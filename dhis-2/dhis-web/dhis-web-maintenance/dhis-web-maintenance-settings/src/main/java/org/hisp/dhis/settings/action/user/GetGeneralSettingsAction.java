@@ -27,6 +27,7 @@
 
 package org.hisp.dhis.settings.action.user;
 
+import static org.hisp.dhis.user.UserSettingService.AUTO_SAVE_DATA_ENTRY_FORM;
 import static org.hisp.dhis.user.UserSettingService.DEFAULT_CHARTS_IN_DASHBOARD;
 import static org.hisp.dhis.user.UserSettingService.KEY_CHARTS_IN_DASHBOARD;
 
@@ -52,7 +53,7 @@ import com.opensymphony.xwork2.Action;
  * @version $ GetAvailableUserSettingsAction.java May 31, 2011 9:31:54 AM $
  * 
  */
-public class GetAvailableUserSettingsAction
+public class GetGeneralSettingsAction
     implements Action
 {
     // -------------------------------------------------------------------------
@@ -100,7 +101,7 @@ public class GetAvailableUserSettingsAction
     {
         this.styleManager = styleManager;
     }
-    
+
     private DisplayPropertyManager displayPropertyManager;
 
     public void setDisplayPropertyManager( DisplayPropertyManager displayPropertyManager )
@@ -188,7 +189,7 @@ public class GetAvailableUserSettingsAction
     {
         return autoSave;
     }
-
+    
     private String currentStyle;
 
     public String getCurrentStyle()
@@ -259,7 +260,8 @@ public class GetAvailableUserSettingsAction
         // Get Charts in Dashboard
         // ---------------------------------------------------------------------
 
-        chartsInDashboard = (Integer) userSettingService.getUserSetting( KEY_CHARTS_IN_DASHBOARD, DEFAULT_CHARTS_IN_DASHBOARD );
+        chartsInDashboard = (Integer) userSettingService.getUserSetting( KEY_CHARTS_IN_DASHBOARD,
+            DEFAULT_CHARTS_IN_DASHBOARD );
 
         chartsInDashboardOptions = UserSettingService.DASHBOARD_CHARTS_TO_DISPLAY;
 
@@ -275,7 +277,7 @@ public class GetAvailableUserSettingsAction
         // Get Auto-save data entry form
         // ---------------------------------------------------------------------
 
-        autoSave = (Boolean) userSettingService.getUserSetting( UserSettingService.AUTO_SAVE_DATA_ENTRY_FORM, false );
+        autoSave = (Boolean) userSettingService.getUserSetting( AUTO_SAVE_DATA_ENTRY_FORM, false );
 
         // ---------------------------------------------------------------------
         // Get styles
