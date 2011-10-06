@@ -61,38 +61,16 @@
     
     <!-- User settings -->
 
-    <action name="userSettings" class="org.hisp.dhis.settings.action.user.GetAvailableUserSettingsAction">
+    <action name="userGeneralSettings" class="org.hisp.dhis.settings.action.user.GetAvailableUserSettingsAction">
       <result name="success" type="velocity">/main.vm</result>
-      <param name="page">/dhis-web-maintenance-settings/userSettings.vm</param>
+      <param name="page">/dhis-web-maintenance-settings/userGeneralSettings.vm</param>
       <param name="menu">/dhis-web-maintenance-settings/settingsMenu.vm</param>
     </action>
 
-    <action name="setCurrentLocale" class="org.hisp.dhis.settings.action.user.SetCurrentLocaleAction">
-      <result name="success" type="redirect">userSettings.action</result>
-    </action>
-
-    <action name="setCurrentLocaleDb" class="org.hisp.dhis.settings.action.user.SetCurrentLocaleDbAction">
-      <result name="success" type="redirect">userSettings.action</result>
-    </action>
-
-    <action name="setCurrentSortOrder" class="org.hisp.dhis.settings.action.user.SetCurrentSortOrderAction">
-      <result name="success" type="redirect">userSettings.action</result>
-    </action>
-
-    <action name="setCurrentChartsInDashboard" class="org.hisp.dhis.settings.action.user.SetCurrentChartsInDashboardAction">
-      <result name="success" type="redirect">userSettings.action</result>
-    </action>
-
-    <action name="setCurrentDisplayProperty" class="org.hisp.dhis.settings.action.user.SetCurrentDisplayPropertyAction">
-      <result name="success" type="redirect">userSettings.action</result>
-    </action>
-
-    <action name="setAutoSaveDataEntryForm" class="org.hisp.dhis.settings.action.user.SetAutoSaveDataEntryFormAction">
-      <result name="success" type="redirect">userSettings.action</result>
-    </action>
-
-    <action name="setCurrentStyle" class="org.hisp.dhis.settings.action.user.SetCurrentStyleAction">
-      <result name="success" type="redirect">userSettings.action</result>
+    <action name="setUserGeneralSettings" class="org.hisp.dhis.settings.action.user.SetGeneralSettingsAction">
+      <result name="success" type="velocity-json">
+		/dhis-web-commons/ajax/jsonResponseSuccess.vm</result>
+	  <param name="onExceptionReturn">plainTextError</param>
     </action>
 
   </package>
