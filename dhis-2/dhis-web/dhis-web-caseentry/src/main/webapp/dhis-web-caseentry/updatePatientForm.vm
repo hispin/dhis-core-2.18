@@ -16,11 +16,6 @@
 		datePickerValid( 'patientForm [id=deathDate]' );
 		addEventForPatientForm('patientForm');
 		
-		jQuery("#btnRepresentativeInfo").cluetip(
-		{
-			local:"#representativeInfo"
-		});
-		
 		jQuery("#patientForm").validate({
 				 meta:"validate"
 				,errorElement:"span"
@@ -174,8 +169,9 @@
 		#set( $representative = $patient.representative ) 
 		<tr>
 			<td>$i18n.getString("representative")</td>
-			<td>$!patient.representative.getFullName() 
-				<a title="$i18n.getString('patient_info')" href="#" id="btnRepresentativeInfo" rel="#representativeInfo"><img src="../images/information.png" alt="$i18n.getString( "show_details" )"></a></td>
+			<td> 
+				$!patient.representative.getFullName() <img src="../images/information.png" alt="$i18n.getString( 'show_details' )" onclick='showRepresentativeInfo()' style='cursor:pointer;'>
+			</td>
 		</tr>
 	#end
 	
@@ -274,56 +270,45 @@
 
 </form> 	
 
-<div id="hiddenModalContent" style="display:none">
-<style> 
-div#hiddenModalContent label { font-weight: bold;}  
-div#hiddenModalContent td {padding: 2px 5px}
-</style>
-<span>$i18n.getString( "duplicate_warning" )</span>
-<input type="button" value="$i18n.getString( 'create_new_patient' )"  id="btnCreateNew"/>
-
-<div id="thickboxContainer"></div>
-</div>
-
-<div id="representativeInfo" style="display:none">
-<table>
-	<tr>
-		<td class="bold">$i18n.getString("full_name"):</td>
-		<td>$!representative.getFullName()</td>
-	</tr>
-	<tr>
-		<td class="bold">$i18n.getString("gender"):</td>
-		<td> $!representative.gender</td>
-	</tr>
-	<tr>
-		<td class="bold">$i18n.getString("date_of_birth"):</td>
-		<td>$!format.formatDate( $!representative.birthDate )</td>
-	</tr>
-	<tr>
-		<td class="bold">$i18n.getString("age"):</td>
-		<td> $!representative.getAge() </td>
-	</tr>
-	<tr>
-		<td class="bold">$i18n.getString("blood_group"):</td>
-		<td>$!representative.getBloodGroup()</td>
-	</tr>
-	#foreach( $patientIdentifier in $representative.identifiers )
-	  <tr>  
-	  	<td class="bold">#if( $patientIdentifier.identifierType )$patientIdentifier.identifierType.name: #else $i18n.getString("system_identifier"): #end</td>      
-	      <td> $!patientIdentifier.identifier </td>
-	   </tr>
-	#end
-	<tr>
-		<td class="bold">$i18n.getString("programs"):</td>
-		<td>  
-			 #foreach( $program in $representative.programs )
-			 	#if( $velocityCount == 1 )
-	      			 $program.name
-	      		#else ,  $program.name 
-	      		#end
-			 #end  
-		</td>
-	</tr>
-	       
-</table>
+<div id="representativeInfo" style='font-size:12px;'>
+	<table id='patientInfoDiv'>
+		<tr>
+			<td class="bold">$i18n.getString("full_name"):</td>
+			<td>$!representative.getFullName()</td>
+		</tr>
+		<tr>
+			<td class="bold">$i18n.getString("gender"):</td>
+			<td> $!representative.gender</td>
+		</tr>
+		<tr>
+			<td class="bold">$i18n.getString("date_of_birth"):</td>
+			<td>$!format.formatDate( $!representative.birthDate )</td>
+		</tr>
+		<tr>
+			<td class="bold">$i18n.getString("age"):</td>
+			<td> $!representative.getAge() </td>
+		</tr>
+		<tr>
+			<td class="bold">$i18n.getString("blood_group"):</td>
+			<td>$!representative.getBloodGroup()</td>
+		</tr>
+		#foreach( $patientIdentifier in $representative.identifiers )
+		  <tr>  
+			<td class="bold">#if( $patientIdentifier.identifierType )$patientIdentifier.identifierType.name: #else $i18n.getString("system_identifier"): #end</td>      
+			  <td> $!patientIdentifier.identifier </td>
+		   </tr>
+		#end
+		<tr>
+			<td class="bold">$i18n.getString("programs"):</td>
+			<td>  
+				 #foreach( $program in $representative.programs )
+					#if( $velocityCount == 1 )
+						 $program.name
+					#else ,  $program.name 
+					#end
+				 #end  
+			</td>
+		</tr>
+			   
+	</table>
 </div>
