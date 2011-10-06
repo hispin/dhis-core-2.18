@@ -1,7 +1,14 @@
 <script>
 	jQuery(document).ready(function() {
 		validation2( 'emailSettingForm', function( form ) {
-			form.submit();
+			jQuery.postUTF8( 'setSystemEmailSettings.action', {
+				smtpHostName: getFieldValue( 'smtpHostName' ),
+				smtpUsername: getFieldValue( 'smtpUsername' ),
+				smtpPassword: getFieldValue( 'smtpPassword' )
+			}, function( json ) {
+				if ( json.response == "success" )
+					setHeaderDelayMessage( json.message );
+			});
 		}, {
 			"rules" : getValidationRules( "emailSettings" )
 		});
@@ -9,9 +16,9 @@
 </script>
 
 
-<h3>$i18n.getString( "system_email_settings" )</h3>
+<h3>$i18n.getString( "smtp_settings" )</h3>
 
-<form id="emailSettingForm" method="post" action="setEmailSettings.action">
+<form id="emailSettingForm">
 
 <h4>$i18n.getString( "host_name" )</h4>
 

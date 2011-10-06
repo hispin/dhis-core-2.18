@@ -5,7 +5,7 @@
 
 <h2>$i18n.getString( "system_settings" )&nbsp;</h2>
 <ul>
-	<li><a href="generalSettings.action">$i18n.getString( "general" )&nbsp;</a></li>
-	<li><a href="appearanceSettings.action">$i18n.getString( "appearance" )&nbsp;</a></li>
-	<li><a href="emailSettings.action">$i18n.getString( "email" )&nbsp;</a></li>
+	<li><a href="systemGeneralSettings.action">$i18n.getString( "general" )&nbsp;</a></li>
+	<li><a href="systemAppearanceSettings.action">$i18n.getString( "appearance" )&nbsp;</a></li>
+	<li><a href="systemEmailSettings.action">$i18n.getString( "email" )&nbsp;</a></li>
 </ul>

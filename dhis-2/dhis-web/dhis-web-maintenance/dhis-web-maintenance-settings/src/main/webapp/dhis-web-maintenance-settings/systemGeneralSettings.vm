@@ -1,12 +1,29 @@
+<script>
+	jQuery(document).ready(function() {
+		jQuery("input[type=button]").click(function() {
+			jQuery.postUTF8( 'setSystemGeneralSettings.action', {
+				aggregationStrategy: getFieldValue( 'aggregationStrategy' ),
+				infrastructuralDataElements: getFieldValue( 'infrastructuralDataElements' ),
+				infrastructuralPeriodType: getFieldValue( 'infrastructuralPeriodType' ),
+				feedbackRecipients: getFieldValue( 'feedbackRecipients' ),
+				omitIndicatorsZeroNumeratorDataMart: getFieldValue( 'omitIndicatorsZeroNumeratorDataMart' ),
+				disableDataEntryWhenCompleted: getFieldValue( 'disableDataEntryWhenCompleted' ),
+				factorDeviation: getFieldValue( 'factorDeviation' ),
+				completenessOffset: getFieldValue( 'completenessOffset' )
+			}, function( json ) {
+				if ( json.response == "success" )
+					setHeaderDelayMessage( json.message );
+			});
+		});
+	});
+</script>
 
-<h3>$i18n.getString( "system_general_settings" )</h3>
-
-<form id="generalSettingForm" method="post" action="setGeneralSettings.action">
+<h3>$i18n.getString( "general_settings" )</h3>
 
 <!-- aggregation_strategy -->
 <h4>$i18n.getString( "aggregation_strategy" )</h4>
 
-<p><select name="aggregationStrategy" style="width:30em">
+<p><select id="aggregationStrategy" name="aggregationStrategy" style="width:30em">
 	#foreach( $strategy in $aggregationStrategies )
 	<option value="$strategy" #if( $aggregationStrategy == $strategy )selected="selected"#end>$i18n.getString( $strategy )</option>
 	#end
@@ -16,7 +33,7 @@
 <h4>$i18n.getString( "infrastructural_data_elements" )</h4>
 
 <p>
-<select name="infrastructuralDataElements" style="width:30em">
+<select id="infrastructuralDataElements" name="infrastructuralDataElements" style="width:30em">
     #foreach ( $group in $dataElementGroups )
     <option value="$group.id" #if( $group.id == $configuration.infrastructuralDataElements.id )selected="selected"#end>$group.name</option>
     #end
@@ -27,7 +44,7 @@
 <h4>$i18n.getString( "infrastructural_period_type" )</h4>
 
 <p>
-<select name="infrastructuralPeriodType" style="width:30em">
+<select id="infrastructuralPeriodType" name="infrastructuralPeriodType" style="width:30em">
     #foreach ( $type in $periodTypes )
     <option value="$type.name" #if( $type.name == $configuration.infrastructuralPeriodTypeDefaultIfNull.name )selected="selected"#end>$type.name</option>
     #end
@@ -38,7 +55,7 @@
 <h4>$i18n.getString( "feedback_recipients" )</h4>
 
 <p>
-<select name="feedbackRecipients" style="width:30em">
+<select id="feedbackRecipients" name="feedbackRecipients" style="width:30em">
 	<option value="-1">$i18n.getString( "no_feedback_recipients" )</option>
 	#foreach ( $group in $userGroups )
 	<option value="$group.id" #if( $group.id == $!feedbackRecipients.id )selected="selected"#end>$encoder.htmlEncode( $group.name )</option>
@@ -74,6 +91,4 @@
 	<input type="text" id="completenessOffset" name="completenessOffset" value="$!completenessOffset"/>
 </p>
 
-<p><input type="submit" value="$i18n.getString( 'save' )" style="width:10em"/></p>
-
-</form>
+<p><input type="button" value="$i18n.getString( 'save' )" style="width:10em"/></p>
