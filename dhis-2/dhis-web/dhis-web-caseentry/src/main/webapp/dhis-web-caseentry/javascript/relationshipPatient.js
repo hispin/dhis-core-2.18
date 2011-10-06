@@ -28,8 +28,7 @@ function showAddRelationshipPatient( patientId, isShowPatientList )
 	hideById( 'searchPatientDiv' );
 	hideById( 'listPatientDiv' );
 	hideById( 'listRelationshipDiv' );
-	setInnerHTML('addPatientDiv', '');
-	setInnerHTML('updatePatientDiv', '');
+	setInnerHTML('editPatientDiv', '');
 	
 	jQuery('#loaderDiv').show();
 	jQuery('#addRelationshipDiv').load('showAddRelationshipPatient.action',

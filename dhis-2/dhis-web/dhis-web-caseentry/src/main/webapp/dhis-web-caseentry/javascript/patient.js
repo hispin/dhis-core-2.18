@@ -6,8 +6,7 @@ function organisationUnitSelected( orgUnits )
 	
 	hideById('searchPatientDiv');
 	hideById('listPatientDiv');
-	hideById('addPatientDiv');
-	hideById('updatePatientDiv');
+	hideById('editPatientDiv');
 	hideById('enrollmentDiv');
 	hideById('listRelationshipDiv');
 	hideById('addRelationshipDiv');
@@ -146,7 +145,7 @@ function validateAddPatient()
 	$.ajax({
 		type: "POST",
 		url: 'validatePatient.action',
-		data: getParamsForDiv('addPatientDiv'),
+		data: getParamsForDiv('editPatientDiv'),
 		success:addValidationCompleted
      });	
 }
@@ -374,16 +373,15 @@ function toggleUnderAge(this_)
 function showAddPatientForm()
 {
 	hideById('listPatientDiv');
-	setInnerHTML('updatePatientDiv', '');
 	
 	hideById('selectDiv');
 	hideById('searchPatientDiv');
 				
 	jQuery('#loaderDiv').show();
-	jQuery('#addPatientDiv').load('showAddPatientForm.action'
+	jQuery('#editPatientDiv').load('showAddPatientForm.action'
 		, function()
 		{
-			showById('addPatientDiv');
+			showById('editPatientDiv');
 			jQuery('#loaderDiv').hide();
 		});
 	
@@ -394,7 +392,7 @@ function addPatient()
 	$.ajax({
       type: "POST",
       url: 'addPatient.action',
-      data: getParamsForDiv('addPatientDiv'),
+      data: getParamsForDiv('editPatientDiv'),
       success: function(json) {
 		var type = json.response;
 		showProgramEnrollmentSelectForm( json.message );
@@ -411,18 +409,18 @@ function addPatient()
 function showUpdatePatientForm( patientId )
 {
 	hideById('listPatientDiv');
-	setInnerHTML('addPatientDiv', '');
+	setInnerHTML('editPatientDiv', '');
 	
 	hideById('selectDiv');
 	hideById('searchPatientDiv');
 				
 	jQuery('#loaderDiv').show();
-	jQuery('#updatePatientDiv').load('showUpdatePatientForm.action',
+	jQuery('#editPatientDiv').load('showUpdatePatientForm.action',
 		{
 			id:patientId
 		}, function()
 		{
-			showById('updatePatientDiv');
+			showById('editPatientDiv');
 			jQuery('#searchPatientsDiv').dialog('close');
 			jQuery('#loaderDiv').hide();
 		});
@@ -435,7 +433,7 @@ function updatePatient()
 	$.ajax({
       type: "POST",
       url: 'updatePatient.action',
-      data: getParamsForDiv('updatePatientDiv'),
+      data: getParamsForDiv('editPatientDiv'),
       success: function( json ) {
 		showProgramEnrollmentSelectForm( getFieldValue('id') );
       }
@@ -449,8 +447,7 @@ function updatePatient()
 function showProgramEnrollmentSelectForm( patientId )
 {
 	hideById('listPatientDiv');
-	hideById('addPatientDiv');
-	hideById('updatePatientDiv');
+	hideById('editPatientDiv');
 	
 	hideById('selectDiv');
 	hideById('searchPatientDiv');
@@ -553,8 +550,7 @@ function saveProgramEnrollment()
 function showUnenrollmentSelectForm( patientId )
 {
 	hideById('listPatientDiv');
-	hideById('addPatientDiv');
-	hideById('updatePatientDiv');
+	hideById('editPatientDiv');
 	
 	hideById('selectDiv');
 	hideById('searchPatientDiv');
@@ -684,8 +680,7 @@ function onClickBackBtn()
 	showById('searchPatientDiv');
 	showById('listPatientDiv');
 	
-	hideById('addPatientDiv');
-	hideById('updatePatientDiv');
+	hideById('editPatientDiv');
 	hideById('enrollmentDiv');
 	hideById('listRelationshipDiv');
 	hideById('addRelationshipDiv');
@@ -693,8 +688,7 @@ function onClickBackBtn()
 
 function loadPatientList()
 {
-	hideById('addPatientDiv');
-	hideById('updatePatientDiv');
+	hideById('editPatientDiv');
 	hideById('enrollmentDiv');
 	hideById('listRelationshipDiv');
 	hideById('addRelationshipDiv');
@@ -721,8 +715,7 @@ function loadPatientList()
 function loadAllPatients()
 {
 	hideById('listPatientDiv');
-	hideById('addPatientDiv');
-	hideById('updatePatientDiv');
+	hideById('editPatientDiv');
 	
 	jQuery('#loaderDiv').show();
 	contentDiv = 'listPatientDiv';
