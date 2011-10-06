@@ -95,12 +95,16 @@
 			datePickerValid( 'dateOfIncident' );
 			
 			$( "#tabs" ).tabs( "option", "selected", 0 );
-			$('#tabs').bind('tabsselect', function(event, ui) {
-				if( ui.index == 1 )
-				{
-					showSelectedDataRecoding( getFieldValue('patientId') );
-				}
-			});
+			#if($registerEvent == 'true')
+				$('#tabs').bind('tabsselect', function(event, ui) {
+					if( ui.index == 1 )
+					{
+						showSelectedDataRecoding( getFieldValue('patientId') );
+					}
+				});
+			#else
+				$("#tabs").tabs("option", "disabled", [1]);
+			#end
 		});
 	
 </script>
