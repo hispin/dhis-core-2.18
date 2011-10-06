@@ -12,16 +12,16 @@
 	
 	jQuery(document).ready(	function(){
 
-		datePickerValid( 'updatePatientForm [id=birthDate]' );
-		datePickerValid( 'updatePatientForm [id=deathDate]' );
-		addEventForPatientForm('updatePatientForm');
+		datePickerValid( 'patientForm [id=birthDate]' );
+		datePickerValid( 'patientForm [id=deathDate]' );
+		addEventForPatientForm('patientForm');
 		
 		jQuery("#btnRepresentativeInfo").cluetip(
 		{
 			local:"#representativeInfo"
 		});
 		
-		jQuery("#updatePatientForm").validate({
+		jQuery("#patientForm").validate({
 				 meta:"validate"
 				,errorElement:"span"
 				,submitHandler: function(form)
@@ -30,23 +30,23 @@
 					}
 				,beforeValidateHandler: function(form)
 					{
-						var dobType = $('#updatePatientForm [id=dobType]').val();
+						var dobType = $('#patientForm [id=dobType]').val();
 						
 						if( dobType=='V' || dobType=='D' ) 
 						{
-							var birthDate = $('#updatePatientForm [id=birthDate]').val();
+							var birthDate = $('#patientForm [id=birthDate]').val();
 							if( birthDate != '' ){
-								$("#updatePatientForm [id=memberValidator]").val(birthDate);
+								$("#patientForm [id=memberValidator]").val(birthDate);
 							}
 						}else{
-							var age = $('#updatePatientForm [id=age]').val();
-							$("#updatePatientForm [id=memberValidator]").val(age);
+							var age = $('#patientForm [id=age]').val();
+							$("#patientForm [id=memberValidator]").val(age);
 						}
 						
 					}
 			});
 		
-		dobTypeOnChange( 'updatePatientForm' );
+		dobTypeOnChange( 'patientForm' );
 		checkedDuplicate = false;
 		if("$!patient.dobType" == 'A'){ 
 			var i18n_please_select_relationshipType = '$encoder.jsEscape( $i18n.getString( "please_verify_birthday" ) , "'")';
@@ -59,7 +59,7 @@
 <h3>$i18n.getString( "update_patient" )</h3>
 <p><input type="button" value="$i18n.getString( 'back_to_search' )" onclick="loadPatientList();" style="width:10em"/></p>
 
-<form id="updatePatientForm" name="updatePatientForm" action="updatePatient.action" method="post" >
+<form id="patientForm" name="patientForm" action="updatePatient.action" method="post" >
 <input type="hidden" id="representativeId" name="representativeId"/> 
 <input type="hidden" id="relationshipTypeId" name="relationshipTypeId"/>
 <div>

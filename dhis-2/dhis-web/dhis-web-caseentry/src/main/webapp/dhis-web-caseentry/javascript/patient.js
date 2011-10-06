@@ -184,10 +184,10 @@ function validateUpdatePatient()
 {
     $.post( 'validatePatient.action?' + getIdParams( ), 
 		{ 
-			id: jQuery( '#updatePatientForm [id=id]' ).val(),
-			fullName: jQuery( '#updatePatientForm [id=fullName]' ).val(),
-			gender: jQuery( '#updatePatientForm [id=gender]' ).val(),
-			birthDate: jQuery( '#updatePatientForm [id=birthDate]' ).val()
+			id: jQuery( '#patientForm [id=id]' ).val(),
+			fullName: jQuery( '#patientForm [id=fullName]' ).val(),
+			gender: jQuery( '#patientForm [id=gender]' ).val(),
+			birthDate: jQuery( '#patientForm [id=birthDate]' ).val()
 		}, updateValidationCompleted );
 }
 

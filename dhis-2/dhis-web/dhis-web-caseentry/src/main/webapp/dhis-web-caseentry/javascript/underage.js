@@ -137,11 +137,11 @@ function autoChoosePerson( xmlElement )
 {
 	jQuery("#tab-2").html("<center><span class='bold'>" + i18n_add_person_successfully + "</span></center>");
 	var root = jQuery(xmlElement);
-	jQuery("#addPatientForm [id=representativeId]").val( root.find("id").text() );
-	jQuery("#addPatientForm [id=relationshipTypeId]").val( root.find("relationshipTypeId").text() );
+	jQuery("#patientForm [id=representativeId]").val( root.find("id").text() );
+	jQuery("#patientForm [id=relationshipTypeId]").val( root.find("relationshipTypeId").text() );
 	root.find("identifier").each(
 			function(){
-				var inputField = jQuery("#addPatientForm iden" + jQuery(this).find("identifierTypeId").text());
+				var inputField = jQuery("#patientForm iden" + jQuery(this).find("identifierTypeId").text());
 				inputField.val( jQuery(this).find("identifierText").text() );
 				inputField.attr({"disabled":"disabled"});
 			}
@@ -162,8 +162,8 @@ function choosePerson(this_)
 	}
 	
 	var id = jQuery(this_).attr("id");
-	jQuery("#addPatientForm [id=representativeId]").val(id);
-	jQuery("#addPatientForm [id=relationshipTypeId]").val(relationshipTypeId);
+	jQuery("#patientForm [id=representativeId]").val(id);
+	jQuery("#patientForm [id=relationshipTypeId]").val(relationshipTypeId);
 	jQuery(".identifierRow"+id).each(function(){
 		var inputField = window.parent.jQuery("#"+jQuery(this).attr("id"));
 		if( inputField.metadata({type:"attr",name:"data"}).related  )
