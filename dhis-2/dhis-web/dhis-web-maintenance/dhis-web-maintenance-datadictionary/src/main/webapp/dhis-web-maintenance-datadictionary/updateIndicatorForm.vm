@@ -74,15 +74,20 @@
         <td><label for="url">$i18n.getString( "url" )</label></td>
         <td><input type="text" id="url" name="url" value="$!encoder.htmlEncode( $indicator.url )" style="width:20em"/></td>
     </tr>
+</table>
+
+#tblDynamicAttributes( { "attributes": $attributes, "attributeValues": $attributeValues } )
+
+<table>
 	<tr>
-		<td></td>
+		<td style="width:200px"></td>
 		<td>
 			<input type="button" value="$i18n.getString( 'edit_numerator' )" onclick="indicatorNumeratorForm()" style="width:20em"/>
 			<input type="hidden" id="numerator" name="numerator" value="$!indicator.numerator"/>
 		</td>		
 	</tr>
 	<tr>
-		<td></td>
+		<td style="width:200px"></td>
 		<td>
 			<input type="button" id="denominatorButton" name="denominatorButton" value="$i18n.getString( 'edit_denominator' )" onclick="indicatorDenominatorForm()" style="width:20em"  #if($!indicator.indicatorType.number=='true') disabled #end/>
 			<input type="hidden" id="denominator" name="denominator" value="$!indicator.denominator"/>
@@ -90,8 +95,6 @@
 		</td>
 	</tr>
 </table>
-
-#tblDynamicAttributes( { "attributes": $attributes, "attributeValues": $attributeValues } )
 
 #if( $groupSets.size() > 0 )
 <table>
