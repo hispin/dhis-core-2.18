@@ -45,8 +45,11 @@ import org.hisp.dhis.organisationunit.OrganisationUnitGroupSet;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.organisationunit.comparator.OrganisationUnitGroupSetNameComparator;
 import org.hisp.dhis.system.util.AttributeUtils;
+import org.hisp.dhis.system.util.ValidationUtils;
 
 import com.opensymphony.xwork2.Action;
+
+import static org.hisp.dhis.system.util.ValidationUtils.*;
 
 /**
  * @author Torgeir Lorange Ostby
@@ -145,6 +148,27 @@ public class GetOrganisationUnitAction
     {
         return attributeValues;
     }
+    
+    private boolean point;
+
+    public boolean isPoint()
+    {
+        return point;
+    }
+    
+    private String latitude;
+    
+    public String getLatitude()
+    {
+        return latitude;
+    }
+
+    private String longitude;
+
+    public String getLongitude()
+    {
+        return longitude;
+    }
 
     // -------------------------------------------------------------------------
     // Action implementation
@@ -174,6 +198,14 @@ public class GetOrganisationUnitAction
         Collections.sort( groupSets, new OrganisationUnitGroupSetNameComparator() );
         Collections.sort( attributes, new AttributeSortOrderComparator() );
 
+        // ---------------------------------------------------------------------
+        // Allow update only if org unit does not have polygon coordinates
+        // ---------------------------------------------------------------------
+
+        point = organisationUnit.getCoordinates() == null || coordinateIsValid( organisationUnit.getCoordinates() );
+        latitude = ValidationUtils.getLatitude( organisationUnit.getCoordinates() );
+        longitude = ValidationUtils.getLongitude( organisationUnit.getCoordinates() );
+        
         return SUCCESS;
     }
 }

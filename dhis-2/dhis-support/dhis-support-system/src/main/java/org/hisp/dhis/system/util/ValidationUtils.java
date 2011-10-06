@@ -146,4 +146,16 @@ public class ValidationUtils
         
         return matcher.find() ? matcher.group( 2 ) : null;
     }
+    
+    /**
+     * Returns a coordinate string based on the given latitude and longitude.
+     * 
+     * @param latitude the latitude string.
+     * @param longitude the longitude string.
+     * @return a coordinate string.
+     */
+    public static String getCoordinate( String latitude, String longitude )
+    {
+        return "[" + latitude + "," + longitude + "]";
+    }
 }

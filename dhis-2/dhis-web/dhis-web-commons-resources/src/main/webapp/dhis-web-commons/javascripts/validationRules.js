@@ -77,6 +77,12 @@ var validationRules = {
         "openingDate" : {
             "required" : true
         },
+        "latitude" : {
+        	"number" : true
+        },
+        "longitude" : {
+        	"number" : true
+        },
         "url" : {
             "url" : true,
             "rangelength" : [ 0, 255 ]
