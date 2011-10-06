@@ -46,9 +46,7 @@
 	<tr>
 		<th>$i18n.getString( "available_data_elements" )</th>
 		<th></th>
-		<th>$i18n.getString( "group_members" )
-			<select id="memberValidator" multiple="multiple" style="display:none" class="{validate:{required:true}}"/>
-		</th>
+		<th>$i18n.getString( "group_members" )</th>
 	</tr>
 
 	<tr>

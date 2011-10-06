@@ -41,9 +41,7 @@
 	<tr>
 		<th>$i18n.getString( "available_indicators" )</th>
 		<th></th>
-		<th>$i18n.getString( "group_members" )
-			<select id="memberValidator" class="{validate:{required:true}}" style="display:none"/>
-		</th>
+		<th>$i18n.getString( "group_members" )</th>
 	</tr>
 
 	<tr>

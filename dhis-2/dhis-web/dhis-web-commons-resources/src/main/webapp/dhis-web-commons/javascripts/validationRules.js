@@ -249,7 +249,7 @@ var validationRules = {
             "required" : true,
             "alphanumericwithbasicpuncspaces" : true,
             "notOnlyDigits" : true,
-            "rangelength" : [ 3, 150 ]
+            "rangelength" : [ 2, 150 ]
         }
     },
     "dataElementGroupSet" : {
@@ -319,7 +319,7 @@ var validationRules = {
     "indicatorGroup" : {
         "name" : {
             "required" : true,
-            "rangelength" : [ 3, 150 ],
+            "rangelength" : [ 2, 150 ],
             "alphanumericwithbasicpuncspaces" : true
         }
     },
