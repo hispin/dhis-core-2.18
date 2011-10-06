@@ -51,7 +51,25 @@ public class ValidationUtilsTest
         assertFalse( coordinateIsValid( "23.34343 56.3232" ) );
         assertFalse( coordinateIsValid( "[23.34f43,56.3232]" ) );
         assertFalse( coordinateIsValid( "23.34343,56.323.2" ) );
-        assertFalse( coordinateIsValid( "S-0.27726 E37.08472" ) );
-        assertFalse( coordinateIsValid( "17298" ) );
+        assertFalse( coordinateIsValid( "S-0.27726 E37.08472" ) );        
+        assertFalse( coordinateIsValid( null ) );
+    }
+    
+    @Test
+    public void testGetLatitude()
+    {
+        assertEquals( "+37.99034", getLatitude( "[+37.99034,-28.94221]" ) );
+        assertEquals( "37.99034", getLatitude( "[37.99034,28.94221]" ) );
+        assertNull( getLatitude( "23.34343,56.3232" ) );
+        assertNull( getLatitude( null ) );
+    }
+    
+    @Test
+    public void testGetLongitude()
+    {
+        assertEquals( "-28.94221", getLongitude( "[+37.99034,-28.94221]" ) );
+        assertEquals( "28.94221", getLongitude( "[37.99034,28.94221]" ) );
+        assertNull( getLongitude( "23.34343,56.3232" ) );
+        assertNull( getLongitude( null ) );
     }
 }
