@@ -837,8 +837,11 @@ function removeAttributeOption( rowId )
 function showSelectedDataRecoding( patientId )
 {
 	showLoader();
+	setInnerHTML('dataRecordingSelectDiv', "");
+	setInnerHTML('dataEntryFormDiv', "");
 	hideById('searchPatientDiv');
 	hideById('dataEntryFormDiv');
+	
 	jQuery('#dataRecordingSelectDiv').load( 'selectDataRecordingFromRegistration.action', 
 		{
 			patientId: patientId
@@ -854,9 +857,24 @@ function showSelectedDataRecoding( patientId )
 				}
 			});
 			
+			hideById('nonSingleEventProgramDiv');
 			hideById('patientInfoDiv');
+			
 			showById('dataRecordingSelectDiv');
 			
 			hideLoader();
+		});
+}
+
+function showRepresentativeInfo( patientId)
+{
+	$('#representativeInfo' ).dialog({
+			title: i18n_representative_info,
+			maximize: true, 
+			closable: true,
+			modal:true,
+			overlay:{background:'#000000', opacity:0.1},
+			width: 400,
+			height: 300
 		});
 }

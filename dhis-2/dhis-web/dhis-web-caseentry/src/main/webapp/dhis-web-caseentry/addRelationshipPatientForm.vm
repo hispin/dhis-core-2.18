@@ -56,14 +56,4 @@
 </p>
 
 </form> 	
-	
-<div id="hiddenModalContent" style="display:none">
-<style> 
-div#hiddenModalContent label { font-weight: bold;}  
-div#hiddenModalContent td {padding: 2px 5px}
-</style>
-<span>$i18n.getString( "duplicate_warning" )</span>
-<input type="button" value="$i18n.getString( 'create_new_patient' )"  id="btnCreateNew"/>
 
-<div id="thickboxContainer"></div>
-</div>
