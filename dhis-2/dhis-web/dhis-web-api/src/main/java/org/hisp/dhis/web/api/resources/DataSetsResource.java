@@ -20,7 +20,9 @@ import org.hisp.dhis.dataset.DataSetService;
 import org.hisp.dhis.importexport.dxf2.model.DataSetLinks;
 import org.hisp.dhis.importexport.dxf2.service.LinkBuilder;
 import org.hisp.dhis.importexport.dxf2.service.LinkBuilderImpl;
+import org.hisp.dhis.system.velocity.VelocityManager;
 import org.hisp.dhis.util.ContextUtils;
+import org.hisp.dhis.web.api.ResponseUtils;
 import org.hisp.dhis.web.api.UrlResourceListener;
 import org.springframework.beans.factory.annotation.Required;
 
@@ -98,6 +100,6 @@ public class DataSetsResource
     {
         DataSetLinks dataSetLinks = new DataSetLinks( linkBuilder.getLinks( dataSetService.getAllDataSets() ) );
         new UrlResourceListener( uriInfo ).beforeMarshal( dataSetLinks );
-        return velocityManager.render( dataSetLinks.getDataSet(), "dataSets" );
+        return velocityManager.render( dataSetLinks.getDataSet(), ResponseUtils.TEMPLATE_PATH + "dataSets" );
     }
 }

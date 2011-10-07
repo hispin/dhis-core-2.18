@@ -6,30 +6,30 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
   <!-- Resources -->
 
   <bean id="org.hisp.dhis.web.api.resources.ApiResource" class="org.hisp.dhis.web.api.resources.ApiResource">
-    <property name="velocityManager" ref="org.hisp.dhis.web.api.resources.VelocityManager" />
+    <property name="velocityManager" ref="org.hisp.dhis.system.velocity.VelocityManager" />
   </bean>
 
   <bean id="org.hisp.dhis.web.api.resources.DataSetsResource" class="org.hisp.dhis.web.api.resources.DataSetsResource"
     scope="prototype">
     <property name="dataSetService" ref="org.hisp.dhis.dataset.DataSetService" />
-	<property name="velocityManager" ref="org.hisp.dhis.web.api.resources.VelocityManager" />
+	<property name="velocityManager" ref="org.hisp.dhis.system.velocity.VelocityManager" />
   </bean>
 
   <bean id="org.hisp.dhis.web.api.resources.DataSetResource" class="org.hisp.dhis.web.api.resources.DataSetResource"
     scope="prototype">
     <property name="dataSetService" ref="org.hisp.dhis.dataset.DataSetService" />
-	<property name="velocityManager" ref="org.hisp.dhis.web.api.resources.VelocityManager" />
+	<property name="velocityManager" ref="org.hisp.dhis.system.velocity.VelocityManager" />
   </bean>
 
   <bean id="org.hisp.dhis.web.api.resources.DataValueSetResource" class="org.hisp.dhis.web.api.resources.DataValueSetsResource">
     <property name="dataValueSetService" ref="org.hisp.dhis.importexport.dxf2.service.DataValueSetService" />
-	<property name="velocityManager" ref="org.hisp.dhis.web.api.resources.VelocityManager" />
+	<property name="velocityManager" ref="org.hisp.dhis.system.velocity.VelocityManager" />
   </bean>
 
   <bean id="org.hisp.dhis.web.api.resources.OrgUnitsResource" class="org.hisp.dhis.web.api.resources.OrgUnitsResource"
     scope="prototype">
     <property name="organisationUnitService" ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
-	<property name="velocityManager" ref="org.hisp.dhis.web.api.resources.VelocityManager" />
+	<property name="velocityManager" ref="org.hisp.dhis.system.velocity.VelocityManager" />
   </bean>
 
   <bean id="org.hisp.dhis.web.api.resources.OrgUnitResource" class="org.hisp.dhis.web.api.resources.OrgUnitResource"
@@ -65,7 +65,5 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     <property name="orgUnitService" ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
     <property name="dataElementCategoryService" ref="org.hisp.dhis.dataelement.DataElementCategoryService" />
   </bean>
-
-  <bean id="org.hisp.dhis.web.api.resources.VelocityManager" class="org.hisp.dhis.web.api.resources.VelocityManager" />
 
 </beans>

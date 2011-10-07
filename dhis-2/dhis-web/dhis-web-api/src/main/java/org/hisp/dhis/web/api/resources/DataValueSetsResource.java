@@ -13,6 +13,8 @@ import javax.ws.rs.core.UriInfo;
 
 import org.hisp.dhis.importexport.dxf2.model.DataValueSet;
 import org.hisp.dhis.importexport.dxf2.service.DataValueSetService;
+import org.hisp.dhis.system.velocity.VelocityManager;
+import org.hisp.dhis.web.api.ResponseUtils;
 import org.springframework.beans.factory.annotation.Required;
 
 @Path( "dataValueSets" )
@@ -30,7 +32,7 @@ public class DataValueSetsResource
     public String getDescription()
     {
         URI uri = uriInfo.getBaseUriBuilder().path( DataSetsResource.class ).build( );
-        return velocityManager.render( uri, "dataValueSets" );
+        return velocityManager.render( uri, ResponseUtils.TEMPLATE_PATH + "dataValueSets" );
     }
      
     @POST
