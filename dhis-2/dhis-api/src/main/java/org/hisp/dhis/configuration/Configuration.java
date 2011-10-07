@@ -50,6 +50,8 @@ public class Configuration
     private int id;
     
     private UserGroup feedbackRecipients;
+    
+    private UserGroup completenessRecipients;
 
     private DataElementGroup infrastructuralDataElements;
     
@@ -90,6 +92,16 @@ public class Configuration
     public void setFeedbackRecipients( UserGroup feedbackRecipients )
     {
         this.feedbackRecipients = feedbackRecipients;
+    }
+
+    public UserGroup getCompletenessRecipients()
+    {
+        return completenessRecipients;
+    }
+
+    public void setCompletenessRecipients( UserGroup completenessRecipients )
+    {
+        this.completenessRecipients = completenessRecipients;
     }
 
     public DataElementGroup getInfrastructuralDataElements()

@@ -142,6 +142,13 @@ public class SetGeneralSettingsAction
     {
         this.feedbackRecipients = feedbackRecipients;
     }
+    
+    private Integer completenessRecipients;
+
+    public void setCompletenessRecipients( Integer completenessRecipients )
+    {
+        this.completenessRecipients = completenessRecipients;
+    }
 
     private Integer completenessOffset;
 
@@ -171,10 +178,8 @@ public class SetGeneralSettingsAction
     public String execute()
     {
         systemSettingManager.saveSystemSetting( KEY_AGGREGATION_STRATEGY, aggregationStrategy );
-        systemSettingManager.saveSystemSetting( KEY_OMIT_INDICATORS_ZERO_NUMERATOR_DATAMART,
-            omitIndicatorsZeroNumeratorDataMart );
-        systemSettingManager
-            .saveSystemSetting( KEY_DISABLE_DATAENTRYFORM_WHEN_COMPLETED, disableDataEntryWhenCompleted );
+        systemSettingManager.saveSystemSetting( KEY_OMIT_INDICATORS_ZERO_NUMERATOR_DATAMART, omitIndicatorsZeroNumeratorDataMart );
+        systemSettingManager.saveSystemSetting( KEY_DISABLE_DATAENTRYFORM_WHEN_COMPLETED, disableDataEntryWhenCompleted );
         systemSettingManager.saveSystemSetting( KEY_FACTOR_OF_DEVIATION, factorDeviation );
         systemSettingManager.saveSystemSetting( KEY_COMPLETENESS_OFFSET, completenessOffset );
 
@@ -185,6 +190,11 @@ public class SetGeneralSettingsAction
             configuration.setFeedbackRecipients( userGroupService.getUserGroup( feedbackRecipients ) );
         }
 
+        if ( completenessRecipients != null )
+        {
+            configuration.setCompletenessRecipients( userGroupService.getUserGroup( completenessRecipients ) );
+        }
+        
         if ( infrastructuralDataElements != null )
         {
             configuration.setInfrastructuralDataElements( dataElementService

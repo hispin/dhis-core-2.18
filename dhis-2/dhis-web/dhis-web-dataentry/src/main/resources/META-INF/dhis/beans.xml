@@ -85,6 +85,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     <property name="registrationService" ref="org.hisp.dhis.dataset.CompleteDataSetRegistrationService" />
 	<property name="dataSetService" ref="org.hisp.dhis.dataset.DataSetService" />
     <property name="organisationUnitService" ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
+	<property name="messageService" ref="org.hisp.dhis.message.MessageService"/>
   </bean>
 
   <bean id="org.hisp.dhis.de.action.UndoCompleteDataSetAction" class="org.hisp.dhis.de.action.UndoCompleteDataSetAction"

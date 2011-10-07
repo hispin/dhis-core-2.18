@@ -32,6 +32,7 @@ import java.util.List;
 import java.util.Set;
 
 import org.hisp.dhis.configuration.ConfigurationService;
+import org.hisp.dhis.dataset.CompleteDataSetRegistration;
 import org.hisp.dhis.user.CurrentUserService;
 import org.hisp.dhis.user.User;
 import org.hisp.dhis.user.UserGroup;
@@ -43,7 +44,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 public class DefaultMessageService
     implements MessageService
-{
+{    
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
@@ -132,7 +133,39 @@ public class DefaultMessageService
         
         invokeMessageSenders( conversation.getSubject(), text, conversation.getUsers() );
     }
+
+    public int sendCompletenessMessage( CompleteDataSetRegistration registration )
+    {
+        UserGroup userGroup = configurationService.getConfiguration().getCompletenessRecipients();
+
+        if ( userGroup != null && userGroup.getMembers().size() > 0 )
+        {
+            User sender = currentUserService.getCurrentUser();
+
+            //TODO i18n and string externalization            
+            String subject = "Notification: Form registered as complete";
+            String text = "The form " + registration.getDataSet() + " was registered as complete for period " + 
+                registration.getPeriod() + " and organisation unit " + registration.getSource();
+            
+            MessageConversation conversation = new MessageConversation( subject, sender );
+            
+            conversation.addMessage( new Message( text, null, sender ) );
+            
+            for ( User user : userGroup.getMembers() )
+            {
+                conversation.addUserMessage( new UserMessage( user ) );        
+            }
+            
+            int id = saveMessageConversation( conversation );
+            
+            invokeMessageSenders( subject, text, userGroup.getMembers() );
+            
+            return id;
+        }
         
+        return 0;
+    }
+    
     public int saveMessageConversation( MessageConversation conversation )
     {
         return messageConversationStore.save( conversation );

@@ -13,6 +13,9 @@
 	<many-to-one name="feedbackRecipients" class="org.hisp.dhis.user.UserGroup" 
 		column="feedbackrecipientsid" foreign-key="fk_configuration_feedback_recipients"/>
 
+	<many-to-one name="completenessRecipients" class="org.hisp.dhis.user.UserGroup"
+		column="completenessrecipientsid" foreign-key="fk_configuration_completeness_recipients"/>
+
 	<many-to-one name="infrastructuralDataElements" class="org.hisp.dhis.dataelement.DataElementGroup" 
 		column="infrastructuraldataelementsid" foreign-key="fk_configuration_infrastructural_dataelements"/>
 		
