@@ -125,10 +125,9 @@ public class RegisterCompleteDataSetAction
         CompleteDataSetRegistration registration = new CompleteDataSetRegistration();
 
         DataSet dataSet = dataSetService.getDataSet( dataSetId );
-        Period period = PeriodType.createPeriodExternalId( periodId );
-        period.setName( format.formatPeriod( period ) );
+        Period period = PeriodType.createPeriodExternalId( periodId );        
         OrganisationUnit organisationUnit = organisationUnitService.getOrganisationUnit( organisationUnitId );
-
+        
         if ( registrationService.getCompleteDataSetRegistration( dataSet, period, organisationUnit ) == null )
         {
             registration.setDataSet( dataSet );
@@ -140,6 +139,8 @@ public class RegisterCompleteDataSetAction
 
             log.info( "DataSet registered as complete: " + registration );
 
+            registration.getPeriod().setName( format.formatPeriod( registration.getPeriod() ) );
+            
             messageService.sendCompletenessMessage( registration );
         }
 
