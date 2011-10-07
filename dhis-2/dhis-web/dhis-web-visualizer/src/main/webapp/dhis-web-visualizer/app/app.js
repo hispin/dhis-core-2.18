@@ -193,7 +193,7 @@ Ext.onReady( function() {
                 getNames: function() {
                     var a = [];
                     DV.util.getCmp('multiselect[name="selectedIndicators"]').store.each( function(r) {
-                        a.push(r.data.shortName);
+                        a.push(r.data.shortName.replace(/\./g,''));
                     });
                     return a;
                 }
@@ -209,7 +209,7 @@ Ext.onReady( function() {
                 getNames: function() {
                     var a = [];
                     DV.util.getCmp('multiselect[name="selectedDataElements"]').store.each( function(r) {
-                        a.push(r.data.shortName);
+                        a.push(r.data.shortName.replace(/\./g,'')); 
                     });
                     return a;
                 }
@@ -510,7 +510,7 @@ Ext.onReady( function() {
             
             Ext.Array.each(DV.data.data, function(item) {
                 for (var i = 0; i < DV.state.series.data.length; i++) {
-                    for (var j = 0; i < DV.data.values.length; j++) {
+                    for (var j = 0; j < DV.data.values.length; j++) {
                         if (DV.data.values[j][DV.state.category.dimension] === item.x && DV.data.values[j][DV.state.series.dimension] === DV.state.series.data[i]) {
                             item[DV.data.values[j][DV.state.series.dimension]] = DV.data.values[j].v;
                             break;
@@ -546,7 +546,9 @@ Ext.onReady( function() {
                 animate: true,
                 store: DV.store.chart,
                 legend: {
-                    position: 'top'
+                    position: 'top',
+                    boxStroke: '#ffffff',
+                    boxStrokeWidth: 0
                 },
                 axes: [
                     {
@@ -1372,7 +1374,7 @@ Ext.onReady( function() {
                     }
                 }
             },
-            {   
+            {
                 region: 'center',
                 layout: 'fit',
                 bodyStyle: 'padding:10px',
@@ -1381,7 +1383,7 @@ Ext.onReady( function() {
                         xtype: 'button',
                         name: 'resize',
                         text: '<span style="font-weight:bold"><<<</span>',
-                        tooltip: 'Show/hide panel',                            
+                        tooltip: 'Show/hide panel',
                         handler: function() {
                             var p = DV.util.getCmp('panel[region="west"]');
                             if (p.collapsed) {
