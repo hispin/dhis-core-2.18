@@ -27,7 +27,7 @@ package org.hisp.dhis.settings.action.user;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-
+import static org.hisp.dhis.user.UserSettingService.KEY_COMPLETENESS_EMAIL_NOTIFICATION;
 import static org.hisp.dhis.user.UserSettingService.KEY_MESSAGE_EMAIL_NOTIFICATION;
 
 import org.hisp.dhis.user.UserSettingService;
@@ -57,6 +57,13 @@ public class GetEmailSettingsAction
     // Output
     // -------------------------------------------------------------------------
 
+    private Boolean completenessEmailNotification;
+
+    public Boolean getCompletenessEmailNotification()
+    {
+        return completenessEmailNotification;
+    }
+
     private Boolean messageEmailNotification;
 
     public Boolean getMessageEmailNotification()
@@ -71,6 +78,13 @@ public class GetEmailSettingsAction
     public String execute()
         throws Exception
     {
+        // ---------------------------------------------------------------------
+        // Get Completeness-email-notification
+        // ---------------------------------------------------------------------
+
+        completenessEmailNotification = (Boolean) userSettingService.getUserSetting(
+            KEY_COMPLETENESS_EMAIL_NOTIFICATION, false );
+
         // ---------------------------------------------------------------------
         // Get Message-email-notification
         // ---------------------------------------------------------------------

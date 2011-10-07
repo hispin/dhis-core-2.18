@@ -3,6 +3,7 @@
 	jQuery(document).ready(function() {
 		jQuery("input[type=button]").click(function() {
 			jQuery.postJSON( 'setUserEmailSettings.action', {
+				completenessEmailNotification: jQuery( '#completenessEmailNotification' ).is(':checked' ),
 				messageEmailNotification: jQuery( '#messageEmailNotification' ).is(':checked' )
 			}, function ( json ) {
 				if ( json.response == "success" )
@@ -13,6 +14,9 @@
 </script>
 
 <h3>$i18n.getString("user_email_settings")</h3>
+
+<h4>$i18n.getString( "completeness_email_notification" )</h4>
+<input type="checkbox" id="completenessEmailNotification" name="completenessEmailNotification" #if( $completenessEmailNotification ) checked="checked"#end/>
 
 <h4>$i18n.getString( "message_email_notification" )</h4>
 <input type="checkbox" id="messageEmailNotification" name="messageEmailNotification" #if( $messageEmailNotification ) checked="checked"#end/>
