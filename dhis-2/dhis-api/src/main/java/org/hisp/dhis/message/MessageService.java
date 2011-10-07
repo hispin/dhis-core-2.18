@@ -30,6 +30,7 @@ package org.hisp.dhis.message;
 import java.util.List;
 import java.util.Set;
 
+import org.hisp.dhis.dataset.CompleteDataSetRegistration;
 import org.hisp.dhis.user.User;
 
 /**
@@ -49,6 +50,8 @@ public interface MessageService
     int saveMessageConversation( MessageConversation conversation );
     
     void updateMessageConversation( MessageConversation conversation );
+    
+    int sendCompletenessMessage( CompleteDataSetRegistration registration );
     
     MessageConversation getMessageConversation( int id );
     

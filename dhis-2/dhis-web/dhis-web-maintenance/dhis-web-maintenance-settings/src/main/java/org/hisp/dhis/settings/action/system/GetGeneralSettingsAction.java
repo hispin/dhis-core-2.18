@@ -103,6 +103,13 @@ public class GetGeneralSettingsAction
         return feedbackRecipients;
     }
 
+    private UserGroup completenessRecipients;
+    
+    public UserGroup getCompletenessRecipients()
+    {
+        return completenessRecipients;
+    }
+
     private Collection<String> aggregationStrategies;
 
     public Collection<String> getAggregationStrategies()
@@ -150,6 +157,8 @@ public class GetGeneralSettingsAction
 
         feedbackRecipients = configurationService.getConfiguration().getFeedbackRecipients();
 
+        completenessRecipients = configurationService.getConfiguration().getCompletenessRecipients();
+        
         dataElementGroups = new ArrayList<DataElementGroup>( dataElementService.getAllDataElementGroups() );
 
         Collections.sort( dataElementGroups, new DataElementGroupNameComparator() );

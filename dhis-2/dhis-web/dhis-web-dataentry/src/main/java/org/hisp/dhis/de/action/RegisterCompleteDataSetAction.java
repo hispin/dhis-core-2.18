@@ -35,6 +35,7 @@ import org.hisp.dhis.dataset.CompleteDataSetRegistration;
 import org.hisp.dhis.dataset.CompleteDataSetRegistrationService;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.dataset.DataSetService;
+import org.hisp.dhis.message.MessageService;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.period.Period;
@@ -73,6 +74,13 @@ public class RegisterCompleteDataSetAction
     public void setOrganisationUnitService( OrganisationUnitService organisationUnitService )
     {
         this.organisationUnitService = organisationUnitService;
+    }
+    
+    private MessageService messageService;
+
+    public void setMessageService( MessageService messageService )
+    {
+        this.messageService = messageService;
     }
 
     // -------------------------------------------------------------------------
@@ -122,8 +130,9 @@ public class RegisterCompleteDataSetAction
             registrationService.saveCompleteDataSetRegistration( registration );
 
             log.info( "DataSet registered as complete: " + registration );
-        }
 
+            messageService.sendCompletenessMessage( registration );
+        }
 
         return SUCCESS;
     }

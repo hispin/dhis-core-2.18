@@ -27,7 +27,6 @@ package org.hisp.dhis.settings.action.user;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import static org.hisp.dhis.user.UserSettingService.KEY_COMPLETENESS_EMAIL_NOTIFICATION;
 import static org.hisp.dhis.user.UserSettingService.KEY_MESSAGE_EMAIL_NOTIFICATION;
 
 import org.hisp.dhis.i18n.I18n;
@@ -37,7 +36,6 @@ import com.opensymphony.xwork2.Action;
 
 /**
  * @author Dang Duy Hieu
- * @version $Id$
  */
 public class SetEmailSettingsAction
     implements Action
@@ -64,13 +62,6 @@ public class SetEmailSettingsAction
         this.messageEmailNotification = messageEmailNotification;
     }
 
-    private Boolean completenessEmailNotification;
-
-    public void setCompletenessEmailNotification( Boolean completenessEmailNotification )
-    {
-        this.completenessEmailNotification = completenessEmailNotification;
-    }
-
     private String message;
 
     public String getMessage()
@@ -92,8 +83,6 @@ public class SetEmailSettingsAction
     public String execute()
         throws Exception
     {
-        userSettingService.saveUserSetting( KEY_COMPLETENESS_EMAIL_NOTIFICATION, completenessEmailNotification );
-        
         userSettingService.saveUserSetting( KEY_MESSAGE_EMAIL_NOTIFICATION, messageEmailNotification );
 
         message = i18n.getString( "settings_updated" );
