@@ -25,5 +25,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     <property name="taskScheduler" ref="taskScheduler" />
     <property name="taskExecutor" ref="taskScheduler" />
   </bean>
+  
+  <bean id="org.hisp.dhis.system.velocity.VelocityManager" class="org.hisp.dhis.system.velocity.VelocityManager" />
 
 </beans>

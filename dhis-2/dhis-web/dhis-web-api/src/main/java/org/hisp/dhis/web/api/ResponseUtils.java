@@ -7,6 +7,8 @@ import org.hisp.dhis.system.util.DateUtils;
 
 public class ResponseUtils
 {
+    public static final String TEMPLATE_PATH = "dhis-web-api/";
+    
     public static ResponseBuilder response( boolean disallowCache,
         String filename, boolean attachment )
     {

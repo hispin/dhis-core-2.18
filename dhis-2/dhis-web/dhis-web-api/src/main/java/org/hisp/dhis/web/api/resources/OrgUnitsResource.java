@@ -11,6 +11,8 @@ import org.hisp.dhis.importexport.dxf2.model.OrgUnitLinks;
 import org.hisp.dhis.importexport.dxf2.service.LinkBuilder;
 import org.hisp.dhis.importexport.dxf2.service.LinkBuilderImpl;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
+import org.hisp.dhis.system.velocity.VelocityManager;
+import org.hisp.dhis.web.api.ResponseUtils;
 import org.hisp.dhis.web.api.UrlResourceListener;
 import org.springframework.beans.factory.annotation.Required;
 
@@ -41,7 +43,7 @@ public class OrgUnitsResource
     {
         OrgUnitLinks orgUnitLinks = new OrgUnitLinks( linkBuilder.getLinks( organisationUnitService.getAllOrganisationUnits() ) );
         new UrlResourceListener( uriInfo ).beforeMarshal( orgUnitLinks );
-        return velocityManager.render( orgUnitLinks.getOrgUnit(), "orgUnits" );
+        return velocityManager.render( orgUnitLinks.getOrgUnit(), ResponseUtils.TEMPLATE_PATH + "orgUnits" );
     }
 
     @Required

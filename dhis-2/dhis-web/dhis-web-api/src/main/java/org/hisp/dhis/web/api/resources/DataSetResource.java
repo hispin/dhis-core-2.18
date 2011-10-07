@@ -13,6 +13,8 @@ import javax.ws.rs.core.UriInfo;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.dataset.DataSetService;
 import org.hisp.dhis.importexport.dxf2.service.DataSetMapper;
+import org.hisp.dhis.system.velocity.VelocityManager;
+import org.hisp.dhis.web.api.ResponseUtils;
 import org.hisp.dhis.web.api.UrlResourceListener;
 import org.springframework.beans.factory.annotation.Required;
 
@@ -92,6 +94,6 @@ public class DataSetResource
             throw new IllegalArgumentException( "No dataset with uuid " + uuid );
         }
 
-        return velocityManager.render( dataSet, "dataSet" );
+        return velocityManager.render( dataSet, ResponseUtils.TEMPLATE_PATH + "dataSet" );
     }
 }

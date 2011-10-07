@@ -10,6 +10,8 @@ import javax.ws.rs.core.MediaType;
 import org.apache.velocity.exception.MethodInvocationException;
 import org.apache.velocity.exception.ParseErrorException;
 import org.apache.velocity.exception.ResourceNotFoundException;
+import org.hisp.dhis.system.velocity.VelocityManager;
+import org.hisp.dhis.web.api.ResponseUtils;
 import org.springframework.beans.factory.annotation.Required;
 
 import com.sun.jersey.api.view.ImplicitProduces;
@@ -25,7 +27,7 @@ public class ApiResource
     public String getDescription()
         throws ResourceNotFoundException, ParseErrorException, MethodInvocationException, IOException, Exception
     {
-        return velocityManager.render( null, "index" );
+        return velocityManager.render( null, ResponseUtils.TEMPLATE_PATH + "index" );
     }
     
     @Required
