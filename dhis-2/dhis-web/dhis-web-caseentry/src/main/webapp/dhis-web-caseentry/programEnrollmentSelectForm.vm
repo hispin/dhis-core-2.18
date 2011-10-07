@@ -30,7 +30,7 @@
 	<!-- TAB Header -->
 	<div id="tabs">
 		<ul>
-			<li><a href="#tab-1">$i18n.getString("enroll_program")</a></li>
+			<li><a href="#tab-1">$i18n.getString("enroll_to_program")</a></li>
 			<li><a href="#tab-2">$i18n.getString("register_event")</a></li>
 		</ul>
 		
