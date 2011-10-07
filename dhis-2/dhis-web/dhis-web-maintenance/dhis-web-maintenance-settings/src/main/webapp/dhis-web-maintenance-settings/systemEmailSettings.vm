@@ -12,6 +12,8 @@
 		}, {
 			"rules" : getValidationRules( "emailSettings" )
 		});
+		
+		jQuery( '#smtpHostName' ).blur();
 	});
 </script>
 
