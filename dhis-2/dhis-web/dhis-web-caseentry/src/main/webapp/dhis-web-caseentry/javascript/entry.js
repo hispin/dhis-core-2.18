@@ -671,6 +671,7 @@ DRAG_DIV = {
     showData : function(data)
     {
         jQuery("#dataelementName").text(data.deName);
+		jQuery("#orgUnitNameField").text(data.provided);
     },
 		
     resetData : function()

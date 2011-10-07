@@ -56,6 +56,8 @@ public class DefaultProgramDataEntryService
     private static final String UNKNOW_CLINIC = "unknow_clinic";
 
     private static final String NOTAVAILABLE = "not_available";
+    
+    private static final String OTHER_FACILITY = "other_facility";
 
     private static final String DATA_ELEMENT_DOES_NOT_EXIST = "[ Data element does not exist ]";
 
@@ -144,7 +146,7 @@ public class DefaultProgramDataEntryService
         String result = populateCustomDataEntryForDate( htmlCode );
 
         result = populateCustomDataEntryForOption( result );
-        
+
         result = populateCustomDataEntryForTextBox( result );
 
         return result;
@@ -367,7 +369,7 @@ public class DefaultProgramDataEntryService
         // Inline Javascript to add to HTML before outputting
         // ---------------------------------------------------------------------
 
-        final String jsCodeForInputs = " $DISABLED onchange=\"saveVal( $DATAELEMENTID, $OPTIONCOMBOID )\" data=\"{compulsory:$COMPULSORY, deName:'$DATAELEMENTNAME', deType:'$DATAELEMENTTYPE'}\" onkeypress=\"return keyPress(event, this)\" style=\" text-align:center;\"  ";
+        final String jsCodeForInputs = " $DISABLED onchange=\"saveVal( $DATAELEMENTID, $OPTIONCOMBOID )\" data=\"{compulsory:$COMPULSORY, deName:'$DATAELEMENTNAME', deType:'$DATAELEMENTTYPE', provided:'$PROVIDED'}\" onkeypress=\"return keyPress(event, this)\" style=\" text-align:center;\"  ";
 
         StringBuffer sb = new StringBuffer();
 
@@ -549,15 +551,19 @@ public class DefaultProgramDataEntryService
                 // -----------------------------------------------------------
 
                 String orgUnitName = i18n.getString( NOTAVAILABLE );
+                String provided = "";
+                
                 if ( patientDataValue != null )
                 {
                     if ( patientDataValue.isProvidedByAnotherFacility() )
                     {
                         orgUnitName = i18n.getString( UNKNOW_CLINIC );
+                        provided = i18n.getString( OTHER_FACILITY );
                     }
                     else
                     {
                         orgUnitName = patientDataValue.getOrganisationUnit().getName();
+                        provided = patientDataValue.getOrganisationUnit().getName();
                     }
                 }
 
@@ -571,6 +577,7 @@ public class DefaultProgramDataEntryService
                 appendCode = appendCode.replace( "$DISABLED", disabled );
                 appendCode = appendCode.replace( "$COMPULSORY", compulsory );
                 appendCode = appendCode.replace( "$SAVEMODE", "false" );
+                appendCode = appendCode.replace( "$PROVIDED", provided );
 
                 dataElementMatcher.appendReplacement( sb, appendCode );
             }
@@ -591,7 +598,7 @@ public class DefaultProgramDataEntryService
         // Inline Javascript to add to HTML before outputting
         // ---------------------------------------------------------------------
 
-        final String jsCodeForBoolean = " name=\"entryselect\" $DISABLED data=\"{compulsory:$COMPULSORY, deName:'$DATAELEMENTNAME'}\" onchange=\"saveOpt( $DATAELEMENTID )\" style=\"  text-align:center;\" ";
+        final String jsCodeForBoolean = " name=\"entryselect\" $DISABLED data=\"{compulsory:$COMPULSORY, deName:'$DATAELEMENTNAME', provided:'$PROVIDED'}\" onchange=\"saveOpt( $DATAELEMENTID )\" style=\"  text-align:center;\" ";
 
         StringBuffer sb = new StringBuffer();
 
@@ -771,15 +778,18 @@ public class DefaultProgramDataEntryService
                 // -----------------------------------------------------------
 
                 String orgUnitName = i18n.getString( NOTAVAILABLE );
+                String provided = i18n.getString( NOTAVAILABLE );;
                 if ( patientDataValue != null )
                 {
                     if ( patientDataValue.isProvidedByAnotherFacility() )
                     {
                         orgUnitName = i18n.getString( UNKNOW_CLINIC );
+                        provided = i18n.getString( OTHER_FACILITY );
                     }
                     else
                     {
                         orgUnitName = patientDataValue.getOrganisationUnit().getName();
+                        provided = patientDataValue.getOrganisationUnit().getName();
                     }
                 }
 
@@ -795,6 +805,10 @@ public class DefaultProgramDataEntryService
                 appendCode = appendCode.replace( "i18n_no", i18n.getString( "no" ) );
                 appendCode = appendCode.replace( "i18n_select_value", i18n.getString( "select_value" ) );
                 appendCode = appendCode.replace( "$SAVEMODE", "false" );
+
+                
+               
+                appendCode = appendCode.replace( "$PROVIDED", provided );
 
                 appendCode = appendCode.replaceAll( "\\$", "\\\\\\$" );
 
@@ -816,7 +830,7 @@ public class DefaultProgramDataEntryService
         // Inline Javascript to add to HTML before outputting
         // ---------------------------------------------------------------------
 
-        final String jsCodeForCombo = " name=\"entryselect\" $DISABLED data=\"{compulsory:$COMPULSORY, deName:'$DATAELEMENTNAME'}\" onchange=\"saveOpt( $DATAELEMENTID )\" style=\" text-align:center;\" ";
+        final String jsCodeForCombo = " name=\"entryselect\" $DISABLED data=\"{compulsory:$COMPULSORY, deName:'$DATAELEMENTNAME', provided:'$PROVIDED'}\" onchange=\"saveOpt( $DATAELEMENTID )\" style=\" text-align:center;\" ";
 
         StringBuffer sb = new StringBuffer();
 
@@ -988,15 +1002,18 @@ public class DefaultProgramDataEntryService
                 // -----------------------------------------------------------
 
                 String orgUnitName = i18n.getString( NOTAVAILABLE );
+                String provided = i18n.getString( NOTAVAILABLE );
                 if ( patientDataValue != null )
                 {
                     if ( patientDataValue.isProvidedByAnotherFacility() )
                     {
                         orgUnitName = i18n.getString( UNKNOW_CLINIC );
+                        provided = i18n.getString( OTHER_FACILITY );
                     }
                     else
                     {
                         orgUnitName = patientDataValue.getOrganisationUnit().getName();
+                        provided = patientDataValue.getOrganisationUnit().getName();
                     }
                 }
 
@@ -1010,6 +1027,8 @@ public class DefaultProgramDataEntryService
                 appendCode = appendCode.replace( "$COMPULSORY", compulsory );
                 appendCode = appendCode.replace( "i18n_select_value", i18n.getString( "select_value" ) );
                 appendCode = appendCode.replace( "$SAVEMODE", "false" );
+                appendCode = appendCode.replace( "$PROVIDED", provided );
+
                 appendCode = appendCode.replaceAll( "\\$", "\\\\\\$" );
 
                 dataElementMatcher.appendReplacement( sb, appendCode );
@@ -1029,7 +1048,7 @@ public class DefaultProgramDataEntryService
         // Inline Javascript to add to HTML before outputting
         // ---------------------------------------------------------------------
 
-        final String jsCodeForDate = " name=\"entryfield\" $DISABLED data=\"{compulsory:$COMPULSORY, deName:'$DATAELEMENTNAME'}\" onchange=\"saveDate( $DATAELEMENTID )\" style=\" text-align:center;\" ";
+        final String jsCodeForDate = " name=\"entryfield\" $DISABLED data=\"{compulsory:$COMPULSORY, deName:'$DATAELEMENTNAME', provided:'$PROVIDED'}\" onchange=\"saveDate( $DATAELEMENTID )\" style=\" text-align:center;\" ";
 
         // ---------------------------------------------------------------------
         // Metadata code to add to HTML before outputting
@@ -1212,15 +1231,18 @@ public class DefaultProgramDataEntryService
                 // -------------------------------------------------------------
 
                 String orgUnitName = i18n.getString( NOTAVAILABLE );
+                String provided = i18n.getString( NOTAVAILABLE );
                 if ( patientDataValue != null )
                 {
                     if ( patientDataValue.isProvidedByAnotherFacility() )
                     {
                         orgUnitName = i18n.getString( UNKNOW_CLINIC );
+                        provided = i18n.getString( OTHER_FACILITY );
                     }
                     else
                     {
                         orgUnitName = patientDataValue.getOrganisationUnit().getName();
+                        provided = patientDataValue.getOrganisationUnit().getName();
                     }
                 }
 
@@ -1233,6 +1255,8 @@ public class DefaultProgramDataEntryService
                 appendCode = appendCode.replace( "$DISABLED", disabled );
                 appendCode = appendCode.replace( "$COMPULSORY", compulsory );
                 appendCode = appendCode.replace( "$SAVEMODE", "false" );
+                appendCode = appendCode.replace( "$PROVIDED", provided );
+
                 appendCode = appendCode.replaceAll( "\\$", "\\\\\\$" );
 
                 dataElementMatcher.appendReplacement( sb, appendCode );
