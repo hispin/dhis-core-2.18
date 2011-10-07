@@ -1318,9 +1318,15 @@ Ext.onReady( function() {
                                         }),
                                         listeners: {
                                             itemcontextmenu: function(v, r, h, i, e) {
-                                                var menu = Ext.create('Ext.menu.Menu');
+                                                if (v.menu) {
+                                                    v.menu.destroy();
+                                                }
+                                                v.menu = Ext.create('Ext.menu.Menu', {
+                                                    id: 'treepanel-contextmenu',
+                                                });
                                                 if (!r.data.leaf) {
-                                                    menu.add({
+                                                    v.menu.add({
+                                                        id: 'treepanel-contextmenu-item',
                                                         text: 'Select all children',
                                                         icon: 'images/node-select-child.png',
                                                         handler: function() {
@@ -1335,7 +1341,7 @@ Ext.onReady( function() {
                                                     return;
                                                 }
                                                 
-                                                menu.showAt(e.xy);
+                                                v.menu.showAt(e.xy);
                                             }
                                         }
                                     }
