@@ -145,7 +145,7 @@ public class DefaultMessageService
             //TODO i18n and string externalization            
             String subject = "Notification: Form registered as complete";
             String text = "The form " + registration.getDataSet() + " was registered as complete for period " + 
-                registration.getPeriod() + " and organisation unit " + registration.getSource();
+                registration.getPeriod().getName() + " and organisation unit " + registration.getSource();
             
             MessageConversation conversation = new MessageConversation( subject, sender );
             
