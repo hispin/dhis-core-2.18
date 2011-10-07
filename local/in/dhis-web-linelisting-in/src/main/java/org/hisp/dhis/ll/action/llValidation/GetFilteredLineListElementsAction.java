@@ -33,22 +33,19 @@ import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 
-
-import org.hisp.dhis.options.displayproperty.DisplayPropertyHandler;
-
-
-import com.opensymphony.xwork2.ActionSupport;
 import org.hisp.dhis.dataelement.DataElementOperand;
 import org.hisp.dhis.linelisting.LineListElement;
 import org.hisp.dhis.linelisting.LineListService;
 import org.hisp.dhis.linelisting.comparator.LineListElementNameComparator;
+
+import com.opensymphony.xwork2.Action;
 
 /**
  * @author Lars Helge Overland
  * @version $Id: GetFilteredDataElementsActionIN.java 5730 2008-09-20 14:32:22Z brajesh $
  */
 public class GetFilteredLineListElementsAction
-    extends ActionSupport
+    implements Action
 {
     private static final int ALL = 0;
 
@@ -70,14 +67,14 @@ public class GetFilteredLineListElementsAction
     // -------------------------------------------------------------------------
     // DisplayPropertyHandler
     // -------------------------------------------------------------------------
-
+    /*
     private DisplayPropertyHandler displayPropertyHandler;
 
     public void setDisplayPropertyHandler( DisplayPropertyHandler displayPropertyHandler )
     {
         this.displayPropertyHandler = displayPropertyHandler;
     }
-
+    */
     // -------------------------------------------------------------------------
     // Parameters
     // -------------------------------------------------------------------------
@@ -130,13 +127,13 @@ public class GetFilteredLineListElementsAction
 
         //dataElements = displayPropertyHandler.handleDataElements( dataElements );
         
-        displayPropertyHandler.handle( llElements );
+        //displayPropertyHandler.handle( llElements );
 
         // ---------------------------------------------------------------------
         // String filter
         // ---------------------------------------------------------------------
 
-        Iterator iterator = llElements.iterator();
+        Iterator<LineListElement> iterator = llElements.iterator();
 
         while ( iterator.hasNext() )
         {

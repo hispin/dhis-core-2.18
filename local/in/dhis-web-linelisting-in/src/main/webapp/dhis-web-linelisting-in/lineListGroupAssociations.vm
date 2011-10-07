@@ -8,7 +8,19 @@
 	<input type="hidden" name="id" value="$id">
   </div>
   <table id="selectionTable">
-	<tr>
+    <tr>
+      <td>
+        #organisationUnitSelectionTree( false, true, false )
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <input type="submit" id="submitButton" value="$i18n.getString( "save" )" style="width:10em">
+        <input type="button" onclick="window.location.href='getLineListGroups.action'" value="$i18n.getString( "cancel" )" style="width:10em">
+      </td>
+    </tr>  	
+ 
+<!--<tr>
 	  <td>
 		<input type="button" value="$i18n.getString( "remove_all" )" onclick="window.location.href='unselectAll.action?id=$id'" style="width:12em">
      	<input type="button" value="$i18n.getString( "select_all_at_level" )" onclick="selectAllAtLevel( $id )" style="width:12em">
@@ -41,11 +53,11 @@
         <input type="submit" id="submitButton" value="$i18n.getString( "save" )" style="width:10em"><input type="button"
             onclick="window.location.href='getLineListGroups.action'" value="$i18n.getString( "cancel" )" style="width:10em">
       </td>
-    </tr>
+    </tr>-->
   </table>
 
 </form>
-
+<!--
 <span id="message"></span>
 
 <script type="text/javascript">
@@ -54,3 +66,4 @@
   var i18n_loading = '$encoder.jsEncode( $i18n.getString( "loading" ) )';
 
 </script>
+-->

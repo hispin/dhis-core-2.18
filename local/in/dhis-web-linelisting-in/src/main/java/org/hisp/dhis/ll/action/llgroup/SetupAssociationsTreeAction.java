@@ -27,15 +27,9 @@ package org.hisp.dhis.ll.action.llgroup;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.Set;
-
 import org.hisp.dhis.linelisting.LineListGroup;
 import org.hisp.dhis.linelisting.LineListService;
-import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.oust.manager.SelectionTreeManager;
-import org.hisp.dhis.source.Source;
 
 import com.opensymphony.xwork2.Action;
 
@@ -109,15 +103,15 @@ public class SetupAssociationsTreeAction
             System.out.println("selectionTreeManager is null");
         }
         
-        selectionTreeManager.setSelectedOrganisationUnits( convert( lineListGroup.getSources() ) );
-
+        //selectionTreeManager.setSelectedOrganisationUnits( convert( lineListGroup.getSources() ) );
+        selectionTreeManager.setSelectedOrganisationUnits( lineListGroup.getSources() );
         return SUCCESS;
     }
 
     // -------------------------------------------------------------------------
     // Supportive methods
     // -------------------------------------------------------------------------
-
+/*
     private Set<OrganisationUnit> convert( Collection<Source> sources )
     {
 
@@ -130,4 +124,5 @@ public class SetupAssociationsTreeAction
         
         return organisationUnits;
     }
+    */
 }

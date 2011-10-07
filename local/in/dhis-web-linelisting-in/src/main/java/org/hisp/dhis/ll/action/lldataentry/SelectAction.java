@@ -43,14 +43,14 @@ import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodService;
 
-import com.opensymphony.xwork2.ActionSupport;
+import com.opensymphony.xwork2.Action;
 
 /**
  * @author Torgeir Lorange Ostby
  * @version $Id: SelectAction.java 4746 2008-03-13 20:02:29Z abyot $
  */
 public class SelectAction
-    extends ActionSupport
+    implements Action
 {
 
     private static final String DEFAULT_FORM = "defaultform";

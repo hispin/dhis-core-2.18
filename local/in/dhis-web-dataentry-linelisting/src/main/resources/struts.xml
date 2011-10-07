@@ -12,19 +12,6 @@
       <result name="success" type="redirect">select.action</result>
     </action>
     
-    <action name="select" class="org.hisp.dhis.den.action.SelectAction">
-      <interceptor-ref name="organisationUnitTreeStack"/>
-      <result name="defaultform" type="chain">defaultform</result>
-      <result name="sectionform" type="chain">sectionform</result>
-      <result name="multidimensionalform" type="chain">multidimensionalform</result>
-      <result name="success" type="velocity">/main.vm</result>
-      <param name="page">/dhis-web-dataentry-national/select.vm</param>
-      <param name="menu">/dhis-web-dataentry-national/menu.vm</param>
-      <param name="javascripts">../dhis-web-commons/ouwt/ouwt.js,javascript/calendar.js,javascript/calendar-lang.js,javascript/calendar-setup.js,javascript/general.js,javascript/form.js</param>
-      <!--<param name="javascripts">../dhis-web-commons/calendar/calendar.js,../dhis-web-commons/calendar/calendar-lang.js,../dhis-web-commons/calendar/calendar-setup.js,../dhis-web-commons/ouwt/ouwt.js,javascript/general.js,javascript/form.js</param>-->
-	  <param name="stylesheets">style/dhis-web-dataentry-national.css,style/custom_data_entry_form_styles.css</param>
-    </action>
-    
     <action name="nextPeriods" class="org.hisp.dhis.den.action.NextPeriodsAction">
       <result name="success" type="redirect">select.action</result>
     </action>
@@ -32,8 +19,8 @@
     <action name="previousPeriods" class="org.hisp.dhis.den.action.PreviousPeriodsAction">
       <result name="success" type="redirect">select.action</result>
     </action>
-    
-    <action name="defaultform" class="org.hisp.dhis.den.action.FormAction">
+    	  
+    <action name="select" class="org.hisp.dhis.den.action.FormAction">
       <interceptor-ref name="organisationUnitTreeStack"/>
       <result name="success" type="velocity">/main.vm</result>
       <param name="page">/dhis-web-dataentry-national/form.vm</param>
@@ -42,25 +29,7 @@
  <!-- <param name="javascripts">../dhis-web-commons/calendar/calendar.js,../dhis-web-commons/calendar/calendar-lang.js,../dhis-web-commons/calendar/calendar-setup.js,../dhis-web-commons/ouwt/ouwt.js,javascript/general.js,javascript/form.js</param>-->
 	  <param name="stylesheets">style/dhis-web-dataentry-national.css,style/custom_data_entry_form_styles.css</param>
     </action>
-    
-    <action name="sectionform" class="org.hisp.dhis.den.action.SectionFormAction">
-      <interceptor-ref name="organisationUnitTreeStack"/>
-      <result name="success" type="velocity">/main.vm</result>
-      <param name="page">/dhis-web-dataentry-national/setionform.vm</param>
-      <param name="menu">/dhis-web-dataentry-national/menu.vm</param>
-      <param name="javascripts">../dhis-web-commons/ouwt/ouwt.js,javascript/general.js,javascript/form.js</param>
-      <param name="stylesheets">style/dhis-web-dataentry-national.css</param>
-    </action>
-    
-    <action name="multidimensionalform" class="org.hisp.dhis.den.action.multidimensional.FormAction">
-      <interceptor-ref name="organisationUnitTreeStack"/>
-      <result name="success" type="velocity">/main.vm</result>
-      <param name="page">/dhis-web-dataentry-national/multidimensional/form.vm</param>
-      <param name="menu">/dhis-web-dataentry-national/menu.vm</param>
-      <param name="javascripts">../dhis-web-commons/ouwt/ouwt.js,javascript/multidimensional.js,javascript/form.js</param>
-      <param name="stylesheets">style/dhis-web-dataentry-national.css,style/custom_data_entry_form_styles.css</param>
-    </action>    
-    
+
     <action name="saveMultiDimensionalValue" class="org.hisp.dhis.den.action.multidimensional.SaveValueAction">
       <!--<interceptor-ref name="transactionStack"/> -->
       <result name="success" type="velocity">status.vm</result>

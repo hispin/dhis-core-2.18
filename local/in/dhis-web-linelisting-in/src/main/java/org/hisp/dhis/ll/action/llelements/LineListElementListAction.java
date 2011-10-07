@@ -34,7 +34,6 @@ import java.util.List;
 import org.hisp.dhis.linelisting.LineListElement;
 import org.hisp.dhis.linelisting.LineListService;
 import org.hisp.dhis.linelisting.comparator.LineListElementNameComparator;
-import org.hisp.dhis.options.displayproperty.DisplayPropertyHandler;
 
 import com.opensymphony.xwork2.Action;
 
@@ -53,14 +52,14 @@ public class LineListElementListAction
     {
         this.lineListService = lineListService;
     }
-
+/*
     private DisplayPropertyHandler displayPropertyHandler;
 
     public void setDisplayPropertyHandler( DisplayPropertyHandler displayPropertyHandler )
     {
         this.displayPropertyHandler = displayPropertyHandler;
     }
-
+*/
     // -------------------------------------------------------------------------
     // Getters & Setters
     // -------------------------------------------------------------------------
@@ -81,7 +80,7 @@ public class LineListElementListAction
         
         Collections.sort( lineListElements, new LineListElementNameComparator() );
         
-        displayPropertyHandler.handle( lineListElements );
+        //displayPropertyHandler.handle( lineListElements );
 
         return SUCCESS;
     }

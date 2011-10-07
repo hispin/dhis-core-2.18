@@ -66,18 +66,6 @@
             <param name="onExceptionReturn">plainTextError</param>
         </action>
         
-        <!-- Report Association -->
-<!--    <action name="defineReportAssociationsForm"
-            class="org.hisp.dhis.reports.reportmanagement.action.GetNumberOfLevelsAction">
-            <result name="success" type="chain">defineReportAssociationsFormChain</result>
-        </action>
-        <action name="defineReportAssociationsFormChain"
-            class="org.hisp.dhis.reports.reportmanagement.action.SetupAssociationsTreeAction">
-            <result name="success" type="velocity">/main.vm</result>
-            <param name="menu">/dhis-web-reports/menu.vm</param>
-            <param name="page">/dhis-web-reports/reportAssociations.vm</param>
-            <param name="javascripts">../dhis-web-commons/oust/oust.js,javascript/reportManagementAssociations.js</param>
-        </action>-->
         <action name="defineReportAssociationsForm"
             class="org.hisp.dhis.reports.reportmanagement.action.SetupAssociationsTreeAction">
             <result name="success" type="velocity">/main.vm</result>
@@ -90,45 +78,6 @@
             class="org.hisp.dhis.reports.reportmanagement.action.DefineReportAssociationsAction">
             <result name="success" type="redirect">reportManagement.action</result>
         </action>
-        
-        <!-- Report Association Remove All -->
-<!--        <action name="unselectAll"
-            class="org.hisp.dhis.reports.reportmanagement.action.UnselectAllAction">
-            <result name="success" type="chain">getNumberOfLevelsSelectLevelChain</result>
-        </action>-->
-        
-        <!-- Report Association select/unselect All at Level -->
-<!--        <action name="selectLevel"
-            class="org.hisp.dhis.reports.reportmanagement.action.SelectLevelAction">
-            <result name="success" type="chain">getNumberOfLevelsSelectLevelChain</result>
-        </action>
-        <action name="unselectLevel"
-            class="org.hisp.dhis.reports.reportmanagement.action.UnselectLevelAction">
-            <result name="success" type="chain">getNumberOfLevelsSelectLevelChain</result>
-        </action>-->
-        
-        <!-- Report Association select/unselect All at Group -->
-<!--        <action name="selectgroup"
-            class="org.hisp.dhis.reports.reportmanagement.action.SelectGroupAction">
-            <result name="success" type="chain">getNumberOfLevelsSelectLevelChain</result>
-        </action>
-        <action name="unselectgroup"
-            class="org.hisp.dhis.reports.reportmanagement.action.UnselectGroupAction">
-            <result name="success" type="chain">getNumberOfLevelsSelectLevelChain</result>
-        </action>-->
-        
-        <!-- Chain for Associations -->
-<!--        <action name="getNumberOfLevelsSelectLevelChain"
-            class="org.hisp.dhis.reports.reportmanagement.action.GetNumberOfLevelsAction">
-            <result name="success" type="chain">getReportSelectLevelChain</result>
-        </action>
-        <action name="getReportSelectLevelChain"
-            class="org.hisp.dhis.reports.reportmanagement.action.GetReportAction">
-            <result name="success" type="velocity">/main.vm</result>
-            <param name="menu">/dhis-web-reports/menu.vm</param>
-            <param name="page">/dhis-web-reports/reportAssociations.vm</param>
-            <param name="javascripts">../dhis-web-commons/oust/oust.js,javascript/reportManagementAssociations.js</param>
-        </action>-->
         
         <!-- Report Deletion -->
         <action name="delReport"

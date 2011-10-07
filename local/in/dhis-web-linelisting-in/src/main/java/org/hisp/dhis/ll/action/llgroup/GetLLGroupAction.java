@@ -35,7 +35,6 @@ import org.hisp.dhis.dataentryform.DataEntryForm;
 import org.hisp.dhis.linelisting.LineListElement;
 import org.hisp.dhis.linelisting.LineListGroup;
 import org.hisp.dhis.linelisting.LineListService;
-import org.hisp.dhis.options.displayproperty.DisplayPropertyHandler;
 
 import com.opensymphony.xwork2.Action;
 
@@ -67,13 +66,14 @@ public class GetLLGroupAction
         this.lineListService = lineListService;
     }
 
-
+/*
     private DisplayPropertyHandler displayPropertyHandler;
 
     public void setDisplayPropertyHandler( DisplayPropertyHandler displayPropertyHandler )
     {
         this.displayPropertyHandler = displayPropertyHandler;
     }
+    */
 
 /*
     private DataEntryFormService dataEntryFormService;
@@ -134,7 +134,7 @@ public class GetLLGroupAction
 
         //Collections.sort( llElements, new LineListElementNameComparator() );
                 	
-        displayPropertyHandler.handle( llElements );
+       // displayPropertyHandler.handle( llElements );
 
         //dataEntryForm = dataEntryFormService.getDataEntryFormByDataSet( lineListGroup );
         

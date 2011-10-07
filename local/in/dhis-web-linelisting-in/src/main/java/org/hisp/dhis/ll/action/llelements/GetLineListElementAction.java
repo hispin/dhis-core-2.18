@@ -81,6 +81,7 @@ public class GetLineListElementAction
     public String execute()
         throws Exception
     {
+        System.out.println("Line List Element Id is : = " + lineListElementId );
         lineListElement = lineListService.getLineListElement( lineListElementId );
         System.out.println("datatype = "+lineListElement.getDataType());
         memberCount = lineListElement.getLineListElementOptions().size();
