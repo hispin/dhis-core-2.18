@@ -37,21 +37,16 @@ function removeSqlViewObject( viewId, viewName )
 
 function showSqlViewDetails( viewId )
 {
-    var request = new Request();
-    request.setResponseTypeXML( 'sqlViewObject' );
-    request.setCallbackSuccess( sqlViewDetailsReceived );
-    request.send( 'getSqlViewObject.action?id=' + viewId );
-}
-
-function sqlViewDetailsReceived( viewElement )
-{
-    setInnerHTML( 'nameField', getElementValue( viewElement, 'name' ) );
-    
-	var description = getElementValue( viewElement, 'description' );
-    setInnerHTML( 'descriptionField', description ? description : '[' + i18n_none + ']' );
-    setInnerHTML( 'sqlQueryField', getElementValue( viewElement, 'sqlquery' ) );
-    	
-	showDetails();
+    jQuery.postJSON( 'getSqlView.action', { id: viewId }, function ( json ) {
+	
+		setInnerHTML( 'nameField', json.sqlView.name );
+		
+		var description = json.sqlView.description;
+		setInnerHTML( 'descriptionField', description ? description : '[' + i18n_none + ']' );
+		setInnerHTML( 'sqlQueryField', json.sqlView.sqlquery );
+			
+		showDetails();
+	});
 }
 
 /**

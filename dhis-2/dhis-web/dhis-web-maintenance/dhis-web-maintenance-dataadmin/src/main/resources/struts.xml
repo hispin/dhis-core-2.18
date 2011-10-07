@@ -312,7 +312,7 @@
 
     <!-- Sql View -->
 
-    <action name="getSqlViewObject" class="org.hisp.dhis.dataadmin.action.sqlview.GetSqlViewObjectAction">
+    <action name="getSqlView" class="org.hisp.dhis.dataadmin.action.sqlview.GetSqlViewObjectAction">
       <result name="success" type="velocity-json">
         /dhis-web-maintenance-dataadmin/jsonSqlView.vm
       </result>
