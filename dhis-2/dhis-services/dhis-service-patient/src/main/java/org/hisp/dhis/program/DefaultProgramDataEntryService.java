@@ -141,7 +141,6 @@ public class DefaultProgramDataEntryService
 
     public String prepareDataEntryFormForEdit( String htmlCode )
     {
-        
         String result = populateCustomDataEntryForDate( htmlCode );
 
         result = populateCustomDataEntryForOption( result );
@@ -817,7 +816,7 @@ public class DefaultProgramDataEntryService
         // Inline Javascript to add to HTML before outputting
         // ---------------------------------------------------------------------
 
-        final String jsCodeForCombo = " name=\"entryselect\" $DISABLED data=\"{compulsory:$COMPULSORY, deName:'$DATAELEMENTNAME'}\" onchange=\"saveOpt( $DATAELEMENTID )\"";
+        final String jsCodeForCombo = " name=\"entryselect\" $DISABLED data=\"{compulsory:$COMPULSORY, deName:'$DATAELEMENTNAME'}\" onchange=\"saveOpt( $DATAELEMENTID )\" style=\" text-align:center;\" ";
 
         StringBuffer sb = new StringBuffer();
 
@@ -1030,7 +1029,7 @@ public class DefaultProgramDataEntryService
         // Inline Javascript to add to HTML before outputting
         // ---------------------------------------------------------------------
 
-        final String jsCodeForDate = " name=\"entryfield\" $DISABLED data=\"{compulsory:$COMPULSORY, deName:'$DATAELEMENTNAME'}\" onchange=\"saveDate( $DATAELEMENTID )\" ";
+        final String jsCodeForDate = " name=\"entryfield\" $DISABLED data=\"{compulsory:$COMPULSORY, deName:'$DATAELEMENTNAME'}\" onchange=\"saveDate( $DATAELEMENTID )\" style=\" text-align:center;\" ";
 
         // ---------------------------------------------------------------------
         // Metadata code to add to HTML before outputting

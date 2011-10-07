@@ -52,3 +52,8 @@ td.error {padding-left:1em}
 	color: red; 
 	font-style: italic;
 }
+
+#facilityCol
+{
+	width: 130px;
+}
