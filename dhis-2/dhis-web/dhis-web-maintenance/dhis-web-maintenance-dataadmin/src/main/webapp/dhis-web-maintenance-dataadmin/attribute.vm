@@ -14,6 +14,7 @@
 				setInnerHTML( 'dataelementField', json.attribute.dataelement );
 				setInnerHTML( 'indicatorField', json.attribute.indicator );
 				setInnerHTML( 'organisationunitField', json.attribute.organisationunit );
+				setInnerHTML( 'userField', json.attribute.user );
 				setInnerHTML( 'valuetypeField', json.attribute.valueType );
 				showDetails();
 		});
@@ -77,6 +78,7 @@
 				<p><label>$i18n.getString( "data_element" ):</label><br/><span id="dataelementField"></span></p>
 				<p><label>$i18n.getString( "indicator" ):</label><br/><span id="indicatorField"></span></p>
 				<p><label>$i18n.getString( "organisation_unit" ):</label><br/><span id="organisationunitField"></span></p>
+				<p><label>$i18n.getString( "user" ):</label><br/><span id="userField"></span></p>
 			</div>
 
 			<div id="warningArea" style="position:fixed;right:10px;top:200px;display:none">

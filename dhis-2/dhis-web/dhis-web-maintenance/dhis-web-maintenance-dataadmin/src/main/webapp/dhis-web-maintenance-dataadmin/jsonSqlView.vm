@@ -2,6 +2,6 @@
   {
 	"name": "$!encoder.jsonEncode( ${sqlViewObject.name} )",
 	"description": "$!encoder.jsonEncode( ${sqlViewObject.description} )",
-	"sqlquery": "$!encoder.jsonEncode( ${sqlViewObject.sqlQuery} )
+	"sqlquery": "$!encoder.jsonEncode( ${sqlViewObject.sqlQuery} )"
   }
 }

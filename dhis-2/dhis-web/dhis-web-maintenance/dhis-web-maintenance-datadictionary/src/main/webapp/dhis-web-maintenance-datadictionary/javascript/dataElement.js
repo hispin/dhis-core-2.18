@@ -97,14 +97,9 @@ function showDataElementDetails( dataElementId )
 
 		var lastUpdated = json.dataElement.lastUpdated;
 		setInnerHTML( 'lastUpdatedField', lastUpdated ? lastUpdated : '[' + i18n_none + ']' );
-		
-		var temp = '';
-		var dataSets = json.dataElement.dataSets;
-		for ( var i = 0 ; i < dataSets.length ; i ++ )
-		{
-			temp += dataSets[i].name + '<br/>';
-		}
-		setInnerHTML( 'dataSetsField', temp ? temp : '[' + i18n_none + ']' );
+
+		var dataSets = joinNameableObjects( json.dataElement.dataSets );
+		setInnerHTML( 'dataSetsField', dataSets ? dataSets : '[' + i18n_none + ']' );
 	
 		showDetails();
 	});
