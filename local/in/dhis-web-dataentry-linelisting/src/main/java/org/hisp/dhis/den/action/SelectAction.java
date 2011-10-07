@@ -224,6 +224,11 @@ public class SelectAction
     public String execute()
         throws Exception
     {
+        
+        
+        
+        
+        
         // ---------------------------------------------------------------------
         // Validate selected OrganisationUnit
         // ---------------------------------------------------------------------

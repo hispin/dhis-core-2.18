@@ -27,6 +27,7 @@ package org.hisp.dhis.den.action;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -37,12 +38,16 @@ import java.util.Map;
 import java.util.Set;
 
 import org.hisp.dhis.dataelement.DataElement;
+import org.hisp.dhis.dataelement.DataElementCategory;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
 import org.hisp.dhis.dataelement.DataElementCategoryService;
 import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.dataentryform.DataEntryForm;
 import org.hisp.dhis.datalock.DataSetLockService;
 import org.hisp.dhis.dataset.DataSet;
+import org.hisp.dhis.dataset.DataSetService;
+import org.hisp.dhis.dataset.Section;
+import org.hisp.dhis.dataset.comparator.DataSetNameComparator;
 import org.hisp.dhis.datavalue.DataValue;
 import org.hisp.dhis.den.api.LLDataSets;
 import org.hisp.dhis.den.api.LLDataValue;
@@ -53,6 +58,7 @@ import org.hisp.dhis.i18n.I18n;
 import org.hisp.dhis.minmax.MinMaxDataElement;
 import org.hisp.dhis.minmax.MinMaxDataElementService;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
+import org.hisp.dhis.period.CalendarPeriodType;
 import org.hisp.dhis.period.Period;
 
 import com.opensymphony.xwork2.Action;
@@ -84,7 +90,7 @@ public class FormAction
     }
     
     @SuppressWarnings("unused")
-	private DataElementCategoryService dataElementCategoryService;
+    private DataElementCategoryService dataElementCategoryService;
 
     public void setDataElementCategoryService( DataElementCategoryService dataElementCategoryService )
     {
@@ -125,7 +131,17 @@ public class FormAction
     {
         this.i18n = i18n;
     } 
+    
+    //SelectAction Source Code
+    private DataSetService dataSetService;
 
+    public void setDataSetService( DataSetService dataSetService )
+    {
+        this.dataSetService = dataSetService;
+    }
+    
+    
+    
     // -------------------------------------------------------------------------
     // Output
     // -------------------------------------------------------------------------
@@ -134,8 +150,8 @@ public class FormAction
     
     public List<String> getRecordNos() 
     {
-		return recordNos;
-	}
+	return recordNos;
+    }
 
     
     private List<OrganisationUnit> orgUnitChildList;
@@ -267,47 +283,47 @@ public class FormAction
     
     private String lldeath;
     
-	public String getLldeath() 
-	{
-		return lldeath;
-	}
+    public String getLldeath() 
+    {
+        return lldeath;
+    }
 
-	private String llmdeath;
+    private String llmdeath;
 	
-	public String getLlmdeath() 
-	{
-		return llmdeath;
-	}
+    public String getLlmdeath() 
+    {
+	return llmdeath;
+    }
 	
-	private String lluuidspe;
+    private String lluuidspe;
 	
-	public String getLluuidspe() 
-	{
-		return lluuidspe;
-	}
+    public String getLluuidspe() 
+    {
+	return lluuidspe;
+    }
 
-	private String lluuidspep;
+    private String lluuidspep;
 	
-	public String getLluuidspep() 
-	{
-		return lluuidspep;
-	}
+    public String getLluuidspep() 
+    {
+        return lluuidspep;
+    }
 	
-	private String lldidsp;
+    private String lldidsp;
 	
-	public String getLldidsp() 
-	{
-		return lldidsp;
-	}
+    public String getLldidsp() 
+    {
+        return lldidsp;
+    }
 
-	private String llidspl;
+    private String llidspl;
 	
-	public String getLlidspl() 
-	{
-		return llidspl;
-	}
+    public String getLlidspl() 
+    {
+        return llidspl;
+    }
     
-	private int maxRecordNo;
+    private int maxRecordNo;
     
     public int getMaxRecordNo()
     {
@@ -320,7 +336,79 @@ public class FormAction
     {
         return locked;
     }
-	    
+    
+    //SelectAction Source Code
+    
+    private OrganisationUnit organisationUnit;
+
+    public OrganisationUnit getOrganisationUnit()
+    {
+        return organisationUnit;
+    }
+
+    private List<DataSet> dataSets = new ArrayList<DataSet>();
+
+    public Collection<DataSet> getDataSets()
+    {
+        return dataSets;
+    }
+    
+    private Boolean haveSection;
+
+    public Boolean getHaveSection()
+    {
+        return haveSection;
+    }
+    
+    
+    private List<Period> periods = new ArrayList<Period>();
+
+    public Collection<Period> getPeriods()
+    {
+        return periods;
+    }
+
+    private String selStartDate;
+
+    public String getSelStartDate()
+    {
+        return selStartDate;
+    }
+
+    private String selEndDate;
+
+    public String getSelEndDate()
+    {
+        return selEndDate;
+    }
+    
+    private Boolean customDataEntryFormExists;
+
+    public Boolean getCustomDataEntryFormExists()
+    {
+        return this.customDataEntryFormExists;
+    }
+    
+    
+    private String useSectionForm;
+
+    public String getUseSectionForm()
+    {
+        return useSectionForm;
+    }
+
+    public void setUseSectionForm( String useSectionForm )
+    {
+        this.useSectionForm = useSectionForm;
+    }
+/*
+    private static final String DEFAULT_FORM = "defaultform";
+
+    private static final String MULTI_DIMENSIONAL_FORM = "multidimensionalform";
+
+    private static final String SECTION_FORM = "sectionform";
+ */   
+    
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
@@ -328,6 +416,183 @@ public class FormAction
     public String execute()
         throws Exception
     {
+        
+        //SelectAction Source Code
+        
+        // ---------------------------------------------------------------------
+        // Validate selected OrganisationUnit
+        // ---------------------------------------------------------------------
+
+        organisationUnit = selectedStateManager.getSelectedOrganisationUnit();
+
+        if ( organisationUnit == null )
+        {
+            selectedDataSetId = null;
+            selectedPeriodIndex = null;
+
+            selectedStateManager.clearSelectedDataSet();
+            selectedStateManager.clearSelectedPeriod();
+
+            return SUCCESS;
+        }
+        
+        // ---------------------------------------------------------------------
+        // Load DataSets
+        // ---------------------------------------------------------------------
+
+        dataSets = new ArrayList<DataSet>( organisationUnit.getDataSets() );
+        //dataSets = new ArrayList<DataSet>( dataSetService.getDataSetsBySource( organisationUnit ) );
+        
+        // ---------------------------------------------------------------------
+        // Remove DataSets which don't have a CalendarPeriodType or are locked
+        // ---------------------------------------------------------------------
+
+        Iterator<DataSet> it = dataSets.iterator();
+
+        while ( it.hasNext() )
+        {
+            DataSet temp = it.next();
+            
+            if(temp.getName().equalsIgnoreCase( LLDataSets.LL_IDSP_LAB ) || temp.getName().equalsIgnoreCase( LLDataSets.LL_DEATHS_IDSP ) || temp.getName().equalsIgnoreCase( LLDataSets.LL_UU_IDSP_EVENTSP ) || temp.getName().equalsIgnoreCase( LLDataSets.LL_BIRTHS ) || temp.getName().equalsIgnoreCase( LLDataSets.LL_DEATHS )  || temp.getName().equalsIgnoreCase( LLDataSets.LL_MATERNAL_DEATHS ) || temp.getName().equalsIgnoreCase( LLDataSets.LL_UU_IDSP_EVENTS ))
+            {
+                if ( !( temp.getPeriodType() instanceof CalendarPeriodType ) )
+                {
+                    it.remove();
+                }
+            }
+            else
+            {
+                it.remove();
+            }
+        }
+
+        Collections.sort( dataSets, new DataSetNameComparator() );
+
+        // ---------------------------------------------------------------------
+        // Validate selected DataSet
+        // ---------------------------------------------------------------------
+
+        DataSet selectedDataSet;
+
+        if ( selectedDataSetId != null )
+        {
+            selectedDataSet = dataSetService.getDataSet( selectedDataSetId );
+        }
+        else
+        {
+            selectedDataSet = selectedStateManager.getSelectedDataSet();
+        }
+
+        if ( selectedDataSet != null && dataSets.contains( selectedDataSet ) )
+        {
+            selectedDataSetId = selectedDataSet.getId();
+            selectedStateManager.setSelectedDataSet( selectedDataSet );
+        }
+        else
+        {
+            selectedDataSetId = null;
+            selectedPeriodIndex = null;
+
+            selectedStateManager.clearSelectedDataSet();
+            selectedStateManager.clearSelectedPeriod();
+
+            return SUCCESS;
+        }
+
+        // ---------------------------------------------------------------------
+        // Prepare for multidimensional dataentry
+        // ---------------------------------------------------------------------
+
+        //List<Section> sections = (List<Section>) sectionService.getSectionByDataSet( selectedDataSet );
+
+        List<Section> sections = new ArrayList<Section>();
+        
+        haveSection = sections.size() != 0;
+        
+        int numberOfTotalColumns = 1;
+        
+        if ( selectedDataSet.getDataElements().size() > 0 )
+        {
+            for( DataElement de :  selectedDataSet.getDataElements() )
+            {                   
+                for ( DataElementCategory category : de.getCategoryCombo().getCategories() )
+                {                                               
+                    numberOfTotalColumns = numberOfTotalColumns * category.getCategoryOptions().size();                   
+                }               
+                
+                if( numberOfTotalColumns > 1 )
+                {
+                        break;
+                }               
+            }           
+            
+        }
+
+        // ---------------------------------------------------------------------
+        // Generate Periods
+        // ---------------------------------------------------------------------
+
+        periods = selectedStateManager.getPeriodList();
+
+        // ---------------------------------------------------------------------
+        // Validate selected Period
+        // ---------------------------------------------------------------------
+
+        if ( selectedPeriodIndex == null )
+        {
+            selectedPeriodIndex = selectedStateManager.getSelectedPeriodIndex();
+            System.out.println("Period is null");
+        }
+
+        if ( selectedPeriodIndex != null && selectedPeriodIndex >= 0 && selectedPeriodIndex < periods.size() )
+        {
+            Period selPeriod = periods.get( selectedPeriodIndex );
+            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+            selStartDate = simpleDateFormat.format( selPeriod.getStartDate() );
+            selEndDate = simpleDateFormat.format( selPeriod.getEndDate() );
+
+            selectedStateManager.setSelectedPeriodIndex( selectedPeriodIndex );
+        }
+        else
+        {
+            selectedPeriodIndex = null;
+            selectedStateManager.clearSelectedPeriod();
+
+            return SUCCESS;
+        }
+
+        // ---------------------------------------------------------------------
+        // Get the custom data entry form (if any)
+        // ---------------------------------------------------------------------
+
+        // Locate custom data entry form belonging to dataset, if any.
+        
+        //DataEntryForm dataEntryForm = selectedDataSet.getDataEntryForm();
+        
+        //dataEntryFormService.getDataEntryFormByDataSet( selectedDataSet );
+        
+        
+        /*
+        customDataEntryFormExists = ( dataEntryForm != null);
+
+        if ( useSectionForm != null )
+        {
+            return SECTION_FORM;
+        }
+
+        if ( numberOfTotalColumns > 1 )
+        {               
+            return MULTI_DIMENSIONAL_FORM;
+        }
+        else
+        {               
+            return DEFAULT_FORM;
+        }
+        */          
+   // }
+        
+        // FormAction Source Code
+        
         //Intialization
         llbirth = LLDataSets.LL_BIRTHS;
         lldeath = LLDataSets.LL_DEATHS;

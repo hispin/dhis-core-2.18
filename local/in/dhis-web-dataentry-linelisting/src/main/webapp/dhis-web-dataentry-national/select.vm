@@ -56,7 +56,7 @@ visibility:hidden;
 		<td><label for="selectedDataSetId">$i18n.getString( "data_set" )</label></td>
 		<td>
 			<select id="selectedDataSetId" name="selectedDataSetId" style="min-width:200px" onchange="document.getElementById( 'selectForm' ).submit();" #if( $dataSets.size() == 0 ) disabled="disabled" #end>
-				<option value="null">[$i18n.getString( "select" )]</option>
+				<option value="null">[$i18n.getString( "select_ds" )]</option>
 			#foreach( $dataSet in $dataSets )
 				<option value="$dataSet.id" #if( $selectedDataSetId && $dataSet.id == $selectedDataSetId ) selected="selected" #end>$encoder.htmlEncode( $dataSet.name )</option>
 			#end
@@ -70,7 +70,7 @@ visibility:hidden;
 			<input type="button" value="&lt;&lt;" title="$i18n.getString('earlier_periods')" onclick="window.location.href='previousPeriods.action'" #if( $periods.size() == 0 ) disabled="disabled" #end>
 			<input type="button" value="&gt;&gt;" title="$i18n.getString('later_periods')" onclick="window.location.href='nextPeriods.action'" #if( $periods.size() == 0 ) disabled="disabled" #end><br>
 			<select id="selectedPeriodIndex" name="selectedPeriodIndex" style="min-width:200px" onchange="document.getElementById( 'selectForm' ).submit();" #if( $periods.size() == 0 ) disabled="disabled" #end>
-				<option value="null">[$i18n.getString( "select" )]</option>
+				<option value="null">[$i18n.getString( "select_period" )]</option>
 			#foreach( $period in $periods )
 				#set( $index = $velocityCount - 1 )
 				<option value="$index" #if( $index && $selectedPeriodIndex && $index == $selectedPeriodIndex ) selected="selected" #end>$format.formatPeriod( $period )</option>

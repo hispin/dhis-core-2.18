@@ -30,9 +30,12 @@ package org.hisp.dhis.ll.action.lldataentry;
 import org.hisp.dhis.i18n.I18n;
 
 import com.opensymphony.xwork2.Action;
+
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -43,7 +46,9 @@ import org.hisp.dhis.linelisting.LineListDataValue;
 import org.hisp.dhis.linelisting.LineListElement;
 import org.hisp.dhis.linelisting.LineListGroup;
 import org.hisp.dhis.linelisting.LineListOption;
+import org.hisp.dhis.linelisting.LineListService;
 import org.hisp.dhis.linelisting.comparator.LineListElementNameComparator;
+import org.hisp.dhis.linelisting.comparator.LineListGroupNameComparator;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodService;
@@ -86,7 +91,15 @@ public class FormAction
     {
         this.i18n = i18n;
     }
+    
+    // source code of SelectAction
+    private LineListService lineListService;
 
+    public void setLineListService( LineListService lineListService )
+    {
+        this.lineListService = lineListService;
+    }
+    
     // --------------------------------------------------------------------------
     // Parameters
     // --------------------------------------------------------------------------
@@ -155,10 +168,187 @@ public class FormAction
     }
 
     private Collection<LineListOption> lineListOptions;
+    
+    // source code of SelectAction
+    private static final String DEFAULT_FORM = "defaultform";
+    
+    private String curDate;
 
+    public String getCurDate()
+    {
+        return curDate;
+    }
+    
+    private OrganisationUnit organisationUnit;
+
+    public OrganisationUnit getOrganisationUnit()
+    {
+        return organisationUnit;
+    }
+    
+    private List<LineListGroup> lineListGroups = new ArrayList<LineListGroup>();
+
+    public Collection<LineListGroup> getLineListGroups()
+    {
+        return lineListGroups;
+    }
+    
+    LineListGroup selectedLineListGroup;
+
+    public LineListGroup getSelectedLineListGroup()
+    {
+        return selectedLineListGroup;
+    }
+    
+    private List<Period> periods = new ArrayList<Period>();
+
+    public Collection<Period> getPeriods()
+    {
+        return periods;
+    }
+    
+    // -------------------------------------------------------------------------
+    // Action implementation
+    // -------------------------------------------------------------------------
     public String execute() throws Exception
     {
 
+        // source code of SelectAction
+        
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+
+        curDate = simpleDateFormat.format( new Date() );
+
+        // ---------------------------------------------------------------------
+        // Validate selected OrganisationUnit
+        // ---------------------------------------------------------------------
+
+        organisationUnit = selectedStateManager.getSelectedOrganisationUnit();
+
+        if ( organisationUnit == null )
+        {
+            selectedLineListGroupId = null;
+            selectedPeriodIndex = null;
+
+            selectedStateManager.clearSelectedLineListGroup();
+            selectedStateManager.clearSelectedPeriod();
+
+            return SUCCESS;
+        }
+        
+        // ---------------------------------------------------------------------
+        // Load LineListGroups
+        // ---------------------------------------------------------------------
+        lineListGroups = selectedStateManager.loadLineListGroupsForSelectedOrgUnit( organisationUnit );
+        // lineListGroups = new ArrayList<LineListGroup>(
+        // lineListService.getLineListGroupsBySource( organisationUnit ) );
+
+        // ---------------------------------------------------------------------
+        // Remove LineListGroups which don't have a CalendarPeriodType or are
+        // locked
+        // ---------------------------------------------------------------------
+
+        Collections.sort( lineListGroups, new LineListGroupNameComparator() );
+
+        // ---------------------------------------------------------------------
+        // Validate selected LineListGroup
+        // ---------------------------------------------------------------------
+
+        // ---------------------------------------------------------------------
+        // Validate selected LineListGroup
+        // ---------------------------------------------------------------------
+
+        if ( selectedLineListGroupId != null )
+        {
+            selectedLineListGroup = lineListService.getLineListGroup( selectedLineListGroupId );
+        }
+        else
+        {
+            selectedLineListGroup = selectedStateManager.getSelectedLineListGroup();
+
+        }
+
+        if ( selectedLineListGroup != null && lineListGroups.contains( selectedLineListGroup ) )
+        {
+            selectedLineListGroupId = selectedLineListGroup.getId();
+            selectedStateManager.setSelectedLineListGroup( selectedLineListGroup );
+        }
+        else
+        {
+
+            selectedLineListGroupId = null;
+            selectedPeriodIndex = null;
+
+            selectedStateManager.clearSelectedLineListGroup();
+            selectedStateManager.clearSelectedPeriod();
+
+            return SUCCESS;
+        }
+
+        // ---------------------------------------------------------------------
+        // Prepare for multidimensional data entry
+        // ---------------------------------------------------------------------
+
+        int numberOfTotalColumns = 1;
+
+        if ( selectedLineListGroup.getLineListElements().size() > 0 )
+        {
+            for ( LineListElement de : selectedLineListGroup.getLineListElements() )
+            {
+                if ( numberOfTotalColumns > 1 )
+                {
+                    break;
+                }
+            }
+        }
+
+        // ---------------------------------------------------------------------
+        // Generate Periods
+        // ---------------------------------------------------------------------
+
+        if ( selectedLineListGroup != null
+            && selectedLineListGroup.getPeriodType().getName().equalsIgnoreCase( "OnChange" ) )
+        {
+            periods = new ArrayList<Period>();
+
+            selectedPeriodIndex = null;
+            selectedStateManager.clearSelectedPeriod();
+
+            return DEFAULT_FORM;
+            // periods.add( periodService.getPeriod( 0 ) );
+        }
+        else
+        {
+            periods = selectedStateManager.getPeriodList();
+        }   
+        
+        
+        // ---------------------------------------------------------------------
+        // Validate selected Period
+        // ---------------------------------------------------------------------
+
+        if ( selectedPeriodIndex == null )
+        {
+            selectedPeriodIndex = selectedStateManager.getSelectedPeriodIndex();
+        }
+
+        if ( selectedPeriodIndex != null && selectedPeriodIndex >= 0 && selectedPeriodIndex < periods.size() )
+        {
+            selectedStateManager.setSelectedPeriodIndex( selectedPeriodIndex );
+        }
+        else
+        {
+            selectedPeriodIndex = null;
+            selectedStateManager.clearSelectedPeriod();
+
+            return SUCCESS;
+        }
+
+       // return DEFAULT_FORM;
+    
+        
+        
+        
         OrganisationUnit organisationUnit = selectedStateManager.getSelectedOrganisationUnit();
 
         LineListGroup lineListGroup = selectedStateManager.getSelectedLineListGroup();

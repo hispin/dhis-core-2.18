@@ -13,18 +13,24 @@ function showLineListElementDetails( lineListElementId )
 
 function lineListElementReceived( lineListElementElement )
 {
-  setFieldValue( 'idField', getElementValue( lineListElementElement, 'id' ) );
+  //setFieldValue( 'idField', getElementValue( lineListElementElement, 'id' ) );
+  setInnerHTML( 'idField', getElementValue( lineListElementElement, 'id' ) );
 
-  setFieldValue( 'nameField', getElementValue( lineListElementElement, 'name' ) );
-
-  setFieldValue( 'shortNameField', getElementValue( lineListElementElement, 'shortName' ) );
-
-  setFieldValue( 'dataTypeField', getElementValue( lineListElementElement, 'dataType' ) );
-
-  setFieldValue( 'presentationTypeField', getElementValue( lineListElementElement, 'presentationType' ) );
-
-  setFieldValue( 'memberCountField', getElementValue( lineListElementElement, 'memberCount' ) );
-
+  //setFieldValue( 'nameField', getElementValue( lineListElementElement, 'name' ) );
+  setInnerHTML( 'idField', getElementValue( lineListElementElement, 'name' ) );
+  
+ // setFieldValue( 'shortNameField', getElementValue( lineListElementElement, 'shortName' ) );
+  setInnerHTML( 'idField', getElementValue( lineListElementElement, 'shortName' ) );
+  
+  //setFieldValue( 'dataTypeField', getElementValue( lineListElementElement, 'dataType' ) );
+  setInnerHTML( 'idField', getElementValue( lineListElementElement, 'dataType' ) );
+  
+  //setFieldValue( 'presentationTypeField', getElementValue( lineListElementElement, 'presentationType' ) );
+  setInnerHTML( 'idField', getElementValue( lineListElementElement, 'presentationType' ) );
+  
+  //setFieldValue( 'memberCountField', getElementValue( lineListElementElement, 'memberCount' ) );
+  setInnerHTML( 'idField', getElementValue( lineListElementElement, 'memberCount' ) );
+  
   showDetails();
 }
 

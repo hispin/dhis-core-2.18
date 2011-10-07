@@ -27,15 +27,12 @@ package org.hisp.dhis.ll.action.llgroup;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.Collection;
 import java.util.HashSet;
-import java.util.Set;
 
 import org.hisp.dhis.linelisting.LineListGroup;
 import org.hisp.dhis.linelisting.LineListService;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.oust.manager.SelectionTreeManager;
-import org.hisp.dhis.source.Source;
 
 import com.opensymphony.xwork2.Action;
 
@@ -91,6 +88,14 @@ public class DefineLLGroupAssociationsAction
         throws Exception
     {
     	
+        LineListGroup lineListGroup = lineListService.getLineListGroup( id );
+        
+        lineListGroup.updateOrganisationUnits( new HashSet<OrganisationUnit>( selectionTreeManager.getReloadedSelectedOrganisationUnits() ) );
+        
+        lineListService.updateLineListGroup( lineListGroup );
+        
+       
+        /*
         Collection<OrganisationUnit> rootUnits = selectionTreeManager.getRootOrganisationUnits(); 
         
         Set<OrganisationUnit> unitsInTheTree = new HashSet<OrganisationUnit>();        
@@ -99,25 +104,28 @@ public class DefineLLGroupAssociationsAction
 	
         LineListGroup lineListGroup = lineListService.getLineListGroup( id );    	
     	
-    	Set<Source> assignedSources = lineListGroup.getSources();
+    	//Set<Source> assignedSources = lineListGroup.getSources();
+    	Set<OrganisationUnit> assignedSources = lineListGroup.getSources();
     	
-    	assignedSources.removeAll( convert( unitsInTheTree ) );        
-
+    	//assignedSources.removeAll( convert( unitsInTheTree ) );        
+    	
+    	assignedSources.removeAll(  unitsInTheTree );
     	Collection<OrganisationUnit> selectedOrganisationUnits = selectionTreeManager.getSelectedOrganisationUnits();
     	
-    	assignedSources.addAll( convert( selectedOrganisationUnits ) );  	
+    	//assignedSources.addAll( convert( selectedOrganisationUnits ) );
+    	assignedSources.addAll( selectedOrganisationUnits  );
     	
     	lineListGroup.setSources( assignedSources );
     	
         lineListService.updateLineListGroup( lineListGroup );
-        
+        */
         return SUCCESS;
     }
 
     // -------------------------------------------------------------------------
     // Supportive methods
     // -------------------------------------------------------------------------
-
+/*
     private Set<Source> convert( Collection<OrganisationUnit> organisationUnits )
     {
         Set<Source> sources = new HashSet<Source>();
@@ -126,7 +134,8 @@ public class DefineLLGroupAssociationsAction
         
         return sources;
     }   
-    
+*/    
+    /*
     private void getUnitsInTheTree( Collection<OrganisationUnit> rootUnits, Set<OrganisationUnit> unitsInTheTree )
     {
     	for( OrganisationUnit root : rootUnits )
@@ -135,4 +144,5 @@ public class DefineLLGroupAssociationsAction
     		getUnitsInTheTree( root.getChildren(), unitsInTheTree );    		
         }
     }
+    */
 }

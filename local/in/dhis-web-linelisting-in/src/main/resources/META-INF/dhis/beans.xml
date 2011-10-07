@@ -38,9 +38,9 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
 
     <bean id="org.hisp.dhis.ll.action.llOption.ShowAddLineListOptionForm"
     class="org.hisp.dhis.ll.action.llOption.ShowAddLineListOptionForm" scope="prototype">
-        <property name="lineListService">
+<!--        <property name="lineListService">
             <ref bean="org.hisp.dhis.linelisting.LineListService"/>
-        </property>
+        </property>-->
     </bean>
 
     <bean id="org.hisp.dhis.ll.action.llOption.ShowUpdateLineListOptionFormAction"
@@ -261,7 +261,7 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
     </bean>
 
     <!-- Line List source assign -->
-
+<!--
     <bean id="org.hisp.dhis.ll.action.llgroup.GetNumberOfLevelsAction"
     class="org.hisp.dhis.ll.action.llgroup.GetNumberOfLevelsAction"
     scope="prototype">
@@ -269,7 +269,7 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
             <ref bean="org.hisp.dhis.organisationunit.OrganisationUnitService"/>
         </property>
     </bean>
-
+-->
     <bean id="org.hisp.dhis.ll.action.llgroup.SetupAssociationsTreeAction"
     class="org.hisp.dhis.ll.action.llgroup.SetupAssociationsTreeAction"
     scope="prototype">		
@@ -291,7 +291,7 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
             <ref bean="org.hisp.dhis.linelisting.LineListService"/>
         </property>
     </bean>
-
+<!--
     <bean id="org.hisp.dhis.ll.action.llgroup.SelectLevelAction"
     class="org.hisp.dhis.ll.action.llgroup.SelectLevelAction"
     scope="prototype">
@@ -326,7 +326,7 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
             <ref bean="org.hisp.dhis.dataset.DataEntryFormService"/>
         </property>
     </bean>
-
+-->
 
     <!-- Line List Data Entry -->
 
@@ -339,7 +339,7 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
             <ref bean="org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager"/>
         </property>
     </bean>
-
+<!--
     <bean id="org.hisp.dhis.ll.action.lldataentry.SelectAction"
     class="org.hisp.dhis.ll.action.lldataentry.SelectAction" scope="prototype">
         <property name="selectedStateManager">
@@ -355,9 +355,9 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
             <ref bean="org.hisp.dhis.period.PeriodService"/>
         </property>
     </bean>
-
+-->
     <bean id="org.hisp.dhis.ll.action.lldataentry.NextPeriodsAction"
-    class="org.hisp.dhis.ll.action.lldataentry.NextPeriodsAction">
+		class="org.hisp.dhis.ll.action.lldataentry.NextPeriodsAction">
         <property name="selectedStateManager">
             <ref bean="org.hisp.dhis.ll.action.lldataentry.SelectedStateManager"/>
         </property>
@@ -371,7 +371,7 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
     </bean>
 
     <bean id="org.hisp.dhis.ll.action.lldataentry.FormAction"
-    class="org.hisp.dhis.ll.action.lldataentry.FormAction" scope="prototype">
+		class="org.hisp.dhis.ll.action.lldataentry.FormAction" scope="prototype">
         <property name="selectedStateManager">
             <ref bean="org.hisp.dhis.ll.action.lldataentry.SelectedStateManager"/>
         </property>
@@ -381,6 +381,9 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
         <property name="periodService">
             <ref bean="org.hisp.dhis.period.PeriodService"/>
         </property>
+        <property name="lineListService">
+            <ref bean="org.hisp.dhis.linelisting.LineListService"/>
+        </property>		
     </bean>
 
     <bean id="org.hisp.dhis.ll.action.lldataentry.SaveValueAction"

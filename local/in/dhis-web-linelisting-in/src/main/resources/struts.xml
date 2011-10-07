@@ -111,14 +111,9 @@
     
     
     <!-- Show edit Line List Element form-->
-    
+
+		<!--<action name="editLineListElementForm" -->
         <action name="showEditLineListElementForm"
-			class="org.hisp.dhis.ll.action.llelements.GetLineListElementAction">
-            <result name="success" type="chain">editLineListElementForm</result>
-        </action>
-    
-    
-        <action name="editLineListElementForm"
 			class="org.hisp.dhis.ll.action.llelements.GetLineListElementOptionsAction">
             <result name="success" type="velocity">/main.vm</result>
             <param name="page">/dhis-web-linelisting-in/editLineListElementForm.vm</param>
@@ -252,71 +247,21 @@
         </action>
 		
 	  <!-- LLGroup association -->
-    
         <action name="defineLLGroupAssociationsForm"
-      class="org.hisp.dhis.ll.action.llgroup.GetNumberOfLevelsAction">
-            <result name="success" type="chain">defineLLGroupAssociationsFormChain</result>
-            <param name="requiredAuthorities">F_LINELISTGroup_ASSIGN</param>
-        </action>
-    
-        <action name="defineLLGroupAssociationsFormChain"
-      class="org.hisp.dhis.ll.action.llgroup.SetupAssociationsTreeAction">
+		  class="org.hisp.dhis.ll.action.llgroup.SetupAssociationsTreeAction">
             <result name="success" type="velocity">/main.vm</result>
             <param name="page">/dhis-web-linelisting-in/lineListGroupAssociations.vm</param>
             <param name="javascripts">../dhis-web-commons/oust/oust.js,javascript/lineListGroupElements.js,javascript/associations.js</param>
             <param name="requiredAuthorities">F_LINELISTGroup_ASSIGN</param>
         </action>
-    
+		
+	 <!-- LLGroup association save -->				
         <action name="defineLLGroupAssociations"
-      class="org.hisp.dhis.ll.action.llgroup.DefineLLGroupAssociationsAction">
+		  class="org.hisp.dhis.ll.action.llgroup.DefineLLGroupAssociationsAction">
             <result name="success" type="redirect">getLineListGroups.action</result>
             <param name="requiredAuthorities">F_LINELISTGroup_ASSIGN</param>
         </action>
-    
-        <action name="selectLevel"
-      class="org.hisp.dhis.ll.action.llgroup.SelectLevelAction">
-            <result name="success" type="chain">getNumberOfLevelsSelectLevelChain</result>
-            <param name="requiredAuthorities">F_LINELISTGroup_ASSIGN</param>
-        </action>
-    
-        <action name="unselectLevel"
-      class="org.hisp.dhis.ll.action.llgroup.UnselectLevelAction">
-            <result name="success" type="chain">getNumberOfLevelsSelectLevelChain</result>
-            <param name="requiredAuthorities">F_LINELISTGroup_ASSIGN</param>
-        </action>
-    
-        <action name="unselectAll"
-      class="org.hisp.dhis.ll.action.llgroup.UnselectAllAction">
-            <result name="success" type="chain">getNumberOfLevelsSelectLevelChain</result>
-            <param name="requiredAuthorities">F_LINELISTGroup_ASSIGN</param>
-        </action>
-    
-        <action name="getNumberOfLevelsSelectLevelChain"
-      class="org.hisp.dhis.ll.action.llgroup.GetNumberOfLevelsAction">
-            <result name="success" type="chain">getLLGroupSelectLevelChain</result>
-            <param name="requiredAuthorities">F_LINELISTGroup_ASSIGN</param>
-        </action>
-    
-        <action name="getLLGroupSelectLevelChain"
-      class="org.hisp.dhis.ll.action.llgroup.GetLLGroupAction">
-            <result name="success" type="velocity">/main.vm</result>
-            <param name="page">/dhis-web-linelisting-in/lineListGroupAssociations.vm</param>
-            <param name="javascripts">../dhis-web-commons/oust/oust.js,javascript/lineListGroupElements.js,javascript/associations.js</param>
-            <param name="requiredAuthorities">F_LINELISTGroup_ASSIGN</param>
-        </action>
-    
-    <!-- LLDataentry -->
-    
-        <action name="select" class="org.hisp.dhis.ll.action.lldataentry.SelectAction">
-            <interceptor-ref name="organisationUnitTreeStack"/>
-            <result name="defaultform" type="chain">defaultform</result>
-            <result name="success" type="velocity">/main.vm</result>
-            <param name="page">/dhis-web-linelisting-in/select.vm</param>
-            <param name="menu">/dhis-web-linelisting-in/menuForLLDataEntry.vm</param>
-            <param name="javascripts">../dhis-web-commons/calendar/calendar.js,../dhis-web-commons/calendar/calendar-lang.js,../dhis-web-commons/calendar/calendar-setup.js,../dhis-web-commons/ouwt/ouwt.js,javascript/general.js,javascript/form.js</param>
-            <param name="stylesheets">css/dhis-web-dataentry-national.css</param>
-        </action>
-    
+
         <action name="nextPeriods" class="org.hisp.dhis.ll.action.lldataentry.NextPeriodsAction">
             <result name="success" type="redirect">select.action</result>
         </action>
@@ -324,8 +269,9 @@
         <action name="previousPeriods" class="org.hisp.dhis.ll.action.lldataentry.PreviousPeriodsAction">
             <result name="success" type="redirect">select.action</result>
         </action>
-
-        <action name="defaultform" class="org.hisp.dhis.ll.action.lldataentry.FormAction">
+		
+		<!--<action name="defaultform" class="org.hisp.dhis.ll.action.lldataentry.FormAction">-->
+        <action name="select" class="org.hisp.dhis.ll.action.lldataentry.FormAction">
             <interceptor-ref name="organisationUnitTreeStack"/>
             <result name="success" type="velocity">/main.vm</result>
             <param name="page">/dhis-web-linelisting-in/form.vm</param>

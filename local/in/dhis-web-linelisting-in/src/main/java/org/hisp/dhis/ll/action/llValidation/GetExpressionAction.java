@@ -32,13 +32,12 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-import org.hisp.dhis.options.displayproperty.DisplayPropertyHandler;
-
-import com.opensymphony.xwork2.ActionSupport;
 import org.hisp.dhis.linelisting.LineListElement;
 import org.hisp.dhis.linelisting.LineListGroup;
 import org.hisp.dhis.linelisting.LineListService;
 import org.hisp.dhis.linelisting.comparator.LineListGroupNameComparator;
+
+import com.opensymphony.xwork2.Action;
 
 /**
  * @author Margrethe Store
@@ -46,7 +45,7 @@ import org.hisp.dhis.linelisting.comparator.LineListGroupNameComparator;
  * @version $Id: GetExpressionAction.java 5730 2008-09-20 14:32:22Z brajesh $
  */
 public class GetExpressionAction
-    extends ActionSupport
+    implements Action
 {
     // -------------------------------------------------------------------------
     // Constants
@@ -84,14 +83,14 @@ public class GetExpressionAction
     // -------------------------------------------------------------------------
     // DisplayPropertyHandler
     // -------------------------------------------------------------------------
-
+    /*
     private DisplayPropertyHandler displayPropertyHandler;
 
     public void setDisplayPropertyHandler( DisplayPropertyHandler displayPropertyHandler )
     {
         this.displayPropertyHandler = displayPropertyHandler;
     }
-    
+   */ 
     // -------------------------------------------------------------------------
     // Input/output
     // -------------------------------------------------------------------------
@@ -157,7 +156,8 @@ public class GetExpressionAction
         Collections.sort( llElements, lineListElementComparator );
 
         //dataElements = displayPropertyHandler.handleDataElements( dataElements );
-        displayPropertyHandler.handle( llElements );
+        
+        //displayPropertyHandler.handle( llElements );
         
         lineListGroups = new ArrayList<LineListGroup>( lineListService.getAllLineListGroups() );
 

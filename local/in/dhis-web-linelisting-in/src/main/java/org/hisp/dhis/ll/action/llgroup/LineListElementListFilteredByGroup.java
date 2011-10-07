@@ -34,7 +34,6 @@ import java.util.List;
 import org.hisp.dhis.linelisting.LineListElement;
 import org.hisp.dhis.linelisting.LineListGroup;
 import org.hisp.dhis.linelisting.LineListService;
-import org.hisp.dhis.options.displayproperty.DisplayPropertyHandler;
 import org.hisp.dhis.period.PeriodStore;
 import org.hisp.dhis.period.PeriodType;
 
@@ -67,14 +66,14 @@ public class LineListElementListFilteredByGroup
     {
         this.periodStore = periodStore;
     }
-
+    /*
     private DisplayPropertyHandler displayPropertyHandler;
 
     public void setDisplayPropertyHandler( DisplayPropertyHandler displayPropertyHandler )
     {
         this.displayPropertyHandler = displayPropertyHandler;
     }
-
+    */
     // -------------------------------------------------------------------------
     // Getters & Setters
     // -------------------------------------------------------------------------
@@ -210,7 +209,7 @@ public class LineListElementListFilteredByGroup
 
         //Collections.sort( lineListElements, new LineListElementNameComparator() );
 
-        displayPropertyHandler.handle( lineListElements );
+        //displayPropertyHandler.handle( lineListElements );
 
         return SUCCESS;
     }
