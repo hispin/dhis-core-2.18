@@ -86,7 +86,7 @@ public class EmailMessageSender
         String hostName = StringUtils.trimToNull( (String) systemSettingManager.getSystemSetting( KEY_EMAIL_HOST_NAME ) );
         String username = StringUtils.trimToNull( (String) systemSettingManager.getSystemSetting( KEY_EMAIL_USERNAME ) );
         String password = StringUtils.trimToNull( (String) systemSettingManager.getSystemSetting( KEY_EMAIL_PASSWORD ) );
-        
+
         if ( hostName == null || username == null || password == null )
         {
             return;
@@ -96,7 +96,9 @@ public class EmailMessageSender
         
         for ( User user : users )
         {
-            if ( (Boolean) settings.get( user ) == new Boolean( true ) && user.getEmail() != null && !user.getEmail().isEmpty() )
+            boolean emailNotification = settings.get( user ) != null && (Boolean) settings.get( user ) == true;
+
+            if ( emailNotification && user.getEmail() != null && !user.getEmail().isEmpty() )
             {
                 try
                 {
@@ -107,10 +109,12 @@ public class EmailMessageSender
                     email.setMsg( text );
                     email.addTo( toAddress );
                     email.send();
+                    
+                    log.debug( "Sent email to user: " + user + " with email address: " + user.getEmail() );
                 }
                 catch ( EmailException ex )
                 {
-                    log.warn( "Could not send email to user: " + user + " with email address: " + user.getEmail() );
+                    log.warn( "Could not send email to user: " + user + " with email address: " + user.getEmail() + " for reason: " + ex.getMessage() );
                 }
             }
         }
