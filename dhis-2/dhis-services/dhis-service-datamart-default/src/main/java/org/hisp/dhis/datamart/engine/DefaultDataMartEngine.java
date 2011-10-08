@@ -29,6 +29,7 @@ package org.hisp.dhis.datamart.engine;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -58,8 +59,8 @@ import org.hisp.dhis.system.util.Clock;
 import org.hisp.dhis.system.util.ConcurrentUtils;
 import org.hisp.dhis.system.util.ConversionUtils;
 import org.hisp.dhis.system.util.FilterUtils;
+import org.hisp.dhis.system.util.PaginatedList;
 import org.hisp.dhis.system.util.SystemUtils;
-import org.hisp.dhis.system.util.WeightedPaginatedList;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
@@ -167,9 +168,11 @@ public class DefaultDataMartEngine
 
         Collection<Indicator> indicators = indicatorService.getIndicators( indicatorIds );
         Collection<Period> periods = periodService.getPeriods( periodIds );
-        Collection<OrganisationUnit> organisationUnits = organisationUnitService.getOrganisationUnits( organisationUnitIds );
+        List<OrganisationUnit> organisationUnits = new ArrayList<OrganisationUnit>( organisationUnitService.getOrganisationUnits( organisationUnitIds ) );
         Collection<DataElement> dataElements = dataElementService.getDataElements( dataElementIds );
         
+        organisationUnitService.filterOrganisationUnitsWithoutData( organisationUnits );
+        Collections.shuffle( organisationUnits );
         FilterUtils.filter( dataElements, new AggregatableDataElementFilter() );
         expressionService.filterInvalidIndicators( indicators );
         
@@ -268,20 +271,20 @@ public class DefaultDataMartEngine
 
         state.setMessage( "exporting_data_for_data_elements" );
 
-        List<List<Period>> periodPages = new WeightedPaginatedList<Period>( periods, cpuCores ).getPages();
+        List<List<OrganisationUnit>> organisationUnitPages = new PaginatedList<OrganisationUnit>( organisationUnits ).setNumberOfPages( cpuCores ).getPages();
         
         if ( allOperands.size() > 0 )
         {
             List<Future<?>> futures = new ArrayList<Future<?>>();
             
-            for ( List<Period> periodPage : periodPages )
+            for ( List<OrganisationUnit> organisationUnitPage : organisationUnitPages )
             {
-                futures.add( dataElementDataMart.exportDataValues( allOperands, periodPage, organisationUnits, new DataElementOperandList( indicatorOperands ), key ) );
+                futures.add( dataElementDataMart.exportDataValues( allOperands, periods, organisationUnitPage, new DataElementOperandList( indicatorOperands ), key ) );
             }
 
             ConcurrentUtils.waitForCompletion( futures );
             
-            clock.logTime( "Exported values for data element operands (" + allOperands.size() + "), number of pages: " + periodPages.size() );
+            clock.logTime( "Exported values for data element operands (" + allOperands.size() + "), number of pages: " + organisationUnitPages.size() );
         }
 
         // ---------------------------------------------------------------------
@@ -302,14 +305,14 @@ public class DefaultDataMartEngine
         {
             List<Future<?>> futures = new ArrayList<Future<?>>();
 
-            for ( List<Period> periodPage : periodPages )
+            for ( List<OrganisationUnit> organisationUnitPage : organisationUnitPages )
             {
-                futures.add( indicatorDataMart.exportIndicatorValues( indicators, periodPage, organisationUnits, indicatorOperands, key ) );
+                futures.add( indicatorDataMart.exportIndicatorValues( indicators, periods, organisationUnitPage, indicatorOperands, key ) );
             }
 
             ConcurrentUtils.waitForCompletion( futures );
             
-            clock.logTime( "Exported values for indicators (" + indicators.size() + "), number of pages: " + periodPages.size() );
+            clock.logTime( "Exported values for indicators (" + indicators.size() + "), number of pages: " + organisationUnitPages.size() );
         }
 
         // ---------------------------------------------------------------------

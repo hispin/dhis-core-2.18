@@ -73,6 +73,10 @@ public interface OrganisationUnitStore
     Collection<OrganisationUnit> getOrganisationUnitsWithoutGroups();
     
     Collection<OrganisationUnit> getOrganisationUnitsByNameAndGroups( String name, Collection<OrganisationUnitGroup> groups, boolean limit );
+
+    Map<Integer, Set<Integer>> getOrganisationUnitDataSetAssocationMap();
+    
+    Set<Integer> getOrganisationUnitIdsWithoutData();
     
     // -------------------------------------------------------------------------
     // OrganisationUnitHierarchy
@@ -92,8 +96,6 @@ public interface OrganisationUnitStore
      * @param parentId the parent organisation unit identifier.
      */
     void updateOrganisationUnitParent( int organisationUnitId, int parentId );
-    
-    Map<Integer, Set<Integer>> getOrganisationUnitDataSetAssocationMap();
     
     // -------------------------------------------------------------------------
     // OrganisationUnitLevel

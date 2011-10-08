@@ -191,6 +191,24 @@ public class HibernateOrganisationUnitStore
         return map;
     }
 
+    public Set<Integer> getOrganisationUnitIdsWithoutData()
+    {
+        final String sql = "select organisationunitid from organisationunit ou where not exists (" +
+            "select sourceid from datavalue where sourceid=ou.organisationunitid)";
+        
+        final Set<Integer> units = new HashSet<Integer>();
+        
+        jdbcTemplate.query( sql, new RowCallbackHandler()
+        {
+            public void processRow( ResultSet rs ) throws SQLException
+            {
+                units.add( rs.getInt( 1 ) );
+            }
+        } );
+        
+        return units;
+    }
+
     // -------------------------------------------------------------------------
     // OrganisationUnitHierarchy
     // -------------------------------------------------------------------------
