@@ -269,6 +269,8 @@ public interface OrganisationUnitService
 
     OrganisationUnitDataSetAssociationSet getOrganisationUnitDataSetAssociationSet();
     
+    void filterOrganisationUnitsWithoutData( Collection<OrganisationUnit> organisationUnits );
+    
     // -------------------------------------------------------------------------
     // OrganisationUnitHierarchy
     // -------------------------------------------------------------------------

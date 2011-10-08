@@ -590,6 +590,7 @@ public abstract class DhisConvenienceTest
         OrganisationUnit unit = createOrganisationUnit( uniqueCharacter );
 
         unit.setParent( parent );
+        parent.getChildren().add( unit );
 
         return unit;
     }

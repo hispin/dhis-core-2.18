@@ -530,6 +530,19 @@ public class DefaultOrganisationUnitService
         }
     }
 
+    public void filterOrganisationUnitsWithoutData( Collection<OrganisationUnit> organisationUnits )
+    {
+        final Set<Integer> unitsWithoutData = organisationUnitStore.getOrganisationUnitIdsWithoutData();
+        
+        FilterUtils.filter( organisationUnits, new Filter<OrganisationUnit>()
+        {
+            public boolean retain( OrganisationUnit unit )
+            {
+                return unit != null && ( !unitsWithoutData.contains( unit.getId() ) || unit.hasChild() );
+            }
+        } );
+    }
+    
     // -------------------------------------------------------------------------
     // OrganisationUnitHierarchy
     // -------------------------------------------------------------------------
