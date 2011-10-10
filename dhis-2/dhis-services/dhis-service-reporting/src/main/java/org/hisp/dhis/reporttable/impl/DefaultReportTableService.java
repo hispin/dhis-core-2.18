@@ -489,6 +489,11 @@ public class DefaultReportTableService
             grid.addHeader( new GridHeader( PRETTY_COLUMNS.get( column ), column, String.class.getName(), false, true ) ); 
         }
 
+        for ( String column : reportTable.getIndexCodeColumns() ) // Index code columns
+        {
+            grid.addHeader( new GridHeader( PRETTY_COLUMNS.get( column ), column, String.class.getName(), true, true ) ); 
+        }
+
         grid.addHeader( new GridHeader( PRETTY_COLUMNS.get( REPORTING_MONTH_COLUMN_NAME ), REPORTING_MONTH_COLUMN_NAME,
             String.class.getName(), true, true ) );
         grid.addHeader( new GridHeader( PRETTY_COLUMNS.get( PARAM_ORGANISATIONUNIT_COLUMN_NAME ),
@@ -525,7 +530,7 @@ public class DefaultReportTableService
         {
             grid.addRow();
 
-            for ( IdentifiableObject object : row ) // Index columns
+            for ( NameableObject object : row ) // Index columns
             {
                 grid.addValue( object.getId() ); 
             }
@@ -533,6 +538,11 @@ public class DefaultReportTableService
             for ( NameableObject object : row ) // Index name columns
             {
                 grid.addValue( object.getName() ); 
+            }
+
+            for ( NameableObject object : row ) // Index code columns
+            {
+                grid.addValue( object.getCode() ); 
             }
 
             grid.addValue( reportTable.getReportingMonthName() );

@@ -71,19 +71,18 @@ public class ReportTable
     private static final long serialVersionUID = 5618655666320890565L;
 
     public static final String DATAELEMENT_ID = "dataelementid";
-    public static final String DATAELEMENT_NAME = "dataelementname";
     public static final String CATEGORYCOMBO_ID = "categoryoptioncomboid";
-    public static final String CATEGORYCOMBO_NAME = "categoryoptioncomboname";
     public static final String CATEGORYOPTION_ID = "categoryoptionid";
-    public static final String CATEGORYOPTION_NAME = "categoryoptionname";
     public static final String INDICATOR_ID = "indicatorid";
     public static final String INDICATOR_NAME = "indicatorname";
+    public static final String INDICATOR_CODE = "indicatorcode";
     public static final String DATASET_ID = "datasetid";
-    public static final String DATASET_NAME = "datasetname";
     public static final String PERIOD_ID = "periodid";
     public static final String PERIOD_NAME = "periodname";
+    public static final String PERIOD_CODE = "periodcode";
     public static final String ORGANISATIONUNIT_ID = "organisationunitid";
     public static final String ORGANISATIONUNIT_NAME = "organisationunitname";
+    public static final String ORGANISATIONUNIT_CODE = "organisationunitcode";
     public static final String REPORTING_MONTH_COLUMN_NAME = "reporting_month_name";
     public static final String PARAM_ORGANISATIONUNIT_COLUMN_NAME = "param_organisationunit_name";
     public static final String ORGANISATION_UNIT_IS_PARENT_COLUMN_NAME = "organisation_unit_is_parent";
@@ -103,18 +102,16 @@ public class ReportTable
     {
         private static final long serialVersionUID = 4194194769957136714L;
         {
-            put( DATAELEMENT_ID, "Data element ID" );
-            put( DATAELEMENT_NAME, "Data element" );
             put( CATEGORYCOMBO_ID, "Category combination ID" );
-            put( CATEGORYCOMBO_NAME, "Category combination" );
             put( INDICATOR_ID, "Indicator ID" );
             put( INDICATOR_NAME, "Indicator" );
-            put( DATASET_ID, "Data set ID" );
-            put( DATASET_NAME, "Data set" );
+            put( INDICATOR_CODE, "Indicator code" );
             put( PERIOD_ID, "Period ID" );
             put( PERIOD_NAME, "Period" );
+            put( PERIOD_CODE, "Period code" );
             put( ORGANISATIONUNIT_ID, "Organisation unit ID" );
             put( ORGANISATIONUNIT_NAME, "Organisation unit" );
+            put( ORGANISATIONUNIT_CODE, "Organisation unit code" );
             put( REPORTING_MONTH_COLUMN_NAME, "Reporting month" );
             put( PARAM_ORGANISATIONUNIT_COLUMN_NAME, "Organisation unit parameter" );
             put( ORGANISATION_UNIT_IS_PARENT_COLUMN_NAME, "Organisation unit is parent" );
@@ -275,6 +272,12 @@ public class ReportTable
     private List<String> indexNameColumns = new ArrayList<String>();
 
     /**
+     * Names of the columns holding entry codes used to query the datavalue
+     * table.
+     */
+    private List<String> indexCodeColumns = new ArrayList<String>();
+    
+    /**
      * The I18nFormat used for internationalization of ie. periods.
      */
     private I18nFormat i18nFormat;
@@ -412,6 +415,9 @@ public class ReportTable
         add( indexNameColumns, INDICATOR_NAME, doIndicators );
         add( indexNameColumns, PERIOD_NAME, doPeriods );
         add( indexNameColumns, ORGANISATIONUNIT_NAME, doUnits );
+        add( indexCodeColumns, INDICATOR_CODE, doIndicators );
+        add( indexCodeColumns, PERIOD_CODE, doPeriods );
+        add( indexCodeColumns, ORGANISATIONUNIT_CODE, doUnits );
     }
 
     // -------------------------------------------------------------------------
@@ -703,7 +709,7 @@ public class ReportTable
     /**
      * Adds an empty list of NameableObjects to the given list if empty.
      */
-    private void addIfEmpty( List<List<NameableObject>> list )
+    private static void addIfEmpty( List<List<NameableObject>> list )
     {
         if ( list != null && list.size() == 0 )
         {
@@ -1075,5 +1081,10 @@ public class ReportTable
     public List<String> getIndexNameColumns()
     {
         return indexNameColumns;
+    }
+
+    public List<String> getIndexCodeColumns()
+    {
+        return indexCodeColumns;
     }
 }
