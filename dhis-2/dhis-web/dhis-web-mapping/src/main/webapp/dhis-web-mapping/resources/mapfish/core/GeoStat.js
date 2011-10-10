@@ -199,7 +199,7 @@ mapfish.GeoStat.Distribution = OpenLayers.Class({
     defaultLabelGenerator: function(bin, binIndex, nbBins) {
         lower = parseFloat(bin.lowerBound).toFixed(1);
         upper = parseFloat(bin.upperBound).toFixed(1);
-        return lower + ' - ' + upper + '&nbsp;&nbsp; ( ' + bin.nbVal + ' )';
+        return lower + ' - ' + upper + '&nbsp;&nbsp;' + '(' + bin.nbVal + ')';
     },
 
     classifyWithBounds: function(bounds) {

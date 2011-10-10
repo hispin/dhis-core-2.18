@@ -966,15 +966,18 @@ mapfish.widgets.geostat.Centroid = Ext.extend(Ext.Panel, {
 				var mapLegends = Ext.util.JSON.decode(r.responseText).mapLegends;
 				this.symbolizerInterpolation = [];
 				this.bounds = [];
+                this.legendNames = [];
 				for (var i = 0; i < mapLegends.length; i++) {
 					if (this.bounds[this.bounds.length-1] != mapLegends[i].startValue) {
 						if (this.bounds.length !== 0) {
 							this.symbolizerInterpolation.push('blank');
+                            this.legendNames.push('');
 						}
 						this.bounds.push(mapLegends[i].startValue);
 					}
 					this.symbolizerInterpolation.push(mapLegends[i].image);
 					this.bounds.push(mapLegends[i].endValue);
+                    this.legendNames.push(mapLegends[i].name);
 				}
                 
                 if (isMapView) {

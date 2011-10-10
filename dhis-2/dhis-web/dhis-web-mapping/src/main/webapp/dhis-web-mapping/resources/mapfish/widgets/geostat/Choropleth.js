@@ -1520,20 +1520,24 @@ mapfish.widgets.geostat.Choropleth = Ext.extend(Ext.Panel, {
 				var mapLegends = Ext.util.JSON.decode(r.responseText).mapLegends;
 				var colors = [];
 				var bounds = [];
+                var legendNames = [];
 				for (var i = 0; i < mapLegends.length; i++) {
 					if (bounds[bounds.length-1] != mapLegends[i].startValue) {
 						if (bounds.length !== 0) {
 							colors.push(new mapfish.ColorRgb(240,240,240));
+                            legendNames.push('');
 						}
 						bounds.push(mapLegends[i].startValue);
 					}
 					colors.push(new mapfish.ColorRgb());
 					colors[colors.length-1].setFromHex(mapLegends[i].color);
+                    legendNames.push(mapLegends[i].name);
 					bounds.push(mapLegends[i].endValue);
 				}              
 
 				this.colorInterpolation = colors;
 				this.bounds = bounds;
+                this.legendNames = legendNames;
                 
                 if (isMapView) {
                     this.setMapViewMap();

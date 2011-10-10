@@ -151,13 +151,14 @@ mapfish.GeoStat.Centroid = OpenLayers.Class(mapfish.GeoStat, {
             element.style.backgroundImage = 'url(../resources/ext-ux/iconcombo/' + this.symbolizerInterpolation[i] + '.png)';
             element.style.backgroundRepeat = 'no-repeat';
             element.style.width = "25px";
-            element.style.height = "18px";
+            element.style.height = this.widget.legendNames[i] ? "25px" : "20px";
             element.style.cssFloat = "left";
-            element.style.marginLeft = "3px";
+            element.style.marginRight = "5px";
             this.legendDiv.appendChild(element);
 
             element = document.createElement("div");
-            element.innerHTML = this.classification.bins[i].label;
+            element.style.lineHeight = this.widget.legendNames[i] ? "12px" : "7px";
+            element.innerHTML = '<b style="color:#222">' + this.widget.legendNames[i] + '</b><br/>' + this.classification.bins[i].label;
             this.legendDiv.appendChild(element);
 
             element = document.createElement("div");
