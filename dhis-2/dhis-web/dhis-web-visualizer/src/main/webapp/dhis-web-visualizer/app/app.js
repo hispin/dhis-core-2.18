@@ -37,19 +37,6 @@ DV.conf = {
             pie: 'pie'
         }
     },
-    chart: {
-        legend: {
-            position: 'top',
-            boxStroke: '#ffffff',
-            boxStrokeWidth: 0
-        },
-        grid: {
-            opacity: 1,
-            fill: '#f1f1f1',
-            stroke: '#aaa',
-            'stroke-width': 0.2
-        }
-    },
     style: {
         label: {
             period: 'font:bold 11px arial; color:#444; line-height:20px',
@@ -207,7 +194,7 @@ Ext.onReady( function() {
                 getNames: function() {
                     var a = [];
                     DV.util.getCmp('multiselect[name="selectedIndicators"]').store.each( function(r) {
-                        a.push(DV.util.chart.encodeSeriesName(r.data.shortName));
+                        a.push(DV.util.chart.getEncodedSeriesName(r.data.shortName));
                     });
                     return a;
                 }
@@ -223,7 +210,7 @@ Ext.onReady( function() {
                 getNames: function() {
                     var a = [];
                     DV.util.getCmp('multiselect[name="selectedDataElements"]').store.each( function(r) {
-                        a.push(DV.util.chart.encodeSeriesName(r.data.shortName));
+                        a.push(DV.util.chart.getEncodedSeriesName(r.data.shortName));
                     });
                     return a;
                 }
@@ -245,7 +232,7 @@ Ext.onReady( function() {
                     Ext.Array.each(cmp, function(item) {
                         if (item.getValue()) {
                             Ext.Array.each(DV.init.system.periods[item.paramName], function(item) {
-                                a.push(DV.util.chart.encodeSeriesName(item.name));
+                                a.push(DV.util.chart.getEncodedSeriesName(item.name));
                             });
                         }
                     });
@@ -285,15 +272,30 @@ Ext.onReady( function() {
                         treepanel.selectRoot();
                     }
                     Ext.Array.each(selection, function(r) {
-                        a.push(DV.util.chart.encodeSeriesName(r.data.text));
+                        a.push(DV.util.chart.getEncodedSeriesName(r.data.text));
                     });
                     return a;
                 }
             }
         },
         chart: {
-            encodeSeriesName: function(text) {
+            getEncodedSeriesName: function(text) {
                 return text.replace(/\./g,'');
+            },
+            getLegend: function(len) {
+                return {
+                    position: len > 3 ? 'right' : 'top',
+                    boxStroke: '#ffffff',
+                    boxStrokeWidth: 0
+                };
+            },
+            getGrid: function() {
+                return {
+                    opacity: 1,
+                    fill: '#f1f1f1',
+                    stroke: '#aaa',
+                    'stroke-width': 0.2
+                };
             },
             line: {
                 getSeriesArray: function() {
@@ -378,7 +380,7 @@ Ext.onReady( function() {
         getChartStore: function(exe) {
             this[DV.state.type](exe);
         },
-        column: function(exe) {
+        defaultChartStore: function(exe) {
             var properties = Ext.Object.getKeys(DV.data.data[0]);
             this.chart = Ext.create('Ext.data.Store', {
                 fields: properties,
@@ -402,38 +404,6 @@ Ext.onReady( function() {
             });
             this.chart.left = properties.slice(0, 1);
             this.chart.bottom = properties.slice(1, properties.length);
-            
-            if (exe) {
-                DV.chart.getChart(true);
-            }
-            else {
-                return DV.store.chart;
-            }
-        },
-        line: function(exe) {
-            var properties = Ext.Object.getKeys(DV.data.data[0]);
-            this.chart = Ext.create('Ext.data.Store', {
-                fields: properties,
-                data: DV.data.data
-            });
-            this.chart.bottom = properties.slice(0, 1);
-            this.chart.left = properties.slice(1, properties.length);
-            
-            if (exe) {
-                DV.chart.getChart(true);
-            }
-            else {
-                return DV.store.chart;
-            }
-        },
-        area: function(exe) {
-            var properties = Ext.Object.getKeys(DV.data.data[0]);
-            this.chart = Ext.create('Ext.data.Store', {
-                fields: properties,
-                data: DV.data.data
-            });
-            this.chart.bottom = properties.slice(0, 1);
-            this.chart.left = properties.slice(1, properties.length);
             
             if (exe) {
                 DV.chart.getChart(true);
@@ -610,20 +580,19 @@ Ext.onReady( function() {
                 height: DV.util.viewport.getSize().y,
                 animate: true,
                 store: DV.store.chart,
-                legend: DV.conf.chart.legend,
+                legend: DV.util.chart.getLegend(DV.state.series.data.length),
                 axes: [
                     {
                         title: 'Value',
                         type: 'Numeric',
                         position: 'left',
                         minimum: 0,
-                        grid: true,
                         fields: DV.store.chart.left,
                         label: {
                             renderer: Ext.util.Format.numberRenderer('0,0')
                         },
                         grid: {
-                            even: DV.conf.chart.grid
+                            even: DV.util.chart.getGrid()
                         }
                     },
                     {
@@ -652,7 +621,7 @@ Ext.onReady( function() {
                 height: DV.util.viewport.getSize().y,
                 animate: true,
                 store: DV.store.chart,
-                legend: DV.conf.chart.legend,
+                legend: DV.util.chart.getLegend(DV.state.series.data.length),
                 axes: [
                     {
                         title: DV.conf.finals.dimension[DV.state.category.dimension].rawvalue,
@@ -665,13 +634,12 @@ Ext.onReady( function() {
                         type: 'Numeric',
                         position: 'bottom',
                         minimum: 0,
-                        grid: true,
                         fields: DV.store.chart.bottom,
                         label: {
                             renderer: Ext.util.Format.numberRenderer('0,0')
                         },
                         grid: {
-                            even: DV.conf.chart.grid
+                            even: DV.util.chart.getGrid()
                         }
                     }
                 ],
@@ -694,20 +662,19 @@ Ext.onReady( function() {
                 height: DV.util.viewport.getSize().y,
                 animate: true,
                 store: DV.store.chart,
-                legend: DV.conf.chart.legend,
+                legend: DV.util.chart.getLegend(DV.state.series.data.length),
                 axes: [
                     {
                         title: 'Value',
                         type: 'Numeric',
                         position: 'left',
                         minimum: 0,
-                        grid: true,
                         fields: DV.store.chart.left,
                         label: {
                             renderer: Ext.util.Format.numberRenderer('0,0')
                         },
                         grid: {
-                            even: DV.conf.chart.grid
+                            even: DV.util.chart.getGrid()
                         }
                     },
                     {
@@ -726,20 +693,19 @@ Ext.onReady( function() {
                 height: DV.util.viewport.getSize().y,
                 animate: true,
                 store: DV.store.chart,
-                legend: DV.conf.chart.legend,
+                legend: DV.util.chart.getLegend(DV.state.series.data.length),
                 axes: [
                     {
                         title: 'Value',
                         type: 'Numeric',
                         position: 'left',
                         minimum: 0,
-                        grid: true,
                         fields: DV.store.chart.left,
                         label: {
                             renderer: Ext.util.Format.numberRenderer('0,0')
                         },
                         grid: {
-                            even: DV.conf.chart.grid
+                            even: DV.util.chart.getGrid()
                         }
                     },
                     {
@@ -756,6 +722,38 @@ Ext.onReady( function() {
                     yField: DV.store.chart.left,
                     style: {
                         opacity: 0.6
+                    }
+                }]
+            });
+        },
+        pie: function() {
+            this.chart = Ext.create('Ext.chart.Chart', {
+                width: DV.util.viewport.getSize().x,
+                height: DV.util.viewport.getSize().y,
+                animate: true,
+                shadow: true,
+                store: DV.store.chart,
+                legend: DV.util.chart.getLegend(DV.state.category.data.length),
+                insetPadding: 60,
+                series: [{
+                    type: 'pie',
+                    field: DV.store.chart.left[0],
+                    showInLegend: true,
+                    tips: {
+                        trackMouse: false,
+                        width: 160,
+                        height: 31,
+                        renderer: function(i) {
+                            this.setTitle('<span class="dv-chart-tips">' + i.data.x + ': <b>' + i.data[DV.store.chart.left[0]] + '</b></span>');
+                        }
+                    },
+                    label: {
+                        field: DV.store.chart.bottom[0]
+                    },
+                    highlight: {
+                        segment: {
+                            margin: 10
+                        }
                     }
                 }]
             });
@@ -824,6 +822,11 @@ Ext.onReady( function() {
                                 icon: 'images/area.png',
                                 name: DV.conf.finals.chart.area,
                                 tooltip: 'Area chart'
+                            },
+                            {
+                                icon: 'images/pie.png',
+                                name: DV.conf.finals.chart.pie,
+                                tooltip: 'Pie chart'
                             }
                         ]
                     },                    
@@ -1569,14 +1572,7 @@ Ext.onReady( function() {
                         cls: 'x-btn-text-icon',
                         icon: 'images/exit.png',
                         handler: function() {
-                            //var d = generateData(8);
-                            //console.log(DV.store.chart.left);
-                            //console.log(DV.store.chart.bottom);                            
-                            console.log(DV.data.data);
-                            
-                            
-                            
-                            //window.location.href = DV.conf.finals.ajax.url_portal + 'redirect.action';
+                            window.location.href = DV.conf.finals.ajax.url_portal + 'redirect.action';
                         }
                     }
                 ]
@@ -1588,6 +1584,11 @@ Ext.onReady( function() {
                 s.filter(s, vp);
                 var c = this.query('combobox[name="' + DV.conf.finals.chart.category + '"]')[0];
                 c.filter(c, vp);
+                
+                DV.store.column = DV.store.defaultChartStore;
+                DV.store.line = DV.store.defaultChartStore;
+                DV.store.area = DV.store.defaultChartStore;
+                DV.store.pie = DV.store.defaultChartStore;
             },
             resize: function() {
                 this.query('panel[region="west"]')[0].setWidth(DV.conf.layout.west_width);
