@@ -162,6 +162,11 @@
     background-color: #ddd;
 }
 
+/* Chart tips (tooltip) */
+.x-tip .x-tip-header .x-box-item {
+    text-align: center;
+}
+
 /****************
  Data Visualizer
  ***************/
@@ -251,5 +256,11 @@ li {
 /* Multiselect */
 .dv-multiselect {
     color: #111;
+}
+
+/* Chart tips */
+.dv-chart-tips {
+    font: normal 13px arial;
+    padding: 0 0 3px 3px;
 }
     
