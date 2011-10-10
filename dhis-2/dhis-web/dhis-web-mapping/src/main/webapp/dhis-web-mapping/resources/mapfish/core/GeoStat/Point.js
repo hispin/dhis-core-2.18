@@ -157,22 +157,44 @@ mapfish.GeoStat.Point = OpenLayers.Class(mapfish.GeoStat, {
         element.style.height = "5px";
         this.legendDiv.appendChild(element);
         
-        for (var i = 0; i < this.classification.bins.length; i++) {
-            var element = document.createElement("div");
-            element.style.backgroundColor = this.colorInterpolation[i].toHexString();
-            element.style.width = "30px";
-            element.style.height = "15px";
-            element.style.cssFloat = "left";
-            element.style.marginRight = "10px";
-            this.legendDiv.appendChild(element);
+        if (G.vars.activeWidget.legend.value == G.conf.map_legendset_type_automatic) {        
+            for (var i = 0; i < this.classification.bins.length; i++) {
+                var element = document.createElement("div");
+                element.style.backgroundColor = this.colorInterpolation[i].toHexString();
+                element.style.width = "30px";
+                element.style.height = "15px";
+                element.style.cssFloat = "left";
+                element.style.marginRight = "8px";
+                this.legendDiv.appendChild(element);
 
-            element = document.createElement("div");
-            element.innerHTML = this.classification.bins[i].label;
-            this.legendDiv.appendChild(element);
+                element = document.createElement("div");
+                element.innerHTML = this.classification.bins[i].label;
+                this.legendDiv.appendChild(element);
 
-            element = document.createElement("div");
-            element.style.clear = "left";
-            this.legendDiv.appendChild(element);
+                element = document.createElement("div");
+                element.style.clear = "left";
+                this.legendDiv.appendChild(element);
+            }
+        }
+        else if (G.vars.activeWidget.legend.value == G.conf.map_legendset_type_predefined) {        
+            for (var i = 0; i < this.classification.bins.length; i++) {
+                var element = document.createElement("div");
+                element.style.backgroundColor = this.colorInterpolation[i].toHexString();
+                element.style.width = "30px";
+                element.style.height = this.widget.legendNames[i] ? "25px" : "20px";
+                element.style.cssFloat = "left";
+                element.style.marginRight = "8px";
+                this.legendDiv.appendChild(element);
+
+                element = document.createElement("div");
+                element.style.lineHeight = this.widget.legendNames[i] ? "12px" : "7px";
+                element.innerHTML = '<b style="color:#222">' + this.widget.legendNames[i] + '</b><br/>' + this.classification.bins[i].label;
+                this.legendDiv.appendChild(element);
+
+                element = document.createElement("div");
+                element.style.clear = "left";
+                this.legendDiv.appendChild(element);
+            }
         }
     },
 
