@@ -9,6 +9,7 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
 
   <bean id="internal-process-ReportTable" class="org.hisp.dhis.reporttable.ReportTableInternalProcess" scope="prototype">
     <property name="statementManager" ref="statementManager" />
+    <property name="inMemoryStatementManager" ref="inMemoryStatementManager" />
     <property name="reportTableService" ref="org.hisp.dhis.reporttable.ReportTableService" />
   </bean>
 
