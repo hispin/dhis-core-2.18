@@ -111,8 +111,10 @@ body div#footer {
 body div#footer ul {
 	margin-left: 2em;
 	padding-left: 0;
+    padding-right: 0;
 	margin-bottom: 0;
 	margin-top: 0;
+   
 }
 
 body div#footer ul li {
@@ -129,7 +131,6 @@ body div#footer p {
 body div#footer ul li {
 	list-style-type: none;
 	text-align: right;
-	padding-right: 1em;
 }
 
 /*
