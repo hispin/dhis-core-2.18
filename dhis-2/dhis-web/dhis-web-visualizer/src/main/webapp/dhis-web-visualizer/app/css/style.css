@@ -53,7 +53,7 @@
 }
 
 /* Fieldset trigger icons */
-.x-tool img {
+#indicator_fs .x-tool img, #dataelement_fs .x-tool img, #period_fs .x-tool img, #organisationunit_fs .x-tool img {
     background-image: url('../images/tool-sprites.gif');
     width: 25px;
 }
@@ -105,11 +105,11 @@
 }
 
 /* Multiselect /*(custom) transparent row hover */
-.dv-multiselect .x-boundlist-item-over {
+#indicator_fs .x-boundlist-item-over, #dataelement_fs .x-boundlist-item-over {
     background-color: transparent;
     border-color: #fff;
 }
-.dv-multiselect .x-boundlist-selected {
+#indicator_fs .x-boundlist-selected, #dataelement_fs .x-boundlist-selected {
     background-color: #d3d3d3;
     border-color: #b3abaa;
 }
@@ -262,5 +262,11 @@ li {
 .dv-chart-tips {
     font: normal 13px arial;
     padding: 0 0 3px 3px;
+}
+
+/* Window */
+.dv-window-title-datatable {
+    padding-left: 19px;
+    background-image: url('../images/datatable.png');
 }
     
