@@ -1,5 +1,5 @@
 
-<h2>Available DataSets</h2>
+<h2>$i18n.getString("available_datasets")</h2>
 
 <p>
 	<ul>

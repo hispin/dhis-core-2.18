@@ -1,9 +1,10 @@
 
-<h2>Menu</h2>
+<h2>$i18n.getString("menu")</h2>
+    
 
 <p>
     <ul>
-        <li><a href="dashboard.action">Dashboard</a></li>
-        <li><a href="selectOrganisationUnit.action">Data Entry</a></li>
+        <li><a href="dashboard.action">$i18n.getString("dashboard")</a></li>
+        <li><a href="selectOrganisationUnit.action">$i18n.getString("data_entry")</a></li>
     </ul>
 </p>

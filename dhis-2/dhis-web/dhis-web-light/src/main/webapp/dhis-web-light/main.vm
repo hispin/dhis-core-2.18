@@ -1,7 +1,7 @@
 <html>
 
 <head>
-<title>DHIS 2</title>
+<title>$i18n.getString("DHIS_2")</title>
 <meta name="viewport" content="width=device-width, user-scalable=yes" />
 <link rel="stylesheet" href="style/light.css" />
 </head>
@@ -22,7 +22,7 @@
 
 <div id="footer">
 	<ul>
-		<li><a href="../dhis-web-commons-security/logout.action">Logout</a></li>
+		<li><a href="../dhis-web-commons-security/logout.action">$i18n.getString("logout")</a></li>
 	</ul>
 </div>
 

@@ -1,5 +1,5 @@
 
-<h2>Available Periods</h2>
+<h2>$i18n.getString("available_periods")</h2>
 
 <p>
 	<ul>
