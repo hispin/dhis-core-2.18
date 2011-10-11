@@ -64,6 +64,29 @@ Ext.onReady( function() {
         success: function(r) {
             
     DV.init = Ext.JSON.decode(r.responseText);
+    
+    DV.init.initialize = function(vp) {
+        var s = vp.query('combobox[name="' + DV.conf.finals.chart.series + '"]')[0];
+        s.filter(s, vp);
+        var c = vp.query('combobox[name="' + DV.conf.finals.chart.category + '"]')[0];
+        c.filter(c, vp);
+        
+        DV.store.column = DV.store.defaultChartStore;
+        DV.store.column_stacked = DV.store.defaultChartStore;
+        DV.store.bar_stacked = DV.store.bar;
+        DV.store.line = DV.store.defaultChartStore;
+        DV.store.area = DV.store.defaultChartStore;
+        DV.store.pie = DV.store.defaultChartStore;
+        
+        DV.data.data = [
+            {x: 'Category 1', 'Series 1': 41, 'Series 2': 69, 'Series 3': 63, 'Series 4': 51},
+            {x: 'Category 2', 'Series 1': 51, 'Series 2': 42, 'Series 3': 58, 'Series 4': 52},
+            {x: 'Category 3', 'Series 1': 44, 'Series 2': 71, 'Series 3': 62, 'Series 4': 54},
+        ];
+        
+        DV.chart.init = true;
+        DV.store.getChartStore(true);
+    };
         
     DV.util = {
         getCmp: function(q) {
@@ -71,7 +94,7 @@ Ext.onReady( function() {
         },
         viewport: {
             getSize: function() {
-                var c = DV.util.getCmp('panel[region="center"]');
+                var c = Ext.getCmp('center');
                 return {x: c.getWidth(), y: c.getHeight()};
             }
         },
@@ -286,7 +309,7 @@ Ext.onReady( function() {
             },
             getLegend: function(len) {
                 return {
-                    position: len > 3 ? 'right' : 'top',
+                    position: len > 6 ? 'right' : 'top',
                     boxStroke: '#ffffff',
                     boxStrokeWidth: 0
                 };
@@ -566,6 +589,12 @@ Ext.onReady( function() {
     };
     
     DV.chart = {
+        init: false,
+        isInit: function() {
+            var bool = this.init ? true : false;
+            this.init = false;
+            return bool;
+        },
         chart: null,
         getChart: function(exe) {
             this[DV.state.type]();
@@ -598,7 +627,7 @@ Ext.onReady( function() {
                         }
                     },
                     {
-                        title: DV.conf.finals.dimension[DV.state.category.dimension].rawvalue,
+                        title: this.isInit() ? 'Category dimension' : DV.conf.finals.dimension[DV.state.category.dimension].rawvalue,
                         type: 'Category',
                         position: 'bottom',
                         fields: DV.store.chart.bottom
@@ -772,7 +801,7 @@ Ext.onReady( function() {
             });
         },
         reload: function() {
-            var c = DV.util.getCmp('panel[region="center"]');
+            var c = Ext.getCmp('center');
             c.removeAll(true);
             c.add(this.chart);
         }
@@ -1038,6 +1067,7 @@ Ext.onReady( function() {
                         items: [
                             {
                                 xtype: 'fieldset',
+                                id: 'indicator_fs',
                                 name: DV.conf.finals.dimension.indicator.value,
                                 title: '<a href="javascript:DV.util.fieldset.toggleIndicator();" class="dv-fieldset-title-link">Indicators</a>',
                                 collapsible: true,
@@ -1185,6 +1215,7 @@ Ext.onReady( function() {
                             },                            
                             {
                                 xtype: 'fieldset',
+                                id: 'dataelement_fs',
                                 name: DV.conf.finals.dimension.dataelement.value,
                                 title: '<a href="javascript:DV.util.fieldset.toggleDataElement();" class="dv-fieldset-title-link">Data elements</a>',
                                 collapsed: true,
@@ -1333,6 +1364,7 @@ Ext.onReady( function() {
                             },                            
                             {
                                 xtype: 'fieldset',
+                                id: 'period_fs',
                                 name: DV.conf.finals.dimension.period.value,
                                 title: '<a href="javascript:DV.util.fieldset.togglePeriod();" class="dv-fieldset-title-link">Periods</a>',
                                 collapsed: true,
@@ -1467,6 +1499,7 @@ Ext.onReady( function() {
                             },                            
                             {
                                 xtype: 'fieldset',
+                                id: 'organisationunit_fs',
                                 name: DV.conf.finals.dimension.organisationunit.value,
                                 title: '<a href="javascript:DV.util.fieldset.toggleOrganisationUnit();" class="dv-fieldset-title-link">Organisation units</a>',
                                 collapsed: true,
@@ -1554,6 +1587,7 @@ Ext.onReady( function() {
                 }
             },
             {
+                id: 'center',
                 region: 'center',
                 layout: 'fit',
                 bodyStyle: 'padding:10px',
@@ -1576,13 +1610,66 @@ Ext.onReady( function() {
                     ' ',
                     {
                         xtype: 'button',
-                        text: 'Update..',
+                        text: 'Update',
                         cls: 'x-btn-text-icon',
                         icon: 'images/refresh.png',
                         handler: function() {
                             DV.state.getState(true);
                         }
                     },
+                    //{
+                        //xtype: 'button',
+                        //text: 'Data table',
+                        //cls: 'x-btn-text-icon',
+                        //icon: 'images/datatable.png',
+                        //handler: function() {
+                            //Ext.create('Ext.window.Window', {
+                                //title: 'Data table',
+                                //layout: 'fit',
+                                //iconCls: 'dv-window-title-datatable',
+                                //width: 580,
+                                //height: DV.viewport.getHeight() / 1.5,
+                                //items: [
+                                    //{
+                                        //xtype: 'grid',
+                                        //layout: 'vbox',
+                                        //scroll: 'vertical',
+                                        //columns: [
+                                            //{
+                                                //text: DV.conf.finals.dimension.indicator.rawvalue,
+                                                //dataIndex: DV.conf.finals.dimension.indicator.value,
+                                                //width: 150
+                                            //},
+                                            //{
+                                                //text: DV.conf.finals.dimension.period.rawvalue,
+                                                //dataIndex: DV.conf.finals.dimension.period.value,
+                                                //width: 150
+                                            //},
+                                            //{
+                                                //text: DV.conf.finals.dimension.organisationunit.rawvalue,
+                                                //dataIndex: DV.conf.finals.dimension.organisationunit.value,
+                                                //width: 150
+                                            //},
+                                            //{
+                                                //text: 'Value',
+                                                //dataIndex: 'v',
+                                                //width: 100
+                                            //}
+                                        //],
+                                        //store: Ext.create('Ext.data.Store', {
+                                            //fields: [
+                                                //DV.conf.finals.dimension.indicator.value,
+                                                //DV.conf.finals.dimension.period.value,
+                                                //DV.conf.finals.dimension.organisationunit.value,
+                                                //'v'
+                                            //],
+                                            //data: DV.data.values
+                                        //})
+                                    //}
+                                //]
+                            //}).show();
+                        //}
+                    //},
                     {
                         xtype: 'label',
                         text: '',
@@ -1591,7 +1678,7 @@ Ext.onReady( function() {
                     '->',
                     {
                         xtype: 'button',
-                        text: 'Exit..',
+                        text: 'Exit',
                         cls: 'x-btn-text-icon',
                         icon: 'images/exit.png',
                         handler: function() {
@@ -1603,17 +1690,7 @@ Ext.onReady( function() {
         ],
         listeners: {
             afterrender: function(vp) {
-                var s = this.query('combobox[name="' + DV.conf.finals.chart.series + '"]')[0];
-                s.filter(s, vp);
-                var c = this.query('combobox[name="' + DV.conf.finals.chart.category + '"]')[0];
-                c.filter(c, vp);
-                
-                DV.store.column = DV.store.defaultChartStore;
-                DV.store.column_stacked = DV.store.defaultChartStore;
-                DV.store.bar_stacked = DV.store.bar;
-                DV.store.line = DV.store.defaultChartStore;
-                DV.store.area = DV.store.defaultChartStore;
-                DV.store.pie = DV.store.defaultChartStore;
+                DV.init.initialize(vp);
             },
             resize: function() {
                 this.query('panel[region="west"]')[0].setWidth(DV.conf.layout.west_width);
