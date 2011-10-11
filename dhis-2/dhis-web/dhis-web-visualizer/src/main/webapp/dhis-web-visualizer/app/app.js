@@ -406,13 +406,16 @@ Ext.onReady( function() {
             this[DV.state.type](exe);
         },
         defaultChartStore: function(exe) {
-            var properties = Ext.Object.getKeys(DV.data.data[0]);
+            var keys = [];
+            Ext.Array.each(DV.data.data, function(item) {
+                keys = Ext.Array.merge(keys, Ext.Object.getKeys(item));
+            });
             this.chart = Ext.create('Ext.data.Store', {
-                fields: properties,
+                fields: keys,
                 data: DV.data.data
             });
-            this.chart.bottom = properties.slice(0, 1);
-            this.chart.left = properties.slice(1, properties.length);
+            this.chart.bottom = keys.slice(0, 1);
+            this.chart.left = keys.slice(1, keys.length);
             
             if (exe) {
                 DV.chart.getChart(true);
@@ -627,7 +630,7 @@ Ext.onReady( function() {
                         }
                     },
                     {
-                        title: this.isInit() ? 'Category dimension' : DV.conf.finals.dimension[DV.state.category.dimension].rawvalue,
+                        title: this.isInit() ? 'Categories' : DV.conf.finals.dimension[DV.state.category.dimension].rawvalue,
                         type: 'Category',
                         position: 'bottom',
                         fields: DV.store.chart.bottom
@@ -1404,13 +1407,13 @@ Ext.onReady( function() {
                                                     {
                                                         xtype: 'checkbox',
                                                         paramName: 'monthsThisYear',
-                                                        boxLabel: 'Months this year'
+                                                        boxLabel: 'Months this year',
+                                                        checked: true
                                                     },
                                                     {
                                                         xtype: 'checkbox',
                                                         paramName: 'monthsLastYear',
-                                                        boxLabel: 'Months last year',
-                                                        checked: true
+                                                        boxLabel: 'Months last year'
                                                     }
                                                 ]
                                             },
