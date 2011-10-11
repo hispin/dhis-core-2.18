@@ -4,33 +4,22 @@
 
 function saveTable()
 {
-    if ( validateCollections() )
-    {
-        var url = "validateTable.action?id=" + getFieldValue( "tableId" ) + "&name=" + getFieldValue( "tableName" );
-
-        var request = new Request();
-        request.setResponseTypeXML( 'message' );
-        request.setCallbackSuccess( saveTableReceived );
-        request.send( url );
-    }
-}
-
-function saveTableReceived( messageElement )
-{
-    var type = messageElement.getAttribute( 'type' );
-    var message = messageElement.firstChild.nodeValue;
-
-    if ( type == "input" )
-    {
-        setMessage( message );
-
-        return false;
-    } else if ( type == "success" )
-    {
-        selectTableForm();
-
-        document.getElementById( "tableForm" ).submit();
-    }
+	if ( validateCollections() )
+	{
+		$.postJSON( "validateTable.action", { id:getFieldValue( "tableId" ), "name":getFieldValue( "tableName" ) }, function( json )
+		{
+			if ( json.response == "input" )
+			{
+				setMessage( json.message );
+				return false;
+			}
+			else if ( json.response == "success" )
+			{
+				selectTableForm();
+	        	$( "#tableForm" ).submit();
+			}
+		} );
+	}
 }
 
 function selectTableForm()

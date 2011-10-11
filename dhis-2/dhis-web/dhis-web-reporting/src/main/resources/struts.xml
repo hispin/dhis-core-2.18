@@ -57,7 +57,7 @@
     </action>
 
     <action name="addDocumentToDashboard" class="org.hisp.dhis.reporting.document.action.AddDocumentToDashboardAction">
-      <result name="success" type="velocity-xml">/dhis-web-reporting/responseSuccess.vm</result>
+      <result name="success" type="velocity-json">/dhis-web-commons/ajax/jsonResponseSuccess.vm</result>
       <param name="onExceptionReturn">plainTextError</param>
     </action>
     
@@ -109,8 +109,8 @@
     </action>
 	
     <action name="validateChart" class="org.hisp.dhis.reporting.chart.action.ValidateChartAction">
-      <result name="success" type="velocity-xml">/dhis-web-reporting/responseSuccess.vm</result>
-      <result name="input" type="velocity-xml">/dhis-web-reporting/responseInput.vm</result>
+      <result name="success" type="velocity-json">/dhis-web-commons/ajax/jsonResponseSuccess.vm</result>
+      <result name="input" type="velocity-json">/dhis-web-commons/ajax/jsonResponseInput.vm</result>
       <param name="onExceptionReturn">plainTextError</param>
     </action>
     
@@ -212,7 +212,7 @@
     </action>
 	
     <action name="addReportToDashboard" class="org.hisp.dhis.reporting.reportviewer.action.AddReportToDashboardAction">
-      <result name="success" type="velocity-xml">/dhis-web-reporting/responseSuccess.vm</result>
+      <result name="success" type="velocity-json">/dhis-web-commons/ajax/jsonResponseSuccess.vm</result>
       <param name="onExceptionReturn">plainTextError</param>
     </action>
 
@@ -337,13 +337,13 @@
     </action>
 
     <action name="validateTable" class="org.hisp.dhis.reporting.tablecreator.action.ValidateTableAction">
-      <result name="success" type="velocity-xml">/dhis-web-reporting/responseSuccess.vm</result>
-      <result name="input" type="velocity-xml">/dhis-web-reporting/responseInput.vm</result>
+      <result name="success" type="velocity-json">/dhis-web-commons/ajax/jsonResponseSuccess.vm</result>
+      <result name="input" type="velocity-json">/dhis-web-commons/ajax/jsonResponseInput.vm</result>
       <param name="onExceptionReturn">plainTextError</param>
     </action>
 
     <action name="addReportTableToDashboard" class="org.hisp.dhis.reporting.tablecreator.action.AddReportTableToDashboardAction">
-      <result name="success" type="velocity-xml">/dhis-web-reporting/responseSuccess.vm</result>
+      <result name="success" type="velocity-json">/dhis-web-commons/ajax/jsonResponseSuccess.vm</result>
       <param name="onExceptionReturn">plainTextError</param>
     </action>
 
