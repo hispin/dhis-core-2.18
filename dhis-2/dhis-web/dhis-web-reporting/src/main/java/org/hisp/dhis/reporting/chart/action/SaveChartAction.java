@@ -353,7 +353,7 @@ public class SaveChartAction
 
         RelativePeriods relatives = new RelativePeriods( reportingMonth, reportingBimonth, reportingQuarter,
             monthsThisYear, quartersThisYear, thisYear,
-            monthsLastYear, quartersLastYear, lastYear );
+            monthsLastYear, quartersLastYear, lastYear, false );
 
         chart.setRelatives( relatives );
 

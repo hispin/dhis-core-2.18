@@ -41,7 +41,6 @@ import com.opensymphony.xwork2.Action;
 
 /**
  * @author Jan Henrik Overland
- * @version $Id$
  */
 public class GetAggregatedIndicatorValuesAction
     implements Action
@@ -82,25 +81,18 @@ public class GetAggregatedIndicatorValuesAction
         this.indicatorIds = indicatorIds;
     }
 
+    private Collection<Integer> organisationUnitIds;
+
+    public void setOrganisationUnitIds( Collection<Integer> organisationUnitIds )
+    {
+        this.organisationUnitIds = organisationUnitIds;
+    }
+
     private boolean lastMonth;
 
     public void setLastMonth( boolean lastMonth )
     {
         this.lastMonth = lastMonth;
-    }
-
-    private boolean monthsThisYear;
-
-    public void setMonthsThisYear( boolean monthsThisYear )
-    {
-        this.monthsThisYear = monthsThisYear;
-    }
-
-    private boolean monthsLastYear;
-
-    public void setMonthsLastYear( boolean monthsLastYear )
-    {
-        this.monthsLastYear = monthsLastYear;
     }
 
     private boolean lastQuarter;
@@ -110,6 +102,13 @@ public class GetAggregatedIndicatorValuesAction
         this.lastQuarter = lastQuarter;
     }
 
+    private boolean monthsThisYear;
+
+    public void setMonthsThisYear( boolean monthsThisYear )
+    {
+        this.monthsThisYear = monthsThisYear;
+    }
+
     private boolean quartersThisYear;
 
     public void setQuartersThisYear( boolean quartersThisYear )
@@ -117,18 +116,25 @@ public class GetAggregatedIndicatorValuesAction
         this.quartersThisYear = quartersThisYear;
     }
 
-    private boolean quartersLastYear;
-
-    public void setQuartersLastYear( boolean quartersLastYear )
-    {
-        this.quartersLastYear = quartersLastYear;
-    }
-
     private boolean thisYear;
 
     public void setThisYear( boolean thisYear )
     {
         this.thisYear = thisYear;
+    }
+
+    private boolean monthsLastYear;
+
+    public void setMonthsLastYear( boolean monthsLastYear )
+    {
+        this.monthsLastYear = monthsLastYear;
+    }
+
+    private boolean quartersLastYear;
+
+    public void setQuartersLastYear( boolean quartersLastYear )
+    {
+        this.quartersLastYear = quartersLastYear;
     }
 
     private boolean lastYear;
@@ -143,13 +149,6 @@ public class GetAggregatedIndicatorValuesAction
     public void setLastFiveYears( boolean lastFiveYears )
     {
         this.lastFiveYears = lastFiveYears;
-    }
-
-    private Collection<Integer> organisationUnitIds;
-
-    public void setOrganisationUnitIds( Collection<Integer> organisationUnitIds )
-    {
-        this.organisationUnitIds = organisationUnitIds;
     }
 
     // -------------------------------------------------------------------------
@@ -172,11 +171,11 @@ public class GetAggregatedIndicatorValuesAction
     {
         if ( indicatorIds != null
             && organisationUnitIds != null
-            && (lastMonth == true || monthsThisYear == true || monthsLastYear == true || lastQuarter == true
-                || quartersThisYear == true || quartersLastYear == true || thisYear == true || lastYear == true || lastFiveYears == true) )
+            && ( lastMonth || lastQuarter || monthsThisYear || quartersThisYear || thisYear
+                || monthsLastYear || quartersLastYear || lastYear || lastFiveYears ) )
         {
-            RelativePeriods relativePeriod = new RelativePeriods( lastMonth, false, lastQuarter, monthsThisYear,
-                quartersThisYear, thisYear, monthsLastYear, quartersLastYear, lastYear );
+            RelativePeriods relativePeriod = new RelativePeriods( lastMonth, false, lastQuarter, monthsThisYear, quartersThisYear,
+                thisYear, monthsLastYear, quartersLastYear, lastYear, lastFiveYears );
 
             Collection<Integer> relativePeriods = ConversionUtils.getIdentifiers( Period.class,
                 periodService.reloadPeriods( relativePeriod.getRelativePeriods( 1, format, true ) ) );

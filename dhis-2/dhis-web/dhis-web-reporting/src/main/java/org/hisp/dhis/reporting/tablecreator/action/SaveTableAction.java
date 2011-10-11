@@ -364,7 +364,7 @@ public class SaveTableAction
         
         RelativePeriods relatives = new RelativePeriods( reportingMonth, reportingBimonth, reportingQuarter,
             monthsThisYear, quartersThisYear, thisYear, 
-            monthsLastYear, quartersLastYear, lastYear );
+            monthsLastYear, quartersLastYear, lastYear, false );
         
         ReportParams reportParams = new ReportParams();
         

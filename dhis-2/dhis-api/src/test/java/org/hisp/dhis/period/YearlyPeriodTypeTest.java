@@ -127,4 +127,19 @@ public class YearlyPeriodTypeTest
         assertEquals( periodType.createPeriod( new Cal( 2013, 1, 1 ).time() ), periods.get( 9 ) );
         assertEquals( periodType.createPeriod( new Cal( 2014, 1, 1 ).time() ), periods.get( 10 ) );
     }
+    
+    @Test
+    public void testGenerateLast5Years()
+    {
+        testCal.set( 2009, 8, 15 );
+        
+        List<Period> periods = new YearlyPeriodType().generateLast5Years( testCal.time() );
+
+        assertEquals( 5, periods.size() );
+        assertEquals( periodType.createPeriod( new Cal( 2005, 1, 1 ).time() ), periods.get( 0 ) );
+        assertEquals( periodType.createPeriod( new Cal( 2006, 1, 1 ).time() ), periods.get( 1 ) );
+        assertEquals( periodType.createPeriod( new Cal( 2007, 1, 1 ).time() ), periods.get( 2 ) );
+        assertEquals( periodType.createPeriod( new Cal( 2008, 1, 1 ).time() ), periods.get( 3 ) );
+        assertEquals( periodType.createPeriod( new Cal( 2009, 1, 1 ).time() ), periods.get( 4 ) );        
+    }
 }
