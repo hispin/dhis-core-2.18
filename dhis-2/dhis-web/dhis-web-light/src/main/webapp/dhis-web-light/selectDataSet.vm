@@ -8,3 +8,9 @@
 		#end
 	</ul>
 </p>
+
+<div id="footer">
+<ul><li>
+<a href="selectOrganisationUnit.action">$i18n.getString("available_organisation_units")</a></li>
+</ul>
+</div>

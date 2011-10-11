@@ -1,6 +1,7 @@
 
 <h2>$i18n.getString("available_oganisation_units")</h2>
 
+
 <p>
 	<ul>
 	#foreach( $organisationUnit in $organisationUnits )
@@ -8,3 +9,8 @@
 	#end
 	</ul>
 </p>
+<div id="footer">
+<ul><li>
+<a href="index.action">$i18n.getString("menu")</a></li>
+</ul>
+</div>
