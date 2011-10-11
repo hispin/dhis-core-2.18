@@ -183,6 +183,9 @@ public class InitializeAction
         
         rp.clear().setLastYear( true );
         lastYear = periodService.reloadPeriods( setNames( rp.getRelativePeriods() ) );
+        
+        rp.clear().setLast5Years( true );
+        lastFiveYears = periodService.reloadPeriods( setNames( rp.getRelativePeriods() ) );
 
         return SUCCESS;
     }
