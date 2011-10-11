@@ -65,53 +65,43 @@ function showChartDetails( chartId )
 // Validate and save
 // -----------------------------------------------------------------------------
 
+
 function saveChart()
 {
     if ( validateTargetLine() && validateCollections() )
     {
-        var url = "validateChart.action?id=" + getFieldValue( "id" ) + "&title=" + getFieldValue( "title" );
-
-        var request = new Request();
-        request.setResponseTypeXML( 'message' );
-        request.setCallbackSuccess( saveChartReceived );
-        request.send( url );
-    }
-}
-
-function saveChartReceived( messageElement )
-{
-    var type = messageElement.getAttribute( 'type' );
-    var message = messageElement.firstChild.nodeValue;
-    var dimension = document.getElementById( "dimension" ).value;
-
-    if ( type == "input" )
-    {
-        setMessage( message );
-
-        return false;
-    } else if ( type == "success" )
-    {
-        if ( $( "#selectedIndicators" ).attr( 'multiple' ) !== undefined )
-        {
-            $( "#selectedIndicators" ).children().attr( "selected", true );
-        }
-
-        if ( $( "#selectedDataElements" ).attr( 'multiple' ) !== undefined )
-        {
-            $( "#selectedDataElements" ).children().attr( "selected", true );
-        }
-
-        if ( $( "#selectedPeriods" ).attr( 'multiple' ) !== undefined )
-        {
-            $( "#selectedPeriods" ).children().attr( "selected", true );
-        }
-
-        if ( $( "#selectedOrganisationUnits" ).attr( 'multiple' ) !== undefined )
-        {
-            $( "#selectedOrganisationUnits" ).children().attr( "selected", true );
-        }
-
-        $( '#chartForm' ).submit();
+    	$.postJSON( "validateChart.action", { id:getFieldValue( "id" ), title:getFieldValue( "title" ) }, function( json )
+    	{
+    		if ( json.response == "input" )
+    		{
+    			setMessage( json.message );
+    			return false;
+    		}
+    		else if ( json.response == "success" )
+    		{
+    			if ( $( "#selectedIndicators" ).attr( 'multiple' ) !== undefined )
+		        {
+		            $( "#selectedIndicators" ).children().attr( "selected", true );
+		        }
+		
+		        if ( $( "#selectedDataElements" ).attr( 'multiple' ) !== undefined )
+		        {
+		            $( "#selectedDataElements" ).children().attr( "selected", true );
+		        }
+		
+		        if ( $( "#selectedPeriods" ).attr( 'multiple' ) !== undefined )
+		        {
+		            $( "#selectedPeriods" ).children().attr( "selected", true );
+		        }
+		
+		        if ( $( "#selectedOrganisationUnits" ).attr( 'multiple' ) !== undefined )
+		        {
+		            $( "#selectedOrganisationUnits" ).children().attr( "selected", true );
+		        }
+		
+		        $( "#chartForm" ).submit();
+		    }
+    	} );
     }
 }
 
