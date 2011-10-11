@@ -48,12 +48,9 @@ function generateReport( type )
 
     if ( doDataMart )
     {
-        var url = "createTable.action?" + getUrlParams();
-
-        var request = new Request();
-        request.setCallbackSuccess( getReportStatus );
-        request.send( url );
-    } else
+    	$.get( "createTable.action?" + getUrlParams(), getReportStatus );
+    } 
+    else
     {
         viewReport();
     }
@@ -61,27 +58,18 @@ function generateReport( type )
 
 function getReportStatus()
 {
-    var url = "getStatus.action";
-
-    var request = new Request();
-    request.setResponseTypeXML( "status" );
-    request.setCallbackSuccess( reportStatusReceived );
-    request.send( url );
-}
-
-function reportStatusReceived( xmlObject )
-{
-    var statusMessage = getElementValue( xmlObject, "statusMessage" );
-    var finished = getElementValue( xmlObject, "finished" );
-
-    if ( finished == "true" )
-    {
-        setMessage( i18n_process_completed );
-        viewReport();
-    } else
-    {
-        setTimeout( "getReportStatus();", 1500 );
-    }
+	$.get( "getStatus.action", function( json )
+	{
+		if ( json.response == "success" ) // Finished
+		{
+			setMessage( i18n_process_completed );
+        	viewReport();
+		}
+		else
+		{
+			setTimeout( "getReportStatus();", 1500 );
+		}
+	} );
 }
 
 function viewReport( urlParams )
@@ -93,7 +81,8 @@ function viewReport( urlParams )
     if ( mode == MODE_REPORT )
     {
         window.location.href = "renderReport.action?type=" + reportType + "&" + getUrlParams();
-    } else
+    } 
+    else
     // MODE_TABLE
     {
         window.location.href = "exportTable.action?type=html&" + getUrlParams();

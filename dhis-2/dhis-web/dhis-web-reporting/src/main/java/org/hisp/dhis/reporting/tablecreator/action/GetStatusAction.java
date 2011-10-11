@@ -67,18 +67,11 @@ public class GetStatusAction
     // Output
     // -------------------------------------------------------------------------
     
-    private String statusMessage = new String();
-
-    public String getStatusMessage()
-    {
-        return statusMessage;
-    }
+    private String message = "";
     
-    private boolean finished = false;
-
-    public boolean getFinished()
+    public String getMessage()
     {
-        return finished;
+        return message;
     }
 
     // -------------------------------------------------------------------------
@@ -87,6 +80,8 @@ public class GetStatusAction
 
     public String execute()
     {
+        boolean finished = false;
+        
         if ( processIsRunning( PROCESS_KEY_REPORT ) )
         {
             String id = getCurrentRunningProcess( PROCESS_KEY_REPORT );
@@ -97,18 +92,18 @@ public class GetStatusAction
             {
                 MessageState state = (MessageState) executor.getState();
                 
-                statusMessage = i18n.getString( state.getMessage() );
+                message = i18n.getString( state.getMessage() );
                 
                 finished = state.isEnded();
             }
         }
         else
         {
-            statusMessage = i18n.getString( "no_process_running" );
+            message = i18n.getString( "no_process_running" );
             
             finished = false;
         }
         
-        return SUCCESS;        
+        return finished ? SUCCESS : INPUT;        
     }
 }
