@@ -132,6 +132,26 @@ public class YearlyPeriodType
         return periods;
     }
 
+    /**
+     * Generates YearlyPeriods for the last 5 years including the current.
+     */
+    public List<Period> generateLast5Years( Date date )
+    {
+        Calendar cal = createCalendarInstance( date );
+        cal.add( Calendar.YEAR, -4 );
+        cal.set( Calendar.DAY_OF_YEAR, 1 );
+
+        ArrayList<Period> periods = new ArrayList<Period>();
+
+        for ( int i = 0; i < 5; ++i )
+        {
+            periods.add( createPeriod( cal ) );
+            cal.add( Calendar.YEAR, 1 );
+        }
+
+        return periods;
+    }
+
     @Override
     public String getIsoDate( Period period )
     {

@@ -92,6 +92,13 @@ public class RelativePeriods
         "quarter2_last_year",
         "quarter3_last_year",
         "quarter4_last_year" };
+    
+    public static final String[] LAST_5_YEARS = {
+        "year_minus_4",
+        "year_minus_3",
+        "year_minus_2",
+        "year_minus_1",
+        "year_this" };
 
     private static final int MONTHS_IN_YEAR = 12;
     
@@ -112,6 +119,8 @@ public class RelativePeriods
     private Boolean quartersLastYear = false;
     
     private Boolean lastYear = false;
+
+    private Boolean last5Years = false;
     
     // -------------------------------------------------------------------------
     // Constructors
@@ -131,10 +140,11 @@ public class RelativePeriods
      * @param monthsLastYear months last year
      * @param quartersLastYear quarters last year
      * @param lastYear last year
+     * @param last5Years last 5 years
      */
     public RelativePeriods( boolean reportingMonth, boolean reportingBimonth, boolean reportingQuarter,
         boolean monthsThisYear, boolean quartersThisYear, boolean thisYear,
-        boolean monthsLastYear, boolean quartersLastYear, boolean lastYear )
+        boolean monthsLastYear, boolean quartersLastYear, boolean lastYear, boolean last5Years )
     {
         this.reportingMonth = reportingMonth;
         this.reportingBimonth = reportingBimonth;
@@ -145,6 +155,7 @@ public class RelativePeriods
         this.monthsLastYear = monthsLastYear;
         this.quartersLastYear = quartersLastYear;
         this.lastYear = lastYear;
+        this.last5Years = last5Years;
     }
 
     // -------------------------------------------------------------------------
@@ -162,6 +173,7 @@ public class RelativePeriods
         this.monthsLastYear = false;
         this.quartersLastYear = false;
         this.lastYear = false;
+        this.last5Years = false;
         return this;
     }
     
@@ -241,6 +253,11 @@ public class RelativePeriods
         {
             periods.add( getRelativePeriod( new YearlyPeriodType(), THIS_YEAR, current, dynamicNames, format ) );
         }
+
+        if ( isLast5Years() )
+        {
+            periods.addAll( getRelativePeriodList( new YearlyPeriodType().generateLast5Years( current ), LAST_5_YEARS, dynamicNames, format ) );
+        }
         
         current = getDate( MONTHS_IN_YEAR, current );
         
@@ -275,16 +292,28 @@ public class RelativePeriods
      */
     private List<Period> getRelativePeriodList( CalendarPeriodType periodType, String[] periodNames, Date current, boolean dynamicNames, I18nFormat format )
     {
-        List<Period> relatives = periodType.generatePeriods( current );
+        return getRelativePeriodList( periodType.generatePeriods( current ), periodNames, dynamicNames, format );
+    }
+
+    /**
+     * Returns a list of relative periods. The name will be dynamic depending on
+     * the dynamicNames argument. The short name will always be dynamic.
+     * 
+     * @param relatives the list of periods.
+     * @param periodNames the array of period names.
+     * @param dynamicNames indication of whether dynamic names should be used.
+     * @param format the I18nFormat.
+     * @return a list of periods.
+     */
+    private List<Period> getRelativePeriodList( List<Period> relatives, String[] periodNames, boolean dynamicNames, I18nFormat format )
+    {
         List<Period> periods = new ArrayList<Period>();
         
         int c = 0;
         
         for ( Period period : relatives )
         {
-            period.setName( dynamicNames && format != null ? format.formatPeriod( period ) : periodNames[c++] );
-            period.setShortName( format != null ? format.formatPeriod( period ) : null );
-            periods.add( period );
+            periods.add( setName( period, periodNames[c++], dynamicNames, format ) );
         }
         
         return periods;
@@ -303,10 +332,22 @@ public class RelativePeriods
      */
     private Period getRelativePeriod( CalendarPeriodType periodType, String periodName, Date current, boolean dynamicNames, I18nFormat format )
     {
-        Period period = periodType.createPeriod( current );
+        return setName( periodType.createPeriod( current ), periodName, dynamicNames, format );
+    }
+    
+    /**
+     * Sets the name and short name of the given Period.
+     * 
+     * @param period the period.
+     * @param periodName the period name.
+     * @param dynamicNames indication of whether dynamic names should be used.
+     * @param format the I18nFormat.
+     * @return a period.
+     */
+    private Period setName( Period period, String periodName, boolean dynamicNames, I18nFormat format )
+    {
         period.setName( dynamicNames && format != null ? format.formatPeriod( period ) : periodName );
-        period.setShortName( format != null ? format.formatPeriod( period ) : null );
-        
+        period.setShortName( format != null ? format.formatPeriod( period ) : null );        
         return period;
     }
     
@@ -374,6 +415,11 @@ public class RelativePeriods
     public boolean isLastYear()
     {
         return lastYear != null && lastYear;
+    }
+    
+    public boolean isLast5Years()
+    {
+        return last5Years != null && last5Years;
     }
         
     // -------------------------------------------------------------------------
@@ -470,6 +516,16 @@ public class RelativePeriods
         this.lastYear = lastYear;
     }
 
+    public Boolean getLast5Years()
+    {
+        return last5Years;
+    }
+
+    public void setLast5Years( Boolean last5Years )
+    {
+        this.last5Years = last5Years;
+    }
+
     // -------------------------------------------------------------------------
     // Equals, hashCode, and toString
     // -------------------------------------------------------------------------
@@ -490,6 +546,7 @@ public class RelativePeriods
         result = prime * result + ( ( monthsLastYear == null ) ? 0 : monthsLastYear.hashCode() );
         result = prime * result + ( ( quartersLastYear == null ) ? 0 : quartersLastYear.hashCode() );
         result = prime * result + ( ( lastYear == null ) ? 0 : lastYear.hashCode() );
+        result = prime * result + ( ( last5Years == null ) ? 0 : last5Years.hashCode() );
         
         return result;
     }
@@ -621,7 +678,19 @@ public class RelativePeriods
         {
             return false;
         }
-                
+
+        if ( last5Years == null )
+        {
+            if ( other.last5Years != null )
+            {
+                return false;
+            }
+        }
+        else if ( !last5Years.equals( other.last5Years ) )
+        {
+            return false;
+        }
+        
         return true;
     }
 }
