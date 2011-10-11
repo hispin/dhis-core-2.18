@@ -5,7 +5,7 @@
 function showConstantDetails( constantId )
 {
 	jQuery.post( 'getConstant.action', { id:constantId },
-		function( constantElement ) {
+		function( json ) {
 			setInnerHTML( 'nameField', json.constant.name );
 			setInnerHTML( 'valueField', json.constant.value );
 			showDetails();
