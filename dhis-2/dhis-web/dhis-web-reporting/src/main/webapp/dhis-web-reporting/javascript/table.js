@@ -147,7 +147,7 @@ function showTableDetails( tableId )
 		setInnerHTML( 'doUnitsField', parseBool( json.table.doUnits ) );
 
 		showDetails();
-	});
+	} );
 }
 
 function parseBool( bool )
@@ -169,7 +169,8 @@ function toggleRegression()
 
         disable( "doOrganisationUnits" );
         disable( "doPeriods" );
-    } else
+    } 
+    else
     {
         enable( "doOrganisationUnits" );
         enable( "doPeriods" );
