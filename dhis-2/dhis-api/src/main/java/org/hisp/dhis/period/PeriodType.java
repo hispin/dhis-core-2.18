@@ -56,34 +56,28 @@ public abstract class PeriodType
     // Available PeriodTypes
     // -------------------------------------------------------------------------
 
-    private static List<PeriodType> periodTypes;
+    private static final List<PeriodType> PERIOD_TYPES = new ArrayList<PeriodType>()
+    { {
+        add( new DailyPeriodType() );
+        add( new WeeklyPeriodType() );
+        add( new MonthlyPeriodType() );
+        add( new BiMonthlyPeriodType() );
+        add( new QuarterlyPeriodType() );
+        add( new SixMonthlyPeriodType() );
+        add( new YearlyPeriodType() );
+        add( new FinancialAprilPeriodType() );
+        add( new FinancialJulyPeriodType() );
+        add( new FinancialOctoberPeriodType() );
+    } };
 
-    private static Map<String, PeriodType> periodTypeMap;
-
-    static
-    {
-        periodTypes = new ArrayList<PeriodType>();
-        periodTypes.add( new DailyPeriodType() );
-        periodTypes.add( new WeeklyPeriodType() );
-        periodTypes.add( new MonthlyPeriodType() );
-        periodTypes.add( new BiMonthlyPeriodType() );
-        periodTypes.add( new QuarterlyPeriodType() );
-        periodTypes.add( new SixMonthlyPeriodType() );
-        periodTypes.add( new YearlyPeriodType() );
-        periodTypes.add( new FinancialAprilPeriodType() );
-        periodTypes.add( new FinancialJulyPeriodType() );
-        periodTypes.add( new FinancialOctoberPeriodType() );
-        // periodTypes.add( new OnChangePeriodType() );
-        // periodTypes.add( new SurveyPeriodType() );
-
-        periodTypeMap = new HashMap<String, PeriodType>();
-
-        for ( PeriodType periodType : periodTypes )
+    private static final Map<String, PeriodType> PERIOD_TYPE_MAP = new HashMap<String, PeriodType>()
+    { {
+        for ( PeriodType periodType : PERIOD_TYPES )
         {
-            periodTypeMap.put( periodType.getName(), periodType );
+            put( periodType.getName(), periodType );
         }
-    }
-
+    } };
+    
     /**
      * Returns all available PeriodTypes in their natural order.
      * 
@@ -91,7 +85,7 @@ public abstract class PeriodType
      */
     public static List<PeriodType> getAvailablePeriodTypes()
     {
-        return new ArrayList<PeriodType>( periodTypes );
+        return new ArrayList<PeriodType>( PERIOD_TYPES );
     }
 
     /**
@@ -103,7 +97,7 @@ public abstract class PeriodType
      */
     public static PeriodType getPeriodTypeByName( String name )
     {
-        return periodTypeMap.get( name );
+        return PERIOD_TYPE_MAP.get( name );
     }
 
     public static PeriodType getByNameIgnoreCase( String name )
@@ -129,12 +123,12 @@ public abstract class PeriodType
     {
         index -= 1;
         
-        if ( index < 0 || index > periodTypes.size() - 1 )
+        if ( index < 0 || index > PERIOD_TYPES.size() - 1 )
         {
             return null;
         }
 
-        return periodTypes.get( index );
+        return PERIOD_TYPES.get( index );
     }
 
     // -------------------------------------------------------------------------

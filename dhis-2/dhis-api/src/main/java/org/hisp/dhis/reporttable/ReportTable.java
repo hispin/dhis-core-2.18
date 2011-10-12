@@ -99,38 +99,32 @@ public class ReportTable
     public static final int NONE = 0;
     
     public static final Map<String, String> PRETTY_COLUMNS = new HashMap<String, String>()
-    {
-        private static final long serialVersionUID = 4194194769957136714L;
-        {
-            put( CATEGORYCOMBO_ID, "Category combination ID" );
-            put( INDICATOR_ID, "Indicator ID" );
-            put( INDICATOR_NAME, "Indicator" );
-            put( INDICATOR_CODE, "Indicator code" );
-            put( PERIOD_ID, "Period ID" );
-            put( PERIOD_NAME, "Period" );
-            put( PERIOD_CODE, "Period code" );
-            put( ORGANISATIONUNIT_ID, "Organisation unit ID" );
-            put( ORGANISATIONUNIT_NAME, "Organisation unit" );
-            put( ORGANISATIONUNIT_CODE, "Organisation unit code" );
-            put( REPORTING_MONTH_COLUMN_NAME, "Reporting month" );
-            put( PARAM_ORGANISATIONUNIT_COLUMN_NAME, "Organisation unit parameter" );
-            put( ORGANISATION_UNIT_IS_PARENT_COLUMN_NAME, "Organisation unit is parent" );
-        }
-    };
+    { {
+        put( CATEGORYCOMBO_ID, "Category combination ID" );
+        put( INDICATOR_ID, "Indicator ID" );
+        put( INDICATOR_NAME, "Indicator" );
+        put( INDICATOR_CODE, "Indicator code" );
+        put( PERIOD_ID, "Period ID" );
+        put( PERIOD_NAME, "Period" );
+        put( PERIOD_CODE, "Period code" );
+        put( ORGANISATIONUNIT_ID, "Organisation unit ID" );
+        put( ORGANISATIONUNIT_NAME, "Organisation unit" );
+        put( ORGANISATIONUNIT_CODE, "Organisation unit code" );
+        put( REPORTING_MONTH_COLUMN_NAME, "Reporting month" );
+        put( PARAM_ORGANISATIONUNIT_COLUMN_NAME, "Organisation unit parameter" );
+        put( ORGANISATION_UNIT_IS_PARENT_COLUMN_NAME, "Organisation unit is parent" );
+    } };
 
     public static final Map<Class<? extends NameableObject>, String> CLASS_ID_MAP = new HashMap<Class<? extends NameableObject>, String>()
-    {
-        private static final long serialVersionUID = 4742098364404485991L;
-        {
-            put( Indicator.class, INDICATOR_ID );
-            put( DataElement.class, DATAELEMENT_ID );
-            put( DataElementCategoryOptionCombo.class, CATEGORYCOMBO_ID );
-            put( DataElementCategoryOption.class, CATEGORYOPTION_ID );
-            put( DataSet.class, DATASET_ID );
-            put( Period.class, PERIOD_ID );
-            put( OrganisationUnit.class, ORGANISATIONUNIT_ID );
-        }
-    };
+    { {
+        put( Indicator.class, INDICATOR_ID );
+        put( DataElement.class, DATAELEMENT_ID );
+        put( DataElementCategoryOptionCombo.class, CATEGORYCOMBO_ID );
+        put( DataElementCategoryOption.class, CATEGORYOPTION_ID );
+        put( DataSet.class, DATASET_ID );
+        put( Period.class, PERIOD_ID );
+        put( OrganisationUnit.class, ORGANISATIONUNIT_ID );
+    } };
 
     private static final String EMPTY = "";
 
@@ -285,7 +279,7 @@ public class ReportTable
     /**
      * The name of the reporting month based on the report param.
      */
-    private String reportingMonthName;
+    private String reportingPeriodName;
 
     /**
      * The name of the (parent) organisation unit based on the report param.
@@ -339,7 +333,7 @@ public class ReportTable
         List<DataSet> dataSets, List<Period> periods, List<Period> relativePeriods, List<OrganisationUnit> units,
         List<OrganisationUnit> relativeUnits, DataElementCategoryCombo categoryCombo, boolean doIndicators,
         boolean doPeriods, boolean doUnits, RelativePeriods relatives, ReportParams reportParams,
-        I18nFormat i18nFormat, String reportingMonthName )
+        I18nFormat i18nFormat, String reportingPeriodName )
     {
         this.name = name;
         this.regression = regression;
@@ -357,7 +351,7 @@ public class ReportTable
         this.relatives = relatives;
         this.reportParams = reportParams;
         this.i18nFormat = i18nFormat;
-        this.reportingMonthName = reportingMonthName;
+        this.reportingPeriodName = reportingPeriodName;
     }
 
     // -------------------------------------------------------------------------
@@ -1043,14 +1037,14 @@ public class ReportTable
         i18nFormat = format;
     }
 
-    public String getReportingMonthName()
+    public String getReportingPeriodName()
     {
-        return reportingMonthName;
+        return reportingPeriodName;
     }
 
-    public void setReportingMonthName( String reportingMonthName )
+    public void setReportingPeriodName( String reportingPeriodName )
     {
-        this.reportingMonthName = reportingMonthName;
+        this.reportingPeriodName = reportingPeriodName;
     }
 
     public String getOrganisationUnitName()

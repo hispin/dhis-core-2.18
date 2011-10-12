@@ -376,18 +376,18 @@ public class DefaultReportTableService
         {
             reportTable.setRelativePeriods( periodService.reloadPeriods( reportTable.getRelatives().getRelativePeriods(
                 reportingPeriod, format, !reportTable.isDoPeriods() ) ) );
-            reportTable.setReportingMonthName( reportTable.getRelatives().getReportingMonthName( reportingPeriod,
+            reportTable.setReportingPeriodName( reportTable.getRelatives().getReportingMonthName( reportingPeriod,
                 format ) );
 
-            log.info( "Reporting period date from report param: " + reportTable.getReportingMonthName() );
+            log.info( "Reporting period date from report param: " + reportTable.getReportingPeriodName() );
         }
         else
         {
             reportTable.setRelativePeriods( periodService.reloadPeriods( reportTable.getRelatives().getRelativePeriods(
                 1, format, !reportTable.isDoPeriods() ) ) );
-            reportTable.setReportingMonthName( reportTable.getRelatives().getReportingMonthName( 1, format ) );
+            reportTable.setReportingPeriodName( reportTable.getRelatives().getReportingMonthName( 1, format ) );
 
-            log.info( "Reporting period date default: " + reportTable.getReportingMonthName() );
+            log.info( "Reporting period date default: " + reportTable.getReportingPeriodName() );
         }
 
         // ---------------------------------------------------------------------
@@ -469,7 +469,7 @@ public class DefaultReportTableService
     private Grid getGrid( ReportTable reportTable )
     {
         String subtitle = StringUtils.trimToEmpty( reportTable.getOrganisationUnitName() ) + SPACE
-            + StringUtils.trimToEmpty( reportTable.getReportingMonthName() );
+            + StringUtils.trimToEmpty( reportTable.getReportingPeriodName() );
 
         Grid grid = new ListGrid().setTitle( reportTable.getName() ).setSubtitle( subtitle );
 
@@ -545,7 +545,7 @@ public class DefaultReportTableService
                 grid.addValue( object.getCode() ); 
             }
 
-            grid.addValue( reportTable.getReportingMonthName() );
+            grid.addValue( reportTable.getReportingPeriodName() );
             grid.addValue( reportTable.getOrganisationUnitName() );
             grid.addValue( isCurrentParent( row ) ? YES : NO );
 

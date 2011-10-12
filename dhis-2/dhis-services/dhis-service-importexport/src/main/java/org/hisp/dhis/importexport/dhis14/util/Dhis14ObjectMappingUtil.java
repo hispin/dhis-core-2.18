@@ -33,7 +33,6 @@ import java.util.Map;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.period.DailyPeriodType;
 import org.hisp.dhis.period.MonthlyPeriodType;
-import org.hisp.dhis.period.OnChangePeriodType;
 import org.hisp.dhis.period.PeriodType;
 import org.hisp.dhis.period.QuarterlyPeriodType;
 import org.hisp.dhis.period.SixMonthlyPeriodType;
@@ -58,7 +57,7 @@ public class Dhis14ObjectMappingUtil
         periodTypeMap.put( 1, new MonthlyPeriodType() );
         periodTypeMap.put( 2, new QuarterlyPeriodType() );
         periodTypeMap.put( 3, new YearlyPeriodType() );
-        periodTypeMap.put( 4, new OnChangePeriodType() );
+        periodTypeMap.put( 4, new MonthlyPeriodType() ); // Should be OnChange, which is un-supported
         periodTypeMap.put( 5, new DailyPeriodType() ); // Should be Survey, which is un-supported
         periodTypeMap.put( 6, new DailyPeriodType() ); 
         periodTypeMap.put( 7, new WeeklyPeriodType() );
