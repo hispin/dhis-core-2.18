@@ -3,7 +3,7 @@
 <head>
 <title>$i18n.getString("district_health_information_software")</title>
 <meta name="viewport" content="width=device-width, user-scalable=yes" />
-<link rel="stylesheet" href="/dhis-web-light/style/light.css" />
+<link rel="stylesheet" href="../dhis-web-light/style/light.css" />
 </head>
 
 <body>
