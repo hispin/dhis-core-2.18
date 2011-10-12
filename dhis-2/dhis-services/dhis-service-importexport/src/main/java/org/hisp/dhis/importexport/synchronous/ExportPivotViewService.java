@@ -34,6 +34,8 @@ import java.io.OutputStreamWriter;
 import java.io.Writer;
 import java.util.Collection;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -186,11 +188,13 @@ public class ExportPivotViewService
     private void processDataValues( Writer writer, OrganisationUnit rootOrgUnit, OrganisationUnitLevel orgUnitLevel, Collection<Period> periods )
         throws IOException
     {
-        StoreIterator<AggregatedDataValue> Iterator = aggregatedDataValueService.getAggregateDataValuesAtLevel( rootOrgUnit, orgUnitLevel, periods );
+        Map<Integer, String> periodIdIsoMap = getPeriodIdIsoMap( periods );
+        
+        StoreIterator<AggregatedDataValue> iterator = aggregatedDataValueService.getAggregateDataValuesAtLevel( rootOrgUnit, orgUnitLevel, periods );
 
         try
         {
-            AggregatedDataValue adv = Iterator.next();
+            AggregatedDataValue adv = iterator.next();
 
             writer.write( "# period, orgunit, dataelement, catoptcombo, value\n" );
 
@@ -198,10 +202,7 @@ public class ExportPivotViewService
 
             while ( adv != null )
             {
-                int periodId = adv.getPeriodId();
-                String period = periodService.getPeriod( periodId ).getIsoDate();
-
-                writer.write( "'" + period + "'," );
+                writer.write( "'" + periodIdIsoMap.get( adv.getPeriodId() ) + "'," );
                 writer.write( adv.getOrganisationUnitId() + "," );
                 writer.write( adv.getDataElementId() + "," );
                 writer.write( adv.getCategoryOptionComboId() + "," );
@@ -215,12 +216,12 @@ public class ExportPivotViewService
                     writer.flush();
                 }
 
-                adv = Iterator.next();
+                adv = iterator.next();
             }
-        } catch ( IOException ex )
+        } 
+        catch ( IOException ex )
         {
-            // whatever happens release the store iterator
-            Iterator.close();
+            iterator.close();
             throw ( ex );
         }
 
@@ -230,11 +231,13 @@ public class ExportPivotViewService
     private void processIndicatorValues( Writer writer, OrganisationUnit rootOrgUnit, OrganisationUnitLevel orgUnitLevel, Collection<Period> periods )
         throws IOException
     {
-        StoreIterator<AggregatedIndicatorValue> Iterator = aggregatedDataValueService.getAggregateIndicatorValuesAtLevel( rootOrgUnit, orgUnitLevel, periods );
+        Map<Integer, String> periodIdIsoMap = getPeriodIdIsoMap( periods );
+        
+        StoreIterator<AggregatedIndicatorValue> iterator = aggregatedDataValueService.getAggregateIndicatorValuesAtLevel( rootOrgUnit, orgUnitLevel, periods );
 
         try 
         {
-            AggregatedIndicatorValue aiv = Iterator.next();
+            AggregatedIndicatorValue aiv = iterator.next();
 
             writer.write( "# period, orgunit, indicator, factor, numerator, denominator\n" );
 
@@ -242,10 +245,7 @@ public class ExportPivotViewService
 
             while ( aiv != null )
             {
-                int periodId = aiv.getPeriodId();
-                String period = periodService.getPeriod( periodId ).getIsoDate();
-
-                writer.write( "'" + period + "'," );
+                writer.write( "'" + periodIdIsoMap.get( aiv.getPeriodId() ) + "'," );
                 writer.write( aiv.getOrganisationUnitId() + "," );
                 writer.write( aiv.getIndicatorId() + "," );
                 writer.write( MathUtils.roundToString( aiv.getFactor(), PRECISION ) + "," );
@@ -260,15 +260,14 @@ public class ExportPivotViewService
                     writer.flush();
                 }
 
-                aiv = Iterator.next();
+                aiv = iterator.next();
             }
-        } catch ( IOException ex )
+        } 
+        catch ( IOException ex )
         {
-            // whatever happens release the store iterator
-            Iterator.close();
+            iterator.close();
             throw (ex);
         }
-
 
         writer.flush();
     }
@@ -277,5 +276,17 @@ public class ExportPivotViewService
     {
         periodType = periodType != null ? periodType : new MonthlyPeriodType(); // Fall back to monthly
         return periodService.getIntersectingPeriodsByPeriodType( periodType, startDate, endDate );
+    }
+    
+    private Map<Integer, String> getPeriodIdIsoMap( Collection<Period> periods )
+    {
+        Map<Integer, String> map = new HashMap<Integer, String>();
+        
+        for ( Period period : periods )
+        {
+            map.put( period.getId(), period.getIsoDate() );
+        }
+        
+        return map;
     }
 }
