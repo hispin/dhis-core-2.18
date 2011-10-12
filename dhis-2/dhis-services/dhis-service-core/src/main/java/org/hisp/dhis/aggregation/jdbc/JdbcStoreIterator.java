@@ -38,19 +38,22 @@ import org.hisp.dhis.aggregation.StoreIterator;
 /**
  * @author bobj
  */
-public class JdbcStoreIterator<T> implements StoreIterator<T> {
-
-    private static final Log log = LogFactory.getLog(JdbcStoreIterator.class);
+public class JdbcStoreIterator<T>
+    implements StoreIterator<T>
+{
+    private static final Log log = LogFactory.getLog( JdbcStoreIterator.class );
 
     private RowMapper<T> rowmapper;
 
     private ResultSet resultSet;
 
-    public ResultSet getResultSet() {
+    public ResultSet getResultSet()
+    {
         return resultSet;
     }
 
-    public void setResultSet(ResultSet resultSet) {
+    public void setResultSet( ResultSet resultSet )
+    {
         this.resultSet = resultSet;
     }
 
@@ -66,35 +69,48 @@ public class JdbcStoreIterator<T> implements StoreIterator<T> {
         this.holder = holder;
     }
 
-    public JdbcStoreIterator(ResultSet resultSet, StatementHolder holder, RowMapper<T> rowmapper) {
+    public JdbcStoreIterator( ResultSet resultSet, StatementHolder holder, RowMapper<T> rowmapper )
+    {
         this.resultSet = resultSet;
         this.holder = holder;
         this.rowmapper = rowmapper;
     }
 
     @Override
-    public T next() {
+    public T next()
+    {
         T row = null;
-        try {
-            if (resultSet.next()) {
-                row = rowmapper.mapRow(resultSet);
-            } else {
-                this.close();
+        try
+        {
+            if ( resultSet.next() )
+            {
+                row = rowmapper.mapRow( resultSet );
             }
-        } catch (SQLException ex) {
-            log.warn("Error reading row: " + ex);
+            else
+            {
+                close();
+            }
+        }
+        catch ( SQLException ex )
+        {
+            log.warn( "Error reading row: " + ex );
         }
         return row;
     }
 
     @Override
-    public void close() {
-        try {
-            if (!resultSet.isClosed()) {
+    public void close()
+    {
+        try
+        {
+            if ( !resultSet.isClosed() )
+            {
                 resultSet.close();
             }
-        } catch (SQLException ex) {
-            log.warn("Error closing resultset: " + ex);
+        }
+        catch ( SQLException ex )
+        {
+            log.warn( "Error closing resultset: " + ex );
         }
 
         holder.close();
