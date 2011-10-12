@@ -28,6 +28,7 @@ package org.hisp.dhis.reporttable;
  */
 
 import java.util.Collection;
+import java.util.Date;
 
 import org.hisp.dhis.common.Grid;
 import org.hisp.dhis.i18n.I18nFormat;
@@ -54,7 +55,7 @@ public interface ReportTableService
      *        report parameter, bot parent organisation unit and organisation unit.
      * @param format the I18nFormat to use.
      */
-    void populateReportTableDataMart( int id, String mode, Integer reportingPeriod, 
+    void populateReportTableDataMart( int id, String mode, Date reportingPeriod, 
         Integer organisationUnitId, I18nFormat format );
     
     /**
@@ -120,7 +121,7 @@ public interface ReportTableService
      * @param organisationUnitId the organisation unit number. 
      * @return a Grid.
      */
-    Grid getReportTableGrid( int id, I18nFormat format, Integer reportingPeriod, Integer organisationUnitId );
+    Grid getReportTableGrid( int id, I18nFormat format, Date reportingPeriod, Integer organisationUnitId );
     
     /**
      * If report table mode, this method will return the report table with the
@@ -140,7 +141,7 @@ public interface ReportTableService
     
     int getReportTableCountByName( String name );
     
- // -------------------------------------------------------------------------
+    // -------------------------------------------------------------------------
     // ReportTableGroup
     // -------------------------------------------------------------------------
 

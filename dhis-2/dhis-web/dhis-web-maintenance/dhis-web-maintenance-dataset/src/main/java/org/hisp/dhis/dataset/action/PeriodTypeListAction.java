@@ -28,9 +28,7 @@ package org.hisp.dhis.dataset.action;
  */
 
 import java.util.Collection;
-import java.util.Iterator;
 
-import org.hisp.dhis.period.OnChangePeriodType;
 import org.hisp.dhis.period.PeriodService;
 import org.hisp.dhis.period.PeriodType;
 
@@ -78,16 +76,6 @@ public class PeriodTypeListAction
     {   	
         periodTypes = periodService.getAllPeriodTypes();
         
-        Iterator<PeriodType> iterator = periodTypes.iterator();
-        
-        while( iterator.hasNext() )
-        {
-        	if( iterator.next().getName().equalsIgnoreCase( OnChangePeriodType.NAME ) )
-        	{
-        		iterator.remove();
-        	}
-        }  	
-    	
         return SUCCESS;
     }
 }

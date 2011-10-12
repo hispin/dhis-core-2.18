@@ -178,7 +178,7 @@ public class GetAggregatedIndicatorValuesAction
                 thisYear, monthsLastYear, quartersLastYear, lastYear, lastFiveYears );
 
             Collection<Integer> relativePeriods = ConversionUtils.getIdentifiers( Period.class,
-                periodService.reloadPeriods( relativePeriod.getRelativePeriods( 1, format, true ) ) );
+                periodService.reloadPeriods( relativePeriod.getRelativePeriods( format, true ) ) );
 
             object = aggregatedDataValueService.getAggregatedIndicatorValues( indicatorIds, relativePeriods,
                 organisationUnitIds );

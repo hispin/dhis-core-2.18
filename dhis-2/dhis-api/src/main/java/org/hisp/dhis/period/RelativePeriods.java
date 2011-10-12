@@ -162,6 +162,9 @@ public class RelativePeriods
     // Logic
     // -------------------------------------------------------------------------
     
+    /**
+     * Sets all options to false.
+     */
     public RelativePeriods clear()
     {
         this.reportingMonth = false;
@@ -176,17 +179,56 @@ public class RelativePeriods
         this.last5Years = false;
         return this;
     }
+
+    /**
+     * Returns the period type for the option with the lowest frequency.
+     * 
+     * @return the period type.
+     */
+    public PeriodType getPeriodType()
+    {
+        if ( isReportingMonth() )
+        {
+            return PeriodType.getPeriodTypeByName( MonthlyPeriodType.NAME );
+        }
+        
+        if ( isReportingBimonth() )
+        {
+            return PeriodType.getPeriodTypeByName( BiMonthlyPeriodType.NAME );
+        }
+        
+        if ( isReportingQuarter() )
+        {
+            return PeriodType.getPeriodTypeByName( QuarterlyPeriodType.NAME );
+        }
+        
+        return PeriodType.getPeriodTypeByName( YearlyPeriodType.NAME );
+    }
     
     /**
-     * Returns the name of the reporting month.
+     * Return the name of the reporting period.
      * 
-     * @param months the number of months back in time representing the current month.
+     * @param date the start date of the reporting period.
      * @param format the i18n format.
-     * @return the name of the reporting month.
+     * @return the name of the reporting period.
      */
-    public String getReportingMonthName( int months, I18nFormat format )
+    public String getReportingPeriodName( Date date, I18nFormat format )
     {
-        Period period = new MonthlyPeriodType().createPeriod( getDate( months, null ) );
+        Period period = getPeriodType().createPeriod( date );
+        return format.formatPeriod( period );
+    }
+
+    /**
+     * Return the name of the reporting period. The current date is set to 
+     * todays date minus one month.
+     * 
+     * @param date the start date of the reporting period.
+     * @param format the i18n format.
+     * @return the name of the reporting period.
+     */
+    public String getReportingPeriodName( I18nFormat format )
+    {
+        Period period = getPeriodType().createPeriod( getDate( 1, new Date() ) );
         return format.formatPeriod( period );
     }
     
@@ -195,85 +237,83 @@ public class RelativePeriods
      */
     public List<Period> getRelativePeriods()
     {
-        return getRelativePeriods( 1, null, null, false );
+        return getRelativePeriods( getDate( 1, new Date() ), null, false );
     }
-    
+
     /**
-     * Gets a list of Periods based on the given input and the state of this RelativePeriods.
+     * Gets a list of Periods based on the given input and the state of this 
+     * RelativePeriods. The current date is set to todays date minus one month.
      * 
-     * @param months the number of months back in time representing the current month.
      * @param format the i18n format.
      * @return a list of relative Periods.
      */
-    public List<Period> getRelativePeriods( int months, I18nFormat format, boolean dynamicNames )
+    public List<Period> getRelativePeriods( I18nFormat format, boolean dynamicNames )
     {
-        return getRelativePeriods( months, null, format, dynamicNames );
+        return getRelativePeriods( getDate( 1, new Date() ), format, dynamicNames );
     }
     
     /**
-     * Gets a list of Periods based on the given input and the state of this RelativePeriods.
+     * Gets a list of Periods based on the given input and the state of this 
+     * RelativePeriods.
      * 
-     * @param months the number of months back in time representing the current reporting month.
-     * @param date the date representing now (for testing purposes).
+     * @param date the date representing now.
      * @param format the i18n format.
      * @return a list of relative Periods.
      */
-    protected List<Period> getRelativePeriods( int months, Date date, I18nFormat format, boolean dynamicNames )
+    public List<Period> getRelativePeriods( Date date, I18nFormat format, boolean dynamicNames )
     {
         List<Period> periods = new ArrayList<Period>();
         
-        Date current = getDate( months, date );
-        
         if ( isReportingMonth() )
         {
-            periods.add( getRelativePeriod( new MonthlyPeriodType(), REPORTING_MONTH, current, dynamicNames, format ) );
+            periods.add( getRelativePeriod( new MonthlyPeriodType(), REPORTING_MONTH, date, dynamicNames, format ) );
         }
         
         if ( isReportingBimonth() )
         {
-            periods.add( getRelativePeriod( new BiMonthlyPeriodType(), REPORTING_BIMONTH, current, dynamicNames, format ) );
+            periods.add( getRelativePeriod( new BiMonthlyPeriodType(), REPORTING_BIMONTH, date, dynamicNames, format ) );
         }
         
         if ( isReportingQuarter() )
         {
-            periods.add( getRelativePeriod( new QuarterlyPeriodType(), REPORTING_QUARTER, current, dynamicNames, format ) );
+            periods.add( getRelativePeriod( new QuarterlyPeriodType(), REPORTING_QUARTER, date, dynamicNames, format ) );
         }
         
         if ( isMonthsThisYear() )
         {
-            periods.addAll( getRelativePeriodList( new MonthlyPeriodType(), MONTHS_THIS_YEAR, current, dynamicNames, format ) );
+            periods.addAll( getRelativePeriodList( new MonthlyPeriodType(), MONTHS_THIS_YEAR, date, dynamicNames, format ) );
         }
         
         if ( isQuartersThisYear() )
         {
-            periods.addAll( getRelativePeriodList( new QuarterlyPeriodType(), QUARTERS_THIS_YEAR, current, dynamicNames, format ) );
+            periods.addAll( getRelativePeriodList( new QuarterlyPeriodType(), QUARTERS_THIS_YEAR, date, dynamicNames, format ) );
         }
         
         if ( isThisYear() )
         {
-            periods.add( getRelativePeriod( new YearlyPeriodType(), THIS_YEAR, current, dynamicNames, format ) );
+            periods.add( getRelativePeriod( new YearlyPeriodType(), THIS_YEAR, date, dynamicNames, format ) );
         }
 
         if ( isLast5Years() )
         {
-            periods.addAll( getRelativePeriodList( new YearlyPeriodType().generateLast5Years( current ), LAST_5_YEARS, dynamicNames, format ) );
+            periods.addAll( getRelativePeriodList( new YearlyPeriodType().generateLast5Years( date ), LAST_5_YEARS, dynamicNames, format ) );
         }
         
-        current = getDate( MONTHS_IN_YEAR, current );
+        date = getDate( MONTHS_IN_YEAR, date );
         
         if ( isMonthsLastYear() )
         {
-            periods.addAll( getRelativePeriodList( new MonthlyPeriodType(), MONTHS_LAST_YEAR, current, dynamicNames, format ) );
+            periods.addAll( getRelativePeriodList( new MonthlyPeriodType(), MONTHS_LAST_YEAR, date, dynamicNames, format ) );
         }
         
         if ( isQuartersLastYear() )
         {
-            periods.addAll( getRelativePeriodList( new QuarterlyPeriodType(), QUARTERS_LAST_YEAR, current, dynamicNames, format ) );
+            periods.addAll( getRelativePeriodList( new QuarterlyPeriodType(), QUARTERS_LAST_YEAR, date, dynamicNames, format ) );
         }
         
         if ( isLastYear() )
         {
-            periods.add( getRelativePeriod( new YearlyPeriodType(), LAST_YEAR, current, dynamicNames, format ) );
+            periods.add( getRelativePeriod( new YearlyPeriodType(), LAST_YEAR, date, dynamicNames, format ) );
         }
         
         return periods;
@@ -285,14 +325,14 @@ public class RelativePeriods
      * 
      * @param periodType the period type.
      * @param periodNames the array of period names.
-     * @param current the current date.
+     * @param date the current date.
      * @param dynamicNames indication of whether dynamic names should be used.
      * @param format the I18nFormat.
      * @return a list of periods.
      */
-    private List<Period> getRelativePeriodList( CalendarPeriodType periodType, String[] periodNames, Date current, boolean dynamicNames, I18nFormat format )
+    private List<Period> getRelativePeriodList( CalendarPeriodType periodType, String[] periodNames, Date date, boolean dynamicNames, I18nFormat format )
     {
-        return getRelativePeriodList( periodType.generatePeriods( current ), periodNames, dynamicNames, format );
+        return getRelativePeriodList( periodType.generatePeriods( date ), periodNames, dynamicNames, format );
     }
 
     /**
@@ -325,14 +365,14 @@ public class RelativePeriods
      * 
      * @param periodType the period type.
      * @param periodName the period name.
-     * @param current the current date.
+     * @param date the current date.
      * @param dynamicNames indication of whether dynamic names should be used.
      * @param format the I18nFormat.
      * @return a list of periods.
      */
-    private Period getRelativePeriod( CalendarPeriodType periodType, String periodName, Date current, boolean dynamicNames, I18nFormat format )
+    private Period getRelativePeriod( CalendarPeriodType periodType, String periodName, Date date, boolean dynamicNames, I18nFormat format )
     {
-        return setName( periodType.createPeriod( current ), periodName, dynamicNames, format );
+        return setName( periodType.createPeriod( date ), periodName, dynamicNames, format );
     }
     
     /**
@@ -355,16 +395,16 @@ public class RelativePeriods
      * Returns a date.
      * 
      * @param months the number of months to subtract from the current date.
-     * @param now the date representing now, ignored if null.
+     * @param date the date representing now, ignored if null.
      * @return a date.
      */
-    private Date getDate( int months, Date now )
+    public Date getDate( int months, Date date )
     {
         Calendar cal = PeriodType.createCalendarInstance();
         
-        if ( now != null ) // For testing purposes
+        if ( date != null ) // For testing purposes
         {
-            cal.setTime( now );
+            cal.setTime( date );
         }
         
         cal.add( Calendar.MONTH, ( months * -1 ) );        

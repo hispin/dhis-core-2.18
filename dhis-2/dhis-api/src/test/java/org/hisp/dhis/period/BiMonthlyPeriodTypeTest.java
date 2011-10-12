@@ -124,4 +124,20 @@ public class BiMonthlyPeriodTypeTest
         assertEquals( periodType.createPeriod( new Cal( 2009, 9, 1 ).time() ), periods.get( 4 ) );
         assertEquals( periodType.createPeriod( new Cal( 2009, 11, 1 ).time() ), periods.get( 5 ) );
     }
+    
+    @Test
+    public void testGenerateLast5Years()
+    {
+        testCal.set( 2009, 8, 15 );
+        
+        List<Period> periods = periodType.generateLast5Years( testCal.time() );
+        
+        assertEquals( 30, periods.size() );
+        assertEquals( periodType.createPeriod( new Cal( 2005, 1, 1 ).time() ), periods.get( 0 ) );
+        assertEquals( periodType.createPeriod( new Cal( 2005, 3, 1 ).time() ), periods.get( 1 ) );
+        assertEquals( periodType.createPeriod( new Cal( 2005, 5, 1 ).time() ), periods.get( 2 ) );
+        assertEquals( periodType.createPeriod( new Cal( 2005, 7, 1 ).time() ), periods.get( 3 ) );
+        assertEquals( periodType.createPeriod( new Cal( 2005, 9, 1 ).time() ), periods.get( 4 ) );
+        assertEquals( periodType.createPeriod( new Cal( 2005, 11, 1 ).time() ), periods.get( 5 ) );
+    }
 }

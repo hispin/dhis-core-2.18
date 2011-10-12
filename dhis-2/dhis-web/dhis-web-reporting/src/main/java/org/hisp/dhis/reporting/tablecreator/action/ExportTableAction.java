@@ -27,6 +27,7 @@ package org.hisp.dhis.reporting.tablecreator.action;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -36,6 +37,7 @@ import org.hisp.dhis.i18n.I18nFormat;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroupService;
 import org.hisp.dhis.reporttable.ReportTable;
 import org.hisp.dhis.reporttable.ReportTableService;
+import org.hisp.dhis.system.util.DateUtils;
 import org.hisp.dhis.util.SessionUtils;
 
 import com.opensymphony.xwork2.Action;
@@ -80,9 +82,9 @@ public class ExportTableAction
         this.format = format;
     }
     
-    private Integer reportingPeriod;
+    private String reportingPeriod;
 
-    public void setReportingPeriod( Integer reportingPeriod )
+    public void setReportingPeriod( String reportingPeriod )
     {
         this.reportingPeriod = reportingPeriod;
     }
@@ -154,8 +156,10 @@ public class ExportTableAction
         else
         {
             ReportTable reportTable = reportTableService.getReportTable( id );
+
+            Date date = reportingPeriod != null ? DateUtils.getMediumDate( reportingPeriod ) : new Date();
             
-            grid = reportTableService.getReportTableGrid( id, format, reportingPeriod, organisationUnitId );
+            grid = reportTableService.getReportTableGrid( id, format, date, organisationUnitId );
             
             params.putAll( constantService.getConstantParameterMap() );
             params.putAll( reportTable.getOrganisationUnitGroupMap( organisationUnitGroupService.getCompulsoryOrganisationUnitGroupSets() ) );

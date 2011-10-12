@@ -132,9 +132,7 @@ public class YearlyPeriodType
         return periods;
     }
 
-    /**
-     * Generates YearlyPeriods for the last 5 years including the current.
-     */
+    @Override
     public List<Period> generateLast5Years( Date date )
     {
         Calendar cal = createCalendarInstance( date );

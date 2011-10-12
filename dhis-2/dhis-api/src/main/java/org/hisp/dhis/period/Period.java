@@ -155,6 +155,16 @@ public class Period
     {
         return frequencyOrder() + 15;
     }
+    
+    /**
+     * Returns start date formatted as string.
+     * 
+     * @return start date formatted as string.
+     */
+    public String getStartDateString()
+    {
+        return getMediumDateString( startDate );
+    }
 
     /**
      * Formats a Date to the format YYYY-MM-DD.

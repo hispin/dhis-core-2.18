@@ -29,6 +29,7 @@ package org.hisp.dhis.report;
 
 import java.io.OutputStream;
 import java.util.Collection;
+import java.util.Date;
 
 import org.hisp.dhis.i18n.I18nFormat;
 
@@ -43,7 +44,7 @@ public interface ReportService
     final String REPORTTYPE_PDF = "pdf";
     final String REPORTTYPE_XLS = "xls";
 
-    public void renderReport( OutputStream out, Report report, Integer reportingPeriod, 
+    public void renderReport( OutputStream out, Report report, Date reportingPeriod, 
         Integer organisationUnitId, String type, I18nFormat format );
     
     /**

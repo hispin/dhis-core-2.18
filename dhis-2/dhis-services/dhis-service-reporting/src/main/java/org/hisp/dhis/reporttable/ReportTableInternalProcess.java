@@ -27,6 +27,8 @@ package org.hisp.dhis.reporttable;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import java.util.Date;
+
 import org.amplecode.cave.process.SerialToGroup;
 import org.hisp.dhis.i18n.I18nFormat;
 import org.hisp.dhis.system.process.AbstractStatementInternalProcess;
@@ -71,9 +73,9 @@ public class ReportTableInternalProcess
         this.mode = mode;
     }
 
-    private Integer reportingPeriod;
+    private Date reportingPeriod;
 
-    public void setReportingPeriod( Integer reportingPeriod )
+    public void setReportingPeriod( Date reportingPeriod )
     {
         this.reportingPeriod = reportingPeriod;
     }

@@ -60,7 +60,7 @@ public class RelativePeriodTest
     {        
         RelativePeriods periods = new RelativePeriods( true, true, true, true, true, true, true, true, true, true );
         
-        Collection<Period> relatives = periods.getRelativePeriods( 1, getDate( 2002, 1, 1 ), i18nFormat, false );
+        Collection<Period> relatives = periods.getRelativePeriods( getDate( 2001, 1, 1 ), i18nFormat, false );
         
         assertTrue( relatives.contains( new Period( new MonthlyPeriodType(), getDate( 2001, 1, 1 ), getDate( 2001, 1, 31 ) ) ) );
         assertTrue( relatives.contains( new Period( new MonthlyPeriodType(), getDate( 2001, 2, 1 ), getDate( 2001, 2, 28 ) ) ) );

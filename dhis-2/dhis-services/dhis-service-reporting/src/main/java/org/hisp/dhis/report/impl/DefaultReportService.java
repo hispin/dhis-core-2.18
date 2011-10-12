@@ -30,6 +30,7 @@ package org.hisp.dhis.report.impl;
 import java.io.OutputStream;
 import java.sql.Connection;
 import java.util.Collection;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -114,7 +115,7 @@ public class DefaultReportService
     // ReportService implementation
     // -------------------------------------------------------------------------
 
-    public void renderReport( OutputStream out, Report report, Integer reportingPeriod, 
+    public void renderReport( OutputStream out, Report report, Date reportingPeriod, 
         Integer organisationUnitId, String type, I18nFormat format )
     {
         Map<String, Object> params = new HashMap<String, Object>();
