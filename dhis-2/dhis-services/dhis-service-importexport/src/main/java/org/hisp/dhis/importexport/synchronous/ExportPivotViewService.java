@@ -54,6 +54,7 @@ import org.hisp.dhis.system.util.MathUtils;
  * Exports pivot view synchronously (using calling thread)
  *
  * TODO: use exportparams and abstract service
+ *       factor out commonality between processIndicatorValues and processDataValues
  *
  * @author bobj
  */
@@ -187,32 +188,40 @@ public class ExportPivotViewService
     {
         StoreIterator<AggregatedDataValue> Iterator = aggregatedDataValueService.getAggregateDataValuesAtLevel( rootOrgUnit, orgUnitLevel, periods );
 
-        AggregatedDataValue adv = Iterator.next();
-
-        writer.write( "# period, orgunit, dataelement, catoptcombo, value\n" );
-        
-        int values = 0;
-
-        while ( adv != null )
+        try
         {
-            int periodId = adv.getPeriodId();
-            String period = periodService.getPeriod( periodId ).getIsoDate();
+            AggregatedDataValue adv = Iterator.next();
 
-            writer.write( "'" + period + "'," );
-            writer.write( adv.getOrganisationUnitId() + "," );
-            writer.write( adv.getDataElementId() + "," );
-            writer.write( adv.getCategoryOptionComboId() + "," );
-            writer.write( adv.getValue() + "\n" );
+            writer.write( "# period, orgunit, dataelement, catoptcombo, value\n" );
 
-            // defend against expanding the writer buffer uncontrollably
-            values = ++values % CHUNK;
+            int values = 0;
 
-            if (values == 0)
+            while ( adv != null )
             {
-                writer.flush();
-            }
+                int periodId = adv.getPeriodId();
+                String period = periodService.getPeriod( periodId ).getIsoDate();
 
-            adv = Iterator.next();
+                writer.write( "'" + period + "'," );
+                writer.write( adv.getOrganisationUnitId() + "," );
+                writer.write( adv.getDataElementId() + "," );
+                writer.write( adv.getCategoryOptionComboId() + "," );
+                writer.write( adv.getValue() + "\n" );
+
+                // defend against expanding the writer buffer uncontrollably
+                values = ++values % CHUNK;
+
+                if ( values == 0 )
+                {
+                    writer.flush();
+                }
+
+                adv = Iterator.next();
+            }
+        } catch ( IOException ex )
+        {
+            // whatever happens release the store iterator
+            Iterator.close();
+            throw ( ex );
         }
 
         writer.flush();
@@ -223,34 +232,43 @@ public class ExportPivotViewService
     {
         StoreIterator<AggregatedIndicatorValue> Iterator = aggregatedDataValueService.getAggregateIndicatorValuesAtLevel( rootOrgUnit, orgUnitLevel, periods );
 
-        AggregatedIndicatorValue aiv = Iterator.next();
-
-        writer.write( "# period, orgunit, indicator, factor, numerator, denominator\n" );
-        
-        int values = 0;
-
-        while ( aiv != null )
+        try 
         {
-            int periodId = aiv.getPeriodId();
-            String period = periodService.getPeriod( periodId ).getIsoDate();
+            AggregatedIndicatorValue aiv = Iterator.next();
 
-            writer.write( "'" + period + "'," );
-            writer.write( aiv.getOrganisationUnitId() + "," );
-            writer.write( aiv.getIndicatorId() + "," );
-            writer.write( MathUtils.roundToString( aiv.getFactor(), PRECISION ) + "," );
-            writer.write( MathUtils.roundToString( aiv.getNumeratorValue(), PRECISION ) + "," );
-            writer.write( MathUtils.roundToString( aiv.getDenominatorValue(), PRECISION ) + "\n" );
+            writer.write( "# period, orgunit, indicator, factor, numerator, denominator\n" );
 
-            // defend against expanding the writer buffer uncontrollably
-            values = ++values % CHUNK;
+            int values = 0;
 
-            if (values == 0)
+            while ( aiv != null )
             {
-                writer.flush();
-            }
+                int periodId = aiv.getPeriodId();
+                String period = periodService.getPeriod( periodId ).getIsoDate();
 
-            aiv = Iterator.next();
+                writer.write( "'" + period + "'," );
+                writer.write( aiv.getOrganisationUnitId() + "," );
+                writer.write( aiv.getIndicatorId() + "," );
+                writer.write( MathUtils.roundToString( aiv.getFactor(), PRECISION ) + "," );
+                writer.write( MathUtils.roundToString( aiv.getNumeratorValue(), PRECISION ) + "," );
+                writer.write( MathUtils.roundToString( aiv.getDenominatorValue(), PRECISION ) + "\n" );
+
+                // defend against expanding the writer buffer uncontrollably
+                values = ++values % CHUNK;
+
+                if ( values == 0 )
+                {
+                    writer.flush();
+                }
+
+                aiv = Iterator.next();
+            }
+        } catch ( IOException ex )
+        {
+            // whatever happens release the store iterator
+            Iterator.close();
+            throw (ex);
         }
+
 
         writer.flush();
     }
