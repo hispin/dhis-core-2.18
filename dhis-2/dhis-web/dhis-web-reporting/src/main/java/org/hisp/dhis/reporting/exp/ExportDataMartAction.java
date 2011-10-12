@@ -27,7 +27,6 @@ package org.hisp.dhis.reporting.exp;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-
 import java.io.IOException;
 import java.io.OutputStream;
 import java.text.DateFormat;
@@ -45,9 +44,9 @@ import org.apache.struts2.ServletActionContext;
 import org.hisp.dhis.importexport.synchronous.ExportPivotViewService;
 import org.hisp.dhis.importexport.synchronous.ExportPivotViewService.RequestType;
 import org.hisp.dhis.period.PeriodType;
-import org.hisp.dhis.system.util.DateUtils;
 import org.hisp.dhis.system.util.StreamUtils;
 import org.hisp.dhis.user.CurrentUserService;
+import org.hisp.dhis.util.ContextUtils;
 
 import com.opensymphony.xwork2.Action;
 
@@ -206,7 +205,8 @@ public class ExportDataMartAction
                 {
                     paramError = BAD_ENDDATE;
                 }
-            } catch ( java.text.ParseException ex )
+            } 
+            catch ( java.text.ParseException ex )
             {
                 paramError = ex.getMessage();
             }
@@ -221,7 +221,7 @@ public class ExportDataMartAction
 
         // timestamp filename
         SimpleDateFormat format = new SimpleDateFormat( "_yyyy_MM_dd_HHmm_ss" );
-        String fileName = requestType + format.format(Calendar.getInstance().getTime()) + ".csv.gz";
+        String filename = requestType + format.format(Calendar.getInstance().getTime()) + ".csv.gz";
 
         PeriodType pType = PeriodType.getPeriodTypeByName( periodType );
         
@@ -232,10 +232,8 @@ public class ExportDataMartAction
         int count = exportPivotViewService.count( requestType, pType, start, end,
                 dataSourceLevel, dataSourceRoot);
 
-        response.setContentType( "application/gzip");
-        response.addHeader( "Content-Disposition", "attachment; filename=\""+fileName+"\"" );
-        response.addHeader( "Cache-Control", "no-cache" );
-        response.addHeader( "Expires", DateUtils.getExpiredHttpDateString() );
+        ContextUtils.configureResponse( response, ContextUtils.CONTENT_TYPE_GZIP, true, filename, true );
+
         // write number of rows to custom header
         response.addHeader( "X-Number-Of-Rows", String.valueOf( count ) );
 
