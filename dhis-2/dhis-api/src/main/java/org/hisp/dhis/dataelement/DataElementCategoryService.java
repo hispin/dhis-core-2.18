@@ -148,14 +148,7 @@ public interface DataElementCategoryService
      * @return the DataElementCategoryOption with the given name.
      */
     DataElementCategoryOption getDataElementCategoryOptionByName( String name );
-
-    /**
-     * Retrieves the DataElementCategoryOption with the given code.
-     * @param code the code.
-     * @return the DataElementCategoryOption with the given code.
-     */
-    DataElementCategoryOption getDataElementCategoryOptionByCode( String code );
-
+    
     /**
      * Returns all DataElementCategoryOptions.
      * 

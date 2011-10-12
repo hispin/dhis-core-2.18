@@ -177,12 +177,6 @@ public class DefaultDataElementCategoryService
         return dataElementCategoryOptionStore.getByName( name );
     }
 
-    @Override
-    public DataElementCategoryOption getDataElementCategoryOptionByCode( String code )
-    {
-        return dataElementCategoryOptionStore.getByCode( code );
-    }
-
     public Collection<DataElementCategoryOption> getDataElementCategoryOptions( final Collection<Integer> identifiers )
     {
         Collection<DataElementCategoryOption> categoryOptions = getAllDataElementCategoryOptions();
@@ -550,5 +544,4 @@ public class DefaultDataElementCategoryService
     {
         return dataElementCategoryComboStore.getBetweenByName( name, first, max );
     }
-
 }

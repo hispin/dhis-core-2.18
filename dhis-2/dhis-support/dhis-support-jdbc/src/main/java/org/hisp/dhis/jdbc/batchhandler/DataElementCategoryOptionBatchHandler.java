@@ -51,7 +51,6 @@ public class DataElementCategoryOptionBatchHandler
     // AbstractBatchHandler implementation
     // -------------------------------------------------------------------------
 
-    @Override
     protected void setTableName()
     {
         statementBuilder.setTableName( "dataelementcategoryoption" );
@@ -75,32 +74,24 @@ public class DataElementCategoryOptionBatchHandler
         statementBuilder.setIdentifierValue( categoryOption.getId() );
     }
     
-    @Override
     protected void setUniqueColumns()
     {
-        statementBuilder.setUniqueColumn( "code" );
         statementBuilder.setUniqueColumn( "name" );
     }
     
-    @Override
     protected void setUniqueValues( DataElementCategoryOption categoryOption )
     {        
-        statementBuilder.setUniqueValue( categoryOption.getCode() );
         statementBuilder.setUniqueValue( categoryOption.getName() );
     }
     
-    @Override
     protected void setColumns()
     {
-        statementBuilder.setColumn( "code" );
         statementBuilder.setColumn( "name" );
         statementBuilder.setColumn( "uuid" );
     }
     
-    @Override
     protected void setValues( DataElementCategoryOption categoryOption )
     {        
-        statementBuilder.setValue( categoryOption.getCode() );
         statementBuilder.setValue( categoryOption.getName() );
         statementBuilder.setValue( categoryOption.getUuid() );
     }
