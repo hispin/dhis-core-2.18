@@ -9,9 +9,10 @@
     </ul>
 </p>
 
-
 <div id="footer">
+
 <ul>
-		<li><a href="../dhis-web-commons-security/logout.action">$i18n.getString("logout")</a></li>
-	</ul>
+	<li><a href="../dhis-web-commons-security/logout.action">$i18n.getString("logout")</a></li>
+</ul>
+
 </div>
