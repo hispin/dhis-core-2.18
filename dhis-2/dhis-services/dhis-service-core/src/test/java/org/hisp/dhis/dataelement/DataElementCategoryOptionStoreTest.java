@@ -119,47 +119,12 @@ public class DataElementCategoryOptionStoreTest
         categoryOptionStore.save( categoryOptionA );
         categoryOptionStore.save( categoryOptionB );
         categoryOptionStore.save( categoryOptionC );
-
+        
         Collection<DataElementCategoryOption> categoryOptions = categoryOptionStore.getAll();
-
+        
         assertEquals( 4, categoryOptions.size() ); // Including default
         assertTrue( categoryOptions.contains( categoryOptionA ) );
         assertTrue( categoryOptions.contains( categoryOptionB ) );
-        assertTrue( categoryOptions.contains( categoryOptionC ) );
+        assertTrue( categoryOptions.contains( categoryOptionC ) );        
     }
-
-    @Test
-    public void testGetByCode()
-    {
-        categoryOptionA = new DataElementCategoryOption( "CategoryOptionA" );
-        categoryOptionA.setCode("CODE_RED");
-        categoryOptionB = new DataElementCategoryOption( "CategoryOptionB" );
-        categoryOptionC = new DataElementCategoryOption( "CategoryOptionC" );
-
-        categoryOptionStore.save( categoryOptionA );
-
-        categoryOptionStore.getByCode( "CODE_RED");
-
-        assertEquals( "CODE_RED", categoryOptionA.getCode() );
-        assertEquals( "CategoryOptionA", categoryOptionA.getName() );
-    }
-
-    @Test
-    public void testUniqueCode()
-    {
-        categoryOptionA = new DataElementCategoryOption( "CategoryOptionA" );
-        categoryOptionA.setCode("CODE_RED");
-        categoryOptionB = new DataElementCategoryOption( "CategoryOptionB" );
-        categoryOptionB.setCode("CODE_RED");
-
-        categoryOptionStore.save( categoryOptionA );
-
-        Exception ex = null;
-        try {
-            categoryOptionStore.save( categoryOptionB );
-        } catch (Exception ex2) { ex = ex2;}
-
-        assertEquals( "class org.hibernate.exception.ConstraintViolationException", ex.getClass().toString() );
-    }
-    
 }
