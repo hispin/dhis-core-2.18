@@ -34,9 +34,7 @@ import org.hisp.dhis.importexport.ImportParams;
 import org.hisp.dhis.importexport.XMLConverter;
 import org.hisp.dhis.period.DailyPeriodType;
 import org.hisp.dhis.period.MonthlyPeriodType;
-import org.hisp.dhis.period.OnChangePeriodType;
 import org.hisp.dhis.period.QuarterlyPeriodType;
-import org.hisp.dhis.period.SurveyPeriodType;
 import org.hisp.dhis.period.WeeklyPeriodType;
 import org.hisp.dhis.period.YearlyPeriodType;
 
@@ -142,42 +140,6 @@ public class PeriodTypeConverter
         
         writer.closeElement();
 
-        // ---------------------------------------------------------------------
-        // OnChange
-        // ---------------------------------------------------------------------
-
-        writer.openElement( ELEMENT_NAME );
-        
-        writer.writeElement( FIELD_ID, String.valueOf( 4 ) );
-        writer.writeElement( FIELD_NAME_ENG, OnChangePeriodType.NAME );
-        writer.writeElement( FIELD_NAME, OnChangePeriodType.NAME );
-        writer.writeElement( FIELD_SORT_ORDER, String.valueOf( 4 ) );
-        writer.writeElement( FIELD_ANNUALISATION_FACTOR, String.valueOf( 0 ) );
-        writer.writeElement( FIELD_UPPER_RANGE_DAY_COUNT, String.valueOf( 0 ) );
-        writer.writeElement( FIELD_FIRST_DAY_OF_WEEK, String.valueOf( 1 ) );
-        writer.writeElement( FIELD_FIRST_WEEK_OF_YEAR, String.valueOf( 0 ) );
-        writer.writeElement( FIELD_SUPPORTED, String.valueOf( 0 ) );
-        
-        writer.closeElement();
-
-        // ---------------------------------------------------------------------
-        // Survey
-        // ---------------------------------------------------------------------
-        
-        writer.openElement( ELEMENT_NAME );
-        
-        writer.writeElement( FIELD_ID, String.valueOf( 5 ) );
-        writer.writeElement( FIELD_NAME_ENG, SurveyPeriodType.NAME );
-        writer.writeElement( FIELD_NAME, SurveyPeriodType.NAME );
-        writer.writeElement( FIELD_SORT_ORDER, String.valueOf( 5 ) );
-        writer.writeElement( FIELD_ANNUALISATION_FACTOR, String.valueOf( 0 ) );
-        writer.writeElement( FIELD_UPPER_RANGE_DAY_COUNT, String.valueOf( 0 ) );
-        writer.writeElement( FIELD_FIRST_DAY_OF_WEEK, String.valueOf( 1 ) );
-        writer.writeElement( FIELD_FIRST_WEEK_OF_YEAR, String.valueOf( 0 ) );
-        writer.writeElement( FIELD_SUPPORTED, String.valueOf( 0 ) );
-        
-        writer.closeElement();
-        
         // ---------------------------------------------------------------------
         // Daily
         // ---------------------------------------------------------------------
