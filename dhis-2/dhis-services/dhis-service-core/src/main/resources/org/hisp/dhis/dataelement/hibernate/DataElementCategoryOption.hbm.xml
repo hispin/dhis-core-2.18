@@ -16,6 +16,9 @@
     <property name="name">
       <column name="name" not-null="true" unique="true" length="160" />
     </property>
+    <property name="code">
+      <column name="code" unique="true" length="160" />
+    </property>
 
     <set name="categoryOptionCombos" table="categoryoptioncombos_categoryoptions" inverse="true">
       <cache usage="read-write" />

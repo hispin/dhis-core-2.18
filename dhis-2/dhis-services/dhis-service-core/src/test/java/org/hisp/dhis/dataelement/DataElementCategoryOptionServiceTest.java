@@ -68,14 +68,25 @@ public class DataElementCategoryOptionServiceTest
         categoryOptionA = new DataElementCategoryOption( "CategoryOptionA" );
         categoryOptionB = new DataElementCategoryOption( "CategoryOptionB" );
         categoryOptionC = new DataElementCategoryOption( "CategoryOptionC" );
-        
+
         int idA = categoryService.addDataElementCategoryOption( categoryOptionA );
         int idB = categoryService.addDataElementCategoryOption( categoryOptionB );
         int idC = categoryService.addDataElementCategoryOption( categoryOptionC );
-        
+
         assertEquals( categoryOptionA, categoryService.getDataElementCategoryOption( idA ) );
         assertEquals( categoryOptionB, categoryService.getDataElementCategoryOption( idB ) );
         assertEquals( categoryOptionC, categoryService.getDataElementCategoryOption( idC ) );
+    }
+
+    @Test
+    public void testCode()
+    {
+        categoryOptionA = new DataElementCategoryOption( "CategoryOptionA" );
+        categoryOptionA.setCode( "12345");
+
+        int idA = categoryService.addDataElementCategoryOption( categoryOptionA );
+
+        assertEquals( "12345", categoryService.getDataElementCategoryOption( idA ).getCode() );
     }
 
     @Test
