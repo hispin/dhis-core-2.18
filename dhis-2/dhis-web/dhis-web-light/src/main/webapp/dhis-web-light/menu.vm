@@ -9,7 +9,7 @@
 </p>
 
 <div id="footer">
-<h2>Navigate to</h2>
+<h2>$i18n.getString( "navigate_to" )</h2>
 <ul>
 	<li><a href="../dhis-web-dashboard-integration/index.action">$i18n.getString("desktop_version")</a></li>
 	<li><a href="../dhis-web-commons-security/logout.action">$i18n.getString("logout")</a></li>
