@@ -1,7 +1,7 @@
 
 #set( $Integer = 0 )
 
-<h2>$dataSet.name</h2>
+<h2>$encoder.htmlEncode( $dataSet.name )</h2>
 
 #if( $validationRuleViolations.size() > 0 )
 <div class="header-box" align="center">
