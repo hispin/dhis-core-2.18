@@ -56,9 +56,9 @@ public class StartupListener
         {
             startupRoutineExecutor.execute();
         }
-        catch ( Exception e )
+        catch ( Exception ex )
         {
-            throw new RuntimeException( "Failed to run startup routines", e );
+            throw new RuntimeException( "Failed to run startup routines: " + ex.getMessage(), ex );
         }
     }
 
