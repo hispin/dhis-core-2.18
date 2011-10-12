@@ -5,7 +5,7 @@
 <struts>
   <include file="dhis-web-commons.xml" />
 
-  <package name="dhis-web-light" extends="dhis-web-commons" namespace="/dhis-web-light">
+  <package name="dhis-web-light" extends="dhis-web-commons" namespace="/mobile">
 
     <action name="index" class="org.hisp.dhis.light.action.NoAction">
       <result name="success" type="velocity">/dhis-web-light/main.vm</result>
@@ -35,7 +35,7 @@
     </action>
 
     <action name="saveSectionForm" class="org.hisp.dhis.light.dataentry.action.SaveSectionFormAction">
-      <result name="success" type="redirect">/dhis-web-light/selectPeriod.action</result>
+      <result name="success" type="redirect">/mobile/selectPeriod.action</result>
       <result name="error" type="velocity">/dhis-web-light/main.vm</result>
       <param name="page">/dhis-web-light/dataEntry.vm</param>
       <param name="requiredAuthorities">F_DATAVALUE_ADD,F_DATAVALUE_UPDATE,F_DATAVALUE_DELETE</param>

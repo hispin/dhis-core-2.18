@@ -3,7 +3,7 @@
 <head>
 <title>$i18n.getString("DHIS_2")</title>
 <meta name="viewport" content="width=device-width, user-scalable=yes" />
-<link rel="stylesheet" href="style/light.css" />
+<link rel="stylesheet" href="/dhis-web-light/style/light.css" />
 </head>
 
 <body>
@@ -19,9 +19,4 @@
 #parse( $page )
 
 </div>
-
-
-
-
 </body>
-
