@@ -71,23 +71,18 @@ public class ExportDataMartAction
 
     private static final DateFormat dateFormat = new SimpleDateFormat( "yyyyMMdd" );
     
-    // parameter errors
     private static final String NO_STARTDATE = "The request is missing a startDate parameter";
-
     private static final String NO_ENDDATE = "The request is missing an endDate parameter";
-
     private static final String BAD_STARTDATE = "The request has a bad startDate parameter. Required format is YYYMMDD";
-
     private static final String BAD_ENDDATE = "The request has a bad endDate parameter. Required format is YYYMMDD";
-
     private static final String NO_ROOT = "The request is missing a non-zero dataSourceRoot parameter";
-
     private static final String NO_LEVEL = "The request is missing a non-zero dataSourceLevel parameter";
 
     // http header result type
     private static final String CLIENT_ERROR = "client-error";
 
     private static final int HTTP_ERROR = 400;
+    
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
@@ -155,9 +150,9 @@ public class ExportDataMartAction
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
+    
     public String execute() throws IOException
     {
-        // do a basic audit log
         HttpServletRequest request = ServletActionContext.getRequest();
 
         log.info( "DataMart export request from " + currentUserService.getCurrentUsername() +
