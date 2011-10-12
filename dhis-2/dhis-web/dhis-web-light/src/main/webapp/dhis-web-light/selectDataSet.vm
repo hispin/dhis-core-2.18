@@ -9,7 +9,9 @@
 </p>
 
 <div id="footer">
-<ul><li>
-<a href="selectOrganisationUnit.action">$i18n.getString("available_organisation_units")</a></li>
+<h2>Navigate to</h2>
+<ul>
+	<li><a href="selectOrganisationUnit.action">$i18n.getString("available_organisation_units")</a></li>
+	<li><a href="index.action">$i18n.getString("home")</a></li>
 </ul>
 </div>
