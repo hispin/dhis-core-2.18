@@ -1,12 +1,11 @@
 
-<h2>$i18n.getString("menu")</h2>
-    
+<h2>$i18n.getString( "menu" )</h2>
 
 <p>
-    <ul>
-        <li><a href="dashboard.action">$i18n.getString("dashboard")</a></li>
-        <li><a href="selectOrganisationUnit.action">$i18n.getString("data_entry")</a></li>
-    </ul>
+<ul>
+    <li><a href="selectOrganisationUnit.action">$i18n.getString( "data_entry" )</a></li>
+    <li><a href="dashboard.action">$i18n.getString( "dashboard" )</a></li>
+</ul>
 </p>
 
 <div id="footer">

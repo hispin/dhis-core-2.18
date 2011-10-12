@@ -26,12 +26,9 @@
  */
 package org.hisp.dhis.light.dataentry.action;
 
-
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Collection;
+import java.util.Collections;
 import java.util.Date;
-import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -45,7 +42,8 @@ import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.period.CalendarPeriodType;
 import org.hisp.dhis.period.Period;
-import org.hisp.dhis.period.PeriodService;
+import org.hisp.dhis.system.filter.PastAndCurrentPeriodFilter;
+import org.hisp.dhis.system.util.FilterUtils;
 
 import com.opensymphony.xwork2.Action;
 
@@ -55,6 +53,8 @@ import com.opensymphony.xwork2.Action;
 public class GetPeriodsAction
     implements Action
 {
+    private static final int MAX_PERIODS = 36;
+    
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
@@ -129,13 +129,6 @@ public class GetPeriodsAction
         return periods;
     }
 
-    private PeriodService periodService;
-
-    public void setPeriodService( PeriodService periodService )
-    {
-        this.periodService = periodService;
-    }
-
     // -------------------------------------------------------------------------
     // Action Implementation
     // -------------------------------------------------------------------------
@@ -146,17 +139,18 @@ public class GetPeriodsAction
         if ( dataSetId != null )
         {
             OrganisationUnit organisationUnit = organisationUnitService.getOrganisationUnit( organisationUnitId );
+            
             DataSet dataSet = dataSetService.getDataSet( dataSetId );
             CalendarPeriodType periodType = (CalendarPeriodType) dataSet.getPeriodType();
-            periods = periodType.generatePeriods( new Date() );
-            Calendar cal = new GregorianCalendar();
-            Date dateEnd = cal.getTime();
-            cal.add( Calendar.MONTH, -12 );
-            Date dateStart = cal.getTime();
-
-            //FilterUtils.filter( periods, new PastAndCurrentPeriodFilter() );
-            Collection<Period> periodsBetweenDates = periodService.getPeriodsBetweenDates( periodType, dateStart, dateEnd );
-            periods = (List<Period>) periodsBetweenDates;
+            periods = periodType.generateLast5Years( new Date() );            
+            FilterUtils.filter( periods, new PastAndCurrentPeriodFilter() );
+            Collections.reverse( periods );
+            
+            if ( periods.size() > MAX_PERIODS )
+            {
+                periods = periods.subList( 0, MAX_PERIODS );
+            }
+            
             for ( Period period : periods )
             {
                 period.setName( format.formatPeriod( period ) );
@@ -166,7 +160,6 @@ public class GetPeriodsAction
 
                 periodCompletedMap.put( period, registration != null ? true : false );
             }
-
         }
 
         return SUCCESS;
