@@ -53,8 +53,8 @@ import com.opensymphony.xwork2.Action;
 public class GetPeriodsAction
     implements Action
 {
-    private static final int MAX_PERIODS = 36;
-    
+    private static final int MAX_PERIODS = 10;
+
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
@@ -90,7 +90,7 @@ public class GetPeriodsAction
     // -------------------------------------------------------------------------
     // Input & Output
     // -------------------------------------------------------------------------
-    
+
     private Integer organisationUnitId;
 
     public void setOrganisationUnitId( Integer organisationUnitId )
@@ -132,25 +132,25 @@ public class GetPeriodsAction
     // -------------------------------------------------------------------------
     // Action Implementation
     // -------------------------------------------------------------------------
-    
+
     @Override
     public String execute()
     {
         if ( dataSetId != null )
         {
             OrganisationUnit organisationUnit = organisationUnitService.getOrganisationUnit( organisationUnitId );
-            
+
             DataSet dataSet = dataSetService.getDataSet( dataSetId );
             CalendarPeriodType periodType = (CalendarPeriodType) dataSet.getPeriodType();
-            periods = periodType.generateLast5Years( new Date() );            
+            periods = periodType.generateLast5Years( new Date() );
             FilterUtils.filter( periods, new PastAndCurrentPeriodFilter() );
             Collections.reverse( periods );
-            
+
             if ( periods.size() > MAX_PERIODS )
             {
                 periods = periods.subList( 0, MAX_PERIODS );
             }
-            
+
             for ( Period period : periods )
             {
                 period.setName( format.formatPeriod( period ) );

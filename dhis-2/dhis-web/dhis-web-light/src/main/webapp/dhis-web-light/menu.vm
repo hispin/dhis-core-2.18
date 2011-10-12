@@ -9,9 +9,9 @@
 </p>
 
 <div id="footer">
-
+<h2>Navigate to</h2>
 <ul>
+	<li><a href="index.action">$i18n.getString("desktop_version")</a></li>
 	<li><a href="../dhis-web-commons-security/logout.action">$i18n.getString("logout")</a></li>
 </ul>
-
 </div>
