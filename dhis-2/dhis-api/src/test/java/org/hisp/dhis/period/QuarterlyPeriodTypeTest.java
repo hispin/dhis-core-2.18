@@ -123,4 +123,18 @@ public class QuarterlyPeriodTypeTest
         assertEquals( periodType.createPeriod( new Cal( 2009, 7, 1 ).time() ), periods.get( 2 ) );
         assertEquals( periodType.createPeriod( new Cal( 2009, 10, 1 ).time() ), periods.get( 3 ) );
     }
+
+    @Test
+    public void testGenerateLast5Years()
+    {
+        testCal.set( 2009, 8, 15 );
+        
+        List<Period> periods = periodType.generateLast5Years( testCal.time() );
+        
+        assertEquals( 20, periods.size() );
+        assertEquals( periodType.createPeriod( new Cal( 2005, 1, 1 ).time() ), periods.get( 0 ) );
+        assertEquals( periodType.createPeriod( new Cal( 2005, 4, 1 ).time() ), periods.get( 1 ) );
+        assertEquals( periodType.createPeriod( new Cal( 2005, 7, 1 ).time() ), periods.get( 2 ) );
+        assertEquals( periodType.createPeriod( new Cal( 2005, 10, 1 ).time() ), periods.get( 3 ) );
+    }
 }

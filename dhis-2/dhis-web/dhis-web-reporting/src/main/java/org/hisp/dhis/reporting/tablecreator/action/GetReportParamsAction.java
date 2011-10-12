@@ -27,18 +27,18 @@ package org.hisp.dhis.reporting.tablecreator.action;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.Calendar;
-import java.util.SortedMap;
-import java.util.TreeMap;
+import java.util.Collections;
+import java.util.Date;
+import java.util.List;
 
 import org.hisp.dhis.i18n.I18nFormat;
-import org.hisp.dhis.period.MonthlyPeriodType;
+import org.hisp.dhis.period.CalendarPeriodType;
 import org.hisp.dhis.period.Period;
-import org.hisp.dhis.period.PeriodType;
-import org.hisp.dhis.report.Report;
 import org.hisp.dhis.reporttable.ReportParams;
 import org.hisp.dhis.reporttable.ReportTable;
 import org.hisp.dhis.reporttable.ReportTableService;
+import org.hisp.dhis.system.filter.PastAndCurrentPeriodFilter;
+import org.hisp.dhis.system.util.FilterUtils;
 
 import com.opensymphony.xwork2.Action;
 
@@ -49,8 +49,6 @@ import com.opensymphony.xwork2.Action;
 public class GetReportParamsAction
     implements Action
 {
-    private static final int AVAILABLE_REPORTING_MONTHS = 24;
-    
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
@@ -107,19 +105,12 @@ public class GetReportParamsAction
     {
         return reportParams;
     }
-        
-    private SortedMap<Integer, String> reportingPeriods = new TreeMap<Integer, String>();
-
-    public SortedMap<Integer, String> getReportingPeriods()
-    {
-        return reportingPeriods;
-    }
     
-    private Report report;
+    private List<Period> periods;
 
-    public Report getReport()
+    public List<Period> getPeriods()
     {
-        return report;
+        return periods;
     }
 
     // -------------------------------------------------------------------------
@@ -136,21 +127,17 @@ public class GetReportParamsAction
             {
                 reportParams = reportTable.getReportParams();
                                 
-                if ( reportParams.isParamReportingMonth() )
+                if ( reportParams.isParamReportingMonth() && reportTable.getRelatives() != null )
                 {
-                    MonthlyPeriodType periodType = new MonthlyPeriodType();
+                    CalendarPeriodType periodType = (CalendarPeriodType) reportTable.getRelatives().getPeriodType();
+                    periods = periodType.generateLast5Years( new Date() );
+                    Collections.reverse( periods );
+                    FilterUtils.filter( periods, new PastAndCurrentPeriodFilter() );
                     
-                    Calendar cal = PeriodType.createCalendarInstance();
-                    
-                    for ( int i = 0; i < AVAILABLE_REPORTING_MONTHS; i++ )
+                    for ( Period period : periods )
                     {
-                        int month = i + 1;    
-                        cal.add( Calendar.MONTH, -1 );                    
-                        Period period = periodType.createPeriod( cal.getTime() );                    
-                        String periodName = format.formatPeriod( period );
-                        
-                        reportingPeriods.put( month, periodName );
-                    }                
+                        period.setName( format.formatPeriod( period ) );
+                    }
                 }
             }
         }

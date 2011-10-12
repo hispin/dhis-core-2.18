@@ -155,6 +155,27 @@ public class TwoYearlyPeriodType
     }
 
     @Override
+    public List<Period> generateLast5Years( Date date )
+    {
+        Calendar cal = createCalendarInstance( date );
+        cal.add( Calendar.YEAR, cal.get( Calendar.YEAR ) % 2 == 0 ? -10 : -9 );
+        cal.set( Calendar.DAY_OF_YEAR, 1 );
+
+        ArrayList<Period> twoYears = new ArrayList<Period>();
+
+        for ( int i = 0; i < 5; ++i )
+        {
+            Date startDate = cal.getTime();
+            cal.add( Calendar.YEAR, 1 );
+            cal.set( Calendar.DAY_OF_YEAR, cal.getActualMaximum( Calendar.DAY_OF_YEAR ) );
+            twoYears.add( new Period( this, startDate, cal.getTime() ) );
+            cal.add( Calendar.DAY_OF_YEAR, 1 );
+        }
+
+        return twoYears;
+    }
+
+    @Override
     public String getIsoDate( Period period )
     {
         throw new UnsupportedOperationException( "Not supported yet." );

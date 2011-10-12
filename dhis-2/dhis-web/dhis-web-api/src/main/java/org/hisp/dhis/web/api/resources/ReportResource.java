@@ -2,6 +2,7 @@ package org.hisp.dhis.web.api.resources;
 
 import java.io.IOException;
 import java.io.OutputStream;
+import java.util.Date;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
@@ -71,7 +72,7 @@ public class ReportResource
             public void write( OutputStream out )
                 throws IOException, WebApplicationException
             {
-                reportService.renderReport( out, report, 1, organisationUnitId, ReportService.REPORTTYPE_PDF, format );
+                reportService.renderReport( out, report, new Date(), organisationUnitId, ReportService.REPORTTYPE_PDF, format );
             }
         } ).build();
     }

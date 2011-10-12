@@ -30,6 +30,7 @@ package org.hisp.dhis.reporting.reportviewer.action;
 import static org.apache.commons.lang.StringUtils.defaultIfEmpty;
 
 import java.io.OutputStream;
+import java.util.Date;
 
 import javax.servlet.http.HttpServletResponse;
 
@@ -37,6 +38,7 @@ import org.hisp.dhis.i18n.I18nFormat;
 import org.hisp.dhis.report.Report;
 import org.hisp.dhis.report.ReportService;
 import org.hisp.dhis.system.util.CodecUtils;
+import org.hisp.dhis.system.util.DateUtils;
 import org.hisp.dhis.util.ContextUtils;
 import org.hisp.dhis.util.StreamActionSupport;
 
@@ -78,9 +80,9 @@ public class RenderReportAction
         this.id = id;
     }
 
-    private Integer reportingPeriod;
+    private String reportingPeriod;
 
-    public void setReportingPeriod( Integer reportingPeriod )
+    public void setReportingPeriod( String reportingPeriod )
     {
         this.reportingPeriod = reportingPeriod;
     }
@@ -110,8 +112,10 @@ public class RenderReportAction
         type = defaultIfEmpty( type, DEFAULT_TYPE );
         
         Report report = reportService.getReport( id );
+
+        Date date = reportingPeriod != null ? DateUtils.getMediumDate( reportingPeriod ) : new Date();
         
-        reportService.renderReport( out, report, reportingPeriod, organisationUnitId, type, format );
+        reportService.renderReport( out, report, date, organisationUnitId, type, format );
         
         return SUCCESS;
     }

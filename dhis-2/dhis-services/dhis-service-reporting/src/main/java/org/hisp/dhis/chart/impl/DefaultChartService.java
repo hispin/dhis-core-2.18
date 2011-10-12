@@ -218,8 +218,7 @@ public class DefaultChartService
 
         if ( chart.getRelatives() != null )
         {
-            chart.setRelativePeriods( periodService.reloadPeriods( chart.getRelatives().getRelativePeriods( 1, null,
-                false ) ) );
+            chart.setRelativePeriods( periodService.reloadPeriods( chart.getRelatives().getRelativePeriods( format, true ) ) );
         }
 
         User user = currentUserService.getCurrentUser();
@@ -239,7 +238,7 @@ public class DefaultChartService
     {
         RelativePeriods relatives = new RelativePeriods();
         relatives.setMonthsThisYear( true );
-        List<Period> periods = periodService.reloadPeriods( relatives.getRelativePeriods( 1, format, true ) );
+        List<Period> periods = periodService.reloadPeriods( relatives.getRelativePeriods( format, true ) );
 
         Chart chart = new Chart();
 
@@ -267,7 +266,7 @@ public class DefaultChartService
     {
         RelativePeriods relatives = new RelativePeriods();
         relatives.setThisYear( true );
-        List<Period> periods = periodService.reloadPeriods( relatives.getRelativePeriods( 1, format, true ) );
+        List<Period> periods = periodService.reloadPeriods( relatives.getRelativePeriods( format, true ) );
 
         Chart chart = new Chart();
 

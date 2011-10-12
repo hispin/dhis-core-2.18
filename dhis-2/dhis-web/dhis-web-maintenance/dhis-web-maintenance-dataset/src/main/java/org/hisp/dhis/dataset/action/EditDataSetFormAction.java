@@ -30,7 +30,6 @@ package org.hisp.dhis.dataset.action;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.Iterator;
 import java.util.List;
 
 import org.hisp.dhis.dataelement.DataElement;
@@ -38,7 +37,6 @@ import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.dataset.DataSetService;
 import org.hisp.dhis.indicator.Indicator;
 import org.hisp.dhis.options.displayproperty.DisplayPropertyHandler;
-import org.hisp.dhis.period.OnChangePeriodType;
 import org.hisp.dhis.period.PeriodService;
 import org.hisp.dhis.period.PeriodType;
 
@@ -142,16 +140,6 @@ public class EditDataSetFormAction
     {
         periodTypes = periodService.getAllPeriodTypes();
 
-        Iterator<PeriodType> iterator = periodTypes.iterator();
-
-        while ( iterator.hasNext() )
-        {
-            if ( iterator.next().getName().equalsIgnoreCase( OnChangePeriodType.NAME ) )
-            {
-                iterator.remove();
-            }
-        }
-
         if ( dataSetId != null )
         {
             dataSet = dataSetService.getDataSet( dataSetId );
@@ -160,11 +148,9 @@ public class EditDataSetFormAction
         }
 
         Collections.sort( dataElements, dataElementComparator );
-
         Collections.sort( indicators, indicatorComparator );
 
         displayPropertyHandler.handle( dataElements );
-
         displayPropertyHandler.handle( indicators );
 
         return SUCCESS;

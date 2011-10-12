@@ -142,7 +142,7 @@ public abstract class AbstractDataSetCompletenessService
     {
         if ( relatives != null )
         {
-            Collection<Integer> periodIds = ConversionUtils.getIdentifiers( Period.class, periodService.reloadPeriods( relatives.getRelativePeriods( 1, null, false ) ) );
+            Collection<Integer> periodIds = ConversionUtils.getIdentifiers( Period.class, periodService.reloadPeriods( relatives.getRelativePeriods() ) );
             
             exportDataSetCompleteness( dataSetIds, periodIds, organisationUnitIds );
         }

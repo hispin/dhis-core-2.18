@@ -27,6 +27,8 @@ package org.hisp.dhis.period;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -92,9 +94,31 @@ public abstract class CalendarPeriodType
      * generates for a year, all months in 2007 should be generated and returned
      * in order.
      * 
-     * @param date the date which touches the time span to generate Periods
-     *        for.
+     * @param date the date which touches the time span to generate Periods for.
      * @return a list of Periods for a defined time span.
      */
     public abstract List<Period> generatePeriods( Date date );
+    
+    /**
+     * Generates a list of Periods for the last 5 years. Must be overridden by
+     * CalendarPeriodTypes which do not generate periods for the current year
+     * only in their implementation of generatePeriods( Date ).
+     * 
+     * @param date the date which touches the time span to generate Periods for.
+     * @return a list of Periods for a defined time span.
+     */
+    public List<Period> generateLast5Years( Date date )
+    {
+        ArrayList<Period> periods = new ArrayList<Period>();
+        Calendar cal = createCalendarInstance( date );
+        cal.add( Calendar.YEAR, -4 );
+        
+        for ( int i = 0; i < 5; i++ )
+        {
+            periods.addAll( generatePeriods( cal.getTime() ) );
+            cal.add( Calendar.YEAR, 1 );
+        }
+        
+        return periods;
+    }
 }

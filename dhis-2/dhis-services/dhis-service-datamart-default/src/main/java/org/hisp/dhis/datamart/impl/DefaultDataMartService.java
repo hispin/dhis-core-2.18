@@ -120,7 +120,7 @@ public class DefaultDataMartService
     {
         if ( relatives != null )
         {
-            periodIds.addAll( getIdentifiers( Period.class, periodService.reloadPeriods( relatives.getRelativePeriods( 1, null, false ) ) ) );
+            periodIds.addAll( getIdentifiers( Period.class, periodService.reloadPeriods( relatives.getRelativePeriods() ) ) );
         }
         
         dataMartEngine.export( dataElementIds, indicatorIds, periodIds, organisationUnitIds, completeExport, new OutputHolderState() );

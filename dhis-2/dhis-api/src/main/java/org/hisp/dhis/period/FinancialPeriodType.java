@@ -135,6 +135,28 @@ public abstract class FinancialPeriodType
     }
 
     @Override
+    public List<Period> generateLast5Years( Date date )
+    {
+        Calendar cal = createCalendarInstance( date );
+        
+        boolean past = cal.get( Calendar.MONTH ) >= getBaseMonth();
+        
+        cal.add( Calendar.YEAR, past ? -5 : -6 );
+        cal.set( Calendar.MONTH, getBaseMonth() );
+        cal.set( Calendar.DATE, 1 );
+
+        ArrayList<Period> periods = new ArrayList<Period>();
+
+        for ( int i = 0; i < 5; ++i )
+        {
+            periods.add( createPeriod( cal ) );
+            cal.add( Calendar.YEAR, 1 );
+        }
+
+        return periods;
+    }
+
+    @Override
     public String getIsoDate( Period period )
     {
         throw new UnsupportedOperationException( "Not supported yet." );

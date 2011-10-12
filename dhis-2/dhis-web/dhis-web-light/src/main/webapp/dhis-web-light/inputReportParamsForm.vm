@@ -19,12 +19,12 @@
 
 #if ( $!reportParams.isParamReportingMonth() )
 
-<div class="labelDiv">$i18n.getString( "reporting_month" )</div>
+<div class="labelDiv">$i18n.getString( "reporting_period" )</div>
 
 <div class="pageDiv">
 <select id="reportingPeriod" name="reportingPeriod" style="width:300px">               
-#foreach ( $key in $reportingPeriods.keySet() )
-<option value="$key">$reportingPeriods.get( $key )</option>
+#foreach ( $period in $periods )
+<option value="${period.startDateString}">${period.name}</option>
 #end
 </select>
 </div>

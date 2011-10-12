@@ -28,10 +28,11 @@ package org.hisp.dhis.light.dataentry.action;
 
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collection;
 import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -44,14 +45,9 @@ import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.period.CalendarPeriodType;
 import org.hisp.dhis.period.Period;
-import org.hisp.dhis.system.filter.PastAndCurrentPeriodFilter;
-import org.hisp.dhis.system.util.FilterUtils;
+import org.hisp.dhis.period.PeriodService;
 
 import com.opensymphony.xwork2.Action;
-import java.util.Calendar;
-import java.util.GregorianCalendar;
-import org.hisp.dhis.period.DefaultPeriodService;
-import org.hisp.dhis.period.PeriodService;
 
 /**
  * @author mortenoh
@@ -94,6 +90,7 @@ public class GetPeriodsAction
     // -------------------------------------------------------------------------
     // Input & Output
     // -------------------------------------------------------------------------
+    
     private Integer organisationUnitId;
 
     public void setOrganisationUnitId( Integer organisationUnitId )
@@ -142,6 +139,7 @@ public class GetPeriodsAction
     // -------------------------------------------------------------------------
     // Action Implementation
     // -------------------------------------------------------------------------
+    
     @Override
     public String execute()
     {
@@ -156,7 +154,6 @@ public class GetPeriodsAction
             cal.add( Calendar.MONTH, -12 );
             Date dateStart = cal.getTime();
 
-            //      System.out.println(">>>>"+dateEnd.toString()+"\n||||"+dateStart.toString());
             //FilterUtils.filter( periods, new PastAndCurrentPeriodFilter() );
             Collection<Period> periodsBetweenDates = periodService.getPeriodsBetweenDates( periodType, dateStart, dateEnd );
             periods = (List<Period>) periodsBetweenDates;

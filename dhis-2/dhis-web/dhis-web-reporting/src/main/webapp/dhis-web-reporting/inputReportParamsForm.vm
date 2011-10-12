@@ -39,13 +39,13 @@
     #if ( $!reportParams.isParamReportingMonth() )
     
     <tr>
-        <th>$i18n.getString( "reporting_month" )</th>
+        <th>$i18n.getString( "reporting_period" )</th>
     </tr>
     <tr>
         <td>
             <select id="reportingPeriod" name="reportingPeriod" style="width:325px">               
-                #foreach ( $key in $reportingPeriods.keySet() )
-                    <option value="$key">$reportingPeriods.get( $key )</option>
+                #foreach ( $period in $periods )
+                    <option value="${period.startDateString}">${period.name}</option>
                 #end
             </select>
         </td>

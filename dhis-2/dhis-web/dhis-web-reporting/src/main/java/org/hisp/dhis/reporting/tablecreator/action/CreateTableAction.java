@@ -31,10 +31,13 @@ import static org.hisp.dhis.reporttable.ReportTableInternalProcess.PROCESS_TYPE;
 import static org.hisp.dhis.util.InternalProcessUtil.PROCESS_KEY_REPORT;
 import static org.hisp.dhis.util.InternalProcessUtil.setCurrentRunningProcess;
 
+import java.util.Date;
+
 import org.amplecode.cave.process.ProcessCoordinator;
 import org.amplecode.cave.process.ProcessExecutor;
 import org.hisp.dhis.i18n.I18nFormat;
 import org.hisp.dhis.reporttable.ReportTableInternalProcess;
+import org.hisp.dhis.system.util.DateUtils;
 import org.hisp.dhis.user.CurrentUserService;
 
 import com.opensymphony.xwork2.Action;
@@ -89,9 +92,9 @@ public class CreateTableAction
         this.mode = mode;
     }
 
-    private Integer reportingPeriod;
+    private String reportingPeriod;
 
-    public void setReportingPeriod( Integer reportingPeriod )
+    public void setReportingPeriod( String reportingPeriod )
     {
         this.reportingPeriod = reportingPeriod;
     }
@@ -116,9 +119,11 @@ public class CreateTableAction
         
         ReportTableInternalProcess process = (ReportTableInternalProcess) executor.getProcess();
 
+        Date date = reportingPeriod != null ? DateUtils.getMediumDate( reportingPeriod ) : new Date();
+        
         process.setId( id );
         process.setMode( mode );
-        process.setReportingPeriod( reportingPeriod );
+        process.setReportingPeriod( date );
         process.setOrganisationUnitId( organisationUnitId );
         process.setFormat( format );
 
