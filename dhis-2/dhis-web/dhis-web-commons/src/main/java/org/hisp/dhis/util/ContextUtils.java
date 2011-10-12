@@ -45,6 +45,7 @@ public class ContextUtils
 {
     public static final String CONTENT_TYPE_PDF = "application/pdf";
     public static final String CONTENT_TYPE_ZIP = "application/zip";
+    public static final String CONTENT_TYPE_GZIP = "application/gzip";
     public static final String CONTENT_TYPE_JSON = "application/json";
     public static final String CONTENT_TYPE_HTML = "text/html";
     public static final String CONTENT_TYPE_TEXT = "text/plain";
