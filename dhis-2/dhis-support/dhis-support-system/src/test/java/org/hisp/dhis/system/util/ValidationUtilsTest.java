@@ -51,7 +51,9 @@ public class ValidationUtilsTest
         assertFalse( coordinateIsValid( "23.34343 56.3232" ) );
         assertFalse( coordinateIsValid( "[23.34f43,56.3232]" ) );
         assertFalse( coordinateIsValid( "23.34343,56.323.2" ) );
-        assertFalse( coordinateIsValid( "S-0.27726 E37.08472" ) );        
+        assertFalse( coordinateIsValid( "[23.34343,56..3232]" ) );
+        assertFalse( coordinateIsValid( "[++37,-28.94221]" ) );
+        assertFalse( coordinateIsValid( "S-0.27726 E37.08472" ) );
         assertFalse( coordinateIsValid( null ) );
     }
     

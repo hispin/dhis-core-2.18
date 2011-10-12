@@ -41,7 +41,7 @@ import org.apache.commons.validator.UrlValidator;
  */
 public class ValidationUtils
 {
-    private static Pattern COORDINATE_PATTERN = Pattern.compile( "\\[([\\+\\-]*\\d+\\.*\\d*),([\\+\\-]*\\d+\\.*\\d*)\\]" );
+    private static Pattern COORDINATE_PATTERN = Pattern.compile( "\\[([+-]?\\d+\\.?\\d*),([+-]?\\d+\\.?\\d*)\\]" );
     
     /**
      * Validates whether an email string is valid.
