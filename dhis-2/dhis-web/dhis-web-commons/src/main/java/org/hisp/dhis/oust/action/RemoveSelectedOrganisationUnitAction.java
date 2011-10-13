@@ -122,7 +122,12 @@ public class RemoveSelectedOrganisationUnitAction
         if ( id != null )
         {
             OrganisationUnit unit = organisationUnitService.getOrganisationUnit( id );
-            selectedUnits.remove( unit );
+
+            // TODO fix this, not pretty, but selectionTreeManager is not
+            // correctly handling adding/removing selected orgunits
+            while ( selectedUnits.remove( unit ) )
+            {
+            }
         }
 
         if ( level != null )
@@ -132,8 +137,8 @@ public class RemoveSelectedOrganisationUnitAction
 
         if ( organisationUnitGroupId != null )
         {
-            selectedUnits.removeAll( organisationUnitGroupService
-                .getOrganisationUnitGroup( organisationUnitGroupId ).getMembers() );
+            selectedUnits.removeAll( organisationUnitGroupService.getOrganisationUnitGroup( organisationUnitGroupId )
+                .getMembers() );
         }
 
         if ( children != null && children == true )
@@ -147,11 +152,11 @@ public class RemoveSelectedOrganisationUnitAction
 
                 if ( !selectedOrganisationUnits.contains( parent ) )
                 {
-                    selectedUnits.removeAll( organisationUnitService.getOrganisationUnitWithChildren( selected
-                        .getId() ) );
-                    
-                    selectedUnits.add( selected );                      
-                }                    
+                    selectedUnits
+                        .removeAll( organisationUnitService.getOrganisationUnitWithChildren( selected.getId() ) );
+
+                    selectedUnits.add( selected );
+                }
             }
         }
 

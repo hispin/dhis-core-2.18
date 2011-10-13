@@ -217,7 +217,7 @@ public class UpdateUserAction
             userCredentials.setPassword( passwordManager.encodePassword( userCredentials.getUsername(), rawPassword ) );
         }
 
-        if ( jsonAttributeValues != null)
+        if ( jsonAttributeValues != null )
         {
             AttributeUtils.updateAttributeValuesFromJson( user.getAttributeValues(), jsonAttributeValues,
                 attributeService );
@@ -225,6 +225,12 @@ public class UpdateUserAction
 
         userService.updateUserCredentials( userCredentials );
         userService.updateUser( user );
+
+        selectionManager.setRootOrganisationUnits( units );
+        selectionManager.setSelectedOrganisationUnits( units );
+
+        selectionTreeManager.setRootOrganisationUnits( units );
+        selectionTreeManager.setSelectedOrganisationUnits( units );
 
         if ( units.size() > 0 )
         {

@@ -62,11 +62,11 @@ public class User
     private String firstName;
 
     private String email;
-    
+
     private String phoneNumber;
 
     private UserCredentials userCredentials;
-    
+
     /**
      * All OrgUnits where the user could belong
      * 
@@ -78,7 +78,7 @@ public class User
      * Set of the dynamic attributes values that belong to this dataElement.
      */
     private Set<AttributeValue> attributeValues = new HashSet<AttributeValue>();
-    
+
     // -------------------------------------------------------------------------
     // hashCode and equals
     // -------------------------------------------------------------------------
@@ -90,7 +90,7 @@ public class User
         int result = 1;
 
         result = result * prime + surname.hashCode();
-        result = result * prime + firstName.hashCode();    
+        result = result * prime + firstName.hashCode();
 
         return result;
     }
@@ -115,10 +115,9 @@ public class User
 
         final User other = (User) o;
 
-        return surname.equals( other.getSurname() )
-            && firstName.equals( other.getFirstName() );
+        return surname.equals( other.getSurname() ) && firstName.equals( other.getFirstName() );
     }
-    
+
     @Override
     public String toString()
     {
@@ -134,13 +133,13 @@ public class User
         organisationUnits.add( unit );
         unit.getUsers().add( this );
     }
-    
+
     public void removeOrganisationUnit( OrganisationUnit unit )
     {
         organisationUnits.remove( unit );
         unit.getUsers().remove( this );
     }
-    
+
     public void updateOrganisationUnits( Set<OrganisationUnit> updates )
     {
         for ( OrganisationUnit unit : new HashSet<OrganisationUnit>( organisationUnits ) )
@@ -150,13 +149,13 @@ public class User
                 removeOrganisationUnit( unit );
             }
         }
-        
+
         for ( OrganisationUnit unit : updates )
         {
             addOrganisationUnit( unit );
         }
     }
-    
+
     /**
      * Returns the concatenated first name and surname.
      */
@@ -164,11 +163,12 @@ public class User
     {
         return firstName + " " + surname;
     }
-    
+
     /**
-     * Returns the first of the organisation units associated with the user. Null
-     * is returned if the user has no organisation units. Which organisation unit
-     * to return is undefined if the user has multiple organisation units.
+     * Returns the first of the organisation units associated with the user.
+     * Null is returned if the user has no organisation units. Which
+     * organisation unit to return is undefined if the user has multiple
+     * organisation units.
      * 
      * @return an organisation unit associated with the user.
      */
@@ -176,22 +176,22 @@ public class User
     {
         return CollectionUtils.isEmpty( organisationUnits ) ? null : organisationUnits.iterator().next();
     }
-    
+
     public boolean hasOrganisationUnit()
     {
         return !CollectionUtils.isEmpty( organisationUnits );
     }
-    
+
     public String getOrganisationUnitsName()
     {
         return IdentifiableObjectUtils.join( organisationUnits );
     }
-    
+
     public String getUsername()
     {
         return userCredentials != null ? userCredentials.getUsername() : null;
     }
-    
+
     // -------------------------------------------------------------------------
     // Getters and setters
     // -------------------------------------------------------------------------
@@ -215,7 +215,7 @@ public class User
     {
         this.firstName = firstName;
     }
-    
+
     public String getSurname()
     {
         return surname;
