@@ -2375,45 +2375,7 @@ public class HibernateLLDataValueStore
 
         return deValueMap;
     }
- /*  
-    public void removeLLRecord( int recordNo )
-    {
-        //Connection con = sessionFactory.getCurrentSession().connection();
-
-        //PreparedStatement pst = null;
-
-        //String query = "DELETE from lldatavalue WHERE recordno = " + recordNo;
-
-        try
-        {
-           // Connection con = jdbcTemplate.getDataSource().getConnection();
-            
-            //pst = con.prepareStatement( query );
-
-            //pst.executeUpdate();
-            //int sqlResult = jdbcTemplate.update( query );
-        }
-        catch ( Exception e )
-        {
-            System.out.println( "SQL Exception while deleting : " + e.getMessage() );
-        }
-        finally
-        {
-            try
-            {
-                //if ( pst != null )
-                 //   pst.close();
-
-                // if ( con != null )
-                // con.close();
-            }
-            catch ( Exception e )
-            {
-                System.out.println( "Exception while closing DB Connections : " + e.getMessage() );
-            }
-        }
-    }
- */   
+   
     public void removeLLRecord( int recordNo )
     {
         String query = "DELETE from lldatavalue WHERE recordno = " + recordNo;

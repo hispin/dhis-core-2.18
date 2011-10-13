@@ -311,6 +311,7 @@ public class PortalReportsResultAction implements Action
     private String inputTemplatePath;
     private String outputReportPath;
     private String deCodesXMLFileName;
+    
     private String startDate;
 
     public void setStartDate( String startDate )
@@ -323,16 +324,49 @@ public class PortalReportsResultAction implements Action
     {
         this.endDate = endDate;
     }
-    private Boolean includePeriod;
 
-    public void setIncludePeriod( Boolean includePeriod )
+    private String includePeriod;
+
+    public void setIncludePeriod( String includePeriod )
     {
         this.includePeriod = includePeriod;
     }
+
+    private String startHour;
+
+    public void setStartHour( String startHour )
+    {
+        this.startHour = startHour;
+    }
+
+    private String startMinute;
+
+    public void setStartMinute( String startMinute )
+    {
+        this.startMinute = startMinute;
+    }
+
+    private String endHour;
+    
+    public void setEndHour( String endHour )
+    {
+        this.endHour = endHour;
+    }
+
+    private String endMinute;
+
+    public void setEndMinute( String endMinute )
+    {
+        this.endMinute = endMinute;
+    }
+
     private int rowCount;
     private Date sDate;
     private Date eDate;
 
+    private long sRegDate;
+    private long eRegDate;
+    
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
@@ -354,7 +388,7 @@ public class PortalReportsResultAction implements Action
         rowList = new ArrayList<Integer>();
         colList = new ArrayList<Integer>();
         progList = new ArrayList<Integer>();
-        if ( includePeriod != null )
+        if ( includePeriod.equalsIgnoreCase( "periodincluding" ) )
         {
             Calendar c = Calendar.getInstance();
             c.setTime( format.parseDate( startDate ) );
@@ -366,6 +400,24 @@ public class PortalReportsResultAction implements Action
             sDate = format.parseDate( startDate );
             eDate = format.parseDate( endDate );
         }
+        else if ( includePeriod.equalsIgnoreCase( "uploadingmcts" ) )
+        {
+            Calendar c = Calendar.getInstance();
+            c.setTime( format.parseDate( startDate ) );
+            c.set( Calendar.HOUR, Integer.parseInt( startHour ) );
+            c.set( Calendar.MINUTE, Integer.parseInt( startMinute )  );
+            c.set( Calendar.SECOND, 0 );
+            c.set( Calendar.MILLISECOND, 0 );
+            
+            //String tempDate = format.formatDate( c.getTime() );;
+            sRegDate = c.getTimeInMillis();
+            
+            c.setTime( format.parseDate( endDate ) );
+            c.set( Calendar.HOUR, Integer.parseInt( endHour ) );
+            c.set( Calendar.MINUTE, Integer.parseInt( endMinute )  );             
+            eRegDate = c.getTimeInMillis();
+        }
+        
         simpleDateFormat = new SimpleDateFormat( "MMM-yyyy" );
         inputTemplatePath = System.getenv( "DHIS2_HOME" ) + File.separator + raFolderName + File.separator + "template" + File.separator + reportFileNameTB;
         //outputReportPath = System.getenv( "DHIS2_HOME" ) + File.separator + raFolderName + File.separator + "output" + File.separator + UUID.randomUUID().toString() + ".xls";
@@ -564,6 +616,23 @@ public class PortalReportsResultAction implements Action
                         {
                             Patient patient = patientIterator.next();
                             
+                            if( includePeriod.equalsIgnoreCase( "uploadingmcts" ) )
+                            {
+                                if ( patient.getRegistrationDate() != null )
+                                {
+                                    Calendar c = Calendar.getInstance();
+                                    c.setTime( patient.getRegistrationDate() );
+                                    long regTime = c.getTimeInMillis();
+                                    if ( regTime >= sRegDate && regTime <= eRegDate )
+                                    {
+                                    }
+                                    else
+                                    {
+                                        continue;
+                                    }
+                                }
+                            }
+                            
                             //checking if patient is enrolled to curprog then adding them in one list
                             Collection<ProgramInstance> programInstances = new ArrayList<ProgramInstance>();
                             programInstances = programInstanceService.getProgramInstances( patient, curProgram );
@@ -584,7 +653,7 @@ public class PortalReportsResultAction implements Action
                                         allProgramStageInstances.add( programStageInstance );
 
                                         //taking programstageinstace which are between startdate and enddate
-                                        if ( includePeriod != null )
+                                        if ( includePeriod.equalsIgnoreCase( "periodincluding" ) )
                                         {
                                             if ( programStageInstance.getExecutionDate() != null )
                                             {
@@ -620,6 +689,23 @@ public class PortalReportsResultAction implements Action
                     //running patient loop
                     for ( Patient patient : patientList )
                     {
+                        if( includePeriod.equalsIgnoreCase( "uploadingmcts" ) )
+                        {
+                            if ( patient.getRegistrationDate() != null )
+                            {
+                                Calendar c = Calendar.getInstance();
+                                c.setTime( patient.getRegistrationDate() );
+                                long regTime = c.getTimeInMillis();
+                                if ( regTime >= sRegDate && regTime <= eRegDate )
+                                {
+                                }
+                                else
+                                {
+                                    continue;
+                                }
+                            }
+                        }
+
                         ProgramInstance programInstance = patientPIList.get( patient );
 
                         String cAPhoneNumberName = "";
@@ -678,7 +764,7 @@ public class PortalReportsResultAction implements Action
                                         ProgramStageInstance pStageInstance = programStageInstanceService.getProgramStageInstance( programInstance, programStageService.getProgramStage( psId ) );
                                         if ( pStageInstance != null && ( PIPSIList.get( programInstance ).contains( pStageInstance ) || programInstance.isCompleted() == false ) ) {
                                             if ( pStageInstance.getExecutionDate() != null ) {
-                                                if ( includePeriod != null ) {
+                                                if ( includePeriod.equalsIgnoreCase( "periodincluding" ) ) {
                                                     if ( pStageInstance.getExecutionDate().before( eDate ) ) {
                                                         PatientDataValue patientDataValue1 = patientDataValueService.getPatientDataValue( pStageInstance, d1e, patientOuList.get(patient) );
 
@@ -791,7 +877,7 @@ public class PortalReportsResultAction implements Action
                                                         {
                                                             SimpleDateFormat simpleLmpDateFormat = new SimpleDateFormat( "dd/MM/yyyy" );
                                                             Date doseDate = simpleLmpDateFormat.parse( str );
-                                                            if ( includePeriod != null )
+                                                            if ( includePeriod.equalsIgnoreCase( "periodincluding" ) )
                                                             {
                                                                 if ( doseDate.before( eDate ) )
                                                                 {
@@ -865,7 +951,7 @@ public class PortalReportsResultAction implements Action
                                                 ProgramStageInstance psi = programStageInstanceService.getProgramStageInstance( programInstance, ps );
                                                 if ( psi.getExecutionDate() != null )
                                                 {
-                                                    if ( includePeriod != null )
+                                                    if ( includePeriod.equalsIgnoreCase( "periodincluding" ) )
                                                     {
                                                         if ( psi.getExecutionDate().before( eDate ) )
                                                         {
@@ -931,7 +1017,7 @@ public class PortalReportsResultAction implements Action
                                                     {
                                                         SimpleDateFormat simpleLmpDateFormat = new SimpleDateFormat( "dd/MM/yyyy" );
                                                         Date doseDate = simpleLmpDateFormat.parse( str );
-                                                        if ( includePeriod != null )
+                                                        if ( includePeriod.equalsIgnoreCase( "periodincluding" ) )
                                                         {
                                                             if ( doseDate.before( eDate ) )
                                                             {
@@ -1261,7 +1347,7 @@ public class PortalReportsResultAction implements Action
                                         allProgramStageInstances.add( programStageInstance );
 
                                         //taking programstageinstace wich are between startdate and enddate
-                                        if ( includePeriod != null )
+                                        if ( includePeriod.equalsIgnoreCase( "periodincluding" ) )
                                         {
                                             if ( programStageInstance.getExecutionDate() != null )
                                             {
@@ -1370,7 +1456,7 @@ public class PortalReportsResultAction implements Action
                                         ProgramStageInstance pStageInstance = programStageInstanceService.getProgramStageInstance( programInstance, programStageService.getProgramStage( psId ) );
                                         if ( pStageInstance != null && ( PIPSIList.get( programInstance ).contains( pStageInstance ) || programInstance.isCompleted() == false ) ) {
                                             if ( pStageInstance.getExecutionDate() != null ) {
-                                                if ( includePeriod != null ) {
+                                                if ( includePeriod.equalsIgnoreCase( "periodincluding" ) ) {
                                                     if ( pStageInstance.getExecutionDate().before( eDate ) ) {
                                                         PatientDataValue patientDataValue1 = patientDataValueService.getPatientDataValue( pStageInstance, d1e, patientOuList.get(patient) );
 
@@ -1483,7 +1569,7 @@ public class PortalReportsResultAction implements Action
                                                         {
                                                             SimpleDateFormat simpleLmpDateFormat = new SimpleDateFormat( "dd/MM/yyyy" );
                                                             Date doseDate = simpleLmpDateFormat.parse( str );
-                                                            if ( includePeriod != null )
+                                                            if ( includePeriod.equalsIgnoreCase( "periodincluding" ) )
                                                             {
                                                                 if ( doseDate.before( eDate ) )
                                                                 {
@@ -1557,7 +1643,7 @@ public class PortalReportsResultAction implements Action
                                                 ProgramStageInstance psi = programStageInstanceService.getProgramStageInstance( programInstance, ps );
                                                 if ( psi.getExecutionDate() != null )
                                                 {
-                                                    if ( includePeriod != null )
+                                                    if ( includePeriod.equalsIgnoreCase( "periodincluding" ) )
                                                     {
                                                         if ( psi.getExecutionDate().before( eDate ) )
                                                         {
@@ -1623,7 +1709,7 @@ public class PortalReportsResultAction implements Action
                                                     {
                                                         SimpleDateFormat simpleLmpDateFormat = new SimpleDateFormat( "dd/MM/yyyy" );
                                                         Date doseDate = simpleLmpDateFormat.parse( str );
-                                                        if ( includePeriod != null )
+                                                        if ( includePeriod.equalsIgnoreCase( "periodincluding" ) )
                                                         {
                                                             if ( doseDate.before( eDate ) )
                                                             {
