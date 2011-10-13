@@ -425,7 +425,7 @@ public class ActivePlanReportsResultAction
         inputTemplatePath = System.getenv( "DHIS2_HOME" ) + File.separator + raFolderName + File.separator + "template" + File.separator + reportFileNameTB;
         //outputReportPath = System.getenv( "DHIS2_HOME" ) + File.separator + raFolderName + File.separator + "output" + File.separator + UUID.randomUUID().toString() + ".xls";
 
-        String outputReportPath = System.getenv( "DHIS2_HOME" ) + File.separator +  Configuration_IN.DEFAULT_TEMPFOLDER;
+        outputReportPath = System.getenv( "DHIS2_HOME" ) + File.separator +  Configuration_IN.DEFAULT_TEMPFOLDER;
         File newdir = new File( outputReportPath );
         if( !newdir.exists() )
         {
@@ -1541,3 +1541,5 @@ public class ActivePlanReportsResultAction
     }// getDECodes end
 
 }
+
+

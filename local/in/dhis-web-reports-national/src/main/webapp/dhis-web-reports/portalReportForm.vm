@@ -17,15 +17,23 @@
 
     function showOrHideDates()
     {
-        var includePeriodChecked = document.getElementById( "includePeriod" ).checked;
+		var criteria = $( "input[name='includePeriod']:checked" ).val();
+        //var includePeriodChecked = document.getElementById( "includePeriod" ).checked;
 
-        if( includePeriodChecked == true )
+        if( criteria == 'periodincluding' )
         {
             jQuery("#periodTR").show();
+			jQuery("#timeTR").hide();
         }
+		else if( criteria == 'uploadingmcts' )
+		{
+		    jQuery("#timeTR").show();
+            jQuery("#periodTR").show();
+		}
         else
         {
             jQuery("#periodTR").hide();
+			jQuery("#timeTR").hide();
         }
     }
 
@@ -88,6 +96,64 @@
 			</td>
 		</tr>
 		<tr>
+            <td>&nbsp;</td>
+            <td>&nbsp;</td>
+        </tr>
+        <tr id="timeTR">
+            <td class="NormalB">
+				<table>
+					<tr>
+						<td>$i18n.getString( 'hour' )</td>
+						<td>&nbsp;</td>
+                        <td>$i18n.getString( 'minute' )</td>
+					</tr>
+					<tr>
+						<td>	
+							<select id="startHour" name="startHour">
+							#foreach( $count in [0..23] )
+								<option value="$count">$count</option>
+							#end
+			                </select>
+						</td>
+						<td>&nbsp;</td>
+						<td>
+			                <select id="startMinute" name="startMinute">
+							#foreach( $count in [0..59] )
+								<option value="$count">$count</option>
+							#end
+							</select>
+						</td>
+					</tr>
+				</table>
+            </td>
+            <td class="NormalB">
+                <table>
+                    <tr>
+                        <td>$i18n.getString( 'hour' )</td>
+						<td>&nbsp;</td>
+                        <td>$i18n.getString( 'minute' )</td>
+                    </tr>
+                    <tr>
+                        <td>    
+                            <select id="endHour" name="endHour">
+                            #foreach( $count in [0..23] )
+                                <option value="$count">$count</option>
+                            #end
+                            </select>
+                        </td>
+						<td>&nbsp;</td>
+                        <td>
+                            <select id="endMinute" name="endMinute">
+                            #foreach( $count in [0..59] )
+                                <option value="$count">$count</option>
+                            #end
+                            </select>
+                        </td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+		<tr>
 			<td>&nbsp;</td>
 			<td>&nbsp;</td>
 		</tr>
@@ -98,7 +164,9 @@
         <tr>
             <td>&nbsp;</td>
 			<td>
-                <input type="checkbox" name="includePeriod" onChange="return showOrHideDates()" id="includePeriod" checked>Report With Specified Period
+				<input type="radio" id="includePeriod" name="includePeriod" value="periodincluding" onClick="showOrHideDates()" checked> Report With Specified Period<br/>
+				<input type="radio" id="includePeriod" name="includePeriod" value="uploadingmcts" onClick="showOrHideDates()" > For uploading to MCTS<br/>
+				<input type="radio" id="includePeriod" name="includePeriod" value="noperiod" onClick="showOrHideDates()" > No Period
                 <br/><br/>
 				<input type="submit" name="generate" value='Generate Report'/>
 				<input type="hidden" name="ouIDTB" id="ouIDTB">
@@ -115,6 +183,6 @@
 	jQuery( function(){
 			datePickerInRange( "startDate", "endDate", false, false );
 	});
+	
+	showOrHideDates();
 </script>
-
-

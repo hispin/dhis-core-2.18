@@ -71,6 +71,426 @@ function trim( stringToTrim )
     return stringToTrim.replace(/^\s+|\s+$/g,"");
 }
 
+//-----------------------------------------------------------------------------
+//Linelisting IDSP Form L Related Methods for Validation
+//-----------------------------------------------------------------------------
+
+function isIDSPLDaignosisFieldEntered( )
+{
+    if(lastRecordNo == -1) return true;
+
+    var dataElementId = 1058;
+    var field = document.getElementById( 'value[' + dataElementId + '].value:value[' + lastRecordNo + '].value' );
+    var resVal = field.selectedIndex;
+
+    if( resVal <= 0 )
+    {
+        alert("Please enter Diagnosis Field in Previous Record" );
+        return false;
+    }
+    else
+    {
+        return true;
+    }
+}
+
+function validateIDSPLNameField( dataElementId, recordNo )
+{
+    var field = document.getElementById( 'value[' + dataElementId + '].value:value[' + recordNo + '].value' );
+    var resVal = field.value;
+    resVal = resVal.replace(/^\s\s*/, '').replace(/\s\s*$/, '');
+
+    if( isIDSPLDaignosisFieldEntered() )
+    {
+        if(resVal == null || resVal == "" )
+        {
+            alert("Please enter name");
+            field.value = "";
+            //field.focus();
+            setTimeout(function(){
+                field.focus();field.select();
+            },2);
+            return false;
+        }
+        if (isInteger(resVal))
+        {
+            alert("For Name field Only Digits are not Allowed");
+            field.value = "";
+            setTimeout(function(){
+                field.focus();field.select();
+            },2);
+            return false;
+        }
+        if(havingSpecialChar(resVal))
+        {
+            alert("For Name field special characters are not allowed");
+            field.value = "";
+            setTimeout(function(){
+                field.focus();field.select();
+            },2);
+            return false;
+        }
+        if(isFirstLetter(resVal))
+        {
+            alert("Name field should start with Letter");
+            field.value = "";
+            setTimeout(function(){
+                field.focus();field.select();
+            },2);
+            return false;
+        }
+        else
+        {
+            saveLLbirthValue( dataElementId, recordNo );
+            document.getElementById(recordNo).style.display = 'block';
+            document.getElementById('actions').style.display = 'block';
+        }
+    }
+    else
+    {
+        field.value = "";
+
+        return false;
+    }
+}
+
+
+function isIDSPLNameFiledEntered( recordNo )
+{
+    var dataElementId = 1053;
+    var field = document.getElementById( 'value[' + dataElementId + '].value:value[' + recordNo + '].value' );
+    var resVal = field.value;
+
+    if(resVal == null || resVal.replace(/^\s\s*/, '').replace(/\s\s*$/, '') == "" )
+    {
+        alert("Please enter NAME");
+        field.focus();
+        field.select();
+        return false;
+    }
+    else
+    {
+        return true;
+    }
+}
+
+function validateIDSPLAgeField( dataElementId, recordNo )
+{
+    var field = document.getElementById( 'value[' + dataElementId + '].value:value[' + recordNo + '].value' );
+    var resVal = field.value;
+    var resVal = resVal.replace(/^\s\s*/, '').replace(/\s\s*$/, '');
+  
+    if( isIDSPLNameFiledEntered( recordNo ) )
+    {
+        if(resVal == null || resVal == "" )
+        {
+            field.value = "";
+            setTimeout(function(){
+                field.focus();field.select();
+            },2);
+	    
+            return false;
+        }
+  
+        if( isInteger( resVal) )
+        {
+            saveLLbirthValue( dataElementId, recordNo );
+            document.getElementById(recordNo).style.display = 'block';
+            document.getElementById('actions').style.display = 'block';
+        }
+        else
+        {
+            alert("Please enter valid AGE");
+            field.value = "";
+            setTimeout(function(){
+                field.focus();field.select();
+            },2);
+	    
+            return false;
+        }
+    }
+    else
+    {
+        field.value = "";
+    
+        return false;
+    }
+}
+
+function isIDSPLAgeFiledEntered( recordNo )
+{
+    var dataElementId = 1055;
+    var field = document.getElementById( 'value[' + dataElementId + '].value:value[' + recordNo + '].value' );
+    var resVal = field.value;
+
+    if(resVal == null || resVal.replace(/^\s\s*/, '').replace(/\s\s*$/, '') == "" )
+    {
+        alert("Please enter AGE");
+        field.focus();
+        field.select();
+        return false;
+    }
+    else
+    {
+        return true;
+    }
+}
+
+function validateIDSPLSexField( dataElementId, recordNo )
+{
+    var field = document.getElementById( 'value[' + dataElementId + '].value:value[' + recordNo + '].value' );
+    var resVal = field.selectedIndex;
+
+    if( isIDSPLAgeFiledEntered( recordNo ) )
+    {
+        if(resVal <= 0 || resVal == "---")
+        {
+            alert("Please Select Sex");
+            field.options[0].selected = false;
+
+            setTimeout(function(){
+                field.focus();field.select();
+            },2);
+            return false;
+        }
+        else
+        {
+            saveLLbirthValue( dataElementId, recordNo );
+            document.getElementById(recordNo).style.display = 'block';
+            document.getElementById('actions').style.display = 'block';
+        }
+    }
+    else
+    {
+        field.options[0].selected = true;
+
+        return false;
+    }
+}
+
+function isIDSPLSexFieldEntered( recordNo )
+{
+    var dataElementId = 1054;
+    var field = document.getElementById( 'value[' + dataElementId + '].value:value[' + recordNo + '].value' );
+    var resVal = field.selectedIndex;
+    
+    if(resVal <= 0 || resVal == "---")
+    {
+        alert("Please enter SEX ");
+        field.focus();
+        return false
+    }
+  
+    return true;
+}
+
+function validateIDSPLAddressField( dataElementId, recordNo )
+{
+    var field = document.getElementById( 'value[' + dataElementId + '].value:value[' + recordNo + '].value' );
+    var resVal = field.value;
+    resVal = resVal.replace(/^\s\s*/, '').replace(/\s\s*$/, '');
+
+    if(isIDSPLSexFieldEntered( recordNo ))
+    {
+        if(resVal == null || resVal == "" )
+        {
+            alert("Please enter Address");
+            field.value = "";
+            setTimeout(function(){
+                field.focus();
+                field.select();
+            },2);
+            return false;
+        }
+        if (isInteger(resVal))
+        {
+            alert("For Address field Only Digits are not Allowed");
+            field.value = "";
+            setTimeout(function(){
+                field.focus();
+                field.select();
+            },2);
+            return false;
+        }
+        if(isVillageNotValid(resVal))
+        {
+            alert("Please enter valid Address, only . - _ / special chars are allowed");
+            field.value = "";
+            setTimeout(function(){
+                field.focus();field.select();
+            },2);
+            return false;
+        }
+        else
+        {
+            saveLLbirthValue( dataElementId, recordNo );
+            document.getElementById(recordNo).style.display = 'block';
+            document.getElementById('actions').style.display = 'block';
+        }
+    }
+    else
+    {
+        field.value = "";
+
+        return false;
+    }
+}
+
+function isIDSPLAddressFiledEntered( recordNo )
+{
+    var dataElementId = 1056;
+    var field = document.getElementById( 'value[' + dataElementId + '].value:value[' + recordNo + '].value' );
+    var resVal = field.value;
+
+    if(resVal == null || resVal.replace(/^\s\s*/, '').replace(/\s\s*$/, '') == "" )
+    {
+        alert("Please enter ADDRESS");
+        field.focus();
+        field.select();
+        return false;
+    }
+    else
+    {
+        return true;
+    }
+}
+
+function validateIDSPLTestField( dataElementId, recordNo )
+{
+    var field = document.getElementById( 'value[' + dataElementId + '].value:value[' + recordNo + '].value' );
+    var resVal = field.value;
+    resVal = resVal.replace(/^\s\s*/, '').replace(/\s\s*$/, '');
+
+    if( isIDSPLAddressFiledEntered( recordNo ) )
+    {
+        if(resVal == null || resVal == "" )
+        {
+            alert("Please enter Test");
+            field.value = "";
+            setTimeout(function(){
+                field.focus();field.select();
+            },2);
+            return false;
+        }
+        if (isInteger(resVal))
+        {
+            alert("For Test field Only Digits are not Allowed");
+            field.value = "";
+            setTimeout(function(){
+                field.focus();field.select();
+            },2);
+            return false;
+        }
+        if(havingSpecialChar(resVal))
+        {
+            alert("For Test field special characters are not allowed");
+            field.value = "";
+            setTimeout(function(){
+                field.focus();field.select();
+            },2);
+            return false;
+        }
+        if(isFirstLetter(resVal))
+        {
+            alert("Test field should start with Letter");
+            field.value = "";
+            setTimeout(function(){
+                field.focus();field.select();
+            },2);
+            return false;
+        }
+        else
+        {
+            saveLLbirthValue( dataElementId, recordNo );
+            document.getElementById(recordNo).style.display = 'block';
+            document.getElementById('actions').style.display = 'block';
+        }
+    }
+    else
+    {
+        field.value = "";
+        return false;
+    }
+}
+
+function isIDSPLTestFieldEntered( recordNo )
+{
+    var dataElementId = 1057;
+    var field = document.getElementById( 'value[' + dataElementId + '].value:value[' + recordNo + '].value' );
+    var resVal = field.value;
+
+    if(resVal == null || resVal.replace(/^\s\s*/, '').replace(/\s\s*$/, '') == "" )
+    {
+        alert("Please enter TEST");
+        field.focus();
+        field.select();
+        return false;
+    }
+    else
+    {
+        return true;
+    }
+}
+
+function validateIDSPLDaignosisField( dataElementId, recordNo )
+{
+    var field = document.getElementById( 'value[' + dataElementId + '].value:value[' + recordNo + '].value' );
+    var resVal = field.value;
+    resVal = resVal.replace(/^\s\s*/, '').replace(/\s\s*$/, '');
+
+    if( isIDSPLTestFieldEntered( recordNo ) )
+    {
+        if(resVal == null || resVal == "" )
+        {
+            alert("Please enter Diagnosis");
+            field.value = "";
+            setTimeout(function(){
+                field.focus();field.select();
+            },2);
+            return false;
+        }
+        if (isInteger(resVal))
+        {
+            alert("For Diagnosis field Only Digits are not Allowed");
+            field.value = "";
+            setTimeout(function(){
+                field.focus();field.select();
+            },2);
+            return false;
+        }
+        if(havingSpecialChar(resVal))
+        {
+            alert("For Diagnosis field special characters are not allowed");
+            field.value = "";
+            setTimeout(function(){
+                field.focus();field.select();
+            },2);
+            return false;
+        }
+        if(isFirstLetter(resVal))
+        {
+            alert("Diagnosis field should start with Letter");
+            field.value = "";
+            setTimeout(function(){
+                field.focus();field.select();
+            },2);
+            return false;
+        }
+        else
+        {
+            saveLLbirthValue( dataElementId, recordNo );
+            //document.getElementById(recordNo).style.display = 'block';
+           // document.getElementById('actions').style.display = 'block';
+        }
+        addLLIDSPLNewRow( resVal, 1053, recordNo );
+    }
+    else
+    {
+        field.value = "";
+        return false;
+    }
+}
+
 // -----------------------------------------------------------------------------
 // Linelisting LiveBirth Related Methods for Validation
 // -----------------------------------------------------------------------------
@@ -1558,7 +1978,11 @@ function saveLLbirthValue( dataElementId, recordNo )
     
     field.style.backgroundColor = '#ffffcc';
     
-    if(dataElementId == 1022 || dataElementId == 1025 || dataElementId == 1029 || dataElementId == 1030 || dataElementId == 1031 || dataElementId == 1035 || dataElementId == 1036 || dataElementId == 1037 || dataElementId == 1038 || dataElementId == 1039 || dataElementId == 1040 || dataElementId == 1043 || dataElementId == 1046 || dataElementId == 1050 || dataElementId == 1051 || dataElementId == 1052 || dataElementId == 1054)
+    if(dataElementId == 1022 || dataElementId == 1025 || dataElementId == 1029 || dataElementId == 1030 || dataElementId == 1031 || 
+    		dataElementId == 1035 || dataElementId == 1036 || dataElementId == 1037 || dataElementId == 1038 || 
+    		dataElementId == 1039 || dataElementId == 1040 || dataElementId == 1043 || dataElementId == 1046 || 
+    		dataElementId == 1050 || dataElementId == 1051 || dataElementId == 1052 || dataElementId == 1054
+    		)
     {
         resVal = field.options[field.selectedIndex].value;
         if(resVal == "NONE") return;
@@ -1994,7 +2418,7 @@ function removeLLRecord( nextRecordNo )
     if ( result )
     {
         //window.location.href = 'delLLRecord.action?recordId=' + nextRecordNo;
-        document.delForm.recordId.value = nextRecordNo;
+        document.getElementById("recordId").value = nextRecordNo;
         document.delForm.submit();
     }
 }

@@ -35,8 +35,20 @@ public class LLDataSets
     public static final String LL_UU_IDSP_EVENTS = "Line listing Unusual IDSP events- FormS";
     public static final String LL_UU_IDSP_EVENTSP = "Line listing Unusual IDSP events- FormP";
     public static final String LL_DEATHS_IDSP = "Line listing Deaths IDSP";
-    public static final String LL_IDSP_LAB = "Line listing IDSP Lab Positive Test Cases";
+    public static final String LL_IDSP_LAB = "Line Listing IDSP Lab";
+    public static final String LL_COLD_CHAIN = "Line listing  Cold Chain";
 
+    //----------------------------------------------------------------
+    // LineListing Cold Chain
+    //----------------------------------------------------------------
+    //public static final int LLCC_EQUIPMENT = ;
+    //public static final int LLCC_MACHINE =;
+    //public static final int LLCC_MACHINE_WORKING =;
+    //public static final int LLCC_BREAKDOWN_DATE =;
+    //public static final int LLCC_INTIMATION_DATE =;
+    //public static final int LLCC_REPAIR_DATE =;
+    //public static final int LLCC_REMARKS =;
+    
     //----------------------------------------------------------------
     // LineListing IDSP LAB
     //----------------------------------------------------------------
