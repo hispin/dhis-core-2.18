@@ -579,8 +579,6 @@ public class JdbcAggregatedDataValueStore
                 " AND ous.idlevel" + rootlevel + "=" + rootOrgunit.getId() +
                 " AND aiv.periodid IN (" + periodids + ") ";
 
-            log.info("sql: " + sql);
-
             Statement statement = holder.getStatement();
 
             statement.setFetchSize( FETCH_SIZE );
@@ -597,7 +595,6 @@ public class JdbcAggregatedDataValueStore
         finally
         {
             // don't close holder or we lose resultset - iterator must close
-            // holder.close();
         }
     }
 
