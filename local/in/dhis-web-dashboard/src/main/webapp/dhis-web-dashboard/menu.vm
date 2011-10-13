@@ -23,5 +23,10 @@
 				<li><a href="dataStatusDataSetWiseForm.action">$i18n.getString( "ds_dataset_wise" )</a></li>	
 	    		<!-- <li><a href="commentsForm.action">Comments</a></li>
 		   		<li><a href="dashBoardMatrixForm.action">DashBoard matrix</a></li> -->
-		   	</ul>		   	
+		   	</ul>
+		<li>$i18n.getString( "bulk_sms" )</li>
+			<ul>
+				<li><a href="#">$i18n.getString( "Due Dates" )</a></li>
+				<li><a href="prgwiseSummaryBulkSMSForm.action">$i18n.getString( "Programwise Summary" )</a></li>
+			</ul>
 	</ul>
