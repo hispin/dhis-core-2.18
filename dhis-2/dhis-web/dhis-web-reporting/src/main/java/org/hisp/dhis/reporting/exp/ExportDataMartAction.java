@@ -52,13 +52,12 @@ import com.opensymphony.xwork2.Action;
 
 /**
  * @author Bob Jolliffe
- *
- * This action is called to export a csv formatted selection of aggregated indicator or
- * data values from datamart.
- * It requires 4 parameters:
- * startdate and enddate: 8 character string representation of date - 20100624
- * root: id of root organization unit
- * level: level number to fetch aggregated values for
+ * 
+ * This action is called to export a csv formatted selection of
+ * aggregated indicator or data values from datamart. It requires 4
+ * parameters: startdate and enddate: 8 character string representation
+ * of date - 20100624 root: id of root organization unit level: level
+ * number to fetch aggregated values for
  */
 public class ExportDataMartAction
     implements Action
@@ -69,19 +68,23 @@ public class ExportDataMartAction
     private static final Log log = LogFactory.getLog( ExportDataMartAction.class );
 
     private static final DateFormat dateFormat = new SimpleDateFormat( "yyyyMMdd" );
-    
+
     private static final String NO_STARTDATE = "The request is missing a startDate parameter";
+
     private static final String NO_ENDDATE = "The request is missing an endDate parameter";
+
     private static final String BAD_STARTDATE = "The request has a bad startDate parameter. Required format is YYYMMDD";
+
     private static final String BAD_ENDDATE = "The request has a bad endDate parameter. Required format is YYYMMDD";
+
     private static final String NO_ROOT = "The request is missing a non-zero dataSourceRoot parameter";
+
     private static final String NO_LEVEL = "The request is missing a non-zero dataSourceLevel parameter";
 
-    // http header result type
     private static final String CLIENT_ERROR = "client-error";
 
     private static final int HTTP_ERROR = 400;
-    
+
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
@@ -131,7 +134,7 @@ public class ExportDataMartAction
     {
         this.dataSourceRoot = dataSourceRoot;
     }
-    
+
     private RequestType requestType;
 
     public void setRequestType( RequestType requestType )
@@ -149,13 +152,14 @@ public class ExportDataMartAction
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
-    
-    public String execute() throws IOException
+
+    public String execute()
+        throws IOException
     {
         HttpServletRequest request = ServletActionContext.getRequest();
 
-        log.info( "DataMart export request from " + currentUserService.getCurrentUsername() +
-            " @ " + request.getRemoteAddr() );
+        log.info( "DataMart export request from " + currentUserService.getCurrentUsername() + " @ "
+            + request.getRemoteAddr() );
 
         HttpServletResponse response = ServletActionContext.getResponse();
 
@@ -205,7 +209,7 @@ public class ExportDataMartAction
                 {
                     paramError = BAD_ENDDATE;
                 }
-            } 
+            }
             catch ( java.text.ParseException ex )
             {
                 paramError = ex.getMessage();
@@ -221,16 +225,15 @@ public class ExportDataMartAction
 
         // timestamp filename
         SimpleDateFormat format = new SimpleDateFormat( "_yyyy_MM_dd_HHmm_ss" );
-        String filename = requestType + format.format(Calendar.getInstance().getTime()) + ".csv.gz";
+        String filename = requestType + format.format( Calendar.getInstance().getTime() ) + ".csv.gz";
 
         PeriodType pType = PeriodType.getPeriodTypeByName( periodType );
-        
+
         // prepare to write output
         OutputStream out = null;
 
         // how many rows do we expect
-        int count = exportPivotViewService.count( requestType, pType, start, end,
-                dataSourceLevel, dataSourceRoot);
+        int count = exportPivotViewService.count( requestType, pType, start, end, dataSourceLevel, dataSourceRoot );
 
         ContextUtils.configureResponse( response, ContextUtils.CONTENT_TYPE_GZIP, true, filename, true );
 
@@ -239,9 +242,8 @@ public class ExportDataMartAction
 
         try
         {
-            out = new GZIPOutputStream(response.getOutputStream(), GZIPBUFFER);
-            exportPivotViewService.execute(out, requestType, pType, start, end,
-                dataSourceLevel, dataSourceRoot);
+            out = new GZIPOutputStream( response.getOutputStream(), GZIPBUFFER );
+            exportPivotViewService.execute( out, requestType, pType, start, end, dataSourceLevel, dataSourceRoot );
         }
         finally
         {
