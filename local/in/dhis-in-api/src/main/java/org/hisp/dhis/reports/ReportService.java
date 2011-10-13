@@ -156,5 +156,7 @@ public interface ReportService
     Map<String, String> getDataFromDataValueTable( String orgUnitIdsByComma, String dataElmentIdsByComma, String periodIdsByComma );
     
     Map<String, String> getDataFromDataValueTableByPeriodAgg( String orgUnitIdsByComma, String dataElmentIdsByComma, String periodIdsByComma );
+    
+    List<Report_inDesign> getReportDesignWithMergeCells( String fileName );
         
 }
