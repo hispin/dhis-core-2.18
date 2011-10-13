@@ -88,7 +88,7 @@ public class MappedRedirectStrategy
         // TODO fix this
         if ( device.isMobile() )
         {
-            url = "../mobile/index.action";
+            url = "mobile/index.action";
         }
 
         super.sendRedirect( request, response, url );
