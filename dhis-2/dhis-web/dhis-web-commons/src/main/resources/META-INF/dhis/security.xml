@@ -19,6 +19,7 @@
         </entry>
       </map>
     </property>
+    <property name="deviceResolver" ref="org.springframework.mobile.device.DeviceResolver" />
   </bean>
 
   <bean id="defaultAuthenticationSuccessHandler" class="org.hisp.dhis.security.DefaultAuthenticationSuccessHandler">
@@ -32,7 +33,7 @@
     <sec:http-basic />
     <sec:logout logout-url="/dhis-web-commons-security/logout.action" />
 
-    <sec:intercept-url pattern="/dhis-web-commons/security/**" access="permitAll"/>
+    <sec:intercept-url pattern="/dhis-web-commons/security/**" access="permitAll" />
     <sec:intercept-url pattern="/dhis-web-commons/javascripts/**" filters="none" />
     <sec:intercept-url pattern="/dhis-web-commons/css/**" filters="none" />
     <sec:intercept-url pattern="/favicon.ico" filters="none" />

@@ -34,6 +34,8 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.springframework.mobile.device.Device;
+import org.springframework.mobile.device.DeviceResolver;
 import org.springframework.security.web.DefaultRedirectStrategy;
 
 /**
@@ -58,6 +60,13 @@ public class MappedRedirectStrategy
         this.redirectMap = redirectMap;
     }
 
+    private DeviceResolver deviceResolver;
+
+    public void setDeviceResolver( DeviceResolver deviceResolver )
+    {
+        this.deviceResolver = deviceResolver;
+    }
+
     // -------------------------------------------------------------------------
     // DefaultRedirectStrategy implementation
     // -------------------------------------------------------------------------
@@ -66,12 +75,20 @@ public class MappedRedirectStrategy
     public void sendRedirect( HttpServletRequest request, HttpServletResponse response, String url )
         throws IOException
     {
+        Device device = deviceResolver.resolveDevice( request );
+
         for ( String key : redirectMap.keySet() )
         {
             if ( url.indexOf( key ) != -1 )
             {
                 url = url.replaceFirst( key, redirectMap.get( key ) );
             }
+        }
+
+        // TODO fix this
+        if ( device.isMobile() )
+        {
+            url = "../mobile/index.action";
         }
 
         super.sendRedirect( request, response, url );
