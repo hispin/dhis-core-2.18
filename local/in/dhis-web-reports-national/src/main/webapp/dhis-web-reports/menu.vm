@@ -61,9 +61,13 @@
             #if( $auth.hasAccess( "dhis-web-reports", "linelistingWebPortalReportAnalyser") )
                 <li><a href = "linelistingWebPortalReportAnalyser.action">Linelisting WebPortal Reports</a></li>
             #end
-            <li><a href = "populateMultipleUsers.action">Populate Users From Excel</a></li>
-			<!--<li><a href = "advancedReportAnalyser.action">Advanced Reports</a></li>-->	
-            <!--<li><a href = "advancedReportAnalyser.action">Advanced Reports</a></li>-->  
+            #if( $auth.hasAccess( "dhis-web-reports", "populateMultipleUsers") )
+				<li><a href = "populateMultipleUsers.action">Populate Users From Excel</a></li>
+			#end
+            <!--<li><a href = "advancedReportAnalyser.action">Advanced Reports</a></li>-->
+            <li><a href = "coldChainReportAnalyser.action">Cold Chain Report</a>
+            <li><a href = "idspReportAnalyser.action">IDSP Report</a>
+            <li><a href = "lineListingBulkReportAnalyser.action">Linelisting Bulk Report</a>
         </ul>
     </ul>
 #end

@@ -6,6 +6,8 @@ import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
+import java.sql.ResultSet;
+import java.sql.Statement;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -15,6 +17,8 @@ import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 import java.util.UUID;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import jxl.CellType;
 import jxl.Workbook;
@@ -33,6 +37,10 @@ import jxl.write.WritableWorkbook;
 
 import org.amplecode.quick.StatementManager;
 import org.hisp.dhis.config.Configuration_IN;
+import org.hisp.dhis.dataelement.DataElement;
+import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
+import org.hisp.dhis.dataelement.DataElementCategoryService;
+import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.i18n.I18nFormat;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroup;
@@ -45,11 +53,13 @@ import org.hisp.dhis.period.PeriodType;
 import org.hisp.dhis.reports.ReportService;
 import org.hisp.dhis.reports.Report_in;
 import org.hisp.dhis.reports.Report_inDesign;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.support.rowset.SqlRowSet;
 
 import com.opensymphony.xwork2.Action;
 
-public class GenerateRoutineReportAnalyserResultAction
-    implements Action
+public class GenerateColdChainReportAnalyserResultAction
+implements Action
 {
  
     // -------------------------------------------------------------------------
@@ -97,7 +107,28 @@ public class GenerateRoutineReportAnalyserResultAction
     {
         this.format = format;
     }
+    
+    private JdbcTemplate jdbcTemplate;
 
+    public void setJdbcTemplate( JdbcTemplate jdbcTemplate )
+    {
+        this.jdbcTemplate = jdbcTemplate;
+    }
+    
+    private DataElementService dataElementService;
+
+    public void setDataElementService( DataElementService dataElementService )
+    {
+        this.dataElementService = dataElementService;
+    }
+    
+    private DataElementCategoryService dataElementCategoryOptionComboService;
+
+    public void setDataElementCategoryOptionComboService(
+        DataElementCategoryService dataElementCategoryOptionComboService )
+    {
+        this.dataElementCategoryOptionComboService = dataElementCategoryOptionComboService;
+    }
     // -------------------------------------------------------------------------
     // Properties
     // -------------------------------------------------------------------------
@@ -183,8 +214,7 @@ public class GenerateRoutineReportAnalyserResultAction
 
     private String raFolderName;
     
-    private SimpleDateFormat dateFormat;
-
+    private OrganisationUnit currentOrgUnit;
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
@@ -202,7 +232,6 @@ public class GenerateRoutineReportAnalyserResultAction
         yearFormat = new SimpleDateFormat( "yyyy" );
         simpleYearFormat = new SimpleDateFormat( "yy" );
         dailyFormat = new SimpleDateFormat( "yyyy-MM-dd" );
-        dateFormat = new SimpleDateFormat( "dd-MM-yyyy" );
         String deCodesXMLFileName = "";
         String parentUnit = "";
 
@@ -261,7 +290,7 @@ public class GenerateRoutineReportAnalyserResultAction
         selectedPeriod = periodService.getPeriod( availablePeriods );
         sDate = format.parseDate( String.valueOf( selectedPeriod.getStartDate() ) );
         eDate = format.parseDate( String.valueOf( selectedPeriod.getEndDate() ) );
-        
+
         Workbook templateWorkbook = Workbook.getWorkbook( new File( inputTemplatePath ) );
         WritableWorkbook outputReportWorkbook = Workbook.createWorkbook( new File( outputReportPath ), templateWorkbook );
 
@@ -274,6 +303,7 @@ public class GenerateRoutineReportAnalyserResultAction
         
         // Getting DataValues
         List<Report_inDesign> reportDesignList = reportService.getReportDesign( deCodesXMLFileName );
+        List<Report_inDesign> reportDesignColdChainList = reportService.getReportDesign( deCodesXMLFileName );
         int orgUnitCount = 0;
 
         Iterator<OrganisationUnit> it = orgUnitList.iterator();
@@ -378,18 +408,6 @@ public class GenerateRoutineReportAnalyserResultAction
                 else if ( deCodeString.equalsIgnoreCase( "PERIOD-WEEK" ) )
                 {
                     tempStr = String.valueOf( tempStartDate.get( Calendar.WEEK_OF_MONTH ) );
-                }
-                else if ( deCodeString.equalsIgnoreCase( "PERIOD-WEEK-YEAR" ) )
-                {
-                    tempStr = String.valueOf( tempStartDate.get( Calendar.WEEK_OF_YEAR ) );
-                }
-                else if ( deCodeString.equalsIgnoreCase( "PERIOD-WEEK-START" ) )
-                {
-                    tempStr = dateFormat.format( sDate );
-                }
-                else if ( deCodeString.equalsIgnoreCase( "PERIOD-WEEK-END" ) )
-                {
-                    tempStr = dateFormat.format( eDate );
                 }
                 else if ( deCodeString.equalsIgnoreCase( "PERIOD-QUARTER" ) )
                 {
@@ -1238,6 +1256,131 @@ public class GenerateRoutineReportAnalyserResultAction
             orgUnitCount++;
         }// outer while loop end
 
+        // for printing the cold-chain data
+        
+        // OrgUnit Info
+        currentOrgUnit = organisationUnitService.getOrganisationUnit( ouIDTB );
+        
+        List<Integer> coldChainrecordNos = new ArrayList<Integer>();
+        coldChainrecordNos = getColdChainRecordNos( currentOrgUnit, selectedPeriod );
+        
+        int tempColdChainRowNo = 0;
+        int flag = 0;
+        if ( coldChainrecordNos.size() == 0 )
+            flag = 1;
+        Iterator<Integer> itColdChain = coldChainrecordNos.iterator();
+        int recordCount = 0;
+        int currentRowNo = 0;
+        
+        while ( itColdChain.hasNext() )
+        {
+            Integer recordNo = -1;
+            if ( flag == 0 )
+            {
+                recordNo = (Integer) itColdChain.next();
+            }
+            flag = 0;
+            
+            Iterator<Report_inDesign> reportDesignIterator = reportDesignColdChainList.iterator();
+            int count1 = 0;
+            while ( reportDesignIterator.hasNext() )
+            {
+                Report_inDesign report_inDesign = (Report_inDesign) reportDesignIterator.next();
+
+                String deType = report_inDesign.getPtype();
+                String sType = report_inDesign.getStype();
+                String deCodeString = report_inDesign.getExpression();
+                String tempStr = "";
+                
+                Calendar tempStartDate = Calendar.getInstance();
+                Calendar tempEndDate = Calendar.getInstance();
+                // List<Calendar> calendarList = new ArrayList<Calendar>(
+                // getStartingEndingPeriods( deType ) );
+                List<Calendar> calendarList = new ArrayList<Calendar>( reportService.getStartingEndingPeriods( deType,
+                    selectedPeriod ) );
+                if ( calendarList == null || calendarList.isEmpty() )
+                {
+                    tempStartDate.setTime( selectedPeriod.getStartDate() );
+                    tempEndDate.setTime( selectedPeriod.getEndDate() );
+                    return SUCCESS;
+                }
+                else
+                {
+                    tempStartDate = calendarList.get( 0 );
+                    tempEndDate = calendarList.get( 1 );
+                }
+                
+                if ( deCodeString.equalsIgnoreCase( "NA" ) )
+                {
+                    tempStr = " ";
+                    
+                }
+                else
+                {
+                    if ( sType.equalsIgnoreCase( "coldchaindataelement" ) )
+                    {
+                        tempStr = getColdChainDataValue( deCodeString, selectedPeriod, currentOrgUnit, recordNo );
+                    }
+
+                    
+                }
+                
+                tempColdChainRowNo = report_inDesign.getRowno();
+                int tempRowNo = report_inDesign.getRowno();
+               
+                currentRowNo = tempColdChainRowNo;
+                int tempColNo = report_inDesign.getColno();
+                int sheetNo = report_inDesign.getSheetno();
+                
+                WritableSheet sheet0 = outputReportWorkbook.getSheet( sheetNo );
+                if ( tempStr == null || tempStr.equals( " " ) )
+                {
+
+                }
+                else
+                {
+                    if ( deCodeString.equalsIgnoreCase( "FACILITYP" )
+                        || deCodeString.equalsIgnoreCase( "FACILITY-NOREPEAT" )
+                        || deCodeString.equalsIgnoreCase( "FACILITYPP" ) 
+                        || deCodeString.equalsIgnoreCase( "FACILITYPPP" ) 
+                        || deCodeString.equalsIgnoreCase( "FACILITYPPPP" ) )
+                    {
+                        
+                    }
+                    else
+                    {
+                        tempColdChainRowNo += recordCount;
+                        currentRowNo += recordCount;
+                        tempRowNo += recordCount;
+                    }
+                    
+                    
+                    WritableCellFormat wCellformat = new WritableCellFormat();
+
+                    wCellformat.setBorder( Border.ALL, BorderLineStyle.THIN );
+                    wCellformat.setWrap( true );
+                    wCellformat.setAlignment( Alignment.CENTRE );
+                    wCellformat.setVerticalAlignment( VerticalAlignment.CENTRE );
+                    
+                    if ( sType.equalsIgnoreCase( "coldchaindataelement" ) )
+                    {
+                        try
+                        {
+                            sheet0.addCell( new Number( tempColNo, tempRowNo, Integer.parseInt( tempStr ), getCellFormat1() ) );
+                        }
+                        catch ( Exception e )
+                        {
+                            sheet0.addCell( new Label( tempColNo, tempRowNo, tempStr, getCellFormat1() ) );
+                        }
+                    }
+                }
+                count1++;
+            }
+            recordCount++;
+        }
+        
+        
+        
         outputReportWorkbook.write();
         outputReportWorkbook.close();
 
@@ -1254,5 +1397,141 @@ public class GenerateRoutineReportAnalyserResultAction
         statementManager.destroy();
 
         return SUCCESS;
-    }
+        
+    }     
+        // Method Finding no of records of coldChain
+        
+        public List<Integer> getColdChainRecordNos( OrganisationUnit organisationUnit, Period period )
+        {
+            List<Integer> recordNosList = new ArrayList<Integer>();
+            
+            int  dataElementid = 1027;
+            String query = "";
+
+            try
+            {
+                query = "SELECT recordno FROM lldatavalue WHERE dataelementid = " + dataElementid + " AND periodid = "
+                    + period.getId() + " AND sourceid = " + organisationUnit.getId();
+
+                SqlRowSet rs1 = jdbcTemplate.queryForRowSet( query );
+
+                while ( rs1.next() )
+                {
+                    recordNosList.add( rs1.getInt( 1 ) );
+                }
+
+                Collections.sort( recordNosList );
+            }
+            catch ( Exception e )
+            {
+                System.out.println( "SQL Exception : " + e.getMessage() );
+            }
+
+            return recordNosList;
+        }   
+
+        
+        public String getColdChainDataValue( String formula, Period period, OrganisationUnit organisationUnit, Integer recordNo )
+        {
+            Statement st1 = null;
+            ResultSet rs1 = null;
+            
+            String query = "";
+            try
+            {
+                Pattern pattern = Pattern.compile( "(\\[\\d+\\.\\d+\\])" );
+
+                Matcher matcher = pattern.matcher( formula );
+                StringBuffer buffer = new StringBuffer();
+
+                while ( matcher.find() )
+                {
+                    String replaceString = matcher.group();
+
+                    replaceString = replaceString.replaceAll( "[\\[\\]]", "" );
+                    String optionComboIdStr = replaceString.substring( replaceString.indexOf( '.' ) + 1, replaceString
+                        .length() );
+
+                    replaceString = replaceString.substring( 0, replaceString.indexOf( '.' ) );
+
+                    int dataElementId = Integer.parseInt( replaceString );
+                    int optionComboId = Integer.parseInt( optionComboIdStr );
+
+                    DataElement dataElement = dataElementService.getDataElement( dataElementId );
+                    DataElementCategoryOptionCombo optionCombo = dataElementCategoryOptionComboService.getDataElementCategoryOptionCombo( optionComboId );
+
+                    if ( dataElement == null || optionCombo == null )
+                    {
+                        replaceString = "";
+                        matcher.appendReplacement( buffer, replaceString );
+                        continue;
+                    }
+
+                   
+
+                    query = "SELECT value FROM lldatavalue WHERE sourceid = " + organisationUnit.getId()
+                        + " AND periodid = " + period.getId() + " AND dataelementid = " + dataElement.getId()
+                        + " AND recordno = " + recordNo;
+                    // rs1 = st1.executeQuery( query );
+
+                    SqlRowSet sqlResultSet = jdbcTemplate.queryForRowSet( query );
+
+                    String tempStr = "";
+
+                    if ( sqlResultSet.next() )
+                    {
+                        tempStr = sqlResultSet.getString( 1 );
+                    }
+
+                    replaceString = tempStr;
+
+                    matcher.appendReplacement( buffer, replaceString );
+                }
+
+                matcher.appendTail( buffer );
+
+                String resultValue = "";
+ 
+                resultValue = buffer.toString();
+
+                return resultValue;
+            }
+            catch ( NumberFormatException ex )
+            {
+                throw new RuntimeException( "Illegal DataElement id", ex );
+            }
+            catch ( Exception e )
+            {
+                System.out.println( "SQL Exception : " + e.getMessage() );
+                return null;
+            }
+            finally
+            {
+                try
+                {
+                    if ( st1 != null )
+                        st1.close();
+
+                    if ( rs1 != null )
+                        rs1.close();
+                }
+                catch ( Exception e )
+                {
+                    System.out.println( "SQL Exception : " + e.getMessage() );
+                    return null;
+                }
+            }// finally block end
+        }
+        public WritableCellFormat getCellFormat1()
+        throws Exception
+    {
+        WritableCellFormat wCellformat = new WritableCellFormat();
+
+        wCellformat.setBorder( Border.ALL, BorderLineStyle.THIN );
+        wCellformat.setAlignment( Alignment.CENTRE );
+        wCellformat.setWrap( true );
+
+        return wCellformat;
+    }    
 }
+

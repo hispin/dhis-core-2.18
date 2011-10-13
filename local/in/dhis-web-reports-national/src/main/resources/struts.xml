@@ -66,6 +66,18 @@
             <param name="onExceptionReturn">plainTextError</param>
         </action>
         
+        <!-- Report Association -->
+<!--    <action name="defineReportAssociationsForm"
+            class="org.hisp.dhis.reports.reportmanagement.action.GetNumberOfLevelsAction">
+            <result name="success" type="chain">defineReportAssociationsFormChain</result>
+        </action>
+        <action name="defineReportAssociationsFormChain"
+            class="org.hisp.dhis.reports.reportmanagement.action.SetupAssociationsTreeAction">
+            <result name="success" type="velocity">/main.vm</result>
+            <param name="menu">/dhis-web-reports/menu.vm</param>
+            <param name="page">/dhis-web-reports/reportAssociations.vm</param>
+            <param name="javascripts">../dhis-web-commons/oust/oust.js,javascript/reportManagementAssociations.js</param>
+        </action>-->
         <action name="defineReportAssociationsForm"
             class="org.hisp.dhis.reports.reportmanagement.action.SetupAssociationsTreeAction">
             <result name="success" type="velocity">/main.vm</result>
@@ -78,6 +90,45 @@
             class="org.hisp.dhis.reports.reportmanagement.action.DefineReportAssociationsAction">
             <result name="success" type="redirect">reportManagement.action</result>
         </action>
+        
+        <!-- Report Association Remove All -->
+<!--        <action name="unselectAll"
+            class="org.hisp.dhis.reports.reportmanagement.action.UnselectAllAction">
+            <result name="success" type="chain">getNumberOfLevelsSelectLevelChain</result>
+        </action>-->
+        
+        <!-- Report Association select/unselect All at Level -->
+<!--        <action name="selectLevel"
+            class="org.hisp.dhis.reports.reportmanagement.action.SelectLevelAction">
+            <result name="success" type="chain">getNumberOfLevelsSelectLevelChain</result>
+        </action>
+        <action name="unselectLevel"
+            class="org.hisp.dhis.reports.reportmanagement.action.UnselectLevelAction">
+            <result name="success" type="chain">getNumberOfLevelsSelectLevelChain</result>
+        </action>-->
+        
+        <!-- Report Association select/unselect All at Group -->
+<!--        <action name="selectgroup"
+            class="org.hisp.dhis.reports.reportmanagement.action.SelectGroupAction">
+            <result name="success" type="chain">getNumberOfLevelsSelectLevelChain</result>
+        </action>
+        <action name="unselectgroup"
+            class="org.hisp.dhis.reports.reportmanagement.action.UnselectGroupAction">
+            <result name="success" type="chain">getNumberOfLevelsSelectLevelChain</result>
+        </action>-->
+        
+        <!-- Chain for Associations -->
+<!--        <action name="getNumberOfLevelsSelectLevelChain"
+            class="org.hisp.dhis.reports.reportmanagement.action.GetNumberOfLevelsAction">
+            <result name="success" type="chain">getReportSelectLevelChain</result>
+        </action>
+        <action name="getReportSelectLevelChain"
+            class="org.hisp.dhis.reports.reportmanagement.action.GetReportAction">
+            <result name="success" type="velocity">/main.vm</result>
+            <param name="menu">/dhis-web-reports/menu.vm</param>
+            <param name="page">/dhis-web-reports/reportAssociations.vm</param>
+            <param name="javascripts">../dhis-web-commons/oust/oust.js,javascript/reportManagementAssociations.js</param>
+        </action>-->
         
         <!-- Report Deletion -->
         <action name="delReport"
@@ -105,7 +156,31 @@
                 <param name="bufferSize">1024</param>
             </result>
         </action>
-        
+
+<!-- IDSP REPORT -->
+        <action name="idspReportAnalyser"
+            class="org.hisp.dhis.reports.idsp.action.GenerateIDSPReportAnalyserFormAction">
+            <result name="success" type="velocity">/main.vm</result>
+            <param name="page">/dhis-web-reports/idspReportAnalysisFront.vm</param>
+            <param name="menu">/dhis-web-reports/menuWithTreeForIDSPReport.vm</param>
+            <param name="javascripts">../dhis-web-commons/ouwt/ouwt.js,../dhis-web-commons/lists/lists.js,javascript/reportManagement.js,javascript/hashtable.js</param>
+            <param name="stylesheets">css/StylesForTags.css</param>
+            <param name="requiredAuthorities">F_REPORT_ROUTINE</param>
+            <interceptor-ref name="organisationUnitTreeStack"/>
+        </action>		
+        <action name="generateIDSPReportResult"
+            class="org.hisp.dhis.reports.idsp.action.GenerateIDSPReportAnalyserResultAction">
+            <result name="success" type="stream">
+                <param name="contentType">application/vnd.ms-excel</param>
+                <param name="inputName">inputStream</param>
+                <param name="contentDisposition">filename="${fileName}"</param>
+                <param name="bufferSize">1024</param>
+            </result>
+        </action>
+		
+		
+		
+		        
         <!-- ED Reports -->
         <action name="edReportForm"
             class="org.hisp.dhis.reports.ed.action.EDReportFormAction">
@@ -150,7 +225,32 @@
             <param name="page">/dhis-web-reports/autoReportSucess.vm</param>
             <param name="menu">/dhis-web-reports/menu.vm</param>            
         </action>
-        
+
+        <!-- Line Listing Bulk Reports -->
+        <action name="lineListingBulkReportAnalyser"
+            class="org.hisp.dhis.reports.auto.action.GenerateLLBulkReportAnalyserFormAction">
+            <result name="success" type="velocity">/main.vm</result>
+            <param name="page">/dhis-web-reports/llBulkReportAnalysisFront.vm</param>
+            <param name="menu">/dhis-web-reports/menuWithTreeForLLBulkReport.vm</param>
+            <param name="javascripts">../dhis-web-commons/ouwt/ouwt.js,../dhis-web-commons/lists/lists.js,javascript/reportManagement.js,javascript/hashtable.js</param>
+            <param name="stylesheets">css/StylesForTags.css</param>
+            <param name="requiredAuthorities">F_REPORT_BULK</param>
+            <interceptor-ref name="organisationUnitTreeStack"/>
+        </action>		
+
+        <action name="generateLLBulkReport"
+            class="org.hisp.dhis.reports.auto.action.GenerateLLBulkReportAnalyserResultAction">
+            <result name="success" type="stream">
+                <param name="contentType">application/zip</param>
+                <param name="inputName">inputStream</param>
+                <param name="contentDisposition">filename="${fileName}"</param>
+                <param name="bufferSize">1024</param>
+            </result>
+            <result name="input" type="velocity">/main.vm</result>
+            <param name="page">/dhis-web-reports/llBulkReportSucess.vm</param>
+            <param name="menu">/dhis-web-reports/menu.vm</param>            
+        </action>		
+		        
         <!--
         <action name="generateAutoReport"
             class="org.hisp.dhis.reports.auto.action.GenerateAutoReportAnalyserResultAction">
@@ -634,6 +734,28 @@
 			</result>
 		</action>
 
+		
+		<!-- Cold-Chain Reports -->
+		<action name="coldChainReportAnalyser"
+			class="org.hisp.dhis.reports.routine.action.GenerateColdChainRoutineReportAnalyserFormAction">
+			<result name="success" type="velocity">/main.vm</result>
+			<param name="page">/dhis-web-reports/coldChainRoutineReportAnalyserFront.vm</param>
+			<param name="menu">/dhis-web-reports/menuWithTreeForColdChainRoutineReport.vm</param>
+			<param name="javascripts">../dhis-web-commons/ouwt/ouwt.js,../dhis-web-commons/lists/lists.js,javascript/reportManagement.js,javascript/hashtable.js</param>
+			<param name="stylesheets">css/StylesForTags.css</param>
+			<param name="requiredAuthorities">F_REPORT_LINELIST_PORTAL</param>
+			<interceptor-ref name="organisationUnitTreeStack"/>
+		</action>		
+		
+        <action name="generateColdChainReport"
+            class="org.hisp.dhis.reports.routine.action.GenerateColdChainReportAnalyserResultAction">
+            <result name="success" type="stream">
+                <param name="contentType">application/vnd.ms-excel</param>
+                <param name="inputName">inputStream</param>
+                <param name="contentDisposition">filename="${fileName}"</param>
+                <param name="bufferSize">1024</param>
+            </result>
+        </action>		
 <!-- NBITS Reports Section -->        
         <!-- ActivityPlan Reports -->
         <action name="activePlanReportsAnalyser"
