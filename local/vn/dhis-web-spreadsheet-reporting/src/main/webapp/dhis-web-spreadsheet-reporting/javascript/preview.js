@@ -25,8 +25,8 @@ function validatePreviewReport( isAdvanced )
 
 	jQuery.postJSON( 'validateGenerateReport.action',
 	{
-		'exportReportId': byId('exportReport').value,
-		'periodIndex': byId('period').value
+		'exportReportId': getFieldValue( 'exportReport' ),
+		'periodIndex': getFieldValue( 'selectedPeriodId' )
 	},
 	function( json )
 	{

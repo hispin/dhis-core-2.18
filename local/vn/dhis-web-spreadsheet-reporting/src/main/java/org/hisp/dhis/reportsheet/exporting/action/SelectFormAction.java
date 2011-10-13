@@ -33,10 +33,7 @@ import java.util.List;
 
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager;
-import org.hisp.dhis.period.MonthlyPeriodType;
-import org.hisp.dhis.period.Period;
 import org.hisp.dhis.reportsheet.ExportReportService;
-import org.hisp.dhis.reportsheet.period.generic.PeriodGenericManager;
 
 import com.opensymphony.xwork2.Action;
 
@@ -59,14 +56,7 @@ public class SelectFormAction
     {
         this.exportReportService = exportReportService;
     }
-
-    private PeriodGenericManager periodGenericManager;
-
-    public void setPeriodGenericManager( PeriodGenericManager periodGenericManager )
-    {
-        this.periodGenericManager = periodGenericManager;
-    }
-
+    
     private OrganisationUnitSelectionManager organisationUnitSelectionManager;
 
     public void setOrganisationUnitSelectionManager( OrganisationUnitSelectionManager organisationUnitSelectionManager )
@@ -77,8 +67,6 @@ public class SelectFormAction
     // -------------------------------------------------------------------------
     // Input & Output
     // -------------------------------------------------------------------------
-
-    private List<Period> periods;
 
     private OrganisationUnit organisationUnit;
 
@@ -98,11 +86,6 @@ public class SelectFormAction
         return organisationUnit;
     }
 
-    public List<Period> getPeriods()
-    {
-        return periods;
-    }
-
     private File fileExcel;
 
     public File getFileExcel()
@@ -115,6 +98,10 @@ public class SelectFormAction
         this.fileExcel = fileExcel;
     }
 
+    // -------------------------------------------------------------------------
+    // Action implementation
+    // -------------------------------------------------------------------------
+
     public String execute()
         throws Exception
     {
@@ -122,13 +109,8 @@ public class SelectFormAction
 
         groups = new ArrayList<String>( exportReportService.getExportReportGroups() );
 
-        periodGenericManager.setPeriodType( MonthlyPeriodType.NAME );       
-        
-        periods = periodGenericManager.getPeriodList();
-
         Collections.sort( groups );
 
         return SUCCESS;
     }
-
 }

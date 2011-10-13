@@ -91,41 +91,7 @@ public class ExpressionUtils
                 DataElementCategoryOptionCombo optionCombo = categoryService
                     .getDataElementCategoryOptionCombo( optionComboId );
 
-                // CalculatedDataElement
-                /*if ( dataElement instanceof CalculatedDataElement )
-                {
-                    CalculatedDataElement calculatedDataElement = (CalculatedDataElement) dataElement;
-
-                    double factor = 0;
-                    double value = 0.0;
-
-                    Map<String, Double> factorMap = dataElementService.getOperandFactors( calculatedDataElement );
-
-                    Collection<String> operandIds = dataElementService.getOperandIds( calculatedDataElement );
-
-                    for ( String operandId : operandIds )
-                    {
-                        factor = factorMap.get( operandId );
-
-                        dataElementIdString = operandId.substring( 0, operandId.indexOf( SEPARATOR ) );
-                        optionComboIdString = operandId.substring( operandId.indexOf( SEPARATOR ) + 1, operandId
-                            .length() );
-
-                        DataElement element = dataElementService
-                            .getDataElement( Integer.parseInt( dataElementIdString ) );
-                        optionCombo = categoryService.getDataElementCategoryOptionCombo( Integer
-                            .parseInt( optionComboIdString ) );
-
-                        double dataValue = getValue( element, optionCombo, organisationUnit, startDate, endDate,
-                            aggregationService );
-
-                        value += (dataValue * factor);
-                    }
-
-                    matcher.appendReplacement( buffer, value + "" );
-                }*/
                 // Normal
-                //else
                 {
                     replaceString = getValue( dataElement, optionCombo, organisationUnit, startDate, endDate,
                         aggregationService )

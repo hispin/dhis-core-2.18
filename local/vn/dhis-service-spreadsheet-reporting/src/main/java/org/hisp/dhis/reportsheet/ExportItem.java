@@ -164,11 +164,17 @@ public class ExportItem
 
     public static class PERIODTYPE
     {
+        // Used for Daily report
+        public static final String DAILY = "daily";
+
+        public static final String SO_FAR_THIS_MONTH = "so_far_this_month";
+        
+        public static final String SO_FAR_THIS_QUARTER = "so_far_this_quarter";
+
+        // Used for other report
         public static final String SELECTED_MONTH = "selected_month";
 
         public static final String LAST_3_MONTH = "last_3_month";
-
-        public static final String SO_FAR_THIS_YEAR = "so_far_this_year";
 
         public static final String LAST_6_MONTH = "last_6_month";
 
@@ -176,11 +182,16 @@ public class ExportItem
 
         public static final String SIX_MONTH = "6_month";
 
+        public static final String SO_FAR_THIS_YEAR = "so_far_this_year";
+
         public static final String YEARLY = "yealy";
 
         public static List<String> getPeriodTypes()
         {
             List<String> list = new ArrayList<String>();
+            list.add( DAILY );
+            list.add( SO_FAR_THIS_MONTH );
+            list.add( SO_FAR_THIS_QUARTER );
             list.add( SELECTED_MONTH );
             list.add( LAST_3_MONTH );
             list.add( SO_FAR_THIS_YEAR );

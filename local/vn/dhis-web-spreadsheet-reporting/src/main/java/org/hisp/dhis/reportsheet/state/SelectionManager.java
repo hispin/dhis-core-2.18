@@ -48,6 +48,10 @@ public interface SelectionManager
 
     public void setRenameFilePath( String path );
     
+    public String getSelectedPeriodIndex();
+    
+    public void setSelectedPeriodIndex( String periodIndex );
+    
     public void setBookmarkType( String type );
     
     public String getBookmarkType();

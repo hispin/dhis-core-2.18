@@ -34,7 +34,24 @@ import java.util.Date;
  * @version $Id$
  */
 public class DateUtils
-{
+{    
+    @SuppressWarnings("deprecation")
+    public static Date getFirstDayOfMonth( Date date )
+    {
+        Calendar result = Calendar.getInstance();
+        
+        Calendar calendar = Calendar.getInstance();
+        calendar.set( Calendar.YEAR, date.getYear() + 1900 );
+        calendar.set( Calendar.MONTH, date.getMonth() );
+        calendar.set( Calendar.DATE, date.getDate() );
+        
+        result.set( Calendar.DATE, calendar.getActualMinimum( Calendar.DATE ) );
+        result.set( Calendar.MONTH, calendar.get( Calendar.MONTH ) );
+        result.set( Calendar.YEAR, calendar.get( Calendar.YEAR ) );
+        
+        return result.getTime();
+    }
+    
     public static Date getFirstDayOfYear( int year )
     {
         Calendar calendar = Calendar.getInstance();

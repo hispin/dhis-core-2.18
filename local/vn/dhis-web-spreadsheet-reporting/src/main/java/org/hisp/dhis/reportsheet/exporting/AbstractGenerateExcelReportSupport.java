@@ -29,6 +29,7 @@ package org.hisp.dhis.reportsheet.exporting;
 
 import static org.hisp.dhis.reportsheet.utils.DateUtils.getEndQuaterly;
 import static org.hisp.dhis.reportsheet.utils.DateUtils.getEndSixMonthly;
+import static org.hisp.dhis.reportsheet.utils.DateUtils.getFirstDayOfMonth;
 import static org.hisp.dhis.reportsheet.utils.DateUtils.getFirstDayOfYear;
 import static org.hisp.dhis.reportsheet.utils.DateUtils.getLastDayOfYear;
 import static org.hisp.dhis.reportsheet.utils.DateUtils.getStartQuaterly;
@@ -49,8 +50,9 @@ import org.apache.poi.ss.usermodel.Sheet;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroup;
 import org.hisp.dhis.period.Period;
-import org.hisp.dhis.reportsheet.ExportReport;
+import org.hisp.dhis.period.PeriodType;
 import org.hisp.dhis.reportsheet.ExportItem;
+import org.hisp.dhis.reportsheet.ExportReport;
 import org.hisp.dhis.reportsheet.utils.ExcelUtils;
 
 import com.opensymphony.xwork2.Action;
@@ -72,7 +74,7 @@ public abstract class AbstractGenerateExcelReportSupport
     {
         statementManager.initialise();
 
-        Period period = periodGenericManager.getSelectedPeriod();
+        Period period = PeriodType.createPeriodExternalId( selectionManager.getSelectedPeriodIndex() );
 
         ExportReport exportReport = exportReportService.getExportReport( selectionManager.getSelectedReportId() );
 
@@ -118,6 +120,10 @@ public abstract class AbstractGenerateExcelReportSupport
         startDate = period.getStartDate();
         endDate = period.getEndDate();
 
+        // So-far-this-month
+        firstDayOfMonth = getFirstDayOfMonth( startDate );
+        firstDayOfMonth = getTimeRoll( firstDayOfMonth, Calendar.DATE, -1 );
+
         // Last 3 month period
         // Last 2 months + this month = last 3 month
         last3MonthStartDate = getTimeRoll( startDate, Calendar.MONTH, -2 );
@@ -137,7 +143,7 @@ public abstract class AbstractGenerateExcelReportSupport
         last6MonthStartDate = getTimeRoll( last6MonthStartDate, Calendar.DATE, -1 );
         last6MonthEndDate = period.getEndDate();
 
-        // Quaterly
+        // Quarterly
         startQuaterly = getStartQuaterly( startDate );
         startQuaterly = getTimeRoll( startQuaterly, Calendar.DATE, -1 );
         endQuaterly = getEndQuaterly( startDate );
@@ -204,7 +210,22 @@ public abstract class AbstractGenerateExcelReportSupport
     {
         double value = 0.0;
 
-        if ( exportItem.getPeriodType().equalsIgnoreCase( ExportItem.PERIODTYPE.SELECTED_MONTH ) )
+        if ( exportItem.getPeriodType().equalsIgnoreCase( ExportItem.PERIODTYPE.DAILY ) )
+        {
+            value = calculateExpression( generateExpression( exportItem, startDate, startDate, organisationUnit,
+                dataElementService, categoryService, aggregationService ) );
+        }
+        else if ( exportItem.getPeriodType().equalsIgnoreCase( ExportItem.PERIODTYPE.SO_FAR_THIS_MONTH ) )
+        {
+            value = calculateExpression( generateExpression( exportItem, firstDayOfMonth, endDate, organisationUnit,
+                dataElementService, categoryService, aggregationService ) );
+        }
+        else if ( exportItem.getPeriodType().equalsIgnoreCase( ExportItem.PERIODTYPE.SO_FAR_THIS_QUARTER ) )
+        {
+            value = calculateExpression( generateExpression( exportItem, startQuaterly, endDate, organisationUnit,
+                dataElementService, categoryService, aggregationService ) );
+        }
+        else if ( exportItem.getPeriodType().equalsIgnoreCase( ExportItem.PERIODTYPE.SELECTED_MONTH ) )
         {
             value = calculateExpression( generateExpression( exportItem, startDate, endDate, organisationUnit,
                 dataElementService, categoryService, aggregationService ) );
@@ -214,19 +235,9 @@ public abstract class AbstractGenerateExcelReportSupport
             value = calculateExpression( generateExpression( exportItem, last3MonthStartDate, last3MonthEndDate,
                 organisationUnit, dataElementService, categoryService, aggregationService ) );
         }
-        else if ( exportItem.getPeriodType().equalsIgnoreCase( ExportItem.PERIODTYPE.SO_FAR_THIS_YEAR ) )
-        {
-            value = calculateExpression( generateExpression( exportItem, firstDayOfYear, endDate, organisationUnit,
-                dataElementService, categoryService, aggregationService ) );
-        }
         else if ( exportItem.getPeriodType().equalsIgnoreCase( ExportItem.PERIODTYPE.LAST_6_MONTH ) )
         {
             value = calculateExpression( generateExpression( exportItem, last6MonthStartDate, last6MonthEndDate,
-                organisationUnit, dataElementService, categoryService, aggregationService ) );
-        }
-        else if ( exportItem.getPeriodType().equalsIgnoreCase( ExportItem.PERIODTYPE.YEARLY ) )
-        {
-            value = calculateExpression( generateExpression( exportItem, firstDayOfYear, endDateOfYear,
                 organisationUnit, dataElementService, categoryService, aggregationService ) );
         }
         else if ( exportItem.getPeriodType().equalsIgnoreCase( ExportItem.PERIODTYPE.QUARTERLY ) )
@@ -237,6 +248,16 @@ public abstract class AbstractGenerateExcelReportSupport
         else if ( exportItem.getPeriodType().equalsIgnoreCase( ExportItem.PERIODTYPE.SIX_MONTH ) )
         {
             value = calculateExpression( generateExpression( exportItem, startSixMonthly, endSixMonthly,
+                organisationUnit, dataElementService, categoryService, aggregationService ) );
+        }
+        else if ( exportItem.getPeriodType().equalsIgnoreCase( ExportItem.PERIODTYPE.SO_FAR_THIS_YEAR ) )
+        {
+            value = calculateExpression( generateExpression( exportItem, firstDayOfYear, endDate, organisationUnit,
+                dataElementService, categoryService, aggregationService ) );
+        }
+        else if ( exportItem.getPeriodType().equalsIgnoreCase( ExportItem.PERIODTYPE.YEARLY ) )
+        {
+            value = calculateExpression( generateExpression( exportItem, firstDayOfYear, endDateOfYear,
                 organisationUnit, dataElementService, categoryService, aggregationService ) );
         }
 
@@ -251,7 +272,12 @@ public abstract class AbstractGenerateExcelReportSupport
     {
         double value = 0.0;
 
-        if ( exportItem.getPeriodType().equalsIgnoreCase( ExportItem.PERIODTYPE.SELECTED_MONTH ) )
+        if ( exportItem.getPeriodType().equalsIgnoreCase( ExportItem.PERIODTYPE.DAILY ) )
+        {
+            value = calculateExpression( generateIndicatorExpression( exportItem, startDate, startDate,
+                organisationUnit, indicatorService, aggregationService ) );
+        }
+        else if ( exportItem.getPeriodType().equalsIgnoreCase( ExportItem.PERIODTYPE.SELECTED_MONTH ) )
         {
             value = calculateExpression( generateIndicatorExpression( exportItem, startDate, endDate, organisationUnit,
                 indicatorService, aggregationService ) );

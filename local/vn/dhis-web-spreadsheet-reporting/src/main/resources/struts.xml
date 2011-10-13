@@ -484,8 +484,8 @@
 
 		<action name="getExportReportsByGroup"
 			class="org.hisp.dhis.reportsheet.exporting.action.GetExportReportsByGroupAction">
-			<result name="success" type="velocity-xml">
-				/dhis-web-spreadsheet-reporting/responseExportReports.vm</result>
+			<result name="success" type="velocity-json">
+				/dhis-web-spreadsheet-reporting/jsonExportReports.vm</result>
 		</action>
 
 		<!-- Generate Report Excel use POI -->
@@ -512,26 +512,26 @@
 
 		<action name="generateReportCategory"
 			class="org.hisp.dhis.reportsheet.exporting.action.GenerateReportCategoryAction">
-			<result name="success" type="velocity-xml">
-				/dhis-web-commons/ajax/xmlResponseSuccess.vm</result>
+			<result name="success" type="velocity-json">
+				/dhis-web-commons/ajax/jsonResponseSuccess.vm</result>
 		</action>
 
 		<action name="generateReportNormal"
 			class="org.hisp.dhis.reportsheet.exporting.action.GenerateReportNormalAction">
-			<result name="success" type="velocity-xml">
-				/dhis-web-commons/ajax/xmlResponseSuccess.vm</result>
+			<result name="success" type="velocity-json">
+				/dhis-web-commons/ajax/jsonResponseSuccess.vm</result>
 		</action>
 
 		<action name="generateReportOrgGroupListing"
 			class="org.hisp.dhis.reportsheet.exporting.action.GenerateReportOrgGroupListingAction">
-			<result name="success" type="velocity-xml">
-				/dhis-web-commons/ajax/xmlResponseSuccess.vm</result>
+			<result name="success" type="velocity-json">
+				/dhis-web-commons/ajax/jsonResponseSuccess.vm</result>
 		</action>
 
 		<action name="generateReportPeriodColumnListing"
 			class="org.hisp.dhis.reportsheet.exporting.action.GenerateReportPeriodColumnListingAction">
-			<result name="success" type="velocity-xml">
-				/dhis-web-commons/ajax/xmlResponseSuccess.vm</result>
+			<result name="success" type="velocity-json">
+				/dhis-web-commons/ajax/jsonResponseSuccess.vm</result>
 		</action>
 
 
