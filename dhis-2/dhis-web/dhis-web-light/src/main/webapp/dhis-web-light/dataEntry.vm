@@ -28,7 +28,7 @@
 		#foreach( $dataElement in $dataElements)
 			#foreach( $optionCombo in $dataElement.categoryCombo.optionCombos )
 				#set( $key = "DE${dataElement.id}OC${optionCombo.id}" )
-				<label>$dataElement.name $optionCombo.name</label>
+				<label>$dataElement.name #if($dataElement.categoryCombo.optionCombos.size > 1)$optionCombo.name#end</label>
 
 				#if( $validationViolations.get( $key ) )
 				#set( $validationViolation = $validationViolations.get( $key ) )
