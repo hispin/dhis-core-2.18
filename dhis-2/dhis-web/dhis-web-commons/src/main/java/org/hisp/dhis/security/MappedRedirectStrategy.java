@@ -84,12 +84,12 @@ public class MappedRedirectStrategy
                 url = url.replaceFirst( key, redirectMap.get( key ) );
             }
         }
-
+        
         // TODO fix this
-        if ( device.isMobile() )
-        {
-            url = "mobile/index.action";
-        }
+//        if ( device.isMobile() )
+//        {
+//            url = "mobile/index.action";
+//        }
 
         super.sendRedirect( request, response, url );
     }
