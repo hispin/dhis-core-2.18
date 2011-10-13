@@ -1,20 +1,21 @@
-package org.hisp.dhis.reports.routine.action;
-
-import static org.hisp.dhis.system.util.ConversionUtils.getIdentifiers;
+package org.hisp.dhis.reports.idsp.action;
 
 import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
+import java.sql.ResultSet;
+import java.sql.Statement;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 import java.util.UUID;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import jxl.CellType;
 import jxl.Workbook;
@@ -33,10 +34,13 @@ import jxl.write.WritableWorkbook;
 
 import org.amplecode.quick.StatementManager;
 import org.hisp.dhis.config.Configuration_IN;
+import org.hisp.dhis.dataelement.DataElement;
+import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
+import org.hisp.dhis.dataelement.DataElementCategoryService;
+import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.i18n.I18nFormat;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroup;
-import org.hisp.dhis.organisationunit.OrganisationUnitGroupService;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.organisationunit.comparator.OrganisationUnitNameComparator;
 import org.hisp.dhis.period.Period;
@@ -45,13 +49,15 @@ import org.hisp.dhis.period.PeriodType;
 import org.hisp.dhis.reports.ReportService;
 import org.hisp.dhis.reports.Report_in;
 import org.hisp.dhis.reports.Report_inDesign;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.support.rowset.SqlRowSet;
 
 import com.opensymphony.xwork2.Action;
 
-public class GenerateRoutineReportAnalyserResultAction
-    implements Action
+public class GenerateIDSPReportAnalyserResultAction
+implements Action
 {
- 
+    
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
@@ -62,14 +68,14 @@ public class GenerateRoutineReportAnalyserResultAction
     {
         this.statementManager = statementManager;
     }
-
+/*
     private OrganisationUnitGroupService organisationUnitGroupService;
 
     public void setOrganisationUnitGroupService( OrganisationUnitGroupService organisationUnitGroupService )
     {
         this.organisationUnitGroupService = organisationUnitGroupService;
     }
-
+*/
     private ReportService reportService;
 
     public void setReportService( ReportService reportService )
@@ -97,7 +103,29 @@ public class GenerateRoutineReportAnalyserResultAction
     {
         this.format = format;
     }
+    
+    private JdbcTemplate jdbcTemplate;
 
+    public void setJdbcTemplate( JdbcTemplate jdbcTemplate )
+    {
+        this.jdbcTemplate = jdbcTemplate;
+    }
+    
+    private DataElementService dataElementService;
+
+    public void setDataElementService( DataElementService dataElementService )
+    {
+        this.dataElementService = dataElementService;
+    }
+    
+    private DataElementCategoryService dataElementCategoryOptionComboService;
+
+    public void setDataElementCategoryOptionComboService(
+        DataElementCategoryService dataElementCategoryOptionComboService )
+    {
+        this.dataElementCategoryOptionComboService = dataElementCategoryOptionComboService;
+    }
+    
     // -------------------------------------------------------------------------
     // Properties
     // -------------------------------------------------------------------------
@@ -136,7 +164,7 @@ public class GenerateRoutineReportAnalyserResultAction
     {
         this.availablePeriods = availablePeriods;
     }
-
+/*
     private String aggCB;
 
     public void setAggCB( String aggCB )
@@ -144,13 +172,13 @@ public class GenerateRoutineReportAnalyserResultAction
         this.aggCB = aggCB;
     }
 
-    private String organisationUnitGroupId;
+  private String organisationUnitGroupId;
 
     public void setOrganisationUnitGroupId( String organisationUnitGroupId )
     {
         this.organisationUnitGroupId = organisationUnitGroupId;
     }
-
+*/
     private List<OrganisationUnit> orgUnitList;
 
     private Period selectedPeriod;
@@ -184,6 +212,12 @@ public class GenerateRoutineReportAnalyserResultAction
     private String raFolderName;
     
     private SimpleDateFormat dateFormat;
+    
+    private OrganisationUnit currentOrgUnit;
+    
+    //private List<Integer> rowMergeList;
+
+    //private List<Integer> colMergeList;
 
     // -------------------------------------------------------------------------
     // Action implementation
@@ -205,7 +239,11 @@ public class GenerateRoutineReportAnalyserResultAction
         dateFormat = new SimpleDateFormat( "dd-MM-yyyy" );
         String deCodesXMLFileName = "";
         String parentUnit = "";
-
+        
+        //rowMergeList = new ArrayList<Integer>();
+        
+       // colMergeList = new ArrayList<Integer>();
+        
         Report_in selReportObj = reportService.getReport( Integer.parseInt( reportList ) );
         deCodesXMLFileName = selReportObj.getXmlTemplateName();
         reportModelTB = selReportObj.getModel();
@@ -241,9 +279,11 @@ public class GenerateRoutineReportAnalyserResultAction
             OrganisationUnit orgUnit = organisationUnitService.getOrganisationUnit( ouIDTB );
             orgUnitList.add( orgUnit );
         }
-
+        
+        currentOrgUnit = organisationUnitService.getOrganisationUnit( ouIDTB );
+        
         System.out.println( orgUnitList.get( 0 ).getName()+ " : " + selReportObj.getName()+" : Report Generation Start Time is : " + new Date() );
-
+/*
         OrganisationUnitGroup orgUnitGroup = null;
         
         List<OrganisationUnit> orgGroupMembers = null;
@@ -257,7 +297,7 @@ public class GenerateRoutineReportAnalyserResultAction
             orgUnitGroup = organisationUnitGroupService.getOrganisationUnitGroup( Integer.parseInt( organisationUnitGroupId ) );
             orgGroupMembers = new ArrayList<OrganisationUnit>( orgUnitGroup.getMembers() );
         }
-        
+*/        
         selectedPeriod = periodService.getPeriod( availablePeriods );
         sDate = format.parseDate( String.valueOf( selectedPeriod.getStartDate() ) );
         eDate = format.parseDate( String.valueOf( selectedPeriod.getEndDate() ) );
@@ -280,6 +320,7 @@ public class GenerateRoutineReportAnalyserResultAction
         while ( it.hasNext() )
         {
             OrganisationUnit currentOrgUnit = (OrganisationUnit) it.next();
+            /*
             List<OrganisationUnit> ouList =  new ArrayList<OrganisationUnit>();
 
             if ( organisationUnitGroupId.equalsIgnoreCase( "ALL" ) || organisationUnitGroupId.equalsIgnoreCase( "Selected_Only" ) || organisationUnitGroupId.equalsIgnoreCase( "useexistingaggdata" ) )
@@ -292,7 +333,7 @@ public class GenerateRoutineReportAnalyserResultAction
                 excludeOrgUnits.retainAll( ouList );
                 ouList.retainAll( orgGroupMembers );
             }
-            
+            */
             Iterator<Report_inDesign> reportDesignIterator = reportDesignList.iterator();
             while ( reportDesignIterator.hasNext() )
             {
@@ -775,343 +816,9 @@ public class GenerateRoutineReportAnalyserResultAction
                 {
                     if ( sType.equalsIgnoreCase( "dataelement" ) )
                     {
-                        if ( organisationUnitGroupId.equalsIgnoreCase( "ALL" ) )
-                        {
-                            tempStr = reportService.getResultDataValue( deCodeString, tempStartDate.getTime(), tempEndDate.getTime(), currentOrgUnit, reportModelTB );
-                            
-                            if( excludeOrgUnits != null && excludeOrgUnits.size() != 0 )
-                            {
-                                double tempExcludeAggVal = 0.0;
-                                double value = 0.0;
-                                for ( OrganisationUnit unit : excludeOrgUnits )
-                                {
-                                    String tempStr1 = reportService.getResultDataValue( deCodeString, tempStartDate.getTime(), tempEndDate.getTime(), unit, reportModelTB );
-
-                                    try
-                                    {
-                                        value = Double.valueOf( tempStr1 );
-                                    }
-                                    catch ( Exception e )
-                                    {
-                                        value = 0.0;
-                                    }
-                                    tempExcludeAggVal += value;
-                                }
-                                
-                                try
-                                {
-                                    value = Double.parseDouble( tempStr ) - tempExcludeAggVal;
-                                    tempStr = ""+value;
-                                }
-                                catch( Exception e )
-                                {
-                                }
-                            }
-                        }
-                        else if ( organisationUnitGroupId.equalsIgnoreCase( "Selected_Only" ) )
-                        {
-                            tempStr = reportService.getIndividualResultDataValue( deCodeString, tempStartDate.getTime(), tempEndDate.getTime(), currentOrgUnit, reportModelTB );
-                            
-                            if( excludeOrgUnits != null && excludeOrgUnits.size() != 0 )
-                            {
-                                double tempExcludeAggVal = 0.0;
-                                double value = 0.0;
-                                for ( OrganisationUnit unit : excludeOrgUnits )
-                                {
-                                    String tempStr1 = reportService.getResultDataValue( deCodeString, tempStartDate.getTime(), tempEndDate.getTime(), unit, reportModelTB );
-
-                                    try
-                                    {
-                                        value = Double.valueOf( tempStr1 );
-                                    }
-                                    catch ( Exception e )
-                                    {
-                                        value = 0.0;
-                                    }
-                                    tempExcludeAggVal += value;
-                                }
-                                
-                                try
-                                {
-                                    value = Double.parseDouble( tempStr ) - tempExcludeAggVal;
-                                    tempStr = ""+value;
-                                }
-                                catch( Exception e )
-                                {
-                                }
-                            }
-                        }
-                        else if ( organisationUnitGroupId.equalsIgnoreCase( "useexistingaggdata" ) )
-                        {
-                            List<Period> periodList = new ArrayList<Period>( periodService.getPeriodsBetweenDates( tempStartDate.getTime(), tempEndDate.getTime() ) );
-                            Collection<Integer> periodIds = new ArrayList<Integer>( getIdentifiers(Period.class, periodList ) );
-                            tempStr = reportService.getResultDataValueFromAggregateTable( deCodeString, periodIds, currentOrgUnit, reportModelTB );
-                            
-                            if( excludeOrgUnits != null && excludeOrgUnits.size() != 0 )
-                            {
-                                double tempExcludeAggVal = 0.0;
-                                double value = 0.0;
-                                for ( OrganisationUnit unit : excludeOrgUnits )
-                                {
-                                    String tempStr1 = reportService.getResultDataValue( deCodeString, tempStartDate.getTime(), tempEndDate.getTime(), unit, reportModelTB );
-
-                                    try
-                                    {
-                                        value = Double.valueOf( tempStr1 );
-                                    }
-                                    catch ( Exception e )
-                                    {
-                                        value = 0.0;
-                                    }
-                                    tempExcludeAggVal += value;
-                                }
-                                
-                                try
-                                {
-                                    value = Double.parseDouble( tempStr ) - tempExcludeAggVal;
-                                    tempStr = ""+value;
-                                }
-                                catch( Exception e )
-                                {
-                                }
-                            }
-                        }
-                        else
-                        {
-                            //List<OrganisationUnit> ouList = new ArrayList<OrganisationUnit>( organisationUnitService.getOrganisationUnitWithChildren( currentOrgUnit.getId() ) );
-                            
-                            //ouList.retainAll( orgGroupMembers );
-                            
-                            double temp = 0.0;
-                            double value = 0.0;
-                            for ( OrganisationUnit unit : ouList )
-                            {
-                                tempStr = reportService.getResultDataValue( deCodeString, tempStartDate.getTime(), tempEndDate.getTime(), unit, reportModelTB );
-
-                                try
-                                {
-                                    value = Double.valueOf( tempStr );
-                                }
-                                catch ( Exception e )
-                                {
-                                    value = 0.0;
-                                }
-                                temp += value;
-                            }
-
-                            tempNum = temp;
-                            tempStr = String.valueOf( (int) temp );
-                            
-                            if( excludeOrgUnits != null && excludeOrgUnits.size() != 0 )
-                            {
-                                double tempExcludeAggVal = 0.0;
-                                value = 0.0;
-                                for ( OrganisationUnit unit : excludeOrgUnits )
-                                {
-                                    String tempStr1 = reportService.getResultDataValue( deCodeString, tempStartDate.getTime(), tempEndDate.getTime(), unit, reportModelTB );
-
-                                    try
-                                    {
-                                        value = Double.valueOf( tempStr1 );
-                                    }
-                                    catch ( Exception e )
-                                    {
-                                        value = 0.0;
-                                    }
-                                    tempExcludeAggVal += value;
-                                }
-                                
-                                try
-                                {
-                                    value = Double.parseDouble( tempStr ) - tempExcludeAggVal;
-                                    tempStr = ""+value;
-                                }
-                                catch( Exception e )
-                                {
-                                }
-                            }
-                        }
-                    }
-                    else if ( sType.equalsIgnoreCase( "de-text-agg" ) )
-                    {
-                        if ( organisationUnitGroupId.equalsIgnoreCase( "ALL" ) )
-                        {
-                            tempStr = reportService.getAggCountForTextData( deCodeString, tempStartDate.getTime(), tempEndDate.getTime(), currentOrgUnit );
-                        }
-                        else if ( organisationUnitGroupId.equalsIgnoreCase( "Selected_Only" ) )
-                        {
-                            tempStr = reportService.getCountForTextData( deCodeString, tempStartDate.getTime(), tempEndDate.getTime(), currentOrgUnit );
-                        }
-                        else
-                        {
-                            //List<OrganisationUnit> ouList = new ArrayList<OrganisationUnit>( organisationUnitService.getOrganisationUnitWithChildren( currentOrgUnit.getId() ) );
-                            
-                            //ouList.retainAll( orgGroupMembers );
-                            
-                            double temp = 0.0;
-                            double value = 0.0;
-                            for ( OrganisationUnit unit : ouList )
-                            {
-                                tempStr = reportService.getAggCountForTextData( deCodeString, tempStartDate.getTime(), tempEndDate.getTime(), unit );
-
-                                try
-                                {
-                                    value = Double.valueOf( tempStr );
-                                }
-                                catch ( Exception e )
-                                {
-                                    value = 0.0;
-                                    System.out.println( e );
-                                }
-                                temp += value;
-                            }
-
-                            tempNum = temp;
-                            tempStr = String.valueOf( (int) temp );
-                        }
-                    }
-                    else if ( sType.equalsIgnoreCase( "progressivede" ) )
-                    {
-                        int year = Integer.parseInt( deType );
-                        tempStartDate.set( year, 1, 1, 0, 0, 0 );
-                        tempEndDate.setTime( selectedPeriod.getEndDate() );
-                        
-                        if ( organisationUnitGroupId.equalsIgnoreCase( "ALL" ) )
-                        {
-                            tempStr = reportService.getResultDataValue( deCodeString, tempStartDate.getTime(), tempEndDate.getTime(), currentOrgUnit, reportModelTB );
-                        }
-                        else if ( organisationUnitGroupId.equalsIgnoreCase( "Selected_Only" ) )
-                        {
-                            tempStr = reportService.getIndividualResultDataValue( deCodeString, tempStartDate.getTime(), tempEndDate.getTime(), currentOrgUnit, reportModelTB );
-                        }
-                        else
-                        {
-                            //List<OrganisationUnit> ouList = new ArrayList<OrganisationUnit>( organisationUnitService.getOrganisationUnitWithChildren( currentOrgUnit.getId() ) );
-                            //ouList.retainAll( orgGroupMembers );
-                            
-                            double temp = 0.0;
-                            double value = 0.0;
-                            for ( OrganisationUnit unit : ouList )
-                            {
-                                tempStr = reportService.getResultDataValue( deCodeString, tempStartDate.getTime(), tempEndDate.getTime(), unit, reportModelTB );
-                                try
-                                {
-                                    value = Double.valueOf( tempStr );
-                                }
-                                catch ( Exception e )
-                                {
-                                    value = 0.0;
-                                    System.out.println( e );
-                                }
-                                temp += value;
-                            }
-                            tempNum = temp;
-                            tempStr = String.valueOf( (int) temp );
-                        }
-                    }
-                    else if ( sType.equalsIgnoreCase( "financialprogressivede" ) )
-                    {
-                        int year = Integer.parseInt( deType );
-                        tempStartDate.set( year, 1, 1, 0, 0, 0 );
-                        
-                        tempEndDate.setTime( selectedPeriod.getEndDate() );
-                        if ( tempEndDate.get( Calendar.MONTH ) < Calendar.JULY )
-                        {
-                            tempEndDate.roll( Calendar.YEAR, -1 );
-                        }
-                        tempEndDate.set( Calendar.MONTH, Calendar.JULY );
-
-                        if ( organisationUnitGroupId.equalsIgnoreCase( "ALL" ) )
-                        {
-                            tempStr = reportService.getResultDataValue( deCodeString, tempStartDate.getTime(), tempEndDate.getTime(), currentOrgUnit, reportModelTB );
-                        }
-                        else if ( organisationUnitGroupId.equalsIgnoreCase( "Selected_Only" ) )
-                        {
-                            tempStr = reportService.getIndividualResultDataValue( deCodeString, tempStartDate.getTime(), tempEndDate.getTime(), currentOrgUnit, reportModelTB );
-                        }
-                        else
-                        {
-                            //List<OrganisationUnit> ouList = new ArrayList<OrganisationUnit>( organisationUnitService.getOrganisationUnitWithChildren( currentOrgUnit.getId() ) );
-                            //ouList.retainAll( orgGroupMembers );
-                            
-                            double temp = 0.0;
-                            double value = 0.0;
-                            for ( OrganisationUnit unit : ouList )
-                            {
-                                tempStr = reportService.getResultDataValue( deCodeString, tempStartDate.getTime(), tempEndDate.getTime(), unit, reportModelTB );
-                                try
-                                {
-                                    value = Double.valueOf( tempStr );
-                                }
-                                catch ( Exception e )
-                                {
-                                    value = 0.0;
-                                    System.out.println( e );
-                                }
-                                temp += value;
-                            }
-                            tempNum = temp;
-                            tempStr = String.valueOf( (int) temp );
-                        }
-                    }
-                    else if( sType.equalsIgnoreCase( "survey" ))
-                    {
-                        tempStr = reportService.getResultSurveyValue( deCodeString, currentOrgUnit );
-                    }
-                    else if( sType.equalsIgnoreCase( "surveydesc" ) )
-                    {
-                        tempStr = reportService.getSurveyDesc( deCodeString );
-                    }
-                    else if ( sType.equalsIgnoreCase( "dataelement-boolean" ) )
-                    {
-                        if ( aggCB == null )
-                        {
-                            tempStr = reportService.getBooleanDataValue( deCodeString, tempStartDate.getTime(), tempEndDate.getTime(), currentOrgUnit, reportModelTB );
-                        }
-                        else
-                        {
-                            tempStr = reportService.getBooleanDataValue( deCodeString, tempStartDate.getTime(), tempEndDate.getTime(), currentOrgUnit, reportModelTB );
-                        }
-                    }
-                    else
-                    {
-                        if ( organisationUnitGroupId.equalsIgnoreCase( "ALL" ) )
-                        {
-                            tempStr = reportService.getResultIndicatorValue( deCodeString, tempStartDate.getTime(), tempEndDate.getTime(), currentOrgUnit );
-                        }
-                        else if ( organisationUnitGroupId.equalsIgnoreCase( "Selected_Only" ) )
-                        {
-                            tempStr = reportService.getIndividualResultIndicatorValue( deCodeString, tempStartDate.getTime(), tempEndDate.getTime(), currentOrgUnit );
-                        }
-                        else
-                        {
-                            //List<OrganisationUnit> ouList = new ArrayList<OrganisationUnit>( organisationUnitService.getOrganisationUnitWithChildren( currentOrgUnit.getId() ) );
-                            //ouList.retainAll( orgGroupMembers );
-                            
-                            double temp = 0.0;
-                            double value = 0.0;
-                            for ( OrganisationUnit unit : ouList )
-                            {
-                                tempStr = reportService.getResultIndicatorValue( deCodeString, tempStartDate.getTime(), tempEndDate.getTime(), unit );
-
-                                try
-                                {
-                                    value = Double.valueOf( tempStr );
-                                }
-                                catch ( Exception e )
-                                {
-                                    value = 0.0;
-                                    System.out.println( e );
-                                }
-                                temp += value;
-                            }
-
-                            tempNum = temp;
-                            tempStr = String.valueOf( temp );
-                        }
-                    }
-                }
-                
+                        tempStr = reportService.getResultDataValue( deCodeString, tempStartDate.getTime(), tempEndDate.getTime(), currentOrgUnit, reportModelTB );
+                    }      
+                }        
                 int tempRowNo = report_inDesign.getRowno();
                 int tempColNo = report_inDesign.getColno();
                 int sheetNo = report_inDesign.getSheetno();
@@ -1196,7 +903,9 @@ public class GenerateRoutineReportAnalyserResultAction
                             || deCodeString.equalsIgnoreCase( "QUARTER-END" )
                             || deCodeString.equalsIgnoreCase( "SIMPLE-YEAR" )
                             || deCodeString.equalsIgnoreCase( "YEAR-END" )
-                            || deCodeString.equalsIgnoreCase( "YEAR-FROMTO" ) )
+                            || deCodeString.equalsIgnoreCase( "YEAR-FROMTO" ) 
+                            || deCodeString.equalsIgnoreCase( "PERIOD-WEEK-START" )
+                            || deCodeString.equalsIgnoreCase( "PERIOD-WEEK-END" ))
                         {
 
                         }
@@ -1237,6 +946,225 @@ public class GenerateRoutineReportAnalyserResultAction
             }// inner while loop end
             orgUnitCount++;
         }// outer while loop end
+        
+        
+        // Line Listing IDSP Lab Test Data Information    
+        List<Integer> llIDSPLabTestRecordNos = new ArrayList<Integer>();
+        //llMaternalDeathrecordNos = getLinelistingMateralanRecordNos( currentOrgUnit, selectedPeriod, deCodesXMLFileName );
+        
+        llIDSPLabTestRecordNos = getLineListingIDSPLabTestRecordNos( currentOrgUnit, selectedPeriod );
+        System.out.println( "Line Listing IDSP Lab TEST Record Count is :" + llIDSPLabTestRecordNos.size() );
+        
+        
+        // for Line Listing IDSP Lab Test DataElements
+        List<Report_inDesign> reportDesignListLLIDSPLabTest = reportService.getReportDesignWithMergeCells( deCodesXMLFileName );
+        //int currentRowNo = 0;
+        int rowCount = 1;
+        int llIDSPLabTestRecordCount = 0;
+        //int tempLLIDSPLabTestRowNo = 0;
+        int tempflag = 0;
+        if ( llIDSPLabTestRecordNos.size() == 0 )
+            tempflag = 1;
+        Iterator<Integer> itllIDSPLabTest = llIDSPLabTestRecordNos.iterator();
+        while ( itllIDSPLabTest.hasNext() )
+        {
+            Integer recordNo = -1;
+            if ( tempflag == 0 )
+            {
+                recordNo = (Integer) itllIDSPLabTest.next();
+            }
+            tempflag = 0;
+
+            Iterator<Report_inDesign> reportDesignIterator = reportDesignListLLIDSPLabTest.iterator();
+            int count1 = 0;
+            while ( reportDesignIterator.hasNext() )
+            {
+              
+                Report_inDesign report_inDesign = (Report_inDesign) reportDesignIterator.next();
+
+                String deType = report_inDesign.getPtype();
+                String sType = report_inDesign.getStype();
+                String deCodeString = report_inDesign.getExpression();
+                String tempStr = "";
+
+                Calendar tempStartDate = Calendar.getInstance();
+                Calendar tempEndDate = Calendar.getInstance();
+                // List<Calendar> calendarList = new ArrayList<Calendar>(
+                // getStartingEndingPeriods( deType ) );
+                List<Calendar> calendarList = new ArrayList<Calendar>( reportService.getStartingEndingPeriods( deType,
+                    selectedPeriod ) );
+                if ( calendarList == null || calendarList.isEmpty() )
+                {
+                    tempStartDate.setTime( selectedPeriod.getStartDate() );
+                    tempEndDate.setTime( selectedPeriod.getEndDate() );
+                    return SUCCESS;
+                }
+                else
+                {
+                    tempStartDate = calendarList.get( 0 );
+                    tempEndDate = calendarList.get( 1 );
+                }
+
+                if ( deCodeString.equalsIgnoreCase( "NA" ) )
+                {
+                    tempStr = " ";
+                    
+                }
+                else if ( deCodeString.equalsIgnoreCase( "SLNo" ) )
+                {
+                       // tempStr = "" + rowCount;
+                        tempStr = "" + (llIDSPLabTestRecordCount + 1);
+                }
+                else
+                {
+                    if ( sType.equalsIgnoreCase( "llidsplabdataelement" ) )
+                    {
+                        tempStr = getLLDataValue( deCodeString, selectedPeriod, currentOrgUnit, recordNo );
+                    }
+
+                    else
+                    {
+                        // tempStr = reportService.getResultIndicatorValue(
+                        // deCodeString, tempStartDate.getTime(),
+                        // tempEndDate.getTime(), currentOrgUnit );
+                        // System.out.println( tempStr );
+                    }
+                }
+                //tempLLIDSPLabTestRowNo = report_inDesign.getRowno();
+                int tempRowNo = report_inDesign.getRowno();
+                int tempRowNo1 = tempRowNo;
+                // int tempRowNo = 136;
+                //currentRowNo = tempLLIDSPLabTestRowNo;
+                
+                int tempMergeCol = report_inDesign.getColmerge();
+                //int tempMergeCol = colMergeList.get( count1 );
+                int tempMergeRow = report_inDesign.getRowmerge();
+                
+                //System.out.println( "Row No is : " + tempRowNo +  ",No of Row Merge is  : " + tempMergeRow + ", and No of Coloum Merge is : " + tempMergeCol );
+                
+               // int tempMergeRow = rowMergeList.get( count1 );
+                int tempColNo = report_inDesign.getColno();
+                int sheetNo = report_inDesign.getSheetno();
+                
+                //int tempMergeCol = colMergeList.get( count1 );
+                //int tempMergeRow = rowMergeList.get( count1 );
+                
+                
+                
+                // System.out.println( ",Temp Row no is : " + tempRowNo );
+                WritableSheet sheet0 = outputReportWorkbook.getSheet( sheetNo );
+                if ( tempStr == null || tempStr.equals( " " ) )
+                {
+
+                }
+                else
+                {
+                    if ( reportModelTB.equalsIgnoreCase( "DYNAMIC-DATAELEMENT" )
+                        || reportModelTB.equalsIgnoreCase( "STATIC-DATAELEMENTS" ) )
+                    {
+                        if ( deCodeString.equalsIgnoreCase( "FACILITYP" )
+                            || deCodeString.equalsIgnoreCase( "FACILITYPP" ) )
+                        {
+
+                        }
+                        else if ( deCodeString.equalsIgnoreCase( "FACILITYPPP" )
+                            || deCodeString.equalsIgnoreCase( "FACILITYPPPP" ) )
+                        {
+
+                        }
+                        else if ( deCodeString.equalsIgnoreCase( "PERIOD-NOREPEAT" )
+                            || deCodeString.equalsIgnoreCase( "PERIOD-WEEK" ) )
+                        {
+
+                        }
+                        else if ( deCodeString.equalsIgnoreCase( "PERIOD-MONTH" )
+                            || deCodeString.equalsIgnoreCase( "PERIOD-QUARTER" ) )
+                        {
+
+                        }
+                        else if ( deCodeString.equalsIgnoreCase( "PERIOD-YEAR" ) )
+                        {
+
+                        }
+                        else if ( sType.equalsIgnoreCase( "dataelementnorepeat" ) )
+                        {
+
+                        }
+                        else
+                        {
+
+                            //tempLLIDSPLabTestRowNo += llIDSPLabTestRecordCount;
+                            //currentRowNo += llIDSPLabTestRecordCount;
+                            tempRowNo += llIDSPLabTestRecordCount;
+                        }
+
+                        WritableCellFormat wCellformat = new WritableCellFormat();
+
+                        wCellformat.setBorder( Border.ALL, BorderLineStyle.THIN );
+                        wCellformat.setWrap( true );
+                        wCellformat.setAlignment( Alignment.CENTRE );
+                        wCellformat.setVerticalAlignment( VerticalAlignment.CENTRE );
+                       
+                        WritableCell cell = sheet0.getWritableCell( tempColNo, tempRowNo1 );
+
+                        CellFormat cellFormat = cell.getCellFormat();
+                        
+                        if ( sType.equalsIgnoreCase( "llidsplabdataelement" ) )
+                        {
+                            //System.out.println( ",Inside LL IDSP Lab Test values" );
+                            if ( cellFormat != null )
+                            {
+                                //System.out.println( ",Inside cellFormat not null" );
+                                if ( tempMergeCol > 0 || tempMergeRow > 0 )
+                                {
+                                    //System.out.println( ",Inside cellFormat not null ,Inside Mrege Cells" );
+                                    sheet0.mergeCells( tempColNo, tempRowNo, tempColNo + tempMergeCol, tempRowNo + tempMergeRow );
+                                }
+                                
+                                try
+                                {
+                                    sheet0.addCell( new Number( tempColNo, tempRowNo, Integer.parseInt( tempStr ), wCellformat ) );
+                                }
+                                catch( Exception e )
+                                {
+                                    sheet0.addCell( new Label( tempColNo, tempRowNo, tempStr, wCellformat ) );
+                                }
+                                
+                                //System.out.println( "In Pre-Formatted: " + tempStr );
+                            }
+                            else
+                            {
+                                //System.out.println( ",Inside cellFormat null" );
+                                if ( tempMergeCol > 0 || tempMergeRow > 0 )
+                                {
+                                    //System.out.println( ",Inside cellFormat null ,Inside Mrege Cells" );
+                                    sheet0.mergeCells( tempColNo, tempRowNo, tempColNo + tempMergeCol, tempRowNo + tempMergeRow );
+                                }
+                                
+                                try
+                                {
+                                    sheet0.addCell( new Number( tempColNo, tempRowNo, Integer.parseInt( tempStr ), getCellFormat1() ) );
+                                }
+                                catch( Exception e )
+                                {
+                                    sheet0.addCell( new Label( tempColNo, tempRowNo, tempStr, getCellFormat1() ) );
+                                }
+
+                                //System.out.println( "In Cur-Formatted: " + tempStr );
+                            }
+                            
+                        }
+
+                    }
+
+                }
+                count1++;
+            }// inner while loop end
+            llIDSPLabTestRecordCount++;
+            rowCount++;
+            // System.out.println("End Row no for ll Death Death is  : " +
+            // recordCount );
+        }// outer while loop end
 
         outputReportWorkbook.write();
         outputReportWorkbook.close();
@@ -1255,4 +1183,163 @@ public class GenerateRoutineReportAnalyserResultAction
 
         return SUCCESS;
     }
+    
+// Supporting Methods
+    
+    public List<Integer> getLineListingIDSPLabTestRecordNos( OrganisationUnit organisationUnit, Period period )
+    {
+        List<Integer> recordNosList = new ArrayList<Integer>();
+
+        String query = "";
+
+        int dataElementid = 1053;
+
+        try
+        {
+            query = "SELECT recordno FROM lldatavalue WHERE dataelementid = " + dataElementid + " AND periodid = "
+                + period.getId() + " AND sourceid = " + organisationUnit.getId();
+
+            SqlRowSet rs1 = jdbcTemplate.queryForRowSet( query );
+
+            while ( rs1.next() )
+            {
+                recordNosList.add( rs1.getInt( 1 ) );
+            }
+
+            Collections.sort( recordNosList );
+        }
+        catch ( Exception e )
+        {
+            System.out.println( "SQL Exception : " + e.getMessage() );
+        }
+
+        return recordNosList;
+    }
+    
+    public WritableCellFormat getCellFormat1() throws Exception
+    {
+        WritableCellFormat wCellformat = new WritableCellFormat();
+    
+        wCellformat.setBorder( Border.ALL, BorderLineStyle.THIN );
+        wCellformat.setAlignment( Alignment.CENTRE );
+        wCellformat.setWrap( true );
+    
+        return wCellformat;
+    }
+    
+    public String getLLDataValue( String formula, Period period, OrganisationUnit organisationUnit, Integer recordNo )
+    {
+        Statement st1 = null;
+        ResultSet rs1 = null;
+        // System.out.println( "Inside LL Data Value Method" );
+        String query = "";
+        try
+        {
+
+            // int deFlag1 = 0;
+            // int deFlag2 = 0;
+            Pattern pattern = Pattern.compile( "(\\[\\d+\\.\\d+\\])" );
+
+            Matcher matcher = pattern.matcher( formula );
+            StringBuffer buffer = new StringBuffer();
+
+            while ( matcher.find() )
+            {
+                String replaceString = matcher.group();
+
+                replaceString = replaceString.replaceAll( "[\\[\\]]", "" );
+                String optionComboIdStr = replaceString.substring( replaceString.indexOf( '.' ) + 1, replaceString
+                    .length() );
+
+                replaceString = replaceString.substring( 0, replaceString.indexOf( '.' ) );
+
+                int dataElementId = Integer.parseInt( replaceString );
+                int optionComboId = Integer.parseInt( optionComboIdStr );
+
+                DataElement dataElement = dataElementService.getDataElement( dataElementId );
+                DataElementCategoryOptionCombo optionCombo = dataElementCategoryOptionComboService.getDataElementCategoryOptionCombo( optionComboId );
+
+                if ( dataElement == null || optionCombo == null )
+                {
+                    replaceString = "";
+                    matcher.appendReplacement( buffer, replaceString );
+                    continue;
+                }
+
+                // DataValue dataValue = dataValueService.getDataValue(
+                // organisationUnit, dataElement, period,
+                // optionCombo );
+                // st1 = con.createStatement();
+
+                // System.out.println(
+                // "Before getting value : OrganisationUnit Name : " +
+                // organisationUnit.getName() + ", Period is : " +
+                // period.getId() + ", DataElement Name : " +
+                // dataElement.getName() + ", Record No: " + recordNo );
+
+                query = "SELECT value FROM lldatavalue WHERE sourceid = " + organisationUnit.getId()
+                    + " AND periodid = " + period.getId() + " AND dataelementid = " + dataElement.getId()
+                    + " AND recordno = " + recordNo;
+                // rs1 = st1.executeQuery( query );
+
+                SqlRowSet sqlResultSet = jdbcTemplate.queryForRowSet( query );
+
+                String tempStr = "";
+
+                if ( sqlResultSet.next() )
+                {
+                    tempStr = sqlResultSet.getString( 1 );
+                }
+
+                replaceString = tempStr;
+
+                matcher.appendReplacement( buffer, replaceString );
+            }
+
+            matcher.appendTail( buffer );
+
+            String resultValue = "";
+            /*
+             * if ( deFlag1 == 0 ) { double d = 0.0; try { d =
+             * MathUtils.calculateExpression( buffer.toString() ); } catch (
+             * Exception e ) { d = 0.0; } if ( d == -1 ) d = 0.0; else { d =
+             * Math.round( d Math.pow( 10, 1 ) ) / Math.pow( 10, 1 );
+             * resultValue = "" + (int) d; }
+             * 
+             * if ( deFlag2 == 0 ) { resultValue = " "; }
+             * 
+             * } else { resultValue = buffer.toString(); }
+             */
+
+            resultValue = buffer.toString();
+
+            return resultValue;
+        }
+        catch ( NumberFormatException ex )
+        {
+            throw new RuntimeException( "Illegal DataElement id", ex );
+        }
+        catch ( Exception e )
+        {
+            System.out.println( "SQL Exception : " + e.getMessage() );
+            return null;
+        }
+        finally
+        {
+            try
+            {
+                if ( st1 != null )
+                    st1.close();
+
+                if ( rs1 != null )
+                    rs1.close();
+            }
+            catch ( Exception e )
+            {
+                System.out.println( "SQL Exception : " + e.getMessage() );
+                return null;
+            }
+        }// finally block end
+    }
+    
 }
