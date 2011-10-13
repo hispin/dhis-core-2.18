@@ -34,13 +34,12 @@
 		
 		<action name="generateChartDataElement"
 			class="org.hisp.dhis.dataanalyser.ga.action.charts.GenerateChartDataElementAction">
-			<result name="success" type="velocity">/popup.vm</result>
-			<param name="page">
-				/dhis-web-dashboard/graphicalAnalysisDataElementResult.vm</param>
+			<!--<result name="success" type="velocity">/popup.vm</result>-->
+			<result name="success" type="velocity">/content.vm</result>
+			<param name="page">/dhis-web-dashboard/graphicalAnalysisDataElementResult.vm</param>
 			
 			<!--<result name="success" type="velocity">/dhis-web-dashboard/graphicalAnalysisDataElementResult.vm</result>-->
-			<param name="javascripts">
-				../dhis-web-commons/ouwt/ouwt.js,../dhis-web-commons/lists/lists.js,javascript/ga.js,javascript/hashtable.js,javascript/gadataelement.js</param>
+			<param name="javascripts">../dhis-web-commons/ouwt/ouwt.js,../dhis-web-commons/lists/lists.js,javascript/ga.js,javascript/hashtable.js,javascript/gadataelement.js</param>
 			<param name="stylesheets">css/StylesForTags.css</param>
 			<interceptor-ref name="organisationUnitTreeStack"/>
 		</action>
@@ -966,7 +965,23 @@
 			<param name="page">/dhis-web-dashboard/dataEntrySummaryStatusResult.vm</param>
 			<param name="javascripts">javascript/ds.js,javascript/hashtable.js</param>
 			<param name="stylesheets">css/StylesForTags.css</param>
-		</action>					
-				
+		</action>
+
+	<!-- BULK SMS -->
+	<!-- BULK SMS: Programwise Summary -->
+        <action name="prgwiseSummaryBulkSMSForm"
+            class="org.hisp.dhis.dataanalyser.sms.action.BulkSMSForProgSummaryFormAction">
+            <result name="success" type="velocity">/main.vm</result>
+            <param name="page">/dhis-web-dashboard/BulkSMSForProgSummaryForm.vm</param>
+            <param name="menu">/dhis-web-dashboard/menu.vm</param>
+        </action>
+        <action name="prgwiseSummaryBulkSMSResult"
+            class="org.hisp.dhis.dataanalyser.sms.action.BulkSMSForProgSummaryResultAction">
+            <result name="success" type="velocity">/main.vm</result>
+            <param name="page">/dhis-web-dashboard/BulkSMSForProgSummaryResult.vm</param>
+            <param name="menu">/dhis-web-dashboard/menu.vm</param>
+        </action>
+
+
 	</package>
 </struts>

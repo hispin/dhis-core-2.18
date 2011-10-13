@@ -1387,5 +1387,19 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
         </property>
         <property name="jdbcTemplate" ref="jdbcTemplate"/>
 	</bean>		
+
+    <!-- BULK SMS -->
+    <!-- BULK SMS: Programwise Summary -->
+    <bean id="org.hisp.dhis.dataanalyser.sms.action.BulkSMSForProgSummaryFormAction"
+        class="org.hisp.dhis.dataanalyser.sms.action.BulkSMSForProgSummaryFormAction"
+        scope="prototype">
+        <property name="userGroupService" ref="org.hisp.dhis.user.UserGroupService"/>
+    </bean>     
+    <bean id="org.hisp.dhis.dataanalyser.sms.action.BulkSMSForProgSummaryResultAction"
+        class="org.hisp.dhis.dataanalyser.sms.action.BulkSMSForProgSummaryResultAction"
+        scope="prototype">
+        <property name="userGroupService" ref="org.hisp.dhis.user.UserGroupService" />
+		<property name="dashBoardService" ref="org.hisp.dhis.dataanalyser.util.DashBoardService" />
+    </bean>     
 		
 </beans>
