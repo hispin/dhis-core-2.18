@@ -16,8 +16,6 @@
 <head>
 <body>
 
-<div class="headerDiv"><span class="header">DHIS 2</span></div>
-
 #parse( $page )
 
 </body>
