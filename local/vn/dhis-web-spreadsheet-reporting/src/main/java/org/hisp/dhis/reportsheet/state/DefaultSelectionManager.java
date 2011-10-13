@@ -1,4 +1,5 @@
 package org.hisp.dhis.reportsheet.state;
+
 /*
  * Copyright (c) 2004-2011, University of Oslo
  * All rights reserved.
@@ -40,36 +41,34 @@ public class DefaultSelectionManager
     private static final String SESSION_KEY_FILE_DOWNLOAD = "SESSION_KEY_FILE_DOWNLOAD";
 
     private static final String SESSION_KEY_FILE_UPLOAD = "SESSION_KEY_FILE_UPLOAD";
-    
+
     private static final String SESSION_KEY_FILE_RENAME = "SESSION_KEY_FILE_RENAME";
 
     private static final String SESSION_KEY_SELECTED_REPORT_ID = "SESSION_KEY_SELECTED_REPORT_ID";
-    
+
+    private static final String SESSION_KEY_SELECTED_PERIOD_ID = "SESSION_KEY_SELECTED_PERIOD_ID";
+
     private static final String SESSION_KEY_BOOKMARK_TYPE = "SESSION_KEY_BOOKMARK_TYPE";
-    
+
     private static final String SESSION_KEY_LIST_OBJECT = "SESSION_KEY_LIST_OBJECT";
 
-    @Override
     public String getDownloadFilePath()
     {
         return (String) getSession().get( SESSION_KEY_FILE_DOWNLOAD );
     }
 
-    @Override
     public String getUploadFilePath()
     {
         return (String) getSession().get( SESSION_KEY_FILE_UPLOAD );
     }
 
     @SuppressWarnings( "unchecked" )
-    @Override
     public void setDownloadFilePath( String path )
     {
         getSession().put( SESSION_KEY_FILE_DOWNLOAD, path );
     }
 
     @SuppressWarnings( "unchecked" )
-    @Override
     public void setUploadFilePath( String path )
     {
         getSession().put( SESSION_KEY_FILE_UPLOAD, path );
@@ -81,35 +80,30 @@ public class DefaultSelectionManager
         return ActionContext.getContext().getSession();
     }
 
-    @Override
     public Integer getSelectedReportId()
     {
         return (Integer) getSession().get( SESSION_KEY_SELECTED_REPORT_ID );
     }
 
     @SuppressWarnings( "unchecked" )
-    @Override
     public void setSelectedReportId( Integer id )
     {
         getSession().put( SESSION_KEY_SELECTED_REPORT_ID, id );
     }
 
-    @Override
     public String getRenameFilePath()
     {
         return (String) getSession().get( SESSION_KEY_FILE_RENAME );
     }
 
-    @SuppressWarnings("unchecked")
-    @Override
+    @SuppressWarnings( "unchecked" )
     public void setRenameFilePath( String path )
     {
         getSession().put( SESSION_KEY_FILE_RENAME, path );
     }
 
-    @Override
     public String getBookmarkType()
-    {        
+    {
         return (String) getSession().get( SESSION_KEY_BOOKMARK_TYPE );
     }
 
@@ -119,16 +113,25 @@ public class DefaultSelectionManager
         getSession().put( SESSION_KEY_BOOKMARK_TYPE, type );
     }
 
-    @Override
     public String[] getListObject()
     {
         return (String[]) getSession().get( SESSION_KEY_LIST_OBJECT );
     }
 
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings( "unchecked" )
     public void setListObject( String[] objects )
     {
         getSession().put( SESSION_KEY_LIST_OBJECT, objects );
     }
 
+    public String getSelectedPeriodIndex()
+    {
+        return (String) getSession().get( SESSION_KEY_SELECTED_PERIOD_ID );
+    }
+
+    @SuppressWarnings("unchecked")
+    public void setSelectedPeriodIndex( String periodIndex )
+    {
+        getSession().put( SESSION_KEY_SELECTED_PERIOD_ID, periodIndex  );
+    }
 }

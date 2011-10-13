@@ -1,3 +1,14 @@
+// Current offset, next or previous corresponding to increasing or decreasing
+// value with one
+var currentPeriodOffset = 0;
+
+// Period type object
+var periodTypeFactory = new PeriodType();
+
+// The current selected period type name
+var currentPeriodTypeName = '';
+
+// Functions
 function organisationUnitSelected( orgUnits )
 {	
 	getExportReportsByGroup();	
@@ -7,77 +18,78 @@ selection.setListenerFunction( organisationUnitSelected );
 
 function getExportReportsByGroup() {
 	
-	var request = new Request();
-    request.setResponseTypeXML( 'xmlObject' );
-    request.setCallbackSuccess( getExportReportsByGroupReceived );
-    request.sendAsPost("group=" + byId('group').value);
-	request.send( "getExportReportsByGroup.action");
-	
-}
-
-function getExportReportsByGroupReceived( xmlObject ) {
-
-	clearListById('exportReport');
-	var list = xmlObject.getElementsByTagName("exportReport");
-	
-	for(var i=0;i<list.length;i++){
-		var item = list[i];
-		var id = item.getElementsByTagName('id')[0].firstChild.nodeValue;
-		var name = item.getElementsByTagName('name')[0].firstChild.nodeValue;
-		addOption('exportReport',name,id);	
-	}
-	
-	var selectedOrganisationUnit = null;
-	
-	try{
-	
-		selectedOrganisationUnit = xmlObject.getElementsByTagName('organisationUnit')[0].firstChild.nodeValue;	
-		
-		enable("group");
-		enable("exportReport");
-		enable("period");
-		enable("generateExportReport");
-		enable("previewButton");
-		enable("nextPeriod");
-		enable("lastPeriod");		
-	
-	}catch(e){
-		disable("group");
-		disable("exportReport");
-		disable("period");
-		disable("generateExportReport");
-		disable("previewButton");
-		disable("nextPeriod");
-		disable("lastPeriod");		
-	}
-	
-	byId("selectedOrganisationUnit").innerHTML = selectedOrganisationUnit; 
-}
-
-function getPreviousPeriod() 
-{
-	jQuery.postJSON('previousPeriodsGeneric.action', {}, responseListPeriodReceived );
-}
-
-function getNextPeriod() 
-{
-	jQuery.postJSON('nextPeriodsGeneric.action', {}, responseListPeriodReceived );	
-}
-
-function responseListPeriodReceived( json ) 
-{
-	if ( json.response == "error" )
+	jQuery.postJSON( 'getExportReportsByGroup.action',
 	{
-		setHeaderDelayMessage( json.message );
-	}
-	else
+		group: getFieldValue( 'group' )
+	},
+	function ( json )
 	{
-		clearListById('period');
-		
-		jQuery.each( json.periods, function(i, item ){
-			addOption('period', item.name , i );
+		jQuery('#exportReport').empty();
+		jQuery.each( json.exportReports, function(i, item){
+			addOptionById( 'exportReport', item.id + '_' + item.flag, item.name );
 		});
-	}
+
+		currentPeriodOffset = 0;
+		reportSelected();
+		displayPeriodsInternal();
+		
+		var selectedOrganisationUnit = null;
+
+		try {
+			selectedOrganisationUnit = json.organisationUnit;
+			
+			enable("group");
+			enable("exportReport");
+			enable("selectedPeriodId");
+			enable("generateExportReport");
+			enable("previewButton");
+			enable("nextPeriod");
+			enable("lastPeriod");
+		}catch(e){
+			disable("group");
+			disable("exportReport");
+			disable("selectedPeriodId");
+			disable("generateExportReport");
+			disable("previewButton");
+			disable("nextPeriod");
+			disable("lastPeriod");		
+		}
+
+		setInnerHTML( "selectedOrganisationUnit", selectedOrganisationUnit );
+	});
+}
+
+function reportSelected()
+{
+	currentPeriodTypeName = (getFieldValue( 'exportReport' ).split( '_' )[1] == "true") ? 'Daily' : 'Monthly';
+}
+
+function displayPeriodsInternal()
+{
+    var periods = periodTypeFactory.get( currentPeriodTypeName ).generatePeriods( currentPeriodOffset );
+    periods = periodTypeFactory.filterFuturePeriods( periods );
+
+    clearListById( 'selectedPeriodId' );
+
+    for ( i in periods )
+    {
+        addOptionById( 'selectedPeriodId', periods[i].id, periods[i].name );
+    }
+}
+
+function getNextPeriod()
+{
+    if ( currentPeriodOffset < 0 ) // Cannot display future periods
+    {
+        currentPeriodOffset++;
+        displayPeriodsInternal();
+    }
+}
+
+function getPreviousPeriod()
+{
+    currentPeriodOffset--;
+    displayPeriodsInternal();
 }
 
 function validateGenerateReport( isAdvanced )
@@ -94,8 +106,8 @@ function validateGenerateReport( isAdvanced )
 
 	jQuery.postJSON( 'validateGenerateReport.action',
 	{
-		'exportReportId': byId('exportReport').value,
-		'periodIndex': byId('period').value
+		'exportReportId': getFieldValue( 'exportReport' ),
+		'periodIndex': getFieldValue( 'selectedPeriodId' )
 	},
 	function( json )
 	{
@@ -114,21 +126,12 @@ function validateGenerateReport( isAdvanced )
 
 function generateExportReport() {
 		
-	var request = new Request();
-	request.setResponseTypeXML( 'xmlObject' );
-	request.setCallbackSuccess( generateExportReportReceived );
-	request.send( 'generateExportReport.action');
-}
-
-function generateExportReportReceived( xmlObject ) {
-
-	var type = xmlObject.getAttribute("type");
-	
-	if( type == "success" ) {
-	
-		window.location = "downloadFile.action";		
-		unLockScreen();
-	}
+	jQuery.postJSON( 'generateExportReport.action', {}, function ( json ) {
+		if ( json.response == "success" ) {
+			window.location = "downloadFile.action";		
+			unLockScreen();
+		}
+	});
 }
 
 function getALLExportReportByGroup() {

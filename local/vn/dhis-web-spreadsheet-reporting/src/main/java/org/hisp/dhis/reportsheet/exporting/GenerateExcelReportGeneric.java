@@ -56,10 +56,9 @@ import org.hisp.dhis.i18n.I18nFormat;
 import org.hisp.dhis.indicator.IndicatorService;
 import org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager;
 import org.hisp.dhis.period.PeriodService;
-import org.hisp.dhis.reportsheet.ExportReportService;
 import org.hisp.dhis.reportsheet.ExportReport;
+import org.hisp.dhis.reportsheet.ExportReportService;
 import org.hisp.dhis.reportsheet.ReportLocationManager;
-import org.hisp.dhis.reportsheet.period.generic.PeriodGenericManager;
 import org.hisp.dhis.reportsheet.preview.manager.InitializePOIStylesManager;
 import org.hisp.dhis.reportsheet.state.SelectionManager;
 import org.hisp.dhis.user.CurrentUserService;
@@ -104,8 +103,6 @@ public class GenerateExcelReportGeneric
 
     protected PeriodService periodService;
 
-    protected PeriodGenericManager periodGenericManager;
-
     protected ExportReportService exportReportService;
 
     protected ReportLocationManager reportLocationManager;
@@ -146,6 +143,8 @@ public class GenerateExcelReportGeneric
 
     protected Date endDate;
 
+    protected Date firstDayOfMonth;
+    
     protected Date firstDayOfYear;
 
     protected Date last3MonthStartDate;
@@ -288,11 +287,6 @@ public class GenerateExcelReportGeneric
     public void setInitPOIStylesManager( InitializePOIStylesManager initPOIStylesManager )
     {
         this.initPOIStylesManager = initPOIStylesManager;
-    }
-
-    public void setPeriodGenericManager( PeriodGenericManager periodGenericManager )
-    {
-        this.periodGenericManager = periodGenericManager;
     }
 
     // -------------------------------------------------------------------------

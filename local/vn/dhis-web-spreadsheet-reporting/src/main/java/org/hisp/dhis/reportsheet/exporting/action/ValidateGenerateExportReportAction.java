@@ -29,11 +29,10 @@ package org.hisp.dhis.reportsheet.exporting.action;
 
 import java.io.File;
 
-import org.hisp.dhis.reportsheet.ExportReportService;
 import org.hisp.dhis.reportsheet.ExportReport;
+import org.hisp.dhis.reportsheet.ExportReportService;
 import org.hisp.dhis.reportsheet.ReportLocationManager;
 import org.hisp.dhis.reportsheet.action.ActionSupport;
-import org.hisp.dhis.reportsheet.period.generic.PeriodGenericManager;
 import org.hisp.dhis.reportsheet.state.SelectionManager;
 
 /**
@@ -54,13 +53,6 @@ public class ValidateGenerateExportReportAction
         this.exportReportService = exportReportService;
     }
 
-    private PeriodGenericManager periodGenericManager;
-
-    public void setPeriodGenericManager( PeriodGenericManager periodGenericManager )
-    {
-        this.periodGenericManager = periodGenericManager;
-    }
-
     private SelectionManager selectionManager;
 
     public void setSelectionManager( SelectionManager selectionManager )
@@ -79,16 +71,16 @@ public class ValidateGenerateExportReportAction
     // Input & Output
     // -------------------------------------------------------------------------
 
-    private Integer exportReportId;
+    private String exportReportId;
 
-    public void setExportReportId( Integer exportReportId )
+    public void setExportReportId( String exportReportId )
     {
         this.exportReportId = exportReportId;
     }
 
-    private Integer periodIndex;
+    private String periodIndex;
 
-    public void setPeriodIndex( Integer periodIndex )
+    public void setPeriodIndex( String periodIndex )
     {
         this.periodIndex = periodIndex;
     }
@@ -100,7 +92,9 @@ public class ValidateGenerateExportReportAction
     public String execute()
         throws Exception
     {
-        ExportReport exportReport = exportReportService.getExportReport( exportReportId );
+        Integer reportId = Integer.parseInt( exportReportId.split( "_" )[0] );
+        
+        ExportReport exportReport = exportReportService.getExportReport( reportId );
         
         if ( exportReport == null )
         {
@@ -126,10 +120,10 @@ public class ValidateGenerateExportReportAction
 
             return ERROR;
         }
+        
+        selectionManager.setSelectedPeriodIndex( periodIndex );
 
-        periodGenericManager.setSelectedPeriodIndex( periodIndex );
-
-        selectionManager.setSelectedReportId( exportReportId );
+        selectionManager.setSelectedReportId( reportId );
 
         return SUCCESS;
     }

@@ -1,7 +1,7 @@
 package org.hisp.dhis.dataset.action;
 
 /*
- * Copyright (c) 2004-2010, University of Oslo
+ * Copyright (c) 2004-2011, University of Oslo
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -54,7 +54,7 @@ public class PeriodTypeListAction
     // -------------------------------------------------------------------------
     // Input & output
     // -------------------------------------------------------------------------
-    
+
     private Collection<PeriodType> periodTypes;
 
     public Collection<PeriodType> getPeriodTypes()
@@ -65,7 +65,7 @@ public class PeriodTypeListAction
     public void setPeriodTypes( Collection<PeriodType> periodTypes )
     {
         this.periodTypes = periodTypes;
-    }   
+    }
 
     // -------------------------------------------------------------------------
     // Execute
@@ -73,10 +73,9 @@ public class PeriodTypeListAction
 
     public String execute()
         throws Exception
-    {   	
+    {
         periodTypes = periodService.getAllPeriodTypes();
-        
+
         return SUCCESS;
     }
 }
-

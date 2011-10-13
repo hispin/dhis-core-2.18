@@ -5,6 +5,7 @@
 	<exportReport>
 		<id>$exportReport.id</id>
 		<name>$!encoder.xmlEncode($exportReport.name)</name>
+		<flag>$!idMap.contains($!exportReport.id)</flag>
 	</exportReport>
 	#end
 </exportReports>
