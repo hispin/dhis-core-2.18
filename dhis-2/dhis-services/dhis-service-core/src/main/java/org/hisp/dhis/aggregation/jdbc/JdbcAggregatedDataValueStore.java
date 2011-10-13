@@ -292,7 +292,7 @@ public class JdbcAggregatedDataValueStore
 
     public StoreIterator<AggregatedDataValue> getAggregatedDataValuesAtLevel( OrganisationUnit rootOrgunit, OrganisationUnitLevel level, Collection<Period> periods )
     {
-        final StatementHolder holder = statementManager.getHolder();
+        final StatementHolder holder = statementManager.getHolder( false );
 
         try
         {
@@ -563,7 +563,7 @@ public class JdbcAggregatedDataValueStore
     @Override
     public StoreIterator<AggregatedIndicatorValue> getAggregatedIndicatorValuesAtLevel(OrganisationUnit rootOrgunit, OrganisationUnitLevel level, Collection<Period> periods)
     {
-        final StatementHolder holder = statementManager.getHolder();
+        final StatementHolder holder = statementManager.getHolder( false );
 
         try
         {

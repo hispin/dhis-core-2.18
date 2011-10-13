@@ -42,13 +42,11 @@
   </distributionManagement>
 
   <repositories>
-    <!--
       <repository>
       <id>amplecode_maven2_repo</id>
       <name>AmpleCode Maven 2 repository</name>
       <url>http://www.amplecode.org/maven2</url>
       </repository>
-    -->
     <repository>
       <id>dhis.uio.no</id>
       <name>Dhis2 External Dependencies Repository</name>
@@ -250,6 +248,7 @@
       <dependency>
         <groupId>org.hisp.dhis</groupId>
 
+
         <artifactId>dhis-support-hibernate</artifactId>
         <version>${project.version}</version>
       </dependency>
@@ -409,7 +408,7 @@
       <dependency>
         <groupId>org.amplecode</groupId>
         <artifactId>quick</artifactId>
-        <version>1.6</version>
+        <version>1.7</version>
       </dependency>
       <dependency>
         <groupId>com.lowagie</groupId>
