@@ -55,6 +55,11 @@ public class ReportType
     public final static String RT_ADVANCED_REPORT = "Advanced Reports";      
     
     public final static String RT_BULK_REPORT = "Bulk Reports";
+    
+    public final static String RT_IDSP_REPORT = "IDSP Reports";
+    
+    public final static String RT_LINELIST_BULK_REPORT = "Linelisting Bulk Reports";
+
 
     public static List<String> getReportTypes()
     {
@@ -83,6 +88,10 @@ public class ReportType
         reportTypes.add( RT_BULK_REPORT );
         
         reportTypes.add( RT_LINELIST_WEB_PORTAL );
+        
+        reportTypes.add( RT_IDSP_REPORT );
+        
+        reportTypes.add( RT_LINELIST_BULK_REPORT );
         
         return reportTypes;
     }
