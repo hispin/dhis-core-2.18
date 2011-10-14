@@ -23,7 +23,7 @@
             return;
        }
 
-       if( !isIDSPLDaignosisFieldEntered( ) )
+       if( !isIDSPLOutcomeFieldEntered( ) )
        {
            return;
        }
@@ -58,6 +58,9 @@
         oCell.innerHTML = "<input name='entryfield' id='value[1058].value:value["+nextRecordNo+"].value' type='text' value='' onchange='validateIDSPLDaignosisField(1058,"+nextRecordNo+")' onkeypress='return keyPress(event, this)' style='width:100% text-align:center'>";
 
         oCell = newRow.insertCell(7);
+        oCell.innerHTML = "<select name='entryfield' id='value[3120].value:value["+nextRecordNo+"].value' onchange='validateIDSPLOutcomeField(3120,"+nextRecordNo+")' onkeypress='return keyPress(event, this)' style='width:100% text-align:center'><option value='NONE' selected>---</option><option value='UT'>Under treatment</option><option value='EXP'>Expired</option></select>";        
+
+        oCell = newRow.insertCell(8);
         oCell.innerHTML = "<div id='"+nextRecordNo+"' style='display: none;'><a href='javascript:removeLLRecord( " + nextRecordNo + " )' title='remove'><img src='../images/delete.png' alt='remove'></a></div>";
 
 	}
@@ -72,9 +75,10 @@
 		<th width="17%">Name of Patient</th>
 		<th width="10%">Age</th>
 		<th width="10%">Sex</th>
-		<th width="20%">Address</th>
-		<th width="18%">Name of Test done</th>
-		<th width="20%">Lab Diagnosis</th>
+		<th width="17%">Address</th>
+		<th width="17%">Name of Test done</th>
+		<th width="17%">Lab Diagnosis</th>
+		<th width="7%">Outcome</th>
 		<th width="2%">&nbsp;</th>
 	<tr>
 
@@ -86,7 +90,7 @@
 	#set($llDataValues = $lldataValueMap.get($mapKey))
 	#set($count1 = 1)
 	
-	#foreach( $llDataValue in $llDataValues)
+	#foreach( $llDataValue in $llDataValues )
 		#if($count1 == 3)
 			<td>
 				<select name="entryfield" id="value[$llDataValue.getDataElement().getId()].value:value[$llDataValue.getRecordNo()].value" onchange="validateIDSPLSexField($llDataValue.getDataElement().getId(),$llDataValue.getRecordNo())" onkeypress="return keyPress(event, this)" style="width:100% text-align:center">
@@ -106,10 +110,19 @@
             <td><input name="entryfield" id="value[$llDataValue.getDataElement().getId()].value:value[$llDataValue.getRecordNo()].value" type="text" value="#if($llDataValue.getValue()) $llDataValue.getValue() #end" onchange="validateIDSPLTestField($llDataValue.getDataElement().getId(),$llDataValue.getRecordNo())" onkeypress="return keyPress(event, this)" style="width:100% text-align:center" #if( $locked ) disabled="disabled"#end></td>
         #elseif($count1 == 6)
             <td><input name="entryfield" id="value[$llDataValue.getDataElement().getId()].value:value[$llDataValue.getRecordNo()].value" type="text" value="#if($llDataValue.getValue()) $llDataValue.getValue() #end" onchange="validateIDSPLDaignosisField($llDataValue.getDataElement().getId(),$llDataValue.getRecordNo())" onkeypress="return keyPress(event, this)" style="width:100% text-align:center" #if( $locked ) disabled="disabled"#end></td>
-			<td #if( $locked ) style="display:none" #end>
+        #elseif($count1 == 7)
+            <td>
+                <select name="entryfield" id="value[$llDataValue.getDataElement().getId()].value:value[$llDataValue.getRecordNo()].value" onchange="validateIDSPLOutcomeField($llDataValue.getDataElement().getId(),$llDataValue.getRecordNo())" onkeypress="return keyPress(event, this)" style="width:100% text-align:center">
+                    <option value="NONE" #if(!$llDataValue.getValue() || $llDataValue.getValue()=="NONE") selected #end>---</option>
+                    <option value="UT" #if($llDataValue.getValue() && $llDataValue.getValue()=="UT") selected #end>Under treatment</option>
+                    <option value="EXP" #if($llDataValue.getValue() && $llDataValue.getValue()=="EXP") selected #end>Expired</option>
+                </select>
+            </td>
+            <td #if( $locked ) style="display:none" #end>
                 <a href="#" onclick="javascript:removeLLRecord( '$llDataValue.getRecordNo()' )" title="$i18n.getString( "remove" )" #if( $locked ) disabled="disabled"#end><img src="../images/delete.png" alt="$i18n.getString( "remove" )"></a>
             </td>
         #end
+
 		#set($count1 = $count1+1)
 		#set( $lastRecord = $llDataValue.getRecordNo() )
 	#end
@@ -120,8 +133,8 @@
 #if( !$locked )
 <tr>
 	<td align="center"><div id='value[1053].value:value[$recordNo].slno' align='center'>$slno</div></td>
-	<td><input name="entryfield" id="value[1053].value:value[$recordNo].value" type="text" value=" " onchange="validateIDSPLNameField(1053,$recordNo )" onkeypress="return keyPress(event, this)" style="width:100% text-align:center"></td>
-	<td><input name="entryfield" id="value[1055].value:value[$recordNo].value" type="text" value=" " onchange="validateIDSPLAgeField(1055,$recordNo )" onkeypress="return keyPress(event, this)" style="width:100% text-align:center"></td>
+	<td><input name="entryfield" id="value[1053].value:value[$recordNo].value" type="text" value="" onchange="validateIDSPLNameField(1053,$recordNo )" onkeypress="return keyPress(event, this)" style="width:100% text-align:center"></td>
+	<td><input name="entryfield" id="value[1055].value:value[$recordNo].value" type="text" value="" onchange="validateIDSPLAgeField(1055,$recordNo )" onkeypress="return keyPress(event, this)" style="width:100% text-align:center"></td>
 	<td>
 		<select name="entryfield" id="value[1054].value:value[$recordNo].value" onchange="validateIDSPLSexField(1054,$recordNo)" onkeypress="return keyPress(event, this)" style="width:100% text-align:center">
 			<option value="NONE" selected>---</option>
@@ -129,9 +142,16 @@
 			<option value="F">Female</option>
 		</select>		
 	</td>	
-	<td><input name="entryfield" id="value[1056].value:value[$recordNo].value" type="text" value=" " onchange="validateIDSPLAddressField(1056,$recordNo )" onkeypress="return keyPress(event, this)" style="width:100% text-align:center"></td>
-	<td><input name="entryfield" id="value[1057].value:value[$recordNo].value" type="text" value=" " onchange="validateIDSPLTestField(1057,$recordNo )" onkeypress="return keyPress(event, this)" style="width:100% text-align:center"></td>
-	<td><input name="entryfield" id="value[1058].value:value[$recordNo].value" type="text" value=" " onchange="validateIDSPLDaignosisField(1058,$recordNo )" onkeypress="return keyPress(event, this)" style="width:100% text-align:center" onblur="addLLIDSPLNewRow()" ></td>
+	<td><input name="entryfield" id="value[1056].value:value[$recordNo].value" type="text" value="" onchange="validateIDSPLAddressField(1056,$recordNo )" onkeypress="return keyPress(event, this)" style="width:100% text-align:center"></td>
+	<td><input name="entryfield" id="value[1057].value:value[$recordNo].value" type="text" value="" onchange="validateIDSPLTestField(1057,$recordNo )" onkeypress="return keyPress(event, this)" style="width:100% text-align:center"></td>
+	<td><input name="entryfield" id="value[1058].value:value[$recordNo].value" type="text" value="" onchange="validateIDSPLDaignosisField(1058,$recordNo )" onkeypress="return keyPress(event, this)" style="width:100% text-align:center"  ></td>
+    <td>
+        <select name="entryfield" id="value[3120].value:value[$recordNo].value" onchange="validateIDSPLOutcomeField(3120,$recordNo)" onkeypress="return keyPress(event, this)" style="width:100% text-align:center" >
+            <option value="NONE" selected>---</option>
+            <option value="UT">Under treatment</option>
+            <option value="EXP">Expired</option>
+        </select>       
+    </td>		
     <td><div id='$recordNo' style="display: none;"><a href="javascript:removeLLRecord( '$recordNo' ) " title="$i18n.getString( "remove" )"><img src="../images/delete.png" alt="$i18n.getString( "remove" )"></a></div></td>   		
 </tr>
 #end		

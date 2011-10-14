@@ -36,18 +36,18 @@ public class LLDataSets
     public static final String LL_UU_IDSP_EVENTSP = "Line listing Unusual IDSP events- FormP";
     public static final String LL_DEATHS_IDSP = "Line listing Deaths IDSP";
     public static final String LL_IDSP_LAB = "Line Listing IDSP Lab";
-    public static final String LL_COLD_CHAIN = "Line listing  Cold Chain";
+    public static final String LL_COLD_CHAIN = "Line listing Cold Chain";
 
     //----------------------------------------------------------------
     // LineListing Cold Chain
     //----------------------------------------------------------------
-    //public static final int LLCC_EQUIPMENT = ;
-    //public static final int LLCC_MACHINE =;
-    //public static final int LLCC_MACHINE_WORKING =;
-    //public static final int LLCC_BREAKDOWN_DATE =;
-    //public static final int LLCC_INTIMATION_DATE =;
-    //public static final int LLCC_REPAIR_DATE =;
-    //public static final int LLCC_REMARKS =;
+    public static final int LLCC_EQUIPMENT = 5726;
+    public static final int LLCC_MACHINE = 5727;
+    public static final int LLCC_MACHINE_WORKING = 5728;
+    public static final int LLCC_BREAKDOWN_DATE = 5729;
+    public static final int LLCC_INTIMATION_DATE = 5730;
+    public static final int LLCC_REPAIR_DATE = 5731;
+    public static final int LLCC_REMARKS = 5732;
     
     //----------------------------------------------------------------
     // LineListing IDSP LAB
@@ -58,6 +58,7 @@ public class LLDataSets
     public static final int LLIDSPL_ADDRESS = 1056;
     public static final int LLIDSPL_TEST = 1057;
     public static final int LLIDSPL_LAB_DIAGNOSIS = 1058;
+    public static final int LLIDSPL_OUTCOME = 3120;
     
     //----------------------------------------------------------------
     // LineListing Death IDSP

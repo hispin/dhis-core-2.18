@@ -17,6 +17,8 @@
 	#parse( "/dhis-web-dataentry-national/lldidsp.vm" )
 #elseif($selDSName.equals($llidspl))
 	#parse( "/dhis-web-dataentry-national/llidspl.vm" )
+#elseif($selDSName.equals($llcoldchain))
+    #parse( "/dhis-web-dataentry-national/llcoldchain.vm" )	
 	
 #else
   <h3>No Dataentry form available for selected DataSet/DataSet not assign to selected Organisation Unit</h3>

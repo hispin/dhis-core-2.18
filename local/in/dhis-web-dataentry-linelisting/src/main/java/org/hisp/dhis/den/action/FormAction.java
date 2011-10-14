@@ -32,6 +32,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -47,6 +48,7 @@ import org.hisp.dhis.datalock.DataSetLockService;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.dataset.DataSetService;
 import org.hisp.dhis.dataset.Section;
+import org.hisp.dhis.dataset.SectionService;
 import org.hisp.dhis.dataset.comparator.DataSetNameComparator;
 import org.hisp.dhis.datavalue.DataValue;
 import org.hisp.dhis.den.api.LLDataSets;
@@ -60,6 +62,10 @@ import org.hisp.dhis.minmax.MinMaxDataElementService;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.period.CalendarPeriodType;
 import org.hisp.dhis.period.Period;
+import org.hisp.dhis.user.CurrentUserService;
+import org.hisp.dhis.user.UserAuthorityGroup;
+import org.hisp.dhis.user.UserCredentials;
+import org.hisp.dhis.user.UserService;
 
 import com.opensymphony.xwork2.Action;
 
@@ -131,7 +137,7 @@ public class FormAction
     {
         this.i18n = i18n;
     } 
-    
+
     //SelectAction Source Code
     private DataSetService dataSetService;
 
@@ -140,7 +146,31 @@ public class FormAction
         this.dataSetService = dataSetService;
     }
     
-    
+    private UserService userService;
+
+    public void setUserService( UserService userService )
+    {
+        this.userService = userService;
+    }
+
+    private CurrentUserService currentUserService;
+
+    public void setCurrentUserService( CurrentUserService currentUserService )
+    {
+        this.currentUserService = currentUserService;
+    }
+    private SectionService sectionService;
+
+    public SectionService getSectionService()
+    {
+        return sectionService;
+    }
+
+    public void setSectionService( SectionService sectionService )
+    {
+        this.sectionService = sectionService;
+    }
+
     
     // -------------------------------------------------------------------------
     // Output
@@ -153,7 +183,6 @@ public class FormAction
 	return recordNos;
     }
 
-    
     private List<OrganisationUnit> orgUnitChildList;
 
     public List<OrganisationUnit> getOrgUnitChildList() 
@@ -175,7 +204,6 @@ public class FormAction
         return isLineListing;
     }
 
-    
     private List<DataElement> orderedDataElements = new ArrayList<DataElement>();
 
     public List<DataElement> getOrderedDataElements()
@@ -289,17 +317,17 @@ public class FormAction
     }
 
     private String llmdeath;
-	
+        
     public String getLlmdeath() 
     {
-	return llmdeath;
+        return llmdeath;
     }
-	
+
     private String lluuidspe;
-	
+        
     public String getLluuidspe() 
     {
-	return lluuidspe;
+        return lluuidspe;
     }
 
     private String lluuidspep;
@@ -322,6 +350,14 @@ public class FormAction
     {
         return llidspl;
     }
+
+    private String llcoldchain;
+    
+    public String getLlcoldchain()
+    {
+        return llcoldchain;
+    }
+
     
     private int maxRecordNo;
     
@@ -330,7 +366,7 @@ public class FormAction
         return maxRecordNo;
     }
 	
-	private boolean locked = false;
+    private boolean locked = false;
 
     public boolean isLocked()
     {
@@ -435,7 +471,7 @@ public class FormAction
 
             return SUCCESS;
         }
-        
+
         // ---------------------------------------------------------------------
         // Load DataSets
         // ---------------------------------------------------------------------
@@ -446,6 +482,19 @@ public class FormAction
         // ---------------------------------------------------------------------
         // Remove DataSets which don't have a CalendarPeriodType or are locked
         // ---------------------------------------------------------------------
+        if ( currentUserService.getCurrentUser() != null && !currentUserService.currentUserIsSuper() )
+        {
+            UserCredentials userCredentials = userService.getUserCredentials( currentUserService.getCurrentUser() );
+
+            Set<DataSet> dataSetUserAuthorityGroups = new HashSet<DataSet>();
+
+            for ( UserAuthorityGroup userAuthorityGroup : userCredentials.getUserAuthorityGroups() )
+            {
+                dataSetUserAuthorityGroups.addAll( userAuthorityGroup.getDataSets() );
+            }
+
+            dataSets.retainAll( dataSetUserAuthorityGroups );
+        }
 
         Iterator<DataSet> it = dataSets.iterator();
 
@@ -453,7 +502,14 @@ public class FormAction
         {
             DataSet temp = it.next();
             
-            if(temp.getName().equalsIgnoreCase( LLDataSets.LL_IDSP_LAB ) || temp.getName().equalsIgnoreCase( LLDataSets.LL_DEATHS_IDSP ) || temp.getName().equalsIgnoreCase( LLDataSets.LL_UU_IDSP_EVENTSP ) || temp.getName().equalsIgnoreCase( LLDataSets.LL_BIRTHS ) || temp.getName().equalsIgnoreCase( LLDataSets.LL_DEATHS )  || temp.getName().equalsIgnoreCase( LLDataSets.LL_MATERNAL_DEATHS ) || temp.getName().equalsIgnoreCase( LLDataSets.LL_UU_IDSP_EVENTS ))
+            if( temp.getName().equalsIgnoreCase( LLDataSets.LL_IDSP_LAB ) || 
+                temp.getName().equalsIgnoreCase( LLDataSets.LL_DEATHS_IDSP ) || 
+                temp.getName().equalsIgnoreCase( LLDataSets.LL_UU_IDSP_EVENTSP ) || 
+                temp.getName().equalsIgnoreCase( LLDataSets.LL_BIRTHS ) || 
+                temp.getName().equalsIgnoreCase( LLDataSets.LL_DEATHS )  || 
+                temp.getName().equalsIgnoreCase( LLDataSets.LL_MATERNAL_DEATHS ) || 
+                temp.getName().equalsIgnoreCase( LLDataSets.LL_UU_IDSP_EVENTS ) || 
+                temp.getName().equalsIgnoreCase( LLDataSets.LL_COLD_CHAIN ))
             {
                 if ( !( temp.getPeriodType() instanceof CalendarPeriodType ) )
                 {
@@ -601,6 +657,7 @@ public class FormAction
         lluuidspep = LLDataSets.LL_UU_IDSP_EVENTSP;
         lldidsp = LLDataSets.LL_DEATHS_IDSP;
         llidspl = LLDataSets.LL_IDSP_LAB;
+        llcoldchain = LLDataSets.LL_COLD_CHAIN;
         
         OrganisationUnit organisationUnit = selectedStateManager.getSelectedOrganisationUnit();
 
@@ -618,8 +675,7 @@ public class FormAction
         }
 
         /*
-          
-         if(selDSName.equalsIgnoreCase( llidspl ) || selDSName.equalsIgnoreCase( lldidsp ) || selDSName.equalsIgnoreCase( lluuidspep ) || selDSName.equalsIgnoreCase( llbirth ) || selDSName.equalsIgnoreCase( lldeath ) || selDSName.equalsIgnoreCase( llmdeath ) || selDSName.equalsIgnoreCase( lluuidspe ))
+        if(selDSName.equalsIgnoreCase( llidspl ) || selDSName.equalsIgnoreCase( lldidsp ) || selDSName.equalsIgnoreCase( lluuidspep ) || selDSName.equalsIgnoreCase( llbirth ) || selDSName.equalsIgnoreCase( lldeath ) || selDSName.equalsIgnoreCase( llmdeath ) || selDSName.equalsIgnoreCase( lluuidspe ))
         {
             isLineListing = "yes";
         }
@@ -627,8 +683,8 @@ public class FormAction
         {
             isLineListing = "no";
         }
+         */
 
-*/
         orgUnitChildList = new ArrayList<OrganisationUnit>(organisationUnit.getChildren());
         
         Period period = selectedStateManager.getSelectedPeriod();   
@@ -667,11 +723,6 @@ public class FormAction
         Collection<LLDataValue> dataValues = dataValueService.getDataValues( organisationUnit, period, dataElements, defaultOptionCombo );
         
         dataValueMap = new HashMap<Integer, DataValue>( dataValues.size() );
-
-        /*for ( LLDataValue dataValue : dataValues )
-        {
-            //dataValueMap.put( dataValue.getDataElement().getId(), dataValue );
-        }*/
         
         // ---------------------------------------------------------------------
         // Make the standard comments available
@@ -710,27 +761,31 @@ public class FormAction
         }
         else if(selDSName.equalsIgnoreCase( lldeath ))
         {
-        	prepareLLDeathFormCode(organisationUnit, period, dataElements, dataValues);
+            prepareLLDeathFormCode(organisationUnit, period, dataElements, dataValues);
         }
         else if(selDSName.equalsIgnoreCase( llmdeath ))
         {
-        	prepareLLMaternalDeathFormCode(organisationUnit, period, dataElements, dataValues);
+            prepareLLMaternalDeathFormCode(organisationUnit, period, dataElements, dataValues);
         }
         else if(selDSName.equalsIgnoreCase( lluuidspe ))
         {
-        	prepareLLUUIDSPEFormCode(organisationUnit, period, dataElements, dataValues);
+            prepareLLUUIDSPEFormCode(organisationUnit, period, dataElements, dataValues);
         }
         else if(selDSName.equalsIgnoreCase( lluuidspep ))
         {
-        	prepareLLUUIDSPEPFormCode(organisationUnit, period, dataElements, dataValues);
+            prepareLLUUIDSPEPFormCode(organisationUnit, period, dataElements, dataValues);
         }
         else if(selDSName.equalsIgnoreCase( lldidsp ))
         {
-        	prepareLLDIDSPFormCode(organisationUnit, period, dataElements, dataValues);
+            prepareLLDIDSPFormCode(organisationUnit, period, dataElements, dataValues);
         }
         else if(selDSName.equalsIgnoreCase( llidspl ))
         {
-        	prepareLLIDSPLFormCode(organisationUnit, period, dataElements, dataValues);
+            prepareLLIDSPLFormCode(organisationUnit, period, dataElements, dataValues);
+        }
+        else if(selDSName.equalsIgnoreCase( llcoldchain ))
+        {
+            prepareLLColdChainFormCode(organisationUnit, period, dataElements, dataValues);
         }
         else
         {
@@ -755,6 +810,114 @@ public class FormAction
     }
     
     
+    private void prepareLLColdChainFormCode( OrganisationUnit organisationUnit, Period period, Collection<DataElement> dataElements,
+        Collection<LLDataValue> dataValues)
+    {
+        lldataValueMap = new HashMap<String, List<LLDataValue>>();
+        
+        for ( LLDataValue dataValue : dataValues )
+        {
+            Integer recordNo = dataValue.getRecordNo();
+            List<LLDataValue> tempLLDVList;
+            if(lldataValueMap == null || lldataValueMap.isEmpty() || lldataValueMap.get(String.valueOf(recordNo)) == null || lldataValueMap.get(String.valueOf(recordNo)).isEmpty())
+            {
+                tempLLDVList = new ArrayList<LLDataValue>();
+            }
+            else
+            {
+                tempLLDVList = new ArrayList<LLDataValue>(lldataValueMap.get(String.valueOf(recordNo)));
+            }
+            
+            tempLLDVList.add( dataValue );
+            lldataValueMap.put( String.valueOf(recordNo), tempLLDVList );
+        }
+
+        Set<String> llDataValueMapKeys = lldataValueMap.keySet();
+        Iterator<String> it1 = llDataValueMapKeys.iterator();
+        while( it1.hasNext() )
+        {
+            String tempRecordNo = (String) it1.next();
+            List<LLDataValue> tempLLDVList1 = new ArrayList<LLDataValue>(lldataValueMap.get(tempRecordNo));
+            List<LLDataValue> tempLLDVList2 = new ArrayList<LLDataValue>();
+            LLDataValue existingLLDV = new LLDataValue();
+            
+            for(int i = 0; i<=6; i++)
+            {
+                LLDataValue tempLLDV1 = new LLDataValue();
+                tempLLDVList2.add(tempLLDV1);
+            }
+
+            Iterator<LLDataValue> it2 = tempLLDVList1.iterator();
+            while( it2.hasNext() )
+            {
+                LLDataValue tempLLDV = (LLDataValue) it2.next();
+                
+                if( tempLLDV.getDataElement().getId() == LLDataSets.LLCC_EQUIPMENT )
+                {
+                    tempLLDVList2.set( 0, tempLLDV );
+                    existingLLDV = tempLLDV;
+                }    
+                else if(tempLLDV.getDataElement().getId() == LLDataSets.LLCC_MACHINE )
+                {
+                    tempLLDVList2.set( 1, tempLLDV );
+                    existingLLDV = tempLLDV;
+                }
+                else if(tempLLDV.getDataElement().getId() == LLDataSets.LLCC_MACHINE_WORKING )
+                {
+                    tempLLDVList2.set( 2, tempLLDV );
+                    existingLLDV = tempLLDV;
+                }
+                else if( tempLLDV.getDataElement().getId() == LLDataSets.LLCC_BREAKDOWN_DATE )
+                {
+                    tempLLDVList2.set( 3, tempLLDV );
+                    existingLLDV = tempLLDV;
+                }
+                else if( tempLLDV.getDataElement().getId() == LLDataSets.LLCC_INTIMATION_DATE )
+                {
+                    tempLLDVList2.set( 4, tempLLDV );
+                    existingLLDV = tempLLDV;
+                }
+                else if( tempLLDV.getDataElement().getId() == LLDataSets.LLCC_REPAIR_DATE )
+                {
+                    tempLLDVList2.set( 5, tempLLDV );
+                    existingLLDV = tempLLDV;
+                }
+                else if( tempLLDV.getDataElement().getId() == LLDataSets.LLCC_REMARKS )
+                {
+                    tempLLDVList2.set( 6, tempLLDV );
+                    existingLLDV = tempLLDV;
+                }
+            }
+
+            int llbDes[] = { LLDataSets.LLCC_EQUIPMENT, LLDataSets.LLCC_MACHINE, LLDataSets.LLCC_MACHINE_WORKING,
+                                LLDataSets.LLCC_BREAKDOWN_DATE, LLDataSets.LLCC_INTIMATION_DATE,
+                                LLDataSets.LLCC_REPAIR_DATE, LLDataSets.LLCC_REMARKS };
+            
+            for(int i = 0; i<=6; i++)
+            {
+                LLDataValue llDv = tempLLDVList2.get(i);
+                if(tempLLDVList2.get(i).getDataElement() == null || tempLLDVList2.get(i).getDataElement().getId() != llbDes[i])
+                {
+                    llDv.setPeriod(existingLLDV.getPeriod());
+                    llDv.setSource(existingLLDV.getSource());
+                    llDv.setDataElement(dataElementService.getDataElement(llbDes[i]));
+                    llDv.setRecordNo(existingLLDV.getRecordNo());
+                    llDv.setOptionCombo(existingLLDV.getOptionCombo());
+                    llDv.setValue(" ");
+                    
+                    tempLLDVList2.set(i, llDv);
+                 }                               
+            }
+
+            lldataValueMap.put( tempRecordNo, tempLLDVList2 );            
+        }
+     
+        recordNos = new ArrayList<String>(lldataValueMap.keySet());
+        Collections.sort( recordNos );
+    }
+
+    
+    
     private void prepareLLIDSPLFormCode(OrganisationUnit organisationUnit, Period period, Collection<DataElement> dataElements,
             Collection<LLDataValue> dataValues)
         {
@@ -767,11 +930,11 @@ public class FormAction
                 List<LLDataValue> tempLLDVList;
                 if(lldataValueMap == null || lldataValueMap.isEmpty() || lldataValueMap.get(String.valueOf(recordNo)) == null || lldataValueMap.get(String.valueOf(recordNo)).isEmpty())
                 {
-                	tempLLDVList = new ArrayList<LLDataValue>();
+                    tempLLDVList = new ArrayList<LLDataValue>();
                 }
                 else
                 {
-                	tempLLDVList = new ArrayList<LLDataValue>(lldataValueMap.get(String.valueOf(recordNo)));
+                    tempLLDVList = new ArrayList<LLDataValue>(lldataValueMap.get(String.valueOf(recordNo)));
                 }
                 
                 tempLLDVList.add( dataValue );
@@ -787,10 +950,10 @@ public class FormAction
                 List<LLDataValue> tempLLDVList2 = new ArrayList<LLDataValue>();
                 LLDataValue existingLLDV = new LLDataValue();
                 
-                for(int i = 0; i<6; i++)
+                for( int i = 0; i < 7; i++ )
                 {
-                	LLDataValue tempLLDV1 = new LLDataValue();
-                	tempLLDVList2.add(tempLLDV1);
+                    LLDataValue tempLLDV1 = new LLDataValue();
+                    tempLLDVList2.add(tempLLDV1);
                 }
 
                 Iterator<LLDataValue> it2 = tempLLDVList1.iterator();
@@ -828,28 +991,34 @@ public class FormAction
                         tempLLDVList2.set( 5, tempLLDV );
                         existingLLDV = tempLLDV;
                     }
+                    else if(tempLLDV.getDataElement().getId() == LLDataSets.LLIDSPL_OUTCOME )
+                    {
+                        tempLLDVList2.set( 6, tempLLDV );
+                        existingLLDV = tempLLDV;
+                    }
                     
                 }
 
                 int llbDes[] = {
-                				LLDataSets.LLIDSPL_PATIENT_NAME, LLDataSets.LLIDSPL_AGE, LLDataSets.LLIDSPL_SEX,
-                				LLDataSets.LLIDSPL_ADDRESS, LLDataSets.LLIDSPL_TEST, LLDataSets.LLIDSPL_LAB_DIAGNOSIS
-                				};
+                                        LLDataSets.LLIDSPL_PATIENT_NAME, LLDataSets.LLIDSPL_AGE, LLDataSets.LLIDSPL_SEX,
+                                        LLDataSets.LLIDSPL_ADDRESS, LLDataSets.LLIDSPL_TEST, LLDataSets.LLIDSPL_LAB_DIAGNOSIS,
+                                        LLDataSets.LLIDSPL_OUTCOME
+                                };
                 
-                for(int i = 0; i<6; i++)
+                for(int i = 0; i < 7; i++ )
                 {
-                	LLDataValue llDv = tempLLDVList2.get(i);
-                	if(tempLLDVList2.get(i).getDataElement() == null || tempLLDVList2.get(i).getDataElement().getId() != llbDes[i])
-                	{
-                		llDv.setPeriod(existingLLDV.getPeriod());
-                		llDv.setSource(existingLLDV.getSource());
-                		llDv.setDataElement(dataElementService.getDataElement(llbDes[i]));
-                		llDv.setRecordNo(existingLLDV.getRecordNo());
-                		llDv.setOptionCombo(existingLLDV.getOptionCombo());
-                		llDv.setValue(" ");
-                		
-                		tempLLDVList2.set(i, llDv);
-                	}	            		
+                        LLDataValue llDv = tempLLDVList2.get(i);
+                        if(tempLLDVList2.get(i).getDataElement() == null || tempLLDVList2.get(i).getDataElement().getId() != llbDes[i])
+                        {
+                                llDv.setPeriod(existingLLDV.getPeriod());
+                                llDv.setSource(existingLLDV.getSource());
+                                llDv.setDataElement(dataElementService.getDataElement(llbDes[i]));
+                                llDv.setRecordNo(existingLLDV.getRecordNo());
+                                llDv.setOptionCombo(existingLLDV.getOptionCombo());
+                                llDv.setValue(" ");
+                                
+                                tempLLDVList2.set( i, llDv );                                                           
+                        }                               
                 }
 
                 lldataValueMap.put( tempRecordNo, tempLLDVList2 );            
@@ -873,11 +1042,11 @@ public class FormAction
             List<LLDataValue> tempLLDVList;
             if(lldataValueMap == null || lldataValueMap.isEmpty() || lldataValueMap.get(String.valueOf(recordNo)) == null || lldataValueMap.get(String.valueOf(recordNo)).isEmpty())
             {
-            	tempLLDVList = new ArrayList<LLDataValue>();
+                tempLLDVList = new ArrayList<LLDataValue>();
             }
             else
             {
-            	tempLLDVList = new ArrayList<LLDataValue>(lldataValueMap.get(String.valueOf(recordNo)));
+                tempLLDVList = new ArrayList<LLDataValue>(lldataValueMap.get(String.valueOf(recordNo)));
             }
             
             tempLLDVList.add( dataValue );
@@ -895,8 +1064,8 @@ public class FormAction
             
             for(int i = 0; i<=7; i++)
             {
-            	LLDataValue tempLLDV1 = new LLDataValue();
-            	tempLLDVList2.add(tempLLDV1);
+                LLDataValue tempLLDV1 = new LLDataValue();
+                tempLLDVList2.add(tempLLDV1);
             }
 
             Iterator<LLDataValue> it2 = tempLLDVList1.iterator();
@@ -948,25 +1117,25 @@ public class FormAction
             }
 
             int llbDes[] = {
-            				LLDataSets.LLMD_MOTHER_NAME, LLDataSets.LLMD_VILLAGE_NAME, LLDataSets.LLMD_AGE_AT_DEATH,
-            				LLDataSets.LLMD_DURATION_OF_PREGNANCY, LLDataSets.LLMD_DELIVERY_AT, LLDataSets.LLMD_NATURE_OF_ASSISTANCE,
-            				LLDataSets.LLMD_DEATH_CAUSE, LLDataSets.LLMD_AUDITED 
-            				};
+                                LLDataSets.LLMD_MOTHER_NAME, LLDataSets.LLMD_VILLAGE_NAME, LLDataSets.LLMD_AGE_AT_DEATH,
+                                LLDataSets.LLMD_DURATION_OF_PREGNANCY, LLDataSets.LLMD_DELIVERY_AT, LLDataSets.LLMD_NATURE_OF_ASSISTANCE,
+                                LLDataSets.LLMD_DEATH_CAUSE, LLDataSets.LLMD_AUDITED 
+                           };
             
             for(int i = 0; i<=7; i++)
             {
-            	LLDataValue llDv = tempLLDVList2.get(i);
-            	if(tempLLDVList2.get(i).getDataElement() == null || tempLLDVList2.get(i).getDataElement().getId() != llbDes[i])
-            	{
-            		llDv.setPeriod(existingLLDV.getPeriod());
-            		llDv.setSource(existingLLDV.getSource());
-            		llDv.setDataElement(dataElementService.getDataElement(llbDes[i]));
-            		llDv.setRecordNo(existingLLDV.getRecordNo());
-            		llDv.setOptionCombo(existingLLDV.getOptionCombo());
-            		llDv.setValue(" ");
-            		
-            		tempLLDVList2.set(i, llDv);
-            	}	            		
+                LLDataValue llDv = tempLLDVList2.get(i);
+                if(tempLLDVList2.get(i).getDataElement() == null || tempLLDVList2.get(i).getDataElement().getId() != llbDes[i])
+                {
+                        llDv.setPeriod(existingLLDV.getPeriod());
+                        llDv.setSource(existingLLDV.getSource());
+                        llDv.setDataElement(dataElementService.getDataElement(llbDes[i]));
+                        llDv.setRecordNo(existingLLDV.getRecordNo());
+                        llDv.setOptionCombo(existingLLDV.getOptionCombo());
+                        llDv.setValue(" ");
+                        
+                        tempLLDVList2.set(i, llDv);
+                }                               
             }
 
             lldataValueMap.put( tempRecordNo, tempLLDVList2 );            
@@ -990,11 +1159,11 @@ public class FormAction
                 List<LLDataValue> tempLLDVList;
                 if(lldataValueMap == null || lldataValueMap.isEmpty() || lldataValueMap.get(String.valueOf(recordNo)) == null || lldataValueMap.get(String.valueOf(recordNo)).isEmpty())
                 {
-                	tempLLDVList = new ArrayList<LLDataValue>();
+                        tempLLDVList = new ArrayList<LLDataValue>();
                 }
                 else
                 {
-                	tempLLDVList = new ArrayList<LLDataValue>(lldataValueMap.get(String.valueOf(recordNo)));
+                        tempLLDVList = new ArrayList<LLDataValue>(lldataValueMap.get(String.valueOf(recordNo)));
                 }
                 
                 tempLLDVList.add( dataValue );
@@ -1015,8 +1184,8 @@ public class FormAction
                 
                 for(int i = 0; i<=5; i++)
                 {
-                	LLDataValue tempLLDV1 = new LLDataValue();
-                	tempLLDVList2.add(tempLLDV1);
+                        LLDataValue tempLLDV1 = new LLDataValue();
+                        tempLLDVList2.add(tempLLDV1);
                 }
 
                 Iterator<LLDataValue> it2 = tempLLDVList1.iterator();
@@ -1057,21 +1226,21 @@ public class FormAction
                 }
 
                 int llbDes[] = {LLDataSets.LLB_CHILD_NAME,LLDataSets.LLB_VILLAGE_NAME,LLDataSets.LLB_SEX,
-                				LLDataSets.LLB_DOB,LLDataSets.LLB_WIEGH,LLDataSets.LLB_BREASTFED};
+                                                LLDataSets.LLB_DOB,LLDataSets.LLB_WIEGH,LLDataSets.LLB_BREASTFED};
                 for(int i = 0; i<=5; i++)
                 {
-                	LLDataValue llDv = tempLLDVList2.get(i);
-                	if(tempLLDVList2.get(i).getDataElement() == null || tempLLDVList2.get(i).getDataElement().getId() != llbDes[i])
-                	{
-                		llDv.setPeriod(existingLLDV.getPeriod());
-                		llDv.setSource(existingLLDV.getSource());
-                		llDv.setDataElement(dataElementService.getDataElement(llbDes[i]));
-                		llDv.setRecordNo(existingLLDV.getRecordNo());
-                		llDv.setOptionCombo(existingLLDV.getOptionCombo());
-                		llDv.setValue(" ");
-                		
-                		tempLLDVList2.set(i, llDv);
-                	}	            		
+                        LLDataValue llDv = tempLLDVList2.get(i);
+                        if(tempLLDVList2.get(i).getDataElement() == null || tempLLDVList2.get(i).getDataElement().getId() != llbDes[i])
+                        {
+                                llDv.setPeriod(existingLLDV.getPeriod());
+                                llDv.setSource(existingLLDV.getSource());
+                                llDv.setDataElement(dataElementService.getDataElement(llbDes[i]));
+                                llDv.setRecordNo(existingLLDV.getRecordNo());
+                                llDv.setOptionCombo(existingLLDV.getOptionCombo());
+                                llDv.setValue(" ");
+                                
+                                tempLLDVList2.set(i, llDv);
+                        }                               
                 }
 
                 lldataValueMap.put( tempRecordNo, tempLLDVList2 );            
@@ -1095,11 +1264,11 @@ public class FormAction
                 List<LLDataValue> tempLLDVList;
                 if(lldataValueMap == null || lldataValueMap.isEmpty() || lldataValueMap.get(String.valueOf(recordNo)) == null || lldataValueMap.get(String.valueOf(recordNo)).isEmpty())
                 {
-                	tempLLDVList = new ArrayList<LLDataValue>();
+                        tempLLDVList = new ArrayList<LLDataValue>();
                 }
                 else
                 {
-                	tempLLDVList = new ArrayList<LLDataValue>(lldataValueMap.get(String.valueOf(recordNo)));
+                        tempLLDVList = new ArrayList<LLDataValue>(lldataValueMap.get(String.valueOf(recordNo)));
                 }
                 
                 tempLLDVList.add( dataValue );
@@ -1117,8 +1286,8 @@ public class FormAction
                 
                 for(int i = 0; i<5; i++)
                 {
-                	LLDataValue tempLLDV1 = new LLDataValue();
-                	tempLLDVList2.add(tempLLDV1);
+                        LLDataValue tempLLDV1 = new LLDataValue();
+                        tempLLDVList2.add(tempLLDV1);
                 }
 
                 Iterator<LLDataValue> it2 = tempLLDVList1.iterator();
@@ -1154,22 +1323,22 @@ public class FormAction
                 }
 
                 int llbDes[] = {LLDataSets.LLD_CHILD_NAME,LLDataSets.LLD_VILLAGE_NAME,LLDataSets.LLD_SEX,
-                				LLDataSets.LLD_AGE_CATEGORY,LLDataSets.LLD_DEATH_CAUSE};
+                                                LLDataSets.LLD_AGE_CATEGORY,LLDataSets.LLD_DEATH_CAUSE};
                 
                 for(int i = 0; i<5; i++)
                 {
-                	LLDataValue llDv = tempLLDVList2.get(i);
-                	if(tempLLDVList2.get(i).getDataElement() == null || tempLLDVList2.get(i).getDataElement().getId() != llbDes[i])
-                	{
-                		llDv.setPeriod(existingLLDV.getPeriod());
-                		llDv.setSource(existingLLDV.getSource());
-                		llDv.setDataElement(dataElementService.getDataElement(llbDes[i]));
-                		llDv.setRecordNo(existingLLDV.getRecordNo());
-                		llDv.setOptionCombo(existingLLDV.getOptionCombo());
-                		llDv.setValue(" ");
-                		
-                		tempLLDVList2.set(i, llDv);
-                	}	            		
+                        LLDataValue llDv = tempLLDVList2.get(i);
+                        if(tempLLDVList2.get(i).getDataElement() == null || tempLLDVList2.get(i).getDataElement().getId() != llbDes[i])
+                        {
+                                llDv.setPeriod(existingLLDV.getPeriod());
+                                llDv.setSource(existingLLDV.getSource());
+                                llDv.setDataElement(dataElementService.getDataElement(llbDes[i]));
+                                llDv.setRecordNo(existingLLDV.getRecordNo());
+                                llDv.setOptionCombo(existingLLDV.getOptionCombo());
+                                llDv.setValue(" ");
+                                
+                                tempLLDVList2.set(i, llDv);
+                        }                               
                 }
 
                 lldataValueMap.put( tempRecordNo, tempLLDVList2 );            
@@ -1192,11 +1361,11 @@ public class FormAction
                 List<LLDataValue> tempLLDVList;
                 if(lldataValueMap == null || lldataValueMap.isEmpty() || lldataValueMap.get(String.valueOf(recordNo)) == null || lldataValueMap.get(String.valueOf(recordNo)).isEmpty())
                 {
-                	tempLLDVList = new ArrayList<LLDataValue>();
+                        tempLLDVList = new ArrayList<LLDataValue>();
                 }
                 else
                 {
-                	tempLLDVList = new ArrayList<LLDataValue>(lldataValueMap.get(String.valueOf(recordNo)));
+                        tempLLDVList = new ArrayList<LLDataValue>(lldataValueMap.get(String.valueOf(recordNo)));
                 }
                 
                 tempLLDVList.add( dataValue );
@@ -1214,8 +1383,8 @@ public class FormAction
                 
                 for(int i = 0; i<4; i++)
                 {
-                	LLDataValue tempLLDV1 = new LLDataValue();
-                	tempLLDVList2.add(tempLLDV1);
+                        LLDataValue tempLLDV1 = new LLDataValue();
+                        tempLLDVList2.add(tempLLDV1);
                 }
 
                 Iterator<LLDataValue> it2 = tempLLDVList1.iterator();
@@ -1246,22 +1415,22 @@ public class FormAction
                 }
 
                 int llbDes[] = {LLDataSets.LLUUIDSPE_SC_NAME,LLDataSets.LLUUIDSPE_DATE_OF_EVENT,
-                				LLDataSets.LLUUIDSPE_DEATAILS,LLDataSets.LLUUIDSPE_WAS_INVESTIGATED};
+                                                LLDataSets.LLUUIDSPE_DEATAILS,LLDataSets.LLUUIDSPE_WAS_INVESTIGATED};
                 
                 for(int i = 0; i<4; i++)
                 {
-                	LLDataValue llDv = tempLLDVList2.get(i);
-                	if(tempLLDVList2.get(i).getDataElement() == null || tempLLDVList2.get(i).getDataElement().getId() != llbDes[i])
-                	{
-                		llDv.setPeriod(existingLLDV.getPeriod());
-                		llDv.setSource(existingLLDV.getSource());
-                		llDv.setDataElement(dataElementService.getDataElement(llbDes[i]));
-                		llDv.setRecordNo(existingLLDV.getRecordNo());
-                		llDv.setOptionCombo(existingLLDV.getOptionCombo());
-                		llDv.setValue(" ");
-                		
-                		tempLLDVList2.set(i, llDv);
-                	}	            		
+                        LLDataValue llDv = tempLLDVList2.get(i);
+                        if(tempLLDVList2.get(i).getDataElement() == null || tempLLDVList2.get(i).getDataElement().getId() != llbDes[i])
+                        {
+                                llDv.setPeriod(existingLLDV.getPeriod());
+                                llDv.setSource(existingLLDV.getSource());
+                                llDv.setDataElement(dataElementService.getDataElement(llbDes[i]));
+                                llDv.setRecordNo(existingLLDV.getRecordNo());
+                                llDv.setOptionCombo(existingLLDV.getOptionCombo());
+                                llDv.setValue(" ");
+                                
+                                tempLLDVList2.set(i, llDv);
+                        }                               
                 }
 
                 lldataValueMap.put( tempRecordNo, tempLLDVList2 );            
@@ -1284,11 +1453,11 @@ public class FormAction
                 List<LLDataValue> tempLLDVList;
                 if(lldataValueMap == null || lldataValueMap.isEmpty() || lldataValueMap.get(String.valueOf(recordNo)) == null || lldataValueMap.get(String.valueOf(recordNo)).isEmpty())
                 {
-                	tempLLDVList = new ArrayList<LLDataValue>();
+                        tempLLDVList = new ArrayList<LLDataValue>();
                 }
                 else
                 {
-                	tempLLDVList = new ArrayList<LLDataValue>(lldataValueMap.get(String.valueOf(recordNo)));
+                        tempLLDVList = new ArrayList<LLDataValue>(lldataValueMap.get(String.valueOf(recordNo)));
                 }
                 
                 tempLLDVList.add( dataValue );
@@ -1306,8 +1475,8 @@ public class FormAction
                 
                 for(int i = 0; i<4; i++)
                 {
-                	LLDataValue tempLLDV1 = new LLDataValue();
-                	tempLLDVList2.add(tempLLDV1);
+                        LLDataValue tempLLDV1 = new LLDataValue();
+                        tempLLDVList2.add(tempLLDV1);
                 }
 
                 Iterator<LLDataValue> it2 = tempLLDVList1.iterator();
@@ -1338,22 +1507,22 @@ public class FormAction
                 }
 
                 int llbDes[] = {LLDataSets.LLUUIDSPEP_EVENT_REPORTED,LLDataSets.LLUUIDSPEP_DATE_OF_EVENT,
-                				LLDataSets.LLUUIDSPEP_WAS_INVESTIGATED,LLDataSets.LLUUIDSPEP_ACTION_TAKEN};
+                                                LLDataSets.LLUUIDSPEP_WAS_INVESTIGATED,LLDataSets.LLUUIDSPEP_ACTION_TAKEN};
                 
                 for(int i = 0; i<4; i++)
                 {
-                	LLDataValue llDv = tempLLDVList2.get(i);
-                	if(tempLLDVList2.get(i).getDataElement() == null || tempLLDVList2.get(i).getDataElement().getId() != llbDes[i])
-                	{
-                		llDv.setPeriod(existingLLDV.getPeriod());
-                		llDv.setSource(existingLLDV.getSource());
-                		llDv.setDataElement(dataElementService.getDataElement(llbDes[i]));
-                		llDv.setRecordNo(existingLLDV.getRecordNo());
-                		llDv.setOptionCombo(existingLLDV.getOptionCombo());
-                		llDv.setValue(" ");
-                		
-                		tempLLDVList2.set(i, llDv);
-                	}	            		
+                        LLDataValue llDv = tempLLDVList2.get(i);
+                        if(tempLLDVList2.get(i).getDataElement() == null || tempLLDVList2.get(i).getDataElement().getId() != llbDes[i])
+                        {
+                                llDv.setPeriod(existingLLDV.getPeriod());
+                                llDv.setSource(existingLLDV.getSource());
+                                llDv.setDataElement(dataElementService.getDataElement(llbDes[i]));
+                                llDv.setRecordNo(existingLLDV.getRecordNo());
+                                llDv.setOptionCombo(existingLLDV.getOptionCombo());
+                                llDv.setValue(" ");
+                                
+                                tempLLDVList2.set(i, llDv);
+                        }                               
                 }
 
                 lldataValueMap.put( tempRecordNo, tempLLDVList2 );            
@@ -1377,11 +1546,11 @@ public class FormAction
                 List<LLDataValue> tempLLDVList;
                 if(lldataValueMap == null || lldataValueMap.isEmpty() || lldataValueMap.get(String.valueOf(recordNo)) == null || lldataValueMap.get(String.valueOf(recordNo)).isEmpty())
                 {
-                	tempLLDVList = new ArrayList<LLDataValue>();
+                        tempLLDVList = new ArrayList<LLDataValue>();
                 }
                 else
                 {
-                	tempLLDVList = new ArrayList<LLDataValue>(lldataValueMap.get(String.valueOf(recordNo)));
+                        tempLLDVList = new ArrayList<LLDataValue>(lldataValueMap.get(String.valueOf(recordNo)));
                 }
                 
                 tempLLDVList.add( dataValue );
@@ -1399,8 +1568,8 @@ public class FormAction
                 
                 for(int i = 0; i<5; i++)
                 {
-                	LLDataValue tempLLDV1 = new LLDataValue();
-                	tempLLDVList2.add(tempLLDV1);
+                        LLDataValue tempLLDV1 = new LLDataValue();
+                        tempLLDVList2.add(tempLLDV1);
                 }
 
                 Iterator<LLDataValue> it2 = tempLLDVList1.iterator();
@@ -1436,22 +1605,22 @@ public class FormAction
                 }
 
                 int llbDes[] = {LLDataSets.LLDIDSP_CHILD_NAME,LLDataSets.LLDIDSP_VILLAGE_NAME,LLDataSets.LLDIDSP_SEX,
-                				LLDataSets.LLDIDSP_AGE_CATEGORY,LLDataSets.LLDIDSP_DEATH_CAUSE};
+                                                LLDataSets.LLDIDSP_AGE_CATEGORY,LLDataSets.LLDIDSP_DEATH_CAUSE};
                 
                 for(int i = 0; i<5; i++)
                 {
-                	LLDataValue llDv = tempLLDVList2.get(i);
-                	if(tempLLDVList2.get(i).getDataElement() == null || tempLLDVList2.get(i).getDataElement().getId() != llbDes[i])
-                	{
-                		llDv.setPeriod(existingLLDV.getPeriod());
-                		llDv.setSource(existingLLDV.getSource());
-                		llDv.setDataElement(dataElementService.getDataElement(llbDes[i]));
-                		llDv.setRecordNo(existingLLDV.getRecordNo());
-                		llDv.setOptionCombo(existingLLDV.getOptionCombo());
-                		llDv.setValue(" ");
-                		
-                		tempLLDVList2.set(i, llDv);
-                	}	            		
+                        LLDataValue llDv = tempLLDVList2.get(i);
+                        if(tempLLDVList2.get(i).getDataElement() == null || tempLLDVList2.get(i).getDataElement().getId() != llbDes[i])
+                        {
+                                llDv.setPeriod(existingLLDV.getPeriod());
+                                llDv.setSource(existingLLDV.getSource());
+                                llDv.setDataElement(dataElementService.getDataElement(llbDes[i]));
+                                llDv.setRecordNo(existingLLDV.getRecordNo());
+                                llDv.setOptionCombo(existingLLDV.getOptionCombo());
+                                llDv.setValue(" ");
+                                
+                                tempLLDVList2.set(i, llDv);
+                        }                               
                 }
 
                 lldataValueMap.put( tempRecordNo, tempLLDVList2 );            
@@ -1488,15 +1657,15 @@ public class FormAction
 
     }
 
-	
-	
+        
+        
 
-	
-	
+        
+        
 
 
 
-	
+        
 
 
     /*
