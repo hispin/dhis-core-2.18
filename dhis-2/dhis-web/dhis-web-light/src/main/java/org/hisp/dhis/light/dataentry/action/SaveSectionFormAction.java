@@ -330,7 +330,7 @@ public class SaveSectionFormAction
 
         validationRuleViolations = sectionFormUtils.getValidationRuleViolations( organisationUnit, dataSet, period );
 
-        if ( needsValidation && validationViolations.size() > 0 )
+        if ( needsValidation && (validationViolations.size() > 0 || validationRuleViolations.size() > 0) )
         {
             return ERROR;
         }
