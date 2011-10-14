@@ -5,7 +5,7 @@
 <ul>
 #foreach( $period in $periods )
 <li>
-	<a href="dataEntry.action?organisationUnitId=$organisationUnitId&dataSetId=$dataSetId&periodId=$period.getExternalId()">${period.name}</a>
+	<a href="dataEntry.action?organisationUnitId=$organisationUnitId&dataSetId=$dataSetId&periodId=$period.getExternalId()">$!encoder.htmlEncode( ${period.name} )</a>
 	#if( $periodCompletedMap.get($period) )<img src="../dhis-web-light/images/check.jpg" />#end
 </li>
 #end
