@@ -352,7 +352,13 @@ public class GenerateDataStatusResultAction
     {
         return dataElementCount;
     }
+
+    private List<OrganisationUnit> dso;
     
+    public List<OrganisationUnit> getDso()
+    {
+        return dso;
+    }
 
     // ---------------------------------------------------------------
     // Action Implementation
@@ -500,7 +506,7 @@ public class GenerateDataStatusResultAction
         Iterator<OrganisationUnit> orgUnitListIterator = orgUnitList.iterator();
         OrganisationUnit o;
         // Set<OrganisationUnit> dso = new HashSet<OrganisationUnit>();
-        List<OrganisationUnit> dso = new ArrayList<OrganisationUnit>( selDataSet.getSources() );
+        dso = new ArrayList<OrganisationUnit>( selDataSet.getSources() );
         Iterator<Period> periodIterator;
         // dso = selDataSet.getSources();
 
@@ -529,8 +535,6 @@ public class GenerateDataStatusResultAction
                 periodInfo = "" + p.getId();
                 dataElementCount = 0;
 
-                
-
                     if ( dso == null )
                     {
                         dsResults.add( -1 );
@@ -540,16 +544,18 @@ public class GenerateDataStatusResultAction
                     else if ( !dso.contains( o ) )
                     {
                         System.out.println("Dataset : " + selDataSet.getName() + " not assign to " + o.getName() );
-                        /*
+                        List<OrganisationUnit> childOrgUnits = new ArrayList<OrganisationUnit>();
+                        childOrgUnits = filterChildOrgUnitsByDataSet( o, dso );
+
+                        
                         if( childOrgUnits == null || childOrgUnits.size() <= 0 )
                         {
                             dsResults.add( -2 );
                             continue;
                         }
-                        
-                        else*/
-                        //{
-                            /*orgUnitInfo = "-1";
+                        else
+                        {
+                            orgUnitInfo = "-1";
                             orgUnitCount = 0;
                             getOrgUnitInfo( o, dso );
         
@@ -589,13 +595,14 @@ public class GenerateDataStatusResultAction
                                 dataStatusPercentatge = 100;
         
                             dataStatusPercentatge = Math.round( dataStatusPercentatge * Math.pow( 10, 0 ) ) / Math.pow( 10, 0 );
-                            */
-                            //dsResults.add( (int) dataStatusPercentatge );
-                            dsResults.add( -1 );
-                            //dataElementCount = sqlResultSet.getInt( 1 );
-                            deCounts.add( -1 );
+                           
+                            dsResults.add( (int) dataStatusPercentatge );
+                            //dsResults.add( -1 );
+                            dataElementCount = sqlResultSet.getInt( 1 );
+                            //deCounts.add( -1 );
+                            deCounts.add( dataElementCount );
                             continue;
-                        //}
+                        }
                     }
 
                 orgUnitInfo = "" + o.getId();
@@ -814,16 +821,24 @@ public class GenerateDataStatusResultAction
         }
     }
 
-    /*
-     * private void getOrgUnitInfo( OrganisationUnit organisationUnit,
-     * List<OrganisationUnit> dso ) { Collection<OrganisationUnit> children =
-     * organisationUnit.getChildren();
-     * 
-     * Iterator<OrganisationUnit> childIterator = children.iterator();
-     * OrganisationUnit child; while ( childIterator.hasNext() ) { child =
-     * childIterator.next(); if ( dso.contains( child ) ) { orgUnitInfo += "," +
-     * child.getId(); orgUnitCount++; } getOrgUnitInfo( child, dso ); } }
-     */
+    
+     private void getOrgUnitInfo( OrganisationUnit organisationUnit, List<OrganisationUnit> dso ) 
+     { 
+         Collection<OrganisationUnit> children = organisationUnit.getChildren();
+      
+         Iterator<OrganisationUnit> childIterator = children.iterator();
+         OrganisationUnit child; 
+         while ( childIterator.hasNext() ) 
+         { 
+             child = childIterator.next(); 
+             if ( dso.contains( child ) ) 
+             { 
+                 orgUnitInfo += "," + child.getId(); orgUnitCount++; 
+             } 
+             getOrgUnitInfo( child, dso ); 
+         } 
+     }
+     
     private String getDEInfo( Collection<DataElement> dataElements )
     {
         StringBuffer deInfo = new StringBuffer( "-1" );
@@ -834,14 +849,12 @@ public class GenerateDataStatusResultAction
         }
         return deInfo.toString();
     }
-    /*
-     * private List<OrganisationUnit> filterChildOrgUnitsByDataSet(
-     * OrganisationUnit selectedOrganisationUnit, List<OrganisationUnit> dso ) {
-     * List<OrganisationUnit> filteredOrganisationUnits = new
-     * ArrayList<OrganisationUnit>(
-     * organisationUnitService.getOrganisationUnitWithChildren(
-     * selectedOrganisationUnit.getId() ) );
-     * filteredOrganisationUnits.retainAll( dso ); return
-     * filteredOrganisationUnits; }
-     */
+    
+     private List<OrganisationUnit> filterChildOrgUnitsByDataSet( OrganisationUnit selectedOrganisationUnit, List<OrganisationUnit> dso ) 
+     {
+         List<OrganisationUnit> filteredOrganisationUnits = new ArrayList<OrganisationUnit>( organisationUnitService.getOrganisationUnitWithChildren( selectedOrganisationUnit.getId() ) );
+         filteredOrganisationUnits.retainAll( dso ); return
+         filteredOrganisationUnits; 
+     }
+    
 }// class end

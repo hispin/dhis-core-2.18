@@ -145,7 +145,6 @@ public class GenerateDataEntrySummaryStatusResultAction implements Action
         this.facilityLB = facilityLB;
     }
     
-    
     private String immChildOption;
 
     public void setImmChildOption( String immChildOption )
@@ -246,8 +245,6 @@ public class GenerateDataEntrySummaryStatusResultAction implements Action
     
     String orgUnitInfo;
 
-    String periodInfo;
-
     String deInfo;
 
     int orgUnitCount;
@@ -282,6 +279,7 @@ public class GenerateDataEntrySummaryStatusResultAction implements Action
     {
         return ouMapForChildDSAssociation;
     }
+
     // ---------------------------------------------------------------
     // Action Implementation
     // ---------------------------------------------------------------
@@ -316,21 +314,10 @@ public class GenerateDataEntrySummaryStatusResultAction implements Action
             selectedDataSets = Integer.parseInt( dsId );
         }
         
-        
         // Data Set Related Information
         selDataSet = dataSetService.getDataSet( selectedDataSets );
-        dataSetName = selDataSet.getName();
-        
-        Collection<DataElement> dataElements = new ArrayList<DataElement>();
-        dataElements = selDataSet.getDataElements();
-        totalDataElementCount = 0;
-        for ( DataElement de1 : dataElements )
-        {
-            totalDataElementCount += de1.getCategoryCombo().getOptionCombos().size();
-        }
-        
+        dataSetName = selDataSet.getName();        
         dataSetSources = new ArrayList<OrganisationUnit>( selDataSet.getSources() );
-        
         
         // Period Related Info
         Period startPeriod = periodService.getPeriod( sDateLB );
@@ -341,26 +328,9 @@ public class GenerateDataEntrySummaryStatusResultAction implements Action
         
         periodNameList = dashBoardService.getPeriodNamesByPeriodType( dataSetPeriodType, periodList );
         
-        periodInfo = "-1";
-        for ( Period p : periodList )
-            periodInfo += "," + p.getId();
-
-        
-        /*
-        Iterator<Period> periodIterator = periodList.iterator();
-        Period p;
-        periodInfo = "-1";
-        while( periodIterator.hasNext() )
-        {
-            p = (Period) periodIterator.next();
-            periodInfo += "," + p.getId();
-        }
-        */
         // Period Information for map
         Collection<Integer> periodIds = new ArrayList<Integer>( getIdentifiers(Period.class, periodList ) );
-        
         periodIdsByComma = getCommaDelimitedString( periodIds );
-        
         
         // OrgUnit Related Info
         OrganisationUnit selectedOrgUnit = new OrganisationUnit();
@@ -370,11 +340,7 @@ public class GenerateDataEntrySummaryStatusResultAction implements Action
             selectedOrgUnit = organisationUnitService.getOrganisationUnit( Integer.parseInt( orgUnitListCB.get( 0 ) ) );
             orgUnitList = new ArrayList<OrganisationUnit>( organisationUnitService.getOrganisationUnitWithChildren( selectedOrgUnit.getId() ) );
         
-            tempOrgUnitList = new ArrayList<OrganisationUnit>( organisationUnitService.getOrganisationUnitWithChildren( selectedOrgUnit.getId() ) );
-            
-            // for Map
-            //childOrgUnitTreeIds = new ArrayList<Integer>( getIdentifiers( OrganisationUnit.class, tempOrgUnitList ) );
-            //childOrgUnitsByComma = getCommaDelimitedString( childOrgUnitTreeIds );
+            tempOrgUnitList = new ArrayList<OrganisationUnit>( organisationUnitService.getOrganisationUnitWithChildren( selectedOrgUnit.getId() ) );            
         }
         else if ( facilityLB.equals( "immChildren" ) )
         {
@@ -632,58 +598,7 @@ public class GenerateDataEntrySummaryStatusResultAction implements Action
             levelNames.add( ouLevelNames[count1] );
             count1++;
         }
-        
- /*       
-        
-        String query2 = "";
-        if ( includeZeros == null )
-        {
-            query2 = "SELECT organisationunitid, periodid, value FROM dataentrystatus  WHERE datasetid = " + selDataSet.getId() +  " AND organisationunitid IN (" + orgUnitInfo + ") AND periodid IN (" + periodInfo + ") and includezero ='N' ";
-        }
-        else
-        {
-            query2 = "SELECT organisationunitid, periodid, value FROM dataentrystatus  WHERE datasetid = " + selDataSet.getId() +  " AND organisationunitid IN (" + orgUnitInfo + ") AND periodid IN (" + periodInfo + ") and includezero ='Y' ";
-        }
-        
-        SqlRowSet rs = jdbcTemplate.queryForRowSet( query );
-        
-        double value ;
-        int result;
-        while ( rs.next() )
-        {                
-            Integer orgUnitId = rs.getInt( 1 );
-            Integer periodId = rs.getInt( 2 );
-            String tempValue =  rs.getString( 3 );
-            
-            try
-            {
-                value = Double.parseDouble( tempValue );
-            }
-            catch ( Exception e )
-            {
-                value = 0.0;
-            }
-            
-            if ( value >= 5.0 )
-            {
-                result = 1;
-            }
-            
-            else
-            {
-                result = 0;
-            }
-           
-            String orgIdPeriodId =  orgUnitId + ":" + periodId;
-            //double dataElementCount = ( value * (double) totalDataElementCount ) / 100;
-            
-            //value = Math.round( value * Math.pow( 10, 0 ) ) / Math.pow( 10, 0 );
-            //dataElementCount = Math.round( dataElementCount * Math.pow( 10, 0 ) ) / Math.pow( 10, 0 );
-            
-            ouMapDataEntryStatusResult.put( orgIdPeriodId, result );
-            //ouMapDataElementCount.put( orgIdPeriodId, (int)dataElementCount );
-        }
-*/        
+                
         System.out.println( "Data Entry Summary  Status Using Mart End Time  : " + new Date() );
         return SUCCESS;
     }

@@ -165,7 +165,7 @@
             <param name="menu">/dhis-web-reports/menuWithTreeForIDSPReport.vm</param>
             <param name="javascripts">../dhis-web-commons/ouwt/ouwt.js,../dhis-web-commons/lists/lists.js,javascript/reportManagement.js,javascript/hashtable.js</param>
             <param name="stylesheets">css/StylesForTags.css</param>
-            <param name="requiredAuthorities">F_REPORT_ROUTINE</param>
+            <param name="requiredAuthorities">F_REPORT_IDSP</param>
             <interceptor-ref name="organisationUnitTreeStack"/>
         </action>		
         <action name="generateIDSPReportResult"
@@ -177,9 +177,6 @@
                 <param name="bufferSize">1024</param>
             </result>
         </action>
-		
-		
-		
 		        
         <!-- ED Reports -->
         <action name="edReportForm"
@@ -743,7 +740,7 @@
 			<param name="menu">/dhis-web-reports/menuWithTreeForColdChainRoutineReport.vm</param>
 			<param name="javascripts">../dhis-web-commons/ouwt/ouwt.js,../dhis-web-commons/lists/lists.js,javascript/reportManagement.js,javascript/hashtable.js</param>
 			<param name="stylesheets">css/StylesForTags.css</param>
-			<param name="requiredAuthorities">F_REPORT_LINELIST_PORTAL</param>
+			<param name="requiredAuthorities">F_REPORT_LINELIST_COLDCHAIN</param>
 			<interceptor-ref name="organisationUnitTreeStack"/>
 		</action>		
 		
