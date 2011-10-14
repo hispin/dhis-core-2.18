@@ -39,7 +39,7 @@
 	  
       <tr>
 		<td><label>$i18n.getString( "single_event" )</td>
-		<td><input type="checkbox" id="singleEvent" name="singleEvent" #if( $program.singleEvent=='true' ) checked #end onchange="singleEventOnChange();"></td>
+		<td><input type="checkbox" id="singleEvent" value='true' name="singleEvent" #if( $program.singleEvent=='true' ) checked #end onchange="singleEventOnChange();"></td>
 		<td></td>
 	 </tr>
 	 
