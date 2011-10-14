@@ -41,7 +41,7 @@ import org.hisp.dhis.user.CurrentUserService;
 import org.hisp.dhis.user.User;
 import org.hisp.dhis.version.Version;
 import org.hisp.dhis.version.VersionService;
-import org.hisp.dhis.organisationunit.comparator.OrganisationUnitNameComparator;
+
 import com.opensymphony.xwork2.Action;
 
 /**
@@ -155,8 +155,6 @@ public class GetOrganisationUnitTreeAction
         Collections.sort( rootOrganisationUnits, new OrganisationUnitNameComparator() );
         
         version = getVersionString();
-        //hack to sort orphaned children
-        Collections.sort( rootOrganisationUnits, new OrganisationUnitNameComparator() );
 
         return SUCCESS;
     }
