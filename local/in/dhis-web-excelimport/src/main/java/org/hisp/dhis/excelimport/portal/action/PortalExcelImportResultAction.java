@@ -50,6 +50,14 @@ import com.opensymphony.xwork2.Action;
 
 public class PortalExcelImportResultAction implements Action
 {
+    private static final String PHC_FORMAT = "PHC";
+    private static final String CHC_FORMAT = "CHC";
+    private static final String SDH_TH_FORMAT = "SUB-DIVISIONAL/TALUKA HOSPITAL";
+    private static final String SC_FORMAT = "SC";
+    private static final String DH_FORMAT = "DISTRICT HOSPITAL";
+    private static final String BLOCK_FORMAT = "BLOCK";
+    private static final String DISTRICT_FORMAT = "DISTRICT";
+    
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
@@ -393,7 +401,263 @@ public class PortalExcelImportResultAction implements Action
         
         return deCodeList;
     }
+    
+    private void importPortalData( WritableWorkbook importWorkbook ) throws Exception
+    {
+        List<ExcelImport_Header> headerInfoList = new ArrayList<ExcelImport_Header>();
+        headerInfoList = getHeaderInfo( importSheetId );
 
+        List<ExcelImport_DeCode> deCodeList = new ArrayList<ExcelImport_DeCode>();
+        deCodeList = getDataInfo( importSheetId );
+        
+        Map<String, String> monthMap = new HashMap<String, String>();
+        monthMap.put( "January", "01" );
+        monthMap.put( "February", "02" );
+        monthMap.put( "March", "03" );
+        monthMap.put( "April", "04" );
+        monthMap.put( "May", "05" );
+        monthMap.put( "June", "06" );
+        monthMap.put( "July", "07" );
+        monthMap.put( "August", "08" );
+        monthMap.put( "September", "09" );
+        monthMap.put( "October", "10" );
+        monthMap.put( "November", "11" );
+        monthMap.put( "December", "12" );
+        
+        String selectedMonth = "";
+        String selectedPeriodicity = "";
+        String selectedFinancialYear = "";
+        String selectedFormat = "";
+        String selectedParentName = "";
+        
+        String query = "";
+        String storedBy = currentUserService.getCurrentUsername();
+        if ( storedBy == null )
+        {
+            storedBy = "[unknown]";
+        }
+        
+        DataSet dataSet = dataSetService.getDataSet( datasetId );
+        
+        Sheet sheet = importWorkbook.getSheet( 0 );
+
+        for( ExcelImport_Header header : headerInfoList )
+        {
+            sheet = importWorkbook.getSheet( header.getSheetno() );
+            String cellContent = sheet.getCell( header.getColno(), header.getRowno() ).getContents();
+            
+            if( cellContent.equalsIgnoreCase( "" ) || cellContent == null || cellContent.equalsIgnoreCase( " " ) )
+            {
+                continue;
+            }
+
+            if( header.getExpression().equalsIgnoreCase( ExcelImport_Header.HEADER_PERIOD ) )
+            {
+                selectedMonth = monthMap.get( cellContent );
+            }
+            else if( header.getExpression().equalsIgnoreCase( ExcelImport_Header.HEADER_FINANCIALYEAR ) )
+            {
+                selectedFinancialYear = cellContent;
+            }
+            else if( header.getExpression().equalsIgnoreCase( ExcelImport_Header.HEADER_FORMAT ) )
+            {
+                selectedFormat = cellContent;
+            }
+            else if( header.getExpression().equalsIgnoreCase( ExcelImport_Header.HEADER_FACILITY_PARENT ) )
+            {
+                selectedParentName = cellContent;
+            }
+            else if( header.getExpression().equalsIgnoreCase( ExcelImport_Header.HEADER_PERIODICITY ) )
+            {
+                selectedPeriodicity = cellContent;
+            }
+        }
+        
+        String selStartDate = "";
+        String selEndDate = "";
+        if( !selectedFinancialYear.trim().equalsIgnoreCase( "" ) )
+        {
+            if( selectedMonth.equals( "01" ) || selectedMonth.equals( "02" ) || selectedMonth.equals( "03" ) )
+            {
+                selStartDate = selectedFinancialYear.split( "-" )[1] + "-" + selectedMonth + "-" + "01";
+            }
+            else
+            {
+                selStartDate = selectedFinancialYear.split( "-" )[0] + "-" + selectedMonth + "-" + "01";
+            }
+        }
+
+        PeriodType periodType = periodService.getPeriodTypeByName( selectedPeriodicity );
+        Period selectedPeriod = getSelectedPeriod( selStartDate, periodType );
+        SimpleDateFormat periodFormat;
+        if( periodType.getName().equalsIgnoreCase("Monthly") )
+        {
+            periodFormat = new SimpleDateFormat("MMM-yyyy");
+        }
+        else if( periodType.getName().equalsIgnoreCase("Monthly") )
+        {
+            periodFormat = new SimpleDateFormat("yyyy");
+        }
+        else
+        {
+            periodFormat = new SimpleDateFormat("yyyy-MM-dd");
+        }
+        
+        Integer selectedBlockId = 0;
+        if( selectedFormat.equals( CHC_FORMAT ) || selectedFormat.equals( SDH_TH_FORMAT ) )
+        {
+            selectedBlockId = getOrgUnitIdByURL( selectedParentName + ":" + DISTRICT_FORMAT );
+        }
+        else if( selectedFormat.equals( PHC_FORMAT ) || selectedFormat.equals( SC_FORMAT ) )
+        {
+            selectedBlockId = getOrgUnitIdByURL( selectedParentName + ":" +  BLOCK_FORMAT );
+        }
+        else
+        {
+            selectedBlockId = getOrgUnitIdByComment( selectedParentName );
+        }
+        
+        if( selectedBlockId != null )
+        {
+            List<OrganisationUnit> orgUnitList = new ArrayList<OrganisationUnit>( organisationUnitService.getOrganisationUnitWithChildren( selectedBlockId ) );
+            OrganisationUnitGroup orgUnitGroup = organisationUnitGroupService.getOrganisationUnitGroup( orgunitGroupId );
+            orgUnitList.retainAll( orgUnitGroup.getMembers() );
+            List<Integer> orgUnitIds = new ArrayList<Integer>( getIdentifiers( OrganisationUnit.class, orgUnitList ) );
+            
+            System.out.println( orgUnitList.size() + " : " + orgUnitGroup.getMembers().size() + " : " + orgUnitList.size() );
+            
+            int facilityStartRow = Integer.parseInt( facilityStart.split( "," )[0] );
+            int facilityStartCol = Integer.parseInt( facilityStart.split( "," )[1] );
+            
+            String facility = sheet.getCell( facilityStartCol, facilityStartRow ).getContents();
+            int colCount = facilityStartCol;
+            String facilityP = "";
+            while( facility != null && !facility.trim().equalsIgnoreCase( "" ) )
+            {
+                String tempFacility = facility;
+                if( selectedFormat.equals( CHC_FORMAT ) || selectedFormat.equals( SDH_TH_FORMAT ) )
+                {
+                    if( sheet.getCell( colCount, facilityStartRow-1 ).getContents() != null && !sheet.getCell( colCount, facilityStartRow-1 ).getContents().trim().equalsIgnoreCase( "" ) )
+                    {
+                        facilityP = sheet.getCell( colCount, facilityStartRow-1 ).getContents();
+                    }
+                    
+                    facility = sheet.getCell( colCount, facilityStartRow ).getContents();
+                    
+                    tempFacility = selectedParentName+ ":" + facilityP + ":" + facility + ":" + selectedFormat;
+                }
+                else if( selectedFormat.equals( PHC_FORMAT ) || selectedFormat.equals( SC_FORMAT ) )
+                {
+                    if( sheet.getCell( colCount, facilityStartRow-2 ).getContents() != null && !sheet.getCell( colCount, facilityStartRow-2 ).getContents().trim().equalsIgnoreCase( "" ) )
+                    {
+                        facilityP = sheet.getCell( colCount, facilityStartRow-2 ).getContents();
+                    }
+                    
+                    facility = sheet.getCell( colCount, facilityStartRow ).getContents();
+                    
+                    tempFacility = facilityP + ":" + selectedParentName + ":" + facility + ":" + selectedFormat;
+                }
+                
+                if( facility.trim().equalsIgnoreCase( "Total" ) )
+                {
+                    colCount++;
+                    facility = sheet.getCell( colCount, facilityStartRow ).getContents();
+
+                    continue;
+                }
+                
+                System.out.println("tempFacility: "+ tempFacility);
+                Integer currentOrgunitId = getOrgUnitIdByURL( tempFacility );
+                if( currentOrgunitId != null )
+                {
+                    OrganisationUnit portalOrgUnit = organisationUnitService.getOrganisationUnit( currentOrgunitId );
+                    
+                    if( portalOrgUnit != null && orgUnitList.contains( portalOrgUnit ) )
+                    {
+                        System.out.println("--------Importing started for :"+portalOrgUnit.getName() + "-------------" );
+                        DataSetLock dataSetLock = dataSetLockService.getDataSetLockByDataSetPeriodAndSource( dataSet, selectedPeriod, portalOrgUnit );
+                        if( dataSetLock != null )
+                        {
+                            message += "<br><font color=red><strong>Unable to Import : Corresponding Dataset ( "+dataSet.getName()+" ) for " + portalOrgUnit.getName() + " and for period : " + periodFormat.format( selectedPeriod.getStartDate() ) + " is locked.</strong></font>";
+                            System.out.println("Unable to Import : Corresponding Dataset ( "+dataSet.getName()+" ) for " + portalOrgUnit.getName() + " and for period : " + periodFormat.format( selectedPeriod.getStartDate() ) + " is locked.");
+                            colCount++;
+                            facility = sheet.getCell( colCount, facilityStartRow ).getContents();
+                            
+                            continue;
+                        }
+
+                        int insertFlag = 1;
+                        String insertQuery = "INSERT INTO datavalue (dataelementid, periodid, sourceid, categoryoptioncomboid, value, storedby, lastupdated ) VALUES ";
+
+                        for( ExcelImport_DeCode deCode : deCodeList )
+                        {
+                            String deCodeExpression = deCode.getExpression();
+                            if( deCodeExpression != null && !deCodeExpression.trim().equals( "" ) )
+                            {
+                                Integer deId = Integer.parseInt( deCodeExpression.split( "\\." )[0] );
+                                Integer deCOCId = Integer.parseInt( deCodeExpression.split( "\\." )[1] );
+                                
+                                String dataValue = sheet.getCell( colCount, deCode.getRowno() ).getContents();
+                                
+                                query = "SELECT value FROM datavalue WHERE dataelementid = " + deId + 
+                                            " AND categoryoptioncomboid = " + deCOCId +
+                                            " AND periodid = " + selectedPeriod.getId() +
+                                            " AND sourceid = " + portalOrgUnit.getId();
+
+                                long t;
+                                Date d = new Date();
+                                t = d.getTime();
+                                java.sql.Date lastUpdatedDate = new java.sql.Date( t );
+
+                                SqlRowSet sqlResultSet1 = jdbcTemplate.queryForRowSet( query );
+                                if ( sqlResultSet1 != null && sqlResultSet1.next() )
+                                {
+                                    String updateQuery = "UPDATE datavalue SET value = '" + dataValue + "', storedby = '" + storedBy + "',lastupdated='" + lastUpdatedDate + "' WHERE dataelementid = "+ deId +" AND periodid = " + selectedPeriod.getId() + " AND sourceid = " + portalOrgUnit.getId() + " AND categoryoptioncomboid = "+deCOCId;
+                                    jdbcTemplate.update( updateQuery );
+                                }
+                                else
+                                {
+                                    if( dataValue != null && !dataValue.trim().equalsIgnoreCase( "" ) )
+                                    {
+                                        insertQuery += "( "+ deId + ", " + selectedPeriod.getId() + ", "+ portalOrgUnit.getId() +", " + deCOCId + ", '" + dataValue + "', '" + storedBy + "', '" + lastUpdatedDate + "' ), ";
+                                        insertFlag = 2;
+                                    }
+                                }
+                            }
+                        }
+                        
+                        if( insertFlag != 1 )
+                        {
+                            insertQuery = insertQuery.substring( 0, insertQuery.length()-2 );
+                            jdbcTemplate.update( insertQuery );
+                            System.out.println("Data is uploaded in DHIS for : "+ facility);
+                        }
+                        message += "<br>Data is uploaded into DHIS for : "+ facility + " and for period : "+ periodFormat.format( selectedPeriod.getStartDate() );
+                    }
+                    else
+                    {
+                        System.out.println( facility + " is not a memeber of orgunitgroup : "+ orgUnitGroup.getName() );
+                        message += "<br><font color=red>" + facility + " is not a memeber of orgunitgroup : "+ orgUnitGroup.getName() + "</font>";
+                    }
+                }
+                else
+                {
+                    System.out.println("No Mapping found in DHIS for :"+ facility + " : NULL");
+                    message += "<br><font color=red>No Mapping found in DHIS for : "+ facility + "</font>";
+                }
+                
+                colCount++;
+                facility = sheet.getCell( colCount, facilityStartRow ).getContents();
+                
+            }
+            
+            
+        }
+        
+    }
+
+
+    /*
     private void importPortalData( WritableWorkbook importWorkbook ) throws Exception
     {
         List<ExcelImport_Header> headerInfoList = new ArrayList<ExcelImport_Header>();
@@ -510,8 +774,23 @@ public class PortalExcelImportResultAction implements Action
             
             String facility = sheet.getCell( facilityStartCol, facilityStartRow ).getContents();
             int colCount = facilityStartCol;
+            String facilityP = "";
             while( facility != null && !facility.trim().equalsIgnoreCase( "" ) )
             {
+                if( selectedFormat.equals( CHC_FORMAT ))
+                {
+                    if( sheet.getCell( colCount, facilityStartRow-1 ).getContents() != null && !sheet.getCell( colCount, facilityStartRow-1 ).getContents().trim().equalsIgnoreCase( "" ) )
+                    {
+                        facilityP = sheet.getCell( colCount, facilityStartRow-1 ).getContents();
+                    }
+                    
+                    facility = sheet.getCell( colCount, facilityStartRow ).getContents();
+                    
+                    System.out.println( facility + " :: " + facilityP );
+                    colCount++;
+                    continue;
+                }
+                
                 if( facility.trim().equalsIgnoreCase( "Total" ) )
                 {
                     colCount++;
@@ -608,6 +887,7 @@ public class PortalExcelImportResultAction implements Action
         }
         
     }
+*/
 
     public void setTextFormatForExcelShett( WritableWorkbook excelImportFile )
     {
@@ -644,10 +924,21 @@ public class PortalExcelImportResultAction implements Action
         
         return null;
     }
-    
+
+    public Integer getOrgUnitIdByURL( String url )
+    {
+        String query = "SELECT organisationunitid FROM organisationunit WHERE url LIKE '"+ url +"'";
+        SqlRowSet sqlResultSet = jdbcTemplate.queryForRowSet( query );
+        if ( sqlResultSet != null && sqlResultSet.next() )
+        {
+            return sqlResultSet.getInt( 1 );
+        }
+        return null;
+    }
+
     public Integer getOrgUnitIdByComment( String comment )
     {
-        String query = "SELECT organisationunitid FROM organisationunit WHERE comment LIKE '"+ comment +"'";
+        String query = "SELECT organisationunitid FROM organisationunit WHERE shortname LIKE '"+ comment +"'";
         SqlRowSet sqlResultSet = jdbcTemplate.queryForRowSet( query );
         if ( sqlResultSet != null && sqlResultSet.next() )
         {

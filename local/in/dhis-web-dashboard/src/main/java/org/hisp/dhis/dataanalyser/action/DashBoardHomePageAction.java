@@ -30,12 +30,14 @@ package org.hisp.dhis.dataanalyser.action;
 import static org.hisp.dhis.system.util.ConversionUtils.getIdentifiers;
 import static org.hisp.dhis.system.util.TextUtils.getCommaDelimitedString;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -147,6 +149,20 @@ public class DashBoardHomePageAction
         return totalEnrollCountMap;
     }
 
+    Map<String, Integer> totalEnrollCountForSelDateMap;
+    
+    public Map<String, Integer> getTotalEnrollCountForSelDateMap()
+    {
+        return totalEnrollCountForSelDateMap;
+    }
+
+    Integer totalRegCountForSelDate = 0;
+    
+    public Integer getTotalRegCountForSelDate()
+    {
+        return totalRegCountForSelDate;
+    }
+
     Integer totalRegCount = 0;
     
     public Integer getTotalRegCount()
@@ -159,6 +175,13 @@ public class DashBoardHomePageAction
     public List<Integer> getTotalRegCountList()
     {
         return totalRegCountList;
+    }
+
+    List<Integer> totalRegCountListForSelDate;
+    
+    public List<Integer> getTotalRegCountListForSelDate()
+    {
+        return totalRegCountListForSelDate;
     }
 
     List<Program> programList;
@@ -195,7 +218,13 @@ public class DashBoardHomePageAction
     {
         return navigationString;
     }
+
+    private String toDaysDate;
     
+    public String getToDaysDate()
+    {
+        return toDaysDate;
+    }
     
     // ---------------------------------------------------------------
     // Action Implementation
@@ -211,10 +240,20 @@ public class DashBoardHomePageAction
         programList = new ArrayList<Program>();
         rootOrgUnitEnrollCountList = new ArrayList<Integer>();
         totalRegCountList = new ArrayList<Integer>();
+        totalRegCountListForSelDate = new ArrayList<Integer>();
+        totalEnrollCountForSelDateMap = new HashMap<String, Integer>();
         
         resultString = "";
         
         navigationString = "Tracker Dashboard";
+        
+        Date toDay = new Date();
+        Calendar cal = Calendar.getInstance();
+        cal.setTime( toDay );
+        //cal.roll( Calendar.DATE, false );
+        cal.add( Calendar.DATE, -1 );
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        toDaysDate = simpleDateFormat.format( cal.getTime() );
         
         // getIndicatorValues();
 
@@ -222,6 +261,16 @@ public class DashBoardHomePageAction
 
         if( programList != null && programList.size() > 0 )
         {
+            Iterator<Program> progIterator = programList.iterator();
+            while( progIterator.hasNext() )
+            {
+                Program prg = progIterator.next();
+                if( prg.getOrganisationUnits() == null || prg.getOrganisationUnits().size() <= 0)
+                {
+                    progIterator.remove();
+                }
+            }
+
             List<OrganisationUnit> rootOrgUnitList = new ArrayList<OrganisationUnit>( );
             if( drillDownOrgUnitId != null )
             {
@@ -259,6 +308,8 @@ public class DashBoardHomePageAction
                     String orgUnitIdsByComma = getCommaDelimitedString( getIdentifiers( OrganisationUnit.class, childTree ) );
     
                     Map<Integer, Integer> enrollCountMap = dashBoardService.getTotalEnrolledNumber( orgUnitIdsByComma );
+                    
+                    Map<Integer, Integer> enrollCountForSelDateMap = dashBoardService.getTotalEnrolledNumberForSelectedDate( orgUnitIdsByComma, toDaysDate );
                     if ( enrollCountMap != null )
                     {
                         for ( Program program : programList )
@@ -278,6 +329,22 @@ public class DashBoardHomePageAction
                             {
                                 totalEnrollCountMap.put( rootOrgUnitName+":"+program.getId(), tempResult );
                             }
+                            
+                            Integer tempResult1 = enrollCountForSelDateMap.get( program.getId() );
+                            if( tempResult1 == null )
+                            {
+                                tempResult1 = 0;
+                            }
+                            totalEnrollCountForSelDateMap.put( program.getId()+":"+ou.getId(), tempResult1 );
+                            Integer tempInteger1 = totalEnrollCountForSelDateMap.get( rootOrgUnitName+":"+program.getId() );
+                            if( tempInteger1 != null )
+                            {
+                                totalEnrollCountForSelDateMap.put( rootOrgUnitName+":"+program.getId(), tempResult1+tempInteger1 );
+                            }
+                            else
+                            {
+                                totalEnrollCountForSelDateMap.put( rootOrgUnitName+":"+program.getId(), tempResult1 );
+                            }
                         }
                     }
                     
@@ -286,6 +353,12 @@ public class DashBoardHomePageAction
                     totalRegCountList.add( regCount  );
                     
                     totalRegCount += regCount;
+                    
+                    Integer regCountForSelDate = dashBoardService.getTotalRegisteredCountForSelDate( orgUnitIdsByComma, toDaysDate );
+                    
+                    totalRegCountListForSelDate.add( regCountForSelDate );
+                    
+                    totalRegCountForSelDate += regCountForSelDate;
                 }
             }
         }
@@ -294,6 +367,7 @@ public class DashBoardHomePageAction
 
         return SUCCESS;
     }
+
 
     @SuppressWarnings( "unused" )
     private void getIndicatorValues()

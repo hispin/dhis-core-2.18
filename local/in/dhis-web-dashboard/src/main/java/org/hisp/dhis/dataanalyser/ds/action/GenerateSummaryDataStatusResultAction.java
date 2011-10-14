@@ -1,5 +1,8 @@
 package org.hisp.dhis.dataanalyser.ds.action;
 
+import static org.hisp.dhis.system.util.ConversionUtils.getIdentifiers;
+import static org.hisp.dhis.system.util.TextUtils.getCommaDelimitedString;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -306,9 +309,17 @@ public class GenerateSummaryDataStatusResultAction
         deInfo = "-1";
         DataSet dSet = dataSetService.getDataSet( Integer.parseInt( selectedDataSets ) );
         selDataSet = dSet;
-        for ( DataElement de : dSet.getDataElements() )
-            deInfo += "," + de.getId();
-
+        Collection<DataElement> dataElements = new ArrayList<DataElement>();
+        dataElements = selDataSet.getDataElements();
+        int dataSetMemberCount1 = 0;
+        for ( DataElement de1 : dataElements )
+        {
+            dataSetMemberCount1 += de1.getCategoryCombo().getOptionCombos().size();
+        }
+        Collection<Integer> dataElementIds = new ArrayList<Integer>( getIdentifiers(DataElement.class, dataElements ) );
+        deInfo = getCommaDelimitedString( dataElementIds );
+        //deInfo = getDEInfo( dataElements );
+        
         // OrgUnit Related Info
         OrganisationUnit selectedOrgUnit = new OrganisationUnit();
         orgUnitList = new ArrayList<OrganisationUnit>();
@@ -323,8 +334,7 @@ public class GenerateSummaryDataStatusResultAction
             Iterator<String> orgUnitIterator = orgUnitListCB.iterator();
             while ( orgUnitIterator.hasNext() )
             {
-                OrganisationUnit o = organisationUnitService.getOrganisationUnit( Integer
-                    .parseInt( (String) orgUnitIterator.next() ) );
+                OrganisationUnit o = organisationUnitService.getOrganisationUnit( Integer.parseInt( (String) orgUnitIterator.next() ) );
                 orgUnitList.add( o );
                 List<OrganisationUnit> organisationUnits = new ArrayList<OrganisationUnit>( o.getChildren() );
                 Collections.sort( organisationUnits, new OrganisationUnitShortNameComparator() );
@@ -373,13 +383,14 @@ public class GenerateSummaryDataStatusResultAction
         Period endPeriod = periodService.getPeriod( eDateLB );
 
         PeriodType dataSetPeriodType = selDataSet.getPeriodType();       
-        periodList = periodService.getPeriodsBetweenDates( dataSetPeriodType, startPeriod.getStartDate(),
-            endPeriod.getEndDate() );
+        periodList = periodService.getPeriodsBetweenDates( dataSetPeriodType, startPeriod.getStartDate(), endPeriod.getEndDate() );
 
         periodInfo = "-1";
         for ( Period p : periodList )
+        {
             periodInfo += "," + p.getId();
-
+        }
+        
         dataViewName = createDataView( orgUnitInfo, deInfo, periodInfo );
         String query = "";
         String query2 = "";
@@ -390,16 +401,6 @@ public class GenerateSummaryDataStatusResultAction
         query2 = "SELECT COUNT(*) FROM " + dataViewName
             + " WHERE dataelementid IN (?) AND sourceid = ? AND periodid IN (?)";
 
-        Collection<DataElement> dataElements = new ArrayList<DataElement>();
-        dataElements = selDataSet.getDataElements();
-
-        int dataSetMemberCount1 = 0;
-        for ( DataElement de1 : dataElements )
-        {
-            dataSetMemberCount1 += de1.getCategoryCombo().getOptionCombos().size();
-        }
-
-        deInfo = getDEInfo( dataElements );
         Iterator<OrganisationUnit> orgUnitListIterator = orgUnitList.iterator();
         OrganisationUnit o;
         dso = new HashSet<OrganisationUnit>();

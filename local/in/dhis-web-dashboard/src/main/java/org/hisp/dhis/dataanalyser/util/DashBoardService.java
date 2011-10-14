@@ -191,6 +191,35 @@ public class DashBoardService
         }
     }
 
+    public Map<Integer, Integer> getTotalEnrolledNumberForSelectedDate( String orgUnitIdsByComma, String toDaysDate )
+    {
+        Map<Integer, Integer> aggDeMap = new HashMap<Integer, Integer>();
+        try
+        {
+            String query = "SELECT programinstance.programid, COUNT(*) FROM programinstance INNER JOIN patient " +
+                                        " ON programinstance.patientid = patient.patientid " +
+                                        " WHERE patient.organisationunitid IN ("+ orgUnitIdsByComma +") AND " +
+                                        " patient.registrationdate LIKE '"+ toDaysDate+"%' GROUP BY programid";
+
+            SqlRowSet rs = jdbcTemplate.queryForRowSet( query );
+            
+            while ( rs.next() )
+            {
+                Integer programId = rs.getInt( 1 );
+                Integer totalCount = rs.getInt( 2 );
+                {
+                    aggDeMap.put( programId, totalCount );
+                }
+            }
+            
+            return aggDeMap;
+        }
+        catch( Exception e )
+        {
+            throw new RuntimeException( e );
+        }
+    }
+
     public Integer getTotalRegisteredCount( String orgUnitIdsByComma )
     {
         Integer totalRegCount = 0;
@@ -198,6 +227,30 @@ public class DashBoardService
         {
             String query = "SELECT COUNT(*) FROM patient " +
                                " WHERE organisationunitid IN ("+ orgUnitIdsByComma +")";
+
+            SqlRowSet rs = jdbcTemplate.queryForRowSet( query );
+            
+            if ( rs != null && rs.next() )
+            {
+                totalRegCount = rs.getInt( 1 );
+            }
+            
+            return totalRegCount;
+        }
+        catch( Exception e )
+        {
+            throw new RuntimeException( e );
+        }
+    }
+
+    public Integer getTotalRegisteredCountForSelDate( String orgUnitIdsByComma, String selDate )
+    {
+        Integer totalRegCount = 0;
+        try
+        {
+            String query = "SELECT COUNT(*) FROM patient " +
+                               " WHERE organisationunitid IN ("+ orgUnitIdsByComma +") AND " +
+                               	" registrationdate LIKE '"+ selDate+"%'";
 
             SqlRowSet rs = jdbcTemplate.queryForRowSet( query );
             

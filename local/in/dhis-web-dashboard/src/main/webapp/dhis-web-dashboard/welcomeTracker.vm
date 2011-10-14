@@ -7,47 +7,54 @@
 
 #set( $mark = 0 )
 
-<table>
-    <tr valign="top">
-		<td valign="top">
-			<table valign="top">
-				<tr bgcolor="#c0c0c0">
-					<td align="center">$rootOrgUnitName</td>
-					<td align="center">Registered</td>
-					#foreach( $program in $programList )
-					<td align="center">$program.name</td>
-					#end
-				</tr>
-				#set( $count1 = 0 )
-				#foreach( $orgUnit in $immChildrenList )
-				<tr style="#if( $mark == 1 )background-color:#e0e0e0;#end" >
-					<td><a href="index.action?drillDownOrgUnitId=$orgUnit.id">$orgUnit.shortName</a></td>
-					<td align="center">$totalRegCountList.get( $count1 )</td>
-					#foreach( $program in $programList )
-					<td align="center">$totalEnrollCountMap.get( "$program.id:$orgUnit.id" )</td>
-					#end
-				</tr>
-					#set( $count1 = $count1 + 1 )
-					#if( $mark == 1 )
-						#set( $mark = 0 )
-					#else
-						#set( $mark = 1 )
-					#end    
-				#end
-                <tr bgcolor="#c0c0c0">
-                    <td align="center">Total :</td>
-                    <td align="center">$totalRegCount</td>
-                    #foreach( $program in $programList )
-                    <td align="center">$!totalEnrollCountMap.get( "$rootOrgUnitName:$program.id" )</td>
-                    #end                    
-                </tr>
+<table valign="top" width="95%" border="1" cellspacing="0" cellpadding="5" >
+	<tr bgcolor="#c0c0c0" style="height:23px">
+		<td align="center" rowspan="2"><strong>$rootOrgUnitName</strong></td>
+		<td align="center" colspan="2"><strong>Registered</strong></td>
+		#foreach( $program in $programList )
+		<td align="center" colspan="2"><strong>$program.name</strong></td>
+		#end
+	</tr>
+	<tr bgcolor="#c0c0c0" align="center" style="height:25px">
+		<td><strong>Total</strong></td>
+		<td><strong>$toDaysDate</strong></td>
+		#foreach( $program in $programList )
+		<td><strong>Total</strong></td>
+		<td><strong>$toDaysDate</strong></td>
+		#end
+	</tr>	
 
-			</table>
-		</td>
-		<td>&nbsp;&nbsp;&nbsp;</td>
-		<td><div id="myChart"></div></td>
+	#set( $count1 = 0 )
+	#foreach( $orgUnit in $immChildrenList )
+	<tr style="#if( $mark == 1 )background-color:#e0e0e0;#end height:23px" >
+		<td><a href="index.action?drillDownOrgUnitId=$orgUnit.id">$orgUnit.shortName</a></td>
+		<td align="center">$totalRegCountList.get( $count1 )</td>
+		<td align="center">$totalRegCountListForSelDate.get( $count1 )</td>
+		#foreach( $program in $programList )
+		<td align="center">$totalEnrollCountMap.get( "$program.id:$orgUnit.id" )</td>
+		<td align="center">$totalEnrollCountForSelDateMap.get( "$program.id:$orgUnit.id" )</td>
+		#end
+	</tr>
+	#set( $count1 = $count1 + 1 )
+	#if( $mark == 1 )
+		#set( $mark = 0 )
+	#else
+		#set( $mark = 1 )
+	#end    
+	#end
+	<tr bgcolor="#c0c0c0" style="height:23px">
+		<td align="center"><strong>Total :</strong></td>
+		<td align="center"><strong>$totalRegCount</strong></td>
+		<td align="center"><strong>$totalRegCountForSelDate</strong></td>
+		#foreach( $program in $programList )
+		<td align="center"><strong>$!totalEnrollCountMap.get( "$rootOrgUnitName:$program.id" )</strong></td>
+		<td align="center"><strong>$!totalEnrollCountForSelDateMap.get( "$rootOrgUnitName:$program.id" )</strong></td>
+		#end                    
 	</tr>
 </table>
+
+<br/>
+<div id="myChart"></div>
 
 <script>
 
@@ -100,7 +107,7 @@
     });			
 
         var panel1 = Ext.create('widget.panel', {
-                        width: 600,
+                        width: 750,
                         height: 500,
                         title: 'Total Enrolled By Facility',
                         renderTo: 'myChart',

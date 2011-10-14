@@ -1173,7 +1173,7 @@ public class GenerateMetaDataReportResultAction
                     String PARENT = new String();
                     if ( ou.getParent() != null )
                     {
-                        PARENT = ou.getParent().getName();
+                        PARENT = ou.getParent().getShortName();
                     }
                     else
                     {
@@ -1254,7 +1254,7 @@ public class GenerateMetaDataReportResultAction
                 {
                     sheet0.addCell( new Number( colStart, rowStart, ou.getId(), getCellFormat2() ) );
                     int ouLevel = ou.getLevel();
-                    sheet0.addCell( new Label( colStart + ouLevel, rowStart, ou.getName(), getCellFormat2() ) );
+                    sheet0.addCell( new Label( colStart + ouLevel, rowStart, ou.getShortName(), getCellFormat2() ) );
                 }
                 else
                 {

@@ -126,13 +126,13 @@
                                     #if( $result < 0 )
                                         <td  bgcolor="white">&nbsp;</td>
                                     #elseif( $result == 0 )
-                                        <td align="center" bgcolor="#ff0000"><font color="#000000"><a href="javascript:getNullReportInfo('$selDataSet.id','$periodCount.id','$chiildorgUnit.id')">$result% #if( $deCount != -1 ) ( $deCount ) #end</a></font></td>
+                                        <td align="center" bgcolor="#ff0000"><font color="#000000">#if( $dso.contains($chiildorgUnit) )<a href="javascript:getNullReportInfo('$selDataSet.id','$periodCount.id','$chiildorgUnit.id')">$result% #if( $deCount != -1 ) ( $deCount ) #end</a>#else $result% #end</font></td>
                                     #elseif( $result > 75 )
-                                        <td align="center" bgcolor="#9ACD32"><font color="#000000"><a href="javascript:getNullReportInfo('$selDataSet.id','$periodCount.id','$chiildorgUnit.id')">$result% #if( $deCount != -1 ) ( $deCount ) #end</a></font></td>
+                                        <td align="center" bgcolor="#9ACD32"><font color="#000000">#if( $dso.contains($chiildorgUnit) )<a href="javascript:getNullReportInfo('$selDataSet.id','$periodCount.id','$chiildorgUnit.id')">$result% #if( $deCount != -1 ) ( $deCount ) #end</a> #else $result% #end</font></td>
                                     #elseif( $result > 40 && $result <= 75 )
-                                        <td align="center" bgcolor="#FF66FF"><font color="#000000"><a href="javascript:getNullReportInfo('$selDataSet.id','$periodCount.id','$chiildorgUnit.id')">$result% #if( $deCount != -1 ) ( $deCount ) #end</a></font></td>
+                                        <td align="center" bgcolor="#FF66FF"><font color="#000000">#if( $dso.contains($chiildorgUnit) )<a href="javascript:getNullReportInfo('$selDataSet.id','$periodCount.id','$chiildorgUnit.id')">$result% #if( $deCount != -1 ) ( $deCount ) #end</a> #else $result% #end</font></td>
                                     #else
-                                        <td align="center" bgcolor="#FFFF00"><font color="#000000"><a href="javascript:getNullReportInfo('$selDataSet.id','$periodCount.id','$chiildorgUnit.id')">$result% #if( $deCount != -1 ) ( $deCount ) #end</a></font></td>
+                                        <td align="center" bgcolor="#FFFF00"><font color="#000000">#if( $dso.contains($chiildorgUnit) )<a href="javascript:getNullReportInfo('$selDataSet.id','$periodCount.id','$chiildorgUnit.id')">$result% #if( $deCount != -1 ) ( $deCount ) #end</a> #else $result% #end</font></td>
                                     #end
                                     #set( $count2 = $count2 + 1 )
                                 #end
