@@ -31,8 +31,10 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategory;
@@ -47,6 +49,10 @@ import org.hisp.dhis.den.state.SelectedStateManager;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.period.CalendarPeriodType;
 import org.hisp.dhis.period.Period;
+import org.hisp.dhis.user.CurrentUserService;
+import org.hisp.dhis.user.UserAuthorityGroup;
+import org.hisp.dhis.user.UserCredentials;
+import org.hisp.dhis.user.UserService;
 
 import com.opensymphony.xwork2.ActionSupport;
 
@@ -93,6 +99,20 @@ public class SelectAction
     public void setDataSetService( DataSetService dataSetService )
     {
         this.dataSetService = dataSetService;
+    }
+
+    private UserService userService;
+
+    public void setUserService( UserService userService )
+    {
+        this.userService = userService;
+    }
+
+    private CurrentUserService currentUserService;
+
+    public void setCurrentUserService( CurrentUserService currentUserService )
+    {
+        this.currentUserService = currentUserService;
     }
 
     // -------------------------------------------------------------------------
@@ -224,11 +244,6 @@ public class SelectAction
     public String execute()
         throws Exception
     {
-        
-        
-        
-        
-        
         // ---------------------------------------------------------------------
         // Validate selected OrganisationUnit
         // ---------------------------------------------------------------------
@@ -256,6 +271,19 @@ public class SelectAction
         // ---------------------------------------------------------------------
         // Remove DataSets which don't have a CalendarPeriodType or are locked
         // ---------------------------------------------------------------------
+        if ( currentUserService.getCurrentUser() != null && !currentUserService.currentUserIsSuper() )
+        {
+            UserCredentials userCredentials = userService.getUserCredentials( currentUserService.getCurrentUser() );
+
+            Set<DataSet> dataSetUserAuthorityGroups = new HashSet<DataSet>();
+
+            for ( UserAuthorityGroup userAuthorityGroup : userCredentials.getUserAuthorityGroups() )
+            {
+                dataSetUserAuthorityGroups.addAll( userAuthorityGroup.getDataSets() );
+            }
+
+            dataSets.retainAll( dataSetUserAuthorityGroups );
+        }
 
         Iterator<DataSet> it = dataSets.iterator();
 
@@ -263,7 +291,14 @@ public class SelectAction
         {
             DataSet temp = it.next();
             
-            if(temp.getName().equalsIgnoreCase( LLDataSets.LL_IDSP_LAB ) || temp.getName().equalsIgnoreCase( LLDataSets.LL_DEATHS_IDSP ) || temp.getName().equalsIgnoreCase( LLDataSets.LL_UU_IDSP_EVENTSP ) || temp.getName().equalsIgnoreCase( LLDataSets.LL_BIRTHS ) || temp.getName().equalsIgnoreCase( LLDataSets.LL_DEATHS )  || temp.getName().equalsIgnoreCase( LLDataSets.LL_MATERNAL_DEATHS ) || temp.getName().equalsIgnoreCase( LLDataSets.LL_UU_IDSP_EVENTS ))
+            if( temp.getName().equalsIgnoreCase( LLDataSets.LL_IDSP_LAB ) || 
+                temp.getName().equalsIgnoreCase( LLDataSets.LL_DEATHS_IDSP ) || 
+                temp.getName().equalsIgnoreCase( LLDataSets.LL_UU_IDSP_EVENTSP ) || 
+                temp.getName().equalsIgnoreCase( LLDataSets.LL_BIRTHS ) || 
+                temp.getName().equalsIgnoreCase( LLDataSets.LL_DEATHS )  || 
+                temp.getName().equalsIgnoreCase( LLDataSets.LL_MATERNAL_DEATHS ) || 
+                temp.getName().equalsIgnoreCase( LLDataSets.LL_UU_IDSP_EVENTS ) || 
+                temp.getName().equalsIgnoreCase( LLDataSets.LL_COLD_CHAIN ))
             {
                 if ( !( temp.getPeriodType() instanceof CalendarPeriodType ) )
                 {
@@ -392,7 +427,7 @@ public class SelectAction
         }
         else
         {        	
-        	return DEFAULT_FORM;
+            return DEFAULT_FORM;
         }            
     }
 }

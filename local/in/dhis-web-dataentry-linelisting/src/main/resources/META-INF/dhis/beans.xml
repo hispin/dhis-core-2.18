@@ -85,7 +85,10 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     <property name="selectedStateManager"
       ref="org.hisp.dhis.den.state.SelectedStateManager"/>
   </bean>
-  
+
+
+	
+	  
   <bean id="org.hisp.dhis.den.action.FormAction"
     class="org.hisp.dhis.den.action.FormAction" scope="prototype">
     <property name="dataValueService"
@@ -101,9 +104,12 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 	<property name="dataElementCategoryService"
       ref="org.hisp.dhis.dataelement.DataElementCategoryService"/>
 	<property name="dataSetLockService"
-      ref="org.hisp.dhis.datalock.DataSetLockService"/>
+      ref="org.hisp.dhis.datalock.DataSetLockService"/>  
 	<property name="dataSetService"
-      ref="org.hisp.dhis.dataset.DataSetService"/> 	  
+      ref="org.hisp.dhis.dataset.DataSetService"/>
+    <property name="sectionService" ref="org.hisp.dhis.dataset.SectionService"/>
+	<property name="currentUserService" ref="org.hisp.dhis.user.CurrentUserService"/>
+	<property name="userService" ref="org.hisp.dhis.user.UserService" />	    
   </bean>
 	
   <bean id="org.hisp.dhis.den.action.multidimensional.FormAction"
