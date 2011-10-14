@@ -33,6 +33,8 @@ import java.util.List;
 
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.comparator.OrganisationUnitNameComparator;
+import org.hisp.dhis.system.filter.OrganisationUnitWithDataSetFilter;
+import org.hisp.dhis.system.util.FilterUtils;
 import org.hisp.dhis.user.CurrentUserService;
 import org.hisp.dhis.user.User;
 
@@ -79,6 +81,7 @@ public class GetOrganisationUnitsAction
         {
             organisationUnits = new ArrayList<OrganisationUnit>( user.getOrganisationUnits() );
             Collections.sort( organisationUnits, new OrganisationUnitNameComparator() );
+            FilterUtils.filter( organisationUnits, new OrganisationUnitWithDataSetFilter() );
         }
 
         return SUCCESS;
