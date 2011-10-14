@@ -3,7 +3,7 @@
 <p>
 <ul>
 #foreach( $dataSet in $dataSets )
-<li><a href="selectPeriod.action?organisationUnitId=$organisationUnitId&dataSetId=$dataSet.id">$!encoder.jsonEncode( ${dataSet.name} )</a></li>
+<li><a href="selectPeriod.action?organisationUnitId=$organisationUnitId&dataSetId=$dataSet.id">$!encoder.htmlEncode( ${dataSet.name} )</a></li>
 #end
 </ul>
 </p>
