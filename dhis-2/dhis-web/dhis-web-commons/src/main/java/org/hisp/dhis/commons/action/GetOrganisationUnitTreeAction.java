@@ -29,12 +29,14 @@ package org.hisp.dhis.commons.action;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.UUID;
 
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
+import org.hisp.dhis.organisationunit.comparator.OrganisationUnitNameComparator;
 import org.hisp.dhis.user.CurrentUserService;
 import org.hisp.dhis.user.User;
 import org.hisp.dhis.version.Version;
@@ -149,6 +151,8 @@ public class GetOrganisationUnitTreeAction
                 organisationUnits.addAll( organisationUnitService.getOrganisationUnitWithChildren( unit.getId() ) );
             }
         }
+        
+        Collections.sort( rootOrganisationUnits, new OrganisationUnitNameComparator() );
         
         version = getVersionString();
 
