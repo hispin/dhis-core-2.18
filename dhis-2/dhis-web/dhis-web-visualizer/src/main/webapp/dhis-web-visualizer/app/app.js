@@ -807,6 +807,7 @@ Ext.onReady( function() {
             var c = Ext.getCmp('center');
             c.removeAll(true);
             c.add(this.chart);
+            c.down('label').setText(DV.state.filter.data[0] || 'Example chart');
         }
     };
         
@@ -1673,9 +1674,10 @@ Ext.onReady( function() {
                             //}).show();
                         //}
                     //},
+                    '-',' ',
                     {
                         xtype: 'label',
-                        text: '',
+                        text: 'Example chart',
                         style: 'font-weight:bold; padding:0 4px'
                     },
                     '->',
