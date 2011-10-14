@@ -42,7 +42,7 @@
     </action>
 
     <!-- Reports -->
-    
+
     <action name="reports" class="org.hisp.dhis.light.dashboard.action.ProvideContentAction">
       <result name="success" type="velocity">/dhis-web-light/main.vm</result>
       <param name="page">/dhis-web-light/reports.vm</param>
@@ -78,6 +78,17 @@
         <param name="width">480</param>
         <param name="height">800</param>
       </result>
+    </action>
+
+    <!-- Settings -->
+
+    <action name="settings" class="org.hisp.dhis.light.action.settings.action.GetSettingsAction">
+      <result name="success" type="velocity">/dhis-web-light/main.vm</result>
+      <param name="page">/dhis-web-light/settings.vm</param>
+    </action>
+
+    <action name="saveSettingsForm" class="org.hisp.dhis.light.action.settings.action.SaveSettingsFormAction">
+      <result name="success" type="redirect">/mobile/index.action</result>
     </action>
 
   </package>
