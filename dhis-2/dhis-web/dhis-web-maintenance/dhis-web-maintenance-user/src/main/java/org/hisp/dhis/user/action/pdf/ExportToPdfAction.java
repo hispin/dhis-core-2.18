@@ -31,7 +31,6 @@ import static org.apache.commons.lang.StringUtils.isNotBlank;
 
 import java.io.InputStream;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import org.apache.commons.logging.Log;
@@ -46,7 +45,6 @@ import org.hisp.dhis.system.util.FilterUtils;
 import org.hisp.dhis.user.CurrentUserService;
 import org.hisp.dhis.user.UserCredentials;
 import org.hisp.dhis.user.UserService;
-import org.hisp.dhis.user.comparator.UsernameComparator;
 
 import com.opensymphony.xwork2.Action;
 
@@ -177,8 +175,6 @@ public class ExportToPdfAction
 
                 FilterUtils.filter( userCredentialsList, new UserCredentialsCanUpdateFilter( currentUserService
                     .getCurrentUser() ) );
-
-                Collections.sort( userCredentialsList, new UsernameComparator() );
 
                 if ( (userCredentialsList != null) && !userCredentialsList.isEmpty() )
                 {

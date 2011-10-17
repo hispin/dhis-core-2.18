@@ -104,6 +104,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
   <bean id="org.hisp.dhis.importexport.action.exp.MetaDataExportAction" class="org.hisp.dhis.importexport.action.exp.MetaDataExportAction"
     scope="prototype">
     <property name="serviceProvider" ref="exportServiceProvider" />
+    <property name="currentUserService" ref="org.hisp.dhis.user.CurrentUserService" />
   </bean>
 
   <bean id="org.hisp.dhis.importexport.action.exp.DetailedMetaDataExportAction" class="org.hisp.dhis.importexport.action.exp.DetailedMetaDataExportAction"

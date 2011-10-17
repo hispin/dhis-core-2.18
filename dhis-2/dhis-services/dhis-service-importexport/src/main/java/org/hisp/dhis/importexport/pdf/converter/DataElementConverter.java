@@ -27,7 +27,13 @@ package org.hisp.dhis.importexport.pdf.converter;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
 import org.hisp.dhis.dataelement.DataElement;
+import org.hisp.dhis.dataelement.DataElementService;
+import org.hisp.dhis.dataelement.comparator.DataElementNameComparator;
 import org.hisp.dhis.i18n.I18n;
 import org.hisp.dhis.i18n.I18nFormat;
 import org.hisp.dhis.importexport.ExportParams;
@@ -46,6 +52,14 @@ public class DataElementConverter
     extends PDFUtils
     implements PDFConverter
 {
+
+    private DataElementService dataElementService;
+
+    public DataElementConverter( DataElementService dataElementService )
+    {
+        this.dataElementService = dataElementService;
+    }
+
     // -------------------------------------------------------------------------
     // PDFConverter implementation
     // -------------------------------------------------------------------------
@@ -54,12 +68,25 @@ public class DataElementConverter
     {
         I18n i18n = params.getI18n();
         I18nFormat format = params.getFormat();
+        List<DataElement> elements = null;
 
-        PDFUtils.printObjectFrontPage( document, params.getDataElementObjects(), i18n, format, "data_elements" );
+        if ( params.isMetaData() )
+        {
+            elements = new ArrayList<DataElement>( dataElementService.getDataElements( params.getDataElements() ) );
+        }
+        else
+        {
+            elements = new ArrayList<DataElement>( params.getDataElementObjects() );
+        }
         
-        for ( DataElement element : params.getDataElementObjects() )
+        Collections.sort( elements, new DataElementNameComparator() );
+        
+        PDFUtils.printObjectFrontPage( document, elements, i18n, format, "data_elements" );
+
+        for ( DataElement element : elements )
         {
             addTableToDocument( document, printDataElement( element, i18n, true, 0.40f, 0.60f ) );
         }
+
     }
 }

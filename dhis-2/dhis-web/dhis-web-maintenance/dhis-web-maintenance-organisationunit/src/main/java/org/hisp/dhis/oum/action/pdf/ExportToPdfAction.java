@@ -32,7 +32,6 @@ import static org.apache.commons.lang.StringUtils.isNotBlank;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
 
 import org.apache.commons.logging.Log;
@@ -44,7 +43,6 @@ import org.hisp.dhis.importexport.ExportParams;
 import org.hisp.dhis.importexport.ExportService;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
-import org.hisp.dhis.organisationunit.comparator.OrganisationUnitNameComparator;
 import org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager;
 
 import com.opensymphony.xwork2.Action;
@@ -172,8 +170,6 @@ public class ExportToPdfAction
                 {
                     organisationUnitService.searchOrganisationUnitByName( organisationUnits, curKey );
                 }
-                
-                Collections.sort( organisationUnits, new OrganisationUnitNameComparator() );
 
                 if ( (organisationUnits != null) && !organisationUnits.isEmpty() )
                 {

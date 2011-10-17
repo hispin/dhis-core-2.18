@@ -47,6 +47,8 @@ import org.hisp.dhis.validation.ValidationRule;
  */
 public class ExportParams
 {
+    private boolean isMetaData;
+
     private boolean includeDataValues;
 
     private boolean includeCompleteDataSetRegistrations;
@@ -132,6 +134,16 @@ public class ExportParams
     // -------------------------------------------------------------------------
     // Getters & setters
     // -------------------------------------------------------------------------
+
+    public boolean isMetaData()
+    {
+        return isMetaData;
+    }
+
+    public void setMetaData( boolean isMetaData )
+    {
+        this.isMetaData = isMetaData;
+    }
 
     public boolean isIncludeDataValues()
     {

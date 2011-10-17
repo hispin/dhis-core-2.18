@@ -34,6 +34,7 @@ import org.hisp.dhis.i18n.I18n;
 import org.hisp.dhis.i18n.I18nFormat;
 import org.hisp.dhis.importexport.ExportParams;
 import org.hisp.dhis.importexport.ExportService;
+import org.hisp.dhis.user.CurrentUserService;
 
 import com.opensymphony.xwork2.Action;
 
@@ -55,6 +56,13 @@ public class MetaDataExportAction
     public void setServiceProvider( ServiceProvider<ExportService> serviceProvider )
     {
         this.serviceProvider = serviceProvider;
+    }
+
+    private CurrentUserService currentUserService;
+
+    public void setCurrentUserService( CurrentUserService currentUserService)
+    {
+        this.currentUserService = currentUserService;
     }
 
     private I18n i18n;
@@ -326,8 +334,10 @@ public class MetaDataExportAction
             params.setOlapUrls( null );
         }
 
+        params.setMetaData( true );
         params.setIncludeDataValues( false );
-
+        params.setCurrentUser( currentUserService.getCurrentUser() );
+        
         params.setI18n( i18n );
         params.setFormat( format );
 
