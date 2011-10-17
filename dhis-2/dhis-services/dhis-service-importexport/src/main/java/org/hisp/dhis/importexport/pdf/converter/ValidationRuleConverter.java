@@ -27,6 +27,10 @@ package org.hisp.dhis.importexport.pdf.converter;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
 import org.hisp.dhis.expression.ExpressionService;
 import org.hisp.dhis.i18n.I18n;
 import org.hisp.dhis.i18n.I18nFormat;
@@ -34,6 +38,8 @@ import org.hisp.dhis.importexport.ExportParams;
 import org.hisp.dhis.importexport.PDFConverter;
 import org.hisp.dhis.system.util.PDFUtils;
 import org.hisp.dhis.validation.ValidationRule;
+import org.hisp.dhis.validation.ValidationRuleService;
+import org.hisp.dhis.validation.comparator.ValidationRuleNameComparator;
 
 import com.lowagie.text.Document;
 
@@ -47,12 +53,15 @@ public class ValidationRuleConverter
 {
     private ExpressionService expressionService;
 
+    private ValidationRuleService validationRuleService;
+
     /**
      * Constructor for write operations.
      */
-    public ValidationRuleConverter( ExpressionService expressionService )
+    public ValidationRuleConverter( ExpressionService expressionService, ValidationRuleService validationRuleService )
     {
         this.expressionService = expressionService;
+        this.validationRuleService = validationRuleService;
     }
 
     // -------------------------------------------------------------------------
@@ -63,10 +72,23 @@ public class ValidationRuleConverter
     {
         I18n i18n = params.getI18n();
         I18nFormat format = params.getFormat();
+        List<ValidationRule> elements = null;
 
-        PDFUtils.printObjectFrontPage( document, params.getValidationRuleObjects(), i18n, format, "validation_rules" );
+        if ( params.isMetaData() )
+        {
+            elements = new ArrayList<ValidationRule>( validationRuleService.getValidationRules( params
+                .getValidationRules() ) );
+        }
+        else
+        {
+            elements = new ArrayList<ValidationRule>( params.getValidationRuleObjects() );
+        }
 
-        for ( ValidationRule rule : params.getValidationRuleObjects() )
+        Collections.sort( elements, new ValidationRuleNameComparator() );
+
+        PDFUtils.printObjectFrontPage( document, elements, i18n, format, "validation_rules" );
+
+        for ( ValidationRule rule : elements )
         {
             addTableToDocument( document, printValidationRule( rule, i18n, expressionService, true, 0.40f, 0.60f ) );
         }

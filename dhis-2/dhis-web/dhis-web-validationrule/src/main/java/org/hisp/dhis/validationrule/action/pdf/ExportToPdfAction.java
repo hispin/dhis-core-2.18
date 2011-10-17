@@ -31,7 +31,6 @@ import static org.apache.commons.lang.StringUtils.isNotBlank;
 
 import java.io.InputStream;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import org.apache.commons.logging.Log;
@@ -43,7 +42,6 @@ import org.hisp.dhis.importexport.ExportParams;
 import org.hisp.dhis.importexport.ExportService;
 import org.hisp.dhis.validation.ValidationRule;
 import org.hisp.dhis.validation.ValidationRuleService;
-import org.hisp.dhis.validation.comparator.ValidationRuleNameComparator;
 
 import com.opensymphony.xwork2.Action;
 
@@ -153,8 +151,6 @@ public class ExportToPdfAction
                 {
                     validationRulesList = new ArrayList<ValidationRule>( validationRuleService.getAllValidationRules() );
                 }
-
-                Collections.sort( validationRulesList, new ValidationRuleNameComparator() );
 
                 if ( (validationRulesList != null) && !validationRulesList.isEmpty() )
                 {

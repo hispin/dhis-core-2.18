@@ -280,8 +280,12 @@
 
   <bean id="org.hisp.dhis.importexport.PDFExportService" class="org.hisp.dhis.importexport.pdf.exporter.ITextPDFExportService">
     <property name="sessionFactory" ref="sessionFactory" />
+	<property name="dataElementService" ref="org.hisp.dhis.dataelement.DataElementService" />
+	<property name="indicatorService" ref="org.hisp.dhis.indicator.IndicatorService" />
 	<property name="expressionService" ref="org.hisp.dhis.expression.ExpressionService" />
     <property name="organisationUnitService" ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
+    <property name="userService" ref="org.hisp.dhis.user.UserService" />
+    <property name="validationRuleService" ref="org.hisp.dhis.validation.ValidationRuleService" />
   </bean>
 
 	<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->

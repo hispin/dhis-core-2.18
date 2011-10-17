@@ -31,7 +31,6 @@ import static org.apache.commons.lang.StringUtils.isNotBlank;
 
 import java.io.InputStream;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import org.apache.commons.logging.Log;
@@ -40,14 +39,12 @@ import org.hisp.dhis.common.ServiceProvider;
 import org.hisp.dhis.datadictionary.DataDictionaryService;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementService;
-import org.hisp.dhis.dataelement.comparator.DataElementNameComparator;
 import org.hisp.dhis.i18n.I18n;
 import org.hisp.dhis.i18n.I18nFormat;
 import org.hisp.dhis.importexport.ExportParams;
 import org.hisp.dhis.importexport.ExportService;
 import org.hisp.dhis.indicator.Indicator;
 import org.hisp.dhis.indicator.IndicatorService;
-import org.hisp.dhis.indicator.comparator.IndicatorNameComparator;
 
 import com.opensymphony.xwork2.Action;
 
@@ -188,8 +185,6 @@ public class ExportToPdfAction
                     dataElements = new ArrayList<DataElement>( dataElementService.getAllDataElements() );
                 }
 
-                Collections.sort( dataElements, new DataElementNameComparator() );
-
                 if ( (dataElements != null) && !dataElements.isEmpty() )
                 {
                     params.setDataElementObjects( dataElements );
@@ -220,8 +215,6 @@ public class ExportToPdfAction
                 {
                     indicators = new ArrayList<Indicator>( indicatorService.getAllIndicators() );
                 }
-
-                Collections.sort( indicators, new IndicatorNameComparator() );
 
                 if ( (indicators != null) && !indicators.isEmpty() )
                 {

@@ -27,11 +27,17 @@ package org.hisp.dhis.importexport.pdf.converter;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
 import org.hisp.dhis.i18n.I18n;
 import org.hisp.dhis.i18n.I18nFormat;
 import org.hisp.dhis.importexport.ExportParams;
 import org.hisp.dhis.importexport.PDFConverter;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
+import org.hisp.dhis.organisationunit.OrganisationUnitService;
+import org.hisp.dhis.organisationunit.comparator.OrganisationUnitNameComparator;
 import org.hisp.dhis.system.util.PDFUtils;
 
 import com.lowagie.text.Document;
@@ -47,7 +53,14 @@ public class OrganisationUnitConverter
     extends PDFUtils
     implements PDFConverter
 {
-    public OrganisationUnitConverter( )
+    private OrganisationUnitService organisationUnitService;
+
+    public OrganisationUnitConverter( OrganisationUnitService organisationUnitService )
+    {
+        this.organisationUnitService = organisationUnitService;
+    }
+
+    public OrganisationUnitConverter()
     {
     }
 
@@ -59,10 +72,22 @@ public class OrganisationUnitConverter
     {
         I18n i18n = params.getI18n();
         I18nFormat format = params.getFormat();
+        List<OrganisationUnit> elements = null;
 
-        PDFUtils.printObjectFrontPage( document, params.getOrganisationUnitObjects(), i18n, format, "organisation_units" );
+        if ( params.isMetaData() )
+        {
+            elements = new ArrayList<OrganisationUnit>( organisationUnitService.getOrganisationUnits( params.getOrganisationUnits() ) );
+        }
+        else
+        {
+            elements = new ArrayList<OrganisationUnit>( params.getOrganisationUnitObjects() );
+        }
 
-        for ( OrganisationUnit unit : params.getOrganisationUnitObjects() )
+        Collections.sort( elements, new OrganisationUnitNameComparator() );
+        
+        PDFUtils.printObjectFrontPage( document, elements, i18n, format, "organisation_units" );
+
+        for ( OrganisationUnit unit : elements )
         {
             addTableToDocument( document, printOrganisationUnit( unit, i18n, format, true, 0.40f, 0.60f ) );
         }

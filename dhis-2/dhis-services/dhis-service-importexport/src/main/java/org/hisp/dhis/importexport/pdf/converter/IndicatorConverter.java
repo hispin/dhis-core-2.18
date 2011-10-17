@@ -27,12 +27,18 @@ package org.hisp.dhis.importexport.pdf.converter;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
 import org.hisp.dhis.expression.ExpressionService;
 import org.hisp.dhis.i18n.I18n;
 import org.hisp.dhis.i18n.I18nFormat;
 import org.hisp.dhis.importexport.ExportParams;
 import org.hisp.dhis.importexport.PDFConverter;
 import org.hisp.dhis.indicator.Indicator;
+import org.hisp.dhis.indicator.IndicatorService;
+import org.hisp.dhis.indicator.comparator.IndicatorNameComparator;
 import org.hisp.dhis.system.util.PDFUtils;
 
 import com.lowagie.text.Document;
@@ -49,9 +55,12 @@ public class IndicatorConverter
 {
     private ExpressionService expressionService;
 
-    public IndicatorConverter( ExpressionService expressionService )
+    private IndicatorService indicatorService;
+
+    public IndicatorConverter( ExpressionService expressionService, IndicatorService indicatorService )
     {
         this.expressionService = expressionService;
+        this.indicatorService = indicatorService;
     }
 
     // -------------------------------------------------------------------------
@@ -62,10 +71,22 @@ public class IndicatorConverter
     {
         I18n i18n = params.getI18n();
         I18nFormat format = params.getFormat();
+        List<Indicator> elements = null;
 
-        PDFUtils.printObjectFrontPage( document, params.getIndicatorObjects(), i18n, format, "indicators" );
+        if ( params.isMetaData() )
+        {
+            elements = new ArrayList<Indicator>( indicatorService.getIndicators( params.getIndicators() ) );
+        }
+        else
+        {
+            elements = new ArrayList<Indicator>( params.getIndicatorObjects() );
+        }
 
-        for ( Indicator indicator : params.getIndicatorObjects() )
+        Collections.sort( elements, new IndicatorNameComparator() );
+
+        PDFUtils.printObjectFrontPage( document, elements, i18n, format, "indicators" );
+
+        for ( Indicator indicator : elements )
         {
             addTableToDocument( document, printIndicator( indicator, i18n, expressionService, true, 0.40f, 0.60f ) );
         }
