@@ -28,6 +28,7 @@
 package org.hisp.dhis.caseaggregation;
 
 import static org.hisp.dhis.caseaggregation.CaseAggregationCondition.AGGRERATION_SUM;
+import static org.hisp.dhis.caseaggregation.CaseAggregationCondition.OBJECT_PATIENT;
 import static org.hisp.dhis.caseaggregation.CaseAggregationCondition.OBJECT_PATIENT_ATTRIBUTE;
 import static org.hisp.dhis.caseaggregation.CaseAggregationCondition.OBJECT_PATIENT_PROPERTY;
 import static org.hisp.dhis.caseaggregation.CaseAggregationCondition.OBJECT_PROGRAM;
@@ -74,8 +75,9 @@ import org.springframework.transaction.annotation.Transactional;
 public class DefaultCaseAggregationConditionService
     implements CaseAggregationConditionService
 {
-    private final String regExp = "\\[(" + OBJECT_PROGRAM + "|" + OBJECT_PROGRAM_STAGE_DATAELEMENT + "|"
-        + OBJECT_PATIENT_ATTRIBUTE + "|" + OBJECT_PATIENT_PROPERTY + "|" + OBJECT_PROGRAM_PROPERTY + ")"
+    private final String regExp = "\\[(" + OBJECT_PATIENT + "|"  + OBJECT_PROGRAM + "|" 
+        + OBJECT_PROGRAM_STAGE_DATAELEMENT + "|" + OBJECT_PATIENT_ATTRIBUTE 
+        + "|" + OBJECT_PATIENT_PROPERTY + "|" + OBJECT_PROGRAM_PROPERTY + ")"
         + SEPARATOR_OBJECT + "([a-zA-Z0-9\\- ]+[" + SEPARATOR_ID + "[0-9]*]*)" + "\\]";
 
     private final String IS_NULL = "is null";
@@ -83,6 +85,8 @@ public class DefaultCaseAggregationConditionService
     private final String PROPERTY_AGE = "age";
 
     private final String INVALID_CONDITION = "Invalid condition";
+    
+    private final String NUMBER_PATIENTS_REGISTERED = "The number of beneficiaries registered";
 
     // -------------------------------------------------------------------------
     // Dependencies
@@ -298,10 +302,15 @@ public class DefaultCaseAggregationConditionService
             {
                 String[] ids = info[1].split( SEPARATOR_ID );
 
-                int objectId = Integer.parseInt( ids[0] );
-
-                if ( info[0].equalsIgnoreCase( OBJECT_PATIENT_ATTRIBUTE ) )
+                if ( info[0].equalsIgnoreCase( OBJECT_PATIENT ) )
                 {
+                    matcher.appendReplacement( description, "[" + OBJECT_PATIENT + SEPARATOR_OBJECT
+                        + NUMBER_PATIENTS_REGISTERED + "]" );
+                }
+                else if ( info[0].equalsIgnoreCase( OBJECT_PATIENT_ATTRIBUTE ) )
+                {
+                    int objectId = Integer.parseInt( ids[0] );
+
                     PatientAttribute patientAttribute = patientAttributeService.getPatientAttribute( objectId );
 
                     if ( patientAttribute == null )
@@ -314,6 +323,8 @@ public class DefaultCaseAggregationConditionService
                 }
                 else if ( info[0].equalsIgnoreCase( OBJECT_PROGRAM ) )
                 {
+                    int objectId = Integer.parseInt( ids[0] );
+                
                     Program program = programService.getProgram( objectId );
 
                     if ( program == null )
@@ -451,7 +462,11 @@ public class DefaultCaseAggregationConditionService
 
                 String[] info = match.split( SEPARATOR_OBJECT );
 
-                if ( info[0].equalsIgnoreCase( OBJECT_PATIENT_PROPERTY ) )
+                if ( info[0].equalsIgnoreCase( OBJECT_PATIENT ) )
+                {
+                    condition = getConditionForPatient( orgunitId, startDate, endDate );
+                }
+                else if ( info[0].equalsIgnoreCase( OBJECT_PATIENT_PROPERTY ) )
                 {
                     String propertyName = info[1];
                     condition = getConditionForPatientProperty( propertyName, orgunitId, startDate, endDate );
@@ -603,6 +618,14 @@ public class DefaultCaseAggregationConditionService
             + "AND pav.value ";
     }
 
+    private String getConditionForPatient( int orgunitId, String startDate, String endDate )
+    {
+        String sql = "SELECT p.patientid FROM patient as p WHERE p.organisationunitid = " + orgunitId + " "
+            + "AND p.registrationdate >= '" + startDate + "' AND p.registrationdate <= '" + endDate + "' ";
+        
+        return sql;
+    }
+    
     private String getConditionForPatientProperty( String propertyName, int orgunitId, String startDate, String endDate )
     {
         String sql = "SELECT distinct(p.patientid) FROM programstageinstance as psi INNER JOIN programstage as ps "
