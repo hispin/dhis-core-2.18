@@ -27,6 +27,7 @@ DV.conf = {
             }
         },        
         chart: {
+            x: 'x',
             series: 'series',
             category: 'category',
             filter: 'filter',
@@ -41,13 +42,18 @@ DV.conf = {
     },
     style: {
         label: {
-            period: 'font:bold 11px arial; color:#444; line-height:20px',
+            period_group: 'font:bold 11px arial; color:#444; line-height:20px',
         }
     },
     layout: {
         west_cmp_width: 380,
         west_width: 424
-    }
+    },
+    data: [
+        {x: 'Category 1', 'Series 1': 41, 'Series 2': 69, 'Series 3': 63, 'Series 4': 51},
+        {x: 'Category 2', 'Series 1': 51, 'Series 2': 42, 'Series 3': 58, 'Series 4': 52},
+        {x: 'Category 3', 'Series 1': 44, 'Series 2': 71, 'Series 3': 62, 'Series 4': 54},
+    ]
 };
 
 Ext.Loader.setConfig({enabled: true});
@@ -78,11 +84,7 @@ Ext.onReady( function() {
         DV.store.area = DV.store.defaultChartStore;
         DV.store.pie = DV.store.defaultChartStore;
         
-        DV.data.data = [
-            {x: 'Category 1', 'Series 1': 41, 'Series 2': 69, 'Series 3': 63, 'Series 4': 51},
-            {x: 'Category 2', 'Series 1': 51, 'Series 2': 42, 'Series 3': 58, 'Series 4': 52},
-            {x: 'Category 3', 'Series 1': 44, 'Series 2': 71, 'Series 3': 62, 'Series 4': 54},
-        ];
+        DV.data.data = DV.conf.data;
         
         DV.chart.init = true;
         DV.store.getChartStore(true);
@@ -414,8 +416,13 @@ Ext.onReady( function() {
                 fields: keys,
                 data: DV.data.data
             });
-            this.chart.bottom = keys.slice(0, 1);
-            this.chart.left = keys.slice(1, keys.length);
+            this.chart.bottom = [DV.conf.finals.chart.x];
+            this.chart.left = keys.slice(0);
+            for (var i = 0; i < this.chart.left.length; i++) {
+                if (this.chart.left[i] === DV.conf.finals.chart.x) {
+                    this.chart.left.splice(i, 1);
+                }
+            }
             
             if (exe) {
                 DV.chart.getChart(true);
@@ -492,7 +499,7 @@ Ext.onReady( function() {
             this.filter.data = this[this.filter.dimension].slice(0,1);
             
             if (exe) {
-                DV.data.getValues(true);
+                DV.value.getValues(true);
             }
         },
         getIndiment: function() {
@@ -517,7 +524,7 @@ Ext.onReady( function() {
         }
     };
     
-    DV.data = {
+    DV.value = {
         values: null,        
         getValues: function(exe) {
             var params = [],
@@ -541,14 +548,14 @@ Ext.onReady( function() {
             Ext.Ajax.request({
                 url: baseUrl,
                 success: function(r) {
-                    DV.data.values = Ext.JSON.decode(r.responseText).values;
+                    DV.value.values = Ext.JSON.decode(r.responseText).values;
                     
-                    if (!DV.data.values.length) {
+                    if (!DV.value.values.length) {
                         alert('no data values');
                         return;
                     }
                     
-                    Ext.Array.each(DV.data.values, function(item) {
+                    Ext.Array.each(DV.value.values, function(item) {
                         item[indiment] = DV.store[indiment].available.storage[item.i].name;
                         item[DV.conf.finals.dimension.period.value] = DV.util.dimension.period.getNameById(item.p);
                         item[DV.conf.finals.dimension.organisationunit.value] = DV.util.getCmp('treepanel').store.getNodeById(item.o).data.text;
@@ -558,24 +565,29 @@ Ext.onReady( function() {
                         DV.data.getData(true);
                     }
                     else {
-                        return DV.data.values;
+                        return DV.value.values;
                     }                    
                 }
             });
-        },        
+        }
+    };        
+    
+    DV.data = {
         data: [],        
         getData: function(exe) {
             this.data = [];
             
             Ext.Array.each(DV.state.category.data, function(item) {
-                DV.data.data.push({x: item});
+                var obj = {};
+                obj[DV.conf.finals.chart.x] = item;
+                DV.data.data.push(obj);
             });
             
             Ext.Array.each(DV.data.data, function(item) {
                 for (var i = 0; i < DV.state.series.data.length; i++) {
-                    for (var j = 0; j < DV.data.values.length; j++) {
-                        if (DV.data.values[j][DV.state.category.dimension] === item.x && DV.data.values[j][DV.state.series.dimension] === DV.state.series.data[i]) {
-                            item[DV.data.values[j][DV.state.series.dimension]] = parseFloat(DV.data.values[j].v);
+                    for (var j = 0; j < DV.value.values.length; j++) {
+                        if (DV.value.values[j][DV.state.category.dimension] === item[DV.conf.finals.chart.x] && DV.value.values[j][DV.state.series.dimension] === DV.state.series.data[i]) {
+                            item[DV.value.values[j][DV.state.series.dimension]] = parseFloat(DV.value.values[j].v);
                             break;
                         }
                     }
@@ -890,7 +902,6 @@ Ext.onReady( function() {
                         xtype: 'toolbar',
                         id: 'chartsettings_tb',
                         height: 48,
-                        style: 'padding:4px 0 0 8px; border-left:0 none; border-right:0 none; border-bottom:0 none',
                         items: [
                             {
                                 xtype: 'panel',
@@ -1398,7 +1409,7 @@ Ext.onReady( function() {
                                                     {
                                                         xtype: 'label',
                                                         text: 'Months',
-                                                        style: DV.conf.style.label.period
+                                                        style: DV.conf.style.label.period_group
                                                     },
                                                     {
                                                         xtype: 'checkbox',
@@ -1436,7 +1447,7 @@ Ext.onReady( function() {
                                                     {
                                                         xtype: 'label',
                                                         text: 'Quarters',
-                                                        style: DV.conf.style.label.period
+                                                        style: DV.conf.style.label.period_group
                                                     },
                                                     {
                                                         xtype: 'checkbox',
@@ -1473,7 +1484,7 @@ Ext.onReady( function() {
                                                     {
                                                         xtype: 'label',
                                                         text: 'Years',
-                                                        style: DV.conf.style.label.period
+                                                        style: DV.conf.style.label.period_group
                                                     },
                                                     {
                                                         xtype: 'checkbox',
@@ -1667,7 +1678,7 @@ Ext.onReady( function() {
                                                 //DV.conf.finals.dimension.organisationunit.value,
                                                 //'v'
                                             //],
-                                            //data: DV.data.values
+                                            //data: DV.value.values
                                         //})
                                     //}
                                 //]
