@@ -36,6 +36,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.hisp.dhis.attribute.AttributeValue;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.expression.ExpressionService;
 import org.hisp.dhis.i18n.I18n;
@@ -310,10 +311,10 @@ public class PDFUtils
      * @param format The i18nFormat object
      * 
      */
-    public static void printObjectFrontPage( Document document, Collection<?> objectIds, I18n i18n, I18nFormat format,
+    public static void printObjectFrontPage( Document document, Collection<?> objects, I18n i18n, I18nFormat format,
         String frontPageLabel )
     {
-        if ( objectIds == null || objectIds.size() > 0 )
+        if ( objects == null || objects.size() > 0 )
         {
             String title = i18n.getString( frontPageLabel );
 
@@ -418,6 +419,12 @@ public class PDFUtils
             table.addCell( getTextCell( i18n.getString( getAggregationOperator().get( element.getAggregationOperator() ) ) ) );
         }
 
+        for ( AttributeValue value : element.getAttributeValues() )
+        {
+            table.addCell( getItalicCell( value.getAttribute().getName() ) );
+            table.addCell( getTextCell( value.getValue() ) );
+        }
+
         table.addCell( getEmptyCell( 2, 30 ) );
 
         return table;
@@ -482,6 +489,12 @@ public class PDFUtils
         table.addCell( getItalicCell( i18n.getString( "denominator_formula" ) ) );
         table.addCell( getTextCell( expressionService.getExpressionDescription( indicator.getDenominator() ) ) );
 
+        for ( AttributeValue value : indicator.getAttributeValues() )
+        {
+            table.addCell( getItalicCell( value.getAttribute().getName() ) );
+            table.addCell( getTextCell( value.getValue() ) );
+        }
+
         table.addCell( getEmptyCell( 2, 30 ) );
 
         return table;
@@ -536,6 +549,12 @@ public class PDFUtils
             table.addCell( getTextCell( unit.getComment() ) );
         }
 
+        for ( AttributeValue value : unit.getAttributeValues() )
+        {
+            table.addCell( getItalicCell( value.getAttribute().getName() ) );
+            table.addCell( getTextCell( value.getValue() ) );
+        }
+
         table.addCell( getEmptyCell( 2, 30 ) );
 
         return table;
@@ -578,8 +597,7 @@ public class PDFUtils
         }
 
         table.addCell( getItalicCell( i18n.getString( "last_login" ) ) );
-        table.addCell( getTextCell( userCredentials.getLastLogin() != null ? format.formatDate( userCredentials
-            .getLastLogin() ) : EMPTY ) );
+        table.addCell( getTextCell( userCredentials.getLastLogin() != null ? format.formatDate( userCredentials.getLastLogin() ) : EMPTY ) );
 
         String temp = "";
 
@@ -607,6 +625,12 @@ public class PDFUtils
         table.addCell( getItalicCell( i18n.getString( "roles" ) ) );
         table.addCell( getTextCell( temp ) );
 
+        for ( AttributeValue value : user.getAttributeValues() )
+        {
+            table.addCell( getItalicCell( value.getAttribute().getName() ) );
+            table.addCell( getTextCell( value.getValue() ) );
+        }
+        
         table.addCell( getEmptyCell( 2, 30 ) );
 
         return table;
