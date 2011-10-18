@@ -125,11 +125,6 @@ public class DataElement
     private Set<DataElement> children = new HashSet<DataElement>();
 
     /**
-     * The parent DataElement for this DataElement.
-     */
-    private DataElement parent;
-
-    /**
      * A combination of categories to capture data.
      */
     private DataElementCategoryCombo categoryCombo;
@@ -439,16 +434,6 @@ public class DataElement
     public void setChildren( Set<DataElement> children )
     {
         this.children = children;
-    }
-
-    public DataElement getParent()
-    {
-        return parent;
-    }
-
-    public void setParent( DataElement parent )
-    {
-        this.parent = parent;
     }
 
     public DataElementCategoryCombo getCategoryCombo()
