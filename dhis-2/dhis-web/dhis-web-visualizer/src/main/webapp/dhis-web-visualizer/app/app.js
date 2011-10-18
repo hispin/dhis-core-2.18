@@ -72,10 +72,7 @@ Ext.onReady( function() {
     DV.init = Ext.JSON.decode(r.responseText);
     
     DV.init.initialize = function(vp) {
-        var s = vp.query('combobox[name="' + DV.conf.finals.chart.series + '"]')[0];
-        s.filter(s, vp);
-        var c = vp.query('combobox[name="' + DV.conf.finals.chart.category + '"]')[0];
-        c.filter(c, vp);
+        DV.util.combobox.filter.category(vp);
         
         DV.store.column = DV.store.defaultChartStore;
         DV.store.column_stacked = DV.store.defaultChartStore;
@@ -338,7 +335,62 @@ Ext.onReady( function() {
                     return a;
                 }
             }
-        }
+        },
+        combobox: {
+            filter: {
+                clearValue: function(v, cb, i, d) {
+                    if (v === cb.getValue()) {
+                        cb.clearValue();
+                    }
+                    else if ((v === i || v === d) && (cb.getValue() === i || cb.getValue() === d)) {
+                        cb.clearValue();
+                    }
+                },
+                category: function(vp) {
+                    var cbs = vp.query('combobox[name="' + DV.conf.finals.chart.series + '"]')[0],
+                        cbc = vp.query('combobox[name="' + DV.conf.finals.chart.category + '"]')[0],
+                        cbf = vp.query('combobox[name="' + DV.conf.finals.chart.filter + '"]')[0],
+                        v = cbs.getValue(),
+                        i = DV.conf.finals.dimension.indicator.value,
+                        d = DV.conf.finals.dimension.dataelement.value,
+                        p = DV.conf.finals.dimension.period.value,
+                        o = DV.conf.finals.dimension.organisationunit.value,
+                        index = 0;
+                        
+                    this.clearValue(v, cbc, i, d);
+                    this.clearValue(v, cbf, i, d);
+                    
+                    cbc.filterArray = [!(v === i || v === d), !(v === i || v === d), !(v === p), !(v === o)];
+                    cbc.store.filterBy( function(r) {
+                        return cbc.filterArray[index++];
+                    });
+                    
+                    this.filter(vp);
+                },                
+                filter: function(vp) {
+                    var cbc = vp.query('combobox[name="' + DV.conf.finals.chart.category + '"]')[0],
+                        cbf = vp.query('combobox[name="' + DV.conf.finals.chart.filter + '"]')[0],
+                        v = cbc.getValue(),
+                        i = DV.conf.finals.dimension.indicator.value,
+                        d = DV.conf.finals.dimension.dataelement.value,
+                        p = DV.conf.finals.dimension.period.value,
+                        o = DV.conf.finals.dimension.organisationunit.value,
+                        index = 0;
+                        
+                    this.clearValue(v, cbf, i, d);
+                        
+                    cbf.filterArray = Ext.Array.clone(cbc.filterArray);
+                    cbf.filterArray[0] = cbf.filterArray[0] ? !(v === i || v === d) : false;
+                    cbf.filterArray[1] = cbf.filterArray[1] ? !(v === i || v === d) : false;
+                    cbf.filterArray[2] = cbf.filterArray[2] ? !(v === p) : false;
+                    cbf.filterArray[3] = cbf.filterArray[3] ? !(v === o) : false;
+                    
+                    cbf.store.filterBy( function(r) {
+                        return cbf.filterArray[index++];
+                    });
+                }
+            }
+        }               
     };
     
     DV.store = {
@@ -925,48 +977,12 @@ Ext.onReady( function() {
                                         width: (DV.conf.layout.west_cmp_width / 3) + 4,
                                         store: DV.store.dimension(),
                                         value: DV.conf.finals.dimension.indicator.value,
-                                        filter: function(cb, vp) {
-                                            var v = cb.getValue(),
-                                                c = vp.query('combobox[name="' + DV.conf.finals.chart.category + '"]')[0],
-                                                f = vp.query('combobox[name="' + DV.conf.finals.chart.filter + '"]')[0],
-                                                i = DV.conf.finals.dimension.indicator.value,
-                                                d = DV.conf.finals.dimension.dataelement.value,
-                                                p = DV.conf.finals.dimension.period.value,
-                                                o = DV.conf.finals.dimension.organisationunit.value,
-                                                index = 0;
-                                            
-                                            if (v === i || v === d) {
-                                                cb.filterArray = [false, false, true, true];
-                                            }
-                                            else if (v === p) {
-                                                cb.filterArray = [true, true, false, true];
-                                            }
-                                            else if (v === o) {
-                                                cb.filterArray = [true, true, true, false];
-                                            }
-                                            
-                                            var fn = function(cmp) {
-                                                cmp.store.filterBy( function(r) {
-                                                    return cb.filterArray[index++];
-                                                });
-                                                if (v === cmp.getValue()) {
-                                                    cmp.clearValue();
-                                                }
-                                                else if ((v === i || v === d) && (cmp.getValue() === i || cmp.getValue() === d)) {
-                                                    cmp.clearValue();
-                                                }
-                                            };
-                                            
-                                            fn(c);                                    
-                                            index = 0;
-                                            fn(f);
-                                        },
                                         listeners: {
                                             afterrender: function(cb) {
                                                 DV.state[cb.name].cmp = cb;
                                             },
-                                            select: function(cb) {
-                                                cb.filter(cb, DV.viewport);
+                                            select: function() {
+                                                DV.util.combobox.filter.category(DV.viewport);
                                             }
                                         }
                                     }
@@ -995,46 +1011,12 @@ Ext.onReady( function() {
                                         width: (DV.conf.layout.west_cmp_width / 3) + 4,
                                         store: DV.store.dimension(),
                                         value: DV.conf.finals.dimension.period.value,
-                                        filter: function(cb, vp) {
-                                            var v = cb.getValue(),
-                                                s = vp.query('combobox[name="' + DV.conf.finals.chart.series + '"]')[0],
-                                                f = vp.query('combobox[name="' + DV.conf.finals.chart.filter + '"]')[0],
-                                                i = DV.conf.finals.dimension.indicator.value,
-                                                d = DV.conf.finals.dimension.dataelement.value,
-                                                p = DV.conf.finals.dimension.period.value,
-                                                o = DV.conf.finals.dimension.organisationunit.value,
-                                                index = 0;
-                                            
-                                            cb.filterArray = Ext.Array.clone(s.filterArray);
-                                            
-                                            if (cb.getValue() === i || cb.getValue() === d) {
-                                                cb.filterArray[0] = false;
-                                                cb.filterArray[1] = false;
-                                            }
-                                            else if (cb.getValue() === p) {
-                                                cb.filterArray[2] = false;
-                                            }
-                                            else if (cb.getValue() === o) {
-                                                cb.filterArray[3] = false;
-                                            }
-                                            
-                                            f.store.filterBy( function(r) {
-                                                return cb.filterArray[index++];
-                                            });
-                                            if (v === f.getValue()) {
-                                                f.clearValue();
-                                            }
-                                            else if ((v === i || v === d) && (f.getValue() === i || f.getValue() === d)) {
-                                                f.clearValue();
-                                            }
-                                        },
                                         listeners: {
                                             afterrender: function(cb) {
                                                 DV.state[cb.name].cmp = cb;
                                             },
                                             select: function(cb) {
-                                                cb.filter(cb, DV.viewport);
-                                                DV.state.category.dimension = cb.getValue();
+                                                DV.util.combobox.filter.filter(DV.viewport);
                                             }
                                         }
                                     }
