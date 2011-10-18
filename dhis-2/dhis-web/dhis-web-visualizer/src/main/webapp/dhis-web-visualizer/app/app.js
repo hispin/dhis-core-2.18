@@ -42,7 +42,7 @@ DV.conf = {
     },
     style: {
         label: {
-            period_group: 'font:bold 11px arial; color:#444; line-height:20px',
+            period_group: 'font:bold 11px arial; color:#444; line-height:20px'
         }
     },
     layout: {
@@ -52,7 +52,7 @@ DV.conf = {
     data: [
         {x: 'Category 1', 'Series 1': 41, 'Series 2': 69, 'Series 3': 63, 'Series 4': 51},
         {x: 'Category 2', 'Series 1': 51, 'Series 2': 42, 'Series 3': 58, 'Series 4': 52},
-        {x: 'Category 3', 'Series 1': 44, 'Series 2': 71, 'Series 3': 62, 'Series 4': 54},
+        {x: 'Category 3', 'Series 1': 44, 'Series 2': 71, 'Series 3': 62, 'Series 4': 54}
     ]
 };
 
@@ -627,14 +627,14 @@ Ext.onReady( function() {
     DV.data = {
         data: [],        
         getData: function(exe) {
-            this.data = [];
-            
+            this.data = [];  
+			
             Ext.Array.each(DV.state.category.data, function(item) {
                 var obj = {};
                 obj[DV.conf.finals.chart.x] = item;
                 DV.data.data.push(obj);
             });
-            
+			
             Ext.Array.each(DV.data.data, function(item) {
                 for (var i = 0; i < DV.state.series.data.length; i++) {
                     for (var j = 0; j < DV.value.values.length; j++) {
@@ -1533,7 +1533,7 @@ Ext.onReady( function() {
                                                     v.menu.destroy();
                                                 }
                                                 v.menu = Ext.create('Ext.menu.Menu', {
-                                                    id: 'treepanel-contextmenu',
+                                                    id: 'treepanel-contextmenu'
                                                 });
                                                 if (!r.data.leaf) {
                                                     v.menu.add({
