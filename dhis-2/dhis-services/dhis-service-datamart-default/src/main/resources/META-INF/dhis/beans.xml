@@ -101,6 +101,7 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
     <property name="averageIntSingleValueAggregator" ref="org.hisp.dhis.datamart.aggregation.dataelement.AverageIntSingleValueAggregator" />
     <property name="sumBoolAggregator" ref="org.hisp.dhis.datamart.aggregation.dataelement.SumBoolAggregator" />
     <property name="averageBoolAggregator" ref="org.hisp.dhis.datamart.aggregation.dataelement.AverageBoolAggregator" />
+	<property name="statementManager" ref="inMemoryStatementManager" />
   </bean>
   
   <!-- IndicatorDataMart -->
@@ -112,6 +113,7 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
     <property name="crossTabService" ref="org.hisp.dhis.datamart.crosstab.CrossTabService" />
 	<property name="constantService" ref="org.hisp.dhis.constant.ConstantService" />
     <property name="batchHandlerFactory" ref="batchHandlerFactory" />
+	<property name="statementManager" ref="inMemoryStatementManager" />
   </bean>
     
   <!-- DeletionHandler -->

@@ -39,6 +39,7 @@ import java.util.concurrent.Future;
 
 import org.amplecode.quick.BatchHandler;
 import org.amplecode.quick.BatchHandlerFactory;
+import org.amplecode.quick.StatementManager;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hisp.dhis.aggregation.AggregatedIndicatorValue;
@@ -114,7 +115,14 @@ public class DefaultIndicatorDataMart
     {
         this.batchHandlerFactory = batchHandlerFactory;
     }
-    
+
+    private StatementManager statementManager;
+
+    public void setStatementManager( StatementManager statementManager )
+    {
+        this.statementManager = statementManager;
+    }
+
     // -------------------------------------------------------------------------
     // IndicatorDataMart implementation
     // -------------------------------------------------------------------------
@@ -123,6 +131,8 @@ public class DefaultIndicatorDataMart
     public Future<?> exportIndicatorValues( final Collection<Indicator> indicators, final Collection<Period> periods, 
         final Collection<OrganisationUnit> organisationUnits, final Collection<DataElementOperand> operands, String key )
     {
+        statementManager.initialise(); // Running in separate thread
+        
         final BatchHandler<AggregatedIndicatorValue> batchHandler = batchHandlerFactory.createBatchHandler( AggregatedIndicatorValueBatchHandler.class ).init();
 
         final boolean omitZeroNumerator = (Boolean) systemSettingManager.getSystemSetting( KEY_OMIT_INDICATORS_ZERO_NUMERATOR_DATAMART, false );
@@ -184,6 +194,8 @@ public class DefaultIndicatorDataMart
         }
         
         batchHandler.flush();
+        
+        statementManager.destroy();
         
         log.info( "Indicator export task done" );
         
