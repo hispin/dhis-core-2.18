@@ -259,7 +259,7 @@ Ext.onReady( function() {
                                 a.push(DV.util.chart.getEncodedSeriesName(item.name));
                             });
                         }
-                    });
+                    });                    
                     return a;
                 },
                 getNameById: function(id) {
@@ -537,12 +537,12 @@ Ext.onReady( function() {
             this.indiment = DV.util.dimension[i].getNames();
             this.period = DV.util.dimension[p].getNames();
             this.organisationunit = DV.util.dimension[o].getNames();
-            
+
             if (!this.indiment.length || !this.period.length || !this.organisationunit.length) {
                 alert('form is not complete');
                 return;
             }
-    
+            
             this.indicator = this.indiment;
             this.dataelement = this.indiment;
             
@@ -889,12 +889,9 @@ Ext.onReady( function() {
                 items: [
                     {
                         xtype: 'toolbar',
-                        layout: 'anchor',
                         height: 44,
                         style: 'padding-top:2px; border-style:none',
                         defaults: {
-                            xtype: 'button',
-                            width: 40,
                             height: 40,
                             toggleGroup: 'chartsettings',
                             handler: DV.util.button.toggleHandler,
@@ -910,43 +907,57 @@ Ext.onReady( function() {
                             {
                                 xtype: 'label',
                                 text: 'Chart type',
-                                style: 'font-size:11px; font-weight:bold; padding:0 8px 0 10px'
+                                style: 'font-size:11px; font-weight:bold; padding:12px 8px 0 10px'
                             },
                             {
+								xtype: 'button',
                                 icon: 'images/column.png',
                                 name: DV.conf.finals.chart.column,
                                 tooltip: 'Column chart',
+								width: 40,
                                 pressed: true
                             },
                             {
+								xtype: 'button',
                                 icon: 'images/column-stacked.png',
                                 name: DV.conf.finals.chart.column_stacked,
-                                tooltip: 'Stacked column chart'
+                                tooltip: 'Stacked column chart',
+								width: 40
                             },
                             {
+								xtype: 'button',
                                 icon: 'images/bar.png',
                                 name: DV.conf.finals.chart.bar,
-                                tooltip: 'Bar chart'
+                                tooltip: 'Bar chart',
+								width: 40
                             },
                             {
+								xtype: 'button',
                                 icon: 'images/bar-stacked.png',
                                 name: DV.conf.finals.chart.bar_stacked,
-                                tooltip: 'Stacked bar chart'
+                                tooltip: 'Stacked bar chart',
+								width: 40
                             },
                             {
+								xtype: 'button',
                                 icon: 'images/line.png',
                                 name: DV.conf.finals.chart.line,
-                                tooltip: 'Line chart'
+                                tooltip: 'Line chart',
+								width: 40
                             },
                             {
+								xtype: 'button',
                                 icon: 'images/area.png',
                                 name: DV.conf.finals.chart.area,
-                                tooltip: 'Area chart'
+                                tooltip: 'Area chart',
+								width: 40
                             },
                             {
+								xtype: 'button',
                                 icon: 'images/pie.png',
                                 name: DV.conf.finals.chart.pie,
-                                tooltip: 'Pie chart'
+                                tooltip: 'Pie chart',
+								width: 40
                             }
                         ]
                     },                    
@@ -958,14 +969,13 @@ Ext.onReady( function() {
                             {
                                 xtype: 'panel',
                                 bodyStyle: 'border-style:none; background-color:transparent; padding:0 2px',
-                                layout: 'anchor',
                                 items: [
                                     {
                                         xtype: 'label',
                                         text: 'Series',
                                         style: 'font-size:11px; font-weight:bold; padding:0 3px'
                                     },
-                                    { html: '<div style="height:2px"></div>', bodyStyle: 'border-style:none;background-color:transparent' },
+                                    { bodyStyle: 'padding:1px 0; border-style:none;	background-color:transparent' },
                                     {
                                         xtype: 'combobox',
                                         name: DV.conf.finals.chart.series,
@@ -991,14 +1001,13 @@ Ext.onReady( function() {
                             {
                                 xtype: 'panel',
                                 bodyStyle: 'border-style:none; background-color:transparent; padding:0 2px',
-                                layout: 'anchor',
                                 items: [
                                     {
                                         xtype: 'label',
                                         text: 'Category',
                                         style: 'font-size:11px; font-weight:bold; padding:0 3px'
                                     },
-                                    { html: '<div style="height:2px"></div>', bodyStyle: 'border-style:none;background-color:transparent' },
+                                    { bodyStyle: 'padding:1px 0; border-style:none;	background-color:transparent' },
                                     {
                                         xtype: 'combobox',
                                         name: DV.conf.finals.chart.category,
@@ -1025,14 +1034,13 @@ Ext.onReady( function() {
                             {
                                 xtype: 'panel',
                                 bodyStyle: 'border-style:none; background-color:transparent; padding:0 2px',
-                                layout: 'anchor',
                                 items: [
                                     {
                                         xtype: 'label',
                                         text: 'Filter',
                                         style: 'font-size:11px; font-weight:bold; padding:0 3px'
                                     },
-                                    { html: '<div style="height:2px"></div>', bodyStyle: 'border-style:none;background-color:transparent' },
+                                    { bodyStyle: 'padding:1px 0; border-style:none;	background-color:transparent' },
                                     {
                                         xtype: 'combobox',
                                         name: DV.conf.finals.chart.filter,
