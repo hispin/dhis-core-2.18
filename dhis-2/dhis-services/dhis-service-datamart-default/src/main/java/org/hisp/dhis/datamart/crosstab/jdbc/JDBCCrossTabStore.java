@@ -117,7 +117,9 @@ public class JDBCCrossTabStore
     {
         final StatementHolder holder = statementManager.getHolder();
         
-        final String sql = "SELECT * FROM " + CROSSTAB_TABLE_PREFIX + key + " AS c WHERE c.periodid IN (" + 
+        final String operandIds = getCommadelimitedString( operands );
+        
+        final String sql = "SELECT periodid, sourceid, " + operandIds + " FROM " + CROSSTAB_TABLE_PREFIX + key + " AS c WHERE c.periodid IN (" + 
             getCommaDelimitedString( periodIds ) + ") AND c.sourceid IN (" + getCommaDelimitedString( sourceIds ) + ")";
         
         try
@@ -141,7 +143,9 @@ public class JDBCCrossTabStore
     {
         final StatementHolder holder = statementManager.getHolder();
 
-        final String sql = "SELECT * FROM " + CROSSTAB_TABLE_PREFIX + key + " AS c WHERE c.periodid IN (" + 
+        final String operandIds = getCommadelimitedString( operands );
+        
+        final String sql = "SELECT periodid, sourceid, " + operandIds + " FROM " + CROSSTAB_TABLE_PREFIX + key + " AS c WHERE c.periodid IN (" + 
             getCommaDelimitedString( periodIds ) + ") AND c.sourceid = " + sourceId;
 
         try
@@ -228,5 +232,22 @@ public class JDBCCrossTabStore
         }
         
         return values;
+    }
+    
+    private String getCommadelimitedString( Collection<DataElementOperand> operands )
+    {
+        final StringBuilder builder = new StringBuilder();
+        
+        for ( DataElementOperand operand : operands )
+        {
+            builder.append( operand.getColumnName() ).append( "," );
+        }
+        
+        if ( builder.length() > 0 )
+        {
+            builder.deleteCharAt( builder.length() - 1);
+        }
+        
+        return builder.toString();
     }
 }
