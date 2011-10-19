@@ -1076,6 +1076,7 @@ Ext.onReady( function() {
                                 name: DV.conf.finals.dimension.indicator.value,
                                 title: '<a href="javascript:DV.util.fieldset.toggleIndicator();" class="dv-fieldset-title-link">Indicators</a>',
                                 collapsible: true,
+								width: DV.conf.layout.west_cmp_width + 22,
                                 items: [
                                     {
                                         xtype: 'combobox',
