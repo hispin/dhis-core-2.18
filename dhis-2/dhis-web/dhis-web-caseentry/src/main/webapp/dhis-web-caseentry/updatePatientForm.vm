@@ -270,7 +270,7 @@
 
 </form> 	
 
-<div id="representativeInfo" style='font-size:12px;'>
+<div id="representativeInfo" style='font-size:12px; display:none;'>
 	<table id='patientInfoDiv'>
 		<tr>
 			<td class="bold">$i18n.getString("full_name"):</td>
