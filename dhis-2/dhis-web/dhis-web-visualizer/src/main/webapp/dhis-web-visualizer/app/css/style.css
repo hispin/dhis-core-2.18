@@ -104,7 +104,7 @@
     border-style: none;
 }
 
-/* Multiselect /*(custom) transparent row hover */
+/* Multiselect (custom) transparent row hover */
 #indicator_fs .x-boundlist-item-over, #dataelement_fs .x-boundlist-item-over {
     background-color: transparent;
     border-color: #fff;
