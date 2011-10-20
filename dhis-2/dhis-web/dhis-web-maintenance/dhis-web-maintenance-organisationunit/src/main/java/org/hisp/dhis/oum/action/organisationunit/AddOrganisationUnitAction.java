@@ -138,18 +138,18 @@ public class AddOrganisationUnitAction
         this.comment = comment;
     }
 
-    private String latitude;
-
-    public void setLatitude( String latitude )
-    {
-        this.latitude = latitude;
-    }
-
     private String longitude;
 
     public void setLongitude( String longitude )
     {
         this.longitude = longitude;
+    }
+
+    private String latitude;
+
+    public void setLatitude( String latitude )
+    {
+        this.latitude = latitude;
     }
 
     private String url;
@@ -224,8 +224,8 @@ public class AddOrganisationUnitAction
     {
         code = nullIfEmpty( code );
         comment = nullIfEmpty( comment );
-        latitude = nullIfEmpty( latitude );
         longitude = nullIfEmpty( longitude );
+        latitude = nullIfEmpty( latitude );
         url = nullIfEmpty( url );
 
         contactPerson = nullIfEmpty( contactPerson );
@@ -235,8 +235,8 @@ public class AddOrganisationUnitAction
 
         Date date = format.parseDate( openingDate );
 
-        String coordinates = latitude != null && longitude != null ?
-            ValidationUtils.getCoordinate( latitude, longitude ) : null;
+        String coordinates = longitude != null && latitude != null ?
+            ValidationUtils.getCoordinate( longitude, latitude ) : null;
         
         // ---------------------------------------------------------------------
         // Get parent

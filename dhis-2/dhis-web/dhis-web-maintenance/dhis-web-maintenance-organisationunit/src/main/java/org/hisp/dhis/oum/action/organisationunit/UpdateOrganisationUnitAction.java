@@ -160,18 +160,18 @@ public class UpdateOrganisationUnitAction
         this.comment = comment;
     }
 
-    private String latitude;
-
-    public void setLatitude( String latitude )
-    {
-        this.latitude = latitude;
-    }
-
     private String longitude;
 
     public void setLongitude( String longitude )
     {
         this.longitude = longitude;
+    }
+
+    private String latitude;
+
+    public void setLatitude( String latitude )
+    {
+        this.latitude = latitude;
     }
 
     private String url;
@@ -246,8 +246,8 @@ public class UpdateOrganisationUnitAction
     {
         code = nullIfEmpty( code );
         comment = nullIfEmpty( comment );
-        latitude = nullIfEmpty( latitude );
         longitude = nullIfEmpty( longitude );
+        latitude = nullIfEmpty( latitude );
         url = nullIfEmpty( url );
 
         contactPerson = nullIfEmpty( contactPerson );
@@ -264,8 +264,8 @@ public class UpdateOrganisationUnitAction
             cDate = format.parseDate( closedDate );
         }
 
-        String coordinates = latitude != null && longitude != null ?
-            ValidationUtils.getCoordinate( latitude, longitude ) : null;
+        String coordinates = longitude != null && latitude != null ?
+            ValidationUtils.getCoordinate( longitude, latitude ) : null;
         
         // ---------------------------------------------------------------------
         // Update organisation unit

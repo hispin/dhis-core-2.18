@@ -167,7 +167,7 @@
 
   <cache name="org.hisp.dhis.reporttable.ReportTable.indicators" maxElementsInMemory="500" />
 
-  <cache name="org.hisp.dhis.reporttable.ReportTable.dataSets" maxElementsInMemory="100" />
+  <cache name="org.hisp.dhis.reporttable.ReportTable.dataSets" maxElementsInMemory="200" />
 
   <cache name="org.hisp.dhis.reporttable.ReportTable.periods" maxElementsInMemory="200" />
 
@@ -184,6 +184,8 @@
   <cache name="org.hisp.dhis.chart.Chart.periods" maxElementsInMemory="200" />
 
   <cache name="org.hisp.dhis.chart.Chart.organisationUnits" maxElementsInMemory="2000" />
+  
+  <cache name="org.hisp.dhis.chart.Chart.dataSets" maxElementsInMemory="200" />
 
   <cache name="org.hisp.dhis.chart.Chart.groups" maxElementsInMemory="500" />
 
