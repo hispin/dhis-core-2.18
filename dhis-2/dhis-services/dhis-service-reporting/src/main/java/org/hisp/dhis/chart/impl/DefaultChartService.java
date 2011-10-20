@@ -869,10 +869,16 @@ public class DefaultChartService
                 {
                     shortName = dataElements.get( i ).getShortName();
                 }
+                else if ( isCompletenessChart )
+                {
+                    shortName = dataSets.get( i ).getShortName();
+                }
 
                 if ( chart.isDimension( DIMENSION_PERIOD_INDICATOR ) || chart.isDimension( DIMENSION_INDICATOR_PERIOD )
                     || chart.isDimension( DIMENSION_PERIOD_DATAELEMENT )
-                    || chart.isDimension( DIMENSION_DATAELEMENT_PERIOD ) )
+                    || chart.isDimension( DIMENSION_DATAELEMENT_PERIOD )
+                    || chart.isDimension( DIMENSION_PERIOD_COMPLETENESS )
+                    || chart.isDimension( DIMENSION_COMPLETENESS_PERIOD ) )
                 {
                     // ---------------------------------------------------------
                     // Regular dataset
@@ -896,9 +902,14 @@ public class DefaultChartService
                                     period.getEndDate(), selectedOrganisationUnit ) : aggregatedDataValueService
                                 .getAggregatedValue( dataElements.get( i ), period, selectedOrganisationUnit );
                         }
+                        else if ( isCompletenessChart )
+                        {
+                            // Completeness value here
+                        }
 
                         if ( chart.isDimension( DIMENSION_PERIOD_INDICATOR )
-                            || chart.isDimension( DIMENSION_PERIOD_DATAELEMENT ) )
+                            || chart.isDimension( DIMENSION_PERIOD_DATAELEMENT )
+                            || chart.isDimension( DIMENSION_PERIOD_COMPLETENESS ) )
                         {
                             regularDataSet.addValue( value != null ? value : 0, shortName, chart.getFormat()
                                 .formatPeriod( period ) );
@@ -943,7 +954,8 @@ public class DefaultChartService
                     }
                 }
                 else if ( chart.isDimension( DIMENSION_ORGANISATIONUNIT_INDICATOR )
-                    || chart.isDimension( DIMENSION_ORGANISATIONUNIT_DATAELEMENT ) )
+                    || chart.isDimension( DIMENSION_ORGANISATIONUNIT_DATAELEMENT )
+                    || chart.isDimension( DIMENSION_ORGANISATIONUNIT_COMPLETENESS ) )
                 {
                     // ---------------------------------------------------------
                     // Regular dataset
@@ -966,6 +978,10 @@ public class DefaultChartService
                                 .getAggregatedDataValue( dataElements.get( i ), null, selectedPeriod.getStartDate(),
                                     selectedPeriod.getEndDate(), unit ) : aggregatedDataValueService
                                 .getAggregatedValue( dataElements.get( i ), selectedPeriod, unit );
+                        }
+                        else if ( isCompletenessChart )
+                        {
+                            // Completeness value here
                         }
 
                         regularDataSet.addValue( value != null ? value : 0, shortName, unit.getShortName() );
@@ -1050,11 +1066,11 @@ public class DefaultChartService
         {
             subTitle.setText( chart.getAllOrganisationUnits().get( 0 ).getName() );
         }
-        else if ( chart.isDimension( DIMENSION_PERIOD_COMPLETENESS ) && chart.getDataSets().size() > 0 )
+        else if ( chart.isDimension( DIMENSION_PERIOD_COMPLETENESS ) && chart.getAllOrganisationUnits().size() > 0 )
         {
             subTitle.setText( chart.getAllOrganisationUnits().get( 0 ).getName() );
         }
-        else if ( chart.isDimension( DIMENSION_ORGANISATIONUNIT_COMPLETENESS ) && chart.getDataSets().size() > 0 )
+        else if ( chart.isDimension( DIMENSION_ORGANISATIONUNIT_COMPLETENESS ) && chart.getAllPeriods().size() > 0 )
         {
             subTitle.setText( format.formatPeriod( chart.getAllPeriods().get( 0 ) ) );
         }
