@@ -390,7 +390,28 @@ Ext.onReady( function() {
                     });
                 }
             }
-        }               
+        },
+        number: {
+            isInteger: function(n) {
+                var str = new String(n);
+                if (str.indexOf('.') > -1) {
+                    var d = str.substr(str.indexOf('.') + 1);
+                    return (d.length === 1 && d == '0');
+                }
+                return false;
+            },
+            allValuesAreIntegers: function(values) {
+                for (var i = 0; i < values.length; i++) {
+                    if (!this.isInteger(values[i].v)) {
+                        return false;
+                    }
+                }
+                return true;
+            },
+            getChartAxisFormatRenderer: function() {
+                return this.allValuesAreIntegers(DV.value.values) ? '0' : '0.0';
+            }
+        }
     };
     
     DV.store = {
@@ -577,7 +598,7 @@ Ext.onReady( function() {
     };
     
     DV.value = {
-        values: null,        
+        values: [],
         getValues: function(exe) {
             var params = [],
                 indicator = DV.conf.finals.dimension.indicator.value,
@@ -605,7 +626,7 @@ Ext.onReady( function() {
                     if (!DV.value.values.length) {
                         alert('no data values');
                         return;
-                    }
+                    }              
                     
                     Ext.Array.each(DV.value.values, function(item) {
                         item[indiment] = DV.store[indiment].available.storage[item.i].name;
@@ -686,11 +707,11 @@ Ext.onReady( function() {
                         position: 'left',
                         minimum: 0,
                         fields: DV.store.chart.left,
-                        label: {
-                            renderer: Ext.util.Format.numberRenderer('0,0')
-                        },
                         grid: {
                             even: DV.util.chart.getGrid()
+                        },
+                        label: {
+                            renderer: Ext.util.Format.numberRenderer(DV.util.number.getChartAxisFormatRenderer())
                         }
                     },
                     {
@@ -738,7 +759,7 @@ Ext.onReady( function() {
                         minimum: 0,
                         fields: DV.store.chart.bottom,
                         label: {
-                            renderer: Ext.util.Format.numberRenderer('0,0')
+                            renderer: Ext.util.Format.numberRenderer(DV.util.number.getChartAxisFormatRenderer())
                         },
                         grid: {
                             even: DV.util.chart.getGrid()
@@ -777,7 +798,7 @@ Ext.onReady( function() {
                         minimum: 0,
                         fields: DV.store.chart.left,
                         label: {
-                            renderer: Ext.util.Format.numberRenderer('0,0')
+                            renderer: Ext.util.Format.numberRenderer(DV.util.number.getChartAxisFormatRenderer())
                         },
                         grid: {
                             even: DV.util.chart.getGrid()
@@ -808,7 +829,7 @@ Ext.onReady( function() {
                         minimum: 0,
                         fields: DV.store.chart.left,
                         label: {
-                            renderer: Ext.util.Format.numberRenderer('0,0')
+                            renderer: Ext.util.Format.numberRenderer(DV.util.number.getChartAxisFormatRenderer())
                         },
                         grid: {
                             even: DV.util.chart.getGrid()
