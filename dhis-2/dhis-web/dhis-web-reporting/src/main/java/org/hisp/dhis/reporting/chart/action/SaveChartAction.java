@@ -341,14 +341,14 @@ public class SaveChartAction
             dataElements.add( dataElementService.getDataElement( id ) );
         }
 
-        for ( Integer id : getIntegerCollection( selectedOrganisationUnits ) )
-        {
-            organisationUnits.add( organisationUnitService.getOrganisationUnit( id ) );
-        }
-
         for ( Integer id : getIntegerCollection( selectedDataSets ) )
         {
             dataSets.add( dataSetService.getDataSet( id ) );
+        }
+
+        for ( Integer id : getIntegerCollection( selectedOrganisationUnits ) )
+        {
+            organisationUnits.add( organisationUnitService.getOrganisationUnit( id ) );
         }
 
         Collections.sort( periods, new AscendingPeriodComparator() );

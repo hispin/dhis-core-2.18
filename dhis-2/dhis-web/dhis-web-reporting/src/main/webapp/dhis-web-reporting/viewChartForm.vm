@@ -26,10 +26,16 @@
                     	<select id="chart_type">
                     		<option value='indicator'>$i18n.getString( 'indicator_by_period_chart' )</option>
                     		<option value='organisationUnit'>$i18n.getString( 'indicator_by_organisation_unit_chart' )</option>
+
                     		<option value='dataElement_period'>$i18n.getString( 'dataelement_by_period_chart' )</option>
                     		<option value='organisationUnit_dataElement'>$i18n.getString( 'dataelement_by_organisation_unit_chart' )</option>
+
+                    		<option value='completeness_period'>$i18n.getString( 'completeness_by_period_chart' )</option>
+                    		<option value='organisationUnit_completeness'>$i18n.getString( 'completeness_by_organisation_unit_chart' )</option>
+
                     		<option value='period'>$i18n.getString( 'period_by_indicator_chart' )</option>
                     		<option value='period_dataElement'>$i18n.getString( 'period_by_dataelement_chart' )</option>
+                    		<option value='period_completeness'>$i18n.getString( 'period_by_completeness_chart' )</option>
                     	</select>
                     	<button type="button" id="add_chart">$i18n.getString( 'add' )</button>
                     </td>
@@ -72,6 +78,7 @@
                 <p><label>$i18n.getString( "dimension" ):</label><br><span id="dimensionField"></span></p>
                 <p id='indicatorsView'><label>$i18n.getString( "indicators" ):</label><br><span id="indicatorsField"></span></p>
                 <p id='dataElementsView'><label>$i18n.getString( "dataelements" ):</label><br><span id="dataElementsField"></span></p>
+                <p id='dataSetsView'><label>$i18n.getString( "datasets" ):</label><br><span id="dataSetsField"></span></p>
                 <p><label>$i18n.getString( "periods" ):</label><br><span id="periodsField"></span></p>
                 <p><label>$i18n.getString( "organisation_units" ):</label><br><span id="organisationUnitsField"></span></p>
             </div>

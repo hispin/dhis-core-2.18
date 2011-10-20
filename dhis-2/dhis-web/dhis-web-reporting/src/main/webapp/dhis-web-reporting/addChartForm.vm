@@ -20,6 +20,7 @@
 
     var i18n_must_select_at_least_one_indicator = '$encoder.jsEscape( $i18n.getString( "must_select_at_least_one_indicator" ), "'")';
     var i18n_must_select_at_least_one_dataelement = '$encoder.jsEscape( $i18n.getString( "must_select_at_least_one_dataelement" ), "'")';
+    var i18n_must_select_at_least_one_dataset = '$encoder.jsEscape( $i18n.getString( "must_select_at_least_one_dataset" ), "'")';
     var i18n_must_select_at_least_one_unit = '$encoder.jsEscape( $i18n.getString( "must_select_at_least_one_unit" ), "'")';
     var i18n_must_select_at_least_one_period = '$encoder.jsEscape( $i18n.getString( "must_select_at_least_one_period" ), "'")';
 	var i18n_target_line_value_must_be_provided = '$encoder.jsEscape( $i18n.getString( "target_line_value_must_be_provided" ), "'")';
@@ -31,14 +32,20 @@
 	    $i18n.getString( "create_period_by_indicator_chart" )
 	#elseif( $dimension == "period_dataElement" )
 	    $i18n.getString( "create_period_by_dataelement_chart" )
+	#elseif( $dimension == "period_completeness" )
+	    $i18n.getString( "create_period_by_completeness_chart" )
 	#elseif ( $dimension == "organisationUnit" )
 	    $i18n.getString( "create_indicator_by_organisation_unit_chart" )
 	#elseif ( $dimension == "organisationUnit_dataElement" )
 	    $i18n.getString( "create_dataelement_by_organisation_unit_chart" )
+	#elseif ( $dimension == "organisationUnit_completeness" )
+	    $i18n.getString( "create_completeness_by_organisation_unit_chart" )
 	#elseif ( $dimension == "indicator" )
 		$i18n.getString( "create_indicator_by_period_chart" )
 	#elseif ( $dimension == "dataElement_period" )
 		$i18n.getString( "create_dataelement_by_period_chart" )
+	#elseif ( $dimension == "completeness_period" )
+		$i18n.getString( "create_completeness_by_period_chart" )
 	#end
 #end
 
@@ -59,7 +66,7 @@
     </tr>
     <tr>
         <td><label for="domainAxisLabel">$i18n.getString( "domain_axis_label_x" )</label></td>
-        <td><input type="text" id="domainAxisLabel" name="domainAxisLabel" style="width:300px" value="$!chart.domainAxisLabel"></td>
+        <td><input type="text" id="domainAxisLabel" name="domainAxisLabel" style="width:300px" value="$!chart.domainAxixLabel"></td>
     </tr>
     <tr>
         <td><label for="rangeAxisLabel">$i18n.getString( "range_axis_label_y" )</label></td>
@@ -137,26 +144,30 @@
 	#parse( "dhis-web-reporting/addChartOrgunitOrPeriodForm.vm" )
 #elseif( $dimension == "period_dataElement" )
 	#parse( "dhis-web-reporting/addChartDataElementOrgunitOrPeriodForm.vm" )
+#elseif( $dimension == "period_completeness" )
+	#parse( "dhis-web-reporting/addChartDataSetOrgunitOrPeriodForm.vm" )
 #elseif ( $dimension == "organisationUnit" )
 	#parse( "dhis-web-reporting/addChartOrgunitOrPeriodForm.vm" )
 #elseif ( $dimension == "organisationUnit_dataElement" )
 	#parse( "dhis-web-reporting/addChartDataElementOrgunitOrPeriodForm.vm" )
+#elseif ( $dimension == "organisationUnit_completeness" )
+	#parse( "dhis-web-reporting/addChartDataSetOrgunitOrPeriodForm.vm" )
 #elseif ( $dimension == "indicator" )
     #parse( "dhis-web-reporting/addChartIndicatorModeForm.vm" )
 #elseif ( $dimension == "dataElement_period" )
 	#parse( "dhis-web-reporting/addChartDataElementModeForm.vm" )
+#elseif ( $dimension == "completeness_period" )
+	#parse( "dhis-web-reporting/addChartDataSetModeForm.vm" )
 #end
 
 <table>
     <!-- Submit -->
-    
     <tr>        
         <td colspan="2">
-            <input type="button" value="$i18n.getString( 'save' )" onclick="saveChart()" style="width:120px" />
+            <input type="button" value="$i18n.getString( 'save' )" onclick="saveChart('$dimension')" style="width:120px" />
             <input type="button" value="$i18n.getString( 'back' )" onclick="javascript:window.location.href='displayViewChartForm.action'" style="width:120px" />
         </td>
     </tr>
-    
 </table>
 
 </form>

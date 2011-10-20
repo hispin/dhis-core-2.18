@@ -12,13 +12,13 @@
       <generator class="native" />
     </id>
 
-	<property name="uuid" length="40" />
+    <property name="uuid" length="40" />
 
     <property name="title" not-null="true" unique="true" />
 
-	<property name="domainAxixLabel" />
-	
-	<property name="rangeAxisLabel" />
+    <property name="domainAxixLabel" />
+
+    <property name="rangeAxisLabel" />
 
     <property name="type" />
 
@@ -56,6 +56,13 @@
       <many-to-many column="dataelementid" class="org.hisp.dhis.dataelement.DataElement" foreign-key="fk_chart_dataelements_dataelementid" />
     </list>
 
+    <list name="dataSets" table="chart_datasets">
+      <cache usage="read-write" />
+      <key column="chartid" foreign-key="fk_chart_datasets_chartid" />
+      <list-index column="sort_order" base="0" />
+      <many-to-many column="datasetid" class="org.hisp.dhis.dataset.DataSet" foreign-key="fk_chart_datasets_datasetid" />
+    </list>
+
     <list name="periods" table="chart_periods">
       <cache usage="read-write" />
       <key column="chartid" foreign-key="fk_chart_periods_chartid" />
@@ -70,12 +77,12 @@
       <many-to-many column="organisationunitid" class="org.hisp.dhis.organisationunit.OrganisationUnit"
         foreign-key="fk_chart_organisationunits_organisationunitid" />
     </list>
-	
-	<set name="groups" table="chartgroupmembers" inverse="true">
-	  <cache usage="read-write" />
-	  <key column="chartid" />
-	  <many-to-many class="org.hisp.dhis.chart.ChartGroup" column="chartgroupid" />
-	</set>
+
+    <set name="groups" table="chartgroupmembers" inverse="true">
+      <cache usage="read-write" />
+      <key column="chartid" />
+      <many-to-many class="org.hisp.dhis.chart.ChartGroup" column="chartgroupid" />
+    </set>
 
     <component name="relatives">
       <property name="reportingMonth" />

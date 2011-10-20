@@ -33,75 +33,97 @@ function removeChart( chartId, chartTitle )
 
 function showChartDetails( chartId )
 {
-    jQuery.post( 'getChart.action', { id: chartId }, function ( json ) {
-		var indicators = parseInt( json.chart.indicators );
-		var dataElements = parseInt( json.chart.dataElements );
+    jQuery.post( 'getChart.action', {
+        id : chartId
+    }, function( json )
+    {
+        var indicators = parseInt( json.chart.indicators );
+        var dataElements = parseInt( json.chart.dataElements );
+        var dataSets = parseInt( json.chart.dataSets );
 
-		setInnerHTML( 'titleField', json.chart.title );
-		setInnerHTML( 'dimensionField', json.chart.dimension );
+        setInnerHTML( 'titleField', json.chart.title );
+        setInnerHTML( 'dimensionField', json.chart.dimension );
 
-		if ( dataElements === 0 )
-		{
-			$( '#dataElementsView' ).hide();
-			$( '#indicatorsView' ).show();
+        if ( isIndicatorChart( json.chart.dimension ) )
+        {
+            $( '#dataElementsView' ).hide();
+            $( '#dataSetsView' ).hide();
+            $( '#indicatorsView' ).show();
 
-			$( '#indicatorsField' ).text( indicators );
-		} else
-		{
-			$( '#dataElementsView' ).show();
-			$( '#indicatorsView' ).hide();
+            $( '#indicatorsField' ).text( indicators );
+        }
+        else if ( isDataElementChart( json.chart.dimension ) )
+        {
+            $( '#indicatorsView' ).hide();
+            $( '#dataSetsView' ).hide();
+            $( '#dataElementsView' ).show();
 
-			$( '#dataElementsField' ).text( dataElements );
-		}
+            $( '#dataElementsField' ).text( dataElements );
+        }
+        else if ( isCompletenessChart( json.chart.dimension ) )
+        {
+            $( '#indicatorsView' ).hide();
+            $( '#dataElementsView' ).hide();
+            $( '#dataSetsView' ).show();
 
-		setInnerHTML( 'periodsField', json.chart.periods );
-		setInnerHTML( 'organisationUnitsField', json.chart.organisationUnits );
+            $( '#dataSetsField' ).text( dataSets );
+        }
 
-		showDetails();
-	});
+        setInnerHTML( 'periodsField', json.chart.periods );
+        setInnerHTML( 'organisationUnitsField', json.chart.organisationUnits );
+
+        showDetails();
+    } );
 }
 
 // -----------------------------------------------------------------------------
 // Validate and save
 // -----------------------------------------------------------------------------
 
-
-function saveChart()
+function saveChart( dimension )
 {
-    if ( validateTargetLine() && validateCollections() )
+    if ( validateTargetLine() && validateCollections( dimension ) )
     {
-    	$.postJSON( "validateChart.action", { id:getFieldValue( "id" ), title:getFieldValue( "title" ) }, function( json )
-    	{
-    		if ( json.response == "input" )
-    		{
-    			setMessage( json.message );
-    			return false;
-    		}
-    		else if ( json.response == "success" )
-    		{
-    			if ( $( "#selectedIndicators" ).attr( 'multiple' ) !== undefined )
-		        {
-		            $( "#selectedIndicators" ).children().attr( "selected", true );
-		        }
-		
-		        if ( $( "#selectedDataElements" ).attr( 'multiple' ) !== undefined )
-		        {
-		            $( "#selectedDataElements" ).children().attr( "selected", true );
-		        }
-		
-		        if ( $( "#selectedPeriods" ).attr( 'multiple' ) !== undefined )
-		        {
-		            $( "#selectedPeriods" ).children().attr( "selected", true );
-		        }
-		
-		        if ( $( "#selectedOrganisationUnits" ).attr( 'multiple' ) !== undefined )
-		        {
-		            $( "#selectedOrganisationUnits" ).children().attr( "selected", true );
-		        }
-		
-		        $( "#chartForm" ).submit();
-		    }
-    	} );
+        $.postJSON( "validateChart.action", {
+            id : getFieldValue( "id" ),
+            title : getFieldValue( "title" )
+        }, function( json )
+        {
+            if ( json.response == "input" )
+            {
+                setMessage( json.message );
+                return false;
+            }
+            else if ( json.response == "success" )
+            {
+                if ( $( "#selectedIndicators" ).attr( 'multiple' ) !== undefined )
+                {
+                    $( "#selectedIndicators" ).children().attr( "selected", true );
+                }
+
+                if ( $( "#selectedDataElements" ).attr( 'multiple' ) !== undefined )
+                {
+                    $( "#selectedDataElements" ).children().attr( "selected", true );
+                }
+
+                if ( $( "#selectedDataSets" ).attr( 'multiple' ) !== undefined )
+                {
+                    $( "#selectedDataSets" ).children().attr( "selected", true );
+                }
+
+                if ( $( "#selectedPeriods" ).attr( 'multiple' ) !== undefined )
+                {
+                    $( "#selectedPeriods" ).children().attr( "selected", true );
+                }
+
+                if ( $( "#selectedOrganisationUnits" ).attr( 'multiple' ) !== undefined )
+                {
+                    $( "#selectedOrganisationUnits" ).children().attr( "selected", true );
+                }
+
+                $( "#chartForm" ).submit();
+            }
+        } );
     }
 }
 
@@ -141,11 +163,57 @@ function validateTargetLine()
     return true;
 }
 
-function validateCollections()
+function isIndicatorChart( dimension )
 {
-    if ( !hasElements( "selectedIndicators" ) && !hasElements( "selectedDataElements" ) )
+    if ( dimension == "period" || dimension == "organisationUnit" || dimension == "indicator" )
+    {
+        return true;
+    }
+
+    return false;
+}
+
+function isDataElementChart( dimension )
+{
+    if ( dimension == "period_dataElement" || dimension == "organisationUnit_dataElement"
+            || dimension == "dataElement_period" )
+    {
+        return true;
+    }
+
+    return false;
+}
+
+function isCompletenessChart( dimension )
+{
+    if ( dimension == "period_completeness" || dimension == "organisationUnit_completeness"
+            || dimension == "completeness_period" )
+    {
+        return true;
+    }
+
+    return false;
+}
+
+function validateCollections( dimension )
+{
+    if ( isIndicatorChart( dimension ) && !hasElements( "selectedIndicators" ) )
     {
         setMessage( i18n_must_select_at_least_one_indicator );
+
+        return false;
+    }
+
+    if ( isDataElementChart( dimension ) && !hasElements( "selectedDataElements" ) )
+    {
+        setMessage( i18n_must_select_at_least_one_dataelement );
+
+        return false;
+    }
+
+    if ( isCompletenessChart( dimension ) && !hasElements( "selectedDataSets" ) )
+    {
+        setMessage( i18n_must_select_at_least_one_dataset );
 
         return false;
     }
