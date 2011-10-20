@@ -35,6 +35,8 @@ import java.util.List;
 import org.hisp.dhis.chart.ChartService;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementService;
+import org.hisp.dhis.dataset.DataSet;
+import org.hisp.dhis.dataset.DataSetService;
 import org.hisp.dhis.i18n.I18nFormat;
 import org.hisp.dhis.indicator.Indicator;
 import org.hisp.dhis.indicator.IndicatorService;
@@ -79,6 +81,13 @@ public class GenerateChartAction
         this.dataElementService = dataElementService;
     }
 
+    private DataSetService dataSetService;
+
+    public void setDataSetService( DataSetService dataSetService )
+    {
+        this.dataSetService = dataSetService;
+    }
+
     private PeriodService periodService;
 
     public void setPeriodService( PeriodService periodService )
@@ -116,6 +125,13 @@ public class GenerateChartAction
     public void setDataElementsId( List<String> dataElementsId )
     {
         this.dataElementsId = dataElementsId;
+    }
+
+    private List<String> selectedDataSets = new ArrayList<String>();
+
+    public void setSelectedDataSets( List<String> selectedDataSets )
+    {
+        this.selectedDataSets = selectedDataSets;
     }
 
     private List<String> periodId;
@@ -199,6 +215,13 @@ public class GenerateChartAction
             dataElements.add( dataElementService.getDataElement( id ) );
         }
 
+        List<DataSet> dataSets = new ArrayList<DataSet>();
+
+        for ( Integer id : getIntegerCollection( selectedDataSets ) )
+        {
+            dataSets.add( dataSetService.getDataSet( id ) );
+        }
+
         List<Period> periods = new ArrayList<Period>();
 
         for ( String id : periodId )
@@ -217,7 +240,7 @@ public class GenerateChartAction
 
         height = 500;
 
-        chart = chartService.getJFreeChart( indicators, dataElements, periods, organisationUnits, dimension,
+        chart = chartService.getJFreeChart( indicators, dataElements, dataSets, periods, organisationUnits, dimension,
             regression, format );
 
         return SUCCESS;

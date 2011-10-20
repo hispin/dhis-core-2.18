@@ -37,6 +37,8 @@ import org.hisp.dhis.chart.Chart;
 import org.hisp.dhis.chart.ChartService;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementService;
+import org.hisp.dhis.dataset.DataSet;
+import org.hisp.dhis.dataset.DataSetService;
 import org.hisp.dhis.indicator.Indicator;
 import org.hisp.dhis.indicator.IndicatorService;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
@@ -80,6 +82,13 @@ public class SaveChartAction
         this.dataElementService = dataElementService;
     }
 
+    private DataSetService dataSetService;
+
+    public void setDataSetService( DataSetService dataSetService )
+    {
+        this.dataSetService = dataSetService;
+    }
+
     private PeriodService periodService;
 
     public void setPeriodService( PeriodService periodService )
@@ -113,7 +122,7 @@ public class SaveChartAction
     }
 
     private String rangeAxisLabel;
-    
+
     public void setRangeAxisLabel( String rangeAxisLabel )
     {
         this.rangeAxisLabel = rangeAxisLabel;
@@ -238,6 +247,13 @@ public class SaveChartAction
         this.selectedOrganisationUnits = selectedOrganisationUnits;
     }
 
+    private List<String> selectedDataSets = new ArrayList<String>();
+
+    public void setSelectedDataSets( List<String> selectedDataSets )
+    {
+        this.selectedDataSets = selectedDataSets;
+    }
+
     private boolean reportingMonth;
 
     public void setReportingMonth( boolean reportingMonth )
@@ -246,12 +262,12 @@ public class SaveChartAction
     }
 
     private boolean reportingBimonth;
-    
+
     public void setReportingBimonth( boolean reportingBimonth )
     {
         this.reportingBimonth = reportingBimonth;
     }
-    
+
     private boolean reportingQuarter;
 
     public void setReportingQuarter( boolean reportingQuarter )
@@ -312,6 +328,7 @@ public class SaveChartAction
         List<Indicator> indicators = new ArrayList<Indicator>();
         List<DataElement> dataElements = new ArrayList<DataElement>();
         List<OrganisationUnit> organisationUnits = new ArrayList<OrganisationUnit>();
+        List<DataSet> dataSets = new ArrayList<DataSet>();
         List<Period> periods = new ArrayList<Period>( periodService.getPeriodsByExternalIds( selectedPeriods ) );
 
         for ( Integer id : getIntegerCollection( selectedIndicators ) )
@@ -327,6 +344,11 @@ public class SaveChartAction
         for ( Integer id : getIntegerCollection( selectedOrganisationUnits ) )
         {
             organisationUnits.add( organisationUnitService.getOrganisationUnit( id ) );
+        }
+
+        for ( Integer id : getIntegerCollection( selectedDataSets ) )
+        {
+            dataSets.add( dataSetService.getDataSet( id ) );
         }
 
         Collections.sort( periods, new AscendingPeriodComparator() );
@@ -348,12 +370,12 @@ public class SaveChartAction
         chart.setUserOrganisationUnit( userOrganisationUnit );
         chart.setIndicators( indicators );
         chart.setDataElements( dataElements );
+        chart.setDataSets( dataSets );
         chart.setPeriods( periods );
         chart.setOrganisationUnits( organisationUnits );
 
         RelativePeriods relatives = new RelativePeriods( reportingMonth, reportingBimonth, reportingQuarter,
-            monthsThisYear, quartersThisYear, thisYear,
-            monthsLastYear, quartersLastYear, lastYear, false );
+            monthsThisYear, quartersThisYear, thisYear, monthsLastYear, quartersLastYear, lastYear, false );
 
         chart.setRelatives( relatives );
 

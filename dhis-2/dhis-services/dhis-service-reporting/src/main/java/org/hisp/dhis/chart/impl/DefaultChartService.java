@@ -29,10 +29,13 @@ package org.hisp.dhis.chart.impl;
 
 import static org.hisp.dhis.chart.Chart.DIMENSION_DATAELEMENT_PERIOD;
 import static org.hisp.dhis.chart.Chart.DIMENSION_INDICATOR_PERIOD;
+import static org.hisp.dhis.chart.Chart.DIMENSION_COMPLETENESS_PERIOD;
 import static org.hisp.dhis.chart.Chart.DIMENSION_ORGANISATIONUNIT_DATAELEMENT;
 import static org.hisp.dhis.chart.Chart.DIMENSION_ORGANISATIONUNIT_INDICATOR;
+import static org.hisp.dhis.chart.Chart.DIMENSION_ORGANISATIONUNIT_COMPLETENESS;
 import static org.hisp.dhis.chart.Chart.DIMENSION_PERIOD_DATAELEMENT;
 import static org.hisp.dhis.chart.Chart.DIMENSION_PERIOD_INDICATOR;
+import static org.hisp.dhis.chart.Chart.DIMENSION_PERIOD_COMPLETENESS;
 import static org.hisp.dhis.chart.Chart.SIZE_NORMAL;
 import static org.hisp.dhis.chart.Chart.TYPE_BAR;
 import static org.hisp.dhis.chart.Chart.TYPE_BAR3D;
@@ -72,6 +75,7 @@ import org.hisp.dhis.common.GenericIdentifiableObjectStore;
 import org.hisp.dhis.common.NameableObject;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
+import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.datavalue.DataValue;
 import org.hisp.dhis.datavalue.DataValueService;
 import org.hisp.dhis.i18n.I18nFormat;
@@ -123,7 +127,9 @@ public class DefaultChartService
     implements ChartService
 {
     private static final Font titleFont = new Font( "Tahoma", Font.BOLD, 15 );
+
     private static final Font subTitleFont = new Font( "Tahoma", Font.PLAIN, 12 );
+
     private static final Font labelFont = new Font( "Tahoma", Font.PLAIN, 10 );
 
     private static final String TREND_PREFIX = "Trend - ";
@@ -218,7 +224,8 @@ public class DefaultChartService
 
         if ( chart.getRelatives() != null )
         {
-            chart.setRelativePeriods( periodService.reloadPeriods( chart.getRelatives().getRelativePeriods( format, true ) ) );
+            chart.setRelativePeriods( periodService.reloadPeriods( chart.getRelatives().getRelativePeriods( format,
+                true ) ) );
         }
 
         User user = currentUserService.getCurrentUser();
@@ -246,7 +253,7 @@ public class DefaultChartService
         {
             chart.setTitle( indicator.getName() );
         }
-        
+
         chart.setType( TYPE_LINE );
         chart.setSize( SIZE_NORMAL );
         chart.setDimension( DIMENSION_PERIOD_INDICATOR );
@@ -262,7 +269,8 @@ public class DefaultChartService
         return getJFreeChart( chart, title );
     }
 
-    public JFreeChart getOrganisationUnitJFreeChart( Indicator indicator, OrganisationUnit parent, boolean title, I18nFormat format )
+    public JFreeChart getOrganisationUnitJFreeChart( Indicator indicator, OrganisationUnit parent, boolean title,
+        I18nFormat format )
     {
         RelativePeriods relatives = new RelativePeriods();
         relatives.setThisYear( true );
@@ -274,7 +282,7 @@ public class DefaultChartService
         {
             chart.setTitle( indicator.getName() );
         }
-        
+
         chart.setType( TYPE_BAR );
         chart.setSize( SIZE_NORMAL );
         chart.setDimension( DIMENSION_ORGANISATIONUNIT_INDICATOR );
@@ -289,19 +297,24 @@ public class DefaultChartService
 
         return getJFreeChart( chart, title );
     }
-    
-    public JFreeChart getJFreeChart( List<Indicator> indicators, List<DataElement> dataElements, List<Period> periods,
-        List<OrganisationUnit> organisationUnits, String dimension, boolean regression, I18nFormat format )
+
+    public JFreeChart getJFreeChart( List<Indicator> indicators, List<DataElement> dataElements,
+        List<DataSet> dataSets, List<Period> periods, List<OrganisationUnit> organisationUnits, String dimension,
+        boolean regression, I18nFormat format )
     {
         Chart chart = new Chart();
 
-        if ( indicators != null && indicators.size() > 0 )
+        if ( indicators != null && !indicators.isEmpty() )
         {
             chart.setTitle( getTitle( indicators.get( 0 ), periods, organisationUnits, format ) );
         }
-        else if ( dataElements != null && dataElements.size() > 0 )
+        else if ( dataElements != null && !dataElements.isEmpty() )
         {
             chart.setTitle( getTitle( dataElements.get( 0 ), periods, organisationUnits, format ) );
+        }
+        else if ( dataSets != null && !dataSets.isEmpty() )
+        {
+            chart.setTitle( getTitle( dataSets.get( 0 ), periods, organisationUnits, format ) );
         }
 
         chart.setType( TYPE_BAR );
@@ -313,6 +326,7 @@ public class DefaultChartService
         chart.setRegression( regression );
         chart.setIndicators( indicators );
         chart.setDataElements( dataElements );
+        chart.setDataSets( dataSets );
         chart.setPeriods( periods );
         chart.setOrganisationUnits( organisationUnits );
         chart.setFormat( format );
@@ -641,7 +655,7 @@ public class DefaultChartService
         CategoryPlot plot = null;
 
         CategoryDataset[] dataSets = getCategoryDataSet( chart );
-        
+
         if ( chart.isType( TYPE_LINE ) )
         {
             plot = new CategoryPlot( dataSets[0], new CategoryAxis(), new NumberAxis(), lineRenderer );
@@ -739,7 +753,7 @@ public class DefaultChartService
             stackedBarChart = ChartFactory.createStackedBarChart3D( chart.getTitle(), chart.getDomainAxixLabel(),
                 chart.getRangeAxisLabel(), dataSet, orientation, true, false, false );
         }
-        
+
         CategoryPlot plot = (CategoryPlot) stackedBarChart.getPlot();
         plot.setBackgroundPaint( Color.WHITE );
         plot.setOutlinePaint( Color.WHITE );
@@ -851,7 +865,7 @@ public class DefaultChartService
                     for ( Period period : chart.getAllPeriods() )
                     {
                         Double value = null;
-                        
+
                         if ( isIndicatorChart )
                         {
                             value = aggregationStrategy.equals( AGGREGATION_STRATEGY_REAL_TIME ) ? aggregationService
@@ -1020,7 +1034,19 @@ public class DefaultChartService
         {
             subTitle.setText( chart.getAllOrganisationUnits().get( 0 ).getName() );
         }
-        
+        else if ( chart.isDimension( DIMENSION_PERIOD_COMPLETENESS ) && chart.getDataSets().size() > 0 )
+        {
+            subTitle.setText( chart.getAllOrganisationUnits().get( 0 ).getName() );
+        }
+        else if ( chart.isDimension( DIMENSION_ORGANISATIONUNIT_COMPLETENESS ) && chart.getDataSets().size() > 0 )
+        {
+            subTitle.setText( format.formatPeriod( chart.getAllPeriods().get( 0 ) ) );
+        }
+        else if ( chart.isDimension( DIMENSION_COMPLETENESS_PERIOD ) && chart.getDataSets().size() > 0 )
+        {
+            subTitle.setText( chart.getAllOrganisationUnits().get( 0 ).getName() );
+        }
+
         return subTitle;
     }
 
