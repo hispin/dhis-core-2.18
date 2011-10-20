@@ -155,19 +155,19 @@ public class GetOrganisationUnitAction
     {
         return point;
     }
-    
-    private String latitude;
-    
-    public String getLatitude()
-    {
-        return latitude;
-    }
 
     private String longitude;
 
     public String getLongitude()
     {
         return longitude;
+    }
+
+    private String latitude;
+    
+    public String getLatitude()
+    {
+        return latitude;
     }
 
     // -------------------------------------------------------------------------
@@ -203,8 +203,8 @@ public class GetOrganisationUnitAction
         // ---------------------------------------------------------------------
 
         point = organisationUnit.getCoordinates() == null || coordinateIsValid( organisationUnit.getCoordinates() );
-        latitude = ValidationUtils.getLatitude( organisationUnit.getCoordinates() );
         longitude = ValidationUtils.getLongitude( organisationUnit.getCoordinates() );
+        latitude = ValidationUtils.getLatitude( organisationUnit.getCoordinates() );
         
         return SUCCESS;
     }

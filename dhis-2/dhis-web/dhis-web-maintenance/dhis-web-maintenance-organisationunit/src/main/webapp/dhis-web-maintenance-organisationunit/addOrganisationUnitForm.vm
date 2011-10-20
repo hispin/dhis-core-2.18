@@ -51,12 +51,12 @@
 		<td><textarea id="comment" name="comment" style="width:20em; height:5em"></textarea></td>
 	</tr>
 	<tr>
-		<td><label for="latitude">$i18n.getString( "latitude_optional" )</label></td>
-		<td><input type="text" id="latitude" name="latitude" style="width:20em"/></td>
-	</tr>
-	<tr>
 		<td><label for="longitude">$i18n.getString( "longitude_optional" )</label></td>
 		<td><input type="text" id="longitude" name="longitude" style="width:20em"/></td>
+	</tr>
+	<tr>
+		<td><label for="latitude">$i18n.getString( "latitude_optional" )</label></td>
+		<td><input type="text" id="latitude" name="latitude" style="width:20em"/></td>
 	</tr>
     <tr>
         <td><label for="url">$i18n.getString( "url" )</label></td>

@@ -110,27 +110,9 @@ public class ValidationUtils
     }
     
     /**
-     * Returns the latitude from the given coordinate. Returns null if the
-     * coordinate string is not valid.
-     * 
-     * @param coordinate the coordinate string.
-     * @return the latitude.
-     */
-    public static String getLatitude( String coordinate )
-    {
-        if ( coordinate == null )
-        {
-            return null;
-        }
-        
-        Matcher matcher = COORDINATE_PATTERN.matcher( coordinate );
-        
-        return matcher.find() ? matcher.group( 1 ) : null;
-    }
-
-    /**
      * Returns the longitude from the given coordinate. Returns null if the
-     * coordinate string is not valid.
+     * coordinate string is not valid. The coordinate is on the form
+     * longitude / latitude.
      * 
      * @param coordinate the coordinate string.
      * @return the longitude.
@@ -144,18 +126,39 @@ public class ValidationUtils
         
         Matcher matcher = COORDINATE_PATTERN.matcher( coordinate );
         
+        return matcher.find() ? matcher.group( 1 ) : null;
+    }
+
+    /**
+     * Returns the latitude from the given coordinate. Returns null if the
+     * coordinate string is not valid. The coordinate is on the form
+     * longitude / latitude.
+     * 
+     * @param coordinate the coordinate string.
+     * @return the latitude.
+     */
+    public static String getLatitude( String coordinate )
+    {
+        if ( coordinate == null )
+        {
+            return null;
+        }
+        
+        Matcher matcher = COORDINATE_PATTERN.matcher( coordinate );
+        
         return matcher.find() ? matcher.group( 2 ) : null;
     }
-    
+
     /**
-     * Returns a coordinate string based on the given latitude and longitude.
+     * Returns a coordinate string based on the given latitude and longitude. 
+     * The coordinate is on the form longitude / latitude.
      * 
-     * @param latitude the latitude string.
      * @param longitude the longitude string.
+     * @param latitude the latitude string.
      * @return a coordinate string.
      */
-    public static String getCoordinate( String latitude, String longitude )
+    public static String getCoordinate( String longitude, String latitude )
     {
-        return "[" + latitude + "," + longitude + "]";
+        return "[" + longitude + "," + latitude + "]";
     }
 }
