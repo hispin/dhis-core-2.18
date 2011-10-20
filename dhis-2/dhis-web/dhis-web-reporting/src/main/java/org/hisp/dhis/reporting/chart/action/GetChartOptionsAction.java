@@ -39,6 +39,8 @@ import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementGroup;
 import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.dataelement.comparator.DataElementGroupNameComparator;
+import org.hisp.dhis.dataset.DataSet;
+import org.hisp.dhis.dataset.DataSetService;
 import org.hisp.dhis.indicator.Indicator;
 import org.hisp.dhis.indicator.IndicatorGroup;
 import org.hisp.dhis.indicator.IndicatorService;
@@ -88,6 +90,13 @@ public class GetChartOptionsAction
         this.dataElementService = dataElementService;
     }
 
+    private DataSetService dataSetService;
+
+    public void setDataSetService( DataSetService dataSetService )
+    {
+        this.dataSetService = dataSetService;
+    }
+
     private PeriodService periodService;
 
     public void setPeriodService( PeriodService periodService )
@@ -121,6 +130,13 @@ public class GetChartOptionsAction
     public void setDataElementComparator( Comparator<DataElement> dataElementComparator )
     {
         this.dataElementComparator = dataElementComparator;
+    }
+
+    private Comparator<DataSet> dataSetComparator;
+
+    public void setDataSetComparator( Comparator<DataSet> dataSetComparator )
+    {
+        this.dataSetComparator = dataSetComparator;
     }
 
     private Comparator<OrganisationUnit> organisationUnitComparator;
@@ -192,6 +208,13 @@ public class GetChartOptionsAction
         return availableDataElements;
     }
 
+    private List<DataSet> availableDataSets;
+
+    public List<DataSet> getAvailableDataSets()
+    {
+        return availableDataSets;
+    }
+
     private List<Indicator> selectedIndicators;
 
     public List<Indicator> getSelectedIndicators()
@@ -204,6 +227,13 @@ public class GetChartOptionsAction
     public List<DataElement> getSelectedDataElements()
     {
         return selectedDataElements;
+    }
+
+    private List<DataSet> selectedDataSets;
+
+    public List<DataSet> getSelectedDataSets()
+    {
+        return selectedDataSets;
     }
 
     private List<PeriodType> periodTypes = new ArrayList<PeriodType>();
@@ -262,6 +292,8 @@ public class GetChartOptionsAction
 
         availableDataElements = new ArrayList<DataElement>( dataElementService.getAllDataElements() );
 
+        availableDataSets = new ArrayList<DataSet>( dataSetService.getAllDataSets() );
+
         periodTypes = new ArrayList<PeriodType>( periodService.getAllPeriodTypes() );
 
         availablePeriods = new MonthlyPeriodType().generatePeriods( new Date() );
@@ -275,6 +307,7 @@ public class GetChartOptionsAction
         Collections.sort( dataElementGroups, new DataElementGroupNameComparator() );
         Collections.sort( availableIndicators, indicatorComparator );
         Collections.sort( availableDataElements, dataElementComparator );
+        Collections.sort( availableDataSets, dataSetComparator );
         Collections.sort( levels, new OrganisationUnitLevelComparator() );
         Collections.sort( availableOrganisationUnits, organisationUnitComparator );
 
@@ -283,6 +316,7 @@ public class GetChartOptionsAction
 
         displayPropertyHandler.handle( availableIndicators );
         displayPropertyHandler.handle( availableDataElements );
+        displayPropertyHandler.handle( availableDataSets );
         displayPropertyHandler.handle( availableOrganisationUnits );
 
         if ( id != null )
@@ -295,6 +329,9 @@ public class GetChartOptionsAction
             selectedDataElements = chart.getDataElements();
             availableDataElements.removeAll( selectedDataElements );
 
+            selectedDataSets = chart.getDataSets();
+            availableDataSets.removeAll( selectedDataSets );
+
             selectedPeriods = chart.getPeriods();
             availablePeriods.removeAll( selectedPeriods );
 
@@ -303,6 +340,7 @@ public class GetChartOptionsAction
 
             displayPropertyHandler.handle( selectedIndicators );
             displayPropertyHandler.handle( selectedDataElements );
+            displayPropertyHandler.handle( selectedDataSets );
             displayPropertyHandler.handle( selectedOrganisationUnits );
         }
 

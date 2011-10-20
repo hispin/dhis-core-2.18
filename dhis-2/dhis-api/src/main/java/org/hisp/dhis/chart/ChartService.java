@@ -33,6 +33,7 @@ import java.util.Map;
 
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
+import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.i18n.I18nFormat;
 import org.hisp.dhis.indicator.Indicator;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
@@ -54,7 +55,7 @@ public interface ChartService
     
     JFreeChart getOrganisationUnitJFreeChart( Indicator indicator, OrganisationUnit parent, boolean title, I18nFormat format );
 
-    JFreeChart getJFreeChart( List<Indicator> indicators, List<DataElement> dataElements, List<Period> periods,
+    JFreeChart getJFreeChart( List<Indicator> indicators, List<DataElement> dataElements, List<DataSet> dataSets, List<Period> periods,
         List<OrganisationUnit> organisationUnits, String dimension, boolean regression, I18nFormat format );
 
     JFreeChart getJFreeChart( String title, PlotOrientation orientation, CategoryLabelPositions labelPositions,

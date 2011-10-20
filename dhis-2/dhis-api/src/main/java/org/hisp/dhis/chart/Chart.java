@@ -34,6 +34,7 @@ import java.util.Set;
 
 import org.hisp.dhis.common.AbstractIdentifiableObject;
 import org.hisp.dhis.dataelement.DataElement;
+import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.i18n.I18nFormat;
 import org.hisp.dhis.indicator.Indicator;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
@@ -49,31 +50,51 @@ public class Chart
     private static final long serialVersionUID = 2570074075484545534L;
 
     public static final String DIMENSION_PERIOD_INDICATOR = "period";
+
     public static final String DIMENSION_ORGANISATIONUNIT_INDICATOR = "organisationUnit";
+
     public static final String DIMENSION_INDICATOR_PERIOD = "indicator";
+
     public static final String DIMENSION_PERIOD_DATAELEMENT = "period_dataElement";
+
     public static final String DIMENSION_ORGANISATIONUNIT_DATAELEMENT = "organisationUnit_dataElement";
+
     public static final String DIMENSION_DATAELEMENT_PERIOD = "dataElement_period";
 
+    public static final String DIMENSION_PERIOD_COMPLETENESS = "period_completeness";
+
+    public static final String DIMENSION_ORGANISATIONUNIT_COMPLETENESS = "organisationUnit_completeness";
+
+    public static final String DIMENSION_COMPLETENESS_PERIOD = "completeness_period";
+
     public static final String TYPE_BAR = "bar";
+
     public static final String TYPE_BAR3D = "bar3d";
-    public static final String TYPE_STACKED_BAR = "stackedBar";    
-    public static final String TYPE_STACKED_BAR3D = "stackedBar3d";    
+
+    public static final String TYPE_STACKED_BAR = "stackedBar";
+
+    public static final String TYPE_STACKED_BAR3D = "stackedBar3d";
+
     public static final String TYPE_LINE = "line";
+
     public static final String TYPE_LINE3D = "line3d";
+
     public static final String TYPE_PIE = "pie";
+
     public static final String TYPE_PIE3D = "pie3d";
-    
+
     public static final String SIZE_NORMAL = "normal";
+
     public static final String SIZE_WIDE = "wide";
+
     public static final String SIZE_TALL = "tall";
 
     private int id;
 
     private String title;
-    
+
     private String domainAxixLabel;
-    
+
     private String rangeAxisLabel;
 
     private String type;
@@ -103,6 +124,8 @@ public class Chart
     private List<Indicator> indicators = new ArrayList<Indicator>();
 
     private List<DataElement> dataElements = new ArrayList<DataElement>();
+
+    private List<DataSet> dataSets = new ArrayList<DataSet>();
 
     private List<Period> periods = new ArrayList<Period>();
 
@@ -168,7 +191,7 @@ public class Chart
     }
 
     public void updateChartGroups( Set<ChartGroup> updates )
-    {  
+    {
         for ( ChartGroup group : new HashSet<ChartGroup>( groups ) )
         {
             if ( !updates.contains( group ) )
@@ -176,7 +199,7 @@ public class Chart
                 removeChartGroup( group );
             }
         }
-        
+
         for ( ChartGroup group : updates )
         {
             addChartGroup( group );
@@ -477,6 +500,16 @@ public class Chart
     public List<DataElement> getDataElements()
     {
         return dataElements;
+    }
+
+    public List<DataSet> getDataSets()
+    {
+        return dataSets;
+    }
+
+    public void setDataSets( List<DataSet> dataSets )
+    {
+        this.dataSets = dataSets;
     }
 
     public List<Period> getPeriods()
