@@ -57,8 +57,11 @@ public class GetDataCompletenessAction
     implements Action
 {
     private static final String KEY_DATA_COMPLETENESS = "dataSetCompletenessResults";
-    private static final String DEFAULT_TYPE = "html";    
+
+    private static final String DEFAULT_TYPE = "html";
+
     private static final String SPACE = " ";
+
     private static final String EMPTY = "";
 
     // -------------------------------------------------------------------------
@@ -92,7 +95,7 @@ public class GetDataCompletenessAction
     {
         this.selectionTreeManager = selectionTreeManager;
     }
-    
+
     private I18n i18n;
 
     public void setI18n( I18n i18n )
@@ -151,70 +154,82 @@ public class GetDataCompletenessAction
         throws Exception
     {
         Grid _grid = (Grid) SessionUtils.getSessionVar( KEY_DATA_COMPLETENESS );
-        
-        if ( _grid != null && type != null && !type.equals( DEFAULT_TYPE ) ) // Use last grid for any format except html
+
+        if ( _grid != null && type != null && !type.equals( DEFAULT_TYPE ) ) // Use
+                                                                             // last
+                                                                             // grid
+                                                                             // for
+                                                                             // any
+                                                                             // format
+                                                                             // except
+                                                                             // html
         {
             grid = _grid;
-            
+
             return type;
         }
         else
-        {            
+        {
             OrganisationUnit selectedUnit = selectionTreeManager.getReloadedSelectedOrganisationUnit();
-            
+
             if ( periodId == null || selectedUnit == null || criteria == null )
             {
                 return INPUT;
-            }            
+            }
             else
             {
                 Integer _periodId = periodService.getPeriodByExternalId( periodId ).getId();
-                
+
                 DataSet dataSet = null;
                 List<DataSetCompletenessResult> mainResults = new ArrayList<DataSetCompletenessResult>();
                 List<DataSetCompletenessResult> footerResults = new ArrayList<DataSetCompletenessResult>();
-    
+
                 DataSetCompletenessService completenessService = serviceProvider.provide( criteria );
-    
-                if ( dataSetId != null && dataSetId != 0 ) // One data set for one organisation unit
+
+                if ( dataSetId != null && dataSetId != 0 )
+                // One data set for one organisation unit
                 {
                     mainResults = new ArrayList<DataSetCompletenessResult>( completenessService.getDataSetCompleteness(
                         _periodId, getIdentifiers( OrganisationUnit.class, selectedUnit.getChildren() ), dataSetId ) );
-                    
-                    footerResults = new ArrayList<DataSetCompletenessResult>( completenessService.getDataSetCompleteness( 
-                        _periodId, Arrays.asList( selectedUnit.getId() ), dataSetId ) );
-    
+
+                    footerResults = new ArrayList<DataSetCompletenessResult>(
+                        completenessService.getDataSetCompleteness( _periodId, Arrays.asList( selectedUnit.getId() ),
+                            dataSetId ) );
+
                     dataSet = dataSetService.getDataSet( dataSetId );
                 }
-                else // All data sets for children of one organisation unit
+                else
+                // All data sets for children of one organisation unit
                 {
                     mainResults = new ArrayList<DataSetCompletenessResult>( completenessService.getDataSetCompleteness(
                         _periodId, selectedUnit.getId() ) );
                 }
-    
+
                 grid = getGrid( mainResults, footerResults, selectedUnit, dataSet );
-                
-                SessionUtils.setSessionVar( KEY_DATA_COMPLETENESS, grid );                      
+
+                SessionUtils.setSessionVar( KEY_DATA_COMPLETENESS, grid );
             }
-            
+
             return type != null ? type : DEFAULT_TYPE;
-        }        
+        }
     }
-    
-    private Grid getGrid( List<DataSetCompletenessResult> mainResults, List<DataSetCompletenessResult> footerResults, OrganisationUnit unit, DataSet dataSet )
+
+    private Grid getGrid( List<DataSetCompletenessResult> mainResults, List<DataSetCompletenessResult> footerResults,
+        OrganisationUnit unit, DataSet dataSet )
     {
         String title = i18n.getString( "data_completeness_report" );
-        String subtitle = ( unit != null ? unit.getName() : EMPTY ) + SPACE + ( dataSet != null ? dataSet.getName() : EMPTY );
-        
+        String subtitle = (unit != null ? unit.getName() : EMPTY) + SPACE
+            + (dataSet != null ? dataSet.getName() : EMPTY);
+
         Grid grid = new ListGrid().setTitle( title ).setSubtitle( subtitle );
-        
+
         grid.addHeader( new GridHeader( i18n.getString( "name" ), false, true ) );
         grid.addHeader( new GridHeader( i18n.getString( "actual" ), false, false ) );
         grid.addHeader( new GridHeader( i18n.getString( "target" ), false, false ) );
         grid.addHeader( new GridHeader( i18n.getString( "percent" ), false, false ) );
         grid.addHeader( new GridHeader( i18n.getString( "on_time" ), false, false ) );
         grid.addHeader( new GridHeader( i18n.getString( "percent" ), false, false ) );
-        
+
         for ( DataSetCompletenessResult result : mainResults )
         {
             addRow( grid, result );
@@ -224,15 +239,15 @@ public class GetDataCompletenessAction
         {
             grid.sortGrid( 4, 1 );
         }
-        
+
         for ( DataSetCompletenessResult result : footerResults )
         {
             addRow( grid, result );
         }
-        
+
         return grid;
     }
-    
+
     private void addRow( Grid grid, DataSetCompletenessResult result )
     {
         grid.addRow();

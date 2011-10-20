@@ -38,54 +38,58 @@ import org.hisp.dhis.period.RelativePeriods;
 public interface DataSetCompletenessService
 {
     String ID = DataSetCompletenessService.class.getName();
-    
+
     /**
      * 
      * @param dataSetIds
      * @param relatives
      * @param organisationUnitIds
      */
-    void exportDataSetCompleteness( Collection<Integer> dataSetIds, RelativePeriods relatives, Collection<Integer> organisationUnitIds );
-    
+    void exportDataSetCompleteness( Collection<Integer> dataSetIds, RelativePeriods relatives,
+        Collection<Integer> organisationUnitIds );
+
     /**
      * 
      * @param dataSetIds
      * @param periodIds
      * @param organisationUnitIds
      */
-    void exportDataSetCompleteness( Collection<Integer> dataSetIds, 
-        Collection<Integer> periodIds, Collection<Integer> organisationUnitIds );
-    
+    void exportDataSetCompleteness( Collection<Integer> dataSetIds, Collection<Integer> periodIds,
+        Collection<Integer> organisationUnitIds );
+
     /**
-     * Returns a Collection of DataSetCompletenessResults. The DataSetCompletenessResult
-     * object contains the name of the associated DataSet, the number of
-     * sources being associated with the DataSet AND being a child of the given 
-     * OrganisationUnit, and the number of CompleteDataSetRegistrations for the
-     * mentioned sources. One DataSetCompletenessResult is included for each
-     * distinct DataSet associated with any of the given OrganisationUnit
-     * or its children.
+     * Returns a Collection of DataSetCompletenessResults. The
+     * DataSetCompletenessResult object contains the name of the associated
+     * DataSet, the number of sources being associated with the DataSet AND
+     * being a child of the given OrganisationUnit, and the number of
+     * CompleteDataSetRegistrations for the mentioned sources. One
+     * DataSetCompletenessResult is included for each distinct DataSet
+     * associated with any of the given OrganisationUnit or its children.
      * 
      * @param periodId the identifier of the Period.
      * @param organisationUnitId the identifier of the root OrganisationUnit.
      * @return a Collection of DataSetCompletenessResults.
      */
     Collection<DataSetCompletenessResult> getDataSetCompleteness( int periodId, int organisationUnitId );
-    
+
     /**
-     * Returns a Collection of DataSetCompletenessResults. The DataSetCompletenessResult
-     * object contains the name of the associated OrganisationUnit, the number of
-     * sources being associated with the DataSet AND being a child of the OrganisationUnit,
-     * and the number of CompleteDataSetRegistrations for the mentioned sources
-     * for the DataSet. One DataSetCompletenessResult is included for each child
-     * of the OrganisationUnit.
+     * Returns a Collection of DataSetCompletenessResults. The
+     * DataSetCompletenessResult object contains the name of the associated
+     * OrganisationUnit, the number of sources being associated with the DataSet
+     * AND being a child of the OrganisationUnit, and the number of
+     * CompleteDataSetRegistrations for the mentioned sources for the DataSet.
+     * One DataSetCompletenessResult is included for each child of the
+     * OrganisationUnit.
      * 
      * @param periodId the identifier of the Period.
-     * @param parentOrganisationUnitId the identifier of the parent OrganisationUnit.
+     * @param parentOrganisationUnitId the identifier of the parent
+     *        OrganisationUnit.
      * @param dataSetId the identifier of the DataSet.
      * @return a Collection of DataSetCompletenessResults.
      */
-    Collection<DataSetCompletenessResult> getDataSetCompleteness( int periodId, Collection<Integer> organisationUnitIds, int dataSetId );
-    
+    Collection<DataSetCompletenessResult> getDataSetCompleteness( int periodId,
+        Collection<Integer> organisationUnitIds, int dataSetId );
+
     /**
      * Creates an index on the aggregateddatasetcompleteness table.
      */
