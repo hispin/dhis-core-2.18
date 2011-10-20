@@ -48,23 +48,23 @@ public class DataSetCompletenessResult
     // -------------------------------------------------------------------------
 
     private int dataSetId;
-    
+
     private int periodId;
 
     private String periodName;
-    
+
     private int organisationUnitId;
-    
+
     // -------------------------------------------------------------------------
     // Properties 2
     // -------------------------------------------------------------------------
 
     private String name;
-    
+
     private int sources;
-    
+
     private int registrations;
-    
+
     private int registrationsOnTime;
 
     // -------------------------------------------------------------------------
@@ -72,7 +72,7 @@ public class DataSetCompletenessResult
     // -------------------------------------------------------------------------
 
     public DataSetCompletenessResult()
-    {   
+    {
     }
 
     /**
@@ -88,7 +88,7 @@ public class DataSetCompletenessResult
         this.registrations = registrations;
         this.registrationsOnTime = registrationsOnTime;
     }
-    
+
     /**
      * @param dataSetId the dataset identifier.
      * @param periodId the period identifier.
@@ -112,7 +112,7 @@ public class DataSetCompletenessResult
         this.registrations = registrations;
         this.registrationsOnTime = registrationsOnTime;
     }
-    
+
     // -------------------------------------------------------------------------
     // Logic
     // -------------------------------------------------------------------------
@@ -121,23 +121,23 @@ public class DataSetCompletenessResult
     {
         if ( sources > 0 )
         {
-            double percentage = (double)registrations / (double)sources * 100;
-        
+            double percentage = (double) registrations / (double) sources * 100;
+
             return getRounded( percentage, 1 );
         }
-        
+
         return 0.0;
     }
-    
+
     public double getPercentageOnTime()
     {
         if ( sources > 0 )
         {
-            double percentage = (double)registrationsOnTime / (double)sources * 100;
-            
+            double percentage = (double) registrationsOnTime / (double) sources * 100;
+
             return getRounded( percentage, 1 );
         }
-        
+
         return 0.0;
     }
 
@@ -152,7 +152,7 @@ public class DataSetCompletenessResult
     {
         return registrations;
     }
-    
+
     // -------------------------------------------------------------------------
     // HashCode, equals, and toString
     // -------------------------------------------------------------------------
@@ -161,14 +161,14 @@ public class DataSetCompletenessResult
     public int hashCode()
     {
         final int prime = 31;
-        
+
         int result = 1;
-        
-        result = prime * result + ( ( name == null ) ? 0 : name.hashCode() );
+
+        result = prime * result + ((name == null) ? 0 : name.hashCode());
         result = prime * result + sources;
         result = prime * result + registrations;
         result = prime * result + registrationsOnTime;
-        
+
         return result;
     }
 
@@ -179,30 +179,29 @@ public class DataSetCompletenessResult
         {
             return true;
         }
-        
+
         if ( object == null )
         {
             return false;
         }
-        
+
         if ( getClass() != object.getClass() )
         {
             return false;
         }
-        
+
         final DataSetCompletenessResult other = (DataSetCompletenessResult) object;
-        
-        return name.equals( other.getName() ) && 
-            sources == other.getSources() &&
-            registrations == other.getRegistrations() && 
-            registrationsOnTime == other.getRegistrationsOnTime();
+
+        return name.equals( other.getName() ) && sources == other.getSources()
+            && registrations == other.getRegistrations() && registrationsOnTime == other.getRegistrationsOnTime();
     }
-    
+
     @Override
     public String toString()
     {
-        String toString = "[Name: " + name + ", Reg: " + registrations + ", On time: " + registrationsOnTime + ", Src: " + sources + "]";
-        
+        String toString = "[Name: " + name + ", Reg: " + registrations + ", On time: " + registrationsOnTime
+            + ", Src: " + sources + "]";
+
         return toString;
     }
 
@@ -263,7 +262,7 @@ public class DataSetCompletenessResult
     {
         this.name = name;
     }
-    
+
     public int getSources()
     {
         return sources;
@@ -307,7 +306,7 @@ public class DataSetCompletenessResult
     private double getRounded( double value, int decimals )
     {
         double factor = Math.pow( 10, decimals );
-        
+
         return Math.round( value * factor ) / factor;
     }
 }
