@@ -828,14 +828,30 @@ public class DefaultChartService
 
             List<Indicator> indicators = chart.getIndicators();
             List<DataElement> dataElements = chart.getDataElements();
+            List<DataSet> dataSets = chart.getDataSets();
 
             boolean isIndicatorChart = chart.isDimension( DIMENSION_INDICATOR_PERIOD )
                 || chart.isDimension( DIMENSION_ORGANISATIONUNIT_INDICATOR )
                 || chart.isDimension( DIMENSION_PERIOD_INDICATOR );
 
-            boolean isDataElementChart = !isIndicatorChart;
+            boolean isDataElementChart = chart.isDimension( DIMENSION_DATAELEMENT_PERIOD )
+                || chart.isDimension( DIMENSION_ORGANISATIONUNIT_DATAELEMENT )
+                || chart.isDimension( DIMENSION_PERIOD_DATAELEMENT );
 
-            int loopSize = isIndicatorChart ? indicators.size() : dataElements.size();
+            boolean isCompletenessChart = chart.isDimension( DIMENSION_COMPLETENESS_PERIOD )
+                || chart.isDimension( DIMENSION_ORGANISATIONUNIT_COMPLETENESS )
+                || chart.isDimension( DIMENSION_PERIOD_COMPLETENESS );
+
+            int loopSize = indicators.size();
+
+            if ( isDataElementChart )
+            {
+                loopSize = dataElements.size();
+            }
+            else if ( isCompletenessChart )
+            {
+                loopSize = dataSets.size();
+            }
 
             for ( int i = 0; i < loopSize; i++ )
             {
