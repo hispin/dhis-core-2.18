@@ -70,10 +70,6 @@ jQuery("#entryFormContainer").ready(function(){
     </table>
 </div>
 
-<span id="startMsg" style="font-style:italic; color:blue"> 
-	#if( $programStageInstance.executionDate ) #else $i18n.getString( "report_date_warning" ) #end
-</span>
-
 <div id="entryFormContainer" #if( $programStageInstance.executionDate ) #else style='display:none;' #end>
 
 #if( $customDataEntryFormCode ) 

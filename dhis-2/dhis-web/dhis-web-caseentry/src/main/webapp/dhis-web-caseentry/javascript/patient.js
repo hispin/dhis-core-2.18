@@ -857,7 +857,11 @@ function showSelectedDataRecoding( patientId )
 				}
 			});
 			
-			hideById('nonSingleEventProgramDiv');
+			jQuery('#backBtnFromEntry').hide();
+			hideById('dueDateLabel');
+			hideById('dueDate');
+			hideById('programStageIdLabel');
+			hideById('programStageId');
 			hideById('patientInfoDiv');
 			
 			showById('dataRecordingSelectDiv');
