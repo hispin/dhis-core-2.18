@@ -40,8 +40,10 @@ public class MapLayer
     private String type;
 
     private String url;
-    
+
     private String layers;
+
+    private String time;
 
     private String fillColor;
 
@@ -55,13 +57,14 @@ public class MapLayer
     {
     }
 
-    public MapLayer( String name, String type, String url, String layers, String fillColor,
+    public MapLayer( String name, String type, String url, String layers, String time, String fillColor,
         double fillOpacity, String strokeColor, int strokeWidth )
     {
         this.name = name;
         this.type = type;
         this.url = url;
         this.layers = layers;
+        this.time = time;
         this.fillColor = fillColor;
         this.fillOpacity = fillOpacity;
         this.strokeColor = strokeColor;
@@ -153,6 +156,16 @@ public class MapLayer
     public void setLayers( String layers )
     {
         this.layers = layers;
+    }
+
+    public String getTime()
+    {
+        return time;
+    }
+
+    public void setTime( String time )
+    {
+        this.time = time;
     }
 
     public String getFillColor()

@@ -154,6 +154,9 @@ a.x-menu-item-custom {
 .menu-layeroptions-labels {
     background-image:url('../../../images/labels.png');
 }
+.menu-layeroptions-legend {
+    background-image:url('../../../images/legendset.png');
+}
 .menu-featureoptions-info {
     background-image:url('../../../images/information2.png');
 }

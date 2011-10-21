@@ -18,6 +18,8 @@
 
     <property name="layers" column="layers" type="text" />
 
+    <property name="time" column="time" type="text" />
+
     <property name="fillColor" column="fillcolor" />
 
     <property name="fillOpacity" column="fillopacity" not-null="true" />

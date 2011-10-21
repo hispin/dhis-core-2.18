@@ -81,6 +81,13 @@ public class AddOrUpdateMapLayerAction
         this.layers = layers;
     }
     
+    private String time;
+    
+    public void setTime( String time )
+    {
+        this.time = time;
+    }
+
     private String fillColor;
 
     public void setFillColor( String fillColor )
@@ -115,7 +122,7 @@ public class AddOrUpdateMapLayerAction
 
     public String execute()
     {
-        mappingService.addOrUpdateMapLayer( name, type, url, layers, fillColor, fillOpacity, strokeColor, strokeWidth );
+        mappingService.addOrUpdateMapLayer( name, type, url, layers, time, fillColor, fillOpacity, strokeColor, strokeWidth );
         
         return SUCCESS;
     }

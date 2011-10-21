@@ -69,6 +69,8 @@ G.conf = {
     map_layer_type_baselayer: 'baselayer',
     map_layer_type_overlay: 'overlay',
     map_layer_type_thematic: 'thematic',
+    map_overlay_type_wms: 'wms',
+    map_overlay_type_file: 'file',
 	map_value_type_indicator: 'indicator',
 	map_value_type_dataelement: 'dataelement',
     map_date_type_fixed: 'fixed',
@@ -364,19 +366,26 @@ G.util = {
         return p.transform(new OpenLayers.Projection("EPSG:4326"), new OpenLayers.Projection("EPSG:900913"));
     },
     
-    createWMSLayer: function(name, url, layer) {
-        return new OpenLayers.Layer.WMS(name, url, 
-            {
-                layers: layer,
-                transparent: true,
-                format: 'image/png'
-            },
-            {
-                isBaseLayer: false,
-                buffer: 0,
-                ratio: 1
-            }
-        );
+    createWMSLayer: function(name, url, layers, time) {
+        var options = {
+            layers: layers,
+            transparent: true,
+            format: 'image/png'
+        };
+        if (time) {
+            options.time = time;
+        }
+        var layer = new OpenLayers.Layer.WMS(name, url, options, {
+            isBaseLayer: false,
+            buffer: 0,
+            ratio: 1
+        });
+        layer.baseUrl = url;
+        return layer;
+    },
+    
+    convertWMSUrlToLegendString: function(url) {
+        return url.replace('.xml','figmap?REQUEST=GetLegendGraphic');
     },
     
     createOverlay: function(name, fillColor, fillOpacity, strokeColor, strokeWidth, url) {

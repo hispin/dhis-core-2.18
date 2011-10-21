@@ -1,4 +1,4 @@
-﻿Ext.onReady( function() {
+Ext.onReady( function() {
     Ext.BLANK_IMAGE_URL = '../resources/ext-ux/theme/gray-extend/gray-extend/s.gif';
 	Ext.layout.FormLayout.prototype.trackLabels = true;
     Ext.QuickTips.init();
@@ -411,6 +411,7 @@
                 for (var i = 0; i < r.length; i++) {
                     var baseLayer = G.util.createWMSLayer(r[i].data.name, r[i].data.url, r[i].data.layers);                    
                     baseLayer.layerType = G.conf.map_layer_type_baselayer;
+                    baseLayer.overlayType = G.conf.map_overlay_type_wms;
                     baseLayer.setVisibility(false);                    
                     G.vars.map.addLayer(baseLayer);
                 }
@@ -1689,6 +1690,14 @@
                         fieldLabel: G.i18n.layer,
                         width: G.conf.combo_width_fieldset
                     },
+                    {
+                        xtype: 'textfield',
+                        id: 'baselayertime_tf',
+                        emptytext: 'Optional',
+                        labelSeparator: G.conf.labelseparator,
+                        fieldLabel: 'Time',
+                        width: G.conf.combo_width_fieldset
+                    },
                     {html: '<div class="window-p"></div>'},
                     {html: '<div class="window-info">' + G.i18n.delete_ + ' WMS ' + G.i18n.overlay + '</div>'},
                     {
@@ -1720,16 +1729,25 @@
                     var bln = Ext.getCmp('baselayername_tf').getRawValue();
                     var blu = Ext.getCmp('baselayerurl_tf').getRawValue();
                     var bll = Ext.getCmp('baselayerlayer_tf').getRawValue();
+                    var blt = Ext.getCmp('baselayertime_tf').getRawValue();
                     
                     if (!bln || !blu || !bll) {
                         Ext.message.msg(false, G.i18n.form_is_not_complete);
                         return;
                     }
                     
+                    var params = {};
+                    params.name = bln;
+                    params.type = G.conf.map_layer_type_baselayer;
+                    params.url = blu;
+                    params.layers = bll;
+                    if (blt) {
+                        params.time = blt;
+                    }
+                    
                     Ext.Ajax.request({
                         url: G.conf.path_mapping + 'addOrUpdateMapLayer' + G.conf.type,
-                        method: 'POST',
-                        params: {name: bln, type: G.conf.map_layer_type_baselayer, url: blu, layers: bll},
+                        params: params,
                         success: function(r) {
                             Ext.message.msg(true, 'WMS ' + G.i18n.overlay + ' <span class="x-msg-hl">' + bln + '</span> ' + G.i18n.registered);
                             G.stores.baseLayer.load();
@@ -1738,8 +1756,9 @@
                                 G.vars.map.getLayersByName(bln)[0].destroy();
                             }
                             
-                            var baselayer = G.util.createWMSLayer(bln, blu, bll);  
+                            var baselayer = G.util.createWMSLayer(bln, blu, bll, blt);  
                             baselayer.layerType = G.conf.map_layer_type_baselayer;
+                            baselayer.overlayType = G.conf.map_overlay_type_wms;
                             baselayer.setVisibility(false);                            
                             G.vars.map.addLayer(baselayer);
                             
@@ -2063,8 +2082,7 @@
             }
         }
     });
-    adminWindow.setPagePosition(G.conf.window_x_left,G.conf.window_y_left);
-    
+    adminWindow.setPagePosition(G.conf.window_x_left,G.conf.window_y_left);    
 
     var layerTree = new Ext.tree.TreePanel({
         id: 'layertree_tp',
@@ -2122,7 +2140,41 @@
                 }
             ]
         }),
-        contextMenuOverlay: new Ext.menu.Menu({
+        contextMenuOverlayWMS: new Ext.menu.Menu({
+            items: [
+                {
+                    text: 'Show legend',
+                    iconCls: 'menu-layeroptions-legend',
+                    handler: function(item) {
+                        var layer = item.parentMenu.contextNode.layer;
+                        var url = G.util.convertWMSUrlToLegendString(layer.baseUrl);
+                        var window = new Ext.Window({
+                            title: '<span id="window-baselayer-title">' + item.parentMenu.contextNode.text + ' legend</span>',
+                            layout: 'fit',
+                            bodyStyle: 'padding:10px 8px 0 0; background:#fff',
+                            items: [
+                                { html: '<img src="' + url + '" />' }
+                            ]
+                        });
+                        window.setPagePosition(Ext.getCmp('east').x - 481, Ext.getCmp('center').y + 25);
+                        window.show();
+                    }
+                },
+                {
+                    text: 'Opacity',
+                    iconCls: 'menu-layeroptions-opacity',
+                    menu: { 
+                        items: G.conf.opacityItems,
+                        listeners: {
+                            'itemclick': function(item) {
+                                item.parentMenu.parentMenu.contextNode.layer.setOpacity(item.text);
+                            }
+                        }
+                    }
+                }
+            ]
+        }),
+        contextMenuOverlayFile: new Ext.menu.Menu({
             items: [
                 {
                     text: 'Opacity',
@@ -2139,17 +2191,18 @@
             ]
         }),
         clickEventFn: function(node, e) {
-            if (node.attributes.text != 'Base layers' && node.attributes.text != 'Overlays') {
+            if (node.attributes.text !== 'Base layers' && node.attributes.text !== 'Overlays') {
                 node.select();
                 
-                if (node.parentNode.attributes.text == 'Base layers') {
+                if (node.parentNode.attributes.text === 'Base layers') {
                     var cmb = node.getOwnerTree().contextMenuBaselayer;
                     cmb.contextNode = node;
                     cmb.showAt(e.getXY());
                 }
                 
-                else if (node.parentNode.attributes.text == 'Overlays') {
-                    var cmo = node.getOwnerTree().contextMenuOverlay;
+                else if (node.parentNode.attributes.text === 'Overlays') {
+                    var cmo = node.layer.overlayType === 'wms' ?
+                        node.getOwnerTree().contextMenuOverlayWMS : node.getOwnerTree().contextMenuOverlayFile;
                     cmo.contextNode = node;
                     cmo.showAt(e.getXY());
                 }
@@ -2167,7 +2220,7 @@
             {
                 xtype: 'button',
                 id: 'baselayers_b',
-                text: 'WMS ' + G.i18n.overlay,
+                text: 'WMS overlays',
                 iconCls: 'icon-baselayer',
                 handler: function() {
                     Ext.getCmp('baselayers_w').setPagePosition(Ext.getCmp('east').x - (Ext.getCmp('overlays_w').width + 15), Ext.getCmp('center').y + 41);
@@ -2177,7 +2230,7 @@
             {
                 xtype: 'button',
                 id: 'overlays_b',
-                text: 'Vector ' + G.i18n.overlay,
+                text: 'File overlays',
                 iconCls: 'icon-overlay',
                 handler: function() {
                     Ext.getCmp('overlays_w').setPagePosition(Ext.getCmp('east').x - (Ext.getCmp('overlays_w').width + 15), Ext.getCmp('center').y + 41);

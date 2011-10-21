@@ -47,9 +47,9 @@ public interface MappingService
     final String MAP_VALUE_TYPE_INDICATOR = "indicator";
 
     final String MAP_VALUE_TYPE_DATAELEMENT = "dataelement";
-    
+
     final String MAP_LEGEND_SYMBOLIZER_COLOR = "color";
-    
+
     final String MAP_LEGEND_SYMBOLIZER_IMAGE = "image";
 
     final String MAPLEGENDSET_TYPE_AUTOMATIC = "automatic";
@@ -65,25 +65,25 @@ public interface MappingService
     final String ORGANISATION_UNIT_SELECTION_TYPE_PARENT = "parent";
 
     final String ORGANISATION_UNIT_SELECTION_TYPE_LEVEL = "level";
-    
+
     final String MAP_LAYER_TYPE_BASELAYER = "baselayer";
-    
+
     final String MAP_LAYER_TYPE_OVERLAY = "overlay";
 
     // -------------------------------------------------------------------------
     // IndicatorMapValue
     // -------------------------------------------------------------------------
 
-    Collection<AggregatedMapValue> getIndicatorMapValues( Integer indicatorId, Period period, Date startDate, Date endDate, 
-        Integer parentOrganisationUnitId, Integer level );
+    Collection<AggregatedMapValue> getIndicatorMapValues( Integer indicatorId, Period period, Date startDate,
+        Date endDate, Integer parentOrganisationUnitId, Integer level );
 
     // -------------------------------------------------------------------------
     // DataMapValue
     // -------------------------------------------------------------------------
 
-    Collection<AggregatedMapValue> getDataElementMapValues( Integer dataElementId, Period period, Date startDate, Date endDate, 
-        Integer parentOrganisationUnitId, Integer level );
-    
+    Collection<AggregatedMapValue> getDataElementMapValues( Integer dataElementId, Period period, Date startDate,
+        Date endDate, Integer parentOrganisationUnitId, Integer level );
+
     Collection<AggregatedMapValue> getInfrastructuralDataElementMapValues( Integer periodId, Integer organisationUnitId );
 
     // -------------------------------------------------------------------------
@@ -131,13 +131,12 @@ public interface MappingService
     // -------------------------------------------------------------------------
 
     int addMapView( MapView mapView );
-    
-    void addMapView( String name, boolean system, String mapValueType, Integer indicatorGroupId,
-        Integer indicatorId, Integer dataElementGroupId, Integer dataElementId, String periodTypeName,
-        Integer periodId, String startDate, String endDate, Integer parentOrganisationUnitId,
-        Integer organisationUnitLevel, String mapLegendType, Integer method, Integer classes, String bounds,
-        String colorLow, String colorHigh, Integer mapLegendSetId, Integer radiusLow, Integer radiusHigh,
-        String longitude, String latitude, int zoom );
+
+    void addMapView( String name, boolean system, String mapValueType, Integer indicatorGroupId, Integer indicatorId,
+        Integer dataElementGroupId, Integer dataElementId, String periodTypeName, Integer periodId, String startDate,
+        String endDate, Integer parentOrganisationUnitId, Integer organisationUnitLevel, String mapLegendType,
+        Integer method, Integer classes, String bounds, String colorLow, String colorHigh, Integer mapLegendSetId,
+        Integer radiusLow, Integer radiusHigh, String longitude, String latitude, int zoom );
 
     void updateMapView( MapView mapView );
 
@@ -159,7 +158,7 @@ public interface MappingService
 
     void updateMapLayer( MapLayer mapLayer );
 
-    void addOrUpdateMapLayer( String name, String type, String url, String layers, String fillColor,
+    void addOrUpdateMapLayer( String name, String type, String url, String layers, String time, String fillColor,
         double fillOpacity, String strokeColor, int strokeWidth );
 
     void deleteMapLayer( MapLayer mapLayer );
