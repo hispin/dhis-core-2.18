@@ -7,8 +7,10 @@ function loadProgramStages()
 {
 	hideById('dataEntryFormDiv');
 	clearListById('programStageId');
-	var programId = jQuery('#dataRecordingSelectDiv [name=programId]').val();
+	setFieldValue('executionDate','');
+	setFieldValue('dueDate','');
 	
+	var programId = jQuery('#dataRecordingSelectDiv [name=programId]').val();
 	if ( programId == 0 )
 	{
 		disable('completeBtn');
@@ -44,22 +46,20 @@ function loadProgramStages()
 			}
 			history += '</table>';
 			setInnerHTML( 'currentSelection', history );
-			jQuery('#dataRecordingSelectDiv select[name=programId] option')
 			
 			var singleEvent = jQuery('#dataRecordingSelectDiv [name=programId] option:selected').attr('singleevent');
 			if(singleEvent=='true')
 			{
 				byId('programStageId').selectedIndex = 1;
-				disable('programStageId');
-				loadDataEntry();
 				enable('completeBtn');
 				enable('validationBtn');
+				
+				loadDataEntry();
 			}
 			else
 			{
 				disable('completeBtn');
 				disable('validationBtn');
-				enable('programStageId');
 			}
 	});
 }
@@ -698,7 +698,6 @@ DRAG_DIV = {
 function toggleContentForReportDate(show)
 {
     if( show ){
-        jQuery("#startMsg").hide();
         jQuery("#entryForm").show();
         jQuery("#completeBtn").removeAttr('disabled');
 		jQuery("#validationBtn").removeAttr('disabled');
@@ -706,7 +705,6 @@ function toggleContentForReportDate(show)
         jQuery("#entryForm").hide();
         jQuery("#completeBtn").attr('disabled', 'disabled');
 		jQuery("#validationBtn").attr('disabled', 'disabled');
-        jQuery("#startMsg").show();
     }
 }
 
@@ -783,12 +781,9 @@ function entryFormContainerOnReady()
 
     if( jQuery("#entryFormContainer") ) {
 		
-        if( jQuery("#executionDate").val() )
+        if( jQuery("#executionDate").val() != '' )
         {
-            jQuery("#startMsg").hide();
-        }else
-        {
-            toggleContentForReportDate(false);
+            toggleContentForReportDate(true);
         }
 		
         jQuery("input[name='entryfield'],select[name='entryselect']").each(function(){

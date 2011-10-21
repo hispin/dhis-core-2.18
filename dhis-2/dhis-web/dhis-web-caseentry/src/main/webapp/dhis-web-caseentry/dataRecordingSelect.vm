@@ -2,11 +2,6 @@
 <table class="mainPageTable" id='patientInfoDiv'> 
 	<tr>
 		<td>
-			<input type="button" value="$i18n.getString( 'back_to_registration' )" id='backBtnFromEntry' onclick="javascript:showSearchForm();" style="width:10em">
-		</td>
-	</tr>
-	<tr>
-		<td>
 	<table>
 		<tr>            
 			<td class="bold">$i18n.getString( "full_name" ):</td>
@@ -25,7 +20,7 @@
 			<td>$encoder.htmlEncode( $patient.getAge() )</td>
 		</tr>
 		</table>
-		<td style="vertical-align:top" rowspan='5'>
+		<td style="vertical-align:top" rowspan='4'>
 			<div id="currentSelection" style="float:right"></div>
 		</td>
 	</tr>
@@ -35,39 +30,62 @@
 </table>
 
 <table width='100%'> 
-   <tr>
-        <td><label for="programId">$i18n.getString( "program" )</label></td>
-        <td>
-            <select id="programId" name="programId" style="min-width:350px" onchange="loadProgramStages();" #if( $programs.size() == 0 ) disabled="disabled" #end>
-                <option value="0">[$i18n.getString( "select" )]</option>
-                #foreach( $program in $programs )
-                    <option value="$program.id" singleevent="$program.singleEvent" #if( $programId && $program.id == $programId ) selected="selected" #end>$encoder.htmlEncode( $program.name )</option>
-                #end
-            </select>
-        </td>
-		<td><label for="executionDate">$i18n.getString( "report_date" ) </label></td>
-		<td><input type="text" id="executionDate" name="executionDate" value="$!format.formatDate( $programStageInstance.executionDate )" >
-			<script type="text/javascript">
-			   datePickerValid( 'executionDate', false );
-			</script>  
-		</tr>
-		<tr id='nonSingleEventProgramDiv'>
-				<td><label for="programStageId">$i18n.getString( "program_stage" )</label></td>
-				<td>
-					<select id="programStageId" name="programStageId" style="min-width:350px" onchange="javascript:loadDataEntry();" >
-					</select>
-				</td>
-				<td><label for="dueDate">$i18n.getString( "due_date" ) </label></td>
-				<td><input type="text" id="dueDate" name="dueDate" value="$!format.formatDate( $programStageInstance.dueDate )" readonly> </td>
-			
-		</tr>
 	<tr>
-		<td></td>
 		<td>
-			<input type="button" id="completeBtn" value="$i18n.getString('complete')" onClick="doComplete()" style="width:12em" disabled="disabled" >
-			<input type="button" id="validationBtn" value="$i18n.getString('validation')" onClick="javascript: runValidation();" style="width:12em " disabled="disabled" >
+			<table>
+			   <tr>
+					<td><label for="programId">$i18n.getString( "program" )</label></td>
+					<td>
+						<select id="programId" name="programId" style="min-width:350px" onchange="loadProgramStages();" #if( $programs.size() == 0 ) disabled="disabled" #end>
+							<option value="0">[$i18n.getString( "select" )]</option>
+							#foreach( $program in $programs )
+								<option value="$program.id" singleevent="$program.singleEvent" #if( $programId && $program.id == $programId ) selected="selected" #end>$encoder.htmlEncode( $program.name )</option>
+							#end
+						</select>
+					</td>
+				</tr>
+				<tr>
+					<td id='programStageIdLabel'><label for="programStageId">$i18n.getString( "program_stage" )</label></td>
+					<td>
+						<select id="programStageId" name="programStageId" style="width:350px" onchange="javascript:loadDataEntry();" >
+						</select>
+					</td>
+				</tr>
+				
+				<tr>
+					<td><label for="executionDate">$i18n.getString( "report_date" ) </label></td>
+					<td><input type="text" id="executionDate" name="executionDate" style="width:350px" value="$!format.formatDate( $programStageInstance.executionDate )" >
+						<script type="text/javascript">
+						   datePickerValid( 'executionDate', false );
+						</script>
+				</tr>
+				
+				<tr>
+					<td id='dueDateLabel'><label for="dueDate">$i18n.getString( "due_date" ) </label></td>
+					<td><input type="text" id="dueDate" name="dueDate" style="width:350px" value="$!format.formatDate( $programStageInstance.dueDate )" readonly> </td>
+				</tr>
+			</table>
 		</td>
-		<td></td>
+		
+		<td>
+			<table>
+				<tr>
+					<td align='right' colspan='2'>
+						<input type="button" id="validationBtn" value="$i18n.getString('validation')" onClick="javascript: runValidation();" style="width:12em " disabled="disabled" >
+					</td>
+				</tr>
+				<tr>
+					<td align='right' colspan='2'>
+						<input type="button" id="completeBtn" value="$i18n.getString('complete')" onClick="doComplete()" style="width:12em" disabled="disabled" >
+					</td>
+				</tr>
+				<tr>
+					<td align='right' colspan='2'>
+						<input type="button" value="$i18n.getString( 'back_to_search' )" id='backBtnFromEntry' onclick="javascript:showSearchForm();" style="width:12em">
+					</td>
+				</tr>
+				<tr><td></td></tr>
+			</table>
+		</td>
 	</tr>
-	
 </table>
