@@ -384,7 +384,8 @@ public class MappingServiceTest
     }
 
     @Test
-    @Ignore //TODO
+    @Ignore
+    // TODO
     public void testGetMapViewsByFeatureType()
     {
         MapView mapView1 = new MapView( "MapViewA", null, MappingService.MAP_VALUE_TYPE_INDICATOR, indicatorGroup,
@@ -417,8 +418,8 @@ public class MappingServiceTest
     @Test
     public void testAddGetMapLayer()
     {
-        MapLayer mapLayer = new MapLayer( "MapLayerA", MappingService.MAP_LAYER_TYPE_BASELAYER, "", "", "A", 0.1, "B",
-            1 );
+        MapLayer mapLayer = new MapLayer( "MapLayerA", MappingService.MAP_LAYER_TYPE_BASELAYER, "", "", "", "A", 0.1,
+            "B", 1 );
 
         int id = mappingService.addMapLayer( mapLayer );
 
@@ -433,8 +434,8 @@ public class MappingServiceTest
     @Test
     public void testGetUpdateDeleteMapLayerByName()
     {
-        MapLayer mapLayer = new MapLayer( "MapLayerA", MappingService.MAP_LAYER_TYPE_BASELAYER, "", "", "A", 0.1, "B",
-            1 );
+        MapLayer mapLayer = new MapLayer( "MapLayerA", MappingService.MAP_LAYER_TYPE_BASELAYER, "", "", "", "A", 0.1,
+            "B", 1 );
 
         int id = mappingService.addMapLayer( mapLayer );
 
@@ -454,13 +455,14 @@ public class MappingServiceTest
     @Test
     public void testGetAllMapLayers()
     {
-        MapLayer mapLayer1 = new MapLayer( "MapLayerA", MappingService.MAP_LAYER_TYPE_BASELAYER, "mapSourceA",
-            "layerA", "A", 0.1, "B", 1 );
-        MapLayer mapLayer2 = new MapLayer( "MapLayerB", MappingService.MAP_LAYER_TYPE_OVERLAY, "", "", "A", 0.1, "B", 1 );
-        MapLayer mapLayer3 = new MapLayer( "MapLayerC", MappingService.MAP_LAYER_TYPE_OVERLAY, "mapSourceC", "layerC",
-            "C", 0.1, "D", 2 );
-        MapLayer mapLayer4 = new MapLayer( "MapLayerD", MappingService.MAP_LAYER_TYPE_BASELAYER, "mapSourceD",
-            "layerA", "C", 0.1, "D", 2 );
+        MapLayer mapLayer1 = new MapLayer( "MapLayerA", MappingService.MAP_LAYER_TYPE_BASELAYER, "", "", "", "A", 0.1,
+            "B", 1 );
+        MapLayer mapLayer2 = new MapLayer( "MapLayerA", MappingService.MAP_LAYER_TYPE_BASELAYER, "", "", "", "C", 0.2,
+            "D", 2 );
+        MapLayer mapLayer3 = new MapLayer( "MapLayerA", MappingService.MAP_LAYER_TYPE_BASELAYER, "", "", "", "E", 0.3,
+            "F", 3 );
+        MapLayer mapLayer4 = new MapLayer( "MapLayerA", MappingService.MAP_LAYER_TYPE_BASELAYER, "", "", "", "G", 0.4,
+            "H", 4 );
 
         int idA = mappingService.addMapLayer( mapLayer1 );
         int idB = mappingService.addMapLayer( mapLayer2 );
@@ -479,14 +481,14 @@ public class MappingServiceTest
         List<MapLayer> baseLayers = new ArrayList<MapLayer>();
         List<MapLayer> overlayLayers = new ArrayList<MapLayer>();
 
-        MapLayer mapLayer1 = new MapLayer( "MapLayerA", MappingService.MAP_LAYER_TYPE_BASELAYER, "mapSourceA",
-            "layerA", "A", 0.1, "B", 1 );
-        MapLayer mapLayer2 = new MapLayer( "MapLayerB", MappingService.MAP_LAYER_TYPE_OVERLAY, "mapSourceB", "", "A",
-            0.1, "B", 1 );
-        MapLayer mapLayer3 = new MapLayer( "MapLayerC", MappingService.MAP_LAYER_TYPE_OVERLAY, "mapSourceC", "layerC",
-            "C", 0.1, "D", 2 );
-        MapLayer mapLayer4 = new MapLayer( "MapLayerD", MappingService.MAP_LAYER_TYPE_BASELAYER, "mapSourceD",
-            "layerA", "C", 0.1, "D", 2 );
+        MapLayer mapLayer1 = new MapLayer( "MapLayerA", MappingService.MAP_LAYER_TYPE_BASELAYER, "", "", "", "A", 0.1,
+            "B", 1 );
+        MapLayer mapLayer2 = new MapLayer( "MapLayerA", MappingService.MAP_LAYER_TYPE_BASELAYER, "", "", "", "C", 0.2,
+            "D", 2 );
+        MapLayer mapLayer3 = new MapLayer( "MapLayerA", MappingService.MAP_LAYER_TYPE_BASELAYER, "", "", "", "E", 0.3,
+            "F", 3 );
+        MapLayer mapLayer4 = new MapLayer( "MapLayerA", MappingService.MAP_LAYER_TYPE_BASELAYER, "", "", "", "G", 0.4,
+            "H", 4 );
 
         baseLayers.add( mapLayer1 );
         baseLayers.add( mapLayer4 );

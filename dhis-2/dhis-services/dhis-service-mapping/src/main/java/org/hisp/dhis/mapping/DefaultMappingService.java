@@ -308,17 +308,18 @@ public class DefaultMappingService
         return values;
     }
 
-    public Collection<AggregatedMapValue> getInfrastructuralDataElementMapValues( Integer periodId, Integer organisationUnitId )
+    public Collection<AggregatedMapValue> getInfrastructuralDataElementMapValues( Integer periodId,
+        Integer organisationUnitId )
     {
         String aggregationStrategy = (String) systemSettingManager.getSystemSetting( KEY_AGGREGATION_STRATEGY,
             DEFAULT_AGGREGATION_STRATEGY );
-        
+
         DataElementGroup group = configurationService.getConfiguration().getInfrastructuralDataElements();
-        
+
         if ( group == null )
         {
             group = dataElementService.getAllDataElementGroups().iterator().next();
-        }        
+        }
 
         Period period = periodService.getPeriod( periodId );
 
@@ -333,7 +334,7 @@ public class DefaultMappingService
         OrganisationUnit organisationUnit = organisationUnitService.getOrganisationUnit( organisationUnitId );
 
         Collection<AggregatedMapValue> values = new HashSet<AggregatedMapValue>();
-        
+
         if ( group != null )
         {
             for ( DataElement dataElement : group.getMembers() )
@@ -341,13 +342,13 @@ public class DefaultMappingService
                 Double value = aggregationStrategy.equals( AGGREGATION_STRATEGY_REAL_TIME ) ? aggregationService
                     .getAggregatedDataValue( dataElement, null, startDate, endDate, organisationUnit )
                     : aggregatedDataValueService.getAggregatedValue( dataElement, period, organisationUnit );
-    
+
                 value = value != null ? value : 0; // TODO improve
-    
+
                 AggregatedMapValue mapValue = new AggregatedMapValue();
                 mapValue.setDataElementName( dataElement.getShortName() );
                 mapValue.setValue( value );
-    
+
                 values.add( mapValue );
             }
         }
@@ -647,8 +648,8 @@ public class DefaultMappingService
         mappingStore.updateMapLayer( mapLayer );
     }
 
-    public void addOrUpdateMapLayer( String name, String type, String url, String layers, String fillColor,
-        double fillOpacity, String strokeColor, int strokeWidth )
+    public void addOrUpdateMapLayer( String name, String type, String url, String layers, String time,
+        String fillColor, double fillOpacity, String strokeColor, int strokeWidth )
     {
         MapLayer mapLayer = mappingStore.getMapLayerByName( name );
 
@@ -658,6 +659,7 @@ public class DefaultMappingService
             mapLayer.setType( type );
             mapLayer.setUrl( url );
             mapLayer.setLayers( layers );
+            mapLayer.setTime( time );
             mapLayer.setFillColor( fillColor );
             mapLayer.setFillOpacity( fillOpacity );
             mapLayer.setStrokeColor( strokeColor );
@@ -667,7 +669,7 @@ public class DefaultMappingService
         }
         else
         {
-            addMapLayer( new MapLayer( name, type, url, layers, fillColor, fillOpacity, strokeColor, strokeWidth ) );
+            addMapLayer( new MapLayer( name, type, url, layers, time, fillColor, fillOpacity, strokeColor, strokeWidth ) );
         }
     }
 
