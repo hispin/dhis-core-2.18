@@ -11,6 +11,8 @@ function loadProgramStages()
 	
 	if ( programId == 0 )
 	{
+		disable('completeBtn');
+		disable('validationBtn');
 		return;
 	}
 	jQuery.postJSON( "loadProgramStages.action",
@@ -43,15 +45,20 @@ function loadProgramStages()
 			history += '</table>';
 			setInnerHTML( 'currentSelection', history );
 			jQuery('#dataRecordingSelectDiv select[name=programId] option')
+			
 			var singleEvent = jQuery('#dataRecordingSelectDiv [name=programId] option:selected').attr('singleevent');
 			if(singleEvent=='true')
 			{
 				byId('programStageId').selectedIndex = 1;
 				disable('programStageId');
 				loadDataEntry();
+				enable('completeBtn');
+				enable('validationBtn');
 			}
 			else
 			{
+				disable('completeBtn');
+				disable('validationBtn');
 				enable('programStageId');
 			}
 	});
