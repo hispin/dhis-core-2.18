@@ -22,15 +22,11 @@
 
 </script>
 
-<div>
-    <input type="button" value="$i18n.getString( "back_to_search" )" onclick="onClickBackBtn();" style="width:10em">
-</div>
-
 <h3>$i18n.getString( "program_unenrollment" )</h3>
 
-<table>
+<table width='100%'>
     <tr>
-        <td class="bold">$i18n.getString( "full_name" ):</td>
+        <td class="bold" style="width:100px">$i18n.getString( "full_name" ):</td>
         <td>$encoder.htmlEncode( $patient.getFullName() )</td>
     </tr>
     <tr>
@@ -44,9 +40,9 @@
     <tr>
         <td class="bold">$i18n.getString( "age" ):</td>
         <td>$encoder.htmlEncode( $patient.getAge() )</td>
-    </tr>    
-    <tr>
-        <td>&nbsp;</td>
+		<td align='right'>
+			<input type="button" value="$i18n.getString( "back_to_registration" )" onclick="onClickBackBtn();" style="width:10em">
+		</td>
     </tr>
 </table>
 

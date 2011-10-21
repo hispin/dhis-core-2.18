@@ -2,7 +2,7 @@
 <table class="mainPageTable" id='patientInfoDiv'> 
 	<tr>
 		<td>
-			<input type="button" value="$i18n.getString( 'back_to_search' )" id='backBtnFromEntry' onclick="javascript:showSearchForm();" style="width:10em">
+			<input type="button" value="$i18n.getString( 'back_to_registration' )" id='backBtnFromEntry' onclick="javascript:showSearchForm();" style="width:10em">
 		</td>
 	</tr>
 	<tr>

@@ -9,9 +9,6 @@
 		
 	});		
 </script>
-<div>
-    <input type="button" value="$i18n.getString( 'back_to_search' )" onclick="showRelationshipList($patient.id)" style="width:10em"/>
-</div>
 
 <h3>$i18n.getString( "adding_new_relationship_for" )</h3>
 
@@ -21,6 +18,9 @@
 <tr>
     <td style="vertical-align:top" bgcolor="#cccccc">
         <table>
+			<tr>
+				<th colspan='2'>$i18n.getString('patient_profile')</th>
+			</tr>
             <tr>
                 <td class="bold">$i18n.getString( "full_name" ):</td>
                 <td>           
@@ -51,7 +51,10 @@
         </table>
     </td>    
     <td style="vertical-align:top">
-        <table>        
+        <table>  
+			<tr>
+				<th colspan='2'>$i18n.getString('relationship_for') $patient.getFullName()</th>
+			</tr>
             <tr>
                 <td>$encoder.htmlEncode( $patient.getFullName() ) $i18n.getString( "'s" )</td>
             </tr>
@@ -64,7 +67,7 @@
                             <option value="$relationshipType.id:$encoder.htmlEncode( $relationshipType.bIsToA )" #if( $relationshipTypeId && "$relationshipType.id:$encoder.htmlEncode( $relationshipType.bIsToA )" == $relationshipTypeId ) selected="selected" #end>$encoder.htmlEncode( $relationshipType.bIsToA )</option>
                         #end
                     </select>
-                    $i18n.getString( "is" )
+                    &nbsp; $i18n.getString( "is" )
                 </td>
             </tr>           
                                     
@@ -90,8 +93,8 @@
                 </td>                               
             </tr>  
             <tr>
-                <td>
-                    <select size="15" id="availablePartnersList" name="availablePartnersList" style="min-width:20em;height:10em" class="{validate:{required:true}}">                        
+                <td colspan='2'>
+                    <select size="30" id="availablePartnersList" name="availablePartnersList" style="width:37em;height:20em" class="{validate:{required:true}}">                        
                         #foreach ( $partner in $patients )
                             <option value="$partner.id"> $encoder.htmlEncode( $partner.getFullName() )</option>
                         #end                
@@ -99,7 +102,10 @@
                 </td>                     
             </tr>
             <tr>
-            	<td><input type="button" value="$i18n.getString( 'assign_relationship' )" onclick="javascript:addRelationship()" style="width:10em"/></td>
+            	<td>
+					<input type="button" value="$i18n.getString( 'assign_relationship' )" onclick="javascript:addRelationship()" style="width:10em"/>
+					<input type="button" value="$i18n.getString( 'back_to_relationship' )" onclick="showRelationshipList($patient.id)" style="width:10em"/>
+				</td>
             </tr>            
         </table>
     </td>
