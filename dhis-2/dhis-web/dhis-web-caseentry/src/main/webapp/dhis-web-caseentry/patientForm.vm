@@ -108,20 +108,20 @@
 		<input type="checkbox" name="underAge" id="underAge" onclick="toggleUnderAge(this);" value="true"/>
 	</td>
 </tr>
-
 <!--IDENTIFIERS -->
-<tr><td colspan="2">&nbsp;</td></tr>	
-<tr><th colspan="2" class="heading-column">$i18n.getString( "patient_identifiers" )</th></tr>
-#foreach ($identifierType in $identifierTypes)
-<tr>
-	<td><label>$identifierType.name #if($identifierType.mandatory == true )<em title="$i18n.getString( 'required' )" class="required">*</em> #end</label></td>       
-		<td class="input-column">
-		<input type="text" style="width:28em" id="iden$identifierType.id" name="iden$identifierType.id" data="{related:$identifierType.related}" class="{validate:{required:$identifierType.mandatory, #if($!identifierType.noChars) maxlength:$identifierType.noChars, #end #if($identifierType.type=='number') number:true #elseif($!identifierType.type=='letter') lettersonly:true #end }}" /></td>
-</tr>
+#if( $identifierTypes.size() > 0)
+	<tr><td colspan="2">&nbsp;</td></tr>	
+	<tr><th colspan="2" class="heading-column">$i18n.getString( "patient_identifiers" )</th></tr>
+	#foreach ($identifierType in $identifierTypes)
+	<tr>
+		<td><label>$identifierType.name #if($identifierType.mandatory == true )<em title="$i18n.getString( 'required' )" class="required">*</em> #end</label></td>       
+			<td class="input-column">
+			<input type="text" style="width:28em" id="iden$identifierType.id" name="iden$identifierType.id" data="{related:$identifierType.related}" class="{validate:{required:$identifierType.mandatory, #if($!identifierType.noChars) maxlength:$identifierType.noChars, #end #if($identifierType.type=='number') number:true #elseif($!identifierType.type=='letter') lettersonly:true #end }}" /></td>
+	</tr>
+	#end
 #end
 
 <!-- ATTRIBUTES IN GROUPS -->
-
 #foreach ($attributeGroup in $attributeGroups )
 	<tr><td>&nbsp;</td></tr>
 	<tr><th colspan="2" class="heading-column">$attributeGroup.name</th></tr>
