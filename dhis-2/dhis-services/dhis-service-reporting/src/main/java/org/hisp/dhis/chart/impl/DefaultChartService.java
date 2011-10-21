@@ -27,15 +27,15 @@ package org.hisp.dhis.chart.impl;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import static org.hisp.dhis.chart.Chart.DIMENSION_COMPLETENESS_PERIOD;
 import static org.hisp.dhis.chart.Chart.DIMENSION_DATAELEMENT_PERIOD;
 import static org.hisp.dhis.chart.Chart.DIMENSION_INDICATOR_PERIOD;
-import static org.hisp.dhis.chart.Chart.DIMENSION_COMPLETENESS_PERIOD;
+import static org.hisp.dhis.chart.Chart.DIMENSION_ORGANISATIONUNIT_COMPLETENESS;
 import static org.hisp.dhis.chart.Chart.DIMENSION_ORGANISATIONUNIT_DATAELEMENT;
 import static org.hisp.dhis.chart.Chart.DIMENSION_ORGANISATIONUNIT_INDICATOR;
-import static org.hisp.dhis.chart.Chart.DIMENSION_ORGANISATIONUNIT_COMPLETENESS;
+import static org.hisp.dhis.chart.Chart.DIMENSION_PERIOD_COMPLETENESS;
 import static org.hisp.dhis.chart.Chart.DIMENSION_PERIOD_DATAELEMENT;
 import static org.hisp.dhis.chart.Chart.DIMENSION_PERIOD_INDICATOR;
-import static org.hisp.dhis.chart.Chart.DIMENSION_PERIOD_COMPLETENESS;
 import static org.hisp.dhis.chart.Chart.SIZE_NORMAL;
 import static org.hisp.dhis.chart.Chart.TYPE_BAR;
 import static org.hisp.dhis.chart.Chart.TYPE_BAR3D;
@@ -54,6 +54,7 @@ import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Font;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
@@ -73,6 +74,8 @@ import org.hisp.dhis.chart.ChartService;
 import org.hisp.dhis.chart.ChartStore;
 import org.hisp.dhis.common.GenericIdentifiableObjectStore;
 import org.hisp.dhis.common.NameableObject;
+import org.hisp.dhis.completeness.DataSetCompletenessResult;
+import org.hisp.dhis.completeness.DataSetCompletenessService;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
 import org.hisp.dhis.dataset.DataSet;
@@ -201,6 +204,13 @@ public class DefaultChartService
     public void setCurrentUserService( CurrentUserService currentUserService )
     {
         this.currentUserService = currentUserService;
+    }
+
+    private DataSetCompletenessService dataSetCompletenessService;
+
+    public void setDataSetCompletenessService( DataSetCompletenessService dataSetCompletenessService )
+    {
+        this.dataSetCompletenessService = dataSetCompletenessService;
     }
 
     private GenericIdentifiableObjectStore<ChartGroup> chartGroupStore;
@@ -904,7 +914,19 @@ public class DefaultChartService
                         }
                         else if ( isCompletenessChart )
                         {
-                            // Completeness value here
+                            List<DataSetCompletenessResult> dataSetCompleteness = new ArrayList<DataSetCompletenessResult>(
+                                dataSetCompletenessService.getDataSetCompleteness( period.getId(),
+                                    Arrays.asList( selectedOrganisationUnit.getId() ), dataSets.get( i ).getId() ) );
+
+                            if ( !dataSetCompleteness.isEmpty() )
+                            {
+                                DataSetCompletenessResult dataSetCompletenessResult = dataSetCompleteness.get( 0 );
+                                value = dataSetCompletenessResult.getPercentage();
+                            }
+                            else
+                            {
+                                value = 0d;
+                            }
                         }
 
                         if ( chart.isDimension( DIMENSION_PERIOD_INDICATOR )
@@ -981,7 +1003,19 @@ public class DefaultChartService
                         }
                         else if ( isCompletenessChart )
                         {
-                            // Completeness value here
+                            List<DataSetCompletenessResult> dataSetCompleteness = new ArrayList<DataSetCompletenessResult>(
+                                dataSetCompletenessService.getDataSetCompleteness( selectedPeriod.getId(),
+                                    Arrays.asList( unit.getId() ), dataSets.get( i ).getId() ) );
+
+                            if ( !dataSetCompleteness.isEmpty() )
+                            {
+                                DataSetCompletenessResult dataSetCompletenessResult = dataSetCompleteness.get( 0 );
+                                value = dataSetCompletenessResult.getPercentage();
+                            }
+                            else
+                            {
+                                value = 0d;
+                            }
                         }
 
                         regularDataSet.addValue( value != null ? value : 0, shortName, unit.getShortName() );

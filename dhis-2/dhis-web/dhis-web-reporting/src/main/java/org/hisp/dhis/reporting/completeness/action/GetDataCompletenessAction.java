@@ -155,14 +155,8 @@ public class GetDataCompletenessAction
     {
         Grid _grid = (Grid) SessionUtils.getSessionVar( KEY_DATA_COMPLETENESS );
 
-        if ( _grid != null && type != null && !type.equals( DEFAULT_TYPE ) ) // Use
-                                                                             // last
-                                                                             // grid
-                                                                             // for
-                                                                             // any
-                                                                             // format
-                                                                             // except
-                                                                             // html
+        // Uselast grid for any format except html
+        if ( _grid != null && type != null && !type.equals( DEFAULT_TYPE ) )
         {
             grid = _grid;
 
