@@ -57,3 +57,7 @@ td.error {padding-left:1em}
 {
 	width: 130px;
 }
+
+.border {
+	border:1px solid #ff0000;
+}

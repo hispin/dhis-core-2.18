@@ -21,7 +21,7 @@
 			<td class='bold'>$i18n.getString( "age" ):</td>
 			<td>$encoder.htmlEncode( $patient.getAge() )</td>
 			<td align='right'>
-				<input type="button" value="$i18n.getString( "back_to_search" )" onclick="loadPatientList();" style="width:10em">
+				<input type="button" value="$i18n.getString( "back_to_registration" )" onclick="loadPatientList();" style="width:10em">
 			</td>
 		</tr>
 	</table>
