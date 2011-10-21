@@ -226,11 +226,14 @@ public class UpdateUserAction
         userService.updateUserCredentials( userCredentials );
         userService.updateUser( user );
 
-        selectionManager.setRootOrganisationUnits( units );
-        selectionManager.setSelectedOrganisationUnits( units );
+        if ( currentUserService.getCurrentUser() == user )
+        {
+            selectionManager.setRootOrganisationUnits( units );
+            selectionManager.setSelectedOrganisationUnits( units );
 
-        selectionTreeManager.setRootOrganisationUnits( units );
-        selectionTreeManager.setSelectedOrganisationUnits( units );
+            selectionTreeManager.setRootOrganisationUnits( units );
+            selectionTreeManager.setSelectedOrganisationUnits( units );
+        }
 
         if ( units.size() > 0 )
         {
