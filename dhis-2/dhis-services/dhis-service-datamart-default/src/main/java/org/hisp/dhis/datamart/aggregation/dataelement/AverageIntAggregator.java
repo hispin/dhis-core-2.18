@@ -44,8 +44,6 @@ import org.hisp.dhis.dataelement.DataElementOperand;
 import org.hisp.dhis.datamart.CrossTabDataValue;
 import org.hisp.dhis.datamart.aggregation.cache.AggregationCache;
 import org.hisp.dhis.datamart.crosstab.CrossTabService;
-import org.hisp.dhis.organisationunit.OrganisationUnit;
-import org.hisp.dhis.organisationunit.OrganisationUnitHierarchy;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodType;
 import org.springframework.util.CollectionUtils;
@@ -81,18 +79,16 @@ public class AverageIntAggregator
     // -------------------------------------------------------------------------
 
     public Map<DataElementOperand, Double> getAggregatedValues( final Collection<DataElementOperand> operands, 
-        final Period period, final OrganisationUnit unit, int unitLevel, OrganisationUnitHierarchy hierarchy, String key )
+        final Period period, int unitLevel, final Collection<Integer> organisationUnits, String key )
     {
         if ( CollectionUtils.isEmpty( operands ) )
         {
             return new HashMap<DataElementOperand, Double>();
         }
         
-        final Collection<Integer> unitIds = hierarchy.getChildren( unit.getId() );
-        
         final Map<DataElementOperand, Double> values = new HashMap<DataElementOperand, Double>(); // <Operand, total value>
         
-        for ( final Integer unitId : unitIds )
+        for ( final Integer unitId : organisationUnits )
         {
             final Collection<CrossTabDataValue> crossTabValues = 
                 crossTabService.getCrossTabDataValues( operands, aggregationCache.getIntersectingPeriods( period.getStartDate(), period.getEndDate() ), unitId, key );

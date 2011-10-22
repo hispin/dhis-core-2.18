@@ -172,11 +172,13 @@ public class DefaultDataElementDataMart
                 
                 final Map<DataElementOperand, Double> valueMap = new HashMap<DataElementOperand, Double>();
                 
-                valueMap.putAll( sumIntAggregator.getAggregatedValues( sumIntOperands, period, unit, level, hierarchy, key ) );
-                valueMap.putAll( averageIntAggregator.getAggregatedValues( averageIntOperands, period, unit, level, hierarchy, key ) );
-                valueMap.putAll( averageIntSingleValueAggregator.getAggregatedValues( averageIntSingleValueOperands, period, unit, level, hierarchy, key ) );
-                valueMap.putAll( sumBoolAggregator.getAggregatedValues( sumBoolOperands, period, unit, level, hierarchy, key ) );
-                valueMap.putAll( averageBoolAggregator.getAggregatedValues( averageBoolOperands, period, unit, level, hierarchy, key ) );
+                final Collection<Integer> orgUnitChildren = hierarchy.getChildren( unit.getId() );
+                
+                valueMap.putAll( sumIntAggregator.getAggregatedValues( sumIntOperands, period, level, orgUnitChildren, key ) );
+                valueMap.putAll( averageIntAggregator.getAggregatedValues( averageIntOperands, period, level, orgUnitChildren, key ) );
+                valueMap.putAll( averageIntSingleValueAggregator.getAggregatedValues( averageIntSingleValueOperands, period, level, orgUnitChildren, key ) );
+                valueMap.putAll( sumBoolAggregator.getAggregatedValues( sumBoolOperands, period, level, orgUnitChildren, key ) );
+                valueMap.putAll( averageBoolAggregator.getAggregatedValues( averageBoolOperands, period, level, orgUnitChildren, key ) );
                 
                 if ( valueMap.size() > 0 )
                 {
