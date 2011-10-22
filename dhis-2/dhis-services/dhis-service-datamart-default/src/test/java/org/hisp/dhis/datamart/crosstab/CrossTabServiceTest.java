@@ -189,8 +189,10 @@ public class CrossTabServiceTest
 
     @Test
     public void testPopulateCrossTabValue()
+        throws Exception
     {
-        String key = crossTabService.populateCrossTabTable( operands, periodIds, organisationUnitIds );
+        String key = crossTabService.createCrossTabTable( operands );
+        crossTabService.populateCrossTabTable( operands, periodIds, organisationUnitIds, key ).get();
         
         Collection<CrossTabDataValue> values = crossTabService.getCrossTabDataValues( operands, periodIds, organisationUnitIds, key );
         

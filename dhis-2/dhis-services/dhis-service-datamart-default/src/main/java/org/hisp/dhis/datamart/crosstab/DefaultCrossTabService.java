@@ -32,9 +32,11 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.Future;
 
 import org.amplecode.quick.BatchHandler;
 import org.amplecode.quick.BatchHandlerFactory;
+import org.amplecode.quick.StatementManager;
 import org.apache.commons.lang.RandomStringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -44,6 +46,7 @@ import org.hisp.dhis.datamart.CrossTabDataValue;
 import org.hisp.dhis.datamart.crosstab.jdbc.CrossTabStore;
 import org.hisp.dhis.datavalue.DataValueService;
 import org.hisp.dhis.jdbc.batchhandler.GenericBatchHandler;
+import org.springframework.scheduling.annotation.Async;
 
 /**
  * @author Lars Helge Overland
@@ -86,6 +89,13 @@ public class DefaultCrossTabService
     {
         this.dataValueService = dataValueService;
     }
+    
+    private StatementManager statementManager;
+
+    public void setStatementManager( StatementManager statementManager )
+    {
+        this.statementManager = statementManager;
+    }
 
     // -------------------------------------------------------------------------
     // CrossTabService implementation
@@ -96,62 +106,67 @@ public class DefaultCrossTabService
         return dataValueService.getOperandsWithDataValues( operands );
     }
     
-    public String populateCrossTabTable( List<DataElementOperand> operands,
-        Collection<Integer> periodIds, Collection<Integer> organisationUnitIds )
+    public String createCrossTabTable( List<DataElementOperand> operands )
     {
         final String key = RandomStringUtils.randomAlphanumeric( 8 );
         
-        if ( validate( operands, periodIds, organisationUnitIds ) )
+        crossTabStore.dropCrossTabTable( key );    
+        crossTabStore.createCrossTabTable( operands, key );
+
+        return key;
+    }
+    
+    @Async
+    public Future<?> populateCrossTabTable( List<DataElementOperand> operands,
+        Collection<Integer> periodIds, Collection<Integer> organisationUnitIds, String key )
+    {
+        statementManager.initialise();
+        
+        final BatchHandler<Object> batchHandler = batchHandlerFactory.createBatchHandler( GenericBatchHandler.class ).
+            setTableName( CrossTabStore.CROSSTAB_TABLE_PREFIX + key ).init();
+
+        for ( final Integer periodId : periodIds )
         {
-            crossTabStore.dropCrossTabTable( key );    
-            crossTabStore.createCrossTabTable( operands, key );
-
-            final BatchHandler<Object> batchHandler = batchHandlerFactory.createBatchHandler( GenericBatchHandler.class ).
-                setTableName( CrossTabStore.CROSSTAB_TABLE_PREFIX + key ).init();
-
-            for ( final Integer periodId : periodIds )
+            for ( final Integer sourceId : organisationUnitIds )
             {
-                for ( final Integer sourceId : organisationUnitIds )
+                final Map<DataElementOperand, String> map = aggregatedDataValueService.getDataValueMap( periodId, sourceId );
+
+                final List<String> valueList = new ArrayList<String>( operands.size() + 2 );
+
+                valueList.add( String.valueOf( periodId ) );
+                valueList.add( String.valueOf( sourceId ) );
+
+                boolean hasValues = false;
+
+                for ( DataElementOperand operand : operands )
                 {
-                    final Map<DataElementOperand, String> map = aggregatedDataValueService.getDataValueMap( periodId, sourceId );
+                    String value = map.get( operand );
 
-                    final List<String> valueList = new ArrayList<String>( operands.size() + 2 );
-
-                    valueList.add( String.valueOf( periodId ) );
-                    valueList.add( String.valueOf( sourceId ) );
-
-                    boolean hasValues = false;
-
-                    for ( DataElementOperand operand : operands )
+                    if ( value != null && value.length() > MAX_LENGTH )
                     {
-                        String value = map.get( operand );
-
-                        if ( value != null && value.length() > MAX_LENGTH )
-                        {
-                            log.warn( "Value ignored, too long: '" + value + "'" );                                
-                            value = null;
-                        }
-
-                        if ( value != null )
-                        {
-                            hasValues = true;
-                        }
-
-                        valueList.add( value );
+                        log.warn( "Value ignored, too long: '" + value + "'" );                                
+                        value = null;
                     }
 
-                    if ( hasValues )
+                    if ( value != null )
                     {
-                        batchHandler.addObject( valueList );
+                        hasValues = true;
                     }
+
+                    valueList.add( value );
+                }
+
+                if ( hasValues )
+                {
+                    batchHandler.addObject( valueList );
                 }
             }
-            
-            batchHandler.flush();
-            
-            return key;
         }
-
+        
+        batchHandler.flush();
+        
+        statementManager.destroy();
+        
         return null;
     }
 
@@ -186,37 +201,5 @@ public class DefaultCrossTabService
         int periodId, int sourceId, String key )
     {
         return crossTabStore.getAggregatedDataCacheValue( operands, periodId, sourceId, key );
-    }
-
-    // -------------------------------------------------------------------------
-    // Supportive methods
-    // -------------------------------------------------------------------------
-
-    /**
-     * Validates whether the given collections of identifiers are not null and
-     * of size greater than 0.
-     */
-    private boolean validate( Collection<DataElementOperand> operands, Collection<Integer> periodIds,
-        Collection<Integer> unitIds )
-    {
-        if ( operands == null || operands.size() == 0 )
-        {
-            log.warn( "No operands selected for crosstab table" );
-            return false;
-        }
-
-        if ( periodIds == null || periodIds.size() == 0 )
-        {
-            log.warn( "No periods selected for crosstab table" );
-            return false;
-        }
-
-        if ( unitIds == null || unitIds.size() == 0 )
-        {
-            log.warn( "No organisation units selected for crosstab table" );
-            return false;
-        }
-
-        return true;
     }
 }

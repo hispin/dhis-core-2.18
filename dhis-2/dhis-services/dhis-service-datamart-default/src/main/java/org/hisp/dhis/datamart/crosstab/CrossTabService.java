@@ -31,6 +31,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.Future;
 
 import org.hisp.dhis.dataelement.DataElementOperand;
 import org.hisp.dhis.datamart.CrossTabDataValue;
@@ -50,6 +51,8 @@ public interface CrossTabService
      * @return the DataElementOperands with data.
      */
     Set<DataElementOperand> getOperandsWithData( Set<DataElementOperand> operands );
+
+    String createCrossTabTable( List<DataElementOperand> operands );
     
     /**
      * Creates and populates the crosstab table. Operands without data will be
@@ -60,8 +63,8 @@ public interface CrossTabService
      * @param organisationUnitIds the collection of OrganisationUnit identifiers.
      * @return a List of random keys for each generated crosstab table. 
      */
-    String populateCrossTabTable( List<DataElementOperand> operands, 
-        Collection<Integer> periodIds, Collection<Integer> organisationUnitIds );
+    Future<?> populateCrossTabTable( List<DataElementOperand> operands, 
+        Collection<Integer> periodIds, Collection<Integer> organisationUnitIds, String key );
 
     /**
      * Drops the crosstab table.
