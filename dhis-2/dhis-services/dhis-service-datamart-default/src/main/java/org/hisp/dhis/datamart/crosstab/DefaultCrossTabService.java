@@ -27,6 +27,9 @@ package org.hisp.dhis.datamart.crosstab;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import static org.hisp.dhis.datavalue.DataValue.FALSE;
+import static org.hisp.dhis.datavalue.DataValue.TRUE;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -146,6 +149,19 @@ public class DefaultCrossTabService
                     {
                         log.warn( "Value ignored, too long: '" + value + "'" );                                
                         value = null;
+                    }
+                    
+                    if ( value != null && !TRUE.equalsIgnoreCase( value ) && !FALSE.equalsIgnoreCase( value ) )
+                    {
+                        try
+                        {
+                            Double.parseDouble( value );
+                        }
+                        catch ( NumberFormatException ex )
+                        {
+                            log.warn( "Value ignored, not numeric: '" + value + "'" );
+                            value = null;
+                        }
                     }
 
                     if ( value != null )
