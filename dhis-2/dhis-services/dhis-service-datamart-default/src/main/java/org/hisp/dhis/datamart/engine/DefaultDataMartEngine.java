@@ -223,10 +223,21 @@ public class DefaultDataMartEngine
 
         state.setMessage( "crosstabulating_data" );
 
-        Collection<Integer> childrenIds = organisationUnitService.getOrganisationUnitHierarchy().getChildren( organisationUnitIds );
         Collection<Integer> intersectingPeriodIds = ConversionUtils.getIdentifiers( Period.class, periodService.getIntersectionPeriods( periods ) );
+        Collection<Integer> childrenIds = organisationUnitService.getOrganisationUnitHierarchy().getChildren( organisationUnitIds );
+        List<List<Integer>> childrenPages = new PaginatedList<Integer>( childrenIds ).setNumberOfPages( cpuCores ).getPages();
 
-        String key = crossTabService.populateCrossTabTable( new ArrayList<DataElementOperand>( allOperands ), intersectingPeriodIds, childrenIds );
+        List<DataElementOperand> crossTabOperands = new ArrayList<DataElementOperand>( allOperands );
+        String key = crossTabService.createCrossTabTable( crossTabOperands );
+        
+        List<Future<?>> crossTabFutures = new ArrayList<Future<?>>();
+        
+        for ( List<Integer> childrenPage : childrenPages )
+        {
+            crossTabFutures.add( crossTabService.populateCrossTabTable( crossTabOperands, intersectingPeriodIds, childrenPage, key ) );
+        }
+
+        ConcurrentUtils.waitForCompletion( crossTabFutures );
         
         clock.logTime( "Populated crosstab table" );
 

@@ -173,7 +173,7 @@ public class JDBCCrossTabStore
         
         try
         {
-            final Map<DataElementOperand, Double> valueMap = new HashMap<DataElementOperand, Double>();
+            final Map<DataElementOperand, Double> valueMap = new HashMap<DataElementOperand, Double>( operands.size() );
             
             final ResultSet resultSet = holder.getStatement().executeQuery( sql );
             

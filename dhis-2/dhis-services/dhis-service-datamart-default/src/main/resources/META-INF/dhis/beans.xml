@@ -53,6 +53,7 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
     <property name="crossTabStore" ref="org.hisp.dhis.datamart.crosstab.jdbc.CrossTabStore" />
     <property name="aggregatedDataValueService" ref="org.hisp.dhis.aggregation.AggregatedDataValueService" />
     <property name="dataValueService" ref="org.hisp.dhis.datavalue.DataValueService" />
+    <property name="statementManager" ref="statementManager" />
   </bean>
   
   <!-- AggregationCache -->
