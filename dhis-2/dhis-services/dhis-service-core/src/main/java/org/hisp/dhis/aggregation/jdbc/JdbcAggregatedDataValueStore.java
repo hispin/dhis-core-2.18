@@ -72,7 +72,7 @@ import org.hisp.dhis.system.objectmapper.DeflatedDataValueRowMapper;
 public class JdbcAggregatedDataValueStore
     extends HibernateGenericStore<CaseAggregationCondition> implements AggregatedDataValueStore
 {
-    private int FETCH_SIZE = 100; // Number of rows to fetch from db for large resultset
+    private int FETCH_SIZE = 1000; // Number of rows to fetch from db for large resultset
 
     private static final Log log = LogFactory.getLog( JdbcAggregatedDataValueStore.class );
 
