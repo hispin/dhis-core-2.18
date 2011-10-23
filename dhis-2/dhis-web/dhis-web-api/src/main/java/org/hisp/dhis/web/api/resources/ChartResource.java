@@ -96,7 +96,7 @@ public class ChartResource
         
         final String filename = CodecUtils.filenameEncode( indicator.getName() + ".png" );
         
-        final JFreeChart jFreeChart = chartService.getPeriodJFreeChart( indicator, unit, title, i18nManager.getI18nFormat() );
+        final JFreeChart jFreeChart = chartService.getJFreePeriodChart( indicator, unit, title, i18nManager.getI18nFormat() );
         
         return ResponseUtils.response( true, filename, false ).entity( new StreamingOutput()
         {
@@ -126,7 +126,7 @@ public class ChartResource
         
         final String filename = CodecUtils.filenameEncode( indicator.getName() + ".png" );
         
-        final JFreeChart jFreeChart = chartService.getOrganisationUnitJFreeChart( indicator, unit, title, i18nManager.getI18nFormat() );
+        final JFreeChart jFreeChart = chartService.getJFreeOrganisationUnitChart( indicator, unit, title, i18nManager.getI18nFormat() );
         
         return ResponseUtils.response( true, filename, false ).entity( new StreamingOutput()
         {
