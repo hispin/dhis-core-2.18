@@ -1,8 +1,5 @@
 package org.hisp.dhis.common;
 
-
-import java.security.SecureRandom;
-
 /*
  * Copyright (c) 2004-2005, University of Oslo
  * All rights reserved.
@@ -30,32 +27,33 @@ import java.security.SecureRandom;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-/**
- *
- * @author bobj
- * @version created 22-Oct-2011
- */
-public class CodeGenerator {
+import java.security.SecureRandom;
 
-    public static final String allowedChars = "0123456789" +
-          "abcdefghijklmnopqrstuvwxyz" + "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+/**
+ * @author bobj
+ */
+public class CodeGenerator
+{
+    public static final String allowedChars = "0123456789" + "abcdefghijklmnopqrstuvwxyz"
+        + "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 
     public static final int codeSize = 11;
 
     /**
      * Generates a pseudo random string using the allowed characters
-     *
+     * 
      * @return the Code
      */
     public static String generateCode()
     {
-        // using the system default algorithm and seed
+        // Using the system default algorithm and seed
         SecureRandom sr = new SecureRandom();
 
         char[] randomChars = new char[11];
-        for (int i = 0; i< codeSize; ++i) {
-            randomChars[i] = allowedChars.charAt( sr.nextInt( 61) );
+        for ( int i = 0; i < codeSize; ++i )
+        {
+            randomChars[i] = allowedChars.charAt( sr.nextInt( 61 ) );
         }
-        return new String(randomChars);
+        return new String( randomChars );
     }
 }
