@@ -25,6 +25,39 @@ public class Cal
         calendar.clear();
         set( year, month, day );
     }
+    
+    /**
+     * Sets the time of the calendar to now.
+     */
+    public Cal now()
+    {
+        calendar.setTime( new Date() );
+        return this;
+    }
+        
+    /**
+     * Adds the given amount of time to the given calendar field.
+     * 
+     * @param field the calendar field.
+     * @param value the amount of time.
+     */
+    public Cal add( int field, int amount )
+    {
+        calendar.add( field, amount );
+        return this;
+    }
+
+    /**
+     * Subtracts the given amount of time to the given calendar field.
+     * 
+     * @param field the calendar field.
+     * @param value the amount of time.
+     */
+    public Cal subtract( int field, int amount )
+    {
+        calendar.add( field, amount * -1 );
+        return this;
+    }
 
     /**
      * Returns the value of the given calendar field.

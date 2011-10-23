@@ -1,8 +1,9 @@
 package org.hisp.dhis.web.api.resources;
 
+import static java.util.Calendar.MONTH;
+
 import java.io.IOException;
 import java.io.OutputStream;
-import java.util.Date;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
@@ -16,6 +17,7 @@ import org.hisp.dhis.i18n.I18nFormat;
 import org.hisp.dhis.i18n.I18nManager;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
+import org.hisp.dhis.period.Cal;
 import org.hisp.dhis.report.Report;
 import org.hisp.dhis.report.ReportService;
 import org.hisp.dhis.system.util.CodecUtils;
@@ -72,7 +74,8 @@ public class ReportResource
             public void write( OutputStream out )
                 throws IOException, WebApplicationException
             {
-                reportService.renderReport( out, report, new Date(), organisationUnitId, ReportService.REPORTTYPE_PDF, format );
+                reportService.renderReport( out, report, new Cal().now().subtract( MONTH, 1 ).time(), 
+                    organisationUnitId, ReportService.REPORTTYPE_PDF, format );
             }
         } ).build();
     }
