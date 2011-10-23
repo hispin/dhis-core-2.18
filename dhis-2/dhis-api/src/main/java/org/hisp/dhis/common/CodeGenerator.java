@@ -37,7 +37,8 @@ public class CodeGenerator
     public static final String allowedChars = "0123456789" + "abcdefghijklmnopqrstuvwxyz"
         + "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 
-    public static final int codeSize = 11;
+    public static final int NUMBER_OF_CODEPOINTS = allowedChars.length();
+    public static final int CODESIZE = 11;
 
     /**
      * Generates a pseudo random string using the allowed characters
@@ -49,10 +50,10 @@ public class CodeGenerator
         // Using the system default algorithm and seed
         SecureRandom sr = new SecureRandom();
 
-        char[] randomChars = new char[11];
-        for ( int i = 0; i < codeSize; ++i )
+        char[] randomChars = new char[CODESIZE];
+        for ( int i = 0; i < CODESIZE; ++i )
         {
-            randomChars[i] = allowedChars.charAt( sr.nextInt( 61 ) );
+            randomChars[i] = allowedChars.charAt( sr.nextInt( NUMBER_OF_CODEPOINTS ) );
         }
         return new String( randomChars );
     }
