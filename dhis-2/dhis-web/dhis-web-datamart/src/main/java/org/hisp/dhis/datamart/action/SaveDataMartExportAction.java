@@ -208,7 +208,7 @@ public class SaveDataMartExportAction
 
         RelativePeriods relatives = new RelativePeriods( reportingMonth, reportingBimonth, reportingQuarter,
             monthsThisYear, quartersThisYear, thisYear, 
-            monthsLastYear, quartersLastYear, lastYear, false );
+            monthsLastYear, quartersLastYear, lastYear, false, false, false );
           
         export.setName( name );            
         export.setDataElements( getSet( dataElementService.getDataElements( getIntegerCollection( selectedDataElements ) ) ) );

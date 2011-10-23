@@ -375,7 +375,7 @@ public class SaveChartAction
         chart.setOrganisationUnits( organisationUnits );
 
         RelativePeriods relatives = new RelativePeriods( reportingMonth, reportingBimonth, reportingQuarter,
-            monthsThisYear, quartersThisYear, thisYear, monthsLastYear, quartersLastYear, lastYear, false );
+            monthsThisYear, quartersThisYear, thisYear, monthsLastYear, quartersLastYear, lastYear, false, false, false );
 
         chart.setRelatives( relatives );
 

@@ -175,7 +175,7 @@ public class GetAggregatedDataValuesAction
                 || monthsLastYear || quartersLastYear || lastYear || lastFiveYears ) )
         {
             RelativePeriods relativePeriod = new RelativePeriods( lastMonth, false, lastQuarter, monthsThisYear, quartersThisYear,
-                thisYear, monthsLastYear, quartersLastYear, lastYear, lastFiveYears );
+                thisYear, monthsLastYear, quartersLastYear, lastYear, lastFiveYears, false, false );
 
             Collection<Integer> relativePeriods = ConversionUtils.getIdentifiers( Period.class,
                 periodService.reloadPeriods( relativePeriod.getRelativePeriods( format, true ) ) );

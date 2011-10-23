@@ -346,7 +346,7 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
         method="intercept" />
       <aop:around pointcut="execution( * org.hisp.dhis.completeness.DataSetCompletenessService.getDataSetCompleteness(..) )"
         method="intercept" />
-      <aop:around pointcut="execution( * org.hisp.dhis.chart.ChartService.getJFreeChart*(..) )" method="intercept" />
+      <aop:around pointcut="execution( * org.hisp.dhis.chart.ChartService.getJFree*(..) )" method="intercept" />
       <aop:around pointcut="execution( * org.hisp.dhis.datasetreport.DataSetReportService.getCustomDataSetReport(..) )"
         method="intercept" />
       <aop:around pointcut="execution( * org.hisp.dhis.datasetreport.DataSetReportService.getSectionDataSetReport(..) )"

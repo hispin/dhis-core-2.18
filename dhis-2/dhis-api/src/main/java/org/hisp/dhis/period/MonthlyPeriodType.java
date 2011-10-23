@@ -137,6 +137,27 @@ public class MonthlyPeriodType
         return periods;
     }
 
+    /**
+     * Generates the last 12 months where the last one is the month
+     * which the given date is inside.
+     */
+    public List<Period> generateRollingPeriods( Date date )
+    {
+        Calendar cal = createCalendarInstance( date );
+        cal.set( Calendar.DAY_OF_MONTH, 1 );
+        cal.add( Calendar.MONTH, -11 );
+
+        ArrayList<Period> periods = new ArrayList<Period>();
+        
+        for ( int i = 0; i < 12; i++ )
+        {
+            periods.add( createPeriod( cal ) );
+            cal.add( Calendar.MONTH, 1 );
+        }
+        
+        return periods;
+    }
+    
     @Override
     public String getIsoDate( Period period )
     {

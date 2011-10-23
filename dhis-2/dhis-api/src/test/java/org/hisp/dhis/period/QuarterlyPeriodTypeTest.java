@@ -43,7 +43,7 @@ public class QuarterlyPeriodTypeTest
     private Cal startCal;
     private Cal endCal;
     private Cal testCal;
-    private CalendarPeriodType periodType;
+    private QuarterlyPeriodType periodType;
     
     @Before
     public void before()
@@ -122,6 +122,20 @@ public class QuarterlyPeriodTypeTest
         assertEquals( periodType.createPeriod( new Cal( 2009, 4, 1 ).time() ), periods.get( 1 ) );
         assertEquals( periodType.createPeriod( new Cal( 2009, 7, 1 ).time() ), periods.get( 2 ) );
         assertEquals( periodType.createPeriod( new Cal( 2009, 10, 1 ).time() ), periods.get( 3 ) );
+    }
+
+    @Test
+    public void testGenerateRollingPeriods()
+    {
+        testCal.set( 2009, 8, 15 );
+        
+        List<Period> periods = periodType.generateRollingPeriods( testCal.time() );
+        
+        assertEquals( 4, periods.size() );
+        assertEquals( periodType.createPeriod( new Cal( 2008, 10, 1 ).time() ), periods.get( 0 ) );
+        assertEquals( periodType.createPeriod( new Cal( 2009, 1, 1 ).time() ), periods.get( 1 ) );
+        assertEquals( periodType.createPeriod( new Cal( 2009, 4, 1 ).time() ), periods.get( 2 ) );
+        assertEquals( periodType.createPeriod( new Cal( 2009, 7, 1 ).time() ), periods.get( 3 ) );
     }
 
     @Test

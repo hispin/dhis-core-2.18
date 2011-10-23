@@ -42,7 +42,7 @@ public class MonthlyPeriodTypeTest
     private Cal startCal;
     private Cal endCal;
     private Cal testCal;
-    private CalendarPeriodType periodType;
+    private MonthlyPeriodType periodType;
     
     @Before
     public void before()
@@ -129,6 +129,28 @@ public class MonthlyPeriodTypeTest
         assertEquals( periodType.createPeriod( new Cal( 2009, 10, 1 ).time() ), periods.get( 9 ) );
         assertEquals( periodType.createPeriod( new Cal( 2009, 11, 1 ).time() ), periods.get( 10 ) );
         assertEquals( periodType.createPeriod( new Cal( 2009, 12, 1 ).time() ), periods.get( 11 ) );
+    }
+
+    @Test
+    public void testGenerateRollingPeriods()
+    {
+        testCal.set( 2009, 8, 15 );
+        
+        List<Period> periods = periodType.generateRollingPeriods( testCal.time() );
+        
+        assertEquals( 12, periods.size() );
+        assertEquals( periodType.createPeriod( new Cal( 2008, 9, 1 ).time() ), periods.get( 0 ) );
+        assertEquals( periodType.createPeriod( new Cal( 2008, 10, 1 ).time() ), periods.get( 1 ) );
+        assertEquals( periodType.createPeriod( new Cal( 2008, 11, 1 ).time() ), periods.get( 2 ) );
+        assertEquals( periodType.createPeriod( new Cal( 2008, 12, 1 ).time() ), periods.get( 3 ) );
+        assertEquals( periodType.createPeriod( new Cal( 2009, 1, 1 ).time() ), periods.get( 4 ) );
+        assertEquals( periodType.createPeriod( new Cal( 2009, 2, 1 ).time() ), periods.get( 5 ) );
+        assertEquals( periodType.createPeriod( new Cal( 2009, 3, 1 ).time() ), periods.get( 6 ) );
+        assertEquals( periodType.createPeriod( new Cal( 2009, 4, 1 ).time() ), periods.get( 7 ) );
+        assertEquals( periodType.createPeriod( new Cal( 2009, 5, 1 ).time() ), periods.get( 8 ) );
+        assertEquals( periodType.createPeriod( new Cal( 2009, 6, 1 ).time() ), periods.get( 9 ) );
+        assertEquals( periodType.createPeriod( new Cal( 2009, 7, 1 ).time() ), periods.get( 10 ) );
+        assertEquals( periodType.createPeriod( new Cal( 2009, 8, 1 ).time() ), periods.get( 11 ) );
     }
     
     @Test
