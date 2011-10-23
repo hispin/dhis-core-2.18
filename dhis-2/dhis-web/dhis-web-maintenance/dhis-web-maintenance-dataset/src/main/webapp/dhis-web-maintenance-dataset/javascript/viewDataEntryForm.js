@@ -201,6 +201,8 @@ function insertDataElement() {
 		var dataEntryId = dataElementId + "-" + optionComboId + "-val";
 	
 		var html = "";
+		
+		var greyedField = $( "#greyedField" ).is( ":checked" ) ? " disabled=\"disabled\"" : "";
 	
 		if (dataElementType == "bool") {
 			html = "<input title=\"" + titleValue
@@ -210,7 +212,7 @@ function insertDataElement() {
 		else {
 			html = "<input title=\"" + titleValue
 					+ "\" value=\"" + displayName + "\" id=\"" + dataEntryId
-					+ "\" style=\"width:7em;text-align:center\"/>";
+					+ "\" style=\"width:7em;text-align:center\"" + greyedField + "/>";
 		}
 	
 		if (!checkExisted(dataEntryId)) {
