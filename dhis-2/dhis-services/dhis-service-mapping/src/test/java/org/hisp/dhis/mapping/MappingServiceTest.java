@@ -457,11 +457,11 @@ public class MappingServiceTest
     {
         MapLayer mapLayer1 = new MapLayer( "MapLayerA", MappingService.MAP_LAYER_TYPE_BASELAYER, "", "", "", "A", 0.1,
             "B", 1 );
-        MapLayer mapLayer2 = new MapLayer( "MapLayerA", MappingService.MAP_LAYER_TYPE_BASELAYER, "", "", "", "C", 0.2,
+        MapLayer mapLayer2 = new MapLayer( "MapLayerB", MappingService.MAP_LAYER_TYPE_BASELAYER, "", "", "", "C", 0.2,
             "D", 2 );
-        MapLayer mapLayer3 = new MapLayer( "MapLayerA", MappingService.MAP_LAYER_TYPE_BASELAYER, "", "", "", "E", 0.3,
+        MapLayer mapLayer3 = new MapLayer( "MapLayerC", MappingService.MAP_LAYER_TYPE_BASELAYER, "", "", "", "E", 0.3,
             "F", 3 );
-        MapLayer mapLayer4 = new MapLayer( "MapLayerA", MappingService.MAP_LAYER_TYPE_BASELAYER, "", "", "", "G", 0.4,
+        MapLayer mapLayer4 = new MapLayer( "MapLayerD", MappingService.MAP_LAYER_TYPE_BASELAYER, "", "", "", "G", 0.4,
             "H", 4 );
 
         int idA = mappingService.addMapLayer( mapLayer1 );
@@ -483,11 +483,11 @@ public class MappingServiceTest
 
         MapLayer mapLayer1 = new MapLayer( "MapLayerA", MappingService.MAP_LAYER_TYPE_BASELAYER, "", "", "", "A", 0.1,
             "B", 1 );
-        MapLayer mapLayer2 = new MapLayer( "MapLayerA", MappingService.MAP_LAYER_TYPE_BASELAYER, "", "", "", "C", 0.2,
+        MapLayer mapLayer2 = new MapLayer( "MapLayerB", MappingService.MAP_LAYER_TYPE_OVERLAY, "", "", "", "C", 0.2,
             "D", 2 );
-        MapLayer mapLayer3 = new MapLayer( "MapLayerA", MappingService.MAP_LAYER_TYPE_BASELAYER, "", "", "", "E", 0.3,
+        MapLayer mapLayer3 = new MapLayer( "MapLayerC", MappingService.MAP_LAYER_TYPE_OVERLAY, "", "", "", "E", 0.3,
             "F", 3 );
-        MapLayer mapLayer4 = new MapLayer( "MapLayerA", MappingService.MAP_LAYER_TYPE_BASELAYER, "", "", "", "G", 0.4,
+        MapLayer mapLayer4 = new MapLayer( "MapLayerD", MappingService.MAP_LAYER_TYPE_BASELAYER, "", "", "", "G", 0.4,
             "H", 4 );
 
         baseLayers.add( mapLayer1 );
