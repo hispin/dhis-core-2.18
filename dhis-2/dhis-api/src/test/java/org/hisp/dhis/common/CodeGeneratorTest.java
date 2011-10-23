@@ -34,25 +34,24 @@ import org.junit.Test;
 import static org.junit.Assert.*;
 
 /**
- *
  * @author bobj
- * @version created 22-Oct-2011
  */
-public class CodeGeneratorTest {
-    
+public class CodeGeneratorTest
+{
     @Test
     public void testCode()
     {
         // set this as high as your heap space allows
-        int numberOfCodes=1000;
+        int numberOfCodes = 1000;
 
-        Set<String> Codes = new HashSet<String>();
-        for (int n=0; n<numberOfCodes; ++n) {
+        Set<String> codes = new HashSet<String>();
+        for ( int n = 0; n < numberOfCodes; ++n )
+        {
             String code = CodeGenerator.generateCode();
             // test syntax
-            assertTrue(code.matches( "[0-9a-zA-Z]{11}"));
+            assertTrue( code.matches( "[0-9a-zA-Z]{11}" ) );
             // test uniqueness
-            assertTrue(Codes.add( code));
+            assertTrue( codes.add( code ) );
         }
     }
 }
