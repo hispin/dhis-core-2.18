@@ -81,6 +81,20 @@ public class RelativePeriods
         "november_last_year",
         "december_last_year" };
     
+    public static final String[] MONTHS_LAST_12 = {
+        "month1",
+        "month2",
+        "month3",
+        "month4",
+        "month5",
+        "month6",
+        "month7",
+        "month8",
+        "month9",
+        "month10",
+        "month11",
+        "month12" };
+    
     public static final String[] QUARTERS_THIS_YEAR = {
         "quarter1",
         "quarter2",
@@ -92,7 +106,7 @@ public class RelativePeriods
         "quarter2_last_year",
         "quarter3_last_year",
         "quarter4_last_year" };
-    
+        
     public static final String[] LAST_5_YEARS = {
         "year_minus_4",
         "year_minus_3",
@@ -122,6 +136,10 @@ public class RelativePeriods
 
     private Boolean last5Years = false;
     
+    private Boolean last12Months = false;
+    
+    private Boolean last4Quarters = false;
+    
     // -------------------------------------------------------------------------
     // Constructors
     // -------------------------------------------------------------------------
@@ -141,10 +159,13 @@ public class RelativePeriods
      * @param quartersLastYear quarters last year
      * @param lastYear last year
      * @param last5Years last 5 years
+     * @param last12Months last 12 months
+     * @param last4Quarters last 4 quarters
      */
     public RelativePeriods( boolean reportingMonth, boolean reportingBimonth, boolean reportingQuarter,
         boolean monthsThisYear, boolean quartersThisYear, boolean thisYear,
-        boolean monthsLastYear, boolean quartersLastYear, boolean lastYear, boolean last5Years )
+        boolean monthsLastYear, boolean quartersLastYear, boolean lastYear, boolean last5Years,
+        boolean last12Months, boolean last4Quarters )
     {
         this.reportingMonth = reportingMonth;
         this.reportingBimonth = reportingBimonth;
@@ -156,6 +177,8 @@ public class RelativePeriods
         this.quartersLastYear = quartersLastYear;
         this.lastYear = lastYear;
         this.last5Years = last5Years;
+        this.last12Months = last12Months;
+        this.last4Quarters = last4Quarters;
     }
 
     // -------------------------------------------------------------------------
@@ -177,6 +200,8 @@ public class RelativePeriods
         this.quartersLastYear = false;
         this.lastYear = false;
         this.last5Years = false;
+        this.last12Months = false;
+        this.last4Quarters = false;
         return this;
     }
 
@@ -297,6 +322,16 @@ public class RelativePeriods
         if ( isLast5Years() )
         {
             periods.addAll( getRelativePeriodList( new YearlyPeriodType().generateLast5Years( date ), LAST_5_YEARS, dynamicNames, format ) );
+        }
+        
+        if ( isLast12Months() )
+        {
+            periods.addAll( getRelativePeriodList( new MonthlyPeriodType().generateRollingPeriods( date ), MONTHS_LAST_12, dynamicNames, format ) );
+        }
+        
+        if ( isLast4Quarters() )
+        {
+            periods.addAll( getRelativePeriodList( new QuarterlyPeriodType().generateRollingPeriods( date ), QUARTERS_THIS_YEAR, dynamicNames, format ) );
         }
         
         date = getDate( MONTHS_IN_YEAR, date );
@@ -461,6 +496,16 @@ public class RelativePeriods
     {
         return last5Years != null && last5Years;
     }
+    
+    public boolean isLast12Months()
+    {
+        return last12Months != null && last12Months;
+    }
+    
+    public boolean isLast4Quarters()
+    {
+        return last4Quarters != null && last4Quarters;
+    }
         
     // -------------------------------------------------------------------------
     // Getters & setters
@@ -566,6 +611,26 @@ public class RelativePeriods
         this.last5Years = last5Years;
     }
 
+    public Boolean getLast12Months()
+    {
+        return last12Months;
+    }
+
+    public void setLast12Months( Boolean last12Months )
+    {
+        this.last12Months = last12Months;
+    }
+
+    public Boolean getLast4Quarters()
+    {
+        return last4Quarters;
+    }
+
+    public void setLast4Quarters( Boolean last4Quarters )
+    {
+        this.last4Quarters = last4Quarters;
+    }
+
     // -------------------------------------------------------------------------
     // Equals, hashCode, and toString
     // -------------------------------------------------------------------------
@@ -587,6 +652,8 @@ public class RelativePeriods
         result = prime * result + ( ( quartersLastYear == null ) ? 0 : quartersLastYear.hashCode() );
         result = prime * result + ( ( lastYear == null ) ? 0 : lastYear.hashCode() );
         result = prime * result + ( ( last5Years == null ) ? 0 : last5Years.hashCode() );
+        result = prime * result + ( ( last12Months == null ) ? 0 : last12Months.hashCode() );
+        result = prime * result + ( ( last4Quarters == null ) ? 0 : last4Quarters.hashCode() );
         
         return result;
     }
@@ -727,6 +794,30 @@ public class RelativePeriods
             }
         }
         else if ( !last5Years.equals( other.last5Years ) )
+        {
+            return false;
+        }
+
+        if ( last12Months == null )
+        {
+            if ( other.last12Months != null )
+            {
+                return false;
+            }
+        }
+        else if ( !last12Months.equals( other.last12Months ) )
+        {
+            return false;
+        }
+
+        if ( last4Quarters == null )
+        {
+            if ( other.last4Quarters != null )
+            {
+                return false;
+            }
+        }
+        else if ( !last4Quarters.equals( other.last4Quarters ) )
         {
             return false;
         }

@@ -73,7 +73,7 @@ public class ChartResource
             public void write( OutputStream out )
                 throws IOException, WebApplicationException
             {
-                ChartUtilities.writeChartAsPNG( out, jFreeChart, 600, 400, true, 0 );
+                ChartUtilities.writeChartAsPNG( out, jFreeChart, 460, 330, true, 0 );
             }
         } ).build();
     }

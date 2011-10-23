@@ -251,10 +251,10 @@ public class DefaultChartService
         return getJFreeChart( chart, !chart.getHideSubtitle() );
     }
 
-    public JFreeChart getPeriodJFreeChart( Indicator indicator, OrganisationUnit unit, boolean title, I18nFormat format )
+    public JFreeChart getJFreePeriodChart( Indicator indicator, OrganisationUnit unit, boolean title, I18nFormat format )
     {
         RelativePeriods relatives = new RelativePeriods();
-        relatives.setMonthsThisYear( true );
+        relatives.setLast12Months( true );
         List<Period> periods = periodService.reloadPeriods( relatives.getRelativePeriods( format, true ) );
 
         Chart chart = new Chart();
@@ -279,7 +279,7 @@ public class DefaultChartService
         return getJFreeChart( chart, title );
     }
 
-    public JFreeChart getOrganisationUnitJFreeChart( Indicator indicator, OrganisationUnit parent, boolean title,
+    public JFreeChart getJFreeOrganisationUnitChart( Indicator indicator, OrganisationUnit parent, boolean title,
         I18nFormat format )
     {
         RelativePeriods relatives = new RelativePeriods();
@@ -827,7 +827,7 @@ public class DefaultChartService
     {
         String aggregationStrategy = (String) systemSettingManager.getSystemSetting( KEY_AGGREGATION_STRATEGY,
             DEFAULT_AGGREGATION_STRATEGY );
-
+        
         final DefaultCategoryDataset regularDataSet = new DefaultCategoryDataset();
         final DefaultCategoryDataset regressionDataSet = new DefaultCategoryDataset();
 
@@ -884,7 +884,8 @@ public class DefaultChartService
                     shortName = dataSets.get( i ).getShortName();
                 }
 
-                if ( chart.isDimension( DIMENSION_PERIOD_INDICATOR ) || chart.isDimension( DIMENSION_INDICATOR_PERIOD )
+                if ( chart.isDimension( DIMENSION_PERIOD_INDICATOR ) 
+                    || chart.isDimension( DIMENSION_INDICATOR_PERIOD )
                     || chart.isDimension( DIMENSION_PERIOD_DATAELEMENT )
                     || chart.isDimension( DIMENSION_DATAELEMENT_PERIOD )
                     || chart.isDimension( DIMENSION_PERIOD_COMPLETENESS )
