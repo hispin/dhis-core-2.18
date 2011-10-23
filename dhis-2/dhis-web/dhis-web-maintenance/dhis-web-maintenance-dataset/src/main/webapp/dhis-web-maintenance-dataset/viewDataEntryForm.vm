@@ -165,9 +165,9 @@
 
 			<tr>
 				<td>
-					<button type="button" id="dataElementsButton">Data Elements</button>
-					<button type="button" id="indicatorsButton">Indicators</button>&nbsp;&nbsp;<span style="color:#606060">|</span>&nbsp;
-					<button type="button" id="insertButton">Insert</button>
+					<button type="button" id="dataElementsButton">$i18n.getString( "data_elements" )</button>
+					<button type="button" id="indicatorsButton">$i18n.getString( "indicators" )</button>&nbsp;&nbsp;<span style="color:#606060">|</span>&nbsp;
+					<button type="button" id="insertButton">$i18n.getString( "insert" )</button>
 				</td>
 				<td style="width: 190px;">
 					<span id="message_"></span>
