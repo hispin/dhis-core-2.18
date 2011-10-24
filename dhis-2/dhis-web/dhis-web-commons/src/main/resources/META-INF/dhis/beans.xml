@@ -91,7 +91,7 @@
 
   <bean id="org.springframework.mobile.device.DeviceResolver" class="org.springframework.mobile.device.LiteDeviceResolver" />
 
-  <bean id="org.hisp.dhis.security.action.LoginAction" class="org.hisp.dhis.security.action.LoginAction">
+  <bean id="org.hisp.dhis.security.action.LoginAction" class="org.hisp.dhis.security.action.LoginAction" scope="prototype">
     <property name="deviceResolver" ref="org.springframework.mobile.device.DeviceResolver" />
   </bean>
 
