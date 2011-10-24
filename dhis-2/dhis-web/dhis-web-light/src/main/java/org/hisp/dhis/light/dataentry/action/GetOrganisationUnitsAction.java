@@ -92,7 +92,6 @@ public class GetOrganisationUnitsAction
         {
             organisationUnits = new ArrayList<OrganisationUnit>( user.getOrganisationUnits() );
             Collections.sort( organisationUnits, new OrganisationUnitNameComparator() );
-            organisationUnits = sectionFormUtils.organisationUnitWithDataSetsFilter( organisationUnits );
         }
 
         return SUCCESS;

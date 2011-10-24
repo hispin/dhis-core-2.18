@@ -4,10 +4,21 @@
 <p>
 <ul>
 #foreach( $organisationUnit in $organisationUnits )
-	<li><a href="selectDataSet.action?organisationUnitId=$organisationUnit.id">$!encoder.htmlEncode( ${organisationUnit.name} )</a></li>
-	#if( $organisationUnit.children.size() > 0 )
-		#foreach( $child in $sectionFormUtils.organisationUnitWithDataSetsFilter( $organisationUnit.children ))
-			<li>- <a href="selectDataSet.action?organisationUnitId=$child.id">$!encoder.htmlEncode( ${child.name} )</a></li>
+	#if( $organisationUnit.children.size() == 0 && $organisationUnit.dataSets.size() > 0 )
+		<li><a href="selectDataSet.action?organisationUnitId=$organisationUnit.id">$!encoder.htmlEncode( ${organisationUnit.name} )</a></li>
+	#else
+		#if( $organisationUnit.children.size() > 0 )
+			#set( $children = $sectionFormUtils.organisationUnitWithDataSetsFilter( $organisationUnit.children ) )
+
+			#if( $organisationUnit.dataSets.size() > 0 )
+				<li><a href="selectDataSet.action?organisationUnitId=$organisationUnit.id">$!encoder.htmlEncode( ${organisationUnit.name} )</a></li>
+			#else
+				<li>$!encoder.htmlEncode( ${organisationUnit.name} )</a></li>
+			#end
+
+			#foreach( $child in $children )
+				<li>- <a href="selectDataSet.action?organisationUnitId=$child.id">$!encoder.htmlEncode( ${child.name} )</a></li>
+			#end
 		#end
 	#end
 #end
