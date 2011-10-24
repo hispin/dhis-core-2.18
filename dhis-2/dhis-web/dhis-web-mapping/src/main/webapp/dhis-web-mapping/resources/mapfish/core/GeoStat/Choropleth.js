@@ -176,7 +176,7 @@ mapfish.GeoStat.Choropleth = OpenLayers.Class(mapfish.GeoStat, {
                 this.legendDiv.appendChild(element);
             }
         }
-        else if (G.vars.activeWidget.legend.value == G.conf.map_legendset_type_predefined) {        
+        else if (G.vars.activeWidget.legend.value == G.conf.map_legendset_type_predefined) {
             for (var i = 0; i < this.classification.bins.length; i++) {
                 var element = document.createElement("div");
                 element.style.backgroundColor = this.colorInterpolation[i].toHexString();
@@ -188,7 +188,7 @@ mapfish.GeoStat.Choropleth = OpenLayers.Class(mapfish.GeoStat, {
 
                 element = document.createElement("div");
                 element.style.lineHeight = this.widget.legendNames[i] ? "12px" : "7px";
-                element.innerHTML = '<b style="color:#222">' + this.widget.legendNames[i] + '</b><br/>' + this.classification.bins[i].label;
+                element.innerHTML = '<b style="color:#222">' + (this.widget.legendNames[i] || '') + '</b><br/>' + this.classification.bins[i].label;
                 this.legendDiv.appendChild(element);
 
                 element = document.createElement("div");

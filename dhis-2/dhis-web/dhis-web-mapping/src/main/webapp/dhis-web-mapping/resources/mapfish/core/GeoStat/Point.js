@@ -188,7 +188,7 @@ mapfish.GeoStat.Point = OpenLayers.Class(mapfish.GeoStat, {
 
                 element = document.createElement("div");
                 element.style.lineHeight = this.widget.legendNames[i] ? "12px" : "7px";
-                element.innerHTML = '<b style="color:#222">' + this.widget.legendNames[i] + '</b><br/>' + this.classification.bins[i].label;
+                element.innerHTML = '<b style="color:#222">' + (this.widget.legendNames[i] || '') + '</b><br/>' + this.classification.bins[i].label;
                 this.legendDiv.appendChild(element);
 
                 element = document.createElement("div");

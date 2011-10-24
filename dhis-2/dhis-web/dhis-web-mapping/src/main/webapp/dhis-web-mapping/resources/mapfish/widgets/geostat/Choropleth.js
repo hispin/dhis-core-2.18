@@ -1517,27 +1517,27 @@ mapfish.widgets.geostat.Choropleth = Ext.extend(Ext.Panel, {
 			params: {mapLegendSetId: mls},
             scope: this,
 			success: function(r) {
-				var mapLegends = Ext.util.JSON.decode(r.responseText).mapLegends;
-				var colors = [];
-				var bounds = [];
-                var legendNames = [];
+				var mapLegends = Ext.util.JSON.decode(r.responseText).mapLegends,
+                    colors = [],
+                    bounds = [],
+                    names = [];
 				for (var i = 0; i < mapLegends.length; i++) {
 					if (bounds[bounds.length-1] != mapLegends[i].startValue) {
 						if (bounds.length !== 0) {
 							colors.push(new mapfish.ColorRgb(240,240,240));
-                            legendNames.push('');
+                            names.push('');
 						}
 						bounds.push(mapLegends[i].startValue);
 					}
 					colors.push(new mapfish.ColorRgb());
 					colors[colors.length-1].setFromHex(mapLegends[i].color);
-                    legendNames.push(mapLegends[i].name);
+                    names.push(mapLegends[i].name);
 					bounds.push(mapLegends[i].endValue);
-				}              
+				}
 
 				this.colorInterpolation = colors;
 				this.bounds = bounds;
-                this.legendNames = legendNames;
+                this.legendNames = names;
                 
                 if (isMapView) {
                     this.setMapViewMap();
