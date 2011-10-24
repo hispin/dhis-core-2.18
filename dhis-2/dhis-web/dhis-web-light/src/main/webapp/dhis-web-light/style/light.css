@@ -68,6 +68,15 @@ body div#wrap {
 	left: 0;
 	padding: 0;
 }
+
+/*
+ * CONTENT
+ */
+
+body div#content ul li {
+	padding-bottom: 5px;
+}
+
 /*
  * HEADER
  * 
