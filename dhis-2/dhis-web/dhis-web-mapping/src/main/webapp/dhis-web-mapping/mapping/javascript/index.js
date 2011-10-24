@@ -478,7 +478,7 @@ Ext.onReady( function() {
                     {
                         xtype: 'textfield',
                         id: 'favoritename_tf',
-                        emptytext: G.conf.emptytext,
+                        emptyText: G.conf.emptytext,
                         labelSeparator: G.conf.labelseparator,
                         fieldLabel: G.i18n.display_name,
                         width: G.conf.combo_width_fieldset,
@@ -1668,7 +1668,7 @@ Ext.onReady( function() {
                     {
                         xtype: 'textfield',
                         id: 'baselayername_tf',
-                        emptytext: G.conf.emptytext,
+                        emptyText: G.conf.emptytext,
                         labelSeparator: G.conf.labelseparator,
                         fieldLabel: G.i18n.display_name,
                         width: G.conf.combo_width_fieldset,
@@ -1677,7 +1677,7 @@ Ext.onReady( function() {
                     {
                         xtype: 'textfield',
                         id: 'baselayerurl_tf',
-                        emptytext: G.conf.emptytext,
+                        emptyText: G.conf.emptytext,
                         labelSeparator: G.conf.labelseparator,
                         fieldLabel: G.i18n.url,
                         width: G.conf.combo_width_fieldset
@@ -1685,7 +1685,7 @@ Ext.onReady( function() {
                     {
                         xtype: 'textfield',
                         id: 'baselayerlayer_tf',
-                        emptytext: G.conf.emptytext,
+                        emptyText: G.conf.emptytext,
                         labelSeparator: G.conf.labelseparator,
                         fieldLabel: G.i18n.layer,
                         width: G.conf.combo_width_fieldset
@@ -1693,7 +1693,7 @@ Ext.onReady( function() {
                     {
                         xtype: 'textfield',
                         id: 'baselayertime_tf',
-                        emptytext: 'Optional',
+                        emptyText: 'Optional',
                         labelSeparator: G.conf.labelseparator,
                         fieldLabel: 'Time',
                         width: G.conf.combo_width_fieldset
@@ -1709,7 +1709,7 @@ Ext.onReady( function() {
                         mode: 'remote',
                         forceSelection: true,
                         triggerAction: 'all',
-                        emptytext: G.conf.emptytext,
+                        emptyText: G.conf.emptytext,
                         labelSeparator: G.conf.labelseparator,
                         fieldLabel: G.i18n.overlay_,
                         width: G.conf.combo_width_fieldset,                
@@ -1819,7 +1819,7 @@ Ext.onReady( function() {
                     {
                         xtype: 'textfield',
                         id: 'maplayername_tf',
-                        emptytext: G.conf.emptytext,
+                        emptyText: G.conf.emptytext,
                         labelSeparator: G.conf.labelseparator,
                         fieldLabel: G.i18n.display_name,
                         width: G.conf.combo_width_fieldset,
@@ -1833,7 +1833,7 @@ Ext.onReady( function() {
                         valueField: 'name',
                         triggerAction: 'all',
                         mode: 'remote',
-                        emptytext: G.conf.emptytext,
+                        emptyText: G.conf.emptytext,
                         labelSeparator: G.conf.labelseparator,
                         fieldLabel: G.i18n.geojson_file,
                         width: G.conf.combo_width_fieldset,
@@ -1908,7 +1908,7 @@ Ext.onReady( function() {
                         mode: 'remote',
                         forceSelection: true,
                         triggerAction: 'all',
-                        emptytext: G.conf.emptytext,
+                        emptyText: G.conf.emptytext,
                         labelSeparator: G.conf.labelseparator,
                         fieldLabel: G.i18n.overlay_,
                         width: G.conf.combo_width_fieldset,                
@@ -2157,6 +2157,45 @@ Ext.onReady( function() {
                             ]
                         });
                         window.setPagePosition(Ext.getCmp('east').x - 481, Ext.getCmp('center').y + 25);
+                        window.show();
+                    }
+                },
+                {
+                    text: 'Change period',
+                    iconCls: 'menu-layeroptions-period',
+                    handler: function(item) {
+                        var layer = item.parentMenu.contextNode.layer;
+                        
+                        var textfield = new Ext.form.TextField({
+                            width: G.conf.combo_width
+                        });
+                        
+                        var button = {
+                            text: 'Update',
+                            iconCls: 'icon-assign',
+                            handler: function() {
+                                var params = {};
+                                if (textfield.getValue()) {
+                                    params.time = textfield.getValue();
+                                }
+                                layer.mergeNewParams(params);
+                                window.destroy();
+                            }
+                        };
+                        
+                        var window = new Ext.Window({
+                            title: '<span id="window-period-title">Change period</span>',
+                            layout: 'fit',
+                            bodyStyle: 'padding:8px; background:#fff',
+                            width: G.conf.combo_width + 26,
+                            items: [ textfield ],
+                            bbar: [
+                                '->',
+                                button
+                            ]
+                        });
+                        
+                        window.setPagePosition(Ext.getCmp('east').x - (window.width + 15), Ext.getCmp('center').y + 41);
                         window.show();
                     }
                 },

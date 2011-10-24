@@ -50,7 +50,7 @@ G.conf = {
     feature_data_style_value: 'color:#444',
     feature_data_style_empty: 'color:#555',
     
-    emptytext: '',
+    emptyText: '',
 	labelseparator: '',
 	
 //	DHIS variables

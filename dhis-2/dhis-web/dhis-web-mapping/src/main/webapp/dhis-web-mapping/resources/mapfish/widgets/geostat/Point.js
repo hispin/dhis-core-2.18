@@ -1522,7 +1522,7 @@ mapfish.widgets.geostat.Point = Ext.extend(Ext.Panel, {
                 }
                 else {
                     this.classify(false, true);
-                }                   
+                }
 			}
 		});
 	},

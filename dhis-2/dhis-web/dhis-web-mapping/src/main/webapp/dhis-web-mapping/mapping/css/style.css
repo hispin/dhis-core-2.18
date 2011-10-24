@@ -157,6 +157,9 @@ a.x-menu-item-custom {
 .menu-layeroptions-legend {
     background-image:url('../../../images/legendset.png');
 }
+.menu-layeroptions-period {
+    background-image:url('../../../images/calendar2.png');
+}
 .menu-featureoptions-info {
     background-image:url('../../../images/information2.png');
 }
@@ -422,6 +425,12 @@ a.x-menu-item-custom {
 #window-maplayer-title {
 	padding:0 0 3px 21px;
 	background:url('../../../images/overlay.png') no-repeat 0 0 transparent;
+	font:bold 11px arial;
+	color:#111;
+}
+#window-period-title {
+	padding:0 0 3px 21px;
+	background:url('../../../images/calendar2.png') no-repeat 0 0 transparent;
 	font:bold 11px arial;
 	color:#111;
 }
