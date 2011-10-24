@@ -3,8 +3,10 @@ jQuery( document ).ready( function()
 	var rules = getValidationRules("user");
 
 	/* some customization is needed for the updateUserAccount validation rules */
-	rules["rawPassword"].required = false;
-	rules["oldPassword"] = {
+    rules["rawPassword"].required = false;
+    rules["retypePassword"].required = false;
+
+    rules["oldPassword"] = {
 			required: true
 	};
 
