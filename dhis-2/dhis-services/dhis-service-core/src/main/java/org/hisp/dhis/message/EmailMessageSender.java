@@ -58,6 +58,7 @@ public class EmailMessageSender
     private static final int SMTP_PORT = 587;
     private static final String FROM_ADDRESS = "noreply@dhis2.org";
     private static final String SUBJECT_PREFX = "[DHIS2] ";
+    private static final String LB = System.getProperty( "line.separator" );
 
     // -------------------------------------------------------------------------
     // Dependencies
@@ -103,11 +104,17 @@ public class EmailMessageSender
             {
                 try
                 {
+                    String message = text + LB + LB + 
+                        user.getName() + LB + 
+                        user.getOrganisationUnitsName() + LB +
+                        ( user.getEmail() != null ? ( user.getEmail() + LB ) : StringUtils.EMPTY ) +
+                        ( user.getPhoneNumber() != null ? ( user.getPhoneNumber() + LB ) : StringUtils.EMPTY );
+                    
                     String toAddress = StringUtils.trimToNull( user.getEmail() );
                     
                     Email email = getEmail( hostName, username, password );
                     email.setSubject( SUBJECT_PREFX + subject );
-                    email.setMsg( text );
+                    email.setMsg( message );
                     email.addTo( toAddress );
                     email.send();
                     
