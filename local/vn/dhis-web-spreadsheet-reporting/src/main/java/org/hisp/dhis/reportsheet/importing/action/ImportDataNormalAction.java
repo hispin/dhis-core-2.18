@@ -27,13 +27,6 @@ package org.hisp.dhis.reportsheet.importing.action;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.Date;
-
-import org.apache.poi.ss.usermodel.Workbook;
-import org.hisp.dhis.dataelement.DataElement;
-import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
-import org.hisp.dhis.dataelement.DataElementOperand;
-import org.hisp.dhis.datavalue.DataValue;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.reportsheet.importing.ImportDataGeneric;
@@ -51,43 +44,11 @@ public class ImportDataNormalAction
     // Override the abstract method
     // -------------------------------------------------------------------------
 
-    public void executeToImport( OrganisationUnit organisationUnit, Period period, String[] importItemIds, Workbook wb )
+    public void executeToImport( OrganisationUnit organisationUnit, Period period, String[] importItemIds )
     {
-        String value = null;
-        
         for ( int i = 0; i < importItemIds.length; i++ )
         {
-            value = importItemIds[i].split( "_" )[1];
-
-            if ( value.length() > 0 )
-            {
-                DataElementOperand operand = expressionService.getOperandsInExpression( importItemIds[i].split( "_" )[0] )
-                    .iterator().next();
-
-                DataElement dataElement = dataElementService.getDataElement( operand.getDataElementId() );
-
-                DataElementCategoryOptionCombo optionCombo = categoryService.getDataElementCategoryOptionCombo( operand
-                    .getOptionComboId() );
-
-                String storedBy = currentUserService.getCurrentUsername();
-
-                DataValue dataValue = dataValueService
-                    .getDataValue( organisationUnit, dataElement, period, optionCombo );
-
-                if ( dataValue == null )
-                {
-                    dataValue = new DataValue( dataElement, period, organisationUnit, value + "", storedBy, new Date(),
-                        null, optionCombo );
-                    dataValueService.addDataValue( dataValue );
-                }
-                else
-                {
-                    dataValue.setValue( value + "" );
-                    dataValue.setTimestamp( new Date() );
-                    dataValue.setStoredBy( storedBy );
-                    dataValueService.updateDataValue( dataValue );
-                }
-            }
+            addDataValue( organisationUnit, period, importItemIds[i].split( "-" )[0], importItemIds[i].split( "-" )[1] );
         }
     }
 }

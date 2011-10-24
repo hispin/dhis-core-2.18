@@ -27,20 +27,22 @@ package org.hisp.dhis.reportsheet.importing;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.io.FileInputStream;
+import java.util.Date;
 
-import org.apache.poi.hssf.usermodel.HSSFWorkbook;
-import org.apache.poi.ss.usermodel.Workbook;
+import org.hisp.dhis.dataelement.DataElement;
+import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
 import org.hisp.dhis.dataelement.DataElementCategoryService;
+import org.hisp.dhis.dataelement.DataElementOperand;
 import org.hisp.dhis.dataelement.DataElementService;
+import org.hisp.dhis.datavalue.DataValue;
 import org.hisp.dhis.datavalue.DataValueService;
 import org.hisp.dhis.expression.ExpressionService;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager;
 import org.hisp.dhis.period.Period;
-import org.hisp.dhis.reportsheet.importitem.ImportReportService;
 import org.hisp.dhis.reportsheet.action.ActionSupport;
+import org.hisp.dhis.reportsheet.importitem.ImportReportService;
 import org.hisp.dhis.reportsheet.period.generic.PeriodGenericManager;
 import org.hisp.dhis.reportsheet.state.SelectionManager;
 import org.hisp.dhis.user.CurrentUserService;
@@ -147,13 +149,9 @@ public abstract class ImportDataGeneric
 
         if ( organisationUnit != null )
         {
-            FileInputStream inputStream = new FileInputStream( selectionManager.getUploadFilePath() );
-
-            Workbook wb = new HSSFWorkbook( inputStream );
-
             Period period = periodGenericManager.getSelectedPeriod();
 
-            executeToImport( organisationUnit, period, importItemIds, wb );
+            executeToImport( organisationUnit, period, importItemIds );
         }
 
         message = i18n.getString( "import_successfully" );
@@ -165,7 +163,37 @@ public abstract class ImportDataGeneric
     // Abstract method
     // -------------------------------------------------------------------------
 
-    public abstract void executeToImport( OrganisationUnit organisationUnit, Period period, String[] importItemIds,
-        Workbook wb );
+    public abstract void executeToImport( OrganisationUnit organisationUnit, Period period, String[] importItemIds );
 
+    // -------------------------------------------------------------------------
+    // Supportive methods
+    // -------------------------------------------------------------------------
+
+    protected void addDataValue( OrganisationUnit unit, Period period, String expression, String value )
+    {
+        DataElementOperand operand = expressionService.getOperandsInExpression( expression ).iterator().next();
+
+        DataElement dataElement = dataElementService.getDataElement( operand.getDataElementId() );
+
+        DataElementCategoryOptionCombo optionCombo = categoryService.getDataElementCategoryOptionCombo( operand
+            .getOptionComboId() );
+
+        String storedBy = currentUserService.getCurrentUsername();
+
+        DataValue dataValue = dataValueService.getDataValue( unit, dataElement, period, optionCombo );
+
+        if ( dataValue == null )
+        {
+            dataValue = new DataValue( dataElement, period, unit, value, storedBy, new Date(), null, optionCombo );
+            dataValueService.addDataValue( dataValue );
+        }
+        else
+        {
+            dataValue.setValue( value );
+            dataValue.setTimestamp( new Date() );
+            dataValue.setStoredBy( storedBy );
+
+            dataValueService.updateDataValue( dataValue );
+        }
+    }
 }
