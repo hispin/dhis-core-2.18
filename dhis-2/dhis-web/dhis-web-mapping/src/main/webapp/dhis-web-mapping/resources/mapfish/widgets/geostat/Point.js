@@ -1456,11 +1456,11 @@ mapfish.widgets.geostat.Point = Ext.extend(Ext.Panel, {
             this.setMapViewMap();
         }
         else if (this.legend.value == G.conf.map_legendset_type_predefined) {
-            if (G.stores.predefinedMapLegendSet.isLoaded) {
+            if (G.stores.predefinedColorMapLegendSet.isLoaded) {
                 predefinedMapLegendSetStoreCallback.call(this);
             }
             else {
-                G.stores.predefinedMapLegendSet.load({scope: this, callback: function() {
+                G.stores.predefinedColorMapLegendSet.load({scope: this, callback: function() {
                     predefinedMapLegendSetStoreCallback.call(this);
                 }});
             }
@@ -1503,19 +1503,19 @@ mapfish.widgets.geostat.Point = Ext.extend(Ext.Panel, {
 					if (bounds[bounds.length-1] != mapLegends[i].startValue) {
 						if (bounds.length !== 0) {
 							colors.push(new mapfish.ColorRgb(240,240,240));
-                            legendNames.push('');
+                            names.push('');
 						}
 						bounds.push(mapLegends[i].startValue);
 					}
 					colors.push(new mapfish.ColorRgb());
 					colors[colors.length-1].setFromHex(mapLegends[i].color);
-                    legendNames.push(mapLegends[i].name);
+                    names.push(mapLegends[i].name);
 					bounds.push(mapLegends[i].endValue);
 				}              
 
 				this.colorInterpolation = colors;
 				this.bounds = bounds;
-                this.legendNames = legendNames;
+                this.legendNames = names;
                 
                 if (isMapView) {
                     this.setMapViewMap();

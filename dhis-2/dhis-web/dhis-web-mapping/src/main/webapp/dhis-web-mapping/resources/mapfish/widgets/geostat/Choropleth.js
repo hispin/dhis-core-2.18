@@ -1478,11 +1478,11 @@ mapfish.widgets.geostat.Choropleth = Ext.extend(Ext.Panel, {
             this.setMapViewMap();
         }
         else if (this.legend.value == G.conf.map_legendset_type_predefined) {
-            if (G.stores.predefinedMapLegendSet.isLoaded) {
+            if (G.stores.predefinedColorMapLegendSet.isLoaded) {
                 predefinedMapLegendSetStoreCallback.call(this);
             }
             else {
-                G.stores.predefinedMapLegendSet.load({scope: this, callback: function() {
+                G.stores.predefinedColorMapLegendSet.load({scope: this, callback: function() {
                     predefinedMapLegendSetStoreCallback.call(this);
                 }});
             }
