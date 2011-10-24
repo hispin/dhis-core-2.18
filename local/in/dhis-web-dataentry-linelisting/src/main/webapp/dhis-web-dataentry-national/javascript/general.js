@@ -71,21 +71,488 @@ function trim( stringToTrim )
     return stringToTrim.replace(/^\s+|\s+$/g,"");
 }
 
-//-----------------------------------------------------------------------------
-//Linelisting IDSP Form L Related Methods for Validation
-//-----------------------------------------------------------------------------
 
-function isIDSPLDaignosisFieldEntered( )
+//-----------------------------------------------------------------------------
+//Linelisting ColdChain Related Methods for Validation
+//-----------------------------------------------------------------------------
+function isColdChainRemarksFieldEntered( )
 {
     if(lastRecordNo == -1) return true;
 
-    var dataElementId = 1058;
+    var dataElementId = 5732;
     var field = document.getElementById( 'value[' + dataElementId + '].value:value[' + lastRecordNo + '].value' );
     var resVal = field.selectedIndex;
 
     if( resVal <= 0 )
     {
-        alert("Please enter Diagnosis Field in Previous Record" );
+        alert("Please enter Remarks Field in Previous Record" );
+        return false;
+    }
+    else
+    {
+        return true;
+    }
+}
+
+function validateColdChainEquipmentField( dataElementId, recordNo )
+{
+    var field = document.getElementById( 'value[' + dataElementId + '].value:value[' + recordNo + '].value' );
+    var resVal = field.selectedIndex;
+
+    if( isColdChainRemarksFieldEntered( recordNo ) )
+    {
+        if(resVal <= 0 || resVal == "---")
+        {
+            alert("Please Select Equipment");
+            field.options[0].selected = true;
+
+            setTimeout(function(){
+                field.focus();field.select();
+            },2);
+            return false;
+        }
+        else
+        {
+            saveLLbirthValue( dataElementId, recordNo );
+        }
+    }
+    else
+    {
+        field.options[0].selected = true;
+        return false;
+    }
+}
+
+function isColdChainEquipmentFieldEntered( recordNo )
+{
+    var dataElementId = 5726;
+    var field = document.getElementById( 'value[' + dataElementId + '].value:value[' + recordNo + '].value' );
+    alert( 'value[' + dataElementId + '].value:value[' + recordNo + '].value' );
+    var resVal = field.selectedIndex;
+    
+    if(resVal <= 0 || resVal == "---")
+    {
+        alert("Please select Equipment");
+        field.focus();
+        return false
+    }
+  
+    return true;
+}
+
+function validateColdChainMachineNumberField( dataElementId, recordNo )
+{
+    var field = document.getElementById( 'value[' + dataElementId + '].value:value[' + recordNo + '].value' );
+    var resVal = field.value;
+    resVal = resVal.replace(/^\s\s*/, '').replace(/\s\s*$/, '');
+
+    if( isColdChainEquipmentFieldEntered( recordNo ) )
+    {
+        if(resVal == null || resVal == "" )
+        {
+            alert("Please enter Machine Number");
+            field.value = "";
+            //field.focus();
+            setTimeout(function(){
+                field.focus();field.select();
+            },2);
+            return false;
+        }
+        else
+        {
+            saveLLbirthValue( dataElementId, recordNo );
+        }
+    }
+    else
+    {
+        field.value = "";
+
+        return false;
+    }
+}
+
+function isColdChainMachineNumberFieldEntered( recordNo )
+{
+    var dataElementId = 5727;
+    var field = document.getElementById( 'value[' + dataElementId + '].value:value[' + recordNo + '].value' );
+    var resVal = field.value;
+
+    if(resVal == null || resVal.replace(/^\s\s*/, '').replace(/\s\s*$/, '') == "" )
+    {
+        alert("Please enter Machine Number");
+        field.focus();
+        field.select();
+        return false;
+    }
+    else
+    {
+        return true;
+    }
+}
+
+function validateColdChainMachineWorkingField( dataElementId, recordNo )
+{
+    var field = document.getElementById( 'value[' + dataElementId + '].value:value[' + recordNo + '].value' );
+    var resVal = field.selectedIndex;
+
+    if( isColdChainMachineNumberFieldEntered( recordNo ) )
+    {
+        if(resVal <= 0 || resVal == "---")
+        {
+            alert("Please Select Whether Working?");
+            field.options[0].selected = true;
+
+            setTimeout(function(){
+                field.focus();field.select();
+            },2);
+            return false;
+        }
+        else
+        {
+            saveLLbirthValue( dataElementId, recordNo );
+        }
+    }
+    else
+    {
+        field.options[0].selected = true;
+        return false;
+    }
+}
+
+function isColdChainMachineWorkingFieldEntered( recordNo )
+{
+    var dataElementId = 5728;
+    var field = document.getElementById( 'value[' + dataElementId + '].value:value[' + recordNo + '].value' );
+    var resVal = field.selectedIndex;
+    
+    if( resVal <= 0 )
+    {
+        alert("Please select Whether Working?");
+        field.focus();
+        return false
+    }
+  
+    return true;
+}
+
+function validateColdChainDateOfBreakdownField( dataElementId, recordNo )
+{
+    var field = document.getElementById( 'value[' + dataElementId + '].value:value[' + recordNo + '].value' );
+    var resVal = field.value;
+
+    resVal = resVal.replace(/^\s\s*/, '').replace(/\s\s*$/, '');
+
+    if(resVal == null || resVal.replace(/^\s\s*/, '').replace(/\s\s*$/, '') == "" )
+    {
+        alert("Please enter Date of BreakDown");
+        field.value = "";
+        setTimeout(function(){
+            field.focus();field.select();
+        },2);
+        return false;
+    }
+    
+    var currentDate= new Date();
+    var mm = currentDate.getMonth()+1;
+    var dd = currentDate.getDate();
+    ms = new String(mm);
+    ds = new String(dd);
+    if ( ms.length == 1 ) ms = "0" + ms;
+    if ( ds.length == 1 ) ds = "0" + ds;
+    var dateString = currentDate.getFullYear() + "-" + ms + "-" + ds;
+
+    var startDateObj = document.getElementById('selStartDate');
+    var endDateObj = document.getElementById('selEndDate');
+    var startDate = startDateObj.value;
+    var endDate = endDateObj.value;
+
+    if( isColdChainMachineWorkingFieldEntered( recordNo ) )
+    {
+        if(isDate(resVal) )
+        {
+            if(resVal > dateString)
+            {
+                alert("The Selected date is greater than Today's Date");
+                field.value = "";
+                return false;
+            }
+            if(resVal < startDate || resVal > endDate)
+            {
+            	alert("The Selected Calendar date is not between Dataentry Month");
+                field.value = "";
+                return false;
+            }
+            else
+            {
+                saveLLbirthValue( dataElementId, recordNo );
+            }
+        }
+        else
+        {
+            field.value = "";
+            field.focus();
+        }
+    }
+    else
+    {
+        field.value = "";
+        return false;
+    }
+}
+
+function isColdChainDateOfBreakdownFieldEntered( recordNo )
+{
+    var dataElementId = 5729;
+    var field = document.getElementById( 'value[' + dataElementId + '].value:value[' + recordNo + '].value' );
+    var resVal = field.value;
+
+    if(resVal == null || resVal.replace(/^\s\s*/, '').replace(/\s\s*$/, '') == "" )
+    {
+        alert("Please enter Breakdown date");
+        field.focus();
+        field.select();
+        return false;
+    }
+
+    return true;
+}
+
+function validateColdChainDateOfIntimationField( dataElementId, recordNo )
+{
+    var field = document.getElementById( 'value[' + dataElementId + '].value:value[' + recordNo + '].value' );
+    var resVal = field.value;
+
+    resVal = resVal.replace(/^\s\s*/, '').replace(/\s\s*$/, '');
+
+    if(resVal == null || resVal.replace(/^\s\s*/, '').replace(/\s\s*$/, '') == "" )
+    {
+        alert("Please enter Date of Intimation");
+        field.value = "";
+        setTimeout(function(){
+            field.focus();field.select();
+        },2);
+        return false;
+    }
+    
+    var currentDate= new Date();
+    var mm = currentDate.getMonth()+1;
+    var dd = currentDate.getDate();
+    ms = new String(mm);
+    ds = new String(dd);
+    if ( ms.length == 1 ) ms = "0" + ms;
+    if ( ds.length == 1 ) ds = "0" + ds;
+    var dateString = currentDate.getFullYear() + "-" + ms + "-" + ds;
+
+    var startDateObj = document.getElementById('selStartDate');
+    var endDateObj = document.getElementById('selEndDate');
+    var startDate = startDateObj.value;
+    var endDate = endDateObj.value;
+
+    if( isColdChainDateOfBreakdownFieldEntered( recordNo ) )
+    {
+        if(isDate(resVal) )
+        {
+            if(resVal > dateString)
+            {
+                alert("The Selected date is greater than Today's Date");
+                field.value = "";
+                return false;
+            }
+            if(resVal < startDate || resVal > endDate)
+            {
+            	alert("The Selected Calendar date is not between Dataentry Month");
+                field.value = "";
+                return false;
+            }
+            else
+            {
+                saveLLbirthValue( dataElementId, recordNo );
+            }
+        }
+        else
+        {
+            field.value = "";
+            field.focus();
+        }
+    }
+    else
+    {
+        field.value = "";
+        return false;
+    }
+}
+
+function isColdChainDateOfIntimationFieldEntered( recordNo )
+{
+    var dataElementId = 5730;
+    var field = document.getElementById( 'value[' + dataElementId + '].value:value[' + recordNo + '].value' );
+    var resVal = field.value;
+
+    if(resVal == null || resVal.replace(/^\s\s*/, '').replace(/\s\s*$/, '') == "" )
+    {
+        alert("Please enter Intimation date");
+        field.focus();
+        field.select();
+        return false;
+    }
+
+    return true;
+}
+
+function validateColdChainDateOfRepairField( dataElementId, recordNo )
+{
+    var field = document.getElementById( 'value[' + dataElementId + '].value:value[' + recordNo + '].value' );
+    var resVal = field.value;
+
+    resVal = resVal.replace(/^\s\s*/, '').replace(/\s\s*$/, '');
+
+    if(resVal == null || resVal.replace(/^\s\s*/, '').replace(/\s\s*$/, '') == "" )
+    {
+        alert("Please enter Date of Intimation");
+        field.value = "";
+        setTimeout(function(){
+            field.focus();field.select();
+        },2);
+        return false;
+    }
+    
+    var currentDate= new Date();
+    var mm = currentDate.getMonth()+1;
+    var dd = currentDate.getDate();
+    ms = new String(mm);
+    ds = new String(dd);
+    if ( ms.length == 1 ) ms = "0" + ms;
+    if ( ds.length == 1 ) ds = "0" + ds;
+    var dateString = currentDate.getFullYear() + "-" + ms + "-" + ds;
+
+    var startDateObj = document.getElementById('selStartDate');
+    var endDateObj = document.getElementById('selEndDate');
+    var startDate = startDateObj.value;
+    var endDate = endDateObj.value;
+
+    if( isColdChainDateOfIntimationFieldEntered( recordNo ) )
+    {
+        if(isDate(resVal) )
+        {
+            if(resVal > dateString)
+            {
+                alert("The Selected date is greater than Today's Date");
+                field.value = "";
+                return false;
+            }
+            if(resVal < startDate || resVal > endDate)
+            {
+            	alert("The Selected Calendar date is not between Dataentry Month");
+                field.value = "";
+                return false;
+            }
+            else
+            {
+                saveLLbirthValue( dataElementId, recordNo );
+            }
+        }
+        else
+        {
+            field.value = "";
+            field.focus();
+        }
+    }
+    else
+    {
+        field.value = "";
+        return false;
+    }
+}
+
+function isColdChainDateOfRepairFieldEntered( recordNo )
+{
+    var dataElementId = 5731;
+    var field = document.getElementById( 'value[' + dataElementId + '].value:value[' + recordNo + '].value' );
+    var resVal = field.value;
+
+    if(resVal == null || resVal.replace(/^\s\s*/, '').replace(/\s\s*$/, '') == "" )
+    {
+        alert("Please enter Repair date");
+        field.focus();
+        field.select();
+        return false;
+    }
+
+    return true;
+}
+
+function validateColdChainRemarksField( dataElementId, recordNo )
+{
+    var field = document.getElementById( 'value[' + dataElementId + '].value:value[' + recordNo + '].value' );
+    var resVal = field.value;
+    resVal = resVal.replace(/^\s\s*/, '').replace(/\s\s*$/, '');
+
+    if( isColdChainDateOfRepairFieldEntered( recordNo ) )
+    {
+        if(resVal == null || resVal == "" )
+        {
+            alert("Please enter Remarks");
+            field.value = "";
+            setTimeout(function(){
+                field.focus();field.select();
+            },2);
+            return false;
+        }
+        if (isInteger(resVal))
+        {
+            alert("For Remarks field Only Digits are not Allowed");
+            field.value = "";
+            setTimeout(function(){
+                field.focus();field.select();
+            },2);
+            return false;
+        }
+        if(havingSpecialChar(resVal))
+        {
+            alert("For Remarks field special characters are not allowed");
+            field.value = "";
+            setTimeout(function(){
+                field.focus();field.select();
+            },2);
+            return false;
+        }
+        if(isFirstLetter(resVal))
+        {
+            alert("Remarks field should start with Letter");
+            field.value = "";
+            setTimeout(function(){
+                field.focus();field.select();
+            },2);
+            return false;
+        }
+        else
+        {
+            saveLLbirthValue( dataElementId, recordNo );
+        }
+        addLLColdChainNewRow( resVal, 5726, recordNo );
+    }
+    else
+    {
+        field.value = "";
+        return false;
+    }
+}
+
+//-----------------------------------------------------------------------------
+//Linelisting IDSP Form L Related Methods for Validation
+//-----------------------------------------------------------------------------
+
+function isIDSPLOutcomeFieldEntered( )
+{
+    if(lastRecordNo == -1) return true;
+
+    var dataElementId = 3120;
+    var field = document.getElementById( 'value[' + dataElementId + '].value:value[' + lastRecordNo + '].value' );
+    var resVal = field.selectedIndex;
+
+    if( resVal <= 0 )
+    {
+        alert("Please enter Outcome Field in Previous Record" );
         return false;
     }
     else
@@ -100,7 +567,7 @@ function validateIDSPLNameField( dataElementId, recordNo )
     var resVal = field.value;
     resVal = resVal.replace(/^\s\s*/, '').replace(/\s\s*$/, '');
 
-    if( isIDSPLDaignosisFieldEntered() )
+    if( isIDSPLOutcomeFieldEntered() )
     {
         if(resVal == null || resVal == "" )
         {
@@ -256,8 +723,6 @@ function validateIDSPLSexField( dataElementId, recordNo )
         else
         {
             saveLLbirthValue( dataElementId, recordNo );
-            document.getElementById(recordNo).style.display = 'block';
-            document.getElementById('actions').style.display = 'block';
         }
     }
     else
@@ -324,8 +789,6 @@ function validateIDSPLAddressField( dataElementId, recordNo )
         else
         {
             saveLLbirthValue( dataElementId, recordNo );
-            document.getElementById(recordNo).style.display = 'block';
-            document.getElementById('actions').style.display = 'block';
         }
     }
     else
@@ -479,14 +942,62 @@ function validateIDSPLDaignosisField( dataElementId, recordNo )
         else
         {
             saveLLbirthValue( dataElementId, recordNo );
-            //document.getElementById(recordNo).style.display = 'block';
-           // document.getElementById('actions').style.display = 'block';
         }
-        addLLIDSPLNewRow( resVal, 1053, recordNo );
+        
     }
     else
     {
         field.value = "";
+        return false;
+    }
+}
+
+function isIDSPLDaignosisFieldEntered( recordNo )
+{
+    var dataElementId = 1058;
+    var field = document.getElementById( 'value[' + dataElementId + '].value:value[' + recordNo + '].value' );
+    //alert( field + '---' + 'value[' + dataElementId + '].value:value[' + recordNo + '].value' );
+    var resVal = field.value;
+
+    
+    if( resVal == null || resVal.replace(/^\s\s*/, '').replace(/\s\s*$/, '') == "" )
+    {
+        alert("Please enter Diagnosis Field" );
+        return false;
+    }
+    else
+    {
+        return true;
+    }
+}
+
+function validateIDSPLOutcomeField( dataElementId, recordNo )
+{
+    var field = document.getElementById( 'value[' + dataElementId + '].value:value[' + recordNo + '].value' );
+    var resVal = field.selectedIndex;
+
+    if( isIDSPLDaignosisFieldEntered( recordNo ) )
+    {
+        if( resVal <= 0 )
+        {
+            alert("Please Select Outcome");
+            field.options[0].selected = false;
+
+            setTimeout(function(){
+                field.focus();field.select();
+            },2);
+            return false;
+        }
+        else
+        {
+            saveLLbirthValue( dataElementId, recordNo );
+            addLLIDSPLNewRow( resVal, 1053, recordNo );
+        }
+    }
+    else
+    {
+        field.options[0].selected = true;
+
         return false;
     }
 }
@@ -1981,7 +2492,8 @@ function saveLLbirthValue( dataElementId, recordNo )
     if(dataElementId == 1022 || dataElementId == 1025 || dataElementId == 1029 || dataElementId == 1030 || dataElementId == 1031 || 
     		dataElementId == 1035 || dataElementId == 1036 || dataElementId == 1037 || dataElementId == 1038 || 
     		dataElementId == 1039 || dataElementId == 1040 || dataElementId == 1043 || dataElementId == 1046 || 
-    		dataElementId == 1050 || dataElementId == 1051 || dataElementId == 1052 || dataElementId == 1054
+    		dataElementId == 1050 || dataElementId == 1051 || dataElementId == 1052 || dataElementId == 1054 || 
+    		dataElementId == 5726 || dataElementId == 5728 || dataElementId == 3120
     		)
     {
         resVal = field.options[field.selectedIndex].value;

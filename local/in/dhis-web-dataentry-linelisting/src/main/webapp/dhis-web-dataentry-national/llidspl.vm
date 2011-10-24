@@ -123,7 +123,7 @@
             </td>
         #end
 
-		#set($count1 = $count1+1)
+		#set( $count1 = $count1+1 )
 		#set( $lastRecord = $llDataValue.getRecordNo() )
 	#end
 	#set( $slno = $slno + 1 )

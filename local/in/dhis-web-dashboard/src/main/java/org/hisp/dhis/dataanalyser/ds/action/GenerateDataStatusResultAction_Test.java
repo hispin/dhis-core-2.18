@@ -516,9 +516,9 @@ implements Action
         
         
         List<DataSetCompletenessResult> dsResults = new ArrayList<DataSetCompletenessResult>();
-        String criteria = "ratio";
+       // String criteria = "ratio";
         
-        DataSetCompletenessService completenessService = serviceProvider.provide( criteria );
+       // DataSetCompletenessService completenessService = serviceProvider.provide( criteria );
         
         while ( orgUnitListIterator.hasNext() )
         {
@@ -541,7 +541,7 @@ implements Action
 */            
             periodIterator = periodList.iterator();
 
-            Period p;
+           // Period p;
 
            // double dataStatusPercentatge;
             
@@ -555,7 +555,7 @@ implements Action
             while ( periodIterator.hasNext() )
             {
                 //System.out.println("Inside period Iterator Loop");
-                p = (Period) periodIterator.next();
+               // p = (Period) periodIterator.next();
                 //periodInfo = "" + p.getId();
                 //dataElementCount = 0;
                 
@@ -634,12 +634,12 @@ implements Action
                 {
                     //System.out.println( "Inside Not includeZeros " );
                     
-                    dsResults = new ArrayList<DataSetCompletenessResult>( completenessService.getDataSetCompleteness( p.getId(), o.getId(), selDataSet.getId() ) );
+                   // dsResults = new ArrayList<DataSetCompletenessResult>( completenessService.getDataSetCompleteness( p.getId(), o.getId(), selDataSet.getId() ) );
                 }
                 else
                 {
                    // System.out.println( "Inside includeZeros " );
-                    dsResults = new ArrayList<DataSetCompletenessResult>( completenessService.getDataSetCompleteness( p.getId(), o.getId(), selDataSet.getId() ) );
+                   // dsResults = new ArrayList<DataSetCompletenessResult>( completenessService.getDataSetCompleteness( p.getId(), o.getId(), selDataSet.getId() ) );
                 }
                 /*
 

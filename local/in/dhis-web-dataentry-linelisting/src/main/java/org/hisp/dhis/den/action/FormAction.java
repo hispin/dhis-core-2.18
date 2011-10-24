@@ -1005,7 +1005,7 @@ public class FormAction
                                         LLDataSets.LLIDSPL_OUTCOME
                                 };
                 
-                for(int i = 0; i < 7; i++ )
+                for( int i = 0; i < 7; i++ )
                 {
                         LLDataValue llDv = tempLLDVList2.get(i);
                         if(tempLLDVList2.get(i).getDataElement() == null || tempLLDVList2.get(i).getDataElement().getId() != llbDes[i])
