@@ -195,7 +195,8 @@ public class GenerateMetaDataReportResultAction
     {
         this.incID = incID;
     }
-
+    
+    @SuppressWarnings("unused")
     private String raFolderName;
 
     // -------------------------------------------------------------------------
@@ -1372,10 +1373,11 @@ public class GenerateMetaDataReportResultAction
                         .addCell( new Label( colStart + 6, rowStart, indicator.getNumeratorDescription(), wCellformat ) );
                     sheet0.addCell( new Label( colStart + 7, rowStart, indicator.getDenominatorDescription(),
                         wCellformat ) );
-                    sheet0.addCell( new Label( colStart + 8, rowStart, indicator.getNumeratorAggregationOperator(),
+                    //sheet0.addCell( new Label( colStart + 8, rowStart, indicator.getNumeratorAggregationOperator(),wCellformat ) );
+                    sheet0.addCell( new Label( colStart + 8, rowStart, indicator.getNumeratorDescription(),
                         wCellformat ) );
-                    sheet0.addCell( new Label( colStart + 9, rowStart, indicator.getDenominatorAggregationOperator(),
-                        wCellformat ) );
+                    //sheet0.addCell( new Label( colStart + 9, rowStart, indicator.getDenominatorAggregationOperator(),wCellformat ) );
+                    sheet0.addCell( new Label( colStart + 9, rowStart, indicator.getDenominatorDescription(),wCellformat ) );
                     sheet0.addCell( new Label( colStart + 10, rowStart, indicator.getDescription(), wCellformat ) );
                     sheet0.addCell( new Label( colStart + 11, rowStart, indicator.getShortName(), wCellformat ) );
                     sheet0.addCell( new Label( colStart + 12, rowStart, indicator.getUrl(), wCellformat ) );
@@ -1514,10 +1516,10 @@ public class GenerateMetaDataReportResultAction
                             wCellformat ) );
                         sheet0.addCell( new Label( colStart + 7, rowStart, indicator.getDenominatorDescription(),
                             wCellformat ) );
-                        sheet0.addCell( new Label( colStart + 8, rowStart, indicator.getNumeratorAggregationOperator(),
-                            wCellformat ) );
-                        sheet0.addCell( new Label( colStart + 9, rowStart, indicator
-                            .getDenominatorAggregationOperator(), wCellformat ) );
+                       // sheet0.addCell( new Label( colStart + 8, rowStart, indicator.getNumeratorAggregationOperator(),wCellformat ) );
+                        sheet0.addCell( new Label( colStart + 8, rowStart, indicator.getNumeratorDescription(),wCellformat ) );
+                        //sheet0.addCell( new Label( colStart + 9, rowStart, indicator.getDenominatorAggregationOperator(), wCellformat ) );
+                        sheet0.addCell( new Label( colStart + 9, rowStart, indicator.getDenominatorDescription(), wCellformat ) );
                         sheet0.addCell( new Label( colStart + 10, rowStart, indicator.getDescription(), wCellformat ) );
                         sheet0.addCell( new Label( colStart + 11, rowStart, indicator.getShortName(), wCellformat ) );
                         sheet0.addCell( new Label( colStart + 12, rowStart, indicator.getUrl(), wCellformat ) );

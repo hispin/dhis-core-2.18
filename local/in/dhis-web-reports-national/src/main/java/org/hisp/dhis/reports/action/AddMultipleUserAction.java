@@ -2,6 +2,7 @@ package org.hisp.dhis.reports.action;
 
 import java.io.File;
 import java.util.Collection;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -74,8 +75,9 @@ public class AddMultipleUserAction
         WritableSheet sheet0 = outputReportWorkbook.getSheet( sheetNo );
         Integer rowStart = Integer.parseInt( sheet0.getCell( 8, 0 ).getContents() );
         Integer rowEnd = Integer.parseInt( sheet0.getCell( 8, 1 ).getContents() );
+        System.out.println( "User  Creation Start Time is : " + new Date() );
         System.out.println( "Row Start : " + rowStart + " ,Row End : "  + rowEnd );
-        
+        int orgunitcount = 0;
         for( int i = rowStart ; i <= rowEnd ; i++ )
         {
             Integer orgUnitId = Integer.parseInt( sheet0.getCell( 0, i ).getContents() );
@@ -123,14 +125,16 @@ public class AddMultipleUserAction
             userStore.addUser( user );
             userStore.addUserCredentials( userCredentials );
             System.out.println( orgUnitname + " Created" );
+            orgunitcount++;
         }
        
         outputReportWorkbook.close();
         
         System.out.println( "**********************************************" );
         System.out.println( "MULTIPLE USER CREATION IS FINISHED" );
+        System.out.println( "Total No of User Created : -- " + orgunitcount );
         System.out.println( "**********************************************" );
-       
+        System.out.println( "User  Creation End Time is : " + new Date() );
         return SUCCESS;
     }
 }

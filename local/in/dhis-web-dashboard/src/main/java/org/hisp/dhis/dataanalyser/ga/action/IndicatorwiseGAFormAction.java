@@ -43,7 +43,6 @@ import org.hisp.dhis.organisationunit.OrganisationUnitGroupService;
 import org.hisp.dhis.period.DailyPeriodType;
 import org.hisp.dhis.period.FinancialAprilPeriodType;
 import org.hisp.dhis.period.MonthlyPeriodType;
-import org.hisp.dhis.period.OnChangePeriodType;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodService;
 import org.hisp.dhis.period.PeriodType;
@@ -230,7 +229,8 @@ public class IndicatorwiseGAFormAction implements Action
         {
             String pTName = ptIterator.next().getName();
            // if ( pTName.equalsIgnoreCase( FinancialAprilPeriodType.NAME ) || pTName.equalsIgnoreCase( TwoYearlyPeriodType.NAME ) || pTName.equalsIgnoreCase( OnChangePeriodType.NAME ) )
-            if ( pTName.equalsIgnoreCase( TwoYearlyPeriodType.NAME ) || pTName.equalsIgnoreCase( OnChangePeriodType.NAME ) )    
+            //if ( pTName.equalsIgnoreCase( TwoYearlyPeriodType.NAME ) || pTName.equalsIgnoreCase( OnChangePeriodType.NAME ) ) 
+            if ( pTName.equalsIgnoreCase( TwoYearlyPeriodType.NAME ) )    
             {
                 ptIterator.remove();
             }

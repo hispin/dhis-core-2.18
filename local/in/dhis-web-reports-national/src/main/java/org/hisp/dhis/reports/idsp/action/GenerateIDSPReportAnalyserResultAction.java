@@ -1109,6 +1109,16 @@ implements Action
 
                         CellFormat cellFormat = cell.getCellFormat();
                         
+                        String tstr1 =  tempStr.trim();
+                        if ( tstr1.equalsIgnoreCase( "UT" ) )
+                        {
+                            tempStr = "Under Treatment";
+                        }
+                        if ( tstr1.equalsIgnoreCase( "EXP" ) )
+                        {
+                            tempStr = "Expired";
+                        }
+                        
                         if ( sType.equalsIgnoreCase( "llidsplabdataelement" ) )
                         {
                             //System.out.println( ",Inside LL IDSP Lab Test values" );
