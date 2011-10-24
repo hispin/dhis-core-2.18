@@ -27,57 +27,31 @@ package org.hisp.dhis.reportsheet.importing.action;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.io.File;
-import java.io.FileInputStream;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
-import org.apache.poi.hssf.usermodel.HSSFWorkbook;
-import org.apache.poi.ss.usermodel.Sheet;
-import org.apache.poi.ss.usermodel.Workbook;
-import org.hisp.dhis.i18n.I18n;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroup;
 import org.hisp.dhis.organisationunit.comparator.OrganisationUnitNameComparator;
 import org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager;
+import org.hisp.dhis.reportsheet.importing.ViewDataGeneric;
 import org.hisp.dhis.reportsheet.importitem.ImportItem;
 import org.hisp.dhis.reportsheet.importitem.ImportReport;
-import org.hisp.dhis.reportsheet.importitem.ImportReportService;
-import org.hisp.dhis.reportsheet.importitem.comparator.ImportItemComparator;
-import org.hisp.dhis.reportsheet.importing.ImportItemValue;
-import org.hisp.dhis.reportsheet.importing.ImportItemValueByOrganisationUnit;
-import org.hisp.dhis.reportsheet.state.SelectionManager;
-import org.hisp.dhis.reportsheet.utils.ExcelUtils;
-
-import com.opensymphony.xwork2.Action;
+import org.hisp.dhis.reportsheet.preview.action.XMLStructureResponseImport;
 
 /**
- * @author Chau Thu Tran
+ * @author Dang Duy Hieu
  * @version $Id
  */
 
 public class ViewDataOrganizationGroupAction
-    implements Action
+    extends ViewDataGeneric
 {
     // -------------------------------------------------------------------------
     // Dependency
     // -------------------------------------------------------------------------
-
-    private ImportReportService importReportService;
-
-    public void setImportReportService( ImportReportService importReportService )
-    {
-        this.importReportService = importReportService;
-    }
-
-    private SelectionManager selectionManager;
-
-    public void setSelectionManager( SelectionManager selectionManager )
-    {
-        this.selectionManager = selectionManager;
-    }
 
     private OrganisationUnitSelectionManager organisationUnitSelectionManager;
 
@@ -87,114 +61,65 @@ public class ViewDataOrganizationGroupAction
     }
 
     // -------------------------------------------------------------------------
-    // Inputs && Outputs
-    // -------------------------------------------------------------------------
-
-    private List<ImportItemValueByOrganisationUnit> importItemValueByOrgUnits;
-
-    private String message;
-
-    private I18n i18n;
-
-    // -------------------------------------------------------------------------
-    // Getters and Setters
-    // -------------------------------------------------------------------------
-
-    public List<ImportItemValueByOrganisationUnit> getImportItemValueByOrgUnits()
-    {
-        return importItemValueByOrgUnits;
-    }
-
-    public String getMessage()
-    {
-        return message;
-    }
-
-    public void setI18n( I18n i18n )
-    {
-        this.i18n = i18n;
-    }
-
-    // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
 
-    public String execute()
+    @Override
+    public void executeViewData( ImportReport importReport, List<ImportItem> importItems )
     {
-        try
+        OrganisationUnit unit = organisationUnitSelectionManager.getSelectedOrganisationUnit();
+
+        if ( unit != null )
         {
-            OrganisationUnit unit = organisationUnitSelectionManager.getSelectedOrganisationUnit();
+            List<ImportItem> orgUnitListingImportItems = new ArrayList<ImportItem>();
 
-            if ( unit != null )
+            setUpImportItems( importReport, unit, importItems, orgUnitListingImportItems );
+
+            try
             {
-                FileInputStream inputStream = new FileInputStream( new File( selectionManager.getUploadFilePath() ) );
+                xmlStructureResponse = new XMLStructureResponseImport( selectionManager.getUploadFilePath(),
+                    importReportService.getAllSheet(), orgUnitListingImportItems, true ).getXml();
+            }
+            catch ( Exception e )
+            {
+                e.printStackTrace();
+            }
+        }
+    }
 
-                Workbook wb = new HSSFWorkbook( inputStream );
+    // -------------------------------------------------------------------------
+    // Supportive methods
+    // -------------------------------------------------------------------------
 
-                ImportReport importReport = importReportService
-                    .getImportReport( selectionManager.getSelectedReportId() );
+    private void setUpImportItems( ImportReport importReport, OrganisationUnit selectedUnit,
+        List<ImportItem> importItemsSource, List<ImportItem> importItemsDest )
+    {
+        for ( OrganisationUnitGroup organisationUnitGroup : importReport.getOrganisationUnitGroups() )
+        {
+            List<OrganisationUnit> organisationUnits = new ArrayList<OrganisationUnit>( getOrganisationUnits(
+                organisationUnitGroup, selectedUnit ) );
 
-                List<ImportItem> importItems = new ArrayList<ImportItem>( importReport.getImportItems() );
+            Collections.sort( organisationUnits, new OrganisationUnitNameComparator() );
 
-                if ( importItems == null || importItems.isEmpty() )
+            int row = 0;
+
+            for ( OrganisationUnit o : organisationUnits )
+            {
+                for ( ImportItem importItem : importItemsSource )
                 {
-                    message = i18n.getString( "import_excel_items_cannot_be_empty" );
+                    ImportItem item = new ImportItem();
+                    
+                    item.setSheetNo( importItem.getSheetNo() );
+                    item.setRow( importItem.getRow() + row );
+                    item.setColumn( importItem.getColumn() );
+                    item.setExpression( o.getId() + "_" + importItem.getExpression() );
 
-                    return ERROR;
+                    importItemsDest.add( item );
                 }
 
-                Collections.sort( importItems, new ImportItemComparator() );
-
-                importItemValueByOrgUnits = new ArrayList<ImportItemValueByOrganisationUnit>();
-
-                for ( OrganisationUnitGroup organisationUnitGroup : importReport.getOrganisationUnitGroups() )
-                {
-                    List<OrganisationUnit> organisationUnits = new ArrayList<OrganisationUnit>( getOrganisationUnits(
-                        organisationUnitGroup, unit ) );
-
-                    Collections.sort( organisationUnits, new OrganisationUnitNameComparator() );
-
-                    int row = 0;
-
-                    for ( OrganisationUnit o : organisationUnits )
-                    {
-                        ImportItemValueByOrganisationUnit importItemValueByOrgUnit = new ImportItemValueByOrganisationUnit(
-                            o );
-                        List<ImportItemValue> importItemValues = new ArrayList<ImportItemValue>();
-
-                        for ( ImportItem importItem : importItems )
-                        {
-                            Sheet sheet = wb.getSheetAt( importItem.getSheetNo() - 1 );
-
-                            String value = ExcelUtils.readValueImportingByPOI( importItem.getRow() + row, importItem
-                                .getColumn(), sheet );
-
-                            if ( value.length() > 0 )
-                            {
-                                ImportItemValue importItemValue = new ImportItemValue( importItem, value );
-                                importItemValues.add( importItemValue );
-                            }
-
-                        }// end for (ImportItem ...
-
-                        row++;
-
-                        importItemValueByOrgUnit.setImportItemValues( importItemValues );
-
-                        importItemValueByOrgUnits.add( importItemValueByOrgUnit );
-
-                    }// end for (OrganisationUnit ...
-
-                } // end for ( OrganisationUnitGroup ...
-
-            }// end if (organisationUnit ...
+                row++;
+            }
         }
-        catch ( Exception ex )
-        {
-            ex.printStackTrace();
-        }
-
-        return SUCCESS;
     }
 
     private Collection<OrganisationUnit> getOrganisationUnits( OrganisationUnitGroup group, OrganisationUnit parentUnit )

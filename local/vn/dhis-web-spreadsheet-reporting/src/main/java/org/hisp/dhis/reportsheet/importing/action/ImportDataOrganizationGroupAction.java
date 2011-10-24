@@ -27,22 +27,13 @@ package org.hisp.dhis.reportsheet.importing.action;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.Date;
-
-import org.apache.poi.ss.usermodel.Sheet;
-import org.apache.poi.ss.usermodel.Workbook;
-import org.hisp.dhis.dataelement.DataElement;
-import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
-import org.hisp.dhis.dataelement.DataElementOperand;
-import org.hisp.dhis.datavalue.DataValue;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.period.Period;
-import org.hisp.dhis.reportsheet.importitem.ImportItem;
 import org.hisp.dhis.reportsheet.importing.ImportDataGeneric;
-import org.hisp.dhis.reportsheet.utils.ExcelUtils;
 
 /**
  * @author Chau Thu Tran
+ * @author Dang Duy Hieu
  * @version $Id$
  */
 
@@ -54,60 +45,14 @@ public class ImportDataOrganizationGroupAction
     // -------------------------------------------------------------------------
 
     @Override
-    public void executeToImport( OrganisationUnit organisationUnit, Period period, String[] importItemIds, Workbook wb )
+    public void executeToImport( OrganisationUnit organisationUnit, Period period, String[] importItemIds )
     {
         for ( int i = 0; i < importItemIds.length; i++ )
         {
-            int orgunitId = Integer.parseInt( importItemIds[i].split( "-" )[0] );
+            OrganisationUnit o = organisationUnitService.getOrganisationUnit( Integer.parseInt( importItemIds[i]
+                .split( "-" )[0] ) );
 
-            OrganisationUnit o = organisationUnitService.getOrganisationUnit( orgunitId );
-
-            int row = Integer.parseInt( importItemIds[i].split( "-" )[1] );
-
-            int importItemId = Integer.parseInt( importItemIds[i].split( "-" )[2] );
-
-            ImportItem importItem = importReportService.getImportItem( importItemId );
-
-            if ( importItem.getId() == importItemId )
-            {
-                writeDataValue( importItem, wb, row, o, period );
-            }
-        }
-    }
-
-    private void writeDataValue( ImportItem importItem, Workbook wb, int row, OrganisationUnit o, Period period )
-    {
-        Sheet sheet = wb.getSheetAt( importItem.getSheetNo() - 1 );
-
-        String value = ExcelUtils.readValueImportingByPOI( importItem.getRow() + row, importItem.getColumn(), sheet );
-
-        if ( value.length() > 0 )
-        {
-            DataElementOperand operand = expressionService.getOperandsInExpression( importItem.getExpression() )
-                .iterator().next();
-
-            DataElement dataElement = dataElementService.getDataElement( operand.getDataElementId() );
-
-            DataElementCategoryOptionCombo optionCombo = categoryService.getDataElementCategoryOptionCombo( operand
-                .getOptionComboId() );
-
-            String storedBy = currentUserService.getCurrentUsername();
-
-            DataValue dataValue = dataValueService.getDataValue( o, dataElement, period, optionCombo );
-
-            if ( dataValue == null )
-            {
-                dataValue = new DataValue( dataElement, period, o, value + "", storedBy, new Date(), null, optionCombo );
-                dataValueService.addDataValue( dataValue );
-            }
-            else
-            {
-                dataValue.setValue( value + "" );
-                dataValue.setTimestamp( new Date() );
-                dataValue.setStoredBy( storedBy );
-
-                dataValueService.updateDataValue( dataValue );
-            }
+            addDataValue( o, period, importItemIds[i].split( "-" )[1], importItemIds[i].split( "-" )[2] );
         }
     }
 }

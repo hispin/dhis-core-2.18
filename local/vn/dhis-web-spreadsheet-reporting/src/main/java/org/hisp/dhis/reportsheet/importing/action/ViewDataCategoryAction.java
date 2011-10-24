@@ -59,7 +59,7 @@ public class ViewDataCategoryAction
             setUpImportItems( importReport, importItems, categoryImportItems );
 
             xmlStructureResponse = new XMLStructureResponseImport( selectionManager.getUploadFilePath(),
-                importReportService.getAllSheet(), categoryImportItems, true, ImportReport.TYPE.CATEGORY ).getXml();
+                importReportService.getAllSheet(), categoryImportItems, true ).getXml();
         }
         catch ( Exception ex )
         {
@@ -83,13 +83,12 @@ public class ViewDataCategoryAction
                 for ( DataElement dataElement : dataElementGroup.getDataElements() )
                 {
                     ImportItem item = new ImportItem();
-
-                    item.setId( importItem.getId() );
-
-                    item.setExpression( importItem.getExpression().replace( "*", dataElement.getId() + "" ) );
-
+                    
+                    item.setSheetNo( importItem.getSheetNo() );
                     item.setRow( rowBegin++ );
-
+                    item.setColumn( importItem.getColumn() );
+                    item.setExpression( importItem.getExpression().replace( "*", dataElement.getId() + "" ) );
+                    
                     importItemsDest.add( item );
                 }
             }

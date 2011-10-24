@@ -45,7 +45,6 @@ import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.util.CellRangeAddress;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.hisp.dhis.reportsheet.importitem.ImportItem;
-import org.hisp.dhis.reportsheet.importitem.ImportReport;
 
 /**
  * 
@@ -97,7 +96,7 @@ public class XMLStructureResponseImport
      */
 
     public XMLStructureResponseImport( String pathFileName, Collection<Integer> collectSheets,
-        List<ImportItem> importItems, boolean bWriteDescription, String type )
+        List<ImportItem> importItems, boolean bWriteDescription )
         throws Exception
     {
         this.cleanUpForResponse();
@@ -113,7 +112,7 @@ public class XMLStructureResponseImport
             this.WORKBOOK = new XSSFWorkbook( inputStream );
         }
 
-        this.writeFormattedXML( collectSheets, importItems, bWriteDescription, type );
+        this.writeFormattedXML( collectSheets, importItems, bWriteDescription );
     }
 
     // -------------------------------------------------------------------------
@@ -126,7 +125,7 @@ public class XMLStructureResponseImport
     }
 
     private void writeFormattedXML( Collection<Integer> collectSheets, List<ImportItem> importItems,
-        boolean bWriteDescription, String type )
+        boolean bWriteDescription )
         throws Exception
     {
         if ( bWriteDescription )
@@ -138,7 +137,7 @@ public class XMLStructureResponseImport
 
         for ( Integer sheet : collectSheets )
         {
-            this.writeData( sheet, importItems, type );
+            this.writeData( sheet, importItems );
         }
 
         xml.append( WORKBOOK_CLOSETAG );
@@ -157,7 +156,7 @@ public class XMLStructureResponseImport
         xml.append( MERGEDCELL_CLOSETAG );
     }
 
-    private void writeData( int sheetNo, List<ImportItem> importItems, String TYPE )
+    private void writeData( int sheetNo, List<ImportItem> importItems )
     {
         Sheet s = WORKBOOK.getSheetAt( sheetNo - 1 );
 
@@ -165,8 +164,8 @@ public class XMLStructureResponseImport
         xml.append( "<name><![CDATA[" + s.getSheetName() + "]]></name>" );
 
         int run = 0;
-        int i = 0;
-        int j = 0;
+        int i = 0;// Presented as row index
+        int j = 0;// Presented as column index
 
         for ( Row row : s )
         {
@@ -188,12 +187,8 @@ public class XMLStructureResponseImport
                         if ( (importItem.getSheetNo() == sheetNo) && (importItem.getRow() == (i + 1))
                             && (importItem.getColumn() == (j + 1)) )
                         {
-                            if ( TYPE.equals( ImportReport.TYPE.NORMAL )
-                                || TYPE.equals( ImportReport.TYPE.CATEGORY ) )
-                            {
-                                xml.append( " id='" + importItem.getExpression() + "'>" );
-                            }
-
+                            xml.append( " id='" + importItem.getExpression() + "'>" );
+                            // If there is any importItem matched the condition then break out the for loop
                             break;
                         }
 
