@@ -49,6 +49,8 @@ import org.hisp.dhis.minmax.validation.MinMaxValuesGenerationService;
 import org.hisp.dhis.options.SystemSettingManager;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.period.Period;
+import org.hisp.dhis.system.filter.OrganisationUnitWithDataSetsFilter;
+import org.hisp.dhis.system.util.FilterUtils;
 import org.hisp.dhis.system.util.ListUtils;
 import org.hisp.dhis.validation.ValidationResult;
 import org.hisp.dhis.validation.ValidationRule;
@@ -203,6 +205,14 @@ public class SectionFormUtils
         }
 
         return dataValueMap;
+    }
+
+    public List<OrganisationUnit> organisationUnitWithDataSetsFilter( Collection<OrganisationUnit> organisationUnits )
+    {
+        List<OrganisationUnit> ous = new ArrayList<OrganisationUnit>( organisationUnits );
+        FilterUtils.filter( ous, new OrganisationUnitWithDataSetsFilter() );
+
+        return ous;
     }
 
     // -------------------------------------------------------------------------
