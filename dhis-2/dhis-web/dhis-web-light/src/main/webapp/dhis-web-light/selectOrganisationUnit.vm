@@ -5,6 +5,11 @@
 <ul>
 #foreach( $organisationUnit in $organisationUnits )
 	<li><a href="selectDataSet.action?organisationUnitId=$organisationUnit.id">$!encoder.htmlEncode( ${organisationUnit.name} )</a></li>
+	#if( $organisationUnit.children.size() > 0 )
+		#foreach( $child in $sectionFormUtils.organisationUnitWithDataSetsFilter( $organisationUnit.children ))
+			<li>- <a href="selectDataSet.action?organisationUnitId=$child.id">$!encoder.htmlEncode( ${child.name} )</a></li>
+		#end
+	#end
 #end
 </ul>
 </p>

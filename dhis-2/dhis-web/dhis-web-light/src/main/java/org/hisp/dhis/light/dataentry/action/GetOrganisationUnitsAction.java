@@ -31,10 +31,9 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import org.hisp.dhis.light.dataentry.utils.SectionFormUtils;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.comparator.OrganisationUnitNameComparator;
-import org.hisp.dhis.system.filter.OrganisationUnitWithDataSetsFilter;
-import org.hisp.dhis.system.util.FilterUtils;
 import org.hisp.dhis.user.CurrentUserService;
 import org.hisp.dhis.user.User;
 
@@ -55,6 +54,18 @@ public class GetOrganisationUnitsAction
     public void setCurrentUserService( CurrentUserService currentUserService )
     {
         this.currentUserService = currentUserService;
+    }
+
+    private SectionFormUtils sectionFormUtils;
+
+    public void setSectionFormUtils( SectionFormUtils sectionFormUtils )
+    {
+        this.sectionFormUtils = sectionFormUtils;
+    }
+
+    public SectionFormUtils getSectionFormUtils()
+    {
+        return sectionFormUtils;
     }
 
     // -------------------------------------------------------------------------
@@ -81,7 +92,7 @@ public class GetOrganisationUnitsAction
         {
             organisationUnits = new ArrayList<OrganisationUnit>( user.getOrganisationUnits() );
             Collections.sort( organisationUnits, new OrganisationUnitNameComparator() );
-            FilterUtils.filter( organisationUnits, new OrganisationUnitWithDataSetsFilter() );
+            organisationUnits = sectionFormUtils.organisationUnitWithDataSetsFilter( organisationUnits );
         }
 
         return SUCCESS;

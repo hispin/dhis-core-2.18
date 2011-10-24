@@ -20,6 +20,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 
   <bean id="org.hisp.dhis.light.dataentry.action.GetOrganisationUnitsAction" class="org.hisp.dhis.light.dataentry.action.GetOrganisationUnitsAction">
     <property name="currentUserService" ref="org.hisp.dhis.user.CurrentUserService" />
+    <property name="sectionFormUtils" ref="org.hisp.dhis.light.dataentry.utils.SectionFormUtils" />
   </bean>
 
   <bean id="org.hisp.dhis.light.dataentry.action.GetDataSetsAction" class="org.hisp.dhis.light.dataentry.action.GetDataSetsAction">
