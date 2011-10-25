@@ -152,8 +152,8 @@ public class GenerateReportOrgGroupListingAction
                 if ( reportItem.getItemType().equalsIgnoreCase( ExportItem.TYPE.ORGANISATION )
                     && (!organisationUnits.isEmpty()) )
                 {
-                    ExcelUtils.writeValueByPOI( rowBegin, reportItem.getColumn(), String.valueOf( organisationUnitGroup
-                        .getName() ), ExcelUtils.TEXT, sheet, this.csText12BoldCenter );
+                    ExcelUtils.writeValueByPOI( rowBegin, reportItem.getColumn(), organisationUnitGroup.getName(),
+                        ExcelUtils.TEXT, sheet, this.csText12BoldCenter );
                 }
                 else if ( reportItem.getItemType().equalsIgnoreCase( ExportItem.TYPE.SERIAL )
                     && (!organisationUnits.isEmpty()) )
@@ -210,8 +210,8 @@ public class GenerateReportOrgGroupListingAction
                 }
             }
 
-            if ( (reportItem.getItemType().equalsIgnoreCase( ExportItem.TYPE.DATAELEMENT ) || reportItem
-                .getItemType().equalsIgnoreCase( ExportItem.TYPE.INDICATOR ))
+            if ( (reportItem.getItemType().equalsIgnoreCase( ExportItem.TYPE.DATAELEMENT ) || reportItem.getItemType()
+                .equalsIgnoreCase( ExportItem.TYPE.INDICATOR ))
                 && !totalFormula.equals( PREFIX_FORMULA_SUM ) )
             {
                 totalFormula = totalFormula.substring( 0, totalFormula.length() - 1 ) + ")";
