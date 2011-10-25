@@ -75,17 +75,16 @@ import org.springframework.transaction.annotation.Transactional;
 public class DefaultCaseAggregationConditionService
     implements CaseAggregationConditionService
 {
-    private final String regExp = "\\[(" + OBJECT_PATIENT + "|"  + OBJECT_PROGRAM + "|" 
-        + OBJECT_PROGRAM_STAGE_DATAELEMENT + "|" + OBJECT_PATIENT_ATTRIBUTE 
-        + "|" + OBJECT_PATIENT_PROPERTY + "|" + OBJECT_PROGRAM_PROPERTY + ")"
-        + SEPARATOR_OBJECT + "([a-zA-Z0-9\\- ]+[" + SEPARATOR_ID + "[0-9]*]*)" + "\\]";
+    private final String regExp = "\\[(" + OBJECT_PATIENT + "|" + OBJECT_PROGRAM + "|"
+        + OBJECT_PROGRAM_STAGE_DATAELEMENT + "|" + OBJECT_PATIENT_ATTRIBUTE + "|" + OBJECT_PATIENT_PROPERTY + "|"
+        + OBJECT_PROGRAM_PROPERTY + ")" + SEPARATOR_OBJECT + "([a-zA-Z0-9\\- ]+[" + SEPARATOR_ID + "[0-9]*]*)" + "\\]";
 
     private final String IS_NULL = "is null";
 
     private final String PROPERTY_AGE = "age";
 
     private final String INVALID_CONDITION = "Invalid condition";
-    
+
     private final String NUMBER_PATIENTS_REGISTERED = "The number of beneficiaries registered";
 
     // -------------------------------------------------------------------------
@@ -204,8 +203,8 @@ public class DefaultCaseAggregationConditionService
     public Double parseConditition( CaseAggregationCondition aggregationCondition, OrganisationUnit orgunit,
         Period period )
     {
-        String sql = createSQL( aggregationCondition, orgunit, period );
-
+        String sql = convertCondition( aggregationCondition, orgunit, period );
+System.out.println("\n\n === \n sql : " + sql );
         Collection<Integer> patientIds = aggregationConditionStore.executeSQL( sql );
 
         if ( patientIds == null )
@@ -222,7 +221,7 @@ public class DefaultCaseAggregationConditionService
     {
         Collection<PatientDataValue> result = new HashSet<PatientDataValue>();
 
-        String sql = createSQL( aggregationCondition, orgunit, period );
+        String sql = createSQL( aggregationCondition.getAggregationExpression(), orgunit, period );
 
         Collection<DataElement> dataElements = getDataElementsInCondition( aggregationCondition
             .getAggregationExpression() );
@@ -249,7 +248,7 @@ public class DefaultCaseAggregationConditionService
     {
         Collection<Patient> result = new HashSet<Patient>();
 
-        String sql = createSQL( aggregationCondition, orgunit, period );
+        String sql = createSQL( aggregationCondition.getAggregationExpression(), orgunit, period );
 
         Collection<Integer> patientIds = aggregationConditionStore.executeSQL( sql );
 
@@ -324,7 +323,7 @@ public class DefaultCaseAggregationConditionService
                 else if ( info[0].equalsIgnoreCase( OBJECT_PROGRAM ) )
                 {
                     int objectId = Integer.parseInt( ids[0] );
-                
+
                     Program program = programService.getProgram( objectId );
 
                     if ( program == null )
@@ -414,7 +413,51 @@ public class DefaultCaseAggregationConditionService
     // Support Methods
     // -------------------------------------------------------------------------
 
-    private String createSQL( CaseAggregationCondition aggregationCondition, OrganisationUnit orgunit, Period period )
+    private String convertCondition( CaseAggregationCondition aggregationCondition, OrganisationUnit orgunit,
+        Period period )
+    {
+        // Get operators between ( )
+        Pattern patternOperator = Pattern.compile( "(\\)\\s*(OR|AND))" );
+
+        Matcher matcherOperator = patternOperator.matcher( aggregationCondition.getAggregationExpression() );
+
+        List<String> operators = new ArrayList<String>();
+
+        while ( matcherOperator.find() )
+        {
+            operators.add( matcherOperator.group( 2 ) );
+        }
+
+        List<String> subSQL = new ArrayList<String>();
+
+        String[] conditions = aggregationCondition.getAggregationExpression().split( "(\\)\\s*(OR|AND))" );
+        
+        // Create SQL statement for the first condition
+        String condition = conditions[0];
+
+        String sql = createSQL( condition, orgunit, period );
+
+        if ( operators.size() > 0 )
+        {
+            sql = "SELECT distinct(p.patientid) FROM patient as p where p.patientid in ( " + sql + ")";
+        }
+        
+        subSQL.add( sql );
+
+        // Create SQL statement for others
+        for ( int index = 1; index < conditions.length; index++ )
+        {
+            condition = conditions[index];
+            
+            sql = "(" + createSQL( condition, orgunit, period ) + ")";
+
+            subSQL.add( sql );
+        }
+
+        return getSQL( subSQL, operators ) + ")";
+    }
+
+    private String createSQL( String aggregationExpression, OrganisationUnit orgunit, Period period )
     {
         int orgunitId = orgunit.getId();
         String startDate = DateUtils.getMediumDateString( period.getStartDate() );
@@ -426,7 +469,7 @@ public class DefaultCaseAggregationConditionService
 
         Pattern patternOperator = Pattern.compile( "(AND|OR)" );
 
-        Matcher matcherOperator = patternOperator.matcher( aggregationCondition.getAggregationExpression() );
+        Matcher matcherOperator = patternOperator.matcher( aggregationExpression );
 
         List<String> operators = new ArrayList<String>();
 
@@ -435,7 +478,7 @@ public class DefaultCaseAggregationConditionService
             operators.add( matcherOperator.group() );
         }
 
-        String[] expression = aggregationCondition.getAggregationExpression().split( "(AND|OR)" );
+        String[] expression = aggregationExpression.split( "(AND|OR)" );
 
         // ---------------------------------------------------------------------
         // parse expressions
@@ -562,7 +605,7 @@ public class DefaultCaseAggregationConditionService
     private String getConditionForNotDataElement( int programStageId, int dataElementId, int optionComboId,
         int orgunitId, String startDate, String endDate )
     {
-        return "SELECT distinct(pi.patientid) FROM programstageinstance as psi "
+        return "SELECT pi.patientid FROM programstageinstance as psi "
             + "INNER JOIN programstage as ps ON psi.programstageid = ps.programstageid "
             + "INNER JOIN programinstance as pi ON pi.programinstanceid = psi.programinstanceid "
             + "LEFT OUTER JOIN patientdatavalue as pd ON psi.programstageinstanceid = pd.programstageinstanceid "
@@ -597,7 +640,7 @@ public class DefaultCaseAggregationConditionService
     private String getConditionForDataElement( int programStageId, int dataElementId, int optionComboId, int orgunitId,
         String startDate, String endDate )
     {
-        return "SELECT distinct(pi.patientid) FROM programstageinstance as psi "
+        return "SELECT pi.patientid FROM programstageinstance as psi "
             + "INNER JOIN programstage as ps ON psi.programstageid = ps.programstageid "
             + "INNER JOIN patientdatavalue as pd ON psi.programstageinstanceid = pd.programstageinstanceid "
             + "INNER JOIN programinstance as pi ON pi.programinstanceid = psi.programinstanceid "
@@ -608,7 +651,7 @@ public class DefaultCaseAggregationConditionService
 
     private String getConditionForPatientAttribute( int attributeId, int orgunitId, String startDate, String endDate )
     {
-        return "SELECT distinct(pi.patientid) FROM programstageinstance as psi "
+        return "SELECT pi.patientid FROM programstageinstance as psi "
             + "INNER JOIN programstage as ps ON psi.programstageid = ps.programstageid "
             + "INNER JOIN patientdatavalue as pd ON psi.programstageinstanceid = pd.programstageinstanceid "
             + "INNER JOIN programinstance as pi ON pi.programinstanceid = psi.programinstanceid "
@@ -622,13 +665,13 @@ public class DefaultCaseAggregationConditionService
     {
         String sql = "SELECT p.patientid FROM patient as p WHERE p.organisationunitid = " + orgunitId + " "
             + "AND p.registrationdate >= '" + startDate + "' AND p.registrationdate <= '" + endDate + "' ";
-        
+
         return sql;
     }
-    
+
     private String getConditionForPatientProperty( String propertyName, int orgunitId, String startDate, String endDate )
     {
-        String sql = "SELECT distinct(p.patientid) FROM programstageinstance as psi INNER JOIN programstage as ps "
+        String sql = "SELECT p.patientid FROM programstageinstance as psi INNER JOIN programstage as ps "
             + "ON psi.programstageid = ps.programstageid INNER JOIN patientdatavalue as pd ON "
             + "psi.programstageinstanceid = pd.programstageinstanceid INNER JOIN programinstance as pi ON "
             + "psi.programinstanceid = pi.programinstanceid INNER JOIN patient as p ON "
@@ -650,7 +693,7 @@ public class DefaultCaseAggregationConditionService
 
     private String getConditionForProgramProperty( int orgunitId, String startDate, String endDate )
     {
-        return "SELECT distinct(p.patientid) FROM programstageinstance as psi "
+        return "SELECT p.patientid FROM programstageinstance as psi "
             + "INNER JOIN programinstance as pi ON psi.programinstanceid = pi.programinstanceid "
             + "INNER JOIN patient as p ON p.patientid = pi.patientid WHERE p.organisationunitid = " + orgunitId + " "
             + "AND psi.executionDate >= '" + startDate + "' AND psi.executionDate <= '" + endDate + "' AND ";
@@ -658,7 +701,7 @@ public class DefaultCaseAggregationConditionService
 
     private String getConditionForProgram( String programId, int orgunitId, String startDate, String endDate )
     {
-        return "SELECT distinct(p.patientid) FROM programstageinstance as psi "
+        return "SELECT p.patientid FROM programstageinstance as psi "
             + "INNER JOIN programinstance as pi ON psi.programinstanceid = pi.programinstanceid "
             + "INNER JOIN patient as p ON p.patientid = pi.patientid " + "WHERE pi.programid=" + programId + " "
             + "AND p.organisationunitid = " + orgunitId + " " + "AND pi.enrollmentdate >= '" + startDate
