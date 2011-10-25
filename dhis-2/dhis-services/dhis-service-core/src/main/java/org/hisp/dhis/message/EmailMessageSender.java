@@ -83,7 +83,7 @@ public class EmailMessageSender
     // -------------------------------------------------------------------------
 
     @Override
-    public void sendMessage( String subject, String text, Set<User> users )
+    public void sendMessage( String subject, String text, User sender, Set<User> users )
     {
         String hostName = StringUtils.trimToNull( (String) systemSettingManager.getSystemSetting( KEY_EMAIL_HOST_NAME ) );
         String username = StringUtils.trimToNull( (String) systemSettingManager.getSystemSetting( KEY_EMAIL_USERNAME ) );
@@ -93,6 +93,12 @@ public class EmailMessageSender
         {
             return;
         }
+
+        text = sender == null ? text : ( text + LB + LB + 
+            sender.getName() + LB + 
+            sender.getOrganisationUnitsName() + LB +
+            ( sender.getEmail() != null ? ( sender.getEmail() + LB ) : StringUtils.EMPTY ) +
+            ( sender.getPhoneNumber() != null ? ( sender.getPhoneNumber() + LB ) : StringUtils.EMPTY ) );
         
         Map<User,Serializable> settings = userService.getUserSettings( KEY_MESSAGE_EMAIL_NOTIFICATION, false );
         
@@ -104,17 +110,11 @@ public class EmailMessageSender
             {
                 try
                 {
-                    String message = text + LB + LB + 
-                        user.getName() + LB + 
-                        user.getOrganisationUnitsName() + LB +
-                        ( user.getEmail() != null ? ( user.getEmail() + LB ) : StringUtils.EMPTY ) +
-                        ( user.getPhoneNumber() != null ? ( user.getPhoneNumber() + LB ) : StringUtils.EMPTY );
-                    
                     String toAddress = StringUtils.trimToNull( user.getEmail() );
                     
                     Email email = getEmail( hostName, username, password );
                     email.setSubject( SUBJECT_PREFX + subject );
-                    email.setMsg( message );
+                    email.setMsg( text );
                     email.addTo( toAddress );
                     email.send();
                     

@@ -111,7 +111,7 @@ public class DefaultMessageService
         
         int id = saveMessageConversation( conversation );
         
-        invokeMessageSenders( subject, text, users );
+        invokeMessageSenders( subject, text, sender, users );
         
         return id;
     }
@@ -131,7 +131,7 @@ public class DefaultMessageService
         
         updateMessageConversation( conversation );
         
-        invokeMessageSenders( conversation.getSubject(), text, conversation.getUsers() );
+        invokeMessageSenders( conversation.getSubject(), text, sender, conversation.getUsers() );
     }
 
     public int sendCompletenessMessage( CompleteDataSetRegistration registration )
@@ -158,7 +158,7 @@ public class DefaultMessageService
             
             int id = saveMessageConversation( conversation );
             
-            invokeMessageSenders( subject, text, userGroup.getMembers() );
+            invokeMessageSenders( subject, text, sender, userGroup.getMembers() );
             
             return id;
         }
@@ -200,11 +200,11 @@ public class DefaultMessageService
     // Supportive methods
     // -------------------------------------------------------------------------
 
-    private void invokeMessageSenders( String subject, String text, Set<User> users )
+    private void invokeMessageSenders( String subject, String text, User sender, Set<User> users )
     {
-        for ( MessageSender sender : messageSenders )
+        for ( MessageSender messageSender : messageSenders )
         {
-            sender.sendMessage( subject, text, users );
+            messageSender.sendMessage( subject, text, sender, users );
         }
     }
 }
