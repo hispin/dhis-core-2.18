@@ -103,7 +103,7 @@ public class ViewDataOrganizationGroupAction
 
             Collections.sort( organisationUnits, new OrganisationUnitNameComparator() );
 
-            row += 2;
+            row ++;
             
             for ( OrganisationUnit o : organisationUnits )
             {
@@ -112,7 +112,7 @@ public class ViewDataOrganizationGroupAction
                     ImportItem item = new ImportItem();
 
                     item.setSheetNo( importItem.getSheetNo() );
-                    item.setRow( importItem.getRow() + row );
+                    item.setRow( importItem.getRow() + row + 1 );
                     item.setColumn( importItem.getColumn() );
                     item.setExpression( o.getId() + "_" + importItem.getExpression() );
 

@@ -80,12 +80,14 @@ public class ViewDataCategoryAction
 
             for ( DataElementGroupOrder dataElementGroup : importReport.getDataElementOrders() )
             {
+                rowBegin ++;
+                
                 for ( DataElement dataElement : dataElementGroup.getDataElements() )
                 {
                     ImportItem item = new ImportItem();
                     
                     item.setSheetNo( importItem.getSheetNo() );
-                    item.setRow( rowBegin++ );
+                    item.setRow( rowBegin ++ );
                     item.setColumn( importItem.getColumn() );
                     item.setExpression( importItem.getExpression().replace( "*", dataElement.getId() + "" ) );
                     

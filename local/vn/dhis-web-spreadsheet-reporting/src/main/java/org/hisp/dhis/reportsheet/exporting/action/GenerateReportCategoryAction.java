@@ -54,9 +54,9 @@ public class GenerateReportCategoryAction
         throws Exception
     {
         OrganisationUnit organisationUnit = organisationUnitSelectionManager.getSelectedOrganisationUnit();
-        
+
         ExportReportCategory exportReportInstance = (ExportReportCategory) exportReport;
-        
+
         this.installReadTemplateFile( exportReportInstance, period, organisationUnit );
 
         for ( Integer sheetNo : exportReportService.getSheets( selectionManager.getSelectedReportId() ) )
@@ -93,13 +93,13 @@ public class GenerateReportCategoryAction
 
                 if ( reportItem.getItemType().equalsIgnoreCase( ExportItem.TYPE.DATAELEMENT_NAME ) )
                 {
-                    ExcelUtils.writeValueByPOI( rowBegin, reportItem.getColumn(), String.valueOf( dataElementGroup
-                        .getName() ), ExcelUtils.TEXT, sheet, this.csText12BoldCenter );
+                    ExcelUtils.writeValueByPOI( rowBegin, reportItem.getColumn(), dataElementGroup.getName(),
+                        ExcelUtils.TEXT, sheet, this.csText12BoldCenter );
                 }
                 else if ( reportItem.getItemType().equalsIgnoreCase( ExportItem.TYPE.DATAELEMENT_CODE ) )
                 {
-                    ExcelUtils.writeValueByPOI( rowBegin, reportItem.getColumn(), String.valueOf( dataElementGroup
-                        .getCode() ), ExcelUtils.TEXT, sheet, this.csText12BoldCenter );
+                    ExcelUtils.writeValueByPOI( rowBegin, reportItem.getColumn(), dataElementGroup.getCode(),
+                        ExcelUtils.TEXT, sheet, this.csText12BoldCenter );
                 }
 
                 rowBegin++;

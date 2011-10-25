@@ -175,22 +175,22 @@ public class GenerateReportOrgGroupListingAction
                     }
                     else if ( reportItem.getItemType().equalsIgnoreCase( ExportItem.TYPE.SERIAL ) )
                     {
-                        ExcelUtils.writeValueByPOI( rowBegin, reportItem.getColumn(), String.valueOf( serial ),
-                            ExcelUtils.NUMBER, sheet, this.csTextSerial );
+                        ExcelUtils.writeValueByPOI( rowBegin, reportItem.getColumn(), serial + "", ExcelUtils.NUMBER,
+                            sheet, this.csTextSerial );
                     }
                     else if ( reportItem.getItemType().equalsIgnoreCase( ExportItem.TYPE.DATAELEMENT ) )
                     {
                         double value = this.getDataValue( reportItem, o );
 
-                        ExcelUtils.writeValueByPOI( rowBegin, reportItem.getColumn(), String.valueOf( value ),
-                            ExcelUtils.NUMBER, sheet, this.csNumber );
+                        ExcelUtils.writeValueByPOI( rowBegin, reportItem.getColumn(), value + "", ExcelUtils.NUMBER,
+                            sheet, this.csNumber );
                     }
                     else if ( reportItem.getItemType().equalsIgnoreCase( ExportItem.TYPE.INDICATOR ) )
                     {
                         double value = this.getIndicatorValue( reportItem, o );
 
-                        ExcelUtils.writeValueByPOI( rowBegin, reportItem.getColumn(), String.valueOf( value ),
-                            ExcelUtils.NUMBER, sheet, this.csNumber );
+                        ExcelUtils.writeValueByPOI( rowBegin, reportItem.getColumn(), value + "", ExcelUtils.NUMBER,
+                            sheet, this.csNumber );
                     }
 
                     rowBegin++;
