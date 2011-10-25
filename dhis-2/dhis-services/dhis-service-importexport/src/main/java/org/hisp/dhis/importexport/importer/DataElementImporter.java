@@ -80,6 +80,7 @@ public class DataElementImporter
         match.setDescription( object.getDescription() );
         match.setActive( object.isActive() );
         match.setType( object.getType() );
+        match.setDomainType( object.getDomainType() );
         match.setAggregationOperator( object.getAggregationOperator() );
         match.setLastUpdated( object.getLastUpdated() );
 
@@ -135,6 +136,10 @@ public class DataElementImporter
             return false;
         }
         if ( !object.getType().equals( existing.getType() ) )
+        {
+            return false;
+        }
+        if ( !isSimiliar( object.getDomainType(), existing.getDomainType() ) || ( isNotNull( object.getDomainType(), existing.getDomainType() ) && !object.getDomainType().equals( existing.getDomainType() ) ) )
         {
             return false;
         }
