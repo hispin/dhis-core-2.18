@@ -366,7 +366,14 @@ body form input {
 	font-size: 1.15em;
 }
 
-body input[type='text'] { 
+body input { 
+	font-size: 1.15em;
+	padding: 0.2em;
+	margin-bottom: .5em;
+	display: block;
+}
+
+body select {
 	font-size: 1.15em;
 	padding: 0.2em;
 	margin-bottom: .5em;
@@ -384,11 +391,7 @@ body form input[type='radio'], body form input[type='checkbox'] {
 	font-size: 1.15em;
 	margin:0.1em 0em;
 	padding: 0;
-}
-
-body select {
-	font-size: 1.15em;
-	margin-bottom: 0;
+	display: inline;
 }
 
 body input[type='button'] {

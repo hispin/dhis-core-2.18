@@ -204,6 +204,13 @@ public class SaveSectionFormAction
         return validationRuleViolations;
     }
 
+    private Map<String, String> typeViolations = new HashMap<String, String>();
+
+    public Map<String, String> getTypeViolations()
+    {
+        return typeViolations;
+    }
+
     private Boolean complete = false;
 
     public void setComplete( Boolean complete )
