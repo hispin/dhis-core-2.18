@@ -55,6 +55,8 @@ import org.hisp.dhis.system.util.ListUtils;
 import org.hisp.dhis.validation.ValidationResult;
 import org.hisp.dhis.validation.ValidationRule;
 import org.hisp.dhis.validation.ValidationRuleService;
+import org.joda.time.format.DateTimeFormatter;
+import org.joda.time.format.ISODateTimeFormat;
 
 /**
  * @author mortenoh
@@ -219,6 +221,20 @@ public class SectionFormUtils
     // Static Utils
     // -------------------------------------------------------------------------
 
+    public static boolean isNumber( String value )
+    {
+        try
+        {
+            Double.parseDouble( value );
+        }
+        catch ( NumberFormatException e )
+        {
+            return false;
+        }
+
+        return true;
+    }
+
     public static boolean isInteger( String value )
     {
         try
@@ -231,6 +247,16 @@ public class SectionFormUtils
         }
 
         return true;
+    }
+
+    public static boolean isPositiveInteger( String value )
+    {
+        return valueHigher( value, 0 );
+    }
+
+    public static boolean isNegativeInteger( String value )
+    {
+        return valueLower( value, 0 );
     }
 
     public static boolean valueHigher( String value, int max )
@@ -267,6 +293,27 @@ public class SectionFormUtils
             }
         }
         catch ( NumberFormatException e )
+        {
+        }
+
+        return false;
+    }
+
+    public static boolean isBoolean( String value )
+    {
+        return value.equals( "true" ) || value.equals( "false" );
+    }
+
+    public static boolean isDate( String value )
+    {
+        DateTimeFormatter sdf = ISODateTimeFormat.yearMonthDay();
+
+        try
+        {
+            sdf.parseDateTime( value );
+            return true;
+        }
+        catch ( IllegalArgumentException e )
         {
         }
 
