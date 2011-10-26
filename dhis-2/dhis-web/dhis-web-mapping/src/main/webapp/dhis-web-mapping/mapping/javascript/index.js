@@ -386,8 +386,8 @@ Ext.onReady( function() {
     /* Init base layers */
     if (window.google) {
         var gmap = new OpenLayers.Layer.Google(
-            "Google Streets", // the default
-            {numZoomLevels: 20, animationEnabled: false}
+            "Google Streets",
+            {numZoomLevels: 20, animationEnabled: true}
         );        
         gmap.layerType = G.conf.map_layer_type_baselayer;
         G.vars.map.addLayer(gmap);
