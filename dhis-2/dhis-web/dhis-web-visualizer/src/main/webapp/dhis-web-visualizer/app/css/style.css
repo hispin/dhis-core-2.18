@@ -105,20 +105,18 @@
     border-style: none;
 }
 
-/* Multiselect (custom) transparent row hover */
-#indicator_fs .x-boundlist-item-over, #dataelement_fs .x-boundlist-item-over {
-    background-color: transparent;
-    border-color: #fff;
+/* Boundlist (multiselect, comboboxlist etc) */
+.x-boundlist-item {
+    color: #333;
+    padding: 2px 2px 2px 4px;
 }
-#indicator_fs .x-boundlist-selected, #dataelement_fs .x-boundlist-selected {
+.x-boundlist-item-over {
+    background-color: #eee;
+    border-color: #ddd;
+}
+.x-boundlist-selected {
     background-color: #d3d3d3;
     border-color: #b3abaa;
-}
-
-/* List (combo, multiselect etc) style */
-.x-boundlist-item {
-    color:#333;
-    padding: 2px 2px 2px 4px;
 }
 
 /* Checkbox box label */
