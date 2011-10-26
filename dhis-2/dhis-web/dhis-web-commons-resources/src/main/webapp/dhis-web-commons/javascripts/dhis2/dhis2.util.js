@@ -52,6 +52,60 @@ dhis2.util.namespace = function( path )
 };
 
 /**
+ * Escape function for regular expressions.
+ */
+dhis2.util.escape = function( text )
+{
+    return text.replace( /[-[\]{}()*+?.,\/\\^$|#\s]/g, "\\$&" );
+};
+
+/**
+ * jQuery cannot correctly filter strings with () in them, so here is a fix
+ * until jQuery gets updated.
+ */
+dhis2.util.jqTextFilterCaseSensitive = function( key, not )
+{
+    key = dhis2.util.escape(key);
+    not = not || false;
+
+    if ( not )
+    {
+        return function( i, el )
+        {
+            return !!!$( el ).text().match( "" + key );
+        };
+    }
+    else
+    {
+        return function( i, el )
+        {
+            return !!$( el ).text().match( "" + key );
+        };
+    }
+};
+
+dhis2.util.jqTextFilter = function( key, not )
+{
+    key = dhis2.util.escape(key).toLowerCase();
+    not = not || false;
+
+    if ( not )
+    {
+        return function( i, el )
+        {
+            return !!!$( el ).text().toLowerCase().match( "" + key );
+        };
+    }
+    else
+    {
+        return function( i, el )
+        {
+            return !!$( el ).text().toLowerCase().match( "" + key );
+        };
+    }
+};
+
+/**
  * adds ':containsNC' to filtering.
  * $(sel).find(':containsNC(key)').doSomething();
  */
@@ -109,12 +163,4 @@ window.log = function( str )
     {
         console.log( str );
     }
-};
-
-/**
- * Escape function for regular expressions.
- */
-dhis2.util.escape = function( text )
-{
-    return text.replace( /[-[\]{}()*+?.,\/\\^$|#\s]/g, "\\$&" );
 };
