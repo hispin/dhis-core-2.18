@@ -80,13 +80,13 @@ dhis2.select.filterWithKey = function( $select, key, caseSensitive )
 
         if ( caseSensitive )
         {
-            $select_ghost_matched = $select_ghost_options.filter( ':contains(' + key + ')' );
-            $select_not_matched = $select_options.filter( ':not( :contains(' + key + ') )' );
+            $select_ghost_matched = $select_ghost_options.filter( dhis2.util.jqTextFilterCaseSensitive( key, false ) );
+            $select_not_matched = $select_options.filter( dhis2.util.jqTextFilterCaseSensitive( key, true ) );
         }
         else
         {
-            $select_ghost_matched = $select_ghost_options.filter( ':containsNC(' + key + ')' );
-            $select_not_matched = $select_options.filter( ':not( :containsNC(' + key + ') )' );
+            $select_ghost_matched = $select_ghost_options.filter( dhis2.util.jqTextFilter( key, false ) );
+            $select_not_matched = $select_options.filter( dhis2.util.jqTextFilter( key, true ) );
         }
 
         dhis2.select.moveSorted( $select_ghost, $select_not_matched );
