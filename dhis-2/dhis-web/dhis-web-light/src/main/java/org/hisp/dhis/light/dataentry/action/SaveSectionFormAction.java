@@ -47,6 +47,7 @@ import org.hisp.dhis.dataset.DataSetService;
 import org.hisp.dhis.datavalue.DataValue;
 import org.hisp.dhis.datavalue.DataValueService;
 import org.hisp.dhis.datavalue.DeflatedDataValue;
+import org.hisp.dhis.i18n.I18n;
 import org.hisp.dhis.light.dataentry.utils.SectionFormUtils;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
@@ -134,6 +135,13 @@ public class SaveSectionFormAction
     public SectionFormUtils getSectionFormUtils()
     {
         return sectionFormUtils;
+    }
+
+    private I18n i18n;
+
+    public void setI18n( I18n i18n )
+    {
+        this.i18n = i18n;
     }
 
     // -------------------------------------------------------------------------
@@ -295,7 +303,7 @@ public class SaveSectionFormAction
                         if ( !valueIsEmpty && !SectionFormUtils.isBoolean( value ) )
                         {
                             correctType = false;
-                            typeViolations.put( key, "Invalid boolean" );
+                            typeViolations.put( key, i18n.getString( "invalid_boolean" ) );
                         }
                     }
                     else if ( type.equals( DataElement.VALUE_TYPE_DATE ) )
@@ -303,7 +311,7 @@ public class SaveSectionFormAction
                         if ( !SectionFormUtils.isDate( value ) )
                         {
                             correctType = false;
-                            typeViolations.put( key, "Invalid date (YYYY-MM-DD)" );
+                            typeViolations.put( key, i18n.getString( "invalid_date" ) );
                         }
                     }
                     else if ( type.equals( DataElement.VALUE_TYPE_INT )
@@ -312,7 +320,7 @@ public class SaveSectionFormAction
                         if ( !SectionFormUtils.isNumber( value ) )
                         {
                             correctType = false;
-                            typeViolations.put( key, "Invalid number" );
+                            typeViolations.put( key, i18n.getString( "invalid_number" ) );
                         }
                     }
                     else if ( type.equals( DataElement.VALUE_TYPE_INT )
@@ -321,7 +329,7 @@ public class SaveSectionFormAction
                         if ( !SectionFormUtils.isInteger( value ) )
                         {
                             correctType = false;
-                            typeViolations.put( key, "Invalid integer" );
+                            typeViolations.put( key, i18n.getString( "invalid_integer" ) );
                         }
                     }
                     else if ( type.equals( DataElement.VALUE_TYPE_INT )
@@ -330,7 +338,7 @@ public class SaveSectionFormAction
                         if ( !SectionFormUtils.isPositiveInteger( value ) )
                         {
                             correctType = false;
-                            typeViolations.put( key, "Invalid positive integer" );
+                            typeViolations.put( key, i18n.getString( "invalid_positive_integer" ) );
                         }
                     }
                     else if ( type.equals( DataElement.VALUE_TYPE_INT )
@@ -339,7 +347,7 @@ public class SaveSectionFormAction
                         if ( !SectionFormUtils.isNegativeInteger( value ) )
                         {
                             correctType = false;
-                            typeViolations.put( key, "Invalid negative integer" );
+                            typeViolations.put( key, i18n.getString( "invalid_negative_integer" ) );
                         }
                     }
                 }
