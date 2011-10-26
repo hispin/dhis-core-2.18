@@ -38,6 +38,7 @@
     -ms-border-radius: 2px 2px 2px 2px;
     -khtml-border-radius: 2px 2px 2px 2px;
     border-radius: 2px 2px 2px 2px;
+    padding-top: 8px;
     padding-bottom: 4px;
 }
 
@@ -129,6 +130,11 @@
 /* Button chart image */
 .x-btn-default-toolbar-small-icon button {
     width: 32px !important;
+}
+
+.x-btn-default-toolbar-small-icon .x-btn-icon {
+    width: 32px;
+    height: 32px;
 }
 
 /* Button border */

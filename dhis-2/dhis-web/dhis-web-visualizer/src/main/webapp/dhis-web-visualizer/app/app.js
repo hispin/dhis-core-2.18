@@ -86,7 +86,14 @@ Ext.onReady( function() {
         DV.chart.init = true;
         DV.store.getChartStore(true);
     };
-        
+    
+    DV.cmp = {
+        charttype: [],
+        dimension: {
+            period: []
+        }
+    };
+    
     DV.util = {
         getCmp: function(q) {
             return DV.viewport.query(q)[0];
@@ -164,11 +171,10 @@ Ext.onReady( function() {
             }
         },
         button: {
-            cmp: [],
             getValue: function() {
-                for (var i = 0; i < this.cmp.length; i++) {
-                    if (this.cmp[i].pressed) {
-                        return this.cmp[i].name;
+                for (var i = 0; i < DV.cmp.charttype.length; i++) {
+                    if (DV.cmp.charttype[i].pressed) {
+                        return DV.cmp.charttype[i].name;
                     }
                 }
             },
@@ -215,11 +221,14 @@ Ext.onReady( function() {
                     });
                     return (isFilter && a.length > 1) ? a.slice(0,1) : a;
                 },
-                getNames: function() {
+                getNames: function(exception) {
                     var a = [];
                     DV.util.getCmp('multiselect[name="selectedIndicators"]').store.each( function(r) {
                         a.push(DV.util.chart.getEncodedSeriesName(r.data.shortName));
                     });
+                    if (exception && !a.length) {
+                        alert('No indicators selected');
+                    }
                     return a;
                 }
             },
@@ -231,18 +240,21 @@ Ext.onReady( function() {
                     });
                     return (isFilter && a.length > 1) ? a.slice(0,1) : a;
                 },
-                getNames: function() {
+                getNames: function(exception) {
                     var a = [];
                     DV.util.getCmp('multiselect[name="selectedDataElements"]').store.each( function(r) {
                         a.push(DV.util.chart.getEncodedSeriesName(r.data.shortName));
                     });
+                    if (exception && !a.length) {
+                        alert('No data elements selected');
+                    }
                     return a;
                 }
             },
             period: {
                 getUrl: function(isFilter) {
                     var a = [],
-                        cmp = DV.util.getCmp('fieldset[name="' + DV.conf.finals.dimension.period.value + '"]').cmp;
+                        cmp = DV.cmp.dimension.period;
                     for (var i = 0; i < cmp.length; i++) {
                         if (cmp[i].getValue()) {
                             a.push(cmp[i].paramName + '=true');
@@ -250,16 +262,19 @@ Ext.onReady( function() {
                     }
                     return (isFilter && a.length > 1) ? a.slice(0,1) : a;
                 },
-                getNames: function() {
+                getNames: function(exception) {
                     var a = [],
-                        cmp = DV.util.getCmp('fieldset[name="' + DV.conf.finals.dimension.period.value + '"]').cmp;
+                        cmp = DV.cmp.dimension.period;
                     Ext.Array.each(cmp, function(item) {
                         if (item.getValue()) {
                             Ext.Array.each(DV.init.system.periods[item.paramName], function(item) {
                                 a.push(DV.util.chart.getEncodedSeriesName(item.name));
                             });
                         }
-                    });                    
+                    });
+                    if (exception && !a.length) {
+                        alert('No periods selected');
+                    }
                     return a;
                 },
                 getNameById: function(id) {
@@ -287,7 +302,7 @@ Ext.onReady( function() {
                     });
                     return (isFilter && a.length > 1) ? a.slice(0,1) : a;
                 },
-                getNames: function() {
+                getNames: function(exception) {
                     var a = [],
                         treepanel = DV.util.getCmp('treepanel'),
                         selection = treepanel.getSelectionModel().getSelection();
@@ -298,7 +313,10 @@ Ext.onReady( function() {
                     Ext.Array.each(selection, function(r) {
                         a.push(DV.util.chart.getEncodedSeriesName(r.data.text));
                     });
-                    return a;
+                    if (exception && !a.length) {
+                        alert('No organisation units selected');
+                    }
+                    return a;                        
                 }
             }
         },
@@ -555,12 +573,11 @@ Ext.onReady( function() {
                 p = DV.conf.finals.dimension.period.value,
                 o = DV.conf.finals.dimension.organisationunit.value;
             
-            this.indiment = DV.util.dimension[i].getNames();
-            this.period = DV.util.dimension[p].getNames();
-            this.organisationunit = DV.util.dimension[o].getNames();
-
+            this.indiment = DV.util.dimension[i].getNames(true);
+            this.period = DV.util.dimension[p].getNames(true);
+            this.organisationunit = DV.util.dimension[o].getNames(true);
+            
             if (!this.indiment.length || !this.period.length || !this.organisationunit.length) {
-                alert('form is not complete');
                 return;
             }
             
@@ -919,7 +936,7 @@ Ext.onReady( function() {
                             listeners: {
                                 afterrender: function(b) {
                                     if (b.xtype === 'button') {
-                                        DV.util.button.cmp.push(b);
+                                        DV.cmp.charttype.push(b);
                                     }
                                 }
                             }
@@ -1388,7 +1405,7 @@ Ext.onReady( function() {
                                         DV.util.fieldset.collapseOthers(this.name);
                                     }
                                 }
-                            },                            
+                            },
                             {
                                 xtype: 'fieldset',
                                 id: 'period_fs',
@@ -1410,9 +1427,9 @@ Ext.onReady( function() {
                                                 defaults: {
                                                     labelSeparator: '',
                                                     listeners: {
-                                                        afterrender: function(chb) {
+                                                        added: function(chb) {
                                                             if (chb.xtype === 'checkbox') {
-                                                                chb.up('fieldset').cmp.push(chb);
+                                                                DV.cmp.dimension.period.push(chb);
                                                             }
                                                         }
                                                     }
@@ -1450,7 +1467,7 @@ Ext.onReady( function() {
                                                     listeners: {
                                                         afterrender: function(chb) {
                                                             if (chb.xtype === 'checkbox') {
-                                                                chb.up('fieldset').cmp.push(chb);
+                                                                DV.cmp.dimension.period.push(chb);
                                                             }
                                                         }
                                                     }
@@ -1487,7 +1504,7 @@ Ext.onReady( function() {
                                                     listeners: {
                                                         afterrender: function(chb) {
                                                             if (chb.xtype === 'checkbox') {
-                                                                chb.up('fieldset').cmp.push(chb);
+                                                                DV.cmp.dimension.period.push(chb);
                                                             }
                                                         }
                                                     }
@@ -1655,12 +1672,14 @@ Ext.onReady( function() {
                                 //layout: 'fit',
                                 //iconCls: 'dv-window-title-datatable',
                                 //width: 580,
-                                //height: DV.viewport.getHeight() / 1.5,
+                                ////height: DV.viewport.getHeight() / 1.5,
+                                //height: 200,
                                 //items: [
                                     //{
                                         //xtype: 'grid',
                                         //layout: 'vbox',
                                         //scroll: 'vertical',
+                                        //height: 150,
                                         //columns: [
                                             //{
                                                 //text: DV.conf.finals.dimension.indicator.rawvalue,
