@@ -31,19 +31,35 @@
 				<label>$dataElement.name #if($optionCombo.name!="(default)")$optionCombo.name#end</label>
 
 				#if( $validationViolations.get( $key ) )
-				#set( $validationViolation = $validationViolations.get( $key ) )
+					#set( $validationViolation = $validationViolations.get( $key ) )
 
-                #if( $sectionFormUtils.valueHigher( $validationViolation.value, $validationViolation.max ) )
-                    <br /><span style="color: #990000;">Too high (max $validationViolation.max)</span>
-                #elseif( $sectionFormUtils.valueLower( $validationViolation.value, $validationViolation.min ) )
-                    <br /><span style="color: red;">Too low (min $validationViolation.min)</span>
-                #else
-                    <br /><span style="color: red;">Not a number</span>
+	                #if( $sectionFormUtils.valueHigher( $validationViolation.value, $validationViolation.max ) )
+	                    <br /><span style="color: #990000;">Too high (max $validationViolation.max)</span>
+	                #elseif( $sectionFormUtils.valueLower( $validationViolation.value, $validationViolation.min ) )
+	                    <br /><span style="color: red;">Too low (min $validationViolation.min)</span>
+	                #else
+	                    <br /><span style="color: red;">Not a number</span>
+	                #end
                 #end
 
-                #end
-
-				<input type="number" size="24" name="$key" value="$!dataValues.get($key)" /> <br />
+				#if( $dataElement.type == "string" )
+					<input type="text" size="24" name="$key" value="$!dataValues.get($key)" />
+				#elseif( $dataElement.type == "bool" )
+					<select name="$key" style="width: 100%;">
+						<option value="true">Yes</option>
+						<option value="false">No</option>
+					</select>
+				#elseif( $dataElement.type == "date" )
+					<input type="date" size="24" name="$key" value="$!dataValues.get($key)" />
+				#elseif( $dataElement.type == "int" && $dataElement.numberType == "number" )
+					<input type="text" size="24" name="$key" value="$!dataValues.get($key)" />
+				#elseif( $dataElement.type == "int" && $dataElement.numberType == "int" )
+					<input type="number" size="24" name="$key" value="$!dataValues.get($key)" />
+				#elseif( $dataElement.type == "int" && $dataElement.numberType == "positiveNumber" )
+					<input type="number" size="24" name="$key" value="$!dataValues.get($key)" />
+				#elseif( $dataElement.type == "int" && $dataElement.numberType == "negativeNumber" )
+					<input type="number" size="24" name="$key" value="$!dataValues.get($key)" />
+				#end
 			#end
 		#end
 	</p>
