@@ -193,9 +193,9 @@ li {
 /* Second toolbar */
 #chartsettings_tb {
     background: #eee;
-    padding: 4px 0 0 8px;
+    padding: 5px 0 0 8px;
     border-style: none;
-    border-top: 1px dashed #bbb;
+    border-top: 1px dashed #ccc;
 }
 
 /* Multiselect dock border radius */
@@ -246,6 +246,10 @@ li {
     border-width: 1px;
     border-style: solid;
     border-color: #aaa;
+}
+
+.x-menu-item-link {
+    padding: 3px 5px 4px 35px;
 }
 
 .x-menu-item-active .x-menu-item-link {

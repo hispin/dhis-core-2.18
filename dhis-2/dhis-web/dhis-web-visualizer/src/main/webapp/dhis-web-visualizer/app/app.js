@@ -1,5 +1,12 @@
 DV = {};
 DV.conf = {
+    init: {
+        data: [
+            {x: 'Category 1', 'Series 1': 41, 'Series 2': 69, 'Series 3': 63, 'Series 4': 51},
+            {x: 'Category 2', 'Series 1': 51, 'Series 2': 42, 'Series 3': 58, 'Series 4': 52},
+            {x: 'Category 3', 'Series 1': 44, 'Series 2': 71, 'Series 3': 62, 'Series 4': 54}
+        ]
+    },
     finals: {
         ajax: {
             url_visualizer: '../',
@@ -48,12 +55,7 @@ DV.conf = {
     layout: {
         west_cmp_width: 380,
         west_width: 424
-    },
-    data: [
-        {x: 'Category 1', 'Series 1': 41, 'Series 2': 69, 'Series 3': 63, 'Series 4': 51},
-        {x: 'Category 2', 'Series 1': 51, 'Series 2': 42, 'Series 3': 58, 'Series 4': 52},
-        {x: 'Category 3', 'Series 1': 44, 'Series 2': 71, 'Series 3': 62, 'Series 4': 54}
-    ]
+    }
 };
 
 Ext.Loader.setConfig({enabled: true});
@@ -70,7 +72,7 @@ Ext.onReady( function() {
         success: function(r) {
             
     DV.init = Ext.JSON.decode(r.responseText);
-    
+    DV.init.isInit = true;
     DV.init.initialize = function(vp) {
         DV.util.combobox.filter.category(vp);
         
@@ -81,7 +83,7 @@ Ext.onReady( function() {
         DV.store.area = DV.store.defaultChartStore;
         DV.store.pie = DV.store.defaultChartStore;
         
-        DV.data.data = DV.conf.data;
+        DV.data.data = DV.conf.init.data;
         
         DV.chart.init = true;
         DV.store.getChartStore(true);
@@ -656,7 +658,7 @@ Ext.onReady( function() {
                     }
                     else {
                         return DV.value.values;
-                    }                    
+                    }
                 }
             });
         }
@@ -695,11 +697,6 @@ Ext.onReady( function() {
     
     DV.chart = {
         init: false,
-        isInit: function() {
-            var bool = this.init ? true : false;
-            this.init = false;
-            return bool;
-        },
         chart: null,
         getChart: function(exe) {
             this[DV.state.type]();
@@ -732,7 +729,7 @@ Ext.onReady( function() {
                         }
                     },
                     {
-                        title: this.isInit() ? 'Categories' : DV.conf.finals.dimension[DV.state.category.dimension].rawvalue,
+                        title: this.init.isInit ? 'Categories' : DV.conf.finals.dimension[DV.state.category.dimension].rawvalue,
                         type: 'Category',
                         position: 'bottom',
                         fields: DV.store.chart.bottom
@@ -910,6 +907,7 @@ Ext.onReady( function() {
             c.removeAll(true);
             c.add(this.chart);
             c.down('label').setText(DV.state.filter.data[0] || 'Example chart');
+            this.init.isInit = false;
         }
     };
         
@@ -927,8 +925,8 @@ Ext.onReady( function() {
                 items: [
                     {
                         xtype: 'toolbar',
-                        height: 44,
-                        style: 'padding-top:2px; border-style:none',
+                        height: 45,
+                        style: 'padding-top:1px; border-style:none',
                         defaults: {
                             height: 40,
                             toggleGroup: 'chartsettings',
@@ -945,7 +943,7 @@ Ext.onReady( function() {
                             {
                                 xtype: 'label',
                                 text: 'Chart type',
-                                style: 'font-size:11px; font-weight:bold; padding:12px 8px 0 10px'
+                                style: 'font-size:11px; font-weight:bold; padding:13px 8px 0 10px'
                             },
                             {
 								xtype: 'button',
