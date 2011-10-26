@@ -398,6 +398,11 @@ public class SaveSectionFormAction
             registrationService.deleteCompleteDataSetRegistration( registration );
         }
 
+        if ( typeViolations.size() > 0 )
+        {
+            needsValidation = true;
+        }
+
         dataValues = sectionFormUtils.getDataValueMap( organisationUnit, dataSet, period );
 
         validationViolations = sectionFormUtils.getValidationViolations( organisationUnit, dataSet, period );
