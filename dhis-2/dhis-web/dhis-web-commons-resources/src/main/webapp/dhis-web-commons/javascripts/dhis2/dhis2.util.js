@@ -58,7 +58,27 @@ dhis2.util.namespace = function( path )
 $.expr[":"].containsNC = function( a, i, m, r )
 {
     var search = dhis2.util.escape( m[3] );
-    return jQuery(a).text().toUpperCase().indexOf(m[search].toUpperCase())>=0;
+    return jQuery( a ).text().toUpperCase().indexOf( m[search].toUpperCase() ) >= 0;
+};
+
+/**
+ * adds ':regex' to filtering, use to filter by regular expression
+ */
+$.expr[":"].regex = function( a, i, m, r )
+{
+    var re = new RegExp( m[3], 'i' );
+    return re.test( jQuery( a ).text() );
+};
+
+/**
+ * adds ':regex' to filtering, use to filter by regular expression
+ * 
+ * (this is the case sensitive version)
+ */
+$.expr[":"].regexCS = function( a, i, m, r )
+{
+    var re = new RegExp( m[3] );
+    return re.test( jQuery( a ).text() );
 };
 
 /**
