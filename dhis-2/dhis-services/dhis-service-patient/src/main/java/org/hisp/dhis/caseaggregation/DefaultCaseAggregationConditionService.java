@@ -204,7 +204,7 @@ public class DefaultCaseAggregationConditionService
         Period period )
     {
         String sql = convertCondition( aggregationCondition, orgunit, period );
-System.out.println("\n\n === \n sql : " + sql );
+
         Collection<Integer> patientIds = aggregationConditionStore.executeSQL( sql );
 
         if ( patientIds == null )
@@ -439,7 +439,7 @@ System.out.println("\n\n === \n sql : " + sql );
 
         if ( operators.size() > 0 )
         {
-            sql = "SELECT distinct(p.patientid) FROM patient as p where p.patientid in ( " + sql + ")";
+            sql = "SELECT distinct(p.patientid) FROM patient as p where p.patientid in " + sql + ")";
         }
         
         subSQL.add( sql );
@@ -454,7 +454,7 @@ System.out.println("\n\n === \n sql : " + sql );
             subSQL.add( sql );
         }
 
-        return getSQL( subSQL, operators ) + ")";
+        return getSQL( subSQL, operators );
     }
 
     private String createSQL( String aggregationExpression, OrganisationUnit orgunit, Period period )

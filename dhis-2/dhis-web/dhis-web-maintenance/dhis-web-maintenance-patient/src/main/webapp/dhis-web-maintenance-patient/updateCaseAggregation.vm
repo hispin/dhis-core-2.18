@@ -71,8 +71,7 @@
 	<tbody>
 	
 	<tr>
-	
-	<td>
+		<td>
 		<fieldset style="border: 1px solid #3f5d8e; ">
 		<legend>$i18n.getString( "program_stage_de" )</legend>
 		
@@ -176,6 +175,8 @@
 			<img src="../images/diff.png" alt="$i18n.getString( 'diff' )" onclick='insertOperator( "!=" );' style="cursor:pointer;">
 			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 			<img src="../images/plus.png" alt="$i18n.getString( 'plus' )" onclick='insertOperator( "+" );' style="cursor:pointer;">
+			<img src="../images/left_parent.png" alt="$i18n.getString( 'left_parent' )" onclick='insertOperator( "(" );' style="cursor:pointer;"/>
+			<img src="../images/right_parent.png" alt="$i18n.getString( 'right_parent' )" onclick='insertOperator( ")" );' style="cursor:pointer;"/>
 			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 			<img src="../images/is_null.png" alt="$i18n.getString( 'is_null' )" onclick='insertOperator( "is null" );' style="cursor:pointer;">
 			<img src="../images/not_null.png" alt="$i18n.getString( 'not_null' )" onclick='insertOperator( "is not null" );' style="cursor:pointer;">
