@@ -31,7 +31,7 @@ dhis2['util'] = dhis2['util'] || {};
 /**
  * Creates namespace object based on path
  * 
- * @param path {String} The path of the namespace, i.e. 'a.b.c'
+ * @param path {String}ï¿½The path of the namespace, i.e. 'a.b.c'
  * 
  * @returns {object} Namespace object
  */
@@ -55,19 +55,10 @@ dhis2.util.namespace = function( path )
  * adds ':containsNC' to filtering.
  * $(sel).find(':containsNC(key)').doSomething();
  */
-$.expr[":"].containsNC = function( el, i, m )
+$.expr[":"].containsNC = function( a, i, m, r )
 {
-    // http://www.west-wind.com/weblog/posts/2008/Oct/24/Using-jQuery-to-search-Content-and-creating-custom-Selector-Filters
-    var search = m[3];
-
-    if ( !search )
-    {
-        return false;
-    }
-
-    search = dhis2.util.escape( search );
-
-    return eval( '/' + search + '/i' ).test( $( el ).text() );
+    var search = dhis2.util.escape( m[3] );
+    return jQuery(a).text().toUpperCase().indexOf(m[search].toUpperCase())>=0;
 };
 
 /**

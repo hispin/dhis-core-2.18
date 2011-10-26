@@ -99,8 +99,8 @@ dhis2.select.filterWithKey = function( $select, key, caseSensitive )
  * sorted fashion. Both the select and array is assumed to be sorted to start
  * with.
  * 
- * @param $select {jQuery} A select which acts as the target
- * @param $array {jQuery} An array of child elements to move
+ * @param $select {jQuery} A select which acts as the target
+ * @param $array {jQuery} An array of child elements to move
  */
 dhis2.select.moveSorted = function( $select, $array )
 {
@@ -158,7 +158,7 @@ dhis2.select.move = function( $select, $array )
 /**
  * Mark all options in a select as selected.
  * 
- * @param $select {jQuery} The select
+ * @param $select {jQuery} The select
  */
 dhis2.select.selectAll = function( $select )
 {
@@ -168,7 +168,7 @@ dhis2.select.selectAll = function( $select )
 /**
  * Mark all options as not selected.
  * 
- * @param $select {jQuery} The select
+ * @param $select {jQuery} The select
  */
 dhis2.select.selectNone = function( $select )
 {
