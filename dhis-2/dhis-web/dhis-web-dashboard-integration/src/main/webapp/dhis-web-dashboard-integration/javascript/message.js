@@ -69,6 +69,9 @@ function sendReply()
 		return false;
 	}
 	
+	$( "#replyButton" ).attr( "disabled", "disabled" );
+	setHeaderWaitMessage( i18n_sending_message );
+	
 	$.postUTF8( "sendReply.action", { id:id, text:text }, function() {
 		window.location.href = "readMessage.action?id=" + id;
 	} );
