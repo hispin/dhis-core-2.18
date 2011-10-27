@@ -132,6 +132,13 @@ public class AddProgramStageAction
         this.compulsories = compulsories;
     }
 
+    private Boolean irregular;
+
+    public void setIrregular( Boolean irregular )
+    {
+        this.irregular = irregular;
+    }
+
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
@@ -148,6 +155,9 @@ public class AddProgramStageAction
         programStage.setDescription( description );
         programStage.setStageInProgram( program.getProgramStages().size() + 1 );
         programStage.setProgram( program );
+        
+        irregular = irregular ? irregular : false;
+        programStage.setIrregular(irregular);
 
         minDaysFromStart = (minDaysFromStart == null) ? 0 : minDaysFromStart;
         programStage.setMinDaysFromStart( minDaysFromStart );

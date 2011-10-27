@@ -67,7 +67,12 @@ tr.selected{
 			<td><label>$i18n.getString( "program" )</label></td>
 			<td><input type="text" id="program" name="program" maxlength="30" value="$encoder.htmlEncode( $programStage.program.name )" style="width:30em" disabled="disabled"/></td>
 		</tr>     
-
+		
+		<tr>
+			<td><label>$i18n.getString( "irregular_encounter" )</label></td>
+			<td><input type="checkbox" id="irregular" name="irregular" value='true' #if( $programStage.irregular=='true' ) checked #end/></td>
+		</tr>	
+      
 		<tr><td>&nbsp;</td><td>&nbsp;</td></tr>       
       
     </tbody>

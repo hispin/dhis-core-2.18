@@ -20,6 +20,8 @@
 
     <many-to-one name="program" class="org.hisp.dhis.program.Program" column="programid" foreign-key="fk_programstage_program" />
 
+	<property name="irregular" column="irregular" />
+
     <set name="programStageDataElements" order-by="sort_order" >
       <key column="programstageid" />
       <one-to-many class="org.hisp.dhis.program.ProgramStageDataElement" />
