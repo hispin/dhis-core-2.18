@@ -233,7 +233,6 @@ public class TableAlteror
         executeSql( "ALTER TABLE reporttable DROP COLUMN last3months" );
         executeSql( "ALTER TABLE reporttable DROP COLUMN last6months" );
         executeSql( "ALTER TABLE reporttable DROP COLUMN last9months" );
-        executeSql( "ALTER TABLE reporttable DROP COLUMN last12months" );
         executeSql( "ALTER TABLE reporttable DROP COLUMN sofarthisyear" );
         executeSql( "ALTER TABLE reporttable DROP COLUMN sofarthisfinancialyear" );
         executeSql( "ALTER TABLE reporttable DROP COLUMN last3to6months" );

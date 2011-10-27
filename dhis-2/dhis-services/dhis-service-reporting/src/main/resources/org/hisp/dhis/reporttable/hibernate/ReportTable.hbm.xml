@@ -78,6 +78,9 @@
       <property name="monthsLastYear" />
       <property name="quartersLastYear" />
       <property name="lastYear" />
+      <property name="last5Years" />
+      <property name="last12Months" />
+      <property name="last4Quarters" />
     </component>
 
     <component name="reportParams">

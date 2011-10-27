@@ -426,7 +426,14 @@
 			<label for="quartersLastYear">$i18n.getString( "quarters_last_year" )</label>
 			<input type="checkbox" id="quartersLastYear" name="quartersLastYear" value="true"#if( $reportTable.relatives.isQuartersLastYear() ) checked#end>&nbsp;
 			<label for="lastYear">$i18n.getString( "last_year" )</label>
-			<input type="checkbox" id="lastYear" name="lastYear" value="true"#if( $reportTable.relatives.isLastYear() ) checked#end>         
+			<input type="checkbox" id="lastYear" name="lastYear" value="true"#if( $reportTable.relatives.isLastYear() ) checked#end><br><br>
+				
+			<label for="last5years">$i18n.getString( "last_5_years" )</label>
+			<input type="checkbox" id="last5years" name="last5years" value="true"#if( $reportTable.relatives.isLast5Years() ) checked#end>&nbsp;
+			<label for="last12Months">$i18n.getString( "last_12_months" )</label>
+			<input type="checkbox" id="last12Months" name="last12Months" value="true"#if( $reportTable.relatives.isLast12Months() ) checked#end>&nbsp;
+			<label for="last4Quarters">$i18n.getString( "last_4_quarters" )</label>
+			<input type="checkbox" id="last4Quarters" name="last4Quarters" value="true"#if( $reportTable.relatives.isLast4Quarters() ) checked#end>
         </td>
     </tr>
     <tr>
@@ -449,11 +456,8 @@
     	    <label for="paramLeafParentOrganisationUnit">$i18n.getString( "leaf_parent_organisation_unit" )</label>
             <input type="checkbox" id="paramLeafParentOrganisationUnit" name="paramLeafParentOrganisationUnit" value="true"#if( $reportTable.reportParams.isParamLeafParentOrganisationUnit() ) checked#end>&nbsp;
     	    <label for="paramGrandParentOrganisationUnit">$i18n.getString( "grand_parent_organisation_unit" )</label>
-            <input type="checkbox" id="paramGrandParentOrganisationUnit" name="paramGrandParentOrganisationUnit" value="true"#if( $reportTable.reportParams.isParamGrandParentOrganisationUnit() ) checked#end>
-        </td>
-    </tr>
-    <tr>
-        <td>
+            <input type="checkbox" id="paramGrandParentOrganisationUnit" name="paramGrandParentOrganisationUnit" value="true"#if( $reportTable.reportParams.isParamGrandParentOrganisationUnit() ) checked#end><br><br>
+            
     	    <label for="paramParentOrganisationUnit">$i18n.getString( "parent_organisation_unit" )</label>
             <input type="checkbox" id="paramParentOrganisationUnit" name="paramParentOrganisationUnit" value="true"#if( $reportTable.reportParams.isParamParentOrganisationUnit() ) checked#end>&nbsp;
             <label for="paramOrganisationUnit">$i18n.getString( "organisation_unit" )</label>
