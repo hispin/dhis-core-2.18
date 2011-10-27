@@ -38,7 +38,7 @@
 <td>
   <select name="groupId" style="width:360px">
   <option value="0">[ $i18n.getString( "all" ) $encoder.htmlEncode( $groupSet.name ) ]</option>
-    #foreach( $group in $groupSet.organisationUnitGroups )
+    #foreach( $group in $groupSet.getSortedGroups() )
     <option value="$group.id"
     #if( $groupId && $groupId.contains( $group.id ) )selected="selected"#end
     >$encoder.htmlEncode( $group.name )</option>
