@@ -32,11 +32,14 @@ function updateIndicators()
 
         var expression = generateExpression( formula );
 
-        var value = eval( expression );
-
-        value = isNaN( value ) ? '-' : Math.round( value );
-
-        $( this ).attr( 'value', value );
+        if ( expression )
+        {
+	        var value = eval( expression );
+	        
+	        value = isNaN( value ) ? '-' : Math.round( value );
+	
+	        $( this ).attr( 'value', value );
+        }
     } );
 }
 
@@ -61,9 +64,16 @@ function generateExpression( expression )
 
         var fieldId = '#' + dataElementId + '-' + categoryOptionComboId + '-val';
 
-        var value = $( fieldId ) && $( fieldId ).val() ? $( fieldId ).val() : '0';
+        if ( $( fieldId ).length )
+        {
+            var value = $( fieldId ).val() ? $( fieldId ).val() : '0';
 
-        expression = expression.replace( match, value ); 
+            expression = expression.replace( match, value );
+        }
+        else // Return null if data element / category option combo not in form
+        {	
+            return null;
+        } 
         
         // TODO signed numbers
     }
