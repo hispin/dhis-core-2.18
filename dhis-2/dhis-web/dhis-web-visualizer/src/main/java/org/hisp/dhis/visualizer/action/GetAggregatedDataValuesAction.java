@@ -31,11 +31,6 @@ import java.util.Collection;
 
 import org.hisp.dhis.aggregation.AggregatedDataValue;
 import org.hisp.dhis.aggregation.AggregatedDataValueService;
-import org.hisp.dhis.i18n.I18nFormat;
-import org.hisp.dhis.period.Period;
-import org.hisp.dhis.period.PeriodService;
-import org.hisp.dhis.period.RelativePeriods;
-import org.hisp.dhis.system.util.ConversionUtils;
 
 import com.opensymphony.xwork2.Action;
 
@@ -56,20 +51,6 @@ public class GetAggregatedDataValuesAction
         this.aggregatedDataValueService = aggregatedDataValueService;
     }
 
-    private PeriodService periodService;
-
-    public void setPeriodService( PeriodService periodService )
-    {
-        this.periodService = periodService;
-    }
-
-    private I18nFormat format;
-
-    public void setFormat( I18nFormat format )
-    {
-        this.format = format;
-    }
-
     // -------------------------------------------------------------------------
     // Input
     // -------------------------------------------------------------------------
@@ -81,74 +62,18 @@ public class GetAggregatedDataValuesAction
         this.dataElementIds = dataElementIds;
     }
 
+    private Collection<Integer> periodIds;
+
+    public void setPeriodIds( Collection<Integer> periodIds )
+    {
+        this.periodIds = periodIds;
+    }
+
     private Collection<Integer> organisationUnitIds;
 
     public void setOrganisationUnitIds( Collection<Integer> organisationUnitIds )
     {
         this.organisationUnitIds = organisationUnitIds;
-    }
-
-    private boolean lastMonth;
-
-    public void setLastMonth( boolean lastMonth )
-    {
-        this.lastMonth = lastMonth;
-    }
-
-    private boolean lastQuarter;
-
-    public void setLastQuarter( boolean lastQuarter )
-    {
-        this.lastQuarter = lastQuarter;
-    }
-
-    private boolean monthsThisYear;
-
-    public void setMonthsThisYear( boolean monthsThisYear )
-    {
-        this.monthsThisYear = monthsThisYear;
-    }
-
-    private boolean quartersThisYear;
-
-    public void setQuartersThisYear( boolean quartersThisYear )
-    {
-        this.quartersThisYear = quartersThisYear;
-    }
-
-    private boolean thisYear;
-
-    public void setThisYear( boolean thisYear )
-    {
-        this.thisYear = thisYear;
-    }
-
-    private boolean monthsLastYear;
-
-    public void setMonthsLastYear( boolean monthsLastYear )
-    {
-        this.monthsLastYear = monthsLastYear;
-    }
-
-    private boolean quartersLastYear;
-
-    public void setQuartersLastYear( boolean quartersLastYear )
-    {
-        this.quartersLastYear = quartersLastYear;
-    }
-
-    private boolean lastYear;
-
-    public void setLastYear( boolean lastYear )
-    {
-        this.lastYear = lastYear;
-    }
-
-    private boolean lastFiveYears;
-
-    public void setLastFiveYears( boolean lastFiveYears )
-    {
-        this.lastFiveYears = lastFiveYears;
     }
 
     // -------------------------------------------------------------------------
@@ -169,19 +94,10 @@ public class GetAggregatedDataValuesAction
     public String execute()
         throws Exception
     {
-        if ( dataElementIds != null
-            && organisationUnitIds != null
-            && ( lastMonth || lastQuarter || monthsThisYear || quartersThisYear || thisYear
-                || monthsLastYear || quartersLastYear || lastYear || lastFiveYears ) )
+        if ( dataElementIds != null && periodIds != null && organisationUnitIds != null )
         {
-            RelativePeriods relativePeriod = new RelativePeriods( lastMonth, false, lastQuarter, monthsThisYear, quartersThisYear,
-                thisYear, monthsLastYear, quartersLastYear, lastYear, lastFiveYears, false, false );
-
-            Collection<Integer> relativePeriods = ConversionUtils.getIdentifiers( Period.class,
-                periodService.reloadPeriods( relativePeriod.getRelativePeriods( format, true ) ) );
-
-            object = aggregatedDataValueService.getAggregatedDataValues( dataElementIds, relativePeriods,
-                organisationUnitIds );
+            object = aggregatedDataValueService
+                .getAggregatedDataValues( dataElementIds, periodIds, organisationUnitIds );
         }
 
         return SUCCESS;

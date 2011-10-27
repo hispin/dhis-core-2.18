@@ -259,7 +259,9 @@ Ext.onReady( function() {
                         cmp = DV.cmp.dimension.period;
                     for (var i = 0; i < cmp.length; i++) {
                         if (cmp[i].getValue()) {
-                            a.push(cmp[i].paramName + '=true');
+                            Ext.Array.each(DV.init.system.periods[cmp[i].paramName], function(item) {
+                                a.push('periodIds=' + item.id);
+                            });
                         }
                     }
                     return (isFilter && a.length > 1) ? a.slice(0,1) : a;
@@ -633,9 +635,9 @@ Ext.onReady( function() {
             params = params.concat(DV.util.dimension[filter].getUrl(true));
             
             var baseUrl = DV.conf.finals.ajax.url_visualizer + url + '.action';
-            for (var i = 0; i < params.length; i++) {
-                baseUrl = Ext.String.urlAppend(baseUrl, params[i]);
-            }
+            Ext.Array.each(params, function(item) {
+                baseUrl = Ext.String.urlAppend(baseUrl, item);
+            });
             
             Ext.Ajax.request({
                 url: baseUrl,
@@ -667,14 +669,14 @@ Ext.onReady( function() {
     DV.data = {
         data: [],        
         getData: function(exe) {
-            this.data = [];  
+            this.data = [];
 			
             Ext.Array.each(DV.state.category.data, function(item) {
                 var obj = {};
                 obj[DV.conf.finals.chart.x] = item;
                 DV.data.data.push(obj);
             });
-			
+            
             Ext.Array.each(DV.data.data, function(item) {
                 for (var i = 0; i < DV.state.series.data.length; i++) {
                     for (var j = 0; j < DV.value.values.length; j++) {

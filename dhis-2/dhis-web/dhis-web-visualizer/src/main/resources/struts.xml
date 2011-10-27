@@ -28,7 +28,7 @@
 		<action name="getOrganisationUnitChildren"
 			class="org.hisp.dhis.visualizer.action.GetOrganisationUnitChildrenAction">
 			<result name="success" type="velocity-json">
-				/dhis-web-visualizer/jsonOrganisationUnitChildren.vm</result>
+				/dhis-web-visualizer/jsonminOrganisationUnitChildren.vm</result>
 		</action>
 
         <!-- AggregatedIndicatorValue -->
