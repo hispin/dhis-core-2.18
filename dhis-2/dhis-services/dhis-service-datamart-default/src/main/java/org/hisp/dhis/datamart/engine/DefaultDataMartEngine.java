@@ -260,21 +260,19 @@ public class DefaultDataMartEngine
         clock.logTime( "Dropped potential indexes" );
         
         // ---------------------------------------------------------------------
-        // Delete existing aggregated data
+        // Delete existing aggregated datavalues
         // ---------------------------------------------------------------------
 
         if ( completeExport )
         {
             aggregatedDataValueService.deleteAggregatedDataValues( periodIds );
-            aggregatedDataValueService.deleteAggregatedIndicatorValues( periodIds );
         }
         else
         {
             aggregatedDataValueService.deleteAggregatedDataValues( dataElementIds, periodIds, organisationUnitIds );
-            aggregatedDataValueService.deleteAggregatedIndicatorValues( indicatorIds, periodIds, organisationUnitIds );
         }
 
-        clock.logTime( "Deleted existing aggregated data" );
+        clock.logTime( "Deleted existing aggregated datavalues" );
         
         // ---------------------------------------------------------------------
         // Export data element values
@@ -305,6 +303,21 @@ public class DefaultDataMartEngine
         crossTabService.dropCrossTabTable( key );
         
         clock.logTime( "Dropped crosstab table" );
+
+        // ---------------------------------------------------------------------
+        // Delete existing aggregated indicatorvalues
+        // ---------------------------------------------------------------------
+
+        if ( completeExport )
+        {
+            aggregatedDataValueService.deleteAggregatedIndicatorValues( periodIds );
+        }
+        else
+        {
+            aggregatedDataValueService.deleteAggregatedIndicatorValues( indicatorIds, periodIds, organisationUnitIds );
+        }
+
+        clock.logTime( "Deleted existing aggregated indicatorvalues" );
         
         // ---------------------------------------------------------------------
         // Export indicator values
