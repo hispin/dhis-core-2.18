@@ -26,6 +26,7 @@
  */
 package org.hisp.dhis.program.hibernate;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
@@ -48,10 +49,14 @@ public class HibernateProgramStageInstanceStore
     extends HibernateGenericStore<ProgramStageInstance>
     implements ProgramStageInstanceStore
 {
+    @SuppressWarnings( "unchecked" )
     public ProgramStageInstance get( ProgramInstance programInstance, ProgramStage programStage )
     {
-        return (ProgramStageInstance) getCriteria( Restrictions.eq( "programInstance", programInstance ),
-            Restrictions.eq( "programStage", programStage ) ).uniqueResult();
+        List<ProgramStageInstance> list = new ArrayList<ProgramStageInstance>( getCriteria(
+            Restrictions.eq( "programInstance", programInstance ), Restrictions.eq( "programStage", programStage ) )
+            .list() );
+
+        return (list == null) ? null : list.get( list.size() - 1 );
     }
 
     @SuppressWarnings( "unchecked" )
@@ -100,12 +105,12 @@ public class HibernateProgramStageInstanceStore
         {
             hql += " and dueDate >= :after";
         }
-        
+
         if ( before != null )
         {
             hql += " and dueDate <= :before";
         }
-        
+
         if ( completed != null )
         {
             hql += " and completed = :completed";
@@ -117,12 +122,12 @@ public class HibernateProgramStageInstanceStore
         {
             q.setDate( "after", after );
         }
-        
+
         if ( before != null )
         {
             q.setDate( "before", before );
         }
-        
+
         if ( completed != null )
         {
             q.setBoolean( "completed", completed );
@@ -135,7 +140,7 @@ public class HibernateProgramStageInstanceStore
     public List<ProgramStageInstance> getProgramStageInstances( Patient patient, Boolean completed )
     {
         String hql = "from ProgramStageInstance where programInstance.patient = :patient and completed = :completed";
-        
+
         return getQuery( hql ).setEntity( "patient", patient ).setBoolean( "completed", completed ).list();
     }
 }

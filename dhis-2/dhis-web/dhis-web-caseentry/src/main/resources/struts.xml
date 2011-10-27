@@ -93,6 +93,12 @@
 				/dhis-web-commons/ajax/xmlResponseInput.vm</result>
 			<param name="onExceptionReturn">plainTextError</param>
 		</action>
+		
+		<action name="registerIrregularEncounter"
+			class="org.hisp.dhis.caseentry.action.caseentry.RegisterIrregularEncounterAction">
+			<result name="success" type="velocity-json">
+				/dhis-web-commons/ajax/jsonResponseSuccess.vm</result>
+		</action>
 
 		<!-- save value -->
 
