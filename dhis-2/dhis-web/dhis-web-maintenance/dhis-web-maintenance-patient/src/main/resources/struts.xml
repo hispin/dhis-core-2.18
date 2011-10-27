@@ -387,6 +387,7 @@
 				/dhis-web-maintenance-patient/addProgramStageForm.vm</param>
 			<param name="menu">/dhis-web-maintenance-patient/patientAndProgramMenu.vm</param>
 			<param name="javascripts">javascript/commons.js,javascript/programStage.js</param>
+			<param name="stylesheets">/dhis-web-maintenance-patient/style/basic.css</param>
 			<param name="requiredAuthorities">F_PROGRAMSTAGE_ADD</param>
 		</action>
 
@@ -420,6 +421,7 @@
 				/dhis-web-maintenance-patient/updateProgramStageForm.vm</param>
 			<param name="menu">/dhis-web-maintenance-patient/patientAndProgramMenu.vm</param>
 			<param name="javascripts">javascript/commons.js,javascript/programStage.js</param>
+			<param name="stylesheets">/dhis-web-maintenance-patient/style/basic.css</param>
 			<param name="requiredAuthorities">F_PROGRAMSTAGE_UPDATE</param>
 		</action>
 

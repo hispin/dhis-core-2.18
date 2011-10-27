@@ -127,6 +127,13 @@ public class UpdateProgramStageAction
         return programId;
     }
 
+    private Boolean irregular;
+
+    public void setIrregular( Boolean irregular )
+    {
+        this.irregular = irregular;
+    }
+
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
@@ -135,13 +142,15 @@ public class UpdateProgramStageAction
         throws Exception
     {
         ProgramStage programStage = programStageService.getProgramStage( id );
-        
-        programStage.setName( name );
 
+        programStage.setName( name );
         programStage.setDescription( description );
 
         minDaysFromStart = (minDaysFromStart == null) ? 0 : minDaysFromStart;
         programStage.setMinDaysFromStart( minDaysFromStart );
+
+        irregular = irregular ? irregular : false;
+        programStage.setIrregular( irregular );
 
         programStageService.updateProgramStage( programStage );
 
@@ -177,7 +186,7 @@ public class UpdateProgramStageAction
         {
             programStageDataElementService.deleteProgramStageDataElement( psdeDelete );
         }
-        
+
         programId = programStage.getProgram().getId();
 
         return SUCCESS;

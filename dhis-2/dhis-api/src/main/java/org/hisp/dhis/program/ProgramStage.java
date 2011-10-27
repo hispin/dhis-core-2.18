@@ -53,6 +53,8 @@ public class ProgramStage
 
     private int minDaysFromStart;    
     
+    private Boolean irregular;
+    
     private Program program;
 
     private Set<ProgramStageDataElement> programStageDataElements = new HashSet<ProgramStageDataElement>();
@@ -173,6 +175,16 @@ public class ProgramStage
     public void setDescription( String description )
     {
         this.description = description;
+    }
+
+    public Boolean getIrregular()
+    {
+        return irregular;
+    }
+
+    public void setIrregular( Boolean irregular )
+    {
+        this.irregular = irregular;
     }
 
     /**
