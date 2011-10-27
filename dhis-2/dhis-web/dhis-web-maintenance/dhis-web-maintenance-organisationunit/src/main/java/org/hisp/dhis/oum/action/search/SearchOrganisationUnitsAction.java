@@ -44,6 +44,7 @@ import org.hisp.dhis.organisationunit.OrganisationUnitGroupService;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroupSet;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.organisationunit.comparator.OrganisationUnitGroupSetNameComparator;
+import org.hisp.dhis.organisationunit.comparator.OrganisationUnitNameComparator;
 import org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager;
 import org.hisp.dhis.system.grid.ListGrid;
 
@@ -131,9 +132,9 @@ public class SearchOrganisationUnitsAction
         return groupSets;
     }
     
-    private Collection<OrganisationUnit> organisationUnits;
+    private List<OrganisationUnit> organisationUnits;
 
-    public Collection<OrganisationUnit> getOrganisationUnits()
+    public List<OrganisationUnit> getOrganisationUnits()
     {
         return organisationUnits;
     }
@@ -214,9 +215,11 @@ public class SearchOrganisationUnitsAction
             
             boolean limit = type == null; // Only limit for HTML view since browser is memory constrained
             
-            organisationUnits = organisationUnitService.getOrganisationUnitsByNameAndGroups( name, groups, selectedOrganisationUnit, limit );
+            organisationUnits = new ArrayList<OrganisationUnit>( organisationUnitService.getOrganisationUnitsByNameAndGroups( name, groups, selectedOrganisationUnit, limit ) );
             
             limited = organisationUnits != null && organisationUnits.size() == OrganisationUnitService.MAX_LIMIT;
+            
+            Collections.sort( organisationUnits, new OrganisationUnitNameComparator() );
             
             if ( type != null && !type.equalsIgnoreCase( DEFAULT_TYPE ) )
             {
