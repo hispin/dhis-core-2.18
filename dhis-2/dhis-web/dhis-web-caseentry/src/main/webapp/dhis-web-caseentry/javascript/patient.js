@@ -863,6 +863,7 @@ function showSelectedDataRecoding( patientId )
 			hideById('programStageIdLabel');
 			hideById('programStageId');
 			hideById('patientInfoDiv');
+			hideById( 'newEncounterBtn' );
 			
 			showById('dataRecordingSelectDiv');
 			

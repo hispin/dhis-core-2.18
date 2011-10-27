@@ -9,12 +9,13 @@ function loadProgramStages()
 	clearListById('programStageId');
 	setFieldValue('executionDate','');
 	setFieldValue('dueDate','');
-	
+	disable('completeBtn');
+	disable('validationBtn');
+	disable('newEncounterBtn');
+		
 	var programId = jQuery('#dataRecordingSelectDiv [name=programId]').val();
 	if ( programId == 0 )
 	{
-		disable('completeBtn');
-		disable('validationBtn');
 		return;
 	}
 	jQuery.postJSON( "loadProgramStages.action",
@@ -74,12 +75,13 @@ function loadDataEntry()
 	showById('dataEntryFormDiv');
 	setFieldValue( 'dueDate', '' );
 	setFieldValue( 'executionDate', '' );
-	
+	disable('validationBtn');
+	disable('completeBtn');
+	disable('newEncounterBtn');
+		
 	if( getFieldValue('programStageId') == null
 		|| getFieldValue('programStageId') == 0 )
 	{
-		disable('validationBtn');
-		disable('completeBtn');
 		return;
 	}
 	
@@ -90,8 +92,27 @@ function loadDataEntry()
 			programStageId:getFieldValue('programStageId')
 		},function( )
 		{
-			enable('validationBtn');
-			enable('completeBtn');
+			var executionDate = jQuery('#dataRecordingSelectDiv input[id=executionDate]').val();
+			var completed = jQuery('#entryFormContainer input[id=completed]').val();
+			var irregular = jQuery('#entryFormContainer input[id=irregular]').val();
+			
+			enable('executionDate');
+			if( executionDate != '' && completed == 'false' )
+			{
+				enable('validationBtn');
+				enable('completeBtn');
+			}
+			else if( completed == 'true' )
+			{
+				disable('validationBtn');
+				disable('completeBtn');
+				disable('executionDate');
+			}
+			
+			if( completed == 'true' && irregular == 'true' )
+			{
+				enable( 'newEncounterBtn' );
+			}
 			
 			hideLoader();
 			hideById('contentDiv'); 
@@ -748,6 +769,15 @@ function doComplete()
 						jQuery(this).attr('style', 'display:none');
 					});
 					
+					disable('validationBtn');
+					disable('completeBtn');
+					disable('executionDate');
+					var irregular = jQuery('#entryFormContainer [name=irregular]').val();
+					if( irregular == 'true')
+					{
+						enable('newEncounterBtn');
+					}
+					
 					hideLoader();
 					hideById('contentDiv');
 				},'xml');
@@ -835,5 +865,18 @@ function runValidation()
 			overlay:{background:'#000000', opacity:0.1},
 			width: 800,
 			height: 450
+		});
+}
+
+//------------------------------------------------------
+// Register Irregular-encounter
+//------------------------------------------------------
+
+function registerIrregularEncounter()
+{
+	jQuery.postJSON( "registerIrregularEncounter.action",{}, 
+		function( json ) 
+		{   
+			loadDataEntry();
 		});
 }
