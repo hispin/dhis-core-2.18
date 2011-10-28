@@ -35,6 +35,7 @@ import org.hisp.dhis.organisationunit.OrganisationUnitGroupSet;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroupSetPopulator;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.system.filter.OrganisationUnitWithCoordinatesFilter;
+import org.hisp.dhis.system.filter.OrganisationUnitWithValidPointCoordinateFilter;
 import org.hisp.dhis.system.util.FilterUtils;
 
 import com.opensymphony.xwork2.Action;
@@ -107,14 +108,16 @@ public class GetGeoJsonAction
         object = organisationUnitService.getOrganisationUnitsAtLevel( level, parent );
 
         FilterUtils.filter( object, new OrganisationUnitWithCoordinatesFilter() );
-        
+
         String returnType = object.size() > 0 ? object.iterator().next().getFeatureType() : NONE;
 
-        if ( returnType.equals( OrganisationUnit.FEATURETYPE_POINT  ) )
+        if ( returnType.equals( OrganisationUnit.FEATURETYPE_POINT ) )
         {
+            FilterUtils.filter( object, new OrganisationUnitWithValidPointCoordinateFilter() );
+
             OrganisationUnitGroupSet typeGroupSet = organisationUnitGroupService
                 .getOrganisationUnitGroupSetByName( OrganisationUnitGroupSetPopulator.NAME_TYPE );
-            
+
             for ( OrganisationUnit organisationUnit : object )
             {
                 if ( organisationUnit.getFeatureType() != null
