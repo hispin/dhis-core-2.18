@@ -70,15 +70,20 @@ public class Util
      * @param coordinates
      * @return
      */
-    public static String gmlToCoords(String coordinates)
+    public static String gmlToCoords(String coordinates, String decimalPlacesAsString)
     {
+        int decimalPlaces = Integer.parseInt( decimalPlacesAsString);
+        String formatString = "%."+decimalPlaces+"f,%."+decimalPlaces+"f";
         StringBuilder sb = new StringBuilder();
         String[] coords = coordinates.split( "\\s");
 
-        for (String coord : coords)
+        for (String coordAsString : coords)
         {
+            String[] latlon = coordAsString.split( ",");
+            double lat = Double.parseDouble( latlon[0] );
+            double lon = Double.parseDouble( latlon[1] );
             sb.append( "<coord>");
-            sb.append( coord);
+            sb.append( String.format(formatString, lat, lon));
             sb.append( "</coord>");
         }
 
