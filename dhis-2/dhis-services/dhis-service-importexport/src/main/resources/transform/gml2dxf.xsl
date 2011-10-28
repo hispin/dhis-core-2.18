@@ -4,11 +4,11 @@
   xmlns:gml="http://www.opengis.net/gml"
 >
 
-<xsl:param name="roundingFactor">10000</xsl:param>
+<xsl:param name="decimalPlaces">4</xsl:param>
   
 <xsl:template match="gml:coordinates">
   <coordinatesTuple>
-      <xsl:value-of select="dhis:gmlToCoords(normalize-space(.))" 
+      <xsl:value-of select="dhis:gmlToCoords(normalize-space(.),$decimalPlaces)"
         disable-output-escaping="yes" 
         xmlns:dhis="org.hisp.dhis.importexport.xml.Util" />
   </coordinatesTuple>
