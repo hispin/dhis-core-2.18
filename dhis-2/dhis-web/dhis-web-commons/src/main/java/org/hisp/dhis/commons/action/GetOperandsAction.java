@@ -51,7 +51,7 @@ public class GetOperandsAction
     extends ActionPagingSupport<DataElementOperand>
 {
     private static Filter<DataElement> AGGREGATABLE_FILTER = new AggregatableDataElementFilter();
-    
+
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
@@ -87,7 +87,7 @@ public class GetOperandsAction
     {
         this.id = id;
     }
-    
+
     private String key;
 
     public void setKey( String key )
@@ -112,7 +112,7 @@ public class GetOperandsAction
     {
         this.aggregationOperator = aggregationOperator;
     }
-    
+
     private String periodType;
 
     public void setPeriodType( String periodType )
@@ -167,13 +167,14 @@ public class GetOperandsAction
         {
             FilterUtils.filter( dataElements, AGGREGATABLE_FILTER );
         }
-        
+
         if ( periodType != null )
         {
             FilterUtils.filter( dataElements, new DataElementPeriodTypeFilter( periodType ) );
         }
 
-        operands = new ArrayList<DataElementOperand>( dataElementCategoryService.getOperands( dataElements, includeTotals ) );
+        operands = new ArrayList<DataElementOperand>( dataElementCategoryService.getOperands( dataElements,
+            includeTotals ) );
 
         Collections.sort( operands, new DataElementOperandNameComparator() );
 

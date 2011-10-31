@@ -61,8 +61,13 @@ public class GetConstantsAction
     }
 
     // -------------------------------------------------------------------------
-    // Output
+    // Input & Output
     // -------------------------------------------------------------------------
+
+    public void setKey( String key )
+    {
+        this.key = key;
+    }
 
     private List<Constant> constants;
 
@@ -72,15 +77,10 @@ public class GetConstantsAction
     }
 
     private String key;
-    
+
     public String getKey()
     {
         return key;
-    }
-
-    public void setKey( String key )
-    {
-        this.key = key;
     }
 
     // -------------------------------------------------------------------------
@@ -92,16 +92,18 @@ public class GetConstantsAction
         if ( isNotBlank( key ) ) // Filter on key only if set
         {
             this.paging = createPaging( constantService.getConstantCountByName( key ) );
-            
-            constants = new ArrayList<Constant>( constantService.getConstantsBetweenByName( key, paging.getStartPos(), paging.getPageSize() ) );
+
+            constants = new ArrayList<Constant>( constantService.getConstantsBetweenByName( key, paging.getStartPos(),
+                paging.getPageSize() ) );
         }
         else
         {
             this.paging = createPaging( constantService.getConstantCount() );
-            
-            constants = new ArrayList<Constant>( constantService.getConstantsBetween( paging.getStartPos(), paging.getPageSize() ) );
+
+            constants = new ArrayList<Constant>( constantService.getConstantsBetween( paging.getStartPos(),
+                paging.getPageSize() ) );
         }
-        
+
         Collections.sort( constants, new ConstantNameComparator() );
 
         return SUCCESS;

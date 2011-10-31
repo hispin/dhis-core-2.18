@@ -64,9 +64,9 @@ public class GetAvailablePeriodsAction
     {
         this.periodType = periodType;
     }
-    
+
     private int year;
-    
+
     public void setYear( int year )
     {
         this.year = year;
@@ -77,7 +77,7 @@ public class GetAvailablePeriodsAction
     // -------------------------------------------------------------------------
 
     private List<Period> periods;
-    
+
     public List<Period> getPeriods()
     {
         return periods;
@@ -90,27 +90,28 @@ public class GetAvailablePeriodsAction
     public String execute()
     {
         periodType = periodType != null && !periodType.isEmpty() ? periodType : MonthlyPeriodType.NAME;
-        
+
         CalendarPeriodType _periodType = (CalendarPeriodType) CalendarPeriodType.getPeriodTypeByName( periodType );
-        
+
         int thisYear = Calendar.getInstance().get( Calendar.YEAR );
-        
+
         int currentYear = (Integer) SessionUtils.getSessionVar( SessionUtils.KEY_CURRENT_YEAR, thisYear );
 
         Calendar cal = PeriodType.createCalendarInstance();
-        
-        if ( !( currentYear == thisYear && year > 0 ) ) // Cannot go to next year if current year equals this year
+
+        // Cannot go to next year if current year equals this year
+        if ( !(currentYear == thisYear && year > 0) )
         {
             cal.set( Calendar.YEAR, currentYear );
             cal.add( Calendar.YEAR, year );
-            
+
             SessionUtils.setSessionVar( SessionUtils.KEY_CURRENT_YEAR, cal.get( Calendar.YEAR ) );
         }
-        
+
         periods = _periodType.generatePeriods( cal.getTime() );
 
         FilterUtils.filter( periods, new PastAndCurrentPeriodFilter() );
-        
+
         Collections.reverse( periods );
 
         if ( usePaging )
@@ -119,12 +120,12 @@ public class GetAvailablePeriodsAction
 
             periods = periods.subList( paging.getStartPos(), paging.getEndPos() );
         }
-        
+
         for ( Period period : periods )
         {
             period.setName( format.formatPeriod( period ) );
         }
-        
+
         return SUCCESS;
     }
 }

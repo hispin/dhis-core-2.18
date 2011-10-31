@@ -68,9 +68,12 @@ public class GetIndicatorGroupSetAction
         return indicatorGroupSet;
     }
 
+    // -------------------------------------------------------------------------
+    // Action implementation
+    // -------------------------------------------------------------------------
+
     @Override
     public String execute()
-        throws Exception
     {
         if ( id != null )
         {

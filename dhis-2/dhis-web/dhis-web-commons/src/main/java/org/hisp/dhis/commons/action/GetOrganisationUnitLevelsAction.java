@@ -63,6 +63,10 @@ public class GetOrganisationUnitLevelsAction
         return organisationUnitLevels;
     }
 
+    // -------------------------------------------------------------------------
+    // Action Implementation
+    // -------------------------------------------------------------------------
+
     @Override
     public String execute()
         throws Exception

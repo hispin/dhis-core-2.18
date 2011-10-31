@@ -155,18 +155,18 @@ public class GetDataElementsAction
         this.aggregate = aggregate;
     }
 
-    private List<DataElement> dataElements;
-
-    public List<DataElement> getDataElements()
-    {
-        return dataElements;
-    }
-
     public String domain;
 
     public void setDomain( String domain )
     {
         this.domain = domain;
+    }
+
+    private List<DataElement> dataElements;
+
+    public List<DataElement> getDataElements()
+    {
+        return dataElements;
     }
 
     // -------------------------------------------------------------------------
@@ -191,8 +191,8 @@ public class GetDataElementsAction
 
             if ( categoryCombo != null )
             {
-                dataElements = new ArrayList<DataElement>( dataElementService
-                    .getDataElementByCategoryCombo( categoryCombo ) );
+                dataElements = new ArrayList<DataElement>(
+                    dataElementService.getDataElementByCategoryCombo( categoryCombo ) );
             }
         }
         else if ( dataSetId != null )
@@ -215,8 +215,8 @@ public class GetDataElementsAction
         }
         else if ( domain != null )
         {
-            dataElements = new ArrayList<DataElement>( dataElementService
-                .getDataElementsByDomainType( DataElement.DOMAIN_TYPE_PATIENT ) );
+            dataElements = new ArrayList<DataElement>(
+                dataElementService.getDataElementsByDomainType( DataElement.DOMAIN_TYPE_PATIENT ) );
         }
         else
         {
