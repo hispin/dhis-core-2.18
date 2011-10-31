@@ -2,6 +2,10 @@
  ExtJS overrides
  ****************/
 
+.x-body {
+	font-family: arial, ubuntu;
+}
+
 /* Combobox empty text */
 .x-form-empty-field, textarea.x-form-empty-field {
     font-size: 10px;
@@ -20,7 +24,7 @@
 
 /* Combobox field label font */
 .x-form-item-label {
-    font: 11px arial;
+    font: 11px arial, ubuntu;
     color: #111;
 }
 
@@ -86,7 +90,7 @@
 
 /* Tree panel font */
 .x-grid-row .x-grid-cell {
-    font: 10px arial;
+    font: 10px arial, ubuntu;
     color: #222;
 }
 
@@ -152,6 +156,11 @@
     border-width: 1px;
 }
 
+/* Button font-family */
+.x-btn-default-toolbar-small .x-btn-inner {
+	font-family: arial, ubuntu;
+}
+
 /* Toolbar separator */
 .x-toolbar .x-toolbar-separator-horizontal {
     height: 15px;
@@ -182,7 +191,7 @@
  ***************/
 
 body {
-    font: normal 11px arial,ubuntu;
+    font: normal 11px arial, ubuntu;
 }
 
 li {
@@ -296,7 +305,7 @@ li {
 
 /* Chart tips */
 .dv-chart-tips {
-    font: normal 13px arial;
+    font: normal 13px arial, ubuntu;
     padding: 0 0 3px 3px;
 }
 
