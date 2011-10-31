@@ -691,7 +691,7 @@ Ext.onReady( function() {
                         }
                     }
                 }
-            });
+            });            
             
             if (exe) {
                 DV.store.getChartStore(true);
