@@ -62,6 +62,10 @@ public class GetPeriodTypesAction
         return periodTypes;
     }
 
+    // -------------------------------------------------------------------------
+    // Action implementation
+    // -------------------------------------------------------------------------
+
     @Override
     public String execute()
         throws Exception
@@ -73,7 +77,7 @@ public class GetPeriodTypesAction
             this.paging = createPaging( periodTypes.size() );
 
             periodTypes = periodTypes.subList( paging.getStartPos(), paging.getEndPos() );
-        }        
+        }
 
         return SUCCESS;
     }

@@ -75,6 +75,10 @@ public class GetExpressionTextAction
         return message;
     }
 
+    // -------------------------------------------------------------------------
+    // Action implementation
+    // -------------------------------------------------------------------------
+
     @Override
     public String execute()
         throws Exception

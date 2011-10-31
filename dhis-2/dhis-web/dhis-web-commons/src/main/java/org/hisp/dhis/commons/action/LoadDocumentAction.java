@@ -64,7 +64,7 @@ public class LoadDocumentAction
     public void setDocumentService( DocumentService documentService )
     {
         this.documentService = documentService;
-    }   
+    }
 
     // -------------------------------------------------------------------------
     // Input
@@ -75,10 +75,10 @@ public class LoadDocumentAction
     public void setId( Integer id )
     {
         this.id = id;
-    }   
-    
+    }
+
     private Document document;
-    
+
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
@@ -88,13 +88,13 @@ public class LoadDocumentAction
         throws Exception
     {
         document = documentService.getDocument( id );
-        
+
         InputStream in = locationManager.getInputStream( document.getUrl(), DocumentService.DIR );
-        
+
         IOUtils.copy( in, out );
-        
+
         log.info( "Document " + document.getName() + ", " + document.getUrl() + ", " + document.getContentType() );
-        
+
         return SUCCESS;
     }
 

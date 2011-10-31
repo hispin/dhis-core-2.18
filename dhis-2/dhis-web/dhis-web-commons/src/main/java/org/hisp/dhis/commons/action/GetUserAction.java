@@ -48,9 +48,9 @@ public class GetUserAction
     {
         this.userService = userService;
     }
-    
+
     // -------------------------------------------------------------------------
-    // Input
+    // Input & Output
     // -------------------------------------------------------------------------
 
     private Integer id;
@@ -59,10 +59,6 @@ public class GetUserAction
     {
         this.id = id;
     }
-
-    // -------------------------------------------------------------------------
-    // Output
-    // -------------------------------------------------------------------------
 
     private User user;
 
@@ -78,7 +74,7 @@ public class GetUserAction
     public String execute()
     {
         user = userService.getUser( id );
-        
+
         return SUCCESS;
     }
 }
