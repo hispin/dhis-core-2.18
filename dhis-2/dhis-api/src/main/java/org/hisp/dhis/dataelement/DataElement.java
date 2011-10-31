@@ -120,11 +120,6 @@ public class DataElement
     private String aggregationOperator;
 
     /**
-     * A Collection of children DataElements.
-     */
-    private Set<DataElement> children = new HashSet<DataElement>();
-
-    /**
      * A combination of categories to capture data.
      */
     private DataElementCategoryCombo categoryCombo;
@@ -424,16 +419,6 @@ public class DataElement
     public void setAggregationOperator( String aggregationOperator )
     {
         this.aggregationOperator = aggregationOperator;
-    }
-
-    public Set<DataElement> getChildren()
-    {
-        return children;
-    }
-
-    public void setChildren( Set<DataElement> children )
-    {
-        this.children = children;
     }
 
     public DataElementCategoryCombo getCategoryCombo()
