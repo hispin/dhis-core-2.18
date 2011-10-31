@@ -1,4 +1,4 @@
-package org.hisp.dhis.dataset.action;
+package org.hisp.dhis.mobile.action;
 
 import java.util.Collection;
 import java.util.HashSet;

@@ -23,6 +23,21 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     <property name="patientMobileSettingService" ref="org.hisp.dhis.mobile.service.PatientMobileSettingService" />
     <property name="patientAttributeService" ref="org.hisp.dhis.patient.PatientAttributeService" />
   </bean>
+	
+		<!-- Mobile DataSet -->
+  <bean id="org.hisp.dhis.mobile.action.MobileDataSetListAction" class="org.hisp.dhis.mobile.action.MobileDataSetListAction"
+    scope="prototype">
+    <property name="dataSetService">
+      <ref bean="org.hisp.dhis.dataset.DataSetService" />
+    </property>
+  </bean>
+
+  <bean id="org.hisp.dhis.mobile.action.UpdateMobileDataSetAction" class="org.hisp.dhis.mobile.action.UpdateMobileDataSetAction"
+    scope="prototype">
+    <property name="dataSetService">
+      <ref bean="org.hisp.dhis.dataset.DataSetService" />
+    </property>
+  </bean>
 
 
   <!-- JAX-RS resources -->
