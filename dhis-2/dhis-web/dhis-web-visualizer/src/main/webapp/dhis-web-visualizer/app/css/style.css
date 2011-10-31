@@ -123,6 +123,11 @@
     border-color: #b3abaa;
 }
 
+/* Checkbox icons */
+.x-form-checkbox, .x-form-radio {
+    background-image: url('../images/checkbox.gif');
+}
+
 /* Checkbox box label */
 .x-form-cb-label-after {
     padding-left: 3px;
