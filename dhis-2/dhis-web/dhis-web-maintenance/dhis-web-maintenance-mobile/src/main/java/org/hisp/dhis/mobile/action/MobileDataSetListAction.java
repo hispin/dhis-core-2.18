@@ -1,4 +1,4 @@
-package org.hisp.dhis.dataset.action;
+package org.hisp.dhis.mobile.action;
 
 /*
  * Copyright (c) 2004-2010, University of Oslo

@@ -41,6 +41,18 @@
     <action name="editPatientMobileSetting" class="org.hisp.dhis.mobile.action.UpdateMobileSettingAction">
       <result name="success" type="redirect">patientMobileSetting.action</result>
     </action>
+	  
+	  	<!-- Mobile Dataset Action -->
+
+    <action name="showMobileDataSet" class="org.hisp.dhis.mobile.action.MobileDataSetListAction">
+      <result name="success" type="velocity">/main.vm</result>
+      <param name="page">/dhis-web-maintenance-mobile/mobileDatasetList.vm</param>
+      <param name="menu">/dhis-web-maintenance-mobile/menu.vm</param>
+    </action>
+
+    <action name="updateMobileDataset" class="org.hisp.dhis.mobile.action.UpdateMobileDataSetAction">
+      <result name="success" type="redirect">showMobileDataSet.action</result>
+    </action>
 
 
   </package>
