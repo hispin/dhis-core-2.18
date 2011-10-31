@@ -137,7 +137,7 @@
 
 /* Button border */
 .x-btn-default-toolbar-small {
-    border-width: 2px;
+    border-width: 1px;
 }
 
 .x-btn-default-toolbar-small-over {
@@ -149,7 +149,7 @@
     border-radius: 3px 3px 3px 3px;
     border-color: #aaa;
     border-style: double;
-    border-width: 2px;
+    border-width: 1px;
 }
 
 /* Toolbar separator */
@@ -233,6 +233,25 @@ li {
     -moz-border-radius-topright: 2px;
 	-webkit-border-top-right-radius: 2px;
 	border-top-right-radius: 2px;
+}
+
+/* Multiselect boundlist */
+#availableIndicators .x-boundlist-item-over, #availableDataElements .x-boundlist-item-over {
+    background-color: transparent;
+    border-color: transparent;
+}
+#availableIndicators .x-boundlist-selected, #availableDataElements .x-boundlist-selected {
+    background-color: #d3d3d3;
+    border-color: #b3abaa;
+}
+
+#selectedIndicators .x-boundlist-item-over, #selectedDataElements .x-boundlist-item-over {
+    background-color: transparent;
+    border-color: transparent;
+}
+#selectedIndicators .x-boundlist-selected, #selectedDataElements .x-boundlist-selected {
+    background-color: #d3d3d3;
+    border-color: #b3abaa;
 }
 
 /* Treepanel contextmenu */
