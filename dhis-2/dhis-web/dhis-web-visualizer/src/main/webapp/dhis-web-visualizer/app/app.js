@@ -104,6 +104,10 @@ Ext.onReady( function() {
             getSize: function() {
                 var c = Ext.getCmp('center');
                 return {x: c.getWidth(), y: c.getHeight()};
+            },
+            getXY: function() {
+                var c = Ext.getCmp('center');
+                return {x: c.x + 15, y: c.y + 45};
             }
         },
         multiselect: {
@@ -647,12 +651,13 @@ Ext.onReady( function() {
                     if (!DV.value.values.length) {
                         alert('no data values');
                         return;
-                    }              
+                    }
                     
                     Ext.Array.each(DV.value.values, function(item) {
                         item[indiment] = DV.store[indiment].available.storage[item.i].name;
                         item[DV.conf.finals.dimension.period.value] = DV.util.dimension.period.getNameById(item.p);
                         item[DV.conf.finals.dimension.organisationunit.value] = DV.util.getCmp('treepanel').store.getNodeById(item.o).data.text;
+                        item.v = parseFloat(item.v);
                     });
                     
                     if (exe) {
@@ -681,7 +686,7 @@ Ext.onReady( function() {
                 for (var i = 0; i < DV.state.series.data.length; i++) {
                     for (var j = 0; j < DV.value.values.length; j++) {
                         if (DV.value.values[j][DV.state.category.dimension] === item[DV.conf.finals.chart.x] && DV.value.values[j][DV.state.series.dimension] === DV.state.series.data[i]) {
-                            item[DV.value.values[j][DV.state.series.dimension]] = parseFloat(DV.value.values[j].v);
+                            item[DV.value.values[j][DV.state.series.dimension]] = DV.value.values[j].v;
                             break;
                         }
                     }
@@ -1661,61 +1666,66 @@ Ext.onReady( function() {
                             DV.state.getState(true);
                         }
                     },
-                    //{
-                        //xtype: 'button',
-                        //text: 'Data table',
-                        //cls: 'x-btn-text-icon',
-                        //icon: 'images/datatable.png',
-                        //handler: function() {
-                            //Ext.create('Ext.window.Window', {
-                                //title: 'Data table',
-                                //layout: 'fit',
-                                //iconCls: 'dv-window-title-datatable',
-                                //width: 580,
-                                ////height: DV.viewport.getHeight() / 1.5,
-                                //height: 200,
-                                //items: [
-                                    //{
-                                        //xtype: 'grid',
-                                        //layout: 'vbox',
-                                        //scroll: 'vertical',
-                                        //height: 150,
-                                        //columns: [
-                                            //{
-                                                //text: DV.conf.finals.dimension.indicator.rawvalue,
-                                                //dataIndex: DV.conf.finals.dimension.indicator.value,
-                                                //width: 150
-                                            //},
-                                            //{
-                                                //text: DV.conf.finals.dimension.period.rawvalue,
-                                                //dataIndex: DV.conf.finals.dimension.period.value,
-                                                //width: 150
-                                            //},
-                                            //{
-                                                //text: DV.conf.finals.dimension.organisationunit.rawvalue,
-                                                //dataIndex: DV.conf.finals.dimension.organisationunit.value,
-                                                //width: 150
-                                            //},
-                                            //{
-                                                //text: 'Value',
-                                                //dataIndex: 'v',
-                                                //width: 100
-                                            //}
-                                        //],
-                                        //store: Ext.create('Ext.data.Store', {
-                                            //fields: [
-                                                //DV.conf.finals.dimension.indicator.value,
-                                                //DV.conf.finals.dimension.period.value,
-                                                //DV.conf.finals.dimension.organisationunit.value,
-                                                //'v'
-                                            //],
-                                            //data: DV.value.values
-                                        //})
-                                    //}
-                                //]
-                            //}).show();
-                        //}
-                    //},
+                    {
+                        xtype: 'button',
+                        text: 'Data table',
+                        cls: 'x-btn-text-icon',
+                        icon: 'images/datatable.png',
+                        handler: function() {
+                            var window = Ext.create('Ext.window.Window', {
+                                title: 'Data table',
+                                layout: 'fit',
+                                iconCls: 'dv-window-title-datatable',
+                                width: 560,
+                                height: Ext.Array.min([21*DV.value.values.length+57, DV.viewport.getHeight()*3/4]),
+                                items: [
+                                    {
+                                        xtype: 'grid',
+                                        scroll: 'vertical',
+                                        columns: [
+                                            {
+                                                text: DV.conf.finals.dimension.indicator.rawvalue,
+                                                dataIndex: DV.conf.finals.dimension.indicator.value,
+                                                width: 150,
+                                            },
+                                            {
+                                                text: DV.conf.finals.dimension.period.rawvalue,
+                                                dataIndex: DV.conf.finals.dimension.period.value,
+                                                width: 150
+                                            },
+                                            {
+                                                text: DV.conf.finals.dimension.organisationunit.rawvalue,
+                                                dataIndex: DV.conf.finals.dimension.organisationunit.value,
+                                                width: 150
+                                            },
+                                            {
+                                                text: 'Value',
+                                                dataIndex: 'v',
+                                                width: 80
+                                            }
+                                        ],
+                                        store: Ext.create('Ext.data.Store', {
+                                            fields: [
+                                                DV.conf.finals.dimension.indicator.value,
+                                                DV.conf.finals.dimension.period.value,
+                                                DV.conf.finals.dimension.organisationunit.value,
+                                                'v'
+                                            ],
+                                            data: DV.value.values
+                                        })
+                                    }
+                                ],
+                                listeners: {
+                                    resize: function() {
+                                        this.down('grid').setHeight(this.height-34);
+                                    }
+                                }
+                            });
+                            var xy = DV.util.viewport.getXY();
+                            window.setPosition(xy.x, xy.y);
+                            window.show();
+                        }
+                    },
                     '-',' ',
                     {
                         xtype: 'label',
