@@ -1,7 +1,13 @@
 
 #set( $Integer = 0 )
 
-<h2>$encoder.htmlEncode( $dataSet.name )</h2>
+#if( $dataSet.alternativeName )
+	#set( $dataSetName = $dataSet.alternativeName )
+#else
+	#set( $dataSetName = $dataSet.name )
+#end
+
+<h2>$encoder.htmlEncode( $dataSetName )</h2>
 
 #set( $validationRuleViolationsSize = $validationRuleViolations.size() )
 #set( $validationViolationsSize = $validationViolations.size() )
@@ -47,9 +53,16 @@
 	<h3 style="text-align: left;">$sectionName</h3>
 	<p style="text-align: left;">
 		#foreach( $dataElement in $dataElements)
+			#if( $dataElement.shortName )
+				#set( $dataElementName = $dataElement.shortName )
+			#else
+				#set( $dataElementName = $dataElement.name )
+			#end
+
 			#foreach( $optionCombo in $dataElement.categoryCombo.optionCombos )
 				#set( $key = "DE${dataElement.id}OC${optionCombo.id}" )
-				<label>$dataElement.name #if($optionCombo.name!="(default)")$optionCombo.name#end</label>
+
+				<label>$encoder.htmlEncode( $dataElementName ) #if( $optionCombo.name!="(default)")$encoder.htmlEncode( $optionCombo.name )#end</label>
 
 				#if( $validationViolations.get( $key ) )
 					#set( $validationViolation = $validationViolations.get( $key ) )
