@@ -112,7 +112,6 @@ public class DefaultMessageService
         for ( User user : users )
         {
             boolean read = user != null && user.equals( sender );
-            System.out.println( "sender " + sender + " user " + user + " read " + read );
             
             conversation.addUserMessage( new UserMessage( user, read ) );        
         }
