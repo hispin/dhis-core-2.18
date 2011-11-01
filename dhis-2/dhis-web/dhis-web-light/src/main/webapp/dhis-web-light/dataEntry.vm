@@ -67,9 +67,9 @@
 				#if( $validationViolations.get( $key ) )
 					#set( $validationViolation = $validationViolations.get( $key ) )
 
-	                #if( $sectionFormUtils.valueHigher( $validationViolation.value, $validationViolation.max ) )
+	                #if( $formUtils.valueHigher( $validationViolation.value, $validationViolation.max ) )
 	                    <br /><span style="color: #990000;">Too high (max $validationViolation.max)</span>
-	                #elseif( $sectionFormUtils.valueLower( $validationViolation.value, $validationViolation.min ) )
+	                #elseif( $formUtils.valueLower( $validationViolation.value, $validationViolation.min ) )
 	                    <br /><span style="color: red;">Too low (min $validationViolation.min)</span>
 	                #else
 	                    <br /><span style="color: red;">Not a number</span>
