@@ -66,7 +66,7 @@ public class SpringScheduler
     }
 
     // -------------------------------------------------------------------------
-    // Sceduler implementation
+    // Scheduler implementation
     // -------------------------------------------------------------------------
 
     public void executeTask( Runnable task )
@@ -84,7 +84,7 @@ public class SpringScheduler
             
             futures.put( key, future );
             
-            log.info( "Sceduled task of type: " + key );
+            log.info( "Scheduled task of type: " + key );
             
             return true;
         }
