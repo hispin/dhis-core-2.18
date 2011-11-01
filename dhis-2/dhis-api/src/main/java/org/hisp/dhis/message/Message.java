@@ -141,4 +141,39 @@ public class Message
     {
         this.sentDate = sentDate;
     }
+    
+    @Override
+    public int hashCode()
+    {
+        return key.hashCode();
+    }
+
+    @Override
+    public boolean equals( Object object )
+    {
+        if ( this == object )
+        {
+            return true;
+        }
+        
+        if ( object == null )
+        {
+            return false;
+        }
+        
+        if ( getClass() != object.getClass() )
+        {
+            return false;
+        }
+        
+        final Message other = (Message) object;
+        
+        return key.equals( other.key );
+    }
+    
+    @Override
+    public String toString()
+    {
+        return "[" + text + "]";
+    }
 }

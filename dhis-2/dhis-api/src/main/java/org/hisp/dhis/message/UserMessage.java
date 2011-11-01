@@ -48,12 +48,19 @@ public class UserMessage
     {
         this.key = UUID.randomUUID().toString();
     }
-    
+
     public UserMessage( User user )
     {
         this.key = UUID.randomUUID().toString();
         this.user = user;
         this.read = false;
+    }
+
+    public UserMessage( User user, boolean read )
+    {
+        this.key = UUID.randomUUID().toString();
+        this.user = user;
+        this.read = read;
     }
     
     public int getId()
@@ -94,6 +101,35 @@ public class UserMessage
     public void setRead( boolean read )
     {
         this.read = read;
+    }
+
+    @Override
+    public int hashCode()
+    {
+        return key.hashCode();
+    }
+
+    @Override
+    public boolean equals( Object object )
+    {
+        if ( this == object )
+        {
+            return true;
+        }
+        
+        if ( object == null )
+        {
+            return false;
+        }
+        
+        if ( getClass() != object.getClass() )
+        {
+            return false;
+        }
+        
+        final UserMessage other = (UserMessage) object;
+        
+        return key.equals( other.key );
     }
     
     @Override
