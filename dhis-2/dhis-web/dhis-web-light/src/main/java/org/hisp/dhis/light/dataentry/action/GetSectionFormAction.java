@@ -37,7 +37,7 @@ import org.hisp.dhis.dataset.CompleteDataSetRegistrationService;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.dataset.DataSetService;
 import org.hisp.dhis.datavalue.DeflatedDataValue;
-import org.hisp.dhis.light.dataentry.utils.SectionFormUtils;
+import org.hisp.dhis.light.dataentry.utils.FormUtils;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.period.Period;
@@ -83,16 +83,16 @@ public class GetSectionFormAction
         this.periodService = periodService;
     }
 
-    private SectionFormUtils sectionFormUtils;
+    private FormUtils formUtils;
 
-    public void setSectionFormUtils( SectionFormUtils sectionFormUtils )
+    public void setFormUtils( FormUtils formUtils )
     {
-        this.sectionFormUtils = sectionFormUtils;
+        this.formUtils = formUtils;
     }
 
-    public SectionFormUtils getSectionFormUtils()
+    public FormUtils getFormUtils()
     {
-        return sectionFormUtils;
+        return formUtils;
     }
 
     // -------------------------------------------------------------------------
@@ -195,11 +195,11 @@ public class GetSectionFormAction
 
         dataSet = dataSetService.getDataSet( dataSetId );
 
-        dataValues = sectionFormUtils.getDataValueMap( organisationUnit, dataSet, period );
+        dataValues = formUtils.getDataValueMap( organisationUnit, dataSet, period );
 
-        validationViolations = sectionFormUtils.getValidationViolations( organisationUnit, dataSet, period );
+        validationViolations = formUtils.getValidationViolations( organisationUnit, dataSet, period );
 
-        validationRuleViolations = sectionFormUtils.getValidationRuleViolations( organisationUnit, dataSet, period );
+        validationRuleViolations = formUtils.getValidationRuleViolations( organisationUnit, dataSet, period );
 
         CompleteDataSetRegistration registration = registrationService.getCompleteDataSetRegistration( dataSet, period,
             organisationUnit );

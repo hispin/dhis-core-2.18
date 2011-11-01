@@ -48,7 +48,7 @@ import org.hisp.dhis.datavalue.DataValue;
 import org.hisp.dhis.datavalue.DataValueService;
 import org.hisp.dhis.datavalue.DeflatedDataValue;
 import org.hisp.dhis.i18n.I18n;
-import org.hisp.dhis.light.dataentry.utils.SectionFormUtils;
+import org.hisp.dhis.light.dataentry.utils.FormUtils;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.period.Period;
@@ -125,16 +125,16 @@ public class SaveSectionFormAction
         this.periodService = periodService;
     }
 
-    private SectionFormUtils sectionFormUtils;
+    private FormUtils formUtils;
 
-    public void setSectionFormUtils( SectionFormUtils sectionFormUtils )
+    public void setFormUtils( FormUtils formUtils )
     {
-        this.sectionFormUtils = sectionFormUtils;
+        this.formUtils = formUtils;
     }
 
-    public SectionFormUtils getSectionFormUtils()
+    public FormUtils getFormUtils()
     {
-        return sectionFormUtils;
+        return formUtils;
     }
 
     private I18n i18n;
@@ -300,7 +300,7 @@ public class SaveSectionFormAction
                     }
                     else if ( type.equals( DataElement.VALUE_TYPE_BOOL ) )
                     {
-                        if ( !valueIsEmpty && !SectionFormUtils.isBoolean( value ) )
+                        if ( !valueIsEmpty && !FormUtils.isBoolean( value ) )
                         {
                             correctType = false;
                             typeViolations.put( key, value + " " + i18n.getString( "is_invalid_boolean" ) );
@@ -308,7 +308,7 @@ public class SaveSectionFormAction
                     }
                     else if ( type.equals( DataElement.VALUE_TYPE_DATE ) )
                     {
-                        if ( !SectionFormUtils.isDate( value ) )
+                        if ( !FormUtils.isDate( value ) )
                         {
                             correctType = false;
                             typeViolations.put( key, value + " " + i18n.getString( "is_invalid_date" ) );
@@ -317,7 +317,7 @@ public class SaveSectionFormAction
                     else if ( type.equals( DataElement.VALUE_TYPE_INT )
                         && numberType.equals( DataElement.VALUE_TYPE_NUMBER ) )
                     {
-                        if ( !SectionFormUtils.isNumber( value ) )
+                        if ( !FormUtils.isNumber( value ) )
                         {
                             correctType = false;
                             typeViolations.put( key, value + " " + i18n.getString( "is_invalid_number" ) );
@@ -326,7 +326,7 @@ public class SaveSectionFormAction
                     else if ( type.equals( DataElement.VALUE_TYPE_INT )
                         && numberType.equals( DataElement.VALUE_TYPE_INT ) )
                     {
-                        if ( !SectionFormUtils.isInteger( value ) )
+                        if ( !FormUtils.isInteger( value ) )
                         {
                             correctType = false;
                             typeViolations.put( key, value + " " + i18n.getString( "is_invalid_integer" ) );
@@ -335,7 +335,7 @@ public class SaveSectionFormAction
                     else if ( type.equals( DataElement.VALUE_TYPE_INT )
                         && numberType.equals( DataElement.VALUE_TYPE_POSITIVE_INT ) )
                     {
-                        if ( !SectionFormUtils.isPositiveInteger( value ) )
+                        if ( !FormUtils.isPositiveInteger( value ) )
                         {
                             correctType = false;
                             typeViolations.put( key, value + " " + i18n.getString( "is_invalid_positive_integer" ) );
@@ -344,7 +344,7 @@ public class SaveSectionFormAction
                     else if ( type.equals( DataElement.VALUE_TYPE_INT )
                         && numberType.equals( DataElement.VALUE_TYPE_NEGATIVE_INT ) )
                     {
-                        if ( !SectionFormUtils.isNegativeInteger( value ) )
+                        if ( !FormUtils.isNegativeInteger( value ) )
                         {
                             correctType = false;
                             typeViolations.put( key, value + " " + i18n.getString( "is_invalid_negative_integer" ) );
@@ -411,11 +411,11 @@ public class SaveSectionFormAction
             needsValidation = true;
         }
 
-        dataValues = sectionFormUtils.getDataValueMap( organisationUnit, dataSet, period );
+        dataValues = formUtils.getDataValueMap( organisationUnit, dataSet, period );
 
-        validationViolations = sectionFormUtils.getValidationViolations( organisationUnit, dataSet, period );
+        validationViolations = formUtils.getValidationViolations( organisationUnit, dataSet, period );
 
-        validationRuleViolations = sectionFormUtils.getValidationRuleViolations( organisationUnit, dataSet, period );
+        validationRuleViolations = formUtils.getValidationRuleViolations( organisationUnit, dataSet, period );
 
         if ( needsValidation
             && (!validationViolations.isEmpty() || !validationRuleViolations.isEmpty() || !typeViolations.isEmpty()) )

@@ -6,9 +6,9 @@
 	<h3 style="text-align: left;">Successfully Saved</h3>
 	<p style="text-align: left;">
 		#if( $complete )
-		Marked DataSet $dataSet.name as complete <br />
+		DataSet $dataSet.name was saved and completed <br />
 		#else
-		Saved data set $dataSet.name <br />		
+		DataSet $dataSet.name was saved<br />
 		#end
 	</p>
 </div>

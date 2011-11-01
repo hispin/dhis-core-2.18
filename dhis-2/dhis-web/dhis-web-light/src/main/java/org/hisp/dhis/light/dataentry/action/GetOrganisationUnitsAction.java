@@ -31,7 +31,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import org.hisp.dhis.light.dataentry.utils.SectionFormUtils;
+import org.hisp.dhis.light.dataentry.utils.FormUtils;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.comparator.OrganisationUnitNameComparator;
 import org.hisp.dhis.user.CurrentUserService;
@@ -56,18 +56,18 @@ public class GetOrganisationUnitsAction
         this.currentUserService = currentUserService;
     }
 
-    private SectionFormUtils sectionFormUtils;
+    private FormUtils formUtils;
 
-    public void setSectionFormUtils( SectionFormUtils sectionFormUtils )
+    public void setFormUtils( FormUtils formUtils )
     {
-        this.sectionFormUtils = sectionFormUtils;
+        this.formUtils = formUtils;
     }
 
-    public SectionFormUtils getSectionFormUtils()
+    public FormUtils getFormUtils()
     {
-        return sectionFormUtils;
+        return formUtils;
     }
-
+    
     // -------------------------------------------------------------------------
     // Input & Output
     // -------------------------------------------------------------------------
