@@ -1,2 +1,13 @@
-<font face"Arial" color="blue"><h1 align="center">DHIS Mobile</h1></font>
-<div align="center"><img height="300px" width="300px" alt="" src="images/intro.png" /></div>
+<script type="text/javascript">
+jQuery(function() {
+	/* make sure that the leftBar is always visible when entering page. */
+	leftBar.showAnimated()
+});
+</script>
+
+<h3>$i18n.getString( "mobile_configuration" ) </h3>
+
+<ul id="introList">
+    #introListImgItem( "showMobileDataSet.action" "mobile_dataset" "mobile" )
+    #introListImgItem( "patientMobileSetting.action" "patient_mobile_setting" "mobile" )
+</ul>
