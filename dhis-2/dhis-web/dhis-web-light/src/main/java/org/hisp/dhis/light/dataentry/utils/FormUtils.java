@@ -61,7 +61,7 @@ import org.joda.time.format.ISODateTimeFormat;
 /**
  * @author mortenoh
  */
-public class SectionFormUtils
+public class FormUtils
 {
     // -------------------------------------------------------------------------
     // Dependencies
