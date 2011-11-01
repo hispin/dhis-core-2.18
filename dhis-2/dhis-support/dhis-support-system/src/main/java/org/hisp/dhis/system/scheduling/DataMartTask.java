@@ -70,7 +70,7 @@ public class DataMartTask
         Collection<Integer> indicatorIds = ConversionUtils.getIdentifiers( Indicator.class, indicatorService.getAllIndicators() );
         Collection<Integer> organisationUnitIds = ConversionUtils.getIdentifiers( OrganisationUnit.class, organisationUnitService.getAllOrganisationUnits() );
         
-        RelativePeriods relatives = new RelativePeriods( false, false, false, true, true, true, false, false, false, false, false, false );
+        RelativePeriods relatives = new RelativePeriods( false, false, false, true, true, true, false, false, false, false, false, false, false, false );
         
         dataMartService.export( dataElementIds, indicatorIds, new HashSet<Integer>(), organisationUnitIds, relatives, true );
     }
