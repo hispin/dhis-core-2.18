@@ -1,6 +1,19 @@
 
 <h2>$i18n.getString( "available_periods" )</h2>
 
+#if( $validated )
+<div class="header-box">
+	<h3 style="text-align: left;">Successfully Saved</h3>
+	<p style="text-align: left;">
+		#if( $complete )
+		Marked DataSet $dataSet.name as complete <br />
+		#else
+		Saved data set $dataSet.name <br />		
+		#end
+	</p>
+</div>
+#end
+
 <p>
 <ul>
 #foreach( $period in $periods )
