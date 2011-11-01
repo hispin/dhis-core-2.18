@@ -423,6 +423,8 @@ public class SaveSectionFormAction
             return ERROR;
         }
 
+        validated = true;
+
         return SUCCESS;
     }
 }

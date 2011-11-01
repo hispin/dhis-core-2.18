@@ -18,16 +18,19 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     <property name="expressionService" ref="org.hisp.dhis.expression.ExpressionService" />
   </bean>
 
-  <bean id="org.hisp.dhis.light.dataentry.action.GetOrganisationUnitsAction" class="org.hisp.dhis.light.dataentry.action.GetOrganisationUnitsAction">
+  <bean id="org.hisp.dhis.light.dataentry.action.GetOrganisationUnitsAction" class="org.hisp.dhis.light.dataentry.action.GetOrganisationUnitsAction"
+    scope="prototype">
     <property name="currentUserService" ref="org.hisp.dhis.user.CurrentUserService" />
     <property name="sectionFormUtils" ref="org.hisp.dhis.light.dataentry.utils.SectionFormUtils" />
   </bean>
 
-  <bean id="org.hisp.dhis.light.dataentry.action.GetDataSetsAction" class="org.hisp.dhis.light.dataentry.action.GetDataSetsAction">
+  <bean id="org.hisp.dhis.light.dataentry.action.GetDataSetsAction" class="org.hisp.dhis.light.dataentry.action.GetDataSetsAction"
+    scope="prototype">
     <property name="organisationUnitService" ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
   </bean>
 
-  <bean id="org.hisp.dhis.light.dataentry.action.GetPeriodsAction" class="org.hisp.dhis.light.dataentry.action.GetPeriodsAction">
+  <bean id="org.hisp.dhis.light.dataentry.action.GetPeriodsAction" class="org.hisp.dhis.light.dataentry.action.GetPeriodsAction"
+    scope="prototype">
     <property name="organisationUnitService" ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
     <property name="dataSetService" ref="org.hisp.dhis.dataset.DataSetService" />
     <property name="registrationService" ref="org.hisp.dhis.dataset.CompleteDataSetRegistrationService" />
@@ -81,13 +84,15 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 
   <!-- Settings -->
 
-  <bean id="org.hisp.dhis.light.action.settings.action.GetSettingsAction" class="org.hisp.dhis.light.action.settings.action.GetSettingsAction">
+  <bean id="org.hisp.dhis.light.action.settings.action.GetSettingsAction" class="org.hisp.dhis.light.action.settings.action.GetSettingsAction"
+    scope="prototype">
     <property name="resourceBundleManager" ref="org.hisp.dhis.i18n.resourcebundle.ResourceBundleManager" />
     <property name="localeManager" ref="org.hisp.dhis.i18n.locale.LocaleManager" />
     <property name="i18nService" ref="org.hisp.dhis.i18n.I18nService" />
   </bean>
 
-  <bean id="org.hisp.dhis.light.action.settings.action.SaveSettingsFormAction" class="org.hisp.dhis.light.action.settings.action.SaveSettingsFormAction">
+  <bean id="org.hisp.dhis.light.action.settings.action.SaveSettingsFormAction" class="org.hisp.dhis.light.action.settings.action.SaveSettingsFormAction"
+    scope="prototype">
     <property name="localeManagerInterface" ref="org.hisp.dhis.i18n.locale.LocaleManager" />
     <property name="localeManagerDB" ref="org.hisp.dhis.i18n.locale.LocaleManagerDb" />
   </bean>

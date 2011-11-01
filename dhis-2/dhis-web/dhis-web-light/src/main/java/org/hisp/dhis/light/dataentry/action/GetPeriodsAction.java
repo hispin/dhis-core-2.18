@@ -105,6 +105,11 @@ public class GetPeriodsAction
 
     private Integer dataSetId;
 
+    public void setDataSetId( String dataSetId )
+    {
+        this.dataSetId = Integer.parseInt( dataSetId );
+    }
+
     public void setDataSetId( Integer dataSetId )
     {
         this.dataSetId = dataSetId;
@@ -113,6 +118,13 @@ public class GetPeriodsAction
     public Integer getDataSetId()
     {
         return dataSetId;
+    }
+
+    private DataSet dataSet;
+
+    public DataSet getDataSet()
+    {
+        return dataSet;
     }
 
     private Map<Period, Boolean> periodCompletedMap = new HashMap<Period, Boolean>();
@@ -129,6 +141,30 @@ public class GetPeriodsAction
         return periods;
     }
 
+    private Boolean complete = false;
+
+    public void setComplete( Boolean complete )
+    {
+        this.complete = complete;
+    }
+
+    public Boolean getComplete()
+    {
+        return complete;
+    }
+
+    private Boolean validated;
+
+    public void setValidated( Boolean validated )
+    {
+        this.validated = validated;
+    }
+
+    public Boolean getValidated()
+    {
+        return validated;
+    }
+
     // -------------------------------------------------------------------------
     // Action Implementation
     // -------------------------------------------------------------------------
@@ -140,7 +176,7 @@ public class GetPeriodsAction
         {
             OrganisationUnit organisationUnit = organisationUnitService.getOrganisationUnit( organisationUnitId );
 
-            DataSet dataSet = dataSetService.getDataSet( dataSetId );
+            dataSet = dataSetService.getDataSet( dataSetId );
             CalendarPeriodType periodType = (CalendarPeriodType) dataSet.getPeriodType();
             periods = periodType.generateLast5Years( new Date() );
             FilterUtils.filter( periods, new PastAndCurrentPeriodFilter() );
