@@ -31,8 +31,8 @@ import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertTrue;
 
 import java.util.Calendar;
-import java.util.Collection;
 import java.util.Date;
+import java.util.List;
 
 import org.hisp.dhis.i18n.I18nFormat;
 import org.hisp.dhis.mock.MockI18nFormat;
@@ -58,9 +58,9 @@ public class RelativePeriodTest
     @Test
     public void getRelativePeriods()
     {        
-        RelativePeriods periods = new RelativePeriods( true, true, true, true, true, true, true, true, true, true, true, true );
+        RelativePeriods periods = new RelativePeriods( true, true, true, true, true, true, true, true, true, true, true, true, true, true );
         
-        Collection<Period> relatives = periods.getRelativePeriods( getDate( 2001, 1, 1 ), i18nFormat, false );
+        List<Period> relatives = periods.getRelativePeriods( getDate( 2001, 1, 1 ), i18nFormat, false );
         
         assertTrue( relatives.contains( new Period( new MonthlyPeriodType(), getDate( 2001, 1, 1 ), getDate( 2001, 1, 31 ) ) ) );
         assertTrue( relatives.contains( new Period( new MonthlyPeriodType(), getDate( 2001, 2, 1 ), getDate( 2001, 2, 28 ) ) ) );
@@ -73,13 +73,23 @@ public class RelativePeriodTest
         assertTrue( relatives.contains( new Period( new MonthlyPeriodType(), getDate( 2001, 9, 1 ), getDate( 2001, 9, 30 ) ) ) );
         assertTrue( relatives.contains( new Period( new MonthlyPeriodType(), getDate( 2001, 10, 1 ), getDate( 2001, 10, 31 ) ) ) );
         assertTrue( relatives.contains( new Period( new MonthlyPeriodType(), getDate( 2001, 11, 1 ), getDate( 2001, 11, 30 ) ) ) );
-        assertTrue( relatives.contains( new Period( new MonthlyPeriodType(), getDate( 2001, 12, 1 ), getDate( 2001, 12, 31 ) ) ) );        
+        assertTrue( relatives.contains( new Period( new MonthlyPeriodType(), getDate( 2001, 12, 1 ), getDate( 2001, 12, 31 ) ) ) );
+
+        assertTrue( relatives.contains( new Period( new BiMonthlyPeriodType(), getDate( 2000, 3, 1 ), getDate( 2000, 4, 30 ) ) ) );
+        assertTrue( relatives.contains( new Period( new BiMonthlyPeriodType(), getDate( 2000, 5, 1 ), getDate( 2000, 6, 30 ) ) ) );
+        assertTrue( relatives.contains( new Period( new BiMonthlyPeriodType(), getDate( 2000, 7, 1 ), getDate( 2000, 8, 31 ) ) ) );
+        assertTrue( relatives.contains( new Period( new BiMonthlyPeriodType(), getDate( 2000, 9, 1 ), getDate( 2000, 10, 31 ) ) ) );
+        assertTrue( relatives.contains( new Period( new BiMonthlyPeriodType(), getDate( 2000, 11, 1 ), getDate( 2000, 12, 31 ) ) ) );
+        assertTrue( relatives.contains( new Period( new BiMonthlyPeriodType(), getDate( 2001, 1, 1 ), getDate( 2001, 2, 28 ) ) ) );
 
         assertTrue( relatives.contains( new Period( new QuarterlyPeriodType(), getDate( 2001, 1, 1 ), getDate( 2001, 3, 31 ) ) ) );
         assertTrue( relatives.contains( new Period( new QuarterlyPeriodType(), getDate( 2001, 4, 1 ), getDate( 2001, 6, 30 ) ) ) );
         assertTrue( relatives.contains( new Period( new QuarterlyPeriodType(), getDate( 2001, 7, 1 ), getDate( 2001, 9, 30 ) ) ) );
         assertTrue( relatives.contains( new Period( new QuarterlyPeriodType(), getDate( 2001, 10, 1 ), getDate( 2001, 12, 31 ) ) ) );
 
+        assertTrue( relatives.contains( new Period( new SixMonthlyPeriodType(), getDate( 2000, 7, 1 ), getDate( 2000, 12, 31 ) ) ) );
+        assertTrue( relatives.contains( new Period( new SixMonthlyPeriodType(), getDate( 2001, 1, 1 ), getDate( 2001, 6, 30 ) ) ) );
+        
         assertTrue( relatives.contains( new Period( new YearlyPeriodType(), getDate( 2001, 1, 1 ), getDate( 2001, 12, 31 ) ) ) );
 
         assertTrue( relatives.contains( new Period( new MonthlyPeriodType(), getDate( 2000, 1, 1 ), getDate( 2000, 1, 31 ) ) ) );
@@ -108,6 +118,6 @@ public class RelativePeriodTest
         assertTrue( relatives.contains( new Period( new YearlyPeriodType(), getDate( 2000, 1, 1 ), getDate( 2000, 12, 31 ) ) ) );
         assertTrue( relatives.contains( new Period( new YearlyPeriodType(), getDate( 2001, 1, 1 ), getDate( 2001, 12, 31 ) ) ) );
         
-        assertEquals( 58, relatives.size() );
+        assertEquals( 66, relatives.size() );
     }
 }

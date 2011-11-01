@@ -44,7 +44,7 @@ public class SixMonthlyPeriodTypeTest
     private Cal startCal;
     private Cal endCal;
     private Cal testCal;
-    private CalendarPeriodType periodType;
+    private SixMonthlyPeriodType periodType;
     
     @Before
     public void before()
@@ -121,6 +121,18 @@ public class SixMonthlyPeriodTypeTest
         assertEquals( 2, periods.size() );
         assertEquals( periodType.createPeriod( new Cal( 2009, 1, 1 ).time() ), periods.get( 0 ) );
         assertEquals( periodType.createPeriod( new Cal( 2009, 7, 1 ).time() ), periods.get( 1 ) );
+    }
+
+    @Test
+    public void testGenerateRollingPeriods()
+    {
+        testCal.set( 2009, 4, 15 );
+        
+        List<Period> periods = periodType.generateRollingPeriods( testCal.time() );
+        
+        assertEquals( 2, periods.size() );
+        assertEquals( periodType.createPeriod( new Cal( 2008, 7, 1 ).time() ), periods.get( 0 ) );
+        assertEquals( periodType.createPeriod( new Cal( 2009, 1, 1 ).time() ), periods.get( 1 ) );
     }
     
     @Test

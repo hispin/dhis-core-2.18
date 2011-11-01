@@ -42,7 +42,7 @@ public class BiMonthlyPeriodTypeTest
     private Cal startCal;
     private Cal endCal;
     private Cal testCal;
-    private CalendarPeriodType periodType;
+    private BiMonthlyPeriodType periodType;
     
     @Before
     public void before()
@@ -123,6 +123,22 @@ public class BiMonthlyPeriodTypeTest
         assertEquals( periodType.createPeriod( new Cal( 2009, 7, 1 ).time() ), periods.get( 3 ) );
         assertEquals( periodType.createPeriod( new Cal( 2009, 9, 1 ).time() ), periods.get( 4 ) );
         assertEquals( periodType.createPeriod( new Cal( 2009, 11, 1 ).time() ), periods.get( 5 ) );
+    }
+
+    @Test
+    public void testGenerateRollingPeriods()
+    {
+        testCal.set( 2009, 8, 15 );
+        
+        List<Period> periods = periodType.generateRollingPeriods( testCal.time() );
+        
+        assertEquals( 6, periods.size() );
+        assertEquals( periodType.createPeriod( new Cal( 2008, 9, 1 ).time() ), periods.get( 0 ) );
+        assertEquals( periodType.createPeriod( new Cal( 2008, 11, 1 ).time() ), periods.get( 1 ) );
+        assertEquals( periodType.createPeriod( new Cal( 2009, 1, 1 ).time() ), periods.get( 2 ) );
+        assertEquals( periodType.createPeriod( new Cal( 2009, 3, 1 ).time() ), periods.get( 3 ) );
+        assertEquals( periodType.createPeriod( new Cal( 2009, 5, 1 ).time() ), periods.get( 4 ) );
+        assertEquals( periodType.createPeriod( new Cal( 2009, 7, 1 ).time() ), periods.get( 5 ) );
     }
     
     @Test

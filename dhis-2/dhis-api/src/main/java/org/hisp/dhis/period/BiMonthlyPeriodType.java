@@ -129,6 +129,23 @@ public class BiMonthlyPeriodType
 
         return periods;
     }
+    
+    public List<Period> generateRollingPeriods( Date date )
+    {
+        Calendar cal = createCalendarInstance( date );
+        cal.set( Calendar.DAY_OF_MONTH, 1 );
+        cal.add( Calendar.MONTH, ( ( cal.get( Calendar.MONTH ) % 2 ) * -1 ) - 10 );        
+
+        ArrayList<Period> periods = new ArrayList<Period>();
+        
+        for ( int i = 0; i < 6; i++ )
+        {
+            periods.add( createPeriod( cal ) );
+            cal.add( Calendar.MONTH, 2 );
+        }
+        
+        return periods;
+    }
 
     @Override
     public String getIsoDate( Period period )
