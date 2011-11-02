@@ -32,6 +32,7 @@ package org.hisp.dhis.reports.auto.action;
  */
 
 import static org.hisp.dhis.system.util.ConversionUtils.getIdentifiers;
+import static org.hisp.dhis.system.util.TextUtils.getCommaDelimitedString;
 
 import java.io.BufferedInputStream;
 import java.io.File;
@@ -44,9 +45,13 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collection;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
@@ -65,6 +70,7 @@ import jxl.write.WritableSheet;
 import jxl.write.WritableWorkbook;
 
 import org.amplecode.quick.StatementManager;
+import org.hisp.dhis.config.Configuration_IN;
 import org.hisp.dhis.i18n.I18nFormat;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroup;
@@ -74,6 +80,7 @@ import org.hisp.dhis.period.PeriodService;
 import org.hisp.dhis.reports.ReportService;
 import org.hisp.dhis.reports.Report_in;
 import org.hisp.dhis.reports.Report_inDesign;
+import org.hisp.dhis.system.util.MathUtils;
 
 import com.opensymphony.xwork2.Action;
 
@@ -180,6 +187,8 @@ public class GenerateAutoReportAnalyserResultAction implements Action
     private SimpleDateFormat simpleDateFormat;
 
     private SimpleDateFormat monthFormat;
+    
+    private SimpleDateFormat yearFormat;
 
     private SimpleDateFormat simpleMonthFormat;
 
@@ -209,6 +218,7 @@ public class GenerateAutoReportAnalyserResultAction implements Action
         String deCodesXMLFileName = "";
         simpleDateFormat = new SimpleDateFormat( "MMM-yyyy" );
         monthFormat = new SimpleDateFormat( "MMMM" );
+        yearFormat = new SimpleDateFormat( "yyyy" );
         simpleMonthFormat = new SimpleDateFormat( "MMM" );
         String parentUnit = "";
         
@@ -221,8 +231,8 @@ public class GenerateAutoReportAnalyserResultAction implements Action
         
 
         String inputTemplatePath = System.getenv( "DHIS2_HOME" ) + File.separator + raFolderName + File.separator + "template" + File.separator + reportFileNameTB;
-        String outputReportFolderPath = System.getenv( "DHIS2_HOME" ) + File.separator + raFolderName + File.separator + "output" + File.separator + UUID.randomUUID().toString();
-
+        //String outputReportFolderPath = System.getenv( "DHIS2_HOME" ) + File.separator + raFolderName + File.separator + "output" + File.separator + UUID.randomUUID().toString();
+        String outputReportFolderPath = System.getenv( "DHIS2_HOME" ) + File.separator +  Configuration_IN.DEFAULT_TEMPFOLDER + File.separator + UUID.randomUUID().toString();
         File newdir = new File( outputReportFolderPath );
         if( !newdir.exists() )
         {
@@ -241,6 +251,11 @@ public class GenerateAutoReportAnalyserResultAction implements Action
             return INPUT;
         }
         
+       
+       // System.out.println(  "---Size of Org Unit List ----: " + orgUnitList.size() + ",Report Group name is :---" + selReportObj.getOrgunitGroup().getName() + ", Size of Group member is ----:" + selReportObj.getOrgunitGroup().getMembers().size()  );
+        
+        System.out.println( " ---- Size of OrgUnit List is ---- " + orgUnitList.size() );
+        
         OrganisationUnit selOrgUnit = organisationUnitService.getOrganisationUnit( ouIDTB );
         
         System.out.println( selOrgUnit.getName()+ " : " + selReportObj.getName()+" : Report Generation Start Time is : " + new Date() );
@@ -253,9 +268,20 @@ public class GenerateAutoReportAnalyserResultAction implements Action
 
         Workbook templateWorkbook = Workbook.getWorkbook( new File( inputTemplatePath ) );
 
-
+       
+        // collect periodId by commaSepareted
+        List<Period> tempPeriodList = new ArrayList<Period>( periodService.getIntersectingPeriods( sDate, eDate ) );
+        
+        Collection<Integer> tempPeriodIds = new ArrayList<Integer>( getIdentifiers(Period.class, tempPeriodList ) );
+        
+        String periodIdsByComma = getCommaDelimitedString( tempPeriodIds );
+        
         // Getting DataValues
         List<Report_inDesign> reportDesignList = reportService.getReportDesign( deCodesXMLFileName );
+        
+        // collect dataElementIDs by commaSepareted
+        String dataElmentIdsByComma = reportService.getDataelementIds( reportDesignList );
+        
         int orgUnitCount = 0;
 
         Iterator<OrganisationUnit> it = orgUnitList.iterator();
@@ -269,7 +295,27 @@ public class GenerateAutoReportAnalyserResultAction implements Action
 
             String outputReportPath = outputReportFolderPath + File.separator + outPutFileName;
             WritableWorkbook outputReportWorkbook = Workbook.createWorkbook( new File( outputReportPath ), templateWorkbook );
+            
+            
+            Map<String, String> aggDeMap = new HashMap<String, String>();
+            if( aggData.equalsIgnoreCase( USEEXISTINGAGGDATA ) )
+            {
+                aggDeMap.putAll( reportService.getResultDataValueFromAggregateTable( currentOrgUnit.getId(), dataElmentIdsByComma, periodIdsByComma ) );
+            }
+            else if( aggData.equalsIgnoreCase( GENERATEAGGDATA ) )
+            {
+                List<OrganisationUnit> childOrgUnitTree = new ArrayList<OrganisationUnit>( organisationUnitService.getOrganisationUnitWithChildren( currentOrgUnit.getId() ) );
+                List<Integer> childOrgUnitTreeIds = new ArrayList<Integer>( getIdentifiers( OrganisationUnit.class, childOrgUnitTree ) );
+                String childOrgUnitsByComma = getCommaDelimitedString( childOrgUnitTreeIds );
 
+                aggDeMap.putAll( reportService.getAggDataFromDataValueTable( childOrgUnitsByComma, dataElmentIdsByComma, periodIdsByComma ) );
+            }
+            else if( aggData.equalsIgnoreCase( USECAPTUREDDATA ) )
+            {
+                aggDeMap.putAll( reportService.getAggDataFromDataValueTable( ""+currentOrgUnit.getId(), dataElmentIdsByComma, periodIdsByComma ) );
+            }
+            
+            
             int count1 = 0;
             Iterator<Report_inDesign> reportDesignIterator = reportDesignList.iterator();
             while ( reportDesignIterator.hasNext() )
@@ -328,6 +374,10 @@ public class GenerateAutoReportAnalyserResultAction implements Action
                 {
                     tempStr = monthFormat.format( sDate );
                 } 
+                else if( deCodeString.equalsIgnoreCase( "PERIOD-YEAR" ) )
+                {
+                    tempStr = yearFormat.format( sDate );
+                } 
                 else if( deCodeString.equalsIgnoreCase( "MONTH-START-SHORT" ) )
                 {
                     tempStr = simpleMonthFormat.format( sDate );
@@ -358,17 +408,23 @@ public class GenerateAutoReportAnalyserResultAction implements Action
                     {
                         if ( aggData.equalsIgnoreCase( USECAPTUREDDATA ) )
                         {
-                            tempStr = reportService.getIndividualResultDataValue(deCodeString, tempStartDate.getTime(), tempEndDate.getTime(), currentOrgUnit, reportModelTB );
+                            tempStr = getAggVal( deCodeString, aggDeMap );
+                            //tempStr = reportService.getIndividualResultDataValue(deCodeString, tempStartDate.getTime(), tempEndDate.getTime(), currentOrgUnit, reportModelTB );
                         } 
                         else if( aggData.equalsIgnoreCase( GENERATEAGGDATA ) )
                         {
-                            tempStr = reportService.getResultDataValue( deCodeString, tempStartDate.getTime(), tempEndDate.getTime(), currentOrgUnit, reportModelTB );
+                            tempStr = getAggVal( deCodeString, aggDeMap );
+                            //tempStr = reportService.getResultDataValue( deCodeString, tempStartDate.getTime(), tempEndDate.getTime(), currentOrgUnit, reportModelTB );
                         }
                         else if( aggData.equalsIgnoreCase( USEEXISTINGAGGDATA ) )
                         {
+                            
+                            tempStr = getAggVal( deCodeString, aggDeMap );
+                            /*
                             List<Period> periodList = new ArrayList<Period>( periodService.getPeriodsBetweenDates( tempStartDate.getTime(), tempEndDate.getTime() ) );
                             Collection<Integer> periodIds = new ArrayList<Integer>( getIdentifiers(Period.class, periodList ) );
                             tempStr = reportService.getResultDataValueFromAggregateTable( deCodeString, periodIds, currentOrgUnit, reportModelTB );
+                            */
                         }
                     } 
                     else if ( sType.equalsIgnoreCase( "dataelement-boolean" ) )
@@ -558,5 +614,58 @@ public class GenerateAutoReportAnalyserResultAction implements Action
         
         return true;
     }
+    
+    // getting data value using Map
+    private String getAggVal( String expression, Map<String, String> aggDeMap )
+    {
+        try
+        {
+            Pattern pattern = Pattern.compile( "(\\[\\d+\\.\\d+\\])" );
 
+            Matcher matcher = pattern.matcher( expression );
+            StringBuffer buffer = new StringBuffer();
+
+            String resultValue = "";
+
+            while ( matcher.find() )
+            {
+                String replaceString = matcher.group();
+
+                replaceString = replaceString.replaceAll( "[\\[\\]]", "" );
+
+                replaceString = aggDeMap.get( replaceString );
+                
+                if( replaceString == null )
+                {
+                    replaceString = "0";
+                }
+                
+                matcher.appendReplacement( buffer, replaceString );
+
+                resultValue = replaceString;
+            }
+
+            matcher.appendTail( buffer );
+            
+            double d = 0.0;
+            try
+            {
+                d = MathUtils.calculateExpression( buffer.toString() );
+            }
+            catch ( Exception e )
+            {
+                d = 0.0;
+                resultValue = "";
+            }
+            
+            resultValue = "" + (double) d;
+
+            return resultValue;
+        }
+        catch ( NumberFormatException ex )
+        {
+            throw new RuntimeException( "Illegal DataElement id", ex );
+        }
+    }
+    
 }

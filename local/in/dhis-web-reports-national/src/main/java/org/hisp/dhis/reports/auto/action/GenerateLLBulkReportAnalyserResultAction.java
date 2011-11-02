@@ -1,16 +1,18 @@
 package org.hisp.dhis.reports.auto.action;
 
+import static org.hisp.dhis.system.util.ConversionUtils.getIdentifiers;
+import static org.hisp.dhis.system.util.TextUtils.getCommaDelimitedString;
+
 import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.sql.ResultSet;
-import java.sql.Statement;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
@@ -40,10 +42,6 @@ import jxl.write.WritableWorkbook;
 
 import org.amplecode.quick.StatementManager;
 import org.hisp.dhis.config.Configuration_IN;
-import org.hisp.dhis.dataelement.DataElement;
-import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
-import org.hisp.dhis.dataelement.DataElementCategoryService;
-import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.i18n.I18nFormat;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroup;
@@ -53,6 +51,7 @@ import org.hisp.dhis.period.PeriodService;
 import org.hisp.dhis.reports.ReportService;
 import org.hisp.dhis.reports.Report_in;
 import org.hisp.dhis.reports.Report_inDesign;
+import org.hisp.dhis.system.util.MathUtils;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.rowset.SqlRowSet;
 
@@ -105,7 +104,7 @@ public class GenerateLLBulkReportAnalyserResultAction implements Action
     {
         this.jdbcTemplate = jdbcTemplate;
     }
-    
+/*    
     private DataElementService dataElementService;
 
     public void setDataElementService( DataElementService dataElementService )
@@ -120,7 +119,7 @@ public class GenerateLLBulkReportAnalyserResultAction implements Action
     {
         this.dataElementCategoryOptionComboService = dataElementCategoryOptionComboService;
     }
-    
+*/    
     // -------------------------------------------------------------------------
     // Properties
     // -------------------------------------------------------------------------
@@ -172,6 +171,8 @@ public class GenerateLLBulkReportAnalyserResultAction implements Action
 
     private SimpleDateFormat simpleMonthFormat;
     
+    private SimpleDateFormat yearFormat;
+    
     private String reportFileNameTB;
 
     private String reportModelTB;
@@ -197,6 +198,7 @@ public class GenerateLLBulkReportAnalyserResultAction implements Action
         String deCodesXMLFileName = "";
         simpleDateFormat = new SimpleDateFormat( "MMM-yyyy" );
         monthFormat = new SimpleDateFormat( "MMMM" );
+        yearFormat = new SimpleDateFormat( "yyyy" );
         simpleMonthFormat = new SimpleDateFormat( "MMM" );
         String parentUnit = "";
         
@@ -234,6 +236,7 @@ public class GenerateLLBulkReportAnalyserResultAction implements Action
         }
         
         System.out.println(  "---Size of Org Unit List ----: " + orgUnitList.size() + ",Report Group name is :---" + selReportObj.getOrgunitGroup().getName() + ", Size of Group member is ----:" + selReportObj.getOrgunitGroup().getMembers().size()  );
+        
         OrganisationUnit selOrgUnit = organisationUnitService.getOrganisationUnit( ouIDTB );
         
         System.out.println( selOrgUnit.getName()+ " : " + selReportObj.getName()+" : Report Generation Start Time is : " + new Date() );
@@ -245,12 +248,23 @@ public class GenerateLLBulkReportAnalyserResultAction implements Action
         eDate = format.parseDate( String.valueOf( selectedPeriod.getEndDate() ) );
 
         Workbook templateWorkbook = Workbook.getWorkbook( new File( inputTemplatePath ) );
+       
+        // collect periodId by commaSepareted
+        List<Period> tempPeriodList = new ArrayList<Period>( periodService.getIntersectingPeriods( sDate, eDate ) );
+        
+        Collection<Integer> tempPeriodIds = new ArrayList<Integer>( getIdentifiers(Period.class, tempPeriodList ) );
+        
+        String periodIdsByComma = getCommaDelimitedString( tempPeriodIds );
         
         // Getting DataValues
         List<Report_inDesign> reportDesignList = reportService.getReportDesign( deCodesXMLFileName );
         List<Report_inDesign> reportDesignListLLDeath = reportService.getReportDesign( deCodesXMLFileName );
         List<Report_inDesign> reportDesignListLLMaternalDeath = reportService.getReportDesign( deCodesXMLFileName );
         
+     // collect dataElementIDs by commaSepareted
+        String dataElmentIdsByComma = reportService.getDataelementIds( reportDesignList );
+        String dataElmentIdsForLLDeathByComma = reportService.getDataelementIds( reportDesignList );
+        String dataElmentIdsForMaternalDeathByComma = reportService.getDataelementIds( reportDesignList );
         
         int orgUnitCount = 0;
         
@@ -265,6 +279,14 @@ public class GenerateLLBulkReportAnalyserResultAction implements Action
 
             String outputReportPath = outputReportFolderPath + File.separator + outPutFileName;
             WritableWorkbook outputReportWorkbook = Workbook.createWorkbook( new File( outputReportPath ), templateWorkbook );
+            
+            Map<String, String> aggDeMap = new HashMap<String, String>();
+            List<OrganisationUnit> childOrgUnitTree = new ArrayList<OrganisationUnit>( organisationUnitService.getOrganisationUnitWithChildren( currentOrgUnit.getId() ) );
+            List<Integer> childOrgUnitTreeIds = new ArrayList<Integer>( getIdentifiers( OrganisationUnit.class, childOrgUnitTree ) );
+            String childOrgUnitsByComma = getCommaDelimitedString( childOrgUnitTreeIds );
+
+            aggDeMap.putAll( reportService.getAggDataFromDataValueTable( childOrgUnitsByComma, dataElmentIdsByComma, periodIdsByComma ) );
+            
             
             int count1 = 0;
             Iterator<Report_inDesign> reportDesignIterator = reportDesignList.iterator();
@@ -323,6 +345,10 @@ public class GenerateLLBulkReportAnalyserResultAction implements Action
                 else if( deCodeString.equalsIgnoreCase( "PERIOD-MONTH" ) )
                 {
                     tempStr = monthFormat.format( sDate );
+                }
+                else if( deCodeString.equalsIgnoreCase( "PERIOD-YEAR" ) )
+                {
+                    tempStr = yearFormat.format( sDate );
                 } 
                 else if( deCodeString.equalsIgnoreCase( "MONTH-START-SHORT" ) )
                 {
@@ -352,7 +378,8 @@ public class GenerateLLBulkReportAnalyserResultAction implements Action
                 {
                     if( sType.equalsIgnoreCase( "dataelement" ) )
                     {
-                        tempStr = reportService.getResultDataValue( deCodeString, tempStartDate.getTime(), tempEndDate.getTime(), currentOrgUnit, reportModelTB );
+                        tempStr = getAggVal( deCodeString, aggDeMap );
+                        //tempStr = reportService.getResultDataValue( deCodeString, tempStartDate.getTime(), tempEndDate.getTime(), currentOrgUnit, reportModelTB );
                     } 
                     else if ( sType.equalsIgnoreCase( "dataelement-boolean" ) )
                     {
@@ -443,6 +470,15 @@ public class GenerateLLBulkReportAnalyserResultAction implements Action
             List<Integer> llrecordNos = new ArrayList<Integer>();
             llrecordNos = getLinelistingDeathRecordNos( currentOrgUnit, selectedPeriod );
             
+            String llDeathRecordNoByComma = getRecordNoByComma( llrecordNos );
+            
+            
+            Map<String, String> aggDeForLLDeathMap = new HashMap<String, String>();
+            
+            aggDeForLLDeathMap.putAll( reportService.getLLDeathDataFromLLDataValueTable( currentOrgUnit.getId(), dataElmentIdsForLLDeathByComma, periodIdsByComma, llDeathRecordNoByComma ) );
+            
+            
+            
             // for Line Listing Death DataElements
 
             int tempLLDeathRowNo = 0;
@@ -459,6 +495,11 @@ public class GenerateLLBulkReportAnalyserResultAction implements Action
                 {
                     recordNo = (Integer) itlldeath.next();
                 }
+                
+                //Map<String, String> aggDeForLLDeathMap = new HashMap<String, String>();
+                
+               // aggDeForLLDeathMap.putAll( reportService.getLLDeathDataFromLLDataValueTable( currentOrgUnit.getId(), dataElmentIdsForLLDeathByComma, periodIdsByComma, recordNo ) );
+                
                 flag = 0;
                 Iterator<Report_inDesign> reportDesignIterator1 = reportDesignListLLDeath.iterator();
                 int count2 = 0;
@@ -500,12 +541,14 @@ public class GenerateLLBulkReportAnalyserResultAction implements Action
                     {
                         if ( sType.equalsIgnoreCase( "lldeathdataelement" ) )
                         {
-                            tempStr = getLLDataValue( deCodeString, selectedPeriod, currentOrgUnit, recordNo );
+                            tempStr = getLlDeathVal( deCodeString, recordNo, aggDeForLLDeathMap );
+                            //tempStr = getLLDataValue( deCodeString, selectedPeriod, currentOrgUnit, recordNo );
                         }
 
                         else if ( sType.equalsIgnoreCase( "lldeathdataelementage" ) )
                         {
-                            tempLLDeathValuStr = getLLDataValue( deCodeString, selectedPeriod, currentOrgUnit, recordNo );
+                            tempLLDeathValuStr = getLlDeathVal( deCodeString, recordNo, aggDeForLLDeathMap );
+                            //tempLLDeathValuStr = getLLDataValue( deCodeString, selectedPeriod, currentOrgUnit, recordNo );
                         }
                         else
                         {
@@ -617,8 +660,15 @@ public class GenerateLLBulkReportAnalyserResultAction implements Action
             //llMaternalDeathrecordNos = getLinelistingMateralanRecordNos( currentOrgUnit, selectedPeriod, deCodesXMLFileName );
             
             llMaternalDeathrecordNos = getLinelistingMateralanRecordNos( currentOrgUnit, selectedPeriod );
-            System.out.println( "Line Listing Maternal Death Record Count is :" + llMaternalDeathrecordNos.size() );
-
+            //System.out.println( "Line Listing Maternal Death Record Count is :" + llMaternalDeathrecordNos.size() );
+            
+            String llMaternalDeathRecordNoByComma = getRecordNoByComma( llMaternalDeathrecordNos );
+            
+            Map<String, String> aggDeForLLMaternalDeathMap = new HashMap<String, String>();
+            
+            aggDeForLLMaternalDeathMap.putAll( reportService.getLLDeathDataFromLLDataValueTable( currentOrgUnit.getId(), dataElmentIdsForMaternalDeathByComma, periodIdsByComma, llMaternalDeathRecordNoByComma ) );
+            
+            
             // int testRowNo = 0;
 
             int flagmdeath = 0;
@@ -634,7 +684,13 @@ public class GenerateLLBulkReportAnalyserResultAction implements Action
                     maternalDeathRecordNo = (Integer) itllmaternaldeath.next();
                 }
                 flagmdeath = 0;
-
+                
+                
+               // Map<String, String> aggDeForLLMaternalDeathMap = new HashMap<String, String>();
+                
+                //aggDeForLLMaternalDeathMap.putAll( reportService.getLLDeathDataFromLLDataValueTable( currentOrgUnit.getId(), dataElmentIdsForMaternalDeathByComma, periodIdsByComma, maternalDeathRecordNo ) );
+                
+                
                 // Iterator<String> it1 = deCodesList.iterator();
                 Iterator<Report_inDesign> reportDesignIterator2 = reportDesignListLLMaternalDeath.iterator();
                 int count3 = 0;
@@ -683,7 +739,8 @@ public class GenerateLLBulkReportAnalyserResultAction implements Action
                     {
                         if ( sType.equalsIgnoreCase( "llmaternaldeathdataelement" ) )
                         {
-                            tempStr = getLLDataValue( deCodeString, selectedPeriod, currentOrgUnit, maternalDeathRecordNo );
+                            tempStr = getLlDeathVal( deCodeString, maternalDeathRecordNo, aggDeForLLMaternalDeathMap );
+                            //tempStr = getLLDataValue( deCodeString, selectedPeriod, currentOrgUnit, maternalDeathRecordNo );
                         }
                     }
                     int tempRowNo1 = report_inDesign.getRowno();
@@ -976,7 +1033,7 @@ public class GenerateLLBulkReportAnalyserResultAction implements Action
 
         return recordNosList;
     }   
-   
+ /*  
     public String getLLDataValue( String formula, Period period, OrganisationUnit organisationUnit, Integer recordNo )
     {
         Statement st1 = null;
@@ -1081,7 +1138,8 @@ public class GenerateLLBulkReportAnalyserResultAction implements Action
             }
         }// finally block end
     }
-
+*/
+    
     public List<Integer> getLinelistingMateralanRecordNos( OrganisationUnit organisationUnit, Period period )
     {
         List<Integer> recordNosList = new ArrayList<Integer>();
@@ -1111,4 +1169,118 @@ public class GenerateLLBulkReportAnalyserResultAction implements Action
 
         return recordNosList;
     }
+    // getting data value using Map
+    private String getAggVal( String expression, Map<String, String> aggDeMap )
+    {
+        try
+        {
+            Pattern pattern = Pattern.compile( "(\\[\\d+\\.\\d+\\])" );
+
+            Matcher matcher = pattern.matcher( expression );
+            StringBuffer buffer = new StringBuffer();
+
+            String resultValue = "";
+
+            while ( matcher.find() )
+            {
+                String replaceString = matcher.group();
+
+                replaceString = replaceString.replaceAll( "[\\[\\]]", "" );
+
+                replaceString = aggDeMap.get( replaceString );
+                
+                if( replaceString == null )
+                {
+                    replaceString = "0";
+                }
+                
+                matcher.appendReplacement( buffer, replaceString );
+
+                resultValue = replaceString;
+            }
+
+            matcher.appendTail( buffer );
+            
+            double d = 0.0;
+            try
+            {
+                d = MathUtils.calculateExpression( buffer.toString() );
+            }
+            catch ( Exception e )
+            {
+                d = 0.0;
+                resultValue = "";
+            }
+            
+            resultValue = "" + (double) d;
+
+            return resultValue;
+        }
+        catch ( NumberFormatException ex )
+        {
+            throw new RuntimeException( "Illegal DataElement id", ex );
+        }
+    }
+
+    
+    private String getLlDeathVal( String expression,Integer recordNo, Map<String, String> aggDeForLLDeathMap )
+    {
+        try
+        {
+            Pattern pattern = Pattern.compile( "(\\[\\d+\\.\\d+\\])" );
+
+            Matcher matcher = pattern.matcher( expression );
+            StringBuffer buffer = new StringBuffer();
+
+            String resultValue = "";
+
+            while ( matcher.find() )
+            {
+                String replaceString = matcher.group();
+
+                replaceString = replaceString.replaceAll( "[\\[\\]]", "" );
+                
+                
+                replaceString = aggDeForLLDeathMap.get( replaceString+":"+recordNo );
+                
+                if( replaceString == null )
+                {
+                    replaceString = "";
+                }
+                
+                matcher.appendReplacement( buffer, replaceString );
+
+                resultValue = replaceString;
+            }
+
+            matcher.appendTail( buffer );
+           
+            resultValue = buffer.toString();
+
+            return resultValue;
+            
+        }
+        catch ( NumberFormatException ex )
+        {
+            throw new RuntimeException( "Illegal DataElement id", ex );
+        }
+        catch ( Exception e )
+        {
+            System.out.println( "SQL Exception : " + e.getMessage() );
+            return null;
+        }
+    }
+
+    public String getRecordNoByComma( List<Integer> recordNosList )
+    {
+        String recordNoByComma = "-1";
+        
+        for( Integer recordNo : recordNosList )
+        {
+            recordNoByComma += "," + recordNo;
+        }
+        
+        return recordNoByComma;
+    }
+
 }
