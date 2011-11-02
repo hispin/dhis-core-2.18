@@ -68,8 +68,8 @@ public class GenerateColdChainRoutineReportAnalyserFormAction implements Action
     
     public String execute() throws Exception
     {
-        reportTypeName = ReportType.RT_ROUTINE;
-
+        //reportTypeName = ReportType.RT_ROUTINE;
+        reportTypeName = ReportType.RT_COLDCHAIN_REPORT;
         periodTypes = periodService.getAllPeriodTypes();
 
         Iterator<PeriodType> periodTypeIterator = periodTypes.iterator();

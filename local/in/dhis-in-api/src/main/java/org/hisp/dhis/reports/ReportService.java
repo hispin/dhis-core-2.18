@@ -158,5 +158,7 @@ public interface ReportService
     Map<String, String> getDataFromDataValueTableByPeriodAgg( String orgUnitIdsByComma, String dataElmentIdsByComma, String periodIdsByComma );
     
     List<Report_inDesign> getReportDesignWithMergeCells( String fileName );
-        
+    
+    //Map<String, String> getLLDeathDataFromLLDataValueTable( Integer orgunitId, String dataElmentIdsForLLDeathByComma, String periodIdsByComma , Integer recordNo );
+    Map<String, String> getLLDeathDataFromLLDataValueTable( Integer orgunitId, String dataElmentIdsForLLDeathByComma, String periodIdsByComma , String recordNoByComma );    
 }
