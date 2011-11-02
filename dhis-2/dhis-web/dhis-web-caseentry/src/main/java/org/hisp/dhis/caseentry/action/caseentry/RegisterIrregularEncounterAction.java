@@ -74,7 +74,7 @@ public class RegisterIrregularEncounterAction
         ProgramStageInstance programStageInstance = new ProgramStageInstance();
         programStageInstance.setProgramInstance( currentStageInstance.getProgramInstance() );
         programStageInstance.setProgramStage( currentStageInstance.getProgramStage() );
-        programStageInstance.setStageInProgram( currentStageInstance.getStageInProgram() + 1 );
+        programStageInstance.setStageInProgram( currentStageInstance.getStageInProgram() );
         programStageInstance.setDueDate( new Date() );
         programStageInstance.setExecutionDate( new Date() );
 
