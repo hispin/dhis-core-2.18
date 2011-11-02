@@ -48,7 +48,11 @@
 	</tr>
 	
 	<tr>
-		<input type="radio" id="operator" name="operator" value="COUNT" checked style='display:none;'/>
+		<td width="20em"><label for="operator">$i18n.getString( "operator" )</label></td>
+		<td>
+			<input type="radio" id="operator" name="operator" value="COUNT" checked >$i18n.getString('count')
+			<input type="radio" id="operator" name="operator" value="SUM"> $i18n.getString('sum')
+		</td>
 	</tr>
 	<tr>
         <td colspan="2"><p></p></td>
@@ -80,10 +84,10 @@
 			</tr>
 			<tr>
 				<td>
-					<select id="program" name="program" style="min-width:20em" onChange="getProgramStages();">
+					<select id="program" name="program" style="width:20em" onChange="getProgramStages();">
 						<option value="0">[$i18n.getString('please_select')]</option>
 						#foreach( $program in $programs )
-							<option value="$program.id">$encoder.htmlEncode( $program.name )</option>
+							<option value="$program.id" title='$program.name'>$encoder.htmlEncode( $program.name )</option>
 						#end
 					</select>
 				</td>
@@ -96,7 +100,7 @@
 			</tr>
 			<tr>
 				<td>
-					<select id="programStage" name="programStage" style="min-width:20em" onChange="getPrgramStageDataElements();">
+					<select id="programStage" name="programStage" style="width:20em" onChange="getPrgramStageDataElements();">
 					</select>
 				</td>
 			</tr>
@@ -151,7 +155,7 @@
 		<table>
 			<tr>
 				<td>
-					<select id="caseProperty" name="caseProperty" size="8" ondblclick="insertInfo(this);" style="width:18em; height:16.5em" >
+					<select id="caseProperty" name="caseProperty" size="4" ondblclick="insertInfo(this);" style="width:18em; height:16.5em" >
 						#foreach( $program in $programs )
 							<option value="[PG:$program.id]">$i18n.getString('program'): $encoder.htmlEncode( $program.name )</option>
 						#end

@@ -28,6 +28,7 @@
 package org.hisp.dhis.caseaggregation;
 
 import java.util.Collection;
+import java.util.List;
 
 import org.hisp.dhis.common.GenericStore;
 import org.hisp.dhis.dataelement.DataElement;
@@ -47,5 +48,5 @@ public interface CaseAggregationConditionStore
    
     Collection<CaseAggregationCondition> get( DataElement dataElement );
     
-    Collection<Integer> executeSQL( String sql );
+    List<Integer> executeSQL( String sql );
 }
