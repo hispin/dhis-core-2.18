@@ -16,5 +16,7 @@
   }#if( $velocityCount < $size2 ),#end
   #end ],
   "locked":${locked},
-  "complete":${complete}
+  "complete":${complete},
+  "date":"$!format.formatDate( $date )",
+  "storedBy":"$!{storedBy}"
  }

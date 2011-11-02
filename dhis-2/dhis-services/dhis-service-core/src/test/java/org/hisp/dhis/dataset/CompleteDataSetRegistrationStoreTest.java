@@ -125,8 +125,8 @@ public class CompleteDataSetRegistrationStoreTest
     @Test
     public void testSaveGet()
     {
-        registrationA = new CompleteDataSetRegistration( dataSetA, periodA, sourceA, new Date() );
-        registrationB = new CompleteDataSetRegistration( dataSetB, periodB, sourceA, new Date() );
+        registrationA = new CompleteDataSetRegistration( dataSetA, periodA, sourceA, new Date(), "" );
+        registrationB = new CompleteDataSetRegistration( dataSetB, periodB, sourceA, new Date(), "" );
         
         registrationStore.saveCompleteDataSetRegistration( registrationA );
         registrationStore.saveCompleteDataSetRegistration( registrationB );
@@ -134,7 +134,7 @@ public class CompleteDataSetRegistrationStoreTest
         assertEquals( registrationA, registrationStore.getCompleteDataSetRegistration( dataSetA, periodA, sourceA ) );
         assertEquals( registrationB, registrationStore.getCompleteDataSetRegistration( dataSetB, periodB, sourceA ) );
         
-        registrationC = new CompleteDataSetRegistration( dataSetA, periodA, sourceA, new Date() );
+        registrationC = new CompleteDataSetRegistration( dataSetA, periodA, sourceA, new Date(), "" );
         
         try
         {
@@ -151,8 +151,8 @@ public class CompleteDataSetRegistrationStoreTest
     @Test
     public void testDelete()
     {
-        registrationA = new CompleteDataSetRegistration( dataSetA, periodA, sourceA, new Date() );
-        registrationB = new CompleteDataSetRegistration( dataSetB, periodB, sourceA, new Date() );
+        registrationA = new CompleteDataSetRegistration( dataSetA, periodA, sourceA, new Date(), "" );
+        registrationB = new CompleteDataSetRegistration( dataSetB, periodB, sourceA, new Date(), "" );
         
         registrationStore.saveCompleteDataSetRegistration( registrationA );
         registrationStore.saveCompleteDataSetRegistration( registrationB );
@@ -174,8 +174,8 @@ public class CompleteDataSetRegistrationStoreTest
     @Test
     public void testGetAll()
     {
-        registrationA = new CompleteDataSetRegistration( dataSetA, periodA, sourceA, new Date() );
-        registrationB = new CompleteDataSetRegistration( dataSetB, periodB, sourceA, new Date() );
+        registrationA = new CompleteDataSetRegistration( dataSetA, periodA, sourceA, new Date(), "" );
+        registrationB = new CompleteDataSetRegistration( dataSetB, periodB, sourceA, new Date(), "" );
         
         registrationStore.saveCompleteDataSetRegistration( registrationA );
         registrationStore.saveCompleteDataSetRegistration( registrationB );
@@ -190,14 +190,14 @@ public class CompleteDataSetRegistrationStoreTest
     @Test
     public void testGetDataSetsSourcesPeriods()
     {
-        registrationA = new CompleteDataSetRegistration( dataSetA, periodA, sourceA, new Date() );
-        registrationB = new CompleteDataSetRegistration( dataSetB, periodA, sourceA, new Date() );
-        registrationC = new CompleteDataSetRegistration( dataSetA, periodB, sourceA, new Date() );
-        registrationD = new CompleteDataSetRegistration( dataSetB, periodB, sourceA, new Date() );
-        registrationE = new CompleteDataSetRegistration( dataSetA, periodA, sourceB, new Date() );
-        registrationF = new CompleteDataSetRegistration( dataSetB, periodA, sourceB, new Date() );
-        registrationG = new CompleteDataSetRegistration( dataSetA, periodB, sourceB, new Date() );
-        registrationH = new CompleteDataSetRegistration( dataSetB, periodB, sourceB, new Date() );
+        registrationA = new CompleteDataSetRegistration( dataSetA, periodA, sourceA, new Date(), "" );
+        registrationB = new CompleteDataSetRegistration( dataSetB, periodA, sourceA, new Date(), "" );
+        registrationC = new CompleteDataSetRegistration( dataSetA, periodB, sourceA, new Date(), "" );
+        registrationD = new CompleteDataSetRegistration( dataSetB, periodB, sourceA, new Date(), "" );
+        registrationE = new CompleteDataSetRegistration( dataSetA, periodA, sourceB, new Date(), "" );
+        registrationF = new CompleteDataSetRegistration( dataSetB, periodA, sourceB, new Date(), "" );
+        registrationG = new CompleteDataSetRegistration( dataSetA, periodB, sourceB, new Date(), "" );
+        registrationH = new CompleteDataSetRegistration( dataSetB, periodB, sourceB, new Date(), "" );
         
         registrationStore.saveCompleteDataSetRegistration( registrationA );
         registrationStore.saveCompleteDataSetRegistration( registrationB );
@@ -233,14 +233,14 @@ public class CompleteDataSetRegistrationStoreTest
     @Test
     public void testGetDataSetSourcesPeriod()
     {
-        registrationA = new CompleteDataSetRegistration( dataSetA, periodA, sourceA, new Date() );
-        registrationB = new CompleteDataSetRegistration( dataSetB, periodA, sourceA, new Date() );
-        registrationC = new CompleteDataSetRegistration( dataSetA, periodB, sourceA, new Date() );
-        registrationD = new CompleteDataSetRegistration( dataSetB, periodB, sourceA, new Date() );
-        registrationE = new CompleteDataSetRegistration( dataSetA, periodA, sourceB, new Date() );
-        registrationF = new CompleteDataSetRegistration( dataSetB, periodA, sourceB, new Date() );
-        registrationG = new CompleteDataSetRegistration( dataSetA, periodB, sourceB, new Date() );
-        registrationH = new CompleteDataSetRegistration( dataSetB, periodB, sourceB, new Date() );
+        registrationA = new CompleteDataSetRegistration( dataSetA, periodA, sourceA, new Date(), "" );
+        registrationB = new CompleteDataSetRegistration( dataSetB, periodA, sourceA, new Date(), "" );
+        registrationC = new CompleteDataSetRegistration( dataSetA, periodB, sourceA, new Date(), "" );
+        registrationD = new CompleteDataSetRegistration( dataSetB, periodB, sourceA, new Date(), "" );
+        registrationE = new CompleteDataSetRegistration( dataSetA, periodA, sourceB, new Date(), "" );
+        registrationF = new CompleteDataSetRegistration( dataSetB, periodA, sourceB, new Date(), "" );
+        registrationG = new CompleteDataSetRegistration( dataSetA, periodB, sourceB, new Date(), "" );
+        registrationH = new CompleteDataSetRegistration( dataSetB, periodB, sourceB, new Date(), "" );
         
         registrationStore.saveCompleteDataSetRegistration( registrationA );
         registrationStore.saveCompleteDataSetRegistration( registrationB );
@@ -268,14 +268,14 @@ public class CompleteDataSetRegistrationStoreTest
     @Test
     public void testGetDataSetSourcesPeriodDate()
     {
-        registrationA = new CompleteDataSetRegistration( dataSetA, periodA, sourceA, onTimeA );
-        registrationB = new CompleteDataSetRegistration( dataSetB, periodA, sourceA, tooLateA );
-        registrationC = new CompleteDataSetRegistration( dataSetA, periodB, sourceA, onTimeB );
-        registrationD = new CompleteDataSetRegistration( dataSetB, periodB, sourceA, tooLateB );
-        registrationE = new CompleteDataSetRegistration( dataSetA, periodA, sourceB, tooLateA );
-        registrationF = new CompleteDataSetRegistration( dataSetB, periodA, sourceB, onTimeA );
-        registrationG = new CompleteDataSetRegistration( dataSetA, periodB, sourceB, tooLateB );
-        registrationH = new CompleteDataSetRegistration( dataSetB, periodB, sourceB, onTimeB );
+        registrationA = new CompleteDataSetRegistration( dataSetA, periodA, sourceA, onTimeA, "" );
+        registrationB = new CompleteDataSetRegistration( dataSetB, periodA, sourceA, tooLateA, "" );
+        registrationC = new CompleteDataSetRegistration( dataSetA, periodB, sourceA, onTimeB, "" );
+        registrationD = new CompleteDataSetRegistration( dataSetB, periodB, sourceA, tooLateB, "" );
+        registrationE = new CompleteDataSetRegistration( dataSetA, periodA, sourceB, tooLateA, "" );
+        registrationF = new CompleteDataSetRegistration( dataSetB, periodA, sourceB, onTimeA, "" );
+        registrationG = new CompleteDataSetRegistration( dataSetA, periodB, sourceB, tooLateB, "" );
+        registrationH = new CompleteDataSetRegistration( dataSetB, periodB, sourceB, onTimeB, "" );
         
         registrationStore.saveCompleteDataSetRegistration( registrationA );
         registrationStore.saveCompleteDataSetRegistration( registrationB );
@@ -302,10 +302,10 @@ public class CompleteDataSetRegistrationStoreTest
     @Test
     public void testDeleteByDataSet()
     {
-        registrationA = new CompleteDataSetRegistration( dataSetA, periodA, sourceA, onTimeA );
-        registrationB = new CompleteDataSetRegistration( dataSetA, periodB, sourceA, onTimeA );
-        registrationC = new CompleteDataSetRegistration( dataSetB, periodA, sourceA, onTimeA );
-        registrationD = new CompleteDataSetRegistration( dataSetB, periodB, sourceA, onTimeA );
+        registrationA = new CompleteDataSetRegistration( dataSetA, periodA, sourceA, onTimeA, "" );
+        registrationB = new CompleteDataSetRegistration( dataSetA, periodB, sourceA, onTimeA, "" );
+        registrationC = new CompleteDataSetRegistration( dataSetB, periodA, sourceA, onTimeA, "" );
+        registrationD = new CompleteDataSetRegistration( dataSetB, periodB, sourceA, onTimeA, "" );
         
         registrationStore.saveCompleteDataSetRegistration( registrationA );
         registrationStore.saveCompleteDataSetRegistration( registrationB );

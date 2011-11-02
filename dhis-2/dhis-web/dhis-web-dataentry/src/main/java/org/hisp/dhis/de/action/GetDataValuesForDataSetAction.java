@@ -28,6 +28,7 @@ package org.hisp.dhis.de.action;
  */
 
 import java.util.Collection;
+import java.util.Date;
 
 import org.hisp.dhis.datalock.DataSetLock;
 import org.hisp.dhis.datalock.DataSetLockService;
@@ -141,18 +142,32 @@ public class GetDataValuesForDataSetAction
         return minMaxDataElements;
     }
 
-    private boolean locked;
+    private boolean locked = false;
 
     public boolean isLocked()
     {
         return locked;
     }
 
-    private boolean complete;
+    private boolean complete = false;
 
     public boolean isComplete()
     {
         return complete;
+    }
+    
+    private Date date;
+    
+    public Date getDate()
+    {
+        return date;
+    }
+
+    private String storedBy;
+
+    public String getStoredBy()
+    {
+        return storedBy;
     }
 
     // -------------------------------------------------------------------------
@@ -199,7 +214,12 @@ public class GetDataValuesForDataSetAction
         {
             CompleteDataSetRegistration registration = registrationService.getCompleteDataSetRegistration( dataSet, period, unit );
 
-            complete = registration != null;
+            if ( registration != null )
+            {
+                complete = true;
+                date = registration.getDate();
+                storedBy = registration.getStoredBy();
+            }
         }
 
         return SUCCESS;

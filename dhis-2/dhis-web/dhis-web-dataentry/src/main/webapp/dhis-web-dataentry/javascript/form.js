@@ -621,6 +621,7 @@ function loadDataValues()
 {
     $( '#completeButton' ).removeAttr( 'disabled' );
     $( '#undoButton' ).attr( 'disabled', 'disabled' );
+    $( '#infoDiv' ).css( 'display', 'none' );
 
     insertDataValues();
     displayEntryFormCompleted();
@@ -705,11 +706,19 @@ function insertDataValues()
 	        {
 	            $( '#completeButton' ).attr( 'disabled', 'disabled' );
 	            $( '#undoButton' ).removeAttr( 'disabled' );
+	            
+	            if ( json.storedBy )
+	            {
+	                $( '#infoDiv' ).css( 'display', 'block' );
+	                $( '#completedBy' ).html( json.storedBy );
+	                $( '#completedDate' ).html( json.date );
+	            }
 	        }
 	        else
 	        {
 	            $( '#completeButton' ).removeAttr( 'disabled' );
 	            $( '#undoButton' ).attr( 'disabled', 'disabled' );
+	            $( '#infoDiv' ).css( 'display', 'none' );
 	        }
 	
 	        // TODO locking
@@ -722,7 +731,6 @@ function displayEntryFormCompleted()
     addEventListeners();
 
     $( '#validationButton' ).removeAttr( 'disabled' );
-    $( '#defaultForm' ).removeAttr( 'disabled' );
 
     dataEntryFormIsLoaded = true;
     hideLoader();
