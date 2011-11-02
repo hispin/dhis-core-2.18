@@ -33,7 +33,7 @@
 </script>
 	
 <h3>$i18n.getString( "create_new_patient_attribute_group" )</h3>
-<div id="tooltip"></div>																				
+																			
 <form id="addPatientAttributeGroupForm" action="addPatientAttributeGroup.action" method="post" >
 
 <table>

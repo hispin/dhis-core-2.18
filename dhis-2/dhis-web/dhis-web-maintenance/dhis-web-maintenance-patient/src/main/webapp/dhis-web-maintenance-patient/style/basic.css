@@ -1,18 +1,4 @@
-#tooltip {
-    color:#000; font-size:11px; line-height:1.2;
-    background-color:#FFFFCC; border:1px solid #667295; 
-    width:210px; padding:4px;
-	z-index: 100000;
-	display: none;
-	position:absolute;
-}
-
 .heading-column { width : 30.5em;}
 td.input-column { width : 30.5em;}
 td.input-column input, td.input-column select { width: 28.5em;}
 td.error {padding-left:1em}
-
-.warnmessage {
-	color: red; 
-	font-style: italic;
-}
