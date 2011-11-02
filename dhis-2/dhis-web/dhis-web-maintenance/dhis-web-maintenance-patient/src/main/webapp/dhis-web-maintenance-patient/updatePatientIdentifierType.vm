@@ -70,9 +70,9 @@
 			<td><label for="type">$i18n.getString( "type" )<em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
 			<td>
 				<select id="type" name="type" style="min-width:30.2em"  class="{validate:{required:true}}">
-					<option value="text" #if( $patientIdentifierType.type=='text' ) selected="selected" #end>$i18n.getString( "string" )</option>
+					<option value="text" #if( $patientIdentifierType.type=='text' ) selected="selected" #end>$i18n.getString( "text" )</option>
 					<option value="number" #if( $patientIdentifierType.type=='number' ) selected="selected" #end>$i18n.getString( "number" )</option>
-					<option value="letter" #if( $patientIdentifierType.type=='letter' ) selected="selected" #end>$i18n.getString( "alphabet" )</option>
+					<option value="letter" #if( $patientIdentifierType.type=='letter' ) selected="selected" #end>$i18n.getString( "letter" )</option>
 				</select>
 			</td>		
 			<td></td>				
