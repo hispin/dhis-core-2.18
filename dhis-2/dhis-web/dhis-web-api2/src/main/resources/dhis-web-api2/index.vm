@@ -15,7 +15,7 @@
 
 	<p>If you don't want org units listed by data set, there is also the <a href="orgUnits">full list of org units</a></p> 
 
-    <p>Post according to the following template <a href="/api/dataValueSets/">/api/dataValueSets/</a></p>
+    <p>Post according to the following template <a href="/api2/dataValueSets/">/api2/dataValueSets/</a></p>
 	<pre>&lt;dataValueSet xmlns="http://dhis2.org/schema/dxf/2.0-SNAPSHOT"
     dataSet="dataSet UUID"
     period="periodInIsoFormat"

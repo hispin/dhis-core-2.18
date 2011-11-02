@@ -1,4 +1,4 @@
-package org.hisp.dhis.web.api.resources;
+package org.hisp.dhis.web.api2.resources;
 
 import static java.util.Calendar.MONTH;
 
@@ -22,7 +22,7 @@ import org.hisp.dhis.report.Report;
 import org.hisp.dhis.report.ReportService;
 import org.hisp.dhis.system.util.CodecUtils;
 import org.hisp.dhis.util.ContextUtils;
-import org.hisp.dhis.web.api.ResponseUtils;
+import org.hisp.dhis.web.api2.ResponseUtils;
 
 @Path( "/report/{report}/{orgUnit}" )
 public class ReportResource

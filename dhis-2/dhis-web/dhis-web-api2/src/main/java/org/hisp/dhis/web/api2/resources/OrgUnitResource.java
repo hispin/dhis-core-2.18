@@ -1,4 +1,4 @@
-package org.hisp.dhis.web.api.resources;
+package org.hisp.dhis.web.api2.resources;
 
 /*
  * Copyright (c) 2004-2010, University of Oslo
@@ -27,7 +27,52 @@ package org.hisp.dhis.web.api.resources;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-public class DhisMediaType
+import javax.ws.rs.Consumes;
+import javax.ws.rs.GET;
+import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
+import javax.ws.rs.Produces;
+import javax.ws.rs.core.Context;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.UriInfo;
+
+import org.hisp.dhis.importexport.dxf2.model.OrgUnit;
+import org.hisp.dhis.importexport.dxf2.service.OrgUnitMapper;
+import org.hisp.dhis.organisationunit.OrganisationUnit;
+import org.hisp.dhis.organisationunit.OrganisationUnitService;
+import org.hisp.dhis.web.api2.UrlResourceListener;
+
+@Produces( { MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON } )
+@Consumes( { MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON } )
+@Path( "/orgUnits/{id}" )
+public class OrgUnitResource
 {
-    public static final String DXF = "application/vnd.org.dhis2.dxf";
+    private OrganisationUnitService organisationUnitService;
+
+    public void setOrganisationUnitService( OrganisationUnitService organisationUnitService )
+    {
+        this.organisationUnitService = organisationUnitService;
+    }
+
+    @PathParam( "id" )
+    private String id;
+
+    @Context
+    private UriInfo uriInfo;
+
+    @GET
+    @Produces( { MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON } )
+    public OrgUnit getOrgUnit()
+    {
+        OrganisationUnit unit = organisationUnitService.getOrganisationUnit( id );
+
+        if ( unit == null )
+        {
+            return null;
+        }
+
+        OrgUnit orgUnit = new OrgUnitMapper().get( unit );
+        new UrlResourceListener( uriInfo ).beforeMarshal( orgUnit );
+        return orgUnit;
+    }
 }

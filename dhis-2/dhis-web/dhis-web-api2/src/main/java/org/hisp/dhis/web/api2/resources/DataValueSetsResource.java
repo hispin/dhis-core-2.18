@@ -1,4 +1,4 @@
-package org.hisp.dhis.web.api.resources;
+package org.hisp.dhis.web.api2.resources;
 
 import java.net.URI;
 
@@ -14,7 +14,7 @@ import javax.ws.rs.core.UriInfo;
 import org.hisp.dhis.importexport.dxf2.model.DataValueSet;
 import org.hisp.dhis.importexport.dxf2.service.DataValueSetService;
 import org.hisp.dhis.system.velocity.VelocityManager;
-import org.hisp.dhis.web.api.ResponseUtils;
+import org.hisp.dhis.web.api2.ResponseUtils;
 import org.springframework.beans.factory.annotation.Required;
 
 @Path( "dataValueSets" )
