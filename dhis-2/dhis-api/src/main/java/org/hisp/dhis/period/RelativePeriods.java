@@ -27,12 +27,16 @@ package org.hisp.dhis.period;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import static org.hisp.dhis.period.PeriodType.getPeriodTypeByName;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
+import org.hisp.dhis.configuration.Configuration;
 import org.hisp.dhis.i18n.I18nFormat;
 
 /**
@@ -479,7 +483,40 @@ public class RelativePeriods
         
         return cal.getTime();
     }
+
+    /**
+     * Creates an instance of RelativePeriods based on the scheduledPeriodTypes
+     * set from Configuration.
+     * 
+     * @param config the Configuration object.
+     * @return a RelativePeriods instance.
+     */
+    public RelativePeriods getRelativePeriods( Set<String> periodTypes )
+    {
+        RelativePeriods relatives = new RelativePeriods();
+        
+        if ( periodTypes == null || periodTypes.isEmpty() )
+        {
+            relatives.setLast12Months( true );
+            relatives.setLast4Quarters( true );
+            relatives.setLastYear( true );
+        }
+        else
+        {
+            relatives.setLast12Months( periodTypes.contains( MonthlyPeriodType.NAME ) );
+            relatives.setLast6BiMonths( periodTypes.contains( BiMonthlyPeriodType.NAME ) );
+            relatives.setLast4Quarters( periodTypes.contains( QuarterlyPeriodType.NAME ) );
+            relatives.setLast2SixMonths( periodTypes.contains( SixMonthlyPeriodType.NAME ) );
+            relatives.setLastYear( periodTypes.contains( YearlyPeriodType.NAME ) );
+        }
+        
+        return relatives;
+    }
     
+    // -------------------------------------------------------------------------
+    // Is methods
+    // -------------------------------------------------------------------------
+
     public boolean isReportingMonth()
     {
         return reportingMonth != null && reportingMonth;

@@ -27,14 +27,18 @@ package org.hisp.dhis.system.scheduling;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import static org.hisp.dhis.options.SystemSettingManager.*;
+
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.Set;
 
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.datamart.DataMartService;
 import org.hisp.dhis.indicator.Indicator;
 import org.hisp.dhis.indicator.IndicatorService;
+import org.hisp.dhis.options.SystemSettingManager;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.period.RelativePeriods;
@@ -53,24 +57,30 @@ public class DataMartTask
     private IndicatorService indicatorService;
     
     private OrganisationUnitService organisationUnitService;
-        
+    
+    private SystemSettingManager systemSettingManager;
+    
     public DataMartTask( DataMartService dataMartService, DataElementService dataElementService, IndicatorService indicatorService,
-        OrganisationUnitService organisationUnitService )
+        OrganisationUnitService organisationUnitService, SystemSettingManager systemSettingManager )
     {
         this.dataMartService = dataMartService;
         this.dataElementService = dataElementService;
         this.indicatorService = indicatorService;
         this.organisationUnitService = organisationUnitService;
+        this.systemSettingManager = systemSettingManager;
     }
     
     @Override
+    @SuppressWarnings("unchecked")    
     public void run()
     {
         Collection<Integer> dataElementIds = ConversionUtils.getIdentifiers( DataElement.class, dataElementService.getAllDataElements() );
         Collection<Integer> indicatorIds = ConversionUtils.getIdentifiers( Indicator.class, indicatorService.getAllIndicators() );
         Collection<Integer> organisationUnitIds = ConversionUtils.getIdentifiers( OrganisationUnit.class, organisationUnitService.getAllOrganisationUnits() );
         
-        RelativePeriods relatives = new RelativePeriods( false, false, false, true, true, true, false, false, false, false, false, false, false, false );
+        Set<String> periodTypes = (Set<String>) systemSettingManager.getSystemSetting( KEY_SCHEDULED_PERIOD_TYPES, DEFAULT_SCHEDULED_PERIOD_TYPES );
+        
+        RelativePeriods relatives = new RelativePeriods().getRelativePeriods( periodTypes );
         
         dataMartService.export( dataElementIds, indicatorIds, new HashSet<Integer>(), organisationUnitIds, relatives, true );
     }

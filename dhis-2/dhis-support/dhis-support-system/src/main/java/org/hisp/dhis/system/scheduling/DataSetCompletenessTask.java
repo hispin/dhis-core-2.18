@@ -28,14 +28,18 @@ package org.hisp.dhis.system.scheduling;
  */
 
 import java.util.Collection;
+import java.util.Set;
 
 import org.hisp.dhis.completeness.DataSetCompletenessService;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.dataset.DataSetService;
+import org.hisp.dhis.options.SystemSettingManager;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.period.RelativePeriods;
 import org.hisp.dhis.system.util.ConversionUtils;
+
+import static org.hisp.dhis.options.SystemSettingManager.*;
 
 /**
  * @author Lars Helge Overland
@@ -49,21 +53,27 @@ public class DataSetCompletenessTask
     
     private OrganisationUnitService organisationUnitService;
 
-    public DataSetCompletenessTask( DataSetCompletenessService completenessService, 
-        DataSetService dataSetService, OrganisationUnitService organisationUnitService )
+    private SystemSettingManager systemSettingManager;
+    
+    public DataSetCompletenessTask( DataSetCompletenessService completenessService, DataSetService dataSetService, 
+        OrganisationUnitService organisationUnitService, SystemSettingManager systemSettingManager )
     {
         this.completenessService = completenessService;
         this.dataSetService = dataSetService;
         this.organisationUnitService = organisationUnitService;
+        this.systemSettingManager = systemSettingManager;
     }
     
     @Override
+    @SuppressWarnings("unchecked")    
     public void run()
     {
         Collection<Integer> dataSetIds = ConversionUtils.getIdentifiers( DataSet.class, dataSetService.getAllDataSets() );
         Collection<Integer> organisationUnitIds = ConversionUtils.getIdentifiers( OrganisationUnit.class, organisationUnitService.getAllOrganisationUnits() );
 
-        RelativePeriods relatives = new RelativePeriods( false, false, false, true, true, true, false, false, false, false, false, false, false, false );
+        Set<String> periodTypes = (Set<String>) systemSettingManager.getSystemSetting( KEY_SCHEDULED_PERIOD_TYPES, DEFAULT_SCHEDULED_PERIOD_TYPES );
+        
+        RelativePeriods relatives = new RelativePeriods().getRelativePeriods( periodTypes );
         
         completenessService.exportDataSetCompleteness( dataSetIds, relatives, organisationUnitIds );        
     }
