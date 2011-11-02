@@ -29,7 +29,12 @@ package org.hisp.dhis.options;
 
 import java.io.Serializable;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
+
+import org.hisp.dhis.period.MonthlyPeriodType;
+import org.hisp.dhis.period.QuarterlyPeriodType;
+import org.hisp.dhis.period.YearlyPeriodType;
 
 /**
  * @author Stian Strandli
@@ -60,6 +65,7 @@ public interface SystemSettingManager
     final String KEY_EMAIL_HOST_NAME = "keyEmailHostName";
     final String KEY_EMAIL_USERNAME = "keyEmailUsername";
     final String KEY_EMAIL_PASSWORD = "keyEmailPassword";
+    final String KEY_SCHEDULED_PERIOD_TYPES = "keyScheduledPeriodTypes";
     
     final int DEFAULT_MAX_NUMBER_OF_ATTEMPTS = 20;
     final int DEFAULT_TIMEFRAME_MINUTES = 1;
@@ -70,6 +76,11 @@ public interface SystemSettingManager
     final String AGGREGATION_STRATEGY_BATCH = "batch";
     final String DEFAULT_AGGREGATION_STRATEGY = AGGREGATION_STRATEGY_REAL_TIME;
     final int DEFAULT_COMPLETENESS_OFFSET = 15;
+    final HashSet<String> DEFAULT_SCHEDULED_PERIOD_TYPES = new HashSet<String>() { {
+        add( MonthlyPeriodType.NAME ); 
+        add( QuarterlyPeriodType.NAME );
+        add( YearlyPeriodType.NAME );
+    } };
     
     void saveSystemSetting( String name, Serializable value );
 

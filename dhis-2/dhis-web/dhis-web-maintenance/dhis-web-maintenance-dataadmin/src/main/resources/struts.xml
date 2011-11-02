@@ -550,5 +550,22 @@
       <param name="onExceptionReturn">plainTextError</param>
     </action>
 
+	<!-- Scheduling -->
+
+    <action name="viewScheduledTasks" class="org.hisp.dhis.dataadmin.action.scheduling.ScheduleTasksAction">
+      <result name="success" type="velocity">/main.vm</result>
+      <param name="page">/dhis-web-maintenance-dataadmin/viewScheduledTasks.vm</param>
+      <param name="menu">/dhis-web-maintenance-dataadmin/menu.vm</param>
+      <param name="statusOnly">true</param>
+      <param name="requiredAuthorities">F_SCHEDULING_ADMIN</param>
+    </action>
+
+    <action name="scheduleTasks" class="org.hisp.dhis.dataadmin.action.scheduling.ScheduleTasksAction">
+      <result name="success" type="velocity">/main.vm</result>
+      <param name="page">/dhis-web-maintenance-dataadmin/viewScheduledTasks.vm</param>
+      <param name="menu">/dhis-web-maintenance-dataadmin/menu.vm</param>
+      <param name="requiredAuthorities">F_SCHEDULING_ADMIN</param>
+    </action>
+	
   </package>
 </struts>

@@ -1,4 +1,4 @@
-package org.hisp.dhis.reporting.scheduling.action;
+package org.hisp.dhis.dataadmin.action.scheduling;
 
 /*
  * Copyright (c) 2004-2010, University of Oslo
@@ -27,13 +27,17 @@ package org.hisp.dhis.reporting.scheduling.action;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import static org.hisp.dhis.options.SystemSettingManager.KEY_SCHEDULED_PERIOD_TYPES;
+import static org.hisp.dhis.options.SystemSettingManager.*;
+
+import java.util.HashSet;
+import java.util.Set;
+
 import org.hisp.dhis.options.SystemSettingManager;
 import org.hisp.dhis.scheduling.SchedulingManager;
 import org.hisp.dhis.system.scheduling.Scheduler;
 
 import com.opensymphony.xwork2.Action;
-
-import static org.hisp.dhis.options.SystemSettingManager.*;
 
 /**
  * @author Lars Helge Overland
@@ -58,7 +62,7 @@ public class ScheduleTasksAction
     {
         this.schedulingManager = schedulingManager;
     }
-
+    
     // -------------------------------------------------------------------------
     // Input
     // -------------------------------------------------------------------------
@@ -75,6 +79,13 @@ public class ScheduleTasksAction
     public void setStatusOnly( boolean statusOnly )
     {
         this.statusOnly = statusOnly;
+    }
+    
+    private Set<String> scheduledPeriodTypes = new HashSet<String>();
+
+    public void setScheduledPeriodTypes( Set<String> scheduledPeriodTypes )
+    {
+        this.scheduledPeriodTypes = scheduledPeriodTypes;
     }
 
     // -------------------------------------------------------------------------
@@ -95,19 +106,29 @@ public class ScheduleTasksAction
         return running;
     }
     
+    private Set<String> periodTypes = new HashSet<String>();
+
+    public Set<String> getPeriodTypes()
+    {
+        return periodTypes;
+    }
+
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
 
+    @SuppressWarnings("unchecked")
     public String execute()
     {
-        if ( !statusOnly )
+        if ( execute )
         {
-            if ( execute )
-            {
-                schedulingManager.executeTasks();
-            }
-            else if ( Scheduler.STATUS_RUNNING.equals( schedulingManager.getTaskStatus() ) )
+            schedulingManager.executeTasks();
+        }
+        else if ( !statusOnly )
+        {
+            systemSettingManager.saveSystemSetting( KEY_SCHEDULED_PERIOD_TYPES, (HashSet<String>) scheduledPeriodTypes );
+            
+            if ( Scheduler.STATUS_RUNNING.equals( schedulingManager.getTaskStatus() ) )
             {
                 systemSettingManager.saveSystemSetting( KEY_DATAMART_TASK, new Boolean( false ) );
                 systemSettingManager.saveSystemSetting( KEY_DATASETCOMPLETENESS_TASK, new Boolean( false ) );
@@ -125,6 +146,7 @@ public class ScheduleTasksAction
 
         status = schedulingManager.getTaskStatus();        
         running = Scheduler.STATUS_RUNNING.equals( status );
+        periodTypes = (Set<String>) systemSettingManager.getSystemSetting( KEY_SCHEDULED_PERIOD_TYPES, DEFAULT_SCHEDULED_PERIOD_TYPES );
         
         return SUCCESS;
     }

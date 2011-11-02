@@ -28,11 +28,14 @@ package org.hisp.dhis.period;
  */
 
 import static junit.framework.Assert.assertEquals;
+import static junit.framework.Assert.assertFalse;
 import static junit.framework.Assert.assertTrue;
 
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.hisp.dhis.i18n.I18nFormat;
 import org.hisp.dhis.mock.MockI18nFormat;
@@ -119,5 +122,23 @@ public class RelativePeriodTest
         assertTrue( relatives.contains( new Period( new YearlyPeriodType(), getDate( 2001, 1, 1 ), getDate( 2001, 12, 31 ) ) ) );
         
         assertEquals( 66, relatives.size() );
+    }
+    
+    @Test
+    public void testGetRelativePeriods()
+    {
+        Set<String> periodTypes = new HashSet<String>();
+        periodTypes.add( MonthlyPeriodType.NAME );
+        periodTypes.add( BiMonthlyPeriodType.NAME );
+        periodTypes.add( SixMonthlyPeriodType.NAME );
+        
+        RelativePeriods relatives = new RelativePeriods().getRelativePeriods( periodTypes );
+        
+        assertTrue( relatives.isLast12Months() );
+        assertTrue( relatives.isLast6BiMonths() );
+        assertTrue( relatives.isLast2SixMonths() );
+        
+        assertFalse( relatives.isLast4Quarters() );
+        assertFalse( relatives.isLastYear() );        
     }
 }
