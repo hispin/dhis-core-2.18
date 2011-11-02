@@ -1,4 +1,4 @@
-package org.hisp.dhis.web.api.resources;
+package org.hisp.dhis.web.api2.resources;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -22,8 +22,8 @@ import org.hisp.dhis.importexport.dxf2.service.LinkBuilder;
 import org.hisp.dhis.importexport.dxf2.service.LinkBuilderImpl;
 import org.hisp.dhis.system.velocity.VelocityManager;
 import org.hisp.dhis.util.ContextUtils;
-import org.hisp.dhis.web.api.ResponseUtils;
-import org.hisp.dhis.web.api.UrlResourceListener;
+import org.hisp.dhis.web.api2.ResponseUtils;
+import org.hisp.dhis.web.api2.UrlResourceListener;
 import org.springframework.beans.factory.annotation.Required;
 
 import com.sun.jersey.api.json.JSONWithPadding;

@@ -1,4 +1,4 @@
-package org.hisp.dhis.web.api;
+package org.hisp.dhis.web.api2;
 
 import java.util.HashMap;
 import java.util.List;

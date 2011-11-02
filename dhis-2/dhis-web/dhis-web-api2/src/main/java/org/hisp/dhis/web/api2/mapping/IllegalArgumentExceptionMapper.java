@@ -1,4 +1,4 @@
-package org.hisp.dhis.web.api.mapping;
+package org.hisp.dhis.web.api2.mapping;
 
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
@@ -16,6 +16,7 @@ public class IllegalArgumentExceptionMapper
     @Override
     public Response toResponse( IllegalArgumentException e )
     {
-        return Response.status( Status.CONFLICT ).entity( "Problem with input: " + e.getMessage() ).type( MediaType.TEXT_PLAIN ).build();
+        return Response.status( Status.CONFLICT ).entity( "Problem with input: " + e.getMessage() )
+            .type( MediaType.TEXT_PLAIN ).build();
     }
 }

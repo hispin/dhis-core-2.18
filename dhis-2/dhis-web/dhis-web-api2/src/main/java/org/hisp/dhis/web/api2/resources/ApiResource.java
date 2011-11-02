@@ -1,4 +1,4 @@
-package org.hisp.dhis.web.api.resources;
+package org.hisp.dhis.web.api2.resources;
 
 import java.io.IOException;
 
@@ -11,7 +11,7 @@ import org.apache.velocity.exception.MethodInvocationException;
 import org.apache.velocity.exception.ParseErrorException;
 import org.apache.velocity.exception.ResourceNotFoundException;
 import org.hisp.dhis.system.velocity.VelocityManager;
-import org.hisp.dhis.web.api.ResponseUtils;
+import org.hisp.dhis.web.api2.ResponseUtils;
 import org.springframework.beans.factory.annotation.Required;
 
 import com.sun.jersey.api.view.ImplicitProduces;

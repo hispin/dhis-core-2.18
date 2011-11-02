@@ -1,4 +1,4 @@
-package org.hisp.dhis.web.api.resources;
+package org.hisp.dhis.web.api2.resources;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
@@ -12,8 +12,8 @@ import org.hisp.dhis.importexport.dxf2.service.LinkBuilder;
 import org.hisp.dhis.importexport.dxf2.service.LinkBuilderImpl;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.system.velocity.VelocityManager;
-import org.hisp.dhis.web.api.ResponseUtils;
-import org.hisp.dhis.web.api.UrlResourceListener;
+import org.hisp.dhis.web.api2.ResponseUtils;
+import org.hisp.dhis.web.api2.UrlResourceListener;
 import org.springframework.beans.factory.annotation.Required;
 
 @Path( "orgUnits" )

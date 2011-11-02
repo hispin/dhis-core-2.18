@@ -1,4 +1,4 @@
-package org.hisp.dhis.web.api.action;
+package org.hisp.dhis.web.api2.action;
 
 /*
  * Copyright (c) 2004-2010, University of Oslo

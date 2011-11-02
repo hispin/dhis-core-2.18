@@ -42,11 +42,11 @@
   </distributionManagement>
 
   <repositories>
-      <repository>
+    <repository>
       <id>amplecode_maven2_repo</id>
       <name>AmpleCode Maven 2 repository</name>
       <url>http://www.amplecode.org/maven2</url>
-      </repository>
+    </repository>
     <repository>
       <id>dhis.uio.no</id>
       <name>Dhis2 External Dependencies Repository</name>
@@ -247,8 +247,6 @@
       </dependency>
       <dependency>
         <groupId>org.hisp.dhis</groupId>
-
-
         <artifactId>dhis-support-hibernate</artifactId>
         <version>${project.version}</version>
       </dependency>
@@ -327,6 +325,11 @@
       <dependency>
         <groupId>org.springframework</groupId>
         <artifactId>spring-web</artifactId>
+        <version>${spring.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.springframework</groupId>
+        <artifactId>spring-webmvc</artifactId>
         <version>${spring.version}</version>
       </dependency>
       <dependency>
