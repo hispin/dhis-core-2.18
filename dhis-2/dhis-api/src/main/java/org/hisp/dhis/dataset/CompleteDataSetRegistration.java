@@ -53,7 +53,9 @@ public class CompleteDataSetRegistration
     private OrganisationUnit source;
     
     private Date date;
-    
+
+    private String storedBy;
+
     // -------------------------------------------------------------------------
     // Constructors
     // -------------------------------------------------------------------------
@@ -62,12 +64,13 @@ public class CompleteDataSetRegistration
     {   
     }
 
-    public CompleteDataSetRegistration( DataSet dataSet, Period period, OrganisationUnit source, Date date )
+    public CompleteDataSetRegistration( DataSet dataSet, Period period, OrganisationUnit source, Date date, String storedBy )
     {
         this.dataSet = dataSet;
         this.period = period;
         this.source = source;
         this.date = date;
+        this.storedBy = storedBy;
     }
 
     // -------------------------------------------------------------------------
@@ -202,5 +205,15 @@ public class CompleteDataSetRegistration
     public void setDate( Date date )
     {
         this.date = date;
+    }
+
+    public String getStoredBy()
+    {
+        return storedBy;
+    }
+
+    public void setStoredBy( String storedBy )
+    {
+        this.storedBy = storedBy;
     }
 }

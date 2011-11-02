@@ -155,10 +155,10 @@ public class DataSetCompletenessServiceExportTest
     @Test
     public void testExportDataSetCompleteness()
     {
-        registrationService.saveCompleteDataSetRegistration( new CompleteDataSetRegistration( dataSetA, periodA, unitB, null ) );
-        registrationService.saveCompleteDataSetRegistration( new CompleteDataSetRegistration( dataSetA, periodA, unitC, null ) );
-        registrationService.saveCompleteDataSetRegistration( new CompleteDataSetRegistration( dataSetA, periodB, unitB, null ) );
-        registrationService.saveCompleteDataSetRegistration( new CompleteDataSetRegistration( dataSetA, periodB, unitA, null ) );
+        registrationService.saveCompleteDataSetRegistration( new CompleteDataSetRegistration( dataSetA, periodA, unitB, null, "" ) );
+        registrationService.saveCompleteDataSetRegistration( new CompleteDataSetRegistration( dataSetA, periodA, unitC, null, "" ) );
+        registrationService.saveCompleteDataSetRegistration( new CompleteDataSetRegistration( dataSetA, periodB, unitB, null, "" ) );
+        registrationService.saveCompleteDataSetRegistration( new CompleteDataSetRegistration( dataSetA, periodB, unitA, null, "" ) );
         
         completenessService.exportDataSetCompleteness( getIdentifiers( DataSet.class, dataSets ),
             getIdentifiers( Period.class, periods ), getIdentifiers( OrganisationUnit.class, units ) );

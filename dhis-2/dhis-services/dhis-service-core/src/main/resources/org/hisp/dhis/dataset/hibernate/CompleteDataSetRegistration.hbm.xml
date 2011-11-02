@@ -16,6 +16,7 @@
     </composite-id>
 
     <property name="date" type="date" column="date" />
+	<property name="storedBy" column="storedby" />
 
   </class>
 </hibernate-mapping>

@@ -41,6 +41,7 @@ import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodType;
+import org.hisp.dhis.user.CurrentUserService;
 
 import com.opensymphony.xwork2.Action;
 
@@ -77,13 +78,20 @@ public class RegisterCompleteDataSetAction
         this.organisationUnitService = organisationUnitService;
     }
     
+    private CurrentUserService currentUserService;
+    
+    public void setCurrentUserService( CurrentUserService currentUserService )
+    {
+        this.currentUserService = currentUserService;
+    }
+
     private MessageService messageService;
 
     public void setMessageService( MessageService messageService )
     {
         this.messageService = messageService;
     }
-    
+        
     private I18nFormat format;
 
     public void setFormat( I18nFormat format )
@@ -128,12 +136,15 @@ public class RegisterCompleteDataSetAction
         Period period = PeriodType.createPeriodExternalId( periodId );        
         OrganisationUnit organisationUnit = organisationUnitService.getOrganisationUnit( organisationUnitId );
         
+        String storedBy = currentUserService.getCurrentUsername();
+        
         if ( registrationService.getCompleteDataSetRegistration( dataSet, period, organisationUnit ) == null )
         {
             registration.setDataSet( dataSet );
             registration.setPeriod( period );
             registration.setSource( organisationUnit );
             registration.setDate( new Date() );
+            registration.setStoredBy( storedBy );
 
             registrationService.saveCompleteDataSetRegistration( registration );
 

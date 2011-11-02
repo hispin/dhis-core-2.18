@@ -211,16 +211,16 @@ public class DataSetCompletenessServiceTest
         dataSetService.addDataSet( dataSetB );
         dataSetService.addDataSet( dataSetC );
         
-        registrationService.saveCompleteDataSetRegistration( new CompleteDataSetRegistration( dataSetA, periodA, unitA, tooLateA ) );
-        registrationService.saveCompleteDataSetRegistration( new CompleteDataSetRegistration( dataSetA, periodA, unitB, tooLateA ) );
+        registrationService.saveCompleteDataSetRegistration( new CompleteDataSetRegistration( dataSetA, periodA, unitA, tooLateA, "" ) );
+        registrationService.saveCompleteDataSetRegistration( new CompleteDataSetRegistration( dataSetA, periodA, unitB, tooLateA, "" ) );
         
-        registrationService.saveCompleteDataSetRegistration( new CompleteDataSetRegistration( dataSetB, periodA, unitA, tooLateA ) );
-        registrationService.saveCompleteDataSetRegistration( new CompleteDataSetRegistration( dataSetB, periodA, unitC, tooLateA ) );        
+        registrationService.saveCompleteDataSetRegistration( new CompleteDataSetRegistration( dataSetB, periodA, unitA, tooLateA, "" ) );
+        registrationService.saveCompleteDataSetRegistration( new CompleteDataSetRegistration( dataSetB, periodA, unitC, tooLateA, "" ) );        
 
-        registrationService.saveCompleteDataSetRegistration( new CompleteDataSetRegistration( dataSetC, periodA, unitC, tooLateA ) );
+        registrationService.saveCompleteDataSetRegistration( new CompleteDataSetRegistration( dataSetC, periodA, unitC, tooLateA, "" ) );
 
-        registrationService.saveCompleteDataSetRegistration( new CompleteDataSetRegistration( dataSetA, periodB, unitA, tooLateB ) );
-        registrationService.saveCompleteDataSetRegistration( new CompleteDataSetRegistration( dataSetA, periodA, unitD, tooLateA ) );
+        registrationService.saveCompleteDataSetRegistration( new CompleteDataSetRegistration( dataSetA, periodB, unitA, tooLateB, "" ) );
+        registrationService.saveCompleteDataSetRegistration( new CompleteDataSetRegistration( dataSetA, periodA, unitD, tooLateA, "" ) );
         
         Collection<DataSetCompletenessResult> results = completenessService.getDataSetCompleteness( periodIdA, unitIdA );
         
@@ -252,17 +252,17 @@ public class DataSetCompletenessServiceTest
         dataSetService.addDataSet( dataSetB );
         dataSetService.addDataSet( dataSetC );
         
-        registrationService.saveCompleteDataSetRegistration( new CompleteDataSetRegistration( dataSetA, periodA, unitA, tooLateA ) );
+        registrationService.saveCompleteDataSetRegistration( new CompleteDataSetRegistration( dataSetA, periodA, unitA, tooLateA, "" ) );
         
-        registrationService.saveCompleteDataSetRegistration( new CompleteDataSetRegistration( dataSetB, periodA, unitA, tooLateA ) );
-        registrationService.saveCompleteDataSetRegistration( new CompleteDataSetRegistration( dataSetB, periodA, unitB, tooLateA ) );
-        registrationService.saveCompleteDataSetRegistration( new CompleteDataSetRegistration( dataSetB, periodA, unitC, tooLateA ) );
+        registrationService.saveCompleteDataSetRegistration( new CompleteDataSetRegistration( dataSetB, periodA, unitA, tooLateA, "" ) );
+        registrationService.saveCompleteDataSetRegistration( new CompleteDataSetRegistration( dataSetB, periodA, unitB, tooLateA, "" ) );
+        registrationService.saveCompleteDataSetRegistration( new CompleteDataSetRegistration( dataSetB, periodA, unitC, tooLateA, "" ) );
         
-        registrationService.saveCompleteDataSetRegistration( new CompleteDataSetRegistration( dataSetC, periodA, unitA, tooLateA ) );
-        registrationService.saveCompleteDataSetRegistration( new CompleteDataSetRegistration( dataSetC, periodA, unitB, tooLateA ) );
+        registrationService.saveCompleteDataSetRegistration( new CompleteDataSetRegistration( dataSetC, periodA, unitA, tooLateA, "" ) );
+        registrationService.saveCompleteDataSetRegistration( new CompleteDataSetRegistration( dataSetC, periodA, unitB, tooLateA, "" ) );
 
-        registrationService.saveCompleteDataSetRegistration( new CompleteDataSetRegistration( dataSetA, periodB, unitA, tooLateB ) );
-        registrationService.saveCompleteDataSetRegistration( new CompleteDataSetRegistration( dataSetA, periodA, unitD, tooLateA ) );
+        registrationService.saveCompleteDataSetRegistration( new CompleteDataSetRegistration( dataSetA, periodB, unitA, tooLateB, "" ) );
+        registrationService.saveCompleteDataSetRegistration( new CompleteDataSetRegistration( dataSetA, periodA, unitD, tooLateA, "" ) );
         
         Collection<DataSetCompletenessResult> results = completenessService.getDataSetCompleteness( periodIdA, unitIdA );
         
@@ -290,11 +290,11 @@ public class DataSetCompletenessServiceTest
         
         dataSetService.addDataSet( dataSetA );
 
-        registrationService.saveCompleteDataSetRegistration( new CompleteDataSetRegistration( dataSetA, periodA, unitB, onTimeA ) );
-        registrationService.saveCompleteDataSetRegistration( new CompleteDataSetRegistration( dataSetA, periodA, unitC, tooLateA ) );
-        registrationService.saveCompleteDataSetRegistration( new CompleteDataSetRegistration( dataSetA, periodA, unitE, onTimeA ) );
-        registrationService.saveCompleteDataSetRegistration( new CompleteDataSetRegistration( dataSetA, periodA, unitF, tooLateA ) );
-        registrationService.saveCompleteDataSetRegistration( new CompleteDataSetRegistration( dataSetA, periodA, unitG, onTimeA ) );
+        registrationService.saveCompleteDataSetRegistration( new CompleteDataSetRegistration( dataSetA, periodA, unitB, onTimeA, "" ) );
+        registrationService.saveCompleteDataSetRegistration( new CompleteDataSetRegistration( dataSetA, periodA, unitC, tooLateA, "" ) );
+        registrationService.saveCompleteDataSetRegistration( new CompleteDataSetRegistration( dataSetA, periodA, unitE, onTimeA, "" ) );
+        registrationService.saveCompleteDataSetRegistration( new CompleteDataSetRegistration( dataSetA, periodA, unitF, tooLateA, "" ) );
+        registrationService.saveCompleteDataSetRegistration( new CompleteDataSetRegistration( dataSetA, periodA, unitG, onTimeA, "" ) );
 
         Collection<DataSetCompletenessResult> results = completenessService.getDataSetCompleteness( periodIdA, unitIdA );
         
@@ -315,9 +315,9 @@ public class DataSetCompletenessServiceTest
         
         dataSetIdA = dataSetService.addDataSet( dataSetA );
         
-        registrationService.saveCompleteDataSetRegistration( new CompleteDataSetRegistration( dataSetA, periodA, unitE, tooLateA ) );
-        registrationService.saveCompleteDataSetRegistration( new CompleteDataSetRegistration( dataSetA, periodA, unitF, tooLateA ) );
-        registrationService.saveCompleteDataSetRegistration( new CompleteDataSetRegistration( dataSetA, periodA, unitG, tooLateA ) );
+        registrationService.saveCompleteDataSetRegistration( new CompleteDataSetRegistration( dataSetA, periodA, unitE, tooLateA, "" ) );
+        registrationService.saveCompleteDataSetRegistration( new CompleteDataSetRegistration( dataSetA, periodA, unitF, tooLateA, "" ) );
+        registrationService.saveCompleteDataSetRegistration( new CompleteDataSetRegistration( dataSetA, periodA, unitG, tooLateA, "" ) );
         
         Collection<DataSetCompletenessResult> results = completenessService.getDataSetCompleteness( periodIdA, unitIdsA, dataSetIdA );
         
@@ -339,9 +339,9 @@ public class DataSetCompletenessServiceTest
 
         dataSetIdA = dataSetService.addDataSet( dataSetA );
 
-        registrationService.saveCompleteDataSetRegistration( new CompleteDataSetRegistration( dataSetA, periodA, unitE, tooLateA ) );
-        registrationService.saveCompleteDataSetRegistration( new CompleteDataSetRegistration( dataSetA, periodA, unitG, tooLateA ) );
-        registrationService.saveCompleteDataSetRegistration( new CompleteDataSetRegistration( dataSetA, periodA, unitH, tooLateA ) );
+        registrationService.saveCompleteDataSetRegistration( new CompleteDataSetRegistration( dataSetA, periodA, unitE, tooLateA, "" ) );
+        registrationService.saveCompleteDataSetRegistration( new CompleteDataSetRegistration( dataSetA, periodA, unitG, tooLateA, "" ) );
+        registrationService.saveCompleteDataSetRegistration( new CompleteDataSetRegistration( dataSetA, periodA, unitH, tooLateA, "" ) );
 
         Collection<DataSetCompletenessResult> results = completenessService.getDataSetCompleteness( periodIdA, unitIdsA, dataSetIdA );
         
@@ -364,10 +364,10 @@ public class DataSetCompletenessServiceTest
 
         dataSetIdA = dataSetService.addDataSet( dataSetA );
 
-        registrationService.saveCompleteDataSetRegistration( new CompleteDataSetRegistration( dataSetA, periodA, unitE, onTimeA ) );
-        registrationService.saveCompleteDataSetRegistration( new CompleteDataSetRegistration( dataSetA, periodA, unitF, tooLateA ) );
-        registrationService.saveCompleteDataSetRegistration( new CompleteDataSetRegistration( dataSetA, periodA, unitG, onTimeA ) );
-        registrationService.saveCompleteDataSetRegistration( new CompleteDataSetRegistration( dataSetA, periodA, unitH, tooLateA ) );
+        registrationService.saveCompleteDataSetRegistration( new CompleteDataSetRegistration( dataSetA, periodA, unitE, onTimeA, "" ) );
+        registrationService.saveCompleteDataSetRegistration( new CompleteDataSetRegistration( dataSetA, periodA, unitF, tooLateA, "" ) );
+        registrationService.saveCompleteDataSetRegistration( new CompleteDataSetRegistration( dataSetA, periodA, unitG, onTimeA, "" ) );
+        registrationService.saveCompleteDataSetRegistration( new CompleteDataSetRegistration( dataSetA, periodA, unitH, tooLateA, "" ) );
 
         Collection<DataSetCompletenessResult> results = completenessService.getDataSetCompleteness( periodIdA, unitIdsA, dataSetIdA );
 
