@@ -12,7 +12,7 @@
 			#end
 			<tr>
 				<td>$!patient.getFullName()</td>
-				<td>$!patient.gender</td>
+				<td>$i18n.getString($!patient.gender)</td>
 				<td>$format.formatDate($!patient.birthDate)</td>
 				<td>$!patient.getAge()</td>
 			</tr>

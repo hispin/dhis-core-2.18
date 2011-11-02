@@ -50,7 +50,11 @@
 		</td>				
 	</tr>
 	<tr>
-		<input type="radio" id="operator" name="operator" value="COUNT" checked style='display:none;'/>
+		<td width="20em"><label for="operator">$i18n.getString( "operator" )</label></td>
+		<td>
+			<input type="radio" id="operator" name="operator" value="COUNT" #if($caseAggregation.operator=="COUNT") checked #end >  $i18n.getString('count')
+			<input type="radio" id="operator" name="operator" value="SUM" #if($caseAggregation.operator=="SUM") checked #end > $i18n.getString('sum')
+		</td>
 	</tr>
 	<tr>
         <td colspan="2"><p></p></td>
@@ -74,9 +78,7 @@
 		<td>
 		<fieldset style="border: 1px solid #3f5d8e; ">
 		<legend>$i18n.getString( "program_stage_de" )</legend>
-		
 		<table>
-		
 			<tr>
 				<td>
 					<label for="program">$i18n.getString( "program" )</label>
@@ -124,9 +126,7 @@
 		<td>
 		<fieldset style="border: 1px solid #3f5d8e; ">
 		<legend>$i18n.getString( "case_attributes" )</legend>
-		
 		<table>
-		
 			<tr>
 				<td>
 					<select id="caseProperty" name="caseProperty" size="5" ondblclick="insertInfo(this);" style="width:20em; height:14.5em" >
@@ -147,12 +147,10 @@
 		<td>
 		<fieldset style="border: 1px solid #3f5d8e; ">
 		<legend>$i18n.getString( "program_properties" )</legend>
-		
 		<table>
-		
 			<tr>
 				<td>
-					<select id="caseProperty" name="caseProperty" size="5" ondblclick="insertInfo(this);" style="width:15em; height:14.5em" >
+					<select id="caseProperty" name="caseProperty" size="5" ondblclick="insertInfo(this);" style="min-width:15em; height:16.5em" >
 						#foreach( $program in $programs )
 							<option value="[PG:$program.id]">$i18n.getString('program'): $encoder.htmlEncode( $program.name )</option>
 						#end
