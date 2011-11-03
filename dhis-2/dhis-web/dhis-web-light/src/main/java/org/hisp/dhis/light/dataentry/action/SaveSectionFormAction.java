@@ -398,6 +398,7 @@ public class SaveSectionFormAction
             registration.setPeriod( period );
             registration.setSource( organisationUnit );
             registration.setDate( new Date() );
+            registration.setStoredBy( storedBy );
 
             registrationService.saveCompleteDataSetRegistration( registration );
         }
