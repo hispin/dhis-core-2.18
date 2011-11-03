@@ -49,18 +49,16 @@ public class HibernateIndicatorStore
     // Indicator
     // -------------------------------------------------------------------------
 
+    @Override
     public int addIndicator( Indicator indicator )
     {
-        Session session = sessionFactory.getCurrentSession();
-
-        return (Integer) session.save( indicator );
+        return this.save(indicator);
     }
 
+    @Override
     public void updateIndicator( Indicator indicator )
     {
-        Session session = sessionFactory.getCurrentSession();
-
-        session.update( indicator );
+        this.update( indicator );
     }
 
     public void deleteIndicator( Indicator indicator )
