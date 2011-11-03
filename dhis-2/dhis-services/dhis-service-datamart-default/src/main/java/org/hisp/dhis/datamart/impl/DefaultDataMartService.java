@@ -80,7 +80,7 @@ public class DefaultDataMartService
     // Export
     // -------------------------------------------------------------------------
 
-    @Transactional
+    @Transactional //TODO potential problem with reload periods inside same tx
     public void export( int id )
     {
         DataMartExport dataMartExport = getDataMartExport( id );
@@ -100,21 +100,19 @@ public class DefaultDataMartService
             false, new OutputHolderState() );
     }
 
-    @Transactional
+ 
     public void export( Collection<Integer> dataElementIds, Collection<Integer> indicatorIds,
         Collection<Integer> periodIds, Collection<Integer> organisationUnitIds )
     {
         dataMartEngine.export( dataElementIds, indicatorIds, periodIds, organisationUnitIds, false, new OutputHolderState() );
     }
     
-    @Transactional
     public void export( Collection<Integer> dataElementIds, Collection<Integer> indicatorIds,
         Collection<Integer> periodIds, Collection<Integer> organisationUnitIds, RelativePeriods relatives )
     {
         export( dataElementIds, indicatorIds, periodIds, organisationUnitIds, relatives, false );
     }
 
-    @Transactional
     public void export( Collection<Integer> dataElementIds, Collection<Integer> indicatorIds,
         Collection<Integer> periodIds, Collection<Integer> organisationUnitIds, RelativePeriods relatives, boolean completeExport )
     {
@@ -160,21 +158,25 @@ public class DefaultDataMartService
         return dataMartExportStore.getByName( name );
     }
 
+    @Transactional
     public int getDataMartExportCount()
     {
         return dataMartExportStore.getCount();
     }
 
+    @Transactional
     public int getDataMartExportCountByName( String name )
     {
         return dataMartExportStore.getCountByName( name );
     }
 
+    @Transactional
     public Collection<DataMartExport> getDataMartExportsBetween( int first, int max )
     {
         return dataMartExportStore.getBetween( first, max );
     }
 
+    @Transactional
     public Collection<DataMartExport> getDataMartExportsBetweenByName( String name, int first, int max )
     {
         return dataMartExportStore.getBetweenByName( name, first, max );

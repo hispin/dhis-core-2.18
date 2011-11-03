@@ -162,7 +162,13 @@ public class DefaultDataMartEngine
         Collection<Period> periods = periodService.getPeriods( periodIds );
         List<OrganisationUnit> organisationUnits = new ArrayList<OrganisationUnit>( organisationUnitService.getOrganisationUnits( organisationUnitIds ) );
         Collection<DataElement> dataElements = dataElementService.getDataElements( dataElementIds );
-        
+
+        clock.logTime( "Retrieved objects" );
+
+        // ---------------------------------------------------------------------
+        // Filter objects
+        // ---------------------------------------------------------------------
+
         organisationUnitService.filterOrganisationUnitsWithoutData( organisationUnits );
         Collections.shuffle( organisationUnits );
         FilterUtils.filter( dataElements, new AggregatableDataElementFilter() );
