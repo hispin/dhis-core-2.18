@@ -31,8 +31,13 @@
 		<td align="center">$totalRegCountList.get( $count1 )</td>
 		<td align="center">$totalRegCountListForSelDate.get( $count1 )</td>
 		#foreach( $program in $programList )
-		<td align="center">$totalEnrollCountMap.get( "$program.id:$orgUnit.id" )</td>
-		<td align="center">$totalEnrollCountForSelDateMap.get( "$program.id:$orgUnit.id" )</td>
+			#if( $orgUnit_ProgramMap.get( "$program.id:$orgUnit.id" ) == 1 )
+				<td align="center"><a href="javascript:viewPatientDataRecords( $program.id, $orgUnit.id, 'ALL' )">$totalEnrollCountMap.get( "$program.id:$orgUnit.id" )</a></td>
+				<td align="center"><a href="javascript:viewPatientDataRecords( $program.id, $orgUnit.id, '$toDaysDate' )">$totalEnrollCountForSelDateMap.get( "$program.id:$orgUnit.id" )</a></td>
+			#else
+                <td align="center">$totalEnrollCountMap.get( "$program.id:$orgUnit.id" )</td>
+                <td align="center">$totalEnrollCountForSelDateMap.get( "$program.id:$orgUnit.id" )</td>
+			#end	
 		#end
 	</tr>
 	#set( $count1 = $count1 + 1 )

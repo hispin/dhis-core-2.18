@@ -6,7 +6,6 @@
 		<li>$i18n.getString( "ds_dataset_wise" )</li>
 	 </ul>
 </ul>
-
 #parse( "/dhis-web-commons/ouwt/orgunittreesearch.vm" )
 
 <script type="text/javascript">
@@ -19,7 +18,7 @@
 		}
 		if( orgUnitIds != null )
 		{
-			getOUDeatilsForDataStatusDataSetWise( orgUnitIds );
+			getOUDeatilsForDataStatus( orgUnitIds );
 		}
 	}
 

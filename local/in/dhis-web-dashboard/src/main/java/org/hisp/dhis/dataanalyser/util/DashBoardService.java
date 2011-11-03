@@ -57,6 +57,7 @@ import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodService;
 import org.hisp.dhis.period.PeriodType;
+import org.hisp.dhis.period.WeeklyPeriodType;
 import org.hisp.dhis.reports.ReportService;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.rowset.SqlRowSet;
@@ -118,7 +119,143 @@ public class DashBoardService
         this.jdbcTemplate = jdbcTemplate;
     }
 
+
+    public String getRAFolderName()
+    {
+        return reportservice.getRAFolderName();
+    }
     
+
+    public String getPeriodIdForIDSPPopulation( )
+    {
+        String periodIdResult = "-1";
+
+        try
+        {
+            Date toDay = new Date();
+            SimpleDateFormat simpleDateFormat = new SimpleDateFormat( "yyyy-MM-dd" );
+            String toDaysDate = simpleDateFormat.format( toDay );
+            
+            String query = "SELECT periodid FROM period WHERE periodtypeid = 6 AND " +
+                                " startdate <= '" + toDaysDate + "' AND enddate >= '"+ toDaysDate +"'";
+    
+            SqlRowSet rs1 = jdbcTemplate.queryForRowSet( query );
+            if ( rs1 != null && rs1.next() )
+            {
+                periodIdResult = ""+rs1.getInt( 1 );
+            }
+        }
+        catch( Exception e )
+        {
+            throw new RuntimeException( e );
+        }
+        
+        System.out.println( "PeriodId : " +periodIdResult );
+        return periodIdResult;
+            
+    }
+    
+    public String getPeriodIdForIDSPOutBreak( )
+    {
+        String periodIdResult = "-1";
+        String startDate = " ";
+        String endDate = " ";
+        try
+        {
+            Date toDay = new Date();
+            SimpleDateFormat simpleDateFormat = new SimpleDateFormat( "yyyy-MM-dd" );
+            String toDaysDate = simpleDateFormat.format( toDay );
+            
+            int periodId = -1;
+            
+            String query = "SELECT periodid, startdate, enddate FROM period WHERE periodtypeid = 2 AND " +
+            		        " startdate <= '" + toDaysDate + "' AND enddate >= '"+ toDaysDate +"'";
+    
+            SqlRowSet rs1 = jdbcTemplate.queryForRowSet( query );
+            if ( rs1 != null && rs1.next() )
+            {
+                periodId = rs1.getInt( 1 );
+                startDate = rs1.getString( 2 );
+                endDate = rs1.getString( 3 ); 
+                
+                System.out.println( periodId + " : " + startDate + " : " + endDate + " : " +  toDaysDate );
+                
+                if( !endDate.equalsIgnoreCase(  toDaysDate ) )
+                {
+                    Calendar cal = Calendar.getInstance();
+                    cal.setTime( toDay );
+                    cal.add( Calendar.DATE, -7 );
+                    toDaysDate = simpleDateFormat.format( cal.getTime() );
+                    
+                    query = "SELECT periodid, startdate, enddate FROM period WHERE periodtypeid = 2 AND " +
+                                " startdate <= '" + toDaysDate + "' AND enddate >= '"+ toDaysDate +"'";
+                    SqlRowSet rs2 = jdbcTemplate.queryForRowSet( query );
+                    if ( rs2 != null && rs2.next() )
+                    {
+                        periodId = rs2.getInt( 1 );    
+                        startDate = rs2.getString( 2 );
+                        endDate = rs2.getString( 3 );
+                    }
+                    System.out.println( periodId + " : " +  toDaysDate );
+                }
+
+                periodIdResult = ""+ periodId+"::"+startDate+" TO "+endDate;
+            }
+            else
+            {
+                Calendar cal = Calendar.getInstance();
+                cal.setTime( toDay );
+                cal.add( Calendar.DATE, -7 );
+                toDaysDate = simpleDateFormat.format( cal.getTime() );
+                
+                query = "SELECT periodid, startdate, enddate FROM period WHERE periodtypeid = 2 AND " +
+                            " startdate <= '" + toDaysDate + "' AND enddate >= '"+ toDaysDate +"'";
+                SqlRowSet rs2 = jdbcTemplate.queryForRowSet( query );
+                if ( rs2 != null && rs2.next() )
+                {
+                    periodId = rs2.getInt( 1 );
+                    startDate = rs2.getString( 2 );
+                    endDate = rs2.getString( 3 );
+                }
+                periodIdResult = ""+ periodId+"::"+startDate+" TO "+endDate;
+            }
+        }
+        catch( Exception e )
+        {
+            throw new RuntimeException( e );
+        }
+        
+        System.out.println( "PeriodId : " +periodIdResult );
+        return periodIdResult;
+    }
+    
+    public Integer getAggregatedData( String orgUnitIdsByComma, String deIdsByComma, String periodId )
+    {
+        Integer aggData = 0;
+
+        try
+        {
+            String query = "SELECT SUM(value) FROM datavalue " +
+                                " WHERE sourceid IN ("+ orgUnitIdsByComma +") AND " +
+                                " dataelementid IN ("+ deIdsByComma +") AND " +
+                                " periodid = "+periodId;
+    
+            SqlRowSet rs1 = jdbcTemplate.queryForRowSet( query );
+    
+            if ( rs1 != null && rs1.next() )
+            {
+                double temp = rs1.getDouble( 1 ); 
+                
+                aggData =  (int) temp;
+            }
+        }
+        catch( Exception e )
+        {
+            throw new RuntimeException( e );
+        }
+        
+        return aggData;
+    }
     
     public String getProgramwiseSummarySMS( OrganisationUnit orgUnit )
     {
@@ -225,8 +362,7 @@ public class DashBoardService
         Integer totalRegCount = 0;
         try
         {
-            String query = "SELECT COUNT(*) FROM patient " +
-                               " WHERE organisationunitid IN ("+ orgUnitIdsByComma +")";
+            String query = "SELECT COUNT(*) FROM patient " +    " WHERE organisationunitid IN ("+ orgUnitIdsByComma+")";
 
             SqlRowSet rs = jdbcTemplate.queryForRowSet( query );
             
@@ -263,6 +399,45 @@ public class DashBoardService
         }
         catch( Exception e )
         {
+            throw new RuntimeException( e );
+        }
+    }
+
+    
+    public  Collection<HashMap> getDueDates(int programInstance,int organisationUnitId,String startDate,String endDate)
+    {
+        String name=null;
+        Date date=null;
+        int instId;
+        Collection<HashMap> data=new ArrayList<HashMap>();
+        try
+        {
+            String query = "select patient.firstname,patient.organisationunitid, programstageinstance.duedate,programstageinstance.programstageid from programstageinstance inner join programinstance on programinstance.programinstanceid = programstageinstance.programinstanceid inner join patient on patient.patientid = programinstance.patientid  where" +" "+
+                               " programinstance.programid ='"+programInstance+"' and patient.organisationunitid = '"+organisationUnitId+"' and duedate >= '"+startDate+"' and duedate <= '"+endDate+"' and programinstance.completed = false ";
+
+            SqlRowSet rs = jdbcTemplate.queryForRowSet( query );
+         //  System.out.println(rs.toString());
+            while (    rs.next() )
+            {
+                  name= rs.getString( 1);
+                  int temp=rs.getInt( 2);
+                  date=rs.getDate( 3);
+                  instId=rs.getInt( 4);
+        HashMap aggDeMap = new HashMap();
+         
+            
+                    aggDeMap.put( "name", name);
+                    aggDeMap.put( "date", date);
+                    aggDeMap.put( "id", instId);
+            data.add( aggDeMap );
+            
+            }
+            
+         return  data;
+        }
+        catch( Exception e )
+        {
+            e.printStackTrace();
             throw new RuntimeException( e );
         }
     }

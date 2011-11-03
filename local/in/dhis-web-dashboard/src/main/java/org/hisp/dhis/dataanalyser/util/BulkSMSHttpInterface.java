@@ -61,6 +61,12 @@ public class BulkSMSHttpInterface
 
     public String sendMessage( String message, String phoneNo ) throws MalformedURLException, IOException
     {
+        if (message==null || phoneNo==null){
+        return "either message or phone no null";
+        }else if (message.equalsIgnoreCase( "")||phoneNo.equalsIgnoreCase( "") ){
+        return "either message or phone no empty";
+        
+        }
         //Populating the data according to the api link
         data = "username=" + username + "&password=" + password + "&sendername=" + senderName + "&mobileno=" + phoneNo + "&message=" + message;
 
