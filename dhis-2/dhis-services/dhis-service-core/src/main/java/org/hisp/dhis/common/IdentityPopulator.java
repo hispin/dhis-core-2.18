@@ -6,6 +6,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
+import java.sql.Timestamp;
+import java.util.Date;
 import java.util.UUID;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -59,7 +61,8 @@ public class IdentityPopulator
         "indicatorgroup", "datadictionary", "validationrulegroup", "validationrule",
         "dataset", "orgunitlevel", "organisationunit", "orgunitgroup",
         "orgunitgroupset", "dataelementcategoryoption", "dataelementgroup",
-        "dataelement", "dataelementgroupset", "dataelementcategory", "categorycombo"
+        "dataelement", "dataelementgroupset", "dataelementcategory", "categorycombo",
+        "categoryoptioncombo"
     };
 
     // -------------------------------------------------------------------------
@@ -122,7 +125,21 @@ public class IdentityPopulator
                     {
                         log.info( count + " uuids updated on " + table );
                     }
-
+                    
+                    Timestamp now = new Timestamp (new Date().getTime());
+                    
+                    resultSet = statement.executeQuery( "SELECT * from " + table + " WHERE lastUpdated IS NULL" );
+                    while ( resultSet.next() )
+                    {
+                        ++count;
+                        resultSet.updateTimestamp( "lastUpdated", now);
+                        resultSet.updateRow();
+                    }
+                    if ( count > 0 )
+                    {
+                        log.info( count + " timestamps updated on " + table );
+                    }
+                    
                 } catch ( SQLException ex )
                 {
                     Logger.getLogger( IdentityPopulator.class.getName() ).log( Level.SEVERE, null, ex );

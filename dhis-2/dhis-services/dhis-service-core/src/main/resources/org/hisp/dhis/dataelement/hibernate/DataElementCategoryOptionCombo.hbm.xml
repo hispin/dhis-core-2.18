@@ -12,10 +12,12 @@
       <generator class="native" />
     </id>
 
-    <property name="uuid">
-      <column name="uuid" length="40" />
-    </property>
-
+    <!-- <property name="name" column="name" not-null="true" unique="true" length="230" /> -->
+    <property name="uuid" column="uuid" length="40" />
+    <property name="uid" column="uid" length="11" />
+    <property name="code" column="code" not-null="false" unique="true" length="50" />
+    <property name="lastUpdated" type="timestamp"/>
+    
     <list name="categoryOptions" table="categoryoptioncombos_categoryoptions">
 	  <cache usage="read-write" />
       <key column="categoryoptioncomboid" foreign-key="fk_categoryoptioncombos_categoryoptions_categoryoptioncomboid" />
