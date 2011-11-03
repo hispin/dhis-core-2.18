@@ -29,7 +29,9 @@ package org.hisp.dhis.organisationunit.hibernate;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.util.Collection;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -43,7 +45,7 @@ import org.hibernate.Criteria;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.criterion.Restrictions;
-import org.hisp.dhis.hibernate.HibernateGenericStore;
+import org.hisp.dhis.common.hibernate.HibernateIdentifiableObjectStore;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroup;
 import org.hisp.dhis.organisationunit.OrganisationUnitHierarchy;
@@ -60,7 +62,7 @@ import org.springframework.jdbc.core.RowCallbackHandler;
  *          larshelg $
  */
 public class HibernateOrganisationUnitStore
-    extends HibernateGenericStore<OrganisationUnit>
+    extends HibernateIdentifiableObjectStore<OrganisationUnit>
     implements OrganisationUnitStore
 {
     // -------------------------------------------------------------------------
@@ -74,17 +76,19 @@ public class HibernateOrganisationUnitStore
         this.statementManager = statementManager;
     }
 
-    private JdbcTemplate jdbcTemplate;
+    private HibernateIdentifiableObjectStore<OrganisationUnitLevel> orgLevelStore;
 
-    public void setJdbcTemplate( JdbcTemplate jdbcTemplate )
+    public void setOrgLevelStore( HibernateIdentifiableObjectStore<OrganisationUnitLevel> orgLevelStore )
     {
-        this.jdbcTemplate = jdbcTemplate;
+        this.orgLevelStore = orgLevelStore;
     }
-
+    
+    
     // -------------------------------------------------------------------------
     // OrganisationUnit
     // -------------------------------------------------------------------------
 
+    @Override
     public OrganisationUnit getOrganisationUnitByNameIgnoreCase( String name )
     {
         Criteria criteria = sessionFactory.getCurrentSession().createCriteria( OrganisationUnit.class );
@@ -222,10 +226,12 @@ public class HibernateOrganisationUnitStore
 
     public void updateOrganisationUnitParent( int organisationUnitId, int parentId )
     {
+        Timestamp now = new Timestamp( new Date().getTime() );
+        
         StatementHolder holder = statementManager.getHolder();
 
-        final String sql = "UPDATE organisationunit " + "SET parentid='" + parentId + "' "
-            + "WHERE organisationunitid='" + organisationUnitId + "'";
+        final String sql = "UPDATE organisationunit " + "SET parentid='" + parentId + "', SET lastUpdated='"
+            + now + "' " + "WHERE organisationunitid='" + organisationUnitId + "'";
 
         holder.executeUpdate( sql );
     }
@@ -236,22 +242,22 @@ public class HibernateOrganisationUnitStore
 
     public int addOrganisationUnitLevel( OrganisationUnitLevel level )
     {
-        return (Integer) sessionFactory.getCurrentSession().save( level );
+        return orgLevelStore.save( level );
     }
 
     public void updateOrganisationUnitLevel( OrganisationUnitLevel level )
     {
-        sessionFactory.getCurrentSession().update( level );
+        orgLevelStore.update( level );
     }
 
     public OrganisationUnitLevel getOrganisationUnitLevel( int id )
     {
-        return (OrganisationUnitLevel) sessionFactory.getCurrentSession().get( OrganisationUnitLevel.class, id );
+        return orgLevelStore.get(  id );
     }
 
     public void deleteOrganisationUnitLevel( OrganisationUnitLevel level )
     {
-        sessionFactory.getCurrentSession().delete( level );
+        orgLevelStore.delete( level );
     }
 
     public void deleteOrganisationUnitLevels()
@@ -292,6 +298,8 @@ public class HibernateOrganisationUnitStore
     @Override
     public void update( Collection<OrganisationUnit> units )
     {
+        Timestamp now = new Timestamp( new Date().getTime() );
+        
         Collection<Integer> unitIds = new HashSet<Integer>();
 
         for ( OrganisationUnit orgunit : units )
@@ -301,19 +309,21 @@ public class HibernateOrganisationUnitStore
 
         if ( unitIds.size() > 0 )
         {
-            String sql = "update OrganisationUnit set hasPatients=true where organisationunitid in (:unitIds)";
+            String sql = "update OrganisationUnit set hasPatients=true,lastUpdated='" + now + 
+                "' where organisationunitid in (:unitIds)";
             Query query = sessionFactory.getCurrentSession().createQuery( sql );
             query.setParameterList( "unitIds", unitIds );
             query.executeUpdate();
 
-            sql = "UPDATE OrganisationUnit SET hasPatients=false WHERE organisationunitid not in ( :unitIds )";
+            sql = "UPDATE OrganisationUnit SET hasPatients=false,lastUpdated='" + now + 
+                "' WHERE organisationunitid not in ( :unitIds )";
             query = sessionFactory.getCurrentSession().createQuery( sql );
             query.setParameterList( "unitIds", unitIds );
             query.executeUpdate();
         }
         else
         {
-            String sql = "update OrganisationUnit set hasPatients=false";
+            String sql = "update OrganisationUnit set hasPatients=false,,lastUpdated='" + now +"'";
             Query query = sessionFactory.getCurrentSession().createQuery( sql );
             query.executeUpdate();
         }

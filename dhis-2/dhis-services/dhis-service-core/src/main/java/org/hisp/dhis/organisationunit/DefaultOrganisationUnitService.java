@@ -97,15 +97,9 @@ public class DefaultOrganisationUnitService
     // OrganisationUnit
     // -------------------------------------------------------------------------
 
+    @Override
     public int addOrganisationUnit( OrganisationUnit organisationUnit )
     {
-        if ( organisationUnit.getUuid() == null )
-        {
-            organisationUnit.setUuid( UUIdUtils.getUUId() );
-        }
-
-        organisationUnit.setLastUpdated( new Date() );
-
         int id = organisationUnitStore.save( organisationUnit );
 
         log.info( AuditLogUtil.logMessage( currentUserService.getCurrentUsername(), AuditLogUtil.ACTION_ADD,

@@ -33,7 +33,6 @@ import java.util.Collection;
 import org.hisp.dhis.common.GenericIdentifiableObjectStore;
 import org.hisp.dhis.system.util.Filter;
 import org.hisp.dhis.system.util.FilterUtils;
-import org.hisp.dhis.system.util.UUIdUtils;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
@@ -68,11 +67,6 @@ public class DefaultOrganisationUnitGroupService
 
     public int addOrganisationUnitGroup( OrganisationUnitGroup organisationUnitGroup )
     {
-        if ( organisationUnitGroup.getUuid() == null )
-        {
-            organisationUnitGroup.setUuid( UUIdUtils.getUUId() );
-        }
-        
         return organisationUnitGroupStore.save( organisationUnitGroup );
     }
 
