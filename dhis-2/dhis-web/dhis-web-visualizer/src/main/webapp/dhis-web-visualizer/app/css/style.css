@@ -319,3 +319,8 @@ li {
     padding-left: 19px;
     background-image: url('../images/datatable.png');
 }
+
+/* Grid datatable */
+.dv-datatable .x-grid-header-ct {
+    border-style: none;
+}
