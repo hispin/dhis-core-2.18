@@ -34,8 +34,10 @@ import java.security.SecureRandom;
  */
 public class CodeGenerator
 {
-    public static final String allowedChars = "0123456789" + "abcdefghijklmnopqrstuvwxyz"
+    public static final String letters = "abcdefghijklmnopqrstuvwxyz"
         + "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+    
+    public static final String allowedChars = "0123456789" + letters;
 
     public static final int NUMBER_OF_CODEPOINTS = allowedChars.length();
     public static final int CODESIZE = 11;
@@ -51,7 +53,11 @@ public class CodeGenerator
         SecureRandom sr = new SecureRandom();
 
         char[] randomChars = new char[CODESIZE];
-        for ( int i = 0; i < CODESIZE; ++i )
+        
+        // first char should be a letter
+        randomChars[0] = letters.charAt( sr.nextInt( letters.length() ) );
+        
+        for ( int i = 1; i < CODESIZE; ++i )
         {
             randomChars[i] = allowedChars.charAt( sr.nextInt( NUMBER_OF_CODEPOINTS ) );
         }
