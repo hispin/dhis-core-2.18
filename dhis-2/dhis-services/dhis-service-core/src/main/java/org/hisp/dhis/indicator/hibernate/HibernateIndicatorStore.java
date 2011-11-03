@@ -33,6 +33,7 @@ import org.hibernate.Criteria;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.criterion.Restrictions;
+import org.hisp.dhis.common.hibernate.HibernateIdentifiableObjectStore;
 import org.hisp.dhis.hibernate.HibernateGenericStore;
 import org.hisp.dhis.indicator.Indicator;
 import org.hisp.dhis.indicator.IndicatorStore;
@@ -42,7 +43,7 @@ import org.hisp.dhis.indicator.IndicatorStore;
  * @version $Id: HibernateIndicatorStore.java 3287 2007-05-08 00:26:53Z larshelg $
  */
 public class HibernateIndicatorStore
-    extends HibernateGenericStore<Indicator>
+    extends HibernateIdentifiableObjectStore<Indicator>
     implements IndicatorStore
 {
     // -------------------------------------------------------------------------
