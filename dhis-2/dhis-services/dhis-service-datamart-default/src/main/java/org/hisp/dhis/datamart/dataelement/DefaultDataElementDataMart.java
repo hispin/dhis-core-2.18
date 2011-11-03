@@ -217,6 +217,8 @@ public class DefaultDataElementDataMart
 
         statementManager.destroy();
         
+        aggregationCache.clearCache();
+        
         log.info( "Data element export task done" );
         
         return null;

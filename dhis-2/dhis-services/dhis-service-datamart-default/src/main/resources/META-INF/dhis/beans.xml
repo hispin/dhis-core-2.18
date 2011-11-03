@@ -23,7 +23,6 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
   <!-- DataMartEngine -->
 
   <bean id="org.hisp.dhis.datamart.engine.DataMartEngine" class="org.hisp.dhis.datamart.engine.DefaultDataMartEngine">
-    <property name="aggregationCache" ref="org.hisp.dhis.datamart.aggregation.cache.AggregationCache" />
     <property name="aggregatedDataValueService" ref="org.hisp.dhis.aggregation.AggregatedDataValueService" />
     <property name="crossTabService" ref="org.hisp.dhis.datamart.crosstab.CrossTabService" />
     <property name="dataElementDataMart" ref="org.hisp.dhis.datamart.dataelement.DataElementDataMart" />

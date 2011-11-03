@@ -178,6 +178,7 @@ public class MemoryAggregationCache
     public void clearCache()
     {
         intersectingPeriodCache.remove();
+        periodBetweenCache.remove();
         periodCache.remove();
         organisationUnitLevelCache.remove();
     }
