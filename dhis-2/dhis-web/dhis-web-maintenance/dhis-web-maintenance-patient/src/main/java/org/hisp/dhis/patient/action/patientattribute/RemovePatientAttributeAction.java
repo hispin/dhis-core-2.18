@@ -87,16 +87,15 @@ public class RemovePatientAttributeAction
             PatientAttribute patientAttribute = patientAttributeService.getPatientAttribute( id );
 
             patientAttributeService.deletePatientAttribute( patientAttribute );
-
         }
         catch ( DeleteNotAllowedException ex )
         {
             if ( ex.getErrorCode().equals( DeleteNotAllowedException.ERROR_ASSOCIATED_BY_OTHER_OBJECTS ) )
             {
                 message = i18n.getString( "object_not_deleted_associated_by_objects" ) + " " + ex.getMessage();
-
-                return ERROR;
             }
+            
+            return ERROR;
         }
 
         return SUCCESS;
