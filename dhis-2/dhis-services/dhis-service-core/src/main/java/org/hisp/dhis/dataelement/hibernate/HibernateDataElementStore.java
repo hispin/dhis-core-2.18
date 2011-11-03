@@ -74,14 +74,16 @@ public class HibernateDataElementStore
     // DataElement
     // -------------------------------------------------------------------------
 
+    @Override
     public int addDataElement( DataElement dataElement )
     {
         return this.save( dataElement );
     }
 
+    @Override
     public void updateDataElement( DataElement dataElement )
     {
-        this.updateDataElement( dataElement );
+        this.update( dataElement );
     }
 
     public void deleteDataElement( DataElement dataElement )
