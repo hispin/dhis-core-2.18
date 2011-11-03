@@ -173,7 +173,9 @@ public class DefaultDataMartEngine
         Collections.shuffle( organisationUnits );
         FilterUtils.filter( dataElements, new AggregatableDataElementFilter() );
         expressionService.filterInvalidIndicators( indicators );
-        
+
+        clock.logTime( "Filtered objects" );
+
         // ---------------------------------------------------------------------
         // Explode indicator expressions
         // ---------------------------------------------------------------------
@@ -183,7 +185,9 @@ public class DefaultDataMartEngine
             indicator.setExplodedNumerator( expressionService.explodeExpression( indicator.getNumerator() ) );
             indicator.setExplodedDenominator( expressionService.explodeExpression( indicator.getDenominator() ) );
         }
-        
+
+        clock.logTime( "Exploded indicator expressions" );
+
         // ---------------------------------------------------------------------
         // Get operands
         // ---------------------------------------------------------------------
@@ -195,7 +199,7 @@ public class DefaultDataMartEngine
         allOperands.addAll( dataElementOperands );
         allOperands.addAll( indicatorOperands );
 
-        clock.logTime( "Filtered data elements, number of operands: " + allOperands.size() );
+        clock.logTime( "Retrieved operands: " + allOperands.size() );
 
         // ---------------------------------------------------------------------
         // Filter out future periods
