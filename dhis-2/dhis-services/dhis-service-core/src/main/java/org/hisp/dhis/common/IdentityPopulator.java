@@ -77,13 +77,13 @@ public class IdentityPopulator
     // -------------------------------------------------------------------------
     @Transactional
     @Override
-    public void execute()
+    public void execute() throws SQLException
     {
         StatementHolder holder = statementManager.getHolder();
 
         Statement dummyStatement = holder.getStatement();
 
-        Statement statement;
+        Statement statement = null;
 
         try
         {
@@ -126,15 +126,17 @@ public class IdentityPopulator
                 } catch ( SQLException ex )
                 {
                     Logger.getLogger( IdentityPopulator.class.getName() ).log( Level.SEVERE, null, ex );
-                } finally
-                {
-                    statement.close();
                 }
             }
         } catch ( SQLException ex )
         {
             Logger.getLogger( IdentityPopulator.class.getName() ).log( Level.SEVERE, null, ex );
             return;
+        } finally
+        {
+            if (statement !=null) {
+                statement.close();
+            }
         }
 
     }
