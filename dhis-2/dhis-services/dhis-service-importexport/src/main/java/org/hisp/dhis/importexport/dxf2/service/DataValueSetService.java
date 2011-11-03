@@ -299,7 +299,7 @@ public class DataValueSetService
         try
         {
             Date completeDate = format.parse( completeDateString );
-            complete = new CompleteDataSetRegistration( dataSet, period, unit, completeDate );
+            complete = new CompleteDataSetRegistration( dataSet, period, unit, completeDate, currentUserService.getCurrentUsername() );
         }
         catch ( ParseException e )
         {
