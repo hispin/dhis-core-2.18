@@ -189,7 +189,7 @@ public class GetOrganisationUnitAction
         groupSets = new ArrayList<OrganisationUnitGroupSet>(
             organisationUnitGroupService.getCompulsoryOrganisationUnitGroupSetsWithMembers() );
 
-        attributes = new ArrayList<Attribute>( attributeService.getDataElementAttributes() );
+        attributes = new ArrayList<Attribute>( attributeService.getOrganisationUnitAttributes() );
 
         attributeValues = AttributeUtils.getAttributeValueMap( organisationUnit.getAttributeValues() );
 

@@ -122,7 +122,7 @@ public class PrepareAddOrganisationUnitAction
         groupSets = new ArrayList<OrganisationUnitGroupSet>(
             organisationUnitGroupService.getCompulsoryOrganisationUnitGroupSetsWithMembers() );
 
-        attributes = new ArrayList<Attribute>( attributeService.getDataElementAttributes() );
+        attributes = new ArrayList<Attribute>( attributeService.getOrganisationUnitAttributes() );
 
         Collections.sort( dataSets, new DataSetNameComparator() );
         Collections.sort( groupSets, new OrganisationUnitGroupSetNameComparator() );
