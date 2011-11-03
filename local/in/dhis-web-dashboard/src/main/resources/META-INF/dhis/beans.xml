@@ -17,6 +17,41 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
         <property name="statementManager" ref="statementManager"/>
     </bean>
 	
+  <bean id="org.hisp.dhis.dataanalyser.action.GetPatientDataRecordsAction" class="org.hisp.dhis.dataanalyser.action.GetPatientDataRecordsAction"
+    scope="prototype">
+    <property name="organisationUnitService" ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
+    <property name="programService" ref="org.hisp.dhis.program.ProgramService" />
+    <property name="programInstanceService" ref="org.hisp.dhis.program.ProgramInstanceService" />
+    <property name="programStageInstanceService" ref="org.hisp.dhis.program.ProgramStageInstanceService" />
+    <property name="patientService" ref="org.hisp.dhis.patient.PatientService" />
+    <property name="patientAttributeService" ref="org.hisp.dhis.patient.PatientAttributeService" />
+    <property name="patientAttributeValueService" ref="org.hisp.dhis.patientattributevalue.PatientAttributeValueService" />
+  </bean>
+	
+  <bean id="org.hisp.dhis.dataanalyser.action.GetPatientDetailsAction" class="org.hisp.dhis.dataanalyser.action.GetPatientDetailsAction"
+    scope="prototype">
+    <property name="patientService" ref="org.hisp.dhis.patient.PatientService" />
+    <property name="patientIdentifierService" ref="org.hisp.dhis.patient.PatientIdentifierService" />
+    <property name="programService" ref="org.hisp.dhis.program.ProgramService" />
+    <property name="patientAttributeValueService" ref="org.hisp.dhis.patientattributevalue.PatientAttributeValueService" />
+  </bean>
+
+    <bean id="org.hisp.dhis.dataanalyser.action.IDSPOutbreakAction"
+        class="org.hisp.dhis.dataanalyser.action.IDSPOutbreakAction"
+        scope="prototype">
+        <property name="aggregationService" ref="org.hisp.dhis.aggregation.AggregationService" />
+        <property name="currentUserService" ref="org.hisp.dhis.user.CurrentUserService" />
+		<property name="userService" ref="org.hisp.dhis.user.UserService" />
+        <property name="indicatorService" ref="org.hisp.dhis.indicator.IndicatorService" />
+        <property name="periodService" ref="org.hisp.dhis.period.PeriodService" />
+        <property name="organisationUnitService" ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
+        <property name="dashBoardService" ref="org.hisp.dhis.dataanalyser.util.DashBoardService" />
+        <property name="programService" ref="org.hisp.dhis.program.ProgramService" />
+        <property name="statementManager" ref="statementManager"/>
+		<property name="orgUnitGroupService" ref="org.hisp.dhis.organisationunit.OrganisationUnitGroupService" />
+    </bean>
+
+	
 <!-- Graphical Analyser DataElements -->
 	 <bean id="org.hisp.dhis.dataanalyser.ga.action.GenerateGraphicalAnalyserDataElementsFormAction"
         class="org.hisp.dhis.dataanalyser.ga.action.GenerateGraphicalAnalyserDataElementsFormAction"
@@ -517,7 +552,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     </bean> 
 	
 	<!-- View Comment Related Stuff -->
-	
+<!--	
 	<bean id="org.hisp.dhis.dataanalyser.vc.action.ViewCommentFormAction"
     	class="org.hisp.dhis.dataanalyser.vc.action.ViewCommentFormAction" 
 		scope="prototype">
@@ -539,9 +574,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		  <ref bean="org.hisp.dhis.oust.manager.SelectionTreeManager"/>
 	    </property>
 	</bean>
-	
-	
-		
+-->			
 	
 	<!-- DataStatus -->
 	
@@ -1388,7 +1421,30 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
         <property name="jdbcTemplate" ref="jdbcTemplate"/>
 	</bean>		
 
-    <!-- BULK SMS -->
+    <!-- BULK SMS due dates -->
+    
+    <bean id="org.hisp.dhis.dataanalyser.sms.action.GenerateDueDatesFormAction"
+		class="org.hisp.dhis.dataanalyser.sms.action.GenerateDueDatesFormAction"
+		scope="prototype">
+       <property name="selectionTreeManager" ref="org.hisp.dhis.oust.manager.SelectionTreeManager" />
+         <property name="periodService" ref="org.hisp.dhis.period.PeriodService" />
+        <property name="dataSetService" ref="org.hisp.dhis.dataset.DataSetService" />    
+         <property name="programService" ref="org.hisp.dhis.program.ProgramService" />
+		<property name="dashBoardService" ref="org.hisp.dhis.dataanalyser.util.DashBoardService" />
+		 <property name="programStageService" ref="org.hisp.dhis.program.ProgramStageService" />
+		
+        </bean>			
+	
+    <bean id="org.hisp.dhis.dataanalyser.sms.action.SendDueDatesFormAction"
+		class="org.hisp.dhis.dataanalyser.sms.action.SendDueDatesFormAction"
+		scope="prototype">
+       <property name="selectionTreeManager" ref="org.hisp.dhis.oust.manager.SelectionTreeManager" />
+         <property name="periodService" ref="org.hisp.dhis.period.PeriodService" />
+        <property name="dataSetService" ref="org.hisp.dhis.dataset.DataSetService" />    
+         <property name="programService" ref="org.hisp.dhis.program.ProgramService" />
+		<property name="dashBoardService" ref="org.hisp.dhis.dataanalyser.util.DashBoardService" />
+		 </bean>			
+	
     <!-- BULK SMS: Programwise Summary -->
     <bean id="org.hisp.dhis.dataanalyser.sms.action.BulkSMSForProgSummaryFormAction"
         class="org.hisp.dhis.dataanalyser.sms.action.BulkSMSForProgSummaryFormAction"
@@ -1400,6 +1456,8 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
         scope="prototype">
         <property name="userGroupService" ref="org.hisp.dhis.user.UserGroupService" />
 		<property name="dashBoardService" ref="org.hisp.dhis.dataanalyser.util.DashBoardService" />
+    <property name="programService" ref="org.hisp.dhis.program.ProgramService" />
+		
     </bean>     
 		
 </beans>

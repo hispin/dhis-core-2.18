@@ -8,14 +8,39 @@
 	<package name="dhis-web-dashboard" extends="dhis-web-commons"
 		namespace="/dhis-web-dashboard">
 		
-		<action name="index"
+		
+		<action name="index1"
 			class="org.hisp.dhis.dataanalyser.action.DashBoardHomePageAction">
 			<result name="success" type="velocity">/main.vm</result>
 			<param name="page">/dhis-web-dashboard/welcome.vm</param>
 			<param name="menu">/dhis-web-dashboard/menu.vm</param>
-			<param name="javascripts">javascript/ext-all.js</param>
+			<param name="javascripts">javascript/ext-all.js,javascript/db.js</param>
 			<param name="stylesheets">css/ext-all.css,example.css</param>
 		</action>
+		
+		
+    <action name="getPatientDataRecords" class="org.hisp.dhis.dataanalyser.action.GetPatientDataRecordsAction">
+      <result name="success" type="velocity">/content.vm</result>
+      <param name="page">/dhis-web-dashboard/viewPatientDataRecords.vm</param>
+      <param name="stylesheets">../dhis-web-commons/paging/paging.css</param>
+    </action>
+		
+    <action name="getPatientDetails" class="org.hisp.dhis.dataanalyser.action.GetPatientDetailsAction">
+      <result name="success" type="velocity-xml">/dhis-web-dashboard/responsePatient.vm</result>
+      <param name="onExceptionReturn">plainTextError</param>
+    </action>    
+
+	<action name="index"
+		class="org.hisp.dhis.dataanalyser.action.IDSPOutbreakAction">
+		<result name="standard" type="redirect">index1.action</result>
+		<result name="success" type="velocity">/main.vm</result>
+		<param name="page">/dhis-web-dashboard/idspOutBreak.vm</param>
+		<param name="menu">/dhis-web-dashboard/menu.vm</param>
+		<param name="javascripts">javascript/ext-all.js,javascript/db.js</param>
+		<param name="stylesheets">css/ext-all.css,example.css</param>
+		<!--<param name="requiredAuthorities">F_IDSP_OUTBREAK</param>-->
+	</action>
+
 		
 		<!-- GraphicalAnalyser  DataElements -->
 		<action name="graphicalAnalyserDataElement"
@@ -965,10 +990,26 @@
 			<param name="page">/dhis-web-dashboard/dataEntrySummaryStatusResult.vm</param>
 			<param name="javascripts">javascript/ds.js,javascript/hashtable.js</param>
 			<param name="stylesheets">css/StylesForTags.css</param>
+
 		</action>
 
-	<!-- BULK SMS -->
-	<!-- BULK SMS: Programwise Summary -->
+	<!-- BULK SMS due dates-->
+	 <action name="dueDates"
+			class="org.hisp.dhis.dataanalyser.sms.action.GenerateDueDatesFormAction">
+			<result name="success" type="velocity">/main.vm</result>
+			<param name="menu">/dhis-web-dashboard/menuWithTreeForSms.vm</param>
+			<param name="page">/dhis-web-dashboard/dueDatesForm.vm</param>
+        
+		</action>					
+     <action name="sendDueDates"
+			class="org.hisp.dhis.dataanalyser.sms.action.SendDueDatesFormAction">
+			<result name="success" type="velocity">/main.vm</result>
+			<param name="menu">/dhis-web-dashboard/menuWithTreeForSms.vm</param>
+			<param name="page">/dhis-web-dashboard/dueDatesForm.vm</param>
+        
+		</action>					
+	
+    <!-- BULK SMS: Programwise Summary -->
         <action name="prgwiseSummaryBulkSMSForm"
             class="org.hisp.dhis.dataanalyser.sms.action.BulkSMSForProgSummaryFormAction">
             <result name="success" type="velocity">/main.vm</result>
@@ -982,6 +1023,6 @@
             <param name="menu">/dhis-web-dashboard/menu.vm</param>
         </action>
 
-
 	</package>
+
 </struts>

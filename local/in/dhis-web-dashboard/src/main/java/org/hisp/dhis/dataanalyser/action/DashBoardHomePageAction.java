@@ -142,6 +142,13 @@ public class DashBoardHomePageAction
         return immChildrenList;
     }
 
+    Map<String, Integer> orgUnit_ProgramMap;
+    
+    public Map<String, Integer> getOrgUnit_ProgramMap()
+    {
+        return orgUnit_ProgramMap;
+    }
+
     Map<String, Integer> totalEnrollCountMap;
 
     public Map<String, Integer> getTotalEnrollCountMap()
@@ -242,6 +249,7 @@ public class DashBoardHomePageAction
         totalRegCountList = new ArrayList<Integer>();
         totalRegCountListForSelDate = new ArrayList<Integer>();
         totalEnrollCountForSelDateMap = new HashMap<String, Integer>();
+        orgUnit_ProgramMap = new HashMap<String, Integer>();
         
         resultString = "";
         
@@ -314,6 +322,15 @@ public class DashBoardHomePageAction
                     {
                         for ( Program program : programList )
                         {
+                            if( program.getOrganisationUnits().contains( ou ) )
+                            {
+                                orgUnit_ProgramMap.put( program.getId()+":"+ou.getId(), 1 );
+                            }
+                            else
+                            {
+                                orgUnit_ProgramMap.put( program.getId()+":"+ou.getId(), 0 );
+                            }
+                            
                             Integer tempResult = enrollCountMap.get( program.getId() );
                             if ( tempResult == null )
                             {
