@@ -106,6 +106,8 @@ public abstract class DhisConvenienceTest
 {
     private static final String BASE_UUID = "C3C2E28D-9686-4634-93FD-BE3133935EC";
 
+    private static final String BASE_UID = "123456789a";
+
     private static final String EXT_TEST_DIR = System.getProperty( "user.home" ) + File.separator + "dhis2_test_dir";
 
     private static Date date;
@@ -569,6 +571,7 @@ public abstract class DhisConvenienceTest
         OrganisationUnit unit = new OrganisationUnit();
 
         unit.setUuid( BASE_UUID + uniqueCharacter );
+        unit.setUid( BASE_UID + uniqueCharacter );
         unit.setName( "OrganisationUnit" + uniqueCharacter );
         unit.setShortName( "OrganisationUnitShort" + uniqueCharacter );
         unit.setCode( "OrganisationUnitCode" + uniqueCharacter );

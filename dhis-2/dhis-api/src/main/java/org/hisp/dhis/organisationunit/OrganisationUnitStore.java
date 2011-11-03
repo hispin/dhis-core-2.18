@@ -31,7 +31,7 @@ import java.util.Collection;
 import java.util.Map;
 import java.util.Set;
 
-import org.hisp.dhis.common.GenericIdentifiableObjectStore;
+import org.hisp.dhis.common.GenericNameableObjectStore;
 
 /**
  * Defines methods for persisting OrganisationUnits.
@@ -40,7 +40,7 @@ import org.hisp.dhis.common.GenericIdentifiableObjectStore;
  * @version $Id: OrganisationUnitStore.java 5645 2008-09-04 10:01:02Z larshelg $
  */
 public interface OrganisationUnitStore
-    extends GenericIdentifiableObjectStore<OrganisationUnit>
+    extends GenericNameableObjectStore<OrganisationUnit>
 {
     String ID = OrganisationUnitStore.class.getName();
 

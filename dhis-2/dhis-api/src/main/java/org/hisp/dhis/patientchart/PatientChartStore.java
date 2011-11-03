@@ -29,7 +29,7 @@ package org.hisp.dhis.patientchart;
 
 import java.util.Collection;
 
-import org.hisp.dhis.common.GenericIdentifiableObjectStore;
+import org.hisp.dhis.common.GenericNameableObjectStore;
 import org.hisp.dhis.program.Program;
 
 /**
@@ -38,7 +38,7 @@ import org.hisp.dhis.program.Program;
  * 
  */
 public interface PatientChartStore
-    extends GenericIdentifiableObjectStore<PatientChart>
+    extends GenericNameableObjectStore<PatientChart>
 {
     String ID = PatientChartStore.class.getName();
 

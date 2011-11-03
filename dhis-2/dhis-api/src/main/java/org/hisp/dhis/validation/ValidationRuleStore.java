@@ -29,7 +29,7 @@ package org.hisp.dhis.validation;
 
 import java.util.Collection;
 
-import org.hisp.dhis.common.GenericIdentifiableObjectStore;
+import org.hisp.dhis.common.GenericNameableObjectStore;
 import org.hisp.dhis.dataelement.DataElement;
 
 /**
@@ -37,7 +37,7 @@ import org.hisp.dhis.dataelement.DataElement;
  * @version ValidationRuleStore.java 2010-05-18 17:05:50Z
  */
 public interface ValidationRuleStore
-    extends GenericIdentifiableObjectStore<ValidationRule>
+    extends GenericNameableObjectStore<ValidationRule>
 {
     String ID = ValidationRuleStore.class.getName();
 

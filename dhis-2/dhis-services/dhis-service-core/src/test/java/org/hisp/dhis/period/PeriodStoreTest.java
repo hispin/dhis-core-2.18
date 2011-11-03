@@ -83,9 +83,9 @@ public class PeriodStoreTest
         
         dataValueStore = (DataValueStore) getBean( DataValueStore.ID );
 
-        optionCombo = new DataElementCategoryOptionCombo();
+        optionCombo = categoryService.getDefaultDataElementCategoryOptionCombo();
         
-        categoryService.addDataElementCategoryOptionCombo( optionCombo );
+        // categoryService.addDataElementCategoryOptionCombo( optionCombo );
     }
 
     // -------------------------------------------------------------------------

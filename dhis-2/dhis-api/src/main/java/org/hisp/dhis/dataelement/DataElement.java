@@ -135,11 +135,6 @@ public class DataElement
     private String url;
 
     /**
-     * The date this data element was last updated.
-     */
-    private Date lastUpdated;
-
-    /**
      * The data element groups which this
      */
     private Set<DataElementGroup> groups = new HashSet<DataElementGroup>();
@@ -449,16 +444,6 @@ public class DataElement
     public void setUrl( String url )
     {
         this.url = url;
-    }
-
-    public Date getLastUpdated()
-    {
-        return lastUpdated;
-    }
-
-    public void setLastUpdated( Date lastUpdated )
-    {
-        this.lastUpdated = lastUpdated;
     }
 
     public Set<DataElementGroup> getGroups()

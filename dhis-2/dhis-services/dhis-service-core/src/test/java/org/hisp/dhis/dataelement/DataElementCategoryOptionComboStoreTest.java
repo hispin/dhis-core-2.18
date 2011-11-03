@@ -37,6 +37,7 @@ import java.util.List;
 
 import org.hisp.dhis.DhisSpringTest;
 import org.hisp.dhis.common.GenericStore;
+import org.hisp.dhis.hibernate.HibernateGenericStore;
 import org.junit.Test;
 
 /**
@@ -74,7 +75,8 @@ public class DataElementCategoryOptionComboStoreTest
     {
         categoryService = (DataElementCategoryService) getBean( DataElementCategoryService.ID );
         
-        categoryOptionComboStore = (GenericStore<DataElementCategoryOptionCombo>) getBean( "org.hisp.dhis.dataelement.DataElementCategoryOptionComboStore" );
+        categoryOptionComboStore = (HibernateGenericStore<DataElementCategoryOptionCombo>) 
+            getBean( "org.hisp.dhis.dataelement.DataElementCategoryOptionComboStore" );
         
         categoryOptionA = new DataElementCategoryOption( "Male" );
         categoryOptionB = new DataElementCategoryOption( "Female" );

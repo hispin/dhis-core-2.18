@@ -1,7 +1,9 @@
 <?xml version="1.0"?>
 <!DOCTYPE hibernate-mapping PUBLIC
   "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
-  "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+  "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd"
+  [<!ENTITY identifiableProperties SYSTEM "classpath://org/hisp/dhis/common/identifiableProperties.hbm">]
+>
 
 <hibernate-mapping>
   <class name="org.hisp.dhis.dataelement.DataElementCategory" table="dataelementcategory">
@@ -11,14 +13,7 @@
     <id name="id" column="categoryid">
       <generator class="native" />
     </id>
-
-    <property name="uuid">
-      <column name="uuid" length="40" />
-    </property>
-
-    <property name="name">
-      <column name="name" not-null="true" unique="true" length="160" />
-    </property>
+    &identifiableProperties;
 
     <many-to-one name="concept" class="org.hisp.dhis.concept.Concept" column="conceptid"
       foreign-key="fk_dataelementcategory_conceptid" />

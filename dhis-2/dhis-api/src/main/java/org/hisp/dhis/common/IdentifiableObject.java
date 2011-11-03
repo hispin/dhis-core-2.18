@@ -1,5 +1,8 @@
 package org.hisp.dhis.common;
 
+
+import java.util.Date;
+
 /*
  * Copyright (c) 2004-2010, University of Oslo
  * All rights reserved.
@@ -34,7 +37,11 @@ public interface IdentifiableObject
 
     public abstract String getUuid();
 
+    public abstract String getUid();
+
     public abstract String getName();
 
     public abstract String getCode();
+
+    public abstract Date getLastUpdated();
 }

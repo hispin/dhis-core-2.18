@@ -29,13 +29,13 @@ package org.hisp.dhis.attribute;
 
 import java.util.Set;
 
-import org.hisp.dhis.common.GenericIdentifiableObjectStore;
+import org.hisp.dhis.common.GenericNameableObjectStore;
 
 /**
  * @author mortenoh
  */
 public interface AttributeStore
-    extends GenericIdentifiableObjectStore<Attribute>
+    extends GenericNameableObjectStore<Attribute>
 {
     String ID = AttributeStore.class.getName();
 

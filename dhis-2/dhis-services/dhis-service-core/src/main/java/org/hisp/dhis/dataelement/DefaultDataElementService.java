@@ -99,11 +99,6 @@ public class DefaultDataElementService
 
     public int addDataElement( DataElement dataElement )
     {
-        if ( dataElement.getUuid() == null )
-        {
-            dataElement.setUuid( UUIdUtils.getUUId() );
-        }
-
         dataElement.setLastUpdated( new Date() );
 
         int id = dataElementStore.addDataElement( dataElement );

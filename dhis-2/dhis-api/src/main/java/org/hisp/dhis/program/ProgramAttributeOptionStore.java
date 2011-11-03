@@ -29,14 +29,14 @@ package org.hisp.dhis.program;
 
 import java.util.Collection;
 
-import org.hisp.dhis.common.GenericIdentifiableObjectStore;
+import org.hisp.dhis.common.GenericNameableObjectStore;
 
 /**
  * @author Chau Thu Tran
  * 
  * @version ProgramAttributeOptionStore.java Nov 1, 2010 3:03:28 PM
  */
-public interface ProgramAttributeOptionStore extends GenericIdentifiableObjectStore<ProgramAttributeOption>
+public interface ProgramAttributeOptionStore extends GenericNameableObjectStore<ProgramAttributeOption>
 {
     String ID = ProgramAttributeOption.class.getName();
 
