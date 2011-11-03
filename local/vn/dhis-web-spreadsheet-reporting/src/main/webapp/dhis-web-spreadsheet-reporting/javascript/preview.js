@@ -135,7 +135,7 @@ function previewExportReportReceived( parentElement )
 					}
 					else if ( !isImport && parseFloat(_sData) )
 					{
-						_sHTML += " ui-normal' title='" + i18n_value_rounded + "'";
+						_sHTML += " ui-normal";
 					}
 					
 					_sHTML += "'>" + _sData + "</td>";
