@@ -29,7 +29,7 @@ package org.hisp.dhis.common;
 /**
  * @author Bob Jolliffe
  */
-public class AbstractNameableObject
+public abstract class AbstractNameableObject
     extends AbstractIdentifiableObject implements NameableObject
 {
 

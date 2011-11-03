@@ -31,13 +31,13 @@ import org.hibernate.Session;
 import org.hibernate.criterion.Restrictions;
 import org.hisp.dhis.attribute.Attribute;
 import org.hisp.dhis.attribute.AttributeStore;
-import org.hisp.dhis.hibernate.HibernateGenericStore;
+import org.hisp.dhis.common.hibernate.HibernateIdentifiableObjectStore;
 
 /**
  * @author mortenoh
  */
 public class HibernateAttributeStore
-    extends HibernateGenericStore<Attribute>
+    extends HibernateIdentifiableObjectStore<Attribute>
     implements AttributeStore
 {
     @SuppressWarnings( "unchecked" )

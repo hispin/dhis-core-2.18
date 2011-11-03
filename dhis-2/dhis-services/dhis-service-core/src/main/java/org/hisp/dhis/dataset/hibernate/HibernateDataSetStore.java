@@ -33,9 +33,9 @@ import org.hibernate.Criteria;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.criterion.Restrictions;
+import org.hisp.dhis.common.hibernate.HibernateIdentifiableObjectStore;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.dataset.DataSetStore;
-import org.hisp.dhis.hibernate.HibernateGenericStore;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.period.PeriodStore;
 import org.hisp.dhis.period.PeriodType;
@@ -46,7 +46,7 @@ import org.hisp.dhis.system.util.ConversionUtils;
  * @version $Id: HibernateDataSetStore.java 3303 2007-05-14 13:39:34Z larshelg $
  */
 public class HibernateDataSetStore
-    extends HibernateGenericStore<DataSet>
+    extends HibernateIdentifiableObjectStore<DataSet>
     implements DataSetStore
 {
     // -------------------------------------------------------------------------

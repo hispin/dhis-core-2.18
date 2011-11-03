@@ -38,15 +38,15 @@ import org.hibernate.criterion.Criterion;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
-import org.hisp.dhis.common.GenericIdentifiableObjectStore;
+import org.hisp.dhis.common.GenericNameableObjectStore;
 import org.springframework.jdbc.core.JdbcTemplate;
 
 /**
  * @author Lars Helge Overland
  * @version $Id$
  */
-public class HibernateGenericStore<T>
-    implements GenericIdentifiableObjectStore<T>
+public class HibernateGenericStore< T >
+    implements GenericNameableObjectStore<T>
 {
     protected SessionFactory sessionFactory;
 
@@ -184,19 +184,19 @@ public class HibernateGenericStore<T>
     // -------------------------------------------------------------------------
 
     @Override
-    public final int save( T object )
+    public int save( T object )
     {
         return (Integer) sessionFactory.getCurrentSession().save( object );
     }
 
     @Override
-    public final void update( T object )
+    public void update( T object )
     {
         sessionFactory.getCurrentSession().update( object );
     }
 
     @Override
-    public final void saveOrUpdate( T object )
+    public void saveOrUpdate( T object )
     {
         sessionFactory.getCurrentSession().saveOrUpdate( object );
     }
@@ -219,6 +219,12 @@ public class HibernateGenericStore<T>
     public final T getByUuid( String uuid )
     {
         return getObject( Restrictions.eq( "uuid", uuid ) );
+    }
+
+    @Override
+    public final T getByUid( String uid )
+    {
+        return getObject( Restrictions.eq( "uid", uid ) );
     }
 
     @Override

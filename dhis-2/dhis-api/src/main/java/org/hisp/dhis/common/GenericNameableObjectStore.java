@@ -1,5 +1,7 @@
+package org.hisp.dhis.common;
+
 /*
- * Copyright (c) 2004-2009, University of Oslo
+ * Copyright (c) 2004-2010, University of Oslo
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -24,23 +26,27 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package org.hisp.dhis.patient;
-
-import java.util.Collection;
-
-import org.hisp.dhis.common.GenericNameableObjectStore;
 
 /**
- * @author Viet
- *
+ * @author Lars Helge Overland
  * @version $Id$
  */
-public interface PatientAttributeOptionStore 
-    extends GenericNameableObjectStore<PatientAttributeOption>
+public interface GenericNameableObjectStore<T>
+    extends GenericIdentifiableObjectStore<T>
 {
-    String ID = PatientAttributeOption.class.getName(); 
-    
-    PatientAttributeOption get( PatientAttribute patientAttribute, String name );
-    
-    Collection<PatientAttributeOption> get( PatientAttribute patientAttribute );
+    /**
+     * Retrieves the object with the given alternative name.
+     *
+     * @param name the alternative name.
+     * @return the object with the given alternative name.
+     */
+    T getByAlternativeName( String alternativeName );
+
+    /**
+     * Retrieves the object with the given short name.
+     *
+     * @param name the short name.
+     * @return the object with the given short name.
+     */
+    T getByShortName( String shortName );
 }

@@ -143,7 +143,7 @@ public class DataValueStoreTest
         organisationUnitService.addOrganisationUnit( sourceD );        
 
         optionCombo = new DataElementCategoryOptionCombo();
-        
+
         categoryService.addDataElementCategoryOptionCombo( optionCombo );
     }
     

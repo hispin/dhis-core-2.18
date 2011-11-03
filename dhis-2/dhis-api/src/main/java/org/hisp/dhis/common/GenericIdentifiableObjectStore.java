@@ -38,12 +38,20 @@ public interface GenericIdentifiableObjectStore<T>
 {
     /**
      * Retrieves the object with the given uuid.
-     * 
+     *
      * @param uuid the uuid.
      * @return the object with the given uuid.
      */
     T getByUuid( String uuid );
-    
+
+    /**
+     * Retrieves the object with the given uid.
+     *
+     * @param uuid the uuid.
+     * @return the object with the given uuid.
+     */
+    T getByUid( String uid );
+
     /**
      * Retrieves the object with the given name.
      *
@@ -51,22 +59,6 @@ public interface GenericIdentifiableObjectStore<T>
      * @return the object with the given name.
      */
     T getByName( String name );
-
-    /**
-     * Retrieves the object with the given alternative name.
-     * 
-     * @param name the alternative name.
-     * @return the object with the given alternative name.
-     */
-    T getByAlternativeName( String alternativeName );
-
-    /**
-     * Retrieves the object with the given short name.
-     * 
-     * @param name the short name.
-     * @return the object with the given short name.
-     */
-    T getByShortName( String shortName );
 
     /**
      * Retrieves the object with the given code.

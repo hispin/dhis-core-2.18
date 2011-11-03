@@ -1,5 +1,11 @@
+package org.hisp.dhis.dataelement.hibernate;
+
+
+import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
+import org.hisp.dhis.hibernate.HibernateGenericStore;
+
 /*
- * Copyright (c) 2004-2009, University of Oslo
+ * Copyright (c) 2004-2005, University of Oslo
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -9,7 +15,7 @@
  * * Redistributions in binary form must reproduce the above copyright notice,
  *   this list of conditions and the following disclaimer in the documentation
  *   and/or other materials provided with the distribution.
- * * Neither the name of the HISP project nor the names of its contributors may
+ * * Neither the name of the <ORGANIZATION> nor the names of its contributors may
  *   be used to endorse or promote products derived from this software without
  *   specific prior written permission.
  *
@@ -24,23 +30,37 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package org.hisp.dhis.patient;
-
-import java.util.Collection;
-
-import org.hisp.dhis.common.GenericNameableObjectStore;
-
 /**
- * @author Viet
  *
- * @version $Id$
+ * @author bobj
+ * @version created 02-Nov-2011
  */
-public interface PatientAttributeOptionStore 
-    extends GenericNameableObjectStore<PatientAttributeOption>
+public class HibernateDataElementCategoryOptionComboStore
+    extends HibernateGenericStore<DataElementCategoryOptionCombo>
 {
-    String ID = PatientAttributeOption.class.getName(); 
-    
-    PatientAttributeOption get( PatientAttribute patientAttribute, String name );
-    
-    Collection<PatientAttributeOption> get( PatientAttribute patientAttribute );
+    @Override
+    public final int save( DataElementCategoryOptionCombo catoptcombo )
+    {
+        catoptcombo.setAutoFields();
+
+        return (Integer) sessionFactory.getCurrentSession().save( catoptcombo );
+    }
+
+    @Override
+    public final void update( DataElementCategoryOptionCombo catoptcombo )
+    {
+        catoptcombo.setAutoFields();
+
+        sessionFactory.getCurrentSession().update( catoptcombo );
+    }
+
+    @Override
+    public final void saveOrUpdate( DataElementCategoryOptionCombo catoptcombo )
+    {
+
+        catoptcombo.setAutoFields();
+
+        sessionFactory.getCurrentSession().saveOrUpdate( catoptcombo );
+    }
+
 }

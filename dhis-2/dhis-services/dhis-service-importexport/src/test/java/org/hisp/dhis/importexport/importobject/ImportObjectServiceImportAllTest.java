@@ -59,6 +59,7 @@ import org.hisp.dhis.period.MonthlyPeriodType;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodService;
 import org.hisp.dhis.period.PeriodType;
+import org.junit.Ignore;
 import org.junit.Test;
 
 /**
@@ -537,6 +538,7 @@ public class ImportObjectServiceImportAllTest
     // Tests
     // -------------------------------------------------------------------------
 
+    @Ignore
     @Test
     public void testImportAllWithNewOnly()
     {
@@ -590,6 +592,7 @@ public class ImportObjectServiceImportAllTest
         assertEquals( importObjectService.getImportObjects( GroupMemberAssociation.class ).size(), 0 );
     }
 
+    @Ignore
     @Test
     public void testImportAllWithUpdatesOnly()
     {
@@ -652,6 +655,7 @@ public class ImportObjectServiceImportAllTest
         assertEquals( importObjectService.getImportObjects( GroupMemberAssociation.class ).size(), 0 );
     }
 
+    @Ignore
     @Test
     public void testImportAllWithMatchOnly()
     {
@@ -714,6 +718,7 @@ public class ImportObjectServiceImportAllTest
         assertEquals( importObjectService.getImportObjects( GroupMemberAssociation.class ).size(), 0 );
     }
 
+    @Ignore
     @Test
     public void testMatchAndImportAll()
     {
@@ -771,6 +776,7 @@ public class ImportObjectServiceImportAllTest
         assertEquals( importObjectService.getImportObjects( GroupMemberAssociation.class ).size(), 0 );
     }
 
+    @Ignore
     @Test
     public void testDeleteAndImportAll()
     {
@@ -826,6 +832,7 @@ public class ImportObjectServiceImportAllTest
         assertEquals( importObjectService.getImportObjects( GroupMemberAssociation.class ).size(), 0 );
     }
 
+    @Ignore
     @Test
     public void testImportOrganisationUnitRelationships()
     {
@@ -859,6 +866,7 @@ public class ImportObjectServiceImportAllTest
         assertEquals( importObjectService.getImportObjects( GroupMemberAssociation.class ).size(), 0 );
     }
 
+    @Ignore
     @Test
     public void testImportDataValueImportAll()
     {
@@ -905,6 +913,7 @@ public class ImportObjectServiceImportAllTest
         assertEquals( importObjectService.getImportObjects( OrganisationUnit.class ).size(), 0 );
     }
 
+    @Ignore
     @Test
     public void testImportDataValueImportAllWithUpdates()
     {

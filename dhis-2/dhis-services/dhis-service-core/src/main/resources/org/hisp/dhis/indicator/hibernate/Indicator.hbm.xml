@@ -1,7 +1,9 @@
 <?xml version="1.0"?>
 <!DOCTYPE hibernate-mapping PUBLIC
   "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
-  "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+  "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd"
+  [<!ENTITY identifiableProperties SYSTEM "classpath://org/hisp/dhis/common/identifiableProperties.hbm">]
+>
 
 <hibernate-mapping>
   <class name="org.hisp.dhis.indicator.Indicator" table="indicator">
@@ -11,16 +13,11 @@
     <id name="id" column="indicatorid">
       <generator class="native" />
     </id>
-
-    <property name="uuid" column="uuid" length="40" />
-
-    <property name="name" column="name" not-null="true" unique="true" length="230" />
-
+    &identifiableProperties;
+    
     <property name="alternativeName" column="alternativename" not-null="false" unique="true" length="230" />
 
     <property name="shortName" column="shortname" not-null="true" unique="true" length="50" />
-
-    <property name="code" column="code" not-null="false" unique="true" length="50" />
 
     <property name="description" type="text" />
 
@@ -40,8 +37,6 @@
     <property name="sortOrder" />
 
     <property name="url" />
-
-    <property name="lastUpdated" />
 
     <set name="groups" table="indicatorgroupmembers" inverse="true">
       <cache usage="read-write" />
