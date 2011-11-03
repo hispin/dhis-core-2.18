@@ -76,16 +76,12 @@ public class HibernateDataElementStore
 
     public int addDataElement( DataElement dataElement )
     {
-        Session session = sessionFactory.getCurrentSession();
-
-        return (Integer) session.save( dataElement );
+        return this.save( dataElement );
     }
 
     public void updateDataElement( DataElement dataElement )
     {
-        Session session = sessionFactory.getCurrentSession();
-
-        session.update( dataElement );
+        this.updateDataElement( dataElement );
     }
 
     public void deleteDataElement( DataElement dataElement )
