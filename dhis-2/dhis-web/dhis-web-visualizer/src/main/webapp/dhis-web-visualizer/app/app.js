@@ -75,8 +75,6 @@ Ext.onReady( function() {
     DV.init = Ext.JSON.decode(r.responseText);
     DV.init.isInit = true;
     DV.init.initialize = function(vp) {
-        vp.query('panel[region="east"]')[0].collapse();
-        
         DV.util.combobox.filter.category(vp);
         
         DV.store.column = DV.store.defaultChartStore;
@@ -1787,6 +1785,7 @@ Ext.onReady( function() {
                     {
                         xtype: 'button',
                         text: 'Data table',
+                        tooltip: 'Show/hide data table',
                         cls: 'x-btn-text-icon',
                         icon: 'images/datatable.png',
                         handler: function(b) {
@@ -1823,6 +1822,7 @@ Ext.onReady( function() {
                 region: 'east',
                 preventHeader: true,
                 collapsible: true,
+                collapsed: true,
                 collapseMode: 'mini',
                 width: 498,
                 tbar: {
