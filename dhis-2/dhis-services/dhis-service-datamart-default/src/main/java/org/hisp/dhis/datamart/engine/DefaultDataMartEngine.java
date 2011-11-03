@@ -42,7 +42,6 @@ import org.hisp.dhis.dataelement.DataElementCategoryService;
 import org.hisp.dhis.dataelement.DataElementOperand;
 import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.datamart.DataElementOperandList;
-import org.hisp.dhis.datamart.aggregation.cache.AggregationCache;
 import org.hisp.dhis.datamart.crosstab.CrossTabService;
 import org.hisp.dhis.datamart.dataelement.DataElementDataMart;
 import org.hisp.dhis.datamart.indicator.IndicatorDataMart;
@@ -72,13 +71,6 @@ public class DefaultDataMartEngine
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
-
-    protected AggregationCache aggregationCache;
-
-    public void setAggregationCache( AggregationCache aggregationCache )
-    {
-        this.aggregationCache = aggregationCache;
-    }
 
     private AggregatedDataValueService aggregatedDataValueService;
 
@@ -357,8 +349,6 @@ public class DefaultDataMartEngine
             
             clock.logTime( "Created indexes" );
         }
-
-        aggregationCache.clearCache();
 
         clock.logTime( "Data mart export process completed" );
     }

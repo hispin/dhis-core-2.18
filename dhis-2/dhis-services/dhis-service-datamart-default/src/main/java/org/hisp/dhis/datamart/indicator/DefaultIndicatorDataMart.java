@@ -197,6 +197,8 @@ public class DefaultIndicatorDataMart
         
         statementManager.destroy();
         
+        aggregationCache.clearCache();
+        
         log.info( "Indicator export task done" );
         
         return null;
