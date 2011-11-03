@@ -194,6 +194,26 @@ public abstract class AbstractIdentifiableObject
     }
 
     /**
+     * Get a map of uids to internal identifiers
+     *
+     * @param objects the IdentifiableObjects to put in the map
+     * @return the map
+     */
+    public static Map<String, Integer> getUIDMap( Collection<? extends AbstractIdentifiableObject> objects )
+    {
+        Map<String, Integer> map = new HashMap<String, Integer>();
+        for ( IdentifiableObject object : objects )
+        {
+            String uid = object.getUid();
+            int internalId = object.getId();
+
+            map.put( uid, internalId );
+        }
+
+        return map;
+    }
+
+    /**
      * Get a map of codes to internal identifiers
      *
      * @param objects the NameableObjects to put in the map
@@ -221,6 +241,6 @@ public abstract class AbstractIdentifiableObject
             }
         }
         return map;
-    }
+    }    
 
 }
