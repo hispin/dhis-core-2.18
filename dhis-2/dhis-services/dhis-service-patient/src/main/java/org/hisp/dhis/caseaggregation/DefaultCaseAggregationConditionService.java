@@ -410,7 +410,68 @@ public class DefaultCaseAggregationConditionService
 
         return optionCombos;
     }
+    
+    public Collection<Program> getProgramsInCondition( String aggregationExpression )
+    {
+        String regExp = "\\[" + OBJECT_PROGRAM + SEPARATOR_OBJECT + "[0-9]+\\]";
 
+        Collection<Program> programs = new HashSet<Program>();
+
+        // ---------------------------------------------------------------------
+        // parse expressions
+        // ---------------------------------------------------------------------
+
+        Pattern pattern = Pattern.compile( regExp );
+
+        Matcher matcher = pattern.matcher( aggregationExpression );
+
+        while ( matcher.find() )
+        {
+            String match = matcher.group();
+            match = match.replaceAll( "[\\[\\]]", "" );
+
+            String[] info = match.split( SEPARATOR_OBJECT );
+
+            int programId = Integer.parseInt( info[1] );
+            
+            Program program = programService.getProgram( programId );
+
+            programs.add( program );
+        }
+
+        return programs;
+    }
+    
+    public Collection<PatientAttribute> getPatientAttributesInCondition( String aggregationExpression )
+    {
+        String regExp = "\\[" + OBJECT_PATIENT_ATTRIBUTE + SEPARATOR_OBJECT + "[0-9]+\\]";
+
+        Collection<PatientAttribute> patientAttributes = new HashSet<PatientAttribute>();
+
+        // ---------------------------------------------------------------------
+        // parse expressions
+        // ---------------------------------------------------------------------
+
+        Pattern pattern = Pattern.compile( regExp );
+
+        Matcher matcher = pattern.matcher( aggregationExpression );
+
+        while ( matcher.find() )
+        {
+            String match = matcher.group();
+            match = match.replaceAll( "[\\[\\]]", "" );
+
+            String[] info = match.split( SEPARATOR_OBJECT );
+
+            int patientAttributeId = Integer.parseInt( info[1] );
+            PatientAttribute patientAttribute = patientAttributeService.getPatientAttribute( patientAttributeId );
+
+            patientAttributes.add( patientAttribute );
+        }
+
+        return patientAttributes;
+    }
+    
     // -------------------------------------------------------------------------
     // Support Methods
     // -------------------------------------------------------------------------

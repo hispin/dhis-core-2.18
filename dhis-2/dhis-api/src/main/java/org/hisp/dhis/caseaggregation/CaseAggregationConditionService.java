@@ -33,8 +33,10 @@ import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.patient.Patient;
+import org.hisp.dhis.patient.PatientAttribute;
 import org.hisp.dhis.patientdatavalue.PatientDataValue;
 import org.hisp.dhis.period.Period;
+import org.hisp.dhis.program.Program;
 
 /**
  * @author Chau Thu Tran
@@ -67,6 +69,10 @@ public interface CaseAggregationConditionService
     Collection<DataElement> getDataElementsInCondition( String aggregationExpression );
     
     Collection<DataElementCategoryOptionCombo> getOptionCombosInCondition( String aggregationExpression );
+    
+    Collection<Program> getProgramsInCondition( String aggregationExpression );
+    
+    Collection<PatientAttribute> getPatientAttributesInCondition( String aggregationExpression );
     
     String getConditionDescription( String condition );
 }

@@ -32,6 +32,8 @@ import java.util.Collection;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryCombo;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
+import org.hisp.dhis.patient.PatientAttribute;
+import org.hisp.dhis.program.Program;
 import org.hisp.dhis.system.deletion.DeletionHandler;
 
 /**
@@ -117,4 +119,44 @@ public class CaseAggregationConditionDeletionHandler
         return null;
     }
 
+    @Override
+    public String allowDeleteProgram( Program program )
+    {
+        Collection<CaseAggregationCondition> conditions = aggregationConditionService
+            .getAllCaseAggregationCondition();
+
+        for ( CaseAggregationCondition condition : conditions )
+        {
+            Collection<Program> programs = aggregationConditionService.getProgramsInCondition( condition
+                .getAggregationExpression() );
+
+            if ( programs != null && programs.contains( program ) )
+            {
+                return condition.getDescription();
+            }
+        }
+
+        return null;
+    }
+    
+
+    @Override
+    public String allowDeletePatientAttribute( PatientAttribute patientAttribute )
+    {
+        Collection<CaseAggregationCondition> conditions = aggregationConditionService
+            .getAllCaseAggregationCondition();
+
+        for ( CaseAggregationCondition condition : conditions )
+        {
+            Collection<PatientAttribute> patientAttributes = aggregationConditionService.getPatientAttributesInCondition( condition
+                .getAggregationExpression() );
+
+            if ( patientAttributes != null && patientAttributes.contains( patientAttribute ) )
+            {
+                return condition.getDescription();
+            }
+        }
+
+        return null;
+    }
 }
