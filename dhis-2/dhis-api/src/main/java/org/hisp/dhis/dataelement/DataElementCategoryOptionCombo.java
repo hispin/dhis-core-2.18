@@ -278,18 +278,6 @@ public class DataElementCategoryOptionCombo
     }
 
     @Override
-    public String getCode()
-    {
-        return getName();
-    }
-
-    @Override
-    public void setCode( String code )
-    {
-        throw new UnsupportedOperationException( "Cannot set code on DataElementCategoryOptionCombo: " + code );
-    }
-
-    @Override
     public String getAlternativeName()
     {
         return getName();

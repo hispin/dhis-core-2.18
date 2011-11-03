@@ -125,33 +125,30 @@ public class IdentityPopulator
                     {
                         log.info( count + " uuids updated on " + table );
                     }
-                    
-                    Timestamp now = new Timestamp (new Date().getTime());
-                    
+
+                    Timestamp now = new Timestamp( new Date().getTime() );
+
                     resultSet = statement.executeQuery( "SELECT * from " + table + " WHERE lastUpdated IS NULL" );
                     while ( resultSet.next() )
                     {
                         ++count;
-                        resultSet.updateTimestamp( "lastUpdated", now);
+                        resultSet.updateTimestamp( "lastUpdated", now );
                         resultSet.updateRow();
                     }
                     if ( count > 0 )
                     {
                         log.info( count + " timestamps updated on " + table );
                     }
-                    
+
                 } catch ( SQLException ex )
                 {
-                    Logger.getLogger( IdentityPopulator.class.getName() ).log( Level.SEVERE, null, ex );
+                    log.info( "Problem updating " + table + ": ", ex );
                 }
             }
-        } catch ( SQLException ex )
-        {
-            Logger.getLogger( IdentityPopulator.class.getName() ).log( Level.SEVERE, null, ex );
-            return;
         } finally
         {
-            if (statement !=null) {
+            if ( statement != null )
+            {
                 statement.close();
             }
         }
