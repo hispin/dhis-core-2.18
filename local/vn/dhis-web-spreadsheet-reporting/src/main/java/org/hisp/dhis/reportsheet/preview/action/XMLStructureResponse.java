@@ -30,17 +30,22 @@ package org.hisp.dhis.reportsheet.preview.action;
 import static org.apache.commons.io.FilenameUtils.getExtension;
 import static org.hisp.dhis.reportsheet.utils.ExcelUtils.convertAlignmentString;
 import static org.hisp.dhis.reportsheet.utils.ExcelUtils.convertVerticalString;
-import static org.hisp.dhis.reportsheet.utils.ExcelUtils.readSpecialValueByPOI;
+import static org.hisp.dhis.reportsheet.utils.ExcelUtils.readValueByPOI;
+import static org.hisp.dhis.reportsheet.utils.NumberUtils.PATTERN_DECIMAL_FORMAT1;
+import static org.hisp.dhis.reportsheet.utils.NumberUtils.applyPatternDecimalFormat;
+import static org.hisp.dhis.reportsheet.utils.NumberUtils.resetDecimalFormatByLocale;
 
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.Collection;
+import java.util.Locale;
 
 import org.apache.poi.hssf.usermodel.HSSFPatternFormatting;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellStyle;
 import org.apache.poi.ss.usermodel.Font;
+import org.apache.poi.ss.usermodel.FormulaEvaluator;
 import org.apache.poi.ss.usermodel.IndexedColors;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
@@ -69,6 +74,8 @@ public class XMLStructureResponse
      * The workbook we are reading from a given file
      */
     private Workbook WORKBOOK;
+
+    private FormulaEvaluator evaluatorFormula;
 
     private boolean bWRITE_VERSION;
 
@@ -120,7 +127,7 @@ public class XMLStructureResponse
         this.cleanUpForResponse();
         this.bWRITE_DTD = bWriteDTD;
         this.bWRITE_VERSION = bWriteVersion;
-        
+
         if ( getExtension( pathFileName ).equals( "xls" ) )
         {
             this.WORKBOOK = new HSSFWorkbook( new FileInputStream( pathFileName ) );
@@ -129,6 +136,11 @@ public class XMLStructureResponse
         {
             this.WORKBOOK = new XSSFWorkbook( new FileInputStream( pathFileName ) );
         }
+
+        resetDecimalFormatByLocale( Locale.GERMAN );
+        applyPatternDecimalFormat( PATTERN_DECIMAL_FORMAT1 );
+
+        this.evaluatorFormula = WORKBOOK.getCreationHelper().createFormulaEvaluator();
 
         if ( bFormat )
         {
@@ -179,7 +191,7 @@ public class XMLStructureResponse
                     if ( cell.getCellType() != Cell.CELL_TYPE_BLANK )
                     {
                         xml.append( "<col number='" + j + "'>" );
-                        xml.append( "<![CDATA[" + readSpecialValueByPOI( i + 1, j + 1, sheet ) + "]]>" );
+                        xml.append( "<![CDATA[" + readValueByPOI( i + 1, j + 1, sheet, evaluatorFormula ) + "]]>" );
                         xml.append( "</col>" );
                     }
 
@@ -257,7 +269,7 @@ public class XMLStructureResponse
                 if ( (cell.getCellStyle() != null) || cell.getCellType() != Cell.CELL_TYPE_BLANK )
                 {
                     xml.append( "<col no='" + j + "'><data>" );
-                    xml.append( "<![CDATA[" + readSpecialValueByPOI( i + 1, j + 1, s ) + "]]></data>" );
+                    xml.append( "<![CDATA[" + readValueByPOI( i + 1, j + 1, s, evaluatorFormula ) + "]]></data>" );
 
                     this.readingDetailsFormattedCell( cell, bDetailed );
 

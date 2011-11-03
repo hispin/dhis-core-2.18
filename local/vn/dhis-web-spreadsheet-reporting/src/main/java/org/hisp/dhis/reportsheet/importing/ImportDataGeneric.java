@@ -171,6 +171,8 @@ public abstract class ImportDataGeneric
 
     protected void addDataValue( OrganisationUnit unit, Period period, String expression, String value )
     {
+        value = value.replaceAll( "\\.", "" ).replace( ",", "." );
+        
         DataElementOperand operand = expressionService.getOperandsInExpression( expression ).iterator().next();
 
         DataElement dataElement = dataElementService.getDataElement( operand.getDataElementId() );

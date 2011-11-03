@@ -172,8 +172,6 @@ public abstract class AbstractGenerateExcelReportSupport
 
         this.installDefaultExcelFormat();
 
-        this.initFormulaEvaluating();
-
         if ( exportReport.getOrganisationRow() != null && exportReport.getOrganisationColumn() != null )
         {
             String value = "";

@@ -156,7 +156,7 @@ public class GenerateAdvancedReportOrgGroupListingAction
                 }
                 else if ( exportItem.getItemType().equalsIgnoreCase( ExportItem.TYPE.FORMULA_EXCEL ) )
                 {
-                    ExcelUtils.writeFormulaByPOI( rowBegin, exportItem.getColumn(), ExcelUtils.checkingExcelFormula(
+                    ExcelUtils.writeFormulaByPOI( rowBegin, exportItem.getColumn(), ExcelUtils.generateExcelFormula(
                         exportItem.getExpression(), iRow, iCol ), sheet, this.csFormula );
                 }
 
@@ -168,7 +168,7 @@ public class GenerateAdvancedReportOrgGroupListingAction
             if ( exportItem.getItemType().equalsIgnoreCase( ExportItem.TYPE.DATAELEMENT )
                 && (!organisationUnits.isEmpty()) )
             {
-                String columnName = ExcelUtils.convertColNumberToColName( exportItem.getColumn() );
+                String columnName = ExcelUtils.convertColumnNumberToName( exportItem.getColumn() );
                 String formula = "SUM(" + columnName + (beginChapter + 1) + ":" + columnName + (rowBegin - 1) + ")";
                 ExcelUtils.writeFormulaByPOI( beginChapter, exportItem.getColumn(), formula, sheet, this.csFormula );
             }

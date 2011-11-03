@@ -1,7 +1,5 @@
 package org.hisp.dhis.reportsheet.utils;
 
-import java.text.DecimalFormat;
-import java.text.NumberFormat;
 
 /*
  * Copyright (c) 2004-2011, University of Oslo
@@ -44,10 +42,6 @@ public class StringUtils
     public static final String NUMBER_OF_ZERO = "0";
 
     private static final String SEPARATE = "/";
-
-    private static final String PATTERN_DECIMAL_FORMAT = "#0.##";
-
-    private static final NumberFormat nf = new DecimalFormat( PATTERN_DECIMAL_FORMAT );
 
     /* ---------------------------------------------------------------------- */
     /*                                                                        */
@@ -118,27 +112,6 @@ public class StringUtils
         }
 
         return number;
-    }
-
-    /* ---------------------------------------------------------------------- */
-    /*                                                                        */
-    /* ---------------------------------------------------------------------- */
-
-    public static String applyPatternDecimalFormat( String input )
-    {
-        try
-        {
-            if ( Double.parseDouble( input ) >= 0.0d )
-            {
-                input = nf.format( Double.parseDouble( input ) );
-            }
-            return input;
-        }
-        catch ( NumberFormatException nfe )
-        {
-            return input;
-        }
-
     }
 
     /* ---------------------------------------------------------------------- */

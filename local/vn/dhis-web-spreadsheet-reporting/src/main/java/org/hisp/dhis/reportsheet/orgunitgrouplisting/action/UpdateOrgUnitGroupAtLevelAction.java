@@ -111,7 +111,7 @@ public class UpdateOrgUnitGroupAtLevelAction
         OrganisationUnitGroup organisationUnitGroup = organisationUnitGroupService
             .getOrganisationUnitGroup( orgUnitGroupId );
 
-        if ( levelId != null )
+        if ( levelId != null && levelId != -1 )
         {
             OrganisationUnitLevel organisationUnitLevel = organisationUnitService.getOrganisationUnitLevel( levelId );
 
