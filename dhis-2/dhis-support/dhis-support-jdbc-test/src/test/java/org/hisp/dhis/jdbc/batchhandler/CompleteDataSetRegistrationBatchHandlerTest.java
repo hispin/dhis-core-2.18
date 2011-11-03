@@ -90,8 +90,6 @@ public class CompleteDataSetRegistrationBatchHandlerTest
         organisationUnitService = (OrganisationUnitService) getBean( OrganisationUnitService.ID );
         completeDataSetRegistrationService = (CompleteDataSetRegistrationService) getBean( CompleteDataSetRegistrationService.ID );
         
-        //batchHandlerFactory = (BatchHandlerFactory) getBean( "batchHandlerFactory" );
-        
         batchHandler = batchHandlerFactory.createBatchHandler( CompleteDataSetRegistrationBatchHandler.class );
         
         dataSetA = createDataSet( 'A', new MonthlyPeriodType() );
@@ -113,10 +111,10 @@ public class CompleteDataSetRegistrationBatchHandlerTest
         dateA = getDate( 2000, 1, 15 );
         dateB = getDate( 2000, 2, 15 );
         
-        registrationA = new CompleteDataSetRegistration( dataSetA, periodA, unitA, dateA );
-        registrationB = new CompleteDataSetRegistration( dataSetA, periodB, unitA, dateB );
-        registrationC = new CompleteDataSetRegistration( dataSetB, periodA, unitA, dateA );
-        registrationD = new CompleteDataSetRegistration( dataSetB, periodB, unitA, dateB );
+        registrationA = new CompleteDataSetRegistration( dataSetA, periodA, unitA, dateA, "" );
+        registrationB = new CompleteDataSetRegistration( dataSetA, periodB, unitA, dateB, "" );
+        registrationC = new CompleteDataSetRegistration( dataSetB, periodA, unitA, dateA, "" );
+        registrationD = new CompleteDataSetRegistration( dataSetB, periodB, unitA, dateB, "" );
         
         batchHandler.init();
     }
