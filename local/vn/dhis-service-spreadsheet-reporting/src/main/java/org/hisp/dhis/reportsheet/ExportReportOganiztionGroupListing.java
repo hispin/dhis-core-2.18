@@ -115,6 +115,7 @@ public class ExportReportOganiztionGroupListing
         types.add( ExportItem.TYPE.DATAELEMENT );
         types.add( ExportItem.TYPE.ORGANISATION );
         types.add( ExportItem.TYPE.INDICATOR );
+        types.add( ExportItem.TYPE.FORMULA_EXCEL );
         types.add( ExportItem.TYPE.SERIAL );
 
         return types;

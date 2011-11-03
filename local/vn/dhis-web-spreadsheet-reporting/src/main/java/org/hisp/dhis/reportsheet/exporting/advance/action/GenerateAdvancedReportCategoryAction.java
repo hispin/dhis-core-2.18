@@ -157,7 +157,7 @@ public class GenerateAdvancedReportCategoryAction
                     else if ( exportItem.getItemType().equalsIgnoreCase( ExportItem.TYPE.FORMULA_EXCEL ) )
                     {
                         ExcelUtils.writeFormulaByPOI( rowBegin, exportItem.getColumn(), ExcelUtils
-                            .checkingExcelFormula( exportItem.getExpression(), iRow, iCol ), sheet, this.csFormula );
+                            .generateExcelFormula( exportItem.getExpression(), iRow, iCol ), sheet, this.csFormula );
                     }
                     else
                     {
@@ -188,7 +188,7 @@ public class GenerateAdvancedReportCategoryAction
 
                 if ( exportItem.getItemType().equalsIgnoreCase( ExportItem.TYPE.DATAELEMENT ) )
                 {
-                    String columnName = ExcelUtils.convertColNumberToColName( exportItem.getColumn() );
+                    String columnName = ExcelUtils.convertColumnNumberToName( exportItem.getColumn() );
                     String formula = "SUM(" + columnName + (beginChapter + 1) + ":" + columnName + (rowBegin - 1) + ")";
                     ExcelUtils.writeFormulaByPOI( beginChapter, exportItem.getColumn(), formula, sheet, this.csFormula );
                 }

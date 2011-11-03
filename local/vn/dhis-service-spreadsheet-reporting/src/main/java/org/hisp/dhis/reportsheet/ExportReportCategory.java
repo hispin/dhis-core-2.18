@@ -98,6 +98,7 @@ public class ExportReportCategory
         types.add( ExportItem.TYPE.DATAELEMENT );
         types.add( ExportItem.TYPE.DATAELEMENT_CODE );
         types.add( ExportItem.TYPE.DATAELEMENT_NAME );
+        types.add( ExportItem.TYPE.FORMULA_EXCEL);
         types.add( ExportItem.TYPE.SERIAL );
 
         return types;

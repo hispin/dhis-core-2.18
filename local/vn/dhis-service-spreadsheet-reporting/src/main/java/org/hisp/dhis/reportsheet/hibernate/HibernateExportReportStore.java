@@ -276,7 +276,7 @@ public class HibernateExportReportStore
         Session session = sessionFactory.getCurrentSession();
         SQLQuery sqlQuery = session
             .createSQLQuery( "select DISTINCT(sheetno) from reportexcel_items where reportexcel_items.reportexcelid="
-                + reportId.intValue() );
+                + reportId.intValue() + " order by sheetno" );
 
         return sqlQuery.list();
     }
@@ -290,7 +290,7 @@ public class HibernateExportReportStore
 
         query.executeUpdate();
     }
-    
+
     // -------------------------------------------------------------------------
     // Data Entry Status
     // -------------------------------------------------------------------------
@@ -374,7 +374,7 @@ public class HibernateExportReportStore
 
         return result;
     }
-    
+
     @SuppressWarnings( "unchecked" )
     public Collection<DataEntryStatus> getDataEntryStatusDefaultByDataSets( Collection<DataSet> dataSets )
     {

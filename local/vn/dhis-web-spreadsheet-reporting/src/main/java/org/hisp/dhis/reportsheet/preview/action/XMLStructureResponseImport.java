@@ -29,19 +29,25 @@ package org.hisp.dhis.reportsheet.preview.action;
 
 import static org.apache.commons.io.FilenameUtils.getExtension;
 import static org.hisp.dhis.reportsheet.utils.ExcelUtils.convertAlignmentString;
-import static org.hisp.dhis.reportsheet.utils.ExcelUtils.readSpecialValueByPOI;
+import static org.hisp.dhis.reportsheet.utils.ExcelUtils.readValueByPOI;
+import static org.hisp.dhis.reportsheet.utils.NumberUtils.PATTERN_DECIMAL_FORMAT1;
+import static org.hisp.dhis.reportsheet.utils.NumberUtils.applyPatternDecimalFormat;
+import static org.hisp.dhis.reportsheet.utils.NumberUtils.resetDecimalFormatByLocale;
 
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.Collection;
 import java.util.List;
+import java.util.Locale;
 
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellStyle;
+import org.apache.poi.ss.usermodel.FormulaEvaluator;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.ss.util.CellRangeAddress;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.hisp.dhis.reportsheet.importitem.ImportItem;
@@ -62,7 +68,9 @@ public class XMLStructureResponseImport
     /**
      * The workbook we are reading from a given file
      */
-    private org.apache.poi.ss.usermodel.Workbook WORKBOOK;
+    private Workbook WORKBOOK;
+    
+    private FormulaEvaluator evaluatorFormula;
 
     private static final String WORKBOOK_OPENTAG = "<workbook>";
 
@@ -111,6 +119,11 @@ public class XMLStructureResponseImport
         {
             this.WORKBOOK = new XSSFWorkbook( inputStream );
         }
+        
+        resetDecimalFormatByLocale( Locale.GERMAN );
+        applyPatternDecimalFormat( PATTERN_DECIMAL_FORMAT1 );
+        
+        this.evaluatorFormula = WORKBOOK.getCreationHelper().createFormulaEvaluator();
 
         this.writeFormattedXML( collectSheets, importItems, bWriteDescription );
     }
@@ -200,7 +213,7 @@ public class XMLStructureResponseImport
                         xml.append( ">" );
                     } // end checking
 
-                    xml.append( "<data><![CDATA[" + readSpecialValueByPOI( i + 1, j + 1, s ) + "]]></data>" );
+                    xml.append( "<data><![CDATA[" + readValueByPOI( i + 1, j + 1, s, evaluatorFormula ) + "]]></data>" );
 
                     this.readingDetailsFormattedCell( cell );
 

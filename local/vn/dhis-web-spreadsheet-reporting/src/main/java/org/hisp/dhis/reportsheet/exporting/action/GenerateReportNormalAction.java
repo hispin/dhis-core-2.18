@@ -65,13 +65,6 @@ public class GenerateReportNormalAction
 
             this.generateOutPutFile( exportReportItems, organisationUnit, sheet );
         }
-
-        for ( Integer sheetNo : exportReportService.getSheets( selectionManager.getSelectedReportId() ) )
-        {
-            Sheet sheet = this.templateWorkbook.getSheetAt( sheetNo - 1 );
-
-            this.recalculatingFormula( sheet );
-        }
     }
 
     // -------------------------------------------------------------------------

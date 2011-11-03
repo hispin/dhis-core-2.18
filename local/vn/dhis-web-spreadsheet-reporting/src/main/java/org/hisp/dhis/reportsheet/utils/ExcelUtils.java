@@ -46,8 +46,10 @@ import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.formula.FormulaParser;
 import org.apache.poi.ss.formula.FormulaParsingWorkbook;
 import org.apache.poi.ss.usermodel.CellStyle;
+import org.apache.poi.ss.usermodel.DataFormatter;
 import org.apache.poi.ss.usermodel.DateUtil;
 import org.apache.poi.ss.usermodel.ErrorConstants;
+import org.apache.poi.ss.usermodel.FormulaEvaluator;
 
 /**
  * @author Tran Thanh Tri
@@ -61,13 +63,15 @@ public class ExcelUtils
 
     private static Matcher matcher = null;
 
+    private static DataFormatter dataFormatter = new DataFormatter();
+
     private static FormulaParsingWorkbook evaluationWorkbook = HSSFEvaluationWorkbook.create( new HSSFWorkbook() );
 
     private static final String PATTERN_FOR_ROW = "(\\d{1,})";
 
     private static final String PATTERN_FOR_COLUMN = "([a-zA-Z])";
 
-    private static final String PATTERN_EXCELFORMULA = "(\\W?([a-zA-Z]{1,2}.?\\d{1,}!?))";
+    private static final String PATTERN_EXCELFORMULA = "(\\$?([a-zA-Z]{1,})\\$?(\\d{1,}!?))";
 
     private static final Integer NUMBER_OF_LETTER = new Integer( 26 );
 
@@ -204,7 +208,8 @@ public class ExcelUtils
     }
 
     /* POI - Read the special value of given cell */
-    public static String readSpecialValueByPOI( int row, int column, org.apache.poi.ss.usermodel.Sheet sheetPOI )
+    public static String readValueByPOI( int row, int column, org.apache.poi.ss.usermodel.Sheet sheetPOI,
+        FormulaEvaluator evaluator )
     {
         org.apache.poi.ss.usermodel.Cell cellPOI = getCellByPOI( row, column, sheetPOI );
 
@@ -229,7 +234,7 @@ public class ExcelUtils
             case org.apache.poi.ss.usermodel.Cell.CELL_TYPE_FORMULA:
                 try
                 {
-                    value = String.valueOf( cellPOI.getNumericCellValue() );
+                    value = NumberUtils.getFormattedNumber( dataFormatter.formatCellValue( cellPOI, evaluator ) );
                 }
                 catch ( IllegalStateException ise )
                 {
@@ -243,7 +248,7 @@ public class ExcelUtils
                 }
                 else
                 {
-                    value = String.valueOf( cellPOI.getNumericCellValue() );
+                    value = NumberUtils.getFormattedNumber( dataFormatter.formatCellValue( cellPOI ) );
                 }
                 break;
 
@@ -434,7 +439,7 @@ public class ExcelUtils
         }
     }
 
-    public static String convertColNumberToColName( int column )
+    public static String convertColumnNumberToName( int column )
     {
         String ConvertToLetter = "";
 
@@ -453,7 +458,7 @@ public class ExcelUtils
         return ConvertToLetter;
     }
 
-    public static int convertExcelColumnNameToNumber( String columnName )
+    public static int convertColumnNameToNumber( String columnName )
     {
         try
         {
@@ -546,7 +551,7 @@ public class ExcelUtils
         return valign;
     }
 
-    public static String checkingExcelFormula( String string_formula, int indexRow, int indexCol )
+    public static String generateExcelFormula( String string_formula, int indexRow, int indexCol )
     {
         Pattern pattern_formula = Pattern.compile( PATTERN_EXCELFORMULA );
         Matcher matcher_formula = pattern_formula.matcher( string_formula );
@@ -622,8 +627,8 @@ public class ExcelUtils
 
         if ( matcher.find() )
         {
-            sCell = ExcelUtils
-                .convertColNumberToColName( (ExcelUtils.convertExcelColumnNameToNumber( matcher.group() ) + iCol) );
+            sCell = ExcelUtils.convertColumnNumberToName( ExcelUtils.convertColumnNameToNumber( matcher.group() )
+                + iCol );
             matcher.appendReplacement( buffer, sCell );
         }
 
