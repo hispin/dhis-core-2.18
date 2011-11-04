@@ -27,9 +27,7 @@ package org.hisp.dhis.dataelement;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-// import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -89,6 +87,9 @@ public class DataElement
 
     public static final String AGGREGATION_OPERATOR_COUNT = "count";
 
+    /**
+     * The name to appear in forms.
+     */
     private String formName;
     
     /**
@@ -339,9 +340,20 @@ public class DataElement
         return false;
     }
 
+    /**
+     * Returns the domain type, or the default domain type if it does not exist.
+     */
     public String getDomainTypeNullSafe()
     {
         return domainType != null ? domainType : DOMAIN_TYPE_AGGREGATE;
+    }
+
+    /**
+     * Returns the form name, or the name if it does not exist.
+     */
+    public String getFormNameFallback()
+    {
+        return formName != null && !formName.isEmpty() ? formName : name;
     }
 
     public String toJSON()
@@ -357,11 +369,6 @@ public class DataElement
         return result.toString();
     }
     
-    public String getFormNameFallback()
-    {
-        return formName != null && !formName.isEmpty() ? formName : name;
-    }
-
     // -------------------------------------------------------------------------
     // Getters and setters
     // -------------------------------------------------------------------------

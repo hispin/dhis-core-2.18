@@ -1,23 +1,5 @@
 package org.hisp.dhis.common;
 
-
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
-
-import java.sql.Timestamp;
-import java.util.Date;
-import java.util.UUID;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import org.amplecode.quick.StatementHolder;
-import org.amplecode.quick.StatementManager;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-import org.hisp.dhis.system.startup.AbstractStartupRoutine;
-import org.springframework.transaction.annotation.Transactional;
-
 /*
  * Copyright (c) 2004-2005, University of Oslo
  * All rights reserved.
@@ -44,30 +26,39 @@ import org.springframework.transaction.annotation.Transactional;
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
+
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.sql.Timestamp;
+import java.util.Date;
+import java.util.UUID;
+
+import org.amplecode.quick.StatementHolder;
+import org.amplecode.quick.StatementManager;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.hisp.dhis.system.startup.AbstractStartupRoutine;
+import org.springframework.transaction.annotation.Transactional;
+
 /**
- *
  * @author bobj
- * @version created 01-Nov-2011
  */
 public class IdentityPopulator
     extends AbstractStartupRoutine
 {
-
     private static final Log log = LogFactory.getLog( IdentityPopulator.class );
 
-    private static String[] tables =
-    {
-        "constant", "attribute", "indicatortype", "indicatorgroupset", "indicator",
-        "indicatorgroup", "datadictionary", "validationrulegroup", "validationrule",
-        "dataset", "orgunitlevel", "organisationunit", "orgunitgroup",
-        "orgunitgroupset", "dataelementcategoryoption", "dataelementgroup",
-        "dataelement", "dataelementgroupset", "dataelementcategory", "categorycombo",
-        "categoryoptioncombo"
-    };
+    private static String[] tables = { "constant", "attribute", "indicatortype", "indicatorgroupset", "indicator",
+        "indicatorgroup", "datadictionary", "validationrulegroup", "validationrule", "dataset", "orgunitlevel",
+        "organisationunit", "orgunitgroup", "orgunitgroupset", "dataelementcategoryoption", "dataelementgroup",
+        "dataelement", "dataelementgroupset", "dataelementcategory", "categorycombo", "categoryoptioncombo" };
 
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
+    
     private StatementManager statementManager;
 
     public void setStatementManager( StatementManager statementManager )
@@ -78,9 +69,11 @@ public class IdentityPopulator
     // -------------------------------------------------------------------------
     // Execute
     // -------------------------------------------------------------------------
+    
     @Transactional
     @Override
-    public void execute() throws SQLException
+    public void execute()
+        throws SQLException
     {
         StatementHolder holder = statementManager.getHolder();
 
@@ -92,8 +85,7 @@ public class IdentityPopulator
         {
             Connection conn = dummyStatement.getConnection();
 
-            statement = conn.createStatement( ResultSet.TYPE_SCROLL_INSENSITIVE,
-                ResultSet.CONCUR_UPDATABLE );
+            statement = conn.createStatement( ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_UPDATABLE );
 
             for ( String table : tables )
             {
@@ -140,18 +132,19 @@ public class IdentityPopulator
                         log.info( count + " timestamps updated on " + table );
                     }
 
-                } catch ( SQLException ex )
+                }
+                catch ( SQLException ex )
                 {
                     log.info( "Problem updating " + table + ": ", ex );
                 }
             }
-        } finally
+        }
+        finally
         {
             if ( statement != null )
             {
                 statement.close();
             }
         }
-
     }
 }

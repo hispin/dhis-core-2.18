@@ -26,13 +26,13 @@ package org.hisp.dhis.common;
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
+
 /**
  * @author Bob Jolliffe
  */
 public abstract class AbstractNameableObject
     extends AbstractIdentifiableObject implements NameableObject
 {
-
     /**
      * Determines if a de-serialized file is compatible with this class.
      */
@@ -96,5 +96,4 @@ public abstract class AbstractNameableObject
     {
         this.description = description;
     }
-
 }
