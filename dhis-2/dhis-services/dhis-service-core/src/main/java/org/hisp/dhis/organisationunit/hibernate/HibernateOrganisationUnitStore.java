@@ -53,7 +53,6 @@ import org.hisp.dhis.organisationunit.OrganisationUnitLevel;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.organisationunit.OrganisationUnitStore;
 import org.hisp.dhis.system.objectmapper.OrganisationUnitRelationshipRowMapper;
-import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowCallbackHandler;
 
 /**
@@ -219,7 +218,7 @@ public class HibernateOrganisationUnitStore
 
     public OrganisationUnitHierarchy getOrganisationUnitHierarchy()
     {
-        final String sql = "SELECT organisationunitid, parentid FROM organisationunit";
+        final String sql = "select organisationunitid, parentid from organisationunit";
 
         return new OrganisationUnitHierarchy( jdbcTemplate.query( sql, new OrganisationUnitRelationshipRowMapper() ) );
     }
@@ -230,8 +229,8 @@ public class HibernateOrganisationUnitStore
         
         StatementHolder holder = statementManager.getHolder();
 
-        final String sql = "UPDATE organisationunit " + "SET parentid='" + parentId + "', SET lastUpdated='"
-            + now + "' " + "WHERE organisationunitid='" + organisationUnitId + "'";
+        final String sql = "update organisationunit " + "set parentid=" + parentId + ", lastupdated='"
+            + now + "' " + "where organisationunitid=" + organisationUnitId;
 
         holder.executeUpdate( sql );
     }
