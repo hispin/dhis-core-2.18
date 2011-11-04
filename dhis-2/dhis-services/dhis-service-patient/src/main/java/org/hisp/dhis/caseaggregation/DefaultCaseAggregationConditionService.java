@@ -613,7 +613,7 @@ public class DefaultCaseAggregationConditionService
 
                 else if ( info[0].equalsIgnoreCase( OBJECT_PROGRAM_PROPERTY ) )
                 {
-                    condition = getConditionForProgramProperty( orgunitId, startDate, endDate ) + info[1];
+                    condition = getConditionForProgramProperty( orgunitId, operator, startDate, endDate ) + info[1];
                 }
                 else if ( info[0].equalsIgnoreCase( OBJECT_PROGRAM ) )
                 {
@@ -735,7 +735,7 @@ public class DefaultCaseAggregationConditionService
             sql = "SELECT p.patient ";
         }
 
-        sql = "FROM patient as p WHERE p.organisationunitid = " + orgunitId + " " + "AND p.registrationdate >= '"
+        sql += "FROM patient as p WHERE p.organisationunitid = " + orgunitId + " " + "AND p.registrationdate >= '"
             + startDate + "' AND p.registrationdate <= '" + endDate + "' ";
 
         return sql;
@@ -751,7 +751,7 @@ public class DefaultCaseAggregationConditionService
             sql = "SELECT p.patient ";
         }
 
-        sql = "FROM programstageinstance as psi INNER JOIN programstage as ps "
+        sql += "FROM programstageinstance as psi INNER JOIN programstage as ps "
             + "ON psi.programstageid = ps.programstageid INNER JOIN patientdatavalue as pd ON "
             + "psi.programstageinstanceid = pd.programstageinstanceid INNER JOIN programinstance as pi ON "
             + "psi.programinstanceid = pi.programinstanceid INNER JOIN patient as p ON "
@@ -771,9 +771,16 @@ public class DefaultCaseAggregationConditionService
         return sql;
     }
 
-    private String getConditionForProgramProperty( int orgunitId, String startDate, String endDate )
+    private String getConditionForProgramProperty( int orgunitId, String operator, String startDate, String endDate )
     {
-        return "FROM programstageinstance as psi "
+        String sql = "SELECT distinct(p.patient) ";
+
+        if ( operator.equals( AGGRERATION_SUM ) )
+        {
+            sql = "SELECT p.patient ";
+        }
+        
+        return sql + "FROM programstageinstance as psi "
             + "INNER JOIN programinstance as pi ON psi.programinstanceid = pi.programinstanceid "
             + "INNER JOIN patient as p ON p.patientid = pi.patientid WHERE p.organisationunitid = " + orgunitId + " "
             + "AND psi.executionDate >= '" + startDate + "' AND psi.executionDate <= '" + endDate + "' AND ";
