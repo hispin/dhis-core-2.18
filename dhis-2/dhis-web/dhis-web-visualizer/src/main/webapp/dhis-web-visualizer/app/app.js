@@ -973,7 +973,8 @@ Ext.onReady( function() {
                     {
                         text: DV.conf.finals.dimension.period.rawvalue,
                         dataIndex: DV.conf.finals.dimension.period.value,
-                        width: 100
+                        width: 100,
+                        sortable: false
                     },
                     {
                         text: DV.conf.finals.dimension.organisationunit.rawvalue,
@@ -1824,6 +1825,8 @@ Ext.onReady( function() {
                 collapsible: true,
                 collapsed: true,
                 collapseMode: 'mini',
+                resizable: true,
+                resizeHandles: 'w',
                 width: 498,
                 tbar: {
                     height: DV.conf.layout.east_tbar_height,
