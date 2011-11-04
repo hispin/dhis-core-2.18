@@ -1,10 +1,5 @@
 package org.hisp.dhis.common.hibernate;
 
-
-import org.hisp.dhis.common.AbstractIdentifiableObject;
-import org.hisp.dhis.common.GenericIdentifiableObjectStore;
-import org.hisp.dhis.hibernate.HibernateGenericStore;
-
 /*
  * Copyright (c) 2004-2005, University of Oslo
  * All rights reserved.
@@ -32,10 +27,12 @@ import org.hisp.dhis.hibernate.HibernateGenericStore;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import org.hisp.dhis.common.AbstractIdentifiableObject;
+import org.hisp.dhis.common.GenericIdentifiableObjectStore;
+import org.hisp.dhis.hibernate.HibernateGenericStore;
+
 /**
- *
  * @author bobj
- * @version created 01-Nov-2011
  */
 public class HibernateIdentifiableObjectStore<T extends AbstractIdentifiableObject>
     extends HibernateGenericStore<T> implements GenericIdentifiableObjectStore<T>
@@ -59,10 +56,8 @@ public class HibernateIdentifiableObjectStore<T extends AbstractIdentifiableObje
     @Override
     public final void saveOrUpdate( T object )
     {
-
         object.setAutoFields();
 
         sessionFactory.getCurrentSession().saveOrUpdate( object );
     }
-
 }

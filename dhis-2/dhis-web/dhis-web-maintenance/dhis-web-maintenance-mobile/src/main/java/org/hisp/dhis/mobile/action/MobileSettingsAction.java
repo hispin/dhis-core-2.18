@@ -371,10 +371,12 @@ public class MobileSettingsAction implements Action
             props.setProperty( "settings.delete_after_processing", "yes" );
             props.setProperty( "settings.send_mode", "async" );
             props.store( new FileWriter( configFile ), "SMS Server Configuration" );
-        } else
+        } 
+        else
         {
             props.load( new FileReader( configFile ) );
         }
+        
         return SUCCESS;
     }
 }
