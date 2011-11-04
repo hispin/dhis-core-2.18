@@ -324,3 +324,8 @@ li {
 .dv-datatable .x-grid-header-ct {
     border-style: none;
 }
+
+/* Grid datatable column chooser */
+.x-column-header-over .x-column-header-trigger, .x-column-header-open .x-column-header-trigger {
+    display: none;
+}
