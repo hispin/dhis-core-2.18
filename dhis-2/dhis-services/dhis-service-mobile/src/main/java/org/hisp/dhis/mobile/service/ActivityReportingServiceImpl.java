@@ -1,7 +1,7 @@
 package org.hisp.dhis.mobile.service;
 
 /*
- * Copyright (c) 2004-2010, University of Oslo
+ * Copyright (c) 2010, University of Oslo
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -41,20 +41,20 @@ import java.util.Set;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hisp.dhis.activityplan.ActivityPlanService;
+import org.hisp.dhis.api.mobile.ActivityReportingService;
+import org.hisp.dhis.api.mobile.NotAllowedException;
+import org.hisp.dhis.api.mobile.PatientMobileSettingService;
+import org.hisp.dhis.api.mobile.model.Activity;
+import org.hisp.dhis.api.mobile.model.ActivityPlan;
+import org.hisp.dhis.api.mobile.model.ActivityValue;
+import org.hisp.dhis.api.mobile.model.Beneficiary;
+import org.hisp.dhis.api.mobile.model.DataValue;
+import org.hisp.dhis.api.mobile.model.PatientAttribute;
+import org.hisp.dhis.api.mobile.model.Task;
+import org.hisp.dhis.api.mobile.model.comparator.ActivityComparator;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
 import org.hisp.dhis.dataelement.DataElementCategoryService;
-import org.hisp.dhis.mobile.api.ActivityReportingService;
-import org.hisp.dhis.mobile.api.NotAllowedException;
-import org.hisp.dhis.mobile.api.PatientMobileSettingService;
-import org.hisp.dhis.mobile.api.model.Activity;
-import org.hisp.dhis.mobile.api.model.ActivityPlan;
-import org.hisp.dhis.mobile.api.model.ActivityValue;
-import org.hisp.dhis.mobile.api.model.Beneficiary;
-import org.hisp.dhis.mobile.api.model.DataValue;
-import org.hisp.dhis.mobile.api.model.PatientAttribute;
-import org.hisp.dhis.mobile.api.model.Task;
-import org.hisp.dhis.mobile.api.model.comparator.ActivityComparator;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.patient.Patient;
 import org.hisp.dhis.patient.PatientAttributeService;
@@ -356,7 +356,7 @@ public class ActivityReportingServiceImpl
 
         // Set all identifier
         Set<PatientIdentifier> patientIdentifiers = patient.getIdentifiers();
-        List<org.hisp.dhis.mobile.api.model.PatientIdentifier> identifiers = new ArrayList<org.hisp.dhis.mobile.api.model.PatientIdentifier>();
+        List<org.hisp.dhis.api.mobile.model.PatientIdentifier> identifiers = new ArrayList<org.hisp.dhis.api.mobile.model.PatientIdentifier>();
         if ( patientIdentifiers.size() > 0 )
         {
 
@@ -373,7 +373,7 @@ public class ActivityReportingServiceImpl
                     idTypeName = identifierType.getName();
                 }
 
-                identifiers.add( new org.hisp.dhis.mobile.api.model.PatientIdentifier( idTypeName, id.getIdentifier() ) );
+                identifiers.add( new org.hisp.dhis.api.mobile.model.PatientIdentifier( idTypeName, id.getIdentifier() ) );
             }
 
             beneficiary.setIdentifiers( identifiers );

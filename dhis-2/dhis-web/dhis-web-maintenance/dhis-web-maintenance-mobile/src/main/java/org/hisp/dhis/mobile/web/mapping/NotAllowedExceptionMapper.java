@@ -6,7 +6,7 @@ import javax.ws.rs.core.Response.Status;
 import javax.ws.rs.ext.ExceptionMapper;
 import javax.ws.rs.ext.Provider;
 
-import org.hisp.dhis.mobile.api.NotAllowedException;
+import org.hisp.dhis.api.mobile.NotAllowedException;
 
 import com.sun.jersey.spi.resource.Singleton;
 

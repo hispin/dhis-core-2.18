@@ -27,9 +27,9 @@ package org.hisp.dhis.mobile.web.mapping;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertTrue;
 
-import org.hisp.dhis.mobile.api.model.OrgUnits;
+import org.hisp.dhis.api.mobile.model.OrgUnits;
 import org.junit.Test;
 
 public class DataStreamSerializableProviderTest

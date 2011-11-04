@@ -6,9 +6,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
   <bean id="org.hisp.dhis.mobile.action.MobileHomePageAction" class="org.hisp.dhis.mobile.action.MobileHomePageAction"
     scope="prototype" />
 
-  <bean id="org.hisp.dhis.mobile.action.SendSMSAction" class="org.hisp.dhis.mobile.action.SendSMSAction" scope="prototype">
-    <property name="smsService" ref="org.hisp.dhis.mobile.api.SmsService" />
-  </bean>
+  <bean id="org.hisp.dhis.mobile.action.SendSMSAction" class="org.hisp.dhis.mobile.action.SendSMSAction" scope="prototype" />
 
   <!-- Patient Mobile Settings -->
 

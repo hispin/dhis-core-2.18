@@ -35,7 +35,7 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 
-import org.hisp.dhis.mobile.api.model.MobileOrgUnitLinks;
+import org.hisp.dhis.api.mobile.model.MobileOrgUnitLinks;
 import org.junit.Test;
 
 public class OrgUnitTest

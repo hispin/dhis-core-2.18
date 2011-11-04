@@ -37,8 +37,8 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
-import org.hisp.dhis.mobile.api.model.MobileOrgUnitLinks;
-import org.hisp.dhis.mobile.api.model.OrgUnits;
+import org.hisp.dhis.api.mobile.model.MobileOrgUnitLinks;
+import org.hisp.dhis.api.mobile.model.OrgUnits;
 import org.junit.Test;
 
 public class OrgUnitsTest

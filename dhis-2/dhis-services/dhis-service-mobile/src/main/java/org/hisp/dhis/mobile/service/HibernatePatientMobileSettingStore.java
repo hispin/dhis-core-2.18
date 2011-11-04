@@ -1,7 +1,7 @@
 package org.hisp.dhis.mobile.service;
 
 /*
- * Copyright (c) 2004-2010, University of Oslo
+ * Copyright (c) 2010, University of Oslo
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -31,8 +31,8 @@ import java.util.Collection;
 
 import org.hibernate.Criteria;
 import org.hibernate.Session;
+import org.hisp.dhis.api.mobile.PatientMobileSettingStore;
 import org.hisp.dhis.hibernate.HibernateGenericStore;
-import org.hisp.dhis.mobile.api.PatientMobileSettingStore;
 import org.hisp.dhis.patient.PatientMobileSetting;
 import org.springframework.transaction.annotation.Transactional;
 

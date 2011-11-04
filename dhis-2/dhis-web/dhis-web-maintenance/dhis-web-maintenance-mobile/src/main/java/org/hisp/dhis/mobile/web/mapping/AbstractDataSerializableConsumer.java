@@ -38,7 +38,7 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.MultivaluedMap;
 import javax.ws.rs.ext.MessageBodyReader;
 
-import org.hisp.dhis.mobile.api.model.DataStreamSerializable;
+import org.hisp.dhis.api.mobile.model.DataStreamSerializable;
 
 
 /**

@@ -1,7 +1,7 @@
 package org.hisp.dhis.mobile.service;
 
 /*
- * Copyright (c) 2004-2010, University of Oslo
+ * Copyright (c) 2010, University of Oslo
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -34,12 +34,12 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Set;
 
-import org.hisp.dhis.mobile.api.IProgramService;
-import org.hisp.dhis.mobile.api.model.DataElement;
-import org.hisp.dhis.mobile.api.model.Model;
-import org.hisp.dhis.mobile.api.model.ModelList;
-import org.hisp.dhis.mobile.api.model.Program;
-import org.hisp.dhis.mobile.api.model.ProgramStage;
+import org.hisp.dhis.api.mobile.IProgramService;
+import org.hisp.dhis.api.mobile.model.DataElement;
+import org.hisp.dhis.api.mobile.model.Model;
+import org.hisp.dhis.api.mobile.model.ModelList;
+import org.hisp.dhis.api.mobile.model.Program;
+import org.hisp.dhis.api.mobile.model.ProgramStage;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.program.ProgramStageDataElement;
 import org.springframework.beans.factory.annotation.Required;

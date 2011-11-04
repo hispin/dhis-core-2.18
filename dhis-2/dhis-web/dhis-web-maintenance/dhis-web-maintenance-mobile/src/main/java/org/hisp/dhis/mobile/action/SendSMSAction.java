@@ -27,8 +27,9 @@ package org.hisp.dhis.mobile.action;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import org.hisp.dhis.mobile.api.SmsService;
-import org.hisp.dhis.mobile.api.SmsServiceException;
+import org.hisp.dhis.api.sms.OutboundSmsService;
+import org.hisp.dhis.api.sms.SmsServiceException;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import com.opensymphony.xwork2.Action;
 
@@ -40,13 +41,13 @@ public class SendSMSAction
     // Dependencies
     // -------------------------------------------------------------------------
 
-    protected SmsService smsService;
+    @Autowired(required=false)
+    private OutboundSmsService outboundSmsService;
 
-    public void setSmsService( SmsService smsService )
+    public void setOutboundSmsService( OutboundSmsService outboundSmsService )
     {
-        this.smsService = smsService;
+        this.outboundSmsService = outboundSmsService;
     }
-
 
     // -------------------------------------------------------------------------
     // Action Implementation
@@ -62,38 +63,7 @@ public class SendSMSAction
     
     public boolean getSmsServiceStatus()
     {
-        return smsService.isServiceRunning();
-    }
-
-    String statAction;
-
-    public void setStatAction( String statAction )
-    {
-        if ( statAction.equalsIgnoreCase( "Start" ) )
-        {
-            try
-            {
-                smsService.start();
-                this.message = "SMS service started.";
-            }
-            catch ( SmsServiceException e )
-            {
-                this.message = e.getMessage();
-            }
-        }
-        else
-        {
-            try
-            {
-                smsService.stop();
-                this.message = "SERVICE STOPPED";
-            }
-            catch ( SmsServiceException e )
-            {
-                this.message = e.getMessage();
-            }
-
-        }
+        return outboundSmsService != null && outboundSmsService.isSmsServiceAvailable();
     }
 
     String recipient;
@@ -126,7 +96,7 @@ public class SendSMSAction
         {
             try
             {
-                smsService.sendMessage( msg, recipient );
+                outboundSmsService.sendMessage( msg, recipient );
                 this.message = "Sent message to " + recipient;
             }
             catch ( SmsServiceException e )
