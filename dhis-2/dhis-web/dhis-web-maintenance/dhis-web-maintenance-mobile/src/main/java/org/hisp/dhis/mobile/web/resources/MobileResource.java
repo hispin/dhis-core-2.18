@@ -39,9 +39,9 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.UriInfo;
 
-import org.hisp.dhis.mobile.api.NotAllowedException;
-import org.hisp.dhis.mobile.api.model.MobileOrgUnitLinks;
-import org.hisp.dhis.mobile.api.model.OrgUnits;
+import org.hisp.dhis.api.mobile.NotAllowedException;
+import org.hisp.dhis.api.mobile.model.MobileOrgUnitLinks;
+import org.hisp.dhis.api.mobile.model.OrgUnits;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.user.CurrentUserService;
 import org.hisp.dhis.user.User;

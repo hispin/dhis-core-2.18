@@ -33,7 +33,7 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 
-import org.hisp.dhis.mobile.api.PatientMobileSettingService;
+import org.hisp.dhis.api.mobile.PatientMobileSettingService;
 import org.hisp.dhis.patient.PatientAttribute;
 import org.hisp.dhis.patient.PatientAttributeService;
 import org.hisp.dhis.patient.PatientMobileSetting;

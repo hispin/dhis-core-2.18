@@ -30,7 +30,7 @@ package org.hisp.dhis.mobile.web.mapping;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.ext.Provider;
 
-import org.hisp.dhis.mobile.api.model.ActivityValue;
+import org.hisp.dhis.api.mobile.model.ActivityValue;
 import org.hisp.dhis.mobile.web.resources.MobileMediaTypes;
 
 import com.sun.jersey.spi.resource.Singleton;

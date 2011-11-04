@@ -42,7 +42,7 @@ import javax.ws.rs.core.MultivaluedMap;
 import javax.ws.rs.ext.MessageBodyWriter;
 import javax.ws.rs.ext.Provider;
 
-import org.hisp.dhis.mobile.api.model.DataStreamSerializable;
+import org.hisp.dhis.api.mobile.model.DataStreamSerializable;
 import org.hisp.dhis.mobile.web.resources.MobileMediaTypes;
 
 import com.jcraft.jzlib.JZlib;
