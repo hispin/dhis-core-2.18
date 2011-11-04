@@ -79,7 +79,7 @@ function isColdChainRemarksFieldEntered( )
 {
     if(lastRecordNo == -1) return true;
 
-    var dataElementId = 5732;
+    var dataElementId = 5792;
     var field = document.getElementById( 'value[' + dataElementId + '].value:value[' + lastRecordNo + '].value' );
     var resVal = field.selectedIndex;
 
@@ -125,9 +125,9 @@ function validateColdChainEquipmentField( dataElementId, recordNo )
 
 function isColdChainEquipmentFieldEntered( recordNo )
 {
-    var dataElementId = 5726;
+	var dataElementId = 5786;
     var field = document.getElementById( 'value[' + dataElementId + '].value:value[' + recordNo + '].value' );
-    alert( 'value[' + dataElementId + '].value:value[' + recordNo + '].value' );
+    //alert( 'value[' + dataElementId + '].value:value[' + recordNo + '].value' );
     var resVal = field.selectedIndex;
     
     if(resVal <= 0 || resVal == "---")
@@ -173,7 +173,7 @@ function validateColdChainMachineNumberField( dataElementId, recordNo )
 
 function isColdChainMachineNumberFieldEntered( recordNo )
 {
-    var dataElementId = 5727;
+	var dataElementId = 5787;
     var field = document.getElementById( 'value[' + dataElementId + '].value:value[' + recordNo + '].value' );
     var resVal = field.value;
 
@@ -209,7 +209,17 @@ function validateColdChainMachineWorkingField( dataElementId, recordNo )
         }
         else
         {
-            saveLLbirthValue( dataElementId, recordNo );
+        	//alert( field.options[ resVal ].value );
+        	
+        	if( field.options[ resVal ].value == "N" )
+        	{
+        		document.getElementById( 'value[5789].value:value[' + recordNo + '].value' ).disabled = false;
+        	}
+        	else
+        	{
+        		document.getElementById( 'value[5789].value:value[' + recordNo + '].value' ).disabled = true;
+        	}
+        	saveLLbirthValue( dataElementId, recordNo );
         }
     }
     else
@@ -302,7 +312,7 @@ function validateColdChainDateOfBreakdownField( dataElementId, recordNo )
 
 function isColdChainDateOfBreakdownFieldEntered( recordNo )
 {
-    var dataElementId = 5729;
+	 var dataElementId = 5789;
     var field = document.getElementById( 'value[' + dataElementId + '].value:value[' + recordNo + '].value' );
     var resVal = field.value;
 
@@ -348,7 +358,13 @@ function validateColdChainDateOfIntimationField( dataElementId, recordNo )
     var startDate = startDateObj.value;
     var endDate = endDateObj.value;
 
-    if( isColdChainDateOfBreakdownFieldEntered( recordNo ) )
+    var flag = 1;
+    if( document.getElementById( 'value[' + dataElementId + '].value:value[' + recordNo + '].value' ).value == "N" )
+    {
+    	flag = 2;
+    }
+    
+    if( flag == 1 || isColdChainDateOfBreakdownFieldEntered( recordNo ) )
     {
         if(isDate(resVal) )
         {
@@ -384,7 +400,7 @@ function validateColdChainDateOfIntimationField( dataElementId, recordNo )
 
 function isColdChainDateOfIntimationFieldEntered( recordNo )
 {
-    var dataElementId = 5730;
+	var dataElementId = 5790;
     var field = document.getElementById( 'value[' + dataElementId + '].value:value[' + recordNo + '].value' );
     var resVal = field.value;
 
@@ -466,7 +482,7 @@ function validateColdChainDateOfRepairField( dataElementId, recordNo )
 
 function isColdChainDateOfRepairFieldEntered( recordNo )
 {
-    var dataElementId = 5731;
+	var dataElementId = 5791;
     var field = document.getElementById( 'value[' + dataElementId + '].value:value[' + recordNo + '].value' );
     var resVal = field.value;
 
@@ -529,7 +545,7 @@ function validateColdChainRemarksField( dataElementId, recordNo )
         {
             saveLLbirthValue( dataElementId, recordNo );
         }
-        addLLColdChainNewRow( resVal, 5726, recordNo );
+        addLLColdChainNewRow( resVal, 5786, recordNo );
     }
     else
     {
@@ -2493,7 +2509,7 @@ function saveLLbirthValue( dataElementId, recordNo )
     		dataElementId == 1035 || dataElementId == 1036 || dataElementId == 1037 || dataElementId == 1038 || 
     		dataElementId == 1039 || dataElementId == 1040 || dataElementId == 1043 || dataElementId == 1046 || 
     		dataElementId == 1050 || dataElementId == 1051 || dataElementId == 1052 || dataElementId == 1054 || 
-    		dataElementId == 5726 || dataElementId == 5728 || dataElementId == 3120
+    		dataElementId == 5786 || dataElementId == 5788 || dataElementId == 3120
     		)
     {
         resVal = field.options[field.selectedIndex].value;
