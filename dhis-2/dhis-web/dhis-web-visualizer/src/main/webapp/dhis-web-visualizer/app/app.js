@@ -47,11 +47,20 @@ DV.conf = {
             pie: 'pie'
         }
     },
-    style: {
+    css: {
         label: {
             period_group: 'font:bold 11px arial; color:#444; line-height:20px'
         }
     },
+	chart: {
+		axis: {
+			label: {
+				rotate: {
+					degrees: 330
+				}
+			}
+		}
+	},
     layout: {
         west_cmp_width: 380,
         west_width: 424,
@@ -86,10 +95,13 @@ Ext.onReady( function() {
         
         DV.chart.data = DV.conf.init.data;
         
-        DV.exe.execute(true, DV.init.isInit);
+        DV.exe.start(true);
     };
     
     DV.cmp = {
+		west: null,
+		center: null,
+		east: null,
         charttype: [],
         dimension: {
             period: []
@@ -103,12 +115,12 @@ Ext.onReady( function() {
         },
         viewport: {
             getSize: function() {
-                var c = Ext.getCmp('center');
-                return {x: c.getWidth(), y: c.getHeight()};
+                var p = DV.cmp.center;
+                return {x: p.getWidth(), y: p.getHeight()};
             },
             getXY: function() {
-                var c = Ext.getCmp('center');
-                return {x: c.x + 15, y: c.y + 43};
+                var p = DV.cmp.center;
+                return {x: p.x + 15, y: p.y + 43};
             }
         },
         multiselect: {
@@ -333,7 +345,8 @@ Ext.onReady( function() {
             getEncodedSeriesName: function(text) {
                 return text.replace(/\./g,'');
             },
-            getLegend: function(len) {
+            getLegend: function() {
+				var len = DV.state.series.data.length;
                 return {
                     position: len > 6 ? 'right' : 'top',
                     boxStroke: '#ffffff',
@@ -754,7 +767,8 @@ Ext.onReady( function() {
                 height: DV.util.viewport.getSize().y,
                 animate: true,
                 store: DV.store.chart,
-                legend: DV.util.chart.getLegend(DV.state.series.data.length),
+                legend: DV.util.chart.getLegend(),
+				style: 'padding-top:50px: background-color:red',
                 axes: [
                     {
                         title: 'Value',
@@ -773,7 +787,8 @@ Ext.onReady( function() {
                         title: DV.init.isInit ? 'Categories' : DV.conf.finals.dimension[DV.state.category.dimension].rawvalue,
                         type: 'Category',
                         position: 'bottom',
-                        fields: DV.store.chart.bottom
+                        fields: DV.store.chart.bottom,
+						label: DV.conf.chart.axis.label
                     }
                 ],
                 series: [
@@ -799,7 +814,7 @@ Ext.onReady( function() {
                 height: DV.util.viewport.getSize().y,
                 animate: true,
                 store: DV.store.chart,
-                legend: DV.util.chart.getLegend(DV.state.series.data.length),
+                legend: DV.util.chart.getLegend(),
                 axes: [
                     {
                         title: DV.conf.finals.dimension[DV.state.category.dimension].rawvalue,
@@ -844,7 +859,7 @@ Ext.onReady( function() {
                 height: DV.util.viewport.getSize().y,
                 animate: true,
                 store: DV.store.chart,
-                legend: DV.util.chart.getLegend(DV.state.series.data.length),
+                legend: DV.util.chart.getLegend(),
                 axes: [
                     {
                         title: 'Value',
@@ -863,7 +878,8 @@ Ext.onReady( function() {
                         title: DV.conf.finals.dimension[DV.state.category.dimension].rawvalue,
                         type: 'Category',
                         position: 'bottom',
-                        fields: DV.store.chart.bottom
+                        fields: DV.store.chart.bottom,
+						label: DV.conf.chart.axis.label
                     }
                 ],
                 series: DV.util.chart.line.getSeriesArray()
@@ -875,7 +891,7 @@ Ext.onReady( function() {
                 height: DV.util.viewport.getSize().y,
                 animate: true,
                 store: DV.store.chart,
-                legend: DV.util.chart.getLegend(DV.state.series.data.length),
+                legend: DV.util.chart.getLegend(),
                 axes: [
                     {
                         title: 'Value',
@@ -894,7 +910,8 @@ Ext.onReady( function() {
                         title: DV.conf.finals.dimension[DV.state.category.dimension].rawvalue,
                         type: 'Category',
                         position: 'bottom',
-                        fields: DV.store.chart.bottom
+                        fields: DV.store.chart.bottom,
+						label: DV.conf.chart.axis.label
                     }
                 ],
                 series: [{
@@ -915,7 +932,7 @@ Ext.onReady( function() {
                 animate: true,
                 shadow: true,
                 store: DV.store.chart,
-                legend: DV.util.chart.getLegend(DV.state.category.data.length),
+                legend: DV.util.chart.getLegend(),
                 insetPadding: 60,
                 series: [{
                     type: 'pie',
@@ -944,10 +961,10 @@ Ext.onReady( function() {
             });
         },
         reload: function() {
-            var c = Ext.getCmp('center');
-            c.removeAll(true);
-            c.add(this.chart);
-            c.down('label').setText(DV.state.filter.data[0] || 'Example chart');
+            var p = DV.cmp.center;
+            p.removeAll(true);
+            p.add(this.chart);
+            p.down('label').setText(DV.state.filter.data[0] || 'Example chart');
             
             if (!DV.init.isInit) {
                 DV.store.getDataTableStore(true);
@@ -1003,15 +1020,15 @@ Ext.onReady( function() {
             }
         },
         reload: function() {
-            var c = DV.util.getCmp('panel[region="east"]');
-            c.removeAll(true);
-            c.add(this.datatable);
+            var p = DV.cmp.east;
+            p.removeAll(true);
+            p.add(this.datatable);
         }            
     };
     
     DV.exe = {
-        execute: function(exe, init) {
-            if (init) {
+        start: function(exe) {
+            if (DV.init.isInit) {
                 DV.store.getChartStore(exe);
             }
             else {
@@ -1029,11 +1046,10 @@ Ext.onReady( function() {
         items: [
             {
                 region: 'west',
+				width: DV.conf.layout.west_width,
                 preventHeader: true,
                 collapsible: true,
                 collapseMode: 'mini',
-                resizable: true,
-                resizeHandles: 'e',
                 items: [
                     {
                         xtype: 'toolbar',
@@ -1560,7 +1576,7 @@ Ext.onReady( function() {
                                                     {
                                                         xtype: 'label',
                                                         text: 'Months',
-                                                        style: DV.conf.style.label.period_group
+                                                        style: DV.conf.css.label.period_group
                                                     },
                                                     {
                                                         xtype: 'checkbox',
@@ -1598,7 +1614,7 @@ Ext.onReady( function() {
                                                     {
                                                         xtype: 'label',
                                                         text: 'Quarters',
-                                                        style: DV.conf.style.label.period_group
+                                                        style: DV.conf.css.label.period_group
                                                     },
                                                     {
                                                         xtype: 'checkbox',
@@ -1635,7 +1651,7 @@ Ext.onReady( function() {
                                                     {
                                                         xtype: 'label',
                                                         text: 'Years',
-                                                        style: DV.conf.style.label.period_group
+                                                        style: DV.conf.css.label.period_group
                                                     },
                                                     {
                                                         xtype: 'checkbox',
@@ -1742,12 +1758,15 @@ Ext.onReady( function() {
                     }
                 ],
                 listeners: {
-                    collapse: function(p) {                    
-                        p.collapsed = true;
+					afterrender: function() {
+						DV.cmp.west = this;
+					},
+                    collapse: function() {                    
+                        this.collapsed = true;
                         DV.util.getCmp('button[name="resizeleft"]').setText('<span style="font-weight:bold">>>></span>');
                     },
-                    expand: function(p) {
-                        p.collapsed = false;
+                    expand: function() {
+                        this.collapsed = false;
                         DV.util.getCmp('button[name="resizeleft"]').setText('<span style="font-weight:bold"><<<</span>');
                     }
                 }
@@ -1764,7 +1783,7 @@ Ext.onReady( function() {
                         text: '<span style="font-weight:bold"><<<</span>',
                         tooltip: 'Show/hide chart settings',
                         handler: function() {
-                            var p = DV.util.getCmp('panel[region="west"]');
+                            var p = DV.cmp.west;
                             if (p.collapsed) {
                                 p.expand();
                             }
@@ -1780,7 +1799,7 @@ Ext.onReady( function() {
                         cls: 'x-btn-text-icon',
                         icon: 'images/refresh.png',
                         handler: function() {
-                            DV.exe.execute(true, DV.init.isInit);
+                            DV.exe.start(true);
                         }
                     },
                     {
@@ -1790,7 +1809,7 @@ Ext.onReady( function() {
                         cls: 'x-btn-text-icon',
                         icon: 'images/datatable.png',
                         handler: function(b) {
-                            var p = DV.util.getCmp('panel[region="east"]');
+                            var p = DV.cmp.east;
                             if (p.collapsed && p.items.length) {
                                 p.expand();
                                 DV.exe.datatable(true);
@@ -1817,7 +1836,12 @@ Ext.onReady( function() {
                         }
                     }
                     
-                ]
+                ],
+				listeners: {
+					afterrender: function() {
+						DV.cmp.center = this;
+					}
+				}
             },
             {
                 region: 'east',
@@ -1825,8 +1849,6 @@ Ext.onReady( function() {
                 collapsible: true,
                 collapsed: true,
                 collapseMode: 'mini',
-                resizable: true,
-                resizeHandles: 'w',
                 width: 498,
                 tbar: {
                     height: DV.conf.layout.east_tbar_height,
@@ -1838,7 +1860,12 @@ Ext.onReady( function() {
                             style: 'font-weight:bold; padding:0 4px'
                         }
                     ]
-                }
+                },
+				listeners: {
+					afterrender: function() {
+						DV.cmp.east = this;
+					}
+				}
             }
         ],
         listeners: {
@@ -1846,8 +1873,6 @@ Ext.onReady( function() {
                 DV.init.initialize(vp);
             },
             resize: function(vp) {
-                vp.query('panel[region="west"]')[0].setWidth(DV.conf.layout.west_width);
-                
                 if (DV.cmp.datatable) {
                     DV.cmp.datatable.setHeight(DV.util.viewport.getSize().y - DV.conf.layout.east_tbar_height);
                 }
