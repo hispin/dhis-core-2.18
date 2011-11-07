@@ -95,7 +95,7 @@ function validationCaseAggregationCompleted( message )
 	
     if( type == "success" )
     {
-        document.forms[ 'caseAggregationForm' ].submit();
+        caseAggregationResult();
     }
     else
     {
@@ -105,6 +105,7 @@ function validationCaseAggregationCompleted( message )
 
 function viewResultDetails( orgunitId, periodId, aggregationConditionId ) 
 {
+	$('#contentDetails' ).val('');
 	var url = 'caseAggregationResultDetails.action?';
 		url+= 'orgunitId=' + orgunitId;
 		url+= '&periodId=' + periodId;
@@ -121,3 +122,24 @@ function viewResultDetails( orgunitId, periodId, aggregationConditionId )
     });
 }
 
+function caseAggregationResult()
+{
+	hideById('caseAggregationForm');
+	showLoader();
+	
+	$('#caseAggregationResult').load("caseAggregationResult.action", 
+		{
+			facilityLB: getFieldValue('facilityLB'),
+			dataSetId: getFieldValue('dataSetId')
+		}
+		, function(){
+			$( "#loaderDiv" ).hide();
+			showById('caseAggregationResult');
+		});
+}
+
+function backBtnOnClick()
+{
+	hideById('caseAggregationResult');
+	showById('caseAggregationForm');
+}
