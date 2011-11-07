@@ -321,10 +321,7 @@ public class CaseAggregationResultAction
             period = periodType.getNextPeriod( period );
             periods.add( period );
         }
-
-        period = periodType.createPeriod( endPeriod.getStartDate() );
-        periods.add( period );
-
+        
         return periods;
     }
 
