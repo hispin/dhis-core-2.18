@@ -156,7 +156,7 @@ public class AddProgramStageAction
         programStage.setStageInProgram( program.getProgramStages().size() + 1 );
         programStage.setProgram( program );
         
-        irregular = irregular ? irregular : false;
+        irregular = (irregular==null) ? false : irregular;
         programStage.setIrregular(irregular);
 
         minDaysFromStart = (minDaysFromStart == null) ? 0 : minDaysFromStart;
