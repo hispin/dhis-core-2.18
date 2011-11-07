@@ -149,7 +149,7 @@ public class UpdateProgramStageAction
         minDaysFromStart = (minDaysFromStart == null) ? 0 : minDaysFromStart;
         programStage.setMinDaysFromStart( minDaysFromStart );
 
-        irregular = irregular ? irregular : false;
+        irregular = (irregular==null) ? false : irregular;
         programStage.setIrregular( irregular );
 
         programStageService.updateProgramStage( programStage );
