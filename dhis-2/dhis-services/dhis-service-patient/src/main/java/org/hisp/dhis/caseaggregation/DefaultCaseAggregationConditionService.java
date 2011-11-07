@@ -204,7 +204,7 @@ public class DefaultCaseAggregationConditionService
         Period period )
     {
         String sql = convertCondition( aggregationCondition, orgunit, period );
-
+        
         Collection<Integer> patientIds = aggregationConditionStore.executeSQL( sql );
 
         if ( patientIds == null )
@@ -219,10 +219,15 @@ public class DefaultCaseAggregationConditionService
     public Collection<PatientDataValue> getPatientDataValues( CaseAggregationCondition aggregationCondition,
         OrganisationUnit orgunit, Period period )
     {
+        // get params
+        int orgunitId = orgunit.getId();
+        String startDate = DateUtils.getMediumDateString( period.getStartDate() );
+        String endDate = DateUtils.getMediumDateString( period.getEndDate() );
+
         Collection<PatientDataValue> result = new HashSet<PatientDataValue>();
 
         String sql = createSQL( aggregationCondition.getAggregationExpression(), aggregationCondition.getOperator(),
-            orgunit, period );
+            orgunitId, startDate, endDate );
 
         Collection<DataElement> dataElements = getDataElementsInCondition( aggregationCondition
             .getAggregationExpression() );
@@ -241,16 +246,22 @@ public class DefaultCaseAggregationConditionService
                 result.addAll( dataValues );
             }
         }
+        
         return result;
     }
 
     public Collection<Patient> getPatients( CaseAggregationCondition aggregationCondition, OrganisationUnit orgunit,
         Period period )
     {
+        // get params
+        int orgunitId = orgunit.getId();
+        String startDate = DateUtils.getMediumDateString( period.getStartDate() );
+        String endDate = DateUtils.getMediumDateString( period.getEndDate() );
+
         Collection<Patient> result = new HashSet<Patient>();
 
         String sql = createSQL( aggregationCondition.getAggregationExpression(), aggregationCondition.getOperator(),
-            orgunit, period );
+            orgunitId, startDate, endDate );
 
         Collection<Integer> patientIds = aggregationConditionStore.executeSQL( sql );
 
@@ -479,6 +490,11 @@ public class DefaultCaseAggregationConditionService
     private String convertCondition( CaseAggregationCondition aggregationCondition, OrganisationUnit orgunit,
         Period period )
     {
+        // get params
+        int orgunitId = orgunit.getId();
+        String startDate = DateUtils.getMediumDateString( period.getStartDate() );
+        String endDate = DateUtils.getMediumDateString( period.getEndDate() );
+
         // Get operators between ( )
         Pattern patternOperator = Pattern.compile( "(\\)\\s*(OR|AND)\\s*\\( )" );
 
@@ -498,7 +514,7 @@ public class DefaultCaseAggregationConditionService
         // Create SQL statement for the first condition
         String condition = conditions[0].replace( "(", "" ).replace( ")", "" );
 
-        String sql = createSQL( condition, aggregationCondition.getOperator(), orgunit, period );
+        String sql = createSQL( condition, aggregationCondition.getOperator(), orgunitId, startDate, endDate );
 
         subSQL.add( sql );
 
@@ -507,7 +523,7 @@ public class DefaultCaseAggregationConditionService
         {
             condition = conditions[index].replace( "(", "" ).replace( ")", "" );
 
-            sql = "(" + createSQL( condition, aggregationCondition.getOperator(), orgunit, period ) + ")";
+            sql = "(" + createSQL( condition, aggregationCondition.getOperator(), orgunitId, startDate, endDate ) + ")";
 
             subSQL.add( sql );
         }
@@ -515,12 +531,9 @@ public class DefaultCaseAggregationConditionService
         return getSQL( subSQL, operators );
     }
 
-    private String createSQL( String aggregationExpression, String operator, OrganisationUnit orgunit, Period period )
+    private String createSQL( String aggregationExpression, String operator, int orgunitId, String startDate, String endDate )
     {
-        int orgunitId = orgunit.getId();
-        String startDate = DateUtils.getMediumDateString( period.getStartDate() );
-        String endDate = DateUtils.getMediumDateString( period.getEndDate() );
-
+        
         // ---------------------------------------------------------------------
         // get operators
         // ---------------------------------------------------------------------
@@ -700,8 +713,9 @@ public class DefaultCaseAggregationConditionService
         return sql + "FROM programstageinstance as psi "
             + "INNER JOIN programstage as ps ON psi.programstageid = ps.programstageid "
             + "INNER JOIN patientdatavalue as pd ON psi.programstageinstanceid = pd.programstageinstanceid "
+            + "INNER JOIN programstage_dataelements as psd ON ps.programstageid = psd.programstageid " 
             + "INNER JOIN programinstance as pi ON pi.programinstanceid = psi.programinstanceid "
-            + "WHERE pd.categoryoptioncomboid = " + optionComboId + " AND pd.dataelementid = " + dataElementId + " "
+            + "WHERE pd.categoryoptioncomboid = " + optionComboId + " AND psd.dataelementid = " + dataElementId + " "
             + "AND pd.organisationunitid = " + orgunitId + " AND ps.programstageid = " + programStageId + " "
             + "AND psi.executionDate >= '" + startDate + "' AND psi.executionDate <= '" + endDate + "' ";
     }

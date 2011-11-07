@@ -4,75 +4,83 @@
 	var isSubmit = true;
 </script>
 
-<h1> $i18n.getString( "case_aggregation_form" ) #openHelp('run_case_aggregation')</h1>
-<hr/>
-<form id="caseAggregationForm" name="caseAggregationForm" action="caseAggregationResult.action" method="post">
-	<table>
-		<tr>
-			<td>
-				$i18n.getString( "dataset_list" )
-			</td>
-			<td>
-				<select id="dataSetId" name="dataSetId" onchange="dataSetSelected()" style="width: 30em">
-					<option value=''>[$i18n.getString('please_select')]</option>
-					#foreach ( $dataSet in $datasets )
-						<option value='$dataSet.id' title='$dataSet.name'>$dataSet.name</option>
-					#end
-				</select>
-			</td>
-		</tr>
+<div id='caseAggregationDiv'>
 
-		<tr>
-			<td>
-				$i18n.getString( "from" )
-			</td>
-			<td>
-				<input type="button" value="<<" onclick="getPreviousPeriodForStart()" id="previousPeriodForStartBtn" disabled />
-				<select id="sDateLB" name="sDateLB" style="width: 23em"></select>
-				<input type="button" value=">>"  onclick="getNextPeriodForStart()" id="nextPeriodForStartBtn" disabled />
-			</td>
-		</tr>
-		
-		<tr>
-			<td>
-				$i18n.getString( "to" )
-			</td>
-			<td>
-				<input type="button" value="<<" onclick="getPreviousPeriodForEnd()" id="previousPeriodForEndBtn" disabled />
-				<select id="eDateLB" name="eDateLB" style="width: 23em"></select>
-				<input type="button" value=">>"  onclick="getNextPeriodForEnd()" id="nextPeriodForEndBtn" disabled />
-				<i><span id='warningMessage' style="color:red"></span></i>
-			</td>
-				
-		</tr>
-		<tr>
-			<td>
-			   $i18n.getString( "ga_facilityby" )
-			</td>
-			<td>
-				<select id="facilityLB" name="facilityLB" style="width: 30em">
-					<option value="random" selected>$i18n.getString( "selected" )</option>
-					<option value="immChildren" >$i18n.getString( "immediate_children" )</option>
-					<option value="children" >$i18n.getString( "child_tree" )</option>
-				</select>
-			</td>
-		</tr>
-		
-		<tr><td colspan='2' style="height:1em"></td></tr>
-		
-		<tr>
-			<td colspan='2'>
-				#organisationUnitSelectionTree( true, false, false )
-			</td>
-		</tr>
+	<h1> $i18n.getString( "case_aggregation_form" ) #openHelp('run_case_aggregation')</h1>
+	<hr/>
+	<form id="caseAggregationForm" name="caseAggregationForm" action="caseAggregationResult.action" method="post">
+		<table>
+			<tr>
+				<td>
+					$i18n.getString( "dataset_list" )
+				</td>
+				<td>
+					<select id="dataSetId" name="dataSetId" onchange="dataSetSelected()" style="width: 30em">
+						<option value=''>[$i18n.getString('please_select')]</option>
+						#foreach ( $dataSet in $datasets )
+							<option value='$dataSet.id' title='$dataSet.name'>$dataSet.name</option>
+						#end
+					</select>
+				</td>
+			</tr>
 
-		<tr>
-			<td>
-				<input type="submit" name="Aggregate" value="$i18n.getString( 'aggregate' )"/></td>
-			</td>
-			<td></td>
-		</tr>
-	</table>
-	
-	<span id='message'></span>
-</form>
+			<tr>
+				<td>
+					$i18n.getString( "from" )
+				</td>
+				<td>
+					<input type="button" value="<<" onclick="getPreviousPeriodForStart()" id="previousPeriodForStartBtn" disabled />
+					<select id="sDateLB" name="sDateLB" style="width: 23em"></select>
+					<input type="button" value=">>"  onclick="getNextPeriodForStart()" id="nextPeriodForStartBtn" disabled />
+				</td>
+			</tr>
+			
+			<tr>
+				<td>
+					$i18n.getString( "to" )
+				</td>
+				<td>
+					<input type="button" value="<<" onclick="getPreviousPeriodForEnd()" id="previousPeriodForEndBtn" disabled />
+					<select id="eDateLB" name="eDateLB" style="width: 23em"></select>
+					<input type="button" value=">>"  onclick="getNextPeriodForEnd()" id="nextPeriodForEndBtn" disabled />
+					<i><span id='warningMessage' style="color:red"></span></i>
+				</td>
+					
+			</tr>
+			<tr>
+				<td>
+				   $i18n.getString( "ga_facilityby" )
+				</td>
+				<td>
+					<select id="facilityLB" name="facilityLB" style="width: 30em">
+						<option value="random" selected>$i18n.getString( "selected" )</option>
+						<option value="immChildren" >$i18n.getString( "immediate_children" )</option>
+						<option value="children" >$i18n.getString( "child_tree" )</option>
+					</select>
+				</td>
+			</tr>
+			
+			<tr><td colspan='2' style="height:1em"></td></tr>
+			
+			<tr>
+				<td colspan='2'>
+					#organisationUnitSelectionTree( true, false, false )
+				</td>
+			</tr>
+
+			<tr>
+				<td>
+					<input type="submit" name="Aggregate" value="$i18n.getString( 'aggregate' )"/></td>
+				</td>
+				<td></td>
+			</tr>
+		</table>
+	</form>
+</div>
+
+#parse( "dhis-web-commons/loader/loader.vm" )
+
+<div id='caseAggregationResult' style='none'></div>
+
+<span id='message'></span>
+
