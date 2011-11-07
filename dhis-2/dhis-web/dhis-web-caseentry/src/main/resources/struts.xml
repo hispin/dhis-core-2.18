@@ -234,7 +234,7 @@
 			<result name="success" type="velocity">/main.vm</result>
 			<param name="page">/dhis-web-caseentry/caseAggregationForm.vm</param>
 			<param name="menu">/dhis-web-caseentry/caseAggregationMenu.vm</param>
-			<param name="javascripts">javascript/caseagg.js,javascript/date.js,javascript/caseAggregationForm.js</param>
+			<param name="javascripts">javascript/caseagg.js,javascript/caseAggregationForm.js</param>
 		</action>
 
 		<action name="loadPeriods"
@@ -258,7 +258,7 @@
 			<result name="success" type="velocity">/main.vm</result>
 			<param name="page">/dhis-web-caseentry/caseAggregationResult.vm</param>
 			<param name="menu">/dhis-web-caseentry/caseAggregationMenu.vm</param>
-			<param name="javascripts">javascript/caseagg.js,javascript/date.js,javascript/caseAggregationForm.js</param>
+			<param name="javascripts">javascript/caseagg.js,javascript/caseAggregationForm.js</param>
 		</action>
 
 		<action name="caseAggregationResultDetails"
