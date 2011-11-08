@@ -147,7 +147,7 @@ public class DefaultResourceTableService
 
             for ( OrganisationUnit unit : units )
             {
-                List<String> structure = new ArrayList<String>();
+                List<Object> structure = new ArrayList<Object>();
 
                 structure.add( String.valueOf( unit.getId() ) );
                 structure.add( String.valueOf( level ) );
@@ -161,14 +161,14 @@ public class DefaultResourceTableService
                     unit = unit.getParent();
                 }
 
-                structure.add( String.valueOf( identifiers.get( 1 ) != null ? identifiers.get( 1 ) : "0" ) ); //TODO improve
-                structure.add( String.valueOf( identifiers.get( 2 ) != null ? identifiers.get( 2 ) : "0" ) );
-                structure.add( String.valueOf( identifiers.get( 3 ) != null ? identifiers.get( 3 ) : "0" ) );
-                structure.add( String.valueOf( identifiers.get( 4 ) != null ? identifiers.get( 4 ) : "0" ) );
-                structure.add( String.valueOf( identifiers.get( 5 ) != null ? identifiers.get( 5 ) : "0" ) );
-                structure.add( String.valueOf( identifiers.get( 6 ) != null ? identifiers.get( 6 ) : "0" ) );
-                structure.add( String.valueOf( identifiers.get( 7 ) != null ? identifiers.get( 7 ) : "0" ) );
-                structure.add( String.valueOf( identifiers.get( 8 ) != null ? identifiers.get( 8 ) : "0" ) );
+                structure.add( identifiers.get( 1 ) );
+                structure.add( identifiers.get( 2 ) );
+                structure.add( identifiers.get( 3 ) );
+                structure.add( identifiers.get( 4 ) );
+                structure.add( identifiers.get( 5 ) );
+                structure.add( identifiers.get( 6 ) );
+                structure.add( identifiers.get( 7 ) );
+                structure.add( identifiers.get( 8 ) );
 
                 batchHandler.addObject( structure );
             }
