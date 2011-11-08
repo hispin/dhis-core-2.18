@@ -134,12 +134,14 @@ public class DefaultResourceTableService
 
     public void generateOrganisationUnitStructures()
     {
-        resourceTableStore.createOrganisationUnitStructure();
+        int maxLevel = organisationUnitService.getMaxOfOrganisationUnitLevels();
+        
+        resourceTableStore.createOrganisationUnitStructure( maxLevel );
 
         BatchHandler<Object> batchHandler = batchHandlerFactory.createBatchHandler( GenericBatchHandler.class ).
             setTableName( ResourceTableStore.TABLE_NAME_ORGANISATION_UNIT_STRUCTURE ).init();
         
-        for ( int i = 0; i < 8; i++ )
+        for ( int i = 0; i < maxLevel; i++ )
         {
             int level = i + 1;
 
@@ -147,10 +149,10 @@ public class DefaultResourceTableService
 
             for ( OrganisationUnit unit : units )
             {
-                List<Object> structure = new ArrayList<Object>();
+                List<Integer> structure = new ArrayList<Integer>();
 
-                structure.add( String.valueOf( unit.getId() ) );
-                structure.add( String.valueOf( level ) );
+                structure.add( unit.getId() );
+                structure.add( level );
 
                 Map<Integer, Integer> identifiers = new HashMap<Integer, Integer>();
 
@@ -160,16 +162,12 @@ public class DefaultResourceTableService
 
                     unit = unit.getParent();
                 }
-
-                structure.add( identifiers.get( 1 ) );
-                structure.add( identifiers.get( 2 ) );
-                structure.add( identifiers.get( 3 ) );
-                structure.add( identifiers.get( 4 ) );
-                structure.add( identifiers.get( 5 ) );
-                structure.add( identifiers.get( 6 ) );
-                structure.add( identifiers.get( 7 ) );
-                structure.add( identifiers.get( 8 ) );
-
+               
+                for (int k = 1 ; k <= maxLevel ; k ++ )
+                {
+                    structure.add( identifiers.get( k ) );
+                }
+                
                 batchHandler.addObject( structure );
             }
         }

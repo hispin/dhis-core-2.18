@@ -46,7 +46,6 @@ import org.springframework.jdbc.core.JdbcTemplate;
 
 /**
  * @author Lars Helge Overland
- * @version $Id$
  */
 public class HibernateResourceTableStore
     implements ResourceTableStore
@@ -68,7 +67,7 @@ public class HibernateResourceTableStore
     // OrganisationUnitStructure
     // -------------------------------------------------------------------------
 
-    public void createOrganisationUnitStructure()
+    public void createOrganisationUnitStructure( int maxLevel )
     {
         try
         {
@@ -79,22 +78,23 @@ public class HibernateResourceTableStore
             // Do nothing, table does not exist
         }
         
-        String sql = "CREATE TABLE " + TABLE_NAME_ORGANISATION_UNIT_STRUCTURE + " ( " +
-            "organisationunitid INTEGER NOT NULL, " +
-            "level INTEGER, " +
-            "idlevel1 INTEGER, " +
-            "idlevel2 INTEGER, " +
-            "idlevel3 INTEGER, " +
-            "idlevel4 INTEGER, " +
-            "idlevel5 INTEGER, " +
-            "idlevel6 INTEGER, " +
-            "idlevel7 INTEGER, " +
-            "idlevel8 INTEGER, " +
-            "PRIMARY KEY (organisationunitid) )";
+        StringBuilder sql = new StringBuilder();
+        
+        sql.append( "CREATE TABLE " ).append( TABLE_NAME_ORGANISATION_UNIT_STRUCTURE ).
+            append( " ( organisationunitid INTEGER NOT NULL, level INTEGER, " );
+        
+        for ( int k = 1 ; k <= maxLevel; k++ )
+        {
+            String levelName = "idlevel" + String.valueOf( k );
+            sql.append ( levelName );
+            sql.append (" INTEGER, ");
+        }
+        
+        sql.append( "PRIMARY KEY ( organisationunitid ) );" );
         
         log.info( "Create organisation unit structure table SQL: " + sql );
         
-        jdbcTemplate.update( sql );            
+        jdbcTemplate.update( sql.toString() );
     }
     
     // -------------------------------------------------------------------------

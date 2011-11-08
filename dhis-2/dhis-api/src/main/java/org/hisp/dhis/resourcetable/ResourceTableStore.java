@@ -52,7 +52,7 @@ public interface ResourceTableStore
     /**
      * Creates a table.
      */
-    void createOrganisationUnitStructure();
+    void createOrganisationUnitStructure( int maxLevel );
     
     // -------------------------------------------------------------------------
     // DataElementCategoryOptionComboName
