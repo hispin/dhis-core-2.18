@@ -8,7 +8,7 @@
     }
 </style>
 
-<h1>Send SMS</h1>
+<h3>Send SMS</h3>
     #if ($smsServiceStatus)
 <div>
     <form method="post">

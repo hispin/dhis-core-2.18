@@ -53,7 +53,14 @@
     <action name="updateMobileDataset" class="org.hisp.dhis.mobile.action.UpdateMobileDataSetAction">
       <result name="success" type="redirect">showMobileDataSet.action</result>
     </action>
-
-
+	  
+		<!-- SMS Service Configuration Action -->
+	  
+	 <action name="showSMSServiceConfiguration" class="org.hisp.dhis.mobile.action.ShowMobileConfigurationFormAction">
+      <result name="success" type="velocity">/main.vm</result>
+      <param name="page">/dhis-web-maintenance-mobile/smsServiceConfiguration.vm</param>
+      <param name="menu">/dhis-web-maintenance-mobile/menu.vm</param>
+    </action>
+	  
   </package>
 </struts>

@@ -8,7 +8,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 
   <bean id="org.hisp.dhis.mobile.action.SendSMSAction" class="org.hisp.dhis.mobile.action.SendSMSAction" scope="prototype" />
 
-  <!-- Patient Mobile Settings -->
+ <!-- Patient Mobile Settings -->
 
   <bean id="org.hisp.dhis.mobile.action.ShowMobileSettingFormAction" class="org.hisp.dhis.mobile.action.ShowMobileSettingFormAction"
     scope="prototype">
@@ -22,7 +22,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     <property name="patientAttributeService" ref="org.hisp.dhis.patient.PatientAttributeService" />
   </bean>
 	
-		<!-- Mobile DataSet -->
+ <!-- Mobile DataSet -->
   <bean id="org.hisp.dhis.mobile.action.MobileDataSetListAction" class="org.hisp.dhis.mobile.action.MobileDataSetListAction"
     scope="prototype">
     <property name="dataSetService">
@@ -37,6 +37,9 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     </property>
   </bean>
 
+  <!-- SMS Service Configuration -->	
+	 <bean id="org.hisp.dhis.mobile.action.ShowMobileConfigurationFormAction" class="org.hisp.dhis.mobile.action.ShowMobileConfigurationFormAction"
+    scope="prototype"/>
 
   <!-- JAX-RS resources -->
 
