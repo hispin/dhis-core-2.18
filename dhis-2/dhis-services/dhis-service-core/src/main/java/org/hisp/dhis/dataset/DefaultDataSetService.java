@@ -137,7 +137,6 @@ public class DefaultDataSetService
         return i18n( i18nService, dataSetStore.getDataSet( uuid ) );
     }
 
-
     public DataSet getDataSetByName( String name )
     {
         return i18n( i18nService, dataSetStore.getDataSetByName( name ) );
@@ -308,13 +307,12 @@ public class DefaultDataSetService
     @Override
     public Collection<DataSet> getDataSetsBetween( int first, int max )
     {
-        return dataSetStore.getDataSetsBetween( first, max );
+        return i18n( i18nService, dataSetStore.getDataSetsBetween( first, max ) );
     }
 
     @Override
     public Collection<DataSet> getDataSetsBetweenByName( String name, int first, int max )
     {
-        return dataSetStore.getDataSetsBetweenByName( name, first, max );
+        return i18n( i18nService, dataSetStore.getDataSetsBetweenByName( name, first, max ) );
     }
-
 }

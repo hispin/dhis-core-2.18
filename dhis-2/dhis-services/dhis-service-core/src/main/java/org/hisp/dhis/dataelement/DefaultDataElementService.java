@@ -321,17 +321,17 @@ public class DefaultDataElementService
 
     public Collection<DataElement> getDataElementsLikeName( String name )
     {
-        return dataElementStore.getDataElementsLikeName( name );
+        return i18n( i18nService, dataElementStore.getDataElementsLikeName( name ) );
     }
 
     public Collection<DataElement> getDataElementsBetween( int first, int max )
     {
-        return dataElementStore.getDataElementsBetween( first, max );
+        return i18n( i18nService, dataElementStore.getDataElementsBetween( first, max ) );
     }
 
     public Collection<DataElement> getDataElementsBetweenByName( String name, int first, int max )
     {
-        return dataElementStore.getDataElementsBetweenByName( name, first, max );
+        return i18n( i18nService, dataElementStore.getDataElementsBetweenByName( name, first, max ) );
     }
 
     public int getDataElementCount()
