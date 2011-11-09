@@ -170,7 +170,7 @@ function trim( string )
  */
 function isChecked( checkboxId )
 {
-	return jQuery( "#" + checkboxId ) && jQuery( "#" + checkboxId ).attr("checked");   
+	return jQuery( "#" + checkboxId ).length && jQuery( "#" + checkboxId ).is( ":checked" );   
 }
 
 /**

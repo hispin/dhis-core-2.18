@@ -86,6 +86,9 @@ function generateExpression( expression )
  */
 function saveVal( dataElementId, optionComboId )
 {
+	dataElementId = parseInt( dataElementId );
+	optionComboId = parseInt( optionComboId );
+	
     var dataElementName = getDataElementName( dataElementId );
     var fieldId = '#' + dataElementId + '-' + optionComboId + '-val';
     var value = $( fieldId ).val();

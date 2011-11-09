@@ -33,8 +33,6 @@ import java.io.OutputStream;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.io.IOUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.hisp.dhis.document.Document;
 import org.hisp.dhis.document.DocumentService;
 import org.hisp.dhis.external.location.LocationManager;
@@ -46,8 +44,6 @@ import org.hisp.dhis.util.StreamActionSupport;
 public class LoadDocumentAction
     extends StreamActionSupport
 {
-    private static final Log log = LogFactory.getLog( LoadDocumentAction.class );
-
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
@@ -77,8 +73,6 @@ public class LoadDocumentAction
         this.id = id;
     }
 
-    private Document document;
-
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
@@ -87,13 +81,11 @@ public class LoadDocumentAction
     protected String execute( HttpServletResponse response, OutputStream out )
         throws Exception
     {
-        document = documentService.getDocument( id );
+        Document document = documentService.getDocument( id );
 
         InputStream in = locationManager.getInputStream( document.getUrl(), DocumentService.DIR );
 
         IOUtils.copy( in, out );
-
-        log.info( "Document " + document.getName() + ", " + document.getUrl() + ", " + document.getContentType() );
 
         return SUCCESS;
     }
@@ -101,12 +93,16 @@ public class LoadDocumentAction
     @Override
     protected String getContentType()
     {
+        Document document = documentService.getDocument( id );
+        
         return document != null ? document.getContentType() : null;
     }
 
     @Override
     protected String getFilename()
     {
+        Document document = documentService.getDocument( id );
+        
         return document != null ? document.getUrl() : null;
     }
 }
