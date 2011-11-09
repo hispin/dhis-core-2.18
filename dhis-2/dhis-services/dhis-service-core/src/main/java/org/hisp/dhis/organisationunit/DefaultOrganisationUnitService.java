@@ -49,7 +49,6 @@ import org.hisp.dhis.system.util.AuditLogUtil;
 import org.hisp.dhis.system.util.ConversionUtils;
 import org.hisp.dhis.system.util.Filter;
 import org.hisp.dhis.system.util.FilterUtils;
-import org.hisp.dhis.system.util.UUIdUtils;
 import org.hisp.dhis.user.CurrentUserService;
 import org.hisp.dhis.user.User;
 import org.hisp.dhis.version.VersionService;
