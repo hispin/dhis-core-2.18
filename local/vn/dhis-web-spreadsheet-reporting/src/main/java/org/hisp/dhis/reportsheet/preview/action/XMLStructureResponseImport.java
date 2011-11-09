@@ -69,7 +69,7 @@ public class XMLStructureResponseImport
      * The workbook we are reading from a given file
      */
     private Workbook WORKBOOK;
-    
+
     private FormulaEvaluator evaluatorFormula;
 
     private static final String WORKBOOK_OPENTAG = "<workbook>";
@@ -119,10 +119,10 @@ public class XMLStructureResponseImport
         {
             this.WORKBOOK = new XSSFWorkbook( inputStream );
         }
-        
+
         resetDecimalFormatByLocale( Locale.GERMAN );
         applyPatternDecimalFormat( PATTERN_DECIMAL_FORMAT1 );
-        
+
         this.evaluatorFormula = WORKBOOK.getCreationHelper().createFormulaEvaluator();
 
         this.writeFormattedXML( collectSheets, importItems, bWriteDescription );
@@ -201,7 +201,8 @@ public class XMLStructureResponseImport
                             && (importItem.getColumn() == (j + 1)) )
                         {
                             xml.append( " id='" + importItem.getExpression() + "'>" );
-                            // If there is any importItem matched the condition then break out the for loop
+                            // If there is any importItem matched the condition
+                            // then break out the for loop
                             break;
                         }
 
@@ -254,7 +255,9 @@ public class XMLStructureResponseImport
 
         if ( format != null )
         {
-            xml.append( "<format align='" + convertAlignmentString( format.getAlignment() ) + "'/>" );
+            xml.append( "<format align='" + convertAlignmentString( format.getAlignment() ) + "'" );
+            xml.append( " border='" + format.getBorderBottom() + format.getBorderLeft() + format.getBorderRight()
+                + format.getBorderTop() + "'/>" );
         }
     }
 }
