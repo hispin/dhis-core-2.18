@@ -41,8 +41,8 @@ import org.hisp.dhis.organisationunit.OrganisationUnitLevel;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.organisationunit.comparator.OrganisationUnitNameComparator;
 import org.hisp.dhis.period.Period;
-import org.hisp.dhis.reportsheet.ExportReport;
 import org.hisp.dhis.reportsheet.ExportItem;
+import org.hisp.dhis.reportsheet.ExportReport;
 import org.hisp.dhis.reportsheet.ExportReportOganiztionGroupListing;
 import org.hisp.dhis.reportsheet.exporting.AbstractGenerateExcelReportSupport;
 import org.hisp.dhis.reportsheet.utils.ExcelUtils;
@@ -218,5 +218,4 @@ public class GenerateReportOrgGroupListingAction
             }
         }
     }
-
 }
