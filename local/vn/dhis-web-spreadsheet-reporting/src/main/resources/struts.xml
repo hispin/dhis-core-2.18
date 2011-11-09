@@ -476,7 +476,7 @@
 			<param name="stylesheets">style/previewStyle.css</param>
 			<param name="javascripts">
 				../dhis-web-commons/ouwt/ouwt.js,
-				../dhis-web-commons/javascripts/jQuery/jquery.jqprint.0.3.js,
+				javascript/jQuery/jquery.jqprint.0.3.js,
 				javascript/export.js,				
 				javascript/preview.js				
 			</param>

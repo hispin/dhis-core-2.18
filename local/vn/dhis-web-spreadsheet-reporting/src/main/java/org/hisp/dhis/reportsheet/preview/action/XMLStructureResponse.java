@@ -294,6 +294,8 @@ public class XMLStructureResponse
         if ( format != null )
         {
             xml.append( "<format align='" + convertAlignmentString( format.getAlignment() ) + "'" );
+            xml.append( " border='" + format.getBorderBottom() + format.getBorderLeft() + format.getBorderRight()
+                + format.getBorderTop() + "'" );
 
             Font font = WORKBOOK.getFontAt( format.getFontIndex() );
 
@@ -301,11 +303,11 @@ public class XMLStructureResponse
             {
                 xml.append( " valign='" + convertVerticalString( format.getVerticalAlignment() ) + "'>" );
 
-                xml.append( "<font point_size='" + font.getFontHeightInPoints() + "'" );
-                xml.append( " bold_weight='" + font.getBoldweight() + "'" );
+                xml.append( "<font size='" + font.getFontHeightInPoints() + "'" );
+                xml.append( " bold='" + font.getBoldweight() + "'" );
                 xml.append( " italic='" + font.getItalic() + "'" );
                 xml.append( " underline='" + UnderlinePatterns.valueOf( font.getUnderline() ).name() + "'" );
-                xml.append( " colour='" + font.getColor() + "'" );
+                xml.append( " color='" + font.getColor() + "'" );
                 xml.append( " />" );
 
                 // The cell background information

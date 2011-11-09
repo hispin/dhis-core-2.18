@@ -93,7 +93,7 @@ function previewExportReportReceived( parentElement )
 		
 		contentsHTML += '<div id="tabs-' + s + '">';
 
-		_sHTML = "<table class='ui-widget-content'>";
+		_sHTML = "<table class='ui-preview-table'>";
 		
 		for (var i = 0 ; i < _rows.length ; i ++)
 		{
@@ -110,13 +110,14 @@ function previewExportReportReceived( parentElement )
 				// Printing out the unformatted cells
 				for (; _index < _number ; _index ++)
 				{
-					_sHTML += "<td class='ui-widget-content'/>";
+					_sHTML += "<td/>";
 				}
 
 				if ( _index == _number )
 				{
 					var _sData		= getElementValue( _cols[j], 'data' );
 					var _align		= getElementAttribute( _cols[j], 'format', 'align' );
+					var _border		= getElementAttribute( _cols[j], 'format', 'border' );
 				
 					// If this cell is merged - Key's form: Sheet#Row#Col
 					_sPattern 		=  _orderSheet + "#" + i + "#" + _number;
@@ -126,16 +127,18 @@ function previewExportReportReceived( parentElement )
 					j 		= Number(j) + Number(_colspan);
 					_index 	= Number(_index) + Number(_colspan);
 					
-					_sHTML += "<td align='" + _align + "' colspan='" + _colspan + "' ";
-					_sHTML += "class='ui-widget-content";
+					_sHTML += "<td align='" + _align + "' colspan='" + _colspan + "'";
+					_sHTML += " class='printclass";
+					_sHTML += _border > 0 ? " ui-widget-content" : "";
 					
+					// Preview without importing
 					if ( keyId && keyId.length > 0 )
 					{
-						_sHTML += " ui-unselected' id='" + keyId;
+						_sHTML += " ui-preview-unselected' id='" + keyId;
 					}
-					else if ( !isImport && parseFloat(_sData) )
+					else if ( !isImport && isRealNumber(_sData) )
 					{
-						_sHTML += " ui-normal";
+						_sHTML += " ui-preview-normal";
 					}
 					
 					_sHTML += "'>" + _sData + "</td>";
@@ -163,18 +166,18 @@ function previewExportReportReceived( parentElement )
 
 function applyStyleIntoPreview()
 {
-	importlist = jQuery( 'table.ui-widget-content tr > td.ui-unselected' );
+	importlist = jQuery( 'table.ui-widget-content tr > td.ui-preview-unselected' );
 	
 	if ( importlist.length > 0 )
 	{
 		importlist.mouseover(function()
 		{
-			jQuery(this).addClass( 'ui-mouseover' );
+			jQuery(this).addClass( 'ui-preview-mouseover' );
 		});
 
 		importlist.mouseout(function()
 		{
-			jQuery(this).removeClass( 'ui-mouseover' );
+			jQuery(this).removeClass( 'ui-preview-mouseover' );
 		});
 
 		importlist.click(function()
@@ -189,7 +192,7 @@ function applyStyleIntoPreview()
 			}
 			else importItemIds.push( idTemp );
 			
-			jQuery(this).toggleClass( 'ui-selected' );
+			jQuery(this).toggleClass( 'ui-preview-selected' );
 		});
 	}
 }
@@ -208,6 +211,13 @@ function getMergedNumberForEachCell( aKey, sKey, aMerged )
 
 function printExportReport()
 {
+	var htmlStyle = "<style type='text/css'>";
+	htmlStyle += "td.printclass { font-size: 12px; }";
+	htmlStyle += ".ui-preview-table{ border-collapse: collapse; }";
+	htmlStyle += ".ui-preview-normal{ font-weight: bold; color: blue }";
+	htmlStyle += ".ui-widget-content { border: 1px solid #a6c9e2; background: #fcfdfd url(images/ui-bg_inset-hard_100_fcfdfd_1x100.png) 50% bottom repeat-x; color: #222222; }";
+	htmlStyle += "</style>";
+
 	var tab = jQuery('#tabs').tabs('option', 'selected');
-	jQuery( "#tabs-" + tab ).jqprint();
+	jQuery( "#tabs-" + tab ).jqprint( {CSS : htmlStyle} );
 }

@@ -9,34 +9,33 @@ var periodTypeFactory = new PeriodType();
 var currentPeriodTypeName = '';
 
 // Functions
-function organisationUnitSelected( orgUnits )
-{	
-	getExportReportsByGroup();	
+function organisationUnitSelected( orgUnits, orgUnitNames )
+{
+	getExportReportsByGroup( orgUnitNames[0] );	
 }
 
 selection.setListenerFunction( organisationUnitSelected );
 
-function getExportReportsByGroup() {
+function getExportReportsByGroup( selectedOrgUnitName ) {
 	
-	jQuery.postJSON( 'getExportReportsByGroup.action',
+	if ( selectedOrgUnitName )
 	{
-		group: getFieldValue( 'group' )
-	},
-	function ( json )
-	{
-		jQuery('#exportReport').empty();
-		jQuery.each( json.exportReports, function(i, item){
-			addOptionById( 'exportReport', item.id + '_' + item.flag, item.name );
-		});
-
-		currentPeriodOffset = 0;
-		reportSelected();
-		displayPeriodsInternal();
+		setInnerHTML( "selectedOrganisationUnit", selectedOrgUnitName );
 		
-		var selectedOrganisationUnit = null;
+		jQuery.postJSON( 'getExportReportsByGroup.action',
+		{
+			group: getFieldValue( 'group' )
+		},
+		function ( json )
+		{
+			jQuery('#exportReport').empty();
+			jQuery.each( json.exportReports, function(i, item){
+				addOptionById( 'exportReport', item.id + '_' + item.flag, item.name );
+			});
 
-		try {
-			selectedOrganisationUnit = json.organisationUnit;
+			currentPeriodOffset = 0;
+			reportSelected();
+			displayPeriodsInternal();
 			
 			enable("group");
 			enable("exportReport");
@@ -45,36 +44,42 @@ function getExportReportsByGroup() {
 			enable("previewButton");
 			enable("nextPeriod");
 			enable("lastPeriod");
-		}catch(e){
-			disable("group");
-			disable("exportReport");
-			disable("selectedPeriodId");
-			disable("generateExportReport");
-			disable("previewButton");
-			disable("nextPeriod");
-			disable("lastPeriod");		
-		}
-
-		setInnerHTML( "selectedOrganisationUnit", selectedOrganisationUnit );
-	});
+		});
+	} else {
+		disable("group");
+		disable("exportReport");
+		disable("selectedPeriodId");
+		disable("generateExportReport");
+		disable("previewButton");
+		disable("nextPeriod");
+		disable("lastPeriod");
+	}
 }
 
 function reportSelected()
 {
-	currentPeriodTypeName = (getFieldValue( 'exportReport' ).split( '_' )[1] == "true") ? 'Daily' : 'Monthly';
+	var value = getFieldValue( 'exportReport' );
+	
+	if ( value && value != null )
+	{
+		currentPeriodTypeName = (value.split( '_' )[1] == "true") ? 'Daily' : 'Monthly';
+	}
 }
 
 function displayPeriodsInternal()
 {
-    var periods = periodTypeFactory.get( currentPeriodTypeName ).generatePeriods( currentPeriodOffset );
-    periods = periodTypeFactory.filterFuturePeriods( periods );
+	if ( currentPeriodTypeName )
+	{
+		var periods = periodTypeFactory.get( currentPeriodTypeName ).generatePeriods( currentPeriodOffset );
+		periods = periodTypeFactory.filterFuturePeriods( periods );
 
-    clearListById( 'selectedPeriodId' );
+		clearListById( 'selectedPeriodId' );
 
-    for ( i in periods )
-    {
-        addOptionById( 'selectedPeriodId', periods[i].id, periods[i].name );
-    }
+		for ( i in periods )
+		{
+			addOptionById( 'selectedPeriodId', periods[i].id, periods[i].name );
+		}
+	}
 }
 
 function getNextPeriod()
