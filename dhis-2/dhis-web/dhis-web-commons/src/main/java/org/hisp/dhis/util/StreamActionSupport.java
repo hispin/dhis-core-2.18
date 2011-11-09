@@ -31,6 +31,8 @@ import java.io.OutputStream;
 
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.apache.struts2.ServletActionContext;
 import org.hisp.dhis.system.util.StreamUtils;
 
@@ -43,6 +45,8 @@ import com.opensymphony.xwork2.Action;
 public abstract class StreamActionSupport
     implements Action
 {
+    private static final Log log = LogFactory.getLog( StreamActionSupport.class );
+
     // -------------------------------------------------------------------------
     // ActionSupport implementation
     // -------------------------------------------------------------------------
@@ -54,7 +58,15 @@ public abstract class StreamActionSupport
         
         HttpServletResponse response = ServletActionContext.getResponse();
         
-        ContextUtils.configureResponse( response, getContentType(), disallowCache(), getFilename(), attachment() );
+        String contentType = getContentType();
+        boolean disallowCache = disallowCache();
+        String filename = getFilename();
+        boolean attachment = attachment();
+        
+        ContextUtils.configureResponse( response, contentType, disallowCache, filename, attachment );
+        
+        log.info( "Content type: " + contentType + ", disallow cache: " + 
+            disallowCache + ", filename: " + filename + ", attachment: " + attachment );
         
         try
         {
