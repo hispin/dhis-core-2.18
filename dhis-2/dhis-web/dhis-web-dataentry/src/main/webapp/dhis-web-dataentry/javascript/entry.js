@@ -36,7 +36,7 @@ function updateIndicators()
         {
 	        var value = eval( expression );
 	        
-	        value = isNaN( value ) ? '-' : Math.round( value );
+	        value = isNaN( value ) ? '-' : roundTo( value, 1 );
 	
 	        $( this ).attr( 'value', value );
         }
