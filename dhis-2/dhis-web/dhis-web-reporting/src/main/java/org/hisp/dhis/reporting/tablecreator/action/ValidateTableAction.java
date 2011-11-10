@@ -75,13 +75,6 @@ public class ValidateTableAction
     {
         this.name = name;
     }
-
-    private String fileName;
-    
-    public void setUploadFileName( String fileName )
-    {
-        this.fileName = fileName;
-    }
     
     // -------------------------------------------------------------------------
     // Output
@@ -125,13 +118,6 @@ public class ValidateTableAction
 
                 return INPUT;
             }
-        }
-
-        if ( id == null && ( fileName == null || fileName.trim().length() == 0 ) )
-        {
-            message = i18n.getString( "select_file" );
-            
-            return ERROR;
         }
 
         message = i18n.getString( "ok" );
