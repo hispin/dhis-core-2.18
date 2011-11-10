@@ -54,6 +54,7 @@ public class ExcelContentTypeMap
         List<String> xlsContentTypes = new ArrayList<String>();
 
         xlsContentTypes.add( APPLICATION + XLS );
+        xlsContentTypes.add( APPLICATION + "ms-excel" );
         xlsContentTypes.add( APPLICATION + "vnd.ms-excel" );
         xlsContentTypes.add( APPLICATION + "octet-stream" );
 
