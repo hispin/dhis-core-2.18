@@ -122,16 +122,16 @@ public class GetExportReportsByGroupAction
                 .getCurrentUser(), currentUserService.currentUserIsSuper(), group ) );
 
             Collection<ExportReport> reportAssociation = exportReportService
-                .getExportReportsByOrganisationUnit( organisationUnitSelectionManager.getSelectedOrganisationUnit() );
+                .getExportReportsByOrganisationUnit( organisationUnit );
 
             exportReports.retainAll( reportAssociation );
 
             Collections.sort( exportReports, new ExportReportNameComparator() );
-            
+
             String periodTypeName = null;
 
             for ( ExportReport exportReport : exportReports )
-            {                
+            {
                 for ( ExportItem exportItem : exportReport.getExportItems() )
                 {
                     periodTypeName = exportItem.getPeriodType();
