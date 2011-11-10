@@ -29,8 +29,6 @@ package org.hisp.dhis.mapping.action;
 
 import java.io.OutputStream;
 
-import javax.servlet.http.HttpServletResponse;
-
 import jxl.CellView;
 import jxl.Workbook;
 import jxl.format.Alignment;
@@ -58,6 +56,8 @@ import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.util.ContextUtils;
 import org.hisp.dhis.util.StreamActionSupport;
+
+import javax.servlet.http.HttpServletResponse;
 
 /**
  * @author Tran Thanh Tri

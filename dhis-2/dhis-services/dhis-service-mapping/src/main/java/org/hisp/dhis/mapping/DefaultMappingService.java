@@ -27,6 +27,12 @@ package org.hisp.dhis.mapping;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import static org.hisp.dhis.options.SystemSettingManager.AGGREGATION_STRATEGY_BATCH;
+import static org.hisp.dhis.options.SystemSettingManager.AGGREGATION_STRATEGY_REAL_TIME;
+import static org.hisp.dhis.options.SystemSettingManager.DEFAULT_AGGREGATION_STRATEGY;
+import static org.hisp.dhis.options.SystemSettingManager.KEY_AGGREGATION_STRATEGY;
+
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashSet;
@@ -55,8 +61,6 @@ import org.hisp.dhis.user.User;
 import org.hisp.dhis.user.UserSettingService;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
-
-import static org.hisp.dhis.options.SystemSettingManager.*;
 
 /**
  * @author Jan Henrik Overland
@@ -169,8 +173,8 @@ public class DefaultMappingService
 
         if ( parentOrganisationUnitId != null && level != null )
         {
-            organisationUnits = organisationUnitService.getOrganisationUnitsAtLevel( level, organisationUnitService
-                .getOrganisationUnit( parentOrganisationUnitId ) );
+            organisationUnits = organisationUnitService.getOrganisationUnitsAtLevel( level,
+                organisationUnitService.getOrganisationUnit( parentOrganisationUnitId ) );
         }
         else if ( level != null )
         {
@@ -182,6 +186,52 @@ public class DefaultMappingService
         }
 
         return organisationUnits;
+    }
+
+    public boolean isPointMinority( Collection<OrganisationUnit> object )
+    {
+        int polygons = 0, points = 0;
+
+        for ( OrganisationUnit unit : object )
+        {
+            polygons = unit.isPolygon() ? polygons + 1 : polygons;
+
+            points = unit.isPoint() ? points + 1 : points;
+        }
+
+        return polygons > points ? true : false;
+    }
+
+    public Collection<OrganisationUnit> removeMinorityFeatureType( Collection<OrganisationUnit> object )
+    {
+        boolean isPointMinority = isPointMinority( object );
+
+        Collection<OrganisationUnit> majority = new ArrayList<OrganisationUnit>();
+
+        if ( isPointMinority )
+        {
+            for ( OrganisationUnit unit : object )
+            {
+                if ( unit.getFeatureType().equals( OrganisationUnit.FEATURETYPE_MULTIPOLYGON )
+                    || unit.getFeatureType().equals( OrganisationUnit.FEATURETYPE_POLYGON ) )
+                {
+                    majority.add( unit );
+                }
+            }
+        }
+
+        else
+        {
+            for ( OrganisationUnit unit : object )
+            {
+                if ( unit.getFeatureType().equals( OrganisationUnit.FEATURETYPE_POINT ) )
+                {
+                    majority.add( unit );
+                }
+            }
+        }
+
+        return majority;
     }
 
     // -------------------------------------------------------------------------

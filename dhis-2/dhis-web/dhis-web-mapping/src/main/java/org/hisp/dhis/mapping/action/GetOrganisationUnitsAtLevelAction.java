@@ -28,6 +28,7 @@ package org.hisp.dhis.mapping.action;
  */
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
@@ -36,8 +37,6 @@ import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 
 import com.opensymphony.xwork2.Action;
-
-import java.util.Collections;
 
 /**
  * @author Lars Helge Overland
