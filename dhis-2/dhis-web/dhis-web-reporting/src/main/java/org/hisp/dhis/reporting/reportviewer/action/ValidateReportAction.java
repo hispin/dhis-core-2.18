@@ -1,4 +1,4 @@
-package org.hisp.dhis.reporting.tablecreator.action;
+package org.hisp.dhis.reporting.reportviewer.action;
 
 /*
  * Copyright (c) 2004-2010, University of Oslo
@@ -28,27 +28,26 @@ package org.hisp.dhis.reporting.tablecreator.action;
  */
 
 import org.hisp.dhis.i18n.I18n;
-import org.hisp.dhis.reporttable.ReportTable;
-import org.hisp.dhis.reporttable.ReportTableService;
+import org.hisp.dhis.report.Report;
+import org.hisp.dhis.report.ReportService;
 
 import com.opensymphony.xwork2.Action;
 
 /**
  * @author Lars Helge Overland
- * @version $Id$
  */
-public class ValidateTableAction
+public class ValidateReportAction
     implements Action
 {
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
 
-    private ReportTableService reportTableService;
+    public ReportService reportService;
 
-    public void setReportTableService( ReportTableService reportTableService )
+    public void setReportService( ReportService reportService )
     {
-        this.reportTableService = reportTableService;
+        this.reportService = reportService;
     }
 
     private I18n i18n;
@@ -76,13 +75,6 @@ public class ValidateTableAction
         this.name = name;
     }
 
-    private String fileName;
-    
-    public void setUploadFileName( String fileName )
-    {
-        this.fileName = fileName;
-    }
-    
     // -------------------------------------------------------------------------
     // Output
     // -------------------------------------------------------------------------
@@ -117,7 +109,7 @@ public class ValidateTableAction
                 return INPUT;
             }
 
-            ReportTable match = reportTableService.getReportTableByName( name );
+            Report match = reportService.getReportByName( name );
 
             if ( match != null && ( id == null || match.getId() != id ) )
             {
@@ -125,13 +117,6 @@ public class ValidateTableAction
 
                 return INPUT;
             }
-        }
-
-        if ( id == null && ( fileName == null || fileName.trim().length() == 0 ) )
-        {
-            message = i18n.getString( "select_file" );
-            
-            return ERROR;
         }
 
         message = i18n.getString( "ok" );

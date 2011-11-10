@@ -1,6 +1,17 @@
 function addReport()
 {
-    document.getElementById( "reportForm" ).submit();
+	$.postJSON( "validateReport.action", { id:$( "#id" ).val(), "name":$( "#name" ).val() }, function( json )
+	{
+		if ( json.response == "input" )
+		{
+			setMessage( json.message );
+			return false;
+		}
+		else if ( json.response == "success" )
+		{
+        	$( "#reportForm" ).submit();
+		}
+	} );
 }
 
 function removeReport( id )

@@ -224,6 +224,12 @@
       <result name="success" type="outputStreamResult" />
     </action>
 	
+	<action name="validateReport" class="org.hisp.dhis.reporting.reportviewer.action.ValidateReportAction">	  
+      <result name="success" type="velocity-json">/dhis-web-commons/ajax/jsonResponseSuccess.vm</result>
+      <result name="input" type="velocity-json">/dhis-web-commons/ajax/jsonResponseInput.vm</result>
+      <param name="onExceptionReturn">plainTextError</param>
+    </action>
+	
 	<!-- ReportGroup -->
 	
     <action name="reportGroup" class="org.hisp.dhis.reporting.reportgroup.action.GetReportGroupListAction">
