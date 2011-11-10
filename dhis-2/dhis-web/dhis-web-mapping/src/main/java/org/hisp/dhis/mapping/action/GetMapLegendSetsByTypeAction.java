@@ -27,12 +27,14 @@ package org.hisp.dhis.mapping.action;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import com.opensymphony.xwork2.Action;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+
 import org.hisp.dhis.mapping.MapLegendSet;
 import org.hisp.dhis.mapping.MappingService;
+
+import com.opensymphony.xwork2.Action;
 
 /**
  * @author Jan Henrik Overland

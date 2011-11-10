@@ -1,0 +1,29 @@
+<html>
+<head>
+    <link rel="stylesheet" type="text/css" href="../lib/ext/resources/css/ext-all-gray.css" />
+    <link rel="stylesheet" type="text/css" href="../css/plugin.css" />
+    <script type="text/javascript" src="../lib/ext/ext-all.js"></script>
+    <script type="text/javascript" src="plugin.js"></script>    
+</head>
+
+<body>
+	
+	<div id="bar_chart_1"></div>
+	
+	<script>
+		Ext.onReady( function() {
+			DHIS.getChart({
+				type: 'column',
+				indicators: [52486],
+				periods: ['monthsThisYear'],
+				organisationunits: [525],
+				series: 'indicator',
+				category: 'period',
+				filter: 'organisationunit',
+				div: 'bar_chart_1'
+			});
+		});
+	</script>
+	
+</body>
+</html>

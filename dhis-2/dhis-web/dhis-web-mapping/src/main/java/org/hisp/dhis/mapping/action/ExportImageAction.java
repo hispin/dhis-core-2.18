@@ -29,8 +29,6 @@ package org.hisp.dhis.mapping.action;
 
 import java.io.OutputStream;
 
-import javax.servlet.http.HttpServletResponse;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hisp.dhis.mapping.export.SVGDocument;
@@ -38,6 +36,8 @@ import org.hisp.dhis.mapping.export.SVGUtils;
 import org.hisp.dhis.util.ContextUtils;
 import org.hisp.dhis.util.SessionUtils;
 import org.hisp.dhis.util.StreamActionSupport;
+
+import javax.servlet.http.HttpServletResponse;
 
 /**
  * @author Tran Thanh Tri

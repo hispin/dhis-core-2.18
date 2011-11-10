@@ -1,0 +1,9 @@
+body {
+	margin: 100px;
+}
+
+#bar_chart_1 {
+	height: 400px;
+	width: 600px;
+	border: 1px solid #ccc;
+}

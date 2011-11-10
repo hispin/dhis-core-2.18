@@ -440,6 +440,16 @@ public class OrganisationUnit
 
         return set;
     }
+    
+    public boolean isPolygon()
+    {
+        return ( featureType.equals( FEATURETYPE_MULTIPOLYGON ) || featureType.equals( FEATURETYPE_POLYGON ) );
+    }
+    
+    public boolean isPoint()
+    {
+        return featureType.equals( FEATURETYPE_POINT );
+    }
 
     // -------------------------------------------------------------------------
     // hashCode, equals and toString

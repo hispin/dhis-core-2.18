@@ -39,6 +39,12 @@
                 /dhis-web-visualizer/jsonminAggregatedIndicatorValues.vm</result>
         </action>
 
+        <action name="getAggregatedIndicatorValuesPlugin"
+            class="org.hisp.dhis.visualizer.action.GetAggregatedIndicatorValuesPluginAction">
+            <result name="success" type="velocity-json">
+                /dhis-web-visualizer/jsonminAggregatedIndicatorValuesPlugin.vm</result>
+        </action>
+
         <!-- AggregatedDataValue -->
 
         <action name="getAggregatedDataValues"
@@ -47,6 +53,12 @@
                 /dhis-web-visualizer/jsonminAggregatedDataValues.vm</result>
             <result name="none" type="velocity-json">
                 /dhis-web-visualizer/void.vm</result>
+        </action>
+
+        <action name="getAggregatedDataValuesPlugin"
+            class="org.hisp.dhis.visualizer.action.GetAggregatedDataValuesPluginAction">
+            <result name="success" type="velocity-json">
+                /dhis-web-visualizer/jsonminAggregatedDataValuesPlugin.vm</result>
         </action>
 		
 	</package>

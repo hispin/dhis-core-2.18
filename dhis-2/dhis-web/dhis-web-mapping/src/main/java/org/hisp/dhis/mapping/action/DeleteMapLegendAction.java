@@ -1,8 +1,9 @@
 package org.hisp.dhis.mapping.action;
 
-import com.opensymphony.xwork2.Action;
 import org.hisp.dhis.mapping.MapLegend;
 import org.hisp.dhis.mapping.MappingService;
+
+import com.opensymphony.xwork2.Action;
 
 public class DeleteMapLegendAction
     implements Action

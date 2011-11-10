@@ -29,6 +29,7 @@ package org.hisp.dhis.mapping.action;
 
 import java.util.Collection;
 
+import org.hisp.dhis.mapping.MappingService;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroupService;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroupSet;
@@ -63,6 +64,13 @@ public class GetGeoJsonAction
     public void setOrganisationUnitGroupService( OrganisationUnitGroupService organisationUnitGroupService )
     {
         this.organisationUnitGroupService = organisationUnitGroupService;
+    }
+    
+    private MappingService mappingService;
+
+    public void setMappingService( MappingService mappingService )
+    {
+        this.mappingService = mappingService;
     }
 
     // -------------------------------------------------------------------------
@@ -108,6 +116,8 @@ public class GetGeoJsonAction
         object = organisationUnitService.getOrganisationUnitsAtLevel( level, parent );
 
         FilterUtils.filter( object, new OrganisationUnitWithCoordinatesFilter() );
+        
+        object = mappingService.removeMinorityFeatureType( object );        
 
         String returnType = object.size() > 0 ? object.iterator().next().getFeatureType() : NONE;
 
