@@ -59,6 +59,15 @@ join reportreporttables rr using(reportid)
 join reporttable t using(reporttableid)
 where t.name='Indicators';
 
+-- Show collection frequency of data elements with average aggregation operator
+
+select distinct de.name, periodtype.name 
+from dataelement de 
+join datasetmembers using (dataelementid) 
+join dataset using (datasetid) 
+join periodtype using(periodtypeid) 
+where de.aggregationtype = 'average';
+
 -- Recreate indexes on aggregated tables
 
 drop index aggregateddatavalue_index;
