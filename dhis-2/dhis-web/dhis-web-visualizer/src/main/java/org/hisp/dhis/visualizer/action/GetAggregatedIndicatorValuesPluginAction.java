@@ -215,10 +215,12 @@ public class GetAggregatedIndicatorValuesPluginAction
 
             for ( AggregatedIndicatorValue value : object )
             {
+                /*
                 value.setIndicatorName( indicatorService.getIndicator( value.getIndicatorId() ).getName() );
                 value.setPeriodName( format.formatPeriod( periodService.getPeriod( value.getPeriodId() ) ) );
                 value.setOrganisationUnitName( organisationUnitService.getOrganisationUnit(
                     value.getOrganisationUnitId() ).getName() );
+                    */
             }
         }
 
