@@ -214,10 +214,12 @@ public class GetAggregatedDataValuesPluginAction
 
             for ( AggregatedDataValue value : object )
             {
+                /*
                 value.setDataElementName( dataElementService.getDataElement( value.getDataElementId() ).getName() );
                 value.setPeriodName( format.formatPeriod( periodService.getPeriod( value.getPeriodId() ) ) );
                 value.setOrganisationUnitName( organisationUnitService.getOrganisationUnit(
                     value.getOrganisationUnitId() ).getName() );
+                    */
             }
         }
 
