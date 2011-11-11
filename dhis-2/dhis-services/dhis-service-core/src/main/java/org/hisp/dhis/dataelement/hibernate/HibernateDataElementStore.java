@@ -244,7 +244,7 @@ public class HibernateDataElementStore
     {
         String hql = "from DataElement d where d.groupSets.size > 0";
 
-        return getQuery( hql ).list();
+        return getQuery( hql ).setCacheable( true ).list();
     }
 
     public void setZeroIsSignificantForDataElements( Collection<Integer> dataElementIds )
@@ -274,6 +274,7 @@ public class HibernateDataElementStore
         Criteria criteria = getCriteria();
         criteria.add( Restrictions.eq( "zeroIsSignificant", zeroIsSignificant ) );
         criteria.add( Restrictions.eq( "type", DataElement.VALUE_TYPE_INT ) );
+        criteria.setCacheable( true );
 
         return criteria.list();
     }
@@ -283,7 +284,7 @@ public class HibernateDataElementStore
     {
         String hql = "from DataElement d where d.groups.size = 0";
 
-        return getQuery( hql ).list();
+        return getQuery( hql ).setCacheable( true ).list();
     }
 
     @SuppressWarnings( "unchecked" )
@@ -291,7 +292,7 @@ public class HibernateDataElementStore
     {
         String hql = "from DataElement d where d.dataSets.size = 0";
 
-        return getQuery( hql ).list();
+        return getQuery( hql ).setCacheable( true ).list();
     }
 
     @SuppressWarnings( "unchecked" )
@@ -299,7 +300,7 @@ public class HibernateDataElementStore
     {
         String hql = "from DataElement d where d.dataSets.size > 0";
 
-        return getQuery( hql ).list();
+        return getQuery( hql ).setCacheable( true ).list();
     }
 
     public boolean dataElementExists( int id )

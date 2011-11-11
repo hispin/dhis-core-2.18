@@ -145,7 +145,7 @@ public class HibernateIndicatorStore
     {
         final String hql = "from Indicator d where d.groupSets.size > 0";
 
-        return getQuery( hql ).list();
+        return getQuery( hql ).setCacheable( true ).list();
     }
 
     @SuppressWarnings( "unchecked" )
@@ -153,7 +153,7 @@ public class HibernateIndicatorStore
     {
         final String hql = "from Indicator d where d.groups.size = 0";
 
-        return getQuery( hql ).list();
+        return getQuery( hql ).setCacheable( true ).list();
     }
 
     @SuppressWarnings( "unchecked" )
@@ -161,7 +161,7 @@ public class HibernateIndicatorStore
     {
         final String hql = "from Indicator d where d.dataSets.size > 0";
 
-        return getQuery( hql ).list();
+        return getQuery( hql ).setCacheable( true ).list();
     }
 
     public int getIndicatorCount()
