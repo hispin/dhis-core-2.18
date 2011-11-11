@@ -349,6 +349,11 @@ public class DefaultDataElementService
         return i18n( i18nService, dataElementStore.getDataElementsByDataSets( dataSets ) );
     }
 
+    public Map<Integer, Set<Integer>> getDataElementCategoryOptionCombos()
+    {
+        return dataElementStore.getDataElementCategoryOptionCombos();
+    }
+    
     // -------------------------------------------------------------------------
     // DataElementGroup
     // -------------------------------------------------------------------------

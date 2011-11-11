@@ -30,7 +30,9 @@ package org.hisp.dhis.dataelement.hibernate;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 
 import org.amplecode.quick.StatementManager;
@@ -49,6 +51,7 @@ import org.hisp.dhis.hierarchy.HierarchyViolationException;
 import org.hisp.dhis.system.objectmapper.DataElementOperandMapper;
 import org.hisp.dhis.system.util.ConversionUtils;
 import org.hisp.dhis.system.util.TextUtils;
+import org.springframework.jdbc.core.RowCallbackHandler;
 
 /**
  * @author Torgeir Lorange Ostby
@@ -69,7 +72,7 @@ public class HibernateDataElementStore
     {
         this.statementManager = statementManager;
     }
-
+    
     // -------------------------------------------------------------------------
     // DataElement
     // -------------------------------------------------------------------------
@@ -349,6 +352,32 @@ public class HibernateDataElementStore
     public int getDataElementCountByName( String name )
     {
         return getCountByName( name );
+    }
+    
+    public Map<Integer, Set<Integer>> getDataElementCategoryOptionCombos()
+    {
+        final String sql = "select de.dataelementid, coc.categoryoptioncomboid from dataelement de " +
+            "join categorycombos_optioncombos coc on de.categorycomboid=coc.categorycomboid";
+        
+        final Map<Integer, Set<Integer>> sets = new HashMap<Integer, Set<Integer>>();
+        
+        jdbcTemplate.query( sql, new RowCallbackHandler()
+        {
+            @Override
+            public void processRow( ResultSet rs )
+                throws SQLException
+            {
+                int dataElementId = rs.getInt( 1 );
+                int categoryOptionComboId = rs.getInt( 2 );
+                
+                Set<Integer> set = sets.get( dataElementId ) != null ? sets.get( dataElementId ) : new HashSet<Integer>();
+                
+                set.add( categoryOptionComboId );                
+                sets.put( dataElementId, set );
+            }
+        } );
+        
+        return sets;
     }
 
     // -------------------------------------------------------------------------
