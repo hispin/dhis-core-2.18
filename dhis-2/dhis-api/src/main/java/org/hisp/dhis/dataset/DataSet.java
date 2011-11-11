@@ -240,7 +240,7 @@ public class DataSet
     
     public DataSet increaseVersion()
     {
-        this.version = this.version + 1;
+        version = version != null ? version + 1 : 1;
         return this;
     }
     
