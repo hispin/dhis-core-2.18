@@ -3,7 +3,7 @@
 
   <diskStore path="java.io.tmpdir" />
 
-  <defaultCache maxElementsInMemory="650000" eternal="false" timeToIdleSeconds="360" timeToLiveSeconds="720"
+  <defaultCache maxElementsInMemory="800000" eternal="false" timeToIdleSeconds="360" timeToLiveSeconds="720"
     overflowToDisk="false" diskPersistent="false" diskExpiryThreadIntervalSeconds="720" memoryStoreEvictionPolicy="LRU" />
 
   <!-- Hibernate entities -->
@@ -66,7 +66,7 @@
 
   <cache name="org.hisp.dhis.options.SystemSetting" maxElementsInMemory="200" />
 
-  <cache name="org.hisp.dhis.translation.Translation" maxElementsInMemory="8000" />
+  <cache name="org.hisp.dhis.translation.Translation" maxElementsInMemory="200000" />
 
   <cache name="org.hisp.dhis.message.MessageConversation" maxElementsInMemory="500" />
 
