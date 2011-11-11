@@ -55,7 +55,8 @@ DV.conf = {
     layout: {
         west_cmp_width: 380,
         west_width: 424,
-        east_tbar_height: 27
+        center_tbar_height: 31,
+        east_tbar_height: 31
     }
 };
 
@@ -1757,67 +1758,73 @@ Ext.onReady( function() {
                 region: 'center',
                 layout: 'fit',
                 bodyStyle: 'padding:10px',
-                tbar: [
-                    {
-                        xtype: 'button',
-                        name: 'resizeleft',
-                        text: '<span style="font-weight:bold"><<<</span>',
-                        tooltip: 'Show/hide chart settings',
-                        handler: function() {
-                            var p = DV.util.getCmp('panel[region="west"]');
-                            if (p.collapsed) {
-                                p.expand();
+                tbar: {
+                    xtype: 'toolbar',
+                    height: DV.conf.layout.center_tbar_height,
+                    items: [
+                        {
+                            xtype: 'button',
+                            id: 'resizeleft_b',
+                            name: 'resizeleft',
+                            text: '<span style="font-weight:bold; color:#444;"><<<</span>',
+                            tooltip: 'Show/hide chart settings',
+                            handler: function() {
+                                var p = DV.util.getCmp('panel[region="west"]');
+                                if (p.collapsed) {
+                                    p.expand();
+                                }
+                                else {
+                                    p.collapse();
+                                }
                             }
-                            else {
-                                p.collapse();
+                        },'-',
+                        {
+                            xtype: 'button',
+                            id: 'update_b',
+                            text: '<b style="color:#444">Update</b>',
+                            cls: 'x-btn-text-icon',
+                            icon: 'images/refresh.png',
+                            handler: function() {
+                                DV.exe.execute(true, DV.init.isInit);
+                            }
+                        },'-',
+                        {
+                            xtype: 'button',
+                            id: 'datatable_b',
+                            text: '<b style="color:#444">Data table</b>',
+                            cls: 'x-btn-text-icon',
+                            icon: 'images/datatable.png',
+                            handler: function(b) {
+                                var p = DV.util.getCmp('panel[region="east"]');
+                                if (p.collapsed && p.items.length) {
+                                    p.expand();
+                                    DV.exe.datatable(true);
+                                }
+                                else {
+                                    p.collapse();
+                                }
+                            }
+                        },
+                        '-',' ',' ',
+                        {
+                            xtype: 'label',
+                            text: 'Example chart',
+                            style: 'font-weight:bold; padding:0 4px;'
+                        },
+                        '->',
+                        {
+                            xtype: 'button',
+							id: 'exit_b',
+                            text: '<b style="color:#444">Exit</b>',
+                            cls: 'x-btn-text-icon',
+                            icon: 'images/exit.png',
+                            handler: function() {
+                                window.location.href = DV.conf.finals.ajax.url_portal + 'redirect.action';
                             }
                         }
-                    },
-                    ' ',
-                    {
-                        xtype: 'button',
-                        text: 'Update',
-                        cls: 'x-btn-text-icon',
-                        icon: 'images/refresh.png',
-                        handler: function() {
-                            DV.exe.execute(true, DV.init.isInit);
-                        }
-                    },
-                    {
-                        xtype: 'button',
-                        text: 'Data table',
-                        tooltip: 'Show/hide data table',
-                        cls: 'x-btn-text-icon',
-                        icon: 'images/datatable.png',
-                        handler: function(b) {
-                            var p = DV.util.getCmp('panel[region="east"]');
-                            if (p.collapsed && p.items.length) {
-                                p.expand();
-                                DV.exe.datatable(true);
-                            }
-                            else {
-                                p.collapse();
-                            }
-                        }
-                    },
-                    '-',' ',
-                    {
-                        xtype: 'label',
-                        text: 'Example chart',
-                        style: 'font-weight:bold; padding:0 4px'
-                    },
-                    '->',
-                    {
-                        xtype: 'button',
-                        text: 'Exit',
-                        cls: 'x-btn-text-icon',
-                        icon: 'images/exit.png',
-                        handler: function() {
-                            window.location.href = DV.conf.finals.ajax.url_portal + 'redirect.action';
-                        }
-                    }
                     
-                ]
+                    ]
+                }
             },
             {
                 region: 'east',
@@ -1835,7 +1842,7 @@ Ext.onReady( function() {
                         {
                             xtype: 'label',
                             text: 'Data table',
-                            style: 'font-weight:bold; padding:0 4px'
+                            style: 'font-weight:bold; color:#444; padding:0 4px'
                         }
                     ]
                 }
