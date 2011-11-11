@@ -449,20 +449,58 @@ public class DefaultExpressionService
 
     public void explodeAndSubstituteExpressions( Collection<Indicator> indicators, Integer days )
     {
-        if ( indicators != null )
-        {            
+        if ( indicators != null && !indicators.isEmpty() )
+        {
             for ( Indicator indicator : indicators )
             {
                 indicator.setExplodedNumerator( substituteExpression( indicator.getNumerator(), days ) );
                 indicator.setExplodedDenominator( substituteExpression( indicator.getDenominator(), days ) );
             }
+
+            final Map<Integer, Set<Integer>> dataElementMap = dataElementService.getDataElementCategoryOptionCombos();
             
             for ( Indicator indicator : indicators )
             {
-                indicator.setExplodedNumerator( explodeExpression( indicator.getExplodedNumerator() ) );
-                indicator.setExplodedDenominator( explodeExpression( indicator.getExplodedDenominator() ) );
+                indicator.setExplodedNumerator( explodeExpression( indicator.getExplodedNumerator(), dataElementMap ) );
+                indicator.setExplodedDenominator( explodeExpression( indicator.getExplodedDenominator(), dataElementMap ) );
             }     
         }
+    }
+
+    private String explodeExpression( String expression, Map<Integer, Set<Integer>> dataElementMap )
+    {
+        StringBuffer buffer = null;
+
+        if ( expression != null )
+        {
+            final Matcher matcher = OPERAND_PATTERN.matcher( expression );
+
+            buffer = new StringBuffer();
+
+            while ( matcher.find() )
+            {
+                final DataElementOperand operand = DataElementOperand.getOperand( matcher.group() );
+                
+                if ( operand.isTotal() )
+                {
+                    final StringBuilder replace = new StringBuilder( PAR_OPEN );
+                    
+                    for ( Integer categoryOptionCombo : dataElementMap.get( operand.getDataElementId() ) )
+                    {
+                        replace.append( EXP_OPEN ).append( operand.getDataElementId() ).append( SEPARATOR ).append(
+                            categoryOptionCombo ).append( EXP_CLOSE ).append( "+" );
+                    }
+
+                    replace.deleteCharAt( replace.length() - 1 ).append( PAR_CLOSE );
+
+                    matcher.appendReplacement( buffer, replace.toString() );
+                }
+            }
+
+            matcher.appendTail( buffer );
+        }
+
+        return buffer != null ? buffer.toString() : null;
     }
     
     public String explodeExpression( String expression )
@@ -478,7 +516,7 @@ public class DefaultExpressionService
             while ( matcher.find() )
             {
                 final DataElementOperand operand = DataElementOperand.getOperand( matcher.group() );
-
+                
                 if ( operand.isTotal() )
                 {
                     final StringBuilder replace = new StringBuilder( PAR_OPEN );
