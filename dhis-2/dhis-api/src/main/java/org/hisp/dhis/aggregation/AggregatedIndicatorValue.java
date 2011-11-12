@@ -64,6 +64,12 @@ public class AggregatedIndicatorValue
     private double denominatorValue;
 
     private Date modified;
+    
+    private transient String indicatorName;
+    
+    private transient String periodName;
+    
+    private transient String organisationUnitName;
 
     // ----------------------------------------------------------------------
     // Constructors
@@ -278,6 +284,36 @@ public class AggregatedIndicatorValue
     public void setModified( Date modified )
     {
         this.modified = modified;
+    }
+
+    public String getIndicatorName()
+    {
+        return indicatorName;
+    }
+
+    public void setIndicatorName( String indicatorName )
+    {
+        this.indicatorName = indicatorName;
+    }
+
+    public String getPeriodName()
+    {
+        return periodName;
+    }
+
+    public void setPeriodName( String periodName )
+    {
+        this.periodName = periodName;
+    }
+
+    public String getOrganisationUnitName()
+    {
+        return organisationUnitName;
+    }
+
+    public void setOrganisationUnitName( String organisationUnitName )
+    {
+        this.organisationUnitName = organisationUnitName;
     }
 
     // ----------------------------------------------------------------------
