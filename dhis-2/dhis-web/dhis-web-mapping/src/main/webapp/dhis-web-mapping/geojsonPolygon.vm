@@ -1,2 +1,0 @@
-#set( $size = $object.size() )
-{"type":"FeatureCollection","features":[#foreach($unit in $object){"geometry":{"type":"MultiPolygon","coordinates":$!encoder.jsonEncode( $!{unit.validCoordinates} )},"properties":{"id":"$!{unit.id}","name":"$!encoder.jsonEncode( ${unit.name} )","hasChildrenWithCoordinates":$!{unit.hasChildrenWithCoordinates()}}}#if( $velocityCount < $size ),#end #end],"crs":{"type":"EPSG","properties":{"code":"4326"}}}

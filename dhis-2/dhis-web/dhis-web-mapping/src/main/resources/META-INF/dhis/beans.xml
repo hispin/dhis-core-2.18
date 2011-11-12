@@ -304,22 +304,6 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
             ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
         <property name="organisationUnitGroupService"
             ref="org.hisp.dhis.organisationunit.OrganisationUnitGroupService" />
-        <property name="mappingService"
-            ref="org.hisp.dhis.mapping.MappingService" />
-    </bean>
-
-    <bean id="org.hisp.dhis.mapping.action.GetGeoJsonByParentAction"
-        class="org.hisp.dhis.mapping.action.GetGeoJsonByParentAction"
-        scope="prototype">
-        <property name="organisationUnitService"
-            ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
-    </bean>
-
-    <bean id="org.hisp.dhis.mapping.action.GetGeoJsonByLevelAction"
-        class="org.hisp.dhis.mapping.action.GetGeoJsonByLevelAction"
-        scope="prototype">
-        <property name="organisationUnitService"
-            ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
     </bean>
 
 	<bean id="org.hisp.dhis.mapping.action.GetGeoJsonFromFileAction" class="org.hisp.dhis.mapping.action.GetGeoJsonFromFileAction"

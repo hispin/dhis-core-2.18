@@ -39,6 +39,6 @@ public class OrganisationUnitWithCoordinatesFilter
     @Override
     public boolean retain( OrganisationUnit object )
     {
-        return object != null && object.hasCoordinates();
+        return object != null && object.getFeatureType() != null && object.hasCoordinates();
     }    
 }
