@@ -1,9 +1,29 @@
 body {
-	margin: 100px;
+	margin: 0 0 0 60px;
 }
 
-#bar_chart_1 {
-	height: 400px;
-	width: 600px;
-	border: 1px solid #ccc;
+h1 {
+	font-size: 20px;
+	margin: 20px 0;
+}
+
+#chart1 {
+	height: 250px;
+	width: 1400px;
+	border: 2px solid #ccc;
+    margin-bottom: 100px;
+}
+
+#chart2 {
+	height: 250px;
+	width: 1400px;
+	border: 2px solid #ccc;
+    margin-bottom: 100px;
+}
+
+#chart3 {
+	height: 250px;
+	width: 1400px;
+	border: 2px solid #ccc;
+    margin-bottom: 100px;
 }

@@ -1,27 +1,64 @@
 <html>
 <head>
     <link rel="stylesheet" type="text/css" href="../lib/ext/resources/css/ext-all-gray.css" />
-    <link rel="stylesheet" type="text/css" href="../css/plugin.css" />
     <script type="text/javascript" src="../lib/ext/ext-all.js"></script>
-    <script type="text/javascript" src="plugin.js"></script>    
+    <script type="text/javascript" src="plugin.js"></script>
+    
+    <link rel="stylesheet" type="text/css" href="../css/plugin.css" />
 </head>
 
 <body>
 	
-	<div id="bar_chart_1"></div>
+	<h1>My chart 1</h1>
+	<div id="chart1"></div>
+    
+    <h1>My chart 2</h1>
+	<div id="chart2"></div>
+    
+    <h1>My chart 3</h1>
+	<div id="chart3"></div>
 	
 	<script>
 		Ext.onReady( function() {
+			var url = 'http://localhost:8180/dhis/dhis-web-visualizer/app';
+			
 			DHIS.getChart({
 				type: 'column',
-				indicators: [52486],
+				indicators: [52486, 52487, 52488],
 				periods: ['monthsThisYear'],
 				organisationunits: [525],
 				series: 'indicator',
 				category: 'period',
 				filter: 'organisationunit',
-				div: 'bar_chart_1'
+				div: 'chart1',
+				url: url
 			});
+            
+            DHIS.getChart({
+				type: 'line',
+				indicators: [52486, 52487, 52488],
+				periods: ['monthsThisYear'],
+				organisationunits: [525],
+				series: 'indicator',
+				category: 'period',
+				filter: 'organisationunit',
+				div: 'chart2',
+				url: url
+			});
+            
+            DHIS.getChart({
+				type: 'area',
+				indicators: [52486, 52487, 52488],
+				periods: ['monthsThisYear'],
+				organisationunits: [525],
+				series: 'indicator',
+				category: 'period',
+				filter: 'organisationunit',
+				div: 'chart3',
+				url: url
+			});
+			
+	
 		});
 	</script>
 	

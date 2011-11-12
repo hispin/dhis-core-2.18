@@ -103,63 +103,63 @@ public class GetAggregatedDataValuesPluginAction
     {
         this.organisationUnitIds = organisationUnitIds;
     }
-    
+
     private Boolean lastMonth;
 
     public void setLastMonth( Boolean lastMonth )
     {
         this.lastMonth = lastMonth;
     }
-    
+
     private Boolean monthsThisYear;
 
     public void setMonthsThisYear( Boolean monthsThisYear )
     {
         this.monthsThisYear = monthsThisYear;
     }
-    
+
     private Boolean monthsLastYear;
 
     public void setMonthsLastYear( Boolean monthsLastYear )
     {
         this.monthsLastYear = monthsLastYear;
     }
-    
+
     private Boolean lastQuarter;
 
     public void setLastQuarter( Boolean lastQuarter )
     {
         this.lastQuarter = lastQuarter;
     }
-    
+
     private Boolean quartersThisYear;
 
     public void setQuartersThisYear( Boolean quartersThisYear )
     {
         this.quartersThisYear = quartersThisYear;
     }
-    
+
     private Boolean quartersLastYear;
 
     public void setQuartersLastYear( Boolean quartersLastYear )
     {
         this.quartersLastYear = quartersLastYear;
     }
-    
+
     private Boolean thisYear;
 
     public void setThisYear( Boolean thisYear )
     {
         this.thisYear = thisYear;
     }
-    
+
     private Boolean lastYear;
 
     public void setLastYear( Boolean lastYear )
     {
         this.lastYear = lastYear;
     }
-    
+
     private Boolean lastFiveYears;
 
     public void setLastFiveYears( Boolean lastFiveYears )
@@ -185,9 +185,10 @@ public class GetAggregatedDataValuesPluginAction
     public String execute()
         throws Exception
     {
-        if ( dataElementIds != null && organisationUnitIds != null &&
-            ( lastMonth || monthsThisYear || monthsLastYear || lastQuarter || quartersThisYear ||
-                quartersLastYear || thisYear || lastYear || lastFiveYears ) )
+        if ( dataElementIds != null
+            && organisationUnitIds != null
+            && (lastMonth || monthsThisYear || monthsLastYear || lastQuarter || quartersThisYear || quartersLastYear
+                || thisYear || lastYear || lastFiveYears) )
         {
             RelativePeriods rp = new RelativePeriods();
             rp.setReportingMonth( lastMonth );
@@ -199,27 +200,26 @@ public class GetAggregatedDataValuesPluginAction
             rp.setThisYear( thisYear );
             rp.setLastYear( lastYear );
             rp.setLast5Years( lastFiveYears );
-            
+
             Collection<Period> periods = rp.getRelativePeriods();
-            
+
             Collection<Integer> periodIds = new ArrayList<Integer>();
-            
+
             for ( Period period : periods )
             {
                 periodIds.add( period.getId() );
             }
-            
-            object = aggregatedDataValueService.getAggregatedDataValues( dataElementIds, periodIds,
-                organisationUnitIds );
+
+            object = aggregatedDataValueService
+                .getAggregatedDataValues( dataElementIds, periodIds, organisationUnitIds );
 
             for ( AggregatedDataValue value : object )
             {
-                /*
                 value.setDataElementName( dataElementService.getDataElement( value.getDataElementId() ).getName() );
                 value.setPeriodName( format.formatPeriod( periodService.getPeriod( value.getPeriodId() ) ) );
                 value.setOrganisationUnitName( organisationUnitService.getOrganisationUnit(
                     value.getOrganisationUnitId() ).getName() );
-                    */
+
             }
         }
 

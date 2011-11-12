@@ -58,6 +58,12 @@ public class AggregatedDataValue
     private double value;
 
     private Date modified;
+    
+    private transient String dataElementName;
+    
+    private transient String periodName;
+    
+    private transient String organisationUnitName;
 
     // ----------------------------------------------------------------------
     // Constructors
@@ -215,6 +221,35 @@ public class AggregatedDataValue
         this.modified = modified;
     }
 
+    public String getDataElementName()
+    {
+        return dataElementName;
+    }
+
+    public void setDataElementName( String dataElementName )
+    {
+        this.dataElementName = dataElementName;
+    }
+
+    public String getPeriodName()
+    {
+        return periodName;
+    }
+
+    public void setPeriodName( String periodName )
+    {
+        this.periodName = periodName;
+    }
+
+    public String getOrganisationUnitName()
+    {
+        return organisationUnitName;
+    }
+
+    public void setOrganisationUnitName( String organisationUnitName )
+    {
+        this.organisationUnitName = organisationUnitName;
+    }
 
     // ----------------------------------------------------------------------
     // hashCode and equals
