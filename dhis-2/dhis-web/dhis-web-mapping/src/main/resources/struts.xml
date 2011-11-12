@@ -328,26 +328,7 @@
 
         <action name="getGeoJson"
             class="org.hisp.dhis.mapping.action.GetGeoJsonAction">
-            <result name="Point" type="velocity-json">/dhis-web-mapping/geojsonPoint.vm</result>
-            <result name="Polygon" type="velocity-json">/dhis-web-mapping/geojsonPolygon.vm</result>
-            <result name="MultiPolygon" type="velocity-json">/dhis-web-mapping/geojsonPolygon.vm</result>
-            <result name="none" type="velocity-json">/dhis-web-mapping/geojsonPolygon.vm</result>
-        </action>
-
-		<action name="getGeoJsonByParent"
-			class="org.hisp.dhis.mapping.action.GetGeoJsonByParentAction">
-			<result name="Point" type="velocity-json">/dhis-web-mapping/geojsonPoint.vm</result>
-			<result name="Polygon" type="velocity-json">/dhis-web-mapping/geojsonPolygon.vm</result>
-			<result name="MultiPolygon" type="velocity-json">/dhis-web-mapping/geojsonPolygon.vm</result>
-			<result name="none" type="velocity-json">/dhis-web-mapping/geojsonPolygon.vm</result>
-		</action>
-
-        <action name="getGeoJsonByLevel"
-            class="org.hisp.dhis.mapping.action.GetGeoJsonByLevelAction">
-            <result name="Point" type="velocity-json">/dhis-web-mapping/geojsonPoint.vm</result>
-            <result name="Polygon" type="velocity-json">/dhis-web-mapping/geojsonPolygon.vm</result>
-            <result name="MultiPolygon" type="velocity-json">/dhis-web-mapping/geojsonPolygon.vm</result>
-            <result name="none" type="velocity-json">/dhis-web-mapping/geojsonPolygon.vm</result>
+            <result name="success" type="velocity-json">/dhis-web-mapping/geojson.vm</result>
         </action>
 
 		<action name="getGeoJsonFromFile"

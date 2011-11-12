@@ -32,7 +32,6 @@ import java.util.Date;
 import java.util.Set;
 
 import org.hisp.dhis.aggregation.AggregatedMapValue;
-import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.period.Period;
 
 /**
@@ -70,14 +69,6 @@ public interface MappingService
     final String MAP_LAYER_TYPE_BASELAYER = "baselayer";
 
     final String MAP_LAYER_TYPE_OVERLAY = "overlay";
-
-    // -------------------------------------------------------------------------
-    // Organisation units
-    // -------------------------------------------------------------------------    
-    
-    boolean isPointMinority( Collection<OrganisationUnit> organisationUnits );
-    
-    Collection<OrganisationUnit> removeMinorityFeatureType( Collection<OrganisationUnit> object );
 
     // -------------------------------------------------------------------------
     // IndicatorMapValue

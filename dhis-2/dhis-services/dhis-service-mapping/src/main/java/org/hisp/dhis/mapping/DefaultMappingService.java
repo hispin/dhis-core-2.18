@@ -32,7 +32,6 @@ import static org.hisp.dhis.options.SystemSettingManager.AGGREGATION_STRATEGY_RE
 import static org.hisp.dhis.options.SystemSettingManager.DEFAULT_AGGREGATION_STRATEGY;
 import static org.hisp.dhis.options.SystemSettingManager.KEY_AGGREGATION_STRATEGY;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashSet;
@@ -188,52 +187,6 @@ public class DefaultMappingService
         return organisationUnits;
     }
 
-    public boolean isPointMinority( Collection<OrganisationUnit> object )
-    {
-        int polygons = 0, points = 0;
-
-        for ( OrganisationUnit unit : object )
-        {
-            polygons = unit.isPolygon() ? polygons + 1 : polygons;
-
-            points = unit.isPoint() ? points + 1 : points;
-        }
-
-        return polygons > points ? true : false;
-    }
-
-    public Collection<OrganisationUnit> removeMinorityFeatureType( Collection<OrganisationUnit> object )
-    {
-        boolean isPointMinority = isPointMinority( object );
-
-        Collection<OrganisationUnit> majority = new ArrayList<OrganisationUnit>();
-
-        if ( isPointMinority )
-        {
-            for ( OrganisationUnit unit : object )
-            {
-                if ( unit.getFeatureType().equals( OrganisationUnit.FEATURETYPE_MULTIPOLYGON )
-                    || unit.getFeatureType().equals( OrganisationUnit.FEATURETYPE_POLYGON ) )
-                {
-                    majority.add( unit );
-                }
-            }
-        }
-
-        else
-        {
-            for ( OrganisationUnit unit : object )
-            {
-                if ( unit.getFeatureType().equals( OrganisationUnit.FEATURETYPE_POINT ) )
-                {
-                    majority.add( unit );
-                }
-            }
-        }
-
-        return majority;
-    }
-
     // -------------------------------------------------------------------------
     // IndicatorMapValues
     // -------------------------------------------------------------------------
@@ -259,10 +212,10 @@ public class DefaultMappingService
     {
         String aggregationStrategy = (String) systemSettingManager.getSystemSetting( KEY_AGGREGATION_STRATEGY,
             DEFAULT_AGGREGATION_STRATEGY );
-
+        
         Assert.isTrue( !(period != null && (startDate != null || endDate != null)) );
         Assert.isTrue( !(aggregationStrategy.equals( AGGREGATION_STRATEGY_BATCH ) && period == null) );
-        Assert.isTrue( !(indicatorId == null || parentOrganisationUnitId == null || level == null) );
+        Assert.isTrue( indicatorId != null && parentOrganisationUnitId != null && level != null );
 
         Collection<AggregatedMapValue> values = new HashSet<AggregatedMapValue>();
 

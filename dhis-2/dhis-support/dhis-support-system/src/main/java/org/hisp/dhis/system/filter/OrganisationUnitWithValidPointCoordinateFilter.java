@@ -40,6 +40,12 @@ public class OrganisationUnitWithValidPointCoordinateFilter
     @Override
     public boolean retain( OrganisationUnit object )
     {
-        return object != null && object.hasCoordinates() && ValidationUtils.coordinateIsValid( object.getCoordinates() );
+        if ( object != null && object.hasCoordinates() )
+        {
+            return object.getFeatureType().equals( OrganisationUnit.FEATURETYPE_POINT ) ?
+                ValidationUtils.coordinateIsValid( object.getCoordinates() ) : true;
+        }
+        
+        return false;
     }
 }
