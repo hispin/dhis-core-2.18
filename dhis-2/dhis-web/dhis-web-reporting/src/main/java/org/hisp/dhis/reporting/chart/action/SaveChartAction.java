@@ -128,11 +128,11 @@ public class SaveChartAction
         this.rangeAxisLabel = rangeAxisLabel;
     }
 
-    private String title;
+    private String name;
 
-    public void setTitle( String title )
+    public void setName( String name )
     {
-        this.title = title;
+        this.name = name;
     }
 
     private boolean hideSubtitle;
@@ -353,7 +353,7 @@ public class SaveChartAction
 
         Collections.sort( periods, new AscendingPeriodComparator() );
 
-        chart.setTitle( title );
+        chart.setName( name );
         chart.setDomainAxixLabel( domainAxisLabel );
         chart.setRangeAxisLabel( rangeAxisLabel );
         chart.setHideSubtitle( hideSubtitle );

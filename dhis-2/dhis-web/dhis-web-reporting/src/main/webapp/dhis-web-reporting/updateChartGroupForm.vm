@@ -65,7 +65,7 @@
 		<td>
 			<select id="groupMembers" name="groupMembers" multiple="multiple" style="height: 200px; width: 100%; margin-top: 22px;">
 				#foreach( $chart in $groupMembers )
-                    <option value="$chart.id">$encoder.htmlEncode( $chart.title )</option>
+                    <option value="$chart.id">$encoder.htmlEncode( $chart.name )</option>
                 #end
 			</select>
 		</td>

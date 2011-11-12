@@ -4,7 +4,7 @@
 #set( $groups = $chart.groups )
   {
     "id": $!{chart.id},
-    "name": "$!encoder.jsonEncode( ${chart.title} )",
+    "name": "$!encoder.jsonEncode( ${chart.name} )",
     "dimension": "$!encoder.jsonEncode( ${chart.dimension} )",
     "indicators": "$!encoder.jsonEncode( ${chart.indicators.size()} )",
     "dataElements": "$!encoder.jsonEncode( ${chart.dataElements.size()} )",

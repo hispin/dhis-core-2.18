@@ -227,6 +227,6 @@ public class ChartServiceTest
         chartService.saveChart( chartB );
         chartService.saveChart( chartC );
         
-        assertEquals( chartB, chartService.getChartByTitle( "ChartB" ) );
+        assertEquals( chartB, chartService.getChartByName( "ChartB" ) );
     }
 }

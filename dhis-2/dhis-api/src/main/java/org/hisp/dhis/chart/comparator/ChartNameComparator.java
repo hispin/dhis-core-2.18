@@ -35,11 +35,11 @@ import org.hisp.dhis.chart.Chart;
  * @author Lars Helge Overland
  * @version $Id$
  */
-public class ChartTitleComparator
+public class ChartNameComparator
     implements Comparator<Chart>
 {
     public int compare( Chart chart1, Chart chart2 )
     {
-        return chart1.getTitle().compareToIgnoreCase( chart2.getTitle() );
+        return chart1.getName().compareToIgnoreCase( chart2.getName() );
     }
 }

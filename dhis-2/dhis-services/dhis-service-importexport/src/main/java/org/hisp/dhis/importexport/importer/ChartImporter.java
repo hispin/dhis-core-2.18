@@ -65,7 +65,7 @@ public class ChartImporter
     @Override
     protected void importMatching( Chart object, Chart match )
     {
-        match.setTitle( object.getTitle() );
+        match.setName( object.getName() );
         match.setType( object.getType() );
         match.setSize( object.getSize() );
         match.setDimension( object.getDimension() );
@@ -88,13 +88,13 @@ public class ChartImporter
     @Override
     protected Chart getMatching( Chart object )
     {
-        return chartService.getChartByTitle( object.getTitle() );
+        return chartService.getChartByName( object.getName() );
     }
 
     @Override
     protected boolean isIdentical( Chart object, Chart existing )
     {
-        if ( !object.getTitle().equals( existing.getTitle() ) )
+        if ( !object.getName().equals( existing.getName() ) )
         {
             return false;
         }

@@ -91,8 +91,6 @@ public class Chart
 
     private int id;
 
-    private String title;
-
     private String domainAxixLabel;
 
     private String rangeAxisLabel;
@@ -157,9 +155,9 @@ public class Chart
     {
     }
 
-    public Chart( String title )
+    public Chart( String name )
     {
-        this.title = title;
+        this.name = name;
     }
 
     public void init()
@@ -213,7 +211,7 @@ public class Chart
     @Override
     public int hashCode()
     {
-        return title.hashCode();
+        return name.hashCode();
     }
 
     @Override
@@ -236,13 +234,13 @@ public class Chart
 
         Chart other = (Chart) object;
 
-        return title.equals( other.getTitle() );
+        return name.equals( other.getName() );
     }
 
     @Override
     public String toString()
     {
-        return "[" + title + "]";
+        return "[" + name + "]";
     }
 
     // -------------------------------------------------------------------------
@@ -310,12 +308,12 @@ public class Chart
 
     public String getName()
     {
-        return title;
+        return name;
     }
 
     public void setName( String name )
     {
-        this.title = name;
+        this.name = name;
     }
 
     // -------------------------------------------------------------------------
@@ -330,16 +328,6 @@ public class Chart
     public void setId( int id )
     {
         this.id = id;
-    }
-
-    public String getTitle()
-    {
-        return title;
-    }
-
-    public void setTitle( String title )
-    {
-        this.title = title;
     }
 
     public String getDomainAxixLabel()

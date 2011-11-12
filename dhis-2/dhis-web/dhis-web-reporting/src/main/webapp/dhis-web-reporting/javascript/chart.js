@@ -41,7 +41,7 @@ function showChartDetails( chartId )
         var dataElements = parseInt( json.chart.dataElements );
         var dataSets = parseInt( json.chart.dataSets );
 
-        setInnerHTML( 'titleField', json.chart.title );
+        setInnerHTML( 'nameField', json.chart.name );
         setInnerHTML( 'dimensionField', json.chart.dimension );
 
         if ( isIndicatorChart( json.chart.dimension ) )
@@ -86,7 +86,7 @@ function saveChart( dimension )
     {
         $.postJSON( "validateChart.action", {
             id : getFieldValue( "id" ),
-            title : getFieldValue( "title" )
+            name : getFieldValue( "name" )
         }, function( json )
         {
             if ( json.response == "input" )

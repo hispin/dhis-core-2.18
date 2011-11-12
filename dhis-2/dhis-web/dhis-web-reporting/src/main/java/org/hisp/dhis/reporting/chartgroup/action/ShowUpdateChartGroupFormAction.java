@@ -34,7 +34,7 @@ import java.util.List;
 import org.hisp.dhis.chart.Chart;
 import org.hisp.dhis.chart.ChartGroup;
 import org.hisp.dhis.chart.ChartService;
-import org.hisp.dhis.chart.comparator.ChartTitleComparator;
+import org.hisp.dhis.chart.comparator.ChartNameComparator;
 
 import com.opensymphony.xwork2.Action;
 
@@ -92,7 +92,7 @@ public class ShowUpdateChartGroupFormAction
 
         groupMembers = new ArrayList<Chart>( chartGroup.getMembers() );
 
-        Collections.sort( groupMembers, new ChartTitleComparator() );
+        Collections.sort( groupMembers, new ChartNameComparator() );
 
         return SUCCESS;
     }

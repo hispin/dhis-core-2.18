@@ -52,13 +52,13 @@ public interface ChartService
     JFreeChart getJFreeChart( int id, I18nFormat format );
     
     JFreeChart getJFreePeriodChart( Indicator indicator, OrganisationUnit unit, boolean title, I18nFormat format );
-    
+
     JFreeChart getJFreeOrganisationUnitChart( Indicator indicator, OrganisationUnit parent, boolean title, I18nFormat format );
 
     JFreeChart getJFreeChart( List<Indicator> indicators, List<DataElement> dataElements, List<DataSet> dataSets, List<Period> periods,
         List<OrganisationUnit> organisationUnits, String dimension, boolean regression, I18nFormat format );
 
-    JFreeChart getJFreeChart( String title, PlotOrientation orientation, CategoryLabelPositions labelPositions,
+    JFreeChart getJFreeChart( String name, PlotOrientation orientation, CategoryLabelPositions labelPositions,
         Map<String, Double> categoryValues );
 
     JFreeChart getJFreeChartHistory( DataElement dataElement, DataElementCategoryOptionCombo categoryOptionCombo,
@@ -74,7 +74,7 @@ public interface ChartService
 
     Collection<Chart> getAllCharts();
 
-    Chart getChartByTitle( String name );
+    Chart getChartByName( String name );
 
     Collection<Chart> getCharts( final Collection<Integer> identifiers );
 

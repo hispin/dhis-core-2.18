@@ -65,7 +65,7 @@ public class ChartResource
         
         final Chart chart = chartService.getChart( id );
         
-        final String filename = CodecUtils.filenameEncode( chart.getTitle() + ".png" );
+        final String filename = CodecUtils.filenameEncode( chart.getName() + ".png" );
         
         return ResponseUtils.response( true, filename, false ).entity( new StreamingOutput()
         {

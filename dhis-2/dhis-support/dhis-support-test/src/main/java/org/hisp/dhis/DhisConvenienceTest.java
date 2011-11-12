@@ -820,7 +820,7 @@ public abstract class DhisConvenienceTest
     {
         Chart chart = new Chart();
 
-        chart.setTitle( "Chart" + uniqueCharacter );
+        chart.setName( "Chart" + uniqueCharacter );
         chart.setDimension( Chart.DIMENSION_PERIOD_INDICATOR );
         chart.setIndicators( indicators );
         chart.setPeriods( periods );

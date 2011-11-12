@@ -53,12 +53,12 @@
                 <tbody id="list">
                 #foreach ( $chart in $charts )
                 <tr id="tr${chart.id}">
-                    <td onclick="showChartDetails( $chart.id )">$encoder.htmlEncode( $chart.title )</td>
+                    <td onclick="showChartDetails( $chart.id )">$encoder.htmlEncode( $chart.name )</td>
                     <td style="text-align:right">
 						<a href="javascript:viewChart( 'viewChart.action?id=$chart.id', '$chart.size' )" title="$i18n.getString( "view_chart" )"><img src="../images/start_process.png" alt="$i18n.getString( "view_chart" )"></a>
 						<a href="displayAddChartForm.action?id=$chart.id&dimension=$chart.dimension" title="$i18n.getString( "edit" )"><img src="../images/edit.png" alt="$i18n.getString( "edit" )"></a>
 						#if( $auth.hasAccess( "dhis-web-reporting", "removeChart" ) )
-						<a href="javascript:removeChart( $chart.id, '$encoder.jsEncode( $chart.title )' )" title="$i18n.getString( "remove" )"><img src="../images/delete.png" alt="$i18n.getString( "remove" )"></a>
+						<a href="javascript:removeChart( $chart.id, '$encoder.jsEncode( $chart.name )' )" title="$i18n.getString( "remove" )"><img src="../images/delete.png" alt="$i18n.getString( "remove" )"></a>
 						#else <img src="../images/delete-denied.png"> #end
 						<a href="javascript:showChartDetails( $chart.id )" title="$i18n.getString( "show_details" )"><img src="../images/information.png" alt="$i18n.getString( "show_details" )"></a>
 					</td>
@@ -74,7 +74,7 @@
                 <div style="float:right">
                     <a href="javascript:hideDetails()" title="$i18n.getString( "hide_details" )"><img src="../images/close.png" alt="$i18n.getString( "hide_details" )"></a>
                 </div>
-                <p><label>$i18n.getString( "title" ):</label><br><span id="titleField"></span></p>
+                <p><label>$i18n.getString( "title" ):</label><br><span id="nameField"></span></p>
                 <p><label>$i18n.getString( "dimension" ):</label><br><span id="dimensionField"></span></p>
                 <p id='indicatorsView'><label>$i18n.getString( "indicators" ):</label><br><span id="indicatorsField"></span></p>
                 <p id='dataElementsView'><label>$i18n.getString( "dataelements" ):</label><br><span id="dataElementsField"></span></p>

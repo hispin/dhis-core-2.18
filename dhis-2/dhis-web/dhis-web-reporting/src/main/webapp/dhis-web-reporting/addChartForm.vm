@@ -61,8 +61,8 @@
         <th colspan="2">$i18n.getString( "chart" )</th>
     </tr>
     <tr>
-        <td><label for="title">$i18n.getString( "title" )</label></td>
-        <td><input type="text" id="title" name="title" style="width:300px" value="$!chart.title"></td>
+        <td><label for="name">$i18n.getString( "title" )</label></td>
+        <td><input type="text" id="name" name="name" style="width:300px" value="$!chart.name"></td>
     </tr>
     <tr>
         <td><label for="domainAxisLabel">$i18n.getString( "domain_axis_label_x" )</label></td>
