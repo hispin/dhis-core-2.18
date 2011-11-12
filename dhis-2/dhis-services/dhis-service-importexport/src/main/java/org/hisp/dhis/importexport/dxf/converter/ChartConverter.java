@@ -104,7 +104,7 @@ public class ChartConverter
                 writer.openElement( ELEMENT_NAME );
                 
                 writer.writeElement( FIELD_ID, String.valueOf( chart.getId() ) );
-                writer.writeElement( FIELD_TITLE, String.valueOf( chart.getTitle() ) );
+                writer.writeElement( FIELD_TITLE, String.valueOf( chart.getName() ) );
                 writer.writeElement( FIELD_TYPE, String.valueOf( chart.getType() ) );
                 writer.writeElement( FIELD_SIZE, String.valueOf( chart.getSize() ) );
                 writer.writeElement( FIELD_DIMENSION, String.valueOf( chart.getDimension() ) );
@@ -163,7 +163,7 @@ public class ChartConverter
             chart.setId( Integer.parseInt( reader.getElementValue() ) );
 
             reader.moveToStartElement( FIELD_TITLE );
-            chart.setTitle( reader.getElementValue() );
+            chart.setName( reader.getElementValue() );
 
             reader.moveToStartElement( FIELD_TYPE );
             chart.setType( reader.getElementValue() );

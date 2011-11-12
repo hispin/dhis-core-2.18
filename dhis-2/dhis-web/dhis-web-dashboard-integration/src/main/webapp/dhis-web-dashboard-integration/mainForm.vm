@@ -29,7 +29,7 @@
     <div id="$listId" class="menuDropDownArea">
         <ul class="menuDropDownBox">
         #foreach( $chart in $charts )
-            <li class="menuDropDownItem" onclick="setAreaItem( '$divId', '$chart.id' )">${chart.title}&nbsp;</li>
+            <li class="menuDropDownItem" onclick="setAreaItem( '$divId', '$chart.id' )">${chart.name}&nbsp;</li>
         #end
         </ul>
     </div>

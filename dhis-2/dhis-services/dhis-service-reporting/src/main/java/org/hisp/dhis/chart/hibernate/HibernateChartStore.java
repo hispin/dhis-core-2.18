@@ -35,6 +35,7 @@ import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.hisp.dhis.chart.Chart;
 import org.hisp.dhis.chart.ChartStore;
+import org.hisp.dhis.common.hibernate.HibernateIdentifiableObjectStore;
 import org.hisp.dhis.hibernate.HibernateGenericStore;
 
 /**
@@ -42,11 +43,11 @@ import org.hisp.dhis.hibernate.HibernateGenericStore;
  * @version $Id$
  */
 public class HibernateChartStore
-    extends HibernateGenericStore<Chart> implements ChartStore
+    extends HibernateIdentifiableObjectStore<Chart> implements ChartStore
 {
     public Chart getByTitle( String title )
     {
-        return getObject( Restrictions.eq( "title", title ) );
+        return getObject( Restrictions.eq( "name", title ) );
     }
 
     public int getChartCount()
@@ -58,7 +59,7 @@ public class HibernateChartStore
     public Collection<Chart> getChartsBetween( int first, int max )
     {
         Criteria criteria = getCriteria();
-        criteria.addOrder( Order.asc( "title" ) );
+        criteria.addOrder( Order.asc( "name" ) );
         criteria.setFirstResult( first );
         criteria.setMaxResults( max );
         return criteria.list();
@@ -68,8 +69,8 @@ public class HibernateChartStore
     public Collection<Chart> getChartsBetweenByName( String name, int first, int max )
     {
         Criteria criteria = getCriteria();
-        criteria.add( Restrictions.ilike( "title", "%" + name + "%" ) );
-        criteria.addOrder( Order.asc( "title" ) );
+        criteria.add( Restrictions.ilike( "name", "%" + name + "%" ) );
+        criteria.addOrder( Order.asc( "name" ) );
         criteria.setFirstResult( first );
         criteria.setMaxResults( max );
         return criteria.list();
@@ -79,7 +80,7 @@ public class HibernateChartStore
     {
         Criteria criteria = getCriteria();
         criteria.setProjection( Projections.rowCount() );
-        criteria.add( Restrictions.ilike( "title", "%" + name + "%" ) );        
+        criteria.add( Restrictions.ilike( "name", "%" + name + "%" ) );
         return ((Number) criteria.uniqueResult()).intValue();
     }    
 }

@@ -67,13 +67,13 @@ public class ValidateChartAction
     public void setId( Integer id )
     {
         this.id = id;
-    }    
+    }
 
-    private String title;
+    private String name;
 
-    public void setTitle( String title )
+    public void setName( String name )
     {
-        this.title = title;
+        this.name = name;
     }
 
     // -------------------------------------------------------------------------
@@ -93,7 +93,7 @@ public class ValidateChartAction
 
     public String execute()
     {
-        if ( title == null )
+        if ( name == null )
         {
             message = i18n.getString( "specify_title" );
 
@@ -101,18 +101,18 @@ public class ValidateChartAction
         }
         else
         {
-            title = title.trim();
+            name = name.trim();
 
-            if ( title.length() == 0 )
+            if ( name.length() == 0 )
             {
                 message = i18n.getString( "specify_title" );
 
                 return INPUT;
             }
 
-            Chart match = chartService.getChartByTitle( title );
-            
-            if ( match != null && ( id == null || match.getId() != id ) )
+            Chart match = chartService.getChartByName( name );
+
+            if ( match != null && (id == null || match.getId() != id) )
             {
                 message = i18n.getString( "title_in_use" );
 

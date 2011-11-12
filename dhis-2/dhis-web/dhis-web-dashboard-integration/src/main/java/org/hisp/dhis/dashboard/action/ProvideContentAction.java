@@ -38,7 +38,7 @@ import java.util.Map;
 
 import org.hisp.dhis.chart.Chart;
 import org.hisp.dhis.chart.ChartService;
-import org.hisp.dhis.chart.comparator.ChartTitleComparator;
+import org.hisp.dhis.chart.comparator.ChartNameComparator;
 import org.hisp.dhis.dashboard.DashboardManager;
 import org.hisp.dhis.message.MessageService;
 import org.hisp.dhis.user.UserSettingService;
@@ -131,7 +131,7 @@ public class ProvideContentAction
 
         charts = new ArrayList<Chart>( chartService.getAllCharts() );
 
-        Collections.sort( charts, new ChartTitleComparator() );
+        Collections.sort( charts, new ChartNameComparator() );
 
         int chartsInDashboardCount = (Integer) userSettingService.getUserSetting( KEY_CHARTS_IN_DASHBOARD, DEFAULT_CHARTS_IN_DASHBOARD );
 

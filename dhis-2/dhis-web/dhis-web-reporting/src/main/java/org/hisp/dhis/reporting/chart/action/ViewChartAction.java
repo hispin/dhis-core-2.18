@@ -123,7 +123,7 @@ public class ViewChartAction
             height = temp.getHeight();
             filename = CodecUtils.filenameEncode( temp.getName() );
             
-            log.info( "Viewing chart: " + temp.getTitle() + ", width: " + width + ", height: " + height );
+            log.info( "Viewing chart: " + temp.getName() + ", width: " + width + ", height: " + height );
         }
         
         return SUCCESS;

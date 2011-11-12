@@ -254,6 +254,7 @@ public class TableAlteror
         executeSql( "ALTER TABLE chart DROP COLUMN last12individualmonths" );
         executeSql( "ALTER TABLE chart DROP COLUMN individualmonthsthisyear" );
         executeSql( "ALTER TABLE chart DROP COLUMN individualquartersthisyear" );
+        executeSql( "ALTER TABLE chart RENAME COLUMN title TO name" );
 
         executeSql( "ALTER TABLE datamartexport DROP COLUMN last3months" );
         executeSql( "ALTER TABLE datamartexport DROP COLUMN last6months" );

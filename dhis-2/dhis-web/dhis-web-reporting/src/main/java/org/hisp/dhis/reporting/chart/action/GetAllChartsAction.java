@@ -35,7 +35,7 @@ import java.util.List;
 
 import org.hisp.dhis.chart.Chart;
 import org.hisp.dhis.chart.ChartService;
-import org.hisp.dhis.chart.comparator.ChartTitleComparator;
+import org.hisp.dhis.chart.comparator.ChartNameComparator;
 import org.hisp.dhis.paging.ActionPagingSupport;
 
 /**
@@ -59,9 +59,9 @@ public class GetAllChartsAction
     // -------------------------------------------------------------------------
     // Input & Output
     // -------------------------------------------------------------------------
-    
+
     private String key;
-    
+
     public String getKey()
     {
         return key;
@@ -78,17 +78,17 @@ public class GetAllChartsAction
     {
         return charts;
     }
-        
+
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
-    
+
     public String execute()
     {
         if ( isNotBlank( key ) )
         {
             this.paging = createPaging( chartService.getChartCountByName( key ) );
-            
+
             charts = new ArrayList<Chart>( chartService.getChartsBetweenByName( key, paging.getStartPos(), paging.getPageSize() ) );
         }
         else
@@ -97,9 +97,9 @@ public class GetAllChartsAction
 
             charts = new ArrayList<Chart>( chartService.getChartsBetween( paging.getStartPos(), paging.getPageSize() ) );
         }
-        
-        Collections.sort( charts, new ChartTitleComparator() );
-        
+
+        Collections.sort( charts, new ChartNameComparator() );
+
         return SUCCESS;
     }
 }

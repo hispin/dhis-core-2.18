@@ -261,7 +261,7 @@ public class DefaultChartService
 
         if ( title )
         {
-            chart.setTitle( indicator.getName() );
+            chart.setName( indicator.getName() );
         }
 
         chart.setType( TYPE_LINE );
@@ -290,7 +290,7 @@ public class DefaultChartService
 
         if ( title )
         {
-            chart.setTitle( indicator.getName() );
+            chart.setName( indicator.getName() );
         }
 
         chart.setType( TYPE_BAR );
@@ -316,15 +316,15 @@ public class DefaultChartService
 
         if ( indicators != null && !indicators.isEmpty() )
         {
-            chart.setTitle( getTitle( indicators.get( 0 ), periods, organisationUnits, format ) );
+            chart.setName( getTitle( indicators.get( 0 ), periods, organisationUnits, format ) );
         }
         else if ( dataElements != null && !dataElements.isEmpty() )
         {
-            chart.setTitle( getTitle( dataElements.get( 0 ), periods, organisationUnits, format ) );
+            chart.setName( getTitle( dataElements.get( 0 ), periods, organisationUnits, format ) );
         }
         else if ( dataSets != null && !dataSets.isEmpty() )
         {
-            chart.setTitle( getTitle( dataSets.get( 0 ), periods, organisationUnits, format ) );
+            chart.setName( getTitle( dataSets.get( 0 ), periods, organisationUnits, format ) );
         }
 
         chart.setType( TYPE_BAR );
@@ -346,20 +346,20 @@ public class DefaultChartService
         return getJFreeChart( chart, false );
     }
 
-    public JFreeChart getJFreeChart( String title, PlotOrientation orientation, CategoryLabelPositions labelPositions,
+    public JFreeChart getJFreeChart( String name, PlotOrientation orientation, CategoryLabelPositions labelPositions,
         Map<String, Double> categoryValues )
     {
         DefaultCategoryDataset dataSet = new DefaultCategoryDataset();
 
         for ( Entry<String, Double> entry : categoryValues.entrySet() )
         {
-            dataSet.addValue( entry.getValue(), title, entry.getKey() );
+            dataSet.addValue( entry.getValue(), name, entry.getKey() );
         }
 
         CategoryPlot plot = getCategoryPlot( dataSet, getBarRenderer(), orientation, labelPositions );
 
         JFreeChart jFreeChart = getBasicJFreeChart( plot );
-        jFreeChart.setTitle( title );
+        jFreeChart.setTitle( name );
 
         return jFreeChart;
     }
@@ -697,7 +697,7 @@ public class DefaultChartService
             plot.setRenderer( 1, lineRenderer );
         }
 
-        JFreeChart jFreeChart = new JFreeChart( chart.getTitle(), titleFont, plot, !chart.isHideLegend() );
+        JFreeChart jFreeChart = new JFreeChart( chart.getName(), titleFont, plot, !chart.isHideLegend() );
 
         if ( chart.isTargetLine() )
         {
@@ -755,12 +755,12 @@ public class DefaultChartService
 
         if ( chart.isType( TYPE_STACKED_BAR ) )
         {
-            stackedBarChart = ChartFactory.createStackedBarChart( chart.getTitle(), chart.getDomainAxixLabel(),
+            stackedBarChart = ChartFactory.createStackedBarChart( chart.getName(), chart.getDomainAxixLabel(),
                 chart.getRangeAxisLabel(), dataSet, orientation, true, false, false );
         }
         else
         {
-            stackedBarChart = ChartFactory.createStackedBarChart3D( chart.getTitle(), chart.getDomainAxixLabel(),
+            stackedBarChart = ChartFactory.createStackedBarChart3D( chart.getName(), chart.getDomainAxixLabel(),
                 chart.getRangeAxisLabel(), dataSet, orientation, true, false, false );
         }
 
@@ -785,12 +785,12 @@ public class DefaultChartService
 
         if ( chart.isType( TYPE_PIE ) )
         {
-            multiplePieChart = ChartFactory.createMultiplePieChart( chart.getTitle(), dataSets[0], TableOrder.BY_ROW,
+            multiplePieChart = ChartFactory.createMultiplePieChart( chart.getName(), dataSets[0], TableOrder.BY_ROW,
                 !chart.getHideLegend(), false, false );
         }
         else
         {
-            multiplePieChart = ChartFactory.createMultiplePieChart3D( chart.getTitle(), dataSets[0], TableOrder.BY_ROW,
+            multiplePieChart = ChartFactory.createMultiplePieChart3D( chart.getName(), dataSets[0], TableOrder.BY_ROW,
                 !chart.getHideLegend(), false, false );
         }
 
@@ -1146,7 +1146,7 @@ public class DefaultChartService
         return chartStore.getAll();
     }
 
-    public Chart getChartByTitle( String name )
+    public Chart getChartByName( String name )
     {
         return chartStore.getByTitle( name );
     }
