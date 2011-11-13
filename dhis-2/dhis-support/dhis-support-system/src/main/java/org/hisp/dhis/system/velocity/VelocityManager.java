@@ -50,6 +50,11 @@ public class VelocityManager
         velocity.init();
     }
 
+    public VelocityEngine getEngine()
+    {
+        return velocity;
+    }
+    
     public String render( Object object, String template )
     {
         try
