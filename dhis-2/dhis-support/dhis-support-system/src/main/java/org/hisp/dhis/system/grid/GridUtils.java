@@ -62,15 +62,13 @@ import net.sf.jasperreports.engine.JasperReport;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.velocity.VelocityContext;
-import org.apache.velocity.app.Velocity;
-import org.apache.velocity.app.VelocityEngine;
-import org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader;
 import org.hisp.dhis.common.Grid;
 import org.hisp.dhis.common.GridHeader;
 import org.hisp.dhis.system.util.CodecUtils;
 import org.hisp.dhis.system.util.Encoder;
 import org.hisp.dhis.system.util.MathUtils;
 import org.hisp.dhis.system.util.StreamUtils;
+import org.hisp.dhis.system.velocity.VelocityManager;
 
 import com.lowagie.text.Document;
 import com.lowagie.text.pdf.PdfPTable;
@@ -99,7 +97,6 @@ public class GridUtils
     private static final String KEY_ENCODER = "encoder";
     private static final String KEY_PARAMS = "params";
     private static final String TEMPLATE = "grid.vm";
-    private static final String RESOURCE_LOADER_NAME = "class";
 
     /**
      * Writes a PDF representation of the given Grid to the given OutputStream.
@@ -318,18 +315,12 @@ public class GridUtils
     private static void render( Grid grid, Map<?, ?> params, Writer writer )
         throws Exception
     {
-        final VelocityEngine velocity = new VelocityEngine();
-        
-        velocity.setProperty( Velocity.RESOURCE_LOADER, RESOURCE_LOADER_NAME );
-        velocity.setProperty( RESOURCE_LOADER_NAME + ".resource.loader.class", ClasspathResourceLoader.class.getName() );
-        velocity.init();
-        
         final VelocityContext context = new VelocityContext();
         
         context.put( KEY_GRID, grid );
         context.put( KEY_ENCODER, ENCODER );
         context.put( KEY_PARAMS, params );
         
-        velocity.getTemplate( TEMPLATE ).merge( context, writer );
+        new VelocityManager().getEngine().getTemplate( TEMPLATE ).merge( context, writer );
     }
 }
