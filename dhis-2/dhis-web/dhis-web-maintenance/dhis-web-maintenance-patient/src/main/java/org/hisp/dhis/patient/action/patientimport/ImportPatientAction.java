@@ -63,7 +63,6 @@ import org.hisp.dhis.patient.PatientAttributeOption;
 import org.hisp.dhis.patient.PatientAttributeOptionService;
 import org.hisp.dhis.patient.PatientAttributeService;
 import org.hisp.dhis.patient.PatientIdentifier;
-import org.hisp.dhis.patient.PatientIdentifierService;
 import org.hisp.dhis.patient.PatientIdentifierType;
 import org.hisp.dhis.patient.PatientIdentifierTypeService;
 import org.hisp.dhis.patient.PatientService;
@@ -100,8 +99,6 @@ public class ImportPatientAction
     // -------------------------------------------------------------------------
 
     private PatientService patientService;
-
-    private PatientIdentifierService patientIdentifierService;
 
     private PatientIdentifierTypeService patientIdentifierTypeService;
 
@@ -201,11 +198,6 @@ public class ImportPatientAction
     public void setDataElementService( DataElementService dataElementService )
     {
         this.dataElementService = dataElementService;
-    }
-
-    public void setPatientIdentifierService( PatientIdentifierService patientIdentifierService )
-    {
-        this.patientIdentifierService = patientIdentifierService;
     }
 
     public void setPatientAttributeValueService( PatientAttributeValueService patientAttributeValueService )

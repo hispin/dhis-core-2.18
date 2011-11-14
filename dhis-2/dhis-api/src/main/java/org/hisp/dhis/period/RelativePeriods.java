@@ -27,8 +27,6 @@ package org.hisp.dhis.period;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import static org.hisp.dhis.period.PeriodType.getPeriodTypeByName;
-
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -36,7 +34,6 @@ import java.util.Date;
 import java.util.List;
 import java.util.Set;
 
-import org.hisp.dhis.configuration.Configuration;
 import org.hisp.dhis.i18n.I18nFormat;
 
 /**

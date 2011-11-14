@@ -35,19 +35,9 @@ import org.hisp.dhis.api.mobile.model.Model;
 import org.hisp.dhis.api.mobile.model.ModelList;
 import org.hisp.dhis.dataelement.DataElementCategoryCombo;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
-import org.hisp.dhis.dataelement.DataElementCategoryService;
-import org.springframework.beans.factory.annotation.Required;
 
 public class ModelMapping
 {
-    private DataElementCategoryService categoryService;
-
-    @Required
-    public void setCategoryService( org.hisp.dhis.dataelement.DataElementCategoryService categoryService )
-    {
-        this.categoryService = categoryService;
-    }
-
     public DataElement getDataElement( org.hisp.dhis.dataelement.DataElement dataElement )
     {
         DataElement de = new DataElement();

@@ -28,8 +28,6 @@
 package org.hisp.dhis.patient.action.patientchart;
 
 import org.hisp.dhis.i18n.I18n;
-import org.hisp.dhis.patient.PatientAttribute;
-import org.hisp.dhis.patient.PatientAttributeService;
 import org.hisp.dhis.patientchart.PatientChart;
 import org.hisp.dhis.patientchart.PatientChartService;
 
