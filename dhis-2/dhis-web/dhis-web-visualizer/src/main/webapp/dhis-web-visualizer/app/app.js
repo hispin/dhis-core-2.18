@@ -47,6 +47,15 @@ DV.conf = {
             pie: 'pie'
         }
     },
+    chart: {
+        axis: {
+            label: {
+                rotate: {
+                    degrees: 330
+                }
+            }
+        }
+    },
     style: {
         label: {
             period_group: 'font:bold 11px arial; color:#444; line-height:20px'
@@ -774,7 +783,8 @@ Ext.onReady( function() {
                         title: DV.init.isInit ? 'Categories' : DV.conf.finals.dimension[DV.state.category.dimension].rawvalue,
                         type: 'Category',
                         position: 'bottom',
-                        fields: DV.store.chart.bottom
+                        fields: DV.store.chart.bottom,
+                        label: DV.conf.chart.axis.label
                     }
                 ],
                 series: [
@@ -864,7 +874,8 @@ Ext.onReady( function() {
                         title: DV.conf.finals.dimension[DV.state.category.dimension].rawvalue,
                         type: 'Category',
                         position: 'bottom',
-                        fields: DV.store.chart.bottom
+                        fields: DV.store.chart.bottom,
+                        label: DV.conf.chart.axis.label
                     }
                 ],
                 series: DV.util.chart.line.getSeriesArray()
@@ -895,7 +906,8 @@ Ext.onReady( function() {
                         title: DV.conf.finals.dimension[DV.state.category.dimension].rawvalue,
                         type: 'Category',
                         position: 'bottom',
-                        fields: DV.store.chart.bottom
+                        fields: DV.store.chart.bottom,
+                        label: DV.conf.chart.axis.label
                     }
                 ],
                 series: [{
