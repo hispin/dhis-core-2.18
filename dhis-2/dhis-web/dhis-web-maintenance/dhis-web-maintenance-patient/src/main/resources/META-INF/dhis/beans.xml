@@ -917,12 +917,8 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		<property name="patientDataValueService">
 			<ref bean="org.hisp.dhis.patientdatavalue.PatientDataValueService" />
 		</property>
-		<property name="patientIdentifierService">
-			<ref bean="org.hisp.dhis.patient.PatientIdentifierService" />
-		</property>
 		<property name="patientAttributeValueService">
-			<ref
-				bean="org.hisp.dhis.patientattributevalue.PatientAttributeValueService" />
+			<ref bean="org.hisp.dhis.patientattributevalue.PatientAttributeValueService" />
 		</property>
 	</bean>
 
