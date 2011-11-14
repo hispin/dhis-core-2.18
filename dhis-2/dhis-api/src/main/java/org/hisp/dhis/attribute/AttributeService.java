@@ -58,6 +58,8 @@ public interface AttributeService
 
     public Set<Attribute> getOrganisationUnitAttributes();
 
+    public Set<Attribute> getUserAttributes();
+
     public int getAttributeCount();
 
     public int getAttributeCountByName( String name );

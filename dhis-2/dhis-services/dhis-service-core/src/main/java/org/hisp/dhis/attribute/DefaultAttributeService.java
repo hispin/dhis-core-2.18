@@ -122,6 +122,12 @@ public class DefaultAttributeService
     }
 
     @Override
+    public Set<Attribute> getUserAttributes()
+    {
+        return attributeStore.getUserAttributes();
+    }
+
+    @Override
     public int getAttributeCount()
     {
         return attributeStore.getCount();

@@ -178,7 +178,7 @@ public class SetupTreeAction
             }
         }
 
-        attributes = new ArrayList<Attribute>( attributeService.getDataElementAttributes() );
+        attributes = new ArrayList<Attribute>( attributeService.getUserAttributes() );
 
         Collections.sort( attributes, new AttributeSortOrderComparator() );
 
