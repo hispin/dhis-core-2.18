@@ -1045,8 +1045,6 @@ Ext.onReady( function() {
                 preventHeader: true,
                 collapsible: true,
                 collapseMode: 'mini',
-                resizable: true,
-                resizeHandles: 'e',
                 items: [
                     {
                         xtype: 'toolbar',
@@ -1844,8 +1842,6 @@ Ext.onReady( function() {
                 collapsible: true,
                 collapsed: true,
                 collapseMode: 'mini',
-                resizable: true,
-                resizeHandles: 'w',
                 width: 498,
                 tbar: {
                     height: DV.conf.layout.east_tbar_height,
