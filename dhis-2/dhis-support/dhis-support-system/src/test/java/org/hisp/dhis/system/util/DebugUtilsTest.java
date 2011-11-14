@@ -27,11 +27,10 @@ package org.hisp.dhis.system.util;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import junit.framework.TestCase;
-
+import static org.hisp.dhis.system.util.DebugUtils.SEPARATOR;
 import static org.hisp.dhis.system.util.DebugUtils.logDuplicates;
 import static org.hisp.dhis.system.util.DebugUtils.resetDuplicates;
-import static org.hisp.dhis.system.util.DebugUtils.SEPARATOR;
+import junit.framework.TestCase;
 
 /**
  * @author Lars Helge Overland
