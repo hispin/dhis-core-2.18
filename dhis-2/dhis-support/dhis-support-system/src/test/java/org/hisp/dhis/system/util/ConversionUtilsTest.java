@@ -27,12 +27,12 @@ package org.hisp.dhis.system.util;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import static junit.framework.Assert.assertEquals;
+
 import java.util.ArrayList;
 import java.util.List;
 
 import org.junit.Test;
-
-import static junit.framework.Assert.*;
 
 /**
  * @author Lars Helge Overland

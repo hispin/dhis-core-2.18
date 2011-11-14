@@ -27,10 +27,13 @@ package org.hisp.dhis.system.util;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import org.junit.Test;
+import static junit.framework.Assert.assertEquals;
+import static junit.framework.Assert.assertFalse;
+import static junit.framework.Assert.assertTrue;
+import static org.hisp.dhis.system.util.DateUtils.convertDate;
+import static org.hisp.dhis.system.util.DateUtils.dateIsValid;
 
-import static junit.framework.Assert.*;
-import static org.hisp.dhis.system.util.DateUtils.*;
+import org.junit.Test;
 
 /**
  * @author Lars Helge Overland

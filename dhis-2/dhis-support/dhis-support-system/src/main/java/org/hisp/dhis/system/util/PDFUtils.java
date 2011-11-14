@@ -27,8 +27,9 @@ package org.hisp.dhis.system.util;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import static com.lowagie.text.Element.ALIGN_CENTER;
+import static com.lowagie.text.Element.ALIGN_LEFT;
 import static org.hisp.dhis.system.util.TextUtils.nullIfEmpty;
-import static com.lowagie.text.pdf.PdfPCell.*;
 
 import java.io.OutputStream;
 import java.util.Calendar;

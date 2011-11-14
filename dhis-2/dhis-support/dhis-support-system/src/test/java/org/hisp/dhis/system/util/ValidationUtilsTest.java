@@ -27,8 +27,13 @@ package org.hisp.dhis.system.util;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import static junit.framework.Assert.*;
-import static org.hisp.dhis.system.util.ValidationUtils.*;
+import static junit.framework.Assert.assertEquals;
+import static junit.framework.Assert.assertFalse;
+import static junit.framework.Assert.assertNull;
+import static junit.framework.Assert.assertTrue;
+import static org.hisp.dhis.system.util.ValidationUtils.coordinateIsValid;
+import static org.hisp.dhis.system.util.ValidationUtils.getLatitude;
+import static org.hisp.dhis.system.util.ValidationUtils.getLongitude;
 
 import org.junit.Test;
 
