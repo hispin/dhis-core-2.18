@@ -60,7 +60,13 @@
       <result name="success" type="velocity">/main.vm</result>
       <param name="page">/dhis-web-maintenance-mobile/smsServiceConfiguration.vm</param>
       <param name="menu">/dhis-web-maintenance-mobile/menu.vm</param>
-    </action>
+     </action>
+	  
+	  <action name="addGateWayConfig" class="org.hisp.dhis.mobile.action.AddGateWayConfigAction">
+      <result name="success" type="velocity">/main.vm</result>
+      <param name="page">/dhis-web-maintenance-mobile/addGateway.vm</param>
+      <param name="menu">/dhis-web-maintenance-mobile/menu.vm</param>
+     </action>
 	  
   </package>
 </struts>
