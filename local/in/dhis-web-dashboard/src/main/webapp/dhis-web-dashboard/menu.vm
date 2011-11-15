@@ -27,7 +27,7 @@
 		<li>$i18n.getString( "bulk_sms" )</li>
 			<ul>
 
-				<li><a href="dueDates.action">$i18n.getString( "Due Dates" )</a></li>
+				<li><a href="dueDates.action">$i18n.getString( "due_dates" )</a></li>
 				<li><a href="prgwiseSummaryBulkSMSForm.action">$i18n.getString( "Programwise Summary" )</a></li>
 			</ul>
 	</ul>
