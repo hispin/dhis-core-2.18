@@ -16,7 +16,7 @@ import java.util.List;
 @XmlAccessorType( value = XmlAccessType.FIELD )
 public class CodeList<T extends AbstractIdentifiableObject>
 {
-    @XmlElement( name = "identifiableObject" )
+    @XmlElement( name = "code" )
     private List<T> list = new ArrayList<T>();
 
     public CodeList()
