@@ -199,53 +199,56 @@ public class LoadDataEntryAction
 
         programStageDataElements = new ArrayList<ProgramStageDataElement>( programStage.getProgramStageDataElements() );
 
-        ProgramInstance programInstance = selectedStateManager.getSelectedProgramInstance();
-
         Collections.sort( programStageDataElements, new ProgramStageDataElementSortOrderComparator() );
 
-        programStageInstance = programStageInstanceService.getProgramStageInstance( programInstance, programStage );
+        ProgramInstance programInstance = selectedStateManager.getSelectedProgramInstance();
 
-        if ( programStageInstance != null )
+        if ( programInstance != null )
         {
-            selectedStateManager.setSelectedProgramStageInstance( programStageInstance );
+            programStageInstance = programStageInstanceService.getProgramStageInstance( programInstance, programStage );
 
-            // ---------------------------------------------------------------------
-            // Get CategoryOptions
-            // ---------------------------------------------------------------------
-
-            Collection<DataElement> dataElements = programStageDataElementService.getListDataElement( programStage );
-
-            for ( DataElement dataElement : dataElements )
+            if ( programStageInstance != null )
             {
-                optionMap.put( dataElement.getId(), dataElement.getCategoryCombo().getOptionCombos() );
+                selectedStateManager.setSelectedProgramStageInstance( programStageInstance );
+
+                // ---------------------------------------------------------------------
+                // Get CategoryOptions
+                // ---------------------------------------------------------------------
+
+                Collection<DataElement> dataElements = programStageDataElementService.getListDataElement( programStage );
+
+                for ( DataElement dataElement : dataElements )
+                {
+                    optionMap.put( dataElement.getId(), dataElement.getCategoryCombo().getOptionCombos() );
+                }
+
+                // ---------------------------------------------------------------------
+                // Get data values
+                // ---------------------------------------------------------------------
+
+                Collection<PatientDataValue> patientDataValues = patientDataValueService
+                    .getPatientDataValues( programStageInstance );
+
+                patientDataValueMap = new HashMap<Integer, PatientDataValue>( patientDataValues.size() );
+
+                for ( PatientDataValue patientDataValue : patientDataValues )
+                {
+                    patientDataValueMap.put( patientDataValue.getDataElement().getId(), patientDataValue );
+                }
+
+                // ---------------------------------------------------------------------
+                // Get data-entry-form
+                // ---------------------------------------------------------------------
+
+                DataEntryForm dataEntryForm = programStage.getDataEntryForm();
+
+                if ( dataEntryForm != null )
+                {
+                    customDataEntryFormCode = programDataEntryService.prepareDataEntryFormForEntry( dataEntryForm
+                        .getHtmlCode(), patientDataValues, "", i18n, programStage, programStageInstance,
+                        organisationUnit );
+                }
             }
-
-            // ---------------------------------------------------------------------
-            // Get data values
-            // ---------------------------------------------------------------------
-
-            Collection<PatientDataValue> patientDataValues = patientDataValueService
-                .getPatientDataValues( programStageInstance );
-
-            patientDataValueMap = new HashMap<Integer, PatientDataValue>( patientDataValues.size() );
-
-            for ( PatientDataValue patientDataValue : patientDataValues )
-            {
-                patientDataValueMap.put( patientDataValue.getDataElement().getId(), patientDataValue );
-            }
-
-            // ---------------------------------------------------------------------
-            // Get data-entry-form
-            // ---------------------------------------------------------------------
-
-            DataEntryForm dataEntryForm = programStage.getDataEntryForm();
-
-            if ( dataEntryForm != null )
-            {
-                customDataEntryFormCode = programDataEntryService.prepareDataEntryFormForEntry( dataEntryForm
-                    .getHtmlCode(), patientDataValues, "", i18n, programStage, programStageInstance, organisationUnit );
-            }
-
         }
 
         return SUCCESS;

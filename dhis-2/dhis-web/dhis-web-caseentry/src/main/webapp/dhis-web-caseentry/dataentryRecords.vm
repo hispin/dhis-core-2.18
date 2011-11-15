@@ -34,7 +34,7 @@
 						#if( $sortPatientAttribute )
 							<td>$!patientAttributeValueMap.get( $patient.id ).value</td>
 						#end
-                        <td><a href="javascript:showPatientDetails( '$programInstance.patient.id' )" title="$i18n.getString( 'show_details' )">$patient.getFullName()</a></td>                    
+                        <td><a href="javascript:showPatientDetails( '$patient.id' )" title="$i18n.getString( 'show_details' )">$patient.getFullName()</a></td>                    
                         #foreach( $programStageInstance in $programStageInstanceMap.get( $programInstance ) )
                             #if( $programStageInstance.executionDate )
                                 <td style="text-align:center" bgcolor="$colorMap.get( $programStageInstance.id )">
