@@ -9,7 +9,7 @@
 		namespace="/dhis-web-dashboard">
 		
 		
-		<action name="index1"
+		<action name="index"
 			class="org.hisp.dhis.dataanalyser.action.DashBoardHomePageAction">
 			<result name="success" type="velocity">/main.vm</result>
 			<param name="page">/dhis-web-dashboard/welcome.vm</param>
@@ -30,7 +30,7 @@
       <param name="onExceptionReturn">plainTextError</param>
     </action>    
 
-	<action name="index"
+	<action name="index1"
 		class="org.hisp.dhis.dataanalyser.action.IDSPOutbreakAction">
 		<result name="standard" type="redirect">index1.action</result>
 		<result name="success" type="velocity">/main.vm</result>
