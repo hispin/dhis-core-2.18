@@ -306,6 +306,15 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
             ref="org.hisp.dhis.organisationunit.OrganisationUnitGroupService" />
     </bean>
 
+    <bean id="org.hisp.dhis.mapping.action.GetGeoJsonFacilitiesAction"
+        class="org.hisp.dhis.mapping.action.GetGeoJsonFacilitiesAction"
+        scope="prototype">
+        <property name="organisationUnitService"
+            ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
+        <property name="organisationUnitGroupService"
+            ref="org.hisp.dhis.organisationunit.OrganisationUnitGroupService" />
+    </bean>
+
 	<bean id="org.hisp.dhis.mapping.action.GetGeoJsonFromFileAction" class="org.hisp.dhis.mapping.action.GetGeoJsonFromFileAction"
 		scope="prototype">
 		<property name="locationManager" ref="locationManager"/>

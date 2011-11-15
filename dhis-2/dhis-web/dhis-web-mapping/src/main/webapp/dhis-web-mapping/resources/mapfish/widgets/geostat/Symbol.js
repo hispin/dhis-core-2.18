@@ -334,7 +334,7 @@ mapfish.widgets.geostat.Symbol = Ext.extend(Ext.Panel, {
                 'select': {
                     scope: this,
                     fn: function(cb) {
-                        if (cb.currentValue != cb.getValue() && cb.getRawValue() == 'Type') {
+                        if (cb.currentValue != cb.getValue()) {
                             cb.currentValue = cb.getValue();
                             G.stores.groupsByGroupSet.setBaseParam('id', cb.getValue());
                             G.stores.groupsByGroupSet.load({scope: this, callback: function() {
@@ -351,11 +351,6 @@ mapfish.widgets.geostat.Symbol = Ext.extend(Ext.Panel, {
                                 
                                 this.classify(false, true);
                             }});
-                        }
-                        else if (cb.getRawValue() != 'Type') {
-                            cb.currentValue = cb.getValue();
-                            this.cmp.group.removeAll();
-                            this.cmp.group.doLayout();
                         }
                     }
                 }
@@ -480,7 +475,7 @@ mapfish.widgets.geostat.Symbol = Ext.extend(Ext.Panel, {
                         width: 270,
                         bodyStyle: 'padding:0 0 0 8px;',
                         items: [
-                            { html: '<div class="window-info">' + G.i18n.organisation_unit_level + ' (facility)</div>' },                            
+                            { html: '<div class="window-info">Facility level</div>' },                            
                             {
                                 xtype: 'panel',
                                 layout: 'form',
@@ -503,7 +498,7 @@ mapfish.widgets.geostat.Symbol = Ext.extend(Ext.Panel, {
         
         var onHoverSelect = function onHoverSelect(feature) {
             if (feature.attributes.name) {
-                document.getElementById('featuredatatext').innerHTML = '<div style="color:black">' + feature.attributes.name + '</div><div style="color:#555">' + feature.attributes.type + '</div>';
+                document.getElementById('featuredatatext').innerHTML = '<div style="color:black">' + feature.attributes.name + '</div><div style="color:#555">' + feature.attributes[scope.cmp.groupSet.getRawValue()] + '</div>';
             }
             else {
                 document.getElementById('featuredatatext').innerHTML = '';
@@ -790,7 +785,7 @@ mapfish.widgets.geostat.Symbol = Ext.extend(Ext.Panel, {
         G.vars.activeWidget = this;
         this.updateValues = true;
         
-        this.setUrl(G.conf.path_mapping + 'getGeoJson.action?' +
+        this.setUrl(G.conf.path_mapping + 'getGeoJsonFacilities.action?' +
             'parentId=' + this.organisationUnitSelection.parent.id +
             '&level=' + this.organisationUnitSelection.level.level
         );
@@ -811,7 +806,7 @@ mapfish.widgets.geostat.Symbol = Ext.extend(Ext.Panel, {
     },
 
     applyValues: function() {
-		var options = {indicator: this.cmp.groupSet.getRawValue().toLowerCase()};
+		var options = {indicator: this.cmp.groupSet.getRawValue()};
         
         G.vars.activeWidget = this;
 		this.coreComp.updateOptions(options);
