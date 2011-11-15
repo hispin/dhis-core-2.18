@@ -85,6 +85,8 @@ public class GenerateMetaDataReportResultAction
 
     private final String SUMMARY = "SUMMARY";
 
+    private final String DATASETMEMBER = "DATASETMEMBER";
+
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
@@ -164,7 +166,7 @@ public class GenerateMetaDataReportResultAction
     {
         this.jdbcTemplate = jdbcTemplate;
     }
-    
+
     // -------------------------------------------------------------------------
     // Input & Output
     // -------------------------------------------------------------------------
@@ -195,8 +197,8 @@ public class GenerateMetaDataReportResultAction
     {
         this.incID = incID;
     }
-    
-    @SuppressWarnings("unused")
+
+    @SuppressWarnings( "unused" )
     private String raFolderName;
 
     // -------------------------------------------------------------------------
@@ -210,7 +212,7 @@ public class GenerateMetaDataReportResultAction
         raFolderName = reportService.getRAFolderName();
 
         System.out.println( "MetaDataReport Generation Start Time is : " + new Date() );
-        
+
         if ( metaDataId.equalsIgnoreCase( ORGUNIT ) )
         {
             generateOrgUnitList();
@@ -260,6 +262,10 @@ public class GenerateMetaDataReportResultAction
             generateSummaryReport();
         }
 
+        else if ( metaDataId.equalsIgnoreCase( DATASETMEMBER ) )
+        {
+            generateDataSetMemberReport();
+        }
         statementManager.destroy();
 
         System.out.println( "MetaDataReport Generation End Time is : " + new Date() );
@@ -317,12 +323,13 @@ public class GenerateMetaDataReportResultAction
         // Coding For Printing MetaData
         // ----------------------------------------------------------------------
 
-        //String outputReportPath = System.getenv( "DHIS2_HOME" ) + File.separator + raFolderName + File.separator
-        //    + "output" + File.separator + UUID.randomUUID().toString() + ".xls";
-        
-        String outputReportPath = System.getenv( "DHIS2_HOME" ) + File.separator +  Configuration_IN.DEFAULT_TEMPFOLDER;
+        // String outputReportPath = System.getenv( "DHIS2_HOME" ) +
+        // File.separator + raFolderName + File.separator
+        // + "output" + File.separator + UUID.randomUUID().toString() + ".xls";
+
+        String outputReportPath = System.getenv( "DHIS2_HOME" ) + File.separator + Configuration_IN.DEFAULT_TEMPFOLDER;
         File newdir = new File( outputReportPath );
-        if( !newdir.exists() )
+        if ( !newdir.exists() )
         {
             newdir.mkdirs();
         }
@@ -425,23 +432,24 @@ public class GenerateMetaDataReportResultAction
         inputStream = new BufferedInputStream( new FileInputStream( outputReportFile ) );
         outputReportFile.deleteOnExit();
     }
-    
+
     // -------------------------------------------------------------------------
     // Method for getting DataElementwise List in Excel Sheet
     // -------------------------------------------------------------------------
-    
+
     public void generateDataElementList()
         throws Exception
     {
         List<DataElement> dataElementList = new ArrayList<DataElement>( dataElementService.getAllDataElements() );
         Collections.sort( dataElementList, new DataElementNameComparator() );
 
-        //String outputReportPath = System.getenv( "DHIS2_HOME" ) + File.separator + raFolderName + File.separator
-        //    + "output" + File.separator + UUID.randomUUID().toString() + ".xls";
-        
-        String outputReportPath = System.getenv( "DHIS2_HOME" ) + File.separator +  Configuration_IN.DEFAULT_TEMPFOLDER;
+        // String outputReportPath = System.getenv( "DHIS2_HOME" ) +
+        // File.separator + raFolderName + File.separator
+        // + "output" + File.separator + UUID.randomUUID().toString() + ".xls";
+
+        String outputReportPath = System.getenv( "DHIS2_HOME" ) + File.separator + Configuration_IN.DEFAULT_TEMPFOLDER;
         File newdir = new File( outputReportPath );
-        if( !newdir.exists() )
+        if ( !newdir.exists() )
         {
             newdir.mkdirs();
         }
@@ -470,7 +478,8 @@ public class GenerateMetaDataReportResultAction
                 sheet0.addCell( new Label( colStart, rowStart, "DataElementID", getCellFormat1() ) );
                 sheet0.addCell( new Label( colStart + 1, rowStart, "DataElementName", getCellFormat1() ) );
                 sheet0.addCell( new Label( colStart + 2, rowStart, "DataElementAlternativeName", getCellFormat1() ) );
-                sheet0.addCell( new Label( colStart + 3, rowStart, "DataElementAggregationOperator", getCellFormat1() ) );
+                sheet0
+                    .addCell( new Label( colStart + 3, rowStart, "DataElementAggregationOperator", getCellFormat1() ) );
                 sheet0.addCell( new Label( colStart + 4, rowStart, "DataElementDescription", getCellFormat1() ) );
                 sheet0.addCell( new Label( colStart + 5, rowStart, "DataElementCode", getCellFormat1() ) );
                 sheet0.addCell( new Label( colStart + 6, rowStart, "DataElementShortName", getCellFormat1() ) );
@@ -507,7 +516,7 @@ public class GenerateMetaDataReportResultAction
                     sheet0.addCell( new Label( colStart + 6, rowStart, dataElement.getShortName(), wCellformat ) );
                     sheet0.addCell( new Label( colStart + 7, rowStart, dataElement.getType(), wCellformat ) );
                     sheet0.addCell( new Label( colStart + 8, rowStart, dataElement.getUrl(), wCellformat ) );
-                    
+
                     String domainType = new String();
                     if ( dataElement.getDomainType() != null )
                     {
@@ -518,7 +527,7 @@ public class GenerateMetaDataReportResultAction
                         domainType = "";
                     }
                     sheet0.addCell( new Label( colStart + 9, rowStart, domainType, wCellformat ) );
-                    
+
                     String numberType = new String();
                     if ( dataElement.getNumberType() != null )
                     {
@@ -540,7 +549,7 @@ public class GenerateMetaDataReportResultAction
                         periodType = "";
                     }
                     sheet0.addCell( new Label( colStart + 11, rowStart, periodType, wCellformat ) );
-                    
+
                     String lastUpdate = new String();
                     if ( dataElement.getLastUpdated() != null )
                     {
@@ -558,7 +567,7 @@ public class GenerateMetaDataReportResultAction
 
             rowStart++;
         }
-        
+
         outputReportWorkbook.write();
         outputReportWorkbook.close();
 
@@ -579,12 +588,13 @@ public class GenerateMetaDataReportResultAction
         List<DataElementGroup> dataElementGroupList = new ArrayList<DataElementGroup>( dataElementService
             .getAllDataElementGroups() );
 
-        //String outputReportPath = System.getenv( "DHIS2_HOME" ) + File.separator + raFolderName + File.separator
-        //    + "output" + File.separator + UUID.randomUUID().toString() + ".xls";
-        
-        String outputReportPath = System.getenv( "DHIS2_HOME" ) + File.separator +  Configuration_IN.DEFAULT_TEMPFOLDER;
+        // String outputReportPath = System.getenv( "DHIS2_HOME" ) +
+        // File.separator + raFolderName + File.separator
+        // + "output" + File.separator + UUID.randomUUID().toString() + ".xls";
+
+        String outputReportPath = System.getenv( "DHIS2_HOME" ) + File.separator + Configuration_IN.DEFAULT_TEMPFOLDER;
         File newdir = new File( outputReportPath );
-        if( !newdir.exists() )
+        if ( !newdir.exists() )
         {
             newdir.mkdirs();
         }
@@ -676,7 +686,7 @@ public class GenerateMetaDataReportResultAction
                         sheet0.addCell( new Label( colStart + 6, rowStart, dataElement.getShortName(), wCellformat ) );
                         sheet0.addCell( new Label( colStart + 7, rowStart, dataElement.getType(), wCellformat ) );
                         sheet0.addCell( new Label( colStart + 8, rowStart, dataElement.getUrl(), wCellformat ) );
-                        
+
                         String domainType = new String();
                         if ( dataElement.getDomainType() != null )
                         {
@@ -687,7 +697,7 @@ public class GenerateMetaDataReportResultAction
                             domainType = "";
                         }
                         sheet0.addCell( new Label( colStart + 9, rowStart, domainType, wCellformat ) );
-                        
+
                         String numberType = new String();
                         if ( dataElement.getNumberType() != null )
                         {
@@ -709,7 +719,7 @@ public class GenerateMetaDataReportResultAction
                             periodType = "";
                         }
                         sheet0.addCell( new Label( colStart + 11, rowStart, periodType, wCellformat ) );
-                        
+
                         String lastUpdate = new String();
                         if ( dataElement.getLastUpdated() != null )
                         {
@@ -740,7 +750,7 @@ public class GenerateMetaDataReportResultAction
     }
 
     // -------------------------------------------------------------------------
-    // Methods for getting Organisation Unit Groupwise List in Excel Sheet 
+    // Methods for getting Organisation Unit Groupwise List in Excel Sheet
     // -------------------------------------------------------------------------
 
     public void generateOrgUnitGroupList()
@@ -748,12 +758,13 @@ public class GenerateMetaDataReportResultAction
     {
         List<OrganisationUnitGroup> orgUnitGroupList = new ArrayList<OrganisationUnitGroup>(
             organisationUnitgroupService.getAllOrganisationUnitGroups() );
-        //String outputReportPath = System.getenv( "DHIS2_HOME" ) + File.separator + raFolderName + File.separator
-        //    + "output" + File.separator + UUID.randomUUID().toString() + ".xls";
-        
-        String outputReportPath = System.getenv( "DHIS2_HOME" ) + File.separator +  Configuration_IN.DEFAULT_TEMPFOLDER;
+        // String outputReportPath = System.getenv( "DHIS2_HOME" ) +
+        // File.separator + raFolderName + File.separator
+        // + "output" + File.separator + UUID.randomUUID().toString() + ".xls";
+
+        String outputReportPath = System.getenv( "DHIS2_HOME" ) + File.separator + Configuration_IN.DEFAULT_TEMPFOLDER;
         File newdir = new File( outputReportPath );
-        if( !newdir.exists() )
+        if ( !newdir.exists() )
         {
             newdir.mkdirs();
         }
@@ -838,8 +849,9 @@ public class GenerateMetaDataReportResultAction
                     {
                         sheet0.addCell( new Number( colStart, rowStart, organisationUnit.getId(), wCellformat ) );
                         sheet0.addCell( new Label( colStart + 1, rowStart, organisationUnit.getName(), wCellformat ) );
-                        sheet0.addCell( new Label( colStart + 2, rowStart, organisationUnit.getShortName(), wCellformat ) );
-                        
+                        sheet0
+                            .addCell( new Label( colStart + 2, rowStart, organisationUnit.getShortName(), wCellformat ) );
+
                         String opendate = new String();
                         if ( organisationUnit.getOpeningDate() != null )
                         {
@@ -850,7 +862,7 @@ public class GenerateMetaDataReportResultAction
                             opendate = "";
                         }
                         sheet0.addCell( new Label( colStart + 3, rowStart, opendate, wCellformat ) );
-                        
+
                         String closedate = new String();
                         if ( organisationUnit.getClosedDate() != null )
                         {
@@ -875,7 +887,7 @@ public class GenerateMetaDataReportResultAction
                         sheet0.addCell( new Label( colStart + 5, rowStart, PARENT, wCellformat ) );
                         sheet0.addCell( new Label( colStart + 6, rowStart, organisationUnit.getCode(), wCellformat ) );
                         sheet0.addCell( new Label( colStart + 7, rowStart, organisationUnit.getUrl(), wCellformat ) );
-                        
+
                         String lastUpdate = new String();
                         if ( organisationUnit.getLastUpdated() != null )
                         {
@@ -886,7 +898,7 @@ public class GenerateMetaDataReportResultAction
                             lastUpdate = "";
                         }
                         sheet0.addCell( new Label( colStart + 8, rowStart, lastUpdate, wCellformat ) );
-                        
+
                         String contactPerson = new String();
                         if ( organisationUnit.getContactPerson() != null )
                         {
@@ -899,7 +911,7 @@ public class GenerateMetaDataReportResultAction
                         sheet0.addCell( new Label( colStart + 9, rowStart, contactPerson, wCellformat ) );
 
                         String phoneNumber = new String();
-                        if( organisationUnit.getPhoneNumber() != null )
+                        if ( organisationUnit.getPhoneNumber() != null )
                         {
                             phoneNumber = organisationUnit.getPhoneNumber();
                         }
@@ -908,9 +920,9 @@ public class GenerateMetaDataReportResultAction
                             phoneNumber = "";
                         }
                         sheet0.addCell( new Label( colStart + 10, rowStart, phoneNumber, wCellformat ) );
-                        
+
                         String email = new String();
-                        if( organisationUnit.getEmail() != null )
+                        if ( organisationUnit.getEmail() != null )
                         {
                             email = organisationUnit.getEmail();
                         }
@@ -919,9 +931,9 @@ public class GenerateMetaDataReportResultAction
                             email = "";
                         }
                         sheet0.addCell( new Label( colStart + 11, rowStart, email, wCellformat ) );
-                        
+
                         String comment = new String();
-                        if( organisationUnit.getComment() != null )
+                        if ( organisationUnit.getComment() != null )
                         {
                             comment = organisationUnit.getComment();
                         }
@@ -930,9 +942,9 @@ public class GenerateMetaDataReportResultAction
                             comment = "";
                         }
                         sheet0.addCell( new Label( colStart + 12, rowStart, comment, wCellformat ) );
-                        
-                        String coordinates =  new String();
-                        if( organisationUnit.getCoordinates() != null )
+
+                        String coordinates = new String();
+                        if ( organisationUnit.getCoordinates() != null )
                         {
                             coordinates = organisationUnit.getCoordinates();
                         }
@@ -941,7 +953,7 @@ public class GenerateMetaDataReportResultAction
                             coordinates = "";
                         }
                         sheet0.addCell( new Label( colStart + 13, rowStart, coordinates, wCellformat ) );
-                        
+
                     }
                     else
                     {
@@ -972,13 +984,16 @@ public class GenerateMetaDataReportResultAction
     {
         OrganisationUnit rootOrgUnit = organisationUnitService.getRootOrganisationUnits().iterator().next();
 
-        List<OrganisationUnit> OrganisitionUnitList = new ArrayList<OrganisationUnit>( organisationUnitService.getOrganisationUnitWithChildren( rootOrgUnit.getId() ) );
+        List<OrganisationUnit> OrganisitionUnitList = new ArrayList<OrganisationUnit>( organisationUnitService
+            .getOrganisationUnitWithChildren( rootOrgUnit.getId() ) );
 
-        //String outputReportPath = System.getenv( "DHIS2_HOME" ) + File.separator + raFolderName + File.separator + "output" + File.separator + UUID.randomUUID().toString() + ".xls";
-        
-        String outputReportPath = System.getenv( "DHIS2_HOME" ) + File.separator +  Configuration_IN.DEFAULT_TEMPFOLDER;
+        // String outputReportPath = System.getenv( "DHIS2_HOME" ) +
+        // File.separator + raFolderName + File.separator + "output" +
+        // File.separator + UUID.randomUUID().toString() + ".xls";
+
+        String outputReportPath = System.getenv( "DHIS2_HOME" ) + File.separator + Configuration_IN.DEFAULT_TEMPFOLDER;
         File newdir = new File( outputReportPath );
-        if( !newdir.exists() )
+        if ( !newdir.exists() )
         {
             newdir.mkdirs();
         }
@@ -1022,11 +1037,14 @@ public class GenerateMetaDataReportResultAction
 
             sheet0.addCell( new Label( colStart + ouLevel, rowStart, ou.getName(), getCellFormat2() ) );
 
-            //String query = "SELECT userid,username FROM users WHERE userid IN ( SELECT userinfoid FROM usermembership WHERE organisationunitid = "+ ou.getId() +")";
-            String query = "SELECT users.userid,users.username FROM users INNER JOIN usermembership ON users.userid = usermembership.userinfoid WHERE usermembership.organisationunitid = "+ ou.getId();            
+            // String query =
+            // "SELECT userid,username FROM users WHERE userid IN ( SELECT userinfoid FROM usermembership WHERE organisationunitid = "+
+            // ou.getId() +")";
+            String query = "SELECT users.userid,users.username FROM users INNER JOIN usermembership ON users.userid = usermembership.userinfoid WHERE usermembership.organisationunitid = "
+                + ou.getId();
             String userName = "";
             String userId = "";
-            
+
             try
             {
                 SqlRowSet sqlResultSet = jdbcTemplate.queryForRowSet( query );
@@ -1042,11 +1060,11 @@ public class GenerateMetaDataReportResultAction
                     }
                 }
             }
-            catch( Exception e )
+            catch ( Exception e )
             {
-                System.out.println("Exception with jdbcTemplate: "+ e.getMessage() );
+                System.out.println( "Exception with jdbcTemplate: " + e.getMessage() );
             }
-            
+
             sheet0.addCell( new Label( colStart + maxLevels + 1, rowStart, userId, getCellFormat2() ) );
             sheet0.addCell( new Label( colStart + maxLevels + 2, rowStart, userName, getCellFormat2() ) );
 
@@ -1072,13 +1090,16 @@ public class GenerateMetaDataReportResultAction
     {
         OrganisationUnit rootOrgUnit = organisationUnitService.getRootOrganisationUnits().iterator().next();
 
-        List<OrganisationUnit> OrganisitionUnitList = new ArrayList<OrganisationUnit>( organisationUnitService.getOrganisationUnitWithChildren( rootOrgUnit.getId() ) );
+        List<OrganisationUnit> OrganisitionUnitList = new ArrayList<OrganisationUnit>( organisationUnitService
+            .getOrganisationUnitWithChildren( rootOrgUnit.getId() ) );
 
-        //String outputReportPath = System.getenv( "DHIS2_HOME" ) + File.separator + raFolderName + File.separator + "output" + File.separator + UUID.randomUUID().toString() + ".xls";
-        
-        String outputReportPath = System.getenv( "DHIS2_HOME" ) + File.separator +  Configuration_IN.DEFAULT_TEMPFOLDER;
+        // String outputReportPath = System.getenv( "DHIS2_HOME" ) +
+        // File.separator + raFolderName + File.separator + "output" +
+        // File.separator + UUID.randomUUID().toString() + ".xls";
+
+        String outputReportPath = System.getenv( "DHIS2_HOME" ) + File.separator + Configuration_IN.DEFAULT_TEMPFOLDER;
         File newdir = new File( outputReportPath );
-        if( !newdir.exists() )
+        if ( !newdir.exists() )
         {
             newdir.mkdirs();
         }
@@ -1138,7 +1159,7 @@ public class GenerateMetaDataReportResultAction
 
         rowStart++;
         Iterator<OrganisationUnit> orgUnitIterator = OrganisitionUnitList.iterator();
-        while( orgUnitIterator.hasNext() )
+        while ( orgUnitIterator.hasNext() )
         {
             OrganisationUnit ou = orgUnitIterator.next();
             if ( incID != null )
@@ -1208,7 +1229,7 @@ public class GenerateMetaDataReportResultAction
                     sheet0.addCell( new Label( colStart + 9, rowStart, contactPerson, wCellformat ) );
 
                     String phoneNumber = new String();
-                    if( ou.getPhoneNumber() != null )
+                    if ( ou.getPhoneNumber() != null )
                     {
                         phoneNumber = ou.getPhoneNumber();
                     }
@@ -1217,9 +1238,9 @@ public class GenerateMetaDataReportResultAction
                         phoneNumber = "";
                     }
                     sheet0.addCell( new Label( colStart + 10, rowStart, phoneNumber, wCellformat ) );
-                    
+
                     String email = new String();
-                    if( ou.getEmail() != null )
+                    if ( ou.getEmail() != null )
                     {
                         email = ou.getEmail();
                     }
@@ -1228,9 +1249,9 @@ public class GenerateMetaDataReportResultAction
                         email = "";
                     }
                     sheet0.addCell( new Label( colStart + 11, rowStart, email, wCellformat ) );
-                    
+
                     String comment = new String();
-                    if( ou.getComment() != null )
+                    if ( ou.getComment() != null )
                     {
                         comment = ou.getComment();
                     }
@@ -1239,9 +1260,9 @@ public class GenerateMetaDataReportResultAction
                         comment = "";
                     }
                     sheet0.addCell( new Label( colStart + 12, rowStart, comment, wCellformat ) );
-                    
-                    String coordinates =  new String();
-                    if( ou.getCoordinates() != null )
+
+                    String coordinates = new String();
+                    if ( ou.getCoordinates() != null )
                     {
                         coordinates = ou.getCoordinates();
                     }
@@ -1287,9 +1308,9 @@ public class GenerateMetaDataReportResultAction
         List<Indicator> indicatorList = new ArrayList<Indicator>( indicatorService.getAllIndicators() );
         Collections.sort( indicatorList, new IndicatorNameComparator() );
 
-        String outputReportPath = System.getenv( "DHIS2_HOME" ) + File.separator +  Configuration_IN.DEFAULT_TEMPFOLDER;
+        String outputReportPath = System.getenv( "DHIS2_HOME" ) + File.separator + Configuration_IN.DEFAULT_TEMPFOLDER;
         File newdir = new File( outputReportPath );
-        if( !newdir.exists() )
+        if ( !newdir.exists() )
         {
             newdir.mkdirs();
         }
@@ -1354,10 +1375,10 @@ public class GenerateMetaDataReportResultAction
                 {
                     sheet0.addCell( new Number( colStart, rowStart, indicator.getId(), wCellformat ) );
                     sheet0.addCell( new Label( colStart + 1, rowStart, indicator.getName(), wCellformat ) );
-                    sheet0.addCell( new Label( colStart + 2, rowStart, expressionService.getExpressionDescription( indicator
-                        .getNumerator() ), wCellformat ) );
-                    sheet0.addCell( new Label( colStart + 3, rowStart, expressionService.getExpressionDescription( indicator
-                        .getDenominator() ), wCellformat ) );
+                    sheet0.addCell( new Label( colStart + 2, rowStart, expressionService
+                        .getExpressionDescription( indicator.getNumerator() ), wCellformat ) );
+                    sheet0.addCell( new Label( colStart + 3, rowStart, expressionService
+                        .getExpressionDescription( indicator.getDenominator() ), wCellformat ) );
                 }
                 else if ( incID.equalsIgnoreCase( PRINT ) )
                 {
@@ -1373,11 +1394,16 @@ public class GenerateMetaDataReportResultAction
                         .addCell( new Label( colStart + 6, rowStart, indicator.getNumeratorDescription(), wCellformat ) );
                     sheet0.addCell( new Label( colStart + 7, rowStart, indicator.getDenominatorDescription(),
                         wCellformat ) );
-                    //sheet0.addCell( new Label( colStart + 8, rowStart, indicator.getNumeratorAggregationOperator(),wCellformat ) );
-                    sheet0.addCell( new Label( colStart + 8, rowStart, indicator.getNumeratorDescription(),
+                    // sheet0.addCell( new Label( colStart + 8, rowStart,
+                    // indicator.getNumeratorAggregationOperator(),wCellformat )
+                    // );
+                    sheet0
+                        .addCell( new Label( colStart + 8, rowStart, indicator.getNumeratorDescription(), wCellformat ) );
+                    // sheet0.addCell( new Label( colStart + 9, rowStart,
+                    // indicator.getDenominatorAggregationOperator(),wCellformat
+                    // ) );
+                    sheet0.addCell( new Label( colStart + 9, rowStart, indicator.getDenominatorDescription(),
                         wCellformat ) );
-                    //sheet0.addCell( new Label( colStart + 9, rowStart, indicator.getDenominatorAggregationOperator(),wCellformat ) );
-                    sheet0.addCell( new Label( colStart + 9, rowStart, indicator.getDenominatorDescription(),wCellformat ) );
                     sheet0.addCell( new Label( colStart + 10, rowStart, indicator.getDescription(), wCellformat ) );
                     sheet0.addCell( new Label( colStart + 11, rowStart, indicator.getShortName(), wCellformat ) );
                     sheet0.addCell( new Label( colStart + 12, rowStart, indicator.getUrl(), wCellformat ) );
@@ -1385,10 +1411,10 @@ public class GenerateMetaDataReportResultAction
                 else
                 {
                     sheet0.addCell( new Label( colStart + 1, rowStart, indicator.getName(), wCellformat ) );
-                    sheet0.addCell( new Label( colStart + 2, rowStart, expressionService.getExpressionDescription( indicator
-                        .getNumerator() ), wCellformat ) );
-                    sheet0.addCell( new Label( colStart + 3, rowStart, expressionService.getExpressionDescription( indicator
-                        .getDenominator() ), wCellformat ) );
+                    sheet0.addCell( new Label( colStart + 2, rowStart, expressionService
+                        .getExpressionDescription( indicator.getNumerator() ), wCellformat ) );
+                    sheet0.addCell( new Label( colStart + 3, rowStart, expressionService
+                        .getExpressionDescription( indicator.getDenominator() ), wCellformat ) );
                 }
             }
 
@@ -1415,12 +1441,13 @@ public class GenerateMetaDataReportResultAction
         List<IndicatorGroup> indicatorGroupList = new ArrayList<IndicatorGroup>( indicatorService
             .getAllIndicatorGroups() );
 
-        //String outputReportPath = System.getenv( "DHIS2_HOME" ) + File.separator + raFolderName + File.separator
-        //    + "output" + File.separator + UUID.randomUUID().toString() + ".xls";
-        
-        String outputReportPath = System.getenv( "DHIS2_HOME" ) + File.separator +  Configuration_IN.DEFAULT_TEMPFOLDER;
+        // String outputReportPath = System.getenv( "DHIS2_HOME" ) +
+        // File.separator + raFolderName + File.separator
+        // + "output" + File.separator + UUID.randomUUID().toString() + ".xls";
+
+        String outputReportPath = System.getenv( "DHIS2_HOME" ) + File.separator + Configuration_IN.DEFAULT_TEMPFOLDER;
         File newdir = new File( outputReportPath );
-        if( !newdir.exists() )
+        if ( !newdir.exists() )
         {
             newdir.mkdirs();
         }
@@ -1516,10 +1543,16 @@ public class GenerateMetaDataReportResultAction
                             wCellformat ) );
                         sheet0.addCell( new Label( colStart + 7, rowStart, indicator.getDenominatorDescription(),
                             wCellformat ) );
-                       // sheet0.addCell( new Label( colStart + 8, rowStart, indicator.getNumeratorAggregationOperator(),wCellformat ) );
-                        sheet0.addCell( new Label( colStart + 8, rowStart, indicator.getNumeratorDescription(),wCellformat ) );
-                        //sheet0.addCell( new Label( colStart + 9, rowStart, indicator.getDenominatorAggregationOperator(), wCellformat ) );
-                        sheet0.addCell( new Label( colStart + 9, rowStart, indicator.getDenominatorDescription(), wCellformat ) );
+                        // sheet0.addCell( new Label( colStart + 8, rowStart,
+                        // indicator.getNumeratorAggregationOperator(),wCellformat
+                        // ) );
+                        sheet0.addCell( new Label( colStart + 8, rowStart, indicator.getNumeratorDescription(),
+                            wCellformat ) );
+                        // sheet0.addCell( new Label( colStart + 9, rowStart,
+                        // indicator.getDenominatorAggregationOperator(),
+                        // wCellformat ) );
+                        sheet0.addCell( new Label( colStart + 9, rowStart, indicator.getDenominatorDescription(),
+                            wCellformat ) );
                         sheet0.addCell( new Label( colStart + 10, rowStart, indicator.getDescription(), wCellformat ) );
                         sheet0.addCell( new Label( colStart + 11, rowStart, indicator.getShortName(), wCellformat ) );
                         sheet0.addCell( new Label( colStart + 12, rowStart, indicator.getUrl(), wCellformat ) );
@@ -1555,12 +1588,13 @@ public class GenerateMetaDataReportResultAction
         List<DataSet> datasetList = new ArrayList<DataSet>( dataSetService.getAllDataSets() );
         Collections.sort( datasetList, new DataSetNameComparator() );
 
-        //String outputReportPath = System.getenv( "DHIS2_HOME" ) + File.separator + raFolderName + File.separator
-        //    + "output" + File.separator + UUID.randomUUID().toString() + ".xls";
-        
-        String outputReportPath = System.getenv( "DHIS2_HOME" ) + File.separator +  Configuration_IN.DEFAULT_TEMPFOLDER;
+        // String outputReportPath = System.getenv( "DHIS2_HOME" ) +
+        // File.separator + raFolderName + File.separator
+        // + "output" + File.separator + UUID.randomUUID().toString() + ".xls";
+
+        String outputReportPath = System.getenv( "DHIS2_HOME" ) + File.separator + Configuration_IN.DEFAULT_TEMPFOLDER;
         File newdir = new File( outputReportPath );
-        if( !newdir.exists() )
+        if ( !newdir.exists() )
         {
             newdir.mkdirs();
         }
@@ -1615,7 +1649,8 @@ public class GenerateMetaDataReportResultAction
                     sheet0.addCell( new Label( colStart + 2, rowStart, dataSet.getShortName(), wCellformat ) );
                     sheet0.addCell( new Label( colStart + 3, rowStart, dataSet.getCode(), wCellformat ) );
                     sheet0.addCell( new Label( colStart + 4, rowStart, dataSet.getAlternativeName(), wCellformat ) );
-                    sheet0.addCell( new Label( colStart + 5, rowStart, dataSet.getPeriodType().getName(), wCellformat ) );
+                    sheet0
+                        .addCell( new Label( colStart + 5, rowStart, dataSet.getPeriodType().getName(), wCellformat ) );
                 }
             }
 
@@ -1645,12 +1680,13 @@ public class GenerateMetaDataReportResultAction
             .getAllValidationRules() );
         Collections.sort( validationRuleList, new ValidationRuleNameComparator() );
 
-        //String outputReportPath = System.getenv( "DHIS2_HOME" ) + File.separator + raFolderName + File.separator
-        //    + "output" + File.separator + UUID.randomUUID().toString() + ".xls";
-        
-        String outputReportPath = System.getenv( "DHIS2_HOME" ) + File.separator +  Configuration_IN.DEFAULT_TEMPFOLDER;
+        // String outputReportPath = System.getenv( "DHIS2_HOME" ) +
+        // File.separator + raFolderName + File.separator
+        // + "output" + File.separator + UUID.randomUUID().toString() + ".xls";
+
+        String outputReportPath = System.getenv( "DHIS2_HOME" ) + File.separator + Configuration_IN.DEFAULT_TEMPFOLDER;
         File newdir = new File( outputReportPath );
-        if( !newdir.exists() )
+        if ( !newdir.exists() )
         {
             newdir.mkdirs();
         }
@@ -1686,7 +1722,8 @@ public class GenerateMetaDataReportResultAction
                 sheet0.addCell( new Label( colStart + 5, rowStart, "ValidationRuleType", getCellFormat1() ) );
                 sheet0.addCell( new Label( colStart + 6, rowStart, "ValidationRuleLeftSideDescription",
                     getCellFormat1() ) );
-                sheet0.addCell( new Label( colStart + 7, rowStart, "ValidationRuleRightSideDescription", getCellFormat1() ) );
+                sheet0.addCell( new Label( colStart + 7, rowStart, "ValidationRuleRightSideDescription",
+                    getCellFormat1() ) );
                 sheet0.addCell( new Label( colStart + 8, rowStart, "ValidationRulePeriodType", getCellFormat1() ) );
             }
         }
@@ -1708,15 +1745,16 @@ public class GenerateMetaDataReportResultAction
                     sheet0.addCell( new Number( colStart, rowStart, validationRule.getId(), wCellformat ) );
                     sheet0.addCell( new Label( colStart + 1, rowStart, validationRule.getName(), wCellformat ) );
                     sheet0.addCell( new Label( colStart + 2, rowStart, validationRule.getDescription(), wCellformat ) );
-                    sheet0.addCell( new Label( colStart + 3, rowStart, validationRule.getOperator().getMathematicalOperator(),
+                    sheet0.addCell( new Label( colStart + 3, rowStart, validationRule.getOperator()
+                        .getMathematicalOperator(), wCellformat ) );
+                    sheet0.addCell( new Label( colStart + 4, rowStart, validationRule.getOperator().toString(),
                         wCellformat ) );
-                    sheet0.addCell( new Label( colStart + 4, rowStart, validationRule.getOperator().toString(), wCellformat ) );
                     sheet0.addCell( new Label( colStart + 5, rowStart, validationRule.getType(), wCellformat ) );
                     sheet0.addCell( new Label( colStart + 6, rowStart, validationRule.getLeftSide().getDescription(),
                         wCellformat ) );
                     sheet0.addCell( new Label( colStart + 7, rowStart, validationRule.getRightSide().getDescription(),
                         wCellformat ) );
-                    
+
                     String periodType = new String();
                     if ( validationRule.getPeriodType() != null )
                     {
@@ -1755,12 +1793,13 @@ public class GenerateMetaDataReportResultAction
         List<ValidationRuleGroup> validationRuleGroupList = new ArrayList<ValidationRuleGroup>( validationRuleService
             .getAllValidationRuleGroups() );
 
-        //String outputReportPath = System.getenv( "DHIS2_HOME" ) + File.separator + raFolderName + File.separator
-        //    + "output" + File.separator + UUID.randomUUID().toString() + ".xls";
-        
-        String outputReportPath = System.getenv( "DHIS2_HOME" ) + File.separator +  Configuration_IN.DEFAULT_TEMPFOLDER;
+        // String outputReportPath = System.getenv( "DHIS2_HOME" ) +
+        // File.separator + raFolderName + File.separator
+        // + "output" + File.separator + UUID.randomUUID().toString() + ".xls";
+
+        String outputReportPath = System.getenv( "DHIS2_HOME" ) + File.separator + Configuration_IN.DEFAULT_TEMPFOLDER;
         File newdir = new File( outputReportPath );
-        if( !newdir.exists() )
+        if ( !newdir.exists() )
         {
             newdir.mkdirs();
         }
@@ -1841,9 +1880,10 @@ public class GenerateMetaDataReportResultAction
                         sheet0.addCell( new Label( colStart + 1, rowStart, validationRule.getName(), wCellformat ) );
                         sheet0
                             .addCell( new Label( colStart + 2, rowStart, validationRule.getDescription(), wCellformat ) );
-                        sheet0.addCell( new Label( colStart + 3, rowStart, validationRule.getOperator().getMathematicalOperator(),
+                        sheet0.addCell( new Label( colStart + 3, rowStart, validationRule.getOperator()
+                            .getMathematicalOperator(), wCellformat ) );
+                        sheet0.addCell( new Label( colStart + 4, rowStart, validationRule.getOperator().toString(),
                             wCellformat ) );
-                        sheet0.addCell( new Label( colStart + 4, rowStart, validationRule.getOperator().toString(), wCellformat ) );
                         sheet0.addCell( new Label( colStart + 5, rowStart, validationRule.getType(), wCellformat ) );
                         sheet0.addCell( new Label( colStart + 6, rowStart, validationRule.getLeftSide()
                             .getDescription(), wCellformat ) );
@@ -1877,7 +1917,7 @@ public class GenerateMetaDataReportResultAction
 
         outputReportFile.deleteOnExit();
 
-    }// end generateValidationGroupList function
+    }// end generateValidationGroupList method
 
     // -------------------------------------------------------------------------
     // Method for getting User List in Excel Sheet
@@ -1888,12 +1928,13 @@ public class GenerateMetaDataReportResultAction
     {
         List<User> userList = new ArrayList<User>( userStore.getAllUsers() );
 
-        //String outputReportPath = System.getenv( "DHIS2_HOME" ) + File.separator + raFolderName + File.separator
-        //    + "output" + File.separator + UUID.randomUUID().toString() + ".xls";
-        
-        String outputReportPath = System.getenv( "DHIS2_HOME" ) + File.separator +  Configuration_IN.DEFAULT_TEMPFOLDER;
+        // String outputReportPath = System.getenv( "DHIS2_HOME" ) +
+        // File.separator + raFolderName + File.separator
+        // + "output" + File.separator + UUID.randomUUID().toString() + ".xls";
+
+        String outputReportPath = System.getenv( "DHIS2_HOME" ) + File.separator + Configuration_IN.DEFAULT_TEMPFOLDER;
         File newdir = new File( outputReportPath );
-        if( !newdir.exists() )
+        if ( !newdir.exists() )
         {
             newdir.mkdirs();
         }
@@ -1937,9 +1978,9 @@ public class GenerateMetaDataReportResultAction
 
         for ( User user : userList )
         {
-            String query = "SELECT username FROM users WHERE userid = "+ user.getId();            
+            String query = "SELECT username FROM users WHERE userid = " + user.getId();
             String userName = "";
-            
+
             try
             {
                 SqlRowSet sqlResultSet = jdbcTemplate.queryForRowSet( query );
@@ -1951,11 +1992,11 @@ public class GenerateMetaDataReportResultAction
                     userName = sqlResultSet.getString( 1 );
                 }
             }
-            catch( Exception e )
+            catch ( Exception e )
             {
-                System.out.println("Exception with jdbcTemplate: "+ e.getMessage() );
+                System.out.println( "Exception with jdbcTemplate: " + e.getMessage() );
             }
-            
+
             if ( incID != null )
             {
                 if ( incID.equalsIgnoreCase( SOURCE ) )
@@ -1984,8 +2025,9 @@ public class GenerateMetaDataReportResultAction
 
                     String userRoleName = "";
 
-                    String query1 = "select userrole.name from userrole inner join userrolemembers on userrole.userroleid=userrolemembers.userroleid where userrolemembers.userid = "+ user.getId();            
-                    
+                    String query1 = "select userrole.name from userrole inner join userrolemembers on userrole.userroleid=userrolemembers.userroleid where userrolemembers.userid = "
+                        + user.getId();
+
                     try
                     {
                         SqlRowSet sqlResultSet = jdbcTemplate.queryForRowSet( query1 );
@@ -2000,9 +2042,9 @@ public class GenerateMetaDataReportResultAction
                             }
                         }
                     }
-                    catch( Exception e )
+                    catch ( Exception e )
                     {
-                        System.out.println("Exception with jdbcTemplate: "+ e.getMessage() );
+                        System.out.println( "Exception with jdbcTemplate: " + e.getMessage() );
                     }
 
                     sheet0.addCell( new Label( colStart + 7, rowStart, userRoleName, wCellformat ) );
@@ -2010,7 +2052,7 @@ public class GenerateMetaDataReportResultAction
             }
 
             sheet0.addCell( new Label( colStart + 1, rowStart, userName, wCellformat ) );
-            
+
             rowStart++;
         }// for loop end
 
@@ -2023,7 +2065,177 @@ public class GenerateMetaDataReportResultAction
 
         outputReportFile.deleteOnExit();
 
-    }// end of generateUserList function
+    }// end of generateUserList method
+
+    // -------------------------------------------------------------------------
+    // Method for getting DataSetMembers List in Excel Sheet
+    // -------------------------------------------------------------------------
+
+    public void generateDataSetMemberReport()
+        throws Exception
+    {
+        List<DataSet> datasetList = new ArrayList<DataSet>( dataSetService.getAllDataSets() );
+        Collections.sort( datasetList, new DataSetNameComparator() );
+
+        // List<DataElement> tttt = new ArrayList<DataElement>(
+        // dataSet.getDataElements() );
+        String outputReportPath = System.getenv( "DHIS2_HOME" ) + File.separator + Configuration_IN.DEFAULT_TEMPFOLDER;
+        File newdir = new File( outputReportPath );
+        if ( !newdir.exists() )
+        {
+            newdir.mkdirs();
+        }
+        outputReportPath += File.separator + UUID.randomUUID().toString() + ".xls";
+
+        WritableWorkbook outputReportWorkbook = Workbook.createWorkbook( new File( outputReportPath ) );
+
+        WritableSheet sheet0 = outputReportWorkbook.createSheet( "DataSetsMember", 0 );
+
+        // Cell Format
+        WritableCellFormat wCellformat = new WritableCellFormat();
+        wCellformat.setBorder( Border.ALL, BorderLineStyle.THIN );
+        wCellformat.setWrap( false );
+        wCellformat.setAlignment( Alignment.LEFT );
+
+        int rowStart = 0;
+        int colStart = 0;
+
+        if ( incID != null )
+        {
+            if ( incID.equalsIgnoreCase( SOURCE ) )
+            {
+                sheet0.addCell( new Label( colStart, rowStart, "DataSetID", getCellFormat1() ) );
+            }
+            else if ( incID.equalsIgnoreCase( PRINT ) )
+            {
+                sheet0.addCell( new Label( colStart, rowStart, "DataElementID", getCellFormat1() ) );
+                sheet0.addCell( new Label( colStart + 1, rowStart, "DataElementName", getCellFormat1() ) );
+                sheet0.addCell( new Label( colStart + 2, rowStart, "DataElementAlternativeName", getCellFormat1() ) );
+                sheet0
+                    .addCell( new Label( colStart + 3, rowStart, "DataElementAggregationOperator", getCellFormat1() ) );
+                sheet0.addCell( new Label( colStart + 4, rowStart, "DataElementDescription", getCellFormat1() ) );
+                sheet0.addCell( new Label( colStart + 5, rowStart, "DataElementCode", getCellFormat1() ) );
+                sheet0.addCell( new Label( colStart + 6, rowStart, "DataElementShortName", getCellFormat1() ) );
+                sheet0.addCell( new Label( colStart + 7, rowStart, "DataElementType", getCellFormat1() ) );
+                sheet0.addCell( new Label( colStart + 8, rowStart, "DataElementUrl", getCellFormat1() ) );
+                sheet0.addCell( new Label( colStart + 9, rowStart, "DomainType", getCellFormat1() ) );
+                sheet0.addCell( new Label( colStart + 10, rowStart, "NumberType", getCellFormat1() ) );
+                sheet0.addCell( new Label( colStart + 11, rowStart, "PeriodType", getCellFormat1() ) );
+                sheet0.addCell( new Label( colStart + 12, rowStart, "LastUpdated", getCellFormat1() ) );
+            }
+        }
+        sheet0.addCell( new Label( colStart + 1, rowStart, "DataSetName", getCellFormat1() ) );
+
+        rowStart++;
+
+        for ( DataSet dataSet : datasetList )
+        {
+            if ( incID != null )
+            {
+                if ( incID.equalsIgnoreCase( SOURCE ) || incID.equalsIgnoreCase( PRINT ) )
+                {
+                    sheet0.addCell( new Number( colStart, rowStart, dataSet.getId(), getCellFormat1() ) );
+                }
+            }
+
+            sheet0.addCell( new Label( colStart + 1, rowStart, dataSet.getName(), getCellFormat1() ) );
+
+            if ( incID.equalsIgnoreCase( PRINT ) )
+            {
+                sheet0.mergeCells( colStart + 1, rowStart, colStart + 12, rowStart );
+            }
+
+            rowStart++;
+
+            List<DataElement> dataElementList = new ArrayList<DataElement>( dataSet.getDataElements() );
+
+            Collections.sort( dataElementList, new DataElementNameComparator() );
+
+            for ( DataElement dataElement : dataElementList )
+            {
+                if ( incID != null )
+                {
+                    if ( incID.equalsIgnoreCase( SOURCE ) )
+                    {
+                        sheet0.addCell( new Number( colStart, rowStart, dataElement.getId(), wCellformat ) );
+                    }
+                    else if ( incID.equalsIgnoreCase( PRINT ) )
+                    {
+                        sheet0.addCell( new Number( colStart, rowStart, dataElement.getId(), wCellformat ) );
+                        sheet0.addCell( new Label( colStart + 1, rowStart, dataElement.getName(), wCellformat ) );
+                        sheet0.addCell( new Label( colStart + 2, rowStart, dataElement.getAlternativeName(),
+                            wCellformat ) );
+                        sheet0.addCell( new Label( colStart + 3, rowStart, dataElement.getAggregationOperator(),
+                            wCellformat ) );
+                        sheet0.addCell( new Label( colStart + 4, rowStart, dataElement.getDescription(), wCellformat ) );
+                        sheet0.addCell( new Label( colStart + 5, rowStart, dataElement.getCode(), wCellformat ) );
+                        sheet0.addCell( new Label( colStart + 6, rowStart, dataElement.getShortName(), wCellformat ) );
+                        sheet0.addCell( new Label( colStart + 7, rowStart, dataElement.getType(), wCellformat ) );
+                        sheet0.addCell( new Label( colStart + 8, rowStart, dataElement.getUrl(), wCellformat ) );
+
+                        String domainType = new String();
+                        if ( dataElement.getDomainType() != null )
+                        {
+                            domainType = dataElement.getDomainType();
+                        }
+                        else
+                        {
+                            domainType = "";
+                        }
+                        sheet0.addCell( new Label( colStart + 9, rowStart, domainType, wCellformat ) );
+
+                        String numberType = new String();
+                        if ( dataElement.getNumberType() != null )
+                        {
+                            numberType = dataElement.getNumberType();
+                        }
+                        else
+                        {
+                            numberType = "";
+                        }
+                        sheet0.addCell( new Label( colStart + 10, rowStart, numberType, wCellformat ) );
+
+                        String periodType = new String();
+                        if ( dataElement.getPeriodType() != null )
+                        {
+                            periodType = dataElement.getPeriodType().getName();
+                        }
+                        else
+                        {
+                            periodType = "";
+                        }
+                        sheet0.addCell( new Label( colStart + 11, rowStart, periodType, wCellformat ) );
+
+                        String lastUpdate = new String();
+                        if ( dataElement.getLastUpdated() != null )
+                        {
+                            lastUpdate = dataElement.getLastUpdated().toString();
+                        }
+                        else
+                        {
+                            lastUpdate = "";
+                        }
+                        sheet0.addCell( new Label( colStart + 12, rowStart, lastUpdate, wCellformat ) );
+                    }
+                }
+
+                sheet0.addCell( new Label( colStart + 1, rowStart, dataElement.getName(), wCellformat ) );
+
+                rowStart++;
+            }
+        }
+        outputReportWorkbook.write();
+        outputReportWorkbook.close();
+
+        fileName = "DataSetMemberList.xls";
+        File outputReportFile = new File( outputReportPath );
+        inputStream = new BufferedInputStream( new FileInputStream( outputReportFile ) );
+
+        outputReportFile.deleteOnExit();
+
+    }
+
+    // end of DataSetMembers Report method
 
     // Returns the OrgUnitTree for which Root is the orgUnit
     public List<OrganisationUnit> getChildOrgUnitTree( OrganisationUnit orgUnit )
