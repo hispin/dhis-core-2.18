@@ -253,7 +253,6 @@ Ext.onReady( function() {
         listeners: {
             'load': function(s) {
                 this.isLoaded = true;
-                this.filter('name', 'Type');
             }
         }
     });
