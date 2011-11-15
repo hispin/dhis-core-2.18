@@ -240,7 +240,7 @@ Ext.onReady( function() {
                 series: 'indicator',
                 category: 'period',
                 filter: 'organisationunit',
-                div: '',
+                el: '',
                 legendPosition: false,
                 url: ''
             };
@@ -333,15 +333,15 @@ Ext.onReady( function() {
         },
         el: null,
         getChart: function(project) {
-            this.el = Ext.get(project.state.conf.div);
+            this.el = Ext.get(project.state.conf.el);
             this[project.state.type](project);
             DHIS.exe.execute();
         },
         column: function(project) {
             project.chart = Ext.create('Ext.chart.Chart', {
-				renderTo: project.state.conf.div,
-                width: this.el.getWidth(),
-                height: this.el.getHeight(),
+				renderTo: project.state.conf.el,
+                width: project.state.conf.width || this.el.getWidth(),
+                height: project.state.conf.height || this.el.getHeight(),
                 animate: true,
                 store: project.store,
                 legend: DHIS.util.chart.getLegend(),
@@ -384,9 +384,9 @@ Ext.onReady( function() {
         },
         bar: function(project) {
             project.chart = Ext.create('Ext.chart.Chart', {
-				renderTo: project.state.conf.div,
-                width: this.el.getWidth(),
-                height: this.el.getHeight(),
+				renderTo: project.state.conf.el,
+                width: project.state.conf.width || this.el.getWidth(),
+                height: project.state.conf.height || this.el.getHeight(),
                 animate: true,
                 store: project.store,
                 legend: DHIS.util.chart.getLegend(),
@@ -429,9 +429,9 @@ Ext.onReady( function() {
         },
         line: function(project) {
             project.chart = Ext.create('Ext.chart.Chart', {
-				renderTo: project.state.conf.div,
-                width: this.el.getWidth(),
-                height: this.el.getHeight(),
+				renderTo: project.state.conf.el,
+                width: project.state.conf.width || this.el.getWidth(),
+                height: project.state.conf.height || this.el.getHeight(),
                 animate: true,
                 store: project.store,
                 legend: DHIS.util.chart.getLegend(),
@@ -463,9 +463,9 @@ Ext.onReady( function() {
         },
         area: function(project) {
             project.chart = Ext.create('Ext.chart.Chart', {
-				renderTo: project.state.conf.div,
-                width: this.el.getWidth(),
-                height: this.el.getHeight(),
+				renderTo: project.state.conf.el,
+                width: project.state.conf.width || this.el.getWidth(),
+                height: project.state.conf.height || this.el.getHeight(),
                 animate: true,
                 store: project.store,
                 legend: DHIS.util.chart.getLegend(),
@@ -505,9 +505,9 @@ Ext.onReady( function() {
         },
         pie: function(project) {
             project.chart = Ext.create('Ext.chart.Chart', {
-				renderTo: project.state.conf.div,
-                width: this.el.getWidth(),
-                height: this.el.getHeight(),
+				renderTo: project.state.conf.el,
+                width: project.state.conf.width || this.el.getWidth(),
+                height: project.state.conf.height || this.el.getHeight(),
                 animate: true,
                 shadow: true,
                 store: project.store,

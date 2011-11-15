@@ -21,40 +21,50 @@
 	<script>
 		Ext.onReady( function() {
 			var url = 'http://localhost:8180/dhis/dhis-web-visualizer/app';
+            
+/*
+CONFIG              TYPE            DEFAULT             DESCRIPTION
+    
+type                string          'column'            (Optional) Chart types: 'column', 'bar', 'line', 'area', 'pie'
+stacked             boolean         false               (Optional) Works for 'column' and 'bar'. Otherwise ignored.
+indicators          [integer]                           (Required*) Indicator ids. Required if no data elements are provided.
+dataelements        [integer]                           (Required*) Data element ids. Required if no indicators are provided.
+periods             [string]        'monthsThisYear'    (Optional) Relative period names.
+organisationunits   [integer]                           (Required) Organisation unit ids.
+series              string          'indicator'         (Optional) Series: 'indicator', 'dataelement', 'period' or 'organisationunit'
+category            string          'period'            (Optional) Category: 'indicator', 'dataelement', 'period' or 'organisationunit'
+filter              string          'organisationunit'  (Optional) Filter: 'indicator', 'dataelement', 'period' or 'organisationunit'
+el                  string                              (Required) The element to render the chart.
+width               integer         <el width>          (Optional) Chart width. Default is the element width.
+height              integer         <el height>         (Optional) Chart height. Default is the element height.
+legendPosition      string          'top'               (Optional) Positions: 'top', 'right', 'bottom' or 'left'
+url                 string                              (Required) The web service url.
+*/
 			
 			DHIS.getChart({
-				type: 'column',
+                stacked: true,
 				indicators: [52486, 52487, 52488],
-				periods: ['monthsThisYear'],
 				organisationunits: [525],
-				series: 'indicator',
-				category: 'period',
-				filter: 'organisationunit',
-				div: 'chart1',
+				el: 'chart1',
 				url: url
 			});
             
             DHIS.getChart({
 				type: 'line',
-				indicators: [52486, 52487, 52488],
-				periods: ['monthsThisYear'],
+				indicators: [52486, 52487],
 				organisationunits: [525],
-				series: 'indicator',
-				category: 'period',
-				filter: 'organisationunit',
-				div: 'chart2',
+				el: 'chart2',
 				url: url
 			});
             
             DHIS.getChart({
 				type: 'area',
-				indicators: [52486, 52487, 52488],
-				periods: ['monthsThisYear'],
+				indicators: [52486, 52487, 52488, 52491, 52496, 52497],
 				organisationunits: [525],
-				series: 'indicator',
-				category: 'period',
-				filter: 'organisationunit',
-				div: 'chart3',
+				el: 'chart3',
+                width: 1300,
+                height: 600,
+                legendPosition: 'right',
 				url: url
 			});
 			
