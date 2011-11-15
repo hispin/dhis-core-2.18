@@ -27,17 +27,20 @@ package org.hisp.dhis.dataelement;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-
 import org.apache.commons.lang.StringEscapeUtils;
 import org.hisp.dhis.attribute.AttributeValue;
 import org.hisp.dhis.common.AbstractNameableObject;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.period.PeriodType;
 import org.hisp.dhis.period.YearlyPeriodType;
+
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlRootElement;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 /**
  * A DataElement is a definition (meta-information about) of the entities that
@@ -48,15 +51,16 @@ import org.hisp.dhis.period.YearlyPeriodType;
  * children. The sum of the children represent the same entity as the parent.
  * Hiearchies of DataElements are used to give more fine- or course-grained
  * representations of the entities.
- * 
+ * <p/>
  * DataElement acts as a DimensionSet in the dynamic dimensional model, and as a
  * DimensionOption in the static DataElement dimension.
- * 
+ *
  * @author Kristian Nordal
  * @version $Id: DataElement.java 5540 2008-08-19 10:47:07Z larshelg $
  */
-public class DataElement
-    extends AbstractNameableObject
+@XmlRootElement( name = "dataElement" )
+@XmlAccessorType( value = XmlAccessType.NONE )
+public class DataElement extends AbstractNameableObject
 {
     /**
      * Determines if a de-serialized file is compatible with this class.
@@ -91,7 +95,7 @@ public class DataElement
      * The name to appear in forms.
      */
     private String formName;
-    
+
     /**
      * If this DataElement is active or not (enabled or disabled).
      */
@@ -197,7 +201,7 @@ public class DataElement
             return false;
         }
 
-        if ( !(o instanceof DataElement) )
+        if ( !( o instanceof DataElement ) )
         {
             return false;
         }
@@ -252,7 +256,7 @@ public class DataElement
      */
     public String getDetailedNumberType()
     {
-        return (type != null && type.equals( VALUE_TYPE_INT ) && numberType != null) ? numberType : type;
+        return ( type != null && type.equals( VALUE_TYPE_INT ) && numberType != null ) ? numberType : type;
     }
 
     /**
@@ -368,7 +372,7 @@ public class DataElement
         result.append( "}" );
         return result.toString();
     }
-    
+
     // -------------------------------------------------------------------------
     // Getters and setters
     // -------------------------------------------------------------------------

@@ -35,12 +35,17 @@ import org.hisp.dhis.attribute.AttributeValue;
 import org.hisp.dhis.common.AbstractNameableObject;
 import org.hisp.dhis.dataset.DataSet;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlRootElement;
+
 /**
  * @author Lars Helge Overland
  * @version $Id: Indicator.java 5540 2008-08-19 10:47:07Z larshelg $
  */
-public class Indicator
-    extends AbstractNameableObject
+@XmlRootElement( name = "indicator" )
+@XmlAccessorType( value = XmlAccessType.NONE )
+public class Indicator extends AbstractNameableObject
 {
     /**
      * Determines if a de-serialized file is compatible with this class.
