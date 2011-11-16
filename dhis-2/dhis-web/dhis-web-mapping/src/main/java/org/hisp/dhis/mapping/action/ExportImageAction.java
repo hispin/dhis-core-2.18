@@ -199,7 +199,7 @@ public class ExportImageAction
     @Override
     protected String getFilename()
     {
-        return "DHIS2_GIS_" + this.title + ".png";
+        return "dhis2_gis_" + this.title + ".png";
     }
     
     @Override
