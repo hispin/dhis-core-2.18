@@ -1,17 +1,12 @@
 package org.hisp.dhis.api.listener;
 
-import org.hisp.dhis.api.resources.XChart;
-import org.hisp.dhis.api.resources.XCharts;
-import org.hisp.dhis.api.resources.XIdentifiableObject;
-import org.springframework.util.StringUtils;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.xml.bind.Marshaller;
 
 public class IdentifiableObjectListener extends Marshaller.Listener {
     private HttpServletRequest request;
 
-    public IdentifiableObjectListener(HttpServletRequest request) {
+/*    public IdentifiableObjectListener(HttpServletRequest request) {
         this.request = request;
     }
 
@@ -43,4 +38,5 @@ public class IdentifiableObjectListener extends Marshaller.Listener {
     @Override
     public void afterMarshal(Object source) {
     }
+*/
 }
