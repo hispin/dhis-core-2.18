@@ -344,8 +344,8 @@ Ext.onReady( function() {
             getEncodedSeriesName: function(text) {
                 return text.replace(/\./g,'');
             },
-            getLegend: function() {
-                var len = DV.state.series.data.length;
+            getLegend: function(len) {
+                len = len ? len : DV.state.series.data.length;
                 return {
                     position: len > 6 ? 'right' : 'top',
                     boxStroke: '#ffffff',
@@ -942,7 +942,7 @@ Ext.onReady( function() {
                 store: DV.store.chart,
                 insetPadding: 60,
                 items: DV.util.chart.getTitle(),
-                legend: DV.util.chart.getLegend(),
+                legend: DV.util.chart.getLegend(DV.state.category.data.length),
                 series: [{
                     type: 'pie',
                     field: DV.store.chart.left[0],
@@ -1843,6 +1843,7 @@ Ext.onReady( function() {
                                     return;
                                 }
                                 
+                                document.getElementById('titleField').value = DV.state.filter.data[0];
                                 document.getElementById('svgField').value = svg[0].parentNode.innerHTML;
                                 document.getElementById('widthField').value = DV.util.viewport.getSize().x - 100;
                                 document.getElementById('heightField').value = DV.util.viewport.getSize().y - 100;

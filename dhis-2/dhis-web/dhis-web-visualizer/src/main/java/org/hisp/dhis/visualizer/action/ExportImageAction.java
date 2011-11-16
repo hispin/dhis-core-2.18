@@ -33,6 +33,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hisp.dhis.visualizer.export.SVGDocument;
 import org.hisp.dhis.visualizer.export.SVGUtils;
+import org.hisp.dhis.system.util.CodecUtils;
 import org.hisp.dhis.util.ContextUtils;
 import org.hisp.dhis.util.SessionUtils;
 import org.hisp.dhis.util.StreamActionSupport;
@@ -54,6 +55,13 @@ public class ExportImageAction
     // -------------------------------------------------------------------------
     // Output & input
     // -------------------------------------------------------------------------
+    
+    private String title;
+
+    public void setTitle( String title )
+    {
+        this.title = title;
+    }
 
     private String svg;
 
@@ -82,7 +90,7 @@ public class ExportImageAction
     protected String execute( HttpServletResponse response, OutputStream out )
         throws Exception
     {
-        if ( svg == null || width == null || height == null )
+        if ( title == null || svg == null || width == null || height == null )
         {
             log.info( "Export map from session" );
 
@@ -94,6 +102,7 @@ public class ExportImageAction
             
             svgDocument = new SVGDocument();
             
+            svgDocument.setTitle( this.title );
             svgDocument.setSvg( this.svg );
             svgDocument.setWidth( this.width );
             svgDocument.setHeight( this.height );
@@ -115,7 +124,7 @@ public class ExportImageAction
     @Override
     protected String getFilename()
     {
-        return "DHIS2_Visualizer.png";
+        return "dhis2_dv_" + CodecUtils.filenameEncode( this.title ) + ".png";
     }
     
     @Override
