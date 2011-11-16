@@ -66,5 +66,10 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		<property name="organisationUnitService"
 			ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
 	</bean>
+
+	<!-- Export -->
+
+	<bean id="org.hisp.dhis.visualizer.action.ExportImageAction" class="org.hisp.dhis.visualizer.action.ExportImageAction"
+		scope="prototype"/>
 	
 </beans>
