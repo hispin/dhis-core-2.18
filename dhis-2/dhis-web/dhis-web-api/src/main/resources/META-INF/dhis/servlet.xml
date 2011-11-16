@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<beans:beans xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-             xmlns:beans="http://www.springframework.org/schema/beans"
-             xmlns:context="http://www.springframework.org/schema/context"
-             xmlns:mvc="http://www.springframework.org/schema/mvc"
-             xsi:schemaLocation="http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-3.0.xsd
+<beans xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns="http://www.springframework.org/schema/beans"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xsi:schemaLocation="http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-3.0.xsd
     http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
     http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd">
 
@@ -11,32 +11,30 @@
 
   <context:component-scan base-package="org.hisp.dhis.api" />
 
-  <beans:bean class="org.springframework.web.servlet.view.ContentNegotiatingViewResolver">
-    <beans:property name="order" value="1" />
-    <beans:property name="mediaTypes">
-      <beans:map>
-        <beans:entry key="json" value="application/json" />
-        <beans:entry key="jsonp" value="application/javascript" />
-        <beans:entry key="xml" value="application/xml" />
-      </beans:map>
-    </beans:property>
+  <bean class="org.springframework.web.servlet.view.ContentNegotiatingViewResolver">
+    <property name="order" value="1" />
+    <property name="mediaTypes">
+      <map>
+        <entry key="json" value="application/json" />
+        <entry key="jsonp" value="application/javascript" />
+        <entry key="xml" value="application/xml" />
+      </map>
+    </property>
 
-    <beans:property name="defaultViews">
-      <beans:list>
-        <beans:bean class="org.hisp.dhis.api.view.ExtendedMappingJacksonView" />
+    <property name="defaultViews">
+      <list>
+        <bean class="org.hisp.dhis.api.view.ExtendedMappingJacksonView" />
 
-        <beans:bean class="org.hisp.dhis.api.view.ExtendedMappingJacksonView">
-          <beans:constructor-arg name="withPadding" value="true" />
-        </beans:bean>
+        <bean class="org.hisp.dhis.api.view.ExtendedMappingJacksonView">
+          <constructor-arg name="withPadding" value="true" />
+        </bean>
 
-        <beans:bean class="org.hisp.dhis.api.view.Jaxb2View" />
-      </beans:list>
-    </beans:property>
+        <bean class="org.hisp.dhis.api.view.Jaxb2View" />
+      </list>
+    </property>
 
-    <beans:property name="defaultContentType" value="application/xml" />
-    <beans:property name="favorParameter" value="true" />
-  </beans:bean>
+    <property name="defaultContentType" value="application/xml" />
+    <property name="favorParameter" value="true" />
+  </bean>
 
-  <beans:bean class="org.hisp.dhis.api.converter.Jaxb2HttpMessageConverter" />
-
-</beans:beans>
+</beans>
