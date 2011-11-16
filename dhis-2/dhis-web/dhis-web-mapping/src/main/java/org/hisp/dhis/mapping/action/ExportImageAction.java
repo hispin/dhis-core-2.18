@@ -33,6 +33,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hisp.dhis.mapping.export.SVGDocument;
 import org.hisp.dhis.mapping.export.SVGUtils;
+import org.hisp.dhis.system.util.CodecUtils;
 import org.hisp.dhis.util.ContextUtils;
 import org.hisp.dhis.util.SessionUtils;
 import org.hisp.dhis.util.StreamActionSupport;
@@ -199,7 +200,7 @@ public class ExportImageAction
     @Override
     protected String getFilename()
     {
-        return "DHIS2_GIS_" + this.title + ".png";
+        return "dhis2_gis_" + CodecUtils.filenameEncode( this.title ) + ".png";
     }
     
     @Override
