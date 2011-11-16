@@ -60,6 +60,12 @@
             <result name="success" type="velocity-json">
                 /dhis-web-visualizer/jsonminAggregatedDataValuesPlugin.vm</result>
         </action>
+
+        <!-- Export -->
+
+		<action name="exportImage" class="org.hisp.dhis.visualizer.action.ExportImageAction">
+			<result name="success" type="outputStreamResult"/>
+		</action>
 		
 	</package>
 </struts>

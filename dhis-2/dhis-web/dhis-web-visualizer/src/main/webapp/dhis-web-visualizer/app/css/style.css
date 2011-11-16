@@ -323,7 +323,7 @@ li {
 }
 
 /* Update button */
-#update_b, #datatable_b, #exit_b {
+#update_b, #datatable_b, #exportpng_b, #exit_b {
     border-width: 1px;
     padding: 3px 1px 3px 4px;
 }

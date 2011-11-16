@@ -54,7 +54,8 @@ DV.conf = {
                     degrees: 330
                 }
             }
-        }
+        },
+        inset: 30
     },
     style: {
         label: {
@@ -343,11 +344,13 @@ Ext.onReady( function() {
             getEncodedSeriesName: function(text) {
                 return text.replace(/\./g,'');
             },
-            getLegend: function(len) {
+            getLegend: function() {
+                var len = DV.state.series.data.length;
                 return {
                     position: len > 6 ? 'right' : 'top',
                     boxStroke: '#ffffff',
-                    boxStrokeWidth: 0
+                    boxStrokeWidth: 0,
+                    padding: 0
                 };
             },
             getGrid: function() {
@@ -356,6 +359,18 @@ Ext.onReady( function() {
                     fill: '#f1f1f1',
                     stroke: '#aaa',
                     'stroke-width': 0.2
+                };
+            },
+            getTitle: function() {
+                return {
+                    type: 'text',
+                    text: DV.init.isInit ? 'Example chart' : DV.state.filter.data[0],
+                    font: 'bold 15px arial',
+                    fill: '#222',
+                    width: 300,
+                    height: 20,
+                    x: 28,
+                    y: 16
                 };
             },
             line: {
@@ -616,6 +631,7 @@ Ext.onReady( function() {
             dimension: DV.conf.finals.dimension.organisationunit.value,
             data: []
         },
+        svg: null,
         getState: function(exe) {
             this.resetState();
             
@@ -760,14 +776,13 @@ Ext.onReady( function() {
         },
         column: function(stacked) {
             this.chart = Ext.create('Ext.chart.Chart', {
-                width: DV.util.viewport.getSize().x,
-                height: DV.util.viewport.getSize().y,
                 animate: true,
                 store: DV.store.chart,
-                legend: DV.util.chart.getLegend(DV.state.series.data.length),
+                insetPadding: DV.conf.chart.inset,
+                items: DV.util.chart.getTitle(),
+                legend: DV.util.chart.getLegend(),
                 axes: [
                     {
-                        title: 'Value',
                         type: 'Numeric',
                         position: 'left',
                         minimum: 0,
@@ -780,7 +795,6 @@ Ext.onReady( function() {
                         }
                     },
                     {
-                        title: DV.init.isInit ? 'Categories' : DV.conf.finals.dimension[DV.state.category.dimension].rawvalue,
                         type: 'Category',
                         position: 'bottom',
                         fields: DV.store.chart.bottom,
@@ -806,11 +820,11 @@ Ext.onReady( function() {
         },
         bar: function(stacked) {
             this.chart = Ext.create('Ext.chart.Chart', {
-                width: DV.util.viewport.getSize().x,
-                height: DV.util.viewport.getSize().y,
                 animate: true,
                 store: DV.store.chart,
-                legend: DV.util.chart.getLegend(DV.state.series.data.length),
+                insetPadding: DV.conf.chart.inset,
+                items: DV.util.chart.getTitle(),
+                legend: DV.util.chart.getLegend(),
                 axes: [
                     {
                         title: DV.conf.finals.dimension[DV.state.category.dimension].rawvalue,
@@ -851,11 +865,11 @@ Ext.onReady( function() {
         },
         line: function() {
             this.chart = Ext.create('Ext.chart.Chart', {
-                width: DV.util.viewport.getSize().x,
-                height: DV.util.viewport.getSize().y,
                 animate: true,
                 store: DV.store.chart,
-                legend: DV.util.chart.getLegend(DV.state.series.data.length),
+                insetPadding: DV.conf.chart.inset,
+                items: DV.util.chart.getTitle(),
+                legend: DV.util.chart.getLegend(),
                 axes: [
                     {
                         title: 'Value',
@@ -883,11 +897,11 @@ Ext.onReady( function() {
         },
         area: function() {
             this.chart = Ext.create('Ext.chart.Chart', {
-                width: DV.util.viewport.getSize().x,
-                height: DV.util.viewport.getSize().y,
                 animate: true,
                 store: DV.store.chart,
-                legend: DV.util.chart.getLegend(DV.state.series.data.length),
+                insetPadding: DV.conf.chart.inset,
+                items: DV.util.chart.getTitle(),
+                legend: DV.util.chart.getLegend(),
                 axes: [
                     {
                         title: 'Value',
@@ -923,13 +937,12 @@ Ext.onReady( function() {
         },
         pie: function() {
             this.chart = Ext.create('Ext.chart.Chart', {
-                width: DV.util.viewport.getSize().x,
-                height: DV.util.viewport.getSize().y,
                 animate: true,
                 shadow: true,
                 store: DV.store.chart,
-                legend: DV.util.chart.getLegend(DV.state.category.data.length),
                 insetPadding: 60,
+                items: DV.util.chart.getTitle(),
+                legend: DV.util.chart.getLegend(),
                 series: [{
                     type: 'pie',
                     field: DV.store.chart.left[0],
@@ -957,10 +970,11 @@ Ext.onReady( function() {
             });
         },
         reload: function() {
-            var c = Ext.getCmp('center');
+            var c = Ext.getCmp('center'),
+                t = null;
             c.removeAll(true);
             c.add(this.chart);
-            c.down('label').setText(DV.state.filter.data[0] || 'Example chart');
+            DV.state.filter.data[0] = DV.state.filter.data[0] ? DV.state.filter.data[0] : 'Example chart';
             
             if (!DV.init.isInit) {
                 DV.store.getDataTableStore(true);
@@ -1815,12 +1829,29 @@ Ext.onReady( function() {
                                 }
                             }
                         },
-                        '-',' ',' ',
                         {
-                            xtype: 'label',
-                            text: 'Example chart',
-                            style: 'font-weight:bold; padding:0 4px;'
-                        },
+                            xtype: 'button',
+                            id: 'exportpng_b',
+                            text: '<b style="color:#444">Export image</b>',
+                            cls: 'x-btn-text-icon',
+                            icon: 'images/exportimage.png',
+                            handler: function(b) {
+                                var svg = document.getElementsByTagName('svg');
+                                
+                                if (svg.length < 1) {
+                                    alert('Please use Chrome, Firefox, Opera or Safari to export image');
+                                    return;
+                                }
+                                
+                                document.getElementById('svgField').value = svg[0].parentNode.innerHTML;
+                                document.getElementById('widthField').value = DV.util.viewport.getSize().x - 100;
+                                document.getElementById('heightField').value = DV.util.viewport.getSize().y - 100;
+                                
+                                var exportForm = document.getElementById('exportPNGForm');
+                                exportForm.action = '../exportImage.action';
+                                exportForm.submit();
+                            }
+                        }, '-',
                         '->',
                         {
                             xtype: 'button',
