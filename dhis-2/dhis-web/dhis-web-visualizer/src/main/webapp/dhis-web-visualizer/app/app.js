@@ -54,7 +54,8 @@ DV.conf = {
                     degrees: 330
                 }
             }
-        }
+        },
+        inset: 30
     },
     style: {
         label: {
@@ -360,9 +361,18 @@ Ext.onReady( function() {
                     'stroke-width': 0.2
                 };
             },
-            //getTitlePosition: function(title) {
-                //var w = DV.util.viewport.getSize().x;
-                //var p = (w/2) - ((title.length/2) * 
+            getTitle: function() {
+                return {
+                    type: 'text',
+                    text: DV.init.isInit ? 'Example chart' : DV.state.filter.data[0],
+                    font: 'bold 15px arial',
+                    fill: '#222',
+                    width: 300,
+                    height: 20,
+                    x: 28,
+                    y: 16
+                };
+            },
             line: {
                 getSeriesArray: function() {
                     var a = [];
@@ -768,21 +778,11 @@ Ext.onReady( function() {
             this.chart = Ext.create('Ext.chart.Chart', {
                 animate: true,
                 store: DV.store.chart,
-                insetPadding: 25,
-                items: [{
-                    type: 'text',
-                    text: DV.init.isInit ? 'Example chart' : DV.state.filter.data[0],
-                    font: 'bold 15px arial',
-                    fill: '#222',
-                    width: 300,
-                    height: 20,
-                    x: 41,
-                    y: 15
-                }],
+                insetPadding: DV.conf.chart.inset,
+                items: DV.util.chart.getTitle(),
                 legend: DV.util.chart.getLegend(),
                 axes: [
                     {
-                        title: DV.init.isInit ? 'Value' : '',
                         type: 'Numeric',
                         position: 'left',
                         minimum: 0,
@@ -820,10 +820,10 @@ Ext.onReady( function() {
         },
         bar: function(stacked) {
             this.chart = Ext.create('Ext.chart.Chart', {
-                width: DV.util.viewport.getSize().x,
-                height: DV.util.viewport.getSize().y,
                 animate: true,
                 store: DV.store.chart,
+                insetPadding: DV.conf.chart.inset,
+                items: DV.util.chart.getTitle(),
                 legend: DV.util.chart.getLegend(),
                 axes: [
                     {
@@ -865,10 +865,10 @@ Ext.onReady( function() {
         },
         line: function() {
             this.chart = Ext.create('Ext.chart.Chart', {
-                width: DV.util.viewport.getSize().x,
-                height: DV.util.viewport.getSize().y,
                 animate: true,
                 store: DV.store.chart,
+                insetPadding: DV.conf.chart.inset,
+                items: DV.util.chart.getTitle(),
                 legend: DV.util.chart.getLegend(),
                 axes: [
                     {
@@ -897,10 +897,10 @@ Ext.onReady( function() {
         },
         area: function() {
             this.chart = Ext.create('Ext.chart.Chart', {
-                width: DV.util.viewport.getSize().x,
-                height: DV.util.viewport.getSize().y,
                 animate: true,
                 store: DV.store.chart,
+                insetPadding: DV.conf.chart.inset,
+                items: DV.util.chart.getTitle(),
                 legend: DV.util.chart.getLegend(),
                 axes: [
                     {
@@ -937,13 +937,12 @@ Ext.onReady( function() {
         },
         pie: function() {
             this.chart = Ext.create('Ext.chart.Chart', {
-                width: DV.util.viewport.getSize().x,
-                height: DV.util.viewport.getSize().y,
                 animate: true,
                 shadow: true,
                 store: DV.store.chart,
-                legend: DV.util.chart.getLegend(),
                 insetPadding: 60,
+                items: DV.util.chart.getTitle(),
+                legend: DV.util.chart.getLegend(),
                 series: [{
                     type: 'pie',
                     field: DV.store.chart.left[0],
@@ -1844,7 +1843,6 @@ Ext.onReady( function() {
                                     return;
                                 }
                                 
-                                document.getElementById('titleField').value = DV.state.filter.data[0];
                                 document.getElementById('svgField').value = svg[0].parentNode.innerHTML;
                                 document.getElementById('widthField').value = DV.util.viewport.getSize().x - 100;
                                 document.getElementById('heightField').value = DV.util.viewport.getSize().y - 100;
