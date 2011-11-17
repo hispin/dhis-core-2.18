@@ -1839,13 +1839,17 @@ Ext.onReady( function() {
                                 
                                 document.getElementById('titleField').value = DV.state.filter.data[0];
                                 document.getElementById('svgField').value = svg[0].parentNode.innerHTML;
-                                document.getElementById('widthField').value = DV.util.viewport.getSize().x - 100;
-                                document.getElementById('heightField').value = DV.util.viewport.getSize().y - 100;
                                 document.getElementById('typeField').value = type;
                                 
                                 var exportForm = document.getElementById('exportForm');
                                 exportForm.action = '../exportImage.action';
-                                exportForm.submit();
+                                
+                                if (svg[0].parentNode.innerHTML && type) {
+                                    exportForm.submit();
+                                }
+                                else {
+                                    alert("No svg/format");
+                                }
                             },
                             listeners: {
                                 afterrender: function(b) {
