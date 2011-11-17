@@ -51,6 +51,10 @@ public class ExportImageAction
     private static final Log log = LogFactory.getLog( ExportImageAction.class );
 
     private static final String SVGDOCUMENT = "SVGDOCUMENT";
+    
+    private static final String TYPE_PNG = "png";
+    
+    private static final String TYPE_PDF = "pdf";
 
     // -------------------------------------------------------------------------
     // Output & input
@@ -83,6 +87,13 @@ public class ExportImageAction
     {
         this.height = height;
     }
+    
+    private String type;
+
+    public void setType( String type )
+    {
+        this.type = type;
+    }
 
     private SVGDocument svgDocument;
 
@@ -90,27 +101,33 @@ public class ExportImageAction
     protected String execute( HttpServletResponse response, OutputStream out )
         throws Exception
     {
-        if ( title == null || svg == null || width == null || height == null )
+        if ( title == null || svg == null || width == null || height == null || type == null )
         {
-            log.info( "Export map from session" );
+            log.info( "Invalid parameter -> Export map from session" );
 
             svgDocument = (SVGDocument) SessionUtils.getSessionVar( SVGDOCUMENT );
         }
         else
         {
-            log.info( "Export map from request" );
-            
             svgDocument = new SVGDocument();
             
-            svgDocument.setTitle( this.title );
-            svgDocument.setSvg( this.svg );
-            svgDocument.setWidth( this.width );
-            svgDocument.setHeight( this.height );
+            svgDocument.setTitle( title );
+            svgDocument.setSvg( svg );
+            svgDocument.setWidth( width );
+            svgDocument.setHeight( height );
             
             SessionUtils.setSessionVar( SVGDOCUMENT, svgDocument );
         }
         
-        SVGUtils.convertToPNG( svgDocument.getSVGForImage(), out, this.width, this.height );
+        if ( type.equals( TYPE_PNG ) )
+        {
+            SVGUtils.convertToPNG( svgDocument.getSVGForImage(), out, width, height );
+        }
+        
+        else if ( type.equals( TYPE_PDF ))
+        {
+            SVGUtils.convertToPDF( svgDocument.getSVGForImage(), out );
+        }
 
         return SUCCESS;
     }
@@ -118,13 +135,13 @@ public class ExportImageAction
     @Override
     protected String getContentType()
     {
-        return ContextUtils.CONTENT_TYPE_PNG;
+        return type.equals( TYPE_PDF ) ? ContextUtils.CONTENT_TYPE_PDF : ContextUtils.CONTENT_TYPE_PNG;
     }
 
     @Override
     protected String getFilename()
     {
-        return "dhis2_dv_" + CodecUtils.filenameEncode( this.title ) + ".png";
+        return "dhis2_dv_" + CodecUtils.filenameEncode( title ) + "." + CodecUtils.filenameEncode( type );
     }
     
     @Override

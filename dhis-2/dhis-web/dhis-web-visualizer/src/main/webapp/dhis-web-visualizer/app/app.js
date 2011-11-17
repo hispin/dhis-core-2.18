@@ -1828,8 +1828,8 @@ Ext.onReady( function() {
                         {
                             xtype: 'button',
 							cls: 'dv-btn-toolbar',
-                            text: '<span class="dv-btn-toolbar-text-2">Save as image</span>',
-                            handler: function(b) {
+                            text: '<span class="dv-btn-toolbar-text-2">Save as..</span>',
+                            execute: function(type) {
                                 var svg = document.getElementsByTagName('svg');
                                 
                                 if (svg.length < 1) {
@@ -1841,10 +1841,35 @@ Ext.onReady( function() {
                                 document.getElementById('svgField').value = svg[0].parentNode.innerHTML;
                                 document.getElementById('widthField').value = DV.util.viewport.getSize().x - 100;
                                 document.getElementById('heightField').value = DV.util.viewport.getSize().y - 100;
+                                document.getElementById('typeField').value = type;
                                 
-                                var exportForm = document.getElementById('exportPNGForm');
+                                var exportForm = document.getElementById('exportForm');
                                 exportForm.action = '../exportImage.action';
                                 exportForm.submit();
+                            },
+                            listeners: {
+                                afterrender: function(b) {
+                                    this.menu = Ext.create('Ext.menu.Menu', {
+                                        items: [
+                                            {
+                                                text: 'PNG',
+                                                iconCls: 'dv-menu-toolbar-png',
+                                                minWidth: 80,
+                                                handler: function() {
+                                                    b.execute('png');
+                                                }
+                                            },
+                                            {
+                                                text: 'PDF',
+                                                iconCls: 'dv-menu-toolbar-pdf',
+                                                minWidth: 80,
+                                                handler: function() {
+                                                    b.execute('pdf');
+                                                }
+                                            }
+                                        ]                                            
+                                    });
+                                }
                             }
                         },
                         '->',
