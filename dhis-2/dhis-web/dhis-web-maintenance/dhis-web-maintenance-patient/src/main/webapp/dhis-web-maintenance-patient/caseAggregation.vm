@@ -3,14 +3,16 @@
 <table class="mainPageTable">
   <tr>
     <td style="vertical-align:top">
-    
+		
       <table class="listTable">
           <col>          
           <col width="20">
           <col width="20">
           <col width="20">          		  
 		  <tr>
-		  	<td></td>
+		  	<td>
+				$i18n.getString( "filter_by_name" ): <input type="text" onkeyup="filterValues( this.value , 1)" style="width:250px"/>
+			</td>
 			<td colspan="3" style="text-align:right"><input type="button" value="$i18n.getString( "add_new" )" onclick="window.location.href='showAddCaseAggregationForm.action'" style="width:70px"></td>
 		  </tr>
           <tr>
