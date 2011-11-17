@@ -31,14 +31,21 @@ import java.io.OutputStream;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.hisp.dhis.visualizer.export.SVGDocument;
-import org.hisp.dhis.visualizer.export.SVGUtils;
 import org.hisp.dhis.system.util.CodecUtils;
 import org.hisp.dhis.util.ContextUtils;
-import org.hisp.dhis.util.SessionUtils;
 import org.hisp.dhis.util.StreamActionSupport;
 
 import javax.servlet.http.HttpServletResponse;
+
+import java.awt.Color;
+import java.io.IOException;
+import java.io.StringReader;
+
+import org.apache.batik.transcoder.TranscoderException;
+import org.apache.batik.transcoder.TranscoderInput;
+import org.apache.batik.transcoder.TranscoderOutput;
+import org.apache.batik.transcoder.image.PNGTranscoder;
+import org.apache.fop.svg.PDFTranscoder;
 
 /**
  * @author Jan Henrik Overland
@@ -50,16 +57,18 @@ public class ExportImageAction
 {
     private static final Log log = LogFactory.getLog( ExportImageAction.class );
 
-    private static final String SVGDOCUMENT = "SVGDOCUMENT";
-    
     private static final String TYPE_PNG = "png";
-    
+
     private static final String TYPE_PDF = "pdf";
+
+    private static final String doctype = "<?xml version='1.0' encoding='UTF-8'?>"
+        + "<!DOCTYPE svg PUBLIC \"-//W3C//DTD SVG 1.1//EN\" \"http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd\" ["
+        + "<!ATTLIST svg xmlns:attrib CDATA #IMPLIED> <!ATTLIST path attrib:divname CDATA #IMPLIED>]>";
 
     // -------------------------------------------------------------------------
     // Output & input
     // -------------------------------------------------------------------------
-    
+
     private String title;
 
     public void setTitle( String title )
@@ -74,20 +83,6 @@ public class ExportImageAction
         this.svg = svg;
     }
 
-    private Integer width;
-
-    public void setWidth( Integer width )
-    {
-        this.width = width;
-    }
-
-    private Integer height;
-
-    public void setHeight( Integer height )
-    {
-        this.height = height;
-    }
-    
     private String type;
 
     public void setType( String type )
@@ -95,41 +90,57 @@ public class ExportImageAction
         this.type = type;
     }
 
-    private SVGDocument svgDocument;
-
     @Override
     protected String execute( HttpServletResponse response, OutputStream out )
         throws Exception
     {
-        if ( title == null || svg == null || width == null || height == null || type == null )
+        if ( svg != null && type != null )
         {
-            log.info( "Invalid parameter -> Export map from session" );
+            if ( type.equals( TYPE_PNG ) )
+            {
+                convertToPNG( new StringBuffer( doctype + svg ), out );
+            }
 
-            svgDocument = (SVGDocument) SessionUtils.getSessionVar( SVGDOCUMENT );
+            else if ( type.equals( TYPE_PDF ) )
+            {
+                convertToPDF( new StringBuffer( doctype + svg ), out );
+            }
+
+            return SUCCESS;
         }
+
         else
         {
-            svgDocument = new SVGDocument();
-            
-            svgDocument.setTitle( title );
-            svgDocument.setSvg( svg );
-            svgDocument.setWidth( width );
-            svgDocument.setHeight( height );
-            
-            SessionUtils.setSessionVar( SVGDOCUMENT, svgDocument );
-        }
-        
-        if ( type.equals( TYPE_PNG ) )
-        {
-            SVGUtils.convertToPNG( svgDocument.getSVGForImage(), out, width, height );
-        }
-        
-        else if ( type.equals( TYPE_PDF ))
-        {
-            SVGUtils.convertToPDF( svgDocument.getSVGForImage(), out );
-        }
+            log.info( "svg = " + svg + ", type = " + type );
 
-        return SUCCESS;
+            return NONE;
+        }
+    }
+
+    public void convertToPNG( StringBuffer buffer, OutputStream out )
+        throws TranscoderException, IOException
+    {
+        PNGTranscoder t = new PNGTranscoder();
+
+        t.addTranscodingHint( PNGTranscoder.KEY_BACKGROUND_COLOR, Color.WHITE );
+
+        TranscoderInput input = new TranscoderInput( new StringReader( buffer.toString() ) );
+
+        TranscoderOutput output = new TranscoderOutput( out );
+
+        t.transcode( input, output );
+    }
+
+    public void convertToPDF( StringBuffer buffer, OutputStream out )
+        throws TranscoderException, IOException
+    {
+        PDFTranscoder t = new PDFTranscoder();
+
+        TranscoderInput input = new TranscoderInput( new StringReader( buffer.toString() ) );
+
+        TranscoderOutput output = new TranscoderOutput( out );
+
+        t.transcode( input, output );
     }
 
     @Override
@@ -141,9 +152,11 @@ public class ExportImageAction
     @Override
     protected String getFilename()
     {
-        return "dhis2_dv_" + CodecUtils.filenameEncode( title ) + "." + CodecUtils.filenameEncode( type );
+        String t = title != null ? CodecUtils.filenameEncode( title ) : "";
+
+        return "dhis2_dv_" + t + "." + CodecUtils.filenameEncode( type );
     }
-    
+
     @Override
     protected boolean disallowCache()
     {
