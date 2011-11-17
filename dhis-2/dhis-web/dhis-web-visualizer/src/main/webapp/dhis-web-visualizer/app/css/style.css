@@ -150,6 +150,10 @@
     height: 32px;
 }
 
+.x-btn-arrow {
+    background-image: url('../images/arrow.png');
+}
+
 /* Button border */
 .x-btn-default-toolbar-small {
     -moz-border-radius: 2px 2px 2px 2px;
@@ -371,9 +375,17 @@ li {
 }
 
 .dv-btn-toolbar-text-1 {
-    color: #444;
+    color: #333;
     font-weight: bold;
 }
 .dv-btn-toolbar-text-2 {
-    color: #555;
+    color: #444;
+}
+
+.dv-menu-toolbar-png {
+    background-image:url('../images/png.png');
+}
+
+.dv-menu-toolbar-pdf {
+    background-image:url('../images/pdf.png');
 }
