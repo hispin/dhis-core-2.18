@@ -158,7 +158,7 @@
     -ms-border-radius: 2px 2px 2px 2px;
     -khtml-border-radius: 2px 2px 2px 2px;
     border-radius: 2px 2px 2px 2px;
-    border-width: 1px;    
+    border-width: 1px;
 }
 
 .x-btn-default-toolbar-small-over {
@@ -214,6 +214,16 @@
 /* Chart tips (tooltip) */
 .x-tip .x-tip-header .x-box-item {
     text-align: center;
+}
+
+/* Grid datatable column header */
+.x-column-header {
+	font: normal 11px arial, ubuntu;
+}
+
+/* Grid datatable column chooser */
+.x-column-header-over .x-column-header-trigger, .x-column-header-open .x-column-header-trigger {
+    display: none;
 }
 
 /****************
@@ -320,19 +330,7 @@ li {
     border-width: 1px;
     border-style: solid;
     border-color: #aaa;
-}
-
-/* Update button */
-#update_b, #datatable_b, #exportpng_b, #exit_b {
-    border-width: 1px;
-    padding: 3px 1px 3px 4px;
-}
-
-#resizeleft_b {
-    border-width: 1px;
-    padding: 3px;
-}
-
+}    
 
 /* Fieldset */
 .dv-fieldset-title-link {
@@ -362,12 +360,20 @@ li {
     border-style: none;
 }
 
-/* Grid datatable column header */
-.x-column-header {
-	font: normal 11px arial, ubuntu;
+#datatable_g .x-fit-item {
+    border-top: 1px solid #d0d0d0;
 }
 
-/* Grid datatable column chooser */
-.x-column-header-over .x-column-header-trigger, .x-column-header-open .x-column-header-trigger {
-    display: none;
+/* Button - toolbar */
+.dv-btn-toolbar {
+    border-width: 1px;
+    padding: 3px;
+}
+
+.dv-btn-toolbar-text-1 {
+    color: #444;
+    font-weight: bold;
+}
+.dv-btn-toolbar-text-2 {
+    color: #555;
 }
