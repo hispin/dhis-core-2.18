@@ -37,6 +37,7 @@ import org.apache.batik.transcoder.TranscoderInput;
 import org.apache.batik.transcoder.TranscoderOutput;
 import org.apache.batik.transcoder.image.JPEGTranscoder;
 import org.apache.batik.transcoder.image.PNGTranscoder;
+import org.apache.fop.svg.PDFTranscoder;
 
 /**
  * @author Tran Thanh Tri
@@ -105,5 +106,5 @@ public class SVGUtils
         TranscoderOutput output = new TranscoderOutput( out );
 
         p.transcode( input, output );
-
+    }
 }
