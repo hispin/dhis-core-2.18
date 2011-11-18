@@ -93,16 +93,23 @@ public class ValidateGenerateExportReportAction
         throws Exception
     {
         Integer reportId = Integer.parseInt( exportReportId.split( "_" )[0] );
-        
+
         ExportReport exportReport = exportReportService.getExportReport( reportId );
-        
+
         if ( exportReport == null )
         {
             message = i18n.getString( "the_specified_report_is_not_exist" );
 
             return ERROR;
         }
-        
+
+        message = exportReportService.validateEmportItems( exportReport, i18n );
+
+        if ( message != null )
+        {
+            return ERROR;
+        }
+
         File templateDirectory = reportLocationManager.getExportReportTemplateDirectory();
 
         if ( templateDirectory == null || !templateDirectory.exists() )
@@ -120,7 +127,7 @@ public class ValidateGenerateExportReportAction
 
             return ERROR;
         }
-        
+
         selectionManager.setSelectedPeriodIndex( periodIndex );
 
         selectionManager.setSelectedReportId( reportId );

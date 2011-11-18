@@ -31,15 +31,28 @@ import static org.hisp.dhis.i18n.I18nUtils.i18n;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import org.apache.commons.collections.CollectionUtils;
+import org.hisp.dhis.dataelement.DataElement;
+import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
+import org.hisp.dhis.dataelement.DataElementCategoryService;
+import org.hisp.dhis.dataelement.DataElementOperand;
+import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.dataset.DataSet;
+import org.hisp.dhis.expression.ExpressionService;
+import org.hisp.dhis.i18n.I18n;
 import org.hisp.dhis.i18n.I18nService;
+import org.hisp.dhis.indicator.Indicator;
+import org.hisp.dhis.indicator.IndicatorService;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.period.Period;
+import org.hisp.dhis.reportsheet.DataElementGroupOrder;
 import org.hisp.dhis.reportsheet.ExportItem;
 import org.hisp.dhis.reportsheet.ExportReport;
+import org.hisp.dhis.reportsheet.ExportReportCategory;
 import org.hisp.dhis.reportsheet.ExportReportService;
 import org.hisp.dhis.reportsheet.ExportReportStore;
 import org.hisp.dhis.reportsheet.PeriodColumn;
@@ -62,6 +75,20 @@ public class DefaultExportReportService
     // Dependency
     // -------------------------------------------------------------------------
 
+    private DataElementService dataElementService;
+
+    public void setDataElementService( DataElementService dataElementService )
+    {
+        this.dataElementService = dataElementService;
+    }
+
+    private DataElementCategoryService categoryService;
+
+    public void setCategoryService( DataElementCategoryService categoryService )
+    {
+        this.categoryService = categoryService;
+    }
+
     private ExportReportStore exportReportStore;
 
     public void setExportReportStore( ExportReportStore exportReportStore )
@@ -69,11 +96,25 @@ public class DefaultExportReportService
         this.exportReportStore = exportReportStore;
     }
 
+    private ExpressionService expressionService;
+
+    public void setExpressionService( ExpressionService expressionService )
+    {
+        this.expressionService = expressionService;
+    }
+
     private UserStore userStore;
 
     public void setUserStore( UserStore userStore )
     {
         this.userStore = userStore;
+    }
+
+    private IndicatorService indicatorService;
+
+    public void setIndicatorService( IndicatorService indicatorService )
+    {
+        this.indicatorService = indicatorService;
     }
 
     private I18nService i18nService;
@@ -175,7 +216,7 @@ public class DefaultExportReportService
     {
         return exportReportStore.getExportReportsByReportType( reportType );
     }
-    
+
     public Collection<String> getAllExportReportTemplates()
     {
         return exportReportStore.getAllExportReportTemplates();
@@ -277,7 +318,7 @@ public class DefaultExportReportService
     {
         return exportReportStore.getDataEntryStatusByDataSets( arg0 );
     }
-    
+
     public Collection<DataEntryStatus> getDataEntryStatusDefaultByDataSets( Collection<DataSet> arg0 )
     {
         return exportReportStore.getDataEntryStatusDefaultByDataSets( arg0 );
@@ -296,5 +337,89 @@ public class DefaultExportReportService
     public void updatePeriodColumn( PeriodColumn periodColumn )
     {
         exportReportStore.updatePeriodColumn( periodColumn );
+    }
+
+    public String validateEmportItems( ExportReport exportReport, I18n i18n )
+    {
+        Set<ExportItem> items = new HashSet<ExportItem>( exportReport.getExportItemsByItemType(
+            ExportItem.TYPE.DATAELEMENT, ExportItem.TYPE.INDICATOR ) );
+
+        if ( exportReport.getReportType().equalsIgnoreCase( ExportReport.TYPE.CATEGORY ) )
+        {
+            for ( DataElementGroupOrder groupOrder : ((ExportReportCategory) exportReport).getDataElementOrders() )
+            {
+                if ( groupOrder.getDataElements() == null || groupOrder.getDataElements().isEmpty() )
+                {
+                    return i18n.getString( "group_order" ) + ": " + groupOrder.getName() + " "
+                        + i18n.getString( "has_no_element" );
+                }
+            }
+
+            String optionComboId = null;
+            List<String> optionComboIds = new ArrayList<String>();
+
+            for ( ExportItem item : items )
+            {
+                optionComboId = item.getExpression().split( "\\" + DataElementOperand.SEPARATOR )[1].replace( "]", "" );
+
+                if ( !optionComboIds.contains( optionComboId ) )
+                {
+                    optionComboIds.add( optionComboId );
+
+                    DataElementCategoryOptionCombo optionCombo = categoryService
+                        .getDataElementCategoryOptionCombo( Integer.parseInt( optionComboId ) );
+
+                    if ( optionCombo == null )
+                    {
+                        return i18n.getString( "cate_option_combo_with_id" ) + ": " + optionComboId + " "
+                            + i18n.getString( "does_not_exist" );
+                    }
+                }
+            }
+        }
+        else
+        {
+            Set<DataElementOperand> operands = new HashSet<DataElementOperand>();
+
+            for ( ExportItem item : items )
+            {
+                operands = expressionService.getOperandsInExpression( item.getExpression() );
+
+                for ( DataElementOperand operand : operands )
+                {
+                    if ( operand.getOptionComboId() == 0 )
+                    {
+                        Indicator indicator = indicatorService.getIndicator( operand.getDataElementId() );
+
+                        if ( indicator == null )
+                        {
+                            return i18n.getString( "indicator_with_id" ) + ": " + operand.getDataElementId() + " "
+                                + i18n.getString( "does_not_exist" );
+                        }
+                    }
+                    else
+                    {
+                        DataElement dataElement = dataElementService.getDataElement( operand.getDataElementId() );
+
+                        if ( dataElement == null )
+                        {
+                            return i18n.getString( "dataelement_with_id" ) + ": " + operand.getDataElementId() + " "
+                                + i18n.getString( "does_not_exist" );
+                        }
+
+                        DataElementCategoryOptionCombo optionCombo = categoryService
+                            .getDataElementCategoryOptionCombo( operand.getOptionComboId() );
+
+                        if ( optionCombo == null )
+                        {
+                            return i18n.getString( "cate_option_combo_with_id" ) + ": " + operand.getOptionComboId()
+                                + " " + i18n.getString( "does_not_exist" );
+                        }
+                    }
+                }
+            }
+        }
+
+        return null;
     }
 }
