@@ -27,6 +27,7 @@ package org.hisp.dhis.reportsheet;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
@@ -191,6 +192,24 @@ public abstract class ExportReport
         }
 
         return null;
+    }
+
+    public Collection<ExportItem> getExportItemsByItemType( String... types )
+    {
+        List<ExportItem> items = new ArrayList<ExportItem>();
+        
+        for ( ExportItem e : this.exportItems )
+        {
+            for ( String type : types )
+            {
+                if ( e.getItemType().equalsIgnoreCase( type ) )
+                {
+                    items.add( e );
+                }
+            }
+        }
+
+        return items;
     }
 
     // -------------------------------------------------------------------------

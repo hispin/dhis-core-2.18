@@ -16,6 +16,10 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 
 	<bean id="org.hisp.dhis.reportsheet.ExportReportService"
 		class="org.hisp.dhis.reportsheet.impl.DefaultExportReportService">
+		<property name="dataElementService" ref="org.hisp.dhis.dataelement.DataElementService" />
+		<property name="categoryService" ref="org.hisp.dhis.dataelement.DataElementCategoryService" />
+		<property name="expressionService" ref="org.hisp.dhis.expression.ExpressionService" />
+		<property name="indicatorService" ref="org.hisp.dhis.indicator.IndicatorService" />
 		<property name="exportReportStore" ref="org.hisp.dhis.reportsheet.ExportReportStore" />
 		<property name="userStore" ref="org.hisp.dhis.user.UserStore" />
 		<property name="i18nService" ref="org.hisp.dhis.i18n.I18nService" />

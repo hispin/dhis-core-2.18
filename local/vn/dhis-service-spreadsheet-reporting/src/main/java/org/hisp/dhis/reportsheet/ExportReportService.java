@@ -29,6 +29,7 @@ package org.hisp.dhis.reportsheet;
 import java.util.Collection;
 
 import org.hisp.dhis.dataset.DataSet;
+import org.hisp.dhis.i18n.I18n;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.reportsheet.status.DataEntryStatus;
@@ -123,4 +124,6 @@ public interface ExportReportService
     public PeriodColumn getPeriodColumn( Integer id );
 
     public void updatePeriodColumn( PeriodColumn periodColumn );
+    
+    public String validateEmportItems( ExportReport exportReport, I18n i18n );
 }
