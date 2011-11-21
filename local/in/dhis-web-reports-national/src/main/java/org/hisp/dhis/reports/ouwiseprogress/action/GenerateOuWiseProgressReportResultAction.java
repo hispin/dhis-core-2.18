@@ -27,6 +27,7 @@ import jxl.format.Border;
 import jxl.format.BorderLineStyle;
 import jxl.format.Colour;
 import jxl.format.VerticalAlignment;
+import jxl.write.Formula;
 import jxl.write.Label;
 import jxl.write.Number;
 import jxl.write.WritableCellFormat;
@@ -36,8 +37,6 @@ import jxl.write.WritableWorkbook;
 
 import org.amplecode.quick.StatementManager;
 import org.hisp.dhis.config.Configuration_IN;
-import org.hisp.dhis.dataelement.DataElementService;
-import org.hisp.dhis.dataset.DataSetService;
 import org.hisp.dhis.i18n.I18nFormat;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
@@ -91,21 +90,21 @@ public class GenerateOuWiseProgressReportResultAction
     {
         this.organisationUnitService = organisationUnitService;
     }
-
+/*
     private DataSetService dataSetService;
     
     public void setDataSetService( DataSetService dataSetService )
     {
         this.dataSetService = dataSetService;
     }
-    
+  
     private DataElementService dataElementService;
     
     public void setDataElementService( DataElementService dataElementService )
     {
         this.dataElementService = dataElementService;
     }
-
+*/  
     private I18nFormat format;
 
     public void setFormat( I18nFormat format )
@@ -212,13 +211,18 @@ public class GenerateOuWiseProgressReportResultAction
         // OrgUnit Related Info
         selectedOrgUnit = new OrganisationUnit();
         selectedOrgUnit = organisationUnitService.getOrganisationUnit( ouIDTB );
+        int selectedOrgUnitLevel = organisationUnitService.getLevelOfOrganisationUnit( ouIDTB );
 
         if ( reportModelTB.equalsIgnoreCase( "PROGRESSIVE-ORGUNIT" ) )
         {
             orgUnitList = new ArrayList<OrganisationUnit>( selectedOrgUnit.getChildren() );
             Collections.sort( orgUnitList, new OrganisationUnitShortNameComparator() );
             
-            orgUnitList.add( selectedOrgUnit );
+            //Hardcoded to level 2 to make report fast for state level
+            if( selectedOrgUnitLevel != 2 )
+            {
+                orgUnitList.add( selectedOrgUnit );
+            }
             
             /*
             if( orgUnitList == null || orgUnitList.size() == 0 )
@@ -251,25 +255,6 @@ public class GenerateOuWiseProgressReportResultAction
         wCellformat.setVerticalAlignment( VerticalAlignment.CENTRE );
         wCellformat.setWrap( true );
 
-        /*
-        String dataSetIds = selReportObj.getDataSetIds();
-        Collection<Integer> dataElementIdList = new ArrayList<Integer>();
-        if( dataSetIds != null && !dataSetIds.trim().equalsIgnoreCase( "" ) )
-        {
-            String[] partsOfDataSetIds = dataSetIds.split( "," );
-            for( int i = 0; i < partsOfDataSetIds.length; i++ )
-            {
-                DataSet dataSet = dataSetService.getDataSet( Integer.parseInt( partsOfDataSetIds[i] ) );
-                dataElementIdList.addAll( getIdentifiers( DataElement.class, dataSet.getDataElements() ) );
-            }
-        }
-        else
-        {
-            dataElementIdList.addAll( getIdentifiers( DataElement.class, dataElementService.getAggregateableDataElements() ) );
-        }
-        
-        String dataElmentIdsByComma = getCommaDelimitedString( dataElementIdList );
-                */
 
         // Period Info
         sDate = format.parseDate( startDate );
@@ -285,7 +270,10 @@ public class GenerateOuWiseProgressReportResultAction
         List<Report_inDesign> reportDesignList = reportService.getReportDesign( deCodesXMLFileName );
 
         String dataElmentIdsByComma = reportService.getDataelementIds( reportDesignList );
-
+        
+        Map<String, String> aggDeMapForselectedFacility = new HashMap<String, String>();
+        aggDeMapForselectedFacility.putAll( reportService.getAggDataFromDataValueTable( ""+selectedOrgUnit.getId(), dataElmentIdsByComma, periodIdsByComma ) );
+        
         int orgUnitCount = 0;
         Iterator<OrganisationUnit> it = orgUnitList.iterator();
         while ( it.hasNext() )
@@ -319,42 +307,52 @@ public class GenerateOuWiseProgressReportResultAction
                 String sType = report_inDesign.getStype();
                 String deCodeString = report_inDesign.getExpression();
                 String tempStr = "";
-
+                String tempStrForSelectedFacility = "";
                 if ( deCodeString.equalsIgnoreCase( "FACILITY" ) )                    
                 {
                     tempStr = selectedOrgUnit.getName();
+                    tempStrForSelectedFacility = selectedOrgUnit.getName();
                 }
                 else if( deCodeString.equalsIgnoreCase( "PROGRESSIVE-ORGUNIT" ) )
                 {
                     tempStr = currentOrgUnit.getName();
+                    tempStrForSelectedFacility = selectedOrgUnit.getName()+"-ONLY";
                 }
                 else if( deCodeString.equalsIgnoreCase( "FACILITYP" ) )
                 {
                     tempStr = selectedOrgUnit.getParent().getName();
+                    tempStrForSelectedFacility = selectedOrgUnit.getParent().getName();
+                    
                 }
                 else if( deCodeString.equalsIgnoreCase( "FACILITYPP" ) )
                 {
                     tempStr = selectedOrgUnit.getParent().getParent().getName();
+                    tempStrForSelectedFacility = selectedOrgUnit.getParent().getParent().getName();
                 }
                 else if ( deCodeString.equalsIgnoreCase( "DATE-FROM" ) )
                 {
                     tempStr = dayFormat.format( sDate );
+                    tempStrForSelectedFacility = dayFormat.format( sDate );
                 }
                 else if ( deCodeString.equalsIgnoreCase( "DATE-TO" ) )
                 {
                     tempStr = dayFormat.format( eDate );
+                    tempStrForSelectedFacility = dayFormat.format( eDate );
                 }
                 else if ( deCodeString.equalsIgnoreCase( "MONTH-FROM" ) )
                 {
                     tempStr = simpleDateFormat.format( sDate );
+                    tempStrForSelectedFacility = simpleDateFormat.format( sDate );
                 }
                 else if ( deCodeString.equalsIgnoreCase( "MONTH-TO" ) )
                 {
                     tempStr = simpleDateFormat.format( eDate );
+                    tempStrForSelectedFacility = simpleDateFormat.format( eDate );
                 }
                 else if ( deCodeString.equalsIgnoreCase( "NA" ) )
                 {
                     tempStr = " ";
+                    tempStrForSelectedFacility = " ";
                 }
                 else
                 {
@@ -364,16 +362,23 @@ public class GenerateOuWiseProgressReportResultAction
                         {
                             tempStr = getAggVal( deCodeString, aggDeMap );
                             //tempStr = reportService.getIndividualResultDataValue( deCodeString, sDate, eDate, currentOrgUnit, reportModelTB );
+                            tempStrForSelectedFacility = getAggVal( deCodeString, aggDeMapForselectedFacility );
                         }
                         else if( aggData.equalsIgnoreCase( GENERATEAGGDATA ) )
                         {
                             //tempStr = reportService.getResultDataValue( deCodeString, sDate, eDate, currentOrgUnit, reportModelTB );
                             tempStr = getAggVal( deCodeString, aggDeMap );
+                            tempStrForSelectedFacility = getAggVal( deCodeString, aggDeMapForselectedFacility );
                         }
                         else if( aggData.equalsIgnoreCase( USEEXISTINGAGGDATA ) )
                         {
                             tempStr = getAggVal( deCodeString, aggDeMap );
+                            tempStrForSelectedFacility = getAggVal( deCodeString, aggDeMapForselectedFacility );
                         }
+                    }
+                    else if ( sType.equalsIgnoreCase( "formula" ) )
+                    {
+                        tempStr = deCodeString;
                     }
                 }
 
@@ -396,20 +401,61 @@ public class GenerateOuWiseProgressReportResultAction
 
                     try
                     {
-                        if( orgUnitCount == orgUnitList.size()-1 )
+                       
+                        if( sType.equalsIgnoreCase( "formula" ) )
                         {
-                            sheet0.addCell( new Number( tempColNo, tempRowNo, Double.parseDouble( tempStr ), getCellFormat1() ) );
+                            tempStr = tempStr.replace( "?", colArray[tempColNo] );
+                            if( orgUnitCount == orgUnitList.size()-1 && selectedOrgUnitLevel != 2 )
+                            {
+                                sheet0.addCell( new Formula( tempColNo+1, tempRowNo, tempStr, getCellFormat1() ) );
+                            }
+                            else
+                            {
+                                sheet0.addCell( new Formula( tempColNo, tempRowNo, tempStr, wCellformat ) );
+                            }
                         }
                         else
-                        {
-                            sheet0.addCell( new Number( tempColNo, tempRowNo, Double.parseDouble( tempStr ), wCellformat ) );
-                        }
+                       {
+                            if( orgUnitCount == orgUnitList.size()-1 && selectedOrgUnitLevel != 2 )
+                            {
+                                //sheet0.addCell( new Number( tempColNo, tempRowNo, Double.parseDouble( tempStrForSelectedFacility ), getCellFormat2() ) );
+                                if( deCodeString.equalsIgnoreCase( "FACILITY" ) || deCodeString.equalsIgnoreCase( "FACILITYP" ) || deCodeString.equalsIgnoreCase( "FACILITYPP" ) 
+                                    || deCodeString.equalsIgnoreCase( "MONTH-FROM" ) || deCodeString.equalsIgnoreCase( "MONTH-TO" ) 
+                                    || deCodeString.equalsIgnoreCase( "DATE-FROM" ) || deCodeString.equalsIgnoreCase( "DATE-TO" ) )
+                                {
+                                    continue;
+                                }
+                                else
+                                {
+                                    sheet0.addCell( new Number( tempColNo, tempRowNo, Double.parseDouble( tempStrForSelectedFacility ), getCellFormat2() ) );
+                                    sheet0.addCell( new Number( tempColNo+1, tempRowNo, Double.parseDouble( tempStr ), getCellFormat1() ) );
+                                }
+                                
+                                
+                            }
+                            else
+                            {
+                                sheet0.addCell( new Number( tempColNo, tempRowNo, Double.parseDouble( tempStr ), wCellformat ) );
+                            }
+                       }
                     }
                     catch( Exception e )
                     {
-                        if( orgUnitCount == orgUnitList.size()-1 )
+                        if( orgUnitCount == orgUnitList.size()-1 && selectedOrgUnitLevel != 2 )
                         {
-                            sheet0.addCell( new Label( tempColNo, tempRowNo, tempStr, getCellFormat1() ) );
+                            //sheet0.addCell( new Label( tempColNo, tempRowNo, tempStrForSelectedFacility, getCellFormat2() ) );
+                            if( deCodeString.equalsIgnoreCase( "FACILITY" ) || deCodeString.equalsIgnoreCase( "FACILITYP" ) || deCodeString.equalsIgnoreCase( "FACILITYPP" ) 
+                                || deCodeString.equalsIgnoreCase( "MONTH-FROM" ) || deCodeString.equalsIgnoreCase( "MONTH-TO" ) 
+                                || deCodeString.equalsIgnoreCase( "DATE-FROM" ) || deCodeString.equalsIgnoreCase( "DATE-TO" ) )
+                            {
+                                continue;
+                            }
+                            else
+                            {
+                                sheet0.addCell( new Label( tempColNo, tempRowNo, tempStrForSelectedFacility, getCellFormat2() ) );
+                                sheet0.addCell( new Label( tempColNo+1, tempRowNo, tempStr, getCellFormat1() ) );
+                            }
+                            
                         }
                         else
                         {
@@ -426,56 +472,59 @@ public class GenerateOuWiseProgressReportResultAction
         // ---------------------------------------------------------------------
         // Writing Total Values
         // ---------------------------------------------------------------------
-        /*
-        WritableCellFormat totalCellformat = new WritableCellFormat( arialBold );
-        totalCellformat.setBorder( Border.ALL, BorderLineStyle.THIN );
-        totalCellformat.setAlignment( Alignment.CENTRE );
-        totalCellformat.setVerticalAlignment( VerticalAlignment.CENTRE );
-        totalCellformat.setWrap( true );
         
-        Iterator<Report_inDesign> reportDesignIterator = reportDesignList.iterator();
-        while (  reportDesignIterator.hasNext() )
+        if( selectedOrgUnitLevel == 2 )
         {
-            Report_inDesign reportDesign =  reportDesignIterator.next();
+            WritableCellFormat totalCellformat = new WritableCellFormat( getCellFormat1() );
+            totalCellformat.setBorder( Border.ALL, BorderLineStyle.THIN );
+            totalCellformat.setAlignment( Alignment.CENTRE );
+            totalCellformat.setVerticalAlignment( VerticalAlignment.CENTRE );
+            totalCellformat.setWrap( true );
             
-            String deCodeString = reportDesign.getExpression();
-
-            if( deCodeString.equalsIgnoreCase( "FACILITY" ) || 
-                deCodeString.equalsIgnoreCase( "FACILITYP" ) || 
-                deCodeString.equalsIgnoreCase( "FACILITYPP" ) ||                
-                deCodeString.equalsIgnoreCase( "MONTH-FROM" ) || 
-                deCodeString.equalsIgnoreCase( "MONTH-TO" ) ||
-                deCodeString.equalsIgnoreCase( "DATE-FROM" ) ||
-                deCodeString.equalsIgnoreCase( "DATE-TO" ) )
+            Iterator<Report_inDesign> reportDesignIterator = reportDesignList.iterator();
+            while (  reportDesignIterator.hasNext() )
             {
-                continue;
-            } 
-            
-            int tempRowNo = reportDesign.getRowno();
-            int tempColNo = reportDesign.getColno();
-            int sheetNo = reportDesign.getSheetno();
-            
-            String colStart = ""+ colArray[tempColNo];
-            String colEnd = ""+ colArray[tempColNo+orgUnitCount-1];
-            
-            String tempFormula = "SUM("+colStart+(tempRowNo+1)+":"+colEnd+(tempRowNo+1)+")";
-            
-            WritableSheet totalSheet = outputReportWorkbook.getSheet( sheetNo );
-
-            if( deCodeString.equalsIgnoreCase( "PROGRESSIVE-ORGUNIT" ) )
-            {
-                totalSheet.addCell( new Label( tempColNo+orgUnitCount, tempRowNo, selectedOrgUnit.getName(), totalCellformat ) );
-            }
-            else if( deCodeString.equalsIgnoreCase( "NA" ) )
-            {
-                totalSheet.addCell( new Label( tempColNo+orgUnitCount, tempRowNo, " ", totalCellformat ) );
-            }
-            else
-            {
-                totalSheet.addCell( new Formula( tempColNo+orgUnitCount, tempRowNo, tempFormula, totalCellformat ) );    
+                Report_inDesign reportDesign =  reportDesignIterator.next();
+                
+                String deCodeString = reportDesign.getExpression();
+    
+                if( deCodeString.equalsIgnoreCase( "FACILITY" ) || 
+                    deCodeString.equalsIgnoreCase( "FACILITYP" ) || 
+                    deCodeString.equalsIgnoreCase( "FACILITYPP" ) ||                
+                    deCodeString.equalsIgnoreCase( "MONTH-FROM" ) || 
+                    deCodeString.equalsIgnoreCase( "MONTH-TO" ) ||
+                    deCodeString.equalsIgnoreCase( "DATE-FROM" ) ||
+                    deCodeString.equalsIgnoreCase( "DATE-TO" ) )
+                {
+                    continue;
+                } 
+                
+                int tempRowNo = reportDesign.getRowno();
+                int tempColNo = reportDesign.getColno();
+                int sheetNo = reportDesign.getSheetno();
+                
+                String colStart = ""+ colArray[tempColNo];
+                String colEnd = ""+ colArray[tempColNo+orgUnitCount-1];
+                
+                String tempFormula = "SUM("+colStart+(tempRowNo+1)+":"+colEnd+(tempRowNo+1)+")";
+                
+                WritableSheet totalSheet = outputReportWorkbook.getSheet( sheetNo );
+    
+                if( deCodeString.equalsIgnoreCase( "PROGRESSIVE-ORGUNIT" ) )
+                {
+                    totalSheet.addCell( new Label( tempColNo+orgUnitCount, tempRowNo, selectedOrgUnit.getName(), totalCellformat ) );
+                }
+                else if( deCodeString.equalsIgnoreCase( "NA" ) )
+                {
+                    totalSheet.addCell( new Label( tempColNo+orgUnitCount, tempRowNo, " ", totalCellformat ) );
+                }
+                else
+                {
+                    totalSheet.addCell( new Formula( tempColNo+orgUnitCount, tempRowNo, tempFormula, totalCellformat ) );    
+                }
             }
         }
-*/
+        
         outputReportWorkbook.write();
         outputReportWorkbook.close();
 
@@ -507,7 +556,19 @@ public class GenerateOuWiseProgressReportResultAction
 
         return wCellformat;
     }
-    
+    public WritableCellFormat getCellFormat2() throws Exception
+    {
+        WritableFont arialBold = new WritableFont( WritableFont.ARIAL, 10, WritableFont.NO_BOLD );
+        WritableCellFormat wCellformat = new WritableCellFormat( arialBold );
+        
+        wCellformat.setBorder( Border.ALL, BorderLineStyle.THIN );
+        wCellformat.setAlignment( Alignment.CENTRE );
+        wCellformat.setBackground( Colour.ICE_BLUE );
+        wCellformat.setVerticalAlignment( VerticalAlignment.CENTRE );
+        wCellformat.setWrap( true );
+
+        return wCellformat;
+    }   
     
     private String getAggVal( String expression, Map<String, String> aggDeMap )
     {

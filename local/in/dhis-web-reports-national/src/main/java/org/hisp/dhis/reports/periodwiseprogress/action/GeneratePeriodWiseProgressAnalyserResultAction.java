@@ -36,8 +36,6 @@ import jxl.write.WritableWorkbook;
 
 import org.amplecode.quick.StatementManager;
 import org.hisp.dhis.config.Configuration_IN;
-import org.hisp.dhis.dataelement.DataElementService;
-import org.hisp.dhis.dataset.DataSetService;
 import org.hisp.dhis.i18n.I18nFormat;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
@@ -93,7 +91,7 @@ public class GeneratePeriodWiseProgressAnalyserResultAction
     {
         this.organisationUnitService = organisationUnitService;
     }
-
+/*
     private DataSetService dataSetService;
     
     public void setDataSetService( DataSetService dataSetService )
@@ -107,7 +105,7 @@ public class GeneratePeriodWiseProgressAnalyserResultAction
     {
         this.dataElementService = dataElementService;
     }
-
+*/
     private I18nFormat format;
 
     public void setFormat( I18nFormat format )
@@ -270,25 +268,6 @@ public class GeneratePeriodWiseProgressAnalyserResultAction
         }
         
         // To get Aggregation Data
-        /*
-        String dataSetIds = selReportObj.getDataSetIds();
-        Collection<Integer> dataElementIdList = new ArrayList<Integer>();
-        if( dataSetIds != null && !dataSetIds.trim().equalsIgnoreCase( "" ) )
-        {
-            String[] partsOfDataSetIds = dataSetIds.split( "," );
-            for( int i = 0; i < partsOfDataSetIds.length; i++ )
-            {
-                DataSet dataSet = dataSetService.getDataSet( Integer.parseInt( partsOfDataSetIds[i] ) );
-                dataElementIdList.addAll( getIdentifiers( DataElement.class, dataSet.getDataElements() ) );
-            }
-        }
-        else
-        {
-            dataElementIdList.addAll( getIdentifiers( DataElement.class, dataElementService.getAggregateableDataElements() ) );
-        }
-            
-        String dataElmentIdsByComma = getCommaDelimitedString( dataElementIdList );
-        */
         
         List<Report_inDesign> reportDesignList = reportService.getReportDesign( deCodesXMLFileName );
 
@@ -314,7 +293,6 @@ public class GeneratePeriodWiseProgressAnalyserResultAction
             {
                 aggDeMap.putAll( reportService.getAggDataFromDataValueTable( ""+currentOrgUnit.getId(), dataElmentIdsByComma, periodsByComma ) );
             }
-            
             
             Iterator<Report_inDesign> reportDesignIterator = reportDesignList.iterator();
             while (  reportDesignIterator.hasNext() )

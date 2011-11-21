@@ -421,8 +421,8 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
         <property name="periodService" ref="org.hisp.dhis.period.PeriodService" />
         <property name="organisationUnitService" ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
         <property name="reportService" ref="org.hisp.dhis.reports.ReportService" />
-        <property name="dataSetService" ref="org.hisp.dhis.dataset.DataSetService" />
-        <property name="dataElementService" ref="org.hisp.dhis.dataelement.DataElementService" />
+<!--    <property name="dataSetService" ref="org.hisp.dhis.dataset.DataSetService" />
+        <property name="dataElementService" ref="org.hisp.dhis.dataelement.DataElementService" />-->
     </bean>
     
     <!-- Orgunitwise Progress Reports -->
@@ -440,8 +440,8 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
         <property name="organisationUnitService" ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
         <property name="reportService" ref="org.hisp.dhis.reports.ReportService" />
         <property name="periodService" ref="org.hisp.dhis.period.PeriodService" />
-        <property name="dataSetService" ref="org.hisp.dhis.dataset.DataSetService" />
-        <property name="dataElementService" ref="org.hisp.dhis.dataelement.DataElementService" />
+<!--    <property name="dataSetService" ref="org.hisp.dhis.dataset.DataSetService" />
+        <property name="dataElementService" ref="org.hisp.dhis.dataelement.DataElementService" />-->
     </bean>
     
     <!-- Meta Data Reports -->
