@@ -221,65 +221,122 @@ G.util = {
     },
 
     labels: {
-        getActivatedOpenLayersStyleMap: function(fsize, fweight, fstyle, fcolor) {
-            return new OpenLayers.StyleMap({
-                'default' : new OpenLayers.Style(
-                    OpenLayers.Util.applyDefaults({
-                        'fillOpacity': 1,
-                        'strokeWidth': 1,
-                        'strokeColor': '#fff',
-                        'label': '${labelString}',
-                        'fontFamily': 'arial,lucida sans unicode',
-                        'fontSize': fsize ? fsize : 13,
-                        'fontWeight': fweight ? 'bold' : 'normal',
-                        'fontStyle': fstyle ? 'italic' : 'normal',
-                        'fontColor': fcolor ? fcolor : '#000000'
-                    },
-                    OpenLayers.Feature.Vector.style['default'])
-                ),
-                'select': new OpenLayers.Style({
-                    'strokeColor': '#000000',
-                    'strokeWidth': 2,
-                    'cursor': 'pointer'
-                })
-            });
-        },
-        getDeactivatedOpenLayersStyleMap: function() {
-            return new OpenLayers.StyleMap({
-                'default': new OpenLayers.Style(
-                    OpenLayers.Util.applyDefaults({
-                        'fillOpacity': 1,
-                        'strokeColor': '#fff',
-                        'strokeWidth': 1
-                    },
-                    OpenLayers.Feature.Vector.style['default'])
-                ),
-                'select': new OpenLayers.Style({
-                    'strokeColor': '#000000',
-                    'strokeWidth': 2,
-                    'cursor': 'pointer'
-                })
-            });
-        },
-        toggleFeatureLabels: function(widget, fsize, fweight, fstyle, fcolor) {
-            function activateLabels() {
-                widget.layer.styleMap = this.getActivatedOpenLayersStyleMap(fsize, fweight, fstyle, fcolor);
-                widget.labels = true;
-            }
-            function deactivateLabels(scope) {
-                widget.layer.styleMap = this.getDeactivatedOpenLayersStyleMap();
-                widget.labels = false;
-            }
+        vector: {
+            getActivatedOpenLayersStyleMap: function(fsize, fweight, fstyle, fcolor) {
+                return new OpenLayers.StyleMap({
+                    'default' : new OpenLayers.Style(
+                        OpenLayers.Util.applyDefaults({
+                            'fillOpacity': 1,
+                            'strokeWidth': 1,
+                            'strokeColor': '#fff',
+                            'label': '${labelString}',
+                            'fontFamily': 'arial,lucida sans unicode',
+                            'fontSize': fsize ? fsize : 13,
+                            'fontWeight': fweight ? 'bold' : 'normal',
+                            'fontStyle': fstyle ? 'italic' : 'normal',
+                            'fontColor': fcolor ? fcolor : '#000000'
+                        },
+                        OpenLayers.Feature.Vector.style['default'])
+                    ),
+                    'select': new OpenLayers.Style({
+                        'strokeColor': '#000000',
+                        'strokeWidth': 2,
+                        'cursor': 'pointer'
+                    })
+                });
+            },
+            getDeactivatedOpenLayersStyleMap: function() {
+                return new OpenLayers.StyleMap({
+                    'default': new OpenLayers.Style(
+                        OpenLayers.Util.applyDefaults({
+                            'fillOpacity': 1,
+                            'strokeColor': '#fff',
+                            'strokeWidth': 1
+                        },
+                        OpenLayers.Feature.Vector.style['default'])
+                    ),
+                    'select': new OpenLayers.Style({
+                        'strokeColor': '#000000',
+                        'strokeWidth': 2,
+                        'cursor': 'pointer'
+                    })
+                });
+            },
+            toggleFeatureLabels: function(widget, fsize, fweight, fstyle, fcolor) {
+                function activateLabels() {
+                    widget.layer.styleMap = this.getActivatedOpenLayersStyleMap(fsize, fweight, fstyle, fcolor);
+                    widget.labels = true;
+                }
+                function deactivateLabels(scope) {
+                    widget.layer.styleMap = this.getDeactivatedOpenLayersStyleMap();
+                    widget.labels = false;
+                }
+                
+                if (widget.labels) {
+                    deactivateLabels.call(this);
+                }
+                else {
+                    activateLabels.call(this);
+                }
             
-            if (widget.labels) {
-                deactivateLabels.call(this);
+                widget.applyValues();
             }
-            else {
-                activateLabels.call(this);
+        },
+        fileOverlay: {
+            getActivatedOpenLayersStyleMap: function(layer) {
+                var style = layer.styleMap.styles.default.defaultStyle;
+                return new OpenLayers.StyleMap({
+                    'default' : new OpenLayers.Style(
+                        OpenLayers.Util.applyDefaults({
+                            'fillOpacity': style.fillOpacity,
+                            'fillColor': style.fillColor,
+                            'strokeWidth': style.strokeWidth,
+                            'strokeColor': style.strokeWidth,
+                            'label': '${name}',
+                            'fontFamily': 'arial,lucida sans unicode',
+                            'fontSize': 13,
+                            'fontWeight': 'normal',
+                            'fontStyle': 'normal',
+                            'fontColor': '#000000'
+                        },
+                        OpenLayers.Feature.Vector.style['default'])
+                    )
+                });
+            },
+            getDeactivatedOpenLayersStyleMap: function(layer) {
+                var style = layer.styleMap.styles.default.defaultStyle;
+                return new OpenLayers.StyleMap({
+                    'default' : new OpenLayers.Style(
+                        OpenLayers.Util.applyDefaults({
+                            'fillOpacity': style.fillOpacity,
+                            'fillColor': style.fillColor,
+                            'strokeWidth': style.strokeWidth,
+                            'strokeColor': style.strokeWidth
+                        },
+                        OpenLayers.Feature.Vector.style['default'])
+                    )
+                });
+            },
+            toggleFeatureLabels: function(layer) {
+                function activateLabels() {
+                    layer.styleMap = this.getActivatedOpenLayersStyleMap(layer);
+                    layer.labels = true;
+                    layer.refresh();
+                }
+                function deactivateLabels(scope) {
+                    layer.styleMap = this.getDeactivatedOpenLayersStyleMap(layer);
+                    layer.labels = false;
+                    layer.refresh();
+                }
+                
+                if (layer.labels) {
+                    deactivateLabels.call(this);
+                }
+                else {
+                    activateLabels.call(this);
+                }
             }
-        
-            widget.applyValues();
-        }
+        }            
     },
     
     measureDistance: {
@@ -900,7 +957,7 @@ G.cls = {
                                                                                                     
                                                     if (this.widget.labels) {
                                                         this.widget.labels = false;
-                                                        G.util.labels.toggleFeatureLabels(this.widget, nf.getValue(), item.cmp.strong.getValue(),
+                                                        G.util.labels.vector.toggleFeatureLabels(this.widget, nf.getValue(), item.cmp.strong.getValue(),
                                                             item.cmp.italic.getValue(), item.cmp.color.getValue());
                                                     }
                                                 }
@@ -918,7 +975,7 @@ G.cls = {
                                                     
                                                     if (this.widget.labels) {
                                                         this.widget.labels = false;
-                                                        G.util.labels.toggleFeatureLabels(this.widget, item.cmp.fontSize.getValue(),
+                                                        G.util.labels.vector.toggleFeatureLabels(this.widget, item.cmp.fontSize.getValue(),
                                                             checked, item.cmp.italic.getValue(), item.cmp.color.getValue());
                                                     }
                                                 }
@@ -936,7 +993,7 @@ G.cls = {
                                                     
                                                     if (this.widget.labels) {
                                                         this.widget.labels = false;
-                                                        G.util.labels.toggleFeatureLabels(this.widget, item.cmp.fontSize.getValue(),
+                                                        G.util.labels.vector.toggleFeatureLabels(this.widget, item.cmp.fontSize.getValue(),
                                                             item.cmp.strong.getValue(), checked, item.cmp.color.getValue());
                                                     }
                                                 }
@@ -957,7 +1014,7 @@ G.cls = {
                                                     
                                                     if (this.widget.labels) {
                                                         this.widget.labels = false;
-                                                        G.util.labels.toggleFeatureLabels(this.widget, item.cmp.fontSize.getValue(),
+                                                        G.util.labels.vector.toggleFeatureLabels(this.widget, item.cmp.fontSize.getValue(),
                                                             item.cmp.strong.getValue(), item.cmp.italic.getValue(), cf.getValue());
                                                     }
                                                 }
@@ -1002,7 +1059,7 @@ G.cls = {
                                                         scope: this,
                                                         handler: function() {
                                                             if (layer.features.length) {
-                                                                G.util.labels.toggleFeatureLabels(layer.widget, this.cmp.fontSize.getValue(),
+                                                                G.util.labels.vector.toggleFeatureLabels(layer.widget, this.cmp.fontSize.getValue(),
                                                                     this.cmp.strong.getValue(), this.cmp.italic.getValue(), this.cmp.color.getValue());
                                                             }
                                                             else {

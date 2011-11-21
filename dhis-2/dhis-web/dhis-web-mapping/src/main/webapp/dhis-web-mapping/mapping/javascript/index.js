@@ -2215,6 +2215,14 @@ Ext.onReady( function() {
         contextMenuOverlayFile: new Ext.menu.Menu({
             items: [
                 {
+                    text: 'Labels',
+                    iconCls: 'menu-layeroptions-labels',
+                    handler: function(item) {
+                        var layer = item.parentMenu.contextNode.layer;
+                        G.util.labels.fileOverlay.toggleFeatureLabels(layer);
+                    }
+                },
+                {
                     text: 'Opacity',
                     iconCls: 'menu-layeroptions-opacity',
                     menu: { 
