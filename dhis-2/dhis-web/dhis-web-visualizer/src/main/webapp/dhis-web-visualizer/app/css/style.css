@@ -382,10 +382,10 @@ li {
     color: #444;
 }
 
-.dv-menu-toolbar-png {
+.dv-menu-toolbar-save-png {
     background-image:url('../images/png.png');
 }
 
-.dv-menu-toolbar-pdf {
+.dv-menu-toolbar-save-pdf {
     background-image:url('../images/pdf.png');
 }

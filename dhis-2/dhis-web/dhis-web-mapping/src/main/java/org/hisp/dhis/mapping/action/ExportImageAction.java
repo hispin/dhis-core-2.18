@@ -133,27 +133,13 @@ public class ExportImageAction
         this.includeLegends = includeLegends;
     }
 
-    private Integer width;
-
-    public void setWidth( Integer width )
-    {
-        this.width = width;
-    }
-
-    private Integer height;
-
-    public void setHeight( Integer height )
-    {
-        this.height = height;
-    }
-
     private SVGDocument svgDocument;
 
     @Override
     protected String execute( HttpServletResponse response, OutputStream out )
         throws Exception
     {
-        if ( svg == null || title == null || indicator == null || period == null || width == null || height == null )
+        if ( svg == null || title == null || indicator == null || period == null )
         {
             log.info( "Export map from session" );
 
@@ -172,8 +158,6 @@ public class ExportImageAction
             svgDocument.setPeriod( this.period );
             svgDocument.setLegends( this.legends );
             svgDocument.setIncludeLegends( this.includeLegends );
-            svgDocument.setWidth( this.width );
-            svgDocument.setHeight( this.height );
             
             if ( this.layer == 3 )
             {
@@ -186,7 +170,7 @@ public class ExportImageAction
             SessionUtils.setSessionVar( SVGDOCUMENT, svgDocument );
         }
         
-        SVGUtils.convertToPNG( svgDocument.getSVGForImage(), out, this.width, this.height );
+        SVGUtils.convertToPNG( svgDocument.getSVGForImage(), out );
 
         return SUCCESS;
     }

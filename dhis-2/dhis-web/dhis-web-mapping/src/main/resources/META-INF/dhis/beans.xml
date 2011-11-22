@@ -330,10 +330,4 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 	<bean id="org.hisp.dhis.mapping.action.ExportImageAction" class="org.hisp.dhis.mapping.action.ExportImageAction"
 		scope="prototype"/>
 
-	<bean id="org.hisp.dhis.mapping.action.ExportExcelAction" class="org.hisp.dhis.mapping.action.ExportExcelAction"
-		scope="prototype">
-		<property name="organisationUnitService"
-			ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
-	</bean>
-
 </beans>
