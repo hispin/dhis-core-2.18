@@ -79,8 +79,7 @@ public class DefaultDataElementService
 
     private GenericIdentifiableObjectStore<DataElementGroupSet> dataElementGroupSetStore;
 
-    public void setDataElementGroupSetStore(
-        GenericIdentifiableObjectStore<DataElementGroupSet> dataElementGroupSetStore )
+    public void setDataElementGroupSetStore( GenericIdentifiableObjectStore<DataElementGroupSet> dataElementGroupSetStore )
     {
         this.dataElementGroupSetStore = dataElementGroupSetStore;
     }
@@ -129,9 +128,9 @@ public class DefaultDataElementService
         return i18n( i18nService, dataElementStore.get( id ) );
     }
 
-    public DataElement getDataElement( String uuid )
+    public DataElement getDataElement( String uid )
     {
-        return i18n( i18nService, dataElementStore.getByUid( uuid ) );
+        return i18n( i18nService, dataElementStore.getByUid( uid ) );
     }
 
     public DataElement getDataElementByCode( String code )
@@ -485,6 +484,11 @@ public class DefaultDataElementService
     public DataElementGroupSet getDataElementGroupSet( int id )
     {
         return i18n( i18nService, dataElementGroupSetStore.get( id ) );
+    }
+
+    public DataElementGroupSet getDataElementGroupSet( String uid )
+    {
+        return i18n( i18nService, dataElementGroupSetStore.getByUid( uid ) );
     }
 
     public DataElementGroupSet getDataElementGroupSetByName( String name )

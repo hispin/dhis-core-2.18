@@ -1136,6 +1136,11 @@ public class DefaultChartService
         return chartStore.get( id );
     }
 
+    public Chart getChart( String uid )
+    {
+        return chartStore.getByUid( uid );
+    }
+
     public void deleteChart( Chart chart )
     {
         chartStore.delete( chart );

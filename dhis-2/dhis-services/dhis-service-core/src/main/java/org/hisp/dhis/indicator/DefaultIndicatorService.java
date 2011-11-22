@@ -412,6 +412,11 @@ public class DefaultIndicatorService
         return i18n( i18nService, indicatorGroupSetStore.get( id ) );
     }
 
+    public IndicatorGroupSet getIndicatorGroupSet( String uid )
+    {
+        return i18n( i18nService, indicatorGroupSetStore.getByUid( uid ) );
+    }
+
     public IndicatorGroupSet getIndicatorGroupSetByName( String name )
     {
         return i18n( i18nService, indicatorGroupSetStore.getByName( name ) );

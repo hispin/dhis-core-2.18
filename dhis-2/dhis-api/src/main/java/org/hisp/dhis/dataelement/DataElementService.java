@@ -422,6 +422,8 @@ public interface DataElementService
     void deleteDataElementGroupSet( DataElementGroupSet groupSet );
 
     DataElementGroupSet getDataElementGroupSet( int id );
+    
+    DataElementGroupSet getDataElementGroupSet( String uid );
 
     DataElementGroupSet getDataElementGroupSetByName( String name );
 

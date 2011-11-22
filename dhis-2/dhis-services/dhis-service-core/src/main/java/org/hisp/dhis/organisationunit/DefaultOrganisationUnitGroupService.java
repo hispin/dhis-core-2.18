@@ -136,6 +136,11 @@ public class DefaultOrganisationUnitGroupService
     {
         return organisationUnitGroupSetStore.get( id );
     }
+
+    public OrganisationUnitGroupSet getOrganisationUnitGroupSet( String uid )
+    {
+        return organisationUnitGroupSetStore.getByUid( uid );
+    }
     
     public Collection<OrganisationUnitGroupSet> getOrganisationUnitGroupSets( final Collection<Integer> identifiers )
     {
