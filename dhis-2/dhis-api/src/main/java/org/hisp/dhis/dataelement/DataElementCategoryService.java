@@ -244,15 +244,20 @@ public interface DataElementCategoryService
     void deleteDataElementCategoryOptionCombo( DataElementCategoryOptionCombo dataElementCategoryOptionCombo );
 
     /**
-     * Retrieves a DataElementCategoryOptionCombo with the given identifier.
+     * Retrieves the DataElementCategoryOptionCombo with the given identifier.
      * 
      * @param id the identifier of the DataElementCategoryOptionCombo.
      * @return the DataElementCategoryOptionCombo.
      */
     DataElementCategoryOptionCombo getDataElementCategoryOptionCombo( int id );
 
-    DataElementCategoryOptionCombo getDataElementCategoryOptionCombo( String uuid );
-
+    /**
+     * Retrieves the DataElementCategoryOptionCombo with the given uid.
+     * 
+     * @param uid the uid of the DataElementCategoryOptionCombo.
+     * @return the DataElementCategoryOptionCombo.
+     */
+    DataElementCategoryOptionCombo getDataElementCategoryOptionCombo( String uid );
 
     /**
      * Retrieves the DataElementCategoryOptionCombos with the given identifiers.

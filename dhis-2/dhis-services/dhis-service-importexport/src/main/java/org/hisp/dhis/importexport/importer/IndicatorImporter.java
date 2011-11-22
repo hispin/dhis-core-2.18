@@ -71,7 +71,6 @@ public class IndicatorImporter
     @Override
     protected void importMatching( Indicator object, Indicator match )
     {
-        match.setUuid( object.getUuid() );
         match.setName( object.getName() );
         match.setAlternativeName( object.getAlternativeName() );
         match.setShortName( object.getShortName() );

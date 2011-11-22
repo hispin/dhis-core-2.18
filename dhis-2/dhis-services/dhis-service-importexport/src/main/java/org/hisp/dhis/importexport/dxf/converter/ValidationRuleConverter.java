@@ -55,23 +55,15 @@ public class ValidationRuleConverter
     implements XMLConverter
 {
     public static final String COLLECTION_NAME = "validationRules";
-
     public static final String ELEMENT_NAME = "validationRule";
 
     private static final String FIELD_NAME = "name";
-
     private static final String FIELD_DESCRIPTION = "description";
-
     private static final String FIELD_TYPE = "type";
-
     private static final String FIELD_OPERATOR = "operator";
-
     private static final String FIELD_LEFTSIDE_EXPRESSION = "leftSideExpression";
-
     private static final String FIELD_LEFTSIDE_DESCRIPTION = "leftSideDescription";
-
     private static final String FIELD_RIGHTSIDE_EXPRESSION = "rightSideExpression";
-
     private static final String FIELD_RIGHTSIDE_DESCRIPTION = "rightSideDescription";
 
     // -------------------------------------------------------------------------

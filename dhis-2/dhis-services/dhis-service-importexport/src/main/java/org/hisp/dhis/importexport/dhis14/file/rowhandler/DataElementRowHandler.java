@@ -77,7 +77,6 @@ public class DataElementRowHandler
     {
         final DataElement dataElement = (DataElement) object;
         
-        dataElement.setUuid( UUIdUtils.getUUId() );
         dataElement.setActive( true );
                     
         if ( dataElement.getCode() != null && dataElement.getCode().trim().length() == 0 )

@@ -59,7 +59,6 @@ public class DataSetConverter
     private static final String FIELD_SHORT_NAME = "shortName";
     private static final String FIELD_CODE = "code";
     private static final String FIELD_PERIOD_TYPE = "periodType";
-    private static final String FIELD_UUID = "uuid";
     
     // -------------------------------------------------------------------------
     // Properties
@@ -151,7 +150,6 @@ public class DataSetConverter
             dataSet.setName( values.get( FIELD_NAME ) );
             dataSet.setShortName( values.get( FIELD_SHORT_NAME ) );
             dataSet.setCode( values.get( FIELD_CODE ) );
-            dataSet.setUuid( values.get( FIELD_UUID) );
             dataSet.getPeriodType().setId( periodTypeMapping.get( values.get( FIELD_PERIOD_TYPE ) ) );
             
             importObject( dataSet, params );

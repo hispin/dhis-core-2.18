@@ -12,8 +12,6 @@
       <generator class="native" />
     </id>
 
-	<property name="uuid" length="40" />
-
     <property name="name">
       <column name="name" not-null="true" unique="true" length="160" />
     </property>

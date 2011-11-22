@@ -31,8 +31,8 @@ import java.util.Collection;
 import java.util.Map;
 import java.util.Set;
 
+import org.hisp.dhis.common.GenericNameableObjectStore;
 import org.hisp.dhis.dataset.DataSet;
-import org.hisp.dhis.hierarchy.HierarchyViolationException;
 
 /**
  * Defines the functionality for persisting DataElements and DataElementGroups.
@@ -41,6 +41,7 @@ import org.hisp.dhis.hierarchy.HierarchyViolationException;
  * @version $Id: DataElementStore.java 6289 2008-11-14 17:53:24Z larshelg $
  */
 public interface DataElementStore
+    extends GenericNameableObjectStore<DataElement>
 {
     String ID = DataElementStore.class.getName();
 
@@ -49,95 +50,12 @@ public interface DataElementStore
     // -------------------------------------------------------------------------
 
     /**
-     * Adds a DataElement.
-     * 
-     * @param dataElement the DataElement to add.
-     * @return a generated unique id of the added DataElement.
-     */
-    int addDataElement( DataElement dataElement );
-
-    /**
-     * Updates a DataElement.
-     * 
-     * @param dataElement the DataElement to update.
-     */
-    void updateDataElement( DataElement dataElement );
-
-    /**
-     * Deletes a DataElement. The DataElement is also removed from any
-     * DataElementGroups it is a member of. It is not possible to delete a
-     * DataElement with children.
-     * 
-     * @param dataElement the DataElement to delete.
-     * @throws HierarchyViolationException if the DataElement has children.
-     */
-    void deleteDataElement( DataElement dataElement )
-        throws HierarchyViolationException;
-
-    /**
-     * Returns a DataElement.
-     * 
-     * @param id the id of the DataElement to return.
-     * @return the DataElement with the given id, or null if no match.
-     */
-    DataElement getDataElement( int id );
-
-    /**
-     * Returns the DataElement with the given UUID.
-     *
-     * @param uuid the UUID.
-     * @return the DataElement with the given UUID, or null if no match.
-     */
-    DataElement getDataElement( String uuid );
-
-    /**
-     * Returns the DataElement with the given code.
-     *
-     * @param code the code.
-     * @return the DataElement with the given code, or null if no match.
-     */
-    DataElement getDataElementByCode( String code );
-
-    /**
-     * Returns a DataElement with a given name.
-     * 
-     * @param name the name of the DataElement to return.
-     * @return the DataElement with the given name, or null if no match.
-     */
-    DataElement getDataElementByName( String name );
-    
-    /**
      * Returns List of DataElements with a given key.
      * 
      * @param key the name of the DataElement to return.
      * @return List of DataElements with a given key, or all dataelements if no match.
      */
     Collection<DataElement> searchDataElementsByName( String key );
-
-    /**
-     * Returns a DataElement with a given alternative name.
-     * 
-     * @param alternativeName the alternative name of the DataElement to return.
-     * @return the DataElement with the given alternative name, or null if no
-     *         match.
-     */
-    DataElement getDataElementByAlternativeName( String alternativeName );
-
-    /**
-     * Returns a DataElement with a given short name.
-     * 
-     * @param shortName the short name of the DataElement to return.
-     * @return the DataElement with the given short name, or null if no match.
-     */
-    DataElement getDataElementByShortName( String shortName );
-
-    /**
-     * Returns all DataElements.
-     * 
-     * @return a collection of all DataElements, or an empty collection if there
-     *         are no DataElements.
-     */
-    Collection<DataElement> getAllDataElements();
 
     /**
      * Returns all DataElements with types that are possible to aggregate. The

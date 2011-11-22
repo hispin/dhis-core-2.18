@@ -69,8 +69,6 @@ public class OrganisationUnitGroupRowHandler
     {
         final OrganisationUnitGroup group = (OrganisationUnitGroup) object;
         
-        group.setUuid( UUIdUtils.getUUId() );
-            
         importObject( group, params );
     }
 }

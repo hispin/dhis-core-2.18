@@ -133,7 +133,6 @@ public class DataValueSetServiceTest
         } );
 
         defaultCombo = categoryService.getDefaultDataElementCategoryOptionCombo();
-        defaultCombo.setUuid( DEFAULT_COMBO_UUID );
         categoryService.updateDataElementCategoryOptionCombo( defaultCombo );
     }
 
@@ -498,8 +497,6 @@ public class DataValueSetServiceTest
 
     private void verifyDataValue( long before, long after, DataValue dv, String value )
     {
-        assertEquals( DATA_ELEMENT_UUID, dv.getDataElement().getUuid() );
-        assertEquals( ORGANISATION_UNIT_UUID, dv.getSource().getUuid() );
         assertEquals( new WeeklyPeriodType().createPeriod( "2011W5" ), dv.getPeriod() );
         assertEquals( value, dv.getValue() );
 

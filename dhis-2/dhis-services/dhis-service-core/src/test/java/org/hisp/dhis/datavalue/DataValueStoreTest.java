@@ -40,7 +40,7 @@ import org.hisp.dhis.DhisSpringTest;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
 import org.hisp.dhis.dataelement.DataElementCategoryService;
-import org.hisp.dhis.dataelement.DataElementStore;
+import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.period.Period;
@@ -56,8 +56,6 @@ public class DataValueStoreTest
 {
     private DataValueStore dataValueStore;
 
-    private DataElementStore dataElementStore;
-    
     private PeriodStore periodStore;
 
     // -------------------------------------------------------------------------
@@ -99,8 +97,8 @@ public class DataValueStoreTest
         throws Exception
     {
         dataValueStore = (DataValueStore) getBean( DataValueStore.ID );
-        
-        dataElementStore = (DataElementStore) getBean( DataElementStore.ID );
+
+        dataElementService = (DataElementService) getBean( DataElementService.ID );
 
         categoryService = (DataElementCategoryService) getBean( DataElementCategoryService.ID );
         
@@ -117,10 +115,10 @@ public class DataValueStoreTest
         dataElementC = createDataElement( 'C' );
         dataElementD = createDataElement( 'D' );
         
-        dataElementStore.addDataElement( dataElementA );
-        dataElementStore.addDataElement( dataElementB );
-        dataElementStore.addDataElement( dataElementC );
-        dataElementStore.addDataElement( dataElementD );
+        dataElementService.addDataElement( dataElementA );
+        dataElementService.addDataElement( dataElementB );
+        dataElementService.addDataElement( dataElementC );
+        dataElementService.addDataElement( dataElementD );
 
         periodA = createPeriod( getDay( 5 ), getDay( 6 ) );
         periodB = createPeriod( getDay( 6 ), getDay( 7 ) );

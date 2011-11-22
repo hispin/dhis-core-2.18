@@ -37,7 +37,6 @@ import java.util.Collection;
 
 import org.hisp.dhis.DhisSpringTest;
 import org.hisp.dhis.common.GenericIdentifiableObjectStore;
-import org.hisp.dhis.system.util.UUIdUtils;
 import org.junit.Test;
 
 /**
@@ -171,22 +170,6 @@ public class DataElementGroupStoreTest
         assertNull( dataElementGroupStore.get( idB ) );
         assertNull( dataElementGroupStore.get( idC ) );
         assertNull( dataElementGroupStore.get( idD ) );
-    }
-
-    @Test
-    public void testgetByUUID()
-    {
-        String uuid = UUIdUtils.getUUId();
-        
-        DataElementGroup groupA = new DataElementGroup( "groupA" );
-        groupA.setUuid( uuid );
-        
-        dataElementGroupStore.save( groupA );
-        
-        groupA = dataElementGroupStore.getByUuid( uuid );
-        
-        assertNotNull( groupA );
-        assertEquals( groupA.getUuid(), uuid );
     }
 
     @Test

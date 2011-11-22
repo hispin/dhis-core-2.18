@@ -71,7 +71,6 @@ public class IndicatorGroupImporter
     @Override
     protected void importMatching( IndicatorGroup object, IndicatorGroup match )
     {
-        match.setUuid( object.getUuid() );
         match.setName( object.getName() );
         
         indicatorService.updateIndicatorGroup( object );

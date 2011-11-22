@@ -69,8 +69,6 @@ public class DataElementGroupRowHandler
     {        
         final DataElementGroup dataElementGroup = (DataElementGroup) object;
         
-        dataElementGroup.setUuid( UUIdUtils.getUUId() );
-            
         importObject( dataElementGroup, params );
     }
 }

@@ -37,18 +37,10 @@ public interface GenericIdentifiableObjectStore<T>
     extends GenericStore<T>
 {
     /**
-     * Retrieves the object with the given uuid.
-     *
-     * @param uuid the uuid.
-     * @return the object with the given uuid.
-     */
-    T getByUuid( String uuid );
-
-    /**
      * Retrieves the object with the given uid.
      *
-     * @param uuid the uuid.
-     * @return the object with the given uuid.
+     * @param uid the uid.
+     * @return the object with the given uid.
      */
     T getByUid( String uid );
 

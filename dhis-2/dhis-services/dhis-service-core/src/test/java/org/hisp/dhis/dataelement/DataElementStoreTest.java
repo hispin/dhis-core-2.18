@@ -42,7 +42,6 @@ import org.hisp.dhis.DhisSpringTest;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.dataset.DataSetService;
 import org.hisp.dhis.period.MonthlyPeriodType;
-import org.hisp.dhis.system.util.UUIdUtils;
 import org.junit.Test;
 
 /**
@@ -83,14 +82,14 @@ public class DataElementStoreTest
         DataElement dataElementC = createDataElement( 'C' );
         DataElement dataElementD = createDataElement( 'A' );
 
-        int idA = dataElementStore.addDataElement( dataElementA );
-        int idB = dataElementStore.addDataElement( dataElementB );
-        int idC = dataElementStore.addDataElement( dataElementC );
+        int idA = dataElementStore.save( dataElementA );
+        int idB = dataElementStore.save( dataElementB );
+        int idC = dataElementStore.save( dataElementC );
 
         try
         {
             // Should give unique constraint violation
-            dataElementStore.addDataElement( dataElementD );
+            dataElementStore.save( dataElementD );
             fail();
         }
         catch ( Exception e )
@@ -98,17 +97,17 @@ public class DataElementStoreTest
             // Expected
         }
 
-        dataElementA = dataElementStore.getDataElement( idA );
+        dataElementA = dataElementStore.get( idA );
         assertNotNull( dataElementA );
         assertEquals( idA, dataElementA.getId() );
         assertEquals( "DataElementA", dataElementA.getName() );
 
-        dataElementB = dataElementStore.getDataElement( idB );
+        dataElementB = dataElementStore.get( idB );
         assertNotNull( dataElementB );
         assertEquals( idB, dataElementB.getId() );
         assertEquals( "DataElementB", dataElementB.getName() );
 
-        dataElementC = dataElementStore.getDataElement( idC );
+        dataElementC = dataElementStore.get( idC );
         assertNotNull( dataElementC );
         assertEquals( idC, dataElementC.getId() );
         assertEquals( "DataElementC", dataElementC.getName() );
@@ -118,13 +117,13 @@ public class DataElementStoreTest
     public void testUpdateDataElement()
     {
         DataElement dataElementA = createDataElement( 'A' );
-        int idA = dataElementStore.addDataElement( dataElementA );
-        dataElementA = dataElementStore.getDataElement( idA );
+        int idA = dataElementStore.save( dataElementA );
+        dataElementA = dataElementStore.get( idA );
         assertEquals( DataElement.VALUE_TYPE_INT, dataElementA.getType() );
 
         dataElementA.setType( DataElement.VALUE_TYPE_BOOL );
-        dataElementStore.updateDataElement( dataElementA );
-        dataElementA = dataElementStore.getDataElement( idA );
+        dataElementStore.update( dataElementA );
+        dataElementA = dataElementStore.get( idA );
         assertNotNull( dataElementA.getType() );
         assertEquals( DataElement.VALUE_TYPE_BOOL, dataElementA.getType() );
     }
@@ -138,60 +137,44 @@ public class DataElementStoreTest
         DataElement dataElementC = createDataElement( 'C' );
         DataElement dataElementD = createDataElement( 'D' );
 
-        int idA = dataElementStore.addDataElement( dataElementA );
-        int idB = dataElementStore.addDataElement( dataElementB );
-        int idC = dataElementStore.addDataElement( dataElementC );
-        int idD = dataElementStore.addDataElement( dataElementD );
+        int idA = dataElementStore.save( dataElementA );
+        int idB = dataElementStore.save( dataElementB );
+        int idC = dataElementStore.save( dataElementC );
+        int idD = dataElementStore.save( dataElementD );
 
-        assertNotNull( dataElementStore.getDataElement( idA ) );
-        assertNotNull( dataElementStore.getDataElement( idB ) );
-        assertNotNull( dataElementStore.getDataElement( idC ) );
-        assertNotNull( dataElementStore.getDataElement( idD ) );
+        assertNotNull( dataElementStore.get( idA ) );
+        assertNotNull( dataElementStore.get( idB ) );
+        assertNotNull( dataElementStore.get( idC ) );
+        assertNotNull( dataElementStore.get( idD ) );
 
-        dataElementA = dataElementStore.getDataElement( idA );
-        dataElementB = dataElementStore.getDataElement( idB );
-        dataElementC = dataElementStore.getDataElement( idC );
-        dataElementD = dataElementStore.getDataElement( idD );
+        dataElementA = dataElementStore.get( idA );
+        dataElementB = dataElementStore.get( idB );
+        dataElementC = dataElementStore.get( idC );
+        dataElementD = dataElementStore.get( idD );
 
-        dataElementStore.deleteDataElement( dataElementA );
-        assertNull( dataElementStore.getDataElement( idA ) );
-        assertNotNull( dataElementStore.getDataElement( idB ) );
-        assertNotNull( dataElementStore.getDataElement( idC ) );
-        assertNotNull( dataElementStore.getDataElement( idD ) );
+        dataElementStore.delete( dataElementA );
+        assertNull( dataElementStore.get( idA ) );
+        assertNotNull( dataElementStore.get( idB ) );
+        assertNotNull( dataElementStore.get( idC ) );
+        assertNotNull( dataElementStore.get( idD ) );
 
-        dataElementStore.deleteDataElement( dataElementB );
-        assertNull( dataElementStore.getDataElement( idA ) );
-        assertNull( dataElementStore.getDataElement( idB ) );
-        assertNotNull( dataElementStore.getDataElement( idC ) );
-        assertNotNull( dataElementStore.getDataElement( idD ) );
+        dataElementStore.delete( dataElementB );
+        assertNull( dataElementStore.get( idA ) );
+        assertNull( dataElementStore.get( idB ) );
+        assertNotNull( dataElementStore.get( idC ) );
+        assertNotNull( dataElementStore.get( idD ) );
 
-        dataElementStore.deleteDataElement( dataElementC );
-        assertNull( dataElementStore.getDataElement( idA ) );
-        assertNull( dataElementStore.getDataElement( idB ) );
-        assertNull( dataElementStore.getDataElement( idC ) );
-        assertNotNull( dataElementStore.getDataElement( idD ) );
+        dataElementStore.delete( dataElementC );
+        assertNull( dataElementStore.get( idA ) );
+        assertNull( dataElementStore.get( idB ) );
+        assertNull( dataElementStore.get( idC ) );
+        assertNotNull( dataElementStore.get( idD ) );
 
-        dataElementStore.deleteDataElement( dataElementD );
-        assertNull( dataElementStore.getDataElement( idA ) );
-        assertNull( dataElementStore.getDataElement( idB ) );
-        assertNull( dataElementStore.getDataElement( idC ) );
-        assertNull( dataElementStore.getDataElement( idD ) );
-    }
-
-    @Test
-    public void testGetDataElementByUUID()
-    {
-        String uuid = UUIdUtils.getUUId();
-        
-        DataElement dataElementA = createDataElement( 'A' );
-        dataElementA.setUuid( uuid );
-        
-        dataElementStore.addDataElement( dataElementA );
-        
-        dataElementA = dataElementStore.getDataElement( uuid );
-        
-        assertNotNull( dataElementA );
-        assertEquals( dataElementA.getUuid(), uuid );
+        dataElementStore.delete( dataElementD );
+        assertNull( dataElementStore.get( idA ) );
+        assertNull( dataElementStore.get( idB ) );
+        assertNull( dataElementStore.get( idC ) );
+        assertNull( dataElementStore.get( idD ) );
     }
 
     @Test
@@ -199,20 +182,20 @@ public class DataElementStoreTest
     {
         DataElement dataElementA = createDataElement( 'A' );
         DataElement dataElementB = createDataElement( 'B' );
-        int idA = dataElementStore.addDataElement( dataElementA );
-        int idB = dataElementStore.addDataElement( dataElementB );
+        int idA = dataElementStore.save( dataElementA );
+        int idB = dataElementStore.save( dataElementB );
 
-        dataElementA = dataElementStore.getDataElementByName( "DataElementA" );
+        dataElementA = dataElementStore.getByName( "DataElementA" );
         assertNotNull( dataElementA );
         assertEquals( idA, dataElementA.getId() );
         assertEquals( "DataElementA", dataElementA.getName() );
 
-        dataElementB = dataElementStore.getDataElementByName( "DataElementB" );
+        dataElementB = dataElementStore.getByName( "DataElementB" );
         assertNotNull( dataElementB );
         assertEquals( idB, dataElementB.getId() );
         assertEquals( "DataElementB", dataElementB.getName() );
 
-        DataElement dataElementC = dataElementStore.getDataElementByName( "DataElementC" );
+        DataElement dataElementC = dataElementStore.getByName( "DataElementC" );
         assertNull( dataElementC );
     }
 
@@ -221,20 +204,20 @@ public class DataElementStoreTest
     {
         DataElement dataElementA = createDataElement( 'A' );
         DataElement dataElementB = createDataElement( 'B' );
-        int idA = dataElementStore.addDataElement( dataElementA );
-        int idB = dataElementStore.addDataElement( dataElementB );
+        int idA = dataElementStore.save( dataElementA );
+        int idB = dataElementStore.save( dataElementB );
 
-        dataElementA = dataElementStore.getDataElementByAlternativeName( "DataElementAlternativeA" );
+        dataElementA = dataElementStore.getByAlternativeName( "DataElementAlternativeA" );
         assertNotNull( dataElementA );
         assertEquals( idA, dataElementA.getId() );
         assertEquals( "DataElementA", dataElementA.getName() );
 
-        dataElementB = dataElementStore.getDataElementByAlternativeName( "DataElementAlternativeB" );
+        dataElementB = dataElementStore.getByAlternativeName( "DataElementAlternativeB" );
         assertNotNull( dataElementB );
         assertEquals( idB, dataElementB.getId() );
         assertEquals( "DataElementB", dataElementB.getName() );
 
-        DataElement dataElementC = dataElementStore.getDataElementByAlternativeName( "DataElementAlternativeC" );
+        DataElement dataElementC = dataElementStore.getByAlternativeName( "DataElementAlternativeC" );
         assertNull( dataElementC );
     }
 
@@ -243,37 +226,37 @@ public class DataElementStoreTest
     {
         DataElement dataElementA = createDataElement( 'A' );
         DataElement dataElementB = createDataElement( 'B' );
-        int idA = dataElementStore.addDataElement( dataElementA );
-        int idB = dataElementStore.addDataElement( dataElementB );
+        int idA = dataElementStore.save( dataElementA );
+        int idB = dataElementStore.save( dataElementB );
 
-        dataElementA = dataElementStore.getDataElementByShortName( "DataElementShortA" );
+        dataElementA = dataElementStore.getByShortName( "DataElementShortA" );
         assertNotNull( dataElementA );
         assertEquals( idA, dataElementA.getId() );
         assertEquals( "DataElementA", dataElementA.getName() );
 
-        dataElementB = dataElementStore.getDataElementByShortName( "DataElementShortB" );
+        dataElementB = dataElementStore.getByShortName( "DataElementShortB" );
         assertNotNull( dataElementB );
         assertEquals( idB, dataElementB.getId() );
         assertEquals( "DataElementB", dataElementB.getName() );
 
-        DataElement dataElementC = dataElementStore.getDataElementByShortName( "DataElementShortC" );
+        DataElement dataElementC = dataElementStore.getByShortName( "DataElementShortC" );
         assertNull( dataElementC );
     }
     
     @Test
     public void testGetAllDataElements()
     {
-        assertEquals( 0, dataElementStore.getAllDataElements().size() );
+        assertEquals( 0, dataElementStore.getAll().size() );
 
         DataElement dataElementA = createDataElement( 'A' );
         DataElement dataElementB = createDataElement( 'B' );
         DataElement dataElementC = createDataElement( 'C' );
         DataElement dataElementD = createDataElement( 'D' );
 
-        dataElementStore.addDataElement( dataElementA );
-        dataElementStore.addDataElement( dataElementB );
-        dataElementStore.addDataElement( dataElementC );
-        dataElementStore.addDataElement( dataElementD );
+        dataElementStore.save( dataElementA );
+        dataElementStore.save( dataElementB );
+        dataElementStore.save( dataElementC );
+        dataElementStore.save( dataElementD );
 
         Collection<DataElement> dataElementsRef = new HashSet<DataElement>();
         dataElementsRef.add( dataElementA );
@@ -281,7 +264,7 @@ public class DataElementStoreTest
         dataElementsRef.add( dataElementC );
         dataElementsRef.add( dataElementD );
 
-        Collection<DataElement> dataElements = dataElementStore.getAllDataElements();
+        Collection<DataElement> dataElements = dataElementStore.getAll();
         assertNotNull( dataElements );
         assertEquals( dataElementsRef.size(), dataElements.size() );
         assertTrue( dataElements.containsAll( dataElementsRef ) );
@@ -302,10 +285,10 @@ public class DataElementStoreTest
         dataElementC.setType( DataElement.VALUE_TYPE_STRING );
         dataElementD.setType( DataElement.VALUE_TYPE_INT );
 
-        dataElementStore.addDataElement( dataElementA );
-        dataElementStore.addDataElement( dataElementB );
-        dataElementStore.addDataElement( dataElementC );
-        dataElementStore.addDataElement( dataElementD );
+        dataElementStore.save( dataElementA );
+        dataElementStore.save( dataElementB );
+        dataElementStore.save( dataElementC );
+        dataElementStore.save( dataElementD );
 
         Collection<DataElement> dataElementsRef = new HashSet<DataElement>();
         dataElementsRef.add( dataElementA );
@@ -332,17 +315,17 @@ public class DataElementStoreTest
         DataElement dataElementD = createDataElement( 'D' );
         dataElementD.setActive( false );
 
-        dataElementStore.addDataElement( dataElementA );
-        dataElementStore.addDataElement( dataElementB );
-        dataElementStore.addDataElement( dataElementC );
-        dataElementStore.addDataElement( dataElementD );
+        dataElementStore.save( dataElementA );
+        dataElementStore.save( dataElementB );
+        dataElementStore.save( dataElementC );
+        dataElementStore.save( dataElementD );
 
         Collection<DataElement> dataElementsRef = new HashSet<DataElement>();
         dataElementsRef.add( dataElementA );
         dataElementsRef.add( dataElementB );
         dataElementsRef.add( dataElementC );
 
-        assertEquals( dataElementsRef.size() + 1, dataElementStore.getAllDataElements().size() );
+        assertEquals( dataElementsRef.size() + 1, dataElementStore.getAll().size() );
 
         Collection<DataElement> dataElements = dataElementStore.getAllActiveDataElements();
         assertNotNull( dataElements );
@@ -367,10 +350,10 @@ public class DataElementStoreTest
         DataElement dataElementD = createDataElement( 'D' );
         dataElementD.setAggregationOperator( DataElement.AGGREGATION_OPERATOR_SUM );
 
-        dataElementStore.addDataElement( dataElementA );
-        dataElementStore.addDataElement( dataElementB );
-        dataElementStore.addDataElement( dataElementC );
-        dataElementStore.addDataElement( dataElementD );
+        dataElementStore.save( dataElementA );
+        dataElementStore.save( dataElementB );
+        dataElementStore.save( dataElementC );
+        dataElementStore.save( dataElementD );
 
         assertEquals( 1, dataElementStore.getDataElementsByAggregationOperator(
             DataElement.AGGREGATION_OPERATOR_AVERAGE ).size() );
@@ -393,10 +376,10 @@ public class DataElementStoreTest
         DataElement dataElementD = createDataElement( 'D' );
         dataElementD.setDomainType( DataElement.DOMAIN_TYPE_PATIENT );
 
-        dataElementStore.addDataElement( dataElementA );
-        dataElementStore.addDataElement( dataElementB );
-        dataElementStore.addDataElement( dataElementC );
-        dataElementStore.addDataElement( dataElementD );
+        dataElementStore.save( dataElementA );
+        dataElementStore.save( dataElementB );
+        dataElementStore.save( dataElementC );
+        dataElementStore.save( dataElementD );
 
         assertEquals( 1, dataElementStore.getDataElementsByDomainType( DataElement.DOMAIN_TYPE_AGGREGATE ).size() );
         assertEquals( 3, dataElementStore.getDataElementsByDomainType( DataElement.DOMAIN_TYPE_PATIENT ).size() );
@@ -417,10 +400,10 @@ public class DataElementStoreTest
         DataElement dataElementD = createDataElement( 'D' );
         dataElementD.setType( DataElement.VALUE_TYPE_BOOL );
 
-        dataElementStore.addDataElement( dataElementA );
-        dataElementStore.addDataElement( dataElementB );
-        dataElementStore.addDataElement( dataElementC );
-        dataElementStore.addDataElement( dataElementD );
+        dataElementStore.save( dataElementA );
+        dataElementStore.save( dataElementB );
+        dataElementStore.save( dataElementC );
+        dataElementStore.save( dataElementD );
 
         assertEquals( 1, dataElementStore.getDataElementsByType( DataElement.VALUE_TYPE_INT ).size() );
         assertEquals( 3, dataElementStore.getDataElementsByType( DataElement.VALUE_TYPE_BOOL ).size() );
@@ -434,11 +417,11 @@ public class DataElementStoreTest
         DataElement dataElementA = createDataElement( 'A' );
         dataElementA.setAggregationLevels( aggregationLevels );
         
-        int idA = dataElementStore.addDataElement( dataElementA );
+        int idA = dataElementStore.save( dataElementA );
         
-        assertNotNull( dataElementStore.getDataElement( idA ).getAggregationLevels() );
-        assertEquals( 2, dataElementStore.getDataElement( idA ).getAggregationLevels().size() );
-        assertEquals( aggregationLevels, dataElementStore.getDataElement( idA ).getAggregationLevels() );
+        assertNotNull( dataElementStore.get( idA ).getAggregationLevels() );
+        assertEquals( 2, dataElementStore.get( idA ).getAggregationLevels().size() );
+        assertEquals( aggregationLevels, dataElementStore.get( idA ).getAggregationLevels() );
     }
         
     @Test
@@ -452,10 +435,10 @@ public class DataElementStoreTest
         dataElementA.setZeroIsSignificant( true );
         dataElementB.setZeroIsSignificant( true );
         
-        dataElementStore.addDataElement( dataElementA );
-        dataElementStore.addDataElement( dataElementB );
-        dataElementStore.addDataElement( dataElementC );
-        dataElementStore.addDataElement( dataElementD );
+        dataElementStore.save( dataElementA );
+        dataElementStore.save( dataElementB );
+        dataElementStore.save( dataElementC );
+        dataElementStore.save( dataElementD );
         
         Collection<DataElement> dataElements = dataElementStore.getDataElementsByZeroIsSignificant( true );
         
@@ -472,12 +455,12 @@ public class DataElementStoreTest
         DataElement dataElementE = createDataElement( 'E' );
         DataElement dataElementF = createDataElement( 'F' );
         
-        dataElementStore.addDataElement( dataElementA );
-        dataElementStore.addDataElement( dataElementB );
-        dataElementStore.addDataElement( dataElementC );
-        dataElementStore.addDataElement( dataElementD );
-        dataElementStore.addDataElement( dataElementE );
-        dataElementStore.addDataElement( dataElementF );
+        dataElementStore.save( dataElementA );
+        dataElementStore.save( dataElementB );
+        dataElementStore.save( dataElementC );
+        dataElementStore.save( dataElementD );
+        dataElementStore.save( dataElementE );
+        dataElementStore.save( dataElementF );
         
         DataSet dataSetA = createDataSet( 'A', new MonthlyPeriodType() );
         DataSet dataSetB = createDataSet( 'B', new MonthlyPeriodType() );

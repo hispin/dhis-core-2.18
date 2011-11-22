@@ -75,12 +75,12 @@ public interface DataSetStore
     DataSet getDataSet( int id );
 
     /**
-     * Returns the DataSet with the given UUID.
+     * Returns the DataSet with the given UID.
      * 
-     * @param uuid the UUID.
-     * @return the DataSet with the given UUID, or null if no match.
+     * @param uid the UID.
+     * @return the DataSet with the given UID, or null if no match.
      */
-    DataSet getDataSet( String uuid );
+    DataSet getDataSet( String uid );
 
     
     /**

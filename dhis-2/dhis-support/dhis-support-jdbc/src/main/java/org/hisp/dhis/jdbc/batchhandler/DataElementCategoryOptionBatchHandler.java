@@ -87,12 +87,10 @@ public class DataElementCategoryOptionBatchHandler
     protected void setColumns()
     {
         statementBuilder.setColumn( "name" );
-        statementBuilder.setColumn( "uuid" );
     }
     
     protected void setValues( DataElementCategoryOption categoryOption )
     {        
         statementBuilder.setValue( categoryOption.getName() );
-        statementBuilder.setValue( categoryOption.getUuid() );
     }
 }

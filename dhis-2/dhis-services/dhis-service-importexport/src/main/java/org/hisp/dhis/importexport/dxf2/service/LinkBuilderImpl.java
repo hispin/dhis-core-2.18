@@ -25,7 +25,7 @@ public class LinkBuilderImpl implements LinkBuilder
         Link link = new Link();
 
         link.setName( target.getName() );
-        link.setId( target.getUuid() );
+        link.setId( target.getUid() );
 
         return link;
     }

@@ -104,8 +104,6 @@ import org.hisp.dhis.validation.ValidationRuleService;
  */
 public abstract class DhisConvenienceTest
 {
-    private static final String BASE_UUID = "C3C2E28D-9686-4634-93FD-BE3133935EC";
-
     private static final String BASE_UID = "123456789a";
 
     private static final String EXT_TEST_DIR = System.getProperty( "user.home" ) + File.separator + "dhis2_test_dir";
@@ -340,7 +338,7 @@ public abstract class DhisConvenienceTest
     {
         DataElement dataElement = new DataElement();
 
-        dataElement.setUuid( BASE_UUID + uniqueCharacter );
+        dataElement.setUid( BASE_UID + uniqueCharacter );
         dataElement.setName( "DataElement" + uniqueCharacter );
         dataElement.setAlternativeName( "DataElementAlternative" + uniqueCharacter );
         dataElement.setShortName( "DataElementShort" + uniqueCharacter );
@@ -451,7 +449,7 @@ public abstract class DhisConvenienceTest
     {
         DataElementGroup group = new DataElementGroup();
 
-        group.setUuid( BASE_UUID + uniqueCharacter );
+        group.setUid( BASE_UID + uniqueCharacter );
         group.setName( "DataElementGroup" + uniqueCharacter );
 
         return group;
@@ -464,7 +462,7 @@ public abstract class DhisConvenienceTest
     {
         DataElementGroupSet groupSet = new DataElementGroupSet();
 
-        groupSet.setUuid( BASE_UUID + uniqueCharacter );
+        groupSet.setUid( BASE_UID + uniqueCharacter );
         groupSet.setName( "DataElementGroupSet" + uniqueCharacter );
 
         return groupSet;
@@ -505,7 +503,7 @@ public abstract class DhisConvenienceTest
     {
         Indicator indicator = new Indicator();
 
-        indicator.setUuid( BASE_UUID + uniqueCharacter );
+        indicator.setUid( BASE_UID + uniqueCharacter );
         indicator.setName( "Indicator" + uniqueCharacter );
         indicator.setAlternativeName( "IndicatorAlternative" + uniqueCharacter );
         indicator.setShortName( "IndicatorShort" + uniqueCharacter );
@@ -528,7 +526,7 @@ public abstract class DhisConvenienceTest
     {
         IndicatorGroup group = new IndicatorGroup();
 
-        group.setUuid( BASE_UUID + uniqueCharacter );
+        group.setUid( BASE_UID + uniqueCharacter );
         group.setName( "IndicatorGroup" + uniqueCharacter );
 
         return group;
@@ -541,7 +539,7 @@ public abstract class DhisConvenienceTest
     {
         IndicatorGroupSet groupSet = new IndicatorGroupSet();
 
-        groupSet.setUuid( BASE_UUID + uniqueCharacter );
+        groupSet.setUid( BASE_UID + uniqueCharacter );
         groupSet.setName( "IndicatorGroupSet" + uniqueCharacter );
 
         return groupSet;
@@ -570,7 +568,6 @@ public abstract class DhisConvenienceTest
     {
         OrganisationUnit unit = new OrganisationUnit();
 
-        unit.setUuid( BASE_UUID + uniqueCharacter );
         unit.setUid( BASE_UID + uniqueCharacter );
         unit.setName( "OrganisationUnit" + uniqueCharacter );
         unit.setShortName( "OrganisationUnitShort" + uniqueCharacter );
@@ -605,7 +602,7 @@ public abstract class DhisConvenienceTest
     {
         OrganisationUnitGroup group = new OrganisationUnitGroup();
 
-        group.setUuid( BASE_UUID + uniqueCharacter );
+        group.setUid( BASE_UID + uniqueCharacter );
         group.setName( "OrganisationUnitGroup" + uniqueCharacter );
 
         return group;

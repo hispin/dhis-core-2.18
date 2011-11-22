@@ -33,7 +33,6 @@ import java.util.List;
 import org.hisp.dhis.dataelement.DataElementGroup;
 import org.hisp.dhis.dataelement.DataElementGroupSet;
 import org.hisp.dhis.dataelement.DataElementService;
-import org.hisp.dhis.system.util.UUIdUtils;
 
 import com.opensymphony.xwork2.Action;
 
@@ -96,8 +95,6 @@ public class AddDataElementGroupSetAction
         throws Exception
     {
         DataElementGroupSet dataElementGroupSet = new DataElementGroupSet( name, description, compulsory );
-
-        dataElementGroupSet.setUuid( UUIdUtils.getUUId() );
 
         List<DataElementGroup> dataElementGroups = new ArrayList<DataElementGroup>();
 

@@ -190,21 +190,6 @@ public class OrganisationUnitServiceTest
     }
 
     @Test
-    public void testGetOrganisationUnitByUUID()
-        throws Exception
-    {
-        OrganisationUnit unit1 = new OrganisationUnit( "name1", "shortName1", "organisationUnitCode1", new Date(), new Date(), true, "comment" );        
-        int id1 = organisationUnitService.addOrganisationUnit( unit1 );
-        
-        unit1 = organisationUnitService.getOrganisationUnit( id1 );        
-        String uuid = unit1.getUuid();
-        
-        OrganisationUnit unit2 = organisationUnitService.getOrganisationUnit( uuid );
-        
-        assertEquals( unit1, unit2 );
-    }
-
-    @Test
     public void testGetOrganisationUnitGraph()
         throws Exception
     {
@@ -524,21 +509,6 @@ public class OrganisationUnitServiceTest
 
         OrganisationUnitGroup group2 = organisationUnitGroupService.getOrganisationUnitGroupByName( oUG2Name );
         assertEquals( group2.getName(), oUG2Name );
-    }
-
-    @Test
-    public void testGetOrganisationUnitGroupByUUID()
-        throws Exception
-    {
-        OrganisationUnitGroup group1 = new OrganisationUnitGroup( "name1" );        
-        int id1 = organisationUnitGroupService.addOrganisationUnitGroup( group1 );
-        
-        group1 = organisationUnitGroupService.getOrganisationUnitGroup( id1 );        
-        String uuid = group1.getUuid();
-        
-        OrganisationUnitGroup group2 = organisationUnitGroupService.getOrganisationUnitGroup( uuid );
-        
-        assertEquals( group1, group2 );
     }
 
     // -------------------------------------------------------------------------

@@ -55,7 +55,6 @@ public class DataElementConverter
     public static final String ELEMENT_NAME = "dataElement";
 
     private static final String FIELD_ID = "id";
-    private static final String FIELD_UUID = "uuid";
     private static final String FIELD_NAME = "name";
     private static final String FIELD_ALTERNATIVE_NAME = "alternativeName";
     private static final String FIELD_SHORT_NAME = "shortName";
@@ -124,7 +123,6 @@ public class DataElementConverter
                 writer.openElement( ELEMENT_NAME );
                 
                 writer.writeElement( FIELD_ID, String.valueOf( element.getId() ) );
-                writer.writeElement( FIELD_UUID, element.getUuid() );
                 writer.writeElement( FIELD_NAME, element.getName() );
                 writer.writeElement( FIELD_ALTERNATIVE_NAME, element.getAlternativeName() );
                 writer.writeElement( FIELD_SHORT_NAME, element.getShortName() );
@@ -156,7 +154,6 @@ public class DataElementConverter
             element.setCategoryCombo( categoryCombo );
             
             element.setId( Integer.parseInt( values.get( FIELD_ID ) ) );
-            element.setUuid( values.get( FIELD_UUID ) );
             element.setName( values.get( FIELD_NAME ) );
             element.setAlternativeName( values.get( FIELD_ALTERNATIVE_NAME ) );
             element.setShortName( values.get( FIELD_SHORT_NAME ) );

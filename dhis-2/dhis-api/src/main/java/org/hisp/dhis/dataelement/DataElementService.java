@@ -85,12 +85,12 @@ public interface DataElementService
     DataElement getDataElement( int id );
 
     /**
-     * Returns the DataElement with the given UUID.
+     * Returns the DataElement with the given UID.
      * 
-     * @param uuid the UUID.
-     * @return the DataElement with the given UUID, or null if no match.
+     * @param uid the UID.
+     * @return the DataElement with the given UID, or null if no match.
      */
-    DataElement getDataElement( String uuid );
+    DataElement getDataElement( String uid );
 
     /**
      * Returns the DataElement with the given code.
@@ -335,12 +335,12 @@ public interface DataElementService
     Collection<DataElementGroup> getDataElementGroups( Collection<Integer> identifiers );
 
     /**
-     * Returns the DataElementGroup with the given UUID.
+     * Returns the DataElementGroup with the given UID.
      * 
-     * @param id the UUID of the DataElementGroup to return.
-     * @return the DataElementGroup with the given UUID, or null if no match.
+     * @param id the UID of the DataElementGroup to return.
+     * @return the DataElementGroup with the given UID, or null if no match.
      */
-    DataElementGroup getDataElementGroup( String uuid );
+    DataElementGroup getDataElementGroup( String uid );
 
     /**
      * Returns a DataElementGroup with a given name.

@@ -86,13 +86,11 @@ public class OrganisationUnitGroupBatchHandler
     
     protected void setColumns()
     {
-        statementBuilder.setColumn( "uuid" );
         statementBuilder.setColumn( "name" );
     }
     
     protected void setValues( OrganisationUnitGroup group )
-    {        
-        statementBuilder.setValue( group.getUuid() );
+    {
         statementBuilder.setValue( group.getName() );
     }
 }

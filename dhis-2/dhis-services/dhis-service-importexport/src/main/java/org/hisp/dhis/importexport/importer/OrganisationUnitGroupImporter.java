@@ -67,7 +67,6 @@ public class OrganisationUnitGroupImporter
     @Override
     protected void importMatching( OrganisationUnitGroup object, OrganisationUnitGroup match )
     {
-        match.setUuid( object.getUuid() );
         match.setName( object.getName() );
         
         organisationUnitGroupService.updateOrganisationUnitGroup( match );

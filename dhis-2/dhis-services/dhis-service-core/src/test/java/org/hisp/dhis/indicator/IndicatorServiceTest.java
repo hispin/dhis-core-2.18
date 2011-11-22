@@ -237,21 +237,6 @@ public class IndicatorServiceTest
     }
 
     @Test
-    public void testGetIndicatorGroupByUUID()
-        throws Exception
-    {
-        IndicatorGroup groupA = new IndicatorGroup( "IndicatorGroupA" );
-        int id = indicatorService.addIndicatorGroup( groupA );
-        
-        groupA = indicatorService.getIndicatorGroup( id );
-        String uuid = groupA.getUuid();
-        
-        IndicatorGroup groupB = indicatorService.getIndicatorGroup( uuid );
-        
-        assertEquals( groupA, groupB );
-    }
-
-    @Test
     public void testGetAllIndicatorGroups()
         throws Exception
     {
@@ -413,24 +398,6 @@ public class IndicatorServiceTest
 
         assertNull( indicatorService.getIndicator( idA ) );
         assertNull( indicatorService.getIndicator( idB ) );        
-    }
-
-    @Test
-    public void testGetIndicatorByUUID()
-        throws Exception
-    {
-        IndicatorType type = new IndicatorType( "IndicatorType", 100, false );
-        indicatorService.addIndicatorType( type );
-        
-        Indicator indicatorA = createIndicator( 'A', type );        
-        int idA = indicatorService.addIndicator( indicatorA );
-        
-        indicatorA = indicatorService.getIndicator( idA );
-        String uuid = indicatorA.getUuid();
-        
-        Indicator indicatorB = indicatorService.getIndicator( uuid );
-        
-        assertEquals( indicatorA, indicatorB );
     }
 
     @Test

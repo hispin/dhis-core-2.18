@@ -22,7 +22,7 @@ public class DataSetMapper
         dxfDataSet.setName( dataSet.getName() );
         dxfDataSet.setPeriodType( dataSet.getPeriodType().getName() );
         dxfDataSet.setShortName( dataSet.getShortName() );
-        dxfDataSet.setId( dataSet.getUuid() );
+        dxfDataSet.setId( dataSet.getUid() );
 
         dxfDataSet.setDataElements( getDataElements( dataSet.getDataElements() ) );
         dxfDataSet.setOrgUnitLinks( linkBuilder.getLinks( dataSet.getSources() ) );
@@ -45,7 +45,7 @@ public class DataSetMapper
     {
         DataElement dxfElement = new DataElement();
 
-        dxfElement.setId( dataElement.getUuid() );
+        dxfElement.setId( dataElement.getUid() );
         dxfElement.setName( dataElement.getName() );
         dxfElement.setType( dataElement.getType() );
 
@@ -67,7 +67,7 @@ public class DataSetMapper
         for ( DataElementCategoryOptionCombo optionCombo : optionCombos )
         {
             CategoryOptionCombo dxfCombo = new CategoryOptionCombo();
-            dxfCombo.setId( optionCombo.getUuid() );
+            dxfCombo.setId( optionCombo.getUid() );
             dxfCombo.setName( optionCombo.getName() );
             dxfCombos.add( dxfCombo );
         }

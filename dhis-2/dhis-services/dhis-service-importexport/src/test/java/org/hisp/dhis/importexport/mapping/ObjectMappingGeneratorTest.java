@@ -210,27 +210,4 @@ public class ObjectMappingGeneratorTest
         assertEquals( mapping.get( Integer.valueOf( 'A' ) ), Integer.valueOf( 'A' ) );
         assertEquals( mapping.get( Integer.valueOf( 'B' ) ), Integer.valueOf( 'B' ) );        
     }
-
-    @Test
-    public void testOrganisationUnitMappingWithUUID()
-    {
-        OrganisationUnit organisationUnitA = createOrganisationUnit( 'A' );
-        OrganisationUnit organisationUnitB = createOrganisationUnit( 'B' );
-        
-        NameMappingUtil.addOrganisationUnitMapping( organisationUnitA.getUuid(), organisationUnitA.getName() );
-        NameMappingUtil.addOrganisationUnitMapping( organisationUnitB.getUuid(), organisationUnitB.getName() );
-
-        int idA = organisationUnitService.addOrganisationUnit( organisationUnitA );
-        int idB = organisationUnitService.addOrganisationUnit( organisationUnitB );
-
-        Map<Object, Integer> mapping = objectMappingGenerator.getOrganisationUnitMapping( false );
-
-        assertEquals( mapping.get( organisationUnitA.getUuid() ), Integer.valueOf( idA ) );
-        assertEquals( mapping.get( organisationUnitB.getUuid() ), Integer.valueOf( idB ) );
-        
-        mapping = objectMappingGenerator.getOrganisationUnitMapping( true );
-        
-        assertEquals( mapping.get( organisationUnitA.getUuid() ), Integer.valueOf( -1 ) );
-        assertEquals( mapping.get( organisationUnitB.getUuid() ), Integer.valueOf( -1 ) );
-    }
 }

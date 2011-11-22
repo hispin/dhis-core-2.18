@@ -98,9 +98,9 @@ public class DefaultOrganisationUnitGroupService
             } );
     }
 
-    public OrganisationUnitGroup getOrganisationUnitGroup( String uuid )
+    public OrganisationUnitGroup getOrganisationUnitGroup( String uid )
     {
-        return organisationUnitGroupStore.getByUuid( uuid );
+        return organisationUnitGroupStore.getByUid( uid );
     }
 
     public OrganisationUnitGroup getOrganisationUnitGroupByName( String name )

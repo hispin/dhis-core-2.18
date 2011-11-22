@@ -72,8 +72,6 @@ public class OrganisationUnitRowHandler
     {
         final OrganisationUnit unit = (OrganisationUnit) object;
         
-        unit.setUuid( UUIdUtils.getUUId() );
-        
         if ( unit.getCode() != null && unit.getCode().trim().length() == 0 )
         {
             unit.setCode( null );                

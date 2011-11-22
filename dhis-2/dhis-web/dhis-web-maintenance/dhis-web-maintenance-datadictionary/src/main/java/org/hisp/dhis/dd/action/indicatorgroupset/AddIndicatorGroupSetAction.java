@@ -33,7 +33,6 @@ import java.util.List;
 import org.hisp.dhis.indicator.IndicatorGroup;
 import org.hisp.dhis.indicator.IndicatorGroupSet;
 import org.hisp.dhis.indicator.IndicatorService;
-import org.hisp.dhis.system.util.UUIdUtils;
 
 import com.opensymphony.xwork2.Action;
 
@@ -94,8 +93,6 @@ public class AddIndicatorGroupSetAction
     public String execute()
     {
         IndicatorGroupSet indicatorGroupSet = new IndicatorGroupSet( name, description, compulsory );
-
-        indicatorGroupSet.setUuid( UUIdUtils.getUUId() );
 
         List<IndicatorGroup> indicatorGroups = new ArrayList<IndicatorGroup>();
 

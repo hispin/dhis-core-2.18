@@ -58,7 +58,6 @@ public class OrganisationUnitConverter
     public static final String ELEMENT_NAME = "organisationUnit";
     
     private static final String FIELD_ID = "id";
-    private static final String FIELD_UUID = "uuid";
     private static final String FIELD_NAME = "name";
     private static final String FIELD_SHORT_NAME = "shortName";
     private static final String FIELD_CODE = "code";
@@ -120,7 +119,6 @@ public class OrganisationUnitConverter
                 writer.openElement( ELEMENT_NAME );
                 
                 writer.writeElement( FIELD_ID, String.valueOf( unit.getId() ) );
-                writer.writeElement( FIELD_UUID, unit.getUuid() );
                 writer.writeElement( FIELD_NAME, unit.getName() );
                 writer.writeElement( FIELD_SHORT_NAME, unit.getShortName() );
                 writer.writeElement( FIELD_CODE, unit.getCode() );
@@ -167,9 +165,6 @@ public class OrganisationUnitConverter
             reader.moveToStartElement( FIELD_ID );
             unit.setId( Integer.parseInt( reader.getElementValue() ) );
 
-            reader.moveToStartElement( FIELD_UUID );
-            unit.setUuid( reader.getElementValue() );
-            
             reader.moveToStartElement( FIELD_NAME );
             unit.setName(reader.getElementValue() );
             
