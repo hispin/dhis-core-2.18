@@ -223,6 +223,11 @@ public class DefaultReportTableService
         return reportTableStore.get( id );
     }
 
+    public ReportTable getReportTable( String uid )
+    {
+        return reportTableStore.getByUid( uid );
+    }
+
     public Collection<ReportTable> getReportTables( final Collection<Integer> identifiers )
     {
         Collection<ReportTable> objects = getAllReportTables();
@@ -245,7 +250,7 @@ public class DefaultReportTableService
     {
         return reportTableStore.getByName( name );
     }
-
+    
     public Collection<ReportTable> getReportTablesBetweenByName( String name, int first, int max )
     {
         return reportTableStore.getBetweenByName( name, first, max );

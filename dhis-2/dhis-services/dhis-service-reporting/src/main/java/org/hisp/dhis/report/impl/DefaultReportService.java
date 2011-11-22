@@ -186,6 +186,11 @@ public class DefaultReportService
         return reportStore.get( id );
     }
 
+    public Report getReport( String uid )
+    {
+        return reportStore.getByUid( uid );
+    }
+
     public Report getReportByName( String name )
     {
         return reportStore.getByName( name );

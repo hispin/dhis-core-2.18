@@ -87,6 +87,14 @@ public interface ReportTableService
      * @return the ReportTable.
      */
     ReportTable getReportTable( int id );
+
+    /**
+     * Retrieves the ReportTable with the given uid.
+     * 
+     * @param uid the uid of the ReportTable to retrieve.
+     * @return the ReportTable.
+     */
+    ReportTable getReportTable( String uid );
     
     /**
      * Retrieves a Collection of all ReportTables.

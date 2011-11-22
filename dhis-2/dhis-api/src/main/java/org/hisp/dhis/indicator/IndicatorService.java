@@ -146,6 +146,8 @@ public interface IndicatorService
     void deleteIndicatorGroupSet( IndicatorGroupSet groupSet );
 
     IndicatorGroupSet getIndicatorGroupSet( int id );
+    
+    IndicatorGroupSet getIndicatorGroupSet( String uid );
 
     IndicatorGroupSet getIndicatorGroupSetByName( String name );
 

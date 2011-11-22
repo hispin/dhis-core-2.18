@@ -29,14 +29,14 @@ package org.hisp.dhis.chart;
 
 import java.util.Collection;
 
-import org.hisp.dhis.common.GenericStore;
+import org.hisp.dhis.common.GenericIdentifiableObjectStore;
 
 /**
  * @author Lars Helge Overland
  * @version $Id$
  */
 public interface ChartStore
-    extends GenericStore<Chart>
+    extends GenericIdentifiableObjectStore<Chart>
 {
     String ID = ChartStore.class.getName();
         

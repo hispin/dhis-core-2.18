@@ -64,6 +64,14 @@ public interface ReportService
     Report getReport( int id );
 
     /**
+     * Retrieves the Report with the given uid.
+     * 
+     * @param uid the uid of the Report to retrieve.
+     * @return the Report.
+     */
+    Report getReport( String uid );
+
+    /**
      * Deletes a Report.
      * 
      * @param report the Report to delete.

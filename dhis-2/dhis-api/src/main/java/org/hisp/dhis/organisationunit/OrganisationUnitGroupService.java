@@ -142,6 +142,15 @@ public interface OrganisationUnitGroupService
     OrganisationUnitGroupSet getOrganisationUnitGroupSet( int id );
 
     /**
+     * Returns an OrganisationUnitGroupSet.
+     * 
+     * @param uid the id of the OrganisationUnitGroupSet to return.
+     * @return the OrganisationUnitGroupSet with the given uid, or null if no
+     *         match.
+     */
+    OrganisationUnitGroupSet getOrganisationUnitGroupSet( String uid );
+
+    /**
      * Returns the OrganisationUnitGroupSets with the given identifiers.
      * 
      * @param identifiers the identifiers.
