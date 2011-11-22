@@ -132,12 +132,12 @@ public class DefaultReportService
             {
                 ReportTable reportTable = report.getReportTable();
                 
+                Grid grid = reportTableService.getReportTableGrid( reportTable.getId(), format, reportingPeriod, organisationUnitId );
+                
                 if ( report.isUsingOrganisationUnitGroupSets() )
                 {
                     params.putAll( reportTable.getOrganisationUnitGroupMap( organisationUnitGroupService.getCompulsoryOrganisationUnitGroupSets() ) );
                 }
-                
-                Grid grid = reportTableService.getReportTableGrid( reportTable.getId(), format, reportingPeriod, organisationUnitId );
                 
                 print = JasperFillManager.fillReport( jasperReport, params, grid );
             }
