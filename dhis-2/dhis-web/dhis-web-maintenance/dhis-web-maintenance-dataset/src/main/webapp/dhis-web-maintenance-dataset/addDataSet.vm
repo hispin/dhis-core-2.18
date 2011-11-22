@@ -158,8 +158,8 @@
 
       <tr>
         <td colspan="3">
-          <input type="submit" value="$i18n.getString( 'save' )" style="width:13em" />
-          <input type="button" onclick="window.location.href='dataSet.action'" value="$i18n.getString( 'cancel' )" style="width:12em" />
+          <input type="submit" value="$i18n.getString( 'save' )" style="width:120px" />
+          <input type="button" onclick="window.location.href='dataSet.action'" value="$i18n.getString( 'cancel' )" style="width:120px" />
         </td>
       </tr>
       
