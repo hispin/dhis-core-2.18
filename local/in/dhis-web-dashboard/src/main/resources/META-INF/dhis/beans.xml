@@ -682,7 +682,23 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
         </property>
     </bean>			
 
-	
+<!-- View Comment -->	
+   <bean id="org.hisp.dhis.dataanalyser.ds.action.GenerateCommentResultAction"
+		class="org.hisp.dhis.dataanalyser.ds.action.GenerateCommentResultAction" scope="prototype">
+	   <property name="statementManager" ref="statementManager"/>
+	   <property name="dataSetService" ref="org.hisp.dhis.dataset.DataSetService">
+	   </property>
+	   <property name="periodService" ref="org.hisp.dhis.period.PeriodService">
+	   </property>
+	   <property name="organisationUnitService" ref="org.hisp.dhis.organisationunit.OrganisationUnitService">
+	   </property>	   
+	   <property name="dataElementService" ref="org.hisp.dhis.dataelement.DataElementService">
+	   </property>   
+	   <property name="dataValueService" ref="org.hisp.dhis.datavalue.DataValueService">
+	   </property>
+	   <property name="dashBoardService" ref="org.hisp.dhis.dataanalyser.util.DashBoardService">
+	   </property>	   
+    </bean>			
 
 			
 	

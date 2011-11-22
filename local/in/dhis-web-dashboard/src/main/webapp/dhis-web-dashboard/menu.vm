@@ -12,7 +12,7 @@
 		      <!--  <li><a href="motionChartForm.action">MotionChart</a></li> -->
 		   	</ul>
 		<li><a href="tabularAnalysisForm.action">$i18n.getString( "ta" )</a></li>
-		<li><a href="viewCommentForm.action">$i18n.getString( "vc" )</a></li>
+		<!--<li><a href="viewCommentForm.action">$i18n.getString( "vc" )</a></li>-->
 		<li>$i18n.getString( "ds_datastatus" )</li>
 			<ul>				
 		   		<li><a href="dataStatusMartForm.action">$i18n.getString( "ds_mart" )</a></li>

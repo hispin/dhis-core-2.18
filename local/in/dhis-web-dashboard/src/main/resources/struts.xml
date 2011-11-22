@@ -485,6 +485,15 @@
 				/dhis-web-dashboard/responsePeriodForDataSetWise.vm</result>
 			<param name="onExceptionReturn">plainTextError</param>
 		</action>
+
+<!-- View Comment -->
+				
+		<action name="commentResult"
+			class="org.hisp.dhis.dataanalyser.ds.action.GenerateCommentResultAction">
+			<result name="success" type="velocity">/dhis-web-dashboard/commentResult.vm</result>
+			<param name="javascripts">javascript/ds.js,javascript/hashtable.js</param>
+			<param name="stylesheets">css/StylesForTags.css</param>
+		</action>		
 		
 		<!-- DataStatus For Mobile start-->
 		

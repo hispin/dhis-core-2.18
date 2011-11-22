@@ -420,8 +420,10 @@ public class GenerateNullReporterResultAction
             for ( Period p : periodsColl )
             {
                 // System.out.println(p.getStartDate() + " - "+p.getEndDate());
+                
                 List<DataElement> resultDeList = new ArrayList<DataElement>();
-
+               // List<String> resultDeList1 = new ArrayList<String>();
+                //String comment = "";
                 for ( DataElement de : deList )
                 {
 
@@ -480,6 +482,7 @@ public class GenerateNullReporterResultAction
                             if ( aggValue < 0.0 )
                             {
                                 resultDeList.add( de );
+                               // resultDeList1.add( de + ":" + comment );
                             }
                         }
                         else
@@ -495,7 +498,7 @@ public class GenerateNullReporterResultAction
                                 DataElementCategoryOptionCombo decoc1 = (DataElementCategoryOptionCombo) optionComboIterator.next();
                                     
                                 DataValue dv1 = dataValueService.getDataValue( curOu, de, p, decoc1 );
-    
+                                //comment = dv1.getComment();
                                 if ( dv1 != null )
                                 {
                                     if ( includeZeros != null )
@@ -517,6 +520,7 @@ public class GenerateNullReporterResultAction
                             if( flag == 0 )
                             {
                                 resultDeList.add( de );
+                                //resultDeList1.add( de + ":" + comment );
                             }
                                 
                             /*

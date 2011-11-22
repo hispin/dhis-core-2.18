@@ -15,7 +15,6 @@ import java.util.Set;
 
 import org.hisp.dhis.dataanalyser.util.DashBoardService;
 import org.hisp.dhis.dataelement.DataElement;
-import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.dataset.DataSetService;
 import org.hisp.dhis.datavalue.DataValueService;
@@ -88,14 +87,14 @@ public class GenerateCommentsResultAction implements Action
     {
         this.dataValueService = dataValueService;
     }
-
+/*
     private DataElementService dataElementService;
     
     public void setDataElementService( DataElementService dataElementService )
     {
         this.dataElementService = dataElementService;
     }
-
+*/
     // ---------------------------------------------------------------
     // Output Parameters
     // ---------------------------------------------------------------
@@ -409,7 +408,7 @@ public class GenerateCommentsResultAction implements Action
                 periodIterator = periodList.iterator();
                 
                 Period p;
-                Collection dataValueResult;
+                //Collection dataValueResult;
                 double dataStatusPercentatge;
                 
                 while ( periodIterator.hasNext() )
@@ -438,10 +437,10 @@ public class GenerateCommentsResultAction implements Action
                         
                         while(rs1.next())
                         {
-                            OrganisationUnit ou = organisationUnitService.getOrganisationUnit( rs1.getInt( 1 ) );
-                            DataElement de = dataElementService.getDataElement( rs1.getInt( 2 ));
-                            Period per = periodService.getPeriod( rs1.getInt(3) );
-                            String tempStr = ou.getShortName() + " --- " + de.getName(); 
+                            //OrganisationUnit ou = organisationUnitService.getOrganisationUnit( rs1.getInt( 1 ) );
+                            //DataElement de = dataElementService.getDataElement( rs1.getInt( 2 ));
+                            //Period per = periodService.getPeriod( rs1.getInt(3) );
+                            //String tempStr = ou.getShortName() + " --- " + de.getName(); 
                         }                            
                         
                         continue;
