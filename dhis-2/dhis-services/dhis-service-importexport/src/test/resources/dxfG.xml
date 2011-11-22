@@ -135,7 +135,7 @@
     <dataElements>
         <dataElement>
             <id>65</id>
-            <uuid>C3C2E28D-9686-4634-93FD-BE3133935ECA</uuid>
+            <uid>E3133935ECA</uid>
             <name>DataElementA</name>
             <alternativeName>AlternativeNameA</alternativeName>
             <shortName>ShortNameA</shortName>
@@ -148,7 +148,7 @@
         </dataElement>
         <dataElement>
             <id>66</id>
-            <uuid>C3C2E28D-9686-4634-93FD-BE3133935ECB</uuid>
+            <uid>E3133935ECB</uid>
             <name>DataElementB</name>
             <alternativeName>AlternativeNameB</alternativeName>
             <shortName>ShortNameB</shortName>
@@ -161,7 +161,7 @@
         </dataElement>
         <dataElement>
             <id>67</id>
-            <uuid>C3C2E28D-9686-4634-93FD-BE3133935ECC</uuid>
+            <uid>E3133935ECC</uid>
             <name>DataElementC</name>
             <alternativeName>AlternativeNameC</alternativeName>
             <shortName>ShortNameC</shortName>
@@ -176,7 +176,7 @@
     <organisationUnits>
         <organisationUnit>
             <id>65</id>
-            <uuid>C3C2E28D-9686-4634-93FD-BE3133935ECA</uuid>
+            <uid>E3133935ECA</uid>
             <name>OrganisationUnitA</name>
             <shortName>ShortNameA</shortName>
             <code>CodeA</code>
@@ -188,7 +188,7 @@
         </organisationUnit>
         <organisationUnit>
             <id>66</id>
-            <uuid>C3C2E28D-9686-4634-93FD-BE3133935ECB</uuid>
+            <uid>E3133935ECB</uid>
             <name>OrganisationUnitB</name>
             <shortName>ShortNameB</shortName>
             <code>CodeB</code>

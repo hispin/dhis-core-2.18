@@ -40,7 +40,7 @@ import org.hisp.dhis.DhisSpringTest;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
 import org.hisp.dhis.dataelement.DataElementCategoryService;
-import org.hisp.dhis.dataelement.DataElementStore;
+import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.period.Period;
@@ -54,8 +54,6 @@ import org.junit.Test;
 public class DataValueServiceTest
     extends DhisSpringTest
 {
-    private DataElementStore dataElementStore;
-
     // -------------------------------------------------------------------------
     // Supporting data
     // -------------------------------------------------------------------------
@@ -96,7 +94,7 @@ public class DataValueServiceTest
     {
         dataValueService = (DataValueService) getBean( DataValueService.ID );
         
-        dataElementStore = (DataElementStore) getBean( DataElementStore.ID );
+        dataElementService = (DataElementService) getBean( DataElementService.ID );
 
         categoryService = (DataElementCategoryService) getBean( DataElementCategoryService.ID );
         
@@ -113,10 +111,10 @@ public class DataValueServiceTest
         dataElementC = createDataElement( 'C' );
         dataElementD = createDataElement( 'D' );
         
-        dataElementStore.addDataElement( dataElementA );
-        dataElementStore.addDataElement( dataElementB );
-        dataElementStore.addDataElement( dataElementC );
-        dataElementStore.addDataElement( dataElementD );
+        dataElementService.addDataElement( dataElementA );
+        dataElementService.addDataElement( dataElementB );
+        dataElementService.addDataElement( dataElementC );
+        dataElementService.addDataElement( dataElementD );
 
         periodA = createPeriod( getDay( 5 ), getDay( 6 ) );
         periodB = createPeriod( getDay( 6 ), getDay( 7 ) );

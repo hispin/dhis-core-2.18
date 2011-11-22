@@ -45,7 +45,7 @@ public interface IndicatorStore
 
     Indicator getIndicator( int id );
     
-    Indicator getIndicator( String uuid );
+    Indicator getIndicator( String uid );
     
     Collection<Indicator> getAllIndicators();
     

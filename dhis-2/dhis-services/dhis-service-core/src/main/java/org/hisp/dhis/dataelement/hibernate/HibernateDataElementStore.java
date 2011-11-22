@@ -41,13 +41,12 @@ import org.hibernate.Criteria;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.criterion.Restrictions;
-import org.hisp.dhis.common.hibernate.HibernateIdentifiableObjectStore;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryCombo;
 import org.hisp.dhis.dataelement.DataElementOperand;
 import org.hisp.dhis.dataelement.DataElementStore;
 import org.hisp.dhis.dataset.DataSet;
-import org.hisp.dhis.hierarchy.HierarchyViolationException;
+import org.hisp.dhis.hibernate.HibernateGenericStore;
 import org.hisp.dhis.system.objectmapper.DataElementOperandMapper;
 import org.hisp.dhis.system.util.ConversionUtils;
 import org.hisp.dhis.system.util.TextUtils;
@@ -59,7 +58,7 @@ import org.springframework.jdbc.core.RowCallbackHandler;
  *          larshelg $
  */
 public class HibernateDataElementStore
-    extends HibernateIdentifiableObjectStore<DataElement>
+    extends HibernateGenericStore<DataElement>
     implements DataElementStore
 {
     // -------------------------------------------------------------------------
@@ -77,63 +76,6 @@ public class HibernateDataElementStore
     // DataElement
     // -------------------------------------------------------------------------
 
-    @Override
-    public int addDataElement( DataElement dataElement )
-    {
-        return this.save( dataElement );
-    }
-
-    @Override
-    public void updateDataElement( DataElement dataElement )
-    {
-        this.update( dataElement );
-    }
-
-    public void deleteDataElement( DataElement dataElement )
-        throws HierarchyViolationException
-    {
-        Session session = sessionFactory.getCurrentSession();
-
-        session.delete( dataElement );
-    }
-
-    public DataElement getDataElement( int id )
-    {
-        Session session = sessionFactory.getCurrentSession();
-
-        return (DataElement) session.get( DataElement.class, id );
-    }
-
-    public DataElement getDataElement( String uuid )
-    {
-        Session session = sessionFactory.getCurrentSession();
-
-        Criteria criteria = session.createCriteria( DataElement.class );
-        criteria.add( Restrictions.eq( "uuid", uuid ) );
-
-        return (DataElement) criteria.uniqueResult();
-    }
-
-    public DataElement getDataElementByCode( String code )
-    {
-        Session session = sessionFactory.getCurrentSession();
-
-        Criteria criteria = session.createCriteria( DataElement.class );
-        criteria.add( Restrictions.eq( "code", code ) );
-
-        return (DataElement) criteria.uniqueResult();
-    }
-
-    public DataElement getDataElementByName( String name )
-    {
-        Session session = sessionFactory.getCurrentSession();
-
-        Criteria criteria = session.createCriteria( DataElement.class );
-        criteria.add( Restrictions.eq( "name", name ) );
-
-        return (DataElement) criteria.uniqueResult();
-    }
-
     @SuppressWarnings( "unchecked" )
     public Collection<DataElement> searchDataElementsByName( String key )
     {
@@ -143,31 +85,6 @@ public class HibernateDataElementStore
         criteria.add( Restrictions.ilike( "name", "%" + key + "%" ) );
 
         return criteria.list();
-    }
-
-    public DataElement getDataElementByAlternativeName( String alternativeName )
-    {
-        Session session = sessionFactory.getCurrentSession();
-
-        Criteria criteria = session.createCriteria( DataElement.class );
-        criteria.add( Restrictions.eq( "alternativeName", alternativeName ) );
-
-        return (DataElement) criteria.uniqueResult();
-    }
-
-    public DataElement getDataElementByShortName( String shortName )
-    {
-        Session session = sessionFactory.getCurrentSession();
-
-        Criteria criteria = session.createCriteria( DataElement.class );
-        criteria.add( Restrictions.eq( "shortName", shortName ) );
-
-        return (DataElement) criteria.uniqueResult();
-    }
-
-    public Collection<DataElement> getAllDataElements()
-    {
-        return getAll();
     }
 
     @SuppressWarnings( "unchecked" )

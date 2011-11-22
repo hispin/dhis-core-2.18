@@ -69,8 +69,6 @@ public class IndicatorGroupRowHandler
     {        
         final IndicatorGroup indicatorGroup = (IndicatorGroup) object;
         
-        indicatorGroup.setUuid( UUIdUtils.getUUId() );
-            
         importObject( indicatorGroup, params );
     }
 }

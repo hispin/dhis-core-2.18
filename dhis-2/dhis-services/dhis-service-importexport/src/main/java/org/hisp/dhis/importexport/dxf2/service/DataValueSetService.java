@@ -134,8 +134,8 @@ public class DataValueSetService
 
         if ( !dataSet.getSources().contains( unit ) )
         {
-            throw new IllegalArgumentException( "Org unit with UUID " + unit.getUuid()
-                + " does not report data set with UUID " + dataSet.getUuid() );
+            throw new IllegalArgumentException( "Org unit with UUID " + unit.getUid()
+                + " does not report data set with UUID " + dataSet.getUid() );
         }
 
         Period period = getPeriod( dataValueSet.getPeriodIsoDate(), dataSet.getPeriodType() );
@@ -187,7 +187,7 @@ public class DataValueSetService
 
             if ( dataSets == null || dataSets.isEmpty() )
             {
-                throw new IllegalArgumentException( "Data element '" + dataElement.getUuid() + "' isn't in a data set." );
+                throw new IllegalArgumentException( "Data element '" + dataElement.getUid() + "' isn't in a data set." );
             }
             else if ( dataSets.size() == 1 )
             {
@@ -221,7 +221,7 @@ public class DataValueSetService
         String message = "Ambiguous which of these data set the data values belong to: ";
         for ( DataSet p : potential )
         {
-            message += p.getUuid() + ", ";
+            message += p.getUid() + ", ";
         }
         message.substring( 0, message.length() - 2 );
         throw new IllegalArgumentException( message );
@@ -234,8 +234,8 @@ public class DataValueSetService
 
         if ( !dataSet.getDataElements().contains( dataElement ) )
         {
-            throw new IllegalArgumentException( "Data element '" + dataElement.getUuid() + "' isn't in data set "
-                + dataSet.getUuid() );
+            throw new IllegalArgumentException( "Data element '" + dataElement.getUid() + "' isn't in data set "
+                + dataSet.getUid() );
         }
 
         DataElementCategoryOptionCombo combo = getOptionCombo( dxfValue.getCategoryOptionComboIdentifier(), dataElement );
@@ -368,8 +368,8 @@ public class DataValueSetService
 
         if ( !dataElement.getCategoryCombo().getOptionCombos().contains( combo ) )
         {
-            throw new IllegalArgumentException( "DataElementCategoryOptionCombo with UUID '" + combo.getUuid()
-                + "' isn't in DataElement '" + dataElement.getUuid() + "'" );
+            throw new IllegalArgumentException( "DataElementCategoryOptionCombo with UUID '" + combo.getUid()
+                + "' isn't in DataElement '" + dataElement.getUid() + "'" );
         }
         return combo;
     }

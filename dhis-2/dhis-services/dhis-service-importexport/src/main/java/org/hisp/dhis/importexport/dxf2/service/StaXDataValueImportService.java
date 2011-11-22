@@ -409,9 +409,6 @@ public class StaXDataValueImportService
         }
         switch ( idScheme )
         {
-            case UUID:
-                result = DataElement.getUUIDMap( dataelements );
-                break;
             case CODE:
                 result = DataElement.getCodeMap( dataelements );
                 break;
@@ -439,9 +436,6 @@ public class StaXDataValueImportService
 
         switch ( idScheme )
         {
-            case UUID:
-                result = OrganisationUnit.getUUIDMap( orgunits );
-                break;
             case CODE:
                 result = OrganisationUnit.getCodeMap( orgunits );
                 break;

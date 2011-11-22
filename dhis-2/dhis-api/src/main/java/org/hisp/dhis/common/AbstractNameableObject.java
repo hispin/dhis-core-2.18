@@ -57,10 +57,10 @@ public abstract class AbstractNameableObject
     {
     }
 
-    public AbstractNameableObject( int id, String uuid, String name, String alternativeName, String shortName,
+    public AbstractNameableObject( int id, String uid, String name, String alternativeName, String shortName,
         String code, String description )
     {
-        super( id, uuid, name );
+        super( id, uid, name );
         this.alternativeName = alternativeName;
         this.shortName = shortName;
         this.code = code;

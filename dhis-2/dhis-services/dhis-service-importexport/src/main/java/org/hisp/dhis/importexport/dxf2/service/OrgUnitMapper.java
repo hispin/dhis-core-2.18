@@ -14,7 +14,7 @@ public class OrgUnitMapper
         OrgUnit dxfUnit = new OrgUnit();
 
         dxfUnit.setName( unit.getName() );
-        dxfUnit.setId( unit.getUuid() );
+        dxfUnit.setId( unit.getUid() );
 
         OrganisationUnit parent = unit.getParent();
         if ( parent != null )

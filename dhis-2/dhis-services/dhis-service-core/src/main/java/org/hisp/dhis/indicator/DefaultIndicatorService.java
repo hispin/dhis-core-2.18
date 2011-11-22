@@ -38,7 +38,6 @@ import org.hisp.dhis.common.GenericIdentifiableObjectStore;
 import org.hisp.dhis.i18n.I18nService;
 import org.hisp.dhis.system.util.Filter;
 import org.hisp.dhis.system.util.FilterUtils;
-import org.hisp.dhis.system.util.UUIdUtils;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
@@ -94,11 +93,6 @@ public class DefaultIndicatorService
 
     public int addIndicator( Indicator indicator )
     {
-        if ( indicator.getUuid() == null )
-        {
-            indicator.setUuid( UUIdUtils.getUUId() );
-        }
-
         indicator.setLastUpdated( new Date() );
 
         int id = indicatorStore.addIndicator( indicator );
@@ -293,11 +287,6 @@ public class DefaultIndicatorService
 
     public int addIndicatorGroup( IndicatorGroup indicatorGroup )
     {
-        if ( indicatorGroup.getUuid() == null )
-        {
-            indicatorGroup.setUuid( UUIdUtils.getUUId() );
-        }
-
         int id = indicatorGroupStore.save( indicatorGroup );
 
         i18nService.addObject( indicatorGroup );
@@ -337,9 +326,9 @@ public class DefaultIndicatorService
         } );
     }
 
-    public IndicatorGroup getIndicatorGroup( String uuid )
+    public IndicatorGroup getIndicatorGroup( String uid )
     {
-        return i18n( i18nService, indicatorGroupStore.getByUuid( uuid ) );
+        return i18n( i18nService, indicatorGroupStore.getByUid( uid ) );
     }
 
     public Collection<IndicatorGroup> getAllIndicatorGroups()
@@ -509,5 +498,4 @@ public class DefaultIndicatorService
     {
         return i18n( i18nService, indicatorGroupSetStore.getBetweenByName( name, first, max ) );
     }
-
 }

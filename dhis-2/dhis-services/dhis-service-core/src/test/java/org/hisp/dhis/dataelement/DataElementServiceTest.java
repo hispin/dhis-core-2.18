@@ -158,21 +158,6 @@ public class DataElementServiceTest
     }
 
     @Test
-    public void testGetDataElementByUUID()
-        throws Exception
-    {
-        DataElement dataElementA = createDataElement( 'A' );
-        int idA = dataElementService.addDataElement( dataElementA );
-        
-        dataElementA = dataElementService.getDataElement( idA );
-        String uuid = dataElementA.getUuid();
-        
-        DataElement dataElementB = dataElementService.getDataElement( uuid );
-        
-        assertEquals( dataElementA, dataElementB );
-    }
-
-    @Test
     public void testGetDataElementByCode()
         throws Exception
     {
@@ -550,21 +535,6 @@ public class DataElementServiceTest
         assertNull( dataElementService.getDataElementGroup( idB ) );
         assertNull( dataElementService.getDataElementGroup( idC ) );
         assertNull( dataElementService.getDataElementGroup( idD ) );
-    }
-
-    @Test
-    public void testGetDataElementGroupByUUID()
-        throws Exception
-    {
-        DataElementGroup groupA = new DataElementGroup( "groupA" );
-        int idA = dataElementService.addDataElementGroup( groupA );
-        
-        groupA = dataElementService.getDataElementGroup( idA );
-        String uuid = groupA.getUuid();
-        
-        DataElementGroup groupB = dataElementService.getDataElementGroup( uuid );
-        
-        assertEquals( groupA, groupB );
     }
 
     @Test

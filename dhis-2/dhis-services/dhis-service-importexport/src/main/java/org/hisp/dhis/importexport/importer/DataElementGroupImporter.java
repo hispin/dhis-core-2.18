@@ -71,7 +71,6 @@ public class DataElementGroupImporter
     @Override
     protected void importMatching( DataElementGroup object, DataElementGroup match )
     {
-        match.setUuid( object.getUuid() );
         match.setName( object.getName() );
         
         dataElementService.updateDataElementGroup( match );

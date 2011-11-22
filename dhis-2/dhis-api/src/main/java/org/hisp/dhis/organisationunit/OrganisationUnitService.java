@@ -93,12 +93,12 @@ public interface OrganisationUnitService
     OrganisationUnit getOrganisationUnit( int id );
     
     /**
-     * Returns the OrganisationUnit with the given UUID.
+     * Returns the OrganisationUnit with the given UID.
      * 
-     * @param uuid the UUID of the OrganisationUnit to return.
-     * @return the OrganisationUnit with the given UUID, or null if no match.
+     * @param uid the UID of the OrganisationUnit to return.
+     * @return the OrganisationUnit with the given UID, or null if no match.
      */
-    OrganisationUnit getOrganisationUnit( String uuid );
+    OrganisationUnit getOrganisationUnit( String uid );
 
     /**
      * Returns the OrganisationUnit with the given code.

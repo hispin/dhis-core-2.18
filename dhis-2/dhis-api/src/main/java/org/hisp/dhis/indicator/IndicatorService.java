@@ -49,7 +49,7 @@ public interface IndicatorService
 
     Indicator getIndicator( int id );
 
-    Indicator getIndicator( String uuid );
+    Indicator getIndicator( String uid );
 
     Collection<Indicator> getAllIndicators();
 
@@ -119,7 +119,7 @@ public interface IndicatorService
 
     Collection<IndicatorGroup> getIndicatorGroups( Collection<Integer> identifiers );
 
-    IndicatorGroup getIndicatorGroup( String uuid );
+    IndicatorGroup getIndicatorGroup( String uid );
 
     Collection<IndicatorGroup> getAllIndicatorGroups();
 

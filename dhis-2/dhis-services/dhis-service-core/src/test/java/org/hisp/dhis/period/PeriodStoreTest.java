@@ -43,7 +43,7 @@ import org.hisp.dhis.DhisSpringTest;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
 import org.hisp.dhis.dataelement.DataElementCategoryService;
-import org.hisp.dhis.dataelement.DataElementStore;
+import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.datavalue.DataValue;
 import org.hisp.dhis.datavalue.DataValueStore;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
@@ -59,8 +59,6 @@ public class PeriodStoreTest
 {
     private PeriodStore periodStore;
     
-    private DataElementStore dataElementStore;
-
     private DataValueStore dataValueStore;
 
     private DataElementCategoryOptionCombo optionCombo;
@@ -75,7 +73,7 @@ public class PeriodStoreTest
     {
         periodStore = (PeriodStore) getBean( PeriodStore.ID );
         
-        dataElementStore = (DataElementStore) getBean( DataElementStore.ID );
+        dataElementService = (DataElementService) getBean( DataElementService.ID );
 
         categoryService = (DataElementCategoryService) getBean( DataElementCategoryService.ID );
 
@@ -574,9 +572,9 @@ public class PeriodStoreTest
         DataValue dataValueI = new DataValue( dataElementB, w05, sourceA, optionCombo );
         dataValueI.setValue( "9" );
         
-        dataElementStore.addDataElement( dataElementA );
-        dataElementStore.addDataElement( dataElementB );
-        dataElementStore.addDataElement( dataElementC );
+        dataElementService.addDataElement( dataElementA );
+        dataElementService.addDataElement( dataElementB );
+        dataElementService.addDataElement( dataElementC );
      
         organisationUnitService.addOrganisationUnit( sourceA );
         organisationUnitService.addOrganisationUnit( sourceB );

@@ -185,9 +185,9 @@ public class DefaultOrganisationUnitService
         } );
     }
 
-    public OrganisationUnit getOrganisationUnit( String uuid )
+    public OrganisationUnit getOrganisationUnit( String uid )
     {
-        return organisationUnitStore.getByUuid( uuid );
+        return organisationUnitStore.getByUid( uid );
     }
 
     public OrganisationUnit getOrganisationUnitByName( String name )

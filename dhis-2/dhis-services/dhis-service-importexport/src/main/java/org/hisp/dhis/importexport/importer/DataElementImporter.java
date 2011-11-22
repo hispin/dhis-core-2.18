@@ -72,7 +72,6 @@ public class DataElementImporter
     @Override
     protected void importMatching( DataElement object, DataElement match )
     {
-        match.setUuid( object.getUuid() );
         match.setName( object.getName() );
         match.setShortName( object.getShortName() );
         match.setAlternativeName( object.getAlternativeName() );

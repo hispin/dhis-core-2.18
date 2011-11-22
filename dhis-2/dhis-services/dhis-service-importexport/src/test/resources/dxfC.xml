@@ -135,7 +135,7 @@
     <dataElements>
         <dataElement>
             <id>65</id>
-            <uuid>C3C2E28D-9686-4634-93FD-BE3133935ECA</uuid>
+            <uid>E3133935ECA</uid>
             <name>DataElementA</name>
             <alternativeName>AlternativeNameA2</alternativeName>
             <shortName>ShortNameA</shortName>
@@ -148,7 +148,7 @@
         </dataElement>
         <dataElement>
             <id>66</id>
-            <uuid>C3C2E28D-9686-4634-93FD-BE3133935ECB</uuid>
+            <uid>E3133935ECB</uid>
             <name>DataElementB</name>
             <alternativeName>AlternativeNameB</alternativeName>
             <shortName>ShortNameB2</shortName>
@@ -161,7 +161,7 @@
         </dataElement>
         <dataElement>
             <id>67</id>
-            <uuid>C3C2E28D-9686-4634-93FD-BE3133935ECC</uuid>
+            <uid>E3133935ECC</uid>
             <name>DataElementC</name>
             <alternativeName>AlternativeNameC</alternativeName>
             <shortName>ShortNameC</shortName>
@@ -174,7 +174,7 @@
         </dataElement>
         <dataElement>
             <id>68</id>
-            <uuid>C3C2E28D-9686-4634-93FD-BE3133935ECD</uuid>
+            <uid>E3133935ECD</uid>
             <name>DataElementD</name>
             <alternativeName>AlternativeNameD</alternativeName>
             <shortName>ShortNameD</shortName>
@@ -187,7 +187,7 @@
         </dataElement>
         <dataElement>
             <id>69</id>
-            <uuid>C3C2E28D-9686-4634-93FD-BE3133935ECE</uuid>
+            <uid>E3133935ECE</uid>
             <name>DataElementE</name>
             <alternativeName>AlternativeNameE</alternativeName>
             <shortName>ShortNameE</shortName>
@@ -202,27 +202,27 @@
     <dataElementGroups>
         <dataElementGroup>
             <id>65</id>
-            <uuid>C3C2E28D-9686-4634-93FD-BE3133935ECA</uuid>
+            <uid>E3133935ECA</uid>
             <name>DataElementGroupA</name>
         </dataElementGroup>
         <dataElementGroup>
             <id>66</id>
-            <uuid>C3C2E28D-9686-4634-93FD-BE3133935ECB</uuid>
+            <uid>E3133935ECB</uid>
             <name>DataElementGroupB</name>
         </dataElementGroup>
         <dataElementGroup>
             <id>67</id>
-            <uuid>C3C2E28D-9686-4634-93FD-BE3133935ECC</uuid>
+            <uid>E3133935ECC</uid>
             <name>DataElementGroupC</name>
         </dataElementGroup>
         <dataElementGroup>
             <id>68</id>
-            <uuid>C3C2E28D-9686-4634-93FD-BE3133935ECD</uuid>
+            <uid>E3133935ECD</uid>
             <name>DataElementGroupD</name>
         </dataElementGroup>
         <dataElementGroup>
             <id>69</id>
-            <uuid>C3C2E28D-9686-4634-93FD-BE3133935ECE</uuid>
+            <uid>E3133935ECE</uid>
             <name>DataElementGroupE</name>
         </dataElementGroup>
     </dataElementGroups>
@@ -358,7 +358,7 @@
     <indicators>
         <indicator>
             <id>65</id>
-            <uuid>C3C2E28D-9686-4634-93FD-BE3133935ECA</uuid>
+            <uid>E3133935ECA</uid>
             <name>IndicatorA</name>
             <alternativeName>AlternativeNameA2</alternativeName>
             <shortName>ShortNameA</shortName>
@@ -373,7 +373,7 @@
         </indicator>
         <indicator>
             <id>66</id>
-            <uuid>C3C2E28D-9686-4634-93FD-BE3133935ECB</uuid>
+            <uid>E3133935ECB</uid>
             <name>IndicatorB</name>
             <alternativeName>AlternativeNameB</alternativeName>
             <shortName>ShortNameB2</shortName>
@@ -388,7 +388,7 @@
         </indicator>
         <indicator>
             <id>67</id>
-            <uuid>C3C2E28D-9686-4634-93FD-BE3133935ECC</uuid>
+            <uid>E3133935ECC</uid>
             <name>IndicatorC</name>
             <alternativeName>AlternativeNameC</alternativeName>
             <shortName>ShortNameC</shortName>
@@ -403,7 +403,7 @@
         </indicator>
         <indicator>
             <id>68</id>
-            <uuid>C3C2E28D-9686-4634-93FD-BE3133935ECD</uuid>
+            <uid>E3133935ECD</uid>
             <name>IndicatorD</name>
             <alternativeName>AlternativeNameD</alternativeName>
             <shortName>ShortNameD</shortName>
@@ -418,7 +418,7 @@
         </indicator>
         <indicator>
             <id>69</id>
-            <uuid>C3C2E28D-9686-4634-93FD-BE3133935ECE</uuid>
+            <uid>E3133935ECE</uid>
             <name>IndicatorE</name>
             <alternativeName>AlternativeNameE</alternativeName>
             <shortName>ShortNameE</shortName>
@@ -435,27 +435,27 @@
     <indicatorGroups>
         <indicatorGroup>
             <id>65</id>
-            <uuid>C3C2E28D-9686-4634-93FD-BE3133935ECA</uuid>
+            <uid>E3133935ECA</uid>
             <name>IndicatorGroupA</name>
         </indicatorGroup>
         <indicatorGroup>
             <id>66</id>
-            <uuid>C3C2E28D-9686-4634-93FD-BE3133935ECB</uuid>
+            <uid>E3133935ECB</uid>
             <name>IndicatorGroupB</name>
         </indicatorGroup>
         <indicatorGroup>
             <id>67</id>
-            <uuid>C3C2E28D-9686-4634-93FD-BE3133935ECC</uuid>
+            <uid>E3133935ECC</uid>
             <name>IndicatorGroupC</name>
         </indicatorGroup>
         <indicatorGroup>
             <id>68</id>
-            <uuid>C3C2E28D-9686-4634-93FD-BE3133935ECD</uuid>
+            <uid>E3133935ECD</uid>
             <name>IndicatorGroupD</name>
         </indicatorGroup>
         <indicatorGroup>
             <id>69</id>
-            <uuid>C3C2E28D-9686-4634-93FD-BE3133935ECE</uuid>
+            <uid>E3133935ECE</uid>
             <name>IndicatorGroupE</name>
         </indicatorGroup>
     </indicatorGroups>
@@ -693,7 +693,7 @@
     <organisationUnits>
         <organisationUnit>
             <id>65</id>
-            <uuid>C3C2E28D-9686-4634-93FD-BE3133935ECA</uuid>
+            <uid>E3133935ECA</uid>
             <name>OrganisationUnitA</name>
             <shortName>ShortNameA2</shortName>
             <code>CodeA</code>
@@ -705,7 +705,7 @@
         </organisationUnit>
         <organisationUnit>
             <id>66</id>
-            <uuid>C3C2E28D-9686-4634-93FD-BE3133935ECB</uuid>
+            <uid>E3133935ECB</uid>
             <name>OrganisationUnitB</name>
             <shortName>ShortNameB2</shortName>
             <code>CodeB</code>
@@ -717,7 +717,7 @@
         </organisationUnit>
         <organisationUnit>
             <id>67</id>
-            <uuid>C3C2E28D-9686-4634-93FD-BE3133935ECC</uuid>
+            <uid>E3133935ECC</uid>
             <name>OrganisationUnitC</name>
             <shortName>ShortNameC</shortName>
             <code>CodeC2</code>
@@ -729,7 +729,7 @@
         </organisationUnit>
         <organisationUnit>
             <id>68</id>
-            <uuid>C3C2E28D-9686-4634-93FD-BE3133935ECD</uuid>
+            <uid>E3133935ECD</uid>
             <name>OrganisationUnitD</name>
             <shortName>ShortNameD</shortName>
             <code>CodeD</code>
@@ -741,7 +741,7 @@
         </organisationUnit>
         <organisationUnit>
             <id>69</id>
-            <uuid>C3C2E28D-9686-4634-93FD-BE3133935ECE</uuid>
+            <uid>E3133935ECE</uid>
             <name>OrganisationUnitE</name>
             <shortName>ShortNameE</shortName>
             <code>CodeE</code>
@@ -773,27 +773,27 @@
     <organisationUnitGroups>
         <organisationUnitGroup>
             <id>65</id>
-            <uuid>C3C2E28D-9686-4634-93FD-BE3133935ECA</uuid>
+            <uid>E3133935ECA</uid>
             <name>OrganisationUnitGroupA</name>
         </organisationUnitGroup>
         <organisationUnitGroup>
             <id>66</id>
-            <uuid>C3C2E28D-9686-4634-93FD-BE3133935ECB</uuid>
+            <uid>E3133935ECB</uid>
             <name>OrganisationUnitGroupB</name>
         </organisationUnitGroup>
         <organisationUnitGroup>
             <id>67</id>
-            <uuid>C3C2E28D-9686-4634-93FD-BE3133935ECC</uuid>
+            <uid>E3133935ECC</uid>
             <name>OrganisationUnitGroupC</name>
         </organisationUnitGroup>
         <organisationUnitGroup>
             <id>68</id>
-            <uuid>C3C2E28D-9686-4634-93FD-BE3133935ECD</uuid>
+            <uid>E3133935ECD</uid>
             <name>OrganisationUnitGroupD</name>
         </organisationUnitGroup>
         <organisationUnitGroup>
             <id>69</id>
-            <uuid>C3C2E28D-9686-4634-93FD-BE3133935ECE</uuid>
+            <uid>E3133935ECE</uid>
             <name>OrganisationUnitGroupE</name>
         </organisationUnitGroup>
     </organisationUnitGroups>

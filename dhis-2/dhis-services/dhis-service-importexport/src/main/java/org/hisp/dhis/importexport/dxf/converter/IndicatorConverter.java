@@ -56,7 +56,6 @@ public class IndicatorConverter
     public static final String ELEMENT_NAME = "indicator";
     
     private static final String FIELD_ID = "id";
-    private static final String FIELD_UUID = "uuid";
     private static final String FIELD_NAME = "name";
     private static final String FIELD_ALTERNATIVE_NAME = "alternativeName";
     private static final String FIELD_SHORT_NAME = "shortName";
@@ -141,7 +140,6 @@ public class IndicatorConverter
                 writer.openElement( ELEMENT_NAME );
                 
                 writer.writeElement( FIELD_ID, String.valueOf( indicator.getId() ) );
-                writer.writeElement( FIELD_UUID, indicator.getUuid() );
                 writer.writeElement( FIELD_NAME, indicator.getName() );
                 writer.writeElement( FIELD_ALTERNATIVE_NAME, indicator.getAlternativeName() );
                 writer.writeElement( FIELD_SHORT_NAME, indicator.getShortName() );
@@ -173,7 +171,6 @@ public class IndicatorConverter
             final IndicatorType type = new IndicatorType();
             indicator.setIndicatorType( type );
             indicator.setId( Integer.parseInt( values.get( FIELD_ID ) ) );
-            indicator.setUuid( values.get( FIELD_UUID ) );
             indicator.setName( values.get( FIELD_NAME ) );
             indicator.setAlternativeName( values.get( FIELD_ALTERNATIVE_NAME ) );
             indicator.setShortName( values.get( FIELD_SHORT_NAME ) );

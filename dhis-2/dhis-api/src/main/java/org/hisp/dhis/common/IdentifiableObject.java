@@ -35,8 +35,6 @@ public interface IdentifiableObject
 {
     public abstract int getId();
 
-    public abstract String getUuid();
-
     public abstract String getUid();
 
     public abstract String getName();

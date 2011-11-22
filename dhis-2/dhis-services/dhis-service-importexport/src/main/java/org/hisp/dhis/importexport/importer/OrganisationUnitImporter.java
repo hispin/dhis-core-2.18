@@ -73,7 +73,6 @@ public class OrganisationUnitImporter
     @Override
     protected void importMatching( OrganisationUnit object, OrganisationUnit match )
     {
-        match.setUuid( defaultIfEmpty( object.getUuid(), match.getUuid() ) );
         match.setName( object.getName() );
         match.setShortName( defaultIfEmpty( object.getShortName(), match.getShortName() ) );
         match.setCode( defaultIfEmpty( object.getCode(), match.getCode() ) );

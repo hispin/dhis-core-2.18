@@ -89,8 +89,6 @@ public class IndicatorRowHandler
     {
         final Indicator indicator = (Indicator) object;
         
-        indicator.setUuid( UUIdUtils.getUUId() );
-
         if ( indicator.getAlternativeName() != null && indicator.getAlternativeName().trim().length() == 0 )
         {
             indicator.setAlternativeName( null );

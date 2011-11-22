@@ -216,12 +216,6 @@ public class HibernateGenericStore< T >
     }
 
     @Override
-    public final T getByUuid( String uuid )
-    {
-        return getObject( Restrictions.eq( "uuid", uuid ) );
-    }
-
-    @Override
     public final T getByUid( String uid )
     {
         return getObject( Restrictions.eq( "uid", uid ) );

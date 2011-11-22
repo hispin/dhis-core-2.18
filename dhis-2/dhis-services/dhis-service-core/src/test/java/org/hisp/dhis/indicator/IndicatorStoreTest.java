@@ -37,7 +37,6 @@ import java.util.Collection;
 
 import org.hisp.dhis.DhisSpringTest;
 import org.hisp.dhis.common.GenericIdentifiableObjectStore;
-import org.hisp.dhis.system.util.UUIdUtils;
 import org.junit.Test;
 
 /**
@@ -275,26 +274,6 @@ public class IndicatorStoreTest
 
         assertNull( indicatorStore.getIndicator( idA ) );
         assertNull( indicatorStore.getIndicator( idB ) );        
-    }
-
-    @Test
-    public void testGetIndicatorByUUID()
-        throws Exception
-    {
-        String uuid = UUIdUtils.getUUId();
-        
-        IndicatorType type = new IndicatorType( "IndicatorType", 100, false );
-        indicatorTypeStore.save( type );
-        
-        Indicator indicatorA = createIndicator( 'A', type );
-        indicatorA.setUuid( uuid );
-        
-        indicatorStore.addIndicator( indicatorA );
-        
-        indicatorA = indicatorStore.getIndicator( uuid );
-        
-        assertNotNull( indicatorA );
-        assertEquals( indicatorA.getUuid(), uuid );
     }
 
     @Test

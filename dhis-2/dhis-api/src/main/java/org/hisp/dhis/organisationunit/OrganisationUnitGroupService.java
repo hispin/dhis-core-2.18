@@ -82,12 +82,12 @@ public interface OrganisationUnitGroupService
     Collection<OrganisationUnitGroup> getOrganisationUnitGroups( Collection<Integer> identifiers );
     
     /**
-     * Returns the OrganisationUnitGroup with the given UUID.
+     * Returns the OrganisationUnitGroup with the given UID.
      * 
-     * @param id the UUID of the OrganisationUnitGroup.
-     * @return the OrganisationGroup with the given UUID, or null if no match.
+     * @param uid the UID of the OrganisationUnitGroup.
+     * @return the OrganisationGroup with the given UID, or null if no match.
      */
-    OrganisationUnitGroup getOrganisationUnitGroup( String uuid );
+    OrganisationUnitGroup getOrganisationUnitGroup( String uid );
 
     /**
      * Returns an OrganisationUnitGroup with a given name.

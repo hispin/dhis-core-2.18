@@ -52,7 +52,6 @@ public class IndicatorGroupConverter
     public static final String ELEMENT_NAME = "indicatorGroup";
     
     private static final String FIELD_ID = "id";
-    private static final String FIELD_UUID = "uuid";
     private static final String FIELD_NAME = "name";
 
     // -------------------------------------------------------------------------
@@ -100,7 +99,6 @@ public class IndicatorGroupConverter
                 writer.openElement( ELEMENT_NAME );
                 
                 writer.writeElement( FIELD_ID, String.valueOf( group.getId() ) );
-                writer.writeElement( FIELD_UUID, group.getUuid() );
                 writer.writeElement( FIELD_NAME, group.getName() );
     
                 writer.closeElement();
@@ -119,7 +117,6 @@ public class IndicatorGroupConverter
             final IndicatorGroup group = new IndicatorGroup();
             
             group.setId( Integer.parseInt( values.get( FIELD_ID ) ) );
-            group.setUuid( values.get( FIELD_UUID ) );
             group.setName( values.get( FIELD_NAME ) );
             
             importObject( group, params );

@@ -86,13 +86,11 @@ public class IndicatorGroupSetBatchHandler
     
     protected void setColumns()
     {
-        statementBuilder.setColumn( "uuid" );
         statementBuilder.setColumn( "name" );
     }
     
     protected void setValues( IndicatorGroupSet groupSet )
-    {        
-        statementBuilder.setValue( groupSet.getUuid() );
+    {
         statementBuilder.setValue( groupSet.getName() );
     }
 }

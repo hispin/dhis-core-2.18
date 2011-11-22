@@ -292,6 +292,33 @@ public class TableAlteror
         executeSql( "ALTER TABLE indicator ADD CONSTRAINT indicator_code_key UNIQUE(code)" );
         executeSql( "ALTER TABLE organisationunit ADD CONSTRAINT organisationunit_code_key UNIQUE(code)" );
         
+        // remove uuid
+        
+        executeSql( "ALTER TABLE attribute DROP COLUMN uuid" );
+        executeSql( "ALTER TABLE categorycombo DROP COLUMN uuid" );
+        executeSql( "ALTER TABLE categoryoptioncombo DROP COLUMN uuid" );
+        executeSql( "ALTER TABLE chart DROP COLUMN uuid" );
+        executeSql( "ALTER TABLE concept DROP COLUMN uuid" );
+        executeSql( "ALTER TABLE constant DROP COLUMN uuid" );
+        executeSql( "ALTER TABLE datadictionary DROP COLUMN uuid" );
+        executeSql( "ALTER TABLE dataelement DROP COLUMN uuid" );
+        executeSql( "ALTER TABLE dataelementcategory DROP COLUMN uuid" );
+        executeSql( "ALTER TABLE dataelementcategoryoption DROP COLUMN uuid" );
+        executeSql( "ALTER TABLE dataelementgroup DROP COLUMN uuid" );
+        executeSql( "ALTER TABLE dataelementgroupset DROP COLUMN uuid" );
+        executeSql( "ALTER TABLE dataset DROP COLUMN uuid" );
+        executeSql( "ALTER TABLE indicator DROP COLUMN uuid" );
+        executeSql( "ALTER TABLE indicatorgroup DROP COLUMN uuid" );
+        executeSql( "ALTER TABLE indicatorgroupset DROP COLUMN uuid" );
+        executeSql( "ALTER TABLE indicatortype DROP COLUMN uuid" );
+        executeSql( "ALTER TABLE organisationunit DROP COLUMN uuid" );
+        executeSql( "ALTER TABLE orgunitgroup DROP COLUMN uuid" );
+        executeSql( "ALTER TABLE orgunitgroupset DROP COLUMN uuid" );
+        executeSql( "ALTER TABLE orgunitlevel DROP COLUMN uuid" );
+        executeSql( "ALTER TABLE report DROP COLUMN uuid" );
+        executeSql( "ALTER TABLE validationrule DROP COLUMN uuid" );
+        executeSql( "ALTER TABLE validationrulegroup DROP COLUMN uuid" );
+        
         log.info( "Tables updated" );
     }
 

@@ -85,14 +85,12 @@ public class DataElementGroupSetBatchHandler
     }
        
     protected void setColumns()
-    {   
-        statementBuilder.setColumn( "uuid" );
+    {
         statementBuilder.setColumn( "name" );
     }
     
     protected void setValues( DataElementGroupSet groupSet )
-    {        
-        statementBuilder.setValue( groupSet.getUuid() ); 
+    {
         statementBuilder.setValue( groupSet.getName() );        
     }
 }

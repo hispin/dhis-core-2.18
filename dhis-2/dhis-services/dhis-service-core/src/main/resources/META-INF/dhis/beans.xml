@@ -1081,12 +1081,6 @@ http://www.springframework.org/schema/security http://www.springframework.org/sc
     <property name="skipInTests" value="true" />
   </bean>
 
-  <bean id="org.hisp.dhis.dataset.DataSetShortNamePopulator" class="org.hisp.dhis.dataset.DataSetShortNamePopulator">
-    <property name="dataSetService" ref="org.hisp.dhis.dataset.DataSetService" />
-    <property name="runlevel" value="5" />
-    <property name="skipInTests" value="true" />
-  </bean>
-
   <bean id="org.hisp.dhis.dataentryform.DataEntryFormPopulator" class="org.hisp.dhis.dataentryform.DataEntryFormPopulator">
     <property name="jdbcTemplate" ref="jdbcTemplate" />
     <property name="statementBuilder" ref="statementBuilder" />
@@ -1111,7 +1105,6 @@ http://www.springframework.org/schema/security http://www.springframework.org/sc
           <ref local="org.hisp.dhis.period.PeriodTypePopulator" />
           <ref local="org.hisp.dhis.startup.TableCreator" />
           <ref local="org.hisp.dhis.dataelement.DataElementDefaultDimensionPopulator" />
-          <ref local="org.hisp.dhis.dataset.DataSetShortNamePopulator" />
           <ref local="org.hisp.dhis.organisationunit.OrganisationUnitGroupSetPopulator" />
           <ref local="org.hisp.dhis.dataentryform.DataEntryFormPopulator" />
           <ref local="org.hisp.dhis.dataentryform.DataEntryFormUpgrader" />

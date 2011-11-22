@@ -82,8 +82,8 @@ public class DataSetsResource
         for ( DataSet dataSet : dataSets )
         {
             Map<String, Object> dataSetMap = new HashMap<String, Object>();
-            dataSetMap.put( "id", dataSet.getUuid() );
-            dataSetMap.put( "href", uriInfo.getAbsolutePath().toASCIIString() + "/" + dataSet.getUuid() );
+            dataSetMap.put( "id", dataSet.getId() );
+            dataSetMap.put( "href", uriInfo.getAbsolutePath().toASCIIString() + "/" + dataSet.getId() );
             dataSetMap.put( "name", dataSet.getName() );
 
             dataSetsArray.add( dataSetMap );

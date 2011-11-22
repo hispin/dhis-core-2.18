@@ -257,8 +257,8 @@ public class DefaultDataElementCategoryService
         return dataElementCategoryOptionComboStore.get( id );
     }
 
-    public DataElementCategoryOptionCombo getDataElementCategoryOptionCombo( String uuid ) {
-        return dataElementCategoryOptionComboStore.getByUuid( uuid );
+    public DataElementCategoryOptionCombo getDataElementCategoryOptionCombo( String uid ) {
+        return dataElementCategoryOptionComboStore.getByUid( uid );
     }
 
     public Collection<DataElementCategoryOptionCombo> getDataElementCategoryOptionCombos(

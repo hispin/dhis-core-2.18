@@ -31,7 +31,6 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.UUID;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -57,11 +56,6 @@ public abstract class AbstractIdentifiableObject
     protected int id;
 
     /**
-     * The Universally Unique Identifer for this Object.
-     */
-    protected String uuid;
-
-    /**
      * The Unique Identifer for this Object.
      */
     protected String uid;
@@ -85,10 +79,10 @@ public abstract class AbstractIdentifiableObject
     {
     }
 
-    public AbstractIdentifiableObject( int id, String uuid, String name )
+    public AbstractIdentifiableObject( int id, String uid, String name )
     {
         this.id = id;
-        this.uuid = uuid;
+        this.uid = uid;
         this.name = name;
     }
 
@@ -102,17 +96,6 @@ public abstract class AbstractIdentifiableObject
     public void setId( int id )
     {
         this.id = id;
-    }
-
-    @Override
-    public String getUuid()
-    {
-        return uuid;
-    }
-
-    public void setUuid( String uuid )
-    {
-        this.uuid = uuid;
     }
 
     @XmlAttribute
@@ -172,32 +155,7 @@ public abstract class AbstractIdentifiableObject
             setUid( CodeGenerator.generateCode() );
         }
 
-        if ( uuid == null )
-        {
-            setUuid( UUID.randomUUID().toString().toUpperCase() );
-        }
-
         setLastUpdated( new Date() );
-    }
-
-    /**
-     * Get a map of uuids to internal identifiers
-     *
-     * @param objects the IdentifiableObjects to put in the map
-     * @return the map
-     */
-    public static Map<String, Integer> getUUIDMap( Collection<? extends AbstractIdentifiableObject> objects )
-    {
-        Map<String, Integer> map = new HashMap<String, Integer>();
-        for ( IdentifiableObject object : objects )
-        {
-            String uuid = object.getUuid();
-            int internalId = object.getId();
-
-            map.put( uuid, internalId );
-        }
-
-        return map;
     }
 
     /**
