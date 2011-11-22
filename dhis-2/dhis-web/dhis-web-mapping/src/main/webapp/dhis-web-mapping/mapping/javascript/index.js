@@ -688,43 +688,6 @@ Ext.onReady( function() {
                         triggerAction: 'all'
                     },
                     {
-                        xtype: 'combo',
-                        id: 'exportimagewidth_cb',
-                        fieldLabel: G.i18n.width,
-                        labelSeparator: G.conf.labelseparator,
-                        editable: false,
-                        valueField: 'width',
-                        displayField: 'text',
-                        width: G.conf.combo_width_fieldset,
-                        minListWidth: G.conf.combo_width_fieldset,
-                        mode: 'local',
-                        triggerAction: 'all',
-                        value: 1190,
-                        store: new Ext.data.ArrayStore({
-                            fields: ['width', 'text'],
-                            data: [[800, 'Small'], [1190, 'Medium'], [1920, 'Large']]
-                        })
-                    },
-                    {
-                        xtype: 'combo',
-                        id: 'exportimageheight_cb',
-                        fieldLabel: G.i18n.height,
-                        labelSeparator: G.conf.labelseparator,
-                        editable: false,
-                        valueField: 'height',
-                        displayField: 'text',
-                        width: G.conf.combo_width_fieldset,
-                        minListWidth: G.conf.combo_width_fieldset,
-                        mode: 'local',
-                        triggerAction: 'all',
-                        value: 880,
-                        store: {
-                            xtype: 'arraystore',
-                            fields: ['height', 'text'],
-                            data: [[600, 'Small'], [880, 'Medium'], [1200, 'Large']]
-                        }
-                    },
-                    {
                         xtype: 'checkbox',
                         id: 'exportimageincludelegend_chb',
                         fieldLabel: G.i18n.legend,
@@ -826,9 +789,7 @@ Ext.onReady( function() {
                         exportForm.action = '../exportImage.action';
                         
                         document.getElementById('titleField').value = title;
-                        document.getElementById('svgField').value = svg;  
-                        document.getElementById('widthField').value = Ext.getCmp('exportimagewidth_cb').getValue();
-                        document.getElementById('heightField').value = Ext.getCmp('exportimageheight_cb').getValue();
+                        document.getElementById('svgField').value = svg;
                         document.getElementById('includeLegendsField').value = Ext.getCmp('exportimageincludelegend_chb').getValue();
 
                         exportForm.submit();
