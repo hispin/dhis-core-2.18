@@ -73,7 +73,7 @@
     </init-param>
     <init-param>
       <param-name>com.sun.jersey.spi.container.ContainerRequestFilters</param-name>
-      <param-value>com.sun.jersey.api.container.filter.LoggingFilter, org.hisp.dhis.web.api.HtmlPromotingUriConnegFilter</param-value>
+      <param-value>com.sun.jersey.api.container.filter.LoggingFilter, org.hisp.dhis.web.api2.HtmlPromotingUriConnegFilter</param-value>
     </init-param>
     <!-- <init-param> -->
     <!-- <param-name> -->
