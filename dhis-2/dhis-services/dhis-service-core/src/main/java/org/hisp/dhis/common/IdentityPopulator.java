@@ -106,18 +106,6 @@ public class IdentityPopulator
 
                     count = 0;
 
-                    resultSet = statement.executeQuery( "SELECT * from " + table + " WHERE uuid IS NULL" );
-                    while ( resultSet.next() )
-                    {
-                        ++count;
-                        resultSet.updateString( "uuid", UUID.randomUUID().toString() );
-                        resultSet.updateRow();
-                    }
-                    if ( count > 0 )
-                    {
-                        log.info( count + " uuids updated on " + table );
-                    }
-
                     Timestamp now = new Timestamp( new Date().getTime() );
 
                     resultSet = statement.executeQuery( "SELECT * from " + table + " WHERE lastUpdated IS NULL" );
