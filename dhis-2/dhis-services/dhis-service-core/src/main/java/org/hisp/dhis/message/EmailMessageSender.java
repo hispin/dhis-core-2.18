@@ -101,30 +101,37 @@ public class EmailMessageSender
             ( sender.getPhoneNumber() != null ? ( sender.getPhoneNumber() + LB ) : StringUtils.EMPTY ) );
         
         Map<User,Serializable> settings = userService.getUserSettings( KEY_MESSAGE_EMAIL_NOTIFICATION, false );
-        
-        for ( User user : users )
-        {
-            boolean emailNotification = settings.get( user ) != null && (Boolean) settings.get( user ) == true;
 
-            if ( emailNotification && user.getEmail() != null && !user.getEmail().isEmpty() )
+        try
+        {
+            Email email = getEmail( hostName, username, password );
+            email.setSubject( SUBJECT_PREFX + subject );
+            email.setMsg( text );
+            
+            boolean hasRecipients = false;
+            
+            for ( User user : users )
             {
-                try
+                boolean emailNotification = settings.get( user ) != null && (Boolean) settings.get( user ) == true;
+    
+                if ( emailNotification && user.getEmail() != null && !user.getEmail().trim().isEmpty() )
                 {
-                    String toAddress = StringUtils.trimToNull( user.getEmail() );
-                    
-                    Email email = getEmail( hostName, username, password );
-                    email.setSubject( SUBJECT_PREFX + subject );
-                    email.setMsg( text );
-                    email.addTo( toAddress );
-                    email.send();
+                    email.addTo( user.getEmail() );
                     
                     log.debug( "Sent email to user: " + user + " with email address: " + user.getEmail() );
-                }
-                catch ( EmailException ex )
-                {
-                    log.warn( "Could not send email to user: " + user + " with email address: " + user.getEmail() + " for reason: " + ex.getMessage() );
+                    
+                    hasRecipients = true;
                 }
             }
+
+            if ( hasRecipients )
+            {
+                email.send();
+            }
+        }
+        catch ( EmailException ex )
+        {
+            log.warn( "Could not send email for reason: " + ex.getMessage() );
         }
     }
 
