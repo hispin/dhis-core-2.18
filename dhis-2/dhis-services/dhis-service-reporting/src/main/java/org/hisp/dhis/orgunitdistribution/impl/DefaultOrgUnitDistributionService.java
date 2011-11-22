@@ -65,6 +65,7 @@ public class DefaultOrgUnitDistributionService
 
     private static final String TITLE_SEP = " - ";
     private static final String FIRST_COLUMN_TEXT = "Organisation unit";
+    private static final String HEADER_NONE = "None";
     private static final String HEADER_TOTAL = "Total";
     
     // -------------------------------------------------------------------------
@@ -135,12 +136,17 @@ public class DefaultOrgUnitDistributionService
             grid.addHeader( new GridHeader( group.getName(), false, false )  );
         }
         
+        grid.addHeader( new GridHeader( HEADER_NONE, false, false ) );
         grid.addHeader( new GridHeader( HEADER_TOTAL, false, false ) );
+        
+        boolean hasNone = false;
         
         for ( OrganisationUnit unit : units )
         {            
             grid.addRow();
             grid.addValue( unit.getName() );
+            
+            int totalGroup = 0;
             
             Collection<OrganisationUnit> subTree = organisationUnitService.getOrganisationUnitWithChildren( unit.getId() ); 
             
@@ -148,10 +154,28 @@ public class DefaultOrgUnitDistributionService
             {
                 Collection<OrganisationUnit> result = CollectionUtils.intersection( subTree, group.getMembers() );
                 
-                grid.addValue( result != null ? result.size() : 0 );
+                int count = result != null ? result.size() : 0;
+                
+                grid.addValue( count );
+                
+                totalGroup += count;
             }
             
-            grid.addValue( subTree != null ? subTree.size() : 0 );
+            int total = subTree != null ? subTree.size() : 0;
+            int none = total - totalGroup;
+            
+            grid.addValue( none );
+            grid.addValue( total );
+            
+            if ( none > 0 )
+            {
+                hasNone = true;
+            }
+        }
+        
+        if ( !hasNone )
+        {
+            grid.removeColumn( grid.getWidth() - 2 ); // None column
         }
         
         return grid;
