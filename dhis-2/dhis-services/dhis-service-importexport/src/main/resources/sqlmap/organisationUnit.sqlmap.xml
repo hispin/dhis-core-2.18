@@ -18,7 +18,6 @@
         <result property="id" column="OrgUnitID"/>
         <result property="name" column="OrgUnitName"/>
         <result property="shortName" column="OrgUnitShort"/>
-        <result property="code" column="OrgUnitCode"/>
         <result property="openingDate" column="ValidFrom" typeHandler="dateTypeHandler"/>
         <result property="active" column="Active" typeHandler="booleanTypeHandler"/>
         <result property="comment" column="Comment"/>
