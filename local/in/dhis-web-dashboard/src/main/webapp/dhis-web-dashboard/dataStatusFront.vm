@@ -59,7 +59,8 @@
                 <input type="button" name="ViewGroupWise" value="View DataStatus - Data Element Group" style="width:250px;height:30px;font-family: Arial; font-weight: bold; color: rgb(0, 0, 0);" onclick="textvalue('GroupWiseStatus')"/><br/><br/>
                <!--<input type="button" name="ViewSummary" value="View DataSummary - Data Set" style="width:250px;height:30px;font-family: Arial; font-weight: bold; color: rgb(0, 0, 0);" onclick="textvalue('SummaryStatus')"/><br/><br/>-->
                 <input type="button" name="LastUpdatedStatus" value="User Details" style="width:250px;height:30px;font-family: Arial; font-weight: bold; color: rgb(0, 0, 0);" onclick="textvalue('LastUpdatedStatus')"/><br/><br/>
-                <input type="button" name="ValidationStatus" value="Validation Status" style="width:250px;height:30px;font-family: Arial; font-weight: bold; color: rgb(0, 0, 0);" onclick="textvalue('ValidationStatus')"/>
+                <input type="button" name="ValidationStatus" value="Validation Status" style="width:250px;height:30px;font-family: Arial; font-weight: bold; color: rgb(0, 0, 0);" onclick="textvalue('ValidationStatus')"/><br/><br/>
+                <input type="button" name="ViewComment" value="View Comments" style="width:250px;height:30px;font-family: Arial; font-weight: bold; color: rgb(0, 0, 0);" onclick="textvalue('ViewComment')"/>
             </td>
         </tr>
     </table>

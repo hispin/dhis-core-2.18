@@ -1313,14 +1313,25 @@ public class GenerateTabularAnalysisResultAction
                             }
                             catch( Exception e )
                             {
+                                numValue = 0.0;
                             }
-                            
+                            Double tempDenValue = 0.0;
                             try
                             {
-                                denValue += Double.parseDouble( getAggVal( selIndicator.getDenominator(), aggDataMap, ou.getId(), periodId ) );
+                                //denValue += Double.parseDouble( getAggVal( selIndicator.getDenominator(), aggDataMap, ou.getId(), periodId ) );
+                                tempDenValue = Double.parseDouble( getAggVal( selIndicator.getDenominator(), aggDataMap, ou.getId(), periodId ) );
                             }
                             catch( Exception e )
                             {
+                                tempDenValue = 1.0;
+                            }
+                            if( !selIndicator.getDenominator().trim().equals( "1" ) )
+                            {
+                                denValue += tempDenValue;
+                            }
+                            else 
+                            {
+                                denValue = 1.0;
                             }
                         }
                         
@@ -2407,14 +2418,25 @@ public class GenerateTabularAnalysisResultAction
                             }
                             catch( Exception e )
                             {
+                                numValue = 0.0;
                             }
-                            
+                            Double tempDenValue = 0.0;
                             try
                             {
-                                denValue += Double.parseDouble( getAggVal( selIndicator.getDenominator(), aggDataMap, ou.getId(), periodId ) );
+                                //denValue += Double.parseDouble( getAggVal( selIndicator.getDenominator(), aggDataMap, ou.getId(), periodId ) );
+                                tempDenValue = Double.parseDouble( getAggVal( selIndicator.getDenominator(), aggDataMap, ou.getId(), periodId ) );
                             }
                             catch( Exception e )
                             {
+                                tempDenValue =1.0;
+                            }
+                            if( !selIndicator.getDenominator().trim().equals( "1" ) )
+                            {
+                                denValue += tempDenValue;
+                            }
+                            else 
+                            {
+                                denValue = 1.0;
                             }
                         }
                         
@@ -2729,13 +2751,23 @@ public class GenerateTabularAnalysisResultAction
                             catch( Exception e )
                             {
                             }
-                            
+                            Double tempDenValue = 0.0;
                             try
                             {
-                                denValue += Double.parseDouble( getAggVal( selIndicator.getDenominator(), aggDataMap, ou.getId(), periodId ) );
+                                //denValue += Double.parseDouble( getAggVal( selIndicator.getDenominator(), aggDataMap, ou.getId(), periodId ) );
+                                tempDenValue = Double.parseDouble( getAggVal( selIndicator.getDenominator(), aggDataMap, ou.getId(), periodId ) );
                             }
                             catch( Exception e )
                             {
+                                tempDenValue = 1.0;
+                            }
+                            if( !selIndicator.getDenominator().trim().equals( "1" ) )
+                            {
+                                denValue += tempDenValue;
+                            }
+                            else 
+                            {
+                                denValue = 1.0;
                             }
                         }
                         
@@ -2983,8 +3015,24 @@ public class GenerateTabularAnalysisResultAction
                     }
                     catch( Exception e )
                     {
+                        numValue = 0.0;
                     }
-                    
+                    if( !selIndicator.getDenominator().trim().equals( "1" ) )
+                    {
+                        try
+                        {
+                            denValue = Double.parseDouble( getAggValByOrgUnit( selIndicator.getDenominator(), aggDataMap, ou.getId() ) );
+                        }
+                        catch( Exception e )
+                        {
+                            denValue = 1.0;
+                        }
+                    }
+                    else 
+                    {
+                        denValue = 1.0;
+                    }
+                    /*
                     try
                     {
                         denValue = Double.parseDouble( getAggValByOrgUnit( selIndicator.getDenominator(), aggDataMap, ou.getId() ) );
@@ -2992,7 +3040,7 @@ public class GenerateTabularAnalysisResultAction
                     catch( Exception e )
                     {
                     }
-                    
+                    */
                     try
                     {
                         if( denValue != 0.0 )
@@ -3184,8 +3232,24 @@ public class GenerateTabularAnalysisResultAction
                     }
                     catch( Exception e )
                     {
+                        numValue = 0.0;
                     }
-                    
+                    if( !selIndicator.getDenominator().trim().equals( "1" ) )
+                    {
+                        try
+                        {
+                            denValue = Double.parseDouble( reportService.getAggVal( selIndicator.getDenominator(), aggDataMap ) );
+                        }
+                        catch( Exception e )
+                        {
+                            denValue = 1.0;
+                        }
+                    }
+                    else 
+                    {
+                        denValue = 1.0;
+                    }
+                    /*
                     try
                     {
                         denValue = Double.parseDouble( reportService.getAggVal( selIndicator.getDenominator(), aggDataMap ) );
@@ -3193,7 +3257,7 @@ public class GenerateTabularAnalysisResultAction
                     catch( Exception e )
                     {
                     }
-                    
+                    */
                     try
                     {
                         if( denValue != 0.0 )
@@ -3387,7 +3451,6 @@ public class GenerateTabularAnalysisResultAction
             List<Integer> orgUnitIds = new ArrayList<Integer>( getIdentifiers(OrganisationUnit.class, ouChildList ) );
             orgUnitIdsByComma = getCommaDelimitedString( orgUnitIds );
             Map<String, String> aggDataMap = new HashMap<String, String>( reportService.getAggDataFromDataValueTable( orgUnitIdsByComma, dataElementIdsByComma, periodIdsByComma ) );
-            
             colCount = c1;
             int deListCount = 0;
             int indListCount = 0;
@@ -3417,8 +3480,26 @@ public class GenerateTabularAnalysisResultAction
                     }
                     catch( Exception e )
                     {
+                        numValue = 0.0;
                     }
-                    
+                   
+                    if( !selIndicator.getDenominator().trim().equals( "1" ) )
+                    {
+                        try
+                        {
+                            denValue = Double.parseDouble( reportService.getAggVal( selIndicator.getDenominator(), aggDataMap ) );
+                        }
+                        catch( Exception e )
+                        {
+                            denValue = 1.0;
+                        }
+                    }
+                    else 
+                    {
+                        denValue = 1.0;
+                    }
+                   
+                   /*
                     try
                     {
                         denValue = Double.parseDouble( reportService.getAggVal( selIndicator.getDenominator(), aggDataMap ) );
@@ -3426,7 +3507,7 @@ public class GenerateTabularAnalysisResultAction
                     catch( Exception e )
                     {
                     }
-                    
+                   */
                     try
                     {
                         if( denValue != 0.0 )
@@ -3645,8 +3726,24 @@ public class GenerateTabularAnalysisResultAction
                     }
                     catch( Exception e )
                     {
+                        numValue = 0.0;
                     }
-                    
+                    if( !selIndicator.getDenominator().trim().equals( "1" ) )
+                    {
+                        try
+                        {
+                            denValue = Double.parseDouble( reportService.getAggVal( selIndicator.getDenominator(), aggDataMap ) );
+                        }
+                        catch( Exception e )
+                        {
+                            denValue = 1.0;
+                        }
+                    }
+                    else 
+                    {
+                        denValue = 1.0;
+                    }
+                    /*
                     try
                     {
                         denValue = Double.parseDouble( reportService.getAggVal( selIndicator.getDenominator(), aggDataMap ) );
@@ -3654,6 +3751,7 @@ public class GenerateTabularAnalysisResultAction
                     catch( Exception e )
                     {
                     }
+                    */
                     
                     try
                     {
@@ -3907,6 +4005,7 @@ public class GenerateTabularAnalysisResultAction
                         Double numValue = 0.0;
                         Double denValue = 0.0;
                         Double indValue = 0.0;
+                        
                         for( Integer periodId : periodIds )
                         {
                             try
@@ -3915,14 +4014,25 @@ public class GenerateTabularAnalysisResultAction
                             }
                             catch( Exception e )
                             {
+                                numValue = 0.0;
                             }
-                            
+                            Double tempDenValue = 0.0;
                             try
                             {
-                                denValue += Double.parseDouble( getAggValByPeriod( selIndicator.getDenominator(), aggDataMap, periodId ) );
+                               // denValue += Double.parseDouble( getAggValByPeriod( selIndicator.getDenominator(), aggDataMap, periodId ) );
+                                tempDenValue = Double.parseDouble( getAggValByPeriod( selIndicator.getDenominator(), aggDataMap, periodId ) );
                             }
                             catch( Exception e )
                             {
+                                tempDenValue = 1.0;
+                            }
+                            if ( !selIndicator.getDenominator().trim().equals( "1" ) )
+                            {
+                                denValue += tempDenValue;
+                            }
+                            else 
+                            {
+                                denValue = 1.0;
                             }
                         }
                         
@@ -4236,14 +4346,25 @@ public class GenerateTabularAnalysisResultAction
                             }
                             catch( Exception e )
                             {
+                                numValue = 0.0;
                             }
-                            
+                            Double tempDenValue = 0.0;
                             try
                             {
-                                denValue += Double.parseDouble( getAggValByPeriod( selIndicator.getDenominator(), aggDataMap, periodId ) );
+                                //denValue += Double.parseDouble( getAggValByPeriod( selIndicator.getDenominator(), aggDataMap, periodId ) );
+                                tempDenValue = Double.parseDouble( getAggValByPeriod( selIndicator.getDenominator(), aggDataMap, periodId ) );
                             }
                             catch( Exception e )
                             {
+                                tempDenValue = 1.0;
+                            }
+                            if ( !selIndicator.getDenominator().trim().equals( "1" ) )
+                            {
+                                denValue += tempDenValue;
+                            }
+                            else 
+                            {
+                                denValue = 1.0;
                             }
                         }
                         
@@ -4530,14 +4651,25 @@ public class GenerateTabularAnalysisResultAction
                             }
                             catch( Exception e )
                             {
+                                numValue = 0.0;
                             }
-                            
+                            Double tempDenValue = 0.0;
                             try
                             {
-                                denValue += Double.parseDouble( getAggValByPeriod( selIndicator.getDenominator(), aggDataMap, periodId ) );
+                                //denValue += Double.parseDouble( getAggValByPeriod( selIndicator.getDenominator(), aggDataMap, periodId ) );
+                                tempDenValue = Double.parseDouble( getAggValByPeriod( selIndicator.getDenominator(), aggDataMap, periodId ) );
                             }
                             catch( Exception e )
                             {
+                                tempDenValue = 1.0;
+                            }
+                            if ( !selIndicator.getDenominator().trim().equals( "1" ) )
+                            {
+                                denValue += tempDenValue;
+                            }
+                            else 
+                            {
+                                denValue = 1.0;
                             }
                         }
                         
@@ -4859,14 +4991,26 @@ public class GenerateTabularAnalysisResultAction
                             }
                             catch( Exception e )
                             {
+                                numValue = 0.0;
                             }
                             
+                            Double tempDenValue = 0.0;
                             try
                             {
-                                denValue += Double.parseDouble( getAggVal( selIndicator.getDenominator(), aggDataMap, ou.getId(), periodId ) );
+                                //denValue += Double.parseDouble( getAggVal( selIndicator.getDenominator(), aggDataMap, ou.getId(), periodId ) );
+                                tempDenValue = Double.parseDouble( getAggVal( selIndicator.getDenominator(), aggDataMap, ou.getId(), periodId ) );
                             }
                             catch( Exception e )
                             {
+                                tempDenValue = 1.0;
+                            }
+                            if ( !selIndicator.getDenominator().trim().equals( "1" ) )
+                            {
+                                denValue += tempDenValue;
+                            }
+                            else 
+                            {
+                                denValue = 1.0;
                             }
                         }
                         
@@ -5181,14 +5325,25 @@ public class GenerateTabularAnalysisResultAction
                             }
                             catch( Exception e )
                             {
+                                numValue = 0.0;
                             }
-                            
+                            Double tempDenValue = 0.0;
                             try
                             {
-                                denValue += Double.parseDouble( getAggVal( selIndicator.getDenominator(), aggDataMap, ou.getId(), periodId ) );
+                                //denValue += Double.parseDouble( getAggVal( selIndicator.getDenominator(), aggDataMap, ou.getId(), periodId ) );
+                                tempDenValue = Double.parseDouble( getAggVal( selIndicator.getDenominator(), aggDataMap, ou.getId(), periodId ) );
                             }
                             catch( Exception e )
                             {
+                                tempDenValue = 1.0;
+                            }
+                            if ( !selIndicator.getDenominator().trim().equals( "1" ) )
+                            {
+                                denValue += tempDenValue;
+                            }
+                            else 
+                            {
+                                denValue = 1.0;
                             }
                         }
                         
@@ -5478,14 +5633,25 @@ public class GenerateTabularAnalysisResultAction
                             }
                             catch( Exception e )
                             {
+                                numValue = 0.0;
                             }
-                            
+                            Double tempDenValue = 0.0;
                             try
                             {
-                                denValue += Double.parseDouble( getAggVal( selIndicator.getDenominator(), aggDataMap, ou.getId(), periodId ) );
+                                //denValue += Double.parseDouble( getAggVal( selIndicator.getDenominator(), aggDataMap, ou.getId(), periodId ) );                                
+                                tempDenValue = Double.parseDouble( getAggVal( selIndicator.getDenominator(), aggDataMap, ou.getId(), periodId ) );
                             }
                             catch( Exception e )
                             {
+                                tempDenValue = 1.0;
+                            }
+                            if( !selIndicator.getDenominator().trim().equals( "1" ) )
+                            {
+                                denValue += tempDenValue;
+                            }
+                            else 
+                            {
+                                denValue = 1.0;
                             }
                         }
                         
@@ -5767,8 +5933,24 @@ public class GenerateTabularAnalysisResultAction
                     }
                     catch( Exception e )
                     {
+                        numValue = 0.0;
                     }
-                    
+                    if( !selIndicator.getDenominator().trim().equals( "1" ) )
+                    {
+                        try
+                        {
+                            denValue = Double.parseDouble( getAggValByOrgUnit( selIndicator.getDenominator(), aggDataMap, ou.getId() ) );
+                        }
+                        catch( Exception e )
+                        {
+                            denValue = 1.0;
+                        }
+                    }
+                    else 
+                    {
+                        denValue = 1.0;
+                    }
+                    /*
                     try
                     {
                         denValue = Double.parseDouble( getAggValByOrgUnit( selIndicator.getDenominator(), aggDataMap, ou.getId() ) );
@@ -5776,7 +5958,7 @@ public class GenerateTabularAnalysisResultAction
                     catch( Exception e )
                     {
                     }
-                    
+                    */
                     try
                     {
                         if( denValue != 0.0 )
@@ -5998,8 +6180,24 @@ public class GenerateTabularAnalysisResultAction
                     }
                     catch( Exception e )
                     {
+                        numValue = 0.0;
                     }
-                    
+                    if( !selIndicator.getDenominator().trim().equals( "1" ) )
+                    {
+                        try
+                        {
+                            denValue = Double.parseDouble( getAggValByOrgUnit( selIndicator.getDenominator(), aggDataMap, ou.getId() ) );
+                        }
+                        catch( Exception e )
+                        {
+                            denValue = 1.0;
+                        }
+                    }
+                    else 
+                    {
+                        denValue = 1.0;
+                    }
+                    /*
                     try
                     {
                         denValue = Double.parseDouble( getAggValByOrgUnit( selIndicator.getDenominator(), aggDataMap, ou.getId() ) );
@@ -6007,7 +6205,7 @@ public class GenerateTabularAnalysisResultAction
                     catch( Exception e )
                     {
                     }
-                    
+                    */
                     try
                     {
                         if( denValue != 0.0 )
@@ -6201,8 +6399,24 @@ public class GenerateTabularAnalysisResultAction
                     }
                     catch( Exception e )
                     {
+                        numValue = 0.0;
                     }
-                    
+                    if( !selIndicator.getDenominator().trim().equals( "1" ) )
+                    {
+                        try
+                        {
+                            denValue = Double.parseDouble( getAggValByOrgUnit( selIndicator.getDenominator(), aggDataMap, ou.getId() ) );
+                        }
+                        catch( Exception e )
+                        {
+                            denValue = 1.0;
+                        }
+                    }
+                    else 
+                    {
+                        denValue = 1.0;
+                    }
+                    /*
                     try
                     {
                         denValue = Double.parseDouble( getAggValByOrgUnit( selIndicator.getDenominator(), aggDataMap, ou.getId() ) );
@@ -6210,7 +6424,7 @@ public class GenerateTabularAnalysisResultAction
                     catch( Exception e )
                     {
                     }
-                    
+                    */
                     try
                     {
                         if( denValue != 0.0 )

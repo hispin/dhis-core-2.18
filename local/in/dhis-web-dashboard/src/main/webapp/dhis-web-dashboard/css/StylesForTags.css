@@ -33,6 +33,13 @@
     cursor: default; 
     text-align: center;       
 }
+.NormalA {
+    font-family: arial, georgia, tahoma;
+    font-size: 10px;    
+    white-space: nowrap;
+    cursor: default; 
+    text-align: left;       
+}
 
 .NormalB {
     font-family: arial, georgia, tahoma;
@@ -79,7 +86,7 @@
 
 .DefaultFontStylesNoBold {
     font-family: arial, georgia, tahoma;
-    font-size: 13px;    
+    font-size: 8px;    
     white-space: nowrap;
     cursor: default;         
 }

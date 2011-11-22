@@ -73,7 +73,7 @@ function textvalue(summary)
     
     //var dataEntryStatus = document.getElementById("usingDataEntryStatus").checked;
     
-    //alert( dataEntryStatus );
+    //alert( summary );
     if(formValidationsForDataStatus())
     {
     	
@@ -94,7 +94,7 @@ function textvalue(summary)
         	}
 
         }
-       // for Mobile summary data status
+        // for Mobile summary data status
         else if(summary == "SummaryMobileStatus")
         {
         	document.ChartGenerationForm.action = "summaryMobileStatusResult.action";
@@ -129,6 +129,12 @@ function textvalue(summary)
         else if(summary == "LastUpdatedStatus")
         {
         	document.ChartGenerationForm.action = "lastUpdatedDataSetResult.action";
+            document.ChartGenerationForm.submit();
+        }
+        //for view Comment
+        else if(summary == "ViewComment")
+        {
+        	document.ChartGenerationForm.action = "commentResult.action";
             document.ChartGenerationForm.submit();
         }
         // for Mobile Last Updated Status
@@ -174,7 +180,6 @@ function textvalue(summary)
     }
   	 
 }
-
 
 // DataStatus Form Validations
 function formValidationsForDataStatus()
