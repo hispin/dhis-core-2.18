@@ -143,7 +143,6 @@ public class OrganisationUnitConverter
         unit.setShortName( values.get( FIELD_SHORT_NAME ) );
         unit.setOpeningDate(   Dhis14DateUtil.getDate( Integer.parseInt( values.get( FIELD_VALID_FROM ) ) ) );
         unit.setClosedDate( Dhis14DateUtil.getDate( Integer.parseInt( values.get( FIELD_VALID_TO ) ) ) );
-        unit.setCode( values.get( FIELD_CODE ) );
         unit.setActive( convertBooleanFromDhis14(values.get( FIELD_ACTIVE ) ) ) ;
         unit.setComment( values.get( FIELD_COMMENT ) );
         unit.setLastUpdated( Dhis14DateUtil.getDate( values.get( FIELD_LAST_UPDATED ) ) );
