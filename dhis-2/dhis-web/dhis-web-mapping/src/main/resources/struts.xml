@@ -356,10 +356,6 @@
 		<action name="exportImage" class="org.hisp.dhis.mapping.action.ExportImageAction">
 			<result name="success" type="outputStreamResult"/>
 		</action>
-
-		<action name="exportExcel" class="org.hisp.dhis.mapping.action.ExportExcelAction">
-            <result name="success" type="outputStreamResult"/>
-		</action>
 		
 		<!-- i18n -->
 		

@@ -113,6 +113,8 @@ G.conf = {
     
     defaultLayerOpacity: 0.8,
     
+    wmsLayerOpacity: 0.5,
+    
     defaultLayerZIndex: 10000,
     
     defaultLowRadius: 5,
@@ -435,7 +437,8 @@ G.util = {
         var layer = new OpenLayers.Layer.WMS(name, url, options, {
             isBaseLayer: false,
             buffer: 0,
-            ratio: 1
+            ratio: 1,
+            singleTile: true
         });
         layer.baseUrl = url;
         return layer;
@@ -533,6 +536,9 @@ G.util = {
             if (G.vars.map.layers[i].layerType == type) {
                 G.vars.map.layers[i].setOpacity(opacity);
             }
+            else if (G.vars.map.layers[i].overlayType == type) {
+                G.vars.map.layers[i].setOpacity(opacity);
+            }                
         }
     },
     

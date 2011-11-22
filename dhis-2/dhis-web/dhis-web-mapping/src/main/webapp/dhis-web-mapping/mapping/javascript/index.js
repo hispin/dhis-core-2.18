@@ -2961,6 +2961,7 @@ Ext.onReady( function() {
         listeners: {
             'afterrender': function() {
                 G.util.setOpacityByLayerType(G.conf.map_layer_type_overlay, G.conf.defaultLayerOpacity);
+                G.util.setOpacityByLayerType(G.conf.map_overlay_type_wms, G.conf.wmsLayerOpacity);                
                 G.util.setOpacityByLayerType(G.conf.map_layer_type_thematic, G.conf.defaultLayerOpacity);
                 symbolLayer.setOpacity(1);
                 centroidLayer.setOpacity(1);
@@ -2971,6 +2972,7 @@ Ext.onReady( function() {
                     polygonLayer.svgId = svg[0].id;
                     pointLayer.svgId = svg[1].id;
                     symbolLayer.svgId = svg[2].id;
+                    centroidLayer.svgId = svg[3].id;
                 }
                 
                 for (var i = 0, j = 3; i < G.vars.map.layers.length; i++) {

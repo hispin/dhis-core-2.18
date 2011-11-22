@@ -45,6 +45,10 @@ DV.conf = {
             line: 'line',
             area: 'area',
             pie: 'pie'
+        },
+        image: {
+            png: 'png',
+            pdf: 'pdf'
         }
     },
     chart: {
@@ -1857,18 +1861,18 @@ Ext.onReady( function() {
                                         items: [
                                             {
                                                 text: 'PNG',
-                                                iconCls: 'dv-menu-toolbar-png',
+                                                iconCls: 'dv-menu-toolbar-save-png',
                                                 minWidth: 80,
                                                 handler: function() {
-                                                    b.execute('png');
+                                                    b.execute(DV.conf.finals.image.png);
                                                 }
                                             },
                                             {
                                                 text: 'PDF',
-                                                iconCls: 'dv-menu-toolbar-pdf',
+                                                iconCls: 'dv-menu-toolbar-save-pdf',
                                                 minWidth: 80,
                                                 handler: function() {
-                                                    b.execute('pdf');
+                                                    b.execute(DV.conf.finals.image.pdf);
                                                 }
                                             }
                                         ]                                            
