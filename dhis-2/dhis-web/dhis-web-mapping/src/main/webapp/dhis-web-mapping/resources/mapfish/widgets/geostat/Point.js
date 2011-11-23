@@ -1025,9 +1025,9 @@ mapfish.widgets.geostat.Point = Ext.extend(Ext.Panel, {
         var scope = this;
         
         var onHoverSelect = function onHoverSelect(feature) {
-            if (feature.attributes.name) {
+            if (feature.attributes.fixedName) {
                 document.getElementById('featuredatatext').innerHTML =
-                    '<div style="' + G.conf.feature_data_style_name + '">' + feature.attributes.name + '</div>' +
+                    '<div style="' + G.conf.feature_data_style_name + '">' + feature.attributes.fixedName + '</div>' +
                     '<div style="' + G.conf.feature_data_style_value + '">' + feature.attributes.value + '</div>';
             }
             else {
@@ -1058,7 +1058,7 @@ mapfish.widgets.geostat.Point = Ext.extend(Ext.Panel, {
                         }
                         
                         scope.featureOptions.info = new Ext.Window({
-                            title: '<span class="window-information-title">' + feature.attributes.name + '</span>',
+                            title: '<span class="window-information-title">Facility information sheet</span>',
                             layout: 'table',
                             width: G.conf.window_width + 178,
                             height: G.util.getMultiSelectHeight() + 100,
@@ -1078,6 +1078,7 @@ mapfish.widgets.geostat.Point = Ext.extend(Ext.Panel, {
                                     bodyStyle: 'padding:8px 4px 8px 8px',
                                     width: 160,
                                     items: [
+                                        {html: '<div class="window-info">' + G.i18n.name + '<p style="font-weight:normal">' + feature.attributes.name + '</p></div>'},
                                         {html: '<div class="window-info">' + G.i18n.type + '<p style="font-weight:normal">' + feature.attributes.type + '</p></div>'},
                                         {html: '<div class="window-info">' + G.i18n.code + '<p style="font-weight:normal">' + feature.attributes.code + '</p></div>'},
                                         {html: '<div class="window-info">' + G.i18n.address + '<p style="font-weight:normal">' + feature.attributes.ad + '</p></div>'},
@@ -1760,7 +1761,7 @@ mapfish.widgets.geostat.Point = Ext.extend(Ext.Panel, {
                                 if (mapvalues[i].orgUnitName == this.layer.features[j].attributes.name) {
                                     this.layer.features[j].attributes.value = parseFloat(mapvalues[i].value);
                                     this.layer.features[j].attributes.labelString = this.layer.features[j].attributes.name + ' (' + this.layer.features[j].attributes.value + ')';
-                                    this.layer.features[j].attributes.name = G.util.cutString(this.layer.features[j].attributes.name, 30);
+                                    this.layer.features[j].attributes.fixedName = G.util.cutString(this.layer.features[j].attributes.name, 30);
                                     break;
                                 }
                             }
