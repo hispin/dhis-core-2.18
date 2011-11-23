@@ -211,7 +211,7 @@ public class GetDataCompletenessAction
     private Grid getGrid( List<DataSetCompletenessResult> mainResults, List<DataSetCompletenessResult> footerResults,
         OrganisationUnit unit, DataSet dataSet )
     {
-        String title = i18n.getString( "data_completeness_report" );
+        String title = i18n.getString( "reporting_rate_summary" );
         String subtitle = (unit != null ? unit.getName() : EMPTY) + SPACE
             + (dataSet != null ? dataSet.getName() : EMPTY);
 

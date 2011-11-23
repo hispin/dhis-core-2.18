@@ -10,7 +10,7 @@ jQuery(function() {
 <ul id="introList">
     #introListImgItem( "displayViewReportForm.action" "standard_report" "standardreport" )
     #introListImgItem( "showDataSetReportForm.action" "dataset_report" "datasetreport" )
-    #introListImgItem( "displayViewDataCompletenessForm.action" "data_completeness" "datacompletenessreport" )
+    #introListImgItem( "displayViewDataCompletenessForm.action" "reporting_rate_summary" "reportingratesummary" )
     #introListImgItem( "displayViewDocumentForm.action" "static_report" "staticreport" )
     #introListImgItem( "displayOrgUnitDistribution.action" "orgunit_distribution_report" "distribution" )
     #introListImgItem( "tallySheetGenerator.action" "tally_sheet_generator" "tallysheetgenerator" )
