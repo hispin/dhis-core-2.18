@@ -43,7 +43,7 @@ public class IndicatorType
 
     private int factor;
 
-    private Boolean number;
+    private boolean number;
 
     // -------------------------------------------------------------------------
     // Constructors
@@ -113,12 +113,12 @@ public class IndicatorType
         this.factor = factor;
     }
 
-    public Boolean getNumber()
+    public boolean isNumber()
     {
-        return number != null && number;
+        return number;
     }
 
-    public void setNumber( Boolean number )
+    public void setNumber( boolean number )
     {
         this.number = number;
     }

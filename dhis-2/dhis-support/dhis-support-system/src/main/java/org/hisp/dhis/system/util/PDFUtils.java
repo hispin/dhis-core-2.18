@@ -473,7 +473,7 @@ public class PDFUtils
         }
 
         table.addCell( getItalicCell( i18n.getString( "annualized" ) ) );
-        table.addCell( getTextCell( i18n.getString( getBoolean().get( indicator.getAnnualized() ) ) ) );
+        table.addCell( getTextCell( i18n.getString( getBoolean().get( indicator.isAnnualized() ) ) ) );
 
         table.addCell( getItalicCell( i18n.getString( "indicator_type" ) ) );
         table.addCell( getTextCell( indicator.getIndicatorType().getName() ) );

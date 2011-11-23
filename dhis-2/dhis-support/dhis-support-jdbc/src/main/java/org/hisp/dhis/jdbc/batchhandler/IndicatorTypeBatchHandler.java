@@ -88,11 +88,14 @@ public class IndicatorTypeBatchHandler
     {
         statementBuilder.setColumn( "name" );
         statementBuilder.setColumn( "indicatorfactor" );
+        statementBuilder.setColumn( "indicatornumber" );
     }
     
     protected void setValues( IndicatorType type )
     {        
         statementBuilder.setValue( type.getName() );
         statementBuilder.setValue( type.getFactor() );
+        statementBuilder.setValue( type.isNumber() );
+        
     }
 }

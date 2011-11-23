@@ -17,15 +17,15 @@
     
     <property name="valueType" not-null="true" />
 
-    <property name="mandatory" />
+    <property name="mandatory" not-null="true" />
 
-    <property name="dataElementAttribute" />
+    <property name="dataElementAttribute" not-null="true" />
 
-    <property name="indicatorAttribute" />
+    <property name="indicatorAttribute" not-null="true" />
 
-    <property name="organisationUnitAttribute" />
+    <property name="organisationUnitAttribute" not-null="true" />
 
-    <property name="userAttribute" />
+    <property name="userAttribute" not-null="true" />
 
     <property name="sortOrder" />
 

@@ -111,7 +111,7 @@ public class OrganisationUnit
 
     private String phoneNumber;
 
-    private Boolean hasPatients;
+    private boolean hasPatients;
 
     private transient int level;
 
@@ -410,11 +410,6 @@ public class OrganisationUnit
         return dataElements;
     }
 
-    public boolean isHasPatients()
-    {
-        return hasPatients != null && hasPatients;
-    }
-
     public void updateParent( OrganisationUnit newParent )
     {
         if ( this.parent != null && this.parent.getChildren() != null )
@@ -706,12 +701,12 @@ public class OrganisationUnit
         this.phoneNumber = phoneNumber;
     }
 
-    public Boolean getHasPatients()
+    public boolean isHasPatients()
     {
         return hasPatients;
     }
 
-    public void setHasPatients( Boolean hasPatients )
+    public void setHasPatients( boolean hasPatients )
     {
         this.hasPatients = hasPatients;
     }

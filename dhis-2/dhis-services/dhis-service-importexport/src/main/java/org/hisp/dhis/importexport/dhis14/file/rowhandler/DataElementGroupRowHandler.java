@@ -33,7 +33,6 @@ import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.importexport.ImportObjectService;
 import org.hisp.dhis.importexport.ImportParams;
 import org.hisp.dhis.importexport.importer.DataElementGroupImporter;
-import org.hisp.dhis.system.util.UUIdUtils;
 
 import com.ibatis.sqlmap.client.event.RowHandler;
 

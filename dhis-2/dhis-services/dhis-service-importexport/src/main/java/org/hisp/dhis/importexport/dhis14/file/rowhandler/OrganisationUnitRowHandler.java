@@ -34,7 +34,6 @@ import org.hisp.dhis.importexport.analysis.ImportAnalyser;
 import org.hisp.dhis.importexport.importer.OrganisationUnitImporter;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
-import org.hisp.dhis.system.util.UUIdUtils;
 
 import com.ibatis.sqlmap.client.event.RowHandler;
 

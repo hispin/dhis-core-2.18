@@ -106,6 +106,7 @@ public class TableAlteror
         executeSql( "ALTER TABLE indicator DROP COLUMN extendeddataelementid" );
         executeSql( "ALTER TABLE indicator DROP COLUMN numeratoraggregationtype" );
         executeSql( "ALTER TABLE indicator DROP COLUMN denominatoraggregationtype" );
+        executeSql( "ALTER TABLE dataset DROP COLUMN locked" );
         
         // remove relative period type
         executeSql( "DELETE FROM period WHERE periodtypeid=(select periodtypeid from periodtype where name in ( 'Survey', 'OnChange', 'Relative' ))" );

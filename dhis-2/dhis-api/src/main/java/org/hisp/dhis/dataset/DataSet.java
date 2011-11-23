@@ -85,11 +85,6 @@ public class DataSet
     private Set<OrganisationUnit> sources = new HashSet<OrganisationUnit>();
 
     /**
-     * Property indicating whether the DataSet is locked for data entry.
-     */
-    private Boolean locked = false;
-
-    /**
      * The Sections associated with the DataSet.
      */
     private Set<Section> sections = new HashSet<Section>();
@@ -102,7 +97,7 @@ public class DataSet
     /**
      * Property indicating if the dataset could be collected using mobile data entry.
      */
-    private Boolean mobile = false;
+    private boolean mobile;
 
     /**
      * Indicating custom data entry form.
@@ -217,12 +212,7 @@ public class DataSet
     {
         return sections != null && sections.size() > 0;
     }
-    
-    public boolean isMobile()
-    {
-        return mobile != null && mobile;
-    }
-    
+        
     public String getDataSetType()
     {
         if ( hasDataEntryForm() )
@@ -347,16 +337,6 @@ public class DataSet
         this.sources = sources;
     }
 
-    public Boolean getLocked()
-    {
-        return locked;
-    }
-
-    public void setLocked( Boolean locked )
-    {
-        this.locked = locked;
-    }
-
     public Integer getSortOrder()
     {
         return sortOrder;
@@ -377,14 +357,14 @@ public class DataSet
         return sections;
     }
 
-    public void setMobile(Boolean mobile) 
-    {
-        this.mobile = mobile;
-    }
-	
-    public Boolean getMobile() 
+    public boolean isMobile()
     {
         return mobile;
+    }
+
+    public void setMobile( boolean mobile )
+    {
+        this.mobile = mobile;
     }
 
     public Integer getVersion()

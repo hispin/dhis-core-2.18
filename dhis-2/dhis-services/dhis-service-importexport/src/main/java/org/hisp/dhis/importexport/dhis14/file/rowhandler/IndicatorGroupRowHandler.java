@@ -33,7 +33,6 @@ import org.hisp.dhis.importexport.ImportParams;
 import org.hisp.dhis.importexport.importer.IndicatorGroupImporter;
 import org.hisp.dhis.indicator.IndicatorGroup;
 import org.hisp.dhis.indicator.IndicatorService;
-import org.hisp.dhis.system.util.UUIdUtils;
 
 import com.ibatis.sqlmap.client.event.RowHandler;
 

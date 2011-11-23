@@ -158,7 +158,7 @@ public class DataElement extends AbstractNameableObject
      * There is no point of saving 0's for this data element default is false
      * ,we don't want to store 0's if not set to true
      */
-    private Boolean zeroIsSignificant;
+    private boolean zeroIsSignificant;
 
     /**
      * Set of the dynamic attributes values that belong to this dataElement.
@@ -257,15 +257,6 @@ public class DataElement extends AbstractNameableObject
     public String getDetailedNumberType()
     {
         return ( type != null && type.equals( VALUE_TYPE_INT ) && numberType != null ) ? numberType : type;
-    }
-
-    /**
-     * Null-safe check.
-     */
-    public boolean isZeroIsSignificant()
-    {
-        return zeroIsSignificant != null && zeroIsSignificant;
-
     }
 
     /**
@@ -487,12 +478,12 @@ public class DataElement extends AbstractNameableObject
         this.aggregationLevels = aggregationLevels;
     }
 
-    public Boolean getZeroIsSignificant()
+    public boolean isZeroIsSignificant()
     {
         return zeroIsSignificant;
     }
 
-    public void setZeroIsSignificant( Boolean zeroIsSignificant )
+    public void setZeroIsSignificant( boolean zeroIsSignificant )
     {
         this.zeroIsSignificant = zeroIsSignificant;
     }

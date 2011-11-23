@@ -79,7 +79,7 @@ public class DataValue
 
     private String comment;
     
-    private Boolean followup;
+    private boolean followup;
     
     // -------------------------------------------------------------------------
     // Constructors
@@ -164,11 +164,6 @@ public class DataValue
     // Logic
     // -------------------------------------------------------------------------
 
-    public boolean isFollowup()
-    {
-        return followup != null && followup;
-    }
-    
     public boolean isZero()
     {
         return dataElement != null && dataElement.getType().equals( DataElement.VALUE_TYPE_INT ) 
@@ -306,12 +301,12 @@ public class DataValue
         this.comment = comment;
     }
 
-    public Boolean getFollowup()
+    public boolean isFollowup()
     {
         return followup;
     }
 
-    public void setFollowup( Boolean followup )
+    public void setFollowup( boolean followup )
     {
         this.followup = followup;
     }
