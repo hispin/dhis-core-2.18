@@ -49,13 +49,11 @@
       <one-to-many class="org.hisp.dhis.dataset.Section" />
     </set>
 
-    <property name="locked" />
-
     <property name="sortOrder" />
 
     <many-to-one name="dataEntryForm" class="org.hisp.dhis.dataentryform.DataEntryForm" foreign-key="fk_dataset_dataentryform" cascade="all" />
 
-    <property name="mobile" />
+    <property name="mobile" not-null="true" />
 
     <property name="version" />
 

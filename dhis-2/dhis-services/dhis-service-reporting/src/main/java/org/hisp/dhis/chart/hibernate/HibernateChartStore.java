@@ -36,7 +36,6 @@ import org.hibernate.criterion.Restrictions;
 import org.hisp.dhis.chart.Chart;
 import org.hisp.dhis.chart.ChartStore;
 import org.hisp.dhis.common.hibernate.HibernateIdentifiableObjectStore;
-import org.hisp.dhis.hibernate.HibernateGenericStore;
 
 /**
  * @author Lars Helge Overland

@@ -114,7 +114,7 @@ public class IndicatorBatchHandler
         statementBuilder.setValue( indicator.getShortName() );
         statementBuilder.setValue( indicator.getCode() );
         statementBuilder.setValue( indicator.getDescription() );
-        statementBuilder.setValue( indicator.getAnnualized() );
+        statementBuilder.setValue( indicator.isAnnualized() );
         statementBuilder.setValue( indicator.getIndicatorType().getId() );
         statementBuilder.setValue( indicator.getNumerator() );
         statementBuilder.setValue( indicator.getNumeratorDescription() );

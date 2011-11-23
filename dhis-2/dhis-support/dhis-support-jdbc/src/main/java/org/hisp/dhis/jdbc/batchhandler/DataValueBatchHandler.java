@@ -100,6 +100,7 @@ public class DataValueBatchHandler
         statementBuilder.setColumn( "lastupdated" );
         statementBuilder.setColumn( "comment" );
         statementBuilder.setColumn( "categoryoptioncomboid" );
+        statementBuilder.setColumn( "followup" );
     }
     
     protected void setValues( DataValue value )
@@ -112,5 +113,6 @@ public class DataValueBatchHandler
         statementBuilder.setValue( value.getTimestamp() );
         statementBuilder.setValue( value.getComment() );
         statementBuilder.setValue( value.getOptionCombo().getId() );
+        statementBuilder.setValue( value.isFollowup() );
     }
 }

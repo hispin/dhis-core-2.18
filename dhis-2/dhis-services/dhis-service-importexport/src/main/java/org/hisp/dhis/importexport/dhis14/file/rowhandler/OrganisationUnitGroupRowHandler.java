@@ -33,7 +33,6 @@ import org.hisp.dhis.importexport.ImportParams;
 import org.hisp.dhis.importexport.importer.OrganisationUnitGroupImporter;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroup;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroupService;
-import org.hisp.dhis.system.util.UUIdUtils;
 
 import com.ibatis.sqlmap.client.event.RowHandler;
 

@@ -145,7 +145,7 @@ public class IndicatorConverter
                 writer.writeElement( FIELD_SHORT_NAME, indicator.getShortName() );
                 writer.writeElement( FIELD_CODE, indicator.getCode() );
                 writer.writeElement( FIELD_DESCRIPTION, indicator.getDescription() );
-                writer.writeElement( FIELD_ANNUALIZED, String.valueOf( indicator.getAnnualized() ) );
+                writer.writeElement( FIELD_ANNUALIZED, String.valueOf( indicator.isAnnualized() ) );
                 writer.writeElement( FIELD_INDICATOR_TYPE, String.valueOf( indicator.getIndicatorType().getId() ) );
                 writer.writeElement( FIELD_NUMERATOR, indicator.getNumerator() );
                 writer.writeElement( FIELD_NUMERATOR_DESCRIPTION, indicator.getNumeratorDescription() );

@@ -21,7 +21,7 @@
 
     <property name="comment" length="360" />
 
-    <property name="followup" />
+    <property name="followup" not-null="true" />
 
   </class>
 </hibernate-mapping>

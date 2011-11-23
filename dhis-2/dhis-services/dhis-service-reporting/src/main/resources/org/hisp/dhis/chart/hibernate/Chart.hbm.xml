@@ -25,17 +25,17 @@
 
     <property name="dimension" />
 
-    <property name="hideLegend" />
+    <property name="hideLegend" not-null="true" />
 
-    <property name="hideSubtitle" />
+    <property name="verticalLabels" not-null="true" />
 
-    <property name="verticalLabels" />
+    <property name="horizontalPlotOrientation" not-null="true" />
 
-    <property name="horizontalPlotOrientation" />
+    <property name="regression" not-null="true" />
 
-    <property name="regression" />
+    <property name="targetLine" not-null="true" />
 
-    <property name="targetLine" />
+    <property name="hideSubtitle" not-null="true" />
 
     <property name="targetLineValue" />
 
@@ -93,7 +93,7 @@
       <property name="lastYear" />
     </component>
 
-    <property name="userOrganisationUnit" />
+    <property name="userOrganisationUnit" not-null="true" />
 
   </class>
 </hibernate-mapping>

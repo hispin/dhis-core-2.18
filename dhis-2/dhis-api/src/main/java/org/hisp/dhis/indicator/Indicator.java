@@ -52,7 +52,7 @@ public class Indicator extends AbstractNameableObject
      */
     private static final long serialVersionUID = -6551567526188061690L;
 
-    private Boolean annualized;
+    private boolean annualized;
 
     private IndicatorType indicatorType;
 
@@ -115,11 +115,6 @@ public class Indicator extends AbstractNameableObject
         }
     }
 
-    public boolean isAnnualized()
-    {
-        return annualized != null && annualized;
-    }
-
     // -------------------------------------------------------------------------
     // hashCode and equals
     // -------------------------------------------------------------------------
@@ -163,12 +158,12 @@ public class Indicator extends AbstractNameableObject
     // Getters and setters
     // -------------------------------------------------------------------------
 
-    public Boolean getAnnualized()
+    public boolean isAnnualized()
     {
         return annualized;
     }
 
-    public void setAnnualized( Boolean annualized )
+    public void setAnnualized( boolean annualized )
     {
         this.annualized = annualized;
     }

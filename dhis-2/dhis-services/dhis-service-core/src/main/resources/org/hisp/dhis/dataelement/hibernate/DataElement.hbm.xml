@@ -58,7 +58,7 @@
       <element column="aggregationlevel" type="integer" />
     </list>
 
-    <property name="zeroIsSignificant" />
+    <property name="zeroIsSignificant" not-null="true" />
 
     <!-- Dynamic attribute values -->
 

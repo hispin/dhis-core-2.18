@@ -42,6 +42,8 @@
 
     <property name="url" />
 
+    <property name="hasPatients" not-null="true" />
+
     <set name="dataSets" table="datasetsource" inverse="true">
       <cache usage="read-write" />
       <key column="sourceid" />
@@ -69,10 +71,6 @@
     <property name="email" length="150" />
 
     <property name="phoneNumber" length="150" />
-
-    <!-- hasPatients -->
-
-    <property name="hasPatients" />
 
     <!-- Dynamic attribute values -->
 

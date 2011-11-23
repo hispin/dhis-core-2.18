@@ -177,7 +177,7 @@ public class DefaultIndicatorDataMart
                                 indicatorValue.setPeriodTypeId( periodType.getId() );
                                 indicatorValue.setOrganisationUnitId( unit.getId() );
                                 indicatorValue.setLevel( level );
-                                indicatorValue.setAnnualized( getAnnualizationString( indicator.getAnnualized() ) );
+                                indicatorValue.setAnnualized( getAnnualizationString( indicator.isAnnualized() ) );
                                 indicatorValue.setFactor( annualizedFactor);
                                 indicatorValue.setValue( getRounded( aggregatedValue, DECIMALS ) );
                                 indicatorValue.setNumeratorValue( getRounded( numeratorValue, DECIMALS ) );

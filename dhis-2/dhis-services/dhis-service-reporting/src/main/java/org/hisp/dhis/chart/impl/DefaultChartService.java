@@ -248,7 +248,7 @@ public class DefaultChartService
         chart.setFormat( format );
         chart.init();
 
-        return getJFreeChart( chart, !chart.getHideSubtitle() );
+        return getJFreeChart( chart, !chart.isHideSubtitle() );
     }
 
     public JFreeChart getJFreePeriodChart( Indicator indicator, OrganisationUnit unit, boolean title, I18nFormat format )
@@ -786,12 +786,12 @@ public class DefaultChartService
         if ( chart.isType( TYPE_PIE ) )
         {
             multiplePieChart = ChartFactory.createMultiplePieChart( chart.getName(), dataSets[0], TableOrder.BY_ROW,
-                !chart.getHideLegend(), false, false );
+                !chart.isHideLegend(), false, false );
         }
         else
         {
             multiplePieChart = ChartFactory.createMultiplePieChart3D( chart.getName(), dataSets[0], TableOrder.BY_ROW,
-                !chart.getHideLegend(), false, false );
+                !chart.isHideLegend(), false, false );
         }
 
         multiplePieChart.getTitle().setFont( titleFont );

@@ -139,7 +139,7 @@ public class ExcelUtils
         sheet.addCell( new Label( column++, row, indicator.getShortName(), format ) );
         sheet.addCell( new Label( column++, row, indicator.getCode(), format ) );
         sheet.addCell( new Label( column++, row, indicator.getDescription(), format ) );
-        sheet.addCell( new Label( column++, row, getBoolean().get( indicator.getAnnualized() ), format ) );
+        sheet.addCell( new Label( column++, row, getBoolean().get( indicator.isAnnualized() ), format ) );
         sheet.addCell( new Label( column++, row, getType().get( indicator.getIndicatorType().getName() ), format ) );
 
         sheet.addCell( new Label( column++, row, indicator.getNumeratorDescription(), format ) );

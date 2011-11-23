@@ -130,7 +130,6 @@ public class UpdateLockedDataSets
 
             if ( dataSetLock != null )
             {
-                dataSet.setLocked( false );
                 dataSetService.updateDataSet( dataSet );
                 dataSetLock.getSources().removeAll( dataSetLock.getSources() );
                 dataSetLockService.deleteDataSetLock( dataSetLock );
