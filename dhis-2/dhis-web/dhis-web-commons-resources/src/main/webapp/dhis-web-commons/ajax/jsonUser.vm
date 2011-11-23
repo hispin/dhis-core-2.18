@@ -12,7 +12,7 @@
     #foreach( $unit in $user.organisationUnits )
       { "name": "$!{unit.name}" }#if( $velocityCount < $size ),#end
     #end ],
-    #set( $size = ${userCredentials.userAuthorityGroups.size()} )
+    #set( $size = ${user.userCredentials.userAuthorityGroups.size()} )
     "roles": [
     #foreach( $role in $user.userCredentials.userAuthorityGroups )
       { "name": "$!{role.name}" }#if( $velocityCount < $size ),#end
