@@ -30,16 +30,19 @@
       <result name="success" type="velocity">/main.vm</result>
       <param name="page">/dhis-web-datamart/exportStatus.vm</param>
       <param name="javascripts">javascript/datamart.js</param>
+      <param name="requiredAuthorities">F_DATAMART_ADMIN</param>
     </action>
 
     <action name="getExportStatus" class="org.hisp.dhis.datamart.action.GetExportStatusAction">
       <result name="success" type="velocity-json">/dhis-web-datamart/jsonExportStatus.vm</result>
       <param name="onExceptionReturn">plainTextError</param>
+      <param name="requiredAuthorities">F_DATAMART_ADMIN</param>
     </action>
 
     <action name="cancelExport" class="org.hisp.dhis.datamart.action.CancelExportAction">
       <result name="success" type="velocity-xml">../dhis-web-commons/ajax/xmlResponseSuccess.vm</result>
       <param name="onExceptionReturn">plainTextError</param>
+      <param name="requiredAuthorities">F_DATAMART_ADMIN</param>
     </action>
 		
     <!-- DataMartExports -->
@@ -48,6 +51,7 @@
       <result name="success" type="velocity-json">
 		../dhis-web-commons/ajax/jsonResponseSuccess.vm</result>
       <param name="onExceptionReturn">plainTextError</param>
+      <param name="requiredAuthorities">F_DATAMART_ADMIN</param>
     </action>
 
     <action name="getDataMartExports" class="org.hisp.dhis.datamart.action.GetAllDataMartExportsAction">
@@ -56,6 +60,7 @@
       <param name="menu">/dhis-web-datamart/menu.vm</param>
       <param name="javascripts">javascript/datamart.js</param>
       <param name="stylesheets">../dhis-web-commons/paging/paging.css</param>
+      <param name="requiredAuthorities">F_DATAMART_ADMIN</param>
     </action>
 
     <action name="saveDataMartExport" class="org.hisp.dhis.datamart.action.SaveDataMartExportAction">
