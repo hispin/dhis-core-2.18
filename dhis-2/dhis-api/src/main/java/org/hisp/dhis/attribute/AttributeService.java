@@ -32,7 +32,7 @@ import java.util.Set;
 /**
  * @author mortenoh
  */
-interface AttributeService
+public interface AttributeService
 {
     String ID = AttributeService.class.getName();
 
@@ -47,6 +47,8 @@ interface AttributeService
     void deleteAttribute( Attribute attribute );
 
     Attribute getAttribute( int id );
+
+    Attribute getAttribute( String uid );
 
     Attribute getAttributeByName( String name );
 
