@@ -32,7 +32,7 @@ import java.util.Set;
 /**
  * @author mortenoh
  */
-public interface AttributeService
+interface AttributeService
 {
     String ID = AttributeService.class.getName();
 
@@ -40,47 +40,47 @@ public interface AttributeService
     // Attribute
     // -------------------------------------------------------------------------
 
-    public void addAttribute( Attribute attribute );
+    void addAttribute( Attribute attribute );
 
-    public void updateAttribute( Attribute attribute );
+    void updateAttribute( Attribute attribute );
 
-    public void deleteAttribute( Attribute attribute );
+    void deleteAttribute( Attribute attribute );
 
-    public Attribute getAttribute( int id );
+    Attribute getAttribute( int id );
 
-    public Attribute getAttributeByName( String name );
+    Attribute getAttributeByName( String name );
 
-    public Set<Attribute> getAllAttributes();
+    Set<Attribute> getAllAttributes();
 
-    public Set<Attribute> getDataElementAttributes();
+    Set<Attribute> getDataElementAttributes();
 
-    public Set<Attribute> getIndicatorAttributes();
+    Set<Attribute> getIndicatorAttributes();
 
-    public Set<Attribute> getOrganisationUnitAttributes();
+    Set<Attribute> getOrganisationUnitAttributes();
 
-    public Set<Attribute> getUserAttributes();
+    Set<Attribute> getUserAttributes();
 
-    public int getAttributeCount();
+    int getAttributeCount();
 
-    public int getAttributeCountByName( String name );
+    int getAttributeCountByName( String name );
 
-    public Set<Attribute> getAttributesBetween( int first, int max );
+    Set<Attribute> getAttributesBetween( int first, int max );
 
-    public Set<Attribute> getAttributesBetweenByName( String name, int first, int max );
+    Set<Attribute> getAttributesBetweenByName( String name, int first, int max );
 
     // -------------------------------------------------------------------------
     // AttributeValue
     // -------------------------------------------------------------------------
 
-    public void addAttributeValue( AttributeValue attributeValue );
+    void addAttributeValue( AttributeValue attributeValue );
 
-    public void updateAttributeValue( AttributeValue attributeValue );
+    void updateAttributeValue( AttributeValue attributeValue );
 
-    public void deleteAttributeValue( AttributeValue attributeValue );
+    void deleteAttributeValue( AttributeValue attributeValue );
 
-    public AttributeValue getAttributeValue( int id );
+    AttributeValue getAttributeValue( int id );
 
-    public Set<AttributeValue> getAllAttributeValues();
+    Set<AttributeValue> getAllAttributeValues();
 
-    public int getAttributeValueCount();
+    int getAttributeValueCount();
 }

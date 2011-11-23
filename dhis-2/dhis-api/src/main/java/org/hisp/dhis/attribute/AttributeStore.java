@@ -34,7 +34,7 @@ import org.hisp.dhis.common.GenericNameableObjectStore;
 /**
  * @author mortenoh
  */
-public interface AttributeStore
+interface AttributeStore
     extends GenericNameableObjectStore<Attribute>
 {
     String ID = AttributeStore.class.getName();
@@ -44,26 +44,26 @@ public interface AttributeStore
      * 
      * @return All attributes with attribute.dataElement = true
      */
-    public Set<Attribute> getDataElementAttributes();
+    Set<Attribute> getDataElementAttributes();
 
     /**
      * Get all attributes that are enabled for indicators.
      * 
      * @return All attributes with attribute.indicator = true
      */
-    public Set<Attribute> getIndicatorAttributes();
+    Set<Attribute> getIndicatorAttributes();
 
     /**
      * Get all attributes that are enabled for organisation units.
      * 
      * @return All attributes with attribute.organisationUnit = true
      */
-    public Set<Attribute> getOrganisationUnitAttributes();
+    Set<Attribute> getOrganisationUnitAttributes();
 
     /**
      * Get all attributes that are enabled for users.
      * 
      * @return All attributes with attribute.organisationUnit = true
      */
-    public Set<Attribute> getUserAttributes();
+    Set<Attribute> getUserAttributes();
 }
