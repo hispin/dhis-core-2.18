@@ -34,7 +34,7 @@ import org.hisp.dhis.common.GenericNameableObjectStore;
 /**
  * @author mortenoh
  */
-interface AttributeStore
+public interface AttributeStore
     extends GenericNameableObjectStore<Attribute>
 {
     String ID = AttributeStore.class.getName();

@@ -92,6 +92,12 @@ public class DefaultAttributeService
     }
 
     @Override
+    public Attribute getAttribute( String uid )
+    {
+        return attributeStore.getByUid( uid );
+    }
+    
+    @Override
     public Attribute getAttributeByName( String name )
     {
         return attributeStore.getByName( name );
