@@ -1,18 +1,20 @@
 
 <h3>$i18n.getString( "scheduling_management" )</h3>
 
-<form action="scheduleTasks.action" method="post">
+<input id="isRunning" type="hidden" value="${running}">
+
+<form id="schedulingForm" action="scheduleTasks.action" method="post">
 <table>
 <tr>
 	<th>$i18n.getString( "aggregation_period_types" )</th>
 </tr>
 <tr>
 	<td>
-		<label for="monthly">$i18n.getString( "Monthly" )</label><input type="checkbox" id="monthly" name="scheduledPeriodTypes" value="Monthly"#if( $periodTypes.contains( "Monthly" ) ) checked="checked"#end>&nbsp;
-		<label for="biMonthly">$i18n.getString( "BiMonthly" )</label><input type="checkbox" id="biMonthly" name="scheduledPeriodTypes" value="BiMonthly"#if( $periodTypes.contains( "BiMonthly" ) ) checked="checked"#end>&nbsp;
-		<label for="quarterly">$i18n.getString( "Quarterly" )</label><input type="checkbox" id="quarterly" name="scheduledPeriodTypes" value="Quarterly"#if( $periodTypes.contains( "Quarterly" ) ) checked="checked"#end><br><br>
-		<label for="sixMonthly">$i18n.getString( "SixMonthly" )</label><input type="checkbox" id="sixMonthly" name="scheduledPeriodTypes" value="SixMonthly"#if( $periodTypes.contains( "SixMonthly" ) ) checked="checked"#end>&nbsp;
-		<label for="yearly">$i18n.getString( "Yearly" )</label><input type="checkbox" id="yearly" name="scheduledPeriodTypes" value="Yearly"#if( $periodTypes.contains( "Yearly" ) ) checked="checked"#end>			
+		<label for="monthly">$i18n.getString( "Monthly" )</label><input type="checkbox" id="monthly" class="scheduling" name="scheduledPeriodTypes" value="Monthly"#if( $periodTypes.contains( "Monthly" ) ) checked="checked"#end>&nbsp;
+		<label for="biMonthly">$i18n.getString( "BiMonthly" )</label><input type="checkbox" id="biMonthly" class="scheduling" name="scheduledPeriodTypes" value="BiMonthly"#if( $periodTypes.contains( "BiMonthly" ) ) checked="checked"#end>&nbsp;
+		<label for="quarterly">$i18n.getString( "Quarterly" )</label><input type="checkbox" id="quarterly" class="scheduling" name="scheduledPeriodTypes" value="Quarterly"#if( $periodTypes.contains( "Quarterly" ) ) checked="checked"#end><br><br>
+		<label for="sixMonthly">$i18n.getString( "SixMonthly" )</label><input type="checkbox" id="sixMonthly" class="scheduling" name="scheduledPeriodTypes" value="SixMonthly"#if( $periodTypes.contains( "SixMonthly" ) ) checked="checked"#end>&nbsp;
+		<label for="yearly">$i18n.getString( "Yearly" )</label><input type="checkbox" id="yearly" class="scheduling" name="scheduledPeriodTypes" class="scheduler" value="Yearly"#if( $periodTypes.contains( "Yearly" ) ) checked="checked"#end>			
 	</td>
 </tr>
 <tr>
@@ -20,7 +22,7 @@
 </tr>
 <tr>
 	<td>
-		<input type="submit" style="width:140px" 
+		<input type="button" style="width:140px" onclick="submitSchedulingForm()"
 		#if ( $running )
 		value="$i18n.getString( 'stop' )"
 		#else
