@@ -47,8 +47,9 @@ import com.opensymphony.xwork2.Action;
 public class ScheduleTasksAction
     implements Action
 {
-    private static final String STRATEGY_DATAMART_LAST_12_MONTHS_DAILY = "dataMartLast12MonthsDaily";
-    
+    private static final String STRATEGY_LAST_12_DAILY = "last12Daily";
+    private static final String STRATEGY_LAST_6_DAILY_6_TO_12_WEEKLY = "last6Daily6To12Weekly";
+        
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
@@ -93,6 +94,11 @@ public class ScheduleTasksAction
     }
     
     private String dataMartStrategy;
+
+    public String getDataMartStrategy()
+    {
+        return dataMartStrategy;
+    }
 
     public void setDataMartStrategy( String dataMartStrategy )
     {
@@ -147,13 +153,23 @@ public class ScheduleTasksAction
             {
                 Map<String, String> keyCronMap = new HashMap<String, String>();
                 
-                if ( STRATEGY_DATAMART_LAST_12_MONTHS_DAILY.equals( dataMartStrategy ) )
+                if ( STRATEGY_LAST_12_DAILY.equals( dataMartStrategy ) )
                 {
-                    keyCronMap.put( SchedulingManager.TASK_DATAMART_LAST_12_MONTHS, Scheduler.CRON_NIGHTLY_0AM );
+                    keyCronMap.put( SchedulingManager.TASK_DATAMART_LAST_12_MONTHS, Scheduler.CRON_DAILY_0AM );
+                }
+                else if ( STRATEGY_LAST_6_DAILY_6_TO_12_WEEKLY.equals( dataMartStrategy ) )
+                {
+                    keyCronMap.put( SchedulingManager.TASK_DATAMART_LAST_6_MONTS, Scheduler.CRON_DAILY_0AM_EXCEPT_SUNDAY );
+                    keyCronMap.put( SchedulingManager.TASK_DATAMART_FROM_6_TO_12_MONTS, Scheduler.CRON_WEEKLY_SUNDAY_0AM );
                 }
                 
                 schedulingManager.scheduleTasks( keyCronMap );
             }
+        }
+        else
+        {
+            dataMartStrategy = schedulingManager.getScheduledTasks().containsKey( SchedulingManager.TASK_DATAMART_LAST_12_MONTHS ) ? 
+                STRATEGY_LAST_12_DAILY : STRATEGY_LAST_6_DAILY_6_TO_12_WEEKLY;
         }
 
         status = schedulingManager.getTaskStatus();        

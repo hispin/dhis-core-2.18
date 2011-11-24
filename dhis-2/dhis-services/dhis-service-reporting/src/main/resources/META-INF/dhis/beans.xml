@@ -277,6 +277,8 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
     <property name="tasks">
       <map>
         <entry key="dataMartLast12MonthsTask" value-ref="dataMartLast12MonthsTask" />
+		<entry key="dataMartLast6MonthsTask" value-ref="dataMartLast6MonthsTask" />
+		<entry key="dataMartFrom6To12MonthsTask" value-ref="dataMartFrom6To12MonthsTask" />
       </map>
     </property>
   </bean>
@@ -286,10 +288,19 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
     <constructor-arg ref="registrationDataCompletenessService" />
     <constructor-arg ref="org.hisp.dhis.dataelement.DataElementService" />
     <constructor-arg ref="org.hisp.dhis.indicator.IndicatorService" />
+	<constructor-arg ref="org.hisp.dhis.period.PeriodService" />
     <constructor-arg ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
     <constructor-arg ref="org.hisp.dhis.dataset.DataSetService" />
 	<constructor-arg ref="org.hisp.dhis.options.SystemSettingManager" />
   </bean>
+    
+  <bean id="dataMartLast6MonthsTask" class="org.hisp.dhis.system.scheduling.DataMartTask" parent="dataMartLast12MonthsTask">
+	<property name="last6Months" value="true"/>
+  </bean>
+  
+  <bean id="dataMartFrom6To12MonthsTask" class="org.hisp.dhis.system.scheduling.DataMartTask" parent="dataMartLast12MonthsTask">
+	<property name="from6To12Months" value="true"/>
+  </bean>  
 
   <!-- DeletionHandler -->
 

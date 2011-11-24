@@ -28,6 +28,7 @@ package org.hisp.dhis.system.scheduling;
  */
 
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
 import java.util.concurrent.ScheduledFuture;
 
@@ -82,7 +83,7 @@ public class SpringScheduler
             
             futures.put( key, future );
             
-            log.info( "Scheduled task with key: " + key );
+            log.info( "Scheduled task with key: " + key + " and cron: " + cronExpr );
             
             return true;
         }
@@ -100,7 +101,7 @@ public class SpringScheduler
             
             futures.remove( key );
             
-            log.info( "Stopped task with key: " + key );
+            log.info( "Stopped task with key: " + key + " successfully: " + result );
             
             return result;
         }
@@ -110,9 +111,19 @@ public class SpringScheduler
     
     public void stopAllTasks()
     {
-        for ( String key : futures.keySet() )
+        Iterator<String> keys = futures.keySet().iterator();
+        
+        while ( keys.hasNext() )
         {
-            stopTask( key );
+            String key = keys.next();
+            
+            ScheduledFuture<?> future = futures.get( key );
+            
+            boolean result = future != null ? future.cancel( true ) : false;
+            
+            keys.remove();
+            
+            log.info( "Stopped task with key: " + key + " successfully: " + result );
         }
     }
 
