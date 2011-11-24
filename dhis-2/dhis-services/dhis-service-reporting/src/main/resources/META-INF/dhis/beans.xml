@@ -276,7 +276,7 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
     <property name="scheduler" ref="scheduler" />
     <property name="tasks">
       <map>
-        <entry key="keyDataMartTask" value-ref="dataMartLast12MonthsTask" />
+        <entry key="dataMartLast12MonthsTask" value-ref="dataMartLast12MonthsTask" />
       </map>
     </property>
   </bean>

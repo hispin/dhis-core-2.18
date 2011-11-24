@@ -4,6 +4,9 @@
 <input id="isRunning" type="hidden" value="${running}">
 
 <form id="schedulingForm" action="scheduleTasks.action" method="post">
+
+<input id="dataMartStrategy" name="dataMartStrategy" type="hidden" value="dataMartLast12MonthsDaily">
+
 <table>
 <tr>
 	<th>$i18n.getString( "aggregation_period_types" )</th>

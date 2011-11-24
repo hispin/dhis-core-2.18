@@ -74,17 +74,15 @@ public class SpringScheduler
         taskExecutor.execute( task );
     }
     
-    public boolean scheduleTask( Runnable task, String cronExpr )
-    {
-        String key = task != null ? task.getClass().getName() : null;
-        
+    public boolean scheduleTask( String key, Runnable task, String cronExpr )
+    {        
         if ( key != null && !futures.containsKey( key ) )
         {
             ScheduledFuture<?> future = taskScheduler.schedule( task, new CronTrigger( cronExpr ) );
             
             futures.put( key, future );
             
-            log.info( "Scheduled task of type: " + key );
+            log.info( "Scheduled task with key: " + key );
             
             return true;
         }
@@ -92,10 +90,8 @@ public class SpringScheduler
         return false;
     }
     
-    public boolean stopTask( Class<? extends Runnable> taskClass )
-    {
-        String key = taskClass != null ? taskClass.getName() : null;
-        
+    public boolean stopTask( String key )
+    {        
         if ( key != null )
         {
             ScheduledFuture<?> future = futures.get( key );
@@ -104,18 +100,24 @@ public class SpringScheduler
             
             futures.remove( key );
             
-            log.info( "Stopped task of type: " + taskClass.getName() );
+            log.info( "Stopped task with key: " + key );
             
             return result;
         }
         
         return false;
-    }    
-
-    public String getTaskStatus( Class<? extends Runnable> taskClass )
+    }
+    
+    public void stopAllTasks()
     {
-        String key = taskClass != null ? taskClass.getName() : null;
-        
+        for ( String key : futures.keySet() )
+        {
+            stopTask( key );
+        }
+    }
+
+    public String getTaskStatus( String key )
+    {        
         ScheduledFuture<?> future = futures.get( key );
         
         if ( future == null )

@@ -27,15 +27,14 @@ package org.hisp.dhis.scheduling;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import static org.hisp.dhis.options.SystemSettingManager.KEY_SCHEDULED_TASKS;
+import static org.hisp.dhis.system.scheduling.Scheduler.STATUS_NOT_STARTED;
+
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Map;
-import java.util.Set;
 
 import org.hisp.dhis.options.SystemSettingManager;
 import org.hisp.dhis.system.scheduling.Scheduler;
-
-import static org.hisp.dhis.system.scheduling.Scheduler.*;
 
 /**
  * @author Lars Helge Overland
@@ -74,59 +73,64 @@ public class DefaultSchedulingManager
 
     public void scheduleTasks()
     {
-        scheduler.scheduleTask( getRunnables(), CRON_NIGHTLY_0AM );
+        Map<String, String> keyCronMap = getScheduledTasks();
+        
+        for ( String key : keyCronMap.keySet() )
+        {
+            String cron = keyCronMap.get( key );
+            Runnable task = tasks.get( key );
+            
+            if ( cron != null && task != null )
+            {
+                scheduler.scheduleTask( key, task, cron );
+            }
+        }
+    }
+    
+    public void scheduleTasks( Map<String, String> keyCronMap )
+    {
+        systemSettingManager.saveSystemSetting( KEY_SCHEDULED_TASKS, new HashMap<String, String>( keyCronMap ) );
+        
+        scheduleTasks();
     }
     
     public void stopTasks()
     {
-        scheduler.stopTask( Runnables.class );
+        systemSettingManager.saveSystemSetting( KEY_SCHEDULED_TASKS, null );
+        
+        scheduler.stopAllTasks();
     }
     
     public void executeTasks()
     {
-        scheduler.executeTask( getRunnables() );
+        Map<String, String> keyCronMap = getScheduledTasks();
+        
+        for ( String key : keyCronMap.keySet() )
+        {
+            Runnable task = tasks.get( key );
+            
+            if ( task != null )
+            {
+                scheduler.executeTask( task );
+            }
+        }
+    }
+    
+    @SuppressWarnings("unchecked")
+    public Map<String, String> getScheduledTasks()
+    {
+        return (Map<String, String>) systemSettingManager.getSystemSetting( KEY_SCHEDULED_TASKS, new HashMap<String, String>() );
     }
     
     public String getTaskStatus()
     {
-        return scheduler.getTaskStatus( Runnables.class );
-    }
-    
-    public Set<String> getScheduledTaskKeys()
-    {
-        final Set<String> keys = new HashSet<String>();
-        
-        for ( String key : tasks.keySet() )
+        Map<String, String> keyCronMap = getScheduledTasks();
+                
+        if ( keyCronMap.size() == 0 )
         {
-            boolean schedule = (Boolean) systemSettingManager.getSystemSetting( key, false );
-            
-            if ( schedule )
-            {
-                keys.add( key );
-            }
+            return STATUS_NOT_STARTED;
         }
         
-        return keys;
-    }
-
-    // -------------------------------------------------------------------------
-    // Supportive methods
-    // -------------------------------------------------------------------------
-
-    private Runnables getRunnables()
-    {
-        final Runnables runnables = new Runnables();
-        
-        for ( String key : tasks.keySet() )
-        {
-            boolean schedule = (Boolean) systemSettingManager.getSystemSetting( key, false );
-            
-            if ( schedule )
-            {
-                runnables.addRunnable( tasks.get( key ) );
-            }
-        }
-        
-        return runnables;
+        return scheduler.getTaskStatus( keyCronMap.keySet().iterator().next() );
     }
 }
