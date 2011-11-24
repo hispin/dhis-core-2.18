@@ -34,9 +34,12 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.hisp.dhis.completeness.DataSetCompletenessService;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.datamart.DataMartService;
+import org.hisp.dhis.dataset.DataSet;
+import org.hisp.dhis.dataset.DataSetService;
 import org.hisp.dhis.indicator.Indicator;
 import org.hisp.dhis.indicator.IndicatorService;
 import org.hisp.dhis.options.SystemSettingManager;
@@ -52,22 +55,29 @@ public class DataMartTask
     implements Runnable
 {
     private DataMartService dataMartService;
- 
+
+    private DataSetCompletenessService completenessService;
+    
     private DataElementService dataElementService;
     
     private IndicatorService indicatorService;
     
     private OrganisationUnitService organisationUnitService;
+
+    private DataSetService dataSetService;
     
     private SystemSettingManager systemSettingManager;
     
-    public DataMartTask( DataMartService dataMartService, DataElementService dataElementService, IndicatorService indicatorService,
-        OrganisationUnitService organisationUnitService, SystemSettingManager systemSettingManager )
+    public DataMartTask( DataMartService dataMartService, DataSetCompletenessService completenessService, 
+        DataElementService dataElementService, IndicatorService indicatorService, 
+        OrganisationUnitService organisationUnitService, DataSetService dataSetService, SystemSettingManager systemSettingManager )
     {
         this.dataMartService = dataMartService;
+        this.completenessService = completenessService;
         this.dataElementService = dataElementService;
         this.indicatorService = indicatorService;
         this.organisationUnitService = organisationUnitService;
+        this.dataSetService = dataSetService;
         this.systemSettingManager = systemSettingManager;
     }
     
@@ -78,11 +88,13 @@ public class DataMartTask
         Collection<Integer> dataElementIds = ConversionUtils.getIdentifiers( DataElement.class, dataElementService.getAllDataElements() );
         Collection<Integer> indicatorIds = ConversionUtils.getIdentifiers( Indicator.class, indicatorService.getAllIndicators() );
         Collection<Integer> organisationUnitIds = ConversionUtils.getIdentifiers( OrganisationUnit.class, organisationUnitService.getAllOrganisationUnits() );
+        Collection<Integer> dataSetIds = ConversionUtils.getIdentifiers( DataSet.class, dataSetService.getAllDataSets() );
         
         Set<String> periodTypes = (Set<String>) systemSettingManager.getSystemSetting( KEY_SCHEDULED_PERIOD_TYPES, DEFAULT_SCHEDULED_PERIOD_TYPES );
         
         RelativePeriods relatives = new RelativePeriods().getRelativePeriods( periodTypes );
         
         dataMartService.export( dataElementIds, indicatorIds, new HashSet<Integer>(), organisationUnitIds, relatives, true );
+        completenessService.exportDataSetCompleteness( dataSetIds, relatives, organisationUnitIds ); 
     }
 }

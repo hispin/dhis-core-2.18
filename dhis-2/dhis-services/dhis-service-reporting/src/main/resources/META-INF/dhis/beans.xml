@@ -276,24 +276,18 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
     <property name="scheduler" ref="scheduler" />
     <property name="tasks">
       <map>
-        <entry key="keyDataMartTask" value-ref="dataMartTask" />
-        <entry key="keyDataSetCompletenessTask" value-ref="dataSetCompletenessTask" />
+        <entry key="keyDataMartTask" value-ref="dataMartLast12MonthsTask" />
       </map>
     </property>
   </bean>
 
-  <bean id="dataMartTask" class="org.hisp.dhis.system.scheduling.DataMartTask" scope="prototype">
+  <bean id="dataMartLast12MonthsTask" class="org.hisp.dhis.system.scheduling.DataMartTask" scope="prototype">
     <constructor-arg ref="org.hisp.dhis.datamart.DataMartService" />
+    <constructor-arg ref="registrationDataCompletenessService" />
     <constructor-arg ref="org.hisp.dhis.dataelement.DataElementService" />
     <constructor-arg ref="org.hisp.dhis.indicator.IndicatorService" />
     <constructor-arg ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
-	<constructor-arg ref="org.hisp.dhis.options.SystemSettingManager" />
-  </bean>
-
-  <bean id="dataSetCompletenessTask" class="org.hisp.dhis.system.scheduling.DataSetCompletenessTask" scope="prototype">
-    <constructor-arg ref="registrationDataCompletenessService" />
     <constructor-arg ref="org.hisp.dhis.dataset.DataSetService" />
-    <constructor-arg ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
 	<constructor-arg ref="org.hisp.dhis.options.SystemSettingManager" />
   </bean>
 
