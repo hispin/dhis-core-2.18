@@ -35,6 +35,8 @@ import java.util.Map;
 public interface SchedulingManager
 {
     final String TASK_DATAMART_LAST_12_MONTHS = "dataMartLast12MonthsTask";
+    final String TASK_DATAMART_LAST_6_MONTS = "dataMartLast6MonthsTask";
+    final String TASK_DATAMART_FROM_6_TO_12_MONTS = "dataMartFrom6To12MonthsTask";
     
     void scheduleTasks();
     

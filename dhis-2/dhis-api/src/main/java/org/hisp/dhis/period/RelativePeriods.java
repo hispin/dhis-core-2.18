@@ -482,8 +482,8 @@ public class RelativePeriods
     }
 
     /**
-     * Creates an instance of RelativePeriods based on the scheduledPeriodTypes
-     * set from Configuration.
+     * Creates an instance of RelativePeriods based on given set of PeriodType
+     * names.
      * 
      * @param config the Configuration object.
      * @return a RelativePeriods instance.
