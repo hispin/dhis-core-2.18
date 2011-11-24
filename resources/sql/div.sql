@@ -7,7 +7,7 @@ join categorycombos_optioncombos co
 on (cc.categoryoptioncomboid=co.categoryoptioncomboid)
 where categorycomboid=12414 );
 
--- Data elements and frequency with average agg operator (lower than yearly negative for data mart performance)
+-- Data elements and frequency with average agg operator (higher than yearly negative for data mart performance)
 
 select d.dataelementid, d.name, pt.name from dataelement d 
 join datasetmembers dsm on d.dataelementid=dsm.dataelementid 
@@ -20,4 +20,16 @@ where d.aggregationtype = 'average';
 select d.dataelementid, d.name, dal.aggregationlevel from dataelementaggregationlevels dal 
 join dataelement d on dal.dataelementid=d.dataelementid 
 order by name, aggregationlevel;
+
+-- Data elements with less than 100 data values
+
+select de.dataelementid, de.name, (select count(*) from datavalue dv where de.dataelementid=dv.dataelementid) as count 
+from dataelement de
+where (select count(*) from datavalue dv where de.dataelementid=dv.dataelementid) < 100
+order by count;
+
+-- Number of data elements with less than 100 data values
+
+select count(*) from dataelement de
+where (select count(*) from datavalue dv where de.dataelementid=dv.dataelementid) < 100;
 
