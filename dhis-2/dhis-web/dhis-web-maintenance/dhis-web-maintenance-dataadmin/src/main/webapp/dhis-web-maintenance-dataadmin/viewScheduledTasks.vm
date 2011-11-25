@@ -5,17 +5,32 @@
 
 <form id="schedulingForm" action="scheduleTasks.action" method="post">
 
-<table>
+<table style="width:300px">
 <tr>
-	<th>$i18n.getString( "aggregation_period_types" )</th>
+	<th style="width:100%">$i18n.getString( "aggregation_period_types" )</th>
 </tr>
 <tr>
 	<td>
-		<label for="monthly">$i18n.getString( "Monthly" )</label><input type="checkbox" id="monthly" class="scheduling" name="scheduledPeriodTypes" value="Monthly"#if( $periodTypes.contains( "Monthly" ) ) checked="checked"#end>&nbsp;
-		<label for="biMonthly">$i18n.getString( "BiMonthly" )</label><input type="checkbox" id="biMonthly" class="scheduling" name="scheduledPeriodTypes" value="BiMonthly"#if( $periodTypes.contains( "BiMonthly" ) ) checked="checked"#end>&nbsp;
-		<label for="quarterly">$i18n.getString( "Quarterly" )</label><input type="checkbox" id="quarterly" class="scheduling" name="scheduledPeriodTypes" value="Quarterly"#if( $periodTypes.contains( "Quarterly" ) ) checked="checked"#end><br><br>
-		<label for="sixMonthly">$i18n.getString( "SixMonthly" )</label><input type="checkbox" id="sixMonthly" class="scheduling" name="scheduledPeriodTypes" value="SixMonthly"#if( $periodTypes.contains( "SixMonthly" ) ) checked="checked"#end>&nbsp;
-		<label for="yearly">$i18n.getString( "Yearly" )</label><input type="checkbox" id="yearly" class="scheduling" name="scheduledPeriodTypes" class="scheduler" value="Yearly"#if( $periodTypes.contains( "Yearly" ) ) checked="checked"#end>			
+		<label for="monthly">$i18n.getString( "Monthly" )</label><input type="checkbox" id="monthly" class="scheduling" name="scheduledPeriodTypes" value="Monthly"#if( $scheduledPeriodTypes.contains( "Monthly" ) ) checked="checked"#end>&nbsp;
+		<label for="biMonthly">$i18n.getString( "BiMonthly" )</label><input type="checkbox" id="biMonthly" class="scheduling" name="scheduledPeriodTypes" value="BiMonthly"#if( $scheduledPeriodTypes.contains( "BiMonthly" ) ) checked="checked"#end>&nbsp;
+		<label for="quarterly">$i18n.getString( "Quarterly" )</label><input type="checkbox" id="quarterly" class="scheduling" name="scheduledPeriodTypes" value="Quarterly"#if( $scheduledPeriodTypes.contains( "Quarterly" ) ) checked="checked"#end><br><br>
+		<label for="sixMonthly">$i18n.getString( "SixMonthly" )</label><input type="checkbox" id="sixMonthly" class="scheduling" name="scheduledPeriodTypes" value="SixMonthly"#if( $scheduledPeriodTypes.contains( "SixMonthly" ) ) checked="checked"#end>&nbsp;
+		<label for="yearly">$i18n.getString( "Yearly" )</label><input type="checkbox" id="yearly" class="scheduling" name="scheduledPeriodTypes" class="scheduler" value="Yearly"#if( $scheduledPeriodTypes.contains( "Yearly" ) ) checked="checked"#end>			
+	</td>
+</tr>
+<tr>
+	<td style="height:10px"></td>
+</tr>
+<tr>
+	<th>$i18n.getString( "organisation_unit_group_set_aggregation_level" )</th>
+</tr>
+<tr>
+	<td>
+		<select id="orgUnitGroupSetAggLevel" name="orgUnitGroupSetAggLevel" class="scheduling" style="width:100%">
+		#foreach( $level in $levels )
+		<option value="$level.level"#if( $orgUnitGroupSetAggLevel && $orgUnitGroupSetAggLevel == $level.level ) selected="selected"#end>$encoder.htmlEncode( $level.name )</option>
+		#end
+		</select>
 	</td>
 </tr>
 <tr>
@@ -26,7 +41,7 @@
 </tr>
 <tr>
 	<td>
-		<select id="dataMartStrategy" name="dataMartStrategy" class="scheduling">
+		<select id="dataMartStrategy" name="dataMartStrategy" class="scheduling" style="width:100%">
 		<option value="never">$i18n.getString( "never" )</option>
 		<option value="last12Daily"#if( $dataMartStrategy && $dataMartStrategy == "last12Daily" ) selected="selected"#end>$i18n.getString( "last_12_months_daily" )</option>
 		<option value="last6Daily6To12Weekly"#if( $dataMartStrategy && $dataMartStrategy == "last6Daily6To12Weekly" ) selected="selected"#end>$i18n.getString( "last_6_months_daily_6_to_12_months_weekly" )</option>		

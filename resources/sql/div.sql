@@ -33,3 +33,9 @@ order by count;
 select count(*) from dataelement de
 where (select count(*) from datavalue dv where de.dataelementid=dv.dataelementid) < 100;
 
+-- Duplicate codes
+
+select code, count(code) as count
+from dataelement
+group by code
+order by count desc;

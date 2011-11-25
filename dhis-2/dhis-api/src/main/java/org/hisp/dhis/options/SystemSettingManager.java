@@ -67,12 +67,14 @@ public interface SystemSettingManager
     final String KEY_EMAIL_PASSWORD = "keyEmailPassword";
     final String KEY_SCHEDULED_PERIOD_TYPES = "keyScheduledPeriodTypes";
     final String KEY_SCHEDULED_TASKS = "keyScheduledTasks";
+    final String KEY_ORGUNITGROUPSET_AGG_LEVEL = "orgUnitGroupSetAggregationLevel";
     
     final int DEFAULT_MAX_NUMBER_OF_ATTEMPTS = 20;
     final int DEFAULT_TIMEFRAME_MINUTES = 1;
     final double DEFAULT_FACTOR_OF_DEVIATION = 2.0;
-    
+    final int DEFAULT_ORGUNITGROUPSET_AGG_LEVEL = 3;    
     final String DEFAULT_GOOGLE_MAPS_API_KEY = "ABQIAAAAut6AhySExnYIXm5s2OFIkxRKNzJ-_9njnryRTbvC6CtrS4sRvRREWnxwlZUa630pLuPf3nD9i4fq9w";
+    
     final String AGGREGATION_STRATEGY_REAL_TIME = "real_time";
     final String AGGREGATION_STRATEGY_BATCH = "batch";
     final String DEFAULT_AGGREGATION_STRATEGY = AGGREGATION_STRATEGY_REAL_TIME;

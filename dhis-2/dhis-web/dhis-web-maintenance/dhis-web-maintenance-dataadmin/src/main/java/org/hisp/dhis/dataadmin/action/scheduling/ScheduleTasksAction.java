@@ -27,15 +27,20 @@ package org.hisp.dhis.dataadmin.action.scheduling;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import static org.hisp.dhis.options.SystemSettingManager.DEFAULT_SCHEDULED_PERIOD_TYPES;
+import static org.hisp.dhis.options.SystemSettingManager.KEY_ORGUNITGROUPSET_AGG_LEVEL;
+import static org.hisp.dhis.options.SystemSettingManager.DEFAULT_ORGUNITGROUPSET_AGG_LEVEL;
 import static org.hisp.dhis.options.SystemSettingManager.KEY_SCHEDULED_PERIOD_TYPES;
-import static org.hisp.dhis.options.SystemSettingManager.*;
 
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
 import org.hisp.dhis.options.SystemSettingManager;
+import org.hisp.dhis.organisationunit.OrganisationUnitLevel;
+import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.scheduling.SchedulingManager;
 import org.hisp.dhis.system.scheduling.Scheduler;
 
@@ -68,6 +73,13 @@ public class ScheduleTasksAction
         this.schedulingManager = schedulingManager;
     }
     
+    private OrganisationUnitService organisationUnitService;
+
+    public void setOrganisationUnitService( OrganisationUnitService organisationUnitService )
+    {
+        this.organisationUnitService = organisationUnitService;
+    }
+
     // -------------------------------------------------------------------------
     // Input
     // -------------------------------------------------------------------------
@@ -88,11 +100,28 @@ public class ScheduleTasksAction
 
     private Set<String> scheduledPeriodTypes = new HashSet<String>();
 
+    public Set<String> getScheduledPeriodTypes()
+    {
+        return scheduledPeriodTypes;
+    }
+
     public void setScheduledPeriodTypes( Set<String> scheduledPeriodTypes )
     {
         this.scheduledPeriodTypes = scheduledPeriodTypes;
     }
     
+    private Integer orgUnitGroupSetAggLevel;
+    
+    public Integer getOrgUnitGroupSetAggLevel()
+    {
+        return orgUnitGroupSetAggLevel;
+    }
+
+    public void setOrgUnitGroupSetAggLevel( Integer orgUnitGroupSetAggLevel )
+    {
+        this.orgUnitGroupSetAggLevel = orgUnitGroupSetAggLevel;
+    }
+
     private String dataMartStrategy;
 
     public String getDataMartStrategy()
@@ -122,12 +151,12 @@ public class ScheduleTasksAction
     {
         return running;
     }
-    
-    private Set<String> periodTypes = new HashSet<String>();
+        
+    private List<OrganisationUnitLevel> levels;
 
-    public Set<String> getPeriodTypes()
+    public List<OrganisationUnitLevel> getLevels()
     {
-        return periodTypes;
+        return levels;
     }
 
     // -------------------------------------------------------------------------
@@ -144,6 +173,7 @@ public class ScheduleTasksAction
         else if ( schedule )
         {
             systemSettingManager.saveSystemSetting( KEY_SCHEDULED_PERIOD_TYPES, (HashSet<String>) scheduledPeriodTypes );
+            systemSettingManager.saveSystemSetting( KEY_ORGUNITGROUPSET_AGG_LEVEL, orgUnitGroupSetAggLevel );
             
             if ( Scheduler.STATUS_RUNNING.equals( schedulingManager.getTaskStatus() ) )
             {
@@ -168,13 +198,15 @@ public class ScheduleTasksAction
         }
         else
         {
+            scheduledPeriodTypes = (Set<String>) systemSettingManager.getSystemSetting( KEY_SCHEDULED_PERIOD_TYPES, DEFAULT_SCHEDULED_PERIOD_TYPES );
+            orgUnitGroupSetAggLevel = (Integer) systemSettingManager.getSystemSetting( KEY_ORGUNITGROUPSET_AGG_LEVEL, DEFAULT_ORGUNITGROUPSET_AGG_LEVEL );
             dataMartStrategy = schedulingManager.getScheduledTasks().containsKey( SchedulingManager.TASK_DATAMART_LAST_12_MONTHS ) ? 
                 STRATEGY_LAST_12_DAILY : STRATEGY_LAST_6_DAILY_6_TO_12_WEEKLY;
         }
 
         status = schedulingManager.getTaskStatus();        
         running = Scheduler.STATUS_RUNNING.equals( status );
-        periodTypes = (Set<String>) systemSettingManager.getSystemSetting( KEY_SCHEDULED_PERIOD_TYPES, DEFAULT_SCHEDULED_PERIOD_TYPES );
+        levels = organisationUnitService.getOrganisationUnitLevels();
         
         return SUCCESS;
     }
