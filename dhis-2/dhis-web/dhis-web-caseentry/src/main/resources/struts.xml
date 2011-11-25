@@ -156,7 +156,7 @@
 			class="org.hisp.dhis.caseentry.action.caseentry.ProgramStageCustomDataEntryAction">
 			<result name="success" type="velocity">/content.vm</result>
 			<param name="page">/dhis-web-caseentry/programStageDataEntryForm.vm</param>
-			<param name="javascripts">javascript/form.js,../dhis-web-commons/javascripts/date.js</param>
+			<param name="javascripts">javascript/form.js,javascript/entry.js,../dhis-web-commons/javascripts/date.js</param>
 		</action>
 
 		<action name="loadProgramStageRecords"
