@@ -11,7 +11,6 @@ import org.hisp.dhis.program.ProgramStageInstance;
 
 /**
  * @author abyotag_adm
- * 
  */
 public class Activity
 {
