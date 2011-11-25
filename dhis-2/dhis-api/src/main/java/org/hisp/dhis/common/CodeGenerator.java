@@ -61,6 +61,7 @@ public class CodeGenerator
         {
             randomChars[i] = allowedChars.charAt( sr.nextInt( NUMBER_OF_CODEPOINTS ) );
         }
+        
         return new String( randomChars );
     }
 }

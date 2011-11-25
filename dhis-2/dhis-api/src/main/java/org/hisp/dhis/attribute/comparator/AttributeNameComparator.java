@@ -31,6 +31,9 @@ import java.util.Comparator;
 
 import org.hisp.dhis.attribute.Attribute;
 
+/**
+ * @author mortenoh
+ */
 public class AttributeNameComparator
     implements Comparator<Attribute>
 {

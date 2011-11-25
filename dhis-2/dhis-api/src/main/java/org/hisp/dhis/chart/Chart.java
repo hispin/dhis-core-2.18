@@ -550,11 +550,6 @@ public class Chart
         this.relativePeriods = relativePeriods;
     }
 
-    @XmlJavaTypeAdapter( BaseNameableObjectXmlAdapter.class )
-    @XmlElementWrapper( name = "allPeriods" )
-    @XmlElement
-    @JsonProperty
-    @JsonSerialize( using = JsonNameableObjectListSerializer.class )
     public List<Period> getAllPeriods()
     {
         return allPeriods;
@@ -565,9 +560,6 @@ public class Chart
         this.allPeriods = allPeriods;
     }
 
-    @XmlJavaTypeAdapter( BaseNameableObjectXmlAdapter.class )
-    @XmlElement
-    @JsonProperty
     public OrganisationUnit getOrganisationUnit()
     {
         return organisationUnit;
@@ -578,11 +570,6 @@ public class Chart
         this.organisationUnit = organisationUnit;
     }
 
-    @XmlJavaTypeAdapter( BaseNameableObjectXmlAdapter.class )
-    @XmlElementWrapper( name = "allOrganisationUnits" )
-    @XmlElement
-    @JsonProperty
-    @JsonSerialize( using = JsonNameableObjectListSerializer.class )
     public List<OrganisationUnit> getAllOrganisationUnits()
     {
         return allOrganisationUnits;
