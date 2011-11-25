@@ -97,8 +97,6 @@ public class Chart
 
     public static final String SIZE_TALL = "tall";
 
-    private int id;
-
     private String domainAxixLabel;
 
     private String rangeAxisLabel;

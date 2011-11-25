@@ -37,5 +37,5 @@ import org.hisp.dhis.concept.Concept;
  */
 public interface GenericDimensionalObjectStore<T> extends GenericIdentifiableObjectStore<T>
 {
-        public Collection<T> getByConcept(Concept concept);    
+    public Collection<T> getByConcept(Concept concept);    
 }

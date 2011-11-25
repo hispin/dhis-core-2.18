@@ -17,12 +17,11 @@ import org.hisp.dhis.concept.Concept;
 public class HibernateDimensionalObjectStore<T> extends HibernateIdentifiableObjectStore
   implements GenericDimensionalObjectStore
 {
-
     @Override
+    @SuppressWarnings( "unchecked" )
     public Collection<T> getByConcept(Concept concept) {
         Criteria criteria = getCriteria();
         criteria.add(Restrictions.eq("concept", concept));
         return criteria.list();
-    }
-    
+    }    
 }
