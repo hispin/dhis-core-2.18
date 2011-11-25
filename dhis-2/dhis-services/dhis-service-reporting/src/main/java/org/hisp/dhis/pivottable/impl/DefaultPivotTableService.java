@@ -38,7 +38,7 @@ import java.util.Map;
 
 import org.hisp.dhis.aggregation.AggregatedDataValueService;
 import org.hisp.dhis.common.AggregatedValue;
-import org.hisp.dhis.common.AbstractIdentifiableObject;
+import org.hisp.dhis.common.BaseIdentifiableObject;
 import org.hisp.dhis.common.Grid;
 import org.hisp.dhis.common.GridHeader;
 import org.hisp.dhis.common.IdentifiableObject;
@@ -66,7 +66,7 @@ import org.hisp.dhis.system.util.ConversionUtils;
 public class DefaultPivotTableService
     implements PivotTableService
 {
-    private static final Comparator<AbstractIdentifiableObject> INDICATOR_COMPARATOR = new IdentifiableObjectNameComparator();
+    private static final Comparator<BaseIdentifiableObject> INDICATOR_COMPARATOR = new IdentifiableObjectNameComparator();
     private static final Comparator<OrganisationUnit> ORGUNIT_COMPARATOR = new OrganisationUnitNameComparator();
     private static final Comparator<Period> PERIOD_COMPARATOR = new AscendingPeriodComparator();
     
@@ -123,7 +123,7 @@ public class DefaultPivotTableService
         List<OrganisationUnit> organisationUnits = new ArrayList<OrganisationUnit>( 
             organisationUnitService.getOrganisationUnit( organisationUnitId ).getChildrenThisIfEmpty() );
          
-        List<? extends AbstractIdentifiableObject> indicators = null;
+        List<? extends BaseIdentifiableObject> indicators = null;
         Collection<? extends AggregatedValue> aggregatedValues = null;
         
         if ( dataType == DATA_TYPE_INDICATOR )
@@ -158,7 +158,7 @@ public class DefaultPivotTableService
             }
             else
             {
-                indicators = new ArrayList<AbstractIdentifiableObject>( dataElementService.getDataElementGroup( groupId ).getMembers() );
+                indicators = new ArrayList<BaseIdentifiableObject>( dataElementService.getDataElementGroup( groupId ).getMembers() );
                 
                 aggregatedValues = aggregatedDataValueService.getAggregatedDataValueTotals(
                     ConversionUtils.getIdentifiers( DataElement.class, indicators ),

@@ -34,7 +34,9 @@ import java.util.List;
 import java.util.Set;
 
 import org.apache.commons.collections.CollectionUtils;
+import org.hisp.dhis.common.GenericDimensionalObjectStore;
 import org.hisp.dhis.common.GenericIdentifiableObjectStore;
+import org.hisp.dhis.concept.Concept;
 import org.hisp.dhis.system.util.Filter;
 import org.hisp.dhis.system.util.FilterUtils;
 import org.springframework.transaction.annotation.Transactional;
@@ -51,18 +53,18 @@ public class DefaultDataElementCategoryService
     // Dependencies
     // -------------------------------------------------------------------------
 
-    private GenericIdentifiableObjectStore<DataElementCategory> dataElementCategoryStore;
+    private GenericDimensionalObjectStore<DataElementCategory> dataElementCategoryStore;
 
     public void setDataElementCategoryStore(
-        GenericIdentifiableObjectStore<DataElementCategory> dataElementCategoryStore )
+        GenericDimensionalObjectStore<DataElementCategory> dataElementCategoryStore )
     {
         this.dataElementCategoryStore = dataElementCategoryStore;
     }
 
-    private GenericIdentifiableObjectStore<DataElementCategoryOption> dataElementCategoryOptionStore;
+    private GenericDimensionalObjectStore<DataElementCategoryOption> dataElementCategoryOptionStore;
 
     public void setDataElementCategoryOptionStore(
-        GenericIdentifiableObjectStore<DataElementCategoryOption> dataElementCategoryOptionStore )
+        GenericDimensionalObjectStore<DataElementCategoryOption> dataElementCategoryOptionStore )
     {
         this.dataElementCategoryOptionStore = dataElementCategoryOptionStore;
     }
@@ -544,4 +546,13 @@ public class DefaultDataElementCategoryService
     {
         return dataElementCategoryComboStore.getBetweenByName( name, first, max );
     }
+
+    @Override
+    public Collection<DataElementCategoryOption> getDataElementCategorOptionsByConcept(Concept concept) {
+        return dataElementCategoryOptionStore.getByConcept(concept);
+    }
+
+    @Override
+    public Collection<DataElementCategory> getDataElementCategorysByConcept(Concept concept) {
+        return dataElementCategoryStore.getByConcept(concept);    }
 }

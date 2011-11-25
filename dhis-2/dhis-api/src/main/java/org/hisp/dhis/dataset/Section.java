@@ -23,15 +23,25 @@ package org.hisp.dhis.dataset;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import org.codehaus.jackson.annotate.JsonProperty;
+import org.codehaus.jackson.map.annotate.JsonSerialize;
+import org.hisp.dhis.common.adapter.BaseIdentifiableObjectXmlAdapter;
+import org.hisp.dhis.common.adapter.JsonIdentifiableObjectListSerializer;
+import org.hisp.dhis.common.adapter.JsonIdentifiableObjectSetSerializer;
+import org.hisp.dhis.dataelement.DataElement;
+import org.hisp.dhis.dataelement.DataElementCategoryCombo;
+import org.hisp.dhis.dataelement.DataElementOperand;
+
+import javax.xml.bind.annotation.*;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import org.hisp.dhis.dataelement.DataElement;
-import org.hisp.dhis.dataelement.DataElementCategoryCombo;
-import org.hisp.dhis.dataelement.DataElementOperand;
 
+@XmlRootElement( name = "section" )
+@XmlAccessorType( value = XmlAccessType.NONE )
 public class Section
     implements Serializable
 {
@@ -47,7 +57,7 @@ public class Section
     private DataSet dataSet;
 
     private List<DataElement> dataElements = new ArrayList<DataElement>();
-    
+
     private Set<DataElementOperand> greyedFields = new HashSet<DataElementOperand>();
 
     private int sortOrder;
@@ -62,7 +72,7 @@ public class Section
 
     public Section( String name, String title, DataSet dataSet, List<DataElement> dataElements, Set<DataElementOperand> greyedFields )
     {
-        this.name = name;      
+        this.name = name;
         this.dataSet = dataSet;
         this.dataElements = dataElements;
         this.greyedFields = greyedFields;
@@ -89,24 +99,24 @@ public class Section
 
         return false;
     }
-    
+
     public boolean categorComboIsInvalid()
     {
         if ( dataElements != null && dataElements.size() > 0 )
         {
             DataElementCategoryCombo categoryCombo = null;
-            
+
             for ( DataElement element : dataElements )
             {
                 if ( categoryCombo != null && !categoryCombo.equals( element.getCategoryCombo() ) )
                 {
                     return true;
                 }
-                
+
                 categoryCombo = element.getCategoryCombo();
             }
         }
-        
+
         return false;
     }
 
@@ -153,6 +163,8 @@ public class Section
     // Getters and setters
     // -------------------------------------------------------------------------
 
+    @XmlAttribute
+    @JsonProperty
     public int getId()
     {
         return id;
@@ -163,6 +175,8 @@ public class Section
         this.id = id;
     }
 
+    @XmlAttribute
+    @JsonProperty
     public String getName()
     {
         return name;
@@ -173,6 +187,8 @@ public class Section
         this.name = name;
     }
 
+    @XmlElement
+    @XmlJavaTypeAdapter( BaseIdentifiableObjectXmlAdapter.class )
     public DataSet getDataSet()
     {
         return dataSet;
@@ -183,6 +199,10 @@ public class Section
         this.dataSet = dataSet;
     }
 
+    @XmlElementWrapper( name = "dataElements" )
+    @XmlElement( name = "dataElement" )
+    @XmlJavaTypeAdapter( BaseIdentifiableObjectXmlAdapter.class )
+    @JsonSerialize( using = JsonIdentifiableObjectListSerializer.class )
     public List<DataElement> getDataElements()
     {
         return dataElements;
@@ -196,8 +216,10 @@ public class Section
     public void addDataElement( DataElement dataElement )
     {
         this.dataElements.add( dataElement );
-    }  
+    }
 
+    @XmlElement
+    @JsonProperty
     public int getSortOrder()
     {
         return sortOrder;
@@ -208,13 +230,16 @@ public class Section
         this.sortOrder = sortOrder;
     }
 
-    public void setGreyedFields( Set<DataElementOperand> greyedFields )
-    {
-        this.greyedFields = greyedFields;
-    }
-
+    @XmlElementWrapper(name = "greyedFields")
+    @XmlElement(name = "greyedField")
+    @JsonProperty
     public Set<DataElementOperand> getGreyedFields()
     {
         return greyedFields;
+    }
+
+    public void setGreyedFields( Set<DataElementOperand> greyedFields )
+    {
+        this.greyedFields = greyedFields;
     }
 }

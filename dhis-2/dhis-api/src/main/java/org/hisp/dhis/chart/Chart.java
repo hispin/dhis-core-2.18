@@ -27,12 +27,11 @@ package org.hisp.dhis.chart;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-
-import org.hisp.dhis.common.AbstractIdentifiableObject;
+import org.codehaus.jackson.annotate.JsonProperty;
+import org.codehaus.jackson.map.annotate.JsonSerialize;
+import org.hisp.dhis.common.BaseIdentifiableObject;
+import org.hisp.dhis.common.adapter.BaseNameableObjectXmlAdapter;
+import org.hisp.dhis.common.adapter.JsonNameableObjectListSerializer;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.i18n.I18nFormat;
@@ -41,11 +40,20 @@ import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.RelativePeriods;
 
+import javax.xml.bind.annotation.*;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
 /**
  * @author Lars Helge Overland
  */
+@XmlRootElement( name = "chart" )
+@XmlAccessorType( value = XmlAccessType.NONE )
 public class Chart
-    extends AbstractIdentifiableObject
+    extends BaseIdentifiableObject
 {
     private static final long serialVersionUID = 2570074075484545534L;
 
@@ -273,33 +281,11 @@ public class Chart
     }
 
     // -------------------------------------------------------------------------
-    // Importable object
-    // -------------------------------------------------------------------------
-
-    public String getName()
-    {
-        return name;
-    }
-
-    public void setName( String name )
-    {
-        this.name = name;
-    }
-
-    // -------------------------------------------------------------------------
     // Getters and setters
     // -------------------------------------------------------------------------
 
-    public int getId()
-    {
-        return id;
-    }
-
-    public void setId( int id )
-    {
-        this.id = id;
-    }
-
+    @XmlElement
+    @JsonProperty
     public String getDomainAxixLabel()
     {
         return domainAxixLabel;
@@ -310,6 +296,8 @@ public class Chart
         this.domainAxixLabel = domainAxixLabel;
     }
 
+    @XmlElement
+    @JsonProperty
     public String getRangeAxisLabel()
     {
         return rangeAxisLabel;
@@ -320,6 +308,8 @@ public class Chart
         this.rangeAxisLabel = rangeAxisLabel;
     }
 
+    @XmlElement
+    @JsonProperty
     public String getType()
     {
         return type;
@@ -330,6 +320,8 @@ public class Chart
         this.type = type;
     }
 
+    @XmlElement
+    @JsonProperty
     public String getSize()
     {
         return size;
@@ -340,6 +332,8 @@ public class Chart
         this.size = size;
     }
 
+    @XmlElement
+    @JsonProperty
     public String getDimension()
     {
         return dimension;
@@ -350,6 +344,8 @@ public class Chart
         this.dimension = dimension;
     }
 
+    @XmlElement
+    @JsonProperty
     public boolean isHideLegend()
     {
         return hideLegend;
@@ -360,6 +356,8 @@ public class Chart
         this.hideLegend = hideLegend;
     }
 
+    @XmlElement
+    @JsonProperty
     public boolean isVerticalLabels()
     {
         return verticalLabels;
@@ -370,6 +368,8 @@ public class Chart
         this.verticalLabels = verticalLabels;
     }
 
+    @XmlElement
+    @JsonProperty
     public boolean isHorizontalPlotOrientation()
     {
         return horizontalPlotOrientation;
@@ -380,6 +380,8 @@ public class Chart
         this.horizontalPlotOrientation = horizontalPlotOrientation;
     }
 
+    @XmlElement
+    @JsonProperty
     public boolean isRegression()
     {
         return regression;
@@ -390,6 +392,8 @@ public class Chart
         this.regression = regression;
     }
 
+    @XmlElement
+    @JsonProperty
     public boolean isTargetLine()
     {
         return targetLine;
@@ -400,6 +404,8 @@ public class Chart
         this.targetLine = targetLine;
     }
 
+    @XmlElement
+    @JsonProperty
     public Double getTargetLineValue()
     {
         return targetLineValue;
@@ -410,6 +416,8 @@ public class Chart
         this.targetLineValue = targetLineValue;
     }
 
+    @XmlElement
+    @JsonProperty
     public void setTargetLineLabel( String targetLineLabel )
     {
         this.targetLineLabel = targetLineLabel;
@@ -420,16 +428,23 @@ public class Chart
         return targetLineLabel;
     }
 
+    @XmlElement
+    @JsonProperty
     public boolean isHideSubtitle()
     {
         return hideSubtitle;
     }
 
-    public void setHideSubtitle( boolean hideSubtitle )
+    public void setHideSubtitle( Boolean hideSubtitle )
     {
         this.hideSubtitle = hideSubtitle;
     }
 
+    @XmlJavaTypeAdapter( BaseNameableObjectXmlAdapter.class )
+    @XmlElementWrapper( name = "indicators" )
+    @XmlElement
+    @JsonProperty
+    @JsonSerialize( using = JsonNameableObjectListSerializer.class )
     public List<Indicator> getIndicators()
     {
         return indicators;
@@ -440,16 +455,26 @@ public class Chart
         this.indicators = indicators;
     }
 
-    public void setDataElements( List<DataElement> dataElements )
-    {
-        this.dataElements = dataElements;
-    }
-
+    @XmlJavaTypeAdapter( BaseNameableObjectXmlAdapter.class )
+    @XmlElementWrapper( name = "dataElements" )
+    @XmlElement
+    @JsonProperty
+    @JsonSerialize( using = JsonNameableObjectListSerializer.class )
     public List<DataElement> getDataElements()
     {
         return dataElements;
     }
 
+    public void setDataElements( List<DataElement> dataElements )
+    {
+        this.dataElements = dataElements;
+    }
+
+    @XmlJavaTypeAdapter( BaseNameableObjectXmlAdapter.class )
+    @XmlElementWrapper( name = "dataSets" )
+    @XmlElement
+    @JsonProperty
+    @JsonSerialize( using = JsonNameableObjectListSerializer.class )
     public List<DataSet> getDataSets()
     {
         return dataSets;
@@ -470,6 +495,11 @@ public class Chart
         this.periods = periods;
     }
 
+    @XmlJavaTypeAdapter( BaseNameableObjectXmlAdapter.class )
+    @XmlElementWrapper( name = "organisationUnits" )
+    @XmlElement
+    @JsonProperty
+    @JsonSerialize( using = JsonNameableObjectListSerializer.class )
     public List<OrganisationUnit> getOrganisationUnits()
     {
         return organisationUnits;
@@ -500,6 +530,8 @@ public class Chart
         this.relatives = relatives;
     }
 
+    @XmlElement
+    @JsonProperty
     public boolean isUserOrganisationUnit()
     {
         return userOrganisationUnit;
@@ -520,6 +552,11 @@ public class Chart
         this.relativePeriods = relativePeriods;
     }
 
+    @XmlJavaTypeAdapter( BaseNameableObjectXmlAdapter.class )
+    @XmlElementWrapper( name = "allPeriods" )
+    @XmlElement
+    @JsonProperty
+    @JsonSerialize( using = JsonNameableObjectListSerializer.class )
     public List<Period> getAllPeriods()
     {
         return allPeriods;
@@ -530,6 +567,9 @@ public class Chart
         this.allPeriods = allPeriods;
     }
 
+    @XmlJavaTypeAdapter( BaseNameableObjectXmlAdapter.class )
+    @XmlElement
+    @JsonProperty
     public OrganisationUnit getOrganisationUnit()
     {
         return organisationUnit;
@@ -540,6 +580,11 @@ public class Chart
         this.organisationUnit = organisationUnit;
     }
 
+    @XmlJavaTypeAdapter( BaseNameableObjectXmlAdapter.class )
+    @XmlElementWrapper( name = "allOrganisationUnits" )
+    @XmlElement
+    @JsonProperty
+    @JsonSerialize( using = JsonNameableObjectListSerializer.class )
     public List<OrganisationUnit> getAllOrganisationUnits()
     {
         return allOrganisationUnits;

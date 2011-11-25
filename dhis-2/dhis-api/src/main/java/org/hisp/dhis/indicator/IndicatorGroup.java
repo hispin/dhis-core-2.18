@@ -27,17 +27,22 @@ package org.hisp.dhis.indicator;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import org.codehaus.jackson.map.annotate.JsonSerialize;
+import org.hisp.dhis.common.BaseIdentifiableObject;
+import org.hisp.dhis.common.adapter.BaseIdentifiableObjectXmlAdapter;
+import org.hisp.dhis.common.adapter.JsonIdentifiableObjectSetSerializer;
+
+import javax.xml.bind.annotation.*;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import java.util.HashSet;
 import java.util.Set;
 
-import org.hisp.dhis.common.AbstractIdentifiableObject;
-
 /**
  * @author Lars Helge Overland
- * @version $Id: IndicatorGroup.java 5296 2008-05-29 16:06:14Z larshelg $
  */
-public class IndicatorGroup
-    extends AbstractIdentifiableObject
+@XmlRootElement( name = "indicatorGroup" )
+@XmlAccessorType( value = XmlAccessType.NONE )
+public class IndicatorGroup extends BaseIdentifiableObject
 {
     /**
      * Determines if a de-serialized file is compatible with this class.
@@ -47,7 +52,7 @@ public class IndicatorGroup
     private Set<Indicator> members = new HashSet<Indicator>();
 
     private IndicatorGroupSet groupSet;
-    
+
     // -------------------------------------------------------------------------
     // Constructors
     // -------------------------------------------------------------------------
@@ -70,13 +75,13 @@ public class IndicatorGroup
         members.add( indicator );
         indicator.getGroups().remove( this );
     }
-    
+
     public void removeIndicator( Indicator indicator )
     {
         members.remove( indicator );
         indicator.getGroups().remove( this );
     }
-    
+
     public void updateIndicators( Set<Indicator> updates )
     {
         for ( Indicator indicator : new HashSet<Indicator>( members ) )
@@ -86,13 +91,13 @@ public class IndicatorGroup
                 removeIndicator( indicator );
             }
         }
-        
+
         for ( Indicator indicator : updates )
         {
             addIndicator( indicator );
         }
     }
-    
+
     // -------------------------------------------------------------------------
     // hashCode and equals
     // -------------------------------------------------------------------------
@@ -136,6 +141,10 @@ public class IndicatorGroup
     // Getters and setters
     // -------------------------------------------------------------------------
 
+    @XmlElementWrapper( name = "members" )
+    @XmlJavaTypeAdapter( BaseIdentifiableObjectXmlAdapter.class )
+    @XmlElement( name = "member" )
+    @JsonSerialize( using = JsonIdentifiableObjectSetSerializer.class )
     public Set<Indicator> getMembers()
     {
         return members;

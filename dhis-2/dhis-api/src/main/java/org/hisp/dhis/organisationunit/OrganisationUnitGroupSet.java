@@ -27,24 +27,20 @@ package org.hisp.dhis.organisationunit;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-
-import org.hisp.dhis.common.AbstractIdentifiableObject;
+import org.hisp.dhis.common.BaseIdentifiableObject;
 import org.hisp.dhis.organisationunit.comparator.OrganisationUnitGroupNameComparator;
+
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlRootElement;
+import java.util.*;
 
 /**
  * @author Kristian Nordal
- * @version $Id: OrganisationUnitGroupSet.java 1905 2006-09-23 14:34:55Z
- *          torgeilo $
  */
-public class OrganisationUnitGroupSet
-    extends AbstractIdentifiableObject
+@XmlRootElement( name = "organisationUnitGroupSet" )
+@XmlAccessorType( value = XmlAccessType.NONE )
+public class OrganisationUnitGroupSet extends BaseIdentifiableObject
 {
     /**
      * Determines if a de-serialized file is compatible with this class.
@@ -54,7 +50,7 @@ public class OrganisationUnitGroupSet
     private static final Comparator<OrganisationUnitGroup> COMPARATOR = new OrganisationUnitGroupNameComparator();
 
     private Set<OrganisationUnitGroup> organisationUnitGroups = new HashSet<OrganisationUnitGroup>();
-    
+
     private String description;
 
     private boolean compulsory;
@@ -126,7 +122,7 @@ public class OrganisationUnitGroupSet
         List<OrganisationUnitGroup> sortedGroups = new ArrayList<OrganisationUnitGroup>( organisationUnitGroups );
 
         Collections.sort( sortedGroups, COMPARATOR );
-   
+
         return sortedGroups;
     }
 

@@ -27,10 +27,10 @@ package org.hisp.dhis.validation;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.io.Serializable;
-
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.period.Period;
+
+import java.io.Serializable;
 
 /**
  * @author Margrethe Store
@@ -45,13 +45,13 @@ public class ValidationResult
     private static final long serialVersionUID = -4118317796752962296L;
 
     private OrganisationUnit source;
-    
+
     private Period period;
-    
+
     private ValidationRule validationRule;
-    
+
     private double leftsideValue;
-    
+
     private double rightsideValue;
 
     // -------------------------------------------------------------------------
@@ -59,11 +59,11 @@ public class ValidationResult
     // -------------------------------------------------------------------------     
 
     public ValidationResult()
-    {      
+    {
     }
-    
+
     public ValidationResult( Period period, OrganisationUnit source, ValidationRule validationRule,
-        double leftsideValue, double rightsideValue )
+                             double leftsideValue, double rightsideValue )
     {
         this.source = source;
         this.period = period;
@@ -80,13 +80,13 @@ public class ValidationResult
     public int hashCode()
     {
         final int PRIME = 31;
-        
+
         int result = 1;
-        
-        result = PRIME * result + ( ( period == null ) ? 0 : period.hashCode() );
-        result = PRIME * result + ( ( source == null ) ? 0 : source.hashCode() );
-        result = PRIME * result + ( ( validationRule == null ) ? 0 : validationRule.hashCode() );
-        
+
+        result = PRIME * result + ((period == null) ? 0 : period.hashCode());
+        result = PRIME * result + ((source == null) ? 0 : source.hashCode());
+        result = PRIME * result + ((validationRule == null) ? 0 : validationRule.hashCode());
+
         return result;
     }
 
@@ -97,19 +97,19 @@ public class ValidationResult
         {
             return true;
         }
-        
+
         if ( object == null )
         {
             return false;
         }
-        
+
         if ( getClass() != object.getClass() )
         {
             return false;
         }
-        
+
         final ValidationResult other = (ValidationResult) object;
-        
+
         if ( period == null )
         {
             if ( other.period != null )
@@ -121,7 +121,7 @@ public class ValidationResult
         {
             return false;
         }
-        
+
         if ( source == null )
         {
             if ( other.source != null )
@@ -133,7 +133,7 @@ public class ValidationResult
         {
             return false;
         }
-        
+
         if ( validationRule == null )
         {
             if ( other.validationRule != null )
@@ -145,7 +145,7 @@ public class ValidationResult
         {
             return false;
         }
-        
+
         return true;
     }
 
@@ -154,7 +154,7 @@ public class ValidationResult
     {
         return source + " - " + period + " - " + validationRule + " - " + leftsideValue + " - " + rightsideValue;
     }
-    
+
     // -------------------------------------------------------------------------
     // Set and get methods
     // -------------------------------------------------------------------------     
@@ -168,7 +168,7 @@ public class ValidationResult
     {
         this.source = source;
     }
-    
+
     public Period getPeriod()
     {
         return period;

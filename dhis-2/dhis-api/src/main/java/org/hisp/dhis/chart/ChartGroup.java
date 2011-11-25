@@ -27,17 +27,20 @@ package org.hisp.dhis.chart;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import org.hisp.dhis.common.BaseIdentifiableObject;
+
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlRootElement;
 import java.util.HashSet;
 import java.util.Set;
 
-import org.hisp.dhis.common.AbstractIdentifiableObject;
-
 /**
  * @author Dang Duy Hieu
- * @version $Id$
  */
-public class ChartGroup
-    extends AbstractIdentifiableObject
+@XmlRootElement( name = "chartGroup" )
+@XmlAccessorType( value = XmlAccessType.NONE )
+public class ChartGroup extends BaseIdentifiableObject
 {
     /**
      * Determines if a de-serialized file is compatible with this class.
@@ -45,7 +48,7 @@ public class ChartGroup
     private static final long serialVersionUID = -1L;
 
     private Set<Chart> members = new HashSet<Chart>();
-    
+
     // -------------------------------------------------------------------------
     // Constructors
     // -------------------------------------------------------------------------
@@ -68,13 +71,13 @@ public class ChartGroup
         members.add( chart );
         chart.getGroups().add( this );
     }
-    
+
     public void removeChart( Chart chart )
     {
         members.remove( chart );
         chart.getGroups().remove( this );
     }
-    
+
     public void updateCharts( Set<Chart> updates )
     {
         for ( Chart chart : new HashSet<Chart>( members ) )
@@ -84,13 +87,13 @@ public class ChartGroup
                 removeChart( chart );
             }
         }
-        
+
         for ( Chart chart : updates )
         {
             addChart( chart );
         }
     }
-    
+
     // -------------------------------------------------------------------------
     // hashCode and equals
     // -------------------------------------------------------------------------

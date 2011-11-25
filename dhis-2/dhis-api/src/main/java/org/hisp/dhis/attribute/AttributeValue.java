@@ -27,11 +27,16 @@
 
 package org.hisp.dhis.attribute;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlRootElement;
 import java.io.Serializable;
 
 /**
  * @author mortenoh
  */
+@XmlRootElement( name = "attributeValue" )
+@XmlAccessorType( value = XmlAccessType.NONE )
 public class AttributeValue
     implements Serializable
 {
@@ -70,7 +75,7 @@ public class AttributeValue
     {
         this.attribute = attribute;
     }
-    
+
     public void setId( int id )
     {
         this.id = id;

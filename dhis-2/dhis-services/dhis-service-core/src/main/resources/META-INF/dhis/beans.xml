@@ -114,13 +114,13 @@ http://www.springframework.org/schema/security http://www.springframework.org/sc
     <property name="cacheable" value="true" />
   </bean>
 
-  <bean id="org.hisp.dhis.dataelement.DataElementCategoryStore" class="org.hisp.dhis.common.hibernate.HibernateIdentifiableObjectStore">
+  <bean id="org.hisp.dhis.dataelement.DataElementCategoryStore" class="org.hisp.dhis.common.hibernate.HibernateDimensionalObjectStore">
     <property name="clazz" value="org.hisp.dhis.dataelement.DataElementCategory" />
     <property name="sessionFactory" ref="sessionFactory" />
     <property name="cacheable" value="true" />
   </bean>
 
-  <bean id="org.hisp.dhis.dataelement.DataElementCategoryOptionStore" class="org.hisp.dhis.common.hibernate.HibernateIdentifiableObjectStore">
+  <bean id="org.hisp.dhis.dataelement.DataElementCategoryOptionStore" class="org.hisp.dhis.common.hibernate.HibernateDimensionalObjectStore">
     <property name="clazz" value="org.hisp.dhis.dataelement.DataElementCategoryOption" />
     <property name="sessionFactory" ref="sessionFactory" />
     <property name="cacheable" value="true" />

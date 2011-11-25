@@ -29,9 +29,9 @@ package org.hisp.dhis.patient;
 
 import java.util.List;
 
-import org.hisp.dhis.common.AbstractIdentifiableObject;
+import org.hisp.dhis.common.BaseIdentifiableObject;
 
-public class PatientMobileSetting extends AbstractIdentifiableObject
+public class PatientMobileSetting extends BaseIdentifiableObject
 {
 
     private static final long serialVersionUID = -5947521380646718129L;

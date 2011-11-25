@@ -57,6 +57,11 @@
       <name>Spring Maven Milestone Repository</name>
       <url>http://maven.springframework.org/milestone</url>
     </repository>
+    <repository>
+      <id>UK</id>
+      <name>UK Central</name>
+      <url>http://uk.maven.org/maven2</url>
+    </repository>
 
     <!--
       <repository>
@@ -176,11 +181,6 @@
       <dependency>
         <groupId>org.hisp.dhis</groupId>
         <artifactId>dhis-service-options</artifactId>
-        <version>${project.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>org.hisp.dhis</groupId>
-        <artifactId>dhis-service-expressionengine-default</artifactId>
         <version>${project.version}</version>
       </dependency>
       <dependency>
@@ -764,19 +764,19 @@
       <dependency>
         <groupId>org.codehaus.jackson</groupId>
         <artifactId>jackson-core-asl</artifactId>
-        <version>1.7.1</version>
+        <version>1.9.2</version>
       </dependency>
 
       <dependency>
         <groupId>org.codehaus.jackson</groupId>
         <artifactId>jackson-mapper-asl</artifactId>
-        <version>1.7.1</version>
+        <version>1.9.2</version>
       </dependency>
 
       <dependency>
         <groupId>org.codehaus.jackson</groupId>
         <artifactId>jackson-xc</artifactId>
-        <version>1.7.1</version>
+        <version>1.9.2</version>
       </dependency>
 
       <dependency>

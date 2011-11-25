@@ -30,7 +30,7 @@ package org.hisp.dhis.report;
 import java.util.HashSet;
 import java.util.Set;
 
-import org.hisp.dhis.common.AbstractIdentifiableObject;
+import org.hisp.dhis.common.BaseIdentifiableObject;
 import org.hisp.dhis.reporttable.ReportTable;
 
 /**
@@ -38,7 +38,7 @@ import org.hisp.dhis.reporttable.ReportTable;
  * @version $Id$
  */
 public class Report
-    extends AbstractIdentifiableObject
+    extends BaseIdentifiableObject
 {
     /**
      * Determines if a de-serialized file is compatible with this class.

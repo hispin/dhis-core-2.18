@@ -15,6 +15,9 @@
     </id>
     &identifiableProperties;
     
+    <many-to-one name="concept" class="org.hisp.dhis.concept.Concept" column="conceptid"
+      foreign-key="fk_dataelementcategory_conceptid" />
+
     <set name="categoryOptionCombos" table="categoryoptioncombos_categoryoptions" inverse="true">
       <cache usage="read-write" />
       <key column="categoryoptionid" foreign-key="fk_categoryoptioncombos_categoryoptions_categoryoptionid" />

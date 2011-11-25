@@ -27,18 +27,8 @@ package org.hisp.dhis.reporttable;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
 import org.apache.commons.lang.StringUtils;
-import org.hisp.dhis.common.AbstractIdentifiableObject;
+import org.hisp.dhis.common.BaseIdentifiableObject;
 import org.hisp.dhis.common.CombinationGenerator;
 import org.hisp.dhis.common.NameableObject;
 import org.hisp.dhis.dataelement.DataElement;
@@ -54,16 +44,17 @@ import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.RelativePeriods;
 import org.hisp.dhis.period.comparator.AscendingPeriodComparator;
 
+import java.util.*;
+
 /**
  * The ReportTable object represents a customizable database table. It has
  * features like crosstabulation, relative periods, parameters, and display
  * columns.
- * 
+ *
  * @author Lars Helge Overland
  * @version $Id$
  */
-public class ReportTable
-    extends AbstractIdentifiableObject
+public class ReportTable extends BaseIdentifiableObject
 {
     /**
      * Determines if a de-serialized file is compatible with this class.
@@ -97,34 +88,38 @@ public class ReportTable
     public static final int ASC = -1;
     public static final int DESC = 1;
     public static final int NONE = 0;
-    
+
     public static final Map<String, String> PRETTY_COLUMNS = new HashMap<String, String>()
-    { {
-        put( CATEGORYCOMBO_ID, "Category combination ID" );
-        put( INDICATOR_ID, "Indicator ID" );
-        put( INDICATOR_NAME, "Indicator" );
-        put( INDICATOR_CODE, "Indicator code" );
-        put( PERIOD_ID, "Period ID" );
-        put( PERIOD_NAME, "Period" );
-        put( PERIOD_CODE, "Period code" );
-        put( ORGANISATIONUNIT_ID, "Organisation unit ID" );
-        put( ORGANISATIONUNIT_NAME, "Organisation unit" );
-        put( ORGANISATIONUNIT_CODE, "Organisation unit code" );
-        put( REPORTING_MONTH_COLUMN_NAME, "Reporting month" );
-        put( PARAM_ORGANISATIONUNIT_COLUMN_NAME, "Organisation unit parameter" );
-        put( ORGANISATION_UNIT_IS_PARENT_COLUMN_NAME, "Organisation unit is parent" );
-    } };
+    {
+        {
+            put( CATEGORYCOMBO_ID, "Category combination ID" );
+            put( INDICATOR_ID, "Indicator ID" );
+            put( INDICATOR_NAME, "Indicator" );
+            put( INDICATOR_CODE, "Indicator code" );
+            put( PERIOD_ID, "Period ID" );
+            put( PERIOD_NAME, "Period" );
+            put( PERIOD_CODE, "Period code" );
+            put( ORGANISATIONUNIT_ID, "Organisation unit ID" );
+            put( ORGANISATIONUNIT_NAME, "Organisation unit" );
+            put( ORGANISATIONUNIT_CODE, "Organisation unit code" );
+            put( REPORTING_MONTH_COLUMN_NAME, "Reporting month" );
+            put( PARAM_ORGANISATIONUNIT_COLUMN_NAME, "Organisation unit parameter" );
+            put( ORGANISATION_UNIT_IS_PARENT_COLUMN_NAME, "Organisation unit is parent" );
+        }
+    };
 
     public static final Map<Class<? extends NameableObject>, String> CLASS_ID_MAP = new HashMap<Class<? extends NameableObject>, String>()
-    { {
-        put( Indicator.class, INDICATOR_ID );
-        put( DataElement.class, DATAELEMENT_ID );
-        put( DataElementCategoryOptionCombo.class, CATEGORYCOMBO_ID );
-        put( DataElementCategoryOption.class, CATEGORYOPTION_ID );
-        put( DataSet.class, DATASET_ID );
-        put( Period.class, PERIOD_ID );
-        put( OrganisationUnit.class, ORGANISATIONUNIT_ID );
-    } };
+    {
+        {
+            put( Indicator.class, INDICATOR_ID );
+            put( DataElement.class, DATAELEMENT_ID );
+            put( DataElementCategoryOptionCombo.class, CATEGORYCOMBO_ID );
+            put( DataElementCategoryOption.class, CATEGORYOPTION_ID );
+            put( DataSet.class, DATASET_ID );
+            put( Period.class, PERIOD_ID );
+            put( OrganisationUnit.class, ORGANISATIONUNIT_ID );
+        }
+    };
 
     private static final String EMPTY = "";
 
@@ -270,7 +265,7 @@ public class ReportTable
      * table.
      */
     private List<String> indexCodeColumns = new ArrayList<String>();
-    
+
     /**
      * The I18nFormat used for internationalization of ie. periods.
      */
@@ -304,36 +299,31 @@ public class ReportTable
 
     /**
      * Default constructor.
-     * 
-     * @param name the name.
-     * @param mode the mode.
-     * @param regression include regression columns.
-     * @param dataElements the data elements.
-     * @param indicators the indicators.
-     * @param dataSets the datasets.
-     * @param periods the periods. These periods cannot have the name property
-     *        set.
+     *
+     * @param name            the name.
+     * @param regression      include regression columns.
+     * @param dataElements    the data elements.
+     * @param indicators      the indicators.
+     * @param dataSets        the datasets.
+     * @param periods         the periods. These periods cannot have the name property
+     *                        set.
      * @param relativePeriods the relative periods. These periods must have the
-     *        name property set. Not persisted.
-     * @param units the organisation units.
-     * @param relativeUnits the organisation units. Not persisted.
-     * @param dimensionSet the dimension set. Not persisted.
-     * @param doIndicators indicating whether indicators should be
-     *        crosstabulated.
-     * @param doCategoryOptionCombos indicating whether category option combos
-     *        should be crosstabulated.
-     * @param doPeriods indicating whether periods should be crosstabulated.
-     * @param doUnits indicating whether organisation units should be
-     *        crosstabulated.
-     * @param relatives the relative periods.
-     * @param i18nFormat the i18n format. Not persisted.
-     * @param reportingMonthName the reporting month name. Not persisted.
+     *                        name property set. Not persisted.
+     * @param units           the organisation units.
+     * @param relativeUnits   the organisation units. Not persisted.
+     * @param doIndicators    indicating whether indicators should be
+     *                        crosstabulated.
+     * @param doPeriods       indicating whether periods should be crosstabulated.
+     * @param doUnits         indicating whether organisation units should be
+     *                        crosstabulated.
+     * @param relatives       the relative periods.
+     * @param i18nFormat      the i18n format. Not persisted.
      */
     public ReportTable( String name, boolean regression, List<DataElement> dataElements, List<Indicator> indicators,
-        List<DataSet> dataSets, List<Period> periods, List<Period> relativePeriods, List<OrganisationUnit> units,
-        List<OrganisationUnit> relativeUnits, DataElementCategoryCombo categoryCombo, boolean doIndicators,
-        boolean doPeriods, boolean doUnits, RelativePeriods relatives, ReportParams reportParams,
-        I18nFormat i18nFormat, String reportingPeriodName )
+                        List<DataSet> dataSets, List<Period> periods, List<Period> relativePeriods, List<OrganisationUnit> units,
+                        List<OrganisationUnit> relativeUnits, DataElementCategoryCombo categoryCombo, boolean doIndicators,
+                        boolean doPeriods, boolean doUnits, RelativePeriods relatives, ReportParams reportParams,
+                        I18nFormat i18nFormat, String reportingPeriodName )
     {
         this.name = name;
         this.regression = regression;
@@ -445,35 +435,35 @@ public class ReportTable
             addReportTableGroup( group );
         }
     }
-    
+
     /**
      * Creates a map which contains mappings between the organisation unit
      * identifier and the name of the group this organisation unit is a member
      * of in all of the given group sets for all organisation units in this
      * report table.
-     * 
+     *
      * @param groupSets the collection of organisation unit group sets.
      * @return a map.
      */
     public Map<String, Object> getOrganisationUnitGroupMap( Collection<OrganisationUnitGroupSet> groupSets )
     {
         Map<String, Object> organisationUnitGroupMap = new HashMap<String, Object>();
-        
-        for ( OrganisationUnitGroupSet groupSet: groupSets )
+
+        for ( OrganisationUnitGroupSet groupSet : groupSets )
         {
             Map<Integer, String> map = new HashMap<Integer, String>();
-            
+
             for ( OrganisationUnit unit : allUnits )
             {
                 map.put( unit.getId(), unit.getGroupNameInGroupSet( groupSet ) );
             }
-            
+
             organisationUnitGroupMap.put( columnEncode( KEY_ORGUNIT_GROUPSET + groupSet.getName() ), map );
         }
-        
+
         return organisationUnitGroupMap;
     }
-        
+
     /**
      * Indicates whether this ReportTable is multi-dimensional.
      */

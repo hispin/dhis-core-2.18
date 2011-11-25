@@ -27,19 +27,23 @@ package org.hisp.dhis.period;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import org.hisp.dhis.common.BaseNameableObject;
+import org.hisp.dhis.common.Weighted;
+
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlRootElement;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import org.hisp.dhis.common.AbstractNameableObject;
-import org.hisp.dhis.common.Weighted;
-
 /**
  * @author Kristian Nordal
- * @version $Id: Period.java 5277 2008-05-27 15:48:42Z larshelg $
  */
+@XmlRootElement( name = "period" )
+@XmlAccessorType( value = XmlAccessType.NONE )
 public class Period
-    extends AbstractNameableObject implements Weighted
+    extends BaseNameableObject implements Weighted
 {
     /**
      * Determines if a de-serialized file is compatible with this class.
@@ -49,7 +53,7 @@ public class Period
     public static final String DEFAULT_DATE_FORMAT = "yyyy-MM-dd";
 
     private static final String SEPARATOR = "_";
-    
+
     /**
      * Required.
      */
@@ -64,7 +68,7 @@ public class Period
      * Required. Must be unique together with startDate.
      */
     private Date endDate;
-    
+
     // -------------------------------------------------------------------------
     // Constructors
     // -------------------------------------------------------------------------
@@ -81,23 +85,23 @@ public class Period
         this.endDate = period.getEndDate();
         this.name = period.getName();
     }
-    
+
     protected Period( PeriodType periodType, Date startDate, Date endDate )
     {
         this.periodType = periodType;
         this.startDate = startDate;
         this.endDate = endDate;
     }
-    
+
     public Period( String externalId )
     {
         final String[] id = externalId.split( SEPARATOR );
-        
+
         this.periodType = PeriodType.getPeriodTypeByName( id[0] );
         this.startDate = getMediumDate( id[1] );
         this.endDate = getMediumDate( id[2] );
     }
-    
+
     // -------------------------------------------------------------------------
     // Logic
     // -------------------------------------------------------------------------
@@ -107,17 +111,17 @@ public class Period
      *
      * @return the period string
      */
-    public String getIsoDate() 
+    public String getIsoDate()
     {
         return periodType.getIsoDate( this );
     }
-    
+
     /**
      * Copies the transient properties (name) from the argument Period
      * to this Period.
-     * 
+     *
      * @param the Period to copy from.
-     * @return this Period. 
+     * @return this Period.
      */
     public Period copyTransientProperties( Period other )
     {
@@ -125,14 +129,14 @@ public class Period
         this.alternativeName = other.getAlternativeName();
         this.shortName = other.getShortName();
         this.code = other.getCode();
-        
+
         return this;
     }
 
     /**
      * Generates an String which uniquely identifies this Period based on its
      * core properties.
-     * 
+     *
      * @return an identifier String.
      */
     public String getExternalId()
@@ -142,23 +146,23 @@ public class Period
 
     /**
      * Returns the frequency order of the period type of the period.
-     * 
+     *
      * @return the frequency order.
      */
     public int frequencyOrder()
     {
         return periodType != null ? periodType.getFrequencyOrder() : YearlyPeriodType.FREQUENCY_ORDER;
     }
-    
+
     @Override
     public int getWeight()
     {
         return frequencyOrder() + 15;
     }
-    
+
     /**
      * Returns start date formatted as string.
-     * 
+     *
      * @return start date formatted as string.
      */
     public String getStartDateString()
@@ -168,7 +172,7 @@ public class Period
 
     /**
      * Formats a Date to the format YYYY-MM-DD.
-     * 
+     *
      * @param date the Date to parse.
      * @return A formatted date string. Null if argument is null.
      */
@@ -183,7 +187,7 @@ public class Period
 
     /**
      * Parses a date from a String on the format YYYY-MM-DD.
-     * 
+     *
      * @param dateString the String to parse.
      * @return a Date based on the given String.
      */
@@ -192,17 +196,16 @@ public class Period
         try
         {
             final SimpleDateFormat format = new SimpleDateFormat();
-    
+
             format.applyPattern( DEFAULT_DATE_FORMAT );
-    
+
             return dateString != null ? format.parse( dateString ) : null;
-        }
-        catch ( ParseException ex )
+        } catch ( ParseException ex )
         {
             throw new RuntimeException( "Failed to parse medium date", ex );
         }
     }
-    
+
     // -------------------------------------------------------------------------
     // hashCode, equals and toString
     // -------------------------------------------------------------------------
@@ -216,7 +219,7 @@ public class Period
         result = result * prime + startDate.hashCode();
         result = result * prime + endDate.hashCode();
         result = result * prime + periodType.hashCode();
-        
+
         return result;
     }
 
@@ -240,8 +243,8 @@ public class Period
 
         final Period other = (Period) o;
 
-        return startDate.equals( other.getStartDate() ) && 
-            endDate.equals( other.getEndDate() ) && 
+        return startDate.equals( other.getStartDate() ) &&
+            endDate.equals( other.getEndDate() ) &&
             periodType.equals( other.getPeriodType() );
     }
 
@@ -283,5 +286,5 @@ public class Period
     public void setStartDate( Date startDate )
     {
         this.startDate = startDate;
-    }    
+    }
 }

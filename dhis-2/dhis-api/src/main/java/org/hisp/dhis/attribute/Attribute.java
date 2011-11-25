@@ -27,16 +27,20 @@
 
 package org.hisp.dhis.attribute;
 
+import org.hisp.dhis.common.BaseIdentifiableObject;
+
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlRootElement;
 import java.util.HashSet;
 import java.util.Set;
-
-import org.hisp.dhis.common.AbstractIdentifiableObject;
 
 /**
  * @author mortenoh
  */
-public class Attribute
-    extends AbstractIdentifiableObject
+@XmlRootElement( name = "attribute" )
+@XmlAccessorType( value = XmlAccessType.NONE )
+public class Attribute extends BaseIdentifiableObject
 {
     /**
      * Determines if a de-serialized file is compatible with this class.
@@ -58,7 +62,7 @@ public class Attribute
     private Integer sortOrder;
 
     private Set<AttributeValue> attributeValues = new HashSet<AttributeValue>();
-    
+
     public Attribute()
     {
 
@@ -129,7 +133,7 @@ public class Attribute
     {
         this.sortOrder = sortOrder;
     }
-    
+
     public boolean isUserAttribute()
     {
         return userAttribute;
@@ -144,7 +148,7 @@ public class Attribute
     {
         return attributeValues;
     }
-    
+
     public Integer getSortOrder()
     {
         return sortOrder;
