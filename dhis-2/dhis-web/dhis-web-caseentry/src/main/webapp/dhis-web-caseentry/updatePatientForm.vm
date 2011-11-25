@@ -300,7 +300,7 @@
 		   </tr>
 		#end
 		<tr>
-			<td class="bold">$i18n.getString("programs"):</td>
+			<td class="bold">$i18n.getString("enrolled_in_program"):</td>
 			<td>  
 				 #foreach( $program in $representative.programs )
 					#if( $velocityCount == 1 )
