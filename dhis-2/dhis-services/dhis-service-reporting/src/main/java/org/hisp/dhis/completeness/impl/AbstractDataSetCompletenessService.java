@@ -285,21 +285,10 @@ public abstract class AbstractDataSetCompletenessService
 
             final Collection<Integer> relevantSources = getRelevantSources( dataSet, children );
 
-            final DataSetCompletenessResult result = new DataSetCompletenessResult();
-
-            result.setSources( getSources( dataSet, relevantSources ) );
+            final DataSetCompletenessResult result = getDataSetCompleteness( period, deadline, unit, relevantSources, dataSet );
 
             if ( result.getSources() > 0 )
             {
-                result.setName( unit.getName() );
-                result.setRegistrations( getRegistrations( dataSet, relevantSources, period ) );
-                result.setRegistrationsOnTime( deadline != null ? getRegistrationsOnTime( dataSet, relevantSources,
-                    period, deadline ) : 0 );
-
-                result.setDataSetId( dataSetId );
-                result.setPeriodId( periodId );
-                result.setOrganisationUnitId( unit.getId() );
-
                 results.add( result );
             }
         }
