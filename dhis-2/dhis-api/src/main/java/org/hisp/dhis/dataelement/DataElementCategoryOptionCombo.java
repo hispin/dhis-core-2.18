@@ -27,22 +27,25 @@ package org.hisp.dhis.dataelement;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Set;
-
 import org.apache.commons.lang.StringEscapeUtils;
-import org.hisp.dhis.common.AbstractNameableObject;
+import org.codehaus.jackson.annotate.JsonProperty;
+import org.codehaus.jackson.map.annotate.JsonSerialize;
+import org.hisp.dhis.common.BaseNameableObject;
+import org.hisp.dhis.common.adapter.BaseIdentifiableObjectXmlAdapter;
+import org.hisp.dhis.common.adapter.BaseNameableObjectXmlAdapter;
+import org.hisp.dhis.common.adapter.JsonIdentifiableObjectSerializer;
+import org.hisp.dhis.common.adapter.JsonNameableObjectListSerializer;
+
+import javax.xml.bind.annotation.*;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
+import java.util.*;
 
 /**
  * @author Abyot Aselefew
- * @version $Id$
  */
-public class DataElementCategoryOptionCombo
-    extends AbstractNameableObject
+@XmlRootElement( name = "dataElementCategoryOptionCombo" )
+@XmlAccessorType( value = XmlAccessType.NONE )
+public class DataElementCategoryOptionCombo extends BaseNameableObject
 {
     /**
      * Determines if a de-serialized file is compatible with this class.
@@ -102,7 +105,7 @@ public class DataElementCategoryOptionCombo
             return false;
         }
 
-        if ( !( object instanceof DataElementCategoryOptionCombo ) )
+        if ( !(object instanceof DataElementCategoryOptionCombo) )
         {
             return false;
         }
@@ -162,11 +165,11 @@ public class DataElementCategoryOptionCombo
 
     /**
      * Tests whether two objects compare on a name basis. The default equals
-     * method becomes unusable in the case of detached objects in conjunction 
-     * with persistence frameworks that put proxys on associated objects and 
-     * collections, since it tests the class type which will differ between the 
+     * method becomes unusable in the case of detached objects in conjunction
+     * with persistence frameworks that put proxys on associated objects and
+     * collections, since it tests the class type which will differ between the
      * proxy and the raw type.
-     * 
+     *
      * @param object the object to test for equality.
      * @return true if objects are equal, false otherwise.
      */
@@ -211,7 +214,7 @@ public class DataElementCategoryOptionCombo
     /**
      * Tests if this object equals to an object in the given Collection on a
      * name basis.
-     * 
+     *
      * @param categoryOptionCombos the Collection.
      * @return true if the Collection contains this object, false otherwise.
      */
@@ -290,6 +293,10 @@ public class DataElementCategoryOptionCombo
             + alternativeName );
     }
 
+    @XmlElement
+    @XmlJavaTypeAdapter( BaseIdentifiableObjectXmlAdapter.class )
+    @JsonProperty
+    @JsonSerialize( using = JsonIdentifiableObjectSerializer.class )
     public DataElementCategoryCombo getCategoryCombo()
     {
         return categoryCombo;
@@ -300,6 +307,11 @@ public class DataElementCategoryOptionCombo
         this.categoryCombo = categoryCombo;
     }
 
+    @XmlElementWrapper( name = "categoryOptions" )
+    @XmlJavaTypeAdapter( BaseNameableObjectXmlAdapter.class )
+    @XmlElement( name = "categoryOption" )
+    @JsonProperty
+    @JsonSerialize( using = JsonNameableObjectListSerializer.class )
     public List<DataElementCategoryOption> getCategoryOptions()
     {
         return categoryOptions;

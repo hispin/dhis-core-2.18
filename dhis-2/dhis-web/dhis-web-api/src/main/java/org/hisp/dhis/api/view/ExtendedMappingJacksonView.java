@@ -5,6 +5,7 @@ import org.codehaus.jackson.JsonFactory;
 import org.codehaus.jackson.JsonGenerator;
 import org.codehaus.jackson.map.AnnotationIntrospector;
 import org.codehaus.jackson.map.ObjectMapper;
+import org.codehaus.jackson.map.introspect.JacksonAnnotationIntrospector;
 import org.codehaus.jackson.map.util.JSONPObject;
 import org.codehaus.jackson.xc.JaxbAnnotationIntrospector;
 import org.springframework.web.servlet.view.json.MappingJacksonJsonView;
@@ -46,11 +47,6 @@ public class ExtendedMappingJacksonView extends MappingJacksonJsonView
         this.includeRootElement = includeRootElement;
     }
 
-    public void setWithPadding( boolean withPadding )
-    {
-        this.withPadding = withPadding;
-    }
-
     public void setCallbackParameter( String callbackParameter )
     {
         this.callbackParameter = callbackParameter;
@@ -67,9 +63,11 @@ public class ExtendedMappingJacksonView extends MappingJacksonJsonView
         Object value = filterModel( model );
         ObjectMapper objectMapper = new ObjectMapper();
 
-        AnnotationIntrospector introspector = new JaxbAnnotationIntrospector();
-        objectMapper.getDeserializationConfig().setAnnotationIntrospector( introspector );
-        objectMapper.getSerializationConfig().setAnnotationIntrospector( introspector );
+        AnnotationIntrospector jacksonAnnotationIntrospector = new JacksonAnnotationIntrospector();
+        AnnotationIntrospector jaxAnnotationIntrospector = new JaxbAnnotationIntrospector();
+        AnnotationIntrospector pair = new AnnotationIntrospector.Pair( jacksonAnnotationIntrospector, jaxAnnotationIntrospector );
+
+        objectMapper.setAnnotationIntrospector( pair );
 
         JsonFactory jf = objectMapper.getJsonFactory();
         JsonGenerator jg = jf.createJsonGenerator( response.getOutputStream(), JsonEncoding.UTF8 );

@@ -27,17 +27,21 @@ package org.hisp.dhis.validation;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import org.hisp.dhis.common.BaseIdentifiableObject;
+
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlRootElement;
 import java.util.HashSet;
 import java.util.Set;
 
-import org.hisp.dhis.common.AbstractIdentifiableObject;
-
 /**
  * @author Lars Helge Overland
- * @version $Id$
  */
+@XmlRootElement( name = "validationRuleGroup" )
+@XmlAccessorType( value = XmlAccessType.NONE )
 public class ValidationRuleGroup
-    extends AbstractIdentifiableObject
+    extends BaseIdentifiableObject
 {
     /**
      * Determines if a de-serialized file is compatible with this class.
@@ -45,7 +49,7 @@ public class ValidationRuleGroup
     private static final long serialVersionUID = 436511421834390504L;
 
     private String description;
-    
+
     private Set<ValidationRule> members = new HashSet<ValidationRule>();
 
     // -------------------------------------------------------------------------
@@ -53,9 +57,9 @@ public class ValidationRuleGroup
     // -------------------------------------------------------------------------     
 
     public ValidationRuleGroup()
-    {   
+    {
     }
-    
+
     public ValidationRuleGroup( String name, String description, Set<ValidationRule> members )
     {
         this.name = name;
@@ -77,7 +81,7 @@ public class ValidationRuleGroup
         {
             return false;
         }
-        else if ( !( object instanceof ValidationRuleGroup ) )
+        else if ( !(object instanceof ValidationRuleGroup) )
         {
             return false;
         }

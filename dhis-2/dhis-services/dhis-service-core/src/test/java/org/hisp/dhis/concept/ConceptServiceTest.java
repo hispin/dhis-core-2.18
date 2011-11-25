@@ -192,4 +192,24 @@ public class ConceptServiceTest
         assertEq( 'C', conceptService.getConceptByName( "ConceptC" ) );
         assertEq( 'D', conceptService.getConceptByName( "ConceptD" ) );
     }
+    
+//    @Test
+//    public void testGetByConcept()
+//    {        
+//        Concept aConcept = conceptStore.getByName("ConceptA");
+//        Concept bConcept = conceptStore.getByName("ConceptB");
+//        
+//        categoryOptionA = new DataElementCategoryOption( "CategoryOptionA" );
+//        categoryOptionA.setConcept(aConcept);
+//        categoryOptionB = new DataElementCategoryOption( "CategoryOptionB" );
+//        categoryOptionB.setConcept(aConcept);
+//        categoryOptionC = new DataElementCategoryOption( "CategoryOptionC" );
+//        categoryOptionC.setConcept(bConcept);
+//        
+//        categoryService.addDataElementCategoryOption(categoryOptionA);
+//        
+//        assertEquals(2, categoryOptionStore.getByConcept(aConcept).size());
+//        assertEquals(1, categoryOptionStore.getByConcept(bConcept).size());
+//    }
+
 }

@@ -27,30 +27,33 @@ package org.hisp.dhis.organisationunit;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
 import org.apache.commons.lang.StringUtils;
+import org.codehaus.jackson.annotate.JsonProperty;
+import org.codehaus.jackson.map.annotate.JsonSerialize;
 import org.hisp.dhis.attribute.AttributeValue;
-import org.hisp.dhis.common.AbstractNameableObject;
+import org.hisp.dhis.common.BaseNameableObject;
+import org.hisp.dhis.common.adapter.BaseNameableObjectXmlAdapter;
+import org.hisp.dhis.common.adapter.JsonDateSerializer;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.organisationunit.comparator.OrganisationUnitNameComparator;
 import org.hisp.dhis.user.User;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
+import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 /**
  * @author Kristian Nordal
- * @version $Id: OrganisationUnit.java 6251 2008-11-10 14:37:05Z larshelg $
  */
-public class OrganisationUnit
-    extends AbstractNameableObject
+@XmlRootElement( name = "organisationUnit" )
+@XmlAccessorType( value = XmlAccessType.NONE )
+public class OrganisationUnit extends BaseNameableObject
 {
     /**
      * Determines if a de-serialized file is compatible with this class.
@@ -95,8 +98,6 @@ public class OrganisationUnit
 
     private String url;
 
-    private Date lastUpdated;
-
     private Set<OrganisationUnitGroup> groups = new HashSet<OrganisationUnitGroup>();
 
     private Set<DataSet> dataSets = new HashSet<DataSet>();
@@ -118,7 +119,7 @@ public class OrganisationUnit
     private transient boolean currentParent;
 
     private transient String type;
-    
+
     private transient String[] groupNames;
 
     /**
@@ -143,14 +144,13 @@ public class OrganisationUnit
     /**
      * @param name
      * @param shortName
-     * @param organisationUnitCode
      * @param openingDate
      * @param closedDate
      * @param active
      * @param comment
      */
     public OrganisationUnit( String name, String shortName, String code, Date openingDate, Date closedDate,
-        boolean active, String comment )
+                             boolean active, String comment )
     {
         this.name = name;
         this.shortName = shortName;
@@ -165,14 +165,13 @@ public class OrganisationUnit
      * @param name
      * @param parent
      * @param shortName
-     * @param organisationUnitCode
      * @param openingDate
      * @param closedDate
      * @param active
      * @param comment
      */
     public OrganisationUnit( String name, OrganisationUnit parent, String shortName, String code, Date openingDate,
-        Date closedDate, boolean active, String comment )
+                             Date closedDate, boolean active, String comment )
     {
         this.name = name;
         this.parent = parent;
@@ -382,7 +381,7 @@ public class OrganisationUnit
 
         return group != null ? group.getName() : null;
     }
-    
+
     public String getAncestorNames()
     {
         StringBuilder builder = new StringBuilder( name );
@@ -437,12 +436,12 @@ public class OrganisationUnit
 
         return set;
     }
-    
+
     public boolean isPolygon()
     {
-        return ( featureType.equals( FEATURETYPE_MULTIPOLYGON ) || featureType.equals( FEATURETYPE_POLYGON ) );
+        return (featureType.equals( FEATURETYPE_MULTIPOLYGON ) || featureType.equals( FEATURETYPE_POLYGON ));
     }
-    
+
     public boolean isPoint()
     {
         return featureType.equals( FEATURETYPE_POINT );
@@ -501,6 +500,9 @@ public class OrganisationUnit
         this.children = children;
     }
 
+    @XmlElement
+    @XmlJavaTypeAdapter( BaseNameableObjectXmlAdapter.class )
+/*     @JsonSerialize( using = JsonNameableObjectSerializer.class ) */
     public OrganisationUnit getParent()
     {
         return parent;
@@ -510,27 +512,7 @@ public class OrganisationUnit
     {
         this.parent = parent;
     }
-
-    public String getShortName()
-    {
-        return shortName;
-    }
-
-    public void setShortName( String shortName )
-    {
-        this.shortName = shortName;
-    }
-
-    public String getCode()
-    {
-        return code;
-    }
-
-    public void setCode( String code )
-    {
-        this.code = code;
-    }
-
+    
     public String getAlternativeName()
     {
         return getShortName();
@@ -541,6 +523,9 @@ public class OrganisationUnit
         throw new UnsupportedOperationException( "Cannot set alternativename on OrganisationUnit: " + alternativeName );
     }
 
+    @XmlElement
+    @JsonProperty
+    @JsonSerialize( using = JsonDateSerializer.class )
     public Date getOpeningDate()
     {
         return openingDate;
@@ -551,6 +536,9 @@ public class OrganisationUnit
         this.openingDate = openingDate;
     }
 
+    @XmlElement
+    @JsonProperty
+    @JsonSerialize( using = JsonDateSerializer.class )
     public Date getClosedDate()
     {
         return closedDate;
@@ -561,6 +549,8 @@ public class OrganisationUnit
         this.closedDate = closedDate;
     }
 
+    @XmlElement
+    @JsonProperty
     public boolean isActive()
     {
         return active;
@@ -571,6 +561,8 @@ public class OrganisationUnit
         this.active = active;
     }
 
+    @XmlElement
+    @JsonProperty
     public String getComment()
     {
         return comment;
@@ -581,6 +573,8 @@ public class OrganisationUnit
         this.comment = comment;
     }
 
+    @XmlElement
+    @JsonProperty
     public String getGeoCode()
     {
         return geoCode;
@@ -591,6 +585,8 @@ public class OrganisationUnit
         this.geoCode = geoCode;
     }
 
+    @XmlElement
+    @JsonProperty
     public String getFeatureType()
     {
         return featureType;
@@ -601,6 +597,8 @@ public class OrganisationUnit
         this.featureType = featureType;
     }
 
+    @XmlElement
+    @JsonProperty
     public String getCoordinates()
     {
         return coordinates;
@@ -611,6 +609,8 @@ public class OrganisationUnit
         this.coordinates = coordinates;
     }
 
+    @XmlElement
+    @JsonProperty
     public String getUrl()
     {
         return url;
@@ -619,16 +619,6 @@ public class OrganisationUnit
     public void setUrl( String url )
     {
         this.url = url;
-    }
-
-    public Date getLastUpdated()
-    {
-        return lastUpdated;
-    }
-
-    public void setLastUpdated( Date lastUpdated )
-    {
-        this.lastUpdated = lastUpdated;
     }
 
     public Set<OrganisationUnitGroup> getGroups()
@@ -661,6 +651,8 @@ public class OrganisationUnit
         this.users = users;
     }
 
+    @XmlElement
+    @JsonProperty
     public String getContactPerson()
     {
         return contactPerson;
@@ -671,6 +663,8 @@ public class OrganisationUnit
         this.contactPerson = contactPerson;
     }
 
+    @XmlElement
+    @JsonProperty
     public String getAddress()
     {
         return address;
@@ -681,6 +675,8 @@ public class OrganisationUnit
         this.address = address;
     }
 
+    @XmlElement
+    @JsonProperty
     public String getEmail()
     {
         return email;
@@ -691,6 +687,8 @@ public class OrganisationUnit
         this.email = email;
     }
 
+    @XmlElement
+    @JsonProperty
     public String getPhoneNumber()
     {
         return phoneNumber;
@@ -701,6 +699,8 @@ public class OrganisationUnit
         this.phoneNumber = phoneNumber;
     }
 
+    @XmlElement
+    @JsonProperty
     public boolean isHasPatients()
     {
         return hasPatients;
@@ -711,6 +711,8 @@ public class OrganisationUnit
         this.hasPatients = hasPatients;
     }
 
+    @XmlElement
+    @JsonProperty
     public int getLevel()
     {
         return level;
@@ -721,6 +723,8 @@ public class OrganisationUnit
         this.level = level;
     }
 
+    @XmlElement
+    @JsonProperty
     public boolean isCurrentParent()
     {
         return currentParent;
@@ -731,6 +735,8 @@ public class OrganisationUnit
         this.currentParent = currentParent;
     }
 
+    @XmlElement
+    @JsonProperty
     public String getType()
     {
         return type;

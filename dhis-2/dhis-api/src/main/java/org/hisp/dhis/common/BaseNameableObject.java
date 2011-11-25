@@ -27,11 +27,17 @@ package org.hisp.dhis.common;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import org.codehaus.jackson.annotate.JsonProperty;
+
+import javax.xml.bind.annotation.*;
+
 /**
  * @author Bob Jolliffe
  */
-public abstract class AbstractNameableObject
-    extends AbstractIdentifiableObject implements NameableObject
+@XmlRootElement( name = "nameableObject" )
+@XmlAccessorType( value = XmlAccessType.NONE )
+public class BaseNameableObject
+    extends BaseIdentifiableObject implements NameableObject
 {
     /**
      * Determines if a de-serialized file is compatible with this class.
@@ -53,20 +59,22 @@ public abstract class AbstractNameableObject
      */
     protected String description;
 
-    public AbstractNameableObject()
+    public BaseNameableObject()
     {
     }
 
-    public AbstractNameableObject( int id, String uid, String name, String alternativeName, String shortName,
-        String code, String description )
+    public BaseNameableObject( int id, String uuid, String name, String alternativeName, String shortName,
+                                   String code, String description )
     {
-        super( id, uid, name );
+        super( id, uuid, name );
         this.alternativeName = alternativeName;
         this.shortName = shortName;
         this.code = code;
         this.description = description;
     }
 
+    @XmlAttribute
+    @JsonProperty
     public String getAlternativeName()
     {
         return alternativeName;
@@ -77,6 +85,8 @@ public abstract class AbstractNameableObject
         this.alternativeName = alternativeName;
     }
 
+    @XmlAttribute
+    @JsonProperty
     public String getShortName()
     {
         return shortName;
@@ -87,6 +97,8 @@ public abstract class AbstractNameableObject
         this.shortName = shortName;
     }
 
+    @XmlElement
+    @JsonProperty
     public String getDescription()
     {
         return description;

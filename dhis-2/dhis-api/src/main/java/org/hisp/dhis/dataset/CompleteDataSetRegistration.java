@@ -27,17 +27,27 @@ package org.hisp.dhis.dataset;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.io.Serializable;
-import java.util.Date;
-
+import org.codehaus.jackson.annotate.JsonProperty;
+import org.codehaus.jackson.map.annotate.JsonSerialize;
 import org.hisp.dhis.common.ImportableObject;
+import org.hisp.dhis.common.adapter.BaseNameableObjectXmlAdapter;
+import org.hisp.dhis.common.adapter.JsonDateSerializer;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.period.Period;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
+import java.io.Serializable;
+import java.util.Date;
+
 /**
  * @author Lars Helge Overland
- * @version $Id$
  */
+@XmlRootElement( name = "completeDataSetRegistration" )
+@XmlAccessorType( value = XmlAccessType.NONE )
 public class CompleteDataSetRegistration
     implements ImportableObject, Serializable
 {
@@ -49,9 +59,9 @@ public class CompleteDataSetRegistration
     private DataSet dataSet;
 
     private Period period;
-    
+
     private OrganisationUnit source;
-    
+
     private Date date;
 
     private String storedBy;
@@ -61,7 +71,7 @@ public class CompleteDataSetRegistration
     // -------------------------------------------------------------------------
 
     public CompleteDataSetRegistration()
-    {   
+    {
     }
 
     public CompleteDataSetRegistration( DataSet dataSet, Period period, OrganisationUnit source, Date date, String storedBy )
@@ -81,13 +91,13 @@ public class CompleteDataSetRegistration
     public int hashCode()
     {
         final int prime = 31;
-        
+
         int result = 1;
-        
-        result = prime * result + ( ( dataSet == null ) ? 0 : dataSet.hashCode() );
-        result = prime * result + ( ( period == null ) ? 0 : period.hashCode() );
-        result = prime * result + ( ( source == null ) ? 0 : source.hashCode() );
-        
+
+        result = prime * result + ((dataSet == null) ? 0 : dataSet.hashCode());
+        result = prime * result + ((period == null) ? 0 : period.hashCode());
+        result = prime * result + ((source == null) ? 0 : source.hashCode());
+
         return result;
     }
 
@@ -98,19 +108,19 @@ public class CompleteDataSetRegistration
         {
             return true;
         }
-        
+
         if ( object == null )
         {
             return false;
         }
-        
+
         if ( getClass() != object.getClass() )
         {
             return false;
         }
-        
+
         final CompleteDataSetRegistration other = (CompleteDataSetRegistration) object;
-        
+
         if ( dataSet == null )
         {
             if ( other.dataSet != null )
@@ -122,7 +132,7 @@ public class CompleteDataSetRegistration
         {
             return false;
         }
-        
+
         if ( period == null )
         {
             if ( other.period != null )
@@ -134,7 +144,7 @@ public class CompleteDataSetRegistration
         {
             return false;
         }
-        
+
         if ( source == null )
         {
             if ( other.source != null )
@@ -146,27 +156,29 @@ public class CompleteDataSetRegistration
         {
             return false;
         }
-        
+
         return true;
     }
-    
+
     @Override
     public String toString()
     {
         String toString = "[" + dataSet + ", " + period + ", " + source + ", " + date + "]";
-        
+
         return toString;
     }
-    
+
     public String getName()
     {
         throw new UnsupportedOperationException();
     }
-        
+
     // -------------------------------------------------------------------------
     // Getters and setters
     // -------------------------------------------------------------------------
 
+    @XmlElement
+    @XmlJavaTypeAdapter( BaseNameableObjectXmlAdapter.class )
     public DataSet getDataSet()
     {
         return dataSet;
@@ -177,6 +189,8 @@ public class CompleteDataSetRegistration
         this.dataSet = dataSet;
     }
 
+    @XmlElement
+    @XmlJavaTypeAdapter( BaseNameableObjectXmlAdapter.class )
     public Period getPeriod()
     {
         return period;
@@ -186,7 +200,9 @@ public class CompleteDataSetRegistration
     {
         this.period = period;
     }
-    
+
+    @XmlElement
+    @XmlJavaTypeAdapter( BaseNameableObjectXmlAdapter.class )
     public OrganisationUnit getSource()
     {
         return source;
@@ -197,6 +213,9 @@ public class CompleteDataSetRegistration
         this.source = source;
     }
 
+    @XmlElement
+    @JsonProperty
+    @JsonSerialize( using = JsonDateSerializer.class )
     public Date getDate()
     {
         return date;
@@ -207,6 +226,8 @@ public class CompleteDataSetRegistration
         this.date = date;
     }
 
+    @XmlElement
+    @JsonProperty
     public String getStoredBy()
     {
         return storedBy;

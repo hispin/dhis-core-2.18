@@ -27,14 +27,14 @@ package org.hisp.dhis.common.hibernate;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import org.hisp.dhis.common.AbstractIdentifiableObject;
+import org.hisp.dhis.common.BaseIdentifiableObject;
 import org.hisp.dhis.common.GenericIdentifiableObjectStore;
 import org.hisp.dhis.hibernate.HibernateGenericStore;
 
 /**
  * @author bobj
  */
-public class HibernateIdentifiableObjectStore<T extends AbstractIdentifiableObject>
+public class HibernateIdentifiableObjectStore<T extends BaseIdentifiableObject>
     extends HibernateGenericStore<T> implements GenericIdentifiableObjectStore<T>
 {
     @Override

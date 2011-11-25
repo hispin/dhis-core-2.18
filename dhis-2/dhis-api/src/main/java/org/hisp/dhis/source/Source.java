@@ -30,7 +30,7 @@ package org.hisp.dhis.source;
 import java.util.HashSet;
 import java.util.Set;
 
-import org.hisp.dhis.common.AbstractNameableObject;
+import org.hisp.dhis.common.BaseNameableObject;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataset.DataSet;
 
@@ -40,7 +40,7 @@ import org.hisp.dhis.dataset.DataSet;
  */
 @Deprecated
 public abstract class Source
-    extends AbstractNameableObject
+    extends BaseNameableObject
 {
     /**
      * Determines if a de-serialized file is compatible with this class.

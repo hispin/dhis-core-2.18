@@ -29,6 +29,7 @@ package org.hisp.dhis.dataelement;
 
 import java.util.Collection;
 
+import org.hisp.dhis.concept.Concept;
 import org.hisp.dhis.hierarchy.HierarchyViolationException;
 
 /**
@@ -172,7 +173,17 @@ public interface DataElementCategoryService
      *         are no DataElementCategoryOptions.
      */
     Collection<DataElementCategoryOption> getAllDataElementCategoryOptions();
+   
+    /**
+     * Returns all DataElementCategoryOptions for a given concept
+     * 
+     * @param concept the Concept
+     * @return a collection of all DataElementCategoryOptions, or an empty collection if there
+     *         are no DataElementCategoryOptions.
+     */
+    Collection<DataElementCategoryOption> getDataElementCategorOptionsByConcept( Concept concept );
 
+   
     // -------------------------------------------------------------------------
     // CategoryCombo
     // -------------------------------------------------------------------------
@@ -384,7 +395,7 @@ public interface DataElementCategoryService
      * Gets the Operands for the DataElements whith names like the given name.
      * 
      * @param name the name.
-     * @return the Operands for the DataElements whith names like the given name.
+     * @return the Operands for the DataElements with names like the given name.
      */
     Collection<DataElementOperand> getOperandsLikeName( String name );
     
@@ -400,6 +411,14 @@ public interface DataElementCategoryService
     
     Collection<DataElementCategory> getDataElementCategorysBetweenByName( String name, int first, int max );
     
+    /**
+     * Returns all DataElementCategories for a given concept
+     * 
+     * @param concept the Concept
+     * @return a collection of all DataElementCategories, or an empty collection.
+     */
+    Collection<DataElementCategory> getDataElementCategorysByConcept( Concept concept );
+
     int getDataElementCategoryCount();
     
     int getDataElementCategoryCountByName( String name );

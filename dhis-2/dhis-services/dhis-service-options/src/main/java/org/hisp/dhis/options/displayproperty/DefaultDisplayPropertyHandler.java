@@ -29,7 +29,7 @@ package org.hisp.dhis.options.displayproperty;
 
 import java.util.List;
 
-import org.hisp.dhis.common.AbstractNameableObject;
+import org.hisp.dhis.common.BaseNameableObject;
 import org.hisp.dhis.common.NameableObject;
 
 /**
@@ -50,9 +50,9 @@ public class DefaultDisplayPropertyHandler
     // DisplayPropertyHandler implementation
     // -------------------------------------------------------------------------
 
-    public List<? extends NameableObject> handle( List<? extends AbstractNameableObject> list )
+    public List<? extends NameableObject> handle( List<? extends BaseNameableObject> list )
     {
-        for ( AbstractNameableObject object : list )
+        for ( BaseNameableObject object : list )
         {
             handle( object );
         }
@@ -60,7 +60,7 @@ public class DefaultDisplayPropertyHandler
         return list;
     }
     
-    public NameableObject handle( AbstractNameableObject object )
+    public NameableObject handle( BaseNameableObject object )
     {
         if ( displayProperty.equals( DisplayPropertyManager.DISPLAY_PROPERTY_SHORTNAME ) )
         {

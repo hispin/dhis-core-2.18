@@ -27,22 +27,24 @@ package org.hisp.dhis.dataelement;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-
-import org.hisp.dhis.common.AbstractIdentifiableObject;
+import org.codehaus.jackson.map.annotate.JsonSerialize;
+import org.hisp.dhis.common.BaseIdentifiableObject;
 import org.hisp.dhis.common.CombinationGenerator;
+import org.hisp.dhis.common.adapter.BaseIdentifiableObjectXmlAdapter;
+import org.hisp.dhis.common.adapter.JsonIdentifiableObjectSetSerializer;
+import org.hisp.dhis.common.adapter.JsonIdentifiableObjectListSerializer;
+
+import javax.xml.bind.annotation.*;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
+import java.util.*;
 
 /**
  * @author Abyot Aselefew
- * @version $Id$
  */
+@XmlRootElement( name = "dataElementCategoryCombo" )
+@XmlAccessorType( value = XmlAccessType.NONE )
 public class DataElementCategoryCombo
-    extends AbstractIdentifiableObject
+    extends BaseIdentifiableObject
 {
     /**
      * Determines if a de-serialized file is compatible with this class.
@@ -50,16 +52,6 @@ public class DataElementCategoryCombo
     private static final long serialVersionUID = 1549406078091077760L;
 
     public static final String DEFAULT_CATEGORY_COMBO_NAME = "default";
-
-    /**
-     * The database internal identifier.
-     */
-    private int id;
-
-    /**
-     * The name.
-     */
-    private String name;
 
     /**
      * A set with categories.
@@ -98,16 +90,16 @@ public class DataElementCategoryCombo
     {
         return name.equals( DEFAULT_CATEGORY_COMBO_NAME );
     }
-    
+
     public List<DataElementCategoryOption> getCategoryOptions()
     {
         final List<DataElementCategoryOption> categoryOptions = new ArrayList<DataElementCategoryOption>();
-        
+
         for ( DataElementCategory category : categories )
         {
-            categoryOptions.addAll( category.getCategoryOptions() );            
+            categoryOptions.addAll( category.getCategoryOptions() );
         }
-        
+
         return categoryOptions;
     }
 
@@ -115,34 +107,34 @@ public class DataElementCategoryCombo
     {
         return optionCombos != null && optionCombos.size() > 1;
     }
-    
+
     public boolean doSubTotals()
     {
         return categories != null && categories.size() > 1;
     }
-    
+
     public DataElementCategoryOption[][] getCategoryOptionsAsArray()
     {
         DataElementCategoryOption[][] arrays = new DataElementCategoryOption[categories.size()][];
-        
+
         int i = 0;
-        
+
         for ( DataElementCategory category : categories )
         {
-            arrays[i++] = new ArrayList<DataElementCategoryOption>( 
+            arrays[i++] = new ArrayList<DataElementCategoryOption>(
                 category.getCategoryOptions() ).toArray( new DataElementCategoryOption[0] );
         }
-        
+
         return arrays;
     }
-    
+
     public List<DataElementCategoryOptionCombo> generateOptionCombosList()
     {
         List<DataElementCategoryOptionCombo> list = new ArrayList<DataElementCategoryOptionCombo>();
-        
-        CombinationGenerator<DataElementCategoryOption> generator = 
+
+        CombinationGenerator<DataElementCategoryOption> generator =
             new CombinationGenerator<DataElementCategoryOption>( getCategoryOptionsAsArray() );
-        
+
         while ( generator.hasNext() )
         {
             DataElementCategoryOptionCombo optionCombo = new DataElementCategoryOptionCombo();
@@ -150,22 +142,22 @@ public class DataElementCategoryCombo
             optionCombo.setCategoryCombo( this );
             list.add( optionCombo );
         }
-        
+
         return list;
     }
 
     //TODO update category option -> category option combo association
-    
+
     public void generateOptionCombos()
     {
         this.optionCombos = new HashSet<DataElementCategoryOptionCombo>( generateOptionCombosList() );
     }
-    
+
     public List<DataElementCategoryOptionCombo> getSortedOptionCombos()
     {
         final List<DataElementCategoryOptionCombo> persistedList = new ArrayList<DataElementCategoryOptionCombo>( optionCombos );
-        final List<DataElementCategoryOptionCombo> sortedList = generateOptionCombosList(); 
-        
+        final List<DataElementCategoryOptionCombo> sortedList = generateOptionCombosList();
+
         Collections.sort( persistedList, new Comparator<DataElementCategoryOptionCombo>()
         {
             public int compare( DataElementCategoryOptionCombo o1, DataElementCategoryOptionCombo o2 )
@@ -173,10 +165,10 @@ public class DataElementCategoryCombo
                 return new Integer( sortedList.indexOf( o1 ) ).compareTo( new Integer( sortedList.indexOf( o2 ) ) );
             }
         } );
-        
+
         return persistedList;
     }
-    
+
     // -------------------------------------------------------------------------
     // hashCode, equals and toString
     // -------------------------------------------------------------------------
@@ -214,32 +206,16 @@ public class DataElementCategoryCombo
     public String toString()
     {
         return "[" + name + "]";
-    }   
+    }
 
     // -------------------------------------------------------------------------
     // Getters and setters
     // -------------------------------------------------------------------------
 
-    public int getId()
-    {
-        return id;
-    }
-
-    public void setId( int id )
-    {
-        this.id = id;
-    }
-
-    public String getName()
-    {
-        return name;
-    }
-
-    public void setName( String name )
-    {
-        this.name = name;
-    }
-
+    @XmlElementWrapper( name = "categories" )
+    @XmlJavaTypeAdapter( BaseIdentifiableObjectXmlAdapter.class )
+    @XmlElement( name = "category" )
+    @JsonSerialize( using = JsonIdentifiableObjectListSerializer.class )
     public List<DataElementCategory> getCategories()
     {
         return categories;
@@ -250,6 +226,10 @@ public class DataElementCategoryCombo
         this.categories = categories;
     }
 
+    @XmlElementWrapper( name = "optionCombos" )
+    @XmlJavaTypeAdapter( BaseIdentifiableObjectXmlAdapter.class )
+    @XmlElement( name = "optionCombo" )
+    @JsonSerialize( using = JsonIdentifiableObjectSetSerializer.class )
     public Set<DataElementCategoryOptionCombo> getOptionCombos()
     {
         return optionCombos;

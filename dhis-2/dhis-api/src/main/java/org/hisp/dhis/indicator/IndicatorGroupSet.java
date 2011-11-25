@@ -32,8 +32,15 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
-import org.hisp.dhis.common.AbstractIdentifiableObject;
+import org.codehaus.jackson.annotate.JsonProperty;
+import org.codehaus.jackson.map.annotate.JsonSerialize;
+import org.hisp.dhis.common.BaseIdentifiableObject;
+import org.hisp.dhis.common.adapter.BaseIdentifiableObjectXmlAdapter;
+import org.hisp.dhis.common.adapter.JsonIdentifiableObjectListSerializer;
 import org.hisp.dhis.indicator.comparator.IndicatorGroupNameComparator;
+
+import javax.xml.bind.annotation.*;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 /**
  * An IndicatorGroupSet is a set of IndicatorGroups. It is by default exclusive,
@@ -42,8 +49,9 @@ import org.hisp.dhis.indicator.comparator.IndicatorGroupNameComparator;
  * 
  * @author Lars Helge Overland
  */
-public class IndicatorGroupSet
-    extends AbstractIdentifiableObject
+@XmlRootElement( name = "indicatorGroupSet" )
+@XmlAccessorType( value = XmlAccessType.NONE )
+public class IndicatorGroupSet extends BaseIdentifiableObject
 {
     /**
      * Determines if a de-serialized file is compatible with this class.
@@ -182,6 +190,8 @@ public class IndicatorGroupSet
     // Getters and setters
     // -------------------------------------------------------------------------
 
+    @XmlElement
+    @JsonProperty
     public String getDescription()
     {
         return description;
@@ -192,6 +202,8 @@ public class IndicatorGroupSet
         this.description = description;
     }
 
+    @XmlElement
+    @JsonProperty
     public Boolean isCompulsory()
     {
         if ( compulsory == null )
@@ -207,6 +219,10 @@ public class IndicatorGroupSet
         this.compulsory = compulsory;
     }
 
+    @XmlElementWrapper( name = "members" )
+    @XmlJavaTypeAdapter( BaseIdentifiableObjectXmlAdapter.class )
+    @XmlElement( name = "member" )
+    @JsonSerialize( using = JsonIdentifiableObjectListSerializer.class )
     public List<IndicatorGroup> getMembers()
     {
         return members;

@@ -30,10 +30,10 @@ package org.hisp.dhis.user;
 import java.util.HashSet;
 import java.util.Set;
 
-import org.hisp.dhis.common.AbstractIdentifiableObject;
+import org.hisp.dhis.common.BaseIdentifiableObject;
 
 public class UserGroup 
-    extends AbstractIdentifiableObject
+    extends BaseIdentifiableObject
 {
     /**
      * Determines if a de-serialized file is compatible with this class.

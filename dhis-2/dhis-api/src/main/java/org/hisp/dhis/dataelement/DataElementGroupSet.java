@@ -27,23 +27,30 @@ package org.hisp.dhis.dataelement;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import org.codehaus.jackson.annotate.JsonProperty;
+import org.codehaus.jackson.map.annotate.JsonSerialize;
+import org.hisp.dhis.common.BaseIdentifiableObject;
+import org.hisp.dhis.common.adapter.BaseIdentifiableObjectXmlAdapter;
+import org.hisp.dhis.common.adapter.JsonIdentifiableObjectListSerializer;
+import org.hisp.dhis.dataelement.comparator.DataElementGroupNameComparator;
+
+import javax.xml.bind.annotation.*;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
-import org.hisp.dhis.common.AbstractIdentifiableObject;
-import org.hisp.dhis.dataelement.comparator.DataElementGroupNameComparator;
-
 /**
  * DataElementGroupSet is a set of DataElementGroups. It is by default
  * exclusive, in the sense that a DataElement can only be a member of one or
  * zero of the DataElementGroups in a DataElementGroupSet.
- * 
+ *
  * @author Lars Helge Overland
  */
-public class DataElementGroupSet
-    extends AbstractIdentifiableObject
+@XmlRootElement( name = "dataElementGroupSet" )
+@XmlAccessorType( value = XmlAccessType.NONE )
+public class DataElementGroupSet extends BaseIdentifiableObject
 {
     /**
      * Determines if a de-serialized file is compatible with this class.
@@ -182,6 +189,8 @@ public class DataElementGroupSet
     // Getters and setters
     // -------------------------------------------------------------------------
 
+    @XmlElement
+    @JsonProperty
     public String getDescription()
     {
         return description;
@@ -192,6 +201,8 @@ public class DataElementGroupSet
         this.description = description;
     }
 
+    @XmlElement
+    @JsonProperty
     public Boolean isCompulsory()
     {
         if ( compulsory == null )
@@ -207,6 +218,10 @@ public class DataElementGroupSet
         this.compulsory = compulsory;
     }
 
+    @XmlElementWrapper( name = "members" )
+    @XmlJavaTypeAdapter( BaseIdentifiableObjectXmlAdapter.class )
+    @XmlElement( name = "member" )
+    @JsonSerialize( using = JsonIdentifiableObjectListSerializer.class )
     public List<DataElementGroup> getMembers()
     {
         return members;

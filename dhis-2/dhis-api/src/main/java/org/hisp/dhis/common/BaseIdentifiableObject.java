@@ -27,22 +27,20 @@ package org.hisp.dhis.common;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.Collection;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
+import org.codehaus.jackson.annotate.JsonProperty;
+import org.codehaus.jackson.map.annotate.JsonSerialize;
+import org.hisp.dhis.common.adapter.JsonDateSerializer;
 
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlAttribute;
-import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.*;
+import java.util.*;
 
 /**
  * @author Bob Jolliffe
  */
 @XmlRootElement( name = "identifiableObject" )
 @XmlAccessorType( value = XmlAccessType.NONE )
-public abstract class AbstractIdentifiableObject
+@XmlType( propOrder = {"id", "uid", "name", "code", "lastUpdated"} )
+public class BaseIdentifiableObject
     implements IdentifiableObject
 {
     /**
@@ -54,6 +52,11 @@ public abstract class AbstractIdentifiableObject
      * The database internal identifier for this Object.
      */
     protected int id;
+
+    /**
+     * The Universally Unique Identifer for this Object.
+     */
+    protected String uuid;
 
     /**
      * The Unique Identifer for this Object.
@@ -75,19 +78,19 @@ public abstract class AbstractIdentifiableObject
      */
     private Date lastUpdated;
 
-    public AbstractIdentifiableObject()
+    public BaseIdentifiableObject()
     {
     }
 
-    public AbstractIdentifiableObject( int id, String uid, String name )
+    public BaseIdentifiableObject( int id, String uuid, String name )
     {
         this.id = id;
-        this.uid = uid;
+        this.uuid = uuid;
         this.name = name;
     }
 
     @XmlAttribute
-    @Override
+    @JsonProperty
     public int getId()
     {
         return id;
@@ -99,7 +102,7 @@ public abstract class AbstractIdentifiableObject
     }
 
     @XmlAttribute
-    @Override
+    @JsonProperty
     public String getUid()
     {
         return uid;
@@ -111,7 +114,7 @@ public abstract class AbstractIdentifiableObject
     }
 
     @XmlAttribute
-    @Override
+    @JsonProperty
     public String getCode()
     {
         return code;
@@ -123,7 +126,7 @@ public abstract class AbstractIdentifiableObject
     }
 
     @XmlAttribute
-    @Override
+    @JsonProperty
     public String getName()
     {
         return name;
@@ -135,6 +138,8 @@ public abstract class AbstractIdentifiableObject
     }
 
     @XmlAttribute
+    @JsonProperty
+    @JsonSerialize( using = JsonDateSerializer.class )
     public Date getLastUpdated()
     {
         return lastUpdated;
@@ -164,7 +169,7 @@ public abstract class AbstractIdentifiableObject
      * @param objects the IdentifiableObjects to put in the map
      * @return the map
      */
-    public static Map<String, Integer> getUIDMap( Collection<? extends AbstractIdentifiableObject> objects )
+    public static Map<String, Integer> getUIDMap( Collection<? extends BaseIdentifiableObject> objects )
     {
         Map<String, Integer> map = new HashMap<String, Integer>();
         for ( IdentifiableObject object : objects )
@@ -184,7 +189,7 @@ public abstract class AbstractIdentifiableObject
      * @param objects the NameableObjects to put in the map
      * @return the map
      */
-    public static Map<String, Integer> getCodeMap( Collection<? extends AbstractNameableObject> objects )
+    public static Map<String, Integer> getCodeMap( Collection<? extends BaseNameableObject> objects )
     {
         Map<String, Integer> map = new HashMap<String, Integer>();
         for ( NameableObject object : objects )
@@ -192,7 +197,7 @@ public abstract class AbstractIdentifiableObject
             String code = object.getCode();
             int internalId = object.getId();
 
-            map.put( code, internalId );            
+            map.put( code, internalId );
         }
         return map;
     }

@@ -29,15 +29,15 @@ package org.hisp.dhis.common.comparator;
 
 import java.util.Comparator;
 
-import org.hisp.dhis.common.AbstractIdentifiableObject;
+import org.hisp.dhis.common.BaseIdentifiableObject;
 
 /**
  * @author Lars Helge Overland
  */
 public class IdentifiableObjectNameComparator
-    implements Comparator<AbstractIdentifiableObject>
+    implements Comparator<BaseIdentifiableObject>
 {
-    public int compare( AbstractIdentifiableObject object0, AbstractIdentifiableObject object1 )
+    public int compare( BaseIdentifiableObject object0, BaseIdentifiableObject object1 )
     {
         return object0.getName().compareToIgnoreCase( object1.getName() );
     }

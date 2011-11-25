@@ -30,14 +30,14 @@ package org.hisp.dhis.reporttable;
 import java.util.HashSet;
 import java.util.Set;
 
-import org.hisp.dhis.common.AbstractIdentifiableObject;
+import org.hisp.dhis.common.BaseIdentifiableObject;
 
 /**
  * @author Dang Duy Hieu
  * @version $Id$
  */
 public class ReportTableGroup
-    extends AbstractIdentifiableObject
+    extends BaseIdentifiableObject
 {
     /**
      * Determines if a de-serialized file is compatible with this class.

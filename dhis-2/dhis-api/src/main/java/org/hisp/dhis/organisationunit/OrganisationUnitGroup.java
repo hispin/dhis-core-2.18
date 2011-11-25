@@ -27,18 +27,20 @@ package org.hisp.dhis.organisationunit;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import org.hisp.dhis.common.BaseIdentifiableObject;
+
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlRootElement;
 import java.util.HashSet;
 import java.util.Set;
 
-import org.hisp.dhis.common.AbstractIdentifiableObject;
-
 /**
  * @author Kristian Nordal
- * @version $Id: OrganisationUnitGroup.java 5296 2008-05-29 16:06:14Z larshelg $
  */
-
-public class OrganisationUnitGroup
-    extends AbstractIdentifiableObject
+@XmlRootElement( name = "organisationUnitGroup" )
+@XmlAccessorType( value = XmlAccessType.NONE )
+public class OrganisationUnitGroup extends BaseIdentifiableObject
 {
     /**
      * Determines if a de-serialized file is compatible with this class.
@@ -46,7 +48,7 @@ public class OrganisationUnitGroup
     private static final long serialVersionUID = -1131637847640209166L;
 
     private Set<OrganisationUnit> members = new HashSet<OrganisationUnit>();
-    
+
     private OrganisationUnitGroupSet groupSet;
 
     // -------------------------------------------------------------------------
@@ -61,7 +63,7 @@ public class OrganisationUnitGroup
     {
         this.name = name;
     }
-    
+
     // -------------------------------------------------------------------------
     // Logic
     // -------------------------------------------------------------------------
@@ -71,13 +73,13 @@ public class OrganisationUnitGroup
         members.add( unit );
         unit.getGroups().add( this );
     }
-    
+
     public void removeOrganisationUnit( OrganisationUnit unit )
     {
         members.remove( unit );
         unit.getGroups().remove( this );
     }
-    
+
     public void updateOrganisationUnits( Set<OrganisationUnit> updates )
     {
         for ( OrganisationUnit unit : new HashSet<OrganisationUnit>( members ) )
@@ -87,7 +89,7 @@ public class OrganisationUnitGroup
                 removeOrganisationUnit( unit );
             }
         }
-        
+
         for ( OrganisationUnit unit : updates )
         {
             addOrganisationUnit( unit );

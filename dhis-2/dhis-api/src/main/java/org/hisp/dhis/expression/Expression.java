@@ -27,26 +27,26 @@ package org.hisp.dhis.expression;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.io.Serializable;
-import java.util.Set;
-
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
+
+import java.io.Serializable;
+import java.util.Set;
 
 /**
  * An Expression is the expression of e.g. a validation rule. It consist of a
  * String representation of the rule as well as references to the data elements
  * and category option combos included in the expression.
- * 
+ * <p/>
  * The expression can contain numbers and mathematical operators and contain references
- * to data elements and category option combos on the form: 
- * 
- * i) [1.2] where 1 refers to the data element identifier and 2 refers to the 
+ * to data elements and category option combos on the form:
+ * <p/>
+ * i) [1.2] where 1 refers to the data element identifier and 2 refers to the
  * category option combo identifier.
- * 
+ * <p/>
  * ii) [1] where 1 refers to the data element identifier, in this case the formula
- * represents the total value for all category option combos for that data element. 
- * 
+ * represents the total value for all category option combos for that data element.
+ *
  * @author Margrethe Store
  * @version $Id: Expression.java 5011 2008-04-24 20:41:28Z larshelg $
  */
@@ -63,51 +63,52 @@ public class Expression
     public static final String EXP_CLOSE = "]";
     public static final String PAR_OPEN = "(";
     public static final String PAR_CLOSE = ")";
-    
+
     /**
      * The unique identifier for this Expression.
      */
     private int id;
-    
+
     /**
      * The Expression.
      */
     private String expression;
-    
+
     /**
      * A description of the Expression.
      */
     private String description;
-    
+
     /**
      * A reference to the DataElements in the Expression.
      */
     private Set<DataElement> dataElementsInExpression;
-    
+
     /**
      * A reference to the optionCombos in the Expression.
      */
     private Set<DataElementCategoryOptionCombo> optionCombosInExpression;
-    
+
     // -------------------------------------------------------------------------
     // Constructors
     // -------------------------------------------------------------------------
+
     /**
      * Default empty Expression
      */
     public Expression()
-    {       
+    {
     }
-    
+
     /**
      * Constructor with all the parameters.
-     * 
-     * @param expression The expression as a String
-     * @param description A description of the Expression.
+     *
+     * @param expression               The expression as a String
+     * @param description              A description of the Expression.
      * @param dataElementsInExpression A reference to the DataElements in the Expression.
      */
     public Expression( String expression, String description, Set<DataElement> dataElementsInExpression,
-        Set<DataElementCategoryOptionCombo> optionCombosInExpression )
+                       Set<DataElementCategoryOptionCombo> optionCombosInExpression )
     {
         this.expression = expression;
         this.description = description;
@@ -118,18 +119,18 @@ public class Expression
     // -------------------------------------------------------------------------
     // Equals and hashCode
     // -------------------------------------------------------------------------
-    
+
     @Override
     public int hashCode()
     {
         final int PRIME = 31;
-        
+
         int result = 1;
-        
-        result = PRIME * result + ( ( description == null ) ? 0 : description.hashCode() );
-        
-        result = PRIME * result + ( ( expression == null ) ? 0 : expression.hashCode() );
-        
+
+        result = PRIME * result + ((description == null) ? 0 : description.hashCode());
+
+        result = PRIME * result + ((expression == null) ? 0 : expression.hashCode());
+
         return result;
     }
 
@@ -140,19 +141,19 @@ public class Expression
         {
             return true;
         }
-        
+
         if ( obj == null )
         {
             return false;
         }
-        
+
         if ( getClass() != obj.getClass() )
         {
             return false;
         }
-        
+
         final Expression other = (Expression) obj;
-        
+
         if ( description == null )
         {
             if ( other.description != null )
@@ -164,7 +165,7 @@ public class Expression
         {
             return false;
         }
-        
+
         if ( expression == null )
         {
             if ( other.expression != null )
@@ -176,14 +177,14 @@ public class Expression
         {
             return false;
         }
-        
+
         return true;
     }
-    
+
     // -------------------------------------------------------------------------
     // Getters and setters
     // -------------------------------------------------------------------------
-    
+
     public Set<DataElement> getDataElementsInExpression()
     {
         return dataElementsInExpression;
