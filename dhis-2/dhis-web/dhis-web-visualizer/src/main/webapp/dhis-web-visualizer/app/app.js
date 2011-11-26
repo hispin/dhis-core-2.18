@@ -180,9 +180,6 @@ Ext.onReady( function() {
             }
         },
         fieldset: {
-            toggleData: function() {
-                DV.cmp.fieldset.data.toggle();
-            },
             toggleIndicator: function() {
                 DV.cmp.fieldset.indicator.toggle();
             },
@@ -645,11 +642,11 @@ Ext.onReady( function() {
         resetState: function() {
             this.type = null;
             this.series.dimension = null;
-            this.series.data = null;
+            this.series.names = null;
             this.category.dimension = null;
-            this.category.data = null;
+            this.category.names = null;
             this.filter.dimension = null;
-            this.filter.data = null;
+            this.filter.names = null;
         }
     };
     
@@ -900,7 +897,7 @@ Ext.onReady( function() {
                 store: DV.store.chart,
                 insetPadding: 60,
                 items: DV.util.chart.getTitle(),
-                legend: DV.util.chart.getLegend(DV.state.category.data.length),
+                legend: DV.util.chart.getLegend(DV.state.category.names.length),
                 series: [{
                     type: 'pie',
                     field: DV.store.chart.left[0],
@@ -1208,346 +1205,336 @@ Ext.onReady( function() {
                         items: [
                             {
                                 xtype: 'fieldset',
-                                id: 'data_fs',
-                                name: DV.conf.finals.dimension.data.value,
-                                title: '<a href="javascript:DV.util.fieldset.toggleData();" class="dv-fieldset-title-link">Data</a>',
+                                id: 'indicator_fs',
+                                name: DV.conf.finals.dimension.indicator.value,
+                                title: '<a href="javascript:DV.util.fieldset.toggleIndicator();" class="dv-fieldset-title-link">Indicators</a>',
                                 collapsible: true,
                                 width: DV.conf.layout.west_fieldset_width,
                                 items: [
                                     {
-                                        xtype: 'fieldset',
-                                        id: 'indicator_fs',
-                                        name: DV.conf.finals.dimension.indicator.value,
-                                        title: '<a href="javascript:DV.util.fieldset.toggleIndicator();" class="dv-fieldset-title-link-sub">Indicators</a>',
-                                        collapsible: true,
+                                        xtype: 'combobox',
+                                        style: 'margin-bottom:8px',
                                         width: DV.conf.layout.west_fieldset_width - 22,
-                                        items: [
-                                            {
-                                                xtype: 'combobox',
-                                                style: 'margin-bottom:8px',
-                                                width: DV.conf.layout.west_fieldset_width - 44,
-                                                valueField: 'id',
-                                                displayField: 'name',
-                                                fieldLabel: 'Select group',
-                                                labelStyle: 'padding-left:7px;',
-                                                labelWidth: 110,
-                                                editable: false,
-                                                queryMode: 'remote',
-                                                store: Ext.create('Ext.data.Store', {
-                                                    fields: ['id', 'name', 'index'],
-                                                    proxy: {
-                                                        type: 'ajax',
-                                                        url: DV.conf.finals.ajax.url_commons + 'getIndicatorGroupsMinified.action',
-                                                        reader: {
-                                                            type: 'json',
-                                                            root: 'indicatorGroups'
-                                                        }
-                                                    },
-                                                    listeners: {
-                                                        load: function(s) {
-                                                            s.add({id: 0, name: '[ All indicator groups ]', index: -1});
-                                                            s.sort('index', 'ASC');
-                                                        }
-                                                    }
-                                                }),
-                                                listeners: {
-                                                    select: function(cb) {
-                                                        var store = DV.store.indicator.available;
-                                                        store.parent = cb.getValue();
-                                                        
-                                                        if (DV.util.store.containsParent(store)) {
-                                                            DV.util.store.loadFromStorage(store);
-                                                        }
-                                                        else {
-                                                            store.load({params: {id: cb.getValue()}});
-                                                        }
-                                                    }
+                                        valueField: 'id',
+                                        displayField: 'name',
+                                        fieldLabel: 'Select group',
+                                        labelStyle: 'padding-left:7px;',
+                                        labelWidth: 110,
+                                        editable: false,
+                                        queryMode: 'remote',
+                                        store: Ext.create('Ext.data.Store', {
+                                            fields: ['id', 'name', 'index'],
+                                            proxy: {
+                                                type: 'ajax',
+                                                url: DV.conf.finals.ajax.url_commons + 'getIndicatorGroupsMinified.action',
+                                                reader: {
+                                                    type: 'json',
+                                                    root: 'indicatorGroups'
                                                 }
-                                            },                                    
-                                            {
-                                                xtype: 'panel',
-                                                layout: 'column',
-                                                bodyStyle: 'border-style:none',
-                                                items: [
-                                                    {
-                                                        xtype: 'multiselect',
-                                                        id: 'availableIndicators',
-                                                        name: 'availableIndicators',
-                                                        cls: 'multiselect',
-                                                        width: (DV.conf.layout.west_fieldset_width - 44) / 2,
-                                                        displayField: 'shortName',
-                                                        valueField: 'id',
-                                                        queryMode: 'remote',
-                                                        store: DV.store.indicator.available,
-                                                        tbar: [
-                                                            {
-                                                                xtype: 'label',
-                                                                text: 'Available indicators',
-                                                                style: 'padding-left:5px'
-                                                            },
-                                                            '->',
-                                                            {
-                                                                xtype: 'button',
-                                                                icon: 'images/arrowright.png',
-                                                                width: 22,
-                                                                handler: function() {
-                                                                    DV.util.multiselect.select(DV.util.getCmp('multiselect[name="availableIndicators"]'),
-                                                                        DV.util.getCmp('multiselect[name="selectedIndicators"]'));
-                                                                }
-                                                            },
-                                                            {
-                                                                xtype: 'button',
-                                                                icon: 'images/arrowrightdouble.png',
-                                                                width: 22,
-                                                                handler: function() {
-                                                                    DV.util.multiselect.selectAll(DV.util.getCmp('multiselect[name="availableIndicators"]'),
-                                                                        DV.util.getCmp('multiselect[name="selectedIndicators"]'));
-                                                                }
-                                                            },
-                                                            ' '
-                                                        ],
-                                                        listeners: {
-                                                            added: function() {
-                                                                DV.cmp.dimension.indicator.available = this;
-                                                            },
-                                                            afterrender: function() {
-                                                                this.boundList.on('itemdblclick', function() {
-                                                                    DV.util.multiselect.select(this, DV.cmp.dimension.indicator.selected);
-                                                                }, this);
-                                                            }
-                                                        }
-                                                    },                                            
-                                                    {
-                                                        xtype: 'multiselect',
-                                                        id: 'selectedIndicators',
-                                                        name: 'selectedIndicators',
-                                                        cls: 'multiselect',
-                                                        width: (DV.conf.layout.west_fieldset_width - 44) / 2,
-                                                        displayField: 'shortName',
-                                                        valueField: 'id',
-                                                        ddReorder: true,
-                                                        queryMode: 'local',
-                                                        store: DV.store.indicator.selected,
-                                                        tbar: [
-                                                            ' ',
-                                                            {
-                                                                xtype: 'button',
-                                                                icon: 'images/arrowleftdouble.png',
-                                                                width: 22,
-                                                                handler: function() {
-                                                                    DV.util.multiselect.unselectAll(DV.util.getCmp('multiselect[name="availableIndicators"]'),
-                                                                        DV.util.getCmp('multiselect[name="selectedIndicators"]'));
-                                                                }
-                                                            },
-                                                            {
-                                                                xtype: 'button',
-                                                                icon: 'images/arrowleft.png',
-                                                                width: 22,
-                                                                handler: function() {
-                                                                    DV.util.multiselect.unselect(DV.util.getCmp('multiselect[name="availableIndicators"]'),
-                                                                        DV.util.getCmp('multiselect[name="selectedIndicators"]'));
-                                                                }
-                                                            },
-                                                            '->',
-                                                            {
-                                                                xtype: 'label',
-                                                                text: 'Selected indicators',
-                                                                style: 'padding-right:5px'
-                                                            }
-                                                        ],
-                                                        listeners: {
-                                                            added: function() {
-                                                                DV.cmp.dimension.indicator.selected = this;
-                                                            },
-                                                            afterrender: function() {
-                                                                this.boundList.on('itemdblclick', function() {
-                                                                    DV.util.multiselect.unselect(DV.cmp.dimension.indicator.available, this);
-                                                                }, this);
-                                                            }
-                                                        }
-                                                    }
-                                                ]
-                                            }
-                                        ],
-                                        listeners: {
-                                            afterrender: function() {
-                                                DV.cmp.fieldset.indicator = this;
                                             },
-                                            expand: function() {
-                                                DV.util.fieldset.collapseFieldsets([DV.cmp.fieldset.dataelement]);
+                                            listeners: {
+                                                load: function(s) {
+                                                    s.add({id: 0, name: '[ All indicator groups ]', index: -1});
+                                                    s.sort('index', 'ASC');
+                                                }
+                                            }
+                                        }),
+                                        listeners: {
+                                            select: function(cb) {
+                                                var store = DV.store.indicator.available;
+                                                store.parent = cb.getValue();
+                                                
+                                                if (DV.util.store.containsParent(store)) {
+                                                    DV.util.store.loadFromStorage(store);
+                                                }
+                                                else {
+                                                    store.load({params: {id: cb.getValue()}});
+                                                }
                                             }
                                         }
-                                    },
+                                    },                                    
                                     {
-                                        xtype: 'fieldset',
-                                        id: 'dataelement_fs',
-                                        name: DV.conf.finals.dimension.dataelement.value,
-                                        title: '<a href="javascript:DV.util.fieldset.toggleDataElement();" class="dv-fieldset-title-link-sub">Data elements</a>',
-                                        collapsed: true,
-                                        collapsible: true,
+                                        xtype: 'panel',
+                                        layout: 'column',
+                                        bodyStyle: 'border-style:none',
                                         items: [
                                             {
-                                                xtype: 'combobox',
-                                                style: 'margin-bottom:8px',
-                                                width: DV.conf.layout.west_fieldset_width - 44,
+                                                xtype: 'multiselect',
+                                                id: 'availableIndicators',
+                                                name: 'availableIndicators',
+                                                cls: 'multiselect',
+                                                width: (DV.conf.layout.west_fieldset_width - 22) / 2,
+                                                displayField: 'shortName',
                                                 valueField: 'id',
-                                                displayField: 'name',
-                                                fieldLabel: 'Select group',
-                                                labelStyle: 'padding-left:7px;',
-                                                labelWidth: 110,
-                                                editable: false,
                                                 queryMode: 'remote',
-                                                store: Ext.create('Ext.data.Store', {
-                                                    fields: ['id', 'name', 'index'],
-                                                    proxy: {
-                                                        type: 'ajax',
-                                                        url: DV.conf.finals.ajax.url_commons + 'getDataElementGroupsMinified.action',
-                                                        reader: {
-                                                            type: 'json',
-                                                            root: 'dataElementGroups'
+                                                store: DV.store.indicator.available,
+                                                tbar: [
+                                                    {
+                                                        xtype: 'label',
+                                                        text: 'Available indicators',
+                                                        style: 'padding-left:5px'
+                                                    },
+                                                    '->',
+                                                    {
+                                                        xtype: 'button',
+                                                        icon: 'images/arrowright.png',
+                                                        tooltip: 'Select',
+                                                        width: 22,
+                                                        handler: function() {
+                                                            DV.util.multiselect.select(DV.util.getCmp('multiselect[name="availableIndicators"]'),
+                                                                DV.util.getCmp('multiselect[name="selectedIndicators"]'));
                                                         }
                                                     },
-                                                    listeners: {
-                                                        load: function(s) {
-                                                            s.add({id: 0, name: '[ All data element groups ]', index: -1});
-                                                            s.sort('index', 'ASC');
+                                                    {
+                                                        xtype: 'button',
+                                                        icon: 'images/arrowrightdouble.png',
+                                                        tooltip: 'Select all',
+                                                        width: 22,
+                                                        handler: function() {
+                                                            DV.util.multiselect.selectAll(DV.util.getCmp('multiselect[name="availableIndicators"]'),
+                                                                DV.util.getCmp('multiselect[name="selectedIndicators"]'));
                                                         }
-                                                    }
-                                                }),
+                                                    },
+                                                    ' '
+                                                ],
                                                 listeners: {
-                                                    select: function(cb) {
-                                                        var store = DV.store.dataelement.available;
-                                                        store.parent = cb.getValue();
-                                                        
-                                                        if (DV.util.store.containsParent(store)) {
-                                                            DV.util.store.loadFromStorage(store);
-                                                        }
-                                                        else {
-                                                            store.load({params: {id: cb.getValue()}});
-                                                        }
+                                                    added: function() {
+                                                        DV.cmp.dimension.indicator.available = this;
+                                                    },
+                                                    afterrender: function() {
+                                                        this.boundList.on('itemdblclick', function() {
+                                                            DV.util.multiselect.select(this, DV.cmp.dimension.indicator.selected);
+                                                        }, this);
                                                     }
                                                 }
-                                            },                                    
+                                            },                                            
                                             {
-                                                xtype: 'panel',
-                                                layout: 'column',
-                                                bodyStyle: 'border-style:none',
-                                                items: [
-                                                    Ext.create('Ext.ux.form.MultiSelect', {
-                                                        id: 'availableDataElements',
-                                                        name: 'availableDataElements',
-                                                        cls: 'multiselect',
-                                                        width: (DV.conf.layout.west_fieldset_width - 44) / 2,
-                                                        displayField: 'shortName',
-                                                        valueField: 'id',
-                                                        queryMode: 'remote',
-                                                        store: DV.store.dataelement.available,
-                                                        tbar: [
-                                                            {
-                                                                xtype: 'label',
-                                                                text: 'Available data elements',
-                                                                style: 'padding-left:5px'
-                                                            },
-                                                            '->',
-                                                            {
-                                                                xtype: 'button',
-                                                                icon: 'images/arrowright.png',
-                                                                width: 22,
-                                                                handler: function() {
-                                                                    DV.util.multiselect.select(DV.util.getCmp('multiselect[name="availableDataElements"]'),
-                                                                        DV.util.getCmp('multiselect[name="selectedDataElements"]'));
-                                                                }
-                                                            },
-                                                            {
-                                                                xtype: 'button',
-                                                                icon: 'images/arrowrightdouble.png',
-                                                                width: 22,
-                                                                handler: function() {
-                                                                    DV.util.multiselect.selectAll(DV.util.getCmp('multiselect[name="availableDataElements"]'),
-                                                                        DV.util.getCmp('multiselect[name="selectedDataElements"]'));
-                                                                }
-                                                            },
-                                                            ' '
-                                                        ],
-                                                        listeners: {
-                                                            added: function() {
-                                                                DV.cmp.dimension.dataelement.available = this;
-                                                            },                                                                
-                                                            afterrender: function() {
-                                                                this.boundList.on('itemdblclick', function() {
-                                                                    DV.util.multiselect.select(this, DV.cmp.dimension.dataelement.selected);
-                                                                }, this);
-                                                            }
-                                                        }
-                                                    }),                                            
+                                                xtype: 'multiselect',
+                                                id: 'selectedIndicators',
+                                                name: 'selectedIndicators',
+                                                cls: 'multiselect',
+                                                width: (DV.conf.layout.west_fieldset_width - 22) / 2,
+                                                displayField: 'shortName',
+                                                valueField: 'id',
+                                                ddReorder: true,
+                                                queryMode: 'local',
+                                                store: DV.store.indicator.selected,
+                                                tbar: [
+                                                    ' ',
                                                     {
-                                                        xtype: 'multiselect',
-                                                        id: 'selectedDataElements',
-                                                        name: 'selectedDataElements',
-                                                        cls: 'multiselect',
-                                                        width: (DV.conf.layout.west_fieldset_width - 44) / 2,
-                                                        displayField: 'shortName',
-                                                        valueField: 'id',
-                                                        ddReorder: true,
-                                                        queryMode: 'remote',
-                                                        store: DV.store.dataelement.selected,
-                                                        tbar: [
-                                                            ' ',
-                                                            {
-                                                                xtype: 'button',
-                                                                icon: 'images/arrowleftdouble.png',
-                                                                width: 22,
-                                                                handler: function() {
-                                                                    DV.util.multiselect.unselectAll(DV.util.getCmp('multiselect[name="availableDataElements"]'),
-                                                                        DV.util.getCmp('multiselect[name="selectedDataElements"]'));
-                                                                }
-                                                            },
-                                                            {
-                                                                xtype: 'button',
-                                                                icon: 'images/arrowleft.png',
-                                                                width: 22,
-                                                                handler: function() {
-                                                                    DV.util.multiselect.unselect(DV.util.getCmp('multiselect[name="availableDataElements"]'),
-                                                                        DV.util.getCmp('multiselect[name="selectedDataElements"]'));
-                                                                }
-                                                            },
-                                                            '->',
-                                                            {
-                                                                xtype: 'label',
-                                                                text: 'Selected data elements',
-                                                                style: 'padding-right:5px'
-                                                            }
-                                                        ],
-                                                        listeners: {
-                                                            added: function() {
-                                                                DV.cmp.dimension.dataelement.selected = this;
-                                                            },          
-                                                            afterrender: function() {
-                                                                this.boundList.on('itemdblclick', function() {
-                                                                    DV.util.multiselect.unselect(DV.cmp.dimension.dataelement.available, this);
-                                                                }, this);
-                                                            }
+                                                        xtype: 'button',
+                                                        icon: 'images/arrowleftdouble.png',
+                                                        tooltip: 'Unselect all',
+                                                        width: 22,
+                                                        handler: function() {
+                                                            DV.util.multiselect.unselectAll(DV.util.getCmp('multiselect[name="availableIndicators"]'),
+                                                                DV.util.getCmp('multiselect[name="selectedIndicators"]'));
                                                         }
+                                                    },
+                                                    {
+                                                        xtype: 'button',
+                                                        icon: 'images/arrowleft.png',
+                                                        tooltip: 'Unselect',
+                                                        width: 22,
+                                                        handler: function() {
+                                                            DV.util.multiselect.unselect(DV.util.getCmp('multiselect[name="availableIndicators"]'),
+                                                                DV.util.getCmp('multiselect[name="selectedIndicators"]'));
+                                                        }
+                                                    },
+                                                    '->',
+                                                    {
+                                                        xtype: 'label',
+                                                        text: 'Selected indicators',
+                                                        style: 'padding-right:5px'
                                                     }
-                                                ]
+                                                ],
+                                                listeners: {
+                                                    added: function() {
+                                                        DV.cmp.dimension.indicator.selected = this;
+                                                    },
+                                                    afterrender: function() {
+                                                        this.boundList.on('itemdblclick', function() {
+                                                            DV.util.multiselect.unselect(DV.cmp.dimension.indicator.available, this);
+                                                        }, this);
+                                                    }
+                                                }
                                             }
-                                        ],
-                                        listeners: {
-                                            afterrender: function() {
-                                                DV.cmp.fieldset.dataelement = this;
-                                            },
-                                            expand: function() {
-                                                DV.util.fieldset.collapseFieldsets([DV.cmp.fieldset.indicator]);
-                                            }
-                                        }
+                                        ]
                                     }
                                 ],
                                 listeners: {
                                     afterrender: function() {
-                                        DV.cmp.fieldset.data = this;
+                                        DV.cmp.fieldset.indicator = this;
                                     },
                                     expand: function() {
-                                        DV.util.fieldset.collapseFieldsets([DV.cmp.fieldset.period, DV.cmp.fieldset.organisationunit]);
+                                        DV.util.fieldset.collapseFieldsets([DV.cmp.fieldset.dataelement, DV.cmp.fieldset.period, DV.cmp.fieldset.organisationunit]);
+                                    }
+                                }
+                            },
+                            {
+                                xtype: 'fieldset',
+                                id: 'dataelement_fs',
+                                name: DV.conf.finals.dimension.dataelement.value,
+                                title: '<a href="javascript:DV.util.fieldset.toggleDataElement();" class="dv-fieldset-title-link">Data elements</a>',
+                                collapsed: true,
+                                collapsible: true,
+                                items: [
+                                    {
+                                        xtype: 'combobox',
+                                        style: 'margin-bottom:8px',
+                                        width: DV.conf.layout.west_fieldset_width - 22,
+                                        valueField: 'id',
+                                        displayField: 'name',
+                                        fieldLabel: 'Select group',
+                                        labelStyle: 'padding-left:7px;',
+                                        labelWidth: 110,
+                                        editable: false,
+                                        queryMode: 'remote',
+                                        store: Ext.create('Ext.data.Store', {
+                                            fields: ['id', 'name', 'index'],
+                                            proxy: {
+                                                type: 'ajax',
+                                                url: DV.conf.finals.ajax.url_commons + 'getDataElementGroupsMinified.action',
+                                                reader: {
+                                                    type: 'json',
+                                                    root: 'dataElementGroups'
+                                                }
+                                            },
+                                            listeners: {
+                                                load: function(s) {
+                                                    s.add({id: 0, name: '[ All data element groups ]', index: -1});
+                                                    s.sort('index', 'ASC');
+                                                }
+                                            }
+                                        }),
+                                        listeners: {
+                                            select: function(cb) {
+                                                var store = DV.store.dataelement.available;
+                                                store.parent = cb.getValue();
+                                                
+                                                if (DV.util.store.containsParent(store)) {
+                                                    DV.util.store.loadFromStorage(store);
+                                                }
+                                                else {
+                                                    store.load({params: {id: cb.getValue()}});
+                                                }
+                                            }
+                                        }
+                                    },                                    
+                                    {
+                                        xtype: 'panel',
+                                        layout: 'column',
+                                        bodyStyle: 'border-style:none',
+                                        items: [
+                                            Ext.create('Ext.ux.form.MultiSelect', {
+                                                id: 'availableDataElements',
+                                                name: 'availableDataElements',
+                                                cls: 'multiselect',
+                                                width: (DV.conf.layout.west_fieldset_width - 22) / 2,
+                                                displayField: 'shortName',
+                                                valueField: 'id',
+                                                queryMode: 'remote',
+                                                store: DV.store.dataelement.available,
+                                                tbar: [
+                                                    {
+                                                        xtype: 'label',
+                                                        text: 'Available data elements',
+                                                        style: 'padding-left:5px'
+                                                    },
+                                                    '->',
+                                                    {
+                                                        xtype: 'button',
+                                                        icon: 'images/arrowright.png',
+                                                        tooltip: 'Select',
+                                                        width: 22,
+                                                        handler: function() {
+                                                            DV.util.multiselect.select(DV.util.getCmp('multiselect[name="availableDataElements"]'),
+                                                                DV.util.getCmp('multiselect[name="selectedDataElements"]'));
+                                                        }
+                                                    },
+                                                    {
+                                                        xtype: 'button',
+                                                        icon: 'images/arrowrightdouble.png',
+                                                        tooltip: 'Select all',
+                                                        width: 22,
+                                                        handler: function() {
+                                                            DV.util.multiselect.selectAll(DV.util.getCmp('multiselect[name="availableDataElements"]'),
+                                                                DV.util.getCmp('multiselect[name="selectedDataElements"]'));
+                                                        }
+                                                    },
+                                                    ' '
+                                                ],
+                                                listeners: {
+                                                    added: function() {
+                                                        DV.cmp.dimension.dataelement.available = this;
+                                                    },                                                                
+                                                    afterrender: function() {
+                                                        this.boundList.on('itemdblclick', function() {
+                                                            DV.util.multiselect.select(this, DV.cmp.dimension.dataelement.selected);
+                                                        }, this);
+                                                    }
+                                                }
+                                            }),                                            
+                                            {
+                                                xtype: 'multiselect',
+                                                id: 'selectedDataElements',
+                                                name: 'selectedDataElements',
+                                                cls: 'multiselect',
+                                                width: (DV.conf.layout.west_fieldset_width - 22) / 2,
+                                                displayField: 'shortName',
+                                                valueField: 'id',
+                                                ddReorder: true,
+                                                queryMode: 'remote',
+                                                store: DV.store.dataelement.selected,
+                                                tbar: [
+                                                    ' ',
+                                                    {
+                                                        xtype: 'button',
+                                                        icon: 'images/arrowleftdouble.png',
+                                                        tooltip: 'Unselect all',
+                                                        width: 22,
+                                                        handler: function() {
+                                                            DV.util.multiselect.unselectAll(DV.util.getCmp('multiselect[name="availableDataElements"]'),
+                                                                DV.util.getCmp('multiselect[name="selectedDataElements"]'));
+                                                        }
+                                                    },
+                                                    {
+                                                        xtype: 'button',
+                                                        icon: 'images/arrowleft.png',
+                                                        tooltip: 'Unselect',
+                                                        width: 22,
+                                                        handler: function() {
+                                                            DV.util.multiselect.unselect(DV.util.getCmp('multiselect[name="availableDataElements"]'),
+                                                                DV.util.getCmp('multiselect[name="selectedDataElements"]'));
+                                                        }
+                                                    },
+                                                    '->',
+                                                    {
+                                                        xtype: 'label',
+                                                        text: 'Selected data elements',
+                                                        style: 'padding-right:5px'
+                                                    }
+                                                ],
+                                                listeners: {
+                                                    added: function() {
+                                                        DV.cmp.dimension.dataelement.selected = this;
+                                                    },          
+                                                    afterrender: function() {
+                                                        this.boundList.on('itemdblclick', function() {
+                                                            DV.util.multiselect.unselect(DV.cmp.dimension.dataelement.available, this);
+                                                        }, this);
+                                                    }
+                                                }
+                                            }
+                                        ]
+                                    }
+                                ],
+                                listeners: {
+                                    afterrender: function() {
+                                        DV.cmp.fieldset.dataelement = this;
+                                    },
+                                    expand: function() {
+                                        DV.util.fieldset.collapseFieldsets([DV.cmp.fieldset.indicator, DV.cmp.fieldset.period, DV.cmp.fieldset.organisationunit]);
                                     }
                                 }
                             },
@@ -1685,7 +1672,7 @@ Ext.onReady( function() {
                                         DV.cmp.fieldset.period = this;
                                     },
                                     expand: function() {
-                                        DV.util.fieldset.collapseFieldsets([DV.cmp.fieldset.data, DV.cmp.fieldset.organisationunit]);
+                                        DV.util.fieldset.collapseFieldsets([DV.cmp.fieldset.indicator, DV.cmp.fieldset.dataelement, DV.cmp.fieldset.organisationunit]);
                                     }
                                 }
                             },                            
@@ -1757,7 +1744,7 @@ Ext.onReady( function() {
                                         DV.cmp.fieldset.organisationunit = this;
                                     },
                                     expand: function(fs) {
-                                        DV.util.fieldset.collapseFieldsets([DV.cmp.fieldset.data, DV.cmp.fieldset.period]);
+                                        DV.util.fieldset.collapseFieldsets([DV.cmp.fieldset.indicator, DV.cmp.fieldset.dataelement, DV.cmp.fieldset.period]);
                                         var tp = fs.down('treepanel');
                                         if (!tp.isRendered) {
                                             tp.isRendered = true;
@@ -1841,7 +1828,7 @@ Ext.onReady( function() {
                                     return;
                                 }
                                 
-                                document.getElementById('titleField').value = DV.state.filter.data[0];
+                                document.getElementById('titleField').value = DV.state.filter.names[0];
                                 document.getElementById('svgField').value = svg[0].parentNode.innerHTML;
                                 document.getElementById('typeField').value = type;
                                 
