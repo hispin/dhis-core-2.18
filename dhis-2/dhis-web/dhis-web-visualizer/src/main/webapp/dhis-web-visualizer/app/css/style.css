@@ -64,7 +64,7 @@
 }
 
 /* Fieldset trigger icons */
-#data_fs .x-tool img, #indicator_fs .x-tool img, #dataelement_fs .x-tool img, #period_fs .x-tool img, #organisationunit_fs .x-tool img {
+#indicator_fs .x-tool img, #dataelement_fs .x-tool img, #period_fs .x-tool img, #organisationunit_fs .x-tool img {
     background-image: url('../images/tool-sprites.gif');
     width: 25px;
 }
@@ -92,16 +92,6 @@
 
 .x-tool-over .x-tool-up {
     background-position: -25px -60px;
-}
-
-/* Fieldset id */
-#data_fs {
-    padding-bottom: 0px;
-}
-
-#indicator_fs {
-    margin-top: 4px;
-    margin-bottom: 8px;
 }
 
 /* Tree panel font */
