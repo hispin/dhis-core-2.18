@@ -66,6 +66,15 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		<property name="organisationUnitService"
 			ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
 	</bean>
+    
+    <!-- Aggregated values -->
+
+    <bean id="org.hisp.dhis.visualizer.action.GetAggregatedValuesAction"
+        class="org.hisp.dhis.visualizer.action.GetAggregatedValuesAction"
+        scope="prototype">
+        <property name="aggregatedDataValueService"
+            ref="org.hisp.dhis.aggregation.AggregatedDataValueService" />
+    </bean>
 
 	<!-- Export -->
 
