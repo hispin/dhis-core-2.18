@@ -1278,7 +1278,6 @@ Ext.onReady( function() {
                                                     {
                                                         xtype: 'button',
                                                         icon: 'images/arrowright.png',
-                                                        tooltip: 'Select',
                                                         width: 22,
                                                         handler: function() {
                                                             DV.util.multiselect.select(DV.util.getCmp('multiselect[name="availableIndicators"]'),
@@ -1288,7 +1287,6 @@ Ext.onReady( function() {
                                                     {
                                                         xtype: 'button',
                                                         icon: 'images/arrowrightdouble.png',
-                                                        tooltip: 'Select all',
                                                         width: 22,
                                                         handler: function() {
                                                             DV.util.multiselect.selectAll(DV.util.getCmp('multiselect[name="availableIndicators"]'),
@@ -1324,7 +1322,6 @@ Ext.onReady( function() {
                                                     {
                                                         xtype: 'button',
                                                         icon: 'images/arrowleftdouble.png',
-                                                        tooltip: 'Unselect all',
                                                         width: 22,
                                                         handler: function() {
                                                             DV.util.multiselect.unselectAll(DV.util.getCmp('multiselect[name="availableIndicators"]'),
@@ -1334,7 +1331,6 @@ Ext.onReady( function() {
                                                     {
                                                         xtype: 'button',
                                                         icon: 'images/arrowleft.png',
-                                                        tooltip: 'Unselect',
                                                         width: 22,
                                                         handler: function() {
                                                             DV.util.multiselect.unselect(DV.util.getCmp('multiselect[name="availableIndicators"]'),
@@ -1445,7 +1441,6 @@ Ext.onReady( function() {
                                                     {
                                                         xtype: 'button',
                                                         icon: 'images/arrowright.png',
-                                                        tooltip: 'Select',
                                                         width: 22,
                                                         handler: function() {
                                                             DV.util.multiselect.select(DV.util.getCmp('multiselect[name="availableDataElements"]'),
@@ -1455,7 +1450,6 @@ Ext.onReady( function() {
                                                     {
                                                         xtype: 'button',
                                                         icon: 'images/arrowrightdouble.png',
-                                                        tooltip: 'Select all',
                                                         width: 22,
                                                         handler: function() {
                                                             DV.util.multiselect.selectAll(DV.util.getCmp('multiselect[name="availableDataElements"]'),
@@ -1491,7 +1485,6 @@ Ext.onReady( function() {
                                                     {
                                                         xtype: 'button',
                                                         icon: 'images/arrowleftdouble.png',
-                                                        tooltip: 'Unselect all',
                                                         width: 22,
                                                         handler: function() {
                                                             DV.util.multiselect.unselectAll(DV.util.getCmp('multiselect[name="availableDataElements"]'),
@@ -1501,7 +1494,6 @@ Ext.onReady( function() {
                                                     {
                                                         xtype: 'button',
                                                         icon: 'images/arrowleft.png',
-                                                        tooltip: 'Unselect',
                                                         width: 22,
                                                         handler: function() {
                                                             DV.util.multiselect.unselect(DV.util.getCmp('multiselect[name="availableDataElements"]'),
