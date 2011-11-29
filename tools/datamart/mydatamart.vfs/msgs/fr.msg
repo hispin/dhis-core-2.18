@@ -1,6 +1,11 @@
 namespace import -force msgcat::mcset
 
 set lang fr
+set stringsFile [open [file join $starkit::topdir msgs/strings.fr]]
 
-mcset $lang {File} {le File}
-mcset $lang  {Exit} {Exeet}
+set strings [read $stringsFile]
+
+foreach {en fr} $strings {
+    mcset $lang $en $fr
+}
+close $stringsFile

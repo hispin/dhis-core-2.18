@@ -163,6 +163,14 @@ proc showstats {parent} {
 	      -command [list synchData [dhisdb::getParentOrgUnit db $::dhis(myorgunitid)] [::dhisdb::getLevelByOrgunit db $::dhis(myorgunitid)] ] ] \
 	-column 0 -row 4 -columnspan 3 -sticky new
     
+    grid [ttk::button $synchframe.deletedata -text [mc "Delete local data for period" ]]] \
+	-column 0 -row 4 -columnspan 3 -sticky new \
+        -command {
+           set reply [tk_dialog .foo "Are you sure?" "This will delete all data for the selected period." \
+             questhead 0 Yes No ]
+           if {reply==1} return
+        }
+    
     
     grid $synchframe -row 0 -column 1 -rowspan 2 -padx 20 -pady 20 -sticky nsew
     grid $dvframe -row 0 -column 0 -padx 20 -pady 10
