@@ -307,6 +307,16 @@ li {
     border-color: #b3abaa;
 }
 
+/* Menu */
+.x-menu-body {
+    -moz-border-radius: 2px 2px 2px 2px;
+    -webkit-border-radius: 2px 2px 2px 2px;
+    -o-border-radius: 2px 2px 2px 2px;
+    -ms-border-radius: 2px 2px 2px 2px;
+    -khtml-border-radius: 2px 2px 2px 2px;
+    border-radius: 2px 2px 2px 2px;
+}
+
 /* Treepanel contextmenu */
 #treepanel-contextmenu {
     -moz-border-radius: 2px 2px 2px 2px;
@@ -334,7 +344,7 @@ li {
     border-width: 1px;
     border-style: solid;
     border-color: #aaa;
-}    
+}
 
 /* Fieldset */
 .dv-fieldset-title-link {
@@ -387,10 +397,18 @@ li {
     color: #444;
 }
 
-.dv-menu-toolbar-save-png {
+.dv-menu-item-png {
     background-image:url('../images/png.png');
 }
 
-.dv-menu-toolbar-save-pdf {
+.dv-menu-item-pdf {
     background-image:url('../images/pdf.png');
 }
+
+.dv-menu-item-datatable {
+    background-image:url('../images/datatable.png');
+}
+
+
+    
+

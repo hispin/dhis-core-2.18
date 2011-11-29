@@ -109,15 +109,17 @@ Ext.onReady( function() {
     };
     
     DV.cmp = {
+        region: {},
         charttype: [],
         settings: {},
+        fieldset: {},
         dimension: {
             indicator: {},
             dataelement: {},
             period: []
         },
-        fieldset: {},
-        datatable: null
+        datatable: null,
+        toolbar: {}
     };
     
     DV.util = {
@@ -990,9 +992,8 @@ Ext.onReady( function() {
             }
         },
         reload: function() {
-            var c = DV.util.getCmp('panel[region="east"]');
-            c.removeAll(true);
-            c.add(this.datatable);
+            DV.cmp.region.east.removeAll(true);
+            DV.cmp.region.east.add(this.datatable);
         }            
     };
     
@@ -1750,13 +1751,16 @@ Ext.onReady( function() {
                     }
                 ],
                 listeners: {
-                    collapse: function(p) {                    
-                        p.collapsed = true;
-                        DV.util.getCmp('button[name="resizeleft"]').setText('>>>');
+                    afterrender: function() {
+                        DV.cmp.region.west = this;
                     },
-                    expand: function(p) {
-                        p.collapsed = false;
-                        DV.util.getCmp('button[name="resizeleft"]').setText('<<<');
+                    collapse: function() {                    
+                        this.collapsed = true;
+                        DV.util.getCmp('button[name="resizewest"]').setText('>>>');
+                    },
+                    expand: function() {
+                        this.collapsed = false;
+                        DV.util.getCmp('button[name="resizewest"]').setText('<<<');
                     }
                 }
             },
@@ -1772,11 +1776,11 @@ Ext.onReady( function() {
                         {
                             xtype: 'button',
 							cls: 'dv-btn-toolbar',
-                            name: 'resizeleft',
+                            name: 'resizewest',
                             text: '<span class="dv-btn-toolbar-text-2"><<<</span>',
                             tooltip: 'Show/hide chart settings',
                             handler: function() {
-                                var p = DV.util.getCmp('panel[region="west"]');
+                                var p = DV.cmp.region.west;
                                 if (p.collapsed) {
                                     p.expand();
                                 }
@@ -1796,15 +1800,38 @@ Ext.onReady( function() {
                         {
                             xtype: 'button',
 							cls: 'dv-btn-toolbar',
-                            text: '<span class="dv-btn-toolbar-text-2">Data table</span>',
-                            handler: function(b) {
-                                var p = DV.util.getCmp('panel[region="east"]');
-                                if (p.collapsed && p.items.length) {
-                                    p.expand();
-                                    DV.exe.datatable(true);
+                            text: '<span class="dv-btn-toolbar-text-2">Show..</span>',
+                            listeners: {
+                                afterrender: function(b) {
+                                    this.menu = Ext.create('Ext.menu.Menu', {
+                                        shadowOffset: 1,
+                                        items: [
+                                            {
+                                                text: 'Data table',
+                                                iconCls: 'dv-menu-item-datatable',
+                                                minWidth: 100,
+                                                handler: function() {
+                                                    var p = DV.cmp.region.east;
+                                                    if (p.collapsed && p.items.length) {
+                                                        p.expand();
+                                                        DV.exe.datatable(true);
+                                                    }
+                                                    else {
+                                                        p.collapse();
+                                                    }
+                                                    DV.cmp.toolbar.resizeeast.show();
+                                                }
+                                            }
+                                        ]                                            
+                                    });
+                                }
+                            },
+                            handler: function() {
+                                if (DV.cmp.region.east.items.length) {
+                                    this.menu.down('menuitem').enable();
                                 }
                                 else {
-                                    p.collapse();
+                                    this.menu.down('menuitem').disable();
                                 }
                             }
                         },
@@ -1837,10 +1864,11 @@ Ext.onReady( function() {
                             listeners: {
                                 afterrender: function(b) {
                                     this.menu = Ext.create('Ext.menu.Menu', {
+                                        shadowOffset: 1,
                                         items: [
                                             {
                                                 text: 'PNG',
-                                                iconCls: 'dv-menu-toolbar-save-png',
+                                                iconCls: 'dv-menu-item-png',
                                                 minWidth: 80,
                                                 handler: function() {
                                                     b.execute(DV.conf.finals.image.png);
@@ -1848,7 +1876,7 @@ Ext.onReady( function() {
                                             },
                                             {
                                                 text: 'PDF',
-                                                iconCls: 'dv-menu-toolbar-save-pdf',
+                                                iconCls: 'dv-menu-item-pdf',
                                                 minWidth: 80,
                                                 handler: function() {
                                                     b.execute(DV.conf.finals.image.pdf);
@@ -1867,6 +1895,23 @@ Ext.onReady( function() {
                             handler: function() {
                                 window.location.href = DV.conf.finals.ajax.url_portal + 'redirect.action';
                             }
+                        },
+                        {
+                            xtype: 'button',
+							cls: 'dv-btn-toolbar',
+                            name: 'resizeeast',
+                            text: '<span class="dv-btn-toolbar-text-2">>>></span>',
+                            tooltip: 'Hide data table',
+                            hidden: true,
+                            handler: function() {
+                                DV.cmp.region.east.collapse();
+                                this.hide();
+                            },
+                            listeners: {
+                                added: function() {
+                                    DV.cmp.toolbar.resizeeast = this;
+                                }
+                            }
                         }
                     
                     ]
@@ -1878,7 +1923,12 @@ Ext.onReady( function() {
                 collapsible: true,
                 collapsed: true,
                 collapseMode: 'mini',
-                width: 498
+                width: 498,
+                listeners: {
+                    afterrender: function() {
+                        DV.cmp.region.east = this;
+                    }
+                }
             }
         ],
         listeners: {
