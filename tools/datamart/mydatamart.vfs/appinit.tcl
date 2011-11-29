@@ -1,10 +1,12 @@
-set ::dhis(version) "1.0 2011-Aug-03"
+set ::dhis(version) "1.0 2011-Nov-29"
 
 #load tcl core extensions
 package require msgcat
 
 # bring msgcat commands into scope for localizing strings
 namespace import msgcat::*
+# load LOCALE specific message file
+mcload [file join $starkit::topdir msgs]
 
 package require logger 0.3
 package require dhisweb
