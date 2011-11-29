@@ -27,14 +27,14 @@ package org.hisp.dhis.reportsheet;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import org.hisp.dhis.common.AbstractNameableObject;
+import org.hisp.dhis.common.BaseNameableObject;
 
 /**
  * @author Tran Thanh Tri
  */
 @SuppressWarnings( "serial" )
 public class Bookmark
-    extends AbstractNameableObject
+    extends BaseNameableObject
 {
     public static final String CHART = "CHART";
 
