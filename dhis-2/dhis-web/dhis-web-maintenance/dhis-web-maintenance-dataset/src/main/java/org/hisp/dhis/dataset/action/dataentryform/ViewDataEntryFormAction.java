@@ -37,6 +37,7 @@ import org.hisp.dhis.dataentryform.DataEntryForm;
 import org.hisp.dhis.dataentryform.DataEntryFormService;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.dataset.DataSetService;
+import org.hisp.dhis.i18n.I18n;
 import org.hisp.dhis.options.displayproperty.DisplayPropertyHandler;
 import org.hisp.dhis.user.UserSettingService;
 
@@ -72,6 +73,13 @@ public class ViewDataEntryFormAction
     public void setDataEntryFormService( DataEntryFormService dataEntryFormService )
     {
         this.dataEntryFormService = dataEntryFormService;
+    }
+    
+    private I18n i18n;
+
+    public void setI18n( I18n i18n )
+    {
+        this.i18n = i18n;
     }
 
     // -------------------------------------------------------------------------
@@ -154,7 +162,7 @@ public class ViewDataEntryFormAction
         dataEntryForm = dataSet.getDataEntryForm();
 
         dataEntryValue = dataEntryForm != null ? dataEntryFormService.prepareDataEntryFormForEdit( dataEntryForm
-            .getHtmlCode() ) : "";
+            .getHtmlCode(), i18n ) : "";
 
         autoSave = (Boolean) userSettingService.getUserSetting( UserSettingService.AUTO_SAVE_DATA_ENTRY_FORM, false );
 
