@@ -65,13 +65,14 @@
 
 #foreach( $chart in $chartAreas )
 #set( $count0 = $velocityCount - 1 )
+#set( $count1 = $velocityCount )
 #set( $startHr = ($count0 % $sizeHalf) == 0 )
 #set( $endHr =  ($count0 % $sizeHalf) == ($sizeHalf - 1) )
 
 #if( $startHr )<tr> #end
 	<td style="width:305px; padding-left: 10px;">
-		#dropDownButtonDiv( "chartDropDown${velocityCount}" "chartArea${velocityCount}" )
-		#chartDropDownListDiv( "chartArea${velocityCount}" "chartDropDown${velocityCount}" $chart )
+		#dropDownButtonDiv( "chartDropDown${count1}" "chartArea${count1}" )
+		#chartDropDownListDiv( "chartArea${count1}" "chartDropDown${count1}" $chart )
 	</td>
 #end
 #if( $endHr )</tr> #end
