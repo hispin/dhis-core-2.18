@@ -54,12 +54,12 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 public class DefaultDataEntryFormService
     implements DataEntryFormService
-{    
+{
     private static final String EMPTY_VALUE_TAG = "value=\"\"";
     private static final String EMPTY_TITLE_TAG = "title=\"\"";
     private static final String TAG_CLOSE = "/>";
     private static final String EMPTY = "";
-    
+
     // ------------------------------------------------------------------------
     // Dependencies
     // ------------------------------------------------------------------------
@@ -84,7 +84,7 @@ public class DefaultDataEntryFormService
     {
         this.dataElementService = dataElementService;
     }
-    
+
     private IndicatorService indicatorService;
 
     public void setIndicatorService( IndicatorService indicatorService )
@@ -125,7 +125,7 @@ public class DefaultDataEntryFormService
     {
         return dataEntryFormStore.getAllDataEntryForms();
     }
-    
+
     public String prepareDataEntryFormForSave( String htmlCode )
     {
         StringBuffer sb = new StringBuffer();
@@ -139,7 +139,7 @@ public class DefaultDataEntryFormService
             // -----------------------------------------------------------------
 
             String dataElementCode = inputMatcher.group();
-            
+
             Matcher valueTagMatcher = VALUE_TAG_PATTERN.matcher( dataElementCode );
             Matcher titleTagMatcher = TITLE_TAG_PATTERN.matcher( dataElementCode );
 
@@ -147,7 +147,7 @@ public class DefaultDataEntryFormService
             {
                 dataElementCode = dataElementCode.replace( valueTagMatcher.group( 1 ), EMPTY );
             }
-            
+
             if ( titleTagMatcher.find() && valueTagMatcher.groupCount() > 0 )
             {
                 dataElementCode = dataElementCode.replace( titleTagMatcher.group( 1 ), EMPTY );
@@ -161,7 +161,7 @@ public class DefaultDataEntryFormService
         return sb.toString();
     }
 
-    public String prepareDataEntryFormForEdit( String htmlCode )
+    public String prepareDataEntryFormForEdit( String htmlCode, I18n i18n )
     {
         StringBuffer sb = new StringBuffer();
 
@@ -181,7 +181,7 @@ public class DefaultDataEntryFormService
 
                 int optionComboId = Integer.parseInt( identifierMatcher.group( 2 ) );
                 DataElementCategoryOptionCombo categegoryOptionCombo = categoryService.getDataElementCategoryOptionCombo( optionComboId );
-                String optionComboName = categegoryOptionCombo != null ? categegoryOptionCombo.getName() : "[ Category option combo does not exist ]";
+                String optionComboName = categegoryOptionCombo != null ? categegoryOptionCombo.getName() : "[ " + i18n.getString( "cate_option_combo_not_exist" ) + " ]";
 
                 // -------------------------------------------------------------
                 // Insert name of data element operand as value and title
@@ -191,11 +191,11 @@ public class DefaultDataEntryFormService
                     new StringBuilder( "title=\"" ).append( dataElement.getId() ).append( " - " ).
                     append( dataElement.getName() ).append( " - " ).append( optionComboId ).append( " - " ).
                     append( optionComboName ).append( " - " ).append( dataElement.getType() ).append( "\"" ) : new StringBuilder();
-                
-                String displayValue = dataElement != null ? "value=\"[ " + dataElement.getName() + " " + optionComboName + " ]\"" : "[ Data element does not exist ]";
-                String displayTitle = dataElement != null ? title.toString() : "[ Data element does not exist ]";
-                
-                inputHtml = inputHtml.contains( EMPTY_VALUE_TAG ) ? inputHtml.replace( EMPTY_VALUE_TAG, displayValue ) : inputHtml + " " + displayValue;                    
+
+                String displayValue = dataElement != null ? "value=\"[ " + dataElement.getName() + " " + optionComboName + " ]\"" : "[ " + i18n.getString( "dataelement_not_exist" ) + " ]";
+                String displayTitle = dataElement != null ? title.toString() : "[ " + i18n.getString( "dataelement_not_exist" ) + " ]";
+
+                inputHtml = inputHtml.contains( EMPTY_VALUE_TAG ) ? inputHtml.replace( EMPTY_VALUE_TAG, displayValue ) : inputHtml + " " + displayValue;
                 inputHtml = inputHtml.contains( EMPTY_TITLE_TAG ) ? inputHtml.replace( EMPTY_TITLE_TAG, displayTitle ) : " " + displayTitle;
 
                 inputMatcher.appendReplacement( sb, inputHtml );
@@ -209,13 +209,13 @@ public class DefaultDataEntryFormService
                 // Insert name of indicator as value and title
                 // -------------------------------------------------------------
 
-                String displayValue = indicator != null ? "value=\"[ " + indicator.getName() + " ]\"" : "[ Indicator does not exist ]";
-                String displayTitle = indicator != null ? "title=\"" + indicator.getName() + "\"" : "[ Indicator does not exist ]";
+                String displayValue = indicator != null ? "value=\"[ " + indicator.getName() + " ]\"" : "[ " + i18n.getString( "indicator_not_exist" ) + " ]";
+                String displayTitle = indicator != null ? "title=\"" + indicator.getName() + "\"" : "[ " + i18n.getString( "indicator_not_exist" ) + " ]";
 
-                inputHtml = inputHtml.contains( EMPTY_VALUE_TAG ) ? inputHtml.replace( EMPTY_VALUE_TAG, displayValue ) : inputHtml + " " + displayValue;                    
+                inputHtml = inputHtml.contains( EMPTY_VALUE_TAG ) ? inputHtml.replace( EMPTY_VALUE_TAG, displayValue ) : inputHtml + " " + displayValue;
                 inputHtml = inputHtml.contains( EMPTY_TITLE_TAG ) ? inputHtml.replace( EMPTY_TITLE_TAG, displayTitle ) : " " + displayTitle;
 
-                inputMatcher.appendReplacement( sb, inputHtml );                
+                inputMatcher.appendReplacement( sb, inputHtml );
             }
         }
 
@@ -229,12 +229,12 @@ public class DefaultDataEntryFormService
         // ---------------------------------------------------------------------
         // Inline javascript/html to add to HTML before output
         // ---------------------------------------------------------------------
-        
+
         int i = 1;
-        
+
         final String codeForInputFields = " name=\"entryfield\" ";
         final String codeForSelectLists = " name=\"entryselect\" ";
-        
+
         StringBuffer sb = new StringBuffer();
 
         Matcher inputMatcher = INPUT_PATTERN.matcher( htmlCode );
@@ -256,18 +256,19 @@ public class DefaultDataEntryFormService
                 int dataElementId = Integer.parseInt( identifierMatcher.group( 1 ) );
                 int optionComboId = Integer.parseInt( identifierMatcher.group( 2 ) );
 
-                DataElement dataElement = dataElementMap.get( dataElementId ); 
+                DataElement dataElement = dataElementMap.get( dataElementId );
 
                 if ( dataElement == null )
                 {
-                    return "Data element with id : " + dataElementId + " does not exist";
+                    return i18n.getString( "dataelement_with_id" ) + ": " + dataElementId + " " + i18n.getString( "does_not_exist" );
                 }
-                
-                DataElementCategoryOptionCombo categoryOptionCombo = categoryService.getDataElementCategoryOptionCombo( optionComboId );
-                
+
+                DataElementCategoryOptionCombo categoryOptionCombo = categoryService
+                    .getDataElementCategoryOptionCombo( optionComboId );
+
                 if ( categoryOptionCombo == null )
                 {
-                    return "Category option combo with id: " + optionComboId + " does not exist";
+                    return i18n.getString( "cate_option_combo_with_id" ) + ": " + optionComboId + " " + i18n.getString( "does_not_exist" );
                 }
 
                 if ( dataElement.getType().equals( DataElement.VALUE_TYPE_BOOL ) )
@@ -280,9 +281,8 @@ public class DefaultDataEntryFormService
                 // Insert title info
                 // -------------------------------------------------------------
 
-                StringBuilder title = new StringBuilder( "title=\"" ).append( dataElement.getName() ).append( " " ).
-                    append( categoryOptionCombo.getName() ).append( "\"" );
-                
+                StringBuilder title = new StringBuilder( "title=\"" ).append( dataElement.getName() ).append( " " ).append( categoryOptionCombo.getName() ).append( "\"" );
+
                 inputHtml = inputHtml.contains( EMPTY_TITLE_TAG ) ? inputHtml.replace( EMPTY_TITLE_TAG, title ) : inputHtml + " " + title;
 
                 String appendCode = "";
@@ -304,7 +304,7 @@ public class DefaultDataEntryFormService
                 inputHtml = inputHtml.replace( TAG_CLOSE, appendCode );
                 inputHtml += "<span id=\"" + dataElement.getId() + "-dataelement\" style=\"display:none\">" + dataElement.getFormNameFallback() + "</span>";
                 inputHtml += "<span id=\"" + categoryOptionCombo.getId() + "-optioncombo\" style=\"display:none\">" + categoryOptionCombo.getName() + "</span>";
-                
+
                 inputMatcher.appendReplacement( sb, inputHtml );
             }
         }
@@ -333,9 +333,9 @@ public class DefaultDataEntryFormService
 
         return dataEntryFormStore.listDisctinctDataEntryFormByDataSetIds( dataSetIds );
     }
-    
+
     public Collection<DataEntryForm> getDataEntryForms( final Collection<Integer> identifiers )
-    {        
+    {
         Collection<DataEntryForm> dataEntryForms = getAllDataEntryForms();
 
         return identifiers == null ? dataEntryForms : FilterUtils.filter( dataEntryForms, new Filter<DataEntryForm>()
