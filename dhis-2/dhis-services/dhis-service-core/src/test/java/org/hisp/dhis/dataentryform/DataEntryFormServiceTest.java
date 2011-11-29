@@ -42,6 +42,8 @@ import org.hisp.dhis.dataelement.DataElementCategoryService;
 import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.dataset.DataSetService;
+import org.hisp.dhis.i18n.I18n;
+import org.hisp.dhis.mock.MockI18n;
 import org.hisp.dhis.period.MonthlyPeriodType;
 import org.hisp.dhis.period.PeriodType;
 import org.junit.Test;
@@ -58,6 +60,8 @@ public class DataEntryFormServiceTest
     private DataElement dataElement;
     
     private DataElementCategoryOptionCombo categoryOptionCombo;
+    
+    private I18n i18n;
     
     private int dataElementId;
     
@@ -88,6 +92,8 @@ public class DataEntryFormServiceTest
         categoryOptionCombo = categoryService.getDefaultDataElementCategoryOptionCombo();
         
         categoryOptionComboId = categoryOptionCombo.getId();
+        
+        i18n = new MockI18n();
     }
 
     // -------------------------------------------------------------------------
@@ -255,7 +261,7 @@ public class DataEntryFormServiceTest
         String title = "" + dataElementId + " - " + dataElement.getName() + " - " + categoryOptionComboId + " - " + categoryOptionCombo.getName() + " - " + dataElement.getType();
         String value = "[ " + dataElement.getName() + " " + categoryOptionCombo.getName() + " ]";
         String expected = "<table><tr><td><input id=\"" + dataElementId + "-" + categoryOptionComboId + "-val\" style=\"width:4em;text-align:center\" title=\"" + title + "\" value=\"" + value + "\" /></td></tr></table>";
-        String actual = dataEntryFormService.prepareDataEntryFormForEdit( html );
+        String actual = dataEntryFormService.prepareDataEntryFormForEdit( html, i18n );
         
         assertEquals( expected.length(), actual.length() );
     }

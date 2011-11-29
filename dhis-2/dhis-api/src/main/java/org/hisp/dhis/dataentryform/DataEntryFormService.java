@@ -118,9 +118,10 @@ public interface DataEntryFormService
      * name as value and title for each entry field.
      * 
      * @param htmlCode the HTML code of the data entry form.
+     * @param i18n the i18n object.
      * @return HTML code for the data entry form.
      */
-    String prepareDataEntryFormForEdit( String htmlCode );
+    String prepareDataEntryFormForEdit( String htmlCode, I18n i18n );
     
     /**
      * Prepares the data entry form for data entry by injecting required javascripts

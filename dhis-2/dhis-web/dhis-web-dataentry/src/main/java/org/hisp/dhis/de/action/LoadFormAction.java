@@ -77,7 +77,7 @@ public class LoadFormAction
     {
         this.dataElementService = dataElementService;
     }
-    
+
     private DataSetService dataSetService;
 
     public void setDataSetService( DataSetService dataSetService )
@@ -221,7 +221,7 @@ public class LoadFormAction
         {
             return INPUT;
         }
-        
+
         Collections.sort( dataElements, dataElementComparator );
 
         orderedDataElements = dataElementService.getGroupedDataElementsByCategoryCombo( dataElements );
@@ -293,7 +293,7 @@ public class LoadFormAction
         // ---------------------------------------------------------------------
 
         String displayMode = dataSet.getDataSetType();
-        
+
         if ( displayMode.equals( DataSet.TYPE_SECTION ) )
         {
             getSectionForm( dataElements, dataSet );
@@ -341,8 +341,8 @@ public class LoadFormAction
 
         if ( dataEntryForm != null )
         {
-            customDataEntryFormCode = dataEntryFormService.prepareDataEntryFormForEntry( 
-                dataEntryForm.getHtmlCode(), i18n, dataSet );
+            customDataEntryFormCode = dataEntryFormService.prepareDataEntryFormForEntry( dataEntryForm.getHtmlCode(),
+                i18n, dataSet );
         }
 
         List<DataElement> des = new ArrayList<DataElement>();
