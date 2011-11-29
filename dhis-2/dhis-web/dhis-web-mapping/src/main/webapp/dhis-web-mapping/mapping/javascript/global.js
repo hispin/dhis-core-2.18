@@ -445,7 +445,8 @@ G.util = {
     },
     
     convertWMSUrlToLegendString: function(url) {
-        return url.replace('.xml','figmap?REQUEST=GetLegendGraphic');
+        var str = url.replace('wms.xml','wmsfigmap');
+        return str += '?REQUEST=GetLegendGraphic';
     },
     
     createOverlay: function(name, fillColor, fillOpacity, strokeColor, strokeWidth, url) {
