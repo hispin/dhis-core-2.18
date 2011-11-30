@@ -55,13 +55,6 @@ DV.conf = {
         }
     },
     chart: {
-        axis: {
-            label: {
-                rotate: {
-                    degrees: 330
-                }
-            }
-        },
         inset: 30
     },
     style: {
@@ -363,10 +356,10 @@ Ext.onReady( function() {
                     'stroke-width': 0.2
                 };
             },
-            getTitle: function(isPie) {
+            getTitle: function() {
                 return {
                     type: 'text',
-                    text: DV.init.isInit ? 'Example chart' : isPie ? DV.state.filter.names[0] + '\n' + DV.state.series.names[0] : DV.state.filter.names[0],
+                    text: DV.init.isInit ? 'Example chart' : DV.state.filter.names[0],
                     font: 'bold 15px arial',
                     fill: '#222',
                     width: 300,
@@ -374,6 +367,37 @@ Ext.onReady( function() {
                     x: 28,
                     y: 16
                 };
+            },
+            getTips: function() {
+                return {
+                    trackMouse: true,
+                    height: 31,
+                    renderer: function(item) {
+                    }
+                };
+            },
+            label: {
+                getCategoryLabel: function() {
+                    return {
+                        font: '14px arial',
+                        rotate: {
+                            degrees: 330
+                        }
+                    };
+                },
+                getNumericLabel: function() {
+                    return {
+                        font: '13px arial',
+                        renderer: Ext.util.Format.numberRenderer(DV.util.number.getChartAxisFormatRenderer())
+                    };
+                }
+            },                        
+            bar: {
+                getCategoryLabel: function() {
+                    return {
+                        font: '14px arial'
+                    };
+                }
             },
             line: {
                 getSeriesArray: function() {
@@ -413,6 +437,16 @@ Ext.onReady( function() {
                             y: 36
                         }
                     ];                        
+                },
+                getTips: function() {
+                    return {
+                        trackMouse: true,
+                        height: 47,
+                        renderer: function(item) {
+                            this.setWidth((item.data.x.length * 8) + 15);
+                            this.setTitle('<span class="dv-chart-tips">' + item.data.x + '<br/><b>' + item.data[DV.store.chart.left[0]] + '</b></span>');
+                        }
+                    };
                 }
             }
         },
@@ -465,23 +499,6 @@ Ext.onReady( function() {
                 }
             }
         },
-		window: {
-			datatable: {
-				getHeight: function() {
-					if (DV.value.values.length) {
-						if (Ext.isWindows && Ext.isGecko) {
-							return 22 * DV.value.values.length + 57;
-						}
-						else if (Ext.isWindows && Ext.isIE) {
-							return 21 * DV.value.values.length + 58;
-						}
-						else {
-							return 21 * DV.value.values.length + 57;
-						}
-					}
-				}
-			}
-		},
         number: {
             isInteger: function(n) {
                 var str = new String(n);
@@ -777,18 +794,16 @@ Ext.onReady( function() {
                         position: 'left',
                         minimum: 0,
                         fields: DV.store.chart.left,
+                        label: DV.util.chart.label.getNumericLabel(),
                         grid: {
                             even: DV.util.chart.getGrid()
-                        },
-                        label: {
-                            renderer: Ext.util.Format.numberRenderer(DV.util.number.getChartAxisFormatRenderer())
                         }
                     },
                     {
                         type: 'Category',
                         position: 'bottom',
                         fields: DV.store.chart.bottom,
-                        label: DV.conf.chart.axis.label
+                        label: DV.util.chart.label.getCategoryLabel()
                     }
                 ],
                 series: [
@@ -819,16 +834,15 @@ Ext.onReady( function() {
                     {
                         type: 'Category',
                         position: 'left',
-                        fields: DV.store.chart.left
+                        fields: DV.store.chart.left,
+                        label: DV.util.chart.bar.getCategoryLabel()
                     },
                     {
                         type: 'Numeric',
                         position: 'bottom',
                         minimum: 0,
-                        fields: DV.store.chart.bottom,
-                        label: {
-                            renderer: Ext.util.Format.numberRenderer(DV.util.number.getChartAxisFormatRenderer())
-                        },
+                        fields: DV.store.chart.bottom,                        
+                        label: DV.util.chart.label.getNumericLabel(),
                         grid: {
                             even: DV.util.chart.getGrid()
                         }
@@ -864,9 +878,7 @@ Ext.onReady( function() {
                         position: 'left',
                         minimum: 0,
                         fields: DV.store.chart.left,
-                        label: {
-                            renderer: Ext.util.Format.numberRenderer(DV.util.number.getChartAxisFormatRenderer())
-                        },
+                        label: DV.util.chart.label.getNumericLabel(),
                         grid: {
                             even: DV.util.chart.getGrid()
                         }
@@ -875,7 +887,7 @@ Ext.onReady( function() {
                         type: 'Category',
                         position: 'bottom',
                         fields: DV.store.chart.bottom,
-                        label: DV.conf.chart.axis.label
+                        label: DV.util.chart.label.getCategoryLabel()
                     }
                 ],
                 series: DV.util.chart.line.getSeriesArray()
@@ -894,9 +906,7 @@ Ext.onReady( function() {
                         position: 'left',
                         minimum: 0,
                         fields: DV.store.chart.left,
-                        label: {
-                            renderer: Ext.util.Format.numberRenderer(DV.util.number.getChartAxisFormatRenderer())
-                        },
+                        label: DV.util.chart.label.getNumericLabel(),
                         grid: {
                             even: DV.util.chart.getGrid()
                         }
@@ -905,7 +915,7 @@ Ext.onReady( function() {
                         type: 'Category',
                         position: 'bottom',
                         fields: DV.store.chart.bottom,
-                        label: DV.conf.chart.axis.label
+                        label: DV.util.chart.label.getCategoryLabel()
                     }
                 ],
                 series: [{
@@ -931,14 +941,7 @@ Ext.onReady( function() {
                     type: 'pie',
                     field: DV.store.chart.left[0],
                     showInLegend: true,
-                    tips: {
-                        trackMouse: false,
-                        width: 160,
-                        height: 31,
-                        renderer: function(i) {
-                            this.setTitle('<span class="dv-chart-tips">' + i.data.x + ': <b>' + i.data[DV.store.chart.left[0]] + '</b></span>');
-                        }
-                    },
+                    tips: DV.util.chart.pie.getTips(),
                     label: {
                         field: DV.store.chart.bottom[0]
                     },
