@@ -373,6 +373,13 @@ Ext.onReady( function() {
                     }
                 };
             },
+            setMask: function(str) {
+                if (DV.mask) {
+                    DV.mask.hide();
+                }
+                DV.mask = new Ext.LoadMask(DV.chart.chart, {msg: str});
+                DV.mask.show();
+            },
             label: {
                 getCategoryLabel: function() {
                     return {
@@ -388,7 +395,7 @@ Ext.onReady( function() {
                         renderer: Ext.util.Format.numberRenderer(DV.util.number.getChartAxisFormatRenderer())
                     };
                 }
-            },                        
+            },
             bar: {
                 getCategoryLabel: function() {
                     return {
@@ -701,6 +708,8 @@ Ext.onReady( function() {
     DV.value = {
         values: [],
         getValues: function(exe) {
+            DV.util.chart.setMask('Please wait..');
+            
             var params = [],
                 i = DV.conf.finals.dimension.indicator.value,
                 d = DV.conf.finals.dimension.dataelement.value;
@@ -720,7 +729,7 @@ Ext.onReady( function() {
                     DV.value.values = Ext.JSON.decode(r.responseText).values;
                     
                     if (!DV.value.values.length) {
-                        alert('no data values');
+                        alert('No data values');
                         return;
                     }
                     
@@ -963,13 +972,14 @@ Ext.onReady( function() {
                 t = null;
             c.removeAll(true);
             c.add(this.chart);
-            DV.state.filter.names[0] = DV.state.filter.names[0] ? DV.state.filter.names[0] : 'Example chart';
             
             if (!DV.init.isInit) {
+                DV.mask.hide();
                 DV.store.getDataTableStore(true);
             }
-            
-            DV.init.isInit = false;
+            else {
+                DV.init.isInit = false;
+            }
         }
     };
     
