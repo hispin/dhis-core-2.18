@@ -250,11 +250,11 @@ Ext.onReady( function() {
                 getNames: function(exception) {
                     var a = [];
                     DV.cmp.dimension.indicator.selected.store.each( function(r) {
-                        a.push(DV.util.chart.getEncodedSeriesName(r.data.shortName));
+                        a.push(DV.util.string.getEncodedString(r.data.shortName));
                     });
                     if (DV.cmp.dimension.dataelement.selected.store) {
                         DV.cmp.dimension.dataelement.selected.store.each( function(r) {
-                            a.push(DV.util.chart.getEncodedSeriesName(r.data.shortName));
+                            a.push(DV.util.string.getEncodedString(r.data.shortName));
                         });
                     }
                     if (exception && !a.length) {
@@ -282,7 +282,7 @@ Ext.onReady( function() {
                     Ext.Array.each(cmp, function(item) {
                         if (item.getValue()) {
                             Ext.Array.each(DV.init.system.periods[item.paramName], function(item) {
-                                a.push(DV.util.chart.getEncodedSeriesName(item.name));
+                                a.push(DV.util.string.getEncodedString(item.name));
                             });
                         }
                     });
@@ -325,7 +325,7 @@ Ext.onReady( function() {
                         treepanel.selectRoot();
                     }
                     Ext.Array.each(selection, function(r) {
-                        a.push(DV.util.chart.getEncodedSeriesName(r.data.text));
+                        a.push(DV.util.string.getEncodedString(r.data.text));
                     });
                     if (exception && !a.length) {
                         alert('No organisation units selected');
@@ -335,9 +335,6 @@ Ext.onReady( function() {
             }
         },
         chart: {
-            getEncodedSeriesName: function(text) {
-                return text.replace(/\./g,'');
-            },
             getLegend: function(len) {
                 len = len ? len : DV.state.series.names.length;
                 return {
@@ -518,6 +515,11 @@ Ext.onReady( function() {
             },
             getChartAxisFormatRenderer: function() {
                 return this.allValuesAreIntegers(DV.value.values) ? '0' : '0.0';
+            }
+        },
+        string: {
+            getEncodedString: function(text) {
+                return text.replace(/\./g,'');
             }
         }
     };
@@ -723,10 +725,10 @@ Ext.onReady( function() {
                     }
                     
                     var storage = Ext.Object.merge(DV.store[i].available.storage, DV.store[d].available.storage);
-
+                    
                     Ext.Array.each(DV.value.values, function(item) {
-                        item[DV.conf.finals.dimension.data.value] = storage[item.d].name;
-                        item[DV.conf.finals.dimension.period.value] = DV.util.dimension.period.getNameById(item.p);
+                        item[DV.conf.finals.dimension.data.value] = DV.util.string.getEncodedString(storage[item.d].name);
+                        item[DV.conf.finals.dimension.period.value] = DV.util.string.getEncodedString(DV.util.dimension.period.getNameById(item.p));
                         item[DV.conf.finals.dimension.organisationunit.value] = DV.util.getCmp('treepanel').store.getNodeById(item.o).data.text;
                         item.v = parseFloat(item.v);
                     });
