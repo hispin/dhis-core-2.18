@@ -349,6 +349,7 @@ Ext.onReady( function() {
                 len = len ? len : DV.state.series.names.length;
                 return {
                     position: len > 6 ? 'right' : 'top',
+                    labelFont: '13px arial',
                     boxStroke: '#ffffff',
                     boxStrokeWidth: 0,
                     padding: 0
@@ -362,10 +363,10 @@ Ext.onReady( function() {
                     'stroke-width': 0.2
                 };
             },
-            getTitle: function() {
+            getTitle: function(isPie) {
                 return {
                     type: 'text',
-                    text: DV.init.isInit ? 'Example chart' : DV.state.filter.names[0],
+                    text: DV.init.isInit ? 'Example chart' : isPie ? DV.state.filter.names[0] + ' / ' + DV.state.series.names[0] : DV.state.filter.names[0],
                     font: 'bold 15px arial',
                     fill: '#222',
                     width: 300,
@@ -898,7 +899,7 @@ Ext.onReady( function() {
                 shadow: true,
                 store: DV.store.chart,
                 insetPadding: 60,
-                items: DV.util.chart.getTitle(),
+                items: DV.util.chart.getTitle(true),
                 legend: DV.util.chart.getLegend(DV.state.category.names.length),
                 series: [{
                     type: 'pie',
@@ -1867,9 +1868,9 @@ Ext.onReady( function() {
                                         shadowOffset: 1,
                                         items: [
                                             {
-                                                text: 'PNG',
+                                                text: 'Image',
                                                 iconCls: 'dv-menu-item-png',
-                                                minWidth: 80,
+                                                minWidth: 90,
                                                 handler: function() {
                                                     b.execute(DV.conf.finals.image.png);
                                                 }
@@ -1877,7 +1878,7 @@ Ext.onReady( function() {
                                             {
                                                 text: 'PDF',
                                                 iconCls: 'dv-menu-item-pdf',
-                                                minWidth: 80,
+                                                minWidth: 90,
                                                 handler: function() {
                                                     b.execute(DV.conf.finals.image.pdf);
                                                 }
