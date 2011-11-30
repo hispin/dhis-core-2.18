@@ -366,7 +366,7 @@ Ext.onReady( function() {
             getTitle: function(isPie) {
                 return {
                     type: 'text',
-                    text: DV.init.isInit ? 'Example chart' : isPie ? DV.state.filter.names[0] + ' / ' + DV.state.series.names[0] : DV.state.filter.names[0],
+                    text: DV.init.isInit ? 'Example chart' : isPie ? DV.state.filter.names[0] + '\n' + DV.state.series.names[0] : DV.state.filter.names[0],
                     font: 'bold 15px arial',
                     fill: '#222',
                     width: 300,
@@ -387,6 +387,32 @@ Ext.onReady( function() {
                         });
                     }
                     return a;
+                }
+            },
+            pie: {
+                getTitle: function() {
+                    return [
+                        {
+                            type: 'text',
+                            text: DV.state.filter.names[0],
+                            font: 'bold 15px arial',
+                            fill: '#222',
+                            width: 300,
+                            height: 20,
+                            x: 28,
+                            y: 16
+                        },
+                        {
+                            type: 'text',
+                            text: DV.state.series.names[0],
+                            font: 'bold 13px arial',
+                            fill: '#777',
+                            width: 300,
+                            height: 20,
+                            x: 28,
+                            y: 36
+                        }
+                    ];                        
                 }
             }
         },
@@ -899,7 +925,7 @@ Ext.onReady( function() {
                 shadow: true,
                 store: DV.store.chart,
                 insetPadding: 60,
-                items: DV.util.chart.getTitle(true),
+                items: DV.util.chart.pie.getTitle(),
                 legend: DV.util.chart.getLegend(DV.state.category.names.length),
                 series: [{
                     type: 'pie',
@@ -1868,9 +1894,9 @@ Ext.onReady( function() {
                                         shadowOffset: 1,
                                         items: [
                                             {
-                                                text: 'Image',
+                                                text: 'Image (PNG)',
                                                 iconCls: 'dv-menu-item-png',
-                                                minWidth: 90,
+                                                minWidth: 110,
                                                 handler: function() {
                                                     b.execute(DV.conf.finals.image.png);
                                                 }
@@ -1878,7 +1904,7 @@ Ext.onReady( function() {
                                             {
                                                 text: 'PDF',
                                                 iconCls: 'dv-menu-item-pdf',
-                                                minWidth: 90,
+                                                minWidth: 110,
                                                 handler: function() {
                                                     b.execute(DV.conf.finals.image.pdf);
                                                 }

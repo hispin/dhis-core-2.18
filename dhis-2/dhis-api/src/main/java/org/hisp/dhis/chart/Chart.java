@@ -57,87 +57,107 @@ public class Chart
 {
     private static final long serialVersionUID = 2570074075484545534L;
 
-    public static final String DIMENSION_PERIOD_INDICATOR = "period";
-
-    public static final String DIMENSION_ORGANISATIONUNIT_INDICATOR = "organisationUnit";
-
-    public static final String DIMENSION_INDICATOR_PERIOD = "indicator";
-
-    public static final String DIMENSION_PERIOD_DATAELEMENT = "period_dataElement";
-
-    public static final String DIMENSION_ORGANISATIONUNIT_DATAELEMENT = "organisationUnit_dataElement";
-
-    public static final String DIMENSION_DATAELEMENT_PERIOD = "dataElement_period";
-
-    public static final String DIMENSION_PERIOD_COMPLETENESS = "period_completeness";
-
-    public static final String DIMENSION_ORGANISATIONUNIT_COMPLETENESS = "organisationUnit_completeness";
-
-    public static final String DIMENSION_COMPLETENESS_PERIOD = "completeness_period";
-
+            public static final String DIMENSION_PERIOD_INDICATOR = "period";
+        
+            public static final String DIMENSION_ORGANISATIONUNIT_INDICATOR = "organisationUnit";
+        
+            public static final String DIMENSION_INDICATOR_PERIOD = "indicator";
+    
+            public static final String DIMENSION_PERIOD_DATAELEMENT = "period_dataElement";
+    
+            public static final String DIMENSION_ORGANISATIONUNIT_DATAELEMENT = "organisationUnit_dataElement";
+        
+            public static final String DIMENSION_DATAELEMENT_PERIOD = "dataElement_period";
+        
+            public static final String DIMENSION_PERIOD_COMPLETENESS = "period_completeness";
+        
+            public static final String DIMENSION_ORGANISATIONUNIT_COMPLETENESS = "organisationUnit_completeness";
+        
+            public static final String DIMENSION_COMPLETENESS_PERIOD = "completeness_period";
+    
+            public static final String TYPE_BAR3D = "bar3d";
+    
+            public static final String TYPE_STACKED_BAR3D = "stackedBar3d";
+    
+            public static final String TYPE_LINE3D = "line3d";
+    
+            public static final String TYPE_PIE3D = "pie3d";
+        
+            public static final String SIZE_NORMAL = "normal";
+        
+            public static final String SIZE_WIDE = "wide";
+    
+            public static final String SIZE_TALL = "tall";
+        
+            public static final String TYPE = "tall";
+    
+    public static final String TYPE_COLUMN = "column";
+    
+    public static final String TYPE_STACKED_COLUMN = "stackedColumn";
+    
     public static final String TYPE_BAR = "bar";
-
-    public static final String TYPE_BAR3D = "bar3d";
-
+    
     public static final String TYPE_STACKED_BAR = "stackedBar";
-
-    public static final String TYPE_STACKED_BAR3D = "stackedBar3d";
-
+    
     public static final String TYPE_LINE = "line";
-
-    public static final String TYPE_LINE3D = "line3d";
-
+    
+    public static final String TYPE_AREA = "area";
+    
     public static final String TYPE_PIE = "pie";
-
-    public static final String TYPE_PIE3D = "pie3d";
-
-    public static final String SIZE_NORMAL = "normal";
-
-    public static final String SIZE_WIDE = "wide";
-
-    public static final String SIZE_TALL = "tall";
-
+    
+    public static final String DIMENSION_DATA = "data";
+    
+    public static final String DIMENSION_PERIOD = "period";
+    
+    public static final String DIMENSION_ORGANISATIONUNIT = "organisationUnit";
+    
     private String domainAxixLabel;
 
     private String rangeAxisLabel;
 
     private String type;
 
-    private String size;
+            private String size;
 
-    private String dimension;
+            private String dimension;
+            
+    private String series;
+    
+    private String category;
+    
+    private String filter;
 
-    private boolean hideLegend;
+            private boolean hideLegend;
+        
+            private boolean verticalLabels;
 
-    private boolean verticalLabels;
+            private boolean horizontalPlotOrientation;
 
-    private boolean horizontalPlotOrientation;
+            private boolean regression;
+        
+            private boolean targetLine;
+        
+            private boolean hideSubtitle;
 
-    private boolean regression;
+            private Double targetLineValue;
+        
+            private String targetLineLabel;
 
-    private boolean targetLine;
-
-    private boolean hideSubtitle;
-
-    private Double targetLineValue;
-
-    private String targetLineLabel;
-
-    private Set<ChartGroup> groups = new HashSet<ChartGroup>();
+            private Set<ChartGroup> groups = new HashSet<ChartGroup>();
 
     private List<Indicator> indicators = new ArrayList<Indicator>();
 
     private List<DataElement> dataElements = new ArrayList<DataElement>();
 
-    private List<DataSet> dataSets = new ArrayList<DataSet>();
+            private List<DataSet> dataSets = new ArrayList<DataSet>();
 
     private List<Period> periods = new ArrayList<Period>();
 
     private List<OrganisationUnit> organisationUnits = new ArrayList<OrganisationUnit>();
 
-    private RelativePeriods relatives;
+            private RelativePeriods relatives;
 
-    private boolean userOrganisationUnit;
+            private boolean userOrganisationUnit;
 
     // -------------------------------------------------------------------------
     // Transient properties
@@ -340,6 +360,42 @@ public class Chart
     public void setDimension( String dimension )
     {
         this.dimension = dimension;
+    }
+    
+    @XmlElement
+    @JsonProperty
+    public String getSeries()
+    {
+        return series;
+    }
+
+    public void setSeries( String series )
+    {
+        this.series = series;
+    }
+    
+    @XmlElement
+    @JsonProperty
+    public String getCategory()
+    {
+        return category;
+    }
+
+    public void setCategory( String category )
+    {
+        this.category = category;
+    }
+    
+    @XmlElement
+    @JsonProperty
+    public String getFilter()
+    {
+        return filter;
+    }
+
+    public void setFilter( String filter )
+    {
+        this.filter = filter;
     }
 
     @XmlElement
