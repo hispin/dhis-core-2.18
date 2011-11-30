@@ -203,16 +203,16 @@
 
 /* Tooltip */
 .x-tip {
-    -moz-border-radius: 3px 3px 3px 3px;
-    -webkit-border-radius: 3px 3px 3px 3px;
-    -o-border-radius: 3px 3px 3px 3px;
-    -ms-border-radius: 3px 3px 3px 3px;
-    -khtml-border-radius: 3px 3px 3px 3px;
-    border-radius: 3px 3px 3px 3px;
-    padding: 2px 2px 2px 2px;
+    -moz-border-radius: 2px 2px 2px 2px;
+    -webkit-border-radius: 2px 2px 2px 2px;
+    -o-border-radius: 2px 2px 2px 2px;
+    -ms-border-radius: 2px 2px 2px 2px;
+    -khtml-border-radius: 2px 2px 2px 2px;
+    border-radius: 2px 2px 2px 2px;
+    padding: 2px 5px 2px 0;
     border-width: 2px;
     border-style: solid;
-    background-color: #ddd;
+    background-color: #eee;
 }
 
 /* Chart tips (tooltip) */
