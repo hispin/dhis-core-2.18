@@ -45,7 +45,7 @@ public class ProgramStageDataElementDeletionHandler
     // Dependencies
     // -------------------------------------------------------------------------
 
-    ProgramStageDataElementService programStageDEService;
+    private ProgramStageDataElementService programStageDEService;
 
     public void setProgramStageDEService( ProgramStageDataElementService programStageDEService )
     {
@@ -74,7 +74,7 @@ public class ProgramStageDataElementDeletionHandler
         for ( ProgramStage programStage : programStages )
         {
             Collection<ProgramStageDataElement> dataElements = programStageDEService.get( programStage );
-            
+
             if ( dataElements != null && dataElements.size() > 0 )
             {
                 for ( ProgramStageDataElement dataElement : dataElements )
@@ -94,6 +94,7 @@ public class ProgramStageDataElementDeletionHandler
         // ---------------------------------------------------------------------
 
         Collection<ProgramStageDataElement> dataElements = programStageDEService.get( programStage );
+       
         if ( dataElements != null && dataElements.size() > 0 )
         {
             for ( ProgramStageDataElement dataElement : dataElements )
@@ -102,26 +103,27 @@ public class ProgramStageDataElementDeletionHandler
             }
         }
     }
-    
+
     @Override
-    public String allowDeleteDataElement ( DataElement dataElement )
+    public String allowDeleteDataElement( DataElement dataElement )
     {
         if ( dataElement != null && DataElement.DOMAIN_TYPE_PATIENT.equals( dataElement.getDomainType() ) )
         {
-            //TODO use a query which will be more efficient
-            
+            // TODO use a query which will be more efficient
+
             Collection<ProgramStageDataElement> psDataElements = programStageDEService.getAllProgramStageDataElements();
-            for ( ProgramStageDataElement psDataElement :  psDataElements )
+            for ( ProgramStageDataElement psDataElement : psDataElements )
             {
-                Collection<DataElement> dataElements = programStageDEService.getListDataElement( psDataElement.getProgramStage() );
-    
+                Collection<DataElement> dataElements = programStageDEService.getListDataElement( psDataElement
+                    .getProgramStage() );
+
                 if ( dataElements.contains( dataElement ) )
                 {
                     return ERROR;
                 }
             }
         }
-        
+
         return null;
     }
 }
