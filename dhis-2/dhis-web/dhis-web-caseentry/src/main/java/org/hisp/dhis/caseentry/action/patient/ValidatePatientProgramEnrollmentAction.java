@@ -132,13 +132,13 @@ public class ValidatePatientProgramEnrollmentAction
 
         if ( criteria != null )
         {
-            message = i18n.getString( "program_is_invalid" ) + " " + criteria.getName();
+            message = i18n.getString( "can_not_enroll_into_the_program_because" ) + " " + criteria.getName();
             return INPUT;
         }
 
         if ( enrollmentDate == null )
         {
-            message = i18n.getString( "please_specify_enrollment_date" );
+            message = i18n.getString( "can_not_enrol_into_the_program_because" );
 
             return INPUT;
         }

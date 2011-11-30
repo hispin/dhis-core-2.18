@@ -158,7 +158,7 @@
 	<tr id='deathDateTR' style="display:none" >
 		<td><label for="deathDate">$i18n.getString("death_date")</label></td>
 		<td class="input-column" >
-			<input type="text" name="deathDate" id="deathDate" style="width:30em" #if($!patient.deathDate) value="$format.formatDate( $!patient.deathDate )" #end>
+			<input type="text" name="deathDate" id="deathDate" style="width:28em" #if($!patient.deathDate) value="$format.formatDate( $!patient.deathDate )" #end>
 		</td>
 	</tr>
 	
@@ -305,7 +305,7 @@
 				 #foreach( $program in $representative.programs )
 					#if( $velocityCount == 1 )
 						 $program.name
-					#else ,  $program.name 
+					#else , $program.name 
 					#end
 				 #end  
 			</td>

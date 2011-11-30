@@ -27,6 +27,8 @@
 
 package org.hisp.dhis.patient.action.programstage;
 
+import org.hisp.dhis.common.DeleteNotAllowedException;
+import org.hisp.dhis.i18n.I18n;
 import org.hisp.dhis.program.ProgramStageService;
 
 import com.opensymphony.xwork2.Action;
@@ -42,7 +44,7 @@ public class RemoveProgramStageAction
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
-    
+
     private ProgramStageService programStageService;
 
     public void setProgramStageService( ProgramStageService programStageService )
@@ -61,6 +63,24 @@ public class RemoveProgramStageAction
         this.id = id;
     }
 
+    private I18n i18n;
+
+    public void setI18n( I18n i18n )
+    {
+        this.i18n = i18n;
+    }
+
+    // -------------------------------------------------------------------------
+    // Output
+    // -------------------------------------------------------------------------
+
+    private String message;
+
+    public String getMessage()
+    {
+        return message;
+    }
+
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
@@ -68,8 +88,19 @@ public class RemoveProgramStageAction
     public String execute()
         throws Exception
     {
-        programStageService.deleteProgramStage(  programStageService.getProgramStage( id ) );
+        try
+        {
+            programStageService.deleteProgramStage( programStageService.getProgramStage( id ) );
+        }
+        catch ( DeleteNotAllowedException ex )
+        {
+            if ( ex.getErrorCode().equals( DeleteNotAllowedException.ERROR_ASSOCIATED_BY_OTHER_OBJECTS ) )
+            {
+                message = i18n.getString( "object_not_deleted_associated_by_objects" ) + " " + ex.getMessage();
 
+                return ERROR;
+            }
+        }
         return SUCCESS;
     }
 }

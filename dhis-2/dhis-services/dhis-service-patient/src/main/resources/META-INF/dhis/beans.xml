@@ -392,6 +392,11 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
     	<property name="dataEntryFormService" ref="org.hisp.dhis.dataentryform.DataEntryFormService" />
     	<property name="programStageService" ref="org.hisp.dhis.program.ProgramStageService" />
   	</bean>
+  	
+  	<bean id="org.hisp.dhis.program.ProgramStageInstanceDeletionHandler" 
+		class="org.hisp.dhis.program.ProgramStageInstanceDeletionHandler">
+		<property name="jdbcTemplate" ref="jdbcTemplate" />
+	</bean>
   
 	<!-- Startup -->
 	
@@ -440,6 +445,7 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
 			  
 			  <ref local="org.hisp.dhis.program.ProgramDeletionHandler"/>
 			  <ref local="org.hisp.dhis.program.ProgramInstanceDeletionHandler"/>
+			  <ref local="org.hisp.dhis.program.ProgramStageInstanceDeletionHandler"/>
 			  <ref local="org.hisp.dhis.program.ProgramStageDataElementDeletionHandler"/>
 			  <ref local="org.hisp.dhis.programattributevalue.ProgramAttributeValueDeletionHandler"/>
 			  <ref local="org.hisp.dhis.program.ProgramValidationDeletionHandler"/>

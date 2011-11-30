@@ -28,6 +28,7 @@
 package org.hisp.dhis.patientdatavalue;
 
 import org.hisp.dhis.dataelement.DataElement;
+import org.hisp.dhis.program.ProgramStage;
 import org.hisp.dhis.system.deletion.DeletionHandler;
 import org.springframework.jdbc.core.JdbcTemplate;
 
@@ -64,7 +65,18 @@ public class PatientDataValueDeletionHandler
     public String allowDeleteDataElement( DataElement dataElement )
     {
         String sql = "SELECT COUNT(*) FROM patientdatavalue where dataelementid=" + dataElement.getId();
-        
+
+        return jdbcTemplate.queryForInt( sql ) == 0 ? null : ERROR;
+    }
+
+    @Override
+    public String allowDeleteProgramStage( ProgramStage programStage )
+    {
+        String sql = "SELECT COUNT(*) "
+                    + "FROM patientdatavalue pdv INNER JOIN programstageinstance psi "
+                    + "ON pdv.programstageinstanceid=psi.programstageinstanceid "
+                    + "WHERE psi.programstageid=" + programStage.getId() ;
+
         return jdbcTemplate.queryForInt( sql ) == 0 ? null : ERROR;
     }
 }
