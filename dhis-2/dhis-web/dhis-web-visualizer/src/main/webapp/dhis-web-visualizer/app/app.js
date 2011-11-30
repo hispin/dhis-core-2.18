@@ -86,8 +86,8 @@ Ext.onReady( function() {
             
     DV.init = Ext.JSON.decode(r.responseText);
     DV.init.isInit = true;
-    DV.init.initialize = function(vp) {
-        DV.util.combobox.filter.category(vp);
+    DV.init.initialize = function() {
+        DV.util.combobox.filter.category();
         
         DV.store.column = DV.store.defaultChartStore;
         DV.store.column_stacked = DV.store.defaultChartStore;
@@ -121,12 +121,10 @@ Ext.onReady( function() {
         },
         viewport: {
             getSize: function() {
-                var c = Ext.getCmp('center');
-                return {x: c.getWidth(), y: c.getHeight()};
+                return {x: DV.cmp.region.center.getWidth(), y: DV.cmp.region.center.getHeight()};
             },
             getXY: function() {
-                var c = Ext.getCmp('center');
-                return {x: c.x + 15, y: c.y + 43};
+                return {x: DV.cmp.region.center.x + 15, y: DV.cmp.region.center.y + 43};
             }
         },
         multiselect: {
@@ -461,7 +459,7 @@ Ext.onReady( function() {
                         cb.clearValue();
                     }
                 },
-                category: function(vp) {
+                category: function() {
                     var cbs = DV.cmp.settings.series,
                         cbc = DV.cmp.settings.category,
                         cbf = DV.cmp.settings.filter,
@@ -479,9 +477,9 @@ Ext.onReady( function() {
                         return cbc.filterArray[index++];
                     });
                     
-                    this.filter(vp);
+                    this.filter();
                 },                
-                filter: function(vp) {
+                filter: function() {
                     var cbc = DV.cmp.settings.category,
                         cbf = DV.cmp.settings.filter,
                         v = cbc.getValue(),
@@ -526,7 +524,7 @@ Ext.onReady( function() {
         },
         string: {
             getEncodedString: function(text) {
-                return text.replace(/\./g,'');
+                return text.replace(/[^a-zA-Z 0-9]+/g,'');
             }
         }
     };
@@ -708,7 +706,7 @@ Ext.onReady( function() {
     DV.value = {
         values: [],
         getValues: function(exe) {
-            DV.util.chart.setMask('Please wait..');
+            DV.util.chart.setMask('Loading...');
             
             var params = [],
                 i = DV.conf.finals.dimension.indicator.value,
@@ -729,6 +727,7 @@ Ext.onReady( function() {
                     DV.value.values = Ext.JSON.decode(r.responseText).values;
                     
                     if (!DV.value.values.length) {
+                        DV.mask.hide();
                         alert('No data values');
                         return;
                     }
@@ -968,10 +967,8 @@ Ext.onReady( function() {
             });
         },
         reload: function() {
-            var c = Ext.getCmp('center'),
-                t = null;
-            c.removeAll(true);
-            c.add(this.chart);
+            DV.cmp.region.center.removeAll(true);
+            DV.cmp.region.center.add(this.chart);
             
             if (!DV.init.isInit) {
                 DV.mask.hide();
@@ -1957,6 +1954,11 @@ Ext.onReady( function() {
                         }
                     
                     ]
+                },
+                listeners: {
+                    added: function() {
+                        DV.cmp.region.center = this;
+                    }
                 }
             },
             {
@@ -1974,11 +1976,11 @@ Ext.onReady( function() {
             }
         ],
         listeners: {
-            afterrender: function(vp) {
-                DV.init.initialize(vp);
+            afterrender: function() {
+                DV.init.initialize();
             },
             resize: function(vp) {
-                vp.query('panel[region="west"]')[0].setWidth(DV.conf.layout.west_width);
+                DV.cmp.region.west.setWidth(DV.conf.layout.west_width);
                 
                 if (DV.cmp.datatable) {
                     DV.cmp.datatable.setHeight(DV.util.viewport.getSize().y - DV.conf.layout.east_tbar_height);
