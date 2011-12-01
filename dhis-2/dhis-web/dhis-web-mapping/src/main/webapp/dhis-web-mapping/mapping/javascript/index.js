@@ -23,21 +23,19 @@ Ext.onReady( function() {
             G.user.initBaseLayers = init.baseLayers;
             G.user.initOverlays = init.overlays;
             G.user.isAdmin = init.security.isAdmin;
-            G.system.aggregationStrategy = init.systemSettings.aggregationStrategy;
             G.system.infrastructuralDataElements = init.systemSettings.infrastructuralDataElements;
             G.system.infrastructuralPeriodType = init.systemSettings.infrastructuralPeriodType;
-            G.system.mapDateType.value = G.system.aggregationStrategy == G.conf.aggregation_strategy_batch ?
-				G.conf.map_date_type_fixed : init.userSettings.mapDateType;
             G.system.rootNode = init.rootNode;
 
     /* Section: stores */
     var mapViewStore = new Ext.data.JsonStore({
         url: G.conf.path_mapping + 'getAllMapViews' + G.conf.type,
         root: 'mapViews',
-        fields: [ 'id', 'name', 'userId', 'mapValueType', 'indicatorGroupId', 'indicatorId', 'dataElementGroupId', 'dataElementId',
-            'mapDateType', 'periodTypeId', 'periodId', 'startDate', 'endDate', 'parentOrganisationUnitId', 'parentOrganisationUnitName',
-            'parentOrganisationUnitLevel', 'organisationUnitLevel', 'organisationUnitLevelName', 'mapLegendType', 'method', 'classes',
-            'bounds', 'colorLow', 'colorHigh', 'mapLegendSetId', 'radiusLow', 'radiusHigh', 'longitude', 'latitude', 'zoom'
+        fields: [
+            'id', 'name', 'userId', 'mapValueType', 'indicatorGroupId', 'indicatorId', 'dataElementGroupId', 'dataElementId',
+            'periodTypeId', 'periodId', 'parentOrganisationUnitId', 'parentOrganisationUnitName', 'parentOrganisationUnitLevel',
+            'organisationUnitLevel', 'organisationUnitLevelName', 'mapLegendType', 'method', 'classes', 'bounds', 'colorLow', 'colorHigh',
+            'mapLegendSetId', 'radiusLow', 'radiusHigh', 'longitude', 'latitude', 'zoom'
         ],
         autoLoad: false,
         isLoaded: false,
@@ -1963,87 +1961,6 @@ Ext.onReady( function() {
         ]
     });
 
-    /* Section: administrator settings */
-    var adminWindow = new Ext.Window({
-        id: 'admin_w',
-        title: '<span id="window-admin-title">Administrator settings</span>',
-        layout: 'accordion',
-        closeAction: 'hide',
-        width: G.conf.window_width,
-        height: G.conf.adminwindow_expanded_1,
-        minHeight: G.conf.adminwindow_collapsed,
-        items: [
-            {
-                title: 'Date',
-                items: [
-                    {
-                        xtype: 'form',
-                        bodyStyle: 'padding:8px',
-                        labelWidth: G.conf.label_width,
-                        items: [
-                            {html: '<div class="window-info">Set thematic map date type</div>'},
-                            {
-                                xtype: 'combo',
-                                id: 'mapdatetype_cb',
-                                fieldLabel: G.i18n.date_type,
-                                labelSeparator: G.conf.labelseparator,
-                                disabled: G.system.aggregationStrategy === G.conf.aggregation_strategy_batch,
-                                disabledClass: 'combo-disabled',
-                                editable: false,
-                                valueField: 'value',
-                                displayField: 'text',
-                                mode: 'local',
-                                value: G.conf.map_date_type_fixed,
-                                triggerAction: 'all',
-                                width: G.conf.combo_width_fieldset,
-                                minListWidth: G.conf.combo_width_fieldset,
-                                store: {
-                                    xtype: 'arraystore',
-                                    fields: ['value', 'text'],
-                                    data: [
-                                        [G.conf.map_date_type_fixed, G.i18n.fixed_periods],
-                                        [G.conf.map_date_type_start_end, G.i18n.start_end_dates]
-                                    ]
-                                },
-                                listeners: {
-                                    'select': function(cb) {
-                                        if (cb.getValue() !== G.system.mapDateType.value) {
-                                            G.system.mapDateType.value = cb.getValue();
-                                            Ext.Ajax.request({
-                                                url: G.conf.path_mapping + 'setMapUserSettings' + G.conf.type,
-                                                method: 'POST',
-                                                params: {mapDateType: G.system.mapDateType.value},
-                                                success: function() {
-                                                    Ext.message.msg(true, '<span class="x-msg-hl">' + cb.getRawValue() + '</span> '+ G.i18n.saved_as_date_type);
-                                                    choropleth.prepareMapViewDateType();
-                                                    point.prepareMapViewDateType();
-                                                }
-                                            });
-                                        }
-                                    }
-                                }
-                            }
-                        ]
-                    }
-                ],
-                listeners: {
-                    expand: function() {
-                        adminWindow.setHeight(G.conf.adminwindow_expanded_1);
-                    },
-                    collapse: function() {
-                        adminWindow.setHeight(G.conf.adminwindow_collapsed);
-                    }
-                }
-            }
-        ],
-        listeners: {
-            afterrender: function() {
-                adminWindow.setHeight(G.conf.adminwindow_expanded_1);
-            }
-        }
-    });
-    adminWindow.setPagePosition(G.conf.window_x_left,G.conf.window_y_left);    
-
     var layerTree = new Ext.tree.TreePanel({
         id: 'layertree_tp',
         title: '<span class="panel-title">' + G.i18n.map_layers + '</span>',
@@ -2775,22 +2692,7 @@ Ext.onReady( function() {
                 control.window.hide();
             }
         }
-    });           
-	
-	var adminButton = new Ext.Button({
-		iconCls: 'icon-admin',
-		tooltip: 'Administrator settings',
-		disabled: !G.user.isAdmin,
-        style: 'margin-top:1px',
-		handler: function() {
-            if (!adminWindow.hidden) {
-                adminWindow.hide();
-            }
-            else {
-                adminWindow.show(this.id);
-            }
-		}
-	});
+    });  
 	
 	var helpButton = new Ext.Button({
 		iconCls: 'icon-help',
@@ -2845,7 +2747,6 @@ Ext.onReady( function() {
             measureDistanceButton,
             ' ',
 			'-',
-            adminButton,
 			helpButton,
 			'->',
 			exitButton,' '
@@ -2941,19 +2842,17 @@ Ext.onReady( function() {
                         G.vars.map.layers[i].svgId = svg[j++].id;
                     }
                 }
-            
-                Ext.getCmp('mapdatetype_cb').setValue(G.system.mapDateType.value);
                 
                 choropleth.prepareMapViewValueType();
-                choropleth.prepareMapViewDateType();
+                choropleth.prepareMapViewPeriod();
                 choropleth.prepareMapViewLegend();
                 
                 point.prepareMapViewValueType();
-                point.prepareMapViewDateType();
+                point.prepareMapViewPeriod();
                 point.prepareMapViewLegend();
                 
                 centroid.prepareMapViewValueType();
-                centroid.prepareMapViewDateType();                
+                centroid.prepareMapViewPeriod();                
                 
                 G.vars.map.events.register('addlayer', null, function(e) {
                     var svg = document.getElementsByTagName('svg');

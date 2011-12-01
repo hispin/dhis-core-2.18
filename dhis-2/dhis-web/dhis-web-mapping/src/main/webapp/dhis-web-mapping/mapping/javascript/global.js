@@ -643,8 +643,6 @@ G.util = {
             this.legend.classes = this.mapView.classes || this.legend.classes;
 
             G.vars.map.setCenter(new OpenLayers.LonLat(this.mapView.longitude, this.mapView.latitude), this.mapView.zoom);
-            G.system.mapDateType.value = this.mapView.mapDateType;
-            Ext.getCmp('mapdatetype_cb').setValue(G.system.mapDateType.value);
 
             this.valueType.value = this.mapView.mapValueType;
             this.cmp.mapValueType.setValue(this.valueType.value);
@@ -716,25 +714,7 @@ G.user = {
     isAdmin: false
 };
 
-G.system = {
-    aggregationStrategy: null,
-    
-    mapDateType: {
-        value: null,
-        setFixed: function() {
-            this.value = G.conf.map_date_type_fixed;
-        },
-        setStartEnd: function() {
-            this.value = G.conf.map_date_type_start_end;
-        },
-        isFixed: function() {
-            return this.value === G.conf.map_date_type_fixed;
-        },
-        isStartEnd: function() {
-            return this.value === G.conf.map_date_type_start_end;
-        }
-    },
-    
+G.system = {    
     infrastructuralPeriodType: null,
     
     rootNode: null
@@ -1153,7 +1133,7 @@ G.cls = {
                                                     c2 + mapView.parentOrganisationUnitName + spanEnd +
                                                     c1 + '( ' + mapView.organisationUnitLevelName + ' )' + spanEnd + 
                                                     c2 + (mapView.mapValueType == G.conf.map_value_type_indicator ? mapView.indicatorName : mapView.dataElementName) + spanEnd +
-                                                    c1 + (mapView.mapDateType == G.conf.map_date_type_fixed ? mapView.periodName : (mapView.startDate + ' - ' + mapView.endDate)) + spanEnd +
+                                                    c1 + mapView.periodName + spanEnd +
                                                     spanEnd;
                                     
                                     for (var i = 0; i < this.menu.items.items.length; i++) {

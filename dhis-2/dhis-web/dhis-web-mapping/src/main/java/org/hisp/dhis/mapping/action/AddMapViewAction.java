@@ -116,20 +116,6 @@ public class AddMapViewAction
         this.periodId = periodId;
     }
 
-    private String startDate;
-
-    public void setStartDate( String startDate )
-    {
-        this.startDate = startDate;
-    }
-
-    private String endDate;
-
-    public void setEndDate( String endDate )
-    {
-        this.endDate = endDate;
-    }
-
     private Integer parentOrganisationUnitId;
 
     public void setParentOrganisationUnitId( Integer parentOrganisationUnitId )
@@ -236,7 +222,7 @@ public class AddMapViewAction
         throws Exception
     {
         mappingService.addMapView( name, system, mapValueType, indicatorGroupId, indicatorId,
-            dataElementGroupId, dataElementId, periodTypeId, periodId, startDate, endDate, parentOrganisationUnitId,
+            dataElementGroupId, dataElementId, periodTypeId, periodId, parentOrganisationUnitId,
             organisationUnitLevel, mapLegendType, method, classes, bounds, colorLow, colorHigh, mapLegendSetId,
             radiusLow, radiusHigh, longitude, latitude, zoom );
 

@@ -46,7 +46,7 @@ public class MapView
     private int id;
 
     private String name;
-    
+
     private User user;
 
     private String mapValueType;
@@ -64,10 +64,6 @@ public class MapView
     private PeriodType periodType;
 
     private Period period;
-
-    private String startDate;
-
-    private String endDate;
 
     private OrganisationUnit parentOrganisationUnit;
 
@@ -101,12 +97,11 @@ public class MapView
     {
     }
 
-    public MapView( String name, User user, String mapValueType, IndicatorGroup indicatorGroup,
-        Indicator indicator, DataElementGroup dataElementGroup, DataElement dataElement, String mapDateType,
-        PeriodType periodType, Period period, String startDate, String endDate,
-        OrganisationUnit parentOrganisationUnit, OrganisationUnitLevel organisationUnitLevel, String mapLegendType,
-        Integer method, Integer classes, String bounds, String colorLow, String colorHigh, MapLegendSet mapLegendSet,
-        Integer radiusLow, Integer radiusHigh, String longitude, String latitude, int zoom )
+    public MapView( String name, User user, String mapValueType, IndicatorGroup indicatorGroup, Indicator indicator,
+        DataElementGroup dataElementGroup, DataElement dataElement, String mapDateType, PeriodType periodType,
+        Period period, OrganisationUnit parentOrganisationUnit, OrganisationUnitLevel organisationUnitLevel,
+        String mapLegendType, Integer method, Integer classes, String bounds, String colorLow, String colorHigh,
+        MapLegendSet mapLegendSet, Integer radiusLow, Integer radiusHigh, String longitude, String latitude, int zoom )
     {
         this.name = name;
         this.user = user;
@@ -118,8 +113,6 @@ public class MapView
         this.mapDateType = mapDateType;
         this.periodType = periodType;
         this.period = period;
-        this.startDate = startDate;
-        this.endDate = endDate;
         this.parentOrganisationUnit = parentOrganisationUnit;
         this.organisationUnitLevel = organisationUnitLevel;
         this.mapLegendType = mapLegendType;
@@ -290,26 +283,6 @@ public class MapView
     public void setPeriod( Period period )
     {
         this.period = period;
-    }
-
-    public String getStartDate()
-    {
-        return startDate;
-    }
-
-    public void setStartDate( String startDate )
-    {
-        this.startDate = startDate;
-    }
-
-    public String getEndDate()
-    {
-        return endDate;
-    }
-
-    public void setEndDate( String endDate )
-    {
-        this.endDate = endDate;
     }
 
     public OrganisationUnit getParentOrganisationUnit()

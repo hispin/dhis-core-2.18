@@ -140,8 +140,8 @@ public class MappingServiceTest
     {
         MapLegend legend = createMapLegend( 'A', 0.1, 0.2 );
 
-        mappingService.addOrUpdateMapLegend( legend.getName(), legend.getStartValue(), legend.getEndValue(), legend
-            .getColor(), legend.getImage() );
+        mappingService.addOrUpdateMapLegend( legend.getName(), legend.getStartValue(), legend.getEndValue(),
+            legend.getColor(), legend.getImage() );
 
         legend = mappingService.getMapLegendByName( legend.getName() );
 
@@ -163,8 +163,8 @@ public class MappingServiceTest
     {
         MapLegend legend = createMapLegend( 'A', 0.1, 0.2 );
 
-        mappingService.addOrUpdateMapLegend( legend.getName(), legend.getStartValue(), legend.getEndValue(), legend
-            .getColor(), legend.getImage() );
+        mappingService.addOrUpdateMapLegend( legend.getName(), legend.getStartValue(), legend.getEndValue(),
+            legend.getColor(), legend.getImage() );
 
         legend = mappingService.getMapLegendByName( legend.getName() );
 
@@ -184,10 +184,10 @@ public class MappingServiceTest
         MapLegend legend2 = createMapLegend( 'B', 0.3, 0.4 );
         MapLegend legend3 = createMapLegend( 'C', 0.5, 0.6 );
 
-        mappingService.addOrUpdateMapLegend( legend1.getName(), legend1.getStartValue(), legend1.getEndValue(), legend1
-            .getColor(), legend1.getImage() );
-        mappingService.addOrUpdateMapLegend( legend3.getName(), legend3.getStartValue(), legend3.getEndValue(), legend3
-            .getColor(), legend3.getImage() );
+        mappingService.addOrUpdateMapLegend( legend1.getName(), legend1.getStartValue(), legend1.getEndValue(),
+            legend1.getColor(), legend1.getImage() );
+        mappingService.addOrUpdateMapLegend( legend3.getName(), legend3.getStartValue(), legend3.getEndValue(),
+            legend3.getColor(), legend3.getImage() );
 
         legend1 = mappingService.getMapLegendByName( legend1.getName() );
         legend3 = mappingService.getMapLegendByName( legend3.getName() );
@@ -250,11 +250,11 @@ public class MappingServiceTest
         int idB = mappingService.addMapLegendSet( legendSet2 );
         int idC = mappingService.addMapLegendSet( legendSet3 );
 
-        List<MapLegendSet> autoTypes = new ArrayList<MapLegendSet>( mappingService
-            .getMapLegendSetsByType( MappingService.MAPLEGENDSET_TYPE_AUTOMATIC ) );
+        List<MapLegendSet> autoTypes = new ArrayList<MapLegendSet>(
+            mappingService.getMapLegendSetsByType( MappingService.MAPLEGENDSET_TYPE_AUTOMATIC ) );
 
-        List<MapLegendSet> predefinedTypes = new ArrayList<MapLegendSet>( mappingService
-            .getMapLegendSetsByType( MappingService.MAPLEGENDSET_TYPE_PREDEFINED ) );
+        List<MapLegendSet> predefinedTypes = new ArrayList<MapLegendSet>(
+            mappingService.getMapLegendSetsByType( MappingService.MAPLEGENDSET_TYPE_PREDEFINED ) );
 
         assertTrue( autoTypes.contains( mappingService.getMapLegendSet( idA ) ) );
         assertTrue( !autoTypes.contains( mappingService.getMapLegendSet( idB ) ) );
@@ -285,8 +285,8 @@ public class MappingServiceTest
         mappingService.updateMapLegendSet( legendSet1 );
         mappingService.updateMapLegendSet( legendSet2 );
 
-        assertEquals( "2", mappingService.getMapLegendSet( idB ), mappingService
-            .getMapLegendSetByDataElement( dataElement.getId() ) );
+        assertEquals( "2", mappingService.getMapLegendSet( idB ),
+            mappingService.getMapLegendSetByDataElement( dataElement.getId() ) );
 
     }
 
@@ -334,7 +334,7 @@ public class MappingServiceTest
     public void testAddGetMapView()
     {
         MapView mapView = new MapView( "MapViewA", null, MappingService.MAP_VALUE_TYPE_INDICATOR, indicatorGroup,
-            indicator, dataElementGroup, dataElement, MappingService.MAP_DATE_TYPE_FIXED, periodType, period, "", "",
+            indicator, dataElementGroup, dataElement, MappingService.MAP_DATE_TYPE_FIXED, periodType, period,
             organisationUnit, organisationUnitLevel, MappingService.MAPLEGENDSET_TYPE_AUTOMATIC, 1, 1, "", "A", "B",
             mapLegendSet, 5, 20, "1", "1", 1 );
 
@@ -351,7 +351,7 @@ public class MappingServiceTest
     public void testGetDeleteMapViewByName()
     {
         MapView mapView = new MapView( "MapViewA", null, MappingService.MAP_VALUE_TYPE_INDICATOR, indicatorGroup,
-            indicator, dataElementGroup, dataElement, MappingService.MAP_DATE_TYPE_FIXED, periodType, period, "", "",
+            indicator, dataElementGroup, dataElement, MappingService.MAP_DATE_TYPE_FIXED, periodType, period,
             organisationUnit, organisationUnitLevel, MappingService.MAPLEGENDSET_TYPE_AUTOMATIC, 1, 1, "", "A", "B",
             mapLegendSet, 5, 20, "1", "1", 1 );
 
@@ -368,14 +368,14 @@ public class MappingServiceTest
     public void testGetAllMapViews()
     {
         MapView mapView1 = new MapView( "MapViewA", null, MappingService.MAP_VALUE_TYPE_INDICATOR, indicatorGroup,
-            indicator, dataElementGroup, dataElement, MappingService.MAP_DATE_TYPE_FIXED, periodType, period, "", "",
+            indicator, dataElementGroup, dataElement, MappingService.MAP_DATE_TYPE_FIXED, periodType, period,
             organisationUnit, organisationUnitLevel, MappingService.MAPLEGENDSET_TYPE_AUTOMATIC, 1, 1, "", "A", "B",
             mapLegendSet, 5, 20, "1", "1", 1 );
 
         MapView mapView2 = new MapView( "MapViewB", null, MappingService.MAP_VALUE_TYPE_DATAELEMENT, indicatorGroup,
-            indicator, dataElementGroup, dataElement, MappingService.MAP_DATE_TYPE_START_END, periodType, period, "",
-            "", organisationUnit, organisationUnitLevel, MappingService.MAPLEGENDSET_TYPE_AUTOMATIC, 1, 1, "", "A",
-            "B", mapLegendSet, 5, 20, "2", "2", 1 );
+            indicator, dataElementGroup, dataElement, MappingService.MAP_DATE_TYPE_START_END, periodType, period,
+            organisationUnit, organisationUnitLevel, MappingService.MAPLEGENDSET_TYPE_AUTOMATIC, 1, 1, "", "A", "B",
+            mapLegendSet, 5, 20, "2", "2", 1 );
 
         mappingService.addMapView( mapView1 );
         mappingService.addMapView( mapView2 );
@@ -389,19 +389,19 @@ public class MappingServiceTest
     public void testGetMapViewsByFeatureType()
     {
         MapView mapView1 = new MapView( "MapViewA", null, MappingService.MAP_VALUE_TYPE_INDICATOR, indicatorGroup,
-            indicator, dataElementGroup, dataElement, MappingService.MAP_DATE_TYPE_FIXED, periodType, period, "", "",
+            indicator, dataElementGroup, dataElement, MappingService.MAP_DATE_TYPE_FIXED, periodType, period,
             organisationUnit, organisationUnitLevel, MappingService.MAPLEGENDSET_TYPE_AUTOMATIC, 1, 1, "", "A", "B",
             mapLegendSet, 5, 20, "1", "1", 1 );
 
         MapView mapView2 = new MapView( "MapViewB", null, MappingService.MAP_VALUE_TYPE_DATAELEMENT, indicatorGroup,
-            indicator, dataElementGroup, dataElement, MappingService.MAP_DATE_TYPE_START_END, periodType, period, "",
-            "", organisationUnit, organisationUnitLevel, MappingService.MAPLEGENDSET_TYPE_AUTOMATIC, 1, 1, "", "A",
-            "B", mapLegendSet, 5, 20, "2", "2", 1 );
+            indicator, dataElementGroup, dataElement, MappingService.MAP_DATE_TYPE_START_END, periodType, period,
+            organisationUnit, organisationUnitLevel, MappingService.MAPLEGENDSET_TYPE_AUTOMATIC, 1, 1, "", "A", "B",
+            mapLegendSet, 5, 20, "2", "2", 1 );
 
         MapView mapView3 = new MapView( "MapViewC", null, MappingService.MAP_VALUE_TYPE_DATAELEMENT, indicatorGroup,
-            indicator, dataElementGroup, dataElement, MappingService.MAP_DATE_TYPE_START_END, periodType, period, "",
-            "", organisationUnit, organisationUnitLevel, MappingService.MAPLEGENDSET_TYPE_AUTOMATIC, 1, 1, "", "A",
-            "B", mapLegendSet, 5, 20, "3", "3", 1 );
+            indicator, dataElementGroup, dataElement, MappingService.MAP_DATE_TYPE_START_END, periodType, period,
+            organisationUnit, organisationUnitLevel, MappingService.MAPLEGENDSET_TYPE_AUTOMATIC, 1, 1, "", "A", "B",
+            mapLegendSet, 5, 20, "3", "3", 1 );
 
         mappingService.addMapView( mapView1 );
         mappingService.addMapView( mapView2 );

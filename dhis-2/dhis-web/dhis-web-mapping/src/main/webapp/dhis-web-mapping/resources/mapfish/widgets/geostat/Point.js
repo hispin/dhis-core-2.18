@@ -154,6 +154,12 @@ mapfish.widgets.geostat.Point = Ext.extend(Ext.Panel, {
                                 fieldLabel: 'Greater than',
                                 width: G.conf.combo_number_width_small,
                                 listeners: {
+                                    'afterrender': {
+                                        scope: this,
+                                        fn: function(nf) {
+                                            this.filtering.cmp.gt = nf;
+                                        }
+                                    },
                                     'change': {
                                         scope: this,
                                         fn: function(nf) {
@@ -167,6 +173,12 @@ mapfish.widgets.geostat.Point = Ext.extend(Ext.Panel, {
                                 fieldLabel: 'Lower than',
                                 width: G.conf.combo_number_width_small,
                                 listeners: {
+                                    'afterrender': {
+                                        scope: this,
+                                        fn: function(nf) {
+                                            this.filtering.cmp.lt = nf;
+                                        }
+                                    },
                                     'change': {
                                         scope: this,
                                         fn: function(nf) {
@@ -187,6 +199,14 @@ mapfish.widgets.geostat.Point = Ext.extend(Ext.Panel, {
                         scope: this,
                         handler: function() {
                             this.filtering.filter.call(this);
+                        },
+                        listeners: {
+                            'afterrender': {
+                                scope: this,
+                                fn: function(b) {
+                                    this.filtering.cmp.button = b;
+                                }
+                            }
                         }
                     }
                 ],
@@ -660,42 +680,6 @@ mapfish.widgets.geostat.Point = Ext.extend(Ext.Panel, {
             }
         });
         
-        this.cmp.startDate = new Ext.form.DateField({
-            fieldLabel: G.i18n.start_date,
-            format: 'Y-m-d',
-            hidden: true,
-            width: G.conf.combo_width,
-            listeners: {
-                'select': {
-                    scope: this,
-                    fn: function(df, date) {
-                        this.cmp.mapview.clearValue();
-                        this.updateValues = true;
-                        this.cmp.endDate.setMinValue(date);
-                        this.classify(false, true);
-                    }
-                }
-            }
-        });
-        
-        this.cmp.endDate = new Ext.form.DateField({
-            fieldLabel: G.i18n.end_date,
-            format: 'Y-m-d',
-            hidden: true,
-            width: G.conf.combo_width,
-            listeners: {
-                'select': {
-                    scope: this,
-                    fn: function(df, date) {
-                        this.cmp.mapview.clearValue();
-                        this.updateValues = true;
-                        this.cmp.startDate.setMaxValue(date);
-                        this.classify(false, true);
-                    }
-                }
-            }
-        });
-        
         this.cmp.mapLegendType = new Ext.form.ComboBox({
             editable: false,
             valueField: 'value',
@@ -982,8 +966,6 @@ mapfish.widgets.geostat.Point = Ext.extend(Ext.Panel, {
                             this.cmp.dataElement,
                             this.cmp.periodType,
                             this.cmp.period,
-                            this.cmp.startDate,
-                            this.cmp.endDate,
                             { html: '<div class="thematic-br">' },
                             { html: '<div class="window-info">Legend options</div>' },
                             this.cmp.mapLegendType,
@@ -1223,7 +1205,7 @@ mapfish.widgets.geostat.Point = Ext.extend(Ext.Panel, {
                 scope.featureOptions.menu.showAt([G.vars.mouseMove.x, G.vars.mouseMove.y]);
             }
             else {
-                if (feature.attributes.hasChildrenWithCoordinates) {
+                if (feature.attributes.hcwc) {
                     if (G.vars.locateFeatureWindow) {
                         G.vars.locateFeatureWindow.destroy();
                     }
@@ -1313,40 +1295,22 @@ mapfish.widgets.geostat.Point = Ext.extend(Ext.Panel, {
         return obj;
     },
     
-    prepareMapViewDateType: function() {
-        var obj = {};
-        if (G.system.mapDateType.isFixed()) {
-            this.cmp.periodType.show();
-            this.cmp.period.show();
-            this.cmp.startDate.hide();
-            this.cmp.endDate.hide();
-            obj.components = {
-                c1: this.cmp.periodType,
-                c2: this.cmp.period
-            };
-            obj.stores = {
-                c1: G.stores.periodType,
-                c2: this.stores.periodsByType
-            };
-            obj.mapView = {
-                c1: 'periodTypeId',
-                c2: 'periodId'
-            };
-        }
-        else if (G.system.mapDateType.isStartEnd()) {
-            this.cmp.periodType.hide();
-            this.cmp.period.hide();
-            this.cmp.startDate.show();
-            this.cmp.endDate.show();
-            obj.components = {
-                c1: this.cmp.startDate,
-                c2: this.cmp.endDate
-            };
-            obj.mapView = {
-                c1: 'startDate',
-                c2: 'endDate'
-            };
-        }
+    prepareMapViewPeriod: function() {
+        var obj = {};        
+        this.cmp.periodType.show();
+        this.cmp.period.show();
+        obj.components = {
+            c1: this.cmp.periodType,
+            c2: this.cmp.period
+        };
+        obj.stores = {
+            c1: G.stores.periodType,
+            c2: this.stores.periodsByType
+        };
+        obj.mapView = {
+            c1: 'periodTypeId',
+            c2: 'periodId'
+        };
         return obj;
     },
     
@@ -1388,23 +1352,15 @@ mapfish.widgets.geostat.Point = Ext.extend(Ext.Panel, {
                 obj.components.valueType.setValue(this.mapView[obj.mapView.valueType]);
                 obj.components.valueType.currentValue = this.mapView[obj.mapView.valueType];
                 
-                obj = this.prepareMapViewDateType();
-                if (G.system.mapDateType.isFixed()) {
-                    if (obj.stores.c1.isLoaded) {
-                        dateTypeGroupStoreCallback.call(this);
-                    }
-                    else {
-                        obj.stores.c1.load({scope: this, callback: function() {
-                            dateTypeGroupStoreCallback.call(this);
-                        }});
-                    }
+                obj = this.prepareMapViewPeriod();
+                if (obj.stores.c1.isLoaded) {
+                    dateTypeGroupStoreCallback.call(this);
                 }
-                else if (G.system.mapDateType.isStartEnd()) {
-                    obj.components.c1.setValue(new Date(this.mapView[obj.mapView.c1]));
-                    obj.components.c2.setValue(new Date(this.mapView[obj.mapView.c2]));
-                    
-                    this.setMapViewLegend();
-                }                
+                else {
+                    obj.stores.c1.load({scope: this, callback: function() {
+                        dateTypeGroupStoreCallback.call(this);
+                    }});
+                }
             }});
         }
         
@@ -1512,7 +1468,7 @@ mapfish.widgets.geostat.Point = Ext.extend(Ext.Panel, {
 					colors[colors.length-1].setFromHex(mapLegends[i].color);
                     names.push(mapLegends[i].name);
 					bounds.push(mapLegends[i].endValue);
-				}              
+				}
 
 				this.colorInterpolation = colors;
 				this.bounds = bounds;
@@ -1542,18 +1498,10 @@ mapfish.widgets.geostat.Point = Ext.extend(Ext.Panel, {
                     return false;
                 }
             }
-
-            if (G.system.mapDateType.isFixed()) {
-                if (!this.cmp.period.getValue()) {
-                    this.window.cmp.apply.disable();
-                    return false;
-                }
-            }
-            else {
-                if (!this.cmp.startDate.getValue() || !this.cmp.endDate.getValue()) {
-                    this.window.cmp.apply.disable();
-                    return false;
-                }
+            
+            if (!this.cmp.period.getValue()) {
+                this.window.cmp.apply.disable();
+                return false;
             }
 
             if (!this.cmp.parent.selectedNode || !this.cmp.level.getValue()) {
@@ -1611,12 +1559,9 @@ mapfish.widgets.geostat.Point = Ext.extend(Ext.Panel, {
                 dataElementGroupId: this.valueType.isDataElement() ? this.cmp.dataElementGroup.getValue() : null,
                 dataElementId: this.valueType.isDataElement() ? this.cmp.dataElement.getValue() : null,
 				dataElementName: this.valueType.isDataElement() ? this.cmp.dataElement.getRawValue() : null,
-                mapDateType: G.system.mapDateType.value,
-                periodTypeId: G.system.mapDateType.isFixed() ? this.cmp.periodType.getValue() : null,
-                periodId: G.system.mapDateType.isFixed() ? this.cmp.period.getValue() : null,
-                periodName: G.system.mapDateType.isFixed() ? this.cmp.period.getRawValue() : null,
-                startDate: G.system.mapDateType.isStartEnd() ? this.cmp.startDate.getRawValue() : null,
-                endDate: G.system.mapDateType.isStartEnd() ? this.cmp.endDate.getRawValue() : null,
+                periodTypeId: this.cmp.periodType.getValue(),
+                periodId: this.cmp.period.getValue(),
+                periodName: this.cmp.period.getRawValue(),
                 parentOrganisationUnitId: this.organisationUnitSelection.parent.id,
                 parentOrganisationUnitLevel: this.organisationUnitSelection.parent.level,
                 parentOrganisationUnitName: this.organisationUnitSelection.parent.name,
@@ -1640,7 +1585,7 @@ mapfish.widgets.geostat.Point = Ext.extend(Ext.Panel, {
         getLegendInfo: function() {
             return {
                 name: this.valueType.isIndicator() ? this.cmp.indicator.getRawValue() : this.cmp.dataElement.getRawValue(),
-                time: G.system.mapDateType.isFixed() ? this.cmp.period.getRawValue() : this.cmp.startDate.getRawValue() + ' to ' + this.cmp.endDate.getRawValue(),
+                time: this.cmp.period.getRawValue(),
                 map: this.organisationUnitSelection.level.name + ' / ' + this.organisationUnitSelection.parent.name
             };
         },
@@ -1649,8 +1594,7 @@ mapfish.widgets.geostat.Point = Ext.extend(Ext.Panel, {
 			return {
 				mapValueTypeValue: this.cmp.mapValueType.getValue() == G.conf.map_value_type_indicator ?
 					this.cmp.indicator.getRawValue() : this.cmp.dataElement.getRawValue(),
-				dateValue: G.system.mapDateType.isFixed() ?
-					this.cmp.period.getRawValue() : new Date(this.cmp.startDate.getRawValue()).format('Y M j') + ' - ' + new Date(this.cmp.endDate.getRawValue()).format('Y M j')
+				dateValue: this.cmp.period.getRawValue()
 			};
 		},
         
@@ -1665,12 +1609,9 @@ mapfish.widgets.geostat.Point = Ext.extend(Ext.Panel, {
             this.cmp.dataElementGroup.clearValue();
             this.cmp.dataElement.clearValue();
             
-            G.system.mapDateType.setFixed();
-            this.prepareMapViewDateType();
+            this.prepareMapViewPeriod();
             this.cmp.periodType.clearValue();
             this.cmp.period.clearValue();
-            this.cmp.startDate.reset();
-            this.cmp.endDate.reset();
             
             this.cmp.level.clearValue();
             this.cmp.parent.reset();
@@ -1729,9 +1670,7 @@ mapfish.widgets.geostat.Point = Ext.extend(Ext.Panel, {
                 var dataUrl = this.valueType.isIndicator() ? 'getIndicatorMapValues' : 'getDataElementMapValues';
                 var params = {
                     id: this.valueType.isIndicator() ? this.cmp.indicator.getValue() : this.cmp.dataElement.getValue(),
-                    periodId: G.system.mapDateType.isFixed() ? this.cmp.period.getValue() : null,
-                    startDate: G.system.mapDateType.isStartEnd() ? new Date(this.cmp.startDate.getValue()).format('Y-m-d') : null,
-                    endDate: G.system.mapDateType.isStartEnd() ? new Date(this.cmp.endDate.getValue()).format('Y-m-d') : null,
+                    periodId: this.cmp.period.getValue(),
                     parentId: this.organisationUnitSelection.parent.id,
                     level: this.organisationUnitSelection.level.level
                 };
@@ -1758,8 +1697,8 @@ mapfish.widgets.geostat.Point = Ext.extend(Ext.Panel, {
 
                         for (var i = 0; i < mapvalues.length; i++) {
                             for (var j = 0; j < this.layer.features.length; j++) {
-                                if (mapvalues[i].orgUnitName == this.layer.features[j].attributes.name) {
-                                    this.layer.features[j].attributes.value = parseFloat(mapvalues[i].value);
+                                if (mapvalues[i].oi == this.layer.features[j].attributes.id) {
+                                    this.layer.features[j].attributes.value = parseFloat(mapvalues[i].v);
                                     this.layer.features[j].attributes.labelString = this.layer.features[j].attributes.name + ' (' + this.layer.features[j].attributes.value + ')';
                                     this.layer.features[j].attributes.fixedName = G.util.cutString(this.layer.features[j].attributes.name, 30);
                                     break;

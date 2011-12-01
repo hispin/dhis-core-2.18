@@ -12,8 +12,6 @@
     "mapDateType": "$!encoder.jsonEncode( ${object.mapDateTypeNullSafe} )",
     "periodTypeId": "$!encoder.jsonEncode( ${object.periodType.name} )",
     "periodId": "$!{object.period.id}",
-    "startDate": "$!encoder.jsonEncode( ${object.startDate} )",
-    "endDate": "$!encoder.jsonEncode( ${object.endDate} )",
     "parentOrganisationUnitId": "$!{object.parentOrganisationUnit.id}",
     "parentOrganisationUnitName": "$!encoder.jsonEncode( ${object.parentOrganisationUnit.name} )",
     "parentOrganisationUnitLevel": "$!{object.parentOrganisationUnit.level}",
