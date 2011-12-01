@@ -41,7 +41,11 @@ import org.apache.commons.validator.UrlValidator;
  */
 public class ValidationUtils
 {
-    private static Pattern COORDINATE_PATTERN = Pattern.compile( "\\[([+-]?\\d+\\.?\\d*),([+-]?\\d+\\.?\\d*)\\]" );
+    private static Pattern POINT_PATTERN = Pattern.compile( "\\[(.+),\\s?(.+)\\]" );
+    private static int LONG_MAX = 180;
+    private static int LONG_MIN = -180;
+    private static int LAT_MAX = 90;
+    private static int LAT_MIN = -90;
     
     /**
      * Validates whether an email string is valid.
@@ -106,7 +110,32 @@ public class ValidationUtils
      */
     public static boolean coordinateIsValid( String coordinate )
     {
-        return coordinate != null ? COORDINATE_PATTERN.matcher( coordinate ).matches() : false;
+        if ( coordinate == null || coordinate.trim().isEmpty() )
+        {
+            return false;
+        }
+        
+        Matcher matcher = POINT_PATTERN.matcher( coordinate );
+        
+        if ( !matcher.find() )
+        {
+            return false;
+        }
+        
+        double longitude = 0.0;
+        double latitude = 0.0;
+        
+        try
+        {
+            longitude = Double.parseDouble( matcher.group( 1 ) );
+            latitude = Double.parseDouble( matcher.group( 2 ) );
+        }
+        catch ( NumberFormatException ex )
+        {
+            return false;
+        }
+        
+        return longitude >= LONG_MIN && longitude <= LONG_MAX && latitude >= LAT_MIN && latitude <= LAT_MAX;
     }
     
     /**
@@ -124,7 +153,7 @@ public class ValidationUtils
             return null;
         }
         
-        Matcher matcher = COORDINATE_PATTERN.matcher( coordinate );
+        Matcher matcher = POINT_PATTERN.matcher( coordinate );
         
         return matcher.find() ? matcher.group( 1 ) : null;
     }
@@ -144,7 +173,7 @@ public class ValidationUtils
             return null;
         }
         
-        Matcher matcher = COORDINATE_PATTERN.matcher( coordinate );
+        Matcher matcher = POINT_PATTERN.matcher( coordinate );
         
         return matcher.find() ? matcher.group( 2 ) : null;
     }

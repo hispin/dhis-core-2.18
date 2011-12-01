@@ -48,8 +48,8 @@ public class ValidationUtilsTest
         assertTrue( coordinateIsValid( "[+37.99034,-28.94221]" ) );
         assertTrue( coordinateIsValid( "[37.99034,-28.94221]" ) );
         assertTrue( coordinateIsValid( "[+37.99034,28.94221]" ) );
-        assertTrue( coordinateIsValid( "[37.99034,28.94221]" ) );
-        assertTrue( coordinateIsValid( "[+37,-28.94221]" ) );
+        assertTrue( coordinateIsValid( "[170.99034,78.94221]" ) );
+        assertTrue( coordinateIsValid( "[-167,-28.94221]" ) );
         assertTrue( coordinateIsValid( "[37.99034,28]" ) );
         
         assertFalse( coordinateIsValid( "23.34343,56.3232" ) );
@@ -60,6 +60,11 @@ public class ValidationUtilsTest
         assertFalse( coordinateIsValid( "[++37,-28.94221]" ) );
         assertFalse( coordinateIsValid( "S-0.27726 E37.08472" ) );
         assertFalse( coordinateIsValid( null ) );
+                
+        assertFalse( coordinateIsValid( "-185.12345,45.45423" ) );
+        assertFalse( coordinateIsValid( "192.56789,-45.34332" ) );
+        assertFalse( coordinateIsValid( "140.34,92.23323" ) );
+        assertFalse( coordinateIsValid( "123.34,-94.23323" ) );
     }
 
     @Test
