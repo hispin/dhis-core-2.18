@@ -59,7 +59,7 @@ import org.hisp.dhis.datavalue.DeflatedDataValue;
  * @author Lars Helge Overland
  */
 public class DeflatedDataValueNameMinMaxRowMapper
-    implements RowMapper<DeflatedDataValue>
+    implements RowMapper<DeflatedDataValue>, org.springframework.jdbc.core.RowMapper<DeflatedDataValue>
 {
     public DeflatedDataValue mapRow( ResultSet resultSet )
         throws SQLException
@@ -86,5 +86,12 @@ public class DeflatedDataValueNameMinMaxRowMapper
         value.setCategoryOptionComboName( resultSet.getString( "categoryoptioncomboname" ) );
         
         return value;
+    }
+
+    @Override
+    public DeflatedDataValue mapRow( ResultSet resultSet, int rowNum )
+        throws SQLException
+    {
+        return mapRow( resultSet );
     }
 }

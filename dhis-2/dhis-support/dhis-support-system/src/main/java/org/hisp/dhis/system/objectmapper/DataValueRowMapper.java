@@ -42,7 +42,7 @@ import org.hisp.dhis.period.Period;
  * @version $Id$
  */
 public class DataValueRowMapper
-    implements RowMapper<DataValue>
+    implements RowMapper<DataValue>, org.springframework.jdbc.core.RowMapper<DataValue>
 {
     public DataValue mapRow( ResultSet resultSet )
         throws SQLException
@@ -64,5 +64,12 @@ public class DataValueRowMapper
         dataValue.setComment( resultSet.getString( 8 ) );
         
         return dataValue;
+    }
+
+    @Override
+    public DataValue mapRow( ResultSet resultSet, int rowNum )
+        throws SQLException
+    {
+        return mapRow( resultSet );
     }
 }

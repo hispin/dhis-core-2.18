@@ -38,7 +38,7 @@ import org.hisp.dhis.aggregation.AggregatedMapValue;
  * @version $Id$
  */
 public class AggregatedIndicatorMapValueRowMapper
-    implements RowMapper<AggregatedMapValue>
+    implements RowMapper<AggregatedMapValue>, org.springframework.jdbc.core.RowMapper<AggregatedMapValue>
 {
     public AggregatedMapValue mapRow( ResultSet resultSet )
         throws SQLException
@@ -54,5 +54,12 @@ public class AggregatedIndicatorMapValueRowMapper
         value.setDenominatorValue( resultSet.getDouble( 7 ) );        
 
         return value;
+    }
+
+    @Override
+    public AggregatedMapValue mapRow( ResultSet resultSet, int rowNum )
+        throws SQLException
+    {
+        return mapRow( resultSet );
     }
 }
