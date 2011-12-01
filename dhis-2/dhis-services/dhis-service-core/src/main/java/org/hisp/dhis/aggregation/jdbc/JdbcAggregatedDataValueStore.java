@@ -433,7 +433,7 @@ public class JdbcAggregatedDataValueStore
     public Collection<AggregatedMapValue> getAggregatedDataMapValues( int dataElementId, int periodId, Collection<Integer> organisationUnitIds )
     {
         final String sql = 
-            "SELECT o.organisationunitid, o.name, a.value, a.periodid " +
+            "SELECT a.periodid, o.organisationunitid, o.name, a.value " +
             "FROM aggregateddatavalue AS a " +
             "JOIN organisationunit AS o ON (a.organisationunitid=o.organisationunitid) " +
             "WHERE a.dataelementid  = " + dataElementId + " " +
@@ -649,7 +649,7 @@ public class JdbcAggregatedDataValueStore
     public Collection<AggregatedMapValue> getAggregatedIndicatorMapValues( int indicatorId, int periodId, Collection<Integer> organisationUnitIds )
     {
         final String sql = 
-            "SELECT o.organisationunitid, o.name, a.value, a.periodid, a.factor, a.numeratorvalue, a.denominatorvalue " +
+            "SELECT a.periodid, o.organisationunitid, o.name, a.value, a.factor, a.numeratorvalue, a.denominatorvalue " +
             "FROM aggregatedindicatorvalue AS a " +
             "JOIN organisationunit AS o ON (a.organisationunitid=o.organisationunitid) " +
             "WHERE a.indicatorid  = " + indicatorId + " " +
