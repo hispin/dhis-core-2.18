@@ -221,6 +221,15 @@ public interface AggregatedDataValueStore
      */
     Collection<AggregatedMapValue> getAggregatedDataMapValues( int dataElementId, int periodId, Collection<Integer> organisationUnitIds );
 
+    /**
+     * Retrieves the AggregatedDataMapValues for the given arguments.
+     * 
+     * @param dataElementIds the set of DataElement identifiers.
+     * @param periodId the Period identifier.
+     * @param organisationUnitId the OrganisationUnit identifier.
+     */
+    Collection<AggregatedMapValue> getAggregatedDataMapValues( Collection<Integer> dataElementIds, int periodId, int organisationUnitId );
+    
     // ----------------------------------------------------------------------
     // AggregatedIndicatorValue
     // ----------------------------------------------------------------------
