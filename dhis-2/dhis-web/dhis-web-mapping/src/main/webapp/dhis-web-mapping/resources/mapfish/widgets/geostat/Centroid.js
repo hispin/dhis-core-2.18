@@ -1099,15 +1099,20 @@ mapfish.widgets.geostat.Centroid = Ext.extend(Ext.Panel, {
                             G.vars.mask.hide();
                             return;
                         }
-
-                        for (var i = 0; i < mapvalues.length; i++) {
-                            for (var j = 0; j < this.layer.features.length; j++) {
-                                if (mapvalues[i].oi == this.layer.features[j].attributes.id) {
+                        
+                        for (var j = 0; j < this.layer.features.length; j++) {
+                            for (var i = 0; i < mapvalues.length; i++) {
+                                if (this.layer.features[j].attributes.id == mapvalues[i].oi) {
                                     this.layer.features[j].attributes.value = parseFloat(mapvalues[i].v);
                                     this.layer.features[j].attributes.labelString = this.layer.features[j].attributes.name + ' (' + this.layer.features[j].attributes.value + ')';
-                                    this.layer.features[j].attributes.name = G.util.cutString(this.layer.features[j].attributes.name, 30);
+                                    this.layer.features[j].attributes.fixedName = G.util.cutString(this.layer.features[j].attributes.name, 30);
                                     break;
                                 }
+                            }
+                            if (!this.layer.features[j].attributes.value) {
+                                this.layer.features[j].attributes.value = 0;
+                                this.layer.features[j].attributes.labelString = this.layer.features[j].attributes.name + ' (0)';
+                                this.layer.features[j].attributes.fixedName = G.util.cutString(this.layer.features[j].attributes.name, 30);
                             }
                         }
                         
