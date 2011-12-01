@@ -217,16 +217,6 @@ public class DefaultAggregatedDataValueService
         return aggregatedDataValueStore.getAggregatedIndicatorMapValues( indicatorId, periodId, organisationUnitIds );
     }
     
-    public Collection<AggregatedMapValue> getAggregatedIndicatorMapValues( int indicatorId, int periodId, int level, int organisationUnitId )
-    {
-        return aggregatedDataValueStore.getAggregatedIndicatorMapValues( indicatorId, periodId, level, organisationUnitId );
-    }
-    
-    public Collection<AggregatedMapValue> getAggregatedIndicatorMapValues( int indicatorId, Collection<Integer> periodIds, int level, int organisationUnitId )
-    {
-        return aggregatedDataValueStore.getAggregatedIndicatorMapValues( indicatorId, periodIds, level, organisationUnitId );
-    }
-    
     // -------------------------------------------------------------------------
     // DataValue
     // -------------------------------------------------------------------------
