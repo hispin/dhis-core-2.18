@@ -200,6 +200,7 @@ http://www.springframework.org/schema/security http://www.springframework.org/sc
 
   <bean id="org.hisp.dhis.aggregation.AggregatedDataValueStore" class="org.hisp.dhis.aggregation.jdbc.JdbcAggregatedDataValueStore">
     <property name="statementManager" ref="statementManager" />
+	<property name="jdbcTemplate" ref="jdbcTemplate" />
   </bean>
 
   <bean id="org.hisp.dhis.user.UserAuthorityGroupStore" class="org.hisp.dhis.hibernate.HibernateGenericStore">

@@ -251,7 +251,7 @@ public interface AggregatedDataValueService
      * @param periodId the Period identifier.
      * @param level the OrganisationUnit level.
      */
-    Collection<AggregatedMapValue> getAggregatedDataMapValues( int dataElementId, int periodId, int level );
+    Collection<AggregatedMapValue> getAggregatedDataMapValues( int dataElementId, int periodId, Collection<Integer> organisationUnitIds );
 
     // ----------------------------------------------------------------------
     // AggregatedIndicatorValue
@@ -333,9 +333,9 @@ public interface AggregatedDataValueService
      * 
      * @param indicatorId the Indicator identifier.
      * @param periodId the Period identifier.
-     * @param level the OrganisationUnit level.
+     * @param organisationUnitIds the collection of OrganisationUnit identifiers.
      */
-    Collection<AggregatedMapValue> getAggregatedIndicatorMapValues( int indicatorId, int periodId, int level );
+    Collection<AggregatedMapValue> getAggregatedIndicatorMapValues( int indicatorId, int periodId, Collection<Integer> organisationUnitIds );
     
     /**
      * Retrieves the AggregatedIndicatorMapValues for the given arguments.

@@ -27,7 +27,6 @@ package org.hisp.dhis.aggregation.jdbc;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import org.hisp.dhis.organisationunit.OrganisationUnitLevel;
 import static org.hisp.dhis.system.util.ConversionUtils.getIdentifiers;
 import static org.hisp.dhis.system.util.TextUtils.getCommaDelimitedString;
 
@@ -58,6 +57,7 @@ import org.hisp.dhis.datavalue.DataValue;
 import org.hisp.dhis.datavalue.DeflatedDataValue;
 import org.hisp.dhis.hibernate.HibernateGenericStore;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
+import org.hisp.dhis.organisationunit.OrganisationUnitLevel;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.system.objectmapper.AggregatedDataMapValueRowMapper;
 import org.hisp.dhis.system.objectmapper.AggregatedDataValueRowMapper;
@@ -430,34 +430,17 @@ public class JdbcAggregatedDataValueStore
     // AggregatedDataMapValue
     // -------------------------------------------------------------------------
     
-    public Collection<AggregatedMapValue> getAggregatedDataMapValues( int dataElementId, int periodId, int level )
+    public Collection<AggregatedMapValue> getAggregatedDataMapValues( int dataElementId, int periodId, Collection<Integer> organisationUnitIds )
     {
-        final StatementHolder holder = statementManager.getHolder();
+        final String sql = 
+            "SELECT o.organisationunitid, o.name, a.value, a.periodid " +
+            "FROM aggregateddatavalue AS a " +
+            "JOIN organisationunit AS o ON (a.organisationunitid=o.organisationunitid) " +
+            "WHERE a.dataelementid  = " + dataElementId + " " +
+            "AND a.periodid = " + periodId + " " + 
+            "AND a.organisationunitid IN (" + getCommaDelimitedString( organisationUnitIds ) + ")";
         
-        final ObjectMapper<AggregatedMapValue> mapper = new ObjectMapper<AggregatedMapValue>();
-        
-        try
-        {
-            final String sql = 
-                "SELECT o.organisationunitid, o.name, a.value, a.periodid " +
-                "FROM aggregateddatavalue AS a, organisationunit AS o " +
-                "WHERE a.dataelementid  = " + dataElementId + " " +
-                "AND a.periodid = " + periodId + " " + 
-                "AND a.level = " + level + " " +
-                "AND a.organisationunitid = o.organisationunitid";
-            
-            final ResultSet resultSet = holder.getStatement().executeQuery( sql );
-            
-            return mapper.getCollection( resultSet, new AggregatedDataMapValueRowMapper() );
-        }
-        catch ( SQLException ex )
-        {
-            throw new RuntimeException( "Failed to get aggregated data map values", ex );
-        }
-        finally
-        {
-            holder.close();
-        }
+        return jdbcTemplate.query( sql, new AggregatedDataMapValueRowMapper() );        
     }
 
     // -------------------------------------------------------------------------
@@ -639,34 +622,16 @@ public class JdbcAggregatedDataValueStore
     // AggregatedIndicatorMapValue
     // -------------------------------------------------------------------------
 
-    public Collection<AggregatedMapValue> getAggregatedIndicatorMapValues( int indicatorId, int periodId, int level )
+    public Collection<AggregatedMapValue> getAggregatedIndicatorMapValues( int indicatorId, int periodId, Collection<Integer> organisationUnitIds )
     {
-        final StatementHolder holder = statementManager.getHolder();
+        final String sql = 
+            "SELECT o.organisationunitid, o.name, a.value, a.periodid, a.factor, a.numeratorvalue, a.denominatorvalue " +
+            "FROM aggregatedindicatorvalue AS a, organisationunit AS o " +
+            "WHERE a.indicatorid  = " + indicatorId + " " +
+            "AND a.periodid = " + periodId + " " +
+            "AND a.organisationunitid IN (" + getCommaDelimitedString( organisationUnitIds ) + ")";
         
-        final ObjectMapper<AggregatedMapValue> mapper = new ObjectMapper<AggregatedMapValue>();
-        
-        try
-        {
-            final String sql = 
-                "SELECT o.organisationunitid, o.name, a.value, a.periodid, a.factor, a.numeratorvalue, a.denominatorvalue " +
-                "FROM aggregatedindicatorvalue AS a, organisationunit AS o " +
-                "WHERE a.indicatorid  = " + indicatorId + " " +
-                "AND a.periodid = " + periodId + " " + 
-                "AND a.level = " + level + " " +
-                "AND a.organisationunitid = o.organisationunitid";
-            
-            final ResultSet resultSet = holder.getStatement().executeQuery( sql );
-            
-            return mapper.getCollection( resultSet, new AggregatedIndicatorMapValueRowMapper() );
-        }
-        catch ( SQLException ex )
-        {
-            throw new RuntimeException( "Failed to get aggregated indicator map values", ex );
-        }
-        finally
-        {
-            holder.close();
-        }
+        return jdbcTemplate.query( sql, new AggregatedIndicatorMapValueRowMapper() );
     }
     
     public Collection<AggregatedMapValue> getAggregatedIndicatorMapValues( int indicatorId, int periodId, int level, int organisationUnitId )

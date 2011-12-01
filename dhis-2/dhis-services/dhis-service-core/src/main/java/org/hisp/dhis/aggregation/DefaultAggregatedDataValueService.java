@@ -30,11 +30,6 @@ package org.hisp.dhis.aggregation;
 import java.util.Collection;
 import java.util.Map;
 
-import org.hisp.dhis.aggregation.AggregatedDataValue;
-import org.hisp.dhis.aggregation.AggregatedDataValueService;
-import org.hisp.dhis.aggregation.AggregatedDataValueStore;
-import org.hisp.dhis.aggregation.AggregatedIndicatorValue;
-import org.hisp.dhis.aggregation.AggregatedMapValue;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryOption;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
@@ -157,9 +152,9 @@ public class DefaultAggregatedDataValueService
     // AggregatedDataMapValue
     // -------------------------------------------------------------------------
     
-    public Collection<AggregatedMapValue> getAggregatedDataMapValues( int dataElementId, int periodId, int level )
+    public Collection<AggregatedMapValue> getAggregatedDataMapValues( int dataElementId, int periodId, Collection<Integer> organisationUnitIds )
     {
-        return aggregatedDataValueStore.getAggregatedDataMapValues( dataElementId, periodId, level );
+        return aggregatedDataValueStore.getAggregatedDataMapValues( dataElementId, periodId, organisationUnitIds );
     }
     
     // -------------------------------------------------------------------------
@@ -217,9 +212,9 @@ public class DefaultAggregatedDataValueService
     // AggregatedIndicatorMapValue
     // -------------------------------------------------------------------------
     
-    public Collection<AggregatedMapValue> getAggregatedIndicatorMapValues( int indicatorId, int periodId, int level )
+    public Collection<AggregatedMapValue> getAggregatedIndicatorMapValues( int indicatorId, int periodId, Collection<Integer> organisationUnitIds )
     {
-        return aggregatedDataValueStore.getAggregatedIndicatorMapValues( indicatorId, periodId, level );
+        return aggregatedDataValueStore.getAggregatedIndicatorMapValues( indicatorId, periodId, organisationUnitIds );
     }
     
     public Collection<AggregatedMapValue> getAggregatedIndicatorMapValues( int indicatorId, int periodId, int level, int organisationUnitId )

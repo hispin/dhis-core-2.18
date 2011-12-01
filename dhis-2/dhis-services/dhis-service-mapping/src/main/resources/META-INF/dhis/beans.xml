@@ -22,10 +22,6 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
       ref="org.hisp.dhis.period.PeriodService"/>
 	<property name="userSettingService"
       ref="org.hisp.dhis.user.UserSettingService"/>
-	<property name="aggregationService"
-	  ref="org.hisp.dhis.aggregation.AggregationService"/>
-	<property name="systemSettingManager"
-	  ref="org.hisp.dhis.options.SystemSettingManager"/>
 	<property name="aggregatedDataValueService"
 	  ref="org.hisp.dhis.aggregation.AggregatedDataValueService"/>
     <property name="currentUserService"
@@ -78,12 +74,6 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
       <aop:before pointcut="execution( * org.hisp.dhis.mapping.MappingService.deleteMapLegend(..) )" method="intercept"/>
       <aop:before pointcut="execution( * org.hisp.dhis.mapping.MappingService.deleteMapLegendSet(..) )" method="intercept"/>
       <aop:before pointcut="execution( * org.hisp.dhis.mapping.MappingService.deleteMapView(..) )" method="intercept"/>
-    </aop:aspect>
-      
-    <aop:aspect ref="statementInterceptor">
-      <aop:around pointcut="execution( * org.hisp.dhis.mapping.MappingService.getDataElementMapValues(..) )" method="intercept"/>
-      <aop:around pointcut="execution( * org.hisp.dhis.mapping.MappingService.getIndicatorMapValues(..) )" method="intercept"/>
-      <aop:around pointcut="execution( * org.hisp.dhis.mapping.MappingService.getInfrastructuralDataElementMapValues(..) )" method="intercept"/>
     </aop:aspect>
       
   </aop:config>
