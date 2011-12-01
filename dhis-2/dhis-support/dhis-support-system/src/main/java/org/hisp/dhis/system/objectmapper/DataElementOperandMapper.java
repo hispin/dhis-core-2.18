@@ -39,7 +39,7 @@ import org.hisp.dhis.dataelement.DataElementOperand;
  * @author Lars Helge Overland
  */
 public class DataElementOperandMapper
-    implements RowMapper<DataElementOperand>
+    implements RowMapper<DataElementOperand>, org.springframework.jdbc.core.RowMapper<DataElementOperand>
 {
     private static final String SEPARATOR = " ";
     
@@ -62,5 +62,12 @@ public class DataElementOperandMapper
             operandName );
         
         return operand;
+    }
+
+    @Override
+    public DataElementOperand mapRow( ResultSet resultSet, int rowNum )
+        throws SQLException
+    {
+        return mapRow( resultSet );
     }
 }
