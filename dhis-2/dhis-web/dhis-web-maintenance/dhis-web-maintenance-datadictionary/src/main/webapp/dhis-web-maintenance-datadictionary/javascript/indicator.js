@@ -73,6 +73,9 @@ function showIndicatorDetails( indicatorId )
 
 		var lastUpdated = json.indicator.lastUpdated;
 		setInnerHTML( 'lastUpdatedField', lastUpdated ? lastUpdated : '[' + i18n_none + ']' );
+		
+		var dataSets = joinNameableObjects( json.indicator.dataSets );
+		setInnerHTML( 'dataSetsField', dataSets ? dataSets : '[' + i18n_none + ']' );
 
 		showDetails();
 	});

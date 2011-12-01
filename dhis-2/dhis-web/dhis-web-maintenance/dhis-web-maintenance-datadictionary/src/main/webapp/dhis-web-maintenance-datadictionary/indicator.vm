@@ -84,6 +84,7 @@
 				<p><label>$i18n.getString( "denominator_description" ):</label><br/><span id="denominatorDescriptionField"></span></p>
 			    <p><label>$i18n.getString( "url" ):</label><br/><span id="urlField"></span></p>   
                 <p><label>$i18n.getString( "last_updated" ):</label><br/><span id="lastUpdatedField"></span></p>             
+                <p><label>$i18n.getString( "data_sets" ):</label><br/><span id="dataSetsField"></span></p>             
 			</div>
 
 			<div id="warningArea" style="position:fixed;right:10px;top:200px;display:none">
