@@ -223,6 +223,7 @@ Ext.onReady( function() {
                 }
                 items = Ext.Array.sort(items);
                 s.add(items);
+                s.sort('shortName', 'ASC');
             },
             containsParent: function(s) {
                 for (var obj in s.storage) {
@@ -334,7 +335,7 @@ Ext.onReady( function() {
         },
         chart: {
             getLegend: function(len) {
-                len = len ? len : DV.state.series.names.length;
+                len = len ? len : DV.store.chart.left.length;
                 return {
                     position: len > 5 ? 'right' : 'top',
                     labelFont: '15px arial',
@@ -430,7 +431,7 @@ Ext.onReady( function() {
                         },
                         {
                             type: 'text',
-                            text: DV.state.series.names[0],
+                            text: DV.store.chart.left[0],
                             font: 'bold 13px arial',
                             fill: '#777',
                             width: 300,
@@ -524,7 +525,7 @@ Ext.onReady( function() {
         },
         string: {
             getEncodedString: function(text) {
-                return text.replace(/[^a-zA-Z 0-9]+/g,'');
+                return text.replace(/[^a-zA-Z 0-9(){}<>_!+;:?*&%#-]+/g,'');
             }
         }
     };
@@ -756,7 +757,6 @@ Ext.onReady( function() {
         data: [],        
         getData: function(exe) {
             this.data = [];
-			
             Ext.Array.each(DV.state.category.names, function(item) {
                 var obj = {};
                 obj[DV.conf.finals.chart.x] = item;
@@ -839,7 +839,7 @@ Ext.onReady( function() {
                 store: DV.store.chart,
                 insetPadding: DV.conf.chart.inset,
                 items: DV.util.chart.getTitle(),
-                legend: DV.util.chart.getLegend(),
+                legend: DV.util.chart.getLegend(DV.store.chart.bottom.length),
                 axes: [
                     {
                         type: 'Category',
@@ -1320,8 +1320,7 @@ Ext.onReady( function() {
                                                         icon: 'images/arrowright.png',
                                                         width: 22,
                                                         handler: function() {
-                                                            DV.util.multiselect.select(DV.util.getCmp('multiselect[name="availableIndicators"]'),
-                                                                DV.util.getCmp('multiselect[name="selectedIndicators"]'));
+                                                            DV.util.multiselect.select(DV.cmp.dimension.indicator.available, DV.cmp.dimension.indicator.selected);
                                                         }
                                                     },
                                                     {
@@ -1329,8 +1328,7 @@ Ext.onReady( function() {
                                                         icon: 'images/arrowrightdouble.png',
                                                         width: 22,
                                                         handler: function() {
-                                                            DV.util.multiselect.selectAll(DV.util.getCmp('multiselect[name="availableIndicators"]'),
-                                                                DV.util.getCmp('multiselect[name="selectedIndicators"]'));
+                                                            DV.util.multiselect.selectAll(DV.cmp.dimension.indicator.available, DV.cmp.dimension.indicator.selected);
                                                         }
                                                     },
                                                     ' '
@@ -1364,8 +1362,7 @@ Ext.onReady( function() {
                                                         icon: 'images/arrowleftdouble.png',
                                                         width: 22,
                                                         handler: function() {
-                                                            DV.util.multiselect.unselectAll(DV.util.getCmp('multiselect[name="availableIndicators"]'),
-                                                                DV.util.getCmp('multiselect[name="selectedIndicators"]'));
+                                                            DV.util.multiselect.unselectAll(DV.cmp.dimension.indicator.available, DV.cmp.dimension.indicator.selected);
                                                         }
                                                     },
                                                     {
@@ -1373,8 +1370,7 @@ Ext.onReady( function() {
                                                         icon: 'images/arrowleft.png',
                                                         width: 22,
                                                         handler: function() {
-                                                            DV.util.multiselect.unselect(DV.util.getCmp('multiselect[name="availableIndicators"]'),
-                                                                DV.util.getCmp('multiselect[name="selectedIndicators"]'));
+                                                            DV.util.multiselect.unselect(DV.cmp.dimension.indicator.available, DV.cmp.dimension.indicator.selected);
                                                         }
                                                     },
                                                     '->',
@@ -1483,8 +1479,7 @@ Ext.onReady( function() {
                                                         icon: 'images/arrowright.png',
                                                         width: 22,
                                                         handler: function() {
-                                                            DV.util.multiselect.select(DV.util.getCmp('multiselect[name="availableDataElements"]'),
-                                                                DV.util.getCmp('multiselect[name="selectedDataElements"]'));
+                                                            DV.util.multiselect.select(DV.cmp.dimension.dataelement.available, DV.cmp.dimension.dataelement.selected);
                                                         }
                                                     },
                                                     {
@@ -1492,8 +1487,7 @@ Ext.onReady( function() {
                                                         icon: 'images/arrowrightdouble.png',
                                                         width: 22,
                                                         handler: function() {
-                                                            DV.util.multiselect.selectAll(DV.util.getCmp('multiselect[name="availableDataElements"]'),
-                                                                DV.util.getCmp('multiselect[name="selectedDataElements"]'));
+                                                            DV.util.multiselect.selectAll(DV.cmp.dimension.dataelement.available, DV.cmp.dimension.dataelement.selected);
                                                         }
                                                     },
                                                     ' '
@@ -1527,8 +1521,7 @@ Ext.onReady( function() {
                                                         icon: 'images/arrowleftdouble.png',
                                                         width: 22,
                                                         handler: function() {
-                                                            DV.util.multiselect.unselectAll(DV.util.getCmp('multiselect[name="availableDataElements"]'),
-                                                                DV.util.getCmp('multiselect[name="selectedDataElements"]'));
+                                                            DV.util.multiselect.unselectAll(DV.cmp.dimension.dataelement.available, DV.cmp.dimension.dataelement.selected);
                                                         }
                                                     },
                                                     {
@@ -1536,8 +1529,7 @@ Ext.onReady( function() {
                                                         icon: 'images/arrowleft.png',
                                                         width: 22,
                                                         handler: function() {
-                                                            DV.util.multiselect.unselect(DV.util.getCmp('multiselect[name="availableDataElements"]'),
-                                                                DV.util.getCmp('multiselect[name="selectedDataElements"]'));
+                                                            DV.util.multiselect.unselect(DV.cmp.dimension.dataelement.available, DV.cmp.dimension.dataelement.selected);
                                                         }
                                                     },
                                                     '->',
