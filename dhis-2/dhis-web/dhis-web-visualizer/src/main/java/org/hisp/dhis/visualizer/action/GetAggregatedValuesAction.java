@@ -120,7 +120,7 @@ public class GetAggregatedValuesAction
             
             if ( dataElementIds != null )
             {
-                dataValues = aggregatedDataValueService.getAggregatedDataValues( dataElementIds, periodIds,
+                dataValues = aggregatedDataValueService.getAggregatedDataValueTotals( dataElementIds, periodIds,
                     organisationUnitIds );
             }
         }

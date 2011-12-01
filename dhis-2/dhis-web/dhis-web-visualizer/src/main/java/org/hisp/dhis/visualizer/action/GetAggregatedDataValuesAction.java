@@ -97,7 +97,7 @@ public class GetAggregatedDataValuesAction
         if ( dataElementIds != null && periodIds != null && organisationUnitIds != null )
         {
             object = aggregatedDataValueService
-                .getAggregatedDataValues( dataElementIds, periodIds, organisationUnitIds );
+                .getAggregatedDataValueTotals( dataElementIds, periodIds, organisationUnitIds );
         }
 
         return SUCCESS;

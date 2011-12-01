@@ -211,7 +211,7 @@ public class GetAggregatedDataValuesPluginAction
             }
 
             object = aggregatedDataValueService
-                .getAggregatedDataValues( dataElementIds, periodIds, organisationUnitIds );
+                .getAggregatedDataValueTotals( dataElementIds, periodIds, organisationUnitIds );
 
             for ( AggregatedDataValue value : object )
             {
@@ -219,7 +219,6 @@ public class GetAggregatedDataValuesPluginAction
                 value.setPeriodName( format.formatPeriod( periodService.getPeriod( value.getPeriodId() ) ) );
                 value.setOrganisationUnitName( organisationUnitService.getOrganisationUnit(
                     value.getOrganisationUnitId() ).getName() );
-
             }
         }
 
