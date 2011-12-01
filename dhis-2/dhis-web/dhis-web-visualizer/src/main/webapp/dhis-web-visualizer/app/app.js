@@ -336,8 +336,8 @@ Ext.onReady( function() {
             getLegend: function(len) {
                 len = len ? len : DV.state.series.names.length;
                 return {
-                    position: len > 6 ? 'right' : 'top',
-                    labelFont: '13px arial',
+                    position: len > 5 ? 'right' : 'top',
+                    labelFont: '15px arial',
                     boxStroke: '#ffffff',
                     boxStrokeWidth: 0,
                     padding: 0
