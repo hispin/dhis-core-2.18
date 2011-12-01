@@ -157,6 +157,11 @@ public class DefaultAggregatedDataValueService
         return aggregatedDataValueStore.getAggregatedDataMapValues( dataElementId, periodId, organisationUnitIds );
     }
     
+    public Collection<AggregatedMapValue> getAggregatedDataMapValues( Collection<Integer> dataElementIds, int periodId, int organisationUnitId )
+    {
+        return aggregatedDataValueStore.getAggregatedDataMapValues( dataElementIds, periodId, organisationUnitId );
+    }
+    
     // -------------------------------------------------------------------------
     // AggregatedIndicatorValue
     // -------------------------------------------------------------------------
@@ -235,5 +240,4 @@ public class DefaultAggregatedDataValueService
     {
         return aggregatedDataValueStore.getDataValueMap( periodId, sourceId );
     }
-
 }

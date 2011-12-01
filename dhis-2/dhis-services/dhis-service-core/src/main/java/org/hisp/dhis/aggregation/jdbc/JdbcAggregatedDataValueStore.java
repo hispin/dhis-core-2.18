@@ -443,6 +443,30 @@ public class JdbcAggregatedDataValueStore
         return jdbcTemplate.query( sql, new AggregatedDataMapValueRowMapper() );        
     }
 
+    public Collection<AggregatedMapValue> getAggregatedDataMapValues( Collection<Integer> dataElementIds, int periodId, int organisationUnitId )
+    {
+        final String sql = 
+            "SELECT d.name, a.value, a.periodid " +
+            "FROM aggregateddatavalue AS a " +
+            "JOIN dataelement AS d ON (a.dataelementid = d.dataelementid) " +
+            "WHERE a.dataelementid IN (" + getCommaDelimitedString( dataElementIds ) + ") " +
+            "AND a.periodid = " + periodId + " " + 
+            "AND a.organisationunitid = " + organisationUnitId;
+        
+        return jdbcTemplate.query( sql, new org.springframework.jdbc.core.RowMapper<AggregatedMapValue>()
+        {
+            public AggregatedMapValue mapRow( ResultSet resultSet, int rowNum )
+                throws SQLException
+            {
+                AggregatedMapValue value = new AggregatedMapValue();
+                value.setDataElementName( resultSet.getString( 1 ) );
+                value.setValue( resultSet.getDouble( 2 ) );
+                value.setPeriodId( resultSet.getInt( 3 ) );                
+                return value;
+            }
+        } );
+    }
+
     // -------------------------------------------------------------------------
     // AggregatedIndicatorValue
     // -------------------------------------------------------------------------
@@ -626,7 +650,8 @@ public class JdbcAggregatedDataValueStore
     {
         final String sql = 
             "SELECT o.organisationunitid, o.name, a.value, a.periodid, a.factor, a.numeratorvalue, a.denominatorvalue " +
-            "FROM aggregatedindicatorvalue AS a, organisationunit AS o " +
+            "FROM aggregatedindicatorvalue AS a " +
+            "JOIN organisationunit AS o ON (a.organisationunitid=o.organisationunitid) " +
             "WHERE a.indicatorid  = " + indicatorId + " " +
             "AND a.periodid = " + periodId + " " +
             "AND a.organisationunitid IN (" + getCommaDelimitedString( organisationUnitIds ) + ")";

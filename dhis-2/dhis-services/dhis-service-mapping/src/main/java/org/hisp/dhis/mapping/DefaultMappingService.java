@@ -242,32 +242,12 @@ public class DefaultMappingService
 
         if ( group == null )
         {
-            group = dataElementService.getAllDataElementGroups().iterator().next();
+            return new HashSet<AggregatedMapValue>();
         }
-
-        Period period = periodService.getPeriod( periodId );
-
-        OrganisationUnit organisationUnit = organisationUnitService.getOrganisationUnit( organisationUnitId );
-
-        Collection<AggregatedMapValue> values = new HashSet<AggregatedMapValue>();
-
-        if ( group != null )
-        {
-            for ( DataElement dataElement : group.getMembers() )
-            {
-                Double value = aggregatedDataValueService.getAggregatedValue( dataElement, period, organisationUnit );
-
-                value = value != null ? value : 0; // TODO improve
-
-                AggregatedMapValue mapValue = new AggregatedMapValue();
-                mapValue.setDataElementName( dataElement.getShortName() );
-                mapValue.setValue( value );
-
-                values.add( mapValue );
-            }
-        }
-
-        return values;
+        
+        Collection<Integer> dataElementIds = ConversionUtils.getIdentifiers( DataElement.class, group.getMembers() );
+            
+        return aggregatedDataValueService.getAggregatedDataMapValues( dataElementIds, periodId, organisationUnitId );        
     }
 
     // -------------------------------------------------------------------------
