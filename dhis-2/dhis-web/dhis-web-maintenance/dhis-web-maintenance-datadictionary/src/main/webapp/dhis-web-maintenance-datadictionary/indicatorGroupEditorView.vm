@@ -44,7 +44,7 @@
 	<table>	
 		<tr>
 			<th>$i18n.getString( "indicator_group" )</th>
-			<th></th>
+			<th>$i18n.getString( "selected_indicators" )</th>
 			<td rowspan="2"></td>
 			<th>$i18n.getString( "available_indicators" )</th>			
 		</tr>
@@ -96,7 +96,7 @@
 		<table>	
 			<tr>		
 				<th>$i18n.getString( "available_indicators" )</th>
-				<th></th>
+				<th>$i18n.getString( "selected_groups" )</th>
 			<td rowspan="2"></td>
 				<th>$i18n.getString( "available_groups" )</th>
 				
