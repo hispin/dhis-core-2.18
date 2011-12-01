@@ -73,7 +73,7 @@ function getDataElementsByGroup()
     loadAvailableDataElements();
 
 	var id = jQuery( '#view_1 #dataElementGroups' ).val();
-    var filter_1 = jQuery( '#view_1 #selecteDataElementsFilter' ).val();
+    var filter_1 = jQuery( '#view_1 #selectedDataElementsFilter' ).val();
     var list_1 = jQuery( "#view_1 #selectedDataElements" );
     list_1.empty();
 

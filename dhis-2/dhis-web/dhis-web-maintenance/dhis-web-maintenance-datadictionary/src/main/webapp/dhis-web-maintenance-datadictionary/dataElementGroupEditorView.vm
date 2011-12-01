@@ -45,7 +45,7 @@
 	<table >
 		<tr>
 			<th>$i18n.getString( "data_element_group" )</th>
-			<th></th>
+			<th>$i18n.getString( "selected_dataelements" )</th>
 			<td rowspan="2"></td>
 			<th>$i18n.getString( "available_dataelements" )</th>
 
@@ -53,7 +53,7 @@
 
 		<tr>
 			<td><input id="dataElementGroupsFilter" type="text" style="width:300px;" onkeyup="filterList(this.value, 'dataElementGroups');"/></td>
-			<td><input id="selecteDataElementsFilter" type="text" style="width:300px;" onkeyup="filterList(this.value, 'selectedDataElements');"/></td>
+			<td><input id="selectedDataElementsFilter" type="text" style="width:300px;" onkeyup="filterList(this.value, 'selectedDataElements');"/></td>
 			<td><input id="availableDataElementsFilter" type="text" style="width:300px;" onkeyup="loadAvailableDataElements()"/></td>
 		</tr>
 
@@ -100,7 +100,7 @@
 		<table>
 			<tr>
 				<th>$i18n.getString( "available_dataelements" )</th>		
-				<th></th>
+				<th>$i18n.getString( "selected_groups" )</th>
 				<td rowspan="2"></td>
 				<th>$i18n.getString( "available_groups" )</th>
 			</tr>
