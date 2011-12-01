@@ -12,6 +12,15 @@
     "numerator": "$!{indicator.numerator}",
     "numeratorDescription": "$!encoder.jsonEncode( ${indicator.numeratorDescription} )",
     "denominator": "$!{indicator.denominator}",
-    "denominatorDescription": "$!encoder.jsonEncode( ${indicator.denominatorDescription} )"
+    "denominatorDescription": "$!encoder.jsonEncode( ${indicator.denominatorDescription} )",
+	
+	#set( $size = ${indicator.dataSets.size()} )
+	"dataSets": [
+	#foreach( $ds in ${indicator.dataSets} )
+	  {
+		"name": "$!encoder.xmlEncode( ${ds.name} )"
+	  }#if( $velocityCount < $size ),#end
+	#end
+	]
   }
 }
