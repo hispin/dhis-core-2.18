@@ -45,13 +45,13 @@ public class AggregatedIndicatorMapValueRowMapper
     {
         final AggregatedMapValue value = new AggregatedMapValue();
 
-        value.setOrganisationUnitId( resultSet.getInt( 1 ) );
-        value.setOrganisationUnitName( resultSet.getString( 2 ) );
-        value.setValue( resultSet.getDouble( 3 ) );
-        value.setPeriodId( resultSet.getInt( 4 ) );
-        value.setFactor( resultSet.getDouble( 5 ) );
-        value.setNumeratorValue( resultSet.getDouble( 6 ) );
-        value.setDenominatorValue( resultSet.getDouble( 7 ) );        
+        value.setPeriodId( resultSet.getInt( "periodid" ) );
+        value.setOrganisationUnitId( resultSet.getInt( "organisationunitid" ) );
+        value.setOrganisationUnitName( resultSet.getString( "name" ) );
+        value.setValue( resultSet.getDouble( "value" ) );
+        value.setFactor( resultSet.getDouble( "factor" ) );
+        value.setNumeratorValue( resultSet.getDouble( "numeratorvalue" ) );
+        value.setDenominatorValue( resultSet.getDouble( "denominatorvalue" ) );        
 
         return value;
     }
