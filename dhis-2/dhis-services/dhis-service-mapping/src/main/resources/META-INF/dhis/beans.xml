@@ -83,8 +83,7 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
     <aop:aspect ref="statementInterceptor">
       <aop:around pointcut="execution( * org.hisp.dhis.mapping.MappingService.getDataElementMapValues(..) )" method="intercept"/>
       <aop:around pointcut="execution( * org.hisp.dhis.mapping.MappingService.getIndicatorMapValues(..) )" method="intercept"/>
-      <aop:around pointcut="execution( * org.hisp.dhis.mapping.MappingService.getDataElementMapValuesByLevel(..) )" method="intercept"/>
-      <aop:around pointcut="execution( * org.hisp.dhis.mapping.MappingService.getIndicatorMapValuesByLevel(..) )" method="intercept"/>
+      <aop:around pointcut="execution( * org.hisp.dhis.mapping.MappingService.getInfrastructuralDataElementMapValues(..) )" method="intercept"/>
     </aop:aspect>
       
   </aop:config>
