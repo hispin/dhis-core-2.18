@@ -28,11 +28,9 @@ package org.hisp.dhis.mapping;
  */
 
 import java.util.Collection;
-import java.util.Date;
 import java.util.Set;
 
 import org.hisp.dhis.aggregation.AggregatedMapValue;
-import org.hisp.dhis.period.Period;
 
 /**
  * @author Jan Henrik Overland
@@ -74,15 +72,13 @@ public interface MappingService
     // IndicatorMapValue
     // -------------------------------------------------------------------------
 
-    Collection<AggregatedMapValue> getIndicatorMapValues( Integer indicatorId, Period period, Date startDate,
-        Date endDate, Integer parentOrganisationUnitId, Integer level );
+    Collection<AggregatedMapValue> getIndicatorMapValues( int indicatorId, int periodId, int parentOrganisationUnitId, Integer level );
 
     // -------------------------------------------------------------------------
     // DataMapValue
     // -------------------------------------------------------------------------
 
-    Collection<AggregatedMapValue> getDataElementMapValues( Integer dataElementId, Period period, Date startDate,
-        Date endDate, Integer parentOrganisationUnitId, Integer level );
+    Collection<AggregatedMapValue> getDataElementMapValues( int dataElementId, int periodId, int parentOrganisationUnitId, Integer level );
 
     Collection<AggregatedMapValue> getInfrastructuralDataElementMapValues( Integer periodId, Integer organisationUnitId );
 

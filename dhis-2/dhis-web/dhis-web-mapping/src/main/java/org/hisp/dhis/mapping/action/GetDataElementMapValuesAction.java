@@ -31,9 +31,6 @@ import java.util.Collection;
 
 import org.hisp.dhis.aggregation.AggregatedMapValue;
 import org.hisp.dhis.mapping.MappingService;
-import org.hisp.dhis.period.Period;
-import org.hisp.dhis.period.PeriodService;
-import org.hisp.dhis.system.util.DateUtils;
 
 import com.opensymphony.xwork2.Action;
 
@@ -55,13 +52,6 @@ public class GetDataElementMapValuesAction
         this.mappingService = mappingService;
     }
 
-    private PeriodService periodService;
-
-    public void setPeriodService( PeriodService periodService )
-    {
-        this.periodService = periodService;
-    }
-
     // -------------------------------------------------------------------------
     // Input
     // -------------------------------------------------------------------------
@@ -78,20 +68,6 @@ public class GetDataElementMapValuesAction
     public void setPeriodId( Integer periodId )
     {
         this.periodId = periodId;
-    }
-
-    private String startDate;
-
-    public void setStartDate( String startDate )
-    {
-        this.startDate = startDate;
-    }
-
-    private String endDate;
-
-    public void setEndDate( String endDate )
-    {
-        this.endDate = endDate;
     }
 
     private Integer parentId;
@@ -125,12 +101,9 @@ public class GetDataElementMapValuesAction
 
     public String execute()
         throws Exception
-    {
-        Period period = periodService.getPeriod( periodId );
-
-        object = mappingService.getDataElementMapValues( id, period, DateUtils.getMediumDate( startDate ), DateUtils
-            .getMediumDate( endDate ), parentId, level );
-
+    {        
+        object = mappingService.getDataElementMapValues( id, periodId, parentId, level );
+        
         return SUCCESS;
     }
 }

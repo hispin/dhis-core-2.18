@@ -84,13 +84,11 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     <bean id="org.hisp.dhis.mapping.action.GetIndicatorMapValuesAction"
         class="org.hisp.dhis.mapping.action.GetIndicatorMapValuesAction" scope="prototype">
         <property name="mappingService" ref="org.hisp.dhis.mapping.MappingService" />
-        <property name="periodService" ref="org.hisp.dhis.period.PeriodService" />
     </bean>
 
     <bean id="org.hisp.dhis.mapping.action.GetDataElementMapValuesAction"
         class="org.hisp.dhis.mapping.action.GetDataElementMapValuesAction" scope="prototype">
         <property name="mappingService" ref="org.hisp.dhis.mapping.MappingService" />
-        <property name="periodService" ref="org.hisp.dhis.period.PeriodService" />
     </bean>
 
     <bean id="org.hisp.dhis.mapping.action.GetInfrastructuralDataElementMapValuesAction"
