@@ -14,8 +14,6 @@
     "mapDateType": "$!encoder.jsonEncode( ${mapView.mapDateTypeNullSafe} )",
     "periodTypeId": "$!encoder.jsonEncode( ${mapView.periodType.name} )",
     "periodId": "$!{mapView.period.id}",
-    "startDate": "$!encoder.jsonEncode( ${mapView.startDate} )",
-    "endDate": "$!encoder.jsonEncode( ${mapView.endDate} )",
     "parentOrganisationUnitId": "$!{mapView.parentOrganisationUnit.id}",
     "parentOrganisationUnitName": "$!encoder.jsonEncode( ${mapView.parentOrganisationUnit.name} )",
     "parentOrganisationUnitLevel": "$!{mapView.parentOrganisationUnit.level}",

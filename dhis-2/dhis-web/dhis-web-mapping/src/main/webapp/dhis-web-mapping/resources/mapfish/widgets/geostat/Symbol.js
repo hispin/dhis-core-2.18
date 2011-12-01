@@ -742,7 +742,6 @@ mapfish.widgets.geostat.Symbol = Ext.extend(Ext.Panel, {
 		getAllValues: function() {
 			return {
 				featureType: G.conf.map_feature_type_point,
-                mapDateType: G.system.mapDateType.value,
 				parentOrganisationUnitId: this.organisationUnitSelection.parent.id,
                 parentOrganisationUnitLevel: this.organisationUnitSelection.parent.level,
                 parentOrganisationUnitName: this.organisationUnitSelection.parent.name,

@@ -35,10 +35,6 @@
 
     <many-to-one name="period" class="org.hisp.dhis.period.Period" column="periodid" foreign-key="fk_mapview_periodid" />
 
-    <property name="startDate" />
-
-    <property name="endDate" />
-
     <many-to-one name="parentOrganisationUnit" class="org.hisp.dhis.organisationunit.OrganisationUnit"
       column="parentorganisationunitid" foreign-key="fk_mapview_parentorganisationunitid" />
 

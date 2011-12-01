@@ -1,1 +1,1 @@
-#set( $size = $object.size() ){"mapValues":[#foreach( $value in $object ){"orgUnitId":"$!{value.organisationUnitId}","orgUnitName":"$!{value.organisationUnitName}","value":"$!{value.value}"}#if( $velocityCount < $size ),#end#end]}
+#set( $size = $object.size() ){"mapValues":[#foreach( $value in $object ){"oi":"$!{value.organisationUnitId}","v":"$!{value.value}"}#if( $velocityCount < $size ),#end#end]}

@@ -72,13 +72,15 @@ public interface MappingService
     // IndicatorMapValue
     // -------------------------------------------------------------------------
 
-    Collection<AggregatedMapValue> getIndicatorMapValues( int indicatorId, int periodId, int parentOrganisationUnitId, Integer level );
+    Collection<AggregatedMapValue> getIndicatorMapValues( int indicatorId, int periodId, int parentOrganisationUnitId,
+        Integer level );
 
     // -------------------------------------------------------------------------
     // DataMapValue
     // -------------------------------------------------------------------------
 
-    Collection<AggregatedMapValue> getDataElementMapValues( int dataElementId, int periodId, int parentOrganisationUnitId, Integer level );
+    Collection<AggregatedMapValue> getDataElementMapValues( int dataElementId, int periodId,
+        int parentOrganisationUnitId, Integer level );
 
     Collection<AggregatedMapValue> getInfrastructuralDataElementMapValues( Integer periodId, Integer organisationUnitId );
 
@@ -129,10 +131,10 @@ public interface MappingService
     int addMapView( MapView mapView );
 
     void addMapView( String name, boolean system, String mapValueType, Integer indicatorGroupId, Integer indicatorId,
-        Integer dataElementGroupId, Integer dataElementId, String periodTypeName, Integer periodId, String startDate,
-        String endDate, Integer parentOrganisationUnitId, Integer organisationUnitLevel, String mapLegendType,
-        Integer method, Integer classes, String bounds, String colorLow, String colorHigh, Integer mapLegendSetId,
-        Integer radiusLow, Integer radiusHigh, String longitude, String latitude, int zoom );
+        Integer dataElementGroupId, Integer dataElementId, String periodTypeName, Integer periodId,
+        Integer parentOrganisationUnitId, Integer organisationUnitLevel, String mapLegendType, Integer method,
+        Integer classes, String bounds, String colorLow, String colorHigh, Integer mapLegendSetId, Integer radiusLow,
+        Integer radiusHigh, String longitude, String latitude, int zoom );
 
     void updateMapView( MapView mapView );
 
