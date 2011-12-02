@@ -100,12 +100,12 @@ public class HibernateDataSetStore
         return (DataSet) session.get( DataSet.class, id );
     }
 
-    public DataSet getDataSet( String uuid )
+    public DataSet getDataSet( String uid )
     {
         Session session = sessionFactory.getCurrentSession();
 
         Criteria criteria = session.createCriteria( DataSet.class );
-        criteria.add( Restrictions.eq( "uuid", uuid ) );
+        criteria.add( Restrictions.eq( "uid", uid ) );
 
         return (DataSet) criteria.uniqueResult();
     }

@@ -39,7 +39,7 @@ import java.util.*;
  */
 @XmlRootElement( name = "identifiableObject" )
 @XmlAccessorType( value = XmlAccessType.NONE )
-@XmlType( propOrder = {"id", "uid", "name", "code", "lastUpdated"} )
+@XmlType( propOrder = {"uid", "name", "code", "lastUpdated"} )
 public class BaseIdentifiableObject
     implements IdentifiableObject
 {
@@ -89,8 +89,6 @@ public class BaseIdentifiableObject
         this.name = name;
     }
 
-    @XmlAttribute
-    @JsonProperty
     public int getId()
     {
         return id;
@@ -101,8 +99,9 @@ public class BaseIdentifiableObject
         this.id = id;
     }
 
-    @XmlAttribute
-    @JsonProperty
+    @XmlID
+    @XmlAttribute(name = "id")
+    @JsonProperty(value = "id")
     public String getUid()
     {
         return uid;

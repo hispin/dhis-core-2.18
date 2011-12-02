@@ -125,6 +125,14 @@ public interface OrganisationUnitStore
     OrganisationUnitLevel getOrganisationUnitLevel( int id );
     
     /**
+     * Gets an OrganisationUnitLevel.
+     *
+     * @param uid the identifier of the OrganisationUnitLevel.
+     * @return the OrganisationUnitLevel with the given identifier.
+     */
+    OrganisationUnitLevel getOrganisationUnitLevel( String uid );
+
+    /**
      * Deletes an OrganisationUnitLevel.
      * 
      * @param level the OrganisationUnitLevel to delete.

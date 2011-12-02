@@ -23,27 +23,22 @@ package org.hisp.dhis.dataset;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import org.codehaus.jackson.annotate.JsonProperty;
+import org.codehaus.jackson.map.annotate.JsonSerialize;
+import org.hisp.dhis.common.adapter.BaseIdentifiableObjectXmlAdapter;
+import org.hisp.dhis.common.adapter.JsonIdentifiableObjectListSerializer;
+import org.hisp.dhis.common.adapter.JsonIdentifiableObjectSetSerializer;
+import org.hisp.dhis.dataelement.DataElement;
+import org.hisp.dhis.dataelement.DataElementCategoryCombo;
+import org.hisp.dhis.dataelement.DataElementOperand;
+
+import javax.xml.bind.annotation.*;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlAttribute;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlElementWrapper;
-import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
-
-import org.codehaus.jackson.annotate.JsonProperty;
-import org.codehaus.jackson.map.annotate.JsonSerialize;
-import org.hisp.dhis.common.adapter.BaseIdentifiableObjectXmlAdapter;
-import org.hisp.dhis.common.adapter.JsonIdentifiableObjectListSerializer;
-import org.hisp.dhis.dataelement.DataElement;
-import org.hisp.dhis.dataelement.DataElementCategoryCombo;
-import org.hisp.dhis.dataelement.DataElementOperand;
 
 @XmlRootElement( name = "section" )
 @XmlAccessorType( value = XmlAccessType.NONE )
@@ -194,6 +189,7 @@ public class Section
 
     @XmlElement
     @XmlJavaTypeAdapter( BaseIdentifiableObjectXmlAdapter.class )
+    @JsonSerialize( using = JsonIdentifiableObjectSetSerializer.class )
     public DataSet getDataSet()
     {
         return dataSet;
@@ -235,8 +231,8 @@ public class Section
         this.sortOrder = sortOrder;
     }
 
-    @XmlElementWrapper(name = "greyedFields")
-    @XmlElement(name = "greyedField")
+    @XmlElementWrapper( name = "greyedFields" )
+    @XmlElement( name = "greyedField" )
     @JsonProperty
     public Set<DataElementOperand> getGreyedFields()
     {

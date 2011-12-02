@@ -27,18 +27,18 @@ package org.hisp.dhis.indicator;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import static org.hisp.dhis.i18n.I18nUtils.i18n;
+import org.hisp.dhis.common.GenericIdentifiableObjectStore;
+import org.hisp.dhis.i18n.I18nService;
+import org.hisp.dhis.system.util.Filter;
+import org.hisp.dhis.system.util.FilterUtils;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 import java.util.Iterator;
 
-import org.hisp.dhis.common.GenericIdentifiableObjectStore;
-import org.hisp.dhis.i18n.I18nService;
-import org.hisp.dhis.system.util.Filter;
-import org.hisp.dhis.system.util.FilterUtils;
-import org.springframework.transaction.annotation.Transactional;
+import static org.hisp.dhis.i18n.I18nUtils.i18n;
 
 /**
  * @author Lars Helge Overland
@@ -123,9 +123,9 @@ public class DefaultIndicatorService
         return i18n( i18nService, indicatorStore.getIndicator( id ) );
     }
 
-    public Indicator getIndicator( String uuid )
+    public Indicator getIndicator( String uid )
     {
-        return i18n( i18nService, indicatorStore.getIndicator( uuid ) );
+        return i18n( i18nService, indicatorStore.getIndicator( uid ) );
     }
 
     public Collection<Indicator> getAllIndicators()
@@ -236,6 +236,11 @@ public class DefaultIndicatorService
     public IndicatorType getIndicatorType( int id )
     {
         return i18n( i18nService, indicatorTypeStore.get( id ) );
+    }
+
+    public IndicatorType getIndicatorType( String uid )
+    {
+        return i18n( i18nService, indicatorTypeStore.getByUid( uid ) );
     }
 
     public Collection<IndicatorType> getIndicatorTypes( final Collection<Integer> identifiers )

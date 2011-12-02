@@ -70,6 +70,8 @@ public interface ChartService
 
     Chart getChart( int id );
 
+    Chart getChart( String uid );
+
     void deleteChart( Chart chart );
 
     Collection<Chart> getAllCharts();

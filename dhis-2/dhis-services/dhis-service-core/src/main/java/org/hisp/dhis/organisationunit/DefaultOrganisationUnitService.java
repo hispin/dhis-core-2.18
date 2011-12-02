@@ -596,6 +596,11 @@ public class DefaultOrganisationUnitService
         return organisationUnitStore.getOrganisationUnitLevel( id );
     }
 
+    public OrganisationUnitLevel getOrganisationUnitLevel( String uid )
+    {
+        return organisationUnitStore.getOrganisationUnitLevel( uid );
+    }
+
     public Collection<OrganisationUnitLevel> getOrganisationUnitLevels( final Collection<Integer> identifiers )
     {
         Collection<OrganisationUnitLevel> objects = getOrganisationUnitLevels();

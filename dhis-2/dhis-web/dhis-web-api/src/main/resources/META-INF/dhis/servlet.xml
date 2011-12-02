@@ -18,6 +18,8 @@
         <entry key="json" value="application/json" />
         <entry key="jsonp" value="application/javascript" />
         <entry key="xml" value="application/xml" />
+        <entry key="pdf" value="application/pdf" />
+        <entry key="html" value="text/html" />
       </map>
     </property>
 
@@ -30,10 +32,27 @@
         </bean>
 
         <bean class="org.hisp.dhis.api.view.Jaxb2View" />
+
       </list>
     </property>
 
-    <property name="defaultContentType" value="application/xml" />
+    <property name="viewResolvers">
+      <list>
+        <bean name="xsltHtmlViewResolver" class="org.springframework.web.servlet.view.UrlBasedViewResolver">
+          <property name="prefix" value="/templates/xslt/" />
+          <property name="suffix" value=".xsl" />
+          <property name="viewClass" value="org.hisp.dhis.api.view.XsltHtmlView" />
+        </bean>
+
+        <bean name="xslFoPdfViewResolver" class="org.springframework.web.servlet.view.UrlBasedViewResolver">
+          <property name="prefix" value="/templates/xslfo/" />
+          <property name="suffix" value=".xsl" />
+          <property name="viewClass" value="org.hisp.dhis.api.view.XslFoPdfView" />
+        </bean>
+      </list>
+    </property>
+
+    <property name="defaultContentType" value="text/html" />
     <property name="favorParameter" value="true" />
   </bean>
 

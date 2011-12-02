@@ -27,16 +27,21 @@ package org.hisp.dhis.api.controller;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import org.hisp.dhis.indicator.*;
+import org.hisp.dhis.indicator.IndicatorGroup;
+import org.hisp.dhis.indicator.IndicatorGroups;
+import org.hisp.dhis.indicator.IndicatorService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 
+/**
+ * @author Morten Olav Hansen <mortenoh@gmail.com>
+ */
 @Controller
 @RequestMapping( value = "/indicatorGroups" )
 public class IndicatorGroupController
@@ -45,19 +50,23 @@ public class IndicatorGroupController
     private IndicatorService indicatorService;
 
     @RequestMapping( method = RequestMethod.GET )
-    public IndicatorGroups getIndicatorGroups()
+    public String getIndicatorGroups( Model model )
     {
         IndicatorGroups indicatorGroups = new IndicatorGroups();
         indicatorGroups.setIndicatorGroups( new ArrayList<IndicatorGroup>( indicatorService.getAllIndicatorGroups() ) );
 
-        return indicatorGroups;
+        model.addAttribute( "model", indicatorGroups );
+
+        return "indicatorGroups";
     }
 
     @RequestMapping( value = "/{uid}", method = RequestMethod.GET )
-    public IndicatorGroup getIndicatorGroup( @PathVariable( "uid" ) Integer uid, HttpServletRequest request )
+    public String getIndicatorGroup( @PathVariable( "uid" ) String uid, Model model )
     {
         IndicatorGroup indicatorGroup = indicatorService.getIndicatorGroup( uid );
 
-        return indicatorGroup;
+        model.addAttribute( "model", indicatorGroup );
+
+        return "indicatorGroup";
     }
 }

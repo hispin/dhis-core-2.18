@@ -27,11 +27,15 @@ package org.hisp.dhis.organisationunit;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import org.codehaus.jackson.map.annotate.JsonSerialize;
 import org.hisp.dhis.common.BaseIdentifiableObject;
+import org.hisp.dhis.common.adapter.BaseIdentifiableObjectXmlAdapter;
+import org.hisp.dhis.common.adapter.BaseNameableObjectXmlAdapter;
+import org.hisp.dhis.common.adapter.JsonIdentifiableObjectSerializer;
+import org.hisp.dhis.common.adapter.JsonNameableObjectSetSerializer;
 
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.*;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -139,6 +143,10 @@ public class OrganisationUnitGroup extends BaseIdentifiableObject
     // Getters and setters
     // -------------------------------------------------------------------------
 
+    @XmlElementWrapper( name = "members" )
+    @XmlElement( name = "member" )
+    @XmlJavaTypeAdapter( BaseNameableObjectXmlAdapter.class )
+    @JsonSerialize( using = JsonNameableObjectSetSerializer.class )
     public Set<OrganisationUnit> getMembers()
     {
         return members;
@@ -149,6 +157,9 @@ public class OrganisationUnitGroup extends BaseIdentifiableObject
         this.members = members;
     }
 
+    @XmlElement
+    @XmlJavaTypeAdapter( BaseIdentifiableObjectXmlAdapter.class )
+    @JsonSerialize( using = JsonIdentifiableObjectSerializer.class )
     public OrganisationUnitGroupSet getGroupSet()
     {
         return groupSet;
