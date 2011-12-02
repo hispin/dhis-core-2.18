@@ -78,6 +78,12 @@
             </result>
         </action>
 
+		<action name="getFacilityInfo"
+			class="org.hisp.dhis.mapping.action.GetOrganisationUnitInfoFacilityAction">
+			<result name="success" type="velocity-json">
+				/dhis-web-mapping/jsonminFacilityInfo.vm</result>
+		</action>
+
         <!-- OrganisationUnitLevel -->
 
         <action name="getOrganisationUnitLevels"
