@@ -33,6 +33,8 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
 import org.hisp.dhis.dataelement.DataElementCategoryService;
@@ -56,6 +58,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 public class DataValueSetService
 {
+    private static final Log log = LogFactory.getLog( DataValueSetService.class );
 
     private OrganisationUnitService organisationUnitService;
 
@@ -76,7 +79,8 @@ public class DataValueSetService
      * <p>
      * Handles the content in the following way
      * <ul>
-     * <li>if data set is not specified, will resolve it through data elements if not ambiguous.
+     * <li>if data set is not specified, will resolve it through data elements
+     * if not ambiguous.
      * <li>optionCombo defaults to 'default' if not specified
      * <li>storedBy defaults to currently logged in user's name
      * <li>if value is empty not present -> delete value
@@ -91,7 +95,8 @@ public class DataValueSetService
      * <li>orgUnit exists
      * <li>orgunit reports dataSet
      * <li>period is a valid period
-     * <li>the dataValueSet is not registered as complete or that if it is a complete date is present
+     * <li>the dataValueSet is not registered as complete or that if it is a
+     * complete date is present
      * <li>if complete date is empty string - delete completion
      * <li>if complete date present checks validity
      * </ul>
@@ -103,12 +108,15 @@ public class DataValueSetService
      * What isn't checked yet:
      * <ul>
      * <li>The value is valid!
-     * <li>There isn't duplicated value entries (will throw Constraint exception)
-     * <li>If multiple data sets are possible, evaluate if they are incompatible (complete, locking and possibly period)
+     * <li>There isn't duplicated value entries (will throw Constraint
+     * exception)
+     * <li>If multiple data sets are possible, evaluate if they are incompatible
+     * (complete, locking and possibly period)
      * </ul>
      * Concerns:
      * <ul>
-     * <li>deletion through sending "empty string" value dependent on semantics of add/update in data value store
+     * <li>deletion through sending "empty string" value dependent on semantics
+     * of add/update in data value store
      * <li>completed semantics: can't uncomplete but can complete and
      * "recomplete"
      * <li>what is 'comment' good for really?
@@ -124,13 +132,14 @@ public class DataValueSetService
         Date timestamp = new Date();
 
         IdentificationStrategy idStrategy = dataValueSet.getIdScheme();
-        if (idStrategy != DataValueSet.DEFAULT_STRATEGY) {
+        if ( idStrategy != DataValueSet.DEFAULT_STRATEGY )
+        {
             throw new IllegalArgumentException( "Onlu UUID id strategy supported currently." );
         }
 
         DataSet dataSet = getDataSet( dataValueSet );
 
-        OrganisationUnit unit = getOrgUnit( dataValueSet.getOrganisationUnitIdentifier());
+        OrganisationUnit unit = getOrgUnit( dataValueSet.getOrganisationUnitIdentifier() );
 
         if ( !dataSet.getSources().contains( unit ) )
         {
@@ -147,6 +156,20 @@ public class DataValueSetService
             saveDataValue( timestamp, dataSet, unit, period, dxfValue );
         }
 
+        log( dataValueSet, unit, dataSet );
+    }
+
+    private void log( DataValueSet dataValueSet, OrganisationUnit unit, DataSet dataSet )
+    {
+        String message = "Saved data value set for " + dataSet.getName() + ", " + unit.getName() + ", "
+            + dataValueSet.getPeriodIsoDate() + " - Data values received: ";
+
+        for ( org.hisp.dhis.importexport.dxf2.model.DataValue value : dataValueSet.getDataValues() )
+        {
+            message += value.getDataElementIdentifier() + " = " + value.getValue() + ", ";
+        }
+
+        log.info( message.substring( 0, message.length() - 3 ) );
     }
 
     private DataSet getDataSet( DataValueSet dataValueSet )
@@ -248,7 +271,6 @@ public class DataValueSetService
 
         String storedBy = currentUserService.getCurrentUsername();
 
-
         if ( dv == null )
         {
             dv = new DataValue( dataElement, period, unit, value, storedBy, timestamp, null, combo );
@@ -282,7 +304,7 @@ public class DataValueSetService
 
         CompleteDataSetRegistration complete = null;
 
-        if ( completeDateString != null && !completeDateString.trim().isEmpty())
+        if ( completeDateString != null && !completeDateString.trim().isEmpty() )
         {
             complete = getComplete( dataSet, unit, period, completeDateString, complete );
         }
@@ -299,7 +321,8 @@ public class DataValueSetService
         try
         {
             Date completeDate = format.parse( completeDateString );
-            complete = new CompleteDataSetRegistration( dataSet, period, unit, completeDate, currentUserService.getCurrentUsername() );
+            complete = new CompleteDataSetRegistration( dataSet, period, unit, completeDate,
+                currentUserService.getCurrentUsername() );
         }
         catch ( ParseException e )
         {
@@ -324,7 +347,7 @@ public class DataValueSetService
         return period;
     }
 
-    private OrganisationUnit getOrgUnit( String id)
+    private OrganisationUnit getOrgUnit( String id )
     {
         OrganisationUnit unit = organisationUnitService.getOrganisationUnit( id );
 

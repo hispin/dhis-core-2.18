@@ -83,7 +83,7 @@ public interface DataSetService
      * @return the DataSet with the given UID, or null if no match.
      */
     DataSet getDataSet( String uid );
-    
+
     /**
      * Returns a DataSets with the given name.
      * 
@@ -196,22 +196,24 @@ public interface DataSetService
      * @return a collection of data elements.
      */
     Collection<DataElement> getDataElements( DataSet dataSet );
-    
+
     /**
-     * Returns all DataSets that can be collected through mobile (one organisation unit).
+     * Returns all DataSets that can be collected through mobile (one
+     * organisation unit).
      */
     Collection<DataSet> getDataSetsForMobile( OrganisationUnit source );
 
     /**
-     * Returns all DataSets that can be collected through mobile (all organisation unit).
+     * Returns all DataSets that can be collected through mobile (all
+     * organisation unit).
      */
     Collection<DataSet> getDataSetsForMobile();
-    
+
     int getDataSetCountByName( String name );
-    
+
     Collection<DataSet> getDataSetsBetweenByName( String name, int first, int max );
-    
+
     int getDataSetCount();
-    
-    Collection<DataSet> getDataSetsBetween(int first, int max );
+
+    Collection<DataSet> getDataSetsBetween( int first, int max );
 }

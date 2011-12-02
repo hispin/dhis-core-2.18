@@ -37,7 +37,7 @@ public class DataSetController
     }
 
     @RequestMapping( value = "/{uid}", method = RequestMethod.GET )
-    public DataSet getDataSet( @PathVariable( "uid" ) Integer uid, HttpServletRequest request )
+    public DataSet getDataSet( @PathVariable( "uid" ) String uid, HttpServletRequest request )
     {
         DataSet dataSet = dataSetService.getDataSet( uid );
 

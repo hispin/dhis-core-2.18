@@ -128,7 +128,7 @@ public class DefaultDataSetService
     @Override
     public DataSet getDataSet( String uid )
     {
-        return i18n( i18nService, dataSetStore.getDataSet( uid ) );
+        return i18n( i18nService, dataSetStore.getByUid( uid ) );
     }
 
     public DataSet getDataSetByName( String name )
