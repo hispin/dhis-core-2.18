@@ -764,7 +764,7 @@ function valueBlur( e )
 
 function keyPress( event, field )
 {
-    var key = event.keyCoe || event.charCode || event.which;
+    var key = event.keyCode || event.charCode || event.which;
 
     var focusField = ( key == 13 || key == 40 ) ? getNextEntryField( field )
             : ( key == 38 ) ? getPreviousEntryField( field ) : false;
