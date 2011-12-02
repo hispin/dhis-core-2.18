@@ -27,20 +27,27 @@ package org.hisp.dhis.user;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import org.apache.commons.collections.CollectionUtils;
+import org.codehaus.jackson.annotate.JsonProperty;
+import org.hisp.dhis.attribute.AttributeValue;
+import org.hisp.dhis.common.IdentifiableObjectUtils;
+import org.hisp.dhis.organisationunit.OrganisationUnit;
+
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
 import java.io.Serializable;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
-import org.apache.commons.collections.CollectionUtils;
-import org.hisp.dhis.attribute.AttributeValue;
-import org.hisp.dhis.common.IdentifiableObjectUtils;
-import org.hisp.dhis.organisationunit.OrganisationUnit;
-
 /**
  * @author Nguyen Hong Duc
  * @version $Id: User.java 5554 2008-08-20 09:18:38Z abyot $
  */
+@XmlRootElement( name = "user" )
+@XmlAccessorType( value = XmlAccessType.NONE )
 public class User
     implements Serializable
 {
@@ -56,11 +63,11 @@ public class User
      */
     private String surname;
 
-    /**
-     * Required.
-     */
     private String firstName;
 
+    /**
+     * Optional.
+     */
     private String email;
 
     private String phoneNumber;
@@ -69,13 +76,13 @@ public class User
 
     /**
      * All OrgUnits where the user could belong
-     * 
+     * <p/>
      * TODO This should have been put in UserCredentials
      */
     private Set<OrganisationUnit> organisationUnits = new HashSet<OrganisationUnit>();
 
     /**
-     * Set of the dynamic attributes values that belong to this dataElement.
+     * Set of the dynamic attributes values that belong to this User.
      */
     private Set<AttributeValue> attributeValues = new HashSet<AttributeValue>();
 
@@ -169,7 +176,7 @@ public class User
      * Null is returned if the user has no organisation units. Which
      * organisation unit to return is undefined if the user has multiple
      * organisation units.
-     * 
+     *
      * @return an organisation unit associated with the user.
      */
     public OrganisationUnit getOrganisationUnit()
@@ -206,6 +213,8 @@ public class User
         this.id = id;
     }
 
+    @XmlElement
+    @JsonProperty
     public String getFirstName()
     {
         return firstName;
@@ -216,6 +225,8 @@ public class User
         this.firstName = firstName;
     }
 
+    @XmlElement
+    @JsonProperty
     public String getSurname()
     {
         return surname;
@@ -226,6 +237,8 @@ public class User
         this.surname = surname;
     }
 
+    @XmlElement
+    @JsonProperty
     public String getEmail()
     {
         return email;
@@ -236,6 +249,8 @@ public class User
         this.email = email;
     }
 
+    @XmlElement
+    @JsonProperty
     public String getPhoneNumber()
     {
         return phoneNumber;

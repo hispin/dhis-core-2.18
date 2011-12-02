@@ -20,6 +20,7 @@ public class OrganisationUnits
 
     public OrganisationUnits()
     {
+
     }
 
     @XmlElement( name = "organisationUnit" )

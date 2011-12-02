@@ -371,8 +371,9 @@ public class DataSet extends BaseNameableObject
         this.sortOrder = sortOrder;
     }
 
-/*  @XmlElementWrapper( name = "sections" )
-    @XmlElement( name = "section" ) */
+    @XmlElementWrapper( name = "sections" )
+    @XmlElement( name = "section" )
+    @JsonProperty
     public Set<Section> getSections()
     {
         return sections;

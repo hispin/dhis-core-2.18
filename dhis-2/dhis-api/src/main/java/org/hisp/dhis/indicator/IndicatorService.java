@@ -91,6 +91,8 @@ public interface IndicatorService
 
     IndicatorType getIndicatorType( int id );
 
+    IndicatorType getIndicatorType( String uid );
+
     Collection<IndicatorType> getIndicatorTypes( Collection<Integer> identifiers );
 
     Collection<IndicatorType> getAllIndicatorTypes();

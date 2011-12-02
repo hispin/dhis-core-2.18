@@ -75,12 +75,12 @@ public class HibernateIndicatorStore
         return (Indicator) session.get( Indicator.class, id );
     }
 
-    public Indicator getIndicator( String uuid )
+    public Indicator getIndicator( String uid )
     {
         Session session = sessionFactory.getCurrentSession();
 
         Criteria criteria = session.createCriteria( Indicator.class );
-        criteria.add( Restrictions.eq( "uuid", uuid ) );
+        criteria.add( Restrictions.eq( "uid", uid ) );
 
         return (Indicator) criteria.uniqueResult();
     }

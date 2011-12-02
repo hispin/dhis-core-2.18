@@ -254,6 +254,11 @@ public class HibernateOrganisationUnitStore
         return orgLevelStore.get(  id );
     }
 
+    public OrganisationUnitLevel getOrganisationUnitLevel( String uid )
+    {
+        return orgLevelStore.getByUid( uid );
+    }
+
     public void deleteOrganisationUnitLevel( OrganisationUnitLevel level )
     {
         orgLevelStore.delete( level );

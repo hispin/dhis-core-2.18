@@ -330,8 +330,6 @@ public class DataElementOperand
     // Getters & setters
     // -------------------------------------------------------------------------
 
-    @XmlAttribute
-    @JsonProperty
     public int getId()
     {
         return id;
@@ -450,8 +448,6 @@ public class DataElementOperand
         this.frequencyOrder = frequencyOrder;
     }
 
-    @XmlElement
-    @JsonProperty
     public String getOperandType()
     {
         return operandType;

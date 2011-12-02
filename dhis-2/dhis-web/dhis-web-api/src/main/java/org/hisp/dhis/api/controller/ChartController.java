@@ -32,12 +32,14 @@ import org.hisp.dhis.chart.ChartService;
 import org.hisp.dhis.chart.Charts;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
@@ -50,19 +52,23 @@ public class ChartController
     private ChartService chartService;
 
     @RequestMapping( method = RequestMethod.GET )
-    public Charts getCharts()
+    public String getCharts( Model model )
     {
         Charts charts = new Charts();
         charts.setCharts( new ArrayList<Chart>( chartService.getAllCharts() ) );
 
-        return charts;
+        model.addAttribute( "model", charts );
+
+        return "charts";
     }
 
     @RequestMapping( value = "/{uid}", method = RequestMethod.GET )
-    public Chart getChart( @PathVariable( "uid" ) Integer uid, HttpServletRequest request )
+    public String getChart( @PathVariable( "uid" ) String uid, Model model )
     {
         Chart chart = chartService.getChart( uid );
 
-        return chart;
+        model.addAttribute( "model", chart );
+
+        return "chart";
     }
 }

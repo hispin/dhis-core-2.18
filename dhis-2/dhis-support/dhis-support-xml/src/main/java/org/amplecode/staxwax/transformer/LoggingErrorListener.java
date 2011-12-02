@@ -46,7 +46,7 @@ public class LoggingErrorListener
     public void warning( TransformerException exception )
         throws TransformerException
     {
-        log.warn( exception.getMessageAndLocation() );
+        log.warn( "xslt: " + exception.getMessage() );
     }
 
     @Override

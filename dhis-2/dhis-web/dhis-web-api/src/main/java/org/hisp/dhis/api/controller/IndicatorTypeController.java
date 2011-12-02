@@ -32,13 +32,16 @@ import org.hisp.dhis.indicator.IndicatorType;
 import org.hisp.dhis.indicator.IndicatorTypes;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 
+/**
+ * @author Morten Olav Hansen <mortenoh@gmail.com>
+ */
 @Controller
 @RequestMapping( value = "/indicatorTypes" )
 public class IndicatorTypeController
@@ -47,19 +50,23 @@ public class IndicatorTypeController
     private IndicatorService indicatorService;
 
     @RequestMapping( method = RequestMethod.GET )
-    public IndicatorTypes getIndicatorTypes()
+    public String getIndicatorTypes( Model model )
     {
         IndicatorTypes indicatorTypes = new IndicatorTypes();
         indicatorTypes.setIndicatorTypes( new ArrayList<IndicatorType>( indicatorService.getAllIndicatorTypes() ) );
 
-        return indicatorTypes;
+        model.addAttribute( "model", indicatorTypes );
+
+        return "indicatorTypes";
     }
 
     @RequestMapping( value = "/{uid}", method = RequestMethod.GET )
-    public IndicatorType getIndicator( @PathVariable( "uid" ) Integer uid, HttpServletRequest request )
+    public String getIndicator( @PathVariable( "uid" ) String uid, Model model )
     {
         IndicatorType indicatorType = indicatorService.getIndicatorType( uid );
 
-        return indicatorType;
+        model.addAttribute( "model", indicatorType );
+
+        return "indicatorType";
     }
 }

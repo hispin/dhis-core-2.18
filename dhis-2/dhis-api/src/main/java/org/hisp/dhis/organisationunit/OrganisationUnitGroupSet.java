@@ -27,12 +27,15 @@ package org.hisp.dhis.organisationunit;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import org.codehaus.jackson.annotate.JsonProperty;
+import org.codehaus.jackson.map.annotate.JsonSerialize;
 import org.hisp.dhis.common.BaseIdentifiableObject;
+import org.hisp.dhis.common.adapter.BaseIdentifiableObjectXmlAdapter;
+import org.hisp.dhis.common.adapter.JsonIdentifiableObjectSetSerializer;
 import org.hisp.dhis.organisationunit.comparator.OrganisationUnitGroupNameComparator;
 
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.*;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import java.util.*;
 
 /**
@@ -169,6 +172,8 @@ public class OrganisationUnitGroupSet extends BaseIdentifiableObject
     // Getters and setters
     // -------------------------------------------------------------------------
 
+    @XmlElement
+    @JsonProperty
     public String getDescription()
     {
         return description;
@@ -179,6 +184,8 @@ public class OrganisationUnitGroupSet extends BaseIdentifiableObject
         this.description = description;
     }
 
+    @XmlElement
+    @JsonProperty
     public boolean isCompulsory()
     {
         return compulsory;
@@ -189,6 +196,10 @@ public class OrganisationUnitGroupSet extends BaseIdentifiableObject
         this.compulsory = compulsory;
     }
 
+    @XmlElementWrapper( name = "organisationUnitGroups" )
+    @XmlElement( name = "organisationUnitGroup" )
+    @XmlJavaTypeAdapter( BaseIdentifiableObjectXmlAdapter.class )
+    @JsonSerialize( using = JsonIdentifiableObjectSetSerializer.class )
     public Set<OrganisationUnitGroup> getOrganisationUnitGroups()
     {
         return organisationUnitGroups;
