@@ -29,6 +29,7 @@ package org.hisp.dhis.dataset;
 
 import java.util.Collection;
 
+import org.hisp.dhis.common.GenericNameableObjectStore;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.period.PeriodType;
 
@@ -37,6 +38,7 @@ import org.hisp.dhis.period.PeriodType;
  * @version $Id: DataSetStore.java 6255 2008-11-10 16:01:24Z larshelg $
  */
 public interface DataSetStore
+    extends GenericNameableObjectStore<DataSet>
 {
     String ID = DataSetStore.class.getName();
 
@@ -82,7 +84,6 @@ public interface DataSetStore
      */
     DataSet getDataSet( String uid );
 
-    
     /**
      * Returns the DataSet with the given name.
      * 
@@ -98,7 +99,7 @@ public interface DataSetStore
      * @return The DataSet with the given short name.
      */
     DataSet getDataSetByShortName( String shortName );
-    
+
     /**
      * Returns the DataSet with the given code.
      * 
@@ -106,14 +107,14 @@ public interface DataSetStore
      * @return The DataSet with the given code.
      */
     DataSet getDataSetByCode( String code );
-    
+
     /**
      * Gets all DataSets.
      * 
      * @return A collection containing all DataSets.
      */
     Collection<DataSet> getAllDataSets();
-    
+
     /**
      * Gets all DataSets associated with the given PeriodType.
      * 
@@ -126,17 +127,17 @@ public interface DataSetStore
      * Returns all DataSets that can be collected through mobile.
      */
     Collection<DataSet> getDataSetsForMobile( OrganisationUnit source );
-    
+
     Collection<DataSet> getDataSetsForMobile();
 
     Collection<DataSet> getDataSetsBySources( Collection<OrganisationUnit> sources );
-    
+
     int getDataSetCountByName( String name );
-    
+
     Collection<DataSet> getDataSetsBetweenByName( String name, int first, int max );
-    
+
     int getDataSetCount();
-    
-    Collection<DataSet> getDataSetsBetween(int first, int max );
+
+    Collection<DataSet> getDataSetsBetween( int first, int max );
 
 }
