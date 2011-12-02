@@ -515,107 +515,116 @@ mapfish.widgets.geostat.Symbol = Ext.extend(Ext.Panel, {
         };
         
         var onClickSelect = function onClickSelect(feature) {
-            if (feature.geometry.CLASS_NAME == G.conf.map_feature_type_point_class_name) {
+            if (feature.geometry.CLASS_NAME == G.conf.map_feature_type_point_class_name) {                
                 if (scope.featureOptions.menu) {
                     scope.featureOptions.menu.destroy();
                 }
                 
                 scope.featureOptions.menu = new Ext.menu.Menu({
-                    showInfo: function() {
-                        if (scope.featureOptions.info) {
-                            scope.featureOptions.info.destroy();
-                        }
-                        
-                        scope.featureOptions.info = new Ext.Window({
-                            title: '<span class="window-information-title">Facility information sheet</span>',
-                            layout: 'table',
-                            width: G.conf.window_width + 178,
-                            height: G.util.getMultiSelectHeight() + 100,
-                            bodyStyle: 'background-color:#fff',
-                            defaults: {
-                                bodyStyle: 'vertical-align:top',
-                                labelSeparator: G.conf.labelseparator,
-                                emptyText: G.conf.emptytext
-                            },
-                            layoutConfig: {
-                                columns: 2
-                            },
-                            items: [
-                                {
-                                    xtype: 'panel',
-                                    layout: 'anchor',
-                                    bodyStyle: 'padding:8px 4px 8px 8px',
-                                    width: 160,
+                    showInfo: function() {                        
+                        Ext.Ajax.request({
+                            url: G.conf.path_mapping + 'getFacilityInfo' + G.conf.type,
+                            method: 'POST',
+                            params: {id: feature.attributes.id},
+                            success: function(r) {
+                                var ou = Ext.util.JSON.decode(r.responseText);
+                                
+                                if (scope.featureOptions.info) {
+                                    scope.featureOptions.info.destroy();
+                                }
+                                
+                                scope.featureOptions.info = new Ext.Window({
+                                    title: '<span class="window-information-title">Facility information sheet</span>',
+                                    layout: 'table',
+                                    width: G.conf.window_width + 178,
+                                    height: G.util.getMultiSelectHeight() + 100,
+                                    bodyStyle: 'background-color:#fff',
+                                    defaults: {
+                                        bodyStyle: 'vertical-align:top',
+                                        labelSeparator: G.conf.labelseparator,
+                                        emptyText: G.conf.emptytext
+                                    },
+                                    layoutConfig: {
+                                        columns: 2
+                                    },
                                     items: [
-                                        {html: '<div class="window-info">' + G.i18n.name + '<p style="font-weight:normal">' + feature.attributes.name + '</p></div>'},
-                                        {html: '<div class="window-info">' + G.i18n.type + '<p style="font-weight:normal">' + feature.attributes.Type + '</p></div>'},
-                                        {html: '<div class="window-info">' + G.i18n.code + '<p style="font-weight:normal">' + feature.attributes.code + '</p></div>'},
-                                        {html: '<div class="window-info">' + G.i18n.address + '<p style="font-weight:normal">' + feature.attributes.ad + '</p></div>'},
-                                        {html: '<div class="window-info">' + G.i18n.contact_person + '<p style="font-weight:normal">' + feature.attributes.cp + '</p></div>'},
-                                        {html: '<div class="window-info">' + G.i18n.email + '<p style="font-weight:normal">' + feature.attributes.em + '</p></div>'},
-                                        {html: '<div class="window-info">' + G.i18n.phone_number + '<p style="font-weight:normal">' + feature.attributes.pn + '</p></div>'}
-                                    ]
-                                },
-                                {
-                                    xtype: 'form',
-                                    bodyStyle: 'padding:8px 8px 8px 4px',
-                                    width: G.conf.window_width + 20,
-                                    labelWidth: G.conf.label_width,
-                                    items: [
-                                        {html: '<div class="window-info">' + G.i18n.infrastructural_data + '</div>'},
                                         {
-                                            xtype: 'combo',
-                                            name: 'period',
-                                            fieldLabel: G.i18n.period,
-                                            typeAhead: true,
-                                            editable: false,
-                                            valueField: 'id',
-                                            displayField: 'name',
-                                            mode: 'remote',
-                                            forceSelection: true,
-                                            triggerAction: 'all',
-                                            selectOnFocus: true,
-                                            width: G.conf.combo_width,
-                                            store: G.stores.infrastructuralPeriodsByType,
-                                            lockPosition: false,
-                                            listeners: {
-                                                'select': function(cb) {
-                                                    scope.infrastructuralPeriod = cb.getValue();
-                                                    scope.stores.infrastructuralDataElementMapValue.setBaseParam('periodId', cb.getValue());
-                                                    scope.stores.infrastructuralDataElementMapValue.setBaseParam('organisationUnitId', feature.attributes.id);
-                                                    scope.stores.infrastructuralDataElementMapValue.load();
-                                                }
-                                            }
+                                            xtype: 'panel',
+                                            layout: 'anchor',
+                                            bodyStyle: 'padding:8px 4px 8px 8px',
+                                            width: 160,
+                                            items: [
+                                                {html: '<div class="window-info">' + G.i18n.name + '<p style="font-weight:normal">' + feature.attributes.name + '</p></div>'},
+                                                {html: '<div class="window-info">' + G.i18n.type + '<p style="font-weight:normal">' + ou.ty + '</p></div>'},
+                                                {html: '<div class="window-info">' + G.i18n.code + '<p style="font-weight:normal">' + ou.co + '</p></div>'},
+                                                {html: '<div class="window-info">' + G.i18n.address + '<p style="font-weight:normal">' + ou.ad + '</p></div>'},
+                                                {html: '<div class="window-info">' + G.i18n.contact_person + '<p style="font-weight:normal">' + ou.cp + '</p></div>'},
+                                                {html: '<div class="window-info">' + G.i18n.email + '<p style="font-weight:normal">' + ou.em + '</p></div>'},
+                                                {html: '<div class="window-info">' + G.i18n.phone_number + '<p style="font-weight:normal">' + ou.pn + '</p></div>'}
+                                            ]
                                         },
-                                        {html: '<div style="padding:4px 0 0 0"></div>'},
                                         {
-                                            xtype: 'grid',
-                                            height: G.util.getMultiSelectHeight(),
-                                            width: 242,
-                                            cm: new Ext.grid.ColumnModel({
-                                                columns: [
-                                                    {id: 'dataElementName', header: 'Data element', dataIndex: 'dataElementName', sortable: true, width: 150},
-                                                    {id: 'value', header: 'Value', dataIndex: 'value', sortable: true, width: 50}
-                                                ]
-                                            }),
-                                            disableSelection: true,
-                                            viewConfig: {forceFit: true},
-                                            store: scope.stores.infrastructuralDataElementMapValue
+                                            xtype: 'form',
+                                            bodyStyle: 'padding:8px 8px 8px 4px',
+                                            width: G.conf.window_width + 20,
+                                            labelWidth: G.conf.label_width,
+                                            items: [
+                                                {html: '<div class="window-info">' + G.i18n.infrastructural_data + '</div>'},
+                                                {
+                                                    xtype: 'combo',
+                                                    name: 'period',
+                                                    fieldLabel: G.i18n.period,
+                                                    typeAhead: true,
+                                                    editable: false,
+                                                    valueField: 'id',
+                                                    displayField: 'name',
+                                                    mode: 'remote',
+                                                    forceSelection: true,
+                                                    triggerAction: 'all',
+                                                    selectOnFocus: true,
+                                                    width: G.conf.combo_width,
+                                                    store: G.stores.infrastructuralPeriodsByType,
+                                                    lockPosition: false,
+                                                    listeners: {
+                                                        'select': function(cb) {
+                                                            scope.infrastructuralPeriod = cb.getValue();
+                                                            scope.stores.infrastructuralDataElementMapValue.setBaseParam('periodId', cb.getValue());
+                                                            scope.stores.infrastructuralDataElementMapValue.setBaseParam('organisationUnitId', feature.attributes.id);
+                                                            scope.stores.infrastructuralDataElementMapValue.load();
+                                                        }
+                                                    }
+                                                },
+                                                {html: '<div style="padding:4px 0 0 0"></div>'},
+                                                {
+                                                    xtype: 'grid',
+                                                    height: G.util.getMultiSelectHeight(),
+                                                    width: 242,
+                                                    cm: new Ext.grid.ColumnModel({
+                                                        columns: [
+                                                            {id: 'dataElementName', header: 'Data element', dataIndex: 'dataElementName', sortable: true, width: 150},
+                                                            {id: 'value', header: 'Value', dataIndex: 'value', sortable: true, width: 50}
+                                                        ]
+                                                    }),
+                                                    disableSelection: true,
+                                                    viewConfig: {forceFit: true},
+                                                    store: scope.stores.infrastructuralDataElementMapValue
+                                                }
+                                            ]
                                         }
                                     ]
+                                });
+            
+                                if (scope.infrastructuralPeriod) {
+                                    scope.featureOptions.info.find('name', 'period')[0].setValue(scope.infrastructuralPeriod);
+                                    scope.stores.infrastructuralDataElementMapValue.setBaseParam('periodId', scope.infrastructuralPeriod);
+                                    scope.stores.infrastructuralDataElementMapValue.setBaseParam('organisationUnitId', feature.attributes.id);
+                                    scope.stores.infrastructuralDataElementMapValue.load();
                                 }
-                            ]
+                                scope.featureOptions.info.setPagePosition(Ext.getCmp('east').x - (scope.featureOptions.info.width + 15), Ext.getCmp('center').y + 41);
+                                scope.featureOptions.info.show();
+                                scope.featureOptions.menu.destroy();
+                            }
                         });
-    
-                        if (scope.infrastructuralPeriod) {
-                            scope.featureOptions.info.find('name', 'period')[0].setValue(scope.infrastructuralPeriod);
-                            scope.stores.infrastructuralDataElementMapValue.setBaseParam('periodId', scope.infrastructuralPeriod);
-                            scope.stores.infrastructuralDataElementMapValue.setBaseParam('organisationUnitId', feature.attributes.id);
-                            scope.stores.infrastructuralDataElementMapValue.load();
-                        }
-                        scope.featureOptions.info.setPagePosition(Ext.getCmp('east').x - (scope.featureOptions.info.width + 15), Ext.getCmp('center').y + 41);
-                        scope.featureOptions.info.show();
-                        scope.featureOptions.menu.destroy();
                     },
                     showRelocate: function() {
                         if (scope.featureOptions.coordinate) {

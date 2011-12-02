@@ -27,14 +27,11 @@ package org.hisp.dhis.mapping.action;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.ArrayList;
-import java.util.Collection;
-
 import org.hisp.dhis.organisationunit.OrganisationUnit;
+import org.hisp.dhis.organisationunit.OrganisationUnitGroupService;
+import org.hisp.dhis.organisationunit.OrganisationUnitGroupSet;
+import org.hisp.dhis.organisationunit.OrganisationUnitGroupSetPopulator;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
-import org.hisp.dhis.system.filter.OrganisationUnitWithCoordinatesFilter;
-import org.hisp.dhis.system.filter.OrganisationUnitWithValidPointCoordinateFilter;
-import org.hisp.dhis.system.util.FilterUtils;
 
 import com.opensymphony.xwork2.Action;
 
@@ -42,7 +39,7 @@ import com.opensymphony.xwork2.Action;
  * @author Jan Henrik Overland
  * @version $Id$
  */
-public class GetGeoJsonAction
+public class GetOrganisationUnitInfoFacilityAction
     implements Action
 {
     // -------------------------------------------------------------------------
@@ -56,31 +53,31 @@ public class GetGeoJsonAction
         this.organisationUnitService = organisationUnitService;
     }
 
+    private OrganisationUnitGroupService organisationUnitGroupService;
+
+    public void setOrganisationUnitGroupService( OrganisationUnitGroupService organisationUnitGroupService )
+    {
+        this.organisationUnitGroupService = organisationUnitGroupService;
+    }
+
     // -------------------------------------------------------------------------
     // Input
     // -------------------------------------------------------------------------
 
-    private Integer parentId;
+    private Integer id;
 
-    public void setParentId( Integer id )
+    public void setId( Integer id )
     {
-        this.parentId = id;
-    }
-
-    private Integer level;
-
-    public void setLevel( Integer level )
-    {
-        this.level = level;
+        this.id = id;
     }
 
     // -------------------------------------------------------------------------
     // Output
     // -------------------------------------------------------------------------
 
-    private Collection<OrganisationUnit> object;
+    private OrganisationUnit object;
 
-    public Collection<OrganisationUnit> getObject()
+    public OrganisationUnit getObject()
     {
         return object;
     }
@@ -92,34 +89,12 @@ public class GetGeoJsonAction
     public String execute()
         throws Exception
     {
-        OrganisationUnit parent = organisationUnitService.getOrganisationUnit( parentId );
+        object = organisationUnitService.getOrganisationUnit( id );
 
-        level = level == null ? organisationUnitService.getLevelOfOrganisationUnit( parent ) : level;
+        OrganisationUnitGroupSet typeGroupSet = organisationUnitGroupService
+            .getOrganisationUnitGroupSetByName( OrganisationUnitGroupSetPopulator.NAME_TYPE );
 
-        Collection<OrganisationUnit> organisationUnits = organisationUnitService.getOrganisationUnitsAtLevel( level,
-            parent );
-
-        FilterUtils.filter( organisationUnits, new OrganisationUnitWithCoordinatesFilter() );
-
-        FilterUtils.filter( organisationUnits, new OrganisationUnitWithValidPointCoordinateFilter() );
-
-        object = new ArrayList<OrganisationUnit>();
-
-        for ( OrganisationUnit unit : organisationUnits )
-        {
-            if ( !unit.getFeatureType().equals( OrganisationUnit.FEATURETYPE_POINT ) )
-            {
-                object.add( unit );
-            }
-        }
-
-        for ( OrganisationUnit unit : organisationUnits )
-        {
-            if ( unit.getFeatureType().equals( OrganisationUnit.FEATURETYPE_POINT ) )
-            {
-                object.add( unit );
-            }
-        }
+        object.setType( object.getGroupNameInGroupSet( typeGroupSet ) );
 
         return SUCCESS;
     }
