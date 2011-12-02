@@ -79,48 +79,55 @@ var isShowLoader;
 function pagingList( currentPage, pageSize )
 {
 	var url = '${baseLink}currentPage=' + currentPage + '&pageSize=' + pageSize;
-	if( isAjax == undefined )
+	if ( isAjax == undefined )
 	{
 		window.location.href = url;
 	}
 	else
 	{
-		var index = url.indexOf('?');
-		var link = url.substring(0, index);
-		var data = url.substring(index + 1);
+		var index = url.indexOf( '?' );
+		var link = url.substring( 0, index );
+		var data = url.substring( index + 1 );
+		
 		jQuery.postUTF8( link , data, function(html)
+		{
+			if ( contentDiv == undefined )
 			{
-				if( contentDiv == undefined) setInnerHTML( 'contentDiv', html);
-				else setInnerHTML(contentDiv, html);
-			});
+				setInnerHTML( 'contentDiv', html );
+			}
+			else
+			{
+				setInnerHTML( contentDiv, html );
+			}
+		} );
 	}
 }
 
-function changePageSize( e, baseLink )
+function changePageSize( event, baseLink )
 {
-	var key = getKeyCode(e);
+	var key = event.keyCode || event.charCode || event.which;
 	
-	if ( key==13 || key==1 )// Enter
+	if ( key == 13 || key == 1 )// Enter
 	{
 		// ---------------------------------------------------
-		// validate parametter
+		// Validate parameters
 		// ---------------------------------------------------
 		
-		var pageSize = jQuery("#sizeOfPage").val();
+		var pageSize = jQuery( "#sizeOfPage" ).val();
 		
 		if ( pageSize < 1)
 		{
 			pageSize = 1;
 		}
 
-		var currentPage = jQuery("#jumpToPage").val();
-		var numberOfPages = eval("$numberOfPages");
+		var currentPage = jQuery( "#jumpToPage" ).val();
+		var numberOfPages = eval( "$numberOfPages" );
 		if ( currentPage > numberOfPages )
 		{
 			currentPage = numberOfPages;
 		}
 		
-		jQuery.cookie("pageSize", pageSize, {path: "/"});
+		jQuery.cookie( "pageSize", pageSize, {path: "/"} );
 		
 		// ---------------------------------------------------
 		// Paging
@@ -128,13 +135,6 @@ function changePageSize( e, baseLink )
 		
 		pagingList( currentPage, pageSize );
 	}
-}
-
-function getKeyCode(e)
-{
-	 if (window.event)
-		return window.event.keyCode;
-	 return (e)? e.which : null;
 }
 
 </script>
