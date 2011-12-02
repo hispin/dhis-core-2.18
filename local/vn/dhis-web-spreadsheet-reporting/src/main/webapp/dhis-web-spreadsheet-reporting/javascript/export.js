@@ -8,16 +8,20 @@ var periodTypeFactory = new PeriodType();
 // The current selected period type name
 var currentPeriodTypeName = '';
 
+// The current selected orgunit name
+var currentOrgunitName = '';
+
 // Functions
 function organisationUnitSelected( orgUnits, orgUnitNames )
 {
-	getExportReportsByGroup( orgUnitNames[0] );	
+	currentOrgunitName = orgUnitNames[0];
+	getExportReportsByGroup( currentOrgunitName );	
 }
 
 selection.setListenerFunction( organisationUnitSelected );
 
 function getExportReportsByGroup( selectedOrgUnitName ) {
-	
+
 	if ( selectedOrgUnitName )
 	{
 		setInnerHTML( "selectedOrganisationUnit", selectedOrgUnitName );
@@ -36,23 +40,7 @@ function getExportReportsByGroup( selectedOrgUnitName ) {
 			currentPeriodOffset = 0;
 			reportSelected();
 			displayPeriodsInternal();
-			
-			enable("group");
-			enable("exportReport");
-			enable("selectedPeriodId");
-			enable("generateExportReport");
-			enable("previewButton");
-			enable("nextPeriod");
-			enable("lastPeriod");
 		});
-	} else {
-		disable("group");
-		disable("exportReport");
-		disable("selectedPeriodId");
-		disable("generateExportReport");
-		disable("previewButton");
-		disable("nextPeriod");
-		disable("lastPeriod");
 	}
 }
 

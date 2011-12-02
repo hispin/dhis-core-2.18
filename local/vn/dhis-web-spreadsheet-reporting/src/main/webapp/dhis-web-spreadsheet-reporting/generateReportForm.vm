@@ -8,7 +8,7 @@
 	<tr>
 		<td><label>$i18n.getString('group')<em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
 		<td >
-			<select type="text" id="group" name="group" style="width:300px" onchange="getExportReportsByGroup()" >
+			<select type="text" id="group" name="group" style="width:300px" onchange="getExportReportsByGroup( currentOrgunitName )" >
 				#foreach($group in $groups)
 					<option value='$group' #if( $group == $exportReportGroup ) selected="selected" #end>$encoder.htmlEncode( $group )</option>				
 				#end
@@ -24,7 +24,7 @@
 	<tr>
 		<td><label>$i18n.getString('period')<em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
 		<td>
-			<select type="text" id="selectedPeriodId" name="selectedPeriodId" style="width:220px" disabled="true"></select>
+			<select type="text" id="selectedPeriodId" name="selectedPeriodId" style="width:220px"></select>
 			<input type="button" value="&lt;&lt;" onclick="getPreviousPeriod()" id="lastPeriod"/>
 			<input type="button" value="&gt;&gt;" onclick="getNextPeriod()" id="nextPeriod"/>
 		</td>
@@ -50,7 +50,8 @@
 	#if ( $organisationUnit )
 		$(document).ready(function()
 		{
-			getExportReportsByGroup( '$organisationUnit.name' );
+			currentOrgunitName = '$organisationUnit.name';
+			getExportReportsByGroup( currentOrgunitName );
 		});
 	#else
 		disable("group");
