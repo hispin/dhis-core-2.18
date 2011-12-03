@@ -153,6 +153,8 @@ public class DefaultDataElementDataMart
         final BatchHandler<Object> cacheHandler = inMemoryBatchHandlerFactory.createBatchHandler( GenericBatchHandler.class ).setTableName( AGGREGATEDDATA_CACHE_PREFIX + key ).init();
         
         final OrganisationUnitHierarchy hierarchy = organisationUnitService.getOrganisationUnitHierarchy().prepareChildren( organisationUnits );
+
+        final Map<DataElementOperand, Double> valueMap = new HashMap<DataElementOperand, Double>();
         
         final AggregatedDataValue aggregatedValue = new AggregatedDataValue();
         
@@ -170,10 +172,9 @@ public class DefaultDataElementDataMart
                 
                 final int level = aggregationCache.getLevelOfOrganisationUnit( unit.getId() );
                 
-                final Map<DataElementOperand, Double> valueMap = new HashMap<DataElementOperand, Double>();
-                
                 final Collection<Integer> orgUnitChildren = hierarchy.getChildren( unit.getId() );
                 
+                valueMap.clear();                
                 valueMap.putAll( sumIntAggregator.getAggregatedValues( sumIntOperands, period, level, orgUnitChildren, key ) );
                 valueMap.putAll( averageIntAggregator.getAggregatedValues( averageIntOperands, period, level, orgUnitChildren, key ) );
                 valueMap.putAll( averageIntSingleValueAggregator.getAggregatedValues( averageIntSingleValueOperands, period, level, orgUnitChildren, key ) );
