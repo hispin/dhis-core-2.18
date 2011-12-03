@@ -26,7 +26,6 @@
     <module>dhis-web-caseentry</module>
     <module>dhis-web-api</module>
     <module>dhis-web-mobile-api</module>
-    <module>dhis-web-api2</module>
     <module>dhis-web-light</module>
     <module>dhis-web-portal</module>
   </modules>

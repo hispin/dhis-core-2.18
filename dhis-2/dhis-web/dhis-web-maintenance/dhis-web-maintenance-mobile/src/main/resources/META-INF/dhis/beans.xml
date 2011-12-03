@@ -43,37 +43,4 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 	
 	<bean id="org.hisp.dhis.mobile.action.AddGateWayConfigAction" class="org.hisp.dhis.mobile.action.AddGateWayConfigAction" scope="prototype"/>
 
-  <!-- JAX-RS resources -->
-
-  <bean id="org.hisp.dhis.mobile.web.resources.MobileResource" class="org.hisp.dhis.mobile.web.resources.MobileResource"
-    scope="prototype">
-    <property name="currentUserService" ref="org.hisp.dhis.user.CurrentUserService" />
-  </bean>
-
-  <bean id="org.hisp.dhis.mobile.web.resources.OrgUnitResource" class="org.hisp.dhis.mobile.web.resources.OrgUnitResource"
-    scope="prototype">
-    <property name="facilityReportingService" ref="org.hisp.dhis.mobile.api.FacilityReportingService" />
-    <property name="activityReportingService" ref="org.hisp.dhis.mobile.api.ActivityReportingService" />
-    <property name="programService" ref="org.hisp.dhis.mobile.api.IProgramService" />
-    <property name="organisationUnitService" ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
-    <property name="i18nService" ref="org.hisp.dhis.i18n.I18nService" />
-  </bean>
-
-  <!-- Jax-RS providers for (de-)serialization, exception mapping, json configuration -->
-
-  <bean id="org.hisp.dhis.mobile.web.mapping.DataSerializableProvider" class="org.hisp.dhis.mobile.web.mapping.DataStreamSerializableProvider"
-    scope="singleton" />
-
-  <bean id="org.hisp.dhis.mobile.web.mapping.DataSetValueConsumer" class="org.hisp.dhis.mobile.web.mapping.DataSetValueConsumer"
-    scope="singleton" />
-
-  <bean id="org.hisp.dhis.mobile.web.mapping.ActivityValueConsumer" class="org.hisp.dhis.mobile.web.mapping.ActivityValueConsumer"
-    scope="singleton" />
-
-  <bean id="org.hisp.dhis.mobile.web.mapping.NotAllowedExceptionMapper" class="org.hisp.dhis.mobile.web.mapping.NotAllowedExceptionMapper"
-    scope="singleton" />
-
-  <bean id="org.hisp.dhis.mobile.web.mapping.IllegalArgumentExceptionMapper" class="org.hisp.dhis.mobile.web.mapping.IllegalArgumentExceptionMapper"
-    scope="singleton" />
-
 </beans>
