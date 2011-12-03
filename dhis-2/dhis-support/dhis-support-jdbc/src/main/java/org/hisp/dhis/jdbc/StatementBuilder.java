@@ -61,22 +61,37 @@ public interface StatementBuilder
     String getPeriodIdentifierStatement( Period period );
     
     /**
-     * Creates a create table statement fot the aggregated datavalue table.
-     * @return a create table statement fot the aggregated datavalue table.
+     * Creates a create table statement for the aggregated datavalue table.
      */
     String getCreateAggregatedDataValueTable();
+
+    /**
+     * Creates a create table statement for the aggregated organisation unit
+     * group datavalue table.
+     */
+    String getCreateAggregatedOrgUnitDataValueTable();
     
     /**
      * Creates a create table statement for the aggregated indicatorvalue table.
-     * @return a create table statement for the aggregated indicatorvalue table.
-     */    
+     */
     String getCreateAggregatedIndicatorTable();
 
     /**
+     * Creates a create table statement for the aggregated organisation unit
+     * group indicatorvalue table.
+     */
+    String getCreateAggregatedOrgUnitIndicatorTable();
+
+    /**
      * Creates a create table statement for the aggregated datasetcompleteness table.
-     * @return a create table statement for the aggregated datasetcompleteness table.
      */
     String getCreateDataSetCompletenessTable();
+
+    /**
+     * Creates a create table statement for the aggregated organisation unit
+     * group datasetcompleteness table.
+     */
+    String getCreateOrgUnitDataSetCompletenessTable();
     
     /**
      * Creates a delete datavalue statement.

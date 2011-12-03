@@ -50,6 +50,8 @@ public class AggregatedIndicatorValue
     private int periodTypeId;
     
     private int organisationUnitId;
+
+    private int organisationUnitGroupId;
     
     private int level;
     
@@ -77,23 +79,6 @@ public class AggregatedIndicatorValue
     
     public AggregatedIndicatorValue()
     {
-    }
-    
-    /**
-     * @deprecated this constructor is deprecated
-     */
-    public AggregatedIndicatorValue( int indicatorId, int periodId, int periodTypeId, int organisationUnitId, 
-        int level, double value, double numeratorValue, double denominatorValue )
-    {
-        this.indicatorId = indicatorId;
-        this.periodId = periodId;
-        this.periodTypeId = periodTypeId;
-        this.organisationUnitId = organisationUnitId;
-        this.level = level;
-        this.value = value;
-        this.numeratorValue = numeratorValue;
-        this.denominatorValue = denominatorValue;
-        this.modified = new Date();
     }
     
     /**
@@ -244,6 +229,16 @@ public class AggregatedIndicatorValue
     public void setOrganisationUnitId( int organisationUnitId )
     {
         this.organisationUnitId = organisationUnitId;
+    }
+
+    public int getOrganisationUnitGroupId()
+    {
+        return organisationUnitGroupId;
+    }
+
+    public void setOrganisationUnitGroupId( int organisationUnitGroupId )
+    {
+        this.organisationUnitGroupId = organisationUnitGroupId;
     }
 
     public int getPeriodId()
