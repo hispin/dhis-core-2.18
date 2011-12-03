@@ -65,131 +65,69 @@ public class TableCreator
 
     public void execute()
     {
-        // -----------------------------------------------------------------
-        // AggregatedDataValue
-        // -----------------------------------------------------------------
-
-        try
-        {
-            jdbcTemplate.execute( statementBuilder.getCreateAggregatedDataValueTable() );
-            
-            log.info( "Created table aggregateddatavalue" );
-        }
-        catch ( Exception ex )
-        {
-            log.info( "Table aggregateddatavalue exists" );
-        }
-
-        // -----------------------------------------------------------------
-        // AggregatedIndicatorValue
-        // -----------------------------------------------------------------
-
-        try
-        {
-            jdbcTemplate.execute( statementBuilder.getCreateAggregatedIndicatorTable() );
-            
-            log.info( "Created table aggregatedindicatorvalue" );
-        }
-        catch ( Exception ex )
-        {
-            log.info( "Table aggregatedindicatorvalue exists" );
-        }
+        createSilently( statementBuilder.getCreateAggregatedDataValueTable(), "aggregateddatavalue" );
+        createSilently( statementBuilder.getCreateAggregatedOrgUnitDataValueTable(), "aggregatedorgunitdatavalue" );
+        createSilently( statementBuilder.getCreateAggregatedIndicatorTable(), "aggregatedindicatorvalue" );
+        createSilently( statementBuilder.getCreateAggregatedOrgUnitIndicatorTable(), "aggregatedorgunitindicatorvalue" );
+        createSilently( statementBuilder.getCreateDataSetCompletenessTable(), "aggregateddatasetcompleteness" );
+        createSilently( statementBuilder.getCreateOrgUnitDataSetCompletenessTable(), "aggregatedorgunitdatasetcompleteness" );
         
-        // -----------------------------------------------------------------
-        // Crosstab index on DataValue table
-        // -----------------------------------------------------------------
+        createSilently( "CREATE INDEX crosstab ON datavalue ( periodid, sourceid )", "crosstab" );
+        
+        final String sqlDataValueArchive = 
+            "CREATE TABLE datavaluearchive ( " +
+            "dataelementid INTEGER NOT NULL, " +
+            "periodid INTEGER NOT NULL, " +
+            "sourceid INTEGER NOT NULL, " +
+            "categoryoptioncomboid INTEGER NOT NULL, " +
+            "value VARCHAR(255), " +
+            "storedby VARCHAR(31), " +
+            "lastupdated TIMESTAMP, " +
+            "comment VARCHAR(360), " +
+            "followup BOOLEAN, " +
+            "CONSTRAINT datavaluearchive_pkey PRIMARY KEY (dataelementid, periodid, sourceid, categoryoptioncomboid), " +
+            "CONSTRAINT fk_datavaluearchive_categoryoptioncomboid FOREIGN KEY (categoryoptioncomboid) " +
+                "REFERENCES categoryoptioncombo (categoryoptioncomboid), " +
+            "CONSTRAINT fk_datavaluearchive_dataelementid FOREIGN KEY (dataelementid) " +
+                "REFERENCES dataelement (dataelementid), " +
+            "CONSTRAINT fk_datavaluearchive_periodid FOREIGN KEY (periodid) " +
+                "REFERENCES period (periodid), " +
+            "CONSTRAINT fk_datavaluearchive_sourceid FOREIGN KEY (sourceid) " +
+                "REFERENCES organisationunit (organisationunitid) );";
+        
+        createSilently( sqlDataValueArchive, "datavaluearchive" );
 
+        final String sqlPatientDataValueArchive = 
+            "CREATE TABLE patientdatavaluearchive ( " +
+             " programstageinstanceid integer NOT NULL, " +
+             " dataelementid integer NOT NULL, " +
+             " organisationunitid integer NOT NULL, " +
+             " categoryoptioncomboid integer default NULL, " +
+             " value varchar(255) default NULL, " +
+             " providedbyanotherfacility boolean NOT NULL, " +
+             " timestamp TIMESTAMP, " +
+             " PRIMARY KEY  (programstageinstanceid,dataelementid,organisationunitid), " +
+             " CONSTRAINT fk_patientdatavaluearchive_organisationunitid FOREIGN KEY (organisationunitid) REFERENCES organisationunit (organisationunitid), " +
+             " CONSTRAINT fk_patientdatavaluearchive_programstageinstanceid FOREIGN KEY (programstageinstanceid) REFERENCES programstageinstance (programstageinstanceid) );";
+        
+        createSilently( sqlPatientDataValueArchive, "patientdatavaluearchive" );
+    }
+
+    // -------------------------------------------------------------------------
+    // Supportive methods
+    // -------------------------------------------------------------------------
+
+    private void createSilently( final String sql, final String name )
+    {
         try
         {
-            final String sql = "CREATE INDEX crosstab ON datavalue ( periodid, sourceid )";
-            
             jdbcTemplate.execute( sql );
             
-            log.info( "Created index crosstab on table datavalue" );
+            log.info( "Created table/index " + name );
         }
         catch ( Exception ex )
         {
-            log.info( "Index crosstab exists on table datavalue" );
-        }
-        
-        // -----------------------------------------------------------------
-        // DataSetCompleteness
-        // -----------------------------------------------------------------
-
-        try
-        {
-            jdbcTemplate.execute( statementBuilder.getCreateDataSetCompletenessTable() );
-            
-            log.info( "Created table aggregateddatasetcompleteness" );
-        }
-        catch ( Exception ex )
-        {
-            log.info( "Table aggregateddatasetcompleteness exists" );
-        }
-        
-        // -----------------------------------------------------------------
-        // ArchivedDataValue
-        // -----------------------------------------------------------------
-
-        try
-        {
-            final String sql = 
-                "CREATE TABLE datavaluearchive ( " +
-                "dataelementid INTEGER NOT NULL, " +
-                "periodid INTEGER NOT NULL, " +
-                "sourceid INTEGER NOT NULL, " +
-                "categoryoptioncomboid INTEGER NOT NULL, " +
-                "value VARCHAR(255), " +
-                "storedby VARCHAR(31), " +
-                "lastupdated TIMESTAMP, " +
-                "comment VARCHAR(360), " +
-                "followup BOOLEAN, " +
-                "CONSTRAINT datavaluearchive_pkey PRIMARY KEY (dataelementid, periodid, sourceid, categoryoptioncomboid), " +
-                "CONSTRAINT fk_datavaluearchive_categoryoptioncomboid FOREIGN KEY (categoryoptioncomboid) " +
-                    "REFERENCES categoryoptioncombo (categoryoptioncomboid), " +
-                "CONSTRAINT fk_datavaluearchive_dataelementid FOREIGN KEY (dataelementid) " +
-                    "REFERENCES dataelement (dataelementid), " +
-                "CONSTRAINT fk_datavaluearchive_periodid FOREIGN KEY (periodid) " +
-                    "REFERENCES period (periodid), " +
-                "CONSTRAINT fk_datavaluearchive_sourceid FOREIGN KEY (sourceid) " +
-                    "REFERENCES organisationunit (organisationunitid) );";
-            
-            jdbcTemplate.execute( sql );
-            
-            log.info( "Created table datavaluearchive" );
-        }
-        catch ( Exception ex )
-        {
-            log.info( "Table datavaluearchive exists" );
-        }
-        
-        // -----------------------------------------------------------------
-        // ArchivedPatientDataValue
-        // -----------------------------------------------------------------
-
-        try
-        {
-            final String sql = 
-                "CREATE TABLE patientdatavaluearchive ( " +
-                 " programstageinstanceid integer NOT NULL, " +
-                 " dataelementid integer NOT NULL, " +
-                 " organisationunitid integer NOT NULL, " +
-                 " categoryoptioncomboid integer default NULL, " +
-                 " value varchar(255) default NULL, " +
-                 " providedbyanotherfacility boolean NOT NULL, " +
-                 " timestamp TIMESTAMP, " +
-                 " PRIMARY KEY  (programstageinstanceid,dataelementid,organisationunitid), " +
-                 " CONSTRAINT fk_patientdatavaluearchive_organisationunitid FOREIGN KEY (organisationunitid) REFERENCES organisationunit (organisationunitid), " +
-                 " CONSTRAINT fk_patientdatavaluearchive_programstageinstanceid FOREIGN KEY (programstageinstanceid) REFERENCES programstageinstance (programstageinstanceid) " +
-                 "        );";
-                            
-            jdbcTemplate.execute( sql );
-            
-            log.info( "Created table patientdatavaluearchive" );
-        }
-        catch ( Exception ex )
-        {
-            log.info( "Table patientdatavaluearchive exists" );
+            log.debug( "Table/index " + name + " exists" );
         }
     }
 }

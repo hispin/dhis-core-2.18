@@ -54,6 +54,8 @@ public class DataSetCompletenessResult
     private String periodName;
 
     private int organisationUnitId;
+    
+    private int organisationUnitGroupId;
 
     // -------------------------------------------------------------------------
     // Properties 2
@@ -247,6 +249,16 @@ public class DataSetCompletenessResult
     public void setOrganisationUnitId( int organisationUnitId )
     {
         this.organisationUnitId = organisationUnitId;
+    }
+
+    public int getOrganisationUnitGroupId()
+    {
+        return organisationUnitGroupId;
+    }
+
+    public void setOrganisationUnitGroupId( int organisationUnitGroupId )
+    {
+        this.organisationUnitGroupId = organisationUnitGroupId;
     }
 
     // -------------------------------------------------------------------------

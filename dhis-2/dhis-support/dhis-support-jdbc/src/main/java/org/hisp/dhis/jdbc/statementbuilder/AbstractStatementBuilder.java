@@ -58,6 +58,20 @@ public abstract class AbstractStatementBuilder
             "level INTEGER, " +
             "value " + getDoubleColumnType() + " );";
     }
+
+    public String getCreateAggregatedOrgUnitDataValueTable()
+    {
+        return
+            "CREATE TABLE aggregatedorgunitdatavalue ( " +
+            "dataelementid INTEGER, " +
+            "categoryoptioncomboid INTEGER, " +
+            "periodid INTEGER, " +
+            "organisationunitid INTEGER, " +
+            "organisationunitgroupid INTEGER, " +
+            "periodtypeid INTEGER, " +
+            "level INTEGER, " +
+            "value " + getDoubleColumnType() + " );";
+    }
     
     public String getCreateAggregatedIndicatorTable()
     {
@@ -75,6 +89,23 @@ public abstract class AbstractStatementBuilder
             "denominatorvalue " + getDoubleColumnType() + " );";
     }
 
+    public String getCreateAggregatedOrgUnitIndicatorTable()
+    {
+        return
+            "CREATE TABLE aggregatedorgunitindicatorvalue ( " +
+            "indicatorid INTEGER, " +
+            "periodid INTEGER, " +
+            "organisationunitid INTEGER, " +
+            "organisationunitgroupid INTEGER, " +
+            "periodtypeid INTEGER, " +
+            "level INTEGER, " +
+            "annualized VARCHAR( 10 ), " +
+            "factor " + getDoubleColumnType() + ", " +
+            "value " + getDoubleColumnType() + ", " +
+            "numeratorvalue " + getDoubleColumnType() + ", " +
+            "denominatorvalue " + getDoubleColumnType() + " );";
+    }
+
     public String getCreateDataSetCompletenessTable()
     {
         return
@@ -83,6 +114,22 @@ public abstract class AbstractStatementBuilder
             "periodid INTEGER, " +
             "periodname VARCHAR( 30 ), " +
             "organisationunitid INTEGER, " +
+            "sources INTEGER, " +
+            "registrations INTEGER, " +
+            "registrationsOnTime INTEGER, " +
+            "value " + getDoubleColumnType() + ", " +
+            "valueOnTime " + getDoubleColumnType() + " );";
+    }
+    
+    public String getCreateOrgUnitDataSetCompletenessTable()
+    {
+        return
+            "CREATE TABLE aggregatedorgunitdatasetcompleteness ( " +
+            "datasetid INTEGER, " +
+            "periodid INTEGER, " +
+            "periodname VARCHAR( 30 ), " +
+            "organisationunitid INTEGER, " +
+            "organisationunitgroupid INTEGER, " +
             "sources INTEGER, " +
             "registrations INTEGER, " +
             "registrationsOnTime INTEGER, " +
