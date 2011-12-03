@@ -27,6 +27,7 @@ package org.hisp.dhis.api.controller;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import org.hisp.dhis.api.utils.WebLinkPopulatorListener;
 import org.hisp.dhis.organisationunit.OrganisationUnitLevel;
 import org.hisp.dhis.organisationunit.OrganisationUnitLevels;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
@@ -37,6 +38,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 
 /**
@@ -50,10 +52,13 @@ public class OrganisationUnitLevelController
     private OrganisationUnitService organisationUnitService;
 
     @RequestMapping( method = RequestMethod.GET )
-    public String getOrganisationUnitLevels( Model model )
+    public String getOrganisationUnitLevels( Model model, HttpServletRequest request )
     {
         OrganisationUnitLevels organisationUnitLevels = new OrganisationUnitLevels();
         organisationUnitLevels.setOrganisationUnitLevels( new ArrayList<OrganisationUnitLevel>( organisationUnitService.getOrganisationUnitLevels() ) );
+
+        WebLinkPopulatorListener listener = new WebLinkPopulatorListener( request );
+        listener.beforeMarshal( organisationUnitLevels );
 
         model.addAttribute( "model", organisationUnitLevels );
 
@@ -61,9 +66,12 @@ public class OrganisationUnitLevelController
     }
 
     @RequestMapping( value = "/{uid}", method = RequestMethod.GET )
-    public String getOrganisationUnit( @PathVariable( "uid" ) String uid, Model model )
+    public String getOrganisationUnit( @PathVariable( "uid" ) String uid, Model model, HttpServletRequest request )
     {
         OrganisationUnitLevel organisationUnitLevel = organisationUnitService.getOrganisationUnitLevel( uid );
+
+        WebLinkPopulatorListener listener = new WebLinkPopulatorListener( request );
+        listener.beforeMarshal( organisationUnitLevel );
 
         model.addAttribute( "model", organisationUnitLevel );
 

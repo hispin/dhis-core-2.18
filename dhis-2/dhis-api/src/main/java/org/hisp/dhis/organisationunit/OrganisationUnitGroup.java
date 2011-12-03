@@ -29,6 +29,7 @@ package org.hisp.dhis.organisationunit;
 
 import org.codehaus.jackson.map.annotate.JsonSerialize;
 import org.hisp.dhis.common.BaseIdentifiableObject;
+import org.hisp.dhis.common.Dxf2Namespace;
 import org.hisp.dhis.common.adapter.BaseIdentifiableObjectXmlAdapter;
 import org.hisp.dhis.common.adapter.BaseNameableObjectXmlAdapter;
 import org.hisp.dhis.common.adapter.JsonIdentifiableObjectSerializer;
@@ -42,7 +43,7 @@ import java.util.Set;
 /**
  * @author Kristian Nordal
  */
-@XmlRootElement( name = "organisationUnitGroup" )
+@XmlRootElement( name = "organisationUnitGroup", namespace = Dxf2Namespace.NAMESPACE )
 @XmlAccessorType( value = XmlAccessType.NONE )
 public class OrganisationUnitGroup extends BaseIdentifiableObject
 {

@@ -27,6 +27,7 @@ package org.hisp.dhis.api.controller;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import org.hisp.dhis.api.utils.WebLinkPopulatorListener;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.dataset.DataSetService;
 import org.hisp.dhis.dataset.DataSets;
@@ -37,6 +38,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 
 /**
@@ -50,10 +52,13 @@ public class DataSetController
     private DataSetService dataSetService;
 
     @RequestMapping( method = RequestMethod.GET )
-    public String getDataSets( Model model )
+    public String getDataSets( Model model, HttpServletRequest request )
     {
         DataSets dataSets = new DataSets();
         dataSets.setDataSets( new ArrayList<DataSet>( dataSetService.getAllDataSets() ) );
+
+        WebLinkPopulatorListener listener = new WebLinkPopulatorListener( request );
+        listener.beforeMarshal( dataSets );
 
         model.addAttribute( "model", dataSets );
 
@@ -61,9 +66,12 @@ public class DataSetController
     }
 
     @RequestMapping( value = "/{uid}", method = RequestMethod.GET )
-    public String getDataSet( @PathVariable( "uid" ) String uid, Model model )
+    public String getDataSet( @PathVariable( "uid" ) String uid, Model model, HttpServletRequest request )
     {
         DataSet dataSet = dataSetService.getDataSet( uid );
+
+        WebLinkPopulatorListener listener = new WebLinkPopulatorListener( request );
+        listener.beforeMarshal( dataSet );
 
         model.addAttribute( "model", dataSet );
 

@@ -61,6 +61,8 @@ public class JsonIdentifiableObjectSerializer extends JsonSerializer<Identifiabl
             JsonDateSerializer jsonDateSerializer = new JsonDateSerializer();
             jsonDateSerializer.serialize( value.getLastUpdated(), jgen, provider );
 
+            jgen.writeStringField( "link", value.getLink() );
+
             jgen.writeEndObject();
         } else {
             jgen.writeNull();            

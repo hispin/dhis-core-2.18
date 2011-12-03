@@ -30,6 +30,7 @@ package org.hisp.dhis.dataelement;
 import org.codehaus.jackson.map.annotate.JsonSerialize;
 import org.hisp.dhis.common.BaseIdentifiableObject;
 import org.hisp.dhis.common.CombinationGenerator;
+import org.hisp.dhis.common.Dxf2Namespace;
 import org.hisp.dhis.common.adapter.BaseIdentifiableObjectXmlAdapter;
 import org.hisp.dhis.common.adapter.JsonIdentifiableObjectSetSerializer;
 import org.hisp.dhis.common.adapter.JsonIdentifiableObjectListSerializer;
@@ -41,7 +42,7 @@ import java.util.*;
 /**
  * @author Abyot Aselefew
  */
-@XmlRootElement( name = "dataElementCategoryCombo" )
+@XmlRootElement( name = "dataElementCategoryCombo", namespace = Dxf2Namespace.NAMESPACE )
 @XmlAccessorType( value = XmlAccessType.NONE )
 public class DataElementCategoryCombo
     extends BaseIdentifiableObject

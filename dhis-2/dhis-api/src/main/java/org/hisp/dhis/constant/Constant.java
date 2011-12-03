@@ -28,6 +28,7 @@ package org.hisp.dhis.constant;
  */
 
 import org.hisp.dhis.common.BaseIdentifiableObject;
+import org.hisp.dhis.common.Dxf2Namespace;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -37,7 +38,7 @@ import javax.xml.bind.annotation.XmlRootElement;
  * @author Dang Duy Hieu
  * @version $Id Constant.java June 29, 2011$
  */
-@XmlRootElement( name = "constant" )
+@XmlRootElement( name = "constant", namespace = Dxf2Namespace.NAMESPACE )
 @XmlAccessorType( value = XmlAccessType.NONE )
 public class Constant extends BaseIdentifiableObject
 {

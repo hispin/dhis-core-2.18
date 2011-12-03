@@ -29,6 +29,7 @@ package org.hisp.dhis.indicator;
 
 import org.codehaus.jackson.map.annotate.JsonSerialize;
 import org.hisp.dhis.common.BaseIdentifiableObject;
+import org.hisp.dhis.common.Dxf2Namespace;
 import org.hisp.dhis.common.adapter.BaseIdentifiableObjectXmlAdapter;
 import org.hisp.dhis.common.adapter.JsonIdentifiableObjectSetSerializer;
 
@@ -40,7 +41,7 @@ import java.util.Set;
 /**
  * @author Lars Helge Overland
  */
-@XmlRootElement( name = "indicatorGroup" )
+@XmlRootElement( name = "indicatorGroup", namespace = Dxf2Namespace.NAMESPACE )
 @XmlAccessorType( value = XmlAccessType.NONE )
 public class IndicatorGroup extends BaseIdentifiableObject
 {

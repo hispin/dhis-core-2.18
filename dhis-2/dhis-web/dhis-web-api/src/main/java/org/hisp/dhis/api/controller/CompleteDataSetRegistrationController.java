@@ -36,6 +36,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 
 /**
@@ -54,7 +55,7 @@ public class CompleteDataSetRegistrationController
     }
 
     @RequestMapping( method = RequestMethod.GET )
-    public String getCompleteDataSetRegistrations( Model model )
+    public String getCompleteDataSetRegistrations( Model model, HttpServletRequest request )
     {
         CompleteDataSetRegistrations completeDataSetRegistrations = new CompleteDataSetRegistrations();
         completeDataSetRegistrations.setCompleteDataSetRegistrations( new ArrayList<CompleteDataSetRegistration>( completeDataSetRegistrationService.getAllCompleteDataSetRegistrations() ) );

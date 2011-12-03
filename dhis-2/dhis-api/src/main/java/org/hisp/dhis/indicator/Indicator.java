@@ -31,6 +31,7 @@ import org.codehaus.jackson.annotate.JsonProperty;
 import org.codehaus.jackson.map.annotate.JsonSerialize;
 import org.hisp.dhis.attribute.AttributeValue;
 import org.hisp.dhis.common.BaseNameableObject;
+import org.hisp.dhis.common.Dxf2Namespace;
 import org.hisp.dhis.common.adapter.*;
 import org.hisp.dhis.dataset.DataSet;
 
@@ -43,7 +44,7 @@ import java.util.Set;
  * @author Lars Helge Overland
  * @version $Id: Indicator.java 5540 2008-08-19 10:47:07Z larshelg $
  */
-@XmlRootElement( name = "indicator" )
+@XmlRootElement( name = "indicator", namespace = Dxf2Namespace.NAMESPACE )
 @XmlAccessorType( value = XmlAccessType.NONE )
 public class Indicator extends BaseNameableObject
 {

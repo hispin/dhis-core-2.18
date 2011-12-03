@@ -27,6 +27,7 @@ package org.hisp.dhis.api.controller;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import org.hisp.dhis.api.utils.WebLinkPopulatorListener;
 import org.hisp.dhis.user.User;
 import org.hisp.dhis.user.UserService;
 import org.hisp.dhis.user.Users;
@@ -37,6 +38,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 
 /**
@@ -50,10 +52,13 @@ public class UserController
     private UserService userService;
 
     @RequestMapping( method = RequestMethod.GET )
-    public String getUsers( Model model )
+    public String getUsers( Model model, HttpServletRequest request )
     {
         Users users = new Users();
         users.setUsers( new ArrayList<User>( userService.getAllUsers() ) );
+
+        WebLinkPopulatorListener listener = new WebLinkPopulatorListener( request );
+        listener.beforeMarshal( users );
 
         model.addAttribute( "model", users );
 
@@ -61,9 +66,12 @@ public class UserController
     }
 
     @RequestMapping( value = "/{id}", method = RequestMethod.GET )
-    public String getUser( @PathVariable( "id" ) Integer id, Model model )
+    public String getUser( @PathVariable( "id" ) Integer id, Model model, HttpServletRequest request )
     {
         User user = userService.getUser( id );
+
+        WebLinkPopulatorListener listener = new WebLinkPopulatorListener( request );
+        listener.beforeMarshal( user );
 
         model.addAttribute( "model", user );
 

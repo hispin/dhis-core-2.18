@@ -28,6 +28,7 @@ package org.hisp.dhis.period;
  */
 
 import org.hisp.dhis.common.BaseNameableObject;
+import org.hisp.dhis.common.Dxf2Namespace;
 import org.hisp.dhis.common.Weighted;
 
 import javax.xml.bind.annotation.XmlAccessType;
@@ -40,7 +41,7 @@ import java.util.Date;
 /**
  * @author Kristian Nordal
  */
-@XmlRootElement( name = "period" )
+@XmlRootElement( name = "period", namespace = Dxf2Namespace.NAMESPACE )
 @XmlAccessorType( value = XmlAccessType.NONE )
 public class Period
     extends BaseNameableObject implements Weighted

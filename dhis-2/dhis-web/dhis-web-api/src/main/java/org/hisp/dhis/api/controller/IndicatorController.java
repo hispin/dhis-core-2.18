@@ -27,6 +27,7 @@ package org.hisp.dhis.api.controller;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import org.hisp.dhis.api.utils.WebLinkPopulatorListener;
 import org.hisp.dhis.indicator.Indicator;
 import org.hisp.dhis.indicator.IndicatorService;
 import org.hisp.dhis.indicator.Indicators;
@@ -37,6 +38,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 
 /**
@@ -50,10 +52,13 @@ public class IndicatorController
     private IndicatorService indicatorService;
 
     @RequestMapping( method = RequestMethod.GET )
-    public String getIndicators( Model model )
+    public String getIndicators( Model model, HttpServletRequest request )
     {
         Indicators indicators = new Indicators();
         indicators.setIndicators( new ArrayList<Indicator>( indicatorService.getAllIndicators() ) );
+
+        WebLinkPopulatorListener listener = new WebLinkPopulatorListener( request );
+        listener.beforeMarshal( indicators );
 
         model.addAttribute( "model", indicators );
 
@@ -61,9 +66,12 @@ public class IndicatorController
     }
 
     @RequestMapping( value = "/{uid}", method = RequestMethod.GET )
-    public String getIndicator( @PathVariable( "uid" ) String uid, Model model )
+    public String getIndicator( @PathVariable( "uid" ) String uid, Model model, HttpServletRequest request )
     {
         Indicator indicator = indicatorService.getIndicator( uid );
+
+        WebLinkPopulatorListener listener = new WebLinkPopulatorListener( request );
+        listener.beforeMarshal( indicator );
 
         model.addAttribute( "model", indicator );
 

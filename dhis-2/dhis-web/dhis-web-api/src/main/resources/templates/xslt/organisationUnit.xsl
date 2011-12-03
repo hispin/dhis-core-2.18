@@ -64,7 +64,7 @@
 
   <xsl:template match="parent">
     <h3>Parent OrganisationUnit</h3>
-    <table>
+    <table border="1">
       <xsl:apply-templates select="." mode="row"/>
     </table>
   </xsl:template>

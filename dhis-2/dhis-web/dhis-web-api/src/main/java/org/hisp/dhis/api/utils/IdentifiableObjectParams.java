@@ -1,4 +1,4 @@
-package org.hisp.dhis.user;
+package org.hisp.dhis.api.utils;
 
 /*
  * Copyright (c) 2004-2011, University of Oslo
@@ -27,35 +27,20 @@ package org.hisp.dhis.user;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import org.codehaus.jackson.annotate.JsonProperty;
-import org.hisp.dhis.common.BaseLinkableObject;
-import org.hisp.dhis.common.Dxf2Namespace;
-
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlRootElement;
-import java.util.ArrayList;
-import java.util.List;
-
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
-@XmlRootElement( name = "users", namespace = Dxf2Namespace.NAMESPACE )
-@XmlAccessorType( value = XmlAccessType.NONE )
-public class Users extends BaseLinkableObject
+public class IdentifiableObjectParams
 {
-    private List<User> users = new ArrayList<User>();
+    private boolean links = true;
 
-    @XmlElement( name = "user" )
-    @JsonProperty( value = "users" )
-    public List<User> getUsers()
+    public boolean hasLinks()
     {
-        return users;
+        return links;
     }
 
-    public void setUsers( List<User> users )
+    public void setLinks( boolean links )
     {
-        this.users = users;
+        this.links = links;
     }
 }

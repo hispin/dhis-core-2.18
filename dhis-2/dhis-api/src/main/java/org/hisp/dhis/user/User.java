@@ -1,7 +1,7 @@
 package org.hisp.dhis.user;
 
 /*
- * Copyright (c) 2004-2010, University of Oslo
+ * Copyright (c) 2004-2011, University of Oslo
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -30,6 +30,7 @@ package org.hisp.dhis.user;
 import org.apache.commons.collections.CollectionUtils;
 import org.codehaus.jackson.annotate.JsonProperty;
 import org.hisp.dhis.attribute.AttributeValue;
+import org.hisp.dhis.common.Dxf2Namespace;
 import org.hisp.dhis.common.IdentifiableObjectUtils;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 
@@ -46,7 +47,7 @@ import java.util.Set;
  * @author Nguyen Hong Duc
  * @version $Id: User.java 5554 2008-08-20 09:18:38Z abyot $
  */
-@XmlRootElement( name = "user" )
+@XmlRootElement( name = "user", namespace = Dxf2Namespace.NAMESPACE )
 @XmlAccessorType( value = XmlAccessType.NONE )
 public class User
     implements Serializable

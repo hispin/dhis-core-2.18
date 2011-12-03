@@ -30,6 +30,7 @@ package org.hisp.dhis.dataelement;
 import org.codehaus.jackson.annotate.JsonProperty;
 import org.codehaus.jackson.map.annotate.JsonSerialize;
 import org.hisp.dhis.common.BaseIdentifiableObject;
+import org.hisp.dhis.common.Dxf2Namespace;
 import org.hisp.dhis.common.adapter.BaseIdentifiableObjectXmlAdapter;
 import org.hisp.dhis.common.adapter.JsonIdentifiableObjectListSerializer;
 import org.hisp.dhis.dataelement.comparator.DataElementGroupNameComparator;
@@ -48,7 +49,7 @@ import java.util.List;
  *
  * @author Lars Helge Overland
  */
-@XmlRootElement( name = "dataElementGroupSet" )
+@XmlRootElement( name = "dataElementGroupSet", namespace = Dxf2Namespace.NAMESPACE )
 @XmlAccessorType( value = XmlAccessType.NONE )
 public class DataElementGroupSet extends BaseIdentifiableObject
 {

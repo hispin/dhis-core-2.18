@@ -45,5 +45,55 @@
             </td>
         </tr>
     </xsl:template>
+    
+    <!-- special case - TODO handle this better -->
+    <xsl:template match="parent" mode="row">
+        <xsl:variable name="root">/api/organisationUnits</xsl:variable>
+        <tr>
+            <td>
+                <xsl:value-of select="@name"/>
+            </td>
+            <td>
+                <xsl:element name="a">
+                    <xsl:attribute name="href">
+                        <xsl:value-of select="concat($root,'/',@id)"/>
+                    </xsl:attribute>
+                    <xsl:text>html</xsl:text>
+                </xsl:element>
+            </td>
+            <td>
+                <xsl:element name="a">
+                    <xsl:attribute name="href">
+                        <xsl:value-of select="concat($root,'/',@id,'.xml')"/>
+                    </xsl:attribute>
+                    <xsl:text>xml</xsl:text>
+                </xsl:element>
+            </td>
+            <td>
+                <xsl:element name="a">
+                    <xsl:attribute name="href">
+                        <xsl:value-of select="concat($root,'/',@id,'.json')"/>
+                    </xsl:attribute>
+                    <xsl:text>json</xsl:text>
+                </xsl:element>
+            </td>
+            <td>
+                <xsl:element name="a">
+                    <xsl:attribute name="href">
+                        <xsl:value-of select="concat($root,'/',@id,'.jsonp')"/>
+                    </xsl:attribute>
+                    <xsl:text>jsonp</xsl:text>
+                </xsl:element>
+            </td>
+            <td>
+                <xsl:element name="a">
+                    <xsl:attribute name="href">
+                        <xsl:value-of select="concat($root,'/',@id,'.pdf')"/>
+                    </xsl:attribute>
+                    <xsl:text>pdf</xsl:text>
+                </xsl:element>
+            </td>
+        </tr>
+    </xsl:template>
 
 </xsl:stylesheet>

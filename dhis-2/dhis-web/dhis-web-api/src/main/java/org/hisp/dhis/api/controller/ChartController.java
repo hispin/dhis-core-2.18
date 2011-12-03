@@ -27,6 +27,8 @@ package org.hisp.dhis.api.controller;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import org.hisp.dhis.api.utils.IdentifiableObjectParams;
+import org.hisp.dhis.api.utils.WebLinkPopulatorListener;
 import org.hisp.dhis.chart.Chart;
 import org.hisp.dhis.chart.ChartService;
 import org.hisp.dhis.chart.Charts;
@@ -37,9 +39,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
@@ -52,10 +53,16 @@ public class ChartController
     private ChartService chartService;
 
     @RequestMapping( method = RequestMethod.GET )
-    public String getCharts( Model model )
+    public String getCharts( IdentifiableObjectParams params, Model model, HttpServletRequest request )
     {
         Charts charts = new Charts();
         charts.setCharts( new ArrayList<Chart>( chartService.getAllCharts() ) );
+
+        if ( params.hasLinks() )
+        {
+            WebLinkPopulatorListener listener = new WebLinkPopulatorListener( request );
+            listener.beforeMarshal( charts );
+        }
 
         model.addAttribute( "model", charts );
 
@@ -63,9 +70,15 @@ public class ChartController
     }
 
     @RequestMapping( value = "/{uid}", method = RequestMethod.GET )
-    public String getChart( @PathVariable( "uid" ) String uid, Model model )
+    public String getChart( @PathVariable( "uid" ) String uid, IdentifiableObjectParams params, Model model, HttpServletRequest request )
     {
         Chart chart = chartService.getChart( uid );
+
+        if ( params.hasLinks() )
+        {
+            WebLinkPopulatorListener listener = new WebLinkPopulatorListener( request );
+            listener.beforeMarshal( chart );
+        }
 
         model.addAttribute( "model", chart );
 

@@ -28,6 +28,7 @@ package org.hisp.dhis.chart;
  */
 
 import org.hisp.dhis.common.BaseIdentifiableObject;
+import org.hisp.dhis.common.Dxf2Namespace;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -38,7 +39,7 @@ import java.util.Set;
 /**
  * @author Dang Duy Hieu
  */
-@XmlRootElement( name = "chartGroup" )
+@XmlRootElement( name = "chartGroup", namespace = Dxf2Namespace.NAMESPACE )
 @XmlAccessorType( value = XmlAccessType.NONE )
 public class ChartGroup extends BaseIdentifiableObject
 {

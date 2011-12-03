@@ -28,6 +28,7 @@ package org.hisp.dhis.validation;
  */
 
 import org.hisp.dhis.common.BaseIdentifiableObject;
+import org.hisp.dhis.common.Dxf2Namespace;
 import org.hisp.dhis.expression.Expression;
 import org.hisp.dhis.expression.Operator;
 import org.hisp.dhis.period.PeriodType;
@@ -41,7 +42,7 @@ import java.util.Set;
 /**
  * @author Kristian Nordal
  */
-@XmlRootElement( name = "validationRule" )
+@XmlRootElement( name = "validationRule", namespace = Dxf2Namespace.NAMESPACE )
 @XmlAccessorType( value = XmlAccessType.NONE )
 public class ValidationRule
     extends BaseIdentifiableObject

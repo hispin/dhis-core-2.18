@@ -29,6 +29,7 @@ package org.hisp.dhis.indicator;
 
 import org.codehaus.jackson.annotate.JsonProperty;
 import org.hisp.dhis.common.BaseIdentifiableObject;
+import org.hisp.dhis.common.Dxf2Namespace;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -38,7 +39,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 /**
  * @author Lars Helge Overland
  */
-@XmlRootElement( name = "indicatorType" )
+@XmlRootElement( name = "indicatorType", namespace = Dxf2Namespace.NAMESPACE )
 @XmlAccessorType( value = XmlAccessType.NONE )
 public class IndicatorType extends BaseIdentifiableObject
 {

@@ -32,6 +32,7 @@ import org.codehaus.jackson.annotate.JsonProperty;
 import org.codehaus.jackson.map.annotate.JsonSerialize;
 import org.hisp.dhis.attribute.AttributeValue;
 import org.hisp.dhis.common.BaseNameableObject;
+import org.hisp.dhis.common.Dxf2Namespace;
 import org.hisp.dhis.common.adapter.*;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataset.DataSet;
@@ -47,7 +48,7 @@ import java.util.regex.Pattern;
 /**
  * @author Kristian Nordal
  */
-@XmlRootElement( name = "organisationUnit" )
+@XmlRootElement( name = "organisationUnit", namespace = Dxf2Namespace.NAMESPACE )
 @XmlAccessorType( value = XmlAccessType.NONE )
 public class OrganisationUnit extends BaseNameableObject
 {
