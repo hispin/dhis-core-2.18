@@ -29,30 +29,19 @@ package org.hisp.dhis.jdbc.statementbuilder;
 
 import static org.hisp.dhis.system.util.DateUtils.getSqlDateString;
 
-import org.hisp.dhis.jdbc.StatementBuilder;
-import org.hisp.dhis.period.Period;
 import java.util.List;
+
+import org.hisp.dhis.period.Period;
 /**
  * @author Lars Helge Overland
  * @version $Id: H2StatementBuilder.java 5715 2008-09-17 14:05:28Z larshelg $
  */
 public class H2StatementBuilder
-    implements StatementBuilder
+    extends AbstractStatementBuilder
 {
     public String getDoubleColumnType()
     {
         return "DOUBLE";
-    }
-    
-    public String encode( String value )
-    {
-        if ( value != null )
-        {
-            value = value.endsWith( "\\" ) ? value.substring( 0, value.length() - 1 ) : value;
-            value = value.replaceAll( QUOTE, QUOTE + QUOTE );
-        }
-        
-        return QUOTE + value + QUOTE;
     }
     
     public String getPeriodIdentifierStatement( Period period )
@@ -62,53 +51,7 @@ public class H2StatementBuilder
             "AND startdate='" + getSqlDateString( period.getStartDate() ) + "' " +
             "AND enddate='" + getSqlDateString( period.getEndDate() ) + "'";
     }
-    
-    public String getCreateAggregatedDataValueTable()
-    {
-        return
-            "CREATE TABLE aggregateddatavalue ( " +
-            "dataelementid INTEGER, " +
-            "categoryoptioncomboid INTEGER, " +
-            "periodid INTEGER, " +
-            "organisationunitid INTEGER, " +
-            "periodtypeid INTEGER, " +
-            "level INTEGER, " +
-            "value DOUBLE, " +
-            "modified TIMESTAMP DEFAULT now() );";
-    }
-    
-    public String getCreateAggregatedIndicatorTable()
-    {
-        return
-            "CREATE TABLE aggregatedindicatorvalue ( " +
-            "indicatorid INTEGER, " +
-            "periodid INTEGER, " +
-            "organisationunitid INTEGER, " +
-            "periodtypeid INTEGER, " +
-            "level INTEGER, " +
-            "annualized VARCHAR( 10 ), " +
-            "factor DOUBLE, " +
-            "value DOUBLE, " +
-            "numeratorvalue DOUBLE, " +
-            "denominatorvalue DOUBLE, " +
-            "modified TIMESTAMP DEFAULT now() );";
-    }
-
-    public String getCreateDataSetCompletenessTable()
-    {
-        return
-            "CREATE TABLE aggregateddatasetcompleteness ( " +
-            "datasetid INTEGER, " +
-            "periodid INTEGER, " +
-            "periodname VARCHAR( 30 ), " +
-            "organisationunitid INTEGER, " +
-            "sources INTEGER, " +
-            "registrations INTEGER, " +
-            "registrationsOnTime INTEGER, " +
-            "value DOUBLE, " +
-            "valueOnTime DOUBLE );";
-    }
-    
+        
     public String getDeleteZeroDataValues()
     {
         return
