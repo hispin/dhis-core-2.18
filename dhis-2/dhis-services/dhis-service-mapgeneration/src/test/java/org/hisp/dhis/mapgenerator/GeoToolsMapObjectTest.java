@@ -6,6 +6,7 @@ import java.awt.Color;
 
 import org.hisp.dhis.DhisSpringTest;
 import org.hisp.dhis.mapgeneration.GeoToolsMapObject;
+import org.junit.Ignore;
 import org.junit.Test;
 
 /**
@@ -39,7 +40,7 @@ public class GeoToolsMapObjectTest extends DhisSpringTest {
 		assertEquals(41.423, geoToolsMapObject.getValue(), 0.00001);
 	}
 	
-	@Test
+	@Test @Ignore
 	public void testSetGetRadius()
 	{
 		geoToolsMapObject.setRadius(32);
