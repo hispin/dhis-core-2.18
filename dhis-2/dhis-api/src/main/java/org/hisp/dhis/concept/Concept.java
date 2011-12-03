@@ -28,6 +28,7 @@ package org.hisp.dhis.concept;
  */
 
 import org.hisp.dhis.common.BaseIdentifiableObject;
+import org.hisp.dhis.common.Dxf2Namespace;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -42,7 +43,7 @@ import javax.xml.bind.annotation.XmlRootElement;
  * 
  * @author Dang Duy Hieu
  */
-@XmlRootElement( name = "concept" )
+@XmlRootElement( name = "concept", namespace = Dxf2Namespace.NAMESPACE )
 @XmlAccessorType( value = XmlAccessType.NONE )
 public class Concept extends BaseIdentifiableObject
 {

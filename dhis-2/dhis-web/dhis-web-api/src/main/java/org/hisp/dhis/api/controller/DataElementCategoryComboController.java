@@ -27,6 +27,7 @@ package org.hisp.dhis.api.controller;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import org.hisp.dhis.api.utils.WebLinkPopulatorListener;
 import org.hisp.dhis.dataelement.DataElementCategoryCombo;
 import org.hisp.dhis.dataelement.DataElementCategoryCombos;
 import org.hisp.dhis.dataelement.DataElementCategoryService;
@@ -37,9 +38,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
@@ -52,10 +52,13 @@ public class DataElementCategoryComboController
     private DataElementCategoryService dataElementCategoryService;
 
     @RequestMapping( method = RequestMethod.GET )
-    public String getDataElementCategoryCombos( Model model )
+    public String getDataElementCategoryCombos( Model model, HttpServletRequest request )
     {
         DataElementCategoryCombos dataElementCategoryCombos = new DataElementCategoryCombos();
         dataElementCategoryCombos.setDataElementCategoryCombos( new ArrayList<DataElementCategoryCombo>( dataElementCategoryService.getAllDataElementCategoryCombos() ) );
+
+        WebLinkPopulatorListener listener = new WebLinkPopulatorListener( request );
+        listener.beforeMarshal( dataElementCategoryCombos );
 
         model.addAttribute( "model", dataElementCategoryCombos );
 
@@ -63,9 +66,12 @@ public class DataElementCategoryComboController
     }
 
     @RequestMapping( value = "/{uid}", method = RequestMethod.GET )
-    public String getDataElementCategoryCombo( @PathVariable( "uid" ) String uid, Model model )
+    public String getDataElementCategoryCombo( @PathVariable( "uid" ) String uid, Model model, HttpServletRequest request )
     {
         DataElementCategoryCombo dataElementCategoryCombo = dataElementCategoryService.getDataElementCategoryCombo( uid );
+
+        WebLinkPopulatorListener listener = new WebLinkPopulatorListener( request );
+        listener.beforeMarshal( dataElementCategoryCombo );
 
         model.addAttribute( "model", dataElementCategoryCombo );
 

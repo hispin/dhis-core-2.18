@@ -24,7 +24,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 @RequestMapping( value = "/dataValueSets" )
 public class DataValueSetController
 {
-
     private static final Log log = LogFactory.getLog( DataValueSetController.class );
 
     @Autowired
@@ -34,9 +33,7 @@ public class DataValueSetController
     private UserService userService;
 
     @RequestMapping( method = RequestMethod.POST )
-    public void storeDataValueSet( @RequestBody
-    DataValueSet dataValueSet, @RequestParam( required = false )
-    String phoneNumber )
+    public void storeDataValueSet( @RequestBody DataValueSet dataValueSet, @RequestParam( required = false ) String phoneNumber )
     {
         if ( phoneNumber != null && !phoneNumber.trim().isEmpty() )
         {
@@ -66,7 +63,7 @@ public class DataValueSetController
 
     /**
      * Find orgunit corresponding to the registered phone number.
-     * 
+     *
      * @param phoneNumber The phone number to look up
      * @return the organisation unit uid
      * @throws IllegalArgumentException if

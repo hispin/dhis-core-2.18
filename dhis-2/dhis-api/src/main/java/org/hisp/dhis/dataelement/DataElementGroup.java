@@ -29,6 +29,7 @@ package org.hisp.dhis.dataelement;
 
 import org.codehaus.jackson.map.annotate.JsonSerialize;
 import org.hisp.dhis.common.BaseIdentifiableObject;
+import org.hisp.dhis.common.Dxf2Namespace;
 import org.hisp.dhis.common.adapter.BaseIdentifiableObjectXmlAdapter;
 import org.hisp.dhis.common.adapter.JsonIdentifiableObjectSetSerializer;
 
@@ -43,7 +44,7 @@ import java.util.Set;
  * @author Kristian Nordal
  * @version $Id: DataElementGroup.java 5540 2008-08-19 10:47:07Z larshelg $
  */
-@XmlRootElement( name = "dataElementGroup" )
+@XmlRootElement( name = "dataElementGroup", namespace = Dxf2Namespace.NAMESPACE )
 @XmlAccessorType( value = XmlAccessType.NONE )
 public class DataElementGroup extends BaseIdentifiableObject
 {

@@ -27,6 +27,7 @@ package org.hisp.dhis.api.controller;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import org.hisp.dhis.api.utils.WebLinkPopulatorListener;
 import org.hisp.dhis.dataelement.DataElementGroupSet;
 import org.hisp.dhis.dataelement.DataElementGroupSets;
 import org.hisp.dhis.dataelement.DataElementService;
@@ -37,6 +38,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 
 /**
@@ -50,10 +52,13 @@ public class DataElementGroupSetController
     private DataElementService dataElementService;
 
     @RequestMapping( method = RequestMethod.GET )
-    public String getDataElementGroupSets( Model model )
+    public String getDataElementGroupSets( Model model, HttpServletRequest request )
     {
         DataElementGroupSets dataElementGroupSets = new DataElementGroupSets();
         dataElementGroupSets.setDataElementGroupSets( new ArrayList<DataElementGroupSet>( dataElementService.getAllDataElementGroupSets() ) );
+
+        WebLinkPopulatorListener listener = new WebLinkPopulatorListener( request );
+        listener.beforeMarshal( dataElementGroupSets );
 
         model.addAttribute( "model", dataElementGroupSets );
 
@@ -61,9 +66,12 @@ public class DataElementGroupSetController
     }
 
     @RequestMapping( value = "/{uid}", method = RequestMethod.GET )
-    public String getDataElementGroupSet( @PathVariable( "uid" ) String uid, Model model )
+    public String getDataElementGroupSet( @PathVariable( "uid" ) String uid, Model model, HttpServletRequest request )
     {
         DataElementGroupSet dataElementGroupSet = dataElementService.getDataElementGroupSet( uid );
+
+        WebLinkPopulatorListener listener = new WebLinkPopulatorListener( request );
+        listener.beforeMarshal( dataElementGroupSet );
 
         model.addAttribute( "model", dataElementGroupSet );
 

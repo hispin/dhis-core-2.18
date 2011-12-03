@@ -29,6 +29,7 @@ package org.hisp.dhis.dataset;
 
 import org.codehaus.jackson.annotate.JsonProperty;
 import org.codehaus.jackson.map.annotate.JsonSerialize;
+import org.hisp.dhis.common.Dxf2Namespace;
 import org.hisp.dhis.common.ImportableObject;
 import org.hisp.dhis.common.adapter.BaseNameableObjectXmlAdapter;
 import org.hisp.dhis.common.adapter.JsonDateSerializer;
@@ -46,7 +47,7 @@ import java.util.Date;
 /**
  * @author Lars Helge Overland
  */
-@XmlRootElement( name = "completeDataSetRegistration" )
+@XmlRootElement( name = "completeDataSetRegistration", namespace = Dxf2Namespace.NAMESPACE )
 @XmlAccessorType( value = XmlAccessType.NONE )
 public class CompleteDataSetRegistration
     implements ImportableObject, Serializable

@@ -30,6 +30,7 @@ package org.hisp.dhis.chart;
 import org.codehaus.jackson.annotate.JsonProperty;
 import org.codehaus.jackson.map.annotate.JsonSerialize;
 import org.hisp.dhis.common.BaseIdentifiableObject;
+import org.hisp.dhis.common.Dxf2Namespace;
 import org.hisp.dhis.common.adapter.BaseNameableObjectXmlAdapter;
 import org.hisp.dhis.common.adapter.JsonNameableObjectListSerializer;
 import org.hisp.dhis.dataelement.DataElement;
@@ -50,7 +51,7 @@ import java.util.Set;
 /**
  * @author Lars Helge Overland
  */
-@XmlRootElement( name = "chart" )
+@XmlRootElement( name = "chart", namespace = Dxf2Namespace.NAMESPACE )
 @XmlAccessorType( value = XmlAccessType.NONE )
 public class Chart
     extends BaseIdentifiableObject

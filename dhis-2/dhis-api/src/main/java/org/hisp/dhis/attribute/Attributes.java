@@ -1,5 +1,3 @@
-package org.hisp.dhis.user;
-
 /*
  * Copyright (c) 2004-2011, University of Oslo
  * All rights reserved.
@@ -27,6 +25,8 @@ package org.hisp.dhis.user;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+package org.hisp.dhis.attribute;
+
 import org.codehaus.jackson.annotate.JsonProperty;
 import org.hisp.dhis.common.BaseLinkableObject;
 import org.hisp.dhis.common.Dxf2Namespace;
@@ -41,21 +41,21 @@ import java.util.List;
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
-@XmlRootElement( name = "users", namespace = Dxf2Namespace.NAMESPACE )
+@XmlRootElement( name = "attributes", namespace = Dxf2Namespace.NAMESPACE )
 @XmlAccessorType( value = XmlAccessType.NONE )
-public class Users extends BaseLinkableObject
+public class Attributes extends BaseLinkableObject
 {
-    private List<User> users = new ArrayList<User>();
+    private List<Attribute> attributes = new ArrayList<Attribute>();
 
-    @XmlElement( name = "user" )
-    @JsonProperty( value = "users" )
-    public List<User> getUsers()
+    @XmlElement( name = "attribute" )
+    @JsonProperty( value = "attributes" )
+    public List<Attribute> getAttributes()
     {
-        return users;
+        return attributes;
     }
 
-    public void setUsers( List<User> users )
+    public void setAttributes( List<Attribute> attributes )
     {
-        this.users = users;
+        this.attributes = attributes;
     }
 }

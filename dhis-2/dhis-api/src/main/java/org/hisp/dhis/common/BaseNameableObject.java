@@ -34,7 +34,7 @@ import javax.xml.bind.annotation.*;
 /**
  * @author Bob Jolliffe
  */
-@XmlRootElement( name = "nameableObject" )
+@XmlRootElement( name = "nameableObject", namespace = Dxf2Namespace.NAMESPACE )
 @XmlAccessorType( value = XmlAccessType.NONE )
 public class BaseNameableObject
     extends BaseIdentifiableObject implements NameableObject

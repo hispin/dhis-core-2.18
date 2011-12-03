@@ -28,6 +28,7 @@ package org.hisp.dhis.validation;
  */
 
 import org.hisp.dhis.common.BaseIdentifiableObject;
+import org.hisp.dhis.common.Dxf2Namespace;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -38,7 +39,7 @@ import java.util.Set;
 /**
  * @author Lars Helge Overland
  */
-@XmlRootElement( name = "validationRuleGroup" )
+@XmlRootElement( name = "validationRuleGroup", namespace = Dxf2Namespace.NAMESPACE )
 @XmlAccessorType( value = XmlAccessType.NONE )
 public class ValidationRuleGroup
     extends BaseIdentifiableObject

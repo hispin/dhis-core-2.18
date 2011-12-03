@@ -30,6 +30,7 @@ package org.hisp.dhis.dataelement;
 import org.apache.commons.lang.StringEscapeUtils;
 import org.codehaus.jackson.annotate.JsonProperty;
 import org.codehaus.jackson.map.annotate.JsonSerialize;
+import org.hisp.dhis.common.Dxf2Namespace;
 import org.hisp.dhis.common.adapter.BaseNameableObjectXmlAdapter;
 import org.hisp.dhis.common.adapter.JsonNameableObjectSerializer;
 
@@ -46,7 +47,7 @@ import java.util.List;
  *
  * @author Abyot Asalefew
  */
-@XmlRootElement( name = "dataElementOperand" )
+@XmlRootElement( name = "dataElementOperand", namespace = Dxf2Namespace.NAMESPACE )
 @XmlAccessorType( value = XmlAccessType.NONE )
 public class DataElementOperand
     implements Serializable, Comparable<DataElementOperand>

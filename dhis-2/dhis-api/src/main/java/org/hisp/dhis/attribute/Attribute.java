@@ -27,10 +27,13 @@
 
 package org.hisp.dhis.attribute;
 
+import org.codehaus.jackson.annotate.JsonProperty;
 import org.hisp.dhis.common.BaseIdentifiableObject;
+import org.hisp.dhis.common.Dxf2Namespace;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import java.util.HashSet;
 import java.util.Set;
@@ -38,7 +41,7 @@ import java.util.Set;
 /**
  * @author mortenoh
  */
-@XmlRootElement( name = "attribute" )
+@XmlRootElement( name = "attribute", namespace = Dxf2Namespace.NAMESPACE )
 @XmlAccessorType( value = XmlAccessType.NONE )
 public class Attribute extends BaseIdentifiableObject
 {
@@ -74,6 +77,8 @@ public class Attribute extends BaseIdentifiableObject
         this.valueType = valueType;
     }
 
+    @XmlElement
+    @JsonProperty
     public String getValueType()
     {
         return valueType;
@@ -84,6 +89,8 @@ public class Attribute extends BaseIdentifiableObject
         this.valueType = valueType;
     }
 
+    @XmlElement
+    @JsonProperty
     public boolean isMandatory()
     {
         return mandatory;
@@ -94,6 +101,8 @@ public class Attribute extends BaseIdentifiableObject
         this.mandatory = mandatory;
     }
 
+    @XmlElement
+    @JsonProperty
     public boolean isDataElementAttribute()
     {
         return dataElementAttribute;
@@ -104,6 +113,8 @@ public class Attribute extends BaseIdentifiableObject
         this.dataElementAttribute = dataElementAttribute;
     }
 
+    @XmlElement
+    @JsonProperty
     public boolean isIndicatorAttribute()
     {
         return indicatorAttribute;
@@ -114,6 +125,8 @@ public class Attribute extends BaseIdentifiableObject
         this.indicatorAttribute = indicatorAttribute;
     }
 
+    @XmlElement
+    @JsonProperty
     public boolean isOrganisationUnitAttribute()
     {
         return organisationUnitAttribute;
@@ -124,16 +137,8 @@ public class Attribute extends BaseIdentifiableObject
         this.organisationUnitAttribute = organisationUnitAttribute;
     }
 
-    public void setAttributeValues( Set<AttributeValue> attributeValues )
-    {
-        this.attributeValues = attributeValues;
-    }
-
-    public void setSortOrder( Integer sortOrder )
-    {
-        this.sortOrder = sortOrder;
-    }
-
+    @XmlElement
+    @JsonProperty
     public boolean isUserAttribute()
     {
         return userAttribute;
@@ -149,8 +154,20 @@ public class Attribute extends BaseIdentifiableObject
         return attributeValues;
     }
 
+    public void setAttributeValues( Set<AttributeValue> attributeValues )
+    {
+        this.attributeValues = attributeValues;
+    }
+
+    @XmlElement
+    @JsonProperty
     public Integer getSortOrder()
     {
         return sortOrder;
+    }
+
+    public void setSortOrder( Integer sortOrder )
+    {
+        this.sortOrder = sortOrder;
     }
 }

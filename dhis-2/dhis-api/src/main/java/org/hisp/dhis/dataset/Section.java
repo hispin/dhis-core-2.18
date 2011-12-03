@@ -25,6 +25,7 @@ package org.hisp.dhis.dataset;
 
 import org.codehaus.jackson.annotate.JsonProperty;
 import org.codehaus.jackson.map.annotate.JsonSerialize;
+import org.hisp.dhis.common.Dxf2Namespace;
 import org.hisp.dhis.common.adapter.BaseIdentifiableObjectXmlAdapter;
 import org.hisp.dhis.common.adapter.JsonIdentifiableObjectListSerializer;
 import org.hisp.dhis.common.adapter.JsonIdentifiableObjectSetSerializer;
@@ -40,7 +41,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-@XmlRootElement( name = "section" )
+@XmlRootElement( name = "section", namespace = Dxf2Namespace.NAMESPACE )
 @XmlAccessorType( value = XmlAccessType.NONE )
 public class Section
     implements Serializable

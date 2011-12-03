@@ -1,4 +1,4 @@
-package org.hisp.dhis.user;
+package org.hisp.dhis.common;
 
 /*
  * Copyright (c) 2004-2011, University of Oslo
@@ -28,34 +28,29 @@ package org.hisp.dhis.user;
  */
 
 import org.codehaus.jackson.annotate.JsonProperty;
-import org.hisp.dhis.common.BaseLinkableObject;
-import org.hisp.dhis.common.Dxf2Namespace;
 
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlRootElement;
-import java.util.ArrayList;
-import java.util.List;
+import javax.xml.bind.annotation.XmlAttribute;
 
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
-@XmlRootElement( name = "users", namespace = Dxf2Namespace.NAMESPACE )
-@XmlAccessorType( value = XmlAccessType.NONE )
-public class Users extends BaseLinkableObject
+public class BaseLinkableObject implements LinkableObject
 {
-    private List<User> users = new ArrayList<User>();
+    /**
+     * As part of the marshalling process, this field can be set to indicate a link to this
+     * identifiable object (will be used on the web layer for navigating the REST API)
+     */
+    private String link;
 
-    @XmlElement( name = "user" )
-    @JsonProperty( value = "users" )
-    public List<User> getUsers()
+    @XmlAttribute
+    @JsonProperty
+    public String getLink()
     {
-        return users;
+        return link;
     }
 
-    public void setUsers( List<User> users )
+    public void setLink( String link )
     {
-        this.users = users;
+        this.link = link;
     }
 }

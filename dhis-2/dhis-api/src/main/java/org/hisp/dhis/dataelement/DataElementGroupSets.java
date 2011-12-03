@@ -28,6 +28,8 @@ package org.hisp.dhis.dataelement;
  */
 
 import org.codehaus.jackson.annotate.JsonProperty;
+import org.hisp.dhis.common.BaseLinkableObject;
+import org.hisp.dhis.common.Dxf2Namespace;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -39,16 +41,11 @@ import java.util.List;
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
-@XmlRootElement( name = "dataElementGroupSets" )
+@XmlRootElement( name = "dataElementGroupSets", namespace = Dxf2Namespace.NAMESPACE )
 @XmlAccessorType( value = XmlAccessType.NONE )
-public class DataElementGroupSets
+public class DataElementGroupSets extends BaseLinkableObject
 {
     private List<DataElementGroupSet> dataElementGroupSets = new ArrayList<DataElementGroupSet>();
-
-    public DataElementGroupSets()
-    {
-
-    }
 
     @XmlElement( name = "dataElementGroupSet" )
     @JsonProperty( value = "dataElementGroupSets" )

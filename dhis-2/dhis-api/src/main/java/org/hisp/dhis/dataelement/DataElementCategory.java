@@ -29,6 +29,7 @@ package org.hisp.dhis.dataelement;
 
 import org.codehaus.jackson.map.annotate.JsonSerialize;
 import org.hisp.dhis.common.BaseIdentifiableObject;
+import org.hisp.dhis.common.Dxf2Namespace;
 import org.hisp.dhis.common.adapter.BaseNameableObjectXmlAdapter;
 import org.hisp.dhis.common.adapter.JsonNameableObjectListSerializer;
 import org.hisp.dhis.concept.Concept;
@@ -46,7 +47,7 @@ import java.util.List;
  *
  * @author Abyot Asalefew
  */
-@XmlRootElement( name = "dataElementCategory" )
+@XmlRootElement( name = "dataElementCategory", namespace = Dxf2Namespace.NAMESPACE )
 @XmlAccessorType( value = XmlAccessType.NONE )
 public class DataElementCategory extends BaseIdentifiableObject
 {

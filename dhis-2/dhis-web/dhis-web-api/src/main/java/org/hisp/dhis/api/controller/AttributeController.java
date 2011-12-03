@@ -1,4 +1,4 @@
-package org.hisp.dhis.user;
+package org.hisp.dhis.api.controller;
 
 /*
  * Copyright (c) 2004-2011, University of Oslo
@@ -27,35 +27,47 @@ package org.hisp.dhis.user;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import org.codehaus.jackson.annotate.JsonProperty;
-import org.hisp.dhis.common.BaseLinkableObject;
-import org.hisp.dhis.common.Dxf2Namespace;
+import org.hisp.dhis.attribute.Attribute;
+import org.hisp.dhis.attribute.AttributeService;
+import org.hisp.dhis.attribute.Attributes;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlRootElement;
+import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
-@XmlRootElement( name = "users", namespace = Dxf2Namespace.NAMESPACE )
-@XmlAccessorType( value = XmlAccessType.NONE )
-public class Users extends BaseLinkableObject
+@Controller
+@RequestMapping( value = "/attributes" )
+public class AttributeController
 {
-    private List<User> users = new ArrayList<User>();
+    @Autowired
+    private AttributeService attributeService;
 
-    @XmlElement( name = "user" )
-    @JsonProperty( value = "users" )
-    public List<User> getUsers()
+    @RequestMapping( method = RequestMethod.GET )
+    public String getAttributes( Model model, HttpServletRequest request )
     {
-        return users;
+        Attributes attributes = new Attributes();
+        attributes.setAttributes( new ArrayList<Attribute>( attributeService.getAllAttributes() ) );
+
+        model.addAttribute( "model", attributes );
+
+        return "attributes";
     }
 
-    public void setUsers( List<User> users )
+    @RequestMapping( value = "/{uid}", method = RequestMethod.GET )
+    public String getAttribute( @PathVariable( "uid" ) String uid, Model model, HttpServletRequest request )
     {
-        this.users = users;
+        Attribute attribute = attributeService.getAttribute( uid );
+
+        model.addAttribute( "model", attribute );
+
+        return "attribute";
     }
 }
