@@ -622,7 +622,7 @@ public class WebLinkPopulatorListener extends Marshaller.Listener
 
             buffer.append( "://" + request.getServerName() );
 
-            if ( request.getServerPort() != 80 || request.getServerPort() != 443 )
+            if ( request.getServerPort() != 80 && request.getServerPort() != 443 )
             {
                 buffer.append( ":" + request.getServerPort() );
             }
