@@ -120,7 +120,8 @@ implements Action
                 } 
                 
                 // Remove datasets which are nor mobile datasets
-                else if ( d.getMobile() == null || !d.getMobile())
+                //else if ( d.getMobile() == null || !d.getMobile())
+                else if ( !d.isMobile() )    
                 {
                    dataSetListIterator.remove();
                 }

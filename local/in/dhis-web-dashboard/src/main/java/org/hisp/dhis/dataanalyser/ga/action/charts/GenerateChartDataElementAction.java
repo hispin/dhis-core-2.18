@@ -384,7 +384,14 @@ public class GenerateChartDataElementAction
         {
             aggChecked = "0";
         }
-
+ /*      
+        System.out.println( ougGroupSetCB );
+        
+        if( ougGroupSetCB.equalsIgnoreCase( "false" ))
+        {
+            ougGroupSetCB = null;
+        }
+ */      
         // ----------------------------------------------------------------------
         // Period Info
         // ----------------------------------------------------------------------
@@ -648,6 +655,7 @@ public class GenerateChartDataElementAction
 
         if ( deSelection.equalsIgnoreCase( OPTIONCOMBO ) )
         {
+            System.out.println( "In side deOptionCombo "  + deSelection );
             Iterator<String> deIterator = selectedDataElements.iterator();
             while ( deIterator.hasNext() )
             {
@@ -674,7 +682,8 @@ public class GenerateChartDataElementAction
         }
 
         selectedServiceList = new ArrayList<Object>( dataElementList );
-
+        
+        System.out.println( "Size of selected OptionCombo List is " + selectedOptionComboList.size() );
         // ----------------------------------------------------------------------
         // OrgUnit Information
         // ----------------------------------------------------------------------
@@ -826,7 +835,7 @@ public class GenerateChartDataElementAction
                 decoc = decocList.get( serviceCount );
 
                 series[serviceCount] = dataElement.getName() + " : " + decoc.getName();
-
+                
                 CaseAggregationCondition caseAggregationCondition = caseAggregationConditionService
                     .getCaseAggregationCondition( dataElement, decoc );
 
@@ -882,25 +891,24 @@ public class GenerateChartDataElementAction
                 selectedDrillDownData.add( drillDownData );
 
                 Double aggDataValue = 0.0;
-
-                Iterator<DataElementCategoryOptionCombo> optionComboIterator = optionCombos.iterator();
-                while ( optionComboIterator.hasNext() )
+                
+                if ( deSelection.equalsIgnoreCase( OPTIONCOMBO ) )
                 {
-                    DataElementCategoryOptionCombo decoc1 = (DataElementCategoryOptionCombo) optionComboIterator.next();
-
+                    //System.out.println( " Inside deSelection.equalsIgnoreCase( OPTIONCOMBO ) "  );
                     if ( aggDataCB != null )
                     {
-                        Double temp = aggregationService.getAggregatedDataValue( dataElement, decoc1, startDate,
+                        Double temp = aggregationService.getAggregatedDataValue( dataElement, decoc, startDate,
                             endDate, orgUnit );
                         if ( temp != null )
                             aggDataValue += temp;
+                            //aggDataValue = temp;
                     }
                     else
                     {
                         Collection<Period> periods = periodService.getPeriodsBetweenDates( startDate, endDate );
                         for ( Period period : periods )
                         {
-                            DataValue dataValue = dataValueService.getDataValue( orgUnit, dataElement, period, decoc1 );
+                            DataValue dataValue = dataValueService.getDataValue( orgUnit, dataElement, period, decoc );
                             try
                             {
                                 aggDataValue += Double.parseDouble( dataValue.getValue() );
@@ -911,7 +919,40 @@ public class GenerateChartDataElementAction
                         }
                     }
                 }
+                else
+                {
+                    //System.out.println( " Inside not deSelection.equalsIgnoreCase( OPTIONCOMBO ) "  );
+                    Iterator<DataElementCategoryOptionCombo> optionComboIterator = optionCombos.iterator();
+                    while ( optionComboIterator.hasNext() )
+                    {
+                        DataElementCategoryOptionCombo decoc1 = (DataElementCategoryOptionCombo) optionComboIterator.next();
 
+                        if ( aggDataCB != null )
+                        {
+                            Double temp = aggregationService.getAggregatedDataValue( dataElement, decoc1, startDate,
+                                endDate, orgUnit );
+                            if ( temp != null )
+                                aggDataValue += temp;
+                                //aggDataValue = temp;
+                        }
+                        else
+                        {
+                            Collection<Period> periods = periodService.getPeriodsBetweenDates( startDate, endDate );
+                            for ( Period period : periods )
+                            {
+                                DataValue dataValue = dataValueService.getDataValue( orgUnit, dataElement, period, decoc1 );
+                                try
+                                {
+                                    aggDataValue += Double.parseDouble( dataValue.getValue() );
+                                }
+                                catch ( Exception e )
+                                {
+                                }
+                            }
+                        }
+                    }
+                }
+                //System.out.println( " Data is  : " + aggDataValue );
                 data[serviceCount][periodCount] = aggDataValue;
 
                 if ( dataElement.getType().equalsIgnoreCase( DataElement.VALUE_TYPE_INT ) )
@@ -934,7 +975,6 @@ public class GenerateChartDataElementAction
 
             serviceCount++;
         }
-
         dataElementChartResult = new DataElementChartResult( series, categories, data, chartTitle, xAxis_Title,
             yAxis_Title );
 
@@ -1003,16 +1043,11 @@ public class GenerateChartDataElementAction
                     Date endDate = selEndPeriodList.get( periodCount );
                     Collection<Period> periods = periodService.getPeriodsBetweenDates( startDate, endDate );
 
-                    Iterator<DataElementCategoryOptionCombo> optionComboIterator = optionCombos.iterator();
-                    while ( optionComboIterator.hasNext() )
+                    if ( deSelection.equalsIgnoreCase( OPTIONCOMBO ) )
                     {
-                        DataElementCategoryOptionCombo decoc1 = (DataElementCategoryOptionCombo) optionComboIterator
-                            .next();
-
                         if ( aggDataCB != null )
                         {
-                            Double tempAggDataValue = aggregationService.getAggregatedDataValue( dataElement, decoc1,
-                                startDate, endDate, orgChild );
+                            Double tempAggDataValue = aggregationService.getAggregatedDataValue( dataElement, decoc, startDate, endDate, orgChild );
                             if ( tempAggDataValue != null )
                                 aggDataValue += tempAggDataValue;
                         }
@@ -1020,14 +1055,45 @@ public class GenerateChartDataElementAction
                         {
                             for ( Period period : periods )
                             {
-                                DataValue dataValue = dataValueService.getDataValue( orgChild, dataElement, period,
-                                    decoc1 );
+                                DataValue dataValue = dataValueService.getDataValue( orgChild, dataElement, period, decoc );
                                 try
                                 {
                                     aggDataValue += Double.parseDouble( dataValue.getValue() );
                                 }
                                 catch ( Exception e )
                                 {
+                                }
+                            }
+                        }
+                    }
+                    else
+                    {
+                        Iterator<DataElementCategoryOptionCombo> optionComboIterator = optionCombos.iterator();
+                        while ( optionComboIterator.hasNext() )
+                        {
+                            DataElementCategoryOptionCombo decoc1 = (DataElementCategoryOptionCombo) optionComboIterator
+                                .next();
+
+                            if ( aggDataCB != null )
+                            {
+                                Double tempAggDataValue = aggregationService.getAggregatedDataValue( dataElement, decoc1,
+                                    startDate, endDate, orgChild );
+                                if ( tempAggDataValue != null )
+                                    aggDataValue += tempAggDataValue;
+                            }
+                            else
+                            {
+                                for ( Period period : periods )
+                                {
+                                    DataValue dataValue = dataValueService.getDataValue( orgChild, dataElement, period,
+                                        decoc1 );
+                                    try
+                                    {
+                                        aggDataValue += Double.parseDouble( dataValue.getValue() );
+                                    }
+                                    catch ( Exception e )
+                                    {
+                                    }
                                 }
                             }
                         }
@@ -1118,16 +1184,12 @@ public class GenerateChartDataElementAction
                 {
                     Date endDate = selEndPeriodList.get( periodCount );
                     Collection<Period> periods = periodService.getPeriodsBetweenDates( startDate, endDate );
-
-                    Iterator<DataElementCategoryOptionCombo> optionComboIterator = optionCombos.iterator();
-                    while ( optionComboIterator.hasNext() )
+                    
+                    if ( deSelection.equalsIgnoreCase( OPTIONCOMBO ) )
                     {
-                        DataElementCategoryOptionCombo decoc1 = (DataElementCategoryOptionCombo) optionComboIterator
-                            .next();
-
                         if ( aggDataCB != null )
                         {
-                            Double tempAggDataValue = aggregationService.getAggregatedDataValue( dataElement, decoc1,
+                            Double tempAggDataValue = aggregationService.getAggregatedDataValue( dataElement, decoc,
                                 startDate, endDate, orgunit );
                             if ( tempAggDataValue != null )
                                 aggDataValue += tempAggDataValue;
@@ -1137,13 +1199,45 @@ public class GenerateChartDataElementAction
                             for ( Period period : periods )
                             {
                                 DataValue dataValue = dataValueService.getDataValue( orgunit, dataElement, period,
-                                    decoc1 );
+                                    decoc );
                                 try
                                 {
                                     aggDataValue += Double.parseDouble( dataValue.getValue() );
                                 }
                                 catch ( Exception e )
                                 {
+                                }
+                            }
+                        }
+                    }
+                    else
+                    {
+                        Iterator<DataElementCategoryOptionCombo> optionComboIterator = optionCombos.iterator();
+                        while ( optionComboIterator.hasNext() )
+                        {
+                            DataElementCategoryOptionCombo decoc1 = (DataElementCategoryOptionCombo) optionComboIterator
+                                .next();
+
+                            if ( aggDataCB != null )
+                            {
+                                Double tempAggDataValue = aggregationService.getAggregatedDataValue( dataElement, decoc1,
+                                    startDate, endDate, orgunit );
+                                if ( tempAggDataValue != null )
+                                    aggDataValue += tempAggDataValue;
+                            }
+                            else
+                            {
+                                for ( Period period : periods )
+                                {
+                                    DataValue dataValue = dataValueService.getDataValue( orgunit, dataElement, period,
+                                        decoc1 );
+                                    try
+                                    {
+                                        aggDataValue += Double.parseDouble( dataValue.getValue() );
+                                    }
+                                    catch ( Exception e )
+                                    {
+                                    }
                                 }
                             }
                         }
@@ -1240,15 +1334,12 @@ public class GenerateChartDataElementAction
                 int orgGroupCount = 0;
                 for ( OrganisationUnit orgUnit : selOUGroupMemberList )
                 {
-                    Iterator<DataElementCategoryOptionCombo> optionComboIterator = optionCombos.iterator();
-                    while ( optionComboIterator.hasNext() )
+                    
+                    if ( deSelection.equalsIgnoreCase( OPTIONCOMBO ) )
                     {
-                        DataElementCategoryOptionCombo decoc1 = (DataElementCategoryOptionCombo) optionComboIterator
-                            .next();
-
                         if ( aggDataCB != null )
                         {
-                            Double tempAggDataValue = aggregationService.getAggregatedDataValue( dataElement, decoc1,
+                            Double tempAggDataValue = aggregationService.getAggregatedDataValue( dataElement, decoc,
                                 startDate, endDate, orgUnit );
                             if ( tempAggDataValue != null )
                                 aggDataValue += tempAggDataValue;
@@ -1258,13 +1349,45 @@ public class GenerateChartDataElementAction
                             for ( Period period : periods )
                             {
                                 DataValue dataValue = dataValueService.getDataValue( orgUnit, dataElement, period,
-                                    decoc1 );
+                                    decoc );
                                 try
                                 {
                                     aggDataValue += Double.parseDouble( dataValue.getValue() );
                                 }
                                 catch ( Exception e )
                                 {
+                                }
+                            }
+                        }
+                    }
+                    else
+                    {
+                        Iterator<DataElementCategoryOptionCombo> optionComboIterator = optionCombos.iterator();
+                        while ( optionComboIterator.hasNext() )
+                        {
+                            DataElementCategoryOptionCombo decoc1 = (DataElementCategoryOptionCombo) optionComboIterator
+                                .next();
+
+                            if ( aggDataCB != null )
+                            {
+                                Double tempAggDataValue = aggregationService.getAggregatedDataValue( dataElement, decoc1,
+                                    startDate, endDate, orgUnit );
+                                if ( tempAggDataValue != null )
+                                    aggDataValue += tempAggDataValue;
+                            }
+                            else
+                            {
+                                for ( Period period : periods )
+                                {
+                                    DataValue dataValue = dataValueService.getDataValue( orgUnit, dataElement, period,
+                                        decoc1 );
+                                    try
+                                    {
+                                        aggDataValue += Double.parseDouble( dataValue.getValue() );
+                                    }
+                                    catch ( Exception e )
+                                    {
+                                    }
                                 }
                             }
                         }
@@ -1374,17 +1497,13 @@ public class GenerateChartDataElementAction
                         Date endDate = selEndPeriodList.get( periodCount );
 
                         Collection<Period> periods = periodService.getPeriodsBetweenDates( startDate, endDate );
-
-                        Iterator<DataElementCategoryOptionCombo> optionComboIterator = optionCombos.iterator();
-                        while ( optionComboIterator.hasNext() )
+                        
+                        if ( deSelection.equalsIgnoreCase( OPTIONCOMBO ) )
                         {
-                            DataElementCategoryOptionCombo decoc1 = (DataElementCategoryOptionCombo) optionComboIterator
-                                .next();
-
                             if ( aggDataCB != null )
                             {
                                 Double tempAggDataValue = aggregationService.getAggregatedDataValue( dataElement,
-                                    decoc1, startDate, endDate, orgUnit );
+                                    decoc, startDate, endDate, orgUnit );
                                 if ( tempAggDataValue != null )
                                     aggDataValue += tempAggDataValue;
                             }
@@ -1393,7 +1512,7 @@ public class GenerateChartDataElementAction
                                 for ( Period period : periods )
                                 {
                                     DataValue dataValue = dataValueService.getDataValue( orgUnit, dataElement, period,
-                                        decoc1 );
+                                        decoc );
 
                                     try
                                     {
@@ -1402,6 +1521,40 @@ public class GenerateChartDataElementAction
                                     catch ( Exception e )
                                     {
 
+                                    }
+                                }
+                            }
+                        }
+                        else
+                        {
+                            Iterator<DataElementCategoryOptionCombo> optionComboIterator = optionCombos.iterator();
+                            while ( optionComboIterator.hasNext() )
+                            {
+                                DataElementCategoryOptionCombo decoc1 = (DataElementCategoryOptionCombo) optionComboIterator
+                                    .next();
+
+                                if ( aggDataCB != null )
+                                {
+                                    Double tempAggDataValue = aggregationService.getAggregatedDataValue( dataElement,
+                                        decoc1, startDate, endDate, orgUnit );
+                                    if ( tempAggDataValue != null )
+                                        aggDataValue += tempAggDataValue;
+                                }
+                                else
+                                {
+                                    for ( Period period : periods )
+                                    {
+                                        DataValue dataValue = dataValueService.getDataValue( orgUnit, dataElement, period,
+                                            decoc1 );
+
+                                        try
+                                        {
+                                            aggDataValue += Double.parseDouble( dataValue.getValue() );
+                                        }
+                                        catch ( Exception e )
+                                        {
+
+                                        }
                                     }
                                 }
                             }

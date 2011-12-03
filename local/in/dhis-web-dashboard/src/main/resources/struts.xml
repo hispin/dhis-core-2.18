@@ -8,7 +8,6 @@
 	<package name="dhis-web-dashboard" extends="dhis-web-commons"
 		namespace="/dhis-web-dashboard">
 		
-		
 		<action name="index"
 			class="org.hisp.dhis.dataanalyser.action.DashBoardHomePageAction">
 			<result name="success" type="velocity">/main.vm</result>
@@ -1031,7 +1030,22 @@
             <param name="page">/dhis-web-dashboard/BulkSMSForProgSummaryResult.vm</param>
             <param name="menu">/dhis-web-dashboard/menu.vm</param>
         </action>
+    <!-- BULK SMS: Excel Uploading -->
+		<action name="excelSheetBulkSMSForm"
+			class="org.hisp.dhis.dataanalyser.sms.action.BulkSMSForExcelSheetFormAction">
+			<result name="success" type="velocity">/main.vm</result>
+			<param name="menu">/dhis-web-dashboard/menu.vm</param>
+			<param name="page">/dhis-web-dashboard/BulkSMSForExcelSheetForm.vm</param>
+		</action>                   
+        <action name="excelSheetBulkSMSResultResult"
+            class="org.hisp.dhis.dataanalyser.sms.action.BulkSMSForExcelSheetResultAction">
+            <result name="success" type="velocity">/main.vm</result>
+            <param name="menu">/dhis-web-dashboard/menu.vm</param>
+            <param name="page">/dhis-web-dashboard/BulkSMSForExcelSheetResult.vm</param>
+			<interceptor-ref name="fileUploadStack"/>
+        </action>		
 
+		
 	</package>
 
 </struts>

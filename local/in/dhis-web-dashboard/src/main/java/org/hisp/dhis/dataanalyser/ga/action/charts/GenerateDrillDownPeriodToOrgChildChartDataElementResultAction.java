@@ -270,8 +270,8 @@ public class GenerateDrillDownPeriodToOrgChildChartDataElementResultAction imple
         String deSelection = values[8];
         String aggDataCB = values[9];
         
-        System.out.println( selStartPeriodList + ":" + selEndPeriodList + ":" +periodTypeLB + ":" +  dataElementList+ ":" + deSelection + ":" + selectedOptionComboList +  ":" + selectedOrgUnit + ":" + aggDataCB );
-        System.out.println( "Chart Generation Start Time is for drillDown: \t" + new Date() );
+        //System.out.println( selStartPeriodList + ":" + selEndPeriodList + ":" +periodTypeLB + ":" +  dataElementList+ ":" + deSelection + ":" + selectedOptionComboList +  ":" + selectedOrgUnit + ":" + aggDataCB );
+       // System.out.println( "Chart Generation Start Time is for drillDown: \t" + new Date() );
         
         if( orgUnitGroup == 0 && ( categoryLB.equalsIgnoreCase( CHILDREN ) || ( categoryLB.equalsIgnoreCase( SELECTED )) )) 
         {

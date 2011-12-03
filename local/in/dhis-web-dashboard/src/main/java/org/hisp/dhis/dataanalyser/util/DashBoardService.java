@@ -126,6 +126,31 @@ public class DashBoardService
     }
     
 
+    public Map<Integer, Integer> getOrgunitLevelMap( )
+    {
+        Map<Integer, Integer> orgUnitLevelMap = new HashMap<Integer, Integer>();
+        try
+        {
+            String query = "SELECT organisationunitid,level FROM _orgunitstructure";
+
+            SqlRowSet rs = jdbcTemplate.queryForRowSet( query );
+            
+            while ( rs.next() )
+            {                
+                Integer orgUnitId = rs.getInt( 1 );
+                Integer level = rs.getInt( 2 );
+                
+                orgUnitLevelMap.put( orgUnitId, level );
+            }
+            
+            return orgUnitLevelMap;
+        }
+        catch( Exception e )
+        {
+            throw new RuntimeException( "Illegal DataElement id", e );
+        }
+    }
+
     public String getPeriodIdForIDSPPopulation( )
     {
         String periodIdResult = "-1";
@@ -155,6 +180,34 @@ public class DashBoardService
             
     }
     
+    public Integer getConfirmedCount( String orgUnitIdsByComma, String dataSetId, String periodId )
+    {
+        Integer confirmedCount = 0;
+        
+        try
+        {
+            String query = "SELECT COUNT(*) FROM completedatasetregistration " +
+                                " WHERE sourceid IN ("+ orgUnitIdsByComma +") AND " +
+                                " datasetid = "+ dataSetId +" AND " +
+                                " periodid = "+periodId;
+    
+            SqlRowSet rs1 = jdbcTemplate.queryForRowSet( query );
+    
+            if ( rs1 != null && rs1.next() )
+            {
+                double temp = rs1.getDouble( 1 ); 
+                
+                confirmedCount =  (int) temp;
+            }
+        }
+        catch( Exception e )
+        {
+            throw new RuntimeException( e );
+        }
+        
+        return confirmedCount;
+    }
+    
     public String getPeriodIdForIDSPOutBreak( )
     {
         String periodIdResult = "-1";
@@ -169,7 +222,7 @@ public class DashBoardService
             int periodId = -1;
             
             String query = "SELECT periodid, startdate, enddate FROM period WHERE periodtypeid = 2 AND " +
-            		        " startdate <= '" + toDaysDate + "' AND enddate >= '"+ toDaysDate +"'";
+                                " startdate <= '" + toDaysDate + "' AND enddate >= '"+ toDaysDate +"'";
     
             SqlRowSet rs1 = jdbcTemplate.queryForRowSet( query );
             if ( rs1 != null && rs1.next() )
@@ -278,9 +331,9 @@ public class DashBoardService
             }
             
             query = "SELECT program.name, COUNT(*) FROM programinstance " +
-            		" INNER JOIN patient ON programinstance.patientid = patient.patientid " +
-            		" INNER JOIN program ON programinstance.programid = program.programid " +
-            		" WHERE patient.organisationunitid IN ("+ orgUnitIdsByComma +") GROUP BY program.programid";
+                        " INNER JOIN patient ON programinstance.patientid = patient.patientid " +
+                        " INNER JOIN program ON programinstance.programid = program.programid " +
+                        " WHERE patient.organisationunitid IN ("+ orgUnitIdsByComma +") GROUP BY program.programid";
             
             SqlRowSet rs2 = jdbcTemplate.queryForRowSet( query );
             
@@ -306,8 +359,8 @@ public class DashBoardService
         try
         {
             String query = "SELECT programinstance.programid, COUNT(*) FROM programinstance INNER JOIN patient " +
-            				" ON programinstance.patientid = patient.patientid " +
-            				" WHERE patient.organisationunitid IN ("+ orgUnitIdsByComma +") GROUP BY programid";
+                                        " ON programinstance.patientid = patient.patientid " +
+                                        " WHERE patient.organisationunitid IN ("+ orgUnitIdsByComma +") GROUP BY programid";
 
             SqlRowSet rs = jdbcTemplate.queryForRowSet( query );
             
@@ -386,7 +439,7 @@ public class DashBoardService
         {
             String query = "SELECT COUNT(*) FROM patient " +
                                " WHERE organisationunitid IN ("+ orgUnitIdsByComma +") AND " +
-                               	" registrationdate LIKE '"+ selDate+"%'";
+                                " registrationdate LIKE '"+ selDate+"%'";
 
             SqlRowSet rs = jdbcTemplate.queryForRowSet( query );
             
@@ -714,25 +767,22 @@ public class DashBoardService
                    PeriodType periodType = periodService.getPeriodTypeByName( periodTypeLB );
                    Collection<Period> periods = periodService.getPeriodsBetweenDates( startDate, endDate );
                    
-                   System.out.println( periods.size() + ":" + periodType + ":" + startDate + ":" +  endDate );
+                   //System.out.println( periods.size() + ":" + periodType + ":" + startDate + ":" +  endDate );
                    
                    int aggChecked = Integer.parseInt( aggDataCB );
-
-                   Iterator<DataElementCategoryOptionCombo> optionComboIterator = optionCombos.iterator();
-                   while ( optionComboIterator.hasNext() )
+                   
+                   if ( deSelection.equalsIgnoreCase( OPTIONCOMBO ) )
                    {
-                       DataElementCategoryOptionCombo decoc1 = (DataElementCategoryOptionCombo) optionComboIterator.next();
-
                        if( aggChecked == 1 )
                        {
-                           Double tempAggDataValue = aggregationService.getAggregatedDataValue( dataElement, decoc1, startDate, endDate, orgChild );
+                           Double tempAggDataValue = aggregationService.getAggregatedDataValue( dataElement, decoc, startDate, endDate, orgChild );
                            if( tempAggDataValue != null ) aggDataValue += tempAggDataValue;
                        }
                        else
                        {
                            for( Period period : periods )
                            {
-                               DataValue dataValue = dataValueService.getDataValue( orgChild, dataElement, period, decoc1 );                               
+                               DataValue dataValue = dataValueService.getDataValue( orgChild, dataElement, period, decoc );                               
                                try
                                {
                                    aggDataValue += Double.parseDouble( dataValue.getValue() );
@@ -743,6 +793,36 @@ public class DashBoardService
                            }
                        }
                    }
+                   
+                   else
+                   {
+                       Iterator<DataElementCategoryOptionCombo> optionComboIterator = optionCombos.iterator();
+                       while ( optionComboIterator.hasNext() )
+                       {
+                           DataElementCategoryOptionCombo decoc1 = (DataElementCategoryOptionCombo) optionComboIterator.next();
+
+                           if( aggChecked == 1 )
+                           {
+                               Double tempAggDataValue = aggregationService.getAggregatedDataValue( dataElement, decoc1, startDate, endDate, orgChild );
+                               if( tempAggDataValue != null ) aggDataValue += tempAggDataValue;
+                           }
+                           else
+                           {
+                               for( Period period : periods )
+                               {
+                                   DataValue dataValue = dataValueService.getDataValue( orgChild, dataElement, period, decoc1 );                               
+                                   try
+                                   {
+                                       aggDataValue += Double.parseDouble( dataValue.getValue() );
+                                   }
+                                   catch( Exception e )
+                                   {                                   
+                                   }
+                               }
+                           }
+                       }
+                   }
+
                    periodCount++;
                }
  
@@ -829,22 +909,19 @@ public class DashBoardService
                    Collection<Period> periods = periodService.getPeriodsBetweenDates( startDate, endDate );
                        
                    int aggChecked = Integer.parseInt( aggDataCB );
-
-                   Iterator<DataElementCategoryOptionCombo> optionComboIterator = optionCombos.iterator();
-                   while ( optionComboIterator.hasNext() )
+                   
+                   if ( deSelection.equalsIgnoreCase( OPTIONCOMBO ) )
                    {
-                       DataElementCategoryOptionCombo decoc1 = (DataElementCategoryOptionCombo) optionComboIterator.next();
-
                        if( aggChecked == 1 )
                        {
-                           Double tempAggDataValue = aggregationService.getAggregatedDataValue( dataElement, decoc1, startDate, endDate, orgUnit );
+                           Double tempAggDataValue = aggregationService.getAggregatedDataValue( dataElement, decoc, startDate, endDate, orgUnit );
                            if( tempAggDataValue != null ) aggDataValue += tempAggDataValue;
                        }
                        else
                        {
                            for( Period period : periods )
                            {
-                               DataValue dataValue = dataValueService.getDataValue( orgUnit, dataElement, period, decoc1 );
+                               DataValue dataValue = dataValueService.getDataValue( orgUnit, dataElement, period, decoc );
                                try
                                {
                                    aggDataValue += Double.parseDouble( dataValue.getValue() );
@@ -855,6 +932,35 @@ public class DashBoardService
                            }
                        }
                    }
+                   else
+                   {
+                       Iterator<DataElementCategoryOptionCombo> optionComboIterator = optionCombos.iterator();
+                       while ( optionComboIterator.hasNext() )
+                       {
+                           DataElementCategoryOptionCombo decoc1 = (DataElementCategoryOptionCombo) optionComboIterator.next();
+
+                           if( aggChecked == 1 )
+                           {
+                               Double tempAggDataValue = aggregationService.getAggregatedDataValue( dataElement, decoc1, startDate, endDate, orgUnit );
+                               if( tempAggDataValue != null ) aggDataValue += tempAggDataValue;
+                           }
+                           else
+                           {
+                               for( Period period : periods )
+                               {
+                                   DataValue dataValue = dataValueService.getDataValue( orgUnit, dataElement, period, decoc1 );
+                                   try
+                                   {
+                                       aggDataValue += Double.parseDouble( dataValue.getValue() );
+                                   }
+                                   catch( Exception e )
+                                   {
+                                   }
+                               }
+                           }
+                       }
+                   }
+
                    periodCount++;
                }
  
@@ -928,14 +1034,11 @@ public class DashBoardService
                Double aggDataValue = 0.0;
                int aggChecked = Integer.parseInt( aggDataCB );
                
-               Iterator<DataElementCategoryOptionCombo> optionComboIterator = optionCombos.iterator();
-               while ( optionComboIterator.hasNext() )
+               if ( deSelection.equalsIgnoreCase( OPTIONCOMBO ) )
                {
-                   DataElementCategoryOptionCombo decoc1 = (DataElementCategoryOptionCombo) optionComboIterator.next();
-
                    if( aggChecked == 1 )
                    {
-                       Double tempAggDataValue = aggregationService.getAggregatedDataValue( dataElement, decoc1, startDate, endDate, selectedOrgUnit );
+                       Double tempAggDataValue = aggregationService.getAggregatedDataValue( dataElement, decoc, startDate, endDate, selectedOrgUnit );
                        if( tempAggDataValue != null ) aggDataValue += tempAggDataValue;
                    }
                    else
@@ -943,13 +1046,42 @@ public class DashBoardService
                        Collection<Period> periods = periodService.getPeriodsBetweenDates( startDate, endDate );
                        for( Period period : periods )
                        {
-                           DataValue dataValue = dataValueService.getDataValue( selectedOrgUnit, dataElement, period, decoc1 );
+                           DataValue dataValue = dataValueService.getDataValue( selectedOrgUnit, dataElement, period, decoc );
                            try
                            {
                                aggDataValue += Double.parseDouble( dataValue.getValue() );
                            }
                            catch( Exception e )
                            {
+                           }
+                       }
+                   }
+               }
+               else
+               {
+                   Iterator<DataElementCategoryOptionCombo> optionComboIterator = optionCombos.iterator();
+                   while ( optionComboIterator.hasNext() )
+                   {
+                       DataElementCategoryOptionCombo decoc1 = (DataElementCategoryOptionCombo) optionComboIterator.next();
+
+                       if( aggChecked == 1 )
+                       {
+                           Double tempAggDataValue = aggregationService.getAggregatedDataValue( dataElement, decoc1, startDate, endDate, selectedOrgUnit );
+                           if( tempAggDataValue != null ) aggDataValue += tempAggDataValue;
+                       }
+                       else
+                       {
+                           Collection<Period> periods = periodService.getPeriodsBetweenDates( startDate, endDate );
+                           for( Period period : periods )
+                           {
+                               DataValue dataValue = dataValueService.getDataValue( selectedOrgUnit, dataElement, period, decoc1 );
+                               try
+                               {
+                                   aggDataValue += Double.parseDouble( dataValue.getValue() );
+                               }
+                               catch( Exception e )
+                               {
+                               }
                            }
                        }
                    }
@@ -1032,28 +1164,53 @@ public class DashBoardService
                for( OrganisationUnit orgUnit : selectedOUGroupMemberList )
                {
                    int aggChecked = Integer.parseInt( aggDataCB );
-
-                   Iterator<DataElementCategoryOptionCombo> optionComboIterator = optionCombos.iterator();
-                   while ( optionComboIterator.hasNext() )
+                   
+                   if ( deSelection.equalsIgnoreCase( OPTIONCOMBO ) )
                    {
-                       DataElementCategoryOptionCombo decoc1 = (DataElementCategoryOptionCombo) optionComboIterator.next();
-
                        if( aggChecked == 1 )
                        {
-                           Double tempAggDataValue = aggregationService.getAggregatedDataValue( dataElement, decoc1, startDate, endDate, orgUnit );
-                           if(tempAggDataValue != null ) aggDataValue = tempAggDataValue;
+                           Double tempAggDataValue = aggregationService.getAggregatedDataValue( dataElement, decoc, startDate, endDate, orgUnit );
+                           if(tempAggDataValue != null ) aggDataValue += tempAggDataValue;
                        }
                        else
                        {
                            for( Period period : periods )
                            {
-                               DataValue dataValue = dataValueService.getDataValue( orgUnit, dataElement, period, decoc1 );
+                               DataValue dataValue = dataValueService.getDataValue( orgUnit, dataElement, period, decoc );
                                try
                                {
                                    aggDataValue += Double.parseDouble( dataValue.getValue() );
                                }
                                catch( Exception e )
                                {
+                               }
+                           }
+                       }
+                   }
+                   else
+                   {
+                       Iterator<DataElementCategoryOptionCombo> optionComboIterator = optionCombos.iterator();
+                       while ( optionComboIterator.hasNext() )
+                       {
+                           DataElementCategoryOptionCombo decoc1 = (DataElementCategoryOptionCombo) optionComboIterator.next();
+
+                           if( aggChecked == 1 )
+                           {
+                               Double tempAggDataValue = aggregationService.getAggregatedDataValue( dataElement, decoc1, startDate, endDate, orgUnit );
+                               if(tempAggDataValue != null ) aggDataValue += tempAggDataValue;
+                           }
+                           else
+                           {
+                               for( Period period : periods )
+                               {
+                                   DataValue dataValue = dataValueService.getDataValue( orgUnit, dataElement, period, decoc1 );
+                                   try
+                                   {
+                                       aggDataValue += Double.parseDouble( dataValue.getValue() );
+                                   }
+                                   catch( Exception e )
+                                   {
+                                   }
                                }
                            }
                        }
@@ -1141,10 +1298,24 @@ public class DashBoardService
                         {
                             aggIndicatorNumValue += tempAggIndicatorNumValue;
                         }
+                        
+                        if ( tempAggIndicatorDenumValue != null )
+                        {
+                            if( !indicator.getDenominator().trim().equals( "1" ) )
+                            {
+                                aggIndicatorDenumValue += tempAggIndicatorDenumValue;
+                            }
+                            else 
+                            {
+                                aggIndicatorDenumValue = 1.0;
+                            }
+                        }
+                        /*
                         if ( tempAggIndicatorDenumValue != null )
                         {
                             aggIndicatorDenumValue += tempAggIndicatorDenumValue;
                         }
+                        */
                     }
                     else
                     {
@@ -1171,7 +1342,17 @@ public class DashBoardService
                         {
                             tempAggIndicatorDenumValue = 0.0;
                         }
-                        aggIndicatorDenumValue += tempAggIndicatorDenumValue;
+                        
+                        if( !indicator.getDenominator().trim().equals( "1" ) )
+                        {
+                            aggIndicatorDenumValue += tempAggIndicatorDenumValue;
+                        }
+                        else 
+                        {
+                            aggIndicatorDenumValue = 1.0;
+                        }
+                        
+                        //aggIndicatorDenumValue += tempAggIndicatorDenumValue;
 
                     }
 
@@ -1273,10 +1454,24 @@ public class DashBoardService
                         {
                             aggIndicatorNumValue += tempAggIndicatorNumValue;
                         }
+                        
+                        if ( tempAggIndicatorDenumValue != null )
+                        {
+                            if( !indicator.getDenominator().trim().equals( "1" ) )
+                            {
+                                aggIndicatorDenumValue += tempAggIndicatorDenumValue;
+                            }
+                            else 
+                            {
+                                aggIndicatorDenumValue = 1.0;
+                            }
+                        }
+                        /*
                         if ( tempAggIndicatorDenumValue != null )
                         {
                             aggIndicatorDenumValue += tempAggIndicatorDenumValue;
                         }
+                        */
                     }
                     else
                     {
@@ -1305,7 +1500,18 @@ public class DashBoardService
                         {
                             tempAggIndicatorDenumValue = 0.0;
                         }
-                        aggIndicatorDenumValue += tempAggIndicatorDenumValue;
+                        
+                        if( !indicator.getDenominator().trim().equals( "1" ) )
+                        {
+                            aggIndicatorDenumValue += tempAggIndicatorDenumValue;
+                        }
+                        else 
+                        {
+                            aggIndicatorDenumValue = 1.0;
+                        }
+                        
+                        
+                        //aggIndicatorDenumValue += tempAggIndicatorDenumValue;
                     }
 
                     periodCount++;
@@ -1501,10 +1707,25 @@ public class DashBoardService
                         {
                             aggIndicatorNumValue += tempAggIndicatorNumValue;
                         }
+                        
+                        if ( tempAggIndicatorDenumValue != null )
+                        {
+                            if( !indicator.getDenominator().trim().equals( "1" ) )
+                            {
+                                aggIndicatorDenumValue += tempAggIndicatorDenumValue;
+                            }
+                            else 
+                            {
+                                aggIndicatorDenumValue = 1.0;
+                            }
+                        }
+                        
+                        /*
                         if ( tempAggIndicatorDenumValue != null )
                         {
                             aggIndicatorDenumValue += tempAggIndicatorDenumValue;
                         }
+                        */
                     }
                     else
                     {
@@ -1532,7 +1753,18 @@ public class DashBoardService
                         {
                             tempAggIndicatorDenumValue = 0.0;
                         }
-                        aggIndicatorDenumValue += tempAggIndicatorDenumValue;
+                       
+                        if( !indicator.getDenominator().trim().equals( "1" ) )
+                        {
+                            aggIndicatorDenumValue += tempAggIndicatorDenumValue;
+                        }
+                        else 
+                        {
+                            aggIndicatorDenumValue = 1.0;
+                        }
+                        
+                        
+                        //aggIndicatorDenumValue += tempAggIndicatorDenumValue;
 
                     }
                     orgGroupCount++;

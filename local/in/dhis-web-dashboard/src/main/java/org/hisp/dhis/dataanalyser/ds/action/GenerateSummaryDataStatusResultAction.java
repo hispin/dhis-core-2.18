@@ -279,6 +279,8 @@ public class GenerateSummaryDataStatusResultAction
     
     Set<OrganisationUnit> dso;
 
+    Map<String, Double> tempOuMapResult;
+    
     // ---------------------------------------------------------------
     // Action Implementation
     // ---------------------------------------------------------------
@@ -289,6 +291,7 @@ public class GenerateSummaryDataStatusResultAction
         dataViewName = "";
 
         // Intialization
+        tempOuMapResult = new HashMap<String, Double>();
         ouMapForChildDSAssociation = new HashMap<OrganisationUnit, Integer>();
         ouMapForColor =  new HashMap<OrganisationUnit, Integer>();
         ouMapStatusResult = new HashMap<OrganisationUnit, List<Integer>>();
@@ -395,11 +398,9 @@ public class GenerateSummaryDataStatusResultAction
         String query = "";
         String query2 = "";
 
-        query = "SELECT COUNT(*) FROM " + dataViewName
-            + " WHERE dataelementid IN (?) AND sourceid IN (?) AND periodid IN (?)";
+        query = "SELECT COUNT(*) FROM " + dataViewName + " WHERE dataelementid IN (?) AND sourceid IN (?) AND periodid IN (?)";
 
-        query2 = "SELECT COUNT(*) FROM " + dataViewName
-            + " WHERE dataelementid IN (?) AND sourceid = ? AND periodid IN (?)";
+        query2 = "SELECT COUNT(*) FROM " + dataViewName + " WHERE dataelementid IN (?) AND sourceid = ? AND periodid IN (?)";
 
         Iterator<OrganisationUnit> orgUnitListIterator = orgUnitList.iterator();
         OrganisationUnit o;
@@ -408,17 +409,27 @@ public class GenerateSummaryDataStatusResultAction
         dso = selDataSet.getSources();
         String orgUnitId = "";
         
+        Map<Integer, Integer> orgunitLevelMap = new HashMap<Integer, Integer>( dashBoardService.getOrgunitLevelMap() );
+        
         while ( orgUnitListIterator.hasNext() )
         {
             o = (OrganisationUnit) orgUnitListIterator.next();
             orgUnitInfo = "" + o.getId();
 
-            if ( maxOULevel < organisationUnitService.getLevelOfOrganisationUnit( o ) )
-                maxOULevel = organisationUnitService.getLevelOfOrganisationUnit( o );
-
-            if ( minOULevel > organisationUnitService.getLevelOfOrganisationUnit( o ) )
-                minOULevel = organisationUnitService.getLevelOfOrganisationUnit( o );
-
+            Integer ouL = orgunitLevelMap.get( o.getId() );
+            if( ouL == null )
+            {
+                ouL = organisationUnitService.getLevelOfOrganisationUnit( o );
+            }
+            if( maxOULevel < ouL )
+            {
+                maxOULevel = ouL;
+            }
+            if( minOULevel > ouL )
+            {
+                minOULevel = ouL;
+            }
+            
             periodIterator = periodList.iterator();
             Period p;
             double dataStatusPercentatge;
@@ -461,8 +472,10 @@ public class GenerateSummaryDataStatusResultAction
                     {
                         OrganisationUnit cUnit = (OrganisationUnit) assignedChildrenIterator.next();
                         orgUnitInfo = "-1";
-                        orgUnitId = "-1,";
-                        orgUnitId += String.valueOf( cUnit.getId() );
+                        dataStatusPercentatge = 0.0;
+                        //orgUnitId = "-1,";
+                        //orgUnitId += String.valueOf( cUnit.getId() );
+                        orgUnitId = ""+ cUnit.getId();
                         orgUnitCount = 0;
                         getOrgUnitInfo( o, dso );
 
@@ -478,32 +491,47 @@ public class GenerateSummaryDataStatusResultAction
                                 + ") AND sourceid IN (" + orgUnitId + ") AND periodid IN (" + periodInfo + ")";
                         }
 
-                        SqlRowSet sqlResultSet = jdbcTemplate.queryForRowSet( query2 );
-
-                        if ( sqlResultSet.next() )
+                        Double tempDataStatusCount = tempOuMapResult.get( orgUnitId+":"+periodInfo );
+                        if( tempDataStatusCount == null )
                         {
-                            try
+                            SqlRowSet sqlResultSet = jdbcTemplate.queryForRowSet( query2 );
+    
+                            if ( sqlResultSet.next() )
                             {
-                                dataStatusPercentatge = ((double) sqlResultSet.getInt( 1 ) / (double) (dataSetMemberCount1)) * 100.0;
+                                try
+                                {
+                                    dataStatusPercentatge = ((double) sqlResultSet.getInt( 1 ) / (double) (dataSetMemberCount1)) * 100.0;
+                                }
+                                catch ( Exception e )
+                                {
+                                    dataStatusPercentatge = 0.0;
+                                }
                             }
-                            catch ( Exception e )
+                            else
                             {
                                 dataStatusPercentatge = 0.0;
                             }
+    
+                            if( dataStatusPercentatge > 100.0 )
+                            {
+                                dataStatusPercentatge = 100;
+                            }
+    
+                            dataStatusPercentatge = Math.round( dataStatusPercentatge * Math.pow( 10, 0 ) ) / Math.pow( 10, 0 );
+                            
+                            tempOuMapResult.put( orgUnitId+":"+periodInfo, dataStatusPercentatge );
+    
                         }
                         else
-                            dataStatusPercentatge = 0.0;
-
-                        if ( dataStatusPercentatge > 100.0 )
-                            dataStatusPercentatge = 100;
-
-                        dataStatusPercentatge = Math.round( dataStatusPercentatge * Math.pow( 10, 0 ) )
-                            / Math.pow( 10, 0 );
+                        {
+                            dataStatusPercentatge = tempDataStatusCount;
+                        }
 
                         if ( dataStatusPercentatge >= 5.0 )
                         {
                             dataStatusCount += 1;
                         }
+
                     }
                     
                     dsSummaryResults.add( dataStatusCount );
