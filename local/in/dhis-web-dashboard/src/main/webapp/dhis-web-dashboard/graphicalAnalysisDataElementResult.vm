@@ -130,7 +130,7 @@
         
         var aggDataCB = arugDetails[9];
         //alert( aggDataCB );
-        alert( orgUnitId + "," + orgUnitGroupId + ","  + dataElementId + "," + categoryCombo + "," + periodTypeName + "," + startDate + "," + endDate + "," + periodName );
+       // alert( orgUnitId + "," + orgUnitGroupId + ","  + dataElementId + "," + categoryCombo + "," + periodTypeName + "," + startDate + "," + endDate + "," + periodName );
 
         //var ouRadioVal = $( "input[name='riRadio']:checked" ).val();
         

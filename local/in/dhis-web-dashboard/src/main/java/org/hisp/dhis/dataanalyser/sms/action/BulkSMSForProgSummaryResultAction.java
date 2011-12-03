@@ -60,7 +60,7 @@ public class BulkSMSForProgSummaryResultAction implements Action
     {
         Map<OrganisationUnit,String> tempOrgUnitMap = new HashMap<OrganisationUnit, String>();
         
-        BulkSMSHttpInterface bulkSMSHTTPInterface = new BulkSMSHttpInterface();;
+        BulkSMSHttpInterface bulkSMSHTTPInterface = new BulkSMSHttpInterface();
         
         try
         {

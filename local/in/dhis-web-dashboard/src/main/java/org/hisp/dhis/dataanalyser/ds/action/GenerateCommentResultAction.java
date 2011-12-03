@@ -84,13 +84,7 @@ public class GenerateCommentResultAction implements Action
     // ---------------------------------------------------------------
     // Input/Output Parameters
     // ---------------------------------------------------------------
-    
-    
-    
-    
-    
-    
-    
+     
     private String selectedDataSets;
     
     public void setSelectedDataSets( String selectedDataSets )

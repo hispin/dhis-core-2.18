@@ -86,7 +86,7 @@
 
 .DefaultFontStylesNoBold {
     font-family: arial, georgia, tahoma;
-    font-size: 8px;    
+    font-size: 15px;    
     white-space: nowrap;
     cursor: default;         
 }

@@ -253,6 +253,7 @@ public class IDSPOutbreakAction implements Action
 
     private String populationDeId;
     private Integer orgUnitGroupId;
+    private String dataSetId;
     // ---------------------------------------------------------------
     // Action Implementation
     // ---------------------------------------------------------------
@@ -261,7 +262,6 @@ public class IDSPOutbreakAction implements Action
         throws Exception
     {
         statementManager.initialise();
-
         
         int idspFlag = 0;
         if ( currentUserService.getCurrentUser() != null )
@@ -352,6 +352,10 @@ public class IDSPOutbreakAction implements Action
     
                     int populationData = dashBoardService.getAggregatedData( orgUnitIdsByComma1, populationDeId, populationPeriodId );
                     
+                    int confirmedCount = dashBoardService.getConfirmedCount( orgUnitIdsByComma, dataSetId, periodId );
+                    int totalSubcentreCount = childTree.size();
+                    System.out.println(confirmedCount + " : " + totalSubcentreCount );
+                    
                     for( String norm : normInfo )
                     {
                         String normId = norm.split( "@:@" )[0];
@@ -366,14 +370,29 @@ public class IDSPOutbreakAction implements Action
                         if( deathData >= 1 )
                         {
                             outBreakAlertMap.put( normName+":"+ou.getId(), deathData + " Deaths" );
-                            outBreakAlertColorMap.put( normName+":"+ou.getId(), "RED" );
+                            
+                            if( confirmedCount != totalSubcentreCount )
+                            {
+                                outBreakAlertColorMap.put( normName+":"+ou.getId(), "PINK" );
+                            }
+                            else
+                            {
+                                outBreakAlertColorMap.put( normName+":"+ou.getId(), "RED" );
+                            }
                         }
                         else
                         {
                             long minLimit = Math.round( populationData/1000.0 );
                             long maxLimit = Math.round( (populationData/1000.0) * 5 );
                             outBreakAlertMap.put( normName+":"+ou.getId(), caseData + " Cases" );
+
                             
+                            if( confirmedCount != totalSubcentreCount )
+                            {
+                                outBreakAlertColorMap.put( normName+":"+ou.getId(), "PINK" );
+                                continue;
+                            }
+
                             if( minLimit == 0 || maxLimit == 0 )
                             {
                                 outBreakAlertColorMap.put( normName+":"+ou.getId(), "WHITE" );
@@ -432,6 +451,8 @@ public class IDSPOutbreakAction implements Action
             }
 
             populationDeId = doc.getElementsByTagName( "population" ).item( 0 ).getFirstChild().getNodeValue();
+            
+            dataSetId = doc.getElementsByTagName( "dataset" ).item( 0 ).getFirstChild().getNodeValue();
             
             orgUnitGroupId = Integer.parseInt( doc.getElementsByTagName( "orgunitgroup" ).item( 0 ).getFirstChild().getNodeValue() );
             

@@ -51,8 +51,8 @@
                             				#set( $dataElement = $dataElementList.get( $count2 ) )
                                	    		#set( $periodCount = $periodCounts.get( $count2 ) )
                                	    		<tr>
-                                        		<td class="DefaultFontStylesNoBold" align="left">$dataElement</td>
-                                        		<td class="DefaultFontStylesNoBold" align="left">$comment</td>
+                                        		<td class="NormalA" align="left">$dataElement</td>
+                                        		<td class="NormalA" align="left">$comment</td>
                                     #set( $count2 = $count2 + 1 )     		
                                        	   </tr>
                                 	    #end

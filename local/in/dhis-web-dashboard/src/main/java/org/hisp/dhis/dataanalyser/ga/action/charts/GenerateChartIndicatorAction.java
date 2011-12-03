@@ -1039,12 +1039,27 @@ public class GenerateChartIndicatorAction
                             aggIndicatorNumValue += tempAggIndicatorNumValue;
 
                         }
+                       
+                        if ( tempAggIndicatorDenumValue != null )
+                        {
+                            if( !indicator.getDenominator().trim().equals( "1" ) )
+                            {
+                                aggIndicatorDenumValue += tempAggIndicatorDenumValue;
+                            }
+                            else 
+                            {
+                                aggIndicatorDenumValue = 1.0;
+                            }
+                        }
+                        
+                        
+                        /*
                         if ( tempAggIndicatorDenumValue != null )
                         {
                             aggIndicatorDenumValue += tempAggIndicatorDenumValue;
 
                         }
-
+                        */
                     }
                     else
                     {
@@ -1061,10 +1076,12 @@ public class GenerateChartIndicatorAction
                         }
                         aggIndicatorNumValue += tempAggIndicatorNumValue;
 
+                        
                         Double tempAggIndicatorDenumValue = 0.0;
 
                         tempStr = reportService.getIndividualResultDataValue( indicator.getDenominator(), startDate,
                             endDate, orgChild, "" );
+                        
                         try
                         {
                             tempAggIndicatorDenumValue = Double.parseDouble( tempStr );
@@ -1073,7 +1090,17 @@ public class GenerateChartIndicatorAction
                         {
                             tempAggIndicatorDenumValue = 0.0;
                         }
-                        aggIndicatorDenumValue += tempAggIndicatorDenumValue;
+                        
+                        if( !indicator.getDenominator().trim().equals( "1" ) )
+                        {
+                            aggIndicatorDenumValue += tempAggIndicatorDenumValue;
+                        }
+                        else 
+                        {
+                            aggIndicatorDenumValue = 1.0;
+                        }
+                        
+                        //aggIndicatorDenumValue += tempAggIndicatorDenumValue;
 
                     }
 
@@ -1182,11 +1209,26 @@ public class GenerateChartIndicatorAction
                             aggIndicatorNumValue += tempAggIndicatorNumValue;
 
                         }
+                        
+                        if ( tempAggIndicatorDenumValue != null )
+                        {
+                            if( !indicator.getDenominator().trim().equals( "1" ) )
+                            {
+                                aggIndicatorDenumValue += tempAggIndicatorDenumValue;
+                            }
+                            else 
+                            {
+                                aggIndicatorDenumValue = 1.0;
+                            }
+                        }
+                        
+                        /*
                         if ( tempAggIndicatorDenumValue != null )
                         {
                             aggIndicatorDenumValue += tempAggIndicatorDenumValue;
 
                         }
+                        */
                     }
                     else
                     {
@@ -1220,7 +1262,18 @@ public class GenerateChartIndicatorAction
                         {
                             tempAggIndicatorDenumValue = 0.0;
                         }
-                        aggIndicatorDenumValue += tempAggIndicatorDenumValue;
+                        
+                        if( !indicator.getDenominator().trim().equals( "1" ) )
+                        {
+                            aggIndicatorDenumValue += tempAggIndicatorDenumValue;
+                        }
+                        else 
+                        {
+                            aggIndicatorDenumValue = 1.0;
+                        }
+                        
+                        //aggIndicatorDenumValue += tempAggIndicatorDenumValue;
+                        
                         // System.out.println( " \nAggIndicator Denum Value : "
                         // + aggIndicatorDenumValue );
 
@@ -1342,10 +1395,24 @@ public class GenerateChartIndicatorAction
                         }
                         if ( tempAggIndicatorDenumValue != null )
                         {
+                            if( !indicator.getDenominator().trim().equals( "1" ) )
+                            {
+                                aggIndicatorDenumValue += tempAggIndicatorDenumValue;
+                            }
+                            else 
+                            {
+                                aggIndicatorDenumValue = 1.0;
+                            }
+                        }
+                       
+                        
+                        /*
+                        if ( tempAggIndicatorDenumValue != null )
+                        {
                             aggIndicatorDenumValue += tempAggIndicatorDenumValue;
 
                         }
-
+                        */
                     }
                     else
                     {
@@ -1380,7 +1447,17 @@ public class GenerateChartIndicatorAction
                         {
                             tempAggIndicatorDenumValue = 0.0;
                         }
-                        aggIndicatorDenumValue += tempAggIndicatorDenumValue;
+                        
+                        if( !indicator.getDenominator().trim().equals( "1" ) )
+                        {
+                            aggIndicatorDenumValue += tempAggIndicatorDenumValue;
+                        }
+                        else 
+                        {
+                            aggIndicatorDenumValue = 1.0;
+                        }
+                        
+                        //aggIndicatorDenumValue += tempAggIndicatorDenumValue;
 
                     }
                     orgGroupCount++;
@@ -1514,10 +1591,22 @@ public class GenerateChartIndicatorAction
                             }
                             if ( tempAggIndicatorDenumValue != null )
                             {
+                                if( !indicator.getDenominator().trim().equals( "1" ) )
+                                {
+                                    aggIndicatorDenumValue += tempAggIndicatorDenumValue;
+                                }
+                                else 
+                                {
+                                    aggIndicatorDenumValue = 1.0;
+                                }
+                            }
+                            /*
+                            if ( tempAggIndicatorDenumValue != null )
+                            {
                                 aggIndicatorDenumValue += tempAggIndicatorDenumValue;
 
                             }
-
+                            */
                         }
                         else
                         {
@@ -1553,7 +1642,18 @@ public class GenerateChartIndicatorAction
                             {
                                 tempAggIndicatorDenumValue = 0.0;
                             }
-                            aggIndicatorDenumValue += tempAggIndicatorDenumValue;
+                           
+                            if( !indicator.getDenominator().trim().equals( "1" ) )
+                            {
+                                aggIndicatorDenumValue += tempAggIndicatorDenumValue;
+                            }
+                            else 
+                            {
+                                aggIndicatorDenumValue = 1.0;
+                            }
+                            
+                            //aggIndicatorDenumValue += tempAggIndicatorDenumValue;
+                            
                             // System.out.println(
                             // " \nAggIndicator Denum Value : " +
                             // aggIndicatorDenumValue );

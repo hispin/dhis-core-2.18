@@ -699,11 +699,6 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 	   <property name="dashBoardService" ref="org.hisp.dhis.dataanalyser.util.DashBoardService">
 	   </property>	   
     </bean>			
-
-			
-	
-	
-	
 	<!-- DataStatus For Mobile start  -->
 
 	<bean id="org.hisp.dhis.dataanalyser.ds.mobile.action.GenerateDataStatusMobileFormAction"
@@ -1472,8 +1467,38 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
         scope="prototype">
         <property name="userGroupService" ref="org.hisp.dhis.user.UserGroupService" />
 		<property name="dashBoardService" ref="org.hisp.dhis.dataanalyser.util.DashBoardService" />
-    <property name="programService" ref="org.hisp.dhis.program.ProgramService" />
+		<property name="programService" ref="org.hisp.dhis.program.ProgramService" />
 		
     </bean>     
-		
+    <!-- BULK SMS: Excel Uploading -->
+    <bean id="org.hisp.dhis.dataanalyser.sms.action.BulkSMSForExcelSheetFormAction"
+        class="org.hisp.dhis.dataanalyser.sms.action.BulkSMSForExcelSheetFormAction"
+        scope="prototype">
+    </bean>     
+    <bean id="org.hisp.dhis.dataanalyser.sms.action.BulkSMSForExcelSheetResultAction"
+        class="org.hisp.dhis.dataanalyser.sms.action.BulkSMSForExcelSheetResultAction"
+        scope="prototype">
+    </bean>
+	
+<!-- Schedular -->	
+    <bean name="schedulerForBulkSMSByExcelJob"
+        class="org.springframework.scheduling.quartz.JobDetailBean">
+        <property name="jobClass" value="org.hisp.dhis.dataanalyser.util.SendingBulkSMSFromExcelJob" />
+   </bean>
+
+   <bean id="cronTriggerForBulkSMSByExcelJob"
+        class="org.springframework.scheduling.quartz.CronTriggerBean">
+        <property name="jobDetail" ref="schedulerForBulkSMSByExcelJob" />
+        <property name="cronExpression" value="0 53 16 * * ?" />
+   </bean>
+
+<!-- Scheduler for all Jobs -->
+
+    <bean class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
+        <property name="triggers">
+            <list>
+                <ref bean="cronTriggerForBulkSMSByExcelJob" />
+            </list>
+        </property>
+   </bean>		
 </beans>

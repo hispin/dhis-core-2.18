@@ -66,7 +66,7 @@ public class IndicatorwiseGAFormAction implements Action
     // Dependencies
     // -------------------------------------------------------------------------
     
-    private IndicatorService indicatorService ;
+    private IndicatorService indicatorService;
 
     public void setIndicatorService( IndicatorService indicatorService )
     {
@@ -202,13 +202,13 @@ public class IndicatorwiseGAFormAction implements Action
 
     public String execute() throws Exception
     {
-    
         /* DataElements and Groups */
         indicators = new ArrayList<Indicator>( indicatorService.getAllIndicators());
         indicatorGroups = new ArrayList<IndicatorGroup>( indicatorService.getAllIndicatorGroups()) ;
         Collections.sort( indicators, new IndicatorNameComparator() );
         Collections.sort( indicatorGroups, new IndicatorGroupNameComparator() );
         
+        System.out.println( "--Size of Indicators is--" +  indicators.size() + ",----Size of Indicators Group is is-- "  + indicatorGroups.size() );
         /* Periods Type */
         periodTypes = new ArrayList<PeriodType>( periodService.getAllPeriodTypes() );
         
