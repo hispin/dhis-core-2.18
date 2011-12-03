@@ -22,6 +22,7 @@
     <module>dhis-service-importexport</module>
     <module>dhis-service-reporting</module>
     <module>dhis-service-mapping</module>
+    <module>dhis-service-mapgeneration</module>
     <module>dhis-service-aggregationengine-default</module>
     <module>dhis-service-patient</module>
     <module>dhis-service-mobile</module>
