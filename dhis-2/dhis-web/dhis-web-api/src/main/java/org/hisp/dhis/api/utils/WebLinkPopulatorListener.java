@@ -41,6 +41,7 @@ import org.hisp.dhis.indicator.*;
 import org.hisp.dhis.organisationunit.*;
 import org.hisp.dhis.user.User;
 import org.hisp.dhis.user.Users;
+import org.springframework.web.util.UrlPathHelper;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.xml.bind.Marshaller;
@@ -626,6 +627,7 @@ public class WebLinkPopulatorListener extends Marshaller.Listener
                 buffer.append( ":" + request.getServerPort() );
             }
 
+            buffer.append( request.getContextPath() );
             buffer.append( request.getServletPath() );
 
             rootPath = buffer.toString();
