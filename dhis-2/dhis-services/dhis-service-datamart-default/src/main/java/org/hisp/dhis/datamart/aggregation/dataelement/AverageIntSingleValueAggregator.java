@@ -81,7 +81,7 @@ public class AverageIntSingleValueAggregator
     {
         if ( CollectionUtils.isEmpty( operands ) )
         {
-            return new HashMap<DataElementOperand, Double>();
+            return EMPTY_MAP;
         }
         
         final Collection<CrossTabDataValue> crossTabValues = crossTabService.getCrossTabDataValues( operands, 

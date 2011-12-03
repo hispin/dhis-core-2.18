@@ -83,7 +83,7 @@ public class AverageIntAggregator
     {
         if ( CollectionUtils.isEmpty( operands ) )
         {
-            return new HashMap<DataElementOperand, Double>();
+            return EMPTY_MAP;
         }
         
         final Map<DataElementOperand, Double> values = new HashMap<DataElementOperand, Double>(); // <Operand, total value>
