@@ -28,6 +28,7 @@ package org.hisp.dhis.datamart.aggregation.dataelement;
  */
 
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.Map;
 
 import org.hisp.dhis.dataelement.DataElementOperand;
@@ -40,6 +41,7 @@ import org.hisp.dhis.period.PeriodType;
 public interface DataElementAggregator
 {
     final String TRUE = "true";
+    final Map<DataElementOperand, Double> EMPTY_MAP = new HashMap<DataElementOperand, Double>();
 
     Map<DataElementOperand, Double> getAggregatedValues( final Collection<DataElementOperand> operands, 
         final Period period, int unitLevel, final Collection<Integer> organisationUnits, String key );
