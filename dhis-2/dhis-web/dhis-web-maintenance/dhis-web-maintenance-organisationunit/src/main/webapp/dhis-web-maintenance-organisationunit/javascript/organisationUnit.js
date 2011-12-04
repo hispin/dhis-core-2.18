@@ -4,6 +4,8 @@
 
 $( document ).ready( function()
 {
+    selection.setAutoSelectRoot( false );
+    selection.setRootUnselectAllowed( true );
     selection.setListenerFunction( organisationUnitSelected, true );
 } );
 

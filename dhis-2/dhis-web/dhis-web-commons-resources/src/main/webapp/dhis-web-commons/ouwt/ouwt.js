@@ -31,7 +31,11 @@ $( document ).ready( function()
 
 function Selection()
 {
-    var listenerFunction = undefined, multipleSelectionAllowed = false, unselectAllowed = false;
+    var listenerFunction = undefined;
+    var multipleSelectionAllowed = false;
+    var unselectAllowed = false;
+    var rootUnselectAllowed = false;
+    var autoSelectRoot = true;
 
     this.setListenerFunction = function( listenerFunction_, skipInitialCall )
     {
@@ -56,6 +60,16 @@ function Selection()
         unselectAllowed = allowed;
     };
 
+    this.setRootUnselectAllowed = function( allowed )
+    {
+        rootUnselectAllowed = allowed;
+    };
+
+    this.setAutoSelectRoot = function( autoSelect )
+    {
+        autoSelectRoot = autoSelect;
+    };
+
     this.load = function()
     {
         function sync_and_reload()
@@ -64,13 +78,16 @@ function Selection()
 
             if ( sessionStorage[getTagId( "Selected" )] == null && roots.length > 0 )
             {
-                if ( multipleSelectionAllowed )
+                if( autoSelectRoot )
                 {
-                    sessionStorage[getTagId( "Selected" )] = roots;
-                }
-                else
-                {
-                    sessionStorage[getTagId( "Selected" )] = roots[0];
+                    if ( multipleSelectionAllowed )
+                    {
+                        sessionStorage[getTagId( "Selected" )] = roots;
+                    }
+                    else
+                    {
+                        sessionStorage[getTagId( "Selected" )] = roots[0];
+                    }
                 }
             }
 
@@ -252,9 +269,20 @@ function Selection()
     {
         var $linkTag = $( "#" + getTagId( unitId ) ).find( "a" ).eq( 0 );
 
-        if ( $linkTag.hasClass( "selected" ) && unselectAllowed )
+        if ( $linkTag.hasClass( "selected" ) && ( unselectAllowed || rootUnselectAllowed ) )
         {
             var selected = JSON.parse( sessionStorage[getTagId( "Selected" )] );
+
+            if( rootUnselectAllowed && !unselectAllowed && !multipleSelectionAllowed )
+            {
+                var roots = JSON.parse( localStorage[getTagId( "Roots" )] );
+
+                if( roots != selected )
+                {
+                    console.log("They are not equal.. do nothing")
+                    return;
+                }
+            }
 
             if ( !!selected && $.isArray( selected ) )
             {
