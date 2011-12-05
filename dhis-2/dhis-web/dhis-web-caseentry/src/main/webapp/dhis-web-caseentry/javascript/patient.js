@@ -42,7 +42,7 @@ function searchingAttributeOnChange( this_ )
 {	
 	var container = jQuery(this_).parent().parent().attr('id');
 	var attributeId = jQuery('#' + container+ ' [id=searchingAttributeId]').val(); 
-	var element = $('#' + container+ ' [id=searchText]');
+	var element = jQuery('#' + container+ ' [id=searchText]');
 	var valueType = jQuery('#' + container+ ' [id=searchingAttributeId] option:selected').attr('valueType');
 	
 	if( attributeId == '0' )
@@ -94,7 +94,7 @@ function searchPatients()
 	hideById( 'listPatientDiv' );
 	var searchTextFields = jQuery('[name=searchText]');
 	var flag = true;
-	$( searchTextFields ).each( function( i, item )
+	jQuery( searchTextFields ).each( function( i, item )
     {
 		if( jQuery( item ).val() == '' )
 		{
@@ -106,7 +106,7 @@ function searchPatients()
 	if(!flag) return;
 	
 	contentDiv = 'listPatientDiv';
-	$( "#loaderDiv" ).show();
+	jQuery( "#loaderDiv" ).show();
 	$.ajax({
 		url: 'searchRegistrationPatient.action',
 		type:"POST",
@@ -115,7 +115,7 @@ function searchPatients()
 				statusSearching = 1;
 				setInnerHTML( 'listPatientDiv', html );
 				showById('listPatientDiv');
-				$( "#loaderDiv" ).hide();
+				jQuery( "#loaderDiv" ).hide();
 			}
 		});
 }
@@ -125,14 +125,14 @@ function sortPatients()
 	hideById( 'listPatientDiv' );
 	
 	contentDiv = 'listPatientDiv';
-	$( "#loaderDiv" ).show();
-	$('#listPatientDiv').load("searchRegistrationPatient.action", 
+	jQuery( "#loaderDiv" ).show();
+	jQuery('#listPatientDiv').load("searchRegistrationPatient.action", 
 		{
 			sortPatientAttributeId: getFieldValue('sortPatientAttributeId')
 		}
 		, function(){
 			showById('listPatientDiv');
-			$( "#loaderDiv" ).hide();
+			jQuery( "#loaderDiv" ).hide();
 		});
 }
 
@@ -152,8 +152,8 @@ function validateAddPatient()
 
 function addValidationCompleted( data )
 {
-    var type = $(data).find('message').attr('type');
-	var message = $(data).find('message').text();
+    var type = jQuery(data).find('message').attr('type');
+	var message = jQuery(data).find('message').text();
 	
 	if ( type == 'success' )
 	{
@@ -192,8 +192,8 @@ function validateUpdatePatient()
 
 function updateValidationCompleted( messageElement )
 {
-    var type = $(messageElement).find('message').attr('type');
-	var message = $(messageElement).find('message').text();
+    var type = jQuery(messageElement).find('message').attr('type');
+	var message = jQuery(messageElement).find('message').text();
     
     if ( type == 'success' )
     {
@@ -247,8 +247,8 @@ function checkDuplicate( divname )
 function checkDuplicateCompleted( messageElement, divname )
 {
 	checkedDuplicate = true;    
-	var type = $(messageElement).find('message').attr('type');
-	var message = $(messageElement).find('message').text();
+	var type = jQuery(messageElement).find('message').attr('type');
+	var message = jQuery(messageElement).find('message').text();
     
     if( type == 'success')
     {
@@ -270,48 +270,48 @@ function checkDuplicateCompleted( messageElement, divname )
  */
 function showListPatientDuplicate( rootElement, validate )
 {
-	var message = $(rootElement).find('message').text();
-	var patients = $(rootElement).find('patient');
+	var message = jQuery(rootElement).find('message').text();
+	var patients = jQuery(rootElement).find('patient');
 	
 	var sPatient = "";
-	$( patients ).each( function( i, patient )
+	jQuery( patients ).each( function( i, patient )
         {
 			sPatient += "<hr style='margin:5px 0px;'><table>";
-			sPatient += "<tr><td class='bold'>" + i18n_patient_system_id + "</td><td>" + $(patient).find('systemIdentifier').text() + "</td></tr>" ;
-			sPatient += "<tr><td class='bold'>" + i18n_patient_full_name + "</td><td>" + $(patient).find('fullName').text() + "</td></tr>" ;
-			sPatient += "<tr><td class='bold'>" + i18n_patient_gender + "</td><td>" + $(patient).find('gender').text() + "</td></tr>" ;
-			sPatient += "<tr><td class='bold'>" + i18n_patient_date_of_birth + "</td><td>" + $(patient).find('dateOfBirth').text() + "</td></tr>" ;
-			sPatient += "<tr><td class='bold'>" + i18n_patient_age + "</td><td>" + $(patient).find('age').text() + "</td></tr>" ;
-			sPatient += "<tr><td class='bold'>" + i18n_patient_blood_group + "</td><td>" + $(patient).find('bloodGroup').text() + "</td></tr>";
+			sPatient += "<tr><td class='bold'>" + i18n_patient_system_id + "</td><td>" + jQuery(patient).find('systemIdentifier').text() + "</td></tr>" ;
+			sPatient += "<tr><td class='bold'>" + i18n_patient_full_name + "</td><td>" + jQuery(patient).find('fullName').text() + "</td></tr>" ;
+			sPatient += "<tr><td class='bold'>" + i18n_patient_gender + "</td><td>" + jQuery(patient).find('gender').text() + "</td></tr>" ;
+			sPatient += "<tr><td class='bold'>" + i18n_patient_date_of_birth + "</td><td>" + jQuery(patient).find('dateOfBirth').text() + "</td></tr>" ;
+			sPatient += "<tr><td class='bold'>" + i18n_patient_age + "</td><td>" + jQuery(patient).find('age').text() + "</td></tr>" ;
+			sPatient += "<tr><td class='bold'>" + i18n_patient_blood_group + "</td><td>" + jQuery(patient).find('bloodGroup').text() + "</td></tr>";
         	
-			var identifiers = $(patient).find('identifier');
+			var identifiers = jQuery(patient).find('identifier');
         	if( identifiers.length > 0 )
         	{
         		sPatient += "<tr><td colspan='2' class='bold'>" + i18n_patient_identifiers + "</td></tr>";
 
-        		$( identifiers ).each( function( i, identifier )
+        		jQuery( identifiers ).each( function( i, identifier )
 				{
         			sPatient +="<tr class='identifierRow'>"
-        				+"<td class='bold'>" + $(identifier).find('name').text() + "</td>"
-        				+"<td>" + $(identifier).find('value').text() + "</td>	"	
+        				+"<td class='bold'>" + jQuery(identifier).find('name').text() + "</td>"
+        				+"<td>" + jQuery(identifier).find('value').text() + "</td>	"	
         				+"</tr>";
         		});
         	}
 			
-        	var attributes = $(patient).find('attribute');
+        	var attributes = jQuery(patient).find('attribute');
         	if( attributes.length > 0 )
         	{
         		sPatient += "<tr><td colspan='2' class='bold'>" + i18n_patient_attributes + "</td></tr>";
 
-        		$( attributes ).each( function( i, attribute )
+        		jQuery( attributes ).each( function( i, attribute )
 				{
         			sPatient +="<tr class='attributeRow'>"
-        				+"<td class='bold'>" + $(attribute).find('name').text() + "</td>"
-        				+"<td>" + $(attribute).find('value').text() + "</td>	"	
+        				+"<td class='bold'>" + jQuery(attribute).find('name').text() + "</td>"
+        				+"<td>" + jQuery(attribute).find('value').text() + "</td>	"	
         				+"</tr>";
         		});
         	}
-        	sPatient += "<tr><td colspan='2'><input type='button' id='"+ $(patient).find('id').first().text() + "' value='" + i18n_edit_this_patient + "' onclick='showUpdatePatientForm(this.id)'/></td></tr>";
+        	sPatient += "<tr><td colspan='2'><input type='button' id='"+ jQuery(patient).find('id').first().text() + "' value='" + i18n_edit_this_patient + "' onclick='showUpdatePatientForm(this.id)'/></td></tr>";
         	sPatient += "</table>";
 		});
 		
@@ -323,8 +323,8 @@ function showListPatientDuplicate( rootElement, validate )
 		}
 		
 		result += "<br>" + sPatient;
-		$('#resultSearchDiv' ).html( result );
-		$('#resultSearchDiv' ).dialog({
+		jQuery('#resultSearchDiv' ).html( result );
+		jQuery('#resultSearchDiv' ).dialog({
 			title: i18n_duplicated_patient_list,
 			maximize: true, 
 			closable: true,
@@ -343,8 +343,8 @@ function toggleUnderAge(this_)
 {
 	if( jQuery(this_).is(":checked"))
 	{
-		$('#representativeDiv').dialog('destroy').remove();
-		$('<div id="representativeDiv">' ).load( 'showAddRepresentative.action' ).dialog({
+		jQuery('#representativeDiv').dialog('destroy').remove();
+		jQuery('<div id="representativeDiv">' ).load( 'showAddRepresentative.action' ).dialog({
 			title: i18n_child_representative,
 			maximize: true, 
 			closable: true,
@@ -585,7 +585,7 @@ function showUnenrollmentForm( programInstanceId )
 			setFieldValue( 'dateOfEnrollmentDescription', json.dateOfEnrollmentDescription );
 			setFieldValue( 'dateOfIncidentDescription', json.dateOfIncidentDescription );
 			showById( 'unenrollmentFormDiv' );
-			$( "#loaderDiv" ).hide();
+			jQuery( "#loaderDiv" ).hide();
 		});
 }
 
@@ -826,7 +826,7 @@ function addAttributeOption()
 		contend += '<input type="button" value="-" onclick="removeAttributeOption(' + "'" + rowId + "'" + ');"></td>';
 		contend = '<tr id="' + rowId + '">' + contend + '</tr>';
 
-	$('#advancedSearchTB > tbody:last').append( contend );
+	jQuery('#advancedSearchTB > tbody:last').append( contend );
 }	
 
 function removeAttributeOption( rowId )
@@ -873,7 +873,7 @@ function showSelectedDataRecoding( patientId )
 
 function showRepresentativeInfo( patientId)
 {
-	$('#representativeInfo' ).dialog({
+	jQuery('#representativeInfo' ).dialog({
 			title: i18n_representative_info,
 			maximize: true, 
 			closable: true,

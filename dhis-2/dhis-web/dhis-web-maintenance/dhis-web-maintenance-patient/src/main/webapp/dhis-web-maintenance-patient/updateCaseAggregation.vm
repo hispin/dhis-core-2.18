@@ -176,6 +176,8 @@
 			<img src="../images/left_parent.png" alt="$i18n.getString( 'left_parent' )" onclick='insertOperator( "(" );' style="cursor:pointer;"/>
 			<img src="../images/right_parent.png" alt="$i18n.getString( 'right_parent' )" onclick='insertOperator( ")" );' style="cursor:pointer;"/>
 			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+			<img src="images/yes.png" alt="$i18n.getString( 'yes' )" onclick='insertOperator( "true" );' style="cursor:pointer;"/>
+			<img src="images/no.png" alt="$i18n.getString( 'no' )" onclick='insertOperator( "false" );' style="cursor:pointer;"/>
 			<img src="../images/is_null.png" alt="$i18n.getString( 'is_null' )" onclick='insertOperator( "is null" );' style="cursor:pointer;">
 			<img src="../images/not_null.png" alt="$i18n.getString( 'not_null' )" onclick='insertOperator( "is not null" );' style="cursor:pointer;">
 			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
