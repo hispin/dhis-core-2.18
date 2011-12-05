@@ -31,9 +31,9 @@ import java.util.Collection;
 
 import org.hibernate.Criteria;
 import org.hibernate.Session;
-import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Criterion;
 import org.hibernate.criterion.Restrictions;
+import org.hisp.dhis.common.hibernate.HibernateIdentifiableObjectStore;
 import org.hisp.dhis.mapping.MapLayer;
 import org.hisp.dhis.mapping.MapLegend;
 import org.hisp.dhis.mapping.MapLegendSet;
@@ -46,18 +46,8 @@ import org.hisp.dhis.user.User;
  * @version $Id$
  */
 public class HibernateMappingStore
-    implements MappingStore
+    extends HibernateIdentifiableObjectStore<MapView> implements MappingStore
 {
-    // -------------------------------------------------------------------------
-    // Dependencies
-    // -------------------------------------------------------------------------
-
-    private SessionFactory sessionFactory;
-
-    public void setSessionFactory( SessionFactory sessionFactory )
-    {
-        this.sessionFactory = sessionFactory;
-    }
 
     // -------------------------------------------------------------------------
     // MapLegend
@@ -183,16 +173,12 @@ public class HibernateMappingStore
 
     public int addMapView( MapView view )
     {
-        Session session = sessionFactory.getCurrentSession();
-
-        return (Integer) session.save( view );
+        return save( view );
     }
 
     public void updateMapView( MapView view )
     {
-        Session session = sessionFactory.getCurrentSession();
-
-        session.update( view );
+        update( view );
     }
 
     public void deleteMapView( MapView view )

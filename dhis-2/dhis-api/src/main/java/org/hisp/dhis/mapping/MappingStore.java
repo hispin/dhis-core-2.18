@@ -29,6 +29,8 @@ package org.hisp.dhis.mapping;
 
 import java.util.Collection;
 
+import org.hisp.dhis.chart.Chart;
+import org.hisp.dhis.common.GenericIdentifiableObjectStore;
 import org.hisp.dhis.user.User;
 
 /**
@@ -36,6 +38,7 @@ import org.hisp.dhis.user.User;
  * @version $Id$
  */
 public interface MappingStore
+    extends GenericIdentifiableObjectStore<MapView>
 {
     String ID = MappingStore.class.getName();
 

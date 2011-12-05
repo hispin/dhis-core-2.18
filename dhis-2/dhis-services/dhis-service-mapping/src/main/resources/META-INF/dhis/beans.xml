@@ -34,6 +34,7 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
 
   <bean id="org.hisp.dhis.mapping.MappingStore"
     class="org.hisp.dhis.mapping.hibernate.HibernateMappingStore">
+    <property name="clazz" value="org.hisp.dhis.mapping.MapView" />
     <property name="sessionFactory" ref="sessionFactory"/>
   </bean>
 

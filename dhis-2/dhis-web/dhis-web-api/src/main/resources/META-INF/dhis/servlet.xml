@@ -20,6 +20,7 @@
         <entry key="xml" value="application/xml" />
         <entry key="pdf" value="application/pdf" />
         <entry key="html" value="text/html" />
+        <entry key="png" value="image/png" />
       </map>
     </property>
 
@@ -33,6 +34,7 @@
 
         <bean class="org.hisp.dhis.api.view.Jaxb2View" />
 
+        <bean name="mapGenerationView" class="org.hisp.dhis.api.view.MapGenerationView" />
       </list>
     </property>
 

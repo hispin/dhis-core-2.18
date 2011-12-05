@@ -39,6 +39,7 @@ import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.hisp.dhis.common.GenericNameableObjectStore;
+import org.springframework.beans.factory.annotation.Required;
 import org.springframework.jdbc.core.JdbcTemplate;
 
 /**
@@ -50,6 +51,7 @@ public class HibernateGenericStore< T >
 {
     protected SessionFactory sessionFactory;
 
+    @Required
     public void setSessionFactory( SessionFactory sessionFactory )
     {
         this.sessionFactory = sessionFactory;
@@ -75,6 +77,7 @@ public class HibernateGenericStore< T >
     /**
      * Could be injected through container.
      */
+    @Required
     public void setClazz( Class<T> clazz )
     {
         this.clazz = clazz;
@@ -133,7 +136,12 @@ public class HibernateGenericStore< T >
      */
     protected final Criteria getCriteria()
     {
-        return sessionFactory.getCurrentSession().createCriteria( getClazz() ).setCacheable( cacheable );
+        return getClazzCriteria().setCacheable( cacheable );
+    }
+
+    protected Criteria getClazzCriteria()
+    {
+        return sessionFactory.getCurrentSession().createCriteria( getClazz() );
     }
     
     /**

@@ -27,18 +27,18 @@ package org.hisp.dhis.api.view;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import org.springframework.web.servlet.view.AbstractUrlBasedView;
+import java.io.OutputStream;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.xml.bind.JAXBContext;
 import javax.xml.bind.Marshaller;
 import javax.xml.bind.util.JAXBSource;
 import javax.xml.transform.Source;
 import javax.xml.transform.Transformer;
 import javax.xml.transform.stream.StreamResult;
-import java.io.OutputStream;
-import java.util.Map;
+
+import org.springframework.web.servlet.view.AbstractUrlBasedView;
 
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
@@ -66,13 +66,13 @@ public class XsltHtmlView extends AbstractUrlBasedView
             // TODO throw exception
         }
 
-        JAXBContext context = JAXBContext.newInstance( domainModel.getClass() );
-        Marshaller marshaller = context.createMarshaller();
-        marshaller.setProperty( Marshaller.JAXB_FORMATTED_OUTPUT, false );
-        marshaller.setProperty( Marshaller.JAXB_ENCODING, "UTF-8" );
+        
+        Marshaller marshaller = Jaxb2Utils.createMarshaller( domainModel, request );
 
-        Source xmlSource = new JAXBSource( context, domainModel );
+        Source xmlSource = new JAXBSource( marshaller, domainModel );
 
+        
+        
         Transformer transformer = TransformCacheImpl.instance().getHtmlTransformer();
 
         OutputStream output = response.getOutputStream();
@@ -90,4 +90,5 @@ public class XsltHtmlView extends AbstractUrlBasedView
         transformer.transform( xmlSource, new StreamResult( output ) );
 
     }
+
 }
