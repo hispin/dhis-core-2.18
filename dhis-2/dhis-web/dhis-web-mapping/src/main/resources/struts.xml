@@ -337,6 +337,11 @@
             <result name="success" type="velocity-json">/dhis-web-mapping/geojson.vm</result>
         </action>
 
+        <action name="getGeoJsonWithValues"
+            class="org.hisp.dhis.mapping.action.GetGeoJsonWithValuesAction">
+            <result name="success" type="velocity-json">/dhis-web-mapping/geojsonmin.vm</result>
+        </action>
+
         <action name="getGeoJsonFacilities"
             class="org.hisp.dhis.mapping.action.GetGeoJsonFacilitiesAction">
             <result name="success" type="velocity-json">/dhis-web-mapping/geojsonFacilities.vm</result>

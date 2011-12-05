@@ -1648,20 +1648,22 @@ mapfish.widgets.geostat.Choropleth = Ext.extend(Ext.Panel, {
 	},
     
     loadGeoJson: function() {
-        G.vars.mask.msg = G.i18n.loading_geojson;
+        G.vars.mask.msg = G.i18n.loading;
         G.vars.mask.show();
         G.vars.activeWidget = this;
-        this.updateValues = true;
+        this.updateValues = false;
         
-        this.setUrl(G.conf.path_mapping + 'getGeoJson.action?' +
-            'parentId=' + this.organisationUnitSelection.parent.id +
-            '&level=' + this.organisationUnitSelection.level.level
-        );
+        var url = G.conf.path_mapping + 'getGeoJsonWithValues.action?' + 
+            'periodId=' + this.cmp.period.getValue() +
+            '&parentId=' + this.organisationUnitSelection.parent.id +
+            '&level=' + this.organisationUnitSelection.level.level;            
+        url += this.valueType.isIndicator() ? '&indicatorId=' + this.cmp.indicator.getValue() : '&dataElementId=' + this.cmp.dataElement.getValue();
+        this.setUrl(url);
     },
 
     classify: function(exception, lockPosition) {
         if (this.formValidation.validateForm.apply(this, [exception])) {
-            G.vars.mask.msg = G.i18n.aggregating_map_values;
+            G.vars.mask.msg = G.i18n.loading;
             G.vars.mask.show();
             
             G.vars.lockPosition = lockPosition;
@@ -1708,15 +1710,11 @@ mapfish.widgets.geostat.Choropleth = Ext.extend(Ext.Panel, {
                             for (var i = 0; i < mapvalues.length; i++) {
                                 if (this.layer.features[j].attributes.id == mapvalues[i].oi) {
                                     this.layer.features[j].attributes.value = parseFloat(mapvalues[i].v);
-                                    this.layer.features[j].attributes.labelString = this.layer.features[j].attributes.name + ' (' + this.layer.features[j].attributes.value + ')';
-                                    this.layer.features[j].attributes.fixedName = G.util.cutString(this.layer.features[j].attributes.name, 30);
                                     break;
                                 }
                             }
                             if (!this.layer.features[j].attributes.value) {
                                 this.layer.features[j].attributes.value = 0;
-                                this.layer.features[j].attributes.labelString = this.layer.features[j].attributes.name + ' (0)';
-                                this.layer.features[j].attributes.fixedName = G.util.cutString(this.layer.features[j].attributes.name, 30);
                             }
                         }
                         
@@ -1730,8 +1728,14 @@ mapfish.widgets.geostat.Choropleth = Ext.extend(Ext.Panel, {
             }
         }
     },
-
+    
     applyValues: function() {
+        for (var i = 0, f; i < this.layer.features.length; i++) {
+            f = this.layer.features[i];
+            f.attributes.labelString = f.attributes.name + ' (' + f.attributes.value + ')';
+            f.attributes.fixedName = G.util.cutString(f.attributes.name, 30);
+        }
+        
         this.button.menu.find('name','history')[0].addItem(this);
         
 		var options = {

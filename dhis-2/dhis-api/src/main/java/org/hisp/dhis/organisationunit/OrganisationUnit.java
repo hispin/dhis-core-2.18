@@ -30,6 +30,7 @@ package org.hisp.dhis.organisationunit;
 import org.apache.commons.lang.StringUtils;
 import org.codehaus.jackson.annotate.JsonProperty;
 import org.codehaus.jackson.map.annotate.JsonSerialize;
+import org.hisp.dhis.aggregation.AggregatedMapValue;
 import org.hisp.dhis.attribute.AttributeValue;
 import org.hisp.dhis.common.BaseNameableObject;
 import org.hisp.dhis.common.Dxf2Namespace;
@@ -118,6 +119,8 @@ public class OrganisationUnit extends BaseNameableObject
     private transient String type;
 
     private transient String[] groupNames;
+    
+    private transient Double value;
 
     /**
      * Set of the dynamic attributes values that belong to this
@@ -771,5 +774,15 @@ public class OrganisationUnit extends BaseNameableObject
     public void setGroupNames( String[] groupNames )
     {
         this.groupNames = groupNames;
+    }
+
+    public Double getValue()
+    {
+        return value;
+    }
+
+    public void setValue( Double value )
+    {
+        this.value = value;
     }
 }

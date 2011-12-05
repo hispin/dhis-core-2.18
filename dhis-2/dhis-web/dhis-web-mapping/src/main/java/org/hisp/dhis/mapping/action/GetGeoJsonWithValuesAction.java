@@ -27,10 +27,16 @@ package org.hisp.dhis.mapping.action;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import java.util.ArrayList;
 import java.util.Collection;
 
 import org.hisp.dhis.aggregation.AggregatedMapValue;
 import org.hisp.dhis.mapping.MappingService;
+import org.hisp.dhis.organisationunit.OrganisationUnit;
+import org.hisp.dhis.organisationunit.OrganisationUnitService;
+import org.hisp.dhis.system.filter.OrganisationUnitWithCoordinatesFilter;
+import org.hisp.dhis.system.filter.OrganisationUnitWithValidPointCoordinateFilter;
+import org.hisp.dhis.system.util.FilterUtils;
 
 import com.opensymphony.xwork2.Action;
 
@@ -38,15 +44,22 @@ import com.opensymphony.xwork2.Action;
  * @author Jan Henrik Overland
  * @version $Id$
  */
-public class GetIndicatorMapValuesAction
+public class GetGeoJsonWithValuesAction
     implements Action
 {
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
 
-    private MappingService mappingService;
+    private OrganisationUnitService organisationUnitService;
 
+    public void setOrganisationUnitService( OrganisationUnitService organisationUnitService )
+    {
+        this.organisationUnitService = organisationUnitService;
+    }
+    
+    private MappingService mappingService;
+    
     public void setMappingService( MappingService mappingService )
     {
         this.mappingService = mappingService;
@@ -55,12 +68,19 @@ public class GetIndicatorMapValuesAction
     // -------------------------------------------------------------------------
     // Input
     // -------------------------------------------------------------------------
+    
+    private Integer indicatorId;
 
-    private Integer id;
-
-    public void setId( Integer id )
+    public void setIndicatorId( Integer indicatorId )
     {
-        this.id = id;
+        this.indicatorId = indicatorId;
+    }
+    
+    private Integer dataElementId;
+
+    public void setDataElementId( Integer dataElementId )
+    {
+        this.dataElementId = dataElementId;
     }
 
     private Integer periodId;
@@ -72,9 +92,9 @@ public class GetIndicatorMapValuesAction
 
     private Integer parentId;
 
-    public void setParentId( Integer parentId )
+    public void setParentId( Integer id )
     {
-        this.parentId = parentId;
+        this.parentId = id;
     }
 
     private Integer level;
@@ -88,9 +108,9 @@ public class GetIndicatorMapValuesAction
     // Output
     // -------------------------------------------------------------------------
 
-    private Collection<AggregatedMapValue> object;
+    private Collection<OrganisationUnit> object;
 
-    public Collection<AggregatedMapValue> getObject()
+    public Collection<OrganisationUnit> getObject()
     {
         return object;
     }
@@ -102,8 +122,61 @@ public class GetIndicatorMapValuesAction
     public String execute()
         throws Exception
     {
-        object = mappingService.getIndicatorMapValues( id, periodId, parentId, level );
+        OrganisationUnit parent = organisationUnitService.getOrganisationUnit( parentId );
+
+        level = level == null ? organisationUnitService.getLevelOfOrganisationUnit( parent ) : level;
+
+        Collection<OrganisationUnit> organisationUnits = organisationUnitService.getOrganisationUnitsAtLevel( level,
+            parent );
+
+        FilterUtils.filter( organisationUnits, new OrganisationUnitWithCoordinatesFilter() );
+
+        FilterUtils.filter( organisationUnits, new OrganisationUnitWithValidPointCoordinateFilter() );
+
+        object = new ArrayList<OrganisationUnit>();
+
+        for ( OrganisationUnit unit : organisationUnits )
+        {
+            if ( !unit.getFeatureType().equals( OrganisationUnit.FEATURETYPE_POINT ) )
+            {
+                object.add( unit );
+            }
+        }
+
+        for ( OrganisationUnit unit : organisationUnits )
+        {
+            if ( unit.getFeatureType().equals( OrganisationUnit.FEATURETYPE_POINT ) )
+            {
+                object.add( unit );
+            }
+        }
         
+        Collection<AggregatedMapValue> values = new ArrayList<AggregatedMapValue>();
+        
+        if ( indicatorId != null )
+        {
+            values = mappingService.getIndicatorMapValues( indicatorId, periodId, object );
+        }
+        
+        else if ( dataElementId != null )
+        {
+            values = mappingService.getDataElementMapValues( dataElementId, periodId, object );
+        }
+        
+        if ( values != null )
+        {
+            for ( OrganisationUnit unit : object )
+            {
+                for ( AggregatedMapValue value : values )
+                {
+                    if ( unit.getId() == value.getOrganisationUnitId() )
+                    {
+                        unit.setValue( value.getValue() );
+                    }
+                }
+            }
+        }
+
         return SUCCESS;
     }
 }
