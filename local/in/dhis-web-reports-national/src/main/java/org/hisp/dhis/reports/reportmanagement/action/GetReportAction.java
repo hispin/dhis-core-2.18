@@ -42,16 +42,48 @@ public class GetReportAction
     {
         return reportId;
     }
+    
+    private String ouGroupname;
+    
+    public String getOuGroupname()
+    {
+        return ouGroupname;
+    }
 
+    private String datasetName;
+    
+    public String getDatasetName()
+    {
+        return datasetName;
+    }
+    
     // -------------------------------------------------------------------------
     // Action
     // -------------------------------------------------------------------------
+
+
+ 
 
     public String execute()
         throws Exception
     {
         report = reportService.getReport( reportId );
-
+        /*
+        if( report.getOrgunitGroup() != null )
+        {
+            ouGroupname = report.getOrgunitGroup().getName();
+            //System.out.println(report.getOrgunitGroup().getName());
+        }
+       
+        if( report.getDataSetIds() != null )
+        {
+            datasetName = report.getDataSetIds();
+            //System.out.println(report.getDataSetIds());
+        }
+     
+        //System.out.println(report.getDataSetIds());
+         * */
+        
         return SUCCESS;
     }
 }

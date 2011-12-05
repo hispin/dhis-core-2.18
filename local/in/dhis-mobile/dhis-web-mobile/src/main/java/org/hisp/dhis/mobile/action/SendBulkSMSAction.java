@@ -54,7 +54,7 @@ public class SendBulkSMSAction
 
     SmsService smsService;
 
-    private int succ = 0, modemError = 0;
+    //private int succ = 0, modemError = 0;
 
     public void setSmsService( SmsService smsService )
     {
@@ -168,10 +168,11 @@ public String isMessageDisabled;
         availableOrganisationUnitGroups = new ArrayList<OrganisationUnitGroup>( orgUnitGrpService.getAllOrganisationUnitGroups() );
         System.out.println( "size(bulksmsmaction)==" + availableOrganisationUnitGroups.size() );   
         Collections.sort( availableOrganisationUnitGroups, new OrganisationUnitGroupNameComparator() );
-Iterator it=orgUnitGrpService.getAllOrganisationUnitGroups().iterator();
-while(it.hasNext()){
-System.out.println(it.next());
-}
+        Iterator<OrganisationUnitGroup> it=orgUnitGrpService.getAllOrganisationUnitGroups().iterator();
+        while(it.hasNext())
+        {
+            System.out.println(it.next());
+        }
 //dataElementService=new DefaultDataElementService();
 
 //System.out.println("------------------------------------->"+dataElementService.getDataElementGroupCount());
@@ -228,7 +229,7 @@ NodeList nodelist=doc.getElementsByTagName( "dataelement");
                         {
 
                             System.out.println( "  -" + availableOrganisationUnitGroups.get( j ).getMembers().size() );
-                            Iterator itr = availableOrganisationUnitGroups.get( j ).getMembers().iterator();
+                            Iterator<OrganisationUnit> itr = availableOrganisationUnitGroups.get( j ).getMembers().iterator();
                             while ( itr.hasNext() )
                             {
                                 OrganisationUnit temp = (OrganisationUnit) itr.next();
@@ -236,7 +237,7 @@ NodeList nodelist=doc.getElementsByTagName( "dataelement");
                                 {
                                     phonenos.add( temp.getPhoneNumber() );
                                 }
-                                 System.out.println( "id="+temp.getUuid()+"       phone=" + temp.getPhoneNumber() );
+                                 System.out.println( "id="+temp.getId()+" ----phone=" + temp.getPhoneNumber() );
                             }
 
                         }
@@ -269,7 +270,7 @@ NodeList nodelist=doc.getElementsByTagName( "dataelement");
             }
             
             // fill in the sendSMS fields...
-            List<SendSMS> sendSMSList = new ArrayList();
+            List<SendSMS> sendSMSList = new ArrayList<SendSMS>();
             SendSMS tempSendSMS;
             for ( int i = 0; i < phonenos.size(); i++ )
             {

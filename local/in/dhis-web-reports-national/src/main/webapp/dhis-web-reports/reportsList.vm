@@ -69,6 +69,8 @@
         <p><label>$i18n.getString( "reportType" ):</label><br><span id="reportTypeField"></span></p>
         <p><label>$i18n.getString( "exceltemplate" ):</label><br><span id="excelTemplateField"></span></p>
         <p><label>$i18n.getString( "xmltemplate" ):</label><br><span id="xmlTemplateField"></span></p>
+       	<!--<p><label>$i18n.getString( "orgunitgroup" ):</label><br><span id="orgGroupNameField"></span></p>
+        <p><label>$i18n.getString( "dataset" ):</label><br><span id="dataSetNameField"></span></p>-->
       </div>
 
     </td>

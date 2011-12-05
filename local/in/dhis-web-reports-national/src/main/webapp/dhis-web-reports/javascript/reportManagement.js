@@ -67,6 +67,17 @@ function reportRecieved(reportElement)
 	byId('excelTemplateField').innerHTML = reportElement.getElementsByTagName( 'exceltemplate' )[0].firstChild.nodeValue;
 
 	byId('xmlTemplateField').innerHTML = reportElement.getElementsByTagName( 'xmltemplate' )[0].firstChild.nodeValue;
+	/*
+	var orgGroupName = getElementValue( reportElement, 'orgGroupName' );
+	setInnerHTML( 'orgGroupNameField', orgGroupName ? orgGroupName : '[' + Null + ']' );
+	
+	var dataSetName = getElementValue( reportElement, 'dataSetName' );
+	setInnerHTML( 'dataSetNameField', dataSetName ? dataSetName : '[' + Null + ']' );
+	*/
+	
+	//byId('orgGroupNameField').innerHTML = reportElement.getElementsByTagName( 'orgGroupName' )[0].firstChild.nodeValue;
+	
+	//byId('dataSetNameField').innerHTML = reportElement.getElementsByTagName( 'dataSetName' )[0].firstChild.nodeValue;
 
 	showDetails();
 }
