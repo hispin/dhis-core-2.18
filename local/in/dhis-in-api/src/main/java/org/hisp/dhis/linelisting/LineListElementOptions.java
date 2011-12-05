@@ -1,7 +1,7 @@
 package org.hisp.dhis.linelisting;
 
 import java.io.Serializable;
-import org.hisp.dhis.common.AbstractIdentifiableObject;
+//import org.hisp.dhis.common.AbstractIdentifiableObject;
 
 /*
  * Copyright (c) 2004-2009, University of Oslo
@@ -30,8 +30,8 @@ import org.hisp.dhis.common.AbstractIdentifiableObject;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 @SuppressWarnings( "serial" )
+//public class LineListElementOptions extends AbstractIdentifiableObject
 public class LineListElementOptions
-    extends AbstractIdentifiableObject
     implements Serializable
 {
 

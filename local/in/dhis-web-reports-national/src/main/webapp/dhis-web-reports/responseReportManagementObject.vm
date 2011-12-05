@@ -6,5 +6,7 @@
   <frequency>$i18n.getString( $report.periodType.name )</frequency>
   <reportType>$report.reportType</reportType>
   <exceltemplate>$report.excelTemplateName</exceltemplate>
-  <xmltemplate>$report.xmlTemplateName</xmltemplate>  
+  <xmltemplate>$report.xmlTemplateName</xmltemplate>
+<!--<orgGroupName>$ouGroupname</orgGroupName>
+  <dataSetName>$datasetName</dataSetName>-->  
 </report>

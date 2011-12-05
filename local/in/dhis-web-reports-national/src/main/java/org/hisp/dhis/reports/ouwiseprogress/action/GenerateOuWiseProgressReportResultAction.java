@@ -39,6 +39,8 @@ import org.amplecode.quick.StatementManager;
 import org.hisp.dhis.config.Configuration_IN;
 import org.hisp.dhis.i18n.I18nFormat;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
+import org.hisp.dhis.organisationunit.OrganisationUnitGroup;
+import org.hisp.dhis.organisationunit.OrganisationUnitGroupService;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.organisationunit.comparator.OrganisationUnitShortNameComparator;
 import org.hisp.dhis.period.Period;
@@ -90,6 +92,14 @@ public class GenerateOuWiseProgressReportResultAction
     {
         this.organisationUnitService = organisationUnitService;
     }
+    
+    private OrganisationUnitGroupService organisationUnitGroupService;
+
+    public void setOrganisationUnitGroupService( OrganisationUnitGroupService organisationUnitGroupService )
+    {
+        this.organisationUnitGroupService = organisationUnitGroupService;
+    }
+
 /*
     private DataSetService dataSetService;
     
@@ -165,6 +175,13 @@ public class GenerateOuWiseProgressReportResultAction
         this.aggData = aggData;
     }
 
+    private Integer orgUnitGroup;
+    
+    public void setOrgUnitGroup( Integer orgUnitGroup )
+    {
+        this.orgUnitGroup = orgUnitGroup;
+    }
+
     private OrganisationUnit selectedOrgUnit;
 
     private List<OrganisationUnit> orgUnitList;
@@ -216,6 +233,17 @@ public class GenerateOuWiseProgressReportResultAction
         if ( reportModelTB.equalsIgnoreCase( "PROGRESSIVE-ORGUNIT" ) )
         {
             orgUnitList = new ArrayList<OrganisationUnit>( selectedOrgUnit.getChildren() );
+            
+            if( orgUnitGroup != 0 )
+            {
+                OrganisationUnitGroup ouGroup = organisationUnitGroupService.getOrganisationUnitGroup( orgUnitGroup );
+            
+                if( ouGroup != null )
+                {
+                    orgUnitList.retainAll( ouGroup.getMembers() );
+                }
+            }
+            
             Collections.sort( orgUnitList, new OrganisationUnitShortNameComparator() );
             
             //Hardcoded to level 2 to make report fast for state level

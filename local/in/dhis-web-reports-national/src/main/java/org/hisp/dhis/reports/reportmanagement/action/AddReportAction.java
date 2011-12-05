@@ -123,9 +123,17 @@ public class AddReportAction
 
         if( orgunitGroupId != null )
         {
-            OrganisationUnitGroup orgUnitGroup = organisationUnitGroupService.getOrganisationUnitGroup( orgunitGroupId );
-            
-            report.setOrgunitGroup( orgUnitGroup );
+            if ( orgunitGroupId == 0 )
+            {
+                report.setOrgunitGroup( null );
+            }
+            else
+            {
+                OrganisationUnitGroup orgUnitGroup = organisationUnitGroupService.getOrganisationUnitGroup( orgunitGroupId );
+                
+                report.setOrgunitGroup( orgUnitGroup );
+            }
+ 
         }
 
         if( dataSetIds != null )

@@ -58,6 +58,7 @@
             <td><label>$i18n.getString( "orgunitgroup" )</label></td>
             <td>
               <select id="orgunitGroupId" name="orgunitGroupId" style="min-width:20em">
+              	<option value="0" selected>[ $i18n.getString( "select_orgUnitGroup" ) ]</option>
                 #foreach ( $orgUnitGroup in $orgUnitGroups )
                   <option value="$orgUnitGroup.id" #if($orgUnitGroup.id == $report.orgunitGroup.id) selected #end>$i18n.getString( $orgUnitGroup.name )</option>
                 #end
