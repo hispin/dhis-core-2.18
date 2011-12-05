@@ -584,13 +584,13 @@ public class DefaultCaseAggregationConditionService
                 else if ( info[0].equalsIgnoreCase( OBJECT_PATIENT_PROPERTY ) )
                 {
                     String propertyName = info[1];
-                    condition = getConditionForPatientProperty( propertyName, operator, orgunitId, startDate, endDate );
+                    condition = getConditionForPatientProperty( propertyName, operator, startDate, endDate );
 
                 }
                 else if ( info[0].equalsIgnoreCase( OBJECT_PATIENT_ATTRIBUTE ) )
                 {
                     int attributeId = Integer.parseInt( info[1] );
-                    condition = getConditionForPatientAttribute( attributeId, operator, orgunitId, startDate, endDate );
+                    condition = getConditionForPatientAttribute( attributeId, operator );
                 }
                 else if ( info[0].equalsIgnoreCase( OBJECT_PROGRAM_STAGE_DATAELEMENT ) )
                 {
@@ -720,23 +720,18 @@ public class DefaultCaseAggregationConditionService
             + "AND psi.executionDate >= '" + startDate + "' AND psi.executionDate <= '" + endDate + "' ";
     }
 
-    private String getConditionForPatientAttribute( int attributeId, String operator, int orgunitId, String startDate,
-        String endDate )
+    private String getConditionForPatientAttribute( int attributeId, String operator )
     {
         String sql = "SELECT distinct(pi.patientid) ";
 
         if ( operator.equals( AGGRERATION_SUM ) )
         {
-            sql = "SELECT pi.patientid ";
+            sql = "SELECT p.patientid ";
         }
 
-        return sql + "FROM programstageinstance as psi "
-            + "INNER JOIN programstage as ps ON psi.programstageid = ps.programstageid "
-            + "INNER JOIN patientdatavalue as pd ON psi.programstageinstanceid = pd.programstageinstanceid "
-            + "INNER JOIN programinstance as pi ON pi.programinstanceid = psi.programinstanceid "
+        return sql + "FROM patient as pi "
             + "INNER JOIN patientattributevalue as pav ON pav.patientid = pi.patientid "
-            + "WHERE pav.patientattributeid = " + attributeId + " " + " AND pd.organisationunitid = " + orgunitId + " "
-            + " AND psi.executionDate >= '" + startDate + "' AND psi.executionDate <= '" + endDate + "' "
+            + "WHERE pav.patientattributeid = " + attributeId + " "
             + "AND pav.value ";
     }
 
@@ -755,22 +750,15 @@ public class DefaultCaseAggregationConditionService
         return sql;
     }
 
-    private String getConditionForPatientProperty( String propertyName, String operator, int orgunitId,
+    private String getConditionForPatientProperty( String propertyName, String operator,
         String startDate, String endDate )
     {
-        String sql = "SELECT distinct(p.patientid) ";
+        String sql = "SELECT distinct(pi.patientid) FROM patient as pi ";
 
         if ( operator.equals( AGGRERATION_SUM ) )
         {
-            sql = "SELECT p.patientid ";
+            sql = "SELECT pi.patientid ";
         }
-
-        sql += "FROM programstageinstance as psi INNER JOIN programstage as ps "
-            + "ON psi.programstageid = ps.programstageid INNER JOIN patientdatavalue as pd ON "
-            + "psi.programstageinstanceid = pd.programstageinstanceid INNER JOIN programinstance as pi ON "
-            + "psi.programinstanceid = pi.programinstanceid INNER JOIN patient as p ON "
-            + "p.patientid = pi.patientid WHERE pd.organisationunitid = " + orgunitId + " "
-            + "AND psi.executionDate >= '" + startDate + "' AND psi.executionDate <= '" + endDate;
 
         if ( propertyName.equals( PROPERTY_AGE ) )
         {
@@ -787,34 +775,34 @@ public class DefaultCaseAggregationConditionService
 
     private String getConditionForProgramProperty( int orgunitId, String operator, String startDate, String endDate )
     {
-        String sql = "SELECT distinct(p.patientid) ";
+        String sql = "SELECT distinct(pi.patientid) ";
 
         if ( operator.equals( AGGRERATION_SUM ) )
         {
-            sql = "SELECT p.patientid ";
+            sql = "SELECT pi.patientid ";
         }
         
         return sql + "FROM programstageinstance as psi "
-            + "INNER JOIN programinstance as pi ON psi.programinstanceid = pi.programinstanceid "
-            + "INNER JOIN patient as p ON p.patientid = pi.patientid WHERE p.organisationunitid = " + orgunitId + " "
+            + "INNER JOIN programinstance as pgi ON psi.programinstanceid = pgi.programinstanceid "
+            + "INNER JOIN patient as pi ON pi.patientid = pgi.patientid WHERE pi.organisationunitid = " + orgunitId + " "
             + "AND psi.executionDate >= '" + startDate + "' AND psi.executionDate <= '" + endDate + "' AND ";
     }
 
     private String getConditionForProgram( String programId, String operator, int orgunitId, String startDate,
         String endDate )
     {
-        String sql = "SELECT distinct(p.patientid) ";
+        String sql = "SELECT distinct(pi.patientid) ";
 
         if ( operator.equals( AGGRERATION_SUM ) )
         {
-            sql = "SELECT p.patientid ";
+            sql = "SELECT pi.patientid ";
         }
 
         return sql + "FROM programstageinstance as psi "
-            + "INNER JOIN programinstance as pi ON psi.programinstanceid = pi.programinstanceid "
-            + "INNER JOIN patient as p ON p.patientid = pi.patientid " + "WHERE pi.programid=" + programId + " "
-            + "AND p.organisationunitid = " + orgunitId + " " + "AND pi.enrollmentdate >= '" + startDate
-            + "' AND pi.enrollmentdate <= '" + endDate + "' ";
+            + "INNER JOIN programinstance as pgi ON psi.programinstanceid = pgi.programinstanceid "
+            + "INNER JOIN patient as pi ON pi.patientid = pgi.patientid " + "WHERE pgi.programid=" + programId + " "
+            + "AND pi.organisationunitid = " + orgunitId + " " + "AND pgi.enrollmentdate >= '" + startDate
+            + "' AND pgi.enrollmentdate <= '" + endDate + "' ";
     }
 
     private String getSQL( List<String> conditions, List<String> operators )
