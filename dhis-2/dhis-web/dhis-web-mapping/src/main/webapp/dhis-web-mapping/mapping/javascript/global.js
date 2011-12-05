@@ -570,6 +570,43 @@ G.util = {
         return str;
     },
     
+    getOrganisationUnitIdStringFromFeatures: function(features) {
+        var str = '';
+        for (var i = 0; i < features.length; i++) {
+            str += features[i].attributes.id;
+            str += i < (features.length - 1) ? ',' : '';
+        }
+        return str;
+    },
+    
+    geoJsonDecode: function(doc) {
+        doc = Ext.util.JSON.decode(doc);
+        var geojson = {};
+        geojson.type = 'FeatureCollection';
+        geojson.crs = {
+            type: 'EPSG',
+            properties: {
+                code: '4326'
+            }
+        };
+        geojson.features = [];
+        for (var i = 0; i < doc.length; i++) {
+            geojson.features.push({
+                geometry: {
+                    type: doc[i].t == 1 ? 'MultiPolygon' : 'Point',
+                    coordinates: doc[i].c
+                },
+                properties: {
+                    id: doc[i].i,
+                    name: doc[i].n,
+                    value: doc[i].v,
+                    hcwc: doc[i].h
+                }
+            });
+        }
+        return geojson;
+    },
+    
     mapView: {
         layer: function(id) {
             var w = new Ext.Window({
@@ -736,7 +773,7 @@ G.func = {
 };
 
 G.cls = {
-    vectorLayerButton: function(iconCls, tooltip, widget) {        
+    vectorLayerButton: function(iconCls, tooltip, widget) {
         return new Ext.Button({
             iconCls: iconCls,
             tooltip: tooltip,

@@ -76,14 +76,13 @@ public class Chart
     public static final String SIZE_NORMAL = "normal";
     public static final String SIZE_WIDE = "wide";
     public static final String SIZE_TALL = "tall";
-
-    public static final String TYPE = "tall";
-    public static final String TYPE_COLUMN = "column";
-    public static final String TYPE_STACKED_COLUMN = "stackedColumn";
-    public static final String TYPE_BAR = "bar";
-    public static final String TYPE_STACKED_BAR = "stackedBar";
-    public static final String TYPE_LINE = "line";
-    public static final String TYPE_AREA = "area";
+    
+    public static final String TYPE_COLUMN = "column";    
+    public static final String TYPE_STACKED_COLUMN = "stackedColumn";    
+    public static final String TYPE_BAR = "bar";    
+    public static final String TYPE_STACKED_BAR = "stackedBar";    
+    public static final String TYPE_LINE = "line";    
+    public static final String TYPE_AREA = "area";    
     public static final String TYPE_PIE = "pie";
 
     public static final String DIMENSION_DATA = "data";

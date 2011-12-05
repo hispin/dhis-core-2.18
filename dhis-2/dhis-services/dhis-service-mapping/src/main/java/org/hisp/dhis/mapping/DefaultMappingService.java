@@ -187,7 +187,12 @@ public class DefaultMappingService
         int parentOrganisationUnitId, Integer level )
     {
         Collection<OrganisationUnit> units = getOrganisationUnits( parentOrganisationUnitId, level );
-
+        
+        return getIndicatorMapValues( indicatorId, periodId, units );
+    }
+    
+    public Collection<AggregatedMapValue> getIndicatorMapValues( int indicatorId, int periodId, Collection<OrganisationUnit> units )
+    {
         Collection<AggregatedMapValue> values = aggregatedDataValueService.getAggregatedIndicatorMapValues(
             indicatorId, periodId, ConversionUtils.getIdentifiers( OrganisationUnit.class, units ) );
 
@@ -195,7 +200,7 @@ public class DefaultMappingService
         {
             value.setValue( MathUtils.getRounded( value.getValue(), 2 ) );
         }
-
+        
         return values;
     }
 
@@ -223,7 +228,12 @@ public class DefaultMappingService
         int parentOrganisationUnitId, Integer level )
     {
         Collection<OrganisationUnit> units = getOrganisationUnits( parentOrganisationUnitId, level );
-
+        
+        return getDataElementMapValues( dataElementId, periodId, units );
+    }
+    
+    public Collection<AggregatedMapValue> getDataElementMapValues( int dataElementId, int periodId, Collection<OrganisationUnit> units )
+    {
         Collection<AggregatedMapValue> values = aggregatedDataValueService.getAggregatedDataMapValues( dataElementId,
             periodId, ConversionUtils.getIdentifiers( OrganisationUnit.class, units ) );
 

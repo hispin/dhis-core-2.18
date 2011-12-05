@@ -31,6 +31,7 @@ import java.util.Collection;
 import java.util.Set;
 
 import org.hisp.dhis.aggregation.AggregatedMapValue;
+import org.hisp.dhis.organisationunit.OrganisationUnit;
 
 /**
  * @author Jan Henrik Overland
@@ -75,12 +76,16 @@ public interface MappingService
     Collection<AggregatedMapValue> getIndicatorMapValues( int indicatorId, int periodId, int parentOrganisationUnitId,
         Integer level );
 
+    Collection<AggregatedMapValue> getIndicatorMapValues( int indicatorId, int periodId, Collection<OrganisationUnit> units );
+
     // -------------------------------------------------------------------------
     // DataMapValue
     // -------------------------------------------------------------------------
 
     Collection<AggregatedMapValue> getDataElementMapValues( int dataElementId, int periodId,
         int parentOrganisationUnitId, Integer level );
+
+    Collection<AggregatedMapValue> getDataElementMapValues( int dataElementId, int periodId, Collection<OrganisationUnit> units );
 
     Collection<AggregatedMapValue> getInfrastructuralDataElementMapValues( Integer periodId, Integer organisationUnitId );
 

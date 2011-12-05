@@ -89,6 +89,11 @@ mapfish.GeoStat = OpenLayers.Class({
         if (!doc || !doc.documentElement) {
             doc = request.responseText;
         }
+                
+        if (doc.length && G.vars.activeWidget != symbol) {
+            doc = G.util.geoJsonDecode(doc);
+        }
+        
         var format = this.format || new OpenLayers.Format.GeoJSON();
         this.layer.removeFeatures(this.layer.features);
         this.layer.addFeatures(format.read(doc));
