@@ -6,7 +6,7 @@ backupfile="$backup_dir/pg-backup-$datetime.gz"
 
 echo "Starting backup..."
 
-/usr/bin/pg_dump dhis2ke -U postgres | gzip > $backupfile
+/usr/bin/pg_dump dhis2ke -U postgres -T aggregated* | gzip > $backupfile
 
 timeinfo=`date '+%T %x'`
 
