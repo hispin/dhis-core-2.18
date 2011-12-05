@@ -631,8 +631,9 @@ function hideInfo()
 function showDetails()
 {
     $( '#detailsArea' )
+	.css( "height", "80%" )
+	.css( "overflow", "scroll" )
 	.resizable()
-	.draggable()
 	.show( "fast" );
 }
 
