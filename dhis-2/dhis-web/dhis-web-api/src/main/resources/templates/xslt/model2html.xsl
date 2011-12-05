@@ -11,6 +11,7 @@
     <xsl:include href="list.xsl"/>
     
     <!-- for rendering elements -->
+    <xsl:include href="map.xsl"/>
     <xsl:include href="chart.xsl"/>
     <xsl:include href="dataElement.xsl"/>
     <xsl:include href="indicator.xsl"/>

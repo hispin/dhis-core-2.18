@@ -1,7 +1,20 @@
-package org.hisp.dhis.api.view;
+package org.hisp.dhis.mapping;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
+
+import org.codehaus.jackson.annotate.JsonProperty;
+import org.hisp.dhis.chart.Chart;
+import org.hisp.dhis.common.BaseLinkableObject;
+import org.hisp.dhis.common.Dxf2Namespace;
 
 /*
- * Copyright (c) 2004-2011, University of Oslo
+ * Copyright (c) 2011, University of Oslo
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -27,53 +40,25 @@ package org.hisp.dhis.api.view;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.io.OutputStream;
-import java.util.Map;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.xml.bind.Marshaller;
-
-import org.springframework.web.servlet.view.AbstractView;
-
-/**
- * @author mortenoh
- */
-public class Jaxb2View extends AbstractView
+@XmlRootElement( name = "maps", namespace = Dxf2Namespace.NAMESPACE )
+@XmlAccessorType( value = XmlAccessType.NONE )
+public class Maps extends BaseLinkableObject
 {
-    public static final String DEFAULT_CONTENT_TYPE = "application/xml";
 
-    public Jaxb2View()
+    private List<MapView> maps = new ArrayList<MapView>();
+
+    private String link;
+
+    @XmlElement( name = "map" )
+    @JsonProperty( value = "maps" )
+    public List<MapView> getMaps()
     {
-        setContentType( DEFAULT_CONTENT_TYPE );
+        return maps;
     }
 
-    @Override
-    protected void renderMergedOutputModel( Map<String, Object> model, HttpServletRequest request, HttpServletResponse response ) throws Exception
+    public void setMaps( List<MapView> maps )
     {
-        response.setContentType( getContentType() );
-        model = ViewUtils.filterModel( model );
-
-        Object domainModel = model.get( "model" );
-
-        if ( domainModel == null )
-        {
-            // TODO throw exception
-        }
-
-        OutputStream outputStream = response.getOutputStream();
-        
-        Marshaller marshaller = Jaxb2Utils.createMarshaller( domainModel, request );
-
-        marshaller.marshal( domainModel, outputStream );
-
-/*
-        Marshaller.Listener listener = new IdentifiableObjectListener(request);
-        marshaller.setListener(listener);
-
-        marshaller.setProperty("com.sun.xml.internal.bind.xmlHeaders",
-                "\n<?xml-stylesheet type=\"text/xsl\" href=\"dhis-web-api/xslt/chart.xslt\"?>\n");
-*/
+        this.maps = maps;
     }
 
 }

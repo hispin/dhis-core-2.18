@@ -52,7 +52,7 @@ public class IdentityPopulator
     private static String[] tables = { "chart", "constant", "attribute", "indicatortype", "indicatorgroupset", "indicator",
         "indicatorgroup", "datadictionary", "validationrulegroup", "validationrule", "dataset", "orgunitlevel",
         "organisationunit", "orgunitgroup", "orgunitgroupset", "dataelementcategoryoption", "dataelementgroup",
-        "dataelement", "dataelementgroupset", "dataelementcategory", "categorycombo", "categoryoptioncombo" };
+        "dataelement", "dataelementgroupset", "dataelementcategory", "categorycombo", "categoryoptioncombo", "mapview" };
 
     // -------------------------------------------------------------------------
     // Dependencies

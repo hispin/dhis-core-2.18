@@ -142,6 +142,8 @@ public interface MappingService
 
     MapView getMapView( int id );
 
+    MapView getMapView( String uid );
+    
     MapView getMapViewByName( String name );
 
     Collection<MapView> getAllMapViews();

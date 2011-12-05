@@ -480,13 +480,27 @@ public class DefaultMappingService
     {
         MapView mapView = mappingStore.getMapView( id );
 
+        setMapViewLevel( mapView );
+
+        return mapView;
+    }
+
+    public MapView getMapView( String uid )
+    {
+        MapView mapView = mappingStore.getByUid( uid );
+
+        setMapViewLevel( mapView );
+
+        return mapView;
+    }
+
+    private void setMapViewLevel( MapView mapView )
+    {
         if ( mapView != null )
         {
             mapView.getParentOrganisationUnit().setLevel(
                 organisationUnitService.getLevelOfOrganisationUnit( mapView.getParentOrganisationUnit() ) );
         }
-
-        return mapView;
     }
 
     public MapView getMapViewByName( String name )

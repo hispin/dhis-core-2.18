@@ -4,7 +4,7 @@
   <xsl:include href="identifiable-row.xsl"/>
 
   <!-- match all plural elements -->
-  <xsl:template match="charts|dataElements|indicators|organisationUnits|categories|categoryCombos|categoryOptions|dataElementGroups|dataElementGroupSets">
+  <xsl:template match="maps|charts|dataElements|indicators|organisationUnits|categories|categoryCombos|categoryOptions|dataElementGroups|dataElementGroupSets">
     <xsl:variable name="elements" select="local-name()" />
     <h3>
       <xsl:value-of select="$elements"/>
