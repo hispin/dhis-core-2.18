@@ -1692,7 +1692,7 @@ mapfish.widgets.geostat.Choropleth = Ext.extend(Ext.Panel, {
                     params: params,
                     scope: this,
                     success: function(r) {
-                        var mapvalues = Ext.util.JSON.decode(r.responseText).mapValues;
+                        var mapvalues = G.util.mapValueDecode(r);
                         
                         if (!this.layer.features.length) {
                             Ext.message.msg(false, 'No coordinates found');

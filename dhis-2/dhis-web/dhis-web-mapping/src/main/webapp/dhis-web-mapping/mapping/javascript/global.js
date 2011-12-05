@@ -607,6 +607,18 @@ G.util = {
         return geojson;
     },
     
+    mapValueDecode: function(r) {
+        var r = Ext.util.JSON.decode(r.responseText),
+            mapvalues = [];
+        for (var i = 0; i < r.length; i++) {
+            mapvalues.push({
+                oi: r[i][0],
+                v: r[i][1]
+            });
+        }
+        return mapvalues;        
+    },
+    
     mapView: {
         layer: function(id) {
             var w = new Ext.Window({
