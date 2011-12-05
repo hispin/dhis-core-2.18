@@ -226,7 +226,7 @@ public class DefaultDataMartEngine
         state.setMessage( "crosstabulating_data" );
 
         Collection<Integer> intersectingPeriodIds = ConversionUtils.getIdentifiers( Period.class, periodService.getIntersectionPeriods( periods ) );
-        Collection<Integer> childrenIds = organisationUnitService.getOrganisationUnitHierarchy().getChildren( organisationUnitIds );
+        Set<Integer> childrenIds = organisationUnitService.getOrganisationUnitHierarchy().getChildren( organisationUnitIds );
         List<List<Integer>> childrenPages = new PaginatedList<Integer>( childrenIds ).setNumberOfPages( cpuCores ).getPages();
 
         List<DataElementOperand> crossTabOperands = new ArrayList<DataElementOperand>( allOperands );

@@ -40,7 +40,7 @@ import java.util.Set;
  */
 public class OrganisationUnitHierarchy
 {
-    private Map<Integer, Collection<Integer>> preparedRelationships = new HashMap<Integer, Collection<Integer>>();
+    private Map<Integer, Set<Integer>> preparedRelationships = new HashMap<Integer, Set<Integer>>();
     
     private Map<Integer, Set<Integer>> relationships = new HashMap<Integer, Set<Integer>>();
     
@@ -82,7 +82,7 @@ public class OrganisationUnitHierarchy
         return this;
     }
     
-    public Collection<Integer> getChildren( int parentId )
+    public Set<Integer> getChildren( int parentId )
     {
         if ( preparedRelationships.containsKey( parentId ) )
         {
@@ -107,10 +107,10 @@ public class OrganisationUnitHierarchy
             }
         }
         
-        return children;
+        return new HashSet<Integer>( children );
     }
     
-    public Collection<Integer> getChildren( Collection<Integer> parentIds )
+    public Set<Integer> getChildren( Collection<Integer> parentIds )
     {
         Set<Integer> children = new HashSet<Integer>();
         
