@@ -439,12 +439,13 @@ public class JdbcAggregatedDataValueStore
     public Collection<AggregatedMapValue> getAggregatedDataMapValues( int dataElementId, int periodId, Collection<Integer> organisationUnitIds )
     {
         final String sql = 
-            "SELECT a.periodid, o.organisationunitid, o.name, a.value " +
+            "SELECT a.periodid, o.organisationunitid, o.name, SUM(a.value) AS value " +
             "FROM aggregateddatavalue AS a " +
             "JOIN organisationunit AS o ON (a.organisationunitid=o.organisationunitid) " +
             "WHERE a.dataelementid  = " + dataElementId + " " +
             "AND a.periodid = " + periodId + " " + 
-            "AND a.organisationunitid IN (" + getCommaDelimitedString( organisationUnitIds ) + ")";
+            "AND a.organisationunitid IN (" + getCommaDelimitedString( organisationUnitIds ) + ") " +
+            "GROUP BY a.periodid, o.organisationunitid, o.name";
         
         return jdbcTemplate.query( sql, new AggregatedDataMapValueRowMapper() );        
     }
@@ -452,12 +453,13 @@ public class JdbcAggregatedDataValueStore
     public Collection<AggregatedMapValue> getAggregatedDataMapValues( Collection<Integer> dataElementIds, int periodId, int organisationUnitId )
     {
         final String sql = 
-            "SELECT d.name, a.value, a.periodid " +
+            "SELECT d.name, a.periodid, SUM(a.value) AS value " +
             "FROM aggregateddatavalue AS a " +
             "JOIN dataelement AS d ON (a.dataelementid = d.dataelementid) " +
             "WHERE a.dataelementid IN (" + getCommaDelimitedString( dataElementIds ) + ") " +
             "AND a.periodid = " + periodId + " " + 
-            "AND a.organisationunitid = " + organisationUnitId;
+            "AND a.organisationunitid = " + organisationUnitId + " " +
+            "GROUP BY d.name, a.periodid";
         
         return jdbcTemplate.query( sql, new org.springframework.jdbc.core.RowMapper<AggregatedMapValue>()
         {
@@ -466,8 +468,8 @@ public class JdbcAggregatedDataValueStore
             {
                 AggregatedMapValue value = new AggregatedMapValue();
                 value.setDataElementName( resultSet.getString( 1 ) );
-                value.setValue( resultSet.getDouble( 2 ) );
-                value.setPeriodId( resultSet.getInt( 3 ) );                
+                value.setPeriodId( resultSet.getInt( 2 ) );
+                value.setValue( resultSet.getDouble( 3 ) );
                 return value;
             }
         } );
