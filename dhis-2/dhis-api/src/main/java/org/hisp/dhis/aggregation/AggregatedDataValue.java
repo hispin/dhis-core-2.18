@@ -53,7 +53,7 @@ public class AggregatedDataValue
     
     private int organisationUnitId;
     
-    private int groupId;
+    private int organisationUnitGroupId;
     
     private int level;
     
@@ -183,14 +183,14 @@ public class AggregatedDataValue
         this.organisationUnitId = organisationUnitId;
     }
 
-    public int getGroupId()
+    public int getOrganisationUnitGroupId()
     {
-        return groupId;
+        return organisationUnitGroupId;
     }
 
-    public void setGroupId( int groupId )
+    public void setOrganisationUnitGroupId( int organisationUnitGroupId )
     {
-        this.groupId = groupId;
+        this.organisationUnitGroupId = organisationUnitGroupId;
     }
 
     public int getPeriodId()
