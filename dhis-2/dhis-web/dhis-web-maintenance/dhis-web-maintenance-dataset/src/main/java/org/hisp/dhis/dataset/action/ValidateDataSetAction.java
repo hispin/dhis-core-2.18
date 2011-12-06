@@ -27,9 +27,16 @@ package org.hisp.dhis.dataset.action;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import java.util.Collection;
+import java.util.HashSet;
+
+import org.apache.commons.lang.StringEscapeUtils;
+import org.hisp.dhis.dataelement.DataElement;
+import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.dataset.DataSetService;
 import org.hisp.dhis.i18n.I18n;
+import org.hisp.dhis.period.PeriodType;
 
 import com.opensymphony.xwork2.Action;
 
@@ -68,6 +75,20 @@ public class ValidateDataSetAction
         this.code = code;
     }
 
+    private String periodType;
+
+    public void setPeriodType( String periodType )
+    {
+        this.periodType = periodType;
+    }
+
+    private Collection<String> dataElementId = new HashSet<String>();
+
+    public void setDataElementsSelectedList( Collection<String> dataElementsSelectedList )
+    {
+        this.dataElementId = dataElementsSelectedList;
+    }
+
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
@@ -77,6 +98,13 @@ public class ValidateDataSetAction
     public void setDataSetService( DataSetService dataSetService )
     {
         this.dataSetService = dataSetService;
+    }
+    
+    private DataElementService dataElementService;
+
+    public void setDataElementService( DataElementService dataElementService )
+    {
+        this.dataElementService = dataElementService;
     }
 
     // -------------------------------------------------------------------------
@@ -156,6 +184,27 @@ public class ValidateDataSetAction
             }
         }
 
+        // ---------------------------------------------------------------------
+        // Data element members
+        // ---------------------------------------------------------------------
+
+        if ( periodType != null && dataElementId != null )
+        {
+            PeriodType pType = PeriodType.getPeriodTypeByName( periodType );
+            
+            for ( String id : dataElementId )
+            {
+                DataElement dataElement = dataElementService.getDataElement( Integer.parseInt( id ) );
+                
+                if ( dataElement != null && pType != null && !pType.equals( dataElement.getPeriodType() ) )
+                {
+                    message = i18n.getString( "data_element_has_other_period_type_than_data_set" ) + ": " + StringEscapeUtils.escapeHtml( dataElement.getName() );
+                    
+                    return ERROR;
+                }
+            }
+        }
+        
         message = "OK";
 
         return SUCCESS;

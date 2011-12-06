@@ -36,7 +36,6 @@ import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.dataset.DataSetService;
 import org.hisp.dhis.indicator.Indicator;
 import org.hisp.dhis.indicator.IndicatorService;
-import org.hisp.dhis.period.PeriodService;
 import org.hisp.dhis.period.PeriodType;
 import org.hisp.dhis.user.UserService;
 
@@ -58,13 +57,6 @@ public class AddDataSetAction
     public void setDataSetService( DataSetService dataSetService )
     {
         this.dataSetService = dataSetService;
-    }
-
-    private PeriodService periodService;
-
-    public void setPeriodService( PeriodService periodService )
-    {
-        this.periodService = periodService;
     }
 
     private DataElementService dataElementService;
@@ -162,7 +154,7 @@ public class AddDataSetAction
             code = null;
         }
 
-        PeriodType periodType = periodService.getPeriodTypeByName( frequencySelect );
+        PeriodType periodType = PeriodType.getPeriodTypeByName( frequencySelect );
 
         DataSet dataSet = new DataSet( name, shortName, code, periodType );
 
