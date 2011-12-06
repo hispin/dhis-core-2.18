@@ -28,7 +28,7 @@ package org.hisp.dhis.api.controller;
  */
 
 import org.hisp.dhis.api.utils.IdentifiableObjectParams;
-import org.hisp.dhis.api.utils.WebLinkPopulatorListener;
+import org.hisp.dhis.api.utils.WebLinkPopulator;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroupService;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroupSet;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroupSets;
@@ -60,8 +60,8 @@ public class OrganisationUnitGroupSetController
 
         if ( params.hasLinks() )
         {
-            WebLinkPopulatorListener listener = new WebLinkPopulatorListener( request );
-            listener.beforeMarshal( organisationUnitGroupSets );
+            WebLinkPopulator listener = new WebLinkPopulator( request );
+            listener.addLinks( organisationUnitGroupSets );
         }
 
         model.addAttribute( "model", organisationUnitGroupSets );
@@ -76,8 +76,8 @@ public class OrganisationUnitGroupSetController
 
         if ( params.hasLinks() )
         {
-            WebLinkPopulatorListener listener = new WebLinkPopulatorListener( request );
-            listener.beforeMarshal( organisationUnitGroupSet );
+            WebLinkPopulator listener = new WebLinkPopulator( request );
+            listener.addLinks( organisationUnitGroupSet );
         }
 
         model.addAttribute( "model", organisationUnitGroupSet );

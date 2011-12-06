@@ -28,7 +28,7 @@ package org.hisp.dhis.api.controller;
  */
 
 import org.hisp.dhis.api.utils.IdentifiableObjectParams;
-import org.hisp.dhis.api.utils.WebLinkPopulatorListener;
+import org.hisp.dhis.api.utils.WebLinkPopulator;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.dataelement.DataElements;
@@ -64,8 +64,8 @@ public class DataElementController
 
         if ( params.hasLinks() )
         {
-            WebLinkPopulatorListener listener = new WebLinkPopulatorListener( request );
-            listener.beforeMarshal( dataElements );
+            WebLinkPopulator listener = new WebLinkPopulator( request );
+            listener.addLinks( dataElements );
         }
 
         model.addAttribute( "model", dataElements );
@@ -98,8 +98,8 @@ public class DataElementController
 
         if ( params.hasLinks() )
         {
-            WebLinkPopulatorListener listener = new WebLinkPopulatorListener( request );
-            listener.beforeMarshal( dataElement );
+            WebLinkPopulator listener = new WebLinkPopulator( request );
+            listener.addLinks( dataElement );
         }
 
         model.addAttribute( "model", dataElement );

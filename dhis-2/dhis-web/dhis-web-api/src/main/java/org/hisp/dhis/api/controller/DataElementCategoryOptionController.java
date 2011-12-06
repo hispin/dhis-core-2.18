@@ -28,7 +28,7 @@ package org.hisp.dhis.api.controller;
  */
 
 import org.hisp.dhis.api.utils.IdentifiableObjectParams;
-import org.hisp.dhis.api.utils.WebLinkPopulatorListener;
+import org.hisp.dhis.api.utils.WebLinkPopulator;
 import org.hisp.dhis.dataelement.DataElementCategoryOption;
 import org.hisp.dhis.dataelement.DataElementCategoryOptions;
 import org.hisp.dhis.dataelement.DataElementCategoryService;
@@ -60,8 +60,8 @@ public class DataElementCategoryOptionController
 
         if ( params.hasLinks() )
         {
-            WebLinkPopulatorListener listener = new WebLinkPopulatorListener( request );
-            listener.beforeMarshal( dataElementCategoryOptions );
+            WebLinkPopulator listener = new WebLinkPopulator( request );
+            listener.addLinks( dataElementCategoryOptions );
         }
 
         model.addAttribute( "model", dataElementCategoryOptions );
@@ -76,8 +76,8 @@ public class DataElementCategoryOptionController
 
         if ( params.hasLinks() )
         {
-            WebLinkPopulatorListener listener = new WebLinkPopulatorListener( request );
-            listener.beforeMarshal( dataElementCategoryOption );
+            WebLinkPopulator listener = new WebLinkPopulator( request );
+            listener.addLinks( dataElementCategoryOption );
         }
 
         model.addAttribute( "model", dataElementCategoryOption );

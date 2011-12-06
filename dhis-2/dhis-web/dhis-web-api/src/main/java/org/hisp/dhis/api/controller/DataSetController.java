@@ -28,7 +28,7 @@ package org.hisp.dhis.api.controller;
  */
 
 import org.hisp.dhis.api.utils.IdentifiableObjectParams;
-import org.hisp.dhis.api.utils.WebLinkPopulatorListener;
+import org.hisp.dhis.api.utils.WebLinkPopulator;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.dataset.DataSetService;
 import org.hisp.dhis.dataset.DataSets;
@@ -60,8 +60,8 @@ public class DataSetController
 
         if ( params.hasLinks() )
         {
-            WebLinkPopulatorListener listener = new WebLinkPopulatorListener( request );
-            listener.beforeMarshal( dataSets );
+            WebLinkPopulator listener = new WebLinkPopulator( request );
+            listener.addLinks( dataSets );
         }
 
         model.addAttribute( "model", dataSets );
@@ -76,8 +76,8 @@ public class DataSetController
 
         if ( params.hasLinks() )
         {
-            WebLinkPopulatorListener listener = new WebLinkPopulatorListener( request );
-            listener.beforeMarshal( dataSet );
+            WebLinkPopulator listener = new WebLinkPopulator( request );
+            listener.addLinks( dataSet );
         }
 
         model.addAttribute( "model", dataSet );

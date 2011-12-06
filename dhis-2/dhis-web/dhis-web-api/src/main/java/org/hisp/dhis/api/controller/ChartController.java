@@ -28,7 +28,7 @@ package org.hisp.dhis.api.controller;
  */
 
 import org.hisp.dhis.api.utils.IdentifiableObjectParams;
-import org.hisp.dhis.api.utils.WebLinkPopulatorListener;
+import org.hisp.dhis.api.utils.WebLinkPopulator;
 import org.hisp.dhis.chart.Chart;
 import org.hisp.dhis.chart.ChartService;
 import org.hisp.dhis.chart.Charts;
@@ -68,8 +68,8 @@ public class ChartController
 
         if ( params.hasLinks() )
         {
-            WebLinkPopulatorListener listener = new WebLinkPopulatorListener( request );
-            listener.beforeMarshal( charts );
+            WebLinkPopulator listener = new WebLinkPopulator( request );
+            listener.addLinks( charts );
         }
 
         model.addAttribute( "model", charts );
@@ -84,8 +84,8 @@ public class ChartController
 
         if ( params.hasLinks() )
         {
-            WebLinkPopulatorListener listener = new WebLinkPopulatorListener( request );
-            listener.beforeMarshal( chart );
+            WebLinkPopulator listener = new WebLinkPopulator( request );
+            listener.addLinks( chart );
         }
 
         model.addAttribute( "model", chart );
