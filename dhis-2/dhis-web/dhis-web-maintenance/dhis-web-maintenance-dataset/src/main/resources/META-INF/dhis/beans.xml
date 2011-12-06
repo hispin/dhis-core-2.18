@@ -213,9 +213,6 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     <property name="dataSetService">
       <ref bean="org.hisp.dhis.dataset.DataSetService" />
     </property>
-    <property name="periodService">
-      <ref bean="org.hisp.dhis.period.PeriodService" />
-    </property>
     <property name="dataElementService">
       <ref bean="org.hisp.dhis.dataelement.DataElementService" />
     </property>
