@@ -11,12 +11,6 @@
 	
 	<h1>My chart 1</h1>
 	<div id="chart1"></div>
-    
-    <h1>My chart 2</h1>
-	<div id="chart2"></div>
-    
-    <h1>My chart 3</h1>
-	<div id="chart3"></div>
 	
 	<script>
 		Ext.onReady( function() {
@@ -42,32 +36,11 @@ url                 string                              (Required) The web servi
 */
 			
 			DHIS.getChart({
-                stacked: true,
-				indicators: [52486, 52487, 52488],
-				organisationunits: [525],
+				indicators: [31664],
+				organisationunits: [18],
 				el: 'chart1',
 				url: url
 			});
-            
-            DHIS.getChart({
-				type: 'line',
-				indicators: [52486, 52487],
-				organisationunits: [525],
-				el: 'chart2',
-				url: url
-			});
-            
-            DHIS.getChart({
-				type: 'area',
-				indicators: [52486, 52487, 52488, 52491, 52496, 52497],
-				organisationunits: [525],
-				el: 'chart3',
-                width: 1300,
-                height: 600,
-                legendPosition: 'right',
-				url: url
-			});
-			
 	
 		});
 	</script>

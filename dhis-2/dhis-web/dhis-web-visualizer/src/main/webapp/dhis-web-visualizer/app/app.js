@@ -871,7 +871,7 @@ Ext.onReady( function() {
                         type: 'Numeric',
                         position: 'bottom',
                         minimum: 0,
-                        fields: DV.store.chart.bottom,                        
+                        fields: DV.store.chart.bottom,
                         label: DV.util.chart.label.getNumericLabel(),
                         grid: {
                             even: DV.util.chart.getGrid()
