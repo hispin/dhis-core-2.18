@@ -29,15 +29,14 @@ package org.hisp.dhis.user;
 
 import org.apache.commons.collections.CollectionUtils;
 import org.codehaus.jackson.annotate.JsonProperty;
+import org.codehaus.jackson.map.annotate.JsonSerialize;
 import org.hisp.dhis.attribute.AttributeValue;
 import org.hisp.dhis.common.Dxf2Namespace;
 import org.hisp.dhis.common.IdentifiableObjectUtils;
+import org.hisp.dhis.common.adapter.JsonCollectionSerializer;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.*;
 import java.io.Serializable;
 import java.util.Collection;
 import java.util.HashSet;
@@ -282,6 +281,9 @@ public class User
         this.organisationUnits = organisationUnits;
     }
 
+    @XmlElementWrapper( name = "attributeValues" )
+    @XmlElement( name = "attributeValue" )
+    @JsonSerialize( using = JsonCollectionSerializer.class )
     public Set<AttributeValue> getAttributeValues()
     {
         return attributeValues;

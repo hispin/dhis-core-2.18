@@ -1,4 +1,4 @@
-package org.hisp.dhis.common.adapter;
+package org.hisp.dhis.api.adapter;
 
 /*
  * Copyright (c) 2004-2011, University of Oslo
@@ -31,26 +31,25 @@ import org.codehaus.jackson.JsonGenerator;
 import org.codehaus.jackson.JsonProcessingException;
 import org.codehaus.jackson.map.JsonSerializer;
 import org.codehaus.jackson.map.SerializerProvider;
-import org.hisp.dhis.common.IdentifiableObject;
+import org.springframework.web.bind.annotation.RequestMethod;
 
 import java.io.IOException;
-import java.util.Set;
+import java.util.Collection;
 
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
-public class JsonIdentifiableObjectSetSerializer extends JsonSerializer<Set<IdentifiableObject>>
+public class RequestMethodCollectionJsonSerializer extends JsonSerializer<Collection<RequestMethod>>
 {
     @Override
-    public void serialize( Set<IdentifiableObject> identifiableObjects, JsonGenerator jgen, SerializerProvider provider ) throws IOException, JsonProcessingException
+    public void serialize( Collection<RequestMethod> requestMethods, JsonGenerator jgen, SerializerProvider serializerProvider )
+        throws IOException, JsonProcessingException
     {
-        JsonIdentifiableObjectSerializer jsonIdentifiableObjectSerializer = new JsonIdentifiableObjectSerializer();
-
         jgen.writeStartArray();
 
-        for ( IdentifiableObject identifiableObject : identifiableObjects )
+        for ( RequestMethod requestMethod : requestMethods )
         {
-            jsonIdentifiableObjectSerializer.serialize( identifiableObject, jgen, provider );
+            jgen.writeString( requestMethod.toString() );
         }
 
         jgen.writeEndArray();

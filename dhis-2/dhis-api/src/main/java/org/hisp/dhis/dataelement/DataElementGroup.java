@@ -147,7 +147,7 @@ public class DataElementGroup extends BaseIdentifiableObject
     @XmlElementWrapper( name = "dataElements" )
     @XmlJavaTypeAdapter( BaseIdentifiableObjectXmlAdapter.class )
     @XmlElement( name = "dataElement" )
-    @JsonSerialize( using = JsonIdentifiableObjectSetSerializer.class )
+    @JsonSerialize( using = JsonIdentifiableObjectCollectionSerializer.class )
     public Set<DataElement> getMembers()
     {
         return members;

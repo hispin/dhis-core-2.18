@@ -31,7 +31,7 @@ import org.codehaus.jackson.annotate.JsonProperty;
 import org.codehaus.jackson.map.annotate.JsonSerialize;
 import org.hisp.dhis.common.BaseIdentifiableObject;
 import org.hisp.dhis.common.adapter.BaseNameableObjectXmlAdapter;
-import org.hisp.dhis.common.adapter.JsonNameableObjectListSerializer;
+import org.hisp.dhis.common.adapter.JsonNameableObjectCollectionSerializer;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.i18n.I18nFormat;
@@ -476,7 +476,7 @@ public class Chart
     @XmlElementWrapper( name = "indicators" )
     @XmlElement( name = "indicator" )
     @JsonProperty
-    @JsonSerialize( using = JsonNameableObjectListSerializer.class )
+    @JsonSerialize( using = JsonNameableObjectCollectionSerializer.class )
     public List<Indicator> getIndicators()
     {
         return indicators;
@@ -491,7 +491,7 @@ public class Chart
     @XmlElementWrapper( name = "dataElements" )
     @XmlElement( name = "dataElement" )
     @JsonProperty
-    @JsonSerialize( using = JsonNameableObjectListSerializer.class )
+    @JsonSerialize( using = JsonNameableObjectCollectionSerializer.class )
     public List<DataElement> getDataElements()
     {
         return dataElements;
@@ -506,7 +506,7 @@ public class Chart
     @XmlElementWrapper( name = "dataSets" )
     @XmlElement( name = "dataSet" )
     @JsonProperty
-    @JsonSerialize( using = JsonNameableObjectListSerializer.class )
+    @JsonSerialize( using = JsonNameableObjectCollectionSerializer.class )
     public List<DataSet> getDataSets()
     {
         return dataSets;
@@ -531,7 +531,7 @@ public class Chart
     @XmlElementWrapper( name = "organisationUnits" )
     @XmlElement( name = "organisationUnit" )
     @JsonProperty
-    @JsonSerialize( using = JsonNameableObjectListSerializer.class )
+    @JsonSerialize( using = JsonNameableObjectCollectionSerializer.class )
     public List<OrganisationUnit> getOrganisationUnits()
     {
         return organisationUnits;

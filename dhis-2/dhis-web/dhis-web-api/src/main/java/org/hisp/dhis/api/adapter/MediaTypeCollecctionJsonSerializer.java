@@ -28,28 +28,26 @@ package org.hisp.dhis.api.adapter;
  */
 
 import org.codehaus.jackson.JsonGenerator;
-import org.codehaus.jackson.JsonProcessingException;
 import org.codehaus.jackson.map.JsonSerializer;
 import org.codehaus.jackson.map.SerializerProvider;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.http.MediaType;
 
 import java.io.IOException;
-import java.util.List;
+import java.util.Collection;
 
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
-public class RequestMethodListJsonSerializer extends JsonSerializer<List<RequestMethod>>
+public class MediaTypeCollecctionJsonSerializer extends JsonSerializer<Collection<MediaType>>
 {
     @Override
-    public void serialize( List<RequestMethod> requestMethods, JsonGenerator jgen, SerializerProvider serializerProvider )
-        throws IOException, JsonProcessingException
+    public void serialize( Collection<MediaType> mediaTypes, JsonGenerator jgen, SerializerProvider serializerProvider ) throws IOException
     {
         jgen.writeStartArray();
 
-        for ( RequestMethod requestMethod : requestMethods )
+        for ( MediaType mediaType : mediaTypes )
         {
-            jgen.writeString( requestMethod.toString() );
+            jgen.writeString( mediaType.toString() );
         }
 
         jgen.writeEndArray();

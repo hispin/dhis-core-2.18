@@ -31,7 +31,7 @@ import org.codehaus.jackson.map.annotate.JsonSerialize;
 import org.hisp.dhis.common.BaseIdentifiableObject;
 import org.hisp.dhis.common.Dxf2Namespace;
 import org.hisp.dhis.common.adapter.BaseNameableObjectXmlAdapter;
-import org.hisp.dhis.common.adapter.JsonNameableObjectListSerializer;
+import org.hisp.dhis.common.adapter.JsonNameableObjectCollectionSerializer;
 import org.hisp.dhis.concept.Concept;
 
 import javax.xml.bind.annotation.*;
@@ -151,7 +151,7 @@ public class DataElementCategory extends BaseIdentifiableObject
     @XmlElementWrapper( name = "categoryOptions" )
     @XmlJavaTypeAdapter( BaseNameableObjectXmlAdapter.class )
     @XmlElement( name = "categoryOption" )
-    @JsonSerialize( using = JsonNameableObjectListSerializer.class )
+    @JsonSerialize( using = JsonNameableObjectCollectionSerializer.class )
     public List<DataElementCategoryOption> getCategoryOptions()
     {
         return categoryOptions;

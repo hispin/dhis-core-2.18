@@ -28,12 +28,16 @@
 package org.hisp.dhis.attribute;
 
 import org.codehaus.jackson.annotate.JsonProperty;
+import org.codehaus.jackson.map.annotate.JsonSerialize;
 import org.hisp.dhis.common.Dxf2Namespace;
+import org.hisp.dhis.common.adapter.BaseIdentifiableObjectXmlAdapter;
+import org.hisp.dhis.common.adapter.JsonIdentifiableObjectSerializer;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import java.io.Serializable;
 
 /**
@@ -70,6 +74,14 @@ public class AttributeValue
         return id;
     }
 
+    public void setId( int id )
+    {
+        this.id = id;
+    }
+
+    @XmlElement( name = "attribute" )
+    @XmlJavaTypeAdapter( BaseIdentifiableObjectXmlAdapter.class )
+    @JsonSerialize( using = JsonIdentifiableObjectSerializer.class )
     public Attribute getAttribute()
     {
         return attribute;
@@ -78,11 +90,6 @@ public class AttributeValue
     public void setAttribute( Attribute attribute )
     {
         this.attribute = attribute;
-    }
-
-    public void setId( int id )
-    {
-        this.id = id;
     }
 
     @XmlElement

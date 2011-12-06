@@ -155,7 +155,7 @@ public class DataElementCategoryOption extends BaseNameableObject
     @XmlElementWrapper( name = "categoryOptionCombos" )
     @XmlJavaTypeAdapter( BaseNameableObjectXmlAdapter.class )
     @XmlElement( name = "categoryOptionCombo" )
-    @JsonSerialize( using = JsonNameableObjectSetSerializer.class )
+    @JsonSerialize( using = JsonNameableObjectCollectionSerializer.class )
     public Set<DataElementCategoryOptionCombo> getCategoryOptionCombos()
     {
         return categoryOptionCombos;

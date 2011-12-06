@@ -27,8 +27,7 @@ import org.codehaus.jackson.annotate.JsonProperty;
 import org.codehaus.jackson.map.annotate.JsonSerialize;
 import org.hisp.dhis.common.Dxf2Namespace;
 import org.hisp.dhis.common.adapter.BaseIdentifiableObjectXmlAdapter;
-import org.hisp.dhis.common.adapter.JsonIdentifiableObjectListSerializer;
-import org.hisp.dhis.common.adapter.JsonIdentifiableObjectSetSerializer;
+import org.hisp.dhis.common.adapter.JsonIdentifiableObjectCollectionSerializer;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryCombo;
 import org.hisp.dhis.dataelement.DataElementOperand;
@@ -201,7 +200,7 @@ public class Section
     @XmlElementWrapper( name = "dataElements" )
     @XmlElement( name = "dataElement" )
     @XmlJavaTypeAdapter( BaseIdentifiableObjectXmlAdapter.class )
-    @JsonSerialize( using = JsonIdentifiableObjectListSerializer.class )
+    @JsonSerialize( using = JsonIdentifiableObjectCollectionSerializer.class )
     public List<DataElement> getDataElements()
     {
         return dataElements;
@@ -217,6 +216,8 @@ public class Section
         this.dataElements.add( dataElement );
     }
 
+    @XmlElement
+    @JsonProperty
     public int getSortOrder()
     {
         return sortOrder;
