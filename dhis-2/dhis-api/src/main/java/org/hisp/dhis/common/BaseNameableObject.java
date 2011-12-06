@@ -28,6 +28,7 @@ package org.hisp.dhis.common;
  */
 
 import org.codehaus.jackson.annotate.JsonProperty;
+import org.codehaus.jackson.map.annotate.JsonSerialize;
 
 import javax.xml.bind.annotation.*;
 
@@ -75,6 +76,7 @@ public class BaseNameableObject
 
     @XmlAttribute
     @JsonProperty
+    @JsonSerialize( include = JsonSerialize.Inclusion.NON_NULL )
     public String getAlternativeName()
     {
         return alternativeName;
@@ -87,6 +89,7 @@ public class BaseNameableObject
 
     @XmlAttribute
     @JsonProperty
+    @JsonSerialize( include = JsonSerialize.Inclusion.NON_NULL )
     public String getShortName()
     {
         return shortName;
@@ -99,6 +102,7 @@ public class BaseNameableObject
 
     @XmlElement
     @JsonProperty
+    @JsonSerialize( include = JsonSerialize.Inclusion.NON_NULL )
     public String getDescription()
     {
         return description;

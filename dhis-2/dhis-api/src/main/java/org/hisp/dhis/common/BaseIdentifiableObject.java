@@ -117,6 +117,7 @@ public class BaseIdentifiableObject extends BaseLinkableObject
 
     @XmlAttribute
     @JsonProperty
+    @JsonSerialize( include = JsonSerialize.Inclusion.NON_NULL )
     public String getCode()
     {
         return code;

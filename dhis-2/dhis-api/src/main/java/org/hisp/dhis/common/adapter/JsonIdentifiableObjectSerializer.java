@@ -51,21 +51,29 @@ public class JsonIdentifiableObjectSerializer extends JsonSerializer<Identifiabl
         {
             jgen.writeStartObject();
 
-            jgen.writeNumberField( "id", value.getId() );
             jgen.writeStringField( "uid", value.getUid() );
             jgen.writeStringField( "name", value.getName() );
-            jgen.writeStringField( "code", value.getCode() );
 
             jgen.writeFieldName( "lastUpdated" );
 
             JsonDateSerializer jsonDateSerializer = new JsonDateSerializer();
             jsonDateSerializer.serialize( value.getLastUpdated(), jgen, provider );
 
-            jgen.writeStringField( "link", value.getLink() );
+            if ( value.getLink() != null )
+            {
+                jgen.writeStringField( "link", value.getLink() );
+            }
+
+            if ( value.getCode() != null )
+            {
+                jgen.writeStringField( "code", value.getCode() );
+            }
 
             jgen.writeEndObject();
-        } else {
-            jgen.writeNull();            
+        }
+        else
+        {
+            jgen.writeNull();
         }
     }
 }
