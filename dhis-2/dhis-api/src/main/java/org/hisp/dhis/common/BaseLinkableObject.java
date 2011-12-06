@@ -40,7 +40,7 @@ public class BaseLinkableObject implements LinkableObject
      * As part of the marshalling process, this field can be set to indicate a link to this
      * identifiable object (will be used on the web layer for navigating the REST API)
      */
-    private transient String link;
+    private String link;
 
     @XmlAttribute
     @JsonProperty

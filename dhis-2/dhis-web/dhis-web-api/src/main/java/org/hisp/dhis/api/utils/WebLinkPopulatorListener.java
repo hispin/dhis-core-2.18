@@ -652,10 +652,8 @@ public class WebLinkPopulatorListener
             handleIdentifiableObjectCollection( chart.getIndicators() );
             handleIdentifiableObjectCollection( chart.getDataElements() );
             handleIdentifiableObjectCollection( chart.getOrganisationUnits() );
-            handleIdentifiableObjectCollection( chart.getAllOrganisationUnits() );
             handleIdentifiableObjectCollection( chart.getDataSets() );
             handleIdentifiableObjectCollection( chart.getPeriods() );
-            handleIdentifiableObjectCollection( chart.getAllPeriods() );
         }
     }
 
