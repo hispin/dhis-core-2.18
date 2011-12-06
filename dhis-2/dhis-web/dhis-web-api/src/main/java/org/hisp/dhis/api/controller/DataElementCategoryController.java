@@ -27,6 +27,7 @@ package org.hisp.dhis.api.controller;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import org.hisp.dhis.api.utils.IdentifiableObjectParams;
 import org.hisp.dhis.api.utils.WebLinkPopulatorListener;
 import org.hisp.dhis.dataelement.DataElementCategories;
 import org.hisp.dhis.dataelement.DataElementCategory;
@@ -52,13 +53,16 @@ public class DataElementCategoryController
     private DataElementCategoryService dataElementCategoryService;
 
     @RequestMapping( method = RequestMethod.GET )
-    public String getDataElementCategories( Model model, HttpServletRequest request )
+    public String getDataElementCategories( IdentifiableObjectParams params, Model model, HttpServletRequest request )
     {
         DataElementCategories dataElementCategories = new DataElementCategories();
         dataElementCategories.setDataElementCategories( new ArrayList<DataElementCategory>( dataElementCategoryService.getAllDataElementCategories() ) );
 
-        WebLinkPopulatorListener listener = new WebLinkPopulatorListener( request );
-        listener.beforeMarshal( dataElementCategories );
+        if ( params.hasLinks() )
+        {
+            WebLinkPopulatorListener listener = new WebLinkPopulatorListener( request );
+            listener.beforeMarshal( dataElementCategories );
+        }
 
         model.addAttribute( "model", dataElementCategories );
 
@@ -66,12 +70,15 @@ public class DataElementCategoryController
     }
 
     @RequestMapping( value = "/{uid}", method = RequestMethod.GET )
-    public String getDataElementCategory( @PathVariable( "uid" ) String uid, Model model, HttpServletRequest request )
+    public String getDataElementCategory( @PathVariable( "uid" ) String uid, IdentifiableObjectParams params, Model model, HttpServletRequest request )
     {
         DataElementCategory dataElementCategory = dataElementCategoryService.getDataElementCategory( uid );
 
-        WebLinkPopulatorListener listener = new WebLinkPopulatorListener( request );
-        listener.beforeMarshal( dataElementCategory );
+        if ( params.hasLinks() )
+        {
+            WebLinkPopulatorListener listener = new WebLinkPopulatorListener( request );
+            listener.beforeMarshal( dataElementCategory );
+        }
 
         model.addAttribute( "model", dataElementCategory );
 

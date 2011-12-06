@@ -27,54 +27,29 @@ package org.hisp.dhis.api.utils;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.HashMap;
-import java.util.Map;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.xml.bind.Marshaller;
-
 import org.hisp.dhis.attribute.Attribute;
 import org.hisp.dhis.attribute.Attributes;
 import org.hisp.dhis.chart.Chart;
 import org.hisp.dhis.chart.Charts;
 import org.hisp.dhis.common.BaseIdentifiableObject;
 import org.hisp.dhis.common.BaseLinkableObject;
-import org.hisp.dhis.dataelement.DataElement;
-import org.hisp.dhis.dataelement.DataElementCategories;
-import org.hisp.dhis.dataelement.DataElementCategory;
-import org.hisp.dhis.dataelement.DataElementCategoryCombo;
-import org.hisp.dhis.dataelement.DataElementCategoryCombos;
-import org.hisp.dhis.dataelement.DataElementCategoryOption;
-import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
-import org.hisp.dhis.dataelement.DataElementCategoryOptionCombos;
-import org.hisp.dhis.dataelement.DataElementCategoryOptions;
-import org.hisp.dhis.dataelement.DataElementGroup;
-import org.hisp.dhis.dataelement.DataElementGroupSet;
-import org.hisp.dhis.dataelement.DataElementGroupSets;
-import org.hisp.dhis.dataelement.DataElementGroups;
-import org.hisp.dhis.dataelement.DataElements;
+import org.hisp.dhis.dataelement.*;
 import org.hisp.dhis.dataset.CompleteDataSetRegistration;
 import org.hisp.dhis.dataset.CompleteDataSetRegistrations;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.dataset.DataSets;
-import org.hisp.dhis.indicator.Indicator;
-import org.hisp.dhis.indicator.IndicatorGroup;
-import org.hisp.dhis.indicator.IndicatorGroupSet;
-import org.hisp.dhis.indicator.IndicatorGroupSets;
-import org.hisp.dhis.indicator.IndicatorGroups;
-import org.hisp.dhis.indicator.IndicatorType;
-import org.hisp.dhis.indicator.IndicatorTypes;
-import org.hisp.dhis.indicator.Indicators;
+import org.hisp.dhis.indicator.*;
 import org.hisp.dhis.mapping.MapView;
 import org.hisp.dhis.mapping.Maps;
-import org.hisp.dhis.organisationunit.OrganisationUnit;
-import org.hisp.dhis.organisationunit.OrganisationUnitGroup;
-import org.hisp.dhis.organisationunit.OrganisationUnitGroupSet;
-import org.hisp.dhis.organisationunit.OrganisationUnitGroupSets;
-import org.hisp.dhis.organisationunit.OrganisationUnitGroups;
-import org.hisp.dhis.organisationunit.OrganisationUnits;
+import org.hisp.dhis.organisationunit.*;
 import org.hisp.dhis.user.User;
 import org.hisp.dhis.user.Users;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.xml.bind.Marshaller;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
@@ -149,17 +124,534 @@ public class WebLinkPopulatorListener
     @Override
     public void beforeMarshal( Object source )
     {
-        if ( source instanceof BaseIdentifiableObject )
+        if ( source instanceof Charts )
         {
-            BaseIdentifiableObject entity = (BaseIdentifiableObject) source;
-            entity.setLink( getPathWithUid( entity ) );
+            populateCharts( (Charts) source, true );
         }
-        else if ( source instanceof BaseLinkableObject )
+        else if ( source instanceof Chart )
         {
-            BaseLinkableObject linkable = (BaseLinkableObject) source;
-            linkable.setLink( getBasePath( linkable.getClass() ) );
+            populateChart( (Chart) source, true );
         }
+        else if ( source instanceof DataSets )
+        {
+            populateDataSets( (DataSets) source, true );
+        }
+        else if ( source instanceof DataSet )
+        {
+            populateDataSet( (DataSet) source, true );
+        }
+        else if ( source instanceof OrganisationUnits )
+        {
+            populateOrganisationUnits( (OrganisationUnits) source, true );
+        }
+        else if ( source instanceof OrganisationUnit )
+        {
+            populateOrganisationUnit( (OrganisationUnit) source, true );
+        }
+        else if ( source instanceof OrganisationUnitGroups )
+        {
+            populateOrganisationUnitGroups( (OrganisationUnitGroups) source, true );
+        }
+        else if ( source instanceof OrganisationUnitGroup )
+        {
+            populateOrganisationUnitGroup( (OrganisationUnitGroup) source, true );
+        }
+        else if ( source instanceof OrganisationUnitGroupSets )
+        {
+            populateOrganisationUnitGroupSets( (OrganisationUnitGroupSets) source, true );
+        }
+        else if ( source instanceof OrganisationUnitGroupSet )
+        {
+            populateOrganisationUnitGroupSet( (OrganisationUnitGroupSet) source, true );
+        }
+        else if ( source instanceof Indicators )
+        {
+            populateIndicators( (Indicators) source, true );
+        }
+        else if ( source instanceof Indicator )
+        {
+            populateIndicator( (Indicator) source, true );
+        }
+        else if ( source instanceof IndicatorGroups )
+        {
+            populateIndicatorGroups( (IndicatorGroups) source, true );
+        }
+        else if ( source instanceof IndicatorGroup )
+        {
+            populateIndicatorGroup( (IndicatorGroup) source, true );
+        }
+        else if ( source instanceof IndicatorGroupSets )
+        {
+            populateIndicatorGroupSets( (IndicatorGroupSets) source, true );
+        }
+        else if ( source instanceof IndicatorGroupSet )
+        {
+            populateIndicatorGroupSet( (IndicatorGroupSet) source, true );
+        }
+        else if ( source instanceof DataElements )
+        {
+            populateDataElements( (DataElements) source, true );
+        }
+        else if ( source instanceof DataElement )
+        {
+            populateDataElement( (DataElement) source, true );
+        }
+        else if ( source instanceof DataElementGroups )
+        {
+            populateDataElementGroups( (DataElementGroups) source, true );
+        }
+        else if ( source instanceof DataElementGroup )
+        {
+            populateDataElementGroup( (DataElementGroup) source, true );
+        }
+        else if ( source instanceof DataElementGroupSets )
+        {
+            populateDataElementGroupSets( (DataElementGroupSets) source, true );
+        }
+        else if ( source instanceof DataElementGroupSet )
+        {
+            populateDataElementGroupSet( (DataElementGroupSet) source, true );
+        }
+        else if ( source instanceof DataElementCategories )
+        {
+            populateDataElementCategories( (DataElementCategories) source, true );
+        }
+        else if ( source instanceof DataElementCategory )
+        {
+            populateDataElementCategory( (DataElementCategory) source, true );
+        }
+        else if ( source instanceof DataElementCategoryCombos )
+        {
+            populateDataElementCategoryCombos( (DataElementCategoryCombos) source, true );
+        }
+        else if ( source instanceof DataElementCategoryCombo )
+        {
+            populateDataElementCategoryCombo( (DataElementCategoryCombo) source, true );
+        }
+        else if ( source instanceof DataElementCategoryOptions )
+        {
+            populateDataElementCategoryOptions( (DataElementCategoryOptions) source, true );
+        }
+        else if ( source instanceof DataElementCategoryOption )
+        {
+            populateDataElementCategoryOption( (DataElementCategoryOption) source, true );
+        }
+        else if ( source instanceof DataElementCategoryOptionCombos )
+        {
+            populateDataElementCategoryOptionCombos( (DataElementCategoryOptionCombos) source, true );
+        }
+        else if ( source instanceof DataElementCategoryOptionCombo )
+        {
+            populateDataElementCategoryOptionCombo( (DataElementCategoryOptionCombo) source, true );
+        }
+        else if ( source instanceof Attributes )
+        {
+            populateAttributes( (Attributes) source, true );
+        }
+        else if ( source instanceof Attribute )
+        {
+            populateAttribute( (Attribute) source, true );
+        }
+    }
 
+    private void populateAttributes( Attributes attributes, boolean root )
+    {
+        attributes.setLink( getBasePath( Attributes.class ) );
+
+        if ( root )
+        {
+            for ( Attribute attribute : attributes.getAttributes() )
+            {
+                populateAttribute( attribute, false );
+            }
+        }
+    }
+
+    private void populateAttribute( Attribute attribute, boolean root )
+    {
+        attribute.setLink( getPathWithUid( attribute ) );
+
+        if ( root )
+        {
+
+        }
+    }
+
+    private void populateDataElementCategories( DataElementCategories dataElementCategories, boolean root )
+    {
+        dataElementCategories.setLink( getBasePath( DataElementCategories.class ) );
+
+        if ( root )
+        {
+            for ( DataElementCategory dataElementCategory : dataElementCategories.getDataElementCategories() )
+            {
+                populateDataElementCategory( dataElementCategory, false );
+            }
+        }
+    }
+
+    private void populateDataElementCategory( DataElementCategory dataElementCategory, boolean root )
+    {
+        dataElementCategory.setLink( getPathWithUid( dataElementCategory ) );
+
+        if ( root )
+        {
+            handleIdentifiableObjectCollection( dataElementCategory.getCategoryOptions() );
+        }
+    }
+
+    private void populateDataElementCategoryCombos( DataElementCategoryCombos dataElementCategoryCombos, boolean root )
+    {
+        dataElementCategoryCombos.setLink( getBasePath( DataElementCategoryCombos.class ) );
+
+        if ( root )
+        {
+            for ( DataElementCategoryCombo dataElementCategoryCombo : dataElementCategoryCombos.getDataElementCategoryCombos() )
+            {
+                populateDataElementCategoryCombo( dataElementCategoryCombo, false );
+            }
+        }
+    }
+
+    private void populateDataElementCategoryCombo( DataElementCategoryCombo dataElementCategoryCombo, boolean root )
+    {
+        dataElementCategoryCombo.setLink( getPathWithUid( dataElementCategoryCombo ) );
+
+        if ( root )
+        {
+            handleIdentifiableObjectCollection( dataElementCategoryCombo.getOptionCombos() );
+            handleIdentifiableObjectCollection( dataElementCategoryCombo.getCategories() );
+        }
+    }
+
+    private void populateDataElementCategoryOptions( DataElementCategoryOptions dataElementCategoryOptions, boolean root )
+    {
+        dataElementCategoryOptions.setLink( getBasePath( DataElementCategoryOptions.class ) );
+
+        if ( root )
+        {
+            for ( DataElementCategoryOption dataElementCategoryOption : dataElementCategoryOptions.getDataElementCategoryOptions() )
+            {
+                populateDataElementCategoryOption( dataElementCategoryOption, false );
+            }
+        }
+    }
+
+    private void populateDataElementCategoryOption( DataElementCategoryOption dataElementCategoryOption, boolean root )
+    {
+        dataElementCategoryOption.setLink( getPathWithUid( dataElementCategoryOption ) );
+
+        if ( root )
+        {
+            handleIdentifiableObjectCollection( dataElementCategoryOption.getCategoryOptionCombos() );
+            populateIdentifiableObject( dataElementCategoryOption.getCategory() );
+        }
+    }
+
+    private void populateDataElementCategoryOptionCombos( DataElementCategoryOptionCombos dataElementCategoryOptionCombos, boolean root )
+    {
+        dataElementCategoryOptionCombos.setLink( getBasePath( DataElementCategoryOptionCombos.class ) );
+
+        if ( root )
+        {
+            for ( DataElementCategoryOptionCombo dataElementCategoryOptionCombo : dataElementCategoryOptionCombos.getDataElementCategoryOptionCombos() )
+            {
+                populateDataElementCategoryOptionCombo( dataElementCategoryOptionCombo, false );
+            }
+        }
+    }
+
+    private void populateDataElementCategoryOptionCombo( DataElementCategoryOptionCombo dataElementCategoryOptionCombo, boolean root )
+    {
+        dataElementCategoryOptionCombo.setLink( getPathWithUid( dataElementCategoryOptionCombo ) );
+
+        if ( root )
+        {
+            handleIdentifiableObjectCollection( dataElementCategoryOptionCombo.getCategoryOptions() );
+            populateIdentifiableObject( dataElementCategoryOptionCombo.getCategoryCombo() );
+        }
+    }
+
+    private void populateDataElements( DataElements dataElements, boolean root )
+    {
+        dataElements.setLink( getBasePath( DataElements.class ) );
+
+        if ( root )
+        {
+            for ( DataElement dataElement : dataElements.getDataElements() )
+            {
+                populateDataElement( dataElement, false );
+            }
+        }
+    }
+
+    private void populateDataElement( DataElement dataElement, boolean root )
+    {
+        dataElement.setLink( getPathWithUid( dataElement ) );
+
+        if ( root )
+        {
+            handleIdentifiableObjectCollection( dataElement.getGroups() );
+            handleIdentifiableObjectCollection( dataElement.getDataSets() );
+            populateIdentifiableObject( dataElement.getCategoryCombo() );
+        }
+    }
+
+    private void populateDataElementGroups( DataElementGroups dataElementGroups, boolean root )
+    {
+        dataElementGroups.setLink( getBasePath( DataElementGroups.class ) );
+
+        if ( root )
+        {
+            for ( DataElementGroup dataElementGroup : dataElementGroups.getDataElementGroups() )
+            {
+                populateDataElementGroup( dataElementGroup, false );
+            }
+        }
+    }
+
+    private void populateDataElementGroup( DataElementGroup dataElementGroup, boolean root )
+    {
+        dataElementGroup.setLink( getPathWithUid( dataElementGroup ) );
+
+        if ( root )
+        {
+            handleIdentifiableObjectCollection( dataElementGroup.getMembers() );
+            populateIdentifiableObject( dataElementGroup.getGroupSet() );
+        }
+    }
+
+    private void populateDataElementGroupSets( DataElementGroupSets dataElementGroupSets, boolean root )
+    {
+        dataElementGroupSets.setLink( getBasePath( DataElementGroupSets.class ) );
+
+        if ( root )
+        {
+            for ( DataElementGroupSet dataElementGroupSet : dataElementGroupSets.getDataElementGroupSets() )
+            {
+                populateDataElementGroupSet( dataElementGroupSet, false );
+            }
+        }
+    }
+
+    private void populateDataElementGroupSet( DataElementGroupSet dataElementGroupSet, boolean root )
+    {
+        dataElementGroupSet.setLink( getPathWithUid( dataElementGroupSet ) );
+
+        if ( root )
+        {
+            handleIdentifiableObjectCollection( dataElementGroupSet.getMembers() );
+        }
+    }
+
+    private void populateIndicators( Indicators indicators, boolean root )
+    {
+        indicators.setLink( getBasePath( Indicators.class ) );
+
+        if ( root )
+        {
+            for ( Indicator indicator : indicators.getIndicators() )
+            {
+                populateIndicator( indicator, false );
+            }
+        }
+    }
+
+    private void populateIndicator( Indicator indicator, boolean root )
+    {
+        indicator.setLink( getPathWithUid( indicator ) );
+
+        if ( root )
+        {
+            handleIdentifiableObjectCollection( indicator.getGroups() );
+            handleIdentifiableObjectCollection( indicator.getDataSets() );
+        }
+    }
+
+    private void populateIndicatorGroups( IndicatorGroups indicatorGroups, boolean root )
+    {
+        indicatorGroups.setLink( getBasePath( IndicatorGroups.class ) );
+
+        if ( root )
+        {
+            for ( IndicatorGroup indicatorGroup : indicatorGroups.getIndicatorGroups() )
+            {
+                populateIndicatorGroup( indicatorGroup, false );
+            }
+        }
+    }
+
+    private void populateIndicatorGroup( IndicatorGroup indicatorGroup, boolean root )
+    {
+        indicatorGroup.setLink( getPathWithUid( indicatorGroup ) );
+
+        if ( root )
+        {
+            handleIdentifiableObjectCollection( indicatorGroup.getMembers() );
+            populateIdentifiableObject( indicatorGroup.getGroupSet() );
+        }
+    }
+
+    private void populateIndicatorGroupSets( IndicatorGroupSets indicatorGroupSets, boolean root )
+    {
+        indicatorGroupSets.setLink( getBasePath( IndicatorGroupSets.class ) );
+
+        if ( root )
+        {
+            for ( IndicatorGroupSet indicatorGroupSet : indicatorGroupSets.getIndicatorGroupSets() )
+            {
+                populateIndicatorGroupSet( indicatorGroupSet, false );
+            }
+        }
+    }
+
+    private void populateIndicatorGroupSet( IndicatorGroupSet indicatorGroupSet, boolean root )
+    {
+        indicatorGroupSet.setLink( getPathWithUid( indicatorGroupSet ) );
+
+        if ( root )
+        {
+            handleIdentifiableObjectCollection( indicatorGroupSet.getMembers() );
+        }
+    }
+
+    private void populateOrganisationUnitGroups( OrganisationUnitGroups organisationUnitGroups, boolean root )
+    {
+        organisationUnitGroups.setLink( getBasePath( OrganisationUnitGroups.class ) );
+
+        if ( root )
+        {
+            for ( OrganisationUnitGroup organisationUnitGroup : organisationUnitGroups.getOrganisationUnitGroups() )
+            {
+                populateOrganisationUnitGroup( organisationUnitGroup, false );
+            }
+        }
+    }
+
+    private void populateOrganisationUnitGroup( OrganisationUnitGroup organisationUnitGroup, boolean root )
+    {
+        organisationUnitGroup.setLink( getPathWithUid( organisationUnitGroup ) );
+
+        if ( root )
+        {
+            handleIdentifiableObjectCollection( organisationUnitGroup.getMembers() );
+            populateIdentifiableObject( organisationUnitGroup.getGroupSet() );
+        }
+    }
+
+    private void populateOrganisationUnitGroupSets( OrganisationUnitGroupSets organisationUnitGroupSets, boolean root )
+    {
+        organisationUnitGroupSets.setLink( getBasePath( OrganisationUnitGroupSets.class ) );
+
+        if ( root )
+        {
+            for ( OrganisationUnitGroupSet organisationUnitGroupSet : organisationUnitGroupSets.getOrganisationUnitGroupSets() )
+            {
+                populateOrganisationUnitGroupSet( organisationUnitGroupSet, false );
+            }
+        }
+    }
+
+    private void populateOrganisationUnitGroupSet( OrganisationUnitGroupSet organisationUnitGroupSet, boolean root )
+    {
+        organisationUnitGroupSet.setLink( getPathWithUid( organisationUnitGroupSet ) );
+
+        if ( root )
+        {
+            handleIdentifiableObjectCollection( organisationUnitGroupSet.getOrganisationUnitGroups() );
+        }
+    }
+
+    private void populateOrganisationUnits( OrganisationUnits organisationUnits, boolean root )
+    {
+        organisationUnits.setLink( getBasePath( OrganisationUnits.class ) );
+
+        if ( root )
+        {
+            for ( OrganisationUnit organisationUnit : organisationUnits.getOrganisationUnits() )
+            {
+                populateOrganisationUnit( organisationUnit, false );
+            }
+        }
+    }
+
+    private void populateOrganisationUnit( OrganisationUnit organisationUnit, boolean root )
+    {
+        organisationUnit.setLink( getPathWithUid( organisationUnit ) );
+
+        if ( root )
+        {
+            populateIdentifiableObject( organisationUnit.getParent() );
+            handleIdentifiableObjectCollection( organisationUnit.getDataSets() );
+            handleIdentifiableObjectCollection( organisationUnit.getGroups() );
+        }
+    }
+
+    private void populateDataSets( DataSets dataSets, boolean root )
+    {
+        dataSets.setLink( getBasePath( DataSets.class ) );
+
+        if ( root )
+        {
+            for ( DataSet dataSet : dataSets.getDataSets() )
+            {
+                populateDataSet( dataSet, false );
+            }
+        }
+    }
+
+    private void populateDataSet( DataSet dataSet, boolean root )
+    {
+        dataSet.setLink( getPathWithUid( dataSet ) );
+
+        if ( root )
+        {
+            handleIdentifiableObjectCollection( dataSet.getDataElements() );
+            handleIdentifiableObjectCollection( dataSet.getIndicators() );
+            handleIdentifiableObjectCollection( dataSet.getSources() );
+        }
+    }
+
+    private void populateCharts( Charts charts, boolean root )
+    {
+        charts.setLink( getBasePath( Chart.class ) );
+
+        if ( root )
+        {
+            for ( Chart chart : charts.getCharts() )
+            {
+                populateChart( chart, false );
+            }
+        }
+    }
+
+    private void populateChart( Chart chart, boolean root )
+    {
+        chart.setLink( getPathWithUid( chart ) );
+
+        if ( root )
+        {
+            handleIdentifiableObjectCollection( chart.getIndicators() );
+            handleIdentifiableObjectCollection( chart.getDataElements() );
+            handleIdentifiableObjectCollection( chart.getOrganisationUnits() );
+            handleIdentifiableObjectCollection( chart.getAllOrganisationUnits() );
+            handleIdentifiableObjectCollection( chart.getDataSets() );
+            handleIdentifiableObjectCollection( chart.getPeriods() );
+            handleIdentifiableObjectCollection( chart.getAllPeriods() );
+        }
+    }
+
+    public void handleIdentifiableObjectCollection( Collection<? extends BaseIdentifiableObject> identifiableObjects )
+    {
+        for ( BaseIdentifiableObject baseIdentifiableObject : identifiableObjects )
+        {
+            populateIdentifiableObject( baseIdentifiableObject );
+        }
+    }
+
+    private void populateIdentifiableObject( BaseIdentifiableObject baseIdentifiableObject )
+    {
+        baseIdentifiableObject.setLink( getPathWithUid( baseIdentifiableObject ) );
     }
 
     private String getPathWithUid( BaseIdentifiableObject baseIdentifiableObject )
@@ -171,20 +663,20 @@ public class WebLinkPopulatorListener
     {
         if ( rootPath == null )
         {
-            StringBuffer buffer = new StringBuffer();
-            buffer.append( request.getScheme() );
+            StringBuilder builder = new StringBuilder();
 
-            buffer.append( "://" + request.getServerName() );
+            builder.append( request.getScheme() );
+            builder.append( "://" ).append( request.getServerName() );
 
             if ( request.getServerPort() != 80 && request.getServerPort() != 443 )
             {
-                buffer.append( ":" + request.getServerPort() );
+                builder.append( ":" ).append( request.getServerPort() );
             }
 
-            buffer.append( request.getContextPath() );
-            buffer.append( request.getServletPath() );
+            builder.append( request.getContextPath() );
+            builder.append( request.getServletPath() );
 
-            rootPath = buffer.toString();
+            rootPath = builder.toString();
         }
 
         String resourcePath = resourcePaths.get( clazz );

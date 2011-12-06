@@ -27,6 +27,7 @@ package org.hisp.dhis.api.controller;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import org.hisp.dhis.api.utils.IdentifiableObjectParams;
 import org.hisp.dhis.api.utils.WebLinkPopulatorListener;
 import org.hisp.dhis.user.User;
 import org.hisp.dhis.user.UserService;
@@ -52,13 +53,16 @@ public class UserController
     private UserService userService;
 
     @RequestMapping( method = RequestMethod.GET )
-    public String getUsers( Model model, HttpServletRequest request )
+    public String getUsers( IdentifiableObjectParams params, Model model, HttpServletRequest request )
     {
         Users users = new Users();
         users.setUsers( new ArrayList<User>( userService.getAllUsers() ) );
 
-        WebLinkPopulatorListener listener = new WebLinkPopulatorListener( request );
-        listener.beforeMarshal( users );
+        if ( params.hasLinks() )
+        {
+            WebLinkPopulatorListener listener = new WebLinkPopulatorListener( request );
+            listener.beforeMarshal( users );
+        }
 
         model.addAttribute( "model", users );
 
@@ -66,12 +70,15 @@ public class UserController
     }
 
     @RequestMapping( value = "/{id}", method = RequestMethod.GET )
-    public String getUser( @PathVariable( "id" ) Integer id, Model model, HttpServletRequest request )
+    public String getUser( @PathVariable( "id" ) Integer id, IdentifiableObjectParams params, Model model, HttpServletRequest request )
     {
         User user = userService.getUser( id );
 
-        WebLinkPopulatorListener listener = new WebLinkPopulatorListener( request );
-        listener.beforeMarshal( user );
+        if ( params.hasLinks() )
+        {
+            WebLinkPopulatorListener listener = new WebLinkPopulatorListener( request );
+            listener.beforeMarshal( user );
+        }
 
         model.addAttribute( "model", user );
 

@@ -27,40 +27,6 @@ package org.hisp.dhis.chart.impl;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import static org.hisp.dhis.chart.Chart.DIMENSION_COMPLETENESS_PERIOD;
-import static org.hisp.dhis.chart.Chart.DIMENSION_DATAELEMENT_PERIOD;
-import static org.hisp.dhis.chart.Chart.DIMENSION_INDICATOR_PERIOD;
-import static org.hisp.dhis.chart.Chart.DIMENSION_ORGANISATIONUNIT_COMPLETENESS;
-import static org.hisp.dhis.chart.Chart.DIMENSION_ORGANISATIONUNIT_DATAELEMENT;
-import static org.hisp.dhis.chart.Chart.DIMENSION_ORGANISATIONUNIT_INDICATOR;
-import static org.hisp.dhis.chart.Chart.DIMENSION_PERIOD_COMPLETENESS;
-import static org.hisp.dhis.chart.Chart.DIMENSION_PERIOD_DATAELEMENT;
-import static org.hisp.dhis.chart.Chart.DIMENSION_PERIOD_INDICATOR;
-import static org.hisp.dhis.chart.Chart.SIZE_NORMAL;
-import static org.hisp.dhis.chart.Chart.TYPE_BAR;
-import static org.hisp.dhis.chart.Chart.TYPE_BAR3D;
-import static org.hisp.dhis.chart.Chart.TYPE_LINE;
-import static org.hisp.dhis.chart.Chart.TYPE_LINE3D;
-import static org.hisp.dhis.chart.Chart.TYPE_PIE;
-import static org.hisp.dhis.chart.Chart.TYPE_PIE3D;
-import static org.hisp.dhis.chart.Chart.TYPE_STACKED_BAR;
-import static org.hisp.dhis.chart.Chart.TYPE_STACKED_BAR3D;
-import static org.hisp.dhis.options.SystemSettingManager.AGGREGATION_STRATEGY_REAL_TIME;
-import static org.hisp.dhis.options.SystemSettingManager.DEFAULT_AGGREGATION_STRATEGY;
-import static org.hisp.dhis.options.SystemSettingManager.KEY_AGGREGATION_STRATEGY;
-import static org.hisp.dhis.system.util.ConversionUtils.getArray;
-
-import java.awt.BasicStroke;
-import java.awt.Color;
-import java.awt.Font;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
-
 import org.apache.commons.math.MathException;
 import org.apache.commons.math.analysis.SplineInterpolator;
 import org.apache.commons.math.analysis.UnivariateRealFunction;
@@ -102,24 +68,23 @@ import org.jfree.chart.axis.CategoryLabelPositions;
 import org.jfree.chart.axis.NumberAxis;
 import org.jfree.chart.axis.ValueAxis;
 import org.jfree.chart.labels.StandardPieSectionLabelGenerator;
-import org.jfree.chart.plot.CategoryPlot;
-import org.jfree.chart.plot.DatasetRenderingOrder;
-import org.jfree.chart.plot.Marker;
-import org.jfree.chart.plot.MultiplePiePlot;
-import org.jfree.chart.plot.PiePlot;
-import org.jfree.chart.plot.PlotOrientation;
-import org.jfree.chart.plot.ValueMarker;
-import org.jfree.chart.renderer.category.BarRenderer;
-import org.jfree.chart.renderer.category.BarRenderer3D;
-import org.jfree.chart.renderer.category.CategoryItemRenderer;
-import org.jfree.chart.renderer.category.LineAndShapeRenderer;
-import org.jfree.chart.renderer.category.LineRenderer3D;
+import org.jfree.chart.plot.*;
+import org.jfree.chart.renderer.category.*;
 import org.jfree.chart.title.TextTitle;
 import org.jfree.data.category.CategoryDataset;
 import org.jfree.data.category.DefaultCategoryDataset;
 import org.jfree.ui.RectangleInsets;
 import org.jfree.util.TableOrder;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.awt.*;
+import java.util.*;
+import java.util.List;
+import java.util.Map.Entry;
+
+import static org.hisp.dhis.chart.Chart.*;
+import static org.hisp.dhis.options.SystemSettingManager.*;
+import static org.hisp.dhis.system.util.ConversionUtils.getArray;
 
 /**
  * @author Lars Helge Overland
@@ -141,10 +106,10 @@ public class DefaultChartService
 
     private static final String DEFAULT_TITLE_PIVOT_CHART = "Pivot Chart";
 
-    private static final Color[] colors = { Color.decode( "#d54a4a" ), Color.decode( "#2e4e83" ),
+    private static final Color[] colors = {Color.decode( "#d54a4a" ), Color.decode( "#2e4e83" ),
         Color.decode( "#75e077" ), Color.decode( "#e3e274" ), Color.decode( "#e58c6d" ), Color.decode( "#df6ff3" ),
         Color.decode( "#88878e" ), Color.decode( "#6ff3e8" ), Color.decode( "#6fc3f3" ), Color.decode( "#aaf36f" ),
-        Color.decode( "#9d6ff3" ), Color.decode( "#474747" ) };
+        Color.decode( "#9d6ff3" ), Color.decode( "#474747" )};
 
     // -------------------------------------------------------------------------
     // Dependencies
@@ -228,10 +193,22 @@ public class DefaultChartService
     // Logic
     // -------------------------------------------------------------------------
 
+    public JFreeChart getJFreeChart( String uid, I18nFormat format )
+    {
+        Chart chart = getChart( uid );
+
+        return getJFreeChart( chart, format );
+    }
+
     public JFreeChart getJFreeChart( int id, I18nFormat format )
     {
         Chart chart = getChart( id );
 
+        return getJFreeChart( chart, format );
+    }
+
+    public JFreeChart getJFreeChart( Chart chart, I18nFormat format )
+    {
         if ( chart.getRelatives() != null )
         {
             chart.setRelativePeriods( periodService.reloadPeriods( chart.getRelatives().getRelativePeriods( format,
@@ -280,7 +257,7 @@ public class DefaultChartService
     }
 
     public JFreeChart getJFreeOrganisationUnitChart( Indicator indicator, OrganisationUnit parent, boolean title,
-        I18nFormat format )
+                                                     I18nFormat format )
     {
         RelativePeriods relatives = new RelativePeriods();
         relatives.setThisYear( true );
@@ -309,8 +286,8 @@ public class DefaultChartService
     }
 
     public JFreeChart getJFreeChart( List<Indicator> indicators, List<DataElement> dataElements,
-        List<DataSet> dataSets, List<Period> periods, List<OrganisationUnit> organisationUnits, String dimension,
-        boolean regression, I18nFormat format )
+                                     List<DataSet> dataSets, List<Period> periods, List<OrganisationUnit> organisationUnits, String dimension,
+                                     boolean regression, I18nFormat format )
     {
         Chart chart = new Chart();
 
@@ -347,7 +324,7 @@ public class DefaultChartService
     }
 
     public JFreeChart getJFreeChart( String name, PlotOrientation orientation, CategoryLabelPositions labelPositions,
-        Map<String, Double> categoryValues )
+                                     Map<String, Double> categoryValues )
     {
         DefaultCategoryDataset dataSet = new DefaultCategoryDataset();
 
@@ -365,8 +342,8 @@ public class DefaultChartService
     }
 
     public JFreeChart getJFreeChartHistory( DataElement dataElement,
-        DataElementCategoryOptionCombo categoryOptionCombo, Period lastPeriod, OrganisationUnit organisationUnit,
-        int historyLength, I18nFormat format )
+                                            DataElementCategoryOptionCombo categoryOptionCombo, Period lastPeriod, OrganisationUnit organisationUnit,
+                                            int historyLength, I18nFormat format )
     {
         lastPeriod = periodService.reloadPeriod( lastPeriod );
 
@@ -440,8 +417,7 @@ public class DefaultChartService
                         metaDataSet.addValue( function.value( periodCount ), "Regression value", period.getName() );
                     }
                 }
-            }
-            catch ( MathException ex )
+            } catch ( MathException ex )
             {
                 throw new RuntimeException( "Failed to interpolate", ex );
             }
@@ -569,7 +545,7 @@ public class DefaultChartService
      * Returns a CategoryPlot.
      */
     private CategoryPlot getCategoryPlot( CategoryDataset dataSet, CategoryItemRenderer renderer,
-        PlotOrientation orientation, CategoryLabelPositions labelPositions )
+                                          PlotOrientation orientation, CategoryLabelPositions labelPositions )
     {
         CategoryPlot plot = new CategoryPlot( dataSet, new CategoryAxis(), new NumberAxis(), renderer );
 
@@ -827,7 +803,7 @@ public class DefaultChartService
     {
         String aggregationStrategy = (String) systemSettingManager.getSystemSetting( KEY_AGGREGATION_STRATEGY,
             DEFAULT_AGGREGATION_STRATEGY );
-        
+
         final DefaultCategoryDataset regularDataSet = new DefaultCategoryDataset();
         final DefaultCategoryDataset regressionDataSet = new DefaultCategoryDataset();
 
@@ -884,7 +860,7 @@ public class DefaultChartService
                     shortName = dataSets.get( i ).getShortName();
                 }
 
-                if ( chart.isDimension( DIMENSION_PERIOD_INDICATOR ) 
+                if ( chart.isDimension( DIMENSION_PERIOD_INDICATOR )
                     || chart.isDimension( DIMENSION_INDICATOR_PERIOD )
                     || chart.isDimension( DIMENSION_PERIOD_DATAELEMENT )
                     || chart.isDimension( DIMENSION_DATAELEMENT_PERIOD )
@@ -1030,14 +1006,14 @@ public class DefaultChartService
             }
         }
 
-        return new CategoryDataset[] { regularDataSet, regressionDataSet };
+        return new CategoryDataset[]{regularDataSet, regressionDataSet};
     }
 
     /**
      * Returns a title based on the chart meta data.
      */
     private String getTitle( NameableObject nameableObject, List<Period> periods,
-        List<OrganisationUnit> organisationUnits, I18nFormat format )
+                             List<OrganisationUnit> organisationUnits, I18nFormat format )
     {
         String title = "";
 

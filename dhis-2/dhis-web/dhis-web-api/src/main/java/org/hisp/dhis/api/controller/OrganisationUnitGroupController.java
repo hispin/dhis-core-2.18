@@ -1,5 +1,6 @@
 package org.hisp.dhis.api.controller;
 
+import org.hisp.dhis.api.utils.IdentifiableObjectParams;
 import org.hisp.dhis.api.utils.WebLinkPopulatorListener;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroup;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroupService;
@@ -25,13 +26,16 @@ public class OrganisationUnitGroupController
     private OrganisationUnitGroupService organisationUnitGroupService;
 
     @RequestMapping( method = RequestMethod.GET )
-    public String getOrganisationUnits( Model model, HttpServletRequest request )
+    public String getOrganisationUnits( IdentifiableObjectParams params, Model model, HttpServletRequest request )
     {
         OrganisationUnitGroups organisationUnitGroups = new OrganisationUnitGroups();
         organisationUnitGroups.setOrganisationUnitGroups( new ArrayList<OrganisationUnitGroup>( organisationUnitGroupService.getAllOrganisationUnitGroups() ) );
 
-        WebLinkPopulatorListener listener = new WebLinkPopulatorListener( request );
-        listener.beforeMarshal( organisationUnitGroups );
+        if ( params.hasLinks() )
+        {
+            WebLinkPopulatorListener listener = new WebLinkPopulatorListener( request );
+            listener.beforeMarshal( organisationUnitGroups );
+        }
 
         model.addAttribute( "model", organisationUnitGroups );
 
@@ -39,13 +43,15 @@ public class OrganisationUnitGroupController
     }
 
     @RequestMapping( value = "/{uid}", method = RequestMethod.GET )
-    public String getOrganisationUnit( @PathVariable( "uid" ) String uid, Model model, HttpServletRequest request )
+    public String getOrganisationUnit( @PathVariable( "uid" ) String uid, IdentifiableObjectParams params, Model model, HttpServletRequest request )
     {
         OrganisationUnitGroup organisationUnitGroup = organisationUnitGroupService.getOrganisationUnitGroup( uid );
 
-        WebLinkPopulatorListener listener = new WebLinkPopulatorListener( request );
-        listener.beforeMarshal( organisationUnitGroup );
-
+        if ( params.hasLinks() )
+        {
+            WebLinkPopulatorListener listener = new WebLinkPopulatorListener( request );
+            listener.beforeMarshal( organisationUnitGroup );
+        }
 
         model.addAttribute( "model", organisationUnitGroup );
 

@@ -1,5 +1,6 @@
 package org.hisp.dhis.api.controller;
 
+import org.hisp.dhis.api.utils.IdentifiableObjectParams;
 import org.hisp.dhis.api.utils.WebLinkPopulatorListener;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
@@ -25,13 +26,16 @@ public class OrganisationUnitController
     private OrganisationUnitService organisationUnitService;
 
     @RequestMapping( method = RequestMethod.GET )
-    public String getOrganisationUnits( Model model, HttpServletRequest request )
+    public String getOrganisationUnits( IdentifiableObjectParams params, Model model, HttpServletRequest request )
     {
         OrganisationUnits organisationUnits = new OrganisationUnits();
         organisationUnits.setOrganisationUnits( new ArrayList<OrganisationUnit>( organisationUnitService.getAllOrganisationUnits() ) );
 
-        WebLinkPopulatorListener listener = new WebLinkPopulatorListener( request );
-        listener.beforeMarshal( organisationUnits );
+        if ( params.hasLinks() )
+        {
+            WebLinkPopulatorListener listener = new WebLinkPopulatorListener( request );
+            listener.beforeMarshal( organisationUnits );
+        }
 
         model.addAttribute( "model", organisationUnits );
 
@@ -39,12 +43,15 @@ public class OrganisationUnitController
     }
 
     @RequestMapping( value = "/{uid}", method = RequestMethod.GET )
-    public String getOrganisationUnit( @PathVariable( "uid" ) String uid, Model model, HttpServletRequest request )
+    public String getOrganisationUnit( @PathVariable( "uid" ) String uid, IdentifiableObjectParams params, Model model, HttpServletRequest request )
     {
         OrganisationUnit organisationUnit = organisationUnitService.getOrganisationUnit( uid );
 
-        WebLinkPopulatorListener listener = new WebLinkPopulatorListener( request );
-        listener.beforeMarshal( organisationUnit );
+        if ( params.hasLinks() )
+        {
+            WebLinkPopulatorListener listener = new WebLinkPopulatorListener( request );
+            listener.beforeMarshal( organisationUnit );
+        }
 
         model.addAttribute( "model", organisationUnit );
 

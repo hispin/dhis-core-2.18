@@ -27,6 +27,7 @@ package org.hisp.dhis.api.controller;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import org.hisp.dhis.api.utils.IdentifiableObjectParams;
 import org.hisp.dhis.api.utils.WebLinkPopulatorListener;
 import org.hisp.dhis.indicator.IndicatorGroup;
 import org.hisp.dhis.indicator.IndicatorGroups;
@@ -52,13 +53,16 @@ public class IndicatorGroupController
     private IndicatorService indicatorService;
 
     @RequestMapping( method = RequestMethod.GET )
-    public String getIndicatorGroups( Model model, HttpServletRequest request )
+    public String getIndicatorGroups( IdentifiableObjectParams params, Model model, HttpServletRequest request )
     {
         IndicatorGroups indicatorGroups = new IndicatorGroups();
         indicatorGroups.setIndicatorGroups( new ArrayList<IndicatorGroup>( indicatorService.getAllIndicatorGroups() ) );
 
-        WebLinkPopulatorListener listener = new WebLinkPopulatorListener( request );
-        listener.beforeMarshal( indicatorGroups );
+        if ( params.hasLinks() )
+        {
+            WebLinkPopulatorListener listener = new WebLinkPopulatorListener( request );
+            listener.beforeMarshal( indicatorGroups );
+        }
 
         model.addAttribute( "model", indicatorGroups );
 
@@ -66,12 +70,15 @@ public class IndicatorGroupController
     }
 
     @RequestMapping( value = "/{uid}", method = RequestMethod.GET )
-    public String getIndicatorGroup( @PathVariable( "uid" ) String uid, Model model, HttpServletRequest request )
+    public String getIndicatorGroup( @PathVariable( "uid" ) String uid, IdentifiableObjectParams params, Model model, HttpServletRequest request )
     {
         IndicatorGroup indicatorGroup = indicatorService.getIndicatorGroup( uid );
 
-        WebLinkPopulatorListener listener = new WebLinkPopulatorListener( request );
-        listener.beforeMarshal( indicatorGroup );
+        if ( params.hasLinks() )
+        {
+            WebLinkPopulatorListener listener = new WebLinkPopulatorListener( request );
+            listener.beforeMarshal( indicatorGroup );
+        }
 
         model.addAttribute( "model", indicatorGroup );
 
