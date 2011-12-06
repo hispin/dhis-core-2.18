@@ -97,5 +97,87 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     <property name="localeManagerInterface" ref="org.hisp.dhis.i18n.locale.LocaleManager" />
     <property name="localeManagerDB" ref="org.hisp.dhis.i18n.locale.LocaleManagerDb" />
   </bean>
+  
+  <!-- Single Events -->
+    
+  <bean id="org.hisp.dhis.light.singleevents.action.GetSelectOrgUnitSingleEventsAction" class="org.hisp.dhis.light.singleevents.action.GetSelectOrgUnitSingleEventsAction">
+    <property name="currentUserService" ref="org.hisp.dhis.user.CurrentUserService" />
+    <property name="formUtils" ref="org.hisp.dhis.light.dataentry.utils.FormUtils" />
+  </bean>
+  
+  <bean id="org.hisp.dhis.light.singleevents.action.GetSingleEventsAction" class="org.hisp.dhis.light.singleevents.action.GetSingleEventsAction">
+    <property name="programService" ref="org.hisp.dhis.program.ProgramService" />
+  </bean>
+  
+  <bean id="org.hisp.dhis.light.singleevents.action.GetSingleEventChoicesAction" class="org.hisp.dhis.light.singleevents.action.GetSingleEventChoicesAction">
+    <property name="programService" ref="org.hisp.dhis.program.ProgramService" />
+  </bean>
+  
+  <bean id="org.hisp.dhis.light.singleevents.action.GetBeneficiaryChoicesAction" class="org.hisp.dhis.light.singleevents.action.GetBeneficiaryChoicesAction">
+    <property name="programService" ref="org.hisp.dhis.program.ProgramService" />
+  </bean>
+  
+  <bean id="org.hisp.dhis.light.singleevents.action.RegisterNewBeneficiaryAction" class="org.hisp.dhis.light.singleevents.action.RegisterNewBeneficiaryAction">
+    <property name="programService" ref="org.hisp.dhis.program.ProgramService" />
+    <property name="patientAttributeService" ref="org.hisp.dhis.patient.PatientAttributeService" />
+	<property name="patientAttributeGroupService" ref="org.hisp.dhis.patient.PatientAttributeGroupService" />
+  </bean>
+
+  <bean id="org.hisp.dhis.light.singleevents.action.GetRecentlyEditChoicesAction" class="org.hisp.dhis.light.singleevents.action.GetRecentlyEditChoicesAction">
+  	<property name="programService" ref="org.hisp.dhis.program.ProgramService" />
+  </bean>
+
+  <bean id="org.hisp.dhis.light.singleevents.action.AddBeneficiaryAction" class="org.hisp.dhis.light.singleevents.action.AddBeneficiaryAction">
+  	<property name="organisationUnitService" ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
+	<property name="patientService" ref="org.hisp.dhis.patient.PatientService" />
+	<property name="programService" ref="org.hisp.dhis.program.ProgramService" />
+	<property name="patientAttributeService" ref="org.hisp.dhis.patient.PatientAttributeService" />
+	<property name="patientAttributeGroupService" ref="org.hisp.dhis.patient.PatientAttributeGroupService" />
+	<property name="patientAttributeOptionService" ref="org.hisp.dhis.patient.PatientAttributeOptionService" />
+  </bean>
+  
+  <bean id="org.hisp.dhis.light.singleevents.action.UpdateBeneficiaryAction" class="org.hisp.dhis.light.singleevents.action.UpdateBeneficiaryAction">
+  	<property name="organisationUnitService" ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
+	<property name="patientService" ref="org.hisp.dhis.patient.PatientService" />
+	<property name="patientAttributeService" ref="org.hisp.dhis.patient.PatientAttributeService" />
+	<property name="patientAttributeGroupService" ref="org.hisp.dhis.patient.PatientAttributeGroupService" />
+	<property name="patientAttributeOptionService" ref="org.hisp.dhis.patient.PatientAttributeOptionService" />
+	<property name="patientAttributeValueService" ref="org.hisp.dhis.patientattributevalue.PatientAttributeValueService" />
+  </bean>
+  
+  <bean id="org.hisp.dhis.light.singleevents.action.EditBeneficiaryAction" class="org.hisp.dhis.light.singleevents.action.EditBeneficiaryAction">
+	<property name="patientService" ref="org.hisp.dhis.patient.PatientService" />
+	<property name="patientAttributeService" ref="org.hisp.dhis.patient.PatientAttributeService" />
+	<property name="patientAttributeGroupService" ref="org.hisp.dhis.patient.PatientAttributeGroupService" />
+	<property name="patientAttributeValueService" ref="org.hisp.dhis.patientattributevalue.PatientAttributeValueService" />
+  </bean>
+  
+  <bean id="org.hisp.dhis.light.singleevents.action.AddSingleEventAction" class="org.hisp.dhis.light.singleevents.action.AddSingleEventAction">
+   <property name="programInstanceService" ref="org.hisp.dhis.program.ProgramInstanceService" />
+   <property name="patientService" ref="org.hisp.dhis.patient.PatientService" />
+   <property name="programService" ref="org.hisp.dhis.program.ProgramService" />
+   <property name="patientDataValueService" ref="org.hisp.dhis.patientdatavalue.PatientDataValueService" />
+   <property name="programStageInstanceService" ref="org.hisp.dhis.program.ProgramStageInstanceService" />
+   <property name="organisationUnitService" ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
+  </bean>
+  
+  <bean id="org.hisp.dhis.light.singleevents.action.GetRecentlyRegisteredSingleEventsAction" class="org.hisp.dhis.light.singleevents.action.GetRecentlyRegisteredSingleEventsAction">
+    <property name="programService" ref="org.hisp.dhis.program.ProgramService" />
+    <property name="organisationUnitService" ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
+    <property name="programInstanceService" ref="org.hisp.dhis.program.ProgramInstanceService" />
+  </bean>
+  
+  <bean id="org.hisp.dhis.light.singleevents.action.RegisterNewSingleEventAction" class="org.hisp.dhis.light.singleevents.action.RegisterNewSingleEventAction">
+    <property name="patientDataValueService" ref="org.hisp.dhis.patientdatavalue.PatientDataValueService" />
+    <property name="programService" ref="org.hisp.dhis.program.ProgramService" />
+    <property name="programInstanceService" ref="org.hisp.dhis.program.ProgramInstanceService" />
+    <property name="programStageInstanceService" ref="org.hisp.dhis.program.ProgramStageInstanceService" />
+    <property name="organisationUnitService" ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
+  </bean>
+  
+  <bean id="org.hisp.dhis.light.singleevents.action.RenderResultPageAction" class="org.hisp.dhis.light.singleevents.action.RenderResultPageAction">
+    <property name="programService" ref="org.hisp.dhis.program.ProgramService" />
+    <property name="patientService" ref="org.hisp.dhis.patient.PatientService" />
+  </bean>
 
 </beans>

@@ -1,0 +1,26 @@
+<h2>$i18n.getString( "result" )</h2>
+
+<p>
+	<ul>
+		#if($resultString == "updateSingleEvent")
+			$i18n.getString("single_event") $eventName $i18n.getString("registered_to_beneficiary") $patientName $i18n.getString("was_updated").
+		#elseif($resultString == "updateBeneficiary")
+			$i18n.getString("beneficiary") $patientName $i18n.getString("was_updated").
+		#elseif($resultString == "newSingleEvent")
+			$i18n.getString("single_event") $eventName $i18n.getString("was_added_to_beneficiary") $patientName.
+		#end
+		
+	</ul>
+</p>
+
+
+<div id="footer">
+<h2>$i18n.getString( "navigate_to" )</h2>
+<ul>
+	<li><a href="GetRecentlyRegisteredSingleEvents.action?organisationUnitId=$organisationUnitId&singleEventId=$singleEventId">
+	$i18n.getString("recently_registered")</a></li>
+	<li><a href="getBeneficiaryChoices.action?organisationUnitId=$organisationUnitId&singleEventId=$singleEventId">
+	$i18n.getString("register_new_single_event")</a></li>
+	<li><a href="index.action">$i18n.getString("home")</a></li>
+</ul>
+</div>
