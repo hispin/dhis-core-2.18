@@ -27,6 +27,7 @@ package org.hisp.dhis.api.controller;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import org.hisp.dhis.api.utils.IdentifiableObjectParams;
 import org.hisp.dhis.api.utils.WebLinkPopulatorListener;
 import org.hisp.dhis.dataelement.DataElementGroup;
 import org.hisp.dhis.dataelement.DataElementGroups;
@@ -49,13 +50,16 @@ public class DataElementGroupController
     private DataElementService dataElementService;
 
     @RequestMapping( method = RequestMethod.GET )
-    public String getDataElementGroups( Model model, HttpServletRequest request )
+    public String getDataElementGroups( IdentifiableObjectParams params, Model model, HttpServletRequest request )
     {
         DataElementGroups dataElementGroups = new DataElementGroups();
         dataElementGroups.setDataElementGroups( new ArrayList<DataElementGroup>( dataElementService.getAllDataElementGroups() ) );
 
-        WebLinkPopulatorListener listener = new WebLinkPopulatorListener( request );
-        listener.beforeMarshal( dataElementGroups );
+        if ( params.hasLinks() )
+        {
+            WebLinkPopulatorListener listener = new WebLinkPopulatorListener( request );
+            listener.beforeMarshal( dataElementGroups );
+        }
 
         model.addAttribute( "model", dataElementGroups );
 
@@ -63,12 +67,15 @@ public class DataElementGroupController
     }
 
     @RequestMapping( value = "/{uid}", method = RequestMethod.GET )
-    public String getDataElementGroup( @PathVariable( "uid" ) String uid, Model model, HttpServletRequest request )
+    public String getDataElementGroup( @PathVariable( "uid" ) String uid, IdentifiableObjectParams params, Model model, HttpServletRequest request )
     {
         DataElementGroup dataElementGroup = dataElementService.getDataElementGroup( uid );
 
-        WebLinkPopulatorListener listener = new WebLinkPopulatorListener( request );
-        listener.beforeMarshal( dataElementGroup );
+        if ( params.hasLinks() )
+        {
+            WebLinkPopulatorListener listener = new WebLinkPopulatorListener( request );
+            listener.beforeMarshal( dataElementGroup );
+        }
 
         model.addAttribute( "model", dataElementGroup );
 

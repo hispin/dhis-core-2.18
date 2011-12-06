@@ -27,6 +27,8 @@ package org.hisp.dhis.api.controller;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import org.hisp.dhis.api.utils.IdentifiableObjectParams;
+import org.hisp.dhis.api.utils.WebLinkPopulatorListener;
 import org.hisp.dhis.attribute.Attribute;
 import org.hisp.dhis.attribute.AttributeService;
 import org.hisp.dhis.attribute.Attributes;
@@ -51,10 +53,16 @@ public class AttributeController
     private AttributeService attributeService;
 
     @RequestMapping( method = RequestMethod.GET )
-    public String getAttributes( Model model, HttpServletRequest request )
+    public String getAttributes( IdentifiableObjectParams params, Model model, HttpServletRequest request )
     {
         Attributes attributes = new Attributes();
         attributes.setAttributes( new ArrayList<Attribute>( attributeService.getAllAttributes() ) );
+
+        if ( params.hasLinks() )
+        {
+            WebLinkPopulatorListener listener = new WebLinkPopulatorListener( request );
+            listener.beforeMarshal( attributes );
+        }
 
         model.addAttribute( "model", attributes );
 
@@ -62,9 +70,15 @@ public class AttributeController
     }
 
     @RequestMapping( value = "/{uid}", method = RequestMethod.GET )
-    public String getAttribute( @PathVariable( "uid" ) String uid, Model model, HttpServletRequest request )
+    public String getAttribute( @PathVariable( "uid" ) String uid, IdentifiableObjectParams params, Model model, HttpServletRequest request )
     {
         Attribute attribute = attributeService.getAttribute( uid );
+
+        if ( params.hasLinks() )
+        {
+            WebLinkPopulatorListener listener = new WebLinkPopulatorListener( request );
+            listener.beforeMarshal( attribute );
+        }
 
         model.addAttribute( "model", attribute );
 

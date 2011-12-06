@@ -27,6 +27,7 @@ package org.hisp.dhis.api.controller;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import org.hisp.dhis.api.utils.IdentifiableObjectParams;
 import org.hisp.dhis.api.utils.WebLinkPopulatorListener;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombos;
@@ -52,13 +53,16 @@ public class DataElementCategoryOptionComboController
     private DataElementCategoryService dataElementCategoryService;
 
     @RequestMapping( method = RequestMethod.GET )
-    public String getDataElementCategoryOptionCombos( Model model, HttpServletRequest request )
+    public String getDataElementCategoryOptionCombos( IdentifiableObjectParams params, Model model, HttpServletRequest request )
     {
         DataElementCategoryOptionCombos dataElementCategoryOptionCombos = new DataElementCategoryOptionCombos();
         dataElementCategoryOptionCombos.setDataElementCategoryOptionCombos( new ArrayList<DataElementCategoryOptionCombo>( dataElementCategoryService.getAllDataElementCategoryOptionCombos() ) );
 
-        WebLinkPopulatorListener listener = new WebLinkPopulatorListener( request );
-        listener.beforeMarshal( dataElementCategoryOptionCombos );
+        if ( params.hasLinks() )
+        {
+            WebLinkPopulatorListener listener = new WebLinkPopulatorListener( request );
+            listener.beforeMarshal( dataElementCategoryOptionCombos );
+        }
 
         model.addAttribute( "model", dataElementCategoryOptionCombos );
 
@@ -66,12 +70,15 @@ public class DataElementCategoryOptionComboController
     }
 
     @RequestMapping( value = "/{uid}", method = RequestMethod.GET )
-    public String getDataElementCategoryCombo( @PathVariable( "uid" ) String uid, Model model, HttpServletRequest request )
+    public String getDataElementCategoryCombo( @PathVariable( "uid" ) String uid, IdentifiableObjectParams params, Model model, HttpServletRequest request )
     {
         DataElementCategoryOptionCombo dataElementCategoryOptionCombo = dataElementCategoryService.getDataElementCategoryOptionCombo( uid );
 
-        WebLinkPopulatorListener listener = new WebLinkPopulatorListener( request );
-        listener.beforeMarshal( dataElementCategoryOptionCombo );
+        if ( params.hasLinks() )
+        {
+            WebLinkPopulatorListener listener = new WebLinkPopulatorListener( request );
+            listener.beforeMarshal( dataElementCategoryOptionCombo );
+        }
 
         model.addAttribute( "model", dataElementCategoryOptionCombo );
 

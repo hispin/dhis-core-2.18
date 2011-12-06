@@ -27,6 +27,7 @@ package org.hisp.dhis.api.controller;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import org.hisp.dhis.api.utils.IdentifiableObjectParams;
 import org.hisp.dhis.api.utils.WebLinkPopulatorListener;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementService;
@@ -56,13 +57,16 @@ public class DataElementController
     private DataElementService dataElementService;
 
     @RequestMapping( method = RequestMethod.GET )
-    public String getDataElements( Model model, HttpServletRequest request )
+    public String getDataElements( IdentifiableObjectParams params, Model model, HttpServletRequest request )
     {
         DataElements dataElements = new DataElements();
         dataElements.setDataElements( new ArrayList<DataElement>( dataElementService.getAllActiveDataElements() ) );
 
-        WebLinkPopulatorListener listener = new WebLinkPopulatorListener( request );
-        listener.beforeMarshal( dataElements );
+        if ( params.hasLinks() )
+        {
+            WebLinkPopulatorListener listener = new WebLinkPopulatorListener( request );
+            listener.beforeMarshal( dataElements );
+        }
 
         model.addAttribute( "model", dataElements );
 
@@ -88,12 +92,15 @@ public class DataElementController
     }
 
     @RequestMapping( value = "/{uid}", method = RequestMethod.GET )
-    public String getDataElement( @PathVariable( "uid" ) String uid, Model model, HttpServletRequest request )
+    public String getDataElement( @PathVariable( "uid" ) String uid, IdentifiableObjectParams params, Model model, HttpServletRequest request )
     {
         DataElement dataElement = dataElementService.getDataElement( uid );
 
-        WebLinkPopulatorListener listener = new WebLinkPopulatorListener( request );
-        listener.beforeMarshal( dataElement );
+        if ( params.hasLinks() )
+        {
+            WebLinkPopulatorListener listener = new WebLinkPopulatorListener( request );
+            listener.beforeMarshal( dataElement );
+        }
 
         model.addAttribute( "model", dataElement );
 

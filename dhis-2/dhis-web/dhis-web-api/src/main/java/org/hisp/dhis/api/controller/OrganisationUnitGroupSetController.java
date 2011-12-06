@@ -27,6 +27,7 @@ package org.hisp.dhis.api.controller;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import org.hisp.dhis.api.utils.IdentifiableObjectParams;
 import org.hisp.dhis.api.utils.WebLinkPopulatorListener;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroupService;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroupSet;
@@ -52,13 +53,16 @@ public class OrganisationUnitGroupSetController
     private OrganisationUnitGroupService organisationUnitGroupService;
 
     @RequestMapping( method = RequestMethod.GET )
-    public String getOrganisationUnitGroupSets( Model model, HttpServletRequest request )
+    public String getOrganisationUnitGroupSets( IdentifiableObjectParams params, Model model, HttpServletRequest request )
     {
         OrganisationUnitGroupSets organisationUnitGroupSets = new OrganisationUnitGroupSets();
         organisationUnitGroupSets.setOrganisationUnitGroupSets( new ArrayList<OrganisationUnitGroupSet>( organisationUnitGroupService.getAllOrganisationUnitGroupSets() ) );
 
-        WebLinkPopulatorListener listener = new WebLinkPopulatorListener( request );
-        listener.beforeMarshal( organisationUnitGroupSets );
+        if ( params.hasLinks() )
+        {
+            WebLinkPopulatorListener listener = new WebLinkPopulatorListener( request );
+            listener.beforeMarshal( organisationUnitGroupSets );
+        }
 
         model.addAttribute( "model", organisationUnitGroupSets );
 
@@ -66,12 +70,15 @@ public class OrganisationUnitGroupSetController
     }
 
     @RequestMapping( value = "/{uid}", method = RequestMethod.GET )
-    public String getOrganisationUnitGroupSet( @PathVariable( "uid" ) String uid, Model model, HttpServletRequest request )
+    public String getOrganisationUnitGroupSet( @PathVariable( "uid" ) String uid, IdentifiableObjectParams params, Model model, HttpServletRequest request )
     {
         OrganisationUnitGroupSet organisationUnitGroupSet = organisationUnitGroupService.getOrganisationUnitGroupSet( uid );
 
-        WebLinkPopulatorListener listener = new WebLinkPopulatorListener( request );
-        listener.beforeMarshal( organisationUnitGroupSet );
+        if ( params.hasLinks() )
+        {
+            WebLinkPopulatorListener listener = new WebLinkPopulatorListener( request );
+            listener.beforeMarshal( organisationUnitGroupSet );
+        }
 
         model.addAttribute( "model", organisationUnitGroupSet );
 

@@ -27,6 +27,7 @@ package org.hisp.dhis.api.controller;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import org.hisp.dhis.api.utils.IdentifiableObjectParams;
 import org.hisp.dhis.api.utils.WebLinkPopulatorListener;
 import org.hisp.dhis.indicator.IndicatorService;
 import org.hisp.dhis.indicator.IndicatorType;
@@ -52,13 +53,16 @@ public class IndicatorTypeController
     private IndicatorService indicatorService;
 
     @RequestMapping( method = RequestMethod.GET )
-    public String getIndicatorTypes( Model model, HttpServletRequest request )
+    public String getIndicatorTypes( IdentifiableObjectParams params, Model model, HttpServletRequest request )
     {
         IndicatorTypes indicatorTypes = new IndicatorTypes();
         indicatorTypes.setIndicatorTypes( new ArrayList<IndicatorType>( indicatorService.getAllIndicatorTypes() ) );
 
-        WebLinkPopulatorListener listener = new WebLinkPopulatorListener( request );
-        listener.beforeMarshal( indicatorTypes );
+        if ( params.hasLinks() )
+        {
+            WebLinkPopulatorListener listener = new WebLinkPopulatorListener( request );
+            listener.beforeMarshal( indicatorTypes );
+        }
 
         model.addAttribute( "model", indicatorTypes );
 
@@ -66,12 +70,15 @@ public class IndicatorTypeController
     }
 
     @RequestMapping( value = "/{uid}", method = RequestMethod.GET )
-    public String getIndicator( @PathVariable( "uid" ) String uid, Model model, HttpServletRequest request )
+    public String getIndicator( @PathVariable( "uid" ) String uid, IdentifiableObjectParams params, Model model, HttpServletRequest request )
     {
         IndicatorType indicatorType = indicatorService.getIndicatorType( uid );
 
-        WebLinkPopulatorListener listener = new WebLinkPopulatorListener( request );
-        listener.beforeMarshal( indicatorType );
+        if ( params.hasLinks() )
+        {
+            WebLinkPopulatorListener listener = new WebLinkPopulatorListener( request );
+            listener.beforeMarshal( indicatorType );
+        }
 
         model.addAttribute( "model", indicatorType );
 

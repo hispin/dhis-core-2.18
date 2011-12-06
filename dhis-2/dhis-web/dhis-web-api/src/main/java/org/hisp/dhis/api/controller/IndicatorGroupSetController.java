@@ -27,6 +27,7 @@ package org.hisp.dhis.api.controller;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import org.hisp.dhis.api.utils.IdentifiableObjectParams;
 import org.hisp.dhis.api.utils.WebLinkPopulatorListener;
 import org.hisp.dhis.indicator.IndicatorGroupSet;
 import org.hisp.dhis.indicator.IndicatorGroupSets;
@@ -52,13 +53,16 @@ public class IndicatorGroupSetController
     private IndicatorService indicatorService;
 
     @RequestMapping( method = RequestMethod.GET )
-    public String getIndicatorGroupSets( Model model, HttpServletRequest request )
+    public String getIndicatorGroupSets( IdentifiableObjectParams params, Model model, HttpServletRequest request )
     {
         IndicatorGroupSets indicatorGroupSets = new IndicatorGroupSets();
         indicatorGroupSets.setIndicatorGroupSets( new ArrayList<IndicatorGroupSet>( indicatorService.getAllIndicatorGroupSets() ) );
 
-        WebLinkPopulatorListener listener = new WebLinkPopulatorListener( request );
-        listener.beforeMarshal( indicatorGroupSets );
+        if ( params.hasLinks() )
+        {
+            WebLinkPopulatorListener listener = new WebLinkPopulatorListener( request );
+            listener.beforeMarshal( indicatorGroupSets );
+        }
 
         model.addAttribute( "model", indicatorGroupSets );
 
@@ -66,12 +70,15 @@ public class IndicatorGroupSetController
     }
 
     @RequestMapping( value = "/{uid}", method = RequestMethod.GET )
-    public String getIndicatorGroupSet( @PathVariable( "uid" ) String uid, Model model, HttpServletRequest request )
+    public String getIndicatorGroupSet( @PathVariable( "uid" ) String uid, IdentifiableObjectParams params, Model model, HttpServletRequest request )
     {
         IndicatorGroupSet indicatorGroupSet = indicatorService.getIndicatorGroupSet( uid );
 
-        WebLinkPopulatorListener listener = new WebLinkPopulatorListener( request );
-        listener.beforeMarshal( indicatorGroupSet );
+        if ( params.hasLinks() )
+        {
+            WebLinkPopulatorListener listener = new WebLinkPopulatorListener( request );
+            listener.beforeMarshal( indicatorGroupSet );
+        }
 
         model.addAttribute( "model", indicatorGroupSet );
 

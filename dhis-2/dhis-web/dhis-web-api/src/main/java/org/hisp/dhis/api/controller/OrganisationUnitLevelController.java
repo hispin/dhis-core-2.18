@@ -27,6 +27,7 @@ package org.hisp.dhis.api.controller;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import org.hisp.dhis.api.utils.IdentifiableObjectParams;
 import org.hisp.dhis.api.utils.WebLinkPopulatorListener;
 import org.hisp.dhis.organisationunit.OrganisationUnitLevel;
 import org.hisp.dhis.organisationunit.OrganisationUnitLevels;
@@ -52,13 +53,16 @@ public class OrganisationUnitLevelController
     private OrganisationUnitService organisationUnitService;
 
     @RequestMapping( method = RequestMethod.GET )
-    public String getOrganisationUnitLevels( Model model, HttpServletRequest request )
+    public String getOrganisationUnitLevels( IdentifiableObjectParams params, Model model, HttpServletRequest request )
     {
         OrganisationUnitLevels organisationUnitLevels = new OrganisationUnitLevels();
         organisationUnitLevels.setOrganisationUnitLevels( new ArrayList<OrganisationUnitLevel>( organisationUnitService.getOrganisationUnitLevels() ) );
 
-        WebLinkPopulatorListener listener = new WebLinkPopulatorListener( request );
-        listener.beforeMarshal( organisationUnitLevels );
+        if ( params.hasLinks() )
+        {
+            WebLinkPopulatorListener listener = new WebLinkPopulatorListener( request );
+            listener.beforeMarshal( organisationUnitLevels );
+        }
 
         model.addAttribute( "model", organisationUnitLevels );
 
@@ -66,12 +70,15 @@ public class OrganisationUnitLevelController
     }
 
     @RequestMapping( value = "/{uid}", method = RequestMethod.GET )
-    public String getOrganisationUnit( @PathVariable( "uid" ) String uid, Model model, HttpServletRequest request )
+    public String getOrganisationUnit( @PathVariable( "uid" ) String uid, IdentifiableObjectParams params, Model model, HttpServletRequest request )
     {
         OrganisationUnitLevel organisationUnitLevel = organisationUnitService.getOrganisationUnitLevel( uid );
 
-        WebLinkPopulatorListener listener = new WebLinkPopulatorListener( request );
-        listener.beforeMarshal( organisationUnitLevel );
+        if ( params.hasLinks() )
+        {
+            WebLinkPopulatorListener listener = new WebLinkPopulatorListener( request );
+            listener.beforeMarshal( organisationUnitLevel );
+        }
 
         model.addAttribute( "model", organisationUnitLevel );
 
