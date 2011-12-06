@@ -600,6 +600,17 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     </property>
   </bean>
 
+  <!--
+  <bean id="org.hisp.dhis.dd.action.category.ShowCategoryEditorAction" class="org.hisp.dhis.dd.action.category.ShowCategoryEditorAction"
+    scope="prototype">
+    <property name="categoryService">
+      <ref bean="org.hisp.dhis.dataelement.DataElementCategoryService" />
+    </property>
+    <property name="conceptService">
+      <ref bean="org.hisp.dhis.concept.ConceptService" />
+    </property>
+  </bean>-->
+
   <!-- CategoryOption -->
 
   <bean id="org.hisp.dhis.dd.action.category.AddDataElementCategoryOptionAction" class="org.hisp.dhis.dd.action.category.AddDataElementCategoryOptionAction"

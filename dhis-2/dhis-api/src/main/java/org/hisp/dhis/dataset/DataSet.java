@@ -306,7 +306,7 @@ public class DataSet extends BaseNameableObject
     @XmlElementWrapper( name = "dataElements" )
     @XmlElement( name = "dataElement" )
     @XmlJavaTypeAdapter( BaseNameableObjectXmlAdapter.class )
-    @JsonSerialize( using = JsonNameableObjectSetSerializer.class )
+    @JsonSerialize( using = JsonNameableObjectCollectionSerializer.class )
     public Set<DataElement> getDataElements()
     {
         return dataElements;
@@ -320,7 +320,7 @@ public class DataSet extends BaseNameableObject
     @XmlElementWrapper( name = "indicators" )
     @XmlElement( name = "indicator" )
     @XmlJavaTypeAdapter( BaseNameableObjectXmlAdapter.class )
-    @JsonSerialize( using = JsonNameableObjectSetSerializer.class )
+    @JsonSerialize( using = JsonNameableObjectCollectionSerializer.class )
     public Set<Indicator> getIndicators()
     {
         return indicators;
@@ -346,7 +346,7 @@ public class DataSet extends BaseNameableObject
     @XmlElementWrapper( name = "organisationUnits" )
     @XmlElement( name = "organisationUnit" )
     @XmlJavaTypeAdapter( BaseIdentifiableObjectXmlAdapter.class )
-    @JsonSerialize( using = JsonIdentifiableObjectSetSerializer.class )
+    @JsonSerialize( using = JsonIdentifiableObjectCollectionSerializer.class )
     public Set<OrganisationUnit> getSources()
     {
         return sources;
@@ -357,6 +357,8 @@ public class DataSet extends BaseNameableObject
         this.sources = sources;
     }
 
+    @XmlElement
+    @JsonProperty
     public Integer getSortOrder()
     {
         return sortOrder;
@@ -370,7 +372,7 @@ public class DataSet extends BaseNameableObject
     @XmlElementWrapper( name = "sections" )
     @XmlElement( name = "section" )
     @JsonProperty
-    @JsonSerialize( using = JsonSetSerializer.class )
+    @JsonSerialize( using = JsonCollectionSerializer.class )
     public Set<Section> getSections()
     {
         return sections;

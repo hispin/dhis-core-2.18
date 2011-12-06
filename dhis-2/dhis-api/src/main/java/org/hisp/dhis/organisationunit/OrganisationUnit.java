@@ -30,7 +30,6 @@ package org.hisp.dhis.organisationunit;
 import org.apache.commons.lang.StringUtils;
 import org.codehaus.jackson.annotate.JsonProperty;
 import org.codehaus.jackson.map.annotate.JsonSerialize;
-import org.hisp.dhis.aggregation.AggregatedMapValue;
 import org.hisp.dhis.attribute.AttributeValue;
 import org.hisp.dhis.common.BaseNameableObject;
 import org.hisp.dhis.common.Dxf2Namespace;
@@ -628,7 +627,7 @@ public class OrganisationUnit extends BaseNameableObject
     @XmlElementWrapper( name = "organisationUnitGroups" )
     @XmlElement( name = "organisationUnitGroup" )
     @XmlJavaTypeAdapter( BaseIdentifiableObjectXmlAdapter.class )
-    @JsonSerialize( using = JsonIdentifiableObjectSetSerializer.class )
+    @JsonSerialize( using = JsonIdentifiableObjectCollectionSerializer.class )
     public Set<OrganisationUnitGroup> getGroups()
     {
         return groups;
@@ -642,7 +641,7 @@ public class OrganisationUnit extends BaseNameableObject
     @XmlElementWrapper( name = "dataSets" )
     @XmlElement( name = "dataSet" )
     @XmlJavaTypeAdapter( BaseNameableObjectXmlAdapter.class )
-    @JsonSerialize( using = JsonNameableObjectSetSerializer.class )
+    @JsonSerialize( using = JsonNameableObjectCollectionSerializer.class )
     public Set<DataSet> getDataSets()
     {
         return dataSets;
@@ -758,6 +757,9 @@ public class OrganisationUnit extends BaseNameableObject
         this.type = type;
     }
 
+    @XmlElementWrapper( name = "attributeValues" )
+    @XmlElement( name = "attributeValue" )
+    @JsonSerialize( using = JsonCollectionSerializer.class )
     public Set<AttributeValue> getAttributeValues()
     {
         return attributeValues;

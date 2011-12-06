@@ -159,6 +159,8 @@ public class Attribute extends BaseIdentifiableObject
         this.attributeValues = attributeValues;
     }
 
+    @XmlElement
+    @JsonProperty
     public Integer getSortOrder()
     {
         return sortOrder;

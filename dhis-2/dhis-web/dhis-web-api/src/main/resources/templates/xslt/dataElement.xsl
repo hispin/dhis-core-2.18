@@ -9,7 +9,6 @@
       <h2>
         <xsl:value-of select="@name" />
       </h2>
-
       <table border="1">
         <tr>
           <td>ID</td>
@@ -66,19 +65,18 @@
           </td>
         </tr>
       </table>
-
-      <xsl:apply-templates select="d:categoryCombo|d:groups|d:dataSets" mode="dataElement" />
+      <xsl:apply-templates select="d:categoryCombo|d:dataElementGroups|d:dataSets"/>
     </div>
   </xsl:template>
 
-  <xsl:template match="d:categoryCombo" mode="dataElement">
+  <xsl:template match="d:categoryCombo">
     <h3>DataElementCategoryCombo</h3>
     <table border="1" class="categoryCombo">
       <xsl:apply-templates select="child::*" mode="row"/>
     </table>
   </xsl:template>
 
-  <xsl:template match="d:groups" mode="dataElement">
+  <xsl:template match="d:dataElementGroups">
     <xsl:if test="count(child::*) > 0">
       <h3>DataElementGroups</h3>
       <table border="1" class="dataElementGroups">
@@ -87,7 +85,7 @@
     </xsl:if>
   </xsl:template>
 
-  <xsl:template match="d:dataSets" mode="dataElement">
+  <xsl:template match="d:dataSets">
     <xsl:if test="count(child::*) > 0">
       <h3>DataSets</h3>
       <table border="1" class="dataSets">

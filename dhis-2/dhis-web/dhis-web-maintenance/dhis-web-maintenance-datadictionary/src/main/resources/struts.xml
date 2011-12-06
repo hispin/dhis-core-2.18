@@ -620,6 +620,14 @@
       <param name="requiredAuthorities">F_DATAELEMENT_DELETE</param>
     </action>
 
+    <!--
+    <action name="showCategoryEditor" class="org.hisp.dhis.dd.action.category.ShowCategoryEditorAction">
+      <result name="success" type="velocity">/main.vm</result>
+      <param name="page">/dhis-web-maintenance-datadictionary/multidimensional/showCategoryEditor.vm</param>
+	  <param name="javascripts">javascript/category.js</param>
+      <param name="requiredAuthorities">F_DATAELEMENT_ADD</param>
+    </action> -->
+
     <!-- CategoryOption -->
 
     <action name="addDataElementCategoryOption" class="org.hisp.dhis.dd.action.category.AddDataElementCategoryOptionAction">

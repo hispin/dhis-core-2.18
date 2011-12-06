@@ -31,23 +31,26 @@ import org.codehaus.jackson.JsonGenerator;
 import org.codehaus.jackson.JsonProcessingException;
 import org.codehaus.jackson.map.JsonSerializer;
 import org.codehaus.jackson.map.SerializerProvider;
+import org.hisp.dhis.common.IdentifiableObject;
 
 import java.io.IOException;
-import java.util.Set;
+import java.util.Collection;
 
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
-public class JsonSetSerializer extends JsonSerializer<Set<Object>>
+public class JsonIdentifiableObjectCollectionSerializer extends JsonSerializer<Collection<IdentifiableObject>>
 {
     @Override
-    public void serialize( Set<Object> objects, JsonGenerator jgen, SerializerProvider provider ) throws IOException, JsonProcessingException
+    public void serialize( Collection<IdentifiableObject> identifiableObjects, JsonGenerator jgen, SerializerProvider provider ) throws IOException, JsonProcessingException
     {
+        JsonIdentifiableObjectSerializer jsonIdentifiableObjectSerializer = new JsonIdentifiableObjectSerializer();
+
         jgen.writeStartArray();
 
-        for ( Object object : objects )
+        for ( IdentifiableObject identifiableObject : identifiableObjects )
         {
-            jgen.writeObject( object );
+            jsonIdentifiableObjectSerializer.serialize( identifiableObject, jgen, provider );
         }
 
         jgen.writeEndArray();
