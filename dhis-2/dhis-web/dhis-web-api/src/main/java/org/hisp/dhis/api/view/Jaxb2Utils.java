@@ -27,13 +27,10 @@ package org.hisp.dhis.api.view;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import org.hisp.dhis.api.utils.WebLinkPopulatorListener;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
-import javax.xml.bind.PropertyException;
 
 public class Jaxb2Utils
 {
@@ -45,9 +42,6 @@ public class Jaxb2Utils
         Marshaller marshaller = context.createMarshaller();
         marshaller.setProperty( Marshaller.JAXB_FORMATTED_OUTPUT, false );
         marshaller.setProperty( Marshaller.JAXB_ENCODING, "UTF-8" );
-
-        // WebLinkPopulatorListener listener = new WebLinkPopulatorListener( request );
-        // marshaller.setListener( listener );
 
         return marshaller;
     }
