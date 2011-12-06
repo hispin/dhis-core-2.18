@@ -1,7 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="1.0">
+<xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="1.0"
+  xmlns="http://www.w3.org/1999/xhtml"
+  xmlns:d="http://dhis2.org/schema/dxf/2.0"
+  >
 
-  <xsl:template match="dataElement">
+  <xsl:template match="d:dataElement">
     <div class="dataElement">
       <h2>
         <xsl:value-of select="@name" />
@@ -29,53 +32,53 @@
         <tr>
           <td>Type</td>
           <td>
-            <xsl:value-of select="type" />
+            <xsl:value-of select="d:type" />
           </td>
         </tr>
         <tr>
           <td>Zero is Significant</td>
           <td>
-            <xsl:value-of select="zeroIsSignificant" />
+            <xsl:value-of select="d:zeroIsSignificant" />
           </td>
         </tr>
         <tr>
           <td>Sort Order</td>
           <td>
-            <xsl:value-of select="sortOrder" />
+            <xsl:value-of select="d:sortOrder" />
           </td>
         </tr>
         <tr>
           <td>Active</td>
           <td>
-            <xsl:value-of select="active" />
+            <xsl:value-of select="d:active" />
           </td>
         </tr>
         <tr>
           <td>Aggregation Operator</td>
           <td>
-            <xsl:value-of select="aggregationOperator" />
+            <xsl:value-of select="d:aggregationOperator" />
           </td>
         </tr>
         <tr>
           <td>Domain Type</td>
           <td>
-            <xsl:value-of select="domainType" />
+            <xsl:value-of select="d:domainType" />
           </td>
         </tr>
       </table>
 
-      <xsl:apply-templates select="categoryCombo|groups|dataSets" />
+      <xsl:apply-templates select="d:categoryCombo|d:groups|d:dataSets" />
     </div>
   </xsl:template>
 
-  <xsl:template match="categoryCombo">
+  <xsl:template match="d:categoryCombo">
     <h3>DataElementCategoryCombo</h3>
     <table border="1" class="categoryCombo">
       <xsl:apply-templates select="child::*" mode="row"/>
     </table>
   </xsl:template>
 
-  <xsl:template match="groups">
+  <xsl:template match="d:groups">
     <xsl:if test="count(child::*) > 0">
       <h3>DataElementGroups</h3>
       <table border="1" class="dataElementGroups">
@@ -84,7 +87,7 @@
     </xsl:if>
   </xsl:template>
 
-  <xsl:template match="dataSets">
+  <xsl:template match="d:dataSets">
     <xsl:if test="count(child::*) > 0">
       <h3>DataSets</h3>
       <table border="1" class="dataSets">

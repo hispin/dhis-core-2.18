@@ -1,8 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="1.0">
+<xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="1.0"
+  xmlns="http://www.w3.org/1999/xhtml"
+  xmlns:d="http://dhis2.org/schema/dxf/2.0"
+  >
 
-  <xsl:template match="dataSet">
-    <div class="dataSet">
+  <xsl:template match="d:dataSet">
+    <div class="d:dataSet">
       <h2>
         <xsl:value-of select="@name" />
       </h2>
@@ -22,39 +25,39 @@
         <tr>
           <td>Short Name</td>
           <td>
-            <xsl:value-of select="shortName" />
+            <xsl:value-of select="d:shortName" />
           </td>
         </tr>
         <tr>
           <td>Version</td>
           <td>
-            <xsl:value-of select="version" />
+            <xsl:value-of select="d:version" />
           </td>
         </tr>
         <tr>
           <td>Mobile</td>
           <td>
-            <xsl:value-of select="mobile" />
+            <xsl:value-of select="d:mobile" />
           </td>
         </tr>
 
       </table>
 
-      <xsl:apply-templates select="dataElements|indicators|sources" />
+      <xsl:apply-templates select="d:dataElements|d:indicators|d:sources" />
 
     </div>
   </xsl:template>
 
-  <xsl:template match="dataElements">
+  <xsl:template match="d:dataElements">
     <xsl:if test="count(child::*) > 0">
       <h3>DataElements</h3>
-      <table border="1" class="dataElements">
+      <table border="1" class="d:dataElements">
           <xsl:apply-templates mode="row"/>
       </table>
     </xsl:if>
   </xsl:template>
 
-  <xsl:template match="indicators">
+  <xsl:template match="d:indicators">
     <xsl:if test="count(child::*) > 0">
       <h3>Indicators</h3>
       <table border="1" class="indicator">
@@ -63,7 +66,7 @@
     </xsl:if>
   </xsl:template>
 
-  <xsl:template match="sources">
+  <xsl:template match="d:sources">
     <xsl:if test="count(child::*) > 0">
       <h3>OrganisationUnits</h3>
       <table border="1" class="sources">
