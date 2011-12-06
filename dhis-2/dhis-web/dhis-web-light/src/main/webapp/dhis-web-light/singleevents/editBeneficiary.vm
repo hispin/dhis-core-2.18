@@ -1,0 +1,259 @@
+
+<h2>$i18n.getString("edit_beneficiary")</h2>
+
+<form method="post" action="updateBeneficiary.action">
+	<div class="header-box" align="center">
+		<p style="text-align: left;">
+		
+			<input type="hidden" name="organisationUnitId" value="$organisationUnitId" />
+			<input type="hidden" name="singleEventId" value="$singleEventId" />
+			<input type="hidden" name="patientId" value="$patientId" />
+		
+	    	
+	    	#if ( $invalidRegistrationDate )
+	    		<label>$i18n.getString("date_of_registration") <em title="$i18n.getString( 'required' )" style="color:red;">*</em></label>
+	    		<label style="color:red;">
+	    			$!registrationDate $i18n.getString("is_invalid_date")
+	    		</label>
+	    	#else
+	    		<label>$i18n.getString("date_of_registration") <em title="$i18n.getString( 'required' )" style="color:red;">*</em></label>
+	    	#end
+	    	<input type="date" maxlength="255" size="24" name="registrationDate" value="$registrationDate" />
+	    	
+	    	#if ( $fullNameIsToLong )
+	    		<label>$i18n.getString("full_name") <em title="$i18n.getString( 'required' )" style="color:red;">*</em></label>
+	    		<label style="color:red;">
+	    			$i18n.getString("is_invalid_name_length")
+	    		</label>
+	    	#elseif( $invalidFullName )
+	    		<label>$i18n.getString("full_name") <em title="$i18n.getString( 'required' )" style="color:red;">*</em></label>
+	    		<label style="color:red;">
+	    			$!patient.getFullName() $i18n.getString("is_invalid_name")
+	    		</label>
+	    	#else
+	    		<label>$i18n.getString("full_name") <em title="$i18n.getString( 'required' )" style="color:red;">*</em></label>
+	    	#end
+	    	<input type="text" maxlength="255" size="24" name="fullName" value="$patient.getFullName()" />
+	    	
+	    	
+	    	#if ( $noGender )
+	    		<label>$i18n.getString("gender") <em title="$i18n.getString( 'required' )" style="color:red;">*</em></label>
+	    		<label style="color:red;">
+	    			$i18n.getString("is_required")
+	    		</label>
+	    	#elseif ( $invalidGender )
+	    		<label>$i18n.getString("gender") <em title="$i18n.getString( 'required' )" style="color:red;">*</em></label>
+	    		<label style="color:red;">
+	    			$!patient.getGender() $i18n.getString("is_invalid_gender")
+	    		</label>
+	    	#else
+	    		<label>$i18n.getString("gender") <em title="$i18n.getString( 'required' )" style="color:red;">*</em></label>
+	    	#end
+	    	<br />    	
+	    	<select name="gender">
+	    		<option value="please_select">$i18n.getString("please_select")</option>
+	    		
+	    		#if ($patient.getGender() == "M")
+					<option value="M" selected="selected">$i18n.getString("male")</option>
+				#else
+					<option value="M">$i18n.getString("male")</option>
+				#end
+				
+				#if ($patient.getGender() == "F")
+					<option value="F" selected="selected">$i18n.getString("female")</option>
+				#else
+					<option value="F">$i18n.getString("female")</option>
+				#end
+				
+				#if ($patient.getGender() == "T")
+					<option value="T" selected="selected">$i18n.getString("transgender")</option>
+				#else
+					<option value="T">$i18n.getString("transgender")</option>
+				#end
+				
+			</select>
+			
+			<br />
+			
+			#if ( $noDobType )
+				<label>$i18n.getString("dob_type") <em title="$i18n.getString( 'required' )" style="color:red;">*</em></label>
+				<label style="color:red;">
+					$i18n.getString("is_required")
+				</label>
+			#elseif ( $invalidDobType )
+				<label>$i18n.getString("dob_type") <em title="$i18n.getString( 'required' )" style="color:red;">*</em></label>
+				<label style="color:red;">
+					$!patient.getDobType() $i18n.getString("is_invalid_dob_type")
+				</label>
+			#else
+				<label>$i18n.getString("dob_type") <em title="$i18n.getString( 'required' )" style="color:red;">*</em></label>
+			#end					
+			<br />
+			<select name="dobType">
+				<option value="p">$i18n.getString("please_select")</option>
+				
+				#if ($patient.getDobType() == "V")
+					<option value="V" selected="selected">$i18n.getString("verified")</option>
+				#else
+					<option value="V">$i18n.getString("verified")</option>
+				#end
+				
+				#if ($patient.getDobType() == "D")
+					<option value="D" selected="selected">$i18n.getString("declared")</option>
+				#else
+					<option value="D">$i18n.getString("declared")</option>
+				#end
+				
+			</select>
+			
+			<br />
+			
+			#if ( $invalidBirthDate )
+				<label>$i18n.getString("date_of_birth") <em title="$i18n.getString( 'required' )" style="color:red;">*</em></label>
+	    		<label style="color:red;">
+	    			$!birthDate $i18n.getString("is_invalid_date")</label>
+	    		</label>
+	    	#else
+	    		<label>$i18n.getString("date_of_birth") <em title="$i18n.getString( 'required' )" style="color:red;">*</em></label>
+	    	#end
+			<input type="date" maxlength="255" size="24" name="birthDate" value="$birthDate" />
+			
+			#if ( $invalidBloodGroup )
+				<label>$i18n.getString("blood_group")</label>
+	    		<label style="color:red;">
+	    			$!patient.getBloodGroup() $i18n.getString("is_invalid_blood_group")
+	    		</label>
+	    	#else
+				<label>$i18n.getString("blood_group")</label>
+			#end
+			<br />
+			<select name="bloodGroup">
+				<option value="please_select">$i18n.getString("please_select")</option>
+				
+				#if ($patient.getBloodGroup() == "A+")
+					<option value="A+" selected="selected">$i18n.getString("bg_a_pluss")</option>
+				#else
+					<option value="A+">$i18n.getString("bg_a_pluss")</option>
+				#end
+				
+				#if ($patient.getBloodGroup() == "A-")
+					<option value="A-" selected="selected">$i18n.getString("bg_a_minus")</option>
+				#else
+					<option value="A-">$i18n.getString("bg_a_minus")</option>
+				#end
+
+				#if ($patient.getBloodGroup() == "AB+")
+					<option value="AB+" selected="selected">$i18n.getString("bg_ab_pluss")</option>
+				#else
+					<option value="AB+">$i18n.getString("bg_ab_pluss")</option>
+				#end
+				
+				#if ($patient.getBloodGroup() == "AB-")
+					<option value="AB-" selected="selected">$i18n.getString("bg_ab_minus")</option>
+				#else
+					<option value="AB-">$i18n.getString("bg_ab_minus")</option>
+				#end
+				
+				#if ($patient.getBloodGroup() == "B+")
+					<option value="B+" selected="selected">$i18n.getString("bg_b_pluss")</option>
+				#else
+					<option value="B+">$i18n.getString("bg_b_pluss")</option>
+				#end
+				
+				#if ($patient.getBloodGroup() == "B-")
+					<option value="B-" selected="selected">$i18n.getString("bg_b_minus")</option>
+				#else
+					<option value="B-">$i18n.getString("bg_b_minus")</option>
+				#end
+				
+				#if ($patient.getBloodGroup() == "O+")
+					<option value="O+" selected="selected">$i18n.getString("bg_o_pluss")</option>
+				#else
+					<option value="O+">$i18n.getString("bg_o_pluss")</option>
+				#end
+				
+				#if ($patient.getBloodGroup() == "O-")
+					<option value="O-" selected="selected">$i18n.getString("bg_o_minus")</option>
+				#else
+					<option value="O-">$i18n.getString("bg_o_minus")</option>
+				#end
+				
+			</select>
+			
+			<br />
+			
+						#set( $i = 0 )
+			<!-- ATTRIBUTES IN GROUPS -->
+			
+			#foreach ($attributeGroup in $attributeGroups )
+
+				#foreach($attribute in $attributeGroup.attributes )
+
+					<label>$attribute.name #if($attribute.mandatory)<em title="$i18n.getString( 'required' )" style="color:red;">*</em> #end</label>
+					#foreach( $validate in $validList )				
+						#if($attribute.id == $validate.id)<label style="color:red;"> $validate.getErrorMessage() </label> #end
+					#end
+					#if( $attribute.valueType == "YES/NO" )
+						<select name="dynForm"> 
+							<option value="" >$i18n.getString( "please_select" )</option>           
+							<option value="true" #if($!dynForm[$i] == "true") selected="selected" #end >$i18n.getString( "yes" )</option>
+							<option value="false" #if($!dynForm[$i] == "false") selected="selected" #end >$i18n.getString( "no" )</option>
+						</select> 
+					#elseif( $attribute.valueType == "DATE" )
+						<input type="date" maxlength="255" size="24" name="dynForm" value="$!dynForm[$i]" />
+					#elseif( $attribute.valueType == "COMBO" )
+							<select name="dynForm">
+								<option value="">$i18n.getString( "please_select" )</option>
+								#foreach ($option in $attribute.attributeOptions )
+									<option value="$option.id" #if($!dynForm[$i] == $option.id) selected="selected" #end >$option.name</option>
+								#end
+							</select>
+					#else 
+					<input type="text"  maxlength="255" size="24" name="dynForm"  value="$!dynForm[$i]"/>
+					#end
+					#set( $i = $i + 1)
+				#end
+				
+			#end
+			
+			<!-- ATTRIBUTES NOT IN GROUPS -->
+			
+			#foreach($attribute in $noGroupAttributes )
+
+				<label>$attribute.name #if($attribute.mandatory)<em title="$i18n.getString( 'required' )" style="color:red;">*</em> #end</label>
+				#foreach( $validate in $validList )				
+					#if($attribute.id == $validate.id)<label style="color:red;"> $validate.getErrorMessage() </label> #end
+				#end
+				#if( $attribute.valueType == "YES/NO" )
+					<select name="dynForm"> 
+						<option value="" >$i18n.getString( "please_select" )</option>           
+						<option value="true" #if($!dynForm[$i] == "true") selected="selected" #end >$i18n.getString( "yes" )</option>
+						<option value="false" #if($!dynForm[$i] == "false") selected="selected" #end >$i18n.getString( "no" )</option>
+					</select> 
+				#elseif( $attribute.valueType == "DATE" )
+					<input type="date" maxlength="255" size="24" name="dynForm" value="$!dynForm[$i]" />
+				#elseif( $attribute.valueType == "COMBO" )
+						<select name="dynForm">
+							<option value="">$i18n.getString( "please_select" )</option>
+							#foreach ($option in $attribute.attributeOptions )
+								<option value="$option.id" #if($!dynForm[$i] == $option.id) selected="selected" #end >$option.name</option>
+							#end
+						</select>
+				#else 
+					<input type="text"  maxlength="255" size="24" name="dynForm"  value="$!dynForm[$i]"/>
+				#end
+				#set( $i = $i + 1)
+			#end
+			
+			<input type="submit" value="$i18n.getString("submit")" />
+	    </p>
+	</div>
+</form>
+
+<div id="footer">
+<h2>$i18n.getString( "navigate_to" )</h2>
+<ul>
+	<li><a href="EditRecentlyRegistered.action?organisationUnitId=$organisationUnitId&singleEventId=$singleEventId&patientId=$patientId">$i18n.getString("recently_registered_options")</a></li>
+	<li><a href="index.action">$i18n.getString("home")</a></li>
+</ul>
+</div>

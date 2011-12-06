@@ -1,0 +1,25 @@
+
+<h2>$i18n.getString("recently_registered"): $eventName</h2>
+
+<p>
+<ul>
+		<li>
+			<a href="editBeneficiary.action?patientId=$patientId&singleEventId=$singleEventId">
+				$i18n.getString("edit_person_details")
+			</a>
+		</li>
+		<li>
+			<a href="newSingleEvent.action?organisationUnitId=${organisationUnitId}&amp;patientId=${patientId}&amp;singleEventId=${singleEventId}&amp;instId=${instId}&amp;update=true">
+				$i18n.getString("edit_single_event_details")
+			</a>
+		</li>
+</ul>
+</p>
+
+<div id="footer">
+<h2>$i18n.getString( "navigate_to" )</h2>
+<ul>
+	<li><a href="GetRecentlyRegisteredSingleEvents.action?organisationUnitId=$organisationUnitId&singleEventId=$singleEventId">$i18n.getString("recently_registered")</a></li>
+	<li><a href="index.action">$i18n.getString("home")</a></li>
+</ul>
+</div>

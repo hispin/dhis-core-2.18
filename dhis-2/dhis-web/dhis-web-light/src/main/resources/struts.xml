@@ -90,6 +90,76 @@
     <action name="saveSettingsForm" class="org.hisp.dhis.light.action.settings.action.SaveSettingsFormAction">
       <result name="success" type="redirect">/mobile/index.action</result>
     </action>
+    
+    <!-- Single Events -->
+	
+	<action name="selectOrgUnitSingleEvents" class="org.hisp.dhis.light.singleevents.action.GetSelectOrgUnitSingleEventsAction">
+      <result name="success" type="velocity">/dhis-web-light/main.vm</result>
+      <param name="page">/dhis-web-light/singleevents/selectOrgUnitSingleEvents.vm</param>
+    </action>
+    
+    <action name="singleEvents" class="org.hisp.dhis.light.singleevents.action.GetSingleEventsAction">
+      <result name="success" type="velocity">/dhis-web-light/main.vm</result>
+      <param name="page">/dhis-web-light/singleevents/singleEvents.vm</param>
+    </action>
+    
+    <action name="getSingleEventChoices" class="org.hisp.dhis.light.singleevents.action.GetSingleEventChoicesAction">
+      <result name="success" type="velocity">/dhis-web-light/main.vm</result>
+      <param name="page">/dhis-web-light/singleevents/singleEventChoices.vm</param>
+    </action>
+    
+    <action name="getBeneficiaryChoices" class="org.hisp.dhis.light.singleevents.action.GetBeneficiaryChoicesAction">
+      <result name="success" type="velocity">/dhis-web-light/main.vm</result>
+      <param name="page">/dhis-web-light/singleevents/beneficiaryChoices.vm</param>
+    </action>
+    
+    <action name="registerNewBeneficiary" class="org.hisp.dhis.light.singleevents.action.RegisterNewBeneficiaryAction">
+      <result name="success" type="velocity">/dhis-web-light/main.vm</result>
+      <param name="page">/dhis-web-light/singleevents/newBeneficiary.vm</param>
+    </action>
+	
+	<action name="addBeneficiary" class="org.hisp.dhis.light.singleevents.action.AddBeneficiaryAction">
+      <result name="success" type="redirect">/mobile/newSingleEvent.action?organisationUnitId=${organisationUnitId}&amp;patientId=${patientId}&amp;singleEventId=${singleEventId}&amp;update=false&amp;resultString=newSingleEvent</result>
+      <result name="error" type="velocity">/dhis-web-light/main.vm</result>
+	  <param name="page">/dhis-web-light/singleevents/newBeneficiary.vm</param>
+	</action>
+	
+	<action name="newSingleEvent" class="org.hisp.dhis.light.singleevents.action.RegisterNewSingleEventAction">
+      <result name="success" type="velocity">/dhis-web-light/main.vm</result>
+      <param name="page">/dhis-web-light/singleevents/newSingleEvent.vm</param>
+    </action>
+	
+    <action name="addSingleEvent" class="org.hisp.dhis.light.singleevents.action.AddSingleEventAction">
+      <result name="success" type="redirect">/mobile/resultPage.action?organisationUnitId=${organisationUnitId}&amp;patientId=${patientId}&amp;singleEventId=${singleEventId}&amp;resultString=${resultString}</result>
+      <result name="error" type="velocity">/dhis-web-light/main.vm</result>
+      <param name="page">/dhis-web-light/singleevents/newSingleEvent.vm</param>
+    </action>
+    
+   	<action name="resultPage" class="org.hisp.dhis.light.singleevents.action.RenderResultPageAction">
+      <result name="success" type="velocity">/dhis-web-light/main.vm</result>
+      <param name="page">/dhis-web-light/singleevents/singleEventResultPage.vm</param>
+    </action>
+    
+    <action name="updateBeneficiary" class="org.hisp.dhis.light.singleevents.action.UpdateBeneficiaryAction">
+      <result name="success" type="redirect">/mobile/resultPage.action?organisationUnitId=${organisationUnitId}&amp;patientId=${patient.getId()}&amp;singleEventId=${singleEventId}&amp;resultString=updateBeneficiary</result>
+      <result name="error" type="velocity">/dhis-web-light/main.vm</result>
+      <param name="page">/dhis-web-light/singleevents/editBeneficiary.vm</param>
+    </action>
+    
+    <action name="editBeneficiary" class="org.hisp.dhis.light.singleevents.action.EditBeneficiaryAction">
+      <result name="success" type="velocity">/dhis-web-light/main.vm</result>
+      <param name="page">/dhis-web-light/singleevents/editBeneficiary.vm</param>
+    </action>
+    
+    <action name="GetRecentlyRegisteredSingleEvents" class="org.hisp.dhis.light.singleevents.action.GetRecentlyRegisteredSingleEventsAction">
+      <result name="success" type="velocity">/dhis-web-light/main.vm</result>
+      <param name="page">/dhis-web-light/singleevents/recentlyRegisteredSingleEvents.vm</param>
+    </action>
+    
+    <action name="EditRecentlyRegistered" class="org.hisp.dhis.light.singleevents.action.GetRecentlyEditChoicesAction">
+      <result name="success" type="velocity">/dhis-web-light/main.vm</result>
+      <param name="page">/dhis-web-light/singleevents/recentlyEditChoices.vm</param>
+    </action>
 
   </package>
 </struts>
