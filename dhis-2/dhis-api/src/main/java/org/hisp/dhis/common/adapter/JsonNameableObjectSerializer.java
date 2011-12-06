@@ -51,20 +51,37 @@ public class JsonNameableObjectSerializer extends JsonSerializer<NameableObject>
         {
             jgen.writeStartObject();
 
-            jgen.writeNumberField( "id", nameableObject.getId() );
             jgen.writeStringField( "uid", nameableObject.getUid() );
             jgen.writeStringField( "name", nameableObject.getName() );
-            jgen.writeStringField( "code", nameableObject.getCode() );
             jgen.writeFieldName( "lastUpdated" );
 
             JsonDateSerializer jsonDateSerializer = new JsonDateSerializer();
             jsonDateSerializer.serialize( nameableObject.getLastUpdated(), jgen, provider );
 
-            jgen.writeStringField( "link", nameableObject.getLink() );
+            if ( nameableObject.getLink() != null )
+            {
+                jgen.writeStringField( "link", nameableObject.getLink() );
+            }
 
-            jgen.writeStringField( "shortName", nameableObject.getShortName() );
-            jgen.writeStringField( "alternativeName", nameableObject.getAlternativeName() );
-            jgen.writeStringField( "description", nameableObject.getDescription() );
+            if ( nameableObject.getCode() != null )
+            {
+                jgen.writeStringField( "code", nameableObject.getCode() );
+            }
+
+            if ( nameableObject.getShortName() != null )
+            {
+                jgen.writeStringField( "shortName", nameableObject.getShortName() );
+            }
+
+            if ( nameableObject.getAlternativeName() != null )
+            {
+                jgen.writeStringField( "alternativeName", nameableObject.getAlternativeName() );
+            }
+
+            if ( nameableObject.getDescription() != null )
+            {
+                jgen.writeStringField( "description", nameableObject.getDescription() );
+            }
 
             jgen.writeEndObject();
         }

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2004-2011, University of Oslo
+ * Copyright (c) 2004-2010, University of Oslo
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -25,39 +25,19 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.hisp.dhis.chart;
-
-import org.codehaus.jackson.annotate.JsonProperty;
-import org.hisp.dhis.common.BaseLinkableObject;
-
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlRootElement;
-import java.util.ArrayList;
-import java.util.List;
-import org.hisp.dhis.common.Dxf2Namespace;
-
 /**
- * @author Morten Olav Hansen <mortenoh@gmail.com>
+ * @author bobj
  */
-@XmlRootElement( name = "charts", namespace=Dxf2Namespace.NAMESPACE)
-@XmlAccessorType( value = XmlAccessType.NONE )
-public class Charts extends BaseLinkableObject
-{
-    private List<Chart> charts = new ArrayList<Chart>();
 
-    private String link;
+@XmlSchema(
+    namespace = "http://dhis2.org/schema/dxf/2.0",
+    xmlns = {   
+         @XmlNs(namespaceURI = "http://dhis2.org/schema/dxf/2.0", prefix = "d")  
+    },
+    elementFormDefault = XmlNsForm.QUALIFIED) 
 
-    @XmlElement( name = "chart" )
-    @JsonProperty( value = "charts" )
-    public List<Chart> getCharts()
-    {
-        return charts;
-    }
+package org.hisp.dhis.options;
 
-    public void setCharts( List<Chart> charts )
-    {
-        this.charts = charts;
-    }
-}
+import javax.xml.bind.annotation.XmlSchema;
+import javax.xml.bind.annotation.XmlNs;
+import javax.xml.bind.annotation.XmlNsForm;

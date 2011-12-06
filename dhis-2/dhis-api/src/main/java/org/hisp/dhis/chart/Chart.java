@@ -30,7 +30,6 @@ package org.hisp.dhis.chart;
 import org.codehaus.jackson.annotate.JsonProperty;
 import org.codehaus.jackson.map.annotate.JsonSerialize;
 import org.hisp.dhis.common.BaseIdentifiableObject;
-import org.hisp.dhis.common.Dxf2Namespace;
 import org.hisp.dhis.common.adapter.BaseNameableObjectXmlAdapter;
 import org.hisp.dhis.common.adapter.JsonNameableObjectListSerializer;
 import org.hisp.dhis.dataelement.DataElement;
@@ -47,11 +46,12 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import org.hisp.dhis.common.Dxf2Namespace;
 
 /**
  * @author Lars Helge Overland
  */
-@XmlRootElement( name = "chart", namespace = Dxf2Namespace.NAMESPACE )
+@XmlRootElement( name = "chart", namespace=Dxf2Namespace.NAMESPACE )
 @XmlAccessorType( value = XmlAccessType.NONE )
 public class Chart
     extends BaseIdentifiableObject
@@ -584,11 +584,6 @@ public class Chart
         this.relativePeriods = relativePeriods;
     }
 
-    @XmlJavaTypeAdapter( BaseNameableObjectXmlAdapter.class )
-    @XmlElementWrapper( name = "allPeriods" )
-    @XmlElement( name = "allPeriod" )
-    @JsonProperty
-    @JsonSerialize( using = JsonNameableObjectListSerializer.class )
     public List<Period> getAllPeriods()
     {
         return allPeriods;
@@ -609,11 +604,6 @@ public class Chart
         this.organisationUnit = organisationUnit;
     }
 
-    @XmlJavaTypeAdapter( BaseNameableObjectXmlAdapter.class )
-    @XmlElementWrapper( name = "allOrganisationUnits" )
-    @XmlElement( name = "allOrganisationUnit" )
-    @JsonProperty
-    @JsonSerialize( using = JsonNameableObjectListSerializer.class )
     public List<OrganisationUnit> getAllOrganisationUnits()
     {
         return allOrganisationUnits;
