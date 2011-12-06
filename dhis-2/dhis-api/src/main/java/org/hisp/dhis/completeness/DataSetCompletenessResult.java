@@ -55,7 +55,7 @@ public class DataSetCompletenessResult
 
     private int organisationUnitId;
     
-    private int organisationUnitGroupId;
+    private int groupId;
 
     // -------------------------------------------------------------------------
     // Properties 2
@@ -251,14 +251,14 @@ public class DataSetCompletenessResult
         this.organisationUnitId = organisationUnitId;
     }
 
-    public int getOrganisationUnitGroupId()
+    public int getGroupId()
     {
-        return organisationUnitGroupId;
+        return groupId;
     }
 
-    public void setOrganisationUnitGroupId( int organisationUnitGroupId )
+    public void setGroupId( int groupId )
     {
-        this.organisationUnitGroupId = organisationUnitGroupId;
+        this.groupId = groupId;
     }
 
     // -------------------------------------------------------------------------
