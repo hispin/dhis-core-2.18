@@ -68,7 +68,7 @@ public class AggregatedOrgUnitDataValueBatchHandler
         statementBuilder.setUniqueValue( value.getDataElementId() );
         statementBuilder.setUniqueValue( value.getPeriodId() );
         statementBuilder.setUniqueValue( value.getOrganisationUnitId() );
-        statementBuilder.setUniqueValue( value.getGroupId() );
+        statementBuilder.setUniqueValue( value.getOrganisationUnitGroupId() );
     }
     
     protected void setColumns()
@@ -90,7 +90,7 @@ public class AggregatedOrgUnitDataValueBatchHandler
         statementBuilder.setValue( value.getPeriodId() );
         statementBuilder.setValue( value.getPeriodTypeId() );
         statementBuilder.setValue( value.getOrganisationUnitId() );
-        statementBuilder.setValue( value.getGroupId() );
+        statementBuilder.setValue( value.getOrganisationUnitGroupId() );
         statementBuilder.setValue( value.getLevel() );
         statementBuilder.setValue( value.getValue() );
     }    

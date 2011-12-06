@@ -30,9 +30,12 @@ package org.hisp.dhis.datamart.dataelement;
 import java.util.Collection;
 import java.util.concurrent.Future;
 
+import org.amplecode.quick.BatchHandler;
+import org.hisp.dhis.aggregation.AggregatedDataValue;
 import org.hisp.dhis.dataelement.DataElementOperand;
 import org.hisp.dhis.datamart.DataElementOperandList;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
+import org.hisp.dhis.organisationunit.OrganisationUnitGroup;
 import org.hisp.dhis.period.Period;
 
 /**
@@ -41,5 +44,6 @@ import org.hisp.dhis.period.Period;
 public interface DataElementDataMart
 {
     Future<?> exportDataValues( Collection<DataElementOperand> operands, Collection<Period> periods, 
-        Collection<OrganisationUnit> organisationUnits, DataElementOperandList operandList, String key );
+        Collection<OrganisationUnit> organisationUnits, Collection<OrganisationUnitGroup> organisationUnitGroups, 
+        DataElementOperandList operandList, Class<? extends BatchHandler<AggregatedDataValue>> clazz, String key );
 }

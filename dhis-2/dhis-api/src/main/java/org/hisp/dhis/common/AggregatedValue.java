@@ -40,7 +40,7 @@ public interface AggregatedValue
     
     int getOrganisationUnitId();
     
-    int getGroupId();
+    int getOrganisationUnitGroupId();
     
     double getValue();
 }

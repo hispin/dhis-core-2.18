@@ -68,7 +68,7 @@ public class AggregatedOrgUnitIndicatorValueBatchHandler
         statementBuilder.setUniqueValue( value.getIndicatorId() );
         statementBuilder.setUniqueValue( value.getPeriodId() );
         statementBuilder.setUniqueValue( value.getOrganisationUnitId() );
-        statementBuilder.setUniqueValue( value.getGroupId() );
+        statementBuilder.setUniqueValue( value.getOrganisationUnitGroupId() );
     }
     
     protected void setColumns()
@@ -92,7 +92,7 @@ public class AggregatedOrgUnitIndicatorValueBatchHandler
         statementBuilder.setValue( value.getPeriodId() );
         statementBuilder.setValue( value.getPeriodTypeId() );
         statementBuilder.setValue( value.getOrganisationUnitId() );
-        statementBuilder.setValue( value.getGroupId() );
+        statementBuilder.setValue( value.getOrganisationUnitGroupId() );
         statementBuilder.setValue( value.getLevel() );
         statementBuilder.setValue( value.getAnnualized() );
         statementBuilder.setValue( value.getFactor() );

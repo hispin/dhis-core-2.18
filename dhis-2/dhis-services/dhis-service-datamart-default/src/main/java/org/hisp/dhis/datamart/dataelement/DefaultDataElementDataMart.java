@@ -27,8 +27,8 @@ package org.hisp.dhis.datamart.dataelement;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import static org.hisp.dhis.datamart.crosstab.jdbc.CrossTabStore.AGGREGATEDDATA_CACHE_PREFIX;
 import static org.hisp.dhis.system.util.MathUtils.getRounded;
-import static org.hisp.dhis.datamart.crosstab.jdbc.CrossTabStore.*;
 
 import java.util.Collection;
 import java.util.HashMap;
@@ -46,9 +46,9 @@ import org.hisp.dhis.dataelement.DataElementOperand;
 import org.hisp.dhis.datamart.DataElementOperandList;
 import org.hisp.dhis.datamart.aggregation.cache.AggregationCache;
 import org.hisp.dhis.datamart.aggregation.dataelement.DataElementAggregator;
-import org.hisp.dhis.jdbc.batchhandler.AggregatedDataValueBatchHandler;
 import org.hisp.dhis.jdbc.batchhandler.GenericBatchHandler;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
+import org.hisp.dhis.organisationunit.OrganisationUnitGroup;
 import org.hisp.dhis.organisationunit.OrganisationUnitHierarchy;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.period.Period;
@@ -144,11 +144,12 @@ public class DefaultDataElementDataMart
     
     @Async
     public Future<?> exportDataValues( Collection<DataElementOperand> operands, Collection<Period> periods, 
-        Collection<OrganisationUnit> organisationUnits, DataElementOperandList operandList, String key )
+        Collection<OrganisationUnit> organisationUnits, Collection<OrganisationUnitGroup> organisationUnitGroups, 
+        DataElementOperandList operandList, Class<? extends BatchHandler<AggregatedDataValue>> clazz, String key )
     {
         statementManager.initialise(); // Running in separate thread
         
-        final BatchHandler<AggregatedDataValue> batchHandler = batchHandlerFactory.createBatchHandler( AggregatedDataValueBatchHandler.class ).init();
+        final BatchHandler<AggregatedDataValue> batchHandler = batchHandlerFactory.createBatchHandler( clazz ).init();
         
         final BatchHandler<Object> cacheHandler = inMemoryBatchHandlerFactory.createBatchHandler( GenericBatchHandler.class ).setTableName( AGGREGATEDDATA_CACHE_PREFIX + key ).init();
         
@@ -166,46 +167,50 @@ public class DefaultDataElementDataMart
             final Collection<DataElementOperand> sumBoolOperands = sumBoolAggregator.filterOperands( operands, period.getPeriodType() );
             final Collection<DataElementOperand> averageBoolOperands = averageBoolAggregator.filterOperands( operands, period.getPeriodType() );
             
-            for ( final OrganisationUnit unit : organisationUnits )
+            for ( OrganisationUnitGroup group : organisationUnitGroups )
             {
-                operandList.init( period, unit );
-                
-                final int level = aggregationCache.getLevelOfOrganisationUnit( unit.getId() );
-                
-                final Collection<Integer> orgUnitChildren = hierarchy.getChildren( unit.getId() );
-                
-                valueMap.clear();                
-                valueMap.putAll( sumIntAggregator.getAggregatedValues( sumIntOperands, period, level, orgUnitChildren, key ) );
-                valueMap.putAll( averageIntAggregator.getAggregatedValues( averageIntOperands, period, level, orgUnitChildren, key ) );
-                valueMap.putAll( averageIntSingleValueAggregator.getAggregatedValues( averageIntSingleValueOperands, period, level, orgUnitChildren, key ) );
-                valueMap.putAll( sumBoolAggregator.getAggregatedValues( sumBoolOperands, period, level, orgUnitChildren, key ) );
-                valueMap.putAll( averageBoolAggregator.getAggregatedValues( averageBoolOperands, period, level, orgUnitChildren, key ) );
-                
-                if ( valueMap.size() > 0 )
+                for ( final OrganisationUnit unit : organisationUnits )
                 {
-                    for ( Entry<DataElementOperand, Double> entry : valueMap.entrySet() )
+                    operandList.init( period, unit );
+                    
+                    final int level = aggregationCache.getLevelOfOrganisationUnit( unit.getId() );
+                    
+                    final Collection<Integer> orgUnitChildren = hierarchy.getChildren( unit.getId() );
+                    
+                    valueMap.clear();                
+                    valueMap.putAll( sumIntAggregator.getAggregatedValues( sumIntOperands, period, level, orgUnitChildren, key ) );
+                    valueMap.putAll( averageIntAggregator.getAggregatedValues( averageIntOperands, period, level, orgUnitChildren, key ) );
+                    valueMap.putAll( averageIntSingleValueAggregator.getAggregatedValues( averageIntSingleValueOperands, period, level, orgUnitChildren, key ) );
+                    valueMap.putAll( sumBoolAggregator.getAggregatedValues( sumBoolOperands, period, level, orgUnitChildren, key ) );
+                    valueMap.putAll( averageBoolAggregator.getAggregatedValues( averageBoolOperands, period, level, orgUnitChildren, key ) );
+                    
+                    if ( valueMap.size() > 0 )
                     {
-                        aggregatedValue.clear();
-                        
-                        final double value = getRounded( entry.getValue(), DECIMALS );
-                        
-                        aggregatedValue.setDataElementId( entry.getKey().getDataElementId() );
-                        aggregatedValue.setCategoryOptionComboId( entry.getKey().getOptionComboId() );
-                        aggregatedValue.setPeriodId( period.getId() );
-                        aggregatedValue.setPeriodTypeId( period.getPeriodType().getId() );
-                        aggregatedValue.setOrganisationUnitId( unit.getId() );
-                        aggregatedValue.setLevel( level );
-                        aggregatedValue.setValue( value );
-                        
-                        batchHandler.addObject( aggregatedValue );
-                        
-                        operandList.addValue( entry.getKey(), value );
+                        for ( Entry<DataElementOperand, Double> entry : valueMap.entrySet() )
+                        {
+                            aggregatedValue.clear();
+                            
+                            final double value = getRounded( entry.getValue(), DECIMALS );
+                            
+                            aggregatedValue.setDataElementId( entry.getKey().getDataElementId() );
+                            aggregatedValue.setCategoryOptionComboId( entry.getKey().getOptionComboId() );
+                            aggregatedValue.setPeriodId( period.getId() );
+                            aggregatedValue.setPeriodTypeId( period.getPeriodType().getId() );
+                            aggregatedValue.setOrganisationUnitId( unit.getId() );
+                            aggregatedValue.setOrganisationUnitGroupId( group.getId() );
+                            aggregatedValue.setLevel( level );
+                            aggregatedValue.setValue( value );
+                            
+                            batchHandler.addObject( aggregatedValue );
+                            
+                            operandList.addValue( entry.getKey(), value );
+                        }
                     }
-                }
-                
-                if ( operandList.hasValues() )
-                {
-                    cacheHandler.addObject( operandList.getList() );
+                    
+                    if ( operandList.hasValues() )
+                    {
+                        cacheHandler.addObject( operandList.getList() );
+                    }
                 }
             }
             
