@@ -1,13 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="1.0"
-    xmlns="http://www.w3.org/1999/xhtml"
-    xmlns:d="http://dhis2.org/schema/dxf/2.0"
-    >
+    xmlns="http://www.w3.org/1999/xhtml" xmlns:d="http://dhis2.org/schema/dxf/2.0">
 
     <xsl:template match="d:map">
         <div class="map">
             <h2>Map: <xsl:value-of select="@name"/></h2>
-              <a href="{@link}.png"><img src="{@link}.png" style="border-style:solid; border-width: 1px; padding: 5px;" /></a>
+            <a href="{@link}.png"><img src="{@link}.png" style="border-style:solid; border-width: 1px; padding: 5px;" /></a>
 
             <table border="1">
                <xsl:for-each select="attribute::*">
