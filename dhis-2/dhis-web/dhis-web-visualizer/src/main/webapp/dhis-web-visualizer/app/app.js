@@ -5,7 +5,20 @@ DV.conf = {
             {x: 'Category 1', 'Series 1': 41, 'Series 2': 69, 'Series 3': 63, 'Series 4': 51},
             {x: 'Category 2', 'Series 1': 51, 'Series 2': 42, 'Series 3': 58, 'Series 4': 52},
             {x: 'Category 3', 'Series 1': 44, 'Series 2': 71, 'Series 3': 62, 'Series 4': 54}
-        ]
+        ],
+        jsonfy: function(r) {
+            r = Ext.JSON.decode(r.responseText);
+            var obj = {system: {rootNode: {id: r.rn[0], name: r.rn[1], level: 1}, periods: {}}};
+            var keys1 = ['lastMonth', 'monthsThisYear', 'monthsLastYear', 'lastQuarter', 'quartersThisYear', 'quartersLastYear', 'thisYear', 'lastYear', 'lastFiveYears'];
+            var keys2 = ['lm', 'mty', 'mly', 'lq', 'qty', 'qly', 'ty', 'ly', 'lfy'];
+            for (var i = 0; i < keys1.length; i++) {
+                obj.system.periods[keys1[i]] = [];
+                for (var j = 0; j < r.p[keys2[i]].length; j++) {
+                    obj.system.periods[keys1[i]].push({id: r.p[keys2[i]][j][0], name: r.p[keys2[i]][j][1]});
+                }
+            }
+            return obj;
+        }
     },
     finals: {
         ajax: {
@@ -84,7 +97,7 @@ Ext.onReady( function() {
         url: DV.conf.finals.ajax.url_visualizer + 'initialize.action',
         success: function(r) {
             
-    DV.init = Ext.JSON.decode(r.responseText);
+    DV.init = DV.conf.init.jsonfy(r);
     DV.init.isInit = true;
     
     DV.init.initialize = function() {
