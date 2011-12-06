@@ -3,7 +3,7 @@
     
     <xsl:template match="map">
         <div class="map">
-            <h2>Map <xsl:value-of select="@name"/></h2>
+            <h2>Map: <xsl:value-of select="@name"/></h2>
             <table border="1">
                 <tr>
                     <td>Map rendering</td>
