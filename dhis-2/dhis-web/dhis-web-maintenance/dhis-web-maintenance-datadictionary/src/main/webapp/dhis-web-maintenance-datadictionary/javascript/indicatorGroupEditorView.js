@@ -3,6 +3,7 @@ jQuery( document ).ready( function()
     loadAvailableGroups();
     getIndicatorsByGroup();
     getAssignedIndicatorGroups();
+
     jQuery( "#addIndicatorGroupForm" ).dialog( {
         autoOpen : false,
         modal : true
@@ -29,6 +30,8 @@ function loadAvailableIndicators()
         }
     }
 
+	sortList( 'availableIndicators', 'ASC' );
+	sortList( 'availableIndicators2', 'ASC' );
     list_1.find( ":first" ).attr( "selected", "selected" );
     list_2.find( ":first" ).attr( "selected", "selected" );
 
@@ -42,6 +45,7 @@ function loadAvailableGroups()
     var list_2 = jQuery( "#view_2 #availableGroups" );
     list_1.empty();
     list_2.empty();
+
     for ( var id in indicatorGroups )
     {
         var text = indicatorGroups[id];

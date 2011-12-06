@@ -23,12 +23,16 @@ function loadAvailableDataElements()
     for ( var id in availableDataElements )
     {
         var text = availableDataElements[id];
+
         if ( text.toLowerCase().indexOf( filter_1.toLowerCase() ) != -1 )
         {
             list_1.append( '<option value="' + id + '">' + text + '</option>' );
             list_2.append( '<option value="' + id + '">' + text + '</option>' );
         }
     }
+
+	sortList( 'availableDataElements', 'ASC' );
+	sortList( 'availableDataElements2', 'ASC' );
     list_1.find( ":first" ).attr( "selected", "selected" );
     list_2.find( ":first" ).attr( "selected", "selected" );
 }
@@ -41,15 +45,18 @@ function loadAvailableGroups()
     var list_2 = jQuery( "#view_2 #availableGroups" );
     list_1.empty();
     list_2.empty();
+
     for ( var id in dataElementGroups )
     {
         var text = dataElementGroups[id];
+
         if ( text.toLowerCase().indexOf( filter_1.toLowerCase() ) != -1 )
         {
             list_1.append( '<option value="' + id + '">' + text + '</option>' );
             list_2.append( '<option value="' + id + '">' + text + '</option>' );
         }
     }
+
     sortList( 'dataElementGroups', 'ASC' );
     sortList( 'availableGroups', 'ASC' );
     list_1.find( ":first" ).attr( "selected", "selected" );
