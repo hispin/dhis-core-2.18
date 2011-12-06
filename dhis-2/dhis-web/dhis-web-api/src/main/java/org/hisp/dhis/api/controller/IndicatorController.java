@@ -28,7 +28,7 @@ package org.hisp.dhis.api.controller;
  */
 
 import org.hisp.dhis.api.utils.IdentifiableObjectParams;
-import org.hisp.dhis.api.utils.WebLinkPopulatorListener;
+import org.hisp.dhis.api.utils.WebLinkPopulator;
 import org.hisp.dhis.indicator.Indicator;
 import org.hisp.dhis.indicator.IndicatorService;
 import org.hisp.dhis.indicator.Indicators;
@@ -60,8 +60,8 @@ public class IndicatorController
 
         if ( params.hasLinks() )
         {
-            WebLinkPopulatorListener listener = new WebLinkPopulatorListener( request );
-            listener.beforeMarshal( indicators );
+            WebLinkPopulator listener = new WebLinkPopulator( request );
+            listener.addLinks( indicators );
         }
 
         model.addAttribute( "model", indicators );
@@ -76,8 +76,8 @@ public class IndicatorController
 
         if ( params.hasLinks() )
         {
-            WebLinkPopulatorListener listener = new WebLinkPopulatorListener( request );
-            listener.beforeMarshal( indicator );
+            WebLinkPopulator listener = new WebLinkPopulator( request );
+            listener.addLinks( indicator );
         }
 
         model.addAttribute( "model", indicator );

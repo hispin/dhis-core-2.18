@@ -28,7 +28,7 @@ package org.hisp.dhis.api.controller;
  */
 
 import org.hisp.dhis.api.utils.IdentifiableObjectParams;
-import org.hisp.dhis.api.utils.WebLinkPopulatorListener;
+import org.hisp.dhis.api.utils.WebLinkPopulator;
 import org.hisp.dhis.attribute.Attribute;
 import org.hisp.dhis.attribute.AttributeService;
 import org.hisp.dhis.attribute.Attributes;
@@ -60,8 +60,8 @@ public class AttributeController
 
         if ( params.hasLinks() )
         {
-            WebLinkPopulatorListener listener = new WebLinkPopulatorListener( request );
-            listener.beforeMarshal( attributes );
+            WebLinkPopulator listener = new WebLinkPopulator( request );
+            listener.addLinks( attributes );
         }
 
         model.addAttribute( "model", attributes );
@@ -76,8 +76,8 @@ public class AttributeController
 
         if ( params.hasLinks() )
         {
-            WebLinkPopulatorListener listener = new WebLinkPopulatorListener( request );
-            listener.beforeMarshal( attribute );
+            WebLinkPopulator listener = new WebLinkPopulator( request );
+            listener.addLinks( attribute );
         }
 
         model.addAttribute( "model", attribute );

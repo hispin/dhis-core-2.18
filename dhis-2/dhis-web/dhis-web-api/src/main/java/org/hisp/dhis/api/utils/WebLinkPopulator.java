@@ -27,6 +27,14 @@ package org.hisp.dhis.api.utils;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
+
+import javassist.util.proxy.ProxyObject;
+
+import javax.servlet.http.HttpServletRequest;
+
 import org.hisp.dhis.api.webdomain.Resource;
 import org.hisp.dhis.api.webdomain.Resources;
 import org.hisp.dhis.attribute.Attribute;
@@ -34,98 +42,63 @@ import org.hisp.dhis.attribute.Attributes;
 import org.hisp.dhis.chart.Chart;
 import org.hisp.dhis.chart.Charts;
 import org.hisp.dhis.common.BaseIdentifiableObject;
-import org.hisp.dhis.dataelement.*;
-import org.hisp.dhis.dataset.CompleteDataSetRegistration;
-import org.hisp.dhis.dataset.CompleteDataSetRegistrations;
+import org.hisp.dhis.common.BaseLinkableObject;
+import org.hisp.dhis.common.IdentifiableObject;
+import org.hisp.dhis.dataelement.DataElement;
+import org.hisp.dhis.dataelement.DataElementCategories;
+import org.hisp.dhis.dataelement.DataElementCategory;
+import org.hisp.dhis.dataelement.DataElementCategoryCombo;
+import org.hisp.dhis.dataelement.DataElementCategoryCombos;
+import org.hisp.dhis.dataelement.DataElementCategoryOption;
+import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
+import org.hisp.dhis.dataelement.DataElementCategoryOptionCombos;
+import org.hisp.dhis.dataelement.DataElementCategoryOptions;
+import org.hisp.dhis.dataelement.DataElementGroup;
+import org.hisp.dhis.dataelement.DataElementGroupSet;
+import org.hisp.dhis.dataelement.DataElementGroupSets;
+import org.hisp.dhis.dataelement.DataElementGroups;
+import org.hisp.dhis.dataelement.DataElements;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.dataset.DataSets;
-import org.hisp.dhis.indicator.*;
+import org.hisp.dhis.indicator.Indicator;
+import org.hisp.dhis.indicator.IndicatorGroup;
+import org.hisp.dhis.indicator.IndicatorGroupSet;
+import org.hisp.dhis.indicator.IndicatorGroupSets;
+import org.hisp.dhis.indicator.IndicatorGroups;
+import org.hisp.dhis.indicator.Indicators;
 import org.hisp.dhis.mapping.MapView;
 import org.hisp.dhis.mapping.Maps;
-import org.hisp.dhis.organisationunit.*;
-import org.hisp.dhis.user.User;
-import org.hisp.dhis.user.Users;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.xml.bind.Marshaller;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
+import org.hisp.dhis.organisationunit.OrganisationUnit;
+import org.hisp.dhis.organisationunit.OrganisationUnitGroup;
+import org.hisp.dhis.organisationunit.OrganisationUnitGroupSet;
+import org.hisp.dhis.organisationunit.OrganisationUnitGroupSets;
+import org.hisp.dhis.organisationunit.OrganisationUnitGroups;
+import org.hisp.dhis.organisationunit.OrganisationUnits;
 
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
-public class WebLinkPopulatorListener
-    extends Marshaller.Listener
+public class WebLinkPopulator
 {
-    private HttpServletRequest request;
 
-    private static Map<Class, String> resourcePaths = new HashMap<Class, String>();
-
-    private String rootPath = null;
+    /**
+     * Custom linkable object -> path mappings
+     */
+    private static Map<Class<? extends BaseLinkableObject>, String> resourcePaths = new HashMap<Class<? extends BaseLinkableObject>, String>();
 
     static
     {
-        resourcePaths.put( Resources.class, "resources" );
-
-        resourcePaths.put( Attributes.class, "attributes" );
-        resourcePaths.put( Attribute.class, "attributes" );
-
-        resourcePaths.put( Charts.class, "charts" );
-        resourcePaths.put( Chart.class, "charts" );
-
-        resourcePaths.put( Maps.class, "maps" );
         resourcePaths.put( MapView.class, "maps" );
-
-        resourcePaths.put( CompleteDataSetRegistrations.class, "completeDataSetRegistrations" );
-        resourcePaths.put( CompleteDataSetRegistration.class, "completeDataSetRegistrations" );
-
-        resourcePaths.put( Indicators.class, "indicators" );
-        resourcePaths.put( Indicator.class, "indicators" );
-        resourcePaths.put( IndicatorGroups.class, "indicatorGroups" );
-        resourcePaths.put( IndicatorGroup.class, "indicatorGroups" );
-        resourcePaths.put( IndicatorGroupSets.class, "indicatorGroupSets" );
-        resourcePaths.put( IndicatorGroupSet.class, "indicatorGroupSets" );
-        resourcePaths.put( IndicatorTypes.class, "indicatorTypes" );
-        resourcePaths.put( IndicatorType.class, "indicatorTypes" );
-
-        resourcePaths.put( DataElements.class, "dataElements" );
-        resourcePaths.put( DataElement.class, "dataElements" );
-        resourcePaths.put( DataElementGroups.class, "dataElementGroups" );
-        resourcePaths.put( DataElementGroup.class, "dataElementGroups" );
-        resourcePaths.put( DataElementGroupSets.class, "dataElementGroupSets" );
-        resourcePaths.put( DataElementGroupSet.class, "dataElementGroupSets" );
-
-        resourcePaths.put( DataElementCategories.class, "dataElementCategories" );
-        resourcePaths.put( DataElementCategory.class, "dataElementCategories" );
-        resourcePaths.put( DataElementCategoryCombos.class, "dataElementCategoryCombos" );
-        resourcePaths.put( DataElementCategoryCombo.class, "dataElementCategoryCombos" );
-        resourcePaths.put( DataElementCategoryOptions.class, "dataElementCategoryOptions" );
-        resourcePaths.put( DataElementCategoryOption.class, "dataElementCategoryOptions" );
-        resourcePaths.put( DataElementCategoryOptionCombos.class, "dataElementCategoryOptionCombos" );
-        resourcePaths.put( DataElementCategoryOptionCombo.class, "dataElementCategoryOptionCombos" );
-
-        resourcePaths.put( OrganisationUnits.class, "organisationUnits" );
-        resourcePaths.put( OrganisationUnit.class, "organisationUnits" );
-        resourcePaths.put( OrganisationUnitGroups.class, "organisationUnitGroups" );
-        resourcePaths.put( OrganisationUnitGroup.class, "organisationUnitGroups" );
-        resourcePaths.put( OrganisationUnitGroupSets.class, "organisationUnitGroupSets" );
-        resourcePaths.put( OrganisationUnitGroupSet.class, "organisationUnitGroupSets" );
-
-        resourcePaths.put( DataSets.class, "dataSets" );
-        resourcePaths.put( DataSet.class, "dataSets" );
-
-        resourcePaths.put( Users.class, "users" );
-        resourcePaths.put( User.class, "users" );
     }
 
-    public WebLinkPopulatorListener( HttpServletRequest request )
+    private String rootPath;
+
+    public WebLinkPopulator( HttpServletRequest request )
     {
-        this.request = request;
+        rootPath = createRootPath( request );
     }
 
-    @Override
-    public void beforeMarshal( Object source )
+    public void addLinks( Object source )
     {
         if ( source instanceof Resources )
         {
@@ -259,6 +232,41 @@ public class WebLinkPopulatorListener
         {
             populateAttribute( (Attribute) source, true );
         }
+        else if ( source instanceof Maps )
+        {
+            populateMaps( (Maps) source, true );
+        }
+        else if ( source instanceof MapView )
+        {
+            populateMap( (MapView) source, true );
+        }
+
+    }
+
+    private void populateMaps( Maps maps, boolean b )
+    {
+        maps.setLink( getBasePath( maps.getClass() ) );
+
+        for ( MapView map : maps.getMaps() )
+        {
+            populateMap( map, false );
+        }
+    }
+
+    private void populateMap( MapView map, boolean root )
+    {
+        populateIdentifiableObject( map );
+
+        if ( root )
+        {
+            populateIdentifiableObject( map.getDataElement() );
+            populateIdentifiableObject( map.getDataElementGroup() );
+            populateIdentifiableObject( map.getIndicator() );
+            populateIdentifiableObject( map.getIndicatorGroup() );
+            populateIdentifiableObject( map.getOrganisationUnitLevel() );
+            populateIdentifiableObject( map.getParentOrganisationUnit() );
+            populateIdentifiableObject( map.getPeriod() );
+        }
     }
 
     private void populateResources( Resources resources )
@@ -323,7 +331,8 @@ public class WebLinkPopulatorListener
 
         if ( root )
         {
-            for ( DataElementCategoryCombo dataElementCategoryCombo : dataElementCategoryCombos.getDataElementCategoryCombos() )
+            for ( DataElementCategoryCombo dataElementCategoryCombo : dataElementCategoryCombos
+                .getDataElementCategoryCombos() )
             {
                 populateDataElementCategoryCombo( dataElementCategoryCombo, false );
             }
@@ -347,7 +356,8 @@ public class WebLinkPopulatorListener
 
         if ( root )
         {
-            for ( DataElementCategoryOption dataElementCategoryOption : dataElementCategoryOptions.getDataElementCategoryOptions() )
+            for ( DataElementCategoryOption dataElementCategoryOption : dataElementCategoryOptions
+                .getDataElementCategoryOptions() )
             {
                 populateDataElementCategoryOption( dataElementCategoryOption, false );
             }
@@ -365,20 +375,23 @@ public class WebLinkPopulatorListener
         }
     }
 
-    private void populateDataElementCategoryOptionCombos( DataElementCategoryOptionCombos dataElementCategoryOptionCombos, boolean root )
+    private void populateDataElementCategoryOptionCombos(
+        DataElementCategoryOptionCombos dataElementCategoryOptionCombos, boolean root )
     {
         dataElementCategoryOptionCombos.setLink( getBasePath( DataElementCategoryOptionCombos.class ) );
 
         if ( root )
         {
-            for ( DataElementCategoryOptionCombo dataElementCategoryOptionCombo : dataElementCategoryOptionCombos.getDataElementCategoryOptionCombos() )
+            for ( DataElementCategoryOptionCombo dataElementCategoryOptionCombo : dataElementCategoryOptionCombos
+                .getDataElementCategoryOptionCombos() )
             {
                 populateDataElementCategoryOptionCombo( dataElementCategoryOptionCombo, false );
             }
         }
     }
 
-    private void populateDataElementCategoryOptionCombo( DataElementCategoryOptionCombo dataElementCategoryOptionCombo, boolean root )
+    private void populateDataElementCategoryOptionCombo( DataElementCategoryOptionCombo dataElementCategoryOptionCombo,
+        boolean root )
     {
         dataElementCategoryOptionCombo.setLink( getPathWithUid( dataElementCategoryOptionCombo ) );
 
@@ -562,7 +575,8 @@ public class WebLinkPopulatorListener
 
         if ( root )
         {
-            for ( OrganisationUnitGroupSet organisationUnitGroupSet : organisationUnitGroupSets.getOrganisationUnitGroupSets() )
+            for ( OrganisationUnitGroupSet organisationUnitGroupSet : organisationUnitGroupSets
+                .getOrganisationUnitGroupSets() )
             {
                 populateOrganisationUnitGroupSet( organisationUnitGroupSet, false );
             }
@@ -658,15 +672,19 @@ public class WebLinkPopulatorListener
 
     public void handleIdentifiableObjectCollection( Collection<? extends BaseIdentifiableObject> identifiableObjects )
     {
-        for ( BaseIdentifiableObject baseIdentifiableObject : identifiableObjects )
+        if ( identifiableObjects != null )
         {
-            populateIdentifiableObject( baseIdentifiableObject );
+            for ( BaseIdentifiableObject baseIdentifiableObject : identifiableObjects )
+            {
+                populateIdentifiableObject( baseIdentifiableObject );
+            }
         }
     }
 
     private void populateIdentifiableObject( BaseIdentifiableObject baseIdentifiableObject )
     {
-        baseIdentifiableObject.setLink( getPathWithUid( baseIdentifiableObject ) );
+        if ( baseIdentifiableObject != null )
+            baseIdentifiableObject.setLink( getPathWithUid( baseIdentifiableObject ) );
     }
 
     private String getPathWithUid( BaseIdentifiableObject baseIdentifiableObject )
@@ -676,35 +694,57 @@ public class WebLinkPopulatorListener
 
     private String getBasePath( Class<?> clazz )
     {
-        if ( rootPath == null )
-        {
-            StringBuilder builder = new StringBuilder();
-
-            builder.append( request.getScheme() );
-            builder.append( "://" ).append( request.getServerName() );
-
-            if ( request.getServerPort() != 80 && request.getServerPort() != 443 )
-            {
-                builder.append( ":" ).append( request.getServerPort() );
-            }
-
-            builder.append( request.getContextPath() );
-            builder.append( request.getServletPath() );
-
-            rootPath = builder.toString();
+        if (ProxyObject.class.isAssignableFrom( clazz ) ) {
+            clazz = clazz.getSuperclass();
         }
-
+        
         String resourcePath = resourcePaths.get( clazz );
 
-        // in some cases, the class is a dynamic subclass (usually subclassed
-        // with javaassist), so
-        // we need to fetch the superClass instead.
+//        // in some cases, the class is a dynamic subclass (usually subclassed
+//        // with javaassist), so
+//        // we need to fetch the superClass instead.
+//        if ( resourcePath == null )
+//        {
+//            resourcePath = resourcePaths.get( clazz.getSuperclass() );
+//        }
+
         if ( resourcePath == null )
         {
-            resourcePath = resourcePaths.get( clazz.getSuperclass() );
+            resourcePath = getPath( clazz );
         }
 
         return rootPath + "/" + resourcePath;
+    }
+
+    public static String createRootPath( HttpServletRequest request )
+    {
+        StringBuilder builder = new StringBuilder();
+        builder.append( request.getScheme() );
+
+        builder.append( "://" + request.getServerName() );
+
+        if ( request.getServerPort() != 80 && request.getServerPort() != 443 )
+        {
+            builder.append( ":" + request.getServerPort() );
+        }
+
+        builder.append( request.getContextPath() );
+        builder.append( request.getServletPath() );
+
+        return builder.toString();
+    }
+
+    public static String getPath( Class<?> clazz )
+    {
+        String path = clazz.getSimpleName();
+
+        path = path.substring( 0, 1 ).toLowerCase() + path.substring( 1 );
+
+        if ( IdentifiableObject.class.isAssignableFrom( clazz ) )
+        {
+            path += "s";
+        }
+        return path;
     }
 
 }

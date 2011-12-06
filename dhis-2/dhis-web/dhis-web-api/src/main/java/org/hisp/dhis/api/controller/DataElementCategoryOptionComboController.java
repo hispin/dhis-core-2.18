@@ -28,7 +28,7 @@ package org.hisp.dhis.api.controller;
  */
 
 import org.hisp.dhis.api.utils.IdentifiableObjectParams;
-import org.hisp.dhis.api.utils.WebLinkPopulatorListener;
+import org.hisp.dhis.api.utils.WebLinkPopulator;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombos;
 import org.hisp.dhis.dataelement.DataElementCategoryService;
@@ -60,8 +60,8 @@ public class DataElementCategoryOptionComboController
 
         if ( params.hasLinks() )
         {
-            WebLinkPopulatorListener listener = new WebLinkPopulatorListener( request );
-            listener.beforeMarshal( dataElementCategoryOptionCombos );
+            WebLinkPopulator listener = new WebLinkPopulator( request );
+            listener.addLinks( dataElementCategoryOptionCombos );
         }
 
         model.addAttribute( "model", dataElementCategoryOptionCombos );
@@ -76,8 +76,8 @@ public class DataElementCategoryOptionComboController
 
         if ( params.hasLinks() )
         {
-            WebLinkPopulatorListener listener = new WebLinkPopulatorListener( request );
-            listener.beforeMarshal( dataElementCategoryOptionCombo );
+            WebLinkPopulator listener = new WebLinkPopulator( request );
+            listener.addLinks( dataElementCategoryOptionCombo );
         }
 
         model.addAttribute( "model", dataElementCategoryOptionCombo );

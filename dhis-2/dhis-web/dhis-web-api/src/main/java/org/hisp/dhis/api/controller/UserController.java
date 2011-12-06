@@ -28,7 +28,7 @@ package org.hisp.dhis.api.controller;
  */
 
 import org.hisp.dhis.api.utils.IdentifiableObjectParams;
-import org.hisp.dhis.api.utils.WebLinkPopulatorListener;
+import org.hisp.dhis.api.utils.WebLinkPopulator;
 import org.hisp.dhis.user.User;
 import org.hisp.dhis.user.UserService;
 import org.hisp.dhis.user.Users;
@@ -60,8 +60,8 @@ public class UserController
 
         if ( params.hasLinks() )
         {
-            WebLinkPopulatorListener listener = new WebLinkPopulatorListener( request );
-            listener.beforeMarshal( users );
+            WebLinkPopulator listener = new WebLinkPopulator( request );
+            listener.addLinks( users );
         }
 
         model.addAttribute( "model", users );
@@ -76,8 +76,8 @@ public class UserController
 
         if ( params.hasLinks() )
         {
-            WebLinkPopulatorListener listener = new WebLinkPopulatorListener( request );
-            listener.beforeMarshal( user );
+            WebLinkPopulator listener = new WebLinkPopulator( request );
+            listener.addLinks( user );
         }
 
         model.addAttribute( "model", user );

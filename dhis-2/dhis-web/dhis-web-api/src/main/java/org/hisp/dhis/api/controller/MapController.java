@@ -32,6 +32,8 @@ import java.util.ArrayList;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.hisp.dhis.api.utils.IdentifiableObjectParams;
+import org.hisp.dhis.api.utils.WebLinkPopulator;
 import org.hisp.dhis.mapgeneration.MapGenerationService;
 import org.hisp.dhis.mapping.MapView;
 import org.hisp.dhis.mapping.MappingService;
@@ -54,18 +56,24 @@ public class MapController
     MappingService mappingService;
 
     @RequestMapping( method = RequestMethod.GET )
-    public String getMaps( Model model, HttpServletRequest request ) throws IOException
+    public String getMaps(IdentifiableObjectParams params, Model model, HttpServletRequest request ) throws IOException
     {
         Maps maps = new Maps();
         maps.setMaps( new ArrayList<MapView>( mappingService.getAllMapViews() ) );
 
+        if ( params.hasLinks() )
+        {
+            WebLinkPopulator listener = new WebLinkPopulator( request );
+            listener.addLinks( maps );
+        }
+        
         model.addAttribute( "model", maps );
 
         return "maps";
     }
 
     @RequestMapping( value = "/{uid}", method = RequestMethod.GET )
-    public String getChart( @PathVariable String uid, Model model, HttpServletRequest request )
+    public String getChart( @PathVariable String uid, IdentifiableObjectParams params, Model model, HttpServletRequest request )
     {
         MapView mapView = mappingService.getMapView( uid );
 
@@ -73,6 +81,12 @@ public class MapController
             throw new IllegalArgumentException("No map with id " + uid);
         }
         
+        if ( params.hasLinks() )
+        {
+            WebLinkPopulator listener = new WebLinkPopulator( request );
+            listener.addLinks( mapView );
+        }
+
         model.addAttribute( "model", mapView );
 
         return "map";

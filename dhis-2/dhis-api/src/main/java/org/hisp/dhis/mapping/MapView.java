@@ -268,8 +268,6 @@ public class MapView
         this.mapDateType = mapDateType;
     }
 
-    @XmlElement
-    @JsonProperty
     public PeriodType getPeriodType()
     {
         return periodType;
