@@ -1,4 +1,4 @@
-package org.hisp.dhis.api.view;
+package org.hisp.dhis.api.controller;
 
 /*
  * Copyright (c) 2004-2011, University of Oslo
@@ -28,28 +28,35 @@ package org.hisp.dhis.api.view;
  */
 
 import org.hisp.dhis.api.utils.IdentifiableObjectParams;
-import org.springframework.validation.BindingResult;
+import org.hisp.dhis.api.utils.WebLinkPopulatorListener;
+import org.hisp.dhis.api.view.Resources;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 
-import java.util.HashMap;
-import java.util.Map;
+import javax.servlet.http.HttpServletRequest;
 
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
-public class ViewUtils
+@Controller
+@RequestMapping( value = "/resources" )
+public class ResourceController
 {
-    public static Map<String, Object> filterModel( Map<String, Object> model )
+    @RequestMapping( method = RequestMethod.GET )
+    public String getResources( IdentifiableObjectParams params, Model model, HttpServletRequest request )
     {
-        Map<String, Object> result = new HashMap<String, Object>( model.size() );
+        Resources resources = new Resources();
 
-        for ( Map.Entry<String, Object> entry : model.entrySet() )
+        if ( params.hasLinks() )
         {
-            if ( !(entry.getValue() instanceof BindingResult) && !(entry.getValue() instanceof IdentifiableObjectParams) )
-            {
-                result.put( entry.getKey(), entry.getValue() );
-            }
+            WebLinkPopulatorListener listener = new WebLinkPopulatorListener( request );
+            listener.beforeMarshal( resources );
         }
 
-        return result;
+        model.addAttribute( "model", resources );
+
+        return "resources";
     }
 }

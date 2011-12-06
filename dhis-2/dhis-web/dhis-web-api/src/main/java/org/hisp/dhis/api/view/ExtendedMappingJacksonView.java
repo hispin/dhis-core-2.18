@@ -46,8 +46,6 @@ import java.util.Map;
  */
 public class ExtendedMappingJacksonView extends MappingJacksonJsonView
 {
-    private boolean includeRootElement = false;
-
     private boolean withPadding = false;
 
     private String callbackParameter = "callback";
@@ -69,11 +67,6 @@ public class ExtendedMappingJacksonView extends MappingJacksonJsonView
         }
     }
 
-    public void setIncludeRootElement( boolean includeRootElement )
-    {
-        this.includeRootElement = includeRootElement;
-    }
-
     public void setCallbackParameter( String callbackParameter )
     {
         this.callbackParameter = callbackParameter;
@@ -87,7 +80,9 @@ public class ExtendedMappingJacksonView extends MappingJacksonJsonView
     @Override
     protected void renderMergedOutputModel( Map<String, Object> model, HttpServletRequest request, HttpServletResponse response ) throws Exception
     {
-        Object value = filterModel( model );
+        model = ViewUtils.filterModel( model );
+        Object value = model.get( "model" );
+
         ObjectMapper objectMapper = new ObjectMapper();
 
         AnnotationIntrospector jacksonAnnotationIntrospector = new JacksonAnnotationIntrospector();
@@ -99,16 +94,6 @@ public class ExtendedMappingJacksonView extends MappingJacksonJsonView
         JsonFactory jf = objectMapper.getJsonFactory();
         JsonGenerator jg = jf.createJsonGenerator( response.getOutputStream(), JsonEncoding.UTF8 );
 
-        if ( !includeRootElement && value instanceof Map )
-        {
-            Map map = (Map) value;
-
-            if ( map.size() == 1 )
-            {
-                value = map.values().toArray()[0];
-            }
-        }
-
         if ( withPadding )
         {
             String callback = request.getParameter( callbackParameter );
@@ -118,7 +103,7 @@ public class ExtendedMappingJacksonView extends MappingJacksonJsonView
                 callback = paddingFunction;
             }
 
-            JSONPObject valueWithPadding = new JSONPObject( callback, value );
+            JSONPObject valueWithPadding = valueWithPadding = new JSONPObject( callback, value );
             jg.writeObject( valueWithPadding );
         }
         else

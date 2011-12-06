@@ -1,4 +1,4 @@
-package org.hisp.dhis.api.view;
+package org.hisp.dhis.api.adapter;
 
 /*
  * Copyright (c) 2004-2011, University of Oslo
@@ -27,29 +27,24 @@ package org.hisp.dhis.api.view;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import org.hisp.dhis.api.utils.IdentifiableObjectParams;
-import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.RequestMethod;
 
-import java.util.HashMap;
-import java.util.Map;
+import javax.xml.bind.annotation.adapters.XmlAdapter;
 
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
-public class ViewUtils
+public class RequestMethodXmlAdapter extends XmlAdapter<String, RequestMethod>
 {
-    public static Map<String, Object> filterModel( Map<String, Object> model )
+    @Override
+    public RequestMethod unmarshal( String v ) throws Exception
     {
-        Map<String, Object> result = new HashMap<String, Object>( model.size() );
+        return null;  //To change body of implemented methods use File | Settings | File Templates.
+    }
 
-        for ( Map.Entry<String, Object> entry : model.entrySet() )
-        {
-            if ( !(entry.getValue() instanceof BindingResult) && !(entry.getValue() instanceof IdentifiableObjectParams) )
-            {
-                result.put( entry.getKey(), entry.getValue() );
-            }
-        }
-
-        return result;
+    @Override
+    public String marshal( RequestMethod v ) throws Exception
+    {
+        return v.toString();
     }
 }
