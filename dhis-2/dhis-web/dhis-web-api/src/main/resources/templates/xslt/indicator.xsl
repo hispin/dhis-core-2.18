@@ -75,7 +75,7 @@
   <xsl:template match="d:groups">
     <xsl:if test="count(child::*) > 0">
       <h3>Indicator Groups</h3>
-      <table border="1" class="d:indicatorGroups">
+      <table border="1" class="indicatorGroups">
         <xsl:apply-templates select="child::*" mode="row"/>
       </table>
     </xsl:if>

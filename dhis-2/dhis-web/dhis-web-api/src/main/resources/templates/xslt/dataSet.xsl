@@ -5,7 +5,7 @@
   >
 
   <xsl:template match="d:dataSet">
-    <div class="d:dataSet">
+    <div class="dataSet">
       <h2>
         <xsl:value-of select="@name" />
       </h2>
@@ -51,7 +51,7 @@
   <xsl:template match="d:dataElements">
     <xsl:if test="count(child::*) > 0">
       <h3>DataElements</h3>
-      <table border="1" class="d:dataElements">
+      <table border="1" class="dataElements">
           <xsl:apply-templates mode="row"/>
       </table>
     </xsl:if>

@@ -5,7 +5,7 @@
     version="1.0">
     
     <xsl:template match="d:chart">
-        <div class="d:chart">
+        <div class="chart">
             <h2>
                 <xsl:value-of select="@name"/>
             </h2>
