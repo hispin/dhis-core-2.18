@@ -1,9 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="1.0">
+<xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="1.0"
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:d="http://dhis2.org/schema/dxf/2.0"
+    >
     
+<<<<<<< TREE
+    <xsl:template match="d:map">
+        <div class="d:map">
+            <h2>Map <xsl:value-of select="@name"/></h2>
+=======
     <xsl:template match="map">
         <div class="map">
             <h2>Map: <xsl:value-of select="@name"/></h2>
+>>>>>>> MERGE-SOURCE
             <table border="1">
                 <tr>
                     <td>Map rendering</td>

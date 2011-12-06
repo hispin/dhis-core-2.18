@@ -254,8 +254,6 @@ public class Indicator extends BaseNameableObject
         this.explodedDenominator = explodedDenominator;
     }
 
-    @XmlElement
-    @JsonProperty
     public Integer getSortOrder()
     {
         return sortOrder;
