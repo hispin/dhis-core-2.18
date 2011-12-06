@@ -4,15 +4,23 @@
 
     <xsl:template match="d:map">
         <div class="map">
-            <h2>Map: <xsl:value-of select="@name"/></h2>
+            <h2><xsl:value-of select="@name"/></h2>
             <a href="{@link}.png"><img src="{@link}.png" style="border-style:solid; border-width: 1px; padding: 5px;" /></a>
+
+            <h3>Details</h3>
 
             <table border="1">
                <xsl:for-each select="attribute::*">
                  <tr><td><xsl:value-of select="local-name()"/></td><td><xsl:value-of select="."/></td></tr>  
                </xsl:for-each>
                <xsl:for-each select="child::*">
-                 <tr><td><xsl:value-of select="local-name()"/></td><td><xsl:value-of select="@name"/></td></tr>  
+                 <tr><td><xsl:value-of select="local-name()"/></td><td>
+                 <xsl:choose>
+                 <xsl:when test="@name"><a href="{@link}"><xsl:value-of select="@name"/></a>  
+                 </xsl:when>
+                 <xsl:otherwise><xsl:value-of select="."/></xsl:otherwise>
+                 </xsl:choose>
+                 </td></tr>
                </xsl:for-each>
             </table>
         </div>
