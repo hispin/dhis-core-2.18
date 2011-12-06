@@ -188,9 +188,6 @@ public class Section
         this.name = name;
     }
 
-    @XmlElement
-    @XmlJavaTypeAdapter( BaseIdentifiableObjectXmlAdapter.class )
-    @JsonSerialize( using = JsonIdentifiableObjectSetSerializer.class )
     public DataSet getDataSet()
     {
         return dataSet;

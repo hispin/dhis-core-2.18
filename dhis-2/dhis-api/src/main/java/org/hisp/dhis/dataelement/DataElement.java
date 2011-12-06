@@ -465,8 +465,8 @@ public class DataElement extends BaseNameableObject
         this.url = url;
     }
 
-    @XmlElementWrapper( name = "groups" )
-    @XmlElement( name = "group" )
+    @XmlElementWrapper( name = "dataElementGroups" )
+    @XmlElement( name = "dataElementGroup" )
     @XmlJavaTypeAdapter( BaseIdentifiableObjectXmlAdapter.class )
     @JsonSerialize( using = JsonIdentifiableObjectSetSerializer.class )
     public Set<DataElementGroup> getGroups()

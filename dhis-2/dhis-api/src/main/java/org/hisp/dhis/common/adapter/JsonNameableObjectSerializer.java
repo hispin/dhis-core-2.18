@@ -51,7 +51,7 @@ public class JsonNameableObjectSerializer extends JsonSerializer<NameableObject>
         {
             jgen.writeStartObject();
 
-            jgen.writeStringField( "uid", nameableObject.getUid() );
+            jgen.writeStringField( "id", nameableObject.getUid() );
             jgen.writeStringField( "name", nameableObject.getName() );
             jgen.writeFieldName( "lastUpdated" );
 

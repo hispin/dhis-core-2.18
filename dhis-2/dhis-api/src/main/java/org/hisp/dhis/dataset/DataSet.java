@@ -31,10 +31,7 @@ import org.codehaus.jackson.annotate.JsonProperty;
 import org.codehaus.jackson.map.annotate.JsonSerialize;
 import org.hisp.dhis.common.BaseNameableObject;
 import org.hisp.dhis.common.Dxf2Namespace;
-import org.hisp.dhis.common.adapter.BaseIdentifiableObjectXmlAdapter;
-import org.hisp.dhis.common.adapter.BaseNameableObjectXmlAdapter;
-import org.hisp.dhis.common.adapter.JsonIdentifiableObjectSetSerializer;
-import org.hisp.dhis.common.adapter.JsonNameableObjectSetSerializer;
+import org.hisp.dhis.common.adapter.*;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementOperand;
 import org.hisp.dhis.dataentryform.DataEntryForm;
@@ -346,8 +343,8 @@ public class DataSet extends BaseNameableObject
         this.compulsoryDataElementOperands = compulsoryDataElementOperands;
     }
 
-    @XmlElementWrapper( name = "sources" )
-    @XmlElement( name = "source" )
+    @XmlElementWrapper( name = "organisationUnits" )
+    @XmlElement( name = "organisationUnit" )
     @XmlJavaTypeAdapter( BaseIdentifiableObjectXmlAdapter.class )
     @JsonSerialize( using = JsonIdentifiableObjectSetSerializer.class )
     public Set<OrganisationUnit> getSources()
@@ -373,6 +370,7 @@ public class DataSet extends BaseNameableObject
     @XmlElementWrapper( name = "sections" )
     @XmlElement( name = "section" )
     @JsonProperty
+    @JsonSerialize( using = JsonSetSerializer.class )
     public Set<Section> getSections()
     {
         return sections;

@@ -67,18 +67,18 @@
         </tr>
       </table>
 
-      <xsl:apply-templates select="d:categoryCombo|d:groups|d:dataSets" />
+      <xsl:apply-templates select="d:categoryCombo|d:groups|d:dataSets" mode="dataElement" />
     </div>
   </xsl:template>
 
-  <xsl:template match="d:categoryCombo">
+  <xsl:template match="d:categoryCombo" mode="dataElement">
     <h3>DataElementCategoryCombo</h3>
     <table border="1" class="categoryCombo">
       <xsl:apply-templates select="child::*" mode="row"/>
     </table>
   </xsl:template>
 
-  <xsl:template match="d:groups">
+  <xsl:template match="d:groups" mode="dataElement">
     <xsl:if test="count(child::*) > 0">
       <h3>DataElementGroups</h3>
       <table border="1" class="dataElementGroups">
@@ -87,7 +87,7 @@
     </xsl:if>
   </xsl:template>
 
-  <xsl:template match="d:dataSets">
+  <xsl:template match="d:dataSets" mode="dataElement">
     <xsl:if test="count(child::*) > 0">
       <h3>DataSets</h3>
       <table border="1" class="dataSets">

@@ -144,8 +144,8 @@ public class OrganisationUnitGroup extends BaseIdentifiableObject
     // Getters and setters
     // -------------------------------------------------------------------------
 
-    @XmlElementWrapper( name = "members" )
-    @XmlElement( name = "member" )
+    @XmlElementWrapper( name = "organisationUnits" )
+    @XmlElement( name = "organisationUnit" )
     @XmlJavaTypeAdapter( BaseNameableObjectXmlAdapter.class )
     @JsonSerialize( using = JsonNameableObjectSetSerializer.class )
     public Set<OrganisationUnit> getMembers()
@@ -158,7 +158,7 @@ public class OrganisationUnitGroup extends BaseIdentifiableObject
         this.members = members;
     }
 
-    @XmlElement
+    @XmlElement( name = "organisationUnitGroupSet" )
     @XmlJavaTypeAdapter( BaseIdentifiableObjectXmlAdapter.class )
     @JsonSerialize( using = JsonIdentifiableObjectSerializer.class )
     public OrganisationUnitGroupSet getGroupSet()
