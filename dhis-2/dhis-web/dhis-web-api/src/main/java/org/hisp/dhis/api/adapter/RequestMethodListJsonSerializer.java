@@ -1,4 +1,4 @@
-package org.hisp.dhis.api.view;
+package org.hisp.dhis.api.adapter;
 
 /*
  * Copyright (c) 2004-2011, University of Oslo
@@ -27,29 +27,31 @@ package org.hisp.dhis.api.view;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import org.hisp.dhis.api.utils.IdentifiableObjectParams;
-import org.springframework.validation.BindingResult;
+import org.codehaus.jackson.JsonGenerator;
+import org.codehaus.jackson.JsonProcessingException;
+import org.codehaus.jackson.map.JsonSerializer;
+import org.codehaus.jackson.map.SerializerProvider;
+import org.springframework.web.bind.annotation.RequestMethod;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.io.IOException;
+import java.util.List;
 
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
-public class ViewUtils
+public class RequestMethodListJsonSerializer extends JsonSerializer<List<RequestMethod>>
 {
-    public static Map<String, Object> filterModel( Map<String, Object> model )
+    @Override
+    public void serialize( List<RequestMethod> requestMethods, JsonGenerator jgen, SerializerProvider serializerProvider )
+        throws IOException, JsonProcessingException
     {
-        Map<String, Object> result = new HashMap<String, Object>( model.size() );
+        jgen.writeStartArray();
 
-        for ( Map.Entry<String, Object> entry : model.entrySet() )
+        for ( RequestMethod requestMethod : requestMethods )
         {
-            if ( !(entry.getValue() instanceof BindingResult) && !(entry.getValue() instanceof IdentifiableObjectParams) )
-            {
-                result.put( entry.getKey(), entry.getValue() );
-            }
+            jgen.writeString( requestMethod.toString() );
         }
 
-        return result;
+        jgen.writeEndArray();
     }
 }

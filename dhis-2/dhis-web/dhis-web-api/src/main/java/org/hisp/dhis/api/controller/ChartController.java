@@ -27,6 +27,8 @@ package org.hisp.dhis.api.controller;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import org.hisp.dhis.api.utils.IdentifiableObjectParams;
+import org.hisp.dhis.api.utils.WebLinkPopulatorListener;
 import org.hisp.dhis.chart.Chart;
 import org.hisp.dhis.chart.ChartService;
 import org.hisp.dhis.chart.Charts;
@@ -59,10 +61,16 @@ public class ChartController
     private ChartService chartService;
 
     @RequestMapping( method = RequestMethod.GET )
-    public String getCharts( Model model, HttpServletRequest request )
+    public String getCharts( IdentifiableObjectParams params, Model model, HttpServletRequest request )
     {
         Charts charts = new Charts();
         charts.setCharts( new ArrayList<Chart>( chartService.getAllCharts() ) );
+
+        if ( params.hasLinks() )
+        {
+            WebLinkPopulatorListener listener = new WebLinkPopulatorListener( request );
+            listener.beforeMarshal( charts );
+        }
 
         model.addAttribute( "model", charts );
 
@@ -70,9 +78,15 @@ public class ChartController
     }
 
     @RequestMapping( value = "/{uid}", method = RequestMethod.GET )
-    public String getChart( @PathVariable( "uid" ) String uid, Model model, HttpServletRequest request )
+    public String getChart( @PathVariable( "uid" ) String uid, IdentifiableObjectParams params, Model model, HttpServletRequest request )
     {
         Chart chart = chartService.getChart( uid );
+
+        if ( params.hasLinks() )
+        {
+            WebLinkPopulatorListener listener = new WebLinkPopulatorListener( request );
+            listener.beforeMarshal( chart );
+        }
 
         model.addAttribute( "model", chart );
 
@@ -104,7 +118,7 @@ public class ChartController
 
     @RequestMapping( value = "/{uid}.png", method = RequestMethod.GET )
     public void getChartPNG( @PathVariable( "uid" ) String uid, @RequestParam( value = "width", defaultValue = "700", required = false ) int width,
-                             @RequestParam( value = "height", defaultValue = "500", required = false ) Integer height,
+                             @RequestParam( value = "height", defaultValue = "500", required = false ) int height,
                              HttpServletResponse response ) throws IOException
     {
         I18nFormat i18nFormat = new MockI18nFormat();
@@ -117,7 +131,7 @@ public class ChartController
 
     @RequestMapping( value = "/{uid}.jpg", method = RequestMethod.GET )
     public void getChartJPG( @PathVariable( "uid" ) String uid, @RequestParam( value = "width", defaultValue = "700", required = false ) int width,
-                             @RequestParam( value = "height", defaultValue = "500", required = false ) Integer height,
+                             @RequestParam( value = "height", defaultValue = "500", required = false ) int height,
                              HttpServletResponse response ) throws IOException
     {
         I18nFormat i18nFormat = new MockI18nFormat();
