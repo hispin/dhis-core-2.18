@@ -61,19 +61,19 @@
 
       </table>
 
-      <xsl:apply-templates select="d:parent|d:groups|d:dataSets" />
+      <xsl:apply-templates select="d:parent|d:groups|d:dataSets" mode="orgunit" />
 
     </div>
   </xsl:template>
 
-  <xsl:template match="d:parent">
+  <xsl:template match="d:parent" mode="orgunit">
     <h3>Parent OrganisationUnit</h3>
     <table border="1">
       <xsl:apply-templates select="." mode="row"/>
     </table>
   </xsl:template>
 
-  <xsl:template match="d:groups">
+  <xsl:template match="d:groups" mode="orgunit">
     <xsl:if test="count(child::*) > 0">
       <h3>OrganisationUnit Groups</h3>
       <table border="1" class="organisationUnitGroups">
@@ -82,7 +82,7 @@
     </xsl:if>
   </xsl:template>
 
-  <xsl:template match="d:dataSets">
+  <xsl:template match="d:dataSets" mode="orgunit">
     <xsl:if test="count(child::*) > 0">
       <h3>DataSets</h3>
       <table border="1" class="dataSets">

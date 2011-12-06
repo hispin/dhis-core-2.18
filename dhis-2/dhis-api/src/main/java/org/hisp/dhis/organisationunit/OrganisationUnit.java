@@ -112,21 +112,25 @@ public class OrganisationUnit extends BaseNameableObject
 
     private boolean hasPatients;
 
-    private transient int level;
+    /**
+     * Set of the dynamic attributes values that belong to this
+     * organisationUnit.
+     */
+    private Set<AttributeValue> attributeValues = new HashSet<AttributeValue>();
+
+    /*
+     * Transient fields
+     */
 
     private transient boolean currentParent;
+
+    private transient int level;
 
     private transient String type;
 
     private transient String[] groupNames;
     
     private transient Double value;
-
-    /**
-     * Set of the dynamic attributes values that belong to this
-     * organisationUnit.
-     */
-    private Set<AttributeValue> attributeValues = new HashSet<AttributeValue>();
 
     // -------------------------------------------------------------------------
     // Constructors
@@ -621,8 +625,8 @@ public class OrganisationUnit extends BaseNameableObject
         this.url = url;
     }
 
-    @XmlElementWrapper( name = "groups" )
-    @XmlElement( name = "group" )
+    @XmlElementWrapper( name = "organisationUnitGroups" )
+    @XmlElement( name = "organisationUnitGroup" )
     @XmlJavaTypeAdapter( BaseIdentifiableObjectXmlAdapter.class )
     @JsonSerialize( using = JsonIdentifiableObjectSetSerializer.class )
     public Set<OrganisationUnitGroup> getGroups()
@@ -720,8 +724,6 @@ public class OrganisationUnit extends BaseNameableObject
         this.hasPatients = hasPatients;
     }
 
-    @XmlElement
-    @JsonProperty
     public int getLevel()
     {
         return level;

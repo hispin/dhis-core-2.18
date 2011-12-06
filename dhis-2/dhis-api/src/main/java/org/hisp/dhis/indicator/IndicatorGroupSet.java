@@ -220,9 +220,9 @@ public class IndicatorGroupSet extends BaseIdentifiableObject
         this.compulsory = compulsory;
     }
 
-    @XmlElementWrapper( name = "members" )
+    @XmlElementWrapper( name = "indicatorGroups" )
     @XmlJavaTypeAdapter( BaseIdentifiableObjectXmlAdapter.class )
-    @XmlElement( name = "member" )
+    @XmlElement( name = "indicatorGroup" )
     @JsonSerialize( using = JsonIdentifiableObjectListSerializer.class )
     public List<IndicatorGroup> getMembers()
     {

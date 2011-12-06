@@ -31,49 +31,25 @@ import org.codehaus.jackson.JsonGenerator;
 import org.codehaus.jackson.JsonProcessingException;
 import org.codehaus.jackson.map.JsonSerializer;
 import org.codehaus.jackson.map.SerializerProvider;
-import org.hisp.dhis.common.IdentifiableObject;
 
 import java.io.IOException;
+import java.util.Set;
 
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
-public class JsonIdentifiableObjectSerializer extends JsonSerializer<IdentifiableObject>
+public class JsonSetSerializer extends JsonSerializer<Set<Object>>
 {
-    /**
-     * Jackson doesn't seem to see the downcasted object, so we need to manually write the values.
-     * TODO fix this.
-     */
     @Override
-    public void serialize( IdentifiableObject value, JsonGenerator jgen, SerializerProvider provider ) throws IOException, JsonProcessingException
+    public void serialize( Set<Object> objects, JsonGenerator jgen, SerializerProvider provider ) throws IOException, JsonProcessingException
     {
-        if ( value != null )
+        jgen.writeStartArray();
+
+        for ( Object object : objects )
         {
-            jgen.writeStartObject();
-
-            jgen.writeStringField( "id", value.getUid() );
-            jgen.writeStringField( "name", value.getName() );
-
-            jgen.writeFieldName( "lastUpdated" );
-
-            JsonDateSerializer jsonDateSerializer = new JsonDateSerializer();
-            jsonDateSerializer.serialize( value.getLastUpdated(), jgen, provider );
-
-            if ( value.getLink() != null )
-            {
-                jgen.writeStringField( "link", value.getLink() );
-            }
-
-            if ( value.getCode() != null )
-            {
-                jgen.writeStringField( "code", value.getCode() );
-            }
-
-            jgen.writeEndObject();
+            jgen.writeObject( object );
         }
-        else
-        {
-            jgen.writeNull();
-        }
+
+        jgen.writeEndArray();
     }
 }

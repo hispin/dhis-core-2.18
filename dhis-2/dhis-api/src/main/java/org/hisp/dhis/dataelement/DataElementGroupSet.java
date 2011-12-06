@@ -219,9 +219,9 @@ public class DataElementGroupSet extends BaseIdentifiableObject
         this.compulsory = compulsory;
     }
 
-    @XmlElementWrapper( name = "members" )
+    @XmlElementWrapper( name = "dataElementGroups" )
     @XmlJavaTypeAdapter( BaseIdentifiableObjectXmlAdapter.class )
-    @XmlElement( name = "member" )
+    @XmlElement( name = "dataElementGroup" )
     @JsonSerialize( using = JsonIdentifiableObjectListSerializer.class )
     public List<DataElementGroup> getMembers()
     {

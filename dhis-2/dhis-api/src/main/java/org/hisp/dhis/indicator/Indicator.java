@@ -42,7 +42,6 @@ import java.util.Set;
 
 /**
  * @author Lars Helge Overland
- * @version $Id: Indicator.java 5540 2008-08-19 10:47:07Z larshelg $
  */
 @XmlRootElement( name = "indicator", namespace = Dxf2Namespace.NAMESPACE )
 @XmlAccessorType( value = XmlAccessType.NONE )
@@ -276,9 +275,9 @@ public class Indicator extends BaseNameableObject
         this.url = url;
     }
 
-    @XmlElementWrapper( name = "groups" )
+    @XmlElementWrapper( name = "indicatorGroups" )
     @XmlJavaTypeAdapter( BaseIdentifiableObjectXmlAdapter.class )
-    @XmlElement( name = "group" )
+    @XmlElement( name = "indicatorGroup" )
     @JsonSerialize( using = JsonIdentifiableObjectSetSerializer.class )
     public Set<IndicatorGroup> getGroups()
     {
