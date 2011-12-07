@@ -72,4 +72,6 @@ public interface PatientAttributeValueStore
     int countSearchPatientAttributeValue(  PatientAttribute patientAttribute, String searchText );
     
     int countSearchPatients( List<Integer> patientAttributeIds, List<String> searchTexts );
+    
+    void updatePatientAttributeValues( PatientAttributeOption patientAttributeOption);
 }

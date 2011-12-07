@@ -240,4 +240,9 @@ public class DefaultPatientAttributeValueService
     {
         return patientAttributeValueStore.countSearchPatients( patientAttributeIds, searchTexts );
     }
+
+    public void updatePatientAttributeValues( PatientAttributeOption patientAttributeOption )
+    {
+        patientAttributeValueStore.updatePatientAttributeValues( patientAttributeOption );
+    }
 }

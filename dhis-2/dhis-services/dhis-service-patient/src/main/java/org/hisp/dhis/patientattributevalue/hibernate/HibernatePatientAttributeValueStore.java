@@ -39,6 +39,7 @@ import org.hisp.dhis.patient.PatientAttribute;
 import org.hisp.dhis.patient.PatientAttributeOption;
 import org.hisp.dhis.patientattributevalue.PatientAttributeValue;
 import org.hisp.dhis.patientattributevalue.PatientAttributeValueStore;
+import org.springframework.jdbc.core.JdbcTemplate;
 
 /**
  * @author Abyot Asalefew
@@ -48,6 +49,22 @@ public class HibernatePatientAttributeValueStore
     extends HibernateGenericStore<PatientAttributeValue>
     implements PatientAttributeValueStore
 {
+
+    // -------------------------------------------------------------------------
+    // Dependency
+    // -------------------------------------------------------------------------
+
+    private JdbcTemplate jdbcTemplate;
+
+    public void setJdbcTemplate( JdbcTemplate jdbcTemplate )
+    {
+        this.jdbcTemplate = jdbcTemplate;
+    }
+
+    // -------------------------------------------------------------------------
+    // Implementation methods
+    // -------------------------------------------------------------------------
+
     public void saveVoid( PatientAttributeValue patientAttributeValue )
     {
         sessionFactory.getCurrentSession().save( patientAttributeValue );
@@ -236,9 +253,9 @@ public class HibernatePatientAttributeValueStore
 
             hql += " ( SELECT p" + index + " FROM Patient as p" + index + " JOIN p" + index
                 + ".identifiers as identifier" + index + " " + "WHERE lower(identifier" + index
-                + ".identifier)=lower('" + searchText + "') " + "OR (lower(p" + index
-                + ".firstName) LIKE lower('%" + firstName + "%') " + "AND lower(p" + index + ".middleName) = lower('"
-                + middleName + "') " + "AND lower(p" + index + ".lastName) LIKE lower('%" + lastName + "%')) ";
+                + ".identifier)=lower('" + searchText + "') " + "OR (lower(p" + index + ".firstName) LIKE lower('%"
+                + firstName + "%') " + "AND lower(p" + index + ".middleName) = lower('" + middleName + "') "
+                + "AND lower(p" + index + ".lastName) LIKE lower('%" + lastName + "%')) ";
 
             isSearchByAttribute = false;
         }
@@ -277,5 +294,13 @@ public class HibernatePatientAttributeValueStore
 
         return hql;
 
+    }
+
+    public void updatePatientAttributeValues( PatientAttributeOption patientAttributeOption )
+    {
+        String sql = "UPDATE patientattributevalue SET value='" + patientAttributeOption.getName()
+            + "' WHERE patientattributeoptionid='" + patientAttributeOption.getId() + "'";
+        
+        jdbcTemplate.execute( sql );
     }
 }
