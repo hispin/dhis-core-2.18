@@ -7,14 +7,35 @@
     <link rel="stylesheet" type="text/css" href="../css/plugin.css" />
 </head>
 
-<body>
-	
+<body>	
 	<h1>My chart 1</h1>
 	<div id="chart1"></div>
-	
-	<script>
+    
+	<h1>My chart 2</h1>
+	<div id="chart2"></div>
+    
+    <script>
 		Ext.onReady( function() {
 			var url = 'http://localhost:8180/dhis/dhis-web-visualizer/app';
+            
+            DHIS.getChart({
+                stacked: true,
+                indicators: [31664, 32414],
+				dataelements: [20911],
+				organisationunits: [18],
+				el: 'chart1',
+				url: url
+			});
+            
+			DHIS.getChart({
+                type: 'pie',
+                indicators: [31664],
+				dataelements: [20911],
+				organisationunits: [18],
+                legendPosition: 'right',
+				el: 'chart2',
+				url: url
+			});    
             
 /*
 CONFIG              TYPE            DEFAULT             DESCRIPTION
@@ -25,23 +46,16 @@ indicators          [integer]                           (Required*) Indicator id
 dataelements        [integer]                           (Required*) Data element ids. Required if no indicators are provided.
 periods             [string]        'monthsThisYear'    (Optional) Relative period names.
 organisationunits   [integer]                           (Required) Organisation unit ids.
-series              string          'indicator'         (Optional) Series: 'indicator', 'dataelement', 'period' or 'organisationunit'
+series              string          'data'              (Optional) Series: 'data', 'period' or 'organisationunit'
 category            string          'period'            (Optional) Category: 'indicator', 'dataelement', 'period' or 'organisationunit'
 filter              string          'organisationunit'  (Optional) Filter: 'indicator', 'dataelement', 'period' or 'organisationunit'
 el                  string                              (Required) The element to render the chart.
 width               integer         <el width>          (Optional) Chart width. Default is the element width.
 height              integer         <el height>         (Optional) Chart height. Default is the element height.
+titlePosition       string          'top'               (Optional) Positions: 'top' or 'bottom'
 legendPosition      string          'top'               (Optional) Positions: 'top', 'right', 'bottom' or 'left'
 url                 string                              (Required) The web service url.
-*/
-			
-			DHIS.getChart({
-				indicators: [31664],
-				organisationunits: [18],
-				el: 'chart1',
-				url: url
-			});
-	
+*/	
 		});
 	</script>
 	

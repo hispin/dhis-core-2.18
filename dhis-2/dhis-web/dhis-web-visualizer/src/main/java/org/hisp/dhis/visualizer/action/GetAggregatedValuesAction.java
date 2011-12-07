@@ -121,7 +121,7 @@ public class GetAggregatedValuesAction
             if ( dataElementIds != null )
             {
                 dataValues = aggregatedDataValueService.getAggregatedDataValueTotals( dataElementIds, periodIds,
-                    organisationUnitIds );
+                    organisationUnitIds );                
             }
         }
 

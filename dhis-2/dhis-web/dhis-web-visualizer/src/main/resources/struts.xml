@@ -71,6 +71,14 @@
                 /dhis-web-visualizer/void.vm</result>
         </action>
 
+        <action name="getAggregatedValuesPlugin"
+            class="org.hisp.dhis.visualizer.action.GetAggregatedValuesPluginAction">
+            <result name="success" type="velocity-json">
+                /dhis-web-visualizer/jsonminAggregatedValuesPlugin.vm</result>
+            <result name="none" type="velocity-json">
+                /dhis-web-visualizer/void.vm</result>
+        </action>
+
         <!-- Export -->
 
 		<action name="exportImage" class="org.hisp.dhis.visualizer.action.ExportImageAction">

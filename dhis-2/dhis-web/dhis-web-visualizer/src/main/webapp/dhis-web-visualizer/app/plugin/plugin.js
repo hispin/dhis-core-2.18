@@ -5,10 +5,13 @@ DHIS.conf = {
             url_visualizer: '../',
             url_commons: '../../dhis-web-commons-ajax-json/',
             url_portal: '../../dhis-web-portal/',
-            url_indicator: 'getAggregatedIndicatorValuesPlugin',
-            url_dataelement: 'getAggregatedDataValuesPlugin'
+            url_data: 'getAggregatedValuesPlugin'
         },        
         dimension: {
+            data: {
+                value: 'data',
+                rawvalue: 'Data'
+            },
             indicator: {
                 value: 'indicator',
                 rawvalue: 'Indicator'
@@ -39,6 +42,9 @@ DHIS.conf = {
             area: 'area',
             pie: 'pie'
         }
+    },
+    chart: {
+        inset: 10
     }
 };
 
@@ -59,18 +65,12 @@ Ext.onReady( function() {
     
     DHIS.util = {
         dimension: {
-            indicator: {
+            data: {
                 getUrl: function(isFilter) {
                     var a = [];
                     Ext.Array.each(DHIS.state.state.conf.indicators, function(r) {
                         a.push('indicatorIds=' + r);
                     });
-                    return (isFilter && a.length > 1) ? a.slice(0,1) : a;
-                }
-            },
-            dataelement: {
-                getUrl: function(isFilter) {
-                    var a = [];
                     Ext.Array.each(DHIS.state.state.conf.dataelements, function(r) {
                         a.push('dataElementIds=' + r);
                     });
@@ -97,10 +97,9 @@ Ext.onReady( function() {
             }
         },
         chart: {
-            getLegend: function(len) {
-                len = len ? len : 1;
+            getLegend: function(pos) {
                 return {
-                    position: len > 5 ? 'right' : 'top',
+                    position: pos,
                     labelFont: '11px arial',
                     boxStroke: '#ffffff',
                     boxStrokeWidth: 0,
@@ -115,7 +114,7 @@ Ext.onReady( function() {
                     'stroke-width': 0.2
                 };
             },
-            getTitle: function() {
+            getTitle: function(pos, size) {
                 return {
                     type: 'text',
                     text: DHIS.state.state.filter.names[0],
@@ -123,8 +122,8 @@ Ext.onReady( function() {
                     fill: '#222',
                     width: 300,
                     height: 20,
-                    x: 28,
-                    y: 16
+                    x: DHIS.util.chart.getTitlePosition(pos, size).x,
+                    y: DHIS.util.chart.getTitlePosition(pos, size).y
                 };
             },
             getTips: function() {
@@ -134,6 +133,20 @@ Ext.onReady( function() {
                     renderer: function(item) {
                     }
                 };
+            },
+            getSize: function(scope, project) {
+                return {
+                    width: project.state.conf.width || scope.el.getWidth(),
+                    height: project.state.conf.height || scope.el.getHeight()
+                };
+            },
+            getTitlePosition: function(pos, size) {
+                if (pos === 'bottom') {
+                    return {x:28, y:size.height-16};
+                }
+                else {
+                    return {x:28, y:16};
+                }                    
             },
             setMask: function(str) {
                 if (DHIS.mask) {
@@ -204,13 +217,13 @@ Ext.onReady( function() {
                         }
                     ];                        
                 },
-                getTips: function() {
+                getTips: function(store) {
                     return {
                         trackMouse: true,
                         height: 47,
                         renderer: function(item) {
                             this.setWidth((item.data.x.length * 8) + 15);
-                            this.setTitle('<span class="dv-chart-tips">' + item.data.x + '<br/><b>' + item.data[DV.store.chart.left[0]] + '</b></span>');
+                            this.setTitle('<span class="dv-chart-tips">' + item.data.x + '<br/><b>' + item.data[store.left[0]] + '</b></span>');
                         }
                     };
                 }
@@ -246,6 +259,21 @@ Ext.onReady( function() {
                     url += '/';
                 }
                 return url;
+            }
+        },
+        value: {
+            jsonfy: function(r) {
+                r = Ext.JSON.decode(r.responseText);
+                var values = [];
+                for (var i = 0; i < r.length; i++) {
+                    var obj = {};
+                    obj.v = r[i][0];
+                    obj[DHIS.conf.finals.dimension.data.value] = r[i][1];
+                    obj[DHIS.conf.finals.dimension.period.value] = r[i][2];
+                    obj[DHIS.conf.finals.dimension.organisationunit.value] = r[i][3];
+                    values.push(obj);
+                }
+                return values;
             }
         }
     };
@@ -304,15 +332,6 @@ Ext.onReady( function() {
                     filter: {
                         dimension: null,
                         names: []
-                    },
-                    getIndiment: function() {
-                        var i = DHIS.conf.finals.dimension.indicator.value;
-                        return (this.series.dimension === i || this.category.dimension === i || this.filter.dimension === i) ?
-                            DHIS.conf.finals.dimension.indicator : DHIS.conf.finals.dimension.dataelement;
-                    },
-                    isIndicator: function() {
-                        var i = DHIS.conf.finals.dimension.indicator.value;
-                        return (this.series.dimension === i || this.category.dimension === i || this.filter.dimension === i);
                     }
                 }
             };
@@ -323,11 +342,12 @@ Ext.onReady( function() {
                 indicators: [],
                 periods: ['monthsThisYear'],
                 organisationunits: [],
-                series: 'indicator',
+                series: 'data',
                 category: 'period',
                 filter: 'organisationunit',
                 el: '',
-                legendPosition: false,
+                titlePosition: 'top',
+                legendPosition: 'top',
                 url: ''
             };
             
@@ -346,20 +366,12 @@ Ext.onReady( function() {
     
     DHIS.value = {
         getValues: function(project) {
-            var params = [],
-                indicator = DHIS.conf.finals.dimension.indicator.value,
-                dataelement = DHIS.conf.finals.dimension.dataelement.value,
-                series = project.state.series.dimension,
-                category = project.state.category.dimension,
-                filter = project.state.filter.dimension,
-                indiment = project.state.getIndiment().value,
-                url = project.state.isIndicator() ? DHIS.conf.finals.ajax.url_indicator : DHIS.conf.finals.ajax.url_dataelement;
-                
-            params = params.concat(DHIS.util.dimension[series].getUrl());
-            params = params.concat(DHIS.util.dimension[category].getUrl());
-            params = params.concat(DHIS.util.dimension[filter].getUrl(true));
+            var params = [];                
+            params = params.concat(DHIS.util.dimension[project.state.series.dimension].getUrl());
+            params = params.concat(DHIS.util.dimension[project.state.category.dimension].getUrl());
+            params = params.concat(DHIS.util.dimension[project.state.filter.dimension].getUrl(true));
                         
-            var baseUrl = DHIS.util.string.extendUrl(project.state.conf.url) + url + '.action';
+            var baseUrl = DHIS.util.string.extendUrl(project.state.conf.url) + DHIS.conf.finals.ajax.url_data + '.action';
             Ext.Array.each(params, function(item) {
                 baseUrl = Ext.String.urlAppend(baseUrl, item);
             });
@@ -367,7 +379,7 @@ Ext.onReady( function() {
             Ext.Ajax.request({
                 url: baseUrl,
                 success: function(r) {
-                    project.values = Ext.JSON.decode(r.responseText).values;
+                    project.values = DHIS.util.value.jsonfy(r);
                     
                     if (!project.values.length) {
                         alert('No data values');
@@ -375,19 +387,13 @@ Ext.onReady( function() {
                     }
                     
                     Ext.Array.each(project.values, function(item) {
-						item.indicator = item.in;
-						item.dataelement = item.in;
-						item.period = item.pn;
-						item.organisationunit = item.on;
-                        
                         Ext.Array.include(project.state.series.names, DHIS.util.string.getEncodedString(item[project.state.series.dimension]));
                         Ext.Array.include(project.state.category.names, DHIS.util.string.getEncodedString(item[project.state.category.dimension]));
                         Ext.Array.include(project.state.filter.names, DHIS.util.string.getEncodedString(item[project.state.filter.dimension]));
                         item.v = parseFloat(item.v);
                     });
                     
-                    DHIS.state.state = project.state;
-                    
+                    DHIS.state.state = project.state;                    
 					DHIS.chart.getData(project);
                 }
             });
@@ -426,12 +432,13 @@ Ext.onReady( function() {
         column: function(project) {
             project.chart = Ext.create('Ext.chart.Chart', {
 				renderTo: project.state.conf.el,
-                width: project.state.conf.width || this.el.getWidth(),
-                height: project.state.conf.height || this.el.getHeight(),
+                width: DHIS.util.chart.getSize(this, project).width,
+                height: DHIS.util.chart.getSize(this, project).height,
                 animate: true,
                 store: project.store,
-                items: DHIS.util.chart.getTitle(),
-                legend: DHIS.util.chart.getLegend(project.store.left.length),
+                insetPadding: DHIS.conf.chart.inset,
+                items: DHIS.util.chart.getTitle(project.state.conf.titlePosition, DHIS.util.chart.getSize(this, project)),
+                legend: DHIS.util.chart.getLegend(project.state.conf.legendPosition),
                 axes: [
                     {
                         type: 'Numeric',
@@ -474,7 +481,7 @@ Ext.onReady( function() {
                 animate: true,
                 store: project.store,
                 items: DHIS.util.chart.getTitle(),
-                legend: DHIS.util.chart.getLegend(project.store.chart.bottom.length),
+                legend: DHIS.util.chart.getLegend(project.state.conf.legendPosition),
                 axes: [
                     {
                         type: 'Category',
@@ -517,7 +524,7 @@ Ext.onReady( function() {
                 animate: true,
                 store: project.store,
                 items: DHIS.util.chart.getTitle(),
-                legend: DHIS.util.chart.getLegend(project.store.chart.left.length),
+                legend: DHIS.util.chart.getLegend(project.state.conf.legendPosition),
                 axes: [
                     {
                         type: 'Numeric',
@@ -533,7 +540,7 @@ Ext.onReady( function() {
                         type: 'Category',
                         position: 'bottom',
                         fields: project.store.bottom,
-                        label: DV.util.chart.label.getCategoryLabel()
+                        label: DHIS.util.chart.label.getCategoryLabel()
                     }
                 ],
                 series: DHIS.util.chart.line.getSeriesArray(project)
@@ -549,7 +556,7 @@ Ext.onReady( function() {
                 animate: true,
                 store: project.store,
                 items: DHIS.util.chart.getTitle(),
-                legend: DHIS.util.chart.getLegend(project.store.chart.left.length),
+                legend: DHIS.util.chart.getLegend(project.state.conf.legendPosition),
                 axes: [
                     {
                         type: 'Numeric',
@@ -590,13 +597,13 @@ Ext.onReady( function() {
                 shadow: true,
                 store: project.store,
                 insetPadding: 60,
-                items: DHIS.util.chart.pie.getTitle(project.state.state.filter.names[0], project.store.left[0]),
-                legend: DHIS.util.chart.getLegend(project.state.state.category.names.length),
+                items: DHIS.util.chart.pie.getTitle(project.state.filter.names[0], project.store.left[0]),
+                legend: DHIS.util.chart.getLegend(project.state.conf.legendPosition),
                 series: [{
                     type: 'pie',
                     field: project.store.left[0],
                     showInLegend: true,
-                    tips: DHIS.util.chart.pie.getTips(),
+                    tips: DHIS.util.chart.pie.getTips(project.store),
                     label: {
                         field: project.store.bottom[0]
                     },
