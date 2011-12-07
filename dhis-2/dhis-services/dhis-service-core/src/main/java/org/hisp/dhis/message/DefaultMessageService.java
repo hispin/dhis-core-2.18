@@ -36,6 +36,7 @@ import org.hisp.dhis.dataset.CompleteDataSetRegistration;
 import org.hisp.dhis.user.CurrentUserService;
 import org.hisp.dhis.user.User;
 import org.hisp.dhis.user.UserGroup;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
@@ -70,6 +71,7 @@ public class DefaultMessageService
         this.configurationService = configurationService;
     }
     
+    @Autowired
     private List<MessageSender> messageSenders;
 
     public void setMessageSenders( List<MessageSender> messageSenders )
