@@ -30,7 +30,7 @@ package org.hisp.dhis.api.sms;
 import java.net.URL;
 
 /**
- * SmsService provides support for sending and receiving SMSes.
+ * OutboundSmsService provides support for sending SMSes.
  */
 public interface OutboundSmsService
 {
