@@ -33,12 +33,11 @@ import java.util.List;
 import org.hisp.dhis.reportsheet.DataElementGroupOrder;
 import org.hisp.dhis.reportsheet.DataElementGroupOrderService;
 import org.hisp.dhis.reportsheet.ExportReport;
-import org.hisp.dhis.reportsheet.ExportReportService;
 import org.hisp.dhis.reportsheet.ExportReportCategory;
+import org.hisp.dhis.reportsheet.ExportReportService;
+import org.hisp.dhis.reportsheet.action.ActionSupport;
 import org.hisp.dhis.reportsheet.importitem.ImportReport;
 import org.hisp.dhis.reportsheet.importitem.ImportReportService;
-
-import com.opensymphony.xwork2.Action;
 
 /**
  * @author Tran Thanh Tri
@@ -46,7 +45,7 @@ import com.opensymphony.xwork2.Action;
  * @version $Id$
  */
 public class UpdateSortedDataElementGroupOrderAction
-    implements Action
+    extends ActionSupport
 {
     // -------------------------------------------------------------------------
     // Dependency
@@ -138,6 +137,8 @@ public class UpdateSortedDataElementGroupOrderAction
             importReportService.updateImportReport( importReport );
         }
 
+        message = i18n.getString( "update_successful" );
+        
         return SUCCESS;
     }
 
