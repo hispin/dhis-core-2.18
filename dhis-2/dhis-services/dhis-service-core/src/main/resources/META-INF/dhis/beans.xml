@@ -448,11 +448,6 @@ http://www.springframework.org/schema/security http://www.springframework.org/sc
     <property name="messageConversationStore" ref="org.hisp.dhis.message.MessageConversationStore" />
     <property name="currentUserService" ref="org.hisp.dhis.user.CurrentUserService" />
     <property name="configurationService" ref="org.hisp.dhis.configuration.ConfigurationService" />
-	<property name="messageSenders">
-	  <list>
-		<ref bean="emailMessageSender"/>
-	  </list>
-	</property>
   </bean>
 
   <bean id="emailMessageSender" class="org.hisp.dhis.message.EmailMessageSender">

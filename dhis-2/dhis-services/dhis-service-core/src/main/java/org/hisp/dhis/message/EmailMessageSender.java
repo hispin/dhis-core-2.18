@@ -57,7 +57,7 @@ public class EmailMessageSender
     
     private static final int SMTP_PORT = 587;
     private static final String FROM_ADDRESS = "noreply@dhis2.org";
-    private static final String SUBJECT_PREFX = "[DHIS2] ";
+    private static final String SUBJECT_PREFIX = "[DHIS2] ";
     private static final String LB = System.getProperty( "line.separator" );
 
     // -------------------------------------------------------------------------
@@ -84,7 +84,7 @@ public class EmailMessageSender
 
     @Override
     public void sendMessage( String subject, String text, User sender, Set<User> users )
-    {
+    {        
         String hostName = StringUtils.trimToNull( (String) systemSettingManager.getSystemSetting( KEY_EMAIL_HOST_NAME ) );
         String username = StringUtils.trimToNull( (String) systemSettingManager.getSystemSetting( KEY_EMAIL_USERNAME ) );
         String password = StringUtils.trimToNull( (String) systemSettingManager.getSystemSetting( KEY_EMAIL_PASSWORD ) );
@@ -105,7 +105,7 @@ public class EmailMessageSender
         try
         {
             Email email = getEmail( hostName, username, password );
-            email.setSubject( SUBJECT_PREFX + subject );
+            email.setSubject( SUBJECT_PREFIX + subject );
             email.setMsg( text );
             
             boolean hasRecipients = false;
@@ -131,7 +131,7 @@ public class EmailMessageSender
         }
         catch ( EmailException ex )
         {
-            log.warn( "Could not send email for reason: " + ex.getMessage() );
+            log.warn( "Could not send email: " + ex.getMessage() );
         }
     }
 
