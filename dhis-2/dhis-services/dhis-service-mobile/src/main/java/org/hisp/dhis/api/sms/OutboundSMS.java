@@ -43,7 +43,7 @@ public class OutboundSMS
     
     private String url;
     
-    private OutboundSmsStatus status;
+    private OutboundSmsStatus status = OutboundSmsStatus.OUTBOUND;
 
     public Set<String> getRecipients()
     {
