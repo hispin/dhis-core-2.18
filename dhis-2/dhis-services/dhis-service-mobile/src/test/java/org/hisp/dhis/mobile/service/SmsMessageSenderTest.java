@@ -1,4 +1,4 @@
-package org.hisp.dhis.api.sms;
+package org.hisp.dhis.mobile.service;
 
 import static org.hisp.dhis.user.UserSettingService.KEY_MESSAGE_SMS_NOTIFICATION;
 import static org.mockito.Matchers.eq;
@@ -11,7 +11,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 
-import org.hisp.dhis.mobile.service.SmsMessageSender;
+import org.hisp.dhis.api.sms.OutboundSmsService;
 import org.hisp.dhis.user.User;
 import org.hisp.dhis.user.UserService;
 import org.junit.Test;
@@ -19,13 +19,12 @@ import org.junit.Test;
 public class SmsMessageSenderTest
 {
 
-    SmsMessageSender smsMessageSender;
-
+    
     @Test
     public void testMessageSender()
     {
 
-        smsMessageSender = new SmsMessageSender();
+        SmsMessageSender smsMessageSender = new SmsMessageSender();
 
         OutboundSmsService outboundSmsService = mock( OutboundSmsService.class );
         when( outboundSmsService.isSmsServiceAvailable() ).thenReturn( true );
@@ -37,22 +36,21 @@ public class SmsMessageSenderTest
 
         smsMessageSender.setOutboundSmsService( outboundSmsService );
         smsMessageSender.setUserService( userService );
-        smsMessageSender.sendMessage( "Hello", "hello", user, getUserSet( user ));
+        smsMessageSender.sendMessage( "Hello", "hello", user, getUserSet( user ) );
 
-        verify(outboundSmsService).isSmsServiceAvailable();
+        verify( outboundSmsService ).isSmsServiceAvailable();
         verify( userService ).getUserSettings( KEY_MESSAGE_SMS_NOTIFICATION, false );
-        verify( outboundSmsService ).sendMessage( eq("From null, Hello: hello"), eq("222222") );
+        verify( outboundSmsService ).sendMessage( eq( "From null, Hello: hello" ), eq( "222222" ) );
     }
 
     private HashSet<User> getUserSet( final User user )
     {
-        return new HashSet<User>(){{add( user );}};
+        return new HashSet<User>() {{ add( user ); }};
     }
 
     private Map<User, Serializable> getUserSettings( final User user )
     {
-        Map<User, Serializable> settings = new HashMap<User, Serializable>(){{put(user, true);}};
-        return settings;
+        return new HashMap<User, Serializable>() {{ put( user, true ); }};
     }
 
     private User getUser()
