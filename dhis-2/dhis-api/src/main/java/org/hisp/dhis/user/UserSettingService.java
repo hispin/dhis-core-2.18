@@ -49,6 +49,7 @@ public interface UserSettingService
     final String KEY_STYLE = "stylesheet";
     final String KEY_STYLE_DIRECTORY = "stylesheetDirectory";
     final String KEY_MESSAGE_EMAIL_NOTIFICATION = "keyMessageEmailNotification";
+    final String KEY_MESSAGE_SMS_NOTIFICATION = "keyMessageSmsNotification";
 
     final int DEFAULT_CHARTS_IN_DASHBOARD = 4;
     final List<Integer> DASHBOARD_CHARTS_TO_DISPLAY = Arrays.asList( 4, 6, 8 );
