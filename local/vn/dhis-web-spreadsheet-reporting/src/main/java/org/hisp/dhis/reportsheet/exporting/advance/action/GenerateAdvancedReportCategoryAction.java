@@ -120,7 +120,6 @@ public class GenerateAdvancedReportCategoryAction
 
             for ( DataElementGroupOrder dataElementGroup : exportReport.getDataElementOrders() )
             {
-
                 int beginChapter = rowBegin;
 
                 if ( exportItem.getItemType().equalsIgnoreCase( ExportItem.TYPE.DATAELEMENT_NAME ) )

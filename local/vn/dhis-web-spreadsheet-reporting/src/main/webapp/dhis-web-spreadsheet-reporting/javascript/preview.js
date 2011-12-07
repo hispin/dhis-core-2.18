@@ -7,6 +7,13 @@ idTemp = null;
 importlist = null;
 importItemIds = new Array();
 
+htmlStyle = ["<style type='text/css'>"];
+htmlStyle.push( "td.printclass { font-size: 12px; }" );
+htmlStyle.push( ".ui-preview-table{ border-collapse: collapse; }" );
+htmlStyle.push( ".ui-preview-normal{ font-weight: bold; color: blue }" );
+htmlStyle.push( ".ui-widget-content { border: 1px solid #a6c9e2; background: #fcfdfd url(images/ui-bg_inset-hard_100_fcfdfd_1x100.png) 50% bottom repeat-x; color: #222222; }" );
+htmlStyle.push( "</style>" );
+
 // ----------------------------------------------------------------------
 // Methods
 // ----------------------------------------------------------------------
@@ -74,31 +81,28 @@ function previewExportReportReceived( parentElement )
 
 	var _index		= 0;
 	var _orderSheet	= 0;
-	var _sHTML		= "";
 	var _sPattern	= "";
 	var _rows 		= "";
 	var _cols 		= "";
 	var _sheets		= parentElement.getElementsByTagName( 'sheet' );
-	var tabsHTML 	= '<div id="tabs">';
-	var titleHTML 	= '<ul>';
-	var contentsHTML= '';
+	var _sHTML		= [];
+	var tabsHTML 	= ['<div id="tabs"><ul>'];
 	
 	for (var s = 0 ; s < _sheets.length ; s ++)
 	{
 		// Create tab name
-		titleHTML += '<li><a href="#tabs-' + s + '">' + getElementValue( _sheets[s], "name" ) + '</a></li>';
+		tabsHTML.push( '<li><a href="#tabs-', s, '">', getElementValue( _sheets[s], "name" ), '</a></li>' );
 	
 		_rows 		= _sheets[s].getElementsByTagName( 'row' );
 		_orderSheet	= getRootElementAttribute( _sheets[s], "id" );
 		
-		contentsHTML += '<div id="tabs-' + s + '">';
-
-		_sHTML = "<table class='ui-preview-table'>";
+		_sHTML.push( '<div id="tabs-', s, '">' );
+		_sHTML.push( "<table class='ui-preview-table'>" );
 		
 		for (var i = 0 ; i < _rows.length ; i ++)
 		{
 			_index	= 0;
-			_sHTML += "<tr>";
+			_sHTML.push( "<tr>" );
 			
 			_cols 	= _rows[i].getElementsByTagName( 'col' );
 			
@@ -110,7 +114,7 @@ function previewExportReportReceived( parentElement )
 				// Printing out the unformatted cells
 				for (; _index < _number ; _index ++)
 				{
-					_sHTML += "<td/>";
+					_sHTML.push( "<td/>" );
 				}
 
 				if ( _index == _number )
@@ -127,37 +131,31 @@ function previewExportReportReceived( parentElement )
 					j 		= Number(j) + Number(_colspan);
 					_index 	= Number(_index) + Number(_colspan);
 					
-					_sHTML += "<td align='" + _align + "' colspan='" + _colspan + "'";
-					_sHTML += " class='printclass";
-					_sHTML += _border > 0 ? " ui-widget-content" : "";
+					_sHTML.push( "<td align='", _align, "' colspan='", _colspan, "'" );
+					_sHTML.push( " class='printclass" );
+					_sHTML.push( _border > 0 ? " ui-widget-content" : "" );
 					
 					// Preview without importing
 					if ( keyId && keyId.length > 0 )
 					{
-						_sHTML += " ui-preview-unselected' id='" + keyId;
+						_sHTML.push( " ui-preview-unselected' id='", keyId );
 					}
 					else if ( !isImport && isRealNumber(_sData) )
 					{
-						_sHTML += " ui-preview-normal";
+						_sHTML.push( " ui-preview-normal" );
 					}
 					
-					_sHTML += "'>" + _sData + "</td>";
+					_sHTML.push( "'>", _sData, "</td>" );
 				}
 			}
-			_sHTML += "</tr>";
+			_sHTML.push( "</tr>" );
 		}
-		_sHTML += "</table><br/>";		
-		
-		contentsHTML += _sHTML;
-		contentsHTML += '</div>';
+		_sHTML.push( "</table></div>" );
 	}
+
+	tabsHTML.push( '</ul>', _sHTML.join(''), '</div>' );
 	
-	titleHTML += '</ul>';
-	tabsHTML += titleHTML;
-	tabsHTML += contentsHTML;	
-	tabsHTML += '</div>';
-	
-	jQuery( '#previewDiv' ).html( tabsHTML );
+	jQuery( '#previewDiv' ).html( tabsHTML.join('') );
 	jQuery( '#tabs' ).tabs({ collapsible : true });
 	enable( 'printExcelReportButton' );
 	applyStyleIntoPreview();
@@ -211,13 +209,6 @@ function getMergedNumberForEachCell( aKey, sKey, aMerged )
 
 function printExportReport()
 {
-	var htmlStyle = "<style type='text/css'>";
-	htmlStyle += "td.printclass { font-size: 12px; }";
-	htmlStyle += ".ui-preview-table{ border-collapse: collapse; }";
-	htmlStyle += ".ui-preview-normal{ font-weight: bold; color: blue }";
-	htmlStyle += ".ui-widget-content { border: 1px solid #a6c9e2; background: #fcfdfd url(images/ui-bg_inset-hard_100_fcfdfd_1x100.png) 50% bottom repeat-x; color: #222222; }";
-	htmlStyle += "</style>";
-
 	var tab = jQuery('#tabs').tabs('option', 'selected');
-	jQuery( "#tabs-" + tab ).jqprint( {CSS : htmlStyle} );
+	jQuery( "#tabs-" + tab ).jqprint( {CSS : htmlStyle.join('')} );
 }

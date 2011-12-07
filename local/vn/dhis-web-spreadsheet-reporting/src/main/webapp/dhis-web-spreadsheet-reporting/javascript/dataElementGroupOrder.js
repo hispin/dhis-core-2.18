@@ -27,13 +27,6 @@ function showDataElementGroupOrderReceived( dataElementGroupOrderElement )
     showDetails();
 }
 
-/*function validateDataElementGroupOrder( _form )
-{
-	jQuery.postJSON( 'validateDataElementGroupOrder.action',
-		{ id: }, function() {
-	});
-}*/
-
 /*
 * 	Open Add Data Element Group Order 
 */
@@ -109,7 +102,7 @@ function updateSortDataElementGroupOrder()
 	}
 	
 	jQuery.postJSON( url, {}, function( json ) {
-		setMessage( json.message );
+		showSuccessMessage( json.message );
 	});
 }
 
