@@ -54,9 +54,9 @@ public class TransformCacheImpl implements TransformCache
 
     static final String MODEL2FOP = "model2fop.xsl"; 
 
-    static final String HTMLXSLT_RESOURCE = "/templates/xslt/";
+    static final String HTMLXSLT_RESOURCE = "/templates/html/";
 
-    static final String FOPXSLT_RESOURCE = "/templates/xslfo/";
+    static final String FOPXSLT_RESOURCE = "/templates/pdf/";
     
     static private TransformCache instance;
     

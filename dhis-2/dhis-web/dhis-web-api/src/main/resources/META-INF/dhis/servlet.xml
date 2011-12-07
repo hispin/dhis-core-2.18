@@ -41,13 +41,13 @@
     <property name="viewResolvers">
       <list>
         <bean name="xsltHtmlViewResolver" class="org.springframework.web.servlet.view.UrlBasedViewResolver">
-          <property name="prefix" value="/templates/xslt/" />
+          <property name="prefix" value="/templates/html/" />
           <property name="suffix" value=".xsl" />
           <property name="viewClass" value="org.hisp.dhis.api.view.XsltHtmlView" />
         </bean>
 
         <bean name="xslFoPdfViewResolver" class="org.springframework.web.servlet.view.UrlBasedViewResolver">
-          <property name="prefix" value="/templates/xslfo/" />
+          <property name="prefix" value="/templates/pdf/" />
           <property name="suffix" value=".xsl" />
           <property name="viewClass" value="org.hisp.dhis.api.view.XslFoPdfView" />
         </bean>
