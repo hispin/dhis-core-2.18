@@ -44,7 +44,7 @@ import java.util.*;
 /**
  * @author Abyot Aselefew
  */
-@XmlRootElement( name = "dataElementCategoryOptionCombo", namespace = Dxf2Namespace.NAMESPACE )
+@XmlRootElement( name = "categoryOptionCombo", namespace = Dxf2Namespace.NAMESPACE )
 @XmlAccessorType( value = XmlAccessType.NONE )
 public class DataElementCategoryOptionCombo extends BaseNameableObject
 {

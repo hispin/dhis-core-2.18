@@ -29,7 +29,15 @@ public class OrganisationUnitController
     public String getOrganisationUnits( IdentifiableObjectParams params, Model model, HttpServletRequest request )
     {
         OrganisationUnits organisationUnits = new OrganisationUnits();
-        organisationUnits.setOrganisationUnits( new ArrayList<OrganisationUnit>( organisationUnitService.getAllOrganisationUnits() ) );
+
+        if ( params.hasNoPaging() )
+        {
+            organisationUnits.setOrganisationUnits( new ArrayList<OrganisationUnit>( organisationUnitService.getAllOrganisationUnits() ) );
+        }
+        else
+        {
+            organisationUnits.setOrganisationUnits( new ArrayList<OrganisationUnit>( organisationUnitService.getAllOrganisationUnits() ) );
+        }
 
         if ( params.hasLinks() )
         {

@@ -64,6 +64,18 @@ public class WebLinkPopulator
 
     static
     {
+        resourcePaths.put( DataElementCategories.class, "categories" );
+        resourcePaths.put( DataElementCategory.class, "categories" );
+
+        resourcePaths.put( DataElementCategoryOptions.class, "categoryOptions" );
+        resourcePaths.put( DataElementCategoryOption.class, "categoryOptions" );
+
+        resourcePaths.put( DataElementCategoryCombos.class, "categoryCombos" );
+        resourcePaths.put( DataElementCategoryCombo.class, "categoryCombos" );
+
+        resourcePaths.put( DataElementCategoryOptionCombos.class, "categoryOptionCombos" );
+        resourcePaths.put( DataElementCategoryOptionCombo.class, "categoryOptionCombos" );
+
         resourcePaths.put( MapView.class, "maps" );
     }
 
@@ -318,7 +330,7 @@ public class WebLinkPopulator
 
         if ( root )
         {
-            for ( DataElementCategory dataElementCategory : dataElementCategories.getDataElementCategories() )
+            for ( DataElementCategory dataElementCategory : dataElementCategories.getCategories() )
             {
                 populateDataElementCategory( dataElementCategory, false );
             }
@@ -342,7 +354,7 @@ public class WebLinkPopulator
         if ( root )
         {
             for ( DataElementCategoryCombo dataElementCategoryCombo : dataElementCategoryCombos
-                .getDataElementCategoryCombos() )
+                .getCategoryCombos() )
             {
                 populateDataElementCategoryCombo( dataElementCategoryCombo, false );
             }
@@ -366,8 +378,7 @@ public class WebLinkPopulator
 
         if ( root )
         {
-            for ( DataElementCategoryOption dataElementCategoryOption : dataElementCategoryOptions
-                .getDataElementCategoryOptions() )
+            for ( DataElementCategoryOption dataElementCategoryOption : dataElementCategoryOptions.getCategoryOptions() )
             {
                 populateDataElementCategoryOption( dataElementCategoryOption, false );
             }
@@ -393,7 +404,7 @@ public class WebLinkPopulator
         if ( root )
         {
             for ( DataElementCategoryOptionCombo dataElementCategoryOptionCombo : dataElementCategoryOptionCombos
-                .getDataElementCategoryOptionCombos() )
+                .getCategoryOptionCombos() )
             {
                 populateDataElementCategoryOptionCombo( dataElementCategoryOptionCombo, false );
             }

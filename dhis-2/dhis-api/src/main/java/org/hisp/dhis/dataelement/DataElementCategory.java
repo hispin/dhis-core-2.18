@@ -47,7 +47,7 @@ import java.util.List;
  *
  * @author Abyot Asalefew
  */
-@XmlRootElement( name = "dataElementCategory", namespace = Dxf2Namespace.NAMESPACE )
+@XmlRootElement( name = "category", namespace = Dxf2Namespace.NAMESPACE )
 @XmlAccessorType( value = XmlAccessType.NONE )
 public class DataElementCategory extends BaseIdentifiableObject
 {

@@ -29,8 +29,8 @@ package org.hisp.dhis.api.controller;
 
 import org.hisp.dhis.api.utils.IdentifiableObjectParams;
 import org.hisp.dhis.api.utils.WebLinkPopulator;
-import org.hisp.dhis.dataelement.DataElementCategories;
-import org.hisp.dhis.dataelement.DataElementCategory;
+import org.hisp.dhis.dataelement.DataElementCategoryOption;
+import org.hisp.dhis.dataelement.DataElementCategoryOptions;
 import org.hisp.dhis.dataelement.DataElementCategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -46,42 +46,42 @@ import java.util.ArrayList;
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
 @Controller
-@RequestMapping( value = "/dataElementCategories" )
-public class DataElementCategoryController
+@RequestMapping( value = "/categoryOptions" )
+public class CategoryOptionController
 {
     @Autowired
     private DataElementCategoryService dataElementCategoryService;
 
     @RequestMapping( method = RequestMethod.GET )
-    public String getDataElementCategories( IdentifiableObjectParams params, Model model, HttpServletRequest request )
+    public String getDataElementCategoryOptions( IdentifiableObjectParams params, Model model, HttpServletRequest request )
     {
-        DataElementCategories dataElementCategories = new DataElementCategories();
-        dataElementCategories.setDataElementCategories( new ArrayList<DataElementCategory>( dataElementCategoryService.getAllDataElementCategories() ) );
+        DataElementCategoryOptions categoryOptions = new DataElementCategoryOptions();
+        categoryOptions.setCategoryOptions( new ArrayList<DataElementCategoryOption>( dataElementCategoryService.getAllDataElementCategoryOptions() ) );
 
         if ( params.hasLinks() )
         {
             WebLinkPopulator listener = new WebLinkPopulator( request );
-            listener.addLinks( dataElementCategories );
+            listener.addLinks( categoryOptions );
         }
 
-        model.addAttribute( "model", dataElementCategories );
+        model.addAttribute( "model", categoryOptions );
 
-        return "dataElementCategories";
+        return "categoryOptions";
     }
 
     @RequestMapping( value = "/{uid}", method = RequestMethod.GET )
-    public String getDataElementCategory( @PathVariable( "uid" ) String uid, IdentifiableObjectParams params, Model model, HttpServletRequest request )
+    public String getDataElementCategoryOption( @PathVariable( "uid" ) String uid, IdentifiableObjectParams params, Model model, HttpServletRequest request )
     {
-        DataElementCategory dataElementCategory = dataElementCategoryService.getDataElementCategory( uid );
+        DataElementCategoryOption categoryOption = dataElementCategoryService.getDataElementCategoryOption( uid );
 
         if ( params.hasLinks() )
         {
             WebLinkPopulator listener = new WebLinkPopulator( request );
-            listener.addLinks( dataElementCategory );
+            listener.addLinks( categoryOption );
         }
 
-        model.addAttribute( "model", dataElementCategory );
+        model.addAttribute( "model", categoryOption );
 
-        return "dataElementCategory";
+        return "categoryOption";
     }
 }

@@ -28,22 +28,18 @@
 package org.hisp.dhis.attribute;
 
 import org.codehaus.jackson.annotate.JsonProperty;
-import org.codehaus.jackson.map.annotate.JsonSerialize;
 import org.hisp.dhis.common.Dxf2Namespace;
-import org.hisp.dhis.common.adapter.BaseIdentifiableObjectXmlAdapter;
-import org.hisp.dhis.common.adapter.JsonIdentifiableObjectSerializer;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import java.io.Serializable;
 
 /**
  * @author mortenoh
  */
-@XmlRootElement( name = "attributeValue", namespace = Dxf2Namespace.NAMESPACE )
+@XmlRootElement( name = "attribute", namespace = Dxf2Namespace.NAMESPACE )
 @XmlAccessorType( value = XmlAccessType.NONE )
 public class AttributeValue
     implements Serializable
@@ -79,9 +75,24 @@ public class AttributeValue
         this.id = id;
     }
 
-    @XmlElement( name = "attribute" )
-    @XmlJavaTypeAdapter( BaseIdentifiableObjectXmlAdapter.class )
-    @JsonSerialize( using = JsonIdentifiableObjectSerializer.class )
+    @XmlAttribute
+    @JsonProperty
+    public String getAttributeTypeRef()
+    {
+        return attribute.getUid();
+    }
+
+    @XmlAttribute( name = "name" )
+    @JsonProperty( value = "name" )
+    public String getAttributeName()
+    {
+        return attribute.getName();
+    }
+
+    /*    @XmlElement( name = "attributeType" )
+@XmlJavaTypeAdapter( BaseIdentifiableObjectXmlAdapter.class )
+@JsonSerialize( using = JsonIdentifiableObjectSerializer.class )
+@JsonProperty( value = "attributeType" ) */
     public Attribute getAttribute()
     {
         return attribute;
@@ -92,7 +103,7 @@ public class AttributeValue
         this.attribute = attribute;
     }
 
-    @XmlElement
+    @XmlAttribute
     @JsonProperty
     public String getValue()
     {

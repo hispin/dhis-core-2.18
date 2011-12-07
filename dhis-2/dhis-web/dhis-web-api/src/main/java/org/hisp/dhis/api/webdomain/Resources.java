@@ -90,7 +90,7 @@ public class Resources extends BaseLinkableObject
     private void generateResources()
     {
         RequestMethod[] defaultRequestMethods = new RequestMethod[]{
-            RequestMethod.GET, RequestMethod.POST, RequestMethod.PUT, RequestMethod.DELETE
+            RequestMethod.GET /* , RequestMethod.POST, RequestMethod.PUT, RequestMethod.DELETE */
         };
 
         MediaType[] defaultMediaTypes = new MediaType[]{
@@ -112,10 +112,10 @@ public class Resources extends BaseLinkableObject
         resources.add( new Resource( "DataElements", DataElements.class, requestMethods, mediaTypes ) );
         resources.add( new Resource( "DataElementGroups", DataElementGroups.class, requestMethods, mediaTypes ) );
         resources.add( new Resource( "DataElementGroupSets", DataElementGroupSets.class, requestMethods, mediaTypes ) );
-        resources.add( new Resource( "DataElementCategories", DataElementCategories.class, requestMethods, mediaTypes ) );
-        resources.add( new Resource( "DataElementCategoryCombos", DataElementCategoryCombos.class, requestMethods, mediaTypes ) );
-        resources.add( new Resource( "DataElementCategoryOptions", DataElementCategoryOptions.class, requestMethods, mediaTypes ) );
-        resources.add( new Resource( "DataElementCategoryOptionCombos", DataElementCategoryOptionCombos.class, requestMethods, mediaTypes ) );
+        resources.add( new Resource( "Categories", DataElementCategories.class, requestMethods, mediaTypes ) );
+        resources.add( new Resource( "CategoryCombos", DataElementCategoryCombos.class, requestMethods, mediaTypes ) );
+        resources.add( new Resource( "CategoryOptions", DataElementCategoryOptions.class, requestMethods, mediaTypes ) );
+        resources.add( new Resource( "CategoryOptionCombos", DataElementCategoryOptionCombos.class, requestMethods, mediaTypes ) );
         resources.add( new Resource( "OrganisationUnits", OrganisationUnits.class, requestMethods, mediaTypes ) );
         resources.add( new Resource( "OrganisationUnitGroups", OrganisationUnitGroups.class, requestMethods, mediaTypes ) );
         resources.add( new Resource( "OrganisationUnitGroupSets", OrganisationUnitGroupSets.class, requestMethods, mediaTypes ) );

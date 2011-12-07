@@ -14,21 +14,21 @@ import java.util.List;
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
-@XmlRootElement( name = "dataElementCategoryOptions", namespace = Dxf2Namespace.NAMESPACE )
+@XmlRootElement( name = "categoryOptions", namespace = Dxf2Namespace.NAMESPACE )
 @XmlAccessorType( value = XmlAccessType.NONE )
 public class DataElementCategoryOptions extends BaseLinkableObject
 {
-    private List<DataElementCategoryOption> dataElementCategoryOptions = new ArrayList<DataElementCategoryOption>();
+    private List<DataElementCategoryOption> categoryOptions = new ArrayList<DataElementCategoryOption>();
 
-    @XmlElement( name = "dataElementCategoryOption" )
-    @JsonProperty( value = "dataElementCategoryOptions" )
-    public List<DataElementCategoryOption> getDataElementCategoryOptions()
+    @XmlElement( name = "categoryOption" )
+    @JsonProperty( value = "categoryOptions" )
+    public List<DataElementCategoryOption> getCategoryOptions()
     {
-        return dataElementCategoryOptions;
+        return categoryOptions;
     }
 
-    public void setDataElementCategoryOptions( List<DataElementCategoryOption> dataElementCategoryOptions )
+    public void setCategoryOptions( List<DataElementCategoryOption> categoryOptions )
     {
-        this.dataElementCategoryOptions = dataElementCategoryOptions;
+        this.categoryOptions = categoryOptions;
     }
 }
