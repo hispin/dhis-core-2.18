@@ -271,6 +271,10 @@ public interface OrganisationUnitService
 
     void filterOrganisationUnitsWithoutData( Collection<OrganisationUnit> organisationUnits );
 
+    Collection<OrganisationUnit> getOrganisationUnitsBetween( int first, int max );
+    
+    Collection<OrganisationUnit> getOrganisationUnitsBetweenByName( String name, int first, int max );
+    
     // -------------------------------------------------------------------------
     // OrganisationUnitHierarchy
     // -------------------------------------------------------------------------
