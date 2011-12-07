@@ -41,14 +41,14 @@ import java.util.List;
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
-@XmlRootElement( name = "attributes", namespace = Dxf2Namespace.NAMESPACE )
+@XmlRootElement( name = "attributeTypes", namespace = Dxf2Namespace.NAMESPACE )
 @XmlAccessorType( value = XmlAccessType.NONE )
 public class Attributes extends BaseLinkableObject
 {
     private List<Attribute> attributes = new ArrayList<Attribute>();
 
-    @XmlElement( name = "attribute" )
-    @JsonProperty( value = "attributes" )
+    @XmlElement( name = "attributeType" )
+    @JsonProperty( value = "attributeTypes" )
     public List<Attribute> getAttributes()
     {
         return attributes;

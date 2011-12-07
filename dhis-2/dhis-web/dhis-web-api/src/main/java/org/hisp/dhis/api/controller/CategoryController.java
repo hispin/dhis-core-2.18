@@ -29,8 +29,8 @@ package org.hisp.dhis.api.controller;
 
 import org.hisp.dhis.api.utils.IdentifiableObjectParams;
 import org.hisp.dhis.api.utils.WebLinkPopulator;
-import org.hisp.dhis.dataelement.DataElementCategoryCombo;
-import org.hisp.dhis.dataelement.DataElementCategoryCombos;
+import org.hisp.dhis.dataelement.DataElementCategories;
+import org.hisp.dhis.dataelement.DataElementCategory;
 import org.hisp.dhis.dataelement.DataElementCategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -46,42 +46,42 @@ import java.util.ArrayList;
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
 @Controller
-@RequestMapping( value = "/dataElementCategoryCombos" )
-public class DataElementCategoryComboController
+@RequestMapping( value = "/categories" )
+public class CategoryController
 {
     @Autowired
     private DataElementCategoryService dataElementCategoryService;
 
     @RequestMapping( method = RequestMethod.GET )
-    public String getDataElementCategoryCombos( IdentifiableObjectParams params, Model model, HttpServletRequest request )
+    public String getCategories( IdentifiableObjectParams params, Model model, HttpServletRequest request )
     {
-        DataElementCategoryCombos dataElementCategoryCombos = new DataElementCategoryCombos();
-        dataElementCategoryCombos.setDataElementCategoryCombos( new ArrayList<DataElementCategoryCombo>( dataElementCategoryService.getAllDataElementCategoryCombos() ) );
+        DataElementCategories categories = new DataElementCategories();
+        categories.setCategories( new ArrayList<DataElementCategory>( dataElementCategoryService.getAllDataElementCategories() ) );
 
         if ( params.hasLinks() )
         {
             WebLinkPopulator listener = new WebLinkPopulator( request );
-            listener.addLinks( dataElementCategoryCombos );
+            listener.addLinks( categories );
         }
 
-        model.addAttribute( "model", dataElementCategoryCombos );
+        model.addAttribute( "model", categories );
 
-        return "dataElementCategoryCombos";
+        return "categories";
     }
 
     @RequestMapping( value = "/{uid}", method = RequestMethod.GET )
-    public String getDataElementCategoryCombo( @PathVariable( "uid" ) String uid, IdentifiableObjectParams params, Model model, HttpServletRequest request )
+    public String getCategory( @PathVariable( "uid" ) String uid, IdentifiableObjectParams params, Model model, HttpServletRequest request )
     {
-        DataElementCategoryCombo dataElementCategoryCombo = dataElementCategoryService.getDataElementCategoryCombo( uid );
+        DataElementCategory category = dataElementCategoryService.getDataElementCategory( uid );
 
         if ( params.hasLinks() )
         {
             WebLinkPopulator listener = new WebLinkPopulator( request );
-            listener.addLinks( dataElementCategoryCombo );
+            listener.addLinks( category );
         }
 
-        model.addAttribute( "model", dataElementCategoryCombo );
+        model.addAttribute( "model", category );
 
-        return "dataElementCategoryCombo";
+        return "category";
     }
 }

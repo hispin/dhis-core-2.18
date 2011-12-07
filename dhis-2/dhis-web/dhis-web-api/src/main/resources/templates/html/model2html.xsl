@@ -9,17 +9,27 @@
     
     <!-- html page level settings -->
     <xsl:include href="html-wrapper.xsl"/>
-    
+
     <!-- for list views -->
     <xsl:include href="list.xsl"/>
-    
+
     <!-- for rendering elements -->
     <xsl:include href="map.xsl"/>
     <xsl:include href="chart.xsl"/>
+    <xsl:include href="category.xsl" />
+    <xsl:include href="categoryOption.xsl" />
+    <xsl:include href="categoryCombo.xsl" />
+    <xsl:include href="categoryOptionCombo.xsl" />
     <xsl:include href="dataElement.xsl"/>
+    <xsl:include href="dataElementGroup.xsl"/>
+    <xsl:include href="dataElementGroupSet.xsl"/>
     <xsl:include href="indicator.xsl"/>
+    <xsl:include href="indicatorGroup.xsl"/>
+    <xsl:include href="indicatorGroupSet.xsl"/>
     <xsl:include href="organisationUnit.xsl"/>
+    <xsl:include href="organisationUnitGroup.xsl"/>
+    <xsl:include href="organisationUnitGroupSet.xsl"/>
     <xsl:include href="dataSet.xsl"/>
     <!-- etc ... -->
-        
+
 </xsl:stylesheet>

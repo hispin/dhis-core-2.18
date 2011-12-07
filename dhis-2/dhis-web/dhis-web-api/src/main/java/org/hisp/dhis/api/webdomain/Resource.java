@@ -29,7 +29,7 @@ package org.hisp.dhis.api.webdomain;
 
 import org.codehaus.jackson.annotate.JsonProperty;
 import org.codehaus.jackson.map.annotate.JsonSerialize;
-import org.hisp.dhis.api.adapter.MediaTypeCollecctionJsonSerializer;
+import org.hisp.dhis.api.adapter.MediaTypeCollectionJsonSerializer;
 import org.hisp.dhis.api.adapter.MediaTypeXmlAdapter;
 import org.hisp.dhis.api.adapter.RequestMethodCollectionJsonSerializer;
 import org.hisp.dhis.api.adapter.RequestMethodXmlAdapter;
@@ -103,7 +103,7 @@ public class Resource extends BaseLinkableObject
     @XmlElementWrapper( name = "mediaTypes" )
     @XmlElement( name = "mediaType" )
     @XmlJavaTypeAdapter( MediaTypeXmlAdapter.class )
-    @JsonSerialize( using = MediaTypeCollecctionJsonSerializer.class )
+    @JsonSerialize( using = MediaTypeCollectionJsonSerializer.class )
     public List<MediaType> getMediaTypes()
     {
         return mediaTypes;

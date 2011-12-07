@@ -42,7 +42,7 @@ import org.hisp.dhis.concept.Concept;
 /**
  * @author Abyot Asalefew
  */
-@XmlRootElement( name = "dataElementCategoryOption", namespace = Dxf2Namespace.NAMESPACE )
+@XmlRootElement( name = "categoryOption", namespace = Dxf2Namespace.NAMESPACE )
 @XmlAccessorType( value = XmlAccessType.NONE )
 public class DataElementCategoryOption extends BaseNameableObject
 {

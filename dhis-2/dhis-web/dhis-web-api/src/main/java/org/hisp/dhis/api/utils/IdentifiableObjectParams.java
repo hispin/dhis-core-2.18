@@ -27,12 +27,33 @@ package org.hisp.dhis.api.utils;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import java.util.Date;
+
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
 public class IdentifiableObjectParams
 {
     private boolean links = true;
+
+    private Date lastUpdated;
+
+    private String nameLike;
+
+    /**
+     * Paging related
+     */
+
+    private boolean noPaging = false;
+
+    private int offset = 1;
+
+    private int limit = 50;
+
+    public IdentifiableObjectParams()
+    {
+
+    }
 
     public boolean hasLinks()
     {
@@ -42,5 +63,55 @@ public class IdentifiableObjectParams
     public void setLinks( boolean links )
     {
         this.links = links;
+    }
+
+    public Date getLastUpdated()
+    {
+        return lastUpdated;
+    }
+
+    public void setLastUpdated( Date lastUpdated )
+    {
+        this.lastUpdated = lastUpdated;
+    }
+
+    public String getNameLike()
+    {
+        return nameLike;
+    }
+
+    public void setNameLike( String nameLike )
+    {
+        this.nameLike = nameLike;
+    }
+
+    public boolean hasNoPaging()
+    {
+        return noPaging;
+    }
+
+    public void setNoPaging( boolean noPaging )
+    {
+        this.noPaging = noPaging;
+    }
+
+    public int getOffset()
+    {
+        return offset;
+    }
+
+    public void setOffset( int offset )
+    {
+        this.offset = offset;
+    }
+
+    public int getLimit()
+    {
+        return limit;
+    }
+
+    public void setLimit( int limit )
+    {
+        this.limit = limit;
     }
 }

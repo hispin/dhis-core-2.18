@@ -305,8 +305,9 @@ public class Indicator extends BaseNameableObject
         this.dataSets = dataSets;
     }
 
-    @XmlElementWrapper( name = "attributeValues" )
-    @XmlElement( name = "attributeValue" )
+    @XmlElementWrapper( name = "attributes" )
+    @XmlElement( name = "attribute" )
+    @JsonProperty( value = "attributes" )
     @JsonSerialize( using = JsonCollectionSerializer.class )
     public Set<AttributeValue> getAttributeValues()
     {

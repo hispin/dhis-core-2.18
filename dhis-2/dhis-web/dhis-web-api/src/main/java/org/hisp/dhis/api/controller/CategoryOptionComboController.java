@@ -46,42 +46,42 @@ import java.util.ArrayList;
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
 @Controller
-@RequestMapping( value = "/dataElementCategoryOptionCombos" )
-public class DataElementCategoryOptionComboController
+@RequestMapping( value = "/categoryOptionCombos" )
+public class CategoryOptionComboController
 {
     @Autowired
     private DataElementCategoryService dataElementCategoryService;
 
     @RequestMapping( method = RequestMethod.GET )
-    public String getDataElementCategoryOptionCombos( IdentifiableObjectParams params, Model model, HttpServletRequest request )
+    public String getCategoryOptionCombos( IdentifiableObjectParams params, Model model, HttpServletRequest request )
     {
-        DataElementCategoryOptionCombos dataElementCategoryOptionCombos = new DataElementCategoryOptionCombos();
-        dataElementCategoryOptionCombos.setDataElementCategoryOptionCombos( new ArrayList<DataElementCategoryOptionCombo>( dataElementCategoryService.getAllDataElementCategoryOptionCombos() ) );
+        DataElementCategoryOptionCombos categoryOptionCombos = new DataElementCategoryOptionCombos();
+        categoryOptionCombos.setCategoryOptionCombos( new ArrayList<DataElementCategoryOptionCombo>( dataElementCategoryService.getAllDataElementCategoryOptionCombos() ) );
 
         if ( params.hasLinks() )
         {
             WebLinkPopulator listener = new WebLinkPopulator( request );
-            listener.addLinks( dataElementCategoryOptionCombos );
+            listener.addLinks( categoryOptionCombos );
         }
 
-        model.addAttribute( "model", dataElementCategoryOptionCombos );
+        model.addAttribute( "model", categoryOptionCombos );
 
-        return "dataElementCategoryOptionCombos";
+        return "categoryOptionCombos";
     }
 
     @RequestMapping( value = "/{uid}", method = RequestMethod.GET )
-    public String getDataElementCategoryCombo( @PathVariable( "uid" ) String uid, IdentifiableObjectParams params, Model model, HttpServletRequest request )
+    public String getCategoryOptionCombo( @PathVariable( "uid" ) String uid, IdentifiableObjectParams params, Model model, HttpServletRequest request )
     {
-        DataElementCategoryOptionCombo dataElementCategoryOptionCombo = dataElementCategoryService.getDataElementCategoryOptionCombo( uid );
+        DataElementCategoryOptionCombo categoryOptionCombo = dataElementCategoryService.getDataElementCategoryOptionCombo( uid );
 
         if ( params.hasLinks() )
         {
             WebLinkPopulator listener = new WebLinkPopulator( request );
-            listener.addLinks( dataElementCategoryOptionCombo );
+            listener.addLinks( categoryOptionCombo );
         }
 
-        model.addAttribute( "model", dataElementCategoryOptionCombo );
+        model.addAttribute( "model", categoryOptionCombo );
 
-        return "dataElementCategoryOptionCombo";
+        return "categoryOptionCombo";
     }
 }

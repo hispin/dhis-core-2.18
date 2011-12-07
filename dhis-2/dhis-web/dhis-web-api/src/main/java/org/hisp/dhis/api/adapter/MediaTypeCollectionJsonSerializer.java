@@ -38,7 +38,7 @@ import java.util.Collection;
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
-public class MediaTypeCollecctionJsonSerializer extends JsonSerializer<Collection<MediaType>>
+public class MediaTypeCollectionJsonSerializer extends JsonSerializer<Collection<MediaType>>
 {
     @Override
     public void serialize( Collection<MediaType> mediaTypes, JsonGenerator jgen, SerializerProvider serializerProvider ) throws IOException

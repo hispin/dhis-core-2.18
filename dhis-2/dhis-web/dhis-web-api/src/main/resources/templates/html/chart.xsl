@@ -14,81 +14,55 @@
             <table border="1">
                 <tr>
                     <td>ID</td>
-                    <td>
-                        <xsl:value-of select="@id"/>
-                    </td>
+                    <td> <xsl:value-of select="@id"/> </td>
                 </tr>
                 <tr>
                     <td>Last Updated</td>
-                    <td>
-                        <xsl:value-of select="@lastUpdated"/>
-                    </td>
+                    <td> <xsl:value-of select="@lastUpdated"/> </td>
                 </tr>
                 <tr>
                     <td>Dimension</td>
-                    <td>
-                        <xsl:value-of select="d:dimension"/>
-                    </td>
+                    <td> <xsl:value-of select="d:dimension"/> </td>
                 </tr>
                 <tr>
                     <td>Hide legend</td>
-                    <td>
-                        <xsl:value-of select="d:hideLegend"/>
-                    </td>
+                    <td> <xsl:value-of select="d:hideLegend"/> </td>
                 </tr>
                 <tr>
                     <td>Hide subtitle</td>
-                    <td>
-                        <xsl:value-of select="d:hideSubtitle"/>
-                    </td>
+                    <td> <xsl:value-of select="d:hideSubtitle"/> </td>
                 </tr>
                 <tr>
                     <td>Horizontal Pilot  Orientation</td>
-                    <td>
-                        <xsl:value-of select="d:horizontalPlotOrientation"/>
-                    </td>
+                    <td> <xsl:value-of select="d:horizontalPlotOrientation"/> </td>
                 </tr>
                 <tr>
                     <td>Regression</td>
-                    <td>
-                        <xsl:value-of select="d:regression"/>
-                    </td>
+                    <td> <xsl:value-of select="d:regression"/> </td>
                 </tr>
                 <tr>
                     <td>Size</td>
-                    <td>
-                        <xsl:value-of select="d:size"/>
-                    </td>
+                    <td> <xsl:value-of select="d:size"/> </td>
                 </tr>
                 <tr>
                     <td>Target line</td>
-                    <td>
-                        <xsl:value-of select="d:targetLine"/>
-                    </td>
+                    <td> <xsl:value-of select="d:targetLine"/> </td>
                 </tr>
                 <tr>
                     <td>Target line label</td>
-                    <td>
-                        <xsl:value-of select="d:targetLineLabel"/>
-                    </td>
+                    <td> <xsl:value-of select="d:targetLineLabel"/> </td>
                 </tr>
                 <tr>
                     <td>Type</td>
-                    <td>
-                        <xsl:value-of select="d:type"/>
-                    </td>
+                    <td> <xsl:value-of select="d:type"/> </td>
                 </tr>
                 <tr>
                     <td>User organisation unit</td>
-                    <td>
-                        <xsl:value-of select="d:userOrganisationUnit"/>
-                    </td>
+                    <td> <xsl:value-of select="d:userOrganisationUnit"/> </td>
                 </tr>
                 <tr>
                     <td>Vertical labels</td>
-                    <td>
-                        <xsl:value-of select="d:verticalLabels"/>
-                    </td>
+                    <td> <xsl:value-of select="d:verticalLabels"/> </td>
                 </tr>
             </table>
 
