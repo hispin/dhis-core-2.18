@@ -38,6 +38,7 @@ import org.hisp.dhis.patient.PatientAttribute;
 import org.hisp.dhis.patient.PatientAttributeOption;
 import org.hisp.dhis.patient.PatientAttributeOptionService;
 import org.hisp.dhis.patient.PatientAttributeService;
+import org.hisp.dhis.patientattributevalue.PatientAttributeValueService;
 
 import com.opensymphony.xwork2.Action;
 
@@ -66,6 +67,13 @@ public class UpdatePatientAttributeAction
     public void setPatientAttributeOptionService( PatientAttributeOptionService patientAttributeOptionService )
     {
         this.patientAttributeOptionService = patientAttributeOptionService;
+    }
+
+    private PatientAttributeValueService patientAttributeValueService;
+
+    public void setPatientAttributeValueService( PatientAttributeValueService patientAttributeValueService )
+    {
+        this.patientAttributeValueService = patientAttributeValueService;
     }
 
     // -------------------------------------------------------------------------
@@ -127,7 +135,7 @@ public class UpdatePatientAttributeAction
     {
         this.noChars = noChars;
     }
-    
+
     private boolean groupBy;
 
     public void setGroupBy( boolean groupBy )
@@ -150,7 +158,7 @@ public class UpdatePatientAttributeAction
         patientAttribute.setMandatory( mandatory );
         patientAttribute.setInheritable( inheritable );
         patientAttribute.setNoChars( noChars );
-        
+
         if ( groupBy )
         {
             PatientAttribute patientAtt = patientAttributeService.getPatientAttributeByGroupBy( true );
@@ -162,8 +170,7 @@ public class UpdatePatientAttributeAction
             patientAttribute.setMandatory( true );
         }
         patientAttribute.setGroupBy( groupBy );
-        
-        
+
         HttpServletRequest request = ServletActionContext.getRequest();
 
         Collection<PatientAttributeOption> attributeOptions = patientAttributeOptionService.get( patientAttribute );
@@ -178,6 +185,7 @@ public class UpdatePatientAttributeAction
                 {
                     option.setName( value.trim() );
                     patientAttributeOptionService.updatePatientAttributeOption( option );
+                    patientAttributeValueService.updatePatientAttributeValues( option );
                 }
             }
         }

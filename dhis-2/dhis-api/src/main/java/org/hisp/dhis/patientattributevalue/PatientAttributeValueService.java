@@ -84,4 +84,6 @@ public interface PatientAttributeValueService
     
     int countSearchPatients( List<Integer> patientAttributeIds, List<String> searchTexts );
     
+    void updatePatientAttributeValues( PatientAttributeOption patientAttributeOption);
+    
 }

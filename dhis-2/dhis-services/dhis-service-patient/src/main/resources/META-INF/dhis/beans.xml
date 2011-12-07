@@ -89,6 +89,7 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
 		class="org.hisp.dhis.patientattributevalue.hibernate.HibernatePatientAttributeValueStore">
 		<property name="clazz" value="org.hisp.dhis.patientattributevalue.PatientAttributeValue" />
 		<property name="sessionFactory" ref="sessionFactory" />
+		<property name="jdbcTemplate" ref="jdbcTemplate"/>
 	</bean>
 	
    <bean id="org.hisp.dhis.patient.PatientAttributeOptionStore"
