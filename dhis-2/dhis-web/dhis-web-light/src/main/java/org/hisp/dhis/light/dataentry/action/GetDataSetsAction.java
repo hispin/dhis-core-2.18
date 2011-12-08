@@ -29,10 +29,15 @@ package org.hisp.dhis.light.dataentry.action;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
+import org.hisp.dhis.user.CurrentUserService;
+import org.hisp.dhis.user.User;
+import org.hisp.dhis.user.UserCredentials;
+import org.springframework.beans.factory.annotation.Required;
 
 import com.opensymphony.xwork2.Action;
 
@@ -45,6 +50,14 @@ public class GetDataSetsAction
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
+
+    private CurrentUserService currentUserService;
+
+    @Required
+    public void setCurrentUserService( CurrentUserService currentUserService )
+    {
+        this.currentUserService = currentUserService;
+    }
 
     private OrganisationUnitService organisationUnitService;
 
@@ -86,9 +99,19 @@ public class GetDataSetsAction
         if ( organisationUnitId != null )
         {
             OrganisationUnit organisationUnit = organisationUnitService.getOrganisationUnit( organisationUnitId );
+            
             dataSets = new ArrayList<DataSet>( organisationUnit.getDataSets() );
+
+            UserCredentials userCredentials = currentUserService.getCurrentUser().getUserCredentials();
+
+            if ( !userCredentials.isSuper() )
+            {
+                dataSets.retainAll( userCredentials.getAllDataSets() );
+            }
+
         }
 
         return SUCCESS;
     }
+
 }
