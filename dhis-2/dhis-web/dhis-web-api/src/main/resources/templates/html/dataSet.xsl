@@ -33,36 +33,18 @@
 
       </table>
 
-      <xsl:apply-templates select="d:dataElements|d:indicators|d:sources" />
+      <xsl:apply-templates select="d:dataElements|d:indicators|d:organisationUnits" mode="short" />
 
     </div>
   </xsl:template>
-
-  <xsl:template match="d:dataElements">
+  
+  <xsl:template match="d:dataSets" mode="short">
     <xsl:if test="count(child::*) > 0">
-      <h3>DataElements</h3>
-      <table border="1" class="dataElements">
-          <xsl:apply-templates mode="row"/>
-      </table>
-    </xsl:if>
-  </xsl:template>
-
-  <xsl:template match="d:indicators">
-    <xsl:if test="count(child::*) > 0">
-      <h3>Indicators</h3>
-      <table border="1" class="indicator">
+      <h3>DataSets</h3>
+      <table border="1" class="dataSets">
         <xsl:apply-templates select="child::*" mode="row"/>
       </table>
     </xsl:if>
   </xsl:template>
-
-  <xsl:template match="d:sources">
-    <xsl:if test="count(child::*) > 0">
-      <h3>OrganisationUnits</h3>
-      <table border="1" class="sources">
-        <xsl:apply-templates select="child::*" mode="row"/>
-      </table>
-    </xsl:if>
-  </xsl:template>
-
+  
 </xsl:stylesheet>

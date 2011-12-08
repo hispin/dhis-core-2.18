@@ -19,24 +19,17 @@
         </tr>
       </table>
 
-      <xsl:apply-templates select="d:categoryOptionCombos|d:category"/>
+      <xsl:apply-templates select="d:category|d:categoryOptionCombos" mode="short"/>
     </div>
   </xsl:template>
 
-  <xsl:template match="d:category">
-    <h3>Category</h3>
-    <table border="1" class="category">
-      <xsl:apply-templates select="child::*" mode="row"/>
-    </table>
-  </xsl:template>
-
-  <xsl:template match="d:categoryOptionCombos">
+  <xsl:template match="d:categoryOptions" mode="short">
     <xsl:if test="count(child::*) > 0">
-      <h3>CategoryOptionCombos</h3>
-      <table border="1" class="categoryOptionCombos">
+      <h3>CategoryOptions</h3>
+      <table border="1" class="categoryOptions">
         <xsl:apply-templates select="child::*" mode="row"/>
       </table>
     </xsl:if>
   </xsl:template>
-
+  
 </xsl:stylesheet>

@@ -10,6 +10,9 @@
     <!-- html page level settings -->
     <xsl:include href="html-wrapper.xsl"/>
 
+    <!-- for resource 'directory' -->
+    <xsl:include href="resource.xsl"/>
+  
     <!-- for list views -->
     <xsl:include href="list.xsl"/>
 
@@ -24,6 +27,7 @@
     <xsl:include href="dataElementGroup.xsl"/>
     <xsl:include href="dataElementGroupSet.xsl"/>
     <xsl:include href="indicator.xsl"/>
+    <xsl:include href="indicatorType.xsl"/>
     <xsl:include href="indicatorGroup.xsl"/>
     <xsl:include href="indicatorGroupSet.xsl"/>
     <xsl:include href="organisationUnit.xsl"/>

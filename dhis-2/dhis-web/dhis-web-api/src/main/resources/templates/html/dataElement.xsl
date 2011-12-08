@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="1.0"
-  xmlns="http://www.w3.org/1999/xhtml"
-  xmlns:d="http://dhis2.org/schema/dxf/2.0"
-  >
+                xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:d="http://dhis2.org/schema/dxf/2.0"
+    >
 
   <xsl:template match="d:dataElement">
     <div class="dataElement">
@@ -46,33 +46,17 @@
           <td> <xsl:value-of select="d:domainType" /> </td>
         </tr>
       </table>
-      <xsl:apply-templates select="d:categoryCombo|d:dataElementGroups|d:dataSets"/>
+      <xsl:apply-templates select="d:categoryCombo|d:dataElementGroups|d:dataSets" mode="short"/>
     </div>
   </xsl:template>
-
-  <xsl:template match="d:categoryCombo">
-    <h3>CategoryCombo</h3>
-    <table border="1" class="categoryCombo">
-      <xsl:apply-templates select="child::*" mode="row"/>
-    </table>
-  </xsl:template>
-
-  <xsl:template match="d:dataElementGroups">
+  
+  <xsl:template match="d:dataElements" mode="short">
     <xsl:if test="count(child::*) > 0">
-      <h3>DataElementGroups</h3>
-      <table border="1" class="dataElementGroups">
-        <xsl:apply-templates select="child::*" mode="row"/>
+      <h3>DataElements</h3>
+      <table border="1" class="dataElements">
+        <xsl:apply-templates mode="row"/>
       </table>
     </xsl:if>
   </xsl:template>
-
-  <xsl:template match="d:dataSets">
-    <xsl:if test="count(child::*) > 0">
-      <h3>DataSets</h3>
-      <table border="1" class="dataSets">
-        <xsl:apply-templates select="child::*" mode="row"/>
-      </table>
-    </xsl:if>
-  </xsl:template>
-
+  
 </xsl:stylesheet>
