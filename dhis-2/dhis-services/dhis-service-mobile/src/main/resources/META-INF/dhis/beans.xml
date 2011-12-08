@@ -47,7 +47,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 
   <!--  SMS Message sender -->
 
-  <bean id="org.hisp.dhis.mobile.service.SmsMessageSender"" class="org.hisp.dhis.mobile.service.SmsMessageSender" />
+  <bean id="org.hisp.dhis.mobile.service.SmsMessageSender" class="org.hisp.dhis.mobile.service.SmsMessageSender" />
 
   <!--  OutboundSmsService stub just logging invocations, only to be used for testing! -->
 
