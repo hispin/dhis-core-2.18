@@ -19,17 +19,15 @@
         </tr>
       </table>
 
-      <xsl:apply-templates select="d:categoryOptions"/>
+      <xsl:apply-templates select="d:categoryOptions" mode="short"/>
     </div>
   </xsl:template>
 
-  <xsl:template match="d:categoryOptions">
-    <xsl:if test="count(child::*) > 0">
-      <h3>CategoryOptions</h3>
-      <table border="1" class="categoryOptions">
-        <xsl:apply-templates select="child::*" mode="row"/>
-      </table>
-    </xsl:if>
+  <xsl:template match="d:category" mode="short">
+    <h3>Category</h3>
+    <table border="1" class="category">
+      <xsl:apply-templates select="." mode="row"/>
+    </table>
   </xsl:template>
 
 </xsl:stylesheet>

@@ -23,17 +23,8 @@
         </tr>
       </table>
 
-      <xsl:apply-templates select="d:organisationUnitGroups"/>
+      <xsl:apply-templates select="d:organisationUnitGroups" mode="short"/>
     </div>
   </xsl:template>
-
-  <xsl:template match="d:organisationUnitGroups">
-    <xsl:if test="count(child::*) > 0">
-      <h3>OrganisationUnit Groups</h3>
-      <table border="1" class="organisationUnitGroups">
-        <xsl:apply-templates select="child::*" mode="row"/>
-      </table>
-    </xsl:if>
-  </xsl:template>
-
+  
 </xsl:stylesheet>

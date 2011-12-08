@@ -67,27 +67,18 @@
 
       </table>
 
-      <xsl:apply-templates select="d:groups|d:dataSets" mode="indicator" />
+      <xsl:apply-templates select="d:indicatorGroups|d:dataSets" mode="short"/>
 
     </div>
   </xsl:template>
-
-  <xsl:template match="d:groups" mode="indicator">
+  
+  <xsl:template match="d:indicators" mode="short">
     <xsl:if test="count(child::*) > 0">
-      <h3>Indicator Groups</h3>
-      <table border="1" class="indicatorGroups">
+      <h3>Indicators</h3>
+      <table border="1" class="indicators">
         <xsl:apply-templates select="child::*" mode="row"/>
       </table>
     </xsl:if>
   </xsl:template>
-
-  <xsl:template match="d:dataSets" mode="indicator">
-    <xsl:if test="count(child::*) > 0">
-      <h3>DataSets</h3>
-      <table border="1" class="dataSets">
-        <xsl:apply-templates select="child::*" mode="row"/>
-      </table>
-    </xsl:if>
-  </xsl:template>
-
+  
 </xsl:stylesheet>

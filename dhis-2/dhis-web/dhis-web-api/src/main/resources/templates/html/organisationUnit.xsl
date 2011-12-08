@@ -44,25 +44,25 @@
 
       </table>
 
-      <xsl:apply-templates select="d:parent|d:organisationUnitGroups|d:dataSets" />
+      <xsl:apply-templates select="d:parent|d:organisationUnitGroups|d:dataSets" mode="short" />
 
     </div>
   </xsl:template>
-
-  <xsl:template match="d:parent">
+  
+  <xsl:template match="d:organisationUnits" mode="short">
+    <xsl:if test="count(child::*) > 0">
+      <h3>OrganisationUnits</h3>
+      <table border="1">
+        <xsl:apply-templates select="child::*" mode="row"/>
+      </table>
+    </xsl:if>
+  </xsl:template>
+  
+  <xsl:template match="d:parent" mode="short">
     <h3>Parent OrganisationUnit</h3>
     <table border="1">
       <xsl:apply-templates select="." mode="row"/>
     </table>
-  </xsl:template>
-
-  <xsl:template match="d:organisationUnitGroups">
-    <xsl:if test="count(child::*) > 0">
-      <h3>OrganisationUnit Groups</h3>
-      <table border="1" class="organisationUnitGroups">
-        <xsl:apply-templates select="child::*" mode="row"/>
-      </table>
-    </xsl:if>
   </xsl:template>
 
   <xsl:template match="d:dataSets">

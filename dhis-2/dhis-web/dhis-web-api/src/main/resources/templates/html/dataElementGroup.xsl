@@ -23,17 +23,17 @@
         </tr>
       </table>
 
-      <xsl:apply-templates select="d:dataElements"/>
+      <xsl:apply-templates select="d:dataElements" mode="short"/>
     </div>
   </xsl:template>
 
-  <xsl:template match="d:dataElements">
+  <xsl:template match="d:dataElementGroups" mode="short">
     <xsl:if test="count(child::*) > 0">
-      <h3>DataElements</h3>
-      <table border="1" class="dataElements">
+      <h3>DataElementGroups</h3>
+      <table border="1" class="dataElementGroups">
         <xsl:apply-templates select="child::*" mode="row"/>
       </table>
     </xsl:if>
   </xsl:template>
-
+  
 </xsl:stylesheet>

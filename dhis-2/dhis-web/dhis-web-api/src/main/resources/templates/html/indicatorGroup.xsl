@@ -23,17 +23,17 @@
         </tr>
       </table>
 
-      <xsl:apply-templates select="d:indicators"/>
+      <xsl:apply-templates select="d:indicators" mode="short"/>
     </div>
   </xsl:template>
 
-  <xsl:template match="d:indicators">
+  <xsl:template match="d:indicatorGroups" mode="short" >
     <xsl:if test="count(child::*) > 0">
-      <h3>Indicators</h3>
-      <table border="1" class="indicators">
+      <h3>Indicator Groups</h3>
+      <table border="1" class="indicatorGroups">
         <xsl:apply-templates select="child::*" mode="row"/>
       </table>
     </xsl:if>
   </xsl:template>
-
+  
 </xsl:stylesheet>
