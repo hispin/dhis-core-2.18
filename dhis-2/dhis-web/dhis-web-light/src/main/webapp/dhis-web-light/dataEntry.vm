@@ -60,6 +60,8 @@
 			#end
 
 			#foreach( $optionCombo in $dataElement.categoryCombo.optionCombos )
+                
+                #if( !$greyedFields.get( "$dataElement.id:$optionCombo.id" ) ) 
 				#set( $key = "DE${dataElement.id}OC${optionCombo.id}" )
 
 				<label>$encoder.htmlEncode( $dataElementName ) #if( $optionCombo.name!="(default)")$encoder.htmlEncode( $optionCombo.name )#end</label>
@@ -99,6 +101,7 @@
 					<input type="text" maxlength="255" size="24" name="$key" value="$!dataValues.get($key)" />
 				#elseif( $dataElement.type == "int" && $dataElement.numberType == "negativeNumber" )
 					<input type="text" maxlength="255" size="24" name="$key" value="$!dataValues.get($key)" />
+				#end
 				#end
 			#end
 		#end
