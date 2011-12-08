@@ -176,14 +176,14 @@ public class DataValueSetService
     {
         DataSet dataSet = null;
 
-        String uuid = dataValueSet.getDataSetIdentifier();
-        if ( uuid != null )
+        String uid = dataValueSet.getDataSetIdentifier();
+        if ( uid != null )
         {
-            dataSet = dataSetService.getDataSet( uuid );
+            dataSet = dataSetService.getDataSet( uid );
 
             if ( dataSet == null )
             {
-                throw new IllegalArgumentException( "Data set with UUID " + uuid + " does not exist" );
+                throw new IllegalArgumentException( "Data set with UID " + uid + " does not exist" );
             }
         }
         else
