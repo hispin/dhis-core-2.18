@@ -32,10 +32,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.hisp.dhis.dataelement.DataElementCategoryCombo;
+import org.hisp.dhis.dataelement.DataElementOperand;
 import org.hisp.dhis.dataset.CompleteDataSetRegistration;
 import org.hisp.dhis.dataset.CompleteDataSetRegistrationService;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.dataset.DataSetService;
+import org.hisp.dhis.dataset.Section;
 import org.hisp.dhis.datavalue.DeflatedDataValue;
 import org.hisp.dhis.light.dataentry.utils.FormUtils;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
@@ -182,6 +185,13 @@ public class GetSectionFormAction
         return page;
     }
 
+    private Map<String, Boolean> greyedFields = new HashMap<String, Boolean>();
+
+    public Map<String, Boolean> getGreyedFields()
+    {
+        return greyedFields;
+    }
+    
     // -------------------------------------------------------------------------
     // Action Implementation
     // -------------------------------------------------------------------------
@@ -206,6 +216,24 @@ public class GetSectionFormAction
 
         complete = registration != null ? true : false;
 
+        if ( dataSet.getDataSetType() == DataSet.TYPE_SECTION )
+        {
+            setGreyedFields();
+        }
+
         return SUCCESS;
+    }
+
+    private void setGreyedFields()
+    {
+        for ( Section section : dataSet.getSections() )
+        {
+            for ( DataElementOperand operand : section.getGreyedFields() )
+            {
+                greyedFields.put( operand.getDataElement().getId() + ":" + operand.getCategoryOptionCombo().getId(),
+                    true );
+            }
+        }
+        
     }
 }
