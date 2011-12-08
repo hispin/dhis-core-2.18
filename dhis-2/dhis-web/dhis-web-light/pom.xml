@@ -46,6 +46,11 @@
       <groupId>org.hisp.dhis</groupId>
       <artifactId>dhis-service-mobile</artifactId>
     </dependency>
+    <dependency>
+      <groupId>org.hisp.dhis</groupId>
+      <artifactId>dhis-support-test</artifactId>
+    </dependency>
+    
 
     <!-- Other -->
     <dependency>
