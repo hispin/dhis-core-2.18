@@ -18,7 +18,7 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
 	
   <!-- ResourceTable -->
 
-  <bean id="org.hisp.dhis.resourcetable.ResourceTableStore" class="org.hisp.dhis.resourcetable.hibernate.HibernateResourceTableStore">
+  <bean id="org.hisp.dhis.resourcetable.ResourceTableStore" class="org.hisp.dhis.resourcetable.jdbc.JdbcResourceTableStore">
     <property name="jdbcTemplate" ref="jdbcTemplate" />
   </bean>
 
