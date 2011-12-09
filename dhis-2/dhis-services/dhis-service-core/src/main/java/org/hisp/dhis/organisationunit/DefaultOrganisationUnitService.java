@@ -30,7 +30,6 @@ package org.hisp.dhis.organisationunit;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -111,8 +110,6 @@ public class DefaultOrganisationUnitService
 
     public void updateOrganisationUnit( OrganisationUnit organisationUnit )
     {
-        organisationUnit.setLastUpdated( new Date() );
-
         organisationUnitStore.update( organisationUnit );
 
         log.info( AuditLogUtil.logMessage( currentUserService.getCurrentUsername(), AuditLogUtil.ACTION_EDIT,
