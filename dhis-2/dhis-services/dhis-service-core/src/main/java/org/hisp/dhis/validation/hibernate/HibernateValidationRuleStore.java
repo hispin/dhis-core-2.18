@@ -31,8 +31,8 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.hisp.dhis.common.hibernate.HibernateIdentifiableObjectStore;
 import org.hisp.dhis.dataelement.DataElement;
-import org.hisp.dhis.hibernate.HibernateGenericStore;
 import org.hisp.dhis.period.PeriodStore;
 import org.hisp.dhis.period.PeriodType;
 import org.hisp.dhis.system.util.ConversionUtils;
@@ -45,7 +45,7 @@ import org.hisp.dhis.validation.ValidationRuleStore;
  */
 
 public class HibernateValidationRuleStore
-    extends HibernateGenericStore<ValidationRule>
+    extends HibernateIdentifiableObjectStore<ValidationRule>
     implements ValidationRuleStore
 {
     // -------------------------------------------------------------------------
