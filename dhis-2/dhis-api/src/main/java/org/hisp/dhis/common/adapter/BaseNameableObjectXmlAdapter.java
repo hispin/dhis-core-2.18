@@ -27,7 +27,6 @@ package org.hisp.dhis.common.adapter;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import org.apache.commons.lang.NotImplementedException;
 import org.hisp.dhis.common.BaseNameableObject;
 
 import javax.xml.bind.annotation.adapters.XmlAdapter;
@@ -38,29 +37,24 @@ import javax.xml.bind.annotation.adapters.XmlAdapter;
 public class BaseNameableObjectXmlAdapter extends XmlAdapter<BaseNameableObject, BaseNameableObject>
 {
     @Override
-    public BaseNameableObject unmarshal( BaseNameableObject baseNameableObject ) throws Exception
+    public BaseNameableObject unmarshal( BaseNameableObject baseIdentifiableObject ) throws Exception
     {
-        throw new NotImplementedException();
+        return baseIdentifiableObject;
     }
 
     @Override
-    public BaseNameableObject marshal( BaseNameableObject baseNameableObject ) throws Exception
+    public BaseNameableObject marshal( BaseNameableObject baseIdentifiableObject ) throws Exception
     {
-        if ( baseNameableObject != null )
+        if ( baseIdentifiableObject != null )
         {
-            BaseNameableObject bno = new BaseNameableObject();
+            BaseNameableObject bio = new BaseNameableObject();
 
-            bno.setUid( baseNameableObject.getUid() );
-            bno.setCode( baseNameableObject.getCode() );
-            bno.setName( baseNameableObject.getName() );
-            bno.setLastUpdated( baseNameableObject.getLastUpdated() );
-            bno.setLink( baseNameableObject.getLink() );
+            bio.setUid( baseIdentifiableObject.getUid() );
+            bio.setName( baseIdentifiableObject.getName() );
+            bio.setLastUpdated( baseIdentifiableObject.getLastUpdated() );
+            bio.setLink( baseIdentifiableObject.getLink() );
 
-            bno.setShortName( baseNameableObject.getShortName() );
-            bno.setAlternativeName( baseNameableObject.getAlternativeName() );
-            bno.setDescription( baseNameableObject.getDescription() );
-
-            return bno;
+            return bio;
         }
 
         return null;

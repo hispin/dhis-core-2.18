@@ -11,7 +11,7 @@
     d:categoryOptions|d:categoryOptionCombos|d:dataElements|d:indicators|
     d:organisationUnits|d:dataElementGroups|d:dataElementGroupSets|
     d:indicatorGroups|d:indicatorGroupSets|d:organisationUnitGroups|
-    d:organisationUnitGroupSets|d:indicatorTypes">
+    d:organisationUnitGroupSets|d:indicatorTypes|d:attributeTypes">
     <h3> <xsl:value-of select="local-name()"/> </h3>
 
     <table border="1">

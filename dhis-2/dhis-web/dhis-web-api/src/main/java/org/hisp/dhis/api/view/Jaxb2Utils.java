@@ -27,10 +27,20 @@ package org.hisp.dhis.api.view;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import org.hisp.dhis.common.BaseIdentifiableObject;
+import org.hisp.dhis.common.BaseNameableObject;
+import org.hisp.dhis.common.adapter.DataElementGroupXmlAdapter;
+import org.hisp.dhis.common.adapter.DataSetXmlAdapter;
+import org.hisp.dhis.dataelement.DataElementGroup;
+import org.hisp.dhis.dataset.DataSet;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
+import javax.xml.bind.Unmarshaller;
+import javax.xml.bind.annotation.adapters.XmlAdapter;
+import java.io.InputStream;
 
 public class Jaxb2Utils
 {
@@ -44,5 +54,20 @@ public class Jaxb2Utils
         marshaller.setProperty( Marshaller.JAXB_ENCODING, "UTF-8" );
 
         return marshaller;
+    }
+
+    public static Unmarshaller createUnmarshaller( Class<?> clazz )
+        throws JAXBException
+    {
+        JAXBContext context = JAXBContext.newInstance( clazz );
+
+        Unmarshaller unmarshaller = context.createUnmarshaller();
+
+        return unmarshaller;
+    }
+
+    public static <T> T unmarshal( Class<?> clazz, InputStream input ) throws JAXBException
+    {
+        return (T) Jaxb2Utils.createUnmarshaller( clazz ).unmarshal( input );
     }
 }

@@ -75,8 +75,8 @@ public class AttributeValue
         this.id = id;
     }
 
-    @XmlAttribute
-    @JsonProperty
+    @XmlAttribute( name = "id" )
+    @JsonProperty( value = "id" )
     public String getAttributeTypeRef()
     {
         return attribute.getUid();
@@ -89,10 +89,6 @@ public class AttributeValue
         return attribute.getName();
     }
 
-    /*    @XmlElement( name = "attributeType" )
-@XmlJavaTypeAdapter( BaseIdentifiableObjectXmlAdapter.class )
-@JsonSerialize( using = JsonIdentifiableObjectSerializer.class )
-@JsonProperty( value = "attributeType" ) */
     public Attribute getAttribute()
     {
         return attribute;

@@ -49,10 +49,9 @@ public class CompleteDataSetRegistrationController
     @Autowired
     private CompleteDataSetRegistrationService completeDataSetRegistrationService;
 
-    public CompleteDataSetRegistrationController()
-    {
-
-    }
+    //-------------------------------------------------------------------------------------------------------
+    // GET
+    //-------------------------------------------------------------------------------------------------------
 
     @RequestMapping( method = RequestMethod.GET )
     public String getCompleteDataSetRegistrations( Model model, HttpServletRequest request )

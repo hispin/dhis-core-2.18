@@ -19,11 +19,17 @@ import java.util.ArrayList;
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
 @Controller
-@RequestMapping( value = "/organisationUnitGroups" )
+@RequestMapping( value = OrganisationUnitGroupController.RESOURCE_PATH )
 public class OrganisationUnitGroupController
 {
+    public static final String RESOURCE_PATH = "/organisationUnitGroups";
+
     @Autowired
     private OrganisationUnitGroupService organisationUnitGroupService;
+
+    //-------------------------------------------------------------------------------------------------------
+    // GET
+    //-------------------------------------------------------------------------------------------------------
 
     @RequestMapping( method = RequestMethod.GET )
     public String getOrganisationUnits( IdentifiableObjectParams params, Model model, HttpServletRequest request )

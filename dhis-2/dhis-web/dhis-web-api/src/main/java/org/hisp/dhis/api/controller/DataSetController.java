@@ -33,13 +33,18 @@ import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.dataset.DataSetService;
 import org.hisp.dhis.dataset.DataSets;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseStatus;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.InputStream;
 import java.util.ArrayList;
 
 /**
@@ -51,6 +56,10 @@ public class DataSetController
 {
     @Autowired
     private DataSetService dataSetService;
+
+    //-------------------------------------------------------------------------------------------------------
+    // GET
+    //-------------------------------------------------------------------------------------------------------
 
     @RequestMapping( method = RequestMethod.GET )
     public String getDataSets( IdentifiableObjectParams params, Model model, HttpServletRequest request )
@@ -83,5 +92,52 @@ public class DataSetController
         model.addAttribute( "model", dataSet );
 
         return "dataSet";
+    }
+
+    //-------------------------------------------------------------------------------------------------------
+    // POST
+    //-------------------------------------------------------------------------------------------------------
+
+    @RequestMapping( method = RequestMethod.POST, headers = {"Content-Type=application/xml, text/xml"} )
+    @ResponseStatus( value = HttpStatus.CREATED )
+    public void postDataSetXML( HttpServletResponse response, InputStream input ) throws Exception
+    {
+        throw new HttpRequestMethodNotSupportedException( RequestMethod.POST.toString() );
+    }
+
+    @RequestMapping( method = RequestMethod.POST, headers = {"Content-Type=application/json"} )
+    @ResponseStatus( value = HttpStatus.CREATED )
+    public void postDataSetJSON( HttpServletResponse response, InputStream input ) throws Exception
+    {
+        throw new HttpRequestMethodNotSupportedException( RequestMethod.POST.toString() );
+    }
+
+    //-------------------------------------------------------------------------------------------------------
+    // PUT
+    //-------------------------------------------------------------------------------------------------------
+
+    @RequestMapping( value = "/{uid}", method = RequestMethod.PUT, headers = {"Content-Type=application/xml, text/xml"} )
+    @ResponseStatus( value = HttpStatus.NO_CONTENT )
+    public void putDataSetXML( @PathVariable( "uid" ) String uid, InputStream input ) throws Exception
+    {
+        throw new HttpRequestMethodNotSupportedException( RequestMethod.DELETE.toString() );
+    }
+
+    @RequestMapping( value = "/{uid}", method = RequestMethod.PUT, headers = {"Content-Type=application/json"} )
+    @ResponseStatus( value = HttpStatus.NO_CONTENT )
+    public void putDataSetJSON( @PathVariable( "uid" ) String uid, InputStream input ) throws Exception
+    {
+        throw new HttpRequestMethodNotSupportedException( RequestMethod.PUT.toString() );
+    }
+
+    //-------------------------------------------------------------------------------------------------------
+    // DELETE
+    //-------------------------------------------------------------------------------------------------------
+
+    @RequestMapping( value = "/{uid}", method = RequestMethod.DELETE )
+    @ResponseStatus( value = HttpStatus.NO_CONTENT )
+    public void deleteDataSet( @PathVariable( "uid" ) String uid ) throws Exception
+    {
+        throw new HttpRequestMethodNotSupportedException( RequestMethod.DELETE.toString() );
     }
 }

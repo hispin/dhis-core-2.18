@@ -46,11 +46,17 @@ import java.util.ArrayList;
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
 @Controller
-@RequestMapping( value = "/indicatorTypes" )
+@RequestMapping( value = IndicatorTypeController.RESOURCE_PATH )
 public class IndicatorTypeController
 {
+    public static final String RESOURCE_PATH = "/indicatorTypes";
+
     @Autowired
     private IndicatorService indicatorService;
+
+    //-------------------------------------------------------------------------------------------------------
+    // GET
+    //-------------------------------------------------------------------------------------------------------
 
     @RequestMapping( method = RequestMethod.GET )
     public String getIndicatorTypes( IdentifiableObjectParams params, Model model, HttpServletRequest request )

@@ -1,4 +1,4 @@
-package org.hisp.dhis.api.controller;
+package org.hisp.dhis.common.adapter;
 
 /*
  * Copyright (c) 2004-2011, University of Oslo
@@ -27,30 +27,34 @@ package org.hisp.dhis.api.controller;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.hisp.dhis.common.BaseIdentifiableObject;
+import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
+
+import javax.xml.bind.annotation.adapters.XmlAdapter;
+import java.util.UUID;
 
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
-@Controller
-public class IndexController
+public class CategoryOptionComboXmlAdapter extends XmlAdapter<BaseIdentifiableObject, DataElementCategoryOptionCombo>
 {
-    //-------------------------------------------------------------------------------------------------------
-    // GET
-    //-------------------------------------------------------------------------------------------------------
+    private BaseIdentifiableObjectXmlAdapter baseIdentifiableObjectXmlAdapter = new BaseIdentifiableObjectXmlAdapter();
 
-    @RequestMapping( value = "/api", method = RequestMethod.GET )
-    public String getIndex( Model model )
+    @Override
+    public DataElementCategoryOptionCombo unmarshal( BaseIdentifiableObject identifiableObject ) throws Exception
     {
-        return "redirect:/api/resources";
+        DataElementCategoryOptionCombo categoryOptionCombo = new DataElementCategoryOptionCombo();
+
+        categoryOptionCombo.setUid( identifiableObject.getUid() );
+        categoryOptionCombo.setLastUpdated( identifiableObject.getLastUpdated() );
+        categoryOptionCombo.setName( identifiableObject.getName() == null ? UUID.randomUUID().toString() : identifiableObject.getName() );
+
+        return categoryOptionCombo;
     }
 
-    @RequestMapping( value = "/", method = RequestMethod.GET )
-    public String getIndexWithSlash( Model model )
+    @Override
+    public BaseIdentifiableObject marshal( DataElementCategoryOptionCombo categoryOptionCombo ) throws Exception
     {
-        return "redirect:/api/resources";
+        return baseIdentifiableObjectXmlAdapter.marshal( categoryOptionCombo );
     }
 }

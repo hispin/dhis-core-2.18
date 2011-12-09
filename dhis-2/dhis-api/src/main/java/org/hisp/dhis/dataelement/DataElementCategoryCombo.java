@@ -213,9 +213,8 @@ public class DataElementCategoryCombo
     // -------------------------------------------------------------------------
 
     @XmlElementWrapper( name = "categories" )
-    @XmlJavaTypeAdapter( BaseIdentifiableObjectXmlAdapter.class )
     @XmlElement( name = "category" )
-    @JsonSerialize( using = JsonIdentifiableObjectCollectionSerializer.class )
+    @XmlJavaTypeAdapter( BaseIdentifiableObjectXmlAdapter.class )
     public List<DataElementCategory> getCategories()
     {
         return categories;
@@ -227,9 +226,8 @@ public class DataElementCategoryCombo
     }
 
     @XmlElementWrapper( name = "optionCombos" )
-    @XmlJavaTypeAdapter( BaseIdentifiableObjectXmlAdapter.class )
     @XmlElement( name = "optionCombo" )
-    @JsonSerialize( using = JsonIdentifiableObjectCollectionSerializer.class )
+    @XmlJavaTypeAdapter( BaseIdentifiableObjectXmlAdapter.class )
     public Set<DataElementCategoryOptionCombo> getOptionCombos()
     {
         return optionCombos;

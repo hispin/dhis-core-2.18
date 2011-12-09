@@ -27,27 +27,25 @@ package org.hisp.dhis.indicator;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
-
 import org.codehaus.jackson.annotate.JsonProperty;
 import org.codehaus.jackson.map.annotate.JsonSerialize;
 import org.hisp.dhis.common.BaseIdentifiableObject;
 import org.hisp.dhis.common.Dxf2Namespace;
 import org.hisp.dhis.common.adapter.BaseIdentifiableObjectXmlAdapter;
-import org.hisp.dhis.common.adapter.JsonIdentifiableObjectCollectionSerializer;
 import org.hisp.dhis.indicator.comparator.IndicatorGroupNameComparator;
 
 import javax.xml.bind.annotation.*;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
 
 /**
  * An IndicatorGroupSet is a set of IndicatorGroups. It is by default exclusive,
  * in the sense that an Indicator can only be a member of one or zero of the
  * IndicatorGroups in a IndicatorGroupSet.
- * 
+ *
  * @author Lars Helge Overland
  */
 @XmlRootElement( name = "indicatorGroupSet", namespace = Dxf2Namespace.NAMESPACE )
@@ -221,9 +219,10 @@ public class IndicatorGroupSet extends BaseIdentifiableObject
     }
 
     @XmlElementWrapper( name = "indicatorGroups" )
-    @XmlJavaTypeAdapter( BaseIdentifiableObjectXmlAdapter.class )
     @XmlElement( name = "indicatorGroup" )
-    @JsonSerialize( using = JsonIdentifiableObjectCollectionSerializer.class )
+    @XmlJavaTypeAdapter( BaseIdentifiableObjectXmlAdapter.class )
+    @JsonProperty( value = "indicatorGroups" )
+    @JsonSerialize( contentAs = BaseIdentifiableObject.class )
     public List<IndicatorGroup> getMembers()
     {
         return members;

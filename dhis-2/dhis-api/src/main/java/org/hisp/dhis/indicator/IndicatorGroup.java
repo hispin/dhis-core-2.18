@@ -27,12 +27,12 @@ package org.hisp.dhis.indicator;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import org.codehaus.jackson.annotate.JsonProperty;
 import org.codehaus.jackson.map.annotate.JsonSerialize;
 import org.hisp.dhis.common.BaseIdentifiableObject;
 import org.hisp.dhis.common.Dxf2Namespace;
 import org.hisp.dhis.common.adapter.BaseIdentifiableObjectXmlAdapter;
 import org.hisp.dhis.common.adapter.JsonIdentifiableObjectCollectionSerializer;
-import org.hisp.dhis.common.adapter.JsonIdentifiableObjectSerializer;
 
 import javax.xml.bind.annotation.*;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
@@ -157,9 +157,10 @@ public class IndicatorGroup extends BaseIdentifiableObject
         this.members = members;
     }
 
-    @XmlJavaTypeAdapter( BaseIdentifiableObjectXmlAdapter.class )
     @XmlElement( name = "indicatorGroupSet" )
-    @JsonSerialize( using = JsonIdentifiableObjectSerializer.class )
+    @XmlJavaTypeAdapter( BaseIdentifiableObjectXmlAdapter.class )
+    @JsonProperty( value = "indicatorGroupSet" )
+    @JsonSerialize( as = BaseIdentifiableObject.class )
     public IndicatorGroupSet getGroupSet()
     {
         return groupSet;

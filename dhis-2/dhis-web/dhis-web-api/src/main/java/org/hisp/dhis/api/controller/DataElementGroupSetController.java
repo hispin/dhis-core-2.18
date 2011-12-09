@@ -46,11 +46,17 @@ import java.util.ArrayList;
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
 @Controller
-@RequestMapping( value = "/dataElementGroupSets" )
+@RequestMapping( value = DataElementGroupSetController.RESOURCE_PATH )
 public class DataElementGroupSetController
 {
+    public static final String RESOURCE_PATH = "/dataElementGroupSets";
+
     @Autowired
     private DataElementService dataElementService;
+
+    //-------------------------------------------------------------------------------------------------------
+    // GET
+    //-------------------------------------------------------------------------------------------------------
 
     @RequestMapping( method = RequestMethod.GET )
     public String getDataElementGroupSets( IdentifiableObjectParams params, Model model, HttpServletRequest request )

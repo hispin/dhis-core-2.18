@@ -28,22 +28,18 @@ package org.hisp.dhis.api.controller;
  */
 
 import org.hisp.dhis.api.utils.IdentifiableObjectParams;
-import org.hisp.dhis.api.utils.ObjectPersister;
 import org.hisp.dhis.api.utils.WebLinkPopulator;
+import org.hisp.dhis.api.view.JacksonUtils;
 import org.hisp.dhis.api.view.Jaxb2Utils;
-import org.hisp.dhis.dataelement.DataElement;
-import org.hisp.dhis.dataelement.DataElementService;
-import org.hisp.dhis.dataelement.DataElements;
-import org.hisp.dhis.dataset.DataSetService;
+import org.hisp.dhis.attribute.Attribute;
+import org.hisp.dhis.attribute.AttributeService;
+import org.hisp.dhis.attribute.Attributes;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseStatus;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -54,55 +50,49 @@ import java.util.ArrayList;
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
 @Controller
-@RequestMapping( value = DataElementController.RESOURCE_PATH )
-public class DataElementController
+@RequestMapping( value = AttributeTypeController.RESOURCE_PATH )
+public class AttributeTypeController
 {
-    public static final String RESOURCE_PATH = "/dataElements";
+    public static final String RESOURCE_PATH = "/attributeTypes";
 
     @Autowired
-    private DataElementService dataElementService;
-
-    @Autowired
-    private DataSetService dataSetService;
-
-    @Autowired
-    private ObjectPersister objectPersister;
+    private AttributeService attributeService;
 
     //-------------------------------------------------------------------------------------------------------
     // GET
     //-------------------------------------------------------------------------------------------------------
 
     @RequestMapping( method = RequestMethod.GET )
-    public String getDataElements( IdentifiableObjectParams params, Model model, HttpServletRequest request )
+    public String getAttributeTypes( IdentifiableObjectParams params, Model model, HttpServletRequest request )
     {
-        DataElements dataElements = new DataElements();
-        dataElements.setDataElements( new ArrayList<DataElement>( dataElementService.getAllActiveDataElements() ) );
+        Attributes attributes = new Attributes();
+        attributes.setAttributes( new ArrayList<Attribute>( attributeService.getAllAttributes() ) );
 
         if ( params.hasLinks() )
         {
             WebLinkPopulator listener = new WebLinkPopulator( request );
-            listener.addLinks( dataElements );
+            listener.addLinks( attributes );
         }
 
-        model.addAttribute( "model", dataElements );
+        model.addAttribute( "model", attributes );
 
-        return "dataElements";
+        return "attributeTypes";
     }
 
     @RequestMapping( value = "/{uid}", method = RequestMethod.GET )
-    public String getDataElement( @PathVariable( "uid" ) String uid, IdentifiableObjectParams params, Model model, HttpServletRequest request )
+    public String getAttributeType( @PathVariable( "uid" ) String uid, IdentifiableObjectParams params, Model model, HttpServletRequest request )
     {
-        DataElement dataElement = dataElementService.getDataElement( uid );
+        Attribute attribute = attributeService.getAttribute( uid );
 
         if ( params.hasLinks() )
         {
             WebLinkPopulator listener = new WebLinkPopulator( request );
-            listener.addLinks( dataElement );
+            listener.addLinks( attribute );
         }
 
-        model.addAttribute( "model", dataElement );
+        model.addAttribute( "model", attribute );
 
-        return "dataElement";
+        return "attributeType";
     }
 
     //-------------------------------------------------------------------------------------------------------
@@ -110,23 +100,22 @@ public class DataElementController
     //-------------------------------------------------------------------------------------------------------
 
     @RequestMapping( method = RequestMethod.POST, headers = {"Content-Type=application/xml, text/xml"} )
-    public void postDataElementXML( HttpServletResponse response, InputStream input ) throws Exception
+    public void postAttributeTypeXML( HttpServletResponse response, InputStream input ) throws Exception
     {
-        DataElement dataElement = Jaxb2Utils.unmarshal( DataElement.class, input );
-        postDataElement( dataElement, response );
+        Attribute attribute = (Attribute) Jaxb2Utils.unmarshal( Attribute.class, input );
+        postAttributeType( attribute, response );
     }
 
     @RequestMapping( method = RequestMethod.POST, headers = {"Content-Type=application/json"} )
-    public void postDataElementJSON( HttpServletResponse response, InputStream input ) throws Exception
+    public void postAttributeTypeJSON( HttpServletResponse response, InputStream input ) throws Exception
     {
-        throw new HttpRequestMethodNotSupportedException( RequestMethod.POST.toString() );
-        //DataElement dataElement = JacksonUtils.readValueAs( DataElement.class, input );
-        //postDataElement( dataElement, response );
+        Attribute attribute = JacksonUtils.readValueAs( Attribute.class, input );
+        postAttributeType( attribute, response );
     }
 
-    public void postDataElement( DataElement dataElement, HttpServletResponse response )
+    public void postAttributeType( Attribute attribute, HttpServletResponse response )
     {
-        if ( dataElement == null )
+        if ( attribute == null )
         {
             response.setStatus( HttpServletResponse.SC_NOT_IMPLEMENTED );
         }
@@ -134,20 +123,19 @@ public class DataElementController
         {
             try
             {
-                objectPersister.persistDataElement( dataElement );
+                attributeService.addAttribute( attribute );
 
-                if ( dataElement.getUid() == null )
+                if ( attribute.getUid() == null )
                 {
                     response.setStatus( HttpServletResponse.SC_INTERNAL_SERVER_ERROR );
                 }
                 else
                 {
                     response.setStatus( HttpServletResponse.SC_CREATED );
-                    response.setHeader( "Location", DataElementController.RESOURCE_PATH + "/" + dataElement.getUid() );
+                    response.setHeader( "Location", AttributeTypeController.RESOURCE_PATH + "/" + attribute.getUid() );
                 }
             } catch ( Exception e )
             {
-                e.printStackTrace();
                 response.setStatus( HttpServletResponse.SC_CONFLICT );
             }
         }
@@ -158,17 +146,57 @@ public class DataElementController
     //-------------------------------------------------------------------------------------------------------
 
     @RequestMapping( value = "/{uid}", method = RequestMethod.PUT, headers = {"Content-Type=application/xml, text/xml"} )
-    @ResponseStatus( value = HttpStatus.NO_CONTENT )
-    public void putDataElementXML( @PathVariable( "uid" ) String uid, InputStream input ) throws Exception
+    public void putAttributeTypeXML( @PathVariable( "uid" ) String uid, InputStream input, HttpServletResponse response ) throws Exception
     {
-        throw new HttpRequestMethodNotSupportedException( RequestMethod.PUT.toString() );
+        Attribute updateAttribute = (Attribute) Jaxb2Utils.unmarshal( Attribute.class, input );
+        updateAttribute.setUid( uid );
+        putAttributeType( updateAttribute, response );
     }
 
     @RequestMapping( value = "/{uid}", method = RequestMethod.PUT, headers = {"Content-Type=application/json"} )
-    @ResponseStatus( value = HttpStatus.NO_CONTENT )
-    public void putDataElementJSON( @PathVariable( "uid" ) String uid, InputStream input ) throws Exception
+    public void putAttributeTypeJSON( @PathVariable( "uid" ) String uid, InputStream input, HttpServletResponse response ) throws Exception
     {
-        throw new HttpRequestMethodNotSupportedException( RequestMethod.PUT.toString() );
+        Attribute updateAttribute = JacksonUtils.readValueAs( Attribute.class, input );
+        updateAttribute.setUid( uid );
+        putAttributeType( updateAttribute, response );
+    }
+
+    public void putAttributeType( Attribute updatedAttribute, HttpServletResponse response )
+    {
+        Attribute attribute = attributeService.getAttribute( updatedAttribute.getUid() );
+
+        if ( updatedAttribute == null || attribute == null )
+        {
+            response.setStatus( HttpServletResponse.SC_NOT_IMPLEMENTED );
+        }
+        else
+        {
+            attribute.setName( updatedAttribute.getName() );
+            attribute.setCode( updatedAttribute.getCode() );
+            attribute.setDataElementAttribute( updatedAttribute.isDataElementAttribute() );
+            attribute.setIndicatorAttribute( updatedAttribute.isIndicatorAttribute() );
+            attribute.setOrganisationUnitAttribute( updatedAttribute.isOrganisationUnitAttribute() );
+            attribute.setMandatory( updatedAttribute.isMandatory() );
+            attribute.setAttributeValues( updatedAttribute.getAttributeValues() );
+
+            try
+            {
+                attributeService.updateAttribute( attribute );
+
+                if ( updatedAttribute.getUid() == null )
+                {
+                    response.setStatus( HttpServletResponse.SC_INTERNAL_SERVER_ERROR );
+                }
+                else
+                {
+                    response.setStatus( HttpServletResponse.SC_NO_CONTENT );
+                    response.setHeader( "Location", AttributeTypeController.RESOURCE_PATH + "/" + updatedAttribute.getUid() );
+                }
+            } catch ( Exception e )
+            {
+                response.setStatus( HttpServletResponse.SC_CONFLICT );
+            }
+        }
     }
 
     //-------------------------------------------------------------------------------------------------------
@@ -176,9 +204,18 @@ public class DataElementController
     //-------------------------------------------------------------------------------------------------------
 
     @RequestMapping( value = "/{uid}", method = RequestMethod.DELETE )
-    @ResponseStatus( value = HttpStatus.NO_CONTENT )
-    public void deleteDataElement( @PathVariable( "uid" ) String uid ) throws Exception
+    public void deleteAttributeType( @PathVariable( "uid" ) String uid, HttpServletResponse response ) throws Exception
     {
-        throw new HttpRequestMethodNotSupportedException( RequestMethod.DELETE.toString() );
+        Attribute attribute = attributeService.getAttribute( uid );
+
+        if ( attribute == null )
+        {
+            response.setStatus( HttpServletResponse.SC_NOT_FOUND );
+        }
+        else
+        {
+            response.setStatus( HttpServletResponse.SC_NO_CONTENT );
+            attributeService.deleteAttribute( attribute );
+        }
     }
 }

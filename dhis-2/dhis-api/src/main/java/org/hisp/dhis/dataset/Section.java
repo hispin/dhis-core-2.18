@@ -25,9 +25,9 @@ package org.hisp.dhis.dataset;
 
 import org.codehaus.jackson.annotate.JsonProperty;
 import org.codehaus.jackson.map.annotate.JsonSerialize;
+import org.hisp.dhis.common.BaseIdentifiableObject;
 import org.hisp.dhis.common.Dxf2Namespace;
 import org.hisp.dhis.common.adapter.BaseIdentifiableObjectXmlAdapter;
-import org.hisp.dhis.common.adapter.JsonIdentifiableObjectCollectionSerializer;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryCombo;
 import org.hisp.dhis.dataelement.DataElementOperand;
@@ -200,7 +200,8 @@ public class Section
     @XmlElementWrapper( name = "dataElements" )
     @XmlElement( name = "dataElement" )
     @XmlJavaTypeAdapter( BaseIdentifiableObjectXmlAdapter.class )
-    @JsonSerialize( using = JsonIdentifiableObjectCollectionSerializer.class )
+    @JsonProperty( value = "dataElements" )
+    @JsonSerialize( contentAs = BaseIdentifiableObject.class )
     public List<DataElement> getDataElements()
     {
         return dataElements;
