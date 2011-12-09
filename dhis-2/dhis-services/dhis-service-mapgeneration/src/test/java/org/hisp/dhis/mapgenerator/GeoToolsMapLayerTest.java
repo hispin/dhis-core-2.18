@@ -28,13 +28,14 @@ import org.junit.Test;
 /**
  * @author Kenneth Solbø Andersen <kennetsa@ifi.uio.no>
  */
-public class GeoToolsMapLayerTest extends DhisSpringTest {
-	
-	InternalMapLayer internalMapLayer;
-	
-	MappingService mappingService;
-	
-	private OrganisationUnit organisationUnit;
+public class GeoToolsMapLayerTest
+    extends DhisSpringTest
+{
+    private InternalMapLayer internalMapLayer;
+
+    private MappingService mappingService;
+
+    private OrganisationUnit organisationUnit;
 
     private OrganisationUnitLevel organisationUnitLevel;
 
@@ -53,20 +54,20 @@ public class GeoToolsMapLayerTest extends DhisSpringTest {
     private Period period;
 
     private MapLegendSet mapLegendSet;
-	
+
     @Override
     public void setUpTest()
-	{
-		mappingService = (MappingService) getBean( MappingService.ID );
+    {
+        mappingService = (MappingService) getBean( MappingService.ID );
 
         organisationUnitService = (OrganisationUnitService) getBean( OrganisationUnitService.ID );
 
         indicatorService = (IndicatorService) getBean( IndicatorService.ID );
-        
+
         dataElementService = (DataElementService) getBean( DataElementService.ID );
 
         periodService = (PeriodService) getBean( PeriodService.ID );
-        
+
         organisationUnit = createOrganisationUnit( 'A' );
         organisationUnitLevel = new OrganisationUnitLevel( 1, "Level" );
 
@@ -95,83 +96,83 @@ public class GeoToolsMapLayerTest extends DhisSpringTest {
 
         mapLegendSet = createMapLegendSet( 'A', indicator );
         mappingService.addMapLegendSet( mapLegendSet );
-        
+
         internalMapLayer = new InternalMapLayer();
-        internalMapLayer.setRadiusLow(15);
-        internalMapLayer.setRadiusHigh(35);
-        internalMapLayer.setColorLow(Color.YELLOW);
-        internalMapLayer.setColorHigh(Color.RED);
-        internalMapLayer.setOpacity(0.5f);
-	}
-	
-	@Test
-	@Ignore
-	public void testBuildGeometryForOrganisationUnit()
-	{
-		
-	}
-	
-	@Test
-	@Ignore
-	public void testGetAllMapObjects()
-	{
-		
-	}
-	
-	@Ignore
-	@Test
-	public void testSetGetRadiusHigh()
-	{
-		internalMapLayer.setRadiusHigh(45);
-		assertEquals(45.8F, internalMapLayer.getRadiusHigh(), 0.00001F);
-		internalMapLayer.setRadiusHigh(82);
-		assertEquals(82.023984F, internalMapLayer.getRadiusHigh(), 0.00001F);
-	}
-	
-	@Ignore
-	@Test
-	public void testSetGetRadiusLow()
-	{
-		internalMapLayer.setRadiusLow(45);
-		assertEquals(45.8F, internalMapLayer.getRadiusLow(), 0.00001F);
-		internalMapLayer.setRadiusLow(82);
-		assertEquals(82.023984F, internalMapLayer.getRadiusLow(), 0.00001F);
-	}
-	
-	@Ignore
-	@Test
-	public void testSetGetColorHigh()
-	{
-		internalMapLayer.setColorHigh(Color.YELLOW);
-		assertEquals(Color.YELLOW, internalMapLayer.getColorHigh());
-		internalMapLayer.setColorHigh(Color.BLUE);
-		assertEquals(Color.BLUE, internalMapLayer.getColorHigh());
-	}
-	
-	@Ignore
-	@Test
-	public void testSetGetColorLow()
-	{
-		internalMapLayer.setColorLow(Color.YELLOW);
-		assertEquals(Color.YELLOW, internalMapLayer.getColorLow());
-		internalMapLayer.setColorLow(Color.BLUE);
-		assertEquals(Color.BLUE, internalMapLayer.getColorLow());
-	}
-	
-	@Ignore
-	@Test
-	public void testSetGetOpacity()
-	{
-		internalMapLayer.setOpacity(34.8F);
-		assertEquals(34.8F, internalMapLayer.getOpacity(), 0.00001);
-		internalMapLayer.setOpacity(14.5F);
-		assertEquals(14.5F, internalMapLayer.getOpacity(), 0.00001);
-	}
-	
-	@Ignore
-	@Test
-	public void testGetIntervalSet()
-	{
-		
-	}
+        internalMapLayer.setRadiusLow( 15 );
+        internalMapLayer.setRadiusHigh( 35 );
+        internalMapLayer.setColorLow( Color.YELLOW );
+        internalMapLayer.setColorHigh( Color.RED );
+        internalMapLayer.setOpacity( 0.5f );
+    }
+
+    @Test
+    @Ignore
+    public void testBuildGeometryForOrganisationUnit()
+    {
+        //TODO
+    }
+
+    @Test
+    @Ignore
+    public void testGetAllMapObjects()
+    {
+        //TODO
+    }
+
+    @Ignore
+    @Test
+    public void testSetGetRadiusHigh()
+    {
+        internalMapLayer.setRadiusHigh( 45 );
+        assertEquals( 45.8F, internalMapLayer.getRadiusHigh(), 0.00001F );
+        internalMapLayer.setRadiusHigh( 82 );
+        assertEquals( 82.023984F, internalMapLayer.getRadiusHigh(), 0.00001F );
+    }
+
+    @Ignore
+    @Test
+    public void testSetGetRadiusLow()
+    {
+        internalMapLayer.setRadiusLow( 45 );
+        assertEquals( 45.8F, internalMapLayer.getRadiusLow(), 0.00001F );
+        internalMapLayer.setRadiusLow( 82 );
+        assertEquals( 82.023984F, internalMapLayer.getRadiusLow(), 0.00001F );
+    }
+
+    @Ignore
+    @Test
+    public void testSetGetColorHigh()
+    {
+        internalMapLayer.setColorHigh( Color.YELLOW );
+        assertEquals( Color.YELLOW, internalMapLayer.getColorHigh() );
+        internalMapLayer.setColorHigh( Color.BLUE );
+        assertEquals( Color.BLUE, internalMapLayer.getColorHigh() );
+    }
+
+    @Ignore
+    @Test
+    public void testSetGetColorLow()
+    {
+        internalMapLayer.setColorLow( Color.YELLOW );
+        assertEquals( Color.YELLOW, internalMapLayer.getColorLow() );
+        internalMapLayer.setColorLow( Color.BLUE );
+        assertEquals( Color.BLUE, internalMapLayer.getColorLow() );
+    }
+
+    @Ignore
+    @Test
+    public void testSetGetOpacity()
+    {
+        internalMapLayer.setOpacity( 34.8F );
+        assertEquals( 34.8F, internalMapLayer.getOpacity(), 0.00001 );
+        internalMapLayer.setOpacity( 14.5F );
+        assertEquals( 14.5F, internalMapLayer.getOpacity(), 0.00001 );
+    }
+
+    @Ignore
+    @Test
+    public void testGetIntervalSet()
+    {
+        //TODO
+    }
 }

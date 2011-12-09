@@ -8,7 +8,6 @@ import org.hisp.dhis.indicator.Indicator;
 import org.hisp.dhis.indicator.IndicatorGroup;
 import org.hisp.dhis.indicator.IndicatorService;
 import org.hisp.dhis.indicator.IndicatorType;
-import org.hisp.dhis.mapgeneration.MapGenerationService;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitLevel;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
@@ -21,11 +20,10 @@ import org.junit.Test;
 /**
  * @author Kenneth Solbø Andersen <kennetsa@ifi.uio.no>
  */
-public class MapGeneratorServiceTest extends DhisSpringTest {
-	
-	MapGenerationService mapGeneratorService;
-	
-	private OrganisationUnit organisationUnit;
+public class MapGeneratorServiceTest
+    extends DhisSpringTest
+{
+    private OrganisationUnit organisationUnit;
 
     private OrganisationUnitLevel organisationUnitLevel;
 
@@ -42,20 +40,18 @@ public class MapGeneratorServiceTest extends DhisSpringTest {
     private PeriodType periodType;
 
     private Period period;
-	
-	@Override
-	public void setUpTest()
-	{
-		mapGeneratorService = (MapGenerationService) getBean(MapGenerationService.ID);
-		
-		organisationUnitService = (OrganisationUnitService) getBean( OrganisationUnitService.ID );
+
+    @Override
+    public void setUpTest()
+    {
+        organisationUnitService = (OrganisationUnitService) getBean( OrganisationUnitService.ID );
 
         indicatorService = (IndicatorService) getBean( IndicatorService.ID );
-        
+
         dataElementService = (DataElementService) getBean( DataElementService.ID );
-        
+
         periodService = (PeriodService) getBean( PeriodService.ID );
-        
+
         organisationUnit = createOrganisationUnit( 'A' );
         organisationUnitLevel = new OrganisationUnitLevel( 1, "Level" );
 
@@ -81,11 +77,11 @@ public class MapGeneratorServiceTest extends DhisSpringTest {
         periodType = periodService.getPeriodTypeByName( MonthlyPeriodType.NAME );
         period = createPeriod( periodType, getDate( 2000, 1, 1 ), getDate( 2000, 2, 1 ) );
         periodService.addPeriod( period );
-	}
-	
+    }
+
     @Test
     public void testGenerateMapImage()
     {
-    	
+        // TODO
     }
 }

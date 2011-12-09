@@ -15,55 +15,64 @@ import java.util.List;
  * @author Kristin Simonsen <krissimo@ifi.uio.no>
  * @author Kjetil Andresen <kjetil.andrese@gmail.com>
  */
-public class Legend {
+public class Legend
+{
+    public static final Font TITLE_FONT = new Font( "title", Font.BOLD, 15 );
+    public static final Font PLAIN_FONT = new Font( "plain", Font.PLAIN, 13 );
 
-	public static final Font TITLE_FONT = new Font("title", Font.BOLD, 15);
-	public static final Font PLAIN_FONT = new Font("plain", Font.PLAIN, 13);
+    private InternalMapLayer mapLayer;
 
-	private InternalMapLayer mapLayer;
-	private List<LegendItem> legendItems;
-	
-	private static final int HEADER_HEIGHT = 50;
-	
-	public Legend(InternalMapLayer mapLayer) {
-		this.mapLayer = mapLayer;
-		this.legendItems = new LinkedList<LegendItem>();
+    private List<LegendItem> legendItems;
 
-		for (Interval interval : mapLayer.getIntervalSet().getAllIntervals()) {
-			addLegendItem(new LegendItem(interval));
-		}
-	}
+    private static final int HEADER_HEIGHT = 50;
 
-	public void draw(Graphics2D g) {
-		g.setColor(Color.BLACK);
-		g.setFont(TITLE_FONT);
-		g.drawString(mapLayer.getName(), 0, 15);
-		g.setFont(PLAIN_FONT);
-		g.drawString(mapLayer.getPeriod().getStartDateString() + "", 0, 35);
+    public Legend( InternalMapLayer mapLayer )
+    {
+        this.mapLayer = mapLayer;
+        this.legendItems = new LinkedList<LegendItem>();
 
-		g.translate(0, HEADER_HEIGHT);
+        for ( Interval interval : mapLayer.getIntervalSet().getAllIntervals() )
+        {
+            addLegendItem( new LegendItem( interval ) );
+        }
+    }
 
-		for (LegendItem legendItem : legendItems) {
-			legendItem.draw(g);
-			g.translate(0, legendItem.getHeight());
-		}
-	}
+    public void draw( Graphics2D g )
+    {
+        g.setColor( Color.BLACK );
+        g.setFont( TITLE_FONT );
+        g.drawString( mapLayer.getName(), 0, 15 );
+        g.setFont( PLAIN_FONT );
+        g.drawString( mapLayer.getPeriod().getStartDateString() + "", 0, 35 );
 
-	public int getHeight() {
-		int height = 0;
+        g.translate( 0, HEADER_HEIGHT );
 
-		for (LegendItem legendItem : legendItems) {
-			height += legendItem.getHeight();
-		}
+        for ( LegendItem legendItem : legendItems )
+        {
+            legendItem.draw( g );
+            g.translate( 0, legendItem.getHeight() );
+        }
+    }
 
-		return HEADER_HEIGHT + height;
-	}
+    public int getHeight()
+    {
+        int height = 0;
 
-	public List<LegendItem> getLegendItems() {
-		return legendItems;
-	}
+        for ( LegendItem legendItem : legendItems )
+        {
+            height += legendItem.getHeight();
+        }
 
-	public void addLegendItem(LegendItem legendItem) {
-		legendItems.add(legendItem);
-	}
+        return HEADER_HEIGHT + height;
+    }
+
+    public List<LegendItem> getLegendItems()
+    {
+        return legendItems;
+    }
+
+    public void addLegendItem( LegendItem legendItem )
+    {
+        legendItems.add( legendItem );
+    }
 }
