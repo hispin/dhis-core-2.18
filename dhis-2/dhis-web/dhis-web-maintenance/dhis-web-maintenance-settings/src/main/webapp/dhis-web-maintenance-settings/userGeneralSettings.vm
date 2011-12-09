@@ -37,7 +37,7 @@
 #end
 </select>
 
-<h4>$i18n.getString( "sort_order" )</h4>
+<h4>$i18n.getString( "sort_order_property" )</h4>
 
 <select id="currentSortOrder" name="currentSortOrder" style="min-width:250px">
 #foreach( $sortOrder in $sortOrders )
