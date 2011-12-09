@@ -46,22 +46,6 @@ public interface ValidationRuleStore
     // -------------------------------------------------------------------------
 
     /**
-     * Saves a ValidationRule to the database.
-     * 
-     * @param validationRule the ValidationRule to add.
-     * @return the generated unique identifier for the ValidationRule.
-     */
-    
-    int saveValidationRule( ValidationRule validationRule );
-    /**
-     * Update a ValidationRule to the database.
-     * 
-     * @param validationRule the ValidationRule to update.
-     * @return the generated unique identifier for the ValidationRule.
-     */
-    void updateValidationRule( ValidationRule validationRule );
-    
-    /**
      * Returns all ValidationRules which are associated through their left or
      * right side Expression with the given collection of DataElements.
      * 
@@ -69,11 +53,4 @@ public interface ValidationRuleStore
      * @return a collection of ValidationRules.
      */
     Collection<ValidationRule> getValidationRulesByDataElements( Collection<DataElement> dataElements );
-    
-    /**
-     * Returns the number of ValidationRules.
-     * 
-     * @return the number of ValidationRules.
-     */
-    Integer getNumberOfValidationRules();
 }
