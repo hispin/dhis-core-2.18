@@ -238,6 +238,7 @@ http://www.springframework.org/schema/security http://www.springframework.org/sc
   <bean id="org.hisp.dhis.version.VersionStore" class="org.hisp.dhis.version.hibernate.HibernateVersionStore">
     <property name="sessionFactory" ref="sessionFactory" />
     <property name="clazz" value="org.hisp.dhis.version.Version" />
+    <property name="cacheable" value="true" />
   </bean>
 
   <bean id="org.hisp.dhis.attribute.AttributeStore" class="org.hisp.dhis.attribute.hibernate.HibernateAttributeStore">
