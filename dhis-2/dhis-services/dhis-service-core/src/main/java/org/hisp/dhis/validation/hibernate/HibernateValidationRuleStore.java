@@ -31,7 +31,6 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
-import org.hibernate.Session;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.hibernate.HibernateGenericStore;
 import org.hisp.dhis.period.PeriodStore;
@@ -65,27 +64,23 @@ public class HibernateValidationRuleStore
     // -------------------------------------------------------------------------
 
     @Override
-    public int saveValidationRule( ValidationRule validationRule )
+    public int save( ValidationRule validationRule )
     {
         PeriodType periodType = periodStore.getPeriodType( validationRule.getPeriodType().getClass() );
 
         validationRule.setPeriodType( periodType );
 
-        Session session = sessionFactory.getCurrentSession();
-
-        return (Integer) session.save( validationRule );
+        return super.save( validationRule );
     }
     
     @Override
-    public void updateValidationRule( ValidationRule validationRule )
+    public void update( ValidationRule validationRule )
     {
         PeriodType periodType = periodStore.getPeriodType( validationRule.getPeriodType().getClass() );
 
         validationRule.setPeriodType( periodType );
 
-        Session session = sessionFactory.getCurrentSession();
-
-        session.update( validationRule );
+        super.save( validationRule );
     }
 
     @Override
@@ -105,11 +100,5 @@ public class HibernateValidationRuleStore
         validationRules.addAll( getQuery( hql ).setParameterList( "ids", ids ).list() );
         
         return validationRules;
-    }
-
-    @Override
-    public Integer getNumberOfValidationRules()
-    {
-        return getCount();
     }
 }

@@ -143,7 +143,7 @@ public class ValidationRuleStoreTest
     {
         ValidationRule validationRule = createValidationRule( 'A', equal_to, expressionA, expressionB, periodType );
 
-        int id = validationRuleStore.saveValidationRule( validationRule );
+        int id = validationRuleStore.save( validationRule );
 
         validationRule = validationRuleStore.get( id );
 
@@ -161,7 +161,7 @@ public class ValidationRuleStoreTest
     {
         ValidationRule validationRule = createValidationRule( 'A', equal_to, expressionA, expressionB, periodType );
 
-        int id = validationRuleStore.saveValidationRule( validationRule );
+        int id = validationRuleStore.save( validationRule );
 
         validationRule = validationRuleStore.get( id );
 
@@ -175,7 +175,7 @@ public class ValidationRuleStoreTest
         validationRule.setType( ValidationRule.TYPE_STATISTICAL );
         validationRule.setOperator( greater_than );
 
-        validationRuleStore.updateValidationRule( validationRule );
+        validationRuleStore.update( validationRule );
 
         validationRule = validationRuleStore.get( id );
 
@@ -191,8 +191,8 @@ public class ValidationRuleStoreTest
         ValidationRule validationRuleA = createValidationRule( 'A', equal_to, expressionA, expressionB, periodType );
         ValidationRule validationRuleB = createValidationRule( 'B', equal_to, expressionA, expressionB, periodType );
 
-        int idA = validationRuleStore.saveValidationRule( validationRuleA );
-        int idB = validationRuleStore.saveValidationRule( validationRuleB );
+        int idA = validationRuleStore.save( validationRuleA );
+        int idB = validationRuleStore.save( validationRuleB );
 
         assertNotNull( validationRuleStore.get( idA ) );
         assertNotNull( validationRuleStore.get( idB ) );
@@ -218,8 +218,8 @@ public class ValidationRuleStoreTest
         ValidationRule validationRuleA = createValidationRule( 'A', equal_to, expressionA, expressionB, periodType );
         ValidationRule validationRuleB = createValidationRule( 'B', equal_to, expressionA, expressionB, periodType );
 
-        validationRuleStore.saveValidationRule( validationRuleA );
-        validationRuleStore.saveValidationRule( validationRuleB );
+        validationRuleStore.save( validationRuleA );
+        validationRuleStore.save( validationRuleB );
 
         Collection<ValidationRule> rules = validationRuleStore.getAll();
 
@@ -234,8 +234,8 @@ public class ValidationRuleStoreTest
         ValidationRule validationRuleA = createValidationRule( 'A', equal_to, expressionA, expressionB, periodType );
         ValidationRule validationRuleB = createValidationRule( 'B', equal_to, expressionA, expressionB, periodType );
 
-        int id = validationRuleStore.saveValidationRule( validationRuleA );
-        validationRuleStore.saveValidationRule( validationRuleB );
+        int id = validationRuleStore.save( validationRuleA );
+        validationRuleStore.save( validationRuleB );
 
         ValidationRule rule = validationRuleStore.getByName( "ValidationRuleA" );
 
@@ -272,9 +272,9 @@ public class ValidationRuleStoreTest
         ValidationRule ruleB = createValidationRule( 'B', equal_to, expression2, expression3, periodType );
         ValidationRule ruleC = createValidationRule( 'C', equal_to, expression3, expression3, periodType );
 
-        validationRuleStore.saveValidationRule( ruleA );
-        validationRuleStore.saveValidationRule( ruleB );
-        validationRuleStore.saveValidationRule( ruleC );
+        validationRuleStore.save( ruleA );
+        validationRuleStore.save( ruleB );
+        validationRuleStore.save( ruleC );
         
         Collection<ValidationRule> rules = validationRuleStore.getValidationRulesByDataElements( dataElementsA );
 
@@ -325,11 +325,11 @@ public class ValidationRuleStoreTest
         ValidationRule ruleB = createValidationRule( 'B', equal_to, expression2, expression3, periodType );
         ValidationRule ruleC = createValidationRule( 'C', equal_to, expression3, expression3, periodType );
 
-        validationRuleStore.saveValidationRule( ruleA );
-        validationRuleStore.saveValidationRule( ruleB );
-        validationRuleStore.saveValidationRule( ruleC );
+        validationRuleStore.save( ruleA );
+        validationRuleStore.save( ruleB );
+        validationRuleStore.save( ruleC );
 
-        assertNotNull( validationRuleStore.getNumberOfValidationRules().intValue() );
-        assertEquals( 3, validationRuleStore.getNumberOfValidationRules().intValue() );
+        assertNotNull( validationRuleStore.getCount() );
+        assertEquals( 3, validationRuleStore.getCount() );
     }
 }

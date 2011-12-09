@@ -40,30 +40,33 @@ import org.hisp.dhis.organisationunit.OrganisationUnit;
 
 /**
  * @author Kristian Nordal
- * @version $Id: HibernateMinMaxDataElementStore.java 6216 2008-11-06 18:06:42Z eivindwa $
+ * @version $Id: HibernateMinMaxDataElementStore.java 6216 2008-11-06 18:06:42Z
+ *          eivindwa $
  */
 public class HibernateMinMaxDataElementStore
-    extends HibernateGenericStore<MinMaxDataElement> implements MinMaxDataElementStore
+    extends HibernateGenericStore<MinMaxDataElement>
+    implements MinMaxDataElementStore
 {
     // -------------------------------------------------------------------------
     // MinMaxDataElementStore Implementation
     // -------------------------------------------------------------------------
 
-    public MinMaxDataElement get( OrganisationUnit source, DataElement dataElement, DataElementCategoryOptionCombo optionCombo )
+    public MinMaxDataElement get( OrganisationUnit source, DataElement dataElement,
+        DataElementCategoryOptionCombo optionCombo )
     {
-        return (MinMaxDataElement) getCriteria(
+        return (MinMaxDataElement) getCriteria( 
             Restrictions.eq( "source", source ),
-            Restrictions.eq( "dataElement", dataElement ),
+            Restrictions.eq( "dataElement", dataElement ), 
             Restrictions.eq( "optionCombo", optionCombo ) ).uniqueResult();
     }
 
     @SuppressWarnings( "unchecked" )
     public Collection<MinMaxDataElement> get( OrganisationUnit source, DataElement dataElement )
     {
-        return getCriteria(
-        	Restrictions.eq( "source", source ),
-        	Restrictions.eq( "dataElement", dataElement ) ).list();
-    }    
+        return getCriteria( 
+            Restrictions.eq( "source", source ), 
+            Restrictions.eq( "dataElement", dataElement ) ).list();
+    }
 
     @SuppressWarnings( "unchecked" )
     public Collection<MinMaxDataElement> get( OrganisationUnit source, Collection<DataElement> dataElements )
@@ -73,8 +76,8 @@ public class HibernateMinMaxDataElementStore
             return Collections.emptySet();
         }
 
-        return getCriteria(
-        	Restrictions.eq( "source", source ), 
-        	Restrictions.in( "dataElement", dataElements ) ).list();
+        return getCriteria( 
+            Restrictions.eq( "source", source ), 
+            Restrictions.in( "dataElement", dataElements ) ).list();
     }
 }
