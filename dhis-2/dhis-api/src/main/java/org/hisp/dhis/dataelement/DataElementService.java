@@ -38,7 +38,7 @@ import org.hisp.dhis.period.PeriodType;
 
 /**
  * Defines service functionality for DataElements and DataElementGroups.
- * 
+ *
  * @author Kristian Nordal
  * @version $Id: DataElementService.java 6289 2008-11-14 17:53:24Z larshelg $
  */
@@ -52,7 +52,7 @@ public interface DataElementService
 
     /**
      * Adds a DataElement.
-     * 
+     *
      * @param dataElement the DataElement to add.
      * @return a generated unique id of the added DataElement.
      */
@@ -60,7 +60,7 @@ public interface DataElementService
 
     /**
      * Updates a DataElement.
-     * 
+     *
      * @param dataElement the DataElement to update.
      */
     void updateDataElement( DataElement dataElement );
@@ -69,7 +69,7 @@ public interface DataElementService
      * Deletes a DataElement. The DataElement is also removed from any
      * DataElementGroups it is a member of. It is not possible to delete a
      * DataElement with children.
-     * 
+     *
      * @param dataElement the DataElement to delete.
      * @throws HierarchyViolationException if the DataElement has children.
      */
@@ -78,7 +78,7 @@ public interface DataElementService
 
     /**
      * Returns a DataElement.
-     * 
+     *
      * @param id the id of the DataElement to return.
      * @return the DataElement with the given id, or null if no match.
      */
@@ -86,7 +86,7 @@ public interface DataElementService
 
     /**
      * Returns the DataElement with the given UID.
-     * 
+     *
      * @param uid the UID.
      * @return the DataElement with the given UID, or null if no match.
      */
@@ -94,7 +94,7 @@ public interface DataElementService
 
     /**
      * Returns the DataElement with the given code.
-     * 
+     *
      * @param code the code.
      * @return the DataElement with the given code, or null if no match.
      */
@@ -102,7 +102,7 @@ public interface DataElementService
 
     /**
      * Returns a DataElement with a given name.
-     * 
+     *
      * @param name the name of the DataElement to return.
      * @return the DataElement with the given name, or null if no match.
      */
@@ -110,7 +110,7 @@ public interface DataElementService
 
     /**
      * Returns a DataElement with a given alternative name.
-     * 
+     *
      * @param alternativeName the alternative name of the DataElement to return.
      * @return the DataElement with the given alternative name, or null if no
      *         match.
@@ -119,7 +119,7 @@ public interface DataElementService
 
     /**
      * Returns List of DataElements with a given key.
-     * 
+     *
      * @param key the name of the DataElement to return.
      * @return List of DataElements with a given key, or all dataelements if no
      *         match.
@@ -128,7 +128,7 @@ public interface DataElementService
 
     /**
      * Returns a DataElement with a given short name.
-     * 
+     *
      * @param shortName the short name of the DataElement to return.
      * @return the DataElement with the given short name, or null if no match.
      */
@@ -136,7 +136,7 @@ public interface DataElementService
 
     /**
      * Returns all DataElements.
-     * 
+     *
      * @return a collection of all DataElements, or an empty collection if there
      *         are no DataElements.
      */
@@ -145,7 +145,7 @@ public interface DataElementService
     /**
      * Returns all DataElements with corresponding identifiers. Returns all
      * DataElements if the given argument is null.
-     * 
+     *
      * @param identifiers the collection of identifiers.
      * @return a collection of DataElements.
      */
@@ -154,14 +154,14 @@ public interface DataElementService
     /**
      * Returns all DataElements with types that are possible to aggregate. The
      * types are currently INT and BOOL.
-     * 
+     *
      * @return all DataElements with types that are possible to aggregate.
      */
     Collection<DataElement> getAggregateableDataElements();
 
     /**
      * Returns all active DataElements.
-     * 
+     *
      * @return a collection of all active DataElements, or an empty collection
      *         if there are no active DataElements.
      */
@@ -169,7 +169,7 @@ public interface DataElementService
 
     /**
      * Returns all DataElements with a given aggregantion operator.
-     * 
+     *
      * @param aggregationOperator the aggregation operator of the DataElements
      *        to return.
      * @return a collection of all DataElements with the given aggregation
@@ -180,7 +180,7 @@ public interface DataElementService
 
     /**
      * Returns all DataElements with the given domain type.
-     * 
+     *
      * @param domainType the domainType.
      * @return all DataElements with the given domainType.
      */
@@ -188,7 +188,7 @@ public interface DataElementService
 
     /**
      * Returns all DataElements with the given type.
-     * 
+     *
      * @param type the type.
      * @return all DataElements with the given type.
      */
@@ -197,7 +197,7 @@ public interface DataElementService
 
     /**
      * Returns the DataElements with the given PeriodType.
-     * 
+     *
      * @param periodType the PeriodType.
      * @return a Collection of DataElements.
      */
@@ -205,7 +205,7 @@ public interface DataElementService
 
     /**
      * Returns all DataElements with the given category combo.
-     * 
+     *
      * @param categoryCombo the DataElementCategoryCombo.
      * @return all DataElements with the given category combo.
      */
@@ -215,7 +215,7 @@ public interface DataElementService
      * Returns a Map with DataElementCategoryCombo as key and a Collection of
      * the DataElements belonging to the DataElementCategoryCombo from the given
      * argument List of DataElements as value.
-     * 
+     *
      * @param dataElements the DataElements to include.
      * @return grouped DataElements based on their DataElementCategoryCombo.
      */
@@ -225,7 +225,7 @@ public interface DataElementService
     /**
      * Returns the DataElementCategoryCombos associated with the given argument
      * list of DataElements.
-     * 
+     *
      * @param dataElements the DataElements.
      * @return a list of DataElements.
      */
@@ -234,7 +234,7 @@ public interface DataElementService
     /**
      * Returns all DataElements which are associated with one or more
      * DataElementGroupSets.
-     * 
+     *
      * @return all DataElements which are associated with one or more
      *         DataElementGroupSets.
      */
@@ -242,28 +242,28 @@ public interface DataElementService
 
     /**
      * Returns all DataElements which are not member of any DataElementGroups.
-     * 
+     *
      * @return all DataElements which are not member of any DataElementGroups.
      */
     Collection<DataElement> getDataElementsWithoutGroups();
 
     /**
      * Returns all DataElements which are not assigned to any DataSets.
-     * 
+     *
      * @return all DataElements which are not assigned to any DataSets.
      */
     Collection<DataElement> getDataElementsWithoutDataSets();
 
     /**
      * Returns all DataElements which are assigned to at least one DataSet.
-     * 
+     *
      * @return all DataElements which are assigned to at least one DataSet.
      */
     Collection<DataElement> getDataElementsWithDataSets();
 
     /**
      * Checks whether a DataElement with the given identifier exists.
-     * 
+     *
      * @param id the DataElement identifier.
      * @return true or false.
      */
@@ -272,7 +272,7 @@ public interface DataElementService
     /**
      * Checks whether a DataElementCategoryOptionCombo with the given identifier
      * exists.
-     * 
+     *
      * @param id the DataElementCategoryOptionCombo identifier.
      * @return true or false.
      */
@@ -289,7 +289,7 @@ public interface DataElementService
     int getDataElementCount();
 
     int getDataElementCountByName( String name );
-    
+
     Map<Integer, Set<Integer>> getDataElementCategoryOptionCombos();
 
     // -------------------------------------------------------------------------
@@ -298,7 +298,7 @@ public interface DataElementService
 
     /**
      * Adds a DataElementGroup.
-     * 
+     *
      * @param dataElementGroup the DataElementGroup to add.
      * @return a generated unique id of the added DataElementGroup.
      */
@@ -306,21 +306,21 @@ public interface DataElementService
 
     /**
      * Updates a DataElementGroup.
-     * 
+     *
      * @param dataElementGroup the DataElementGroup to update.
      */
     void updateDataElementGroup( DataElementGroup dataElementGroup );
 
     /**
      * Deletes a DataElementGroup.
-     * 
+     *
      * @param dataElementGroup the DataElementGroup to delete.
      */
     void deleteDataElementGroup( DataElementGroup dataElementGroup );
 
     /**
      * Returns a DataElementGroup.
-     * 
+     *
      * @param id the id of the DataElementGroup to return.
      * @return the DataElementGroup with the given id, or null if no match.
      */
@@ -328,7 +328,7 @@ public interface DataElementService
 
     /**
      * Returns data elements with identifiers in the given collection.
-     * 
+     *
      * @param identifiers the id collection.
      * @return data elements with identifiers in the given collection.
      */
@@ -336,7 +336,7 @@ public interface DataElementService
 
     /**
      * Returns the DataElementGroup with the given UID.
-     * 
+     *
      * @param id the UID of the DataElementGroup to return.
      * @return the DataElementGroup with the given UID, or null if no match.
      */
@@ -344,7 +344,7 @@ public interface DataElementService
 
     /**
      * Returns a DataElementGroup with a given name.
-     * 
+     *
      * @param name the name of the DataElementGroup to return.
      * @return the DataElementGroup with the given name, or null if no match.
      */
@@ -352,7 +352,7 @@ public interface DataElementService
 
     /**
      * Returns all DataElementGroups.
-     * 
+     *
      * @return a collection of all DataElementGroups, or an empty collection if
      *         no DataElementGroups exist.
      */
@@ -360,7 +360,7 @@ public interface DataElementService
 
     /**
      * Returns all DataElementGroups which contain the given DataElement.
-     * 
+     *
      * @param dataElement the DataElement which the DataElementGroups must
      *        contain.
      * @return a collection of all DataElementGroups that contain the given
@@ -370,7 +370,7 @@ public interface DataElementService
 
     /**
      * Returns data elements with identifier in the given id.
-     * 
+     *
      * @param groupId is the id of data element group.
      * @return data elements with identifier in the given id.
      */
@@ -379,7 +379,7 @@ public interface DataElementService
     /**
      * Defines the given data elements as zero is significant. All other data
      * elements are defined as zero is in-significant.
-     * 
+     *
      * @param dataElementIds identifiers of data elements where zero is
      *        significant.
      */
@@ -387,7 +387,7 @@ public interface DataElementService
 
     /**
      * Returns all DataElement which zeroIsSignificant property is true or false
-     * 
+     *
      * @param zeroIsSignificant is zeroIsSignificant property
      * @return a collection of all DataElement
      */
@@ -395,7 +395,7 @@ public interface DataElementService
 
     /**
      * Returns all DataElement which zeroIsSignificant property is true or false
-     * 
+     *
      * @param zeroIsSignificant is zeroIsSignificant property
      * @param dataElementGroup is group contain data elements
      * @return a collection of all DataElement
@@ -422,7 +422,7 @@ public interface DataElementService
     void deleteDataElementGroupSet( DataElementGroupSet groupSet );
 
     DataElementGroupSet getDataElementGroupSet( int id );
-    
+
     DataElementGroupSet getDataElementGroupSet( String uid );
 
     DataElementGroupSet getDataElementGroupSetByName( String name );
@@ -452,7 +452,7 @@ public interface DataElementService
     /**
      * Returns all Operands. Requires the categoryoptioncomboname resource table
      * to be populated.
-     * 
+     *
      * @return a collection of all Operands.
      */
     Collection<DataElementOperand> getAllGeneratedOperands();
@@ -461,7 +461,7 @@ public interface DataElementService
      * Returns all generated permutations of Operands for the given collection
      * of DataElements. Requires the categoryoptioncomboname resource table to
      * be populated.
-     * 
+     *
      * @param dataElements the DataElements.
      * @return a collection of all Operands.
      */

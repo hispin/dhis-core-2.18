@@ -27,7 +27,6 @@ package org.hisp.dhis.common.adapter;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import org.apache.commons.lang.NotImplementedException;
 import org.hisp.dhis.common.BaseIdentifiableObject;
 
 import javax.xml.bind.annotation.adapters.XmlAdapter;
@@ -40,7 +39,7 @@ public class BaseIdentifiableObjectXmlAdapter extends XmlAdapter<BaseIdentifiabl
     @Override
     public BaseIdentifiableObject unmarshal( BaseIdentifiableObject baseIdentifiableObject ) throws Exception
     {
-        throw new NotImplementedException();
+        return baseIdentifiableObject;
     }
 
     @Override
@@ -51,7 +50,6 @@ public class BaseIdentifiableObjectXmlAdapter extends XmlAdapter<BaseIdentifiabl
             BaseIdentifiableObject bio = new BaseIdentifiableObject();
 
             bio.setUid( baseIdentifiableObject.getUid() );
-            bio.setCode( baseIdentifiableObject.getCode() );
             bio.setName( baseIdentifiableObject.getName() );
             bio.setLastUpdated( baseIdentifiableObject.getLastUpdated() );
             bio.setLink( baseIdentifiableObject.getLink() );

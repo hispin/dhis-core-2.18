@@ -101,7 +101,7 @@ public class Resources extends BaseLinkableObject
         List<RequestMethod> requestMethods = Arrays.asList( defaultRequestMethods );
         List<MediaType> mediaTypes = Arrays.asList( defaultMediaTypes );
 
-        resources.add( new Resource( "Attributes", Attributes.class, requestMethods, mediaTypes ) );
+        resources.add( new Resource( "AttributeTypes", Attributes.class, requestMethods, mediaTypes ) );
         resources.add( new Resource( "Charts", Charts.class, requestMethods, mediaTypes ) );
         resources.add( new Resource( "Maps", Maps.class, requestMethods, mediaTypes ) );
         resources.add( new Resource( "CompleteDataSetRegistrations", CompleteDataSetRegistrations.class, requestMethods, mediaTypes ) );

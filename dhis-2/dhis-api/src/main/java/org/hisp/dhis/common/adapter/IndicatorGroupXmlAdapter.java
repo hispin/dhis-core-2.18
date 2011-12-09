@@ -1,4 +1,4 @@
-package org.hisp.dhis.api.controller;
+package org.hisp.dhis.common.adapter;
 
 /*
  * Copyright (c) 2004-2011, University of Oslo
@@ -27,30 +27,34 @@ package org.hisp.dhis.api.controller;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.hisp.dhis.common.BaseIdentifiableObject;
+import org.hisp.dhis.indicator.IndicatorGroup;
+
+import javax.xml.bind.annotation.adapters.XmlAdapter;
+import java.util.UUID;
 
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
-@Controller
-public class IndexController
+public class IndicatorGroupXmlAdapter extends XmlAdapter<BaseIdentifiableObject, IndicatorGroup>
 {
-    //-------------------------------------------------------------------------------------------------------
-    // GET
-    //-------------------------------------------------------------------------------------------------------
+    private BaseIdentifiableObjectXmlAdapter baseIdentifiableObjectXmlAdapter = new BaseIdentifiableObjectXmlAdapter();
 
-    @RequestMapping( value = "/api", method = RequestMethod.GET )
-    public String getIndex( Model model )
+    @Override
+    public IndicatorGroup unmarshal( BaseIdentifiableObject identifiableObject ) throws Exception
     {
-        return "redirect:/api/resources";
+        IndicatorGroup indicatorGroup = new IndicatorGroup();
+
+        indicatorGroup.setUid( identifiableObject.getUid() );
+        indicatorGroup.setLastUpdated( identifiableObject.getLastUpdated() );
+        indicatorGroup.setName( identifiableObject.getName() == null ? UUID.randomUUID().toString() : identifiableObject.getName() );
+
+        return indicatorGroup;
     }
 
-    @RequestMapping( value = "/", method = RequestMethod.GET )
-    public String getIndexWithSlash( Model model )
+    @Override
+    public BaseIdentifiableObject marshal( IndicatorGroup indicatorGroup ) throws Exception
     {
-        return "redirect:/api/resources";
+        return baseIdentifiableObjectXmlAdapter.marshal( indicatorGroup );
     }
 }

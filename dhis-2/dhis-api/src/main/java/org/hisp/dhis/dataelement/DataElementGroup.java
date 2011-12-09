@@ -27,10 +27,11 @@ package org.hisp.dhis.dataelement;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import org.codehaus.jackson.annotate.JsonProperty;
 import org.codehaus.jackson.map.annotate.JsonSerialize;
 import org.hisp.dhis.common.BaseIdentifiableObject;
 import org.hisp.dhis.common.Dxf2Namespace;
-import org.hisp.dhis.common.adapter.*;
+import org.hisp.dhis.common.adapter.BaseIdentifiableObjectXmlAdapter;
 
 import javax.xml.bind.annotation.*;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
@@ -145,9 +146,10 @@ public class DataElementGroup extends BaseIdentifiableObject
     // -------------------------------------------------------------------------
 
     @XmlElementWrapper( name = "dataElements" )
-    @XmlJavaTypeAdapter( BaseIdentifiableObjectXmlAdapter.class )
     @XmlElement( name = "dataElement" )
-    @JsonSerialize( using = JsonIdentifiableObjectCollectionSerializer.class )
+    @XmlJavaTypeAdapter( BaseIdentifiableObjectXmlAdapter.class )
+    @JsonProperty( value = "dataElements" )
+    @JsonSerialize( contentAs = BaseIdentifiableObject.class )
     public Set<DataElement> getMembers()
     {
         return members;
@@ -158,9 +160,10 @@ public class DataElementGroup extends BaseIdentifiableObject
         this.members = members;
     }
 
-    @XmlJavaTypeAdapter( BaseIdentifiableObjectXmlAdapter.class )
     @XmlElement( name = "dataElementGroupSet" )
-    @JsonSerialize( using = JsonIdentifiableObjectSerializer.class )
+    @XmlJavaTypeAdapter( BaseIdentifiableObjectXmlAdapter.class )
+    @JsonProperty( value = "dataElementGroupSet" )
+    @JsonSerialize( as = BaseIdentifiableObject.class )
     public DataElementGroupSet getGroupSet()
     {
         return groupSet;

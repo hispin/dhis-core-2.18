@@ -32,7 +32,6 @@ import org.codehaus.jackson.map.annotate.JsonSerialize;
 import org.hisp.dhis.common.BaseIdentifiableObject;
 import org.hisp.dhis.common.Dxf2Namespace;
 import org.hisp.dhis.common.adapter.BaseIdentifiableObjectXmlAdapter;
-import org.hisp.dhis.common.adapter.JsonIdentifiableObjectCollectionSerializer;
 import org.hisp.dhis.organisationunit.comparator.OrganisationUnitGroupNameComparator;
 
 import javax.xml.bind.annotation.*;
@@ -200,7 +199,8 @@ public class OrganisationUnitGroupSet extends BaseIdentifiableObject
     @XmlElementWrapper( name = "organisationUnitGroups" )
     @XmlElement( name = "organisationUnitGroup" )
     @XmlJavaTypeAdapter( BaseIdentifiableObjectXmlAdapter.class )
-    @JsonSerialize( using = JsonIdentifiableObjectCollectionSerializer.class )
+    @JsonProperty( value = "organisationUnitGroups" )
+    @JsonSerialize( contentAs = BaseIdentifiableObject.class )
     public Set<OrganisationUnitGroup> getOrganisationUnitGroups()
     {
         return organisationUnitGroups;

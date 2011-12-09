@@ -64,6 +64,9 @@ public class WebLinkPopulator
 
     static
     {
+        resourcePaths.put( Attributes.class, "attributeTypes" );
+        resourcePaths.put( Attribute.class, "attributeTypes" );
+
         resourcePaths.put( DataElementCategories.class, "categories" );
         resourcePaths.put( DataElementCategory.class, "categories" );
 
@@ -719,7 +722,9 @@ public class WebLinkPopulator
     private void populateIdentifiableObject( BaseIdentifiableObject baseIdentifiableObject )
     {
         if ( baseIdentifiableObject != null )
+        {
             baseIdentifiableObject.setLink( getPathWithUid( baseIdentifiableObject ) );
+        }
     }
 
     private String getPathWithUid( BaseIdentifiableObject baseIdentifiableObject )

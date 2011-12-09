@@ -21,9 +21,11 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
-@RequestMapping( value = "/dataValueSets" )
+@RequestMapping( value = DataValueSetController.RESOURCE_PATH )
 public class DataValueSetController
 {
+    public static final String RESOURCE_PATH = "/dataValueSets";
+
     private static final Log log = LogFactory.getLog( DataValueSetController.class );
 
     @Autowired
