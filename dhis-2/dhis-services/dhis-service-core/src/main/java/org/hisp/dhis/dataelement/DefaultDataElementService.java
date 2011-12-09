@@ -32,7 +32,6 @@ import static org.hisp.dhis.i18n.I18nUtils.i18n;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -97,8 +96,6 @@ public class DefaultDataElementService
 
     public int addDataElement( DataElement dataElement )
     {
-        dataElement.setLastUpdated( new Date() );
-
         int id = dataElementStore.save( dataElement );
 
         i18nService.addObject( dataElement );
@@ -108,8 +105,6 @@ public class DefaultDataElementService
 
     public void updateDataElement( DataElement dataElement )
     {
-        dataElement.setLastUpdated( new Date() );
-
         dataElementStore.update( dataElement );
 
         i18nService.verify( dataElement );

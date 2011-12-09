@@ -27,18 +27,17 @@ package org.hisp.dhis.indicator;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import static org.hisp.dhis.i18n.I18nUtils.i18n;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Iterator;
+
 import org.hisp.dhis.common.GenericIdentifiableObjectStore;
 import org.hisp.dhis.i18n.I18nService;
 import org.hisp.dhis.system.util.Filter;
 import org.hisp.dhis.system.util.FilterUtils;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Date;
-import java.util.Iterator;
-
-import static org.hisp.dhis.i18n.I18nUtils.i18n;
 
 /**
  * @author Lars Helge Overland
@@ -93,8 +92,6 @@ public class DefaultIndicatorService
 
     public int addIndicator( Indicator indicator )
     {
-        indicator.setLastUpdated( new Date() );
-
         int id = indicatorStore.addIndicator( indicator );
 
         i18nService.addObject( indicator );
@@ -104,8 +101,6 @@ public class DefaultIndicatorService
 
     public void updateIndicator( Indicator indicator )
     {
-        indicator.setLastUpdated( new Date() );
-
         indicatorStore.updateIndicator( indicator );
 
         i18nService.verify( indicator );
