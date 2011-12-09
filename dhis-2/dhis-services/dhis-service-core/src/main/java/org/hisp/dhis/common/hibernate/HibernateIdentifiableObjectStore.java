@@ -35,29 +35,27 @@ import org.hisp.dhis.hibernate.HibernateGenericStore;
  * @author bobj
  */
 public class HibernateIdentifiableObjectStore<T extends BaseIdentifiableObject>
-    extends HibernateGenericStore<T> implements GenericIdentifiableObjectStore<T>
+    extends HibernateGenericStore<T>
+    implements GenericIdentifiableObjectStore<T>
 {
     @Override
     public final int save( T object )
     {
         object.setAutoFields();
-
-        return (Integer) sessionFactory.getCurrentSession().save( object );
+        return super.save( object );
     }
 
     @Override
     public final void update( T object )
     {
         object.setAutoFields();
-
-        sessionFactory.getCurrentSession().update( object );
+        super.update( object );
     }
 
     @Override
     public final void saveOrUpdate( T object )
     {
         object.setAutoFields();
-
-        sessionFactory.getCurrentSession().saveOrUpdate( object );
+        super.saveOrUpdate( object );
     }
 }
