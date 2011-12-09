@@ -28,13 +28,17 @@ package org.hisp.dhis.dataelement;
  */
 
 import org.codehaus.jackson.annotate.JsonProperty;
+import org.codehaus.jackson.map.annotate.JsonSerialize;
+import org.hisp.dhis.common.BaseIdentifiableObject;
 import org.hisp.dhis.common.BaseLinkableObject;
 import org.hisp.dhis.common.Dxf2Namespace;
+import org.hisp.dhis.common.adapter.DataElementGroupSetXmlAdapter;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -48,7 +52,9 @@ public class DataElementGroupSets extends BaseLinkableObject
     private List<DataElementGroupSet> dataElementGroupSets = new ArrayList<DataElementGroupSet>();
 
     @XmlElement( name = "dataElementGroupSet" )
+    @XmlJavaTypeAdapter( DataElementGroupSetXmlAdapter.class )
     @JsonProperty( value = "dataElementGroupSets" )
+    @JsonSerialize( contentAs = BaseIdentifiableObject.class )
     public List<DataElementGroupSet> getDataElementGroupSets()
     {
         return dataElementGroupSets;

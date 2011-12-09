@@ -27,11 +27,13 @@ package org.hisp.dhis.constant;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import org.codehaus.jackson.annotate.JsonProperty;
 import org.hisp.dhis.common.BaseIdentifiableObject;
 import org.hisp.dhis.common.Dxf2Namespace;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
@@ -115,6 +117,8 @@ public class Constant extends BaseIdentifiableObject
     // Getter & Setter
     // -------------------------------------------------------------------------
 
+    @XmlElement
+    @JsonProperty
     public double getValue()
     {
         return value;

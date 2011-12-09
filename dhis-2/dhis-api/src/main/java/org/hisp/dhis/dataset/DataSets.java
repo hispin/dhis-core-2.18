@@ -28,13 +28,17 @@ package org.hisp.dhis.dataset;
  */
 
 import org.codehaus.jackson.annotate.JsonProperty;
+import org.codehaus.jackson.map.annotate.JsonSerialize;
+import org.hisp.dhis.common.BaseIdentifiableObject;
 import org.hisp.dhis.common.BaseLinkableObject;
 import org.hisp.dhis.common.Dxf2Namespace;
+import org.hisp.dhis.common.adapter.DataSetXmlAdapter;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -48,7 +52,9 @@ public class DataSets extends BaseLinkableObject
     private List<DataSet> dataSets = new ArrayList<DataSet>();
 
     @XmlElement( name = "dataSet" )
+    @XmlJavaTypeAdapter( DataSetXmlAdapter.class )
     @JsonProperty( value = "dataSets" )
+    @JsonSerialize( contentAs = BaseIdentifiableObject.class )
     public List<DataSet> getDataSets()
     {
         return dataSets;

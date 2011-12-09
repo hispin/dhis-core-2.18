@@ -27,32 +27,34 @@ package org.hisp.dhis.common.adapter;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import org.codehaus.jackson.JsonGenerator;
-import org.codehaus.jackson.JsonProcessingException;
-import org.codehaus.jackson.map.JsonSerializer;
-import org.codehaus.jackson.map.SerializerProvider;
-import org.hisp.dhis.common.IdentifiableObject;
+import org.hisp.dhis.common.BaseIdentifiableObject;
+import org.hisp.dhis.organisationunit.OrganisationUnitLevel;
 
-import java.io.IOException;
-import java.util.Collection;
+import javax.xml.bind.annotation.adapters.XmlAdapter;
+import java.util.UUID;
 
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
-public class JsonIdentifiableObjectCollectionSerializer extends JsonSerializer<Collection<IdentifiableObject>>
+public class OrganisationUnitLevelXmlAdapter extends XmlAdapter<BaseIdentifiableObject, OrganisationUnitLevel>
 {
+    private BaseIdentifiableObjectXmlAdapter baseIdentifiableObjectXmlAdapter = new BaseIdentifiableObjectXmlAdapter();
+
     @Override
-    public void serialize( Collection<IdentifiableObject> identifiableObjects, JsonGenerator jgen, SerializerProvider provider ) throws IOException, JsonProcessingException
+    public OrganisationUnitLevel unmarshal( BaseIdentifiableObject identifiableObject ) throws Exception
     {
-        JsonIdentifiableObjectSerializer jsonIdentifiableObjectSerializer = new JsonIdentifiableObjectSerializer();
+        OrganisationUnitLevel organisationUnitLevel = new OrganisationUnitLevel();
 
-        jgen.writeStartArray();
+        organisationUnitLevel.setUid( identifiableObject.getUid() );
+        organisationUnitLevel.setLastUpdated( identifiableObject.getLastUpdated() );
+        organisationUnitLevel.setName( identifiableObject.getName() == null ? UUID.randomUUID().toString() : identifiableObject.getName() );
 
-        for ( IdentifiableObject identifiableObject : identifiableObjects )
-        {
-            jsonIdentifiableObjectSerializer.serialize( identifiableObject, jgen, provider );
-        }
+        return organisationUnitLevel;
+    }
 
-        jgen.writeEndArray();
+    @Override
+    public BaseIdentifiableObject marshal( OrganisationUnitLevel organisationUnitLevel ) throws Exception
+    {
+        return baseIdentifiableObjectXmlAdapter.marshal( organisationUnitLevel );
     }
 }

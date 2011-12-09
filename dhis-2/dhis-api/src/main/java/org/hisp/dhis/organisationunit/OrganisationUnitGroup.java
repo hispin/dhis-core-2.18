@@ -31,8 +31,8 @@ import org.codehaus.jackson.annotate.JsonProperty;
 import org.codehaus.jackson.map.annotate.JsonSerialize;
 import org.hisp.dhis.common.BaseIdentifiableObject;
 import org.hisp.dhis.common.Dxf2Namespace;
-import org.hisp.dhis.common.adapter.BaseIdentifiableObjectXmlAdapter;
-import org.hisp.dhis.common.adapter.BaseNameableObjectXmlAdapter;
+import org.hisp.dhis.common.adapter.OrganisationUnitGroupSetXmlAdapter;
+import org.hisp.dhis.common.adapter.OrganisationUnitXmlAdapter;
 
 import javax.xml.bind.annotation.*;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
@@ -145,7 +145,7 @@ public class OrganisationUnitGroup extends BaseIdentifiableObject
 
     @XmlElementWrapper( name = "organisationUnits" )
     @XmlElement( name = "organisationUnit" )
-    @XmlJavaTypeAdapter( BaseNameableObjectXmlAdapter.class )
+    @XmlJavaTypeAdapter( OrganisationUnitXmlAdapter.class )
     @JsonProperty( value = "organisationUnits" )
     @JsonSerialize( contentAs = BaseIdentifiableObject.class )
     public Set<OrganisationUnit> getMembers()
@@ -159,7 +159,7 @@ public class OrganisationUnitGroup extends BaseIdentifiableObject
     }
 
     @XmlElement( name = "organisationUnitGroupSet" )
-    @XmlJavaTypeAdapter( BaseIdentifiableObjectXmlAdapter.class )
+    @XmlJavaTypeAdapter( OrganisationUnitGroupSetXmlAdapter.class )
     @JsonProperty( value = "organisationUnitGroupSet" )
     @JsonSerialize( as = BaseIdentifiableObject.class )
     public OrganisationUnitGroupSet getGroupSet()

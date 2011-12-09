@@ -29,15 +29,17 @@ package org.hisp.dhis.dataelement;
 
 import org.codehaus.jackson.annotate.JsonProperty;
 import org.codehaus.jackson.map.annotate.JsonSerialize;
+import org.hisp.dhis.common.BaseIdentifiableObject;
 import org.hisp.dhis.common.BaseNameableObject;
 import org.hisp.dhis.common.Dxf2Namespace;
-import org.hisp.dhis.common.adapter.*;
+import org.hisp.dhis.common.adapter.BaseIdentifiableObjectXmlAdapter;
+import org.hisp.dhis.common.adapter.CategoryOptionComboXmlAdapter;
+import org.hisp.dhis.concept.Concept;
 
 import javax.xml.bind.annotation.*;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import java.util.HashSet;
 import java.util.Set;
-import org.hisp.dhis.concept.Concept;
 
 /**
  * @author Abyot Asalefew
@@ -54,7 +56,7 @@ public class DataElementCategoryOption extends BaseNameableObject
     public static final String DEFAULT_NAME = "default";
 
     private DataElementCategory category;
-    
+
     private Concept concept;
 
     private Set<DataElementCategoryOptionCombo> categoryOptionCombos = new HashSet<DataElementCategoryOptionCombo>();
@@ -133,7 +135,7 @@ public class DataElementCategoryOption extends BaseNameableObject
     @XmlElement
     @XmlJavaTypeAdapter( BaseIdentifiableObjectXmlAdapter.class )
     @JsonProperty
-    @JsonSerialize( using = JsonIdentifiableObjectSerializer.class )
+    @JsonSerialize( as = BaseIdentifiableObject.class )
     public DataElementCategory getCategory()
     {
         return category;
@@ -144,18 +146,21 @@ public class DataElementCategoryOption extends BaseNameableObject
         this.category = category;
     }
 
-    public Concept getConcept() {
+    public Concept getConcept()
+    {
         return concept;
     }
 
-    public void setConcept(Concept concept) {
+    public void setConcept( Concept concept )
+    {
         this.concept = concept;
     }
 
     @XmlElementWrapper( name = "categoryOptionCombos" )
-    @XmlJavaTypeAdapter( BaseNameableObjectXmlAdapter.class )
+    @XmlJavaTypeAdapter( CategoryOptionComboXmlAdapter.class )
     @XmlElement( name = "categoryOptionCombo" )
-    @JsonSerialize( using = JsonNameableObjectCollectionSerializer.class )
+    @JsonProperty
+    @JsonSerialize( contentAs = BaseIdentifiableObject.class )
     public Set<DataElementCategoryOptionCombo> getCategoryOptionCombos()
     {
         return categoryOptionCombos;

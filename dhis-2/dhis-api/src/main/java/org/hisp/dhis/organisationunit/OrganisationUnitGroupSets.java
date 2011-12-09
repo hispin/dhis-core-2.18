@@ -28,13 +28,17 @@ package org.hisp.dhis.organisationunit;
  */
 
 import org.codehaus.jackson.annotate.JsonProperty;
+import org.codehaus.jackson.map.annotate.JsonSerialize;
+import org.hisp.dhis.common.BaseIdentifiableObject;
 import org.hisp.dhis.common.BaseLinkableObject;
 import org.hisp.dhis.common.Dxf2Namespace;
+import org.hisp.dhis.common.adapter.OrganisationUnitGroupSetXmlAdapter;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -48,7 +52,9 @@ public class OrganisationUnitGroupSets extends BaseLinkableObject
     private List<OrganisationUnitGroupSet> organisationUnitGroupSets = new ArrayList<OrganisationUnitGroupSet>();
 
     @XmlElement( name = "organisationUnitGroupSet" )
+    @XmlJavaTypeAdapter( OrganisationUnitGroupSetXmlAdapter.class )
     @JsonProperty( value = "organisationUnitGroupSets" )
+    @JsonSerialize( contentAs = BaseIdentifiableObject.class )
     public List<OrganisationUnitGroupSet> getOrganisationUnitGroupSets()
     {
         return organisationUnitGroupSets;

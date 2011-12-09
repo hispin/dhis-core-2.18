@@ -490,6 +490,7 @@ public class DataElement extends BaseNameableObject
     @XmlElementWrapper( name = "dataSets" )
     @XmlElement( name = "dataSet" )
     @XmlJavaTypeAdapter( DataSetXmlAdapter.class )
+    @JsonProperty
     @JsonSerialize( contentAs = BaseIdentifiableObject.class )
     public Set<DataSet> getDataSets()
     {

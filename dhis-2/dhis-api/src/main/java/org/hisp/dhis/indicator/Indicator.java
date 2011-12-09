@@ -33,8 +33,9 @@ import org.hisp.dhis.attribute.AttributeValue;
 import org.hisp.dhis.common.BaseIdentifiableObject;
 import org.hisp.dhis.common.BaseNameableObject;
 import org.hisp.dhis.common.Dxf2Namespace;
-import org.hisp.dhis.common.adapter.BaseIdentifiableObjectXmlAdapter;
-import org.hisp.dhis.common.adapter.BaseNameableObjectXmlAdapter;
+import org.hisp.dhis.common.adapter.DataSetXmlAdapter;
+import org.hisp.dhis.common.adapter.IndicatorGroupXmlAdapter;
+import org.hisp.dhis.common.adapter.IndicatorTypeXmlAdapter;
 import org.hisp.dhis.dataset.DataSet;
 
 import javax.xml.bind.annotation.*;
@@ -171,7 +172,8 @@ public class Indicator extends BaseNameableObject
     }
 
     @XmlElement
-    @XmlJavaTypeAdapter( BaseIdentifiableObjectXmlAdapter.class )
+    @XmlJavaTypeAdapter( IndicatorTypeXmlAdapter.class )
+    @JsonProperty
     @JsonSerialize( as = BaseIdentifiableObject.class )
     public IndicatorType getIndicatorType()
     {
@@ -280,7 +282,7 @@ public class Indicator extends BaseNameableObject
     }
 
     @XmlElementWrapper( name = "indicatorGroups" )
-    @XmlJavaTypeAdapter( BaseIdentifiableObjectXmlAdapter.class )
+    @XmlJavaTypeAdapter( IndicatorGroupXmlAdapter.class )
     @XmlElement( name = "indicatorGroup" )
     @JsonProperty( value = "indicatorGroups" )
     @JsonSerialize( contentAs = BaseIdentifiableObject.class )
@@ -295,7 +297,7 @@ public class Indicator extends BaseNameableObject
     }
 
     @XmlElementWrapper( name = "dataSets" )
-    @XmlJavaTypeAdapter( BaseNameableObjectXmlAdapter.class )
+    @XmlJavaTypeAdapter( DataSetXmlAdapter.class )
     @XmlElement( name = "dataSet" )
     @JsonSerialize( contentAs = BaseIdentifiableObject.class )
     public Set<DataSet> getDataSets()

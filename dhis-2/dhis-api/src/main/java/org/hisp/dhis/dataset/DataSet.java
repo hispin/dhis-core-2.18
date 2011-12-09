@@ -32,8 +32,9 @@ import org.codehaus.jackson.map.annotate.JsonSerialize;
 import org.hisp.dhis.common.BaseIdentifiableObject;
 import org.hisp.dhis.common.BaseNameableObject;
 import org.hisp.dhis.common.Dxf2Namespace;
-import org.hisp.dhis.common.adapter.BaseIdentifiableObjectXmlAdapter;
-import org.hisp.dhis.common.adapter.BaseNameableObjectXmlAdapter;
+import org.hisp.dhis.common.adapter.DataElementXmlAdapter;
+import org.hisp.dhis.common.adapter.IndicatorXmlAdapter;
+import org.hisp.dhis.common.adapter.OrganisationUnitXmlAdapter;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementOperand;
 import org.hisp.dhis.dataentryform.DataEntryForm;
@@ -307,7 +308,7 @@ public class DataSet extends BaseNameableObject
 
     @XmlElementWrapper( name = "dataElements" )
     @XmlElement( name = "dataElement" )
-    @XmlJavaTypeAdapter( BaseNameableObjectXmlAdapter.class )
+    @XmlJavaTypeAdapter( DataElementXmlAdapter.class )
     @JsonProperty( value = "dataElements" )
     @JsonSerialize( contentAs = BaseIdentifiableObject.class )
     public Set<DataElement> getDataElements()
@@ -322,7 +323,7 @@ public class DataSet extends BaseNameableObject
 
     @XmlElementWrapper( name = "indicators" )
     @XmlElement( name = "indicator" )
-    @XmlJavaTypeAdapter( BaseNameableObjectXmlAdapter.class )
+    @XmlJavaTypeAdapter( IndicatorXmlAdapter.class )
     @JsonProperty( value = "indicators" )
     @JsonSerialize( contentAs = BaseIdentifiableObject.class )
     public Set<Indicator> getIndicators()
@@ -349,7 +350,7 @@ public class DataSet extends BaseNameableObject
 
     @XmlElementWrapper( name = "organisationUnits" )
     @XmlElement( name = "organisationUnit" )
-    @XmlJavaTypeAdapter( BaseIdentifiableObjectXmlAdapter.class )
+    @XmlJavaTypeAdapter( OrganisationUnitXmlAdapter.class )
     @JsonProperty( value = "organisationUnits" )
     @JsonSerialize( contentAs = BaseIdentifiableObject.class )
     public Set<OrganisationUnit> getSources()

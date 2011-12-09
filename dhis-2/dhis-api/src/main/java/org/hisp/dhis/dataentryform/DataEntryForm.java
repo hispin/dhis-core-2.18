@@ -90,7 +90,6 @@ public class DataEntryForm
      * Map the identifiers inside the HTML code according to the provided data
      * element identifier and category option combo identifier mappings.
      *
-     * @param htmlCode               the HTML code.
      * @param dataElementMap         the mapping between data element identifiers to be
      *                               converted.
      * @param categoryOptionComboMap the mapping between category option combo

@@ -45,7 +45,6 @@ public class BaseLinkableObject implements LinkableObject
 
     @XmlAttribute
     @JsonProperty
-    @JsonSerialize( include = JsonSerialize.Inclusion.NON_NULL )
     public String getLink()
     {
         return link;

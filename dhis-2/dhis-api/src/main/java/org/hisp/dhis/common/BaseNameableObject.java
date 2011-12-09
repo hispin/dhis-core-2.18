@@ -76,7 +76,6 @@ public class BaseNameableObject
 
     @XmlAttribute
     @JsonProperty
-    @JsonSerialize( include = JsonSerialize.Inclusion.NON_NULL )
     public String getAlternativeName()
     {
         return alternativeName;
@@ -89,7 +88,6 @@ public class BaseNameableObject
 
     @XmlAttribute
     @JsonProperty
-    @JsonSerialize( include = JsonSerialize.Inclusion.NON_NULL )
     public String getShortName()
     {
         return shortName;
@@ -102,7 +100,6 @@ public class BaseNameableObject
 
     @XmlElement
     @JsonProperty
-    @JsonSerialize( include = JsonSerialize.Inclusion.NON_NULL )
     public String getDescription()
     {
         return description;

@@ -27,31 +27,34 @@ package org.hisp.dhis.common.adapter;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import org.codehaus.jackson.JsonGenerator;
-import org.codehaus.jackson.map.JsonSerializer;
-import org.codehaus.jackson.map.SerializerProvider;
-import org.hisp.dhis.common.NameableObject;
+import org.hisp.dhis.common.BaseIdentifiableObject;
+import org.hisp.dhis.indicator.IndicatorType;
 
-import java.io.IOException;
-import java.util.Collection;
+import javax.xml.bind.annotation.adapters.XmlAdapter;
+import java.util.UUID;
 
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
-public class JsonNameableObjectCollectionSerializer extends JsonSerializer<Collection<NameableObject>>
+public class IndicatorTypeXmlAdapter extends XmlAdapter<BaseIdentifiableObject, IndicatorType>
 {
+    private BaseIdentifiableObjectXmlAdapter baseIdentifiableObjectXmlAdapter = new BaseIdentifiableObjectXmlAdapter();
+
     @Override
-    public void serialize( Collection<NameableObject> nameableObjects, JsonGenerator jgen, SerializerProvider provider ) throws IOException
+    public IndicatorType unmarshal( BaseIdentifiableObject identifiableObject ) throws Exception
     {
-        JsonNameableObjectSerializer jsonNameableObjectSerializer = new JsonNameableObjectSerializer();
+        IndicatorType indicatorType = new IndicatorType();
 
-        jgen.writeStartArray();
+        indicatorType.setUid( identifiableObject.getUid() );
+        indicatorType.setLastUpdated( identifiableObject.getLastUpdated() );
+        indicatorType.setName( identifiableObject.getName() == null ? UUID.randomUUID().toString() : identifiableObject.getName() );
 
-        for ( NameableObject nameableObject : nameableObjects )
-        {
-            jsonNameableObjectSerializer.serialize( nameableObject, jgen, provider );
-        }
+        return indicatorType;
+    }
 
-        jgen.writeEndArray();
+    @Override
+    public BaseIdentifiableObject marshal( IndicatorType indicatorType ) throws Exception
+    {
+        return baseIdentifiableObjectXmlAdapter.marshal( indicatorType );
     }
 }

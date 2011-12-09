@@ -149,6 +149,7 @@ public class Attribute extends BaseIdentifiableObject
         this.userAttribute = userAttribute;
     }
 
+    // TODO expose attribute values? probably not..
     public Set<AttributeValue> getAttributeValues()
     {
         return attributeValues;

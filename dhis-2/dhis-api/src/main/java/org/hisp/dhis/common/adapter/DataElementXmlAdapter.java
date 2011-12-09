@@ -27,29 +27,34 @@ package org.hisp.dhis.common.adapter;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import org.codehaus.jackson.JsonGenerator;
-import org.codehaus.jackson.JsonProcessingException;
-import org.codehaus.jackson.map.JsonSerializer;
-import org.codehaus.jackson.map.SerializerProvider;
+import org.hisp.dhis.common.BaseIdentifiableObject;
+import org.hisp.dhis.dataelement.DataElement;
 
-import java.io.IOException;
-import java.util.Collection;
+import javax.xml.bind.annotation.adapters.XmlAdapter;
+import java.util.UUID;
 
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
-public class JsonCollectionSerializer extends JsonSerializer<Collection<Object>>
+public class DataElementXmlAdapter extends XmlAdapter<BaseIdentifiableObject, DataElement>
 {
+    private BaseIdentifiableObjectXmlAdapter baseIdentifiableObjectXmlAdapter = new BaseIdentifiableObjectXmlAdapter();
+
     @Override
-    public void serialize( Collection<Object> objects, JsonGenerator jgen, SerializerProvider provider ) throws IOException, JsonProcessingException
+    public DataElement unmarshal( BaseIdentifiableObject identifiableObject ) throws Exception
     {
-        jgen.writeStartArray();
+        DataElement dataElement = new DataElement();
 
-        for ( Object object : objects )
-        {
-            jgen.writeObject( object );
-        }
+        dataElement.setUid( identifiableObject.getUid() );
+        dataElement.setLastUpdated( identifiableObject.getLastUpdated() );
+        dataElement.setName( identifiableObject.getName() == null ? UUID.randomUUID().toString() : identifiableObject.getName() );
 
-        jgen.writeEndArray();
+        return dataElement;
+    }
+
+    @Override
+    public BaseIdentifiableObject marshal( DataElement dataElement ) throws Exception
+    {
+        return baseIdentifiableObjectXmlAdapter.marshal( dataElement );
     }
 }

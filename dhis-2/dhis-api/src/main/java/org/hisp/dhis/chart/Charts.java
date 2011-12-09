@@ -27,29 +27,34 @@
 
 package org.hisp.dhis.chart;
 
-import java.util.ArrayList;
-import java.util.List;
+import org.codehaus.jackson.annotate.JsonProperty;
+import org.codehaus.jackson.map.annotate.JsonSerialize;
+import org.hisp.dhis.common.BaseIdentifiableObject;
+import org.hisp.dhis.common.BaseLinkableObject;
+import org.hisp.dhis.common.Dxf2Namespace;
+import org.hisp.dhis.common.adapter.ChartXmlAdapter;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
-
-import org.codehaus.jackson.annotate.JsonProperty;
-import org.hisp.dhis.common.BaseLinkableObject;
-import org.hisp.dhis.common.Dxf2Namespace;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
-@XmlRootElement( name = "charts", namespace=Dxf2Namespace.NAMESPACE)
+@XmlRootElement( name = "charts", namespace = Dxf2Namespace.NAMESPACE )
 @XmlAccessorType( value = XmlAccessType.NONE )
 public class Charts extends BaseLinkableObject
 {
     private List<Chart> charts = new ArrayList<Chart>();
 
     @XmlElement( name = "chart" )
+    @XmlJavaTypeAdapter( ChartXmlAdapter.class )
     @JsonProperty( value = "charts" )
+    @JsonSerialize( contentAs = BaseIdentifiableObject.class )
     public List<Chart> getCharts()
     {
         return charts;

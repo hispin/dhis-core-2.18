@@ -31,7 +31,8 @@ import org.codehaus.jackson.annotate.JsonProperty;
 import org.codehaus.jackson.map.annotate.JsonSerialize;
 import org.hisp.dhis.common.BaseIdentifiableObject;
 import org.hisp.dhis.common.Dxf2Namespace;
-import org.hisp.dhis.common.adapter.BaseIdentifiableObjectXmlAdapter;
+import org.hisp.dhis.common.adapter.DataElementGroupSetXmlAdapter;
+import org.hisp.dhis.common.adapter.DataElementXmlAdapter;
 
 import javax.xml.bind.annotation.*;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
@@ -147,7 +148,7 @@ public class DataElementGroup extends BaseIdentifiableObject
 
     @XmlElementWrapper( name = "dataElements" )
     @XmlElement( name = "dataElement" )
-    @XmlJavaTypeAdapter( BaseIdentifiableObjectXmlAdapter.class )
+    @XmlJavaTypeAdapter( DataElementXmlAdapter.class )
     @JsonProperty( value = "dataElements" )
     @JsonSerialize( contentAs = BaseIdentifiableObject.class )
     public Set<DataElement> getMembers()
@@ -161,7 +162,7 @@ public class DataElementGroup extends BaseIdentifiableObject
     }
 
     @XmlElement( name = "dataElementGroupSet" )
-    @XmlJavaTypeAdapter( BaseIdentifiableObjectXmlAdapter.class )
+    @XmlJavaTypeAdapter( DataElementGroupSetXmlAdapter.class )
     @JsonProperty( value = "dataElementGroupSet" )
     @JsonSerialize( as = BaseIdentifiableObject.class )
     public DataElementGroupSet getGroupSet()
