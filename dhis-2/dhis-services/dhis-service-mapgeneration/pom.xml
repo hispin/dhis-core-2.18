@@ -56,6 +56,12 @@
       <groupId>org.geotools</groupId>
       <artifactId>gt-render</artifactId>
       <version>8.0-M3</version>
+	  <exclusions>
+        <exclusion>
+          <groupId>xerces</groupId>
+          <artifactId>xercesImpl</artifactId>
+        </exclusion>
+      </exclusions>
     </dependency>
     <dependency>
       <groupId>org.geotools</groupId>
