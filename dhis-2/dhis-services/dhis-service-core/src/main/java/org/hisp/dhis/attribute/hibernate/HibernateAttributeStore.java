@@ -26,8 +26,6 @@ package org.hisp.dhis.attribute.hibernate;
 import java.util.HashSet;
 import java.util.Set;
 
-import org.hibernate.Criteria;
-import org.hibernate.Session;
 import org.hibernate.criterion.Restrictions;
 import org.hisp.dhis.attribute.Attribute;
 import org.hisp.dhis.attribute.AttributeStore;
@@ -43,44 +41,24 @@ public class HibernateAttributeStore
     @SuppressWarnings( "unchecked" )
     public Set<Attribute> getDataElementAttributes()
     {
-        Session session = sessionFactory.getCurrentSession();
-        Criteria criteria = session.createCriteria( Attribute.class );
-        criteria.add( Restrictions.eq( "dataElementAttribute", true ) );
-        criteria.setCacheable( true );
-
-        return new HashSet<Attribute>( criteria.list() );
+        return new HashSet<Attribute>( getCriteria( Restrictions.eq( "dataElementAttribute", true ) ).list() );
     }
 
     @SuppressWarnings( "unchecked" )
     public Set<Attribute> getIndicatorAttributes()
     {
-        Session session = sessionFactory.getCurrentSession();
-        Criteria criteria = session.createCriteria( Attribute.class );
-        criteria.add( Restrictions.eq( "indicatorAttribute", true ) );
-        criteria.setCacheable( true );
-
-        return new HashSet<Attribute>( criteria.list() );
+        return new HashSet<Attribute>( getCriteria( Restrictions.eq( "indicatorAttribute", true ) ).list() );
     }
 
     @SuppressWarnings( "unchecked" )
     public Set<Attribute> getOrganisationUnitAttributes()
     {
-        Session session = sessionFactory.getCurrentSession();
-        Criteria criteria = session.createCriteria( Attribute.class );
-        criteria.add( Restrictions.eq( "organisationUnitAttribute", true ) );
-        criteria.setCacheable( true );
-
-        return new HashSet<Attribute>( criteria.list() );
+        return new HashSet<Attribute>( getCriteria( Restrictions.eq( "organisationUnitAttribute", true ) ).list() );
     }
 
     @SuppressWarnings( "unchecked" )
     public Set<Attribute> getUserAttributes()
     {
-        Session session = sessionFactory.getCurrentSession();
-        Criteria criteria = session.createCriteria( Attribute.class );
-        criteria.add( Restrictions.eq( "userAttribute", true ) );
-        criteria.setCacheable( true );
-
-        return new HashSet<Attribute>( criteria.list() );
+        return new HashSet<Attribute>( getCriteria( Restrictions.eq( "userAttribute", true ) ).list() );
     }
 }
