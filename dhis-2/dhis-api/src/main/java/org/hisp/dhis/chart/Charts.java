@@ -27,15 +27,16 @@
 
 package org.hisp.dhis.chart;
 
-import org.codehaus.jackson.annotate.JsonProperty;
-import org.hisp.dhis.common.BaseLinkableObject;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
-import java.util.ArrayList;
-import java.util.List;
+
+import org.codehaus.jackson.annotate.JsonProperty;
+import org.hisp.dhis.common.BaseLinkableObject;
 import org.hisp.dhis.common.Dxf2Namespace;
 
 /**
@@ -46,8 +47,6 @@ import org.hisp.dhis.common.Dxf2Namespace;
 public class Charts extends BaseLinkableObject
 {
     private List<Chart> charts = new ArrayList<Chart>();
-
-    private String link;
 
     @XmlElement( name = "chart" )
     @JsonProperty( value = "charts" )
