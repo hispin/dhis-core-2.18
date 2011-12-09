@@ -9,7 +9,6 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
 import org.codehaus.jackson.annotate.JsonProperty;
-import org.hisp.dhis.chart.Chart;
 import org.hisp.dhis.common.BaseLinkableObject;
 import org.hisp.dhis.common.Dxf2Namespace;
 
@@ -44,10 +43,7 @@ import org.hisp.dhis.common.Dxf2Namespace;
 @XmlAccessorType( value = XmlAccessType.NONE )
 public class Maps extends BaseLinkableObject
 {
-
     private List<MapView> maps = new ArrayList<MapView>();
-
-    private String link;
 
     @XmlElement( name = "map" )
     @JsonProperty( value = "maps" )

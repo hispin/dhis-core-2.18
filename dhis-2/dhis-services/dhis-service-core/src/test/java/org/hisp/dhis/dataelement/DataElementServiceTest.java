@@ -76,6 +76,14 @@ public class DataElementServiceTest
         int idB = dataElementService.addDataElement( dataElementB );
         int idC = dataElementService.addDataElement( dataElementC );
 
+        assertNotNull( dataElementA.getUid() );
+        assertNotNull( dataElementB.getUid() );
+        assertNotNull( dataElementC.getUid() );
+        
+        assertNotNull( dataElementA.getLastUpdated() );
+        assertNotNull( dataElementB.getLastUpdated() );
+        assertNotNull( dataElementC.getLastUpdated() );
+        
         dataElementA = dataElementService.getDataElement( idA );
         assertNotNull( dataElementA );
         assertEquals( idA, dataElementA.getId() );
@@ -97,7 +105,11 @@ public class DataElementServiceTest
         throws Exception
     {
         DataElement dataElementA = createDataElement( 'A' );
+        
         int idA = dataElementService.addDataElement( dataElementA );
+        assertNotNull( dataElementA.getUid() );
+        assertNotNull( dataElementA.getLastUpdated() );
+        
         dataElementA = dataElementService.getDataElement( idA );
         assertEquals( DataElement.VALUE_TYPE_INT, dataElementA.getType() );
 
