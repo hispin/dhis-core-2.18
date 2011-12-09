@@ -27,21 +27,23 @@ import org.junit.Test;
 import static org.junit.Assert.*;
 
 import org.hisp.dhis.DhisSpringTest;
+import org.hisp.dhis.common.GenericStore;
 
 public class AttributeValueStoreTest
     extends DhisSpringTest
 {
-    private AttributeValueStore attributeValueStore;
+    private GenericStore<AttributeValue> attributeValueStore;
 
     private AttributeValue attributeValue1;
 
     private AttributeValue attributeValue2;
 
     @Override
+    @SuppressWarnings("unchecked")
     protected void setUpTest()
     {
         AttributeStore attributeStore = (AttributeStore) getBean( "org.hisp.dhis.attribute.AttributeStore" );
-        attributeValueStore = (AttributeValueStore) getBean( "org.hisp.dhis.attribute.AttributeValueStore" );
+        attributeValueStore = (GenericStore<AttributeValue>) getBean( "org.hisp.dhis.attribute.AttributeValueStore" );
 
         Attribute attribute1 = new Attribute();
         attribute1.setName( "attribute_simple" );

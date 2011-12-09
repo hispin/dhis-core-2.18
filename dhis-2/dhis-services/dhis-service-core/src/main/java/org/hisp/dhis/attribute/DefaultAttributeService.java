@@ -26,6 +26,7 @@ package org.hisp.dhis.attribute;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.hisp.dhis.common.GenericStore;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
@@ -41,24 +42,14 @@ public class DefaultAttributeService
 
     private AttributeStore attributeStore;
 
-    public AttributeStore getAttributeStore()
-    {
-        return attributeStore;
-    }
-
     public void setAttributeStore( AttributeStore attributeStore )
     {
         this.attributeStore = attributeStore;
     }
 
-    private AttributeValueStore attributeValueStore;
+    private GenericStore<AttributeValue> attributeValueStore;
 
-    public AttributeValueStore getAttributeValueStore()
-    {
-        return attributeValueStore;
-    }
-
-    public void setAttributeValueStore( AttributeValueStore attributeValueStore )
+    public void setAttributeValueStore( GenericStore<AttributeValue> attributeValueStore )
     {
         this.attributeValueStore = attributeValueStore;
     }

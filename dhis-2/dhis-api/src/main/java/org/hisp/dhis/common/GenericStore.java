@@ -97,4 +97,11 @@ public interface GenericStore<T>
      * @param object the object instance to delete.
      */
     void delete( T object );
+    
+    /**
+     * Gets the count of objects.
+     * 
+     * @return the count of objects.
+     */
+    int getCount();
 }

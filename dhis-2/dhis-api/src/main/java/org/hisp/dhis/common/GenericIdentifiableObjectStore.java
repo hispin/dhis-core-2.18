@@ -81,13 +81,6 @@ public interface GenericIdentifiableObjectStore<T>
     Collection<T> getBetweenByName( String name, int first, int max );
     
     /**
-     * Gets the count of objects.
-     * 
-     * @return the count of objects.
-     */
-    int getCount();
-    
-    /**
      * Gets the count of objects which name is like the given name.
      * 
      * @param name the name which result object names must be like.
