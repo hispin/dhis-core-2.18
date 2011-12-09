@@ -90,7 +90,7 @@ public class DefaultDataSetService
 
     public int addDataSet( DataSet dataSet )
     {
-        int id = dataSetStore.addDataSet( dataSet );
+        int id = dataSetStore.save( dataSet );
 
         i18nService.addObject( dataSet );
 
@@ -102,7 +102,7 @@ public class DefaultDataSetService
 
     public void updateDataSet( DataSet dataSet )
     {
-        dataSetStore.updateDataSet( dataSet );
+        dataSetStore.update( dataSet );
 
         log.info( AuditLogUtil.logMessage( currentUserService.getCurrentUsername(),
             AuditLogUtil.ACTION_EDIT, DataSet.class.getSimpleName(), dataSet.getName() ) );
@@ -114,7 +114,7 @@ public class DefaultDataSetService
     {
         i18nService.removeObject( dataSet );
 
-        dataSetStore.deleteDataSet( dataSet );
+        dataSetStore.delete( dataSet );
 
         log.info( AuditLogUtil.logMessage( currentUserService.getCurrentUsername(),
             AuditLogUtil.ACTION_DELETE, DataSet.class.getSimpleName(), dataSet.getName() ) );
@@ -122,7 +122,7 @@ public class DefaultDataSetService
 
     public DataSet getDataSet( int id )
     {
-        return i18n( i18nService, dataSetStore.getDataSet( id ) );
+        return i18n( i18nService, dataSetStore.get( id ) );
     }
     
     @Override
@@ -133,17 +133,17 @@ public class DefaultDataSetService
 
     public DataSet getDataSetByName( String name )
     {
-        return i18n( i18nService, dataSetStore.getDataSetByName( name ) );
+        return i18n( i18nService, dataSetStore.getByName( name ) );
     }
 
     public DataSet getDataSetByShortName( String shortName )
     {
-        return i18n( i18nService, dataSetStore.getDataSetByShortName( shortName ) );
+        return i18n( i18nService, dataSetStore.getByShortName( shortName ) );
     }
 
     public DataSet getDataSetByCode( String code )
     {
-        return i18n( i18nService, dataSetStore.getDataSetByCode( code ) );
+        return i18n( i18nService, dataSetStore.getByCode( code ) );
     }
 
     public Collection<DataSet> getDataSetsBySources( Collection<OrganisationUnit> sources )
@@ -168,7 +168,7 @@ public class DefaultDataSetService
 
     public Collection<DataSet> getAllDataSets()
     {
-        return i18n( i18nService, dataSetStore.getAllDataSets() );
+        return i18n( i18nService, dataSetStore.getAll() );
     }
 
     public Collection<DataSet> getDataSetsByPeriodType( PeriodType periodType )
@@ -289,24 +289,24 @@ public class DefaultDataSetService
     @Override
     public int getDataSetCount()
     {
-        return dataSetStore.getDataSetCount();
+        return dataSetStore.getCount();
     }
 
     @Override
     public int getDataSetCountByName( String name )
     {
-        return dataSetStore.getDataSetCountByName( name );
+        return dataSetStore.getCountByName( name );
     }
 
     @Override
     public Collection<DataSet> getDataSetsBetween( int first, int max )
     {
-        return i18n( i18nService, dataSetStore.getDataSetsBetween( first, max ) );
+        return i18n( i18nService, dataSetStore.getBetween( first, max ) );
     }
 
     @Override
     public Collection<DataSet> getDataSetsBetweenByName( String name, int first, int max )
     {
-        return i18n( i18nService, dataSetStore.getDataSetsBetweenByName( name, first, max ) );
+        return i18n( i18nService, dataSetStore.getBetweenByName( name, first, max ) );
     }
 }

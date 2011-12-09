@@ -207,23 +207,23 @@ public class IndicatorStoreTest
         Indicator indicatorB = createIndicator( 'B', type );
         Indicator indicatorC = createIndicator( 'A', type );
         
-        int idA = indicatorStore.addIndicator( indicatorA );
-        int idB = indicatorStore.addIndicator( indicatorB );
+        int idA = indicatorStore.save( indicatorA );
+        int idB = indicatorStore.save( indicatorB );
         
         try
         {
-            indicatorStore.addIndicator( indicatorC );
+            indicatorStore.save( indicatorC );
             fail( "Expected unique constraint exception" );
         }
         catch ( Exception ex )
         {
         }
 
-        indicatorA = indicatorStore.getIndicator( idA );
+        indicatorA = indicatorStore.get( idA );
         assertNotNull( indicatorA );
         assertEq( 'A', indicatorA );
         
-        indicatorB = indicatorStore.getIndicator( idB );
+        indicatorB = indicatorStore.get( idB );
         assertNotNull( indicatorB );
         assertEq( 'B', indicatorB );
     }
@@ -237,13 +237,13 @@ public class IndicatorStoreTest
         indicatorTypeStore.save( type );
         
         Indicator indicatorA = createIndicator( 'A', type );
-        int idA = indicatorStore.addIndicator( indicatorA );
-        indicatorA = indicatorStore.getIndicator( idA );
+        int idA = indicatorStore.save( indicatorA );
+        indicatorA = indicatorStore.get( idA );
         assertEq( 'A', indicatorA );
         
         indicatorA.setName( "IndicatorB" );
-        indicatorStore.updateIndicator( indicatorA );
-        indicatorA = indicatorStore.getIndicator( idA );
+        indicatorStore.update( indicatorA );
+        indicatorA = indicatorStore.get( idA );
         assertNotNull( indicatorA );
         assertEquals( indicatorA.getName(), "IndicatorB" );
     }
@@ -259,21 +259,21 @@ public class IndicatorStoreTest
         Indicator indicatorA = createIndicator( 'A', type );
         Indicator indicatorB = createIndicator( 'B', type );
 
-        int idA = indicatorStore.addIndicator( indicatorA );
-        int idB = indicatorStore.addIndicator( indicatorB );
+        int idA = indicatorStore.save( indicatorA );
+        int idB = indicatorStore.save( indicatorB );
         
-        assertNotNull( indicatorStore.getIndicator( idA ) );
-        assertNotNull( indicatorStore.getIndicator( idB ) );
+        assertNotNull( indicatorStore.get( idA ) );
+        assertNotNull( indicatorStore.get( idB ) );
         
-        indicatorStore.deleteIndicator( indicatorA );
+        indicatorStore.delete( indicatorA );
 
-        assertNull( indicatorStore.getIndicator( idA ) );
-        assertNotNull( indicatorStore.getIndicator( idB ) );
+        assertNull( indicatorStore.get( idA ) );
+        assertNotNull( indicatorStore.get( idB ) );
 
-        indicatorStore.deleteIndicator( indicatorB );
+        indicatorStore.delete( indicatorB );
 
-        assertNull( indicatorStore.getIndicator( idA ) );
-        assertNull( indicatorStore.getIndicator( idB ) );        
+        assertNull( indicatorStore.get( idA ) );
+        assertNull( indicatorStore.get( idB ) );        
     }
 
     @Test
@@ -287,10 +287,10 @@ public class IndicatorStoreTest
         Indicator indicatorA = createIndicator( 'A', type );
         Indicator indicatorB = createIndicator( 'B', type );
 
-        indicatorStore.addIndicator( indicatorA );
-        indicatorStore.addIndicator( indicatorB );
+        indicatorStore.save( indicatorA );
+        indicatorStore.save( indicatorB );
         
-        Collection<Indicator> indicators = indicatorStore.getAllIndicators();
+        Collection<Indicator> indicators = indicatorStore.getAll();
         
         assertEquals( indicators.size(), 2 );
         assertTrue( indicators.contains( indicatorA ) );
@@ -308,17 +308,17 @@ public class IndicatorStoreTest
         Indicator indicatorA = createIndicator( 'A', type );
         Indicator indicatorB = createIndicator( 'B', type );
 
-        int idA = indicatorStore.addIndicator( indicatorA );
-        int idB = indicatorStore.addIndicator( indicatorB );
+        int idA = indicatorStore.save( indicatorA );
+        int idB = indicatorStore.save( indicatorB );
         
-        assertNotNull( indicatorStore.getIndicator( idA ) );
-        assertNotNull( indicatorStore.getIndicator( idB ) );
+        assertNotNull( indicatorStore.get( idA ) );
+        assertNotNull( indicatorStore.get( idB ) );
         
-        indicatorA = indicatorStore.getIndicatorByName( "IndicatorA" );
+        indicatorA = indicatorStore.getByName( "IndicatorA" );
         assertNotNull( indicatorA );
         assertEq( 'A', indicatorA );
         
-        Indicator indicatorC = indicatorStore.getIndicatorByName( "IndicatorC" );
+        Indicator indicatorC = indicatorStore.getByName( "IndicatorC" );
         assertNull( indicatorC );
     }    
 
@@ -333,17 +333,17 @@ public class IndicatorStoreTest
         Indicator indicatorA = createIndicator( 'A', type );
         Indicator indicatorB = createIndicator( 'B', type );
 
-        int idA = indicatorStore.addIndicator( indicatorA );
-        int idB = indicatorStore.addIndicator( indicatorB );
+        int idA = indicatorStore.save( indicatorA );
+        int idB = indicatorStore.save( indicatorB );
         
-        assertNotNull( indicatorStore.getIndicator( idA ) );
-        assertNotNull( indicatorStore.getIndicator( idB ) );
+        assertNotNull( indicatorStore.get( idA ) );
+        assertNotNull( indicatorStore.get( idB ) );
         
-        indicatorA = indicatorStore.getIndicatorByAlternativeName( "IndicatorAlternativeA" );
+        indicatorA = indicatorStore.getByAlternativeName( "IndicatorAlternativeA" );
         assertNotNull( indicatorA );
         assertEq( 'A', indicatorA );
         
-        Indicator indicatorC = indicatorStore.getIndicatorByAlternativeName( "IndicatorAlternativeC" );
+        Indicator indicatorC = indicatorStore.getByAlternativeName( "IndicatorAlternativeC" );
         assertNull( indicatorC );
     }
 
@@ -358,17 +358,17 @@ public class IndicatorStoreTest
         Indicator indicatorA = createIndicator( 'A', type );
         Indicator indicatorB = createIndicator( 'B', type );
     
-        int idA = indicatorStore.addIndicator( indicatorA );
-        int idB = indicatorStore.addIndicator( indicatorB );
+        int idA = indicatorStore.save( indicatorA );
+        int idB = indicatorStore.save( indicatorB );
         
-        assertNotNull( indicatorStore.getIndicator( idA ) );
-        assertNotNull( indicatorStore.getIndicator( idB ) );
+        assertNotNull( indicatorStore.get( idA ) );
+        assertNotNull( indicatorStore.get( idB ) );
         
-        indicatorA = indicatorStore.getIndicatorByShortName( "IndicatorShortA" );
+        indicatorA = indicatorStore.getByShortName( "IndicatorShortA" );
         assertNotNull( indicatorA );
         assertEq( 'A', indicatorA );
         
-        Indicator indicatorC = indicatorStore.getIndicatorByShortName( "IndicatorShortC" );
+        Indicator indicatorC = indicatorStore.getByShortName( "IndicatorShortC" );
         assertNull( indicatorC );
     }
 }

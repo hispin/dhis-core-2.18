@@ -39,21 +39,21 @@ public class HibernateIdentifiableObjectStore<T extends BaseIdentifiableObject>
     implements GenericIdentifiableObjectStore<T>
 {
     @Override
-    public final int save( T object )
+    public int save( T object )
     {
         object.setAutoFields();
         return super.save( object );
     }
 
     @Override
-    public final void update( T object )
+    public void update( T object )
     {
         object.setAutoFields();
         super.update( object );
     }
 
     @Override
-    public final void saveOrUpdate( T object )
+    public void saveOrUpdate( T object )
     {
         object.setAutoFields();
         super.saveOrUpdate( object );

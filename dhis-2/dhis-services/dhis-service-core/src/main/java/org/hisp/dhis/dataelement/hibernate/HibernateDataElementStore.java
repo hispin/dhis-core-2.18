@@ -246,31 +246,6 @@ public class HibernateDataElementStore
             ConversionUtils.getIdentifiers( DataSet.class, dataSets ) ).list();
     }
 
-    public Collection<DataElement> getDataElementsLikeName( String name )
-    {
-        return getLikeName( name );
-    }
-
-    public Collection<DataElement> getDataElementsBetween( int first, int max )
-    {
-        return getBetween( first, max );
-    }
-
-    public Collection<DataElement> getDataElementsBetweenByName( String name, int first, int max )
-    {
-        return getBetweenByName( name, first, max );
-    }
-
-    public int getDataElementCount()
-    {
-        return getCount();
-    }
-
-    public int getDataElementCountByName( String name )
-    {
-        return getCountByName( name );
-    }
-    
     public Map<Integer, Set<Integer>> getDataElementCategoryOptionCombos()
     {
         final String sql = "select de.dataelementid, coc.categoryoptioncomboid from dataelement de " +
