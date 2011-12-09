@@ -1,5 +1,7 @@
 package org.hisp.dhis.document;
 
+import org.hisp.dhis.common.BaseIdentifiableObject;
+
 /*
  * Copyright (c) 2004-2010, University of Oslo
  * All rights reserved.
@@ -32,11 +34,8 @@ package org.hisp.dhis.document;
  * @version $Id$
  */
 public class Document
+    extends BaseIdentifiableObject
 {
-    private int id;
-    
-    private String name;
-    
     private String url;
     
     private boolean external;
@@ -82,26 +81,6 @@ public class Document
         final Document other = (Document) object;
     
         return name.equals( other.name );
-    }
-
-    public int getId()
-    {
-        return id;
-    }
-
-    public void setId( int id )
-    {
-        this.id = id;
-    }
-
-    public String getName()
-    {
-        return name;
-    }
-
-    public void setName( String name )
-    {
-        this.name = name;
     }
 
     public String getUrl()
