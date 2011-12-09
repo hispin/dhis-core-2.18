@@ -34,8 +34,9 @@ import org.hisp.dhis.attribute.AttributeValue;
 import org.hisp.dhis.common.BaseIdentifiableObject;
 import org.hisp.dhis.common.BaseNameableObject;
 import org.hisp.dhis.common.Dxf2Namespace;
-import org.hisp.dhis.common.adapter.BaseIdentifiableObjectXmlAdapter;
-import org.hisp.dhis.common.adapter.BaseNameableObjectXmlAdapter;
+import org.hisp.dhis.common.adapter.DataSetXmlAdapter;
+import org.hisp.dhis.common.adapter.OrganisationUnitGroupXmlAdapter;
+import org.hisp.dhis.common.adapter.OrganisationUnitXmlAdapter;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.organisationunit.comparator.OrganisationUnitNameComparator;
@@ -506,7 +507,8 @@ public class OrganisationUnit extends BaseNameableObject
     }
 
     @XmlElement
-    @XmlJavaTypeAdapter( BaseNameableObjectXmlAdapter.class )
+    @XmlJavaTypeAdapter( OrganisationUnitXmlAdapter.class )
+    @JsonProperty
     @JsonSerialize( as = BaseIdentifiableObject.class )
     public OrganisationUnit getParent()
     {
@@ -626,7 +628,7 @@ public class OrganisationUnit extends BaseNameableObject
 
     @XmlElementWrapper( name = "organisationUnitGroups" )
     @XmlElement( name = "organisationUnitGroup" )
-    @XmlJavaTypeAdapter( BaseIdentifiableObjectXmlAdapter.class )
+    @XmlJavaTypeAdapter( OrganisationUnitGroupXmlAdapter.class )
     @JsonProperty( value = "organisationUnitGroups" )
     @JsonSerialize( contentAs = BaseIdentifiableObject.class )
     public Set<OrganisationUnitGroup> getGroups()
@@ -641,7 +643,8 @@ public class OrganisationUnit extends BaseNameableObject
 
     @XmlElementWrapper( name = "dataSets" )
     @XmlElement( name = "dataSet" )
-    @XmlJavaTypeAdapter( BaseNameableObjectXmlAdapter.class )
+    @XmlJavaTypeAdapter( DataSetXmlAdapter.class )
+    @JsonProperty
     @JsonSerialize( contentAs = BaseIdentifiableObject.class )
     public Set<DataSet> getDataSets()
     {

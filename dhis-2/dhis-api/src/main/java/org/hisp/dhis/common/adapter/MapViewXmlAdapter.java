@@ -1,5 +1,7 @@
+package org.hisp.dhis.common.adapter;
+
 /*
- * Copyright (c) 2004-2010, University of Oslo
+ * Copyright (c) 2004-2011, University of Oslo
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -25,19 +27,34 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import org.hisp.dhis.common.BaseIdentifiableObject;
+import org.hisp.dhis.mapping.MapView;
+
+import javax.xml.bind.annotation.adapters.XmlAdapter;
+import java.util.UUID;
+
 /**
- * @author bobj
+ * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
+public class MapViewXmlAdapter extends XmlAdapter<BaseIdentifiableObject, MapView>
+{
+    private BaseIdentifiableObjectXmlAdapter baseIdentifiableObjectXmlAdapter = new BaseIdentifiableObjectXmlAdapter();
 
-@XmlSchema(
-    namespace = "http://dhis2.org/schema/dxf/2.0",
-    xmlns = {   
-         @XmlNs(namespaceURI = "http://dhis2.org/schema/dxf/2.0", prefix = "d")  
-    },
-    elementFormDefault = XmlNsForm.QUALIFIED) 
+    @Override
+    public MapView unmarshal( BaseIdentifiableObject identifiableObject ) throws Exception
+    {
+        MapView mapView = new MapView();
 
-package org.hisp.dhis.codelist;
+        mapView.setUid( identifiableObject.getUid() );
+        mapView.setLastUpdated( identifiableObject.getLastUpdated() );
+        mapView.setName( identifiableObject.getName() == null ? UUID.randomUUID().toString() : identifiableObject.getName() );
 
-import javax.xml.bind.annotation.XmlSchema;
-import javax.xml.bind.annotation.XmlNs;
-import javax.xml.bind.annotation.XmlNsForm;
+        return mapView;
+    }
+
+    @Override
+    public BaseIdentifiableObject marshal( MapView mapView ) throws Exception
+    {
+        return baseIdentifiableObjectXmlAdapter.marshal( mapView );
+    }
+}

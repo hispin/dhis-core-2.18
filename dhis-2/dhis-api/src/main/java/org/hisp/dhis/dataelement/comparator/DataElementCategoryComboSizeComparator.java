@@ -24,7 +24,7 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package org.hisp.dhis.common.comparator;
+package org.hisp.dhis.dataelement.comparator;
 
 /**
  * @author Abyot Asalefew Gizaw
@@ -34,7 +34,7 @@ import java.util.Comparator;
 
 import org.hisp.dhis.dataelement.DataElementCategoryCombo;
 
-public class CategoryComboSizeComparator
+public class DataElementCategoryComboSizeComparator
     implements Comparator<DataElementCategoryCombo>
 {
     public int compare( DataElementCategoryCombo o1, DataElementCategoryCombo o2 )

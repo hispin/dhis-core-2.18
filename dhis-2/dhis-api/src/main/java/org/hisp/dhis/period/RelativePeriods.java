@@ -271,7 +271,6 @@ public class RelativePeriods
      * Return the name of the reporting period. The current date is set to 
      * todays date minus one month.
      * 
-     * @param date the start date of the reporting period.
      * @param format the i18n format.
      * @return the name of the reporting period.
      */
@@ -485,7 +484,6 @@ public class RelativePeriods
      * Creates an instance of RelativePeriods based on given set of PeriodType
      * names.
      * 
-     * @param config the Configuration object.
      * @return a RelativePeriods instance.
      */
     public RelativePeriods getRelativePeriods( Set<String> periodTypes )

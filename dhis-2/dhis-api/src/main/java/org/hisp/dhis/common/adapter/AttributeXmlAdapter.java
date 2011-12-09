@@ -27,36 +27,34 @@ package org.hisp.dhis.common.adapter;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import org.hisp.dhis.common.BaseNameableObject;
+import org.hisp.dhis.attribute.Attribute;
+import org.hisp.dhis.common.BaseIdentifiableObject;
 
 import javax.xml.bind.annotation.adapters.XmlAdapter;
+import java.util.UUID;
 
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
-public class BaseNameableObjectXmlAdapter extends XmlAdapter<BaseNameableObject, BaseNameableObject>
+public class AttributeXmlAdapter extends XmlAdapter<BaseIdentifiableObject, Attribute>
 {
+    private BaseIdentifiableObjectXmlAdapter baseIdentifiableObjectXmlAdapter = new BaseIdentifiableObjectXmlAdapter();
+
     @Override
-    public BaseNameableObject unmarshal( BaseNameableObject baseIdentifiableObject ) throws Exception
+    public Attribute unmarshal( BaseIdentifiableObject identifiableObject ) throws Exception
     {
-        return baseIdentifiableObject;
+        Attribute attribute = new Attribute();
+
+        attribute.setUid( identifiableObject.getUid() );
+        attribute.setLastUpdated( identifiableObject.getLastUpdated() );
+        attribute.setName( identifiableObject.getName() == null ? UUID.randomUUID().toString() : identifiableObject.getName() );
+
+        return attribute;
     }
 
     @Override
-    public BaseNameableObject marshal( BaseNameableObject baseIdentifiableObject ) throws Exception
+    public BaseIdentifiableObject marshal( Attribute attribute ) throws Exception
     {
-        if ( baseIdentifiableObject != null )
-        {
-            BaseNameableObject bio = new BaseNameableObject();
-
-            bio.setUid( baseIdentifiableObject.getUid() );
-            bio.setName( baseIdentifiableObject.getName() );
-            bio.setLastUpdated( baseIdentifiableObject.getLastUpdated() );
-            bio.setLink( baseIdentifiableObject.getLink() );
-
-            return bio;
-        }
-
-        return null;
+        return baseIdentifiableObjectXmlAdapter.marshal( attribute );
     }
 }

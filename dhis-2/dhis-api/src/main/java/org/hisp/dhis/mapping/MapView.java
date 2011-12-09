@@ -27,14 +27,11 @@ package org.hisp.dhis.mapping;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlRootElement;
-
 import org.codehaus.jackson.annotate.JsonProperty;
+import org.codehaus.jackson.map.annotate.JsonSerialize;
 import org.hisp.dhis.common.BaseIdentifiableObject;
 import org.hisp.dhis.common.Dxf2Namespace;
+import org.hisp.dhis.common.adapter.*;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementGroup;
 import org.hisp.dhis.indicator.Indicator;
@@ -44,6 +41,12 @@ import org.hisp.dhis.organisationunit.OrganisationUnitLevel;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodType;
 import org.hisp.dhis.user.User;
+
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 /**
  * @author Jan Henrik Overland
@@ -107,10 +110,10 @@ public class MapView
     }
 
     public MapView( String name, User user, String mapValueType, IndicatorGroup indicatorGroup, Indicator indicator,
-        DataElementGroup dataElementGroup, DataElement dataElement, String mapDateType, PeriodType periodType,
-        Period period, OrganisationUnit parentOrganisationUnit, OrganisationUnitLevel organisationUnitLevel,
-        String mapLegendType, Integer method, Integer classes, String bounds, String colorLow, String colorHigh,
-        MapLegendSet mapLegendSet, Integer radiusLow, Integer radiusHigh, String longitude, String latitude, int zoom )
+                    DataElementGroup dataElementGroup, DataElement dataElement, String mapDateType, PeriodType periodType,
+                    Period period, OrganisationUnit parentOrganisationUnit, OrganisationUnitLevel organisationUnitLevel,
+                    String mapLegendType, Integer method, Integer classes, String bounds, String colorLow, String colorHigh,
+                    MapLegendSet mapLegendSet, Integer radiusLow, Integer radiusHigh, String longitude, String latitude, int zoom )
     {
         this.name = name;
         this.user = user;
@@ -209,7 +212,9 @@ public class MapView
     }
 
     @XmlElement
+    @XmlJavaTypeAdapter( IndicatorGroupXmlAdapter.class )
     @JsonProperty
+    @JsonSerialize( as = BaseIdentifiableObject.class )
     public IndicatorGroup getIndicatorGroup()
     {
         return indicatorGroup;
@@ -221,7 +226,9 @@ public class MapView
     }
 
     @XmlElement
+    @XmlJavaTypeAdapter( IndicatorXmlAdapter.class )
     @JsonProperty
+    @JsonSerialize( as = BaseIdentifiableObject.class )
     public Indicator getIndicator()
     {
         return indicator;
@@ -233,7 +240,9 @@ public class MapView
     }
 
     @XmlElement
+    @XmlJavaTypeAdapter( DataElementGroupXmlAdapter.class )
     @JsonProperty
+    @JsonSerialize( as = BaseIdentifiableObject.class )
     public DataElementGroup getDataElementGroup()
     {
         return dataElementGroup;
@@ -245,7 +254,9 @@ public class MapView
     }
 
     @XmlElement
+    @XmlJavaTypeAdapter( DataElementXmlAdapter.class )
     @JsonProperty
+    @JsonSerialize( as = BaseIdentifiableObject.class )
     public DataElement getDataElement()
     {
         return dataElement;
@@ -279,7 +290,9 @@ public class MapView
     }
 
     @XmlElement
+    @XmlJavaTypeAdapter( BaseIdentifiableObjectXmlAdapter.class )
     @JsonProperty
+    @JsonSerialize( as = BaseIdentifiableObject.class )
     public Period getPeriod()
     {
         return period;
@@ -291,7 +304,9 @@ public class MapView
     }
 
     @XmlElement
+    @XmlJavaTypeAdapter( OrganisationUnitXmlAdapter.class )
     @JsonProperty
+    @JsonSerialize( as = BaseIdentifiableObject.class )
     public OrganisationUnit getParentOrganisationUnit()
     {
         return parentOrganisationUnit;
@@ -303,7 +318,9 @@ public class MapView
     }
 
     @XmlElement
+    @XmlJavaTypeAdapter( OrganisationUnitLevelXmlAdapter.class )
     @JsonProperty
+    @JsonSerialize( as = BaseIdentifiableObject.class )
     public OrganisationUnitLevel getOrganisationUnitLevel()
     {
         return organisationUnitLevel;

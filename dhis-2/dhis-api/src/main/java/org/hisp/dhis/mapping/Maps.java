@@ -1,16 +1,19 @@
 package org.hisp.dhis.mapping;
 
-import java.util.ArrayList;
-import java.util.List;
+import org.codehaus.jackson.annotate.JsonProperty;
+import org.codehaus.jackson.map.annotate.JsonSerialize;
+import org.hisp.dhis.common.BaseIdentifiableObject;
+import org.hisp.dhis.common.BaseLinkableObject;
+import org.hisp.dhis.common.Dxf2Namespace;
+import org.hisp.dhis.common.adapter.MapViewXmlAdapter;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
-
-import org.codehaus.jackson.annotate.JsonProperty;
-import org.hisp.dhis.common.BaseLinkableObject;
-import org.hisp.dhis.common.Dxf2Namespace;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
+import java.util.ArrayList;
+import java.util.List;
 
 /*
  * Copyright (c) 2011, University of Oslo
@@ -46,7 +49,9 @@ public class Maps extends BaseLinkableObject
     private List<MapView> maps = new ArrayList<MapView>();
 
     @XmlElement( name = "map" )
+    @XmlJavaTypeAdapter( MapViewXmlAdapter.class )
     @JsonProperty( value = "maps" )
+    @JsonSerialize( contentAs = BaseIdentifiableObject.class )
     public List<MapView> getMaps()
     {
         return maps;

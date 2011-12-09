@@ -31,12 +31,14 @@ import org.apache.commons.collections.CollectionUtils;
 import org.codehaus.jackson.annotate.JsonProperty;
 import org.codehaus.jackson.map.annotate.JsonSerialize;
 import org.hisp.dhis.attribute.AttributeValue;
+import org.hisp.dhis.common.BaseIdentifiableObject;
 import org.hisp.dhis.common.Dxf2Namespace;
 import org.hisp.dhis.common.IdentifiableObjectUtils;
-import org.hisp.dhis.common.adapter.JsonCollectionSerializer;
+import org.hisp.dhis.common.adapter.OrganisationUnitXmlAdapter;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 
 import javax.xml.bind.annotation.*;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import java.io.Serializable;
 import java.util.Collection;
 import java.util.HashSet;
@@ -271,6 +273,11 @@ public class User
         this.userCredentials = userCredentials;
     }
 
+    @XmlElementWrapper( name = "organisationUnits" )
+    @XmlElement( name = "organisationUnit" )
+    @XmlJavaTypeAdapter( OrganisationUnitXmlAdapter.class )
+    @JsonProperty
+    @JsonSerialize( contentAs = BaseIdentifiableObject.class )
     public Collection<OrganisationUnit> getOrganisationUnits()
     {
         return organisationUnits;
@@ -284,7 +291,6 @@ public class User
     @XmlElementWrapper( name = "attributes" )
     @XmlElement( name = "attribute" )
     @JsonProperty( value = "attributes" )
-    @JsonSerialize( using = JsonCollectionSerializer.class )
     public Set<AttributeValue> getAttributeValues()
     {
         return attributeValues;

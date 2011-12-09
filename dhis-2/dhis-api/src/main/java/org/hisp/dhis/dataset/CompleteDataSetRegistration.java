@@ -29,10 +29,12 @@ package org.hisp.dhis.dataset;
 
 import org.codehaus.jackson.annotate.JsonProperty;
 import org.codehaus.jackson.map.annotate.JsonSerialize;
+import org.hisp.dhis.common.BaseIdentifiableObject;
 import org.hisp.dhis.common.Dxf2Namespace;
 import org.hisp.dhis.common.ImportableObject;
-import org.hisp.dhis.common.adapter.BaseNameableObjectXmlAdapter;
-import org.hisp.dhis.common.adapter.JsonDateSerializer;
+import org.hisp.dhis.common.adapter.DataSetXmlAdapter;
+import org.hisp.dhis.common.adapter.OrganisationUnitXmlAdapter;
+import org.hisp.dhis.common.adapter.PeriodXmlAdapter;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.period.Period;
 
@@ -179,7 +181,9 @@ public class CompleteDataSetRegistration
     // -------------------------------------------------------------------------
 
     @XmlElement
-    @XmlJavaTypeAdapter( BaseNameableObjectXmlAdapter.class )
+    @XmlJavaTypeAdapter( DataSetXmlAdapter.class )
+    @JsonProperty
+    @JsonSerialize( as = BaseIdentifiableObject.class )
     public DataSet getDataSet()
     {
         return dataSet;
@@ -191,7 +195,9 @@ public class CompleteDataSetRegistration
     }
 
     @XmlElement
-    @XmlJavaTypeAdapter( BaseNameableObjectXmlAdapter.class )
+    @XmlJavaTypeAdapter( PeriodXmlAdapter.class )
+    @JsonProperty
+    @JsonSerialize( as = BaseIdentifiableObject.class )
     public Period getPeriod()
     {
         return period;
@@ -202,8 +208,10 @@ public class CompleteDataSetRegistration
         this.period = period;
     }
 
-    @XmlElement
-    @XmlJavaTypeAdapter( BaseNameableObjectXmlAdapter.class )
+    @XmlElement( name = "organisationUnit" )
+    @XmlJavaTypeAdapter( OrganisationUnitXmlAdapter.class )
+    @JsonProperty( value = "organisationUnit" )
+    @JsonSerialize( as = BaseIdentifiableObject.class )
     public OrganisationUnit getSource()
     {
         return source;
@@ -216,7 +224,6 @@ public class CompleteDataSetRegistration
 
     @XmlElement
     @JsonProperty
-    @JsonSerialize( using = JsonDateSerializer.class )
     public Date getDate()
     {
         return date;

@@ -30,12 +30,11 @@ package org.hisp.dhis.dataelement;
 import org.apache.commons.lang.StringEscapeUtils;
 import org.codehaus.jackson.annotate.JsonProperty;
 import org.codehaus.jackson.map.annotate.JsonSerialize;
+import org.hisp.dhis.common.BaseIdentifiableObject;
 import org.hisp.dhis.common.BaseNameableObject;
 import org.hisp.dhis.common.Dxf2Namespace;
-import org.hisp.dhis.common.adapter.BaseIdentifiableObjectXmlAdapter;
-import org.hisp.dhis.common.adapter.BaseNameableObjectXmlAdapter;
-import org.hisp.dhis.common.adapter.JsonIdentifiableObjectSerializer;
-import org.hisp.dhis.common.adapter.JsonNameableObjectCollectionSerializer;
+import org.hisp.dhis.common.adapter.CategoryComboXmlAdapter;
+import org.hisp.dhis.common.adapter.CategoryOptionXmlAdapter;
 
 import javax.xml.bind.annotation.*;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
@@ -295,9 +294,9 @@ public class DataElementCategoryOptionCombo extends BaseNameableObject
     }
 
     @XmlElement
-    @XmlJavaTypeAdapter( BaseIdentifiableObjectXmlAdapter.class )
+    @XmlJavaTypeAdapter( CategoryComboXmlAdapter.class )
     @JsonProperty
-    @JsonSerialize( using = JsonIdentifiableObjectSerializer.class )
+    @JsonSerialize( contentAs = BaseIdentifiableObject.class )
     public DataElementCategoryCombo getCategoryCombo()
     {
         return categoryCombo;
@@ -309,10 +308,10 @@ public class DataElementCategoryOptionCombo extends BaseNameableObject
     }
 
     @XmlElementWrapper( name = "categoryOptions" )
-    @XmlJavaTypeAdapter( BaseNameableObjectXmlAdapter.class )
+    @XmlJavaTypeAdapter( CategoryOptionXmlAdapter.class )
     @XmlElement( name = "categoryOption" )
     @JsonProperty
-    @JsonSerialize( using = JsonNameableObjectCollectionSerializer.class )
+    @JsonSerialize( contentAs = BaseIdentifiableObject.class )
     public List<DataElementCategoryOption> getCategoryOptions()
     {
         return categoryOptions;

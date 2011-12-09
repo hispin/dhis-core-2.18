@@ -33,6 +33,8 @@ import org.hisp.dhis.chart.Chart;
 import org.hisp.dhis.chart.ChartService;
 import org.hisp.dhis.chart.Charts;
 import org.hisp.dhis.i18n.I18nFormat;
+import org.hisp.dhis.i18n.I18nManager;
+import org.hisp.dhis.i18n.I18nManagerException;
 import org.hisp.dhis.period.Period;
 import org.jfree.chart.ChartUtilities;
 import org.jfree.chart.JFreeChart;
@@ -61,6 +63,9 @@ public class ChartController
 
     @Autowired
     private ChartService chartService;
+
+    @Autowired
+    private I18nManager i18nManager;
 
     //-------------------------------------------------------------------------------------------------------
     // GET
@@ -99,37 +104,12 @@ public class ChartController
         return "chart";
     }
 
-    private class MockI18nFormat
-        extends I18nFormat
-    {
-        public MockI18nFormat()
-        {
-            super( null );
-        }
-
-        @Override
-        public String formatPeriod( Period period )
-        {
-            String name = period.getStartDate() + "-" + period.getEndDate();
-
-            return name.toLowerCase().trim();
-        }
-
-        @Override
-        public String formatDate( Date date )
-        {
-            return date.toString().toLowerCase().trim();
-        }
-    }
-
     @RequestMapping( value = "/{uid}.png", method = RequestMethod.GET )
     public void getChartPNG( @PathVariable( "uid" ) String uid, @RequestParam( value = "width", defaultValue = "700", required = false ) int width,
                              @RequestParam( value = "height", defaultValue = "500", required = false ) int height,
-                             HttpServletResponse response ) throws IOException
+                             HttpServletResponse response ) throws IOException, I18nManagerException
     {
-        I18nFormat i18nFormat = new MockI18nFormat();
-
-        JFreeChart chart = chartService.getJFreeChart( uid, i18nFormat );
+        JFreeChart chart = chartService.getJFreeChart( uid, i18nManager.getI18nFormat() );
 
         response.setContentType( "image/png" );
         ChartUtilities.writeChartAsPNG( response.getOutputStream(), chart, width, height );
@@ -138,11 +118,9 @@ public class ChartController
     @RequestMapping( value = "/{uid}.jpg", method = RequestMethod.GET )
     public void getChartJPG( @PathVariable( "uid" ) String uid, @RequestParam( value = "width", defaultValue = "700", required = false ) int width,
                              @RequestParam( value = "height", defaultValue = "500", required = false ) int height,
-                             HttpServletResponse response ) throws IOException
+                             HttpServletResponse response ) throws IOException, I18nManagerException
     {
-        I18nFormat i18nFormat = new MockI18nFormat();
-
-        JFreeChart chart = chartService.getJFreeChart( uid, i18nFormat );
+        JFreeChart chart = chartService.getJFreeChart( uid, i18nManager.getI18nFormat() );
 
         response.setContentType( "image/jpg" );
         ChartUtilities.writeChartAsJPEG( response.getOutputStream(), chart, width, height );

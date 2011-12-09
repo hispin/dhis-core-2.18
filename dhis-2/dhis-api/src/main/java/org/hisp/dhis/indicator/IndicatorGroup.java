@@ -31,8 +31,8 @@ import org.codehaus.jackson.annotate.JsonProperty;
 import org.codehaus.jackson.map.annotate.JsonSerialize;
 import org.hisp.dhis.common.BaseIdentifiableObject;
 import org.hisp.dhis.common.Dxf2Namespace;
-import org.hisp.dhis.common.adapter.BaseIdentifiableObjectXmlAdapter;
-import org.hisp.dhis.common.adapter.JsonIdentifiableObjectCollectionSerializer;
+import org.hisp.dhis.common.adapter.IndicatorGroupSetXmlAdapter;
+import org.hisp.dhis.common.adapter.IndicatorXmlAdapter;
 
 import javax.xml.bind.annotation.*;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
@@ -144,9 +144,10 @@ public class IndicatorGroup extends BaseIdentifiableObject
     // -------------------------------------------------------------------------
 
     @XmlElementWrapper( name = "indicators" )
-    @XmlJavaTypeAdapter( BaseIdentifiableObjectXmlAdapter.class )
     @XmlElement( name = "indicator" )
-    @JsonSerialize( using = JsonIdentifiableObjectCollectionSerializer.class )
+    @XmlJavaTypeAdapter( IndicatorXmlAdapter.class )
+    @JsonProperty( value = "indicators" )
+    @JsonSerialize( contentAs = BaseIdentifiableObject.class )
     public Set<Indicator> getMembers()
     {
         return members;
@@ -158,7 +159,7 @@ public class IndicatorGroup extends BaseIdentifiableObject
     }
 
     @XmlElement( name = "indicatorGroupSet" )
-    @XmlJavaTypeAdapter( BaseIdentifiableObjectXmlAdapter.class )
+    @XmlJavaTypeAdapter( IndicatorGroupSetXmlAdapter.class )
     @JsonProperty( value = "indicatorGroupSet" )
     @JsonSerialize( as = BaseIdentifiableObject.class )
     public IndicatorGroupSet getGroupSet()

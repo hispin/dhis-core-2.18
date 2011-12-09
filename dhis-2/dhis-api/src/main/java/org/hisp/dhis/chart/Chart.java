@@ -31,8 +31,7 @@ import org.codehaus.jackson.annotate.JsonProperty;
 import org.codehaus.jackson.map.annotate.JsonSerialize;
 import org.hisp.dhis.common.BaseIdentifiableObject;
 import org.hisp.dhis.common.Dxf2Namespace;
-import org.hisp.dhis.common.adapter.BaseNameableObjectXmlAdapter;
-import org.hisp.dhis.common.adapter.JsonNameableObjectCollectionSerializer;
+import org.hisp.dhis.common.adapter.*;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.i18n.I18nFormat;
@@ -143,13 +142,13 @@ public class Chart
 
     private transient I18nFormat format;
 
-    private List<Period> relativePeriods = new ArrayList<Period>();
+    private transient List<Period> relativePeriods = new ArrayList<Period>();
 
-    private List<Period> allPeriods = new ArrayList<Period>();
+    private transient List<Period> allPeriods = new ArrayList<Period>();
 
-    private OrganisationUnit organisationUnit;
+    private transient OrganisationUnit organisationUnit;
 
-    private List<OrganisationUnit> allOrganisationUnits = new ArrayList<OrganisationUnit>();
+    private transient List<OrganisationUnit> allOrganisationUnits = new ArrayList<OrganisationUnit>();
 
     // -------------------------------------------------------------------------
     // Constructors
@@ -472,9 +471,9 @@ public class Chart
         this.hideSubtitle = hideSubtitle;
     }
 
-    @XmlJavaTypeAdapter( BaseNameableObjectXmlAdapter.class )
     @XmlElementWrapper( name = "indicators" )
     @XmlElement( name = "indicator" )
+    @XmlJavaTypeAdapter( IndicatorXmlAdapter.class )
     @JsonProperty
     @JsonSerialize( contentAs = BaseIdentifiableObject.class )
     public List<Indicator> getIndicators()
@@ -489,7 +488,7 @@ public class Chart
 
     @XmlElementWrapper( name = "dataElements" )
     @XmlElement( name = "dataElement" )
-    @XmlJavaTypeAdapter( BaseNameableObjectXmlAdapter.class )
+    @XmlJavaTypeAdapter( DataElementXmlAdapter.class )
     @JsonProperty
     @JsonSerialize( contentAs = BaseIdentifiableObject.class )
     public List<DataElement> getDataElements()
@@ -504,7 +503,7 @@ public class Chart
 
     @XmlElementWrapper( name = "dataSets" )
     @XmlElement( name = "dataSet" )
-    @XmlJavaTypeAdapter( BaseNameableObjectXmlAdapter.class )
+    @XmlJavaTypeAdapter( DataSetXmlAdapter.class )
     @JsonProperty
     @JsonSerialize( contentAs = BaseIdentifiableObject.class )
     public List<DataSet> getDataSets()
@@ -517,6 +516,7 @@ public class Chart
         this.dataSets = dataSets;
     }
 
+    // TODO marshall this? we probably want that..
     public List<Period> getPeriods()
     {
         return periods;
@@ -527,11 +527,11 @@ public class Chart
         this.periods = periods;
     }
 
-    @XmlJavaTypeAdapter( BaseNameableObjectXmlAdapter.class )
     @XmlElementWrapper( name = "organisationUnits" )
     @XmlElement( name = "organisationUnit" )
+    @XmlJavaTypeAdapter( OrganisationUnitXmlAdapter.class )
     @JsonProperty
-    @JsonSerialize( using = JsonNameableObjectCollectionSerializer.class )
+    @JsonSerialize( contentAs = BaseIdentifiableObject.class )
     public List<OrganisationUnit> getOrganisationUnits()
     {
         return organisationUnits;

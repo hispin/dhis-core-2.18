@@ -27,53 +27,34 @@ package org.hisp.dhis.common.adapter;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import org.codehaus.jackson.JsonGenerator;
-import org.codehaus.jackson.JsonProcessingException;
-import org.codehaus.jackson.map.JsonSerializer;
-import org.codehaus.jackson.map.SerializerProvider;
-import org.hisp.dhis.common.IdentifiableObject;
+import org.hisp.dhis.common.BaseIdentifiableObject;
+import org.hisp.dhis.period.Period;
 
-import java.io.IOException;
+import javax.xml.bind.annotation.adapters.XmlAdapter;
+import java.util.UUID;
 
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
-public class JsonIdentifiableObjectSerializer extends JsonSerializer<IdentifiableObject>
+public class PeriodXmlAdapter extends XmlAdapter<BaseIdentifiableObject, Period>
 {
-    /**
-     * Jackson doesn't seem to see the downcasted object, so we need to manually write the values.
-     * TODO fix this.
-     */
+    private BaseIdentifiableObjectXmlAdapter baseIdentifiableObjectXmlAdapter = new BaseIdentifiableObjectXmlAdapter();
+
     @Override
-    public void serialize( IdentifiableObject value, JsonGenerator jgen, SerializerProvider provider ) throws IOException, JsonProcessingException
+    public Period unmarshal( BaseIdentifiableObject identifiableObject ) throws Exception
     {
-        if ( value != null )
-        {
-            jgen.writeStartObject();
+        Period period = new Period();
 
-            jgen.writeStringField( "id", value.getUid() );
-            jgen.writeStringField( "name", value.getName() );
+        period.setUid( identifiableObject.getUid() );
+        period.setLastUpdated( identifiableObject.getLastUpdated() );
+        period.setName( identifiableObject.getName() == null ? UUID.randomUUID().toString() : identifiableObject.getName() );
 
-            jgen.writeFieldName( "lastUpdated" );
+        return period;
+    }
 
-            JsonDateSerializer jsonDateSerializer = new JsonDateSerializer();
-            jsonDateSerializer.serialize( value.getLastUpdated(), jgen, provider );
-
-            if ( value.getLink() != null )
-            {
-                jgen.writeStringField( "link", value.getLink() );
-            }
-
-            if ( value.getCode() != null )
-            {
-                jgen.writeStringField( "code", value.getCode() );
-            }
-
-            jgen.writeEndObject();
-        }
-        else
-        {
-            jgen.writeNull();
-        }
+    @Override
+    public BaseIdentifiableObject marshal( Period period ) throws Exception
+    {
+        return baseIdentifiableObjectXmlAdapter.marshal( period );
     }
 }
