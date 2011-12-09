@@ -1,4 +1,4 @@
-package org.hisp.dhis.resourcetable.hibernate;
+package org.hisp.dhis.resourcetable.jdbc;
 
 /*
  * Copyright (c) 2004-2010, University of Oslo
@@ -47,10 +47,10 @@ import org.springframework.jdbc.core.JdbcTemplate;
 /**
  * @author Lars Helge Overland
  */
-public class HibernateResourceTableStore
+public class JdbcResourceTableStore
     implements ResourceTableStore
 {
-    private static final Log log = LogFactory.getLog( HibernateResourceTableStore.class );
+    private static final Log log = LogFactory.getLog( JdbcResourceTableStore.class );
     
     // -------------------------------------------------------------------------
     // Dependencies
