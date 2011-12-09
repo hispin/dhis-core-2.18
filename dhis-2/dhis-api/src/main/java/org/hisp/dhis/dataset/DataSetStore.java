@@ -47,75 +47,6 @@ public interface DataSetStore
     // -------------------------------------------------------------------------
 
     /**
-     * Adds a DataSet.
-     * 
-     * @param dataSet The DataSet to add.
-     * @return The generated unique identifier for this DataSet.
-     */
-    int addDataSet( DataSet dataSet );
-
-    /**
-     * Updates a DataSet.
-     * 
-     * @param dataSet The DataSet to update.
-     */
-    void updateDataSet( DataSet dataSet );
-
-    /**
-     * Deletes a DataSet.
-     * 
-     * @param dataSet The DataSet to delete.
-     */
-    void deleteDataSet( DataSet dataSet );
-
-    /**
-     * Get a DataSet
-     * 
-     * @param id The unique identifier for the DataSet to get.
-     * @return The DataSet with the given id or null if it does not exist.
-     */
-    DataSet getDataSet( int id );
-
-    /**
-     * Returns the DataSet with the given UID.
-     * 
-     * @param uid the UID.
-     * @return the DataSet with the given UID, or null if no match.
-     */
-    DataSet getDataSet( String uid );
-
-    /**
-     * Returns the DataSet with the given name.
-     * 
-     * @param name The name.
-     * @return The DataSet with the given name.
-     */
-    DataSet getDataSetByName( String name );
-
-    /**
-     * Returns the DataSet with the given short name.
-     * 
-     * @param shortName The short name.
-     * @return The DataSet with the given short name.
-     */
-    DataSet getDataSetByShortName( String shortName );
-
-    /**
-     * Returns the DataSet with the given code.
-     * 
-     * @param code The code.
-     * @return The DataSet with the given code.
-     */
-    DataSet getDataSetByCode( String code );
-
-    /**
-     * Gets all DataSets.
-     * 
-     * @return A collection containing all DataSets.
-     */
-    Collection<DataSet> getAllDataSets();
-
-    /**
      * Gets all DataSets associated with the given PeriodType.
      * 
      * @param periodType the PeriodType.
@@ -131,13 +62,4 @@ public interface DataSetStore
     Collection<DataSet> getDataSetsForMobile();
 
     Collection<DataSet> getDataSetsBySources( Collection<OrganisationUnit> sources );
-
-    int getDataSetCountByName( String name );
-
-    Collection<DataSet> getDataSetsBetweenByName( String name, int first, int max );
-
-    int getDataSetCount();
-
-    Collection<DataSet> getDataSetsBetween( int first, int max );
-
 }

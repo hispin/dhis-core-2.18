@@ -314,27 +314,27 @@ public class DefaultDataElementService
 
     public Collection<DataElement> getDataElementsLikeName( String name )
     {
-        return i18n( i18nService, dataElementStore.getDataElementsLikeName( name ) );
+        return i18n( i18nService, dataElementStore.getLikeName( name ) );
     }
 
     public Collection<DataElement> getDataElementsBetween( int first, int max )
     {
-        return i18n( i18nService, dataElementStore.getDataElementsBetween( first, max ) );
+        return i18n( i18nService, dataElementStore.getBetween( first, max ) );
     }
 
     public Collection<DataElement> getDataElementsBetweenByName( String name, int first, int max )
     {
-        return i18n( i18nService, dataElementStore.getDataElementsBetweenByName( name, first, max ) );
+        return i18n( i18nService, dataElementStore.getBetweenByName( name, first, max ) );
     }
 
     public int getDataElementCount()
     {
-        return dataElementStore.getDataElementCount();
+        return dataElementStore.getCount();
     }
 
     public int getDataElementCountByName( String name )
     {
-        return dataElementStore.getDataElementCountByName( name );
+        return dataElementStore.getCountByName( name );
     }
 
     public Collection<DataElement> getDataElementsByDataSets( Collection<DataSet> dataSets )

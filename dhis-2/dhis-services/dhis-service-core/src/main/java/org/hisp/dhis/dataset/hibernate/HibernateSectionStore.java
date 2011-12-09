@@ -24,7 +24,6 @@ package org.hisp.dhis.dataset.hibernate;
  */
 
 import org.hibernate.Criteria;
-import org.hibernate.Session;
 import org.hibernate.criterion.Restrictions;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.dataset.Section;
@@ -40,11 +39,9 @@ public class HibernateSectionStore
 {
     public Section getSectionByName( String name, DataSet dataSet )
     {
-        Session session = sessionFactory.getCurrentSession();
-        Criteria criteria = session.createCriteria( Section.class );
+        Criteria criteria = getCriteria();
         criteria.add( Restrictions.eq( "name", name ) );
         criteria.add( Restrictions.eq( "dataSet", dataSet ) );
-        criteria.setCacheable( true );
         return (Section) criteria.uniqueResult();
     }
 }

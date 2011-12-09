@@ -29,10 +29,6 @@ package org.hisp.dhis.indicator.hibernate;
 
 import java.util.Collection;
 
-import org.hibernate.Criteria;
-import org.hibernate.Query;
-import org.hibernate.Session;
-import org.hibernate.criterion.Restrictions;
 import org.hisp.dhis.common.hibernate.HibernateIdentifiableObjectStore;
 import org.hisp.dhis.indicator.Indicator;
 import org.hisp.dhis.indicator.IndicatorStore;
@@ -48,97 +44,6 @@ public class HibernateIndicatorStore
     // -------------------------------------------------------------------------
     // Indicator
     // -------------------------------------------------------------------------
-
-    @Override
-    public int addIndicator( Indicator indicator )
-    {
-        return this.save(indicator);
-    }
-
-    @Override
-    public void updateIndicator( Indicator indicator )
-    {
-        this.update( indicator );
-    }
-
-    public void deleteIndicator( Indicator indicator )
-    {
-        Session session = sessionFactory.getCurrentSession();
-
-        session.delete( indicator );
-    }
-
-    public Indicator getIndicator( int id )
-    {
-        Session session = sessionFactory.getCurrentSession();
-
-        return (Indicator) session.get( Indicator.class, id );
-    }
-
-    public Indicator getIndicator( String uid )
-    {
-        Session session = sessionFactory.getCurrentSession();
-
-        Criteria criteria = session.createCriteria( Indicator.class );
-        criteria.add( Restrictions.eq( "uid", uid ) );
-
-        return (Indicator) criteria.uniqueResult();
-    }
-
-    @SuppressWarnings( "unchecked" )
-    public Collection<Indicator> getAllIndicators()
-    {
-        Session session = sessionFactory.getCurrentSession();
-
-        Criteria criteria = session.createCriteria( Indicator.class );
-        criteria.setCacheable( true );
-
-        return criteria.list();
-    }
-
-    public Indicator getIndicatorByName( String name )
-    {
-        Session session = sessionFactory.getCurrentSession();
-
-        Query query = session.createQuery( "from Indicator i where i.name = :name" );
-
-        query.setString( "name", name );
-
-        return (Indicator) query.uniqueResult();
-    }
-
-    public Indicator getIndicatorByShortName( String shortName )
-    {
-        Session session = sessionFactory.getCurrentSession();
-
-        Query query = session.createQuery( "from Indicator i where i.shortName = :shortName" );
-
-        query.setString( "shortName", shortName );
-
-        return (Indicator) query.uniqueResult();
-    }
-
-    public Indicator getIndicatorByAlternativeName( String alternativeName )
-    {
-        Session session = sessionFactory.getCurrentSession();
-
-        Query query = session.createQuery( "from Indicator i where i.alternativeName = :alternativeName" );
-
-        query.setString( "alternativeName", alternativeName );
-
-        return (Indicator) query.uniqueResult();
-    }
-
-    public Indicator getIndicatorByCode( String code )
-    {
-        Session session = sessionFactory.getCurrentSession();
-
-        Query query = session.createQuery( "from Indicator i where i.code = :code" );
-
-        query.setString( "code", code );
-
-        return (Indicator) query.uniqueResult();
-    }
 
     @SuppressWarnings( "unchecked" )
     public Collection<Indicator> getIndicatorsWithGroupSets()
@@ -162,30 +67,5 @@ public class HibernateIndicatorStore
         final String hql = "from Indicator d where d.dataSets.size > 0";
 
         return getQuery( hql ).setCacheable( true ).list();
-    }
-
-    public int getIndicatorCount()
-    {
-        return getCount();
-    }
-
-    public int getIndicatorCountByName( String name )
-    {
-        return getCountByName( name );
-    }
-
-    public Collection<Indicator> getIndicatorsLikeName( String name )
-    {
-        return getLikeName( name );
-    }
-
-    public Collection<Indicator> getIndicatorsBetween( int first, int max )
-    {
-        return getBetween( first, max );
-    }
-
-    public Collection<Indicator> getIndicatorsBetweenByName( String name, int first, int max )
-    {
-        return getBetweenByName( name, first, max );
     }
 }

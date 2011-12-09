@@ -29,47 +29,20 @@ package org.hisp.dhis.indicator;
 
 import java.util.Collection;
 
+import org.hisp.dhis.common.GenericNameableObjectStore;
+
 /**
  * @author Lars Helge Overland
  * @version $Id: IndicatorStore.java 3305 2007-05-14 18:55:52Z larshelg $
  */
 public interface IndicatorStore
+    extends GenericNameableObjectStore<Indicator>
 {
     String ID = IndicatorStore.class.getName();
-
-    int addIndicator( Indicator indicator );
-
-    void updateIndicator( Indicator indicator );
-
-    void deleteIndicator( Indicator indicator );
-
-    Indicator getIndicator( int id );
-    
-    Indicator getIndicator( String uid );
-    
-    Collection<Indicator> getAllIndicators();
-    
-    Indicator getIndicatorByName( String name );
-
-    Indicator getIndicatorByShortName( String shortName );
-
-    Indicator getIndicatorByAlternativeName( String alternativeName );
-    
-    Indicator getIndicatorByCode( String code );
 
     Collection<Indicator> getIndicatorsWithGroupSets();
     
     Collection<Indicator> getIndicatorsWithoutGroups();
     
     Collection<Indicator> getIndicatorsWithDataSets();
-
-    int getIndicatorCountByName( String name );
-    
-    Collection<Indicator> getIndicatorsLikeName( String name );
-    
-    Collection<Indicator> getIndicatorsBetweenByName( String name, int first, int max );
-    
-    int getIndicatorCount();
-    
-    Collection<Indicator> getIndicatorsBetween(int first, int max );
 }

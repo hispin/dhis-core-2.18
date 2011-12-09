@@ -97,10 +97,10 @@ public class DataSetStoreTest
         dataSetB.getSources().add( unitA );
         dataSetC.getSources().add( unitB );
         
-        dataSetStore.addDataSet( dataSetA );
-        dataSetStore.addDataSet( dataSetB );
-        dataSetStore.addDataSet( dataSetC );
-        dataSetStore.addDataSet( dataSetD );
+        dataSetStore.save( dataSetA );
+        dataSetStore.save( dataSetB );
+        dataSetStore.save( dataSetC );
+        dataSetStore.save( dataSetD );
         
         Collection<OrganisationUnit> sources = new HashSet<OrganisationUnit>();
         sources.add( unitA );
@@ -129,11 +129,11 @@ public class DataSetStoreTest
         DataSet dataSetA = createDataSet( 'A', periodType );
         DataSet dataSetB = createDataSet( 'B', periodType );
 
-        int idA = dataSetStore.addDataSet( dataSetA );
-        int idB = dataSetStore.addDataSet( dataSetB );
+        int idA = dataSetStore.save( dataSetA );
+        int idB = dataSetStore.save( dataSetB );
 
-        dataSetA = dataSetStore.getDataSet( idA );
-        dataSetB = dataSetStore.getDataSet( idB );
+        dataSetA = dataSetStore.get( idA );
+        dataSetB = dataSetStore.get( idB );
 
         assertEquals( idA, dataSetA.getId() );
         assertEq( 'A', dataSetA );
@@ -147,17 +147,17 @@ public class DataSetStoreTest
     {
         DataSet dataSet = createDataSet( 'A', periodType );
 
-        int id = dataSetStore.addDataSet( dataSet );
+        int id = dataSetStore.save( dataSet );
 
-        dataSet = dataSetStore.getDataSet( id );
+        dataSet = dataSetStore.get( id );
 
         assertEq( 'A', dataSet );
 
         dataSet.setName( "DataSetB" );
 
-        dataSetStore.updateDataSet( dataSet );
+        dataSetStore.update( dataSet );
 
-        dataSet = dataSetStore.getDataSet( id );
+        dataSet = dataSetStore.get( id );
 
         assertEquals( dataSet.getName(), "DataSetB" );
     }
@@ -168,21 +168,21 @@ public class DataSetStoreTest
         DataSet dataSetA = createDataSet( 'A', periodType );
         DataSet dataSetB = createDataSet( 'B', periodType );
 
-        int idA = dataSetStore.addDataSet( dataSetA );
-        int idB = dataSetStore.addDataSet( dataSetB );
+        int idA = dataSetStore.save( dataSetA );
+        int idB = dataSetStore.save( dataSetB );
 
-        assertNotNull( dataSetStore.getDataSet( idA ) );
-        assertNotNull( dataSetStore.getDataSet( idB ) );
+        assertNotNull( dataSetStore.get( idA ) );
+        assertNotNull( dataSetStore.get( idB ) );
 
-        dataSetStore.deleteDataSet( dataSetStore.getDataSet( idA ) );
+        dataSetStore.delete( dataSetStore.get( idA ) );
 
-        assertNull( dataSetStore.getDataSet( idA ) );
-        assertNotNull( dataSetStore.getDataSet( idB ) );
+        assertNull( dataSetStore.get( idA ) );
+        assertNotNull( dataSetStore.get( idB ) );
 
-        dataSetStore.deleteDataSet( dataSetStore.getDataSet( idB ) );
+        dataSetStore.delete( dataSetStore.get( idB ) );
 
-        assertNull( dataSetStore.getDataSet( idA ) );
-        assertNull( dataSetStore.getDataSet( idB ) );
+        assertNull( dataSetStore.get( idA ) );
+        assertNull( dataSetStore.get( idB ) );
     }
 
     @Test
@@ -192,12 +192,12 @@ public class DataSetStoreTest
         DataSet dataSetA = createDataSet( 'A', periodType );
         DataSet dataSetB = createDataSet( 'B', periodType );
 
-        int idA = dataSetStore.addDataSet( dataSetA );
-        int idB = dataSetStore.addDataSet( dataSetB );
+        int idA = dataSetStore.save( dataSetA );
+        int idB = dataSetStore.save( dataSetB );
 
-        assertEquals( dataSetStore.getDataSetByName( "DataSetA" ).getId(), idA );
-        assertEquals( dataSetStore.getDataSetByName( "DataSetB" ).getId(), idB );
-        assertNull( dataSetStore.getDataSetByName( "DataSetC" ) );
+        assertEquals( dataSetStore.getByName( "DataSetA" ).getId(), idA );
+        assertEquals( dataSetStore.getByName( "DataSetB" ).getId(), idB );
+        assertNull( dataSetStore.getByName( "DataSetC" ) );
     }
 
     @Test
@@ -207,12 +207,12 @@ public class DataSetStoreTest
         DataSet dataSetA = createDataSet( 'A', periodType );
         DataSet dataSetB = createDataSet( 'B', periodType );
 
-        int idA = dataSetStore.addDataSet( dataSetA );
-        int idB = dataSetStore.addDataSet( dataSetB );
+        int idA = dataSetStore.save( dataSetA );
+        int idB = dataSetStore.save( dataSetB );
 
-        assertEquals( dataSetStore.getDataSetByShortName( "DataSetShortA" ).getId(), idA );
-        assertEquals( dataSetStore.getDataSetByShortName( "DataSetShortB" ).getId(), idB );
-        assertNull( dataSetStore.getDataSetByShortName( "DataSetShortC" ) );
+        assertEquals( dataSetStore.getByShortName( "DataSetShortA" ).getId(), idA );
+        assertEquals( dataSetStore.getByShortName( "DataSetShortB" ).getId(), idB );
+        assertNull( dataSetStore.getByShortName( "DataSetShortC" ) );
     }
 
     @Test
@@ -221,10 +221,10 @@ public class DataSetStoreTest
         DataSet dataSetA = createDataSet( 'A', periodType );
         DataSet dataSetB = createDataSet( 'B', periodType );
 
-        dataSetStore.addDataSet( dataSetA );
-        dataSetStore.addDataSet( dataSetB );
+        dataSetStore.save( dataSetA );
+        dataSetStore.save( dataSetB );
 
-        Collection<DataSet> dataSets = dataSetStore.getAllDataSets();
+        Collection<DataSet> dataSets = dataSetStore.getAll();
 
         assertEquals( dataSets.size(), 2 );
         assertTrue( dataSets.contains( dataSetA ) );

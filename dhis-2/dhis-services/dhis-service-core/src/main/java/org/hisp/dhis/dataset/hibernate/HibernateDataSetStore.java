@@ -64,86 +64,24 @@ public class HibernateDataSetStore
     // DataSet
     // -------------------------------------------------------------------------
 
-    public int addDataSet( DataSet dataSet )
+    @Override
+    public int save( DataSet dataSet )
     {
         PeriodType periodType = periodStore.getPeriodType( dataSet.getPeriodType().getClass() );
 
         dataSet.setPeriodType( periodType );
 
-        Session session = sessionFactory.getCurrentSession();
-
-        return (Integer) session.save( dataSet );
+        return super.save( dataSet );
     }
 
-    public void updateDataSet( DataSet dataSet )
+    @Override
+    public void update( DataSet dataSet )
     {
         PeriodType periodType = periodStore.getPeriodType( dataSet.getPeriodType().getClass() );
 
         dataSet.setPeriodType( periodType );
 
-        Session session = sessionFactory.getCurrentSession();
-
-        session.update( dataSet );
-    }
-
-    public void deleteDataSet( DataSet dataSet )
-    {
-        Session session = sessionFactory.getCurrentSession();
-
-        session.delete( dataSet );
-    }
-
-    public DataSet getDataSet( int id )
-    {
-        Session session = sessionFactory.getCurrentSession();
-
-        return (DataSet) session.get( DataSet.class, id );
-    }
-
-    public DataSet getDataSet( String uid )
-    {
-        Session session = sessionFactory.getCurrentSession();
-
-        Criteria criteria = session.createCriteria( DataSet.class );
-        criteria.add( Restrictions.eq( "uid", uid ) );
-
-        return (DataSet) criteria.uniqueResult();
-    }
-
-    
-    public DataSet getDataSetByName( String name )
-    {
-        Session session = sessionFactory.getCurrentSession();
-
-        Criteria criteria = session.createCriteria( DataSet.class );
-        criteria.add( Restrictions.eq( "name", name ) );
-
-        return (DataSet) criteria.uniqueResult();
-    }
-
-    public DataSet getDataSetByShortName( String shortName )
-    {
-        Session session = sessionFactory.getCurrentSession();
-
-        Criteria criteria = session.createCriteria( DataSet.class );
-        criteria.add( Restrictions.eq( "shortName", shortName ) );
-
-        return (DataSet) criteria.uniqueResult();
-    }
-
-    public DataSet getDataSetByCode( String code )
-    {
-        Session session = sessionFactory.getCurrentSession();
-
-        Criteria criteria = session.createCriteria( DataSet.class );
-        criteria.add( Restrictions.eq( "code", code ) );
-
-        return (DataSet) criteria.uniqueResult();
-    }
-
-    public Collection<DataSet> getAllDataSets()
-    {
-        return getAll();
+        super.update( dataSet );
     }
 
     @SuppressWarnings( "unchecked" )
@@ -185,29 +123,5 @@ public class HibernateDataSetStore
         Query query = sessionFactory.getCurrentSession().createQuery( hql );
 
         return query.list();
-    }    
-
-    @Override
-    public int getDataSetCount()
-    {
-        return getCount();
-    }
-
-    @Override
-    public int getDataSetCountByName( String name )
-    {
-        return getCountByName( name );
-    }
-
-    @Override
-    public Collection<DataSet> getDataSetsBetween( int first, int max )
-    {
-        return getBetween( first, max );
-    }
-
-    @Override
-    public Collection<DataSet> getDataSetsBetweenByName( String name, int first, int max )
-    {
-        return getBetweenByName( name, first, max );
     }
 }
