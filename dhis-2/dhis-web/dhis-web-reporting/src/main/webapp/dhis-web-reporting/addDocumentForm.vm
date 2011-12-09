@@ -15,7 +15,7 @@
 	}
 </script>
 
-<h3>$i18n.getString( 'create_new_static_report' )</h3>
+<h3>$i18n.getString( 'create_new_resource' )</h3>
 
 <form id="documentForm" action="saveDocument.action" method="post" enctype="multipart/form-data">
 <input type='hidden' id='id' name='id' value='$!document.id'/>
