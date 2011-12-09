@@ -58,6 +58,10 @@
       <version>8.0-M3</version>
 	  <exclusions>
         <exclusion>
+          <groupId>xalan</groupId>
+          <artifactId>xalan</artifactId>
+        </exclusion>
+        <exclusion>
           <groupId>xerces</groupId>
           <artifactId>xercesImpl</artifactId>
         </exclusion>

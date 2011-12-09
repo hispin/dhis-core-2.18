@@ -14,36 +14,37 @@ import org.junit.Test;
 /**
  * @author Kenneth Solbø Andersen <kennetsa@ifi.uio.no>
  */
-public class GeoToolsMapTest extends DhisSpringTest {
-	
-	GeoToolsMap geoToolsMap;
-	
-	@Override
+public class GeoToolsMapTest
+    extends DhisSpringTest
+{
+    private GeoToolsMap geoToolsMap;
+
+    @Override
     public void setUpTest()
-	{
-		geoToolsMap = new GeoToolsMap();
-	}
-	
-	@Test
-	public void testSetGetBackground()
-	{
-		geoToolsMap.setBackgroundColor(Color.BLUE);
-		assertEquals(Color.BLUE, geoToolsMap.getBackgroundColor());
-	}
-	
-	@Test
-	public void testSetGetAntiAliasingEnabled()
-	{
-		geoToolsMap.setAntiAliasingEnabled(false);
-		assertFalse(geoToolsMap.isAntiAliasingEnabled());
-		geoToolsMap.setAntiAliasingEnabled(true);
-		assertTrue(geoToolsMap.isAntiAliasingEnabled());
-	}
-	
-	@Test
-	@Ignore
-	public void testRender()
-	{
-		
-	}
+    {
+        geoToolsMap = new GeoToolsMap();
+    }
+
+    @Test
+    public void testSetGetBackground()
+    {
+        geoToolsMap.setBackgroundColor( Color.BLUE );
+        assertEquals( Color.BLUE, geoToolsMap.getBackgroundColor() );
+    }
+
+    @Test
+    public void testSetGetAntiAliasingEnabled()
+    {
+        geoToolsMap.setAntiAliasingEnabled( false );
+        assertFalse( geoToolsMap.isAntiAliasingEnabled() );
+        geoToolsMap.setAntiAliasingEnabled( true );
+        assertTrue( geoToolsMap.isAntiAliasingEnabled() );
+    }
+
+    @Test
+    @Ignore
+    public void testRender()
+    {
+        //TODO
+    }
 }
