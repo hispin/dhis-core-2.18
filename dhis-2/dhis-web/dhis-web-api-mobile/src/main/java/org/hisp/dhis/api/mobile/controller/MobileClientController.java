@@ -23,7 +23,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 @RequestMapping( value = "/mobile" )
 public class MobileClientController extends AbstractMobileController
 {
-
     @Autowired
     private CurrentUserService currentUserService;
 
@@ -75,7 +74,5 @@ public class MobileClientController extends AbstractMobileController
         url = url.substring( 0, url.indexOf( base ) + base.length() );
 
         return url + "/orgUnits/" + id + "/" + path;
-
     }
-
 }

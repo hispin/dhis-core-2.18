@@ -16,5 +16,4 @@ public class AbstractMobileController
         response.setContentType( "text/plain" );
         response.getWriter().write( exception.getReason() );
     }
-
 }
