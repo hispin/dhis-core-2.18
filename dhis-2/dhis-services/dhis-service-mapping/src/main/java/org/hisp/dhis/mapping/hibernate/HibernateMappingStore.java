@@ -173,37 +173,27 @@ public class HibernateMappingStore
 
     public int addMapView( MapView view )
     {
-        return save( view );
+        return super.save( view );
     }
 
     public void updateMapView( MapView view )
     {
-        update( view );
+        super.update( view );
     }
 
     public void deleteMapView( MapView view )
     {
-        Session session = sessionFactory.getCurrentSession();
-
-        session.delete( view );
+        super.delete( view );
     }
 
     public MapView getMapView( int id )
     {
-        Session session = sessionFactory.getCurrentSession();
-
-        return (MapView) session.get( MapView.class, id );
+        return super.get( id );
     }
 
     public MapView getMapViewByName( String name )
     {
-        Session session = sessionFactory.getCurrentSession();
-
-        Criteria criteria = session.createCriteria( MapView.class );
-
-        criteria.add( Restrictions.eq( "name", name ) );
-
-        return (MapView) criteria.uniqueResult();
+        return super.getByName( name );
     }
 
     @SuppressWarnings( "unchecked" )

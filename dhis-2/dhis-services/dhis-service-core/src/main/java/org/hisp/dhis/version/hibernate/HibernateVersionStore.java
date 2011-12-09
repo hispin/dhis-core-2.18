@@ -23,8 +23,6 @@ package org.hisp.dhis.version.hibernate;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import org.hibernate.Criteria;
-import org.hibernate.Session;
 import org.hibernate.criterion.Restrictions;
 import org.hisp.dhis.hibernate.HibernateGenericStore;
 import org.hisp.dhis.version.Version;
@@ -37,11 +35,6 @@ public class HibernateVersionStore
     @Override
     public Version getVersionByKey( String key )
     {
-        Session session = sessionFactory.getCurrentSession();
-        Criteria criteria = session.createCriteria( Version.class );
-        criteria.add( Restrictions.eq( "key", key ) );
-        criteria.setCacheable( true );
-        return (Version) criteria.uniqueResult();
+        return (Version) getCriteria( Restrictions.eq( "key", key ) ).uniqueResult();
     }
-
 }

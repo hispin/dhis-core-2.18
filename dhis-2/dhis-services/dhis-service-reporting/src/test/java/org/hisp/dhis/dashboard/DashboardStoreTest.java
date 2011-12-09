@@ -33,6 +33,7 @@ import static junit.framework.Assert.assertNull;
 
 import org.hibernate.NonUniqueObjectException;
 import org.hisp.dhis.DhisSpringTest;
+import org.hisp.dhis.common.GenericStore;
 import org.hisp.dhis.report.Report;
 import org.hisp.dhis.report.ReportService;
 import org.hisp.dhis.user.User;
@@ -51,7 +52,7 @@ public class DashboardStoreTest
     
     private ReportService reportService;
     
-    private DashboardContentStore dashboardContentStore;
+    private GenericStore<DashboardContent> dashboardContentStore;
     
     private User userA;
     
@@ -61,13 +62,14 @@ public class DashboardStoreTest
     private DashboardContent contentB;
     
     @Override
+    @SuppressWarnings("unchecked")
     public void setUpTest()
     {
         userStore = (UserStore) getBean( UserStore.ID );
         
         reportService = (ReportService) getBean( ReportService.ID );
 
-        dashboardContentStore = (DashboardContentStore) getBean( DashboardContentStore.ID );
+        dashboardContentStore = (GenericStore<DashboardContent>) getBean( "org.hisp.dhis.dashboard.DashboardContentStore" );
         
         userA = createUser( 'A' );
         userStore.addUser( userA );
@@ -87,9 +89,9 @@ public class DashboardStoreTest
         
         dashboardContentStore.save( contentA );
         
-        assertEquals( contentA, dashboardContentStore.get( userA ) );
-        assertEquals( userA, dashboardContentStore.get( userA ).getUser() );
-        assertEquals( reportA, dashboardContentStore.get( userA ).getReports().iterator().next() );
+        assertEquals( contentA, dashboardContentStore.get( userA.getId() ) );
+        assertEquals( userA, dashboardContentStore.get( userA.getId() ).getUser() );
+        assertEquals( reportA, dashboardContentStore.get( userA.getId() ).getReports().iterator().next() );
     }
     
     @Test
@@ -111,10 +113,10 @@ public class DashboardStoreTest
         
         dashboardContentStore.save( contentA );
         
-        assertNotNull( dashboardContentStore.get( userA ) );
+        assertNotNull( dashboardContentStore.get( userA.getId() ) );
         
         dashboardContentStore.delete( contentA );
         
-        assertNull( dashboardContentStore.get( userA ) );
+        assertNull( dashboardContentStore.get( userA.getId() ) );
     }
 }

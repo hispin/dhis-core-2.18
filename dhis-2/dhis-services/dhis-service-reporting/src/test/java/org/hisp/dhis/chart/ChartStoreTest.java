@@ -36,6 +36,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.hisp.dhis.DhisSpringTest;
+import org.hisp.dhis.common.GenericIdentifiableObjectStore;
 import org.hisp.dhis.indicator.Indicator;
 import org.hisp.dhis.indicator.IndicatorService;
 import org.hisp.dhis.indicator.IndicatorType;
@@ -54,7 +55,7 @@ import org.junit.Test;
 public class ChartStoreTest
     extends DhisSpringTest
 {
-    private ChartStore chartStore;
+    private GenericIdentifiableObjectStore<Chart> chartStore;
 
     private Indicator indicatorA;
     private Indicator indicatorB;
@@ -77,9 +78,10 @@ public class ChartStoreTest
     // -------------------------------------------------------------------------
 
     @Override
+    @SuppressWarnings("unchecked")
     public void setUpTest()
     {
-        chartStore = (ChartStore) getBean( ChartStore.ID );
+        chartStore = (GenericIdentifiableObjectStore<Chart>) getBean( "org.hisp.dhis.chart.ChartStore" );
         
         indicatorService = (IndicatorService) getBean( IndicatorService.ID );
         
@@ -209,6 +211,6 @@ public class ChartStoreTest
         chartStore.save( chartB );
         chartStore.save( chartC );
         
-        assertEquals( chartB, chartStore.getByTitle( "ChartB" ) );
+        assertEquals( chartB, chartStore.getByName( "ChartB" ) );
     }
 }

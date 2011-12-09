@@ -27,6 +27,40 @@ package org.hisp.dhis.chart.impl;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import static org.hisp.dhis.chart.Chart.DIMENSION_COMPLETENESS_PERIOD;
+import static org.hisp.dhis.chart.Chart.DIMENSION_DATAELEMENT_PERIOD;
+import static org.hisp.dhis.chart.Chart.DIMENSION_INDICATOR_PERIOD;
+import static org.hisp.dhis.chart.Chart.DIMENSION_ORGANISATIONUNIT_COMPLETENESS;
+import static org.hisp.dhis.chart.Chart.DIMENSION_ORGANISATIONUNIT_DATAELEMENT;
+import static org.hisp.dhis.chart.Chart.DIMENSION_ORGANISATIONUNIT_INDICATOR;
+import static org.hisp.dhis.chart.Chart.DIMENSION_PERIOD_COMPLETENESS;
+import static org.hisp.dhis.chart.Chart.DIMENSION_PERIOD_DATAELEMENT;
+import static org.hisp.dhis.chart.Chart.DIMENSION_PERIOD_INDICATOR;
+import static org.hisp.dhis.chart.Chart.SIZE_NORMAL;
+import static org.hisp.dhis.chart.Chart.TYPE_BAR;
+import static org.hisp.dhis.chart.Chart.TYPE_BAR3D;
+import static org.hisp.dhis.chart.Chart.TYPE_LINE;
+import static org.hisp.dhis.chart.Chart.TYPE_LINE3D;
+import static org.hisp.dhis.chart.Chart.TYPE_PIE;
+import static org.hisp.dhis.chart.Chart.TYPE_PIE3D;
+import static org.hisp.dhis.chart.Chart.TYPE_STACKED_BAR;
+import static org.hisp.dhis.chart.Chart.TYPE_STACKED_BAR3D;
+import static org.hisp.dhis.options.SystemSettingManager.AGGREGATION_STRATEGY_REAL_TIME;
+import static org.hisp.dhis.options.SystemSettingManager.DEFAULT_AGGREGATION_STRATEGY;
+import static org.hisp.dhis.options.SystemSettingManager.KEY_AGGREGATION_STRATEGY;
+import static org.hisp.dhis.system.util.ConversionUtils.getArray;
+
+import java.awt.BasicStroke;
+import java.awt.Color;
+import java.awt.Font;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
+
 import org.apache.commons.math.MathException;
 import org.apache.commons.math.analysis.SplineInterpolator;
 import org.apache.commons.math.analysis.UnivariateRealFunction;
@@ -37,7 +71,6 @@ import org.hisp.dhis.aggregation.AggregationService;
 import org.hisp.dhis.chart.Chart;
 import org.hisp.dhis.chart.ChartGroup;
 import org.hisp.dhis.chart.ChartService;
-import org.hisp.dhis.chart.ChartStore;
 import org.hisp.dhis.common.GenericIdentifiableObjectStore;
 import org.hisp.dhis.common.NameableObject;
 import org.hisp.dhis.completeness.DataSetCompletenessResult;
@@ -68,23 +101,24 @@ import org.jfree.chart.axis.CategoryLabelPositions;
 import org.jfree.chart.axis.NumberAxis;
 import org.jfree.chart.axis.ValueAxis;
 import org.jfree.chart.labels.StandardPieSectionLabelGenerator;
-import org.jfree.chart.plot.*;
-import org.jfree.chart.renderer.category.*;
+import org.jfree.chart.plot.CategoryPlot;
+import org.jfree.chart.plot.DatasetRenderingOrder;
+import org.jfree.chart.plot.Marker;
+import org.jfree.chart.plot.MultiplePiePlot;
+import org.jfree.chart.plot.PiePlot;
+import org.jfree.chart.plot.PlotOrientation;
+import org.jfree.chart.plot.ValueMarker;
+import org.jfree.chart.renderer.category.BarRenderer;
+import org.jfree.chart.renderer.category.BarRenderer3D;
+import org.jfree.chart.renderer.category.CategoryItemRenderer;
+import org.jfree.chart.renderer.category.LineAndShapeRenderer;
+import org.jfree.chart.renderer.category.LineRenderer3D;
 import org.jfree.chart.title.TextTitle;
 import org.jfree.data.category.CategoryDataset;
 import org.jfree.data.category.DefaultCategoryDataset;
 import org.jfree.ui.RectangleInsets;
 import org.jfree.util.TableOrder;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.awt.*;
-import java.util.*;
-import java.util.List;
-import java.util.Map.Entry;
-
-import static org.hisp.dhis.chart.Chart.*;
-import static org.hisp.dhis.options.SystemSettingManager.*;
-import static org.hisp.dhis.system.util.ConversionUtils.getArray;
 
 /**
  * @author Lars Helge Overland
@@ -115,9 +149,9 @@ public class DefaultChartService
     // Dependencies
     // -------------------------------------------------------------------------
 
-    private ChartStore chartStore;
+    private GenericIdentifiableObjectStore<Chart> chartStore;
 
-    public void setChartStore( ChartStore chartStore )
+    public void setChartStore( GenericIdentifiableObjectStore<Chart> chartStore )
     {
         this.chartStore = chartStore;
     }
@@ -1129,7 +1163,7 @@ public class DefaultChartService
 
     public Chart getChartByName( String name )
     {
-        return chartStore.getByTitle( name );
+        return chartStore.getByName( name );
     }
 
     public Collection<Chart> getCharts( final Collection<Integer> identifiers )
@@ -1147,21 +1181,21 @@ public class DefaultChartService
 
     public int getChartCount()
     {
-        return chartStore.getChartCount();
+        return chartStore.getCount();
     }
 
     public int getChartCountByName( String name )
     {
-        return chartStore.getChartCountByName( name );
+        return chartStore.getCountByName( name );
     }
 
     public Collection<Chart> getChartsBetween( int first, int max )
     {
-        return chartStore.getChartsBetween( first, max );
+        return chartStore.getBetween( first, max );
     }
 
     public Collection<Chart> getChartsBetweenByName( String name, int first, int max )
     {
-        return chartStore.getChartsBetweenByName( name, first, max );
+        return chartStore.getBetweenByName( name, first, max );
     }
 }
