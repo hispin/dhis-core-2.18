@@ -1,0 +1,26 @@
+<script type="text/javascript">
+	
+	jQuery(document).ready(function() {
+		jQuery("input[type=button]").click(function() {
+			jQuery.post( 'setUserMessageSettings.action', {
+				messageEmailNotification: jQuery( '#messageEmailNotification' ).is(':checked' ),
+				messageSmsNotification: jQuery( '#messageSmsNotification' ).is(':checked' )
+			}, function ( json ) {
+				if ( json.response == "success" )
+					setHeaderDelayMessage( json.message );
+			});
+		});
+	});
+</script>
+
+<h3>$i18n.getString("user_message_settings")</h3>
+
+<ul style="list-style-type:none">
+<li><input type="checkbox" id="messageEmailNotification" name="messageEmailNotification" #if( $messageEmailNotification ) checked="checked"#end/>
+$i18n.getString( "message_email_notification" )</li>
+
+<li><input type="checkbox" id="messageSmsNotification" name="messageSmsNotification" #if( $messageSmsNotification ) checked="checked"#end/>
+$i18n.getString( "message_sms_notification" )</li>
+</ul>
+
+<p><input type="button" value="$i18n.getString( 'save' )" style="width:10em"/></p>

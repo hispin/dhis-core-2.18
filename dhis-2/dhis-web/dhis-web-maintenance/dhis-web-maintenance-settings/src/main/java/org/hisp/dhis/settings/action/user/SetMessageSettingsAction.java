@@ -28,17 +28,17 @@ package org.hisp.dhis.settings.action.user;
  */
 
 import static org.hisp.dhis.user.UserSettingService.KEY_MESSAGE_EMAIL_NOTIFICATION;
+import static org.hisp.dhis.user.UserSettingService.KEY_MESSAGE_SMS_NOTIFICATION;
 
+import org.hisp.dhis.i18n.I18n;
 import org.hisp.dhis.user.UserSettingService;
 
 import com.opensymphony.xwork2.Action;
 
 /**
  * @author Dang Duy Hieu
- * @version $Id$
- * 
  */
-public class GetEmailSettingsAction
+public class SetMessageSettingsAction
     implements Action
 {
     // -------------------------------------------------------------------------
@@ -53,14 +53,35 @@ public class GetEmailSettingsAction
     }
 
     // -------------------------------------------------------------------------
-    // Output
+    // Input
     // -------------------------------------------------------------------------
 
     private Boolean messageEmailNotification;
 
-    public Boolean getMessageEmailNotification()
+    public void setMessageEmailNotification( Boolean messageEmailNotification )
     {
-        return messageEmailNotification;
+        this.messageEmailNotification = messageEmailNotification;
+    }
+
+    private Boolean messageSmsNotification;
+
+    public void setMessageSmsNotification( Boolean messageSmsNotification )
+    {
+        this.messageSmsNotification = messageSmsNotification;
+    }
+
+    private String message;
+
+    public String getMessage()
+    {
+        return message;
+    }
+
+    private I18n i18n;
+
+    public void setI18n( I18n i18n )
+    {
+        this.i18n = i18n;
     }
 
     // -------------------------------------------------------------------------
@@ -70,11 +91,11 @@ public class GetEmailSettingsAction
     public String execute()
         throws Exception
     {
-        // ---------------------------------------------------------------------
-        // Get Message-email-notification
-        // ---------------------------------------------------------------------
+        userSettingService.saveUserSetting( KEY_MESSAGE_EMAIL_NOTIFICATION, messageEmailNotification );
 
-        messageEmailNotification = (Boolean) userSettingService.getUserSetting( KEY_MESSAGE_EMAIL_NOTIFICATION, false );
+        userSettingService.saveUserSetting( KEY_MESSAGE_SMS_NOTIFICATION, messageSmsNotification );
+
+        message = i18n.getString( "settings_updated" );
 
         return SUCCESS;
     }

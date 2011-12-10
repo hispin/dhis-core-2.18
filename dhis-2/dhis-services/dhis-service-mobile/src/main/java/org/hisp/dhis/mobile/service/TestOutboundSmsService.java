@@ -31,7 +31,13 @@ public class TestOutboundSmsService
     public void sendOtaMessage( URL url, String prompt, String... recipients )
         throws SmsServiceException
     {
-        log.info( "Send OTA message '" + prompt + "', url " + url + " to " + recipients);
+        String numbers = "";
+        
+        for ( String recipient : recipients )
+        {
+            numbers += recipient + ", ";
+        }
+        log.info( "Send OTA message '" + prompt + "', url " + url + " to " + numbers.substring( 0, numbers.length() - 2 ) );
     }
 
 }

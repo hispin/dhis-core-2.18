@@ -27,11 +27,12 @@ package org.hisp.dhis.mobile.action;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import org.hisp.dhis.api.sms.OutboundSmsService;
-import org.hisp.dhis.api.sms.SmsServiceException;
+
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.opensymphony.xwork2.Action;
+import org.hisp.dhis.api.sms.OutboundSmsService;
+import org.hisp.dhis.api.sms.SmsServiceException;
 
 public class SendSMSAction
     implements Action

@@ -31,6 +31,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.hisp.dhis.configuration.ConfigurationService;
 import org.hisp.dhis.dataset.CompleteDataSetRegistration;
 import org.hisp.dhis.user.CurrentUserService;
@@ -46,6 +48,8 @@ import org.springframework.transaction.annotation.Transactional;
 public class DefaultMessageService
     implements MessageService
 {    
+    private static final Log log = LogFactory.getLog( DefaultMessageService.class );
+
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
@@ -71,12 +75,19 @@ public class DefaultMessageService
         this.configurationService = configurationService;
     }
     
-    @Autowired
     private List<MessageSender> messageSenders;
 
+    @Autowired
     public void setMessageSenders( List<MessageSender> messageSenders )
     {
         this.messageSenders = messageSenders;
+
+        String message = "Found the following message senders: ";
+        for ( MessageSender messageSender : messageSenders )
+        {
+            message += messageSender.getClass().getSimpleName() + ", ";
+        }
+        log.info( message.substring( 0, message.length() - 2 ) );
     }
     
     // -------------------------------------------------------------------------
@@ -213,6 +224,9 @@ public class DefaultMessageService
     {
         for ( MessageSender messageSender : messageSenders )
         {
+            if (log.isDebugEnabled())
+                log.debug( "Invoking message sender " + messageSender.getClass().getSimpleName() );
+
             messageSender.sendMessage( subject, text, sender, users );
         }
     }

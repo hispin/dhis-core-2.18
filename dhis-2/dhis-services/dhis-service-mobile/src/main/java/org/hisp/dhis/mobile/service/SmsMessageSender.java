@@ -66,6 +66,8 @@ public class SmsMessageSender
     public void setOutboundSmsService( OutboundSmsService outboundSmsService )
     {
         this.outboundSmsService = outboundSmsService;
+        
+        log.info( "Found OutboundMessageService " + outboundSmsService.getClass().getSimpleName() + ". Enabling sms message sending.");
     }
 
     
@@ -77,7 +79,7 @@ public class SmsMessageSender
     @Override
     public void sendMessage( String subject, String text, User sender, Set<User> users )
     {
-        
+
         if ( outboundSmsService == null || !outboundSmsService.isSmsServiceAvailable() )
         {
             return;
@@ -101,20 +103,25 @@ public class SmsMessageSender
         for ( User user : users )
         {
             boolean smsNotification = settings.get( user ) != null && (Boolean) settings.get( user );
-            System.out.println(smsNotification);
 
             String phoneNumber = user.getPhoneNumber();
             if ( smsNotification && phoneNumber != null && !phoneNumber.trim().isEmpty() )
             {
                 recipients.add( phoneNumber );
-
-                log.debug( "Adding user as sms recipient: " + user + " with phone number: " + phoneNumber );
+                
+                if (log.isDebugEnabled())
+                    log.debug( "Adding user as sms recipient: " + user + " with phone number: " + phoneNumber );
             }
         }
 
         if ( !recipients.isEmpty() )
         {
             outboundSmsService.sendMessage( text, recipients.toArray( new String[recipients.size()] ) );
+            if (log.isDebugEnabled()) {
+                log.debug( "Sent message to " + recipients + ": " + text );
+            }
+        } else if ( log.isDebugEnabled() ) {
+            log.debug( "No user to send message to" );
         }
 
     }

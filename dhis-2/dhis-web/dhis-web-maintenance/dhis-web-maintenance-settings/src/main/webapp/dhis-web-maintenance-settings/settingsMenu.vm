@@ -1,7 +1,7 @@
 <h2>$i18n.getString( "user_settings" )&nbsp;</h2>
 <ul>
 	<li><a href="userGeneralSettings.action">$i18n.getString( "general" )&nbsp;</a></li>
-	<li><a href="userEmailSettings.action">$i18n.getString( "email" )&nbsp;</a></li>
+	<li><a href="userMessageSettings.action">$i18n.getString( "user_message_settings" )&nbsp;</a></li>
 </ul>
 
 <h2>$i18n.getString( "system_settings" )&nbsp;</h2>
