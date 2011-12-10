@@ -47,6 +47,10 @@ import org.hisp.dhis.period.Period;
 public class DefaultAggregatedDataValueService
     implements AggregatedDataValueService
 {
+    // -------------------------------------------------------------------------
+    // Dependencies
+    // -------------------------------------------------------------------------
+    
     private AggregatedDataValueStore aggregatedDataValueStore;
 
     public void setAggregatedDataValueStore( AggregatedDataValueStore aggregatedDataValueStore )
@@ -113,19 +117,19 @@ public class DefaultAggregatedDataValueService
         return aggregatedDataValueStore.getAggregatedDataValueTotals( dataElementIds, periodIds, organisationUnitIds );
     }
     
-    public int deleteAggregatedDataValues( Collection<Integer> dataElementIds, Collection<Integer> periodIds, Collection<Integer> organisationUnitIds )
+    public void deleteAggregatedDataValues( Collection<Integer> dataElementIds, Collection<Integer> periodIds, Collection<Integer> organisationUnitIds )
     {
-        return aggregatedDataValueStore.deleteAggregatedDataValues( dataElementIds, periodIds, organisationUnitIds );
+        aggregatedDataValueStore.deleteAggregatedDataValues( dataElementIds, periodIds, organisationUnitIds );
     }
 
-    public int deleteAggregatedDataValues( Collection<Integer> periodIds )
+    public void deleteAggregatedDataValues( Collection<Integer> periodIds )
     {
-        return aggregatedDataValueStore.deleteAggregatedDataValues( periodIds );
+        aggregatedDataValueStore.deleteAggregatedDataValues( periodIds );
     }
     
-    public int deleteAggregatedDataValues()
+    public void deleteAggregatedDataValues()
     {
-        return aggregatedDataValueStore.deleteAggregatedDataValues();
+        aggregatedDataValueStore.deleteAggregatedDataValues();
     }
 
     public StoreIterator<AggregatedDataValue> getAggregateDataValuesAtLevel(OrganisationUnit orgunit, OrganisationUnitLevel level, Collection<Period> periods)
@@ -187,20 +191,20 @@ public class DefaultAggregatedDataValueService
         return aggregatedDataValueStore.getAggregatedIndicatorValues( indicatorIds, periodIds, organisationUnitIds );
     }
     
-    public int deleteAggregatedIndicatorValues( Collection<Integer> indicatorIds, Collection<Integer> periodIds,
+    public void deleteAggregatedIndicatorValues( Collection<Integer> indicatorIds, Collection<Integer> periodIds,
         Collection<Integer> organisationUnitIds )
     {
-        return aggregatedDataValueStore.deleteAggregatedIndicatorValues( indicatorIds, periodIds, organisationUnitIds );
+        aggregatedDataValueStore.deleteAggregatedIndicatorValues( indicatorIds, periodIds, organisationUnitIds );
     }
 
-    public int deleteAggregatedIndicatorValues( Collection<Integer> periodIds )
+    public void deleteAggregatedIndicatorValues( Collection<Integer> periodIds )
     {
-        return aggregatedDataValueStore.deleteAggregatedIndicatorValues( periodIds );
+        aggregatedDataValueStore.deleteAggregatedIndicatorValues( periodIds );
     }
     
-    public int deleteAggregatedIndicatorValues()
+    public void deleteAggregatedIndicatorValues()
     {
-        return aggregatedDataValueStore.deleteAggregatedIndicatorValues();
+        aggregatedDataValueStore.deleteAggregatedIndicatorValues();
     }
 
     public StoreIterator<AggregatedIndicatorValue> getAggregateIndicatorValuesAtLevel( OrganisationUnit orgunit, OrganisationUnitLevel level, Collection<Period> periods )
