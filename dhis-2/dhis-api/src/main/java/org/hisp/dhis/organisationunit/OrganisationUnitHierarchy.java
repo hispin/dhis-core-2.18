@@ -36,14 +36,27 @@ import java.util.Map;
 import java.util.Set;
 
 /**
+ * Class which encapsulates logic for the organisation unit hierarchy.
+ * 
+ * The key format for the organisation unit group variant is
+ * "<parent org unit id>:<group id>".
+ * 
  * @author Lars Helge Overland
  */
 public class OrganisationUnitHierarchy
 {
-    private Map<Integer, Set<Integer>> preparedRelationships = new HashMap<Integer, Set<Integer>>();
-    
     private Map<Integer, Set<Integer>> relationships = new HashMap<Integer, Set<Integer>>();
+
+    private Map<Integer, Set<Integer>> subTrees = new HashMap<Integer, Set<Integer>>();
     
+    // Key is on format "parent id:group id"
+    
+    private Map<String, Set<Integer>> groupSubTrees = new HashMap<String, Set<Integer>>();
+    
+    // -------------------------------------------------------------------------
+    // Constructors
+    // -------------------------------------------------------------------------
+
     public OrganisationUnitHierarchy( Map<Integer, Set<Integer>> relationships )
     {
         this.relationships = relationships;
@@ -64,7 +77,18 @@ public class OrganisationUnitHierarchy
             children.add( relation.getChildId() );
         }
     }
-    
+
+    // -------------------------------------------------------------------------
+    // Prepare
+    // -------------------------------------------------------------------------
+
+    public OrganisationUnitHierarchy prepareChildren( OrganisationUnit parent )
+    {
+        subTrees.put( parent.getId(), getChildren( parent.getId() ) );
+        
+        return this;
+    }
+
     public OrganisationUnitHierarchy prepareChildren( Collection<OrganisationUnit> parents )
     {
         for ( OrganisationUnit unit : parents )
@@ -74,19 +98,39 @@ public class OrganisationUnitHierarchy
         
         return this;
     }
-    
-    public OrganisationUnitHierarchy prepareChildren( OrganisationUnit unit )
+
+    // -------------------------------------------------------------------------
+    // Prepare for group
+    // -------------------------------------------------------------------------
+
+    public OrganisationUnitHierarchy prepareChildren( OrganisationUnit parent, OrganisationUnitGroup group )
     {
-        preparedRelationships.put( unit.getId(), getChildren( unit.getId() ) );
+        groupSubTrees.put( getKey( parent.getId(), group ), getChildren( parent.getId(), group ) );
+        
+        return this;
+    }
+
+    public OrganisationUnitHierarchy prepareChildren( Collection<OrganisationUnit> parents, OrganisationUnitGroup group )
+    {
+        for ( OrganisationUnit unit : parents )
+        {
+            prepareChildren( unit, group );
+        }
         
         return this;
     }
     
+    // -------------------------------------------------------------------------
+    // Get children
+    // -------------------------------------------------------------------------
+
     public Set<Integer> getChildren( int parentId )
     {
-        if ( preparedRelationships.containsKey( parentId ) )
+        Set<Integer> preparedChildren = subTrees.get( parentId );
+        
+        if ( preparedChildren != null )
         {
-            return preparedRelationships.get( parentId );
+            return preparedChildren;
         }
         
         List<Integer> children = new ArrayList<Integer>();
@@ -120,6 +164,57 @@ public class OrganisationUnitHierarchy
         }
         
         return children;
+    }
+
+    // -------------------------------------------------------------------------
+    // Get children for group
+    // -------------------------------------------------------------------------
+
+    public Set<Integer> getChildren( int parentId, OrganisationUnitGroup group )
+    {
+        Set<Integer> children = groupSubTrees.get( getKey( parentId, group ) );
+        
+        if ( children != null )
+        {
+            return children;
+        }
+        
+        children = getChildren( parentId );
+        
+        Set<Integer> groupMembers = new HashSet<Integer>();
+        
+        for ( OrganisationUnit unit : group.getMembers() )
+        {
+            groupMembers.add( unit.getId() );
+        }
+        
+        children.retainAll( groupMembers );
+        
+        return children;
+    }
+    
+    public Set<Integer> getChildren( Collection<Integer> parentIds, Collection<OrganisationUnitGroup> groups )
+    {
+        Set<Integer> children = new HashSet<Integer>();
+        
+        for ( Integer id : parentIds )
+        {
+            for ( OrganisationUnitGroup group : groups )
+            {
+                children.addAll( getChildren( id, group ) );
+            }
+        }
+        
+        return children;
+    }
+    
+    // -------------------------------------------------------------------------
+    // Supportive methods
+    // -------------------------------------------------------------------------
+
+    private String getKey( int parentId, OrganisationUnitGroup group )
+    {
+        return parentId + ":" + group.getId();
     }
 }
 

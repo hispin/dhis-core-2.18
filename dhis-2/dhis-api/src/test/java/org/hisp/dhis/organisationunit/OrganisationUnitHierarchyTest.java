@@ -46,6 +46,71 @@ import org.junit.Test;
 public class OrganisationUnitHierarchyTest
 {
     @Test
+    public void testGetGroupChildren()
+    {
+        OrganisationUnitGroup group = new OrganisationUnitGroup( "Group" );
+        
+        OrganisationUnit unit2 = new OrganisationUnit( "Unit2" );
+        OrganisationUnit unit4 = new OrganisationUnit( "Unit4" );
+        OrganisationUnit unit6 = new OrganisationUnit( "Unit6" );
+        OrganisationUnit unit8 = new OrganisationUnit( "Unit8" );
+        OrganisationUnit unit10 = new OrganisationUnit( "Unit10" );
+        OrganisationUnit unit12 = new OrganisationUnit( "Unit12" );
+        
+        unit2.setId( 2 );
+        unit4.setId( 4 );
+        unit6.setId( 6 );
+        unit8.setId( 8 );
+        unit10.setId( 10 );
+        unit12.setId( 12 );
+        
+        group.addOrganisationUnit( unit2 );
+        group.addOrganisationUnit( unit4 );
+        group.addOrganisationUnit( unit6 );
+        group.addOrganisationUnit( unit8 );
+        group.addOrganisationUnit( unit10 );
+        group.addOrganisationUnit( unit12 );
+                
+        List<OrganisationUnitRelationship> relationships = new ArrayList<OrganisationUnitRelationship>();
+        
+        relationships.add( new OrganisationUnitRelationship( 1, 2 ) );
+        relationships.add( new OrganisationUnitRelationship( 1, 3 ) );
+        relationships.add( new OrganisationUnitRelationship( 2, 4 ) );
+        relationships.add( new OrganisationUnitRelationship( 2, 5 ) );
+        relationships.add( new OrganisationUnitRelationship( 2, 6 ) );
+        relationships.add( new OrganisationUnitRelationship( 3, 7 ) );
+        relationships.add( new OrganisationUnitRelationship( 3, 8 ) );
+        relationships.add( new OrganisationUnitRelationship( 3, 9 ) );
+        relationships.add( new OrganisationUnitRelationship( 4, 10 ) );
+        relationships.add( new OrganisationUnitRelationship( 4, 11 ) );
+        relationships.add( new OrganisationUnitRelationship( 4, 12 ) );
+
+        OrganisationUnitHierarchy hierarchy = new OrganisationUnitHierarchy( relationships );
+        
+        assertEquals( 6, hierarchy.getChildren( 1, group ).size() );
+
+        assertEquals( 5, hierarchy.getChildren( 2, group ).size() );
+        assertTrue( hierarchy.getChildren( 2, group ).contains( 2 ) );
+        assertTrue( hierarchy.getChildren( 2, group ).contains( 4 ) );
+        assertTrue( hierarchy.getChildren( 2, group ).contains( 6 ) );
+        assertTrue( hierarchy.getChildren( 2, group ).contains( 10 ) );
+        assertTrue( hierarchy.getChildren( 2, group ).contains( 12 ) );
+
+        assertEquals( 1, hierarchy.getChildren( 3, group ).size() );
+        assertTrue( hierarchy.getChildren( 3, group ).contains( 8 ) );
+
+        assertEquals( 3, hierarchy.getChildren( 4, group ).size() );
+        assertTrue( hierarchy.getChildren( 4, group ).contains( 4 ) );
+        assertTrue( hierarchy.getChildren( 4, group ).contains( 10 ) );
+        assertTrue( hierarchy.getChildren( 4, group ).contains( 12 ) );        
+
+        assertEquals( 0, hierarchy.getChildren( 11, group ).size() );
+        
+        assertFalse( hierarchy.getChildren( 5, group ).contains( 10 ) );
+        assertFalse( hierarchy.getChildren( 3, group ).contains( 11 ) );
+    }
+    
+    @Test
     public void testGetChildrenA()
     {
         List<OrganisationUnitRelationship> relationships = new ArrayList<OrganisationUnitRelationship>();
