@@ -151,26 +151,23 @@ public interface AggregatedDataValueStore
      * @param dataElementIds a collection of DataElement identifiers.
      * @param periodIds a collection of Period identifiers.
      * @param organisationUnitIds a collection of OrganisationUnit identifiers.
-     * @return the number of deleted AggregatedDataValues.
      */
-    int deleteAggregatedDataValues( Collection<Integer> dataElementIds, Collection<Integer> periodIds,
+    void deleteAggregatedDataValues( Collection<Integer> dataElementIds, Collection<Integer> periodIds,
         Collection<Integer> organisationUnitIds );
 
     /**
      * Deletes AggregatedDataValues registered for the given parameters.
      * 
      * @param periodIds a collection of Period identifiers.
-     * @return the number of deleted AggregatedDataValues.
      */
-    int deleteAggregatedDataValues( Collection<Integer> periodIds );
+    void deleteAggregatedDataValues( Collection<Integer> periodIds );
     
     /**
      * Deletes all AggregatedDataValues.
      * 
      * @return the number of deleted AggregatedDataValues.
-     * @throws AggregationStoreException
      */
-    int deleteAggregatedDataValues();
+    void deleteAggregatedDataValues();
 
     /**
      * Returns values for children of an orgunit at a particular level
@@ -270,26 +267,23 @@ public interface AggregatedDataValueStore
      * @param indicatorIds a collection of Indicator identifiers.
      * @param periodIds a collection of Period identifiers.
      * @param organisationUnitIds a collection of OrganisationUnit identifiers.
-     * @return the number of deleted AggregatedIndicatorValues.
      */
-    int deleteAggregatedIndicatorValues( Collection<Integer> indicatorIds, Collection<Integer> periodIds,
+    void deleteAggregatedIndicatorValues( Collection<Integer> indicatorIds, Collection<Integer> periodIds,
         Collection<Integer> organisationUnitIds );
 
     /**
      * Deletes AggregatedIndicatorValue registered for the given parameters.
      * 
      * @param periodIds a collection of Period identifiers.
-     * @return the number of deleted AggregatedIndicatorValues.
      */
-    int deleteAggregatedIndicatorValues( Collection<Integer> periodIds );
+    void deleteAggregatedIndicatorValues( Collection<Integer> periodIds );
     
     /**
      * Deletes all AggregatedIndicatorValue.
      * 
      * @return the number of deleted AggregatedIndicatorValues.
-     * @throws AggregationStoreException
      */
-    int deleteAggregatedIndicatorValues();
+    void deleteAggregatedIndicatorValues();
 
 
     /**

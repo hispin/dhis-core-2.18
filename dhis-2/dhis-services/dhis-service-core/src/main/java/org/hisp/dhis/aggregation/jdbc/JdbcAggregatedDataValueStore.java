@@ -69,7 +69,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
  * @author Lars Helge Overland
  */
 public class JdbcAggregatedDataValueStore
- implements AggregatedDataValueStore
+    implements AggregatedDataValueStore
 {
     private int FETCH_SIZE = 1000; // Number of rows to fetch from db for large resultset
 
@@ -336,7 +336,7 @@ public class JdbcAggregatedDataValueStore
 
     public int countDataValuesAtLevel( OrganisationUnit rootOrgunit, OrganisationUnitLevel level, Collection<Period> periods )
     {
-        final String periodids = getCommaDelimitedString( getIdentifiers(Period.class, periods));
+        final String periodids = getCommaDelimitedString( getIdentifiers( Period.class, periods ) );
 
         final String sql =
             "SELECT count(*) " +
@@ -349,7 +349,7 @@ public class JdbcAggregatedDataValueStore
         return statementManager.getHolder().queryForInteger( sql );
     }
 
-    public int deleteAggregatedDataValues( Collection<Integer> dataElementIds, Collection<Integer> periodIds, Collection<Integer> organisationUnitIds )
+    public void deleteAggregatedDataValues( Collection<Integer> dataElementIds, Collection<Integer> periodIds, Collection<Integer> organisationUnitIds )
     {
         final String sql =
             "DELETE FROM aggregateddatavalue " +
@@ -357,21 +357,21 @@ public class JdbcAggregatedDataValueStore
             "AND periodid IN ( " + getCommaDelimitedString( periodIds ) + " ) " +
             "AND organisationunitid IN ( " + getCommaDelimitedString( organisationUnitIds ) + " )";
         
-        return statementManager.getHolder().executeUpdate( sql );        
+        jdbcTemplate.execute( sql );        
     }
 
-    public int deleteAggregatedDataValues( Collection<Integer> periodIds )
+    public void deleteAggregatedDataValues( Collection<Integer> periodIds )
     {
         final String sql =
             "DELETE FROM aggregateddatavalue " +
             "WHERE periodid IN ( " + getCommaDelimitedString( periodIds ) + " )";
         
-        return statementManager.getHolder().executeUpdate( sql );        
+        jdbcTemplate.execute( sql );        
     }
 
-    public int deleteAggregatedDataValues()
+    public void deleteAggregatedDataValues()
     {
-        return statementManager.getHolder().executeUpdate( "DELETE FROM aggregateddatavalue" ); 
+        jdbcTemplate.execute( "DELETE FROM aggregateddatavalue" ); 
     }
     
     public void createIndex( boolean dataElement, boolean indicator )
@@ -381,7 +381,7 @@ public class JdbcAggregatedDataValueStore
             try
             {
                 final String sql = "CREATE INDEX aggregateddatavalue_index ON aggregateddatavalue (dataelementid, categoryoptioncomboid, periodid, organisationunitid)";        
-                statementManager.getHolder().executeUpdate( sql, true );
+                jdbcTemplate.execute( sql );
             }
             catch ( Exception ex )
             {
@@ -394,7 +394,7 @@ public class JdbcAggregatedDataValueStore
             try
             {
                 final String sql = "CREATE INDEX aggregatedindicatorvalue_index ON aggregatedindicatorvalue (indicatorid, periodid, organisationunitid)";        
-                statementManager.getHolder().executeUpdate( sql, true );
+                jdbcTemplate.execute( sql );
             }
             catch ( Exception ex )
             {
@@ -410,7 +410,7 @@ public class JdbcAggregatedDataValueStore
             try
             {
                 final String sql = "DROP INDEX aggregateddatavalue_index";
-                statementManager.getHolder().executeUpdate( sql, true );
+                jdbcTemplate.execute( sql );
             }
             catch ( Exception ex )
             {
@@ -423,7 +423,7 @@ public class JdbcAggregatedDataValueStore
             try
             {
                 final String sql = "DROP INDEX aggregatedindicatorvalue_index";
-                statementManager.getHolder().executeUpdate( sql, true );
+                jdbcTemplate.execute( sql );
             }
             catch ( Exception ex )
             {
@@ -549,7 +549,7 @@ public class JdbcAggregatedDataValueStore
         }
     }
 
-    public int deleteAggregatedIndicatorValues( Collection<Integer> indicatorIds, Collection<Integer> periodIds,
+    public void deleteAggregatedIndicatorValues( Collection<Integer> indicatorIds, Collection<Integer> periodIds,
         Collection<Integer> organisationUnitIds )
     {
         final String sql =
@@ -558,21 +558,21 @@ public class JdbcAggregatedDataValueStore
             "AND periodid IN ( " + getCommaDelimitedString( periodIds ) + " ) " +
             "AND organisationunitid IN ( " + getCommaDelimitedString( organisationUnitIds ) + " )";
         
-        return statementManager.getHolder().executeUpdate( sql );        
+        jdbcTemplate.execute( sql );        
     }
 
-    public int deleteAggregatedIndicatorValues( Collection<Integer> periodIds )
+    public void deleteAggregatedIndicatorValues( Collection<Integer> periodIds )
     {
         final String sql =
             "DELETE FROM aggregatedindicatorvalue " +
             "WHERE periodid IN ( " + getCommaDelimitedString( periodIds ) + " )";
-        
-        return statementManager.getHolder().executeUpdate( sql );        
+
+        jdbcTemplate.execute( sql );      
     }
     
-    public int deleteAggregatedIndicatorValues()
+    public void deleteAggregatedIndicatorValues()
     {
-        return statementManager.getHolder().executeUpdate( "DELETE FROM aggregatedindicatorvalue" );
+        jdbcTemplate.execute( "DELETE FROM aggregatedindicatorvalue" );
     }
 
     @Override
