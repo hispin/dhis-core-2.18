@@ -191,6 +191,13 @@ public class GetSectionFormAction
         return greyedFields;
     }
     
+    // FIXME: Not in use, but seems to be referenced in html.
+    private Map<String, String> typeViolations = new HashMap<String, String>();
+    
+    public Map<String, String> getTypeViolations() {
+         return typeViolations;
+     }
+    
     // -------------------------------------------------------------------------
     // Action Implementation
     // -------------------------------------------------------------------------
