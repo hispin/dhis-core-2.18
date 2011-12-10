@@ -27,15 +27,15 @@ package org.hisp.dhis.validation;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.Collection;
-import java.util.Date;
-import java.util.List;
-
 import org.hisp.dhis.common.Grid;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.period.Period;
+
+import java.util.Collection;
+import java.util.Date;
+import java.util.List;
 
 /**
  * @author Margrethe Store
@@ -46,7 +46,7 @@ public interface ValidationRuleService
     String ID = ValidationRuleService.class.getName();
 
     int MAX_VIOLATIONS = 500;
-    
+
     // -------------------------------------------------------------------------
     // ValidationRule business logic
     // -------------------------------------------------------------------------
@@ -56,66 +56,66 @@ public interface ValidationRuleService
      * are listed as columns and Sources are listed as rows.
      */
     Grid getAggregateValidationResult( Collection<ValidationResult> results, List<Period> periods, List<OrganisationUnit> sources );
-    
+
     /**
      * Validates AggregatedDataValues.
-     * 
+     *
      * @param startDate the start date.
-     * @param endDate the end date.
-     * @param sources a collection of Sources.
-     * @return a collection of ValidationResults for each validation violation. 
+     * @param endDate   the end date.
+     * @param sources   a collection of Sources.
+     * @return a collection of ValidationResults for each validation violation.
      */
     Collection<ValidationResult> validateAggregate( Date startDate, Date endDate, Collection<OrganisationUnit> sources );
 
     /**
      * Validate AggregatedDataValues.
-     * 
+     *
      * @param startDate the start date.
-     * @param endDate the end date.
-     * @param sources a collection of Sources.
-     * @param group a group of ValidationRules.
-     * @return a collection of ValidationResults for each validation violation. 
+     * @param endDate   the end date.
+     * @param sources   a collection of Sources.
+     * @param group     a group of ValidationRules.
+     * @return a collection of ValidationResults for each validation violation.
      */
     public Collection<ValidationResult> validateAggregate( Date startDate, Date endDate, Collection<OrganisationUnit> sources, ValidationRuleGroup group );
-    
+
     /**
      * Validate DataValues.
-     * 
+     *
      * @param startDate the start date.
-     * @param endDate the end date.
-     * @param sources a collection of Sources.
-     * @return a collection of ValidationResults for each validation violation. 
+     * @param endDate   the end date.
+     * @param sources   a collection of Sources.
+     * @return a collection of ValidationResults for each validation violation.
      */
     Collection<ValidationResult> validate( Date startDate, Date endDate, Collection<OrganisationUnit> sources );
-    
+
     /**
      * Validate DataValues.
-     * 
+     *
      * @param startDate the start date.
-     * @param endDate the end date.
-     * @param sources a collection of Sources.
-     * @param group a group of ValidationRules.
-     * @return a collection of ValidationResults for each validation violation. 
+     * @param endDate   the end date.
+     * @param sources   a collection of Sources.
+     * @param group     a group of ValidationRules.
+     * @return a collection of ValidationResults for each validation violation.
      */
     Collection<ValidationResult> validate( Date startDate, Date endDate, Collection<OrganisationUnit> sources, ValidationRuleGroup group );
-    
+
     /**
      * Validate DataValues.
-     * 
+     *
      * @param dataSet the DataSet.
-     * @param period the Period.
-     * @param source the Source.
-     * @return a collection of ValidationResults for each validation violation. 
+     * @param period  the Period.
+     * @param source  the Source.
+     * @return a collection of ValidationResults for each validation violation.
      */
     Collection<ValidationResult> validate( DataSet dataSet, Period period, OrganisationUnit source );
 
     /**
      * Validate DataValues.
-     * 
+     *
      * @param startDate the start date.
-     * @param endDate the end date.
-     * @param source the Source.
-     * @return a collection of ValidationResults for each validation violation. 
+     * @param endDate   the end date.
+     * @param source    the Source.
+     * @return a collection of ValidationResults for each validation violation.
      */
     Collection<ValidationResult> validate( Date startDate, Date endDate, OrganisationUnit source );
 
@@ -125,15 +125,15 @@ public interface ValidationRuleService
 
     /**
      * Save a ValidationRule to the database.
-     * 
+     *
      * @param validationRule the ValidationRule to save.
      * @return the generated unique identifier for the ValidationRule.
      */
     int saveValidationRule( ValidationRule validationRule );
-   
+
     /**
      * Update a ValidationRule to the database.
-     * 
+     *
      * @param validationRule the ValidationRule to update.
      * @return the generated unique identifier for the ValidationRule.
      */
@@ -141,71 +141,79 @@ public interface ValidationRuleService
 
     /**
      * Delete a validation rule with the given identifiers from the database.
-     * 
+     *
      * @param validationRule the ValidationRule to delete.
      */
     void deleteValidationRule( ValidationRule validationRule );
-    
+
     /**
      * Get ValidationRule with the given identifier.
-     * 
+     *
      * @param id the unique identifier of the ValidationRule.
      * @return the ValidationRule or null if it doesn't exist.
      */
     ValidationRule getValidationRule( int id );
 
     /**
+     * Get ValidationRule with the given uid.
+     *
+     * @param uid the unique identifier of the ValidationRule.
+     * @return the ValidationRule or null if it doesn't exist.
+     */
+    ValidationRule getValidationRule( String uid );
+
+    /**
      * Get the ValidationRules with the corresponding identifiers.
-     * 
+     *
      * @param identifiers the collection of identifiers.
      * @return a collection of validation rules.
      */
     Collection<ValidationRule> getValidationRules( Collection<Integer> identifiers );
-    
+
     /**
      * Get all validation rules.
-     * 
+     *
      * @return a Collection of ValidationRule or null if it there are no validation rules.
-     */    
+     */
     Collection<ValidationRule> getAllValidationRules();
 
     /**
      * Get a validation rule with the given name.
-     * 
+     *
      * @param name the name of the validation rule.
      */
     ValidationRule getValidationRuleByName( String name );
-    
+
     /**
      * Get the validation rules which are associated with the given name key.
-     * 
+     *
      * @param name the name key.
      * @return a collection of validation rules.
      */
     Collection<ValidationRule> getValidationRulesByName( String name );
-    
+
     /**
      * Get the validation rules which are associated with the given data elements.
-     * 
+     *
      * @param dataElements the collection of data elements.
      * @return a collection of validation rules.
      */
     Collection<ValidationRule> getValidationRulesByDataElements( Collection<DataElement> dataElements );
-    
+
     /**
      * Get all data elements associated with any validation rule.
-     * 
+     *
      * @return a collection of data elements.
      */
     Collection<DataElement> getDataElementsInValidationRules();
-    
+
     // -------------------------------------------------------------------------
     // ValidationRuleGroup
     // -------------------------------------------------------------------------
 
     /**
      * Adds a ValidationRuleGroup to the database.
-     * 
+     *
      * @param validationRuleGroup the ValidationRuleGroup to add.
      * @return the generated unique identifier for the ValidationRuleGroup.
      */
@@ -213,54 +221,62 @@ public interface ValidationRuleService
 
     /**
      * Delete a ValidationRuleGroup with the given identifiers from the database.
-     * 
-     * @param id the ValidationRuleGroup to delete.
+     *
+     * @param validationRuleGroup the ValidationRuleGroup to delete.
      */
     void deleteValidationRuleGroup( ValidationRuleGroup validationRuleGroup );
 
     /**
      * Update a ValidationRuleGroup with the given identifiers.
-     * 
-     * @param validationRule the ValidationRule to update.
+     *
+     * @param validationRuleGroup the ValidationRule to update.
      */
     void updateValidationRuleGroup( ValidationRuleGroup validationRuleGroup );
 
     /**
      * Get ValidationRuleGroup with the given identifier.
-     * 
+     *
      * @param id the unique identifier of the ValidationRuleGroup.
-     * @return the ValidationRule or null if it doesn't exist.
+     * @return the ValidationRuleGroup or null if it doesn't exist.
      */
     ValidationRuleGroup getValidationRuleGroup( int id );
 
     /**
+     * Get ValidationRuleGroup with the given uid.
+     *
+     * @param uid the unique identifier of the ValidationRuleGroup.
+     * @return the ValidationRuleGroup or null if it doesn't exist.
+     */
+    ValidationRuleGroup getValidationRuleGroup( String uid );
+
+    /**
      * Get all ValidationRuleGroups.
-     * 
+     *
      * @return a Collection of ValidationRuleGroup or null if it there are no ValidationRuleGroups.
-     */    
+     */
     Collection<ValidationRuleGroup> getAllValidationRuleGroups();
-    
+
     /**
      * Get a ValidationRuleGroup with the given name.
-     * 
+     *
      * @param name the name of the ValidationRuleGroup.
      */
-    ValidationRuleGroup getValidationRuleGroupByName( String name );  
-    
+    ValidationRuleGroup getValidationRuleGroupByName( String name );
+
     Collection<ValidationRule> getValidationRulesBetween( int first, int max );
-    
+
     Collection<ValidationRule> getValidationRulesBetweenByName( String name, int first, int max );
-    
+
     int getValidationRuleCount();
-    
+
     int getValidationRuleCountByName( String name );
-    
+
     Collection<ValidationRuleGroup> getValidationRuleGroupsBetween( int first, int max );
-    
+
     Collection<ValidationRuleGroup> getValidationRuleGroupsBetweenByName( String name, int first, int max );
-    
+
     int getValidationRuleGroupCount();
-    
+
     int getValidationRuleGroupCountByName( String name );
 
 }

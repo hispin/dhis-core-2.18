@@ -395,6 +395,11 @@ public class DefaultValidationRuleService
         return validationRuleStore.get( id );
     }
 
+    public ValidationRule getValidationRule( String uid )
+    {
+        return validationRuleStore.getByUid( uid );
+    }
+
     public ValidationRule getValidationRuleByName( String name )
     {
         return validationRuleStore.getByName( name );
@@ -450,6 +455,11 @@ public class DefaultValidationRuleService
     public ValidationRuleGroup getValidationRuleGroup( int id )
     {
         return validationRuleGroupStore.get( id );
+    }
+
+    public ValidationRuleGroup getValidationRuleGroup( String uid )
+    {
+        return validationRuleGroupStore.getByUid( uid );
     }
 
     public Collection<ValidationRuleGroup> getAllValidationRuleGroups()

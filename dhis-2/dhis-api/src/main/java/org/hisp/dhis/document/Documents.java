@@ -1,7 +1,7 @@
 package org.hisp.dhis.document;
 
 /*
- * Copyright (c) 2004-2010, University of Oslo
+ * Copyright (c) 2004-2011, University of Oslo
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -27,69 +27,41 @@ package org.hisp.dhis.document;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.Collection;
+import org.codehaus.jackson.annotate.JsonProperty;
+import org.codehaus.jackson.map.annotate.JsonSerialize;
+import org.hisp.dhis.common.BaseIdentifiableObject;
+import org.hisp.dhis.common.BaseLinkableObject;
+import org.hisp.dhis.common.Dxf2Namespace;
+import org.hisp.dhis.common.adapter.DocumentXmlAdapter;
+
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
- * @author Lars Helge Overland
- * @version $Id$
+ * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
-public interface DocumentService
+@XmlRootElement( name = "documents", namespace = Dxf2Namespace.NAMESPACE )
+@XmlAccessorType( value = XmlAccessType.NONE )
+public class Documents extends BaseLinkableObject
 {
-    String ID = DocumentService.class.getName();
-    String DIR = "documents";
-    
-    /**
-     * Saves a Document.
-     * 
-     * @param document the Document to save.
-     * @return the generated identifier.
-     */
-    int saveDocument( Document document );
+    private List<Document> documents = new ArrayList<Document>();
 
-    /**
-     * Retrieves the Document with the given identifier.
-     *
-     * @param id the identifier of the Document.
-     * @return the Document.
-     */
-    Document getDocument( int id );
+    @XmlElement( name = "document" )
+    @XmlJavaTypeAdapter( DocumentXmlAdapter.class )
+    @JsonProperty( value = "documents" )
+    @JsonSerialize( contentAs = BaseIdentifiableObject.class )
+    public List<Document> getDocuments()
+    {
+        return documents;
+    }
 
-    /**
-     * Retrieves the Document with the given identifier.
-     *
-     * @param uid the identifier of the Document.
-     * @return the Document.
-     */
-    Document getDocument( String uid );
-
-    /**
-     * Deletes a Document.
-     * 
-     * @param document the Document to delete.
-     */
-    void deleteDocument( Document document );
-
-    /**
-     * Retrieves all Documents.
-     * 
-     * @return a Collection of Documents.
-     */
-    Collection<Document> getAllDocuments();
-    
-    /**
-     * Retrieves the Document with the given name.
-     * 
-     * @param name the name of the Document.
-     * @return the Document.
-     */
-    Document getDocumentByName( String name );
-    
-    Collection<Document> getDocumentsBetween( int first, int max );
-    
-    Collection<Document> getDocumentsBetweenByName( String name, int first, int max );
-    
-    int getDocumentCount();
-    
-    int getDocumentCountByName( String name );
-
+    public void setDocuments( List<Document> documents )
+    {
+        this.documents = documents;
+    }
 }

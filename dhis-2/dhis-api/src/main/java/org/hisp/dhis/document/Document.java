@@ -38,7 +38,7 @@ import javax.xml.bind.annotation.*;
  * @author Lars Helge Overland
  * @version $Id$
  */
-@XmlRootElement( name = "dataElement", namespace = Dxf2Namespace.NAMESPACE )
+@XmlRootElement( name = "document", namespace = Dxf2Namespace.NAMESPACE )
 @XmlAccessorType( value = XmlAccessType.NONE )
 public class Document
     extends BaseIdentifiableObject
