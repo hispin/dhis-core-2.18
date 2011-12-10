@@ -75,15 +75,15 @@
 	  <param name="onExceptionReturn">plainTextError</param>
     </action>
 		
-		<!-- Email settings -->
+		<!-- Message notification settings -->
 
-    <action name="userEmailSettings" class="org.hisp.dhis.settings.action.user.GetEmailSettingsAction">
+    <action name="userMessageSettings" class="org.hisp.dhis.settings.action.user.GetMessageSettingsAction">
       <result name="success" type="velocity">/main.vm</result>
-      <param name="page">/dhis-web-maintenance-settings/userEmailSettings.vm</param>
+      <param name="page">/dhis-web-maintenance-settings/userMessageSettings.vm</param>
       <param name="menu">/dhis-web-maintenance-settings/settingsMenu.vm</param>
     </action>
 
-    <action name="setUserEmailSettings" class="org.hisp.dhis.settings.action.user.SetEmailSettingsAction">
+    <action name="setUserMessageSettings" class="org.hisp.dhis.settings.action.user.SetMessageSettingsAction">
       <result name="success" type="velocity-json">
 		/dhis-web-commons/ajax/jsonResponseSuccess.vm</result>
 	  <param name="onExceptionReturn">plainTextError</param>

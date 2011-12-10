@@ -51,6 +51,6 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 
   <!--  OutboundSmsService stub just logging invocations, only to be used for testing! -->
 
-  <!-- <bean id="org.hisp.dhis.mobile.service.TestOuboundSmsService" class="org.hisp.dhis.mobile.service.TestOuboundSmsService" /> -->
+  <!-- <bean id="org.hisp.dhis.mobile.service.TestOutboundSmsService" class="org.hisp.dhis.mobile.service.TestOutboundSmsService" />  -->
 
 </beans>
