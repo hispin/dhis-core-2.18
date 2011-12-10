@@ -28,14 +28,22 @@ package org.hisp.dhis.datamart.engine;
  */
 
 import java.util.Collection;
+import java.util.HashSet;
+import java.util.Set;
 
 import org.hisp.dhis.common.ProcessState;
+import org.hisp.dhis.organisationunit.OrganisationUnitGroup;
 
 /**
  * @author Lars Helge Overland
  */
 public interface DataMartEngine
 {
+    final Set<OrganisationUnitGroup> DUMMY_ORG_UNIT_GROUPS = new HashSet<OrganisationUnitGroup>()
+    { {
+        add( null );
+    } };
+    
     /**
      * Exports aggregated values to the data mart tables.
      * 

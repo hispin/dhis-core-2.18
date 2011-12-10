@@ -32,6 +32,7 @@ import java.util.List;
 
 import org.hisp.dhis.dataelement.DataElementOperand;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
+import org.hisp.dhis.organisationunit.OrganisationUnitGroup;
 import org.hisp.dhis.period.Period;
 
 /**
@@ -48,20 +49,28 @@ public class DataElementOperandList
     
     private boolean hasValues;
     
+    private int offset;
+    
     public DataElementOperandList( List<DataElementOperand> operands )
     {
         this.operands = operands;
     }
     
-    public void init( Period period, OrganisationUnit unit )
+    public void init( Period period, OrganisationUnit unit, OrganisationUnitGroup group )
     {
         this.hasValues = false;
+        this.offset = group != null ? 3 : 2;
         
         if ( valid() )
         {
-            this.valueList = new Object[operands.size() + 2];
+            this.valueList = new Object[operands.size() + offset];
             this.valueList[0] = period.getId();
             this.valueList[1] = unit.getId();
+            
+            if ( group != null )
+            {
+                this.valueList[2] = group.getId();
+            }
         }
     }
     
@@ -73,7 +82,7 @@ public class DataElementOperandList
             
             if ( index != -1 && value != null )
             {                
-                this.valueList[index + 2] = value;
+                this.valueList[index + offset] = value;
                 this.hasValues = true;
             }
         }
