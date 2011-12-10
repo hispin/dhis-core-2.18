@@ -41,10 +41,16 @@ import org.hisp.dhis.common.IdentifiableObject;
 import org.hisp.dhis.dataelement.*;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.dataset.DataSets;
+import org.hisp.dhis.document.Document;
+import org.hisp.dhis.document.Documents;
 import org.hisp.dhis.indicator.*;
 import org.hisp.dhis.mapping.MapView;
 import org.hisp.dhis.mapping.Maps;
 import org.hisp.dhis.organisationunit.*;
+import org.hisp.dhis.validation.ValidationRule;
+import org.hisp.dhis.validation.ValidationRuleGroup;
+import org.hisp.dhis.validation.ValidationRuleGroups;
+import org.hisp.dhis.validation.ValidationRules;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Collection;
@@ -239,7 +245,99 @@ public class WebLinkPopulator
         {
             populateMap( (MapView) source, true );
         }
+        else if ( source instanceof Documents )
+        {
+            populateDocuments( (Documents) source, true );
+        }
+        else if ( source instanceof Document )
+        {
+            populateDocument( (Document) source, true );
+        }
+        else if ( source instanceof ValidationRules )
+        {
+            populateValidationRules( (ValidationRules) source, true );
+        }
+        else if ( source instanceof ValidationRule )
+        {
+            populateValidationRule( (ValidationRule) source, true );
+        }
+        else if ( source instanceof ValidationRuleGroups )
+        {
+            populateValidationRuleGroups( (ValidationRuleGroups) source, true );
+        }
+        else if ( source instanceof ValidationRuleGroup )
+        {
+            populateValidationRuleGroup( (ValidationRuleGroup) source, true );
+        }
+    }
 
+    private void populateDocuments( Documents documents, boolean root )
+    {
+        documents.setLink( getBasePath( documents.getClass() ) );
+
+        if ( root )
+        {
+            for ( Document document : documents.getDocuments() )
+            {
+                populateDocument( document, false );
+            }
+        }
+    }
+
+    private void populateDocument( Document document, boolean root )
+    {
+        populateIdentifiableObject( document );
+
+        if ( root )
+        {
+
+        }
+    }
+
+    private void populateValidationRules( ValidationRules validationRules, boolean root )
+    {
+        validationRules.setLink( getBasePath( validationRules.getClass() ) );
+
+        if ( root )
+        {
+            for ( ValidationRule validationRule : validationRules.getValidationRules() )
+            {
+                populateValidationRule( validationRule, false );
+            }
+        }
+    }
+
+    private void populateValidationRule( ValidationRule validationRule, boolean root )
+    {
+        populateIdentifiableObject( validationRule );
+
+        if ( root )
+        {
+            handleIdentifiableObjectCollection( validationRule.getGroups() );
+        }
+    }
+
+    private void populateValidationRuleGroups( ValidationRuleGroups validationRuleGroups, boolean root )
+    {
+        validationRuleGroups.setLink( getBasePath( validationRuleGroups.getClass() ) );
+
+        if ( root )
+        {
+            for ( ValidationRuleGroup validationRuleGroup : validationRuleGroups.getValidationRuleGroups() )
+            {
+                populateValidationRuleGroup( validationRuleGroup, false );
+            }
+        }
+    }
+
+    private void populateValidationRuleGroup( ValidationRuleGroup validationRuleGroup, boolean root )
+    {
+        populateIdentifiableObject( validationRuleGroup );
+
+        if ( root )
+        {
+            handleIdentifiableObjectCollection( validationRuleGroup.getMembers() );
+        }
     }
 
     private void populateIndicatorTypes( IndicatorTypes indicatorTypes, boolean root )

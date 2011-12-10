@@ -27,12 +27,14 @@ package org.hisp.dhis.validation;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import org.codehaus.jackson.annotate.JsonProperty;
+import org.codehaus.jackson.map.annotate.JsonSerialize;
 import org.hisp.dhis.common.BaseIdentifiableObject;
 import org.hisp.dhis.common.Dxf2Namespace;
+import org.hisp.dhis.common.adapter.ValidationRuleXmlAdapter;
 
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.*;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -107,6 +109,8 @@ public class ValidationRuleGroup
     // Getters and setters
     // -------------------------------------------------------------------------     
 
+    @XmlElement
+    @JsonProperty
     public String getDescription()
     {
         return description;
@@ -117,6 +121,11 @@ public class ValidationRuleGroup
         this.description = description;
     }
 
+    @XmlElementWrapper( name = "validationRules" )
+    @XmlElement( name = "validationRule" )
+    @XmlJavaTypeAdapter( ValidationRuleXmlAdapter.class )
+    @JsonProperty( value = "validationRules" )
+    @JsonSerialize( contentAs = BaseIdentifiableObject.class )
     public Set<ValidationRule> getMembers()
     {
         return members;

@@ -50,7 +50,7 @@ public class IdentityPopulator
     private static final Log log = LogFactory.getLog( IdentityPopulator.class );
 
     private static String[] tables = { "chart", "constant", "attribute", "indicatortype", "indicatorgroupset", "indicator",
-        "indicatorgroup", "datadictionary", "validationrulegroup", "validationrule", "dataset", "orgunitlevel",
+        "indicatorgroup", "datadictionary", "validationrulegroup", "validationrule", "dataset", "orgunitlevel", "document",
         "organisationunit", "orgunitgroup", "orgunitgroupset", "dataelementcategoryoption", "dataelementgroup",
         "dataelement", "dataelementgroupset", "dataelementcategory", "categorycombo", "categoryoptioncombo", "mapview" };
 

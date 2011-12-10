@@ -27,9 +27,17 @@ package org.hisp.dhis.expression;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import org.codehaus.jackson.annotate.JsonProperty;
+import org.codehaus.jackson.map.annotate.JsonSerialize;
+import org.hisp.dhis.common.BaseIdentifiableObject;
+import org.hisp.dhis.common.Dxf2Namespace;
+import org.hisp.dhis.common.adapter.CategoryOptionComboXmlAdapter;
+import org.hisp.dhis.common.adapter.DataElementXmlAdapter;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
 
+import javax.xml.bind.annotation.*;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import java.io.Serializable;
 import java.util.Set;
 
@@ -50,6 +58,8 @@ import java.util.Set;
  * @author Margrethe Store
  * @version $Id: Expression.java 5011 2008-04-24 20:41:28Z larshelg $
  */
+@XmlRootElement( name = "expression", namespace = Dxf2Namespace.NAMESPACE )
+@XmlAccessorType( value = XmlAccessType.NONE )
 public class Expression
     implements Serializable
 {
@@ -185,36 +195,18 @@ public class Expression
     // Getters and setters
     // -------------------------------------------------------------------------
 
-    public Set<DataElement> getDataElementsInExpression()
+    public int getId()
     {
-        return dataElementsInExpression;
+        return id;
     }
 
-    public void setDataElementsInExpression( Set<DataElement> dataElementsInExpression )
+    public void setId( int id )
     {
-        this.dataElementsInExpression = dataElementsInExpression;
+        this.id = id;
     }
 
-    public Set<DataElementCategoryOptionCombo> getOptionCombosInExpression()
-    {
-        return optionCombosInExpression;
-    }
-
-    public void setOptionCombosInExpression( Set<DataElementCategoryOptionCombo> optionCombosInExpression )
-    {
-        this.optionCombosInExpression = optionCombosInExpression;
-    }
-
-    public String getDescription()
-    {
-        return description;
-    }
-
-    public void setDescription( String description )
-    {
-        this.description = description;
-    }
-
+    @XmlElement
+    @JsonProperty
     public String getExpression()
     {
         return expression;
@@ -225,13 +217,45 @@ public class Expression
         this.expression = expression;
     }
 
-    public int getId()
+    @XmlElementWrapper( name = "dataElements" )
+    @XmlElement( name = "dataElement" )
+    @XmlJavaTypeAdapter( DataElementXmlAdapter.class )
+    @JsonProperty( value = "dataElements" )
+    @JsonSerialize( contentAs = BaseIdentifiableObject.class )
+    public Set<DataElement> getDataElementsInExpression()
     {
-        return id;
+        return dataElementsInExpression;
     }
 
-    public void setId( int id )
+    public void setDataElementsInExpression( Set<DataElement> dataElementsInExpression )
     {
-        this.id = id;
+        this.dataElementsInExpression = dataElementsInExpression;
+    }
+
+    @XmlElementWrapper( name = "categoryOptionCombos" )
+    @XmlElement( name = "categoryOptionCombo" )
+    @XmlJavaTypeAdapter( CategoryOptionComboXmlAdapter.class )
+    @JsonProperty( value = "categoryOptionCombos" )
+    @JsonSerialize( contentAs = BaseIdentifiableObject.class )
+    public Set<DataElementCategoryOptionCombo> getOptionCombosInExpression()
+    {
+        return optionCombosInExpression;
+    }
+
+    public void setOptionCombosInExpression( Set<DataElementCategoryOptionCombo> optionCombosInExpression )
+    {
+        this.optionCombosInExpression = optionCombosInExpression;
+    }
+
+    @XmlElement
+    @JsonProperty
+    public String getDescription()
+    {
+        return description;
+    }
+
+    public void setDescription( String description )
+    {
+        this.description = description;
     }
 }

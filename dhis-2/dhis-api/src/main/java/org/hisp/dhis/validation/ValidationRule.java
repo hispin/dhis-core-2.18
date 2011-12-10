@@ -27,15 +27,17 @@ package org.hisp.dhis.validation;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import org.codehaus.jackson.annotate.JsonProperty;
+import org.codehaus.jackson.map.annotate.JsonSerialize;
 import org.hisp.dhis.common.BaseIdentifiableObject;
 import org.hisp.dhis.common.Dxf2Namespace;
+import org.hisp.dhis.common.adapter.ValidationRuleGroupXmlAdapter;
 import org.hisp.dhis.expression.Expression;
 import org.hisp.dhis.expression.Operator;
 import org.hisp.dhis.period.PeriodType;
 
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.*;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -133,6 +135,8 @@ public class ValidationRule
     // Set and get methods
     // -------------------------------------------------------------------------  
 
+    @XmlElement
+    @JsonProperty
     public String getDescription()
     {
         return description;
@@ -141,11 +145,6 @@ public class ValidationRule
     public void setDescription( String description )
     {
         this.description = description;
-    }
-
-    public Operator getOperator()
-    {
-        return operator;
     }
 
     public PeriodType getPeriodType()
@@ -158,11 +157,20 @@ public class ValidationRule
         this.periodType = periodType;
     }
 
+    @XmlElement
+    @JsonProperty
+    public Operator getOperator()
+    {
+        return operator;
+    }
+
     public void setOperator( Operator operator )
     {
         this.operator = operator;
     }
 
+    @XmlElement
+    @JsonProperty
     public String getType()
     {
         return type;
@@ -173,6 +181,8 @@ public class ValidationRule
         this.type = type;
     }
 
+    @XmlElement
+    @JsonProperty
     public Expression getLeftSide()
     {
         return leftSide;
@@ -183,6 +193,8 @@ public class ValidationRule
         this.leftSide = leftSide;
     }
 
+    @XmlElement
+    @JsonProperty
     public Expression getRightSide()
     {
         return rightSide;
@@ -193,6 +205,11 @@ public class ValidationRule
         this.rightSide = rightSide;
     }
 
+    @XmlElementWrapper( name = "validationRuleGroups" )
+    @XmlElement( name = "validationRuleGroup" )
+    @XmlJavaTypeAdapter( ValidationRuleGroupXmlAdapter.class )
+    @JsonProperty( value = "validationRuleGroups" )
+    @JsonSerialize( contentAs = BaseIdentifiableObject.class )
     public Set<ValidationRuleGroup> getGroups()
     {
         return groups;
