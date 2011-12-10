@@ -46,6 +46,7 @@ import org.hisp.dhis.dataelement.DataElementOperand;
 import org.hisp.dhis.datamart.DataElementOperandList;
 import org.hisp.dhis.datamart.aggregation.cache.AggregationCache;
 import org.hisp.dhis.datamart.aggregation.dataelement.DataElementAggregator;
+import org.hisp.dhis.datamart.engine.DataMartEngine;
 import org.hisp.dhis.jdbc.batchhandler.GenericBatchHandler;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroup;
@@ -153,11 +154,13 @@ public class DefaultDataElementDataMart
         
         final BatchHandler<Object> cacheHandler = inMemoryBatchHandlerFactory.createBatchHandler( GenericBatchHandler.class ).setTableName( AGGREGATEDDATA_CACHE_PREFIX + key ).init();
         
-        final OrganisationUnitHierarchy hierarchy = organisationUnitService.getOrganisationUnitHierarchy().prepareChildren( organisationUnits );
+        final OrganisationUnitHierarchy hierarchy = organisationUnitService.getOrganisationUnitHierarchy().prepareChildren( organisationUnits, organisationUnitGroups );
 
         final Map<DataElementOperand, Double> valueMap = new HashMap<DataElementOperand, Double>();
         
         final AggregatedDataValue aggregatedValue = new AggregatedDataValue();
+        
+        organisationUnitGroups = ( organisationUnitGroups != null ) ? organisationUnitGroups : DataMartEngine.DUMMY_ORG_UNIT_GROUPS;
         
         for ( final Period period : periods )
         {
@@ -171,11 +174,11 @@ public class DefaultDataElementDataMart
             {
                 for ( final OrganisationUnit unit : organisationUnits )
                 {
-                    operandList.init( period, unit );
+                    operandList.init( period, unit, group );
                     
                     final int level = aggregationCache.getLevelOfOrganisationUnit( unit.getId() );
                     
-                    final Collection<Integer> orgUnitChildren = hierarchy.getChildren( unit.getId() );
+                    final Collection<Integer> orgUnitChildren = hierarchy.getChildren( unit.getId(), group );
                     
                     valueMap.clear();                
                     valueMap.putAll( sumIntAggregator.getAggregatedValues( sumIntOperands, period, level, orgUnitChildren, key ) );
@@ -197,7 +200,7 @@ public class DefaultDataElementDataMart
                             aggregatedValue.setPeriodId( period.getId() );
                             aggregatedValue.setPeriodTypeId( period.getPeriodType().getId() );
                             aggregatedValue.setOrganisationUnitId( unit.getId() );
-                            aggregatedValue.setOrganisationUnitGroupId( group.getId() );
+                            aggregatedValue.setOrganisationUnitGroupId( group != null ? group.getId() : 0 );
                             aggregatedValue.setLevel( level );
                             aggregatedValue.setValue( value );
                             

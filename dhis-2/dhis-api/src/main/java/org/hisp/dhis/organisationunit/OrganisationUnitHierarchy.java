@@ -105,16 +105,29 @@ public class OrganisationUnitHierarchy
 
     public OrganisationUnitHierarchy prepareChildren( OrganisationUnit parent, OrganisationUnitGroup group )
     {
+        if ( group == null )
+        {
+            return prepareChildren( parent );
+        }
+        
         groupSubTrees.put( getKey( parent.getId(), group ), getChildren( parent.getId(), group ) );
         
         return this;
     }
 
-    public OrganisationUnitHierarchy prepareChildren( Collection<OrganisationUnit> parents, OrganisationUnitGroup group )
+    public OrganisationUnitHierarchy prepareChildren( Collection<OrganisationUnit> parents, Collection<OrganisationUnitGroup> groups )
     {
+        if ( groups == null )
+        {
+            return prepareChildren( parents );
+        }
+        
         for ( OrganisationUnit unit : parents )
         {
-            prepareChildren( unit, group );
+            for ( OrganisationUnitGroup group : groups )
+            {
+                prepareChildren( unit, group );
+            }
         }
         
         return this;
@@ -172,6 +185,11 @@ public class OrganisationUnitHierarchy
 
     public Set<Integer> getChildren( int parentId, OrganisationUnitGroup group )
     {
+        if ( group == null )
+        {
+            return getChildren( parentId );
+        }
+        
         Set<Integer> children = groupSubTrees.get( getKey( parentId, group ) );
         
         if ( children != null )
@@ -195,6 +213,11 @@ public class OrganisationUnitHierarchy
     
     public Set<Integer> getChildren( Collection<Integer> parentIds, Collection<OrganisationUnitGroup> groups )
     {
+        if ( groups == null )
+        {
+            return getChildren( parentIds );
+        }
+        
         Set<Integer> children = new HashSet<Integer>();
         
         for ( Integer id : parentIds )

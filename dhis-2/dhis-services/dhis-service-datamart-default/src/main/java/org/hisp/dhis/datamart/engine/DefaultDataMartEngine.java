@@ -50,7 +50,6 @@ import org.hisp.dhis.indicator.Indicator;
 import org.hisp.dhis.indicator.IndicatorService;
 import org.hisp.dhis.jdbc.batchhandler.AggregatedDataValueBatchHandler;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
-import org.hisp.dhis.organisationunit.OrganisationUnitGroup;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodService;
@@ -69,12 +68,7 @@ import org.springframework.transaction.annotation.Transactional;
  */
 public class DefaultDataMartEngine
     implements DataMartEngine
-{    
-    private static final Set<OrganisationUnitGroup> DUMMY_ORG_UNIT_GROUPS = new HashSet<OrganisationUnitGroup>()
-    { {
-        add( new OrganisationUnitGroup( "" ) );
-    } };
-    
+{
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
@@ -298,7 +292,7 @@ public class DefaultDataMartEngine
             for ( List<OrganisationUnit> organisationUnitPage : organisationUnitPages )
             {
                 futures.add( dataElementDataMart.exportDataValues( allOperands, periods, organisationUnitPage, 
-                    DUMMY_ORG_UNIT_GROUPS, new DataElementOperandList( indicatorOperands ), AggregatedDataValueBatchHandler.class, key ) );
+                    null, new DataElementOperandList( indicatorOperands ), AggregatedDataValueBatchHandler.class, key ) );
             }
 
             ConcurrentUtils.waitForCompletion( futures );

@@ -49,6 +49,7 @@ public class OrganisationUnitHierarchyTest
     public void testGetGroupChildren()
     {
         OrganisationUnitGroup group = new OrganisationUnitGroup( "Group" );
+        group.setId( 1 );
         
         OrganisationUnit unit2 = new OrganisationUnit( "Unit2" );
         OrganisationUnit unit4 = new OrganisationUnit( "Unit4" );
