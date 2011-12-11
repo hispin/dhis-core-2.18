@@ -76,6 +76,11 @@ public class DefaultConstantService
         return constantStore.get( constantId );
     }
 
+    public Constant getConstant( String uid )
+    {
+        return constantStore.getByUid( uid );
+    }
+
     public Constant getConstantByName( String constantName )
     {
         return constantStore.getByName( constantName );

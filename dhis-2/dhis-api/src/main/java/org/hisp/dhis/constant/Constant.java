@@ -38,7 +38,6 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  * @author Dang Duy Hieu
- * @version $Id Constant.java June 29, 2011$
  */
 @XmlRootElement( name = "constant", namespace = Dxf2Namespace.NAMESPACE )
 @XmlAccessorType( value = XmlAccessType.NONE )

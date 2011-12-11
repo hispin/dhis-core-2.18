@@ -38,6 +38,8 @@ import org.hisp.dhis.chart.Charts;
 import org.hisp.dhis.common.BaseIdentifiableObject;
 import org.hisp.dhis.common.BaseLinkableObject;
 import org.hisp.dhis.common.IdentifiableObject;
+import org.hisp.dhis.constant.Constant;
+import org.hisp.dhis.constant.Constants;
 import org.hisp.dhis.dataelement.*;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.dataset.DataSets;
@@ -47,6 +49,8 @@ import org.hisp.dhis.indicator.*;
 import org.hisp.dhis.mapping.MapView;
 import org.hisp.dhis.mapping.Maps;
 import org.hisp.dhis.organisationunit.*;
+import org.hisp.dhis.sqlview.SqlView;
+import org.hisp.dhis.sqlview.SqlViews;
 import org.hisp.dhis.validation.ValidationRule;
 import org.hisp.dhis.validation.ValidationRuleGroup;
 import org.hisp.dhis.validation.ValidationRuleGroups;
@@ -268,6 +272,68 @@ public class WebLinkPopulator
         else if ( source instanceof ValidationRuleGroup )
         {
             populateValidationRuleGroup( (ValidationRuleGroup) source, true );
+        }
+        else if ( source instanceof Constants )
+        {
+            populateConstants( (Constants) source, true );
+        }
+        else if ( source instanceof Constant )
+        {
+            populateConstant( (Constant) source, true );
+        }
+        else if ( source instanceof SqlViews )
+        {
+            populateSqlViews( (SqlViews) source, true );
+        }
+        else if ( source instanceof SqlView )
+        {
+            populateSqlView( (SqlView) source, true );
+        }
+    }
+
+    private void populateSqlViews( SqlViews sqlViews, boolean root )
+    {
+        sqlViews.setLink( getBasePath( sqlViews.getClass() ) );
+
+        if ( root )
+        {
+            for ( SqlView sqlView : sqlViews.getSqlViews() )
+            {
+                populateSqlView( sqlView, false );
+            }
+        }
+    }
+
+    private void populateSqlView( SqlView sqlView, boolean root )
+    {
+        populateIdentifiableObject( sqlView );
+
+        if ( root )
+        {
+
+        }
+    }
+
+    private void populateConstants( Constants constants, boolean root )
+    {
+        constants.setLink( getBasePath( constants.getClass() ) );
+
+        if ( root )
+        {
+            for ( Constant constant : constants.getConstants() )
+            {
+                populateConstant( constant, false );
+            }
+        }
+    }
+
+    private void populateConstant( Constant constant, boolean root )
+    {
+        populateIdentifiableObject( constant );
+
+        if ( root )
+        {
+
         }
     }
 

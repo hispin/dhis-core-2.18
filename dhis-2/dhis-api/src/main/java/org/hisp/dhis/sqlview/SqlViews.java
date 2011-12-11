@@ -27,55 +27,41 @@ package org.hisp.dhis.sqlview;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.Collection;
+import org.codehaus.jackson.annotate.JsonProperty;
+import org.codehaus.jackson.map.annotate.JsonSerialize;
+import org.hisp.dhis.common.BaseIdentifiableObject;
+import org.hisp.dhis.common.BaseLinkableObject;
+import org.hisp.dhis.common.Dxf2Namespace;
+import org.hisp.dhis.common.adapter.SqlViewXmlAdapter;
+
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
- * @author Dang Duy Hieu
- * @version $Id SqlViewService.java July 06, 2010$
+ * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
-public interface SqlViewService
+@XmlRootElement( name = "sqlViews", namespace = Dxf2Namespace.NAMESPACE )
+@XmlAccessorType( value = XmlAccessType.NONE )
+public class SqlViews extends BaseLinkableObject
 {
-    String ID = SqlViewService.class.getName();
+    private List<SqlView> sqlViews = new ArrayList<SqlView>();
 
-    // -------------------------------------------------------------------------
-    // SqlView
-    // -------------------------------------------------------------------------
+    @XmlElement( name = "sqlView" )
+    @XmlJavaTypeAdapter( SqlViewXmlAdapter.class )
+    @JsonProperty( value = "sqlViews" )
+    @JsonSerialize( contentAs = BaseIdentifiableObject.class )
+    public List<SqlView> getSqlViews()
+    {
+        return sqlViews;
+    }
 
-    int saveSqlView( SqlView sqlView );
-
-    void deleteSqlView( SqlView sqlView );
-
-    void updateSqlView( SqlView sqlView );
-
-    SqlView getSqlView( int viewId );
-
-    SqlView getSqlViewByUid( String uid );
-
-    SqlView getSqlView( String viewName );
-
-    Collection<SqlView> getAllSqlViews();
-
-    String makeUpForQueryStatement( String query );
-
-    String setUpViewTableName( String input );
-
-    // -------------------------------------------------------------------------
-    // SqlView Expanded
-    // -------------------------------------------------------------------------
-
-    Collection<String> getAllSqlViewNames();
-
-    boolean isViewTableExists( String viewTableName );
-
-    boolean createAllViewTables();
-    
-    boolean createViewTable( SqlView sqlViewInstance );
-
-    void dropViewTable( String viewName );
-    
-    void dropAllSqlViewTables();
-
-    SqlViewTable getDataSqlViewTable( String viewTableName );
-
-    String testSqlGrammar( String sql );
+    public void setSqlViews( List<SqlView> sqlViews )
+    {
+        this.sqlViews = sqlViews;
+    }
 }

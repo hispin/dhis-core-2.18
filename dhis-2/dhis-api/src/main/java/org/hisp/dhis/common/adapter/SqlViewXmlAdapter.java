@@ -1,4 +1,4 @@
-package org.hisp.dhis.sqlview;
+package org.hisp.dhis.common.adapter;
 
 /*
  * Copyright (c) 2004-2011, University of Oslo
@@ -27,55 +27,34 @@ package org.hisp.dhis.sqlview;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.Collection;
+import org.hisp.dhis.common.BaseIdentifiableObject;
+import org.hisp.dhis.sqlview.SqlView;
+
+import javax.xml.bind.annotation.adapters.XmlAdapter;
+import java.util.UUID;
 
 /**
- * @author Dang Duy Hieu
- * @version $Id SqlViewService.java July 06, 2010$
+ * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
-public interface SqlViewService
+public class SqlViewXmlAdapter extends XmlAdapter<BaseIdentifiableObject, SqlView>
 {
-    String ID = SqlViewService.class.getName();
+    private BaseIdentifiableObjectXmlAdapter baseIdentifiableObjectXmlAdapter = new BaseIdentifiableObjectXmlAdapter();
 
-    // -------------------------------------------------------------------------
-    // SqlView
-    // -------------------------------------------------------------------------
+    @Override
+    public SqlView unmarshal( BaseIdentifiableObject identifiableObject ) throws Exception
+    {
+        SqlView sqlView = new SqlView();
 
-    int saveSqlView( SqlView sqlView );
+        sqlView.setUid( identifiableObject.getUid() );
+        sqlView.setLastUpdated( identifiableObject.getLastUpdated() );
+        sqlView.setName( identifiableObject.getName() == null ? UUID.randomUUID().toString() : identifiableObject.getName() );
 
-    void deleteSqlView( SqlView sqlView );
+        return sqlView;
+    }
 
-    void updateSqlView( SqlView sqlView );
-
-    SqlView getSqlView( int viewId );
-
-    SqlView getSqlViewByUid( String uid );
-
-    SqlView getSqlView( String viewName );
-
-    Collection<SqlView> getAllSqlViews();
-
-    String makeUpForQueryStatement( String query );
-
-    String setUpViewTableName( String input );
-
-    // -------------------------------------------------------------------------
-    // SqlView Expanded
-    // -------------------------------------------------------------------------
-
-    Collection<String> getAllSqlViewNames();
-
-    boolean isViewTableExists( String viewTableName );
-
-    boolean createAllViewTables();
-    
-    boolean createViewTable( SqlView sqlViewInstance );
-
-    void dropViewTable( String viewName );
-    
-    void dropAllSqlViewTables();
-
-    SqlViewTable getDataSqlViewTable( String viewTableName );
-
-    String testSqlGrammar( String sql );
+    @Override
+    public BaseIdentifiableObject marshal( SqlView sqlView ) throws Exception
+    {
+        return baseIdentifiableObjectXmlAdapter.marshal( sqlView );
+    }
 }
