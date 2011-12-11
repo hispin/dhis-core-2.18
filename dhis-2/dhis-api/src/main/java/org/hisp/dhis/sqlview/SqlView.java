@@ -26,19 +26,25 @@ package org.hisp.dhis.sqlview;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import org.codehaus.jackson.annotate.JsonProperty;
+import org.hisp.dhis.common.BaseIdentifiableObject;
+import org.hisp.dhis.common.Dxf2Namespace;
+
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
+
 /**
  * @author Dang Duy Hieu
- * @version $Id SqlView.java July 06, 2010$
  */
-public class SqlView
+@XmlRootElement( name = "sqlView", namespace = Dxf2Namespace.NAMESPACE )
+@XmlAccessorType( value = XmlAccessType.NONE )
+public class SqlView extends BaseIdentifiableObject
 {
     // -------------------------------------------------------------------------
     // Variables
     // -------------------------------------------------------------------------
-
-    private int id;
-
-    private String name;
 
     private String description;
 
@@ -50,55 +56,12 @@ public class SqlView
 
     public SqlView()
     {
+
     }
 
     public SqlView( String name, String sqlQuery )
     {
         this.name = name;
-        this.sqlQuery = sqlQuery;
-    }
-
-    // -------------------------------------------------------------------------
-    // Getters and setters
-    // -------------------------------------------------------------------------
-
-    public int getId()
-    {
-        return id;
-    }
-
-    public void setId( int id )
-    {
-        this.id = id;
-    }
-
-    public String getName()
-    {
-        return name;
-    }
-
-    public void setName( String name )
-    {
-        this.name = name;
-    }
-
-    public String getDescription()
-    {
-        return description;
-    }
-
-    public void setDescription( String description )
-    {
-        this.description = description;
-    }
-
-    public String getSqlQuery()
-    {
-        return sqlQuery;
-    }
-
-    public void setSqlQuery( String sqlQuery )
-    {
         this.sqlQuery = sqlQuery;
     }
 
@@ -159,4 +122,31 @@ public class SqlView
         return "[ Name: " + name + ",\n\n sqlQuery: " + sqlQuery + " ]";
     }
 
+    // -------------------------------------------------------------------------
+    // Getters and setters
+    // -------------------------------------------------------------------------
+
+    @XmlElement
+    @JsonProperty
+    public String getDescription()
+    {
+        return description;
+    }
+
+    public void setDescription( String description )
+    {
+        this.description = description;
+    }
+
+    @XmlElement
+    @JsonProperty
+    public String getSqlQuery()
+    {
+        return sqlQuery;
+    }
+
+    public void setSqlQuery( String sqlQuery )
+    {
+        this.sqlQuery = sqlQuery;
+    }
 }

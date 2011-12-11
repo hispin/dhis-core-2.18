@@ -50,23 +50,25 @@ public interface ConstantService
 
     Constant getConstant( int constantId );
 
+    public Constant getConstant( String uid );
+
     Constant getConstantByName( String constantName );
 
     Collection<Constant> getAllConstants();
-    
+
     Map<Integer, Double> getConstantMap();
-    
+
     Map<String, Double> getConstantParameterMap();
-    
+
     // -------------------------------------------------------------------------
     // Constant expanding
     // -------------------------------------------------------------------------
-    
+
     Collection<Constant> getConstantsBetween( int first, int max );
-    
+
     Collection<Constant> getConstantsBetweenByName( String name, int first, int max );
-    
+
     int getConstantCount();
-    
-    int getConstantCountByName( String name );    
+
+    int getConstantCountByName( String name );
 }

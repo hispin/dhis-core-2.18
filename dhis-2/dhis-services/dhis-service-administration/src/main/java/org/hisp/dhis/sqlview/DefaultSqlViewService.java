@@ -26,10 +26,11 @@ package org.hisp.dhis.sqlview;
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-import java.util.Collection;
 
 import org.hisp.dhis.common.GenericIdentifiableObjectStore;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Collection;
 
 /**
  * @author Dang Duy Hieu
@@ -77,6 +78,12 @@ public class DefaultSqlViewService
     public SqlView getSqlView( int viewId )
     {
         return sqlViewStore.get( viewId );
+    }
+
+    @Override
+    public SqlView getSqlViewByUid( String uid )
+    {
+        return sqlViewStore.getByUid( uid );
     }
 
     @Override
@@ -129,7 +136,7 @@ public class DefaultSqlViewService
     public boolean createAllViewTables()
     {
         boolean success = true;
-        
+
         for ( SqlView sqlView : getAllSqlViews() )
         {
             if ( !createViewTable( sqlView ) )
@@ -137,10 +144,10 @@ public class DefaultSqlViewService
                 success = false;
             }
         }
-        
+
         return success;
     }
-    
+
     @Override
     public boolean createViewTable( SqlView sqlViewInstance )
     {
