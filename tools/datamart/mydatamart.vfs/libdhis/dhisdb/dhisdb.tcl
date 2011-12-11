@@ -188,4 +188,9 @@ namespace eval dhisdb {
 	    }
 	}
     }
+
+    proc deleteValues {handle periodType level orgunit valueType from to} {
+	puts "delete old values"
+    }
+
 }

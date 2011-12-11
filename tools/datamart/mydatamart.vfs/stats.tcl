@@ -190,7 +190,10 @@ proc synchData {orgunit level} {
 		    indicator {set valueTypeParam IndicatorValues}
 		}
 		
-		${::log}::debug "Downloading for $periodtype $valuetype"
+		# delete old values
+		dhisdb::deleteValues db $periodType $level $orgunit $valueType $from $to
+		
+		${::log}::debug "Downloading for $periodType $valueType"
 		set tok [::dhisweb::fetchValues $::dhis(url) $level $orgunit $valueTypeParam $periodtype $from $to db]
 		
 		if {$tok ne 0} {

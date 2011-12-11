@@ -21,7 +21,7 @@
         <xsl:param name="raw"/>
         <xsl:variable name="tick">'</xsl:variable>
         <xsl:variable name="clean1"            
-            select="translate($raw,' .,-+:','______')" />
+            select="translate($raw,' .,-+:!','_______')" />
         <xsl:variable name="clean2"            
             select="translate($clean1,'/()','')" />
         <xsl:variable name="clean3" select="str:replace($clean2,'&lt;','_lt_')"/>
