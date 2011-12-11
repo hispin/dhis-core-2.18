@@ -57,6 +57,7 @@ import org.hisp.dhis.datavalue.DataValueService;
 import org.hisp.dhis.jdbc.batchhandler.GenericBatchHandler;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
+import org.hisp.dhis.period.MonthlyPeriodType;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodService;
 import org.hisp.dhis.period.WeeklyPeriodType;
@@ -220,6 +221,12 @@ public class CrossTabServiceTest
     public void testPopulateAggregatedDataCache()
     {
         String key = RandomStringUtils.randomAlphanumeric( 8 );
+
+        Period period = new MonthlyPeriodType().createPeriod();
+        period.setId( 1 );
+        
+        OrganisationUnit unit = createOrganisationUnit( 'A' );
+        unit.setId( 1 );
         
         crossTabService.createAggregatedDataCache( operands, key );
 
@@ -239,7 +246,7 @@ public class CrossTabServiceTest
         
         batchHandler.flush();
         
-        Map<DataElementOperand, Double> valueMap = crossTabService.getAggregatedDataCacheValue( operands, 1, 1, key );
+        Map<DataElementOperand, Double> valueMap = crossTabService.getAggregatedDataCacheValue( operands, period, unit, null, key );
         
         for ( DataElementOperand operand : valueMap.keySet() )
         {

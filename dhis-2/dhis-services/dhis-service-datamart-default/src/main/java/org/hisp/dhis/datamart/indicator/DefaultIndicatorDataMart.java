@@ -47,11 +47,12 @@ import org.hisp.dhis.constant.ConstantService;
 import org.hisp.dhis.dataelement.DataElementOperand;
 import org.hisp.dhis.datamart.aggregation.cache.AggregationCache;
 import org.hisp.dhis.datamart.crosstab.CrossTabService;
+import org.hisp.dhis.datamart.engine.DataMartEngine;
 import org.hisp.dhis.expression.ExpressionService;
 import org.hisp.dhis.indicator.Indicator;
-import org.hisp.dhis.jdbc.batchhandler.AggregatedIndicatorValueBatchHandler;
 import org.hisp.dhis.options.SystemSettingManager;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
+import org.hisp.dhis.organisationunit.OrganisationUnitGroup;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodType;
 import org.hisp.dhis.system.util.DateUtils;
@@ -128,18 +129,21 @@ public class DefaultIndicatorDataMart
     // -------------------------------------------------------------------------
 
     @Async
-    public Future<?> exportIndicatorValues( final Collection<Indicator> indicators, final Collection<Period> periods, 
-        final Collection<OrganisationUnit> organisationUnits, final Collection<DataElementOperand> operands, String key )
+    public Future<?> exportIndicatorValues( Collection<Indicator> indicators, Collection<Period> periods, 
+        Collection<OrganisationUnit> organisationUnits, Collection<OrganisationUnitGroup> organisationUnitGroups,
+        Collection<DataElementOperand> operands, Class<? extends BatchHandler<AggregatedIndicatorValue>> clazz, String key )
     {
         statementManager.initialise(); // Running in separate thread
         
-        final BatchHandler<AggregatedIndicatorValue> batchHandler = batchHandlerFactory.createBatchHandler( AggregatedIndicatorValueBatchHandler.class ).init();
+        final BatchHandler<AggregatedIndicatorValue> batchHandler = batchHandlerFactory.createBatchHandler( clazz ).init();
 
         final boolean omitZeroNumerator = (Boolean) systemSettingManager.getSystemSetting( KEY_OMIT_INDICATORS_ZERO_NUMERATOR_DATAMART, false );
         
         final AggregatedIndicatorValue indicatorValue = new AggregatedIndicatorValue();
         
         final Map<Integer, Double> constantMap = constantService.getConstantMap();
+
+        organisationUnitGroups = ( organisationUnitGroups != null ) ? organisationUnitGroups : DataMartEngine.DUMMY_ORG_UNIT_GROUPS;
         
         for ( final Period period : periods )
         {
@@ -147,43 +151,47 @@ public class DefaultIndicatorDataMart
             
             final PeriodType periodType = period.getPeriodType();
             
-            for ( final OrganisationUnit unit : organisationUnits )
+            for ( OrganisationUnitGroup group : organisationUnitGroups )
             {
-                final int level = aggregationCache.getLevelOfOrganisationUnit( unit.getId() );
-                
-                final Map<DataElementOperand, Double> valueMap = crossTabService.getAggregatedDataCacheValue( operands, period.getId(), unit.getId(), key );
-                
-                if ( valueMap.size() > 0 )
-                {                
-                    for ( final Indicator indicator : indicators )
-                    {
-                        final double denominatorValue = calculateExpression( expressionService.generateExpression( indicator.getExplodedDenominator(), valueMap, constantMap, days ) );
-
-                        if ( !isEqual( denominatorValue, 0d ) )
+                for ( final OrganisationUnit unit : organisationUnits )
+                {
+                    final int level = aggregationCache.getLevelOfOrganisationUnit( unit.getId() );
+                    
+                    final Map<DataElementOperand, Double> valueMap = crossTabService.getAggregatedDataCacheValue( operands, period, unit, group, key );
+                    
+                    if ( valueMap.size() > 0 )
+                    {                
+                        for ( final Indicator indicator : indicators )
                         {
-                            final double numeratorValue = calculateExpression( expressionService.generateExpression( indicator.getExplodedNumerator(), valueMap, constantMap, days ) );
-                         
-                            if ( !( omitZeroNumerator && isEqual( numeratorValue, 0d ) ) )
+                            final double denominatorValue = calculateExpression( expressionService.generateExpression( indicator.getExplodedDenominator(), valueMap, constantMap, days ) );
+    
+                            if ( !isEqual( denominatorValue, 0d ) )
                             {
-                                final double annualizationFactor = DateUtils.getAnnualizationFactor( indicator, period.getStartDate(), period.getEndDate() );                            
-                                final double factor = indicator.getIndicatorType().getFactor();                            
-                                final double aggregatedValue = ( numeratorValue / denominatorValue ) * factor * annualizationFactor;                            
-                                final double annualizedFactor = factor * annualizationFactor;
-        
-                                indicatorValue.clear();
-                                
-                                indicatorValue.setIndicatorId( indicator.getId() );
-                                indicatorValue.setPeriodId( period.getId() );
-                                indicatorValue.setPeriodTypeId( periodType.getId() );
-                                indicatorValue.setOrganisationUnitId( unit.getId() );
-                                indicatorValue.setLevel( level );
-                                indicatorValue.setAnnualized( getAnnualizationString( indicator.isAnnualized() ) );
-                                indicatorValue.setFactor( annualizedFactor);
-                                indicatorValue.setValue( getRounded( aggregatedValue, DECIMALS ) );
-                                indicatorValue.setNumeratorValue( getRounded( numeratorValue, DECIMALS ) );
-                                indicatorValue.setDenominatorValue( getRounded( denominatorValue, DECIMALS ) );
-                                
-                                batchHandler.addObject( indicatorValue );
+                                final double numeratorValue = calculateExpression( expressionService.generateExpression( indicator.getExplodedNumerator(), valueMap, constantMap, days ) );
+                             
+                                if ( !( omitZeroNumerator && isEqual( numeratorValue, 0d ) ) )
+                                {
+                                    final double annualizationFactor = DateUtils.getAnnualizationFactor( indicator, period.getStartDate(), period.getEndDate() );                            
+                                    final double factor = indicator.getIndicatorType().getFactor();                            
+                                    final double aggregatedValue = ( numeratorValue / denominatorValue ) * factor * annualizationFactor;                            
+                                    final double annualizedFactor = factor * annualizationFactor;
+            
+                                    indicatorValue.clear();
+                                    
+                                    indicatorValue.setIndicatorId( indicator.getId() );
+                                    indicatorValue.setPeriodId( period.getId() );
+                                    indicatorValue.setPeriodTypeId( periodType.getId() );
+                                    indicatorValue.setOrganisationUnitId( unit.getId() );
+                                    indicatorValue.setOrganisationUnitGroupId( group != null ? group.getId() : 0 );
+                                    indicatorValue.setLevel( level );
+                                    indicatorValue.setAnnualized( getAnnualizationString( indicator.isAnnualized() ) );
+                                    indicatorValue.setFactor( annualizedFactor);
+                                    indicatorValue.setValue( getRounded( aggregatedValue, DECIMALS ) );
+                                    indicatorValue.setNumeratorValue( getRounded( numeratorValue, DECIMALS ) );
+                                    indicatorValue.setDenominatorValue( getRounded( denominatorValue, DECIMALS ) );
+                                    
+                                    batchHandler.addObject( indicatorValue );
+                                }
                             }
                         }
                     }

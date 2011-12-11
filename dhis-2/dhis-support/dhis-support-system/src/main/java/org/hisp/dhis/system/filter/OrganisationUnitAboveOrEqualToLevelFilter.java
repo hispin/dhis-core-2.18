@@ -1,4 +1,4 @@
-package org.hisp.dhis.datamart.engine;
+package org.hisp.dhis.system.filter;
 
 /*
  * Copyright (c) 2004-2010, University of Oslo
@@ -27,35 +27,29 @@ package org.hisp.dhis.datamart.engine;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.Set;
-
-import org.hisp.dhis.common.ProcessState;
-import org.hisp.dhis.organisationunit.OrganisationUnitGroup;
+import org.hisp.dhis.organisationunit.OrganisationUnit;
+import org.hisp.dhis.system.util.Filter;
 
 /**
+ * Retains organisation units which are above or at the same level as the level
+ * given in the constructor. This filter must be invoked inside a transactional
+ * context in order to work.
+ * 
  * @author Lars Helge Overland
  */
-public interface DataMartEngine
+public class OrganisationUnitAboveOrEqualToLevelFilter
+    implements Filter<OrganisationUnit>
 {
-    final Set<OrganisationUnitGroup> DUMMY_ORG_UNIT_GROUPS = new HashSet<OrganisationUnitGroup>()
-    { {
-        add( null );
-    } };
+    private int level;
     
-    /**
-     * Exports aggregated values to the data mart tables.
-     * 
-     * @param dataElementIds the data element identifiers.
-     * @param indicatorIds the indicator identifiers.
-     * @param periodIds the period identifiers.
-     * @param organisationUnitIds the organisation unit identifiers.
-     * @param organisationUnitGroupIds the organisation unit group identifiers.
-     * @param completeExport indicates whether this is a complete export.
-     * @param processState the state object.
-     */
-    void export( Collection<Integer> dataElementIds, Collection<Integer> indicatorIds,
-        Collection<Integer> periodIds, Collection<Integer> organisationUnitIds, Collection<Integer> organisationUnitGroupIds,
-        boolean completeExport, ProcessState processState );
+    public OrganisationUnitAboveOrEqualToLevelFilter( int level )
+    {
+        this.level = level;
+    }
+    
+    @Override
+    public boolean retain( OrganisationUnit object )
+    {
+        return object != null &&  object.getOrganisationUnitLevel() >= level;
+    }
 }

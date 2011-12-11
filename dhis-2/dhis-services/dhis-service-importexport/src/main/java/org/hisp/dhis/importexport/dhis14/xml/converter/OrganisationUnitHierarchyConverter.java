@@ -113,7 +113,7 @@ public class OrganisationUnitHierarchyConverter
             {
                 if ( unit.getParent() != null )
                 {
-                    int level = organisationUnitService.getLevelOfOrganisationUnit( unit );
+                    int level = unit.getOrganisationUnitLevel();
                     
                     writer.openElement( ELEMENT_NAME );
                     

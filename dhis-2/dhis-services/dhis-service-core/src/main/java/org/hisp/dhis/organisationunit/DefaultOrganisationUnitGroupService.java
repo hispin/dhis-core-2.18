@@ -47,9 +47,9 @@ public class DefaultOrganisationUnitGroupService
     // Dependencies
     // -------------------------------------------------------------------------
 
-    private GenericIdentifiableObjectStore<OrganisationUnitGroup> organisationUnitGroupStore;
+    private OrganisationUnitGroupStore organisationUnitGroupStore;
 
-    public void setOrganisationUnitGroupStore( GenericIdentifiableObjectStore<OrganisationUnitGroup> organisationUnitGroupStore )
+    public void setOrganisationUnitGroupStore( OrganisationUnitGroupStore organisationUnitGroupStore )
     {
         this.organisationUnitGroupStore = organisationUnitGroupStore;
     }
@@ -111,6 +111,11 @@ public class DefaultOrganisationUnitGroupService
     public Collection<OrganisationUnitGroup> getAllOrganisationUnitGroups()
     {
         return organisationUnitGroupStore.getAll();
+    }
+    
+    public Collection<OrganisationUnitGroup> getOrganisationUnitGroupsWithGroupSets()
+    {
+        return organisationUnitGroupStore.getOrganisationUnitGroupsWithGroupSets();
     }
 
     // -------------------------------------------------------------------------

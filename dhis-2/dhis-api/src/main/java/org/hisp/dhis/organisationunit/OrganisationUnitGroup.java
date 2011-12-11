@@ -44,7 +44,8 @@ import java.util.Set;
  */
 @XmlRootElement( name = "organisationUnitGroup", namespace = Dxf2Namespace.NAMESPACE )
 @XmlAccessorType( value = XmlAccessType.NONE )
-public class OrganisationUnitGroup extends BaseIdentifiableObject
+public class OrganisationUnitGroup 
+    extends BaseIdentifiableObject
 {
     /**
      * Determines if a de-serialized file is compatible with this class.

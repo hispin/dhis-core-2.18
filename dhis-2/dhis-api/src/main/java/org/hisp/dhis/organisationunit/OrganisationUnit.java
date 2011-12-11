@@ -443,9 +443,25 @@ public class OrganisationUnit extends BaseNameableObject
         return set;
     }
 
+    public int getOrganisationUnitLevel()
+    {
+        int currentLevel = 1;
+
+        OrganisationUnit thisParent = this.parent;
+
+        while ( thisParent != null )
+        {
+            ++currentLevel;
+
+            thisParent = thisParent.getParent();
+        }
+
+        return currentLevel;
+    }
+
     public boolean isPolygon()
     {
-        return (featureType.equals( FEATURETYPE_MULTIPOLYGON ) || featureType.equals( FEATURETYPE_POLYGON ));
+        return featureType.equals( FEATURETYPE_MULTIPOLYGON ) || featureType.equals( FEATURETYPE_POLYGON );
     }
 
     public boolean isPoint()

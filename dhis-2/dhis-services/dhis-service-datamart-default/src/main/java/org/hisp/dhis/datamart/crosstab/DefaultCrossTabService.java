@@ -49,6 +49,9 @@ import org.hisp.dhis.datamart.CrossTabDataValue;
 import org.hisp.dhis.datamart.crosstab.jdbc.CrossTabStore;
 import org.hisp.dhis.datavalue.DataValueService;
 import org.hisp.dhis.jdbc.batchhandler.GenericBatchHandler;
+import org.hisp.dhis.organisationunit.OrganisationUnit;
+import org.hisp.dhis.organisationunit.OrganisationUnitGroup;
+import org.hisp.dhis.period.Period;
 import org.springframework.scheduling.annotation.Async;
 
 /**
@@ -201,6 +204,16 @@ public class DefaultCrossTabService
         crossTabStore.dropAggregatedDataCache( key );
     }
     
+    public void createAggregatedOrgUnitDataCache( List<DataElementOperand> operands, String key )
+    {
+        crossTabStore.createAggregatedOrgUnitDataCache( operands, key );
+    }
+    
+    public void dropAggregatedOrgUnitDataCache( String key )
+    {
+        crossTabStore.dropAggregatedOrgUnitDataCache( key );
+    }
+    
     public Collection<CrossTabDataValue> getCrossTabDataValues( Collection<DataElementOperand> operands,
         Collection<Integer> periodIds, Collection<Integer> sourceIds, String key )
     {
@@ -214,8 +227,15 @@ public class DefaultCrossTabService
     }
     
     public Map<DataElementOperand, Double> getAggregatedDataCacheValue( Collection<DataElementOperand> operands, 
-        int periodId, int sourceId, String key )
+        Period period, OrganisationUnit unit, OrganisationUnitGroup group, String key )
     {
-        return crossTabStore.getAggregatedDataCacheValue( operands, periodId, sourceId, key );
+        if ( group != null && group.getId() > 0 )
+        {
+            return crossTabStore.getAggregatedOrgUnitDataCacheValue( operands, period.getId(), unit.getId(), group.getId(), key );
+        }
+        else
+        {
+            return crossTabStore.getAggregatedDataCacheValue( operands, period.getId(), unit.getId(), key );
+        }
     }
 }

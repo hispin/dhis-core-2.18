@@ -1,5 +1,7 @@
 package org.hisp.dhis.aggregation;
 
+import java.util.Collection;
+
 /*
  * Copyright (c) 2004-2010, University of Oslo
  * All rights reserved.
@@ -44,6 +46,16 @@ public class DefaultAggregatedOrgUnitDataValueService
     // -------------------------------------------------------------------------
     // AggregatedOrgUnitDataValueService implementation
     // -------------------------------------------------------------------------
+
+    public void deleteAggregatedDataValues( Collection<Integer> dataElementIds, Collection<Integer> periodIds, Collection<Integer> organisationUnitIds )
+    {
+        aggregatedDataValueStore.deleteAggregatedDataValues( dataElementIds, periodIds, organisationUnitIds );
+    }
+    
+    public void deleteAggregatedDataValues( Collection<Integer> periodIds )
+    {
+        aggregatedDataValueStore.deleteAggregatedDataValues( periodIds );
+    }
     
     public void createIndex( boolean dataElement, boolean indicator )
     {
@@ -53,5 +65,19 @@ public class DefaultAggregatedOrgUnitDataValueService
     public void dropIndex( boolean dataElement, boolean indicator )
     {
         aggregatedDataValueStore.dropIndex( dataElement, indicator );
+    }
+
+    // -------------------------------------------------------------------------
+    // AggregatedOrgUnitDataValueService implementation
+    // -------------------------------------------------------------------------
+
+    public void deleteAggregatedIndicatorValues( Collection<Integer> indicatorIds, Collection<Integer> periodIds, Collection<Integer> organisationUnitIds )
+    {
+        aggregatedDataValueStore.deleteAggregatedIndicatorValues( indicatorIds, periodIds, organisationUnitIds );
+    }
+    
+    public void deleteAggregatedIndicatorValues( Collection<Integer> periodIds )
+    {
+        aggregatedDataValueStore.deleteAggregatedDataValues( periodIds );
     }
 }

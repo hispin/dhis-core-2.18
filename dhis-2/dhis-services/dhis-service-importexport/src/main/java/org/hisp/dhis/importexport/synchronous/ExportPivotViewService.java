@@ -118,7 +118,7 @@ public class ExportPivotViewService
             return;
         }
 
-        rootOrgUnit.setLevel( organisationUnitService.getLevelOfOrganisationUnit( rootOrgUnit ) );
+        rootOrgUnit.setLevel( rootOrgUnit.getOrganisationUnitLevel() );
 
         OrganisationUnitLevel orgUnitLevel = organisationUnitService.getOrganisationUnitLevelByLevel( level );
 
@@ -157,7 +157,7 @@ public class ExportPivotViewService
             return 0;
         }
 
-        rootOrgUnit.setLevel( organisationUnitService.getLevelOfOrganisationUnit( rootOrgUnit ) );
+        rootOrgUnit.setLevel( rootOrgUnit.getOrganisationUnitLevel() );
 
         OrganisationUnitLevel orgUnitLevel = organisationUnitService.getOrganisationUnitLevelByLevel( level );
 

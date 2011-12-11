@@ -27,9 +27,19 @@ package org.hisp.dhis.aggregation;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import java.util.Collection;
+
 public interface AggregatedOrgUnitDataValueService
 {
+    void deleteAggregatedDataValues( Collection<Integer> dataElementIds, Collection<Integer> periodIds, Collection<Integer> organisationUnitIds );
+    
+    void deleteAggregatedDataValues( Collection<Integer> periodIds );
+    
     void createIndex( boolean dataElement, boolean indicator );
     
     void dropIndex( boolean dataElement, boolean indicator );
+
+    void deleteAggregatedIndicatorValues( Collection<Integer> indicatorIds, Collection<Integer> periodIds, Collection<Integer> organisationUnitIds );
+    
+    void deleteAggregatedIndicatorValues( Collection<Integer> periodIds );
 }

@@ -27,6 +27,10 @@ package org.hisp.dhis.aggregation.jdbc;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import static org.hisp.dhis.system.util.TextUtils.getCommaDelimitedString;
+
+import java.util.Collection;
+
 import org.amplecode.quick.StatementManager;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -59,6 +63,26 @@ public class JdbcAggregatedOrgUnitDataValueStore
     // -------------------------------------------------------------------------
     // AggregatedOrgUnitDataValueStore implementation
     // -------------------------------------------------------------------------
+
+    public void deleteAggregatedDataValues( Collection<Integer> dataElementIds, Collection<Integer> periodIds, Collection<Integer> organisationUnitIds )
+    {
+        final String sql =
+            "DELETE FROM aggregatedorgunitdatavalue " +
+            "WHERE dataelementid IN ( " + getCommaDelimitedString( dataElementIds ) + " ) " +
+            "AND periodid IN ( " + getCommaDelimitedString( periodIds ) + " ) " +
+            "AND organisationunitid IN ( " + getCommaDelimitedString( organisationUnitIds ) + " )";
+        
+        jdbcTemplate.execute( sql );        
+    }
+
+    public void deleteAggregatedDataValues( Collection<Integer> periodIds )
+    {
+        final String sql =
+            "DELETE FROM aggregatedorgunitdatavalue " +
+            "WHERE periodid IN ( " + getCommaDelimitedString( periodIds ) + " )";
+        
+        jdbcTemplate.execute( sql );        
+    }
 
     public void createIndex( boolean dataElement, boolean indicator )
     {
@@ -117,4 +141,29 @@ public class JdbcAggregatedOrgUnitDataValueStore
             }
         }
     }
+    
+    // -------------------------------------------------------------------------
+    // AggregatedIndicatorValue
+    // -------------------------------------------------------------------------
+
+    public void deleteAggregatedIndicatorValues( Collection<Integer> indicatorIds, Collection<Integer> periodIds,
+        Collection<Integer> organisationUnitIds )
+    {
+        final String sql =
+            "DELETE FROM aggregatedorgunitindicatorvalue " +
+            "WHERE indicatorid IN ( " + getCommaDelimitedString( indicatorIds ) + " ) " +
+            "AND periodid IN ( " + getCommaDelimitedString( periodIds ) + " ) " +
+            "AND organisationunitid IN ( " + getCommaDelimitedString( organisationUnitIds ) + " )";
+        
+        jdbcTemplate.execute( sql );        
+    }
+
+    public void deleteAggregatedIndicatorValues( Collection<Integer> periodIds )
+    {
+        final String sql =
+            "DELETE FROM aggregatedorgunitindicatorvalue " +
+            "WHERE periodid IN ( " + getCommaDelimitedString( periodIds ) + " )";
+
+        jdbcTemplate.execute( sql );      
+    }    
 }
