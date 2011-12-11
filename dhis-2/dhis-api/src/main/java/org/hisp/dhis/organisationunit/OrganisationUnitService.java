@@ -159,6 +159,13 @@ public interface OrganisationUnitService
     Collection<OrganisationUnit> getRootOrganisationUnits();
 
     /**
+     * Returns the level of the organisation unit with the given identifier.
+     * 
+     * @return the level of the organisation unit with the given identifier.
+     */
+    int getLevelOfOrganisationUnit( int id );
+    
+    /**
      * Returns all OrganisationUnits which are part of the subtree of the
      * OrganisationUnit with the given identifer and have no children.
      *
@@ -211,24 +218,6 @@ public interface OrganisationUnitService
      * @throws IllegalArgumentException if the level is illegal.
      */
     Collection<OrganisationUnit> getOrganisationUnitsAtLevel( int level, OrganisationUnit parent );
-
-    /**
-     * Returns the hierarchical level in which the given OrganisationUnit
-     * resides.
-     *
-     * @param id the identifier of the OrganisationUnit.
-     * @return the hierarchical level of the given OrganisationUnit.
-     */
-    int getLevelOfOrganisationUnit( int id );
-
-    /**
-     * Returns the hierarchical level in which the given OrganisationUnit
-     * resides.
-     *
-     * @param organisationUnit the OrganisationUnit.
-     * @return the hierarchical level of the given OrganisationUnit.
-     */
-    int getLevelOfOrganisationUnit( OrganisationUnit organisationUnit );
 
     /**
      * Returns the number of levels in the OrganisationUnit hierarchy.

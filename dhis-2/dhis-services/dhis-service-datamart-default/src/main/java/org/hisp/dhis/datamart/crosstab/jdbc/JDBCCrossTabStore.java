@@ -107,6 +107,29 @@ public class JDBCCrossTabStore
     {
         statementManager.getHolder().executeUpdate( "DROP TABLE IF EXISTS " + AGGREGATEDDATA_CACHE_PREFIX + key );
     }
+
+    public void createAggregatedOrgUnitDataCache( List<DataElementOperand> operands, String key )
+    {
+        final StringBuffer sql = new StringBuffer( "CREATE TABLE " + AGGREGATEDORGUNITDATA_CACHE_PREFIX + key + " ( " );
+        
+        sql.append( "periodid INTEGER NOT NULL, " );
+        sql.append( "sourceid INTEGER NOT NULL, " );
+        sql.append( "organisationunitgroupid INTEGER NOT NULL, " );
+        
+        for ( DataElementOperand operand : operands )
+        {
+            sql.append( operand.getColumnName() ).append( " DOUBLE, " );
+        }
+        
+        sql.append( "PRIMARY KEY ( periodid, sourceid, organisationunitgroupid ) );" );
+        
+        statementManager.getHolder().executeUpdate( sql.toString() );
+    }
+    
+    public void dropAggregatedOrgUnitDataCache( String key )
+    {
+        statementManager.getHolder().executeUpdate( "DROP TABLE IF EXISTS " + AGGREGATEDORGUNITDATA_CACHE_PREFIX + key );
+    }
     
     // -------------------------------------------------------------------------
     // CrossTabDataValue
@@ -169,28 +192,42 @@ public class JDBCCrossTabStore
     {
         final StatementHolder holder = statementManager.getHolder();
         
-        final String sql = "SELECT * FROM " + AGGREGATEDDATA_CACHE_PREFIX + key + " AS a WHERE a.periodid = " + periodId + " AND a.sourceid = " + sourceId;
+        // TODO use prepared statement?
+        
+        final String sql = "SELECT * FROM " + AGGREGATEDDATA_CACHE_PREFIX + key + 
+            " AS a WHERE a.periodid = " + periodId + " AND a.sourceid = " + sourceId;
         
         try
         {
-            final Map<DataElementOperand, Double> valueMap = new HashMap<DataElementOperand, Double>( operands.size() );
-            
             final ResultSet resultSet = holder.getStatement().executeQuery( sql );
             
-            if ( resultSet.next() )
-            { 
-                for ( DataElementOperand operand : operands )
-                {       
-                    final Double columnValue = resultSet.getDouble( operand.getColumnName() );
-                    
-                    if ( columnValue != null )
-                    {
-                        valueMap.put( operand, columnValue );
-                    }
-                }
-            }
+            return getOperandValueMap( resultSet, operands );
+        }
+        catch ( SQLException ex )
+        {
+            throw new RuntimeException( "Failed to get Map", ex );
+        }
+        finally
+        {
+            holder.close();
+        }
+    }
+
+    public Map<DataElementOperand, Double> getAggregatedOrgUnitDataCacheValue( Collection<DataElementOperand> operands, 
+        int periodId, int sourceId, int organisationUnitGroupId, String key )
+    {
+        final StatementHolder holder = statementManager.getHolder();
+        
+        // TODO use prepared statement?
+        
+        final String sql = "SELECT * FROM " + AGGREGATEDDATA_CACHE_PREFIX + key + 
+            " AS a WHERE a.periodid = " + periodId + " AND a.sourceid = " + sourceId + " AND a.organisationunitgroupid = " + organisationUnitGroupId;
+        
+        try
+        {
+            final ResultSet resultSet = holder.getStatement().executeQuery( sql );
             
-            return valueMap;
+            return getOperandValueMap( resultSet, operands );
         }
         catch ( SQLException ex )
         {
@@ -232,6 +269,27 @@ public class JDBCCrossTabStore
         }
         
         return values;
+    }
+    
+    private Map<DataElementOperand, Double> getOperandValueMap( ResultSet resultSet, Collection<DataElementOperand> operands )
+        throws SQLException
+    {
+        final Map<DataElementOperand, Double> valueMap = new HashMap<DataElementOperand, Double>( operands.size() );
+        
+        if ( resultSet.next() )
+        { 
+            for ( DataElementOperand operand : operands )
+            {       
+                final Double columnValue = resultSet.getDouble( operand.getColumnName() );
+                
+                if ( columnValue != null )
+                {
+                    valueMap.put( operand, columnValue );
+                }
+            }
+        }
+        
+        return valueMap;
     }
     
     private String getCommadelimitedString( Collection<DataElementOperand> operands )

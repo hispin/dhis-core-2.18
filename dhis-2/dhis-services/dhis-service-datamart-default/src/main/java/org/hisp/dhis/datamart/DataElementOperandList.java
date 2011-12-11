@@ -67,7 +67,7 @@ public class DataElementOperandList
             this.valueList[0] = period.getId();
             this.valueList[1] = unit.getId();
             
-            if ( group != null )
+            if ( group != null && group.getId() != 0 )
             {
                 this.valueList[2] = group.getId();
             }

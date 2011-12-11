@@ -43,6 +43,7 @@ public interface CrossTabStore
     final String ID = CrossTabStore.class.getName();
     final String CROSSTAB_TABLE_PREFIX = "crosstab_table_";
     final String AGGREGATEDDATA_CACHE_PREFIX = "aggregateddata_cache_";
+    final String AGGREGATEDORGUNITDATA_CACHE_PREFIX = "aggregatedorgunitdata_cache_";
     
     /**
      * Creates a crosstab table where the first column is the period identifier,
@@ -70,9 +71,28 @@ public interface CrossTabStore
 
     /**
      * Drops the aggregated data cache table.
+     * 
      * @param key the key used in the table name.
      */
     void dropAggregatedDataCache( String key );
+
+    /**
+     * Creates a table which functions as a cache for aggregated org unit data 
+     * element values with columns for period identifier, organisation unit 
+     * identifier, organisation unit group identifier followed by one column for 
+     * each DataElementOperand in the given list.
+     *  
+     * @param operands the list of DataElementOperands.
+     * @param key the key to use in table name.
+     */
+    void createAggregatedOrgUnitDataCache( List<DataElementOperand> operands, String key );
+
+    /**
+     * Drops the aggregated org unit data cache table.
+     * 
+     * @param key the key used in the table name.
+     */
+    void dropAggregatedOrgUnitDataCache( String key );
     
     /**
      * Gets all CrossTabDataValues for the given collection of period ids and source ids.
@@ -106,5 +126,20 @@ public interface CrossTabStore
      * @param key the key to use in the table name.
      * @return a map of DataElementOperands and aggregated values.
      */
-    Map<DataElementOperand, Double> getAggregatedDataCacheValue( Collection<DataElementOperand> operands, int periodId, int sourceId, String key );
+    Map<DataElementOperand, Double> getAggregatedDataCacheValue( Collection<DataElementOperand> operands, 
+        int periodId, int sourceId, String key );
+
+    /**
+     * Gets a map of DataElementOperands and corresponding Double aggregated data
+     * element value from the cache table.
+     * 
+     * @param operands the list of DataElementOperand to return map entries for.
+     * @param periodId the period identifier.
+     * @param sourceId the organisation unit identifier.
+     * @param organisationUnitGroupId the organisation unit group identifier.
+     * @param key the key to use in the table name.
+     * @return a map of DataElementOperands and aggregated values.
+     */
+    Map<DataElementOperand, Double> getAggregatedOrgUnitDataCacheValue( Collection<DataElementOperand> operands, 
+        int periodId, int sourceId, int organisationUnitGroupId, String key );
 }

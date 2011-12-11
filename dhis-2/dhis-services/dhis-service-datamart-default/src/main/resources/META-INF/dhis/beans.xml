@@ -33,6 +33,8 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
     <property name="categoryService" ref="org.hisp.dhis.dataelement.DataElementCategoryService" />
     <property name="expressionService" ref="org.hisp.dhis.expression.ExpressionService" />
     <property name="organisationUnitService" ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
+	<property name="organisationUnitGroupService" ref="org.hisp.dhis.organisationunit.OrganisationUnitGroupService" />
+	<property name="systemSettingManager" ref="org.hisp.dhis.options.SystemSettingManager" />
   </bean>
 
   <bean id="internal-process-DataMart" class="org.hisp.dhis.datamart.DataMartInternalProcess" scope="prototype">

@@ -105,6 +105,13 @@ public interface OrganisationUnitGroupService
      *         collection if no OrganisationUnitGroup exists.
      */
     Collection<OrganisationUnitGroup> getAllOrganisationUnitGroups();
+    
+    /**
+     * Returns all OrganisationUnitGroups which have a OrganisationUnitGroupSet.
+     * 
+     * @return a collection of OrganisationUnitGroups.
+     */
+    Collection<OrganisationUnitGroup> getOrganisationUnitGroupsWithGroupSets();
 
     // -------------------------------------------------------------------------
     // OrganisationUnitGroupSet

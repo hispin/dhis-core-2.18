@@ -30,9 +30,12 @@ package org.hisp.dhis.datamart.indicator;
 import java.util.Collection;
 import java.util.concurrent.Future;
 
+import org.amplecode.quick.BatchHandler;
+import org.hisp.dhis.aggregation.AggregatedIndicatorValue;
 import org.hisp.dhis.dataelement.DataElementOperand;
 import org.hisp.dhis.indicator.Indicator;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
+import org.hisp.dhis.organisationunit.OrganisationUnitGroup;
 import org.hisp.dhis.period.Period;
 
 /**
@@ -41,5 +44,6 @@ import org.hisp.dhis.period.Period;
 public interface IndicatorDataMart
 {
     Future<?> exportIndicatorValues( Collection<Indicator> indicators, Collection<Period> periods, 
-        Collection<OrganisationUnit> organisationUnits, Collection<DataElementOperand> operands, String key );
+        Collection<OrganisationUnit> organisationUnits, Collection<OrganisationUnitGroup> organisationUnitGroups,
+        Collection<DataElementOperand> operands, Class<? extends BatchHandler<AggregatedIndicatorValue>> clazz, String key );
 }

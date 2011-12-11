@@ -291,9 +291,9 @@ public class OrganisationUnitServiceTest
         assertTrue( organisationUnitService.getOrganisationUnitsAtLevel( 1 ).size() == 2 );
         assertTrue( organisationUnitService.getOrganisationUnitsAtLevel( 3 ).size() == 3 );
         assertTrue( organisationUnitService.getNumberOfOrganisationalLevels() == 4 );
-        assertTrue( organisationUnitService.getLevelOfOrganisationUnit( unit4 ) == 3 );
-        assertTrue( organisationUnitService.getLevelOfOrganisationUnit( unit1 ) == 1 );
-        assertTrue( organisationUnitService.getLevelOfOrganisationUnit( unit6 ) == 4 );
+        assertTrue( organisationUnitService.getOrganisationUnit( unit4.getId() ).getOrganisationUnitLevel() == 3 );
+        assertTrue( organisationUnitService.getOrganisationUnit( unit1.getId() ).getOrganisationUnitLevel() == 1 );
+        assertTrue( organisationUnitService.getOrganisationUnit( unit6.getId() ).getOrganisationUnitLevel() == 4 );
     }
 
     @Test

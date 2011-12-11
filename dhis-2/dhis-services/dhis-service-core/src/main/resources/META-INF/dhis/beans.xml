@@ -153,13 +153,12 @@ http://www.springframework.org/schema/security http://www.springframework.org/sc
   <bean id="org.hisp.dhis.organisationunit.OrganisationUnitStore" class="org.hisp.dhis.organisationunit.hibernate.HibernateOrganisationUnitStore">
     <property name="clazz" value="org.hisp.dhis.organisationunit.OrganisationUnit" />
     <property name="sessionFactory" ref="sessionFactory" />
-    <property name="statementManager" ref="statementManager" />
     <property name="jdbcTemplate" ref="jdbcTemplate" />
     <property name="cacheable" value="true" />
     <property name="orgLevelStore" ref="org.hisp.dhis.organisationunit.OrganisationUnitLevelStore" />
   </bean>
 
-  <bean id="org.hisp.dhis.organisationunit.OrganisationUnitGroupStore" class="org.hisp.dhis.common.hibernate.HibernateIdentifiableObjectStore">
+  <bean id="org.hisp.dhis.organisationunit.OrganisationUnitGroupStore" class="org.hisp.dhis.organisationunit.hibernate.HibernateOrganisationUnitGroupStore">
     <property name="clazz" value="org.hisp.dhis.organisationunit.OrganisationUnitGroup" />
     <property name="sessionFactory" ref="sessionFactory" />
     <property name="cacheable" value="true" />

@@ -37,13 +37,10 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-import org.amplecode.quick.StatementHolder;
-import org.amplecode.quick.StatementManager;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.hibernate.Criteria;
 import org.hibernate.Query;
-import org.hibernate.Session;
 import org.hibernate.criterion.Restrictions;
 import org.hisp.dhis.common.hibernate.HibernateIdentifiableObjectStore;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
@@ -57,8 +54,6 @@ import org.springframework.jdbc.core.RowCallbackHandler;
 
 /**
  * @author Kristian Nordal
- * @version $Id: HibernateOrganisationUnitStore.java 6251 2008-11-10 14:37:05Z
- *          larshelg $
  */
 public class HibernateOrganisationUnitStore
     extends HibernateIdentifiableObjectStore<OrganisationUnit>
@@ -68,20 +63,14 @@ public class HibernateOrganisationUnitStore
     // Dependencies
     // -------------------------------------------------------------------------
 
-    private StatementManager statementManager;
-
-    public void setStatementManager( StatementManager statementManager )
-    {
-        this.statementManager = statementManager;
-    }
-
+    //TODO this should be a separate class!
+    
     private HibernateIdentifiableObjectStore<OrganisationUnitLevel> orgLevelStore;
 
     public void setOrgLevelStore( HibernateIdentifiableObjectStore<OrganisationUnitLevel> orgLevelStore )
     {
         this.orgLevelStore = orgLevelStore;
-    }
-    
+    }    
     
     // -------------------------------------------------------------------------
     // OrganisationUnit
@@ -90,25 +79,19 @@ public class HibernateOrganisationUnitStore
     @Override
     public OrganisationUnit getOrganisationUnitByNameIgnoreCase( String name )
     {
-        Criteria criteria = sessionFactory.getCurrentSession().createCriteria( OrganisationUnit.class );
-        criteria.add( Restrictions.eq( "name", name ).ignoreCase() );
-        return (OrganisationUnit) criteria.uniqueResult();
+        return (OrganisationUnit) getCriteria( Restrictions.eq( "name", name ).ignoreCase() ).uniqueResult();
     }
 
     @SuppressWarnings( "unchecked" )
     public Collection<OrganisationUnit> getRootOrganisationUnits()
     {
-        Session session = sessionFactory.getCurrentSession();
-
-        return session.createQuery( "from OrganisationUnit o where o.parent is null" ).list();
+        return getQuery( "from OrganisationUnit o where o.parent is null" ).list();
     }
 
     @SuppressWarnings( "unchecked" )
     public Collection<OrganisationUnit> getOrganisationUnitsWithoutGroups()
     {
-        String hql = "from OrganisationUnit o where o.groups.size = 0";
-
-        return sessionFactory.getCurrentSession().createQuery( hql ).list();
+        return getQuery( "from OrganisationUnit o where o.groups.size = 0" ).list();
     }
 
     @SuppressWarnings( "unchecked" )
@@ -227,12 +210,10 @@ public class HibernateOrganisationUnitStore
     {
         Timestamp now = new Timestamp( new Date().getTime() );
         
-        StatementHolder holder = statementManager.getHolder();
-
         final String sql = "update organisationunit " + "set parentid=" + parentId + ", lastupdated='"
             + now + "' " + "where organisationunitid=" + organisationUnitId;
 
-        holder.executeUpdate( sql );
+        jdbcTemplate.execute( sql );
     }
 
     // -------------------------------------------------------------------------

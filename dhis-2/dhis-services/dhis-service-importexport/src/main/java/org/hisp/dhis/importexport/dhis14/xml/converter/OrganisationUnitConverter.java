@@ -110,7 +110,7 @@ public class OrganisationUnitConverter
         {
             for ( OrganisationUnit unit : units )
             {
-                int level = organisationUnitService.getLevelOfOrganisationUnit( unit );
+                int level = unit.getOrganisationUnitLevel();
 
                 writer.openElement( ELEMENT_NAME );
                 
