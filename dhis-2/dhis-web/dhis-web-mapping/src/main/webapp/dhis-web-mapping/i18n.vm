@@ -23,6 +23,7 @@ G.i18n = {
     applied: '$encoder.jsEscape($i18n.getString( 'applied' ) , "'")',
     show: '$encoder.jsEscape($i18n.getString( 'show' ) , "'")',
     hide: '$encoder.jsEscape($i18n.getString( 'hide' ) , "'")',
+    showhide: '$encoder.jsEscape($i18n.getString( 'showhide' ) , "'")',
     toggle: '$encoder.jsEscape($i18n.getString( 'toggle' ) , "'")',
 
     boundary: '$encoder.jsEscape($i18n.getString( 'boundary' ) , "'")',

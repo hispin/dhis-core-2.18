@@ -84,6 +84,8 @@ mapfish.widgets.geostat.Point = Ext.extend(Ext.Panel, {
     
     requireUpdate: false,
     
+    featureStorage: [],
+    
     filtering: {
         cache: [],
         options: {
@@ -1693,12 +1695,7 @@ mapfish.widgets.geostat.Point = Ext.extend(Ext.Panel, {
                     scope: this,
                     success: function(r) {
                         var mapvalues = G.util.mapValueDecode(r);
-                        
-                        if (!this.layer.features.length) {
-                            Ext.message.msg(false, 'No coordinates found');
-                            G.vars.mask.hide();
-                            return;
-                        }
+                        this.layer.features = this.featureStorage.slice(0);
                         
                         if (mapvalues.length === 0) {
                             Ext.message.msg(false, G.i18n.current_selection_no_data);
@@ -1706,15 +1703,12 @@ mapfish.widgets.geostat.Point = Ext.extend(Ext.Panel, {
                             return;
                         }
                         
-                        for (var j = 0; j < this.layer.features.length; j++) {
-                            for (var i = 0; i < mapvalues.length; i++) {
-                                if (this.layer.features[j].attributes.id == mapvalues[i].oi) {
-                                    this.layer.features[j].attributes.value = parseFloat(mapvalues[i].v);
+                        for (var i = 0; i < this.layer.features.length; i++) {
+                            for (var j = 0; j < mapvalues.length; j++) {
+                                if (this.layer.features[i].attributes.id == mapvalues[j].oi) {
+                                    this.layer.features[i].attributes.value = parseFloat(mapvalues[j].v);
                                     break;
                                 }
-                            }
-                            if (!this.layer.features[j].attributes.value) {
-                                this.layer.features[j].attributes.value = 0;
                             }
                         }
                         
@@ -1728,12 +1722,18 @@ mapfish.widgets.geostat.Point = Ext.extend(Ext.Panel, {
             }
         }
     },
-
+    
     applyValues: function() {
-        for (var i = 0, f; i < this.layer.features.length; i++) {
-            f = this.layer.features[i];
-            f.attributes.labelString = f.attributes.name + ' (' + f.attributes.value + ')';
-            f.attributes.fixedName = G.util.cutString(f.attributes.name, 30);
+        for (var i = 0; i < this.layer.features.length; i++) {
+            var f = this.layer.features[i];
+            if (!f.attributes.value) {
+                this.layer.features.splice(i,1);
+                i--;
+            }
+            else {
+                f.attributes.labelString = f.attributes.name + ' (' + f.attributes.value + ')';
+                f.attributes.fixedName = G.util.cutString(f.attributes.name, 30);
+            }
         }
 
         this.button.menu.find('name','history')[0].addItem(this);
