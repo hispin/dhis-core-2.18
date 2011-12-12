@@ -7,6 +7,7 @@ import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
 
+import org.apache.commons.lang.StringUtils;
 import org.hisp.dhis.aggregation.AggregatedMapValue;
 import org.hisp.dhis.mapgeneration.IntervalSet.DistributionStrategy;
 import org.hisp.dhis.mapping.MapView;
@@ -128,9 +129,9 @@ public class GeoToolsMapGenerationService
 
         // Get the low and high colors, typically in hexadecimal form, e.g.
         // '#ff3200' is an orange color
-        Color colorLow = Utilities.createColorFromString( mapView.getColorLow() != null ? mapView.getColorLow()
+        Color colorLow = Utilities.createColorFromString( StringUtils.trimToNull( mapView.getColorLow() ) != null ? mapView.getColorLow()
             : DEFAULT_COLOR_LOW );
-        Color colorHigh = Utilities.createColorFromString( mapView.getColorHigh() != null ? mapView.getColorHigh()
+        Color colorHigh = Utilities.createColorFromString( StringUtils.trimToNull( mapView.getColorHigh() ) != null ? mapView.getColorHigh()
             : DEFAULT_COLOR_HIGH );
 
         // TODO MapView should be extended to feature opacity
