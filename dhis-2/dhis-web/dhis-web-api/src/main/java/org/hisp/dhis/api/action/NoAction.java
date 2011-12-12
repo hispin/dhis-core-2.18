@@ -1,7 +1,7 @@
-package org.hisp.dhis.api.controller;
+package org.hisp.dhis.api.action;
 
 /*
- * Copyright (c) 2004-2011, University of Oslo
+ * Copyright (c) 2004-2009, University of Oslo
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -27,31 +27,17 @@ package org.hisp.dhis.api.controller;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import com.opensymphony.xwork2.Action;
 
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
-@Controller
-public class IndexController
+public class NoAction
+    implements Action
 {
-    //-------------------------------------------------------------------------------------------------------
-    // GET
-    //-------------------------------------------------------------------------------------------------------
-
-    @RequestMapping( value = "/api", method = RequestMethod.GET )
-    public String getIndex( Model model )
+    public String execute()
+        throws Exception
     {
-        return "redirect:/api/resources";
-    }
-
-    @RequestMapping( value = "/", method = RequestMethod.GET )
-    public String getIndexWithSlash( Model model )
-    {
-        return "redirect:/api/resources";
+        return SUCCESS;
     }
 }
