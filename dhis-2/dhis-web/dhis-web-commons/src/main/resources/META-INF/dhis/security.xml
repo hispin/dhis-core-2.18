@@ -1,12 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans" xmlns:sec="http://www.springframework.org/schema/security"
-  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="
 		http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security-3.0.xsd
 		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
-
-  <sec:global-method-security jsr250-annotations="disabled" pre-post-annotations="disabled"
-    secured-annotations="disabled" />
 
   <bean id="mappedRedirectStrategy" class="org.hisp.dhis.security.MappedRedirectStrategy">
     <property name="redirectMap">
@@ -28,15 +25,18 @@
 
   <sec:http access-decision-manager-ref="accessDecisionManager" use-expressions="true" realm="DHIS2">
     <sec:form-login default-target-url="/" always-use-default-target="false"
-      login-processing-url="/dhis-web-commons-security/login.action" authentication-failure-url="/dhis-web-commons/security/login.action?failed=true"
-      login-page="/dhis-web-commons/security/login.action" authentication-success-handler-ref="defaultAuthenticationSuccessHandler" />
+                    login-processing-url="/dhis-web-commons-security/login.action"
+                    authentication-failure-url="/dhis-web-commons/security/login.action?failed=true"
+                    login-page="/dhis-web-commons/security/login.action"
+                    authentication-success-handler-ref="defaultAuthenticationSuccessHandler" />
     <sec:http-basic />
     <sec:logout logout-url="/dhis-web-commons-security/logout.action" />
-
     <sec:intercept-url pattern="/dhis-web-commons/security/**" access="permitAll" />
     <sec:intercept-url pattern="/dhis-web-commons/javascripts/**" filters="none" />
     <sec:intercept-url pattern="/dhis-web-commons/css/**" filters="none" />
     <sec:intercept-url pattern="/favicon.ico" filters="none" />
+    <sec:intercept-url pattern="/api*" access="hasRole('F_WEBAPI_READ')" />
+    <sec:intercept-url pattern="/api/**" access="hasRole('F_WEBAPI_READ')" />
     <sec:intercept-url pattern="/**" access="isAuthenticated()" />
 
     <sec:custom-filter ref="automaticAccessFilter" before="LOGOUT_FILTER" />
@@ -44,7 +44,7 @@
 
   <!-- Security : Action -->
   <bean id="restrictOrganisationUnitsAction" class="org.hisp.dhis.security.action.RestrictOrganisationUnitsAction"
-    scope="prototype">
+        scope="prototype">
     <property name="currentUserService" ref="org.hisp.dhis.user.CurrentUserService" />
     <property name="selectionManager" ref="org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager" />
     <property name="selectionTreeManager" ref="org.hisp.dhis.oust.manager.SelectionTreeManager" />
@@ -143,7 +143,8 @@
     </property>
   </bean>
 
-  <bean id="org.hisp.dhis.security.ActionAccessResolver" class="org.hisp.dhis.security.SpringSecurityActionAccessResolver">
+  <bean id="org.hisp.dhis.security.ActionAccessResolver"
+        class="org.hisp.dhis.security.SpringSecurityActionAccessResolver">
     <property name="requiredAuthoritiesProvider" ref="org.hisp.dhis.security.authority.RequiredAuthoritiesProvider" />
     <property name="accessDecisionManager" ref="accessDecisionManager" />
   </bean>
@@ -158,7 +159,8 @@
     </property>
   </bean>
 
-  <bean id="org.hisp.dhis.security.intercept.XWorkSecurityInterceptor" class="org.hisp.dhis.security.intercept.XWorkSecurityInterceptor">
+  <bean id="org.hisp.dhis.security.intercept.XWorkSecurityInterceptor"
+        class="org.hisp.dhis.security.intercept.XWorkSecurityInterceptor">
     <property name="accessDecisionManager" ref="accessDecisionManager" />
     <property name="authenticationManager" ref="authenticationManager" />
     <property name="validateConfigAttributes" value="false" />
@@ -168,7 +170,8 @@
 
   <!-- Security : AuthorityProvider -->
 
-  <bean id="org.hisp.dhis.security.authority.RequiredAuthoritiesProvider" class="org.hisp.dhis.security.authority.DefaultRequiredAuthoritiesProvider">
+  <bean id="org.hisp.dhis.security.authority.RequiredAuthoritiesProvider"
+        class="org.hisp.dhis.security.authority.DefaultRequiredAuthoritiesProvider">
     <property name="requiredAuthoritiesKey" value="requiredAuthorities" />
     <property name="globalAttributes">
       <set>
@@ -177,11 +180,13 @@
     </property>
   </bean>
 
-  <bean id="org.hisp.dhis.security.authority.SystemAuthoritiesProvider" class="org.hisp.dhis.security.authority.CachingSystemAuthoritiesProvider">
+  <bean id="org.hisp.dhis.security.authority.SystemAuthoritiesProvider"
+        class="org.hisp.dhis.security.authority.CachingSystemAuthoritiesProvider">
     <property name="source" ref="compositeSystemAuthoritiesProvider" />
   </bean>
 
-  <bean id="compositeSystemAuthoritiesProvider" class="org.hisp.dhis.security.authority.CompositeSystemAuthoritiesProvider">
+  <bean id="compositeSystemAuthoritiesProvider"
+        class="org.hisp.dhis.security.authority.CompositeSystemAuthoritiesProvider">
     <property name="sources">
       <set>
         <ref bean="detectingSystemAuthoritiesProvider" />
@@ -191,7 +196,8 @@
     </property>
   </bean>
 
-  <bean id="detectingSystemAuthoritiesProvider" class="org.hisp.dhis.security.authority.DetectingSystemAuthoritiesProvider">
+  <bean id="detectingSystemAuthoritiesProvider"
+        class="org.hisp.dhis.security.authority.DetectingSystemAuthoritiesProvider">
     <property name="requiredAuthoritiesProvider" ref="org.hisp.dhis.security.authority.RequiredAuthoritiesProvider" />
   </bean>
 
