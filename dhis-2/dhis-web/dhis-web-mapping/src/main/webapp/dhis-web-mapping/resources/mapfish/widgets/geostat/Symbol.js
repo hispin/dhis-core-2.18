@@ -88,6 +88,7 @@ mapfish.widgets.geostat.Symbol = Ext.extend(Ext.Panel, {
             type: []
         },
         filter: function() {
+            var groupSet = this.cmp.groupSet.getRawValue();
             var type = this.filtering.options.type;
             var add = [];
             if (!type.length || !type[0]) {
@@ -96,12 +97,13 @@ mapfish.widgets.geostat.Symbol = Ext.extend(Ext.Panel, {
             else {
                 for (var i = 0; i < this.filtering.cache.length; i++) {
                     for (var j = 0; j < type.length; j++) {
-                        if (this.filtering.cache[i].attributes.type == type[j]) {
+                        if (this.filtering.cache[i].attributes[groupSet] === type[j]) {
                             add.push(this.filtering.cache[i]);
                         }
                     }
                 }
             }
+            
             this.layer.removeAllFeatures();
             this.layer.addFeatures(add);
         },
