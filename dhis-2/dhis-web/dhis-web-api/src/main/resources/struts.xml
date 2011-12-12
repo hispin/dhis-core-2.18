@@ -8,6 +8,7 @@
   <package name="dhis-web-api" extends="dhis-web-commons" namespace="/dhis-web-api">
 
     <action name="index" class="org.hisp.dhis.api.action.NoAction">
+	  <result name="success" type="redirect">../api</result>
       <param name="requiredAuthorities">F_WEBAPI_CREATE, F_WEBAPI_READ, F_WEBAPI_UPDATE, F_WEBAPI_DELETE</param>
     </action>
 
