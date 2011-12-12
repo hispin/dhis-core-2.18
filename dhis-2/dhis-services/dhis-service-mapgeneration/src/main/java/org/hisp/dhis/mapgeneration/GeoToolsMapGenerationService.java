@@ -201,19 +201,21 @@ public class GeoToolsMapGenerationService
         // Build internal map objects for each map value
         for ( AggregatedMapValue mapValue : mapValues )
         {
-            mapObjects.add( buildSingleGeoToolsMapObjectForMapLayer( mapLayer, mapValue ) );
+            // Get the org unit for this map value
+            OrganisationUnit orgUnit = organisationUnitService.getOrganisationUnit( mapValue.getOrganisationUnitId() );
+
+            if ( orgUnit != null && orgUnit.hasCoordinates() )
+            {
+                mapObjects.add( buildSingleGeoToolsMapObjectForMapLayer( mapLayer, mapValue, orgUnit ) );
+            }
         }
 
         return mapObjects;
     }
 
     private GeoToolsMapObject buildSingleGeoToolsMapObjectForMapLayer( InternalMapLayer mapLayer,
-        AggregatedMapValue mapValue )
+        AggregatedMapValue mapValue, OrganisationUnit orgUnit )
     {
-
-        // Get the org unit for this map value
-        OrganisationUnit orgUnit = organisationUnitService.getOrganisationUnit( mapValue.getOrganisationUnitId() );
-
         // Create and setup an internal map object
         GeoToolsMapObject mapObject = new GeoToolsMapObject();
         mapObject.setName( orgUnit.getName() );
