@@ -98,6 +98,7 @@ mapfish.GeoStat = OpenLayers.Class({
         this.layer.removeFeatures(this.layer.features);
         this.layer.addFeatures(format.read(doc));
 		this.layer.features = G.util.getTransformedFeatureArray(this.layer.features);
+        G.vars.activeWidget.featureStorage = this.layer.features.slice(0);
         this.requestSuccess(request);
         
         G.vars.activeWidget.classify();
@@ -109,6 +110,10 @@ mapfish.GeoStat = OpenLayers.Class({
             doc = request.responseText;
         }
         
+        if (doc.length && G.vars.activeWidget != symbol) {
+            doc = G.util.geoJsonDecode(doc);
+        }
+        
         var format = this.format || new OpenLayers.Format.GeoJSON();
         this.layer.removeFeatures(this.layer.features);
         
@@ -118,6 +123,7 @@ mapfish.GeoStat = OpenLayers.Class({
 		}
 		
         this.layer.addFeatures(geo);
+        G.vars.activeWidget.featureStorage = this.layer.features.slice(0);
         this.requestSuccess(request);
   
 		if (!G.vars.activeWidget.formValidation.validateForm.call(G.vars.activeWidget)) {

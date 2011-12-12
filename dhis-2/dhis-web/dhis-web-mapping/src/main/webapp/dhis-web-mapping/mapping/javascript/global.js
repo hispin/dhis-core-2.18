@@ -280,7 +280,8 @@ G.util = {
                 else {
                     activateLabels.call(this);
                 }
-            
+                
+                G.vars.lockPosition = true;
                 widget.applyValues();
             }
         },
@@ -1091,7 +1092,7 @@ G.cls = {
                                                         xtype: 'button',
                                                         iconCls: 'icon-assign',
                                                         hideLabel: true,
-                                                        text: G.i18n.toggle,
+                                                        text: G.i18n.showhide,
                                                         scope: this,
                                                         handler: function() {
                                                             if (layer.features.length) {

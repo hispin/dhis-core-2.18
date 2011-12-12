@@ -62,6 +62,7 @@ Ext.onReady( function() {
         url: G.conf.path_mapping + 'getAllIndicators' + G.conf.type,
         root: 'indicators',
         fields: ['id', 'shortName'],
+        sortInfo: {field: 'shortName', direction: 'ASC'},
         autoLoad: false,
         isLoaded: false,
         listeners: {
@@ -85,6 +86,7 @@ Ext.onReady( function() {
         url: G.conf.path_mapping + 'getAllDataElements' + G.conf.type,
         root: 'dataElements',
         fields: ['id', 'shortName'],
+        sortInfo: {field: 'shortName', direction: 'ASC'},
         autoLoad: false,
         isLoaded: false,
         listeners: {
@@ -1328,7 +1330,7 @@ Ext.onReady( function() {
                                 displayField: 'shortName',
                                 width:G.conf.multiselect_width,
                                 height: G.util.getMultiSelectHeight(),
-                                store:G.stores.indicator
+                                store: G.stores.indicator
                             }
                         ]
                     }

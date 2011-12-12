@@ -84,6 +84,8 @@ mapfish.widgets.geostat.Centroid = Ext.extend(Ext.Panel, {
     
     requireUpdate: false,
     
+    featureStorage: [],
+    
     filtering: {
         cache: [],
         options: {
@@ -1023,10 +1025,12 @@ mapfish.widgets.geostat.Centroid = Ext.extend(Ext.Panel, {
         G.vars.activeWidget = this;
         this.updateValues = true;
         
-        this.setUrl(G.conf.path_mapping + 'getGeoJson.action?' +
-            'parentId=' + this.organisationUnitSelection.parent.id +
-            '&level=' + this.organisationUnitSelection.level.level
-        );
+        var url = G.conf.path_mapping + 'getGeoJsonWithValues.action?' + 
+            'periodId=' + this.cmp.period.getValue() +
+            '&parentId=' + this.organisationUnitSelection.parent.id +
+            '&level=' + this.organisationUnitSelection.level.level;            
+        url += this.valueType.isIndicator() ? '&indicatorId=' + this.cmp.indicator.getValue() : '&dataElementId=' + this.cmp.dataElement.getValue();
+        this.setUrl(url);
     },
 
     classify: function(exception, lockPosition) {
@@ -1060,14 +1064,8 @@ mapfish.widgets.geostat.Centroid = Ext.extend(Ext.Panel, {
                     params: params,
                     scope: this,
                     success: function(r) {
-alert(r);                        
                         var mapvalues = G.util.mapValueDecode(r);
-                        
-                        if (!this.layer.features.length) {
-                            Ext.message.msg(false, 'No coordinates found');
-                            G.vars.mask.hide();
-                            return;
-                        }
+                        this.layer.features = this.featureStorage.slice(0);
                         
                         if (mapvalues.length === 0) {
                             Ext.message.msg(false, G.i18n.current_selection_no_data);
@@ -1075,19 +1073,12 @@ alert(r);
                             return;
                         }
                         
-                        for (var j = 0; j < this.layer.features.length; j++) {
-                            for (var i = 0; i < mapvalues.length; i++) {
-                                if (this.layer.features[j].attributes.id == mapvalues[i].oi) {
-                                    this.layer.features[j].attributes.value = parseFloat(mapvalues[i].v);
-                                    this.layer.features[j].attributes.labelString = this.layer.features[j].attributes.name + ' (' + this.layer.features[j].attributes.value + ')';
-                                    this.layer.features[j].attributes.fixedName = G.util.cutString(this.layer.features[j].attributes.name, 30);
+                        for (var i = 0; i < this.layer.features.length; i++) {
+                            for (var j = 0; j < mapvalues.length; j++) {
+                                if (this.layer.features[i].attributes.id == mapvalues[j].oi) {
+                                    this.layer.features[i].attributes.value = parseFloat(mapvalues[j].v);
                                     break;
                                 }
-                            }
-                            if (!this.layer.features[j].attributes.value) {
-                                this.layer.features[j].attributes.value = 0;
-                                this.layer.features[j].attributes.labelString = this.layer.features[j].attributes.name + ' (0)';
-                                this.layer.features[j].attributes.fixedName = G.util.cutString(this.layer.features[j].attributes.name, 30);
                             }
                         }
                         
@@ -1103,6 +1094,18 @@ alert(r);
     },
 
     applyValues: function() {
+        for (var i = 0; i < this.layer.features.length; i++) {
+            var f = this.layer.features[i];
+            if (!f.attributes.value) {
+                this.layer.features.splice(i,1);
+                i--;
+            }
+            else {
+                f.attributes.labelString = f.attributes.name + ' (' + f.attributes.value + ')';
+                f.attributes.fixedName = G.util.cutString(f.attributes.name, 30);
+            }
+        }
+        
 		var options = {
             indicator: 'value',
             method: G.conf.classify_by_equal_intervals

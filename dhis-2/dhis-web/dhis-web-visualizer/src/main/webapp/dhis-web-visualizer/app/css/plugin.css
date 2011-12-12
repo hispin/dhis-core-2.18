@@ -8,16 +8,16 @@ h1 {
 }
 
 #chart1 {
-	width: 1000px;
-	height: 600px;
+	width: 600px;
+	height: 400px;
 	border: 2px solid #ddd;
     margin-bottom: 100px;
 }
 
 #chart2 {
-	width: 600px;
+	width: 1400px;
 	height: 400px;
-	border: 2px solid #ddd;
+	border: 2px solid #ccc;
     margin-bottom: 100px;
 }
 
@@ -27,28 +27,4 @@ h1 {
     padding: 50px;
 	border: 2px solid #ccc;
     margin-bottom: 100px;
-}
-
-/* Tooltip */
-.x-tip {
-    -moz-border-radius: 2px 2px 2px 2px;
-    -webkit-border-radius: 2px 2px 2px 2px;
-    -o-border-radius: 2px 2px 2px 2px;
-    -ms-border-radius: 2px 2px 2px 2px;
-    -khtml-border-radius: 2px 2px 2px 2px;
-    border-radius: 2px 2px 2px 2px;
-    padding: 2px 5px 2px 0;
-    border-width: 2px;
-    border-style: solid;
-    background-color: #eee;
-}
-
-/* Chart tips (tooltip) */
-.x-tip .x-tip-header .x-box-item {
-    text-align: center;
-}
-
-.dv-chart-tips {
-    font: normal 13px arial, ubuntu;
-    padding: 0 0 3px 3px;
 }
