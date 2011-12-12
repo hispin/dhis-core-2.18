@@ -101,7 +101,7 @@ public class GetOrganisationUnitChildrenAction
     {
         OrganisationUnit unit = organisationUnitService.getOrganisationUnit( node );
         
-        int level = organisationUnitService.getLevelOfOrganisationUnit( unit ) + 1;
+        int level = organisationUnitService.getLevelOfOrganisationUnit( unit.getId() ) + 1;
         
         if ( unit != null )
         {

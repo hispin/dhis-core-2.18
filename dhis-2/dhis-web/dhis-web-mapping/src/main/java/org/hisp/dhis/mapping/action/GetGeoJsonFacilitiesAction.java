@@ -110,7 +110,7 @@ public class GetGeoJsonFacilitiesAction
     {
         OrganisationUnit parent = organisationUnitService.getOrganisationUnit( parentId );
 
-        level = level == null ? organisationUnitService.getLevelOfOrganisationUnit( parent ) : level;
+        level = level == null ? organisationUnitService.getLevelOfOrganisationUnit( parent.getId() ) : level;
 
         Collection<OrganisationUnit> organisationUnits = organisationUnitService.getOrganisationUnitsAtLevel( level,
             parent );
