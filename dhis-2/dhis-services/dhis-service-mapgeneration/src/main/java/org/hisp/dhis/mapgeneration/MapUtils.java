@@ -29,6 +29,8 @@ package org.hisp.dhis.mapgeneration;
 
 import java.awt.Color;
 
+import org.codehaus.jackson.JsonNode;
+
 /**
  * Utility class.
  * 
@@ -96,5 +98,37 @@ public class MapUtils
         string = string.startsWith( COLOR_PREFIX ) ? string.substring( 1 ) : string;
         
         return new Color( Integer.parseInt( string, COLOR_RADIX ) );
+    }
+    
+    /**
+     * Returns the number of non empty sub JsonNodes in the given JsonNode.
+     * 
+     * @param json the JsonNode.
+     * @return the number of non empty sub JsonNodes.
+     */
+    public static int getNonEmptyNodes( JsonNode json )
+    {
+        int count = 0;
+        
+        for ( int i = 0; i < json.size(); i++ )
+        {
+            JsonNode node = json.get( i );
+            
+            count = nodeIsNonEmpty( node ) ? ++count : count;
+        }
+        
+        return count;
+    }
+    
+    /**
+     * Indicates whether the given JsonNode is empty, which implies that the
+     * node is not null and has a size greater than 0.
+     * 
+     * @param json the JsonNode.
+     * @return true if the given JsonNode is non empty, false otherwise.
+     */
+    public static boolean nodeIsNonEmpty( JsonNode json )
+    {
+        return json != null && json.size() > 0;
     }
 }

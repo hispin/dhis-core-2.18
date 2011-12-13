@@ -84,12 +84,17 @@ public class GeoToolsPrimitiveFromJsonFactory
     public static MultiPolygon createMultiPolygonFromJson( JsonNode json )
     {
         // Native array of polygons to pass to GeoFactory
-        Polygon[] polygons = new Polygon[json.size()];
+        Polygon[] polygons = new Polygon[MapUtils.getNonEmptyNodes( json )];
 
         // Read all the polygons from the json array
         for ( int i = 0; i < json.size(); i++ )
         {
-            polygons[i] = createPolygonFromJson( json.get( i ) );
+            JsonNode node = json.get( i );
+            
+            if ( MapUtils.nodeIsNonEmpty( node ) )
+            {
+                polygons[i] = createPolygonFromJson( node );
+            }
         }
 
         // Create the multi-polygon from factory
@@ -122,7 +127,11 @@ public class GeoToolsPrimitiveFromJsonFactory
             for ( int i = 1; i < shell.size(); i++ )
             {
                 JsonNode hole = json.get( i );
-                holes[i] = createLinearRingFromJson( hole );
+                
+                if ( hole != null && hole.size() > 0 )
+                {
+                    holes[i] = createLinearRingFromJson( hole );
+                }
             }
         }
 
@@ -139,12 +148,17 @@ public class GeoToolsPrimitiveFromJsonFactory
     public static LinearRing createLinearRingFromJson( JsonNode json )
     {
         // Native array of coordinates to pass to GeoFactory
-        Coordinate[] coords = new Coordinate[json.size()];
+        Coordinate[] coords = new Coordinate[MapUtils.getNonEmptyNodes( json )];
 
         // Read the json array of coordinates
         for ( int i = 0; i < json.size(); i++ )
         {
-            coords[i] = createCoordinateFromJson( json.get( i ) );
+            JsonNode node = json.get( i );
+            
+            if ( MapUtils.nodeIsNonEmpty( node ) )
+            {
+                coords[i] = createCoordinateFromJson( node );
+            }
         }
 
         // Create the linear-ring from factory
