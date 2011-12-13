@@ -71,6 +71,12 @@
       <groupId>org.geotools</groupId>
       <artifactId>gt-epsg-wkt</artifactId>
       <version>8.0-M3</version>
+	  <exclusions>
+        <exclusion>
+          <groupId>commons-pool</groupId>
+          <artifactId>commons-pool</artifactId>
+        </exclusion>
+	  </exclusions>
     </dependency>
   </dependencies>
   

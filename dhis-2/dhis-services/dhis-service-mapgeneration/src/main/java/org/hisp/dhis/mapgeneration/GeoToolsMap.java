@@ -160,7 +160,7 @@ public class GeoToolsMap
             }
             catch ( SchemaException ex )
             {
-                System.err.println( "Could not add map object: " + mapObject.toString() + ": " + ex.getMessage() );
+                throw new RuntimeException( "Could not add map object: " + mapObject.toString() + ": " + ex.getMessage() );
             }
         }
 
