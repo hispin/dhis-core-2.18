@@ -36,6 +36,9 @@
     <xsl:include href="dataSet.xsl"/>
     <xsl:include href="attributeType.xsl"/>
     <xsl:include href="report.xsl"/>
+    <xsl:include href="validationRule.xsl"/>
+    <xsl:include href="validationRuleGroup.xsl"/>
+    <xsl:include href="sqlView.xsl"/>
     <!-- etc ... -->
 
 </xsl:stylesheet>
