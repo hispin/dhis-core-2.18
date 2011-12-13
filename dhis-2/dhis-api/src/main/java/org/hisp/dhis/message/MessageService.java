@@ -59,5 +59,5 @@ public interface MessageService
     
     long getUnreadMessageConversationCount( User user );
     
-    public List<MessageConversation> getMessageConversations( int first, int max );
+    List<MessageConversation> getMessageConversations( int first, int max );
 }
