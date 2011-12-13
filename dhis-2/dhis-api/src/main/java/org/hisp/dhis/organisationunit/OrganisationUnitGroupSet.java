@@ -77,6 +77,18 @@ public class OrganisationUnitGroupSet extends BaseIdentifiableObject
     // Logic
     // -------------------------------------------------------------------------
 
+    public void addOrganisationUnitGroup( OrganisationUnitGroup organisationUnitGroup )
+    {
+        organisationUnitGroups.add( organisationUnitGroup );
+        organisationUnitGroup.setGroupSet( this );
+    }
+
+    public void removeOrganisationUnitGroup( OrganisationUnitGroup organisationUnitGroup )
+    {
+        organisationUnitGroups.remove( organisationUnitGroup );
+        organisationUnitGroup.setGroupSet( null );
+    }
+
     public Collection<OrganisationUnit> getOrganisationUnits()
     {
         List<OrganisationUnit> units = new ArrayList<OrganisationUnit>();

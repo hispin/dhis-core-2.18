@@ -28,12 +28,15 @@ package org.hisp.dhis.api.controller;
  */
 
 import org.hisp.dhis.api.utils.IdentifiableObjectParams;
+import org.hisp.dhis.api.utils.ObjectPersister;
 import org.hisp.dhis.api.utils.WebLinkPopulator;
+import org.hisp.dhis.api.view.Jaxb2Utils;
 import org.hisp.dhis.organisationunit.OrganisationUnitLevel;
 import org.hisp.dhis.organisationunit.OrganisationUnitLevels;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
@@ -58,6 +61,9 @@ public class OrganisationUnitLevelController
 
     @Autowired
     private OrganisationUnitService organisationUnitService;
+
+    @Autowired
+    private ObjectPersister objectPersister;
 
     //-------------------------------------------------------------------------------------------------------
     // GET
@@ -101,17 +107,46 @@ public class OrganisationUnitLevelController
     //-------------------------------------------------------------------------------------------------------
 
     @RequestMapping( method = RequestMethod.POST, headers = {"Content-Type=application/xml, text/xml"} )
-    @ResponseStatus( value = HttpStatus.CREATED )
+    @PreAuthorize( "hasRole('ALL') or hasRole('F_WEBAPI_CREATE')" )
     public void postOrganisationUnitLevelXML( HttpServletResponse response, InputStream input ) throws Exception
+    {
+        OrganisationUnitLevel organisationUnitLevel = Jaxb2Utils.unmarshal( OrganisationUnitLevel.class, input );
+        postOrganisationUnitLevel( organisationUnitLevel, response );
+    }
+
+    @RequestMapping( method = RequestMethod.POST, headers = {"Content-Type=application/json"} )
+    @PreAuthorize( "hasRole('ALL') or hasRole('F_WEBAPI_CREATE')" )
+    public void postOrganisationUnitLevelJSON( HttpServletResponse response, InputStream input ) throws Exception
     {
         throw new HttpRequestMethodNotSupportedException( RequestMethod.POST.toString() );
     }
 
-    @RequestMapping( method = RequestMethod.POST, headers = {"Content-Type=application/json"} )
-    @ResponseStatus( value = HttpStatus.CREATED )
-    public void postOrganisationUnitLevelJSON( HttpServletResponse response, InputStream input ) throws Exception
+    public void postOrganisationUnitLevel( OrganisationUnitLevel organisationUnitLevel, HttpServletResponse response )
     {
-        throw new HttpRequestMethodNotSupportedException( RequestMethod.POST.toString() );
+        if ( organisationUnitLevel == null )
+        {
+            response.setStatus( HttpServletResponse.SC_NOT_IMPLEMENTED );
+        }
+        else
+        {
+            try
+            {
+                organisationUnitLevel = objectPersister.persistOrganisationUnitLevel( organisationUnitLevel );
+
+                if ( organisationUnitLevel.getUid() == null )
+                {
+                    response.setStatus( HttpServletResponse.SC_INTERNAL_SERVER_ERROR );
+                }
+                else
+                {
+                    response.setStatus( HttpServletResponse.SC_CREATED );
+                    response.setHeader( "Location", DataElementController.RESOURCE_PATH + "/" + organisationUnitLevel.getUid() );
+                }
+            } catch ( Exception e )
+            {
+                response.setStatus( HttpServletResponse.SC_CONFLICT );
+            }
+        }
     }
 
     //-------------------------------------------------------------------------------------------------------
@@ -122,7 +157,7 @@ public class OrganisationUnitLevelController
     @ResponseStatus( value = HttpStatus.NO_CONTENT )
     public void putOrganisationUnitLevelXML( @PathVariable( "uid" ) String uid, InputStream input ) throws Exception
     {
-        throw new HttpRequestMethodNotSupportedException( RequestMethod.DELETE.toString() );
+        throw new HttpRequestMethodNotSupportedException( RequestMethod.PUT.toString() );
     }
 
     @RequestMapping( value = "/{uid}", method = RequestMethod.PUT, headers = {"Content-Type=application/json"} )

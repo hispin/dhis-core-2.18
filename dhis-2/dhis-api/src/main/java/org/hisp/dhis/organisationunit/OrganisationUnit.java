@@ -187,6 +187,18 @@ public class OrganisationUnit extends BaseNameableObject
     // Logic
     // -------------------------------------------------------------------------
 
+    public void addOrganisationUnitGroup( OrganisationUnitGroup organisationUnitGroup )
+    {
+        groups.add( organisationUnitGroup );
+        organisationUnitGroup.getMembers().add( this );
+    }
+
+    public void removeOrganisationUnitGroup( OrganisationUnitGroup organisationUnitGroup )
+    {
+        groups.remove( organisationUnitGroup );
+        organisationUnitGroup.getMembers().remove( this );
+    }
+
     public void addDataSet( DataSet dataSet )
     {
         dataSets.add( dataSet );
@@ -542,7 +554,7 @@ public class OrganisationUnit extends BaseNameableObject
 
     public void setAlternativeName( String alternativeName )
     {
-        throw new UnsupportedOperationException( "Cannot set alternativename on OrganisationUnit: " + alternativeName );
+        throw new UnsupportedOperationException( "Cannot set alternativeName on OrganisationUnit: " + alternativeName );
     }
 
     @XmlElement
@@ -744,18 +756,6 @@ public class OrganisationUnit extends BaseNameableObject
 
     @XmlElement
     @JsonProperty
-    public boolean isCurrentParent()
-    {
-        return currentParent;
-    }
-
-    public void setCurrentParent( boolean currentParent )
-    {
-        this.currentParent = currentParent;
-    }
-
-    @XmlElement
-    @JsonProperty
     public String getType()
     {
         return type;
@@ -807,5 +807,15 @@ public class OrganisationUnit extends BaseNameableObject
     public void setValue( Double value )
     {
         this.value = value;
+    }
+
+    public boolean isCurrentParent()
+    {
+        return currentParent;
+    }
+
+    public void setCurrentParent( boolean currentParent )
+    {
+        this.currentParent = currentParent;
     }
 }

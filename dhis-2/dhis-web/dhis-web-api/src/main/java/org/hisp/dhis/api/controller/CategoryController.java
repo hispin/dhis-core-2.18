@@ -122,7 +122,7 @@ public class CategoryController
     @ResponseStatus( value = HttpStatus.NO_CONTENT )
     public void putCategoryXML( @PathVariable( "uid" ) String uid, InputStream input ) throws Exception
     {
-        throw new HttpRequestMethodNotSupportedException( RequestMethod.DELETE.toString() );
+        throw new HttpRequestMethodNotSupportedException( RequestMethod.PUT.toString() );
     }
 
     @RequestMapping( value = "/{uid}", method = RequestMethod.PUT, headers = {"Content-Type=application/json"} )

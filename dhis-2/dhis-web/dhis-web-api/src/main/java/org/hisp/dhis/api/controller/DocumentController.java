@@ -93,7 +93,7 @@ public class DocumentController
 
         model.addAttribute( "model", document );
 
-        return "validationRule";
+        return "document";
     }
 
     //-------------------------------------------------------------------------------------------------------
@@ -122,7 +122,7 @@ public class DocumentController
     @ResponseStatus( value = HttpStatus.NO_CONTENT )
     public void putDocumentXML( @PathVariable( "uid" ) String uid, InputStream input ) throws Exception
     {
-        throw new HttpRequestMethodNotSupportedException( RequestMethod.DELETE.toString() );
+        throw new HttpRequestMethodNotSupportedException( RequestMethod.PUT.toString() );
     }
 
     @RequestMapping( value = "/{uid}", method = RequestMethod.PUT, headers = {"Content-Type=application/json"} )
