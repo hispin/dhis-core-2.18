@@ -50,15 +50,13 @@
 					<td></td>
 					</td></td>
 				</tr>   
-					
 				<tr>
-					<td><label for="enrollmentDate">$i18n.getString( "date_of_enrollment" ) <em title="$i18n.getString( "required" )" class="required">*</em></label></td>
-					<td colspan='2' align='left'><input type="text" id="enrollmentDate" name="enrollmentDate" style='width:30em' disabled="disabled" > <i>( <span id='enrollmentDateDescription'></span> )</i></td>
-					</tr>
-				
+					<td><label for="enrollmentDate"><span id='enrollmentDateDescription'></span><em title="$i18n.getString( "required" )" class="required">*</em></label></td>
+					<td colspan='2' align='left'><input type="text" id="enrollmentDate" name="enrollmentDate" style='width:30em' disabled="disabled" ></td>
+				</tr>
 				<tr>
-					<td><label for="dateOfIncident">$i18n.getString( "date_of_incident" ) <em title="$i18n.getString( "required" )" class="required">*</em></label></td>
-					<td colspan='2'><input type="text" id="dateOfIncident" name="dateOfIncident" style='width:30em' disabled="disabled" ><i>( <span id='dateOfIncidentDescription'></span> )</i></td>
+					<td><label for="dateOfIncident"><span id='dateOfIncidentDescription'></span><em title="$i18n.getString( "required" )" class="required">*</em></label></td>
+					<td colspan='2'><input type="text" id="dateOfIncident" name="dateOfIncident" style='width:30em' disabled="disabled" ></td>
 				</tr>
 				<tr>
 					<td></td>
