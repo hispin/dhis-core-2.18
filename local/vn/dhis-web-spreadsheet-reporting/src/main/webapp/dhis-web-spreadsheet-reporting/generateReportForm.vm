@@ -53,14 +53,6 @@
 			currentOrgunitName = '$organisationUnit.name';
 			getExportReportsByGroup( currentOrgunitName );
 		});
-	#else
-		disable("group");
-		disable("exportReport");
-		disable("period");
-		disable("generateExportReport");
-		disable("previewButton");
-		disable("nextPeriod");
-		disable("lastPeriod");	
 	#end
 	
 </script>

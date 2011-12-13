@@ -88,10 +88,9 @@ public class ValidateDataElementGroupOrderAction
     public String execute()
         throws Exception
     {
-        DataElementGroupOrder groupOrder = dataElementGroupOrderService.getDataElementGroupOrder( name, clazzName,
-            reportId );
-        
-        if ( groupOrder != null && (this.id == null || groupOrder.getId() != this.id) )
+        DataElementGroupOrder match = dataElementGroupOrderService.getDataElementGroupOrder( name, clazzName, reportId );
+
+        if ( match != null && (id == null || match.getId() != id) )
         {
             message = i18n.getString( "name_ready_exist" );
 

@@ -1,5 +1,5 @@
-<h3>$i18n.getString('dataelement_groups')</h3>
-<h4><font color="green">$!encoder.htmlEncode($!report.name)</font></h4>
+<h3>$i18n.getString( 'dataelement_groups' )</h3>
+<h4><font color="green">$!encoder.htmlEncode( $!report.name )</font></h4>
 
 <table width="800px">
 	<tr>
@@ -40,7 +40,7 @@
 </table>
 
 <ul id="sortable"> 
-#foreach($group in $!report.dataElementOrders)
+#foreach( $group in $!report.dataElementOrders )
 	<li class="ui-state-default" name="dataElementGroupOrder" value="$group.id" title="$i18n.getString( 'sort_order_help' )">		
 		<table cellspacing="0" cellpadding="0" width="100%">
 			<tr>
@@ -58,7 +58,7 @@
 </ul>
 
 <div id="dataElementGroups">
-	<form name="dataElementGroups" id="dataElementGroupsForm" method="POST">
+	<form name="dataElementGroupsForm" id="dataElementGroupsForm" method="POST">
 		<input type="hidden" name="id" value="$report.id"/>
 		<input type="hidden" name="dataElementGroupOrderId" id="dataElementGroupOrderId"/>
 		<table>
@@ -123,15 +123,8 @@
 		
 	});
 	
-	var dialog = jQuery("#dataElementGroups").dialog({modal:true,autoOpen:false,width:720,title:"$i18n.getString('dataelement_groups')"});
+	var dialog = jQuery("#dataElementGroups").dialog( { modal:true,autoOpen:false,width:720,title:"$i18n.getString('dataelement_groups')" } );
 	
-	validation( "dataElementGroupsForm", function(form) {
-		//validateDataElementGroupOrder( form );
-		form.submit();
-	}, function() {
-		listValidator( 'dataElementIdsValidate', 'dataElementIds' );
-	});
-	
-	checkValueIsExist( "name", "validateDataElementGroupOrder.action", {id: byId('dataElementGroupOrderId').value, reportId: reportId, clazzName: clazzName} );
+	var validator = validation( "dataElementGroupsForm", function( form ) { validateDataElementGroupOrder( form ); });
 	
 </script>

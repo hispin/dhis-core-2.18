@@ -68,7 +68,7 @@ public class HibernateDataElementGroupOrderStore
     {
         Session session = sessionFactory.getCurrentSession();
 
-        String sql = "SELECT * FROM reportexcel_dataelementgrouporders WHERE lower(name) LIKE :name";
+        String sql = "SELECT * FROM reportexcel_dataelementgrouporders WHERE lower(name) = :name";
 
         if ( clazzName.equals( ExportReport.class.getSimpleName() ) )
         {
@@ -82,7 +82,7 @@ public class HibernateDataElementGroupOrderStore
         SQLQuery query = session.createSQLQuery( sql );
 
         query.addEntity( DataElementGroupOrder.class );
-        query.setString( "name", "%" + name.toLowerCase() + "%" ).setInteger( "reportId", reportId );
+        query.setString( "name", name.toLowerCase() ).setInteger( "reportId", reportId );
 
         return (DataElementGroupOrder) query.uniqueResult();
     }

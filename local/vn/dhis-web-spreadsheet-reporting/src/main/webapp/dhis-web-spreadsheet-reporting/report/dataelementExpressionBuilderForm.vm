@@ -103,7 +103,7 @@
 	function getDataElementCategoryOptionCombos()
 	{
 		jQuery.postJSON('getDataElementCategoryOptionCombos.action'
-		, {id:$exportReport.id}
+		, { id:$exportReport.id }
 		, function( json )
 		{
 			var select = jQuery("#dataelement select[id=elementSelect]");

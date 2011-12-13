@@ -35,7 +35,7 @@
                 </td>            
                 
                 <td style="text-align:center">
-                  <a href="javascript:showCaseAggregationDetails( $aggregationCondition.id )" title="$i18n.getString( "show_details" )"><img src="../images/information.png" alt="$i18n.getString( "show_details" )"></a>
+                  <a href="javascript:showCaseAggregationDetails( $aggregationCondition.id )" title="$i18n.getString( "show_details" )"><img src="../images/information.png" alt="$i18n.getString( 'show_details' )"></a>
                 </td>
                 
               </tr>
@@ -49,7 +49,7 @@
 
 			<div id="detailsArea" style="display:none">
 				<div style="float:right">
-					<a href="javascript:hideDetails()" title="$i18n.getString( "hide_details" )"><img src="../images/close.png" alt="$i18n.getString( "hide_details" )"></a>
+					<a href="javascript:hideDetails()" title="$i18n.getString( 'hide_details' )"><img src="../images/close.png" alt="$i18n.getString( 'hide_details' )"></a>
 				</div>				
 				<p><label class="bold">$i18n.getString( "id" ):</label><br><span id="idField"></span></p>
                 <p><label class="bold">$i18n.getString( "description" ):</label><br><span id="descriptionField"></span></p>
