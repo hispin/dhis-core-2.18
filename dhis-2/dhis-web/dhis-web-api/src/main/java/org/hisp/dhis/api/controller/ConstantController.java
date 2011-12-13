@@ -93,7 +93,7 @@ public class ConstantController
 
         model.addAttribute( "model", constant );
 
-        return "category";
+        return "constant";
     }
 
     //-------------------------------------------------------------------------------------------------------

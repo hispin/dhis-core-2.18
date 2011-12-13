@@ -46,41 +46,17 @@ import org.hisp.dhis.user.User;
  */
 public interface ObjectPersister
 {
-    public void persistAttribute( Attribute attribute );
+    public DataElement persistDataElement( DataElement dataElement );
 
-    public void persistDataElement( DataElement dataElement );
+    public DataElementGroup persistDataElementGroup( DataElementGroup dataElementGroup );
 
-    public void persistDataElementGroup( DataElementGroup dataElementGroup );
+    public DataElementGroupSet persistDataElementGroupSet( DataElementGroupSet dataElementGroupSet );
 
-    public void persistDataElementGroupSet( DataElementGroupSet dataElementGroupSet );
+    public OrganisationUnit persistOrganisationUnit( OrganisationUnit organisationUnit );
 
-    public void persistCategory( DataElementCategory category );
+    public OrganisationUnitLevel persistOrganisationUnitLevel( OrganisationUnitLevel organisationUnitLevel );
 
-    public void persistCategoryOption( DataElementCategoryOption categoryOption );
+    public OrganisationUnitGroup persistOrganisationUnitGroup( OrganisationUnitGroup organisationUnitGroup );
 
-    public void persistCategoryCombo( DataElementCategoryCombo categoryCombo );
-
-    public void persistCategoryOptionCombo( DataElementCategoryOptionCombo categoryOptionCombo );
-
-    public void persistIndicator( Indicator indicator );
-
-    public void persistIndicatorType( IndicatorType indicatorType );
-
-    public void persistIndicatorGroup( IndicatorGroup indicatorGroup );
-
-    public void persistIndicatorGroupSet( IndicatorGroupSet indicatorGroupSet );
-
-    public void persistOrganisationUnit( OrganisationUnit organisationUnit );
-
-    public void persistOrganisationUnitLevel( OrganisationUnitLevel organisationUnitLevel );
-
-    public void persistOrganisationUnitGroup( OrganisationUnitGroup organisationUnitGroup );
-
-    public void persistOrganisationUnitGroupSet( OrganisationUnitGroupSet organisationUnitGroupSet );
-
-    public void persistDataSet( DataSet dataSet );
-
-    public void persistChart( Chart chart );
-
-    public void persistUser( User user );
+    public OrganisationUnitGroupSet persistOrganisationUnitGroupSet( OrganisationUnitGroupSet organisationUnitGroupSet );
 }

@@ -33,13 +33,18 @@ import org.hisp.dhis.indicator.IndicatorGroup;
 import org.hisp.dhis.indicator.IndicatorGroups;
 import org.hisp.dhis.indicator.IndicatorService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseStatus;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.InputStream;
 import java.util.ArrayList;
 
 /**
@@ -89,5 +94,52 @@ public class IndicatorGroupController
         model.addAttribute( "model", indicatorGroup );
 
         return "indicatorGroup";
+    }
+
+    //-------------------------------------------------------------------------------------------------------
+    // POST
+    //-------------------------------------------------------------------------------------------------------
+
+    @RequestMapping( method = RequestMethod.POST, headers = {"Content-Type=application/xml, text/xml"} )
+    @ResponseStatus( value = HttpStatus.CREATED )
+    public void postIndicatorGroupXML( HttpServletResponse response, InputStream input ) throws Exception
+    {
+        throw new HttpRequestMethodNotSupportedException( RequestMethod.POST.toString() );
+    }
+
+    @RequestMapping( method = RequestMethod.POST, headers = {"Content-Type=application/json"} )
+    @ResponseStatus( value = HttpStatus.CREATED )
+    public void postIndicatorGroupJSON( HttpServletResponse response, InputStream input ) throws Exception
+    {
+        throw new HttpRequestMethodNotSupportedException( RequestMethod.POST.toString() );
+    }
+
+    //-------------------------------------------------------------------------------------------------------
+    // PUT
+    //-------------------------------------------------------------------------------------------------------
+
+    @RequestMapping( value = "/{uid}", method = RequestMethod.PUT, headers = {"Content-Type=application/xml, text/xml"} )
+    @ResponseStatus( value = HttpStatus.NO_CONTENT )
+    public void putIndicatorGroupXML( @PathVariable( "uid" ) String uid, InputStream input ) throws Exception
+    {
+        throw new HttpRequestMethodNotSupportedException( RequestMethod.PUT.toString() );
+    }
+
+    @RequestMapping( value = "/{uid}", method = RequestMethod.PUT, headers = {"Content-Type=application/json"} )
+    @ResponseStatus( value = HttpStatus.NO_CONTENT )
+    public void putIndicatorGroupJSON( @PathVariable( "uid" ) String uid, InputStream input ) throws Exception
+    {
+        throw new HttpRequestMethodNotSupportedException( RequestMethod.PUT.toString() );
+    }
+
+    //-------------------------------------------------------------------------------------------------------
+    // DELETE
+    //-------------------------------------------------------------------------------------------------------
+
+    @RequestMapping( value = "/{uid}", method = RequestMethod.DELETE )
+    @ResponseStatus( value = HttpStatus.NO_CONTENT )
+    public void deleteIndicatorGroup( @PathVariable( "uid" ) String uid ) throws Exception
+    {
+        throw new HttpRequestMethodNotSupportedException( RequestMethod.DELETE.toString() );
     }
 }

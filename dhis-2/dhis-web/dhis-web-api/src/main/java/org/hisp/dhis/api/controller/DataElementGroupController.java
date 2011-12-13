@@ -28,12 +28,15 @@ package org.hisp.dhis.api.controller;
  */
 
 import org.hisp.dhis.api.utils.IdentifiableObjectParams;
+import org.hisp.dhis.api.utils.ObjectPersister;
 import org.hisp.dhis.api.utils.WebLinkPopulator;
+import org.hisp.dhis.api.view.Jaxb2Utils;
 import org.hisp.dhis.dataelement.DataElementGroup;
 import org.hisp.dhis.dataelement.DataElementGroups;
 import org.hisp.dhis.dataelement.DataElementService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
@@ -55,6 +58,9 @@ public class DataElementGroupController
 
     @Autowired
     private DataElementService dataElementService;
+
+    @Autowired
+    private ObjectPersister objectPersister;
 
     //-------------------------------------------------------------------------------------------------------
     // GET
@@ -98,17 +104,46 @@ public class DataElementGroupController
     //-------------------------------------------------------------------------------------------------------
 
     @RequestMapping( method = RequestMethod.POST, headers = {"Content-Type=application/xml, text/xml"} )
-    @ResponseStatus( value = HttpStatus.CREATED )
+    @PreAuthorize( "hasRole('ALL') or hasRole('F_WEBAPI_CREATE')" )
     public void postDataElementGroupXML( HttpServletResponse response, InputStream input ) throws Exception
+    {
+        DataElementGroup dataElementGroup = Jaxb2Utils.unmarshal( DataElementGroup.class, input );
+        postDataElementGroup( dataElementGroup, response );
+    }
+
+    @RequestMapping( method = RequestMethod.POST, headers = {"Content-Type=application/json"} )
+    @PreAuthorize( "hasRole('ALL') or hasRole('F_WEBAPI_CREATE')" )
+    public void postDataElementGroupJSON( HttpServletResponse response, InputStream input ) throws Exception
     {
         throw new HttpRequestMethodNotSupportedException( RequestMethod.POST.toString() );
     }
 
-    @RequestMapping( method = RequestMethod.POST, headers = {"Content-Type=application/json"} )
-    @ResponseStatus( value = HttpStatus.CREATED )
-    public void postDataElementGroupJSON( HttpServletResponse response, InputStream input ) throws Exception
+    public void postDataElementGroup( DataElementGroup dataElementGroup, HttpServletResponse response )
     {
-        throw new HttpRequestMethodNotSupportedException( RequestMethod.POST.toString() );
+        if ( dataElementGroup == null )
+        {
+            response.setStatus( HttpServletResponse.SC_NOT_IMPLEMENTED );
+        }
+        else
+        {
+            try
+            {
+                dataElementGroup = objectPersister.persistDataElementGroup( dataElementGroup );
+
+                if ( dataElementGroup.getUid() == null )
+                {
+                    response.setStatus( HttpServletResponse.SC_INTERNAL_SERVER_ERROR );
+                }
+                else
+                {
+                    response.setStatus( HttpServletResponse.SC_CREATED );
+                    response.setHeader( "Location", DataElementController.RESOURCE_PATH + "/" + dataElementGroup.getUid() );
+                }
+            } catch ( Exception e )
+            {
+                response.setStatus( HttpServletResponse.SC_CONFLICT );
+            }
+        }
     }
 
     //-------------------------------------------------------------------------------------------------------
@@ -117,6 +152,7 @@ public class DataElementGroupController
 
     @RequestMapping( value = "/{uid}", method = RequestMethod.PUT, headers = {"Content-Type=application/xml, text/xml"} )
     @ResponseStatus( value = HttpStatus.NO_CONTENT )
+    @PreAuthorize( "hasRole('ALL') or hasRole('F_WEBAPI_UPDATE')" )
     public void putDataElementGroupXML( @PathVariable( "uid" ) String uid, InputStream input ) throws Exception
     {
         throw new HttpRequestMethodNotSupportedException( RequestMethod.DELETE.toString() );
@@ -124,6 +160,7 @@ public class DataElementGroupController
 
     @RequestMapping( value = "/{uid}", method = RequestMethod.PUT, headers = {"Content-Type=application/json"} )
     @ResponseStatus( value = HttpStatus.NO_CONTENT )
+    @PreAuthorize( "hasRole('ALL') or hasRole('F_WEBAPI_UPDATE')" )
     public void putDataElementGroupJSON( @PathVariable( "uid" ) String uid, InputStream input ) throws Exception
     {
         throw new HttpRequestMethodNotSupportedException( RequestMethod.PUT.toString() );
@@ -135,8 +172,16 @@ public class DataElementGroupController
 
     @RequestMapping( value = "/{uid}", method = RequestMethod.DELETE )
     @ResponseStatus( value = HttpStatus.NO_CONTENT )
+    @PreAuthorize( "hasRole('ALL') or hasRole('F_WEBAPI_DELETE')" )
     public void deleteDataElementGroup( @PathVariable( "uid" ) String uid ) throws Exception
     {
-        throw new HttpRequestMethodNotSupportedException( RequestMethod.DELETE.toString() );
+        // throw new HttpRequestMethodNotSupportedException( RequestMethod.DELETE.toString() );
+
+        DataElementGroup dataElementGroup = dataElementService.getDataElementGroup( uid );
+
+        if ( dataElementGroup != null )
+        {
+            dataElementService.deleteDataElementGroup( dataElementGroup );
+        }
     }
 }

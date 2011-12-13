@@ -94,6 +94,12 @@ public class DataElementGroupSet extends BaseIdentifiableObject
     // Logic
     // -------------------------------------------------------------------------
 
+    public void addDataElementGroup( DataElementGroup dataElementGroup )
+    {
+        members.add( dataElementGroup );
+        dataElementGroup.setGroupSet( this );
+    }
+
     public Collection<DataElement> getDataElements()
     {
         List<DataElement> dataElements = new ArrayList<DataElement>();

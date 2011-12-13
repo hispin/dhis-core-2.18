@@ -73,16 +73,16 @@ public class OrganisationUnitGroup
     // Logic
     // -------------------------------------------------------------------------
 
-    public void addOrganisationUnit( OrganisationUnit unit )
+    public void addOrganisationUnit( OrganisationUnit organisationUnit )
     {
-        members.add( unit );
-        unit.getGroups().add( this );
+        members.add( organisationUnit );
+        organisationUnit.getGroups().add( this );
     }
 
-    public void removeOrganisationUnit( OrganisationUnit unit )
+    public void removeOrganisationUnit( OrganisationUnit organisationUnit )
     {
-        members.remove( unit );
-        unit.getGroups().remove( this );
+        members.remove( organisationUnit );
+        organisationUnit.getGroups().remove( this );
     }
 
     public void updateOrganisationUnits( Set<OrganisationUnit> updates )
