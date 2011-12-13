@@ -1,20 +1,5 @@
 package org.hisp.dhis.api.view;
 
-
-import java.io.IOException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javax.xml.transform.ErrorListener;
-import javax.xml.transform.Source;
-import javax.xml.transform.Templates;
-import javax.xml.transform.Transformer;
-import javax.xml.transform.TransformerConfigurationException;
-import javax.xml.transform.TransformerFactory;
-import javax.xml.transform.stream.StreamSource;
-import org.amplecode.staxwax.transformer.LoggingErrorListener;
-import org.springframework.core.io.ClassPathResource;
-import org.springframework.stereotype.Component;
-
 /*
  * Copyright (c) 2004-2005, University of Oslo
  * All rights reserved.
@@ -42,60 +27,75 @@ import org.springframework.stereotype.Component;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.xml.transform.ErrorListener;
+import javax.xml.transform.Source;
+import javax.xml.transform.Templates;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerConfigurationException;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.stream.StreamSource;
+import org.amplecode.staxwax.transformer.LoggingErrorListener;
+import org.springframework.core.io.ClassPathResource;
+import org.springframework.stereotype.Component;
+
 /**
- *
+ * 
  * @author bobj
  * @version created 02-Dec-2011
  */
 @Component
-public class TransformCacheImpl implements TransformCache
+public class TransformCacheImpl
+    implements TransformCache
 {
-    static final String MODEL2HTML = "model2html.xsl"; 
+    static final String MODEL2HTML = "model2html.xsl";
 
-    static final String MODEL2FOP = "model2fop.xsl"; 
+    static final String MODEL2FOP = "model2fop.xsl";
 
     static final String HTMLXSLT_RESOURCE = "/templates/html/";
 
     static final String FOPXSLT_RESOURCE = "/templates/pdf/";
-    
+
     static private TransformCache instance;
-    
+
     private Templates htmlCachedTransform;
 
     private Templates fopCachedTransform;
-    
-    private TransformCacheImpl() throws IOException, TransformerConfigurationException
+
+    private TransformCacheImpl()
+        throws IOException, TransformerConfigurationException
     {
         ErrorListener errorListener = new LoggingErrorListener();
-        
+
         TransformerFactory factory = TransformerFactory.newInstance();
         factory.setErrorListener( errorListener );
 
-        Source model2html = 
-            new StreamSource(new ClassPathResource( HTMLXSLT_RESOURCE + MODEL2HTML ).getInputStream());
-        Source model2fop = 
-            new StreamSource(new ClassPathResource( FOPXSLT_RESOURCE + MODEL2FOP ).getInputStream());
+        Source model2html = new StreamSource( new ClassPathResource( HTMLXSLT_RESOURCE + MODEL2HTML ).getInputStream() );
+        Source model2fop = new StreamSource( new ClassPathResource( FOPXSLT_RESOURCE + MODEL2FOP ).getInputStream() );
 
-        factory.setURIResolver(  new ClassPathUriResolver(HTMLXSLT_RESOURCE));
+        factory.setURIResolver( new ClassPathUriResolver( HTMLXSLT_RESOURCE ) );
         htmlCachedTransform = factory.newTemplates( model2html );
-        factory.setURIResolver(  new ClassPathUriResolver(FOPXSLT_RESOURCE));
-        fopCachedTransform = factory.newTemplates( model2fop );   
+        factory.setURIResolver( new ClassPathUriResolver( FOPXSLT_RESOURCE ) );
+        fopCachedTransform = factory.newTemplates( model2fop );
     }
-    
-    static TransformCache instance() {
-        if (instance == null) {
+
+    protected static TransformCache instance()
+    {
+        if ( instance == null )
+        {
             try
             {
                 instance = new TransformCacheImpl();
-            } catch ( Exception ex )
+            }
+            catch ( Exception ex )
             {
                 Logger.getLogger( TransformCacheImpl.class.getName() ).log( Level.SEVERE, null, ex );
             }
         }
         return instance;
     }
-        
-    
 
     @Override
     public Transformer getHtmlTransformer()
@@ -110,5 +110,4 @@ public class TransformCacheImpl implements TransformCache
     {
         return fopCachedTransform.newTransformer();
     }
-    
 }
