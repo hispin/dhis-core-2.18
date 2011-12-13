@@ -79,8 +79,6 @@ public class InternalMapLayer
      */
     public InternalMapLayer()
     {
-
-        // Create a new list for the map objects in this map layer
         this.mapObjects = new ArrayList<InternalMapObject>();
     }
 
@@ -90,7 +88,6 @@ public class InternalMapLayer
      */
     public void applyInterpolatedRadii()
     {
-
         Assert.isTrue( mapObjects != null );
         Assert.isTrue( mapObjects.size() > 0 );
 

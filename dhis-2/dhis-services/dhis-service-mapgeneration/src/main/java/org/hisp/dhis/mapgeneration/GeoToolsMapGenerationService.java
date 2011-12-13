@@ -138,7 +138,6 @@ public class GeoToolsMapGenerationService
 
     private InternalMapLayer buildSingleInternalMapLayer( MapView mapView )
     {
-
         Assert.isTrue( mapView != null );
         Assert.isTrue( mapView.getMapValueType() != null );
 
@@ -184,8 +183,7 @@ public class GeoToolsMapGenerationService
 
         // Get the aggregated map values
         // TODO Might make version of getIndicatorMapValues that takes Indicator
-        // and
-        // parent OrganisationUnit *directly*, i.e. not from ID-s, since we have
+        // and parent OrganisationUnit *directly*, i.e. not from ID-s, since we have
         // them
         // NOTE There is no need to provide startDate and endDate as period is
         // set
@@ -222,7 +220,6 @@ public class GeoToolsMapGenerationService
     private List<GeoToolsMapObject> buildGeoToolsMapObjectsForMapLayer( InternalMapLayer mapLayer,
         Collection<AggregatedMapValue> mapValues )
     {
-
         // Create a list of map objects
         List<GeoToolsMapObject> mapObjects = new LinkedList<GeoToolsMapObject>();
 
@@ -232,7 +229,7 @@ public class GeoToolsMapGenerationService
             // Get the org unit for this map value
             OrganisationUnit orgUnit = organisationUnitService.getOrganisationUnit( mapValue.getOrganisationUnitId() );
 
-            if ( orgUnit != null && orgUnit.hasCoordinates() )
+            if ( orgUnit != null && orgUnit.hasCoordinates() && orgUnit.hasFeatureType() )
             {
                 mapObjects.add( buildSingleGeoToolsMapObjectForMapLayer( mapLayer, mapValue, orgUnit ) );
             }
@@ -267,7 +264,6 @@ public class GeoToolsMapGenerationService
 
     private BufferedImage combineLegendAndMapImages( BufferedImage legendImage, BufferedImage mapImage )
     {
-
         Assert.isTrue( legendImage != null );
         Assert.isTrue( mapImage != null );
         Assert.isTrue( legendImage.getType() == mapImage.getType() );
