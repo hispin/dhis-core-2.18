@@ -32,7 +32,7 @@ import java.sql.SQLException;
 import java.util.List;
 
 import org.hibernate.Query;
-import org.hisp.dhis.hibernate.HibernateGenericStore;
+import org.hisp.dhis.common.hibernate.HibernateIdentifiableObjectStore;
 import org.hisp.dhis.message.MessageConversation;
 import org.hisp.dhis.message.MessageConversationStore;
 import org.hisp.dhis.user.User;
@@ -42,12 +42,12 @@ import org.springframework.jdbc.core.RowMapper;
  * @author Lars Helge Overland
  */
 public class HibernateMessageConversationStore
-    extends HibernateGenericStore<MessageConversation> implements MessageConversationStore
+    extends HibernateIdentifiableObjectStore<MessageConversation> implements MessageConversationStore
 {
     public List<MessageConversation> getMessageConversations( User user, int first, int max )
     {
         final String sql = 
-            "select mc.messageconversationid, mc.messageconversationkey, mc.subject, mc.lastupdated, ui.surname, ui.firstname, ( " +
+            "select mc.messageconversationid, mc.uid, mc.subject, mc.lastupdated, ui.surname, ui.firstname, ( " +
                 "select isread from usermessage " +
                 "where usermessage.usermessageid=mu.usermessageid " +
                 "and mu.messageconversationid=mc.messageconversationid ) as isread " +
@@ -66,7 +66,7 @@ public class HibernateMessageConversationStore
                 MessageConversation conversation = new MessageConversation();
                 
                 conversation.setId( resultSet.getInt( 1 ) );
-                conversation.setKey( resultSet.getString( 2 ) );
+                conversation.setUid( resultSet.getString( 2 ) );
                 conversation.setSubject( resultSet.getString( 3 ) );
                 conversation.setLastUpdated( resultSet.getDate( 4 ) );
                 conversation.setLastSenderSurname( resultSet.getString( 5 ) );
