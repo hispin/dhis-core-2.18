@@ -4,8 +4,8 @@
   xmlns:d="http://dhis2.org/schema/dxf/2.0"
   >
 
-  <xsl:template match="d:dataSet">
-    <div class="dataSet">
+  <xsl:template match="d:validationRuleGroup">
+    <div class="validationRuleGroup">
       <h2>
         <xsl:value-of select="@name" />
       </h2>
@@ -19,29 +19,19 @@
           <td> <xsl:value-of select="@lastUpdated" /> </td>
         </tr>
         <tr>
-          <td>Short Name</td>
-          <td> <xsl:value-of select="d:shortName" /> </td>
+          <td>Description</td>
+          <td> <xsl:value-of select="d:description" /> </td>
         </tr>
-        <tr>
-          <td>Version</td>
-          <td> <xsl:value-of select="d:version" /> </td>
-        </tr>
-        <tr>
-          <td>Mobile</td>
-          <td> <xsl:value-of select="d:mobile" /> </td>
-        </tr>
-
       </table>
 
-      <xsl:apply-templates select="d:dataElements|d:indicators|d:organisationUnits" mode="short" />
-
+      <xsl:apply-templates select="d:validationRules" mode="short" />
     </div>
   </xsl:template>
-  
-  <xsl:template match="d:dataSets" mode="short">
+
+  <xsl:template match="d:validationRuleGroups" mode="short">
     <xsl:if test="count(child::*) > 0">
-      <h3>DataSets</h3>
-      <table border="1" class="dataSets">
+      <h3>ValidationRuleGroups</h3>
+      <table border="1" class="validationRuleGroups">
         <xsl:apply-templates select="child::*" mode="row"/>
       </table>
     </xsl:if>
