@@ -199,6 +199,8 @@ public class GeoToolsMap
         // Render the map
         renderer.paint( g, imageBounds, mapBounds );
 
+        map.dispose();
+        
         return image;
     }
 
