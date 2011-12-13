@@ -33,27 +33,22 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
-import java.util.UUID;
 
+import org.hisp.dhis.common.BaseIdentifiableObject;
 import org.hisp.dhis.user.User;
 
 /**
  * @author Lars Helge Overland
  */
 public class MessageConversation
+    extends BaseIdentifiableObject
 {
-    private int id;
-    
-    private String key;
-    
     private String subject;
 
     private Set<UserMessage> userMessages = new HashSet<UserMessage>();
     
     private List<Message> messages = new ArrayList<Message>();
 
-    private Date lastUpdated;
-    
     private User lastSender;
     
     private transient boolean read;
@@ -64,18 +59,20 @@ public class MessageConversation
     
     public MessageConversation()
     {
-        this.key = UUID.randomUUID().toString();
-        this.lastUpdated = new Date();
     }
     
     public MessageConversation( String subject, User lastSender )
     {
-        this.key = UUID.randomUUID().toString();
         this.subject = subject;
-        this.lastUpdated = new Date();
         this.lastSender = lastSender;
     }
     
+    @Override
+    public String getName()
+    {
+        return subject;
+    }
+        
     public void addUserMessage( UserMessage userMessage )
     {
         this.userMessages.add( userMessage );
@@ -124,7 +121,7 @@ public class MessageConversation
         
         addMessage( message );
         
-        this.lastUpdated = new Date();
+        this.setLastUpdated( new Date() );
         this.lastSender = sender;
     }
     
@@ -172,16 +169,6 @@ public class MessageConversation
         this.id = id;
     }
 
-    public String getKey()
-    {
-        return key;
-    }
-
-    public void setKey( String key )
-    {
-        this.key = key;
-    }
-
     public String getSubject()
     {
         return subject;
@@ -210,16 +197,6 @@ public class MessageConversation
     public void setMessages( List<Message> messages )
     {
         this.messages = messages;
-    }
-
-    public Date getLastUpdated()
-    {
-        return lastUpdated;
-    }
-
-    public void setLastUpdated( Date lastUpdated )
-    {
-        this.lastUpdated = lastUpdated;
     }
 
     public User getLastSender()
@@ -265,7 +242,7 @@ public class MessageConversation
     @Override
     public int hashCode()
     {
-        return key.hashCode();
+        return uid.hashCode();
     }
 
     @Override
@@ -288,7 +265,7 @@ public class MessageConversation
         
         final MessageConversation other = (MessageConversation) object;
         
-        return key.equals( other.key );
+        return uid.equals( other.uid );
     }
     
     @Override

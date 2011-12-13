@@ -11,8 +11,10 @@
     <id name="id" column="messageconversationid">
       <generator class="native" />
     </id>
+	
+    <property name="uid" column="uid" length="11" />
+    <property name="lastUpdated" type="timestamp"/>
 
-    <property name="key" column="messageconversationkey" not-null="true" />
     <property name="subject" column="subject" not-null="true" />
 
     <set name="userMessages" table="messageconversation_usermessages" cascade="all,delete-orphan">
@@ -27,9 +29,7 @@
 	  <many-to-many class="org.hisp.dhis.message.Message" column="messageid"
 		unique="true" foreign-key="fk_messageconversation_messages_messageid" />
 	</list>
-	
-	<property name="lastUpdated"/>
-	
+		
     <many-to-one name="lastSender" class="org.hisp.dhis.user.User" column="lastsenderid" 
 	  foreign-key="fk_messageconversation_userid" />
 	
