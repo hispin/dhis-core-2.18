@@ -647,8 +647,8 @@ function saveDueDate( programStageInstanceId, programStageInstanceName )
 	
 	field.style.backgroundColor = '#ffffcc';
 	
-	var dateSaver = new DateSaver( programStageInstanceId, field.value, '#ccffcc' );
-	dateSaver.save();
+	var dateDueSaver = new DateDueSaver( programStageInstanceId, field.value, '#ccffcc' );
+	dateDueSaver.save();
 }
 
 //----------------------------------------------------
@@ -746,7 +746,7 @@ function loadAllPatients()
 // Saver objects
 //-----------------------------------------------------------------------------
 
-function DateSaver( programStageInstanceId_, dueDate_, resultColor_ )
+function DateDueSaver( programStageInstanceId_, dueDate_, resultColor_ )
 {
 	var SUCCESS = '#ccffcc';
 	var ERROR = '#ccccff';
