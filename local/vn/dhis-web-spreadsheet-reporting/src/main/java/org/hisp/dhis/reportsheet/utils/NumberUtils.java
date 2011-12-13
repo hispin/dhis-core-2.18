@@ -41,10 +41,10 @@ public class NumberUtils
     private static DecimalFormat df = null;
 
     // This pattern used for VN
-    public static final String PATTERN_DECIMAL_FORMAT1 = "#,##0.############";
+    public static final String PATTERN_DECIMAL_FORMAT1 = "#,##0.######";
     
     // This pattern is default in DHIS2    
-    public static final String PATTERN_DECIMAL_FORMAT2 = "#0.############";
+    public static final String PATTERN_DECIMAL_FORMAT2 = "#0.######";
 
     // -------------------------------------------------------------------------
     //

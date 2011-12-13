@@ -12,19 +12,14 @@ function addOptionToListWithToolTip( list, optionValue, optionText )
 
 function showDataElementGroupOrderDetails( id )
 {
-	var request = new Request();
-    request.setResponseTypeXML( 'dataElementGroupOrder' );
-    request.setCallbackSuccess( showDataElementGroupOrderReceived );
-    request.send( 'getDataElementGroupOrder.action?id=' + id );
-}
+	jQuery.post( 'getDataElementGroupOrder.action',  { id: id }, function( json ) {
+		
+		setInnerHTML( 'nameField', json.dataElementGroupOrder.name );
+		setInnerHTML( 'codeField', json.dataElementGroupOrder.code );
+		setInnerHTML( 'memberCountField', json.dataElementGroupOrder.memberCount );
 
-function showDataElementGroupOrderReceived( dataElementGroupOrderElement )
-{
-    setInnerHTML( 'nameField', getElementValue( dataElementGroupOrderElement, 'name' ) );
-    setInnerHTML( 'codeField', getElementValue( dataElementGroupOrderElement, 'code' ) );
-    setInnerHTML( 'memberCountField', getElementValue( dataElementGroupOrderElement, 'memberCount' ) );
-
-    showDetails();
+		showDetails();
+	});
 }
 
 /*
@@ -32,12 +27,15 @@ function showDataElementGroupOrderReceived( dataElementGroupOrderElement )
 */
 function openAddDataElementGroupOrder()
 {
+	validator.resetForm();
+	setFieldValue( "dataElementGroupOrderId", "" );
+
 	dataDictionary.loadDataElementGroups( "#availableDataElementGroups" );
-	dataDictionary.loadDataElementsByGroup( "" , "#availableDataElements" );	
+	dataDictionary.loadDataElementsByGroup( "" , "#availableDataElements" );
 	
 	dialog.dialog("open");
 	
-	jQuery( "#dataElementGroupsForm" ).attr( "action", "addDataElementGroupOrderFor"+clazzName+".action?clazzName="+clazzName );
+	jQuery( "#dataElementGroupsForm" ).attr( "action", "addDataElementGroupOrderFor" + clazzName + ".action?clazzName=" + clazzName );
 }
 
 /*
@@ -46,37 +44,47 @@ function openAddDataElementGroupOrder()
 
 function openUpdateDataElementGroupOrder( id )
 {
+	validator.resetForm();
 	setFieldValue("dataElementGroupOrderId", id );
 	
-	var request = new Request();
-	request.setResponseTypeXML( 'xmlObject' );
-	request.setCallbackSuccess( openUpdateDataElementGroupOrderReceived );
-	var url = "getDataElementGroupOrder.action?id=" + id;
-	request.send(url);
+	jQuery.post( 'getDataElementGroupOrder.action', { id: id }, function( json )
+	{
+		var listDataElement = jQuery('#dataElementIds');
+		listDataElement.empty();
+		setFieldValue( "name", json.dataElementGroupOrder.name );
+		setFieldValue( "code", json.dataElementGroupOrder.code );
+		
+		var dataElements = json.dataElementGroupOrder.dataElements;
+		
+		for ( var i = 0 ; i < dataElements.length ; i++ )
+		{
+			listDataElement.append( '<option value="' + dataElements[ i ].id + '">' + dataElements[ i ].name + '</option>' );
+		}
+		
+		dataDictionary.loadDataElementGroups( "#availableDataElementGroups" );
+		dataDictionary.loadDataElementsByGroup( "" , "#availableDataElements" );	
+			
+		dialog.dialog( "open" );
+		
+		jQuery( "#dataElementGroupsForm" ).attr( "action", "updateDataElementGroupOrderFor" + clazzName + ".action" );
+	});
 }
 
-function openUpdateDataElementGroupOrderReceived(xmlObject)
+function validateDataElementGroupOrder( _form )
 {
-	var listDataElement = jQuery('#dataElementIds');
-	listDataElement.empty();
-	setFieldValue( "name", getElementValue(xmlObject, 'name') );
-	setFieldValue( "code", getElementValue(xmlObject, 'code') );
-	var dataElements = xmlObject.getElementsByTagName('dataElements')[0].getElementsByTagName('dataElement');
-	
-	for ( var i=0 ; i < dataElements.length ; i++ )
-	{
-		var name = getElementValue(dataElements[i], 'name');
-		var id = getElementValue(dataElements[i], 'id');
-		listDataElement.append('<option value="' + id + '">' + name + '</option>');
-	}
-	
-	dataDictionary.loadDataElementGroups( "#availableDataElementGroups" );
-	dataDictionary.loadDataElementsByGroup( "" , "#availableDataElements" );	
-		
-	dialog.dialog("open");
-	
-	jQuery( "#dataElementGroupsForm" ).attr( "action","updateDataElementGroupOrderFor"+clazzName+".action");
-	
+	jQuery.post( "validateDataElementGroupOrder.action", {
+		name: getFieldValue( 'name' ),
+		id: getFieldValue( 'dataElementGroupOrderId' ),
+		reportId: reportId,
+		clazzName: clazzName
+	}, function( json ){
+		if ( json.response == "success" )
+		{
+			listValidator( 'dataElementIdsValidate', 'dataElementIds' );
+			_form.submit();
+		}
+		else { markInvalid( "name", json.message ); }
+	} );
 }
 
 /*
@@ -96,7 +104,7 @@ function updateSortDataElementGroupOrder()
 	var url = "updateSortDataElementGroupOrder.action?reportId=" + reportId;
 	url += "&clazzName=" + clazzName;
 	
-	for ( var i=0 ; i < dataElements.length ; i++ )
+	for ( var i = 0 ; i < dataElements.length ; i++ )
 	{
 		url += "&dataElementGroupOrderId=" + dataElements.item(i).value;
 	}

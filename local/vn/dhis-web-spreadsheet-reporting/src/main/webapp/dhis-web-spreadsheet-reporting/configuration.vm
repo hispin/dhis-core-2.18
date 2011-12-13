@@ -39,7 +39,7 @@
 			},
 			function( json )
 			{
-				if( json.response == "success" ) {form.submit();}
+				if( json.response == "success" ) { form.submit(); }
 				else
 				{
 					if ( window.confirm( json.message ) ) backUpTemplateFiles( form );

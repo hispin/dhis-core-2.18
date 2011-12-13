@@ -140,7 +140,7 @@ function previewExportReportReceived( parentElement )
 					{
 						_sHTML.push( " ui-preview-unselected' id='", keyId );
 					}
-					else if ( !isImport && isRealNumber(_sData) )
+					else if ( !isImport && isRealNumber( _sData.replace( /[.,]/g, "" ) ) )
 					{
 						_sHTML.push( " ui-preview-normal" );
 					}

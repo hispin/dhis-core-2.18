@@ -259,8 +259,8 @@
 		
 		<action name="getDataElementGroupOrder"
 			class="org.hisp.dhis.reportsheet.degroup.action.GetDataElementGroupOrderAction">
-			<result name="success" type="velocity-xml">
-				/dhis-web-spreadsheet-reporting/responseDataElementGroupOrder.vm</result>
+			<result name="success" type="velocity-json">
+				/dhis-web-spreadsheet-reporting/jsonDataElementGroupOrder.vm</result>
 		</action>
 		
 		<action name="openSortDataElement"
