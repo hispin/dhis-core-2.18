@@ -32,9 +32,11 @@ import org.hisp.dhis.attribute.Attributes;
 import org.hisp.dhis.chart.Charts;
 import org.hisp.dhis.common.BaseLinkableObject;
 import org.hisp.dhis.common.Dxf2Namespace;
+import org.hisp.dhis.constant.Constants;
 import org.hisp.dhis.dataelement.*;
 import org.hisp.dhis.dataset.CompleteDataSetRegistrations;
 import org.hisp.dhis.dataset.DataSets;
+import org.hisp.dhis.document.Documents;
 import org.hisp.dhis.indicator.IndicatorGroupSets;
 import org.hisp.dhis.indicator.IndicatorGroups;
 import org.hisp.dhis.indicator.IndicatorTypes;
@@ -44,7 +46,10 @@ import org.hisp.dhis.organisationunit.OrganisationUnitGroupSets;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroups;
 import org.hisp.dhis.organisationunit.OrganisationUnits;
 import org.hisp.dhis.report.Reports;
+import org.hisp.dhis.sqlview.SqlViews;
 import org.hisp.dhis.user.Users;
+import org.hisp.dhis.validation.ValidationRuleGroups;
+import org.hisp.dhis.validation.ValidationRules;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.RequestMethod;
 
@@ -88,7 +93,7 @@ public class Resources extends BaseLinkableObject
     //-----------------------------------------------
     // Helpers
     //-----------------------------------------------
-    
+
     private void generateResources()
     {
         RequestMethod[] defaultRequestMethods = new RequestMethod[]{
@@ -96,7 +101,7 @@ public class Resources extends BaseLinkableObject
         };
 
         MediaType[] defaultMediaTypes = new MediaType[]{
-            MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML, MediaType.TEXT_HTML,
+            MediaType.TEXT_HTML, MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON,
             new MediaType( "application", "javascript" ), new MediaType( "application", "pdf" )
         };
 
@@ -106,6 +111,8 @@ public class Resources extends BaseLinkableObject
         resources.add( new Resource( "AttributeTypes", Attributes.class, requestMethods, mediaTypes ) );
         resources.add( new Resource( "Charts", Charts.class, requestMethods, mediaTypes ) );
         resources.add( new Resource( "Maps", Maps.class, requestMethods, mediaTypes ) );
+        resources.add( new Resource( "Documents", Documents.class, requestMethods, mediaTypes ) );
+        resources.add( new Resource( "Constants", Constants.class, requestMethods, mediaTypes ) );
         resources.add( new Resource( "CompleteDataSetRegistrations", CompleteDataSetRegistrations.class, requestMethods, mediaTypes ) );
         resources.add( new Resource( "Indicators", Indicators.class, requestMethods, mediaTypes ) );
         resources.add( new Resource( "IndicatorGroups", IndicatorGroups.class, requestMethods, mediaTypes ) );
@@ -121,6 +128,9 @@ public class Resources extends BaseLinkableObject
         resources.add( new Resource( "OrganisationUnits", OrganisationUnits.class, requestMethods, mediaTypes ) );
         resources.add( new Resource( "OrganisationUnitGroups", OrganisationUnitGroups.class, requestMethods, mediaTypes ) );
         resources.add( new Resource( "OrganisationUnitGroupSets", OrganisationUnitGroupSets.class, requestMethods, mediaTypes ) );
+        resources.add( new Resource( "SqlViews", SqlViews.class, requestMethods, mediaTypes ) );
+        resources.add( new Resource( "ValidationRules", ValidationRules.class, requestMethods, mediaTypes ) );
+        resources.add( new Resource( "ValidationRuleGroups", ValidationRuleGroups.class, requestMethods, mediaTypes ) );
         resources.add( new Resource( "DataSets", DataSets.class, requestMethods, mediaTypes ) );
         resources.add( new Resource( "Users", Users.class, requestMethods, mediaTypes ) );
         resources.add( new Resource( "Reports", Reports.class, requestMethods, mediaTypes ) );
