@@ -61,11 +61,19 @@ public interface UserStore
 
     /**
      * Retrieves the User with the given identifier.
-     * 
-     * @param idn the identifier of the User to retrieve.
+     *
+     * @param id the identifier of the User to retrieve.
      * @return the User.
      */
     User getUser( int id );
+
+    /**
+     * Retrieves the User with the given unique identifier.
+     *
+     * @param id the identifier of the User to retrieve.
+     * @return the User.
+     */
+    User getUser( String uid );
 
     /**
      * Returns a Collection of all Users.

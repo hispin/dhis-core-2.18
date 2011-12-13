@@ -1,12 +1,5 @@
 package org.hisp.dhis.user;
 
-import java.io.Serializable;
-import java.util.Calendar;
-import java.util.Collection;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hisp.dhis.common.GenericIdentifiableObjectStore;
@@ -18,6 +11,9 @@ import org.hisp.dhis.system.util.AuditLogUtil;
 import org.hisp.dhis.system.util.Filter;
 import org.hisp.dhis.system.util.FilterUtils;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.io.Serializable;
+import java.util.*;
 
 /*
  * Copyright (c) 2004-2010, University of Oslo
@@ -181,6 +177,11 @@ public class DefaultUserService
         return userStore.getUser( userId );
     }
 
+    public User getUser( String uid )
+    {
+        return userStore.getUser( uid );
+    }
+
     public int getUserCount()
     {
         return userStore.getUserCount();
@@ -213,7 +214,7 @@ public class DefaultUserService
     }
 
     public Collection<UserCredentials> getUsersByOrganisationUnitBetweenByName( OrganisationUnit unit, String userName,
-        int first, int max )
+                                                                                int first, int max )
     {
         return userStore.getUsersByOrganisationUnitBetweenByName( unit, userName, first, max );
     }
@@ -389,7 +390,7 @@ public class DefaultUserService
     {
         Calendar cal = PeriodType.createCalendarInstance();
         cal.add( Calendar.MONTH, (months * -1) );
-        
+
         return userStore.getInactiveUsers( cal.getTime() );
     }
 
@@ -445,16 +446,16 @@ public class DefaultUserService
     {
         return userStore.getUserSetting( user, name );
     }
-    
-    public Map<User,Serializable> getUserSettings( String name, Serializable defaultValue )
+
+    public Map<User, Serializable> getUserSettings( String name, Serializable defaultValue )
     {
-        Map<User,Serializable> map = new HashMap<User, Serializable>();
-        
+        Map<User, Serializable> map = new HashMap<User, Serializable>();
+
         for ( UserSetting setting : userStore.getUserSettings( name ) )
         {
             map.put( setting.getUser(), setting.getValue() != null ? setting.getValue() : defaultValue );
         }
-        
+
         return map;
     }
 }

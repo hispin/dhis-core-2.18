@@ -39,7 +39,6 @@ import org.hisp.dhis.organisationunit.OrganisationUnit;
 
 import javax.xml.bind.annotation.*;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
-import java.io.Serializable;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
@@ -51,14 +50,12 @@ import java.util.Set;
 @XmlRootElement( name = "user", namespace = Dxf2Namespace.NAMESPACE )
 @XmlAccessorType( value = XmlAccessType.NONE )
 public class User
-    implements Serializable
+    extends BaseIdentifiableObject
 {
     /**
      * Determines if a de-serialized file is compatible with this class.
      */
     private static final long serialVersionUID = 859837727604102353L;
-
-    private int id;
 
     /**
      * Required.
@@ -168,8 +165,14 @@ public class User
     /**
      * Returns the concatenated first name and surname.
      */
+    @Override
     public String getName()
     {
+        if ( userCredentials != null )
+        {
+            return userCredentials.getUsername();
+        }
+
         return firstName + " " + surname;
     }
 
@@ -204,16 +207,6 @@ public class User
     // -------------------------------------------------------------------------
     // Getters and setters
     // -------------------------------------------------------------------------
-
-    public int getId()
-    {
-        return id;
-    }
-
-    public void setId( int id )
-    {
-        this.id = id;
-    }
 
     @XmlElement
     @JsonProperty

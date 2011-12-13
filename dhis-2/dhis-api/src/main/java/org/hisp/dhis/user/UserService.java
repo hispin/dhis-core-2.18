@@ -1,11 +1,11 @@
 package org.hisp.dhis.user;
 
+import org.hisp.dhis.dataset.DataSet;
+import org.hisp.dhis.organisationunit.OrganisationUnit;
+
 import java.io.Serializable;
 import java.util.Collection;
 import java.util.Map;
-
-import org.hisp.dhis.dataset.DataSet;
-import org.hisp.dhis.organisationunit.OrganisationUnit;
 
 /*
  * Copyright (c) 2004-2010, University of Oslo
@@ -56,7 +56,7 @@ public interface UserService
 
     /**
      * Adds a User.
-     * 
+     *
      * @param user the User to add.
      * @return the generated identifier.
      */
@@ -64,22 +64,30 @@ public interface UserService
 
     /**
      * Updates a User.
-     * 
+     *
      * @param user the User to update.
      */
     void updateUser( User user );
 
     /**
      * Retrieves the User with the given identifier.
-     * 
-     * @param idn the identifier of the User to retrieve.
+     *
+     * @param id the identifier of the User to retrieve.
      * @return the User.
      */
     User getUser( int id );
 
     /**
+     * Retrieves the User with the given unique identifier.
+     *
+     * @param id the identifier of the User to retrieve.
+     * @return the User.
+     */
+    User getUser( String uid );
+
+    /**
      * Returns a Collection of all Users.
-     * 
+     *
      * @return a Collection of Users.
      */
     Collection<User> getAllUsers();
@@ -87,14 +95,14 @@ public interface UserService
     /**
      * Returns a Collection of the Users which are not associated with any
      * OrganisationUnits.
-     * 
+     *
      * @return a Collection of Users.
      */
     Collection<User> getUsersWithoutOrganisationUnit();
 
     /**
      * Returns a Collection of Users which are having given Phone number.
-     * 
+     *
      * @param phoneNumber
      * @return a Collection of Users.
      */
@@ -102,7 +110,7 @@ public interface UserService
 
     /**
      * Deletes a User.
-     * 
+     *
      * @param user the User to delete.
      */
     void deleteUser( User user );
@@ -125,7 +133,7 @@ public interface UserService
 
     /**
      * Adds a UserCredentials.
-     * 
+     *
      * @param userCredentials the UserCredentials to add.
      * @return the User which the UserCredentials is associated with.
      */
@@ -133,14 +141,14 @@ public interface UserService
 
     /**
      * Updates a UserCredentials.
-     * 
+     *
      * @param userCredentials the UserCredentials to update.
      */
     void updateUserCredentials( UserCredentials userCredentials );
 
     /**
      * Retrieves the UserCredentials of the given User.
-     * 
+     *
      * @param user the User.
      * @return the UserCredentials.
      */
@@ -149,7 +157,7 @@ public interface UserService
     /**
      * Retrieves the UserCredentials associated with the User with the given
      * name.
-     * 
+     *
      * @param username the name of the User.
      * @return the UserCredentials.
      */
@@ -157,7 +165,7 @@ public interface UserService
 
     /**
      * Retrieves all UserCredentials.
-     * 
+     *
      * @return a Collection of UserCredentials.
      */
     Collection<UserCredentials> getAllUserCredentials();
@@ -165,26 +173,26 @@ public interface UserService
     /**
      * Updates the last login date of UserCredentials with the given username
      * with the current date.
-     *   
+     *
      * @param username the username of the UserCredentials.
      */
     void setLastLogin( String username );
-    
+
     /**
      * Deletes a UserCredentials.
-     * 
+     *
      * @param userCredentials the UserCredentials.
      */
     void deleteUserCredentials( UserCredentials userCredentials );
 
     /**
      * Get the UserCredentials with the corresponding identifiers.
-     * 
+     *
      * @param identifiers the collection of identifiers.
      * @return a collection of users.
      */
     Collection<UserCredentials> getUsers( Collection<Integer> identifiers, User user );
-    
+
     Collection<UserCredentials> searchUsersByName( String key );
 
     Collection<UserCredentials> getUsersBetween( int first, int max );
@@ -198,23 +206,23 @@ public interface UserService
     Collection<UserCredentials> getUsersByOrganisationUnitBetween( OrganisationUnit orgUnit, int first, int max );
 
     Collection<UserCredentials> getUsersByOrganisationUnitBetweenByName( OrganisationUnit orgUnit, String name,
-        int first, int max );
-    
+                                                                         int first, int max );
+
     Collection<UserCredentials> getInactiveUsers( int months );
-    
+
     Collection<UserCredentials> getInactiveUsers( int months, int first, int max );
-    
+
     int getInactiveUsersCount( int months );
 
     int getActiveUsersCount( int days );
-    
+
     // -------------------------------------------------------------------------
     // UserAuthorityGroup
     // -------------------------------------------------------------------------
 
     /**
      * Adds a UserAuthorityGroup.
-     * 
+     *
      * @param userAuthorityGroup the UserAuthorityGroup.
      * @return the generated identifier.
      */
@@ -222,14 +230,15 @@ public interface UserService
 
     /**
      * Updates a UserAuthorityGroup.
-     * 
+     *
      * @param userAuthorityGroup the UserAuthorityGroup.
      */
     void updateUserAuthorityGroup( UserAuthorityGroup userAuthorityGroup );
 
-    /**2
+    /**
+     * 2
      * Retrieves the UserAuthorityGroup with the given identifier.
-     * 
+     *
      * @param id the identifier of the UserAuthorityGroup to retrieve.
      * @return the UserAuthorityGroup.
      */
@@ -237,7 +246,7 @@ public interface UserService
 
     /**
      * Retrieves the UserAuthorityGroup with the given name.
-     * 
+     *
      * @param name the name of the UserAuthorityGroup to retrieve.
      * @return the UserAuthorityGroup.
      */
@@ -245,28 +254,28 @@ public interface UserService
 
     /**
      * Deletes a UserAuthorityGroup.
-     * 
+     *
      * @param userAuthorityGroup the UserAuthorityGroup to delete.
      */
     void deleteUserAuthorityGroup( UserAuthorityGroup userAuthorityGroup );
 
     /**
      * Retrieves all UserAuthorityGroups.
-     * 
+     *
      * @return a Collectio of UserAuthorityGroups.
      */
     Collection<UserAuthorityGroup> getAllUserAuthorityGroups();
 
     /**
      * Retrieves all UserAuthorityGroups.
-     * 
+     *
      * @return a Collectio of UserAuthorityGroups.
      */
     Collection<UserAuthorityGroup> getUserRolesBetween( int first, int max );
 
     /**
      * Retrieves all UserAuthorityGroups.
-     * 
+     *
      * @return a Collectio of UserAuthorityGroups.
      */
     Collection<UserAuthorityGroup> getUserRolesBetweenByName( String name, int first, int max );
@@ -276,21 +285,21 @@ public interface UserService
     int getUserRoleCount();
 
     int getUserRoleCountByName( String name );
-    
+
     // -------------------------------------------------------------------------
     // UserSettings
     // -------------------------------------------------------------------------
 
     /**
      * Adds a UserSetting.
-     * 
+     *
      * @param userSetting the UserSetting to add.
      */
     void addUserSetting( UserSetting userSetting );
 
     /**
      * Updates a UserSetting.
-     * 
+     *
      * @param userSetting the UserSetting to update.
      */
     void updateUserSetting( UserSetting userSetting );
@@ -298,7 +307,7 @@ public interface UserService
     /**
      * Retrieves the UserSetting associated with the given User for the given
      * UserSetting name.
-     * 
+     *
      * @param user the User.
      * @param name the name of the UserSetting.
      * @return the UserSetting.
@@ -307,7 +316,7 @@ public interface UserService
 
     /**
      * Retrieves all UserSettings for the given User.
-     * 
+     *
      * @param user the User.
      * @return a Collection of UserSettings.
      */
@@ -315,7 +324,7 @@ public interface UserService
 
     /**
      * Deletes a UserSetting.
-     * 
+     *
      * @param userSetting the UserSetting to delete.
      */
     void deleteUserSetting( UserSetting userSetting );
@@ -323,10 +332,10 @@ public interface UserService
     /**
      * Returns a Map with an entry for all UserSettings with the given name where
      * the key is the user and the value is the value of the user setting.
-     * 
-     * @param name the name of the UserSetting.
-     * @param defaultValue the value to return if the UserSetting value is null.  
+     *
+     * @param name         the name of the UserSetting.
+     * @param defaultValue the value to return if the UserSetting value is null.
      * @return a Map.
      */
-    Map<User,Serializable> getUserSettings( String name, Serializable defaultValue );
+    Map<User, Serializable> getUserSettings( String name, Serializable defaultValue );
 }

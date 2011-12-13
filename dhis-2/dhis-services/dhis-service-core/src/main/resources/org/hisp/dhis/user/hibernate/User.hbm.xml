@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <!DOCTYPE hibernate-mapping PUBLIC
-  "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
-  "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
 
 <hibernate-mapping>
   <class name="org.hisp.dhis.user.User" lazy="false" table="userinfo">
@@ -12,6 +12,12 @@
       <generator class="native" />
     </id>
 
+    <property name="uid" column="uid" length="11" />
+
+    <property name="code" column="code" not-null="false" unique="true" length="50" />
+
+    <property name="lastUpdated" type="timestamp" />
+
     <property name="surname" not-null="true" length="160" />
 
     <property name="firstName" not-null="true" length="160" />
@@ -20,10 +26,10 @@
 
     <property name="phoneNumber" length="80" />
 
-	<one-to-one name="userCredentials" class="org.hisp.dhis.user.UserCredentials" foreign-key="fk_userinfo_userid"/>
+    <one-to-one name="userCredentials" class="org.hisp.dhis.user.UserCredentials" foreign-key="fk_userinfo_userid" />
 
-    <set name="organisationUnits" table="usermembership">      
-      <cache usage="read-write" />      
+    <set name="organisationUnits" table="usermembership">
+      <cache usage="read-write" />
       <key column="userinfoid" foreign-key="fk_usermembership_userinfoid" />
       <many-to-many class="org.hisp.dhis.organisationunit.OrganisationUnit" column="organisationunitid"
         foreign-key="fk_userinfo_organisationunitid" />
@@ -35,7 +41,7 @@
       <cache usage="read-write" />
       <key column="userinfoid" />
       <many-to-many class="org.hisp.dhis.attribute.AttributeValue" column="attributevalueid" unique="true" />
-  </set>
+    </set>
 
   </class>
 </hibernate-mapping>
