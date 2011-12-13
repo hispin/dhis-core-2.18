@@ -27,20 +27,13 @@ package org.hisp.dhis.api.view;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import org.hisp.dhis.common.BaseIdentifiableObject;
-import org.hisp.dhis.common.BaseNameableObject;
-import org.hisp.dhis.common.adapter.DataElementGroupXmlAdapter;
-import org.hisp.dhis.common.adapter.DataSetXmlAdapter;
-import org.hisp.dhis.dataelement.DataElementGroup;
-import org.hisp.dhis.dataset.DataSet;
+import java.io.InputStream;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
-import javax.xml.bind.annotation.adapters.XmlAdapter;
-import java.io.InputStream;
 
 public class Jaxb2Utils
 {
@@ -66,6 +59,7 @@ public class Jaxb2Utils
         return unmarshaller;
     }
 
+    @SuppressWarnings("unchecked")
     public static <T> T unmarshal( Class<?> clazz, InputStream input ) throws JAXBException
     {
         return (T) Jaxb2Utils.createUnmarshaller( clazz ).unmarshal( input );

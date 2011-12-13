@@ -1,4 +1,4 @@
-package org.hisp.dhis.api.controller;
+package org.hisp.dhis.report;
 
 /*
  * Copyright (c) 2004-2011, University of Oslo
@@ -27,30 +27,40 @@ package org.hisp.dhis.api.controller;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import java.util.ArrayList;
+import java.util.List;
 
-/**
- * @author Morten Olav Hansen <mortenoh@gmail.com>
- */
-@Controller
-public class IndexController
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
+
+import org.codehaus.jackson.annotate.JsonProperty;
+import org.codehaus.jackson.map.annotate.JsonSerialize;
+import org.hisp.dhis.common.BaseIdentifiableObject;
+import org.hisp.dhis.common.BaseLinkableObject;
+import org.hisp.dhis.common.Dxf2Namespace;
+import org.hisp.dhis.common.adapter.ReportXmlAdapter;
+
+@XmlRootElement( name = "reports", namespace = Dxf2Namespace.NAMESPACE )
+@XmlAccessorType( value = XmlAccessType.NONE )
+public class Reports 
+    extends BaseLinkableObject
 {
-    //-------------------------------------------------------------------------------------------------------
-    // GET
-    //-------------------------------------------------------------------------------------------------------
+    private List<Report> reports = new ArrayList<Report>();
 
-    @RequestMapping( value = "/api", method = RequestMethod.GET )
-    public String getIndex( Model model )
+    @XmlElement( name = "report" )
+    @XmlJavaTypeAdapter( ReportXmlAdapter.class )
+    @JsonProperty( value = "reports" )
+    @JsonSerialize( contentAs = BaseIdentifiableObject.class )
+    public List<Report> getReports()
     {
-        return "redirect:/api/resources";
+        return reports;
     }
 
-    @RequestMapping( value = "/", method = RequestMethod.GET )
-    public String getIndexWithSlash( Model model )
+    public void setReports( List<Report> reports )
     {
-        return "redirect:/api/resources";
+        this.reports = reports;
     }
 }

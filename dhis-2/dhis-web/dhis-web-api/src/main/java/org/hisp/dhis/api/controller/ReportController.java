@@ -27,30 +27,73 @@ package org.hisp.dhis.api.controller;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import java.util.ArrayList;
+
+import javax.servlet.http.HttpServletRequest;
+
+import org.hisp.dhis.api.utils.IdentifiableObjectParams;
+import org.hisp.dhis.api.utils.WebLinkPopulator;
+import org.hisp.dhis.report.Report;
+import org.hisp.dhis.report.ReportService;
+import org.hisp.dhis.report.Reports;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-/**
- * @author Morten Olav Hansen <mortenoh@gmail.com>
- */
 @Controller
-public class IndexController
+@RequestMapping( value = ReportController.RESOURCE_PATH )
+public class ReportController
 {
+    public static final String RESOURCE_PATH = "/reports";
+
+    @Autowired
+    public ReportService reportService;
+
     //-------------------------------------------------------------------------------------------------------
     // GET
     //-------------------------------------------------------------------------------------------------------
 
-    @RequestMapping( value = "/api", method = RequestMethod.GET )
-    public String getIndex( Model model )
+    @RequestMapping( method = RequestMethod.GET )
+    public String getReports( IdentifiableObjectParams params, Model model, HttpServletRequest request )
     {
-        return "redirect:/api/resources";
+        Reports reports = new Reports();
+
+        if ( params.hasNoPaging() )
+        {
+            reports.setReports( new ArrayList<Report>( reportService.getAllReports() ) );
+        }
+        else
+        {
+            reports.setReports( new ArrayList<Report>( reportService.getAllReports() ) );
+        }
+
+        if ( params.hasLinks() )
+        {
+            WebLinkPopulator listener = new WebLinkPopulator( request );
+            listener.addLinks( reports );
+        }
+
+        model.addAttribute( "model", reports );
+
+        return "reports";
     }
 
-    @RequestMapping( value = "/", method = RequestMethod.GET )
-    public String getIndexWithSlash( Model model )
+    @RequestMapping( value = "/{uid}", method = RequestMethod.GET )
+    public String getReport( @PathVariable( "uid" ) String uid, IdentifiableObjectParams params, Model model, HttpServletRequest request )
     {
-        return "redirect:/api/resources";
+        Report report = reportService.getReport( uid );
+
+        if ( params.hasLinks() )
+        {
+            WebLinkPopulator listener = new WebLinkPopulator( request );
+            listener.addLinks( report );
+        }
+
+        model.addAttribute( "model", report );
+
+        return "report";
     }
 }

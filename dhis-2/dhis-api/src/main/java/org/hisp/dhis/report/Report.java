@@ -30,19 +30,23 @@ package org.hisp.dhis.report;
 import java.util.HashSet;
 import java.util.Set;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlRootElement;
+
 import org.hisp.dhis.common.BaseIdentifiableObject;
+import org.hisp.dhis.common.Dxf2Namespace;
 import org.hisp.dhis.reporttable.ReportTable;
 
 /**
  * @author Lars Helge Overland
  * @version $Id$
  */
+@XmlRootElement( name = "report", namespace = Dxf2Namespace.NAMESPACE )
+@XmlAccessorType( value = XmlAccessType.NONE )
 public class Report
     extends BaseIdentifiableObject
 {
-    /**
-     * Determines if a de-serialized file is compatible with this class.
-     */
     private static final long serialVersionUID = 7880117720157807526L;
 
     public static final String TEMPLATE_DIR = "templates";
@@ -164,7 +168,7 @@ public class Report
     {
         this.designContent = designContent;
     }
-
+    
     public ReportTable getReportTable()
     {
         return reportTable;
