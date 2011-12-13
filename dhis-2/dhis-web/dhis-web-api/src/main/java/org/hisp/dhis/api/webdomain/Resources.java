@@ -43,6 +43,7 @@ import org.hisp.dhis.mapping.Maps;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroupSets;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroups;
 import org.hisp.dhis.organisationunit.OrganisationUnits;
+import org.hisp.dhis.report.Reports;
 import org.hisp.dhis.user.Users;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -87,6 +88,7 @@ public class Resources extends BaseLinkableObject
     //-----------------------------------------------
     // Helpers
     //-----------------------------------------------
+    
     private void generateResources()
     {
         RequestMethod[] defaultRequestMethods = new RequestMethod[]{
@@ -121,5 +123,6 @@ public class Resources extends BaseLinkableObject
         resources.add( new Resource( "OrganisationUnitGroupSets", OrganisationUnitGroupSets.class, requestMethods, mediaTypes ) );
         resources.add( new Resource( "DataSets", DataSets.class, requestMethods, mediaTypes ) );
         resources.add( new Resource( "Users", Users.class, requestMethods, mediaTypes ) );
+        resources.add( new Resource( "Reports", Reports.class, requestMethods, mediaTypes ) );
     }
 }

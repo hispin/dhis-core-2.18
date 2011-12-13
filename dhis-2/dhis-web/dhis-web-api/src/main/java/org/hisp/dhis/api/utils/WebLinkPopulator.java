@@ -49,6 +49,8 @@ import org.hisp.dhis.indicator.*;
 import org.hisp.dhis.mapping.MapView;
 import org.hisp.dhis.mapping.Maps;
 import org.hisp.dhis.organisationunit.*;
+import org.hisp.dhis.report.Report;
+import org.hisp.dhis.report.Reports;
 import org.hisp.dhis.sqlview.SqlView;
 import org.hisp.dhis.sqlview.SqlViews;
 import org.hisp.dhis.validation.ValidationRule;
@@ -288,6 +290,14 @@ public class WebLinkPopulator
         else if ( source instanceof SqlView )
         {
             populateSqlView( (SqlView) source, true );
+        }
+        else if ( source instanceof Reports )
+        {
+            populateReports( (Reports) source, true );
+        }
+        else if ( source instanceof Report )
+        {
+            populateReport( (Report) source, true );
         }
     }
 
@@ -869,6 +879,28 @@ public class WebLinkPopulator
             {
                 populateIdentifiableObject( attributeValue.getAttribute() );
             }
+        }
+    }
+    
+    private void populateReports( Reports reports, boolean root )
+    {
+        reports.setLink( getBasePath( Report.class ) );
+        
+        if ( root )
+        {
+            for ( Report report : reports.getReports() )
+            {
+                populateReport( report, false );
+            }
+        }
+    }
+    
+    private void populateReport( Report report, boolean root )
+    {
+        report.setLink( getPathWithUid( report ) );
+        
+        if ( root )
+        {
         }
     }
 

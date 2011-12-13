@@ -1,0 +1,2091 @@
+[INFO] Scanning for projects...
+[INFO] ------------------------------------------------------------------------
+[INFO] Reactor Build Order:
+[INFO] 
+[INFO] DHIS 2
+[INFO] DHIS API
+[INFO] DHIS Support Parent Project
+[INFO] DHIS Test Support
+[INFO] DHIS External Support
+[INFO] DHIS Hibernate Support
+[INFO] DHIS System Support
+[INFO] DHIS JDBC Service
+[INFO] DHIS XML framework services
+[INFO] DHIS Services Parent Project
+[INFO] DHIS Core API Implementations
+[INFO] DHIS I18n Static
+[INFO] DHIS Options
+[INFO] DHIS Administration Service
+[INFO] DHIS DataMart Service - Default
+[INFO] DHIS Aggregation Service - Default
+[INFO] DHIS OrganisationUnit API Implementations
+[INFO] DHIS Reporting Service
+[INFO] DHIS Import-Export Service
+[INFO] DHIS Map Generation Service
+[INFO] DHIS Patient API Implementations
+[INFO] DHIS Mobile Service
+[INFO] DHIS Data Exchange
+[INFO] DHIS JDBC / External Test Project
+[INFO]                                                                         
+[INFO] ------------------------------------------------------------------------
+[INFO] Building DHIS 2 2.6-SNAPSHOT
+[INFO] ------------------------------------------------------------------------
+[INFO] 
+[INFO] --- maven-dependency-plugin:2.1:tree (default-cli) @ dhis ---
+[INFO] org.hisp.dhis:dhis:pom:2.6-SNAPSHOT
+[INFO]                                                                         
+[INFO] ------------------------------------------------------------------------
+[INFO] Building DHIS API 2.6-SNAPSHOT
+[INFO] ------------------------------------------------------------------------
+[INFO] 
+[INFO] --- maven-dependency-plugin:2.1:tree (default-cli) @ dhis-api ---
+[INFO] org.hisp.dhis:dhis-api:jar:2.6-SNAPSHOT
+[INFO] +- junit:junit:jar:4.8.1:compile
+[INFO] +- commons-lang:commons-lang:jar:2.6:compile
+[INFO] +- commons-collections:commons-collections:jar:3.2:compile
+[INFO] +- jfree:jfreechart:jar:1.0.13:compile
+[INFO] |  \- jfree:jcommon:jar:1.0.15:compile (version managed from 1.0.16)
+[INFO] +- net.sf.jasperreports:jasperreports:jar:4.1.1:compile
+[INFO] |  +- commons-beanutils:commons-beanutils:jar:1.8.0:compile
+[INFO] |  +- commons-digester:commons-digester:jar:1.7:compile
+[INFO] |  +- commons-logging:commons-logging:jar:1.1.1:compile
+[INFO] |  +- com.lowagie:itext:jar:2.1.5:compile (version managed from 2.1.7)
+[INFO] |  |  +- bouncycastle:bcmail-jdk14:jar:138:compile
+[INFO] |  |  \- bouncycastle:bcprov-jdk14:jar:138:compile
+[INFO] |  +- xml-apis:xml-apis:jar:1.3.02:compile
+[INFO] |  +- eclipse:jdtcore:jar:3.1.0:compile
+[INFO] |  +- org.codehaus.castor:castor:jar:1.2:compile
+[INFO] |  \- org.apache.poi:poi-ooxml:jar:3.6:compile
+[INFO] |     +- org.apache.poi:poi:jar:3.7:compile (version managed from 3.6)
+[INFO] |     +- org.apache.poi:poi-ooxml-schemas:jar:3.6:compile
+[INFO] |     |  +- org.apache.xmlbeans:xmlbeans:jar:2.3.0:compile
+[INFO] |     |  |  \- stax:stax-api:jar:1.0.1:compile
+[INFO] |     |  \- org.apache.geronimo.specs:geronimo-stax-api_1.0_spec:jar:1.0:compile
+[INFO] |     \- dom4j:dom4j:jar:1.6.1:compile
+[INFO] +- org.codehaus.jackson:jackson-core-asl:jar:1.9.2:compile
+[INFO] +- org.codehaus.jackson:jackson-mapper-asl:jar:1.9.2:compile
+[INFO] +- org.codehaus.jackson:jackson-xc:jar:1.9.2:compile
+[INFO] \- javax.xml.bind:jaxb-api:jar:2.2.2:compile
+[INFO]    +- javax.xml.stream:stax-api:jar:1.0-2:test (scope managed from compile)
+[INFO]    \- javax.activation:activation:jar:1.1:compile
+[INFO]                                                                         
+[INFO] ------------------------------------------------------------------------
+[INFO] Building DHIS Support Parent Project 2.6-SNAPSHOT
+[INFO] ------------------------------------------------------------------------
+[INFO] 
+[INFO] --- maven-dependency-plugin:2.1:tree (default-cli) @ dhis-support ---
+[INFO] org.hisp.dhis:dhis-support:pom:2.6-SNAPSHOT
+[INFO]                                                                         
+[INFO] ------------------------------------------------------------------------
+[INFO] Building DHIS Test Support 2.6-SNAPSHOT
+[INFO] ------------------------------------------------------------------------
+[INFO] 
+[INFO] --- maven-dependency-plugin:2.1:tree (default-cli) @ dhis-support-test ---
+[INFO] org.hisp.dhis:dhis-support-test:jar:2.6-SNAPSHOT
+[INFO] +- org.hisp.dhis:dhis-api:jar:2.6-SNAPSHOT:compile
+[INFO] |  +- commons-lang:commons-lang:jar:2.6:compile
+[INFO] |  +- commons-collections:commons-collections:jar:3.2:compile
+[INFO] |  +- jfree:jfreechart:jar:1.0.13:compile
+[INFO] |  |  \- jfree:jcommon:jar:1.0.15:compile (version managed from 1.0.16)
+[INFO] |  +- net.sf.jasperreports:jasperreports:jar:4.1.1:compile
+[INFO] |  |  +- commons-beanutils:commons-beanutils:jar:1.8.0:compile
+[INFO] |  |  +- commons-digester:commons-digester:jar:1.7:compile
+[INFO] |  |  +- com.lowagie:itext:jar:2.1.5:compile (version managed from 2.1.7)
+[INFO] |  |  |  +- bouncycastle:bcmail-jdk14:jar:138:compile
+[INFO] |  |  |  \- bouncycastle:bcprov-jdk14:jar:138:compile
+[INFO] |  |  +- xml-apis:xml-apis:jar:1.3.02:compile
+[INFO] |  |  +- eclipse:jdtcore:jar:3.1.0:compile
+[INFO] |  |  +- org.codehaus.castor:castor:jar:1.2:compile
+[INFO] |  |  \- org.apache.poi:poi-ooxml:jar:3.6:compile
+[INFO] |  |     +- org.apache.poi:poi:jar:3.7:compile (version managed from 3.6)
+[INFO] |  |     \- org.apache.poi:poi-ooxml-schemas:jar:3.6:compile
+[INFO] |  |        +- org.apache.xmlbeans:xmlbeans:jar:2.3.0:compile
+[INFO] |  |        |  \- stax:stax-api:jar:1.0.1:compile
+[INFO] |  |        \- org.apache.geronimo.specs:geronimo-stax-api_1.0_spec:jar:1.0:compile
+[INFO] |  +- org.codehaus.jackson:jackson-core-asl:jar:1.9.2:compile
+[INFO] |  +- org.codehaus.jackson:jackson-mapper-asl:jar:1.9.2:compile
+[INFO] |  +- org.codehaus.jackson:jackson-xc:jar:1.9.2:compile
+[INFO] |  \- javax.xml.bind:jaxb-api:jar:2.2.2:compile
+[INFO] |     +- javax.xml.stream:stax-api:jar:1.0-2:test (scope managed from compile)
+[INFO] |     \- javax.activation:activation:jar:1.1:compile
+[INFO] +- org.springframework:spring-context:jar:3.0.6.RELEASE:compile
+[INFO] |  +- org.springframework:spring-aop:jar:3.0.6.RELEASE:compile
+[INFO] |  |  \- aopalliance:aopalliance:jar:1.0:compile
+[INFO] |  +- org.springframework:spring-beans:jar:3.0.6.RELEASE:compile
+[INFO] |  +- org.springframework:spring-core:jar:3.0.6.RELEASE:compile
+[INFO] |  +- org.springframework:spring-expression:jar:3.0.6.RELEASE:compile
+[INFO] |  \- org.springframework:spring-asm:jar:3.0.6.RELEASE:compile
+[INFO] +- org.springframework:spring-orm:jar:3.0.6.RELEASE:compile
+[INFO] |  +- org.springframework:spring-jdbc:jar:3.0.6.RELEASE:compile
+[INFO] |  \- org.springframework:spring-tx:jar:3.0.6.RELEASE:compile
+[INFO] +- org.springframework:spring-test:jar:3.0.6.RELEASE:compile
+[INFO] +- commons-logging:commons-logging:jar:1.1.1:compile
+[INFO] +- junit:junit:jar:4.8.1:compile
+[INFO] +- org.mockito:mockito-all:jar:1.8.5:compile
+[INFO] \- org.hibernate:hibernate-core:jar:3.6.4.Final:compile
+[INFO]    +- antlr:antlr:jar:2.7.6:compile
+[INFO]    +- dom4j:dom4j:jar:1.6.1:compile
+[INFO]    +- org.hibernate:hibernate-commons-annotations:jar:3.2.0.Final:compile
+[INFO]    +- org.hibernate.javax.persistence:hibernate-jpa-2.0-api:jar:1.0.0.Final:compile
+[INFO]    +- javax.transaction:jta:jar:1.1:compile
+[INFO]    \- org.slf4j:slf4j-api:jar:1.6.1:compile
+[INFO]                                                                         
+[INFO] ------------------------------------------------------------------------
+[INFO] Building DHIS External Support 2.6-SNAPSHOT
+[INFO] ------------------------------------------------------------------------
+[INFO] 
+[INFO] --- maven-dependency-plugin:2.1:tree (default-cli) @ dhis-support-external ---
+[INFO] org.hisp.dhis:dhis-support-external:jar:2.6-SNAPSHOT
+[INFO] +- org.hisp.dhis:dhis-api:jar:2.6-SNAPSHOT:compile
+[INFO] |  +- junit:junit:jar:4.8.1:compile
+[INFO] |  +- commons-lang:commons-lang:jar:2.6:compile
+[INFO] |  +- commons-collections:commons-collections:jar:3.2:compile
+[INFO] |  +- jfree:jfreechart:jar:1.0.13:compile
+[INFO] |  |  \- jfree:jcommon:jar:1.0.15:compile (version managed from 1.0.16)
+[INFO] |  +- net.sf.jasperreports:jasperreports:jar:4.1.1:compile
+[INFO] |  |  +- commons-beanutils:commons-beanutils:jar:1.8.0:compile
+[INFO] |  |  +- commons-digester:commons-digester:jar:1.7:compile
+[INFO] |  |  +- com.lowagie:itext:jar:2.1.5:compile (version managed from 2.1.7)
+[INFO] |  |  |  +- bouncycastle:bcmail-jdk14:jar:138:compile
+[INFO] |  |  |  \- bouncycastle:bcprov-jdk14:jar:138:compile
+[INFO] |  |  +- xml-apis:xml-apis:jar:1.3.02:compile
+[INFO] |  |  +- eclipse:jdtcore:jar:3.1.0:compile
+[INFO] |  |  +- org.codehaus.castor:castor:jar:1.2:compile
+[INFO] |  |  \- org.apache.poi:poi-ooxml:jar:3.6:compile
+[INFO] |  |     +- org.apache.poi:poi:jar:3.7:compile (version managed from 3.6)
+[INFO] |  |     +- org.apache.poi:poi-ooxml-schemas:jar:3.6:compile
+[INFO] |  |     |  +- org.apache.xmlbeans:xmlbeans:jar:2.3.0:compile
+[INFO] |  |     |  |  \- stax:stax-api:jar:1.0.1:compile
+[INFO] |  |     |  \- org.apache.geronimo.specs:geronimo-stax-api_1.0_spec:jar:1.0:compile
+[INFO] |  |     \- dom4j:dom4j:jar:1.6.1:compile
+[INFO] |  +- org.codehaus.jackson:jackson-core-asl:jar:1.9.2:compile
+[INFO] |  +- org.codehaus.jackson:jackson-mapper-asl:jar:1.9.2:compile
+[INFO] |  +- org.codehaus.jackson:jackson-xc:jar:1.9.2:compile
+[INFO] |  \- javax.xml.bind:jaxb-api:jar:2.2.2:compile
+[INFO] |     +- javax.xml.stream:stax-api:jar:1.0-2:test (scope managed from compile)
+[INFO] |     \- javax.activation:activation:jar:1.1:compile
+[INFO] +- org.hisp.dhis:dhis-support-test:jar:2.6-SNAPSHOT:test
+[INFO] |  +- org.mockito:mockito-all:jar:1.8.5:test
+[INFO] |  \- org.hibernate:hibernate-core:jar:3.6.4.Final:test
+[INFO] |     +- antlr:antlr:jar:2.7.6:test
+[INFO] |     +- org.hibernate:hibernate-commons-annotations:jar:3.2.0.Final:test
+[INFO] |     +- org.hibernate.javax.persistence:hibernate-jpa-2.0-api:jar:1.0.0.Final:test
+[INFO] |     +- javax.transaction:jta:jar:1.1:test
+[INFO] |     \- org.slf4j:slf4j-api:jar:1.6.1:test
+[INFO] +- org.springframework:spring-aop:jar:3.0.6.RELEASE:compile
+[INFO] |  \- aopalliance:aopalliance:jar:1.0:compile
+[INFO] +- org.springframework:spring-asm:jar:3.0.6.RELEASE:compile
+[INFO] +- org.springframework:spring-beans:jar:3.0.6.RELEASE:compile
+[INFO] +- org.springframework:spring-context:jar:3.0.6.RELEASE:compile
+[INFO] +- org.springframework:spring-core:jar:3.0.6.RELEASE:compile
+[INFO] +- org.springframework:spring-expression:jar:3.0.6.RELEASE:compile
+[INFO] +- org.springframework:spring-jdbc:jar:3.0.6.RELEASE:compile
+[INFO] +- org.springframework:spring-orm:jar:3.0.6.RELEASE:compile
+[INFO] +- org.springframework:spring-test:jar:3.0.6.RELEASE:compile
+[INFO] +- org.springframework:spring-tx:jar:3.0.6.RELEASE:compile
+[INFO] +- org.springframework:spring-web:jar:3.0.6.RELEASE:compile
+[INFO] +- org.springframework.security:spring-security-core:jar:3.0.7.RELEASE:compile
+[INFO] |  +- org.aspectj:aspectjrt:jar:1.6.4:compile (version managed from 1.6.8)
+[INFO] |  \- org.aspectj:aspectjweaver:jar:1.6.4:compile (version managed from 1.6.8)
+[INFO] +- org.springframework.security:spring-security-web:jar:3.0.7.RELEASE:compile
+[INFO] +- org.springframework.security:spring-security-config:jar:3.0.7.RELEASE:compile
+[INFO] +- commons-logging:commons-logging:jar:1.1.1:compile
+[INFO] \- com.thoughtworks.xstream:xstream:jar:1.3:compile
+[INFO]    \- xpp3:xpp3_min:jar:1.1.4c:compile
+[INFO]                                                                         
+[INFO] ------------------------------------------------------------------------
+[INFO] Building DHIS Hibernate Support 2.6-SNAPSHOT
+[INFO] ------------------------------------------------------------------------
+[INFO] 
+[INFO] --- maven-dependency-plugin:2.1:tree (default-cli) @ dhis-support-hibernate ---
+[INFO] org.hisp.dhis:dhis-support-hibernate:jar:2.6-SNAPSHOT
+[INFO] +- org.hisp.dhis:dhis-api:jar:2.6-SNAPSHOT:compile
+[INFO] |  +- junit:junit:jar:4.8.1:compile
+[INFO] |  +- commons-lang:commons-lang:jar:2.6:compile
+[INFO] |  +- commons-collections:commons-collections:jar:3.2:compile
+[INFO] |  +- jfree:jfreechart:jar:1.0.13:compile
+[INFO] |  |  \- jfree:jcommon:jar:1.0.15:compile (version managed from 1.0.16)
+[INFO] |  +- net.sf.jasperreports:jasperreports:jar:4.1.1:compile
+[INFO] |  |  +- commons-beanutils:commons-beanutils:jar:1.8.0:compile
+[INFO] |  |  +- commons-digester:commons-digester:jar:1.7:compile
+[INFO] |  |  +- com.lowagie:itext:jar:2.1.5:compile (version managed from 2.1.7)
+[INFO] |  |  |  +- bouncycastle:bcmail-jdk14:jar:138:compile
+[INFO] |  |  |  \- bouncycastle:bcprov-jdk14:jar:138:compile
+[INFO] |  |  +- xml-apis:xml-apis:jar:1.3.02:compile
+[INFO] |  |  +- eclipse:jdtcore:jar:3.1.0:compile
+[INFO] |  |  +- org.codehaus.castor:castor:jar:1.2:compile
+[INFO] |  |  \- org.apache.poi:poi-ooxml:jar:3.6:compile
+[INFO] |  |     +- org.apache.poi:poi:jar:3.7:compile (version managed from 3.6)
+[INFO] |  |     \- org.apache.poi:poi-ooxml-schemas:jar:3.6:compile
+[INFO] |  |        +- org.apache.xmlbeans:xmlbeans:jar:2.3.0:compile
+[INFO] |  |        |  \- stax:stax-api:jar:1.0.1:compile
+[INFO] |  |        \- org.apache.geronimo.specs:geronimo-stax-api_1.0_spec:jar:1.0:compile
+[INFO] |  +- org.codehaus.jackson:jackson-core-asl:jar:1.9.2:compile
+[INFO] |  +- org.codehaus.jackson:jackson-mapper-asl:jar:1.9.2:compile
+[INFO] |  +- org.codehaus.jackson:jackson-xc:jar:1.9.2:compile
+[INFO] |  \- javax.xml.bind:jaxb-api:jar:2.2.2:compile
+[INFO] |     +- javax.xml.stream:stax-api:jar:1.0-2:test (scope managed from compile)
+[INFO] |     \- javax.activation:activation:jar:1.1:compile
+[INFO] +- org.hisp.dhis:dhis-support-external:jar:2.6-SNAPSHOT:compile
+[INFO] |  +- org.springframework:spring-aop:jar:3.0.6.RELEASE:compile
+[INFO] |  |  \- aopalliance:aopalliance:jar:1.0:compile
+[INFO] |  +- org.springframework:spring-asm:jar:3.0.6.RELEASE:compile
+[INFO] |  +- org.springframework:spring-beans:jar:3.0.6.RELEASE:compile
+[INFO] |  +- org.springframework:spring-context:jar:3.0.6.RELEASE:compile
+[INFO] |  +- org.springframework:spring-core:jar:3.0.6.RELEASE:compile
+[INFO] |  +- org.springframework:spring-expression:jar:3.0.6.RELEASE:compile
+[INFO] |  +- org.springframework:spring-jdbc:jar:3.0.6.RELEASE:compile
+[INFO] |  +- org.springframework:spring-test:jar:3.0.6.RELEASE:compile
+[INFO] |  +- org.springframework:spring-tx:jar:3.0.6.RELEASE:compile
+[INFO] |  +- org.springframework:spring-web:jar:3.0.6.RELEASE:compile
+[INFO] |  +- org.springframework.security:spring-security-core:jar:3.0.7.RELEASE:compile
+[INFO] |  |  +- org.aspectj:aspectjrt:jar:1.6.4:compile (version managed from 1.6.8)
+[INFO] |  |  \- org.aspectj:aspectjweaver:jar:1.6.4:compile (version managed from 1.6.8)
+[INFO] |  +- org.springframework.security:spring-security-web:jar:3.0.7.RELEASE:compile
+[INFO] |  +- org.springframework.security:spring-security-config:jar:3.0.7.RELEASE:compile
+[INFO] |  \- com.thoughtworks.xstream:xstream:jar:1.3:compile
+[INFO] |     \- xpp3:xpp3_min:jar:1.1.4c:compile
+[INFO] +- org.hibernate:hibernate-core:jar:3.6.4.Final:compile
+[INFO] |  +- antlr:antlr:jar:2.7.6:compile
+[INFO] |  +- dom4j:dom4j:jar:1.6.1:compile
+[INFO] |  +- org.hibernate:hibernate-commons-annotations:jar:3.2.0.Final:compile
+[INFO] |  +- org.hibernate.javax.persistence:hibernate-jpa-2.0-api:jar:1.0.0.Final:compile
+[INFO] |  +- javax.transaction:jta:jar:1.1:compile
+[INFO] |  \- org.slf4j:slf4j-api:jar:1.6.1:compile
+[INFO] +- org.hibernate:hibernate-ehcache:jar:3.6.4.Final:compile
+[INFO] |  \- net.sf.ehcache:ehcache-core:jar:2.4.1:compile
+[INFO] +- org.hibernate:hibernate-entitymanager:jar:3.6.4.Final:compile
+[INFO] |  +- cglib:cglib:jar:2.2:compile
+[INFO] |  |  \- asm:asm:jar:3.1:compile
+[INFO] |  \- javassist:javassist:jar:3.12.0.GA:compile
+[INFO] +- geronimo-spec:geronimo-spec-jta:jar:1.0-M1:compile
+[INFO] +- c3p0:c3p0:jar:0.9.1.2:compile
+[INFO] +- mysql:mysql-connector-java:jar:5.1.6:compile
+[INFO] +- postgresql:postgresql:jar:9.0-801.jdbc4:compile
+[INFO] +- com.h2database:h2:jar:1.3.154:compile
+[INFO] +- org.springframework:spring-orm:jar:3.0.6.RELEASE:compile
+[INFO] \- commons-logging:commons-logging:jar:1.1.1:compile
+[INFO]                                                                         
+[INFO] ------------------------------------------------------------------------
+[INFO] Building DHIS System Support 2.6-SNAPSHOT
+[INFO] ------------------------------------------------------------------------
+[INFO] 
+[INFO] --- maven-dependency-plugin:2.1:tree (default-cli) @ dhis-support-system ---
+[INFO] org.hisp.dhis:dhis-support-system:jar:2.6-SNAPSHOT
+[INFO] +- org.hisp.dhis:dhis-api:jar:2.6-SNAPSHOT:compile
+[INFO] |  +- junit:junit:jar:4.8.1:compile
+[INFO] |  +- org.codehaus.jackson:jackson-core-asl:jar:1.9.2:compile
+[INFO] |  +- org.codehaus.jackson:jackson-mapper-asl:jar:1.9.2:compile
+[INFO] |  +- org.codehaus.jackson:jackson-xc:jar:1.9.2:compile
+[INFO] |  \- javax.xml.bind:jaxb-api:jar:2.2.2:compile
+[INFO] |     +- javax.xml.stream:stax-api:jar:1.0-2:test (scope managed from compile)
+[INFO] |     \- javax.activation:activation:jar:1.1:compile
+[INFO] +- org.hisp.dhis:dhis-support-hibernate:jar:2.6-SNAPSHOT:compile
+[INFO] |  +- org.hisp.dhis:dhis-support-external:jar:2.6-SNAPSHOT:compile
+[INFO] |  |  +- org.springframework:spring-aop:jar:3.0.6.RELEASE:compile
+[INFO] |  |  +- org.springframework:spring-asm:jar:3.0.6.RELEASE:compile
+[INFO] |  |  +- org.springframework:spring-expression:jar:3.0.6.RELEASE:compile
+[INFO] |  |  +- org.springframework:spring-jdbc:jar:3.0.6.RELEASE:compile
+[INFO] |  |  +- org.springframework:spring-test:jar:3.0.6.RELEASE:compile
+[INFO] |  |  +- org.springframework:spring-tx:jar:3.0.6.RELEASE:compile
+[INFO] |  |  +- org.springframework.security:spring-security-core:jar:3.0.7.RELEASE:compile
+[INFO] |  |  +- org.springframework.security:spring-security-web:jar:3.0.7.RELEASE:compile
+[INFO] |  |  +- org.springframework.security:spring-security-config:jar:3.0.7.RELEASE:compile
+[INFO] |  |  \- com.thoughtworks.xstream:xstream:jar:1.3:compile
+[INFO] |  |     \- xpp3:xpp3_min:jar:1.1.4c:compile
+[INFO] |  +- org.hibernate:hibernate-core:jar:3.6.4.Final:compile
+[INFO] |  |  +- antlr:antlr:jar:2.7.6:compile
+[INFO] |  |  +- org.hibernate:hibernate-commons-annotations:jar:3.2.0.Final:compile
+[INFO] |  |  +- org.hibernate.javax.persistence:hibernate-jpa-2.0-api:jar:1.0.0.Final:compile
+[INFO] |  |  \- javax.transaction:jta:jar:1.1:compile
+[INFO] |  +- org.hibernate:hibernate-ehcache:jar:3.6.4.Final:compile
+[INFO] |  |  \- net.sf.ehcache:ehcache-core:jar:2.4.1:compile
+[INFO] |  +- org.hibernate:hibernate-entitymanager:jar:3.6.4.Final:compile
+[INFO] |  |  +- cglib:cglib:jar:2.2:compile
+[INFO] |  |  |  \- asm:asm:jar:3.1:compile
+[INFO] |  |  \- javassist:javassist:jar:3.12.0.GA:compile
+[INFO] |  +- geronimo-spec:geronimo-spec-jta:jar:1.0-M1:compile
+[INFO] |  +- c3p0:c3p0:jar:0.9.1.2:compile
+[INFO] |  +- mysql:mysql-connector-java:jar:5.1.6:compile
+[INFO] |  +- postgresql:postgresql:jar:9.0-801.jdbc4:compile
+[INFO] |  +- com.h2database:h2:jar:1.3.154:compile
+[INFO] |  \- org.springframework:spring-orm:jar:3.0.6.RELEASE:compile
+[INFO] +- org.hisp.dhis:dhis-support-test:jar:2.6-SNAPSHOT:test
+[INFO] |  \- org.mockito:mockito-all:jar:1.8.5:test
+[INFO] +- net.sf.jasperreports:jasperreports:jar:4.1.1:compile
+[INFO] |  +- commons-beanutils:commons-beanutils:jar:1.8.0:compile
+[INFO] |  +- commons-digester:commons-digester:jar:1.7:compile
+[INFO] |  +- jfree:jcommon:jar:1.0.15:compile
+[INFO] |  +- xml-apis:xml-apis:jar:1.3.02:compile
+[INFO] |  +- eclipse:jdtcore:jar:3.1.0:compile
+[INFO] |  +- org.codehaus.castor:castor:jar:1.2:compile
+[INFO] |  \- org.apache.poi:poi-ooxml:jar:3.6:compile
+[INFO] |     \- org.apache.poi:poi-ooxml-schemas:jar:3.6:compile
+[INFO] |        +- org.apache.xmlbeans:xmlbeans:jar:2.3.0:compile
+[INFO] |        |  \- stax:stax-api:jar:1.0.1:compile
+[INFO] |        \- org.apache.geronimo.specs:geronimo-stax-api_1.0_spec:jar:1.0:compile
+[INFO] +- jfree:jfreechart:jar:1.0.13:compile
+[INFO] +- org.apache.poi:poi:jar:3.7:compile
+[INFO] +- org.slf4j:slf4j-log4j12:jar:1.6.1:compile
+[INFO] |  \- org.slf4j:slf4j-api:jar:1.6.1:compile
+[INFO] +- log4j:log4j:jar:1.2.16:compile
+[INFO] +- org.aspectj:aspectjrt:jar:1.6.4:compile
+[INFO] +- org.aspectj:aspectjweaver:jar:1.6.4:compile
+[INFO] +- org.springframework:spring-web:jar:3.0.6.RELEASE:compile
+[INFO] |  +- aopalliance:aopalliance:jar:1.0:compile
+[INFO] |  +- org.springframework:spring-beans:jar:3.0.6.RELEASE:compile
+[INFO] |  +- org.springframework:spring-context:jar:3.0.6.RELEASE:compile
+[INFO] |  \- org.springframework:spring-core:jar:3.0.6.RELEASE:compile
+[INFO] +- com.lowagie:itext:jar:2.1.5:compile
+[INFO] |  +- bouncycastle:bcmail-jdk14:jar:138:compile
+[INFO] |  \- bouncycastle:bcprov-jdk14:jar:138:compile
+[INFO] +- commons-logging:commons-logging:jar:1.1.1:compile
+[INFO] +- commons-collections:commons-collections:jar:3.2:compile
+[INFO] +- commons-lang:commons-lang:jar:2.6:compile
+[INFO] +- commons-codec:commons-codec:jar:1.3:compile
+[INFO] +- commons-math:commons-math:jar:1.2:compile
+[INFO] +- commons-validator:commons-validator:jar:1.3.1:compile
+[INFO] +- commons-io:commons-io:jar:1.4:compile
+[INFO] +- jep:jep:jar:2.24:compile
+[INFO] +- joda-time:joda-time:jar:1.5.2:compile
+[INFO] +- org.amplecode:cave-process:jar:1.0.3:compile
+[INFO] |  \- commons-logging:commons-logging-api:jar:1.1:compile
+[INFO] +- org.amplecode:quick:jar:1.7.1:compile
+[INFO] |  \- org.hsqldb:hsqldb:jar:2.2.6:compile (version managed from 2.2.4)
+[INFO] +- net.sourceforge.jexcelapi:jxl:jar:2.6:compile
+[INFO] +- org.apache.velocity:velocity:jar:1.7:compile
+[INFO] +- org.apache.velocity:velocity-tools:jar:2.0:compile
+[INFO] |  +- commons-chain:commons-chain:jar:1.1:compile
+[INFO] |  +- dom4j:dom4j:jar:1.1:compile
+[INFO] |  +- oro:oro:jar:2.0.8:compile
+[INFO] |  +- sslext:sslext:jar:1.2-0:compile
+[INFO] |  +- org.apache.struts:struts-core:jar:1.3.8:compile
+[INFO] |  +- org.apache.struts:struts-taglib:jar:1.3.8:compile
+[INFO] |  \- org.apache.struts:struts-tiles:jar:1.3.8:compile
+[INFO] +- net.sf.json-lib:json-lib:jar:jdk15:2.4:compile
+[INFO] |  \- net.sf.ezmorph:ezmorph:jar:1.0.6:compile
+[INFO] \- javax.servlet:servlet-api:jar:2.4:provided
+[INFO]                                                                         
+[INFO] ------------------------------------------------------------------------
+[INFO] Building DHIS JDBC Service 2.6-SNAPSHOT
+[INFO] ------------------------------------------------------------------------
+[INFO] 
+[INFO] --- maven-dependency-plugin:2.1:tree (default-cli) @ dhis-support-jdbc ---
+[INFO] org.hisp.dhis:dhis-support-jdbc:jar:2.6-SNAPSHOT
+[INFO] +- org.hisp.dhis:dhis-api:jar:2.6-SNAPSHOT:compile
+[INFO] |  +- junit:junit:jar:4.8.1:compile
+[INFO] |  +- commons-lang:commons-lang:jar:2.6:compile
+[INFO] |  +- commons-collections:commons-collections:jar:3.2:compile
+[INFO] |  +- jfree:jfreechart:jar:1.0.13:compile
+[INFO] |  |  \- jfree:jcommon:jar:1.0.15:compile (version managed from 1.0.16)
+[INFO] |  +- net.sf.jasperreports:jasperreports:jar:4.1.1:compile
+[INFO] |  |  +- commons-beanutils:commons-beanutils:jar:1.8.0:compile
+[INFO] |  |  +- commons-digester:commons-digester:jar:1.7:compile
+[INFO] |  |  +- xml-apis:xml-apis:jar:1.3.02:compile
+[INFO] |  |  +- eclipse:jdtcore:jar:3.1.0:compile
+[INFO] |  |  +- org.codehaus.castor:castor:jar:1.2:compile
+[INFO] |  |  \- org.apache.poi:poi-ooxml:jar:3.6:compile
+[INFO] |  |     \- org.apache.poi:poi-ooxml-schemas:jar:3.6:compile
+[INFO] |  |        +- org.apache.xmlbeans:xmlbeans:jar:2.3.0:compile
+[INFO] |  |        |  \- stax:stax-api:jar:1.0.1:compile
+[INFO] |  |        \- org.apache.geronimo.specs:geronimo-stax-api_1.0_spec:jar:1.0:compile
+[INFO] |  +- org.codehaus.jackson:jackson-core-asl:jar:1.9.2:compile
+[INFO] |  +- org.codehaus.jackson:jackson-mapper-asl:jar:1.9.2:compile
+[INFO] |  +- org.codehaus.jackson:jackson-xc:jar:1.9.2:compile
+[INFO] |  \- javax.xml.bind:jaxb-api:jar:2.2.2:compile
+[INFO] |     +- javax.xml.stream:stax-api:jar:1.0-2:test (scope managed from compile)
+[INFO] |     \- javax.activation:activation:jar:1.1:compile
+[INFO] +- org.amplecode:quick:jar:1.7.1:compile
+[INFO] |  +- org.springframework:spring-beans:jar:3.0.6.RELEASE:compile (version managed from 3.0.5.RELEASE)
+[INFO] |  |  \- org.springframework:spring-core:jar:3.0.6.RELEASE:compile
+[INFO] |  +- org.hsqldb:hsqldb:jar:2.2.6:compile (version managed from 2.2.4)
+[INFO] |  \- commons-logging:commons-logging:jar:1.1.1:compile
+[INFO] +- org.aspectj:aspectjrt:jar:1.6.4:compile
+[INFO] +- org.aspectj:aspectjweaver:jar:1.6.4:compile
+[INFO] +- org.hisp.dhis:dhis-support-hibernate:jar:2.6-SNAPSHOT:compile
+[INFO] |  +- org.hisp.dhis:dhis-support-external:jar:2.6-SNAPSHOT:compile
+[INFO] |  |  +- org.springframework:spring-aop:jar:3.0.6.RELEASE:compile
+[INFO] |  |  +- org.springframework:spring-asm:jar:3.0.6.RELEASE:compile
+[INFO] |  |  +- org.springframework:spring-context:jar:3.0.6.RELEASE:compile
+[INFO] |  |  +- org.springframework:spring-expression:jar:3.0.6.RELEASE:compile
+[INFO] |  |  +- org.springframework:spring-jdbc:jar:3.0.6.RELEASE:compile
+[INFO] |  |  +- org.springframework:spring-test:jar:3.0.6.RELEASE:compile
+[INFO] |  |  +- org.springframework:spring-tx:jar:3.0.6.RELEASE:compile
+[INFO] |  |  +- org.springframework.security:spring-security-core:jar:3.0.7.RELEASE:compile
+[INFO] |  |  +- org.springframework.security:spring-security-web:jar:3.0.7.RELEASE:compile
+[INFO] |  |  +- org.springframework.security:spring-security-config:jar:3.0.7.RELEASE:compile
+[INFO] |  |  \- com.thoughtworks.xstream:xstream:jar:1.3:compile
+[INFO] |  |     \- xpp3:xpp3_min:jar:1.1.4c:compile
+[INFO] |  +- org.hibernate:hibernate-core:jar:3.6.4.Final:compile
+[INFO] |  |  +- antlr:antlr:jar:2.7.6:compile
+[INFO] |  |  +- dom4j:dom4j:jar:1.6.1:compile
+[INFO] |  |  +- org.hibernate:hibernate-commons-annotations:jar:3.2.0.Final:compile
+[INFO] |  |  +- org.hibernate.javax.persistence:hibernate-jpa-2.0-api:jar:1.0.0.Final:compile
+[INFO] |  |  +- javax.transaction:jta:jar:1.1:compile
+[INFO] |  |  \- org.slf4j:slf4j-api:jar:1.6.1:compile
+[INFO] |  +- org.hibernate:hibernate-ehcache:jar:3.6.4.Final:compile
+[INFO] |  |  \- net.sf.ehcache:ehcache-core:jar:2.4.1:compile
+[INFO] |  +- org.hibernate:hibernate-entitymanager:jar:3.6.4.Final:compile
+[INFO] |  |  +- cglib:cglib:jar:2.2:compile
+[INFO] |  |  |  \- asm:asm:jar:3.1:compile
+[INFO] |  |  \- javassist:javassist:jar:3.12.0.GA:compile
+[INFO] |  +- geronimo-spec:geronimo-spec-jta:jar:1.0-M1:compile
+[INFO] |  +- c3p0:c3p0:jar:0.9.1.2:compile
+[INFO] |  +- mysql:mysql-connector-java:jar:5.1.6:compile
+[INFO] |  +- postgresql:postgresql:jar:9.0-801.jdbc4:compile
+[INFO] |  +- com.h2database:h2:jar:1.3.154:compile
+[INFO] |  \- org.springframework:spring-orm:jar:3.0.6.RELEASE:compile
+[INFO] \- org.hisp.dhis:dhis-support-system:jar:2.6-SNAPSHOT:compile
+[INFO]    +- org.apache.poi:poi:jar:3.7:compile
+[INFO]    +- org.slf4j:slf4j-log4j12:jar:1.6.1:compile
+[INFO]    +- log4j:log4j:jar:1.2.16:compile
+[INFO]    +- org.springframework:spring-web:jar:3.0.6.RELEASE:compile
+[INFO]    |  \- aopalliance:aopalliance:jar:1.0:compile
+[INFO]    +- com.lowagie:itext:jar:2.1.5:compile
+[INFO]    |  +- bouncycastle:bcmail-jdk14:jar:138:compile
+[INFO]    |  \- bouncycastle:bcprov-jdk14:jar:138:compile
+[INFO]    +- commons-codec:commons-codec:jar:1.3:compile
+[INFO]    +- commons-math:commons-math:jar:1.2:compile
+[INFO]    +- commons-validator:commons-validator:jar:1.3.1:compile
+[INFO]    +- commons-io:commons-io:jar:1.4:compile
+[INFO]    +- jep:jep:jar:2.24:compile
+[INFO]    +- joda-time:joda-time:jar:1.5.2:compile
+[INFO]    +- org.amplecode:cave-process:jar:1.0.3:compile
+[INFO]    |  \- commons-logging:commons-logging-api:jar:1.1:compile
+[INFO]    +- net.sourceforge.jexcelapi:jxl:jar:2.6:compile
+[INFO]    +- org.apache.velocity:velocity:jar:1.7:compile
+[INFO]    +- org.apache.velocity:velocity-tools:jar:2.0:compile
+[INFO]    |  +- commons-chain:commons-chain:jar:1.1:compile
+[INFO]    |  +- oro:oro:jar:2.0.8:compile
+[INFO]    |  +- sslext:sslext:jar:1.2-0:compile
+[INFO]    |  +- org.apache.struts:struts-core:jar:1.3.8:compile
+[INFO]    |  +- org.apache.struts:struts-taglib:jar:1.3.8:compile
+[INFO]    |  \- org.apache.struts:struts-tiles:jar:1.3.8:compile
+[INFO]    \- net.sf.json-lib:json-lib:jar:jdk15:2.4:compile
+[INFO]       \- net.sf.ezmorph:ezmorph:jar:1.0.6:compile
+[INFO]                                                                         
+[INFO] ------------------------------------------------------------------------
+[INFO] Building DHIS XML framework services 2.6-SNAPSHOT
+[INFO] ------------------------------------------------------------------------
+[INFO] 
+[INFO] --- maven-dependency-plugin:2.1:tree (default-cli) @ dhis-support-xml ---
+[INFO] org.hisp.dhis:dhis-support-xml:jar:2.6-SNAPSHOT
+[INFO] +- org.hisp.dhis:dhis-support-test:jar:2.6-SNAPSHOT:test
+[INFO] |  +- org.hisp.dhis:dhis-api:jar:2.6-SNAPSHOT:test
+[INFO] |  |  +- commons-lang:commons-lang:jar:2.6:test
+[INFO] |  |  +- commons-collections:commons-collections:jar:3.2:test
+[INFO] |  |  +- jfree:jfreechart:jar:1.0.13:test
+[INFO] |  |  |  \- jfree:jcommon:jar:1.0.15:test (version managed from 1.0.16)
+[INFO] |  |  +- net.sf.jasperreports:jasperreports:jar:4.1.1:test
+[INFO] |  |  |  +- commons-beanutils:commons-beanutils:jar:1.8.0:test
+[INFO] |  |  |  +- commons-digester:commons-digester:jar:1.7:test
+[INFO] |  |  |  +- com.lowagie:itext:jar:2.1.5:test (version managed from 2.1.7)
+[INFO] |  |  |  |  +- bouncycastle:bcmail-jdk14:jar:138:test
+[INFO] |  |  |  |  \- bouncycastle:bcprov-jdk14:jar:138:test
+[INFO] |  |  |  +- xml-apis:xml-apis:jar:1.3.02:test
+[INFO] |  |  |  +- eclipse:jdtcore:jar:3.1.0:test
+[INFO] |  |  |  +- org.codehaus.castor:castor:jar:1.2:test
+[INFO] |  |  |  \- org.apache.poi:poi-ooxml:jar:3.6:test
+[INFO] |  |  |     +- org.apache.poi:poi:jar:3.7:test (version managed from 3.6)
+[INFO] |  |  |     \- org.apache.poi:poi-ooxml-schemas:jar:3.6:test
+[INFO] |  |  |        +- org.apache.xmlbeans:xmlbeans:jar:2.3.0:test
+[INFO] |  |  |        \- org.apache.geronimo.specs:geronimo-stax-api_1.0_spec:jar:1.0:test
+[INFO] |  |  +- org.codehaus.jackson:jackson-core-asl:jar:1.9.2:test
+[INFO] |  |  +- org.codehaus.jackson:jackson-mapper-asl:jar:1.9.2:test
+[INFO] |  |  +- org.codehaus.jackson:jackson-xc:jar:1.9.2:test
+[INFO] |  |  \- javax.xml.bind:jaxb-api:jar:2.2.2:test
+[INFO] |  |     +- javax.xml.stream:stax-api:jar:1.0-2:test
+[INFO] |  |     \- javax.activation:activation:jar:1.1:test
+[INFO] |  +- org.springframework:spring-context:jar:3.0.6.RELEASE:test
+[INFO] |  |  +- org.springframework:spring-aop:jar:3.0.6.RELEASE:test
+[INFO] |  |  |  \- aopalliance:aopalliance:jar:1.0:test
+[INFO] |  |  +- org.springframework:spring-beans:jar:3.0.6.RELEASE:test
+[INFO] |  |  +- org.springframework:spring-core:jar:3.0.6.RELEASE:test
+[INFO] |  |  +- org.springframework:spring-expression:jar:3.0.6.RELEASE:test
+[INFO] |  |  \- org.springframework:spring-asm:jar:3.0.6.RELEASE:test
+[INFO] |  +- org.springframework:spring-orm:jar:3.0.6.RELEASE:test
+[INFO] |  |  +- org.springframework:spring-jdbc:jar:3.0.6.RELEASE:test
+[INFO] |  |  \- org.springframework:spring-tx:jar:3.0.6.RELEASE:test
+[INFO] |  +- org.springframework:spring-test:jar:3.0.6.RELEASE:test
+[INFO] |  +- org.mockito:mockito-all:jar:1.8.5:test
+[INFO] |  \- org.hibernate:hibernate-core:jar:3.6.4.Final:test
+[INFO] |     +- antlr:antlr:jar:2.7.6:test
+[INFO] |     +- dom4j:dom4j:jar:1.6.1:test
+[INFO] |     +- org.hibernate:hibernate-commons-annotations:jar:3.2.0.Final:test
+[INFO] |     +- org.hibernate.javax.persistence:hibernate-jpa-2.0-api:jar:1.0.0.Final:test
+[INFO] |     +- javax.transaction:jta:jar:1.1:test
+[INFO] |     \- org.slf4j:slf4j-api:jar:1.6.1:test
+[INFO] +- commons-logging:commons-logging:jar:1.1.1:compile
+[INFO] +- org.codehaus.woodstox:stax2-api:jar:3.0.1:compile
+[INFO] |  \- stax:stax-api:jar:1.0.1:compile
+[INFO] +- org.codehaus.woodstox:woodstox-core-asl:jar:4.0.7:compile
+[INFO] +- junit:junit:jar:4.8.1:test
+[INFO] +- net.java.dev.msv:msv:jar:20081113:test
+[INFO] +- net.java.dev.msv:relaxngDatatype:jar:20081113:test
+[INFO] \- net.java.dev.msv:xsdlib:jar:20081113:test
+[INFO]                                                                         
+[INFO] ------------------------------------------------------------------------
+[INFO] Building DHIS Services Parent Project 2.6-SNAPSHOT
+[INFO] ------------------------------------------------------------------------
+[INFO] 
+[INFO] --- maven-dependency-plugin:2.1:tree (default-cli) @ dhis-services ---
+[INFO] org.hisp.dhis:dhis-services:pom:2.6-SNAPSHOT
+[INFO] +- org.hisp.dhis:dhis-api:jar:2.6-SNAPSHOT:compile
+[INFO] |  +- junit:junit:jar:4.8.1:compile
+[INFO] |  +- commons-lang:commons-lang:jar:2.6:compile
+[INFO] |  +- commons-collections:commons-collections:jar:3.2:compile
+[INFO] |  +- jfree:jfreechart:jar:1.0.13:compile
+[INFO] |  |  \- jfree:jcommon:jar:1.0.15:compile (version managed from 1.0.16)
+[INFO] |  +- net.sf.jasperreports:jasperreports:jar:4.1.1:compile
+[INFO] |  |  +- commons-beanutils:commons-beanutils:jar:1.8.0:compile
+[INFO] |  |  +- commons-digester:commons-digester:jar:1.7:compile
+[INFO] |  |  +- com.lowagie:itext:jar:2.1.5:compile (version managed from 2.1.7)
+[INFO] |  |  |  +- bouncycastle:bcmail-jdk14:jar:138:compile
+[INFO] |  |  |  \- bouncycastle:bcprov-jdk14:jar:138:compile
+[INFO] |  |  +- xml-apis:xml-apis:jar:1.3.02:compile
+[INFO] |  |  +- eclipse:jdtcore:jar:3.1.0:compile
+[INFO] |  |  +- org.codehaus.castor:castor:jar:1.2:compile
+[INFO] |  |  \- org.apache.poi:poi-ooxml:jar:3.6:compile
+[INFO] |  |     +- org.apache.poi:poi:jar:3.7:compile (version managed from 3.6)
+[INFO] |  |     +- org.apache.poi:poi-ooxml-schemas:jar:3.6:compile
+[INFO] |  |     |  +- org.apache.xmlbeans:xmlbeans:jar:2.3.0:compile
+[INFO] |  |     |  |  \- stax:stax-api:jar:1.0.1:compile
+[INFO] |  |     |  \- org.apache.geronimo.specs:geronimo-stax-api_1.0_spec:jar:1.0:compile
+[INFO] |  |     \- dom4j:dom4j:jar:1.6.1:compile
+[INFO] |  +- org.codehaus.jackson:jackson-core-asl:jar:1.9.2:compile
+[INFO] |  +- org.codehaus.jackson:jackson-mapper-asl:jar:1.9.2:compile
+[INFO] |  +- org.codehaus.jackson:jackson-xc:jar:1.9.2:compile
+[INFO] |  \- javax.xml.bind:jaxb-api:jar:2.2.2:compile
+[INFO] |     +- javax.xml.stream:stax-api:jar:1.0-2:test (scope managed from compile)
+[INFO] |     \- javax.activation:activation:jar:1.1:compile
+[INFO] \- org.hisp.dhis:dhis-support-test:jar:2.6-SNAPSHOT:test
+[INFO]    +- org.springframework:spring-context:jar:3.0.6.RELEASE:test
+[INFO]    |  +- org.springframework:spring-aop:jar:3.0.6.RELEASE:test
+[INFO]    |  |  \- aopalliance:aopalliance:jar:1.0:test
+[INFO]    |  +- org.springframework:spring-beans:jar:3.0.6.RELEASE:test
+[INFO]    |  +- org.springframework:spring-core:jar:3.0.6.RELEASE:test
+[INFO]    |  +- org.springframework:spring-expression:jar:3.0.6.RELEASE:test
+[INFO]    |  \- org.springframework:spring-asm:jar:3.0.6.RELEASE:test
+[INFO]    +- org.springframework:spring-orm:jar:3.0.6.RELEASE:test
+[INFO]    |  +- org.springframework:spring-jdbc:jar:3.0.6.RELEASE:test
+[INFO]    |  \- org.springframework:spring-tx:jar:3.0.6.RELEASE:test
+[INFO]    +- org.springframework:spring-test:jar:3.0.6.RELEASE:test
+[INFO]    +- commons-logging:commons-logging:jar:1.1.1:compile
+[INFO]    +- org.mockito:mockito-all:jar:1.8.5:test
+[INFO]    \- org.hibernate:hibernate-core:jar:3.6.4.Final:test
+[INFO]       +- antlr:antlr:jar:2.7.6:test
+[INFO]       +- org.hibernate:hibernate-commons-annotations:jar:3.2.0.Final:test
+[INFO]       +- org.hibernate.javax.persistence:hibernate-jpa-2.0-api:jar:1.0.0.Final:test
+[INFO]       +- javax.transaction:jta:jar:1.1:test
+[INFO]       \- org.slf4j:slf4j-api:jar:1.6.1:test
+[INFO]                                                                         
+[INFO] ------------------------------------------------------------------------
+[INFO] Building DHIS Core API Implementations 2.6-SNAPSHOT
+[INFO] ------------------------------------------------------------------------
+[INFO] 
+[INFO] --- maven-dependency-plugin:2.1:tree (default-cli) @ dhis-service-core ---
+[INFO] org.hisp.dhis:dhis-service-core:jar:2.6-SNAPSHOT
+[INFO] +- org.hisp.dhis:dhis-api:jar:2.6-SNAPSHOT:compile
+[INFO] |  +- junit:junit:jar:4.8.1:compile
+[INFO] |  +- commons-lang:commons-lang:jar:2.6:compile
+[INFO] |  +- jfree:jfreechart:jar:1.0.13:compile
+[INFO] |  |  \- jfree:jcommon:jar:1.0.15:compile (version managed from 1.0.16)
+[INFO] |  +- net.sf.jasperreports:jasperreports:jar:4.1.1:compile
+[INFO] |  |  +- commons-beanutils:commons-beanutils:jar:1.8.0:compile
+[INFO] |  |  +- commons-digester:commons-digester:jar:1.7:compile
+[INFO] |  |  +- xml-apis:xml-apis:jar:1.3.02:compile
+[INFO] |  |  +- eclipse:jdtcore:jar:3.1.0:compile
+[INFO] |  |  +- org.codehaus.castor:castor:jar:1.2:compile
+[INFO] |  |  \- org.apache.poi:poi-ooxml:jar:3.6:compile
+[INFO] |  |     \- org.apache.poi:poi-ooxml-schemas:jar:3.6:compile
+[INFO] |  |        +- org.apache.xmlbeans:xmlbeans:jar:2.3.0:compile
+[INFO] |  |        \- org.apache.geronimo.specs:geronimo-stax-api_1.0_spec:jar:1.0:compile
+[INFO] |  +- org.codehaus.jackson:jackson-core-asl:jar:1.9.2:compile
+[INFO] |  +- org.codehaus.jackson:jackson-mapper-asl:jar:1.9.2:compile
+[INFO] |  +- org.codehaus.jackson:jackson-xc:jar:1.9.2:compile
+[INFO] |  \- javax.xml.bind:jaxb-api:jar:2.2.2:compile
+[INFO] |     \- javax.xml.stream:stax-api:jar:1.0-2:test (scope managed from compile)
+[INFO] +- org.hisp.dhis:dhis-support-hibernate:jar:2.6-SNAPSHOT:compile
+[INFO] |  +- org.hibernate:hibernate-core:jar:3.6.4.Final:compile
+[INFO] |  |  +- antlr:antlr:jar:2.7.6:compile
+[INFO] |  |  +- dom4j:dom4j:jar:1.6.1:compile
+[INFO] |  |  +- org.hibernate:hibernate-commons-annotations:jar:3.2.0.Final:compile
+[INFO] |  |  +- org.hibernate.javax.persistence:hibernate-jpa-2.0-api:jar:1.0.0.Final:compile
+[INFO] |  |  +- javax.transaction:jta:jar:1.1:compile
+[INFO] |  |  \- org.slf4j:slf4j-api:jar:1.6.1:compile
+[INFO] |  +- org.hibernate:hibernate-ehcache:jar:3.6.4.Final:compile
+[INFO] |  |  \- net.sf.ehcache:ehcache-core:jar:2.4.1:compile
+[INFO] |  +- org.hibernate:hibernate-entitymanager:jar:3.6.4.Final:compile
+[INFO] |  |  +- cglib:cglib:jar:2.2:compile
+[INFO] |  |  |  \- asm:asm:jar:3.1:compile
+[INFO] |  |  \- javassist:javassist:jar:3.12.0.GA:compile
+[INFO] |  +- geronimo-spec:geronimo-spec-jta:jar:1.0-M1:compile
+[INFO] |  +- c3p0:c3p0:jar:0.9.1.2:compile
+[INFO] |  +- mysql:mysql-connector-java:jar:5.1.6:compile
+[INFO] |  +- postgresql:postgresql:jar:9.0-801.jdbc4:compile
+[INFO] |  +- com.h2database:h2:jar:1.3.154:compile
+[INFO] |  +- org.springframework:spring-orm:jar:3.0.6.RELEASE:compile
+[INFO] |  \- commons-logging:commons-logging:jar:1.1.1:compile
+[INFO] +- org.hisp.dhis:dhis-support-test:jar:2.6-SNAPSHOT:test
+[INFO] |  \- org.mockito:mockito-all:jar:1.8.5:test
+[INFO] +- org.hisp.dhis:dhis-support-system:jar:2.6-SNAPSHOT:compile
+[INFO] |  +- org.apache.poi:poi:jar:3.7:compile
+[INFO] |  +- org.slf4j:slf4j-log4j12:jar:1.6.1:compile
+[INFO] |  +- log4j:log4j:jar:1.2.16:compile
+[INFO] |  +- org.springframework:spring-web:jar:3.0.6.RELEASE:compile
+[INFO] |  |  \- aopalliance:aopalliance:jar:1.0:compile
+[INFO] |  +- com.lowagie:itext:jar:2.1.5:compile
+[INFO] |  |  +- bouncycastle:bcmail-jdk14:jar:138:compile
+[INFO] |  |  \- bouncycastle:bcprov-jdk14:jar:138:compile
+[INFO] |  +- commons-math:commons-math:jar:1.2:compile
+[INFO] |  +- commons-validator:commons-validator:jar:1.3.1:compile
+[INFO] |  +- commons-io:commons-io:jar:1.4:compile
+[INFO] |  +- joda-time:joda-time:jar:1.5.2:compile
+[INFO] |  +- org.amplecode:cave-process:jar:1.0.3:compile
+[INFO] |  |  \- commons-logging:commons-logging-api:jar:1.1:compile
+[INFO] |  +- org.amplecode:quick:jar:1.7.1:compile
+[INFO] |  |  \- org.hsqldb:hsqldb:jar:2.2.6:compile (version managed from 2.2.4)
+[INFO] |  +- net.sourceforge.jexcelapi:jxl:jar:2.6:compile
+[INFO] |  +- org.apache.velocity:velocity:jar:1.7:compile
+[INFO] |  +- org.apache.velocity:velocity-tools:jar:2.0:compile
+[INFO] |  |  +- commons-chain:commons-chain:jar:1.1:compile
+[INFO] |  |  +- oro:oro:jar:2.0.8:compile
+[INFO] |  |  +- sslext:sslext:jar:1.2-0:compile
+[INFO] |  |  +- org.apache.struts:struts-core:jar:1.3.8:compile
+[INFO] |  |  +- org.apache.struts:struts-taglib:jar:1.3.8:compile
+[INFO] |  |  \- org.apache.struts:struts-tiles:jar:1.3.8:compile
+[INFO] |  \- net.sf.json-lib:json-lib:jar:jdk15:2.4:compile
+[INFO] |     \- net.sf.ezmorph:ezmorph:jar:1.0.6:compile
+[INFO] +- org.hisp.dhis:dhis-support-external:jar:2.6-SNAPSHOT:compile
+[INFO] |  +- org.springframework:spring-aop:jar:3.0.6.RELEASE:compile
+[INFO] |  +- org.springframework:spring-asm:jar:3.0.6.RELEASE:compile
+[INFO] |  +- org.springframework:spring-beans:jar:3.0.6.RELEASE:compile
+[INFO] |  +- org.springframework:spring-context:jar:3.0.6.RELEASE:compile
+[INFO] |  +- org.springframework:spring-core:jar:3.0.6.RELEASE:compile
+[INFO] |  +- org.springframework:spring-expression:jar:3.0.6.RELEASE:compile
+[INFO] |  +- org.springframework:spring-jdbc:jar:3.0.6.RELEASE:compile
+[INFO] |  +- org.springframework:spring-test:jar:3.0.6.RELEASE:compile
+[INFO] |  +- org.springframework:spring-tx:jar:3.0.6.RELEASE:compile
+[INFO] |  +- org.springframework.security:spring-security-core:jar:3.0.7.RELEASE:compile
+[INFO] |  +- org.springframework.security:spring-security-web:jar:3.0.7.RELEASE:compile
+[INFO] |  +- org.springframework.security:spring-security-config:jar:3.0.7.RELEASE:compile
+[INFO] |  \- com.thoughtworks.xstream:xstream:jar:1.3:compile
+[INFO] |     \- xpp3:xpp3_min:jar:1.1.4c:compile
+[INFO] +- org.hisp.dhis:dhis-support-jdbc:jar:2.6-SNAPSHOT:compile
+[INFO] +- org.hisp.dhis:dhis-support-xml:jar:2.6-SNAPSHOT:compile
+[INFO] |  +- org.codehaus.woodstox:stax2-api:jar:3.0.1:compile
+[INFO] |  |  \- stax:stax-api:jar:1.0.1:compile
+[INFO] |  \- org.codehaus.woodstox:woodstox-core-asl:jar:4.0.7:compile
+[INFO] +- jep:jep:jar:2.24:compile
+[INFO] +- commons-codec:commons-codec:jar:1.3:compile
+[INFO] +- org.apache.commons:commons-email:jar:1.2:compile
+[INFO] |  +- javax.mail:mail:jar:1.4.1:compile
+[INFO] |  \- javax.activation:activation:jar:1.1:compile
+[INFO] +- commons-collections:commons-collections:jar:3.2:compile
+[INFO] +- org.aspectj:aspectjrt:jar:1.6.4:compile
+[INFO] \- org.aspectj:aspectjweaver:jar:1.6.4:compile
+[INFO]                                                                         
+[INFO] ------------------------------------------------------------------------
+[INFO] Building DHIS I18n Static 2.6-SNAPSHOT
+[INFO] ------------------------------------------------------------------------
+[INFO] 
+[INFO] --- maven-dependency-plugin:2.1:tree (default-cli) @ dhis-service-i18n ---
+[INFO] org.hisp.dhis:dhis-service-i18n:jar:2.6-SNAPSHOT
+[INFO] +- org.hisp.dhis:dhis-api:jar:2.6-SNAPSHOT:compile
+[INFO] |  +- junit:junit:jar:4.8.1:compile
+[INFO] |  +- commons-lang:commons-lang:jar:2.6:compile
+[INFO] |  +- commons-collections:commons-collections:jar:3.2:compile
+[INFO] |  +- jfree:jfreechart:jar:1.0.13:compile
+[INFO] |  |  \- jfree:jcommon:jar:1.0.15:compile (version managed from 1.0.16)
+[INFO] |  +- net.sf.jasperreports:jasperreports:jar:4.1.1:compile
+[INFO] |  |  +- commons-beanutils:commons-beanutils:jar:1.8.0:compile
+[INFO] |  |  +- commons-digester:commons-digester:jar:1.7:compile
+[INFO] |  |  +- com.lowagie:itext:jar:2.1.5:compile (version managed from 2.1.7)
+[INFO] |  |  |  +- bouncycastle:bcmail-jdk14:jar:138:compile
+[INFO] |  |  |  \- bouncycastle:bcprov-jdk14:jar:138:compile
+[INFO] |  |  +- xml-apis:xml-apis:jar:1.3.02:compile
+[INFO] |  |  +- eclipse:jdtcore:jar:3.1.0:compile
+[INFO] |  |  +- org.codehaus.castor:castor:jar:1.2:compile
+[INFO] |  |  \- org.apache.poi:poi-ooxml:jar:3.6:compile
+[INFO] |  |     +- org.apache.poi:poi-ooxml-schemas:jar:3.6:compile
+[INFO] |  |     |  +- org.apache.xmlbeans:xmlbeans:jar:2.3.0:compile
+[INFO] |  |     |  \- org.apache.geronimo.specs:geronimo-stax-api_1.0_spec:jar:1.0:compile
+[INFO] |  |     \- dom4j:dom4j:jar:1.6.1:compile
+[INFO] |  +- org.codehaus.jackson:jackson-core-asl:jar:1.9.2:compile
+[INFO] |  +- org.codehaus.jackson:jackson-mapper-asl:jar:1.9.2:compile
+[INFO] |  +- org.codehaus.jackson:jackson-xc:jar:1.9.2:compile
+[INFO] |  \- javax.xml.bind:jaxb-api:jar:2.2.2:compile
+[INFO] |     +- javax.xml.stream:stax-api:jar:1.0-2:test (scope managed from compile)
+[INFO] |     \- javax.activation:activation:jar:1.1:compile
+[INFO] +- org.hisp.dhis:dhis-service-core:jar:2.6-SNAPSHOT:compile
+[INFO] |  +- org.hisp.dhis:dhis-support-hibernate:jar:2.6-SNAPSHOT:compile
+[INFO] |  |  +- org.hibernate:hibernate-core:jar:3.6.4.Final:compile
+[INFO] |  |  |  +- antlr:antlr:jar:2.7.6:compile
+[INFO] |  |  |  +- org.hibernate:hibernate-commons-annotations:jar:3.2.0.Final:compile
+[INFO] |  |  |  +- org.hibernate.javax.persistence:hibernate-jpa-2.0-api:jar:1.0.0.Final:compile
+[INFO] |  |  |  +- javax.transaction:jta:jar:1.1:compile
+[INFO] |  |  |  \- org.slf4j:slf4j-api:jar:1.6.1:compile
+[INFO] |  |  +- org.hibernate:hibernate-ehcache:jar:3.6.4.Final:compile
+[INFO] |  |  |  \- net.sf.ehcache:ehcache-core:jar:2.4.1:compile
+[INFO] |  |  +- org.hibernate:hibernate-entitymanager:jar:3.6.4.Final:compile
+[INFO] |  |  |  +- cglib:cglib:jar:2.2:compile
+[INFO] |  |  |  |  \- asm:asm:jar:3.1:compile
+[INFO] |  |  |  \- javassist:javassist:jar:3.12.0.GA:compile
+[INFO] |  |  +- geronimo-spec:geronimo-spec-jta:jar:1.0-M1:compile
+[INFO] |  |  +- c3p0:c3p0:jar:0.9.1.2:compile
+[INFO] |  |  +- mysql:mysql-connector-java:jar:5.1.6:compile
+[INFO] |  |  +- postgresql:postgresql:jar:9.0-801.jdbc4:compile
+[INFO] |  |  +- com.h2database:h2:jar:1.3.154:compile
+[INFO] |  |  \- org.springframework:spring-orm:jar:3.0.6.RELEASE:compile
+[INFO] |  +- org.hisp.dhis:dhis-support-system:jar:2.6-SNAPSHOT:compile
+[INFO] |  |  +- org.apache.poi:poi:jar:3.7:compile
+[INFO] |  |  +- org.slf4j:slf4j-log4j12:jar:1.6.1:compile
+[INFO] |  |  +- log4j:log4j:jar:1.2.16:compile
+[INFO] |  |  +- org.springframework:spring-web:jar:3.0.6.RELEASE:compile
+[INFO] |  |  |  \- aopalliance:aopalliance:jar:1.0:compile
+[INFO] |  |  +- commons-math:commons-math:jar:1.2:compile
+[INFO] |  |  +- commons-validator:commons-validator:jar:1.3.1:compile
+[INFO] |  |  +- commons-io:commons-io:jar:1.4:compile
+[INFO] |  |  +- joda-time:joda-time:jar:1.5.2:compile
+[INFO] |  |  +- org.amplecode:cave-process:jar:1.0.3:compile
+[INFO] |  |  |  \- commons-logging:commons-logging-api:jar:1.1:compile
+[INFO] |  |  +- org.amplecode:quick:jar:1.7.1:compile
+[INFO] |  |  |  \- org.hsqldb:hsqldb:jar:2.2.6:compile (version managed from 2.2.4)
+[INFO] |  |  +- net.sourceforge.jexcelapi:jxl:jar:2.6:compile
+[INFO] |  |  +- org.apache.velocity:velocity:jar:1.7:compile
+[INFO] |  |  +- org.apache.velocity:velocity-tools:jar:2.0:compile
+[INFO] |  |  |  +- commons-chain:commons-chain:jar:1.1:compile
+[INFO] |  |  |  +- oro:oro:jar:2.0.8:compile
+[INFO] |  |  |  +- sslext:sslext:jar:1.2-0:compile
+[INFO] |  |  |  +- org.apache.struts:struts-core:jar:1.3.8:compile
+[INFO] |  |  |  +- org.apache.struts:struts-taglib:jar:1.3.8:compile
+[INFO] |  |  |  \- org.apache.struts:struts-tiles:jar:1.3.8:compile
+[INFO] |  |  \- net.sf.json-lib:json-lib:jar:jdk15:2.4:compile
+[INFO] |  |     \- net.sf.ezmorph:ezmorph:jar:1.0.6:compile
+[INFO] |  +- org.hisp.dhis:dhis-support-external:jar:2.6-SNAPSHOT:compile
+[INFO] |  |  +- org.springframework:spring-aop:jar:3.0.6.RELEASE:compile
+[INFO] |  |  +- org.springframework:spring-asm:jar:3.0.6.RELEASE:compile
+[INFO] |  |  +- org.springframework:spring-beans:jar:3.0.6.RELEASE:compile
+[INFO] |  |  +- org.springframework:spring-context:jar:3.0.6.RELEASE:compile
+[INFO] |  |  +- org.springframework:spring-core:jar:3.0.6.RELEASE:compile
+[INFO] |  |  +- org.springframework:spring-expression:jar:3.0.6.RELEASE:compile
+[INFO] |  |  +- org.springframework:spring-jdbc:jar:3.0.6.RELEASE:compile
+[INFO] |  |  +- org.springframework:spring-test:jar:3.0.6.RELEASE:compile
+[INFO] |  |  +- org.springframework:spring-tx:jar:3.0.6.RELEASE:compile
+[INFO] |  |  +- org.springframework.security:spring-security-core:jar:3.0.7.RELEASE:compile
+[INFO] |  |  +- org.springframework.security:spring-security-web:jar:3.0.7.RELEASE:compile
+[INFO] |  |  +- org.springframework.security:spring-security-config:jar:3.0.7.RELEASE:compile
+[INFO] |  |  \- com.thoughtworks.xstream:xstream:jar:1.3:compile
+[INFO] |  |     \- xpp3:xpp3_min:jar:1.1.4c:compile
+[INFO] |  +- org.hisp.dhis:dhis-support-jdbc:jar:2.6-SNAPSHOT:compile
+[INFO] |  +- org.hisp.dhis:dhis-support-xml:jar:2.6-SNAPSHOT:compile
+[INFO] |  |  +- org.codehaus.woodstox:stax2-api:jar:3.0.1:compile
+[INFO] |  |  |  \- stax:stax-api:jar:1.0.1:compile
+[INFO] |  |  \- org.codehaus.woodstox:woodstox-core-asl:jar:4.0.7:compile
+[INFO] |  +- jep:jep:jar:2.24:compile
+[INFO] |  +- commons-codec:commons-codec:jar:1.3:compile
+[INFO] |  +- org.apache.commons:commons-email:jar:1.2:compile
+[INFO] |  |  \- javax.mail:mail:jar:1.4.1:compile
+[INFO] |  +- org.aspectj:aspectjrt:jar:1.6.4:compile
+[INFO] |  \- org.aspectj:aspectjweaver:jar:1.6.4:compile
+[INFO] \- org.hisp.dhis:dhis-support-test:jar:2.6-SNAPSHOT:test
+[INFO]    +- commons-logging:commons-logging:jar:1.1.1:compile
+[INFO]    \- org.mockito:mockito-all:jar:1.8.5:test
+[INFO]                                                                         
+[INFO] ------------------------------------------------------------------------
+[INFO] Building DHIS Options 2.6-SNAPSHOT
+[INFO] ------------------------------------------------------------------------
+[INFO] 
+[INFO] --- maven-dependency-plugin:2.1:tree (default-cli) @ dhis-service-options ---
+[INFO] org.hisp.dhis:dhis-service-options:jar:2.6-SNAPSHOT
+[INFO] +- org.hisp.dhis:dhis-api:jar:2.6-SNAPSHOT:compile
+[INFO] |  +- junit:junit:jar:4.8.1:compile
+[INFO] |  +- commons-lang:commons-lang:jar:2.6:compile
+[INFO] |  +- commons-collections:commons-collections:jar:3.2:compile
+[INFO] |  +- jfree:jfreechart:jar:1.0.13:compile
+[INFO] |  |  \- jfree:jcommon:jar:1.0.15:compile (version managed from 1.0.16)
+[INFO] |  +- net.sf.jasperreports:jasperreports:jar:4.1.1:compile
+[INFO] |  |  +- commons-beanutils:commons-beanutils:jar:1.8.0:compile
+[INFO] |  |  +- commons-digester:commons-digester:jar:1.7:compile
+[INFO] |  |  +- com.lowagie:itext:jar:2.1.5:compile (version managed from 2.1.7)
+[INFO] |  |  |  +- bouncycastle:bcmail-jdk14:jar:138:compile
+[INFO] |  |  |  \- bouncycastle:bcprov-jdk14:jar:138:compile
+[INFO] |  |  +- xml-apis:xml-apis:jar:1.3.02:compile
+[INFO] |  |  +- eclipse:jdtcore:jar:3.1.0:compile
+[INFO] |  |  +- org.codehaus.castor:castor:jar:1.2:compile
+[INFO] |  |  \- org.apache.poi:poi-ooxml:jar:3.6:compile
+[INFO] |  |     +- org.apache.poi:poi-ooxml-schemas:jar:3.6:compile
+[INFO] |  |     |  +- org.apache.xmlbeans:xmlbeans:jar:2.3.0:compile
+[INFO] |  |     |  \- org.apache.geronimo.specs:geronimo-stax-api_1.0_spec:jar:1.0:compile
+[INFO] |  |     \- dom4j:dom4j:jar:1.6.1:compile
+[INFO] |  +- org.codehaus.jackson:jackson-core-asl:jar:1.9.2:compile
+[INFO] |  +- org.codehaus.jackson:jackson-mapper-asl:jar:1.9.2:compile
+[INFO] |  +- org.codehaus.jackson:jackson-xc:jar:1.9.2:compile
+[INFO] |  \- javax.xml.bind:jaxb-api:jar:2.2.2:compile
+[INFO] |     +- javax.xml.stream:stax-api:jar:1.0-2:test (scope managed from compile)
+[INFO] |     \- javax.activation:activation:jar:1.1:compile
+[INFO] +- org.hisp.dhis:dhis-service-core:jar:2.6-SNAPSHOT:compile
+[INFO] |  +- org.hisp.dhis:dhis-support-hibernate:jar:2.6-SNAPSHOT:compile
+[INFO] |  |  +- org.hibernate:hibernate-core:jar:3.6.4.Final:compile
+[INFO] |  |  |  +- antlr:antlr:jar:2.7.6:compile
+[INFO] |  |  |  +- org.hibernate:hibernate-commons-annotations:jar:3.2.0.Final:compile
+[INFO] |  |  |  +- org.hibernate.javax.persistence:hibernate-jpa-2.0-api:jar:1.0.0.Final:compile
+[INFO] |  |  |  +- javax.transaction:jta:jar:1.1:compile
+[INFO] |  |  |  \- org.slf4j:slf4j-api:jar:1.6.1:compile
+[INFO] |  |  +- org.hibernate:hibernate-ehcache:jar:3.6.4.Final:compile
+[INFO] |  |  |  \- net.sf.ehcache:ehcache-core:jar:2.4.1:compile
+[INFO] |  |  +- org.hibernate:hibernate-entitymanager:jar:3.6.4.Final:compile
+[INFO] |  |  |  +- cglib:cglib:jar:2.2:compile
+[INFO] |  |  |  |  \- asm:asm:jar:3.1:compile
+[INFO] |  |  |  \- javassist:javassist:jar:3.12.0.GA:compile
+[INFO] |  |  +- geronimo-spec:geronimo-spec-jta:jar:1.0-M1:compile
+[INFO] |  |  +- c3p0:c3p0:jar:0.9.1.2:compile
+[INFO] |  |  +- mysql:mysql-connector-java:jar:5.1.6:compile
+[INFO] |  |  +- postgresql:postgresql:jar:9.0-801.jdbc4:compile
+[INFO] |  |  +- com.h2database:h2:jar:1.3.154:compile
+[INFO] |  |  \- org.springframework:spring-orm:jar:3.0.6.RELEASE:compile
+[INFO] |  +- org.hisp.dhis:dhis-support-system:jar:2.6-SNAPSHOT:compile
+[INFO] |  |  +- org.apache.poi:poi:jar:3.7:compile
+[INFO] |  |  +- org.slf4j:slf4j-log4j12:jar:1.6.1:compile
+[INFO] |  |  +- log4j:log4j:jar:1.2.16:compile
+[INFO] |  |  +- org.springframework:spring-web:jar:3.0.6.RELEASE:compile
+[INFO] |  |  |  \- aopalliance:aopalliance:jar:1.0:compile
+[INFO] |  |  +- commons-math:commons-math:jar:1.2:compile
+[INFO] |  |  +- commons-validator:commons-validator:jar:1.3.1:compile
+[INFO] |  |  +- commons-io:commons-io:jar:1.4:compile
+[INFO] |  |  +- joda-time:joda-time:jar:1.5.2:compile
+[INFO] |  |  +- org.amplecode:cave-process:jar:1.0.3:compile
+[INFO] |  |  |  \- commons-logging:commons-logging-api:jar:1.1:compile
+[INFO] |  |  +- org.amplecode:quick:jar:1.7.1:compile
+[INFO] |  |  |  \- org.hsqldb:hsqldb:jar:2.2.6:compile (version managed from 2.2.4)
+[INFO] |  |  +- net.sourceforge.jexcelapi:jxl:jar:2.6:compile
+[INFO] |  |  +- org.apache.velocity:velocity:jar:1.7:compile
+[INFO] |  |  +- org.apache.velocity:velocity-tools:jar:2.0:compile
+[INFO] |  |  |  +- commons-chain:commons-chain:jar:1.1:compile
+[INFO] |  |  |  +- oro:oro:jar:2.0.8:compile
+[INFO] |  |  |  +- sslext:sslext:jar:1.2-0:compile
+[INFO] |  |  |  +- org.apache.struts:struts-core:jar:1.3.8:compile
+[INFO] |  |  |  +- org.apache.struts:struts-taglib:jar:1.3.8:compile
+[INFO] |  |  |  \- org.apache.struts:struts-tiles:jar:1.3.8:compile
+[INFO] |  |  \- net.sf.json-lib:json-lib:jar:jdk15:2.4:compile
+[INFO] |  |     \- net.sf.ezmorph:ezmorph:jar:1.0.6:compile
+[INFO] |  +- org.hisp.dhis:dhis-support-external:jar:2.6-SNAPSHOT:compile
+[INFO] |  |  +- org.springframework:spring-aop:jar:3.0.6.RELEASE:compile
+[INFO] |  |  +- org.springframework:spring-asm:jar:3.0.6.RELEASE:compile
+[INFO] |  |  +- org.springframework:spring-beans:jar:3.0.6.RELEASE:compile
+[INFO] |  |  +- org.springframework:spring-context:jar:3.0.6.RELEASE:compile
+[INFO] |  |  +- org.springframework:spring-core:jar:3.0.6.RELEASE:compile
+[INFO] |  |  +- org.springframework:spring-expression:jar:3.0.6.RELEASE:compile
+[INFO] |  |  +- org.springframework:spring-jdbc:jar:3.0.6.RELEASE:compile
+[INFO] |  |  +- org.springframework:spring-test:jar:3.0.6.RELEASE:compile
+[INFO] |  |  +- org.springframework:spring-tx:jar:3.0.6.RELEASE:compile
+[INFO] |  |  +- org.springframework.security:spring-security-core:jar:3.0.7.RELEASE:compile
+[INFO] |  |  +- org.springframework.security:spring-security-web:jar:3.0.7.RELEASE:compile
+[INFO] |  |  +- org.springframework.security:spring-security-config:jar:3.0.7.RELEASE:compile
+[INFO] |  |  \- com.thoughtworks.xstream:xstream:jar:1.3:compile
+[INFO] |  |     \- xpp3:xpp3_min:jar:1.1.4c:compile
+[INFO] |  +- org.hisp.dhis:dhis-support-jdbc:jar:2.6-SNAPSHOT:compile
+[INFO] |  +- org.hisp.dhis:dhis-support-xml:jar:2.6-SNAPSHOT:compile
+[INFO] |  |  +- org.codehaus.woodstox:stax2-api:jar:3.0.1:compile
+[INFO] |  |  |  \- stax:stax-api:jar:1.0.1:compile
+[INFO] |  |  \- org.codehaus.woodstox:woodstox-core-asl:jar:4.0.7:compile
+[INFO] |  +- jep:jep:jar:2.24:compile
+[INFO] |  +- commons-codec:commons-codec:jar:1.3:compile
+[INFO] |  +- org.apache.commons:commons-email:jar:1.2:compile
+[INFO] |  |  \- javax.mail:mail:jar:1.4.1:compile
+[INFO] |  +- org.aspectj:aspectjrt:jar:1.6.4:compile
+[INFO] |  \- org.aspectj:aspectjweaver:jar:1.6.4:compile
+[INFO] \- org.hisp.dhis:dhis-support-test:jar:2.6-SNAPSHOT:test
+[INFO]    +- commons-logging:commons-logging:jar:1.1.1:compile
+[INFO]    \- org.mockito:mockito-all:jar:1.8.5:test
+[INFO]                                                                         
+[INFO] ------------------------------------------------------------------------
+[INFO] Building DHIS Administration Service 2.6-SNAPSHOT
+[INFO] ------------------------------------------------------------------------
+[INFO] 
+[INFO] --- maven-dependency-plugin:2.1:tree (default-cli) @ dhis-service-administration ---
+[INFO] org.hisp.dhis:dhis-service-administration:jar:2.6-SNAPSHOT
+[INFO] +- org.hisp.dhis:dhis-api:jar:2.6-SNAPSHOT:compile
+[INFO] |  +- junit:junit:jar:4.8.1:compile
+[INFO] |  +- commons-lang:commons-lang:jar:2.6:compile
+[INFO] |  +- commons-collections:commons-collections:jar:3.2:compile
+[INFO] |  +- jfree:jfreechart:jar:1.0.13:compile
+[INFO] |  |  \- jfree:jcommon:jar:1.0.15:compile (version managed from 1.0.16)
+[INFO] |  +- net.sf.jasperreports:jasperreports:jar:4.1.1:compile
+[INFO] |  |  +- commons-beanutils:commons-beanutils:jar:1.8.0:compile
+[INFO] |  |  +- commons-digester:commons-digester:jar:1.7:compile
+[INFO] |  |  +- com.lowagie:itext:jar:2.1.5:compile (version managed from 2.1.7)
+[INFO] |  |  |  +- bouncycastle:bcmail-jdk14:jar:138:compile
+[INFO] |  |  |  \- bouncycastle:bcprov-jdk14:jar:138:compile
+[INFO] |  |  +- xml-apis:xml-apis:jar:1.3.02:compile
+[INFO] |  |  +- eclipse:jdtcore:jar:3.1.0:compile
+[INFO] |  |  +- org.codehaus.castor:castor:jar:1.2:compile
+[INFO] |  |  \- org.apache.poi:poi-ooxml:jar:3.6:compile
+[INFO] |  |     +- org.apache.poi:poi-ooxml-schemas:jar:3.6:compile
+[INFO] |  |     |  +- org.apache.xmlbeans:xmlbeans:jar:2.3.0:compile
+[INFO] |  |     |  \- org.apache.geronimo.specs:geronimo-stax-api_1.0_spec:jar:1.0:compile
+[INFO] |  |     \- dom4j:dom4j:jar:1.6.1:compile
+[INFO] |  +- org.codehaus.jackson:jackson-core-asl:jar:1.9.2:compile
+[INFO] |  +- org.codehaus.jackson:jackson-mapper-asl:jar:1.9.2:compile
+[INFO] |  +- org.codehaus.jackson:jackson-xc:jar:1.9.2:compile
+[INFO] |  \- javax.xml.bind:jaxb-api:jar:2.2.2:compile
+[INFO] |     +- javax.xml.stream:stax-api:jar:1.0-2:test (scope managed from compile)
+[INFO] |     \- javax.activation:activation:jar:1.1:compile
+[INFO] +- org.hisp.dhis:dhis-service-core:jar:2.6-SNAPSHOT:compile
+[INFO] |  +- org.hisp.dhis:dhis-support-hibernate:jar:2.6-SNAPSHOT:compile
+[INFO] |  |  +- org.hibernate:hibernate-core:jar:3.6.4.Final:compile
+[INFO] |  |  |  +- antlr:antlr:jar:2.7.6:compile
+[INFO] |  |  |  +- org.hibernate:hibernate-commons-annotations:jar:3.2.0.Final:compile
+[INFO] |  |  |  +- org.hibernate.javax.persistence:hibernate-jpa-2.0-api:jar:1.0.0.Final:compile
+[INFO] |  |  |  +- javax.transaction:jta:jar:1.1:compile
+[INFO] |  |  |  \- org.slf4j:slf4j-api:jar:1.6.1:compile
+[INFO] |  |  +- org.hibernate:hibernate-ehcache:jar:3.6.4.Final:compile
+[INFO] |  |  |  \- net.sf.ehcache:ehcache-core:jar:2.4.1:compile
+[INFO] |  |  +- org.hibernate:hibernate-entitymanager:jar:3.6.4.Final:compile
+[INFO] |  |  |  +- cglib:cglib:jar:2.2:compile
+[INFO] |  |  |  |  \- asm:asm:jar:3.1:compile
+[INFO] |  |  |  \- javassist:javassist:jar:3.12.0.GA:compile
+[INFO] |  |  +- geronimo-spec:geronimo-spec-jta:jar:1.0-M1:compile
+[INFO] |  |  +- c3p0:c3p0:jar:0.9.1.2:compile
+[INFO] |  |  +- mysql:mysql-connector-java:jar:5.1.6:compile
+[INFO] |  |  +- postgresql:postgresql:jar:9.0-801.jdbc4:compile
+[INFO] |  |  +- com.h2database:h2:jar:1.3.154:compile
+[INFO] |  |  \- org.springframework:spring-orm:jar:3.0.6.RELEASE:compile
+[INFO] |  +- org.hisp.dhis:dhis-support-system:jar:2.6-SNAPSHOT:compile
+[INFO] |  |  +- org.apache.poi:poi:jar:3.7:compile
+[INFO] |  |  +- org.slf4j:slf4j-log4j12:jar:1.6.1:compile
+[INFO] |  |  +- log4j:log4j:jar:1.2.16:compile
+[INFO] |  |  +- org.springframework:spring-web:jar:3.0.6.RELEASE:compile
+[INFO] |  |  |  \- aopalliance:aopalliance:jar:1.0:compile
+[INFO] |  |  +- commons-validator:commons-validator:jar:1.3.1:compile
+[INFO] |  |  +- commons-io:commons-io:jar:1.4:compile
+[INFO] |  |  +- joda-time:joda-time:jar:1.5.2:compile
+[INFO] |  |  +- org.amplecode:cave-process:jar:1.0.3:compile
+[INFO] |  |  |  \- commons-logging:commons-logging-api:jar:1.1:compile
+[INFO] |  |  +- org.amplecode:quick:jar:1.7.1:compile
+[INFO] |  |  |  \- org.hsqldb:hsqldb:jar:2.2.6:compile (version managed from 2.2.4)
+[INFO] |  |  +- net.sourceforge.jexcelapi:jxl:jar:2.6:compile
+[INFO] |  |  +- org.apache.velocity:velocity:jar:1.7:compile
+[INFO] |  |  +- org.apache.velocity:velocity-tools:jar:2.0:compile
+[INFO] |  |  |  +- commons-chain:commons-chain:jar:1.1:compile
+[INFO] |  |  |  +- oro:oro:jar:2.0.8:compile
+[INFO] |  |  |  +- sslext:sslext:jar:1.2-0:compile
+[INFO] |  |  |  +- org.apache.struts:struts-core:jar:1.3.8:compile
+[INFO] |  |  |  +- org.apache.struts:struts-taglib:jar:1.3.8:compile
+[INFO] |  |  |  \- org.apache.struts:struts-tiles:jar:1.3.8:compile
+[INFO] |  |  \- net.sf.json-lib:json-lib:jar:jdk15:2.4:compile
+[INFO] |  |     \- net.sf.ezmorph:ezmorph:jar:1.0.6:compile
+[INFO] |  +- org.hisp.dhis:dhis-support-external:jar:2.6-SNAPSHOT:compile
+[INFO] |  |  +- org.springframework:spring-aop:jar:3.0.6.RELEASE:compile
+[INFO] |  |  +- org.springframework:spring-asm:jar:3.0.6.RELEASE:compile
+[INFO] |  |  +- org.springframework:spring-beans:jar:3.0.6.RELEASE:compile
+[INFO] |  |  +- org.springframework:spring-context:jar:3.0.6.RELEASE:compile
+[INFO] |  |  +- org.springframework:spring-core:jar:3.0.6.RELEASE:compile
+[INFO] |  |  +- org.springframework:spring-expression:jar:3.0.6.RELEASE:compile
+[INFO] |  |  +- org.springframework:spring-jdbc:jar:3.0.6.RELEASE:compile
+[INFO] |  |  +- org.springframework:spring-test:jar:3.0.6.RELEASE:compile
+[INFO] |  |  +- org.springframework:spring-tx:jar:3.0.6.RELEASE:compile
+[INFO] |  |  +- org.springframework.security:spring-security-core:jar:3.0.7.RELEASE:compile
+[INFO] |  |  +- org.springframework.security:spring-security-web:jar:3.0.7.RELEASE:compile
+[INFO] |  |  +- org.springframework.security:spring-security-config:jar:3.0.7.RELEASE:compile
+[INFO] |  |  \- com.thoughtworks.xstream:xstream:jar:1.3:compile
+[INFO] |  |     \- xpp3:xpp3_min:jar:1.1.4c:compile
+[INFO] |  +- org.hisp.dhis:dhis-support-jdbc:jar:2.6-SNAPSHOT:compile
+[INFO] |  +- org.hisp.dhis:dhis-support-xml:jar:2.6-SNAPSHOT:compile
+[INFO] |  |  +- org.codehaus.woodstox:stax2-api:jar:3.0.1:compile
+[INFO] |  |  |  \- stax:stax-api:jar:1.0.1:compile
+[INFO] |  |  \- org.codehaus.woodstox:woodstox-core-asl:jar:4.0.7:compile
+[INFO] |  +- jep:jep:jar:2.24:compile
+[INFO] |  +- commons-codec:commons-codec:jar:1.3:compile
+[INFO] |  +- org.apache.commons:commons-email:jar:1.2:compile
+[INFO] |  |  \- javax.mail:mail:jar:1.4.1:compile
+[INFO] |  +- org.aspectj:aspectjrt:jar:1.6.4:compile
+[INFO] |  \- org.aspectj:aspectjweaver:jar:1.6.4:compile
+[INFO] +- org.hisp.dhis:dhis-service-options:jar:2.6-SNAPSHOT:compile
+[INFO] +- commons-logging:commons-logging:jar:1.1.1:compile
+[INFO] +- commons-math:commons-math:jar:1.2:compile
+[INFO] \- org.hisp.dhis:dhis-support-test:jar:2.6-SNAPSHOT:test
+[INFO]    \- org.mockito:mockito-all:jar:1.8.5:test
+[INFO]                                                                         
+[INFO] ------------------------------------------------------------------------
+[INFO] Building DHIS DataMart Service - Default 2.6-SNAPSHOT
+[INFO] ------------------------------------------------------------------------
+[INFO] 
+[INFO] --- maven-dependency-plugin:2.1:tree (default-cli) @ dhis-service-datamart-default ---
+[INFO] org.hisp.dhis:dhis-service-datamart-default:jar:2.6-SNAPSHOT
+[INFO] +- org.hisp.dhis:dhis-api:jar:2.6-SNAPSHOT:compile
+[INFO] |  +- junit:junit:jar:4.8.1:compile
+[INFO] |  +- commons-collections:commons-collections:jar:3.2:compile
+[INFO] |  +- jfree:jfreechart:jar:1.0.13:compile
+[INFO] |  |  \- jfree:jcommon:jar:1.0.15:compile (version managed from 1.0.16)
+[INFO] |  +- net.sf.jasperreports:jasperreports:jar:4.1.1:compile
+[INFO] |  |  +- commons-beanutils:commons-beanutils:jar:1.8.0:compile
+[INFO] |  |  +- commons-digester:commons-digester:jar:1.7:compile
+[INFO] |  |  +- com.lowagie:itext:jar:2.1.5:compile (version managed from 2.1.7)
+[INFO] |  |  |  +- bouncycastle:bcmail-jdk14:jar:138:compile
+[INFO] |  |  |  \- bouncycastle:bcprov-jdk14:jar:138:compile
+[INFO] |  |  +- xml-apis:xml-apis:jar:1.3.02:compile
+[INFO] |  |  +- eclipse:jdtcore:jar:3.1.0:compile
+[INFO] |  |  +- org.codehaus.castor:castor:jar:1.2:compile
+[INFO] |  |  \- org.apache.poi:poi-ooxml:jar:3.6:compile
+[INFO] |  |     +- org.apache.poi:poi-ooxml-schemas:jar:3.6:compile
+[INFO] |  |     |  +- org.apache.xmlbeans:xmlbeans:jar:2.3.0:compile
+[INFO] |  |     |  \- org.apache.geronimo.specs:geronimo-stax-api_1.0_spec:jar:1.0:compile
+[INFO] |  |     \- dom4j:dom4j:jar:1.6.1:compile
+[INFO] |  +- org.codehaus.jackson:jackson-core-asl:jar:1.9.2:compile
+[INFO] |  +- org.codehaus.jackson:jackson-mapper-asl:jar:1.9.2:compile
+[INFO] |  +- org.codehaus.jackson:jackson-xc:jar:1.9.2:compile
+[INFO] |  \- javax.xml.bind:jaxb-api:jar:2.2.2:compile
+[INFO] |     +- javax.xml.stream:stax-api:jar:1.0-2:test (scope managed from compile)
+[INFO] |     \- javax.activation:activation:jar:1.1:compile
+[INFO] +- org.hisp.dhis:dhis-service-core:jar:2.6-SNAPSHOT:compile
+[INFO] |  +- org.hisp.dhis:dhis-support-hibernate:jar:2.6-SNAPSHOT:compile
+[INFO] |  |  +- org.hibernate:hibernate-core:jar:3.6.4.Final:compile
+[INFO] |  |  |  +- antlr:antlr:jar:2.7.6:compile
+[INFO] |  |  |  +- org.hibernate:hibernate-commons-annotations:jar:3.2.0.Final:compile
+[INFO] |  |  |  +- org.hibernate.javax.persistence:hibernate-jpa-2.0-api:jar:1.0.0.Final:compile
+[INFO] |  |  |  +- javax.transaction:jta:jar:1.1:compile
+[INFO] |  |  |  \- org.slf4j:slf4j-api:jar:1.6.1:compile
+[INFO] |  |  +- org.hibernate:hibernate-ehcache:jar:3.6.4.Final:compile
+[INFO] |  |  |  \- net.sf.ehcache:ehcache-core:jar:2.4.1:compile
+[INFO] |  |  +- org.hibernate:hibernate-entitymanager:jar:3.6.4.Final:compile
+[INFO] |  |  |  +- cglib:cglib:jar:2.2:compile
+[INFO] |  |  |  |  \- asm:asm:jar:3.1:compile
+[INFO] |  |  |  \- javassist:javassist:jar:3.12.0.GA:compile
+[INFO] |  |  +- geronimo-spec:geronimo-spec-jta:jar:1.0-M1:compile
+[INFO] |  |  +- c3p0:c3p0:jar:0.9.1.2:compile
+[INFO] |  |  +- mysql:mysql-connector-java:jar:5.1.6:compile
+[INFO] |  |  +- postgresql:postgresql:jar:9.0-801.jdbc4:compile
+[INFO] |  |  +- com.h2database:h2:jar:1.3.154:compile
+[INFO] |  |  \- org.springframework:spring-orm:jar:3.0.6.RELEASE:compile
+[INFO] |  +- org.hisp.dhis:dhis-support-system:jar:2.6-SNAPSHOT:compile
+[INFO] |  |  +- org.apache.poi:poi:jar:3.7:compile
+[INFO] |  |  +- org.slf4j:slf4j-log4j12:jar:1.6.1:compile
+[INFO] |  |  +- log4j:log4j:jar:1.2.16:compile
+[INFO] |  |  +- org.springframework:spring-web:jar:3.0.6.RELEASE:compile
+[INFO] |  |  |  \- aopalliance:aopalliance:jar:1.0:compile
+[INFO] |  |  +- commons-math:commons-math:jar:1.2:compile
+[INFO] |  |  +- commons-validator:commons-validator:jar:1.3.1:compile
+[INFO] |  |  +- commons-io:commons-io:jar:1.4:compile
+[INFO] |  |  +- joda-time:joda-time:jar:1.5.2:compile
+[INFO] |  |  +- net.sourceforge.jexcelapi:jxl:jar:2.6:compile
+[INFO] |  |  +- org.apache.velocity:velocity:jar:1.7:compile
+[INFO] |  |  +- org.apache.velocity:velocity-tools:jar:2.0:compile
+[INFO] |  |  |  +- commons-chain:commons-chain:jar:1.1:compile
+[INFO] |  |  |  +- oro:oro:jar:2.0.8:compile
+[INFO] |  |  |  +- sslext:sslext:jar:1.2-0:compile
+[INFO] |  |  |  +- org.apache.struts:struts-core:jar:1.3.8:compile
+[INFO] |  |  |  +- org.apache.struts:struts-taglib:jar:1.3.8:compile
+[INFO] |  |  |  \- org.apache.struts:struts-tiles:jar:1.3.8:compile
+[INFO] |  |  \- net.sf.json-lib:json-lib:jar:jdk15:2.4:compile
+[INFO] |  |     \- net.sf.ezmorph:ezmorph:jar:1.0.6:compile
+[INFO] |  +- org.hisp.dhis:dhis-support-external:jar:2.6-SNAPSHOT:compile
+[INFO] |  |  +- org.springframework:spring-aop:jar:3.0.6.RELEASE:compile
+[INFO] |  |  +- org.springframework:spring-asm:jar:3.0.6.RELEASE:compile
+[INFO] |  |  +- org.springframework:spring-context:jar:3.0.6.RELEASE:compile
+[INFO] |  |  +- org.springframework:spring-core:jar:3.0.6.RELEASE:compile
+[INFO] |  |  +- org.springframework:spring-expression:jar:3.0.6.RELEASE:compile
+[INFO] |  |  +- org.springframework:spring-jdbc:jar:3.0.6.RELEASE:compile
+[INFO] |  |  +- org.springframework:spring-test:jar:3.0.6.RELEASE:compile
+[INFO] |  |  +- org.springframework:spring-tx:jar:3.0.6.RELEASE:compile
+[INFO] |  |  +- org.springframework.security:spring-security-core:jar:3.0.7.RELEASE:compile
+[INFO] |  |  +- org.springframework.security:spring-security-web:jar:3.0.7.RELEASE:compile
+[INFO] |  |  +- org.springframework.security:spring-security-config:jar:3.0.7.RELEASE:compile
+[INFO] |  |  \- com.thoughtworks.xstream:xstream:jar:1.3:compile
+[INFO] |  |     \- xpp3:xpp3_min:jar:1.1.4c:compile
+[INFO] |  +- org.hisp.dhis:dhis-support-jdbc:jar:2.6-SNAPSHOT:compile
+[INFO] |  +- org.hisp.dhis:dhis-support-xml:jar:2.6-SNAPSHOT:compile
+[INFO] |  |  +- org.codehaus.woodstox:stax2-api:jar:3.0.1:compile
+[INFO] |  |  |  \- stax:stax-api:jar:1.0.1:compile
+[INFO] |  |  \- org.codehaus.woodstox:woodstox-core-asl:jar:4.0.7:compile
+[INFO] |  +- commons-codec:commons-codec:jar:1.3:compile
+[INFO] |  +- org.apache.commons:commons-email:jar:1.2:compile
+[INFO] |  |  \- javax.mail:mail:jar:1.4.1:compile
+[INFO] |  +- org.aspectj:aspectjrt:jar:1.6.4:compile
+[INFO] |  \- org.aspectj:aspectjweaver:jar:1.6.4:compile
+[INFO] +- org.hisp.dhis:dhis-service-options:jar:2.6-SNAPSHOT:compile
+[INFO] +- jep:jep:jar:2.24:compile
+[INFO] +- commons-logging:commons-logging:jar:1.1.1:compile
+[INFO] +- commons-lang:commons-lang:jar:2.6:compile
+[INFO] +- org.amplecode:cave-process:jar:1.0.3:compile
+[INFO] |  +- commons-logging:commons-logging-api:jar:1.1:compile
+[INFO] |  \- org.springframework:spring-beans:jar:3.0.6.RELEASE:compile
+[INFO] +- org.amplecode:quick:jar:1.7.1:compile
+[INFO] |  \- org.hsqldb:hsqldb:jar:2.2.6:compile (version managed from 2.2.4)
+[INFO] \- org.hisp.dhis:dhis-support-test:jar:2.6-SNAPSHOT:test
+[INFO]    \- org.mockito:mockito-all:jar:1.8.5:test
+[INFO]                                                                         
+[INFO] ------------------------------------------------------------------------
+[INFO] Building DHIS Aggregation Service - Default 2.6-SNAPSHOT
+[INFO] ------------------------------------------------------------------------
+[INFO] 
+[INFO] --- maven-dependency-plugin:2.1:tree (default-cli) @ dhis-service-aggregationengine-default ---
+[INFO] org.hisp.dhis:dhis-service-aggregationengine-default:jar:2.6-SNAPSHOT
+[INFO] +- org.hisp.dhis:dhis-api:jar:2.6-SNAPSHOT:compile
+[INFO] |  +- junit:junit:jar:4.8.1:compile
+[INFO] |  +- commons-lang:commons-lang:jar:2.6:compile
+[INFO] |  +- commons-collections:commons-collections:jar:3.2:compile
+[INFO] |  +- jfree:jfreechart:jar:1.0.13:compile
+[INFO] |  |  \- jfree:jcommon:jar:1.0.15:compile (version managed from 1.0.16)
+[INFO] |  +- net.sf.jasperreports:jasperreports:jar:4.1.1:compile
+[INFO] |  |  +- commons-beanutils:commons-beanutils:jar:1.8.0:compile
+[INFO] |  |  +- commons-digester:commons-digester:jar:1.7:compile
+[INFO] |  |  +- com.lowagie:itext:jar:2.1.5:compile (version managed from 2.1.7)
+[INFO] |  |  |  +- bouncycastle:bcmail-jdk14:jar:138:compile
+[INFO] |  |  |  \- bouncycastle:bcprov-jdk14:jar:138:compile
+[INFO] |  |  +- xml-apis:xml-apis:jar:1.3.02:compile
+[INFO] |  |  +- eclipse:jdtcore:jar:3.1.0:compile
+[INFO] |  |  +- org.codehaus.castor:castor:jar:1.2:compile
+[INFO] |  |  \- org.apache.poi:poi-ooxml:jar:3.6:compile
+[INFO] |  |     +- org.apache.poi:poi-ooxml-schemas:jar:3.6:compile
+[INFO] |  |     |  +- org.apache.xmlbeans:xmlbeans:jar:2.3.0:compile
+[INFO] |  |     |  \- org.apache.geronimo.specs:geronimo-stax-api_1.0_spec:jar:1.0:compile
+[INFO] |  |     \- dom4j:dom4j:jar:1.6.1:compile
+[INFO] |  +- org.codehaus.jackson:jackson-core-asl:jar:1.9.2:compile
+[INFO] |  +- org.codehaus.jackson:jackson-mapper-asl:jar:1.9.2:compile
+[INFO] |  +- org.codehaus.jackson:jackson-xc:jar:1.9.2:compile
+[INFO] |  \- javax.xml.bind:jaxb-api:jar:2.2.2:compile
+[INFO] |     +- javax.xml.stream:stax-api:jar:1.0-2:test (scope managed from compile)
+[INFO] |     \- javax.activation:activation:jar:1.1:compile
+[INFO] +- org.hisp.dhis:dhis-service-core:jar:2.6-SNAPSHOT:compile
+[INFO] |  +- org.hisp.dhis:dhis-support-hibernate:jar:2.6-SNAPSHOT:compile
+[INFO] |  |  +- org.hibernate:hibernate-core:jar:3.6.4.Final:compile
+[INFO] |  |  |  +- antlr:antlr:jar:2.7.6:compile
+[INFO] |  |  |  +- org.hibernate:hibernate-commons-annotations:jar:3.2.0.Final:compile
+[INFO] |  |  |  +- org.hibernate.javax.persistence:hibernate-jpa-2.0-api:jar:1.0.0.Final:compile
+[INFO] |  |  |  +- javax.transaction:jta:jar:1.1:compile
+[INFO] |  |  |  \- org.slf4j:slf4j-api:jar:1.6.1:compile
+[INFO] |  |  +- org.hibernate:hibernate-ehcache:jar:3.6.4.Final:compile
+[INFO] |  |  |  \- net.sf.ehcache:ehcache-core:jar:2.4.1:compile
+[INFO] |  |  +- org.hibernate:hibernate-entitymanager:jar:3.6.4.Final:compile
+[INFO] |  |  |  +- cglib:cglib:jar:2.2:compile
+[INFO] |  |  |  |  \- asm:asm:jar:3.1:compile
+[INFO] |  |  |  \- javassist:javassist:jar:3.12.0.GA:compile
+[INFO] |  |  +- geronimo-spec:geronimo-spec-jta:jar:1.0-M1:compile
+[INFO] |  |  +- c3p0:c3p0:jar:0.9.1.2:compile
+[INFO] |  |  +- mysql:mysql-connector-java:jar:5.1.6:compile
+[INFO] |  |  +- postgresql:postgresql:jar:9.0-801.jdbc4:compile
+[INFO] |  |  +- com.h2database:h2:jar:1.3.154:compile
+[INFO] |  |  \- org.springframework:spring-orm:jar:3.0.6.RELEASE:compile
+[INFO] |  +- org.hisp.dhis:dhis-support-system:jar:2.6-SNAPSHOT:compile
+[INFO] |  |  +- org.apache.poi:poi:jar:3.7:compile
+[INFO] |  |  +- org.slf4j:slf4j-log4j12:jar:1.6.1:compile
+[INFO] |  |  +- log4j:log4j:jar:1.2.16:compile
+[INFO] |  |  +- org.springframework:spring-web:jar:3.0.6.RELEASE:compile
+[INFO] |  |  |  \- aopalliance:aopalliance:jar:1.0:compile
+[INFO] |  |  +- commons-math:commons-math:jar:1.2:compile
+[INFO] |  |  +- commons-validator:commons-validator:jar:1.3.1:compile
+[INFO] |  |  +- commons-io:commons-io:jar:1.4:compile
+[INFO] |  |  +- joda-time:joda-time:jar:1.5.2:compile
+[INFO] |  |  +- org.amplecode:cave-process:jar:1.0.3:compile
+[INFO] |  |  |  \- commons-logging:commons-logging-api:jar:1.1:compile
+[INFO] |  |  +- org.amplecode:quick:jar:1.7.1:compile
+[INFO] |  |  |  \- org.hsqldb:hsqldb:jar:2.2.6:compile (version managed from 2.2.4)
+[INFO] |  |  +- net.sourceforge.jexcelapi:jxl:jar:2.6:compile
+[INFO] |  |  +- org.apache.velocity:velocity:jar:1.7:compile
+[INFO] |  |  +- org.apache.velocity:velocity-tools:jar:2.0:compile
+[INFO] |  |  |  +- commons-chain:commons-chain:jar:1.1:compile
+[INFO] |  |  |  +- oro:oro:jar:2.0.8:compile
+[INFO] |  |  |  +- sslext:sslext:jar:1.2-0:compile
+[INFO] |  |  |  +- org.apache.struts:struts-core:jar:1.3.8:compile
+[INFO] |  |  |  +- org.apache.struts:struts-taglib:jar:1.3.8:compile
+[INFO] |  |  |  \- org.apache.struts:struts-tiles:jar:1.3.8:compile
+[INFO] |  |  \- net.sf.json-lib:json-lib:jar:jdk15:2.4:compile
+[INFO] |  |     \- net.sf.ezmorph:ezmorph:jar:1.0.6:compile
+[INFO] |  +- org.hisp.dhis:dhis-support-external:jar:2.6-SNAPSHOT:compile
+[INFO] |  |  +- org.springframework:spring-aop:jar:3.0.6.RELEASE:compile
+[INFO] |  |  +- org.springframework:spring-asm:jar:3.0.6.RELEASE:compile
+[INFO] |  |  +- org.springframework:spring-beans:jar:3.0.6.RELEASE:compile
+[INFO] |  |  +- org.springframework:spring-context:jar:3.0.6.RELEASE:compile
+[INFO] |  |  +- org.springframework:spring-core:jar:3.0.6.RELEASE:compile
+[INFO] |  |  +- org.springframework:spring-expression:jar:3.0.6.RELEASE:compile
+[INFO] |  |  +- org.springframework:spring-jdbc:jar:3.0.6.RELEASE:compile
+[INFO] |  |  +- org.springframework:spring-test:jar:3.0.6.RELEASE:compile
+[INFO] |  |  +- org.springframework:spring-tx:jar:3.0.6.RELEASE:compile
+[INFO] |  |  +- org.springframework.security:spring-security-core:jar:3.0.7.RELEASE:compile
+[INFO] |  |  +- org.springframework.security:spring-security-web:jar:3.0.7.RELEASE:compile
+[INFO] |  |  +- org.springframework.security:spring-security-config:jar:3.0.7.RELEASE:compile
+[INFO] |  |  \- com.thoughtworks.xstream:xstream:jar:1.3:compile
+[INFO] |  |     \- xpp3:xpp3_min:jar:1.1.4c:compile
+[INFO] |  +- org.hisp.dhis:dhis-support-jdbc:jar:2.6-SNAPSHOT:compile
+[INFO] |  +- org.hisp.dhis:dhis-support-xml:jar:2.6-SNAPSHOT:compile
+[INFO] |  |  +- org.codehaus.woodstox:stax2-api:jar:3.0.1:compile
+[INFO] |  |  |  \- stax:stax-api:jar:1.0.1:compile
+[INFO] |  |  \- org.codehaus.woodstox:woodstox-core-asl:jar:4.0.7:compile
+[INFO] |  +- commons-codec:commons-codec:jar:1.3:compile
+[INFO] |  +- org.apache.commons:commons-email:jar:1.2:compile
+[INFO] |  |  \- javax.mail:mail:jar:1.4.1:compile
+[INFO] |  +- org.aspectj:aspectjrt:jar:1.6.4:compile
+[INFO] |  \- org.aspectj:aspectjweaver:jar:1.6.4:compile
+[INFO] +- jep:jep:jar:2.24:compile
+[INFO] \- org.hisp.dhis:dhis-support-test:jar:2.6-SNAPSHOT:test
+[INFO]    +- commons-logging:commons-logging:jar:1.1.1:compile
+[INFO]    \- org.mockito:mockito-all:jar:1.8.5:test
+[INFO]                                                                         
+[INFO] ------------------------------------------------------------------------
+[INFO] Building DHIS OrganisationUnit API Implementations 2.6-SNAPSHOT
+[INFO] ------------------------------------------------------------------------
+[INFO] 
+[INFO] --- maven-dependency-plugin:2.1:tree (default-cli) @ dhis-service-mapping ---
+[INFO] org.hisp.dhis:dhis-service-mapping:jar:2.6-SNAPSHOT
+[INFO] +- org.hisp.dhis:dhis-api:jar:2.6-SNAPSHOT:compile
+[INFO] |  +- junit:junit:jar:4.8.1:compile
+[INFO] |  +- commons-lang:commons-lang:jar:2.6:compile
+[INFO] |  +- commons-collections:commons-collections:jar:3.2:compile
+[INFO] |  +- jfree:jfreechart:jar:1.0.13:compile
+[INFO] |  |  \- jfree:jcommon:jar:1.0.15:compile (version managed from 1.0.16)
+[INFO] |  +- net.sf.jasperreports:jasperreports:jar:4.1.1:compile
+[INFO] |  |  +- commons-beanutils:commons-beanutils:jar:1.8.0:compile
+[INFO] |  |  +- commons-digester:commons-digester:jar:1.7:compile
+[INFO] |  |  +- com.lowagie:itext:jar:2.1.5:compile (version managed from 2.1.7)
+[INFO] |  |  |  +- bouncycastle:bcmail-jdk14:jar:138:compile
+[INFO] |  |  |  \- bouncycastle:bcprov-jdk14:jar:138:compile
+[INFO] |  |  +- xml-apis:xml-apis:jar:1.3.02:compile
+[INFO] |  |  +- eclipse:jdtcore:jar:3.1.0:compile
+[INFO] |  |  +- org.codehaus.castor:castor:jar:1.2:compile
+[INFO] |  |  \- org.apache.poi:poi-ooxml:jar:3.6:compile
+[INFO] |  |     +- org.apache.poi:poi-ooxml-schemas:jar:3.6:compile
+[INFO] |  |     |  +- org.apache.xmlbeans:xmlbeans:jar:2.3.0:compile
+[INFO] |  |     |  \- org.apache.geronimo.specs:geronimo-stax-api_1.0_spec:jar:1.0:compile
+[INFO] |  |     \- dom4j:dom4j:jar:1.6.1:compile
+[INFO] |  +- org.codehaus.jackson:jackson-core-asl:jar:1.9.2:compile
+[INFO] |  +- org.codehaus.jackson:jackson-mapper-asl:jar:1.9.2:compile
+[INFO] |  +- org.codehaus.jackson:jackson-xc:jar:1.9.2:compile
+[INFO] |  \- javax.xml.bind:jaxb-api:jar:2.2.2:compile
+[INFO] |     +- javax.xml.stream:stax-api:jar:1.0-2:test (scope managed from compile)
+[INFO] |     \- javax.activation:activation:jar:1.1:compile
+[INFO] +- org.hisp.dhis:dhis-service-core:jar:2.6-SNAPSHOT:compile
+[INFO] |  +- org.hisp.dhis:dhis-support-hibernate:jar:2.6-SNAPSHOT:compile
+[INFO] |  |  +- org.hibernate:hibernate-core:jar:3.6.4.Final:compile
+[INFO] |  |  |  +- antlr:antlr:jar:2.7.6:compile
+[INFO] |  |  |  +- org.hibernate:hibernate-commons-annotations:jar:3.2.0.Final:compile
+[INFO] |  |  |  +- org.hibernate.javax.persistence:hibernate-jpa-2.0-api:jar:1.0.0.Final:compile
+[INFO] |  |  |  +- javax.transaction:jta:jar:1.1:compile
+[INFO] |  |  |  \- org.slf4j:slf4j-api:jar:1.6.1:compile
+[INFO] |  |  +- org.hibernate:hibernate-ehcache:jar:3.6.4.Final:compile
+[INFO] |  |  |  \- net.sf.ehcache:ehcache-core:jar:2.4.1:compile
+[INFO] |  |  +- org.hibernate:hibernate-entitymanager:jar:3.6.4.Final:compile
+[INFO] |  |  |  +- cglib:cglib:jar:2.2:compile
+[INFO] |  |  |  |  \- asm:asm:jar:3.1:compile
+[INFO] |  |  |  \- javassist:javassist:jar:3.12.0.GA:compile
+[INFO] |  |  +- geronimo-spec:geronimo-spec-jta:jar:1.0-M1:compile
+[INFO] |  |  +- c3p0:c3p0:jar:0.9.1.2:compile
+[INFO] |  |  +- mysql:mysql-connector-java:jar:5.1.6:compile
+[INFO] |  |  +- postgresql:postgresql:jar:9.0-801.jdbc4:compile
+[INFO] |  |  +- com.h2database:h2:jar:1.3.154:compile
+[INFO] |  |  \- org.springframework:spring-orm:jar:3.0.6.RELEASE:compile
+[INFO] |  +- org.hisp.dhis:dhis-support-system:jar:2.6-SNAPSHOT:compile
+[INFO] |  |  +- org.apache.poi:poi:jar:3.7:compile
+[INFO] |  |  +- org.slf4j:slf4j-log4j12:jar:1.6.1:compile
+[INFO] |  |  +- log4j:log4j:jar:1.2.16:compile
+[INFO] |  |  +- org.springframework:spring-web:jar:3.0.6.RELEASE:compile
+[INFO] |  |  |  \- aopalliance:aopalliance:jar:1.0:compile
+[INFO] |  |  +- commons-math:commons-math:jar:1.2:compile
+[INFO] |  |  +- commons-validator:commons-validator:jar:1.3.1:compile
+[INFO] |  |  +- commons-io:commons-io:jar:1.4:compile
+[INFO] |  |  +- joda-time:joda-time:jar:1.5.2:compile
+[INFO] |  |  +- org.amplecode:cave-process:jar:1.0.3:compile
+[INFO] |  |  |  \- commons-logging:commons-logging-api:jar:1.1:compile
+[INFO] |  |  +- org.amplecode:quick:jar:1.7.1:compile
+[INFO] |  |  |  \- org.hsqldb:hsqldb:jar:2.2.6:compile (version managed from 2.2.4)
+[INFO] |  |  +- net.sourceforge.jexcelapi:jxl:jar:2.6:compile
+[INFO] |  |  +- org.apache.velocity:velocity:jar:1.7:compile
+[INFO] |  |  +- org.apache.velocity:velocity-tools:jar:2.0:compile
+[INFO] |  |  |  +- commons-chain:commons-chain:jar:1.1:compile
+[INFO] |  |  |  +- oro:oro:jar:2.0.8:compile
+[INFO] |  |  |  +- sslext:sslext:jar:1.2-0:compile
+[INFO] |  |  |  +- org.apache.struts:struts-core:jar:1.3.8:compile
+[INFO] |  |  |  +- org.apache.struts:struts-taglib:jar:1.3.8:compile
+[INFO] |  |  |  \- org.apache.struts:struts-tiles:jar:1.3.8:compile
+[INFO] |  |  \- net.sf.json-lib:json-lib:jar:jdk15:2.4:compile
+[INFO] |  |     \- net.sf.ezmorph:ezmorph:jar:1.0.6:compile
+[INFO] |  +- org.hisp.dhis:dhis-support-external:jar:2.6-SNAPSHOT:compile
+[INFO] |  |  +- org.springframework:spring-aop:jar:3.0.6.RELEASE:compile
+[INFO] |  |  +- org.springframework:spring-asm:jar:3.0.6.RELEASE:compile
+[INFO] |  |  +- org.springframework:spring-beans:jar:3.0.6.RELEASE:compile
+[INFO] |  |  +- org.springframework:spring-context:jar:3.0.6.RELEASE:compile
+[INFO] |  |  +- org.springframework:spring-core:jar:3.0.6.RELEASE:compile
+[INFO] |  |  +- org.springframework:spring-expression:jar:3.0.6.RELEASE:compile
+[INFO] |  |  +- org.springframework:spring-jdbc:jar:3.0.6.RELEASE:compile
+[INFO] |  |  +- org.springframework:spring-test:jar:3.0.6.RELEASE:compile
+[INFO] |  |  +- org.springframework:spring-tx:jar:3.0.6.RELEASE:compile
+[INFO] |  |  +- org.springframework.security:spring-security-core:jar:3.0.7.RELEASE:compile
+[INFO] |  |  +- org.springframework.security:spring-security-web:jar:3.0.7.RELEASE:compile
+[INFO] |  |  +- org.springframework.security:spring-security-config:jar:3.0.7.RELEASE:compile
+[INFO] |  |  \- com.thoughtworks.xstream:xstream:jar:1.3:compile
+[INFO] |  |     \- xpp3:xpp3_min:jar:1.1.4c:compile
+[INFO] |  +- org.hisp.dhis:dhis-support-jdbc:jar:2.6-SNAPSHOT:compile
+[INFO] |  +- org.hisp.dhis:dhis-support-xml:jar:2.6-SNAPSHOT:compile
+[INFO] |  |  +- org.codehaus.woodstox:stax2-api:jar:3.0.1:compile
+[INFO] |  |  |  \- stax:stax-api:jar:1.0.1:compile
+[INFO] |  |  \- org.codehaus.woodstox:woodstox-core-asl:jar:4.0.7:compile
+[INFO] |  +- jep:jep:jar:2.24:compile
+[INFO] |  +- commons-codec:commons-codec:jar:1.3:compile
+[INFO] |  +- org.apache.commons:commons-email:jar:1.2:compile
+[INFO] |  |  \- javax.mail:mail:jar:1.4.1:compile
+[INFO] |  +- org.aspectj:aspectjrt:jar:1.6.4:compile
+[INFO] |  \- org.aspectj:aspectjweaver:jar:1.6.4:compile
+[INFO] +- org.hisp.dhis:dhis-service-options:jar:2.6-SNAPSHOT:compile
+[INFO] +- org.hisp.dhis:dhis-service-aggregationengine-default:jar:2.6-SNAPSHOT:compile
+[INFO] +- commons-logging:commons-logging:jar:1.1.1:compile
+[INFO] \- org.hisp.dhis:dhis-support-test:jar:2.6-SNAPSHOT:test
+[INFO]    \- org.mockito:mockito-all:jar:1.8.5:test
+[INFO]                                                                         
+[INFO] ------------------------------------------------------------------------
+[INFO] Building DHIS Reporting Service 2.6-SNAPSHOT
+[INFO] ------------------------------------------------------------------------
+[INFO] 
+[INFO] --- maven-dependency-plugin:2.1:tree (default-cli) @ dhis-service-reporting ---
+[INFO] org.hisp.dhis:dhis-service-reporting:jar:2.6-SNAPSHOT
+[INFO] +- org.hisp.dhis:dhis-api:jar:2.6-SNAPSHOT:compile
+[INFO] |  +- junit:junit:jar:4.8.1:compile
+[INFO] |  +- commons-lang:commons-lang:jar:2.6:compile
+[INFO] |  +- commons-collections:commons-collections:jar:3.2:compile
+[INFO] |  +- org.codehaus.jackson:jackson-core-asl:jar:1.9.2:compile
+[INFO] |  +- org.codehaus.jackson:jackson-mapper-asl:jar:1.9.2:compile
+[INFO] |  +- org.codehaus.jackson:jackson-xc:jar:1.9.2:compile
+[INFO] |  \- javax.xml.bind:jaxb-api:jar:2.2.2:compile
+[INFO] |     +- javax.xml.stream:stax-api:jar:1.0-2:test (scope managed from compile)
+[INFO] |     \- javax.activation:activation:jar:1.1:compile
+[INFO] +- org.hisp.dhis:dhis-service-datamart-default:jar:2.6-SNAPSHOT:compile
+[INFO] |  +- org.hisp.dhis:dhis-service-options:jar:2.6-SNAPSHOT:compile
+[INFO] |  +- commons-logging:commons-logging:jar:1.1.1:compile
+[INFO] |  \- org.amplecode:quick:jar:1.7.1:compile
+[INFO] |     \- org.hsqldb:hsqldb:jar:2.2.6:compile (version managed from 2.2.4)
+[INFO] +- org.hisp.dhis:dhis-service-aggregationengine-default:jar:2.6-SNAPSHOT:compile
+[INFO] +- org.hisp.dhis:dhis-service-core:jar:2.6-SNAPSHOT:compile
+[INFO] |  +- org.hisp.dhis:dhis-support-hibernate:jar:2.6-SNAPSHOT:compile
+[INFO] |  |  +- org.hibernate:hibernate-core:jar:3.6.4.Final:compile
+[INFO] |  |  |  +- antlr:antlr:jar:2.7.6:compile
+[INFO] |  |  |  +- org.hibernate:hibernate-commons-annotations:jar:3.2.0.Final:compile
+[INFO] |  |  |  +- org.hibernate.javax.persistence:hibernate-jpa-2.0-api:jar:1.0.0.Final:compile
+[INFO] |  |  |  +- javax.transaction:jta:jar:1.1:compile
+[INFO] |  |  |  \- org.slf4j:slf4j-api:jar:1.6.1:compile
+[INFO] |  |  +- org.hibernate:hibernate-ehcache:jar:3.6.4.Final:compile
+[INFO] |  |  |  \- net.sf.ehcache:ehcache-core:jar:2.4.1:compile
+[INFO] |  |  +- org.hibernate:hibernate-entitymanager:jar:3.6.4.Final:compile
+[INFO] |  |  |  +- cglib:cglib:jar:2.2:compile
+[INFO] |  |  |  |  \- asm:asm:jar:3.1:compile
+[INFO] |  |  |  \- javassist:javassist:jar:3.12.0.GA:compile
+[INFO] |  |  +- geronimo-spec:geronimo-spec-jta:jar:1.0-M1:compile
+[INFO] |  |  +- c3p0:c3p0:jar:0.9.1.2:compile
+[INFO] |  |  +- mysql:mysql-connector-java:jar:5.1.6:compile
+[INFO] |  |  +- postgresql:postgresql:jar:9.0-801.jdbc4:compile
+[INFO] |  |  \- com.h2database:h2:jar:1.3.154:compile
+[INFO] |  +- org.hisp.dhis:dhis-support-system:jar:2.6-SNAPSHOT:compile
+[INFO] |  |  +- org.slf4j:slf4j-log4j12:jar:1.6.1:compile
+[INFO] |  |  +- log4j:log4j:jar:1.2.16:compile
+[INFO] |  |  +- commons-validator:commons-validator:jar:1.3.1:compile
+[INFO] |  |  +- commons-io:commons-io:jar:1.4:compile
+[INFO] |  |  +- joda-time:joda-time:jar:1.5.2:compile
+[INFO] |  |  +- net.sourceforge.jexcelapi:jxl:jar:2.6:compile
+[INFO] |  |  +- org.apache.velocity:velocity:jar:1.7:compile (version managed from 1.6.2)
+[INFO] |  |  +- org.apache.velocity:velocity-tools:jar:2.0:compile
+[INFO] |  |  |  +- commons-chain:commons-chain:jar:1.1:compile
+[INFO] |  |  |  +- oro:oro:jar:2.0.8:compile
+[INFO] |  |  |  +- sslext:sslext:jar:1.2-0:compile
+[INFO] |  |  |  +- org.apache.struts:struts-core:jar:1.3.8:compile
+[INFO] |  |  |  +- org.apache.struts:struts-taglib:jar:1.3.8:compile
+[INFO] |  |  |  \- org.apache.struts:struts-tiles:jar:1.3.8:compile
+[INFO] |  |  \- net.sf.json-lib:json-lib:jar:jdk15:2.4:compile
+[INFO] |  |     \- net.sf.ezmorph:ezmorph:jar:1.0.6:compile
+[INFO] |  +- org.hisp.dhis:dhis-support-jdbc:jar:2.6-SNAPSHOT:compile
+[INFO] |  +- org.hisp.dhis:dhis-support-xml:jar:2.6-SNAPSHOT:compile
+[INFO] |  |  +- org.codehaus.woodstox:stax2-api:jar:3.0.1:compile
+[INFO] |  |  |  \- stax:stax-api:jar:1.0.1:compile
+[INFO] |  |  \- org.codehaus.woodstox:woodstox-core-asl:jar:4.0.7:compile
+[INFO] |  +- commons-codec:commons-codec:jar:1.3:compile
+[INFO] |  +- org.apache.commons:commons-email:jar:1.2:compile
+[INFO] |  |  \- javax.mail:mail:jar:1.4.1:compile
+[INFO] |  +- org.aspectj:aspectjrt:jar:1.6.4:compile
+[INFO] |  \- org.aspectj:aspectjweaver:jar:1.6.4:compile
+[INFO] +- org.hisp.dhis:dhis-service-mapping:jar:2.6-SNAPSHOT:compile
+[INFO] +- net.sf.jasperreports:jasperreports:jar:4.1.1:compile
+[INFO] |  +- commons-beanutils:commons-beanutils:jar:1.8.0:compile
+[INFO] |  +- commons-digester:commons-digester:jar:1.7:compile (version managed from 1.8)
+[INFO] |  +- com.lowagie:itext:jar:2.1.5:compile (version managed from 2.1.7)
+[INFO] |  |  +- bouncycastle:bcmail-jdk14:jar:138:compile
+[INFO] |  |  \- bouncycastle:bcprov-jdk14:jar:138:compile
+[INFO] |  +- xml-apis:xml-apis:jar:1.3.02:compile
+[INFO] |  +- eclipse:jdtcore:jar:3.1.0:compile
+[INFO] |  +- org.codehaus.castor:castor:jar:1.2:compile
+[INFO] |  \- org.apache.poi:poi-ooxml:jar:3.6:compile
+[INFO] |     +- org.apache.poi:poi-ooxml-schemas:jar:3.6:compile
+[INFO] |     |  +- org.apache.xmlbeans:xmlbeans:jar:2.3.0:compile
+[INFO] |     |  \- org.apache.geronimo.specs:geronimo-stax-api_1.0_spec:jar:1.0:compile
+[INFO] |     \- dom4j:dom4j:jar:1.6.1:compile
+[INFO] +- jfree:jfreechart:jar:1.0.13:compile
+[INFO] +- jfree:jcommon:jar:1.0.15:compile
+[INFO] +- org.apache.poi:poi:jar:3.7:compile
+[INFO] +- jep:jep:jar:2.24:compile
+[INFO] +- commons-math:commons-math:jar:1.2:compile
+[INFO] +- org.hisp.dhis:dhis-support-external:jar:2.6-SNAPSHOT:compile
+[INFO] |  +- org.springframework:spring-aop:jar:3.0.6.RELEASE:compile
+[INFO] |  |  \- aopalliance:aopalliance:jar:1.0:compile
+[INFO] |  +- org.springframework:spring-asm:jar:3.0.6.RELEASE:compile
+[INFO] |  +- org.springframework:spring-beans:jar:3.0.6.RELEASE:compile
+[INFO] |  +- org.springframework:spring-context:jar:3.0.6.RELEASE:compile
+[INFO] |  +- org.springframework:spring-core:jar:3.0.6.RELEASE:compile
+[INFO] |  +- org.springframework:spring-expression:jar:3.0.6.RELEASE:compile
+[INFO] |  +- org.springframework:spring-jdbc:jar:3.0.6.RELEASE:compile
+[INFO] |  +- org.springframework:spring-orm:jar:3.0.6.RELEASE:compile
+[INFO] |  +- org.springframework:spring-test:jar:3.0.6.RELEASE:compile
+[INFO] |  +- org.springframework:spring-tx:jar:3.0.6.RELEASE:compile
+[INFO] |  +- org.springframework:spring-web:jar:3.0.6.RELEASE:compile
+[INFO] |  +- org.springframework.security:spring-security-core:jar:3.0.7.RELEASE:compile
+[INFO] |  +- org.springframework.security:spring-security-web:jar:3.0.7.RELEASE:compile
+[INFO] |  +- org.springframework.security:spring-security-config:jar:3.0.7.RELEASE:compile
+[INFO] |  \- com.thoughtworks.xstream:xstream:jar:1.3:compile
+[INFO] |     \- xpp3:xpp3_min:jar:1.1.4c:compile
+[INFO] +- org.amplecode:cave-process:jar:1.0.3:compile
+[INFO] |  \- commons-logging:commons-logging-api:jar:1.1:compile
+[INFO] \- org.hisp.dhis:dhis-support-test:jar:2.6-SNAPSHOT:test
+[INFO]    \- org.mockito:mockito-all:jar:1.8.5:test
+[INFO]                                                                         
+[INFO] ------------------------------------------------------------------------
+[INFO] Building DHIS Import-Export Service 2.6-SNAPSHOT
+[INFO] ------------------------------------------------------------------------
+[INFO] 
+[INFO] --- maven-dependency-plugin:2.1:tree (default-cli) @ dhis-service-importexport ---
+[INFO] org.hisp.dhis:dhis-service-importexport:jar:2.6-SNAPSHOT
+[INFO] +- org.hisp.dhis:dhis-api:jar:2.6-SNAPSHOT:compile
+[INFO] |  +- junit:junit:jar:4.8.1:compile
+[INFO] |  +- commons-lang:commons-lang:jar:2.6:compile
+[INFO] |  +- jfree:jfreechart:jar:1.0.13:compile
+[INFO] |  +- net.sf.jasperreports:jasperreports:jar:4.1.1:compile
+[INFO] |  |  +- commons-beanutils:commons-beanutils:jar:1.8.0:compile
+[INFO] |  |  +- commons-digester:commons-digester:jar:1.7:compile
+[INFO] |  |  +- xml-apis:xml-apis:jar:1.3.02:compile
+[INFO] |  |  +- eclipse:jdtcore:jar:3.1.0:compile
+[INFO] |  |  +- org.codehaus.castor:castor:jar:1.2:compile
+[INFO] |  |  \- org.apache.poi:poi-ooxml:jar:3.6:compile
+[INFO] |  |     +- org.apache.poi:poi-ooxml-schemas:jar:3.6:compile
+[INFO] |  |     |  +- org.apache.xmlbeans:xmlbeans:jar:2.3.0:compile
+[INFO] |  |     |  \- org.apache.geronimo.specs:geronimo-stax-api_1.0_spec:jar:1.0:compile
+[INFO] |  |     \- dom4j:dom4j:jar:1.6.1:compile
+[INFO] |  +- org.codehaus.jackson:jackson-core-asl:jar:1.9.2:compile
+[INFO] |  +- org.codehaus.jackson:jackson-mapper-asl:jar:1.9.2:compile
+[INFO] |  +- org.codehaus.jackson:jackson-xc:jar:1.9.2:compile
+[INFO] |  \- javax.xml.bind:jaxb-api:jar:2.2.2:compile
+[INFO] |     +- javax.xml.stream:stax-api:jar:1.0-2:test (scope managed from compile)
+[INFO] |     \- javax.activation:activation:jar:1.1:compile
+[INFO] +- org.hisp.dhis:dhis-service-core:jar:2.6-SNAPSHOT:compile
+[INFO] |  +- org.hisp.dhis:dhis-support-hibernate:jar:2.6-SNAPSHOT:compile
+[INFO] |  |  +- org.hibernate:hibernate-core:jar:3.6.4.Final:compile
+[INFO] |  |  |  +- antlr:antlr:jar:2.7.6:compile
+[INFO] |  |  |  +- org.hibernate:hibernate-commons-annotations:jar:3.2.0.Final:compile
+[INFO] |  |  |  +- org.hibernate.javax.persistence:hibernate-jpa-2.0-api:jar:1.0.0.Final:compile
+[INFO] |  |  |  +- javax.transaction:jta:jar:1.1:compile
+[INFO] |  |  |  \- org.slf4j:slf4j-api:jar:1.6.1:compile
+[INFO] |  |  +- org.hibernate:hibernate-ehcache:jar:3.6.4.Final:compile
+[INFO] |  |  |  \- net.sf.ehcache:ehcache-core:jar:2.4.1:compile
+[INFO] |  |  +- org.hibernate:hibernate-entitymanager:jar:3.6.4.Final:compile
+[INFO] |  |  |  +- cglib:cglib:jar:2.2:compile
+[INFO] |  |  |  |  \- asm:asm:jar:3.1:compile
+[INFO] |  |  |  \- javassist:javassist:jar:3.12.0.GA:compile
+[INFO] |  |  +- geronimo-spec:geronimo-spec-jta:jar:1.0-M1:compile
+[INFO] |  |  +- c3p0:c3p0:jar:0.9.1.2:compile
+[INFO] |  |  +- mysql:mysql-connector-java:jar:5.1.6:compile
+[INFO] |  |  +- postgresql:postgresql:jar:9.0-801.jdbc4:compile
+[INFO] |  |  +- com.h2database:h2:jar:1.3.154:compile
+[INFO] |  |  \- org.springframework:spring-orm:jar:3.0.6.RELEASE:compile
+[INFO] |  +- org.hisp.dhis:dhis-support-system:jar:2.6-SNAPSHOT:compile
+[INFO] |  |  +- org.slf4j:slf4j-log4j12:jar:1.6.1:compile
+[INFO] |  |  +- log4j:log4j:jar:1.2.16:compile
+[INFO] |  |  +- org.springframework:spring-web:jar:3.0.6.RELEASE:compile
+[INFO] |  |  |  \- aopalliance:aopalliance:jar:1.0:compile
+[INFO] |  |  +- commons-validator:commons-validator:jar:1.3.1:compile
+[INFO] |  |  +- commons-io:commons-io:jar:1.4:compile
+[INFO] |  |  +- net.sourceforge.jexcelapi:jxl:jar:2.6:compile
+[INFO] |  |  +- org.apache.velocity:velocity:jar:1.7:compile
+[INFO] |  |  +- org.apache.velocity:velocity-tools:jar:2.0:compile
+[INFO] |  |  |  +- commons-chain:commons-chain:jar:1.1:compile
+[INFO] |  |  |  +- oro:oro:jar:2.0.8:compile
+[INFO] |  |  |  +- sslext:sslext:jar:1.2-0:compile
+[INFO] |  |  |  +- org.apache.struts:struts-core:jar:1.3.8:compile
+[INFO] |  |  |  +- org.apache.struts:struts-taglib:jar:1.3.8:compile
+[INFO] |  |  |  \- org.apache.struts:struts-tiles:jar:1.3.8:compile
+[INFO] |  |  \- net.sf.json-lib:json-lib:jar:jdk15:2.4:compile
+[INFO] |  |     \- net.sf.ezmorph:ezmorph:jar:1.0.6:compile
+[INFO] |  +- org.hisp.dhis:dhis-support-external:jar:2.6-SNAPSHOT:compile
+[INFO] |  |  +- org.springframework:spring-aop:jar:3.0.6.RELEASE:compile
+[INFO] |  |  +- org.springframework:spring-asm:jar:3.0.6.RELEASE:compile
+[INFO] |  |  +- org.springframework:spring-context:jar:3.0.6.RELEASE:compile
+[INFO] |  |  +- org.springframework:spring-core:jar:3.0.6.RELEASE:compile
+[INFO] |  |  +- org.springframework:spring-expression:jar:3.0.6.RELEASE:compile
+[INFO] |  |  +- org.springframework:spring-jdbc:jar:3.0.6.RELEASE:compile
+[INFO] |  |  +- org.springframework:spring-test:jar:3.0.6.RELEASE:compile
+[INFO] |  |  +- org.springframework:spring-tx:jar:3.0.6.RELEASE:compile
+[INFO] |  |  +- org.springframework.security:spring-security-core:jar:3.0.7.RELEASE:compile
+[INFO] |  |  +- org.springframework.security:spring-security-web:jar:3.0.7.RELEASE:compile
+[INFO] |  |  +- org.springframework.security:spring-security-config:jar:3.0.7.RELEASE:compile
+[INFO] |  |  \- com.thoughtworks.xstream:xstream:jar:1.3:compile
+[INFO] |  |     \- xpp3:xpp3_min:jar:1.1.4c:compile
+[INFO] |  +- org.hisp.dhis:dhis-support-jdbc:jar:2.6-SNAPSHOT:compile
+[INFO] |  +- org.hisp.dhis:dhis-support-xml:jar:2.6-SNAPSHOT:compile
+[INFO] |  |  +- org.codehaus.woodstox:stax2-api:jar:3.0.1:compile
+[INFO] |  |  |  \- stax:stax-api:jar:1.0.1:compile
+[INFO] |  |  \- org.codehaus.woodstox:woodstox-core-asl:jar:4.0.7:compile
+[INFO] |  +- jep:jep:jar:2.24:compile
+[INFO] |  +- commons-codec:commons-codec:jar:1.3:compile
+[INFO] |  +- org.apache.commons:commons-email:jar:1.2:compile
+[INFO] |  |  \- javax.mail:mail:jar:1.4.1:compile
+[INFO] |  +- org.aspectj:aspectjrt:jar:1.6.4:compile
+[INFO] |  \- org.aspectj:aspectjweaver:jar:1.6.4:compile
+[INFO] +- org.hisp.dhis:dhis-service-datamart-default:jar:2.6-SNAPSHOT:compile
+[INFO] |  +- org.hisp.dhis:dhis-service-options:jar:2.6-SNAPSHOT:compile
+[INFO] |  \- org.amplecode:quick:jar:1.7.1:compile
+[INFO] |     \- org.hsqldb:hsqldb:jar:2.2.6:compile (version managed from 2.2.4)
+[INFO] +- org.hisp.dhis:dhis-service-administration:jar:2.6-SNAPSHOT:compile
+[INFO] |  \- commons-math:commons-math:jar:1.2:compile
+[INFO] +- org.hisp.dhis:dhis-service-reporting:jar:2.6-SNAPSHOT:compile
+[INFO] |  +- org.hisp.dhis:dhis-service-aggregationengine-default:jar:2.6-SNAPSHOT:compile
+[INFO] |  +- org.hisp.dhis:dhis-service-mapping:jar:2.6-SNAPSHOT:compile
+[INFO] |  +- jfree:jcommon:jar:1.0.15:compile
+[INFO] |  \- org.apache.poi:poi:jar:3.7:compile
+[INFO] +- com.lowagie:itext:jar:2.1.5:compile
+[INFO] |  +- bouncycastle:bcmail-jdk14:jar:138:compile
+[INFO] |  \- bouncycastle:bcprov-jdk14:jar:138:compile
+[INFO] +- commons-logging:commons-logging:jar:1.1.1:compile
+[INFO] +- commons-collections:commons-collections:jar:3.2:compile
+[INFO] +- joda-time:joda-time:jar:1.5.2:compile
+[INFO] +- com.ibatis:ibatis2-common:jar:2.1.7.597:compile
+[INFO] +- com.ibatis:ibatis2-sqlmap:jar:2.1.7.597:compile
+[INFO] +- org.amplecode:cave-process:jar:1.0.3:compile
+[INFO] |  +- commons-logging:commons-logging-api:jar:1.1:compile
+[INFO] |  \- org.springframework:spring-beans:jar:3.0.6.RELEASE:compile
+[INFO] \- org.hisp.dhis:dhis-support-test:jar:2.6-SNAPSHOT:test
+[INFO]    \- org.mockito:mockito-all:jar:1.8.5:test
+[INFO]                                                                         
+[INFO] ------------------------------------------------------------------------
+[INFO] Building DHIS Map Generation Service 2.6-SNAPSHOT
+[INFO] ------------------------------------------------------------------------
+[INFO] 
+[INFO] --- maven-dependency-plugin:2.1:tree (default-cli) @ dhis-service-mapgeneration ---
+[INFO] org.hisp.dhis:dhis-service-mapgeneration:jar:2.6-SNAPSHOT
+[INFO] +- org.hisp.dhis:dhis-api:jar:2.6-SNAPSHOT:compile
+[INFO] |  +- junit:junit:jar:4.8.1:compile
+[INFO] |  +- commons-lang:commons-lang:jar:2.6:compile
+[INFO] |  +- commons-collections:commons-collections:jar:3.2:compile
+[INFO] |  +- jfree:jfreechart:jar:1.0.13:compile
+[INFO] |  |  \- jfree:jcommon:jar:1.0.15:compile (version managed from 1.0.16)
+[INFO] |  +- net.sf.jasperreports:jasperreports:jar:4.1.1:compile
+[INFO] |  |  +- commons-beanutils:commons-beanutils:jar:1.8.0:compile
+[INFO] |  |  +- commons-digester:commons-digester:jar:1.7:compile
+[INFO] |  |  +- com.lowagie:itext:jar:2.1.5:compile (version managed from 2.1.7)
+[INFO] |  |  |  +- bouncycastle:bcmail-jdk14:jar:138:compile
+[INFO] |  |  |  \- bouncycastle:bcprov-jdk14:jar:138:compile
+[INFO] |  |  +- xml-apis:xml-apis:jar:1.3.02:compile
+[INFO] |  |  +- eclipse:jdtcore:jar:3.1.0:compile
+[INFO] |  |  +- org.codehaus.castor:castor:jar:1.2:compile
+[INFO] |  |  \- org.apache.poi:poi-ooxml:jar:3.6:compile
+[INFO] |  |     +- org.apache.poi:poi-ooxml-schemas:jar:3.6:compile
+[INFO] |  |     |  +- org.apache.xmlbeans:xmlbeans:jar:2.3.0:compile
+[INFO] |  |     |  \- org.apache.geronimo.specs:geronimo-stax-api_1.0_spec:jar:1.0:compile
+[INFO] |  |     \- dom4j:dom4j:jar:1.6.1:compile
+[INFO] |  +- org.codehaus.jackson:jackson-core-asl:jar:1.9.2:compile
+[INFO] |  +- org.codehaus.jackson:jackson-xc:jar:1.9.2:compile
+[INFO] |  \- javax.xml.bind:jaxb-api:jar:2.2.2:compile
+[INFO] |     +- javax.xml.stream:stax-api:jar:1.0-2:test (scope managed from compile)
+[INFO] |     \- javax.activation:activation:jar:1.1:compile
+[INFO] +- org.hisp.dhis:dhis-service-core:jar:2.6-SNAPSHOT:compile
+[INFO] |  +- org.hisp.dhis:dhis-support-hibernate:jar:2.6-SNAPSHOT:compile
+[INFO] |  |  +- org.hibernate:hibernate-core:jar:3.6.4.Final:compile
+[INFO] |  |  |  +- antlr:antlr:jar:2.7.6:compile
+[INFO] |  |  |  +- org.hibernate:hibernate-commons-annotations:jar:3.2.0.Final:compile
+[INFO] |  |  |  +- org.hibernate.javax.persistence:hibernate-jpa-2.0-api:jar:1.0.0.Final:compile
+[INFO] |  |  |  +- javax.transaction:jta:jar:1.1:compile
+[INFO] |  |  |  \- org.slf4j:slf4j-api:jar:1.6.1:compile
+[INFO] |  |  +- org.hibernate:hibernate-ehcache:jar:3.6.4.Final:compile
+[INFO] |  |  |  \- net.sf.ehcache:ehcache-core:jar:2.4.1:compile
+[INFO] |  |  +- org.hibernate:hibernate-entitymanager:jar:3.6.4.Final:compile
+[INFO] |  |  |  +- cglib:cglib:jar:2.2:compile
+[INFO] |  |  |  |  \- asm:asm:jar:3.1:compile
+[INFO] |  |  |  \- javassist:javassist:jar:3.12.0.GA:compile
+[INFO] |  |  +- geronimo-spec:geronimo-spec-jta:jar:1.0-M1:compile
+[INFO] |  |  +- c3p0:c3p0:jar:0.9.1.2:compile
+[INFO] |  |  +- mysql:mysql-connector-java:jar:5.1.6:compile
+[INFO] |  |  +- postgresql:postgresql:jar:9.0-801.jdbc4:compile
+[INFO] |  |  +- com.h2database:h2:jar:1.3.154:compile
+[INFO] |  |  \- org.springframework:spring-orm:jar:3.0.6.RELEASE:compile
+[INFO] |  +- org.hisp.dhis:dhis-support-system:jar:2.6-SNAPSHOT:compile
+[INFO] |  |  +- org.apache.poi:poi:jar:3.7:compile
+[INFO] |  |  +- org.slf4j:slf4j-log4j12:jar:1.6.1:compile
+[INFO] |  |  +- log4j:log4j:jar:1.2.16:compile
+[INFO] |  |  +- org.springframework:spring-web:jar:3.0.6.RELEASE:compile
+[INFO] |  |  |  \- aopalliance:aopalliance:jar:1.0:compile
+[INFO] |  |  +- commons-math:commons-math:jar:1.2:compile
+[INFO] |  |  +- commons-validator:commons-validator:jar:1.3.1:compile
+[INFO] |  |  +- commons-io:commons-io:jar:1.4:compile
+[INFO] |  |  +- joda-time:joda-time:jar:1.5.2:compile
+[INFO] |  |  +- org.amplecode:cave-process:jar:1.0.3:compile
+[INFO] |  |  |  \- commons-logging:commons-logging-api:jar:1.1:compile
+[INFO] |  |  +- org.amplecode:quick:jar:1.7.1:compile
+[INFO] |  |  |  \- org.hsqldb:hsqldb:jar:2.2.6:compile (version managed from 2.2.4)
+[INFO] |  |  +- net.sourceforge.jexcelapi:jxl:jar:2.6:compile
+[INFO] |  |  +- org.apache.velocity:velocity:jar:1.7:compile
+[INFO] |  |  +- org.apache.velocity:velocity-tools:jar:2.0:compile
+[INFO] |  |  |  +- commons-chain:commons-chain:jar:1.1:compile
+[INFO] |  |  |  +- oro:oro:jar:2.0.8:compile
+[INFO] |  |  |  +- sslext:sslext:jar:1.2-0:compile
+[INFO] |  |  |  +- org.apache.struts:struts-core:jar:1.3.8:compile
+[INFO] |  |  |  +- org.apache.struts:struts-taglib:jar:1.3.8:compile
+[INFO] |  |  |  \- org.apache.struts:struts-tiles:jar:1.3.8:compile
+[INFO] |  |  \- net.sf.json-lib:json-lib:jar:jdk15:2.4:compile
+[INFO] |  |     \- net.sf.ezmorph:ezmorph:jar:1.0.6:compile
+[INFO] |  +- org.hisp.dhis:dhis-support-external:jar:2.6-SNAPSHOT:compile
+[INFO] |  |  +- org.springframework:spring-aop:jar:3.0.6.RELEASE:compile
+[INFO] |  |  +- org.springframework:spring-asm:jar:3.0.6.RELEASE:compile
+[INFO] |  |  +- org.springframework:spring-beans:jar:3.0.6.RELEASE:compile
+[INFO] |  |  +- org.springframework:spring-context:jar:3.0.6.RELEASE:compile
+[INFO] |  |  +- org.springframework:spring-core:jar:3.0.6.RELEASE:compile
+[INFO] |  |  +- org.springframework:spring-expression:jar:3.0.6.RELEASE:compile
+[INFO] |  |  +- org.springframework:spring-jdbc:jar:3.0.6.RELEASE:compile
+[INFO] |  |  +- org.springframework:spring-test:jar:3.0.6.RELEASE:compile
+[INFO] |  |  +- org.springframework:spring-tx:jar:3.0.6.RELEASE:compile
+[INFO] |  |  +- org.springframework.security:spring-security-core:jar:3.0.7.RELEASE:compile
+[INFO] |  |  +- org.springframework.security:spring-security-web:jar:3.0.7.RELEASE:compile
+[INFO] |  |  +- org.springframework.security:spring-security-config:jar:3.0.7.RELEASE:compile
+[INFO] |  |  \- com.thoughtworks.xstream:xstream:jar:1.3:compile
+[INFO] |  |     \- xpp3:xpp3_min:jar:1.1.4c:compile
+[INFO] |  +- org.hisp.dhis:dhis-support-jdbc:jar:2.6-SNAPSHOT:compile
+[INFO] |  +- org.hisp.dhis:dhis-support-xml:jar:2.6-SNAPSHOT:compile
+[INFO] |  |  +- org.codehaus.woodstox:stax2-api:jar:3.0.1:compile
+[INFO] |  |  |  \- stax:stax-api:jar:1.0.1:compile
+[INFO] |  |  \- org.codehaus.woodstox:woodstox-core-asl:jar:4.0.7:compile
+[INFO] |  +- jep:jep:jar:2.24:compile
+[INFO] |  +- commons-codec:commons-codec:jar:1.3:compile
+[INFO] |  +- org.apache.commons:commons-email:jar:1.2:compile
+[INFO] |  |  \- javax.mail:mail:jar:1.4.1:compile
+[INFO] |  +- org.aspectj:aspectjrt:jar:1.6.4:compile
+[INFO] |  \- org.aspectj:aspectjweaver:jar:1.6.4:compile
+[INFO] +- org.hisp.dhis:dhis-service-options:jar:2.6-SNAPSHOT:compile
+[INFO] +- org.hisp.dhis:dhis-service-aggregationengine-default:jar:2.6-SNAPSHOT:compile
+[INFO] +- org.hisp.dhis:dhis-service-mapping:jar:2.6-SNAPSHOT:compile
+[INFO] +- commons-logging:commons-logging:jar:1.1.1:compile
+[INFO] +- org.codehaus.jackson:jackson-mapper-asl:jar:1.9.2:compile
+[INFO] +- org.geotools:gt-render:jar:8.0-M3:compile
+[INFO] |  +- org.geotools:gt-main:jar:8.0-M3:compile
+[INFO] |  |  +- org.geotools:gt-api:jar:8.0-M3:compile
+[INFO] |  |  +- com.vividsolutions:jts:jar:1.12:compile
+[INFO] |  |  \- jdom:jdom:jar:1.0:compile
+[INFO] |  +- org.geotools:gt-coverage:jar:8.0-M3:compile
+[INFO] |  |  +- javax.media:jai_imageio:jar:1.1:compile
+[INFO] |  |  +- it.geosolutions.imageio-ext:imageio-ext-tiff:jar:1.1.0:compile
+[INFO] |  |  |  +- it.geosolutions.imageio-ext:imageio-ext-utilities:jar:1.1.0:compile
+[INFO] |  |  |  \- javax.media:jai_codec:jar:1.1.3:compile
+[INFO] |  |  +- org.jaitools:jt-zonalstats:jar:1.2.0:compile
+[INFO] |  |  \- org.jaitools:jt-utils:jar:1.2.0:compile
+[INFO] |  +- org.geotools:gt-cql:jar:8.0-M3:compile
+[INFO] |  \- javax.media:jai_core:jar:1.1.3:compile
+[INFO] +- org.geotools:gt-epsg-wkt:jar:8.0-M3:compile
+[INFO] |  \- org.geotools:gt-referencing:jar:8.0-M3:compile
+[INFO] |     +- java3d:vecmath:jar:1.3.2:compile
+[INFO] |     \- org.geotools:gt-metadata:jar:8.0-M3:compile
+[INFO] |        \- org.geotools:gt-opengis:jar:8.0-M3:compile
+[INFO] |           \- net.java.dev.jsr-275:jsr-275:jar:1.0-beta-2:compile
+[INFO] \- org.hisp.dhis:dhis-support-test:jar:2.6-SNAPSHOT:test
+[INFO]    \- org.mockito:mockito-all:jar:1.8.5:test
+[INFO]                                                                         
+[INFO] ------------------------------------------------------------------------
+[INFO] Building DHIS Patient API Implementations 2.6-SNAPSHOT
+[INFO] ------------------------------------------------------------------------
+[INFO] 
+[INFO] --- maven-dependency-plugin:2.1:tree (default-cli) @ dhis-service-patient ---
+[INFO] org.hisp.dhis:dhis-service-patient:jar:2.6-SNAPSHOT
+[INFO] +- org.hisp.dhis:dhis-api:jar:2.6-SNAPSHOT:compile
+[INFO] |  +- junit:junit:jar:4.8.1:compile
+[INFO] |  +- commons-lang:commons-lang:jar:2.6:compile
+[INFO] |  +- commons-collections:commons-collections:jar:3.2:compile
+[INFO] |  +- jfree:jfreechart:jar:1.0.13:compile
+[INFO] |  |  \- jfree:jcommon:jar:1.0.15:compile (version managed from 1.0.16)
+[INFO] |  +- net.sf.jasperreports:jasperreports:jar:4.1.1:compile
+[INFO] |  |  +- commons-beanutils:commons-beanutils:jar:1.8.0:compile
+[INFO] |  |  +- commons-digester:commons-digester:jar:1.7:compile
+[INFO] |  |  +- com.lowagie:itext:jar:2.1.5:compile (version managed from 2.1.7)
+[INFO] |  |  |  +- bouncycastle:bcmail-jdk14:jar:138:compile
+[INFO] |  |  |  \- bouncycastle:bcprov-jdk14:jar:138:compile
+[INFO] |  |  +- xml-apis:xml-apis:jar:1.3.02:compile
+[INFO] |  |  +- eclipse:jdtcore:jar:3.1.0:compile
+[INFO] |  |  +- org.codehaus.castor:castor:jar:1.2:compile
+[INFO] |  |  \- org.apache.poi:poi-ooxml:jar:3.6:compile
+[INFO] |  |     +- org.apache.poi:poi-ooxml-schemas:jar:3.6:compile
+[INFO] |  |     |  +- org.apache.xmlbeans:xmlbeans:jar:2.3.0:compile
+[INFO] |  |     |  \- org.apache.geronimo.specs:geronimo-stax-api_1.0_spec:jar:1.0:compile
+[INFO] |  |     \- dom4j:dom4j:jar:1.6.1:compile
+[INFO] |  +- org.codehaus.jackson:jackson-core-asl:jar:1.9.2:compile
+[INFO] |  +- org.codehaus.jackson:jackson-mapper-asl:jar:1.9.2:compile
+[INFO] |  +- org.codehaus.jackson:jackson-xc:jar:1.9.2:compile
+[INFO] |  \- javax.xml.bind:jaxb-api:jar:2.2.2:compile
+[INFO] |     +- javax.xml.stream:stax-api:jar:1.0-2:test (scope managed from compile)
+[INFO] |     \- javax.activation:activation:jar:1.1:compile
+[INFO] +- org.hisp.dhis:dhis-service-core:jar:2.6-SNAPSHOT:compile
+[INFO] |  +- org.hisp.dhis:dhis-support-hibernate:jar:2.6-SNAPSHOT:compile
+[INFO] |  |  +- org.hibernate:hibernate-core:jar:3.6.4.Final:compile
+[INFO] |  |  |  +- antlr:antlr:jar:2.7.6:compile
+[INFO] |  |  |  +- org.hibernate:hibernate-commons-annotations:jar:3.2.0.Final:compile
+[INFO] |  |  |  +- org.hibernate.javax.persistence:hibernate-jpa-2.0-api:jar:1.0.0.Final:compile
+[INFO] |  |  |  +- javax.transaction:jta:jar:1.1:compile
+[INFO] |  |  |  \- org.slf4j:slf4j-api:jar:1.6.1:compile
+[INFO] |  |  +- org.hibernate:hibernate-ehcache:jar:3.6.4.Final:compile
+[INFO] |  |  |  \- net.sf.ehcache:ehcache-core:jar:2.4.1:compile
+[INFO] |  |  +- org.hibernate:hibernate-entitymanager:jar:3.6.4.Final:compile
+[INFO] |  |  |  +- cglib:cglib:jar:2.2:compile
+[INFO] |  |  |  |  \- asm:asm:jar:3.1:compile
+[INFO] |  |  |  \- javassist:javassist:jar:3.12.0.GA:compile
+[INFO] |  |  +- geronimo-spec:geronimo-spec-jta:jar:1.0-M1:compile
+[INFO] |  |  +- c3p0:c3p0:jar:0.9.1.2:compile
+[INFO] |  |  +- mysql:mysql-connector-java:jar:5.1.6:compile
+[INFO] |  |  +- postgresql:postgresql:jar:9.0-801.jdbc4:compile
+[INFO] |  |  +- com.h2database:h2:jar:1.3.154:compile
+[INFO] |  |  \- org.springframework:spring-orm:jar:3.0.6.RELEASE:compile
+[INFO] |  +- org.hisp.dhis:dhis-support-system:jar:2.6-SNAPSHOT:compile
+[INFO] |  |  +- org.apache.poi:poi:jar:3.7:compile
+[INFO] |  |  +- org.slf4j:slf4j-log4j12:jar:1.6.1:compile
+[INFO] |  |  +- log4j:log4j:jar:1.2.16:compile
+[INFO] |  |  +- org.springframework:spring-web:jar:3.0.6.RELEASE:compile
+[INFO] |  |  |  \- aopalliance:aopalliance:jar:1.0:compile
+[INFO] |  |  +- commons-math:commons-math:jar:1.2:compile
+[INFO] |  |  +- commons-validator:commons-validator:jar:1.3.1:compile
+[INFO] |  |  +- commons-io:commons-io:jar:1.4:compile
+[INFO] |  |  +- joda-time:joda-time:jar:1.5.2:compile
+[INFO] |  |  +- org.amplecode:cave-process:jar:1.0.3:compile
+[INFO] |  |  |  \- commons-logging:commons-logging-api:jar:1.1:compile
+[INFO] |  |  +- org.amplecode:quick:jar:1.7.1:compile
+[INFO] |  |  |  \- org.hsqldb:hsqldb:jar:2.2.6:compile (version managed from 2.2.4)
+[INFO] |  |  +- net.sourceforge.jexcelapi:jxl:jar:2.6:compile
+[INFO] |  |  +- org.apache.velocity:velocity:jar:1.7:compile
+[INFO] |  |  +- org.apache.velocity:velocity-tools:jar:2.0:compile
+[INFO] |  |  |  +- commons-chain:commons-chain:jar:1.1:compile
+[INFO] |  |  |  +- oro:oro:jar:2.0.8:compile
+[INFO] |  |  |  +- sslext:sslext:jar:1.2-0:compile
+[INFO] |  |  |  +- org.apache.struts:struts-core:jar:1.3.8:compile
+[INFO] |  |  |  +- org.apache.struts:struts-taglib:jar:1.3.8:compile
+[INFO] |  |  |  \- org.apache.struts:struts-tiles:jar:1.3.8:compile
+[INFO] |  |  \- net.sf.json-lib:json-lib:jar:jdk15:2.4:compile
+[INFO] |  |     \- net.sf.ezmorph:ezmorph:jar:1.0.6:compile
+[INFO] |  +- org.hisp.dhis:dhis-support-external:jar:2.6-SNAPSHOT:compile
+[INFO] |  |  +- org.springframework:spring-aop:jar:3.0.6.RELEASE:compile
+[INFO] |  |  +- org.springframework:spring-asm:jar:3.0.6.RELEASE:compile
+[INFO] |  |  +- org.springframework:spring-beans:jar:3.0.6.RELEASE:compile
+[INFO] |  |  +- org.springframework:spring-context:jar:3.0.6.RELEASE:compile
+[INFO] |  |  +- org.springframework:spring-core:jar:3.0.6.RELEASE:compile
+[INFO] |  |  +- org.springframework:spring-expression:jar:3.0.6.RELEASE:compile
+[INFO] |  |  +- org.springframework:spring-jdbc:jar:3.0.6.RELEASE:compile
+[INFO] |  |  +- org.springframework:spring-test:jar:3.0.6.RELEASE:compile
+[INFO] |  |  +- org.springframework:spring-tx:jar:3.0.6.RELEASE:compile
+[INFO] |  |  +- org.springframework.security:spring-security-core:jar:3.0.7.RELEASE:compile
+[INFO] |  |  +- org.springframework.security:spring-security-web:jar:3.0.7.RELEASE:compile
+[INFO] |  |  +- org.springframework.security:spring-security-config:jar:3.0.7.RELEASE:compile
+[INFO] |  |  \- com.thoughtworks.xstream:xstream:jar:1.3:compile
+[INFO] |  |     \- xpp3:xpp3_min:jar:1.1.4c:compile
+[INFO] |  +- org.hisp.dhis:dhis-support-jdbc:jar:2.6-SNAPSHOT:compile
+[INFO] |  +- org.hisp.dhis:dhis-support-xml:jar:2.6-SNAPSHOT:compile
+[INFO] |  |  +- org.codehaus.woodstox:stax2-api:jar:3.0.1:compile
+[INFO] |  |  |  \- stax:stax-api:jar:1.0.1:compile
+[INFO] |  |  \- org.codehaus.woodstox:woodstox-core-asl:jar:4.0.7:compile
+[INFO] |  +- jep:jep:jar:2.24:compile
+[INFO] |  +- commons-codec:commons-codec:jar:1.3:compile
+[INFO] |  +- org.apache.commons:commons-email:jar:1.2:compile
+[INFO] |  |  \- javax.mail:mail:jar:1.4.1:compile
+[INFO] |  +- org.aspectj:aspectjrt:jar:1.6.4:compile
+[INFO] |  \- org.aspectj:aspectjweaver:jar:1.6.4:compile
+[INFO] \- org.hisp.dhis:dhis-support-test:jar:2.6-SNAPSHOT:test
+[INFO]    +- commons-logging:commons-logging:jar:1.1.1:compile
+[INFO]    \- org.mockito:mockito-all:jar:1.8.5:test
+[INFO]                                                                         
+[INFO] ------------------------------------------------------------------------
+[INFO] Building DHIS Mobile Service 2.6-SNAPSHOT
+[INFO] ------------------------------------------------------------------------
+[INFO] 
+[INFO] --- maven-dependency-plugin:2.1:tree (default-cli) @ dhis-service-mobile ---
+[INFO] org.hisp.dhis:dhis-service-mobile:jar:2.6-SNAPSHOT
+[INFO] +- org.hisp.dhis:dhis-api:jar:2.6-SNAPSHOT:compile
+[INFO] |  +- junit:junit:jar:4.8.1:compile
+[INFO] |  +- commons-lang:commons-lang:jar:2.6:compile
+[INFO] |  +- commons-collections:commons-collections:jar:3.2:compile
+[INFO] |  +- jfree:jfreechart:jar:1.0.13:compile
+[INFO] |  |  \- jfree:jcommon:jar:1.0.15:compile (version managed from 1.0.16)
+[INFO] |  +- net.sf.jasperreports:jasperreports:jar:4.1.1:compile
+[INFO] |  |  +- commons-beanutils:commons-beanutils:jar:1.8.0:compile
+[INFO] |  |  +- commons-digester:commons-digester:jar:1.7:compile
+[INFO] |  |  +- com.lowagie:itext:jar:2.1.5:compile (version managed from 2.1.7)
+[INFO] |  |  |  +- bouncycastle:bcmail-jdk14:jar:138:compile
+[INFO] |  |  |  \- bouncycastle:bcprov-jdk14:jar:138:compile
+[INFO] |  |  +- xml-apis:xml-apis:jar:1.3.02:compile
+[INFO] |  |  +- eclipse:jdtcore:jar:3.1.0:compile
+[INFO] |  |  +- org.codehaus.castor:castor:jar:1.2:compile
+[INFO] |  |  \- org.apache.poi:poi-ooxml:jar:3.6:compile
+[INFO] |  |     +- org.apache.poi:poi-ooxml-schemas:jar:3.6:compile
+[INFO] |  |     |  +- org.apache.xmlbeans:xmlbeans:jar:2.3.0:compile
+[INFO] |  |     |  \- org.apache.geronimo.specs:geronimo-stax-api_1.0_spec:jar:1.0:compile
+[INFO] |  |     \- dom4j:dom4j:jar:1.6.1:compile
+[INFO] |  +- org.codehaus.jackson:jackson-core-asl:jar:1.9.2:compile
+[INFO] |  +- org.codehaus.jackson:jackson-mapper-asl:jar:1.9.2:compile
+[INFO] |  +- org.codehaus.jackson:jackson-xc:jar:1.9.2:compile
+[INFO] |  \- javax.xml.bind:jaxb-api:jar:2.2.2:compile
+[INFO] |     +- javax.xml.stream:stax-api:jar:1.0-2:test (scope managed from compile)
+[INFO] |     \- javax.activation:activation:jar:1.1:compile
+[INFO] +- org.hisp.dhis:dhis-service-core:jar:2.6-SNAPSHOT:compile
+[INFO] |  +- org.hisp.dhis:dhis-support-hibernate:jar:2.6-SNAPSHOT:compile
+[INFO] |  |  +- org.hibernate:hibernate-core:jar:3.6.4.Final:compile
+[INFO] |  |  |  +- antlr:antlr:jar:2.7.6:compile
+[INFO] |  |  |  +- org.hibernate:hibernate-commons-annotations:jar:3.2.0.Final:compile
+[INFO] |  |  |  +- org.hibernate.javax.persistence:hibernate-jpa-2.0-api:jar:1.0.0.Final:compile
+[INFO] |  |  |  +- javax.transaction:jta:jar:1.1:compile
+[INFO] |  |  |  \- org.slf4j:slf4j-api:jar:1.6.1:compile
+[INFO] |  |  +- org.hibernate:hibernate-ehcache:jar:3.6.4.Final:compile
+[INFO] |  |  |  \- net.sf.ehcache:ehcache-core:jar:2.4.1:compile
+[INFO] |  |  +- org.hibernate:hibernate-entitymanager:jar:3.6.4.Final:compile
+[INFO] |  |  |  +- cglib:cglib:jar:2.2:compile
+[INFO] |  |  |  |  \- asm:asm:jar:3.1:compile
+[INFO] |  |  |  \- javassist:javassist:jar:3.12.0.GA:compile
+[INFO] |  |  +- geronimo-spec:geronimo-spec-jta:jar:1.0-M1:compile
+[INFO] |  |  +- c3p0:c3p0:jar:0.9.1.2:compile
+[INFO] |  |  +- mysql:mysql-connector-java:jar:5.1.6:compile
+[INFO] |  |  +- postgresql:postgresql:jar:9.0-801.jdbc4:compile
+[INFO] |  |  +- com.h2database:h2:jar:1.3.154:compile
+[INFO] |  |  \- org.springframework:spring-orm:jar:3.0.6.RELEASE:compile
+[INFO] |  +- org.hisp.dhis:dhis-support-system:jar:2.6-SNAPSHOT:compile
+[INFO] |  |  +- org.apache.poi:poi:jar:3.7:compile
+[INFO] |  |  +- org.slf4j:slf4j-log4j12:jar:1.6.1:compile
+[INFO] |  |  +- log4j:log4j:jar:1.2.16:compile
+[INFO] |  |  +- org.springframework:spring-web:jar:3.0.6.RELEASE:compile
+[INFO] |  |  |  \- aopalliance:aopalliance:jar:1.0:compile
+[INFO] |  |  +- commons-validator:commons-validator:jar:1.3.1:compile
+[INFO] |  |  +- commons-io:commons-io:jar:1.4:compile
+[INFO] |  |  +- joda-time:joda-time:jar:1.5.2:compile
+[INFO] |  |  +- org.amplecode:cave-process:jar:1.0.3:compile
+[INFO] |  |  |  \- commons-logging:commons-logging-api:jar:1.1:compile
+[INFO] |  |  +- org.amplecode:quick:jar:1.7.1:compile
+[INFO] |  |  |  \- org.hsqldb:hsqldb:jar:2.2.6:compile (version managed from 2.2.4)
+[INFO] |  |  +- net.sourceforge.jexcelapi:jxl:jar:2.6:compile
+[INFO] |  |  +- org.apache.velocity:velocity:jar:1.7:compile
+[INFO] |  |  +- org.apache.velocity:velocity-tools:jar:2.0:compile
+[INFO] |  |  |  +- commons-chain:commons-chain:jar:1.1:compile
+[INFO] |  |  |  +- oro:oro:jar:2.0.8:compile
+[INFO] |  |  |  +- sslext:sslext:jar:1.2-0:compile
+[INFO] |  |  |  +- org.apache.struts:struts-core:jar:1.3.8:compile
+[INFO] |  |  |  +- org.apache.struts:struts-taglib:jar:1.3.8:compile
+[INFO] |  |  |  \- org.apache.struts:struts-tiles:jar:1.3.8:compile
+[INFO] |  |  \- net.sf.json-lib:json-lib:jar:jdk15:2.4:compile
+[INFO] |  |     \- net.sf.ezmorph:ezmorph:jar:1.0.6:compile
+[INFO] |  +- org.hisp.dhis:dhis-support-external:jar:2.6-SNAPSHOT:compile
+[INFO] |  |  +- org.springframework:spring-aop:jar:3.0.6.RELEASE:compile
+[INFO] |  |  +- org.springframework:spring-asm:jar:3.0.6.RELEASE:compile
+[INFO] |  |  +- org.springframework:spring-beans:jar:3.0.6.RELEASE:compile
+[INFO] |  |  +- org.springframework:spring-context:jar:3.0.6.RELEASE:compile
+[INFO] |  |  +- org.springframework:spring-core:jar:3.0.6.RELEASE:compile
+[INFO] |  |  +- org.springframework:spring-expression:jar:3.0.6.RELEASE:compile
+[INFO] |  |  +- org.springframework:spring-jdbc:jar:3.0.6.RELEASE:compile
+[INFO] |  |  +- org.springframework:spring-test:jar:3.0.6.RELEASE:compile
+[INFO] |  |  +- org.springframework:spring-tx:jar:3.0.6.RELEASE:compile
+[INFO] |  |  +- org.springframework.security:spring-security-core:jar:3.0.7.RELEASE:compile
+[INFO] |  |  +- org.springframework.security:spring-security-web:jar:3.0.7.RELEASE:compile
+[INFO] |  |  +- org.springframework.security:spring-security-config:jar:3.0.7.RELEASE:compile
+[INFO] |  |  \- com.thoughtworks.xstream:xstream:jar:1.3:compile
+[INFO] |  |     \- xpp3:xpp3_min:jar:1.1.4c:compile
+[INFO] |  +- org.hisp.dhis:dhis-support-jdbc:jar:2.6-SNAPSHOT:compile
+[INFO] |  +- org.hisp.dhis:dhis-support-xml:jar:2.6-SNAPSHOT:compile
+[INFO] |  |  +- org.codehaus.woodstox:stax2-api:jar:3.0.1:compile
+[INFO] |  |  |  \- stax:stax-api:jar:1.0.1:compile
+[INFO] |  |  \- org.codehaus.woodstox:woodstox-core-asl:jar:4.0.7:compile
+[INFO] |  +- jep:jep:jar:2.24:compile
+[INFO] |  +- commons-codec:commons-codec:jar:1.3:compile
+[INFO] |  +- org.apache.commons:commons-email:jar:1.2:compile
+[INFO] |  |  \- javax.mail:mail:jar:1.4.1:compile
+[INFO] |  +- org.aspectj:aspectjrt:jar:1.6.4:compile
+[INFO] |  \- org.aspectj:aspectjweaver:jar:1.6.4:compile
+[INFO] +- org.hisp.dhis:dhis-service-administration:jar:2.6-SNAPSHOT:compile
+[INFO] |  +- org.hisp.dhis:dhis-service-options:jar:2.6-SNAPSHOT:compile
+[INFO] |  +- commons-logging:commons-logging:jar:1.1.1:compile
+[INFO] |  \- commons-math:commons-math:jar:1.2:compile
+[INFO] +- org.hisp.dhis:dhis-service-patient:jar:2.6-SNAPSHOT:compile
+[INFO] \- org.hisp.dhis:dhis-support-test:jar:2.6-SNAPSHOT:test
+[INFO]    \- org.mockito:mockito-all:jar:1.8.5:test
+[INFO]                                                                         
+[INFO] ------------------------------------------------------------------------
+[INFO] Building DHIS Data Exchange 2.6-SNAPSHOT
+[INFO] ------------------------------------------------------------------------
+[INFO] 
+[INFO] --- maven-dependency-plugin:2.1:tree (default-cli) @ dhis-dxf2 ---
+[INFO] org.hisp.dhis:dhis-dxf2:jar:2.6-SNAPSHOT
+[INFO] +- org.hisp.dhis:dhis-api:jar:2.6-SNAPSHOT:compile
+[INFO] |  +- junit:junit:jar:4.8.1:compile
+[INFO] |  +- commons-lang:commons-lang:jar:2.6:compile
+[INFO] |  +- commons-collections:commons-collections:jar:3.2:compile
+[INFO] |  +- jfree:jfreechart:jar:1.0.13:compile
+[INFO] |  |  \- jfree:jcommon:jar:1.0.15:compile (version managed from 1.0.16)
+[INFO] |  \- net.sf.jasperreports:jasperreports:jar:4.1.1:compile
+[INFO] |     +- commons-beanutils:commons-beanutils:jar:1.8.0:compile
+[INFO] |     +- commons-digester:commons-digester:jar:1.7:compile
+[INFO] |     +- commons-logging:commons-logging:jar:1.1.1:compile
+[INFO] |     +- com.lowagie:itext:jar:2.1.5:compile (version managed from 2.1.7)
+[INFO] |     |  +- bouncycastle:bcmail-jdk14:jar:138:compile
+[INFO] |     |  \- bouncycastle:bcprov-jdk14:jar:138:compile
+[INFO] |     +- xml-apis:xml-apis:jar:1.3.02:compile
+[INFO] |     +- eclipse:jdtcore:jar:3.1.0:compile
+[INFO] |     +- org.codehaus.castor:castor:jar:1.2:compile
+[INFO] |     \- org.apache.poi:poi-ooxml:jar:3.6:compile
+[INFO] |        +- org.apache.poi:poi:jar:3.7:compile (version managed from 3.6)
+[INFO] |        +- org.apache.poi:poi-ooxml-schemas:jar:3.6:compile
+[INFO] |        |  +- org.apache.xmlbeans:xmlbeans:jar:2.3.0:compile
+[INFO] |        |  |  \- stax:stax-api:jar:1.0.1:compile
+[INFO] |        |  \- org.apache.geronimo.specs:geronimo-stax-api_1.0_spec:jar:1.0:compile
+[INFO] |        \- dom4j:dom4j:jar:1.6.1:compile
+[INFO] +- org.codehaus.jackson:jackson-core-asl:jar:1.9.2:compile
+[INFO] +- org.codehaus.jackson:jackson-mapper-asl:jar:1.9.2:compile
+[INFO] +- org.codehaus.jackson:jackson-xc:jar:1.9.2:compile
+[INFO] \- javax.xml.bind:jaxb-api:jar:2.2.2:compile
+[INFO]    +- javax.xml.stream:stax-api:jar:1.0-2:test (scope managed from compile)
+[INFO]    \- javax.activation:activation:jar:1.1:compile
+[INFO]                                                                         
+[INFO] ------------------------------------------------------------------------
+[INFO] Building DHIS JDBC / External Test Project 2.6-SNAPSHOT
+[INFO] ------------------------------------------------------------------------
+[INFO] 
+[INFO] --- maven-dependency-plugin:2.1:tree (default-cli) @ dhis-support-jdbc-test ---
+[INFO] org.hisp.dhis:dhis-support-jdbc-test:jar:2.6-SNAPSHOT
+[INFO] +- org.hisp.dhis:dhis-api:jar:2.6-SNAPSHOT:compile
+[INFO] |  +- junit:junit:jar:4.8.1:compile
+[INFO] |  +- commons-lang:commons-lang:jar:2.6:compile
+[INFO] |  +- commons-collections:commons-collections:jar:3.2:compile
+[INFO] |  +- jfree:jfreechart:jar:1.0.13:compile
+[INFO] |  |  \- jfree:jcommon:jar:1.0.15:compile (version managed from 1.0.16)
+[INFO] |  +- net.sf.jasperreports:jasperreports:jar:4.1.1:compile
+[INFO] |  |  +- commons-beanutils:commons-beanutils:jar:1.8.0:compile
+[INFO] |  |  +- commons-digester:commons-digester:jar:1.7:compile
+[INFO] |  |  +- com.lowagie:itext:jar:2.1.5:compile (version managed from 2.1.7)
+[INFO] |  |  |  +- bouncycastle:bcmail-jdk14:jar:138:compile
+[INFO] |  |  |  \- bouncycastle:bcprov-jdk14:jar:138:compile
+[INFO] |  |  +- xml-apis:xml-apis:jar:1.3.02:compile
+[INFO] |  |  +- eclipse:jdtcore:jar:3.1.0:compile
+[INFO] |  |  +- org.codehaus.castor:castor:jar:1.2:compile
+[INFO] |  |  \- org.apache.poi:poi-ooxml:jar:3.6:compile
+[INFO] |  |     +- org.apache.poi:poi:jar:3.7:compile (version managed from 3.6)
+[INFO] |  |     +- org.apache.poi:poi-ooxml-schemas:jar:3.6:compile
+[INFO] |  |     |  +- org.apache.xmlbeans:xmlbeans:jar:2.3.0:compile
+[INFO] |  |     |  |  \- stax:stax-api:jar:1.0.1:compile
+[INFO] |  |     |  \- org.apache.geronimo.specs:geronimo-stax-api_1.0_spec:jar:1.0:compile
+[INFO] |  |     \- dom4j:dom4j:jar:1.6.1:compile
+[INFO] |  +- org.codehaus.jackson:jackson-core-asl:jar:1.9.2:compile
+[INFO] |  +- org.codehaus.jackson:jackson-mapper-asl:jar:1.9.2:compile
+[INFO] |  +- org.codehaus.jackson:jackson-xc:jar:1.9.2:compile
+[INFO] |  \- javax.xml.bind:jaxb-api:jar:2.2.2:compile
+[INFO] |     +- javax.xml.stream:stax-api:jar:1.0-2:test (scope managed from compile)
+[INFO] |     \- javax.activation:activation:jar:1.1:compile
+[INFO] +- org.hisp.dhis:dhis-support-jdbc:jar:2.6-SNAPSHOT:test
+[INFO] |  +- org.aspectj:aspectjweaver:jar:1.6.4:test
+[INFO] |  \- org.hisp.dhis:dhis-support-system:jar:2.6-SNAPSHOT:test
+[INFO] |     +- org.slf4j:slf4j-log4j12:jar:1.6.1:test
+[INFO] |     +- log4j:log4j:jar:1.2.16:test
+[INFO] |     +- commons-math:commons-math:jar:1.2:test
+[INFO] |     +- commons-validator:commons-validator:jar:1.3.1:test
+[INFO] |     +- commons-io:commons-io:jar:1.4:test
+[INFO] |     +- net.sourceforge.jexcelapi:jxl:jar:2.6:test
+[INFO] |     +- org.apache.velocity:velocity:jar:1.7:test
+[INFO] |     +- org.apache.velocity:velocity-tools:jar:2.0:test
+[INFO] |     |  +- commons-chain:commons-chain:jar:1.1:test
+[INFO] |     |  +- oro:oro:jar:2.0.8:test
+[INFO] |     |  +- sslext:sslext:jar:1.2-0:test
+[INFO] |     |  +- org.apache.struts:struts-core:jar:1.3.8:test
+[INFO] |     |  +- org.apache.struts:struts-taglib:jar:1.3.8:test
+[INFO] |     |  \- org.apache.struts:struts-tiles:jar:1.3.8:test
+[INFO] |     \- net.sf.json-lib:json-lib:jar:jdk15:2.4:test
+[INFO] |        \- net.sf.ezmorph:ezmorph:jar:1.0.6:test
+[INFO] +- org.hisp.dhis:dhis-service-core:jar:2.6-SNAPSHOT:test
+[INFO] |  +- org.hisp.dhis:dhis-support-xml:jar:2.6-SNAPSHOT:test
+[INFO] |  |  +- org.codehaus.woodstox:stax2-api:jar:3.0.1:test
+[INFO] |  |  \- org.codehaus.woodstox:woodstox-core-asl:jar:4.0.7:test
+[INFO] |  +- jep:jep:jar:2.24:test
+[INFO] |  +- commons-codec:commons-codec:jar:1.3:test
+[INFO] |  \- org.apache.commons:commons-email:jar:1.2:test
+[INFO] |     \- javax.mail:mail:jar:1.4.1:test
+[INFO] +- org.hisp.dhis:dhis-service-importexport:jar:2.6-SNAPSHOT:test
+[INFO] |  +- org.hisp.dhis:dhis-service-datamart-default:jar:2.6-SNAPSHOT:test
+[INFO] |  |  \- org.hisp.dhis:dhis-service-options:jar:2.6-SNAPSHOT:test
+[INFO] |  +- org.hisp.dhis:dhis-service-administration:jar:2.6-SNAPSHOT:test
+[INFO] |  +- org.hisp.dhis:dhis-service-reporting:jar:2.6-SNAPSHOT:test
+[INFO] |  |  +- org.hisp.dhis:dhis-service-aggregationengine-default:jar:2.6-SNAPSHOT:test
+[INFO] |  |  \- org.hisp.dhis:dhis-service-mapping:jar:2.6-SNAPSHOT:test
+[INFO] |  +- commons-logging:commons-logging:jar:1.1.1:compile
+[INFO] |  +- joda-time:joda-time:jar:1.5.2:test
+[INFO] |  +- com.ibatis:ibatis2-common:jar:2.1.7.597:test
+[INFO] |  +- com.ibatis:ibatis2-sqlmap:jar:2.1.7.597:test
+[INFO] |  \- org.amplecode:cave-process:jar:1.0.3:test
+[INFO] |     \- commons-logging:commons-logging-api:jar:1.1:test
+[INFO] +- org.hisp.dhis:dhis-support-test:jar:2.6-SNAPSHOT:test
+[INFO] |  +- org.springframework:spring-context:jar:3.0.6.RELEASE:test
+[INFO] |  +- org.springframework:spring-orm:jar:3.0.6.RELEASE:test
+[INFO] |  +- org.springframework:spring-test:jar:3.0.6.RELEASE:test
+[INFO] |  +- org.mockito:mockito-all:jar:1.8.5:test
+[INFO] |  \- org.hibernate:hibernate-core:jar:3.6.4.Final:test
+[INFO] |     +- antlr:antlr:jar:2.7.6:test
+[INFO] |     +- org.hibernate:hibernate-commons-annotations:jar:3.2.0.Final:test
+[INFO] |     +- org.hibernate.javax.persistence:hibernate-jpa-2.0-api:jar:1.0.0.Final:test
+[INFO] |     +- javax.transaction:jta:jar:1.1:test
+[INFO] |     \- org.slf4j:slf4j-api:jar:1.6.1:test
+[INFO] +- org.hisp.dhis:dhis-support-hibernate:jar:2.6-SNAPSHOT:test
+[INFO] |  +- org.hibernate:hibernate-ehcache:jar:3.6.4.Final:test
+[INFO] |  |  \- net.sf.ehcache:ehcache-core:jar:2.4.1:test
+[INFO] |  +- org.hibernate:hibernate-entitymanager:jar:3.6.4.Final:test
+[INFO] |  |  +- cglib:cglib:jar:2.2:test
+[INFO] |  |  |  \- asm:asm:jar:3.1:test
+[INFO] |  |  \- javassist:javassist:jar:3.12.0.GA:test
+[INFO] |  +- geronimo-spec:geronimo-spec-jta:jar:1.0-M1:test
+[INFO] |  +- c3p0:c3p0:jar:0.9.1.2:test
+[INFO] |  +- mysql:mysql-connector-java:jar:5.1.6:test
+[INFO] |  +- postgresql:postgresql:jar:9.0-801.jdbc4:test
+[INFO] |  \- com.h2database:h2:jar:1.3.154:test
+[INFO] +- org.hisp.dhis:dhis-support-external:jar:2.6-SNAPSHOT:test
+[INFO] |  +- org.springframework:spring-aop:jar:3.0.6.RELEASE:test
+[INFO] |  |  \- aopalliance:aopalliance:jar:1.0:test
+[INFO] |  +- org.springframework:spring-expression:jar:3.0.6.RELEASE:test
+[INFO] |  +- org.springframework:spring-jdbc:jar:3.0.6.RELEASE:test
+[INFO] |  +- org.springframework:spring-tx:jar:3.0.6.RELEASE:test
+[INFO] |  +- org.springframework:spring-web:jar:3.0.6.RELEASE:test
+[INFO] |  +- org.springframework.security:spring-security-core:jar:3.0.7.RELEASE:test
+[INFO] |  +- org.springframework.security:spring-security-web:jar:3.0.7.RELEASE:test
+[INFO] |  +- org.springframework.security:spring-security-config:jar:3.0.7.RELEASE:test
+[INFO] |  \- com.thoughtworks.xstream:xstream:jar:1.3:test
+[INFO] |     \- xpp3:xpp3_min:jar:1.1.4c:test
+[INFO] \- org.amplecode:quick:jar:1.7.1:compile
+[INFO]    +- org.springframework:spring-beans:jar:3.0.6.RELEASE:compile
+[INFO]    |  \- org.springframework:spring-core:jar:3.0.6.RELEASE:compile
+[INFO]    |     \- org.springframework:spring-asm:jar:3.0.6.RELEASE:compile
+[INFO]    +- org.aspectj:aspectjrt:jar:1.6.4:compile
+[INFO]    \- org.hsqldb:hsqldb:jar:2.2.6:compile (version managed from 2.2.4)
+[INFO] ------------------------------------------------------------------------
+[INFO] Reactor Summary:
+[INFO] 
+[INFO] DHIS 2 ............................................ SUCCESS [1.037s]
+[INFO] DHIS API .......................................... SUCCESS [0.361s]
+[INFO] DHIS Support Parent Project ....................... SUCCESS [0.030s]
+[INFO] DHIS Test Support ................................. SUCCESS [0.669s]
+[INFO] DHIS External Support ............................. SUCCESS [0.601s]
+[INFO] DHIS Hibernate Support ............................ SUCCESS [0.568s]
+[INFO] DHIS System Support ............................... SUCCESS [0.666s]
+[INFO] DHIS JDBC Service ................................. SUCCESS [0.146s]
+[INFO] DHIS XML framework services ....................... SUCCESS [0.126s]
+[INFO] DHIS Services Parent Project ...................... SUCCESS [0.053s]
+[INFO] DHIS Core API Implementations ..................... SUCCESS [0.269s]
+[INFO] DHIS I18n Static .................................. SUCCESS [0.286s]
+[INFO] DHIS Options ...................................... SUCCESS [0.246s]
+[INFO] DHIS Administration Service ....................... SUCCESS [0.333s]
+[INFO] DHIS DataMart Service - Default ................... SUCCESS [0.153s]
+[INFO] DHIS Aggregation Service - Default ................ SUCCESS [0.127s]
+[INFO] DHIS OrganisationUnit API Implementations ......... SUCCESS [0.143s]
+[INFO] DHIS Reporting Service ............................ SUCCESS [0.438s]
+[INFO] DHIS Import-Export Service ........................ SUCCESS [0.293s]
+[INFO] DHIS Map Generation Service ....................... SUCCESS [0.402s]
+[INFO] DHIS Patient API Implementations .................. SUCCESS [0.123s]
+[INFO] DHIS Mobile Service ............................... SUCCESS [0.154s]
+[INFO] DHIS Data Exchange ................................ SUCCESS [0.038s]
+[INFO] DHIS JDBC / External Test Project ................. SUCCESS [0.765s]
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD SUCCESS
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time: 9.023s
+[INFO] Finished at: Tue Dec 13 12:50:00 CET 2011
+[INFO] Final Memory: 23M/370M
+[INFO] ------------------------------------------------------------------------

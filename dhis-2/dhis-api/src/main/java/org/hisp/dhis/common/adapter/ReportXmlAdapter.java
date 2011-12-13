@@ -1,4 +1,4 @@
-package org.hisp.dhis.api.controller;
+package org.hisp.dhis.common.adapter;
 
 /*
  * Copyright (c) 2004-2011, University of Oslo
@@ -27,30 +27,35 @@ package org.hisp.dhis.api.controller;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import java.util.UUID;
+
+import javax.xml.bind.annotation.adapters.XmlAdapter;
+
+import org.hisp.dhis.common.BaseIdentifiableObject;
+import org.hisp.dhis.report.Report;
 
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
-@Controller
-public class IndexController
+public class ReportXmlAdapter extends XmlAdapter<BaseIdentifiableObject, Report>
 {
-    //-------------------------------------------------------------------------------------------------------
-    // GET
-    //-------------------------------------------------------------------------------------------------------
+    private BaseIdentifiableObjectXmlAdapter baseIdentifiableObjectXmlAdapter = new BaseIdentifiableObjectXmlAdapter();
 
-    @RequestMapping( value = "/api", method = RequestMethod.GET )
-    public String getIndex( Model model )
+    @Override
+    public Report unmarshal( BaseIdentifiableObject identifiableObject ) throws Exception
     {
-        return "redirect:/api/resources";
+        Report report = new Report();
+
+        report.setUid( identifiableObject.getUid() );
+        report.setLastUpdated( identifiableObject.getLastUpdated() );
+        report.setName( identifiableObject.getName() == null ? UUID.randomUUID().toString() : identifiableObject.getName() );
+
+        return report;
     }
 
-    @RequestMapping( value = "/", method = RequestMethod.GET )
-    public String getIndexWithSlash( Model model )
+    @Override
+    public BaseIdentifiableObject marshal( Report report ) throws Exception
     {
-        return "redirect:/api/resources";
+        return baseIdentifiableObjectXmlAdapter.marshal( report );
     }
 }

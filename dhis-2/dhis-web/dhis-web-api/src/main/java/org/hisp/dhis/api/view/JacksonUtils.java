@@ -1,5 +1,9 @@
 package org.hisp.dhis.api.view;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+
 import org.codehaus.jackson.JsonEncoding;
 import org.codehaus.jackson.JsonFactory;
 import org.codehaus.jackson.JsonGenerator;
@@ -9,11 +13,6 @@ import org.codehaus.jackson.map.ObjectMapper;
 import org.codehaus.jackson.map.SerializationConfig;
 import org.codehaus.jackson.map.annotate.JsonSerialize;
 import org.codehaus.jackson.map.introspect.JacksonAnnotationIntrospector;
-import org.codehaus.jackson.xc.JaxbAnnotationIntrospector;
-
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
 
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
@@ -66,6 +65,7 @@ public class JacksonUtils
         return JacksonUtils.createJsonFactory().createJsonParser( input );
     }
 
+    @SuppressWarnings("unchecked")
     public static <T> T readValueAs( Class<?> clazz, InputStream input ) throws IOException
     {
         return (T) JacksonUtils.createJsonParser( input ).readValueAs( clazz );
