@@ -470,9 +470,16 @@ function showProgramEnrollmentForm( patientId, programId )
 		disable('enrollBtn');
 		disable('enrollmentDate');
 		disable('dateOfIncident');
+		
 		jQuery('#enrollBtn').attr('value',i18n_enroll_to_program);
+		
 		setFieldValue( 'enrollmentDate', '' );
 		setFieldValue( 'dateOfIncident', '' );
+		setInnerHTML('enrollmentDateDescription', '');
+		setInnerHTML('dateOfIncidentDescription', '');
+		
+		hideById('programEnrollmentDiv');
+		
 		return;
 	}
 		
@@ -491,12 +498,16 @@ function showProgramEnrollmentForm( patientId, programId )
 				disable('enrollBtn');
 				disable('enrollmentDate');
 				disable('dateOfIncident');
+				setInnerHTML('enrollmentDateDescription', '');
+				setInnerHTML('dateOfIncidentDescription', '');
 			}
 			else
 			{
 				enable('enrollBtn');
 				enable('enrollmentDate');
 				enable('dateOfIncident');
+				showById('enrollmentDateTD');
+				showById('dateOfIncidentTD');
 			}
 			
 			jQuery('#loaderDiv').hide();
