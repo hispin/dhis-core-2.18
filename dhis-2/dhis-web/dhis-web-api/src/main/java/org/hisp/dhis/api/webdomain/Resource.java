@@ -27,6 +27,17 @@ package org.hisp.dhis.api.webdomain;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlElementWrapper;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
+
 import org.codehaus.jackson.annotate.JsonProperty;
 import org.codehaus.jackson.map.annotate.JsonSerialize;
 import org.hisp.dhis.api.adapter.MediaTypeCollectionJsonSerializer;
@@ -37,11 +48,6 @@ import org.hisp.dhis.common.BaseLinkableObject;
 import org.hisp.dhis.common.Dxf2Namespace;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.RequestMethod;
-
-import javax.xml.bind.annotation.*;
-import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * At some point this class will be extended to show all available options
@@ -55,7 +61,7 @@ public class Resource extends BaseLinkableObject
 {
     private String name;
 
-    private Class clazz;
+    private Class<?> clazz;
 
     private List<RequestMethod> methods = new ArrayList<RequestMethod>();
 
@@ -66,7 +72,7 @@ public class Resource extends BaseLinkableObject
 
     }
 
-    public Resource( String name, Class clazz, List<RequestMethod> methods, List<MediaType> mediaTypes )
+    public Resource( String name, Class<?> clazz, List<RequestMethod> methods, List<MediaType> mediaTypes )
     {
         this.name = name;
         this.clazz = clazz;
@@ -114,12 +120,12 @@ public class Resource extends BaseLinkableObject
         this.mediaTypes = mediaTypes;
     }
 
-    public Class getClazz()
+    public Class<?> getClazz()
     {
         return clazz;
     }
 
-    public void setClazz( Class clazz )
+    public void setClazz( Class<?> clazz )
     {
         this.clazz = clazz;
     }

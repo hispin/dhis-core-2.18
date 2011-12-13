@@ -53,6 +53,7 @@ public class XsltHtmlView extends AbstractUrlBasedView
     }
 
     @Override
+    @SuppressWarnings("unchecked")
     protected void renderMergedOutputModel( Map<String, Object> model, HttpServletRequest request, HttpServletResponse response )
         throws Exception
     {
@@ -76,6 +77,7 @@ public class XsltHtmlView extends AbstractUrlBasedView
 
         // pass on any parameters set in xslt-params
         Map<String, String> params = (Map<String, String>) model.get( "xslt-params" );
+        
         if ( params != null )
         {
             for ( Map.Entry<String, String> entry : params.entrySet() )

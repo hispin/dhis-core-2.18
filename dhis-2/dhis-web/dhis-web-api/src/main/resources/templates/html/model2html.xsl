@@ -35,6 +35,7 @@
     <xsl:include href="organisationUnitGroupSet.xsl"/>
     <xsl:include href="dataSet.xsl"/>
     <xsl:include href="attributeType.xsl"/>
+    <xsl:include href="report.xsl"/>
     <!-- etc ... -->
 
 </xsl:stylesheet>
