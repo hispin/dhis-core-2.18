@@ -53,6 +53,8 @@ import org.hisp.dhis.report.Report;
 import org.hisp.dhis.report.Reports;
 import org.hisp.dhis.sqlview.SqlView;
 import org.hisp.dhis.sqlview.SqlViews;
+import org.hisp.dhis.user.User;
+import org.hisp.dhis.user.Users;
 import org.hisp.dhis.validation.ValidationRule;
 import org.hisp.dhis.validation.ValidationRuleGroup;
 import org.hisp.dhis.validation.ValidationRuleGroups;
@@ -298,6 +300,37 @@ public class WebLinkPopulator
         else if ( source instanceof Report )
         {
             populateReport( (Report) source, true );
+        }
+        else if ( source instanceof Users )
+        {
+            populateUsers( (Users) source, true );
+        }
+        else if ( source instanceof User )
+        {
+            populateUser( (User) source, true );
+        }
+    }
+
+    private void populateUsers( Users users, boolean root )
+    {
+        users.setLink( getBasePath( users.getClass() ) );
+
+        if ( root )
+        {
+            for ( User user : users.getUsers() )
+            {
+                populateUser( user, false );
+            }
+        }
+    }
+
+    private void populateUser( User user, boolean root )
+    {
+        populateIdentifiableObject( user );
+
+        if ( root )
+        {
+            handleIdentifiableObjectCollection( user.getOrganisationUnits() );
         }
     }
 
@@ -881,11 +914,11 @@ public class WebLinkPopulator
             }
         }
     }
-    
+
     private void populateReports( Reports reports, boolean root )
     {
         reports.setLink( getBasePath( Report.class ) );
-        
+
         if ( root )
         {
             for ( Report report : reports.getReports() )
@@ -894,11 +927,11 @@ public class WebLinkPopulator
             }
         }
     }
-    
+
     private void populateReport( Report report, boolean root )
     {
         report.setLink( getPathWithUid( report ) );
-        
+
         if ( root )
         {
         }

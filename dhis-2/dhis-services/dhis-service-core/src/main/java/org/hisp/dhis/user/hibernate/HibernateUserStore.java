@@ -27,12 +27,6 @@ package org.hisp.dhis.user.hibernate;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Date;
-import java.util.Iterator;
-import java.util.List;
-
 import org.hibernate.Criteria;
 import org.hibernate.Query;
 import org.hibernate.Session;
@@ -41,11 +35,9 @@ import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
-import org.hisp.dhis.user.User;
-import org.hisp.dhis.user.UserAuthorityGroup;
-import org.hisp.dhis.user.UserCredentials;
-import org.hisp.dhis.user.UserSetting;
-import org.hisp.dhis.user.UserStore;
+import org.hisp.dhis.user.*;
+
+import java.util.*;
 
 /**
  * @author Nguyen Hong Duc
@@ -88,6 +80,16 @@ public class HibernateUserStore
         Session session = sessionFactory.getCurrentSession();
 
         return (User) session.get( User.class, id );
+    }
+
+    public User getUser( String uid )
+    {
+        Session session = sessionFactory.getCurrentSession();
+
+        Criteria criteria = session.createCriteria( User.class );
+        criteria.add( Restrictions.like( "uid", uid ) );
+
+        return (User) criteria.uniqueResult();
     }
 
     @SuppressWarnings( "unchecked" )
@@ -256,7 +258,7 @@ public class HibernateUserStore
     }
 
     public Collection<UserCredentials> getUsersByOrganisationUnitBetweenByName( OrganisationUnit orgUnit, String name,
-        int first, int max )
+                                                                                int first, int max )
     {
         return getBlockUser( findByName( toUserCredentials( orgUnit.getUsers() ), name ), first, max );
     }
@@ -332,7 +334,7 @@ public class HibernateUserStore
 
         return rs != null ? rs.intValue() : 0;
     }
-    
+
     // -------------------------------------------------------------------------
     // UserAuthorityGroup
     // -------------------------------------------------------------------------

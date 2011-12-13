@@ -80,10 +80,10 @@ public class UserController
         return "users";
     }
 
-    @RequestMapping( value = "/{id}", method = RequestMethod.GET )
-    public String getUser( @PathVariable( "id" ) Integer id, IdentifiableObjectParams params, Model model, HttpServletRequest request )
+    @RequestMapping( value = "/{uid}", method = RequestMethod.GET )
+    public String getUser( @PathVariable( "uid" ) String uid, IdentifiableObjectParams params, Model model, HttpServletRequest request )
     {
-        User user = userService.getUser( id );
+        User user = userService.getUser( uid );
 
         if ( params.hasLinks() )
         {

@@ -58,7 +58,7 @@ public class BaseIdentifiableObject extends BaseLinkableObject
     protected int id;
 
     /**
-     * The Unique Identifer for this Object.
+     * The Unique Identifier for this Object.
      */
     protected String uid;
 

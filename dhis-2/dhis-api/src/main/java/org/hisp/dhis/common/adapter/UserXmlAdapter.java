@@ -1,4 +1,4 @@
-package org.hisp.dhis.user;
+package org.hisp.dhis.common.adapter;
 
 /*
  * Copyright (c) 2004-2011, University of Oslo
@@ -27,41 +27,34 @@ package org.hisp.dhis.user;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import org.codehaus.jackson.annotate.JsonProperty;
-import org.codehaus.jackson.map.annotate.JsonSerialize;
 import org.hisp.dhis.common.BaseIdentifiableObject;
-import org.hisp.dhis.common.BaseLinkableObject;
-import org.hisp.dhis.common.Dxf2Namespace;
-import org.hisp.dhis.common.adapter.UserXmlAdapter;
+import org.hisp.dhis.user.User;
 
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
-import java.util.ArrayList;
-import java.util.List;
+import javax.xml.bind.annotation.adapters.XmlAdapter;
+import java.util.UUID;
 
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
-@XmlRootElement( name = "users", namespace = Dxf2Namespace.NAMESPACE )
-@XmlAccessorType( value = XmlAccessType.NONE )
-public class Users extends BaseLinkableObject
+public class UserXmlAdapter extends XmlAdapter<BaseIdentifiableObject, User>
 {
-    private List<User> users = new ArrayList<User>();
+    private BaseIdentifiableObjectXmlAdapter baseIdentifiableObjectXmlAdapter = new BaseIdentifiableObjectXmlAdapter();
 
-    @XmlElement( name = "user" )
-    @XmlJavaTypeAdapter( UserXmlAdapter.class )
-    @JsonProperty( value = "users" )
-    @JsonSerialize( contentAs = BaseIdentifiableObject.class )
-    public List<User> getUsers()
+    @Override
+    public User unmarshal( BaseIdentifiableObject identifiableObject ) throws Exception
     {
-        return users;
+        User user = new User();
+
+        user.setUid( identifiableObject.getUid() );
+        user.setLastUpdated( identifiableObject.getLastUpdated() );
+        user.setName( identifiableObject.getName() == null ? UUID.randomUUID().toString() : identifiableObject.getName() );
+
+        return user;
     }
 
-    public void setUsers( List<User> users )
+    @Override
+    public BaseIdentifiableObject marshal( User user ) throws Exception
     {
-        this.users = users;
+        return baseIdentifiableObjectXmlAdapter.marshal( user );
     }
 }
