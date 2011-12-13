@@ -58,11 +58,6 @@ public class BaseIdentifiableObject extends BaseLinkableObject
     protected int id;
 
     /**
-     * The Universally Unique Identifer for this Object.
-     */
-    protected String uuid;
-
-    /**
      * The Unique Identifer for this Object.
      */
     protected String uid;
@@ -90,10 +85,10 @@ public class BaseIdentifiableObject extends BaseLinkableObject
     {
     }
 
-    public BaseIdentifiableObject( int id, String uuid, String name )
+    public BaseIdentifiableObject( int id, String uid, String name )
     {
         this.id = id;
-        this.uuid = uuid;
+        this.uid = uid;
         this.name = name;
     }
 
