@@ -82,12 +82,7 @@ public class DefaultMessageService
     {
         this.messageSenders = messageSenders;
 
-        String message = "Found the following message senders: ";
-        for ( MessageSender messageSender : messageSenders )
-        {
-            message += messageSender.getClass().getSimpleName() + ", ";
-        }
-        log.info( message.substring( 0, message.length() - 2 ) );
+        log.info( "Found the following message senders: " + messageSenders );        
     }
     
     // -------------------------------------------------------------------------
@@ -224,9 +219,6 @@ public class DefaultMessageService
     {
         for ( MessageSender messageSender : messageSenders )
         {
-            if (log.isDebugEnabled())
-                log.debug( "Invoking message sender " + messageSender.getClass().getSimpleName() );
-
             messageSender.sendMessage( subject, text, sender, users );
         }
     }
