@@ -75,7 +75,7 @@ public class BaseIdentifiableObject extends BaseLinkableObject
     /**
      * The date this object was last updated.
      */
-    private Date lastUpdated;
+    protected Date lastUpdated;
 
     // -------------------------------------------------------------------------
     // Constructors
