@@ -197,7 +197,28 @@
                 <param name="bufferSize">1024</param>
             </result>
         </action>
-        
+
+		<!-- MD Reports -->
+        <action name="mdReportAnalyser"
+            class="org.hisp.dhis.reports.md.action.MDReportFormAction">
+            <result name="success" type="velocity">/main.vm</result>
+            <param name="page">/dhis-web-reports/mdReportForm.vm</param>
+            <param name="menu">/dhis-web-reports/menuWithTreeForMDReport.vm</param>
+            <param name="javascripts">../dhis-web-commons/ouwt/ouwt.js,../dhis-web-commons/lists/lists.js,javascript/reportManagement.js,javascript/hashtable.js</param>
+            <param name="stylesheets">css/StylesForTags.css</param>
+            <param name="requiredAuthorities">F_MDREPORT_GENERATE</param>
+			<interceptor-ref name="organisationUnitTreeStack"/>
+        </action>		
+        <action name="generateMDReport"
+            class="org.hisp.dhis.reports.md.action.GenerateMDReportAnalyserResultAction">
+            <result name="success" type="stream">
+                <param name="contentType">application/vnd.ms-excel</param>
+                <param name="inputName">inputStream</param>
+                <param name="contentDisposition">filename="${fileName}"</param>
+                <param name="bufferSize">1024</param>
+            </result>
+        </action>
+		       
         <!-- Auto Reports -->
         <action name="autoReportAnalyser"
             class="org.hisp.dhis.reports.auto.action.GenerateAutoReportAnalyserFormAction">

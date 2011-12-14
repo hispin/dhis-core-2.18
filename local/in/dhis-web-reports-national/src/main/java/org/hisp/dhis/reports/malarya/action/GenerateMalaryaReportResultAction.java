@@ -447,7 +447,8 @@ extends ActionSupport
         List<String> deCodesList = getDECodes( deCodesXMLFileName );
 
         String levelName = "Level";
-        int selOULevel = organisationUnitService.getLevelOfOrganisationUnit( selectedOrgUnit ) + 1;
+        //int selOULevel = organisationUnitService.getLevelOfOrganisationUnit( selectedOrgUnit ) + 1;
+        int selOULevel = organisationUnitService.getLevelOfOrganisationUnit( selectedOrgUnit.getId() ) + 1;
 
         if ( selOULevel <= organisationUnitService.getNumberOfOrganisationalLevels() )
         {

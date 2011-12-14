@@ -500,16 +500,16 @@ public class GenerateSelChildGradingReportAction extends ActionSupport
                                 
                                 OrganisationUnit tempOU = new OrganisationUnit();
                                 
-                                if(organisationUnitService.getLevelOfOrganisationUnit( orgUnit ) == 2) 
+                                if(organisationUnitService.getLevelOfOrganisationUnit( orgUnit.getId() ) == 2) 
                                     tempOU = orgUnit.getParent();
-                                else if(organisationUnitService.getLevelOfOrganisationUnit( orgUnit ) == 3)
+                                else if(organisationUnitService.getLevelOfOrganisationUnit( orgUnit.getId() ) == 3)
                                     tempOU = orgUnit.getParent();
-                                else if(organisationUnitService.getLevelOfOrganisationUnit( orgUnit ) == 4)
+                                else if(organisationUnitService.getLevelOfOrganisationUnit( orgUnit.getId() ) == 4)
                                     tempOU = orgUnit.getParent().getParent();
-                                else if(organisationUnitService.getLevelOfOrganisationUnit( orgUnit ) == 5)
+                                else if(organisationUnitService.getLevelOfOrganisationUnit( orgUnit.getId() ) == 5)
                                     tempOU = orgUnit.getParent().getParent();
                                 
-                                if(organisationUnitService.getLevelOfOrganisationUnit( orgUnit ) != 1)
+                                if(organisationUnitService.getLevelOfOrganisationUnit( orgUnit.getId() ) != 1)
                                 {
                                     String tempdeCodeString = "([1251.1]+[1252.1]+[1253.1]+[1254.1]+[1255.1]+[26.1])*100/([14.1]+[15.1]+[1251.1]+[1252.1]+[1253.1]+[1254.1]+[1255.1]+[26.1])*10";
 

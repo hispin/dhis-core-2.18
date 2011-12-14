@@ -397,7 +397,8 @@ public class GradingAbstractionResultAction  extends ActionSupport
         String reportHeading = "";
         
         
-        int selOULevel = organisationUnitService.getLevelOfOrganisationUnit( selectedOrgUnit );
+        int selOULevel = organisationUnitService.getLevelOfOrganisationUnit( selectedOrgUnit.getId() );
+        //int selOULevel = organisationUnitService.getLevelOfOrganisationUnit( selectedOrgUnit );
         int maxOULevels = organisationUnitService.getNumberOfOrganisationalLevels();
         
         if( selOULevel < maxOULevels-1 )
@@ -431,17 +432,17 @@ public class GradingAbstractionResultAction  extends ActionSupport
             selLevel = 5;
         }
             
-        if(organisationUnitService.getLevelOfOrganisationUnit( selectedOrgUnit) == 2)
+        if( organisationUnitService.getLevelOfOrganisationUnit( selectedOrgUnit.getId() ) == 2)
         {
             reportHeading += "Block, "+simpleDateFormat.format( eDate );
             heading1 = "Taluk / Block";            
         }
-        else if(organisationUnitService.getLevelOfOrganisationUnit( selectedOrgUnit) == 1)
+        else if(organisationUnitService.getLevelOfOrganisationUnit( selectedOrgUnit.getId() ) == 1)
         {
             reportHeading += "District, "+simpleDateFormat.format( eDate );
             heading1 = "District";            
         }
-        else if(organisationUnitService.getLevelOfOrganisationUnit( selectedOrgUnit) == 3)
+        else if(organisationUnitService.getLevelOfOrganisationUnit( selectedOrgUnit.getId() ) == 3)
         {
             reportHeading += "PHC, "+simpleDateFormat.format( eDate );
             heading1 = "PHC";            
@@ -573,16 +574,16 @@ public class GradingAbstractionResultAction  extends ActionSupport
                                 
                                 OrganisationUnit tempOU = new OrganisationUnit();
                                 
-                                if(organisationUnitService.getLevelOfOrganisationUnit( ccOU ) == 2) 
+                                if(organisationUnitService.getLevelOfOrganisationUnit( ccOU.getId() ) == 2) 
                                     tempOU = ccOU.getParent();
-                                else if(organisationUnitService.getLevelOfOrganisationUnit( ccOU ) == 3)
+                                else if(organisationUnitService.getLevelOfOrganisationUnit( ccOU.getId() ) == 3)
                                     tempOU = ccOU.getParent();
-                                else if(organisationUnitService.getLevelOfOrganisationUnit( ccOU ) == 4)
+                                else if(organisationUnitService.getLevelOfOrganisationUnit( ccOU.getId() ) == 4)
                                     tempOU = ccOU.getParent().getParent();
-                                else if(organisationUnitService.getLevelOfOrganisationUnit( ccOU ) == 5)
+                                else if(organisationUnitService.getLevelOfOrganisationUnit( ccOU.getId() ) == 5)
                                     tempOU = ccOU.getParent().getParent();
                                 
-                                if(organisationUnitService.getLevelOfOrganisationUnit( ccOU ) != 1)
+                                if(organisationUnitService.getLevelOfOrganisationUnit( ccOU.getId() ) != 1)
                                 {
                                     String tempdeCodeString = "([1251.1]+[1252.1]+[1253.1]+[1254.1]+[1255.1]+[26.1])*100/([14.1]+[15.1]+[1251.1]+[1252.1]+[1253.1]+[1254.1]+[1255.1]+[26.1])*10";
 
@@ -768,7 +769,7 @@ public class GradingAbstractionResultAction  extends ActionSupport
         while(it.hasNext())
         {
             OrganisationUnit ou = (OrganisationUnit) it.next();
-            if(organisationUnitService.getLevelOfOrganisationUnit( ou ) == selLevel)
+            if(organisationUnitService.getLevelOfOrganisationUnit( ou.getId() ) == selLevel)
             {
                 ouList.add( ou );
             }
