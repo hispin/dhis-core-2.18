@@ -45,7 +45,7 @@ public class GridRows
 {
     private List<GridRow> rows = new ArrayList<GridRow>();
 
-    @XmlElement
+    @XmlElement(name = "row")
     @JsonProperty
     public List<GridRow> getRows()
     {
