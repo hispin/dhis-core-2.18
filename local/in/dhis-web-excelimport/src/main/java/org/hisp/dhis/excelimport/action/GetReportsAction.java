@@ -118,7 +118,8 @@ public class GetReportsAction
             {
                 orgUnit = organisationUnitService.getOrganisationUnit( Integer.parseInt( ouId ) );
 
-                int ouLevel = organisationUnitService.getLevelOfOrganisationUnit( orgUnit );
+                //int ouLevel = organisationUnitService.getLevelOfOrganisationUnit( orgUnit );
+                int ouLevel = organisationUnitService.getLevelOfOrganisationUnit( orgUnit.getId() );
 
                 if ( autogenrep.equalsIgnoreCase( "1" ) )
                     ouLevel++;

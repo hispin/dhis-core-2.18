@@ -61,6 +61,8 @@ public class ReportType
     public final static String RT_LINELIST_BULK_REPORT = "Linelisting Bulk Reports";
     
     public final static String RT_COLDCHAIN_REPORT = "Cold Chain Reports";
+    
+    public final static String RT_MD_REPORT = "MD Reports";
 
     public static List<String> getReportTypes()
     {
@@ -95,6 +97,8 @@ public class ReportType
         reportTypes.add( RT_LINELIST_BULK_REPORT );
         
         reportTypes.add( RT_COLDCHAIN_REPORT );
+        
+        reportTypes.add( RT_MD_REPORT );
         
         return reportTypes;
     }
