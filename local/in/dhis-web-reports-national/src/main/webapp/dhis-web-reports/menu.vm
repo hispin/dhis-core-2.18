@@ -71,7 +71,10 @@
 		#end
 		#if( $auth.hasAccess( "dhis-web-reports", "lineListingBulkReportAnalyser") )
 			<li><a href = "lineListingBulkReportAnalyser.action">Linelisting Bulk Report</a>
-		#end	
+		#end
+		#if( $auth.hasAccess( "dhis-web-reports", "mdReportAnalyser") )
+			<li><a href = "mdReportAnalyser.action">MD Report</a>
+		#end			
 		<!--<li><a href = "advancedReportAnalyser.action">Advanced Reports</a></li>-->
 	</ul>
 </ul>

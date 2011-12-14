@@ -66,14 +66,14 @@ import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException;
 
-import com.opensymphony.xwork2.ActionSupport;
+import com.opensymphony.xwork2.Action;
 
 /**
  * @author Brajesh Murari
  * 
  */
 public class GenerateTwentyPointReportsResultAction
-    extends ActionSupport
+    implements Action
 {
     // private static final long serialVersionUID = 1L;
 
@@ -486,7 +486,8 @@ public class GenerateTwentyPointReportsResultAction
         List<String> deCodesList = getDECodes( deCodesXMLFileName );
 
         String levelName = "Level";
-        int selOULevel = organisationUnitService.getLevelOfOrganisationUnit( selectedOrgUnit ) + 1;
+        //int selOULevel = organisationUnitService.getLevelOfOrganisationUnit( selectedOrgUnit ) + 1;
+        int selOULevel = organisationUnitService.getLevelOfOrganisationUnit( selectedOrgUnit.getId() ) + 1;
 
         if ( selOULevel <= organisationUnitService.getNumberOfOrganisationalLevels() )
         {

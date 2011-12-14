@@ -92,7 +92,7 @@
                 </select>
             </td>
             <td class="NormalB">
-                6. $i18n.getString( "orgunit_group" ) :<br />
+                6. $i18n.getString( "orgunitgroup" ) :<br />
                 <select id="orgUnitGroup" name="orgUnitGroup" style="width:200px">
 					<option value="0">ALL</option>
 				#foreach( $orgUnitGroup in $orgUnitGroups )

@@ -54,8 +54,8 @@ public class GetOrgUnitsAction
         if ( orgUnitId != null )
         {
             orgUnit = organisationUnitService.getOrganisationUnit( orgUnitId );
-            ouLevel = "" + organisationUnitService.getLevelOfOrganisationUnit( orgUnit );
-            
+            ouLevel = "" + organisationUnitService.getLevelOfOrganisationUnit( orgUnit.getId() );
+            //ouLevel = "" + organisationUnitService.getLevelOfOrganisationUnit( orgUnit )
             System.out.println( " Org Short name : " + orgUnit.getShortName() + ", level is : " + ouLevel );
             
         }

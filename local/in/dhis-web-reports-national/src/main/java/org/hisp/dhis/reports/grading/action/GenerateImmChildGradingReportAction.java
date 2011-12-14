@@ -511,17 +511,16 @@ public class GenerateImmChildGradingReportAction extends ActionSupport
                                 resultVal = tempd1;                                
                                 
                                 OrganisationUnit tempOU = new OrganisationUnit();
-                                
-                                if(organisationUnitService.getLevelOfOrganisationUnit( ccOU ) == 2) 
+                                if(organisationUnitService.getLevelOfOrganisationUnit( ccOU.getId() ) == 2) 
                                     tempOU = ccOU.getParent();
-                                else if(organisationUnitService.getLevelOfOrganisationUnit( ccOU ) == 3)
+                                else if(organisationUnitService.getLevelOfOrganisationUnit( ccOU.getId() ) == 3)
                                     tempOU = ccOU.getParent();
-                                else if(organisationUnitService.getLevelOfOrganisationUnit( ccOU ) == 4)
+                                else if(organisationUnitService.getLevelOfOrganisationUnit( ccOU.getId() ) == 4)
                                     tempOU = ccOU.getParent().getParent();
-                                else if(organisationUnitService.getLevelOfOrganisationUnit( ccOU ) == 5)
+                                else if(organisationUnitService.getLevelOfOrganisationUnit( ccOU.getId() ) == 5)
                                     tempOU = ccOU.getParent().getParent();
                                 
-                                if(organisationUnitService.getLevelOfOrganisationUnit( ccOU ) != 1)
+                                if(organisationUnitService.getLevelOfOrganisationUnit( ccOU.getId() ) != 1)
                                 {
                                     String tempdeCodeString = "([1251.1]+[1252.1]+[1253.1]+[1254.1]+[1255.1]+[26.1])*100/([14.1]+[15.1]+[1251.1]+[1252.1]+[1253.1]+[1254.1]+[1255.1]+[26.1])*10";
                                     //tempd1 = reportService.getResultDataValue( tempdeCodeString, tempStartDate.getTime(), tempEndDate.getTime(), tempOU, sType, con);
@@ -687,16 +686,16 @@ public class GenerateImmChildGradingReportAction extends ActionSupport
                                 
                                 OrganisationUnit tempOU = new OrganisationUnit();
                                 
-                                if(organisationUnitService.getLevelOfOrganisationUnit( ccOU ) == 2) 
+                                if(organisationUnitService.getLevelOfOrganisationUnit( ccOU.getId() ) == 2) 
                                     tempOU = ccOU.getParent();
-                                else if(organisationUnitService.getLevelOfOrganisationUnit( ccOU ) == 3)
+                                else if(organisationUnitService.getLevelOfOrganisationUnit( ccOU.getId() ) == 3)
                                     tempOU = ccOU.getParent();
-                                else if(organisationUnitService.getLevelOfOrganisationUnit( ccOU ) == 4)
+                                else if(organisationUnitService.getLevelOfOrganisationUnit( ccOU.getId() ) == 4)
                                     tempOU = ccOU.getParent().getParent();
-                                else if(organisationUnitService.getLevelOfOrganisationUnit( ccOU ) == 5)
+                                else if(organisationUnitService.getLevelOfOrganisationUnit( ccOU.getId() ) == 5)
                                     tempOU = ccOU.getParent().getParent();
                                 
-                                if(organisationUnitService.getLevelOfOrganisationUnit( ccOU ) != 1)
+                                if(organisationUnitService.getLevelOfOrganisationUnit( ccOU.getId() ) != 1)
                                 {
                                     String tempdeCodeString = "([1251.1]+[1252.1]+[1253.1]+[1254.1]+[1255.1]+[26.1])*100/([14.1]+[15.1]+[1251.1]+[1252.1]+[1253.1]+[1254.1]+[1255.1]+[26.1])*10";
 
