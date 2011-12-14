@@ -132,9 +132,9 @@ public class UpdateOrganisationUnitAction
         this.code = code;
     }
 
-    private Boolean active;
+    private boolean active;
 
-    public void setActive( Boolean active )
+    public void setActive( boolean active )
     {
         this.active = active;
     }
