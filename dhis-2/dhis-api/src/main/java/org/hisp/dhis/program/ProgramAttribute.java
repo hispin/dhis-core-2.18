@@ -80,15 +80,21 @@ public class ProgramAttribute
     private Set<ProgramAttributeOption> attributeOptions;
 
     // -------------------------------------------------------------------------
-    // Constructors
+    // Logic
     // -------------------------------------------------------------------------
 
-    public ProgramAttribute()
+    public void addAttributeOptions( ProgramAttributeOption option )
     {
+        if ( attributeOptions == null )
+        {
+            attributeOptions = new HashSet<ProgramAttributeOption>();
+        }
+        
+        attributeOptions.add( option );
     }
 
     // -------------------------------------------------------------------------
-    // Logic
+    // hashCode and equals
     // -------------------------------------------------------------------------
 
     @Override
@@ -104,19 +110,34 @@ public class ProgramAttribute
     public boolean equals( Object obj )
     {
         if ( this == obj )
+        {
             return true;
+        }
+        
         if ( obj == null )
+        {
             return false;
+        }
+        
         if ( getClass() != obj.getClass() )
+        {
             return false;
+        }
+            
         ProgramAttribute other = (ProgramAttribute) obj;
+        
         if ( name == null )
         {
             if ( other.name != null )
+            {
                 return false;
+            }
         }
         else if ( !name.equals( other.name ) )
+        {
             return false;
+        }
+        
         return true;
     }
 
@@ -173,12 +194,4 @@ public class ProgramAttribute
     {
         this.attributeOptions = attributeOptions;
     }
-
-    public void addAttributeOptions( ProgramAttributeOption option )
-    {
-        if ( attributeOptions == null )
-            attributeOptions = new HashSet<ProgramAttributeOption>();
-        attributeOptions.add( option );
-    }
-
 }

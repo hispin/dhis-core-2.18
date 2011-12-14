@@ -69,6 +69,12 @@ public class Message
         this.sender = sender;
     }
     
+    @Override
+    public String getName()
+    {
+        return text;
+    }
+    
     public String getText()
     {
         return text;
