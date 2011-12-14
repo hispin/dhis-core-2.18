@@ -301,7 +301,7 @@ public class GenerateDrillDownResultAction
         String tempStr = "";
         for ( OrganisationUnit ou : orgUnitList )
         {
-            int level = organisationUnitService.getLevelOfOrganisationUnit( ou );
+            int level = organisationUnitService.getLevelOfOrganisationUnit( ou.getId() );
             ouAndLevel.put( ou, level );
             if ( !levelsList.contains( level ) )
             {
@@ -473,7 +473,7 @@ public class GenerateDrillDownResultAction
                 for ( int i = levelsList.size() - 1; i >= 0; i-- )
                 {
                     colNo++;
-                    int level = organisationUnitService.getLevelOfOrganisationUnit( ouname );
+                    int level = organisationUnitService.getLevelOfOrganisationUnit( ouname.getId() );
                     if ( levelsList.get( i ) == level )
                     {
                         sheet0.addCell( new Label( colNo, rowNo, ouname.getName(), wCellformat ) );

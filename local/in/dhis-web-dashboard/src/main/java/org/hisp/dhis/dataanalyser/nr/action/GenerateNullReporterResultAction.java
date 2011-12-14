@@ -354,7 +354,7 @@ public class GenerateNullReporterResultAction
             while ( ouIterator.hasNext() )
             {
                 OrganisationUnit orgU = ouIterator.next();
-                if ( organisationUnitService.getLevelOfOrganisationUnit( orgU ) > orgUnitLevelCB )
+                if ( organisationUnitService.getLevelOfOrganisationUnit( orgU.getId() ) > orgUnitLevelCB )
                 {
                     ouIterator.remove();
                 }
@@ -362,7 +362,7 @@ public class GenerateNullReporterResultAction
         }
 
         minOULevel = 1;
-        minOULevel = organisationUnitService.getLevelOfOrganisationUnit( selOUList.get( 0 ) );
+        minOULevel = organisationUnitService.getLevelOfOrganisationUnit( selOUList.get( 0 ).getId() );
 
         int maxOuLevel = 1;
         if ( orgUnitLevelCB != null )
@@ -582,7 +582,7 @@ public class GenerateNullReporterResultAction
         {
             for ( OrganisationUnit ou : ouHavingNullValuesWithHigherLevel )
             {
-                int levelOu = organisationUnitService.getLevelOfOrganisationUnit( ou );
+                int levelOu = organisationUnitService.getLevelOfOrganisationUnit( ou.getId() );
                 if ( levelOu == level )
                 {
                     ouHavingNullValues.remove( ou );

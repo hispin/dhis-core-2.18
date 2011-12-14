@@ -21,7 +21,7 @@
 			            var orgUnitLevels = new HashTable();
 			            #foreach($orgUnit in $organisationUnits)
 			                var orgUnitId = ""+$orgUnit.getId();
-			                orgUnitLevels.put(orgUnitId,""+$organisationUnitService.getLevelOfOrganisationUnit( $orgUnit ));
+			                orgUnitLevels.put(orgUnitId,""+$organisationUnitService.getLevelOfOrganisationUnit( $orgUnit.id ));
 			            #end		
 			            
 			            var orgUnitChildren = new HashTable();

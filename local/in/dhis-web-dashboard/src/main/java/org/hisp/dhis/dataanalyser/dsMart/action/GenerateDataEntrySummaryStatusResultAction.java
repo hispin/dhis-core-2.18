@@ -15,7 +15,6 @@ import java.util.Map;
 import java.util.Set;
 
 import org.hisp.dhis.dataanalyser.util.DashBoardService;
-import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.dataset.DataSetService;
 import org.hisp.dhis.options.displayproperty.DisplayPropertyHandler;
@@ -477,11 +476,11 @@ public class GenerateDataEntrySummaryStatusResultAction implements Action
                 
                 //List<OrganisationUnit> childOrgUnits = new ArrayList<OrganisationUnit>();
                 
-                if ( maxOULevel < organisationUnitService.getLevelOfOrganisationUnit( ou ) )
-                    maxOULevel = organisationUnitService.getLevelOfOrganisationUnit( ou );
+                if ( maxOULevel < organisationUnitService.getLevelOfOrganisationUnit( ou.getId() ) )
+                    maxOULevel = organisationUnitService.getLevelOfOrganisationUnit( ou.getId() );
 
-                if ( minOULevel > organisationUnitService.getLevelOfOrganisationUnit( ou ) )
-                    minOULevel = organisationUnitService.getLevelOfOrganisationUnit( ou );
+                if ( minOULevel > organisationUnitService.getLevelOfOrganisationUnit( ou.getId() ) )
+                    minOULevel = organisationUnitService.getLevelOfOrganisationUnit( ou.getId() );
                 
                 int result1 = 0;
                 int percentageResult = 0;

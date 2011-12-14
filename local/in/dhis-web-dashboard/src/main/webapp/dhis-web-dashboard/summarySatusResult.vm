@@ -71,7 +71,7 @@
                               
                     #foreach($chiildorgUnit in $orgUnitList)
                         #set( $count1 = $minOULevel )
-                        #set( $curOrgUnitLevel = $organisationUnitService.getLevelOfOrganisationUnit( $chiildorgUnit ) )
+                        #set( $curOrgUnitLevel = $organisationUnitService.getLevelOfOrganisationUnit( $chiildorgUnit.id ) )
                         #set( $orgunitCount = $ouMapForChildDSAssociation.get( $chiildorgUnit ) )
                         #set( $orgunitColor = $ouMapForColor.get( $chiildorgUnit ) )
                         
