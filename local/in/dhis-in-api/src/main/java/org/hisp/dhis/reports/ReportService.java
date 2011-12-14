@@ -160,5 +160,9 @@ public interface ReportService
     List<Report_inDesign> getReportDesignWithMergeCells( String fileName );
     
     //Map<String, String> getLLDeathDataFromLLDataValueTable( Integer orgunitId, String dataElmentIdsForLLDeathByComma, String periodIdsByComma , Integer recordNo );
-    Map<String, String> getLLDeathDataFromLLDataValueTable( Integer orgunitId, String dataElmentIdsForLLDeathByComma, String periodIdsByComma , String recordNoByComma );    
+    Map<String, String> getLLDeathDataFromLLDataValueTable( Integer orgunitId, String dataElmentIdsForLLDeathByComma, String periodIdsByComma , String recordNoByComma );
+    
+    Map<String, String> getAggDataFromDataValueTableForOrgUnitWise( String orgUnitIdsByComma, String dataElmentIdsByComma, String periodIdsByComma );
+    
+    Map<String, String> getAggDataFromAggDataValueTableForOrgUnitWise( String orgUnitIdsByComma, String dataElmentIdsByComma, String periodIdsByComma );
 }

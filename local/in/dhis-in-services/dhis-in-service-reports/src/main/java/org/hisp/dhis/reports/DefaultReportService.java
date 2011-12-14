@@ -1945,6 +1945,54 @@ public List<Report_inDesign> getReportDesignWithMergeCells( String fileName )
         }
     }
 
+
+    public Map<String, String> getAggDataFromAggDataValueTableForOrgUnitWise( String orgUnitIdsByComma, String dataElmentIdsByComma, String periodIdsByComma )
+    {
+        Map<String, String> aggDataMap = new HashMap<String, String>();
+        DatabaseInfo dataBaseInfo = databaseInfoProvider.getDatabaseInfo();
+        try
+        {
+            String query = "";
+            if( dataBaseInfo.getType().equalsIgnoreCase( "postgresql" ) )
+            {
+                query = "SELECT organisationunitid, dataelementid,categoryoptioncomboid, SUM( cast( value as numeric) ) FROM aggregateddatavalue" +
+                           " WHERE dataelementid IN (" + dataElmentIdsByComma + ") AND "+
+                           " organisationunitid IN ("+ orgUnitIdsByComma +") AND "+
+                           " periodid IN (" + periodIdsByComma +") " +
+                           " GROUP BY organisationunitid,dataelementid,categoryoptioncomboid";
+            }
+            else if( dataBaseInfo.getType().equalsIgnoreCase( "mysql" ) )
+            {
+                query = "SELECT organisationunitid, dataelementid,categoryoptioncomboid, SUM(value) FROM aggregateddatavalue" +
+                            " WHERE dataelementid IN (" + dataElmentIdsByComma + ") AND "+
+                            " organisationunitid IN ("+ orgUnitIdsByComma +") AND "+
+                            " periodid IN (" + periodIdsByComma +") " +
+                            " GROUP BY organisationunitid,dataelementid,categoryoptioncomboid";
+            }
+            
+            SqlRowSet rs = jdbcTemplate.queryForRowSet( query );
+            
+            while ( rs.next() )
+            {
+                Integer ouId = rs.getInt( 1 );
+                Integer deId = rs.getInt( 2 );
+                Integer optionComId = rs.getInt( 3 );
+                Double aggregatedValue = rs.getDouble( 4 );
+                if( aggregatedValue != null )
+                {
+                    aggDataMap.put( deId+"."+optionComId+":"+ouId, ""+aggregatedValue );
+                }
+            }
+            
+            return aggDataMap;
+        }
+        catch( Exception e )
+        {
+            throw new RuntimeException( "Illegal DataElement id", e );
+        }
+    }
+
+    
     
     public Map<String, String> getResultDataValueFromAggregateTable( String orgUnitIdsByComma, String dataElmentIdsByComma, String periodIdsByComma )
     {
@@ -2621,6 +2669,51 @@ public List<Report_inDesign> getReportDesignWithMergeCells( String fileName )
             throw new RuntimeException( "Illegal DataElement id", e );
         }
     }    
-    
-    
+
+    public Map<String, String> getAggDataFromDataValueTableForOrgUnitWise( String orgUnitIdsByComma, String dataElmentIdsByComma, String periodIdsByComma )
+    {
+        Map<String, String> aggDataMap = new HashMap<String, String>();
+        DatabaseInfo dataBaseInfo = databaseInfoProvider.getDatabaseInfo();
+        try
+        {
+            String query = "";
+            if( dataBaseInfo.getType().equalsIgnoreCase( "postgresql" ) )
+            {
+                query = "SELECT sourceid, dataelementid,categoryoptioncomboid, SUM( cast( value as numeric) ) FROM datavalue" +
+                           " WHERE dataelementid IN (" + dataElmentIdsByComma + ") AND "+
+                           " sourceid IN ("+ orgUnitIdsByComma +") AND "+
+                           " periodid IN (" + periodIdsByComma +") " +
+                           " GROUP BY sourceid,dataelementid,categoryoptioncomboid";
+            }
+            else if( dataBaseInfo.getType().equalsIgnoreCase( "mysql" ) )
+            {
+                query = "SELECT sourceid, dataelementid,categoryoptioncomboid, SUM(value) FROM datavalue" +
+                            " WHERE dataelementid IN (" + dataElmentIdsByComma + ") AND "+
+                            " sourceid IN ("+ orgUnitIdsByComma +") AND "+
+                            " periodid IN (" + periodIdsByComma +") " +
+                            " GROUP BY sourceid,dataelementid,categoryoptioncomboid";
+            }
+            
+            SqlRowSet rs = jdbcTemplate.queryForRowSet( query );
+            String tempValue = "";
+            while ( rs.next() )
+            {
+                Integer ouId = rs.getInt( 1 );
+                Integer deId = rs.getInt( 2 );
+                Integer optionComId = rs.getInt( 3 );
+                tempValue = rs.getString( 4 );
+                //Double aggregatedValue = rs.getDouble( 4 );
+                if( tempValue != null )
+                {
+                    aggDataMap.put( deId+"."+optionComId+":"+ouId, ""+tempValue );
+                }
+            }
+            
+            return aggDataMap;
+        }
+        catch( Exception e )
+        {
+            throw new RuntimeException( "Illegal DataElement id", e );
+        }
+    }
 }
