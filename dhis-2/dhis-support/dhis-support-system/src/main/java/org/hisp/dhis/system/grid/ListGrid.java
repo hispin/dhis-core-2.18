@@ -107,7 +107,7 @@ public class ListGrid
     // Public methods
     // ---------------------------------------------------------------------
 
-    @XmlElement
+    @XmlElement( namespace = Dxf2Namespace.NAMESPACE )
     @JsonProperty
     public String getTitle()
     {
@@ -121,7 +121,7 @@ public class ListGrid
         return this;
     }
 
-    @XmlElement
+    @XmlElement( namespace = Dxf2Namespace.NAMESPACE )
     @JsonProperty
     public String getSubtitle()
     {
@@ -158,8 +158,8 @@ public class ListGrid
         return this;
     }
 
-    @XmlElementWrapper( name = "headers" )
-    @XmlElement( name = "header" )
+    @XmlElementWrapper( name = "headers", namespace = Dxf2Namespace.NAMESPACE )
+    @XmlElement( name = "header", namespace = Dxf2Namespace.NAMESPACE )
     @JsonProperty( value = "headers" )
     public List<GridHeader> getHeaders()
     {
@@ -181,14 +181,14 @@ public class ListGrid
         return tempHeaders;
     }
 
-    @XmlElement
+    @XmlElement( namespace = Dxf2Namespace.NAMESPACE )
     @JsonProperty
     public int getHeight()
     {
         return (grid != null && grid.size() > 0) ? grid.size() : 0;
     }
 
-    @XmlElement
+    @XmlElement( namespace = Dxf2Namespace.NAMESPACE )
     @JsonProperty
     public int getWidth()
     {
@@ -225,7 +225,7 @@ public class ListGrid
         return grid.get( rowIndex );
     }
 
-    @XmlElement
+    @XmlElement( namespace = Dxf2Namespace.NAMESPACE )
     @XmlJavaTypeAdapter( GridRowsXmlAdapter.class )
     @JsonProperty
     public List<List<Object>> getRows()
