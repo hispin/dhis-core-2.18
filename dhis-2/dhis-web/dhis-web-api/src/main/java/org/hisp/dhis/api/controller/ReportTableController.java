@@ -51,6 +51,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -129,6 +130,12 @@ public class ReportTableController
         if ( organisationUnitUid == null && period == null )
         {
             response.setStatus( HttpServletResponse.SC_BAD_REQUEST );
+            response.setContentType( "text/plain" );
+
+            PrintWriter writer = new PrintWriter( response.getOutputStream() );
+            writer.println( "PDF needs either organisationUnit or period parameter." );
+            writer.flush();
+
             return;
         }
 
@@ -151,6 +158,12 @@ public class ReportTableController
         if ( organisationUnitUid == null && period == null )
         {
             response.setStatus( HttpServletResponse.SC_BAD_REQUEST );
+            response.setContentType( "text/plain" );
+
+            PrintWriter writer = new PrintWriter( response.getOutputStream() );
+            writer.println( "XLS needs either organisationUnit or period parameter." );
+            writer.flush();
+
             return;
         }
 
@@ -173,6 +186,12 @@ public class ReportTableController
         if ( organisationUnitUid == null && period == null )
         {
             response.setStatus( HttpServletResponse.SC_BAD_REQUEST );
+            response.setContentType( "text/plain" );
+
+            PrintWriter writer = new PrintWriter( response.getOutputStream() );
+            writer.println( "CSV needs either organisationUnit or period parameter." );
+            writer.flush();
+
             return;
         }
 
