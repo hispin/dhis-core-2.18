@@ -1,5 +1,11 @@
 package org.hisp.dhis.common;
 
+import org.codehaus.jackson.annotate.JsonProperty;
+
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
 import java.util.Arrays;
 import java.util.List;
 
@@ -33,30 +39,32 @@ import java.util.List;
 /**
  * @author Lars Helge Overland
  */
+@XmlRootElement( name = "header", namespace = Dxf2Namespace.NAMESPACE )
+@XmlAccessorType( value = XmlAccessType.NONE )
 public class GridHeader
 {
     private static final List<String> NUMERIC_TYPES = Arrays.asList( Float.class.getName(), Double.class.getName(), Long.class.getName(), Integer.class.getName() );
-    
+
     private String name;
-    
+
     private String column;
-    
+
     private String type;
-    
+
     private boolean hidden;
-    
+
     private boolean meta;
-    
+
     public GridHeader()
     {
     }
 
     /**
      * Sets the column property to the name value. Sets the type property to String.
-     * 
-     * @param name name
+     *
+     * @param name   name
      * @param hidden hidden
-     * @param meta meta
+     * @param meta   meta
      */
     public GridHeader( String name, boolean hidden, boolean meta )
     {
@@ -68,11 +76,11 @@ public class GridHeader
     }
 
     /**
-     * @param name name
+     * @param name   name
      * @param column column
-     * @param type type
+     * @param type   type
      * @param hidden hidden
-     * @param meta meta
+     * @param meta   meta
      */
     public GridHeader( String name, String column, String type, boolean hidden, boolean meta )
     {
@@ -83,11 +91,15 @@ public class GridHeader
         this.meta = meta;
     }
 
+    @XmlElement
+    @JsonProperty
     public boolean isNumeric()
     {
         return type != null && NUMERIC_TYPES.contains( type );
     }
-    
+
+    @XmlElement
+    @JsonProperty
     public String getName()
     {
         return name;
@@ -98,6 +110,8 @@ public class GridHeader
         this.name = name;
     }
 
+    @XmlElement
+    @JsonProperty
     public String getColumn()
     {
         return column;
@@ -108,6 +122,8 @@ public class GridHeader
         this.column = column;
     }
 
+    @XmlElement
+    @JsonProperty
     public String getType()
     {
         return type;
@@ -118,6 +134,8 @@ public class GridHeader
         this.type = type;
     }
 
+    @XmlElement
+    @JsonProperty
     public boolean isHidden()
     {
         return hidden;
@@ -128,6 +146,8 @@ public class GridHeader
         this.hidden = hidden;
     }
 
+    @XmlElement
+    @JsonProperty
     public boolean isMeta()
     {
         return meta;
@@ -151,19 +171,19 @@ public class GridHeader
         {
             return true;
         }
-        
+
         if ( object == null )
         {
             return false;
         }
-        
+
         if ( getClass() != object.getClass() )
         {
             return false;
         }
-        
+
         final GridHeader other = (GridHeader) object;
-        
+
         return name.equals( other.name );
     }
 }
