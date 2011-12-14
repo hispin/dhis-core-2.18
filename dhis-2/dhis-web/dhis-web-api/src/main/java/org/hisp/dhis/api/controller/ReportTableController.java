@@ -121,6 +121,33 @@ public class ReportTableController
         return "reportTable";
     }
 
+    @RequestMapping( value = "/{uid}/data", method = RequestMethod.GET )
+    public String getReportTableDATA( @PathVariable( "uid" ) String uid, Model model,
+                                      @RequestParam( value = "organisationUnit", required = false ) String organisationUnitUid,
+                                      @RequestParam( value = "period", required = false ) String period,
+                                      HttpServletResponse response ) throws I18nManagerException, IOException
+    {
+        if ( organisationUnitUid == null && period == null )
+        {
+            response.setStatus( HttpServletResponse.SC_BAD_REQUEST );
+            response.setContentType( "text/plain" );
+
+            PrintWriter writer = new PrintWriter( response.getOutputStream() );
+            writer.println( "GRID needs either organisationUnit or period parameter." );
+            writer.flush();
+
+            return "grid";
+        }
+
+        Date date = period != null ? DateUtils.getMediumDate( period ) : new Date();
+
+        Grid grid = reportTableService.getReportTableGrid( uid, i18nManager.getI18nFormat(), date, organisationUnitUid );
+
+        model.addAttribute( "model", grid );
+
+        return "grid";
+    }
+
     @RequestMapping( value = "/{uid}/data.pdf", method = RequestMethod.GET )
     public void getReportTablePDF( @PathVariable( "uid" ) String uid,
                                    @RequestParam( value = "organisationUnit", required = false ) String organisationUnitUid,
