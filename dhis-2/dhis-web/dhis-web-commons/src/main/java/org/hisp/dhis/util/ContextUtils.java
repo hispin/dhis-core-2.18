@@ -27,6 +27,8 @@ package org.hisp.dhis.util;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Map;
@@ -147,5 +149,16 @@ public class ContextUtils
         }
  
         return null;
+    }
+    
+    public static void errorResponse( HttpServletResponse response, String message )
+        throws IOException
+    {
+        response.setStatus( HttpServletResponse.SC_BAD_REQUEST );
+        response.setContentType( CONTENT_TYPE_TEXT );
+
+        PrintWriter writer = new PrintWriter( response.getOutputStream() );
+        writer.println( message );
+        writer.flush();
     }
 }
