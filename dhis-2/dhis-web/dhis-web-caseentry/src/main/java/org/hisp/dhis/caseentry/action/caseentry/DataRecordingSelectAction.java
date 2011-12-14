@@ -105,7 +105,7 @@ public class DataRecordingSelectAction
 
         programs.addAll( patient.getPrograms() );
         
-        programs.addAll( programService.getPrograms( true ) );
+        programs.addAll( programService.getPrograms( true, false ) );
         
         programs.retainAll( programService.getPrograms( selectedStateManager.getSelectedOrganisationUnit() ) );
 
