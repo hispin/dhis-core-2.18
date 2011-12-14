@@ -27,6 +27,13 @@ package org.hisp.dhis.period;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import org.codehaus.jackson.annotate.JsonProperty;
+import org.hisp.dhis.common.Dxf2Namespace;
+
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
 import java.io.Serializable;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -42,8 +49,9 @@ import java.util.Map;
  * The superclass of all PeriodTypes.
  * 
  * @author Kristian Nordal
- * @version $Id: PeriodType.java 5297 2008-05-29 16:49:33Z larshelg $
  */
+@XmlRootElement( name = "periodType", namespace = Dxf2Namespace.NAMESPACE )
+@XmlAccessorType( value = XmlAccessType.NONE )
 public abstract class PeriodType
     implements Serializable
 {

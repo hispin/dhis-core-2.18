@@ -965,7 +965,6 @@ public class WebLinkPopulator
             handleIdentifiableObjectCollection( chart.getDataElements() );
             handleIdentifiableObjectCollection( chart.getOrganisationUnits() );
             handleIdentifiableObjectCollection( chart.getDataSets() );
-            handleIdentifiableObjectCollection( chart.getPeriods() );
         }
     }
 

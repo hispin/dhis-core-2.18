@@ -31,7 +31,10 @@ import org.codehaus.jackson.annotate.JsonProperty;
 import org.codehaus.jackson.map.annotate.JsonSerialize;
 import org.hisp.dhis.common.BaseIdentifiableObject;
 import org.hisp.dhis.common.Dxf2Namespace;
-import org.hisp.dhis.common.adapter.*;
+import org.hisp.dhis.common.adapter.DataElementXmlAdapter;
+import org.hisp.dhis.common.adapter.DataSetXmlAdapter;
+import org.hisp.dhis.common.adapter.IndicatorXmlAdapter;
+import org.hisp.dhis.common.adapter.OrganisationUnitXmlAdapter;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.i18n.I18nFormat;
@@ -516,7 +519,8 @@ public class Chart
         this.dataSets = dataSets;
     }
 
-    // TODO marshall this? we probably want that..
+    @XmlElement
+    @JsonProperty
     public List<Period> getPeriods()
     {
         return periods;
@@ -552,6 +556,8 @@ public class Chart
         this.format = format;
     }
 
+    @XmlElement( name = "relativePeriods" )
+    @JsonProperty( value = "relativePeriods" )
     public RelativePeriods getRelatives()
     {
         return relatives;
