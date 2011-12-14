@@ -34,7 +34,6 @@ import java.util.Collection;
  */
 public interface PatientAttributeGroupService
 {
-
     String ID = PatientAttributeGroupService.class.getName();
 
     int savePatientAttributeGroup( PatientAttributeGroup patientAttributeGroup );

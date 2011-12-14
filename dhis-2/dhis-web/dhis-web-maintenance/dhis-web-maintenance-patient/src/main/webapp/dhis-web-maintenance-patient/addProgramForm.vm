@@ -40,6 +40,12 @@
 		</tr>
 		
 		<tr>
+			<td><label>$i18n.getString( "anonymous_event" )</label></td>
+			<td><input type="checkbox" id="anonymousEvent" name="anonymousEvent" value='true' ></td>
+			<td></td>
+		</tr>
+		
+		<tr>
 			<td><label>$i18n.getString( "date_of_enrollment_description" ) <em title="$i18n.getString( "required" )" class="required">*</em></label></td>
 			<td><input type="text" id="dateOfEnrollmentDescription" name="dateOfEnrollmentDescription" style="width:30em" class="{validate:{required:true,minlength:4}}"></td>
 			<td></td>

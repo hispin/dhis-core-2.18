@@ -31,7 +31,6 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
-import org.hisp.dhis.common.GenericIdentifiableObjectStore;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.validation.ValidationCriteria;
 import org.springframework.transaction.annotation.Transactional;
@@ -48,9 +47,9 @@ public class DefaultProgramService
     // Dependencies
     // -------------------------------------------------------------------------
 
-    private GenericIdentifiableObjectStore<Program> programStore;
+    private ProgramStore programStore;
 
-    public void setProgramStore( GenericIdentifiableObjectStore<Program> programStore )
+    public void setProgramStore( ProgramStore programStore )
     {
         this.programStore = programStore;
     }
@@ -121,17 +120,17 @@ public class DefaultProgramService
 
     public Collection<Program> getPrograms( boolean singleEvent )
     {
-        Set<Program> programs = new HashSet<Program>();
+        return programStore.get( singleEvent );
+    }
 
-        for ( Program program : getAllPrograms() )
-        {
-            if ( program.getSingleEvent() == singleEvent)
-            {
-                programs.add( program );
-            }
-        }
-
-        return programs;
+    public Collection<Program> getPrograms( boolean singleEvent, boolean anonymousEvent )
+    {
+        return programStore.get( singleEvent, anonymousEvent );
+    }
+    
+    public Collection<Program> getPrograms( boolean singleEvent, boolean anonymousEvent, OrganisationUnit orgunit )
+    {
+        return programStore.get( singleEvent, anonymousEvent, orgunit );
     }
 
 }

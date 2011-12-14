@@ -18,7 +18,7 @@
 
     <property name="completed" not-null="true" />
 
-    <many-to-one name="patient" class="org.hisp.dhis.patient.Patient" column="patientid" not-null="true"
+    <many-to-one name="patient" class="org.hisp.dhis.patient.Patient" column="patientid"
       foreign-key="fk_programinstance_patientid" />
 
     <many-to-one name="program" class="org.hisp.dhis.program.Program" column="programid" not-null="true"

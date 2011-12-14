@@ -3,6 +3,7 @@
 
 <ul>
 	<li><a href="patient.action">$i18n.getString( "patient_registration" )</a></li>
+	<li><a href="anonymousRegistration.action">$i18n.getString( "event_registration" )</a></li>
 </ul>
 
 <br>

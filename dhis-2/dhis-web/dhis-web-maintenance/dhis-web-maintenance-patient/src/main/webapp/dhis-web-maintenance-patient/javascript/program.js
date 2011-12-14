@@ -10,9 +10,13 @@ function showProgramDetails( programId )
 		setInnerHTML( 'idField', json.program.id );
 		setInnerHTML( 'nameField', json.program.name );
 		setInnerHTML( 'descriptionField', json.program.description );
+		
 		var singleEvent = ( json.program.singleEvent == 'true') ? i18n_yes : i18n_no;
-				
-		setInnerHTML( 'singleEventField', singleEvent );   
+		setInnerHTML( 'singleEventField', singleEvent );  
+		
+		var anonymousEvent = ( json.program.anonymousEvent == 'true') ? i18n_yes : i18n_no;
+		setInnerHTML( 'anonymousEventField', anonymousEvent );   		
+		
 		setInnerHTML( 'dateOfEnrollmentDescriptionField', json.program.dateOfEnrollmentDescription );   
 		setInnerHTML( 'dateOfIncidentDescriptionField', json.program.dateOfIncidentDescription );   		
 		setInnerHTML( 'programStageCountField',  json.program.programStageCount );

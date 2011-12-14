@@ -115,7 +115,14 @@ public class ProgramInstance
         int result = 1;
 
         result = result * prime + enrollmentDate.hashCode();
-        result = result * prime + patient.hashCode();
+        if ( patient != null )
+        {
+            result = result * prime + patient.hashCode();
+        }
+        else
+        {
+            result = result * prime + id;
+        }
         result = result * prime + program.hashCode();
 
         return result;
@@ -262,7 +269,7 @@ public class ProgramInstance
     {
         this.attributes = attributes;
     }
-    
+
     // -------------------------------------------------------------------------
     // Convenience method
     // -------------------------------------------------------------------------

@@ -1,7 +1,8 @@
 
 <h2>$i18n.getString( "registration" )&nbsp;</h2>
 <ul>
-	<li><a href="patient.action">$i18n.getString( "patient_registration" )</a></li>		
+	<li><a href="patient.action">$i18n.getString( "patient_registration" )</a></li>	
+	<li><a href="anonymousRegistration.action">$i18n.getString( "event_registration" )</a></li>	
 </ul>
 
 <h2>$i18n.getString( "data_entry" )&nbsp;</h2>
