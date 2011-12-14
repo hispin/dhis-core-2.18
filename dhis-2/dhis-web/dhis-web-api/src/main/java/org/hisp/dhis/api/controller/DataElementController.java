@@ -181,8 +181,6 @@ public class DataElementController
     @PreAuthorize( "hasRole('ALL') or hasRole('F_WEBAPI_DELETE')" )
     public void deleteDataElement( @PathVariable( "uid" ) String uid ) throws Exception
     {
-        // throw new HttpRequestMethodNotSupportedException( RequestMethod.DELETE.toString() );
-
         DataElement dataElement = dataElementService.getDataElement( uid );
 
         if ( dataElement != null )

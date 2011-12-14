@@ -27,11 +27,14 @@ package org.hisp.dhis.api.controller;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import org.apache.commons.io.IOUtils;
 import org.hisp.dhis.api.utils.IdentifiableObjectParams;
 import org.hisp.dhis.api.utils.WebLinkPopulator;
 import org.hisp.dhis.document.Document;
 import org.hisp.dhis.document.DocumentService;
 import org.hisp.dhis.document.Documents;
+import org.hisp.dhis.external.location.LocationManager;
+import org.hisp.dhis.util.ContextUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
@@ -58,6 +61,9 @@ public class DocumentController
 
     @Autowired
     private DocumentService documentService;
+    
+    @Autowired
+    private LocationManager locationManager;
 
     //-------------------------------------------------------------------------------------------------------
     // GET
@@ -94,6 +100,27 @@ public class DocumentController
         model.addAttribute( "model", document );
 
         return "document";
+    }
+    
+    @RequestMapping( value = "/{uid}/data", method = RequestMethod.GET )
+    public void getDocumentContent( @PathVariable( "uid" ) String uid, HttpServletResponse response ) throws Exception
+    {
+        Document document = documentService.getDocument( uid );
+        
+        if ( document.isExternal() )
+        {
+            String redirectUrl = response.encodeRedirectURL( document.getUrl() );
+            
+            response.sendRedirect( redirectUrl );
+        }
+        else
+        {
+            InputStream in = locationManager.getInputStream( document.getUrl(), DocumentService.DIR );
+
+            IOUtils.copy( in, response.getOutputStream() );
+            
+            ContextUtils.configureResponse( response, document.getContentType(), true, document.getUrl(), true );
+        }
     }
 
     //-------------------------------------------------------------------------------------------------------
