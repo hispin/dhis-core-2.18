@@ -79,7 +79,7 @@ public class DataValue
 
     private String comment;
     
-    private boolean followup;
+    private Boolean followup;
     
     // -------------------------------------------------------------------------
     // Constructors
@@ -174,7 +174,12 @@ public class DataValue
     {
         return value == null && comment == null;
     }
-    
+
+    public boolean isFollowup()
+    {
+        return followup != null && followup;
+    }
+
     // -------------------------------------------------------------------------
     // hashCode and equals
     // -------------------------------------------------------------------------
@@ -301,12 +306,12 @@ public class DataValue
         this.comment = comment;
     }
 
-    public boolean isFollowup()
+    public Boolean getFollowup()
     {
         return followup;
     }
 
-    public void setFollowup( boolean followup )
+    public void setFollowup( Boolean followup )
     {
         this.followup = followup;
     }
