@@ -1,6 +1,6 @@
 <h3>$i18n.getString( "event_registration" )</h3>	
 
-	<div id='dataRecordingSelectDiv' class="inputCriteria" style="width:420px;height:80px;">
+	<div id="dataRecordingSelectDiv" class="inputCriteria" style="width:420px;height:80px;">
 		
 		<input type='hidden' id="programStageId">
 		
@@ -28,8 +28,7 @@
 
 	#parse( "dhis-web-commons/loader/loader.vm" )
 
-
-		<div id='dataEntryFormDiv'> </div>
+	<div id="dataEntryFormDiv"> </div>
 
 <script>
 	var i18n_please_select = '[ ' + '$encoder.jsEscape( $i18n.getString( "please_select" ) , "'" )' + ' ]';

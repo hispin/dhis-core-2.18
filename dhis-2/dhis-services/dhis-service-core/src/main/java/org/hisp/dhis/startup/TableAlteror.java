@@ -215,8 +215,7 @@ public class TableAlteror
         // orgunit shortname uniqueness
         executeSql( "ALTER TABLE organisationunit DROP CONSTRAINT organisationunit_shortname_key" );
 
-        // update dataset-dataentryform association and programstage -
-        // dataentryform association
+        // update dataset-dataentryform association and programstage-cde association
         if ( updateDataSetAssociation() && updateProgramStageAssociation() )
         {
             // delete table dataentryformassociation
@@ -227,12 +226,16 @@ public class TableAlteror
         executeSql( "UPDATE patientattribute set inheritable=false where inheritable is null" );
         executeSql( "UPDATE dataelement set numbertype='number' where numbertype is null and valuetype='int'" );
 
-       // revert prepare aggregateXXXValue tables for offline diffs
+       // revert prepare aggregate*Value tables for offline diffs
 
         executeSql( "ALTER TABLE aggregateddatavalue DROP COLUMN modified");
         executeSql( "ALTER TABLE aggregatedindicatorvalue DROP COLUMN modified ");
         executeSql( "UPDATE indicatortype SET indicatornumber=false WHERE indicatornumber is null" );
 
+        // program
+        
+        executeSql( "ALTER TABLE programinstance ALTER COLUMN patientid DROP NOT NULL" );
+        
         // remove outdated relative periods
         
         executeSql( "ALTER TABLE reporttable DROP COLUMN last3months" );

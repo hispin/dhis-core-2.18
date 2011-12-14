@@ -183,6 +183,7 @@ public class SaveValueAction
         else
         {
             Set<DataElementCategoryOptionCombo> options = dataElement.getCategoryCombo().getOptionCombos();
+            
             if ( options != null )
             {
                 for ( DataElementCategoryOptionCombo tmpOption : options )

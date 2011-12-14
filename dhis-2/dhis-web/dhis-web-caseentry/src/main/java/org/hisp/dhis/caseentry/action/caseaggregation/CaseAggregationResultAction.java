@@ -293,7 +293,6 @@ public class CaseAggregationResultAction
     // Support methods
     // -------------------------------------------------------------------------
 
-    // Returns the OrgUnitTree for which Root is the orgUnit
     private List<OrganisationUnit> getChildOrgUnitTree( OrganisationUnit orgUnit )
     {
         List<OrganisationUnit> orgUnitTree = new ArrayList<OrganisationUnit>();
@@ -325,5 +324,4 @@ public class CaseAggregationResultAction
         
         return periods;
     }
-
 }
