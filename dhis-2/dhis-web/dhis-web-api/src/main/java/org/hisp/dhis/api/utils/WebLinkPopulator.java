@@ -51,6 +51,10 @@ import org.hisp.dhis.mapping.Maps;
 import org.hisp.dhis.organisationunit.*;
 import org.hisp.dhis.report.Report;
 import org.hisp.dhis.report.Reports;
+import org.hisp.dhis.reporttable.ReportTable;
+import org.hisp.dhis.reporttable.ReportTableGroup;
+import org.hisp.dhis.reporttable.ReportTableGroups;
+import org.hisp.dhis.reporttable.ReportTables;
 import org.hisp.dhis.sqlview.SqlView;
 import org.hisp.dhis.sqlview.SqlViews;
 import org.hisp.dhis.user.User;
@@ -308,6 +312,73 @@ public class WebLinkPopulator
         else if ( source instanceof User )
         {
             populateUser( (User) source, true );
+        }
+        else if ( source instanceof ReportTables )
+        {
+            populateReportTables( (ReportTables) source, true );
+        }
+        else if ( source instanceof ReportTable )
+        {
+            populateReportTable( (ReportTable) source, true );
+        }
+        else if ( source instanceof ReportTableGroups )
+        {
+            populateReportTableGroups( (ReportTableGroups) source, true );
+        }
+        else if ( source instanceof ReportTableGroup )
+        {
+            populateReportTableGroup( (ReportTableGroup) source, true );
+        }
+    }
+
+    private void populateReportTables( ReportTables reportTables, boolean root )
+    {
+        reportTables.setLink( getBasePath( reportTables.getClass() ) );
+
+        if ( root )
+        {
+            for ( ReportTable reportTable : reportTables.getReportTables() )
+            {
+                populateReportTable( reportTable, false );
+            }
+        }
+    }
+
+    private void populateReportTable( ReportTable reportTable, boolean root )
+    {
+        populateIdentifiableObject( reportTable );
+
+        if ( root )
+        {
+            handleIdentifiableObjectCollection( reportTable.getPeriods() );
+            handleIdentifiableObjectCollection( reportTable.getCategoryOptionCombos() );
+            handleIdentifiableObjectCollection( reportTable.getDataElements() );
+            handleIdentifiableObjectCollection( reportTable.getIndicators() );
+            handleIdentifiableObjectCollection( reportTable.getGroups() );
+            handleIdentifiableObjectCollection( reportTable.getDataSets() );
+        }
+    }
+
+    private void populateReportTableGroups( ReportTableGroups reportTableGroups, boolean root )
+    {
+        reportTableGroups.setLink( getBasePath( reportTableGroups.getClass() ) );
+
+        if ( root )
+        {
+            for ( ReportTableGroup reportTableGroup : reportTableGroups.getReportTableGroups() )
+            {
+                populateReportTableGroup( reportTableGroup, false );
+            }
+        }
+    }
+
+    private void populateReportTableGroup( ReportTableGroup reportTableGroup, boolean root )
+    {
+        populateIdentifiableObject( reportTableGroup );
+
+        if ( root )
+        {
+            handleIdentifiableObjectCollection( reportTableGroup.getMembers() );
         }
     }
 

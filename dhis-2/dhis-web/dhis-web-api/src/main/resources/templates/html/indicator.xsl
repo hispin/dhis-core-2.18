@@ -12,57 +12,43 @@
       <table border="1">
         <tr>
           <td>ID</td>
-          <td>
-            <xsl:value-of select="@id" />
-          </td>
+          <td> <xsl:value-of select="@id" /> </td>
         </tr>
         <tr>
           <td>Last Updated</td>
-          <td>
-            <xsl:value-of select="@lastUpdated" />
-          </td>
+          <td> <xsl:value-of select="@lastUpdated" /> </td>
+        </tr>
+        <tr>
+          <td>Code</td>
+          <td> <xsl:value-of select="@code" /> </td>
         </tr>
         <tr>
           <td>Short Name</td>
-          <td>
-            <xsl:value-of select="d:shortName" />
-          </td>
+          <td> <xsl:value-of select="d:shortName" /> </td>
         </tr>
         <tr>
           <td>Denominator</td>
-          <td>
-            <xsl:value-of select="d:denominator" />
-          </td>
+          <td> <xsl:value-of select="d:denominator" /> </td>
         </tr>
         <tr>
           <td>Denominator Description</td>
-          <td>
-            <xsl:value-of select="d:denominatorDescription" />
-          </td>
+          <td> <xsl:value-of select="d:denominatorDescription" /> </td>
         </tr>
         <tr>
           <td>Numerator</td>
-          <td>
-            <xsl:value-of select="d:numerator" />
-          </td>
+          <td> <xsl:value-of select="d:numerator" /> </td>
         </tr>
         <tr>
           <td>Numerator Description</td>
-          <td>
-            <xsl:value-of select="d:numeratorDescription" />
-          </td>
+          <td> <xsl:value-of select="d:numeratorDescription" /> </td>
         </tr>
         <tr>
           <td>Annualized</td>
-          <td>
-            <xsl:value-of select="d:annualized" />
-          </td>
+          <td> <xsl:value-of select="d:annualized" /> </td>
         </tr>
         <tr>
           <td>Sort Order</td>
-          <td>
-            <xsl:value-of select="d:sortOrder" />
-          </td>
+          <td> <xsl:value-of select="d:sortOrder" /> </td>
         </tr>
 
       </table>

@@ -27,6 +27,13 @@ package org.hisp.dhis.reporttable;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import org.codehaus.jackson.annotate.JsonProperty;
+import org.hisp.dhis.common.Dxf2Namespace;
+
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
 import java.io.Serializable;
 
 /**
@@ -37,6 +44,8 @@ import java.io.Serializable;
  * @author Lars Helge Overland
  * @version $Id$
  */
+@XmlRootElement( name = "reportParams", namespace = Dxf2Namespace.NAMESPACE )
+@XmlAccessorType( value = XmlAccessType.NONE )
 public class ReportParams
     implements Serializable
 {
@@ -117,6 +126,8 @@ public class ReportParams
     // Getters and setters
     // -------------------------------------------------------------------------
 
+    @XmlElement
+    @JsonProperty
     public Boolean getParamReportingMonth()
     {
         return paramReportingMonth;
@@ -127,6 +138,8 @@ public class ReportParams
         this.paramReportingMonth = paramReportingMonth;
     }
 
+    @XmlElement
+    @JsonProperty
     public Boolean getParamLeafParentOrganisationUnit()
     {
         return paramLeafParentOrganisationUnit;
@@ -137,6 +150,8 @@ public class ReportParams
         this.paramLeafParentOrganisationUnit = paramLeafParentOrganisationUnit;
     }
 
+    @XmlElement
+    @JsonProperty
     public Boolean getParamGrandParentOrganisationUnit()
     {
         return paramGrandParentOrganisationUnit;
@@ -147,6 +162,8 @@ public class ReportParams
         this.paramGrandParentOrganisationUnit = paramGrandParentOrganisationUnit;
     }
 
+    @XmlElement
+    @JsonProperty
     public Boolean getParamParentOrganisationUnit()
     {
         return paramParentOrganisationUnit;
@@ -157,6 +174,8 @@ public class ReportParams
         this.paramParentOrganisationUnit = paramParentOrganisationUnit;
     }
 
+    @XmlElement
+    @JsonProperty
     public Boolean getParamOrganisationUnit()
     {
         return paramOrganisationUnit;

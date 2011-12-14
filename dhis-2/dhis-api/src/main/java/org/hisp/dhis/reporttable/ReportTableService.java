@@ -161,6 +161,8 @@ public interface ReportTableService
 
     ReportTableGroup getReportTableGroup( int id );
 
+    ReportTableGroup getReportTableGroup( String uid);
+
     ReportTableGroup getReportTableGroupByName( String name );
 
     Collection<ReportTableGroup> getAllReportTableGroups();

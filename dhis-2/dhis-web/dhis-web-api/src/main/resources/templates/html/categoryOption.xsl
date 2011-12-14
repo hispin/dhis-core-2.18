@@ -17,6 +17,10 @@
           <td>Last Updated</td>
           <td> <xsl:value-of select="@lastUpdated" /> </td>
         </tr>
+        <tr>
+          <td>Code</td>
+          <td> <xsl:value-of select="@code" /> </td>
+        </tr>
       </table>
 
       <xsl:apply-templates select="d:category|d:categoryOptionCombos" mode="short"/>

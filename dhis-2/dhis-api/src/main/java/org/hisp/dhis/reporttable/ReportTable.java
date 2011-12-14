@@ -28,9 +28,13 @@ package org.hisp.dhis.reporttable;
  */
 
 import org.apache.commons.lang.StringUtils;
+import org.codehaus.jackson.annotate.JsonProperty;
+import org.codehaus.jackson.map.annotate.JsonSerialize;
 import org.hisp.dhis.common.BaseIdentifiableObject;
 import org.hisp.dhis.common.CombinationGenerator;
+import org.hisp.dhis.common.Dxf2Namespace;
 import org.hisp.dhis.common.NameableObject;
+import org.hisp.dhis.common.adapter.*;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryCombo;
 import org.hisp.dhis.dataelement.DataElementCategoryOption;
@@ -44,6 +48,8 @@ import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.RelativePeriods;
 import org.hisp.dhis.period.comparator.AscendingPeriodComparator;
 
+import javax.xml.bind.annotation.*;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import java.util.*;
 
 /**
@@ -54,6 +60,8 @@ import java.util.*;
  * @author Lars Helge Overland
  * @version $Id$
  */
+@XmlRootElement( name = "reportTable", namespace = Dxf2Namespace.NAMESPACE )
+@XmlAccessorType( value = XmlAccessType.NONE )
 public class ReportTable extends BaseIdentifiableObject
 {
     /**
@@ -823,6 +831,8 @@ public class ReportTable extends BaseIdentifiableObject
     // Get- and set-methods for persisted properties
     // -------------------------------------------------------------------------
 
+    @XmlElement
+    @JsonProperty
     public boolean isRegression()
     {
         return regression;
@@ -833,6 +843,11 @@ public class ReportTable extends BaseIdentifiableObject
         this.regression = regression;
     }
 
+    @XmlElementWrapper( name = "dataElements" )
+    @XmlElement( name = "dataElement" )
+    @XmlJavaTypeAdapter( DataElementXmlAdapter.class )
+    @JsonProperty
+    @JsonSerialize( contentAs = BaseIdentifiableObject.class )
     public List<DataElement> getDataElements()
     {
         return dataElements;
@@ -843,6 +858,11 @@ public class ReportTable extends BaseIdentifiableObject
         this.dataElements = dataElements;
     }
 
+    @XmlElementWrapper( name = "categoryOptionCombos" )
+    @XmlElement( name = "categoryOptionCombo" )
+    @XmlJavaTypeAdapter( CategoryOptionComboXmlAdapter.class )
+    @JsonProperty
+    @JsonSerialize( contentAs = BaseIdentifiableObject.class )
     public List<DataElementCategoryOptionCombo> getCategoryOptionCombos()
     {
         return categoryOptionCombos;
@@ -853,6 +873,11 @@ public class ReportTable extends BaseIdentifiableObject
         this.categoryOptionCombos = categoryOptionCombos;
     }
 
+    @XmlElementWrapper( name = "indicators" )
+    @XmlElement( name = "indicator" )
+    @XmlJavaTypeAdapter( IndicatorXmlAdapter.class )
+    @JsonProperty
+    @JsonSerialize( contentAs = BaseIdentifiableObject.class )
     public List<Indicator> getIndicators()
     {
         return indicators;
@@ -868,6 +893,16 @@ public class ReportTable extends BaseIdentifiableObject
         return periods;
     }
 
+    public void setPeriods( List<Period> periods )
+    {
+        this.periods = periods;
+    }
+
+    @XmlElementWrapper( name = "dataSets" )
+    @XmlElement( name = "dataSet" )
+    @XmlJavaTypeAdapter( DataSetXmlAdapter.class )
+    @JsonProperty
+    @JsonSerialize( contentAs = BaseIdentifiableObject.class )
     public List<DataSet> getDataSets()
     {
         return dataSets;
@@ -878,11 +913,11 @@ public class ReportTable extends BaseIdentifiableObject
         this.dataSets = dataSets;
     }
 
-    public void setPeriods( List<Period> periods )
-    {
-        this.periods = periods;
-    }
-
+    @XmlElementWrapper( name = "organisationUnits" )
+    @XmlElement( name = "organisationUnit" )
+    @XmlJavaTypeAdapter( OrganisationUnitXmlAdapter.class )
+    @JsonProperty
+    @JsonSerialize( contentAs = BaseIdentifiableObject.class )
     public List<OrganisationUnit> getUnits()
     {
         return units;
@@ -893,16 +928,10 @@ public class ReportTable extends BaseIdentifiableObject
         this.units = units;
     }
 
-    public Set<ReportTableGroup> getGroups()
-    {
-        return groups;
-    }
-
-    public void setGroups( Set<ReportTableGroup> groups )
-    {
-        this.groups = groups;
-    }
-
+    @XmlElement
+    @XmlJavaTypeAdapter( CategoryComboXmlAdapter.class )
+    @JsonProperty
+    @JsonSerialize( as = BaseIdentifiableObject.class )
     public DataElementCategoryCombo getCategoryCombo()
     {
         return categoryCombo;
@@ -913,6 +942,8 @@ public class ReportTable extends BaseIdentifiableObject
         this.categoryCombo = categoryCombo;
     }
 
+    @XmlElement
+    @JsonProperty
     public boolean isDoIndicators()
     {
         return doIndicators;
@@ -923,6 +954,8 @@ public class ReportTable extends BaseIdentifiableObject
         this.doIndicators = doIndicators;
     }
 
+    @XmlElement
+    @JsonProperty
     public boolean isDoPeriods()
     {
         return doPeriods;
@@ -933,6 +966,8 @@ public class ReportTable extends BaseIdentifiableObject
         this.doPeriods = doPeriods;
     }
 
+    @XmlElement
+    @JsonProperty
     public boolean isDoUnits()
     {
         return doUnits;
@@ -953,6 +988,8 @@ public class ReportTable extends BaseIdentifiableObject
         this.relatives = relatives;
     }
 
+    @XmlElement
+    @JsonProperty
     public ReportParams getReportParams()
     {
         return reportParams;
@@ -963,6 +1000,8 @@ public class ReportTable extends BaseIdentifiableObject
         this.reportParams = reportParams;
     }
 
+    @XmlElement
+    @JsonProperty
     public Integer getSortOrder()
     {
         return sortOrder;
@@ -973,6 +1012,8 @@ public class ReportTable extends BaseIdentifiableObject
         this.sortOrder = sortOrder;
     }
 
+    @XmlElement
+    @JsonProperty
     public Integer getTopLimit()
     {
         return topLimit;
@@ -981,6 +1022,16 @@ public class ReportTable extends BaseIdentifiableObject
     public void setTopLimit( Integer topLimit )
     {
         this.topLimit = topLimit;
+    }
+
+    public Set<ReportTableGroup> getGroups()
+    {
+        return groups;
+    }
+
+    public void setGroups( Set<ReportTableGroup> groups )
+    {
+        this.groups = groups;
     }
 
     // -------------------------------------------------------------------------
