@@ -55,7 +55,7 @@ public class GridRowsXmlAdapter extends XmlAdapter<GridRows, List<List<Object>>>
 
             for ( Object object : row )
             {
-                gridRow.getRowData().add( object != null ? object.toString() : null );
+                gridRow.getRowData().add( object != null ? object.toString() : "" );
             }
 
             gridRows.getRows().add( gridRow );
