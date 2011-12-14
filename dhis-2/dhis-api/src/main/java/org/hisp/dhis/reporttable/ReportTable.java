@@ -666,6 +666,14 @@ public class ReportTable extends BaseIdentifiableObject
     {
         return topLimit != null ? topLimit : 0;
     }
+    
+    /**
+     * Tests whether this report table has report params.
+     */
+    public boolean hasReportParams()
+    {
+        return reportParams != null;
+    }
 
     // -------------------------------------------------------------------------
     // Supportive methods

@@ -27,13 +27,22 @@ package org.hisp.dhis.api.controller;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import static org.hisp.dhis.system.util.CodecUtils.filenameEncode;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.Date;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 import org.hisp.dhis.api.utils.IdentifiableObjectParams;
 import org.hisp.dhis.api.utils.WebLinkPopulator;
 import org.hisp.dhis.common.Grid;
 import org.hisp.dhis.i18n.I18nManager;
 import org.hisp.dhis.i18n.I18nManagerException;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
-import org.hisp.dhis.period.PeriodService;
 import org.hisp.dhis.reporttable.ReportTable;
 import org.hisp.dhis.reporttable.ReportTableService;
 import org.hisp.dhis.reporttable.ReportTables;
@@ -45,18 +54,11 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
-import org.springframework.web.bind.annotation.*;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.PrintWriter;
-import java.util.ArrayList;
-import java.util.Date;
-
-import static org.apache.commons.lang.StringUtils.defaultIfEmpty;
-import static org.hisp.dhis.system.util.CodecUtils.filenameEncode;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseStatus;
 
 @Controller
 @RequestMapping( value = ReportTableController.RESOURCE_PATH )
@@ -69,9 +71,6 @@ public class ReportTableController
 
     @Autowired
     private OrganisationUnitService organisationUnitService;
-
-    @Autowired
-    private PeriodService periodService;
 
     @Autowired
     private I18nManager i18nManager;
@@ -122,21 +121,16 @@ public class ReportTableController
     }
 
     @RequestMapping( value = "/{uid}/data", method = RequestMethod.GET )
-    public String getReportTableDATA( @PathVariable( "uid" ) String uid, Model model,
+    public String getReportTableData( @PathVariable( "uid" ) String uid, Model model,
                                       @RequestParam( value = "organisationUnit", required = false ) String organisationUnitUid,
                                       @RequestParam( value = "period", required = false ) String period,
                                       HttpServletResponse response ) throws I18nManagerException, IOException
     {
-        if ( organisationUnitUid == null && period == null )
+        ReportTable reportTable = reportTableService.getReportTable( uid );
+        
+        if ( organisationUnitUid == null && reportTable.hasReportParams() && reportTable.getReportParams().isOrganisationUnitSet() )
         {
-            response.setStatus( HttpServletResponse.SC_BAD_REQUEST );
-            response.setContentType( "text/plain" );
-
-            PrintWriter writer = new PrintWriter( response.getOutputStream() );
-            writer.println( "GRID needs either organisationUnit or period parameter." );
-            writer.flush();
-
-            return "grid";
+            organisationUnitUid = organisationUnitService.getRootOrganisationUnits().iterator().next().getUid();
         }
 
         Date date = period != null ? DateUtils.getMediumDate( period ) : new Date();
@@ -149,85 +143,70 @@ public class ReportTableController
     }
 
     @RequestMapping( value = "/{uid}/data.pdf", method = RequestMethod.GET )
-    public void getReportTablePDF( @PathVariable( "uid" ) String uid,
+    public void getReportTablePdf( @PathVariable( "uid" ) String uid,
                                    @RequestParam( value = "organisationUnit", required = false ) String organisationUnitUid,
                                    @RequestParam( value = "period", required = false ) String period,
                                    HttpServletResponse response ) throws I18nManagerException, IOException
     {
-        if ( organisationUnitUid == null && period == null )
+        ReportTable reportTable = reportTableService.getReportTable( uid );
+        
+        if ( organisationUnitUid == null && reportTable.hasReportParams() && reportTable.getReportParams().isOrganisationUnitSet() )
         {
-            response.setStatus( HttpServletResponse.SC_BAD_REQUEST );
-            response.setContentType( "text/plain" );
-
-            PrintWriter writer = new PrintWriter( response.getOutputStream() );
-            writer.println( "PDF needs either organisationUnit or period parameter." );
-            writer.flush();
-
-            return;
+            organisationUnitUid = organisationUnitService.getRootOrganisationUnits().iterator().next().getUid();
         }
 
         Date date = period != null ? DateUtils.getMediumDate( period ) : new Date();
-
+        
         Grid grid = reportTableService.getReportTableGrid( uid, i18nManager.getI18nFormat(), date, organisationUnitUid );
 
-        String filename = filenameEncode( defaultIfEmpty( grid.getTitle(), "Grid" ) ) + ".pdf";
+        String filename = filenameEncode( grid.getTitle() ) + ".pdf";
         ContextUtils.configureResponse( response, ContextUtils.CONTENT_TYPE_PDF, true, filename, false );
 
         GridUtils.toPdf( grid, response.getOutputStream() );
     }
 
     @RequestMapping( value = "/{uid}/data.xls", method = RequestMethod.GET )
-    public void getReportTableXLS( @PathVariable( "uid" ) String uid,
+    public void getReportTableXls( @PathVariable( "uid" ) String uid,
                                    @RequestParam( value = "organisationUnit", required = false ) String organisationUnitUid,
                                    @RequestParam( value = "period", required = false ) String period,
                                    HttpServletResponse response ) throws Exception
     {
-        if ( organisationUnitUid == null && period == null )
+        ReportTable reportTable = reportTableService.getReportTable( uid );
+        
+        if ( organisationUnitUid == null && reportTable.hasReportParams() && reportTable.getReportParams().isOrganisationUnitSet() )
         {
-            response.setStatus( HttpServletResponse.SC_BAD_REQUEST );
-            response.setContentType( "text/plain" );
-
-            PrintWriter writer = new PrintWriter( response.getOutputStream() );
-            writer.println( "XLS needs either organisationUnit or period parameter." );
-            writer.flush();
-
-            return;
+            organisationUnitUid = organisationUnitService.getRootOrganisationUnits().iterator().next().getUid();
         }
 
         Date date = period != null ? DateUtils.getMediumDate( period ) : new Date();
 
         Grid grid = reportTableService.getReportTableGrid( uid, i18nManager.getI18nFormat(), date, organisationUnitUid );
 
-        String filename = filenameEncode( defaultIfEmpty( grid.getTitle(), "Grid" ) ) + ".xls";
-        ContextUtils.configureResponse( response, ContextUtils.CONTENT_TYPE_EXCEL, true, filename, false );
+        String filename = filenameEncode( grid.getTitle() ) + ".xls";
+        ContextUtils.configureResponse( response, ContextUtils.CONTENT_TYPE_EXCEL, true, filename, true );
 
         GridUtils.toXls( grid, response.getOutputStream() );
     }
 
     @RequestMapping( value = "/{uid}/data.csv", method = RequestMethod.GET )
-    public void getReportTableCSV( @PathVariable( "uid" ) String uid,
+    public void getReportTableCsv( @PathVariable( "uid" ) String uid,
                                    @RequestParam( value = "organisationUnit", required = false ) String organisationUnitUid,
                                    @RequestParam( value = "period", required = false ) String period,
                                    HttpServletResponse response ) throws Exception
     {
-        if ( organisationUnitUid == null && period == null )
+        ReportTable reportTable = reportTableService.getReportTable( uid );
+        
+        if ( organisationUnitUid == null && reportTable.hasReportParams() && reportTable.getReportParams().isOrganisationUnitSet() )
         {
-            response.setStatus( HttpServletResponse.SC_BAD_REQUEST );
-            response.setContentType( "text/plain" );
-
-            PrintWriter writer = new PrintWriter( response.getOutputStream() );
-            writer.println( "CSV needs either organisationUnit or period parameter." );
-            writer.flush();
-
-            return;
+            organisationUnitUid = organisationUnitService.getRootOrganisationUnits().iterator().next().getUid();
         }
 
         Date date = period != null ? DateUtils.getMediumDate( period ) : new Date();
 
         Grid grid = reportTableService.getReportTableGrid( uid, i18nManager.getI18nFormat(), date, organisationUnitUid );
 
-        String filename = filenameEncode( defaultIfEmpty( grid.getTitle(), "Grid" ) ) + ".csv";
-        ContextUtils.configureResponse( response, ContextUtils.CONTENT_TYPE_CSV, true, filename, false );
+        String filename = filenameEncode( grid.getTitle() ) + ".csv";
+        ContextUtils.configureResponse( response, ContextUtils.CONTENT_TYPE_CSV, true, filename, true );
 
         GridUtils.toCsv( grid, response.getOutputStream() );
     }
