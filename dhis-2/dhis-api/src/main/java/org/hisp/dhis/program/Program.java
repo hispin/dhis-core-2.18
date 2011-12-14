@@ -52,7 +52,7 @@ public class Program
     private String name;
 
     private String description;
-    
+
     private Integer version;
 
     /**
@@ -76,9 +76,11 @@ public class Program
     private Set<ValidationCriteria> patientValidationCriteria = new HashSet<ValidationCriteria>();
 
     private Integer maxDaysAllowedInputData;
-    
+
     private Boolean singleEvent;
-    
+
+    private Boolean anonymousEvent;
+
     // -------------------------------------------------------------------------
     // Constructors
     // -------------------------------------------------------------------------
@@ -164,7 +166,6 @@ public class Program
     {
         this.organisationUnits = organisationUnits;
     }
-    
 
     public Integer getVersion()
     {
@@ -249,6 +250,16 @@ public class Program
     public void setPatientValidationCriteria( Set<ValidationCriteria> patientValidationCriteria )
     {
         this.patientValidationCriteria = patientValidationCriteria;
+    }
+
+    public Boolean getAnonymousEvent()
+    {
+        return anonymousEvent;
+    }
+
+    public void setAnonymousEvent( Boolean anonymousEvent )
+    {
+        this.anonymousEvent = anonymousEvent;
     }
 
     // -------------------------------------------------------------------------

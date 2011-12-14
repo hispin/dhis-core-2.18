@@ -124,6 +124,13 @@ public class UpdateProgramAction
         this.singleEvent = singleEvent;
     }
 
+    private Boolean anonymousEvent;
+
+    public void setAnonymousEvent( Boolean anonymousEvent )
+    {
+        this.anonymousEvent = anonymousEvent;
+    }
+
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
@@ -131,11 +138,9 @@ public class UpdateProgramAction
     public String execute()
         throws Exception
     {
-        if ( singleEvent == null )
-        {
-            singleEvent = false;
-        }
-        
+        singleEvent = (singleEvent == null) ? false : singleEvent;
+        anonymousEvent = (anonymousEvent == null) ? false : anonymousEvent;
+
         Program program = programService.getProgram( id );
         program.setName( name );
         program.setDescription( description );
@@ -144,6 +149,7 @@ public class UpdateProgramAction
         program.setDateOfIncidentDescription( dateOfIncidentDescription );
         program.setMaxDaysAllowedInputData( maxDaysAllowedInputData );
         program.setSingleEvent( singleEvent );
+        program.setAnonymousEvent( anonymousEvent );
 
         programService.updateProgram( program );
 
@@ -159,7 +165,7 @@ public class UpdateProgramAction
 
             programStageService.saveProgramStage( programStage );
         }
-        
+
         return SUCCESS;
     }
 }

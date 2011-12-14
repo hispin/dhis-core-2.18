@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2004-2009, University of Oslo
+ * Copyright (c) 2004-2010, University of Oslo
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -29,37 +29,21 @@ package org.hisp.dhis.program;
 
 import java.util.Collection;
 
+import org.hisp.dhis.common.GenericNameableObjectStore;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
-import org.hisp.dhis.validation.ValidationCriteria;
 
 /**
- * @author Abyot Asalefew
- * @version $Id$
+ * @author Chau Thu Tran
+ *
+ * @version $Id: ProgramStore.java Dec 14, 2011 9:22:17 AM $
  */
-public interface ProgramService
-{
-    String ID = ProgramService.class.getName();
+public interface ProgramStore extends GenericNameableObjectStore<Program>
+{ 
+    String ID = ProgramStore.class.getName();
 
-    int saveProgram( Program program );
+    Collection<Program> get( boolean singleEvent );
 
-    void deleteProgram( Program program );
+    Collection<Program> get( boolean singleEvent, boolean anonymousEvent );
 
-    void updateProgram( Program program );
-
-    Program getProgram( int id );
-
-    Program getProgramByName( String name );
-
-    Collection<Program> getAllPrograms();
-
-    Collection<Program> getPrograms( OrganisationUnit organisationUnit );
-
-    Collection<Program> getPrograms( ValidationCriteria validationCriteria );
-
-    Collection<Program> getPrograms( boolean singleEvent );
-
-    Collection<Program> getPrograms( boolean singleEvent, boolean anonymousEvent );
-
-    Collection<Program> getPrograms( boolean singleEvent, boolean anonymousEvent, OrganisationUnit orgunit );
-
+    Collection<Program> get( boolean singleEvent, boolean anonymousEvent, OrganisationUnit orgunit );
 }

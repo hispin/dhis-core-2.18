@@ -171,7 +171,7 @@
 			<result name="success" type="redirect">
 				getDataRecords.action?programId=${programId}</result>
 		</action>
-
+		
 		<!-- Visit Plan -->
 
 		<action name="visitplan"
@@ -420,6 +420,25 @@
 			<param name="stylesheets">../dhis-web-commons/paging/paging.css</param>
 		</action>
 
+		<action name="anonymousRegistration"
+			class="org.hisp.dhis.caseentry.action.caseentry.LoadAnonymousProgramsAction">
+			<interceptor-ref name="organisationUnitTreeStack" />
+			<result name="success" type="velocity">/main.vm</result>
+			<param name="page">/dhis-web-caseentry/anonymousRegistration.vm</param>
+			<param name="menu">/dhis-web-caseentry/registrationMenu.vm</param>
+			<param name="javascripts">../dhis-web-commons/ouwt/ouwt.js
+				,javascript/commons.js
+				,javascript/anonymousRegistration.js
+				,javascript/entry.js
+				,../dhis-web-commons/javascripts/date.js</param>
+		</action>
+		
+		<action name="loadAnonymousPrograms"
+			class="org.hisp.dhis.caseentry.action.caseentry.LoadAnonymousProgramsAction">
+			<result name="success" type="velocity-json">
+				/dhis-web-commons/ajax/jsonPrograms.vm</result>
+		</action>
+		
 		<!-- Patient-Program Enrollment -->
 
 		<action name="showProgramEnrollmentForm"

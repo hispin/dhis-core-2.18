@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2004-2009, University of Oslo
+ * Copyright (c) 2004-2010, University of Oslo
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -25,41 +25,50 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.hisp.dhis.program;
+package org.hisp.dhis.program.hibernate;
 
 import java.util.Collection;
 
+import org.hibernate.criterion.Restrictions;
+import org.hisp.dhis.hibernate.HibernateGenericStore;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
-import org.hisp.dhis.validation.ValidationCriteria;
+import org.hisp.dhis.program.Program;
+import org.hisp.dhis.program.ProgramAttribute;
+import org.hisp.dhis.program.ProgramAttributeOption;
+import org.hisp.dhis.program.ProgramAttributeOptionStore;
+import org.hisp.dhis.program.ProgramStore;
 
 /**
- * @author Abyot Asalefew
- * @version $Id$
+ * @author Chau Thu Tran
+ * 
+ * @version $Id: HibernateProgramStore.java Dec 14, 2011 9:24:21 AM $
  */
-public interface ProgramService
+public class HibernateProgramStore
+    extends HibernateGenericStore<Program>
+    implements ProgramStore
 {
-    String ID = ProgramService.class.getName();
+    @SuppressWarnings( "unchecked" )
+    @Override
+    public Collection<Program> get( boolean singleEvent )
+    {
+        return getCriteria( Restrictions.eq( "singleEvent", singleEvent )).list();
+    }
 
-    int saveProgram( Program program );
+    @SuppressWarnings( "unchecked" )
+    @Override
+    public Collection<Program> get( boolean singleEvent, boolean anonymousEvent )
+    {
+        return getCriteria( Restrictions.eq( "singleEvent", singleEvent ),
+            Restrictions.eq( "anonymousEvent", anonymousEvent ) ).list();
+    }
 
-    void deleteProgram( Program program );
-
-    void updateProgram( Program program );
-
-    Program getProgram( int id );
-
-    Program getProgramByName( String name );
-
-    Collection<Program> getAllPrograms();
-
-    Collection<Program> getPrograms( OrganisationUnit organisationUnit );
-
-    Collection<Program> getPrograms( ValidationCriteria validationCriteria );
-
-    Collection<Program> getPrograms( boolean singleEvent );
-
-    Collection<Program> getPrograms( boolean singleEvent, boolean anonymousEvent );
-
-    Collection<Program> getPrograms( boolean singleEvent, boolean anonymousEvent, OrganisationUnit orgunit );
+    @SuppressWarnings( "unchecked" )
+    @Override
+    public Collection<Program> get( boolean singleEvent, boolean anonymousEvent, OrganisationUnit orgunit )
+    {
+        return getCriteria( Restrictions.eq( "singleEvent", singleEvent ),
+            Restrictions.eq( "anonymousEvent", anonymousEvent ) ).createAlias( "organisationUnits", "orgunit" ).add(
+            Restrictions.eq( "orgunit.id", orgunit.getId() ) ).list();
+    }
 
 }

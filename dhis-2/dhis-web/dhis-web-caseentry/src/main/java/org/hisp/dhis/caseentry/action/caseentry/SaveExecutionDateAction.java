@@ -155,14 +155,17 @@ public class SaveExecutionDateAction
                     programInstance.setEnrollmentDate( dateValue );
                     programInstance.setDateOfIncident( dateValue );
                     programInstance.setProgram( program );
-                    programInstance.setPatient( patient );
                     programInstance.setCompleted( false );
-
+                    
+                    if ( !programStage.getProgram().getAnonymousEvent() )
+                    {
+                        programInstance.setPatient( patient );
+                        patient.getPrograms().add( program );
+                        patientService.updatePatient( patient );
+                    }
+                    
                     programInstanceService.addProgramInstance( programInstance );
-
-                    patient.getPrograms().add( program );
-                    patientService.updatePatient( patient );
-
+                    
                     // Add a new program-stage-instance
                     programStageInstance = new ProgramStageInstance();
                     programStageInstance.setProgramInstance( programInstance );
@@ -187,7 +190,7 @@ public class SaveExecutionDateAction
             LOG.debug( "Updating Execution Date, value added/changed" );
 
             message = programStageInstance.getId() + "";
-            
+
             return SUCCESS;
         }
 

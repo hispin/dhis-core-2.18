@@ -106,10 +106,14 @@ public class TableAlteror
 
         executeSql( "UPDATE dataset SET version = 1 WHERE version is null" );
         
-        executeSql( "UPDATE program SET singleevent = false WHERE singleevent is null" );
+        executeSql( "UPDATE program SET singleEvent = false WHERE singleevent is null" );
+        
+        executeSql( "UPDATE program SET anonymousEvent = false WHERE anonymousEvent is null" );
         
         executeSql( "UPDATE programstage SET irregular = false WHERE irregular is null" );
 
+        executeSql( "Alter table programinstance modify patientid integer null");
+        		
         updateSingleProgramValidation();
 
         updateStageInProgram();

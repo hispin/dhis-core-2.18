@@ -27,9 +27,10 @@
 
 package org.hisp.dhis.caseentry.action.caseentry;
 
-import java.util.Collection;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -132,15 +133,26 @@ public class LoadProgramStagesAction
     {
         selectedStateManager.clearSelectedProgramInstance();
         selectedStateManager.clearSelectedProgramStageInstance();
-        
+
         Patient patient = selectedStateManager.getSelectedPatient();
 
         program = programService.getProgram( programId );
-        
+
         programStages = program.getProgramStages();
 
-        Collection<ProgramInstance> programInstances = programInstanceService.getProgramInstances( patient, program, false );
-       
+        List<ProgramInstance> programInstances = new ArrayList<ProgramInstance>();
+
+        if ( program.getAnonymousEvent() )
+        {
+            programInstances = new ArrayList<ProgramInstance>( programInstanceService.getProgramInstances( program,
+                false ) );
+        }
+        else
+        {
+            programInstances = new ArrayList<ProgramInstance>( programInstanceService.getProgramInstances( patient,
+                program, false ) );
+        }
+
         if ( programInstances != null && programInstances.size() > 0 )
         {
             programInstance = programInstances.iterator().next();
