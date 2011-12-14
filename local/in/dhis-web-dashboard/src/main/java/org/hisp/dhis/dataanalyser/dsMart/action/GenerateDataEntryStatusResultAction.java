@@ -389,11 +389,11 @@ public class GenerateDataEntryStatusResultAction implements Action
             OrganisationUnit ou = orgUnitListIterator.next();
             orgUnitInfo += "," + ou.getId();
             
-            if ( maxOULevel < organisationUnitService.getLevelOfOrganisationUnit( ou ) )
-                maxOULevel = organisationUnitService.getLevelOfOrganisationUnit( ou );
+            if ( maxOULevel < organisationUnitService.getLevelOfOrganisationUnit( ou.getId() ) )
+                maxOULevel = organisationUnitService.getLevelOfOrganisationUnit( ou.getId() );
 
-            if ( minOULevel > organisationUnitService.getLevelOfOrganisationUnit( ou ) )
-                minOULevel = organisationUnitService.getLevelOfOrganisationUnit( ou );
+            if ( minOULevel > organisationUnitService.getLevelOfOrganisationUnit( ou.getId() ) )
+                minOULevel = organisationUnitService.getLevelOfOrganisationUnit( ou.getId() );
         }
 
         // For Level Names

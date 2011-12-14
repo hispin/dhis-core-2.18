@@ -419,7 +419,7 @@ public class GenerateSummaryDataStatusResultAction
             Integer ouL = orgunitLevelMap.get( o.getId() );
             if( ouL == null )
             {
-                ouL = organisationUnitService.getLevelOfOrganisationUnit( o );
+                ouL = organisationUnitService.getLevelOfOrganisationUnit( o.getId() );
             }
             if( maxOULevel < ouL )
             {

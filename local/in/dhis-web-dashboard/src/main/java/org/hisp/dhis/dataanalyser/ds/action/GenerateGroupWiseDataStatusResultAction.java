@@ -608,11 +608,11 @@ public class GenerateGroupWiseDataStatusResultAction
                 o = orgUnitListIterator.next();
                 orgUnitInfo = "" + o.getId();
 
-                if ( maxOULevel < organisationUnitService.getLevelOfOrganisationUnit( o ) )
-                    maxOULevel = organisationUnitService.getLevelOfOrganisationUnit( o );
+                if ( maxOULevel < organisationUnitService.getLevelOfOrganisationUnit( o.getId() ) )
+                    maxOULevel = organisationUnitService.getLevelOfOrganisationUnit( o.getId() );
 
-                if ( minOULevel > organisationUnitService.getLevelOfOrganisationUnit( o ) )
-                    minOULevel = organisationUnitService.getLevelOfOrganisationUnit( o );
+                if ( minOULevel > organisationUnitService.getLevelOfOrganisationUnit( o.getId() ) )
+                    minOULevel = organisationUnitService.getLevelOfOrganisationUnit( o.getId() );
 
                 dso = ds.getSources();
                 periodIterator = periodList.iterator();

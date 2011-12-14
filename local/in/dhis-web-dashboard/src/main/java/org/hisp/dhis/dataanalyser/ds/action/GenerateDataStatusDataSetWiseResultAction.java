@@ -394,11 +394,11 @@ public class GenerateDataStatusDataSetWiseResultAction implements Action
                 //orgUnit.getChildren().size();
                 
                 orgUnitInfo = "" + orgUnit.getId();
-                if ( maxOULevel < organisationUnitService.getLevelOfOrganisationUnit( orgUnit ) )
-                    maxOULevel = organisationUnitService.getLevelOfOrganisationUnit( orgUnit );
+                if ( maxOULevel < organisationUnitService.getLevelOfOrganisationUnit( orgUnit.getId() ) )
+                    maxOULevel = organisationUnitService.getLevelOfOrganisationUnit( orgUnit.getId() );
     
-                if ( minOULevel > organisationUnitService.getLevelOfOrganisationUnit( orgUnit ) )
-                    minOULevel = organisationUnitService.getLevelOfOrganisationUnit( orgUnit );
+                if ( minOULevel > organisationUnitService.getLevelOfOrganisationUnit( orgUnit.getId() ) )
+                    minOULevel = organisationUnitService.getLevelOfOrganisationUnit( orgUnit.getId() );
                 
                 Iterator<Period> periodIterator = periodList.iterator();
                 Period p;

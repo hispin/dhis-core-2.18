@@ -96,7 +96,7 @@
 
                         #foreach( $chiildorgUnit in $orgUnitList )
                             #set( $count1 = $minOULevel )
-                            #set( $curOrgUnitLevel = $organisationUnitService.getLevelOfOrganisationUnit( $chiildorgUnit ) )
+                            #set( $curOrgUnitLevel = $organisationUnitService.getLevelOfOrganisationUnit( $chiildorgUnit.id ) )
                             #set( $orgunitCount = $ouMapForChildDSAssociation.get( $chiildorgUnit ) )
                             <tr class="TableHeadingCellStyles">
                                 #foreach( $levelName in $levelNames )

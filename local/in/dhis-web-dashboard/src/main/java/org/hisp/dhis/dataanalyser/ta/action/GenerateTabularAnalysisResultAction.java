@@ -768,7 +768,7 @@ public class GenerateTabularAnalysisResultAction
             
             Integer level = orgunitLevelMap.get( orgU.getId() );
             if( level == null )
-                level = organisationUnitService.getLevelOfOrganisationUnit( orgU );
+                level = organisationUnitService.getLevelOfOrganisationUnit( orgU.getId() );
             if ( level > orgUnitLevelCB )
             {
                 ouIterator.remove();
@@ -779,7 +779,7 @@ public class GenerateTabularAnalysisResultAction
         int maxOuLevel = 1;
         if ( selOUList != null && selOUList.size() > 0 )
         {
-            minOULevel = organisationUnitService.getLevelOfOrganisationUnit( selOUList.get( 0 ) );
+            minOULevel = organisationUnitService.getLevelOfOrganisationUnit( selOUList.get( 0 ).getId() );
         }
         maxOuLevel = orgUnitLevelCB;
 
@@ -811,7 +811,7 @@ public class GenerateTabularAnalysisResultAction
             
             Integer level = orgunitLevelMap.get( ou.getId() );
             if( level == null )
-                level = organisationUnitService.getLevelOfOrganisationUnit( ou );
+                level = organisationUnitService.getLevelOfOrganisationUnit( ou.getId() );
             
             colCount = 1 + level - minOULevel;
             sheet0.addCell( new Label( colCount, headerRow + rowCount, ou.getName(), getCellFormat2() ) );
@@ -1029,7 +1029,7 @@ public class GenerateTabularAnalysisResultAction
             
             Integer level = orgunitLevelMap.get( ou.getId() );
             if( level == null )
-                level = organisationUnitService.getLevelOfOrganisationUnit( ou );
+                level = organisationUnitService.getLevelOfOrganisationUnit( ou.getId() );
             
             colCount = 1 + level - minOULevel;
             sheet0.addCell( new Label( colCount, headerRow + rowCount, ou.getName(), getCellFormat2() ) );
@@ -1954,7 +1954,7 @@ public class GenerateTabularAnalysisResultAction
         for ( OrganisationUnit ou : selOUList )
         {
             sheet0.addCell( new Number( headerCol, headerRow + 1 + rowCount, rowCount, getCellFormat2() ) );
-            colCount = 1 + organisationUnitService.getLevelOfOrganisationUnit( ou ) - minOULevel;
+            colCount = 1 + organisationUnitService.getLevelOfOrganisationUnit( ou.getId() ) - minOULevel;
             sheet0.addCell( new Label( colCount, rowCount + 1, ou.getName(), getCellFormat2() ) );
             
             OrganisationUnit orgUnit = new OrganisationUnit();
@@ -2303,7 +2303,7 @@ public class GenerateTabularAnalysisResultAction
             
             Integer level = orgunitLevelMap.get( orgU.getId() );
             if( level == null )
-                level = organisationUnitService.getLevelOfOrganisationUnit( orgU );
+                level = organisationUnitService.getLevelOfOrganisationUnit( orgU.getId() );
             if ( level > orgUnitLevelCB )
             {
                 ouIterator.remove();
@@ -2314,7 +2314,7 @@ public class GenerateTabularAnalysisResultAction
         int maxOuLevel = 1;
         if ( selOUList != null && selOUList.size() > 0 )
         {
-            minOULevel = organisationUnitService.getLevelOfOrganisationUnit( selOUList.get( 0 ) );
+            minOULevel = organisationUnitService.getLevelOfOrganisationUnit( selOUList.get( 0 ).getId() );
         }
         maxOuLevel = orgUnitLevelCB;
 
@@ -2347,7 +2347,7 @@ public class GenerateTabularAnalysisResultAction
             
             Integer level = orgunitLevelMap.get( ou.getId() );
             if( level == null )
-                level = organisationUnitService.getLevelOfOrganisationUnit( ou );
+                level = organisationUnitService.getLevelOfOrganisationUnit( ou.getId() );
             
             colCount = 1 + level - minOULevel;
             sheet0.addCell( new Label( colCount, headerRow + 1 + rowCount, ou.getName(), getCellFormat2() ) );
@@ -2669,7 +2669,7 @@ public class GenerateTabularAnalysisResultAction
             
             Integer level = orgunitLevelMap.get( ou.getId() );
             if( level == null )
-                level = organisationUnitService.getLevelOfOrganisationUnit( ou );
+                level = organisationUnitService.getLevelOfOrganisationUnit( ou.getId() );
             
             colCount = 1 + level - minOULevel;
             sheet0.addCell( new Label( colCount, headerRow + 1 + rowCount, ou.getName(), getCellFormat2() ) );
@@ -3404,7 +3404,7 @@ public class GenerateTabularAnalysisResultAction
             
             Integer level = orgunitLevelMap.get( orgU.getId() );
             if( level == null )
-                level = organisationUnitService.getLevelOfOrganisationUnit( orgU );
+                level = organisationUnitService.getLevelOfOrganisationUnit( orgU.getId() );
             if ( level > orgUnitLevelCB )
             {
                 ouIterator.remove();
@@ -3415,7 +3415,7 @@ public class GenerateTabularAnalysisResultAction
         int maxOuLevel = 1;
         if ( selOUList != null && selOUList.size() > 0 )
         {
-            minOULevel = organisationUnitService.getLevelOfOrganisationUnit( selOUList.get( 0 ) );
+            minOULevel = organisationUnitService.getLevelOfOrganisationUnit( selOUList.get( 0 ).getId() );
         }
         maxOuLevel = orgUnitLevelCB;
 
@@ -3442,7 +3442,7 @@ public class GenerateTabularAnalysisResultAction
             
             Integer level = orgunitLevelMap.get( ou.getId() );
             if( level == null )
-                level = organisationUnitService.getLevelOfOrganisationUnit( ou );
+                level = organisationUnitService.getLevelOfOrganisationUnit( ou.getId() );
             
             colCount = 1 + level - minOULevel;
             sheet0.addCell( new Label( colCount, headerRow + rowCount, ou.getName(), getCellFormat2() ) );
@@ -3677,7 +3677,7 @@ public class GenerateTabularAnalysisResultAction
             
             Integer level = orgunitLevelMap.get( ou.getId() );
             if( level == null )
-                level = organisationUnitService.getLevelOfOrganisationUnit( ou );
+                level = organisationUnitService.getLevelOfOrganisationUnit( ou.getId() );
             
             colCount = 1 + level - minOULevel;
             sheet0.addCell( new Label( colCount, headerRow + rowCount, ou.getName(), getCellFormat2() ) );
@@ -3899,7 +3899,7 @@ public class GenerateTabularAnalysisResultAction
             
             Integer level = orgunitLevelMap.get( orgU.getId() );
             if( level == null )
-                level = organisationUnitService.getLevelOfOrganisationUnit( orgU );
+                level = organisationUnitService.getLevelOfOrganisationUnit( orgU.getId() );
             if ( level > orgUnitLevelCB )
             {
                 ouIterator.remove();
@@ -3910,7 +3910,7 @@ public class GenerateTabularAnalysisResultAction
         int maxOuLevel = 1;
         if ( selOUList != null && selOUList.size() > 0 )
         {
-            minOULevel = organisationUnitService.getLevelOfOrganisationUnit( selOUList.get( 0 ) );
+            minOULevel = organisationUnitService.getLevelOfOrganisationUnit( selOUList.get( 0 ).getId() );
         }
         maxOuLevel = orgUnitLevelCB;
 
@@ -3938,7 +3938,7 @@ public class GenerateTabularAnalysisResultAction
             
             Integer level = orgunitLevelMap.get( ou.getId() );
             if( level == null )
-                level = organisationUnitService.getLevelOfOrganisationUnit( ou );
+                level = organisationUnitService.getLevelOfOrganisationUnit( ou.getId() );
             
             colCount = 1 + level - minOULevel;
             sheet0.addCell( new Label( colCount, headerRow + 1 + rowCount, ou.getName(), getCellFormat2() ) );
@@ -4261,7 +4261,7 @@ public class GenerateTabularAnalysisResultAction
             
             Integer level = orgunitLevelMap.get( ou.getId() );
             if( level == null )
-                level = organisationUnitService.getLevelOfOrganisationUnit( ou );
+                level = organisationUnitService.getLevelOfOrganisationUnit( ou.getId() );
             
             colCount = 1 + level - minOULevel;
             sheet0.addCell( new Label( colCount, headerRow + 1 + rowCount, ou.getName(), getCellFormat2() ) );
@@ -4874,7 +4874,7 @@ public class GenerateTabularAnalysisResultAction
             
             Integer level = orgunitLevelMap.get( orgU.getId() );
             if( level == null )
-                level = organisationUnitService.getLevelOfOrganisationUnit( orgU );
+                level = organisationUnitService.getLevelOfOrganisationUnit( orgU.getId() );
             if ( level > orgUnitLevelCB )
             {
                 ouIterator.remove();
@@ -4885,7 +4885,7 @@ public class GenerateTabularAnalysisResultAction
         int maxOuLevel = 1;
         if ( selOUList != null && selOUList.size() > 0 )
         {
-            minOULevel = organisationUnitService.getLevelOfOrganisationUnit( selOUList.get( 0 ) );
+            minOULevel = organisationUnitService.getLevelOfOrganisationUnit( selOUList.get( 0 ).getId() );
         }
         maxOuLevel = orgUnitLevelCB;
 
@@ -4920,7 +4920,7 @@ public class GenerateTabularAnalysisResultAction
             
             Integer level = orgunitLevelMap.get( ou.getId() );
             if( level == null )
-                level = organisationUnitService.getLevelOfOrganisationUnit( ou );
+                level = organisationUnitService.getLevelOfOrganisationUnit( ou.getId() );
             
             colCount = 1 + level - minOULevel;
             sheet0.addCell( new Label( colCount, headerRow + 1 + rowCount, ou.getName(), getCellFormat2() ) );
@@ -5244,7 +5244,7 @@ public class GenerateTabularAnalysisResultAction
             
             Integer level = orgunitLevelMap.get( ou.getId() );
             if( level == null )
-                level = organisationUnitService.getLevelOfOrganisationUnit( ou );
+                level = organisationUnitService.getLevelOfOrganisationUnit( ou.getId() );
             
             colCount = 1 + level - minOULevel;
             sheet0.addCell( new Label( colCount, headerRow + 1 + rowCount, ou.getName(), getCellFormat2() ) );
@@ -5854,7 +5854,7 @@ public class GenerateTabularAnalysisResultAction
             
             Integer level = orgunitLevelMap.get( orgU.getId() );
             if( level == null )
-                level = organisationUnitService.getLevelOfOrganisationUnit( orgU );
+                level = organisationUnitService.getLevelOfOrganisationUnit( orgU.getId() );
             if ( level > orgUnitLevelCB )
             {
                 ouIterator.remove();
@@ -5865,7 +5865,7 @@ public class GenerateTabularAnalysisResultAction
         int maxOuLevel = 1;
         if ( selOUList != null && selOUList.size() > 0 )
         {
-            minOULevel = organisationUnitService.getLevelOfOrganisationUnit( selOUList.get( 0 ) );
+            minOULevel = organisationUnitService.getLevelOfOrganisationUnit( selOUList.get( 0 ).getId() );
         }
         maxOuLevel = orgUnitLevelCB;
 
@@ -5899,7 +5899,7 @@ public class GenerateTabularAnalysisResultAction
             
             Integer level = orgunitLevelMap.get( ou.getId() );
             if( level == null )
-                level = organisationUnitService.getLevelOfOrganisationUnit( ou );
+                level = organisationUnitService.getLevelOfOrganisationUnit( ou.getId() );
             
             colCount = 1 + level - minOULevel;
             sheet0.addCell( new Label( colCount, headerRow + rowCount, ou.getName(), getCellFormat2() ) );
@@ -6136,7 +6136,7 @@ public class GenerateTabularAnalysisResultAction
             
             Integer level = orgunitLevelMap.get( ou.getId() );
             if( level == null )
-                level = organisationUnitService.getLevelOfOrganisationUnit( ou );
+                level = organisationUnitService.getLevelOfOrganisationUnit( ou.getId() );
             
             colCount = 1 + level - minOULevel;
             sheet0.addCell( new Label( colCount, headerRow + rowCount, ou.getName(), getCellFormat2() ) );
@@ -6573,7 +6573,7 @@ public class GenerateTabularAnalysisResultAction
             
             Integer level = orgunitLevelMap.get( orgU.getId() );
             if( level == null )
-                level = organisationUnitService.getLevelOfOrganisationUnit( orgU );
+                level = organisationUnitService.getLevelOfOrganisationUnit( orgU.getId() );
             if ( level > orgUnitLevelCB )
             {
                 ouIterator.remove();
@@ -6584,7 +6584,7 @@ public class GenerateTabularAnalysisResultAction
         int maxOuLevel = 1;
         if ( selOUList != null && selOUList.size() > 0 )
         {
-            minOULevel = organisationUnitService.getLevelOfOrganisationUnit( selOUList.get( 0 ) );
+            minOULevel = organisationUnitService.getLevelOfOrganisationUnit( selOUList.get( 0 ).getId() );
         }
         maxOuLevel = orgUnitLevelCB;
 
@@ -6615,7 +6615,7 @@ public class GenerateTabularAnalysisResultAction
         for ( OrganisationUnit ou : selOUList )
         {
             sheet0.addCell( new Number( headerCol, headerRow + 1 + rowCount, rowCount, getCellFormat2() ) );
-            colCount = 1 + organisationUnitService.getLevelOfOrganisationUnit( ou ) - minOULevel;
+            colCount = 1 + organisationUnitService.getLevelOfOrganisationUnit( ou.getId() ) - minOULevel;
             sheet0.addCell( new Label( colCount, headerRow + 1 + rowCount, ou.getName(), getCellFormat2() ) );
 
             colCount = c1;
