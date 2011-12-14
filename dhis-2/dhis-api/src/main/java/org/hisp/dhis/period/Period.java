@@ -259,14 +259,14 @@ public class Period
     // Getters and setters
     // -------------------------------------------------------------------------
 
-    public void setEndDate( Date endDate )
-    {
-        this.endDate = endDate;
-    }
-
     public Date getEndDate()
     {
         return endDate;
+    }
+
+    public void setEndDate( Date endDate )
+    {
+        this.endDate = endDate;
     }
 
     public PeriodType getPeriodType()
