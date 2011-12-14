@@ -200,7 +200,7 @@ public class ReportTableController
         Grid grid = reportTableService.getReportTableGrid( uid, i18nManager.getI18nFormat(), date, organisationUnitUid );
 
         String filename = filenameEncode( defaultIfEmpty( grid.getTitle(), "Grid" ) ) + ".csv";
-        ContextUtils.configureResponse( response, ContextUtils.CONTENT_TYPE_EXCEL, true, filename, false );
+        ContextUtils.configureResponse( response, ContextUtils.CONTENT_TYPE_CSV, true, filename, false );
 
         GridUtils.toCsv( grid, response.getOutputStream() );
     }
