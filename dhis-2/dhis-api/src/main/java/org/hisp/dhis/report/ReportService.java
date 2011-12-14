@@ -113,6 +113,8 @@ public interface ReportService
 
     ReportGroup getReportGroup( int id );
 
+    ReportGroup getReportGroup( String uid );
+
     ReportGroup getReportGroupByName( String name );
 
     Collection<ReportGroup> getAllReportGroups();

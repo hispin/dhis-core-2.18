@@ -295,6 +295,11 @@ public class DefaultReportTableService
         return reportTableGroupStore.get( id );
     }
 
+    public ReportTableGroup getReportTableGroup( String uid)
+    {
+        return reportTableGroupStore.getByUid( uid );
+    }
+
     public ReportTableGroup getReportTableGroupByName( String name )
     {
         return reportTableGroupStore.getByName( name );

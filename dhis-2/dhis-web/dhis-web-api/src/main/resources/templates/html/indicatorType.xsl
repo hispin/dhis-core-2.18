@@ -12,27 +12,23 @@
       <table border="1">
         <tr>
           <td>ID</td>
-          <td>
-            <xsl:value-of select="@id" />
-          </td>
+          <td> <xsl:value-of select="@id" /> </td>
         </tr>
         <tr>
           <td>Last Updated</td>
-          <td>
-            <xsl:value-of select="@lastUpdated" />
-          </td>
+          <td> <xsl:value-of select="@lastUpdated" /> </td>
+        </tr>
+        <tr>
+          <td>Code</td>
+          <td> <xsl:value-of select="@code" /> </td>
         </tr>
         <tr>
           <td>Factor</td>
-          <td>
-            <xsl:value-of select="d:factor" />
-          </td>
+          <td> <xsl:value-of select="d:factor" /> </td>
         </tr>
         <tr>
           <td>Number</td>
-          <td>
-            <xsl:value-of select="d:number" />
-          </td>
+          <td> <xsl:value-of select="d:number" /> </td>
         </tr>
       </table>
 

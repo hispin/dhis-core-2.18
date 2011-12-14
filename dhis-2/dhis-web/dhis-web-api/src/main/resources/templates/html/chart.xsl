@@ -21,6 +21,10 @@
           <td> <xsl:value-of select="@lastUpdated"/> </td>
         </tr>
         <tr>
+          <td>Code</td>
+          <td> <xsl:value-of select="@code" /> </td>
+        </tr>
+        <tr>
           <td>Dimension</td>
           <td> <xsl:value-of select="d:dimension"/> </td>
         </tr>

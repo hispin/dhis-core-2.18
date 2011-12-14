@@ -30,12 +30,20 @@ package org.hisp.dhis.reporttable;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.codehaus.jackson.annotate.JsonProperty;
+import org.codehaus.jackson.map.annotate.JsonSerialize;
 import org.hisp.dhis.common.BaseIdentifiableObject;
+import org.hisp.dhis.common.Dxf2Namespace;
+import org.hisp.dhis.common.adapter.DataElementGroupXmlAdapter;
+
+import javax.xml.bind.annotation.*;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 /**
  * @author Dang Duy Hieu
- * @version $Id$
  */
+@XmlRootElement( name = "reportTableGroup", namespace = Dxf2Namespace.NAMESPACE )
+@XmlAccessorType( value = XmlAccessType.NONE )
 public class ReportTableGroup
     extends BaseIdentifiableObject
 {
@@ -134,6 +142,11 @@ public class ReportTableGroup
     // Getters and setters
     // -------------------------------------------------------------------------
 
+    @XmlElementWrapper( name = "reportTables" )
+    @XmlElement( name = "reportTable" )
+    @XmlJavaTypeAdapter( DataElementGroupXmlAdapter.class )
+    @JsonProperty( value = "reportTables" )
+    @JsonSerialize( contentAs = BaseIdentifiableObject.class )
     public Set<ReportTable> getMembers()
     {
         return members;

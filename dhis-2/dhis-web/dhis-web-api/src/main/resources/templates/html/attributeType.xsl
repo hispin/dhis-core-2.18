@@ -18,6 +18,10 @@
           <td> <xsl:value-of select="@lastUpdated" /> </td>
         </tr>
         <tr>
+          <td>Code</td>
+          <td> <xsl:value-of select="@code" /> </td>
+        </tr>
+        <tr>
           <td>Mandatory</td>
           <td> <xsl:value-of select="d:mandatory" /> </td>
         </tr>
