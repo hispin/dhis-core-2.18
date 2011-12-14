@@ -27,34 +27,10 @@ package org.hisp.dhis.reporttable.impl;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import static org.hisp.dhis.reporttable.ReportTable.ORGANISATION_UNIT_IS_PARENT_COLUMN_NAME;
-import static org.hisp.dhis.reporttable.ReportTable.PARAM_ORGANISATIONUNIT_COLUMN_NAME;
-import static org.hisp.dhis.reporttable.ReportTable.PRETTY_COLUMNS;
-import static org.hisp.dhis.reporttable.ReportTable.REPORTING_MONTH_COLUMN_NAME;
-import static org.hisp.dhis.reporttable.ReportTable.SPACE;
-import static org.hisp.dhis.reporttable.ReportTable.TOTAL_COLUMN_NAME;
-import static org.hisp.dhis.reporttable.ReportTable.TOTAL_COLUMN_PRETTY_NAME;
-import static org.hisp.dhis.reporttable.ReportTable.columnEncode;
-import static org.hisp.dhis.reporttable.ReportTable.getColumnName;
-import static org.hisp.dhis.reporttable.ReportTable.getIdentifier;
-import static org.hisp.dhis.reporttable.ReportTable.getPrettyColumnName;
-import static org.hisp.dhis.system.util.ConversionUtils.getIdentifiers;
-
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Date;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.hisp.dhis.common.GenericIdentifiableObjectStore;
-import org.hisp.dhis.common.Grid;
-import org.hisp.dhis.common.GridHeader;
-import org.hisp.dhis.common.IdentifiableObject;
-import org.hisp.dhis.common.NameableObject;
+import org.hisp.dhis.common.*;
 import org.hisp.dhis.completeness.DataSetCompletenessService;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryOption;
@@ -75,6 +51,11 @@ import org.hisp.dhis.system.grid.ListGrid;
 import org.hisp.dhis.system.util.Filter;
 import org.hisp.dhis.system.util.FilterUtils;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.*;
+
+import static org.hisp.dhis.reporttable.ReportTable.*;
+import static org.hisp.dhis.system.util.ConversionUtils.getIdentifiers;
 
 /**
  * @author Lars Helge Overland
@@ -155,7 +136,7 @@ public class DefaultReportTableService
     // -------------------------------------------------------------------------
 
     public void populateReportTableDataMart( int id, String mode, Date reportingPeriod, Integer organisationUnitId,
-        I18nFormat format )
+                                             I18nFormat format )
     {
         ReportTable reportTable = getReportTable( id, mode );
 
@@ -172,8 +153,16 @@ public class DefaultReportTableService
         {
             completenessService.exportDataSetCompleteness( getIdentifiers( DataSet.class, reportTable.getDataSets() ),
                 getIdentifiers( Period.class, reportTable.getAllPeriods() ), getIdentifiers( OrganisationUnit.class,
-                    reportTable.getAllUnits() ) );
+                reportTable.getAllUnits() ) );
         }
+    }
+
+    public Grid getReportTableGrid( String uid, I18nFormat format, Date reportingPeriod, String organisationUnitUid )
+    {
+        ReportTable reportTable = getReportTable( uid );
+        OrganisationUnit organisationUnit = organisationUnitService.getOrganisationUnit( organisationUnitUid );
+
+        return getReportTableGrid( reportTable.getId(), format, reportingPeriod, organisationUnit.getId() );
     }
 
     public Grid getReportTableGrid( int id, I18nFormat format, Date reportingPeriod, Integer organisationUnitId )
@@ -250,7 +239,7 @@ public class DefaultReportTableService
     {
         return reportTableStore.getByName( name );
     }
-    
+
     public Collection<ReportTable> getReportTablesBetweenByName( String name, int first, int max )
     {
         return reportTableStore.getBetweenByName( name, first, max );
@@ -295,7 +284,7 @@ public class DefaultReportTableService
         return reportTableGroupStore.get( id );
     }
 
-    public ReportTableGroup getReportTableGroup( String uid)
+    public ReportTableGroup getReportTableGroup( String uid )
     {
         return reportTableGroupStore.getByUid( uid );
     }
@@ -369,15 +358,15 @@ public class DefaultReportTableService
     /**
      * Populates the report table with dynamic meta objects originating from
      * report table parameters.
-     * 
-     * @param reportTable the report table.
-     * @param reportingPeriod the reporting period number.
+     *
+     * @param reportTable        the report table.
+     * @param reportingPeriod    the reporting period number.
      * @param organisationUnitId the organisation unit identifier.
-     * @param format the I18n format.
+     * @param format             the I18n format.
      * @return a report table.
      */
     private ReportTable initDynamicMetaObjects( ReportTable reportTable, Date reportingPeriod,
-        Integer organisationUnitId, I18nFormat format )
+                                                Integer organisationUnitId, I18nFormat format )
     {
         // ---------------------------------------------------------------------
         // Reporting period report parameter / current reporting period
@@ -412,15 +401,15 @@ public class DefaultReportTableService
             reportTable.getRelativeUnits().addAll(
                 new ArrayList<OrganisationUnit>( organisationUnitService.getLeafOrganisationUnits( organisationUnitId ) ) );
             reportTable.setOrganisationUnitName( organisationUnit.getName() );
-            
+
             log.info( "Leaf parent organisation unit: " + organisationUnit.getName() );
         }
-        
+
         // ---------------------------------------------------------------------
         // Grand parent organisation unit report parameter
         // ---------------------------------------------------------------------
 
-        if ( reportTable.getReportParams() != null && 
+        if ( reportTable.getReportParams() != null &&
             reportTable.getReportParams().isParamGrandParentOrganisationUnit() )
         {
             OrganisationUnit organisationUnit = organisationUnitService.getOrganisationUnit( organisationUnitId );
@@ -473,7 +462,7 @@ public class DefaultReportTableService
 
     /**
      * Generates a grid based on the given report table.
-     * 
+     *
      * @param reportTable the report table.
      * @return a grid.
      */
@@ -492,17 +481,17 @@ public class DefaultReportTableService
 
         for ( String column : reportTable.getIndexColumns() ) // Index columns
         {
-            grid.addHeader( new GridHeader( PRETTY_COLUMNS.get( column ), column, Integer.class.getName(), true, true ) ); 
+            grid.addHeader( new GridHeader( PRETTY_COLUMNS.get( column ), column, Integer.class.getName(), true, true ) );
         }
 
         for ( String column : reportTable.getIndexNameColumns() ) // Index name columns
         {
-            grid.addHeader( new GridHeader( PRETTY_COLUMNS.get( column ), column, String.class.getName(), false, true ) ); 
+            grid.addHeader( new GridHeader( PRETTY_COLUMNS.get( column ), column, String.class.getName(), false, true ) );
         }
 
         for ( String column : reportTable.getIndexCodeColumns() ) // Index code columns
         {
-            grid.addHeader( new GridHeader( PRETTY_COLUMNS.get( column ), column, String.class.getName(), true, true ) ); 
+            grid.addHeader( new GridHeader( PRETTY_COLUMNS.get( column ), column, String.class.getName(), true, true ) );
         }
 
         grid.addHeader( new GridHeader( PRETTY_COLUMNS.get( REPORTING_MONTH_COLUMN_NAME ), REPORTING_MONTH_COLUMN_NAME,
@@ -543,17 +532,17 @@ public class DefaultReportTableService
 
             for ( NameableObject object : row ) // Index columns
             {
-                grid.addValue( object.getId() ); 
+                grid.addValue( object.getId() );
             }
 
             for ( NameableObject object : row ) // Index name columns
             {
-                grid.addValue( object.getName() ); 
+                grid.addValue( object.getName() );
             }
 
             for ( NameableObject object : row ) // Index code columns
             {
-                grid.addValue( object.getCode() ); 
+                grid.addValue( object.getCode() );
             }
 
             grid.addValue( reportTable.getReportingPeriodName() );
@@ -562,7 +551,7 @@ public class DefaultReportTableService
 
             for ( List<NameableObject> column : reportTable.getColumns() ) // Values
             {
-                grid.addValue( map.get( getIdentifier( row, column ) ) ); 
+                grid.addValue( map.get( getIdentifier( row, column ) ) );
             }
 
             if ( reportTable.doSubTotals() )
@@ -580,8 +569,8 @@ public class DefaultReportTableService
                 // Only category option combo is crosstab when total, row
                 // identifier will return total
                 // -------------------------------------------------------------
-                
-                grid.addValue( map.get( getIdentifier( row ) ) ); 
+
+                grid.addValue( map.get( getIdentifier( row ) ) );
             }
         }
 
@@ -609,8 +598,8 @@ public class DefaultReportTableService
 
     /**
      * Adds columns with regression values to the given grid.
-     * 
-     * @param grid the grid.
+     *
+     * @param grid            the grid.
      * @param numberOfColumns the number of columns.
      */
     private Grid addRegressionToGrid( Grid grid, int numberOfColumns )
@@ -631,7 +620,7 @@ public class DefaultReportTableService
      * Checks whether the given List of IdentifiableObjects contains an object
      * which is an OrganisationUnit and has the currentParent property set to
      * true.
-     * 
+     *
      * @param objects the List of IdentifiableObjects.
      */
     private boolean isCurrentParent( List<? extends IdentifiableObject> objects )
