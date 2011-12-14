@@ -129,12 +129,14 @@ public class Patient
     {
         final int prime = 31;
         int result = 1;
-        result = prime * result + ((id == null) ? 0 : id.hashCode());
-        result = prime * result + ((birthDate == null) ? 0 : birthDate.hashCode());
-        result = prime * result + ((firstName == null) ? 0 : firstName.hashCode());
-        result = prime * result + ((gender == null) ? 0 : gender.hashCode());
-        result = prime * result + ((lastName == null) ? 0 : lastName.hashCode());
-        result = prime * result + ((middleName == null) ? 0 : middleName.hashCode());
+        
+        result = prime * result + ( ( id == null) ? 0 : id.hashCode() );
+        result = prime * result + ( ( birthDate == null) ? 0 : birthDate.hashCode() );
+        result = prime * result + ( ( firstName == null) ? 0 : firstName.hashCode() );
+        result = prime * result + ( ( gender == null) ? 0 : gender.hashCode() );
+        result = prime * result + ( ( lastName == null) ? 0 : lastName.hashCode() );
+        result = prime * result + ( ( middleName == null) ? 0 : middleName.hashCode() );
+
         return result;
     }
 
@@ -142,47 +144,80 @@ public class Patient
     public boolean equals( Object obj )
     {
         if ( this == obj )
+        {
             return true;
+        }
+        
         if ( obj == null )
+        {
             return false;
+        }
+        
         if ( getClass() != obj.getClass() )
+        {
             return false;
-        Patient other = (Patient) obj;
+        }
+        
+        final Patient other = (Patient) obj;
+        
         if ( birthDate == null )
         {
             if ( other.birthDate != null )
+            {
                 return false;
+            }
         }
         else if ( !birthDate.equals( other.birthDate ) )
+        {
             return false;
+        }
+        
         if ( firstName == null )
         {
             if ( other.firstName != null )
+            {
                 return false;
+            }
         }
         else if ( !firstName.equals( other.firstName ) )
+        {
             return false;
+        }
+        
         if ( gender == null )
         {
             if ( other.gender != null )
                 return false;
         }
         else if ( !gender.equals( other.gender ) )
+        {
             return false;
+        }
+        
         if ( lastName == null )
         {
             if ( other.lastName != null )
+            {
                 return false;
+            }
         }
         else if ( !lastName.equals( other.lastName ) )
+        {
             return false;
+        }
+        
         if ( middleName == null )
         {
             if ( other.middleName != null )
+            {
                 return false;
+            }
         }
         else if ( !middleName.equals( other.middleName ) )
+        {
             return false;
+        }
+        
         return true;
     }
 
@@ -393,7 +428,6 @@ public class Patient
         }
 
         return age;
-
     }
 
     public void setBirthDateFromAge( int age, char ageType )
@@ -407,6 +441,7 @@ public class Patient
         // Assumed relative to the 1st of January
         // todayCalendar.set( Calendar.DATE, 1 );
         // todayCalendar.set( Calendar.MONTH, Calendar.JANUARY );
+        
         if ( ageType == AGE_TYPE_YEAR )
         {
             todayCalendar.add( Calendar.YEAR, -1 * age );
@@ -464,19 +499,28 @@ public class Patient
             name = firstName;
             space = true;
         }
+        
         if ( middleName != null && middleName.length() != 0 )
         {
             if ( space )
+            {
                 name += " ";
+            }
+            
             name += middleName;
             space = true;
         }
+        
         if ( lastName != null && lastName.length() != 0 )
         {
             if ( space )
+            {
                 name += " ";
+            }
+            
             name += lastName;
         }
+        
         return name;
     }
 
@@ -519,12 +563,12 @@ public class Patient
     {
         switch ( dobType )
         {
-        case DOB_TYPE_VERIFIED:
-            return "Verified";
-        case DOB_TYPE_DECLARED:
-            return "Declared";
-        default:
-            return "Approxiated";
+            case DOB_TYPE_VERIFIED:
+                return "Verified";
+            case DOB_TYPE_DECLARED:
+                return "Declared";
+            default:
+                return "Approxiated";
         }
     }
 }

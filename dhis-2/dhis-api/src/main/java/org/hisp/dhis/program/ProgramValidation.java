@@ -93,9 +93,9 @@ implements Serializable
     {
         final int prime = 31;
         int result = 1;
-        result = prime * result + ((leftSide == null) ? 0 : leftSide.hashCode());
-        result = prime * result + ((program == null) ? 0 : program.hashCode());
-        result = prime * result + ((rightSide == null) ? 0 : rightSide.hashCode());
+        result = prime * result + ( ( leftSide == null ) ? 0 : leftSide.hashCode() );
+        result = prime * result + ( ( program == null ) ? 0 : program.hashCode() );
+        result = prime * result + ( ( rightSide == null)  ? 0 : rightSide.hashCode() );
         return result;
     }
 
@@ -103,33 +103,58 @@ implements Serializable
     public boolean equals( Object obj )
     {
         if ( this == obj )
+        {
             return true;
+        }
+        
         if ( obj == null )
+        {
             return false;
+        }
+        
         if ( getClass() != obj.getClass() )
+        {
             return false;
+        }
+        
         ProgramValidation other = (ProgramValidation) obj;
+        
         if ( leftSide == null )
         {
             if ( other.leftSide != null )
+            {
                 return false;
+            }
         }
         else if ( !leftSide.equals( other.leftSide ) )
+        {
             return false;
+        }
+        
         if ( program == null )
         {
             if ( other.program != null )
+            {
                 return false;
+            }
         }
         else if ( !program.equals( other.program ) )
+        {
             return false;
+        }
+        
         if ( rightSide == null )
         {
             if ( other.rightSide != null )
+            {
                 return false;
+            }
         }
         else if ( !rightSide.equals( other.rightSide ) )
+        {
             return false;
+        }
+        
         return true;
     }
 
