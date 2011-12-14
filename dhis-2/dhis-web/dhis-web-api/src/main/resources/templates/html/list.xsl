@@ -10,7 +10,7 @@
   <xsl:template match="d:maps|d:charts|d:categories|d:categoryCombos|
     d:categoryOptions|d:categoryOptionCombos|d:dataElements|d:indicators|
     d:organisationUnits|d:dataElementGroups|d:dataElementGroupSets|
-    d:indicatorGroups|d:indicatorGroupSets|d:organisationUnitGroups|
+    d:documents|d:indicatorGroups|d:indicatorGroupSets|d:organisationUnitGroups|
     d:organisationUnitGroupSets|d:indicatorTypes|d:attributeTypes|d:reports|
     d:sqlViews|d:validationRules|d:validationRuleGroups|d:users|d:reportTables">
     <h3> <xsl:value-of select="local-name()"/> </h3>

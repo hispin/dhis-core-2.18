@@ -26,6 +26,7 @@
     <xsl:include href="dataElement.xsl"/>
     <xsl:include href="dataElementGroup.xsl"/>
     <xsl:include href="dataElementGroupSet.xsl"/>
+    <xsl:include href="document.xsl"/>
     <xsl:include href="indicator.xsl"/>
     <xsl:include href="indicatorType.xsl"/>
     <xsl:include href="indicatorGroup.xsl"/>
