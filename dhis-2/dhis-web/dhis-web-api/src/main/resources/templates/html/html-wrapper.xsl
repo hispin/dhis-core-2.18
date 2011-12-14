@@ -14,7 +14,6 @@
       </head>
 
       <body>
-        <p>Some CSS required!</p>
         <xsl:apply-templates />
       </body>
 
