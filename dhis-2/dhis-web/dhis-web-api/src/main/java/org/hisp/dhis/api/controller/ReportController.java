@@ -28,20 +28,28 @@ package org.hisp.dhis.api.controller;
  */
 
 import java.util.ArrayList;
+import java.util.Date;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.hisp.dhis.api.utils.IdentifiableObjectParams;
 import org.hisp.dhis.api.utils.WebLinkPopulator;
+import org.hisp.dhis.i18n.I18nManager;
+import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.report.Report;
 import org.hisp.dhis.report.ReportService;
 import org.hisp.dhis.report.Reports;
+import org.hisp.dhis.system.util.CodecUtils;
+import org.hisp.dhis.system.util.DateUtils;
+import org.hisp.dhis.util.ContextUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
 @RequestMapping( value = ReportController.RESOURCE_PATH )
@@ -52,9 +60,15 @@ public class ReportController
     @Autowired
     public ReportService reportService;
 
-    //-------------------------------------------------------------------------------------------------------
+    @Autowired
+    private OrganisationUnitService organisationUnitService;
+
+    @Autowired
+    private I18nManager i18nManager;
+
+    // -------------------------------------------------------------------------------------------------------
     // GET
-    //-------------------------------------------------------------------------------------------------------
+    // -------------------------------------------------------------------------------------------------------
 
     @RequestMapping( method = RequestMethod.GET )
     public String getReports( IdentifiableObjectParams params, Model model, HttpServletRequest request )
@@ -82,7 +96,8 @@ public class ReportController
     }
 
     @RequestMapping( value = "/{uid}", method = RequestMethod.GET )
-    public String getReport( @PathVariable( "uid" ) String uid, IdentifiableObjectParams params, Model model, HttpServletRequest request )
+    public String getReport( @PathVariable( "uid" ) String uid, IdentifiableObjectParams params, Model model,
+        HttpServletRequest request )
     {
         Report report = reportService.getReport( uid );
 
@@ -95,5 +110,47 @@ public class ReportController
         model.addAttribute( "model", report );
 
         return "report";
+    }
+
+    @RequestMapping( value = {"/{uid}/data","/{uid}/data.pdf"}, method = RequestMethod.GET )
+    public void getReportAsPdf( @PathVariable( "uid" ) String uid,
+        @RequestParam( value = "organisationUnit", required = false ) String organisationUnitUid,
+        @RequestParam( value = "period", required = false ) String period, HttpServletResponse response )
+        throws Exception
+    {
+        getReport( uid, organisationUnitUid, period, response, "pdf", ContextUtils.CONTENT_TYPE_PDF, false );
+    }
+
+    @RequestMapping( value = "/{uid}/data.xls", method = RequestMethod.GET )
+    public void getReportAsXls( @PathVariable( "uid" ) String uid,
+        @RequestParam( value = "organisationUnit", required = false ) String organisationUnitUid,
+        @RequestParam( value = "period", required = false ) String period, HttpServletResponse response )
+        throws Exception
+    {
+        getReport( uid, organisationUnitUid, period, response, "xls", ContextUtils.CONTENT_TYPE_EXCEL, true );
+    }
+
+    // -------------------------------------------------------------------------------------------------------
+    // Supportive methods
+    // -------------------------------------------------------------------------------------------------------
+
+    private void getReport( String uid, String organisationUnitUid, String period, 
+        HttpServletResponse response, String type, String contentType, boolean attachment ) throws Exception
+    {
+        Report report = reportService.getReport( uid );
+
+        if ( report.hasReportTable() && report.getReportTable().hasReportParams()
+            && report.getReportTable().getReportParams().isOrganisationUnitSet() )
+        {
+            organisationUnitUid = organisationUnitService.getRootOrganisationUnits().iterator().next().getUid();
+        }
+
+        Date date = period != null ? DateUtils.getMediumDate( period ) : new Date();
+
+        reportService.renderReport( response.getOutputStream(), uid, date, organisationUnitUid, type,
+            i18nManager.getI18nFormat() );
+        
+        String filename = CodecUtils.filenameEncode( report.getName() ) + "." + type;
+        ContextUtils.configureResponse( response, contentType, true, filename, attachment );
     }
 }

@@ -29,7 +29,6 @@ package org.hisp.dhis.api.controller;
 
 import static org.hisp.dhis.system.util.CodecUtils.filenameEncode;
 
-import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Date;
@@ -41,7 +40,6 @@ import org.hisp.dhis.api.utils.IdentifiableObjectParams;
 import org.hisp.dhis.api.utils.WebLinkPopulator;
 import org.hisp.dhis.common.Grid;
 import org.hisp.dhis.i18n.I18nManager;
-import org.hisp.dhis.i18n.I18nManagerException;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.reporttable.ReportTable;
 import org.hisp.dhis.reporttable.ReportTableService;
@@ -124,7 +122,7 @@ public class ReportTableController
     public String getReportTableData( @PathVariable( "uid" ) String uid, Model model,
                                       @RequestParam( value = "organisationUnit", required = false ) String organisationUnitUid,
                                       @RequestParam( value = "period", required = false ) String period,
-                                      HttpServletResponse response ) throws I18nManagerException, IOException
+                                      HttpServletResponse response ) throws Exception
     {
         ReportTable reportTable = reportTableService.getReportTable( uid );
         
@@ -146,7 +144,7 @@ public class ReportTableController
     public void getReportTablePdf( @PathVariable( "uid" ) String uid,
                                    @RequestParam( value = "organisationUnit", required = false ) String organisationUnitUid,
                                    @RequestParam( value = "period", required = false ) String period,
-                                   HttpServletResponse response ) throws I18nManagerException, IOException
+                                   HttpServletResponse response ) throws Exception
     {
         ReportTable reportTable = reportTableService.getReportTable( uid );
         

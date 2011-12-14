@@ -330,6 +330,46 @@ public class TableAlteror
         executeSql( "ALTER TABLE validationrule DROP COLUMN uuid" );
         executeSql( "ALTER TABLE validationrulegroup DROP COLUMN uuid" );
         
+        // replace null with false for boolean fields
+        
+        executeSql( "update chart set hidelegend = false where hidelegend is null" );
+        executeSql( "update chart set verticallabels = false where verticallabels is null" );
+        executeSql( "update chart set horizontalplotorientation = false where horizontalplotorientation is null" );
+        executeSql( "update chart set regression = false where regression is null" );
+        executeSql( "update chart set targetline = false where targetline is null" );
+        executeSql( "update chart set hidesubtitle = false where hidesubtitle is null" );
+        executeSql( "update chart set userorganisationunit = false where userorganisationunit is null" );
+        executeSql( "update indicator set annualized = false where annualized is null" );
+        executeSql( "update indicatortype set indicatornumber = false where indicatornumber is null" );
+        executeSql( "update dataset set mobile = false where mobile is null" );
+        executeSql( "update dataelement set zeroissignificant = false where zeroissignificant is null" );
+        executeSql( "update organisationunit set haspatients = false where haspatients is null" );
+
+        executeSql( "update reporttable set monthsthisyear = false where monthsthisyear is null" );
+        executeSql( "update reporttable set quartersthisyear = false where quartersthisyear is null" );
+        executeSql( "update reporttable set thisyear = false where thisyear is null" );
+        executeSql( "update reporttable set monthslastyear = false where monthslastyear is null" );
+        executeSql( "update reporttable set quartersthisyear = false where quartersthisyear is null" );
+        executeSql( "update reporttable set thisyear = false where thisyear is null" );
+        executeSql( "update reporttable set monthslastyear = false where monthslastyear is null" );
+        executeSql( "update reporttable set quarterslastyear = false where quarterslastyear is null" );
+        executeSql( "update reporttable set monthsthisyear = false where monthsthisyear is null" );
+        executeSql( "update reporttable set lastyear = false where lastyear is null" );
+        executeSql( "update reporttable set last5years = false where last5years is null" );
+        executeSql( "update reporttable set last4quarters = false where last4quarters is null" );
+        executeSql( "update reporttable set last12months = false where last12months is null" );
+
+        executeSql( "update chart set monthsthisyear = false where monthsthisyear is null" );
+        executeSql( "update chart set quartersthisyear = false where quartersthisyear is null" );
+        executeSql( "update chart set thisyear = false where thisyear is null" );
+        executeSql( "update chart set monthslastyear = false where monthslastyear is null" );
+        executeSql( "update chart set quartersthisyear = false where quartersthisyear is null" );
+        executeSql( "update chart set thisyear = false where thisyear is null" );
+        executeSql( "update chart set monthslastyear = false where monthslastyear is null" );
+        executeSql( "update chart set quarterslastyear = false where quarterslastyear is null" );
+        executeSql( "update chart set monthsthisyear = false where monthsthisyear is null" );
+        executeSql( "update chart set lastyear = false where lastyear is null" );
+
         log.info( "Tables updated" );
     }
 

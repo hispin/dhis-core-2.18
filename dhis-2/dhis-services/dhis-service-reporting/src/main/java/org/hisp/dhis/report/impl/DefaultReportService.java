@@ -36,7 +36,9 @@ import org.hisp.dhis.common.GenericIdentifiableObjectStore;
 import org.hisp.dhis.common.Grid;
 import org.hisp.dhis.constant.ConstantService;
 import org.hisp.dhis.i18n.I18nFormat;
+import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroupService;
+import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.report.Report;
 import org.hisp.dhis.report.ReportGroup;
 import org.hisp.dhis.report.ReportService;
@@ -98,6 +100,13 @@ public class DefaultReportService
     {
         this.statementManager = statementManager;
     }
+    
+    private OrganisationUnitService organisationUnitService;
+
+    public void setOrganisationUnitService( OrganisationUnitService organisationUnitService )
+    {
+        this.organisationUnitService = organisationUnitService;
+    }
 
     private OrganisationUnitGroupService organisationUnitGroupService;
 
@@ -110,8 +119,17 @@ public class DefaultReportService
     // ReportService implementation
     // -------------------------------------------------------------------------
 
+    public void renderReport( OutputStream out, String reportUid, Date reportingPeriod,
+        String organisationUnitUid, String type, I18nFormat format )
+    {
+        Report report = getReport( reportUid );
+        OrganisationUnit unit = organisationUnitService.getOrganisationUnit( organisationUnitUid );
+        
+        renderReport( out, report, reportingPeriod, unit.getId(), type, format );
+    }
+    
     public void renderReport( OutputStream out, Report report, Date reportingPeriod,
-                              Integer organisationUnitId, String type, I18nFormat format )
+        Integer organisationUnitId, String type, I18nFormat format )
     {
         Map<String, Object> params = new HashMap<String, Object>();
 
