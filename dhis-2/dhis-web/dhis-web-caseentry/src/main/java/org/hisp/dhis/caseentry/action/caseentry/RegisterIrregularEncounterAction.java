@@ -84,5 +84,4 @@ public class RegisterIrregularEncounterAction
         
         return SUCCESS;
     }
-
 }

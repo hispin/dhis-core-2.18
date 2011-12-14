@@ -107,5 +107,4 @@ public class GeneratePatientChartAction
      
         return SUCCESS;
     }
-
 }

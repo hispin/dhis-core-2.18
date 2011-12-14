@@ -115,7 +115,7 @@ public class MultiDataEntrySelectAction
 
         organisationUnit = selectedStateManager.getSelectedOrganisationUnit();
 
-        if( organisationUnit != null )
+        if ( organisationUnit != null )
         {
             programs = programService.getPrograms( organisationUnit );
         }

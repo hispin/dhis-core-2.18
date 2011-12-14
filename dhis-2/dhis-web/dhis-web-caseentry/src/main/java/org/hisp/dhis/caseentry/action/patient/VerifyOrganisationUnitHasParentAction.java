@@ -33,8 +33,6 @@ import com.opensymphony.xwork2.Action;
 
 /**
  * @author Chau Thu Tran
- * @version $ID : VerifyOrganisationUnitHasParentAction.java May 4, 2011
- *          10:19:48 AM $
  */
 public class VerifyOrganisationUnitHasParentAction
     implements Action

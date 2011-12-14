@@ -207,8 +207,11 @@ public class ValidatePatientAction
                         }
                     }
                 }
+                
                 if ( flagDuplicate )
+                {
                     return PATIENT_DUPLICATE;
+                }
             }
         }
 
@@ -257,9 +260,11 @@ public class ValidatePatientAction
                 if ( !underAge || (underAge && !idType.isRelated()) )
                 {
                     value = request.getParameter( AddPatientAction.PREFIX_IDENTIFIER + idType.getId() );
+                    
                     if ( StringUtils.isNotBlank( value ) )
                     {
                         PatientIdentifier identifier = patientIdentifierService.get( idType, value );
+                        
                         if ( identifier != null
                             && (id == null || identifier.getPatient().getId().intValue() != id.intValue()) )
                         {
