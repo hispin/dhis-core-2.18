@@ -169,7 +169,7 @@ public class AddDataElementAction
         this.selectedCategoryComboId = selectedCategoryComboId;
     }
 
-    private Boolean zeroIsSignificant;
+    private boolean zeroIsSignificant;
 
     public void setZeroIsSignificant( Boolean zeroIsSignificant )
     {
@@ -236,11 +236,10 @@ public class AddDataElementAction
         dataElement.setNumberType( numberType );
         dataElement.setAggregationOperator( aggregationOperator );
         dataElement.setUrl( url );
+        dataElement.setZeroIsSignificant( zeroIsSignificant );
         dataElement.setCategoryCombo( categoryCombo );
         dataElement.setAggregationLevels( new ArrayList<Integer>( ConversionUtils
             .getIntegerCollection( aggregationLevels ) ) );
-
-        dataElement.setZeroIsSignificant( zeroIsSignificant );
 
         if ( jsonAttributeValues != null )
         {

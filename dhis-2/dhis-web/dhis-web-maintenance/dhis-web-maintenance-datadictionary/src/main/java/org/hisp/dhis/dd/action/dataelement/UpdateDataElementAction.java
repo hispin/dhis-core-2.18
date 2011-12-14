@@ -131,9 +131,9 @@ public class UpdateDataElementAction
         this.formName = formName;
     }
 
-    private Boolean active;
+    private boolean active;
 
-    public void setActive( Boolean active )
+    public void setActive( boolean active )
     {
         this.active = active;
     }
@@ -187,9 +187,9 @@ public class UpdateDataElementAction
         this.selectedCategoryComboId = selectedCategoryComboId;
     }
 
-    private Boolean zeroIsSignificant;
+    private boolean zeroIsSignificant;
 
-    public void setZeroIsSignificant( Boolean zeroIsSignificant )
+    public void setZeroIsSignificant( boolean zeroIsSignificant )
     {
         this.zeroIsSignificant = zeroIsSignificant;
     }
@@ -266,14 +266,10 @@ public class UpdateDataElementAction
         dataElement.setNumberType( numberType );
         dataElement.setAggregationOperator( aggregationOperator );
         dataElement.setUrl( url );
+        dataElement.setZeroIsSignificant( zeroIsSignificant );
         dataElement.setCategoryCombo( categoryCombo );
         dataElement.setAggregationLevels( new ArrayList<Integer>( ConversionUtils
             .getIntegerCollection( aggregationLevels ) ) );
-
-        if ( zeroIsSignificant != null )
-        {
-            dataElement.setZeroIsSignificant( zeroIsSignificant );
-        }
 
         Set<DataSet> dataSets = dataElement.getDataSets();
 
