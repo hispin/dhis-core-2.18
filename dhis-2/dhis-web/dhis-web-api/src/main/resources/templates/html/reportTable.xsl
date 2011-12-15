@@ -6,9 +6,18 @@
 
   <xsl:template match="d:reportTable">
     <div class="reportTable">
-      <h2>
-        <xsl:value-of select="@name" />
-      </h2>
+      <h2> <xsl:value-of select="@name" /> </h2>
+	  
+	  <table>
+		<tr>
+			<td>Data</td>
+			<td><a href="{@link}/data">html</a></td>
+			<td><a href="{@link}/data.pdf">pdf</a></td>
+			<td><a href="{@link}/data.xls">xls</a></td>
+			<td><a href="{@link}/data.csv">csv</a></td>
+		</tr>
+	  </table><br/>
+	  	  
       <table>
         <tr>
           <td>ID</td>
