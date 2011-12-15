@@ -9,7 +9,7 @@
       <h2>
         <xsl:value-of select="@name" />
       </h2>
-      <table border="1">
+      <table>
         <tr>
           <td>ID</td>
           <td> <xsl:value-of select="@id" /> </td>
@@ -54,7 +54,7 @@
 
   <xsl:template match="d:reportParams" mode="short">
     <h3>ReportParams</h3>
-    <table border="1" class="reportParams">
+    <table class="reportParams">
       <tr>
         <td>ParamGrandParentOrganisationUnit</td>
         <td> <xsl:value-of select="d:paramGrandParentOrganisationUnit" /> </td>
@@ -77,7 +77,7 @@
   <xsl:template match="d:reportTables" mode="short">
     <xsl:if test="count(child::*) > 0">
       <h3>ReportTables</h3>
-      <table border="1" class="reportTables">
+      <table class="reportTables">
         <xsl:apply-templates select="child::*" mode="row"/>
       </table>
     </xsl:if>

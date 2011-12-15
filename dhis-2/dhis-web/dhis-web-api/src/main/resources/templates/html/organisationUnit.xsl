@@ -8,7 +8,7 @@
     <div class="organisationUnit">
       <h2> <xsl:value-of select="@name" /> </h2>
 
-      <table border="1">
+      <table>
         <tr>
           <td>ID</td>
           <td> <xsl:value-of select="@id" /> </td>
@@ -56,7 +56,7 @@
   <xsl:template match="d:organisationUnits" mode="short">
     <xsl:if test="count(child::*) > 0">
       <h3>OrganisationUnits</h3>
-      <table border="1">
+      <table>
         <xsl:apply-templates select="child::*" mode="row"/>
       </table>
     </xsl:if>
@@ -64,7 +64,7 @@
   
   <xsl:template match="d:parent" mode="short">
     <h3>Parent OrganisationUnit</h3>
-    <table border="1">
+    <table>
       <xsl:apply-templates select="." mode="row"/>
     </table>
   </xsl:template>
@@ -72,7 +72,7 @@
   <xsl:template match="d:dataSets">
     <xsl:if test="count(child::*) > 0">
       <h3>DataSets</h3>
-      <table border="1" class="dataSets">
+      <table class="dataSets">
         <xsl:apply-templates select="child::*" mode="row"/>
       </table>
     </xsl:if>

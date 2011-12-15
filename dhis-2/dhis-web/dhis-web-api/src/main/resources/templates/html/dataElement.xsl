@@ -8,7 +8,7 @@
     <div class="dataElement">
       <h2> <xsl:value-of select="@name" /> </h2>
 
-      <table border="1">
+      <table>
         <tr>
           <td>ID</td>
           <td> <xsl:value-of select="@id" /> </td>
@@ -57,7 +57,7 @@
   <xsl:template match="d:dataElements" mode="short">
     <xsl:if test="count(child::*) > 0">
       <h3>DataElements</h3>
-      <table border="1" class="dataElements">
+      <table class="dataElements">
         <xsl:apply-templates mode="row"/>
       </table>
     </xsl:if>
