@@ -36,7 +36,6 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.hisp.dhis.api.utils.IdentifiableObjectParams;
 import org.hisp.dhis.api.utils.WebLinkPopulator;
-import org.hisp.dhis.mapgeneration.MapGenerationService;
 import org.hisp.dhis.mapping.MapView;
 import org.hisp.dhis.mapping.MappingService;
 import org.hisp.dhis.mapping.Maps;
@@ -55,10 +54,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 public class MapController
 {
     @Autowired
-    MapGenerationService mapGenerationService;
-
-    @Autowired
-    MappingService mappingService;
+    private MappingService mappingService;
 
     //-------------------------------------------------------------------------------------------------------
     // GET
@@ -85,10 +81,6 @@ public class MapController
     public String getMap( @PathVariable String uid, IdentifiableObjectParams params, Model model, HttpServletRequest request )
     {
         MapView mapView = mappingService.getMapView( uid );
-
-        if (mapView == null) {
-            throw new IllegalArgumentException("No map with id " + uid);
-        }
         
         if ( params.hasLinks() )
         {
@@ -100,7 +92,6 @@ public class MapController
 
         return "map";
     }
-
 
     //-------------------------------------------------------------------------------------------------------
     // POST
