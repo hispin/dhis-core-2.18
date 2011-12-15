@@ -168,7 +168,7 @@ public class ValidateProgramInstanceAction
         // ---------------------------------------------------------------------
 
         runProgramValidation( programValidationService.getProgramValidation( programStageInstance.getProgramInstance().getProgram() ),
-            programStageInstance.getProgramInstance() );
+            programStageInstance.getProgramInstance(), organisationUnit );
 
         return SUCCESS;
     }
@@ -213,13 +213,13 @@ public class ValidateProgramInstanceAction
 
     }
 
-    private void runProgramValidation( Collection<ProgramValidation> validations, ProgramInstance programInstance )
+    private void runProgramValidation( Collection<ProgramValidation> validations, ProgramInstance programInstance, OrganisationUnit orgunit )
     {
         if ( validations != null )
         {
             for ( ProgramValidation validation : validations )
             {
-                boolean valid = programValidationService.runValidation( validation, programInstance );
+                boolean valid = programValidationService.runValidation( validation, programInstance, orgunit );
 
                 if ( !valid )
                 {

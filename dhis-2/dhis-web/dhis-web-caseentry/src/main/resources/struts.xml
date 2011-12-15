@@ -431,6 +431,7 @@
 				,javascript/anonymousRegistration.js
 				,javascript/entry.js
 				,../dhis-web-commons/javascripts/date.js</param>
+			<param name="stylesheets">../dhis-web-caseentry/style/patient.css</param>
 		</action>
 		
 		<action name="loadAnonymousPrograms"

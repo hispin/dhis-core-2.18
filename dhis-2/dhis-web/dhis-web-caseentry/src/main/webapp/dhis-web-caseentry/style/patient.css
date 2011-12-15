@@ -57,3 +57,11 @@ td.error {padding-left:1em}
 {
 	width: 130px;
 }
+
+#actions
+{
+  float: right;
+  width:200px;
+  text-align: right;
+}
+
