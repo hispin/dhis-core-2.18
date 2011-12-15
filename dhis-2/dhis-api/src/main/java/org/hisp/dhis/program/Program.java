@@ -79,7 +79,7 @@ public class Program
 
     private Boolean singleEvent;
 
-    private Boolean anonymousEvent;
+    private Boolean anonymous;
 
     // -------------------------------------------------------------------------
     // Constructors
@@ -252,14 +252,14 @@ public class Program
         this.patientValidationCriteria = patientValidationCriteria;
     }
 
-    public Boolean getAnonymousEvent()
+    public Boolean getAnonymous()
     {
-        return anonymousEvent;
+        return anonymous;
     }
 
-    public void setAnonymousEvent( Boolean anonymousEvent )
+    public void setAnonymous( Boolean anonymous )
     {
-        this.anonymousEvent = anonymousEvent;
+        this.anonymous = anonymous;
     }
 
     // -------------------------------------------------------------------------

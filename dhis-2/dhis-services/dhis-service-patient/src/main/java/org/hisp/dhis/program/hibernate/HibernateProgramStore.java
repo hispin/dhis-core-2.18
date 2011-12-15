@@ -56,18 +56,18 @@ public class HibernateProgramStore
 
     @SuppressWarnings( "unchecked" )
     @Override
-    public Collection<Program> get( boolean singleEvent, boolean anonymousEvent )
+    public Collection<Program> get( boolean singleEvent, boolean anonymous )
     {
         return getCriteria( Restrictions.eq( "singleEvent", singleEvent ),
-            Restrictions.eq( "anonymousEvent", anonymousEvent ) ).list();
+            Restrictions.eq( "anonymous", anonymous ) ).list();
     }
 
     @SuppressWarnings( "unchecked" )
     @Override
-    public Collection<Program> get( boolean singleEvent, boolean anonymousEvent, OrganisationUnit orgunit )
+    public Collection<Program> get( boolean singleEvent, boolean anonymous, OrganisationUnit orgunit )
     {
         return getCriteria( Restrictions.eq( "singleEvent", singleEvent ),
-            Restrictions.eq( "anonymousEvent", anonymousEvent ) ).createAlias( "organisationUnits", "orgunit" ).add(
+            Restrictions.eq( "anonymous", anonymous ) ).createAlias( "organisationUnits", "orgunit" ).add(
             Restrictions.eq( "orgunit.id", orgunit.getId() ) ).list();
     }
 

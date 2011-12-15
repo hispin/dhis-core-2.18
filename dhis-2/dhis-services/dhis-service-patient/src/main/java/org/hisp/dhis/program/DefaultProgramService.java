@@ -123,14 +123,14 @@ public class DefaultProgramService
         return programStore.get( singleEvent );
     }
 
-    public Collection<Program> getPrograms( boolean singleEvent, boolean anonymousEvent )
+    public Collection<Program> getPrograms( boolean singleEvent, boolean anonymous )
     {
-        return programStore.get( singleEvent, anonymousEvent );
+        return programStore.get( singleEvent, anonymous );
     }
     
-    public Collection<Program> getPrograms( boolean singleEvent, boolean anonymousEvent, OrganisationUnit orgunit )
+    public Collection<Program> getPrograms( boolean singleEvent, boolean anonymous, OrganisationUnit orgunit )
     {
-        return programStore.get( singleEvent, anonymousEvent, orgunit );
+        return programStore.get( singleEvent, anonymous, orgunit );
     }
 
 }

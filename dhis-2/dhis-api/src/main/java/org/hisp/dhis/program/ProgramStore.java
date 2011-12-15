@@ -43,7 +43,7 @@ public interface ProgramStore extends GenericNameableObjectStore<Program>
 
     Collection<Program> get( boolean singleEvent );
 
-    Collection<Program> get( boolean singleEvent, boolean anonymousEvent );
+    Collection<Program> get( boolean singleEvent, boolean anonymous );
 
-    Collection<Program> get( boolean singleEvent, boolean anonymousEvent, OrganisationUnit orgunit );
+    Collection<Program> get( boolean singleEvent, boolean anonymous, OrganisationUnit orgunit );
 }

@@ -58,8 +58,8 @@ public interface ProgramService
 
     Collection<Program> getPrograms( boolean singleEvent );
 
-    Collection<Program> getPrograms( boolean singleEvent, boolean anonymousEvent );
+    Collection<Program> getPrograms( boolean singleEvent, boolean anonymous );
 
-    Collection<Program> getPrograms( boolean singleEvent, boolean anonymousEvent, OrganisationUnit orgunit );
+    Collection<Program> getPrograms( boolean singleEvent, boolean anonymous, OrganisationUnit orgunit );
 
 }

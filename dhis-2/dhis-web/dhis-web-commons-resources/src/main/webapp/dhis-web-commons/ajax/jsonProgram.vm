@@ -4,7 +4,7 @@
 	"name": "$!encoder.jsEncode( ${program.name} )",
 	"description": "$!encoder.jsEncode( ${program.description} )",
 	"singleEvent": "$!program.singleEvent",
-	"anonymousEvent": "$!program.anonymousEvent",
+	"anonymous": "$!program.anonymous",
 	"dateOfEnrollmentDescription": "$!encoder.jsEncode( ${program.dateOfEnrollmentDescription} )",
 	"dateOfIncidentDescription": "$!encoder.jsEncode( ${program.dateOfIncidentDescription} )",
 	"programStageCount": "${program.programStages.size()}",

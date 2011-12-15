@@ -39,7 +39,7 @@
 
     <property name="singleEvent" />
     
-    <property name="anonymousEvent" />
+    <property name="anonymous" />
 
   </class>
 </hibernate-mapping>
