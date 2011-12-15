@@ -27,40 +27,6 @@ package org.hisp.dhis.chart.impl;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import static org.hisp.dhis.chart.Chart.DIMENSION_COMPLETENESS_PERIOD;
-import static org.hisp.dhis.chart.Chart.DIMENSION_DATAELEMENT_PERIOD;
-import static org.hisp.dhis.chart.Chart.DIMENSION_INDICATOR_PERIOD;
-import static org.hisp.dhis.chart.Chart.DIMENSION_ORGANISATIONUNIT_COMPLETENESS;
-import static org.hisp.dhis.chart.Chart.DIMENSION_ORGANISATIONUNIT_DATAELEMENT;
-import static org.hisp.dhis.chart.Chart.DIMENSION_ORGANISATIONUNIT_INDICATOR;
-import static org.hisp.dhis.chart.Chart.DIMENSION_PERIOD_COMPLETENESS;
-import static org.hisp.dhis.chart.Chart.DIMENSION_PERIOD_DATAELEMENT;
-import static org.hisp.dhis.chart.Chart.DIMENSION_PERIOD_INDICATOR;
-import static org.hisp.dhis.chart.Chart.SIZE_NORMAL;
-import static org.hisp.dhis.chart.Chart.TYPE_BAR;
-import static org.hisp.dhis.chart.Chart.TYPE_BAR3D;
-import static org.hisp.dhis.chart.Chart.TYPE_LINE;
-import static org.hisp.dhis.chart.Chart.TYPE_LINE3D;
-import static org.hisp.dhis.chart.Chart.TYPE_PIE;
-import static org.hisp.dhis.chart.Chart.TYPE_PIE3D;
-import static org.hisp.dhis.chart.Chart.TYPE_STACKED_BAR;
-import static org.hisp.dhis.chart.Chart.TYPE_STACKED_BAR3D;
-import static org.hisp.dhis.options.SystemSettingManager.AGGREGATION_STRATEGY_REAL_TIME;
-import static org.hisp.dhis.options.SystemSettingManager.DEFAULT_AGGREGATION_STRATEGY;
-import static org.hisp.dhis.options.SystemSettingManager.KEY_AGGREGATION_STRATEGY;
-import static org.hisp.dhis.system.util.ConversionUtils.getArray;
-
-import java.awt.BasicStroke;
-import java.awt.Color;
-import java.awt.Font;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
-
 import org.apache.commons.math.MathException;
 import org.apache.commons.math.analysis.SplineInterpolator;
 import org.apache.commons.math.analysis.UnivariateRealFunction;
@@ -101,24 +67,23 @@ import org.jfree.chart.axis.CategoryLabelPositions;
 import org.jfree.chart.axis.NumberAxis;
 import org.jfree.chart.axis.ValueAxis;
 import org.jfree.chart.labels.StandardPieSectionLabelGenerator;
-import org.jfree.chart.plot.CategoryPlot;
-import org.jfree.chart.plot.DatasetRenderingOrder;
-import org.jfree.chart.plot.Marker;
-import org.jfree.chart.plot.MultiplePiePlot;
-import org.jfree.chart.plot.PiePlot;
-import org.jfree.chart.plot.PlotOrientation;
-import org.jfree.chart.plot.ValueMarker;
-import org.jfree.chart.renderer.category.BarRenderer;
-import org.jfree.chart.renderer.category.BarRenderer3D;
-import org.jfree.chart.renderer.category.CategoryItemRenderer;
-import org.jfree.chart.renderer.category.LineAndShapeRenderer;
-import org.jfree.chart.renderer.category.LineRenderer3D;
+import org.jfree.chart.plot.*;
+import org.jfree.chart.renderer.category.*;
 import org.jfree.chart.title.TextTitle;
 import org.jfree.data.category.CategoryDataset;
 import org.jfree.data.category.DefaultCategoryDataset;
 import org.jfree.ui.RectangleInsets;
 import org.jfree.util.TableOrder;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.awt.*;
+import java.util.*;
+import java.util.List;
+import java.util.Map.Entry;
+
+import static org.hisp.dhis.chart.Chart.*;
+import static org.hisp.dhis.options.SystemSettingManager.*;
+import static org.hisp.dhis.system.util.ConversionUtils.getArray;
 
 /**
  * @author Lars Helge Overland
@@ -830,13 +795,44 @@ public class DefaultChartService
         return multiplePieChart;
     }
 
+    private boolean isIndicatorChart( Chart chart )
+    {
+        return chart.isDimension( DIMENSION_INDICATOR_PERIOD )
+            || chart.isDimension( DIMENSION_ORGANISATIONUNIT_INDICATOR )
+            || chart.isDimension( DIMENSION_PERIOD_INDICATOR );
+    }
+
+    private boolean isDataElementChart( Chart chart )
+    {
+        return chart.isDimension( DIMENSION_DATAELEMENT_PERIOD )
+            || chart.isDimension( DIMENSION_ORGANISATIONUNIT_DATAELEMENT )
+            || chart.isDimension( DIMENSION_PERIOD_DATAELEMENT );
+    }
+
+    private boolean isCompletenessChart( Chart chart )
+    {
+        return chart.isDimension( DIMENSION_COMPLETENESS_PERIOD )
+            || chart.isDimension( DIMENSION_ORGANISATIONUNIT_COMPLETENESS )
+            || chart.isDimension( DIMENSION_PERIOD_COMPLETENESS );
+    }
+
+    private boolean hasPeriodDimension( Chart chart )
+    {
+        return chart.isDimension( DIMENSION_PERIOD_INDICATOR )
+            || chart.isDimension( DIMENSION_INDICATOR_PERIOD )
+            || chart.isDimension( DIMENSION_PERIOD_DATAELEMENT )
+            || chart.isDimension( DIMENSION_DATAELEMENT_PERIOD )
+            || chart.isDimension( DIMENSION_PERIOD_COMPLETENESS )
+            || chart.isDimension( DIMENSION_COMPLETENESS_PERIOD );
+    }
+
     /**
      * Returns a DefaultCategoryDataSet based on aggregated data for the chart.
      */
     private CategoryDataset[] getCategoryDataSet( Chart chart )
     {
-        String aggregationStrategy = (String) systemSettingManager.getSystemSetting( KEY_AGGREGATION_STRATEGY,
-            DEFAULT_AGGREGATION_STRATEGY );
+        boolean realTimeAggregation = systemSettingManager.getSystemSetting( KEY_AGGREGATION_STRATEGY,
+            DEFAULT_AGGREGATION_STRATEGY ).equals( AGGREGATION_STRATEGY_REAL_TIME );
 
         final DefaultCategoryDataset regularDataSet = new DefaultCategoryDataset();
         final DefaultCategoryDataset regressionDataSet = new DefaultCategoryDataset();
@@ -850,25 +846,17 @@ public class DefaultChartService
             List<DataElement> dataElements = chart.getDataElements();
             List<DataSet> dataSets = chart.getDataSets();
 
-            boolean isIndicatorChart = chart.isDimension( DIMENSION_INDICATOR_PERIOD )
-                || chart.isDimension( DIMENSION_ORGANISATIONUNIT_INDICATOR )
-                || chart.isDimension( DIMENSION_PERIOD_INDICATOR );
-
-            boolean isDataElementChart = chart.isDimension( DIMENSION_DATAELEMENT_PERIOD )
-                || chart.isDimension( DIMENSION_ORGANISATIONUNIT_DATAELEMENT )
-                || chart.isDimension( DIMENSION_PERIOD_DATAELEMENT );
-
-            boolean isCompletenessChart = chart.isDimension( DIMENSION_COMPLETENESS_PERIOD )
-                || chart.isDimension( DIMENSION_ORGANISATIONUNIT_COMPLETENESS )
-                || chart.isDimension( DIMENSION_PERIOD_COMPLETENESS );
+            boolean indicatorChart = isIndicatorChart( chart );
+            boolean dataElementChart = isDataElementChart( chart );
+            boolean completenessChart = isCompletenessChart( chart );
 
             int loopSize = indicators.size();
 
-            if ( isDataElementChart )
+            if ( dataElementChart )
             {
                 loopSize = dataElements.size();
             }
-            else if ( isCompletenessChart )
+            else if ( completenessChart )
             {
                 loopSize = dataSets.size();
             }
@@ -881,25 +869,20 @@ public class DefaultChartService
 
                 String shortName = null;
 
-                if ( isIndicatorChart )
+                if ( indicatorChart )
                 {
                     shortName = indicators.get( i ).getShortName();
                 }
-                else if ( isDataElementChart )
+                else if ( dataElementChart )
                 {
                     shortName = dataElements.get( i ).getShortName();
                 }
-                else if ( isCompletenessChart )
+                else if ( completenessChart )
                 {
                     shortName = dataSets.get( i ).getShortName();
                 }
 
-                if ( chart.isDimension( DIMENSION_PERIOD_INDICATOR )
-                    || chart.isDimension( DIMENSION_INDICATOR_PERIOD )
-                    || chart.isDimension( DIMENSION_PERIOD_DATAELEMENT )
-                    || chart.isDimension( DIMENSION_DATAELEMENT_PERIOD )
-                    || chart.isDimension( DIMENSION_PERIOD_COMPLETENESS )
-                    || chart.isDimension( DIMENSION_COMPLETENESS_PERIOD ) )
+                if ( hasPeriodDimension( chart ) )
                 {
                     // ---------------------------------------------------------
                     // Regular dataset
@@ -909,21 +892,19 @@ public class DefaultChartService
                     {
                         Double value = null;
 
-                        if ( isIndicatorChart )
+                        if ( indicatorChart )
                         {
-                            value = aggregationStrategy.equals( AGGREGATION_STRATEGY_REAL_TIME ) ? aggregationService
-                                .getAggregatedIndicatorValue( indicators.get( i ), period.getStartDate(),
-                                    period.getEndDate(), selectedOrganisationUnit ) : aggregatedDataValueService
-                                .getAggregatedValue( indicators.get( i ), period, selectedOrganisationUnit );
+                            value = realTimeAggregation ?
+                                aggregationService.getAggregatedIndicatorValue( indicators.get( i ), period.getStartDate(), period.getEndDate(), selectedOrganisationUnit ) :
+                                aggregatedDataValueService.getAggregatedValue( indicators.get( i ), period, selectedOrganisationUnit );
                         }
-                        else if ( isDataElementChart )
+                        else if ( dataElementChart )
                         {
-                            value = aggregationStrategy.equals( AGGREGATION_STRATEGY_REAL_TIME ) ? aggregationService
-                                .getAggregatedDataValue( dataElements.get( i ), null, period.getStartDate(),
-                                    period.getEndDate(), selectedOrganisationUnit ) : aggregatedDataValueService
-                                .getAggregatedValue( dataElements.get( i ), period, selectedOrganisationUnit );
+                            value = realTimeAggregation ?
+                                aggregationService.getAggregatedDataValue( dataElements.get( i ), null, period.getStartDate(), period.getEndDate(), selectedOrganisationUnit ) :
+                                aggregatedDataValueService.getAggregatedValue( dataElements.get( i ), period, selectedOrganisationUnit );
                         }
-                        else if ( isCompletenessChart )
+                        else if ( completenessChart )
                         {
                             List<DataSetCompletenessResult> dataSetCompleteness = new ArrayList<DataSetCompletenessResult>(
                                 dataSetCompletenessService.getDataSetCompleteness( period.getId(),
@@ -998,21 +979,19 @@ public class DefaultChartService
                     {
                         Double value = null;
 
-                        if ( isIndicatorChart )
+                        if ( indicatorChart )
                         {
-                            value = aggregationStrategy.equals( AGGREGATION_STRATEGY_REAL_TIME ) ? aggregationService
-                                .getAggregatedIndicatorValue( indicators.get( i ), selectedPeriod.getStartDate(),
-                                    selectedPeriod.getEndDate(), unit ) : aggregatedDataValueService
-                                .getAggregatedValue( indicators.get( i ), selectedPeriod, unit );
+                            value = realTimeAggregation ?
+                                aggregationService.getAggregatedIndicatorValue( indicators.get( i ), selectedPeriod.getStartDate(), selectedPeriod.getEndDate(), unit ) :
+                                aggregatedDataValueService.getAggregatedValue( indicators.get( i ), selectedPeriod, unit );
                         }
-                        else if ( isDataElementChart )
+                        else if ( dataElementChart )
                         {
-                            value = aggregationStrategy.equals( AGGREGATION_STRATEGY_REAL_TIME ) ? aggregationService
-                                .getAggregatedDataValue( dataElements.get( i ), null, selectedPeriod.getStartDate(),
-                                    selectedPeriod.getEndDate(), unit ) : aggregatedDataValueService
-                                .getAggregatedValue( dataElements.get( i ), selectedPeriod, unit );
+                            value = realTimeAggregation ?
+                                aggregationService.getAggregatedDataValue( dataElements.get( i ), null, selectedPeriod.getStartDate(), selectedPeriod.getEndDate(), unit ) :
+                                aggregatedDataValueService.getAggregatedValue( dataElements.get( i ), selectedPeriod, unit );
                         }
-                        else if ( isCompletenessChart )
+                        else if ( completenessChart )
                         {
                             List<DataSetCompletenessResult> dataSetCompleteness = new ArrayList<DataSetCompletenessResult>(
                                 dataSetCompletenessService.getDataSetCompleteness( selectedPeriod.getId(),

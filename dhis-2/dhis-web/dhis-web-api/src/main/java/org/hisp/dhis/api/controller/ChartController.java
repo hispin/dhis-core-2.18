@@ -27,16 +27,23 @@ package org.hisp.dhis.api.controller;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import org.hisp.dhis.aggregation.AggregatedDataValueService;
+import org.hisp.dhis.aggregation.AggregationService;
 import org.hisp.dhis.api.utils.IdentifiableObjectParams;
 import org.hisp.dhis.api.utils.WebLinkPopulator;
 import org.hisp.dhis.chart.Chart;
 import org.hisp.dhis.chart.ChartService;
 import org.hisp.dhis.chart.Charts;
+import org.hisp.dhis.completeness.DataSetCompletenessService;
+import org.hisp.dhis.datavalue.DataValueService;
 import org.hisp.dhis.i18n.I18nManager;
 import org.hisp.dhis.i18n.I18nManagerException;
+import org.hisp.dhis.options.SystemSettingManager;
+import org.hisp.dhis.period.PeriodService;
 import org.jfree.chart.ChartUtilities;
 import org.jfree.chart.JFreeChart;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -60,6 +67,25 @@ public class ChartController
 
     @Autowired
     private ChartService chartService;
+
+    @Autowired
+    private AggregatedDataValueService aggregatedDataValueService;
+
+    @Autowired
+    private AggregationService aggregationService;
+
+    @Autowired
+    private DataValueService dataValueService;
+
+    @Autowired
+    private PeriodService periodService;
+
+    @Autowired
+    @Qualifier( "registrationDataCompletenessService" )
+    private DataSetCompletenessService dataSetCompletenessService;
+
+    @Autowired
+    private SystemSettingManager systemSettingManager;
 
     @Autowired
     private I18nManager i18nManager;
@@ -101,8 +127,15 @@ public class ChartController
         return "chart";
     }
 
-    @RequestMapping( value = "/{uid}.png", method = RequestMethod.GET )
-    public void getChartPNG( @PathVariable( "uid" ) String uid, @RequestParam( value = "width", defaultValue = "700", required = false ) int width,
+    @RequestMapping( value = "/{uid}/data", method = RequestMethod.GET )
+    public void getChartData( @PathVariable( "uid" ) String uid, HttpServletResponse response ) throws IOException, I18nManagerException
+    {
+        Chart chart = chartService.getChart( uid );
+    }
+
+    @RequestMapping( value = "/{uid}/data.png", method = RequestMethod.GET )
+    public void getChartPng( @PathVariable( "uid" ) String uid,
+                             @RequestParam( value = "width", defaultValue = "700", required = false ) int width,
                              @RequestParam( value = "height", defaultValue = "500", required = false ) int height,
                              HttpServletResponse response ) throws IOException, I18nManagerException
     {
@@ -112,8 +145,9 @@ public class ChartController
         ChartUtilities.writeChartAsPNG( response.getOutputStream(), chart, width, height );
     }
 
-    @RequestMapping( value = "/{uid}.jpg", method = RequestMethod.GET )
-    public void getChartJPG( @PathVariable( "uid" ) String uid, @RequestParam( value = "width", defaultValue = "700", required = false ) int width,
+    @RequestMapping( value = "/{uid}/data.jpg", method = RequestMethod.GET )
+    public void getChartJpg( @PathVariable( "uid" ) String uid,
+                             @RequestParam( value = "width", defaultValue = "700", required = false ) int width,
                              @RequestParam( value = "height", defaultValue = "500", required = false ) int height,
                              HttpServletResponse response ) throws IOException, I18nManagerException
     {

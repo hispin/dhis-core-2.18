@@ -27,10 +27,6 @@ package org.hisp.dhis.chart;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.Collection;
-import java.util.List;
-import java.util.Map;
-
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
 import org.hisp.dhis.dataset.DataSet;
@@ -41,6 +37,10 @@ import org.hisp.dhis.period.Period;
 import org.jfree.chart.JFreeChart;
 import org.jfree.chart.axis.CategoryLabelPositions;
 import org.jfree.chart.plot.PlotOrientation;
+
+import java.util.Collection;
+import java.util.List;
+import java.util.Map;
 
 /**
  * @author Lars Helge Overland
@@ -54,19 +54,19 @@ public interface ChartService
     JFreeChart getJFreeChart( int id, I18nFormat format );
 
     JFreeChart getJFreeChart( Chart chart, I18nFormat format );
-    
+
     JFreeChart getJFreePeriodChart( Indicator indicator, OrganisationUnit unit, boolean title, I18nFormat format );
 
     JFreeChart getJFreeOrganisationUnitChart( Indicator indicator, OrganisationUnit parent, boolean title, I18nFormat format );
 
     JFreeChart getJFreeChart( List<Indicator> indicators, List<DataElement> dataElements, List<DataSet> dataSets, List<Period> periods,
-        List<OrganisationUnit> organisationUnits, String dimension, boolean regression, I18nFormat format );
+                              List<OrganisationUnit> organisationUnits, String dimension, boolean regression, I18nFormat format );
 
     JFreeChart getJFreeChart( String name, PlotOrientation orientation, CategoryLabelPositions labelPositions,
-        Map<String, Double> categoryValues );
+                              Map<String, Double> categoryValues );
 
     JFreeChart getJFreeChartHistory( DataElement dataElement, DataElementCategoryOptionCombo categoryOptionCombo,
-        Period lastPeriod, OrganisationUnit organisationUnit, int historyLength, I18nFormat format );
+                                     Period lastPeriod, OrganisationUnit organisationUnit, int historyLength, I18nFormat format );
 
     int saveChart( Chart chart );
 
