@@ -27,6 +27,7 @@ function showEventForm()
 	{
 		disable('executionDate');
 		setFieldValue('executionDate', '');
+		hideById('dataEntryFormDiv');
 		return;
 	}
 	
@@ -53,5 +54,6 @@ function loadEventRegistrationForm()
 		{
 			enable('executionDate');
 			hideById('loaderDiv');
+			showById('dataEntryFormDiv');
 		} );
 }

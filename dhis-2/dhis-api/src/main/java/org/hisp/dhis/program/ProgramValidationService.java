@@ -29,6 +29,8 @@ package org.hisp.dhis.program;
 
 import java.util.Collection;
 
+import org.hisp.dhis.organisationunit.OrganisationUnit;
+
 /**
  * @author Chau Thu Tran
  * @version $ ProgramValidationService.java Apr 28, 2011 10:32:20 AM $
@@ -49,5 +51,5 @@ public interface ProgramValidationService
 
     Collection<ProgramValidation> getProgramValidation( Program program );
 
-    boolean runValidation( ProgramValidation validation, ProgramInstance programInstance );
+    boolean runValidation( ProgramValidation validation, ProgramInstance programInstance, OrganisationUnit orgunit );
 }

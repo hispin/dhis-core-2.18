@@ -39,6 +39,7 @@ import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
 import org.hisp.dhis.dataelement.DataElementCategoryService;
 import org.hisp.dhis.dataelement.DataElementService;
+import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.patientdatavalue.PatientDataValue;
 import org.hisp.dhis.patientdatavalue.PatientDataValueService;
 import org.nfunk.jep.JEP;
@@ -132,19 +133,20 @@ public class DefaultProgramValidationService
     }
 
     @Override
-    public boolean runValidation( ProgramValidation validation, ProgramInstance programInstance )
+    public boolean runValidation( ProgramValidation validation, ProgramInstance programInstance,
+        OrganisationUnit orgunit )
     {
         // ---------------------------------------------------------------------
         // parse left-expressions
         // ---------------------------------------------------------------------
 
-        boolean resultLeft = runExpression( validation.getLeftSide(), programInstance );
+        boolean resultLeft = runExpression( validation.getLeftSide(), programInstance, orgunit );
 
         // ---------------------------------------------------------------------
         // parse right-expressions
         // ---------------------------------------------------------------------
 
-        boolean resultRight = runExpression( validation.getRightSide(), programInstance );
+        boolean resultRight = runExpression( validation.getRightSide(), programInstance, orgunit );
 
         return (resultLeft == resultRight);
 
@@ -155,7 +157,7 @@ public class DefaultProgramValidationService
         return validationStore.get( program );
     }
 
-    private boolean runExpression( String expression, ProgramInstance programInstance )
+    private boolean runExpression( String expression, ProgramInstance programInstance, OrganisationUnit orgunit )
     {
         final String regExp = "\\[" + OBJECT_PROGRAM_STAGE_DATAELEMENT + SEPARATOR_OBJECT + "([a-zA-Z0-9\\- ]+["
             + SEPARATOR_ID + "[0-9]*]*)" + "\\]";
@@ -181,13 +183,14 @@ public class DefaultProgramValidationService
             DataElement dataElement = dataElementService.getDataElement( dataElementId );
 
             int optionComboId = Integer.parseInt( ids[2] );
-            DataElementCategoryOptionCombo optionCombo = categoryService.getDataElementCategoryOptionCombo( optionComboId );
+            DataElementCategoryOptionCombo optionCombo = categoryService
+                .getDataElementCategoryOptionCombo( optionComboId );
 
             ProgramStageInstance stageInstance = stageInstanceService.getProgramStageInstance( programInstance,
                 programStage );
 
             PatientDataValue dataValue = valueService.getPatientDataValue( stageInstance, dataElement, optionCombo,
-                programInstance.getPatient().getOrganisationUnit() );
+                orgunit );
 
             if ( dataValue == null )
             {
