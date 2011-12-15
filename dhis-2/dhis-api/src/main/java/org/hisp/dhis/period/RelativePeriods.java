@@ -523,9 +523,10 @@ public class RelativePeriods
         return reportingMonth;
     }
 
-    public void setReportingMonth( boolean reportingMonth )
+    public RelativePeriods setReportingMonth( boolean reportingMonth )
     {
         this.reportingMonth = reportingMonth;
+        return this;
     }
 
     @XmlElement
@@ -535,9 +536,10 @@ public class RelativePeriods
         return reportingBimonth;
     }
 
-    public void setReportingBimonth( boolean reportingBimonth )
+    public RelativePeriods setReportingBimonth( boolean reportingBimonth )
     {
         this.reportingBimonth = reportingBimonth;
+        return this;
     }
 
     @XmlElement
@@ -547,9 +549,10 @@ public class RelativePeriods
         return reportingQuarter;
     }
 
-    public void setReportingQuarter( boolean reportingQuarter )
+    public RelativePeriods setReportingQuarter( boolean reportingQuarter )
     {
         this.reportingQuarter = reportingQuarter;
+        return this;
     }
 
     @XmlElement
@@ -559,9 +562,10 @@ public class RelativePeriods
         return monthsThisYear;
     }
 
-    public void setMonthsThisYear( boolean monthsThisYear )
+    public RelativePeriods setMonthsThisYear( boolean monthsThisYear )
     {
         this.monthsThisYear = monthsThisYear;
+        return this;
     }
 
     @XmlElement
@@ -571,9 +575,10 @@ public class RelativePeriods
         return quartersThisYear;
     }
 
-    public void setQuartersThisYear( boolean quartersThisYear )
+    public RelativePeriods setQuartersThisYear( boolean quartersThisYear )
     {
         this.quartersThisYear = quartersThisYear;
+        return this;
     }
 
     @XmlElement
@@ -583,9 +588,10 @@ public class RelativePeriods
         return thisYear;
     }
 
-    public void setThisYear( boolean thisYear )
+    public RelativePeriods setThisYear( boolean thisYear )
     {
         this.thisYear = thisYear;
+        return this;
     }
 
     @XmlElement
@@ -595,9 +601,10 @@ public class RelativePeriods
         return monthsLastYear;
     }
 
-    public void setMonthsLastYear( boolean monthsLastYear )
+    public RelativePeriods setMonthsLastYear( boolean monthsLastYear )
     {
         this.monthsLastYear = monthsLastYear;
+        return this;
     }
 
     @XmlElement
@@ -607,9 +614,10 @@ public class RelativePeriods
         return quartersLastYear;
     }
 
-    public void setQuartersLastYear( boolean quartersLastYear )
+    public RelativePeriods setQuartersLastYear( boolean quartersLastYear )
     {
         this.quartersLastYear = quartersLastYear;
+        return this;
     }
 
     @XmlElement
@@ -619,9 +627,10 @@ public class RelativePeriods
         return lastYear;
     }
 
-    public void setLastYear( boolean lastYear )
+    public RelativePeriods setLastYear( boolean lastYear )
     {
         this.lastYear = lastYear;
+        return this;
     }
 
     @XmlElement
@@ -631,9 +640,10 @@ public class RelativePeriods
         return last5Years;
     }
 
-    public void setLast5Years( boolean last5Years )
+    public RelativePeriods setLast5Years( boolean last5Years )
     {
         this.last5Years = last5Years;
+        return this;
     }
 
     @XmlElement
@@ -643,9 +653,10 @@ public class RelativePeriods
         return last12Months;
     }
 
-    public void setLast12Months( boolean last12Months )
+    public RelativePeriods setLast12Months( boolean last12Months )
     {
         this.last12Months = last12Months;
+        return this;
     }
 
     @XmlElement
@@ -655,9 +666,10 @@ public class RelativePeriods
         return last6BiMonths;
     }
 
-    public void setLast6BiMonths( boolean last6BiMonths )
+    public RelativePeriods setLast6BiMonths( boolean last6BiMonths )
     {
         this.last6BiMonths = last6BiMonths;
+        return this;
     }
 
     @XmlElement
@@ -667,9 +679,10 @@ public class RelativePeriods
         return last4Quarters;
     }
 
-    public void setLast4Quarters( boolean last4Quarters )
+    public RelativePeriods setLast4Quarters( boolean last4Quarters )
     {
         this.last4Quarters = last4Quarters;
+        return this;
     }
 
     @XmlElement
@@ -679,9 +692,10 @@ public class RelativePeriods
         return last2SixMonths;
     }
 
-    public void setLast2SixMonths( boolean last2SixMonths )
+    public RelativePeriods setLast2SixMonths( boolean last2SixMonths )
     {
         this.last2SixMonths = last2SixMonths;
+        return this;
     }
 
     // -------------------------------------------------------------------------

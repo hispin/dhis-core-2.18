@@ -47,6 +47,7 @@ import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
 @Controller
@@ -79,7 +80,7 @@ public class MapController
         return "maps";
     }
 
-    @RequestMapping( value = "/{uid}", method = RequestMethod.GET )
+    @RequestMapping( value = {"/{uid}","/{uid}/data"}, method = RequestMethod.GET )
     public String getMap( @PathVariable String uid, IdentifiableObjectParams params, Model model, HttpServletRequest request )
     {
         MapView mapView = mappingService.getMapView( uid );
@@ -89,6 +90,19 @@ public class MapController
             WebLinkPopulator listener = new WebLinkPopulator( request );
             listener.addLinks( mapView );
         }
+
+        model.addAttribute( "model", mapView );
+
+        return "map";
+    }
+    
+    @RequestMapping( value = "/data", method = RequestMethod.GET )
+    public String getMap( Model model,
+        @RequestParam( value = "in" ) String indicatorUid, 
+        @RequestParam( value = "ou" ) String organisationUnitUid,
+        @RequestParam Integer level )
+    {
+        MapView mapView = mappingService.getIndicatorLastYearMapView( indicatorUid, organisationUnitUid, level );
 
         model.addAttribute( "model", mapView );
 
