@@ -142,7 +142,7 @@ public class LoadProgramStagesAction
 
         List<ProgramInstance> programInstances = new ArrayList<ProgramInstance>();
 
-        if ( program.getAnonymousEvent() )
+        if ( program.getAnonymous() )
         {
             programInstances = new ArrayList<ProgramInstance>( programInstanceService.getProgramInstances( program,
                 false ) );

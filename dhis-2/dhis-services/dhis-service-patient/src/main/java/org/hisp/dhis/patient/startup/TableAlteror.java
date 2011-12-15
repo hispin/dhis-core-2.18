@@ -108,7 +108,7 @@ public class TableAlteror
         
         executeSql( "UPDATE program SET singleEvent = false WHERE singleevent is null" );
         
-        executeSql( "UPDATE program SET anonymousEvent = false WHERE anonymousEvent is null" );
+        executeSql( "UPDATE program SET anonymous = false WHERE anonymous is null" );
         
         executeSql( "UPDATE programstage SET irregular = false WHERE irregular is null" );
 

@@ -153,19 +153,6 @@ public class UpdateProgramAction
 
         programService.updateProgram( program );
 
-        if ( singleEvent )
-        {
-            ProgramStage programStage = new ProgramStage();
-
-            programStage.setName( name );
-            programStage.setDescription( description );
-            programStage.setStageInProgram( program.getProgramStages().size() + 1 );
-            programStage.setProgram( program );
-            programStage.setMinDaysFromStart( 0 );
-
-            programStageService.saveProgramStage( programStage );
-        }
-
         return SUCCESS;
     }
 }
