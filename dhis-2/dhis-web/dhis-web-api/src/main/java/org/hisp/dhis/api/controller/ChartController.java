@@ -41,6 +41,10 @@ import org.hisp.dhis.chart.ChartService;
 import org.hisp.dhis.chart.Charts;
 import org.hisp.dhis.i18n.I18nManager;
 import org.hisp.dhis.i18n.I18nManagerException;
+import org.hisp.dhis.indicator.Indicator;
+import org.hisp.dhis.indicator.IndicatorService;
+import org.hisp.dhis.organisationunit.OrganisationUnit;
+import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.util.ContextUtils;
 import org.jfree.chart.ChartUtilities;
 import org.jfree.chart.JFreeChart;
@@ -67,6 +71,12 @@ public class ChartController
     @Autowired
     private ChartService chartService;
 
+    @Autowired
+    private IndicatorService indicatorService;
+    
+    @Autowired
+    private OrganisationUnitService organisationUnitService;
+    
     @Autowired
     private I18nManager i18nManager;
 
@@ -108,7 +118,7 @@ public class ChartController
     }
 
     @RequestMapping( value = {"/{uid}/data","/{uid}/data.png"}, method = RequestMethod.GET )
-    public void getChartPng( @PathVariable( "uid" ) String uid,
+    public void getChart( @PathVariable( "uid" ) String uid,
                              @RequestParam( value = "width", defaultValue = "700", required = false ) int width,
                              @RequestParam( value = "height", defaultValue = "500", required = false ) int height,
                              HttpServletResponse response ) throws IOException, I18nManagerException
@@ -119,18 +129,32 @@ public class ChartController
         ChartUtilities.writeChartAsPNG( response.getOutputStream(), chart, width, height );
     }
 
-    @RequestMapping( value = "/{uid}/data.jpg", method = RequestMethod.GET )
-    public void getChartJpg( @PathVariable( "uid" ) String uid,
-                             @RequestParam( value = "width", defaultValue = "700", required = false ) int width,
-                             @RequestParam( value = "height", defaultValue = "500", required = false ) int height,
-                             HttpServletResponse response ) throws IOException, I18nManagerException
+    @RequestMapping( value = "/data", method = RequestMethod.GET )
+    public void getChart( @RequestParam( value = "in" ) String indicatorUid, 
+        @RequestParam( value = "ou" ) String organisationUnitUid,
+        @RequestParam( value = "periods", required = false ) boolean periods,
+        @RequestParam( value = "width", defaultValue = "700", required = false ) int width,
+        @RequestParam( value = "height", defaultValue = "500", required = false ) int height,
+        HttpServletResponse response ) throws Exception
     {
-        JFreeChart chart = chartService.getJFreeChart( uid, i18nManager.getI18nFormat() );
-
-        response.setContentType( ContextUtils.CONTENT_TYPE_JPG );
-        ChartUtilities.writeChartAsJPEG( response.getOutputStream(), chart, width, height );
+        Indicator indicator = indicatorService.getIndicator( indicatorUid );
+        OrganisationUnit unit = organisationUnitService.getOrganisationUnit( organisationUnitUid );
+        
+        JFreeChart chart = null;
+        
+        if ( periods )
+        {
+            chart = chartService.getJFreePeriodChart( indicator, unit, true, i18nManager.getI18nFormat() );
+        }
+        else
+        {
+            chart = chartService.getJFreeOrganisationUnitChart( indicator, unit, true, i18nManager.getI18nFormat() );
+        }
+        
+        response.setContentType( ContextUtils.CONTENT_TYPE_PNG );
+        ChartUtilities.writeChartAsPNG( response.getOutputStream(), chart, width, height );
     }
-
+    
     //-------------------------------------------------------------------------------------------------------
     // POST
     //-------------------------------------------------------------------------------------------------------
