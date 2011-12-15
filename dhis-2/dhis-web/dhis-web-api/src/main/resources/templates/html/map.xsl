@@ -9,7 +9,7 @@
 
       <h3>Details</h3>
 
-      <table border="1">
+      <table>
         <xsl:for-each select="attribute::*">
           <tr><td><xsl:value-of select="local-name()"/></td><td><xsl:value-of select="."/></td></tr>
         </xsl:for-each>

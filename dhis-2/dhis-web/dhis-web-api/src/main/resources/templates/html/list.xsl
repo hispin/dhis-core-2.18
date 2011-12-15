@@ -15,7 +15,7 @@
     d:sqlViews|d:validationRules|d:validationRuleGroups|d:users|d:reportTables">
     <h3> <xsl:value-of select="local-name()"/> </h3>
 
-    <table border="1">
+    <table>
       <xsl:apply-templates select="child::*" mode="row"/>
     </table>
   </xsl:template>

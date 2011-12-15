@@ -9,7 +9,7 @@
       <h2>
         <xsl:value-of select="@name" />
       </h2>
-      <table border="1">
+      <table>
         <tr>
           <td>ID</td>
           <td> <xsl:value-of select="@id" /> </td>
@@ -42,7 +42,7 @@
 
   <xsl:template match="d:leftSide" mode="short">
     <h3>LeftSide Expression</h3>
-    <table border="1" class="expression">
+    <table class="expression">
       <tr>
         <td>Description</td>
         <td> <xsl:value-of select="d:description" /> </td>
@@ -56,7 +56,7 @@
 
   <xsl:template match="d:rightSide" mode="short">
     <h3>RightSide Expression</h3>
-    <table border="1" class="expression">
+    <table class="expression">
       <tr>
         <td>Description</td>
         <td> <xsl:value-of select="d:description" /> </td>
@@ -71,7 +71,7 @@
   <xsl:template match="d:validationRules" mode="short">
     <xsl:if test="count(child::*) > 0">
       <h3>ValidationRules</h3>
-      <table border="1" class="validationRules">
+      <table class="validationRules">
         <xsl:apply-templates select="child::*" mode="row"/>
       </table>
     </xsl:if>

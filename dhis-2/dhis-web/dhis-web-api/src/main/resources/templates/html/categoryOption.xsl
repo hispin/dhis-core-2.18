@@ -8,7 +8,7 @@
     <div class="categoryOption">
       <h2> <xsl:value-of select="@name" /> </h2>
 
-      <table border="1">
+      <table>
         <tr>
           <td>ID</td>
           <td> <xsl:value-of select="@id" /> </td>
@@ -30,7 +30,7 @@
   <xsl:template match="d:categoryOptions" mode="short">
     <xsl:if test="count(child::*) > 0">
       <h3>CategoryOptions</h3>
-      <table border="1" class="categoryOptions">
+      <table class="categoryOptions">
         <xsl:apply-templates select="child::*" mode="row"/>
       </table>
     </xsl:if>

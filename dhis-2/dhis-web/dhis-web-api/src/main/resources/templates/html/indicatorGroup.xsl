@@ -8,7 +8,7 @@
     <div class="indicatorGroup">
       <h2> <xsl:value-of select="@name" /> </h2>
 
-      <table border="1">
+      <table>
         <tr>
           <td>ID</td>
           <td> <xsl:value-of select="@id" /> </td>
@@ -30,7 +30,7 @@
   <xsl:template match="d:indicatorGroups" mode="short" >
     <xsl:if test="count(child::*) > 0">
       <h3>Indicator Groups</h3>
-      <table border="1" class="indicatorGroups">
+      <table class="indicatorGroups">
         <xsl:apply-templates select="child::*" mode="row"/>
       </table>
     </xsl:if>

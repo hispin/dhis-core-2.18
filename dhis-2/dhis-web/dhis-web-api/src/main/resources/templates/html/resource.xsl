@@ -7,7 +7,7 @@
   <xsl:template match="d:resources" mode="short">
     <xsl:if test="count(child::*) > 0">
       <h3>Resources</h3>
-      <table border="1">
+      <table>
         <xsl:apply-templates select="child::*" mode="row"/>
       </table>
     </xsl:if>

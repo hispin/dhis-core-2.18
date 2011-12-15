@@ -8,7 +8,7 @@
     <div class="attributeType">
       <h2> <xsl:value-of select="@name" /> </h2>
 
-      <table border="1">
+      <table>
         <tr>
           <td>ID</td>
           <td> <xsl:value-of select="@id" /> </td>

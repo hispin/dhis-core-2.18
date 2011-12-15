@@ -8,7 +8,7 @@
     <div class="dataElementGroup">
       <h2> <xsl:value-of select="@name" /> </h2>
 
-      <table border="1">
+      <table>
         <tr>
           <td>ID</td>
           <td> <xsl:value-of select="@id" /> </td>
@@ -30,7 +30,7 @@
   <xsl:template match="d:dataElementGroups" mode="short">
     <xsl:if test="count(child::*) > 0">
       <h3>DataElementGroups</h3>
-      <table border="1" class="dataElementGroups">
+      <table class="dataElementGroups">
         <xsl:apply-templates select="child::*" mode="row"/>
       </table>
     </xsl:if>
