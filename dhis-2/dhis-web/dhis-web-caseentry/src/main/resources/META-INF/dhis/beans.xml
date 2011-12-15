@@ -381,6 +381,12 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		<property name="programService"
 			ref="org.hisp.dhis.program.ProgramService" />
 	</bean>
+	
+	<bean id="org.hisp.dhis.caseentry.action.caseentry.RemoveCurrentEncounterAction"
+		class="org.hisp.dhis.caseentry.action.caseentry.RemoveCurrentEncounterAction" scope="prototype">
+		<property name="programInstanceService"
+			ref="org.hisp.dhis.program.ProgramInstanceService" />
+	</bean>
 
 	<!--  Patient chart -->
 
