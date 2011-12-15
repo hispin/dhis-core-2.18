@@ -22,6 +22,7 @@
 
 <input type='hidden' id='incidentDate' value='$!format.formatDate($programStageInstance.programInstance.dateOfIncident)'>
 <input type='hidden' name='programStageInstanceId' id='programStageInstanceId' value='$!programStageInstance.id'>
+<input type='hidden' name='programInstanceId' id='programInstanceId' value='$!programStageInstance.programInstance.id'>
 <input type='hidden' name='irregular' id='irregular' value='$!programStageInstance.programStage.irregular'>
 <input type='hidden' name='completed' id='completed' value='$!programStageInstance.completed'>
 

@@ -655,11 +655,12 @@ function ExecutionDateSaver( programStageId_, executionDate_, resultColor_ )
             if( executionDate != "")
             {
                 markValue( ERROR );
-                window.alert( i18n_invalid_date );
+                showWarningMessage( i18n_invalid_date );
             }
             else
             {
-                markValue( resultColor );
+                markValue( ERROR );
+				showWarningMessage( i18n_please_enter_report_date );
             }
 			hideById('dataEntryFormDiv');
         }

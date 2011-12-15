@@ -3,6 +3,11 @@ function organisationUnitSelected( orgUnits )
 {
 	disable('executionDate');
 	setFieldValue('executionDate', '');
+	$('#executionDate').unbind('change');
+	
+	disable('createEventBtn');
+	disable('deleteCurrentEventBtn');
+	
 	
 	$.postJSON( 'loadAnonymousPrograms.action',{}
 		, function( json ) 
@@ -23,10 +28,10 @@ selection.setListenerFunction( organisationUnitSelected );
 
 function showEventForm()
 {	
+	setFieldValue('executionDate', '');
+	
 	if( getFieldValue('programId') == '' )
 	{
-		disable('executionDate');
-		setFieldValue('executionDate', '');
 		hideById('dataEntryFormDiv');
 		return;
 	}
@@ -55,5 +60,59 @@ function loadEventRegistrationForm()
 			enable('executionDate');
 			hideById('loaderDiv');
 			showById('dataEntryFormDiv');
+			
+			var programStageInstanceId = getFieldValue('programStageInstanceId');
+			
+			if( programStageInstanceId == '' )
+			{
+				$('#executionDate').unbind('change');
+				disable('deleteCurrentEventBtn');
+				enable('createEventBtn');
+			}
+			else
+			{
+				disable('createEventBtn');
+				enable('deleteCurrentEventBtn');
+			}
+			
 		} );
+}
+
+function createNewEvent()
+{
+	saveExecutionDate( getFieldValue('programStageId'), getFieldValue('executionDate') );
+	loadEventRegistrationForm();
+	
+	disable('createEventBtn');
+	enable('deleteCurrentEventBtn');
+	
+	$('#executionDate').change(function() {
+			saveExecutionDate( getFieldValue('programStageId'), getFieldValue('executionDate') );
+	});
+}
+
+function deleteCurrentEvent()
+{	
+	jQuery.postJSON( "removeCurrentEncounter.action",
+		{
+			programInstanceId: getFieldValue('programInstanceId')
+		}, 
+		function( json ) 
+		{    
+			var type = json.response;
+			
+			if( type == 'success' )
+			{
+				showSuccessMessage( i18n_delete_current_event_success );
+				hideById('dataEntryFormDiv');
+				setFieldValue('executionDate','');
+				$('#executionDate').unbind('change');
+				disable('deleteCurrentEventBtn');
+				enable('createEventBtn');
+			}
+			else if( type == 'input' )
+			{
+				showWarningMessage( json.message );
+			}
+		});
 }

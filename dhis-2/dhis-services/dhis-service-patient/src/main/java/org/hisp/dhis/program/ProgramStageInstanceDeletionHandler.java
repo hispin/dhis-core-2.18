@@ -66,6 +66,14 @@ public class ProgramStageInstanceDeletionHandler
         String sql = "SELECT COUNT(*) " + "FROM programstageinstance " + "WHERE programstageid=" + programStage.getId();
 
         return jdbcTemplate.queryForInt( sql ) == 0 ? null : ERROR;
+    }
+    
+    @Override
+    public void deleteProgramInstance( ProgramInstance programInstance )
+    {
+        String sql = "DELETE FROM programstageinstance " +
+        		"WHERE programinstanceid = " + programInstance.getId();
 
+        jdbcTemplate.execute( sql );
     }
 }

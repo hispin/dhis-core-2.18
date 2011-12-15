@@ -28,6 +28,7 @@
 package org.hisp.dhis.patientdatavalue;
 
 import org.hisp.dhis.dataelement.DataElement;
+import org.hisp.dhis.program.ProgramInstance;
 import org.hisp.dhis.program.ProgramStage;
 import org.hisp.dhis.system.deletion.DeletionHandler;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -78,5 +79,16 @@ public class PatientDataValueDeletionHandler
                     + "WHERE psi.programstageid=" + programStage.getId() ;
 
         return jdbcTemplate.queryForInt( sql ) == 0 ? null : ERROR;
+    }
+    
+    @Override
+    public void deleteProgramInstance( ProgramInstance programInstance )
+    { 
+        String sql = "DELETE FROM patientdatavalue " +
+        		"WHERE programstageinstanceid in " +
+        		"( SELECT programstageinstanceid FROM programstageinstance " +
+        		"WHERE programinstanceid = " + programInstance.getId() + ")";
+
+        jdbcTemplate.execute( sql );
     }
 }
