@@ -27,15 +27,6 @@ package org.hisp.dhis.api.controller;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import static org.hisp.dhis.system.util.CodecUtils.filenameEncode;
-
-import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.Date;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
 import org.hisp.dhis.api.utils.IdentifiableObjectParams;
 import org.hisp.dhis.api.utils.WebLinkPopulator;
 import org.hisp.dhis.common.Grid;
@@ -52,11 +43,15 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.bind.annotation.*;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.Date;
+
+import static org.hisp.dhis.system.util.CodecUtils.filenameEncode;
 
 @Controller
 @RequestMapping( value = ReportTableController.RESOURCE_PATH )
@@ -125,7 +120,7 @@ public class ReportTableController
                                       HttpServletResponse response ) throws Exception
     {
         ReportTable reportTable = reportTableService.getReportTable( uid );
-        
+
         if ( organisationUnitUid == null && reportTable.hasReportParams() && reportTable.getReportParams().isOrganisationUnitSet() )
         {
             organisationUnitUid = organisationUnitService.getRootOrganisationUnits().iterator().next().getUid();
@@ -147,14 +142,14 @@ public class ReportTableController
                                    HttpServletResponse response ) throws Exception
     {
         ReportTable reportTable = reportTableService.getReportTable( uid );
-        
+
         if ( organisationUnitUid == null && reportTable.hasReportParams() && reportTable.getReportParams().isOrganisationUnitSet() )
         {
             organisationUnitUid = organisationUnitService.getRootOrganisationUnits().iterator().next().getUid();
         }
 
         Date date = period != null ? DateUtils.getMediumDate( period ) : new Date();
-        
+
         Grid grid = reportTableService.getReportTableGrid( uid, i18nManager.getI18nFormat(), date, organisationUnitUid );
 
         String filename = filenameEncode( grid.getTitle() ) + ".pdf";
@@ -170,7 +165,7 @@ public class ReportTableController
                                    HttpServletResponse response ) throws Exception
     {
         ReportTable reportTable = reportTableService.getReportTable( uid );
-        
+
         if ( organisationUnitUid == null && reportTable.hasReportParams() && reportTable.getReportParams().isOrganisationUnitSet() )
         {
             organisationUnitUid = organisationUnitService.getRootOrganisationUnits().iterator().next().getUid();
@@ -193,7 +188,7 @@ public class ReportTableController
                                    HttpServletResponse response ) throws Exception
     {
         ReportTable reportTable = reportTableService.getReportTable( uid );
-        
+
         if ( organisationUnitUid == null && reportTable.hasReportParams() && reportTable.getReportParams().isOrganisationUnitSet() )
         {
             organisationUnitUid = organisationUnitService.getRootOrganisationUnits().iterator().next().getUid();
