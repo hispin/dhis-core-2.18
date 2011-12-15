@@ -253,7 +253,6 @@ public class TableAlteror
         executeSql( "ALTER TABLE chart DROP COLUMN last3months" );
         executeSql( "ALTER TABLE chart DROP COLUMN last6months" );
         executeSql( "ALTER TABLE chart DROP COLUMN last9months" );
-        executeSql( "ALTER TABLE chart DROP COLUMN last12months" );
         executeSql( "ALTER TABLE chart DROP COLUMN sofarthisyear" );
         executeSql( "ALTER TABLE chart DROP COLUMN sofarthisfinancialyear" );
         executeSql( "ALTER TABLE chart DROP COLUMN last3to6months" );
@@ -267,7 +266,6 @@ public class TableAlteror
         executeSql( "ALTER TABLE datamartexport DROP COLUMN last3months" );
         executeSql( "ALTER TABLE datamartexport DROP COLUMN last6months" );
         executeSql( "ALTER TABLE datamartexport DROP COLUMN last9months" );
-        executeSql( "ALTER TABLE datamartexport DROP COLUMN last12months" );
         executeSql( "ALTER TABLE datamartexport DROP COLUMN sofarthisyear" );
         executeSql( "ALTER TABLE datamartexport DROP COLUMN sofarthisfinancialyear" );
         executeSql( "ALTER TABLE datamartexport DROP COLUMN last3to6months" );
