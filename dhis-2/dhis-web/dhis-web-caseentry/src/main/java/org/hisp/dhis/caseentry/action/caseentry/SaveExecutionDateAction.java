@@ -157,7 +157,7 @@ public class SaveExecutionDateAction
                     programInstance.setProgram( program );
                     programInstance.setCompleted( false );
                     
-                    if ( !programStage.getProgram().getAnonymousEvent() )
+                    if ( !programStage.getProgram().getAnonymous() )
                     {
                         programInstance.setPatient( patient );
                         patient.getPrograms().add( program );
