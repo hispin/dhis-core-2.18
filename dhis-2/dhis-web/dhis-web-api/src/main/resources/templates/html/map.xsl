@@ -8,8 +8,27 @@
 	  
 	  <table>
 		<tr>
-			<td>Data</td>
+			<td>Resource Data</td>
 			<td><a href="{@link}/data">png</a></td>
+		</tr>
+	  </table><br/>
+	  
+	  <table>
+		<tr>
+			<td>Dynamic Data</td>
+			<td><a href="data">png</a></td>
+		</tr>
+		<tr>
+			<td>in</td>
+			<td>indicator uid (req)</td>
+		</tr>
+		<tr>
+			<td>ou</td>
+			<td>organisation unit uid (req)</td>
+		</tr>
+		<tr>
+			<td>level</td>
+			<td>organisation unit level (opt)</td>
 		</tr>
 	  </table><br/>
 	  

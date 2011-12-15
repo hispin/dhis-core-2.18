@@ -10,8 +10,47 @@
 	  
 	  <table>
 		<tr>
-			<td>Data</td>
+			<td>Resource Data</td>
 			<td><a href="{@link}/data">png</a></td>
+		</tr>
+		<tr>
+			<td>width</td>
+			<td>width in px (opt)</td>
+		</tr>
+		<tr>
+			<td>height</td>
+			<td>height in px (opt)</td>
+		</tr>
+	  </table><br/>
+	  
+	  <table>
+		<tr>
+			<td>Dynamic Data</td>
+			<td><a href="data">png</a></td>
+		</tr>
+		<tr>
+			<td>ou</td>
+			<td>organisation unit uid (req)</td>
+		</tr>
+		<tr>
+			<td>pe</td>
+			<td>period yyyy-MM-dd (req)</td>
+		</tr>
+		<tr>
+			<td>periods</td>
+			<td>use periods or org units (opt)</td>
+		</tr>
+		<tr>
+			<td>width</td>
+			<td>width in px (opt)</td>
+		</tr>
+		<tr>
+			<td>height</td>
+			<td>height in px (opt)</td>
+		</tr>
+		<tr>
+			<td>skipTitle</td>
+			<td>skip title (opt)</td>
 		</tr>
 	  </table><br/>
 	  

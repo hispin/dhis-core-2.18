@@ -10,9 +10,17 @@
 	  
 	  <table>
 		<tr>
-			<td>Data</td>
+			<td>Resource Data</td>
 			<td><a href="{@link}/data">pdf</a></td>
 			<td><a href="{@link}/data.xls">xls</a></td>
+		</tr>
+		<tr>
+			<td>ou</td>
+			<td colspan="2">organisation unit uid (opt)</td>
+		</tr>
+		<tr>
+			<td>pe</td>
+			<td colspan="2">period yyyy-MM-dd (opt)</td>
 		</tr>
 	  </table><br/>
 	  

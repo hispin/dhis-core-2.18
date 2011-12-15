@@ -39,6 +39,8 @@ import org.hisp.dhis.api.utils.WebLinkPopulator;
 import org.hisp.dhis.mapping.MapView;
 import org.hisp.dhis.mapping.MappingService;
 import org.hisp.dhis.mapping.Maps;
+import org.hisp.dhis.organisationunit.OrganisationUnit;
+import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
@@ -58,6 +60,9 @@ public class MapController
     
     @Autowired
     private MappingService mappingService;
+    
+    @Autowired
+    private OrganisationUnitService organisationUnitService;
 
     //-------------------------------------------------------------------------------------------------------
     // GET
@@ -108,8 +113,15 @@ public class MapController
     public String getMap( Model model,
         @RequestParam( value = "in" ) String indicatorUid, 
         @RequestParam( value = "ou" ) String organisationUnitUid,
-        @RequestParam Integer level )
+        @RequestParam( value = "level", required = false ) Integer level )
     {
+        if ( level == null )
+        {
+            OrganisationUnit unit = organisationUnitService.getOrganisationUnit( organisationUnitUid );
+            
+            level = organisationUnitService.getLevelOfOrganisationUnit( unit.getId() );
+        }
+        
         MapView mapView = mappingService.getIndicatorLastYearMapView( indicatorUid, organisationUnitUid, level );
 
         model.addAttribute( "model", mapView );

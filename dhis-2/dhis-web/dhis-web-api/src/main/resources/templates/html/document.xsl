@@ -10,7 +10,7 @@
 	  
 	  <table>
 		<tr>
-			<td>Data</td>
+			<td>Resource Data</td>
 			<td><a href="{@link}/data">any</a></td>
 		</tr>
 	  </table><br/>
