@@ -110,31 +110,31 @@ public class Resources extends BaseLinkableObject
         List<MediaType> mediaTypes = Arrays.asList( defaultMediaTypes );
 
         resources.add( new Resource( "AttributeTypes", Attributes.class, requestMethods, mediaTypes ) );
-        resources.add( new Resource( "Charts", Charts.class, requestMethods, mediaTypes ) );
-        resources.add( new Resource( "Maps", Maps.class, requestMethods, mediaTypes ) );
-        resources.add( new Resource( "Documents", Documents.class, requestMethods, mediaTypes ) );
-        resources.add( new Resource( "Constants", Constants.class, requestMethods, mediaTypes ) );
-        resources.add( new Resource( "CompleteDataSetRegistrations", CompleteDataSetRegistrations.class, requestMethods, mediaTypes ) );
-        resources.add( new Resource( "Indicators", Indicators.class, requestMethods, mediaTypes ) );
-        resources.add( new Resource( "IndicatorGroups", IndicatorGroups.class, requestMethods, mediaTypes ) );
-        resources.add( new Resource( "IndicatorGroupSets", IndicatorGroupSets.class, requestMethods, mediaTypes ) );
-        resources.add( new Resource( "IndicatorTypes", IndicatorTypes.class, requestMethods, mediaTypes ) );
-        resources.add( new Resource( "DataElements", DataElements.class, requestMethods, mediaTypes ) );
-        resources.add( new Resource( "DataElementGroups", DataElementGroups.class, requestMethods, mediaTypes ) );
-        resources.add( new Resource( "DataElementGroupSets", DataElementGroupSets.class, requestMethods, mediaTypes ) );
         resources.add( new Resource( "Categories", DataElementCategories.class, requestMethods, mediaTypes ) );
         resources.add( new Resource( "CategoryCombos", DataElementCategoryCombos.class, requestMethods, mediaTypes ) );
         resources.add( new Resource( "CategoryOptions", DataElementCategoryOptions.class, requestMethods, mediaTypes ) );
         resources.add( new Resource( "CategoryOptionCombos", DataElementCategoryOptionCombos.class, requestMethods, mediaTypes ) );
+        resources.add( new Resource( "Charts", Charts.class, requestMethods, mediaTypes ) );
+        resources.add( new Resource( "CompleteDataSetRegistrations", CompleteDataSetRegistrations.class, requestMethods, mediaTypes ) );
+        resources.add( new Resource( "Constants", Constants.class, requestMethods, mediaTypes ) );
+        resources.add( new Resource( "DataElements", DataElements.class, requestMethods, mediaTypes ) );
+        resources.add( new Resource( "DataElementGroups", DataElementGroups.class, requestMethods, mediaTypes ) );
+        resources.add( new Resource( "DataElementGroupSets", DataElementGroupSets.class, requestMethods, mediaTypes ) );
+        resources.add( new Resource( "DataSets", DataSets.class, requestMethods, mediaTypes ) );
+        resources.add( new Resource( "Documents", Documents.class, requestMethods, mediaTypes ) );
+        resources.add( new Resource( "Indicators", Indicators.class, requestMethods, mediaTypes ) );
+        resources.add( new Resource( "IndicatorGroups", IndicatorGroups.class, requestMethods, mediaTypes ) );
+        resources.add( new Resource( "IndicatorGroupSets", IndicatorGroupSets.class, requestMethods, mediaTypes ) );
+        resources.add( new Resource( "IndicatorTypes", IndicatorTypes.class, requestMethods, mediaTypes ) );
+        resources.add( new Resource( "Maps", Maps.class, requestMethods, mediaTypes ) );
         resources.add( new Resource( "OrganisationUnits", OrganisationUnits.class, requestMethods, mediaTypes ) );
         resources.add( new Resource( "OrganisationUnitGroups", OrganisationUnitGroups.class, requestMethods, mediaTypes ) );
         resources.add( new Resource( "OrganisationUnitGroupSets", OrganisationUnitGroupSets.class, requestMethods, mediaTypes ) );
-        resources.add( new Resource( "SqlViews", SqlViews.class, requestMethods, mediaTypes ) );
-        resources.add( new Resource( "ValidationRules", ValidationRules.class, requestMethods, mediaTypes ) );
-        resources.add( new Resource( "ValidationRuleGroups", ValidationRuleGroups.class, requestMethods, mediaTypes ) );
-        resources.add( new Resource( "DataSets", DataSets.class, requestMethods, mediaTypes ) );
-        resources.add( new Resource( "Users", Users.class, requestMethods, mediaTypes ) );
         resources.add( new Resource( "Reports", Reports.class, requestMethods, mediaTypes ) );
         resources.add( new Resource( "ReportTables", ReportTables.class, requestMethods, mediaTypes ) );
+        resources.add( new Resource( "SqlViews", SqlViews.class, requestMethods, mediaTypes ) );
+        resources.add( new Resource( "Users", Users.class, requestMethods, mediaTypes ) );
+        resources.add( new Resource( "ValidationRules", ValidationRules.class, requestMethods, mediaTypes ) );
+        resources.add( new Resource( "ValidationRuleGroups", ValidationRuleGroups.class, requestMethods, mediaTypes ) );
     }
 }
