@@ -40,8 +40,8 @@
 		</tr>
 		
 		<tr>
-			<td><label>$i18n.getString( "anonymous_event" )</label></td>
-			<td><input type="checkbox" id="anonymousEvent" name="anonymousEvent" value='true' ></td>
+			<td><label>$i18n.getString( "anonymous" )</label></td>
+			<td><input type="checkbox" id="anonymous" name="anonymous" value='true' disabled='disabled'></td>
 			<td></td>
 		</tr>
 		

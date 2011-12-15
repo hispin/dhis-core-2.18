@@ -44,8 +44,8 @@
 	 </tr>
 	 
 	 <tr>
-		<td><label>$i18n.getString( "anonymous_event" )</label></td>
-		<td><input type="checkbox" id="anonymousEvent" name="anonymousEvent" value='true' #if( $program.anonymousEvent=='true' ) checked #end ></td>
+		<td><label>$i18n.getString( "anonymous" )</label></td>
+		<td><input type="checkbox" id="anonymous" name="anonymous" value='true' #if( $program.anonymous=='true' ) checked #end #if( $program.singleEvent=='false' ) disabled='disabled' #end #></td>
 		<td></td>
 	 </tr>
 		
