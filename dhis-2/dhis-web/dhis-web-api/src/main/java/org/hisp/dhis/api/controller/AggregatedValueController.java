@@ -39,6 +39,7 @@ import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodService;
 import org.hisp.dhis.period.RelativePeriods;
+import org.hisp.dhis.util.ContextUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -84,6 +85,9 @@ public class AggregatedValueController
 
     @RequestMapping( method = RequestMethod.GET )
     public void getAggregatedValues(
+        @RequestParam( value = "de", required = false ) List<String> dataElementUids,
+        @RequestParam( value = "in", required = false ) List<String> indicatorUids,
+        @RequestParam( value = "ou" ) List<String> organisationUnitsUids,
         @RequestParam( required = false ) boolean lastMonth,
         @RequestParam( required = false ) boolean monthsThisYear,
         @RequestParam( required = false ) boolean monthsLastYear,
@@ -93,9 +97,6 @@ public class AggregatedValueController
         @RequestParam( required = false ) boolean thisYear,
         @RequestParam( required = false ) boolean lastYear,
         @RequestParam( required = false ) boolean lastFiveYears,
-        @RequestParam( value = "ou" ) List<String> organisationUnitsUids,
-        @RequestParam( value = "i", required = false ) List<String> indicatorUids,
-        @RequestParam( value = "de", required = false ) List<String> dataElementUids,
         HttpServletResponse response
     ) throws IOException, I18nManagerException
     {
@@ -201,7 +202,7 @@ public class AggregatedValueController
 
         JacksonUtils.writeObject( valueList, response.getOutputStream() );
 
-        response.setContentType( "application/json" );
+        response.setContentType( ContextUtils.CONTENT_TYPE_JSON );
         response.setStatus( HttpServletResponse.SC_OK );
     }
 }
