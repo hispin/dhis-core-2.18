@@ -54,6 +54,7 @@ public class ContextUtils
     public static final String CONTENT_TYPE_XML = "application/xml";
     public static final String CONTENT_TYPE_CSV = "application/csv";
     public static final String CONTENT_TYPE_PNG = "image/png";
+    public static final String CONTENT_TYPE_JPG = "image/jpg";
     public static final String CONTENT_TYPE_EXCEL = "application/vnd.ms-excel";
     public static final String CONTENT_TYPE_JAVASCRIPT = "application/javascript";
 

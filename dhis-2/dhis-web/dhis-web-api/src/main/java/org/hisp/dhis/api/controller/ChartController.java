@@ -27,34 +27,33 @@ package org.hisp.dhis.api.controller;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import org.hisp.dhis.aggregation.AggregatedDataValueService;
-import org.hisp.dhis.aggregation.AggregationService;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.ArrayList;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 import org.hisp.dhis.api.utils.IdentifiableObjectParams;
 import org.hisp.dhis.api.utils.WebLinkPopulator;
 import org.hisp.dhis.chart.Chart;
 import org.hisp.dhis.chart.ChartService;
 import org.hisp.dhis.chart.Charts;
-import org.hisp.dhis.completeness.DataSetCompletenessService;
-import org.hisp.dhis.datavalue.DataValueService;
 import org.hisp.dhis.i18n.I18nManager;
 import org.hisp.dhis.i18n.I18nManagerException;
-import org.hisp.dhis.options.SystemSettingManager;
-import org.hisp.dhis.period.PeriodService;
+import org.hisp.dhis.util.ContextUtils;
 import org.jfree.chart.ChartUtilities;
 import org.jfree.chart.JFreeChart;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
-import org.springframework.web.bind.annotation.*;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.ArrayList;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseStatus;
 
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
@@ -67,25 +66,6 @@ public class ChartController
 
     @Autowired
     private ChartService chartService;
-
-    @Autowired
-    private AggregatedDataValueService aggregatedDataValueService;
-
-    @Autowired
-    private AggregationService aggregationService;
-
-    @Autowired
-    private DataValueService dataValueService;
-
-    @Autowired
-    private PeriodService periodService;
-
-    @Autowired
-    @Qualifier( "registrationDataCompletenessService" )
-    private DataSetCompletenessService dataSetCompletenessService;
-
-    @Autowired
-    private SystemSettingManager systemSettingManager;
 
     @Autowired
     private I18nManager i18nManager;
@@ -127,13 +107,7 @@ public class ChartController
         return "chart";
     }
 
-    @RequestMapping( value = "/{uid}/data", method = RequestMethod.GET )
-    public void getChartData( @PathVariable( "uid" ) String uid, HttpServletResponse response ) throws IOException, I18nManagerException
-    {
-        Chart chart = chartService.getChart( uid );
-    }
-
-    @RequestMapping( value = "/{uid}/data.png", method = RequestMethod.GET )
+    @RequestMapping( value = {"/{uid}/data","/{uid}/data.png"}, method = RequestMethod.GET )
     public void getChartPng( @PathVariable( "uid" ) String uid,
                              @RequestParam( value = "width", defaultValue = "700", required = false ) int width,
                              @RequestParam( value = "height", defaultValue = "500", required = false ) int height,
@@ -141,7 +115,7 @@ public class ChartController
     {
         JFreeChart chart = chartService.getJFreeChart( uid, i18nManager.getI18nFormat() );
 
-        response.setContentType( "image/png" );
+        response.setContentType( ContextUtils.CONTENT_TYPE_PNG );
         ChartUtilities.writeChartAsPNG( response.getOutputStream(), chart, width, height );
     }
 
@@ -153,7 +127,7 @@ public class ChartController
     {
         JFreeChart chart = chartService.getJFreeChart( uid, i18nManager.getI18nFormat() );
 
-        response.setContentType( "image/jpg" );
+        response.setContentType( ContextUtils.CONTENT_TYPE_JPG );
         ChartUtilities.writeChartAsJPEG( response.getOutputStream(), chart, width, height );
     }
 
