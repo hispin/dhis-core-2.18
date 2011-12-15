@@ -135,6 +135,7 @@ public class ChartController
         @RequestParam( value = "periods", required = false ) boolean periods,
         @RequestParam( value = "width", defaultValue = "700", required = false ) int width,
         @RequestParam( value = "height", defaultValue = "500", required = false ) int height,
+        @RequestParam( value = "skipTitle", required = false ) boolean skipTitle,
         HttpServletResponse response ) throws Exception
     {
         Indicator indicator = indicatorService.getIndicator( indicatorUid );
@@ -144,11 +145,11 @@ public class ChartController
         
         if ( periods )
         {
-            chart = chartService.getJFreePeriodChart( indicator, unit, true, i18nManager.getI18nFormat() );
+            chart = chartService.getJFreePeriodChart( indicator, unit, !skipTitle, i18nManager.getI18nFormat() );
         }
         else
         {
-            chart = chartService.getJFreeOrganisationUnitChart( indicator, unit, true, i18nManager.getI18nFormat() );
+            chart = chartService.getJFreeOrganisationUnitChart( indicator, unit, !skipTitle, i18nManager.getI18nFormat() );
         }
         
         response.setContentType( ContextUtils.CONTENT_TYPE_PNG );
