@@ -15,12 +15,11 @@
 
 <h3>$i18n.getString("user_message_settings")</h3>
 
-<ul style="list-style-type:none">
-<li><input type="checkbox" id="messageEmailNotification" name="messageEmailNotification" #if( $messageEmailNotification ) checked="checked"#end/>
-$i18n.getString( "message_email_notification" )</li>
+<h4>$i18n.getString( "message_email_notification" )</h4>
+<p><input type="checkbox" id="messageEmailNotification" name="messageEmailNotification" #if( $messageEmailNotification ) checked="checked"#end/></p>
 
-<li><input type="checkbox" id="messageSmsNotification" name="messageSmsNotification" #if( $messageSmsNotification ) checked="checked"#end/>
-$i18n.getString( "message_sms_notification" )</li>
-</ul>
+
+<h4>$i18n.getString( "message_sms_notification" )</h4>
+<p><input type="checkbox" id="messageSmsNotification" name="messageSmsNotification" #if( $messageSmsNotification ) checked="checked"#end/></p>
 
 <p><input type="button" value="$i18n.getString( 'save' )" style="width:10em"/></p>
