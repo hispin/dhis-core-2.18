@@ -29,6 +29,8 @@ package org.hisp.dhis.mapgeneration;
 
 import java.awt.image.BufferedImage;
 
+import org.hisp.dhis.mapping.MapView;
+
 /**
  * The MapGenerationService interface generates map images from Map objects.
  * 
@@ -48,8 +50,8 @@ public interface MapGenerationService
     /**
      * Generate an image that represents this map.
      * 
-     * @param map the map that will be rendered
+     * @param mapView the map view that will be rendered
      * @return the rendered map image
      */
-    public BufferedImage generateMapImage( Map map );
+    public BufferedImage generateMapImage( MapView mapView );
 }

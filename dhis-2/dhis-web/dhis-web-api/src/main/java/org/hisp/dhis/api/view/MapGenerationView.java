@@ -43,7 +43,7 @@ public class MapGenerationView
     extends AbstractView
 {
     @Autowired
-    MapGenerationService mapGenerationService;
+    private MapGenerationService mapGenerationService;
 
     public MapGenerationView()
     {
@@ -56,7 +56,7 @@ public class MapGenerationView
         throws Exception
     {
         MapView mapView = (MapView) model.get( "model" );
-        BufferedImage image = mapGenerationService.generateMapImage( new org.hisp.dhis.mapgeneration.Map( mapView ) );
+        BufferedImage image = mapGenerationService.generateMapImage( mapView );
 
         response.setContentType( MediaType.IMAGE_PNG.toString() );
         ImageIO.write( image, "PNG", response.getOutputStream() );

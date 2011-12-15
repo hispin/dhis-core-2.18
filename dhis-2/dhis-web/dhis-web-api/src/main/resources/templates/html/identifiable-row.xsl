@@ -9,32 +9,8 @@
       <td> <a href="{@link}.xml">xml</a> </td>
       <td> <a href="{@link}.json">json</a> </td>
       <td> <a href="{@link}.jsonp">jsonp</a> </td>
-      <td><a href="{@link}.pdf">pdf</a> </td>
+      <td> <a href="{@link}.pdf">pdf</a> </td>
     </tr>
   </xsl:template>
-
-  <!-- special case - TODO handle this better -->
-  <!--   <xsl:template match="d:parent" mode="row">
-      <tr>
-          <td>
-              <xsl:value-of select="@name"/>
-          </td>
-          <td>
-              <a href="{@link}">html</a>
-          </td>
-          <td>
-              <a href="{@link}.xml">xml</a>
-          </td>
-          <td>
-              <a href="{@link}.json">json</a>
-          </td>
-          <td>
-              <a href="{@link}.jsonp">jsonp</a>
-          </td>
-          <td>
-              <a href="{@link}.pdf">pdf</a>
-          </td>
-      </tr>
-  </xsl:template>-->
 
 </xsl:stylesheet>

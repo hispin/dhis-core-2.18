@@ -44,29 +44,23 @@ public interface MappingService
     final String GEOJSON_DIR = "geojson";
 
     final String MAP_VALUE_TYPE_INDICATOR = "indicator";
-
     final String MAP_VALUE_TYPE_DATAELEMENT = "dataelement";
 
     final String MAP_LEGEND_SYMBOLIZER_COLOR = "color";
-
     final String MAP_LEGEND_SYMBOLIZER_IMAGE = "image";
 
     final String MAPLEGENDSET_TYPE_AUTOMATIC = "automatic";
-
     final String MAPLEGENDSET_TYPE_PREDEFINED = "predefined";
 
     final String KEY_MAP_DATE_TYPE = "dateType";
 
     final String MAP_DATE_TYPE_FIXED = "fixed";
-
     final String MAP_DATE_TYPE_START_END = "start-end";
 
     final String ORGANISATION_UNIT_SELECTION_TYPE_PARENT = "parent";
-
     final String ORGANISATION_UNIT_SELECTION_TYPE_LEVEL = "level";
 
     final String MAP_LAYER_TYPE_BASELAYER = "baselayer";
-
     final String MAP_LAYER_TYPE_OVERLAY = "overlay";
 
     // -------------------------------------------------------------------------

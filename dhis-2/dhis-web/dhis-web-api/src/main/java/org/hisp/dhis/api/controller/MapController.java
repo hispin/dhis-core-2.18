@@ -50,9 +50,11 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
 @Controller
-@RequestMapping( value = "/maps" )
+@RequestMapping( value = MapController.RESOURCE_PATH )
 public class MapController
 {
+    public static final String RESOURCE_PATH = "/maps";
+    
     @Autowired
     private MappingService mappingService;
 

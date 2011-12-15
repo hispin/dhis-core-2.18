@@ -7,7 +7,7 @@
   <xsl:template match="d:chart">
     <div class="chart">
       <h2>Chart: <xsl:value-of select="@name"/> </h2>
-      <a href="{@link}.png"><img src="{@link}.png" style="border-style:solid; border-width: 1px; padding: 5px;" /></a>
+      <a href="{@link}/data"><img src="{@link}/data" style="border-style:solid; border-width: 1px; padding: 5px;" /></a>
 
       <h3>Details</h3>
 
