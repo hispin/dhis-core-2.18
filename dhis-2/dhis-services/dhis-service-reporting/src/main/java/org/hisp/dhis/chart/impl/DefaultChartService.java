@@ -258,9 +258,8 @@ public class DefaultChartService
     public JFreeChart getJFreeOrganisationUnitChart( Indicator indicator, OrganisationUnit parent, boolean title,
                                                      I18nFormat format )
     {
-        RelativePeriods relatives = new RelativePeriods();
-        relatives.setThisYear( true );
-        List<Period> periods = periodService.reloadPeriods( relatives.getRelativePeriods( format, true ) );
+        List<Period> periods = periodService.reloadPeriods( 
+            new RelativePeriods().setThisYear( true ).getRelativePeriods( format, true ) );
 
         Chart chart = new Chart();
 
