@@ -1,7 +1,7 @@
-package org.hisp.dhis.mobile.action;
+package org.hisp.dhis.sms.outbound;
 
 /*
- * Copyright (c) 2004-2010, University of Oslo
+ * Copyright (c) 2011, University of Oslo
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -27,42 +27,26 @@ package org.hisp.dhis.mobile.action;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import org.hisp.dhis.sms.SmsConfigurationManager;
-import org.hisp.dhis.sms.config.SmsConfiguration;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.hisp.dhis.sms.SmsServiceException;
+import org.hisp.dhis.sms.config.SmsConfigurable;
 
-import com.opensymphony.xwork2.Action;
+/**
+ * OutboundSmsService provides support for sending SMSes.
+ */
+public interface OutboundSmsService extends SmsConfigurable
+{
 
-public class ShowMobileConfigurationFormAction implements Action {
+    String ID = OutboundSmsService.class.getName();
 
-	// -------------------------------------------------------------------------
-	// Dependencies
-	// -------------------------------------------------------------------------
+    public boolean isEnabled();
 
-	@Autowired
-        private SmsConfigurationManager smsConfigurationManager;
+    /**
+     * Send an SMS message.
+     * 
+     * @param sms the message to be sent
+     * @throws SmsServiceException if unable to sent Message
+     */
+    public void sendMessage( OutboundSms sms )
+        throws SmsServiceException;
 
-	// -------------------------------------------------------------------------
-	// Output
-	// -------------------------------------------------------------------------
-
-	private SmsConfiguration smsConfig;
-
-	@Override
-	public String execute() throws Exception {
-	    smsConfig = smsConfigurationManager.getSmsConfiguration();
-		return SUCCESS;
-	}
-
-	public boolean getSmsServiceStatus() {
-		return this.smsConfig != null && this.smsConfig.isEnabled();
-	}
-
-	public SmsConfiguration getSmsConfig() {
-		return smsConfig;
-	}
-
-	public void setSmsConfig(SmsConfiguration smsConfig) {
-		this.smsConfig = smsConfig;
-	}
 }

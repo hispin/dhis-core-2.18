@@ -79,6 +79,9 @@ public interface SystemSettingManager
     final String AGGREGATION_STRATEGY_BATCH = "batch";
     final String DEFAULT_AGGREGATION_STRATEGY = AGGREGATION_STRATEGY_REAL_TIME;
     final int DEFAULT_COMPLETENESS_OFFSET = 15;
+
+    final String KEY_SMS_CONFIG = "SMS_CONFIG";
+    
     final HashSet<String> DEFAULT_SCHEDULED_PERIOD_TYPES = new HashSet<String>() { {
         add( MonthlyPeriodType.NAME ); 
         add( QuarterlyPeriodType.NAME );

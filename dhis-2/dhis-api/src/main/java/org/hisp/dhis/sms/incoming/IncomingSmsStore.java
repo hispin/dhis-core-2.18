@@ -1,7 +1,7 @@
-package org.hisp.dhis.mobile.action;
+package org.hisp.dhis.sms.incoming;
 
 /*
- * Copyright (c) 2004-2010, University of Oslo
+ * Copyright (c) 2011, University of Oslo
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -27,42 +27,31 @@ package org.hisp.dhis.mobile.action;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import org.hisp.dhis.sms.SmsConfigurationManager;
-import org.hisp.dhis.sms.config.SmsConfiguration;
-import org.springframework.beans.factory.annotation.Autowired;
+import java.util.Collection;
 
-import com.opensymphony.xwork2.Action;
+/** 
+ * Store for incoming SMS messages.
+ */
+public interface IncomingSmsStore
+{
 
-public class ShowMobileConfigurationFormAction implements Action {
+    public static final String ID = IncomingSmsStore.class.getName();
+    
+    public int save( IncomingSms incomingSms );
 
-	// -------------------------------------------------------------------------
-	// Dependencies
-	// -------------------------------------------------------------------------
+    public IncomingSms get( int id );
 
-	@Autowired
-        private SmsConfigurationManager smsConfigurationManager;
+    public Collection<IncomingSms> getSmsByStatus( SmsMessageStatus status );
 
-	// -------------------------------------------------------------------------
-	// Output
-	// -------------------------------------------------------------------------
+    public Collection<IncomingSms> getSmsByOriginator( String originator );
 
-	private SmsConfiguration smsConfig;
+    public long getSmsCount();
 
-	@Override
-	public String execute() throws Exception {
-	    smsConfig = smsConfigurationManager.getSmsConfiguration();
-		return SUCCESS;
-	}
+    public Collection<IncomingSms> getAllSmses();
 
-	public boolean getSmsServiceStatus() {
-		return this.smsConfig != null && this.smsConfig.isEnabled();
-	}
+//    public Collection<IncomingSms> getSms( String originator, Date startDate, Date endDate);
+//    
+//    public Collection<IncomingSms> getSmsByDate( Date startDate, Date endDate );
+//
 
-	public SmsConfiguration getSmsConfig() {
-		return smsConfig;
-	}
-
-	public void setSmsConfig(SmsConfiguration smsConfig) {
-		this.smsConfig = smsConfig;
-	}
 }

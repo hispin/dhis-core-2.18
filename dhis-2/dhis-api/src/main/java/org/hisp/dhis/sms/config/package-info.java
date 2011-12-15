@@ -1,5 +1,3 @@
-package org.hisp.dhis.mobile.action;
-
 /*
  * Copyright (c) 2004-2010, University of Oslo
  * All rights reserved.
@@ -27,42 +25,19 @@ package org.hisp.dhis.mobile.action;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import org.hisp.dhis.sms.SmsConfigurationManager;
-import org.hisp.dhis.sms.config.SmsConfiguration;
-import org.springframework.beans.factory.annotation.Autowired;
+/**
+ * @author bobj
+ */
 
-import com.opensymphony.xwork2.Action;
+@XmlSchema(
+    namespace = "http://dhis2.org/schema/dxf/2.0",
+    xmlns = {   
+         @XmlNs(namespaceURI = "http://dhis2.org/schema/dxf/2.0", prefix = "d")  
+    },
+    elementFormDefault = XmlNsForm.QUALIFIED) 
 
-public class ShowMobileConfigurationFormAction implements Action {
+package org.hisp.dhis.sms.config;
 
-	// -------------------------------------------------------------------------
-	// Dependencies
-	// -------------------------------------------------------------------------
-
-	@Autowired
-        private SmsConfigurationManager smsConfigurationManager;
-
-	// -------------------------------------------------------------------------
-	// Output
-	// -------------------------------------------------------------------------
-
-	private SmsConfiguration smsConfig;
-
-	@Override
-	public String execute() throws Exception {
-	    smsConfig = smsConfigurationManager.getSmsConfiguration();
-		return SUCCESS;
-	}
-
-	public boolean getSmsServiceStatus() {
-		return this.smsConfig != null && this.smsConfig.isEnabled();
-	}
-
-	public SmsConfiguration getSmsConfig() {
-		return smsConfig;
-	}
-
-	public void setSmsConfig(SmsConfiguration smsConfig) {
-		this.smsConfig = smsConfig;
-	}
-}
+import javax.xml.bind.annotation.XmlSchema;
+import javax.xml.bind.annotation.XmlNs;
+import javax.xml.bind.annotation.XmlNsForm;

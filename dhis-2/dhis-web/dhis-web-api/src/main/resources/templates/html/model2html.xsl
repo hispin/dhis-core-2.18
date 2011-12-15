@@ -42,4 +42,8 @@
     <xsl:include href="user.xsl"/>
     <xsl:include href="grid.xsl"/>
 
+    <!-- Config elements -->    
+
+    <xsl:include href="config/sms.xsl"/>
+
 </xsl:stylesheet>

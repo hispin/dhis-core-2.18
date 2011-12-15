@@ -45,12 +45,4 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     <property name="sessionFactory" ref="sessionFactory"/>
   </bean>
 
-  <!--  SMS Message sender -->
-
-  <bean id="org.hisp.dhis.mobile.service.SmsMessageSender" class="org.hisp.dhis.mobile.service.SmsMessageSender" />
-
-  <!--  OutboundSmsService stub just logging invocations, only to be used for testing! -->
-
-  <!-- <bean id="org.hisp.dhis.mobile.service.TestOutboundSmsService" class="org.hisp.dhis.mobile.service.TestOutboundSmsService" />  -->
-
 </beans>
