@@ -10,13 +10,11 @@
     <!-- html page level settings -->
     <xsl:include href="html-wrapper.xsl"/>
 
-    <!-- for resource 'directory' -->
-    <xsl:include href="resource.xsl"/>
-  
     <!-- for list views -->
     <xsl:include href="list.xsl"/>
 
     <!-- for rendering elements -->
+    <xsl:include href="resource.xsl"/>
     <xsl:include href="map.xsl"/>
     <xsl:include href="chart.xsl"/>
     <xsl:include href="category.xsl" />
@@ -43,6 +41,5 @@
     <xsl:include href="sqlView.xsl"/>
     <xsl:include href="user.xsl"/>
     <xsl:include href="grid.xsl"/>
-    <!-- etc ... -->
 
 </xsl:stylesheet>
