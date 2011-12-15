@@ -172,14 +172,15 @@ public class GeoToolsMapGenerationService
         // NOTE There is no need to provide startDate and endDate as period is
         // set
         Collection<AggregatedMapValue> mapValues;
-        if ( mapView.getMapValueType().equals( "dataelement" ) )
+        
+        if ( isIndicator )
         {
-            mapValues = mappingService.getDataElementMapValues( mapView.getDataElement().getId(), mapView.getPeriod()
+            mapValues = mappingService.getIndicatorMapValues( mapView.getIndicator().getId(), mapView.getPeriod()
                 .getId(), mapView.getParentOrganisationUnit().getId(), mapView.getOrganisationUnitLevel().getLevel() );
         }
         else
         {
-            mapValues = mappingService.getIndicatorMapValues( mapView.getIndicator().getId(), mapView.getPeriod()
+            mapValues = mappingService.getDataElementMapValues( mapView.getDataElement().getId(), mapView.getPeriod()
                 .getId(), mapView.getParentOrganisationUnit().getId(), mapView.getOrganisationUnitLevel().getLevel() );
         }
 

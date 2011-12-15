@@ -46,6 +46,7 @@ import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodService;
 import org.hisp.dhis.period.PeriodType;
+import org.hisp.dhis.period.RelativePeriods;
 import org.hisp.dhis.system.util.ConversionUtils;
 import org.hisp.dhis.system.util.MathUtils;
 import org.hisp.dhis.user.CurrentUserService;
@@ -518,6 +519,26 @@ public class DefaultMappingService
         return mappingStore.getMapViewByName( name );
     }
 
+    public MapView getIndicatorLastYearMapView( String indicatorUid, String organisationUnitUid, int level )
+    {
+        MapView mapView = new MapView();
+        
+        Period period = periodService.reloadPeriod( 
+            new RelativePeriods().setLastYear( true ).getRelativePeriods().iterator().next() );
+        
+        Indicator indicator = indicatorService.getIndicator( indicatorUid );
+        OrganisationUnit unit = organisationUnitService.getOrganisationUnit( organisationUnitUid );
+        
+        mapView.setIndicator( indicator );
+        mapView.setPeriod( period );
+        mapView.setParentOrganisationUnit( unit );
+        mapView.setOrganisationUnitLevel( new OrganisationUnitLevel( level, "" ) );
+        mapView.setName( indicator.getName() );
+        mapView.setMapValueType( MappingService.MAP_VALUE_TYPE_INDICATOR );
+        
+        return mapView;
+    }
+
     public Collection<MapView> getAllMapViews()
     {
         User user = currentUserService.getCurrentUser();
@@ -550,7 +571,7 @@ public class DefaultMappingService
 
         return mapViews;
     }
-
+    
     // -------------------------------------------------------------------------
     // MapLayer
     // -------------------------------------------------------------------------
