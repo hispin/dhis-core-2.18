@@ -1,7 +1,7 @@
-package org.hisp.dhis.mobile.action;
+package org.hisp.dhis.sms.config;
 
 /*
- * Copyright (c) 2004-2010, University of Oslo
+ * Copyright (c) 2011, University of Oslo
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -27,42 +27,46 @@ package org.hisp.dhis.mobile.action;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import org.hisp.dhis.sms.SmsConfigurationManager;
-import org.hisp.dhis.sms.config.SmsConfiguration;
-import org.springframework.beans.factory.annotation.Autowired;
+public class BulkSmsGatewayConfig
+    extends SmsGatewayConfig
+{
 
-import com.opensymphony.xwork2.Action;
+    private static final long serialVersionUID = 5249703354480948250L;
 
-public class ShowMobileConfigurationFormAction implements Action {
+    private String username;
 
-	// -------------------------------------------------------------------------
-	// Dependencies
-	// -------------------------------------------------------------------------
+    private String password;
 
-	@Autowired
-        private SmsConfigurationManager smsConfigurationManager;
+    public String getUsername()
+    {
+        return username;
+    }
 
-	// -------------------------------------------------------------------------
-	// Output
-	// -------------------------------------------------------------------------
+    public void setUsername( String username )
+    {
+        this.username = username;
+    }
 
-	private SmsConfiguration smsConfig;
+    public String getPassword()
+    {
+        return password;
+    }
 
-	@Override
-	public String execute() throws Exception {
-	    smsConfig = smsConfigurationManager.getSmsConfiguration();
-		return SUCCESS;
-	}
+    public void setPassword( String password )
+    {
+        this.password = password;
+    }
 
-	public boolean getSmsServiceStatus() {
-		return this.smsConfig != null && this.smsConfig.isEnabled();
-	}
+    @Override
+    public boolean isInbound()
+    {
+        return false;
+    }
 
-	public SmsConfiguration getSmsConfig() {
-		return smsConfig;
-	}
+    @Override
+    public boolean isOutbound()
+    {
+        return true;
+    }
 
-	public void setSmsConfig(SmsConfiguration smsConfig) {
-		this.smsConfig = smsConfig;
-	}
 }

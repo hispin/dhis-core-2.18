@@ -28,11 +28,12 @@ package org.hisp.dhis.mobile.action;
  */
 
 
+import org.hisp.dhis.sms.SmsServiceException;
+import org.hisp.dhis.sms.outbound.OutboundSms;
+import org.hisp.dhis.sms.outbound.OutboundSmsService;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.opensymphony.xwork2.Action;
-import org.hisp.dhis.api.sms.OutboundSmsService;
-import org.hisp.dhis.api.sms.SmsServiceException;
 
 public class SendSMSAction
     implements Action
@@ -42,7 +43,6 @@ public class SendSMSAction
     // Dependencies
     // -------------------------------------------------------------------------
 
-    @Autowired(required=false)
     private OutboundSmsService outboundSmsService;
 
     public void setOutboundSmsService( OutboundSmsService outboundSmsService )
@@ -64,7 +64,7 @@ public class SendSMSAction
     
     public boolean getSmsServiceStatus()
     {
-        return outboundSmsService != null && outboundSmsService.isSmsServiceAvailable();
+        return outboundSmsService.isEnabled();
     }
 
     String recipient;
@@ -97,7 +97,7 @@ public class SendSMSAction
         {
             try
             {
-                outboundSmsService.sendMessage( msg, recipient );
+                outboundSmsService.sendMessage( new OutboundSms( msg, recipient ) );
                 this.message = "Sent message to " + recipient;
             }
             catch ( SmsServiceException e )

@@ -1,7 +1,7 @@
-package org.hisp.dhis.mobile.action;
+package org.hisp.dhis.sms;
 
 /*
- * Copyright (c) 2004-2010, University of Oslo
+ * Copyright (c) 2011, University of Oslo
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -27,42 +27,24 @@ package org.hisp.dhis.mobile.action;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import org.hisp.dhis.sms.SmsConfigurationManager;
-import org.hisp.dhis.sms.config.SmsConfiguration;
-import org.springframework.beans.factory.annotation.Autowired;
+/**
+ * This exception type is used for signaling any problems during SMS handling.
+ */
+public class SmsServiceException
+    extends RuntimeException
+{
 
-import com.opensymphony.xwork2.Action;
+    private static final long serialVersionUID = -7927288362330380301L;
 
-public class ShowMobileConfigurationFormAction implements Action {
+    public SmsServiceException( String message )
+    {
+        super( message );
+    }
 
-	// -------------------------------------------------------------------------
-	// Dependencies
-	// -------------------------------------------------------------------------
+    public SmsServiceException( String message, Exception cause )
+    {
+        super( message, cause );
+    }
 
-	@Autowired
-        private SmsConfigurationManager smsConfigurationManager;
-
-	// -------------------------------------------------------------------------
-	// Output
-	// -------------------------------------------------------------------------
-
-	private SmsConfiguration smsConfig;
-
-	@Override
-	public String execute() throws Exception {
-	    smsConfig = smsConfigurationManager.getSmsConfiguration();
-		return SUCCESS;
-	}
-
-	public boolean getSmsServiceStatus() {
-		return this.smsConfig != null && this.smsConfig.isEnabled();
-	}
-
-	public SmsConfiguration getSmsConfig() {
-		return smsConfig;
-	}
-
-	public void setSmsConfig(SmsConfiguration smsConfig) {
-		this.smsConfig = smsConfig;
-	}
+    
 }

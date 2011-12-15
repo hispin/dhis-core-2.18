@@ -1,7 +1,7 @@
-package org.hisp.dhis.mobile.action;
+package org.hisp.dhis.sms.config;
 
 /*
- * Copyright (c) 2004-2010, University of Oslo
+ * Copyright (c) 2011, University of Oslo
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -27,42 +27,29 @@ package org.hisp.dhis.mobile.action;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import org.hisp.dhis.sms.SmsConfigurationManager;
-import org.hisp.dhis.sms.config.SmsConfiguration;
-import org.springframework.beans.factory.annotation.Autowired;
+import java.io.Serializable;
 
-import com.opensymphony.xwork2.Action;
+/**
+ * Super class for gateway configurations
+ */
+@SuppressWarnings( "serial" )
+public abstract class SmsGatewayConfig implements Serializable
+{
+    
+    private String name;
 
-public class ShowMobileConfigurationFormAction implements Action {
+    public String getName()
+    {
+        return name;
+    }
 
-	// -------------------------------------------------------------------------
-	// Dependencies
-	// -------------------------------------------------------------------------
+    public void setName( String name )
+    {
+        this.name = name;
+    }
 
-	@Autowired
-        private SmsConfigurationManager smsConfigurationManager;
+    public abstract boolean isInbound();
 
-	// -------------------------------------------------------------------------
-	// Output
-	// -------------------------------------------------------------------------
-
-	private SmsConfiguration smsConfig;
-
-	@Override
-	public String execute() throws Exception {
-	    smsConfig = smsConfigurationManager.getSmsConfiguration();
-		return SUCCESS;
-	}
-
-	public boolean getSmsServiceStatus() {
-		return this.smsConfig != null && this.smsConfig.isEnabled();
-	}
-
-	public SmsConfiguration getSmsConfig() {
-		return smsConfig;
-	}
-
-	public void setSmsConfig(SmsConfiguration smsConfig) {
-		this.smsConfig = smsConfig;
-	}
+    public abstract boolean isOutbound();
+    
 }
