@@ -115,8 +115,8 @@ public class ReportTableController
 
     @RequestMapping( value = "/{uid}/data", method = RequestMethod.GET )
     public String getReportTableData( @PathVariable( "uid" ) String uid, Model model,
-                                      @RequestParam( value = "organisationUnit", required = false ) String organisationUnitUid,
-                                      @RequestParam( value = "period", required = false ) String period,
+                                      @RequestParam( value = "ou", required = false ) String organisationUnitUid,
+                                      @RequestParam( value = "pe", required = false ) String period,
                                       HttpServletResponse response ) throws Exception
     {
         ReportTable reportTable = reportTableService.getReportTable( uid );
@@ -137,8 +137,8 @@ public class ReportTableController
 
     @RequestMapping( value = "/{uid}/data.pdf", method = RequestMethod.GET )
     public void getReportTablePdf( @PathVariable( "uid" ) String uid,
-                                   @RequestParam( value = "organisationUnit", required = false ) String organisationUnitUid,
-                                   @RequestParam( value = "period", required = false ) String period,
+                                   @RequestParam( value = "ou", required = false ) String organisationUnitUid,
+                                   @RequestParam( value = "pe", required = false ) String period,
                                    HttpServletResponse response ) throws Exception
     {
         ReportTable reportTable = reportTableService.getReportTable( uid );
@@ -160,8 +160,8 @@ public class ReportTableController
 
     @RequestMapping( value = "/{uid}/data.xls", method = RequestMethod.GET )
     public void getReportTableXls( @PathVariable( "uid" ) String uid,
-                                   @RequestParam( value = "organisationUnit", required = false ) String organisationUnitUid,
-                                   @RequestParam( value = "period", required = false ) String period,
+                                   @RequestParam( value = "ou", required = false ) String organisationUnitUid,
+                                   @RequestParam( value = "pe", required = false ) String period,
                                    HttpServletResponse response ) throws Exception
     {
         ReportTable reportTable = reportTableService.getReportTable( uid );
@@ -183,8 +183,8 @@ public class ReportTableController
 
     @RequestMapping( value = "/{uid}/data.csv", method = RequestMethod.GET )
     public void getReportTableCsv( @PathVariable( "uid" ) String uid,
-                                   @RequestParam( value = "organisationUnit", required = false ) String organisationUnitUid,
-                                   @RequestParam( value = "period", required = false ) String period,
+                                   @RequestParam( value = "ou", required = false ) String organisationUnitUid,
+                                   @RequestParam( value = "pe", required = false ) String period,
                                    HttpServletResponse response ) throws Exception
     {
         ReportTable reportTable = reportTableService.getReportTable( uid );

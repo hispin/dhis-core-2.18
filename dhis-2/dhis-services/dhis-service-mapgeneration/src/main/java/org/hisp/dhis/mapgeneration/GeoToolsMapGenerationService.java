@@ -78,24 +78,22 @@ public class GeoToolsMapGenerationService
     // MapGenerationService implementation
     // -------------------------------------------------------------------------
 
-    public BufferedImage generateMapImage( Map map )
+    public BufferedImage generateMapImage( MapView mapView )
     {
-        Assert.isTrue( map != null );
-        Assert.isTrue( map.getMapViews() != null );
-        Assert.isTrue( map.getMapViews().size() > 0 );
+        Assert.isTrue( mapView != null );
 
         int height = 512;
 
         // Build internal map layer representation
-        List<InternalMapLayer> mapLayers = buildInternalMapLayers( map.getMapViews() );
+        InternalMapLayer mapLayer = buildSingleInternalMapLayer( mapView );
 
         // Build internal representation of a map using GeoTools, then render it
         // to an image
-        GeoToolsMap gtMap = new GeoToolsMap( mapLayers );
+        GeoToolsMap gtMap = new GeoToolsMap( mapLayer );
         BufferedImage mapImage = gtMap.render( height );
 
         // Build the legend set, then render it to an image
-        LegendSet legendSet = new LegendSet( mapLayers );
+        LegendSet legendSet = new LegendSet( mapLayer );
         BufferedImage legendImage = legendSet.render( height );
 
         // Combine the legend image and the map image into one image
@@ -122,26 +120,12 @@ public class GeoToolsMapGenerationService
 
     private static final int DEFAULT_RADIUS_LOW = 15;
 
-    private List<InternalMapLayer> buildInternalMapLayers( List<MapView> mapViews )
-    {
-        // Create the list of internal map layers
-        List<InternalMapLayer> mapLayers = new LinkedList<InternalMapLayer>();
-
-        // Build internal layers for each external layer
-        for ( MapView mapView : mapViews )
-        {
-            mapLayers.add( buildSingleInternalMapLayer( mapView ) );
-        }
-
-        return mapLayers;
-    }
-
     private InternalMapLayer buildSingleInternalMapLayer( MapView mapView )
     {
         Assert.isTrue( mapView != null );
         Assert.isTrue( mapView.getMapValueType() != null );
 
-        boolean isIndicator = "indicator".equals( mapView.getMapValueType() );
+        boolean isIndicator = MappingService.MAP_VALUE_TYPE_INDICATOR.equals( mapView.getMapValueType() );
 
         // Get the name from the external layer
         String name = mapView.getName();
