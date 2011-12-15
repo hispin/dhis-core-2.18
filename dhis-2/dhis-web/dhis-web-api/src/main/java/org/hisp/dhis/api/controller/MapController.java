@@ -80,7 +80,7 @@ public class MapController
         return "maps";
     }
 
-    @RequestMapping( value = {"/{uid}","/{uid}/data"}, method = RequestMethod.GET )
+    @RequestMapping( value = "/{uid}", method = RequestMethod.GET )
     public String getMap( @PathVariable String uid, IdentifiableObjectParams params, Model model, HttpServletRequest request )
     {
         MapView mapView = mappingService.getMapView( uid );
@@ -94,6 +94,14 @@ public class MapController
         model.addAttribute( "model", mapView );
 
         return "map";
+    }
+    
+    @RequestMapping( value = "/{uid}/data", method = RequestMethod.GET )
+    public String getMap( @PathVariable String uid, HttpServletRequest request, HttpServletResponse response )
+    {
+        String url = "forward:" + request.getRequestURI().replace( "/data", "" ) + ".png";
+        
+        return url;
     }
     
     @RequestMapping( value = "/data", method = RequestMethod.GET )
