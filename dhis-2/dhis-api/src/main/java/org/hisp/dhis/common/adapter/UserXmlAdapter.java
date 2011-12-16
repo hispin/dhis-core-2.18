@@ -47,7 +47,8 @@ public class UserXmlAdapter extends XmlAdapter<BaseIdentifiableObject, User>
 
         user.setUid( identifiableObject.getUid() );
         user.setLastUpdated( identifiableObject.getLastUpdated() );
-        user.setName( identifiableObject.getName() == null ? UUID.randomUUID().toString() : identifiableObject.getName() );
+        user.setFirstName( UUID.randomUUID().toString() );
+        user.setSurname( UUID.randomUUID().toString() );
 
         return user;
     }
