@@ -28,14 +28,14 @@ package org.hisp.dhis.message;
  */
 
 import org.codehaus.jackson.annotate.JsonProperty;
+import org.codehaus.jackson.map.annotate.JsonSerialize;
 import org.hisp.dhis.common.BaseIdentifiableObject;
 import org.hisp.dhis.common.Dxf2Namespace;
+import org.hisp.dhis.common.adapter.UserXmlAdapter;
 import org.hisp.dhis.user.User;
 
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.*;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import java.util.*;
 
 /**
@@ -176,6 +176,10 @@ public class MessageConversation
         this.subject = subject;
     }
 
+/*    @XmlElementWrapper( name = "userMessages" )
+    @XmlElement( name = "userMessage" )
+    @JsonProperty */
+    // TODO waiting for idObject version of userMessage
     public Set<UserMessage> getUserMessages()
     {
         return userMessages;
@@ -186,6 +190,9 @@ public class MessageConversation
         this.userMessages = userMessages;
     }
 
+    @XmlElementWrapper( name = "messages" )
+    @XmlElement( name = "message" )
+    @JsonProperty
     public List<Message> getMessages()
     {
         return messages;
@@ -197,7 +204,9 @@ public class MessageConversation
     }
 
     @XmlElement
+    @XmlJavaTypeAdapter( UserXmlAdapter.class )
     @JsonProperty
+    @JsonSerialize( as = BaseIdentifiableObject.class )
     public User getLastSender()
     {
         return lastSender;
