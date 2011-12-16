@@ -28,15 +28,18 @@ package org.hisp.dhis.message;
  */
 
 import org.codehaus.jackson.annotate.JsonProperty;
+import org.codehaus.jackson.map.annotate.JsonSerialize;
 import org.hisp.dhis.common.BaseIdentifiableObject;
 import org.hisp.dhis.common.CodeGenerator;
 import org.hisp.dhis.common.Dxf2Namespace;
+import org.hisp.dhis.common.adapter.UserXmlAdapter;
 import org.hisp.dhis.user.User;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import java.util.Date;
 
 /**
@@ -108,7 +111,9 @@ public class Message
     }
 
     @XmlElement
+    @XmlJavaTypeAdapter( UserXmlAdapter.class )
     @JsonProperty
+    @JsonSerialize( as = BaseIdentifiableObject.class )
     public User getSender()
     {
         return sender;
