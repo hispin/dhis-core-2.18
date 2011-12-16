@@ -158,7 +158,7 @@ public class ContextUtils
         response.setStatus( HttpServletResponse.SC_BAD_REQUEST );
         response.setContentType( CONTENT_TYPE_TEXT );
 
-        PrintWriter writer = new PrintWriter( response.getOutputStream() );
+        PrintWriter writer = response.getWriter();
         writer.println( message );
         writer.flush();
     }
