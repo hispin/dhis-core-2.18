@@ -172,6 +172,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		class="org.hisp.dhis.patient.action.program.AddProgramAction" scope="prototype">
 		<property name="programService" ref="org.hisp.dhis.program.ProgramService" />
 		<property name="programStageService" ref="org.hisp.dhis.program.ProgramStageService" />
+		<property name="programInstanceService" ref="org.hisp.dhis.program.ProgramInstanceService" />
 	</bean>
 
 	<bean id="org.hisp.dhis.patient.action.program.GetProgramListAction"

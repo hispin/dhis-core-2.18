@@ -3,7 +3,6 @@ function organisationUnitSelected( orgUnits )
 {
 	disable('executionDate');
 	setFieldValue('executionDate', '');
-	$('#executionDate').unbind('change');
 	
 	disable('createEventBtn');
 	disable('deleteCurrentEventBtn');
@@ -15,9 +14,9 @@ function organisationUnitSelected( orgUnits )
 			clearListById( 'programId' );
 			addOptionById( 'programId', '', i18n_please_select );
 			
-			for ( i in json.programs ) 
+			for ( i in json.programInstances ) 
 			{
-				$('#programId').append('<option value=' + json.programs[i].id + ' singleevent="true">' + json.programs[i].name + '</option>');
+				$('#programId').append('<option value=' + json.programInstances[i].id + ' singleevent="true" programInstanceId=' + json.programInstances[i].programInstanceId + '>' + json.programInstances[i].name + '</option>');
 			}			
 			
 		} );
@@ -45,7 +44,18 @@ function showEventForm()
 		function( json ) 
 		{    
 			setFieldValue( 'programStageId', json.programStages[0].id );
-			loadEventRegistrationForm();
+			
+			if( json.programStageInstances.length > 0 )
+			{
+				loadEventRegistrationForm();
+			}
+			else
+			{
+				enable('executionDate');
+				enable('createEventBtn');
+				disable('deleteCurrentEventBtn');
+				hideById('loaderDiv');
+			}
 			
 	});
 }
@@ -57,22 +67,42 @@ function loadEventRegistrationForm()
 			programStageId:getFieldValue('programStageId')
 		},function( )
 		{
-			enable('executionDate');
 			hideById('loaderDiv');
 			showById('dataEntryFormDiv');
 			
 			var programStageInstanceId = getFieldValue('programStageInstanceId');
-			
 			if( programStageInstanceId == '' )
 			{
-				$('#executionDate').unbind('change');
-				disable('deleteCurrentEventBtn');
+				enable('executionDate');
 				enable('createEventBtn');
+				disable('deleteCurrentEventBtn');
+				disable('completeBtn');
+				
+				$('#executionDate').change(function() {
+					saveExecutionDate( getFieldValue('programStageId'), getFieldValue('executionDate') );
+				});
 			}
 			else
 			{
-				disable('createEventBtn');
-				enable('deleteCurrentEventBtn');
+				if( getFieldValue('completed') == 'true')
+				{
+					disable('executionDate');
+					enable('createEventBtn');
+					enable('deleteCurrentEventBtn');
+					disable('completeBtn');
+				} 
+				else
+				{
+					enable('executionDate');
+					disable('createEventBtn');
+					enable('deleteCurrentEventBtn');
+					enable('completeBtn');
+					
+					
+					$('#executionDate').change(function() {
+						saveExecutionDate( getFieldValue('programStageId'), getFieldValue('executionDate') );
+					});
+				}
 			}
 			
 		} );
@@ -80,22 +110,34 @@ function loadEventRegistrationForm()
 
 function createNewEvent()
 {
-	saveExecutionDate( getFieldValue('programStageId'), getFieldValue('executionDate') );
-	loadEventRegistrationForm();
-	
-	disable('createEventBtn');
-	enable('deleteCurrentEventBtn');
-	
-	$('#executionDate').change(function() {
-			saveExecutionDate( getFieldValue('programStageId'), getFieldValue('executionDate') );
-	});
+	jQuery.postJSON( "createAnonymousEncounter.action",
+		{
+			programInstanceId: jQuery('select[id=programId] option:selected').attr('programInstanceId'),
+			executionDate: getFieldValue('executionDate')
+		}, 
+		function( json ) 
+		{    
+			if(json.response=='success')
+			{
+				disable('createEventBtn');
+				enable('deleteCurrentEventBtn');
+				setFieldValue('programStageInstanceId', json.message );
+				
+				loadEventRegistrationForm();
+			}
+			else
+			{
+				showWarmingMessage( json.message );
+			}
+			
+		});
 }
 
 function deleteCurrentEvent()
 {	
 	jQuery.postJSON( "removeCurrentEncounter.action",
 		{
-			programInstanceId: getFieldValue('programInstanceId')
+			programStageInstanceId: getFieldValue('programStageInstanceId')
 		}, 
 		function( json ) 
 		{    
@@ -103,16 +145,27 @@ function deleteCurrentEvent()
 			
 			if( type == 'success' )
 			{
-				showSuccessMessage( i18n_delete_current_event_success );
 				hideById('dataEntryFormDiv');
+				
+				showSuccessMessage( i18n_delete_current_event_success );
 				setFieldValue('executionDate','');
-				$('#executionDate').unbind('change');
+				
 				disable('deleteCurrentEventBtn');
 				enable('createEventBtn');
+				
+				enable('executionDate');
+				
+				$('#executionDate').unbind('change');
 			}
 			else if( type == 'input' )
 			{
 				showWarningMessage( json.message );
 			}
 		});
+}
+
+function afterCompleteStage()
+{
+	enable('createEventBtn');
+	disable('createEventBtn');
 }

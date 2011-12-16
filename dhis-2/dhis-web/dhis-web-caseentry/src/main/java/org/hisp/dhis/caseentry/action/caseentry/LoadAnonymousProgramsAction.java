@@ -27,15 +27,14 @@
 
 package org.hisp.dhis.caseentry.action.caseentry;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import java.util.Collection;
 
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager;
 import org.hisp.dhis.program.Program;
+import org.hisp.dhis.program.ProgramInstance;
+import org.hisp.dhis.program.ProgramInstanceService;
 import org.hisp.dhis.program.ProgramService;
-import org.hisp.dhis.program.comparator.ProgramNameComparator;
 
 import com.opensymphony.xwork2.Action;
 
@@ -65,15 +64,22 @@ public class LoadAnonymousProgramsAction
         this.programService = programService;
     }
 
+    private ProgramInstanceService programInstanceService;
+
+    public void setProgramInstanceService( ProgramInstanceService programInstanceService )
+    {
+        this.programInstanceService = programInstanceService;
+    }
+
     // -------------------------------------------------------------------------
     // Output
     // -------------------------------------------------------------------------
 
-    private List<Program> programs;
+    private Collection<ProgramInstance> programInstances;
 
-    public List<Program> getPrograms()
+    public Collection<ProgramInstance> getProgramInstances()
     {
-        return programs;
+        return programInstances;
     }
 
     // -------------------------------------------------------------------------
@@ -87,11 +93,11 @@ public class LoadAnonymousProgramsAction
 
         if ( orgunit != null )
         {
-            programs = new ArrayList<Program>( programService.getPrograms( true, true, orgunit ) );
+            Collection<Program> programs = programService.getPrograms( true, true, orgunit );
 
-            Collections.sort( programs, new ProgramNameComparator() );
+            programInstances = programInstanceService.getProgramInstances( programs );
         }
-        
+
         return SUCCESS;
     }
 }

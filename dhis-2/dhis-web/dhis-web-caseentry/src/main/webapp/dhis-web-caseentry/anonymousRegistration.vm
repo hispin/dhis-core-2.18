@@ -4,6 +4,7 @@
 <div id="actions">	
 	<input type="button" id="createEventBtn" value="$i18n.getString('create_new_event')" onClick="javascript: createNewEvent();" style="width:12em " disabled="disabled">
 	<input type="button" id="deleteCurrentEventBtn" value="$i18n.getString('delete_current_event')" onClick="javascript: deleteCurrentEvent();" style="width:12em " disabled="disabled" >
+	<input type="button" id="completeBtn" value="$i18n.getString('complete')" onClick="doComplete(); afterCompleteStage()" style="width:12em" disabled="disabled" >
 	<input type="button" id="validationBtn" value="$i18n.getString('run_validation')" onClick="javascript: runValidation();" style="width:12em " disabled="disabled" >
 </div>	
 			
@@ -15,8 +16,8 @@
 			<td>
 				<select id='programId' style='width:300px' onchange='showEventForm();'>
 					<option value="">[ $i18n.getString('please_select') ]</option>
-					#foreach( $program in $programs)
-						<option value="$program.id" singleevent='$program.singleEvent'>$program.name</option>
+					#foreach( $programInstance in $programInstances)
+						<option value="$programInstance.program.id" singleevent='$programInstance.program.singleEvent' programInstanceId='$programInstance.id'>$programInstance.program.name</option>
 					#end
 				</select>
 			</td>

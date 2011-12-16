@@ -148,7 +148,7 @@ public class SaveExecutionDateAction
                 ProgramStage programStage = programStageService.getProgramStage( programStageId );
                 Program program = programStage.getProgram();
 
-                if ( programStage.getProgram().getSingleEvent() )
+                if ( programStage.getProgram().getSingleEvent() && !programStage.getProgram().getAnonymous() )
                 {
                     // Add a new program-instance
                     ProgramInstance programInstance = new ProgramInstance();
@@ -156,16 +156,13 @@ public class SaveExecutionDateAction
                     programInstance.setDateOfIncident( dateValue );
                     programInstance.setProgram( program );
                     programInstance.setCompleted( false );
-                    
-                    if ( !programStage.getProgram().getAnonymous() )
-                    {
-                        programInstance.setPatient( patient );
-                        patient.getPrograms().add( program );
-                        patientService.updatePatient( patient );
-                    }
-                    
+
+                    programInstance.setPatient( patient );
+                    patient.getPrograms().add( program );
+                    patientService.updatePatient( patient );
+
                     programInstanceService.addProgramInstance( programInstance );
-                    
+
                     // Add a new program-stage-instance
                     programStageInstance = new ProgramStageInstance();
                     programStageInstance.setProgramInstance( programInstance );
