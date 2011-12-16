@@ -10,9 +10,11 @@
 		}
 		#end
 		
-		$('#executionDate').change(function() {
-			saveExecutionDate( getFieldValue('programStageId'), getFieldValue('executionDate') );
-		});
+		#if( $program.anonymous == "false" )
+			$('#executionDate').change(function() {
+				saveExecutionDate( getFieldValue('programStageId'), getFieldValue('executionDate') );
+			});
+		#end
 			
 		entryFormContainerOnReady();
 	});
@@ -102,9 +104,11 @@
 							</select>
 						#elseif( $programStageDataElement.dataElement.type == "date" )
 							<input type="text" data="{compulsory: $programStageDataElement.compulsory }" #if($programStageInstance.completed) disabled="disabled" #end id="$id" name="entryfield" value="$!encoder.htmlEncode( $patientDataValue.value )" onchange="saveDate( $programStageDataElement.dataElement.id )" onkeypress="return keyPress(event, this)" tabindex="$tabIndex"  style="text-align:center;">
-							<script type="text/javascript">
-								datePicker($programStageDataElement.programStage.id + '-' + $programStageDataElement.dataElement.id + '-val', false);
-							</script>                     
+							#if(!$programStageInstance.completed)
+								<script type="text/javascript">
+									datePicker($programStageDataElement.programStage.id + '-' + $programStageDataElement.dataElement.id + '-val', false);
+								</script>   
+							#end
 						#else
 							#foreach( $optionCombo in $programStageDataElement.dataElement.categoryCombo.optionCombos )
 								#set( $id = $programStageDataElement.programStage.id + '-' + $programStageDataElement.dataElement.id + '-' + $optionCombo.id + '-val' )

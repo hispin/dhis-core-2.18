@@ -113,6 +113,9 @@ public class ProgramStageInstance
 
         result = result * prime + programInstance.hashCode();
         result = result * prime + programStage.hashCode();
+        result = result * prime + dueDate.hashCode();
+        result = result * prime + ( ( executionDate == null) ? 0 : executionDate.hashCode() );
+        result = result * prime + stageInProgram;
 
         return result;
     }

@@ -30,6 +30,7 @@ package org.hisp.dhis.patientdatavalue;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.program.ProgramInstance;
 import org.hisp.dhis.program.ProgramStage;
+import org.hisp.dhis.program.ProgramStageInstance;
 import org.hisp.dhis.system.deletion.DeletionHandler;
 import org.springframework.jdbc.core.JdbcTemplate;
 
@@ -73,21 +74,27 @@ public class PatientDataValueDeletionHandler
     @Override
     public String allowDeleteProgramStage( ProgramStage programStage )
     {
-        String sql = "SELECT COUNT(*) "
-                    + "FROM patientdatavalue pdv INNER JOIN programstageinstance psi "
-                    + "ON pdv.programstageinstanceid=psi.programstageinstanceid "
-                    + "WHERE psi.programstageid=" + programStage.getId() ;
+        String sql = "SELECT COUNT(*) " + "FROM patientdatavalue pdv INNER JOIN programstageinstance psi "
+            + "ON pdv.programstageinstanceid=psi.programstageinstanceid " + "WHERE psi.programstageid="
+            + programStage.getId();
 
         return jdbcTemplate.queryForInt( sql ) == 0 ? null : ERROR;
     }
-    
+
     @Override
     public void deleteProgramInstance( ProgramInstance programInstance )
-    { 
-        String sql = "DELETE FROM patientdatavalue " +
-        		"WHERE programstageinstanceid in " +
-        		"( SELECT programstageinstanceid FROM programstageinstance " +
-        		"WHERE programinstanceid = " + programInstance.getId() + ")";
+    {
+        String sql = "DELETE FROM patientdatavalue " + "WHERE programstageinstanceid in "
+            + "( SELECT programstageinstanceid FROM programstageinstance " + "WHERE programinstanceid = "
+            + programInstance.getId() + ")";
+
+        jdbcTemplate.execute( sql );
+    }
+
+    @Override
+    public void deleteProgramStageInstance( ProgramStageInstance programStageInstance )
+    {
+        String sql = "DELETE FROM patientdatavalue " + "WHERE programstageinstanceid = " + programStageInstance.getId();
 
         jdbcTemplate.execute( sql );
     }

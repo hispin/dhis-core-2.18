@@ -87,7 +87,7 @@ public class CompleteDataEntryAction
     {
         this.programStageInstanceId = programStageInstanceId;
     }
-    
+
     // -------------------------------------------------------------------------
     // Implementation Action
     // -------------------------------------------------------------------------
@@ -112,22 +112,25 @@ public class CompleteDataEntryAction
         // ProgramInstance
         // ----------------------------------------------------------------------
 
-        ProgramInstance programInstance = programStageInstance.getProgramInstance();
-
-        Set<ProgramStageInstance> stageInstances = programInstance.getProgramStageInstances();
-
-        for ( ProgramStageInstance stageInstance : stageInstances )
+        if ( !programStageInstance.getProgramInstance().getProgram().getAnonymous() )
         {
-            if ( !stageInstance.isCompleted() )
+            ProgramInstance programInstance = programStageInstance.getProgramInstance();
+
+            Set<ProgramStageInstance> stageInstances = programInstance.getProgramStageInstances();
+
+            for ( ProgramStageInstance stageInstance : stageInstances )
             {
-                return SUCCESS;
+                if ( !stageInstance.isCompleted() )
+                {
+                    return SUCCESS;
+                }
             }
+
+            programInstance.setCompleted( true );
+            programInstance.setEndDate( new Date() );
+
+            programInstanceService.updateProgramInstance( programInstance );
         }
-
-        programInstance.setCompleted( true );
-        programInstance.setEndDate( new Date() );
-
-        programInstanceService.updateProgramInstance( programInstance );
         
         return SUCCESS;
     }

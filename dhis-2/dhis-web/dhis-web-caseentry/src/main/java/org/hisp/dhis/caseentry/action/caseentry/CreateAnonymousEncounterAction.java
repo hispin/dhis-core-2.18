@@ -27,8 +27,13 @@
 
 package org.hisp.dhis.caseentry.action.caseentry;
 
-import org.hisp.dhis.common.DeleteNotAllowedException;
+import java.util.Date;
+
 import org.hisp.dhis.i18n.I18n;
+import org.hisp.dhis.i18n.I18nFormat;
+import org.hisp.dhis.program.ProgramInstance;
+import org.hisp.dhis.program.ProgramInstanceService;
+import org.hisp.dhis.program.ProgramStage;
 import org.hisp.dhis.program.ProgramStageInstance;
 import org.hisp.dhis.program.ProgramStageInstanceService;
 
@@ -37,14 +42,21 @@ import com.opensymphony.xwork2.Action;
 /**
  * @author Chau Thu Tran
  * 
- * @version $Id: RemoveCurrentEncounterAction.java Dec 15, 2011 12:53:34 PM $
+ * @version $Id: CreateAnonymousEncounterAction.java Dec 16, 2011 9:08:12 AM $
  */
-public class RemoveCurrentEncounterAction
+public class CreateAnonymousEncounterAction
     implements Action
 {
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
+
+    private ProgramInstanceService programInstanceService;
+
+    public void setProgramInstanceService( ProgramInstanceService programInstanceService )
+    {
+        this.programInstanceService = programInstanceService;
+    }
 
     private ProgramStageInstanceService programStageInstanceService;
 
@@ -53,15 +65,11 @@ public class RemoveCurrentEncounterAction
         this.programStageInstanceService = programStageInstanceService;
     }
 
-    // --------------------------------------------------------------------------
-    // Input
-    // -------------------------------------------------------------------------
+    private I18nFormat format;
 
-    private int programStageInstanceId;
-
-    public void setProgramStageInstanceId( int programStageInstanceId )
+    public void setFormat( I18nFormat format )
     {
-        this.programStageInstanceId = programStageInstanceId;
+        this.format = format;
     }
 
     private I18n i18n;
@@ -70,10 +78,25 @@ public class RemoveCurrentEncounterAction
     {
         this.i18n = i18n;
     }
+    
+    // -------------------------------------------------------------------------
+    // Input/Output
+    // -------------------------------------------------------------------------
 
-    // -------------------------------------------------------------------------
-    // Output
-    // -------------------------------------------------------------------------
+
+    private Integer programInstanceId;
+
+    public void setProgramInstanceId( Integer programInstanceId )
+    {
+        this.programInstanceId = programInstanceId;
+    }
+
+    public String executionDate;
+
+    public void setExecutionDate( String executionDate )
+    {
+        this.executionDate = executionDate;
+    }
 
     private String message;
 
@@ -86,25 +109,36 @@ public class RemoveCurrentEncounterAction
     // Action implementation
     // -------------------------------------------------------------------------
 
+    @Override
     public String execute()
         throws Exception
     {
-        try
-        {
-            ProgramStageInstance programStageInstance = programStageInstanceService.getProgramStageInstance( programStageInstanceId );
+        Date date = format.parseDate( executionDate );
 
-            programStageInstanceService.deleteProgramStageInstance( programStageInstance );
-        }
-        catch ( DeleteNotAllowedException ex )
+        if ( date != null )
         {
-            if ( ex.getErrorCode().equals( DeleteNotAllowedException.ERROR_ASSOCIATED_BY_OTHER_OBJECTS ) )
-            {
-                message = i18n.getString( "object_not_deleted_associated_by_objects" ) + " " + ex.getMessage();
 
-                return ERROR;
-            }
+            ProgramInstance programInstance = programInstanceService.getProgramInstance( programInstanceId );
+
+            ProgramStageInstance programStageInstance = new ProgramStageInstance();
+            programStageInstance.setProgramInstance( programInstance );
+
+            ProgramStage programStage = programInstance.getProgram().getProgramStages().iterator().next();
+            programStageInstance.setProgramStage( programStage );
+
+            programStageInstance.setStageInProgram( programInstance.getProgramStageInstances().size() + 1 );
+            programStageInstance.setDueDate( date );
+            programStageInstance.setExecutionDate( date );
+
+            programStageInstanceService.addProgramStageInstance( programStageInstance );
+            
+            message = programStageInstance.getId() + "";
+            
+            return SUCCESS;
         }
-        return SUCCESS;
+
+        message = i18n.getString("please_enter_report_date");
+
+        return INPUT;
     }
-
 }

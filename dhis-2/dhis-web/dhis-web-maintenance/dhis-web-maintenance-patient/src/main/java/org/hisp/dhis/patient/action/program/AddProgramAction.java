@@ -27,7 +27,11 @@
 
 package org.hisp.dhis.patient.action.program;
 
+import java.util.Date;
+
 import org.hisp.dhis.program.Program;
+import org.hisp.dhis.program.ProgramInstance;
+import org.hisp.dhis.program.ProgramInstanceService;
 import org.hisp.dhis.program.ProgramService;
 import org.hisp.dhis.program.ProgramStage;
 import org.hisp.dhis.program.ProgramStageService;
@@ -59,6 +63,13 @@ public class AddProgramAction
     public void setProgramStageService( ProgramStageService programStageService )
     {
         this.programStageService = programStageService;
+    }
+
+    private ProgramInstanceService programInstanceService;
+
+    public void setProgramInstanceService( ProgramInstanceService programInstanceService )
+    {
+        this.programInstanceService = programInstanceService;
     }
 
     // -------------------------------------------------------------------------
@@ -134,7 +145,7 @@ public class AddProgramAction
         program.setMaxDaysAllowedInputData( maxDaysAllowedInputData );
         program.setSingleEvent( singleEvent );
         program.setAnonymous( anonymous );
-        
+
         programService.saveProgram( program );
 
         if ( singleEvent )
@@ -148,6 +159,22 @@ public class AddProgramAction
             programStage.setMinDaysFromStart( 0 );
 
             programStageService.saveProgramStage( programStage );
+        }
+
+        // ---------------------------------------------------------------------
+        // create program-instance for anonymous program
+        // ---------------------------------------------------------------------
+
+        if ( program.getAnonymous() )
+        {
+            // Add a new program-instance
+            ProgramInstance programInstance = new ProgramInstance();
+            programInstance.setEnrollmentDate( new Date() );
+            programInstance.setDateOfIncident( new Date() );
+            programInstance.setProgram( program );
+            programInstance.setCompleted( false );
+
+            programInstanceService.addProgramInstance( programInstance );
         }
 
         return SUCCESS;

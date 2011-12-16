@@ -158,11 +158,15 @@ public class LoadProgramStagesAction
             programInstance = programInstances.iterator().next();
 
             selectedStateManager.setSelectedProgramInstance( programInstance );
-
-            colorMap = programStageInstanceService.colorProgramStageInstances( programInstance
-                .getProgramStageInstances() );
+            
+            if ( programInstance.getProgramStageInstances() != null )
+            {
+                colorMap = programStageInstanceService.colorProgramStageInstances( programInstance
+                    .getProgramStageInstances() );
+            }
         }
 
+       
         return SUCCESS;
     }
 
