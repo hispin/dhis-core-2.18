@@ -44,9 +44,9 @@ import org.springframework.jdbc.core.RowMapper;
 public class HibernateMessageConversationStore
     extends HibernateIdentifiableObjectStore<MessageConversation> implements MessageConversationStore
 {
-    public List<MessageConversation> getMessageConversations( User user, int first, int max )
+    public List<MessageConversation> getMessageConversations( User user, Integer first, Integer max )
     {
-        final String sql = 
+        String sql = 
             "select mc.messageconversationid, mc.uid, mc.subject, mc.lastupdated, ui.surname, ui.firstname, ( " +
                 "select isread from usermessage " +
                 "where usermessage.usermessageid=mu.usermessageid " +
@@ -54,10 +54,24 @@ public class HibernateMessageConversationStore
             "from messageconversation mc " +
             "left join messageconversation_usermessages mu on mc.messageconversationid=mu.messageconversationid " +
             "left join usermessage um on mu.usermessageid=um.usermessageid " +
-            "left join userinfo ui on mc.lastsenderid=ui.userinfoid " +
-            "where um.userid=" + user.getId() + " " +
-            "order by mc.lastupdated desc " +
-            "limit " + max;
+            "left join userinfo ui on mc.lastsenderid=ui.userinfoid ";
+        
+        if ( user != null )
+        {
+            sql += "where um.userid=" + user.getId() + " ";
+        }
+        
+        sql += "order by mc.lastupdated desc ";
+        
+        if ( first != null )
+        {
+            sql += "offset " + first + " ";
+        }
+        
+        if ( max != null )
+        {
+            sql += "limit " + max;
+        }
         
         final List<MessageConversation> conversations = jdbcTemplate.query( sql, new RowMapper<MessageConversation>()
         {

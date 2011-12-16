@@ -63,4 +63,6 @@ public interface MessageService
     long getUnreadMessageConversationCount( User user );
     
     List<MessageConversation> getMessageConversations( int first, int max );
+    
+    List<MessageConversation> getAllMessageConversations();
 }

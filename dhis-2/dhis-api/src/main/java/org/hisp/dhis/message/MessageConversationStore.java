@@ -38,7 +38,16 @@ import java.util.List;
 public interface MessageConversationStore
     extends GenericIdentifiableObjectStore<MessageConversation>
 {
-    List<MessageConversation> getMessageConversations( User user, int first, int max );
-
+    /**
+     * Returns a list of MessageConversations.
+     * 
+     * @param user the User for which the MessageConversations are sent to, or
+     *        all if null.
+     * @param first the first record number to return, or all if null.
+     * @param max the max number of records to return, or all if null.
+     * @return a list of MessageConversations.
+     */
+    List<MessageConversation> getMessageConversations( User user, Integer first, Integer max );
+    
     long getUnreadUserMessageConversationCount( User user );
 }
