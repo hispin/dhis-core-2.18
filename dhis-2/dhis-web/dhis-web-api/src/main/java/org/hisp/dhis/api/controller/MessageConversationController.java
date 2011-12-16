@@ -27,7 +27,6 @@ package org.hisp.dhis.api.controller;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import org.apache.commons.io.IOUtils;
 import org.hisp.dhis.api.utils.IdentifiableObjectParams;
 import org.hisp.dhis.api.utils.WebLinkPopulator;
 import org.hisp.dhis.api.view.Jaxb2Utils;
@@ -127,10 +126,8 @@ public class MessageConversationController
         int id = messageService.sendMessage( message.getSubject(), message.getText(), metaData, message.getUsers() );
         MessageConversation m = messageService.getMessageConversation( id );
 
-        System.err.println( "uid: " + m.getUid() );
-
         response.setStatus( HttpServletResponse.SC_CREATED );
-        response.setHeader( "Location", DataElementController.RESOURCE_PATH + "/" + m.getUid() );
+        response.setHeader( "Location", MessageConversationController.RESOURCE_PATH + "/" + m.getUid() );
     }
 
     @RequestMapping( method = RequestMethod.POST, headers = {"Content-Type=application/json"} )
