@@ -27,15 +27,7 @@ package org.hisp.dhis.api.utils;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Set;
-
 import javassist.util.proxy.ProxyObject;
-
-import javax.servlet.http.HttpServletRequest;
-
 import org.hisp.dhis.api.webdomain.Resource;
 import org.hisp.dhis.api.webdomain.Resources;
 import org.hisp.dhis.attribute.Attribute;
@@ -48,40 +40,17 @@ import org.hisp.dhis.common.BaseLinkableObject;
 import org.hisp.dhis.common.IdentifiableObject;
 import org.hisp.dhis.constant.Constant;
 import org.hisp.dhis.constant.Constants;
-import org.hisp.dhis.dataelement.DataElement;
-import org.hisp.dhis.dataelement.DataElementCategories;
-import org.hisp.dhis.dataelement.DataElementCategory;
-import org.hisp.dhis.dataelement.DataElementCategoryCombo;
-import org.hisp.dhis.dataelement.DataElementCategoryCombos;
-import org.hisp.dhis.dataelement.DataElementCategoryOption;
-import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
-import org.hisp.dhis.dataelement.DataElementCategoryOptionCombos;
-import org.hisp.dhis.dataelement.DataElementCategoryOptions;
-import org.hisp.dhis.dataelement.DataElementGroup;
-import org.hisp.dhis.dataelement.DataElementGroupSet;
-import org.hisp.dhis.dataelement.DataElementGroupSets;
-import org.hisp.dhis.dataelement.DataElementGroups;
-import org.hisp.dhis.dataelement.DataElements;
+import org.hisp.dhis.dataelement.*;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.dataset.DataSets;
 import org.hisp.dhis.document.Document;
 import org.hisp.dhis.document.Documents;
-import org.hisp.dhis.indicator.Indicator;
-import org.hisp.dhis.indicator.IndicatorGroup;
-import org.hisp.dhis.indicator.IndicatorGroupSet;
-import org.hisp.dhis.indicator.IndicatorGroupSets;
-import org.hisp.dhis.indicator.IndicatorGroups;
-import org.hisp.dhis.indicator.IndicatorType;
-import org.hisp.dhis.indicator.IndicatorTypes;
-import org.hisp.dhis.indicator.Indicators;
+import org.hisp.dhis.indicator.*;
 import org.hisp.dhis.mapping.MapView;
 import org.hisp.dhis.mapping.Maps;
-import org.hisp.dhis.organisationunit.OrganisationUnit;
-import org.hisp.dhis.organisationunit.OrganisationUnitGroup;
-import org.hisp.dhis.organisationunit.OrganisationUnitGroupSet;
-import org.hisp.dhis.organisationunit.OrganisationUnitGroupSets;
-import org.hisp.dhis.organisationunit.OrganisationUnitGroups;
-import org.hisp.dhis.organisationunit.OrganisationUnits;
+import org.hisp.dhis.message.MessageConversation;
+import org.hisp.dhis.message.MessageConversations;
+import org.hisp.dhis.organisationunit.*;
 import org.hisp.dhis.report.Report;
 import org.hisp.dhis.report.Reports;
 import org.hisp.dhis.reporttable.ReportTable;
@@ -94,6 +63,12 @@ import org.hisp.dhis.validation.ValidationRule;
 import org.hisp.dhis.validation.ValidationRuleGroup;
 import org.hisp.dhis.validation.ValidationRuleGroups;
 import org.hisp.dhis.validation.ValidationRules;
+
+import javax.servlet.http.HttpServletRequest;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
@@ -345,6 +320,37 @@ public class WebLinkPopulator
         else if ( source instanceof ReportTable )
         {
             populateReportTable( (ReportTable) source, true );
+        }
+        else if ( source instanceof MessageConversations )
+        {
+            populateMessageConversations( (MessageConversations) source, true );
+        }
+        else if ( source instanceof MessageConversation )
+        {
+            populateMessageConversation( (MessageConversation) source, true );
+        }
+    }
+
+    private void populateMessageConversations( MessageConversations messageConversations, boolean root )
+    {
+        messageConversations.setLink( getBasePath( messageConversations.getClass() ) );
+
+        if ( root )
+        {
+            for ( MessageConversation messageConversation : messageConversations.getMessageConversations() )
+            {
+                populateMessageConversation( messageConversation, false );
+            }
+        }
+    }
+
+    private void populateMessageConversation( MessageConversation messageConversation, boolean root )
+    {
+        populateIdentifiableObject( messageConversation );
+
+        if ( root )
+        {
+            handleIdentifiableObjectCollection( messageConversation.getUsers() );
         }
     }
 
