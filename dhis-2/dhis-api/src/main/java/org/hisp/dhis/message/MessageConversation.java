@@ -159,13 +159,6 @@ public class MessageConversation
 
     @XmlElement
     @JsonProperty
-    public String getLastSenderName()
-    {
-        return lastSenderFirstname + " " + lastSenderSurname;
-    }
-
-    @XmlElement
-    @JsonProperty
     public String getSubject()
     {
         return subject;
@@ -229,8 +222,11 @@ public class MessageConversation
         this.read = read;
     }
 
-    @XmlElement
-    @JsonProperty
+    public String getLastSenderName()
+    {
+        return lastSenderFirstname + " " + lastSenderSurname;
+    }
+
     public String getLastSenderSurname()
     {
         return lastSenderSurname;
@@ -241,8 +237,6 @@ public class MessageConversation
         this.lastSenderSurname = lastSenderSurname;
     }
 
-    @XmlElement
-    @JsonProperty
     public String getLastSenderFirstname()
     {
         return lastSenderFirstname;
