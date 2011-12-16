@@ -27,20 +27,24 @@ package org.hisp.dhis.api.controller;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 
+import javax.imageio.ImageIO;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.hisp.dhis.api.utils.IdentifiableObjectParams;
 import org.hisp.dhis.api.utils.WebLinkPopulator;
+import org.hisp.dhis.mapgeneration.MapGenerationService;
 import org.hisp.dhis.mapping.MapView;
 import org.hisp.dhis.mapping.MappingService;
 import org.hisp.dhis.mapping.Maps;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
+import org.hisp.dhis.util.ContextUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
@@ -63,6 +67,9 @@ public class MapController
     
     @Autowired
     private OrganisationUnitService organisationUnitService;
+
+    @Autowired
+    private MapGenerationService mapGenerationService;
 
     //-------------------------------------------------------------------------------------------------------
     // GET
@@ -101,32 +108,32 @@ public class MapController
         return "map";
     }
     
-    @RequestMapping( value = "/{uid}/data", method = RequestMethod.GET )
-    public void getMapPng( HttpServletRequest request, HttpServletResponse response ) throws Exception
+    @RequestMapping( value = {"/{uid}/data","/{uid}/data.png"}, method = RequestMethod.GET )
+    public void getMap( @PathVariable String uid, HttpServletResponse response ) throws Exception
     {
-        String url = request.getRequestURL().toString().replace( "/data", ".png" );
+        MapView mapView = mappingService.getMapView( uid );
         
-        response.sendRedirect( response.encodeRedirectURL( url ) );
+        renderMapViewPng( mapView, response );
     }
     
-    @RequestMapping( value = "/data", method = RequestMethod.GET )
-    public String getMap( Model model,
-        @RequestParam( value = "in" ) String indicatorUid, 
-        @RequestParam( value = "ou" ) String organisationUnitUid,
-        @RequestParam( value = "level", required = false ) Integer level )
+    @RequestMapping( value = {"/data","/data.png"}, method = RequestMethod.GET )
+    public void getMap( Model model,
+                        @RequestParam( value = "in" ) String indicatorUid, 
+                        @RequestParam( value = "ou" ) String organisationUnitUid,
+                        @RequestParam( value = "level", required = false ) Integer level,
+                        HttpServletResponse response ) throws Exception
     {
         if ( level == null )
         {
             OrganisationUnit unit = organisationUnitService.getOrganisationUnit( organisationUnitUid );
             
             level = organisationUnitService.getLevelOfOrganisationUnit( unit.getId() );
+            level++;
         }
         
         MapView mapView = mappingService.getIndicatorLastYearMapView( indicatorUid, organisationUnitUid, level );
-
-        model.addAttribute( "model", mapView );
-
-        return "map";
+        
+        renderMapViewPng( mapView, response );
     }
 
     //-------------------------------------------------------------------------------------------------------
@@ -174,5 +181,17 @@ public class MapController
     public void deleteMap( @PathVariable( "uid" ) String uid ) throws Exception
     {
         throw new HttpRequestMethodNotSupportedException( RequestMethod.DELETE.toString() );
+    }
+
+    //-------------------------------------------------------------------------------------------------------
+    // Supportive methods
+    //-------------------------------------------------------------------------------------------------------
+
+    private void renderMapViewPng( MapView mapView, HttpServletResponse response )
+        throws Exception
+    {
+        BufferedImage image = mapGenerationService.generateMapImage( mapView );
+        response.setContentType( ContextUtils.CONTENT_TYPE_PNG );
+        ImageIO.write( image, "PNG", response.getOutputStream() );
     }
 }

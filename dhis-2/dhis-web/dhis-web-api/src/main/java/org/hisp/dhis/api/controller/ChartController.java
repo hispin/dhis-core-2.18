@@ -119,9 +119,9 @@ public class ChartController
 
     @RequestMapping( value = {"/{uid}/data","/{uid}/data.png"}, method = RequestMethod.GET )
     public void getChart( @PathVariable( "uid" ) String uid,
-                             @RequestParam( value = "width", defaultValue = "700", required = false ) int width,
-                             @RequestParam( value = "height", defaultValue = "500", required = false ) int height,
-                             HttpServletResponse response ) throws IOException, I18nManagerException
+                          @RequestParam( value = "width", defaultValue = "700", required = false ) int width,
+                          @RequestParam( value = "height", defaultValue = "500", required = false ) int height,
+                          HttpServletResponse response ) throws IOException, I18nManagerException
     {
         JFreeChart chart = chartService.getJFreeChart( uid, i18nManager.getI18nFormat() );
 
@@ -129,14 +129,14 @@ public class ChartController
         ChartUtilities.writeChartAsPNG( response.getOutputStream(), chart, width, height );
     }
 
-    @RequestMapping( value = "/data", method = RequestMethod.GET )
+    @RequestMapping( value = {"/data","/data.png"}, method = RequestMethod.GET )
     public void getChart( @RequestParam( value = "in" ) String indicatorUid, 
-        @RequestParam( value = "ou" ) String organisationUnitUid,
-        @RequestParam( value = "periods", required = false ) boolean periods,
-        @RequestParam( value = "width", defaultValue = "700", required = false ) int width,
-        @RequestParam( value = "height", defaultValue = "500", required = false ) int height,
-        @RequestParam( value = "skipTitle", required = false ) boolean skipTitle,
-        HttpServletResponse response ) throws Exception
+                          @RequestParam( value = "ou" ) String organisationUnitUid,
+                          @RequestParam( value = "periods", required = false ) boolean periods,
+                          @RequestParam( value = "width", defaultValue = "700", required = false ) int width,
+                          @RequestParam( value = "height", defaultValue = "500", required = false ) int height,
+                          @RequestParam( value = "skipTitle", required = false ) boolean skipTitle,
+                          HttpServletResponse response ) throws Exception
     {
         Indicator indicator = indicatorService.getIndicator( indicatorUid );
         OrganisationUnit unit = organisationUnitService.getOrganisationUnit( organisationUnitUid );

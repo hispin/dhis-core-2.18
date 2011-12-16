@@ -37,8 +37,6 @@
         </bean>
 
         <bean class="org.hisp.dhis.api.view.Jaxb2View" />
-
-        <bean name="mapGenerationView" class="org.hisp.dhis.api.view.MapGenerationView" />
       </list>
     </property>
 
