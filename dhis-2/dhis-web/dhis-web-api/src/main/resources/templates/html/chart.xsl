@@ -29,12 +29,12 @@
 			<td><a href="data">png</a></td>
 		</tr>
 		<tr>
-			<td>ou</td>
-			<td>organisation unit uid (req)</td>
+			<td>in</td>
+			<td>indicator uid (req)</td>
 		</tr>
 		<tr>
-			<td>pe</td>
-			<td>period yyyy-MM-dd (req)</td>
+			<td>ou</td>
+			<td>organisation unit uid (req)</td>
 		</tr>
 		<tr>
 			<td>periods</td>
