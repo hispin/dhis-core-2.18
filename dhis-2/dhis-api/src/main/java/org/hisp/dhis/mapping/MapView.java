@@ -173,6 +173,13 @@ public class MapView
 
         return name.equals( other.name );
     }
+    
+    @Override
+    public String toString()
+    {
+        return "[Name: " + name + ", indicator: " + indicator + ", org unit: " + 
+            parentOrganisationUnit + ", period: " + period + ", value type: " + mapValueType + "]";
+    }
 
     // -------------------------------------------------------------------------
     // Logic

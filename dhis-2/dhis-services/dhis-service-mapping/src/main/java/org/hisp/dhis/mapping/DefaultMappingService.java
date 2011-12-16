@@ -524,7 +524,7 @@ public class DefaultMappingService
         MapView mapView = new MapView();
         
         Period period = periodService.reloadPeriod( 
-            new RelativePeriods().setLastYear( true ).getRelativePeriods().iterator().next() );
+            new RelativePeriods().setThisYear( true ).getRelativePeriods().iterator().next() );
         
         Indicator indicator = indicatorService.getIndicator( indicatorUid );
         OrganisationUnit unit = organisationUnitService.getOrganisationUnit( organisationUnitUid );

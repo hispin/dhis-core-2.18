@@ -183,7 +183,7 @@ public class GeoToolsMapGenerationService
             mapValues = mappingService.getDataElementMapValues( mapView.getDataElement().getId(), mapView.getPeriod()
                 .getId(), mapView.getParentOrganisationUnit().getId(), mapView.getOrganisationUnitLevel().getLevel() );
         }
-
+        
         // Build and set the internal GeoTools map objects for the layer
         buildGeoToolsMapObjectsForMapLayer( mapLayer, mapValues );
 
@@ -213,7 +213,7 @@ public class GeoToolsMapGenerationService
         {
             // Get the org unit for this map value
             OrganisationUnit orgUnit = organisationUnitService.getOrganisationUnit( mapValue.getOrganisationUnitId() );
-
+            
             if ( orgUnit != null && orgUnit.hasCoordinates() && orgUnit.hasFeatureType() )
             {
                 mapObjects.add( buildSingleGeoToolsMapObjectForMapLayer( mapLayer, mapValue, orgUnit ) );

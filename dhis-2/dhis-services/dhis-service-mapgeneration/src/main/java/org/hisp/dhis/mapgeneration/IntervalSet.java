@@ -123,7 +123,6 @@ public class IntervalSet
      */
     private static IntervalSet applyEqualRangeIntervalSetToMapLayer( InternalMapLayer mapLayer, int length )
     {
-
         Assert.isTrue( mapLayer != null );
         Assert.isTrue( length > 0 );
         Assert.isTrue( mapLayer.getAllMapObjects() != null );
@@ -139,9 +138,14 @@ public class IntervalSet
         for ( InternalMapObject mapObject : mapLayer.getAllMapObjects() )
         {
             if ( set.objectLow == null || mapObject.getValue() < set.objectLow.getValue() )
+            {
                 set.objectLow = mapObject;
+            }
+            
             if ( set.objectHigh == null || mapObject.getValue() > set.objectHigh.getValue() )
+            {
                 set.objectHigh = mapObject;
+            }
         }
 
         // Determine and set the color for each of the intervals according to
@@ -183,7 +187,6 @@ public class IntervalSet
      */
     private static IntervalSet applyEqualSizeIntervalSetToMapLayer( InternalMapLayer mapLayer, int length )
     {
-
         Assert.isTrue( mapLayer != null );
         Assert.isTrue( length > 0 );
         Assert.isTrue( mapLayer.getAllMapObjects() != null );
