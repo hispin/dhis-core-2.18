@@ -148,10 +148,10 @@ public class ReportController
 
         Date date = period != null ? DateUtils.getMediumDate( period ) : new Cal().now().subtract( Calendar.MONTH, 1 ).time();
 
-        reportService.renderReport( response.getOutputStream(), uid, date, organisationUnitUid, type,
-            i18nManager.getI18nFormat() );
-
         String filename = CodecUtils.filenameEncode( report.getName() ) + "." + type;
         ContextUtils.configureResponse( response, contentType, true, filename, attachment );
+        
+        reportService.renderReport( response.getOutputStream(), uid, date, organisationUnitUid, type,
+            i18nManager.getI18nFormat() );
     }
 }
