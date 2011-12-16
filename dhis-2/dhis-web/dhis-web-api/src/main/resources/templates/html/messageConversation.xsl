@@ -42,10 +42,10 @@
   </xsl:template>
 
   <xsl:template match="d:message">
-    <table style="width: 800px;">
+    <table>
       <tr>
-        <td>Text</td>
-        <td> <xsl:value-of select="d:text" /> </td>
+        <td style="width: 80px;">Text</td>
+        <td style="width: 800px;"> <xsl:value-of select="d:text" /> </td>
       </tr>
       <tr>
         <td>Sender</td>
