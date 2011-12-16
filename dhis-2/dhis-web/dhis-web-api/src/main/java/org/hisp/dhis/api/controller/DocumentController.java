@@ -112,12 +112,12 @@ public class DocumentController
             response.sendRedirect( response.encodeRedirectURL( document.getUrl() ) );
         }
         else
-        {
+        {            
+            ContextUtils.configureResponse( response, document.getContentType(), true, document.getUrl(), true );
+            
             InputStream in = locationManager.getInputStream( document.getUrl(), DocumentService.DIR );
 
             IOUtils.copy( in, response.getOutputStream() );
-            
-            ContextUtils.configureResponse( response, document.getContentType(), true, document.getUrl(), true );
         }
     }
 
