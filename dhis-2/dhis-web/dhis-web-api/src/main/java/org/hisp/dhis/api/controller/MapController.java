@@ -102,11 +102,11 @@ public class MapController
     }
     
     @RequestMapping( value = "/{uid}/data", method = RequestMethod.GET )
-    public String getMap( @PathVariable String uid, HttpServletRequest request, HttpServletResponse response )
+    public void getMapPng( HttpServletRequest request, HttpServletResponse response ) throws Exception
     {
-        String url = "forward:" + request.getRequestURI().replace( "/data", "" ) + ".png";
+        String url = request.getRequestURL().toString().replace( "/data", ".png" );
         
-        return url;
+        response.sendRedirect( response.encodeRedirectURL( url ) );
     }
     
     @RequestMapping( value = "/data", method = RequestMethod.GET )

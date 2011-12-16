@@ -109,9 +109,7 @@ public class DocumentController
         
         if ( document.isExternal() )
         {
-            String redirectUrl = response.encodeRedirectURL( document.getUrl() );
-            
-            response.sendRedirect( redirectUrl );
+            response.sendRedirect( response.encodeRedirectURL( document.getUrl() ) );
         }
         else
         {
