@@ -42,6 +42,7 @@ import org.hisp.dhis.indicator.IndicatorGroups;
 import org.hisp.dhis.indicator.IndicatorTypes;
 import org.hisp.dhis.indicator.Indicators;
 import org.hisp.dhis.mapping.Maps;
+import org.hisp.dhis.message.MessageConversations;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroupSets;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroups;
 import org.hisp.dhis.organisationunit.OrganisationUnits;
@@ -127,6 +128,7 @@ public class Resources extends BaseLinkableObject
         resources.add( new Resource( "IndicatorGroupSets", IndicatorGroupSets.class, requestMethods, mediaTypes ) );
         resources.add( new Resource( "IndicatorTypes", IndicatorTypes.class, requestMethods, mediaTypes ) );
         resources.add( new Resource( "Maps", Maps.class, requestMethods, mediaTypes ) );
+        resources.add( new Resource( "MessageConversations", MessageConversations.class, requestMethods, mediaTypes ) );
         resources.add( new Resource( "OrganisationUnits", OrganisationUnits.class, requestMethods, mediaTypes ) );
         resources.add( new Resource( "OrganisationUnitGroups", OrganisationUnitGroups.class, requestMethods, mediaTypes ) );
         resources.add( new Resource( "OrganisationUnitGroupSets", OrganisationUnitGroupSets.class, requestMethods, mediaTypes ) );
