@@ -8,7 +8,7 @@
     <h3> <xsl:value-of select="local-name()" /> </h3>
 
     <h4>Starting a new conversation</h4>
-    <p>This is done through a POST to <code>/api/messageConversations using</code> the format below.</p>
+    <p>This is done through a POST to <code>/api/messageConversations</code> using the format below.</p>
 
   <pre style="font-size: 0.9em;">
   <![CDATA[
