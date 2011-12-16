@@ -1,7 +1,7 @@
 package org.hisp.dhis.message;
 
 /*
- * Copyright (c) 2004-2010, University of Oslo
+ * Copyright (c) 2004-2011, University of Oslo
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -27,15 +27,23 @@ package org.hisp.dhis.message;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.Date;
-
+import org.codehaus.jackson.annotate.JsonProperty;
 import org.hisp.dhis.common.BaseIdentifiableObject;
 import org.hisp.dhis.common.CodeGenerator;
+import org.hisp.dhis.common.Dxf2Namespace;
 import org.hisp.dhis.user.User;
+
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
+import java.util.Date;
 
 /**
  * @author Lars Helge Overland
  */
+@XmlRootElement( name = "message", namespace = Dxf2Namespace.NAMESPACE )
+@XmlAccessorType( value = XmlAccessType.NONE )
 public class Message
     extends BaseIdentifiableObject
 {
@@ -43,7 +51,7 @@ public class Message
      * The message text.
      */
     private String text;
-    
+
     /**
      * The message meta data, like user agent and OS of sender.
      */
@@ -53,13 +61,13 @@ public class Message
      * The message sender.
      */
     private User sender;
-    
+
     public Message()
     {
         this.uid = CodeGenerator.generateCode();
         this.lastUpdated = new Date();
     }
-    
+
     public Message( String text, String metaData, User sender )
     {
         this.uid = CodeGenerator.generateCode();
@@ -68,13 +76,15 @@ public class Message
         this.metaData = metaData;
         this.sender = sender;
     }
-    
+
     @Override
     public String getName()
     {
         return text;
     }
-    
+
+    @XmlElement
+    @JsonProperty
     public String getText()
     {
         return text;
@@ -85,6 +95,8 @@ public class Message
         this.text = text;
     }
 
+    @XmlElement
+    @JsonProperty
     public String getMetaData()
     {
         return metaData;
@@ -95,6 +107,8 @@ public class Message
         this.metaData = metaData;
     }
 
+    @XmlElement
+    @JsonProperty
     public User getSender()
     {
         return sender;
@@ -118,22 +132,22 @@ public class Message
         {
             return true;
         }
-        
+
         if ( object == null )
         {
             return false;
         }
-        
+
         if ( getClass() != object.getClass() )
         {
             return false;
         }
-        
+
         final Message other = (Message) object;
-        
+
         return uid.equals( other.uid );
     }
-    
+
     @Override
     public String toString()
     {

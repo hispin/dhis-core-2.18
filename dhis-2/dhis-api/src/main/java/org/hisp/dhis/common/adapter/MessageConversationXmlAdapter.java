@@ -1,7 +1,7 @@
-package org.hisp.dhis.message;
+package org.hisp.dhis.common.adapter;
 
 /*
- * Copyright (c) 2004-2010, University of Oslo
+ * Copyright (c) 2004-2011, University of Oslo
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -27,40 +27,34 @@ package org.hisp.dhis.message;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.List;
-import java.util.Set;
+import org.hisp.dhis.common.BaseIdentifiableObject;
+import org.hisp.dhis.message.MessageConversation;
 
-import org.hisp.dhis.dataset.CompleteDataSetRegistration;
-import org.hisp.dhis.user.User;
+import javax.xml.bind.annotation.adapters.XmlAdapter;
+import java.util.UUID;
 
 /**
- * @author Lars Helge Overland
+ * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
-public interface MessageService
+public class MessageConversationXmlAdapter extends XmlAdapter<BaseIdentifiableObject, MessageConversation>
 {
-    final String ID = MessageService.class.getName();
+    private BaseIdentifiableObjectXmlAdapter baseIdentifiableObjectXmlAdapter = new BaseIdentifiableObjectXmlAdapter();
 
-    final String META_USER_AGENT = "User-agent: ";
-    
-    int sendMessage( String subject, String text, String metaData, Set<User> users );
-    
-    int sendFeedback( String subject, String text, String metaData );
-    
-    void sendReply( MessageConversation conversation, String text, String metaData );
-    
-    int saveMessageConversation( MessageConversation conversation );
-    
-    void updateMessageConversation( MessageConversation conversation );
-    
-    int sendCompletenessMessage( CompleteDataSetRegistration registration );
+    @Override
+    public MessageConversation unmarshal( BaseIdentifiableObject identifiableObject ) throws Exception
+    {
+        MessageConversation messageConversation = new MessageConversation();
 
-    MessageConversation getMessageConversation( int id );
+        messageConversation.setUid( identifiableObject.getUid() );
+        messageConversation.setLastUpdated( identifiableObject.getLastUpdated() );
+        messageConversation.setName( identifiableObject.getName() == null ? UUID.randomUUID().toString() : identifiableObject.getName() );
 
-    MessageConversation getMessageConversation( String uid );
-    
-    long getUnreadMessageConversationCount();
-    
-    long getUnreadMessageConversationCount( User user );
-    
-    List<MessageConversation> getMessageConversations( int first, int max );
+        return messageConversation;
+    }
+
+    @Override
+    public BaseIdentifiableObject marshal( MessageConversation messageConversation ) throws Exception
+    {
+        return baseIdentifiableObjectXmlAdapter.marshal( messageConversation );
+    }
 }

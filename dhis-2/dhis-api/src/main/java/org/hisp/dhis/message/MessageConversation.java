@@ -27,62 +27,65 @@ package org.hisp.dhis.message;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Set;
-
+import org.codehaus.jackson.annotate.JsonProperty;
 import org.hisp.dhis.common.BaseIdentifiableObject;
+import org.hisp.dhis.common.Dxf2Namespace;
 import org.hisp.dhis.user.User;
+
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
+import java.util.*;
 
 /**
  * @author Lars Helge Overland
  */
+@XmlRootElement( name = "messageConversation", namespace = Dxf2Namespace.NAMESPACE )
+@XmlAccessorType( value = XmlAccessType.NONE )
 public class MessageConversation
     extends BaseIdentifiableObject
 {
     private String subject;
 
     private Set<UserMessage> userMessages = new HashSet<UserMessage>();
-    
+
     private List<Message> messages = new ArrayList<Message>();
 
     private User lastSender;
-    
+
     private transient boolean read;
-    
+
     private transient String lastSenderSurname;
-    
+
     private transient String lastSenderFirstname;
-    
+
     public MessageConversation()
     {
     }
-    
+
     public MessageConversation( String subject, User lastSender )
     {
         this.subject = subject;
         this.lastSender = lastSender;
     }
-    
+
     @Override
     public String getName()
     {
         return subject;
     }
-        
+
     public void addUserMessage( UserMessage userMessage )
     {
         this.userMessages.add( userMessage );
     }
-    
+
     public void addMessage( Message message )
     {
         this.messages.add( message );
     }
-    
+
     public void markRead( User user )
     {
         for ( UserMessage userMessage : userMessages )
@@ -90,7 +93,7 @@ public class MessageConversation
             if ( userMessage.getUser() != null && userMessage.getUser().equals( user ) )
             {
                 userMessage.setRead( true );
-                
+
                 return;
             }
         }
@@ -103,14 +106,14 @@ public class MessageConversation
             if ( userMessage.getUser() != null && userMessage.getUser().equals( user ) )
             {
                 userMessage.setRead( false );
-                
+
                 return;
             }
         }
     }
-    
+
     public void markReplied( User sender, Message message )
-    {   
+    {
         for ( UserMessage userMessage : userMessages )
         {
             if ( userMessage.getUser() != null && !userMessage.getUser().equals( sender ) )
@@ -118,57 +121,51 @@ public class MessageConversation
                 userMessage.setRead( false );
             }
         }
-        
+
         addMessage( message );
-        
+
         this.setLastUpdated( new Date() );
         this.lastSender = sender;
     }
-    
+
     public void remove( User user )
     {
         Iterator<UserMessage> iterator = userMessages.iterator();
-        
+
         while ( iterator.hasNext() )
         {
             UserMessage userMessage = iterator.next();
-            
+
             if ( userMessage.getUser() != null && userMessage.getUser().equals( user ) )
             {
                 iterator.remove();
-                
+
                 return;
             }
         }
     }
-    
+
     public Set<User> getUsers()
     {
         Set<User> users = new HashSet<User>();
-        
+
         for ( UserMessage userMessage : userMessages )
         {
             users.add( userMessage.getUser() );
         }
-        
+
         return users;
     }
-    
+
+    @XmlElement
+    @JsonProperty
     public String getLastSenderName()
     {
         return lastSenderFirstname + " " + lastSenderSurname;
     }
-        
-    public int getId()
-    {
-        return id;
-    }
 
-    public void setId( int id )
-    {
-        this.id = id;
-    }
-
+    @XmlElement
+    @JsonProperty
     public String getSubject()
     {
         return subject;
@@ -199,6 +196,8 @@ public class MessageConversation
         this.messages = messages;
     }
 
+    @XmlElement
+    @JsonProperty
     public User getLastSender()
     {
         return lastSender;
@@ -209,6 +208,8 @@ public class MessageConversation
         this.lastSender = lastSender;
     }
 
+    @XmlElement
+    @JsonProperty
     public boolean isRead()
     {
         return read;
@@ -219,6 +220,8 @@ public class MessageConversation
         this.read = read;
     }
 
+    @XmlElement
+    @JsonProperty
     public String getLastSenderSurname()
     {
         return lastSenderSurname;
@@ -229,6 +232,8 @@ public class MessageConversation
         this.lastSenderSurname = lastSenderSurname;
     }
 
+    @XmlElement
+    @JsonProperty
     public String getLastSenderFirstname()
     {
         return lastSenderFirstname;
@@ -252,22 +257,22 @@ public class MessageConversation
         {
             return true;
         }
-        
+
         if ( object == null )
         {
             return false;
         }
-        
+
         if ( getClass() != object.getClass() )
         {
             return false;
         }
-        
+
         final MessageConversation other = (MessageConversation) object;
-        
+
         return uid.equals( other.uid );
     }
-    
+
     @Override
     public String toString()
     {

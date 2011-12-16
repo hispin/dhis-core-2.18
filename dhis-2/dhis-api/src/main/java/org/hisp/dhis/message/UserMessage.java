@@ -27,21 +27,29 @@ package org.hisp.dhis.message;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.UUID;
-
+import org.codehaus.jackson.annotate.JsonProperty;
+import org.hisp.dhis.common.Dxf2Namespace;
 import org.hisp.dhis.user.User;
+
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
+import java.util.UUID;
 
 /**
  * @author Lars Helge Overland
  */
+@XmlRootElement( name = "userMessage", namespace = Dxf2Namespace.NAMESPACE )
+@XmlAccessorType( value = XmlAccessType.NONE )
 public class UserMessage
 {
     private int id;
-    
+
     private String key;
-    
+
     private User user;
-    
+
     private boolean read;
 
     public UserMessage()
@@ -62,7 +70,7 @@ public class UserMessage
         this.user = user;
         this.read = read;
     }
-    
+
     public int getId()
     {
         return id;
@@ -73,6 +81,8 @@ public class UserMessage
         this.id = id;
     }
 
+    @XmlElement
+    @JsonProperty
     public String getKey()
     {
         return key;
@@ -83,6 +93,8 @@ public class UserMessage
         this.key = key;
     }
 
+    @XmlElement
+    @JsonProperty
     public User getUser()
     {
         return user;
@@ -93,6 +105,8 @@ public class UserMessage
         this.user = user;
     }
 
+    @XmlElement
+    @JsonProperty
     public boolean isRead()
     {
         return read;
@@ -116,22 +130,22 @@ public class UserMessage
         {
             return true;
         }
-        
+
         if ( object == null )
         {
             return false;
         }
-        
+
         if ( getClass() != object.getClass() )
         {
             return false;
         }
-        
+
         final UserMessage other = (UserMessage) object;
-        
+
         return key.equals( other.key );
     }
-    
+
     @Override
     public String toString()
     {

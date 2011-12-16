@@ -27,10 +27,6 @@ package org.hisp.dhis.message;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hisp.dhis.configuration.ConfigurationService;
@@ -41,13 +37,17 @@ import org.hisp.dhis.user.UserGroup;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
 /**
  * @author Lars Helge Overland
  */
 @Transactional
 public class DefaultMessageService
     implements MessageService
-{    
+{
     private static final Log log = LogFactory.getLog( DefaultMessageService.class );
 
     // -------------------------------------------------------------------------
@@ -62,19 +62,19 @@ public class DefaultMessageService
     }
 
     private CurrentUserService currentUserService;
-    
+
     public void setCurrentUserService( CurrentUserService currentUserService )
     {
         this.currentUserService = currentUserService;
     }
-    
+
     private ConfigurationService configurationService;
 
     public void setConfigurationService( ConfigurationService configurationService )
     {
         this.configurationService = configurationService;
     }
-    
+
     private List<MessageSender> messageSenders;
 
     @Autowired
@@ -82,9 +82,9 @@ public class DefaultMessageService
     {
         this.messageSenders = messageSenders;
 
-        log.info( "Found the following message senders: " + messageSenders );        
+        log.info( "Found the following message senders: " + messageSenders );
     }
-    
+
     // -------------------------------------------------------------------------
     // MessageService implementation
     // -------------------------------------------------------------------------
@@ -103,31 +103,31 @@ public class DefaultMessageService
         }
 
         User sender = currentUserService.getCurrentUser();
-        
+
         if ( sender != null )
         {
             users.add( sender );
         }
-        
+
         // ---------------------------------------------------------------------
         // Instantiate message, content and user messages
         // ---------------------------------------------------------------------
 
         MessageConversation conversation = new MessageConversation( subject, sender );
-        
+
         conversation.addMessage( new Message( text, metaData, sender ) );
-        
+
         for ( User user : users )
         {
             boolean read = user != null && user.equals( sender );
-            
-            conversation.addUserMessage( new UserMessage( user, read ) );        
+
+            conversation.addUserMessage( new UserMessage( user, read ) );
         }
-        
+
         int id = saveMessageConversation( conversation );
-        
+
         invokeMessageSenders( subject, text, sender, users );
-        
+
         return id;
     }
 
@@ -135,17 +135,17 @@ public class DefaultMessageService
     {
         return sendMessage( subject, text, metaData, new HashSet<User>() );
     }
-    
+
     public void sendReply( MessageConversation conversation, String text, String metaData )
     {
         User sender = currentUserService.getCurrentUser();
-        
+
         Message message = new Message( text, metaData, sender );
-        
+
         conversation.markReplied( sender, message );
-        
+
         updateMessageConversation( conversation );
-        
+
         invokeMessageSenders( conversation.getSubject(), text, sender, conversation.getUsers() );
     }
 
@@ -159,53 +159,58 @@ public class DefaultMessageService
 
             //TODO i18n and string externalization            
             String subject = "Form registered as complete";
-            String text = "The form " + registration.getDataSet() + " was registered as complete for period " + 
+            String text = "The form " + registration.getDataSet() + " was registered as complete for period " +
                 registration.getPeriod().getName() + " and organisation unit " + registration.getSource();
-            
+
             MessageConversation conversation = new MessageConversation( subject, sender );
-            
+
             conversation.addMessage( new Message( text, null, sender ) );
-            
+
             for ( User user : userGroup.getMembers() )
             {
-                conversation.addUserMessage( new UserMessage( user ) );        
+                conversation.addUserMessage( new UserMessage( user ) );
             }
-            
+
             int id = saveMessageConversation( conversation );
-            
+
             invokeMessageSenders( subject, text, sender, userGroup.getMembers() );
-            
+
             return id;
         }
-        
+
         return 0;
     }
-    
+
     public int saveMessageConversation( MessageConversation conversation )
     {
         return messageConversationStore.save( conversation );
     }
-    
+
     public void updateMessageConversation( MessageConversation conversation )
     {
         messageConversationStore.update( conversation );
     }
-    
+
     public MessageConversation getMessageConversation( int id )
     {
         return messageConversationStore.get( id );
     }
-        
+
+    public MessageConversation getMessageConversation( String uid )
+    {
+        return messageConversationStore.getByUid( uid );
+    }
+
     public long getUnreadMessageConversationCount()
     {
         return messageConversationStore.getUnreadUserMessageConversationCount( currentUserService.getCurrentUser() );
     }
-    
+
     public long getUnreadMessageConversationCount( User user )
     {
         return messageConversationStore.getUnreadUserMessageConversationCount( user );
     }
-    
+
     public List<MessageConversation> getMessageConversations( int first, int max )
     {
         return messageConversationStore.getMessageConversations( currentUserService.getCurrentUser(), first, max );

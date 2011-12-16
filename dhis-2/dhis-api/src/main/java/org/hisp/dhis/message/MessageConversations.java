@@ -1,7 +1,7 @@
 package org.hisp.dhis.message;
 
 /*
- * Copyright (c) 2004-2010, University of Oslo
+ * Copyright (c) 2004-2011, University of Oslo
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -27,40 +27,40 @@ package org.hisp.dhis.message;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.List;
-import java.util.Set;
+import org.codehaus.jackson.annotate.JsonProperty;
+import org.codehaus.jackson.map.annotate.JsonSerialize;
+import org.hisp.dhis.common.BaseIdentifiableObject;
+import org.hisp.dhis.common.Dxf2Namespace;
+import org.hisp.dhis.common.adapter.MessageConversationXmlAdapter;
 
-import org.hisp.dhis.dataset.CompleteDataSetRegistration;
-import org.hisp.dhis.user.User;
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
- * @author Lars Helge Overland
+ * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
-public interface MessageService
+@XmlRootElement( name = "messages", namespace = Dxf2Namespace.NAMESPACE )
+@XmlAccessorType( value = XmlAccessType.NONE )
+public class MessageConversations
 {
-    final String ID = MessageService.class.getName();
+    private List<MessageConversation> messageConversations = new ArrayList<MessageConversation>();
 
-    final String META_USER_AGENT = "User-agent: ";
-    
-    int sendMessage( String subject, String text, String metaData, Set<User> users );
-    
-    int sendFeedback( String subject, String text, String metaData );
-    
-    void sendReply( MessageConversation conversation, String text, String metaData );
-    
-    int saveMessageConversation( MessageConversation conversation );
-    
-    void updateMessageConversation( MessageConversation conversation );
-    
-    int sendCompletenessMessage( CompleteDataSetRegistration registration );
+    @XmlElement( name = "message" )
+    @XmlJavaTypeAdapter( MessageConversationXmlAdapter.class )
+    @JsonProperty( value = "messages" )
+    @JsonSerialize( contentAs = BaseIdentifiableObject.class )
+    public List<MessageConversation> getMessageConversations()
+    {
+        return messageConversations;
+    }
 
-    MessageConversation getMessageConversation( int id );
-
-    MessageConversation getMessageConversation( String uid );
-    
-    long getUnreadMessageConversationCount();
-    
-    long getUnreadMessageConversationCount( User user );
-    
-    List<MessageConversation> getMessageConversations( int first, int max );
+    public void setMessageConversations( List<MessageConversation> messageConversations )
+    {
+        this.messageConversations = messageConversations;
+    }
 }
