@@ -145,6 +145,8 @@ public class DXFConverter
 
     public static final String MINOR_VERSION_12 = "1.2";
 
+    public static final String MINOR_VERSION_121 = "1.2.1";
+
     private final Log log = LogFactory.getLog( DXFConverter.class );
 
     // -------------------------------------------------------------------------
