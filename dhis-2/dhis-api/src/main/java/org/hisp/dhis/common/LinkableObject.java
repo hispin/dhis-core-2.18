@@ -33,4 +33,6 @@ package org.hisp.dhis.common;
 public interface LinkableObject
 {
     public String getLink();
+
+    public void setLink( String link );
 }
