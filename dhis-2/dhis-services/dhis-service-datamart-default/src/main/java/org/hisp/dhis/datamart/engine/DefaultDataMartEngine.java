@@ -201,11 +201,11 @@ public class DefaultDataMartEngine
         // Get objects
         // ---------------------------------------------------------------------
 
-        Collection<Indicator> indicators = indicatorService.getIndicators( indicatorIds );
-        Collection<Period> periods = periodService.getPeriods( periodIds );
-        List<OrganisationUnit> organisationUnits = new ArrayList<OrganisationUnit>( organisationUnitService.getOrganisationUnits( organisationUnitIds ) );
-        Collection<OrganisationUnitGroup> organisationUnitGroups = organisationUnitGroupService.getOrganisationUnitGroups( organisationUnitGroupIds );
-        Collection<DataElement> dataElements = dataElementService.getDataElements( dataElementIds );
+        final Collection<Indicator> indicators = indicatorService.getIndicators( indicatorIds );
+        final Collection<Period> periods = periodService.getPeriods( periodIds );
+        final List<OrganisationUnit> organisationUnits = new ArrayList<OrganisationUnit>( organisationUnitService.getOrganisationUnits( organisationUnitIds ) );
+        final Collection<OrganisationUnitGroup> organisationUnitGroups = organisationUnitGroupService.getOrganisationUnitGroups( organisationUnitGroupIds );
+        final Collection<DataElement> dataElements = dataElementService.getDataElements( dataElementIds );
 
         clock.logTime( "Retrieved objects" );
 
@@ -236,8 +236,8 @@ public class DefaultDataMartEngine
         // Get operands
         // ---------------------------------------------------------------------
         
-        Collection<DataElementOperand> dataElementOperands = categoryService.getOperands( dataElements );
-        List<DataElementOperand> indicatorOperands = new ArrayList<DataElementOperand>( categoryService.populateOperands( expressionService.getOperandsInIndicators( indicators ) ) );
+        final Collection<DataElementOperand> dataElementOperands = categoryService.getOperands( dataElements );
+        final List<DataElementOperand> indicatorOperands = new ArrayList<DataElementOperand>( categoryService.populateOperands( expressionService.getOperandsInIndicators( indicators ) ) );
         
         Set<DataElementOperand> allOperands = new HashSet<DataElementOperand>();
         allOperands.addAll( dataElementOperands );
@@ -269,12 +269,12 @@ public class DefaultDataMartEngine
 
         state.setMessage( "crosstabulating_data" );
 
-        Collection<Integer> intersectingPeriodIds = ConversionUtils.getIdentifiers( Period.class, periodService.getIntersectionPeriods( periods ) );
-        Set<Integer> childrenIds = organisationUnitService.getOrganisationUnitHierarchy().getChildren( organisationUnitIds );
-        List<List<Integer>> childrenPages = new PaginatedList<Integer>( childrenIds ).setNumberOfPages( cpuCores ).getPages();
+        final Collection<Integer> intersectingPeriodIds = ConversionUtils.getIdentifiers( Period.class, periodService.getIntersectionPeriods( periods ) );
+        final Set<Integer> childrenIds = organisationUnitService.getOrganisationUnitHierarchy().getChildren( organisationUnitIds );
+        final List<List<Integer>> childrenPages = new PaginatedList<Integer>( childrenIds ).setNumberOfPages( cpuCores ).getPages();
 
-        List<DataElementOperand> crossTabOperands = new ArrayList<DataElementOperand>( allOperands );
-        String key = crossTabService.createCrossTabTable( crossTabOperands );
+        final List<DataElementOperand> crossTabOperands = new ArrayList<DataElementOperand>( allOperands );
+        final String key = crossTabService.createCrossTabTable( crossTabOperands );
         
         List<Future<?>> crossTabFutures = new ArrayList<Future<?>>();
         

@@ -143,7 +143,7 @@ public class DefaultIndicatorDataMart
         
         final Map<Integer, Double> constantMap = constantService.getConstantMap();
 
-        organisationUnitGroups = ( organisationUnitGroups != null ) ? organisationUnitGroups : DataMartEngine.DUMMY_ORG_UNIT_GROUPS;
+        organisationUnitGroups = organisationUnitGroups != null ? organisationUnitGroups : DataMartEngine.DUMMY_ORG_UNIT_GROUPS;
         
         for ( final Period period : periods )
         {

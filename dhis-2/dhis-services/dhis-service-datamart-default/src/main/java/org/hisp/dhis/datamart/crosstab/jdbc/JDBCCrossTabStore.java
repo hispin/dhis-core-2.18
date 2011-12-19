@@ -220,7 +220,7 @@ public class JDBCCrossTabStore
         
         // TODO use prepared statement?
         
-        final String sql = "SELECT * FROM " + AGGREGATEDDATA_CACHE_PREFIX + key + 
+        final String sql = "SELECT * FROM " + AGGREGATEDORGUNITDATA_CACHE_PREFIX + key + 
             " AS a WHERE a.periodid = " + periodId + " AND a.sourceid = " + sourceId + " AND a.organisationunitgroupid = " + organisationUnitGroupId;
         
         try

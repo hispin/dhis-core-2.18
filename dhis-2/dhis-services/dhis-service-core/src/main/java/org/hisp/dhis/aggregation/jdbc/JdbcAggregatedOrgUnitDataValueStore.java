@@ -160,6 +160,19 @@ public class JdbcAggregatedOrgUnitDataValueStore
     // AggregatedIndicatorValue
     // -------------------------------------------------------------------------
 
+    public Double getAggregatedIndicatorValue( int indicator, int period, int organisationUnit, int organisationUnitGroup )
+    {
+        final String sql =
+            "SELECT value " +
+            "FROM aggregatedorgunitindicatorvalue " +
+            "WHERE indicatorid = " + indicator + " " +
+            "AND periodid = " + period + " " +
+            "AND organisationunitid = " + organisationUnit + " " +
+            "AND organisationunitgroupid = " + organisationUnitGroup;
+        
+        return statementManager.getHolder().queryForDouble( sql );
+    }
+
     public void deleteAggregatedIndicatorValues( Collection<Integer> indicatorIds, Collection<Integer> periodIds,
         Collection<Integer> organisationUnitIds )
     {
