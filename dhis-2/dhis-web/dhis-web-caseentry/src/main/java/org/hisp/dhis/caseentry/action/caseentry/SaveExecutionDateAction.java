@@ -181,6 +181,11 @@ public class SaveExecutionDateAction
             {
                 programStageInstance.setExecutionDate( dateValue );
 
+                if ( programStageInstance.getProgramInstance().getProgram().getSingleEvent() )
+                {
+                    programStageInstance.setDueDate( dateValue );
+                }
+
                 programStageInstanceService.updateProgramStageInstance( programStageInstance );
             }
 
