@@ -274,6 +274,13 @@ public class SaveChartAction
     {
         this.reportingQuarter = reportingQuarter;
     }
+    
+    private boolean lastSixMonth;
+
+    public void setLastSixMonth( boolean lastSixMonth )
+    {
+        this.lastSixMonth = lastSixMonth;
+    }
 
     private boolean monthsThisYear;
 
@@ -374,7 +381,7 @@ public class SaveChartAction
         chart.setPeriods( periods );
         chart.setOrganisationUnits( organisationUnits );
 
-        RelativePeriods relatives = new RelativePeriods( reportingMonth, reportingBimonth, reportingQuarter,
+        RelativePeriods relatives = new RelativePeriods( reportingMonth, reportingBimonth, reportingQuarter, lastSixMonth,
             monthsThisYear, quartersThisYear, thisYear, monthsLastYear, quartersLastYear, lastYear, false, false, false, false, false );
 
         chart.setRelatives( relatives );

@@ -206,7 +206,7 @@ public class SaveDataMartExportAction
     {
         DataMartExport export = id == null ? new DataMartExport() : dataMartService.getDataMartExport( id );
 
-        RelativePeriods relatives = new RelativePeriods( reportingMonth, reportingBimonth, reportingQuarter,
+        RelativePeriods relatives = new RelativePeriods( reportingMonth, reportingBimonth, reportingQuarter, false,
             monthsThisYear, quartersThisYear, thisYear, 
             monthsLastYear, quartersLastYear, lastYear, false, false, false, false, false );
           
