@@ -75,15 +75,6 @@ public class OrganisationUnitLevelController
         OrganisationUnitLevels organisationUnitLevels = new OrganisationUnitLevels();
         organisationUnitLevels.setOrganisationUnitLevels( new ArrayList<OrganisationUnitLevel>( organisationUnitService.getOrganisationUnitLevels() ) );
 
-        if ( params.isPaging() )
-        {
-
-        }
-        else
-        {
-
-        }
-
         if ( params.hasLinks() )
         {
             WebLinkPopulator listener = new WebLinkPopulator( request );

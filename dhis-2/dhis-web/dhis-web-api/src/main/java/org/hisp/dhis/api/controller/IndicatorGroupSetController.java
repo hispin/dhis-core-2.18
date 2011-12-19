@@ -29,6 +29,7 @@ package org.hisp.dhis.api.controller;
 
 import org.hisp.dhis.api.utils.IdentifiableObjectParams;
 import org.hisp.dhis.api.utils.WebLinkPopulator;
+import org.hisp.dhis.common.Pager;
 import org.hisp.dhis.indicator.IndicatorGroupSet;
 import org.hisp.dhis.indicator.IndicatorGroupSets;
 import org.hisp.dhis.indicator.IndicatorService;
@@ -46,6 +47,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
@@ -67,15 +69,22 @@ public class IndicatorGroupSetController
     public String getIndicatorGroupSets( IdentifiableObjectParams params, Model model, HttpServletRequest request )
     {
         IndicatorGroupSets indicatorGroupSets = new IndicatorGroupSets();
-        indicatorGroupSets.setIndicatorGroupSets( new ArrayList<IndicatorGroupSet>( indicatorService.getAllIndicatorGroupSets() ) );
 
         if ( params.isPaging() )
         {
+            int total = indicatorService.getIndicatorGroupSetCount();
 
+            Pager pager = new Pager( params.getPage(), total );
+            indicatorGroupSets.setPager( pager );
+
+            List<IndicatorGroupSet> indicatorGroupSetList = new ArrayList<IndicatorGroupSet>(
+                indicatorService.getIndicatorGroupSetsBetween( pager.getOffset(), pager.getPageSize() ) );
+
+            indicatorGroupSets.setIndicatorGroupSets( indicatorGroupSetList );
         }
         else
         {
-
+            indicatorGroupSets.setIndicatorGroupSets( new ArrayList<IndicatorGroupSet>( indicatorService.getAllIndicatorGroupSets() ) );
         }
 
         if ( params.hasLinks() )

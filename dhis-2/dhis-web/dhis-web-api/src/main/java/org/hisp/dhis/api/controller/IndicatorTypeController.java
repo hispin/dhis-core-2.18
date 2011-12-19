@@ -29,6 +29,7 @@ package org.hisp.dhis.api.controller;
 
 import org.hisp.dhis.api.utils.IdentifiableObjectParams;
 import org.hisp.dhis.api.utils.WebLinkPopulator;
+import org.hisp.dhis.common.Pager;
 import org.hisp.dhis.indicator.IndicatorService;
 import org.hisp.dhis.indicator.IndicatorType;
 import org.hisp.dhis.indicator.IndicatorTypes;
@@ -46,6 +47,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
@@ -67,15 +69,22 @@ public class IndicatorTypeController
     public String getIndicatorTypes( IdentifiableObjectParams params, Model model, HttpServletRequest request )
     {
         IndicatorTypes indicatorTypes = new IndicatorTypes();
-        indicatorTypes.setIndicatorTypes( new ArrayList<IndicatorType>( indicatorService.getAllIndicatorTypes() ) );
 
         if ( params.isPaging() )
         {
+            int total = indicatorService.getIndicatorTypeCount();
 
+            Pager pager = new Pager( params.getPage(), total );
+            indicatorTypes.setPager( pager );
+
+            List<IndicatorType> indicatorTypeList = new ArrayList<IndicatorType>(
+                indicatorService.getIndicatorTypesBetween( pager.getOffset(), pager.getPageSize() ) );
+
+            indicatorTypes.setIndicatorTypes( indicatorTypeList );
         }
         else
         {
-
+            indicatorTypes.setIndicatorTypes( new ArrayList<IndicatorType>( indicatorService.getAllIndicatorTypes() ) );
         }
 
         if ( params.hasLinks() )

@@ -29,6 +29,7 @@ package org.hisp.dhis.api.controller;
 
 import org.hisp.dhis.api.utils.IdentifiableObjectParams;
 import org.hisp.dhis.api.utils.WebLinkPopulator;
+import org.hisp.dhis.common.Pager;
 import org.hisp.dhis.validation.ValidationRule;
 import org.hisp.dhis.validation.ValidationRuleService;
 import org.hisp.dhis.validation.ValidationRules;
@@ -46,6 +47,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
@@ -67,15 +69,22 @@ public class ValidationRuleController
     public String getValidationRules( IdentifiableObjectParams params, Model model, HttpServletRequest request )
     {
         ValidationRules validationRules = new ValidationRules();
-        validationRules.setValidationRules( new ArrayList<ValidationRule>( validationRuleService.getAllValidationRules() ) );
 
         if ( params.isPaging() )
         {
+            int total = validationRuleService.getValidationRuleCount();
 
+            Pager pager = new Pager( params.getPage(), total );
+            validationRules.setPager( pager );
+
+            List<ValidationRule> validationRuleList = new ArrayList<ValidationRule>(
+                validationRuleService.getValidationRulesBetween( pager.getOffset(), pager.getPageSize() ) );
+
+            validationRules.setValidationRules( validationRuleList );
         }
         else
         {
-
+            validationRules.setValidationRules( new ArrayList<ValidationRule>( validationRuleService.getAllValidationRules() ) );
         }
 
         if ( params.hasLinks() )

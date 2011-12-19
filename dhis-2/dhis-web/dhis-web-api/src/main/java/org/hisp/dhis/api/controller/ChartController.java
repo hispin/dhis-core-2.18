@@ -27,18 +27,12 @@ package org.hisp.dhis.api.controller;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.ArrayList;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
 import org.hisp.dhis.api.utils.IdentifiableObjectParams;
 import org.hisp.dhis.api.utils.WebLinkPopulator;
 import org.hisp.dhis.chart.Chart;
 import org.hisp.dhis.chart.ChartService;
 import org.hisp.dhis.chart.Charts;
+import org.hisp.dhis.common.Pager;
 import org.hisp.dhis.i18n.I18nManager;
 import org.hisp.dhis.i18n.I18nManagerException;
 import org.hisp.dhis.indicator.Indicator;
@@ -53,11 +47,14 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.bind.annotation.*;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
@@ -73,10 +70,10 @@ public class ChartController
 
     @Autowired
     private IndicatorService indicatorService;
-    
+
     @Autowired
     private OrganisationUnitService organisationUnitService;
-    
+
     @Autowired
     private I18nManager i18nManager;
 
@@ -88,15 +85,21 @@ public class ChartController
     public String getCharts( IdentifiableObjectParams params, Model model, HttpServletRequest request )
     {
         Charts charts = new Charts();
-        charts.setCharts( new ArrayList<Chart>( chartService.getAllCharts() ) );
 
         if ( params.isPaging() )
         {
+            int total = chartService.getChartCount();
 
+            Pager pager = new Pager( params.getPage(), total );
+            charts.setPager( pager );
+
+            List<Chart> chartList = new ArrayList<Chart>( chartService.getChartsBetween( pager.getOffset(), pager.getPageSize() ) );
+
+            charts.setCharts( chartList );
         }
         else
         {
-
+            charts.setCharts( new ArrayList<Chart>( chartService.getAllCharts() ) );
         }
 
         if ( params.hasLinks() )
@@ -126,7 +129,7 @@ public class ChartController
         return "chart";
     }
 
-    @RequestMapping( value = {"/{uid}/data","/{uid}/data.png"}, method = RequestMethod.GET )
+    @RequestMapping( value = {"/{uid}/data", "/{uid}/data.png"}, method = RequestMethod.GET )
     public void getChart( @PathVariable( "uid" ) String uid,
                           @RequestParam( value = "width", defaultValue = "700", required = false ) int width,
                           @RequestParam( value = "height", defaultValue = "500", required = false ) int height,
@@ -138,8 +141,8 @@ public class ChartController
         ChartUtilities.writeChartAsPNG( response.getOutputStream(), chart, width, height );
     }
 
-    @RequestMapping( value = {"/data","/data.png"}, method = RequestMethod.GET )
-    public void getChart( @RequestParam( value = "in" ) String indicatorUid, 
+    @RequestMapping( value = {"/data", "/data.png"}, method = RequestMethod.GET )
+    public void getChart( @RequestParam( value = "in" ) String indicatorUid,
                           @RequestParam( value = "ou" ) String organisationUnitUid,
                           @RequestParam( value = "periods", required = false ) boolean periods,
                           @RequestParam( value = "width", defaultValue = "700", required = false ) int width,
@@ -149,9 +152,9 @@ public class ChartController
     {
         Indicator indicator = indicatorService.getIndicator( indicatorUid );
         OrganisationUnit unit = organisationUnitService.getOrganisationUnit( organisationUnitUid );
-        
+
         JFreeChart chart = null;
-        
+
         if ( periods )
         {
             chart = chartService.getJFreePeriodChart( indicator, unit, !skipTitle, i18nManager.getI18nFormat() );
@@ -160,11 +163,11 @@ public class ChartController
         {
             chart = chartService.getJFreeOrganisationUnitChart( indicator, unit, !skipTitle, i18nManager.getI18nFormat() );
         }
-        
+
         response.setContentType( ContextUtils.CONTENT_TYPE_PNG );
         ChartUtilities.writeChartAsPNG( response.getOutputStream(), chart, width, height );
     }
-    
+
     //-------------------------------------------------------------------------------------------------------
     // POST
     //-------------------------------------------------------------------------------------------------------

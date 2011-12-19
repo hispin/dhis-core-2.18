@@ -105,6 +105,24 @@ public class DefaultSqlViewService
     }
 
     @Override
+    public int getSqlViewCount()
+    {
+        return sqlViewStore.getCount();
+    }
+
+    @Override
+    public Collection<SqlView> getSqlViewsBetween( int first, int max )
+    {
+        return sqlViewStore.getBetween( first, max );
+    }
+
+    @Override
+    public Collection<SqlView> getSqlViewsBetweenByName( String name, int first, int max )
+    {
+        return sqlViewStore.getBetweenByName( name, first, max );
+    }
+
+    @Override
     public String makeUpForQueryStatement( String query )
     {
         return query.replaceAll( "\\s*;\\s+", ";" ).replaceAll( ";+", ";" ).replaceAll( "\\s+", " " ).trim();

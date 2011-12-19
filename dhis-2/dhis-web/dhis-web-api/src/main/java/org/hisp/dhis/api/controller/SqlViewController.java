@@ -29,6 +29,7 @@ package org.hisp.dhis.api.controller;
 
 import org.hisp.dhis.api.utils.IdentifiableObjectParams;
 import org.hisp.dhis.api.utils.WebLinkPopulator;
+import org.hisp.dhis.common.Pager;
 import org.hisp.dhis.sqlview.SqlView;
 import org.hisp.dhis.sqlview.SqlViewService;
 import org.hisp.dhis.sqlview.SqlViews;
@@ -46,6 +47,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
@@ -67,15 +69,22 @@ public class SqlViewController
     public String getSqlViews( IdentifiableObjectParams params, Model model, HttpServletRequest request )
     {
         SqlViews sqlViews = new SqlViews();
-        sqlViews.setSqlViews( new ArrayList<SqlView>( sqlViewService.getAllSqlViews() ) );
 
         if ( params.isPaging() )
         {
+            int total = sqlViewService.getSqlViewCount();
 
+            Pager pager = new Pager( params.getPage(), total );
+            sqlViews.setPager( pager );
+
+            List<SqlView> sqlViewList = new ArrayList<SqlView>(
+                sqlViewService.getSqlViewsBetween( pager.getOffset(), pager.getPageSize() ) );
+
+            sqlViews.setSqlViews( sqlViewList );
         }
         else
         {
-
+            sqlViews.setSqlViews( new ArrayList<SqlView>( sqlViewService.getAllSqlViews() ) );
         }
 
         if ( params.hasLinks() )

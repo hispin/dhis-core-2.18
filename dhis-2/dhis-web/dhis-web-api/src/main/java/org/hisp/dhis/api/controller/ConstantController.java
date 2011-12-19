@@ -29,6 +29,7 @@ package org.hisp.dhis.api.controller;
 
 import org.hisp.dhis.api.utils.IdentifiableObjectParams;
 import org.hisp.dhis.api.utils.WebLinkPopulator;
+import org.hisp.dhis.common.Pager;
 import org.hisp.dhis.constant.Constant;
 import org.hisp.dhis.constant.ConstantService;
 import org.hisp.dhis.constant.Constants;
@@ -46,6 +47,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
@@ -67,15 +69,22 @@ public class ConstantController
     public String getConstants( IdentifiableObjectParams params, Model model, HttpServletRequest request )
     {
         Constants constants = new Constants();
-        constants.setConstants( new ArrayList<Constant>( constantService.getAllConstants() ) );
 
         if ( params.isPaging() )
         {
+            int total = constantService.getConstantCount();
 
+            Pager pager = new Pager( params.getPage(), total );
+            constants.setPager( pager );
+
+            List<Constant> constantList = new ArrayList<Constant>(
+                constantService.getConstantsBetween( pager.getOffset(), pager.getPageSize() ) );
+
+            constants.setConstants( constantList );
         }
         else
         {
-
+            constants.setConstants( new ArrayList<Constant>( constantService.getAllConstants() ) );
         }
 
         if ( params.hasLinks() )

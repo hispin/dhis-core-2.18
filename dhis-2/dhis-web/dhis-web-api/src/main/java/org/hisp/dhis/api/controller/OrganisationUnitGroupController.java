@@ -4,6 +4,7 @@ import org.hisp.dhis.api.utils.IdentifiableObjectParams;
 import org.hisp.dhis.api.utils.ObjectPersister;
 import org.hisp.dhis.api.utils.WebLinkPopulator;
 import org.hisp.dhis.api.view.Jaxb2Utils;
+import org.hisp.dhis.common.Pager;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroup;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroupService;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroups;
@@ -22,6 +23,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
@@ -46,15 +48,22 @@ public class OrganisationUnitGroupController
     public String getOrganisationUnits( IdentifiableObjectParams params, Model model, HttpServletRequest request )
     {
         OrganisationUnitGroups organisationUnitGroups = new OrganisationUnitGroups();
-        organisationUnitGroups.setOrganisationUnitGroups( new ArrayList<OrganisationUnitGroup>( organisationUnitGroupService.getAllOrganisationUnitGroups() ) );
 
         if ( params.isPaging() )
         {
+            int total = organisationUnitGroupService.getOrganisationUnitGroupCount();
 
+            Pager pager = new Pager( params.getPage(), total );
+            organisationUnitGroups.setPager( pager );
+
+            List<OrganisationUnitGroup> organisationUnitGroupList = new ArrayList<OrganisationUnitGroup>(
+                organisationUnitGroupService.getOrganisationUnitGroupsBetween( pager.getOffset(), pager.getPageSize() ) );
+
+            organisationUnitGroups.setOrganisationUnitGroups( organisationUnitGroupList );
         }
         else
         {
-
+            organisationUnitGroups.setOrganisationUnitGroups( new ArrayList<OrganisationUnitGroup>( organisationUnitGroupService.getAllOrganisationUnitGroups() ) );
         }
 
         if ( params.hasLinks() )
