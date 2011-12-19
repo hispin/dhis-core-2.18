@@ -451,10 +451,22 @@ function Selection()
 
     this.enable = function()
     {
+        $( "#orgUnitTree" ).unblock();
     };
 
-    this.disable = function()
+    this.disable = function(message)
     {
+        if(message === undefined ) {
+            $( "#orgUnitTree" ).block({message: null});
+        } else {
+            $( "#orgUnitTree" ).block({
+                message: message,
+                css: {
+                    border: '1px solid black',
+                    margin: '4px 10px'
+                }
+            });
+        }
     };
 }
 
