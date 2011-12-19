@@ -235,6 +235,13 @@ public class SaveTableAction
         this.reportingQuarter = reportingQuarter;
     }
 
+    private boolean lastSixMonth;
+
+    public void setLastSixMonth( boolean lastSixMonth )
+    {
+        this.lastSixMonth = lastSixMonth;
+    }
+
     private boolean monthsThisYear;
 
     public void setMonthsThisYear( boolean monthsThisYear )
@@ -383,7 +390,7 @@ public class SaveTableAction
         
         DataElementCategoryCombo categoryCombo = categoryComboId != null ? categoryService.getDataElementCategoryCombo( categoryComboId ) : null;
         
-        RelativePeriods relatives = new RelativePeriods( reportingMonth, reportingBimonth, reportingQuarter,
+        RelativePeriods relatives = new RelativePeriods( reportingMonth, reportingBimonth, reportingQuarter, lastSixMonth,
             monthsThisYear, quartersThisYear, thisYear, 
             monthsLastYear, quartersLastYear, lastYear, 
             last5years, last12Months, false, last4Quarters, false );

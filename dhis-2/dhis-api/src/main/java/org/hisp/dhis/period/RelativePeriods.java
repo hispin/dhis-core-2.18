@@ -55,6 +55,7 @@ public class RelativePeriods
     public static final String REPORTING_MONTH = "reporting_month";
     public static final String REPORTING_BIMONTH = "reporting_bimonth";
     public static final String REPORTING_QUARTER = "reporting_quarter";
+    public static final String LAST_SIXMONTH = "last_sixmonth";
     public static final String THIS_YEAR = "year";
     public static final String LAST_YEAR = "last_year";
 
@@ -133,12 +134,14 @@ public class RelativePeriods
 
     private static final int MONTHS_IN_YEAR = 12;
 
-    private boolean reportingMonth = false;
+    private boolean reportingMonth = false; // TODO rename to lastMonth
 
-    private boolean reportingBimonth = false;
+    private boolean reportingBimonth = false; // TODO rename to lastBimonth
 
-    private boolean reportingQuarter = false;
+    private boolean reportingQuarter = false; // TODO rename to lastQuarter
 
+    private boolean lastSixMonth = false;
+    
     private boolean monthsThisYear = false;
 
     private boolean quartersThisYear = false;
@@ -185,7 +188,7 @@ public class RelativePeriods
      * @param last4Quarters    last 4 quarters
      * @param last2SixMonths   last 2 six-months
      */
-    public RelativePeriods( boolean reportingMonth, boolean reportingBimonth, boolean reportingQuarter,
+    public RelativePeriods( boolean reportingMonth, boolean reportingBimonth, boolean reportingQuarter, boolean lastSixMonth,
                             boolean monthsThisYear, boolean quartersThisYear, boolean thisYear,
                             boolean monthsLastYear, boolean quartersLastYear, boolean lastYear, boolean last5Years,
                             boolean last12Months, boolean last6BiMonths, boolean last4Quarters, boolean last2SixMonths )
@@ -193,6 +196,7 @@ public class RelativePeriods
         this.reportingMonth = reportingMonth;
         this.reportingBimonth = reportingBimonth;
         this.reportingQuarter = reportingQuarter;
+        this.lastSixMonth = lastSixMonth;
         this.monthsThisYear = monthsThisYear;
         this.quartersThisYear = quartersThisYear;
         this.thisYear = thisYear;
@@ -253,6 +257,11 @@ public class RelativePeriods
         if ( isReportingQuarter() )
         {
             return PeriodType.getPeriodTypeByName( QuarterlyPeriodType.NAME );
+        }
+        
+        if ( isLastSixMonth() )
+        {
+            return PeriodType.getPeriodTypeByName( SixMonthlyPeriodType.NAME );
         }
 
         return PeriodType.getPeriodTypeByName( YearlyPeriodType.NAME );
@@ -329,6 +338,11 @@ public class RelativePeriods
         if ( isReportingQuarter() )
         {
             periods.add( getRelativePeriod( new QuarterlyPeriodType(), REPORTING_QUARTER, date, dynamicNames, format ) );
+        }
+        
+        if ( isLastSixMonth() )
+        {
+            periods.add( getRelativePeriod( new SixMonthlyPeriodType(), LAST_SIXMONTH, date, dynamicNames, format ) );
         }
 
         if ( isMonthsThisYear() )
@@ -554,6 +568,18 @@ public class RelativePeriods
         this.reportingQuarter = reportingQuarter;
         return this;
     }
+    
+    @XmlElement
+    @JsonProperty
+    public boolean isLastSixMonth()
+    {
+        return lastSixMonth;
+    }
+
+    public void setLastSixMonth( boolean lastSixMonth )
+    {
+        this.lastSixMonth = lastSixMonth;
+    }
 
     @XmlElement
     @JsonProperty
@@ -712,6 +738,7 @@ public class RelativePeriods
         result = prime * result + (reportingMonth ? 1 : 0);
         result = prime * result + (reportingBimonth ? 1 : 0);
         result = prime * result + (reportingQuarter ? 1 : 0);
+        result = prime * result + (lastSixMonth ? 1 : 0);
         result = prime * result + (monthsThisYear ? 1 : 0);
         result = prime * result + (quartersThisYear ? 1 : 0);
         result = prime * result + (thisYear ? 1 : 0);
@@ -758,6 +785,11 @@ public class RelativePeriods
         }
 
         if ( !reportingQuarter == other.reportingQuarter )
+        {
+            return false;
+        }
+        
+        if ( !lastSixMonth == other.last2SixMonths )
         {
             return false;
         }

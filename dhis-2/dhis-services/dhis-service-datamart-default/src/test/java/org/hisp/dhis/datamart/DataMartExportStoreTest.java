@@ -134,7 +134,7 @@ public class DataMartExportStoreTest
         periods.add( periodA );
         periods.add( periodB );
         
-        relatives = new RelativePeriods( true, true, true, true, true, true, false, false, false, false, false, false, false, false );
+        relatives = new RelativePeriods( true, true, true, true, true, true, true, false, false, false, false, false, false, false, false );
         
         exportA = new DataMartExport( "ExportA", dataElements, indicators, organisationUnits, periods, relatives );
         exportB = new DataMartExport( "ExportB", dataElements, indicators, organisationUnits, periods, relatives );
