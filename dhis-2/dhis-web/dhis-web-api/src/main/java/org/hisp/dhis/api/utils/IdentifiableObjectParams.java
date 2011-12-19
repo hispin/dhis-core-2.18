@@ -44,11 +44,9 @@ public class IdentifiableObjectParams
      * Paging related
      */
 
-    private boolean noPaging = false;
+    private boolean paging = true;
 
-    private int offset = 1;
-
-    private int limit = 50;
+    private int page = 1;
 
     public IdentifiableObjectParams()
     {
@@ -85,33 +83,23 @@ public class IdentifiableObjectParams
         this.nameLike = nameLike;
     }
 
-    public boolean hasNoPaging()
+    public boolean isPaging()
     {
-        return noPaging;
+        return paging;
     }
 
-    public void setNoPaging( boolean noPaging )
+    public void setPaging( boolean paging )
     {
-        this.noPaging = noPaging;
+        this.paging = paging;
     }
 
-    public int getOffset()
+    public int getPage()
     {
-        return offset;
+        return page;
     }
 
-    public void setOffset( int offset )
+    public void setPage( int page )
     {
-        this.offset = offset;
-    }
-
-    public int getLimit()
-    {
-        return limit;
-    }
-
-    public void setLimit( int limit )
-    {
-        this.limit = limit;
+        this.page = page;
     }
 }

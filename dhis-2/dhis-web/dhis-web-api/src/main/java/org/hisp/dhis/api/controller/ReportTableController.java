@@ -79,7 +79,7 @@ public class ReportTableController
     {
         ReportTables reportTables = new ReportTables();
 
-        if ( params.hasNoPaging() )
+        if ( params.isPaging() )
         {
             reportTables.setReportTables( new ArrayList<ReportTable>( reportTableService.getAllReportTables() ) );
         }

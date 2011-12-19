@@ -38,6 +38,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 import org.codehaus.jackson.annotate.JsonProperty;
 import org.hisp.dhis.common.BaseLinkableObject;
 import org.hisp.dhis.common.Dxf2Namespace;
+import org.hisp.dhis.common.Pager;
 
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
@@ -46,7 +47,21 @@ import org.hisp.dhis.common.Dxf2Namespace;
 @XmlAccessorType( value = XmlAccessType.NONE )
 public class CompleteDataSetRegistrations extends BaseLinkableObject
 {
+    private Pager pager;
+
     private List<CompleteDataSetRegistration> completeDataSetRegistrations = new ArrayList<CompleteDataSetRegistration>();
+
+    @XmlElement
+    @JsonProperty
+    public Pager getPager()
+    {
+        return pager;
+    }
+
+    public void setPager( Pager pager )
+    {
+        this.pager = pager;
+    }
 
     @XmlElement( name = "completeDataSetRegistration" )
     @JsonProperty( value = "completeDataSetRegistrations" )

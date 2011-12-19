@@ -27,16 +27,11 @@ package org.hisp.dhis.api.controller;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.io.InputStream;
-import java.util.ArrayList;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
 import org.hisp.dhis.api.utils.IdentifiableObjectParams;
 import org.hisp.dhis.api.utils.ObjectPersister;
 import org.hisp.dhis.api.utils.WebLinkPopulator;
 import org.hisp.dhis.api.view.Jaxb2Utils;
+import org.hisp.dhis.common.Pager;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.dataelement.DataElements;
@@ -50,6 +45,12 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseStatus;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
@@ -74,7 +75,23 @@ public class DataElementController
     public String getDataElements( IdentifiableObjectParams params, Model model, HttpServletRequest request )
     {
         DataElements dataElements = new DataElements();
-        dataElements.setDataElements( new ArrayList<DataElement>( dataElementService.getAllDataElements() ) );
+
+        if ( params.isPaging() )
+        {
+            int total = dataElementService.getDataElementCount();
+
+            Pager pager = new Pager( params.getPage(), total );
+            dataElements.setPager( pager );
+
+            List<DataElement> dataElementList = new ArrayList<DataElement>(
+                dataElementService.getDataElementsBetween( pager.getOffset(), pager.getPageSize() ) );
+
+            dataElements.setDataElements( dataElementList );
+        }
+        else
+        {
+            dataElements.setDataElements( new ArrayList<DataElement>( dataElementService.getAllDataElements() ) );
+        }
 
         if ( params.hasLinks() )
         {
