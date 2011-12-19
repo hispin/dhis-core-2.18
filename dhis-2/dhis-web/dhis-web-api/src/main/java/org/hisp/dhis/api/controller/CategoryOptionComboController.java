@@ -64,23 +64,7 @@ public class CategoryOptionComboController
     public String getCategoryOptionCombos( IdentifiableObjectParams params, Model model, HttpServletRequest request )
     {
         DataElementCategoryOptionCombos categoryOptionCombos = new DataElementCategoryOptionCombos();
-
-        if ( params.isPaging() )
-        {
-            int total = dataElementCategoryService.getDataElementCategoryOptionComboCount();
-
-            Pager pager = new Pager( params.getPage(), total );
-            categoryOptionCombos.setPager( pager );
-
-            List<DataElementCategoryOptionCombo> categoryOptionComboList = new ArrayList<DataElementCategoryOptionCombo>(
-                dataElementCategoryService.getDataElementCategoryOptionCombosBetween( pager.getOffset(), pager.getPageSize() ) );
-
-            categoryOptionCombos.setCategoryOptionCombos( categoryOptionComboList );
-        }
-        else
-        {
-            categoryOptionCombos.setCategoryOptionCombos( new ArrayList<DataElementCategoryOptionCombo>( dataElementCategoryService.getAllDataElementCategoryOptionCombos() ) );
-        }
+        categoryOptionCombos.setCategoryOptionCombos( new ArrayList<DataElementCategoryOptionCombo>( dataElementCategoryService.getAllDataElementCategoryOptionCombos() ) );
 
         if ( params.hasLinks() )
         {

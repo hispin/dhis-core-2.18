@@ -602,16 +602,4 @@ public class DefaultDataElementCategoryService
     {
         return dataElementCategoryOptionStore.getBetweenByName( name, first, max );
     }
-
-    @Override
-    public Collection<DataElementCategoryOptionCombo> getDataElementCategoryOptionCombosBetween( int first, int max )
-    {
-        return dataElementCategoryOptionComboStore.getBetween( first, max );
-    }
-
-    @Override
-    public Collection<DataElementCategoryOptionCombo> getDataElementCategoryOptionCombosBetweenByName( String name, int first, int max )
-    {
-        return dataElementCategoryOptionComboStore.getBetweenByName( name, first, max );
-    }
 }
