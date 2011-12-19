@@ -27,6 +27,7 @@
 
 package org.hisp.dhis.caseentry.action.caseentry;
 
+import java.util.ArrayList;
 import java.util.Collection;
 
 import org.hisp.dhis.organisationunit.OrganisationUnit;
@@ -75,7 +76,7 @@ public class LoadAnonymousProgramsAction
     // Output
     // -------------------------------------------------------------------------
 
-    private Collection<ProgramInstance> programInstances;
+    private Collection<ProgramInstance> programInstances = new ArrayList<ProgramInstance>();
 
     public Collection<ProgramInstance> getProgramInstances()
     {
@@ -95,7 +96,10 @@ public class LoadAnonymousProgramsAction
         {
             Collection<Program> programs = programService.getPrograms( true, true, orgunit );
 
-            programInstances = programInstanceService.getProgramInstances( programs );
+            if ( programs != null && programs.size() > 0 )
+            {
+                programInstances = programInstanceService.getProgramInstances( programs );
+            }
         }
 
         return SUCCESS;
