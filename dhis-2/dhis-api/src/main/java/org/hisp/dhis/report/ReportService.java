@@ -27,11 +27,11 @@ package org.hisp.dhis.report;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import org.hisp.dhis.i18n.I18nFormat;
+
 import java.io.OutputStream;
 import java.util.Collection;
 import java.util.Date;
-
-import org.hisp.dhis.i18n.I18nFormat;
 
 /**
  * @author Lars Helge Overland
@@ -40,19 +40,19 @@ import org.hisp.dhis.i18n.I18nFormat;
 public interface ReportService
 {
     final String ID = ReportService.class.getName();
-    
+
     final String REPORTTYPE_PDF = "pdf";
     final String REPORTTYPE_XLS = "xls";
 
-    public void renderReport( OutputStream out, Report report, Date reportingPeriod, 
-        Integer organisationUnitId, String type, I18nFormat format );
-    
+    public void renderReport( OutputStream out, Report report, Date reportingPeriod,
+                              Integer organisationUnitId, String type, I18nFormat format );
+
     void renderReport( OutputStream out, String reportUid, Date reportingPeriod,
-        String organisationUnitUid, String type, I18nFormat format );
-    
+                       String organisationUnitUid, String type, I18nFormat format );
+
     /**
      * Saves a Report.
-     * 
+     *
      * @param report the Report to save.
      * @return the generated identifier.
      */
@@ -60,7 +60,7 @@ public interface ReportService
 
     /**
      * Retrieves the Report with the given identifier.
-     * 
+     *
      * @param id the identifier of the Report to retrieve.
      * @return the Report.
      */
@@ -68,29 +68,35 @@ public interface ReportService
 
     /**
      * Retrieves the Report with the given uid.
-     * 
+     *
      * @param uid the uid of the Report to retrieve.
      * @return the Report.
      */
     Report getReport( String uid );
 
+    int getReportCount();
+
+    Collection<Report> getReportsBetween( int first, int max );
+
+    Collection<Report> getReportsBetweenByName( String name, int first, int max );
+
     /**
      * Deletes a Report.
-     * 
+     *
      * @param report the Report to delete.
      */
     void deleteReport( Report report );
 
     /**
      * Retrieves all Reports.
-     * 
+     *
      * @return a Collection of Reports.
      */
     Collection<Report> getAllReports();
 
     /**
      * Retrieves the Report with the given name.
-     * 
+     *
      * @param name the name.
      * @return the Report.
      */
@@ -98,7 +104,7 @@ public interface ReportService
 
     /**
      * Retrieves all Reports with the given identifiers.
-     * 
+     *
      * @param identifiers the Collection of identifiers.
      * @return a Collection of Reports.
      */

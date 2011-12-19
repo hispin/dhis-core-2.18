@@ -47,6 +47,12 @@ public interface SqlViewService
 
     void updateSqlView( SqlView sqlView );
 
+    int getSqlViewCount();
+
+    Collection<SqlView> getSqlViewsBetween( int first, int max );
+
+    Collection<SqlView> getSqlViewsBetweenByName( String name, int first, int max );
+
     SqlView getSqlView( int viewId );
 
     SqlView getSqlViewByUid( String uid );
@@ -68,11 +74,11 @@ public interface SqlViewService
     boolean isViewTableExists( String viewTableName );
 
     boolean createAllViewTables();
-    
+
     boolean createViewTable( SqlView sqlViewInstance );
 
     void dropViewTable( String viewName );
-    
+
     void dropAllSqlViewTables();
 
     SqlViewTable getDataSqlViewTable( String viewTableName );

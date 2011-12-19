@@ -31,6 +31,7 @@ import org.hisp.dhis.api.utils.IdentifiableObjectParams;
 import org.hisp.dhis.api.utils.ObjectPersister;
 import org.hisp.dhis.api.utils.WebLinkPopulator;
 import org.hisp.dhis.api.view.Jaxb2Utils;
+import org.hisp.dhis.common.Pager;
 import org.hisp.dhis.dataelement.DataElementGroupSet;
 import org.hisp.dhis.dataelement.DataElementGroupSets;
 import org.hisp.dhis.dataelement.DataElementService;
@@ -49,6 +50,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
@@ -73,7 +75,23 @@ public class DataElementGroupSetController
     public String getDataElementGroupSets( IdentifiableObjectParams params, Model model, HttpServletRequest request )
     {
         DataElementGroupSets dataElementGroupSets = new DataElementGroupSets();
-        dataElementGroupSets.setDataElementGroupSets( new ArrayList<DataElementGroupSet>( dataElementService.getAllDataElementGroupSets() ) );
+
+        if ( params.isPaging() )
+        {
+            int total = dataElementService.getDataElementGroupSetCount();
+
+            Pager pager = new Pager( params.getPage(), total );
+            dataElementGroupSets.setPager( pager );
+
+            List<DataElementGroupSet> dataElementGroupSetList = new ArrayList<DataElementGroupSet>(
+                dataElementService.getDataElementGroupSetsBetween( pager.getOffset(), pager.getPageSize() ) );
+
+            dataElementGroupSets.setDataElementGroupSets( dataElementGroupSetList );
+        }
+        else
+        {
+            dataElementGroupSets.setDataElementGroupSets( new ArrayList<DataElementGroupSet>( dataElementService.getAllDataElementGroupSets() ) );
+        }
 
         if ( params.hasLinks() )
         {

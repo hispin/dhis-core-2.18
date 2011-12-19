@@ -30,6 +30,7 @@ package org.hisp.dhis.api.controller;
 import org.apache.commons.io.IOUtils;
 import org.hisp.dhis.api.utils.IdentifiableObjectParams;
 import org.hisp.dhis.api.utils.WebLinkPopulator;
+import org.hisp.dhis.common.Pager;
 import org.hisp.dhis.document.Document;
 import org.hisp.dhis.document.DocumentService;
 import org.hisp.dhis.document.Documents;
@@ -49,6 +50,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
@@ -61,7 +63,7 @@ public class DocumentController
 
     @Autowired
     private DocumentService documentService;
-    
+
     @Autowired
     private LocationManager locationManager;
 
@@ -73,7 +75,23 @@ public class DocumentController
     public String getDocuments( IdentifiableObjectParams params, Model model, HttpServletRequest request )
     {
         Documents documents = new Documents();
-        documents.setDocuments( new ArrayList<Document>( documentService.getAllDocuments() ) );
+
+        if ( params.isPaging() )
+        {
+            int total = documentService.getDocumentCount();
+
+            Pager pager = new Pager( params.getPage(), total );
+            documents.setPager( pager );
+
+            List<Document> documentList = new ArrayList<Document>(
+                documentService.getDocumentsBetween( pager.getOffset(), pager.getPageSize() ) );
+
+            documents.setDocuments( documentList );
+        }
+        else
+        {
+            documents.setDocuments( new ArrayList<Document>( documentService.getAllDocuments() ) );
+        }
 
         if ( params.hasLinks() )
         {
@@ -101,20 +119,20 @@ public class DocumentController
 
         return "document";
     }
-    
+
     @RequestMapping( value = "/{uid}/data", method = RequestMethod.GET )
     public void getDocumentContent( @PathVariable( "uid" ) String uid, HttpServletResponse response ) throws Exception
     {
         Document document = documentService.getDocument( uid );
-        
+
         if ( document.isExternal() )
         {
             response.sendRedirect( response.encodeRedirectURL( document.getUrl() ) );
         }
         else
-        {            
+        {
             ContextUtils.configureResponse( response, document.getContentType(), true, document.getUrl(), true );
-            
+
             InputStream in = locationManager.getInputStream( document.getUrl(), DocumentService.DIR );
 
             IOUtils.copy( in, response.getOutputStream() );

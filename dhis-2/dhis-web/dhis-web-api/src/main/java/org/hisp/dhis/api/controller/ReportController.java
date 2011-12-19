@@ -29,6 +29,7 @@ package org.hisp.dhis.api.controller;
 
 import org.hisp.dhis.api.utils.IdentifiableObjectParams;
 import org.hisp.dhis.api.utils.WebLinkPopulator;
+import org.hisp.dhis.common.Pager;
 import org.hisp.dhis.i18n.I18nManager;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.period.Cal;
@@ -51,6 +52,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 
 @Controller
 @RequestMapping( value = ReportController.RESOURCE_PATH )
@@ -78,7 +80,15 @@ public class ReportController
 
         if ( params.isPaging() )
         {
-            reports.setReports( new ArrayList<Report>( reportService.getAllReports() ) );
+            int total = reportService.getReportCount();
+
+            Pager pager = new Pager( params.getPage(), total );
+            reports.setPager( pager );
+
+            List<Report> reportList = new ArrayList<Report>(
+                reportService.getReportsBetween( pager.getOffset(), pager.getPageSize() ) );
+
+            reports.setReports( reportList );
         }
         else
         {
@@ -113,7 +123,7 @@ public class ReportController
         return "report";
     }
 
-    @RequestMapping( value = {"/{uid}/data","/{uid}/data.pdf"}, method = RequestMethod.GET )
+    @RequestMapping( value = {"/{uid}/data", "/{uid}/data.pdf"}, method = RequestMethod.GET )
     public void getReportAsPdf( @PathVariable( "uid" ) String uid,
                                 @RequestParam( value = "ou", required = false ) String organisationUnitUid,
                                 @RequestParam( value = "pe", required = false ) String period, HttpServletResponse response )
@@ -150,7 +160,7 @@ public class ReportController
 
         String filename = CodecUtils.filenameEncode( report.getName() ) + "." + type;
         ContextUtils.configureResponse( response, contentType, true, filename, attachment );
-        
+
         reportService.renderReport( response.getOutputStream(), uid, date, organisationUnitUid, type,
             i18nManager.getI18nFormat() );
     }

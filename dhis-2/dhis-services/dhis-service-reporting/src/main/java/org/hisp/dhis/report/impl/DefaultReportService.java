@@ -202,6 +202,24 @@ public class DefaultReportService
         return reportStore.getByUid( uid );
     }
 
+    @Override
+    public int getReportCount()
+    {
+        return reportStore.getCount();
+    }
+
+    @Override
+    public Collection<Report> getReportsBetween( int first, int max )
+    {
+        return reportStore.getBetween( first, max );
+    }
+
+    @Override
+    public Collection<Report> getReportsBetweenByName( String name, int first, int max )
+    {
+        return reportStore.getBetweenByName( name, first, max );
+    }
+
     public Report getReportByName( String name )
     {
         return reportStore.getByName( name );

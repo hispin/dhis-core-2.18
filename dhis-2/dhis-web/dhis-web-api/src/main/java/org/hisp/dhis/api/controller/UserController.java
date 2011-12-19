@@ -29,6 +29,7 @@ package org.hisp.dhis.api.controller;
 
 import org.hisp.dhis.api.utils.IdentifiableObjectParams;
 import org.hisp.dhis.api.utils.WebLinkPopulator;
+import org.hisp.dhis.common.Pager;
 import org.hisp.dhis.user.User;
 import org.hisp.dhis.user.UserService;
 import org.hisp.dhis.user.Users;
@@ -46,6 +47,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
@@ -68,15 +70,6 @@ public class UserController
     {
         Users users = new Users();
         users.setUsers( new ArrayList<User>( userService.getAllUsers() ) );
-
-        if ( params.isPaging() )
-        {
-
-        }
-        else
-        {
-
-        }
 
         if ( params.hasLinks() )
         {

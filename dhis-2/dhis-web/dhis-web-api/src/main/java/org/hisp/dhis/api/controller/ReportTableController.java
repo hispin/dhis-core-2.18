@@ -30,6 +30,7 @@ package org.hisp.dhis.api.controller;
 import org.hisp.dhis.api.utils.IdentifiableObjectParams;
 import org.hisp.dhis.api.utils.WebLinkPopulator;
 import org.hisp.dhis.common.Grid;
+import org.hisp.dhis.common.Pager;
 import org.hisp.dhis.i18n.I18nManager;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.period.Cal;
@@ -52,6 +53,7 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 
 import static org.hisp.dhis.system.util.CodecUtils.filenameEncode;
 
@@ -81,7 +83,15 @@ public class ReportTableController
 
         if ( params.isPaging() )
         {
-            reportTables.setReportTables( new ArrayList<ReportTable>( reportTableService.getAllReportTables() ) );
+            int total = reportTableService.getReportTableCount();
+
+            Pager pager = new Pager( params.getPage(), total );
+            reportTables.setPager( pager );
+
+            List<ReportTable> reportTableList = new ArrayList<ReportTable>(
+                reportTableService.getReportTablesBetween( pager.getOffset(), pager.getPageSize() ) );
+
+            reportTables.setReportTables( reportTableList );
         }
         else
         {

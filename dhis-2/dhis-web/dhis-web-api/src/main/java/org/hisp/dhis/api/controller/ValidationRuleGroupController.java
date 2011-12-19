@@ -29,6 +29,7 @@ package org.hisp.dhis.api.controller;
 
 import org.hisp.dhis.api.utils.IdentifiableObjectParams;
 import org.hisp.dhis.api.utils.WebLinkPopulator;
+import org.hisp.dhis.common.Pager;
 import org.hisp.dhis.validation.ValidationRuleGroup;
 import org.hisp.dhis.validation.ValidationRuleGroups;
 import org.hisp.dhis.validation.ValidationRuleService;
@@ -46,6 +47,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
@@ -67,15 +69,22 @@ public class ValidationRuleGroupController
     public String getValidationRuleGroups( IdentifiableObjectParams params, Model model, HttpServletRequest request )
     {
         ValidationRuleGroups validationRuleGroups = new ValidationRuleGroups();
-        validationRuleGroups.setValidationRuleGroups( new ArrayList<ValidationRuleGroup>( validationRuleService.getAllValidationRuleGroups() ) );
 
         if ( params.isPaging() )
         {
+            int total = validationRuleService.getValidationRuleGroupCount();
 
+            Pager pager = new Pager( params.getPage(), total );
+            validationRuleGroups.setPager( pager );
+
+            List<ValidationRuleGroup> validationRuleGroupList = new ArrayList<ValidationRuleGroup>(
+                validationRuleService.getValidationRuleGroupsBetween( pager.getOffset(), pager.getPageSize() ) );
+
+            validationRuleGroups.setValidationRuleGroups( validationRuleGroupList );
         }
         else
         {
-
+            validationRuleGroups.setValidationRuleGroups( new ArrayList<ValidationRuleGroup>( validationRuleService.getAllValidationRuleGroups() ) );
         }
 
         if ( params.hasLinks() )

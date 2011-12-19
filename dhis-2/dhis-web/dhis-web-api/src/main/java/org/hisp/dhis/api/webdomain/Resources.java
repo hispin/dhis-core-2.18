@@ -34,7 +34,6 @@ import org.hisp.dhis.common.BaseLinkableObject;
 import org.hisp.dhis.common.Dxf2Namespace;
 import org.hisp.dhis.constant.Constants;
 import org.hisp.dhis.dataelement.*;
-import org.hisp.dhis.dataset.CompleteDataSetRegistrations;
 import org.hisp.dhis.dataset.DataSets;
 import org.hisp.dhis.document.Documents;
 import org.hisp.dhis.indicator.IndicatorGroupSets;
@@ -116,7 +115,6 @@ public class Resources extends BaseLinkableObject
         resources.add( new Resource( "CategoryOptions", DataElementCategoryOptions.class, requestMethods, mediaTypes ) );
         resources.add( new Resource( "CategoryOptionCombos", DataElementCategoryOptionCombos.class, requestMethods, mediaTypes ) );
         resources.add( new Resource( "Charts", Charts.class, requestMethods, mediaTypes ) );
-        resources.add( new Resource( "CompleteDataSetRegistrations", CompleteDataSetRegistrations.class, requestMethods, mediaTypes ) );
         resources.add( new Resource( "Constants", Constants.class, requestMethods, mediaTypes ) );
         resources.add( new Resource( "DataElements", DataElements.class, requestMethods, mediaTypes ) );
         resources.add( new Resource( "DataElementGroups", DataElementGroups.class, requestMethods, mediaTypes ) );
