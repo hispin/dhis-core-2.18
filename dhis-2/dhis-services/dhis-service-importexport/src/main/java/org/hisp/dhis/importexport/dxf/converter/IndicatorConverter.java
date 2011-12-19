@@ -185,7 +185,7 @@ public class IndicatorConverter
 
             if ( params.minorVersionGreaterOrEqual(  "1.2" ) ) 
             {
-              indicator.setCode( values.get( FIELD_CODE ) );
+                indicator.setCode( values.get( FIELD_CODE ) );
             }
             
             indicator.setDescription( values.get( FIELD_DESCRIPTION ) );

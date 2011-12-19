@@ -80,11 +80,13 @@ public interface DataMartService
      * @param indicatorIds the indicator identifiers.
      * @param periodIds the period identifiers.
      * @param organisationUnitIds the organisation unit identifiers.
+     * @param organisationUnitGroupIds the organisation unit group identifiers.
      * @param relatives the RelativePeriods.
      * @param completeExport indicates whether this is a complete export.
      */
     void export( Collection<Integer> dataElementIds, Collection<Integer> indicatorIds,
-        Collection<Integer> periodIds, Collection<Integer> organisationUnitIds, RelativePeriods relatives, boolean completeExport );
+        Collection<Integer> periodIds, Collection<Integer> organisationUnitIds, Collection<Integer> organisationUnitGroupIds,
+        RelativePeriods relatives, boolean completeExport );
     
     // ----------------------------------------------------------------------
     // DataMartExport
