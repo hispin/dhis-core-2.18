@@ -29,8 +29,23 @@ package org.hisp.dhis.aggregation;
 
 import java.util.Collection;
 
+import org.hisp.dhis.dataelement.DataElement;
+import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
+import org.hisp.dhis.organisationunit.OrganisationUnit;
+import org.hisp.dhis.organisationunit.OrganisationUnitGroup;
+import org.hisp.dhis.period.Period;
+
 public interface AggregatedOrgUnitDataValueService
 {
+    String ID = AggregatedOrgUnitDataValueService.class.getName();
+    
+    // -------------------------------------------------------------------------
+    // AggregatedDataValue
+    // -------------------------------------------------------------------------
+    
+    Double getAggregatedValue( DataElement dataElement, DataElementCategoryOptionCombo optionCombo, 
+        Period period, OrganisationUnit organisationUnit, OrganisationUnitGroup group );
+    
     void deleteAggregatedDataValues( Collection<Integer> dataElementIds, Collection<Integer> periodIds, Collection<Integer> organisationUnitIds );
     
     void deleteAggregatedDataValues( Collection<Integer> periodIds );
@@ -39,6 +54,10 @@ public interface AggregatedOrgUnitDataValueService
     
     void dropIndex( boolean dataElement, boolean indicator );
 
+    // -------------------------------------------------------------------------
+    // AggregatedIndicatorValue
+    // -------------------------------------------------------------------------
+    
     void deleteAggregatedIndicatorValues( Collection<Integer> indicatorIds, Collection<Integer> periodIds, Collection<Integer> organisationUnitIds );
     
     void deleteAggregatedIndicatorValues( Collection<Integer> periodIds );

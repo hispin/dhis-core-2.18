@@ -50,6 +50,6 @@ public class OrganisationUnitAboveOrEqualToLevelFilter
     @Override
     public boolean retain( OrganisationUnit object )
     {
-        return object != null &&  object.getOrganisationUnitLevel() >= level;
+        return object != null && object.getOrganisationUnitLevel() <= level;
     }
 }

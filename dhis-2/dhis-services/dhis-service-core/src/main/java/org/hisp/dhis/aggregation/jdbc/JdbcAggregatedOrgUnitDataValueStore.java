@@ -64,6 +64,20 @@ public class JdbcAggregatedOrgUnitDataValueStore
     // AggregatedOrgUnitDataValueStore implementation
     // -------------------------------------------------------------------------
 
+    public Double getAggregatedDataValue( int dataElement, int categoryOptionCombo, int period, int organisationUnit, int organisationUnitGroup )
+    {
+        final String sql =
+            "SELECT value " +
+            "FROM aggregatedorgunitdatavalue " +
+            "WHERE dataelementid = " + dataElement + " " +
+            "AND categoryoptioncomboid = " + categoryOptionCombo + " " +
+            "AND periodid = " + period + " " +
+            "AND organisationunitid = " + organisationUnit + " " +
+            "AND organisationunitgroupid = " + organisationUnitGroup;
+        
+        return statementManager.getHolder().queryForDouble( sql );
+    }
+
     public void deleteAggregatedDataValues( Collection<Integer> dataElementIds, Collection<Integer> periodIds, Collection<Integer> organisationUnitIds )
     {
         final String sql =

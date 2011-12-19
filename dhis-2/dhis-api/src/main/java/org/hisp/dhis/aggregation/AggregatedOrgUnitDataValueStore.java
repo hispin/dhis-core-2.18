@@ -31,6 +31,12 @@ import java.util.Collection;
 
 public interface AggregatedOrgUnitDataValueStore
 {
+    // -------------------------------------------------------------------------
+    // AggregatedDataValue
+    // -------------------------------------------------------------------------
+    
+    Double getAggregatedDataValue( int dataElement, int categoryOptionCombo, int period, int organisationUnit, int organisationUnitGroup );
+    
     void deleteAggregatedDataValues( Collection<Integer> dataElementIds, Collection<Integer> periodIds, Collection<Integer> organisationUnitIds );
     
     void deleteAggregatedDataValues( Collection<Integer> periodIds );
@@ -38,6 +44,10 @@ public interface AggregatedOrgUnitDataValueStore
     void createIndex( boolean dataElement, boolean indicator );
     
     void dropIndex( boolean dataElement, boolean indicator );
+
+    // -------------------------------------------------------------------------
+    // AggregatedIndicatorValue
+    // -------------------------------------------------------------------------
     
     void deleteAggregatedIndicatorValues( Collection<Integer> indicatorIds, Collection<Integer> periodIds, Collection<Integer> organisationUnitIds );
     

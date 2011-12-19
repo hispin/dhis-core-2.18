@@ -37,6 +37,7 @@ import java.util.List;
 import java.util.Set;
 
 import org.hisp.dhis.aggregation.AggregatedDataValueService;
+import org.hisp.dhis.aggregation.AggregatedOrgUnitDataValueService;
 import org.hisp.dhis.chart.Chart;
 import org.hisp.dhis.concept.Concept;
 import org.hisp.dhis.constant.Constant;
@@ -133,6 +134,8 @@ public abstract class DhisConvenienceTest
     protected OrganisationUnitGroupService organisationUnitGroupService;
 
     protected AggregatedDataValueService aggregatedDataValueService;
+    
+    protected AggregatedOrgUnitDataValueService aggregatedOrgUnitDataValueService;
 
     protected PeriodService periodService;
 

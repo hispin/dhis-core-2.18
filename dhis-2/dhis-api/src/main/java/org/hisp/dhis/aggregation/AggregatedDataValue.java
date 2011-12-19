@@ -267,11 +267,25 @@ public class AggregatedDataValue
     // hashCode and equals
     // ----------------------------------------------------------------------
 
+    @Override
+    public String toString()
+    {
+        return 
+            "[Data element: " + dataElementId + 
+            " option combo: " + categoryOptionComboId +
+            " period: " + periodId +
+            " org unit: " + organisationUnitId +
+            " org unit group: " + organisationUnitGroupId +
+            " value: " + value + "]";
+    }
+    
+    @Override
     public int hashCode()
     {
         return dataElementId * periodId * organisationUnitId * 17;
     }
     
+    @Override
     public boolean equals( Object object )
     {
         if ( this == object )

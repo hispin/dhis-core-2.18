@@ -315,11 +315,24 @@ public class AggregatedIndicatorValue
     // hashCode and equals
     // ----------------------------------------------------------------------
 
+    @Override
+    public String toString()
+    {
+        return 
+            "[Indicator: " + indicatorId +
+            " period: " + periodId +
+            " org unit: " + organisationUnitId +
+            " org unit group: " + organisationUnitGroupId +
+            " value: " + value + "]";
+    }
+    
+    @Override
     public int hashCode()
     {
         return indicatorId * periodId * organisationUnitId * 17;
     }
-    
+
+    @Override
     public boolean equals( Object o )
     {
         if ( this == o )
