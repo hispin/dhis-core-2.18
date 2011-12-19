@@ -30,6 +30,7 @@ package org.hisp.dhis.chart;
 import org.codehaus.jackson.annotate.JsonProperty;
 import org.codehaus.jackson.map.annotate.JsonSerialize;
 import org.hisp.dhis.common.BaseIdentifiableObject;
+import org.hisp.dhis.common.BaseNameableObject;
 import org.hisp.dhis.common.Dxf2Namespace;
 import org.hisp.dhis.common.adapter.DataElementXmlAdapter;
 import org.hisp.dhis.common.adapter.DataSetXmlAdapter;
@@ -493,7 +494,7 @@ public class Chart
     @XmlElement( name = "dataElement" )
     @XmlJavaTypeAdapter( DataElementXmlAdapter.class )
     @JsonProperty
-    @JsonSerialize( contentAs = BaseIdentifiableObject.class )
+    @JsonSerialize( contentAs = BaseNameableObject.class )
     public List<DataElement> getDataElements()
     {
         return dataElements;
@@ -508,7 +509,7 @@ public class Chart
     @XmlElement( name = "dataSet" )
     @XmlJavaTypeAdapter( DataSetXmlAdapter.class )
     @JsonProperty
-    @JsonSerialize( contentAs = BaseIdentifiableObject.class )
+    @JsonSerialize( contentAs = BaseNameableObject.class )
     public List<DataSet> getDataSets()
     {
         return dataSets;
@@ -535,7 +536,7 @@ public class Chart
     @XmlElement( name = "organisationUnit" )
     @XmlJavaTypeAdapter( OrganisationUnitXmlAdapter.class )
     @JsonProperty
-    @JsonSerialize( contentAs = BaseIdentifiableObject.class )
+    @JsonSerialize( contentAs = BaseNameableObject.class )
     public List<OrganisationUnit> getOrganisationUnits()
     {
         return organisationUnits;
