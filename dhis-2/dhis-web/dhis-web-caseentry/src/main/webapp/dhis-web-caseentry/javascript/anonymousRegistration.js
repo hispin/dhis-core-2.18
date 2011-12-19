@@ -54,6 +54,9 @@ function showEventForm()
 				enable('executionDate');
 				enable('createEventBtn');
 				disable('deleteCurrentEventBtn');
+				disable('completeBtn');
+				disable('validationBtn');
+				
 				hideById('loaderDiv');
 			}
 			
@@ -77,6 +80,7 @@ function loadEventRegistrationForm()
 				enable('createEventBtn');
 				disable('deleteCurrentEventBtn');
 				disable('completeBtn');
+				disable('validationBtn');
 				
 				$('#executionDate').change(function() {
 					saveExecutionDate( getFieldValue('programStageId'), getFieldValue('executionDate') );
@@ -90,6 +94,7 @@ function loadEventRegistrationForm()
 					enable('createEventBtn');
 					enable('deleteCurrentEventBtn');
 					disable('completeBtn');
+					disable('validationBtn');
 				} 
 				else
 				{
@@ -97,7 +102,7 @@ function loadEventRegistrationForm()
 					disable('createEventBtn');
 					enable('deleteCurrentEventBtn');
 					enable('completeBtn');
-					
+					enable('validationBtn');
 					
 					$('#executionDate').change(function() {
 						saveExecutionDate( getFieldValue('programStageId'), getFieldValue('executionDate') );
@@ -167,5 +172,4 @@ function deleteCurrentEvent()
 function afterCompleteStage()
 {
 	enable('createEventBtn');
-	disable('createEventBtn');
 }
