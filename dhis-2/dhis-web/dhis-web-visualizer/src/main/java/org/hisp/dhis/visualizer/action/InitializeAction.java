@@ -90,18 +90,11 @@ public class InitializeAction
         return lastMonth;
     }
 
-    private List<Period> monthsThisYear;
-
-    public List<Period> getMonthsThisYear()
-    {
-        return monthsThisYear;
-    }
+    private List<Period> last12Months;
     
-    private List<Period> monthsLastYear;
-
-    public List<Period> getMonthsLastYear()
+    public List<Period> getLast12Months()
     {
-        return monthsLastYear;
+        return last12Months;
     }
     
     private List<Period> lastQuarter;
@@ -111,18 +104,25 @@ public class InitializeAction
         return lastQuarter;
     }
     
-    private List<Period> quartersThisYear;
-
-    public List<Period> getQuartersThisYear()
+    private List<Period> last4Quarters;
+    
+    public List<Period> getLast4Quarters()
     {
-        return quartersThisYear;
+        return last4Quarters;
     }
     
-    private List<Period> quartersLastYear;
-
-    public List<Period> getQuartersLastYear()
+    private List<Period> lastSixMonth;
+    
+    public List<Period> getLastSixMonth()
     {
-        return quartersLastYear;
+        return lastSixMonth;
+    }
+
+    private List<Period> last2SixMonths;
+
+    public List<Period> getLast2SixMonths()
+    {
+        return last2SixMonths;
     }
     
     private List<Period> thisYear;
@@ -132,18 +132,11 @@ public class InitializeAction
         return thisYear;
     }
     
-    private List<Period> lastYear;
+    private List<Period> last5Years;
 
-    public List<Period> getLastYear()
+    public List<Period> getLast5Years()
     {
-        return lastYear;
-    }
-    
-    private List<Period> lastFiveYears;
-
-    public List<Period> getLastFiveYears()
-    {
-        return lastFiveYears;
+        return last5Years;
     }
 
     // -------------------------------------------------------------------------
@@ -163,29 +156,26 @@ public class InitializeAction
         rp.clear().setReportingMonth( true );
         lastMonth = periodService.reloadPeriods( setNames( rp.getRelativePeriods() ) );
         
-        rp.clear().setMonthsThisYear( true );
-        monthsThisYear = periodService.reloadPeriods( setNames( rp.getRelativePeriods() ) );
-        
-        rp.clear().setMonthsLastYear( true );
-        monthsLastYear = periodService.reloadPeriods( setNames( rp.getRelativePeriods() ) );
+        rp.clear().setLast12Months( true );
+        last12Months = periodService.reloadPeriods( setNames( rp.getRelativePeriods() ) );
         
         rp.clear().setReportingQuarter( true );
         lastQuarter = periodService.reloadPeriods( setNames( rp.getRelativePeriods() ) );
         
-        rp.clear().setQuartersThisYear( true );
-        quartersThisYear = periodService.reloadPeriods( setNames( rp.getRelativePeriods() ) );
+        rp.clear().setLast4Quarters( true );
+        last4Quarters = periodService.reloadPeriods( setNames( rp.getRelativePeriods() ) );
         
-        rp.clear().setQuartersLastYear( true );
-        quartersLastYear = periodService.reloadPeriods( setNames( rp.getRelativePeriods() ) );
+        rp.clear().setLastSixMonth( true );
+        lastSixMonth = periodService.reloadPeriods( setNames( rp.getRelativePeriods() ) );
+        
+        rp.clear().setLast2SixMonths( true );
+        last2SixMonths = periodService.reloadPeriods( setNames( rp.getRelativePeriods() ) );
         
         rp.clear().setThisYear( true );
         thisYear = periodService.reloadPeriods( setNames( rp.getRelativePeriods() ) );
         
-        rp.clear().setLastYear( true );
-        lastYear = periodService.reloadPeriods( setNames( rp.getRelativePeriods() ) );
-        
         rp.clear().setLast5Years( true );
-        lastFiveYears = periodService.reloadPeriods( setNames( rp.getRelativePeriods() ) );
+        last5Years = periodService.reloadPeriods( setNames( rp.getRelativePeriods() ) );
 
         return SUCCESS;
     }
