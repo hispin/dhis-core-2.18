@@ -54,6 +54,8 @@ public class ChartConverter
     public static final String ELEMENT_NAME = "chart";
 
     private static final String FIELD_ID = "id";
+    private static final String FIELD_UID = "uid";
+    private static final String FIELD_CODE = "code";
     private static final String FIELD_TITLE = "title";
     private static final String FIELD_TYPE = "type";
     private static final String FIELD_SIZE = "size";
@@ -131,6 +133,8 @@ public class ChartConverter
                 writer.openElement( ELEMENT_NAME );
                 
                 writer.writeElement( FIELD_ID, String.valueOf( chart.getId() ) );
+                writer.writeElement( FIELD_UID, String.valueOf( chart.getUid() ) );    //v1.2.1
+                writer.writeElement( FIELD_CODE, String.valueOf( chart.getCode() ) );  // v1.2.1
                 writer.writeElement( FIELD_TITLE, String.valueOf( chart.getName() ) );
                 writer.writeElement( FIELD_TYPE, String.valueOf( chart.getType() ) );
                 writer.writeElement( FIELD_SIZE, String.valueOf( chart.getSize() ) );
@@ -188,6 +192,13 @@ public class ChartConverter
 
             reader.moveToStartElement( FIELD_ID );
             chart.setId( Integer.parseInt( reader.getElementValue() ) );
+
+            if (params.minorVersionGreaterOrEqual( "1.3")) {
+                reader.moveToStartElement( FIELD_UID );
+                chart.setUid( reader.getElementValue() );
+                reader.moveToStartElement( FIELD_CODE );
+                chart.setCode( reader.getElementValue() );
+            }
 
             reader.moveToStartElement( FIELD_TITLE );
             chart.setName( reader.getElementValue() );

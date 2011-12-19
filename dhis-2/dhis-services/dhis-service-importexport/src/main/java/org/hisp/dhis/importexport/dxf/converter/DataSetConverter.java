@@ -55,6 +55,7 @@ public class DataSetConverter
     public static final String ELEMENT_NAME = "dataSet";
 
     private static final String FIELD_ID = "id";
+    private static final String FIELD_UID = "uid";
     private static final String FIELD_NAME = "name";
     private static final String FIELD_SHORT_NAME = "shortName";
     private static final String FIELD_CODE = "code";
@@ -123,6 +124,7 @@ public class DataSetConverter
                 writer.openElement( ELEMENT_NAME );
 
                 writer.writeElement( FIELD_ID, String.valueOf( dataSet.getId() ) );
+                writer.writeElement( FIELD_UID, String.valueOf( dataSet.getUid() ) );
                 writer.writeCData( FIELD_NAME, dataSet.getName() );
                 writer.writeCData( FIELD_SHORT_NAME, dataSet.getShortName() );
                 writer.writeElement( FIELD_CODE, dataSet.getCode() );
@@ -147,9 +149,20 @@ public class DataSetConverter
             final Map<String, String> values = reader.readElements( ELEMENT_NAME );
             
             dataSet.setId( Integer.parseInt( values.get( FIELD_ID ) ) );
+            
+            if ( params.minorVersionGreaterOrEqual( "1.3") )
+            {
+                dataSet.setUid( values.get( FIELD_UID) );
+            }
+            
             dataSet.setName( values.get( FIELD_NAME ) );
             dataSet.setShortName( values.get( FIELD_SHORT_NAME ) );
-            dataSet.setCode( values.get( FIELD_CODE ) );
+            
+            if ( params.minorVersionGreaterOrEqual( "1.2") ) 
+            {
+              dataSet.setCode( values.get( FIELD_CODE ) );
+            }
+            
             dataSet.getPeriodType().setId( periodTypeMapping.get( values.get( FIELD_PERIOD_TYPE ) ) );
             
             importObject( dataSet, params );

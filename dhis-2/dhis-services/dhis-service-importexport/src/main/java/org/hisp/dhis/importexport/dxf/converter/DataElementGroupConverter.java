@@ -52,6 +52,8 @@ public class DataElementGroupConverter
     public static final String ELEMENT_NAME = "dataElementGroup";
     
     private static final String FIELD_ID = "id";
+    private static final String FIELD_UID = "uid";
+    private static final String FIELD_CODE = "code";
     private static final String FIELD_NAME = "name";
 
     // -------------------------------------------------------------------------
@@ -99,6 +101,8 @@ public class DataElementGroupConverter
                 writer.openElement( ELEMENT_NAME );
                 
                 writer.writeElement( FIELD_ID, String.valueOf( group.getId() ) );
+                writer.writeElement( FIELD_UID, String.valueOf( group.getUid() ) );
+                writer.writeElement( FIELD_CODE, String.valueOf( group.getCode() ) );
                 writer.writeElement( FIELD_NAME, group.getName() );
     
                 writer.closeElement();
@@ -117,6 +121,13 @@ public class DataElementGroupConverter
             final DataElementGroup group = new DataElementGroup();
 
             group.setId( Integer.parseInt( values.get( FIELD_ID ) ) );
+
+            if ( params.minorVersionGreaterOrEqual( "1.3") )
+            {
+                group.setUid( values.get( FIELD_UID ) );
+                group.setCode( values.get( FIELD_CODE) );
+            }
+
             group.setName( values.get( FIELD_NAME ) );
             
             importObject( group, params );

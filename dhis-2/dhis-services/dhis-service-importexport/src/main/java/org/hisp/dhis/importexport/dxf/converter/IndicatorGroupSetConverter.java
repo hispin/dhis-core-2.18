@@ -52,6 +52,8 @@ public class IndicatorGroupSetConverter
     public static final String ELEMENT_NAME = "indicatorGroupSet";
     
     private static final String FIELD_ID = "id";
+    private static final String FIELD_UID = "uid";
+    private static final String FIELD_CODE = "code";
     private static final String FIELD_NAME = "name";
 
     // -------------------------------------------------------------------------
@@ -99,6 +101,8 @@ public class IndicatorGroupSetConverter
                 writer.openElement( ELEMENT_NAME );
                 
                 writer.writeElement( FIELD_ID, String.valueOf( groupSet.getId() ) );
+                writer.writeElement( FIELD_UID, String.valueOf( groupSet.getUid() ) );
+                writer.writeElement( FIELD_CODE, String.valueOf( groupSet.getCode() ) );
                 writer.writeElement( FIELD_NAME, groupSet.getName() );
     
                 writer.closeElement();
@@ -117,6 +121,12 @@ public class IndicatorGroupSetConverter
             final IndicatorGroupSet groupSet = new IndicatorGroupSet();
             
             groupSet.setId( Integer.parseInt( values.get( FIELD_ID ) ) );
+
+            if (params.minorVersionGreaterOrEqual( "1.3") ) {
+                groupSet.setUid( values.get( FIELD_UID) );
+                groupSet.setCode( values.get( FIELD_CODE) );
+            }
+
             groupSet.setName( values.get( FIELD_NAME ) );
             
             importObject( groupSet, params );

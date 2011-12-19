@@ -1,5 +1,5 @@
 <?xml version='1.0'?>
-<dxf>
+<dxf minorVersion="1.2">
     <categoryOptions>
         <categoryOption>
             <id>65</id>
@@ -702,6 +702,8 @@
             <active>true</active>
             <comment>CommentA</comment>
             <geoCode>GeoCode</geoCode>
+            <feature />
+            <lastUpdated>2011-12-19</lastUpdated>
         </organisationUnit>
         <organisationUnit>
             <id>66</id>
@@ -714,6 +716,8 @@
             <active>true</active>
             <comment>CommentB</comment>
             <geoCode>GeoCode</geoCode>
+            <feature />
+            <lastUpdated>2011-12-19</lastUpdated>
         </organisationUnit>
         <organisationUnit>
             <id>67</id>
@@ -726,6 +730,8 @@
             <active>true</active>
             <comment>CommentC</comment>
             <geoCode>GeoCode</geoCode>
+            <feature />
+            <lastUpdated>2011-12-19</lastUpdated>
         </organisationUnit>
         <organisationUnit>
             <id>68</id>
@@ -738,6 +744,8 @@
             <active>true</active>
             <comment>CommentD</comment>
             <geoCode>GeoCode</geoCode>
+            <feature />
+            <lastUpdated>2011-12-19</lastUpdated>
         </organisationUnit>
         <organisationUnit>
             <id>69</id>
@@ -750,6 +758,8 @@
             <active>true</active>
             <comment>CommentE</comment>
             <geoCode>GeoCode</geoCode>
+            <feature />
+            <lastUpdated>2011-12-19</lastUpdated>
         </organisationUnit>
     </organisationUnits>
     <organisationUnitRelationships>

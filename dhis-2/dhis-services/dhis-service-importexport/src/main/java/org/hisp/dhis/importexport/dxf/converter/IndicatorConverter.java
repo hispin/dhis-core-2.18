@@ -56,6 +56,7 @@ public class IndicatorConverter
     public static final String ELEMENT_NAME = "indicator";
     
     private static final String FIELD_ID = "id";
+    private static final String FIELD_UID = "uid";
     private static final String FIELD_NAME = "name";
     private static final String FIELD_ALTERNATIVE_NAME = "alternativeName";
     private static final String FIELD_SHORT_NAME = "shortName";
@@ -140,6 +141,7 @@ public class IndicatorConverter
                 writer.openElement( ELEMENT_NAME );
                 
                 writer.writeElement( FIELD_ID, String.valueOf( indicator.getId() ) );
+                writer.writeElement( FIELD_UID, String.valueOf( indicator.getUid() ) );
                 writer.writeElement( FIELD_NAME, indicator.getName() );
                 writer.writeElement( FIELD_ALTERNATIVE_NAME, indicator.getAlternativeName() );
                 writer.writeElement( FIELD_SHORT_NAME, indicator.getShortName() );
@@ -171,10 +173,21 @@ public class IndicatorConverter
             final IndicatorType type = new IndicatorType();
             indicator.setIndicatorType( type );
             indicator.setId( Integer.parseInt( values.get( FIELD_ID ) ) );
+
+            if ( params.minorVersionGreaterOrEqual( "1.3" ) )
+            {
+                indicator.setUid( values.get( FIELD_UID) );
+            }
+
             indicator.setName( values.get( FIELD_NAME ) );
             indicator.setAlternativeName( values.get( FIELD_ALTERNATIVE_NAME ) );
             indicator.setShortName( values.get( FIELD_SHORT_NAME ) );
-            indicator.setCode( values.get( FIELD_CODE ) );
+
+            if ( params.minorVersionGreaterOrEqual(  "1.2" ) ) 
+            {
+              indicator.setCode( values.get( FIELD_CODE ) );
+            }
+            
             indicator.setDescription( values.get( FIELD_DESCRIPTION ) );
             indicator.setAnnualized( Boolean.parseBoolean( values.get( FIELD_ANNUALIZED ) ) );
             indicator.getIndicatorType().setId( indicatorTypeMapping.get( Integer.parseInt( values.get( FIELD_INDICATOR_TYPE ) ) ) );

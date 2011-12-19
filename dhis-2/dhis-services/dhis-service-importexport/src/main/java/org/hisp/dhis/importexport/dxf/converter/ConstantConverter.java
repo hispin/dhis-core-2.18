@@ -55,6 +55,10 @@ public class ConstantConverter
 
     private static final String FIELD_ID = "id";
 
+    private static final String FIELD_UID = "uid";
+    
+    private static final String FIELD_CODE = "code";
+
     private static final String FIELD_NAME = "name";
 
     private static final String FIELD_VALUE = "value";
@@ -104,6 +108,8 @@ public class ConstantConverter
                 writer.openElement( ELEMENT_NAME );
 
                 writer.writeElement( FIELD_ID, String.valueOf( constant.getId() ) );
+                writer.writeElement( FIELD_UID, String.valueOf( constant.getUid() ) );
+                writer.writeElement( FIELD_CODE, String.valueOf( constant.getCode() ) );
                 writer.writeElement( FIELD_NAME, constant.getName() );
                 writer.writeElement( FIELD_VALUE, String.valueOf( constant.getValue() ) );
 
@@ -123,6 +129,13 @@ public class ConstantConverter
             final Constant constant = new Constant();
 
             constant.setId( Integer.parseInt( results.get( FIELD_ID ) ) );
+            if (params.minorVersionGreaterOrEqual( "1.3") ) {
+                reader.moveToStartElement( FIELD_UID );
+                constant.setUid( reader.getElementValue() );
+                reader.moveToStartElement( FIELD_CODE );
+                constant.setCode( reader.getElementValue() );
+            }
+
             constant.setName( results.get( FIELD_NAME ) );
             constant.setValue( Double.parseDouble( results.get( FIELD_VALUE ) ) );
 

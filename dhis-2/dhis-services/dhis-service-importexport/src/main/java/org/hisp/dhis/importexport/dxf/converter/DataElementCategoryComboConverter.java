@@ -52,6 +52,8 @@ public class DataElementCategoryComboConverter
     public static final String ELEMENT_NAME = "categoryCombo";
     
     private static final String FIELD_ID = "id";
+    private static final String FIELD_UID = "uid";
+    private static final String FIELD_CODE = "code";
     private static final String FIELD_NAME = "name";
 
     // -------------------------------------------------------------------------
@@ -100,6 +102,8 @@ public class DataElementCategoryComboConverter
                 writer.openElement( ELEMENT_NAME );
                 
                 writer.writeElement( FIELD_ID, String.valueOf( categoryCombo.getId() ) );
+                writer.writeElement( FIELD_UID, String.valueOf( categoryCombo.getUid() ) );
+                writer.writeElement( FIELD_CODE, String.valueOf( categoryCombo.getCode() ) );
                 writer.writeElement( FIELD_NAME, categoryCombo.getName() );
                 
                 writer.closeElement();
@@ -118,6 +122,13 @@ public class DataElementCategoryComboConverter
             final DataElementCategoryCombo categoryCombo = new DataElementCategoryCombo();
             
             categoryCombo.setId( Integer.parseInt( values.get( FIELD_ID ) ) );
+            
+            if (params.minorVersionGreaterOrEqual( "1.3") )
+            {
+                categoryCombo.setUid( values.get( FIELD_UID) );
+                categoryCombo.setCode( values.get( FIELD_CODE) );
+            }
+            
             categoryCombo.setName( values.get( FIELD_NAME ) );
             
             importObject( categoryCombo, params );

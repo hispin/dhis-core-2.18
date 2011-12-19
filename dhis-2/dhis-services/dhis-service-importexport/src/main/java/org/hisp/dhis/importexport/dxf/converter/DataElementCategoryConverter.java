@@ -58,6 +58,8 @@ public class DataElementCategoryConverter
     public static final String ELEMENT_NAME = "category";
 
     private static final String FIELD_ID = "id";
+    private static final String FIELD_UID = "uid";
+    private static final String FIELD_CODE = "code";
     private static final String FIELD_NAME = "name";
     private static final String FIELD_CONCEPT_ID = "conceptid";
     
@@ -112,6 +114,8 @@ public class DataElementCategoryConverter
                 writer.openElement( ELEMENT_NAME );
 
                 writer.writeElement( FIELD_ID, String.valueOf( category.getId() ) );
+                writer.writeElement( FIELD_UID, String.valueOf( category.getId() ) );
+                writer.writeElement( FIELD_CODE, String.valueOf( category.getId() ) );
                 writer.writeElement( FIELD_NAME, category.getName() );
                 writer.writeElement( FIELD_CONCEPT_ID, String.valueOf( category.getConcept() == null ? BLANK : category
                     .getConcept().getId() ) );
@@ -136,6 +140,12 @@ public class DataElementCategoryConverter
             final DataElementCategory category = new DataElementCategory();
 
             category.setId( Integer.parseInt( values.get( FIELD_ID ) ) );
+            
+            if (params.minorVersionGreaterOrEqual( "1.3") ) {
+                category.setUid( values.get( FIELD_UID) );
+                category.setCode( values.get( FIELD_CODE) );
+            }
+
             category.setName( values.get( FIELD_NAME ) );
 
             if ( params.minorVersionGreaterOrEqual( MINOR_VERSION_12 ) && values.get( FIELD_CONCEPT_ID ) != null )

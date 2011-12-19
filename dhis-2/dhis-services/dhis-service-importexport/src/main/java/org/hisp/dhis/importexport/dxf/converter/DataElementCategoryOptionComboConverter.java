@@ -49,28 +49,35 @@ import org.hisp.dhis.importexport.importer.DataElementCategoryOptionComboImporte
 public class DataElementCategoryOptionComboConverter
     extends DataElementCategoryOptionComboImporter implements XMLConverter
 {
+
     public static final String COLLECTION_NAME = "categoryOptionCombos";
+
     public static final String ELEMENT_NAME = "categoryOptionCombo";
-    
+
     private static final String FIELD_ID = "id";
+
+    private static final String FIELD_UID = "uid";
+
+    private static final String FIELD_CODE = "code";
+
     private static final String FIELD_NAME = "name";
 
     private static final String SUB_ELEMENT_NAME = "categoryCombo";
-    
+
     private static final String SUB_COLLECTION_NAME = "categoryOptions";
+
     private static final String SUB_COLLECTION_ELEMENT_NAME = "categoryOption";
 
     // -------------------------------------------------------------------------
     // Properties
     // -------------------------------------------------------------------------
-
     private Map<Object, Integer> categoryComboMapping;
+
     private Map<Object, Integer> categoryOptionMapping;
-    
+
     // -------------------------------------------------------------------------
     // Constructor
     // -------------------------------------------------------------------------
-
     /**
      * Constructor for write operations.
      */
@@ -78,7 +85,7 @@ public class DataElementCategoryOptionComboConverter
     {
         this.categoryService = categoryService;
     }
-    
+
     /**
      * Constructor for read operations.
      * 
@@ -94,36 +101,39 @@ public class DataElementCategoryOptionComboConverter
         this.categoryComboMapping = categoryComboMapping;
         this.categoryOptionMapping = categoryOptionMapping;
         this.categoryService = categoryService;
-    }    
+    }
 
     // -------------------------------------------------------------------------
     // XMLConverter implementation
     // -------------------------------------------------------------------------
-
     public void write( XMLWriter writer, ExportParams params )
     {
-        Collection<DataElementCategoryOptionCombo> categoryOptionCombos = 
+        Collection<DataElementCategoryOptionCombo> categoryOptionCombos =
             categoryService.getDataElementCategoryOptionCombos( params.getCategoryOptionCombos() );
-        
+
         if ( categoryOptionCombos != null && categoryOptionCombos.size() > 0 )
         {
             writer.openElement( COLLECTION_NAME );
-            
+
             for ( DataElementCategoryOptionCombo categoryOptionCombo : categoryOptionCombos )
             {
                 writer.openElement( ELEMENT_NAME );
-                
+
                 writer.writeElement( FIELD_ID, String.valueOf( categoryOptionCombo.getId() ) );
-                
+
+                writer.writeElement( FIELD_UID, String.valueOf( categoryOptionCombo.getUid() ) );
+
+                writer.writeElement( FIELD_CODE, String.valueOf( categoryOptionCombo.getCode() ) );
+
                 // -------------------------------------------------------------
                 // Write CategoryCombo
                 // -------------------------------------------------------------
 
                 writer.openElement( SUB_ELEMENT_NAME );
-                
+
                 writer.writeElement( FIELD_ID, String.valueOf( categoryOptionCombo.getCategoryCombo().getId() ) );
                 writer.writeElement( FIELD_NAME, categoryOptionCombo.getCategoryCombo().getName() );
-                
+
                 writer.closeElement();
 
                 // -------------------------------------------------------------
@@ -135,55 +145,63 @@ public class DataElementCategoryOptionComboConverter
                 for ( DataElementCategoryOption categoryOption : categoryOptionCombo.getCategoryOptions() )
                 {
                     writer.openElement( SUB_COLLECTION_ELEMENT_NAME );
-                    
+
                     writer.writeElement( FIELD_ID, String.valueOf( categoryOption.getId() ) );
                     writer.writeElement( FIELD_NAME, String.valueOf( categoryOption.getName() ) );
-                    
+
                     writer.closeElement();
                 }
-                
+
                 writer.closeElement();
-                
+
                 writer.closeElement();
             }
-            
+
             writer.closeElement();
         }
     }
-    
+
     public void read( XMLReader reader, ImportParams params )
     {
         while ( reader.moveToStartElement( ELEMENT_NAME, COLLECTION_NAME ) )
         {
             final DataElementCategoryOptionCombo categoryOptionCombo = new DataElementCategoryOptionCombo();
-            
+
             reader.moveToStartElement( FIELD_ID );
             categoryOptionCombo.setId( Integer.parseInt( reader.getElementValue() ) );
-            
+
+            if ( params.minorVersionGreaterOrEqual( "1.3") )
+            {
+                reader.moveToStartElement( FIELD_UID );
+                categoryOptionCombo.setUid( reader.getElementValue() );
+                reader.moveToStartElement( FIELD_CODE );
+                categoryOptionCombo.setCode( reader.getElementValue() );
+            }
+
+
             reader.moveToStartElement( FIELD_ID );
             int categoryComboId = Integer.parseInt( reader.getElementValue() );
-            
+
             reader.moveToStartElement( FIELD_NAME );
             String categoryComboName = reader.getElementValue();
 
-            log.debug( categoryComboName + ": " + categoryComboId + "-" + categoryOptionCombo.getId());
+            log.debug( categoryComboName + ": " + categoryComboId + "-" + categoryOptionCombo.getId() );
             // -----------------------------------------------------------------
             // Setting the persisted CategoryCombo on the CategoryOptionCombo
             // if not in preview
             // -----------------------------------------------------------------
 
             DataElementCategoryCombo categoryCombo = new DataElementCategoryCombo();
-            
+
             if ( params.isPreview() )
-            {   
+            {
                 categoryCombo.setId( categoryComboId );
                 categoryCombo.setName( categoryComboName );
-            }
-            else
+            } else
             {
                 categoryCombo = categoryService.getDataElementCategoryCombo( categoryComboMapping.get( categoryComboId ) );
             }
-            
+
             categoryOptionCombo.setCategoryCombo( categoryCombo );
 
             // -----------------------------------------------------------------
@@ -194,26 +212,25 @@ public class DataElementCategoryOptionComboConverter
             while ( reader.moveToStartElement( SUB_COLLECTION_ELEMENT_NAME, SUB_COLLECTION_NAME ) )
             {
                 DataElementCategoryOption categoryOption = new DataElementCategoryOption();
-                
-                reader.moveToStartElement( FIELD_ID );                
+
+                reader.moveToStartElement( FIELD_ID );
                 int categoryOptionId = Integer.parseInt( reader.getElementValue() );
-                
+
                 reader.moveToStartElement( FIELD_NAME );
                 String categoryOptionName = reader.getElementValue();
-                
+
                 if ( params.isPreview() )
                 {
                     categoryOption.setId( categoryOptionId );
                     categoryOption.setName( categoryOptionName );
-                }
-                else
+                } else
                 {
-                    categoryOption = categoryService.getDataElementCategoryOption( categoryOptionMapping.get( categoryOptionId ) );                    
+                    categoryOption = categoryService.getDataElementCategoryOption( categoryOptionMapping.get( categoryOptionId ) );
                 }
-                
+
                 categoryOptionCombo.getCategoryOptions().add( categoryOption );
             }
-            
+
             importObject( categoryOptionCombo, params );
         }
     }
