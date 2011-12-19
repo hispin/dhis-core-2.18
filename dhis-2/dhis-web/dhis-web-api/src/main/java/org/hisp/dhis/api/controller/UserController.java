@@ -69,6 +69,15 @@ public class UserController
         Users users = new Users();
         users.setUsers( new ArrayList<User>( userService.getAllUsers() ) );
 
+        if ( params.isPaging() )
+        {
+
+        }
+        else
+        {
+
+        }
+
         if ( params.hasLinks() )
         {
             WebLinkPopulator listener = new WebLinkPopulator( request );

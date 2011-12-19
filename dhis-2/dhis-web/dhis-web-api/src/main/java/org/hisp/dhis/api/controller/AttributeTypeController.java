@@ -68,6 +68,15 @@ public class AttributeTypeController
         Attributes attributes = new Attributes();
         attributes.setAttributes( new ArrayList<Attribute>( attributeService.getAllAttributes() ) );
 
+        if ( params.isPaging() )
+        {
+
+        }
+        else
+        {
+
+        }
+
         if ( params.hasLinks() )
         {
             WebLinkPopulator listener = new WebLinkPopulator( request );

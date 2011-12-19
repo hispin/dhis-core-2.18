@@ -27,9 +27,6 @@ package org.hisp.dhis.hibernate;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.Collection;
-import java.util.List;
-
 import org.hibernate.Criteria;
 import org.hibernate.Query;
 import org.hibernate.SQLQuery;
@@ -42,11 +39,14 @@ import org.hisp.dhis.common.GenericNameableObjectStore;
 import org.springframework.beans.factory.annotation.Required;
 import org.springframework.jdbc.core.JdbcTemplate;
 
+import java.util.Collection;
+import java.util.List;
+
 /**
  * @author Lars Helge Overland
  * @version $Id$
  */
-public class HibernateGenericStore< T >
+public class HibernateGenericStore<T>
     implements GenericNameableObjectStore<T>
 {
     protected SessionFactory sessionFactory;
@@ -56,9 +56,9 @@ public class HibernateGenericStore< T >
     {
         this.sessionFactory = sessionFactory;
     }
-    
+
     protected JdbcTemplate jdbcTemplate;
-    
+
     public void setJdbcTemplate( JdbcTemplate jdbcTemplate )
     {
         this.jdbcTemplate = jdbcTemplate;
@@ -82,7 +82,7 @@ public class HibernateGenericStore< T >
     {
         this.clazz = clazz;
     }
-    
+
     private boolean cacheable = false;
 
     /**
@@ -100,14 +100,14 @@ public class HibernateGenericStore< T >
     {
         this.cacheable = cacheable;
     }
-    
+
     // -------------------------------------------------------------------------
     // Convenience methods
     // -------------------------------------------------------------------------
 
     /**
      * Creates a Query.
-     * 
+     *
      * @param hql the hql query.
      * @return a Query instance.
      */
@@ -115,10 +115,10 @@ public class HibernateGenericStore< T >
     {
         return sessionFactory.getCurrentSession().createQuery( hql ).setCacheable( cacheable );
     }
-    
+
     /**
      * Creates a SqlQuery.
-     * 
+     *
      * @param sql the sql query.
      * @return a SqlQuery instance.
      */
@@ -128,10 +128,10 @@ public class HibernateGenericStore< T >
         query.setCacheable( cacheable );
         return query;
     }
-    
+
     /**
      * Creates a Critera for the implementation Class type.
-     * 
+     *
      * @return a Criteria instance.
      */
     protected final Criteria getCriteria()
@@ -143,29 +143,29 @@ public class HibernateGenericStore< T >
     {
         return sessionFactory.getCurrentSession().createCriteria( getClazz() );
     }
-    
+
     /**
      * Creates a Criteria for the implementation Class type restricted by the
      * given Criterions.
-     * 
+     *
      * @param expressions the Criterions for the Criteria.
      * @return a Criteria instance.
      */
     protected final Criteria getCriteria( Criterion... expressions )
     {
         Criteria criteria = getCriteria();
-        
+
         for ( Criterion expression : expressions )
         {
             criteria.add( expression );
         }
-        
+
         return criteria;
     }
-    
+
     /**
      * Retrieves an object based on the given Criterions.
-     * 
+     *
      * @param expressions the Criterions for the Criteria.
      * @return an object of the implementation Class type.
      */
@@ -174,10 +174,10 @@ public class HibernateGenericStore< T >
     {
         return (T) getCriteria( expressions ).uniqueResult();
     }
-    
+
     /**
      * Retrieves a List based on the given Criterions.
-     * 
+     *
      * @param expressions the Criterions for the Criteria.
      * @return a List with objects of the implementation Class type.
      */
@@ -254,7 +254,7 @@ public class HibernateGenericStore< T >
     }
 
     @Override
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings( "unchecked" )
     public Collection<T> getLikeName( String name )
     {
         return getCriteria().add( Restrictions.ilike( "name", "%" + name + "%" ) ).list();
@@ -274,7 +274,7 @@ public class HibernateGenericStore< T >
     }
 
     @Override
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings( "unchecked" )
     public Collection<T> getBetween( int first, int max )
     {
         Criteria criteria = getCriteria();
@@ -285,7 +285,7 @@ public class HibernateGenericStore< T >
     }
 
     @Override
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings( "unchecked" )
     public Collection<T> getBetweenByName( String name, int first, int max )
     {
         Criteria criteria = getCriteria();
@@ -311,5 +311,5 @@ public class HibernateGenericStore< T >
         criteria.setProjection( Projections.rowCount() );
         criteria.add( Restrictions.ilike( "name", "%" + name + "%" ) );
         return ((Number) criteria.uniqueResult()).intValue();
-    }    
+    }
 }

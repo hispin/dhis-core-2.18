@@ -69,6 +69,15 @@ public class ValidationRuleController
         ValidationRules validationRules = new ValidationRules();
         validationRules.setValidationRules( new ArrayList<ValidationRule>( validationRuleService.getAllValidationRules() ) );
 
+        if ( params.isPaging() )
+        {
+
+        }
+        else
+        {
+
+        }
+
         if ( params.hasLinks() )
         {
             WebLinkPopulator listener = new WebLinkPopulator( request );

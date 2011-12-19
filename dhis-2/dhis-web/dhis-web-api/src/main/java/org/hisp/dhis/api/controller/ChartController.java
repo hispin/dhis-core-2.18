@@ -90,6 +90,15 @@ public class ChartController
         Charts charts = new Charts();
         charts.setCharts( new ArrayList<Chart>( chartService.getAllCharts() ) );
 
+        if ( params.isPaging() )
+        {
+
+        }
+        else
+        {
+
+        }
+
         if ( params.hasLinks() )
         {
             WebLinkPopulator listener = new WebLinkPopulator( request );

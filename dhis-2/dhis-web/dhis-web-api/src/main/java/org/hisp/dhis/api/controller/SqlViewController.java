@@ -69,6 +69,15 @@ public class SqlViewController
         SqlViews sqlViews = new SqlViews();
         sqlViews.setSqlViews( new ArrayList<SqlView>( sqlViewService.getAllSqlViews() ) );
 
+        if ( params.isPaging() )
+        {
+
+        }
+        else
+        {
+
+        }
+
         if ( params.hasLinks() )
         {
             WebLinkPopulator listener = new WebLinkPopulator( request );

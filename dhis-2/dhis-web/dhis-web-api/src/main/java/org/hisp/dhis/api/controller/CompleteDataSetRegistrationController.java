@@ -27,6 +27,7 @@ package org.hisp.dhis.api.controller;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import org.hisp.dhis.api.utils.IdentifiableObjectParams;
 import org.hisp.dhis.dataset.CompleteDataSetRegistration;
 import org.hisp.dhis.dataset.CompleteDataSetRegistrationService;
 import org.hisp.dhis.dataset.CompleteDataSetRegistrations;
@@ -54,10 +55,19 @@ public class CompleteDataSetRegistrationController
     //-------------------------------------------------------------------------------------------------------
 
     @RequestMapping( method = RequestMethod.GET )
-    public String getCompleteDataSetRegistrations( Model model, HttpServletRequest request )
+    public String getCompleteDataSetRegistrations( IdentifiableObjectParams params, Model model, HttpServletRequest request )
     {
         CompleteDataSetRegistrations completeDataSetRegistrations = new CompleteDataSetRegistrations();
         completeDataSetRegistrations.setCompleteDataSetRegistrations( new ArrayList<CompleteDataSetRegistration>( completeDataSetRegistrationService.getAllCompleteDataSetRegistrations() ) );
+
+        if ( params.isPaging() )
+        {
+
+        }
+        else
+        {
+
+        }
 
         model.addAttribute( "model", completeDataSetRegistrations );
 
