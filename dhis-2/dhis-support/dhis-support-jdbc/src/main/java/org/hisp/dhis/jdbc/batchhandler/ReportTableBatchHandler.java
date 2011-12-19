@@ -86,6 +86,8 @@ public class ReportTableBatchHandler
     
     protected void setColumns()
     {
+        statementBuilder.setColumn( "uid" );
+        statementBuilder.setColumn( "code" );
         statementBuilder.setColumn( "name" );
         statementBuilder.setColumn( "regression" );
         statementBuilder.setColumn( "doindicators" );
@@ -107,6 +109,8 @@ public class ReportTableBatchHandler
     
     protected void setValues( ReportTable reportTable )
     {        
+        statementBuilder.setValue( reportTable.getUid() );
+        statementBuilder.setValue( reportTable.getCode() );
         statementBuilder.setValue( reportTable.getName() );
         statementBuilder.setValue( reportTable.isRegression() );
         statementBuilder.setValue( reportTable.isDoIndicators() );

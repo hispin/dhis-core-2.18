@@ -86,6 +86,8 @@ public class DataDictionaryBatchHandler
     
     protected void setColumns()
     {
+        statementBuilder.setColumn( "uid" );
+        statementBuilder.setColumn( "code" );
         statementBuilder.setColumn( "name" );
         statementBuilder.setColumn( "description" );
         statementBuilder.setColumn( "region" );
@@ -93,6 +95,8 @@ public class DataDictionaryBatchHandler
     
     protected void setValues( DataDictionary dataDictionary )
     {        
+        statementBuilder.setValue( dataDictionary.getUid() );
+        statementBuilder.setValue( dataDictionary.getCode() );
         statementBuilder.setValue( dataDictionary.getName() );
         statementBuilder.setValue( dataDictionary.getDescription() );
         statementBuilder.setValue( dataDictionary.getRegion() );

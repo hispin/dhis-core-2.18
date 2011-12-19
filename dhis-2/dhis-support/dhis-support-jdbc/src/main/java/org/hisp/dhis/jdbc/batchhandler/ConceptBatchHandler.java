@@ -86,11 +86,15 @@ public class ConceptBatchHandler
 
     protected void setColumns()
     {
+        statementBuilder.setColumn( "uid" );
+        statementBuilder.setColumn( "code" );
         statementBuilder.setColumn( "name" );
     }
 
     protected void setValues( Concept concept )
     {        
+        statementBuilder.setValue( concept.getUid() );
+        statementBuilder.setValue( concept.getCode() );
         statementBuilder.setValue( concept.getName() );
     }
 }

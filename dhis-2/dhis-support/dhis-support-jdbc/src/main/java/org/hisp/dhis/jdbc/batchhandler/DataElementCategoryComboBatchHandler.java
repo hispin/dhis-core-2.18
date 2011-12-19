@@ -86,11 +86,15 @@ public class DataElementCategoryComboBatchHandler
     
     protected void setColumns()
     {
+        statementBuilder.setColumn( "uid" );
+        statementBuilder.setColumn( "code" );
         statementBuilder.setColumn( "name" );
     }
     
     protected void setValues( DataElementCategoryCombo categoryCombo )
     {        
+        statementBuilder.setValue( categoryCombo.getUid() );
+        statementBuilder.setValue( categoryCombo.getCode() );
         statementBuilder.setValue( categoryCombo.getName() );
     }
 }

@@ -90,6 +90,7 @@ public class OrganisationUnitBatchHandler
     
     protected void setColumns()
     {
+        statementBuilder.setColumn( "uid" );
         statementBuilder.setColumn( "name" );
         statementBuilder.setColumn( "parentid" );
         statementBuilder.setColumn( "shortname" );
@@ -107,6 +108,7 @@ public class OrganisationUnitBatchHandler
     
     protected void setValues( OrganisationUnit unit )
     {
+        statementBuilder.setValue( unit.getUid() );        
         statementBuilder.setValue( unit.getName() );        
         statementBuilder.setValue( unit.getParent() != null ? unit.getParent().getId() : null );
         statementBuilder.setValue( unit.getShortName() );

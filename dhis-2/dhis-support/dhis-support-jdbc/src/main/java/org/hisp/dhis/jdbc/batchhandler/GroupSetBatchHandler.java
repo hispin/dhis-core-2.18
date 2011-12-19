@@ -86,6 +86,8 @@ public class GroupSetBatchHandler
     
     protected void setColumns()
     {
+        statementBuilder.setColumn( "uid" );
+        statementBuilder.setColumn( "code" );
         statementBuilder.setColumn( "name" );
         statementBuilder.setColumn( "description" );
         statementBuilder.setColumn( "compulsory" );
@@ -93,6 +95,8 @@ public class GroupSetBatchHandler
     
     protected void setValues( OrganisationUnitGroupSet groupSet )
     {        
+        statementBuilder.setValue( groupSet.getUid() );
+        statementBuilder.setValue( groupSet.getCode() );
         statementBuilder.setValue( groupSet.getName() );
         statementBuilder.setValue( groupSet.getDescription() );
         statementBuilder.setValue( groupSet.isCompulsory() );

@@ -86,6 +86,8 @@ public class IndicatorTypeBatchHandler
     
     protected void setColumns()
     {
+        statementBuilder.setColumn( "uid" );
+        statementBuilder.setColumn( "code" );
         statementBuilder.setColumn( "name" );
         statementBuilder.setColumn( "indicatorfactor" );
         statementBuilder.setColumn( "indicatornumber" );
@@ -93,6 +95,8 @@ public class IndicatorTypeBatchHandler
     
     protected void setValues( IndicatorType type )
     {        
+        statementBuilder.setValue( type.getUid() );
+        statementBuilder.setValue( type.getCode() );
         statementBuilder.setValue( type.getName() );
         statementBuilder.setValue( type.getFactor() );
         statementBuilder.setValue( type.isNumber() );

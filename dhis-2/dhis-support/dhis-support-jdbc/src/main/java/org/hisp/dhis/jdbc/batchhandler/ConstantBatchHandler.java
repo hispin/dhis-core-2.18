@@ -86,12 +86,16 @@ public class ConstantBatchHandler
 
     protected void setColumns()
     {
+        statementBuilder.setColumn( "uid" );
+        statementBuilder.setColumn( "code" );
         statementBuilder.setColumn( "name" );
         statementBuilder.setColumn( "value" );
     }
 
     protected void setValues( Constant constant )
     {
+        statementBuilder.setValue( constant.getUid() );
+        statementBuilder.setValue( constant.getCode() );
         statementBuilder.setValue( constant.getName() );
         statementBuilder.setValue( constant.getValue() );
     }
