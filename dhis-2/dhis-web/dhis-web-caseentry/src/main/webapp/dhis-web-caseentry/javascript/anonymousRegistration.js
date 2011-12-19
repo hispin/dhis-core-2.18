@@ -7,7 +7,6 @@ function organisationUnitSelected( orgUnits )
 	disable('createEventBtn');
 	disable('deleteCurrentEventBtn');
 	
-	
 	$.postJSON( 'loadAnonymousPrograms.action',{}
 		, function( json ) 
 		{
@@ -140,33 +139,38 @@ function createNewEvent()
 
 function deleteCurrentEvent()
 {	
-	jQuery.postJSON( "removeCurrentEncounter.action",
-		{
-			programStageInstanceId: getFieldValue('programStageInstanceId')
-		}, 
-		function( json ) 
-		{    
-			var type = json.response;
-			
-			if( type == 'success' )
+	var result = window.confirm( i18n_comfirm_delete_current_event );
+    
+    if ( result )
+    {
+		jQuery.postJSON( "removeCurrentEncounter.action",
 			{
-				hideById('dataEntryFormDiv');
+				programStageInstanceId: getFieldValue('programStageInstanceId')
+			}, 
+			function( json ) 
+			{    
+				var type = json.response;
 				
-				showSuccessMessage( i18n_delete_current_event_success );
-				setFieldValue('executionDate','');
-				
-				disable('deleteCurrentEventBtn');
-				enable('createEventBtn');
-				
-				enable('executionDate');
-				
-				$('#executionDate').unbind('change');
-			}
-			else if( type == 'input' )
-			{
-				showWarningMessage( json.message );
-			}
-		});
+				if( type == 'success' )
+				{
+					hideById('dataEntryFormDiv');
+					
+					showSuccessMessage( i18n_delete_current_event_success );
+					setFieldValue('executionDate','');
+					
+					disable('deleteCurrentEventBtn');
+					enable('createEventBtn');
+					
+					enable('executionDate');
+					
+					$('#executionDate').unbind('change');
+				}
+				else if( type == 'input' )
+				{
+					showWarningMessage( json.message );
+				}
+			});
+	}
 }
 
 function afterCompleteStage()
