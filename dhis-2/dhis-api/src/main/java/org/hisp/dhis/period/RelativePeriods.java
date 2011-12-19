@@ -516,8 +516,8 @@ public class RelativePeriods
     // Getters & setters
     // -------------------------------------------------------------------------
 
-    @XmlElement
-    @JsonProperty
+    @XmlElement( name = "lastMonth" )
+    @JsonProperty( value = "lastMonth" )
     public boolean isReportingMonth()
     {
         return reportingMonth;
@@ -529,8 +529,8 @@ public class RelativePeriods
         return this;
     }
 
-    @XmlElement
-    @JsonProperty
+    @XmlElement( name = "lastBimonth" )
+    @JsonProperty( value = "lastBimonth" )
     public boolean isReportingBimonth()
     {
         return reportingBimonth;
@@ -542,8 +542,8 @@ public class RelativePeriods
         return this;
     }
 
-    @XmlElement
-    @JsonProperty
+    @XmlElement( name = "lastQuarter" )
+    @JsonProperty( value = "lastQuarter" )
     public boolean isReportingQuarter()
     {
         return reportingQuarter;

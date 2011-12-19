@@ -983,6 +983,8 @@ public class ReportTable extends BaseIdentifiableObject
         this.doUnits = doUnits;
     }
 
+    @XmlElement( name = "relativePeriods" )
+    @JsonProperty( value = "relativePeriods" )
     public RelativePeriods getRelatives()
     {
         return relatives;
