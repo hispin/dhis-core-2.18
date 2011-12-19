@@ -102,8 +102,8 @@ public class DataElementCategoryComboConverter
                 writer.openElement( ELEMENT_NAME );
                 
                 writer.writeElement( FIELD_ID, String.valueOf( categoryCombo.getId() ) );
-                writer.writeElement( FIELD_UID, String.valueOf( categoryCombo.getUid() ) );
-                writer.writeElement( FIELD_CODE, String.valueOf( categoryCombo.getCode() ) );
+                writer.writeElement( FIELD_UID,  categoryCombo.getUid() );
+                writer.writeElement( FIELD_CODE, categoryCombo.getCode() );
                 writer.writeElement( FIELD_NAME, categoryCombo.getName() );
                 
                 writer.closeElement();

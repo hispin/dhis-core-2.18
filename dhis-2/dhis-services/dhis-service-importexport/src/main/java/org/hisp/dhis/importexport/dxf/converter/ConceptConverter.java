@@ -110,8 +110,8 @@ public class ConceptConverter
                 writer.openElement( ELEMENT_NAME );
 
                 writer.writeElement( FIELD_ID, String.valueOf( concept.getId() ) );
-                writer.writeElement( FIELD_UID, String.valueOf( concept.getUid() ) );
-                writer.writeElement( FIELD_CODE, String.valueOf( concept.getCode() ) );
+                writer.writeElement( FIELD_UID, concept.getUid() );
+                writer.writeElement( FIELD_CODE, concept.getCode() );
                 writer.writeElement( FIELD_NAME, concept.getName() );
 
                 writer.closeElement();

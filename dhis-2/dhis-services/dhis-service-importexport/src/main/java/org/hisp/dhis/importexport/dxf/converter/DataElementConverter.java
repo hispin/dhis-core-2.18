@@ -124,7 +124,7 @@ public class DataElementConverter
                 writer.openElement( ELEMENT_NAME );
                 
                 writer.writeElement( FIELD_ID, String.valueOf( element.getId() ) );
-                writer.writeElement( FIELD_UID, String.valueOf( element.getUid() ) );
+                writer.writeElement( FIELD_UID, element.getUid() );
                 writer.writeElement( FIELD_NAME, element.getName() );
                 writer.writeElement( FIELD_ALTERNATIVE_NAME, element.getAlternativeName() );
                 writer.writeElement( FIELD_SHORT_NAME, element.getShortName() );

@@ -57,6 +57,9 @@ public class ValidationRuleConverter
     public static final String COLLECTION_NAME = "validationRules";
     public static final String ELEMENT_NAME = "validationRule";
 
+    private static final String FIELD_ID = "id";
+    private static final String FIELD_UID = "uid";
+    private static final String FIELD_CODE = "code";
     private static final String FIELD_NAME = "name";
     private static final String FIELD_DESCRIPTION = "description";
     private static final String FIELD_TYPE = "type";
@@ -131,6 +134,10 @@ public class ValidationRuleConverter
             {
                 writer.openElement( ELEMENT_NAME );
 
+                writer.writeElement( FIELD_ID, String.valueOf( rule.getId() ) );
+                writer.writeElement( FIELD_UID, rule.getUid() );
+                writer.writeElement( FIELD_CODE, rule.getCode() );
+
                 writer.writeElement( FIELD_NAME, rule.getName() );
                 writer.writeElement( FIELD_DESCRIPTION, rule.getDescription() );
                 writer.writeElement( FIELD_TYPE, rule.getType() );
@@ -154,6 +161,13 @@ public class ValidationRuleConverter
             final Map<String, String> values = reader.readElements( ELEMENT_NAME );
 
             final ValidationRule validationRule = new ValidationRule();
+
+            if ( params.minorVersionGreaterOrEqual( "1.3") )
+            {
+                validationRule.setId( Integer.parseInt( values.get( FIELD_ID )));
+                validationRule.setUid( values.get( FIELD_UID ) );
+                validationRule.setCode( values.get( FIELD_CODE) );
+            }
 
             final Expression leftSide = new Expression();
             final Expression rightSide = new Expression();

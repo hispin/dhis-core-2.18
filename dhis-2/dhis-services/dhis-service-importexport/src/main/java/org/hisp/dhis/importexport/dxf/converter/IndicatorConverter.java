@@ -141,7 +141,7 @@ public class IndicatorConverter
                 writer.openElement( ELEMENT_NAME );
                 
                 writer.writeElement( FIELD_ID, String.valueOf( indicator.getId() ) );
-                writer.writeElement( FIELD_UID, String.valueOf( indicator.getUid() ) );
+                writer.writeElement( FIELD_UID,  indicator.getUid() );
                 writer.writeElement( FIELD_NAME, indicator.getName() );
                 writer.writeElement( FIELD_ALTERNATIVE_NAME, indicator.getAlternativeName() );
                 writer.writeElement( FIELD_SHORT_NAME, indicator.getShortName() );

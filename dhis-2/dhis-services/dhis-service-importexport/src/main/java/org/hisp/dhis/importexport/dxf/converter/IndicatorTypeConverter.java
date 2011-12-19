@@ -102,8 +102,8 @@ public class IndicatorTypeConverter
                 writer.openElement( ELEMENT_NAME );
                 
                 writer.writeElement( FIELD_ID, String.valueOf( type.getId() ) );
-                writer.writeElement( FIELD_UID, String.valueOf( type.getUid() ) );
-                writer.writeElement( FIELD_CODE, String.valueOf( type.getCode() ) );
+                writer.writeElement( FIELD_UID, type.getUid() );
+                writer.writeElement( FIELD_CODE, type.getCode() );
                 writer.writeElement( FIELD_NAME, type.getName() );
                 writer.writeElement( FIELD_FACTOR, String.valueOf( type.getFactor() ) );
                 

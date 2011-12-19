@@ -124,7 +124,7 @@ public class DataSetConverter
                 writer.openElement( ELEMENT_NAME );
 
                 writer.writeElement( FIELD_ID, String.valueOf( dataSet.getId() ) );
-                writer.writeElement( FIELD_UID, String.valueOf( dataSet.getUid() ) );
+                writer.writeElement( FIELD_UID, dataSet.getUid() );
                 writer.writeCData( FIELD_NAME, dataSet.getName() );
                 writer.writeCData( FIELD_SHORT_NAME, dataSet.getShortName() );
                 writer.writeElement( FIELD_CODE, dataSet.getCode() );

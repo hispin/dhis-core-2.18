@@ -101,8 +101,8 @@ public class DataElementGroupConverter
                 writer.openElement( ELEMENT_NAME );
                 
                 writer.writeElement( FIELD_ID, String.valueOf( group.getId() ) );
-                writer.writeElement( FIELD_UID, String.valueOf( group.getUid() ) );
-                writer.writeElement( FIELD_CODE, String.valueOf( group.getCode() ) );
+                writer.writeElement( FIELD_UID, group.getUid() );
+                writer.writeElement( FIELD_CODE, group.getCode() );
                 writer.writeElement( FIELD_NAME, group.getName() );
     
                 writer.closeElement();

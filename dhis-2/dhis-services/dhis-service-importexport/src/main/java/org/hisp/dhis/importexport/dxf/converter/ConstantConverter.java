@@ -108,8 +108,8 @@ public class ConstantConverter
                 writer.openElement( ELEMENT_NAME );
 
                 writer.writeElement( FIELD_ID, String.valueOf( constant.getId() ) );
-                writer.writeElement( FIELD_UID, String.valueOf( constant.getUid() ) );
-                writer.writeElement( FIELD_CODE, String.valueOf( constant.getCode() ) );
+                writer.writeElement( FIELD_UID,  constant.getUid() );
+                writer.writeElement( FIELD_CODE,  constant.getCode() );
                 writer.writeElement( FIELD_NAME, constant.getName() );
                 writer.writeElement( FIELD_VALUE, String.valueOf( constant.getValue() ) );
 

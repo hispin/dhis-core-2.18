@@ -120,7 +120,7 @@ public class OrganisationUnitConverter
                 writer.openElement( ELEMENT_NAME );
                 
                 writer.writeElement( FIELD_ID, String.valueOf( unit.getId() ) );
-                writer.writeElement( FIELD_UID, String.valueOf( unit.getUid() ) );
+                writer.writeElement( FIELD_UID, unit.getUid() );
                 writer.writeElement( FIELD_NAME, unit.getName() );
                 writer.writeElement( FIELD_SHORT_NAME, unit.getShortName() );
                 writer.writeElement( FIELD_CODE, unit.getCode() );

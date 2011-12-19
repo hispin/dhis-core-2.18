@@ -63,6 +63,8 @@ public class ReportTableConverter
     public static final String ELEMENT_NAME = "reportTable";
 
     private static final String FIELD_ID = "id";
+    private static final String FIELD_UID = "uid";
+    private static final String FIELD_CODE = "code";
     private static final String FIELD_NAME = "name";
     private static final String FIELD_REGRESSION = "regression";
     
@@ -178,6 +180,8 @@ public class ReportTableConverter
                 writer.openElement( ELEMENT_NAME );
                 
                 writer.writeElement( FIELD_ID, String.valueOf( reportTable.getId() ) );
+                writer.writeElement( FIELD_UID, reportTable.getUid() );
+                writer.writeElement( FIELD_CODE, reportTable.getCode() );
                 writer.writeElement( FIELD_NAME, reportTable.getName() );
                 writer.writeElement( FIELD_REGRESSION, String.valueOf( reportTable.isRegression() ) );
                 
@@ -256,6 +260,14 @@ public class ReportTableConverter
             reader.moveToStartElement( FIELD_ID );
             reportTable.setId( Integer.parseInt( reader.getElementValue() ) );
             
+            if ( params.minorVersionGreaterOrEqual( "1.3") )
+            {
+                reader.moveToStartElement( FIELD_UID );
+                reportTable.setUid( reader.getElementValue() );
+                reader.moveToStartElement( FIELD_CODE );
+                reportTable.setCode( reader.getElementValue() );
+            }
+
             reader.moveToStartElement( FIELD_NAME );
             reportTable.setName( reader.getElementValue() );
 

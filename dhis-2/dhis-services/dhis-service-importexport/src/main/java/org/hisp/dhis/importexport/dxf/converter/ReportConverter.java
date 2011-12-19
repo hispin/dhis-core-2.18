@@ -50,6 +50,8 @@ public class ReportConverter
     public static final String ELEMENT_NAME = "report";
 
     private static final String FIELD_ID = "id";
+    private static final String FIELD_UID = "uid";
+    private static final String FIELD_CODE = "code";
     private static final String FIELD_NAME = "name";
     private static final String FIELD_DESIGN_CONTENT = "designContent";
     
@@ -89,6 +91,8 @@ public class ReportConverter
                 writer.openElement( ELEMENT_NAME );
                 
                 writer.writeElement( FIELD_ID, String.valueOf( report.getId() ) );
+                writer.writeElement( FIELD_UID, report.getUid() );
+                writer.writeElement( FIELD_CODE, report.getCode() );
                 writer.writeElement( FIELD_NAME, report.getName() );
                 writer.writeElement( FIELD_DESIGN_CONTENT, report.getDesignContent() );
                 
@@ -109,6 +113,13 @@ public class ReportConverter
             final Report report = new Report();
             
             report.setId( Integer.parseInt( values.get( FIELD_ID ) ) );
+
+            if ( params.minorVersionGreaterOrEqual( "1.3") )
+            {
+                report.setUid( values.get( FIELD_UID ) );
+                report.setCode( values.get( FIELD_CODE) );
+            }
+
             report.setName( values.get( FIELD_NAME ) );
             report.setDesignContent( values.get( FIELD_DESIGN_CONTENT ) );
             
