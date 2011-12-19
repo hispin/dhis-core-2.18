@@ -479,7 +479,7 @@ public class Chart
     @XmlElement( name = "indicator" )
     @XmlJavaTypeAdapter( IndicatorXmlAdapter.class )
     @JsonProperty
-    @JsonSerialize( contentAs = BaseIdentifiableObject.class )
+    @JsonSerialize( contentAs = BaseNameableObject.class )
     public List<Indicator> getIndicators()
     {
         return indicators;
