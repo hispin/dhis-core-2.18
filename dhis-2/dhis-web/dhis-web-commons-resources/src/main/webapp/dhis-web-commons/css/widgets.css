@@ -301,7 +301,9 @@ div#detailsArea
   background-color: #dadaff;
   position: fixed;
   width: 18em;
+  max-height: 75%;
   padding: 0.5em;
+  overflow: auto;
 }
 
 div#detailsArea label 
