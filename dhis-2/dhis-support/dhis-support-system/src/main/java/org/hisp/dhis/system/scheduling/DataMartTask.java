@@ -149,7 +149,7 @@ public class DataMartTask
         
         Collection<Integer> periodIds = ConversionUtils.getIdentifiers( Period.class, periodService.reloadPeriods( periods ) );
         
-        dataMartService.export( dataElementIds, indicatorIds, periodIds, organisationUnitIds, null, true );
+        dataMartService.export( dataElementIds, indicatorIds, periodIds, organisationUnitIds, null, null, true );
         completenessService.exportDataSetCompleteness( dataSetIds, periodIds, organisationUnitIds ); 
     }
 }
