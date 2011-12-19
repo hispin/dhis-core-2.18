@@ -398,7 +398,7 @@ public class DefaultDataMartEngine
             clock.logTime( "Created indexes" );
         }
 
-        final boolean isGroups = organisationUnitGroupIds != null && organisationUnitGroupIds.size() > 0;
+        final boolean isGroups = organisationUnitGroups != null && organisationUnitGroups.size() > 0;
         
         final int groupLevel = (Integer) systemSettingManager.getSystemSetting( KEY_ORGUNITGROUPSET_AGG_LEVEL, DEFAULT_ORGUNITGROUPSET_AGG_LEVEL );
         
