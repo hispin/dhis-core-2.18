@@ -121,9 +121,9 @@ public class DataElementCategoryOptionComboConverter
 
                 writer.writeElement( FIELD_ID, String.valueOf( categoryOptionCombo.getId() ) );
 
-                writer.writeElement( FIELD_UID, String.valueOf( categoryOptionCombo.getUid() ) );
+                writer.writeElement( FIELD_UID,  categoryOptionCombo.getUid() );
 
-                writer.writeElement( FIELD_CODE, String.valueOf( categoryOptionCombo.getCode() ) );
+                writer.writeElement( FIELD_CODE, categoryOptionCombo.getCode() );
 
                 // -------------------------------------------------------------
                 // Write CategoryCombo

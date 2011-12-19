@@ -104,8 +104,8 @@ public class GroupSetConverter
                 writer.openElement( ELEMENT_NAME );
                 
                 writer.writeElement( FIELD_ID, String.valueOf( groupSet.getId() ) );
-                writer.writeElement( FIELD_UID, String.valueOf( groupSet.getUid() ) );
-                writer.writeElement( FIELD_CODE, String.valueOf( groupSet.getCode() ) );
+                writer.writeElement( FIELD_UID, groupSet.getUid() );
+                writer.writeElement( FIELD_CODE, groupSet.getCode()  );
                 writer.writeElement( FIELD_NAME, groupSet.getName() );
                 writer.writeElement( FIELD_DESCRIPTION, groupSet.getDescription() );
                 writer.writeElement( FIELD_COMPULSORY, String.valueOf( groupSet.isCompulsory() ) );

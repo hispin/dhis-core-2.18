@@ -51,6 +51,8 @@ public class OrganisationUnitLevelConverter
     public static final String ELEMENT_NAME = "organisationUnitLevel";
     
     private static final String FIELD_ID = "id";
+    private static final String FIELD_UID = "uid";
+    private static final String FIELD_CODE = "code";
     private static final String FIELD_LEVEL = "level";
     private static final String FIELD_NAME = "name";
 
@@ -96,6 +98,8 @@ public class OrganisationUnitLevelConverter
                 writer.openElement( ELEMENT_NAME );
                 
                 writer.writeElement( FIELD_ID, String.valueOf( level.getId() ) );
+                writer.writeElement( FIELD_UID, level.getUid() );
+                writer.writeElement( FIELD_CODE, level.getCode() );
                 writer.writeElement( FIELD_LEVEL, String.valueOf( level.getLevel() ) );
                 writer.writeElement( FIELD_NAME, level.getName() );
                 
@@ -115,6 +119,13 @@ public class OrganisationUnitLevelConverter
             final OrganisationUnitLevel level = new OrganisationUnitLevel();
             
             level.setId( Integer.parseInt( values.get( FIELD_ID ) ) );
+
+            if ( params.minorVersionGreaterOrEqual( "1.3") )
+            {
+                level.setUid( values.get( FIELD_UID ) );
+                level.setCode( values.get( FIELD_CODE) );
+            }
+
             level.setLevel( Integer.parseInt( values.get( FIELD_LEVEL ) ) );
             level.setName( values.get( FIELD_NAME ) );
             

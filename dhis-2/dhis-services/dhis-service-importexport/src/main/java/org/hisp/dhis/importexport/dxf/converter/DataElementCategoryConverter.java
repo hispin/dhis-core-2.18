@@ -114,8 +114,8 @@ public class DataElementCategoryConverter
                 writer.openElement( ELEMENT_NAME );
 
                 writer.writeElement( FIELD_ID, String.valueOf( category.getId() ) );
-                writer.writeElement( FIELD_UID, String.valueOf( category.getId() ) );
-                writer.writeElement( FIELD_CODE, String.valueOf( category.getId() ) );
+                writer.writeElement( FIELD_UID, category.getUid() );
+                writer.writeElement( FIELD_CODE, category.getCode() );
                 writer.writeElement( FIELD_NAME, category.getName() );
                 writer.writeElement( FIELD_CONCEPT_ID, String.valueOf( category.getConcept() == null ? BLANK : category
                     .getConcept().getId() ) );

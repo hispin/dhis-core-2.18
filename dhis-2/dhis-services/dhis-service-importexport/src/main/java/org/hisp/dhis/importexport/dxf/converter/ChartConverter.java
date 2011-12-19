@@ -133,10 +133,10 @@ public class ChartConverter
                 writer.openElement( ELEMENT_NAME );
                 
                 writer.writeElement( FIELD_ID, String.valueOf( chart.getId() ) );
-                writer.writeElement( FIELD_UID, String.valueOf( chart.getUid() ) );    //v1.2.1
-                writer.writeElement( FIELD_CODE, String.valueOf( chart.getCode() ) );  // v1.2.1
-                writer.writeElement( FIELD_TITLE, String.valueOf( chart.getName() ) );
-                writer.writeElement( FIELD_TYPE, String.valueOf( chart.getType() ) );
+                writer.writeElement( FIELD_UID, chart.getUid() );    //v1.2.1
+                writer.writeElement( FIELD_CODE, chart.getCode()  );  // v1.2.1
+                writer.writeElement( FIELD_TITLE,  chart.getName() );
+                writer.writeElement( FIELD_TYPE, chart.getType() );
                 writer.writeElement( FIELD_SIZE, String.valueOf( chart.getSize() ) );
                 writer.writeElement( FIELD_DIMENSION, String.valueOf( chart.getDimension() ) );
                 writer.writeElement( FIELD_HIDE_LEGEND, String.valueOf( chart.isHideLegend() ) );

@@ -103,8 +103,8 @@ public class DataDictionaryConverter
                 writer.openElement( ELEMENT_NAME );
                 
                 writer.writeElement( FIELD_ID, String.valueOf( dictionary.getId() ) );
-                writer.writeElement( FIELD_UID, String.valueOf( dictionary.getUid() ) );
-                writer.writeElement( FIELD_CODE, String.valueOf( dictionary.getCode() ) );
+                writer.writeElement( FIELD_UID,  dictionary.getUid() );
+                writer.writeElement( FIELD_CODE, dictionary.getCode() );
                 writer.writeElement( FIELD_NAME, dictionary.getName() );
                 writer.writeElement( FIELD_DESCRIPTION, dictionary.getDescription() );
                 writer.writeElement( FIELD_REGION, dictionary.getRegion() );

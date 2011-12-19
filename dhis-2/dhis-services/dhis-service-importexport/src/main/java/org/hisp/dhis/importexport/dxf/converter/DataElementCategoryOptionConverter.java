@@ -101,7 +101,7 @@ public class DataElementCategoryOptionConverter
                 writer.openElement( ELEMENT_NAME );
                 
                 writer.writeElement( FIELD_ID, String.valueOf( categoryOption.getId() ) );
-                writer.writeElement( FIELD_UID, String.valueOf( categoryOption.getUid() ) );
+                writer.writeElement( FIELD_UID, categoryOption.getUid() );
                 writer.writeElement( FIELD_CODE, categoryOption.getCode() );
                 writer.writeElement( FIELD_NAME, categoryOption.getName() );
                 
