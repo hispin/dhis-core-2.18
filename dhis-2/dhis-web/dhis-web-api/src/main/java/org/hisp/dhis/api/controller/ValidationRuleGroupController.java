@@ -69,6 +69,15 @@ public class ValidationRuleGroupController
         ValidationRuleGroups validationRuleGroups = new ValidationRuleGroups();
         validationRuleGroups.setValidationRuleGroups( new ArrayList<ValidationRuleGroup>( validationRuleService.getAllValidationRuleGroups() ) );
 
+        if ( params.isPaging() )
+        {
+
+        }
+        else
+        {
+
+        }
+
         if ( params.hasLinks() )
         {
             WebLinkPopulator listener = new WebLinkPopulator( request );

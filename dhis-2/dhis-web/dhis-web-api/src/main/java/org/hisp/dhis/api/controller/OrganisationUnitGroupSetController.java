@@ -75,6 +75,15 @@ public class OrganisationUnitGroupSetController
         OrganisationUnitGroupSets organisationUnitGroupSets = new OrganisationUnitGroupSets();
         organisationUnitGroupSets.setOrganisationUnitGroupSets( new ArrayList<OrganisationUnitGroupSet>( organisationUnitGroupService.getAllOrganisationUnitGroupSets() ) );
 
+        if ( params.isPaging() )
+        {
+
+        }
+        else
+        {
+
+        }
+
         if ( params.hasLinks() )
         {
             WebLinkPopulator listener = new WebLinkPopulator( request );

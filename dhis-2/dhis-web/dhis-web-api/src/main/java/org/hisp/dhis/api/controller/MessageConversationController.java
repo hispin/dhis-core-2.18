@@ -75,6 +75,15 @@ public class MessageConversationController
         MessageConversations messageConversations = new MessageConversations();
         messageConversations.setMessageConversations( new ArrayList<MessageConversation>( messageService.getMessageConversations( 0, 300 ) ) );
 
+        if ( params.isPaging() )
+        {
+
+        }
+        else
+        {
+
+        }
+
         if ( params.hasLinks() )
         {
             WebLinkPopulator listener = new WebLinkPopulator( request );

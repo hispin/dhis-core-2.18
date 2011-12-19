@@ -69,6 +69,15 @@ public class IndicatorTypeController
         IndicatorTypes indicatorTypes = new IndicatorTypes();
         indicatorTypes.setIndicatorTypes( new ArrayList<IndicatorType>( indicatorService.getAllIndicatorTypes() ) );
 
+        if ( params.isPaging() )
+        {
+
+        }
+        else
+        {
+
+        }
+
         if ( params.hasLinks() )
         {
             WebLinkPopulator listener = new WebLinkPopulator( request );

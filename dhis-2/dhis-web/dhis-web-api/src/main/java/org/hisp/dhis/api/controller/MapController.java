@@ -81,6 +81,15 @@ public class MapController
         Maps maps = new Maps();
         maps.setMaps( new ArrayList<MapView>( mappingService.getAllMapViews() ) );
 
+        if ( params.isPaging() )
+        {
+
+        }
+        else
+        {
+
+        }
+
         if ( params.hasLinks() )
         {
             WebLinkPopulator listener = new WebLinkPopulator( request );

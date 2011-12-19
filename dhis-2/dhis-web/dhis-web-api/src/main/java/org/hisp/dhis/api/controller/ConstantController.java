@@ -69,6 +69,15 @@ public class ConstantController
         Constants constants = new Constants();
         constants.setConstants( new ArrayList<Constant>( constantService.getAllConstants() ) );
 
+        if ( params.isPaging() )
+        {
+
+        }
+        else
+        {
+
+        }
+
         if ( params.hasLinks() )
         {
             WebLinkPopulator listener = new WebLinkPopulator( request );

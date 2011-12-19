@@ -29,6 +29,7 @@ package org.hisp.dhis.api.controller;
 
 import org.hisp.dhis.api.utils.IdentifiableObjectParams;
 import org.hisp.dhis.api.utils.WebLinkPopulator;
+import org.hisp.dhis.common.Pager;
 import org.hisp.dhis.dataelement.DataElementCategories;
 import org.hisp.dhis.dataelement.DataElementCategory;
 import org.hisp.dhis.dataelement.DataElementCategoryService;
@@ -46,6 +47,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
@@ -67,7 +69,23 @@ public class CategoryController
     public String getCategories( IdentifiableObjectParams params, Model model, HttpServletRequest request )
     {
         DataElementCategories categories = new DataElementCategories();
-        categories.setCategories( new ArrayList<DataElementCategory>( dataElementCategoryService.getAllDataElementCategories() ) );
+
+        if ( params.isPaging() )
+        {
+            int total = dataElementCategoryService.getDataElementCategoryCount();
+
+            Pager pager = new Pager( params.getPage(), total );
+            categories.setPager( pager );
+
+            List<DataElementCategory> categoryList = new ArrayList<DataElementCategory>(
+                dataElementCategoryService.getDataElementCategorysBetween( pager.getOffset(), pager.getPageSize() ) );
+
+            categories.setCategories( categoryList );
+        }
+        else
+        {
+            categories.setCategories( new ArrayList<DataElementCategory>( dataElementCategoryService.getAllDataElementCategories() ) );
+        }
 
         if ( params.hasLinks() )
         {

@@ -69,6 +69,15 @@ public class IndicatorGroupSetController
         IndicatorGroupSets indicatorGroupSets = new IndicatorGroupSets();
         indicatorGroupSets.setIndicatorGroupSets( new ArrayList<IndicatorGroupSet>( indicatorService.getAllIndicatorGroupSets() ) );
 
+        if ( params.isPaging() )
+        {
+
+        }
+        else
+        {
+
+        }
+
         if ( params.hasLinks() )
         {
             WebLinkPopulator listener = new WebLinkPopulator( request );

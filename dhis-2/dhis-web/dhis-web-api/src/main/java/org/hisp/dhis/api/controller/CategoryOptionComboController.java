@@ -29,6 +29,7 @@ package org.hisp.dhis.api.controller;
 
 import org.hisp.dhis.api.utils.IdentifiableObjectParams;
 import org.hisp.dhis.api.utils.WebLinkPopulator;
+import org.hisp.dhis.common.Pager;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombos;
 import org.hisp.dhis.dataelement.DataElementCategoryService;
@@ -41,6 +42,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
@@ -62,7 +64,23 @@ public class CategoryOptionComboController
     public String getCategoryOptionCombos( IdentifiableObjectParams params, Model model, HttpServletRequest request )
     {
         DataElementCategoryOptionCombos categoryOptionCombos = new DataElementCategoryOptionCombos();
-        categoryOptionCombos.setCategoryOptionCombos( new ArrayList<DataElementCategoryOptionCombo>( dataElementCategoryService.getAllDataElementCategoryOptionCombos() ) );
+
+        if ( params.isPaging() )
+        {
+            int total = dataElementCategoryService.getDataElementCategoryOptionComboCount();
+
+            Pager pager = new Pager( params.getPage(), total );
+            categoryOptionCombos.setPager( pager );
+
+            List<DataElementCategoryOptionCombo> categoryOptionComboList = new ArrayList<DataElementCategoryOptionCombo>(
+                dataElementCategoryService.getDataElementCategoryOptionCombosBetween( pager.getOffset(), pager.getPageSize() ) );
+
+            categoryOptionCombos.setCategoryOptionCombos( categoryOptionComboList );
+        }
+        else
+        {
+            categoryOptionCombos.setCategoryOptionCombos( new ArrayList<DataElementCategoryOptionCombo>( dataElementCategoryService.getAllDataElementCategoryOptionCombos() ) );
+        }
 
         if ( params.hasLinks() )
         {
