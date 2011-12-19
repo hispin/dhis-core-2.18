@@ -38,6 +38,7 @@ import org.hisp.dhis.chart.Charts;
 import org.hisp.dhis.common.BaseIdentifiableObject;
 import org.hisp.dhis.common.BaseLinkableObject;
 import org.hisp.dhis.common.IdentifiableObject;
+import org.hisp.dhis.common.LinkableObject;
 import org.hisp.dhis.constant.Constant;
 import org.hisp.dhis.constant.Constants;
 import org.hisp.dhis.dataelement.*;
@@ -78,7 +79,7 @@ public class WebLinkPopulator
     /**
      * Custom linkable object -> path mappings
      */
-    private static Map<Class<? extends BaseLinkableObject>, String> resourcePaths = new HashMap<Class<? extends BaseLinkableObject>, String>();
+    private static Map<Class<? extends LinkableObject>, String> resourcePaths = new HashMap<Class<? extends LinkableObject>, String>();
 
     static
     {

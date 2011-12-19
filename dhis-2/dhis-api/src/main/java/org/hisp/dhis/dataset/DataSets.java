@@ -29,10 +29,7 @@ package org.hisp.dhis.dataset;
 
 import org.codehaus.jackson.annotate.JsonProperty;
 import org.codehaus.jackson.map.annotate.JsonSerialize;
-import org.hisp.dhis.common.BaseIdentifiableObject;
-import org.hisp.dhis.common.BaseLinkableObject;
-import org.hisp.dhis.common.Dxf2Namespace;
-import org.hisp.dhis.common.Pager;
+import org.hisp.dhis.common.*;
 import org.hisp.dhis.common.adapter.DataSetXmlAdapter;
 
 import javax.xml.bind.annotation.XmlAccessType;
@@ -48,23 +45,9 @@ import java.util.List;
  */
 @XmlRootElement( name = "dataSets", namespace = Dxf2Namespace.NAMESPACE )
 @XmlAccessorType( value = XmlAccessType.NONE )
-public class DataSets extends BaseLinkableObject
+public class DataSets extends BaseCollection
 {
-    private Pager pager;
-
     private List<DataSet> dataSets = new ArrayList<DataSet>();
-
-    @XmlElement
-    @JsonProperty
-    public Pager getPager()
-    {
-        return pager;
-    }
-
-    public void setPager( Pager pager )
-    {
-        this.pager = pager;
-    }
 
     @XmlElement( name = "dataSet" )
     @XmlJavaTypeAdapter( DataSetXmlAdapter.class )

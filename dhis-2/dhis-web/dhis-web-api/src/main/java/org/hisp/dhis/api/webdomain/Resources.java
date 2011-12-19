@@ -30,6 +30,7 @@ package org.hisp.dhis.api.webdomain;
 import org.codehaus.jackson.annotate.JsonProperty;
 import org.hisp.dhis.attribute.Attributes;
 import org.hisp.dhis.chart.Charts;
+import org.hisp.dhis.common.BaseCollection;
 import org.hisp.dhis.common.BaseLinkableObject;
 import org.hisp.dhis.common.Dxf2Namespace;
 import org.hisp.dhis.constant.Constants;
@@ -70,7 +71,7 @@ import java.util.List;
  */
 @XmlRootElement( name = "resources", namespace = Dxf2Namespace.NAMESPACE )
 @XmlAccessorType( value = XmlAccessType.NONE )
-public class Resources extends BaseLinkableObject
+public class Resources extends BaseCollection
 {
     private List<Resource> resources = new ArrayList<Resource>();
 

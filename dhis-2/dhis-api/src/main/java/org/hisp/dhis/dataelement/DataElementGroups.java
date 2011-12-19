@@ -29,10 +29,7 @@ package org.hisp.dhis.dataelement;
 
 import org.codehaus.jackson.annotate.JsonProperty;
 import org.codehaus.jackson.map.annotate.JsonSerialize;
-import org.hisp.dhis.common.BaseIdentifiableObject;
-import org.hisp.dhis.common.BaseLinkableObject;
-import org.hisp.dhis.common.Dxf2Namespace;
-import org.hisp.dhis.common.Pager;
+import org.hisp.dhis.common.*;
 import org.hisp.dhis.common.adapter.DataElementGroupXmlAdapter;
 
 import javax.xml.bind.annotation.XmlAccessType;
@@ -48,23 +45,9 @@ import java.util.List;
  */
 @XmlRootElement( name = "dataElementGroups", namespace = Dxf2Namespace.NAMESPACE )
 @XmlAccessorType( value = XmlAccessType.NONE )
-public class DataElementGroups extends BaseLinkableObject
+public class DataElementGroups extends BaseCollection
 {
-    private Pager pager;
-
     private List<DataElementGroup> dataElementGroups = new ArrayList<DataElementGroup>();
-
-    @XmlElement
-    @JsonProperty
-    public Pager getPager()
-    {
-        return pager;
-    }
-
-    public void setPager( Pager pager )
-    {
-        this.pager = pager;
-    }
 
     @XmlElement( name = "dataElementGroup" )
     @XmlJavaTypeAdapter( DataElementGroupXmlAdapter.class )

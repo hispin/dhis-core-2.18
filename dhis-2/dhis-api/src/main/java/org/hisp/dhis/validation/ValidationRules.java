@@ -29,10 +29,7 @@ package org.hisp.dhis.validation;
 
 import org.codehaus.jackson.annotate.JsonProperty;
 import org.codehaus.jackson.map.annotate.JsonSerialize;
-import org.hisp.dhis.common.BaseIdentifiableObject;
-import org.hisp.dhis.common.BaseLinkableObject;
-import org.hisp.dhis.common.Dxf2Namespace;
-import org.hisp.dhis.common.Pager;
+import org.hisp.dhis.common.*;
 import org.hisp.dhis.common.adapter.ValidationRuleXmlAdapter;
 
 import javax.xml.bind.annotation.XmlAccessType;
@@ -48,23 +45,9 @@ import java.util.List;
  */
 @XmlRootElement( name = "validationRules", namespace = Dxf2Namespace.NAMESPACE )
 @XmlAccessorType( value = XmlAccessType.NONE )
-public class ValidationRules extends BaseLinkableObject
+public class ValidationRules extends BaseCollection
 {
-    private Pager pager;
-
     private List<ValidationRule> validationRules = new ArrayList<ValidationRule>();
-
-    @XmlElement
-    @JsonProperty
-    public Pager getPager()
-    {
-        return pager;
-    }
-
-    public void setPager( Pager pager )
-    {
-        this.pager = pager;
-    }
 
     @XmlElement( name = "validationRule" )
     @XmlJavaTypeAdapter( ValidationRuleXmlAdapter.class )

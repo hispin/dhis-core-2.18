@@ -29,10 +29,9 @@ package org.hisp.dhis.message;
 
 import org.codehaus.jackson.annotate.JsonProperty;
 import org.codehaus.jackson.map.annotate.JsonSerialize;
+import org.hisp.dhis.common.BaseCollection;
 import org.hisp.dhis.common.BaseIdentifiableObject;
-import org.hisp.dhis.common.BaseLinkableObject;
 import org.hisp.dhis.common.Dxf2Namespace;
-import org.hisp.dhis.common.Pager;
 import org.hisp.dhis.common.adapter.MessageConversationXmlAdapter;
 
 import javax.xml.bind.annotation.XmlAccessType;
@@ -48,23 +47,9 @@ import java.util.List;
  */
 @XmlRootElement( name = "messageConversations", namespace = Dxf2Namespace.NAMESPACE )
 @XmlAccessorType( value = XmlAccessType.NONE )
-public class MessageConversations extends BaseLinkableObject
+public class MessageConversations extends BaseCollection
 {
-    private Pager pager;
-
     private List<MessageConversation> messageConversations = new ArrayList<MessageConversation>();
-
-    @XmlElement
-    @JsonProperty
-    public Pager getPager()
-    {
-        return pager;
-    }
-
-    public void setPager( Pager pager )
-    {
-        this.pager = pager;
-    }
 
     @XmlElement( name = "messageConversation" )
     @XmlJavaTypeAdapter( MessageConversationXmlAdapter.class )

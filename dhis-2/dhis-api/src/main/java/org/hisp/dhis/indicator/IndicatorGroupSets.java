@@ -29,10 +29,7 @@ package org.hisp.dhis.indicator;
 
 import org.codehaus.jackson.annotate.JsonProperty;
 import org.codehaus.jackson.map.annotate.JsonSerialize;
-import org.hisp.dhis.common.BaseIdentifiableObject;
-import org.hisp.dhis.common.BaseLinkableObject;
-import org.hisp.dhis.common.Dxf2Namespace;
-import org.hisp.dhis.common.Pager;
+import org.hisp.dhis.common.*;
 import org.hisp.dhis.common.adapter.IndicatorGroupSetXmlAdapter;
 
 import javax.xml.bind.annotation.XmlAccessType;
@@ -48,23 +45,9 @@ import java.util.List;
  */
 @XmlRootElement( name = "indicatorGroupSets", namespace = Dxf2Namespace.NAMESPACE )
 @XmlAccessorType( value = XmlAccessType.NONE )
-public class IndicatorGroupSets extends BaseLinkableObject
+public class IndicatorGroupSets extends BaseCollection
 {
-    private Pager pager;
-
     private List<IndicatorGroupSet> indicatorGroupSets = new ArrayList<IndicatorGroupSet>();
-
-    @XmlElement
-    @JsonProperty
-    public Pager getPager()
-    {
-        return pager;
-    }
-
-    public void setPager( Pager pager )
-    {
-        this.pager = pager;
-    }
 
     @XmlElement( name = "indicatorGroupSet" )
     @XmlJavaTypeAdapter( IndicatorGroupSetXmlAdapter.class )
