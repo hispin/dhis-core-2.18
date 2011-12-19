@@ -5,9 +5,17 @@
                 xmlns:d="http://dhis2.org/schema/dxf/2.0"
     >
 
-  <xsl:output method="xml" />
+  <xsl:output method="pdf" />
 
-  <xsl:template match="/">
+  <xsl:include href="identifiable-row.xsl"/>
+
+  <xsl:template match="d:resources|d:maps|d:charts|d:categories|d:categoryCombos|
+    d:categoryOptions|d:categoryOptionCombos|d:dataElements|d:indicators|
+    d:organisationUnits|d:dataElementGroups|d:dataElementGroupSets|
+    d:documents|d:indicatorGroups|d:indicatorGroupSets|d:organisationUnitGroups|
+    d:organisationUnitGroupSets|d:indicatorTypes|d:attributeTypes|d:reports|
+    d:sqlViews|d:validationRules|d:validationRuleGroups|d:users|d:reportTables">
+
     <fo:root>
       <fo:layout-master-set>
         <fo:simple-page-master master-name="A4">
@@ -17,15 +25,16 @@
 
       <fo:page-sequence master-reference="A4">
         <fo:flow flow-name="xsl-region-body">
-          <fo:block font-size="20pt" border-bottom="2pt solid black" margin-bottom="20pt">DataElements</fo:block>
+          <fo:block font-size="20pt" border-bottom="2pt solid black" margin-bottom="20pt"><xsl:value-of select="local-name()" /></fo:block>
 
-          <xsl:apply-templates />
+          <xsl:apply-templates select="child::*" mode="row"/>
 
         </fo:flow>
       </fo:page-sequence>
     </fo:root>
   </xsl:template>
 
+  <!--
   <xsl:template match="d:dataElement">
     <fo:block font-size="12pt" font-weight="bold" border-bottom="1pt solid black"><xsl:value-of select="@name" /></fo:block>
     <fo:table border-top="1pt solid black" margin-bottom="10pt" table-layout="fixed">
@@ -65,5 +74,5 @@
       </fo:table-body>
     </fo:table>
   </xsl:template>
-
+-->
 </xsl:stylesheet>
