@@ -29,6 +29,7 @@ package org.hisp.dhis.api.controller;
 
 import org.hisp.dhis.api.utils.IdentifiableObjectParams;
 import org.hisp.dhis.api.utils.WebLinkPopulator;
+import org.hisp.dhis.common.Pager;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.dataset.DataSetService;
 import org.hisp.dhis.dataset.DataSets;
@@ -46,6 +47,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
@@ -65,7 +67,23 @@ public class DataSetController
     public String getDataSets( IdentifiableObjectParams params, Model model, HttpServletRequest request )
     {
         DataSets dataSets = new DataSets();
-        dataSets.setDataSets( new ArrayList<DataSet>( dataSetService.getAllDataSets() ) );
+
+        if ( params.isPaging() )
+        {
+            int total = dataSetService.getDataSetCount();
+
+            Pager pager = new Pager( params.getPage(), total );
+            dataSets.setPager( pager );
+
+            List<DataSet> dataSetList = new ArrayList<DataSet>(
+                dataSetService.getDataSetsBetween( pager.getOffset(), pager.getPageSize() ) );
+
+            dataSets.setDataSets( dataSetList );
+        }
+        else
+        {
+            dataSets.setDataSets( new ArrayList<DataSet>( dataSetService.getAllDataSets() ) );
+        }
 
         if ( params.hasLinks() )
         {

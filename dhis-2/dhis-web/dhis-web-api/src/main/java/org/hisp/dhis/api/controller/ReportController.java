@@ -76,7 +76,7 @@ public class ReportController
     {
         Reports reports = new Reports();
 
-        if ( params.hasNoPaging() )
+        if ( params.isPaging() )
         {
             reports.setReports( new ArrayList<Report>( reportService.getAllReports() ) );
         }

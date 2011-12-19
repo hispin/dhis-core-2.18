@@ -4,6 +4,7 @@ import org.hisp.dhis.api.utils.IdentifiableObjectParams;
 import org.hisp.dhis.api.utils.ObjectPersister;
 import org.hisp.dhis.api.utils.WebLinkPopulator;
 import org.hisp.dhis.api.view.Jaxb2Utils;
+import org.hisp.dhis.common.Pager;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.organisationunit.OrganisationUnits;
@@ -22,6 +23,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
@@ -47,9 +49,17 @@ public class OrganisationUnitController
     {
         OrganisationUnits organisationUnits = new OrganisationUnits();
 
-        if ( params.hasNoPaging() )
+        if ( params.isPaging() )
         {
-            organisationUnits.setOrganisationUnits( new ArrayList<OrganisationUnit>( organisationUnitService.getAllOrganisationUnits() ) );
+            int total = organisationUnitService.getNumberOfOrganisationUnits();
+
+            Pager pager = new Pager( params.getPage(), total );
+            organisationUnits.setPager( pager );
+
+            List<OrganisationUnit> organisationUnitList = new ArrayList<OrganisationUnit>(
+                organisationUnitService.getOrganisationUnitsBetween( pager.getOffset(), pager.getPageSize() ) );
+
+            organisationUnits.setOrganisationUnits( organisationUnitList );
         }
         else
         {
@@ -123,8 +133,7 @@ public class OrganisationUnitController
                     response.setStatus( HttpServletResponse.SC_CREATED );
                     response.setHeader( "Location", DataElementController.RESOURCE_PATH + "/" + organisationUnit.getUid() );
                 }
-            } 
-            catch ( Exception e )
+            } catch ( Exception e )
             {
                 response.setStatus( HttpServletResponse.SC_CONFLICT );
             }

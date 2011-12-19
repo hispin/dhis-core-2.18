@@ -32,6 +32,7 @@ import org.codehaus.jackson.map.annotate.JsonSerialize;
 import org.hisp.dhis.common.BaseIdentifiableObject;
 import org.hisp.dhis.common.BaseLinkableObject;
 import org.hisp.dhis.common.Dxf2Namespace;
+import org.hisp.dhis.common.Pager;
 import org.hisp.dhis.common.adapter.MapViewXmlAdapter;
 
 import javax.xml.bind.annotation.XmlAccessType;
@@ -46,7 +47,21 @@ import java.util.List;
 @XmlAccessorType( value = XmlAccessType.NONE )
 public class Maps extends BaseLinkableObject
 {
+    private Pager pager;
+
     private List<MapView> maps = new ArrayList<MapView>();
+
+    @XmlElement
+    @JsonProperty
+    public Pager getPager()
+    {
+        return pager;
+    }
+
+    public void setPager( Pager pager )
+    {
+        this.pager = pager;
+    }
 
     @XmlElement( name = "map" )
     @XmlJavaTypeAdapter( MapViewXmlAdapter.class )

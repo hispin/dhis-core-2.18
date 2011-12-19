@@ -41,6 +41,7 @@ import org.codehaus.jackson.map.annotate.JsonSerialize;
 import org.hisp.dhis.common.BaseIdentifiableObject;
 import org.hisp.dhis.common.BaseLinkableObject;
 import org.hisp.dhis.common.Dxf2Namespace;
+import org.hisp.dhis.common.Pager;
 import org.hisp.dhis.common.adapter.ReportXmlAdapter;
 
 @XmlRootElement( name = "reports", namespace = Dxf2Namespace.NAMESPACE )
@@ -48,7 +49,21 @@ import org.hisp.dhis.common.adapter.ReportXmlAdapter;
 public class Reports 
     extends BaseLinkableObject
 {
+    private Pager pager;
+
     private List<Report> reports = new ArrayList<Report>();
+
+    @XmlElement
+    @JsonProperty
+    public Pager getPager()
+    {
+        return pager;
+    }
+
+    public void setPager( Pager pager )
+    {
+        this.pager = pager;
+    }
 
     @XmlElement( name = "report" )
     @XmlJavaTypeAdapter( ReportXmlAdapter.class )

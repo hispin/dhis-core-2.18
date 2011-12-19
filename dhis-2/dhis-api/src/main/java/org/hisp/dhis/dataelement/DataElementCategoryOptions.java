@@ -5,6 +5,7 @@ import org.codehaus.jackson.map.annotate.JsonSerialize;
 import org.hisp.dhis.common.BaseIdentifiableObject;
 import org.hisp.dhis.common.BaseLinkableObject;
 import org.hisp.dhis.common.Dxf2Namespace;
+import org.hisp.dhis.common.Pager;
 import org.hisp.dhis.common.adapter.CategoryOptionXmlAdapter;
 
 import javax.xml.bind.annotation.XmlAccessType;
@@ -22,7 +23,21 @@ import java.util.List;
 @XmlAccessorType( value = XmlAccessType.NONE )
 public class DataElementCategoryOptions extends BaseLinkableObject
 {
+    private Pager pager;
+
     private List<DataElementCategoryOption> categoryOptions = new ArrayList<DataElementCategoryOption>();
+
+    @XmlElement
+    @JsonProperty
+    public Pager getPager()
+    {
+        return pager;
+    }
+
+    public void setPager( Pager pager )
+    {
+        this.pager = pager;
+    }
 
     @XmlElement( name = "categoryOption" )
     @XmlJavaTypeAdapter( CategoryOptionXmlAdapter.class )

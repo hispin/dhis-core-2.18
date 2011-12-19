@@ -30,6 +30,7 @@ package org.hisp.dhis.organisationunit;
 import org.codehaus.jackson.annotate.JsonProperty;
 import org.hisp.dhis.common.BaseLinkableObject;
 import org.hisp.dhis.common.Dxf2Namespace;
+import org.hisp.dhis.common.Pager;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -45,7 +46,21 @@ import java.util.List;
 @XmlAccessorType( value = XmlAccessType.NONE )
 public class OrganisationUnitLevels extends BaseLinkableObject
 {
+    private Pager pager;
+
     private List<OrganisationUnitLevel> organisationUnitLevels = new ArrayList<OrganisationUnitLevel>();
+
+    @XmlElement
+    @JsonProperty
+    public Pager getPager()
+    {
+        return pager;
+    }
+
+    public void setPager( Pager pager )
+    {
+        this.pager = pager;
+    }
 
     @XmlElement( name = "organisationUnitLevel" )
     @JsonProperty( value = "organisationUnitLevels" )
