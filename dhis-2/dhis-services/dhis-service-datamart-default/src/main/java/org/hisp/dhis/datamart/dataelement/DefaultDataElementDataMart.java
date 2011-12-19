@@ -28,6 +28,7 @@ package org.hisp.dhis.datamart.dataelement;
  */
 
 import static org.hisp.dhis.datamart.crosstab.jdbc.CrossTabStore.AGGREGATEDDATA_CACHE_PREFIX;
+import static org.hisp.dhis.datamart.crosstab.jdbc.CrossTabStore.AGGREGATEDORGUNITDATA_CACHE_PREFIX;
 import static org.hisp.dhis.system.util.MathUtils.getRounded;
 
 import java.util.Collection;
@@ -152,7 +153,9 @@ public class DefaultDataElementDataMart
         
         final BatchHandler<AggregatedDataValue> batchHandler = batchHandlerFactory.createBatchHandler( clazz ).init();
         
-        final BatchHandler<Object> cacheHandler = inMemoryBatchHandlerFactory.createBatchHandler( GenericBatchHandler.class ).setTableName( AGGREGATEDDATA_CACHE_PREFIX + key ).init();
+        final String tableName = organisationUnitGroups != null ? AGGREGATEDORGUNITDATA_CACHE_PREFIX : AGGREGATEDDATA_CACHE_PREFIX;
+        
+        final BatchHandler<Object> cacheHandler = inMemoryBatchHandlerFactory.createBatchHandler( GenericBatchHandler.class ).setTableName( tableName + key ).init();
         
         final OrganisationUnitHierarchy hierarchy = organisationUnitService.getOrganisationUnitHierarchy().prepareChildren( organisationUnits, organisationUnitGroups );
 
@@ -160,7 +163,7 @@ public class DefaultDataElementDataMart
         
         final AggregatedDataValue aggregatedValue = new AggregatedDataValue();
         
-        organisationUnitGroups = ( organisationUnitGroups != null ) ? organisationUnitGroups : DataMartEngine.DUMMY_ORG_UNIT_GROUPS;
+        organisationUnitGroups = organisationUnitGroups != null ? organisationUnitGroups : DataMartEngine.DUMMY_ORG_UNIT_GROUPS;
         
         for ( final Period period : periods )
         {

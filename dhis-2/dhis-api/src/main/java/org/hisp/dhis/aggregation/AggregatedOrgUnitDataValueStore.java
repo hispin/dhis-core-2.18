@@ -49,6 +49,8 @@ public interface AggregatedOrgUnitDataValueStore
     // AggregatedIndicatorValue
     // -------------------------------------------------------------------------
     
+    Double getAggregatedIndicatorValue( int indicator, int period, int organisationUnit, int organisationUnitGroup );
+    
     void deleteAggregatedIndicatorValues( Collection<Integer> indicatorIds, Collection<Integer> periodIds, Collection<Integer> organisationUnitIds );
     
     void deleteAggregatedIndicatorValues( Collection<Integer> periodIds );

@@ -31,6 +31,7 @@ import java.util.Collection;
 
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
+import org.hisp.dhis.indicator.Indicator;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroup;
 import org.hisp.dhis.period.Period;
@@ -57,6 +58,8 @@ public interface AggregatedOrgUnitDataValueService
     // -------------------------------------------------------------------------
     // AggregatedIndicatorValue
     // -------------------------------------------------------------------------
+    
+    Double getAggregatedIndicatorValue( Indicator indicator, Period period, OrganisationUnit organisationUnit, OrganisationUnitGroup group );
     
     void deleteAggregatedIndicatorValues( Collection<Integer> indicatorIds, Collection<Integer> periodIds, Collection<Integer> organisationUnitIds );
     
