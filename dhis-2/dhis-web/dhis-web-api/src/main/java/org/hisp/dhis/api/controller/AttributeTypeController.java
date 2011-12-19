@@ -34,6 +34,7 @@ import org.hisp.dhis.api.view.Jaxb2Utils;
 import org.hisp.dhis.attribute.Attribute;
 import org.hisp.dhis.attribute.AttributeService;
 import org.hisp.dhis.attribute.Attributes;
+import org.hisp.dhis.common.Pager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -45,6 +46,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
@@ -66,15 +68,22 @@ public class AttributeTypeController
     public String getAttributeTypes( IdentifiableObjectParams params, Model model, HttpServletRequest request )
     {
         Attributes attributes = new Attributes();
-        attributes.setAttributes( new ArrayList<Attribute>( attributeService.getAllAttributes() ) );
 
         if ( params.isPaging() )
         {
+            int total = attributeService.getAttributeCount();
 
+            Pager pager = new Pager( params.getPage(), total );
+            attributes.setPager( pager );
+
+            List<Attribute> attributeList = new ArrayList<Attribute>(
+                attributeService.getAttributesBetween( pager.getOffset(), pager.getPageSize() ) );
+
+            attributes.setAttributes( attributeList );
         }
         else
         {
-
+            attributes.setAttributes( new ArrayList<Attribute>( attributeService.getAllAttributes() ) );
         }
 
         if ( params.hasLinks() )
