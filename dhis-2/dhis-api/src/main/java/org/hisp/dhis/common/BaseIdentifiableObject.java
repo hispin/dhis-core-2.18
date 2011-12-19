@@ -96,6 +96,7 @@ public class BaseIdentifiableObject extends BaseLinkableObject
     // Setters and getters
     // -------------------------------------------------------------------------
 
+    @JsonProperty( value = "internalId" )
     public int getId()
     {
         return id;

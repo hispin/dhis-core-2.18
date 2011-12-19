@@ -448,6 +448,14 @@ function Selection()
             $( '#searchField' ).css( 'background-color', '#ffc5c5' );
         }
     };
+
+    this.enable = function()
+    {
+    };
+
+    this.disable = function()
+    {
+    };
 }
 
 // -----------------------------------------------------------------------------
