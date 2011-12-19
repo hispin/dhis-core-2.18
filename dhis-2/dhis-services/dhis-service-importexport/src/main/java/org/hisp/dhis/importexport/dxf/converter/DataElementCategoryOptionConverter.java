@@ -52,6 +52,8 @@ public class DataElementCategoryOptionConverter
     public static final String ELEMENT_NAME = "categoryOption";
     
     private static final String FIELD_ID = "id";
+    private static final String FIELD_UID = "uid";
+    private static final String FIELD_CODE = "code";
     private static final String FIELD_NAME = "name";
         
     // -------------------------------------------------------------------------
@@ -99,6 +101,8 @@ public class DataElementCategoryOptionConverter
                 writer.openElement( ELEMENT_NAME );
                 
                 writer.writeElement( FIELD_ID, String.valueOf( categoryOption.getId() ) );
+                writer.writeElement( FIELD_UID, String.valueOf( categoryOption.getUid() ) );
+                writer.writeElement( FIELD_CODE, categoryOption.getCode() );
                 writer.writeElement( FIELD_NAME, categoryOption.getName() );
                 
                 writer.closeElement();
@@ -115,10 +119,19 @@ public class DataElementCategoryOptionConverter
             final Map<String, String> values = reader.readElements( ELEMENT_NAME );
             
             final DataElementCategoryOption categoryOption = new DataElementCategoryOption();
-            
+
             categoryOption.setId( Integer.parseInt( values.get( FIELD_ID ) ) );
-            categoryOption.setName( values.get( FIELD_NAME ) );
+
+            if ( params.minorVersionGreaterOrEqual( "1.3") )
+            {
+                categoryOption.setUid( values.get( FIELD_UID) );
+            }
             
+            if (params.minorVersionGreaterOrEqual( "1.2") ) {
+                categoryOption.setCode( values.get( FIELD_CODE ) );
+            }
+
+            categoryOption.setName( values.get( FIELD_NAME ) );
             importObject( categoryOption, params );
         }
     }

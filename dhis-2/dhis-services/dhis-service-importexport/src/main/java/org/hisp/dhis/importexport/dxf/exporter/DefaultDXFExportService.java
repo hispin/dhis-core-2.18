@@ -31,7 +31,7 @@ import static org.hisp.dhis.importexport.ImportParams.ATTRIBUTE_NAMESPACE;
 import static org.hisp.dhis.importexport.dxf.converter.DXFConverter.ATTRIBUTE_EXPORTED;
 import static org.hisp.dhis.importexport.dxf.converter.DXFConverter.ATTRIBUTE_MINOR_VERSION;
 import static org.hisp.dhis.importexport.dxf.converter.DXFConverter.DXFROOT;
-import static org.hisp.dhis.importexport.dxf.converter.DXFConverter.MINOR_VERSION_121;
+import static org.hisp.dhis.importexport.dxf.converter.DXFConverter.MINOR_VERSION_13;
 import static org.hisp.dhis.importexport.dxf.converter.DXFConverter.NAMESPACE_10;
 
 import java.io.BufferedInputStream;
@@ -274,7 +274,7 @@ public class DefaultDXFExportService
             // Writes to one end of the pipe
             // -----------------------------------------------------------------
 
-            String[] rootProperties = { ATTRIBUTE_NAMESPACE, NAMESPACE_10, ATTRIBUTE_MINOR_VERSION, MINOR_VERSION_121,
+            String[] rootProperties = { ATTRIBUTE_NAMESPACE, NAMESPACE_10, ATTRIBUTE_MINOR_VERSION, MINOR_VERSION_13,
                 ATTRIBUTE_EXPORTED, DateUtils.getMediumDateString() };
 
             ExportPipeThread thread = new ExportPipeThread( sessionFactory );

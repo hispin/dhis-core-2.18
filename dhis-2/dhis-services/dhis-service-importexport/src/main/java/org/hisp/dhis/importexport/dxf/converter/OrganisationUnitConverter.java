@@ -58,6 +58,7 @@ public class OrganisationUnitConverter
     public static final String ELEMENT_NAME = "organisationUnit";
     
     private static final String FIELD_ID = "id";
+    private static final String FIELD_UID = "uid";
     private static final String FIELD_NAME = "name";
     private static final String FIELD_SHORT_NAME = "shortName";
     private static final String FIELD_CODE = "code";
@@ -119,6 +120,7 @@ public class OrganisationUnitConverter
                 writer.openElement( ELEMENT_NAME );
                 
                 writer.writeElement( FIELD_ID, String.valueOf( unit.getId() ) );
+                writer.writeElement( FIELD_UID, String.valueOf( unit.getUid() ) );
                 writer.writeElement( FIELD_NAME, unit.getName() );
                 writer.writeElement( FIELD_SHORT_NAME, unit.getShortName() );
                 writer.writeElement( FIELD_CODE, unit.getCode() );
@@ -164,6 +166,13 @@ public class OrganisationUnitConverter
 
             reader.moveToStartElement( FIELD_ID );
             unit.setId( Integer.parseInt( reader.getElementValue() ) );
+            
+            if ( params.minorVersionGreaterOrEqual( "1.3") )
+            {
+                reader.moveToStartElement( FIELD_UID );
+                unit.setUid( reader.getElementValue() );
+            }
+
 
             reader.moveToStartElement( FIELD_NAME );
             unit.setName(reader.getElementValue() );
@@ -171,8 +180,11 @@ public class OrganisationUnitConverter
             reader.moveToStartElement( FIELD_SHORT_NAME );
             unit.setShortName( reader.getElementValue() );
             
-            reader.moveToStartElement( FIELD_CODE );
-            unit.setCode( reader.getElementValue() );
+            if ( params.minorVersionGreaterOrEqual( "1.2") )
+            {
+              reader.moveToStartElement( FIELD_CODE );
+              unit.setCode( reader.getElementValue() );
+            }
             
             reader.moveToStartElement( FIELD_OPENING_DATE );
             unit.setOpeningDate( DateUtils.getMediumDate( reader.getElementValue() ) );

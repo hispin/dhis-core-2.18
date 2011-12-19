@@ -71,7 +71,11 @@ public class DataElementCategoryOptionImporter
     @Override
     protected void importMatching( DataElementCategoryOption object, DataElementCategoryOption match )
     {
-        throw new UnsupportedOperationException( "DataElementCategoryOption can only be unique or duplicate" );
+        match.setCode(object.getCode());
+        match.setUid( object.getUid());
+        match.setName( object.getName());
+
+        categoryService.updateDataElementCategoryOption( match );
     }
 
     @Override
@@ -83,6 +87,18 @@ public class DataElementCategoryOptionImporter
     @Override
     protected boolean isIdentical( DataElementCategoryOption object, DataElementCategoryOption existing )
     {
-        return object.getName().equals( existing.getName() );
+        boolean codeMatch = true;
+        boolean uidMatch = true;
+
+        // if there is a code that must also match
+        if (object.getCode() != null) {
+            codeMatch = object.getCode().equals( existing.getCode());
+        }
+        // if there is a uid that must also match
+        if (object.getUid() != null) {
+            uidMatch = object.getUid().equals( existing.getUid());
+        }
+
+        return (object.getName().equals( existing.getName()) && codeMatch && uidMatch);
     }
 }

@@ -270,7 +270,7 @@ public class DXFImportServiceTest
 
         importService.importData( importParams, inputStreamH );
         
-        assertObjects( dataASize );
+        assertEquals( categoryService.getAllDataElementCategoryOptions().size(), 5 );
     }
 
     @Ignore
@@ -370,7 +370,7 @@ public class DXFImportServiceTest
 
         importService.importData( importParams, inputStreamC );
 
-        assertUpdateableImportObjects( ImportObjectStatus.UPDATE, dataASize );
+        assertUpdateableImportObjects( ImportObjectStatus.UPDATE,  dataASize );
 
         assertImportObjects( ImportObjectStatus.NEW, dataCSize - dataASize );
 

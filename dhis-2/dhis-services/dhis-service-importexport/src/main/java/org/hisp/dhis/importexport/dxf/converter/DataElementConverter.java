@@ -55,10 +55,11 @@ public class DataElementConverter
     public static final String ELEMENT_NAME = "dataElement";
 
     private static final String FIELD_ID = "id";
+    private static final String FIELD_UID = "uid";
+    private static final String FIELD_CODE = "code";
     private static final String FIELD_NAME = "name";
     private static final String FIELD_ALTERNATIVE_NAME = "alternativeName";
     private static final String FIELD_SHORT_NAME = "shortName";
-    private static final String FIELD_CODE = "code";
     private static final String FIELD_DESCRIPTION = "description";
     private static final String FIELD_ACTIVE = "active";
     private static final String FIELD_TYPE = "type";
@@ -123,10 +124,11 @@ public class DataElementConverter
                 writer.openElement( ELEMENT_NAME );
                 
                 writer.writeElement( FIELD_ID, String.valueOf( element.getId() ) );
+                writer.writeElement( FIELD_UID, String.valueOf( element.getUid() ) );
                 writer.writeElement( FIELD_NAME, element.getName() );
                 writer.writeElement( FIELD_ALTERNATIVE_NAME, element.getAlternativeName() );
                 writer.writeElement( FIELD_SHORT_NAME, element.getShortName() );
-                writer.writeElement( FIELD_CODE, element.getCode() );
+                writer.writeElement( FIELD_CODE, element.getCode() ); // historic positioning from v1.2 :-(
                 writer.writeElement( FIELD_DESCRIPTION, element.getDescription() );
                 writer.writeElement( FIELD_ACTIVE, String.valueOf( element.isActive() ) );
                 writer.writeElement( FIELD_TYPE, element.getType() );
@@ -154,10 +156,20 @@ public class DataElementConverter
             element.setCategoryCombo( categoryCombo );
             
             element.setId( Integer.parseInt( values.get( FIELD_ID ) ) );
+            
+            if ( params.minorVersionGreaterOrEqual( "1.2" ))
+            {
+                element.setUid( values.get( FIELD_UID ) );
+            }
+
             element.setName( values.get( FIELD_NAME ) );
             element.setAlternativeName( values.get( FIELD_ALTERNATIVE_NAME ) );
             element.setShortName( values.get( FIELD_SHORT_NAME ) );
-            element.setCode( values.get( FIELD_CODE ) );
+            
+            if ( params.minorVersionGreaterOrEqual( "1.2" )) {
+              element.setCode( values.get( FIELD_CODE ) );                
+            }
+            
             element.setDescription( values.get( FIELD_DESCRIPTION ) );
             element.setActive( Boolean.parseBoolean( values.get( FIELD_ACTIVE ) ) );
             element.setType( values.get( FIELD_TYPE ) );

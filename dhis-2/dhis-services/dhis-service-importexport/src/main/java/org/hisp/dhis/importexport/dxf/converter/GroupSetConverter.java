@@ -52,6 +52,8 @@ public class GroupSetConverter
     public static final String ELEMENT_NAME = "groupSet";
     
     private static final String FIELD_ID = "id";
+    private static final String FIELD_UID = "uid";
+    private static final String FIELD_CODE = "code";
     private static final String FIELD_NAME = "name";
     private static final String FIELD_DESCRIPTION = "description";
     private static final String FIELD_COMPULSORY = "compulsory";
@@ -102,6 +104,8 @@ public class GroupSetConverter
                 writer.openElement( ELEMENT_NAME );
                 
                 writer.writeElement( FIELD_ID, String.valueOf( groupSet.getId() ) );
+                writer.writeElement( FIELD_UID, String.valueOf( groupSet.getUid() ) );
+                writer.writeElement( FIELD_CODE, String.valueOf( groupSet.getCode() ) );
                 writer.writeElement( FIELD_NAME, groupSet.getName() );
                 writer.writeElement( FIELD_DESCRIPTION, groupSet.getDescription() );
                 writer.writeElement( FIELD_COMPULSORY, String.valueOf( groupSet.isCompulsory() ) );
@@ -122,6 +126,13 @@ public class GroupSetConverter
             final OrganisationUnitGroupSet groupSet = new OrganisationUnitGroupSet();
 
             groupSet.setId( Integer.parseInt( values.get( FIELD_ID ) ) );
+
+            if ( params.minorVersionGreaterOrEqual( "1.3") )
+            {
+                groupSet.setUid( values.get( FIELD_UID ) );
+                groupSet.setCode( values.get( FIELD_CODE ) );
+            }
+
             groupSet.setName( values.get( FIELD_NAME ) );
             groupSet.setDescription( values.get( FIELD_DESCRIPTION ) );
             groupSet.setCompulsory( Boolean.parseBoolean( values.get( FIELD_COMPULSORY ) ) );

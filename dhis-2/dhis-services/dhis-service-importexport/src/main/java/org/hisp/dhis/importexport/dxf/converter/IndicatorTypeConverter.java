@@ -52,6 +52,8 @@ public class IndicatorTypeConverter
     public static final String ELEMENT_NAME = "indicatorType";
     
     private static final String FIELD_ID = "id";
+    private static final String FIELD_UID = "uid";
+    private static final String FIELD_CODE = "code";
     private static final String FIELD_NAME = "name";
     private static final String FIELD_FACTOR = "factor";
     
@@ -100,6 +102,8 @@ public class IndicatorTypeConverter
                 writer.openElement( ELEMENT_NAME );
                 
                 writer.writeElement( FIELD_ID, String.valueOf( type.getId() ) );
+                writer.writeElement( FIELD_UID, String.valueOf( type.getUid() ) );
+                writer.writeElement( FIELD_CODE, String.valueOf( type.getCode() ) );
                 writer.writeElement( FIELD_NAME, type.getName() );
                 writer.writeElement( FIELD_FACTOR, String.valueOf( type.getFactor() ) );
                 
@@ -119,6 +123,12 @@ public class IndicatorTypeConverter
             final IndicatorType type = new IndicatorType();
 
             type.setId( Integer.parseInt( values.get( FIELD_ID ) ) );
+
+            if (params.minorVersionGreaterOrEqual( "1.3") ) {
+                type.setUid( values.get( FIELD_UID ) );
+                type.setCode( values.get( FIELD_CODE ) );
+            }
+
             type.setName( values.get( FIELD_NAME ) );
             type.setFactor( Integer.parseInt( values.get( FIELD_FACTOR ) ) );
             

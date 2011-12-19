@@ -59,6 +59,10 @@ public class ConceptConverter
 
     private static final String FIELD_ID = "id";
 
+    private static final String FIELD_UID = "uid";
+     
+    private static final String FIELD_CODE = "code";
+
     private static final String FIELD_NAME = "name";
 
     // -------------------------------------------------------------------------
@@ -106,6 +110,8 @@ public class ConceptConverter
                 writer.openElement( ELEMENT_NAME );
 
                 writer.writeElement( FIELD_ID, String.valueOf( concept.getId() ) );
+                writer.writeElement( FIELD_UID, String.valueOf( concept.getUid() ) );
+                writer.writeElement( FIELD_CODE, String.valueOf( concept.getCode() ) );
                 writer.writeElement( FIELD_NAME, concept.getName() );
 
                 writer.closeElement();
@@ -124,6 +130,15 @@ public class ConceptConverter
             final Concept concept = new Concept();
 
             concept.setId( Integer.parseInt( values.get( FIELD_ID ) ) );
+            
+            if (params.minorVersionGreaterOrEqual( "1.3") ) {
+                reader.moveToStartElement( FIELD_UID );
+                concept.setUid( reader.getElementValue() );
+                reader.moveToStartElement( FIELD_CODE );
+                concept.setCode( reader.getElementValue() );
+            }
+
+            
             concept.setName( values.get( FIELD_NAME ) );
 
             importObject( concept, params );

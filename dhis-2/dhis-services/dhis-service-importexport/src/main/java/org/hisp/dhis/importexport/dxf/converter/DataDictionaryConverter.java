@@ -52,6 +52,8 @@ public class DataDictionaryConverter
     public static final String ELEMENT_NAME = "dataDictionary";
 
     private static final String FIELD_ID = "id";
+    private static final String FIELD_UID = "uid";
+    private static final String FIELD_CODE = "code";
     private static final String FIELD_NAME = "name";
     private static final String FIELD_DESCRIPTION = "description";
     private static final String FIELD_REGION = "region";
@@ -101,6 +103,8 @@ public class DataDictionaryConverter
                 writer.openElement( ELEMENT_NAME );
                 
                 writer.writeElement( FIELD_ID, String.valueOf( dictionary.getId() ) );
+                writer.writeElement( FIELD_UID, String.valueOf( dictionary.getUid() ) );
+                writer.writeElement( FIELD_CODE, String.valueOf( dictionary.getCode() ) );
                 writer.writeElement( FIELD_NAME, dictionary.getName() );
                 writer.writeElement( FIELD_DESCRIPTION, dictionary.getDescription() );
                 writer.writeElement( FIELD_REGION, dictionary.getRegion() );
@@ -121,6 +125,14 @@ public class DataDictionaryConverter
             final DataDictionary dictionary = new DataDictionary();
             
             dictionary.setId( Integer.parseInt( values.get( FIELD_ID ) ) );
+
+            if (params.minorVersionGreaterOrEqual( "1.3") ) {
+                reader.moveToStartElement( FIELD_UID );
+                dictionary.setUid( reader.getElementValue() );
+                reader.moveToStartElement( FIELD_CODE );
+                dictionary.setCode( reader.getElementValue() );
+            }
+
             dictionary.setName( values.get( FIELD_NAME ) );
             dictionary.setDescription( values.get( FIELD_DESCRIPTION ) );
             dictionary.setRegion( values.get( FIELD_REGION ) );
