@@ -30,10 +30,7 @@ package org.hisp.dhis.reporttable;
 import org.apache.commons.lang.StringUtils;
 import org.codehaus.jackson.annotate.JsonProperty;
 import org.codehaus.jackson.map.annotate.JsonSerialize;
-import org.hisp.dhis.common.BaseIdentifiableObject;
-import org.hisp.dhis.common.CombinationGenerator;
-import org.hisp.dhis.common.Dxf2Namespace;
-import org.hisp.dhis.common.NameableObject;
+import org.hisp.dhis.common.*;
 import org.hisp.dhis.common.adapter.*;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryCombo;
@@ -855,7 +852,7 @@ public class ReportTable extends BaseIdentifiableObject
     @XmlElement( name = "dataElement" )
     @XmlJavaTypeAdapter( DataElementXmlAdapter.class )
     @JsonProperty
-    @JsonSerialize( contentAs = BaseIdentifiableObject.class )
+    @JsonSerialize( contentAs = BaseNameableObject.class )
     public List<DataElement> getDataElements()
     {
         return dataElements;
@@ -870,7 +867,7 @@ public class ReportTable extends BaseIdentifiableObject
     @XmlElement( name = "categoryOptionCombo" )
     @XmlJavaTypeAdapter( CategoryOptionComboXmlAdapter.class )
     @JsonProperty
-    @JsonSerialize( contentAs = BaseIdentifiableObject.class )
+    @JsonSerialize( contentAs = BaseNameableObject.class )
     public List<DataElementCategoryOptionCombo> getCategoryOptionCombos()
     {
         return categoryOptionCombos;
@@ -885,7 +882,7 @@ public class ReportTable extends BaseIdentifiableObject
     @XmlElement( name = "indicator" )
     @XmlJavaTypeAdapter( IndicatorXmlAdapter.class )
     @JsonProperty
-    @JsonSerialize( contentAs = BaseIdentifiableObject.class )
+    @JsonSerialize( contentAs = BaseNameableObject.class )
     public List<Indicator> getIndicators()
     {
         return indicators;
@@ -910,7 +907,7 @@ public class ReportTable extends BaseIdentifiableObject
     @XmlElement( name = "dataSet" )
     @XmlJavaTypeAdapter( DataSetXmlAdapter.class )
     @JsonProperty
-    @JsonSerialize( contentAs = BaseIdentifiableObject.class )
+    @JsonSerialize( contentAs = BaseNameableObject.class )
     public List<DataSet> getDataSets()
     {
         return dataSets;
@@ -925,7 +922,7 @@ public class ReportTable extends BaseIdentifiableObject
     @XmlElement( name = "organisationUnit" )
     @XmlJavaTypeAdapter( OrganisationUnitXmlAdapter.class )
     @JsonProperty
-    @JsonSerialize( contentAs = BaseIdentifiableObject.class )
+    @JsonSerialize( contentAs = BaseNameableObject.class )
     public List<OrganisationUnit> getUnits()
     {
         return units;
