@@ -1,1 +1,0 @@
-#set( $size = $object.size() ){"values":[#foreach( $value in $object ){"v":"$!{value.value}","i":"$!{value.dataElementId}","in":"$!{value.dataElementName}","p":"$!{value.periodId}","pn":"$!{value.periodName}","o":"$!{value.organisationUnitId}","on":"$!{value.organisationUnitName}"}#if( $velocityCount < $size ),#end#end]}

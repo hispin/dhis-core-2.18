@@ -28,63 +28,35 @@ package org.hisp.dhis.visualizer.action;
  */
 
 import java.util.Collection;
-
-import org.hisp.dhis.aggregation.AggregatedDataValue;
-import org.hisp.dhis.aggregation.AggregatedDataValueService;
-
+import org.hisp.dhis.chart.ChartService;
 import com.opensymphony.xwork2.Action;
 
 /**
  * @author Jan Henrik Overland
  */
-public class GetAggregatedDataValuesAction
+public class DeleteChartsAction
     implements Action
 {
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
+    
+    private ChartService chartService;
 
-    private AggregatedDataValueService aggregatedDataValueService;
-
-    public void setAggregatedDataValueService( AggregatedDataValueService aggregatedDataValueService )
+    public void setChartService( ChartService chartService )
     {
-        this.aggregatedDataValueService = aggregatedDataValueService;
+        this.chartService = chartService;
     }
 
     // -------------------------------------------------------------------------
     // Input
     // -------------------------------------------------------------------------
 
-    private Collection<Integer> dataElementIds;
+    private Collection<String> uids;
 
-    public void setDataElementIds( Collection<Integer> dataElementIds )
+    public void setUids( Collection<String> uids )
     {
-        this.dataElementIds = dataElementIds;
-    }
-
-    private Collection<Integer> periodIds;
-
-    public void setPeriodIds( Collection<Integer> periodIds )
-    {
-        this.periodIds = periodIds;
-    }
-
-    private Collection<Integer> organisationUnitIds;
-
-    public void setOrganisationUnitIds( Collection<Integer> organisationUnitIds )
-    {
-        this.organisationUnitIds = organisationUnitIds;
-    }
-
-    // -------------------------------------------------------------------------
-    // Output
-    // -------------------------------------------------------------------------
-
-    private Collection<AggregatedDataValue> object;
-
-    public Collection<AggregatedDataValue> getObject()
-    {
-        return object;
+        this.uids = uids;
     }
 
     // -------------------------------------------------------------------------
@@ -94,10 +66,12 @@ public class GetAggregatedDataValuesAction
     public String execute()
         throws Exception
     {
-        if ( dataElementIds != null && periodIds != null && organisationUnitIds != null )
+        if ( uids != null )
         {
-            object = aggregatedDataValueService
-                .getAggregatedDataValueTotals( dataElementIds, periodIds, organisationUnitIds );
+            for ( String uid : uids )
+            {
+                chartService.deleteChart( chartService.getChart( uid ) );
+            }
         }
 
         return SUCCESS;

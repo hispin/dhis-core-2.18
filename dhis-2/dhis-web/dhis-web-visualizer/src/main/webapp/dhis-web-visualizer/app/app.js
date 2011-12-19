@@ -9,12 +9,10 @@ DV.conf = {
         jsonfy: function(r) {
             r = Ext.JSON.decode(r.responseText);
             var obj = {system: {rootNode: {id: r.rn[0], name: r.rn[1], level: 1}, periods: {}}};
-            var keys1 = ['lastMonth', 'monthsThisYear', 'monthsLastYear', 'lastQuarter', 'quartersThisYear', 'quartersLastYear', 'thisYear', 'lastYear', 'lastFiveYears'];
-            var keys2 = ['lm', 'mty', 'mly', 'lq', 'qty', 'qly', 'ty', 'ly', 'lfy'];
-            for (var i = 0; i < keys1.length; i++) {
-                obj.system.periods[keys1[i]] = [];
-                for (var j = 0; j < r.p[keys2[i]].length; j++) {
-                    obj.system.periods[keys1[i]].push({id: r.p[keys2[i]][j][0], name: r.p[keys2[i]][j][1]});
+            for (var relative in r.p) {
+                obj.system.periods[relative] = [];
+                for (var i = 0; i < r.p[relative].length; i++) {
+                    obj.system.periods[relative].push({id: r.p[relative][i][0], name: r.p[relative][i][1]});
                 }
             }
             return obj;
@@ -22,10 +20,23 @@ DV.conf = {
     },
     finals: {
         ajax: {
-            url_visualizer: '../',
-            url_commons: '../../dhis-web-commons-ajax-json/',
-            url_portal: '../../dhis-web-portal/',
-            url_data: 'getAggregatedValues.action'
+            path_visualizer: '../',
+            path_commons: '../../dhis-web-commons-ajax-json/',
+            path_api: '../../api/',
+            path_portal: '../../dhis-web-portal/',
+            initialize: 'initialize.action',
+            redirect: 'redirect.action',
+            data_get: 'getAggregatedValues.action',
+            indicator_get: 'getIndicatorsMinified.action',
+            indicatorgroup_get: 'getIndicatorGroupsMinified.action',
+            dataelement_get: 'getDataElementsMinified.action',
+            dataelementgroup_get: 'getDataElementGroupsMinified.action',
+            dataelement_get: 'getDataElementsMinified.action',
+            organisationunitchildren_get: 'getOrganisationUnitChildren.action',
+            favorite_addorupdate: 'addOrUpdateChart.action',
+            favorite_get: 'charts/',
+            favorite_getall: 'charts.json?links=false',
+            favorite_delete: 'deleteCharts.action'
         },        
         dimension: {
             data: {
@@ -65,22 +76,25 @@ DV.conf = {
         image: {
             png: 'png',
             pdf: 'pdf'
+        },
+        cmd: {
+            init: 'init',
+            id: 'id'
         }
     },
     chart: {
         inset: 30
-    },
-    style: {
-        label: {
-            period_group: 'font:bold 11px arial; color:#444; line-height:20px'
-        }
     },
     layout: {
         west_width: 424,
         west_fieldset_width: 402,
         center_tbar_height: 31,
         east_tbar_height: 31,
-        east_gridcolumn_height: 30
+        east_gridcolumn_height: 30,
+        form_label_width: 45,
+        window_favorite_ypos: 100,
+        window_confirm_width: 250,
+        grid_favorite_width: 420
     }
 };
 
@@ -92,13 +106,13 @@ Ext.onReady( function() {
     Ext.override(Ext.form.FieldSet,{setExpanded:function(a){var b=this,c=b.checkboxCmp,d=b.toggleCmp,e;a=!!a;if(c){c.setValue(a)}if(d){d.setType(a?"up":"down")}if(a){e="expand";b.removeCls(b.baseCls+"-collapsed")}else{e="collapse";b.addCls(b.baseCls+"-collapsed")}b.collapsed=!a;b.doComponentLayout();b.fireEvent(e,b);return b}});
     Ext.QuickTips.init();
     document.body.oncontextmenu = function(){return false;};
-
+    
     Ext.Ajax.request({
-        url: DV.conf.finals.ajax.url_visualizer + 'initialize.action',
+        url: DV.conf.finals.ajax.path_visualizer + DV.conf.finals.ajax.initialize,
         success: function(r) {
             
     DV.init = DV.conf.init.jsonfy(r);
-    DV.init.isInit = true;
+    DV.init.init = DV.conf.finals.cmd.init;
     
     DV.init.initialize = function() {
         DV.util.combobox.filter.category();        
@@ -109,7 +123,7 @@ Ext.onReady( function() {
         DV.store.area = DV.store.defaultChartStore;
         DV.store.pie = DV.store.defaultChartStore;        
         DV.chart.data = DV.conf.init.data;        
-        DV.exe.execute(true, DV.init.isInit);
+        DV.exe.execute(true, DV.init.init);
     };
     
     DV.cmp = {
@@ -125,6 +139,9 @@ Ext.onReady( function() {
         },
         toolbar: {
             menuitem: {}
+        },
+        favorite: {
+            rename: {}
         }
     };
     
@@ -138,6 +155,12 @@ Ext.onReady( function() {
             },
             getXY: function() {
                 return {x: DV.cmp.region.center.x + 15, y: DV.cmp.region.center.y + 43};
+            },
+            getPageCenterX: function(cmp) {
+                return ((screen.width/2)-(cmp.width/2));
+            },
+            getPageCenterY: function(cmp) {
+                return ((screen.height/2)-((cmp.height/2)-100));
             }
         },
         multiselect: {
@@ -146,7 +169,7 @@ Ext.onReady( function() {
                 if (selected.length) {
                     var array = [];
                     Ext.Array.each(selected, function(item) {
-                        array.push({id: item, s: a.store.getAt(a.store.find('id', item)).data.s});
+                        array.push({id: item, s: a.store.getAt(a.store.findExact('id', item)).data.s});
                     });
                     s.store.add(array);
                 }
@@ -164,7 +187,7 @@ Ext.onReady( function() {
                 var selected = s.getValue();
                 if (selected.length) {
                     Ext.Array.each(selected, function(item) {
-                        s.store.remove(s.store.getAt(s.store.find('id', item)));
+                        s.store.remove(s.store.getAt(s.store.findExact('id', item)));
                     });                    
                     this.filterAvailable(a, s);
                 }
@@ -206,26 +229,37 @@ Ext.onReady( function() {
             }
         },
         button: {
-            getValue: function() {
-                for (var i = 0; i < DV.cmp.charttype.length; i++) {
-                    if (DV.cmp.charttype[i].pressed) {
-                        return DV.cmp.charttype[i].name;
+            type: {
+                getValue: function() {
+                    for (var i = 0; i < DV.cmp.charttype.length; i++) {
+                        if (DV.cmp.charttype[i].pressed) {
+                            return DV.cmp.charttype[i].name;
+                        }
                     }
-                }
-            },
-            toggleHandler: function(b) {
-                if (!b.pressed) {
-                    b.toggle();
+                },
+                setValue: function(type) {
+                },
+                toggleHandler: function(b) {
+                    if (!b.pressed) {
+                        b.toggle();
+                    }
                 }
             }
         },
         store: {
-            addToStorage: function(s) {
+            addToStorage: function(s, records) {
                 s.each( function(r) {
                     if (!s.storage[r.data.id]) {
                         s.storage[r.data.id] = {id: r.data.id, s: r.data.s, name: r.data.s, parent: s.parent};
                     }
                 });
+                if (records) {
+                    Ext.Array.each(records, function(r) {
+                        if (!s.storage[r.data.id]) {
+                            s.storage[r.data.id] = {id: r.data.id, s: r.data.s, name: r.data.s, parent: s.parent};
+                        }
+                    });
+                }                        
             },
             loadFromStorage: function(s) {
                 var items = [];
@@ -248,14 +282,43 @@ Ext.onReady( function() {
             }
         },
         dimension: {
+            indicator: {
+                getIds: function(exception) {
+                    var a = [];
+                    DV.cmp.dimension.indicator.selected.store.each( function(r) {
+                        a.push(r.data.id);
+                    });
+                    if (exception && !a.length) {
+                        alert('No indicators selected');
+                    }
+                    return a;
+                }
+            },
+            dataelement: {
+                getIds: function(exception) {
+                    if (DV.cmp.dimension.dataelement.selected.store) {
+                        var a = [];
+                        DV.cmp.dimension.dataelement.selected.store.each( function(r) {
+                            a.push(r.data.id);
+                        });
+                        if (exception && !a.length) {
+                            alert('No data elements selected');
+                        }
+                        return a;
+                    }
+                    else {
+                        alert('Data element store does not exist');
+                    }
+                }
+            },
             data: {
                 getUrl: function(isFilter) {
                     var a = [];
-                    DV.cmp.dimension.indicator.selected.store.each( function(r) {
-                        a.push('indicatorIds=' + r.data.id);
+                    Ext.Array.each(DV.state.indicatorIds, function(r) {
+                        a.push('indicatorIds=' + r);
                     });
-                    DV.cmp.dimension.dataelement.selected.store.each( function(r) {
-                        a.push('dataElementIds=' + r.data.id);
+                    Ext.Array.each(DV.state.dataelementIds, function(r) {
+                        a.push('dataElementIds=' + r);
                     });
                     return (isFilter && a.length > 1) ? a.slice(0,1) : a;
                 },
@@ -273,15 +336,14 @@ Ext.onReady( function() {
                         alert('No indicators or data elements selected');
                     }
                     return a;
-                }
+                }                    
             },
             period: {
                 getUrl: function(isFilter) {
-                    var a = [],
-                        cmp = DV.cmp.dimension.period;
-                    for (var i = 0; i < cmp.length; i++) {
-                        if (cmp[i].getValue()) {
-                            Ext.Array.each(DV.init.system.periods[cmp[i].paramName], function(item) {
+                    var a = [];
+                    for (var r in DV.state.relativePeriods) {
+                        if (DV.state.relativePeriods[r]) {
+                            Ext.Array.each(DV.init.system.periods[r], function(item) {
                                 a.push('periodIds=' + item.id);
                             });
                         }
@@ -303,6 +365,22 @@ Ext.onReady( function() {
                     }
                     return a;
                 },
+                getNamesByRelativePeriodsObject: function(rp) {
+                    var relatives = [],
+                        names = [];
+                    for (var r in rp) {
+                        if (rp[r]) {
+                            relatives.push(r);
+                        }
+                    }
+                    for (var i = 0; i < relatives.length; i++) {
+                        var r = DV.init.system.periods[relatives[i]] || [];
+                        for (var j = 0; j < r.length; j++) {
+                            names.push(r[j].name);
+                        }
+                    }
+                    return names;
+                },                        
                 getNameById: function(id) {
                     for (var obj in DV.init.system.periods) {
                         var a = DV.init.system.periods[obj];
@@ -312,19 +390,39 @@ Ext.onReady( function() {
                             }
                         };
                     }
-                }
+                },
+                getIds: function(exception) {
+                    var a = [],
+                        cmp = DV.cmp.dimension.period;
+                    Ext.Array.each(cmp, function(item) {
+                        if (item.getValue()) {
+                            a.push(item.paramName);
+                        }
+                    });
+                    if (exception && !a.length) {
+                        alert('No periods selected');
+                    }
+                    return a;
+                },
+                getRelativePeriodObject: function(exception) {
+                    var a = {},
+                        cmp = DV.cmp.dimension.period,
+                        valid = false;
+                    Ext.Array.each(cmp, function(item) {
+                        a[item.paramName] = item.getValue();
+                        valid = item.getValue() ? true : valid;
+                    });
+                    if (exception && !valid) {
+                        alert('No periods selected');
+                    }
+                    return a;
+                }   
             },
             organisationunit: {
                 getUrl: function(isFilter) {
-                    var a = [],
-                        tp = DV.cmp.dimension.organisationunit.treepanel,
-                        selection = tp.getSelectionModel().getSelection();
-                    if (!selection.length) {
-                        selection = [tp.getRootNode()];
-                        tp.selectRoot();
-                    }
-                    Ext.Array.each(selection, function(r) {
-                        a.push('organisationUnitIds=' + r.data.id);
+                    var a = [];
+                    Ext.Array.each(DV.state.organisationunitIds, function(item) {
+                        a.push('organisationUnitIds=' + item);
                     });
                     return (isFilter && a.length > 1) ? a.slice(0,1) : a;
                 },
@@ -342,8 +440,33 @@ Ext.onReady( function() {
                     if (exception && !a.length) {
                         alert('No organisation units selected');
                     }
-                    return a;                        
+                    return a;
+                },
+                getIds: function(exception) {
+                    var a = [],
+                        tp = DV.cmp.dimension.organisationunit.treepanel,
+                        selection = tp.getSelectionModel().getSelection();
+                    if (!selection.length) {
+                        selection = [tp.getRootNode()];
+                        tp.selectRoot();
+                    }
+                    Ext.Array.each(selection, function(r) {
+                        a.push(DV.util.string.getEncodedString(r.data.id));
+                    });
+                    if (exception && !a.length) {
+                        alert('No organisation units selected');
+                    }
+                    return a;
+                }                    
+            }
+        },
+        mask: {
+            setMask: function(cmp, str) {
+                if (DV.mask) {
+                    DV.mask.hide();
                 }
+                DV.mask = new Ext.LoadMask(cmp, {msg: str});
+                DV.mask.show();
             }
         },
         chart: {
@@ -368,7 +491,7 @@ Ext.onReady( function() {
             getTitle: function() {
                 return {
                     type: 'text',
-                    text: DV.init.isInit ? 'Example chart' : DV.state.filter.names[0],
+                    text: DV.init.init ? 'Example chart' : DV.state.filter.names[0],
                     font: 'bold 15px arial',
                     fill: '#222',
                     width: 300,
@@ -384,13 +507,6 @@ Ext.onReady( function() {
                     renderer: function(item) {
                     }
                 };
-            },
-            setMask: function(str) {
-                if (DV.mask) {
-                    DV.mask.hide();
-                }
-                DV.mask = new Ext.LoadMask(DV.chart.chart, {msg: str});
-                DV.mask.show();
             },
             label: {
                 getCategoryLabel: function() {
@@ -515,6 +631,16 @@ Ext.onReady( function() {
                 }
             }
         },
+        checkbox: {
+            setRelativePeriods: function(rp) {
+                for (var r in rp) {
+                    var cmp = DV.util.getCmp('checkbox[paramName="' + r + '"]');
+                    if (cmp) {
+                        cmp.setValue(rp[r]);
+                    }
+                }
+            }
+        },                
         number: {
             isInteger: function(n) {
                 var str = new String(n);
@@ -550,6 +676,73 @@ Ext.onReady( function() {
                 }
                 return values;
             }
+        },
+        crud: {
+            favorite: {
+                create: function(fn, isUpdate) {
+                    DV.util.mask.setMask(DV.cmp.favorite.window, 'Saving...');
+                    var params = DV.state.getParams();
+                    params.name = DV.cmp.favorite.name.getValue();
+                    if (isUpdate) {
+                        var store = DV.store.favorite;
+                        params.uid = store.getAt(store.findExact('name', params.name)).data.id;
+                    }
+                    Ext.Ajax.request({
+                        url: DV.conf.finals.ajax.path_visualizer + DV.conf.finals.ajax.favorite_addorupdate,
+                        params: params,
+                        success: function() {
+                            DV.store.favorite.load({callback: function() {
+                                DV.mask.hide();
+                                if (fn) {
+                                    fn();
+                                }
+                            }});
+                        }
+                    });
+                },
+                update: function(fn) {
+                    DV.util.crud.favorite.create(fn, true);
+                },
+                updateName: function(name) {
+                    if (DV.store.favorite.findExact('name', name) != -1) {
+                        alert('Name is already in use');
+                        return;
+                    }
+                    DV.util.mask.setMask(DV.cmp.favorite.window, 'Renaming...');
+                    var r = DV.cmp.favorite.grid.getSelectionModel().getSelection()[0];
+                    Ext.Ajax.request({
+                        url: DV.conf.finals.ajax.path_visualizer + DV.conf.finals.ajax.favorite_addorupdate,
+                        params: {uid: r.data.id, name: name},
+                        success: function() {
+                            DV.store.favorite.load({callback: function() {
+                                DV.cmp.favorite.rename.window.close();
+                                DV.mask.hide();
+                                DV.cmp.favorite.grid.getSelectionModel().select(DV.store.favorite.getAt(DV.store.favorite.findExact('name', name)));
+                                DV.cmp.favorite.name.setValue(name);
+                            }});
+                        }
+                    });
+                },
+                del: function(fn) {
+                    DV.util.mask.setMask(DV.cmp.favorite.window, 'Deleting...');
+                    var baseurl = DV.conf.finals.ajax.path_visualizer + DV.conf.finals.ajax.favorite_delete,
+                        selection = DV.cmp.favorite.grid.getSelectionModel().getSelection();
+                    Ext.Array.each(selection, function(item) {
+                        baseurl = Ext.String.urlAppend(baseurl, 'uids=' + item.data.id);
+                    });
+                    Ext.Ajax.request({
+                        url: baseurl,
+                        success: function() {
+                            DV.store.favorite.load({callback: function() {
+                                DV.mask.hide();
+                                if (fn) {
+                                    fn();
+                                }
+                            }});
+                        }
+                    }); 
+                }
+            }
         }
     };
     
@@ -563,13 +756,13 @@ Ext.onReady( function() {
                     {id: DV.conf.finals.dimension.organisationunit.value, name: DV.conf.finals.dimension.organisationunit.rawvalue}
                 ]
             });
-        },        
+        },
         indicator: {
             available: Ext.create('Ext.data.Store', {
-                fields: ['id', 'name', 's'],
+                fields: ['id', 's'],
                 proxy: {
                     type: 'ajax',
-                    url: DV.conf.finals.ajax.url_commons + 'getIndicatorsMinified.action',
+                    url: DV.conf.finals.ajax.path_commons + DV.conf.finals.ajax.indicator_get,
                     reader: {
                         type: 'json',
                         root: 'indicators'
@@ -590,10 +783,10 @@ Ext.onReady( function() {
         },
         dataelement: {
             available: Ext.create('Ext.data.Store', {
-                fields: ['id', 'name', 's'],
+                fields: ['id', 's'],
                 proxy: {
                     type: 'ajax',
-                    url: DV.conf.finals.ajax.url_commons + 'getDataElementsMinified.action',
+                    url: DV.conf.finals.ajax.path_commons + DV.conf.finals.ajax.dataelement_get,
                     reader: {
                         type: 'json',
                         root: 'dataElements'
@@ -675,7 +868,36 @@ Ext.onReady( function() {
             else {
                 return DV.store.chart;
             }
-        }
+        },
+        favorite: Ext.create('Ext.data.Store', {
+            fields: ['id', 'name', 'lastUpdated'],
+            proxy: {
+                type: 'ajax',
+                url: DV.conf.finals.ajax.path_api + DV.conf.finals.ajax.favorite_getall,
+                reader: {
+                    type: 'json',
+                    root: 'charts'
+                }
+            },
+            isLoaded: false,
+            sorting: {
+                field: 'lastUpdated',
+                direction: 'DESC'
+            },
+            listeners: {
+                load: function(s) {
+                    s.sort(this.sorting.field, this.sorting.direction);
+                    s.each(function(r) {
+                        r.data.lastUpdated = r.data.lastUpdated.substr(0,16).replace('T',' ');
+                        r.data.icon = '<img src="images/favorite.png" />';
+                        r.commit();
+                    });
+                    if (!s.isLoaded) {
+                        s.isLoaded = true;
+                    }
+                }
+            }
+        })            
     };
     
     DV.state = {
@@ -692,44 +914,152 @@ Ext.onReady( function() {
             dimension: DV.conf.finals.dimension.organisationunit.value,
             names: []
         },
+        indicatorIds: [],
+        dataelementIds: [],
+        relativePeriods: {},
+        organisationunitIds: [],
+        isRendered: false,
         getState: function(exe) {
             this.resetState();
             
-            this.type = DV.util.button.getValue();
+            var tmp_series_dimension = DV.cmp.settings.series.getValue();
+            var tmp_series_names = DV.util.dimension[tmp_series_dimension].getNames(true);
             
-            this.series.dimension = DV.cmp.settings.series.getValue();
-            this.series.names = DV.util.dimension[this.series.dimension].getNames(true);
+            var tmp_category_dimension = DV.cmp.settings.category.getValue();
+            var tmp_category_names = DV.util.dimension[tmp_category_dimension].getNames(true);
             
-            this.category.dimension = DV.cmp.settings.category.getValue();
-            this.category.names = DV.util.dimension[this.category.dimension].getNames(true);
+            var tmp_filter_dimension = DV.cmp.settings.filter.getValue();
+            var tmp_filter_names = DV.util.dimension[tmp_filter_dimension].getNames(true).slice(0,1);
             
-            this.filter.dimension = DV.cmp.settings.filter.getValue();
-            this.filter.names = DV.util.dimension[this.filter.dimension].getNames(true).slice(0,1);
-            
-            if (!this.series.names.length || !this.category.names.length || !this.filter.names.length) {
+            if (!tmp_series_names.length || !tmp_category_names.length || !tmp_filter_names.length) {
                 return;
             }
+            
+            this.type = DV.util.button.type.getValue();
+            
+            this.series.dimension = tmp_series_dimension;
+            this.series.names = tmp_series_names;
+            
+            this.category.dimension = tmp_category_dimension;
+            this.category.names = tmp_category_names;
+            
+            this.filter.dimension = tmp_filter_dimension;
+            this.filter.names = tmp_filter_names;
+            
+            this.indicatorIds = DV.util.dimension.indicator.getIds();
+            this.dataelementIds = DV.util.dimension.dataelement.getIds();
+            this.relativePeriods = DV.util.dimension.period.getRelativePeriodObject();
+            this.organisationunitIds = DV.util.dimension.organisationunit.getIds();
+            
+            this.isRendered = true;
+            DV.util.mask.setMask(DV.chart.chart, 'Loading...');
             
             if (exe) {
                 DV.value.getValues(true);
             }
         },
+        getParams: function() {
+            var obj = {};
+            obj.type = this.type;
+            obj.series = this.series.dimension;
+            obj.category = this.category.dimension;
+            obj.filter = this.filter.dimension;
+            obj.indicatorIds = this.indicatorIds;
+            obj.dataElementIds = this.dataelementIds;
+            obj.organisationUnitIds = this.organisationunitIds;
+            obj = Ext.Object.merge(obj, this.relativePeriods);
+            return obj;            
+        },
+        setState: function(exe, id) {
+            if (id) {
+                this.resetState();
+                DV.util.mask.setMask(DV.chart.chart, 'Loading...');
+                
+                Ext.Ajax.request({
+                    url: DV.conf.finals.ajax.path_api + DV.conf.finals.ajax.favorite_get + id + '.json',
+                    scope: this,
+                    success: function(r) {
+                        var f = Ext.JSON.decode(r.responseText),
+                            indiment = [];
+                        f.names = {
+                            data: [],
+                            period: [],
+                            organisationunit: []
+                        };
+                        
+                        this.type = f.type;
+                        this.series.dimension = f.series;
+                        this.category.dimension = f.category;
+                        this.filter.dimension = f.filter;
+                        
+                        if (f.indicators) {
+                            var records = [];
+                            for (var i = 0; i < f.indicators.length; i++) {
+                                indiment.push(f.indicators[i]);
+                                this.indicatorIds.push(f.indicators[i].internalId);
+                                records.push({id: f.indicators[i].internalId, s: f.indicators[i].shortName, name: f.indicators[i].shortName, parent: null});
+                            }
+                            DV.store.indicator.selected.removeAll();
+                            DV.store.indicator.selected.add(records);
+                            DV.util.store.addToStorage(DV.store.indicator.available, records);
+                            DV.util.multiselect.filterAvailable(DV.cmp.dimension.indicator.available, DV.cmp.dimension.indicator.selected);
+                        }
+                        if (f.dataElements) {
+                            var records = [];
+                            for (var i = 0; i < f.dataElements.length; i++) {
+                                indiment.push(f.dataElements[i]);
+                                this.dataelementIds.push(f.dataElements[i].internalId);
+                                records.push({id: f.dataElements[i].internalId, s: f.dataElements[i].shortName, name: f.dataElements[i].shortName, parent: null});
+                            }
+                            DV.store.dataelement.selected.removeAll();
+                            DV.store.dataelement.selected.add(records);
+                            DV.util.store.addToStorage(DV.store.dataelement.available, records);
+                            DV.util.multiselect.filterAvailable(DV.cmp.dimension.dataelement.available, DV.cmp.dimension.dataelement.selected);
+                        }
+                        for (var i = 0; i < indiment.length; i++) {
+                            f.names.data.push(indiment[i].shortName);
+                        }
+                        
+                        this.relativePeriods = f.relativePeriods;
+                        DV.util.checkbox.setRelativePeriods(this.relativePeriods);
+                        f.names.period = DV.util.dimension.period.getNamesByRelativePeriodsObject(this.relativePeriods);
+                        
+                        for (var i = 0; i < f.organisationUnits.length; i++) {
+                            this.organisationunitIds.push(f.organisationUnits[i].internalId);
+                            f.names.organisationunit.push(f.organisationUnits[i].name);
+                        }
+                        
+                        this.series.names = f.names[this.series.dimension];
+                        this.category.names = f.names[this.category.dimension];
+                        this.filter.names = f.names[this.filter.dimension];
+                        
+                        this.isRendered = true;
+                        
+                        if (exe) {
+                            DV.value.getValues(true);
+                        }
+                    }
+                });
+            }
+        },
         resetState: function() {
             this.type = null;
             this.series.dimension = null;
-            this.series.names = null;
+            this.series.names = [];
             this.category.dimension = null;
-            this.category.names = null;
+            this.category.names = [];
             this.filter.dimension = null;
-            this.filter.names = null;
+            this.filter.names = [];
+            this.indicatorIds = [];
+            this.dataelementIds = [];
+            this.relativePeriods = {};
+            this.organisationunitIds = [];
         }
     };
     
     DV.value = {
         values: [],
-        getValues: function(exe) {
-            DV.util.chart.setMask('Loading...');
-            
+        getValues: function(exe) {            
             var params = [],
                 i = DV.conf.finals.dimension.indicator.value,
                 d = DV.conf.finals.dimension.dataelement.value;
@@ -738,23 +1068,22 @@ Ext.onReady( function() {
             params = params.concat(DV.util.dimension[DV.state.category.dimension].getUrl());
             params = params.concat(DV.util.dimension[DV.state.filter.dimension].getUrl(true));
             
-            var baseUrl = DV.conf.finals.ajax.url_visualizer + DV.conf.finals.ajax.url_data;
+            var baseurl = DV.conf.finals.ajax.path_visualizer + DV.conf.finals.ajax.data_get;
             Ext.Array.each(params, function(item) {
-                baseUrl = Ext.String.urlAppend(baseUrl, item);
+                baseurl = Ext.String.urlAppend(baseurl, item);
             });
             
             Ext.Ajax.request({
-                url: baseUrl,
+                url: baseurl,
                 success: function(r) {
                     DV.value.values = DV.util.value.jsonfy(r);
-                    
                     if (!DV.value.values.length) {
                         DV.mask.hide();
                         alert('No data values');
                         return;
                     }
                     
-                    var storage = Ext.Object.merge(DV.store[i].available.storage, DV.store[d].available.storage);                    
+                    var storage = Ext.Object.merge(DV.store[i].available.storage, DV.store[d].available.storage);
                     Ext.Array.each(DV.value.values, function(item) {
                         item[DV.conf.finals.dimension.data.value] = DV.util.string.getEncodedString(storage[item.d].name);
                         item[DV.conf.finals.dimension.period.value] = DV.util.string.getEncodedString(DV.util.dimension.period.getNameById(item.p));
@@ -990,12 +1319,12 @@ Ext.onReady( function() {
             DV.cmp.region.center.removeAll(true);
             DV.cmp.region.center.add(this.chart);
             
-            if (!DV.init.isInit) {
+            if (!DV.init.init) {
                 DV.mask.hide();
                 DV.store.getDataTableStore(true);
             }
             else {
-                DV.init.isInit = false;
+                DV.init.init = false;
             }
         }
     };
@@ -1004,7 +1333,6 @@ Ext.onReady( function() {
         datatable: null,
         getDataTable: function(exe) {
             this.datatable = Ext.create('Ext.grid.Panel', {
-                id: 'datatable_g',
                 height: DV.util.viewport.getSize().y - 1,
                 scroll: 'vertical',
                 cls: 'dv-datatable',
@@ -1052,9 +1380,14 @@ Ext.onReady( function() {
     };
     
     DV.exe = {
-        execute: function(exe, init) {
-            if (init) {
-                DV.store.getChartStore(exe);
+        execute: function(exe, cmd) {
+            if (cmd) {
+                if (cmd === DV.conf.finals.cmd.init) {
+                    DV.store.getChartStore(exe);
+                }
+                else {
+                    DV.state.setState(true, cmd);
+                }
             }
             else {
                 DV.state.getState(exe);
@@ -1082,7 +1415,7 @@ Ext.onReady( function() {
                         defaults: {
                             height: 40,
                             toggleGroup: 'chartsettings',
-                            handler: DV.util.button.toggleHandler,
+                            handler: DV.util.button.type.toggleHandler,
                             listeners: {
                                 afterrender: function(b) {
                                     if (b.xtype === 'button') {
@@ -1166,6 +1499,7 @@ Ext.onReady( function() {
                                     { bodyStyle: 'padding:1px 0; border-style:none;	background-color:transparent' },
                                     {
                                         xtype: 'combobox',
+                                        cls: 'dv-combo',
                                         name: DV.conf.finals.chart.series,
                                         emptyText: 'Series',
                                         queryMode: 'local',
@@ -1198,6 +1532,7 @@ Ext.onReady( function() {
                                     { bodyStyle: 'padding:1px 0; border-style:none;	background-color:transparent' },
                                     {
                                         xtype: 'combobox',
+                                        cls: 'dv-combo',
                                         name: DV.conf.finals.chart.category,
                                         emptyText: 'Category',
                                         queryMode: 'local',
@@ -1231,6 +1566,7 @@ Ext.onReady( function() {
                                     { bodyStyle: 'padding:1px 0; border-style:none;	background-color:transparent' },
                                     {
                                         xtype: 'combobox',
+                                        cls: 'dv-combo',
                                         name: DV.conf.finals.chart.filter,
                                         emptyText: 'Filter',
                                         queryMode: 'local',
@@ -1268,20 +1604,21 @@ Ext.onReady( function() {
                                 items: [
                                     {
                                         xtype: 'combobox',
+                                        cls: 'dv-combo',
                                         style: 'margin-bottom:8px',
                                         width: DV.conf.layout.west_fieldset_width - 22,
                                         valueField: 'id',
                                         displayField: 'name',
                                         fieldLabel: 'Select group',
                                         labelStyle: 'padding-left:7px;',
-                                        labelWidth: 110,
+                                        labelWidth: 90,
                                         editable: false,
                                         queryMode: 'remote',
                                         store: Ext.create('Ext.data.Store', {
                                             fields: ['id', 'name', 'index'],
                                             proxy: {
                                                 type: 'ajax',
-                                                url: DV.conf.finals.ajax.url_commons + 'getIndicatorGroupsMinified.action',
+                                                url: DV.conf.finals.ajax.path_commons + DV.conf.finals.ajax.indicatorgroup_get,
                                                 reader: {
                                                     type: 'json',
                                                     root: 'indicatorGroups'
@@ -1301,6 +1638,7 @@ Ext.onReady( function() {
                                                 
                                                 if (DV.util.store.containsParent(store)) {
                                                     DV.util.store.loadFromStorage(store);
+                                                    DV.util.multiselect.filterAvailable(DV.cmp.dimension.indicator.available, DV.cmp.dimension.indicator.selected);
                                                 }
                                                 else {
                                                     store.load({params: {id: cb.getValue()}});
@@ -1317,7 +1655,7 @@ Ext.onReady( function() {
                                                 xtype: 'multiselect',
                                                 id: 'availableIndicators',
                                                 name: 'availableIndicators',
-                                                cls: 'multiselect',
+                                                cls: 'dv-toolbar-multiselect-left',
                                                 width: (DV.conf.layout.west_fieldset_width - 22) / 2,
                                                 displayField: 's',
                                                 valueField: 'id',
@@ -1327,7 +1665,7 @@ Ext.onReady( function() {
                                                     {
                                                         xtype: 'label',
                                                         text: 'Available indicators',
-                                                        style: 'padding-left:5px'
+                                                        cls: 'dv-toolbar-multiselect-left-label'
                                                     },
                                                     '->',
                                                     {
@@ -1363,7 +1701,7 @@ Ext.onReady( function() {
                                                 xtype: 'multiselect',
                                                 id: 'selectedIndicators',
                                                 name: 'selectedIndicators',
-                                                cls: 'multiselect',
+                                                cls: 'dv-toolbar-multiselect-right',
                                                 width: (DV.conf.layout.west_fieldset_width - 22) / 2,
                                                 displayField: 's',
                                                 valueField: 'id',
@@ -1392,7 +1730,7 @@ Ext.onReady( function() {
                                                     {
                                                         xtype: 'label',
                                                         text: 'Selected indicators',
-                                                        style: 'padding-right:5px'
+                                                        cls: 'dv-toolbar-multiselect-right-label'
                                                     }
                                                 ],
                                                 listeners: {
@@ -1428,20 +1766,21 @@ Ext.onReady( function() {
                                 items: [
                                     {
                                         xtype: 'combobox',
+                                        cls: 'dv-combo',
                                         style: 'margin-bottom:8px',
                                         width: DV.conf.layout.west_fieldset_width - 22,
                                         valueField: 'id',
                                         displayField: 'name',
                                         fieldLabel: 'Select group',
                                         labelStyle: 'padding-left:7px;',
-                                        labelWidth: 110,
+                                        labelWidth: 90,
                                         editable: false,
                                         queryMode: 'remote',
                                         store: Ext.create('Ext.data.Store', {
                                             fields: ['id', 'name', 'index'],
                                             proxy: {
                                                 type: 'ajax',
-                                                url: DV.conf.finals.ajax.url_commons + 'getDataElementGroupsMinified.action',
+                                                url: DV.conf.finals.ajax.path_commons + DV.conf.finals.ajax.dataelementgroup_get,
                                                 reader: {
                                                     type: 'json',
                                                     root: 'dataElementGroups'
@@ -1461,6 +1800,7 @@ Ext.onReady( function() {
                                                 
                                                 if (DV.util.store.containsParent(store)) {
                                                     DV.util.store.loadFromStorage(store);
+                                                    DV.util.multiselect.filterAvailable(DV.cmp.dimension.dataelement.available, DV.cmp.dimension.dataelement.selected);
                                                 }
                                                 else {
                                                     store.load({params: {id: cb.getValue()}});
@@ -1476,7 +1816,7 @@ Ext.onReady( function() {
                                             Ext.create('Ext.ux.form.MultiSelect', {
                                                 id: 'availableDataElements',
                                                 name: 'availableDataElements',
-                                                cls: 'multiselect',
+                                                cls: 'dv-toolbar-multiselect-left',
                                                 width: (DV.conf.layout.west_fieldset_width - 22) / 2,
                                                 displayField: 's',
                                                 valueField: 'id',
@@ -1486,7 +1826,7 @@ Ext.onReady( function() {
                                                     {
                                                         xtype: 'label',
                                                         text: 'Available data elements',
-                                                        style: 'padding-left:5px'
+                                                        cls: 'dv-toolbar-multiselect-left-label'
                                                     },
                                                     '->',
                                                     {
@@ -1522,7 +1862,7 @@ Ext.onReady( function() {
                                                 xtype: 'multiselect',
                                                 id: 'selectedDataElements',
                                                 name: 'selectedDataElements',
-                                                cls: 'multiselect',
+                                                cls: 'dv-toolbar-multiselect-right',
                                                 width: (DV.conf.layout.west_fieldset_width - 22) / 2,
                                                 displayField: 's',
                                                 valueField: 'id',
@@ -1551,7 +1891,7 @@ Ext.onReady( function() {
                                                     {
                                                         xtype: 'label',
                                                         text: 'Selected data elements',
-                                                        style: 'padding-right:5px'
+                                                        cls: 'dv-toolbar-multiselect-right-label'
                                                     }
                                                 ],
                                                 listeners: {
@@ -1594,7 +1934,7 @@ Ext.onReady( function() {
                                             {
                                                 xtype: 'panel',
                                                 layout: 'anchor',
-                                                bodyStyle: 'border-style:none; padding:0 40px 0 0px',
+                                                bodyStyle: 'border-style:none; padding:0 0 0 10px',
                                                 defaults: {
                                                     labelSeparator: '',
                                                     listeners: {
@@ -1609,7 +1949,7 @@ Ext.onReady( function() {
                                                     {
                                                         xtype: 'label',
                                                         text: 'Months',
-                                                        style: DV.conf.style.label.period_group
+                                                        cls: 'dv-label-period-heading'
                                                     },
                                                     {
                                                         xtype: 'checkbox',
@@ -1618,25 +1958,20 @@ Ext.onReady( function() {
                                                     },
                                                     {
                                                         xtype: 'checkbox',
-                                                        paramName: 'monthsThisYear',
-                                                        boxLabel: 'Months this year',
+                                                        paramName: 'last12Months',
+                                                        boxLabel: 'Last 12 months',
                                                         checked: true
-                                                    },
-                                                    {
-                                                        xtype: 'checkbox',
-                                                        paramName: 'monthsLastYear',
-                                                        boxLabel: 'Months last year'
                                                     }
                                                 ]
                                             },
                                             {
                                                 xtype: 'panel',
                                                 layout: 'anchor',
-                                                bodyStyle: 'border-style:none; padding-right:40px',
+                                                bodyStyle: 'border-style:none; padding:0 0 0 32px',
                                                 defaults: {
                                                     labelSeparator: '',
                                                     listeners: {
-                                                        afterrender: function(chb) {
+                                                        added: function(chb) {
                                                             if (chb.xtype === 'checkbox') {
                                                                 DV.cmp.dimension.period.push(chb);
                                                             }
@@ -1647,7 +1982,7 @@ Ext.onReady( function() {
                                                     {
                                                         xtype: 'label',
                                                         text: 'Quarters',
-                                                        style: DV.conf.style.label.period_group
+                                                        cls: 'dv-label-period-heading'
                                                     },
                                                     {
                                                         xtype: 'checkbox',
@@ -1656,24 +1991,58 @@ Ext.onReady( function() {
                                                     },
                                                     {
                                                         xtype: 'checkbox',
-                                                        paramName: 'quartersThisYear',
-                                                        boxLabel: 'Quarters this year'
-                                                    },
-                                                    {
-                                                        xtype: 'checkbox',
-                                                        paramName: 'quartersLastYear',
-                                                        boxLabel: 'Quarters last year'
+                                                        paramName: 'last4Quarters',
+                                                        boxLabel: 'Last 4 quarters'
                                                     }
                                                 ]
                                             },
                                             {
                                                 xtype: 'panel',
                                                 layout: 'anchor',
-                                                bodyStyle: 'border-style:none',
+                                                bodyStyle: 'border-style:none; padding:0 0 0 32px',
                                                 defaults: {
                                                     labelSeparator: '',
                                                     listeners: {
-                                                        afterrender: function(chb) {
+                                                        added: function(chb) {
+                                                            if (chb.xtype === 'checkbox') {
+                                                                DV.cmp.dimension.period.push(chb);
+                                                            }
+                                                        }
+                                                    }
+                                                },
+                                                items: [
+                                                    {
+                                                        xtype: 'label',
+                                                        text: 'Six-months',
+                                                        cls: 'dv-label-period-heading'
+                                                    },
+                                                    {
+                                                        xtype: 'checkbox',
+                                                        paramName: 'lastSixMonth',
+                                                        boxLabel: 'Last six-month'
+                                                    },
+                                                    {
+                                                        xtype: 'checkbox',
+                                                        paramName: 'last2SixMonths',
+                                                        boxLabel: 'Last 2 six-months'
+                                                    }
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    {
+                                        xtype: 'panel',
+                                        layout: 'column',
+                                        bodyStyle: 'border-style:none',
+                                        items: [
+                                            {
+                                                xtype: 'panel',
+                                                layout: 'anchor',
+                                                bodyStyle: 'border-style:none; padding:5px 0 0 10px',
+                                                defaults: {
+                                                    labelSeparator: '',
+                                                    listeners: {
+                                                        added: function(chb) {
                                                             if (chb.xtype === 'checkbox') {
                                                                 DV.cmp.dimension.period.push(chb);
                                                             }
@@ -1684,12 +2053,7 @@ Ext.onReady( function() {
                                                     {
                                                         xtype: 'label',
                                                         text: 'Years',
-                                                        style: DV.conf.style.label.period_group
-                                                    },
-                                                    {
-                                                        xtype: 'checkbox',
-                                                        paramName: 'thisYear',
-                                                        boxLabel: 'This year'
+                                                        cls: 'dv-label-period-heading'
                                                     },
                                                     {
                                                         xtype: 'checkbox',
@@ -1698,7 +2062,7 @@ Ext.onReady( function() {
                                                     },
                                                     {
                                                         xtype: 'checkbox',
-                                                        paramName: 'lastFiveYears',
+                                                        paramName: 'last5Years',
                                                         boxLabel: 'Last 5 years'
                                                     }
                                                 ]
@@ -1725,6 +2089,7 @@ Ext.onReady( function() {
                                 items: [
                                     {
                                         xtype: 'treepanel',
+                                        cls: 'dv-tree',
                                         height: 300,
                                         width: DV.conf.layout.west_fieldset_width - 22,
                                         autoScroll: true,
@@ -1740,7 +2105,7 @@ Ext.onReady( function() {
                                         store: Ext.create('Ext.data.TreeStore', {
                                             proxy: {
                                                 type: 'ajax',
-                                                url: DV.conf.finals.ajax.url_visualizer + 'getOrganisationUnitChildren.action'
+                                                url: DV.conf.finals.ajax.path_visualizer + DV.conf.finals.ajax.organisationunitchildren_get
                                             },
                                             root: {
                                                 id: DV.init.system.rootNode.id,
@@ -1820,13 +2185,17 @@ Ext.onReady( function() {
                 bodyStyle: 'padding:10px',
                 tbar: {
                     xtype: 'toolbar',
+                    cls: 'dv-toolbar',
                     height: DV.conf.layout.center_tbar_height,
+                    defaults: {
+                        height: 26
+                    },
                     items: [
                         {
                             xtype: 'button',
-							cls: 'dv-btn-toolbar',
                             name: 'resizewest',
-                            text: '<span class="dv-btn-toolbar-text-2"><<<</span>',
+							cls: 'dv-toolbar-btn-2',
+                            text: '<<<',
                             tooltip: 'Show/hide chart settings',
                             handler: function() {
                                 var p = DV.cmp.region.west;
@@ -1845,25 +2214,487 @@ Ext.onReady( function() {
                         },
                         {
                             xtype: 'button',
-							cls: 'dv-btn-toolbar',
-                            text: '<span class="dv-btn-toolbar-text-1">Update</span>',
+							cls: 'dv-toolbar-btn-1',
+                            text: 'Update',
                             handler: function() {
-                                DV.exe.execute(true, DV.init.isInit);
+                                DV.exe.execute(true, DV.init.init);
                             }
                         },
                         {
                             xtype: 'button',
-							cls: 'dv-btn-toolbar',
-                            text: '<span class="dv-btn-toolbar-text-2">Show..</span>',
+							cls: 'dv-toolbar-btn-2',
+                            text: 'Favorites..',
                             listeners: {
                                 afterrender: function(b) {
                                     this.menu = Ext.create('Ext.menu.Menu', {
                                         shadowOffset: 1,
+                                        showSeparator: false,
+                                        items: [
+                                            {
+                                                text: 'Manage favorites',
+                                                iconCls: 'dv-menu-item-edit',
+                                                handler: function() {
+                                                    if (DV.cmp.favorite.window) {
+                                                        DV.cmp.favorite.window.show();
+                                                    }
+                                                    else {
+                                                        DV.cmp.favorite.window = Ext.create('Ext.window.Window', {
+                                                            title: 'Manage favorites',
+                                                            iconCls: 'dv-window-title-favorite',
+                                                            bodyStyle: 'padding:8px; background-color:#fff',
+															width: DV.conf.layout.grid_favorite_width,
+                                                            closeAction: 'hide',
+                                                            modal: true,
+                                                            items: [
+                                                                {
+                                                                    xtype: 'form',
+                                                                    bodyStyle: 'border-style:none',
+                                                                    items: [
+                                                                        {
+                                                                            xtype: 'textfield',
+                                                                            cls: 'dv-textfield',
+                                                                            maxLength: 160,
+                                                                            enforceMaxLength: true,
+                                                                            fieldLabel: 'Name',
+                                                                            labelWidth: DV.conf.layout.form_label_width,
+                                                                            width: DV.conf.layout.grid_favorite_width - 28,
+                                                                            listeners: {
+                                                                                added: function() {
+                                                                                    DV.cmp.favorite.name = this;
+                                                                                },
+                                                                                change: function() {
+                                                                                    DV.cmp.favorite.save.xable();
+                                                                                }
+                                                                            }
+                                                                        }
+                                                                    ]
+                                                                },
+                                                                {
+                                                                    xtype: 'grid',
+                                                                    width: DV.conf.layout.grid_favorite_width - 28,
+                                                                    scroll: 'vertical',
+                                                                    multiSelect: true,
+                                                                    columns: [
+                                                                        {
+                                                                            dataIndex: 'name',
+                                                                            width: DV.conf.layout.grid_favorite_width - 139,
+                                                                            style: 'display:none'
+                                                                        },
+                                                                        {
+                                                                            dataIndex: 'lastUpdated',
+                                                                            width: 111,
+                                                                            style: 'display:none'
+                                                                        }
+                                                                    ],
+                                                                    setHeightInWindow: function(store) {
+                                                                        var h = (store.getTotalCount() * 23) + 30,
+                                                                            sh = DV.util.viewport.getSize().y * 0.8;
+                                                                        this.setHeight(h > sh ? sh : h);
+                                                                        this.doLayout();
+                                                                        this.up('window').doLayout();
+                                                                    },
+                                                                    store: DV.store.favorite,
+                                                                    tbar: {
+                                                                        id: 'favorite_t',
+                                                                        cls: 'dv-toolbar',
+                                                                        height: 30,
+                                                                        defaults: {
+                                                                            height: 24
+                                                                        },
+                                                                        items: [
+                                                                            {
+                                                                                text: 'Sort by..',
+                                                                                cls: 'dv-toolbar-btn-2',
+                                                                                handler: function() {
+                                                                                    
+                                                                                },
+                                                                                listeners: {
+                                                                                    added: function() {
+                                                                                        DV.cmp.favorite.sortby = this;
+                                                                                    },
+                                                                                    afterrender: function(b) {
+                                                                                        this.addCls('dv-menu-togglegroup');
+                                                                                        this.menu = Ext.create('Ext.menu.Menu', {
+                                                                                            shadowOffset: 1,
+                                                                                            showSeparator: false,
+                                                                                            width: 109,
+                                                                                            height: 70,
+                                                                                            items: [
+                                                                                                {
+                                                                                                    xtype: 'radiogroup',
+                                                                                                    cls: 'dv-radiogroup',
+                                                                                                    columns: 1,
+                                                                                                    vertical: true,
+                                                                                                    items: [
+                                                                                                        {
+                                                                                                            boxLabel: 'Name',
+                                                                                                            name: 'sortby',
+                                                                                                            handler: function() {
+                                                                                                                if (this.getValue()) {
+                                                                                                                    var store = DV.store.favorite;
+                                                                                                                    store.sorting.field = 'name';
+                                                                                                                    store.sorting.direction = 'ASC';
+                                                                                                                    store.sort(store.sorting.field, store.sorting.direction);
+                                                                                                                    this.up('menu').hide();
+                                                                                                                }
+                                                                                                            }
+                                                                                                        },
+                                                                                                        {
+                                                                                                            boxLabel: 'Last updated',
+                                                                                                            name: 'sortby',
+                                                                                                            checked: true,
+                                                                                                            handler: function() {
+                                                                                                                if (this.getValue()) {
+                                                                                                                    var store = DV.store.favorite;
+                                                                                                                    store.sorting.field = 'lastUpdated';
+                                                                                                                    store.sorting.direction = 'DESC';
+                                                                                                                    store.sort(store.sorting.field, store.sorting.direction);
+                                                                                                                    this.up('menu').hide();
+                                                                                                                }
+                                                                                                            }
+                                                                                                        }
+                                                                                                    ]
+                                                                                                }
+                                                                                            ]
+                                                                                        });
+                                                                                    }
+                                                                                }
+                                                                            },
+                                                                            '->',
+                                                                            {
+                                                                                text: 'Rename',
+                                                                                cls: 'dv-toolbar-btn-2',
+                                                                                disabled: true,
+                                                                                xable: function() {
+                                                                                    if (DV.cmp.favorite.grid.getSelectionModel().getSelection().length == 1) {
+                                                                                        DV.cmp.favorite.rename.button.enable();
+                                                                                    }
+                                                                                    else {
+                                                                                        DV.cmp.favorite.rename.button.disable();
+                                                                                    }
+                                                                                },
+                                                                                handler: function() {
+                                                                                    var selected = DV.cmp.favorite.grid.getSelectionModel().getSelection()[0];
+                                                                                    var w = Ext.create('Ext.window.Window', {
+                                                                                        title: 'Rename favorite',
+                                                                                        layout: 'fit',
+                                                                                        width: DV.conf.layout.window_confirm_width,
+                                                                                        bodyStyle: 'padding:10px 5px; background-color:#fff; text-align:center',
+                                                                                        modal: true,
+                                                                                        cmp: {},
+                                                                                        items: [
+                                                                                            {
+                                                                                                xtype: 'textfield',
+                                                                                                cls: 'dv-textfield',
+                                                                                                maxLength: 160,
+                                                                                                enforceMaxLength: true,
+                                                                                                value: selected.data.name,
+                                                                                                listeners: {
+                                                                                                    added: function() {
+                                                                                                        this.up('window').cmp.name = this;
+                                                                                                    },
+                                                                                                    change: function() {
+                                                                                                        this.up('window').cmp.rename.xable();
+                                                                                                    }
+                                                                                                }
+                                                                                            }
+                                                                                        ],
+                                                                                        bbar: [
+                                                                                            {
+                                                                                                text: 'Cancel',
+                                                                                                handler: function() {
+                                                                                                    this.up('window').close();
+                                                                                                }
+                                                                                            },
+                                                                                            '->',
+                                                                                            {
+                                                                                                text: 'Rename',
+                                                                                                disabled: true,
+                                                                                                xable: function() {
+                                                                                                    var value = this.up('window').cmp.name.getValue();
+                                                                                                    if (value && value != DV.cmp.favorite.name.getValue()) {
+                                                                                                        this.enable();
+                                                                                                    }
+                                                                                                    else {
+                                                                                                        this.disable();
+                                                                                                    }
+                                                                                                },
+                                                                                                handler: function() {
+                                                                                                    DV.util.crud.favorite.updateName(this.up('window').cmp.name.getValue());
+                                                                                                },
+                                                                                                listeners: {
+                                                                                                    afterrender: function() {
+                                                                                                        this.up('window').cmp.rename = this;
+                                                                                                    },
+                                                                                                    change: function() {
+                                                                                                        this.xable();
+                                                                                                    }
+                                                                                                }
+                                                                                            }
+                                                                                        ],
+                                                                                        listeners: {
+                                                                                            afterrender: function() {
+                                                                                                DV.cmp.favorite.rename.window = this;
+                                                                                            }
+                                                                                        }
+                                                                                    });
+                                                                                    w.setPosition((screen.width/2)-(DV.conf.layout.window_confirm_width/2), DV.conf.layout.window_favorite_ypos + 100, true);
+                                                                                    w.show();
+                                                                                },
+                                                                                listeners: {
+                                                                                    added: function() {
+                                                                                        DV.cmp.favorite.rename.button = this;
+                                                                                    }
+                                                                                }
+                                                                            },
+                                                                            {
+                                                                                text: 'Delete',
+                                                                                cls: 'dv-toolbar-btn-2',
+                                                                                disabled: true,
+                                                                                xable: function() {
+                                                                                    if (DV.cmp.favorite.grid.getSelectionModel().getSelection().length) {
+                                                                                        DV.cmp.favorite.del.enable();
+                                                                                    }
+                                                                                    else {
+                                                                                        DV.cmp.favorite.del.disable();
+                                                                                    }
+                                                                                },
+                                                                                handler: function() {
+                                                                                    var sel = DV.cmp.favorite.grid.getSelectionModel().getSelection();
+                                                                                    if (sel.length) {
+                                                                                        var str = '';
+                                                                                        for (var i = 0; i < sel.length; i++) {
+                                                                                            var out = sel[i].data.name.length > 35 ? (sel[i].data.name.substr(0,35) + '...') : sel[i].data.name;
+                                                                                            str += '<br/>' + out;
+                                                                                        }
+                                                                                        var w = Ext.create('Ext.window.Window', {
+                                                                                            title: 'Delete favorites',
+                                                                                            width: DV.conf.layout.window_confirm_width,
+                                                                                            bodyStyle: 'padding:10px 5px; background-color:#fff; text-align:center',
+                                                                                            modal: true,
+                                                                                            items: [
+                                                                                                {
+                                                                                                    html: 'Are you sure?',
+                                                                                                    bodyStyle: 'border-style:none'
+                                                                                                },
+                                                                                                {
+                                                                                                    html: str,
+                                                                                                    cls: 'dv-window-confirm-list'
+                                                                                                }                                                                                                    
+                                                                                            ],
+                                                                                            bbar: [
+                                                                                                {
+                                                                                                    text: 'Cancel',
+                                                                                                    handler: function() {
+                                                                                                        this.up('window').close();
+                                                                                                    }
+                                                                                                },
+                                                                                                '->',
+                                                                                                {
+                                                                                                    text: 'Delete',
+                                                                                                    handler: function() {
+                                                                                                        this.up('window').close();
+                                                                                                        DV.util.crud.favorite.del(function() {
+                                                                                                            DV.cmp.favorite.name.setValue('');
+                                                                                                            DV.cmp.favorite.window.down('grid').setHeightInWindow(DV.store.favorite);
+                                                                                                        });                                                                                                        
+                                                                                                    }
+                                                                                                }
+                                                                                            ]
+                                                                                        });
+                                                                                        w.setPosition((screen.width/2)-(DV.conf.layout.window_confirm_width/2), DV.conf.layout.window_favorite_ypos + 100, true);
+                                                                                        w.show();
+                                                                                    }
+                                                                                },
+                                                                                listeners: {
+                                                                                    added: function() {
+                                                                                        DV.cmp.favorite.del = this;
+                                                                                    }
+                                                                                }
+                                                                            }
+                                                                        ]
+                                                                    },
+                                                                    listeners: {
+                                                                        added: function() {
+                                                                            DV.cmp.favorite.grid = this;
+                                                                        },
+                                                                        itemclick: function(g, r) {
+                                                                            DV.cmp.favorite.name.setValue(r.get('name'));
+                                                                            DV.cmp.favorite.rename.button.xable();
+                                                                            DV.cmp.favorite.del.xable();
+                                                                        },
+                                                                        itemdblclick: function() {
+                                                                            DV.cmp.favorite.save.handler();
+                                                                        }
+                                                                    }
+                                                                }
+                                                            ],
+                                                            bbar: {
+                                                                cls: 'dv-toolbar',
+                                                                height: 29,
+                                                                defaults: {
+                                                                    height: 24
+                                                                },
+                                                                items: [
+                                                                    '->',
+                                                                    {
+                                                                        text: 'Save',
+                                                                        disabled: true,
+                                                                        xable: function() {
+                                                                            if (DV.state.isRendered && DV.cmp.favorite.name.getValue()) {
+                                                                                this.enable();
+                                                                            }
+                                                                            else {
+                                                                                this.disable();
+                                                                            }
+                                                                        },
+                                                                        handler: function() {
+                                                                            var value = DV.cmp.favorite.name.getValue();
+                                                                            if (DV.state.isRendered && value) {
+                                                                                if (DV.store.favorite.findExact('name', value) != -1) {
+                                                                                    var item = value.length > 35 ? (value.substr(0,35) + '...') : value;
+                                                                                    var w = Ext.create('Ext.window.Window', {
+                                                                                        title: 'Save favorite',
+                                                                                        width: DV.conf.layout.window_confirm_width,
+                                                                                        bodyStyle: 'padding:10px 5px; background-color:#fff; text-align:center',
+                                                                                        modal: true,
+                                                                                        items: [
+                                                                                            {
+                                                                                                html: 'Are you sure?',
+                                                                                                bodyStyle: 'border-style:none'
+                                                                                            },
+                                                                                            {
+                                                                                                html: '<br/>' + item,
+                                                                                                cls: 'dv-window-confirm-list'
+                                                                                            }
+                                                                                        ],
+                                                                                        bbar: [
+                                                                                            {
+                                                                                                text: 'Cancel',
+                                                                                                handler: function() {
+                                                                                                    this.up('window').close();
+                                                                                                }
+                                                                                            },
+                                                                                            '->',
+                                                                                            {
+                                                                                                text: 'Overwrite',
+                                                                                                handler: function() {
+                                                                                                    this.up('window').close();
+                                                                                                    DV.util.crud.favorite.update(function() {
+                                                                                                        DV.cmp.favorite.name.setValue('');
+                                                                                                    });
+                                                                                                    
+                                                                                                }
+                                                                                            }
+                                                                                        ]
+                                                                                    });
+                                                                                    w.setPosition((screen.width/2)-(DV.conf.layout.window_confirm_width/2), DV.conf.layout.window_favorite_ypos + 100, true);
+                                                                                    w.show();
+                                                                                }
+                                                                                else {
+                                                                                    DV.util.crud.favorite.create(function() {
+                                                                                        DV.cmp.favorite.name.setValue('');
+                                                                                        DV.cmp.favorite.window.down('grid').setHeightInWindow(DV.store.favorite);
+                                                                                    });
+                                                                                }                                                                                    
+                                                                            }
+                                                                        },
+                                                                        listeners: {
+                                                                            added: function() {
+                                                                                DV.cmp.favorite.save = this;
+                                                                            }
+                                                                        }
+                                                                    }
+                                                                ]
+                                                            },
+                                                            listeners: {
+                                                                show: function() {                                               
+                                                                    DV.cmp.favorite.save.xable();
+                                                                    this.down('grid').setHeightInWindow(DV.store.favorite);
+                                                                }
+                                                            }
+                                                        });
+                                                        var w = DV.cmp.favorite.window;
+                                                        w.setPosition((screen.width/2)-(DV.conf.layout.grid_favorite_width/2), DV.conf.layout.window_favorite_ypos, true);
+                                                        w.show();
+                                                    }
+                                                },
+                                                listeners: {
+                                                    added: function() {
+                                                        DV.cmp.toolbar.menuitem.datatable = this;
+                                                    }
+                                                }
+                                            },
+                                            '-',
+                                            {
+                                                xtype: 'grid',
+                                                cls: 'dv-menugrid',
+                                                width: 420,
+                                                scroll: 'vertical',
+                                                columns: [
+                                                    {
+                                                        dataIndex: 'icon',
+                                                        width: 25,
+                                                        style: 'display:none'
+                                                    },
+                                                    {
+                                                        dataIndex: 'name',
+                                                        width: 289,
+                                                        style: 'display:none'
+                                                    },
+                                                    {
+                                                        dataIndex: 'lastUpdated',
+                                                        width: 106,
+                                                        style: 'display:none'
+                                                    }
+                                                ],
+                                                setHeightInMenu: function(store) {
+                                                    var h = store.getTotalCount() * 26,
+                                                        sh = DV.util.viewport.getSize().y * 0.8;
+                                                    this.setHeight(h > sh ? sh : h);
+                                                    this.doLayout();
+                                                    this.up('menu').doLayout();
+                                                },
+                                                store: DV.store.favorite,
+                                                listeners: {
+                                                    itemclick: function(g, r) {
+                                                        g.getSelectionModel().select([], false);
+                                                        this.up('menu').hide();
+                                                        DV.exe.execute(true, r.data.id);
+                                                    }
+                                                }
+                                            }
+                                        ],
+                                        listeners: {
+                                            show: function() {
+                                                if (!DV.store.favorite.isLoaded) {
+                                                    DV.store.favorite.load({scope: this, callback: function() {
+                                                        this.down('grid').setHeightInMenu(DV.store.favorite);
+                                                    }});
+                                                }
+                                                else {
+                                                    this.down('grid').setHeightInMenu(DV.store.favorite);
+                                                }
+                                            }
+                                        }
+                                    });
+                                }
+                            }
+                        },
+                        {
+                            xtype: 'button',
+							cls: 'dv-toolbar-btn-2',
+                            text: 'Show..',
+                            listeners: {
+                                afterrender: function(b) {
+                                    this.menu = Ext.create('Ext.menu.Menu', {
+                                        shadowOffset: 1,
+                                        showSeparator: false,
                                         items: [
                                             {
                                                 text: 'Data table',
                                                 iconCls: 'dv-menu-item-datatable',
-                                                minWidth: 100,
+                                                minWidth: 90,
                                                 handler: function() {
                                                     var p = DV.cmp.region.east;
                                                     if (p.collapsed && p.items.length) {
@@ -1896,8 +2727,8 @@ Ext.onReady( function() {
                         },
                         {
                             xtype: 'button',
-							cls: 'dv-btn-toolbar',
-                            text: '<span class="dv-btn-toolbar-text-2">Save as..</span>',
+							cls: 'dv-toolbar-btn-2',
+                            text: 'Save as..',
                             execute: function(type) {
                                 var svg = document.getElementsByTagName('svg');
                                 
@@ -1924,11 +2755,12 @@ Ext.onReady( function() {
                                 afterrender: function(b) {
                                     this.menu = Ext.create('Ext.menu.Menu', {
                                         shadowOffset: 1,
+                                        showSeparator: false,
                                         items: [
                                             {
                                                 text: 'Image (PNG)',
                                                 iconCls: 'dv-menu-item-png',
-                                                minWidth: 110,
+                                                minWidth: 105,
                                                 handler: function() {
                                                     b.execute(DV.conf.finals.image.png);
                                                 }
@@ -1936,7 +2768,7 @@ Ext.onReady( function() {
                                             {
                                                 text: 'PDF',
                                                 iconCls: 'dv-menu-item-pdf',
-                                                minWidth: 110,
+                                                minWidth: 105,
                                                 handler: function() {
                                                     b.execute(DV.conf.finals.image.pdf);
                                                 }
@@ -1949,17 +2781,17 @@ Ext.onReady( function() {
                         '->',
                         {
                             xtype: 'button',
-							cls: 'dv-btn-toolbar',
-                            text: '<span class="dv-btn-toolbar-text-2">Exit</span>',
+							cls: 'dv-toolbar-btn-2',
+                            text: 'Exit',
                             handler: function() {
-                                window.location.href = DV.conf.finals.ajax.url_portal + 'redirect.action';
+                                window.location.href = DV.conf.finals.ajax.path_portal + DV.conf.finals.ajax.redirect;
                             }
                         },
                         {
                             xtype: 'button',
-							cls: 'dv-btn-toolbar',
                             name: 'resizeeast',
-                            text: '<span class="dv-btn-toolbar-text-2">>>></span>',
+							cls: 'dv-toolbar-btn-2',
+                            text: '>>>',
                             tooltip: 'Hide data table',
                             hidden: true,
                             handler: function() {

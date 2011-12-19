@@ -31,36 +31,6 @@
 				/dhis-web-visualizer/jsonminOrganisationUnitChildren.vm</result>
 		</action>
 
-        <!-- AggregatedIndicatorValue -->
-
-        <action name="getAggregatedIndicatorValues"
-            class="org.hisp.dhis.visualizer.action.GetAggregatedIndicatorValuesAction">
-            <result name="success" type="velocity-json">
-                /dhis-web-visualizer/jsonminAggregatedIndicatorValues.vm</result>
-        </action>
-
-        <action name="getAggregatedIndicatorValuesPlugin"
-            class="org.hisp.dhis.visualizer.action.GetAggregatedIndicatorValuesPluginAction">
-            <result name="success" type="velocity-json">
-                /dhis-web-visualizer/jsonminAggregatedIndicatorValuesPlugin.vm</result>
-        </action>
-
-        <!-- AggregatedDataValue -->
-
-        <action name="getAggregatedDataValues"
-            class="org.hisp.dhis.visualizer.action.GetAggregatedDataValuesAction">
-            <result name="success" type="velocity-json">
-                /dhis-web-visualizer/jsonminAggregatedDataValues.vm</result>
-            <result name="none" type="velocity-json">
-                /dhis-web-visualizer/void.vm</result>
-        </action>
-
-        <action name="getAggregatedDataValuesPlugin"
-            class="org.hisp.dhis.visualizer.action.GetAggregatedDataValuesPluginAction">
-            <result name="success" type="velocity-json">
-                /dhis-web-visualizer/jsonminAggregatedDataValuesPlugin.vm</result>
-        </action>
-
         <!-- Aggregated values -->
 
         <action name="getAggregatedValues"
@@ -76,6 +46,20 @@
             <result name="success" type="velocity-json">
                 /dhis-web-visualizer/jsonminAggregatedValuesPlugin.vm</result>
             <result name="none" type="velocity-json">
+                /dhis-web-visualizer/void.vm</result>
+        </action>
+
+        <!-- Chart -->
+
+        <action name="addOrUpdateChart"
+            class="org.hisp.dhis.visualizer.action.AddOrUpdateChartAction">
+            <result name="success" type="velocity-json">
+                /dhis-web-visualizer/void.vm</result>
+        </action>
+
+        <action name="deleteCharts"
+            class="org.hisp.dhis.visualizer.action.DeleteChartsAction">
+            <result name="success" type="velocity-json">
                 /dhis-web-visualizer/void.vm</result>
         </action>
 
