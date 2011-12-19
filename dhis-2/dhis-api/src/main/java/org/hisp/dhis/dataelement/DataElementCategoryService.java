@@ -440,10 +440,6 @@ public interface DataElementCategoryService
 
     int getDataElementCategoryOptionComboCountByName( String name );
 
-    Collection<DataElementCategoryOptionCombo> getDataElementCategoryOptionCombosBetween( int first, int max );
-
-    Collection<DataElementCategoryOptionCombo> getDataElementCategoryOptionCombosBetweenByName( String name, int first, int max );
-
     int getDataElementCategoryComboCount();
 
     int getDataElementCategoryComboCountByName( String name );
