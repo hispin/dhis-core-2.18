@@ -92,6 +92,7 @@ public class IndicatorBatchHandler
     
     protected void setColumns()
     {
+        statementBuilder.setColumn( "uid" );
         statementBuilder.setColumn( "name" );
         statementBuilder.setColumn( "alternativename" );
         statementBuilder.setColumn( "shortname" );
@@ -109,6 +110,7 @@ public class IndicatorBatchHandler
     
     protected void setValues( Indicator indicator )
     {
+        statementBuilder.setValue( indicator.getUid() );
         statementBuilder.setValue( indicator.getName() );
         statementBuilder.setValue( indicator.getAlternativeName() );
         statementBuilder.setValue( indicator.getShortName() );

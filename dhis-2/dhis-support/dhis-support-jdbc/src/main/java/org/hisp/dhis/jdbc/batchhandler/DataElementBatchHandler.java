@@ -92,6 +92,7 @@ public class DataElementBatchHandler
     
     protected void setColumns()
     {
+        statementBuilder.setColumn( "uid" );
         statementBuilder.setColumn( "name" );
         statementBuilder.setColumn( "alternativename" );
         statementBuilder.setColumn( "shortname" );
@@ -109,6 +110,7 @@ public class DataElementBatchHandler
     
     protected void setValues( DataElement dataElement )
     {
+        statementBuilder.setValue( dataElement.getUid() );
         statementBuilder.setValue( dataElement.getName() );
         statementBuilder.setValue( dataElement.getAlternativeName() );
         statementBuilder.setValue( dataElement.getShortName() );

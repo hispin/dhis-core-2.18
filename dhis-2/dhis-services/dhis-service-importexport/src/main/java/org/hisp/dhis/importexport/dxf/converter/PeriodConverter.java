@@ -55,8 +55,6 @@ public class PeriodConverter
     public static final String ELEMENT_NAME = "period";
     
     private static final String FIELD_ID = "id";
-    private static final String FIELD_UID = "uid";
-    private static final String FIELD_CODE = "code";
     private static final String FIELD_PERIOD_TYPE = "periodType";
     private static final String FIELD_START_DATE = "startDate";
     private static final String FIELD_END_DATE = "endDate";
@@ -114,8 +112,6 @@ public class PeriodConverter
                 writer.openElement( ELEMENT_NAME );
                 
                 writer.writeElement( FIELD_ID, String.valueOf( period.getId() ) );
-                writer.writeElement( FIELD_UID, period.getUid() );
-                writer.writeElement( FIELD_CODE, period.getCode() );
                 writer.writeElement( FIELD_PERIOD_TYPE, String.valueOf( period.getPeriodType().getName() ) );
                 writer.writeElement( FIELD_START_DATE, DateUtils.getMediumDateString( period.getStartDate() ) );
                 writer.writeElement( FIELD_END_DATE, DateUtils.getMediumDateString( period.getEndDate() ) );
@@ -152,12 +148,6 @@ public class PeriodConverter
             }
             
             period.setId( Integer.parseInt( values.get( FIELD_ID ) ) );
-
-            if ( params.minorVersionGreaterOrEqual( "1.3") )
-            {
-                period.setUid( values.get( FIELD_UID ) );
-                period.setCode( values.get( FIELD_CODE) );
-            }
 
             period.setStartDate( DateUtils.getMediumDate( values.get( FIELD_START_DATE ) ) );
             period.setEndDate( DateUtils.getMediumDate( values.get( FIELD_END_DATE ) ) );
