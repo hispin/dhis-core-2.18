@@ -630,10 +630,7 @@ function hideInfo()
  */
 function showDetails()
 {
-    $( '#detailsArea' )
-	.css( "height", "75%" )
-	.css( "overflow", "auto" )
-	.show( "fast" );
+    $( '#detailsArea' ).show( "fast" );
 }
 
 /**
