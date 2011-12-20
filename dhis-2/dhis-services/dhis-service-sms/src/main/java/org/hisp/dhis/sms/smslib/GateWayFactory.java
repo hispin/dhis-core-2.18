@@ -3,6 +3,7 @@ package org.hisp.dhis.sms.smslib;
 import org.hisp.dhis.sms.SmsServiceException;
 import org.hisp.dhis.sms.config.BulkSmsGatewayConfig;
 import org.hisp.dhis.sms.config.ClickatellGatewayConfig;
+import org.hisp.dhis.sms.config.GenericHttpGatewayConfig;
 import org.hisp.dhis.sms.config.ModemGatewayConfig;
 import org.hisp.dhis.sms.config.SmsGatewayConfig;
 import org.smslib.AGateway;
@@ -18,6 +19,8 @@ public class GateWayFactory
     {
         if ( config instanceof BulkSmsGatewayConfig )
             return createBulkSmsGateway( (BulkSmsGatewayConfig) config );
+        else if ( config instanceof GenericHttpGatewayConfig )
+            return createSimplisticHttpGetGateway( (GenericHttpGatewayConfig) config );
         else if ( config instanceof ClickatellGatewayConfig )
             return createClickatellGateway( (ClickatellGatewayConfig) config );
         else if ( config instanceof ModemGatewayConfig )
@@ -69,5 +72,12 @@ public class GateWayFactory
         return gateway;
     }
 
+    public AGateway createSimplisticHttpGetGateway( GenericHttpGatewayConfig c )
+    {
+        SimplisticHttpGetGateWay gateway = new SimplisticHttpGetGateWay( c.getName(), c.getUrlTemplate(), c.getParameters() );
+        gateway.setOutbound( true );
+        gateway.setInbound( false );
+        return gateway;
+    }
 
 }

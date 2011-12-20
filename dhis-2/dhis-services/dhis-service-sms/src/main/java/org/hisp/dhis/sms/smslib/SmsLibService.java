@@ -63,10 +63,12 @@ public class SmsLibService
             message.setFrom( longNumber );
         }
 
+        boolean sent = false;
+
         try
         {
             log.debug( "Sending message " + sms );
-            getService().sendMessage( message );
+            sent = getService().sendMessage( message );
         }
         catch ( SMSLibException e )
         {
@@ -90,6 +92,11 @@ public class SmsLibService
                 // Make sure we delete tmp. group
                 removeGroup( recipient );
             }
+        }
+
+        if ( !sent )
+        {
+
         }
 
     }
@@ -118,10 +125,12 @@ public class SmsLibService
         log.info( "Loading configuration" );
         reloadConfig();
 
-        if (config.isEnabled()) {
-        log.info( "Starting SmsLib" );
-        startService();
-        } else
+        if ( config.isEnabled() )
+        {
+            log.info( "Starting SmsLib" );
+            startService();
+        }
+        else
         {
             log.info( "Sms not enabled, won't start service" );
         }
@@ -201,7 +210,7 @@ public class SmsLibService
         Service service = Service.getInstance();
 
         service.setOutboundMessageNotification( new OutboundNotification() );
-        
+
         service.getGateways().clear();
 
         // Add gateways
@@ -227,7 +236,7 @@ public class SmsLibService
         @Override
         public void process( AGateway gateway, OutboundMessage msg )
         {
-            log.info( "Sent message through gateway " + gateway.getGatewayId() + ": " + msg);
+            log.info( "Sent message through gateway " + gateway.getGatewayId() + ": " + msg );
 
         }
     }

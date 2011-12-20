@@ -38,11 +38,8 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hisp.dhis.message.MessageSender;
 import org.hisp.dhis.sms.SmsServiceException;
-import org.hisp.dhis.sms.outbound.OutboundSms;
-import org.hisp.dhis.sms.outbound.OutboundSmsService;
 import org.hisp.dhis.user.User;
 import org.hisp.dhis.user.UserService;
-import org.springframework.beans.factory.annotation.Autowired;
 
 public class SmsMessageSender
     implements MessageSender
@@ -124,7 +121,7 @@ public class SmsMessageSender
         if ( sender != null )
             name = sender.getUsername();
 
-        text = "From " + name + ", " + subject + ": " + text;
+        text = "From " + name + " - " + subject + ": " + text;
 
         // Simplistic cutoff 160 characters..
         int length = text.length();

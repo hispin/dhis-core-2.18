@@ -28,13 +28,17 @@ package org.hisp.dhis.api.controller;
  */
 
 import java.io.IOException;
+import java.util.Collections;
+import java.util.HashMap;
 
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hisp.dhis.sms.SmsConfigurationManager;
+import org.hisp.dhis.sms.config.GenericHttpGatewayConfig;
 import org.hisp.dhis.sms.config.SmsConfiguration;
+import org.hisp.dhis.sms.config.SmsGatewayConfig;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -69,6 +73,21 @@ public class SmsConfigurationController
         return "smsConfiguration";
     }
 
+    @RequestMapping( value="test", method = RequestMethod.GET )
+    public String getTest( Model model )
+    {
+
+        SmsConfiguration smsConfiguration = new SmsConfiguration();
+
+        SmsGatewayConfig gatewayConfig = new GenericHttpGatewayConfig("http://storset.org/", new HashMap<String,String>());
+        smsConfiguration.setGateways( Collections.singletonList( gatewayConfig ) );
+        
+        model.addAttribute( "model", smsConfiguration );
+
+        return "smsConfiguration";
+    }
+
+    
     //-------------------------------------------------------------------------------------------------------
     // POST
     //-------------------------------------------------------------------------------------------------------
