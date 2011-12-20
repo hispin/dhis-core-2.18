@@ -1414,6 +1414,7 @@ Ext.onReady( function() {
         reload: function() {
             DV.cmp.region.east.removeAll(true);
             DV.cmp.region.east.add(this.datatable);
+            DV.init.cmd = false;
         }            
     };
     
