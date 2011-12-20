@@ -1058,6 +1058,7 @@ Ext.onReady( function() {
                         for (var i = 0; i < f.organisationUnits.length; i++) {
                             this.organisationunitIds.push(f.organisationUnits[i].internalId);
                             f.names.organisationunit.push(f.organisationUnits[i].name);
+                            DV.cmp.dimension.organisationunit.treepanel.storage[f.organisationUnits[i].internalId] = f.organisationUnits[i].name;
                         }
                         
                         this.series.names = f.names[this.series.dimension];
@@ -1118,7 +1119,7 @@ Ext.onReady( function() {
                     Ext.Array.each(DV.value.values, function(item) {
                         item[DV.conf.finals.dimension.data.value] = DV.util.string.getEncodedString(storage[item.d].name);
                         item[DV.conf.finals.dimension.period.value] = DV.util.string.getEncodedString(DV.util.dimension.period.getNameById(item.p));
-                        item[DV.conf.finals.dimension.organisationunit.value] = DV.cmp.dimension.organisationunit.treepanel.store.getNodeById(item.o).data.text;
+                        item[DV.conf.finals.dimension.organisationunit.value] = DV.cmp.dimension.organisationunit.treepanel.findNameById(item.o);
                         item.v = parseFloat(item.v);
                     });
                     
@@ -2129,12 +2130,24 @@ Ext.onReady( function() {
                                         autoScroll: true,
                                         multiSelect: true,
                                         isRendered: false,
+                                        storage: {},
                                         selectRoot: function() {
                                             if (this.isRendered) {
                                                 if (!this.getSelectionModel().getSelection().length) {
                                                     this.getSelectionModel().select(this.getRootNode());
                                                 }
                                             }
+                                        },
+                                        findNameById: function(id) {
+                                            var n = this.store.getNodeById(id) ? this.store.getNodeById(id).data.text : null;                                            
+                                            if (!n) {
+                                                for (var k in this.storage) {
+                                                    if (k === id) {
+                                                        n = this.storage[k];
+                                                    }
+                                                }
+                                            }
+                                            return n;
                                         },
                                         store: Ext.create('Ext.data.TreeStore', {
                                             proxy: {
