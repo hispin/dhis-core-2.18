@@ -92,12 +92,22 @@ public class Pager
         return total;
     }
 
+    /**
+     * How many items per page.
+     *
+     * @return Number of items per page.
+     */
     @JsonProperty
     public int getPageSize()
     {
         return pageSize;
     }
 
+    /**
+     * How many pages in total
+     *
+     * @return Total number of pages
+     */
     @JsonProperty
     public int getPageCount()
     {
@@ -113,6 +123,11 @@ public class Pager
         return pageCount;
     }
 
+    /**
+     * Return the current offset to start at.
+     *
+     * @return Offset to start at
+     */
     public int getOffset()
     {
         return (page * pageSize) - pageSize;
