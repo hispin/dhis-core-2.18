@@ -91,7 +91,9 @@ public class GetProgramsByOrgunitAction
         organisationUnit = selectedStateManager.getSelectedOrganisationUnit();
 
         programs = programService.getPrograms( organisationUnit );
-
+        Collection<Program> anonymousPrograms = programService.getPrograms( true, true, organisationUnit );
+        programs.removeAll( anonymousPrograms );
+        
         selectedStateManager.clearSelectedPatient();
         selectedStateManager.clearSelectedProgramInstance();
         selectedStateManager.clearSelectedProgramStageInstance();
