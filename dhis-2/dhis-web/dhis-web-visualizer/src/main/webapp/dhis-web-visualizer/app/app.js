@@ -78,8 +78,7 @@ DV.conf = {
             pdf: 'pdf'
         },
         cmd: {
-            init: 'init',
-            id: 'id'
+            init: 'init'
         }
     },
     chart: {
@@ -111,9 +110,7 @@ Ext.onReady( function() {
         url: DV.conf.finals.ajax.path_visualizer + DV.conf.finals.ajax.initialize,
         success: function(r) {
             
-    DV.init = DV.conf.init.jsonfy(r);
-    DV.init.init = DV.conf.finals.cmd.init;
-    
+    DV.init = DV.conf.init.jsonfy(r);    
     DV.init.initialize = function() {
         DV.util.combobox.filter.category();
         DV.store.column = DV.store.defaultChartStore;
@@ -123,7 +120,9 @@ Ext.onReady( function() {
         DV.store.area = DV.store.defaultChartStore;
         DV.store.pie = DV.store.defaultChartStore;
         DV.chart.data = DV.conf.init.data;
-        DV.exe.execute(true, DV.init.init);
+        
+        DV.init.cmd = DV.util.getUrlParam('uid') || DV.conf.finals.cmd.init;
+        DV.exe.execute(true, DV.init.cmd);
     };
     
     DV.cmp = {
@@ -148,6 +147,22 @@ Ext.onReady( function() {
     DV.util = {
         getCmp: function(q) {
             return DV.viewport.query(q)[0];
+        },
+        getUrlParam: function(strParam) {            
+            var output = '';
+            var strHref = window.location.href;
+            if (strHref.indexOf('?') > -1 ) {
+                var strQueryString = strHref.substr(strHref.indexOf('?'));
+                var aQueryString = strQueryString.split('&');
+                for (var iParam = 0; iParam < aQueryString.length; iParam++) {
+                    if (aQueryString[iParam].indexOf(strParam + '=') > -1) {
+                        var aParam = aQueryString[iParam].split('=');
+                        output = aParam[1];
+                        break;
+                    }
+                }
+            }
+            return unescape(output);
         },
         viewport: {
             getSize: function() {
@@ -174,7 +189,7 @@ Ext.onReady( function() {
                     s.store.add(array);
                 }
                 this.filterAvailable(a, s);
-            },            
+            },
             selectAll: function(a, s) {
                 var array = [];
                 a.store.each( function(r) {
@@ -494,7 +509,7 @@ Ext.onReady( function() {
             getTitle: function() {
                 return {
                     type: 'text',
-                    text: DV.init.init ? 'Example chart' : DV.state.filter.names[0],
+                    text: DV.init.cmd === DV.conf.finals.cmd.init ? 'Example chart' : DV.state.filter.names[0],
                     font: 'bold 15px arial',
                     fill: '#222',
                     width: 300,
@@ -973,15 +988,19 @@ Ext.onReady( function() {
             obj = Ext.Object.merge(obj, this.relativePeriods);
             return obj;            
         },
-        setState: function(exe, id) {
-            if (id) {
+        setState: function(exe, uid) {
+            if (uid) {
                 this.resetState();
-                DV.util.mask.setMask(DV.chart.chart, 'Loading...');
-                
+                DV.util.mask.setMask(DV.cmp.region.center, 'Loading...');
                 Ext.Ajax.request({
-                    url: DV.conf.finals.ajax.path_api + DV.conf.finals.ajax.favorite_get + id + '.json',
+                    url: DV.conf.finals.ajax.path_api + DV.conf.finals.ajax.favorite_get + uid + '.json',
                     scope: this,
                     success: function(r) {
+                        if (!r.responseText) {
+                            DV.mask.hide();
+                            alert("Invalid uid parameter");
+                            return;
+                        }
                         var f = Ext.JSON.decode(r.responseText),
                             indiment = [];
                         f.names = {
@@ -1337,12 +1356,12 @@ Ext.onReady( function() {
             DV.cmp.region.center.removeAll(true);
             DV.cmp.region.center.add(this.chart);
             
-            if (!DV.init.init) {
+            if (DV.init.cmd !== DV.conf.finals.cmd.init) {
                 DV.mask.hide();
                 DV.store.getDataTableStore(true);
             }
             else {
-                DV.init.init = false;
+                DV.init.cmd = false;
             }
         }
     };
@@ -2232,7 +2251,7 @@ Ext.onReady( function() {
 							cls: 'dv-toolbar-btn-1',
                             text: 'Update',
                             handler: function() {
-                                DV.exe.execute(true, DV.init.init);
+                                DV.exe.execute(true, DV.init.cmd);
                             }
                         },
                         {
