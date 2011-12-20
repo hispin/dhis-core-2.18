@@ -1091,7 +1091,7 @@ Ext.onReady( function() {
                     DV.value.values = DV.util.value.jsonfy(r);
                     if (!DV.value.values.length) {
                         DV.mask.hide();
-                        alert('No data values');
+                        alert('No data');
                         return;
                     }
                     
@@ -1124,6 +1124,12 @@ Ext.onReady( function() {
                 DV.chart.data.push(obj);
             });
             
+            Ext.Array.each(DV.chart.data, function(item) {
+                for (var i = 0; i < DV.state.series.names.length; i++) {
+                    item[DV.state.series.names[i]] = 0;
+                }
+            });
+
             Ext.Array.each(DV.chart.data, function(item) {
                 for (var i = 0; i < DV.state.series.names.length; i++) {
                     for (var j = 0; j < DV.value.values.length; j++) {
