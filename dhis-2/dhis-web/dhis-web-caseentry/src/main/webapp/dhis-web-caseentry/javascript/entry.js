@@ -779,6 +779,9 @@ function doComplete()
 						enable('newEncounterBtn');
 					}
 					
+					enable('createEventBtn');
+					selection.enable();
+		
 					hideLoader();
 					hideById('contentDiv');
 				},'xml');
