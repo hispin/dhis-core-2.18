@@ -115,14 +115,14 @@ Ext.onReady( function() {
     DV.init.init = DV.conf.finals.cmd.init;
     
     DV.init.initialize = function() {
-        DV.util.combobox.filter.category();        
+        DV.util.combobox.filter.category();
         DV.store.column = DV.store.defaultChartStore;
         DV.store.column_stacked = DV.store.defaultChartStore;
         DV.store.bar_stacked = DV.store.bar;
         DV.store.line = DV.store.defaultChartStore;
         DV.store.area = DV.store.defaultChartStore;
-        DV.store.pie = DV.store.defaultChartStore;        
-        DV.chart.data = DV.conf.init.data;        
+        DV.store.pie = DV.store.defaultChartStore;
+        DV.chart.data = DV.conf.init.data;
         DV.exe.execute(true, DV.init.init);
     };
     
@@ -238,6 +238,9 @@ Ext.onReady( function() {
                     }
                 },
                 setValue: function(type) {
+                    for (var i = 0; i < DV.cmp.charttype.length; i++) {
+                        DV.cmp.charttype[i].toggle(DV.cmp.charttype[i].name === type);
+                    }
                 },
                 toggleHandler: function(b) {
                     if (!b.pressed) {
@@ -988,9 +991,18 @@ Ext.onReady( function() {
                         };
                         
                         this.type = f.type;
+                        DV.util.button.type.setValue(this.type);
+                        
                         this.series.dimension = f.series;
+                        DV.cmp.settings.series.setValue(DV.conf.finals.dimension[this.series.dimension].value);
+                        DV.util.combobox.filter.category();
+                        
                         this.category.dimension = f.category;
+                        DV.cmp.settings.category.setValue(DV.conf.finals.dimension[this.category.dimension].value);
+                        DV.util.combobox.filter.filter();
+                        
                         this.filter.dimension = f.filter;
+                        DV.cmp.settings.filter.setValue(DV.conf.finals.dimension[this.filter.dimension].value);
                         
                         if (f.indicators) {
                             var records = [];
@@ -1514,7 +1526,7 @@ Ext.onReady( function() {
                                                 DV.cmp.settings.series = this;
                                             },
                                             select: function() {
-                                                DV.util.combobox.filter.category(DV.viewport);
+                                                DV.util.combobox.filter.category();
                                             }
                                         }
                                     }
@@ -1548,7 +1560,7 @@ Ext.onReady( function() {
                                                 DV.cmp.settings.category = this;
                                             },
                                             select: function(cb) {
-                                                DV.util.combobox.filter.filter(DV.viewport);
+                                                DV.util.combobox.filter.filter();
                                             }
                                         }
                                     }
@@ -1580,9 +1592,6 @@ Ext.onReady( function() {
                                         listeners: {
                                             afterrender: function(cb) {
                                                 DV.cmp.settings.filter = this;
-                                            },
-                                            select: function(cb) {
-                                                DV.state.filter.dimension = cb.getValue();
                                             }
                                         }
                                     }
