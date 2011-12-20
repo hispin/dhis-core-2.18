@@ -35,8 +35,8 @@ import org.hisp.dhis.attribute.AttributeValue;
 import org.hisp.dhis.attribute.Attributes;
 import org.hisp.dhis.chart.Chart;
 import org.hisp.dhis.chart.Charts;
+import org.hisp.dhis.common.BaseCollection;
 import org.hisp.dhis.common.BaseIdentifiableObject;
-import org.hisp.dhis.common.BaseLinkableObject;
 import org.hisp.dhis.common.IdentifiableObject;
 import org.hisp.dhis.common.LinkableObject;
 import org.hisp.dhis.constant.Constant;
@@ -329,6 +329,34 @@ public class WebLinkPopulator
         else if ( source instanceof MessageConversation )
         {
             populateMessageConversation( (MessageConversation) source, true );
+        }
+
+        if ( source instanceof BaseCollection )
+        {
+            BaseCollection baseCollection = (BaseCollection) source;
+
+            if ( baseCollection.getPager() != null )
+            {
+                String basePath = getBasePath( source.getClass() );
+
+                if ( baseCollection.getPage() < baseCollection.getPageCount() )
+                {
+                    baseCollection.getPager().setNextPage( basePath + "?page=" + (baseCollection.getPage() + 1) );
+                }
+
+                if ( baseCollection.getPage() > 1 )
+                {
+                    if ( (baseCollection.getPage() - 1) == 1 )
+                    {
+                        baseCollection.getPager().setPrevPage( basePath );
+                    }
+                    else
+                    {
+                        baseCollection.getPager().setPrevPage( basePath + "?page=" + (baseCollection.getPage() - 1) );
+                    }
+
+                }
+            }
         }
     }
 
