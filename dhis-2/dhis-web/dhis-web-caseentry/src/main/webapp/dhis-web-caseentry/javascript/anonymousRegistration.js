@@ -1,6 +1,7 @@
 
 function organisationUnitSelected( orgUnits )
 {
+	hideById('dataEntryFormDiv');
 	disable('executionDate');
 	setFieldValue('executionDate', '');
 	$('#executionDate').unbind('change');
@@ -14,10 +15,30 @@ function organisationUnitSelected( orgUnits )
 			clearListById( 'programId' );
 			addOptionById( 'programId', '', i18n_please_select );
 			
+			var preSelectedProgramId = getFieldValue('selectedProgramId');
 			for ( i in json.programInstances ) 
+			{ 
+				if( preSelectedProgramId == json.programInstances[i].id )
+				{
+					$('#programId').append('<option selected value=' + json.programInstances[i].id + ' singleevent="true" programInstanceId=' + json.programInstances[i].programInstanceId + '>' + json.programInstances[i].name + '</option>');
+				}
+				else
+				{
+					$('#programId').append('<option value=' + json.programInstances[i].id + ' singleevent="true" programInstanceId=' + json.programInstances[i].programInstanceId + '>' + json.programInstances[i].name + '</option>');
+				}
+			}
+
+			if( byId('programId').selectedIndex > 0 )
 			{
-				$('#programId').append('<option value=' + json.programInstances[i].id + ' singleevent="true" programInstanceId=' + json.programInstances[i].programInstanceId + '>' + json.programInstances[i].name + '</option>');
-			}			
+				showEventForm();
+			}
+			else
+			{
+				if( json.programInstances.length > 0 )
+				{
+					enable('createEventBtn');
+				}
+			}
 			
 		} );
 }
@@ -28,10 +49,12 @@ selection.setListenerFunction( organisationUnitSelected );
 function showEventForm()
 {	
 	setFieldValue('executionDate', '');
+	var programId = getFieldValue('programId');
 	
-	if( getFieldValue('programId') == '' )
+	hideById('dataEntryFormDiv');
+	
+	if( programId == '' )
 	{
-		hideById('dataEntryFormDiv');
 		return;
 	}
 	
@@ -39,11 +62,12 @@ function showEventForm()
 	
 	jQuery.postJSON( "loadProgramStages.action",
 		{
-			programId: getFieldValue('programId')
+			programId: programId
 		}, 
 		function( json ) 
 		{    
 			setFieldValue( 'programStageId', json.programStages[0].id );
+			setFieldValue( 'selectedProgramId', programId );
 			
 			if( json.programStageInstances.length > 0 )
 			{

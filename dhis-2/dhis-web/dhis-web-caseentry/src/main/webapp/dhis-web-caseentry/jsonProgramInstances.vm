@@ -1,4 +1,4 @@
-#set( $size = $programs.size() )
+#set( $size = $programInstances.size() )
 { 
 	"programInstances": [
 		#foreach( $programInstance in $programInstances )
