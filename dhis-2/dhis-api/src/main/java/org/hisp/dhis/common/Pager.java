@@ -42,6 +42,10 @@ public class Pager
 
     private int pageSize = Pager.DEFAULT_PAGE_SIZE;
 
+    private String nextPage;
+
+    private String prevPage;
+
     public Pager()
     {
 
@@ -131,5 +135,27 @@ public class Pager
     public int getOffset()
     {
         return (page * pageSize) - pageSize;
+    }
+
+    @JsonProperty
+    public String getNextPage()
+    {
+        return nextPage;
+    }
+
+    public void setNextPage( String nextPage )
+    {
+        this.nextPage = nextPage;
+    }
+
+    @JsonProperty
+    public String getPrevPage()
+    {
+        return prevPage;
+    }
+
+    public void setPrevPage( String prevPage )
+    {
+        this.prevPage = prevPage;
     }
 }

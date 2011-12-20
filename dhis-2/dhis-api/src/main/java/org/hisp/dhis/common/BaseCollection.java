@@ -105,6 +105,11 @@ public class BaseCollection implements LinkableObject
         }
     }
 
+    /**
+     * Get current page.
+     *
+     * @return Current page
+     */
     @XmlAttribute
     public Integer getPage()
     {
@@ -116,6 +121,11 @@ public class BaseCollection implements LinkableObject
         return pager.getPage();
     }
 
+    /**
+     * Total number of items.
+     *
+     * @return number of items in collection
+     */
     @XmlAttribute
     public Integer getTotal()
     {
@@ -127,6 +137,11 @@ public class BaseCollection implements LinkableObject
         return pager.getTotal();
     }
 
+    /**
+     * How many items per page.
+     *
+     * @return items per page
+     */
     @XmlAttribute
     public Integer getPageSize()
     {
@@ -138,6 +153,11 @@ public class BaseCollection implements LinkableObject
         return pager.getPageSize();
     }
 
+    /**
+     * How many pages in total.
+     *
+     * @return total page count
+     */
     @XmlAttribute
     public Integer getPageCount()
     {
@@ -147,5 +167,27 @@ public class BaseCollection implements LinkableObject
         }
 
         return pager.getPageCount();
+    }
+
+    @XmlAttribute
+    public String getNextPage()
+    {
+        if ( pager == null )
+        {
+            return null;
+        }
+
+        return pager.getNextPage();
+    }
+
+    @XmlAttribute
+    public String getPrevPage()
+    {
+        if ( pager == null )
+        {
+            return null;
+        }
+
+        return pager.getPrevPage();
     }
 }

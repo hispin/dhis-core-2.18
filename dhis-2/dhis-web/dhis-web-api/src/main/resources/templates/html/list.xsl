@@ -19,6 +19,28 @@
         <table>
           <tr>
             <td>Page <xsl:value-of select="@page" /> / <xsl:value-of select="@pageCount" /></td>
+
+            <xsl:if test="@prevPage">
+              <td>
+                <xsl:element name="a">
+                  <xsl:attribute name="href">
+                    <xsl:value-of select="@prevPage" />
+                  </xsl:attribute>
+                  <xsl:text>Previous Page</xsl:text>
+                </xsl:element>
+              </td>
+            </xsl:if>
+
+            <xsl:if test="@nextPage">
+            <td>
+              <xsl:element name="a">
+                <xsl:attribute name="href">
+                  <xsl:value-of select="@nextPage" />
+                </xsl:attribute>
+                <xsl:text>Next Page</xsl:text>
+              </xsl:element>
+            </td>
+            </xsl:if>
           </tr>
         </table>
       </xsl:when>
