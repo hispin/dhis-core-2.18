@@ -39,20 +39,21 @@ import javax.xml.bind.annotation.XmlRootElement;
  * Serializable configuration object for Sms.
  */
 @XmlRootElement( name = "smsConfiguration" )
-public class SmsConfiguration implements Serializable
+public class SmsConfiguration
+    implements Serializable
 {
 
     private static final long serialVersionUID = 7460688383539123303L;
 
     private String longNumber;
-    
+
     private List<SmsGatewayConfig> gateways;
-    
+
     private Integer pollingInterval;
 
     private boolean enabled = false;
 
-    public SmsConfiguration( )
+    public SmsConfiguration()
     {
     }
 
@@ -70,7 +71,7 @@ public class SmsConfiguration implements Serializable
     {
         this.enabled = enabled;
     }
-    
+
     public String getLongNumber()
     {
         return longNumber;
@@ -81,11 +82,11 @@ public class SmsConfiguration implements Serializable
         this.longNumber = longNumber;
     }
 
-    @XmlElementWrapper(name="gateways")
-    @XmlElements({
-        @XmlElement(name = "bulksms", type = BulkSmsGatewayConfig.class),
-        @XmlElement(name = "clickatell", type = ClickatellGatewayConfig.class),
-        @XmlElement(name = "modem", type = ModemGatewayConfig.class)})
+    @XmlElementWrapper( name = "gateways" )
+    @XmlElements( { @XmlElement( name = "bulksms", type = BulkSmsGatewayConfig.class ),
+        @XmlElement( name = "clickatell", type = ClickatellGatewayConfig.class ),
+        @XmlElement( name = "http", type = GenericHttpGatewayConfig.class ),
+        @XmlElement( name = "modem", type = ModemGatewayConfig.class ) } )
     public List<SmsGatewayConfig> getGateways()
     {
         return gateways;
