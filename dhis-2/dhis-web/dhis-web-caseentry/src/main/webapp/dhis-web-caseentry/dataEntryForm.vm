@@ -10,11 +10,9 @@
 		}
 		#end
 		
-		#if( $program.anonymous == "false" )
-			$('#executionDate').change(function() {
+		$('#executionDate').change(function() {
 				saveExecutionDate( getFieldValue('programStageId'), getFieldValue('executionDate') );
 			});
-		#end
 			
 		entryFormContainerOnReady();
 	});
