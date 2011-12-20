@@ -24,7 +24,11 @@
 					
 					<td style="text-align:center">
 					  <a href="defineProgramAssociationsForm.action?id=$program.id" title="$i18n.getString( 'define_associations' )"><img src="../images/assign.png" alt="$i18n.getString( 'define_associations' )"></a>
+					  #if( $program.anonymous=='false')
 					  <a href="programValidation.action?programId=$program.id" title="$i18n.getString( 'program_validation_management' )"><img src="../images/assign_b.png" alt="$i18n.getString( 'define_program_validation' )"></a>
+					  #else
+						&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+					  #end
 					  <a href="showUpdateProgramForm.action?id=$program.id" title="$i18n.getString( 'edit' )"><img src="../images/edit.png" alt="$i18n.getString( 'edit' )"></a>
 					  <a href="programStage.action?id=$program.id" title="$i18n.getString( 'view_program_stages' )"><img src="../images/add_section.png" alt="$i18n.getString( 'view_stage_management' )"></a>
 					  <a href="patientChartList.action?programId=$program.id" title="$i18n.getString( 'patient_chart_management' )"><img src="../images/add_to_dashboard.png" alt="$i18n.getString( 'remove' )"></a>
