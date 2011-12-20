@@ -240,6 +240,34 @@ public class GenerateMDReportAnalyserResultAction implements Action
         
         // collect dataElementIDs by commaSepareted
         String dataElmentIdsByComma = reportService.getDataelementIds( reportDesignList );
+        
+        /*
+        Map<String, String> tempAggDeMap = new HashMap<String, String>();
+        
+        if( aggData.equalsIgnoreCase( GENERATEAGGDATA ) )
+        {
+            Iterator<OrganisationUnit> tempOrgUnit = orgUnitList.iterator();
+            while ( tempOrgUnit.hasNext() )
+            {
+                OrganisationUnit orgUnit = (OrganisationUnit) tempOrgUnit.next();
+                
+                List<OrganisationUnit> tempOrgUnitWithChildTree = new ArrayList<OrganisationUnit>( organisationUnitService.getOrganisationUnitWithChildren( orgUnit.getId() ) );
+                tempOrgUnitWithChildTree.retainAll( orgUnitGroupMemberList );
+                
+                Iterator<OrganisationUnit> tempCurrIt = tempOrgUnitWithChildTree.iterator();                        
+                while ( tempCurrIt.hasNext() )
+                {
+                    OrganisationUnit tempCurrentOrgUnit = (OrganisationUnit) tempCurrIt.next();
+                    
+                    List<OrganisationUnit> childOrgUnitTree = new ArrayList<OrganisationUnit>( organisationUnitService.getOrganisationUnitWithChildren( tempCurrentOrgUnit.getId() ) );
+                    List<Integer> tempchildOrgUnitTreeIds = new ArrayList<Integer>( getIdentifiers( OrganisationUnit.class, childOrgUnitTree ) );
+                    String tempchildOrgUnitsByComma = getCommaDelimitedString( tempchildOrgUnitTreeIds );
+                    
+                    tempAggDeMap.putAll( reportService.getAggDataFromDataValueTable( tempchildOrgUnitsByComma, dataElmentIdsByComma, periodIdsByComma ) );
+                }
+            }
+        }
+        */
         System.out.println( selOrgUnit.getName()+ " : " + selReportObj.getName()+" : Report Generation Start Time is : " + new Date() );
         
         int orgUnitCount = 0;
@@ -252,6 +280,7 @@ public class GenerateMDReportAnalyserResultAction implements Action
         int rowInc = 0;
         int slno = 1;
         
+        Double[] grandTotal = new Double[ reportDesignList.size() ];
         
         Iterator<OrganisationUnit> it = orgUnitList.iterator();
         while ( it.hasNext() )
@@ -295,6 +324,7 @@ public class GenerateMDReportAnalyserResultAction implements Action
             {
                 OrganisationUnit currentOrgUnit = (OrganisationUnit) currIt.next();
                 
+                //12/12/2011
                 Map<String, String> tempAggDeMap = new HashMap<String, String>();
                 if( aggData.equalsIgnoreCase( GENERATEAGGDATA ) )
                 {
@@ -304,6 +334,7 @@ public class GenerateMDReportAnalyserResultAction implements Action
                     
                     tempAggDeMap.putAll( reportService.getAggDataFromDataValueTable( tempchildOrgUnitsByComma, dataElmentIdsByComma, periodIdsByComma ) );
                 }
+                //12/12/2011
                 sheet0.addCell( new Number( colStart, rowStart+rowInc, slno, getCellFormat1() ) );
                 sheet0.addCell( new Label( colStart+1, rowStart+rowInc, tempOrgUnit.getName(), getCellFormat1() ) );
                 sheet0.addCell( new Label( colStart+2, rowStart+rowInc, currentOrgUnit.getName(), getCellFormat1() ) );
@@ -353,6 +384,15 @@ public class GenerateMDReportAnalyserResultAction implements Action
                                 }
                                 tempSubTotal += tempAggValue;
                                 
+                                if( grandTotal[deCount] != null )
+                                {
+                                    grandTotal[deCount] += tempAggValue;
+                                }
+                                else
+                                {
+                                    grandTotal[deCount] = tempAggValue;
+                                }
+
                                 Double tempST = subTotalMap.get( deCount );
                                 if( tempST != null )
                                 {
@@ -381,6 +421,15 @@ public class GenerateMDReportAnalyserResultAction implements Action
                                     tempAggValue = 0.0;
                                 }
                                 tempSubTotal += tempAggValue;
+                                if( grandTotal[deCount] != null )
+                                {
+                                    grandTotal[deCount] += tempAggValue;
+                                }
+                                else
+                                {
+                                    grandTotal[deCount] = tempAggValue;
+                                }
+
                                 Double tempST = subTotalMap.get( deCount );
                                 if( tempST != null )
                                 {
@@ -407,6 +456,15 @@ public class GenerateMDReportAnalyserResultAction implements Action
                                     tempAggValue = 0.0;
                                 }
                                 tempSubTotal += tempAggValue;
+                                if( grandTotal[deCount] != null )
+                                {
+                                    grandTotal[deCount] += tempAggValue;
+                                }
+                                else
+                                {
+                                    grandTotal[deCount] = tempAggValue;
+                                }
+
                                 Double tempST = subTotalMap.get( deCount );
                                 if( tempST != null )
                                 {
@@ -456,7 +514,7 @@ public class GenerateMDReportAnalyserResultAction implements Action
                                 {
                                        try
                                        {
-                                           sheet0.addCell( new Number( tempColNo, tempRowNo, Integer.parseInt( tempStr ), getCellFormat1() ) );
+                                           sheet0.addCell( new Number( tempColNo, tempRowNo, Double.parseDouble( tempStr ), getCellFormat1() ) );
                                        }
                                        catch ( Exception e )
                                        {
@@ -473,15 +531,30 @@ public class GenerateMDReportAnalyserResultAction implements Action
                                        {
                                            sheet0.addCell( new Label( tempColNo, tempRowNo, " ", getCellFormat2() ) );
                                        }
-                                       //tempOrgUnitCount++;
-                                       //rowInc++;
+                                       
+                                       if( orgUnitCount == orgUnitList.size()-1 )
+                                       {
+                                           tempRowNo++;                                       
+                                           sheet0.addCell( new Label( colStart, tempRowNo, " ", getCellFormat2() ) );
+                                           sheet0.addCell( new Label( colStart+1, tempRowNo, " ", getCellFormat2() ) );
+                                           sheet0.addCell( new Label( colStart+2, tempRowNo, "GRAND TOTAL", getCellFormat2() ) );
+
+                                           try
+                                           {                                           
+                                               sheet0.addCell( new Number( tempColNo, tempRowNo, grandTotal[deCount] , getCellFormat2() ) );
+                                           }
+                                           catch ( Exception e )
+                                           {
+                                               sheet0.addCell( new Label( tempColNo, tempRowNo, " ", getCellFormat2() ) );
+                                           }
+                                       }
                                }
                             }                                
                             else
                             {
                                     try
                                     {
-                                        sheet0.addCell( new Number( tempColNo, tempRowNo, Integer.parseInt( tempStr ), getCellFormat1() ) );
+                                        sheet0.addCell( new Number( tempColNo, tempRowNo, Double.parseDouble( tempStr ), getCellFormat1() ) );
                                     }
                                     catch ( Exception e )
                                     {
@@ -677,4 +750,6 @@ public class GenerateMDReportAnalyserResultAction implements Action
             throw new RuntimeException( "Illegal DataElement id", ex );
         }
     }
+
+    
 }
