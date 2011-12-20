@@ -8,13 +8,6 @@
 </ul>
 </p>
 
-<h2>Experimental</h2>
-<p>
-<ul>
-    <li><a href="selectOrgUnitSingleEvents.action">$i18n.getString( "single_events" )</a></li>
-</ul>
-</p>
-
 <div id="footer">
 <h2>$i18n.getString( "navigate_to" )</h2>
 <ul>
