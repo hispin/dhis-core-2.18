@@ -25,7 +25,6 @@ public class SmsMessageSenderTest
     @Test
     public void testMessageSender()
     {
-        OutboundSms sms = getSms();
         final User user = getUser();
         Map<User, Serializable> settings = getUserSettings( user );
 
@@ -43,13 +42,13 @@ public class SmsMessageSenderTest
 
         verify( outboundSmsService ).isEnabled();
         verify( userService ).getUserSettings( KEY_MESSAGE_SMS_NOTIFICATION, false );
-        verify( outboundSmsService ).sendMessage( refEq(sms) );
+        verify( outboundSmsService ).sendMessage( refEq(getSms()) );
     }
 
     private OutboundSms getSms()
     {
         OutboundSms sms = new OutboundSms();
-        sms.setMessage( "From null, Hello: hello" );
+        sms.setMessage( "From null - Hello: hello" );
         sms.setRecipients( new HashSet<String>() {{ add("222222");}} );
         return sms;
     }
