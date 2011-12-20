@@ -34,7 +34,7 @@
     </table>
   </xsl:template>
   
-  <xsl:template match="d:categories">
+  <xsl:template match="d:categories" mode="short">
     <xsl:if test="count(child::*) > 0">
       <h3>Categories</h3>
       <table border="1" class="categories">

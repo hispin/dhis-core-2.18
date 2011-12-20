@@ -69,7 +69,7 @@
     </table>
   </xsl:template>
 
-  <xsl:template match="d:dataSets">
+  <xsl:template match="d:dataSets" mode="short">
     <xsl:if test="count(child::*) > 0">
       <h3>DataSets</h3>
       <table class="dataSets">
