@@ -118,6 +118,8 @@ public class MultiDataEntrySelectAction
         if ( organisationUnit != null )
         {
             programs = programService.getPrograms( organisationUnit );
+            Collection<Program> anonymousPrograms = programService.getPrograms( true, true, organisationUnit );
+            programs.removeAll( anonymousPrograms );
         }
         
         return SUCCESS;
