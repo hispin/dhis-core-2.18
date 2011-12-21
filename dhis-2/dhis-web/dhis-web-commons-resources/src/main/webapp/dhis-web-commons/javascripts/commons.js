@@ -222,13 +222,13 @@ function unCheckALL( jQuerySelectorString )
 function enable( elementId )
 {
 	var hasDatePicker = jQuery("#" + elementId ).data("datepicker");
-	if( hasDatePicker == undefined){
+	if( hasDatePicker == undefined)
+	{
 		jQuery( "#" + elementId ).removeAttr( "disabled" );
 	}
 	else
 	{
 		jQuery('#' + elementId ).datepicker( "enable" );
-		jQuery( "#" + elementId ).attr("disabled", true );
 	} 
 }
 
@@ -245,7 +245,8 @@ function enableGroup( selectorJQueryString )
 function disable( elementId )
 {
 	var hasDatePicker = jQuery("#" + elementId ).data("datepicker");
-	if( hasDatePicker == undefined){
+	if( hasDatePicker == undefined)
+	{
 		jQuery( "#" + elementId ).attr("disabled", true );
 	}
 	else
@@ -855,7 +856,7 @@ function datePicker( id )
 		constrainInput: true,
         yearRange: '-100:+100',
 	});
-	jQuery( "#" + id ).attr("disabled", true );
+	jQuery( "#" + id ).attr("readonly", true );
 	s = jQuery("#" + id );		
 	if( s.val()=='' ) s.val( getCurrentDate() );		
 }
@@ -875,7 +876,7 @@ function datePicker( id, today )
 		constrainInput: true,
         yearRange: '-100:+100'
 	});
-	jQuery( "#" + id ).attr("disabled", true );
+	jQuery( "#" + id ).attr("readonly", true );
 	
 	if( today == undefined ) today = false;
 	
@@ -900,7 +901,7 @@ function datePickerjQuery( jQueryString )
 		constrainInput: true,
         yearRange: '-100:+100'
 	});		
-	jQuery( "#" + id ).attr("disabled", true );
+	jQuery( "#" + id ).attr("readonly", true );
 }
 
 /**
@@ -924,7 +925,7 @@ function datePickerValid( id, today )
 		constrainInput: true,
         yearRange: '-100:+100'
 	});
-	jQuery( "#" + id ).attr("disabled", true );
+	jQuery( "#" + id ).attr("readonly", true );
 	
 	if ( today == undefined )
 	{
