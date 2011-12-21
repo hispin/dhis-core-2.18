@@ -105,7 +105,7 @@ public class Resources extends BaseCollection
 
         MediaType[] defaultMediaTypes = new MediaType[]{
             MediaType.TEXT_HTML, MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON,
-            new MediaType( "application", "javascript" ), new MediaType( "application", "pdf" )
+            new MediaType( "application", "javascript" ) /* , new MediaType( "application", "pdf" ) */
         };
 
         List<RequestMethod> requestMethods = Arrays.asList( defaultRequestMethods );

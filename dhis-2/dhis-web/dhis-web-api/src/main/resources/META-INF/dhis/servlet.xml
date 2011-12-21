@@ -22,7 +22,7 @@
         <entry key="json" value="application/json" />
         <entry key="jsonp" value="application/javascript" />
         <entry key="xml" value="application/xml" />
-        <entry key="pdf" value="application/pdf" />
+        <!--<entry key="pdf" value="application/pdf" />-->
         <entry key="html" value="text/html" />
         <entry key="png" value="image/png" />
       </map>
@@ -48,11 +48,13 @@
           <property name="viewClass" value="org.hisp.dhis.api.view.XsltHtmlView" />
         </bean>
 
+<!--
         <bean name="xslFoPdfViewResolver" class="org.springframework.web.servlet.view.UrlBasedViewResolver">
           <property name="prefix" value="/templates/pdf/" />
           <property name="suffix" value=".xsl" />
           <property name="viewClass" value="org.hisp.dhis.api.view.XslFoPdfView" />
         </bean>
+-->
       </list>
     </property>
 
