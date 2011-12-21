@@ -15,9 +15,8 @@ function organisationUnitSelected( orgUnits )
 		if( json.programs.length == 0)
 		{
 			disable('programId');
-			disable('startDate');
-			disable('endDate');
-			disable('endDate');
+			disableDataPicker('startDate');
+			disableDataPicker('endDate');
 			disable('generateBtn');
 		}
 		else
@@ -29,9 +28,8 @@ function organisationUnitSelected( orgUnits )
 				addOptionById( 'programId', json.programs[i].id, json.programs[i].name );
 			} 
 			enable('programId');
-			enable('startDate');
-			enable('endDate');
-			enable('endDate');
+			enableDataPicker('startDate');
+			enableDataPicker('endDate');
 			enable('generateBtn');
 		}
 		

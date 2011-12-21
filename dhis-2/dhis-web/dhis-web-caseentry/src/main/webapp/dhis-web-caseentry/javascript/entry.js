@@ -96,7 +96,7 @@ function loadDataEntry()
 			var completed = jQuery('#entryFormContainer input[id=completed]').val();
 			var irregular = jQuery('#entryFormContainer input[id=irregular]').val();
 			
-			enable('executionDate');
+			enableDataPicker('dataRecordingSelectDiv input[id=executionDate]');
 			if( executionDate != '' && completed == 'false' )
 			{
 				enable('validationBtn');
@@ -106,7 +106,7 @@ function loadDataEntry()
 			{
 				disable('validationBtn');
 				disable('completeBtn');
-				disable('executionDate');
+				disableDataPicker('dataRecordingSelectDiv input[id=executionDate]');
 			}
 			
 			if( completed == 'true' && irregular == 'true' )
@@ -674,7 +674,7 @@ function ExecutionDateSaver( programStageId_, executionDate_, resultColor_ )
 
     function markValue( color )
     {
-        var element = document.getElementById( 'executionDate' );
+        var element = byId( 'executionDate' );
            
         element.style.backgroundColor = color;
     }
@@ -772,7 +772,7 @@ function doComplete()
 					
 					disable('validationBtn');
 					disable('completeBtn');
-					disable('executionDate');
+					disableDataPicker('executionDate');
 					var irregular = jQuery('#entryFormContainer [name=irregular]').val();
 					if( irregular == 'true')
 					{
