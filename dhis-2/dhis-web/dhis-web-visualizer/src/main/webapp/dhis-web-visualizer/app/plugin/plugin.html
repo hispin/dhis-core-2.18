@@ -11,16 +11,18 @@
 	
 	<h1>My chart 1</h1>
 	<div id="chart1"></div>
+    
+    <h1>My chart 2</h1>
+	<div id="chart2"></div>
 	
 	<script>
 		Ext.onReady( function() {
-			var url = 'http://localhost:8180/dhis/dhis-web-visualizer/app';
+			var url = 'http://localhost:8180/dhis/';
             
 /*
 CONFIG              TYPE            DEFAULT             DESCRIPTION
     
-type                string          'column'            (Optional) Chart types: 'column', 'bar', 'line', 'area', 'pie'
-stacked             boolean         false               (Optional) Works for 'column' and 'bar'. Otherwise ignored.
+type                string          'column'            (Optional) Chart types: 'column', 'stackedcolumn', 'bar', 'stackedbar', 'line', 'area', 'pie'
 indicators          [integer]                           (Required*) Indicator ids. Required if no data elements are provided.
 dataelements        [integer]                           (Required*) Data element ids. Required if no indicators are provided.
 periods             [string]        'monthsThisYear'    (Optional) Relative period names.
@@ -33,6 +35,9 @@ width               integer         <el width>          (Optional) Chart width. 
 height              integer         <el height>         (Optional) Chart height. Default is the element height.
 legendPosition      string          'top'               (Optional) Positions: 'top', 'right', 'bottom' or 'left'
 url                 string                              (Required) The web service url.
+uid                 string                              (Optional) The uid of a store chart.
+
+Note: If a uid is provided, only 'el' and 'url' are required.
 */
 			
 			DHIS.getChart({
@@ -41,6 +46,12 @@ url                 string                              (Required) The web servi
 				el: 'chart1',
 				url: url
 			});
+            
+            DHIS.getChart({
+                uid: 'En9nUMN7WjT',
+                el: 'chart2',
+                url: url
+            });
 	
 		});
 	</script>

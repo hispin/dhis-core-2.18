@@ -2,10 +2,8 @@ DHIS = {};
 DHIS.conf = {
     finals: {
         ajax: {
-            url_visualizer: '../',
-            url_commons: '../../dhis-web-commons-ajax-json/',
-            url_portal: '../../dhis-web-portal/',
-            url_data: 'getAggregatedValuesPlugin'
+            data_get: 'dhis-web-visualizer/app/getAggregatedValuesPlugin.action',
+            favorite_get: 'api/charts/'
         },        
         dimension: {
             data: {
@@ -35,9 +33,9 @@ DHIS.conf = {
             category: 'category',
             filter: 'filter',
             column: 'column',
-            column_stacked: 'column_stacked',
+            stackedcolumn: 'stackedcolumn',
             bar: 'bar',
-            bar_stacked: 'bar_stacked',
+            stackedbar: 'stackedbar',
             line: 'line',
             area: 'area',
             pie: 'pie'
@@ -49,8 +47,8 @@ Ext.onReady( function() {
 	
     DHIS.initialize = function() {
         DHIS.store.column = DHIS.store.defaultChartStore;
-        DHIS.store.column_stacked = DHIS.store.defaultChartStore;
-        DHIS.store.bar_stacked = DHIS.store.bar;
+        DHIS.store.stackedcolumn = DHIS.store.defaultChartStore;
+        DHIS.store.stackedbar = DHIS.store.bar;
         DHIS.store.line = DHIS.store.defaultChartStore;
         DHIS.store.area = DHIS.store.defaultChartStore;
         DHIS.store.pie = DHIS.store.defaultChartStore;
@@ -62,6 +60,24 @@ Ext.onReady( function() {
     
     DHIS.util = {
         dimension: {
+            indicator: {
+                getIdsFromObjects: function(indicators) {
+                    var a = []
+                    for (var i = 0; i < indicators.length; i++) {
+                        a.push(indicators[i].internalId);
+                    }
+                    return a;
+                }
+            },
+            dataelement: {
+                getIdsFromObjects: function(dataelements) {
+                    var a = []
+                    for (var i = 0; i < dataelements.length; i++) {
+                        a.push(dataelements[i].internalId);
+                    }
+                    return a;
+                }
+            },
             data: {
                 getUrl: function(isFilter) {
                     var a = [];
@@ -81,6 +97,15 @@ Ext.onReady( function() {
 						a.push(r + '=true')
                     });
                     return (isFilter && a.length > 1) ? a.slice(0,1) : a;
+                },
+                getRelativesFromObject: function(obj) {
+                    var a = [];
+                    for (var k in obj) {
+                        if (obj[k]) {
+                            a.push(k);
+                        }
+                    }
+                    return a;
                 }
             },
             organisationunit: {
@@ -90,6 +115,13 @@ Ext.onReady( function() {
 						a.push('organisationUnitIds=' + r)
                     });
                     return (isFilter && a.length > 1) ? a.slice(0,1) : a;
+                },
+                getIdsFromObjects: function(organisationunits) {
+                    var a = []
+                    for (var i = 0; i < organisationunits.length; i++) {
+                        a.push(organisationunits[i].internalId);
+                    }
+                    return a;
                 }
             }
         },
@@ -351,6 +383,37 @@ Ext.onReady( function() {
             DHIS.state.state = project.state;
             
 			DHIS.value.getValues(project);
+        },
+        setState: function(conf) {
+            if (conf.uid) {
+                Ext.Ajax.request({
+                    url: conf.url + DHIS.conf.finals.ajax.favorite_get + conf.uid + '.json',
+                    scope: this,
+                    success: function(r) {
+                        if (!r.responseText) {
+                            alert('Invalid uid');
+                            return;
+                        }
+                        var f = Ext.JSON.decode(r.responseText);
+                        conf.type = f.type.toLowerCase();
+                        conf.periods = DHIS.util.dimension.period.getRelativesFromObject(f.relativePeriods);
+                        conf.organisationunits = DHIS.util.dimension.organisationunit.getIdsFromObjects(f.organisationUnits);
+                        conf.series = f.series.toLowerCase();
+                        conf.category = f.category.toLowerCase();
+                        conf.filter = f.filter.toLowerCase();
+                        conf.legendPosition = conf.legendPosition || false;
+                        
+                        if (f.indicators) {
+                            conf.indicators = DHIS.util.dimension.indicator.getIdsFromObjects(f.indicators);
+                        }
+                        if (f.dataelements) {
+                            conf.dataelements = DHIS.util.dimension.dataelement.getIdsFromObjects(f.dataelements);
+                        }
+                        
+                        this.getState(conf);                        
+                    }
+                });
+            }
         }
     };
     
@@ -361,7 +424,7 @@ Ext.onReady( function() {
             params = params.concat(DHIS.util.dimension[project.state.category.dimension].getUrl());
             params = params.concat(DHIS.util.dimension[project.state.filter.dimension].getUrl(true));
                         
-            var baseUrl = DHIS.util.string.extendUrl(project.state.conf.url) + DHIS.conf.finals.ajax.url_data + '.action';
+            var baseUrl = DHIS.util.string.extendUrl(project.state.conf.url) + DHIS.conf.finals.ajax.data_get;
             Ext.Array.each(params, function(item) {
                 baseUrl = Ext.String.urlAppend(baseUrl, item);
             });
@@ -439,7 +502,7 @@ Ext.onReady( function() {
             this[project.state.type](project);
             DHIS.exe.execute();
         },
-        column: function(project) {
+        column: function(project, isStacked) {
             project.chart = Ext.create('Ext.chart.Chart', {
 				renderTo: project.state.conf.el,
                 width: project.state.conf.width || this.el.getWidth(),
@@ -472,7 +535,7 @@ Ext.onReady( function() {
                         axis: 'left',
                         xField: project.store.bottom,
                         yField: project.store.left,
-                        stacked: project.state.conf.stacked,
+                        stacked: isStacked,
                         style: {
                             opacity: 0.8
                         }
@@ -482,7 +545,10 @@ Ext.onReady( function() {
             
             DHIS.projects.push(project);
         },
-        bar: function(project) {
+        stackedcolumn: function(project) {
+            this.column(project, true);
+        },
+        bar: function(project, isStacked) {
             project.chart = Ext.create('Ext.chart.Chart', {
 				renderTo: project.state.conf.el,
                 width: project.state.conf.width || this.el.getWidth(),
@@ -515,7 +581,7 @@ Ext.onReady( function() {
                         axis: 'bottom',
                         xField: project.store.left,
                         yField: project.store.bottom,
-                        stacked: project.state.conf.stacked,
+                        stacked: isStacked,
                         style: {
                             opacity: 0.8
                         }
@@ -524,6 +590,9 @@ Ext.onReady( function() {
             });
             
             DHIS.projects.push(project);
+        },
+        stackedbar: function(project) {
+            this.bar(project, true);
         },
         line: function(project) {
             project.chart = Ext.create('Ext.chart.Chart', {
@@ -634,9 +703,8 @@ Ext.onReady( function() {
     DHIS.exe = {
         allow: true,
         queue: [],
-        addToQueue: function(obj) {
-            DHIS.exe.queue.push(obj);
-            
+        addToQueue: function(conf) {
+            DHIS.exe.queue.push(conf);            
             if (DHIS.exe.allow) {
                 DHIS.exe.allow = false;
                 DHIS.exe.execute();
@@ -644,7 +712,13 @@ Ext.onReady( function() {
         },
         execute: function() {
             if (this.queue.length) {
-                DHIS.state.getState(this.queue.shift());
+                var conf = this.queue.shift();
+                if (conf.uid) {
+                    DHIS.state.setState(conf);
+                }
+                else {
+                    DHIS.state.getState(conf);
+                }
             }
 		}
     };

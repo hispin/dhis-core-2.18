@@ -999,7 +999,7 @@ Ext.onReady( function() {
                     success: function(r) {
                         if (!r.responseText) {
                             DV.mask.hide();
-                            alert("Invalid uid parameter");
+                            alert('Invalid uid');
                             return;
                         }
                         var f = Ext.JSON.decode(r.responseText),
