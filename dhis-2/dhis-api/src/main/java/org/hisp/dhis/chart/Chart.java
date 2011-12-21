@@ -76,17 +76,21 @@ public class Chart
     public static final String TYPE_LINE3D = "line3d";
     public static final String TYPE_PIE3D = "pie3d";
 
-    public static final String TYPE_COLUMN = "column";
-    public static final String TYPE_STACKED_COLUMN = "stackedColumn";
-    public static final String TYPE_BAR = "bar";
-    public static final String TYPE_STACKED_BAR = "stackedBar";
-    public static final String TYPE_LINE = "line";
-    public static final String TYPE_AREA = "area";
-    public static final String TYPE_PIE = "pie";
+    public static final String SIZE_NORMAL = "normal";
+    public static final String SIZE_WIDE = "wide";
+    public static final String SIZE_TALL = "tall";
 
-    public static final String DIMENSION_DATA = "data";
-    public static final String DIMENSION_PERIOD = "period";
-    public static final String DIMENSION_ORGANISATIONUNIT = "organisationUnit";
+    public static final String TYPE_COLUMN = "COLUMN";
+    public static final String TYPE_STACKED_COLUMN = "STACKEDCOLUMN";
+    public static final String TYPE_BAR = "BAR";
+    public static final String TYPE_STACKED_BAR = "STACKEDBAR";
+    public static final String TYPE_LINE = "LINE";
+    public static final String TYPE_AREA = "AREA";
+    public static final String TYPE_PIE = "PIE";
+
+    public static final String DIMENSION_DATA = "DATA";
+    public static final String DIMENSION_PERIOD = "PERIOD";
+    public static final String DIMENSION_ORGANISATIONUNIT = "ORGANISATIONUNIT";
 
     private String domainAxixLabel;
 
