@@ -31,6 +31,7 @@ import static org.hisp.dhis.chart.Chart.TYPE_BAR;
 import static org.hisp.dhis.chart.Chart.TYPE_LINE;
 import static org.hisp.dhis.chart.Chart.TYPE_PIE;
 import static org.hisp.dhis.chart.Chart.TYPE_STACKED_BAR;
+import static org.hisp.dhis.chart.Chart.*;
 import static org.hisp.dhis.reporttable.ReportTable.getIdentifier;
 import static org.hisp.dhis.system.util.ConversionUtils.getArray;
 
@@ -402,7 +403,8 @@ public class DefaultChartService
                         metaDataSet.addValue( function.value( periodCount ), "Regression value", period.getName() );
                     }
                 }
-            } catch ( MathException ex )
+            }
+            catch ( MathException ex )
             {
                 throw new RuntimeException( "Failed to interpolate", ex );
             }
@@ -592,11 +594,11 @@ public class DefaultChartService
 
         CategoryDataset[] dataSets = getCategoryDataSet( chart );
 
-        if ( chart.isType( TYPE_LINE ) )
+        if ( chart.isType( TYPE_LINE ) || chart.isType( TYPE_AREA ) )
         {
             plot = new CategoryPlot( dataSets[0], new CategoryAxis(), new NumberAxis(), lineRenderer );
         }
-        else if ( chart.isType( TYPE_BAR ) )
+        else if ( chart.isType( TYPE_BAR ) || chart.isType( TYPE_COLUMN ) )
         {
             plot = new CategoryPlot( dataSets[0], new CategoryAxis(), new NumberAxis(), barRenderer );
         }
@@ -604,7 +606,7 @@ public class DefaultChartService
         {
             return getMultiplePieChart( chart, dataSets );
         }
-        else if ( chart.isType( TYPE_STACKED_BAR ) )
+        else if ( chart.isType( TYPE_STACKED_BAR ) || chart.isType( TYPE_STACKED_COLUMN ) )
         {
             return getStackedBarChart( chart, dataSets[0] );
         }
@@ -753,7 +755,7 @@ public class DefaultChartService
                 
                 Double value = valueMap.get( key );
                 
-                regularDataSet.addValue( value, series.getName(), category.getName() );
+                regularDataSet.addValue( value, series.getShortName(), category.getShortName() );
                 
                 if ( chart.isRegression() && MathUtils.isEqual( value, MathUtils.ZERO ) )
                 {
@@ -776,7 +778,7 @@ public class DefaultChartService
 
                     if ( !Double.isNaN( value ) )
                     {
-                        regressionDataSet.addValue( value, TREND_PREFIX + series.getName(), category.getName() );
+                        regressionDataSet.addValue( value, TREND_PREFIX + series.getShortName(), category.getShortName() );
 
                     }
                 }
