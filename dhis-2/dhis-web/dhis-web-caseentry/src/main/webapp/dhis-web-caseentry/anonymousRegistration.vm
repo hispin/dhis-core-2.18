@@ -27,8 +27,8 @@
 			<td><input type="text" id="executionDate" name="executionDate" style="width:300px" value="$!format.formatDate( $programStageInstance.executionDate )" >
 				<script type="text/javascript">
 				   datePickerValid( 'executionDate', false );
-				   jQuery('#executionDate').datepicker( "disable" );
 				</script>
+			</td>
 		</tr>
 	</table>
 </div>
