@@ -685,39 +685,11 @@ function ExecutionDateSaver( programStageId_, executionDate_, resultColor_ )
 //
 //-----------------------------------------------------------------
 
-
 function initCustomCheckboxes()
 {
     jQuery('input[type=checkbox][name="providedByAnotherFacility"]').prettyCheckboxes();
 }
 
-DRAG_DIV = {
-    init : function()
-    {
-        var dragDiv = jQuery("#dragDiv");
-        dragDiv.show();
-        var left = screen.width - 500 ;
-        var top = Math.round(jQuery("#entryFormContainer").position().top )  ;
-        dragDiv.css({
-            'left': left+'px',
-            'top': top+'px'
-        });
-        dragDiv.draggable();
-    },
-		
-    showData : function(data)
-    {
-        jQuery("#dataelementName").text(data.deName);
-		jQuery("#orgUnitNameField").text(data.provided);
-    },
-		
-    resetData : function()
-    {
-        jQuery("#orgUnitNameField").text("");
-        jQuery("#programStageName").text("");
-        jQuery("#dataelementName").text("");
-    }
-};
 function toggleContentForReportDate(show)
 {
     if( show ){

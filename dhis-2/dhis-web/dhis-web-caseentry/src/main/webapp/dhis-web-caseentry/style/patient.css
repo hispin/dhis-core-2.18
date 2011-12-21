@@ -21,7 +21,6 @@ table
   font-size: 12px; 
 
 }
-#dragDiv{  display:none;border : 1px solid red;  background: yellow; color:black; z-index: 9999999; position: fixed; }
 
 .focusCell{background-color: #AFCCFF}
 .errorCell{background-color: #FFCFCF}

@@ -29,18 +29,10 @@
 <div id='entryForm' style="display: #if($!programStageInstance.executionDate) block #else none #end;">
 	#if( $customDataEntryFormCode )
 		<div id="customEntryScreenContainer">
-			<div id="dragDiv">
-				<table id="listInfo">
-					<tr><td style="text-align:left" class="bold">$i18n.getString("org_unit_name") :</td> <td id="orgUnitNameField" style="text-align:right"></td></tr>
-					<tr><td style="text-align:left" class="bold">$i18n.getString("program_stage_name") :</td> <td  id="programStageName" style="text-align:right">$programStageInstance.programStage.name</td></tr>
-					<tr><td style="text-align:left" class="bold">$i18n.getString("datae_element_name") :</td> <td id="dataelementName" style="text-align:right"></td></tr>
-				</table>
-			</div>
 		   $customDataEntryFormCode
 
 			<script type="text/javascript"> 
 				initCustomCheckboxes();
-				DRAG_DIV.init();
 			</script>
 		</div>
 	#else
