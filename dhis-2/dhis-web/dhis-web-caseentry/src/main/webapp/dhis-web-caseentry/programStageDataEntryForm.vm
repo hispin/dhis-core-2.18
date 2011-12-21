@@ -4,14 +4,37 @@ jQuery("#entryFormContainer").ready(function(){
 });
 </script>
 
-<table class="mainPageTable"> 
+<table> 
     <tr>            
         <td>
-            <span class='bold'>$i18n.getString( "full_name" ):</span>$encoder.htmlEncode( $patient.getFullName() )<br>
-            <span class='bold'>$i18n.getString( "gender" ):</span>$i18n.getString( $patient.gender )<br>
-            <span class='bold'>$i18n.getString( "date_of_birth" ):</span>$format.formatDate( $patient.birthDate )<br>
-            <span class='bold'>$i18n.getString( "age" ):</span>$encoder.htmlEncode( $patient.getAge() )
+            <span class='bold'>$i18n.getString( "full_name" ):</span>
+		</td>
+		<td>
+			$encoder.htmlEncode( $patient.getFullName() )
+		<td>
+	</tr>
+	<tr>
+		<td>
+            <span class='bold'>$i18n.getString( "gender" ):</span>
+		</td>
+		<td>
+			$i18n.getString( $patient.gender )
+		</td>
+	</tr>
+	<tr>
+		<td>
+            <span class='bold'>$i18n.getString( "date_of_birth" ):</span>
+		</td>
+		<td>
+			$format.formatDate( $patient.birthDate )
+		</td>
+	<tr>
+		<td>
+            <span class='bold'>$i18n.getString( "age" ):</span>
         </td>
+		<td>
+			$encoder.htmlEncode( $patient.getAge() )
+		</td>
 	</tr>
 </table>
 
@@ -46,7 +69,7 @@ jQuery("#entryFormContainer").ready(function(){
     <tr>
 		<td>&nbsp;</td>
 		<td><input type="button" id="completeBtn" value="$i18n.getString('complete')" onClick="doComplete()" #if($programStageInstance.executionDate) #else disabled #end>
-			<input type="button" id="validationBtn" value="$i18n.getString('validation')" onClick="javascript: runValidation();" style="width:12em " #if($programStageInstance.executionDate) #else disabled #end>
+			<input type="button" id="validationBtn" value="$i18n.getString('run_validation')" onClick="javascript: runValidation();" style="width:12em " #if($programStageInstance.executionDate) #else disabled #end>
 		</td>
 		<td></td>
 		<td></td>

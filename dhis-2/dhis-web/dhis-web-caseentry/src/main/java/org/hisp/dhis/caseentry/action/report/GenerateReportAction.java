@@ -51,10 +51,6 @@ import org.hisp.dhis.program.ProgramStageInstanceService;
 public class GenerateReportAction
     extends ActionPagingSupport<ProgramInstance>
 {
-    public static final String RED = "#ff0000";
-
-    public static final String YELLOW = "#ffff00";
-
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
