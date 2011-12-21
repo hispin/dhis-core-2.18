@@ -14,7 +14,7 @@
 		<tr>
 			<td>$i18n.getString('program')</td>
 			<td>
-				<select id='programId' name='programId' style='width:300px' onchange='showEventForm();'>
+				<select id='programId' name='programId' style='width:300px' onchange='loadEventForm();'>
 					<option value="">[ $i18n.getString('please_select') ]</option>
 					#foreach( $programInstance in $programInstances)
 						<option value="$programInstance.program.id" singleevent='$programInstance.program.singleEvent' programInstanceId='$programInstance.id'>$programInstance.program.name</option>
@@ -24,9 +24,10 @@
 		</tr>
 		<tr>
 			<td><label for="executionDate">$i18n.getString( "report_date" ) </label></td>
-			<td><input type="text" id="executionDate" name="executionDate" disabled style="width:300px" value="$!format.formatDate( $programStageInstance.executionDate )" >
+			<td><input type="text" id="executionDate" name="executionDate" style="width:300px" value="$!format.formatDate( $programStageInstance.executionDate )" >
 				<script type="text/javascript">
 				   datePickerValid( 'executionDate', false );
+				   jQuery('#executionDate').datepicker( "disable" );
 				</script>
 		</tr>
 	</table>

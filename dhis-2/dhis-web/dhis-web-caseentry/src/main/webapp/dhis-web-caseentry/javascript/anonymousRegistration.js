@@ -2,7 +2,7 @@
 function organisationUnitSelected( orgUnits )
 {
 	hideById('dataEntryFormDiv');
-	disable('executionDate');
+	disableDataPicker( 'executionDate' );
 	setFieldValue('executionDate', '');
 	$('#executionDate').unbind('change');
 	
@@ -46,13 +46,13 @@ function organisationUnitSelected( orgUnits )
 selection.setListenerFunction( organisationUnitSelected );
 
 
-function showEventForm()
+function loadEventForm()
 {	
-	setFieldValue('executionDate', '');
-	var programId = getFieldValue('programId');
-	
 	hideById('dataEntryFormDiv');
+	setFieldValue('executionDate', '');
+	disableDataPicker( 'executionDate' );
 	
+	var programId = getFieldValue('programId');
 	if( programId == '' )
 	{
 		return;
@@ -75,7 +75,8 @@ function showEventForm()
 			}
 			else
 			{
-				enable('executionDate');
+				
+				enableDataPicker( 'executionDate' );
 				enable('createEventBtn');
 				disable('deleteCurrentEventBtn');
 				disable('completeBtn');
@@ -100,23 +101,18 @@ function loadEventRegistrationForm()
 			var programStageInstanceId = getFieldValue('programStageInstanceId');
 			if( programStageInstanceId == '' )
 			{
-				enable('executionDate');
 				enable('createEventBtn');
 				disable('deleteCurrentEventBtn');
 				disable('completeBtn');
 				disable('validationBtn');
-				
-				//$('#executionDate').change(function() {
-				//	saveExecutionDate( getFieldValue('programStageId'), getFieldValue('executionDate') );
-				//});
-				
+				enableDataPicker( 'executionDate' );
 				$('#executionDate').bind('change');
 			}
 			else
 			{
 				if( getFieldValue('completed') == 'true')
 				{
-					disable('executionDate');
+					disableDataPicker( 'executionDate' );
 					enable('createEventBtn');
 					enable('deleteCurrentEventBtn');
 					disable('completeBtn');
@@ -124,16 +120,12 @@ function loadEventRegistrationForm()
 				} 
 				else
 				{
-					enable('executionDate');
 					disable('createEventBtn');
 					enable('deleteCurrentEventBtn');
 					enable('completeBtn');
 					enable('validationBtn');
-					
-					//$('#executionDate').change(function() {
-					//	saveExecutionDate( getFieldValue('programStageId'), getFieldValue('executionDate') );
-					//});
-					$('#executionDate').bind('change');
+					enableDataPicker( 'executionDate' );
+					jQuery('#executionDate').bind('change');
 				}
 			}
 			
@@ -192,7 +184,7 @@ function deleteCurrentEvent()
 					enable('createEventBtn');
 					
 					setFieldValue('executionDate','');
-					enable('executionDate');
+					enableDataPicker( 'executionDate' );
 					$('#executionDate').unbind('change');
 					
 					selection.enable();

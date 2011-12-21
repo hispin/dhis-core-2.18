@@ -838,8 +838,9 @@ function datePicker( id )
 		buttonImage: '../images/calendar.png',
 		buttonImageOnly: true,
 		constrainInput: true,
-        yearRange: '-100:+100'
+        yearRange: '-100:+100',
 	});
+	disable( id );
 	s = jQuery("#" + id );		
 	if( s.val()=='' ) s.val( getCurrentDate() );		
 }
@@ -859,6 +860,7 @@ function datePicker( id, today )
 		constrainInput: true,
         yearRange: '-100:+100'
 	});
+	disable( id );
 	
 	if( today == undefined ) today = false;
 	
@@ -883,8 +885,19 @@ function datePickerjQuery( jQueryString )
 		constrainInput: true,
         yearRange: '-100:+100'
 	});		
+	disable( id );
 }
 
+function enableDataPicker( id )
+{
+	jQuery('#' + id ).datepicker( "enable" );
+	disable( id );
+}
+
+function disableDataPicker( id )
+{
+	jQuery('#' + id ).datepicker( "disable" );
+}
 /**
  * Create jQuery datepicker for input text with id * *
  * 
@@ -906,6 +919,7 @@ function datePickerValid( id, today )
 		constrainInput: true,
         yearRange: '-100:+100'
 	});
+	disable( id );
 	
 	if ( today == undefined )
 	{
@@ -958,6 +972,8 @@ function datePickerInRange ( startdate, enddate, setCurrentStartDate, setCurrent
 			dates.not(this).datepicker("option", option, date);
 		}
 	});
+	disable( startdate );
+	disable( enddate );
 
     $("#ui-datepicker-div").hide();
 }
