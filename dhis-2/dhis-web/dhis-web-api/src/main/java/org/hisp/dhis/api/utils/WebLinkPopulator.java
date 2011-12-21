@@ -59,6 +59,8 @@ import org.hisp.dhis.reporttable.ReportTables;
 import org.hisp.dhis.sqlview.SqlView;
 import org.hisp.dhis.sqlview.SqlViews;
 import org.hisp.dhis.user.User;
+import org.hisp.dhis.user.UserGroup;
+import org.hisp.dhis.user.UserGroups;
 import org.hisp.dhis.user.Users;
 import org.hisp.dhis.validation.ValidationRule;
 import org.hisp.dhis.validation.ValidationRuleGroup;
@@ -314,6 +316,14 @@ public class WebLinkPopulator
         {
             populateUser( (User) source, true );
         }
+        else if ( source instanceof UserGroups )
+        {
+            populateUserGroups( (UserGroups) source, true );
+        }
+        else if ( source instanceof UserGroup )
+        {
+            populateUserGroup( (UserGroup) source, true );
+        }
         else if ( source instanceof ReportTables )
         {
             populateReportTables( (ReportTables) source, true );
@@ -431,6 +441,29 @@ public class WebLinkPopulator
         if ( root )
         {
             handleIdentifiableObjectCollection( user.getOrganisationUnits() );
+        }
+    }
+
+    private void populateUserGroups( UserGroups userGroups, boolean root )
+    {
+        userGroups.setLink( getBasePath( userGroups.getClass() ) );
+
+        if ( root )
+        {
+            for ( UserGroup userGroup : userGroups.getUserGroups() )
+            {
+                populateUserGroup( userGroup, false );
+            }
+        }
+    }
+
+    private void populateUserGroup( UserGroup userGroup, boolean root )
+    {
+        populateIdentifiableObject( userGroup );
+
+        if ( root )
+        {
+            handleIdentifiableObjectCollection( userGroup.getMembers() );
         }
     }
 
