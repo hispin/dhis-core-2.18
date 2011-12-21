@@ -2,7 +2,7 @@
 function organisationUnitSelected( orgUnits )
 {
 	hideById('dataEntryFormDiv');
-	disableDataPicker( 'executionDate' );
+	disable( 'executionDate' );
 	setFieldValue('executionDate', '');
 	$('#executionDate').unbind('change');
 	
@@ -50,7 +50,7 @@ function loadEventForm()
 {	
 	hideById('dataEntryFormDiv');
 	setFieldValue('executionDate', '');
-	disableDataPicker( 'executionDate' );
+	disable( 'executionDate' );
 	
 	var programId = getFieldValue('programId');
 	if( programId == '' )
@@ -76,7 +76,7 @@ function loadEventForm()
 			else
 			{
 				
-				enableDataPicker( 'executionDate' );
+				enable( 'executionDate' );
 				enable('createEventBtn');
 				disable('deleteCurrentEventBtn');
 				disable('completeBtn');
@@ -105,14 +105,14 @@ function loadEventRegistrationForm()
 				disable('deleteCurrentEventBtn');
 				disable('completeBtn');
 				disable('validationBtn');
-				enableDataPicker( 'executionDate' );
+				enable( 'executionDate' );
 				$('#executionDate').bind('change');
 			}
 			else
 			{
 				if( getFieldValue('completed') == 'true')
 				{
-					disableDataPicker( 'executionDate' );
+					disable( 'executionDate' );
 					enable('createEventBtn');
 					enable('deleteCurrentEventBtn');
 					disable('completeBtn');
@@ -124,7 +124,7 @@ function loadEventRegistrationForm()
 					enable('deleteCurrentEventBtn');
 					enable('completeBtn');
 					enable('validationBtn');
-					enableDataPicker( 'executionDate' );
+					enable( 'executionDate' );
 					jQuery('#executionDate').bind('change');
 				}
 			}
@@ -184,7 +184,7 @@ function deleteCurrentEvent()
 					enable('createEventBtn');
 					
 					setFieldValue('executionDate','');
-					enableDataPicker( 'executionDate' );
+					enable( 'executionDate' );
 					$('#executionDate').unbind('change');
 					
 					selection.enable();
