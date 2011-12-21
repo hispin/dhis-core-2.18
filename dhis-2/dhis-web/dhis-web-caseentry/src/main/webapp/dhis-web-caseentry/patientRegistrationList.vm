@@ -120,11 +120,12 @@
   </tr>
 </table>
 
-<div id="detailsArea" style="display:none;overflow:auto;height:250px;width:250px">
+<div id="detailsInfo">
 </div>
 #end
 <script type="text/javascript">
 	jQuery(document).ready(function(){	
 		tableSorter( 'patientList' );
 	});
+	var i18n_patient_details = '$encoder.jsEscape( $i18n.getString( "patient_details" ) , "'" )';
 </script>

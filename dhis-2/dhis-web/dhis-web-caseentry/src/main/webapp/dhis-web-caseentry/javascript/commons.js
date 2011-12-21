@@ -100,13 +100,20 @@ function getParamsForDiv( patientDiv)
 
 function showPatientDetails( patientId )
 {
-    $('#detailsArea').load("getPatientDetails.action", 
+    $('#detailsInfo').load("getPatientDetails.action", 
 		{
 			id:patientId
 		}
 		, function( ){
-			showDetails();
-		});
+		}).dialog({
+			title: i18n_patient_details,
+			maximize: true, 
+			closable: true,
+			modal:true,
+			overlay:{background:'#000000', opacity:0.1},
+			width: 450,
+			height: 400
+		});;
 }
 
 // -----------------------------------------------------------------------------
