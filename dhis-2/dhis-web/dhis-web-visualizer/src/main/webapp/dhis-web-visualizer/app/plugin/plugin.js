@@ -375,7 +375,13 @@ Ext.onReady( function() {
                     if (!project.values.length) {
                         alert('No data values');
                         return;
-                    }                    
+                    }
+                    
+                    for (var i = 0; i < project.values.length; i++) {
+                        project.values[i][DHIS.conf.finals.dimension.data.value] = DHIS.util.string.getEncodedString(project.values[i][DHIS.conf.finals.dimension.data.value]);
+                        project.values[i][DHIS.conf.finals.dimension.period.value] = DHIS.util.string.getEncodedString(project.values[i][DHIS.conf.finals.dimension.period.value]);
+                        project.values[i][DHIS.conf.finals.dimension.organisationunit.value] = DHIS.util.string.getEncodedString(project.values[i][DHIS.conf.finals.dimension.organisationunit.value]);
+                    }                        
                     
                     Ext.Array.each(project.values, function(item) {
                         Ext.Array.include(project.state.series.names, DHIS.util.string.getEncodedString(item[project.state.series.dimension]));
@@ -401,14 +407,18 @@ Ext.onReady( function() {
     DHIS.chart = {
         getData: function(project) {
             project.data = [];
-//console.log(project.state.category.names);return;  
 			
             Ext.Array.each(project.state.category.names, function(item) {
                 var obj = {};
                 obj[DHIS.conf.finals.chart.x] = item;
                 project.data.push(obj);
             });
-//console.log(project.data);return;         
+            
+            Ext.Array.each(project.data, function(item) {
+                for (var i = 0; i < project.state.series.names.length; i++) {
+                    item[project.state.series.names[i]] = 0;
+                }
+            });
             
             Ext.Array.each(project.data, function(item) {
                 for (var i = 0; i < project.state.series.names.length; i++) {
@@ -420,7 +430,6 @@ Ext.onReady( function() {
                     }
                 }
             });
-//console.log(project.data);return;            
                 
 			DHIS.store.getChartStore(project);
         },

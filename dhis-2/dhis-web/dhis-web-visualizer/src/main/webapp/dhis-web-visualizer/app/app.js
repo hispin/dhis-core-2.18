@@ -1144,13 +1144,12 @@ Ext.onReady( function() {
         data: [],        
         getData: function(exe) {
             this.data = [];
-console.log(DV.state.category.names);return;            
+            
             Ext.Array.each(DV.state.category.names, function(item) {
                 var obj = {};
                 obj[DV.conf.finals.chart.x] = item;
                 DV.chart.data.push(obj);
-            });     
-console.log(this.data);return;       
+            });
             
             Ext.Array.each(DV.chart.data, function(item) {
                 for (var i = 0; i < DV.state.series.names.length; i++) {
@@ -1168,7 +1167,6 @@ console.log(this.data);return;
                     }
                 }
             });
-console.log(this.data);return;       
             
             if (exe) {
                 DV.store.getChartStore(true);
