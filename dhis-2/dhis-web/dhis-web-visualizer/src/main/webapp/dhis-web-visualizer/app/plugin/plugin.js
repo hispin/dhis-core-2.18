@@ -248,15 +248,19 @@ Ext.onReady( function() {
         value: {
             jsonfy: function(r) {
                 r = Ext.JSON.decode(r.responseText);
-                var values = [];
-                for (var i = 0, obj = {}; i < r.length; i++) {
-                    obj.v = r[i][0];
-                    obj[DHIS.conf.finals.dimension.data.value] = r[i][1];
-                    obj[DHIS.conf.finals.dimension.period.value] = r[i][2];
-                    obj[DHIS.conf.finals.dimension.organisationunit.value] = r[i][3];
-                    values.push(obj);
+                var object = {
+                    values: [],
+                    periods: r.p
+                };
+                for (var i = 0; i < r.v.length; i++) {
+                    var obj = {};
+                    obj.v = r.v[i][0];
+                    obj[DHIS.conf.finals.dimension.data.value] = r.v[i][1];
+                    obj[DHIS.conf.finals.dimension.period.value] = r.v[i][2];
+                    obj[DHIS.conf.finals.dimension.organisationunit.value] = r.v[i][3];
+                    object.values.push(obj);
                 }
-                return values;
+                return object;
             }
         }
     };
@@ -323,7 +327,7 @@ Ext.onReady( function() {
                 type: 'column',
                 stacked: false,
                 indicators: [],
-                periods: ['monthsThisYear'],
+                periods: ['last12Months'],
                 organisationunits: [],
                 series: 'data',
                 category: 'period',
@@ -334,6 +338,10 @@ Ext.onReady( function() {
             };
             
             project.state.conf = Ext.applyIf(conf, defaultConf);
+            project.state.conf.type = project.state.conf.type.toLowerCase();
+            project.state.conf.series = project.state.conf.series.toLowerCase();
+            project.state.conf.category = project.state.conf.category.toLowerCase();
+            project.state.conf.filter = project.state.conf.filter.toLowerCase();
             
             project.state.type = project.state.conf.type;
             project.state.series.dimension = project.state.conf.series;
@@ -361,12 +369,13 @@ Ext.onReady( function() {
             Ext.Ajax.request({
                 url: baseUrl,
                 success: function(r) {
-                    project.values = DHIS.util.value.jsonfy(r);
+                    var json = DHIS.util.value.jsonfy(r);
+                    project.values = json.values;
                     
                     if (!project.values.length) {
                         alert('No data values');
                         return;
-                    }
+                    }                    
                     
                     Ext.Array.each(project.values, function(item) {
                         Ext.Array.include(project.state.series.names, DHIS.util.string.getEncodedString(item[project.state.series.dimension]));
@@ -374,6 +383,12 @@ Ext.onReady( function() {
                         Ext.Array.include(project.state.filter.names, DHIS.util.string.getEncodedString(item[project.state.filter.dimension]));
                         item.v = parseFloat(item.v);
                     });
+                    
+                    for (var k in project.state.conf) {
+                        if (project.state.conf[k] == 'period') {
+                            project.state[k].names = json.periods;
+                        }
+                    }
                     
                     DHIS.state.state = project.state;
                     
@@ -386,12 +401,14 @@ Ext.onReady( function() {
     DHIS.chart = {
         getData: function(project) {
             project.data = [];
+//console.log(project.state.category.names);return;  
 			
             Ext.Array.each(project.state.category.names, function(item) {
                 var obj = {};
                 obj[DHIS.conf.finals.chart.x] = item;
                 project.data.push(obj);
             });
+//console.log(project.data);return;         
             
             Ext.Array.each(project.data, function(item) {
                 for (var i = 0; i < project.state.series.names.length; i++) {
@@ -403,6 +420,7 @@ Ext.onReady( function() {
                     }
                 }
             });
+//console.log(project.data);return;            
                 
 			DHIS.store.getChartStore(project);
         },

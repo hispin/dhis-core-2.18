@@ -30,6 +30,7 @@ package org.hisp.dhis.visualizer.action;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.List;
 
 import org.hisp.dhis.aggregation.AggregatedDataValue;
 import org.hisp.dhis.aggregation.AggregatedDataValueService;
@@ -128,18 +129,11 @@ public class GetAggregatedValuesPluginAction
         this.lastMonth = lastMonth;
     }
 
-    private boolean monthsThisYear;
+    private boolean last12Months;
 
-    public void setMonthsThisYear( boolean monthsThisYear )
+    public void setLast12Months( boolean last12Months )
     {
-        this.monthsThisYear = monthsThisYear;
-    }
-
-    private boolean monthsLastYear;
-
-    public void setMonthsLastYear( boolean monthsLastYear )
-    {
-        this.monthsLastYear = monthsLastYear;
+        this.last12Months = last12Months;
     }
 
     private boolean lastQuarter;
@@ -149,18 +143,25 @@ public class GetAggregatedValuesPluginAction
         this.lastQuarter = lastQuarter;
     }
 
-    private boolean quartersThisYear;
+    private boolean last4Quarters;
 
-    public void setQuartersThisYear( boolean quartersThisYear )
+    public void setLast4Quarters( boolean last4Quarters )
     {
-        this.quartersThisYear = quartersThisYear;
+        this.last4Quarters = last4Quarters;
     }
 
-    private boolean quartersLastYear;
+    private boolean lastSixMonth;
 
-    public void setQuartersLastYear( boolean quartersLastYear )
+    public void setLastSixMonth( boolean lastSixMonth )
     {
-        this.quartersLastYear = quartersLastYear;
+        this.lastSixMonth = lastSixMonth;
+    }
+
+    private boolean last2SixMonths;
+
+    public void setLast2SixMonths( boolean last2SixMonths )
+    {
+        this.last2SixMonths = last2SixMonths;
     }
 
     private boolean thisYear;
@@ -170,18 +171,11 @@ public class GetAggregatedValuesPluginAction
         this.thisYear = thisYear;
     }
 
-    private boolean lastYear;
+    private boolean last5Years;
 
-    public void setLastYear( boolean lastYear )
+    public void setLast5Years( boolean last5Years )
     {
-        this.lastYear = lastYear;
-    }
-
-    private boolean lastFiveYears;
-
-    public void setLastFiveYears( boolean lastFiveYears )
-    {
-        this.lastFiveYears = lastFiveYears;
+        this.last5Years = last5Years;
     }
 
     // -------------------------------------------------------------------------
@@ -202,29 +196,45 @@ public class GetAggregatedValuesPluginAction
         return dataValues;
     }
 
+    private List<Period> periods;
+
+    public List<Period> getPeriods()
+    {
+        return periods;
+    }
+
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
+    
+    private List<Period> setNames( List<Period> periods )
+    {
+        for ( Period period : periods )
+        {
+            period.setName( format.formatPeriod( period ) );
+        }
+        
+        return periods;
+    }
 
     public String execute()
         throws Exception
     {
         if ( organisationUnitIds != null
-            && (lastMonth || monthsThisYear || monthsLastYear || lastQuarter || quartersThisYear || quartersLastYear
-                || thisYear || lastYear || lastFiveYears) )
+            && ( lastMonth || last12Months || lastQuarter || last4Quarters || lastSixMonth ||
+                    last2SixMonths || thisYear || last5Years ) )
         {
             RelativePeriods rp = new RelativePeriods();
             rp.setReportingMonth( lastMonth );
-            rp.setMonthsThisYear( monthsThisYear );
-            rp.setMonthsLastYear( monthsLastYear );
+            rp.setLast12Months( last12Months );
             rp.setReportingQuarter( lastQuarter );
-            rp.setQuartersThisYear( quartersThisYear );
-            rp.setQuartersLastYear( quartersLastYear );
+            rp.setLast4Quarters( last4Quarters );
+            rp.setLastSixMonth( lastSixMonth );
+            rp.setLast2SixMonths( last2SixMonths );
             rp.setThisYear( thisYear );
-            rp.setLastYear( lastYear );
-            rp.setLast5Years( lastFiveYears );
+            rp.setLast5Years( last5Years );
 
-            Collection<Period> periods = periodService.reloadPeriods( rp.getRelativePeriods() );
+            periods = periodService.reloadPeriods( setNames( rp.getRelativePeriods() ) );
 
             Collection<Integer> periodIds = new ArrayList<Integer>();
 
@@ -254,7 +264,8 @@ public class GetAggregatedValuesPluginAction
 
                 for ( AggregatedDataValue value : dataValues )
                 {
-                    value.setDataElementName( dataElementService.getDataElement( value.getDataElementId() ).getShortName() );
+                    value.setDataElementName( dataElementService.getDataElement( value.getDataElementId() )
+                        .getShortName() );
                     value.setPeriodName( format.formatPeriod( periodService.getPeriod( value.getPeriodId() ) ) );
                     value.setOrganisationUnitName( organisationUnitService.getOrganisationUnit(
                         value.getOrganisationUnitId() ).getName() );
