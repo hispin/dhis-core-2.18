@@ -1,6 +1,3 @@
-<div style="float:right">
-	<a href="javascript:hideDetails()" title="$i18n.getString( 'hide_details' )"><img src="../images/close.png" alt="$i18n.getString( 'hide_details' )" id='closeBtn'></a>
-</div>
 <table>
 	<tr>
 		<td><label class="bold">$i18n.getString('full_name') : </label>

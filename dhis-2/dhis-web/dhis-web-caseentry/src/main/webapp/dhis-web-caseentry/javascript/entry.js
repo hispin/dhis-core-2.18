@@ -12,6 +12,7 @@ function loadProgramStages()
 	disable('completeBtn');
 	disable('validationBtn');
 	disable('newEncounterBtn');
+	disable('executionDate');
 		
 	var programId = jQuery('#dataRecordingSelectDiv [name=programId]').val();
 	if ( programId == 0 )
