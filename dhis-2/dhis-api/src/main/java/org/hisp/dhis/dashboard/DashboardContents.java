@@ -1,7 +1,7 @@
 package org.hisp.dhis.dashboard;
 
 /*
- * Copyright (c) 2004-2010, University of Oslo
+ * Copyright (c) 2004-2011, University of Oslo
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -27,23 +27,35 @@ package org.hisp.dhis.dashboard;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import org.hisp.dhis.user.User;
+import org.codehaus.jackson.annotate.JsonProperty;
+import org.codehaus.jackson.map.annotate.JsonSerialize;
+import org.hisp.dhis.common.BaseCollection;
+import org.hisp.dhis.common.BaseIdentifiableObject;
+import org.hisp.dhis.common.Dxf2Namespace;
 
-import java.util.Collection;
+import javax.xml.bind.annotation.*;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
- * @author Lars Helge Overland
- * @version $Id$
+ * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
-public interface DashboardService
+@XmlRootElement( name = "dashboardContents", namespace = Dxf2Namespace.NAMESPACE )
+@XmlAccessorType( value = XmlAccessType.NONE )
+public class DashboardContents extends BaseCollection
 {
-    final String ID = DashboardService.class.getName();
+    private List<DashboardContent> dashboardContents = new ArrayList<DashboardContent>();
 
-    void saveDashboardContent( DashboardContent dashboardContent );
+    @XmlElementWrapper( name = "dashboardContents" )
+    @XmlElement( name = "dashboardContent" )
+    @JsonProperty( value = "dashboardContents" )
+    public List<DashboardContent> getDashboardContents()
+    {
+        return dashboardContents;
+    }
 
-    DashboardContent getDashboardContent( int id );
-
-    DashboardContent getDashboardContent( User user );
-
-    Collection<DashboardContent> getAllDashboardContent();
+    public void setDashboardContents( List<DashboardContent> dashboardContents )
+    {
+        this.dashboardContents = dashboardContents;
+    }
 }

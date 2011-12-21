@@ -27,71 +27,82 @@ package org.hisp.dhis.dashboard;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.ArrayList;
-import java.util.List;
-
+import org.codehaus.jackson.annotate.JsonProperty;
+import org.codehaus.jackson.map.annotate.JsonSerialize;
+import org.hisp.dhis.common.BaseIdentifiableObject;
+import org.hisp.dhis.common.Dxf2Namespace;
+import org.hisp.dhis.common.adapter.*;
 import org.hisp.dhis.document.Document;
 import org.hisp.dhis.mapping.MapView;
 import org.hisp.dhis.report.Report;
 import org.hisp.dhis.reporttable.ReportTable;
 import org.hisp.dhis.user.User;
 
+import javax.xml.bind.annotation.*;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
+import java.util.ArrayList;
+import java.util.List;
+
 /**
+ * it would make sense to make this an idObject, so that we could have nameable (switchable?)
+ * dashboards, would be great for default content etc.
+ *
  * @author Lars Helge Overland
- * @version $Id$
  */
+@XmlRootElement( name = "dashboardContent", namespace = Dxf2Namespace.NAMESPACE )
+@XmlAccessorType( value = XmlAccessType.NONE )
 public class DashboardContent
 {
     private final static int MAX_DASHBOARD_ELEMENTS = 6;
-    
+
     private int id;
-    
+
     private User user;
 
     private List<Report> reports = new ArrayList<Report>();
-    
+
     private List<Document> documents = new ArrayList<Document>();
-    
+
     private List<ReportTable> reportTables = new ArrayList<ReportTable>();
 
     private List<MapView> mapViews = new ArrayList<MapView>();
 
     public DashboardContent()
-    {   
+    {
     }
-    
+
     public DashboardContent( User user )
     {
         this.user = user;
     }
-    
+
     public int hashCode()
     {
         return user.hashCode();
     }
-    
+
     public boolean equals( Object object )
-    {        
+    {
         if ( this == object )
         {
             return true;
         }
-        
+
         if ( object == null )
         {
             return false;
         }
-        
+
         if ( object.getClass() != getClass() )
         {
             return false;
         }
-        
+
         final DashboardContent other = (DashboardContent) object;
-        
+
         return user.equals( other.user );
     }
-    
+
     // -------------------------------------------------------------------------
     // Logic
     // -------------------------------------------------------------------------
@@ -101,57 +112,59 @@ public class DashboardContent
         if ( !reports.contains( report ) )
         {
             reports.add( 0, report );
-            
+
             while ( reports.size() > MAX_DASHBOARD_ELEMENTS )
             {
                 reports.remove( MAX_DASHBOARD_ELEMENTS );
             }
         }
     }
-    
+
     public void addDocument( Document document )
     {
         if ( !documents.contains( document ) )
         {
             documents.add( 0, document );
-            
+
             while ( documents.size() > MAX_DASHBOARD_ELEMENTS )
             {
                 documents.remove( MAX_DASHBOARD_ELEMENTS );
             }
         }
     }
-    
+
     public void addReportTable( ReportTable reportTable )
     {
         if ( !reportTables.contains( reportTable ) )
         {
             reportTables.add( 0, reportTable );
-            
+
             while ( reportTables.size() > MAX_DASHBOARD_ELEMENTS )
             {
                 reportTables.remove( MAX_DASHBOARD_ELEMENTS );
             }
         }
     }
-    
+
     public void addMapView( MapView mapView )
     {
         if ( !mapViews.contains( mapView ) )
         {
             mapViews.add( 0, mapView );
-            
+
             while ( mapViews.size() > MAX_DASHBOARD_ELEMENTS )
             {
                 mapViews.remove( MAX_DASHBOARD_ELEMENTS );
             }
         }
     }
-    
+
     // -------------------------------------------------------------------------
     // Getters & setters
     // -------------------------------------------------------------------------
 
+    @XmlAttribute( name = "internalId" )
+    @JsonProperty( value = "internalId" )
     public int getId()
     {
         return id;
@@ -162,6 +175,10 @@ public class DashboardContent
         this.id = id;
     }
 
+    @XmlElement( name = "user" )
+    @XmlJavaTypeAdapter( UserXmlAdapter.class )
+    @JsonProperty
+    @JsonSerialize( contentAs = BaseIdentifiableObject.class )
     public User getUser()
     {
         return user;
@@ -172,6 +189,11 @@ public class DashboardContent
         this.user = user;
     }
 
+    @XmlElementWrapper( name = "reports" )
+    @XmlElement( name = "report" )
+    @XmlJavaTypeAdapter( ReportXmlAdapter.class )
+    @JsonProperty
+    @JsonSerialize( contentAs = BaseIdentifiableObject.class )
     public List<Report> getReports()
     {
         return reports;
@@ -182,6 +204,11 @@ public class DashboardContent
         this.reports = reports;
     }
 
+    @XmlElementWrapper( name = "documents" )
+    @XmlElement( name = "document" )
+    @XmlJavaTypeAdapter( DocumentXmlAdapter.class )
+    @JsonProperty
+    @JsonSerialize( contentAs = BaseIdentifiableObject.class )
     public List<Document> getDocuments()
     {
         return documents;
@@ -192,6 +219,11 @@ public class DashboardContent
         this.documents = documents;
     }
 
+    @XmlElementWrapper( name = "reportTables" )
+    @XmlElement( name = "reportTable" )
+    @XmlJavaTypeAdapter( ReportTableXmlAdapter.class )
+    @JsonProperty
+    @JsonSerialize( contentAs = BaseIdentifiableObject.class )
     public List<ReportTable> getReportTables()
     {
         return reportTables;
@@ -202,6 +234,11 @@ public class DashboardContent
         this.reportTables = reportTables;
     }
 
+    @XmlElementWrapper( name = "mapViews" )
+    @XmlElement( name = "mapView" )
+    @XmlJavaTypeAdapter( MapViewXmlAdapter.class )
+    @JsonProperty
+    @JsonSerialize( contentAs = BaseIdentifiableObject.class )
     public List<MapView> getMapViews()
     {
         return mapViews;
