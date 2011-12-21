@@ -49,6 +49,7 @@ import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.patient.Patient;
 import org.hisp.dhis.patient.PatientStore;
 import org.hisp.dhis.program.Program;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
@@ -78,6 +79,13 @@ public class HibernatePatientStore
         this.statementManager = statementManager;
     }
 
+    private JdbcTemplate jdbcTemplate;
+
+    public void setJdbcTemplate( JdbcTemplate jdbcTemplate )
+    {
+        this.jdbcTemplate = jdbcTemplate;
+    }
+
     // -------------------------------------------------------------------------
     // Implementation methods
     // -------------------------------------------------------------------------
@@ -101,7 +109,7 @@ public class HibernatePatientStore
     }
 
     public Collection<Patient> getByNames( String name )
-    {   
+    {
         String sql = statementBuilder.getPatientsByFullName( name );
 
         StatementHolder holder = statementManager.getHolder();
@@ -131,9 +139,9 @@ public class HibernatePatientStore
 
         return patients;
     }
-    
+
     public Collection<Patient> getByNames( String name, int min, int max )
-    {   
+    {
         String sql = statementBuilder.getPatientsByFullName( name, min, max );
 
         StatementHolder holder = statementManager.getHolder();
@@ -179,7 +187,7 @@ public class HibernatePatientStore
 
         if ( StringUtils.isNotBlank( lastName ) )
             con.add( Restrictions.ilike( "lastName", lastName ) );
-        
+
         con.add( Restrictions.eq( "gender", gender ) );
         con.add( Restrictions.eq( "birthDate", birthdate ) );
 
@@ -265,11 +273,18 @@ public class HibernatePatientStore
         return rs != null ? rs.intValue() : 0;
     }
 
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings( "unchecked" )
     public Collection<Patient> getRepresentatives( Patient patient )
     {
         String hql = "select distinct p from Patient p where p.representative = :representative order by p.id DESC";
 
         return getQuery( hql ).setEntity( "representative", patient ).list();
+    }
+
+    public void removeErollmentPrograms( Program program )
+    {
+        String sql = "delete from patient_programs where programid='" + program.getId() + "'";
+        
+        jdbcTemplate.execute( sql );
     }
 }

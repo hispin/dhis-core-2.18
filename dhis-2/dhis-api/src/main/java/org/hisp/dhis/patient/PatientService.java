@@ -221,4 +221,6 @@ public interface PatientService
     
     Object getObjectValue( String property, String value, I18nFormat format );
     
+    void removeErollmentPrograms( Program program );
+    
 }

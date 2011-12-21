@@ -30,6 +30,7 @@ package org.hisp.dhis.patient;
 import java.util.Collection;
 
 import org.hisp.dhis.organisationunit.OrganisationUnit;
+import org.hisp.dhis.program.Program;
 import org.hisp.dhis.system.deletion.DeletionHandler;
 
 public class PatientDeletionHandler
@@ -76,5 +77,11 @@ public class PatientDeletionHandler
         {
             patientService.deletePatient( patient );
         }
+    }
+    
+    @Override
+    public void deleteProgram( Program program )
+    {
+        patientService.removeErollmentPrograms( program );
     }
 }

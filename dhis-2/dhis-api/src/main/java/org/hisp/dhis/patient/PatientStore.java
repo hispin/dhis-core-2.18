@@ -68,4 +68,6 @@ public interface PatientStore
     int countGetPatientsByName( String name );
     
     int countGetPatientsByOrgUnitProgram( OrganisationUnit organisationUnit, Program program );
+
+    void removeErollmentPrograms( Program program );
 }

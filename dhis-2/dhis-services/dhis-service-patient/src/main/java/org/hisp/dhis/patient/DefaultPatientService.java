@@ -330,7 +330,8 @@ public class DefaultPatientService
     @Override
     public Collection<Patient> sortPatientsByAttribute( Collection<Patient> patients, PatientAttribute patientAttribute )
     {
-//        List<PatientAttributeValue> patientsSortedByAttribute = new ArrayList<PatientAttributeValue>();
+        // List<PatientAttributeValue> patientsSortedByAttribute = new
+        // ArrayList<PatientAttributeValue>();
 
         Collection<Patient> sortedPatients = new ArrayList<Patient>();
 
@@ -341,7 +342,7 @@ public class DefaultPatientService
 
         Collection<PatientAttributeValue> patientAttributeValues = patientAttributeValueService
             .getPatientAttributeValues( patients );
-        
+
         if ( patientAttributeValues != null )
         {
             for ( PatientAttributeValue patientAttributeValue : patientAttributeValues )
@@ -360,7 +361,7 @@ public class DefaultPatientService
         // ---------------------------------------------------------------------
 
         sortedPatients.addAll( patients );
-        
+
         return sortedPatients;
     }
 
@@ -501,5 +502,10 @@ public class DefaultPatientService
     public Collection<Patient> getRepresentatives( Patient patient )
     {
         return patientStore.getRepresentatives( patient );
+    }
+
+    public void removeErollmentPrograms( Program program )
+    {
+        patientStore.removeErollmentPrograms( program );
     }
 }
