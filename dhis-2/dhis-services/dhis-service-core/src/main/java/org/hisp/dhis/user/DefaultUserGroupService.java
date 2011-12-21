@@ -82,6 +82,12 @@ public class DefaultUserGroupService implements UserGroupService
     }
 
     @Override
+    public UserGroup getUserGroup( String uid )
+    {
+        return userGroupStore.getByUid( uid );
+    }
+
+    @Override
     public UserGroup getUserGroupByName( String name )
     {
         return userGroupStore.getByName( name );

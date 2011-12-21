@@ -1,7 +1,7 @@
 package org.hisp.dhis.user;
 
 /*
- * Copyright (c) 2004-2010, University of Oslo
+ * Copyright (c) 2004-2011, University of Oslo
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -27,12 +27,20 @@ package org.hisp.dhis.user;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import org.codehaus.jackson.annotate.JsonProperty;
+import org.codehaus.jackson.map.annotate.JsonSerialize;
+import org.hisp.dhis.common.BaseIdentifiableObject;
+import org.hisp.dhis.common.Dxf2Namespace;
+import org.hisp.dhis.common.adapter.UserXmlAdapter;
+
+import javax.xml.bind.annotation.*;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import java.util.HashSet;
 import java.util.Set;
 
-import org.hisp.dhis.common.BaseIdentifiableObject;
-
-public class UserGroup 
+@XmlRootElement( name = "userGroup", namespace = Dxf2Namespace.NAMESPACE )
+@XmlAccessorType( value = XmlAccessType.NONE )
+public class UserGroup
     extends BaseIdentifiableObject
 {
     /**
@@ -44,16 +52,16 @@ public class UserGroup
      * Set of related users
      */
     private Set<User> members = new HashSet<User>();
-    
+
     // -------------------------------------------------------------------------
     // Constructors
     // -------------------------------------------------------------------------     
 
     public UserGroup()
     {
-        
+
     }
-    
+
     public UserGroup( String name )
     {
         this.name = name;
@@ -65,7 +73,7 @@ public class UserGroup
         this.members = members;
     }
 
-    
+
     // -------------------------------------------------------------------------
     // hashCode, equals and toString
     // -------------------------------------------------------------------------     
@@ -80,7 +88,7 @@ public class UserGroup
         {
             return false;
         }
-        else if ( !( object instanceof UserGroup ) )
+        else if ( !(object instanceof UserGroup) )
         {
             return false;
         }
@@ -99,6 +107,11 @@ public class UserGroup
     // Getters and setters
     // -------------------------------------------------------------------------
 
+    @XmlElementWrapper( name = "users" )
+    @XmlElement( name = "user" )
+    @XmlJavaTypeAdapter( UserXmlAdapter.class )
+    @JsonProperty
+    @JsonSerialize( contentAs = BaseIdentifiableObject.class )
     public Set<User> getMembers()
     {
         return members;
@@ -108,5 +121,4 @@ public class UserGroup
     {
         this.members = members;
     }
-
 }

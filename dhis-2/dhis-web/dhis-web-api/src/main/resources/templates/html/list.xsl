@@ -12,7 +12,7 @@
     d:organisationUnits|d:dataElementGroups|d:dataElementGroupSets|d:dataSets|
     d:documents|d:indicatorGroups|d:indicatorGroupSets|d:organisationUnitGroups|
     d:organisationUnitGroupSets|d:indicatorTypes|d:attributeTypes|d:reports|d:constants|
-    d:sqlViews|d:validationRules|d:validationRuleGroups|d:users|d:reportTables">
+    d:sqlViews|d:validationRules|d:validationRuleGroups|d:users|d:userGroups|d:reportTables">
 
     <xsl:choose>
       <xsl:when test="@page">
