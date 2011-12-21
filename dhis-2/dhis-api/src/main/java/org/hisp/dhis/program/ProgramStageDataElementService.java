@@ -52,4 +52,5 @@ public interface ProgramStageDataElementService
     Collection<ProgramStageDataElement> get( ProgramStage programStage );
     
     Collection<DataElement> getListDataElement( ProgramStage programStage );
+    
 }
