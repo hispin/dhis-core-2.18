@@ -30,7 +30,7 @@ function organisationUnitSelected( orgUnits )
 
 			if( byId('programId').selectedIndex > 0 )
 			{
-				showEventForm();
+				loadEventForm();
 			}
 			else
 			{
