@@ -15,6 +15,7 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
 
   <bean id="org.hisp.dhis.reporttable.jdbc.ReportTableManager" class="org.hisp.dhis.reporttable.jdbc.JDBCReportTableManager">
     <property name="statementManager" ref="statementManager" />
+	<property name="jdbcTemplate" ref="jdbcTemplate" />
   </bean>
 
   <bean id="org.hisp.dhis.reporttable.ReportTableStore" class="org.hisp.dhis.common.hibernate.HibernateIdentifiableObjectStore">
@@ -86,9 +87,8 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
     <property name="minMaxDataElementService" ref="org.hisp.dhis.minmax.MinMaxDataElementService" />
     <property name="aggregationService" ref="org.hisp.dhis.aggregation.AggregationService" />
     <property name="systemSettingManager" ref="org.hisp.dhis.options.SystemSettingManager" />
-    <property name="aggregatedDataValueService" ref="org.hisp.dhis.aggregation.AggregatedDataValueService" />
     <property name="currentUserService" ref="org.hisp.dhis.user.CurrentUserService" />
-    <property name="dataSetCompletenessService" ref="registrationDataCompletenessService" />
+	<property name="reportTableManager" ref="org.hisp.dhis.reporttable.jdbc.ReportTableManager" />
   </bean>
 
   <!-- Document -->
@@ -354,7 +354,6 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
         method="intercept" />
       <aop:around pointcut="execution( * org.hisp.dhis.completeness.DataSetCompletenessService.getDataSetCompleteness(..) )"
         method="intercept" />
-      <aop:around pointcut="execution( * org.hisp.dhis.chart.ChartService.getJFree*(..) )" method="intercept" />
       <aop:around pointcut="execution( * org.hisp.dhis.datasetreport.DataSetReportService.getCustomDataSetReport(..) )"
         method="intercept" />
       <aop:around pointcut="execution( * org.hisp.dhis.datasetreport.DataSetReportService.getSectionDataSetReport(..) )"

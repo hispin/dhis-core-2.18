@@ -31,7 +31,7 @@ import java.util.Date;
  */
 
 public interface IdentifiableObject
-    extends ImportableObject, LinkableObject
+    extends ImportableObject, LinkableObject, Comparable<IdentifiableObject>
 {
     public abstract int getId();
 

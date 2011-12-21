@@ -21,8 +21,6 @@
 
     <property name="type" />
 
-    <property name="dimension" />
-
     <property name="series" />
 
     <property name="category" />
@@ -30,10 +28,6 @@
     <property name="filter" />
 
     <property name="hideLegend" not-null="true" />
-
-    <property name="verticalLabels" not-null="true" />
-
-    <property name="horizontalPlotOrientation" not-null="true" />
 
     <property name="regression" not-null="true" />
 

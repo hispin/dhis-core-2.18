@@ -148,11 +148,25 @@ public class GenerateChartAction
         this.organisationUnitId = organisationUnitId;
     }
 
-    private String dimension;
+    private String series;
 
-    public void setDimension( String dimension )
+    public void setSeries( String series )
     {
-        this.dimension = dimension;
+        this.series = series;
+    }
+
+    private String category;
+
+    public void setCategory( String category )
+    {
+        this.category = category;
+    }
+
+    private String filter;
+    
+    public void setFilter( String filter )
+    {
+        this.filter = filter;
     }
 
     private boolean regression;
@@ -240,8 +254,8 @@ public class GenerateChartAction
 
         height = 500;
 
-        chart = chartService.getJFreeChart( indicators, dataElements, dataSets, periods, organisationUnits, dimension,
-            regression, format );
+        chart = chartService.getJFreeChart( indicators, dataElements, dataSets, periods, organisationUnits,
+            series, category, filter, regression, format );
 
         return SUCCESS;
     }
