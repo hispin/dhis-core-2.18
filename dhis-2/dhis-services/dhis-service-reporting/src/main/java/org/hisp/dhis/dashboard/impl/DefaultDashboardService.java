@@ -27,13 +27,13 @@ package org.hisp.dhis.dashboard.impl;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.Collection;
-
 import org.hisp.dhis.common.GenericStore;
 import org.hisp.dhis.dashboard.DashboardContent;
 import org.hisp.dhis.dashboard.DashboardService;
 import org.hisp.dhis.user.User;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Collection;
 
 /**
  * @author Lars Helge Overland
@@ -57,19 +57,25 @@ public class DefaultDashboardService
     // -------------------------------------------------------------------------
     // DashboardService implementation
     // -------------------------------------------------------------------------
-    
+
     public void saveDashboardContent( DashboardContent dashboardContent )
     {
         dashboardContentStore.save( dashboardContent );
     }
-    
+
+    @Override
+    public DashboardContent getDashboardContent( int id )
+    {
+        return dashboardContentStore.get( id );
+    }
+
     public DashboardContent getDashboardContent( User user )
     {
         DashboardContent content = dashboardContentStore.get( user.getId() );
-        
-        return content != null ? content : new DashboardContent( user );        
+
+        return content != null ? content : new DashboardContent( user );
     }
-    
+
     public Collection<DashboardContent> getAllDashboardContent()
     {
         return dashboardContentStore.getAll();

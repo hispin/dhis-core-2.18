@@ -1,7 +1,7 @@
-package org.hisp.dhis.dashboard;
+package org.hisp.dhis.common.adapter;
 
 /*
- * Copyright (c) 2004-2010, University of Oslo
+ * Copyright (c) 2004-2011, University of Oslo
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -27,23 +27,36 @@ package org.hisp.dhis.dashboard;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import org.hisp.dhis.user.User;
+import org.hisp.dhis.common.BaseIdentifiableObject;
+import org.hisp.dhis.dashboard.DashboardContent;
 
-import java.util.Collection;
+import javax.xml.bind.annotation.adapters.XmlAdapter;
+import java.util.UUID;
 
 /**
- * @author Lars Helge Overland
- * @version $Id$
+ * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
-public interface DashboardService
+public class DashboardContentXmlAdapter extends XmlAdapter<BaseIdentifiableObject, DashboardContent>
 {
-    final String ID = DashboardService.class.getName();
+    private BaseIdentifiableObjectXmlAdapter baseIdentifiableObjectXmlAdapter = new BaseIdentifiableObjectXmlAdapter();
 
-    void saveDashboardContent( DashboardContent dashboardContent );
+    @Override
+    public DashboardContent unmarshal( BaseIdentifiableObject identifiableObject ) throws Exception
+    {
+        DashboardContent dashboardContent = new DashboardContent();
 
-    DashboardContent getDashboardContent( int id );
+/*
+        dashboardContent.setUid( identifiableObject.getUid() );
+        dashboardContent.setLastUpdated( identifiableObject.getLastUpdated() );
+        dashboardContent.setName( identifiableObject.getName() == null ? UUID.randomUUID().toString() : identifiableObject.getName() );
+*/
 
-    DashboardContent getDashboardContent( User user );
+        return dashboardContent;
+    }
 
-    Collection<DashboardContent> getAllDashboardContent();
+    @Override
+    public BaseIdentifiableObject marshal( DashboardContent dashboardContent ) throws Exception
+    {
+        return null; // baseIdentifiableObjectXmlAdapter.marshal( dashboardContent );
+    }
 }
