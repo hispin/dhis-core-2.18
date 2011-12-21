@@ -27,6 +27,7 @@
 
 package org.hisp.dhis.patientdatavalue.hibernate;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 
@@ -101,6 +102,11 @@ public class HibernatePatientDataValueStore
     @SuppressWarnings( "unchecked" )
     public Collection<PatientDataValue> get( Collection<ProgramStageInstance> programStageInstances )
     {
+        if ( programStageInstances == null || programStageInstances.isEmpty() )
+        {
+            return new ArrayList<PatientDataValue>();
+        }
+        
         return getCriteria( Restrictions.in( "programStageInstance", programStageInstances ) ).list();
     }
 
