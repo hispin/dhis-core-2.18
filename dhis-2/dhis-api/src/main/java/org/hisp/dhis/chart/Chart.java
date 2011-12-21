@@ -76,10 +76,6 @@ public class Chart
     public static final String TYPE_LINE3D = "line3d";
     public static final String TYPE_PIE3D = "pie3d";
 
-    public static final String SIZE_NORMAL = "normal";
-    public static final String SIZE_WIDE = "wide";
-    public static final String SIZE_TALL = "tall";
-
     public static final String TYPE_COLUMN = "column";
     public static final String TYPE_STACKED_COLUMN = "stackedColumn";
     public static final String TYPE_BAR = "bar";
@@ -271,12 +267,12 @@ public class Chart
 
     public int getWidth()
     {
-        return isSize( SIZE_WIDE ) ? 1000 : 700;
+        return 700;
     }
 
     public int getHeight()
     {
-        return isSize( SIZE_TALL ) ? 800 : 500;
+        return 500;
     }
 
     // -------------------------------------------------------------------------

@@ -263,6 +263,7 @@ public class TableAlteror
         executeSql( "ALTER TABLE chart DROP COLUMN individualquartersthisyear" );
         executeSql( "ALTER TABLE chart RENAME COLUMN title TO name" );
         executeSql( "ALTER TABLE chart ALTER COLUMN dimension DROP NOT NULL" );
+        executeSql( "ALTER TABLE chart DROP COLUMN size" );
 
         executeSql( "ALTER TABLE datamartexport DROP COLUMN last3months" );
         executeSql( "ALTER TABLE datamartexport DROP COLUMN last6months" );
