@@ -66,9 +66,9 @@ DV.conf = {
             category: 'category',
             filter: 'filter',
             column: 'column',
-            column_stacked: 'column_stacked',
+            stackedcolumn: 'stackedcolumn',
             bar: 'bar',
-            bar_stacked: 'bar_stacked',
+            stackedbar: 'stackedbar',
             line: 'line',
             area: 'area',
             pie: 'pie'
@@ -114,8 +114,8 @@ Ext.onReady( function() {
     DV.init.initialize = function() {
         DV.util.combobox.filter.category();
         DV.store.column = DV.store.defaultChartStore;
-        DV.store.column_stacked = DV.store.defaultChartStore;
-        DV.store.bar_stacked = DV.store.bar;
+        DV.store.stackedcolumn = DV.store.defaultChartStore;
+        DV.store.stackedbar = DV.store.bar;
         DV.store.line = DV.store.defaultChartStore;
         DV.store.area = DV.store.defaultChartStore;
         DV.store.pie = DV.store.defaultChartStore;
@@ -705,6 +705,7 @@ Ext.onReady( function() {
                         var store = DV.store.favorite;
                         params.uid = store.getAt(store.findExact('name', params.name)).data.id;
                     }
+                    
                     Ext.Ajax.request({
                         url: DV.conf.finals.ajax.path_visualizer + DV.conf.finals.ajax.favorite_addorupdate,
                         params: params,
@@ -978,10 +979,10 @@ Ext.onReady( function() {
         },
         getParams: function() {
             var obj = {};
-            obj.type = this.type;
-            obj.series = this.series.dimension;
-            obj.category = this.category.dimension;
-            obj.filter = this.filter.dimension;
+            obj.type = this.type.toUpperCase();
+            obj.series = this.series.dimension.toUpperCase();
+            obj.category = this.category.dimension.toUpperCase();
+            obj.filter = this.filter.dimension.toUpperCase();
             obj.indicatorIds = this.indicatorIds;
             obj.dataElementIds = this.dataelementIds;
             obj.organisationUnitIds = this.organisationunitIds;
@@ -1003,6 +1004,11 @@ Ext.onReady( function() {
                         }
                         var f = Ext.JSON.decode(r.responseText),
                             indiment = [];
+                        f.type = f.type.toLowerCase();
+                        f.series = f.series.toLowerCase();
+                        f.category = f.category.toLowerCase();
+                        f.filter = f.filter.toLowerCase();
+                        
                         f.names = {
                             data: [],
                             period: [],
@@ -1217,7 +1223,7 @@ Ext.onReady( function() {
                 ]
             });
         },
-        column_stacked: function() {
+        stackedcolumn: function() {
             this.column(true);
         },
         bar: function(stacked) {
@@ -1259,7 +1265,7 @@ Ext.onReady( function() {
                 ]
             });
         },
-        bar_stacked: function() {
+        stackedbar: function() {
             this.bar(true);
         },
         line: function() {
@@ -1480,7 +1486,7 @@ Ext.onReady( function() {
                             {
 								xtype: 'button',
                                 icon: 'images/column-stacked.png',
-                                name: DV.conf.finals.chart.column_stacked,
+                                name: DV.conf.finals.chart.stackedcolumn,
                                 tooltip: 'Stacked column chart',
 								width: 40
                             },
@@ -1494,7 +1500,7 @@ Ext.onReady( function() {
                             {
 								xtype: 'button',
                                 icon: 'images/bar-stacked.png',
-                                name: DV.conf.finals.chart.bar_stacked,
+                                name: DV.conf.finals.chart.stackedbar,
                                 tooltip: 'Stacked bar chart',
 								width: 40
                             },
