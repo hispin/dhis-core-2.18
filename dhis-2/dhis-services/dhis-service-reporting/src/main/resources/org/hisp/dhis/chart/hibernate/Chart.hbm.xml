@@ -21,8 +21,6 @@
 
     <property name="type" />
 
-    <property name="size" />
-
     <property name="dimension" />
 
     <property name="series" />

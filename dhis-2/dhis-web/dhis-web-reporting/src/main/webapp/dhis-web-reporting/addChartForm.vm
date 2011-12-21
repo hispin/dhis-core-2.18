@@ -92,16 +92,6 @@
 	    </td>
     </tr>
     <tr>
-        <td><label for="type">$i18n.getString( "chart_size" )</label></td>
-        <td>
-            <select id="size" name="size" style="width:300px">
-                <option value="normal"#if ( $!chart.size == "normal" ) selected#end>$i18n.getString( "normal" )</option>
-                <option value="wide"#if ( $!chart.size == "wide" ) selected#end>$i18n.getString( "wide" )</option>
-                <option value="tall"#if ( $!chart.size == "tall" ) selected#end>$i18n.getString( "tall" )</option>
-            </select>
-        </td>
-    </tr>
-    <tr>
     	<td><label for="hideLegend">$i18n.getString( "hide_legend" )</label></td>
     	<td><input type="checkbox" id="hideLegend" name="hideLegend" value="true"#if( $!chart.hideLegend ) checked#end></td>
     </tr>

@@ -33,6 +33,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import org.apache.commons.lang.StringUtils;
 import org.hisp.dhis.chart.Chart;
 import org.hisp.dhis.chart.ChartService;
 import org.hisp.dhis.dataelement.DataElement;
@@ -147,13 +148,6 @@ public class SaveChartAction
     public void setType( String type )
     {
         this.type = type;
-    }
-
-    private String size;
-
-    public void setSize( String size )
-    {
-        this.size = size;
     }
 
     private String dimension;
@@ -361,11 +355,10 @@ public class SaveChartAction
         Collections.sort( periods, new AscendingPeriodComparator() );
 
         chart.setName( name );
-        chart.setDomainAxixLabel( domainAxisLabel );
-        chart.setRangeAxisLabel( rangeAxisLabel );
+        chart.setDomainAxixLabel( StringUtils.trimToNull( domainAxisLabel ) );
+        chart.setRangeAxisLabel( StringUtils.trimToNull( rangeAxisLabel ) );
         chart.setHideSubtitle( hideSubtitle );
         chart.setType( type );
-        chart.setSize( size );
         chart.setDimension( dimension );
         chart.setHideLegend( hideLegend );
         chart.setVerticalLabels( verticalLabels );
@@ -373,7 +366,7 @@ public class SaveChartAction
         chart.setRegression( regression );
         chart.setTargetLine( targetLine );
         chart.setTargetLineValue( targetLineValue );
-        chart.setTargetLineLabel( targetLineLabel );
+        chart.setTargetLineLabel( StringUtils.trimToNull( targetLineLabel ) );
         chart.setUserOrganisationUnit( userOrganisationUnit );
         chart.setIndicators( indicators );
         chart.setDataElements( dataElements );

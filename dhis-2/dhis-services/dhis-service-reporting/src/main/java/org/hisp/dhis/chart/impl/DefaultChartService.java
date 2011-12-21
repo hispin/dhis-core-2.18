@@ -240,7 +240,6 @@ public class DefaultChartService
         }
 
         chart.setType( TYPE_LINE );
-        chart.setSize( SIZE_NORMAL );
         chart.setDimension( DIMENSION_PERIOD_INDICATOR );
         chart.setHideLegend( true );
         chart.setVerticalLabels( true );
@@ -268,7 +267,6 @@ public class DefaultChartService
         }
 
         chart.setType( TYPE_BAR );
-        chart.setSize( SIZE_NORMAL );
         chart.setDimension( DIMENSION_ORGANISATIONUNIT_INDICATOR );
         chart.setHideLegend( true );
         chart.setVerticalLabels( true );
@@ -302,7 +300,6 @@ public class DefaultChartService
         }
 
         chart.setType( TYPE_BAR );
-        chart.setSize( SIZE_NORMAL );
         chart.setDimension( dimension );
         chart.setHideLegend( false );
         chart.setVerticalLabels( true );

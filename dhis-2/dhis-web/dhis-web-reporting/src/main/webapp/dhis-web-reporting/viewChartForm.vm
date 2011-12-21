@@ -26,16 +26,13 @@
                     	<select id="chart_type">
                     		<option value='indicator'>$i18n.getString( 'indicator_by_period_chart' )</option>
                     		<option value='organisationUnit'>$i18n.getString( 'indicator_by_organisation_unit_chart' )</option>
-
                     		<option value='dataElement_period'>$i18n.getString( 'dataelement_by_period_chart' )</option>
                     		<option value='organisationUnit_dataElement'>$i18n.getString( 'dataelement_by_organisation_unit_chart' )</option>
-
-                    		<option value='completeness_period'>$i18n.getString( 'completeness_by_period_chart' )</option>
-                    		<option value='organisationUnit_completeness'>$i18n.getString( 'completeness_by_organisation_unit_chart' )</option>
-
+                    		<option value='completeness_period'>$i18n.getString( 'completeness_by_period_chart' )</option>                    		
+                    		##<option value='organisationUnit_completeness'>$i18n.getString( 'completeness_by_organisation_unit_chart' )</option>
                     		<option value='period'>$i18n.getString( 'period_by_indicator_chart' )</option>
                     		<option value='period_dataElement'>$i18n.getString( 'period_by_dataelement_chart' )</option>
-                    		<option value='period_completeness'>$i18n.getString( 'period_by_completeness_chart' )</option>
+                    		##<option value='period_completeness'>$i18n.getString( 'period_by_completeness_chart' )</option>
                     	</select>
                     	<button type="button" id="add_chart">$i18n.getString( 'add' )</button>
                     </td>
@@ -55,7 +52,7 @@
                 <tr id="tr${chart.id}">
                     <td onclick="showChartDetails( $chart.id )">$encoder.htmlEncode( $chart.name )</td>
                     <td style="text-align:right">
-						<a href="javascript:viewChart( 'viewChart.action?id=$chart.id', '$chart.size' )" title="$i18n.getString( "view_chart" )"><img src="../images/start_process.png" alt="$i18n.getString( "view_chart" )"></a>
+						<a href="javascript:viewChart( 'viewChart.action?id=$chart.id' )" title="$i18n.getString( "view_chart" )"><img src="../images/start_process.png" alt="$i18n.getString( "view_chart" )"></a>
 						<a href="displayAddChartForm.action?id=$chart.id&dimension=$chart.dimension" title="$i18n.getString( "edit" )"><img src="../images/edit.png" alt="$i18n.getString( "edit" )"></a>
 						#if( $auth.hasAccess( "dhis-web-reporting", "removeChart" ) )
 						<a href="javascript:removeChart( $chart.id, '$encoder.jsEncode( $chart.name )' )" title="$i18n.getString( "remove" )"><img src="../images/delete.png" alt="$i18n.getString( "remove" )"></a>

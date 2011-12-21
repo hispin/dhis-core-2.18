@@ -2,17 +2,14 @@
 // View chart
 // -----------------------------------------------------------------------------
 
-function viewChart( url, size )
+function viewChart( url )
 {
-    var width = size === 'wide' ? 1000 : 700;
-    var height = size === 'tall' ? 800 : 500;
-
     $( '#chartImage' ).attr( 'src', url );
     $( '#chartView' ).dialog( {
         autoOpen : true,
         modal : true,
-        height : height + 65,
-        width : width + 45,
+        height : 565,
+        width : 745,
         resizable : false,
         title : 'Viewing Chart'
     } );
