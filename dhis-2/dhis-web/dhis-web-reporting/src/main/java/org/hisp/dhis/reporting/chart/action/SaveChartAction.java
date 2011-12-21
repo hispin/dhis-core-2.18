@@ -150,11 +150,25 @@ public class SaveChartAction
         this.type = type;
     }
 
-    private String dimension;
+    private String series;
 
-    public void setDimension( String dimension )
+    public void setSeries( String series )
     {
-        this.dimension = dimension;
+        this.series = series;
+    }
+
+    private String category;
+
+    public void setCategory( String category )
+    {
+        this.category = category;
+    }
+
+    private String filter;
+    
+    public void setFilter( String filter )
+    {
+        this.filter = filter;
     }
 
     private boolean hideLegend;
@@ -162,20 +176,6 @@ public class SaveChartAction
     public void setHideLegend( boolean hideLegend )
     {
         this.hideLegend = hideLegend;
-    }
-
-    private boolean verticalLabels;
-
-    public void setVerticalLabels( boolean verticalLabels )
-    {
-        this.verticalLabels = verticalLabels;
-    }
-
-    private boolean horizontalPlotOrientation;
-
-    public void setHorizontalPlotOrientation( boolean horizontalPlotOrientation )
-    {
-        this.horizontalPlotOrientation = horizontalPlotOrientation;
     }
 
     private boolean regression;
@@ -359,10 +359,10 @@ public class SaveChartAction
         chart.setRangeAxisLabel( StringUtils.trimToNull( rangeAxisLabel ) );
         chart.setHideSubtitle( hideSubtitle );
         chart.setType( type );
-        chart.setDimension( dimension );
+        chart.setSeries( series );
+        chart.setCategory( category );
+        chart.setFilter( filter );
         chart.setHideLegend( hideLegend );
-        chart.setVerticalLabels( verticalLabels );
-        chart.setHorizontalPlotOrientation( horizontalPlotOrientation );
         chart.setRegression( regression );
         chart.setTargetLine( targetLine );
         chart.setTargetLineValue( targetLineValue );

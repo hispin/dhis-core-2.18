@@ -539,7 +539,7 @@ public class ReportTable extends BaseIdentifiableObject
 
         return column.length() > 0 ? column.substring( 0, column.lastIndexOf( SEPARATOR ) ) : TOTAL_COLUMN_NAME;
     }
-
+    
     /**
      * Generates a grid identifier based on the internal identifiers of the
      * argument objects.

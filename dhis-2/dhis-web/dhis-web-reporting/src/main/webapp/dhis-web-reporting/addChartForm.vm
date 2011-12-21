@@ -32,20 +32,14 @@
 	    $i18n.getString( "create_period_by_indicator_chart" )
 	#elseif( $dimension == "period_dataElement" )
 	    $i18n.getString( "create_period_by_dataelement_chart" )
-	#elseif( $dimension == "period_completeness" )
-	    $i18n.getString( "create_period_by_completeness_chart" )
 	#elseif ( $dimension == "organisationUnit" )
 	    $i18n.getString( "create_indicator_by_organisation_unit_chart" )
 	#elseif ( $dimension == "organisationUnit_dataElement" )
 	    $i18n.getString( "create_dataelement_by_organisation_unit_chart" )
-	#elseif ( $dimension == "organisationUnit_completeness" )
-	    $i18n.getString( "create_completeness_by_organisation_unit_chart" )
 	#elseif ( $dimension == "indicator" )
 		$i18n.getString( "create_indicator_by_period_chart" )
 	#elseif ( $dimension == "dataElement_period" )
 		$i18n.getString( "create_dataelement_by_period_chart" )
-	#elseif ( $dimension == "completeness_period" )
-		$i18n.getString( "create_completeness_by_period_chart" )
 	#end
 #end
 
@@ -55,6 +49,20 @@
 
 <input type="hidden" id="id" name="id" value="$!chart.id" />
 <input type="hidden" id="dimension" name="dimension" value="$!dimension" />
+
+#if ( $dimension == "period" || $dimension == "period_dataElement" )
+	<input type="hidden" name="series" value="PERIOD" />
+	<input type="hidden" name="category" value="DATA" />
+	<input type="hidden" name="filter" value="ORGANISATIONUNIT" />
+#elseif ( $dimension == "indicator" || $dimension == "dataElement_period" )
+	<input type="hidden" name="series" value="DATA" />
+	<input type="hidden" name="category" value="PERIOD" />
+	<input type="hidden" name="filter" value="ORGANISATIONUNIT" />
+#elseif ( $dimension == "organisationUnit" || $dimension == "organisationUnit_dataElement" )
+	<input type="hidden" name="series" value="DATA" />
+	<input type="hidden" name="category" value="ORGANISATIONUNIT" />
+	<input type="hidden" name="filter" value="PERIOD" />
+#end
 
 <table>
     <tr>
@@ -80,28 +88,16 @@
     	<td><label for="type">$i18n.getString( "chart_type" )</label></td>
     	<td>
     		<select id="type" name="type" style="width:300px">
-    			<option value="bar"#if ( $!chart.type == "bar" ) selected#end>$i18n.getString( "bar_chart" )</option>
-    			<option value="bar3d"#if ( $!chart.type == "bar3d" ) selected#end>$i18n.getString( "bar3d_chart" )</option>
-    			<option value="line"#if ( $!chart.type == "line" ) selected#end>$i18n.getString( "line_chart" )</option>
-    			<option value="line3d"#if ( $!chart.type == "line3d" ) selected#end>$i18n.getString( "line3d_chart" )</option>
-    			<option value="pie"#if ( $!chart.type == "pie" ) selected#end>$i18n.getString( "pie_chart" )</option>
-    			<option value="pie3d"#if ( $!chart.type == "pie3d" ) selected#end>$i18n.getString( "pie3d_chart" )</option>
-    			<option value="stackedBar"#if ( $!chart.type == "stackedBar" ) selected#end>$i18n.getString( "stacked_bar_chart" )</option>
-    			<option value="stackedBar3d"#if ( $!chart.type == "stackedBar3d" ) selected#end>$i18n.getString( "stacked_bar3d_chart" )</option>
+    			<option value="BAR"#if ( $!chart.type == "bar" ) selected#end>$i18n.getString( "bar_chart" )</option>
+    			<option value="LINE"#if ( $!chart.type == "line" ) selected#end>$i18n.getString( "line_chart" )</option>
+    			<option value="PIE"#if ( $!chart.type == "pie" ) selected#end>$i18n.getString( "pie_chart" )</option>
+    			<option value="STACKEDBAR"#if ( $!chart.type == "stackedBar" ) selected#end>$i18n.getString( "stacked_bar_chart" )</option>
 		    </select>
 	    </td>
     </tr>
     <tr>
     	<td><label for="hideLegend">$i18n.getString( "hide_legend" )</label></td>
     	<td><input type="checkbox" id="hideLegend" name="hideLegend" value="true"#if( $!chart.hideLegend ) checked#end></td>
-    </tr>
-    <tr>
-        <td><label for="verticalLabels">$i18n.getString( "vertical_category_labels" )</label></td>
-        <td><input type="checkbox" id="verticalLabels" name="verticalLabels" value="true"#if( $!chart.verticalLabels ) checked#end></td>
-    </tr>
-    <tr>
-        <td><label for="horizontalPlotOrientation">$i18n.getString( "horizontal_plot_orientation" )</label></td>
-        <td><input type="checkbox" id="horizontalPlotOrientation" name="horizontalPlotOrientation" value="true"#if( $!chart.horizontalPlotOrientation ) checked#end></td>
     </tr>
     <tr>
         <td><label for="regression">$i18n.getString( "include_regression_line" )</label></td>

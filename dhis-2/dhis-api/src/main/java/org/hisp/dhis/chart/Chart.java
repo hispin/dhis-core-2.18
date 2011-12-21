@@ -32,6 +32,7 @@ import org.codehaus.jackson.map.annotate.JsonSerialize;
 import org.hisp.dhis.common.BaseIdentifiableObject;
 import org.hisp.dhis.common.BaseNameableObject;
 import org.hisp.dhis.common.Dxf2Namespace;
+import org.hisp.dhis.common.NameableObject;
 import org.hisp.dhis.common.adapter.DataElementXmlAdapter;
 import org.hisp.dhis.common.adapter.DataSetXmlAdapter;
 import org.hisp.dhis.common.adapter.IndicatorXmlAdapter;
@@ -67,14 +68,6 @@ public class Chart
     public static final String DIMENSION_PERIOD_DATAELEMENT = "period_dataElement";
     public static final String DIMENSION_ORGANISATIONUNIT_DATAELEMENT = "organisationUnit_dataElement";
     public static final String DIMENSION_DATAELEMENT_PERIOD = "dataElement_period";
-    public static final String DIMENSION_PERIOD_COMPLETENESS = "period_completeness";
-    public static final String DIMENSION_ORGANISATIONUNIT_COMPLETENESS = "organisationUnit_completeness";
-    public static final String DIMENSION_COMPLETENESS_PERIOD = "completeness_period";
-
-    public static final String TYPE_BAR3D = "bar3d";
-    public static final String TYPE_STACKED_BAR3D = "stackedBar3d";
-    public static final String TYPE_LINE3D = "line3d";
-    public static final String TYPE_PIE3D = "pie3d";
 
     public static final String SIZE_NORMAL = "normal";
     public static final String SIZE_WIDE = "wide";
@@ -98,10 +91,6 @@ public class Chart
 
     private String type;
 
-    private String size;
-
-    private String dimension;
-
     private String series;
 
     private String category;
@@ -109,10 +98,6 @@ public class Chart
     private String filter;
 
     private boolean hideLegend;
-
-    private boolean verticalLabels;
-
-    private boolean horizontalPlotOrientation;
 
     private boolean regression;
 
@@ -210,7 +195,98 @@ public class Chart
             addChartGroup( group );
         }
     }
+    
+    public List<NameableObject> series()
+    {
+        return dimensionToList( series );
+    }
+    
+    public List<NameableObject> category()
+    {
+        return dimensionToList( category );
+    }
+    
+    public NameableObject filter()
+    {
+        List<NameableObject> list = dimensionToList( filter );
+        
+        return list != null && !list.isEmpty() ? list.iterator().next() : null;
+    }
 
+    public String getTitle()
+    {
+        if ( DIMENSION_PERIOD.equals( filter ) )
+        {
+            return format.formatPeriod( getAllPeriods().get( 0 ) );
+        }
+        
+        return filter().getName();
+    }
+    
+    private List<NameableObject> dimensionToList( String dimension )
+    {
+        List<NameableObject> list = new ArrayList<NameableObject>();
+        
+        if ( DIMENSION_DATA.equals( dimension ) )
+        {
+            list.addAll( getDataElements() );
+            list.addAll( getIndicators() );
+        }
+        else if ( DIMENSION_PERIOD.equals( dimension ) )
+        {
+            namePeriods( getAllPeriods(), format );
+            
+            list.addAll( getAllPeriods() );
+        }
+        else if ( DIMENSION_ORGANISATIONUNIT.equals( dimension ) )
+        {
+            list.addAll( getAllOrganisationUnits() );
+        }
+        
+        return list;
+    }
+    
+    private void namePeriods( List<Period> periods, I18nFormat format )
+    {
+        for ( Period period : periods )
+        {
+            period.setName( format.formatPeriod( period ) );
+        }
+    }
+    
+    /**
+     * TODO This method is a temporary hack while we phase out the old chart UI.
+     */
+    public String getDimension()
+    {
+        if ( DIMENSION_DATA.equals( series ) && DIMENSION_PERIOD.equals( category ) && !indicators.isEmpty() )
+        {
+            return DIMENSION_PERIOD_INDICATOR;
+        }
+        else if ( DIMENSION_DATA.equals( series ) && DIMENSION_ORGANISATIONUNIT.equals( category ) && !indicators.isEmpty() )
+        {
+            return DIMENSION_ORGANISATIONUNIT_INDICATOR;
+        }
+        else if ( DIMENSION_PERIOD.equals( series ) && DIMENSION_DATA.equals( category ) && !indicators.isEmpty() )
+        {
+            return DIMENSION_INDICATOR_PERIOD;
+        }
+        else if ( DIMENSION_DATA.equals( series ) && DIMENSION_PERIOD.equals( category ) )
+        {
+            return DIMENSION_PERIOD_DATAELEMENT;
+        }
+        else if ( DIMENSION_DATA.equals( series ) && DIMENSION_ORGANISATIONUNIT.equals( category ) )
+        {
+            return DIMENSION_ORGANISATIONUNIT_DATAELEMENT;
+        }
+        else if ( DIMENSION_PERIOD.equals( series ) && DIMENSION_DATA.equals( category ) )
+        {
+            return DIMENSION_DATAELEMENT_PERIOD;
+        }
+        
+        return null;
+    }
+    
     // -------------------------------------------------------------------------
     // hashCode, equals, toString
     // -------------------------------------------------------------------------
@@ -254,19 +330,33 @@ public class Chart
     // Logic
     // -------------------------------------------------------------------------
 
+    /**
+     * Sets all dimensions for this chart.
+     * 
+     * @param series the series dimension.
+     * @param category the category dimension.
+     * @param filter the filter dimension.
+     */
+    public void setDimensions( String series, String category, String filter )
+    {
+        this.series = series;
+        this.category = category;
+        this.filter = filter;
+    }
+    
+    public boolean hasIndicators()
+    {
+        return indicators != null && indicators.size() > 0;
+    }
+    
+    public boolean hasDataElements()
+    {
+        return dataElements != null && dataElements.size() > 0;
+    }
+    
     public boolean isType( String type )
     {
         return this.type != null && this.type.equals( type );
-    }
-
-    public boolean isSize( String size )
-    {
-        return this.size != null && this.size.equals( size );
-    }
-
-    public boolean isDimension( String dimension )
-    {
-        return this.dimension != null && this.dimension.equals( dimension );
     }
 
     public int getWidth()
@@ -321,30 +411,6 @@ public class Chart
 
     @XmlElement
     @JsonProperty
-    public String getSize()
-    {
-        return size;
-    }
-
-    public void setSize( String size )
-    {
-        this.size = size;
-    }
-
-    @XmlElement
-    @JsonProperty
-    public String getDimension()
-    {
-        return dimension;
-    }
-
-    public void setDimension( String dimension )
-    {
-        this.dimension = dimension;
-    }
-
-    @XmlElement
-    @JsonProperty
     public String getSeries()
     {
         return series;
@@ -389,30 +455,6 @@ public class Chart
     public void setHideLegend( boolean hideLegend )
     {
         this.hideLegend = hideLegend;
-    }
-
-    @XmlElement
-    @JsonProperty
-    public boolean isVerticalLabels()
-    {
-        return verticalLabels;
-    }
-
-    public void setVerticalLabels( boolean verticalLabels )
-    {
-        this.verticalLabels = verticalLabels;
-    }
-
-    @XmlElement
-    @JsonProperty
-    public boolean isHorizontalPlotOrientation()
-    {
-        return horizontalPlotOrientation;
-    }
-
-    public void setHorizontalPlotOrientation( boolean horizontalPlotOrientation )
-    {
-        this.horizontalPlotOrientation = horizontalPlotOrientation;
     }
 
     @XmlElement

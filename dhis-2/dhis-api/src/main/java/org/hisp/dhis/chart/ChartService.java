@@ -60,7 +60,7 @@ public interface ChartService
     JFreeChart getJFreeOrganisationUnitChart( Indicator indicator, OrganisationUnit parent, boolean title, I18nFormat format );
 
     JFreeChart getJFreeChart( List<Indicator> indicators, List<DataElement> dataElements, List<DataSet> dataSets, List<Period> periods,
-                              List<OrganisationUnit> organisationUnits, String dimension, boolean regression, I18nFormat format );
+                              List<OrganisationUnit> organisationUnits, String series, String category, String filter, boolean regression, I18nFormat format );
 
     JFreeChart getJFreeChart( String name, PlotOrientation orientation, CategoryLabelPositions labelPositions,
                               Map<String, Double> categoryValues );

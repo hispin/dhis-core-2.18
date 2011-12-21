@@ -67,11 +67,7 @@ public class ChartImporter
     {
         match.setName( object.getName() );
         match.setType( object.getType() );
-        match.setSize( object.getSize() );
-        match.setDimension( object.getDimension() );
         match.setHideLegend( object.isHideLegend() );
-        match.setVerticalLabels( object.isVerticalLabels() );
-        match.setHorizontalPlotOrientation( object.isHorizontalPlotOrientation() );
         match.setRegression( object.isRegression() );        
 
         match.getRelatives().setReportingMonth( object.getRelatives().isReportingMonth() );
@@ -102,23 +98,7 @@ public class ChartImporter
         {
             return false;
         }
-        if ( !isSimiliar( object.getSize(), existing.getSize() ) || ( isNotNull( object.getSize(), existing.getSize() ) && !object.getSize().equals( existing.getSize() ) ) )
-        {
-            return false;
-        }
-        if ( !isSimiliar( object.getDimension(), existing.getDimension() ) || ( isNotNull( object.getDimension(), existing.getDimension() ) && !object.getDimension().equals( existing.getDimension() ) ) )
-        {
-            return false;
-        }
         if ( object.isHideLegend() != existing.isHideLegend() )
-        {
-            return false;
-        }
-        if ( object.isVerticalLabels() != existing.isVerticalLabels() )
-        {
-            return false;
-        }
-        if ( object.isHorizontalPlotOrientation() != existing.isHorizontalPlotOrientation() )
         {
             return false;
         }

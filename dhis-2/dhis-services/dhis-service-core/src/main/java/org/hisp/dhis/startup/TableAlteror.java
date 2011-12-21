@@ -224,7 +224,7 @@ public class TableAlteror
 
         executeSql( "ALTER TABLE section DROP CONSTRAINT section_name_key" );
         executeSql( "UPDATE patientattribute set inheritable=false where inheritable is null" );
-        executeSql( "UPDATE dataelement set numbertype='number' where numbertype is null and valuetype='int'" );
+        executeSql( "UPDATE dataelement SET numbertype='number' where numbertype is null and valuetype='int'" );
 
        // revert prepare aggregate*Value tables for offline diffs
 
@@ -235,6 +235,30 @@ public class TableAlteror
         // program
         
         executeSql( "ALTER TABLE programinstance ALTER COLUMN patientid DROP NOT NULL" );
+
+        // migrate charts from dimension to category, series, filter
+        
+        executeSql( "UPDATE chart SET series='PERIOD', category='DATA', filter='ORGANISATIONUNIT' WHERE dimension='indicator'" );
+        executeSql( "UPDATE chart SET series='DATA', category='ORGANISATIONUNIT', filter='PERIOD' WHERE dimension='organisationUnit'" );
+        executeSql( "UPDATE chart SET series='PERIOD', category='DATA', filter='ORGANISATIONUNIT' WHERE dimension='dataElement_period'" );
+        executeSql( "UPDATE chart SET series='DATA', category='ORGANISATIONUNIT', filter='PERIOD' WHERE dimension='organisationUnit_dataElement'" );
+        executeSql( "UPDATE chart SET series='DATA', category='PERIOD', filter='ORGANISATIONUNIT' WHERE dimension='period'" );
+        executeSql( "UPDATE chart SET series='DATA', category='PERIOD', filter='ORGANISATIONUNIT' WHERE dimension='period_dataElement'" );
+
+        executeSql( "UPDATE chart SET type='BAR' where type='bar'" );
+        executeSql( "UPDATE chart SET type='BAR' where type='bar3d'" );
+        executeSql( "UPDATE chart SET type='STACKEDBAR' where type='stackedBar'" );
+        executeSql( "UPDATE chart SET type='STACKEDBAR' where type='stackedBar3d'" );
+        executeSql( "UPDATE chart SET type='LINE' where type='line'" );
+        executeSql( "UPDATE chart SET type='LINE' where type='line3d'" );
+        executeSql( "UPDATE chart SET type='PIE' where type='pie'" );
+        executeSql( "UPDATE chart SET type='PIE' where type='pie3d'" );
+
+        executeSql( "ALTER TABLE chart RENAME COLUMN title TO name" );
+        executeSql( "ALTER TABLE chart ALTER COLUMN dimension DROP NOT NULL" );
+        executeSql( "ALTER TABLE chart DROP COLUMN size" );
+        executeSql( "ALTER TABLE chart DROP COLUMN verticallabels" );
+        executeSql( "ALTER TABLE chart DROP COLUMN horizontalplotorientation" );
         
         // remove outdated relative periods
         
@@ -261,9 +285,6 @@ public class TableAlteror
         executeSql( "ALTER TABLE chart DROP COLUMN last12individualmonths" );
         executeSql( "ALTER TABLE chart DROP COLUMN individualmonthsthisyear" );
         executeSql( "ALTER TABLE chart DROP COLUMN individualquartersthisyear" );
-        executeSql( "ALTER TABLE chart RENAME COLUMN title TO name" );
-        executeSql( "ALTER TABLE chart ALTER COLUMN dimension DROP NOT NULL" );
-        executeSql( "ALTER TABLE chart DROP COLUMN size" );
 
         executeSql( "ALTER TABLE datamartexport DROP COLUMN last3months" );
         executeSql( "ALTER TABLE datamartexport DROP COLUMN last6months" );

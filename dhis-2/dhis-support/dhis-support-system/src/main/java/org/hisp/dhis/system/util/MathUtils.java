@@ -43,6 +43,7 @@ import org.nfunk.jep.JEP;
 public class MathUtils
 {
     public static final double INVALID = -1.0;
+    public static final Double ZERO = new Double( 0 );
     
     private static final double TOLERANCE = 0.01; 
     

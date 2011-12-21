@@ -28,9 +28,7 @@
 package org.hisp.dhis.patientchart;
 
 import static org.hisp.dhis.chart.Chart.TYPE_BAR;
-import static org.hisp.dhis.chart.Chart.TYPE_BAR3D;
 import static org.hisp.dhis.chart.Chart.TYPE_LINE;
-import static org.hisp.dhis.chart.Chart.TYPE_LINE3D;
 
 import java.awt.Color;
 import java.awt.Font;
@@ -50,9 +48,7 @@ import org.jfree.chart.plot.CategoryPlot;
 import org.jfree.chart.plot.DatasetRenderingOrder;
 import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.chart.renderer.category.BarRenderer;
-import org.jfree.chart.renderer.category.BarRenderer3D;
 import org.jfree.chart.renderer.category.LineAndShapeRenderer;
-import org.jfree.chart.renderer.category.LineRenderer3D;
 import org.jfree.data.category.CategoryDataset;
 import org.jfree.data.category.DefaultCategoryDataset;
 import org.springframework.transaction.annotation.Transactional;
@@ -154,9 +150,7 @@ public class DefaultPatientChartService
     private JFreeChart getJFreeChart( PatientChart patientChart )
     {
         final BarRenderer barRenderer = getBarRenderer();
-        final BarRenderer bar3dRenderer = getBar3DRenderer();
         final LineAndShapeRenderer lineRenderer = getLineRenderer();
-        final LineRenderer3D line3dRenderer = getLineRenderer3D();
 
         // ---------------------------------------------------------------------
         // Plot
@@ -169,14 +163,6 @@ public class DefaultPatientChartService
         if ( patientChart.isType( TYPE_LINE ) )
         {
             plot = new CategoryPlot( dataSets[0], new CategoryAxis(), new NumberAxis(), lineRenderer );
-        }
-        if ( patientChart.isType( TYPE_LINE3D ) )
-        {
-            plot = new CategoryPlot( dataSets[0], new CategoryAxis(), new NumberAxis(), line3dRenderer );
-        }
-        else if ( patientChart.isType( TYPE_BAR3D ) )
-        {
-            plot = new CategoryPlot( dataSets[0], new CategoryAxis(), new NumberAxis(), bar3dRenderer );
         }
         else if ( patientChart.isType( TYPE_BAR ) )
         {
@@ -234,44 +220,11 @@ public class DefaultPatientChartService
     }
 
     /**
-     * Returns a bar3d renderer.
-     */
-    private BarRenderer getBar3DRenderer()
-    {
-        BarRenderer3D renderer = new BarRenderer3D();
-
-        renderer.setMaximumBarWidth( 0.07 );
-
-        for ( int i = 0; i < colors.length; i++ )
-        {
-            renderer.setSeriesPaint( i, colors[i] );
-            renderer.setShadowVisible( false );
-        }
-
-        return renderer;
-    }
-
-    /**
      * Returns a line and shape renderer.
      */
     private LineAndShapeRenderer getLineRenderer()
     {
         LineAndShapeRenderer renderer = new LineAndShapeRenderer();
-
-        for ( int i = 0; i < colors.length; i++ )
-        {
-            renderer.setSeriesPaint( i, colors[i] );
-        }
-
-        return renderer;
-    }
-
-    /**
-     * Returns a line3d renderer.
-     */
-    private LineRenderer3D getLineRenderer3D()
-    {
-        LineRenderer3D renderer = new LineRenderer3D();
 
         for ( int i = 0; i < colors.length; i++ )
         {

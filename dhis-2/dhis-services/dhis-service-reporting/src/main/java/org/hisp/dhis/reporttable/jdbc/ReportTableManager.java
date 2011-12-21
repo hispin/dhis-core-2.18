@@ -29,6 +29,7 @@ package org.hisp.dhis.reporttable.jdbc;
 
 import java.util.Map;
 
+import org.hisp.dhis.chart.Chart;
 import org.hisp.dhis.reporttable.ReportTable;
 
 /**
@@ -40,9 +41,16 @@ public interface ReportTableManager
     String ID = ReportTableManager.class.getName();
     
     /**
-     * Generates a map with a key identifiying the dimensions of each value.
+     * Generates a map with a key identifying the dimensions of each value.
      * 
      * @param reportTable the ReportTable for which to create the value map.
      */
     Map<String, Double> getAggregatedValueMap( ReportTable reportTable );
+
+    /**
+     * Generates a map with a key identifying the dimensions of each value.
+     * 
+     * @param chart the Chart for which to create the value map.
+     */
+    Map<String, Double> getAggregatedValueMap( Chart chart );
 }

@@ -35,6 +35,7 @@ import java.util.Map;
 
 import org.amplecode.quick.StatementHolder;
 import org.amplecode.quick.StatementManager;
+import org.hisp.dhis.chart.Chart;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryOption;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
@@ -45,6 +46,8 @@ import org.hisp.dhis.period.Period;
 import org.hisp.dhis.reporttable.ReportTable;
 import org.hisp.dhis.system.util.ConversionUtils;
 import org.hisp.dhis.system.util.TextUtils;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.support.rowset.SqlRowSet;
 
 /**
  * @author Lars Helge Overland
@@ -63,6 +66,13 @@ public class JDBCReportTableManager
     {
         this.statementManager = statementManager;
     }
+    
+    private JdbcTemplate jdbcTemplate;
+
+    public void setJdbcTemplate( JdbcTemplate jdbcTemplate )
+    {
+        this.jdbcTemplate = jdbcTemplate;
+    }
 
     // -------------------------------------------------------------------------
     // ReportTableManager implementation
@@ -70,7 +80,7 @@ public class JDBCReportTableManager
 
     public Map<String, Double> getAggregatedValueMap( ReportTable reportTable )
     {
-        // TODO move agg value methods to agg datavalueservice and move this method to service layer?
+        // TODO use jdbc template
 
         StatementHolder holder = statementManager.getHolder();
 
@@ -195,5 +205,58 @@ public class JDBCReportTableManager
         {
             holder.close();
         }
+    }
+
+    public Map<String, Double> getAggregatedValueMap( Chart chart )
+    {
+        // A bit misplaced but we will merge chart and report table soon
+
+        Map<String, Double> map = new HashMap<String, Double>();
+
+        String dataElementIds = TextUtils.getCommaDelimitedString( 
+            ConversionUtils.getIdentifiers( DataElement.class, chart.getDataElements() ) );
+        String indicatorIds = TextUtils.getCommaDelimitedString( 
+            ConversionUtils.getIdentifiers( Indicator.class, chart.getIndicators() ) );
+        String periodIds = TextUtils.getCommaDelimitedString( 
+            ConversionUtils.getIdentifiers( Period.class, chart.getAllPeriods() ) );
+        String unitIds = TextUtils.getCommaDelimitedString( 
+            ConversionUtils.getIdentifiers( OrganisationUnit.class, chart.getAllOrganisationUnits() ) );
+
+        if ( chart.hasDataElements() )
+        {
+            final String sql = "SELECT dataelementid, periodid, organisationunitid, SUM(value) FROM aggregateddatavalue " + 
+                "WHERE dataelementid IN (" + dataElementIds + ") AND periodid IN (" + periodIds + ") AND organisationunitid IN (" + unitIds + ") " + 
+                "GROUP BY dataelementid, periodid, organisationunitid"; // Sum of category option combos
+
+            SqlRowSet rowSet = jdbcTemplate.queryForRowSet( sql );
+            
+            while ( rowSet.next() )
+            {
+                String id = getIdentifier( getIdentifier( DataElement.class, rowSet.getInt( 1 ) ),
+                    getIdentifier( Period.class, rowSet.getInt( 2 ) ),
+                    getIdentifier( OrganisationUnit.class, rowSet.getInt( 3 ) ) );
+
+                map.put( id, rowSet.getDouble( 4 ) );
+            }
+        }
+        
+        if ( chart.hasIndicators() )
+        {
+            final String sql = "SELECT indicatorid, periodid, organisationunitid, value FROM aggregatedindicatorvalue " + 
+                "WHERE indicatorid IN (" + indicatorIds + ") AND periodid IN (" + periodIds + ") AND organisationunitid IN (" + unitIds + ")";
+
+            SqlRowSet rowSet = jdbcTemplate.queryForRowSet( sql );
+            
+            while ( rowSet.next() )
+            {
+                String id = getIdentifier( getIdentifier( Indicator.class, rowSet.getInt( 1 ) ),
+                    getIdentifier( Period.class, rowSet.getInt( 2 ) ),
+                    getIdentifier( OrganisationUnit.class, rowSet.getInt( 3 ) ) );
+
+                map.put( id, rowSet.getDouble( 4 ) );
+            }
+        }
+        
+        return map;
     }
 }
