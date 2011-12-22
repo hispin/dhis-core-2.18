@@ -5,8 +5,8 @@
   >
 
   <xsl:template match="d:report">
-    <div class="report">
-      <h2> <xsl:value-of select="@name" /> </h2>
+  <div class="report">
+    <h2> <xsl:value-of select="@name" /> </h2>
 	  
 	  <table>
 		<tr>
@@ -24,21 +24,30 @@
 		</tr>
 	  </table><br/>
 	  
-      <table>
-        <tr>
-          <td>ID</td>
-          <td> <xsl:value-of select="@id" /> </td>
-        </tr>
-        <tr>
-          <td>Last Updated</td>
-          <td> <xsl:value-of select="@lastUpdated" /> </td>
-        </tr>
-        <tr>
-          <td>Code</td>
-          <td> <xsl:value-of select="@code" /> </td>
-        </tr>
-      </table>
-    </div>
+    <table>
+      <tr>
+        <td>ID</td>
+        <td> <xsl:value-of select="@id" /> </td>
+      </tr>
+      <tr>
+        <td>Last Updated</td>
+        <td> <xsl:value-of select="@lastUpdated" /> </td>
+      </tr>
+      <tr>
+        <td>Code</td>
+        <td> <xsl:value-of select="@code" /> </td>
+      </tr>
+    </table>
+
+    <xsl:apply-templates select="d:reportTable" mode="short"/>
+  </div>
+  </xsl:template>
+
+  <xsl:template match="d:reportTable" mode="short">
+    <h3>ReportTable</h3>
+    <table class="reportTable">
+      <xsl:apply-templates select="." mode="row"/>
+    </table>
   </xsl:template>
 
 </xsl:stylesheet>

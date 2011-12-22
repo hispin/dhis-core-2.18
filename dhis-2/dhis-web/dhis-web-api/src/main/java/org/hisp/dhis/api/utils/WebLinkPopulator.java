@@ -1066,6 +1066,7 @@ public class WebLinkPopulator
 
         if ( root )
         {
+            populateIdentifiableObject( report.getReportTable() );
         }
     }
 

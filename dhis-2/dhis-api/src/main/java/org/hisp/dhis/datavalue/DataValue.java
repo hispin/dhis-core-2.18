@@ -27,14 +27,14 @@ package org.hisp.dhis.datavalue;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.io.Serializable;
-import java.util.Date;
-
 import org.hisp.dhis.common.ImportableObject;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.period.Period;
+
+import java.io.Serializable;
+import java.util.Date;
 
 /**
  * @author Kristian Nordal
@@ -50,7 +50,7 @@ public class DataValue
 
     public static final String TRUE = "true";
     public static final String FALSE = "false";
-    
+
     /**
      * Part of the DataValue's composite ID
      */
@@ -78,9 +78,9 @@ public class DataValue
     private Date timestamp;
 
     private String comment;
-    
+
     private Boolean followup;
-    
+
     // -------------------------------------------------------------------------
     // Constructors
     // -------------------------------------------------------------------------
@@ -122,7 +122,7 @@ public class DataValue
     }
 
     public DataValue( DataElement dataElement, Period period, OrganisationUnit source, String value, String storedBy,
-        Date timestamp, String comment )
+                      Date timestamp, String comment )
     {
         this.dataElement = dataElement;
         this.period = period;
@@ -132,9 +132,9 @@ public class DataValue
         this.timestamp = timestamp;
         this.comment = comment;
     }
-    
+
     public DataValue( DataElement dataElement, Period period, OrganisationUnit source, String value, String storedBy,
-        Date timestamp, String comment, DataElementCategoryOptionCombo optionCombo )
+                      Date timestamp, String comment, DataElementCategoryOptionCombo optionCombo )
     {
         this.dataElement = dataElement;
         this.period = period;
@@ -149,12 +149,12 @@ public class DataValue
     // -------------------------------------------------------------------------
     // Dimension
     // -------------------------------------------------------------------------
-    
+
     public String getMeasure()
     {
         return value;
     }
-    
+
     public String getName()
     {
         throw new UnsupportedOperationException();
@@ -166,10 +166,10 @@ public class DataValue
 
     public boolean isZero()
     {
-        return dataElement != null && dataElement.getType().equals( DataElement.VALUE_TYPE_INT ) 
+        return dataElement != null && dataElement.getType().equals( DataElement.VALUE_TYPE_INT )
             && value != null && new Double( value ).intValue() == 0;
     }
-    
+
     public boolean isNullValue()
     {
         return value == null && comment == null;
@@ -204,7 +204,7 @@ public class DataValue
 
         final DataValue other = (DataValue) o;
 
-        return dataElement.equals( other.getDataElement() ) && optionCombo.equals( other.getOptionCombo() ) 
+        return dataElement.equals( other.getDataElement() ) && optionCombo.equals( other.getOptionCombo() )
             && period.equals( other.getPeriod() ) && source.equals( other.getSource() );
     }
 
@@ -255,7 +255,7 @@ public class DataValue
     {
         this.source = source;
     }
-    
+
     public DataElementCategoryOptionCombo getOptionCombo()
     {
         return optionCombo;
