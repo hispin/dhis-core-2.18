@@ -83,19 +83,13 @@
 
     <component name="relatives">
       <property name="reportingMonth" />
-      <property name="reportingBimonth" />
       <property name="reportingQuarter" />
-      <property name="monthsThisYear" />
-      <property name="quartersThisYear" />
+      <property name="lastSixMonth" />
       <property name="thisYear" />
-      <property name="monthsLastYear" />
-      <property name="quartersLastYear" />
-      <property name="lastYear" />
-      <property name="last5Years" />
       <property name="last12Months" />
-      <property name="last6BiMonths" />
       <property name="last4Quarters" />
       <property name="last2SixMonths" />
+      <property name="last5Years" />
     </component>
 
     <property name="userOrganisationUnit" not-null="true" />

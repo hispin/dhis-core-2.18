@@ -248,27 +248,34 @@ public class SaveChartAction
         this.selectedDataSets = selectedDataSets;
     }
 
-    private boolean reportingMonth;
+    private boolean lastMonth;
 
-    public void setReportingMonth( boolean reportingMonth )
+    public void setLastMonth( boolean lastMonth )
     {
-        this.reportingMonth = reportingMonth;
+        this.lastMonth = lastMonth;
     }
 
-    private boolean reportingBimonth;
+    private boolean last12Months;
 
-    public void setReportingBimonth( boolean reportingBimonth )
+    public void setLast12Months( boolean last12Months )
     {
-        this.reportingBimonth = reportingBimonth;
+        this.last12Months = last12Months;
     }
 
-    private boolean reportingQuarter;
+    private boolean lastQuarter;
 
-    public void setReportingQuarter( boolean reportingQuarter )
+    public void setLastQuarter( boolean lastQuarter )
     {
-        this.reportingQuarter = reportingQuarter;
+        this.lastQuarter = lastQuarter;
     }
-    
+
+    private boolean last4Quarters;
+
+    public void setLast4Quarters( boolean last4Quarters )
+    {
+        this.last4Quarters = last4Quarters;
+    }
+
     private boolean lastSixMonth;
 
     public void setLastSixMonth( boolean lastSixMonth )
@@ -276,18 +283,11 @@ public class SaveChartAction
         this.lastSixMonth = lastSixMonth;
     }
 
-    private boolean monthsThisYear;
+    private boolean last2SixMonths;
 
-    public void setMonthsThisYear( boolean monthsThisYear )
+    public void setLast2SixMonths( boolean last2SixMonths )
     {
-        this.monthsThisYear = monthsThisYear;
-    }
-
-    private boolean quartersThisYear;
-
-    public void setQuartersThisYear( boolean quartersThisYear )
-    {
-        this.quartersThisYear = quartersThisYear;
+        this.last2SixMonths = last2SixMonths;
     }
 
     private boolean thisYear;
@@ -297,25 +297,11 @@ public class SaveChartAction
         this.thisYear = thisYear;
     }
 
-    private boolean monthsLastYear;
+    private boolean last5Years;
 
-    public void setMonthsLastYear( boolean monthsLastYear )
+    public void setLast5Years( boolean last5Years )
     {
-        this.monthsLastYear = monthsLastYear;
-    }
-
-    private boolean quartersLastYear;
-
-    public void setQuartersLastYear( boolean quartersLastYear )
-    {
-        this.quartersLastYear = quartersLastYear;
-    }
-
-    private boolean lastYear;
-
-    public void setLastYear( boolean lastYear )
-    {
-        this.lastYear = lastYear;
+        this.last5Years = last5Years;
     }
 
     // -------------------------------------------------------------------------
@@ -374,10 +360,17 @@ public class SaveChartAction
         chart.setPeriods( periods );
         chart.setOrganisationUnits( organisationUnits );
 
-        RelativePeriods relatives = new RelativePeriods( reportingMonth, reportingBimonth, reportingQuarter, lastSixMonth,
-            monthsThisYear, quartersThisYear, thisYear, monthsLastYear, quartersLastYear, lastYear, false, false, false, false, false );
-
-        chart.setRelatives( relatives );
+        RelativePeriods rp = new RelativePeriods();
+        rp.setReportingMonth( lastMonth );
+        rp.setLast12Months( last12Months );
+        rp.setReportingQuarter( lastQuarter );
+        rp.setLast4Quarters( last4Quarters );
+        rp.setLastSixMonth( lastSixMonth );
+        rp.setLast2SixMonths( last2SixMonths );
+        rp.setThisYear( thisYear );
+        rp.setLast5Years( last5Years );
+        
+        chart.setRelatives( rp );
 
         chartService.saveChart( chart );
 
