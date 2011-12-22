@@ -779,7 +779,6 @@ public class DefaultChartService
                     if ( !Double.isNaN( value ) )
                     {
                         regressionDataSet.addValue( value, TREND_PREFIX + series.getShortName(), category.getShortName() );
-
                     }
                 }
             }
