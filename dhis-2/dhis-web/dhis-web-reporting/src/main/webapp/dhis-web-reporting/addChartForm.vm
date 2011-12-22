@@ -88,10 +88,10 @@
     	<td><label for="type">$i18n.getString( "chart_type" )</label></td>
     	<td>
     		<select id="type" name="type" style="width:300px">
-    			<option value="BAR"#if ( $!chart.type == "bar" ) selected#end>$i18n.getString( "bar_chart" )</option>
-    			<option value="LINE"#if ( $!chart.type == "line" ) selected#end>$i18n.getString( "line_chart" )</option>
-    			<option value="PIE"#if ( $!chart.type == "pie" ) selected#end>$i18n.getString( "pie_chart" )</option>
-    			<option value="STACKEDBAR"#if ( $!chart.type == "stackedBar" ) selected#end>$i18n.getString( "stacked_bar_chart" )</option>
+    			<option value="BAR"#if ( $!chart.type == "BAR" ) selected#end>$i18n.getString( "bar_chart" )</option>
+    			<option value="LINE"#if ( $!chart.type == "LINE" ) selected#end>$i18n.getString( "line_chart" )</option>
+    			<option value="PIE"#if ( $!chart.type == "PIE" ) selected#end>$i18n.getString( "pie_chart" )</option>
+    			<option value="STACKEDBAR"#if ( $!chart.type == "STACKEDBAR" ) selected#end>$i18n.getString( "stacked_bar_chart" )</option>
 		    </select>
 	    </td>
     </tr>
