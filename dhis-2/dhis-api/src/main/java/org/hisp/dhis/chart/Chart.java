@@ -49,6 +49,7 @@ import org.hisp.dhis.user.User;
 import javax.xml.bind.annotation.*;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -226,18 +227,19 @@ public class Chart
         
         if ( DIMENSION_DATA.equals( dimension ) )
         {
-            list.addAll( getDataElements() );
-            list.addAll( getIndicators() );
+            list.addAll( dataElements );
+            list.addAll( indicators );
         }
         else if ( DIMENSION_PERIOD.equals( dimension ) )
         {
             namePeriods( getRelativePeriods(), format );
             
-            list.addAll( getRelativePeriods() );
+            list.addAll( relativePeriods );
         }
         else if ( DIMENSION_ORGANISATIONUNIT.equals( dimension ) )
         {
-            list.addAll( getAllOrganisationUnits() );
+            list.addAll( organisationUnits );
+            list.addAll( organisationUnit != null ? Arrays.asList( organisationUnit ) : new ArrayList<NameableObject>() );
         }
         
         return list;
