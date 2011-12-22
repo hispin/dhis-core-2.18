@@ -37,7 +37,7 @@
     </dependency>
     
     <!-- Web maintenance modules -->
-    <!--
+    
     <dependency>
       <groupId>org.hisp.dhis</groupId>
       <artifactId>dhis-web-maintenance-datadictionary</artifactId>
@@ -141,7 +141,6 @@
       <version>${project.version}</version>
       <type>war</type>
     </dependency>
-	-->
     <dependency>
       <groupId>org.hisp.dhis</groupId>
       <artifactId>dhis-web-reporting</artifactId>
