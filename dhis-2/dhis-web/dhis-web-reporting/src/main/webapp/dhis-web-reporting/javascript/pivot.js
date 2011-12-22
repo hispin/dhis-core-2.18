@@ -47,7 +47,8 @@ function getData()
     if ( organisationUnitId == -1 )
     {
         setHeaderDelayMessage( i18n_selected_organisation_unit );
-    } else
+    } 
+    else
     {
         clearGlobalVariables();
 
@@ -142,25 +143,28 @@ function viewChart( chartIndicators, chartDimension )
 
     if ( chartIndicators == "single" && chartDimension == "period" )
     {
-        url += "?indicatorId=" + currentIndicator + "&organisationUnitId=" + currentOrgunit
-                + "&dimension=period&regression=true";
+        url += "?indicatorId=" + currentIndicator + "&organisationUnitId=" + currentOrgunit + 
+               "&series=DATA&category=PERIOD&filter=ORGANISATIONUNIT&regression=true"
 
         for ( p in periods )
         {
             url += "&periodId=" + periods[p].id;
         }
-    } else if ( chartIndicators == "single" && chartDimension == "orgunit" )
+    } 
+    else if ( chartIndicators == "single" && chartDimension == "orgunit" )
     {
-        url += "?indicatorId=" + currentIndicator + "&periodId=" + currentPeriod
-                + "&dimension=organisationUnit&regression=false";
+        url += "?indicatorId=" + currentIndicator + "&periodId=" + currentPeriod + 
+               "&series=DATA&category=ORGANISATIONUNIT&filter=PERIOD";
 
         for ( o in orgunits )
         {
             url += "&organisationUnitId=" + orgunits[o].id;
         }
-    } else if ( chartIndicators == "all" && chartDimension == "period" )
+    } 
+    else if ( chartIndicators == "all" && chartDimension == "period" )
     {
-        url += "?organisationUnitId=" + currentOrgunit + "&dimension=period&regression=false&chartWidth=950";
+        url += "?organisationUnitId=" + currentOrgunit + 
+               "&series=DATA&category=PERIOD&filter=ORGANISATIONUNIT&chartWidth=950&regression=true";
 
         for ( i in indicators )
         {
@@ -173,9 +177,11 @@ function viewChart( chartIndicators, chartDimension )
         }
 
         chartWidth = 1000;
-    } else if ( chartIndicators == "all" && chartDimension == "orgunit" )
+    } 
+    else if ( chartIndicators == "all" && chartDimension == "orgunit" )
     {
-        url += "?periodId=" + currentPeriod + "&dimension=organisationUnit&regression=false&chartWidth=950";
+        url += "?periodId=" + currentPeriod + 
+               "&series=DATA&category=ORGANISATIONUNIT&filter=PERIOD&chartWidth=950";
 
         for ( i in indicators )
         {

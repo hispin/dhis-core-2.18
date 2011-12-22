@@ -288,7 +288,7 @@ public class DefaultChartService
     }
 
     public JFreeChart getJFreeChart( List<Indicator> indicators, List<DataElement> dataElements,
-                                     List<DataSet> dataSets, List<Period> periods, List<OrganisationUnit> organisationUnits, 
+                                     List<Period> periods, List<OrganisationUnit> organisationUnits, 
                                      String series, String category, String filter,
                                      boolean regression, I18nFormat format )
     {
@@ -300,7 +300,6 @@ public class DefaultChartService
         chart.setRegression( regression );
         chart.setIndicators( indicators );
         chart.setDataElements( dataElements );
-        chart.setDataSets( dataSets );
         chart.setRelativePeriods( periods );
         chart.setOrganisationUnits( organisationUnits );
         chart.setFormat( format );
@@ -759,7 +758,7 @@ public class DefaultChartService
                 
                 regularDataSet.addValue( value, series.getShortName(), category.getShortName() );
                 
-                if ( chart.isRegression() && !MathUtils.isEqual( value, MathUtils.ZERO ) )
+                if ( chart.isRegression() && value != null && !MathUtils.isEqual( value, MathUtils.ZERO ) )
                 {
                     regression.addData( categoryIndex, value );
                 }
