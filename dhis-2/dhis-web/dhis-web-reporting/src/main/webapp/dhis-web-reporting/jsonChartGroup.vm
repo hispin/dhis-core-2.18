@@ -1,7 +1,0 @@
-{ "chartGroup":
-  {
-    "id": "$!{chartGroup.id}",
-    "name": "$!encoder.jsonEncode( ${chartGroup.name} )",
-    "memberCount": "${chartGroup.getMembers().size()}"
-  }
-}
