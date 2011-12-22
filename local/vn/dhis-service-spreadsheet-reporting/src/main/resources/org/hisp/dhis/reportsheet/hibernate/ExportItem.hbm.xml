@@ -21,6 +21,7 @@
 		<property name="row" column="excelrow" not-null="true"/>
 		<property name="column" column="excelcolumn" not-null="true"/>
 		<property name="expression" column="itemexpression" not-null="true"/>
+		<property name="extraExpression" column="itemextraexpression"/>
 		<property name="periodType" column="periodtype" not-null="true"/>
 	
 	</class>

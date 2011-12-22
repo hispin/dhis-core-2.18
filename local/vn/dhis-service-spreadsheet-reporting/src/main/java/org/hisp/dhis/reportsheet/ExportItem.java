@@ -58,11 +58,21 @@ public class ExportItem
 
     public ExportItem( String name, String itemType, int row, int column, String expression )
     {
+        this.name = name;
+        this.row = row;
+        this.column = column;
         this.itemType = itemType;
+        this.expression = expression;
+    }
+
+    public ExportItem( String name, String itemType, int row, int column, String expression, String extraExpression )
+    {
+        this.name = name;
         this.row = row;
         this.column = column;
         this.expression = expression;
-        this.name = name;
+        this.extraExpression = extraExpression;
+        this.itemType = itemType;
     }
 
     // -------------------------------------------------------------------------
@@ -168,7 +178,7 @@ public class ExportItem
         public static final String DAILY = "daily";
 
         public static final String SO_FAR_THIS_MONTH = "so_far_this_month";
-        
+
         public static final String SO_FAR_THIS_QUARTER = "so_far_this_quarter";
 
         // Used for other report

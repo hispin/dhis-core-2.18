@@ -2100,8 +2100,8 @@ Ext.onReady( function() {
                                                     },
                                                     {
                                                         xtype: 'checkbox',
-                                                        paramName: 'lastYear',
-                                                        boxLabel: 'Last year'
+                                                        paramName: 'thisYear',
+                                                        boxLabel: 'This year'
                                                     },
                                                     {
                                                         xtype: 'checkbox',
