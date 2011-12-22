@@ -109,34 +109,4 @@ public interface ReportService
      * @return a Collection of Reports.
      */
     Collection<Report> getReports( final Collection<Integer> identifiers );
-
-    // -------------------------------------------------------------------------
-    // ReportGroup
-    // -------------------------------------------------------------------------
-
-    int addReportGroup( ReportGroup reportGroup );
-
-    void updateReportGroup( ReportGroup reportGroup );
-
-    void deleteReportGroup( ReportGroup reportGroup );
-
-    ReportGroup getReportGroup( int id );
-
-    ReportGroup getReportGroup( String uid );
-
-    ReportGroup getReportGroupByName( String name );
-
-    Collection<ReportGroup> getAllReportGroups();
-
-    Collection<ReportGroup> getReportGroups( final Collection<Integer> identifiers );
-
-    Collection<ReportGroup> getGroupsContainingReport( Report report );
-
-    int getReportGroupCount();
-
-    int getReportGroupCountByName( String name );
-
-    Collection<ReportGroup> getReportGroupsBetween( int first, int max );
-
-    Collection<ReportGroup> getReportGroupsBetweenByName( String name, int first, int max );
 }

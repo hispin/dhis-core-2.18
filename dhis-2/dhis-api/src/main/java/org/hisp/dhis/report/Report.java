@@ -27,20 +27,18 @@ package org.hisp.dhis.report;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
+
 import org.codehaus.jackson.annotate.JsonProperty;
 import org.codehaus.jackson.map.annotate.JsonSerialize;
 import org.hisp.dhis.common.BaseIdentifiableObject;
 import org.hisp.dhis.common.Dxf2Namespace;
 import org.hisp.dhis.common.adapter.ReportTableXmlAdapter;
 import org.hisp.dhis.reporttable.ReportTable;
-
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
-import java.util.HashSet;
-import java.util.Set;
 
 /**
  * @author Lars Helge Overland
@@ -61,8 +59,6 @@ public class Report
 
     private Boolean usingOrgUnitGroupSets;
 
-    private Set<ReportGroup> groups = new HashSet<ReportGroup>();
-
     // -------------------------------------------------------------------------
     // Constructors
     // -------------------------------------------------------------------------
@@ -81,34 +77,6 @@ public class Report
     // -------------------------------------------------------------------------
     // Logic
     // -------------------------------------------------------------------------
-
-    public void addReportGroup( ReportGroup group )
-    {
-        groups.add( group );
-        group.getMembers().add( this );
-    }
-
-    public void removeReportGroup( ReportGroup group )
-    {
-        groups.remove( group );
-        group.getMembers().remove( this );
-    }
-
-    public void updateReportGroups( Set<ReportGroup> updates )
-    {
-        for ( ReportGroup group : new HashSet<ReportGroup>( groups ) )
-        {
-            if ( !updates.contains( group ) )
-            {
-                removeReportGroup( group );
-            }
-        }
-
-        for ( ReportGroup group : updates )
-        {
-            addReportGroup( group );
-        }
-    }
 
     public boolean hasReportTable()
     {
@@ -197,15 +165,5 @@ public class Report
     public void setUsingOrgUnitGroupSets( Boolean usingOrgUnitGroupSets )
     {
         this.usingOrgUnitGroupSets = usingOrgUnitGroupSets;
-    }
-
-    public Set<ReportGroup> getGroups()
-    {
-        return groups;
-    }
-
-    public void setGroups( Set<ReportGroup> groups )
-    {
-        this.groups = groups;
     }
 }

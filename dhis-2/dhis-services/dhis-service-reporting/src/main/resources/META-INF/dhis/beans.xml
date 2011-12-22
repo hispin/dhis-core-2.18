@@ -25,16 +25,9 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
     <property name="cacheable" value="true" />
   </bean>
 
-  <bean id="org.hisp.dhis.reporttable.ReportTableGroupStore" class="org.hisp.dhis.hibernate.HibernateGenericStore">
-    <property name="clazz" value="org.hisp.dhis.reporttable.ReportTableGroup" />
-    <property name="sessionFactory" ref="sessionFactory" />
-    <property name="cacheable" value="true" />
-  </bean>
-
   <bean id="org.hisp.dhis.reporttable.ReportTableService" class="org.hisp.dhis.reporttable.impl.DefaultReportTableService">
     <property name="reportTableManager" ref="org.hisp.dhis.reporttable.jdbc.ReportTableManager" />
     <property name="reportTableStore" ref="org.hisp.dhis.reporttable.ReportTableStore" />
-    <property name="reportTableGroupStore" ref="org.hisp.dhis.reporttable.ReportTableGroupStore" />
     <property name="reportService" ref="org.hisp.dhis.report.ReportService" />
     <property name="periodService" ref="org.hisp.dhis.period.PeriodService" />
     <property name="organisationUnitService" ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
@@ -50,15 +43,8 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
     <property name="cacheable" value="true" />
   </bean>
 
-  <bean id="org.hisp.dhis.report.ReportGroupStore" class="org.hisp.dhis.hibernate.HibernateGenericStore">
-    <property name="clazz" value="org.hisp.dhis.report.ReportGroup" />
-    <property name="sessionFactory" ref="sessionFactory" />
-    <property name="cacheable" value="true" />
-  </bean>
-
   <bean id="org.hisp.dhis.report.ReportService" class="org.hisp.dhis.report.impl.DefaultReportService">
     <property name="reportStore" ref="org.hisp.dhis.report.ReportStore" />
-    <property name="reportGroupStore" ref="org.hisp.dhis.report.ReportGroupStore" />
     <property name="reportTableService" ref="org.hisp.dhis.reporttable.ReportTableService" />
     <property name="constantService" ref="org.hisp.dhis.constant.ConstantService" />
     <property name="statementManager" ref="statementManager" />
@@ -74,15 +60,8 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
     <property name="cacheable" value="true" />
   </bean>
 
-  <bean id="org.hisp.dhis.chart.ChartGroupStore" class="org.hisp.dhis.hibernate.HibernateGenericStore">
-    <property name="clazz" value="org.hisp.dhis.chart.ChartGroup" />
-    <property name="sessionFactory" ref="sessionFactory" />
-    <property name="cacheable" value="true" />
-  </bean>
-
   <bean id="org.hisp.dhis.chart.ChartService" class="org.hisp.dhis.chart.impl.DefaultChartService">
     <property name="chartStore" ref="org.hisp.dhis.chart.ChartStore" />
-    <property name="chartGroupStore" ref="org.hisp.dhis.chart.ChartGroupStore" />
     <property name="periodService" ref="org.hisp.dhis.period.PeriodService" />
     <property name="dataValueService" ref="org.hisp.dhis.datavalue.DataValueService" />
     <property name="minMaxDataElementService" ref="org.hisp.dhis.minmax.MinMaxDataElementService" />

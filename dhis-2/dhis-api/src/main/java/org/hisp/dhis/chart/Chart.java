@@ -27,6 +27,17 @@ package org.hisp.dhis.chart;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlElementWrapper;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
+
 import org.codehaus.jackson.annotate.JsonProperty;
 import org.codehaus.jackson.map.annotate.JsonSerialize;
 import org.hisp.dhis.common.BaseIdentifiableObject;
@@ -45,14 +56,6 @@ import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.RelativePeriods;
 import org.hisp.dhis.user.User;
-
-import javax.xml.bind.annotation.*;
-import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
 
 /**
  * @author Lars Helge Overland
@@ -111,8 +114,6 @@ public class Chart
 
     private String targetLineLabel;
 
-    private Set<ChartGroup> groups = new HashSet<ChartGroup>();
-
     private List<Indicator> indicators = new ArrayList<Indicator>();
 
     private List<DataElement> dataElements = new ArrayList<DataElement>();
@@ -166,34 +167,6 @@ public class Chart
     // Logic
     // -------------------------------------------------------------------------
 
-    public void addChartGroup( ChartGroup group )
-    {
-        groups.add( group );
-        group.getMembers().add( this );
-    }
-
-    public void removeChartGroup( ChartGroup group )
-    {
-        groups.remove( group );
-        group.getMembers().remove( this );
-    }
-
-    public void updateChartGroups( Set<ChartGroup> updates )
-    {
-        for ( ChartGroup group : new HashSet<ChartGroup>( groups ) )
-        {
-            if ( !updates.contains( group ) )
-            {
-                removeChartGroup( group );
-            }
-        }
-
-        for ( ChartGroup group : updates )
-        {
-            addChartGroup( group );
-        }
-    }
-    
     public List<NameableObject> series()
     {
         return dimensionToList( series );
@@ -639,16 +612,6 @@ public class Chart
     public void setAllOrganisationUnits( List<OrganisationUnit> allOrganisationUnits )
     {
         this.allOrganisationUnits = allOrganisationUnits;
-    }
-
-    public Set<ChartGroup> getGroups()
-    {
-        return groups;
-    }
-
-    public void setGroups( Set<ChartGroup> groups )
-    {
-        this.groups = groups;
     }
 
     @XmlElement

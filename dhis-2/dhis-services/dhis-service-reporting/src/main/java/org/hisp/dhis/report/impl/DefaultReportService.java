@@ -32,7 +32,6 @@ import java.sql.Connection;
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Map;
 
 import net.sf.jasperreports.engine.JasperCompileManager;
@@ -49,7 +48,6 @@ import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroupService;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.report.Report;
-import org.hisp.dhis.report.ReportGroup;
 import org.hisp.dhis.report.ReportService;
 import org.hisp.dhis.reporttable.ReportTable;
 import org.hisp.dhis.reporttable.ReportTableService;
@@ -76,13 +74,6 @@ public class DefaultReportService
     public void setReportStore( GenericIdentifiableObjectStore<Report> reportStore )
     {
         this.reportStore = reportStore;
-    }
-
-    private GenericIdentifiableObjectStore<ReportGroup> reportGroupStore;
-
-    public void setReportGroupStore( GenericIdentifiableObjectStore<ReportGroup> reportGroupStore )
-    {
-        this.reportGroupStore = reportGroupStore;
     }
 
     private ReportTableService reportTableService;
@@ -241,96 +232,5 @@ public class DefaultReportService
                 return identifiers.contains( object.getId() );
             }
         } );
-    }
-
-    // -------------------------------------------------------------------------
-    // ReportGroup
-    // -------------------------------------------------------------------------
-
-    public int addReportGroup( ReportGroup reportGroup )
-    {
-        return reportGroupStore.save( reportGroup );
-    }
-
-    public void updateReportGroup( ReportGroup reportGroup )
-    {
-        reportGroupStore.update( reportGroup );
-    }
-
-    public void deleteReportGroup( ReportGroup reportGroup )
-    {
-        reportGroupStore.delete( reportGroup );
-    }
-
-    public ReportGroup getReportGroup( int id )
-    {
-        return reportGroupStore.get( id );
-    }
-
-    public ReportGroup getReportGroup( String uid )
-    {
-        return reportGroupStore.getByUid( uid );
-    }
-
-    public ReportGroup getReportGroupByName( String name )
-    {
-        return reportGroupStore.getByName( name );
-    }
-
-    public Collection<ReportGroup> getAllReportGroups()
-    {
-        return reportGroupStore.getAll();
-    }
-
-    public Collection<ReportGroup> getReportGroups( final Collection<Integer> identifiers )
-    {
-        Collection<ReportGroup> groups = getAllReportGroups();
-
-        return identifiers == null ? groups : FilterUtils.filter( groups, new Filter<ReportGroup>()
-        {
-            public boolean retain( ReportGroup object )
-            {
-                return identifiers.contains( object.getId() );
-            }
-        } );
-    }
-
-    public Collection<ReportGroup> getGroupsContainingReport( Report report )
-    {
-        Collection<ReportGroup> groups = getAllReportGroups();
-
-        Iterator<ReportGroup> iterator = groups.iterator();
-
-        while ( iterator.hasNext() )
-        {
-            ReportGroup group = iterator.next();
-
-            if ( !group.getMembers().contains( report ) )
-            {
-                iterator.remove();
-            }
-        }
-
-        return groups;
-    }
-
-    public int getReportGroupCount()
-    {
-        return reportGroupStore.getCount();
-    }
-
-    public int getReportGroupCountByName( String name )
-    {
-        return reportGroupStore.getCountByName( name );
-    }
-
-    public Collection<ReportGroup> getReportGroupsBetween( int first, int max )
-    {
-        return reportGroupStore.getBetween( first, max );
-    }
-
-    public Collection<ReportGroup> getReportGroupsBetweenByName( String name, int first, int max )
-    {
-        return reportGroupStore.getBetweenByName( name, first, max );
     }
 }

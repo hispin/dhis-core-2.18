@@ -29,7 +29,6 @@ package org.hisp.dhis.system.deletion;
 
 import org.hisp.dhis.caseaggregation.CaseAggregationCondition;
 import org.hisp.dhis.chart.Chart;
-import org.hisp.dhis.chart.ChartGroup;
 import org.hisp.dhis.concept.Concept;
 import org.hisp.dhis.constant.Constant;
 import org.hisp.dhis.datadictionary.DataDictionary;
@@ -79,9 +78,7 @@ import org.hisp.dhis.programattributevalue.ProgramAttributeValue;
 import org.hisp.dhis.relationship.Relationship;
 import org.hisp.dhis.relationship.RelationshipType;
 import org.hisp.dhis.report.Report;
-import org.hisp.dhis.report.ReportGroup;
 import org.hisp.dhis.reporttable.ReportTable;
-import org.hisp.dhis.reporttable.ReportTableGroup;
 import org.hisp.dhis.user.User;
 import org.hisp.dhis.user.UserAuthorityGroup;
 import org.hisp.dhis.user.UserCredentials;
@@ -121,15 +118,6 @@ public abstract class DeletionHandler
     }
 
     public String allowDeleteChart( Chart chart )
-    {
-        return null;
-    }
-
-    public void deleteChartGroup( ChartGroup group )
-    {
-    }
-
-    public String allowDeleteChartGroup( ChartGroup group )
     {
         return null;
     }
@@ -377,29 +365,11 @@ public abstract class DeletionHandler
         return null;
     }
 
-    public void deleteReportGroup( ReportGroup group )
-    {
-    }
-
-    public String allowDeleteReportGroup( ReportGroup group )
-    {
-        return null;
-    }
-
     public void deleteReportTable( ReportTable reportTable )
     {
     }
 
     public String allowDeleteReportTable( ReportTable reportTable )
-    {
-        return null;
-    }
-
-    public void deleteReportTableGroup( ReportTableGroup group )
-    {
-    }
-
-    public String allowDeleteReportTableGroup( ReportTableGroup group )
     {
         return null;
     }

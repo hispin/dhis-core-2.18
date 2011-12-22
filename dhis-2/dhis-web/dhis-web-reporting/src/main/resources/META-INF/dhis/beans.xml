@@ -95,43 +95,6 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     <property name="chartService" ref="org.hisp.dhis.chart.ChartService" />
   </bean>
   
-  <!-- ChartGroups -->
-
-  <bean id="org.hisp.dhis.reporting.chartgroup.action.GetChartGroupAction" class="org.hisp.dhis.reporting.chartgroup.action.GetChartGroupAction"
-    scope="prototype">
-    <property name="chartService" ref="org.hisp.dhis.chart.ChartService" />
-  </bean>
-  
-  <bean id="org.hisp.dhis.reporting.chartgroup.action.GetChartGroupListAction" class="org.hisp.dhis.reporting.chartgroup.action.GetChartGroupListAction"
-    scope="prototype">
-    <property name="chartService" ref="org.hisp.dhis.chart.ChartService" />
-  </bean>
-
-  <bean id="org.hisp.dhis.reporting.chartgroup.action.ValidateChartGroupAction" class="org.hisp.dhis.reporting.chartgroup.action.ValidateChartGroupAction"
-    scope="prototype">
-    <property name="chartService" ref="org.hisp.dhis.chart.ChartService" />
-  </bean>
-  
-  <bean id="org.hisp.dhis.reporting.chartgroup.action.AddChartGroupAction" class="org.hisp.dhis.reporting.chartgroup.action.AddChartGroupAction"
-    scope="prototype">
-    <property name="chartService" ref="org.hisp.dhis.chart.ChartService" />
-  </bean>
-  
-  <bean id="org.hisp.dhis.reporting.chartgroup.action.ShowUpdateChartGroupFormAction" class="org.hisp.dhis.reporting.chartgroup.action.ShowUpdateChartGroupFormAction"
-    scope="prototype">
-    <property name="chartService" ref="org.hisp.dhis.chart.ChartService" />
-  </bean>
-  
-  <bean id="org.hisp.dhis.reporting.chartgroup.action.UpdateChartGroupAction" class="org.hisp.dhis.reporting.chartgroup.action.UpdateChartGroupAction"
-    scope="prototype">
-    <property name="chartService" ref="org.hisp.dhis.chart.ChartService" />
-  </bean>
-    
-  <bean id="org.hisp.dhis.reporting.chartgroup.action.RemoveChartGroupAction" class="org.hisp.dhis.reporting.chartgroup.action.RemoveChartGroupAction"
-    scope="prototype">
-    <property name="chartService" ref="org.hisp.dhis.chart.ChartService" />
-  </bean>
-  
   <!-- TableCreator -->
 
   <bean id="org.hisp.dhis.reporting.tablecreator.action.GetTableOptionsAction" class="org.hisp.dhis.reporting.tablecreator.action.GetTableOptionsAction"
@@ -212,43 +175,6 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     <property name="dataElementService" ref="org.hisp.dhis.dataelement.DataElementService" />
   </bean>
   
-  <!-- ReportTableGroups -->
-
-  <bean id="org.hisp.dhis.reporting.reporttablegroup.action.GetReportTableGroupAction" class="org.hisp.dhis.reporting.reporttablegroup.action.GetReportTableGroupAction"
-    scope="prototype">
-    <property name="reportTableService" ref="org.hisp.dhis.reporttable.ReportTableService" />
-  </bean>
-  
-  <bean id="org.hisp.dhis.reporting.reporttablegroup.action.GetReportTableGroupListAction" class="org.hisp.dhis.reporting.reporttablegroup.action.GetReportTableGroupListAction"
-    scope="prototype">
-    <property name="reportTableService" ref="org.hisp.dhis.reporttable.ReportTableService" />
-  </bean>
-
-  <bean id="org.hisp.dhis.reporting.reporttablegroup.action.ValidateReportTableGroupAction" class="org.hisp.dhis.reporting.reporttablegroup.action.ValidateReportTableGroupAction"
-    scope="prototype">
-    <property name="reportTableService" ref="org.hisp.dhis.reporttable.ReportTableService" />
-  </bean>
-  
-  <bean id="org.hisp.dhis.reporting.reporttablegroup.action.AddReportTableGroupAction" class="org.hisp.dhis.reporting.reporttablegroup.action.AddReportTableGroupAction"
-    scope="prototype">
-    <property name="reportTableService" ref="org.hisp.dhis.reporttable.ReportTableService" />
-  </bean>
-  
-  <bean id="org.hisp.dhis.reporting.reporttablegroup.action.ShowUpdateReportTableGroupFormAction" class="org.hisp.dhis.reporting.reporttablegroup.action.ShowUpdateReportTableGroupFormAction"
-    scope="prototype">
-    <property name="reportTableService" ref="org.hisp.dhis.reporttable.ReportTableService" />
-  </bean>
-  
-  <bean id="org.hisp.dhis.reporting.reporttablegroup.action.UpdateReportTableGroupAction" class="org.hisp.dhis.reporting.reporttablegroup.action.UpdateReportTableGroupAction"
-    scope="prototype">
-    <property name="reportTableService" ref="org.hisp.dhis.reporttable.ReportTableService" />
-  </bean>
-    
-  <bean id="org.hisp.dhis.reporting.reporttablegroup.action.RemoveReportTableGroupAction" class="org.hisp.dhis.reporting.reporttablegroup.action.RemoveReportTableGroupAction"
-    scope="prototype">
-    <property name="reportTableService" ref="org.hisp.dhis.reporttable.ReportTableService" />
-  </bean>
-  
   <!-- Report -->
 
   <bean id="org.hisp.dhis.reporting.reportviewer.action.AddReportAction" class="org.hisp.dhis.reporting.reportviewer.action.AddReportAction"
@@ -298,43 +224,6 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
   <bean id="org.hisp.dhis.reporting.reportviewer.action.ValidateReportAction" class="org.hisp.dhis.reporting.reportviewer.action.ValidateReportAction"
 	scope="prototype">
     <property name="reportService" ref="org.hisp.dhis.report.ReportService" />	
-  </bean>
-  
-  <!-- ReportGroups -->
-
-  <bean id="org.hisp.dhis.reporting.reportgroup.action.GetReportGroupAction" class="org.hisp.dhis.reporting.reportgroup.action.GetReportGroupAction"
-    scope="prototype">
-    <property name="reportService" ref="org.hisp.dhis.report.ReportService" />
-  </bean>
-  
-  <bean id="org.hisp.dhis.reporting.reportgroup.action.GetReportGroupListAction" class="org.hisp.dhis.reporting.reportgroup.action.GetReportGroupListAction"
-    scope="prototype">
-    <property name="reportService" ref="org.hisp.dhis.report.ReportService" />
-  </bean>
-
-  <bean id="org.hisp.dhis.reporting.reportgroup.action.ValidateReportGroupAction" class="org.hisp.dhis.reporting.reportgroup.action.ValidateReportGroupAction"
-    scope="prototype">
-    <property name="reportService" ref="org.hisp.dhis.report.ReportService" />
-  </bean>
-  
-  <bean id="org.hisp.dhis.reporting.reportgroup.action.AddReportGroupAction" class="org.hisp.dhis.reporting.reportgroup.action.AddReportGroupAction"
-    scope="prototype">
-    <property name="reportService" ref="org.hisp.dhis.report.ReportService" />
-  </bean>
-  
-  <bean id="org.hisp.dhis.reporting.reportgroup.action.ShowUpdateReportGroupFormAction" class="org.hisp.dhis.reporting.reportgroup.action.ShowUpdateReportGroupFormAction"
-    scope="prototype">
-    <property name="reportService" ref="org.hisp.dhis.report.ReportService" />
-  </bean>
-  
-  <bean id="org.hisp.dhis.reporting.reportgroup.action.UpdateReportGroupAction" class="org.hisp.dhis.reporting.reportgroup.action.UpdateReportGroupAction"
-    scope="prototype">
-    <property name="reportService" ref="org.hisp.dhis.report.ReportService" />
-  </bean>
-    
-  <bean id="org.hisp.dhis.reporting.reportgroup.action.RemoveReportGroupAction" class="org.hisp.dhis.reporting.reportgroup.action.RemoveReportGroupAction"
-    scope="prototype">
-    <property name="reportService" ref="org.hisp.dhis.report.ReportService" />
   </bean>
   
   <!-- PivotTable -->
