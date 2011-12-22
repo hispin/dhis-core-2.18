@@ -27,11 +27,35 @@ package org.hisp.dhis.reporttable;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlElementWrapper;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
+
 import org.apache.commons.lang.StringUtils;
 import org.codehaus.jackson.annotate.JsonProperty;
 import org.codehaus.jackson.map.annotate.JsonSerialize;
-import org.hisp.dhis.common.*;
-import org.hisp.dhis.common.adapter.*;
+import org.hisp.dhis.common.BaseIdentifiableObject;
+import org.hisp.dhis.common.BaseNameableObject;
+import org.hisp.dhis.common.CombinationGenerator;
+import org.hisp.dhis.common.Dxf2Namespace;
+import org.hisp.dhis.common.NameableObject;
+import org.hisp.dhis.common.adapter.CategoryComboXmlAdapter;
+import org.hisp.dhis.common.adapter.CategoryOptionComboXmlAdapter;
+import org.hisp.dhis.common.adapter.DataElementXmlAdapter;
+import org.hisp.dhis.common.adapter.DataSetXmlAdapter;
+import org.hisp.dhis.common.adapter.IndicatorXmlAdapter;
+import org.hisp.dhis.common.adapter.OrganisationUnitXmlAdapter;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryCombo;
 import org.hisp.dhis.dataelement.DataElementCategoryOption;
@@ -44,10 +68,6 @@ import org.hisp.dhis.organisationunit.OrganisationUnitGroupSet;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.RelativePeriods;
 import org.hisp.dhis.period.comparator.AscendingPeriodComparator;
-
-import javax.xml.bind.annotation.*;
-import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
-import java.util.*;
 
 /**
  * The ReportTable object represents a customizable database table. It has
@@ -167,11 +187,6 @@ public class ReportTable extends BaseIdentifiableObject
      * The list of OrganisationUnits the ReportTable contains.
      */
     private List<OrganisationUnit> units = new ArrayList<OrganisationUnit>();
-
-    /**
-     * The list of OrganisationUnits the ReportTable contains.
-     */
-    private Set<ReportTableGroup> groups = new HashSet<ReportTableGroup>();
 
     /**
      * The DataElementCategoryCombo for the ReportTable.
@@ -412,34 +427,6 @@ public class ReportTable extends BaseIdentifiableObject
     // -------------------------------------------------------------------------
     // Public methods
     // -------------------------------------------------------------------------
-
-    public void addReportTableGroup( ReportTableGroup group )
-    {
-        groups.add( group );
-        group.getMembers().add( this );
-    }
-
-    public void removeReportTableGroup( ReportTableGroup group )
-    {
-        groups.remove( group );
-        group.getMembers().remove( this );
-    }
-
-    public void updateReportTableGroups( Set<ReportTableGroup> updates )
-    {
-        for ( ReportTableGroup group : new HashSet<ReportTableGroup>( groups ) )
-        {
-            if ( !updates.contains( group ) )
-            {
-                removeReportTableGroup( group );
-            }
-        }
-
-        for ( ReportTableGroup group : updates )
-        {
-            addReportTableGroup( group );
-        }
-    }
 
     /**
      * Creates a map which contains mappings between the organisation unit
@@ -1029,16 +1016,6 @@ public class ReportTable extends BaseIdentifiableObject
     public void setTopLimit( Integer topLimit )
     {
         this.topLimit = topLimit;
-    }
-
-    public Set<ReportTableGroup> getGroups()
-    {
-        return groups;
-    }
-
-    public void setGroups( Set<ReportTableGroup> groups )
-    {
-        this.groups = groups;
     }
 
     // -------------------------------------------------------------------------

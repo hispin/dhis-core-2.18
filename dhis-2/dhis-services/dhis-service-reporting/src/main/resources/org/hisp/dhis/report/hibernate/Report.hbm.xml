@@ -22,11 +22,5 @@
 	  
 	<property name="usingOrgUnitGroupSets"/>
 	  
-	<set name="groups" table="reportgroupmembers" inverse="true">
-	  <cache usage="read-write" />
-	  <key column="reportid" />
-	  <many-to-many class="org.hisp.dhis.report.ReportGroup" column="reportgroupid" />
-	</set>
-	
   </class>
 </hibernate-mapping>

@@ -27,15 +27,18 @@ package org.hisp.dhis.dashboard;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import org.codehaus.jackson.annotate.JsonProperty;
-import org.codehaus.jackson.map.annotate.JsonSerialize;
-import org.hisp.dhis.common.BaseCollection;
-import org.hisp.dhis.common.BaseIdentifiableObject;
-import org.hisp.dhis.common.Dxf2Namespace;
-
-import javax.xml.bind.annotation.*;
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlElementWrapper;
+import javax.xml.bind.annotation.XmlRootElement;
+
+import org.codehaus.jackson.annotate.JsonProperty;
+import org.hisp.dhis.common.BaseCollection;
+import org.hisp.dhis.common.Dxf2Namespace;
 
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>

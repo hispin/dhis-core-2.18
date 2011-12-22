@@ -45,7 +45,6 @@ import java.awt.Font;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -56,7 +55,6 @@ import org.apache.commons.math.analysis.UnivariateRealFunction;
 import org.apache.commons.math.analysis.UnivariateRealInterpolator;
 import org.apache.commons.math.stat.regression.SimpleRegression;
 import org.hisp.dhis.chart.Chart;
-import org.hisp.dhis.chart.ChartGroup;
 import org.hisp.dhis.chart.ChartService;
 import org.hisp.dhis.common.GenericIdentifiableObjectStore;
 import org.hisp.dhis.common.NameableObject;
@@ -163,13 +161,6 @@ public class DefaultChartService
         this.currentUserService = currentUserService;
     }
 
-    private GenericIdentifiableObjectStore<ChartGroup> chartGroupStore;
-
-    public void setChartGroupStore( GenericIdentifiableObjectStore<ChartGroup> chartGroupStore )
-    {
-        this.chartGroupStore = chartGroupStore;
-    }
-    
     private ReportTableManager reportTableManager;
 
     public void setReportTableManager( ReportTableManager reportTableManager )
@@ -415,92 +406,6 @@ public class DefaultChartService
         JFreeChart jFreeChart = getBasicJFreeChart( plot );
 
         return jFreeChart;
-    }
-
-    // -------------------------------------------------------------------------
-    // ChartGroup
-    // -------------------------------------------------------------------------
-
-    public int addChartGroup( ChartGroup chartGroup )
-    {
-        return chartGroupStore.save( chartGroup );
-    }
-
-    public void updateChartGroup( ChartGroup chartGroup )
-    {
-        chartGroupStore.update( chartGroup );
-    }
-
-    public void deleteChartGroup( ChartGroup chartGroup )
-    {
-        chartGroupStore.delete( chartGroup );
-    }
-
-    public ChartGroup getChartGroup( int id )
-    {
-        return chartGroupStore.get( id );
-    }
-
-    public ChartGroup getChartGroupByName( String name )
-    {
-        return chartGroupStore.getByName( name );
-    }
-
-    public Collection<ChartGroup> getAllChartGroups()
-    {
-        return chartGroupStore.getAll();
-    }
-
-    public Collection<ChartGroup> getChartGroups( final Collection<Integer> identifiers )
-    {
-        Collection<ChartGroup> groups = getAllChartGroups();
-
-        return identifiers == null ? groups : FilterUtils.filter( groups, new Filter<ChartGroup>()
-        {
-            public boolean retain( ChartGroup object )
-            {
-                return identifiers.contains( object.getId() );
-            }
-        } );
-    }
-
-    public Collection<ChartGroup> getGroupsContainingChart( Chart chart )
-    {
-        Collection<ChartGroup> groups = getAllChartGroups();
-
-        Iterator<ChartGroup> iterator = groups.iterator();
-
-        while ( iterator.hasNext() )
-        {
-            ChartGroup group = iterator.next();
-
-            if ( !group.getMembers().contains( chart ) )
-            {
-                iterator.remove();
-            }
-        }
-
-        return groups;
-    }
-
-    public int getChartGroupCount()
-    {
-        return chartGroupStore.getCount();
-    }
-
-    public int getChartGroupCountByName( String name )
-    {
-        return chartGroupStore.getCountByName( name );
-    }
-
-    public Collection<ChartGroup> getChartGroupsBetween( int first, int max )
-    {
-        return chartGroupStore.getBetween( first, max );
-    }
-
-    public Collection<ChartGroup> getChartGroupsBetweenByName( String name, int first, int max )
-    {
-        return chartGroupStore.getBetweenByName( name, first, max );
     }
 
     // -------------------------------------------------------------------------

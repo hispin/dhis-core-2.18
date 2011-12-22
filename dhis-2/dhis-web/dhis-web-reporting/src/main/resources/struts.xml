@@ -114,62 +114,6 @@
       <param name="onExceptionReturn">plainTextError</param>
     </action>
     
-	<!-- ChartGroup -->
-	
-    <action name="chartGroup" class="org.hisp.dhis.reporting.chartgroup.action.GetChartGroupListAction">
-      <result name="success" type="velocity">/main.vm</result>
-      <param name="page">/dhis-web-reporting/chartGroup.vm</param>
-      <param name="menu">/dhis-web-reporting/menu.vm</param>
-      <param name="javascripts">javascript/chartGroup.js</param>
-      <param name="stylesheets">../dhis-web-commons/paging/paging.css</param>
-    </action>
-
-    <action name="removeChartGroup" class="org.hisp.dhis.reporting.chartgroup.action.RemoveChartGroupAction">
-      <result name="success" type="velocity-json">
-        /dhis-web-commons/ajax/jsonResponseSuccess.vm</result>
-      <result name="error" type="velocity-json">
-        /dhis-web-commons/ajax/jsonResponseError.vm</result>
-      <param name="onExceptionReturn">plainTextError</param>
-      <param name="requiredAuthorities">F_INDICATORGROUP_DELETE</param>
-    </action>
-
-    <action name="showAddChartGroupForm" class="org.hisp.dhis.reporting.chart.action.GetAllChartsAction">
-      <result name="success" type="velocity">/main.vm</result>
-      <param name="page">/dhis-web-reporting/addChartGroupForm.vm</param>
-      <param name="javascripts">javascript/chartGroup.js</param>
-      <param name="requiredAuthorities">F_INDICATORGROUP_ADD</param>
-    </action>
-
-    <action name="addChartGroup" class="org.hisp.dhis.reporting.chartgroup.action.AddChartGroupAction">
-      <result name="success" type="redirect">chartGroup.action</result>
-      <param name="requiredAuthorities">F_INDICATORGROUP_ADD</param>
-    </action>
-
-    <action name="showUpdateChartGroupForm" class="org.hisp.dhis.reporting.chartgroup.action.ShowUpdateChartGroupFormAction">
-      <result name="success" type="velocity">/main.vm</result>
-      <param name="page">/dhis-web-reporting/updateChartGroupForm.vm</param>
-      <param name="javascripts">javascript/chartGroup.js</param>
-      <param name="requiredAuthorities">F_INDICATORGROUP_UPDATE</param>
-    </action>
-
-    <action name="updateChartGroup" class="org.hisp.dhis.reporting.chartgroup.action.UpdateChartGroupAction">
-      <result name="success" type="redirect">chartGroup.action</result>
-      <param name="requiredAuthorities">F_INDICATORGROUP_UPDATE</param>
-    </action>
-	
-	<action name="getChartGroup" class="org.hisp.dhis.reporting.chartgroup.action.GetChartGroupAction">
-      <result name="success" type="velocity-json">/dhis-web-reporting/jsonChartGroup.vm</result>
-      <param name="onExceptionReturn">plainTextError</param>
-    </action>
-
-    <action name="validateChartGroup" class="org.hisp.dhis.reporting.chartgroup.action.ValidateChartGroupAction">
-      <result name="success" type="velocity-json">
-		/dhis-web-commons/ajax/jsonResponseSuccess.vm</result>
-      <result name="error" type="velocity-json">
-		/dhis-web-commons/ajax/jsonResponseError.vm</result>
-      <param name="onExceptionReturn">plainTextError</param>
-    </action>
-	
     <!-- Report -->
 
     <action name="displayAddReportForm" class="org.hisp.dhis.reporting.reportviewer.action.GetReportOptionsAction">
@@ -227,62 +171,6 @@
 	<action name="validateReport" class="org.hisp.dhis.reporting.reportviewer.action.ValidateReportAction">	  
       <result name="success" type="velocity-json">/dhis-web-commons/ajax/jsonResponseSuccess.vm</result>
       <result name="input" type="velocity-json">/dhis-web-commons/ajax/jsonResponseInput.vm</result>
-      <param name="onExceptionReturn">plainTextError</param>
-    </action>
-	
-	<!-- ReportGroup -->
-	
-    <action name="reportGroup" class="org.hisp.dhis.reporting.reportgroup.action.GetReportGroupListAction">
-      <result name="success" type="velocity">/main.vm</result>
-      <param name="page">/dhis-web-reporting/reportGroup.vm</param>
-      <param name="menu">/dhis-web-reporting/menu.vm</param>
-      <param name="javascripts">javascript/reportGroup.js</param>
-      <param name="stylesheets">../dhis-web-commons/paging/paging.css</param>
-    </action>
-
-    <action name="removeReportGroup" class="org.hisp.dhis.reporting.reportgroup.action.RemoveReportGroupAction">
-      <result name="success" type="velocity-json">
-        /dhis-web-commons/ajax/jsonResponseSuccess.vm</result>
-      <result name="error" type="velocity-json">
-        /dhis-web-commons/ajax/jsonResponseError.vm</result>
-      <param name="onExceptionReturn">plainTextError</param>
-      <param name="requiredAuthorities">F_INDICATORGROUP_DELETE</param>
-    </action>
-
-    <action name="showAddReportGroupForm" class="org.hisp.dhis.reporting.reportviewer.action.GetAllReportsAction">
-      <result name="success" type="velocity">/main.vm</result>
-      <param name="page">/dhis-web-reporting/addReportGroupForm.vm</param>
-      <param name="javascripts">javascript/reportGroup.js</param>
-      <param name="requiredAuthorities">F_INDICATORGROUP_ADD</param>
-    </action>
-
-    <action name="addReportGroup" class="org.hisp.dhis.reporting.reportgroup.action.AddReportGroupAction">
-      <result name="success" type="redirect">reportGroup.action</result>
-      <param name="requiredAuthorities">F_INDICATORGROUP_ADD</param>
-    </action>
-
-    <action name="showUpdateReportGroupForm" class="org.hisp.dhis.reporting.reportgroup.action.ShowUpdateReportGroupFormAction">
-      <result name="success" type="velocity">/main.vm</result>
-      <param name="page">/dhis-web-reporting/updateReportGroupForm.vm</param>
-      <param name="javascripts">javascript/reportGroup.js</param>
-      <param name="requiredAuthorities">F_INDICATORGROUP_UPDATE</param>
-    </action>
-
-    <action name="updateReportGroup" class="org.hisp.dhis.reporting.reportgroup.action.UpdateReportGroupAction">
-      <result name="success" type="redirect">reportGroup.action</result>
-      <param name="requiredAuthorities">F_INDICATORGROUP_UPDATE</param>
-    </action>
-	
-	<action name="getReportGroup" class="org.hisp.dhis.reporting.reportgroup.action.GetReportGroupAction">
-      <result name="success" type="velocity-json">/dhis-web-reporting/jsonReportGroup.vm</result>
-      <param name="onExceptionReturn">plainTextError</param>
-    </action>
-
-    <action name="validateReportGroup" class="org.hisp.dhis.reporting.reportgroup.action.ValidateReportGroupAction">
-      <result name="success" type="velocity-json">
-		/dhis-web-commons/ajax/jsonResponseSuccess.vm</result>
-      <result name="error" type="velocity-json">
-		/dhis-web-commons/ajax/jsonResponseError.vm</result>
       <param name="onExceptionReturn">plainTextError</param>
     </action>
 	
@@ -371,63 +259,6 @@
       <param name="onExceptionReturn">plainTextError</param>
     </action>
     
-	<!-- ReportTableGroup -->
-	
-    <action name="reportTableGroup" class="org.hisp.dhis.reporting.reporttablegroup.action.GetReportTableGroupListAction">
-      <result name="success" type="velocity">/main.vm</result>
-      <param name="page">/dhis-web-reporting/reportTableGroup.vm</param>
-      <param name="menu">/dhis-web-reporting/menu.vm</param>
-      <param name="javascripts">javascript/reportTableGroup.js</param>
-      <param name="stylesheets">../dhis-web-commons/paging/paging.css</param>
-    </action>
-
-    <action name="removeReportTableGroup" class="org.hisp.dhis.reporting.reporttablegroup.action.RemoveReportTableGroupAction">
-      <result name="success" type="velocity-json">
-        /dhis-web-commons/ajax/jsonResponseSuccess.vm</result>
-      <result name="error" type="velocity-json">
-        /dhis-web-commons/ajax/jsonResponseError.vm</result>
-      <param name="onExceptionReturn">plainTextError</param>
-      <param name="requiredAuthorities">F_INDICATORGROUP_DELETE</param>
-    </action>
-
-    <action name="showAddReportTableGroupForm" class="org.hisp.dhis.reporting.tablecreator.action.GetAllTablesAction">
-      <result name="success" type="velocity">/main.vm</result>
-      <param name="page">/dhis-web-reporting/addReportTableGroupForm.vm</param>
-      <param name="javascripts">javascript/reportTableGroup.js</param>
-      <param name="requiredAuthorities">F_INDICATORGROUP_ADD</param>
-    </action>
-
-    <action name="addReportTableGroup" class="org.hisp.dhis.reporting.reporttablegroup.action.AddReportTableGroupAction">
-      <result name="success" type="redirect">reportTableGroup.action</result>
-      <param name="requiredAuthorities">F_INDICATORGROUP_ADD</param>
-    </action>
-
-    <action name="showUpdateReportTableGroupForm" class="org.hisp.dhis.reporting.reporttablegroup.action.ShowUpdateReportTableGroupFormAction">
-      <result name="success" type="velocity">/main.vm</result>
-      <param name="page">/dhis-web-reporting/updateReportTableGroupForm.vm</param>
-      <param name="javascripts">javascript/reportTableGroup.js</param>
-      <param name="requiredAuthorities">F_INDICATORGROUP_UPDATE</param>
-    </action>
-
-    <action name="updateReportTableGroup" class="org.hisp.dhis.reporting.reporttablegroup.action.UpdateReportTableGroupAction">
-      <result name="success" type="redirect">reportTableGroup.action
-			</result>
-      <param name="requiredAuthorities">F_INDICATORGROUP_UPDATE</param>
-    </action>
-	
-	<action name="getReportTableGroup" class="org.hisp.dhis.reporting.reporttablegroup.action.GetReportTableGroupAction">
-      <result name="success" type="velocity-json">/dhis-web-reporting/jsonReportTableGroup.vm</result>
-      <param name="onExceptionReturn">plainTextError</param>
-    </action>
-
-    <action name="validateReportTableGroup" class="org.hisp.dhis.reporting.reporttablegroup.action.ValidateReportTableGroupAction">
-      <result name="success" type="velocity-json">
-		/dhis-web-commons/ajax/jsonResponseSuccess.vm</result>
-      <result name="error" type="velocity-json">
-		/dhis-web-commons/ajax/jsonResponseError.vm</result>
-      <param name="onExceptionReturn">plainTextError</param>
-    </action>
-	
     <!-- PivotTable -->
 
     <action name="displayPivotTableForm" class="org.hisp.dhis.reporting.pivottable.action.GetPivotTableOptionsAction">

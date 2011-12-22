@@ -405,6 +405,15 @@ public class TableAlteror
         executeSql( "update chart set last4quarters = false where last4quarters is null" );
         executeSql( "update chart set last2sixmonths = false where last2sixmonths is null" );
 
+        // report, reporttable, chart groups
+        
+        executeSql( "DROP TABLE reportgroupmembers" );
+        executeSql( "DROP TABLE reportgroup" );
+        executeSql( "DROP TABLE reporttablegroupmembers" );
+        executeSql( "DROP TABLE reporttablegroup" );
+        executeSql( "DROP TABLE chartgroupmembers" );
+        executeSql( "DROP TABLE chartgroup" );
+        
         log.info( "Tables updated" );
     }
 

@@ -90,33 +90,4 @@ public interface ChartService
     int getChartCount();
 
     int getChartCountByName( String name );
-
-    // -------------------------------------------------------------------------
-    // ChartGroup
-    // -------------------------------------------------------------------------
-
-    int addChartGroup( ChartGroup chartGroup );
-
-    void updateChartGroup( ChartGroup chartGroup );
-
-    void deleteChartGroup( ChartGroup chartGroup );
-
-    ChartGroup getChartGroup( int id );
-
-    ChartGroup getChartGroupByName( String name );
-
-    Collection<ChartGroup> getAllChartGroups();
-
-    Collection<ChartGroup> getChartGroups( final Collection<Integer> identifiers );
-
-    Collection<ChartGroup> getGroupsContainingChart( Chart chart );
-
-    int getChartGroupCount();
-
-    int getChartGroupCountByName( String name );
-
-    Collection<ChartGroup> getChartGroupsBetween( int first, int max );
-
-    Collection<ChartGroup> getChartGroupsBetweenByName( String name, int first, int max );
-
 }

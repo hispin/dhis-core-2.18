@@ -55,12 +55,6 @@
       <many-to-many column="organisationunitid" class="org.hisp.dhis.organisationunit.OrganisationUnit" foreign-key="fk_reporttable_organisationunits_organisationunitid" />
     </list>
 
-	<set name="groups" table="reporttablegroupmembers" inverse="true">
-	  <cache usage="read-write" />
-	  <key column="reporttableid" />
-	  <many-to-many class="org.hisp.dhis.reporttable.ReportTableGroup" column="reporttablegroupid" />
-	</set>
-	
     <property name="doIndicators" />
 
     <property name="doPeriods" />

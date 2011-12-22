@@ -160,34 +160,4 @@ public interface ReportTableService
     int getReportTableCount();
 
     int getReportTableCountByName( String name );
-
-    // -------------------------------------------------------------------------
-    // ReportTableGroup
-    // -------------------------------------------------------------------------
-
-    int addReportTableGroup( ReportTableGroup reportTableGroup );
-
-    void updateReportTableGroup( ReportTableGroup reportTableGroup );
-
-    void deleteReportTableGroup( ReportTableGroup reportTableGroup );
-
-    ReportTableGroup getReportTableGroup( int id );
-
-    ReportTableGroup getReportTableGroup( String uid );
-
-    ReportTableGroup getReportTableGroupByName( String name );
-
-    Collection<ReportTableGroup> getAllReportTableGroups();
-
-    Collection<ReportTableGroup> getReportTableGroups( final Collection<Integer> identifiers );
-
-    Collection<ReportTableGroup> getGroupsContainingReportTable( ReportTable reportTable );
-
-    int getReportTableGroupCount();
-
-    int getReportTableGroupCountByName( String name );
-
-    Collection<ReportTableGroup> getReportTableGroupsBetween( int first, int max );
-
-    Collection<ReportTableGroup> getReportTableGroupsBetweenByName( String name, int first, int max );
 }

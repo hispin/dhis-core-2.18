@@ -68,12 +68,6 @@
         foreign-key="fk_chart_organisationunits_organisationunitid" />
     </list>
 
-    <set name="groups" table="chartgroupmembers" inverse="true">
-      <cache usage="read-write" />
-      <key column="chartid" />
-      <many-to-many class="org.hisp.dhis.chart.ChartGroup" column="chartgroupid" />
-    </set>
-
     <component name="relatives">
       <property name="reportingMonth" />
       <property name="reportingQuarter" />
