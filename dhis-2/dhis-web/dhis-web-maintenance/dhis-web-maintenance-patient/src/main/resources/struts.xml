@@ -721,6 +721,13 @@
 				/dhis-web-maintenance-patient/responseAggDataElement.vm
 			</result>
 		</action>
+		
+		<action name="getAggPSDataElements"
+			class="org.hisp.dhis.patient.action.caseaggregation.GetAggPSDataElementsAction">
+			<result name="success" type="velocity-xml">
+				/dhis-web-maintenance-patient/responseAggDataElement.vm
+			</result>
+		</action>
 
 		<action name="getCaseAggregation"
 			class="org.hisp.dhis.patient.action.caseaggregation.GetCaseAggregationConditionAction">

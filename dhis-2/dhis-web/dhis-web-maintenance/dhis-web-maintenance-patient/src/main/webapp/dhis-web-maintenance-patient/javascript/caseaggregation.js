@@ -91,7 +91,7 @@ function getPrgramStageDataElements()
 	var programStage = document.getElementById( 'programStage' );
 	var psId = programStage.options[ programStage.selectedIndex ].value;
 	
-	$.post( 'getPSDataElements.action', { psId:psId }, getPrgramStageDataElementsCompleted );
+	$.post( 'getAggDataElements.action', { psId:psId }, getPrgramStageDataElementsCompleted );
 }
 
 function getPrgramStageDataElementsCompleted( dataelementElement )
