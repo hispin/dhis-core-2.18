@@ -320,7 +320,7 @@ public class DefaultReportTableService
             OrganisationUnit organisationUnit = organisationUnitService.getOrganisationUnit( organisationUnitId );
             reportTable.getRelativeUnits().addAll(
                 new ArrayList<OrganisationUnit>( organisationUnitService.getLeafOrganisationUnits( organisationUnitId ) ) );
-            reportTable.setOrganisationUnitName( organisationUnit.getName() );
+            reportTable.setParentOrganisationUnit( organisationUnit );
 
             log.info( "Leaf parent organisation unit: " + organisationUnit.getName() );
         }
@@ -337,7 +337,7 @@ public class DefaultReportTableService
             reportTable.getRelativeUnits().addAll(
                 new ArrayList<OrganisationUnit>( organisationUnit.getGrandChildren() ) );
             reportTable.getRelativeUnits().add( organisationUnit );
-            reportTable.setOrganisationUnitName( organisationUnit.getName() );
+            reportTable.setParentOrganisationUnit( organisationUnit );
 
             log.info( "Grand parent organisation unit: " + organisationUnit.getName() );
         }
@@ -352,7 +352,7 @@ public class DefaultReportTableService
             organisationUnit.setCurrentParent( true );
             reportTable.getRelativeUnits().addAll( new ArrayList<OrganisationUnit>( organisationUnit.getChildren() ) );
             reportTable.getRelativeUnits().add( organisationUnit );
-            reportTable.setOrganisationUnitName( organisationUnit.getName() );
+            reportTable.setParentOrganisationUnit( organisationUnit );
 
             log.info( "Parent organisation unit: " + organisationUnit.getName() );
         }
@@ -365,7 +365,7 @@ public class DefaultReportTableService
         {
             OrganisationUnit organisationUnit = organisationUnitService.getOrganisationUnit( organisationUnitId );
             reportTable.getRelativeUnits().add( organisationUnit );
-            reportTable.setOrganisationUnitName( organisationUnit.getName() );
+            reportTable.setParentOrganisationUnit( organisationUnit );
 
             log.info( "Organisation unit: " + organisationUnit.getName() );
         }
@@ -388,7 +388,7 @@ public class DefaultReportTableService
      */
     private Grid getGrid( ReportTable reportTable )
     {
-        String subtitle = StringUtils.trimToEmpty( reportTable.getOrganisationUnitName() ) + SPACE
+        String subtitle = StringUtils.trimToEmpty( reportTable.getParentOrganisationUnitName() ) + SPACE
             + StringUtils.trimToEmpty( reportTable.getReportingPeriodName() );
 
         Grid grid = new ListGrid().setTitle( reportTable.getName() ).setSubtitle( subtitle );
@@ -466,7 +466,7 @@ public class DefaultReportTableService
             }
 
             grid.addValue( reportTable.getReportingPeriodName() );
-            grid.addValue( reportTable.getOrganisationUnitName() );
+            grid.addValue( reportTable.getParentOrganisationUnitName() );
             grid.addValue( isCurrentParent( row ) ? YES : NO );
 
             for ( List<NameableObject> column : reportTable.getColumns() ) // Values
