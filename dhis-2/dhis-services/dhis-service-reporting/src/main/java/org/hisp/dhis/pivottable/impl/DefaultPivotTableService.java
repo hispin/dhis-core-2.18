@@ -185,7 +185,6 @@ public class DefaultPivotTableService
         return pivotTable;
     }
     
-
     public List<Grid> getGrids( PivotTable pivotTable )
     {
         List<Grid> grids = new ArrayList<Grid>();

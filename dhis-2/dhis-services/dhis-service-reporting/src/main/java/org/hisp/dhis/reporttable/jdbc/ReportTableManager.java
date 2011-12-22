@@ -53,4 +53,12 @@ public interface ReportTableManager
      * @param chart the Chart for which to create the value map.
      */
     Map<String, Double> getAggregatedValueMap( Chart chart );
+
+    /**
+     * Generates a map with a key identifying the dimensions of each value based
+     * on real-time aggregation.
+     * 
+     * @param chart the Chart for which to create the value map.
+     */
+    Map<String, Double> getAggregatedValueMapRealTime( Chart chart );
 }
