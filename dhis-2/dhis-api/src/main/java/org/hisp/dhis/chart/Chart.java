@@ -251,6 +251,7 @@ public class Chart
         for ( Period period : periods )
         {
             period.setName( format.formatPeriod( period ) );
+            period.setShortName( format.formatPeriod( period ) );
         }
     }
     

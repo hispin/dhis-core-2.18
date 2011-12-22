@@ -259,6 +259,11 @@ public class TableAlteror
         executeSql( "ALTER TABLE chart DROP COLUMN size" );
         executeSql( "ALTER TABLE chart DROP COLUMN verticallabels" );
         executeSql( "ALTER TABLE chart DROP COLUMN horizontalplotorientation" );
+
+        executeSql( "ALTER TABLE chart DROP COLUMN monthsLastYear" );
+        executeSql( "ALTER TABLE chart DROP COLUMN quartersLastYear" );
+        executeSql( "ALTER TABLE chart DROP COLUMN lastYear" );
+        executeSql( "ALTER TABLE chart DROP COLUMN last6BiMonths" );
         
         // remove outdated relative periods
         
@@ -354,8 +359,6 @@ public class TableAlteror
         // replace null with false for boolean fields
         
         executeSql( "update chart set hidelegend = false where hidelegend is null" );
-        executeSql( "update chart set verticallabels = false where verticallabels is null" );
-        executeSql( "update chart set horizontalplotorientation = false where horizontalplotorientation is null" );
         executeSql( "update chart set regression = false where regression is null" );
         executeSql( "update chart set targetline = false where targetline is null" );
         executeSql( "update chart set hidesubtitle = false where hidesubtitle is null" );
@@ -391,6 +394,8 @@ public class TableAlteror
         executeSql( "update chart set monthslastyear = false where monthslastyear is null" );
         executeSql( "update chart set quarterslastyear = false where quarterslastyear is null" );
         executeSql( "update chart set lastyear = false where lastyear is null" );
+        executeSql( "update chart set lastsixmonth = false where lastsixmonth is null" );
+        executeSql( "update chart set last12months = false where last12months is null" );
         executeSql( "update chart set last5years = false where last5years is null" );
         executeSql( "update chart set last4quarters = false where last4quarters is null" );
         executeSql( "update chart set last12months = false where last12months is null" );
