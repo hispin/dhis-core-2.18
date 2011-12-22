@@ -186,13 +186,11 @@ jQuery("#entryFormContainer").ready(function(){
 			<input type="hidden" name="programStageId" value="$programStage.id"/>
 			<input type="hidden" name="programStageInstanceId" value="$programStageInstance.id"/>
 		</form>
-
 	</div>
 </div>
 
 <script type="text/javascript">
     initCustomCheckboxes();
-    DRAG_DIV.init(); 
 	
 	var i18n_value_must_integer = '$encoder.jsEscape( $i18n.getString( "value_must_integer" ) , "'")';
 	var i18n_value_must_number = '$encoder.jsEscape( $i18n.getString( "value_must_number" ) , "'")';
