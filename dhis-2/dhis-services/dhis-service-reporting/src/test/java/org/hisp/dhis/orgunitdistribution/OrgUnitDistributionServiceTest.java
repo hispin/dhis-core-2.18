@@ -1,5 +1,8 @@
 package org.hisp.dhis.orgunitdistribution;
 
+import static junit.framework.Assert.assertEquals;
+import static junit.framework.Assert.assertNotNull;
+
 import org.hisp.dhis.DhisSpringTest;
 import org.hisp.dhis.common.Grid;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
@@ -8,8 +11,6 @@ import org.hisp.dhis.organisationunit.OrganisationUnitGroupService;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroupSet;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.junit.Test;
-
-import static junit.framework.Assert.*;
 
 public class OrgUnitDistributionServiceTest
     extends DhisSpringTest

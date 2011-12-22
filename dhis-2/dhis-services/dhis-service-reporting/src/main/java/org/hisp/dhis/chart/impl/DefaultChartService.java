@@ -27,11 +27,13 @@ package org.hisp.dhis.chart.impl;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import static org.hisp.dhis.chart.Chart.TYPE_AREA;
 import static org.hisp.dhis.chart.Chart.TYPE_BAR;
+import static org.hisp.dhis.chart.Chart.TYPE_COLUMN;
 import static org.hisp.dhis.chart.Chart.TYPE_LINE;
 import static org.hisp.dhis.chart.Chart.TYPE_PIE;
 import static org.hisp.dhis.chart.Chart.TYPE_STACKED_BAR;
-import static org.hisp.dhis.chart.Chart.*;
+import static org.hisp.dhis.chart.Chart.TYPE_STACKED_COLUMN;
 import static org.hisp.dhis.reporttable.ReportTable.getIdentifier;
 import static org.hisp.dhis.system.util.ConversionUtils.getArray;
 
@@ -743,13 +745,13 @@ public class DefaultChartService
         
         SimpleRegression regression = new SimpleRegression();
         
-        double count = 0;
-        
         for ( NameableObject series : chart.series() )
         {
+            double categoryIndex = 0;
+            
             for ( NameableObject category : chart.category() )
-            {
-                count++;
+            {   
+                categoryIndex++;
                 
                 String key = getIdentifier( Arrays.asList( series, category, chart.filter() ) );
                 
@@ -757,25 +759,22 @@ public class DefaultChartService
                 
                 regularDataSet.addValue( value, series.getShortName(), category.getShortName() );
                 
-                if ( chart.isRegression() && MathUtils.isEqual( value, MathUtils.ZERO ) )
+                if ( chart.isRegression() && !MathUtils.isEqual( value, MathUtils.ZERO ) )
                 {
-                    regression.addData( ++count, value );
+                    regression.addData( categoryIndex, value );
                 }
             }
-        }
-        
-        if ( chart.isRegression() ) // Period must be category
-        {
-            count = 0;
             
-            for ( NameableObject series : chart.series() )
+            if ( chart.isRegression() ) // Period must be category
             {
+                categoryIndex = 0;
+                
                 for ( NameableObject category : chart.category() )
                 {
-                    final double value = regression.predict( count++ );
+                    final double value = regression.predict( categoryIndex++ );
 
                     // Enough values must exist for regression
-
+                    
                     if ( !Double.isNaN( value ) )
                     {
                         regressionDataSet.addValue( value, TREND_PREFIX + series.getShortName(), category.getShortName() );
