@@ -1,7 +1,0 @@
-{ "reportTableGroup":
-  {
-	"id": "${reportTableGroup.id}",
-	"name": "$!encoder.jsonEncode( ${reportTableGroup.name} )",
-	"memberCount": "$!{reportTableGroup.getMembers().size()}"
-  }
-}
