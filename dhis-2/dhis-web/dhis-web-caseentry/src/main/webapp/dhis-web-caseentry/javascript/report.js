@@ -92,7 +92,7 @@ function loadGeneratedReport()
 
 function viewRecords( programStageInstanceId ) 
 {
-	$('<div id="viewRecordsDiv">' )
+	$('#viewRecordsDiv' )
 		.load( 'viewRecords.action?id=' + programStageInstanceId )
 		.dialog({
 			title: i18n_reports,
