@@ -48,6 +48,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import org.amplecode.quick.StatementManager;
 import org.apache.commons.math.MathException;
 import org.apache.commons.math.analysis.SplineInterpolator;
 import org.apache.commons.math.analysis.UnivariateRealFunction;
@@ -61,7 +62,6 @@ import org.hisp.dhis.common.GenericIdentifiableObjectStore;
 import org.hisp.dhis.common.NameableObject;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
-import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.datavalue.DataValue;
 import org.hisp.dhis.datavalue.DataValueService;
 import org.hisp.dhis.i18n.I18nFormat;
@@ -118,8 +118,6 @@ public class DefaultChartService
     private static final Font labelFont = new Font( "Tahoma", Font.PLAIN, 10 );
 
     private static final String TREND_PREFIX = "Trend - ";
-    private static final String TITLE_SEPARATOR = " - ";
-    private static final String DEFAULT_TITLE_PIVOT_CHART = "Pivot Chart";
 
     private static final Color[] colors = {Color.decode( "#d54a4a" ), Color.decode( "#2e4e83" ),
         Color.decode( "#75e077" ), Color.decode( "#e3e274" ), Color.decode( "#e58c6d" ), Color.decode( "#df6ff3" ),
@@ -158,20 +156,6 @@ public class DefaultChartService
         this.minMaxDataElementService = minMaxDataElementService;
     }
 
-    private AggregationService aggregationService;
-
-    public void setAggregationService( AggregationService aggregationService )
-    {
-        this.aggregationService = aggregationService;
-    }
-
-    private SystemSettingManager systemSettingManager;
-
-    public void setSystemSettingManager( SystemSettingManager systemSettingManager )
-    {
-        this.systemSettingManager = systemSettingManager;
-    }
-
     private CurrentUserService currentUserService;
 
     public void setCurrentUserService( CurrentUserService currentUserService )
@@ -191,6 +175,29 @@ public class DefaultChartService
     public void setReportTableManager( ReportTableManager reportTableManager )
     {
         this.reportTableManager = reportTableManager;
+    }
+
+    // TODO remove support for aggregation service
+    
+    private AggregationService aggregationService;
+
+    public void setAggregationService( AggregationService aggregationService )
+    {
+        this.aggregationService = aggregationService;
+    }
+
+    private SystemSettingManager systemSettingManager;
+
+    public void setSystemSettingManager( SystemSettingManager systemSettingManager )
+    {
+        this.systemSettingManager = systemSettingManager;
+    }
+
+    private StatementManager statementManager;
+
+    public void setStatementManager( StatementManager statementManager )
+    {
+        this.statementManager = statementManager;
     }
 
     // -------------------------------------------------------------------------
