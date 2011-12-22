@@ -22,4 +22,6 @@
 
 <hr style="clear:both">
 
+#parse( "dhis-web-commons/loader/loader.vm" )
+
 <div id="contentDiv"></div>

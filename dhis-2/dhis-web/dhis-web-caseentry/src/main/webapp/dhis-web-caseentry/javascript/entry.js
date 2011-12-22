@@ -796,31 +796,8 @@ function entryFormContainerOnReady()
         jQuery("input[name='entryfield'],select[name='entryselect']").each(function(){
             jQuery(this).focus(function(){
                 currentFocus = this;
-                DRAG_DIV.showData(jQuery(this).metadata({
-                    "type":"attr",
-                    "name":"data"
-                }));
             });
-            jQuery(this).blur(function(){
-               
-                });
-            jQuery(this).hover(
-                function(){
-                    DRAG_DIV.showData(jQuery(this).metadata({
-                        "type":"attr",
-                        "name":"data"
-                    }));
-                },
-                function()
-                {
-                    if(currentFocus) {
-                        DRAG_DIV.showData(jQuery(currentFocus).metadata({
-                            "type":"attr",
-                            "name":"data"
-                        }));
-                    }
-                }
-                );
+            
             jQuery(this).addClass("inputText");
         });
 		
