@@ -27,10 +27,34 @@ package org.hisp.dhis.reporttable.impl;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import static org.hisp.dhis.reporttable.ReportTable.ORGANISATION_UNIT_IS_PARENT_COLUMN_NAME;
+import static org.hisp.dhis.reporttable.ReportTable.PARAM_ORGANISATIONUNIT_COLUMN_NAME;
+import static org.hisp.dhis.reporttable.ReportTable.PRETTY_COLUMNS;
+import static org.hisp.dhis.reporttable.ReportTable.REPORTING_MONTH_COLUMN_NAME;
+import static org.hisp.dhis.reporttable.ReportTable.SPACE;
+import static org.hisp.dhis.reporttable.ReportTable.TOTAL_COLUMN_NAME;
+import static org.hisp.dhis.reporttable.ReportTable.TOTAL_COLUMN_PRETTY_NAME;
+import static org.hisp.dhis.reporttable.ReportTable.columnEncode;
+import static org.hisp.dhis.reporttable.ReportTable.getColumnName;
+import static org.hisp.dhis.reporttable.ReportTable.getIdentifier;
+import static org.hisp.dhis.reporttable.ReportTable.getPrettyColumnName;
+import static org.hisp.dhis.system.util.ConversionUtils.getIdentifiers;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Date;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.hisp.dhis.common.*;
+import org.hisp.dhis.common.GenericIdentifiableObjectStore;
+import org.hisp.dhis.common.Grid;
+import org.hisp.dhis.common.GridHeader;
+import org.hisp.dhis.common.IdentifiableObject;
+import org.hisp.dhis.common.NameableObject;
 import org.hisp.dhis.completeness.DataSetCompletenessService;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryOption;
@@ -51,11 +75,6 @@ import org.hisp.dhis.system.grid.ListGrid;
 import org.hisp.dhis.system.util.Filter;
 import org.hisp.dhis.system.util.FilterUtils;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.*;
-
-import static org.hisp.dhis.reporttable.ReportTable.*;
-import static org.hisp.dhis.system.util.ConversionUtils.getIdentifiers;
 
 /**
  * @author Lars Helge Overland

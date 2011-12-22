@@ -27,10 +27,19 @@ package org.hisp.dhis.report.impl;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import java.io.OutputStream;
+import java.sql.Connection;
+import java.util.Collection;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
+
 import net.sf.jasperreports.engine.JasperCompileManager;
 import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.engine.JasperReport;
+
 import org.amplecode.quick.StatementManager;
 import org.hisp.dhis.common.GenericIdentifiableObjectStore;
 import org.hisp.dhis.common.Grid;
@@ -49,10 +58,6 @@ import org.hisp.dhis.system.util.FilterUtils;
 import org.hisp.dhis.system.util.JRExportUtils;
 import org.hisp.dhis.system.util.StreamUtils;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.io.OutputStream;
-import java.sql.Connection;
-import java.util.*;
 
 /**
  * @author Lars Helge Overland

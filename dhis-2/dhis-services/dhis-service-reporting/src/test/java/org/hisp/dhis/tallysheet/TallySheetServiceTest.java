@@ -36,9 +36,6 @@ import java.util.List;
 import org.hisp.dhis.DhisSpringTest;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.period.MonthlyPeriodType;
-import org.hisp.dhis.tallysheet.TallySheet;
-import org.hisp.dhis.tallysheet.TallySheetPdfService;
-import org.hisp.dhis.tallysheet.TallySheetService;
 import org.junit.Test;
 
 /**
