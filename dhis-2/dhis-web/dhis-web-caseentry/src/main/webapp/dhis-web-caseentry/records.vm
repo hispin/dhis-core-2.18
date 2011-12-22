@@ -72,8 +72,10 @@
 	      
 	        ##providedByAnotherFacility                
 	        <td style="text-align:center">            
-	            #if( $patientDataValue.providedByAnotherFacility )
-	                $i18n.getString( "yes" )  
+	            #if( !$patientDataValue.providedByAnotherFacility )
+					$patientDataValue.organisationUnit.name
+				#else
+					$i18n.getString("other_facility")
 	            #end                         
 	        </td>    
 	    </tr>    

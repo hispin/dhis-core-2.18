@@ -57,5 +57,7 @@
     </td>
 </tr>
 </table>
+
+<div id="viewRecordsDiv"></div>
 #end
 <p></p>
