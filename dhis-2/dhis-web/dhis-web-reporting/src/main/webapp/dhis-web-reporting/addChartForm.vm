@@ -130,20 +130,14 @@
 	#parse( "dhis-web-reporting/addChartOrgunitOrPeriodForm.vm" )
 #elseif( $dimension == "period_dataElement" )
 	#parse( "dhis-web-reporting/addChartDataElementOrgunitOrPeriodForm.vm" )
-#elseif( $dimension == "period_completeness" )
-	#parse( "dhis-web-reporting/addChartDataSetOrgunitOrPeriodForm.vm" )
 #elseif ( $dimension == "organisationUnit" )
 	#parse( "dhis-web-reporting/addChartOrgunitOrPeriodForm.vm" )
 #elseif ( $dimension == "organisationUnit_dataElement" )
 	#parse( "dhis-web-reporting/addChartDataElementOrgunitOrPeriodForm.vm" )
-#elseif ( $dimension == "organisationUnit_completeness" )
-	#parse( "dhis-web-reporting/addChartDataSetOrgunitOrPeriodForm.vm" )
 #elseif ( $dimension == "indicator" )
     #parse( "dhis-web-reporting/addChartIndicatorModeForm.vm" )
 #elseif ( $dimension == "dataElement_period" )
 	#parse( "dhis-web-reporting/addChartDataElementModeForm.vm" )
-#elseif ( $dimension == "completeness_period" )
-	#parse( "dhis-web-reporting/addChartDataSetModeForm.vm" )
 #end
 
 <table>
