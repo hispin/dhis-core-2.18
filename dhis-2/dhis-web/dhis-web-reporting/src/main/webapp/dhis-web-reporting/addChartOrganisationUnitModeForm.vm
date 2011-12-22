@@ -63,26 +63,15 @@
 <tr>
     <th colspan="2">$i18n.getString( "filter_available_periods" )</th>
 </tr>
-
 <tr>
 	<td>
-		<input type="button" style="width:60px" value="$i18n.getString( 'prev' )" onclick="getAvailablePeriods( 'periodType', 'selectedPeriods', 'selectedPeriods', '-1' )" />
-		<input type="button" style="width:60px" value="$i18n.getString( 'next' )" onclick="getAvailablePeriods( 'periodType', 'selectedPeriods', 'selectedPeriods', '1' )" />
-		<select id="periodType" name="periodType" style="min-width:478px" onchange="getAvailablePeriods( 'periodType', 'selectedPeriods', 'selectedPeriods', '0' )">
-			<option value="">[ $i18n.getString( "select_period_type_all" ) ]</option>
-			#foreach ( $type in $periodTypes )
-				<option value="$type.name">$i18n.getString( $type.name )</option>
-			#end
-		</select>
-	</td>
-</tr>
-
-<tr>
-    <td colspan="2">
-        <select id="selectedPeriods" name="selectedPeriods" style="min-width:600px">               
-            #foreach ( $period in $selectedPeriods )
-                <option value="$period.externalId">$format.formatPeriod( $period )</option>
-            #end
-        </select>
+	    <label for="lastMonth">$i18n.getString( "last_month" )</label>
+		<input type="checkbox" id="lastMonth" name="lastMonth" value="true"#if( $chart.relatives.isReportingMonth() ) checked#end>&nbsp;
+		<label for="lastQuarter">$i18n.getString( "last_quarter" )</label>
+		<input type="checkbox" id="lastQuarter" name="lastQuarter" value="true""#if( $chart.relatives.isReportingQuarter() ) checked#end>&nbsp;
+		<label for="lastSixMonth">$i18n.getString( "last_six_month" )</label>
+		<input type="checkbox" id="lastSixMonth" name="lastSixMonth" value="true"#if( $chart.relatives.isLastSixMonth() ) checked#end>&nbsp;
+		<label for="thisYear">$i18n.getString( "this_year" )</label>
+		<input type="checkbox" id="thisYear" name="thisYear" value="true"#if( $chart.relatives.isThisYear() ) checked#end>
     </td>
 </tr>

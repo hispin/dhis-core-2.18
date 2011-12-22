@@ -30,7 +30,6 @@ package org.hisp.dhis.reporting.chart.action;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.Date;
 import java.util.List;
 
 import org.hisp.dhis.chart.Chart;
@@ -50,12 +49,7 @@ import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitLevel;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.organisationunit.comparator.OrganisationUnitLevelComparator;
-import org.hisp.dhis.period.MonthlyPeriodType;
-import org.hisp.dhis.period.Period;
-import org.hisp.dhis.period.PeriodService;
 import org.hisp.dhis.period.PeriodType;
-import org.hisp.dhis.system.filter.PastAndCurrentPeriodFilter;
-import org.hisp.dhis.system.util.FilterUtils;
 
 import com.opensymphony.xwork2.Action;
 
@@ -95,13 +89,6 @@ public class GetChartOptionsAction
     public void setDataSetService( DataSetService dataSetService )
     {
         this.dataSetService = dataSetService;
-    }
-
-    private PeriodService periodService;
-
-    public void setPeriodService( PeriodService periodService )
-    {
-        this.periodService = periodService;
     }
 
     private OrganisationUnitService organisationUnitService;
@@ -243,20 +230,6 @@ public class GetChartOptionsAction
         return periodTypes;
     }
 
-    private List<Period> availablePeriods;
-
-    public List<Period> getAvailablePeriods()
-    {
-        return availablePeriods;
-    }
-
-    private List<Period> selectedPeriods;
-
-    public List<Period> getSelectedPeriods()
-    {
-        return selectedPeriods;
-    }
-
     private List<OrganisationUnitLevel> levels = new ArrayList<OrganisationUnitLevel>();
 
     public List<OrganisationUnitLevel> getLevels()
@@ -294,10 +267,6 @@ public class GetChartOptionsAction
 
         availableDataSets = new ArrayList<DataSet>( dataSetService.getAllDataSets() );
 
-        periodTypes = new ArrayList<PeriodType>( periodService.getAllPeriodTypes() );
-
-        availablePeriods = new MonthlyPeriodType().generatePeriods( new Date() );
-
         levels = organisationUnitService.getOrganisationUnitLevels();
 
         availableOrganisationUnits = new ArrayList<OrganisationUnit>(
@@ -310,9 +279,6 @@ public class GetChartOptionsAction
         Collections.sort( availableDataSets, dataSetComparator );
         Collections.sort( levels, new OrganisationUnitLevelComparator() );
         Collections.sort( availableOrganisationUnits, organisationUnitComparator );
-
-        Collections.reverse( availablePeriods );
-        FilterUtils.filter( availablePeriods, new PastAndCurrentPeriodFilter() );
 
         displayPropertyHandler.handle( availableIndicators );
         displayPropertyHandler.handle( availableDataElements );
@@ -331,9 +297,6 @@ public class GetChartOptionsAction
 
             selectedDataSets = chart.getDataSets();
             availableDataSets.removeAll( selectedDataSets );
-
-            selectedPeriods = chart.getPeriods();
-            availablePeriods.removeAll( selectedPeriods );
 
             selectedOrganisationUnits = chart.getOrganisationUnits();
             availableOrganisationUnits.removeAll( selectedOrganisationUnits );

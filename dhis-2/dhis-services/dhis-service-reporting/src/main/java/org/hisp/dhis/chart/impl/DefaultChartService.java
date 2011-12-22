@@ -250,7 +250,7 @@ public class DefaultChartService
         chart.setDimensions( Chart.DIMENSION_DATA, Chart.DIMENSION_PERIOD, Chart.DIMENSION_ORGANISATIONUNIT );
         chart.setHideLegend( true );
         chart.getIndicators().add( indicator );
-        chart.setPeriods( periods );
+        chart.setRelativePeriods( periods );
         chart.setOrganisationUnit( unit );
         chart.setFormat( format );
 
@@ -276,7 +276,7 @@ public class DefaultChartService
         chart.setDimensions( Chart.DIMENSION_DATA, Chart.DIMENSION_ORGANISATIONUNIT, Chart.DIMENSION_PERIOD );
         chart.setHideLegend( true );
         chart.getIndicators().add( indicator );
-        chart.setPeriods( periods );
+        chart.setRelativePeriods( periods );
         chart.setOrganisationUnits( parent.getSortedChildren() );
         chart.setFormat( format );
 
@@ -299,7 +299,7 @@ public class DefaultChartService
         chart.setIndicators( indicators );
         chart.setDataElements( dataElements );
         chart.setDataSets( dataSets );
-        chart.setPeriods( periods );
+        chart.setRelativePeriods( periods );
         chart.setOrganisationUnits( organisationUnits );
         chart.setFormat( format );
         chart.setName( chart.getTitle() );

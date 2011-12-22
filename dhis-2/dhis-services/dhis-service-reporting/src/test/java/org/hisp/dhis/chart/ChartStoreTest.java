@@ -166,7 +166,6 @@ public class ChartStoreTest
         assertEquals( chartC, chartStore.get( idC ) );
         
         assertTrue( equals( chartStore.get( idA ).getIndicators(), indicatorA, indicatorB, indicatorC ) );
-        assertTrue( equals( chartStore.get( idA ).getPeriods(), periodA, periodB, periodC ) );
         assertTrue( equals( chartStore.get( idA ).getOrganisationUnits(), unitA, unitB, unitC ) );
     }
 

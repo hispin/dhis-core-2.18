@@ -60,13 +60,6 @@
       <many-to-many column="datasetid" class="org.hisp.dhis.dataset.DataSet" foreign-key="fk_chart_datasets_datasetid" />
     </list>
 
-    <list name="periods" table="chart_periods">
-      <cache usage="read-write" />
-      <key column="chartid" foreign-key="fk_chart_periods_chartid" />
-      <list-index column="sort_order" base="0" />
-      <many-to-many column="periodid" class="org.hisp.dhis.period.Period" foreign-key="fk_chart_periods_periodid" />
-    </list>
-
     <list name="organisationUnits" table="chart_organisationunits">
       <cache usage="read-write" />
       <key column="chartid" foreign-key="fk_chart_organisationunits_chartid" />

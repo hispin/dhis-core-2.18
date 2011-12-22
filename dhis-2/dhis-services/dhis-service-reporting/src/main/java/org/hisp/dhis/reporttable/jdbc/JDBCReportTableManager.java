@@ -218,7 +218,7 @@ public class JDBCReportTableManager
         String indicatorIds = TextUtils.getCommaDelimitedString( 
             ConversionUtils.getIdentifiers( Indicator.class, chart.getIndicators() ) );
         String periodIds = TextUtils.getCommaDelimitedString( 
-            ConversionUtils.getIdentifiers( Period.class, chart.getAllPeriods() ) );
+            ConversionUtils.getIdentifiers( Period.class, chart.getRelativePeriods() ) );
         String unitIds = TextUtils.getCommaDelimitedString( 
             ConversionUtils.getIdentifiers( OrganisationUnit.class, chart.getAllOrganisationUnits() ) );
 
