@@ -44,6 +44,7 @@ import org.hisp.dhis.indicator.Indicator;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.RelativePeriods;
+import org.hisp.dhis.user.User;
 
 import javax.xml.bind.annotation.*;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
@@ -122,6 +123,8 @@ public class Chart
     private RelativePeriods relatives;
 
     private boolean userOrganisationUnit;
+    
+    private User user;
 
     // -------------------------------------------------------------------------
     // Transient properties
@@ -644,5 +647,15 @@ public class Chart
     public void setGroups( Set<ChartGroup> groups )
     {
         this.groups = groups;
+    }
+
+    public User getUser()
+    {
+        return user;
+    }
+
+    public void setUser( User user )
+    {
+        this.user = user;
     }
 }

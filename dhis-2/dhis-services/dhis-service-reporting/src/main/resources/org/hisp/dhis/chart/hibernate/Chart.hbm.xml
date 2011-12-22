@@ -86,6 +86,8 @@
     </component>
 
     <property name="userOrganisationUnit" not-null="true" />
+    
+    <many-to-one name="user" class="org.hisp.dhis.user.User" column="userid" foreign-key="fk_chart_userid" />
 
   </class>
 </hibernate-mapping>

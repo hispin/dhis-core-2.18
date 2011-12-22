@@ -39,6 +39,7 @@ import org.hisp.dhis.indicator.IndicatorService;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.period.RelativePeriods;
+import org.hisp.dhis.user.CurrentUserService;
 
 import com.opensymphony.xwork2.Action;
 
@@ -78,6 +79,13 @@ public class AddOrUpdateChartAction
     public void setOrganisationUnitService( OrganisationUnitService organisationUnitService )
     {
         this.organisationUnitService = organisationUnitService;
+    }
+    
+    private CurrentUserService currentUserService;
+
+    public void setCurrentUserService( CurrentUserService currentUserService )
+    {
+        this.currentUserService = currentUserService;
     }
 
     // -------------------------------------------------------------------------
@@ -202,6 +210,13 @@ public class AddOrUpdateChartAction
     {
         this.organisationUnitIds = organisationUnitIds;
     }
+    
+    private boolean system;
+
+    public void setSystem( boolean system )
+    {
+        this.system = system;
+    }
 
     // -------------------------------------------------------------------------
     // Action implementation
@@ -276,6 +291,11 @@ public class AddOrUpdateChartAction
         {
             chart.setOrganisationUnits( new ArrayList<OrganisationUnit>( organisationUnitService
                 .getOrganisationUnits( organisationUnitIds ) ) );
+        }
+        
+        if ( !system )
+        {
+            chart.setUser( currentUserService.getCurrentUser() );
         }
 
         chartService.saveOrUpdate( chart );

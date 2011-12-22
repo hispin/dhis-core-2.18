@@ -6,6 +6,11 @@ body {
     font-size: 11px;
 }
 
+/* Disable class invisible */
+.dv-invisible .x-form-item-body {
+    display: none;
+}
+
 /* Combobox empty text */
 .x-form-empty-field, textarea.x-form-empty-field {
     font-size: 20px;
@@ -243,6 +248,15 @@ body {
 .x-form-cb-label-after {
     padding-left: 1px;
     font-size: 11px;
+}
+
+/* DV toolbar checkbox */
+.dv-toolbar .x-form-cb-wrap {
+    padding-top: 5px;
+}
+.dv-toolbar .x-form-cb-label-after {
+    margin-left: 3px;
+    color: #333;
 }
 
 /* Button dv-toolbar font size */

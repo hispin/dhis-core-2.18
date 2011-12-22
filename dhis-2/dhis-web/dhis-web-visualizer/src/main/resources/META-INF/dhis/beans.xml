@@ -57,6 +57,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
         <property name="indicatorService" ref="org.hisp.dhis.indicator.IndicatorService" />
         <property name="dataElementService" ref="org.hisp.dhis.dataelement.DataElementService" />
         <property name="organisationUnitService" ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
+        <property name="currentUserService" ref="org.hisp.dhis.user.CurrentUserService" />
     </bean>
 
     <bean id="org.hisp.dhis.visualizer.action.DeleteChartsAction"
