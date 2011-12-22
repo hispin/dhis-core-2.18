@@ -29,7 +29,6 @@ package org.hisp.dhis.chart;
 
 import org.hisp.dhis.indicator.Indicator;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
-import org.hisp.dhis.period.Period;
 import org.hisp.dhis.system.deletion.DeletionHandler;
 
 /**
@@ -66,20 +65,6 @@ public class ChartDeletionHandler
         for ( Chart chart : chartService.getAllCharts() )
         {
             if ( chart.getIndicators().contains( indicator ) )
-            {
-                return chart.getName();
-            }
-        }
-
-        return null;
-    }
-
-    @Override
-    public String allowDeletePeriod( Period period )
-    {
-        for ( Chart chart : chartService.getAllCharts() )
-        {
-            if ( chart.getPeriods().contains( period ) )
             {
                 return chart.getName();
             }

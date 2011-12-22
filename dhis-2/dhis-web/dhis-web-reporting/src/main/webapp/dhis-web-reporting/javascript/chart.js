@@ -57,14 +57,6 @@ function showChartDetails( chartId )
 
             $( '#dataElementsField' ).text( dataElements );
         }
-        else if ( isCompletenessChart( json.chart.dimension ) )
-        {
-            $( '#indicatorsView' ).hide();
-            $( '#dataElementsView' ).hide();
-            $( '#dataSetsView' ).show();
-
-            $( '#dataSetsField' ).text( dataSets );
-        }
 
         setInnerHTML( 'periodsField', json.chart.periods );
         setInnerHTML( 'organisationUnitsField', json.chart.organisationUnits );
@@ -106,11 +98,6 @@ function saveChart( dimension )
                 if ( $( "#selectedDataSets" ).attr( 'multiple' ) !== undefined )
                 {
                     $( "#selectedDataSets" ).children().attr( "selected", true );
-                }
-
-                if ( $( "#selectedPeriods" ).attr( 'multiple' ) !== undefined )
-                {
-                    $( "#selectedPeriods" ).children().attr( "selected", true );
                 }
 
                 if ( $( "#selectedOrganisationUnits" ).attr( 'multiple' ) !== undefined )
@@ -181,17 +168,6 @@ function isDataElementChart( dimension )
     return false;
 }
 
-function isCompletenessChart( dimension )
-{
-    if ( dimension == "period_completeness" || dimension == "organisationUnit_completeness"
-            || dimension == "completeness_period" )
-    {
-        return true;
-    }
-
-    return false;
-}
-
 function validateCollections( dimension )
 {
     if ( isIndicatorChart( dimension ) && !hasElements( "selectedIndicators" ) )
@@ -208,13 +184,6 @@ function validateCollections( dimension )
         return false;
     }
 
-    if ( isCompletenessChart( dimension ) && !hasElements( "selectedDataSets" ) )
-    {
-        setMessage( i18n_must_select_at_least_one_dataset );
-
-        return false;
-    }
-
     if ( !hasElements( "selectedOrganisationUnits" ) && !isChecked( "userOrganisationUnit" ) )
     {
         setMessage( i18n_must_select_at_least_one_unit );
@@ -222,7 +191,7 @@ function validateCollections( dimension )
         return false;
     }
 
-    if ( !hasElements( "selectedPeriods" ) && !relativePeriodsChecked() )
+    if ( !relativePeriodsChecked() )
     {
         setMessage( i18n_must_select_at_least_one_period );
 

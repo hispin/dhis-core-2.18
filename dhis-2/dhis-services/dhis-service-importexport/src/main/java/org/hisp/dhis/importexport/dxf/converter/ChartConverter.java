@@ -43,8 +43,6 @@ import org.hisp.dhis.indicator.Indicator;
 import org.hisp.dhis.indicator.IndicatorService;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
-import org.hisp.dhis.period.Period;
-import org.hisp.dhis.period.PeriodService;
 import org.hisp.dhis.period.RelativePeriods;
 
 public class ChartConverter
@@ -62,7 +60,6 @@ public class ChartConverter
     private static final String FIELD_REGRESSION = "regression";
 
     private static final String FIELD_INDICATORS = "indicators";
-    private static final String FIELD_PERIODS = "periods";
     private static final String FIELD_ORGANISATION_UNITS = "organisationUnits";
 
     private static final String FIELD_REPORTING_MONTH = "reportingMonth";
@@ -74,11 +71,9 @@ public class ChartConverter
     private static final String FIELD_LAST_YEAR = "lastYear";
     
     private IndicatorService indicatorService;
-    private PeriodService periodService;
     private OrganisationUnitService organisationUnitService;
 
     private Map<Object, Integer> indicatorMapping;
-    private Map<Object, Integer> periodMapping;
     private Map<Object, Integer> organisationUnitMapping;
 
     /**
@@ -98,20 +93,16 @@ public class ChartConverter
      */
     public ChartConverter( ChartService chartService, 
         ImportObjectService importObjectService, 
-        IndicatorService indicatorService, 
-        PeriodService periodService,
+        IndicatorService indicatorService,
         OrganisationUnitService organisationUnitService,
         Map<Object, Integer> indicatorMapping,
-        Map<Object, Integer> periodMapping,
         Map<Object, Integer> organisationUnitMapping )
     {
         this.chartService = chartService;
         this.importObjectService = importObjectService;
         this.indicatorService = indicatorService;
-        this.periodService = periodService;
         this.organisationUnitService = organisationUnitService;
         this.indicatorMapping = indicatorMapping;
-        this.periodMapping = periodMapping;
         this.organisationUnitMapping = organisationUnitMapping;
     }
     
@@ -143,13 +134,6 @@ public class ChartConverter
                 }
                 writer.closeElement();
 
-                writer.openElement( FIELD_PERIODS );
-                for ( Period period : chart.getPeriods() )
-                {
-                    writer.writeElement( FIELD_ID, String.valueOf( period.getId() ) );
-                }
-                writer.closeElement();
-                
                 writer.openElement( FIELD_ORGANISATION_UNITS );
                 for ( OrganisationUnit unit : chart.getOrganisationUnits() )
                 {
@@ -208,12 +192,6 @@ public class ChartConverter
             {
                 int id = Integer.parseInt( reader.getElementValue() );
                 chart.getIndicators().add( indicatorService.getIndicator( indicatorMapping.get( id ) ) );
-            }
-
-            while ( reader.moveToStartElement( FIELD_ID, FIELD_PERIODS ) )
-            {
-                int id = Integer.parseInt( reader.getElementValue() );
-                chart.getPeriods().add( periodService.getPeriod( periodMapping.get( id ) ) );
             }
 
             while ( reader.moveToStartElement( FIELD_ID, FIELD_ORGANISATION_UNITS ) )

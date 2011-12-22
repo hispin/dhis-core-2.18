@@ -1408,6 +1408,10 @@ function relativePeriodsChecked()
     if ( isChecked( "reportingMonth" ) ||
          isChecked( "reportingBimonth" ) ||
          isChecked( "reportingQuarter" ) ||
+         isChecked( "lastMonth" ) ||
+         isChecked( "lastBimonth" ) ||
+         isChecked( "lastQuarter" ) ||
+         isChecked( "lastSixMonth" ) ||
          isChecked( "monthsThisYear" ) ||
          isChecked( "quartersThisYear" ) ||
          isChecked( "thisYear" ) ||
@@ -1416,7 +1420,9 @@ function relativePeriodsChecked()
          isChecked( "lastYear" ) ||
          isChecked( "last5Years" ) ||
          isChecked( "last12Months" ) ||
-         isChecked( "last4Quarters" ) )
+         isChecked( "last6BiMonths" ) ||
+         isChecked( "last4Quarters" ) ||
+         isChecked( "last2SixMonths" ) )
     {
         return true;
     }

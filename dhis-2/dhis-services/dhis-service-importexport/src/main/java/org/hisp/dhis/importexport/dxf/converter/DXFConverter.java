@@ -910,9 +910,8 @@ public class DXFConverter
                 state.setMessage( "importing_charts" );
 
                 XMLConverter converter = new ChartConverter( chartService, importObjectService, indicatorService,
-                    periodService, organisationUnitService, objectMappingGenerator.getIndicatorMapping( params
-                        .skipMapping() ), objectMappingGenerator.getPeriodMapping( params.skipMapping() ),
-                    objectMappingGenerator.getOrganisationUnitMapping( params.skipMapping() ) );
+                    organisationUnitService, objectMappingGenerator.getIndicatorMapping( params
+                        .skipMapping() ), objectMappingGenerator.getOrganisationUnitMapping( params.skipMapping() ) );
 
                 converterInvoker.invokeRead( converter, reader, params );
 

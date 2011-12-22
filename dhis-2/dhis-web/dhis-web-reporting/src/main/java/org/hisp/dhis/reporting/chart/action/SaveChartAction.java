@@ -30,7 +30,6 @@ package org.hisp.dhis.reporting.chart.action;
 import static org.hisp.dhis.system.util.ConversionUtils.getIntegerCollection;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
@@ -44,10 +43,7 @@ import org.hisp.dhis.indicator.Indicator;
 import org.hisp.dhis.indicator.IndicatorService;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
-import org.hisp.dhis.period.Period;
-import org.hisp.dhis.period.PeriodService;
 import org.hisp.dhis.period.RelativePeriods;
-import org.hisp.dhis.period.comparator.AscendingPeriodComparator;
 
 import com.opensymphony.xwork2.Action;
 
@@ -88,13 +84,6 @@ public class SaveChartAction
     public void setDataSetService( DataSetService dataSetService )
     {
         this.dataSetService = dataSetService;
-    }
-
-    private PeriodService periodService;
-
-    public void setPeriodService( PeriodService periodService )
-    {
-        this.periodService = periodService;
     }
 
     private OrganisationUnitService organisationUnitService;
@@ -227,13 +216,6 @@ public class SaveChartAction
         this.selectedDataElements = selectedDataElements;
     }
 
-    private List<String> selectedPeriods = new ArrayList<String>();
-
-    public void setSelectedPeriods( List<String> selectedPeriods )
-    {
-        this.selectedPeriods = selectedPeriods;
-    }
-
     private List<String> selectedOrganisationUnits = new ArrayList<String>();
 
     public void setSelectedOrganisationUnits( List<String> selectedOrganisationUnits )
@@ -316,7 +298,6 @@ public class SaveChartAction
         List<DataElement> dataElements = new ArrayList<DataElement>();
         List<OrganisationUnit> organisationUnits = new ArrayList<OrganisationUnit>();
         List<DataSet> dataSets = new ArrayList<DataSet>();
-        List<Period> periods = new ArrayList<Period>( periodService.getPeriodsByExternalIds( selectedPeriods ) );
 
         for ( Integer id : getIntegerCollection( selectedIndicators ) )
         {
@@ -338,8 +319,6 @@ public class SaveChartAction
             organisationUnits.add( organisationUnitService.getOrganisationUnit( id ) );
         }
 
-        Collections.sort( periods, new AscendingPeriodComparator() );
-
         chart.setName( name );
         chart.setDomainAxixLabel( StringUtils.trimToNull( domainAxisLabel ) );
         chart.setRangeAxisLabel( StringUtils.trimToNull( rangeAxisLabel ) );
@@ -357,7 +336,6 @@ public class SaveChartAction
         chart.setIndicators( indicators );
         chart.setDataElements( dataElements );
         chart.setDataSets( dataSets );
-        chart.setPeriods( periods );
         chart.setOrganisationUnits( organisationUnits );
 
         RelativePeriods rp = new RelativePeriods();

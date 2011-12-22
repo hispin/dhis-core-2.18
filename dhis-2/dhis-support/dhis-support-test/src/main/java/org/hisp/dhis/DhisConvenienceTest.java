@@ -822,7 +822,7 @@ public abstract class DhisConvenienceTest
 
         chart.setName( "Chart" + uniqueCharacter );
         chart.setIndicators( indicators );
-        chart.setPeriods( periods );
+        chart.setRelativePeriods( periods );
         chart.setOrganisationUnits( units );
         chart.setDimensions( Chart.DIMENSION_DATA, Chart.DIMENSION_PERIOD, Chart.DIMENSION_ORGANISATIONUNIT );
 
