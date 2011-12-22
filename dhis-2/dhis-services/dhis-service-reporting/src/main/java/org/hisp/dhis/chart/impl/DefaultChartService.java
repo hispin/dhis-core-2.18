@@ -34,6 +34,8 @@ import static org.hisp.dhis.chart.Chart.TYPE_LINE;
 import static org.hisp.dhis.chart.Chart.TYPE_PIE;
 import static org.hisp.dhis.chart.Chart.TYPE_STACKED_BAR;
 import static org.hisp.dhis.chart.Chart.TYPE_STACKED_COLUMN;
+import static org.hisp.dhis.options.SystemSettingManager.AGGREGATION_STRATEGY_REAL_TIME;
+import static org.hisp.dhis.options.SystemSettingManager.KEY_AGGREGATION_STRATEGY;
 import static org.hisp.dhis.reporttable.ReportTable.getIdentifier;
 import static org.hisp.dhis.system.util.ConversionUtils.getArray;
 
@@ -48,13 +50,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import org.amplecode.quick.StatementManager;
 import org.apache.commons.math.MathException;
 import org.apache.commons.math.analysis.SplineInterpolator;
 import org.apache.commons.math.analysis.UnivariateRealFunction;
 import org.apache.commons.math.analysis.UnivariateRealInterpolator;
 import org.apache.commons.math.stat.regression.SimpleRegression;
-import org.hisp.dhis.aggregation.AggregationService;
 import org.hisp.dhis.chart.Chart;
 import org.hisp.dhis.chart.ChartGroup;
 import org.hisp.dhis.chart.ChartService;
@@ -177,27 +177,11 @@ public class DefaultChartService
         this.reportTableManager = reportTableManager;
     }
 
-    // TODO remove support for aggregation service
-    
-    private AggregationService aggregationService;
-
-    public void setAggregationService( AggregationService aggregationService )
-    {
-        this.aggregationService = aggregationService;
-    }
-
     private SystemSettingManager systemSettingManager;
 
     public void setSystemSettingManager( SystemSettingManager systemSettingManager )
     {
         this.systemSettingManager = systemSettingManager;
-    }
-
-    private StatementManager statementManager;
-
-    public void setStatementManager( StatementManager statementManager )
-    {
-        this.statementManager = statementManager;
     }
 
     // -------------------------------------------------------------------------
@@ -744,7 +728,16 @@ public class DefaultChartService
 
     private CategoryDataset[] getCategoryDataSet( Chart chart )
     {
-        Map<String, Double> valueMap = reportTableManager.getAggregatedValueMap( chart );
+        Map<String, Double> valueMap = null;
+        
+        if ( AGGREGATION_STRATEGY_REAL_TIME.equals( systemSettingManager.getSystemSetting( KEY_AGGREGATION_STRATEGY, AGGREGATION_STRATEGY_REAL_TIME ) ) )
+        {
+            valueMap = reportTableManager.getAggregatedValueMapRealTime( chart ); // Temp fix
+        }
+        else
+        {
+            valueMap = reportTableManager.getAggregatedValueMap( chart );
+        }        
         
         DefaultCategoryDataset regularDataSet = new DefaultCategoryDataset();
         DefaultCategoryDataset regressionDataSet = new DefaultCategoryDataset();
