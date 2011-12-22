@@ -8,7 +8,7 @@ DV.conf = {
         ],
         jsonfy: function(r) {
             r = Ext.JSON.decode(r.responseText);
-            var obj = {system: {rootNode: {id: r.rn[0], name: r.rn[1], level: 1}, periods: {}}};
+            var obj = {system: {rootNode: {id: r.rn[0], name: r.rn[1], level: 1}, periods: {}, isAdmin: r.isAdmin}};
             for (var relative in r.p) {
                 obj.system.periods[relative] = [];
                 for (var i = 0; i < r.p[relative].length; i++) {
@@ -34,10 +34,11 @@ DV.conf = {
             dataelement_get: 'getDataElementsMinified.action',
             organisationunitchildren_get: 'getOrganisationUnitChildren.action',
             favorite_addorupdate: 'addOrUpdateChart.action',
+            favorite_addorupdatesystem: 'addOrUpdateSystemChart.action',            
             favorite_get: 'charts/',
-            favorite_getall: 'charts.json?links=false',
+            favorite_getall: 'charts.json?paging=false&links=false',
             favorite_delete: 'deleteCharts.action'
-        },        
+        },
         dimension: {
             data: {
                 value: 'data',
@@ -705,9 +706,10 @@ Ext.onReady( function() {
                         var store = DV.store.favorite;
                         params.uid = store.getAt(store.findExact('name', params.name)).data.id;
                     }
+                    var url = DV.cmp.favorite.system.getValue() ? DV.conf.finals.ajax.favorite_addorupdatesystem : DV.conf.finals.ajax.favorite_addorupdate;
                     
                     Ext.Ajax.request({
-                        url: DV.conf.finals.ajax.path_visualizer + DV.conf.finals.ajax.favorite_addorupdate,
+                        url: DV.conf.finals.ajax.path_visualizer + url,
                         params: params,
                         success: function() {
                             DV.store.favorite.load({callback: function() {
@@ -2591,6 +2593,18 @@ Ext.onReady( function() {
                                                                     height: 24
                                                                 },
                                                                 items: [
+                                                                    ' ',
+                                                                    {
+                                                                        xtype: 'checkbox',
+                                                                        boxLabel: 'System',
+                                                                        disabled: !DV.init.system.isAdmin,
+                                                                        disabledCls: 'dv-invisible',
+                                                                        listeners: {
+                                                                            added: function() {
+                                                                                DV.cmp.favorite.system = this;
+                                                                            }
+                                                                        }
+                                                                    },
                                                                     '->',
                                                                     {
                                                                         text: 'Save',
@@ -2607,7 +2621,7 @@ Ext.onReady( function() {
                                                                             var value = DV.cmp.favorite.name.getValue();
                                                                             if (DV.state.isRendered && value) {
                                                                                 if (DV.store.favorite.findExact('name', value) != -1) {
-                                                                                    var item = value.length > 35 ? (value.substr(0,35) + '...') : value;
+                                                                                    var item = value.length > 40 ? (value.substr(0,40) + '...') : value;
                                                                                     var w = Ext.create('Ext.window.Window', {
                                                                                         title: 'Save favorite',
                                                                                         width: DV.conf.layout.window_confirm_width,
