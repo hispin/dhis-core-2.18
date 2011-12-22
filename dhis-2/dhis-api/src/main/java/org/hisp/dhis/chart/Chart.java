@@ -649,6 +649,8 @@ public class Chart
         this.groups = groups;
     }
 
+    @XmlElement
+    @JsonProperty
     public User getUser()
     {
         return user;
