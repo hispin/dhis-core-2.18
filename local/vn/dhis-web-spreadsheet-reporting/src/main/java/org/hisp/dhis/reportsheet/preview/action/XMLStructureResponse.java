@@ -254,33 +254,25 @@ public class XMLStructureResponse
         xml.append( "<sheet id='" + (sheetNo) + "'>" );
         xml.append( "<name><![CDATA[" + s.getSheetName() + "]]></name>" );
 
-        int i = 0;
-        int j = 0;
-
         for ( Row row : s )
         {
-            j = 0;
-
-            xml.append( "<row index='" + i + "'>" );
+            xml.append( "<row index='" + row.getRowNum() + "'>" );
 
             for ( Cell cell : row )
             {
                 // Remember that empty cells can contain format information
                 if ( (cell.getCellStyle() != null) || cell.getCellType() != Cell.CELL_TYPE_BLANK )
                 {
-                    xml.append( "<col no='" + j + "'><data>" );
-                    xml.append( "<![CDATA[" + readValueByPOI( i + 1, j + 1, s, evaluatorFormula ) + "]]></data>" );
+                    xml.append( "<col no='" + cell.getColumnIndex() + "'>" );
+                    xml.append( "<data><![CDATA["
+                        + readValueByPOI( row.getRowNum() + 1, cell.getColumnIndex() + 1, s, evaluatorFormula )
+                        + "]]></data>" );
 
                     this.readingDetailsFormattedCell( cell, bDetailed );
 
                     xml.append( "</col>" );
                 }
-
-                j++;
             }
-
-            i++;
-
             xml.append( "</row>" );
         }
         xml.append( "</sheet>" );
@@ -294,8 +286,9 @@ public class XMLStructureResponse
         if ( format != null )
         {
             xml.append( "<format align='" + convertAlignmentString( format.getAlignment() ) + "'" );
-            xml.append( " border='" + format.getBorderBottom() + format.getBorderLeft() + format.getBorderRight()
-                + format.getBorderTop() + "'" );
+            xml.append( " border='"
+                + (format.getBorderBottom() + format.getBorderLeft() + format.getBorderRight() + format.getBorderTop())
+                + "'" );
 
             Font font = WORKBOOK.getFontAt( format.getFontIndex() );
 

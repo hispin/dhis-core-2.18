@@ -222,6 +222,7 @@ public class RelativePeriods
         this.reportingMonth = false;
         this.reportingBimonth = false;
         this.reportingQuarter = false;
+        this.lastSixMonth = false;
         this.monthsThisYear = false;
         this.quartersThisYear = false;
         this.thisYear = false;

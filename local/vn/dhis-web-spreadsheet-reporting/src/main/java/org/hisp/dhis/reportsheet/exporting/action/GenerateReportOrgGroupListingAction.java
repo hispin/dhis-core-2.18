@@ -109,6 +109,7 @@ public class GenerateReportOrgGroupListingAction
         for ( ExportItem reportItem : exportReportItems )
         {
             int run = 0;
+            int next = 0;
             int chapperNo = 0;
             int firstRow = reportItem.getRow();
             int rowBegin = firstRow + 1;
@@ -148,9 +149,8 @@ public class GenerateReportOrgGroupListingAction
                 else if ( reportItem.getItemType().equalsIgnoreCase( ExportItem.TYPE.SERIAL )
                     && (!organisationUnits.isEmpty()) )
                 {
-                    ExcelUtils.writeValueByPOI( rowBegin, reportItem.getColumn(), chappter[chapperNo], ExcelUtils.TEXT,
-                        sheet, this.csText12BoldCenter );
-                    chapperNo++;
+                    ExcelUtils.writeValueByPOI( rowBegin, reportItem.getColumn(), chappter[chapperNo++],
+                        ExcelUtils.TEXT, sheet, this.csText12BoldCenter );
                 }
 
                 run++;
@@ -195,24 +195,42 @@ public class GenerateReportOrgGroupListingAction
                     serial++;
                 }
 
-                if ( (reportItem.getItemType().equalsIgnoreCase( ExportItem.TYPE.DATAELEMENT ) || reportItem
-                    .getItemType().equalsIgnoreCase( ExportItem.TYPE.INDICATOR ))
-                    && (!organisationUnits.isEmpty()) )
+                if ( !organisationUnits.isEmpty() )
                 {
-                    String columnName = ExcelUtils.convertColumnNumberToName( reportItem.getColumn() );
-                    String formula = "SUM(" + columnName + (beginChapter + 1) + ":" + columnName + (rowBegin - 1) + ")";
+                    String formula = "";
 
-                    ExcelUtils.writeFormulaByPOI( beginChapter, reportItem.getColumn(), formula, sheet, this.csFormula );
+                    if ( reportItem.getItemType().equalsIgnoreCase( ExportItem.TYPE.DATAELEMENT ) )
+                    {
+                        String columnName = ExcelUtils.convertColumnNumberToName( reportItem.getColumn() );
+                        formula = "SUM(" + columnName + (beginChapter + 1) + ":" + columnName + (rowBegin - 1) + ")";
 
-                    totalFormula += columnName + beginChapter + ",";
+                        ExcelUtils.writeFormulaByPOI( beginChapter, reportItem.getColumn(), formula, sheet,
+                            this.csFormula );
+
+                        totalFormula += columnName + beginChapter + ",";
+                    }
+                    else if ( reportItem.getItemType().equalsIgnoreCase( ExportItem.TYPE.INDICATOR ) )
+                    {
+                        formula = ExcelUtils.generateExcelFormula( reportItem.getExtraExpression(), next + 1, 0 );
+
+                        ExcelUtils.writeFormulaByPOI( beginChapter, reportItem.getColumn(), formula, sheet,
+                            this.csFormula );
+                    }
                 }
+
+                next = run;
             }
 
-            if ( (reportItem.getItemType().equalsIgnoreCase( ExportItem.TYPE.DATAELEMENT ) || reportItem.getItemType()
-                .equalsIgnoreCase( ExportItem.TYPE.INDICATOR ))
+            if ( (reportItem.getItemType().equalsIgnoreCase( ExportItem.TYPE.DATAELEMENT ))
                 && !totalFormula.equals( PREFIX_FORMULA_SUM ) )
             {
                 totalFormula = totalFormula.substring( 0, totalFormula.length() - 1 ) + ")";
+
+                ExcelUtils.writeFormulaByPOI( firstRow, reportItem.getColumn(), totalFormula, sheet, this.csFormula );
+            }
+            else if ( reportItem.getItemType().equalsIgnoreCase( ExportItem.TYPE.INDICATOR ) )
+            {
+                totalFormula = ExcelUtils.generateExcelFormula( reportItem.getExtraExpression(), 0, 0 );
 
                 ExcelUtils.writeFormulaByPOI( firstRow, reportItem.getColumn(), totalFormula, sheet, this.csFormula );
             }

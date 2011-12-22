@@ -73,6 +73,11 @@ public class GenericItem
      */
     protected String expression;
 
+    /**
+     * The extraExpression for this Object.
+     */
+    protected String extraExpression;    
+    
     // -------------------------------------------------------------------------
     // Getters & setters
     // -------------------------------------------------------------------------
@@ -135,6 +140,16 @@ public class GenericItem
     public void setExpression( String expression )
     {
         this.expression = expression;
+    }
+
+    public String getExtraExpression()
+    {
+        return extraExpression;
+    }
+
+    public void setExtraExpression( String extraExpression )
+    {
+        this.extraExpression = extraExpression;
     }
 
 }

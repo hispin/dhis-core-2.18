@@ -82,6 +82,13 @@ public class UpdateExportItemAction
         this.expression = expression;
     }
 
+    private String extraExpression;
+
+    public void setExtraExpression( String extraExpression )
+    {
+        this.extraExpression = extraExpression;
+    }
+
     private String periodType;
 
     public void setPeriodType( String periodType )
@@ -126,12 +133,13 @@ public class UpdateExportItemAction
         throws Exception
     {
         ExportItem exportItem = exportReportService.getExportItem( id );
-        
+
         exportItem.setName( name );
         exportItem.setItemType( itemType );
         exportItem.setRow( row );
         exportItem.setColumn( column );
         exportItem.setExpression( expression );
+        exportItem.setExtraExpression( extraExpression );
         exportItem.setPeriodType( periodType );
         exportItem.setSheetNo( (sheetNo) );
         exportItem.setExportReport( exportReportService.getExportReport( exportReportId ) );
