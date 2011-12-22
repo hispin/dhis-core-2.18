@@ -96,7 +96,7 @@ function getLeftPrgramStageDataElements()
 	if( psId == '') return;
   
 	$.ajax({
-		url: 'getPSDataElements.action?psId=' + psId,
+		url: 'getAggPSDataElements.action?psId=' + psId,
 		dataType: "xml",
 		success: getLeftPrgramStageDataElementsCompleted
 	});  
@@ -135,7 +135,7 @@ function getRightPrgramStageDataElements()
 	if( psId == '') return;
   
 	$.ajax({
-		url: 'getPSDataElements.action?psId=' + psId,
+		url: 'getAggPSDataElements.action?psId=' + psId,
 		dataType: "xml",
 		success: getRightPrgramStageDataElementsCompleted
 	});  
