@@ -416,7 +416,6 @@ public class WebLinkPopulator
             handleIdentifiableObjectCollection( reportTable.getCategoryOptionCombos() );
             handleIdentifiableObjectCollection( reportTable.getDataElements() );
             handleIdentifiableObjectCollection( reportTable.getIndicators() );
-            handleIdentifiableObjectCollection( reportTable.getGroups() );
             handleIdentifiableObjectCollection( reportTable.getDataSets() );
         }
     }

@@ -90,7 +90,7 @@ public class Chart
     public static final String DIMENSION_PERIOD = "PERIOD";
     public static final String DIMENSION_ORGANISATIONUNIT = "ORGANISATIONUNIT";
 
-    private String domainAxixLabel;
+    private String domainAxisLabel;
 
     private String rangeAxisLabel;
 
@@ -348,14 +348,14 @@ public class Chart
 
     @XmlElement( name = "domainAxisLabel" )
     @JsonProperty( value = "domainAxisLabel" )
-    public String getDomainAxixLabel()
+    public String getDomainAxisLabel()
     {
-        return domainAxixLabel;
+        return domainAxisLabel;
     }
 
-    public void setDomainAxixLabel( String domainAxixLabel )
+    public void setDomainAxisLabel( String domainAxisLabel )
     {
-        this.domainAxixLabel = domainAxixLabel;
+        this.domainAxisLabel = domainAxisLabel;
     }
 
     @XmlElement

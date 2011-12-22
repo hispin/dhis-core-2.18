@@ -320,7 +320,7 @@ public class SaveChartAction
         }
 
         chart.setName( name );
-        chart.setDomainAxixLabel( StringUtils.trimToNull( domainAxisLabel ) );
+        chart.setDomainAxisLabel( StringUtils.trimToNull( domainAxisLabel ) );
         chart.setRangeAxisLabel( StringUtils.trimToNull( rangeAxisLabel ) );
         chart.setHideSubtitle( hideSubtitle );
         chart.setType( type );
