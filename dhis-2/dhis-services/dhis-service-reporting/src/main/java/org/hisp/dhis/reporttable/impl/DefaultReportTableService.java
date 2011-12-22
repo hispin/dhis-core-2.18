@@ -43,7 +43,6 @@ import static org.hisp.dhis.system.util.ConversionUtils.getIdentifiers;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -171,6 +170,7 @@ public class DefaultReportTableService
     public Grid getReportTableGrid( String uid, I18nFormat format, Date reportingPeriod, String organisationUnitUid )
     {
         ReportTable reportTable = getReportTable( uid );
+        
         OrganisationUnit organisationUnit = organisationUnitService.getOrganisationUnit( organisationUnitUid );
 
         return getReportTableGrid( reportTable.getId(), format, reportingPeriod, organisationUnit.getId() );

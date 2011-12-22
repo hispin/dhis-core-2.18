@@ -546,7 +546,7 @@ public class DefaultChartService
 
         CategoryAxis xAxis = plot.getDomainAxis();
         xAxis.setCategoryLabelPositions( CategoryLabelPositions.UP_45 );
-        xAxis.setLabel( chart.getDomainAxixLabel() );
+        xAxis.setLabel( chart.getDomainAxisLabel() );
 
         ValueAxis yAxis = plot.getRangeAxis();
         yAxis.setLabel( chart.getRangeAxisLabel() );
@@ -567,12 +567,12 @@ public class DefaultChartService
 
         if ( chart.isType( TYPE_STACKED_BAR ) )
         {
-            stackedBarChart = ChartFactory.createStackedBarChart( chart.getName(), chart.getDomainAxixLabel(),
+            stackedBarChart = ChartFactory.createStackedBarChart( chart.getName(), chart.getDomainAxisLabel(),
                 chart.getRangeAxisLabel(), dataSet, PlotOrientation.VERTICAL, true, false, false );
         }
         else
         {
-            stackedBarChart = ChartFactory.createStackedBarChart3D( chart.getName(), chart.getDomainAxixLabel(),
+            stackedBarChart = ChartFactory.createStackedBarChart3D( chart.getName(), chart.getDomainAxisLabel(),
                 chart.getRangeAxisLabel(), dataSet, PlotOrientation.VERTICAL, true, false, false );
         }
 
