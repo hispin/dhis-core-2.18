@@ -27,16 +27,20 @@ package org.hisp.dhis.report;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.HashSet;
-import java.util.Set;
+import org.codehaus.jackson.annotate.JsonProperty;
+import org.codehaus.jackson.map.annotate.JsonSerialize;
+import org.hisp.dhis.common.BaseIdentifiableObject;
+import org.hisp.dhis.common.Dxf2Namespace;
+import org.hisp.dhis.common.adapter.ReportTableXmlAdapter;
+import org.hisp.dhis.reporttable.ReportTable;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
-
-import org.hisp.dhis.common.BaseIdentifiableObject;
-import org.hisp.dhis.common.Dxf2Namespace;
-import org.hisp.dhis.reporttable.ReportTable;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * @author Lars Helge Overland
@@ -56,7 +60,7 @@ public class Report
     private ReportTable reportTable;
 
     private Boolean usingOrgUnitGroupSets;
-    
+
     private Set<ReportGroup> groups = new HashSet<ReportGroup>();
 
     // -------------------------------------------------------------------------
@@ -110,7 +114,7 @@ public class Report
     {
         return reportTable != null;
     }
-    
+
     public boolean isUsingOrganisationUnitGroupSets()
     {
         return usingOrgUnitGroupSets != null && usingOrgUnitGroupSets;
@@ -159,6 +163,8 @@ public class Report
     // Getters and setters
     // -------------------------------------------------------------------------
 
+    @XmlElement
+    @JsonProperty
     public String getDesignContent()
     {
         return designContent;
@@ -168,7 +174,11 @@ public class Report
     {
         this.designContent = designContent;
     }
-    
+
+    @XmlElement
+    @XmlJavaTypeAdapter( ReportTableXmlAdapter.class )
+    @JsonProperty
+    @JsonSerialize( contentAs = BaseIdentifiableObject.class )
     public ReportTable getReportTable()
     {
         return reportTable;

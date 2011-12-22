@@ -146,6 +146,7 @@ public class DataElementCategoryOption extends BaseNameableObject
         this.category = category;
     }
 
+    // TODO Serialize this when bobs concept stuff is in place
     public Concept getConcept()
     {
         return concept;
