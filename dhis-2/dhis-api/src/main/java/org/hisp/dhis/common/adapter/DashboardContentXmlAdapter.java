@@ -27,11 +27,10 @@ package org.hisp.dhis.common.adapter;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import javax.xml.bind.annotation.adapters.XmlAdapter;
+
 import org.hisp.dhis.common.BaseIdentifiableObject;
 import org.hisp.dhis.dashboard.DashboardContent;
-
-import javax.xml.bind.annotation.adapters.XmlAdapter;
-import java.util.UUID;
 
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
