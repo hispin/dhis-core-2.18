@@ -54,6 +54,7 @@ import org.hisp.dhis.common.adapter.CategoryComboXmlAdapter;
 import org.hisp.dhis.common.adapter.DataElementXmlAdapter;
 import org.hisp.dhis.common.adapter.DataSetXmlAdapter;
 import org.hisp.dhis.common.adapter.IndicatorXmlAdapter;
+import org.hisp.dhis.common.adapter.OrganisationUnitGroupXmlAdapter;
 import org.hisp.dhis.common.adapter.OrganisationUnitXmlAdapter;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryCombo;
@@ -63,6 +64,7 @@ import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.i18n.I18nFormat;
 import org.hisp.dhis.indicator.Indicator;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
+import org.hisp.dhis.organisationunit.OrganisationUnitGroup;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroupSet;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.RelativePeriods;
@@ -98,6 +100,9 @@ public class ReportTable extends BaseIdentifiableObject
     public static final String ORGANISATIONUNIT_ID = "organisationunitid";
     public static final String ORGANISATIONUNIT_NAME = "organisationunitname";
     public static final String ORGANISATIONUNIT_CODE = "organisationunitcode";
+    public static final String ORGANISATIONUNITGROUP_ID = "organisationunitgroupid";
+    public static final String ORGANISATIONUNITGROUP_NAME = "organisationunitgroupname";
+    public static final String ORGANISATIONUNITGROUP_CODE = "organisationunitgroupcode";
     public static final String REPORTING_MONTH_COLUMN_NAME = "reporting_month_name";
     public static final String PARAM_ORGANISATIONUNIT_COLUMN_NAME = "param_organisationunit_name";
     public static final String ORGANISATION_UNIT_IS_PARENT_COLUMN_NAME = "organisation_unit_is_parent";
@@ -126,6 +131,9 @@ public class ReportTable extends BaseIdentifiableObject
             put( ORGANISATIONUNIT_ID, "Organisation unit ID" );
             put( ORGANISATIONUNIT_NAME, "Organisation unit" );
             put( ORGANISATIONUNIT_CODE, "Organisation unit code" );
+            put( ORGANISATIONUNITGROUP_ID, "Organisation unit group ID" );
+            put( ORGANISATIONUNITGROUP_NAME, "Organisation unit group" );
+            put( ORGANISATIONUNITGROUP_CODE, "Organisation unit group code" );
             put( REPORTING_MONTH_COLUMN_NAME, "Reporting month" );
             put( PARAM_ORGANISATIONUNIT_COLUMN_NAME, "Organisation unit parameter" );
             put( ORGANISATION_UNIT_IS_PARENT_COLUMN_NAME, "Organisation unit is parent" );
@@ -142,6 +150,7 @@ public class ReportTable extends BaseIdentifiableObject
             put( DataSet.class, DATASET_ID );
             put( Period.class, PERIOD_ID );
             put( OrganisationUnit.class, ORGANISATIONUNIT_ID );
+            put( OrganisationUnitGroup.class, ORGANISATIONUNITGROUP_ID );
         }
     };
 
@@ -187,6 +196,11 @@ public class ReportTable extends BaseIdentifiableObject
      */
     private List<OrganisationUnit> units = new ArrayList<OrganisationUnit>();
 
+    /**
+     * The list of OrganisationUnitGroups the ReportTable contains.
+     */
+    private List<OrganisationUnitGroup> organisationUnitGroups = new ArrayList<OrganisationUnitGroup>();
+    
     /**
      * The DataElementCategoryCombo for the ReportTable.
      */
@@ -340,7 +354,8 @@ public class ReportTable extends BaseIdentifiableObject
      */
     public ReportTable( String name, boolean regression, List<DataElement> dataElements, List<Indicator> indicators,
                         List<DataSet> dataSets, List<Period> periods, List<Period> relativePeriods, List<OrganisationUnit> units,
-                        List<OrganisationUnit> relativeUnits, DataElementCategoryCombo categoryCombo, boolean doIndicators,
+                        List<OrganisationUnit> relativeUnits, List<OrganisationUnitGroup> organisationUnitGroups,
+                        DataElementCategoryCombo categoryCombo, boolean doIndicators,
                         boolean doPeriods, boolean doUnits, RelativePeriods relatives, ReportParams reportParams,
                         I18nFormat i18nFormat, String reportingPeriodName )
     {
@@ -353,6 +368,7 @@ public class ReportTable extends BaseIdentifiableObject
         this.relativePeriods = relativePeriods;
         this.units = units;
         this.relativeUnits = relativeUnits;
+        this.organisationUnitGroups = organisationUnitGroups;
         this.categoryCombo = categoryCombo;
         this.doIndicators = doIndicators;
         this.doPeriods = doPeriods;
@@ -372,8 +388,8 @@ public class ReportTable extends BaseIdentifiableObject
         verify( nonEmptyLists( dataElements, indicators, dataSets ) > 0,
             "Must contain dataelements, indicators or datasets" );
         verify( nonEmptyLists( periods, relativePeriods ) > 0, "Must contain periods or relative periods" );
-        verify( nonEmptyLists( units, relativeUnits ) > 0,
-            "Must contain organisation units or relative organisation units" );
+        verify( nonEmptyLists( units, relativeUnits, organisationUnitGroups ) > 0,
+            "Must contain organisation units, relative organisation units or organisation unit groups" );
         verify( !(doTotal() && regression), "Cannot have regression columns with total columns" );
         verify( i18nFormat != null, "I18n format must be set" );
 
@@ -401,10 +417,17 @@ public class ReportTable extends BaseIdentifiableObject
 
         Collections.sort( allPeriods, new AscendingPeriodComparator() );
         setNames( allPeriods ); // Set names on periods
-
-        allUnits.addAll( units );
-        allUnits.addAll( relativeUnits );
-        allUnits = removeDuplicates( allUnits );
+        
+        if ( isOrganisationUnitGroupBased() )
+        {
+            allUnits.addAll( organisationUnitGroups );
+        }
+        else
+        {
+            allUnits.addAll( units );
+            allUnits.addAll( relativeUnits );
+            allUnits = removeDuplicates( allUnits );
+        }
 
         columns = new CombinationGenerator<NameableObject>( getArrays( true ) ).getCombinations();
         rows = new CombinationGenerator<NameableObject>( getArrays( false ) ).getCombinations();
@@ -665,6 +688,15 @@ public class ReportTable extends BaseIdentifiableObject
     {
         return parentOrganisationUnit != null ? parentOrganisationUnit.getName() : EMPTY;
     }
+    
+    /**
+     * Indicates whether this report table is based on organisation unit groups
+     * or the organisation unit hierarchy.
+     */
+    public boolean isOrganisationUnitGroupBased()
+    {
+        return organisationUnitGroups != null && organisationUnitGroups.size() > 0;
+    }
 
     // -------------------------------------------------------------------------
     // Supportive methods
@@ -910,6 +942,21 @@ public class ReportTable extends BaseIdentifiableObject
     public void setUnits( List<OrganisationUnit> units )
     {
         this.units = units;
+    }
+
+    @XmlElementWrapper( name = "organisationUnitGroups" )
+    @XmlElement( name = "organisationUnitGroup" )
+    @XmlJavaTypeAdapter( OrganisationUnitGroupXmlAdapter.class )
+    @JsonProperty
+    @JsonSerialize( contentAs = BaseNameableObject.class )
+    public List<OrganisationUnitGroup> getOrganisationUnitGroups()
+    {
+        return organisationUnitGroups;
+    }
+
+    public void setOrganisationUnitGroups( List<OrganisationUnitGroup> organisationUnitGroups )
+    {
+        this.organisationUnitGroups = organisationUnitGroups;
     }
 
     @XmlElement

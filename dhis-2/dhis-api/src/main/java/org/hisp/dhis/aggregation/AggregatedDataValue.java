@@ -28,7 +28,6 @@ package org.hisp.dhis.aggregation;
  */
 
 import java.io.Serializable;
-import java.util.Date;
 
 import org.hisp.dhis.common.AggregatedValue;
 
@@ -59,8 +58,6 @@ public class AggregatedDataValue
     
     private double value;
 
-    private Date modified;
-    
     private transient String dataElementName;
     
     private transient String periodName;
@@ -84,7 +81,8 @@ public class AggregatedDataValue
      * @param level level
      * @param value value
      */
-    public AggregatedDataValue( int dataElementId, int categoryOptionComboId, int periodId, int periodTypeId, int organisationUnitId, int level, double value ) 
+    public AggregatedDataValue( int dataElementId, int categoryOptionComboId, int periodId, 
+        int periodTypeId, int organisationUnitId, int level, double value ) 
     {
         this.dataElementId = dataElementId;
         this.categoryOptionComboId = categoryOptionComboId;
@@ -93,7 +91,6 @@ public class AggregatedDataValue
         this.organisationUnitId = organisationUnitId;
         this.level = level;
         this.value = value;
-        this.modified = new Date();
     }
 
     /**
@@ -102,20 +99,21 @@ public class AggregatedDataValue
      * @param periodId period id
      * @param periodTypeId period type id
      * @param organisationUnitId organisation unit id
+     * @param organisationUnitGroupId organisation unit group id
      * @param level level
      * @param value value
-     * @param timestamp modification timestamp
      */
-    public AggregatedDataValue( int dataElementId, int categoryOptionComboId, int periodId, int periodTypeId, int organisationUnitId, int level, double value, Date timestamp )
+    public AggregatedDataValue( int dataElementId, int categoryOptionComboId, int periodId, 
+        int periodTypeId, int organisationUnitId, int organisationUnitGroupId, int level, double value ) 
     {
         this.dataElementId = dataElementId;
         this.categoryOptionComboId = categoryOptionComboId;
         this.periodId = periodId;
         this.periodTypeId = periodTypeId;
         this.organisationUnitId = organisationUnitId;
+        this.organisationUnitGroupId = organisationUnitGroupId;
         this.level = level;
         this.value = value;
-        this.modified = timestamp;
     }
 
     // ----------------------------------------------------------------------
@@ -221,16 +219,6 @@ public class AggregatedDataValue
     public void setValue( double value )
     {
         this.value = value;
-    }
-
-    public Date getModified()
-    {
-        return modified;
-    }
-
-    public void setModified( Date modified )
-    {
-        this.modified = modified;
     }
 
     public String getDataElementName()

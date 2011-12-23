@@ -1,4 +1,4 @@
-package org.hisp.dhis.reporting.chart.action;
+package org.hisp.dhis.visualizer.action;
 
 /*
  * Copyright (c) 2004-2010, University of Oslo
@@ -27,17 +27,17 @@ package org.hisp.dhis.reporting.chart.action;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import java.util.Collection;
+
 import org.hisp.dhis.chart.Chart;
 import org.hisp.dhis.chart.ChartService;
-import org.hisp.dhis.i18n.I18n;
 
 import com.opensymphony.xwork2.Action;
 
 /**
- * @author Lars Helge Overland
- * @version $Id$
+ * @author Jan Henrik Overland
  */
-public class ValidateChartAction
+public class GetAllChartsAction
     implements Action
 {
     // -------------------------------------------------------------------------
@@ -51,40 +51,15 @@ public class ValidateChartAction
         this.chartService = chartService;
     }
 
-    private I18n i18n;
-
-    public void setI18n( I18n i18n )
-    {
-        this.i18n = i18n;
-    }
-
-    // -------------------------------------------------------------------------
-    // Input
-    // -------------------------------------------------------------------------
-
-    private Integer id;
-
-    public void setId( Integer id )
-    {
-        this.id = id;
-    }
-
-    private String name;
-
-    public void setName( String name )
-    {
-        this.name = name;
-    }
-
     // -------------------------------------------------------------------------
     // Output
     // -------------------------------------------------------------------------
 
-    private String message;
+    private Collection<Chart> object;
 
-    public String getMessage()
+    public Collection<Chart> getObject()
     {
-        return message;
+        return object;
     }
 
     // -------------------------------------------------------------------------
@@ -92,35 +67,9 @@ public class ValidateChartAction
     // -------------------------------------------------------------------------
 
     public String execute()
+        throws Exception
     {
-        if ( name == null )
-        {
-            message = i18n.getString( "specify_title" );
-
-            return INPUT;
-        }
-        else
-        {
-            name = name.trim();
-
-            if ( name.length() == 0 )
-            {
-                message = i18n.getString( "specify_title" );
-
-                return INPUT;
-            }
-
-            Chart match = chartService.getChartByName( name );
-
-            if ( match != null && (id == null || match.getId() != id) )
-            {
-                message = i18n.getString( "title_in_use" );
-
-                return INPUT;
-            }
-        }
-
-        message = i18n.getString( "ok" );
+        object = chartService.getAllCharts();
 
         return SUCCESS;
     }

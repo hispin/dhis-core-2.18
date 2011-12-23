@@ -46,6 +46,16 @@
 
   <repositories>
     <repository>
+      <id>org.springframework.maven.release</id>
+      <name>Spring Maven Repository</name>
+      <url>http://maven.springframework.org/release</url>
+    </repository>
+    <repository>
+      <id>org.springframework.maven.milestone</id>
+      <name>Spring Maven Milestone Repository</name>
+      <url>http://maven.springframework.org/milestone</url>
+    </repository>
+    <repository>
       <id>amplecode_maven2_repo</id>
       <name>AmpleCode Maven 2 repository</name>
       <url>http://www.amplecode.org/maven2</url>
@@ -54,11 +64,6 @@
       <id>dhis.uio.no</id>
       <name>Dhis2 External Dependencies Repository</name>
       <url>http://dhis.uio.no/maven/external</url>
-    </repository>
-    <repository>
-      <id>org.springframework.maven.milestone</id>
-      <name>Spring Maven Milestone Repository</name>
-      <url>http://maven.springframework.org/milestone</url>
     </repository>
     <repository>
       <id>UK</id>
@@ -783,7 +788,7 @@
   <properties>
     <rootDir></rootDir>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <spring.version>3.0.6.RELEASE</spring.version>
+    <spring.version>3.0.7.RELEASE</spring.version>
     <spring.security.version>3.0.7.RELEASE</spring.security.version>
     <hibernate.version>3.6.4.Final</hibernate.version>
   </properties>

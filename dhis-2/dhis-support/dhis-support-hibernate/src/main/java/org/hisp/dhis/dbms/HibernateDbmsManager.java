@@ -89,7 +89,7 @@ public class HibernateDbmsManager
         emptyTable( "reporttable_indicators" );
         emptyTable( "reporttable_periods" );
         emptyTable( "reporttable_organisationunits" );
-        emptyTable( "reporttable_displaycolumns" );
+        emptyTable( "reporttable_orgunitgroups" );
         emptyTable( "reporttable" );
 
         emptyTable( "datamartexportdataelements" );
@@ -152,7 +152,10 @@ public class HibernateDbmsManager
         dropTable( "aggregateddatavalue" );
         dropTable( "aggregatedindicatorvalue" );
         dropTable( "aggregateddatasetcompleteness" );
-        dropTable( "datavaluecrosstab" );
+        
+        dropTable( "aggregatedorgunitdatavalue" );
+        dropTable( "aggregatedorgunitindicatorvalue" );
+        dropTable( "aggregatedorgunitdatasetcompleteness" );
 
         log.debug( "Cleared database contents" );
 

@@ -10,11 +10,6 @@
 	<li><a href="displayManageTableForm.action">$i18n.getString( "report_table" )&nbsp;</a></li>
 </ul>
 
-<h2>$i18n.getString( "chart" )&nbsp;</h2>
-<ul>
-	<li><a href="displayViewChartForm.action">$i18n.getString( "chart" )&nbsp;</a></li>
-</ul>
-
 <h2>$i18n.getString( "pivot_table" )&nbsp;</h2>
 <ul>
 	<li><a href="displayPivotTableForm.action">$i18n.getString( "pivot_table" )&nbsp;</a></li>

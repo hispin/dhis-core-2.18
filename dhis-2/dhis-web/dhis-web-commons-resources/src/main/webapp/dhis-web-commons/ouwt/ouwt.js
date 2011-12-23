@@ -89,6 +89,10 @@ function Selection()
                         sessionStorage[getTagId( "Selected" )] = roots[0];
                     }
                 }
+                else
+                {
+                    selection.sync( true );
+                }
             }
 
             organisationUnits = JSON.parse( localStorage["organisationUnits"] );

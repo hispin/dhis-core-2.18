@@ -28,7 +28,6 @@ package org.hisp.dhis.aggregation;
  */
 
 import java.io.Serializable;
-import java.util.Date;
 
 import org.hisp.dhis.common.AggregatedValue;
 
@@ -65,8 +64,6 @@ public class AggregatedIndicatorValue
     
     private double denominatorValue;
 
-    private Date modified;
-    
     private transient String indicatorName;
     
     private transient String periodName;
@@ -93,18 +90,18 @@ public class AggregatedIndicatorValue
      * @param denominatorValue denominator value
      */
     public AggregatedIndicatorValue( int indicatorId, int periodId, int periodTypeId, int organisationUnitId, 
-        int level, double factor, double value, double numeratorValue, double denominatorValue )
+        int level, String annualized, double factor, double value, double numeratorValue, double denominatorValue )
     {
         this.indicatorId = indicatorId;
         this.periodId = periodId;
         this.periodTypeId = periodTypeId;
         this.organisationUnitId = organisationUnitId;
         this.level = level;
+        this.annualized = annualized;
         this.factor = factor;
         this.value = value;
         this.numeratorValue = numeratorValue;
         this.denominatorValue = denominatorValue;
-        this.modified = new Date();
     }
 
     /**
@@ -112,26 +109,27 @@ public class AggregatedIndicatorValue
      * @param periodId period id
      * @param periodTypeId period type id
      * @param organisationUnitId organisation unit id
+     * @param organisationUnitGroupId organisation unit group id
      * @param level level
      * @param factor factor
      * @param value value
      * @param numeratorValue numerator value
      * @param denominatorValue denominator value
-     * @param timestamp modification timestamp
      */
-    public AggregatedIndicatorValue( int indicatorId, int periodId, int periodTypeId, int organisationUnitId,
-        int level, double factor, double value, double numeratorValue, double denominatorValue, Date timestamp )
+    public AggregatedIndicatorValue( int indicatorId, int periodId, int periodTypeId, int organisationUnitId, 
+        int organisationUnitGroupId, int level, String annualized, double factor, double value, double numeratorValue, double denominatorValue )
     {
         this.indicatorId = indicatorId;
         this.periodId = periodId;
         this.periodTypeId = periodTypeId;
         this.organisationUnitId = organisationUnitId;
+        this.organisationUnitGroupId = organisationUnitGroupId;
         this.level = level;
+        this.annualized = annualized;
         this.factor = factor;
         this.value = value;
         this.numeratorValue = numeratorValue;
         this.denominatorValue = denominatorValue;
-        this.modified = timestamp;
     }
 
     // ----------------------------------------------------------------------
@@ -269,16 +267,6 @@ public class AggregatedIndicatorValue
     public void setValue( double value )
     {
         this.value = value;
-    }
-
-    public Date getModified()
-    {
-        return modified;
-    }
-
-    public void setModified( Date modified )
-    {
-        this.modified = modified;
     }
 
     public String getIndicatorName()

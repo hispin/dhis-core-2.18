@@ -30,6 +30,7 @@ package org.hisp.dhis.organisationunit;
 import org.codehaus.jackson.annotate.JsonProperty;
 import org.codehaus.jackson.map.annotate.JsonSerialize;
 import org.hisp.dhis.common.BaseIdentifiableObject;
+import org.hisp.dhis.common.BaseNameableObject;
 import org.hisp.dhis.common.Dxf2Namespace;
 import org.hisp.dhis.common.adapter.OrganisationUnitGroupSetXmlAdapter;
 import org.hisp.dhis.common.adapter.OrganisationUnitXmlAdapter;
@@ -45,7 +46,7 @@ import java.util.Set;
 @XmlRootElement( name = "organisationUnitGroup", namespace = Dxf2Namespace.NAMESPACE )
 @XmlAccessorType( value = XmlAccessType.NONE )
 public class OrganisationUnitGroup 
-    extends BaseIdentifiableObject
+    extends BaseNameableObject
 {
     /**
      * Determines if a de-serialized file is compatible with this class.
@@ -73,6 +74,18 @@ public class OrganisationUnitGroup
     // Logic
     // -------------------------------------------------------------------------
 
+    @Override
+    public String getShortName()
+    {
+        return name;
+    }
+    
+    @Override
+    public String getCode()
+    {
+        return name;
+    }
+    
     public void addOrganisationUnit( OrganisationUnit organisationUnit )
     {
         members.add( organisationUnit );

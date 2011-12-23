@@ -35,12 +35,14 @@ import java.util.Map;
 import org.amplecode.quick.StatementManager;
 import org.hisp.dhis.aggregation.AggregationService;
 import org.hisp.dhis.chart.Chart;
+import org.hisp.dhis.common.NameableObject;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryOption;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.indicator.Indicator;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
+import org.hisp.dhis.organisationunit.OrganisationUnitGroup;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.reporttable.ReportTable;
 import org.hisp.dhis.system.util.ConversionUtils;
@@ -86,6 +88,71 @@ public class JDBCReportTableManager
 
     public Map<String, Double> getAggregatedValueMap( ReportTable reportTable )
     {
+        if ( reportTable.isOrganisationUnitGroupBased() )
+        {
+            return getAggregatedValueMapOrgUnitGroups( reportTable );
+        }
+        else
+        {
+            return getAggregatedValueMapOrgUnitHierarchy( reportTable );
+        }
+    }
+    
+    public Map<String, Double> getAggregatedValueMapOrgUnitGroups( ReportTable reportTable )
+    {
+        Map<String, Double> map = new HashMap<String, Double>();
+        
+        String dataElementIds = TextUtils.getCommaDelimitedString( 
+            ConversionUtils.getIdentifiers( DataElement.class, reportTable.getDataElements() ) );
+        String indicatorIds = TextUtils.getCommaDelimitedString( 
+            ConversionUtils.getIdentifiers( Indicator.class, reportTable.getIndicators() ) );
+        String periodIds = TextUtils.getCommaDelimitedString( 
+            ConversionUtils.getIdentifiers( Period.class, reportTable.getAllPeriods() ) );
+        String unitIds = TextUtils.getCommaDelimitedString( 
+            ConversionUtils.getIdentifiers( NameableObject.class, reportTable.getAllUnits() ) );
+
+        if ( reportTable.hasDataElements() )
+        {
+            final String sql = "SELECT dataelementid, periodid, organisationunitgroupid, SUM(value) FROM aggregatedorgunitdatavalue " + 
+                "WHERE dataelementid IN (" + dataElementIds + ") AND periodid IN (" + periodIds + ") AND organisationunitgroupid IN (" + unitIds + ") " + 
+                "AND organisationunitid = " + reportTable.getParentOrganisationUnit().getId() + " " +
+                "GROUP BY dataelementid, periodid, organisationunitgroupid"; // Sum of category option combos
+
+            SqlRowSet rowSet = jdbcTemplate.queryForRowSet( sql );
+            
+            while ( rowSet.next() )
+            {
+                String id = getIdentifier( getIdentifier( DataElement.class, rowSet.getInt( 1 ) ),
+                    getIdentifier( Period.class, rowSet.getInt( 2 ) ),
+                    getIdentifier( OrganisationUnitGroup.class, rowSet.getInt( 3 ) ) );
+
+                map.put( id, rowSet.getDouble( 4 ) );
+            }
+        }
+
+        if ( reportTable.hasIndicators() )
+        {
+            final String sql = "SELECT indicatorid, periodid, organisationunitgroupid, value FROM aggregatedorgunitindicatorvalue " + 
+                "WHERE indicatorid IN (" + indicatorIds + ") AND periodid IN (" + periodIds + ") AND organisationunitgroupid IN (" + unitIds + ") " +
+                "AND organisationunitid = " + reportTable.getParentOrganisationUnit().getId();
+
+            SqlRowSet rowSet = jdbcTemplate.queryForRowSet( sql );
+            
+            while ( rowSet.next() )
+            {
+                String id = getIdentifier( getIdentifier( Indicator.class, rowSet.getInt( 1 ) ),
+                    getIdentifier( Period.class, rowSet.getInt( 2 ) ),
+                    getIdentifier( OrganisationUnitGroup.class, rowSet.getInt( 3 ) ) );
+
+                map.put( id, rowSet.getDouble( 4 ) );
+            }
+        }
+
+        return map;
+    }
+    
+    public Map<String, Double> getAggregatedValueMapOrgUnitHierarchy( ReportTable reportTable )
+    {
         Map<String, Double> map = new HashMap<String, Double>();
 
         String dataElementIds = TextUtils.getCommaDelimitedString( 
@@ -97,7 +164,7 @@ public class JDBCReportTableManager
         String periodIds = TextUtils.getCommaDelimitedString( 
             ConversionUtils.getIdentifiers( Period.class, reportTable.getAllPeriods() ) );
         String unitIds = TextUtils.getCommaDelimitedString( 
-            ConversionUtils.getIdentifiers( OrganisationUnit.class, reportTable.getAllUnits() ) );
+            ConversionUtils.getIdentifiers( NameableObject.class, reportTable.getAllUnits() ) );
 
         if ( reportTable.hasDataElements() )
         {

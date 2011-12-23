@@ -75,7 +75,7 @@ body {
 }
 
 /* Fieldset trigger icons */
-#indicator_fs .x-tool img, #dataelement_fs .x-tool img, #period_fs .x-tool img, #organisationunit_fs .x-tool img {
+.dv-fieldset .x-tool img {
     background-image: url('../images/tool-sprites.gif');
     width: 25px;
 }
@@ -239,15 +239,23 @@ body {
     border-color: #d3d3d3;
 }
 
-/* Checkbox icons */
-.x-form-checkbox {
-    background-image: url('../images/checkbox.gif');
-}
-
 /* Checkbox box label */
 .x-form-cb-label-after {
     padding-left: 1px;
     font-size: 11px;
+}
+/* DV checkbox */
+.dv-checkbox .x-form-item-label {
+    padding-left: 5px;
+}
+.dv-checkbox .x-form-cb-label-after {
+    margin-left: 3px;
+    font-size: 11px;
+}
+
+/* Checkbox icons */
+.x-form-checkbox {
+    background-image: url('../images/checkbox.gif');
 }
 
 /* DV toolbar checkbox */
@@ -468,7 +476,13 @@ body {
     color:#000;
     font-size: 11px;
     font-weight: bold;
-    text-decoration:none;
+    text-decoration: none;
+}
+.dv-fieldset-title-link-alt1 {
+    color:#555;
+    font-size: 11px;
+    font-weight: bold;
+    text-decoration: none;
 }
 
 /* Multiselect */
@@ -529,7 +543,7 @@ body {
 }
 
 /* Textfield */
-.dv-textfield .x-form-field {  
+.dv-textfield .x-form-field, .dv-textfield-alt1 .x-form-field {  
     height: 26px;
     padding-left: 4px;
     -moz-border-radius: 2px 2px 2px 2px;
@@ -544,6 +558,10 @@ body {
 .dv-textfield .x-form-item-label {
     padding-left: 5px;
     line-height: 20px;
+}
+.dv-textfield-alt1 .x-form-item-label {
+    padding-left: 5px;
+    line-height: 8px;
 }
 
 /* DV window confirm list */
