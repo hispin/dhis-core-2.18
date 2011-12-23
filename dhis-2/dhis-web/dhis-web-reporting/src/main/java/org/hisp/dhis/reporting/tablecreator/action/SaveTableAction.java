@@ -43,6 +43,7 @@ import org.hisp.dhis.indicator.Indicator;
 import org.hisp.dhis.indicator.IndicatorService;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroup;
+import org.hisp.dhis.organisationunit.OrganisationUnitGroupService;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodService;
@@ -106,6 +107,13 @@ public class SaveTableAction
         this.organisationUnitService = organisationUnitService;
     }
     
+    private OrganisationUnitGroupService organisationUnitGroupService;
+    
+    public void setOrganisationUnitGroupService( OrganisationUnitGroupService organisationUnitGroupService )
+    {
+        this.organisationUnitGroupService = organisationUnitGroupService;
+    }
+
     private DataSetService dataSetService;
 
     public void setDataSetService( DataSetService dataSetService )
@@ -213,6 +221,13 @@ public class SaveTableAction
     public void setSelectedOrganisationUnits( List<String> selectedOrganisationUnits )
     {
         this.selectedOrganisationUnits = selectedOrganisationUnits;
+    }
+    
+    private List<String> selectedOrganisationUnitGroups = new ArrayList<String>();
+
+    public void setSelectedOrganisationUnitGroups( List<String> selectedOrganisationUnitGroups )
+    {
+        this.selectedOrganisationUnitGroups = selectedOrganisationUnitGroups;
     }
 
     private boolean reportingMonth;
@@ -368,6 +383,7 @@ public class SaveTableAction
         List<Indicator> indicators = new ArrayList<Indicator>();
         List<DataSet> dataSets = new ArrayList<DataSet>();
         List<OrganisationUnit> units = new ArrayList<OrganisationUnit>();
+        List<OrganisationUnitGroup> organisationUnitGroups = new ArrayList<OrganisationUnitGroup>(); 
 
         for ( Integer id : getIntegerCollection( selectedDataElements ) )
         {
@@ -387,6 +403,11 @@ public class SaveTableAction
         for ( Integer id : getIntegerCollection( selectedOrganisationUnits ) )
         {
             units.add( organisationUnitService.getOrganisationUnit( id ) );
+        }
+        
+        for ( Integer id : getIntegerCollection( selectedOrganisationUnitGroups ) )
+        {
+            organisationUnitGroups.add( organisationUnitGroupService.getOrganisationUnitGroup( id ) );
         }
         
         DataElementCategoryCombo categoryCombo = categoryComboId != null ? categoryService.getDataElementCategoryCombo( categoryComboId ) : null;
@@ -409,9 +430,9 @@ public class SaveTableAction
         if ( tableId == null )
         {
             reportTable = new ReportTable( tableName, regression,
-                dataElements, indicators, dataSets, periods, null, units, null, new ArrayList<OrganisationUnitGroup>(),
-                categoryCombo, doIndicators, doPeriods, doOrganisationUnits, relatives, reportParams, 
-                null, null );
+                dataElements, indicators, dataSets, periods, null, units, null, organisationUnitGroups,
+                categoryCombo, doIndicators, doPeriods, doOrganisationUnits, relatives, reportParams, null, null );
+            
             reportTable.setSortOrder( sortOrder );
             reportTable.setTopLimit( topLimit );
         }
@@ -428,6 +449,7 @@ public class SaveTableAction
             reportTable.setDataSets( dataSets );
             reportTable.setPeriods( periods );
             reportTable.setUnits( units );
+            reportTable.setOrganisationUnitGroups( organisationUnitGroups );
             reportTable.setCategoryCombo( categoryCombo );
             reportTable.setDoIndicators( doIndicators );
             reportTable.setDoPeriods( doPeriods );
