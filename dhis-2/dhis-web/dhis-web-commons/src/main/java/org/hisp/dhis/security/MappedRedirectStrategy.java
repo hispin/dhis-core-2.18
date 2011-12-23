@@ -95,11 +95,28 @@ public class MappedRedirectStrategy
             //
             //  url = request.getHeader( "referer" ).replaceFirst( "/dhis-web-commons/security/login.action",
             //  "/mobile/index.action" );
-            url = request.getContextPath() + "/mobile/index.action";
+            url = getRootPath( request ) + "/mobile/index.action";
         }
 
         log.debug( "Redirecting to " + url );
 
         super.sendRedirect( request, response, url );
+    }
+
+    public String getRootPath( HttpServletRequest request )
+    {
+        StringBuilder builder = new StringBuilder();
+        builder.append( request.getScheme() );
+
+        builder.append( "://" ).append( request.getServerName() );
+
+        if ( request.getServerPort() != 80 && request.getServerPort() != 443 )
+        {
+            builder.append( ":" ).append( request.getServerPort() );
+        }
+
+        builder.append( request.getContextPath() );
+
+        return builder.toString();
     }
 }
