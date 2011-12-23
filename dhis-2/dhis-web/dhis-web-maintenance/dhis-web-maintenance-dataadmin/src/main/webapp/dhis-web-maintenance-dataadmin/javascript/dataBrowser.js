@@ -43,7 +43,13 @@ function validateBeforeSubmit( form )
 	{
 		setHeaderDelayMessage( i18n_please_select_org_unit );
 	}
-	else form.submit();
+    else
+    {
+        $( "#fromDate").removeAttr("disabled");
+        $( "#toDate").removeAttr("disabled");
+
+        form.submit();
+    }
 }
 
 // -----------------------------------------------------------------------------
