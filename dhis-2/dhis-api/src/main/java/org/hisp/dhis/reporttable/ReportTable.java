@@ -469,7 +469,10 @@ public class ReportTable extends BaseIdentifiableObject
 
             for ( NameableObject unit : allUnits )
             {
-                map.put( unit.getId(), ((OrganisationUnit) unit).getGroupNameInGroupSet( groupSet ) );
+                if ( unit instanceof OrganisationUnit )
+                {
+                    map.put( unit.getId(), ((OrganisationUnit) unit).getGroupNameInGroupSet( groupSet ) );
+                }
             }
 
             organisationUnitGroupMap.put( columnEncode( KEY_ORGUNIT_GROUPSET + groupSet.getName() ), map );
