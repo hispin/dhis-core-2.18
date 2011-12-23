@@ -57,44 +57,6 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     <property name="chartService" ref="org.hisp.dhis.chart.ChartService" />
   </bean>
 
-  <bean id="org.hisp.dhis.reporting.chart.action.GetAllChartsAction" class="org.hisp.dhis.reporting.chart.action.GetAllChartsAction"
-    scope="prototype">
-    <property name="chartService" ref="org.hisp.dhis.chart.ChartService" />
-  </bean>
-
-  <bean id="org.hisp.dhis.reporting.chart.action.GetChartAction" class="org.hisp.dhis.reporting.chart.action.GetChartAction"
-    scope="prototype">
-    <property name="chartService" ref="org.hisp.dhis.chart.ChartService" />
-  </bean>
-
-  <bean id="org.hisp.dhis.reporting.chart.action.GetChartOptionsAction" class="org.hisp.dhis.reporting.chart.action.GetChartOptionsAction"
-    scope="prototype">
-    <property name="chartService" ref="org.hisp.dhis.chart.ChartService" />
-    <property name="indicatorService" ref="org.hisp.dhis.indicator.IndicatorService" />
-    <property name="dataElementService" ref="org.hisp.dhis.dataelement.DataElementService" />
-    <property name="dataSetService" ref="org.hisp.dhis.dataset.DataSetService" />
-    <property name="organisationUnitService" ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
-  </bean>
-
-  <bean id="org.hisp.dhis.reporting.chart.action.RemoveChartAction" class="org.hisp.dhis.reporting.chart.action.RemoveChartAction"
-    scope="prototype">
-    <property name="chartService" ref="org.hisp.dhis.chart.ChartService" />
-  </bean>
-
-  <bean id="org.hisp.dhis.reporting.chart.action.SaveChartAction" class="org.hisp.dhis.reporting.chart.action.SaveChartAction"
-    scope="prototype">
-    <property name="chartService" ref="org.hisp.dhis.chart.ChartService" />
-    <property name="indicatorService" ref="org.hisp.dhis.indicator.IndicatorService" />
-    <property name="dataElementService" ref="org.hisp.dhis.dataelement.DataElementService" />
-    <property name="dataSetService" ref="org.hisp.dhis.dataset.DataSetService" />
-    <property name="organisationUnitService" ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
-  </bean>
-
-  <bean id="org.hisp.dhis.reporting.chart.action.ValidateChartAction" class="org.hisp.dhis.reporting.chart.action.ValidateChartAction"
-    scope="prototype">
-    <property name="chartService" ref="org.hisp.dhis.chart.ChartService" />
-  </bean>
-  
   <!-- TableCreator -->
 
   <bean id="org.hisp.dhis.reporting.tablecreator.action.GetTableOptionsAction" class="org.hisp.dhis.reporting.tablecreator.action.GetTableOptionsAction"

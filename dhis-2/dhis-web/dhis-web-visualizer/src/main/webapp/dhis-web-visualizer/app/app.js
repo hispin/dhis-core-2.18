@@ -8,7 +8,7 @@ DV.conf = {
         ],
         jsonfy: function(r) {
             r = Ext.JSON.decode(r.responseText);
-            var obj = {system: {rootNode: {id: r.rn[0], name: r.rn[1], level: 1}, periods: {}, isAdmin: r.isAdmin}};
+            var obj = {system: {rootNode: {id: r.rn[0], name: r.rn[1], level: 1}, periods: {}, user: {id: r.user.id, isAdmin: r.user.isAdmin}}};
             for (var relative in r.p) {
                 obj.system.periods[relative] = [];
                 for (var i = 0; i < r.p[relative].length; i++) {
@@ -36,7 +36,7 @@ DV.conf = {
             favorite_addorupdate: 'addOrUpdateChart.action',
             favorite_addorupdatesystem: 'addOrUpdateSystemChart.action',            
             favorite_get: 'charts/',
-            favorite_getall: 'charts.json?paging=false&links=false',
+            favorite_getall: 'getAllCharts.action',
             favorite_delete: 'deleteCharts.action'
         },
         dimension: {
@@ -91,7 +91,7 @@ DV.conf = {
         center_tbar_height: 31,
         east_tbar_height: 31,
         east_gridcolumn_height: 30,
-        form_label_width: 45,
+        form_label_width: 55,
         window_favorite_ypos: 100,
         window_confirm_width: 250,
         grid_favorite_width: 420
@@ -237,6 +237,9 @@ Ext.onReady( function() {
             },
             toggleOrganisationUnit: function() {
                 DV.cmp.fieldset.organisationunit.toggle();
+            },
+            toggleOptions: function() {
+                DV.cmp.fieldset.options.toggle();
             },
             collapseFieldsets: function(fieldsets) {
                 for (var i = 0; i < fieldsets.length; i++) {
@@ -702,6 +705,23 @@ Ext.onReady( function() {
                     DV.util.mask.setMask(DV.cmp.favorite.window, 'Saving...');
                     var params = DV.state.getParams();
                     params.name = DV.cmp.favorite.name.getValue();
+                    params.trendLine = DV.cmp.favorite.trendline.getValue();
+                    params.hideSubtitle = DV.cmp.favorite.hidesubtitle.getValue();
+                    params.hideLegend = DV.cmp.favorite.hidelegend.getValue();
+                    params.userOrganisationUnit = DV.cmp.favorite.userorganisationunit.getValue();
+                    if (DV.cmp.favorite.xaxislabel.getValue()) {
+                        params.xAxisLabel = DV.cmp.favorite.xaxislabel.getValue();
+                    }
+                    if (DV.cmp.favorite.yaxislabel.getValue()) {
+                        params.yAxisLabel = DV.cmp.favorite.yaxislabel.getValue();
+                    }
+                    if (DV.cmp.favorite.targetlinevalue.getValue()) {
+                        params.targetLineValue = DV.cmp.favorite.targetlinevalue.getValue();
+                    }
+                    if (params.targetLineValue && !DV.cmp.favorite.targetlinelabel.isDisabled()) {
+                        params.targetLineLabel = DV.cmp.favorite.targetlinelabel.getValue();
+                    }
+                    
                     if (isUpdate) {
                         var store = DV.store.favorite;
                         params.uid = store.getAt(store.findExact('name', params.name)).data.id;
@@ -891,10 +911,10 @@ Ext.onReady( function() {
             }
         },
         favorite: Ext.create('Ext.data.Store', {
-            fields: ['id', 'name', 'lastUpdated'],
+            fields: ['id', 'name', 'lastUpdated', 'userId'],
             proxy: {
                 type: 'ajax',
-                url: DV.conf.finals.ajax.path_api + DV.conf.finals.ajax.favorite_getall,
+                url: DV.conf.finals.ajax.path_visualizer + DV.conf.finals.ajax.favorite_getall,
                 reader: {
                     type: 'json',
                     root: 'charts'
@@ -905,11 +925,24 @@ Ext.onReady( function() {
                 field: 'lastUpdated',
                 direction: 'DESC'
             },
+            sortStore: function() {
+                this.sort(this.sorting.field, this.sorting.direction);
+            },
             listeners: {
                 load: function(s) {
-                    s.sort(this.sorting.field, this.sorting.direction);
+                    s.filterBy(function(r) {
+                        if (r.data.userId == DV.init.system.user.id) {
+                            return true;
+                        }
+                        if (!r.data.userId && DV.init.system.user.isAdmin) {
+                            return true;
+                        }
+                        return false;
+                    });
+                        
+                    s.sortStore();
                     s.each(function(r) {
-                        r.data.lastUpdated = r.data.lastUpdated.substr(0,16).replace('T',' ');
+                        r.data.lastUpdated = r.data.lastUpdated.substr(0,16);
                         r.data.icon = '<img src="images/favorite.png" />';
                         r.commit();
                     });
@@ -1073,6 +1106,16 @@ Ext.onReady( function() {
                         this.category.names = f.names[this.category.dimension];
                         this.filter.names = f.names[this.filter.dimension];
                         
+                        DV.cmp.favorite.trendline.setValue(f.regression);
+                        DV.cmp.favorite.hidesubtitle.setValue(f.hideSubtitle);
+                        DV.cmp.favorite.hidelegend.setValue(f.hideLegend);
+                        DV.cmp.favorite.userorganisationunit.setValue(f.userOrganisationUnit);
+                        DV.cmp.favorite.xaxislabel.setValue(f.domainAxisLabel);
+                        DV.cmp.favorite.yaxislabel.setValue(f.rangeAxisLabel);
+                        DV.cmp.favorite.targetlinevalue.setValue(f.targetLineValue);
+                        DV.cmp.favorite.targetlinelabel.xable();
+                        DV.cmp.favorite.targetlinelabel.setValue(f.targetLineLabel);
+                        
                         this.isRendered = true;
                         
                         if (exe) {
@@ -1127,7 +1170,7 @@ Ext.onReady( function() {
                     Ext.Array.each(DV.value.values, function(item) {
                         item[DV.conf.finals.dimension.data.value] = DV.util.string.getEncodedString(storage[item.d].name);
                         item[DV.conf.finals.dimension.period.value] = DV.util.string.getEncodedString(DV.util.dimension.period.getNameById(item.p));
-                        item[DV.conf.finals.dimension.organisationunit.value] = DV.cmp.dimension.organisationunit.treepanel.findNameById(item.o);
+                        item[DV.conf.finals.dimension.organisationunit.value] = DV.util.string.getEncodedString(DV.cmp.dimension.organisationunit.treepanel.findNameById(item.o));
                         item.v = parseFloat(item.v);
                     });
                     
@@ -1641,7 +1684,7 @@ Ext.onReady( function() {
                         items: [
                             {
                                 xtype: 'fieldset',
-                                id: 'indicator_fs',
+                                cls: 'dv-fieldset',
                                 name: DV.conf.finals.dimension.indicator.value,
                                 title: '<a href="javascript:DV.util.fieldset.toggleIndicator();" class="dv-fieldset-title-link">Indicators</a>',
                                 collapsible: true,
@@ -1797,13 +1840,13 @@ Ext.onReady( function() {
                                         DV.cmp.fieldset.indicator = this;
                                     },
                                     expand: function() {
-                                        DV.util.fieldset.collapseFieldsets([DV.cmp.fieldset.dataelement, DV.cmp.fieldset.period, DV.cmp.fieldset.organisationunit]);
+                                        DV.util.fieldset.collapseFieldsets([DV.cmp.fieldset.dataelement, DV.cmp.fieldset.period, DV.cmp.fieldset.organisationunit, DV.cmp.fieldset.options]);
                                     }
                                 }
                             },
                             {
                                 xtype: 'fieldset',
-                                id: 'dataelement_fs',
+                                cls: 'dv-fieldset',
                                 name: DV.conf.finals.dimension.dataelement.value,
                                 title: '<a href="javascript:DV.util.fieldset.toggleDataElement();" class="dv-fieldset-title-link">Data elements</a>',
                                 collapsed: true,
@@ -1958,13 +2001,13 @@ Ext.onReady( function() {
                                         DV.cmp.fieldset.dataelement = this;
                                     },
                                     expand: function() {
-                                        DV.util.fieldset.collapseFieldsets([DV.cmp.fieldset.indicator, DV.cmp.fieldset.period, DV.cmp.fieldset.organisationunit]);
+                                        DV.util.fieldset.collapseFieldsets([DV.cmp.fieldset.indicator, DV.cmp.fieldset.period, DV.cmp.fieldset.organisationunit, DV.cmp.fieldset.options]);
                                     }
                                 }
                             },
                             {
                                 xtype: 'fieldset',
-                                id: 'period_fs',
+                                cls: 'dv-fieldset',
                                 name: DV.conf.finals.dimension.period.value,
                                 title: '<a href="javascript:DV.util.fieldset.togglePeriod();" class="dv-fieldset-title-link">Periods</a>',
                                 collapsed: true,
@@ -2120,13 +2163,13 @@ Ext.onReady( function() {
                                         DV.cmp.fieldset.period = this;
                                     },
                                     expand: function() {
-                                        DV.util.fieldset.collapseFieldsets([DV.cmp.fieldset.indicator, DV.cmp.fieldset.dataelement, DV.cmp.fieldset.organisationunit]);
+                                        DV.util.fieldset.collapseFieldsets([DV.cmp.fieldset.indicator, DV.cmp.fieldset.dataelement, DV.cmp.fieldset.organisationunit, DV.cmp.fieldset.options]);
                                     }
                                 }
-                            },                            
+                            },
                             {
                                 xtype: 'fieldset',
-                                id: 'organisationunit_fs',
+                                cls: 'dv-fieldset',
                                 name: DV.conf.finals.dimension.organisationunit.value,
                                 title: '<a href="javascript:DV.util.fieldset.toggleOrganisationUnit();" class="dv-fieldset-title-link">Organisation units</a>',
                                 collapsed: true,
@@ -2208,13 +2251,180 @@ Ext.onReady( function() {
                                         DV.cmp.fieldset.organisationunit = this;
                                     },
                                     expand: function(fs) {
-                                        DV.util.fieldset.collapseFieldsets([DV.cmp.fieldset.indicator, DV.cmp.fieldset.dataelement, DV.cmp.fieldset.period]);
+                                        DV.util.fieldset.collapseFieldsets([DV.cmp.fieldset.indicator, DV.cmp.fieldset.dataelement, DV.cmp.fieldset.period, DV.cmp.fieldset.options]);
                                         var tp = DV.cmp.dimension.organisationunit.treepanel;
                                         if (!tp.isRendered) {
                                             tp.isRendered = true;
                                             tp.getRootNode().expand();
                                             tp.selectRoot();
                                         }
+                                    }
+                                }
+                            },
+                            {
+                                xtype: 'fieldset',
+                                cls: 'dv-fieldset',
+                                name: 'options',
+                                title: '<a href="javascript:DV.util.fieldset.toggleOptions();" class="dv-fieldset-title-link-alt1">Chart options</a>',
+                                collapsed: true,
+                                collapsible: true,
+                                items: [
+                                    {
+                                        html: 'NB! These fields are for the PNG version only',
+                                        bodyStyle: 'border:0 none; color:#555; font-style:italic; padding-bottom:10px'
+                                    },
+                                    {
+                                        xtype: 'panel',
+                                        layout: 'column',
+                                        bodyStyle: 'border-style:none; padding-bottom:10px',
+                                        items: [
+                                            {
+                                                xtype: 'checkbox',
+                                                cls: 'dv-checkbox-alt1',
+                                                style: 'margin-right:26px',
+                                                boxLabel: 'Trend line',
+                                                labelWidth: DV.conf.layout.form_label_width,
+                                                listeners: {
+                                                    added: function() {
+                                                        DV.cmp.favorite.trendline = this;
+                                                    }
+                                                }
+                                            },
+                                            {
+                                                xtype: 'checkbox',
+                                                cls: 'dv-checkbox-alt1',
+                                                style: 'margin-right:26px',
+                                                boxLabel: 'Hide subtitle',
+                                                labelWidth: DV.conf.layout.form_label_width,
+                                                listeners: {
+                                                    added: function() {
+                                                        DV.cmp.favorite.hidesubtitle = this;
+                                                    }
+                                                }
+                                            },
+                                            {
+                                                xtype: 'checkbox',
+                                                cls: 'dv-checkbox-alt1',
+                                                style: 'margin-right:26px',
+                                                boxLabel: 'Hide legend',
+                                                labelWidth: DV.conf.layout.form_label_width,
+                                                listeners: {
+                                                    added: function() {
+                                                        DV.cmp.favorite.hidelegend = this;
+                                                    }
+                                                }
+                                            },
+                                            {
+                                                xtype: 'checkbox',
+                                                cls: 'dv-checkbox-alt1',
+                                                boxLabel: 'User orgunit',
+                                                labelWidth: DV.conf.layout.form_label_width,
+                                                listeners: {
+                                                    added: function() {
+                                                        DV.cmp.favorite.userorganisationunit = this;
+                                                    }
+                                                }
+                                            }
+                                        ]
+                                    },
+                                    {
+                                        xtype: 'panel',
+                                        layout: 'column',
+                                        bodyStyle: 'border:0 none; padding-bottom:8px',
+                                        items: [
+                                            {
+                                                xtype: 'textfield',
+                                                cls: 'dv-textfield-alt1',
+                                                style: 'margin-right:4px',
+                                                fieldLabel: 'X axis label',
+                                                labelAlign: 'top',
+                                                labelSeparator: '',
+                                                maxLength: 100,
+                                                enforceMaxLength: true,
+                                                labelWidth: DV.conf.layout.form_label_width,
+                                                width: 188,
+                                                listeners: {
+                                                    added: function() {
+                                                        DV.cmp.favorite.xaxislabel = this;
+                                                    }
+                                                }
+                                            },
+                                            {
+                                                xtype: 'textfield',
+                                                cls: 'dv-textfield-alt1',
+                                                fieldLabel: 'Y axis label',
+                                                labelAlign: 'top',
+                                                labelSeparator: '',
+                                                maxLength: 100,
+                                                enforceMaxLength: true,
+                                                labelWidth: DV.conf.layout.form_label_width,
+                                                width: 187,
+                                                listeners: {
+                                                    added: function() {
+                                                        DV.cmp.favorite.yaxislabel = this;
+                                                    }
+                                                }
+                                            }
+                                        ]
+                                    },
+                                    {
+                                        xtype: 'panel',
+                                        layout: 'column',
+                                        bodyStyle: 'border:0 none',
+                                        items: [
+                                            {
+                                                xtype: 'numberfield',
+                                                cls: 'dv-textfield-alt1',
+                                                style: 'margin-right:4px',
+                                                hideTrigger: true,
+                                                fieldLabel: 'Target line value',
+                                                labelAlign: 'top',
+                                                labelSeparator: '',
+                                                maxLength: 100,
+                                                enforceMaxLength: true,
+                                                width: 188,
+                                                listeners: {
+                                                    added: function() {
+                                                        DV.cmp.favorite.targetlinevalue = this;
+                                                    },
+                                                    change: function() {
+                                                        DV.cmp.favorite.targetlinelabel.xable();
+                                                    }
+                                                }
+                                            },
+                                            {
+                                                xtype: 'textfield',
+                                                cls: 'dv-textfield-alt1',
+                                                fieldLabel: 'Target line label',
+                                                labelAlign: 'top',
+                                                labelSeparator: '',
+                                                maxLength: 100,
+                                                enforceMaxLength: true,
+                                                width: 187,
+                                                disabled: true,
+                                                xable: function() {
+                                                    if (DV.cmp.favorite.targetlinevalue.getValue()) {
+                                                        this.enable();
+                                                    }
+                                                    else {
+                                                        this.disable();
+                                                    }
+                                                },
+                                                listeners: {
+                                                    added: function() {
+                                                        DV.cmp.favorite.targetlinelabel = this;
+                                                    }
+                                                }
+                                            }
+                                        ]
+                                    }
+                                ],
+                                listeners: {
+                                    afterrender: function() {
+                                        DV.cmp.fieldset.options = this;
+                                    },
+                                    expand: function() {
+                                        DV.util.fieldset.collapseFieldsets([DV.cmp.fieldset.indicator, DV.cmp.fieldset.dataelement, DV.cmp.fieldset.period, DV.cmp.fieldset.organisationunit]);
                                     }
                                 }
                             }
@@ -2280,6 +2490,23 @@ Ext.onReady( function() {
                         {
                             xtype: 'button',
 							cls: 'dv-toolbar-btn-2',
+                            text: 'Data table',
+                            handler: function() {
+                                var p = DV.cmp.region.east;
+                                if (p.collapsed && p.items.length) {
+                                    p.expand();
+                                    DV.cmp.toolbar.resizeeast.show();
+                                    DV.exe.datatable(true);
+                                }
+                                else {
+                                    p.collapse();
+                                    DV.cmp.toolbar.resizeeast.hide();
+                                }
+                            }
+                        },
+                        {
+                            xtype: 'button',
+							cls: 'dv-toolbar-btn-2',
                             text: 'Favorites..',
                             listeners: {
                                 afterrender: function(b) {
@@ -2301,7 +2528,12 @@ Ext.onReady( function() {
                                                             bodyStyle: 'padding:8px; background-color:#fff',
 															width: DV.conf.layout.grid_favorite_width,
                                                             closeAction: 'hide',
+                                                            resizable: false,
                                                             modal: true,
+                                                            resetForm: function() {
+                                                                DV.cmp.favorite.name.setValue('');
+                                                                DV.cmp.favorite.system.setValue(false);
+                                                            },
                                                             items: [
                                                                 {
                                                                     xtype: 'form',
@@ -2310,9 +2542,9 @@ Ext.onReady( function() {
                                                                         {
                                                                             xtype: 'textfield',
                                                                             cls: 'dv-textfield',
+                                                                            fieldLabel: 'Name',
                                                                             maxLength: 160,
                                                                             enforceMaxLength: true,
-                                                                            fieldLabel: 'Name',
                                                                             labelWidth: DV.conf.layout.form_label_width,
                                                                             width: DV.conf.layout.grid_favorite_width - 28,
                                                                             listeners: {
@@ -2321,6 +2553,19 @@ Ext.onReady( function() {
                                                                                 },
                                                                                 change: function() {
                                                                                     DV.cmp.favorite.save.xable();
+                                                                                }
+                                                                            }
+                                                                        },
+                                                                        {
+                                                                            xtype: 'checkbox',
+                                                                            cls: 'dv-checkbox',
+                                                                            style: 'padding-bottom:2px',
+                                                                            fieldLabel: 'System',
+                                                                            labelWidth: DV.conf.layout.form_label_width,
+                                                                            disabled: !DV.init.system.user.isAdmin,
+                                                                            listeners: {
+                                                                                added: function() {
+                                                                                    DV.cmp.favorite.system = this;
                                                                                 }
                                                                             }
                                                                         }
@@ -2344,8 +2589,8 @@ Ext.onReady( function() {
                                                                         }
                                                                     ],
                                                                     setHeightInWindow: function(store) {
-                                                                        var h = (store.getTotalCount() * 23) + 30,
-                                                                            sh = DV.util.viewport.getSize().y * 0.8;
+                                                                        var h = (store.getCount() * 23) + 30,
+                                                                            sh = DV.util.viewport.getSize().y * 0.6;
                                                                         this.setHeight(h > sh ? sh : h);
                                                                         this.doLayout();
                                                                         this.up('window').doLayout();
@@ -2362,9 +2607,6 @@ Ext.onReady( function() {
                                                                             {
                                                                                 text: 'Sort by..',
                                                                                 cls: 'dv-toolbar-btn-2',
-                                                                                handler: function() {
-                                                                                    
-                                                                                },
                                                                                 listeners: {
                                                                                     added: function() {
                                                                                         DV.cmp.favorite.sortby = this;
@@ -2391,7 +2633,20 @@ Ext.onReady( function() {
                                                                                                                     var store = DV.store.favorite;
                                                                                                                     store.sorting.field = 'name';
                                                                                                                     store.sorting.direction = 'ASC';
-                                                                                                                    store.sort(store.sorting.field, store.sorting.direction);
+                                                                                                                    store.sortStore();
+                                                                                                                    this.up('menu').hide();
+                                                                                                                }
+                                                                                                            }
+                                                                                                        },
+                                                                                                        {
+                                                                                                            boxLabel: 'System',
+                                                                                                            name: 'sortby',
+                                                                                                            handler: function() {
+                                                                                                                if (this.getValue()) {
+                                                                                                                    var store = DV.store.favorite;
+                                                                                                                    store.sorting.field = 'userId';
+                                                                                                                    store.sorting.direction = 'ASC';
+                                                                                                                    store.sortStore();
                                                                                                                     this.up('menu').hide();
                                                                                                                 }
                                                                                                             }
@@ -2405,7 +2660,7 @@ Ext.onReady( function() {
                                                                                                                     var store = DV.store.favorite;
                                                                                                                     store.sorting.field = 'lastUpdated';
                                                                                                                     store.sorting.direction = 'DESC';
-                                                                                                                    store.sort(store.sorting.field, store.sorting.direction);
+                                                                                                                    store.sortStore();
                                                                                                                     this.up('menu').hide();
                                                                                                                 }
                                                                                                             }
@@ -2576,7 +2831,8 @@ Ext.onReady( function() {
                                                                             DV.cmp.favorite.grid = this;
                                                                         },
                                                                         itemclick: function(g, r) {
-                                                                            DV.cmp.favorite.name.setValue(r.get('name'));
+                                                                            DV.cmp.favorite.name.setValue(r.data.name);
+                                                                            DV.cmp.favorite.system.setValue(r.data.userId ? false : true);
                                                                             DV.cmp.favorite.rename.button.xable();
                                                                             DV.cmp.favorite.del.xable();
                                                                         },
@@ -2593,18 +2849,6 @@ Ext.onReady( function() {
                                                                     height: 24
                                                                 },
                                                                 items: [
-                                                                    ' ',
-                                                                    {
-                                                                        xtype: 'checkbox',
-                                                                        boxLabel: 'System',
-                                                                        disabled: !DV.init.system.isAdmin,
-                                                                        disabledCls: 'dv-invisible',
-                                                                        listeners: {
-                                                                            added: function() {
-                                                                                DV.cmp.favorite.system = this;
-                                                                            }
-                                                                        }
-                                                                    },
                                                                     '->',
                                                                     {
                                                                         text: 'Save',
@@ -2641,7 +2885,7 @@ Ext.onReady( function() {
                                                                                             {
                                                                                                 text: 'Cancel',
                                                                                                 handler: function() {
-                                                                                                    this.up('window').close();
+                                                                                                    DV.cmp.favorite.window.close();
                                                                                                 }
                                                                                             },
                                                                                             '->',
@@ -2650,7 +2894,7 @@ Ext.onReady( function() {
                                                                                                 handler: function() {
                                                                                                     this.up('window').close();
                                                                                                     DV.util.crud.favorite.update(function() {
-                                                                                                        DV.cmp.favorite.name.setValue('');
+                                                                                                        DV.cmp.favorite.window.resetForm();
                                                                                                     });
                                                                                                     
                                                                                                 }
@@ -2662,7 +2906,7 @@ Ext.onReady( function() {
                                                                                 }
                                                                                 else {
                                                                                     DV.util.crud.favorite.create(function() {
-                                                                                        DV.cmp.favorite.name.setValue('');
+                                                                                        DV.cmp.favorite.window.resetForm();
                                                                                         DV.cmp.favorite.window.down('grid').setHeightInWindow(DV.store.favorite);
                                                                                     });
                                                                                 }                                                                                    
@@ -2718,8 +2962,8 @@ Ext.onReady( function() {
                                                     }
                                                 ],
                                                 setHeightInMenu: function(store) {
-                                                    var h = store.getTotalCount() * 26,
-                                                        sh = DV.util.viewport.getSize().y * 0.8;
+                                                    var h = store.getCount() * 26,
+                                                        sh = DV.util.viewport.getSize().y * 0.6;
                                                     this.setHeight(h > sh ? sh : h);
                                                     this.doLayout();
                                                     this.up('menu').doLayout();
@@ -2753,51 +2997,7 @@ Ext.onReady( function() {
                         {
                             xtype: 'button',
 							cls: 'dv-toolbar-btn-2',
-                            text: 'Data..',
-                            listeners: {
-                                afterrender: function(b) {
-                                    this.menu = Ext.create('Ext.menu.Menu', {
-                                        shadowOffset: 1,
-                                        showSeparator: false,
-                                        items: [
-                                            {
-                                                text: 'Data table',
-                                                iconCls: 'dv-menu-item-datatable',
-                                                minWidth: 90,
-                                                handler: function() {
-                                                    var p = DV.cmp.region.east;
-                                                    if (p.collapsed && p.items.length) {
-                                                        p.expand();
-                                                        DV.exe.datatable(true);
-                                                    }
-                                                    else {
-                                                        p.collapse();
-                                                    }
-                                                    DV.cmp.toolbar.resizeeast.show();
-                                                },
-                                                listeners: {
-                                                    added: function() {
-                                                        DV.cmp.toolbar.menuitem.datatable = this;
-                                                    }
-                                                }
-                                            }
-                                        ]                                            
-                                    });
-                                }
-                            },
-                            handler: function() {
-                                if (DV.cmp.region.east.items.length) {
-                                    DV.cmp.toolbar.menuitem.datatable.enable();
-                                }
-                                else {
-                                    DV.cmp.toolbar.menuitem.datatable.disable();
-                                }
-                            }
-                        },
-                        {
-                            xtype: 'button',
-							cls: 'dv-toolbar-btn-2',
-                            text: 'Save as..',
+                            text: 'Download as..',
                             execute: function(type) {
                                 var svg = document.getElementsByTagName('svg');
                                 
@@ -2806,7 +3006,7 @@ Ext.onReady( function() {
                                     return;
                                 }
                                 
-                                document.getElementById('titleField').value = DV.state.filter.names[0];
+                                document.getElementById('titleField').value = DV.state.filter.names[0] || 'Example chart';
                                 document.getElementById('svgField').value = svg[0].parentNode.innerHTML;
                                 document.getElementById('typeField').value = type;
                                 

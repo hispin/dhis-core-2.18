@@ -59,9 +59,13 @@ import org.hisp.dhis.indicator.IndicatorService;
 import org.hisp.dhis.indicator.IndicatorType;
 import org.hisp.dhis.jdbc.batchhandler.AggregatedDataValueBatchHandler;
 import org.hisp.dhis.jdbc.batchhandler.AggregatedIndicatorValueBatchHandler;
+import org.hisp.dhis.jdbc.batchhandler.AggregatedOrgUnitDataValueBatchHandler;
+import org.hisp.dhis.jdbc.batchhandler.AggregatedOrgUnitIndicatorValueBatchHandler;
 import org.hisp.dhis.jdbc.batchhandler.DataSetCompletenessResultBatchHandler;
 import org.hisp.dhis.mock.MockI18nFormat;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
+import org.hisp.dhis.organisationunit.OrganisationUnitGroup;
+import org.hisp.dhis.organisationunit.OrganisationUnitGroupService;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.period.MonthlyPeriodType;
 import org.hisp.dhis.period.Period;
@@ -87,6 +91,7 @@ public class ReportTableGridTest
     private List<Period> periods;
     private List<Period> relativePeriods;
     private List<OrganisationUnit> units;
+    private List<OrganisationUnitGroup> groups;
 
     private PeriodType montlyPeriodType;
 
@@ -117,6 +122,9 @@ public class ReportTableGridTest
     private OrganisationUnit unitA;
     private OrganisationUnit unitB;
     
+    private OrganisationUnitGroup groupA;
+    private OrganisationUnitGroup groupB;
+        
     private int dataElementIdA;
     private int dataElementIdB;
     
@@ -134,6 +142,9 @@ public class ReportTableGridTest
     
     private int unitIdA;
     private int unitIdB;
+    
+    private int groupIdA;
+    private int groupIdB;
         
     private I18nFormat i18nFormat;
     
@@ -157,6 +168,7 @@ public class ReportTableGridTest
         dataSetService = (DataSetService) getBean( DataSetService.ID );
         periodService = (PeriodService) getBean( PeriodService.ID );
         organisationUnitService = (OrganisationUnitService) getBean( OrganisationUnitService.ID );
+        organisationUnitGroupService = (OrganisationUnitGroupService) getBean( OrganisationUnitGroupService.ID );
         
         batchHandlerFactory = (BatchHandlerFactory) getBean( "batchHandlerFactory" );
         
@@ -167,6 +179,7 @@ public class ReportTableGridTest
         periods = new ArrayList<Period>();
         relativePeriods = new ArrayList<Period>();
         units = new ArrayList<OrganisationUnit>();
+        groups = new ArrayList<OrganisationUnitGroup>();
         
         montlyPeriodType = PeriodType.getPeriodTypeByName( MonthlyPeriodType.NAME );       
         
@@ -274,6 +287,19 @@ public class ReportTableGridTest
         
         units.add( unitA );
         units.add( unitB );
+
+        // ---------------------------------------------------------------------
+        // Setup OrganisationUnitGroups
+        // ---------------------------------------------------------------------
+
+        groupA = createOrganisationUnitGroup( 'A' );
+        groupB = createOrganisationUnitGroup( 'B' );
+        
+        groupIdA = organisationUnitGroupService.addOrganisationUnitGroup( groupA );
+        groupIdB = organisationUnitGroupService.addOrganisationUnitGroup( groupB );
+        
+        groups.add( groupA );
+        groups.add( groupB );
         
         i18nFormat = new MockI18nFormat();
 
@@ -292,14 +318,14 @@ public class ReportTableGridTest
         
         BatchHandler<AggregatedIndicatorValue> indicatorValueBatchHandler = batchHandlerFactory.createBatchHandler( AggregatedIndicatorValueBatchHandler.class ).init();
         
-        indicatorValueBatchHandler.addObject( new AggregatedIndicatorValue( indicatorIdA, periodIdA, 8, unitIdA, 8, 1, 11, 0, 0 ) );
-        indicatorValueBatchHandler.addObject( new AggregatedIndicatorValue( indicatorIdA, periodIdA, 8, unitIdB, 8, 1, 12, 0, 0 ) );
-        indicatorValueBatchHandler.addObject( new AggregatedIndicatorValue( indicatorIdA, periodIdB, 8, unitIdA, 8, 1, 13, 0, 0 ) );
-        indicatorValueBatchHandler.addObject( new AggregatedIndicatorValue( indicatorIdA, periodIdB, 8, unitIdB, 8, 1, 14, 0, 0 ) );
-        indicatorValueBatchHandler.addObject( new AggregatedIndicatorValue( indicatorIdB, periodIdA, 8, unitIdA, 8, 1, 15, 0, 0 ) );
-        indicatorValueBatchHandler.addObject( new AggregatedIndicatorValue( indicatorIdB, periodIdA, 8, unitIdB, 8, 1, 16, 0, 0 ) );
-        indicatorValueBatchHandler.addObject( new AggregatedIndicatorValue( indicatorIdB, periodIdB, 8, unitIdA, 8, 1, 17, 0, 0 ) );
-        indicatorValueBatchHandler.addObject( new AggregatedIndicatorValue( indicatorIdB, periodIdB, 8, unitIdB, 8, 1, 18, 0, 0 ) );
+        indicatorValueBatchHandler.addObject( new AggregatedIndicatorValue( indicatorIdA, periodIdA, 8, unitIdA, 8, "", 1, 11, 0, 0 ) );
+        indicatorValueBatchHandler.addObject( new AggregatedIndicatorValue( indicatorIdA, periodIdA, 8, unitIdB, 8, "", 1, 12, 0, 0 ) );
+        indicatorValueBatchHandler.addObject( new AggregatedIndicatorValue( indicatorIdA, periodIdB, 8, unitIdA, 8, "", 1, 13, 0, 0 ) );
+        indicatorValueBatchHandler.addObject( new AggregatedIndicatorValue( indicatorIdA, periodIdB, 8, unitIdB, 8, "", 1, 14, 0, 0 ) );
+        indicatorValueBatchHandler.addObject( new AggregatedIndicatorValue( indicatorIdB, periodIdA, 8, unitIdA, 8, "", 1, 15, 0, 0 ) );
+        indicatorValueBatchHandler.addObject( new AggregatedIndicatorValue( indicatorIdB, periodIdA, 8, unitIdB, 8, "", 1, 16, 0, 0 ) );
+        indicatorValueBatchHandler.addObject( new AggregatedIndicatorValue( indicatorIdB, periodIdB, 8, unitIdA, 8, "", 1, 17, 0, 0 ) );
+        indicatorValueBatchHandler.addObject( new AggregatedIndicatorValue( indicatorIdB, periodIdB, 8, unitIdB, 8, "", 1, 18, 0, 0 ) );
         
         indicatorValueBatchHandler.flush();
         
@@ -315,6 +341,32 @@ public class ReportTableGridTest
         completenessBatchHandler.addObject( new DataSetCompletenessResult( dataSetIdB, periodIdB, null, unitIdB, null, 100, 18, 18 ) );
         
         completenessBatchHandler.flush();
+        
+        BatchHandler<AggregatedDataValue> dataValueOrgUnitBatchHandler = batchHandlerFactory.createBatchHandler( AggregatedOrgUnitDataValueBatchHandler.class ).init();
+        
+        dataValueOrgUnitBatchHandler.addObject( new AggregatedDataValue( dataElementIdA, categoryOptionComboIdA, periodIdA, 8, unitIdA, groupIdA, 8, 11 ) );
+        dataValueOrgUnitBatchHandler.addObject( new AggregatedDataValue( dataElementIdA, categoryOptionComboIdA, periodIdA, 8, unitIdA, groupIdB, 8, 12 ) );
+        dataValueOrgUnitBatchHandler.addObject( new AggregatedDataValue( dataElementIdA, categoryOptionComboIdA, periodIdB, 8, unitIdA, groupIdA, 8, 13 ) );
+        dataValueOrgUnitBatchHandler.addObject( new AggregatedDataValue( dataElementIdA, categoryOptionComboIdA, periodIdB, 8, unitIdA, groupIdB, 8, 14 ) );
+        dataValueOrgUnitBatchHandler.addObject( new AggregatedDataValue( dataElementIdB, categoryOptionComboIdA, periodIdA, 8, unitIdA, groupIdA, 8, 15 ) );
+        dataValueOrgUnitBatchHandler.addObject( new AggregatedDataValue( dataElementIdB, categoryOptionComboIdA, periodIdA, 8, unitIdA, groupIdB, 8, 16 ) );
+        dataValueOrgUnitBatchHandler.addObject( new AggregatedDataValue( dataElementIdB, categoryOptionComboIdA, periodIdB, 8, unitIdA, groupIdA, 8, 17 ) );
+        dataValueOrgUnitBatchHandler.addObject( new AggregatedDataValue( dataElementIdB, categoryOptionComboIdA, periodIdB, 8, unitIdA, groupIdB, 8, 18 ) );
+        
+        dataValueOrgUnitBatchHandler.flush();
+        
+        BatchHandler<AggregatedIndicatorValue> indicatorOrgUnitValueBatchHandler = batchHandlerFactory.createBatchHandler( AggregatedOrgUnitIndicatorValueBatchHandler.class ).init();
+        
+        indicatorOrgUnitValueBatchHandler.addObject( new AggregatedIndicatorValue( indicatorIdA, periodIdA, 8, unitIdA, groupIdA, 8, "", 1, 11, 0, 0 ) );
+        indicatorOrgUnitValueBatchHandler.addObject( new AggregatedIndicatorValue( indicatorIdA, periodIdA, 8, unitIdA, groupIdB, 8, "", 1, 12, 0, 0 ) );
+        indicatorOrgUnitValueBatchHandler.addObject( new AggregatedIndicatorValue( indicatorIdA, periodIdB, 8, unitIdA, groupIdA, 8, "", 1, 13, 0, 0 ) );
+        indicatorOrgUnitValueBatchHandler.addObject( new AggregatedIndicatorValue( indicatorIdA, periodIdB, 8, unitIdA, groupIdB, 8, "", 1, 14, 0, 0 ) );
+        indicatorOrgUnitValueBatchHandler.addObject( new AggregatedIndicatorValue( indicatorIdB, periodIdA, 8, unitIdA, groupIdA, 8, "", 1, 15, 0, 0 ) );
+        indicatorOrgUnitValueBatchHandler.addObject( new AggregatedIndicatorValue( indicatorIdB, periodIdA, 8, unitIdA, groupIdB, 8, "", 1, 16, 0, 0 ) );
+        indicatorOrgUnitValueBatchHandler.addObject( new AggregatedIndicatorValue( indicatorIdB, periodIdB, 8, unitIdA, groupIdA, 8, "", 1, 17, 0, 0 ) );
+        indicatorOrgUnitValueBatchHandler.addObject( new AggregatedIndicatorValue( indicatorIdB, periodIdB, 8, unitIdA, groupIdB, 8, "", 1, 18, 0, 0 ) );
+        
+        indicatorOrgUnitValueBatchHandler.flush();
     }
     
     @Override
@@ -333,11 +385,35 @@ public class ReportTableGridTest
     // -------------------------------------------------------------------------
 
     @Test
+    public void testGetOrgUnitIndicatorReportTableA()
+    {
+        ReportTable reportTable = new ReportTable( "Prescriptions", false,
+            new ArrayList<DataElement>(), indicators, new ArrayList<DataSet>(), periods, relativePeriods, new ArrayList<OrganisationUnit>(), new ArrayList<OrganisationUnit>(),
+            groups, null, true, true, false, new RelativePeriods(), null, i18nFormat, "january_2000" );
+
+        reportTable.setParentOrganisationUnit( unitA );
+        
+        int id = reportTableService.saveReportTable( reportTable );
+
+        Grid grid = reportTableService.getReportTableGrid( id, i18nFormat, null, 0 );
+        
+        assertEquals( 11.0, grid.getRow( 0 ).get( 6 ) );
+        assertEquals( 13.0, grid.getRow( 0 ).get( 7 ) );
+        assertEquals( 15.0, grid.getRow( 0 ).get( 8 ) );
+        assertEquals( 17.0, grid.getRow( 0 ).get( 9 ) );
+        
+        assertEquals( 12.0, grid.getRow( 1 ).get( 6 ) );
+        assertEquals( 14.0, grid.getRow( 1 ).get( 7 ) );
+        assertEquals( 16.0, grid.getRow( 1 ).get( 8 ) );
+        assertEquals( 18.0, grid.getRow( 1 ).get( 9 ) );
+    }
+    
+    @Test
     public void testGetIndicatorReportTableA()
     {
         ReportTable reportTable = new ReportTable( "Prescriptions", false,
             new ArrayList<DataElement>(), indicators, new ArrayList<DataSet>(), periods, relativePeriods, units, new ArrayList<OrganisationUnit>(),
-            null, true, true, false, new RelativePeriods(), null, i18nFormat, "january_2000" );
+            new ArrayList<OrganisationUnitGroup>(), null, true, true, false, new RelativePeriods(), null, i18nFormat, "january_2000" );
 
         int id = reportTableService.saveReportTable( reportTable );
 
@@ -359,7 +435,7 @@ public class ReportTableGridTest
     {
         ReportTable reportTable = new ReportTable( "Embezzlement", false,
             new ArrayList<DataElement>(), indicators, new ArrayList<DataSet>(), periods, relativePeriods, units, new ArrayList<OrganisationUnit>(), 
-            null, false, false, true, new RelativePeriods(), null, i18nFormat, "january_2000" );
+            new ArrayList<OrganisationUnitGroup>(), null, false, false, true, new RelativePeriods(), null, i18nFormat, "january_2000" );
 
         int id = reportTableService.saveReportTable( reportTable );
 
@@ -383,7 +459,7 @@ public class ReportTableGridTest
     {
         ReportTable reportTable = new ReportTable( "Embezzlement", false, 
             new ArrayList<DataElement>(), indicators, new ArrayList<DataSet>(), periods, relativePeriods, units, new ArrayList<OrganisationUnit>(), 
-            null, true, false, true, new RelativePeriods(), null, i18nFormat, "january_2000" );
+            new ArrayList<OrganisationUnitGroup>(), null, true, false, true, new RelativePeriods(), null, i18nFormat, "january_2000" );
 
         int id = reportTableService.saveReportTable( reportTable );
 
@@ -405,7 +481,7 @@ public class ReportTableGridTest
     {
         ReportTable reportTable = new ReportTable( "Prescriptions", false,
             dataElements, new ArrayList<Indicator>(), new ArrayList<DataSet>(), periods, relativePeriods, units, new ArrayList<OrganisationUnit>(),
-            null, true, true, false, new RelativePeriods(), null, i18nFormat, "january_2000" );
+            new ArrayList<OrganisationUnitGroup>(), null, true, true, false, new RelativePeriods(), null, i18nFormat, "january_2000" );
 
         int id = reportTableService.saveReportTable( reportTable );
 
@@ -427,7 +503,7 @@ public class ReportTableGridTest
     {
         ReportTable reportTable = new ReportTable( "Embezzlement", false,
             dataElements, new ArrayList<Indicator>(), new ArrayList<DataSet>(), periods, relativePeriods, units, new ArrayList<OrganisationUnit>(), 
-            null, false, false, true, new RelativePeriods(), null, i18nFormat, "january_2000" );
+            new ArrayList<OrganisationUnitGroup>(), null, false, false, true, new RelativePeriods(), null, i18nFormat, "january_2000" );
 
         int id = reportTableService.saveReportTable( reportTable );
 
@@ -451,7 +527,7 @@ public class ReportTableGridTest
     {
         ReportTable reportTable = new ReportTable( "Embezzlement", false, 
             dataElements, new ArrayList<Indicator>(), new ArrayList<DataSet>(), periods, relativePeriods, units, new ArrayList<OrganisationUnit>(), 
-            null, true, false, true, new RelativePeriods(), null, i18nFormat, "january_2000" );
+            new ArrayList<OrganisationUnitGroup>(), null, true, false, true, new RelativePeriods(), null, i18nFormat, "january_2000" );
 
         int id = reportTableService.saveReportTable( reportTable );
 
@@ -473,7 +549,7 @@ public class ReportTableGridTest
     {
         ReportTable reportTable = new ReportTable( "Prescriptions", false,
             new ArrayList<DataElement>(), new ArrayList<Indicator>(), dataSets, periods, relativePeriods, units, new ArrayList<OrganisationUnit>(),
-            null, true, true, false, new RelativePeriods(), null, i18nFormat, "january_2000" );
+            new ArrayList<OrganisationUnitGroup>(), null, true, true, false, new RelativePeriods(), null, i18nFormat, "january_2000" );
 
         int id = reportTableService.saveReportTable( reportTable );
 
@@ -495,7 +571,7 @@ public class ReportTableGridTest
     {
         ReportTable reportTable = new ReportTable( "Embezzlement", false,
             new ArrayList<DataElement>(), new ArrayList<Indicator>(), dataSets, periods, relativePeriods, units, new ArrayList<OrganisationUnit>(), 
-            null, false, false, true, new RelativePeriods(), null, i18nFormat, "january_2000" );
+            new ArrayList<OrganisationUnitGroup>(), null, false, false, true, new RelativePeriods(), null, i18nFormat, "january_2000" );
 
         int id = reportTableService.saveReportTable( reportTable );
 
@@ -519,7 +595,7 @@ public class ReportTableGridTest
     {
         ReportTable reportTable = new ReportTable( "Embezzlement", false, 
             new ArrayList<DataElement>(), new ArrayList<Indicator>(), dataSets, periods, relativePeriods, units, new ArrayList<OrganisationUnit>(), 
-            null, true, false, true, new RelativePeriods(), null, i18nFormat, "january_2000" );
+            new ArrayList<OrganisationUnitGroup>(), null, true, false, true, new RelativePeriods(), null, i18nFormat, "january_2000" );
 
         int id = reportTableService.saveReportTable( reportTable );
 
@@ -554,7 +630,7 @@ public class ReportTableGridTest
         
         ReportTable reportTable = new ReportTable( "Prescriptions", false,
             dataElements, new ArrayList<Indicator>(), new ArrayList<DataSet>(), periods, relativePeriods, units, new ArrayList<OrganisationUnit>(),
-            categoryComboA, true, true, false, new RelativePeriods(), null, i18nFormat, "january_2000" );
+            new ArrayList<OrganisationUnitGroup>(), categoryComboA, true, true, false, new RelativePeriods(), null, i18nFormat, "january_2000" );
 
         int id = reportTableService.saveReportTable( reportTable );
 
@@ -597,7 +673,7 @@ public class ReportTableGridTest
         
         ReportTable reportTable = new ReportTable( "Embezzlement", false,
             dataElements, new ArrayList<Indicator>(), new ArrayList<DataSet>(), periods, relativePeriods, units, new ArrayList<OrganisationUnit>(), 
-            categoryComboA, false, false, true, new RelativePeriods(), null, i18nFormat, "january_2000" );
+            new ArrayList<OrganisationUnitGroup>(), categoryComboA, false, false, true, new RelativePeriods(), null, i18nFormat, "january_2000" );
 
         int id = reportTableService.saveReportTable( reportTable );
 
@@ -642,7 +718,7 @@ public class ReportTableGridTest
         
         ReportTable reportTable = new ReportTable( "Embezzlement", false, 
             dataElements, new ArrayList<Indicator>(), new ArrayList<DataSet>(), periods, relativePeriods, units, new ArrayList<OrganisationUnit>(), 
-            categoryComboA, true, false, true, new RelativePeriods(), null, i18nFormat, "january_2000" );
+            new ArrayList<OrganisationUnitGroup>(), categoryComboA, true, false, true, new RelativePeriods(), null, i18nFormat, "january_2000" );
 
         int id = reportTableService.saveReportTable( reportTable );
 
@@ -685,7 +761,7 @@ public class ReportTableGridTest
         
         ReportTable reportTable = new ReportTable( "Embezzlement", false, 
             dataElements, new ArrayList<Indicator>(), new ArrayList<DataSet>(), periods, relativePeriods, units, new ArrayList<OrganisationUnit>(), 
-            categoryComboA, false, false, false, new RelativePeriods(), null, i18nFormat, "january_2000" );
+            new ArrayList<OrganisationUnitGroup>(), categoryComboA, false, false, false, new RelativePeriods(), null, i18nFormat, "january_2000" );
 
         int id = reportTableService.saveReportTable( reportTable );
 
@@ -729,7 +805,7 @@ public class ReportTableGridTest
     {
         ReportTable reportTable = new ReportTable( "Prescriptions", false,
             dataElements, indicators, dataSets, periods, relativePeriods, units, new ArrayList<OrganisationUnit>(),
-            null, true, true, false, new RelativePeriods(), null, i18nFormat, "january_2000" );
+            new ArrayList<OrganisationUnitGroup>(), null, true, true, false, new RelativePeriods(), null, i18nFormat, "january_2000" );
 
         int id = reportTableService.saveReportTable( reportTable );
 
@@ -767,7 +843,7 @@ public class ReportTableGridTest
     {
         ReportTable reportTable = new ReportTable( "Embezzlement", false,
             dataElements, indicators, dataSets, periods, relativePeriods, units, new ArrayList<OrganisationUnit>(), 
-            null, false, false, true, new RelativePeriods(), null, i18nFormat, "january_2000" );
+            new ArrayList<OrganisationUnitGroup>(), null, false, false, true, new RelativePeriods(), null, i18nFormat, "january_2000" );
 
         int id = reportTableService.saveReportTable( reportTable );
 
@@ -815,7 +891,7 @@ public class ReportTableGridTest
     {
         ReportTable reportTable = new ReportTable( "Embezzlement", false, 
             dataElements, indicators, dataSets, periods, relativePeriods, units, new ArrayList<OrganisationUnit>(), 
-            null, true, false, true, new RelativePeriods(), null, i18nFormat, "january_2000" );
+            new ArrayList<OrganisationUnitGroup>(), null, true, false, true, new RelativePeriods(), null, i18nFormat, "january_2000" );
 
         int id = reportTableService.saveReportTable( reportTable );
 
@@ -853,7 +929,7 @@ public class ReportTableGridTest
     {
         ReportTable reportTable = new ReportTable( "Prescriptions", false,
             new ArrayList<DataElement>(), indicators, new ArrayList<DataSet>(), periods, relativePeriods, units, new ArrayList<OrganisationUnit>(),
-            null, true, true, true, new RelativePeriods(), null, i18nFormat, "january_2000" );
+            new ArrayList<OrganisationUnitGroup>(), null, true, true, true, new RelativePeriods(), null, i18nFormat, "january_2000" );
 
         int id = reportTableService.saveReportTable( reportTable );
 
@@ -874,7 +950,7 @@ public class ReportTableGridTest
     {
         ReportTable reportTable = new ReportTable( "Prescriptions", false,
             new ArrayList<DataElement>(), indicators, new ArrayList<DataSet>(), periods, relativePeriods, units, new ArrayList<OrganisationUnit>(),
-            null, false, false, false, new RelativePeriods(), null, i18nFormat, "january_2000" );
+            new ArrayList<OrganisationUnitGroup>(), null, false, false, false, new RelativePeriods(), null, i18nFormat, "january_2000" );
 
         int id = reportTableService.saveReportTable( reportTable );
 
@@ -895,7 +971,7 @@ public class ReportTableGridTest
     {
         ReportTable reportTable = new ReportTable( "Embezzlement", false,
             new ArrayList<DataElement>(), indicators, new ArrayList<DataSet>(), periods, relativePeriods, units, new ArrayList<OrganisationUnit>(), 
-            null, false, false, true, new RelativePeriods(), null, i18nFormat, "january_2000" );
+            new ArrayList<OrganisationUnitGroup>(), null, false, false, true, new RelativePeriods(), null, i18nFormat, "january_2000" );
         reportTable.setTopLimit( 2 );
         
         int id = reportTableService.saveReportTable( reportTable );
@@ -916,7 +992,7 @@ public class ReportTableGridTest
     {
         ReportTable reportTable = new ReportTable( "Embezzlement", false,
             new ArrayList<DataElement>(), indicators, new ArrayList<DataSet>(), periods, relativePeriods, units, new ArrayList<OrganisationUnit>(), 
-            null, false, false, true, new RelativePeriods(), null, i18nFormat, "january_2000" );
+            new ArrayList<OrganisationUnitGroup>(), null, false, false, true, new RelativePeriods(), null, i18nFormat, "january_2000" );
         reportTable.setSortOrder( ReportTable.DESC );
         
         int id = reportTableService.saveReportTable( reportTable );
@@ -941,7 +1017,7 @@ public class ReportTableGridTest
     {
         ReportTable reportTable = new ReportTable( "Embezzlement", true, 
             dataElements, new ArrayList<Indicator>(), new ArrayList<DataSet>(), periods, relativePeriods, units, new ArrayList<OrganisationUnit>(), 
-            null, true, false, true, new RelativePeriods(), null, i18nFormat, "january_2000" );
+            new ArrayList<OrganisationUnitGroup>(), null, true, false, true, new RelativePeriods(), null, i18nFormat, "january_2000" );
 
         int id = reportTableService.saveReportTable( reportTable );
 

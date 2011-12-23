@@ -60,6 +60,13 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
         <property name="currentUserService" ref="org.hisp.dhis.user.CurrentUserService" />
     </bean>
 
+    <bean id="org.hisp.dhis.visualizer.action.GetAllChartsAction"
+        class="org.hisp.dhis.visualizer.action.GetAllChartsAction"
+        scope="prototype">
+        <property name="chartService"
+            ref="org.hisp.dhis.chart.ChartService" />
+    </bean>
+
     <bean id="org.hisp.dhis.visualizer.action.DeleteChartsAction"
         class="org.hisp.dhis.visualizer.action.DeleteChartsAction"
         scope="prototype">

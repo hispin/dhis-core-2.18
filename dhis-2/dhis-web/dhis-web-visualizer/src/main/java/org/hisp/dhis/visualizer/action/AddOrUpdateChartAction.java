@@ -211,11 +211,67 @@ public class AddOrUpdateChartAction
         this.organisationUnitIds = organisationUnitIds;
     }
     
-    private boolean system;
+    private Boolean system;
 
-    public void setSystem( boolean system )
+    public void setSystem( Boolean system )
     {
         this.system = system;
+    }
+    
+    private Boolean trendLine;
+    
+    public void setTrendLine( Boolean trendLine )
+    {
+        this.trendLine = trendLine;
+    }
+    
+    private Boolean hideSubtitle;
+    
+    public void setHideSubtitle( Boolean hideSubtitle )
+    {
+        this.hideSubtitle = hideSubtitle;
+    }
+
+    private Boolean hideLegend;
+
+    public void setHideLegend( Boolean hideLegend )
+    {
+        this.hideLegend = hideLegend;
+    }
+    
+    private Boolean userOrganisationUnit;
+
+    public void setUserOrganisationUnit( Boolean userOrganisationUnit )
+    {
+        this.userOrganisationUnit = userOrganisationUnit;
+    }
+    
+    private String xAxisLabel;
+
+    public void setXAxisLabel( String xAxisLabel )
+    {
+        this.xAxisLabel = xAxisLabel;
+    }
+    
+    private String yAxisLabel;
+
+    public void setYAxisLabel( String yAxisLabel )
+    {
+        this.yAxisLabel = yAxisLabel;
+    }
+    
+    private Double targetLineValue;
+
+    public void setTargetLineValue( Double targetLineValue )
+    {
+        this.targetLineValue = targetLineValue;
+    }
+
+    private String targetLineLabel;
+
+    public void setTargetLineLabel( String targetLineLabel )
+    {
+        this.targetLineLabel = targetLineLabel;
     }
 
     // -------------------------------------------------------------------------
@@ -293,9 +349,49 @@ public class AddOrUpdateChartAction
                 .getOrganisationUnits( organisationUnitIds ) ) );
         }
         
-        if ( !system )
+        if ( system == null )
         {
             chart.setUser( currentUserService.getCurrentUser() );
+        }
+        
+        if ( trendLine != null )
+        {
+            chart.setRegression( trendLine );
+        }
+        
+        if ( hideSubtitle != null )
+        {
+            chart.setHideSubtitle( hideSubtitle );
+        }
+        
+        if ( hideLegend != null )
+        {
+            chart.setHideLegend( hideLegend );
+        }
+        
+        if ( userOrganisationUnit != null )
+        {
+            chart.setUserOrganisationUnit( userOrganisationUnit );
+        }
+        
+        if ( xAxisLabel != null )
+        {
+            chart.setDomainAxisLabel( xAxisLabel );
+        }
+        
+        if ( yAxisLabel != null )
+        {
+            chart.setRangeAxisLabel( yAxisLabel );
+        }
+        
+        if ( targetLineValue != null )
+        {
+            chart.setTargetLineValue( targetLineValue );
+        }
+        
+        if ( targetLineLabel != null )
+        {
+            chart.setTargetLineLabel( targetLineLabel );
         }
 
         chartService.saveOrUpdate( chart );

@@ -37,7 +37,7 @@ import org.hisp.dhis.dashboard.DashboardContent;
  */
 public class DashboardContentXmlAdapter extends XmlAdapter<BaseIdentifiableObject, DashboardContent>
 {
-    private BaseIdentifiableObjectXmlAdapter baseIdentifiableObjectXmlAdapter = new BaseIdentifiableObjectXmlAdapter();
+    //private BaseIdentifiableObjectXmlAdapter baseIdentifiableObjectXmlAdapter = new BaseIdentifiableObjectXmlAdapter();
 
     @Override
     public DashboardContent unmarshal( BaseIdentifiableObject identifiableObject ) throws Exception

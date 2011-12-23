@@ -346,8 +346,8 @@ public class Chart
     // Getters and setters
     // -------------------------------------------------------------------------
 
-    @XmlElement( name = "domainAxisLabel" )
-    @JsonProperty( value = "domainAxisLabel" )
+    @XmlElement
+    @JsonProperty
     public String getDomainAxisLabel()
     {
         return domainAxisLabel;
@@ -468,14 +468,14 @@ public class Chart
 
     @XmlElement
     @JsonProperty
-    public void setTargetLineLabel( String targetLineLabel )
-    {
-        this.targetLineLabel = targetLineLabel;
-    }
-
     public String getTargetLineLabel()
     {
         return targetLineLabel;
+    }
+
+    public void setTargetLineLabel( String targetLineLabel )
+    {
+        this.targetLineLabel = targetLineLabel;
     }
 
     @XmlElement

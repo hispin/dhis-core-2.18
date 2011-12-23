@@ -42,6 +42,7 @@ import org.hisp.dhis.dataset.DataSetService;
 import org.hisp.dhis.indicator.Indicator;
 import org.hisp.dhis.indicator.IndicatorService;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
+import org.hisp.dhis.organisationunit.OrganisationUnitGroup;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodService;
@@ -408,7 +409,7 @@ public class SaveTableAction
         if ( tableId == null )
         {
             reportTable = new ReportTable( tableName, regression,
-                dataElements, indicators, dataSets, periods, null, units, null,
+                dataElements, indicators, dataSets, periods, null, units, null, new ArrayList<OrganisationUnitGroup>(),
                 categoryCombo, doIndicators, doPeriods, doOrganisationUnits, relatives, reportParams, 
                 null, null );
             reportTable.setSortOrder( sortOrder );

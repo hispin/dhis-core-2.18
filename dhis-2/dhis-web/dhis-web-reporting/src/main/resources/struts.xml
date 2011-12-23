@@ -63,55 +63,12 @@
     
     <!-- Chart -->
 
-    <action name="saveChart" class="org.hisp.dhis.reporting.chart.action.SaveChartAction">
-      <result name="success" type="redirect">displayViewChartForm.action</result>
-      <param name="requiredAuthorities">F_CHART_ADD</param>
-    </action>
-
-    <action name="removeChart" class="org.hisp.dhis.reporting.chart.action.RemoveChartAction">
-      <result name="success" type="velocity-json">/dhis-web-commons/ajax/jsonResponseSuccess.vm</result>
-      <param name="requiredAuthorities">F_CHART_DELETE</param>
-      <param name="onExceptionReturn">plainTextError</param>
-    </action>
-
-    <action name="displayAddChartForm" class="org.hisp.dhis.reporting.chart.action.GetChartOptionsAction">
-      <result name="success" type="velocity">/main.vm</result>
-      <param name="page">/dhis-web-reporting/addChartForm.vm</param>
-      <param name="menu">/dhis-web-reporting/menu.vm</param>
-      <param name="javascripts">javascript/lists.js,javascript/chart.js</param>
-      <param name="requiredAuthorities">F_CHART_ADD</param>
-    </action>
-
-    <action name="displayViewChartForm" class="org.hisp.dhis.reporting.chart.action.GetAllChartsAction">
-      <result name="success" type="velocity">/main.vm</result>
-      <param name="page">/dhis-web-reporting/viewChartForm.vm</param>
-      <param name="menu">/dhis-web-reporting/menu.vm</param>
-      <param name="javascripts">javascript/chart.js</param>
-      <param name="stylesheets">../dhis-web-commons/paging/paging.css</param>
-    </action>
-
     <action name="viewChart" class="org.hisp.dhis.reporting.chart.action.ViewChartAction">
       <result name="success" type="chart"></result>
     </action>
 
     <action name="generateChart" class="org.hisp.dhis.reporting.chart.action.GenerateChartAction">
       <result name="success" type="chart"></result>
-    </action>
-
-    <action name="getChart" class="org.hisp.dhis.reporting.chart.action.GetChartAction">
-      <result name="success" type="velocity-json">/dhis-web-reporting/jsonChart.vm</result>
-      <param name="onExceptionReturn">plainTextError</param>
-    </action>
-	
-    <action name="getCharts" class="org.hisp.dhis.reporting.chart.action.GetAllChartsAction">
-      <result name="success" type="velocity-json">/dhis-web-reporting/jsonCharts.vm</result>
-      <param name="onExceptionReturn">plainTextError</param>
-    </action>
-	
-    <action name="validateChart" class="org.hisp.dhis.reporting.chart.action.ValidateChartAction">
-      <result name="success" type="velocity-json">/dhis-web-commons/ajax/jsonResponseSuccess.vm</result>
-      <result name="input" type="velocity-json">/dhis-web-commons/ajax/jsonResponseInput.vm</result>
-      <param name="onExceptionReturn">plainTextError</param>
     </action>
     
     <!-- Report -->

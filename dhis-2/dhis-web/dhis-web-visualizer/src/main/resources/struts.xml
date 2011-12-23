@@ -65,6 +65,12 @@
                 /dhis-web-visualizer/void.vm</result>
         </action>
 
+        <action name="getAllCharts"
+            class="org.hisp.dhis.visualizer.action.GetAllChartsAction">
+            <result name="success" type="velocity-json">
+                /dhis-web-visualizer/jsonminCharts.vm</result>
+        </action>
+
         <action name="deleteCharts"
             class="org.hisp.dhis.visualizer.action.DeleteChartsAction">
             <result name="success" type="velocity-json">

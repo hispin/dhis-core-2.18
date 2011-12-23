@@ -27,16 +27,17 @@
 
 package org.hisp.dhis.security;
 
-import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.mobile.device.Device;
 import org.springframework.mobile.device.DeviceResolver;
 import org.springframework.security.web.DefaultRedirectStrategy;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * @author mortenoh
@@ -44,6 +45,8 @@ import org.springframework.security.web.DefaultRedirectStrategy;
 public class MappedRedirectStrategy
     extends DefaultRedirectStrategy
 {
+    private static final Log log = LogFactory.getLog( MappedRedirectStrategy.class );
+
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
@@ -87,9 +90,15 @@ public class MappedRedirectStrategy
 
         if ( device.isMobile() )
         {
-            url = request.getHeader( "referer" ).replaceFirst( "/dhis-web-commons/security/login.action",
-                "/mobile/index.action" );
+            // Older nokia phones do not set the referer header correct, leaving old code here for now
+            // until new code has been tested.
+            //
+            //  url = request.getHeader( "referer" ).replaceFirst( "/dhis-web-commons/security/login.action",
+            //  "/mobile/index.action" );
+            url = request.getContextPath() + "/mobile/index.action";
         }
+
+        log.debug( "Redirecting to " + url );
 
         super.sendRedirect( request, response, url );
     }
