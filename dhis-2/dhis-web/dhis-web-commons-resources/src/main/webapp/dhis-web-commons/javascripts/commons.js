@@ -940,7 +940,7 @@ function datePickerValid( id, today )
 }
 
 /**
- * Create jQuery datepicker for start date and end ate text with id * *
+ * Create jQuery datepicker for start date and end date text with id
  * 
  * @param startdate the id of input field which you want enter start date *
  * @param enddate the id of input field which you want enter end date *
@@ -978,6 +978,7 @@ function datePickerInRange ( startdate, enddate, setCurrentStartDate, setCurrent
 			dates.not(this).datepicker("option", option, date);
 		}
 	});
+
 	jQuery( "#" + startdate ).attr("disabled", true );
 	jQuery( "#" + enddate ).attr("disabled", true );
 
