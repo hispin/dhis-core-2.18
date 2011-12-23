@@ -35,8 +35,10 @@
     <sec:intercept-url pattern="/dhis-web-commons/javascripts/**" filters="none" />
     <sec:intercept-url pattern="/dhis-web-commons/css/**" filters="none" />
     <sec:intercept-url pattern="/favicon.ico" filters="none" />
+<!--
     <sec:intercept-url pattern="/api*" access="hasRole('F_WEBAPI_READ')" />
     <sec:intercept-url pattern="/api/**" access="hasRole('F_WEBAPI_READ')" />
+-->
     <sec:intercept-url pattern="/**" access="isAuthenticated()" />
 
     <sec:custom-filter ref="automaticAccessFilter" before="LOGOUT_FILTER" />
