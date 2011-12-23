@@ -38,6 +38,11 @@ function selectTableForm()
 
     selectAllById( "selectedPeriods" );
     selectAllById( "selectedOrganisationUnits" );
+    
+    if ( isNotEmpty( "selectedOrganisationUnitGroups" ) )
+    {
+        selectAllById( "selectedOrganisationUnitGroups" );
+    }
 }
 
 // -----------------------------------------------------------------------------
@@ -185,6 +190,11 @@ function toggleFixedOrganisationUnits()
 function toggleFixedPeriods()
 {
     $( '#fixedPeriods' ).toggle( 'fast' );
+}
+
+function toggleOrganisationUnitGroups()
+{
+	$( '#organisationUnitGroupsDiv' ).toggle( 'fast' );
 }
 
 // -----------------------------------------------------------------------------

@@ -36,6 +36,7 @@ import java.util.List;
 import java.util.SortedMap;
 import java.util.TreeMap;
 
+import org.hisp.dhis.common.comparator.IdentifiableObjectNameComparator;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryCombo;
 import org.hisp.dhis.dataelement.DataElementCategoryService;
@@ -54,6 +55,8 @@ import org.hisp.dhis.indicator.IndicatorService;
 import org.hisp.dhis.indicator.comparator.IndicatorGroupNameComparator;
 import org.hisp.dhis.options.displayproperty.DisplayPropertyHandler;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
+import org.hisp.dhis.organisationunit.OrganisationUnitGroup;
+import org.hisp.dhis.organisationunit.OrganisationUnitGroupService;
 import org.hisp.dhis.organisationunit.OrganisationUnitLevel;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.period.MonthlyPeriodType;
@@ -130,6 +133,13 @@ public class GetTableOptionsAction
         this.organisationUnitService = organisationUnitService;
     }
     
+    private OrganisationUnitGroupService organisationUnitGroupService;
+    
+    public void setOrganisationUnitGroupService( OrganisationUnitGroupService organisationUnitGroupService )
+    {
+        this.organisationUnitGroupService = organisationUnitGroupService;
+    }
+
     private DataSetService dataSetService;
 
     public void setDataSetService( DataSetService dataSetService )
@@ -255,6 +265,13 @@ public class GetTableOptionsAction
         return organisationUnits;
     }
     
+    private List<OrganisationUnitGroup> organisationUnitGroups = new ArrayList<OrganisationUnitGroup>();
+
+    public List<OrganisationUnitGroup> getOrganisationUnitGroups()
+    {
+        return organisationUnitGroups;
+    }
+
     private ReportTable reportTable;
 
     public ReportTable getReportTable()
@@ -297,6 +314,13 @@ public class GetTableOptionsAction
         return selectedOrganisationUnits;
     }
     
+    private List<OrganisationUnitGroup> selectedOrganisationUnitGroups = new ArrayList<OrganisationUnitGroup>();
+
+    public List<OrganisationUnitGroup> getSelectedOrganisationUnitGroups()
+    {
+        return selectedOrganisationUnitGroups;
+    }
+
     private SortedMap<Integer, String> reportingPeriods = new TreeMap<Integer, String>();
 
     public SortedMap<Integer, String> getReportingPeriods()
@@ -323,53 +347,44 @@ public class GetTableOptionsAction
 
         if ( dimension )
         {
-            categoryCombos = new ArrayList<DataElementCategoryCombo>( categoryService.getAllDataElementCategoryCombos() );
-            
+            categoryCombos = new ArrayList<DataElementCategoryCombo>( categoryService.getAllDataElementCategoryCombos() );            
             Collections.sort( categoryCombos, new DataElementCategoryComboNameComparator() );            
         }
         else
         {        
-            dataElementGroups = new ArrayList<DataElementGroup>( dataElementService.getAllDataElementGroups() );
-            
+            dataElementGroups = new ArrayList<DataElementGroup>( dataElementService.getAllDataElementGroups() );            
             Collections.sort( dataElementGroups, new DataElementGroupNameComparator() );
             
-            dataElements = new ArrayList<DataElement>( dataElementService.getAllDataElements() );
-            
-            Collections.sort( dataElements, new DataElementNameComparator() );
-            
-            FilterUtils.filter( dataElements, new AggregatableDataElementFilter() );
-            
+            dataElements = new ArrayList<DataElement>( dataElementService.getAllDataElements() );            
+            Collections.sort( dataElements, new DataElementNameComparator() );            
+            FilterUtils.filter( dataElements, new AggregatableDataElementFilter() );            
             displayPropertyHandler.handle( dataElements );
             
-            indicatorGroups = new ArrayList<IndicatorGroup>( indicatorService.getAllIndicatorGroups() );
-            
+            indicatorGroups = new ArrayList<IndicatorGroup>( indicatorService.getAllIndicatorGroups() );            
             Collections.sort( indicatorGroups, new IndicatorGroupNameComparator() );
-                    
-            indicators = new ArrayList<Indicator>( indicatorService.getAllIndicators() );
             
-            Collections.sort( indicators, indicatorComparator );
-            
+            indicators = new ArrayList<Indicator>( indicatorService.getAllIndicators() );            
+            Collections.sort( indicators, indicatorComparator );            
             displayPropertyHandler.handle( indicators );
             
-            dataSets = new ArrayList<DataSet>( dataSetService.getAllDataSets() );
-            
+            dataSets = new ArrayList<DataSet>( dataSetService.getAllDataSets() );            
             Collections.sort( dataSets, new DataSetNameComparator() ); 
         }
         
         periodTypes = periodService.getAllPeriodTypes();
         
         periods = new MonthlyPeriodType().generatePeriods( new Date() );
-
         Collections.reverse( periods );
         FilterUtils.filter( periods, new PastAndCurrentPeriodFilter() );
         
         levels = organisationUnitService.getOrganisationUnitLevels();
         
         organisationUnits = new ArrayList<OrganisationUnit>( organisationUnitService.getOrganisationUnitsAtLevel( 1 ) );
-
         displayPropertyHandler.handle( organisationUnits );
-
         Collections.sort( organisationUnits, organisationUnitComparator );
+        
+        organisationUnitGroups = new ArrayList<OrganisationUnitGroup>( organisationUnitGroupService.getOrganisationUnitGroupsWithGroupSets() );
+        Collections.sort( organisationUnitGroups, new IdentifiableObjectNameComparator() );
         
         // ---------------------------------------------------------------------
         // Reporting periods
@@ -416,6 +431,8 @@ public class GetTableOptionsAction
             selectedPeriods = reportTable.getPeriods();
             
             selectedOrganisationUnits = reportTable.getUnits();
+            
+            selectedOrganisationUnitGroups = reportTable.getOrganisationUnitGroups();
         }
         
         return SUCCESS;
