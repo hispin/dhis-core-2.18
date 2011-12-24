@@ -1069,7 +1069,7 @@ Ext.onReady( function() {
                             for (var i = 0; i < f.indicators.length; i++) {
                                 indiment.push(f.indicators[i]);
                                 this.indicatorIds.push(f.indicators[i].internalId);
-                                records.push({id: f.indicators[i].internalId, s: f.indicators[i].shortName, name: f.indicators[i].shortName, parent: null});
+                                records.push({id: f.indicators[i].internalId, s: DV.util.string.getEncodedString(f.indicators[i].shortName), name: DV.util.string.getEncodedString(f.indicators[i].shortName), parent: null});
                             }
                             DV.store.indicator.selected.removeAll();
                             DV.store.indicator.selected.add(records);
@@ -1081,7 +1081,7 @@ Ext.onReady( function() {
                             for (var i = 0; i < f.dataElements.length; i++) {
                                 indiment.push(f.dataElements[i]);
                                 this.dataelementIds.push(f.dataElements[i].internalId);
-                                records.push({id: f.dataElements[i].internalId, s: f.dataElements[i].shortName, name: f.dataElements[i].shortName, parent: null});
+                                records.push({id: f.dataElements[i].internalId, s: DV.util.string.getEncodedString(f.dataElements[i].shortName), name: DV.util.string.getEncodedString(f.dataElements[i].shortName), parent: null});
                             }
                             DV.store.dataelement.selected.removeAll();
                             DV.store.dataelement.selected.add(records);
@@ -1089,7 +1089,7 @@ Ext.onReady( function() {
                             DV.util.multiselect.filterAvailable(DV.cmp.dimension.dataelement.available, DV.cmp.dimension.dataelement.selected);
                         }
                         for (var i = 0; i < indiment.length; i++) {
-                            f.names.data.push(indiment[i].shortName);
+                            f.names.data.push(DV.util.string.getEncodedString(indiment[i].shortName));
                         }
                         
                         this.relativePeriods = f.relativePeriods;
@@ -1098,8 +1098,8 @@ Ext.onReady( function() {
                         
                         for (var i = 0; i < f.organisationUnits.length; i++) {
                             this.organisationunitIds.push(f.organisationUnits[i].internalId);
-                            f.names.organisationunit.push(f.organisationUnits[i].name);
-                            DV.cmp.dimension.organisationunit.treepanel.storage[f.organisationUnits[i].internalId] = f.organisationUnits[i].name;
+                            f.names.organisationunit.push(DV.util.string.getEncodedString(f.organisationUnits[i].name));
+                            DV.cmp.dimension.organisationunit.treepanel.storage[f.organisationUnits[i].internalId] = DV.util.string.getEncodedString(f.organisationUnits[i].name);
                         }
                         
                         this.series.names = f.names[this.series.dimension];
