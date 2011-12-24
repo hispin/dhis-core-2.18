@@ -48,6 +48,8 @@ import org.hisp.dhis.indicator.Indicator;
 import org.hisp.dhis.indicator.IndicatorService;
 import org.hisp.dhis.options.SystemSettingManager;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
+import org.hisp.dhis.organisationunit.OrganisationUnitGroup;
+import org.hisp.dhis.organisationunit.OrganisationUnitGroupService;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.period.Cal;
 import org.hisp.dhis.period.Period;
@@ -76,6 +78,8 @@ public class DataMartTask
     private PeriodService periodService;
     
     private OrganisationUnitService organisationUnitService;
+    
+    private OrganisationUnitGroupService organisationUnitGroupService;
 
     private DataSetService dataSetService;
     
@@ -97,7 +101,8 @@ public class DataMartTask
 
     public DataMartTask( DataMartService dataMartService, DataSetCompletenessService completenessService, 
         DataElementService dataElementService, IndicatorService indicatorService, PeriodService periodService,
-        OrganisationUnitService organisationUnitService, DataSetService dataSetService, SystemSettingManager systemSettingManager )
+        OrganisationUnitService organisationUnitService, OrganisationUnitGroupService organisationUnitGroupService,
+        DataSetService dataSetService, SystemSettingManager systemSettingManager )
     {
         this.dataMartService = dataMartService;
         this.completenessService = completenessService;
@@ -105,6 +110,7 @@ public class DataMartTask
         this.indicatorService = indicatorService;
         this.periodService = periodService;
         this.organisationUnitService = organisationUnitService;
+        this.organisationUnitGroupService = organisationUnitGroupService;
         this.dataSetService = dataSetService;
         this.systemSettingManager = systemSettingManager;
     }
@@ -115,8 +121,9 @@ public class DataMartTask
     {
         Collection<Integer> dataElementIds = ConversionUtils.getIdentifiers( DataElement.class, dataElementService.getAllDataElements() );
         Collection<Integer> indicatorIds = ConversionUtils.getIdentifiers( Indicator.class, indicatorService.getAllIndicators() );
-        Collection<Integer> organisationUnitIds = ConversionUtils.getIdentifiers( OrganisationUnit.class, organisationUnitService.getAllOrganisationUnits() );
         Collection<Integer> dataSetIds = ConversionUtils.getIdentifiers( DataSet.class, dataSetService.getAllDataSets() );
+        Collection<Integer> organisationUnitIds = ConversionUtils.getIdentifiers( OrganisationUnit.class, organisationUnitService.getAllOrganisationUnits() );
+        Collection<Integer> organisationUnitGroupIds = ConversionUtils.getIdentifiers( OrganisationUnitGroup.class, organisationUnitGroupService.getOrganisationUnitGroupsWithGroupSets() );
         
         Set<String> periodTypes = (Set<String>) systemSettingManager.getSystemSetting( KEY_SCHEDULED_PERIOD_TYPES, DEFAULT_SCHEDULED_PERIOD_TYPES );
 
@@ -149,7 +156,7 @@ public class DataMartTask
         
         Collection<Integer> periodIds = ConversionUtils.getIdentifiers( Period.class, periodService.reloadPeriods( periods ) );
         
-        dataMartService.export( dataElementIds, indicatorIds, periodIds, organisationUnitIds, null, null, true );
+        dataMartService.export( dataElementIds, indicatorIds, periodIds, organisationUnitIds, organisationUnitGroupIds, null, true );
         completenessService.exportDataSetCompleteness( dataSetIds, periodIds, organisationUnitIds ); 
     }
 }

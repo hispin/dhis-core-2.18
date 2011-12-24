@@ -270,6 +270,7 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
     <constructor-arg ref="org.hisp.dhis.indicator.IndicatorService" />
 	<constructor-arg ref="org.hisp.dhis.period.PeriodService" />
     <constructor-arg ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
+    <constructor-arg ref="org.hisp.dhis.organisationunit.OrganisationUnitGroupService" />
     <constructor-arg ref="org.hisp.dhis.dataset.DataSetService" />
 	<constructor-arg ref="org.hisp.dhis.options.SystemSettingManager" />
   </bean>
