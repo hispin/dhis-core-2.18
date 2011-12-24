@@ -513,7 +513,7 @@ public class RelativePeriods
         {
             relatives.setLast12Months( true );
             relatives.setLast4Quarters( true );
-            relatives.setLastYear( true );
+            relatives.setThisYear( true );
         }
         else
         {
@@ -521,7 +521,7 @@ public class RelativePeriods
             relatives.setLast6BiMonths( periodTypes.contains( BiMonthlyPeriodType.NAME ) );
             relatives.setLast4Quarters( periodTypes.contains( QuarterlyPeriodType.NAME ) );
             relatives.setLast2SixMonths( periodTypes.contains( SixMonthlyPeriodType.NAME ) );
-            relatives.setLastYear( periodTypes.contains( YearlyPeriodType.NAME ) );
+            relatives.setThisYear( periodTypes.contains( YearlyPeriodType.NAME ) );
         }
 
         return relatives;
