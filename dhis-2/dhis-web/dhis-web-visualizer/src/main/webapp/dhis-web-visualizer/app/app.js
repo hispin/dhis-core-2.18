@@ -931,10 +931,7 @@ Ext.onReady( function() {
             listeners: {
                 load: function(s) {
                     s.filterBy(function(r) {
-                        if (r.data.userId == DV.init.system.user.id) {
-                            return true;
-                        }
-                        if (!r.data.userId && DV.init.system.user.isAdmin) {
+                        if (!r.data.userId || r.data.userId == DV.init.system.user.id) {
                             return true;
                         }
                         return false;
