@@ -405,9 +405,10 @@ mapfish.widgets.geostat.Symbol = Ext.extend(Ext.Panel, {
             listeners: {
                 'select': {
                     scope: this,
-                    fn: function() {
+                    fn: function(c) {
                         this.requireUpdate = true;
                         this.formValidation.validateForm.call(this);
+                        this.organisationUnitSelection.setValues(null, null, null, c.getValue(), c.getRawValue());
                     }
                 }
             }
@@ -447,6 +448,7 @@ mapfish.widgets.geostat.Symbol = Ext.extend(Ext.Panel, {
                         tree.selectedNode = n;
                         this.requireUpdate = true;
                         this.formValidation.validateForm.call(this);
+                        this.organisationUnitSelection.setValues(n.attributes.id, n.attributes.text, n.attributes.level);
                     }
                 }
             }
@@ -804,6 +806,9 @@ mapfish.widgets.geostat.Symbol = Ext.extend(Ext.Panel, {
 
     classify: function(exception, lockPosition) {
         if (this.formValidation.validateForm.apply(this, [exception])) {
+            if (!this.layer.features.length) {
+                this.loadGeoJson();
+            }
             
             G.vars.lockPosition = lockPosition;
             
