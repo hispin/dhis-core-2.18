@@ -2829,6 +2829,7 @@ Ext.onReady( function() {
                 G.util.setOpacityByLayerType(G.conf.map_layer_type_thematic, G.conf.defaultLayerOpacity);
                 symbolLayer.setOpacity(1);
                 centroidLayer.setOpacity(1);
+                G.vars.map.getLayersByName('Google Streets')[0].setVisibility(false);
                 
                 var svg = document.getElementsByTagName('svg');
                 
