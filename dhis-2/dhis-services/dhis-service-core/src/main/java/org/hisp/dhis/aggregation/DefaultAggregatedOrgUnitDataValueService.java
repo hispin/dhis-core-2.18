@@ -1,14 +1,5 @@
 package org.hisp.dhis.aggregation;
 
-import java.util.Collection;
-
-import org.hisp.dhis.dataelement.DataElement;
-import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
-import org.hisp.dhis.indicator.Indicator;
-import org.hisp.dhis.organisationunit.OrganisationUnit;
-import org.hisp.dhis.organisationunit.OrganisationUnitGroup;
-import org.hisp.dhis.period.Period;
-
 /*
  * Copyright (c) 2004-2010, University of Oslo
  * All rights reserved.
@@ -35,6 +26,15 @@ import org.hisp.dhis.period.Period;
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
+
+import java.util.Collection;
+
+import org.hisp.dhis.dataelement.DataElement;
+import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
+import org.hisp.dhis.indicator.Indicator;
+import org.hisp.dhis.organisationunit.OrganisationUnit;
+import org.hisp.dhis.organisationunit.OrganisationUnitGroup;
+import org.hisp.dhis.period.Period;
 
 public class DefaultAggregatedOrgUnitDataValueService
     implements AggregatedOrgUnitDataValueService
@@ -100,6 +100,6 @@ public class DefaultAggregatedOrgUnitDataValueService
     
     public void deleteAggregatedIndicatorValues( Collection<Integer> periodIds )
     {
-        aggregatedDataValueStore.deleteAggregatedDataValues( periodIds );
+        aggregatedDataValueStore.deleteAggregatedIndicatorValues( periodIds );
     }
 }
