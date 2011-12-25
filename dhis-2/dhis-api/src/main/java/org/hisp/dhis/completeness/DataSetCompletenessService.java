@@ -91,6 +91,11 @@ public interface DataSetCompletenessService
         Collection<Integer> organisationUnitIds, int dataSetId );
 
     /**
+     * Delete all data set completeness registrations.
+     */
+    void deleteDataSetCompleteness();
+    
+    /**
      * Creates an index on the aggregateddatasetcompleteness table.
      */
     void createIndex();

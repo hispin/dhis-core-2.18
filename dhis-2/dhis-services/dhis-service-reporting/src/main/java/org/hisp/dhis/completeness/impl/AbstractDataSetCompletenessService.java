@@ -295,6 +295,11 @@ public abstract class AbstractDataSetCompletenessService
 
         return results;
     }
+    
+    public void deleteDataSetCompleteness()
+    {
+        completenessStore.deleteDataSetCompleteness();
+    }
 
     // -------------------------------------------------------------------------
     // Index

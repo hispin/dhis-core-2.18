@@ -30,8 +30,9 @@ package org.hisp.dhis.dataadmin.action.maintenance;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hisp.dhis.aggregation.AggregatedDataValueService;
+import org.hisp.dhis.aggregation.AggregatedOrgUnitDataValueService;
 import org.hisp.dhis.common.DeleteNotAllowedException;
-import org.hisp.dhis.completeness.DataSetCompletenessStore;
+import org.hisp.dhis.completeness.DataSetCompletenessService;
 import org.hisp.dhis.maintenance.MaintenanceService;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodService;
@@ -58,11 +59,11 @@ public class PerformMaintenanceAction
         this.maintenanceService = maintenanceService;
     }
     
-    private DataSetCompletenessStore completenessStore;
+    private DataSetCompletenessService completenessService;
 
-    public void setCompletenessStore( DataSetCompletenessStore completenessStore )
+    public void setCompletenessService( DataSetCompletenessService completenessService )
     {
-        this.completenessStore = completenessStore;
+        this.completenessService = completenessService;
     }
 
     private AggregatedDataValueService aggregatedDataValueService;
@@ -72,6 +73,13 @@ public class PerformMaintenanceAction
         this.aggregatedDataValueService = aggregatedDataValueService;
     }
     
+    private AggregatedOrgUnitDataValueService aggregatedOrgUnitDataValueService;
+    
+    public void setAggregatedOrgUnitDataValueService( AggregatedOrgUnitDataValueService aggregatedOrgUnitDataValueService )
+    {
+        this.aggregatedOrgUnitDataValueService = aggregatedOrgUnitDataValueService;
+    }
+
     private PeriodService periodService;
 
     public void setPeriodService( PeriodService periodService )
@@ -138,8 +146,11 @@ public class PerformMaintenanceAction
             aggregatedDataValueService.dropIndex( true, true );
             aggregatedDataValueService.createIndex( true, true );
             
-            completenessStore.dropIndex();
-            completenessStore.createIndex(); //TODO respect layering
+            aggregatedOrgUnitDataValueService.dropIndex( true, true );
+            aggregatedOrgUnitDataValueService.createIndex( true, true );
+            
+            completenessService.dropIndex();
+            completenessService.createIndex();
             
             log.info( "Rebuilt data mart indexes" );
         }
@@ -153,7 +164,7 @@ public class PerformMaintenanceAction
         
         if ( dataSetCompleteness )
         {
-            completenessStore.deleteDataSetCompleteness();
+            completenessService.deleteDataSetCompleteness();
             
             log.info( "Cleared data completeness" );
         }
