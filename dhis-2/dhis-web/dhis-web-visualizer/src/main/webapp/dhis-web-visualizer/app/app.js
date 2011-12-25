@@ -2709,24 +2709,41 @@ Ext.onReady( function() {
                                                                                             }
                                                                                         ],
                                                                                         bbar: [
+																							{
+																								xtype: 'label',
+																								style: 'padding-left:2px; line-height:22px; font-size:10px; color:#666; width:50%',
+																								listeners: {
+																									added: function() {
+																										DV.cmp.favorite.rename.label = this;
+																									}
+																								}
+																							},
+																							'->',
                                                                                             {
                                                                                                 text: 'Cancel',
                                                                                                 handler: function() {
                                                                                                     this.up('window').close();
                                                                                                 }
                                                                                             },
-                                                                                            '->',
                                                                                             {
                                                                                                 text: 'Rename',
                                                                                                 disabled: true,
                                                                                                 xable: function() {
                                                                                                     var value = this.up('window').cmp.name.getValue();
-                                                                                                    if (value && value != DV.cmp.favorite.name.getValue()) {
-                                                                                                        this.enable();
-                                                                                                    }
-                                                                                                    else {
-                                                                                                        this.disable();
-                                                                                                    }
+                                                                                                    if (value) {
+																										if (DV.store.favorite.findExact('name', value) == -1) {
+																											this.enable();
+																											DV.cmp.favorite.rename.label.setText('');
+																											return;
+																										}
+																										else {
+																											DV.cmp.favorite.rename.label.setText('* Name already in use');
+																										}
+																									}
+																									else {
+																										DV.cmp.favorite.rename.label.setText('* No name entered');
+																									}
+																									this.disable();
                                                                                                 },
                                                                                                 handler: function() {
                                                                                                     DV.util.crud.favorite.updateName(this.up('window').cmp.name.getValue());
@@ -2846,17 +2863,39 @@ Ext.onReady( function() {
                                                                     height: 24
                                                                 },
                                                                 items: [
+																	{
+																		xtype: 'label',
+																		style: 'padding-left:2px; line-height:22px; font-size:10px; color:#666; width:50%',
+																		listeners: {
+																			added: function() {
+																				DV.cmp.favorite.label = this;
+																			}
+																		}
+																	},																
                                                                     '->',
                                                                     {
                                                                         text: 'Save',
                                                                         disabled: true,
                                                                         xable: function() {
-                                                                            if (DV.state.isRendered && DV.cmp.favorite.name.getValue()) {
-                                                                                this.enable();
+                                                                            if (DV.state.isRendered) {
+																				if (DV.cmp.favorite.name.getValue()) {
+																					this.enable();
+																					DV.cmp.favorite.label.setText('');
+																					return;
+																				}
+																				else {
+																					DV.cmp.favorite.label.setText('');
+																				}
+																			}
+																			else {
+																				if (DV.cmp.favorite.name.getValue()) {
+																					DV.cmp.favorite.label.setText('* No active chart');
+																				}
+																				else {
+																					DV.cmp.favorite.label.setText('');
+																				}																				
                                                                             }
-                                                                            else {
-                                                                                this.disable();
-                                                                            }
+																			this.disable();
                                                                         },
                                                                         handler: function() {
                                                                             var value = DV.cmp.favorite.name.getValue();
