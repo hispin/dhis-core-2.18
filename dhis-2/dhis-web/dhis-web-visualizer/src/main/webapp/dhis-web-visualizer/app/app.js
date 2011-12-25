@@ -751,8 +751,9 @@ Ext.onReady( function() {
                     }
                     DV.util.mask.setMask(DV.cmp.favorite.window, 'Renaming...');
                     var r = DV.cmp.favorite.grid.getSelectionModel().getSelection()[0];
+                    var url = DV.cmp.favorite.system.getValue() ? DV.conf.finals.ajax.favorite_addorupdatesystem : DV.conf.finals.ajax.favorite_addorupdate;
                     Ext.Ajax.request({
-                        url: DV.conf.finals.ajax.path_visualizer + DV.conf.finals.ajax.favorite_addorupdate,
+                        url: DV.conf.finals.ajax.path_visualizer + url,
                         params: {uid: r.data.id, name: name},
                         success: function() {
                             DV.store.favorite.load({callback: function() {
@@ -2740,9 +2741,6 @@ Ext.onReady( function() {
 																											DV.cmp.favorite.rename.label.setText('* Name already in use');
 																										}
 																									}
-																									else {
-																										DV.cmp.favorite.rename.label.setText('* No name entered');
-																									}
 																									this.disable();
                                                                                                 },
                                                                                                 handler: function() {
@@ -2856,106 +2854,99 @@ Ext.onReady( function() {
                                                                     }
                                                                 }
                                                             ],
-                                                            bbar: {
-                                                                cls: 'dv-toolbar',
-                                                                height: 29,
-                                                                defaults: {
-                                                                    height: 24
-                                                                },
-                                                                items: [
-																	{
-																		xtype: 'label',
-																		style: 'padding-left:2px; line-height:22px; font-size:10px; color:#666; width:50%',
-																		listeners: {
-																			added: function() {
-																				DV.cmp.favorite.label = this;
-																			}
-																		}
-																	},																
-                                                                    '->',
-                                                                    {
-                                                                        text: 'Save',
-                                                                        disabled: true,
-                                                                        xable: function() {
-                                                                            if (DV.state.isRendered) {
-																				if (DV.cmp.favorite.name.getValue()) {
-																					this.enable();
-																					DV.cmp.favorite.label.setText('');
-																					return;
-																				}
-																				else {
-																					DV.cmp.favorite.label.setText('');
-																				}
-																			}
-																			else {
-																				if (DV.cmp.favorite.name.getValue()) {
-																					DV.cmp.favorite.label.setText('* No active chart');
-																				}
-																				else {
-																					DV.cmp.favorite.label.setText('');
-																				}																				
-                                                                            }
-																			this.disable();
-                                                                        },
-                                                                        handler: function() {
-                                                                            var value = DV.cmp.favorite.name.getValue();
-                                                                            if (DV.state.isRendered && value) {
-                                                                                if (DV.store.favorite.findExact('name', value) != -1) {
-                                                                                    var item = value.length > 40 ? (value.substr(0,40) + '...') : value;
-                                                                                    var w = Ext.create('Ext.window.Window', {
-                                                                                        title: 'Save favorite',
-                                                                                        width: DV.conf.layout.window_confirm_width,
-                                                                                        bodyStyle: 'padding:10px 5px; background-color:#fff; text-align:center',
-                                                                                        modal: true,
-                                                                                        items: [
-                                                                                            {
-                                                                                                html: 'Are you sure?',
-                                                                                                bodyStyle: 'border-style:none'
-                                                                                            },
-                                                                                            {
-                                                                                                html: '<br/>' + item,
-                                                                                                cls: 'dv-window-confirm-list'
-                                                                                            }
-                                                                                        ],
-                                                                                        bbar: [
-                                                                                            {
-                                                                                                text: 'Cancel',
-                                                                                                handler: function() {
-                                                                                                    DV.cmp.favorite.window.close();
-                                                                                                }
-                                                                                            },
-                                                                                            '->',
-                                                                                            {
-                                                                                                text: 'Overwrite',
-                                                                                                handler: function() {
-                                                                                                    this.up('window').close();
-                                                                                                    DV.util.crud.favorite.update(function() {
-                                                                                                        DV.cmp.favorite.window.resetForm();
-                                                                                                    });
-                                                                                                    
-                                                                                                }
-                                                                                            }
-                                                                                        ]
-                                                                                    });
-                                                                                    w.setPosition((screen.width/2)-(DV.conf.layout.window_confirm_width/2), DV.conf.layout.window_favorite_ypos + 100, true);
-                                                                                    w.show();
-                                                                                }
-                                                                                else {
-                                                                                    DV.util.crud.favorite.create(function() {
-                                                                                        DV.cmp.favorite.window.resetForm();
-                                                                                        DV.cmp.favorite.window.down('grid').setHeightInWindow(DV.store.favorite);
-                                                                                    });
-                                                                                }                                                                                    
-                                                                            }
-                                                                        },
-                                                                        listeners: {
-                                                                            added: function() {
-                                                                                DV.cmp.favorite.save = this;
-                                                                            }
+                                                            bbar: [
+                                                                {
+                                                                    xtype: 'label',
+                                                                    style: 'padding-left:2px; line-height:22px; font-size:10px; color:#666; width:50%',
+                                                                    listeners: {
+                                                                        added: function() {
+                                                                            DV.cmp.favorite.label = this;
                                                                         }
                                                                     }
-                                                                ]
-                                                            },
+                                                                },																
+                                                                '->',
+                                                                {
+                                                                    text: 'Save',
+                                                                    disabled: true,
+                                                                    xable: function() {
+                                                                        if (DV.state.isRendered) {
+                                                                            if (DV.cmp.favorite.name.getValue()) {
+                                                                                this.enable();
+                                                                                DV.cmp.favorite.label.setText('');
+                                                                                return;
+                                                                            }
+                                                                            else {
+                                                                                DV.cmp.favorite.label.setText('');
+                                                                            }
+                                                                        }
+                                                                        else {
+                                                                            if (DV.cmp.favorite.name.getValue()) {
+                                                                                DV.cmp.favorite.label.setText('* The example chart cannot be saved');
+                                                                            }
+                                                                            else {
+                                                                                DV.cmp.favorite.label.setText('');
+                                                                            }																				
+                                                                        }
+                                                                        this.disable();
+                                                                    },
+                                                                    handler: function() {
+                                                                        var value = DV.cmp.favorite.name.getValue();
+                                                                        if (DV.state.isRendered && value) {
+                                                                            if (DV.store.favorite.findExact('name', value) != -1) {
+                                                                                var item = value.length > 40 ? (value.substr(0,40) + '...') : value;
+                                                                                var w = Ext.create('Ext.window.Window', {
+                                                                                    title: 'Save favorite',
+                                                                                    width: DV.conf.layout.window_confirm_width,
+                                                                                    bodyStyle: 'padding:10px 5px; background-color:#fff; text-align:center',
+                                                                                    modal: true,
+                                                                                    items: [
+                                                                                        {
+                                                                                            html: 'Are you sure?',
+                                                                                            bodyStyle: 'border-style:none'
+                                                                                        },
+                                                                                        {
+                                                                                            html: '<br/>' + item,
+                                                                                            cls: 'dv-window-confirm-list'
+                                                                                        }
+                                                                                    ],
+                                                                                    bbar: [
+                                                                                        {
+                                                                                            text: 'Cancel',
+                                                                                            handler: function() {
+                                                                                                DV.cmp.favorite.window.close();
+                                                                                            }
+                                                                                        },
+                                                                                        '->',
+                                                                                        {
+                                                                                            text: 'Overwrite',
+                                                                                            handler: function() {
+                                                                                                this.up('window').close();
+                                                                                                DV.util.crud.favorite.update(function() {
+                                                                                                    DV.cmp.favorite.window.resetForm();
+                                                                                                });
+                                                                                                
+                                                                                            }
+                                                                                        }
+                                                                                    ]
+                                                                                });
+                                                                                w.setPosition((screen.width/2)-(DV.conf.layout.window_confirm_width/2), DV.conf.layout.window_favorite_ypos + 100, true);
+                                                                                w.show();
+                                                                            }
+                                                                            else {
+                                                                                DV.util.crud.favorite.create(function() {
+                                                                                    DV.cmp.favorite.window.resetForm();
+                                                                                    DV.cmp.favorite.window.down('grid').setHeightInWindow(DV.store.favorite);
+                                                                                });
+                                                                            }                                                                                    
+                                                                        }
+                                                                    },
+                                                                    listeners: {
+                                                                        added: function() {
+                                                                            DV.cmp.favorite.save = this;
+                                                                        }
+                                                                    }
+                                                                }
+                                                            ],
                                                             listeners: {
                                                                 show: function() {                                               
                                                                     DV.cmp.favorite.save.xable();
