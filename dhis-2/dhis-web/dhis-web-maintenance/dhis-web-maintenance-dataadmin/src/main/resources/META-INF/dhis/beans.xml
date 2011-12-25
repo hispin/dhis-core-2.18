@@ -41,8 +41,9 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
   <bean id="org.hisp.dhis.dataadmin.action.maintenance.PerformMaintenanceAction" class="org.hisp.dhis.dataadmin.action.maintenance.PerformMaintenanceAction"
     scope="prototype">
     <property name="maintenanceService" ref="org.hisp.dhis.maintenance.MaintenanceService" />
-    <property name="completenessStore" ref="org.hisp.dhis.completeness.DataSetCompletenessStore" />
+    <property name="completenessService" ref="compulsoryDataCompletenessService" />
     <property name="aggregatedDataValueService" ref="org.hisp.dhis.aggregation.AggregatedDataValueService" />
+	<property name="aggregatedOrgUnitDataValueService" ref="org.hisp.dhis.aggregation.AggregatedOrgUnitDataValueService" />
     <property name="periodService" ref="org.hisp.dhis.period.PeriodService" />
   </bean>
 
