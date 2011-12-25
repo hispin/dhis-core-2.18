@@ -57,6 +57,7 @@ import org.hisp.dhis.options.SystemSettingManager;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroup;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroupService;
+import org.hisp.dhis.organisationunit.OrganisationUnitHierarchy;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodService;
@@ -327,15 +328,17 @@ public class DefaultDataMartEngine
         state.setMessage( "exporting_data_for_data_elements" );
 
         List<List<OrganisationUnit>> organisationUnitPages = new PaginatedList<OrganisationUnit>( organisationUnits ).setNumberOfPages( cpuCores ).getPages();
-        
+
         if ( allOperands.size() > 0 )
         {
+            final OrganisationUnitHierarchy hierarchy = organisationUnitService.getOrganisationUnitHierarchy().prepareChildren( organisationUnits );
+
             List<Future<?>> futures = new ArrayList<Future<?>>();
             
             for ( List<OrganisationUnit> organisationUnitPage : organisationUnitPages )
             {
                 futures.add( dataElementDataMart.exportDataValues( allOperands, periods, organisationUnitPage, 
-                    null, new DataElementOperandList( indicatorOperands ), AggregatedDataValueBatchHandler.class, key ) );
+                    null, new DataElementOperandList( indicatorOperands ), hierarchy, AggregatedDataValueBatchHandler.class, key ) );
             }
 
             ConcurrentUtils.waitForCompletion( futures );
@@ -397,7 +400,9 @@ public class DefaultDataMartEngine
             
             clock.logTime( "Created indexes" );
         }
-
+        
+        clock.logTime( "Aggregated data export done" );
+        
         final boolean isGroups = organisationUnitGroups != null && organisationUnitGroups.size() > 0;
         
         final int groupLevel = (Integer) systemSettingManager.getSystemSetting( KEY_ORGUNITGROUPSET_AGG_LEVEL, DEFAULT_ORGUNITGROUPSET_AGG_LEVEL );
@@ -449,12 +454,14 @@ public class DefaultDataMartEngine
             
             if ( allOperands.size() > 0 )
             {
+                final OrganisationUnitHierarchy hierarchy = organisationUnitService.getOrganisationUnitHierarchy().prepareChildren( organisationUnits, organisationUnitGroups );
+                
                 List<Future<?>> futures = new ArrayList<Future<?>>();
                 
                 for ( List<OrganisationUnit> organisationUnitPage : organisationUnitPages )
                 {
                     futures.add( dataElementDataMart.exportDataValues( allOperands, periods, organisationUnitPage, 
-                        organisationUnitGroups, new DataElementOperandList( indicatorOperands ), AggregatedOrgUnitDataValueBatchHandler.class, key ) );
+                        organisationUnitGroups, new DataElementOperandList( indicatorOperands ), hierarchy, AggregatedOrgUnitDataValueBatchHandler.class, key ) );
                 }
 
                 ConcurrentUtils.waitForCompletion( futures );
@@ -516,6 +523,9 @@ public class DefaultDataMartEngine
                 
                 clock.logTime( "Created org unit indexes" );
             }
+
+            clock.logTime( "Aggregated organisation unit data export done" );
+            
         }
 
         // ---------------------------------------------------------------------

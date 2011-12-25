@@ -86,7 +86,7 @@ public class JdbcAggregatedDataValueStore
         this.statementManager = statementManager;
     }
 
-    protected JdbcTemplate jdbcTemplate;
+    private JdbcTemplate jdbcTemplate;
     
     public void setJdbcTemplate( JdbcTemplate jdbcTemplate )
     {
@@ -357,7 +357,7 @@ public class JdbcAggregatedDataValueStore
             "AND periodid IN ( " + getCommaDelimitedString( periodIds ) + " ) " +
             "AND organisationunitid IN ( " + getCommaDelimitedString( organisationUnitIds ) + " )";
         
-        jdbcTemplate.execute( sql );        
+        statementManager.getHolder().executeUpdate( sql );
     }
 
     public void deleteAggregatedDataValues( Collection<Integer> periodIds )
@@ -366,12 +366,14 @@ public class JdbcAggregatedDataValueStore
             "DELETE FROM aggregateddatavalue " +
             "WHERE periodid IN ( " + getCommaDelimitedString( periodIds ) + " )";
         
-        jdbcTemplate.execute( sql );        
+        statementManager.getHolder().executeUpdate( sql );
     }
 
     public void deleteAggregatedDataValues()
     {
-        jdbcTemplate.execute( "DELETE FROM aggregateddatavalue" ); 
+        final String sql = "DELETE FROM aggregateddatavalue";
+        
+        statementManager.getHolder().executeUpdate( sql );
     }
     
     public void createIndex( boolean dataElement, boolean indicator )
@@ -558,7 +560,7 @@ public class JdbcAggregatedDataValueStore
             "AND periodid IN ( " + getCommaDelimitedString( periodIds ) + " ) " +
             "AND organisationunitid IN ( " + getCommaDelimitedString( organisationUnitIds ) + " )";
         
-        jdbcTemplate.execute( sql );        
+        statementManager.getHolder().executeUpdate( sql );
     }
 
     public void deleteAggregatedIndicatorValues( Collection<Integer> periodIds )
@@ -567,12 +569,14 @@ public class JdbcAggregatedDataValueStore
             "DELETE FROM aggregatedindicatorvalue " +
             "WHERE periodid IN ( " + getCommaDelimitedString( periodIds ) + " )";
 
-        jdbcTemplate.execute( sql );      
+        statementManager.getHolder().executeUpdate( sql );
     }
     
     public void deleteAggregatedIndicatorValues()
     {
-        jdbcTemplate.execute( "DELETE FROM aggregatedindicatorvalue" );
+        final String sql = "DELETE FROM aggregatedindicatorvalue";
+        
+        statementManager.getHolder().executeUpdate( sql );
     }
 
     @Override

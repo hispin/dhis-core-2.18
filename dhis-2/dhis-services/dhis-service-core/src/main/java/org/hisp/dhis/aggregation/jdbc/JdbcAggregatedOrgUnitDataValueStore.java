@@ -35,7 +35,6 @@ import org.amplecode.quick.StatementManager;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hisp.dhis.aggregation.AggregatedOrgUnitDataValueStore;
-import org.springframework.jdbc.core.JdbcTemplate;
 
 public class JdbcAggregatedOrgUnitDataValueStore
     implements AggregatedOrgUnitDataValueStore
@@ -51,13 +50,6 @@ public class JdbcAggregatedOrgUnitDataValueStore
     public void setStatementManager( StatementManager statementManager )
     {
         this.statementManager = statementManager;
-    }
-
-    protected JdbcTemplate jdbcTemplate;
-    
-    public void setJdbcTemplate( JdbcTemplate jdbcTemplate )
-    {
-        this.jdbcTemplate = jdbcTemplate;
     }
 
     // -------------------------------------------------------------------------
@@ -86,7 +78,7 @@ public class JdbcAggregatedOrgUnitDataValueStore
             "AND periodid IN ( " + getCommaDelimitedString( periodIds ) + " ) " +
             "AND organisationunitid IN ( " + getCommaDelimitedString( organisationUnitIds ) + " )";
         
-        jdbcTemplate.execute( sql );        
+        statementManager.getHolder().executeUpdate( sql );
     }
 
     public void deleteAggregatedDataValues( Collection<Integer> periodIds )
@@ -95,7 +87,7 @@ public class JdbcAggregatedOrgUnitDataValueStore
             "DELETE FROM aggregatedorgunitdatavalue " +
             "WHERE periodid IN ( " + getCommaDelimitedString( periodIds ) + " )";
         
-        jdbcTemplate.execute( sql );        
+        statementManager.getHolder().executeUpdate( sql );
     }
 
     public void createIndex( boolean dataElement, boolean indicator )
@@ -105,7 +97,7 @@ public class JdbcAggregatedOrgUnitDataValueStore
             try
             {
                 final String sql = "CREATE INDEX aggregatedorgunitdatavalue_index ON aggregatedorgunitdatavalue (dataelementid, categoryoptioncomboid, periodid, organisationunitid, organisationunitgroupid)";        
-                jdbcTemplate.execute( sql );
+                statementManager.getHolder().executeUpdate( sql, true );
             }
             catch ( Exception ex )
             {
@@ -118,7 +110,7 @@ public class JdbcAggregatedOrgUnitDataValueStore
             try
             {
                 final String sql = "CREATE INDEX aggregatedorgunitindicatorvalue_index ON aggregatedorgunitindicatorvalue (indicatorid, periodid, organisationunitid, organisationunitgroupid)";        
-                jdbcTemplate.execute( sql );
+                statementManager.getHolder().executeUpdate( sql, true );
             }
             catch ( Exception ex )
             {
@@ -134,7 +126,7 @@ public class JdbcAggregatedOrgUnitDataValueStore
             try
             {
                 final String sql = "DROP INDEX aggregatedorgunitdatavalue_index";
-                jdbcTemplate.execute( sql );
+                statementManager.getHolder().executeUpdate( sql, true );
             }
             catch ( Exception ex )
             {
@@ -147,7 +139,7 @@ public class JdbcAggregatedOrgUnitDataValueStore
             try
             {
                 final String sql = "DROP INDEX aggregatedorgunitindicatorvalue_index";
-                jdbcTemplate.execute( sql );
+                statementManager.getHolder().executeUpdate( sql, true );
             }
             catch ( Exception ex )
             {
@@ -182,7 +174,7 @@ public class JdbcAggregatedOrgUnitDataValueStore
             "AND periodid IN ( " + getCommaDelimitedString( periodIds ) + " ) " +
             "AND organisationunitid IN ( " + getCommaDelimitedString( organisationUnitIds ) + " )";
         
-        jdbcTemplate.execute( sql );        
+        statementManager.getHolder().executeUpdate( sql );
     }
 
     public void deleteAggregatedIndicatorValues( Collection<Integer> periodIds )
@@ -191,6 +183,6 @@ public class JdbcAggregatedOrgUnitDataValueStore
             "DELETE FROM aggregatedorgunitindicatorvalue " +
             "WHERE periodid IN ( " + getCommaDelimitedString( periodIds ) + " )";
 
-        jdbcTemplate.execute( sql );      
+        statementManager.getHolder().executeUpdate( sql );
     }    
 }

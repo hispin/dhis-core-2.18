@@ -95,7 +95,6 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
   <!-- DataElementDataMart -->
 
   <bean id="org.hisp.dhis.datamart.dataelement.DataElementDataMart" class="org.hisp.dhis.datamart.dataelement.DefaultDataElementDataMart">
-    <property name="organisationUnitService" ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
     <property name="batchHandlerFactory" ref="batchHandlerFactory" />
     <property name="inMemoryBatchHandlerFactory" ref="inMemoryBatchHandlerFactory" />
     <property name="aggregationCache" ref="org.hisp.dhis.datamart.aggregation.cache.AggregationCache" />

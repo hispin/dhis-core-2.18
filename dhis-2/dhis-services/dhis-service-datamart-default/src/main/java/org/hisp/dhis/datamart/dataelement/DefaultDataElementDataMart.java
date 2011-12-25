@@ -52,7 +52,6 @@ import org.hisp.dhis.jdbc.batchhandler.GenericBatchHandler;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroup;
 import org.hisp.dhis.organisationunit.OrganisationUnitHierarchy;
-import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.period.Period;
 import org.springframework.scheduling.annotation.Async;
 
@@ -70,13 +69,6 @@ public class DefaultDataElementDataMart
     // Dependencies
     // -------------------------------------------------------------------------
 
-    private OrganisationUnitService organisationUnitService;
-
-    public void setOrganisationUnitService( OrganisationUnitService organisationUnitService )
-    {
-        this.organisationUnitService = organisationUnitService;
-    }
-    
     private BatchHandlerFactory batchHandlerFactory;
 
     public void setBatchHandlerFactory( BatchHandlerFactory batchHandlerFactory )
@@ -147,7 +139,7 @@ public class DefaultDataElementDataMart
     @Async
     public Future<?> exportDataValues( Collection<DataElementOperand> operands, Collection<Period> periods, 
         Collection<OrganisationUnit> organisationUnits, Collection<OrganisationUnitGroup> organisationUnitGroups, 
-        DataElementOperandList operandList, Class<? extends BatchHandler<AggregatedDataValue>> clazz, String key )
+        DataElementOperandList operandList, OrganisationUnitHierarchy hierarchy, Class<? extends BatchHandler<AggregatedDataValue>> clazz, String key )
     {
         statementManager.initialise(); // Running in separate thread
         
@@ -157,8 +149,6 @@ public class DefaultDataElementDataMart
         
         final BatchHandler<Object> cacheHandler = inMemoryBatchHandlerFactory.createBatchHandler( GenericBatchHandler.class ).setTableName( tableName + key ).init();
         
-        final OrganisationUnitHierarchy hierarchy = organisationUnitService.getOrganisationUnitHierarchy().prepareChildren( organisationUnits, organisationUnitGroups );
-
         final Map<DataElementOperand, Double> valueMap = new HashMap<DataElementOperand, Double>();
         
         final AggregatedDataValue aggregatedValue = new AggregatedDataValue();
