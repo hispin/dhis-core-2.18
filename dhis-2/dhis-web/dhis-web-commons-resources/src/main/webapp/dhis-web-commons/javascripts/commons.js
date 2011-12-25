@@ -965,8 +965,8 @@ function datePickerInRange ( startdate, enddate, setCurrentStartDate, setCurrent
 		}
 	});
 
-	jQuery( "#" + startdate ).attr("disabled", true );
-	jQuery( "#" + enddate ).attr("disabled", true );
+	jQuery( "#" + startdate ).attr("readonly", true );
+	jQuery( "#" + enddate ).attr("readonly", true );
 
     $("#ui-datepicker-div").hide();
 }
