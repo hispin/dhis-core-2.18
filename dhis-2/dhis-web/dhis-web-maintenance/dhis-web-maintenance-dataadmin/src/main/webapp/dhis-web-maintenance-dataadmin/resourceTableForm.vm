@@ -1,11 +1,5 @@
 <script type="text/javascript">
-    var i18n_generating_resource_tables = '$encoder.jsEscape( $i18n.getString( "generating_resource_tables" ), "'" )';
-    var i18n_resource_tables_generated = '$encoder.jsEscape( $i18n.getString( "resource_tables_generated" ), "'" )';
-    var i18n_regenerating_resource_tables_and_views = '$encoder.jsEscape( $i18n.getString( "regenerating_resource_tables_and_views" ), "'" )';
-    var i18n_regenerating_failed = '$encoder.jsEscape( $i18n.getString( "regenerating_failed" ), "'" )';
-    var i18n_select_options = '$encoder.jsEscape( $i18n.getString( "select_options" ), "'" )';
-    var i18n_select_all = '$encoder.jsEscape( $i18n.getString( "select_all" ), "'" )';
-    var i18n_unselect_all = '$encoder.jsEscape( $i18n.getString( "unselect_all" ), "'" )';
+    var i18n_execute_tasks_confirmation = '$encoder.jsEscape( $i18n.getString( "execute_tasks_confirmation" ), "'" )';
 </script>
 
 <h3>$i18n.getString( "resource_table" ) #openHelp( "resourceTables" )</h3>

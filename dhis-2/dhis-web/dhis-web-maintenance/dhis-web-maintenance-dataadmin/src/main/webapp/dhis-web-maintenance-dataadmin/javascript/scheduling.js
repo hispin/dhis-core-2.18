@@ -16,3 +16,13 @@ function submitSchedulingForm()
 	$( '.scheduling' ).removeAttr( 'disabled' );
 	$( '#schedulingForm' ).submit();
 }
+
+function executeTasks()
+{
+	var ok = confirm( i18n_execute_tasks_confirmation );
+	
+	if ( ok )
+	{
+		window.location.href = 'scheduleTasks.action?execute=true';
+	}
+}
