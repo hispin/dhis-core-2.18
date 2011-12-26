@@ -43,9 +43,10 @@ public class CreateMobileAppAction implements Action {
     private String[] splashImg;
     private String[] availableDatasets;
     private String mobileAppFilename;
-
+    
     public String getMobileAppFilename() {
         String webappPath = ServletActionContext.getServletContext().getRealPath("/");
+       // String webappPath = ActionContext.getContext().getRealPath("/");
         String appPath = webappPath + "/dhis-web-mobile/javame_src/target";
         File appFile = new File(appPath, "dhis-javame-1.0.0-me.jar");
         if (appFile.exists()) {

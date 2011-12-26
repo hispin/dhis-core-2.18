@@ -884,7 +884,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
         </property>
         <property name="sessionFactory" ref="sessionFactory"/>
         <property name="jdbcTemplate" ref="jdbcTemplate"/>
-<!--    <property name="sectionService">
+<!--	<property name="sectionService">
             <ref bean="org.hisp.dhis.dataset.SectionService"/>
         </property>-->
     </bean>
