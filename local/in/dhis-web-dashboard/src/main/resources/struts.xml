@@ -580,10 +580,8 @@
 		
 		<action name="groupWiseDataStatusResult"
 			class="org.hisp.dhis.dataanalyser.ds.action.GenerateGroupWiseDataStatusResultAction">
-			<result name="success" type="velocity">
-				/dhis-web-dashboard/groupWiseDataStatusResult.vm</result>
-			<param name="javascripts">
-				javascript/ds.js,javascript/hashtable.js,javascript/date.js</param>
+			<result name="success" type="velocity">/dhis-web-dashboard/groupWiseDataStatusResult.vm</result>
+			<param name="javascripts">javascript/ds.js,javascript/hashtable.js,javascript/date.js</param>
 			<param name="stylesheets">css/StylesForTags.css</param>
 		</action>
 		

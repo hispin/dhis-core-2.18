@@ -3,10 +3,10 @@ package org.hisp.dhis.ll.action.lldataentry;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 
-import com.opensymphony.xwork2.ActionSupport;
+import com.opensymphony.xwork2.Action;
 
 public class GetOrgUnitsAction
-    extends ActionSupport
+    implements Action
 {
     // -------------------------------------------------------------------------
     // Dependencies
@@ -57,7 +57,7 @@ public class GetOrgUnitsAction
             orgUnit = organisationUnitService.getOrganisationUnit( orgUnitId );
         }
 
-        orgUnitLevel = organisationUnitService.getLevelOfOrganisationUnit( orgUnit );
+        orgUnitLevel = organisationUnitService.getLevelOfOrganisationUnit( orgUnit.getId() );
 
         return SUCCESS;
     }

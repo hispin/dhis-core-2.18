@@ -8,7 +8,6 @@ import java.util.Date;
 import org.hisp.dhis.config.ConfigurationService;
 import org.hisp.dhis.config.Configuration_IN;
 import org.hisp.dhis.system.database.DatabaseInfoProvider;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Required;
 
 import com.opensymphony.xwork2.Action;

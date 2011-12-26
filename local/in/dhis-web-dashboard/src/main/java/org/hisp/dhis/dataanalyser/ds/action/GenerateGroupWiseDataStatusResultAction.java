@@ -115,14 +115,14 @@ public class GenerateGroupWiseDataStatusResultAction
     {
         this.displayPropertyHandler = displayPropertyHandler;
     }
-/*    
+/*   
     private SectionService sectionService;
     
     public void setSectionService( SectionService sectionService )
     {
         this.sectionService = sectionService;
     }
-*/    
+ */  
     // ---------------------------------------------------------------
     // Output Parameters
     // ---------------------------------------------------------------
@@ -534,12 +534,23 @@ public class GenerateGroupWiseDataStatusResultAction
         */
         // for dataSet Sections
         
+ 
+        
+        
         //Collection<Section> sections = selDataSet.getSections();
         sections = new ArrayList<Section>();
+        
         //sections = new ArrayList<Section>( sectionService.getAllSections() );
-        sections = new ArrayList<Section>( selDataSet.getSections() );
+        
+        DataSet dataSet = dataSetService.getDataSet( selDataSet.getId() );
+
+        sections = new ArrayList<Section>( dataSet.getSections() );
+
         Collections.sort( sections, new SectionOrderComparator() );
         
+       // sections = new ArrayList<Section>( selDataSet.getSections() );
+        //Collections.sort( sections, new SectionOrderComparator() );
+        System.out.println( "---- Size of dataSet Section is --" + sections.size() );
         for ( Section section : sections )
         {
             for ( DataElement de : section.getDataElements() )

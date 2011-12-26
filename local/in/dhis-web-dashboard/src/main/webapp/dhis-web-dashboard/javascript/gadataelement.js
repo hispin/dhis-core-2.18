@@ -594,5 +594,4 @@ function formValidationsIndicator()
   	
   	return true;
 } 
-
 // formValidations Function Indicators End
