@@ -1,6 +1,6 @@
 package org.hisp.dhis.hr.action.indicator;
 /*
- * Copyright (c) 2004-2010, University of Oslo, University Of Dar-es-salaam
+ * Copyright (c) 2004-2012, University of Oslo, University Of Dar-es-salaam
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without

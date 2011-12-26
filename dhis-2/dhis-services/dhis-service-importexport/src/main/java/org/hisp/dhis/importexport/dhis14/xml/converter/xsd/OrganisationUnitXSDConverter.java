@@ -1,6 +1,6 @@
 package org.hisp.dhis.importexport.dhis14.xml.converter.xsd;
 /*
- * Copyright (c) 2004-2010, University of Oslo
+ * Copyright (c) 2004-2012, University of Oslo
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
