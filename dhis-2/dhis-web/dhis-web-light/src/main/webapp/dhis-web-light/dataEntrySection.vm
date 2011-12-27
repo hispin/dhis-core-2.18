@@ -9,17 +9,13 @@
 
 <h2>$encoder.htmlEncode( $dataSetName )</h2>
 
-#set( $validationRuleViolationsSize = $validationRuleViolations.size() )
 #set( $validationViolationsSize = $validationViolations.size() )
 #set( $typeViolationsSize = $typeViolations.size() )
 
-#if( $validationRuleViolationsSize > 0 || $validationViolationsSize > 0 || $typeViolationsSize > 0 )
+#if( $validationViolationsSize > 0 || $typeViolationsSize > 0 )
 <div class="header-box" align="center">
 	<h3 style="text-align: left; background-color: #990000; color: white;">$i18n.getString("warnings_and_errors")</h3>
 	<p style="text-align: left;">
-		#if( $validationRuleViolationsSize > 0 )
-			$validationRuleViolationsSize $i18n.getString("validation_rule_violation_warnings"). <br />
-		#end
 		#if( $validationViolationsSize > 0 )
 			$validationViolationsSize $i18n.getString("minmax_violation_warnings"). <br />
 		#end
@@ -30,22 +26,12 @@
 </div>
 #end
 
-#if( $validationRuleViolationsSize > 0 )
-<div class="header-box" align="center">
-	<h3 style="text-align: left; background-color: #990000; color: white;">$i18n.getString("validation_rule_violations")</h3>
-	<p style="text-align: left;">
-	#foreach( $validationRuleViolation in $validationRuleViolations )
-		$validationRuleViolation <br />
-	#end
-	</p>
-</div>
-#end
-
 <form action="saveSectionForm.action" method="POST">
 
 <input type="hidden" id="organisationUnitId" name="organisationUnitId" value="$organisationUnitId" />
 <input type="hidden" id="dataSetId" name="dataSetId" value="$dataSetId" />
 <input type="hidden" id="periodId" name="periodId" value="$periodId" />
+<input type="hidden" id="sectionId" name="sectionId" value="$sectionId" />
 <input type="hidden" id="validated" name="validated" value="#if($validated)true#{else}false#end" />
 
 #macro( createSection $sectionName $dataElements )

@@ -42,7 +42,7 @@
     <action name="saveSectionForm" class="org.hisp.dhis.light.dataentry.action.SaveSectionFormAction">
       <result name="success" type="redirect">/mobile/dataEntry.action?organisationUnitId=${organisationUnitId}&amp;dataSetId=${dataSetId}&amp;periodId=${periodId}</result>
       <result name="error" type="velocity">/dhis-web-light/main.vm</result>
-      <param name="page">/dhis-web-light/dataEntry.vm</param>
+      <param name="page">/dhis-web-light/dataEntrySection.vm</param>
       <param name="requiredAuthorities">F_DATAVALUE_ADD,F_DATAVALUE_UPDATE,F_DATAVALUE_DELETE</param>
     </action>
 
