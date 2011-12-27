@@ -1,16 +1,24 @@
 
-<h2>$encoder.htmlEncode( "Sections" )</h2>
+#if( $dataSet.alternativeName )
+    #set( $dataSetName = $dataSet.alternativeName )
+#else
+    #set( $dataSetName = $dataSet.name )
+#end
+
+<h2>$encoder.htmlEncode( $dataSetName )</h2>
 
 <p>
-<ul>
-#if( $dataSet.sections.size() > 0 )
-    #foreach( $section in $dataSet.sections )
-        <li><a href="entry">$i18n.getString( $section.name )</a></li>
+    <ul>
+    #if( $dataSet.sections.size() > 0 )
+        #foreach( $section in $dataSet.sections )
+            <li>
+                <a href="dataEntrySection.action?organisationUnitId=$organisationUnitId&dataSetId=$dataSetId&periodId=$periodId&sectionId=$section.id">$i18n.getString( $section.name )</a>
+            </li>
+        #end
+    #else
+        <a href="dataEntrySection.action?organisationUnitId=$organisationUnitId&dataSetId=$dataSetId&periodId=$periodId">$i18n.getString( "Default" )</a>
     #end
-#else
-    <li><a href="entry">$i18n.getString( "Default" )</a></li>
-#end
-</ul>
+    </ul>
 </p>
 
 <form method="GET" action="dataEntry.action">
