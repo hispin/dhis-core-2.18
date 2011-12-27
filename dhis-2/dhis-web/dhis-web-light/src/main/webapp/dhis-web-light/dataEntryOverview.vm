@@ -1,0 +1,41 @@
+
+<h2>$encoder.htmlEncode( "Sections" )</h2>
+
+<p>
+<ul>
+#if( $dataSet.sections.size() > 0 )
+    #foreach( $section in $dataSet.sections )
+        <li><a href="entry">$i18n.getString( $section.name )</a></li>
+    #end
+#else
+    <li><a href="entry">$i18n.getString( "Default" )</a></li>
+#end
+</ul>
+</p>
+
+<form method="GET" action="dataEntry.action">
+
+<input type="hidden" id="organisationUnitId" name="organisationUnitId" value="$organisationUnitId" />
+<input type="hidden" id="dataSetId" name="dataSetId" value="$dataSetId" />
+<input type="hidden" id="periodId" name="periodId" value="$periodId" />
+
+<div class="header-box" align="center">
+    <p>
+        #if($complete)
+            <input type="hidden" name="markComplete" value="false" />
+            <input type="submit" style="width: 100%;" value="$i18n.getString("mark_as_not_complete")" />
+        #else
+            <input type="hidden" name="markComplete" value="true" />
+            <input type="submit" style="width: 100%;" value="$i18n.getString("mark_as_complete")" />
+        #end
+    </p>
+</div>
+</form>
+
+<div id="footer">
+    <h2>$i18n.getString( "navigate_to" )</h2>
+    <ul>
+        <li><a href="selectPeriod.action?organisationUnitId=$organisationUnitId&dataSetId=$dataSetId&periodId=$periodId">$i18n.getString("available_periods")</a></li>
+        <li><a href="index.action">$i18n.getString("home")</a></li>
+    </ul>
+</div>
