@@ -39,7 +39,9 @@ import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodService;
 import org.hisp.dhis.user.CurrentUserService;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 /**
  * @author mortenoh
@@ -169,6 +171,13 @@ public class GetDataSetOverviewAction
         this.markComplete = markComplete;
     }
 
+    private List<String> validationRuleViolations = new ArrayList<String>();
+
+    public List<String> getValidationRuleViolations()
+    {
+        return validationRuleViolations;
+    }
+
     // -------------------------------------------------------------------------
     // Action Implementation
     // -------------------------------------------------------------------------
@@ -209,6 +218,8 @@ public class GetDataSetOverviewAction
                 complete = false;
             }
         }
+
+        validationRuleViolations = formUtils.getValidationRuleViolations( organisationUnit, dataSet, period );
 
         return SUCCESS;
     }

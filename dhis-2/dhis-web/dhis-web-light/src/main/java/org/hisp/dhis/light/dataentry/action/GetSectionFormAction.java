@@ -28,6 +28,7 @@
 package org.hisp.dhis.light.dataentry.action;
 
 import com.opensymphony.xwork2.Action;
+import org.hisp.dhis.common.comparator.IdentifiableObjectNameComparator;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementOperand;
 import org.hisp.dhis.dataset.DataSet;
@@ -40,10 +41,7 @@ import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodService;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * @author mortenoh
@@ -133,6 +131,11 @@ public class GetSectionFormAction
     public void setSectionId( Integer sectionId )
     {
         this.sectionId = sectionId;
+    }
+
+    public Integer getSectionId()
+    {
+        return sectionId;
     }
 
     private DataSet dataSet;
@@ -233,6 +236,7 @@ public class GetSectionFormAction
         {
             name = "Default";
             dataElements = new ArrayList<DataElement>( dataSet.getDataElements() );
+            Collections.sort( dataElements, new IdentifiableObjectNameComparator() );
         }
 
         return SUCCESS;

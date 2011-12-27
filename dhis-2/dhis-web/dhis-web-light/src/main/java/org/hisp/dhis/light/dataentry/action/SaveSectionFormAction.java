@@ -27,23 +27,15 @@
 
 package org.hisp.dhis.light.dataentry.action;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import javax.servlet.http.HttpServletRequest;
-
+import com.opensymphony.xwork2.Action;
+import com.opensymphony.xwork2.ActionContext;
 import org.apache.struts2.ServletActionContext;
+import org.hisp.dhis.common.comparator.IdentifiableObjectNameComparator;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
 import org.hisp.dhis.dataelement.DataElementCategoryService;
 import org.hisp.dhis.dataelement.DataElementService;
-import org.hisp.dhis.dataset.CompleteDataSetRegistration;
-import org.hisp.dhis.dataset.CompleteDataSetRegistrationService;
-import org.hisp.dhis.dataset.DataSet;
-import org.hisp.dhis.dataset.DataSetService;
+import org.hisp.dhis.dataset.*;
 import org.hisp.dhis.datavalue.DataValue;
 import org.hisp.dhis.datavalue.DataValueService;
 import org.hisp.dhis.datavalue.DeflatedDataValue;
@@ -56,8 +48,8 @@ import org.hisp.dhis.period.PeriodService;
 import org.hisp.dhis.user.CurrentUserService;
 import org.hisp.dhis.util.ContextUtils;
 
-import com.opensymphony.xwork2.Action;
-import com.opensymphony.xwork2.ActionContext;
+import javax.servlet.http.HttpServletRequest;
+import java.util.*;
 
 /**
  * @author mortenoh
@@ -184,6 +176,18 @@ public class SaveSectionFormAction
         return dataSetId;
     }
 
+    private Integer sectionId;
+
+    public void setSectionId( Integer sectionId )
+    {
+        this.sectionId = sectionId;
+    }
+
+    public Integer getSectionId()
+    {
+        return sectionId;
+    }
+
     private DataSet dataSet;
 
     public DataSet getDataSet()
@@ -241,6 +245,20 @@ public class SaveSectionFormAction
     public Boolean getValidated()
     {
         return validated;
+    }
+
+    private String name;
+
+    public String getName()
+    {
+        return name;
+    }
+
+    private List<DataElement> dataElements = new ArrayList<DataElement>();
+
+    public List<DataElement> getDataElements()
+    {
+        return dataElements;
     }
 
     // -------------------------------------------------------------------------
@@ -303,7 +321,7 @@ public class SaveSectionFormAction
                         if ( !valueIsEmpty && !FormUtils.isBoolean( value ) )
                         {
                             correctType = false;
-                            typeViolations.put( key, value + " " + i18n.getString( "is_invalid_boolean" ) );
+                            typeViolations.put( key, "\"" + value + "\"" + " " + i18n.getString( "is_invalid_boolean" ) );
                         }
                     }
                     else if ( type.equals( DataElement.VALUE_TYPE_DATE ) )
@@ -311,7 +329,7 @@ public class SaveSectionFormAction
                         if ( !FormUtils.isDate( value ) )
                         {
                             correctType = false;
-                            typeViolations.put( key, value + " " + i18n.getString( "is_invalid_date" ) );
+                            typeViolations.put( key, "\"" + value + "\"" + " " + i18n.getString( "is_invalid_date" ) );
                         }
                     }
                     else if ( type.equals( DataElement.VALUE_TYPE_INT )
@@ -320,7 +338,7 @@ public class SaveSectionFormAction
                         if ( !FormUtils.isNumber( value ) )
                         {
                             correctType = false;
-                            typeViolations.put( key, value + " " + i18n.getString( "is_invalid_number" ) );
+                            typeViolations.put( key, "\"" + value + "\"" + " " + i18n.getString( "is_invalid_number" ) );
                         }
                     }
                     else if ( type.equals( DataElement.VALUE_TYPE_INT )
@@ -329,7 +347,7 @@ public class SaveSectionFormAction
                         if ( !FormUtils.isInteger( value ) )
                         {
                             correctType = false;
-                            typeViolations.put( key, value + " " + i18n.getString( "is_invalid_integer" ) );
+                            typeViolations.put( key, "\"" + value + "\"" + " " + i18n.getString( "is_invalid_integer" ) );
                         }
                     }
                     else if ( type.equals( DataElement.VALUE_TYPE_INT )
@@ -338,7 +356,7 @@ public class SaveSectionFormAction
                         if ( !FormUtils.isPositiveInteger( value ) )
                         {
                             correctType = false;
-                            typeViolations.put( key, value + " " + i18n.getString( "is_invalid_positive_integer" ) );
+                            typeViolations.put( key, "\"" + value + "\"" + " " + i18n.getString( "is_invalid_positive_integer" ) );
                         }
                     }
                     else if ( type.equals( DataElement.VALUE_TYPE_INT )
@@ -347,7 +365,7 @@ public class SaveSectionFormAction
                         if ( !FormUtils.isNegativeInteger( value ) )
                         {
                             correctType = false;
-                            typeViolations.put( key, value + " " + i18n.getString( "is_invalid_negative_integer" ) );
+                            typeViolations.put( key, "\"" + value + "\"" + " " + i18n.getString( "is_invalid_negative_integer" ) );
                         }
                     }
                 }
@@ -410,6 +428,26 @@ public class SaveSectionFormAction
         if ( typeViolations.size() > 0 )
         {
             needsValidation = true;
+        }
+
+        if ( sectionId != null )
+        {
+            for ( Section section : dataSet.getSections() )
+            {
+                if ( section.getId() == sectionId )
+                {
+                    name = section.getName();
+                    dataElements = section.getDataElements();
+
+                    break;
+                }
+            }
+        }
+        else
+        {
+            name = "Default";
+            dataElements = new ArrayList<DataElement>( dataSet.getDataElements() );
+            Collections.sort( dataElements, new IdentifiableObjectNameComparator() );
         }
 
         dataValues = formUtils.getDataValueMap( organisationUnit, dataSet, period );
