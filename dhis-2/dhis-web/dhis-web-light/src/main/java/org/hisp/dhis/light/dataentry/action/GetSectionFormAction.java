@@ -28,8 +28,11 @@
 package org.hisp.dhis.light.dataentry.action;
 
 import com.opensymphony.xwork2.Action;
+import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementOperand;
-import org.hisp.dhis.dataset.*;
+import org.hisp.dhis.dataset.DataSet;
+import org.hisp.dhis.dataset.DataSetService;
+import org.hisp.dhis.dataset.Section;
 import org.hisp.dhis.datavalue.DeflatedDataValue;
 import org.hisp.dhis.light.dataentry.utils.FormUtils;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
@@ -64,13 +67,6 @@ public class GetSectionFormAction
     public void setDataSetService( DataSetService dataSetService )
     {
         this.dataSetService = dataSetService;
-    }
-
-    private CompleteDataSetRegistrationService registrationService;
-
-    public void setRegistrationService( CompleteDataSetRegistrationService registrationService )
-    {
-        this.registrationService = registrationService;
     }
 
     private PeriodService periodService;
@@ -132,6 +128,13 @@ public class GetSectionFormAction
         return dataSetId;
     }
 
+    private Integer sectionId;
+
+    public void setSectionId( Integer sectionId )
+    {
+        this.sectionId = sectionId;
+    }
+
     private DataSet dataSet;
 
     public DataSet getDataSet()
@@ -160,25 +163,6 @@ public class GetSectionFormAction
         return validationRuleViolations;
     }
 
-    private Boolean complete = false;
-
-    public void setComplete( Boolean complete )
-    {
-        this.complete = complete;
-    }
-
-    public Boolean getComplete()
-    {
-        return complete;
-    }
-
-    private String page;
-
-    public String getPage()
-    {
-        return page;
-    }
-
     private Map<String, Boolean> greyedFields = new HashMap<String, Boolean>();
 
     public Map<String, Boolean> getGreyedFields()
@@ -192,6 +176,20 @@ public class GetSectionFormAction
     public Map<String, String> getTypeViolations()
     {
         return typeViolations;
+    }
+
+    private String name;
+
+    public String getName()
+    {
+        return name;
+    }
+
+    private List<DataElement> dataElements = new ArrayList<DataElement>();
+
+    public List<DataElement> getDataElements()
+    {
+        return dataElements;
     }
 
     // -------------------------------------------------------------------------
@@ -213,14 +211,28 @@ public class GetSectionFormAction
 
         validationRuleViolations = formUtils.getValidationRuleViolations( organisationUnit, dataSet, period );
 
-        CompleteDataSetRegistration registration = registrationService.getCompleteDataSetRegistration( dataSet, period,
-            organisationUnit );
-
-        complete = registration != null ? true : false;
-
         if ( dataSet.getDataSetType().equals( DataSet.TYPE_SECTION ) )
         {
             setGreyedFields();
+        }
+
+        if ( sectionId != null )
+        {
+            for ( Section section : dataSet.getSections() )
+            {
+                if ( section.getId() == sectionId )
+                {
+                    name = section.getName();
+                    dataElements = section.getDataElements();
+
+                    break;
+                }
+            }
+        }
+        else
+        {
+            name = "Default";
+            dataElements = new ArrayList<DataElement>( dataSet.getDataElements() );
         }
 
         return SUCCESS;
