@@ -53,7 +53,7 @@
 
 	<!-- Search Person TAB -->
 	<div id="tab-1">
-		<form id="searchForm" name="searchForm" action="searchPerson.action" action="post" >
+		<form id="searchForm" name="searchForm" action="searchPerson.action" method="post" >
 			<table>
 				<tr>
 					<td >$i18n.getString("relationship_type")<em title="$i18n.getString( "required" )" class="required">*</em></td>

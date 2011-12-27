@@ -160,7 +160,7 @@
 <!-- ATTRIBUTES NOT IN GROUPS -->
 
 <tr><td>&nbsp;</td></tr>
-#if ( $noGroupAttributes.size() > 0) 	
+#if ( $noGroupAttributes && $noGroupAttributes.size() > 0) 	
 	<tr><th colspan="2" class="heading-column">$i18n.getString( "other_details" )</th></tr>
 	#foreach($attribute in $noGroupAttributes )
 		<tr>
