@@ -2,8 +2,8 @@
 <beans xmlns="http://www.springframework.org/schema/beans" xmlns:sec="http://www.springframework.org/schema/security"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:schemaLocation="
-		http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security-3.0.xsd
-		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
+		http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security-3.1.xsd
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.1.xsd">
 
   <bean id="mappedRedirectStrategy" class="org.hisp.dhis.security.MappedRedirectStrategy">
     <property name="redirectMap">
@@ -35,10 +35,10 @@
     <sec:intercept-url pattern="/dhis-web-commons/javascripts/**" filters="none" />
     <sec:intercept-url pattern="/dhis-web-commons/css/**" filters="none" />
     <sec:intercept-url pattern="/favicon.ico" filters="none" />
-<!--
-    <sec:intercept-url pattern="/api*" access="hasRole('F_WEBAPI_READ')" />
-    <sec:intercept-url pattern="/api/**" access="hasRole('F_WEBAPI_READ')" />
--->
+    <!--
+        <sec:intercept-url pattern="/api*" access="hasRole('F_WEBAPI_READ')" />
+        <sec:intercept-url pattern="/api/**" access="hasRole('F_WEBAPI_READ')" />
+    -->
     <sec:intercept-url pattern="/**" access="isAuthenticated()" />
 
     <sec:custom-filter ref="automaticAccessFilter" before="LOGOUT_FILTER" />
