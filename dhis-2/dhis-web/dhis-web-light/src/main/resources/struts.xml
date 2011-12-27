@@ -29,9 +29,9 @@
       <param name="page">/dhis-web-light/selectPeriod.vm</param>
     </action>
 
-    <action name="dataEntry" class="org.hisp.dhis.light.dataentry.action.GetSectionFormAction">
+    <action name="dataEntry" class="org.hisp.dhis.light.dataentry.action.GetDataSetOverviewAction">
       <result name="success" type="velocity">/dhis-web-light/main.vm</result>
-      <param name="page">/dhis-web-light/dataEntry.vm</param>
+      <param name="page">/dhis-web-light/dataEntryOverview.vm</param>
     </action>
 
     <action name="saveSectionForm" class="org.hisp.dhis.light.dataentry.action.SaveSectionFormAction">

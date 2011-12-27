@@ -28,29 +28,35 @@
 package org.hisp.dhis.light.dataentry.action;
 
 import com.opensymphony.xwork2.Action;
-import org.hisp.dhis.dataelement.DataElementOperand;
-import org.hisp.dhis.dataset.*;
-import org.hisp.dhis.datavalue.DeflatedDataValue;
+import org.hisp.dhis.dataset.CompleteDataSetRegistration;
+import org.hisp.dhis.dataset.CompleteDataSetRegistrationService;
+import org.hisp.dhis.dataset.DataSet;
+import org.hisp.dhis.dataset.DataSetService;
 import org.hisp.dhis.light.dataentry.utils.FormUtils;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodService;
+import org.hisp.dhis.user.CurrentUserService;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.Date;
 
 /**
  * @author mortenoh
  */
-public class GetSectionFormAction
+public class GetDataSetOverviewAction
     implements Action
 {
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
+
+    private CurrentUserService currentUserService;
+
+    public void setCurrentUserService( CurrentUserService currentUserService )
+    {
+        this.currentUserService = currentUserService;
+    }
 
     private OrganisationUnitService organisationUnitService;
 
@@ -139,28 +145,7 @@ public class GetSectionFormAction
         return dataSet;
     }
 
-    private Map<String, String> dataValues = new HashMap<String, String>();
-
-    public Map<String, String> getDataValues()
-    {
-        return dataValues;
-    }
-
-    private Map<String, DeflatedDataValue> validationViolations = new HashMap<String, DeflatedDataValue>();
-
-    public Map<String, DeflatedDataValue> getValidationViolations()
-    {
-        return validationViolations;
-    }
-
-    private List<String> validationRuleViolations = new ArrayList<String>();
-
-    public List<String> getValidationRuleViolations()
-    {
-        return validationRuleViolations;
-    }
-
-    private Boolean complete = false;
+    private Boolean complete;
 
     public void setComplete( Boolean complete )
     {
@@ -172,26 +157,16 @@ public class GetSectionFormAction
         return complete;
     }
 
-    private String page;
+    private Boolean markComplete;
 
-    public String getPage()
+    public Boolean getMarkComplete()
     {
-        return page;
+        return markComplete;
     }
 
-    private Map<String, Boolean> greyedFields = new HashMap<String, Boolean>();
-
-    public Map<String, Boolean> getGreyedFields()
+    public void setMarkComplete( Boolean markComplete )
     {
-        return greyedFields;
-    }
-
-    // FIXME: Not in use, but seems to be referenced in html.
-    private Map<String, String> typeViolations = new HashMap<String, String>();
-
-    public Map<String, String> getTypeViolations()
-    {
-        return typeViolations;
+        this.markComplete = markComplete;
     }
 
     // -------------------------------------------------------------------------
@@ -207,34 +182,34 @@ public class GetSectionFormAction
 
         dataSet = dataSetService.getDataSet( dataSetId );
 
-        dataValues = formUtils.getDataValueMap( organisationUnit, dataSet, period );
-
-        validationViolations = formUtils.getValidationViolations( organisationUnit, dataSet, period );
-
-        validationRuleViolations = formUtils.getValidationRuleViolations( organisationUnit, dataSet, period );
-
         CompleteDataSetRegistration registration = registrationService.getCompleteDataSetRegistration( dataSet, period,
             organisationUnit );
 
         complete = registration != null ? true : false;
 
-        if ( dataSet.getDataSetType().equals( DataSet.TYPE_SECTION ) )
+        if ( markComplete != null )
         {
-            setGreyedFields();
+            if ( markComplete && !complete )
+            {
+                registration = new CompleteDataSetRegistration();
+                registration.setDataSet( dataSet );
+                registration.setPeriod( period );
+                registration.setSource( organisationUnit );
+                registration.setDate( new Date() );
+                registration.setStoredBy( currentUserService.getCurrentUsername() );
+
+                registrationService.saveCompleteDataSetRegistration( registration );
+
+                complete = true;
+            }
+            else if ( !markComplete && complete )
+            {
+                registrationService.deleteCompleteDataSetRegistration( registration );
+
+                complete = false;
+            }
         }
 
         return SUCCESS;
-    }
-
-    private void setGreyedFields()
-    {
-        for ( Section section : dataSet.getSections() )
-        {
-            for ( DataElementOperand operand : section.getGreyedFields() )
-            {
-                greyedFields.put( operand.getDataElement().getId() + ":" + operand.getCategoryOptionCombo().getId(),
-                    true );
-            }
-        }
     }
 }
