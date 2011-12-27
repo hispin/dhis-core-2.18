@@ -229,7 +229,7 @@
 	
 	<!-- ATTRIBUTES NOT IN GROUPS -->
 	
-	#if ( $noGroupAttributes.size() > 0) 	
+	#if ( $noGroupAttributes && $noGroupAttributes.size() > 0) 	
 		<tr><th colspan="2" class="heading-column">$i18n.getString( "Other details" )</th></tr>
 		#foreach($attribute in $noGroupAttributes )
 		#set( $attributeValue = "" )

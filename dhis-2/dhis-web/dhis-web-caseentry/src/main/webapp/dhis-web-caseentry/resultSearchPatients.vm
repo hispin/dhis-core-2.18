@@ -15,7 +15,7 @@
 		<th>$i18n.getString( "gender" )</th>
 		<th>$i18n.getString( "dob_type" )</th>
 		<th>$i18n.getString( "date_of_birth" )</th>
-		<th>$i18n.getString( "orgunit" )</th>
+		<th>$i18n.getString( "registered_by_orgunit" )</th>
 	</tr></thead>
 	<tbody>
 		#set($mark = false)
