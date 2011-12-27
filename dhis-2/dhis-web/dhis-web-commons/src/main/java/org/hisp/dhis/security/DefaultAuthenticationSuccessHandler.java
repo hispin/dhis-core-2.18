@@ -27,32 +27,40 @@ package org.hisp.dhis.security;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.io.IOException;
+import org.hisp.dhis.security.intercept.LoginInterceptor;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.web.authentication.SavedRequestAwareAuthenticationSuccessHandler;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
-import org.hisp.dhis.security.intercept.LoginInterceptor;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.web.authentication.SavedRequestAwareAuthenticationSuccessHandler;
+import javax.servlet.http.HttpSession;
+import java.io.IOException;
 
 /**
  * Since ActionContext is not available at this point, we set a mark in the
  * session that signales that login has just occured, and that LoginInterceptor
  * should be run.
- * 
+ *
  * @author mortenoh
  */
 public class DefaultAuthenticationSuccessHandler
     extends SavedRequestAwareAuthenticationSuccessHandler
 {
+    // default is 1 hour of inactivity, this is mostly for when we are using the mobile
+    // client, since entering data can take time, and data will be lost of the session
+    // times out while entering data.
+    public static int DEFAULT_SESSION_TIMEOUT = 60 * 60;
+
     @Override
     public void onAuthenticationSuccess( HttpServletRequest request, HttpServletResponse response,
-        Authentication authentication )
+                                         Authentication authentication )
         throws ServletException, IOException
     {
-        request.getSession().setAttribute( LoginInterceptor.JLI_SESSION_VARIABLE, Boolean.TRUE );
+        HttpSession session = request.getSession();
+
+        session.setAttribute( LoginInterceptor.JLI_SESSION_VARIABLE, Boolean.TRUE );
+        session.setMaxInactiveInterval( DefaultAuthenticationSuccessHandler.DEFAULT_SESSION_TIMEOUT );
 
         super.onAuthenticationSuccess( request, response, authentication );
     }
