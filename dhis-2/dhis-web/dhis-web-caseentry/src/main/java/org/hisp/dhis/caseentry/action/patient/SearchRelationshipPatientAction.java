@@ -29,6 +29,7 @@ package org.hisp.dhis.caseentry.action.patient;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Iterator;
 
 import org.hisp.dhis.patient.Patient;
 import org.hisp.dhis.patient.PatientAttribute;
@@ -36,6 +37,8 @@ import org.hisp.dhis.patient.PatientAttributeService;
 import org.hisp.dhis.patient.PatientService;
 import org.hisp.dhis.patientattributevalue.PatientAttributeValue;
 import org.hisp.dhis.patientattributevalue.PatientAttributeValueService;
+import org.hisp.dhis.relationship.Relationship;
+import org.hisp.dhis.relationship.RelationshipService;
 
 import com.opensymphony.xwork2.Action;
 
@@ -70,6 +73,13 @@ public class SearchRelationshipPatientAction
     public void setPatientAttributeValueService( PatientAttributeValueService patientAttributeValueService )
     {
         this.patientAttributeValueService = patientAttributeValueService;
+    }
+
+    private RelationshipService relationshipService;
+
+    public void setRelationshipService( RelationshipService relationshipService )
+    {
+        this.relationshipService = relationshipService;
     }
 
     // -------------------------------------------------------------------------
@@ -122,8 +132,6 @@ public class SearchRelationshipPatientAction
     public String execute()
         throws Exception
     {
-        Patient patient = patientService.getPatient( patientId );
-
         if ( searchText != null && searchText.length() > 0 )
             searchText = searchText.trim();
 
@@ -135,9 +143,9 @@ public class SearchRelationshipPatientAction
             searchText = keys[0] + "  " + keys[1];
         }
 
-        if ( searchingAttributeId != null && searchText != null )
+        if ( searchText != null && !searchText.isEmpty() )
         {
-            if ( searchText.length() > 0 )
+            if ( searchingAttributeId != null )
             {
                 PatientAttribute patientAttribute = patientAttributeService.getPatientAttribute( searchingAttributeId );
 
@@ -149,22 +157,30 @@ public class SearchRelationshipPatientAction
                     patients.add( patientAttributeValue.getPatient() );
                 }
 
-                patients.remove( patient );
-
-                return SUCCESS;
             }
-
-        }
-
-        if ( searchText != null )
-        {
-            if ( searchText.length() > 0 )
+            else
             {
                 patients = patientService.getPatientsByNames( searchText );
+            }
+        }
+        if ( patients != null && !patients.isEmpty() )
+        {
+            Patient patient = patientService.getPatient( patientId );
 
-                patients.remove( patient );
+            patients.remove( patient );
 
-                return SUCCESS;
+            Collection<Relationship> relationships = relationshipService.getRelationshipsForPatient( patient );
+
+            if ( relationships != null )
+            {
+                Iterator<Relationship> iter = relationships.iterator();
+
+                while ( iter.hasNext() )
+                {
+                    Relationship relationship = iter.next();
+                    patients.remove( relationship.getPatientA() );
+                    patients.remove( relationship.getPatientB() );
+                }
             }
         }
 
