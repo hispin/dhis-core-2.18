@@ -27,14 +27,8 @@
 
 package org.hisp.dhis.light.dataentry.utils;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-
 import org.apache.commons.collections.CollectionUtils;
+import org.hisp.dhis.common.comparator.IdentifiableObjectNameComparator;
 import org.hisp.dhis.dataanalysis.DataAnalysisService;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
@@ -57,6 +51,8 @@ import org.hisp.dhis.validation.ValidationRule;
 import org.hisp.dhis.validation.ValidationRuleService;
 import org.joda.time.format.DateTimeFormatter;
 import org.joda.time.format.ISODateTimeFormat;
+
+import java.util.*;
 
 /**
  * @author mortenoh
@@ -129,7 +125,7 @@ public class FormUtils
 
     @SuppressWarnings( "unchecked" )
     public Map<String, DeflatedDataValue> getValidationViolations( OrganisationUnit organisationUnit, DataSet dataSet,
-        Period period )
+                                                                   Period period )
     {
         Map<String, DeflatedDataValue> validationErrorMap = new HashMap<String, DeflatedDataValue>();
 
@@ -226,8 +222,7 @@ public class FormUtils
         try
         {
             Double.parseDouble( value );
-        }
-        catch ( NumberFormatException e )
+        } catch ( NumberFormatException e )
         {
             return false;
         }
@@ -240,8 +235,7 @@ public class FormUtils
         try
         {
             Integer.parseInt( value );
-        }
-        catch ( NumberFormatException e )
+        } catch ( NumberFormatException e )
         {
             return false;
         }
@@ -271,8 +265,7 @@ public class FormUtils
             {
                 return true;
             }
-        }
-        catch ( NumberFormatException e )
+        } catch ( NumberFormatException e )
         {
         }
 
@@ -291,8 +284,7 @@ public class FormUtils
             {
                 return true;
             }
-        }
-        catch ( NumberFormatException e )
+        } catch ( NumberFormatException e )
         {
         }
 
@@ -312,11 +304,18 @@ public class FormUtils
         {
             sdf.parseDateTime( value );
             return true;
-        }
-        catch ( IllegalArgumentException e )
+        } catch ( IllegalArgumentException e )
         {
         }
 
         return false;
+    }
+
+    public static List<DataElementCategoryOptionCombo> sortedCategoryOptionCombos( Collection<DataElementCategoryOptionCombo> categoryOptionCombos )
+    {
+        List<DataElementCategoryOptionCombo> sortedCategoryOptionCombos = new ArrayList<DataElementCategoryOptionCombo>( categoryOptionCombos );
+        Collections.sort( sortedCategoryOptionCombos, new IdentifiableObjectNameComparator() );
+
+        return sortedCategoryOptionCombos;
     }
 }
