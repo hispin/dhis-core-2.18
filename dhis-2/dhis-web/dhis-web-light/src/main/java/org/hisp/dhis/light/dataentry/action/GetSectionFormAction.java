@@ -210,8 +210,6 @@ public class GetSectionFormAction
 
         dataValues = formUtils.getDataValueMap( organisationUnit, dataSet, period );
 
-        validationViolations = formUtils.getValidationViolations( organisationUnit, dataSet, period );
-
         validationRuleViolations = formUtils.getValidationRuleViolations( organisationUnit, dataSet, period );
 
         if ( dataSet.getDataSetType().equals( DataSet.TYPE_SECTION ) )
@@ -237,7 +235,10 @@ public class GetSectionFormAction
             name = "Default";
             dataElements = new ArrayList<DataElement>( dataSet.getDataElements() );
             Collections.sort( dataElements, new IdentifiableObjectNameComparator() );
+
         }
+
+        validationViolations = formUtils.getValidationViolations( organisationUnit, dataElements, period );
 
         return SUCCESS;
     }

@@ -452,7 +452,7 @@ public class SaveSectionFormAction
 
         dataValues = formUtils.getDataValueMap( organisationUnit, dataSet, period );
 
-        validationViolations = formUtils.getValidationViolations( organisationUnit, dataSet, period );
+        validationViolations = formUtils.getValidationViolations( organisationUnit, dataElements, period );
 
         validationRuleViolations = formUtils.getValidationRuleViolations( organisationUnit, dataSet, period );
 

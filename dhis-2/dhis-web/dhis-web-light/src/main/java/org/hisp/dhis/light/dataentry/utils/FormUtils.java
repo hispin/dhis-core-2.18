@@ -124,15 +124,13 @@ public class FormUtils
     // -------------------------------------------------------------------------
 
     @SuppressWarnings( "unchecked" )
-    public Map<String, DeflatedDataValue> getValidationViolations( OrganisationUnit organisationUnit, DataSet dataSet,
+    public Map<String, DeflatedDataValue> getValidationViolations( OrganisationUnit organisationUnit, Collection<DataElement> dataElements,
                                                                    Period period )
     {
         Map<String, DeflatedDataValue> validationErrorMap = new HashMap<String, DeflatedDataValue>();
 
-        Collection<MinMaxDataElement> minmaxs = minMaxDataElementService.getMinMaxDataElements( organisationUnit,
-            dataSet.getDataElements() );
-
-        Collection<DeflatedDataValue> deflatedDataValues = new HashSet<DeflatedDataValue>();
+        Collection<MinMaxDataElement> minmaxs = minMaxDataElementService.getMinMaxDataElements( organisationUnit, dataElements );
+        Collection<DeflatedDataValue> deflatedDataValues;
 
         if ( minmaxs == null )
         {
@@ -140,10 +138,10 @@ public class FormUtils
                 SystemSettingManager.KEY_FACTOR_OF_DEVIATION, 2.0 );
 
             Collection<DeflatedDataValue> stdDevs = stdDevOutlierAnalysisService.analyse( organisationUnit,
-                dataSet.getDataElements(), ListUtils.getCollection( period ), factor );
+                dataElements, ListUtils.getCollection( period ), factor );
 
             Collection<DeflatedDataValue> minMaxs = minMaxOutlierAnalysisService.analyse( organisationUnit,
-                dataSet.getDataElements(), ListUtils.getCollection( period ), null );
+                dataElements, ListUtils.getCollection( period ), null );
 
             deflatedDataValues = CollectionUtils.union( stdDevs, minMaxs );
         }
