@@ -45,9 +45,11 @@
 				#set( $dataElementName = $dataElement.name )
 			#end
 
-			#foreach( $optionCombo in $dataElement.categoryCombo.optionCombos )
-                
-                #if( !$greyedFields.get( "$dataElement.id:$optionCombo.id" ) ) 
+            #set( $optionCombos = $formUtils.sortedCategoryOptionCombos( $dataElement.categoryCombo.optionCombos ) )
+
+			#foreach( $optionCombo in $optionCombos )
+
+                #if( !$greyedFields.get( "$dataElement.id:$optionCombo.id" ) )
 				#set( $key = "DE${dataElement.id}OC${optionCombo.id}" )
 
 				<label>$encoder.htmlEncode( $dataElementName ) #if( $optionCombo.name!="(default)")$encoder.htmlEncode( $optionCombo.name )#end</label>
