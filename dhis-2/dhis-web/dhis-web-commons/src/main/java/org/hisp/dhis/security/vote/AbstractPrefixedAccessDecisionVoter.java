@@ -37,7 +37,7 @@ import org.springframework.security.access.ConfigAttribute;
  * @version $Id: AbstractPrefixedAccessDecisionVoter.java 3160 2007-03-24 20:15:06Z torgeilo $
  */
 public abstract class AbstractPrefixedAccessDecisionVoter
-    implements AccessDecisionVoter<Object>
+    implements AccessDecisionVoter
 {
     private static final Log LOG = LogFactory.getLog( AbstractPrefixedAccessDecisionVoter.class );
 

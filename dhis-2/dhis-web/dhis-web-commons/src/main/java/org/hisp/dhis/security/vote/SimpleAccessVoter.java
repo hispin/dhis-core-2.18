@@ -45,7 +45,7 @@ import org.springframework.security.core.GrantedAuthority;
  * @version $Id: SimpleAccessVoter.java 6352 2008-11-20 15:49:52Z larshelg $
  */
 public class SimpleAccessVoter
-    implements AccessDecisionVoter<Object>
+    implements AccessDecisionVoter
 {
     private static final Log LOG = LogFactory.getLog( SimpleAccessVoter.class );
 
