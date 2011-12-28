@@ -250,11 +250,11 @@ function searchValidationCompleted( messageElement )
 	}
 	else if( type == 'error' )
 	{
-		window.alert( i18n_searching_patient_failed + ':' + '\n' + message );
+		showErrorMessage( i18n_searching_patient_failed + ':' + '\n' + message );
 	}
 	else if( type == 'input' )
 	{
-		setHeaderMessage( message );
+		showWarningMessage( message );
 	}
 }
 

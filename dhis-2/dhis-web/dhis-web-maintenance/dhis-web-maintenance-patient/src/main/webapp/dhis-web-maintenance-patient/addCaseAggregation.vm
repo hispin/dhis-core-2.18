@@ -42,7 +42,7 @@
     <tr>
 		<td width="20em"><label for="dataElement">$i18n.getString( "dataelement" )<em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
 		<td>
-			<select id="aggregationDataElementId" name="aggregationDataElementId" style="min-width:30.5em" class="{validate:{required:true}}" >
+			<select id="aggregationDataElementId" name="aggregationDataElementId" style="width:30.5em" class="{validate:{required:true}}" >
 			</select>
 		</td>				
 	</tr>
