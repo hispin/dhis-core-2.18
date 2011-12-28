@@ -57,6 +57,7 @@
 					<td><input type="text" id="executionDate" name="executionDate" style="width:330px" value="$!format.formatDate( $programStageInstance.executionDate )" >
 						<script type="text/javascript">
 						   datePickerValid( 'executionDate', false );
+						   disable('executionDate');
 						</script>
 				</tr>
 				

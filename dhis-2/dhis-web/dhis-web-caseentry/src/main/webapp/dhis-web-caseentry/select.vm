@@ -45,6 +45,7 @@
 #parse( "dhis-web-commons/loader/loader.vm" )
 
 <script type="text/javascript">
+
 	var i18n_id = '$encoder.jsEscape( $i18n.getString( "id" ), "'")';
 	var i18n_full_name = '$encoder.jsEscape( $i18n.getString( "full_name" ), "'")';
 	var i18n_gender = '$encoder.jsEscape( $i18n.getString( "gender" ), "'")';

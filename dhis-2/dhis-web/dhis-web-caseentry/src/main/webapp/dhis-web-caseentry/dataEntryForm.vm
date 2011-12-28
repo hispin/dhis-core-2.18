@@ -14,6 +14,14 @@
 				saveExecutionDate( getFieldValue('programStageId'), getFieldValue('executionDate') );
 			});
 			
+		if( getFieldValue('programStageId') == 0 )
+		{
+			disable('executionDate');
+		}
+		else
+		{
+			enable('executionDate');
+		}
 		entryFormContainerOnReady();
 	});
 </script>
