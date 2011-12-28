@@ -19,7 +19,7 @@
 				<select id="periodTypeId" name="periodTypeId" style="min-width:200px">
 					<option value="">[ $i18n.getString( "select_period_type" ) ]</option>
 					#foreach ( $type in $periodTypes )
-						<option value="$type.name" #if( $currentPeriodTypeId == $type.name ) selected="selected"#end>$type.name</option>
+						<option value="$type.name" #if( $currentPeriodTypeId == $type.name ) selected="selected"#end>$i18n.getString( $type.name )</option>
 					#end
 				</select>
 			</td>
