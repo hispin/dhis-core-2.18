@@ -209,13 +209,6 @@ public class SaveSectionFormAction
         return validationViolations;
     }
 
-    private List<String> validationRuleViolations = new ArrayList<String>();
-
-    public List<String> getValidationRuleViolations()
-    {
-        return validationRuleViolations;
-    }
-
     private Map<String, String> typeViolations = new HashMap<String, String>();
 
     public Map<String, String> getTypeViolations()
@@ -454,10 +447,8 @@ public class SaveSectionFormAction
 
         validationViolations = formUtils.getValidationViolations( organisationUnit, dataElements, period );
 
-        validationRuleViolations = formUtils.getValidationRuleViolations( organisationUnit, dataSet, period );
-
         if ( needsValidation
-            && (!validationViolations.isEmpty() || !validationRuleViolations.isEmpty() || !typeViolations.isEmpty()) )
+            && (!validationViolations.isEmpty() || !typeViolations.isEmpty()) )
         {
             return ERROR;
         }
