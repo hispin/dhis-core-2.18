@@ -29,6 +29,7 @@ package org.hisp.dhis.caseentry.action.caseentry;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -50,6 +51,7 @@ import org.hisp.dhis.program.ProgramStageDataElement;
 import org.hisp.dhis.program.ProgramStageDataElementService;
 import org.hisp.dhis.program.ProgramStageInstance;
 import org.hisp.dhis.program.ProgramStageInstanceService;
+import org.hisp.dhis.program.comparator.ProgramStageDataElementSortOrderComparator;
 
 import com.opensymphony.xwork2.Action;
 
@@ -250,6 +252,8 @@ public class ProgramStageCustomDataEntryAction
         programStage = programStageInstance.getProgramStage();
 
         programStageDataElements = programStage.getProgramStageDataElements();
+        
+        Collections.sort( programStageDataElements, new ProgramStageDataElementSortOrderComparator() );
 
         program = programStage.getProgram();
 
