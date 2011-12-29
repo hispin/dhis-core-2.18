@@ -134,7 +134,7 @@
 			<param name="page">/dhis-web-caseentry/multiDataEntrySelect.vm</param>
 			<param name="menu">/dhis-web-caseentry/dataEntryMenu.vm</param>
 			<param name="javascripts">../dhis-web-commons/ouwt/ouwt.js,javascript/commons.js,
-				javascript/form.js, javascript/multiDataEntry.js</param>
+				javascript/form.js,javascript/multiDataEntry.js</param>
 		</action>
 
 		<action name="getPrograms"
