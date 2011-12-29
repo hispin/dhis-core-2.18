@@ -27,11 +27,7 @@
 
 package org.hisp.dhis.caseentry.action.caseentry;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 import org.hisp.dhis.caseentry.state.SelectedStateManager;
 import org.hisp.dhis.dataelement.DataElement;
@@ -227,9 +223,9 @@ public class ProgramStageCustomDataEntryAction
         return programStageInstance.getId();
     }
 
-    private Collection<ProgramStageDataElement> programStageDataElements;
+    private List<ProgramStageDataElement> programStageDataElements;
 
-    public Collection<ProgramStageDataElement> getProgramStageDataElements()
+    public List<ProgramStageDataElement> getProgramStageDataElements()
     {
         return programStageDataElements;
     }
@@ -251,7 +247,7 @@ public class ProgramStageCustomDataEntryAction
 
         programStage = programStageInstance.getProgramStage();
 
-        programStageDataElements = programStage.getProgramStageDataElements();
+        programStageDataElements = new ArrayList<ProgramStageDataElement>( programStage.getProgramStageDataElements() );
         
         Collections.sort( programStageDataElements, new ProgramStageDataElementSortOrderComparator() );
 
