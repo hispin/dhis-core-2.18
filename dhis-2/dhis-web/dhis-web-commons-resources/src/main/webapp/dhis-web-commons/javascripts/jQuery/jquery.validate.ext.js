@@ -327,6 +327,10 @@ jQuery.validator.addMethod("required_group", function(value, element) {
     return $("input.required_group:filled").length;
 }, "Please fill out at least one of these fields.");
 
+jQuery.validator.addMethod("required_select_group", function(value, element) {
+    return $("select.required_select_group option").length;
+}, "Please select at least one option for these fields.");
+
 jQuery.validator.addMethod("date", function(value, element, param) {
     return this.optional(element) || getDateFromFormat(value,param);
 });
