@@ -45,7 +45,7 @@
 		<th>$i18n.getString( "available_dataelements" )</th>
 		<td></td>
 		<th>$i18n.getString( "selected_dataelements" )
-			<select id="dataelementsValidator" class="{validate:{required:true}}" style="display:none"/>
+			<select id="dataelementsValidator" class="required_select_group {validate:{required_select_group:true}}" style="display:none"/>
 		</th>
 	</tr>	
 	<tr>
@@ -76,7 +76,7 @@
 		<th>$i18n.getString( "available_indicators" )</th>
 		<td></td>
 		<th>$i18n.getString( "selected_indicators" )
-			<select id="indicatorsValidator" class="{validate:{required:true}}" style="display:none"/>
+			<select id="indicatorsValidator" class="required_select_group {validate:{required_select_group:true}}" style="display:none"/>
 		</th>
 	</tr>
 	<tr>
