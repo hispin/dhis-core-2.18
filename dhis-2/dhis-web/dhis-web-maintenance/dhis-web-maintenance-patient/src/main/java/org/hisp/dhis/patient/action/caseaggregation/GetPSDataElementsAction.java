@@ -119,17 +119,6 @@ public class GetPSDataElementsAction
             {
                 DataElement de = deIterator.next();
 
-                if ( de.getType().equals( DataElement.VALUE_TYPE_STRING ) && de.isMultiDimensional() )
-                {
-                    optionComboIds.add( "[DE:" + psId + "." + de.getId() + ".0]" );
-
-                    optionComboNames.add( de.getName() );
-
-                    optionComboType.add( "1:" + de.getType() );
-
-                    continue;
-                }
-
                 DataElementCategoryCombo dataElementCategoryCombo = de.getCategoryCombo();
 
                 List<DataElementCategoryOptionCombo> optionCombos = new ArrayList<DataElementCategoryOptionCombo>(
