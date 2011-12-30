@@ -199,19 +199,17 @@ public class StaXDataValueImportService
             do
             {
                 // look for a  DataValue set
-                try
-                {
-                    reader.moveToStartElement( Dxf.DATAVALUESET );
-                } 
-                catch ( java.util.NoSuchElementException ex )
-                {
-                    // we have to reach here eventuallyperiodId
-                    break;
-                }
                 if ( !reader.isStartElement( Dxf.DATAVALUESET ) )
                 {
-                    // we have to reach here eventually
-                    break;
+                    try
+                    {
+                       reader.moveToStartElement( Dxf.DATAVALUESET );
+                    } 
+                    catch ( java.util.NoSuchElementException ex )
+                    {
+                        // we have to reach here eventuallyperiodId
+                        break;
+                    }
                 }
 
                 // Pick off the attributes
@@ -271,14 +269,8 @@ public class StaXDataValueImportService
                 do
                 {
                     // look for a  DataValue
-                    try
-                    {
-                        reader.moveToStartElement( DataValueSet.DATAVALUE );
-                    } catch ( java.util.NoSuchElementException ex )
-                    {
-                        break;
-                    }
-
+                    reader.moveToStartElement();
+                    
                     if ( !reader.isStartElement( DataValueSet.DATAVALUE ) )
                     {
                         // we have to reach here eventually
@@ -342,8 +334,8 @@ public class StaXDataValueImportService
 
             } while ( true ); // DataValueSets loop
 
-            log.info( SUCCESS );
-            state.setMessage( SUCCESS );
+            log.info( String.format(COUNTER,cumulativeDataValueCounter));
+            state.setMessage( String.format(COUNTER,cumulativeDataValueCounter));
 
         } 
         catch ( ImportException ex )
