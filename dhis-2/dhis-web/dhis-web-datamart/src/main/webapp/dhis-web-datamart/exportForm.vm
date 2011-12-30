@@ -140,13 +140,15 @@
     </tr>
 	
 	<!-- Periods -->
-	
+	<tr>
+		<td colspan='3' class='listAlternateRow'>
+			<select id="periodsValidator" class="{validate:{required:true}}" style="display:none"/>
+		</td>
+	</tr>
 	<tr>
 		<th>$i18n.getString( "available_periods" )</th>
 		<td></td>
-		<th>$i18n.getString( "selected_periods" )
-			<select id="periodsValidator" class="{validate:{required:true}}" style="display:none"/>
-		</th>
+		<th>$i18n.getString( "selected_periods" )</th>
 	</tr>	
 	<tr>
 		<td>
@@ -185,10 +187,12 @@
     <!-- Relative periods -->
     
 	<tr>
-		<th colspan="3">$i18n.getString( "relative_periods" )</th>
+		<th colspan="3">$i18n.getString( "relative_periods" )
+			<select id="relativesPeriodsValidator" style="display:none"/>
+		</th>
 	</tr>
 	<tr>
-		<td colspan="3">
+		<td colspan="3" id='relativesPeriodsTD'>
 		    <label for="reportingMonth">$i18n.getString( "reporting_month" )</label>
 			<input type="checkbox" id="reportingMonth" name="reportingMonth" value="true"#if( $!export.relatives.isReportingMonth() ) checked#end/>&nbsp;
 			<label for="monthsThisYear">$i18n.getString( "months_this_year" )</label>

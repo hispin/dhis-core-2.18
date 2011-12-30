@@ -15,6 +15,18 @@ jQuery( document ).ready( function() {
 			listValidator( 'indicatorsValidator', 'selectedIndicators' );
 			listValidator( 'organisationunitsValidator', 'selectedOrganisationUnits' );
 			listValidator( 'periodsValidator', 'selectedPeriods' );
+			
+			if( byId('selectedPeriods').options.length == 0 )
+			{
+				if( $("input:checked").length > 0 )
+				{
+					$("#periodsValidator").rules("add",{required:false});
+				}
+				else
+				{
+					$("#periodsValidator").rules("add",{required:true});
+				}
+			}
 		},
 		'rules': getValidationRules( 'dataMart' )
 	} );
