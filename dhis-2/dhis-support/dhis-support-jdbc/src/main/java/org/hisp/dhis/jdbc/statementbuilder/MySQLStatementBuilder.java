@@ -365,4 +365,9 @@ public class MySQLStatementBuilder
                  "ORDER BY ps.stageinprogram " +
                  "LIMIT " + min + " ," + max;
     }
+    
+    public String limitRecord( int min, int max )
+    {
+        return " LIMIT " + min + " ," + max;
+    }
 }

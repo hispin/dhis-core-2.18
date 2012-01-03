@@ -368,4 +368,9 @@ public class H2StatementBuilder
                "ORDER BY ps.stageinprogram " +
                "LIMIT " + max + " OFFSET " + min;
     }
+
+    public String limitRecord( int min, int max )
+    {
+        return " LIMIT " + max + " OFFSET " + min;
+    }
 }

@@ -33,6 +33,7 @@ import java.util.List;
 
 import org.hibernate.Query;
 import org.hisp.dhis.common.hibernate.HibernateIdentifiableObjectStore;
+import org.hisp.dhis.jdbc.StatementBuilder;
 import org.hisp.dhis.message.MessageConversation;
 import org.hisp.dhis.message.MessageConversationStore;
 import org.hisp.dhis.user.User;
@@ -44,6 +45,21 @@ import org.springframework.jdbc.core.RowMapper;
 public class HibernateMessageConversationStore
     extends HibernateIdentifiableObjectStore<MessageConversation> implements MessageConversationStore
 {
+    // -------------------------------------------------------------------------
+    // Dependencies
+    // -------------------------------------------------------------------------
+
+    private StatementBuilder statementBuilder;
+
+    public void setStatementBuilder( StatementBuilder statementBuilder )
+    {
+        this.statementBuilder = statementBuilder;
+    }
+    
+    // -------------------------------------------------------------------------
+    // Implementation methods
+    // -------------------------------------------------------------------------
+
     public List<MessageConversation> getMessageConversations( User user, Integer first, Integer max )
     {
         String sql = 
@@ -63,14 +79,9 @@ public class HibernateMessageConversationStore
         
         sql += "order by mc.lastupdated desc ";
         
-        if ( first != null )
+        if ( first != null && max != null )
         {
-            sql += "offset " + first + " ";
-        }
-        
-        if ( max != null )
-        {
-            sql += "limit " + max;
+            sql += statementBuilder.limitRecord( first, max );
         }
         
         final List<MessageConversation> conversations = jdbcTemplate.query( sql, new RowMapper<MessageConversation>()
