@@ -215,6 +215,7 @@ http://www.springframework.org/schema/security http://www.springframework.org/sc
     <property name="clazz" value="org.hisp.dhis.message.MessageConversation" />
     <property name="sessionFactory" ref="sessionFactory" />
     <property name="jdbcTemplate" ref="jdbcTemplate" />
+    <property name="statementBuilder" ref="statementBuilder"/>
     <property name="cacheable" value="true" />
   </bean>
 
