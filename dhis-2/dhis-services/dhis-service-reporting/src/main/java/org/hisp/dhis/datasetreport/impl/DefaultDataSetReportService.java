@@ -329,7 +329,7 @@ public class DefaultDataSetReportService
 
         List<Indicator> indicators = new ArrayList<Indicator>( dataSet.getIndicators() );
 
-     // ---------------------------------------------------------------------
+        // ---------------------------------------------------------------------
         // Values for GRID
         // ---------------------------------------------------------------------
 
@@ -339,7 +339,7 @@ public class DefaultDataSetReportService
 
             grid.addValue( indicator.getName() );
             
-            Double value = aggregationService.getAggregatedDenominatorValue( indicator, period.getStartDate(), period.getEndDate(), unit );
+            Double value = aggregationService.getAggregatedIndicatorValue( indicator, period.getStartDate(), period.getEndDate(), unit );
             
             grid.addValue( value );
             
