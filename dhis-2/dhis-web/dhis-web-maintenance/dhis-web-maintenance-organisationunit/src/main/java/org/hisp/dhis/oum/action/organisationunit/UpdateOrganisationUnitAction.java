@@ -264,14 +264,14 @@ public class UpdateOrganisationUnitAction
             cDate = format.parseDate( closedDate );
         }
 
-        String coordinates = longitude != null && latitude != null ?
-            ValidationUtils.getCoordinate( longitude, latitude ) : null;
-        
+        OrganisationUnit organisationUnit = organisationUnitService.getOrganisationUnit( id );
+
+        String coordinates = (longitude != null && latitude != null) ? ValidationUtils.getCoordinate( longitude,
+            latitude ) : (organisationUnit.getCoordinates() != null ? organisationUnit.getCoordinates() : null);
+
         // ---------------------------------------------------------------------
         // Update organisation unit
         // ---------------------------------------------------------------------
-
-        OrganisationUnit organisationUnit = organisationUnitService.getOrganisationUnit( id );
 
         if ( !organisationUnit.getName().equals( name ) )
         {
