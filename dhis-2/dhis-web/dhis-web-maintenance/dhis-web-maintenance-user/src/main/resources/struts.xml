@@ -211,6 +211,7 @@
 
     <action name="removeUserGroup" class="org.hisp.dhis.user.action.RemoveUserGroupAction">
       <result name="success" type="velocity">/dhis-web-commons/ajax/jsonResponseSuccess.vm</result>
+      <result name="error" type="velocity">/dhis-web-commons/ajax/jsonResponseError.vm</result>
       <param name="requiredAuthorities">F_USER_GRUP_DELETE</param>
     </action>
 
