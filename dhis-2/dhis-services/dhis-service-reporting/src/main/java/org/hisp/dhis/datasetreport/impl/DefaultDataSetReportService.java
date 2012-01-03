@@ -77,18 +77,21 @@ import org.hisp.dhis.system.util.FilterUtils;
  */
 public class DefaultDataSetReportService
     implements DataSetReportService
-{        
+{
     private static final String NULL_REPLACEMENT = "";
+
     private static final String SEPARATOR = ":";
+
     private static final String DEFAULT_HEADER = "Value";
+
     private static final String TOTAL_HEADER = "Total";
 
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
-    
+
     private DataValueService dataValueService;
-    
+
     public void setDataValueService( DataValueService dataValueService )
     {
         this.dataValueService = dataValueService;
@@ -100,14 +103,14 @@ public class DefaultDataSetReportService
     {
         this.aggregationService = aggregationService;
     }
-    
+
     private AggregatedDataValueService aggregatedDataValueService;
-    
+
     public void setAggregatedDataValueService( AggregatedDataValueService aggregatedDataValueService )
     {
         this.aggregatedDataValueService = aggregatedDataValueService;
     }
-    
+
     private SystemSettingManager systemSettingManager;
 
     public void setSystemSettingManager( SystemSettingManager systemSettingManager )
@@ -118,26 +121,30 @@ public class DefaultDataSetReportService
     // -------------------------------------------------------------------------
     // DataSetReportService implementation
     // -------------------------------------------------------------------------
-    
-    public String getCustomDataSetReport( DataSet dataSet, OrganisationUnit unit, Period period, boolean selectedUnitOnly, I18nFormat format )
+
+    public String getCustomDataSetReport( DataSet dataSet, OrganisationUnit unit, Period period,
+        boolean selectedUnitOnly, I18nFormat format )
     {
-        Map<String, String> aggregatedDataValueMap = getAggregatedValueMap( dataSet, unit, period, selectedUnitOnly, format );
+        Map<String, String> aggregatedDataValueMap = getAggregatedValueMap( dataSet, unit, period, selectedUnitOnly,
+            format );
 
         Map<Integer, String> aggregatedIndicatorMap = getAggregatedIndicatorValueMap( dataSet, unit, period, format );
-        
-        return prepareReportContent( dataSet.getDataEntryForm(), aggregatedDataValueMap, aggregatedIndicatorMap ); 
+
+        return prepareReportContent( dataSet.getDataEntryForm(), aggregatedDataValueMap, aggregatedIndicatorMap );
     }
-    
-    public List<Grid> getSectionDataSetReport( DataSet dataSet, Period period, OrganisationUnit unit, boolean selectedUnitOnly, I18nFormat format, I18n i18n )
+
+    public List<Grid> getSectionDataSetReport( DataSet dataSet, Period period, OrganisationUnit unit,
+        boolean selectedUnitOnly, I18nFormat format, I18n i18n )
     {
-        String aggregationStrategy = (String) systemSettingManager.getSystemSetting( KEY_AGGREGATION_STRATEGY, DEFAULT_AGGREGATION_STRATEGY );
+        String aggregationStrategy = (String) systemSettingManager.getSystemSetting( KEY_AGGREGATION_STRATEGY,
+            DEFAULT_AGGREGATION_STRATEGY );
         boolean realTime = aggregationStrategy.equals( AGGREGATION_STRATEGY_REAL_TIME );
-        
+
         List<Section> sections = new ArrayList<Section>( dataSet.getSections() );
         Collections.sort( sections, new SectionOrderComparator() );
 
         List<Grid> grids = new ArrayList<Grid>();
-        
+
         // ---------------------------------------------------------------------
         // Create a grid for each section
         // ---------------------------------------------------------------------
@@ -147,33 +154,38 @@ public class DefaultDataSetReportService
             Grid grid = new ListGrid().setTitle( section.getName() );
 
             DataElementCategoryCombo categoryCombo = section.getCategoryCombo();
-            
+
             // -----------------------------------------------------------------
             // Grid headers
             // -----------------------------------------------------------------
 
-            grid.addHeader( new GridHeader( i18n.getString( "dataelement" ), false, true ) ); // Data element header
+            grid.addHeader( new GridHeader( i18n.getString( "dataelement" ), false, true ) ); // Data
+                                                                                              // element
+                                                                                              // header
 
             List<DataElementCategoryOptionCombo> optionCombos = categoryCombo.getSortedOptionCombos();
 
-            for ( DataElementCategoryOptionCombo optionCombo : optionCombos ) // Value headers
+            for ( DataElementCategoryOptionCombo optionCombo : optionCombos ) // Value
+                                                                              // headers
             {
-                grid.addHeader( new GridHeader( optionCombo.isDefault() ? DEFAULT_HEADER : optionCombo.getName(), false, false ) );
+                grid.addHeader( new GridHeader( optionCombo.isDefault() ? DEFAULT_HEADER : optionCombo.getName(),
+                    false, false ) );
             }
 
-            if ( categoryCombo.doSubTotals() && !selectedUnitOnly ) // Sub-total headers
+            if ( categoryCombo.doSubTotals() && !selectedUnitOnly ) // Sub-total
+                                                                    // headers
             {
                 for ( DataElementCategoryOption categoryOption : categoryCombo.getCategoryOptions() )
                 {
                     grid.addHeader( new GridHeader( categoryOption.getName(), false, false ) );
                 }
             }
-            
+
             if ( categoryCombo.doTotal() && !selectedUnitOnly ) // Total header
             {
                 grid.addHeader( new GridHeader( TOTAL_HEADER, false, false ) );
             }
-            
+
             // -----------------------------------------------------------------
             // Grid values
             // -----------------------------------------------------------------
@@ -193,36 +205,39 @@ public class DefaultDataSetReportService
                     if ( selectedUnitOnly )
                     {
                         DataValue dataValue = dataValueService.getDataValue( unit, dataElement, period, optionCombo );
-                        value = dataValue != null && dataValue.getValue() != null ? Double.parseDouble( dataValue.getValue() ) : null;
+                        value = dataValue != null && dataValue.getValue() != null ? Double.parseDouble( dataValue
+                            .getValue() ) : null;
                     }
                     else
                     {
-                        value = realTime ? 
-                            aggregationService.getAggregatedDataValue( dataElement, optionCombo, period.getStartDate(), period.getEndDate(), unit ) : 
-                            aggregatedDataValueService.getAggregatedValue( dataElement, optionCombo, period, unit );
+                        value = realTime ? aggregationService.getAggregatedDataValue( dataElement, optionCombo, period
+                            .getStartDate(), period.getEndDate(), unit ) : aggregatedDataValueService
+                            .getAggregatedValue( dataElement, optionCombo, period, unit );
                     }
-                    
+
                     grid.addValue( value );
                 }
-                
-                if ( categoryCombo.doSubTotals() && !selectedUnitOnly ) // Sub-total values
+
+                if ( categoryCombo.doSubTotals() && !selectedUnitOnly ) // Sub-total
+                                                                        // values
                 {
                     for ( DataElementCategoryOption categoryOption : categoryCombo.getCategoryOptions() )
                     {
-                        Double value = realTime ? 
-                            aggregationService.getAggregatedDataValue( dataElement, period.getStartDate(), period.getEndDate(), unit, categoryOption ) : 
-                            aggregatedDataValueService.getAggregatedValue( dataElement, categoryOption, period, unit );
+                        Double value = realTime ? aggregationService.getAggregatedDataValue( dataElement, period
+                            .getStartDate(), period.getEndDate(), unit, categoryOption ) : aggregatedDataValueService
+                            .getAggregatedValue( dataElement, categoryOption, period, unit );
 
                         grid.addValue( value );
                     }
                 }
-                
-                if ( categoryCombo.doTotal() && !selectedUnitOnly ) // Total value
+
+                if ( categoryCombo.doTotal() && !selectedUnitOnly ) // Total
+                                                                    // value
                 {
-                    Double value = realTime ?
-                        aggregationService.getAggregatedDataValue( dataElement, null, period.getStartDate(), period.getEndDate(), unit ) :
-                        aggregatedDataValueService.getAggregatedValue( dataElement, period, unit );
-                        
+                    Double value = realTime ? aggregationService.getAggregatedDataValue( dataElement, null, period
+                        .getStartDate(), period.getEndDate(), unit ) : aggregatedDataValueService.getAggregatedValue(
+                        dataElement, period, unit );
+
                     grid.addValue( value );
                 }
             }
@@ -232,7 +247,7 @@ public class DefaultDataSetReportService
 
         return grids;
     }
-    
+
     public Grid getDefaultDataSetReport( DataSet dataSet, Period period, OrganisationUnit unit, boolean selectedUnitOnly, I18nFormat format, I18n i18n )
     {
         List<DataElement> dataElements = new ArrayList<DataElement>( dataSet.getDataElements() );
@@ -270,7 +285,7 @@ public class DefaultDataSetReportService
         // Headers for GRID
         // ---------------------------------------------------------------------
 
-        grid.addHeader( new GridHeader( i18n.getString( "dataelement" ), false, true ) );
+        grid.addHeader( new GridHeader( i18n.getString( "name" ), false, true ) );
          
         for ( DataElementCategoryOptionCombo optionCombo : orderedOptionCombos )
         {
@@ -308,66 +323,100 @@ public class DefaultDataSetReportService
             }
         }
         
+        // ---------------------------------------------------------------------
+        // Indicator-values for GRID
+        // ---------------------------------------------------------------------
+
+        List<Indicator> indicators = new ArrayList<Indicator>( dataSet.getIndicators() );
+
+     // ---------------------------------------------------------------------
+        // Values for GRID
+        // ---------------------------------------------------------------------
+
+        for ( Indicator indicator : indicators )
+        {
+            grid.addRow();
+
+            grid.addValue( indicator.getName() );
+            
+            Double value = aggregationService.getAggregatedDenominatorValue( indicator, period.getStartDate(), period.getEndDate(), unit );
+            
+            grid.addValue( value );
+            
+            for (int i=1; i< orderedOptionCombos.size(); i++ )
+            {
+                grid.addValue( "" );
+            }
+        }
+        
         return grid;
     }
 
     // -------------------------------------------------------------------------
     // Supportive methods
     // -------------------------------------------------------------------------
-    
+
     /**
-     * Generates a map with aggregated data values or regular data values (depending
-     * on the selectedUnitOnly argument) mapped to a DataElemenet operand identifier.
+     * Generates a map with aggregated data values or regular data values
+     * (depending on the selectedUnitOnly argument) mapped to a DataElemenet
+     * operand identifier.
      * 
      * @param dataSet the DataSet.
      * @param unit the OrganisationUnit.
      * @param period the Period.
-     * @param selectedUnitOnly whether to include aggregated or regular data in the map.
+     * @param selectedUnitOnly whether to include aggregated or regular data in
+     *        the map.
      * @param format the I18nFormat.
      * @return a map.
      */
-    private Map<String, String> getAggregatedValueMap( DataSet dataSet, OrganisationUnit unit, Period period, boolean selectedUnitOnly, I18nFormat format )
+    private Map<String, String> getAggregatedValueMap( DataSet dataSet, OrganisationUnit unit, Period period,
+        boolean selectedUnitOnly, I18nFormat format )
     {
-        String aggregationStrategy = (String) systemSettingManager.getSystemSetting( KEY_AGGREGATION_STRATEGY, DEFAULT_AGGREGATION_STRATEGY );
-        
-        Collection<DataElement> dataElements = new ArrayList<DataElement>( dataSet.getDataElements());
-        
+        String aggregationStrategy = (String) systemSettingManager.getSystemSetting( KEY_AGGREGATION_STRATEGY,
+            DEFAULT_AGGREGATION_STRATEGY );
+
+        Collection<DataElement> dataElements = new ArrayList<DataElement>( dataSet.getDataElements() );
+
         FilterUtils.filter( dataElements, new AggregatableDataElementFilter() );
-        
-        Map<String, String> map = new TreeMap<String, String>();            
-        
+
+        Map<String, String> map = new TreeMap<String, String>();
+
         for ( DataElement dataElement : dataElements )
         {
             for ( DataElementCategoryOptionCombo categoryOptionCombo : dataElement.getCategoryCombo().getOptionCombos() )
             {
                 String value;
-                
+
                 if ( selectedUnitOnly )
-                {                                   
-                    DataValue dataValue = dataValueService.getDataValue( unit, dataElement, period, categoryOptionCombo );                                  
-                    value = ( dataValue != null ) ? dataValue.getValue() : null;
+                {
+                    DataValue dataValue = dataValueService
+                        .getDataValue( unit, dataElement, period, categoryOptionCombo );
+                    value = (dataValue != null) ? dataValue.getValue() : null;
                 }
                 else
                 {
-                    Double aggregatedValue = aggregationStrategy.equals( AGGREGATION_STRATEGY_REAL_TIME ) ? 
-                        aggregationService.getAggregatedDataValue( dataElement, categoryOptionCombo, period.getStartDate(), period.getEndDate(), unit ) :
-                            aggregatedDataValueService.getAggregatedValue( dataElement, categoryOptionCombo, period, unit );
-                    
+                    Double aggregatedValue = aggregationStrategy.equals( AGGREGATION_STRATEGY_REAL_TIME ) ? aggregationService
+                        .getAggregatedDataValue( dataElement, categoryOptionCombo, period.getStartDate(), period
+                            .getEndDate(), unit )
+                        : aggregatedDataValueService
+                            .getAggregatedValue( dataElement, categoryOptionCombo, period, unit );
+
                     value = format.formatValue( aggregatedValue );
-                }                 
-                
+                }
+
                 if ( value != null )
                 {
                     map.put( dataElement.getId() + SEPARATOR + categoryOptionCombo.getId(), value );
                 }
             }
         }
-        
+
         return map;
     }
 
     /**
-     * Generates a map with aggregated indicator values mapped to an Indicator identifier.
+     * Generates a map with aggregated indicator values mapped to an Indicator
+     * identifier.
      * 
      * @param dataSet the DataSet.
      * @param unit the OrganisationUnit.
@@ -375,26 +424,28 @@ public class DefaultDataSetReportService
      * @param format the I18nFormat.
      * @return a map.
      */
-    private Map<Integer, String> getAggregatedIndicatorValueMap( DataSet dataSet, OrganisationUnit unit, Period period, I18nFormat format )
+    private Map<Integer, String> getAggregatedIndicatorValueMap( DataSet dataSet, OrganisationUnit unit, Period period,
+        I18nFormat format )
     {
-        String aggregationStrategy = (String) systemSettingManager.getSystemSetting( KEY_AGGREGATION_STRATEGY, DEFAULT_AGGREGATION_STRATEGY );
-        
+        String aggregationStrategy = (String) systemSettingManager.getSystemSetting( KEY_AGGREGATION_STRATEGY,
+            DEFAULT_AGGREGATION_STRATEGY );
+
         Map<Integer, String> map = new TreeMap<Integer, String>();
-        
+
         for ( Indicator indicator : dataSet.getIndicators() )
         {
-            Double aggregatedValue = aggregationStrategy.equals( AGGREGATION_STRATEGY_REAL_TIME ) ? 
-                aggregationService.getAggregatedIndicatorValue( indicator, period.getStartDate(), period.getEndDate(), unit ) :
-                    aggregatedDataValueService.getAggregatedValue( indicator, period, unit );
-            
+            Double aggregatedValue = aggregationStrategy.equals( AGGREGATION_STRATEGY_REAL_TIME ) ? aggregationService
+                .getAggregatedIndicatorValue( indicator, period.getStartDate(), period.getEndDate(), unit )
+                : aggregatedDataValueService.getAggregatedValue( indicator, period, unit );
+
             String value = format.formatValue( aggregatedValue );
-            
+
             if ( value != null )
             {
                 map.put( indicator.getId(), value );
             }
         }
-        
+
         return map;
     }
 
@@ -407,8 +458,9 @@ public class DefaultDataSetReportService
      * @return data entry form HTML code populated with aggregated data in the
      *         input fields.
      */
-    private String prepareReportContent( DataEntryForm dataEntryForm, Map<String, String> dataValues, Map<Integer, String> indicatorValues )
-    {        
+    private String prepareReportContent( DataEntryForm dataEntryForm, Map<String, String> dataValues,
+        Map<Integer, String> indicatorValues )
+    {
         StringBuffer buffer = new StringBuffer();
 
         Matcher inputMatcher = INPUT_PATTERN.matcher( dataEntryForm.getHtmlCode() );
@@ -416,47 +468,47 @@ public class DefaultDataSetReportService
         // ---------------------------------------------------------------------
         // Iterate through all matching data element fields.
         // ---------------------------------------------------------------------
-        
+
         while ( inputMatcher.find() )
-        {       
+        {
             // -----------------------------------------------------------------
             // Get input HTML code
             // -----------------------------------------------------------------
-            
+
             String inputHtml = inputMatcher.group( 1 );
-            
+
             Matcher identifierMatcher = IDENTIFIER_PATTERN.matcher( inputHtml );
             Matcher indicatorMatcher = INDICATOR_PATTERN.matcher( inputHtml );
 
             // -----------------------------------------------------------------
             // Find existing data or indicator value and replace input tag
-            // -----------------------------------------------------------------               
-             
+            // -----------------------------------------------------------------
+
             if ( identifierMatcher.find() && identifierMatcher.groupCount() > 0 )
             {
                 Integer dataElementId = Integer.parseInt( identifierMatcher.group( 1 ) );
-                Integer optionComboId = Integer.parseInt( identifierMatcher.group( 2 ) ); 
-                
-                String dataValue = dataValues.get( dataElementId + SEPARATOR + optionComboId );               
-                
+                Integer optionComboId = Integer.parseInt( identifierMatcher.group( 2 ) );
+
+                String dataValue = dataValues.get( dataElementId + SEPARATOR + optionComboId );
+
                 dataValue = dataValue != null ? dataValue : NULL_REPLACEMENT;
-                
+
                 inputMatcher.appendReplacement( buffer, dataValue );
             }
             else if ( indicatorMatcher.find() && indicatorMatcher.groupCount() > 0 )
             {
                 Integer indicatorId = Integer.parseInt( indicatorMatcher.group( 1 ) );
-                
+
                 String indicatorValue = indicatorValues.get( indicatorId );
-                
+
                 indicatorValue = indicatorValue != null ? indicatorValue : NULL_REPLACEMENT;
-                
+
                 inputMatcher.appendReplacement( buffer, indicatorValue );
             }
         }
 
         inputMatcher.appendTail( buffer );
-        
+
         return buffer.toString();
     }
 }
