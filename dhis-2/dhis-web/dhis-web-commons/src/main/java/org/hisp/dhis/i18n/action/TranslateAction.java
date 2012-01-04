@@ -174,14 +174,18 @@ public class TranslateAction
         {
             String[] translation = request.getParameterValues( propertyName );
 
-            if ( translation != null && translation.length > 0 && translation[0].length() > 0 )
+            if ( translation != null && translation.length > 0  )
             {
-                if ( uniquePropertyNames.contains( propertyName ) )
+                if ( uniquePropertyNames.contains( propertyName ) && translation[0].length() > 0 )
                 {
                     if ( this.isDuplicatedInTranslation( thisLocale, propertyName, translation[0] ) )
                     {
                         return INPUT;
                     }
+                }
+                else if ( translation[0].length() == 0 )
+                {
+                	translation[0] = "";
                 }
 
                 translations.put( propertyName, translation[0] );
