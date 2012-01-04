@@ -120,13 +120,13 @@
 						#if ( $patientDataValue.value )        
 							#if( !$patientDataValue.providedByAnotherFacility )
 								$patientDataValue.organisationUnit.name
-								<input  name="providedByAnotherFacility" id="$id" type="hidden" onclick="updateProvidingFacility( $programStageDataElement.dataElement.id, this )">
+								<input  name="providedByAnotherFacility" id="$id" type="hidden" onclick="updateProvidingFacility( $programStageDataElement.dataElement.id, this )" #if($programStageInstance.completed) disabled="disabled" #end >
 							#else
 								$i18n.getString("other_facility")
-								<input  name="providedByAnotherFacility" id="$id" type="hidden" onclick="updateProvidingFacility( $programStageDataElement.dataElement.id, this )">
+								<input  name="providedByAnotherFacility" id="$id" type="hidden" onclick="updateProvidingFacility( $programStageDataElement.dataElement.id, this )" #if($programStageInstance.completed) disabled="disabled" #end >
 							#end
 						 #else
-							<input name="providedByAnotherFacility" id="$id" type="checkbox" onclick="updateProvidingFacility( $programStageDataElement.dataElement.id, this )">
+							<input name="providedByAnotherFacility" id="$id" type="checkbox" onclick="updateProvidingFacility( $programStageDataElement.dataElement.id, this )" #if($programStageInstance.completed) disabled="disabled" #end >
 						 #end                         
 					</td>    
 				</tr>

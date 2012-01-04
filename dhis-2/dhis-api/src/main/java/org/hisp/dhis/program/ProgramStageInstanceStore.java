@@ -67,4 +67,6 @@ public interface ProgramStageInstanceStore
     public List<ProgramStageInstance> get(OrganisationUnit unit, Date after, Date before, Boolean completed);
 
     List<ProgramStageInstance> getProgramStageInstances( Patient patient, Boolean completed);
+    
+    List<ProgramStageInstance> getProgramStageInstances( ProgramInstance programInstance, int min, int max );
 }
