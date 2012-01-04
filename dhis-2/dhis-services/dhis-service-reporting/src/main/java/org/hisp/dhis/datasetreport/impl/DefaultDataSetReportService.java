@@ -79,11 +79,8 @@ public class DefaultDataSetReportService
     implements DataSetReportService
 {
     private static final String NULL_REPLACEMENT = "";
-
     private static final String SEPARATOR = ":";
-
     private static final String DEFAULT_HEADER = "Value";
-
     private static final String TOTAL_HEADER = "Total";
 
     // -------------------------------------------------------------------------
@@ -159,21 +156,17 @@ public class DefaultDataSetReportService
             // Grid headers
             // -----------------------------------------------------------------
 
-            grid.addHeader( new GridHeader( i18n.getString( "dataelement" ), false, true ) ); // Data
-                                                                                              // element
-                                                                                              // header
+            grid.addHeader( new GridHeader( i18n.getString( "dataelement" ), false, true ) );
 
             List<DataElementCategoryOptionCombo> optionCombos = categoryCombo.getSortedOptionCombos();
 
-            for ( DataElementCategoryOptionCombo optionCombo : optionCombos ) // Value
-                                                                              // headers
+            for ( DataElementCategoryOptionCombo optionCombo : optionCombos )
             {
                 grid.addHeader( new GridHeader( optionCombo.isDefault() ? DEFAULT_HEADER : optionCombo.getName(),
                     false, false ) );
             }
 
             if ( categoryCombo.doSubTotals() && !selectedUnitOnly ) // Sub-total
-                                                                    // headers
             {
                 for ( DataElementCategoryOption categoryOption : categoryCombo.getCategoryOptions() )
                 {
@@ -181,7 +174,7 @@ public class DefaultDataSetReportService
                 }
             }
 
-            if ( categoryCombo.doTotal() && !selectedUnitOnly ) // Total header
+            if ( categoryCombo.doTotal() && !selectedUnitOnly ) // Total
             {
                 grid.addHeader( new GridHeader( TOTAL_HEADER, false, false ) );
             }
@@ -219,7 +212,6 @@ public class DefaultDataSetReportService
                 }
 
                 if ( categoryCombo.doSubTotals() && !selectedUnitOnly ) // Sub-total
-                                                                        // values
                 {
                     for ( DataElementCategoryOption categoryOption : categoryCombo.getCategoryOptions() )
                     {
@@ -232,7 +224,6 @@ public class DefaultDataSetReportService
                 }
 
                 if ( categoryCombo.doTotal() && !selectedUnitOnly ) // Total
-                                                                    // value
                 {
                     Double value = realTime ? aggregationService.getAggregatedDataValue( dataElement, null, period
                         .getStartDate(), period.getEndDate(), unit ) : aggregatedDataValueService.getAggregatedValue(
@@ -259,7 +250,7 @@ public class DefaultDataSetReportService
             DEFAULT_AGGREGATION_STRATEGY );
 
         // ---------------------------------------------------------------------
-        // Get the category-option-combos
+        // Get category option combos
         // ---------------------------------------------------------------------
 
         Set<DataElementCategoryOptionCombo> optionCombos = new HashSet<DataElementCategoryOptionCombo>();
@@ -275,14 +266,14 @@ public class DefaultDataSetReportService
         Collections.sort( orderedOptionCombos, new DataElementCategoryOptionComboNameComparator() );
 
         // ---------------------------------------------------------------------
-        // Create a GRID
+        // Create a grid
         // ---------------------------------------------------------------------
 
         Grid grid = new ListGrid().setTitle( dataSet.getName() );
         grid.setSubtitle( format.formatPeriod( period ) );
 
         // ---------------------------------------------------------------------
-        // Headers for GRID
+        // Headers
         // ---------------------------------------------------------------------
 
         grid.addHeader( new GridHeader( i18n.getString( "name" ), false, true ) );
@@ -293,7 +284,7 @@ public class DefaultDataSetReportService
         }
 
         // ---------------------------------------------------------------------
-        // Values for GRID
+        // Values
         // ---------------------------------------------------------------------
 
         for ( DataElement dataElement : dataElements )
@@ -324,28 +315,26 @@ public class DefaultDataSetReportService
         }
         
         // ---------------------------------------------------------------------
-        // Indicator-values for GRID
+        // Indicator values
         // ---------------------------------------------------------------------
 
         List<Indicator> indicators = new ArrayList<Indicator>( dataSet.getIndicators() );
-
-        // ---------------------------------------------------------------------
-        // Values for GRID
-        // ---------------------------------------------------------------------
-
+        
         for ( Indicator indicator : indicators )
         {
             grid.addRow();
 
             grid.addValue( indicator.getName() );
             
-            Double value = aggregationService.getAggregatedIndicatorValue( indicator, period.getStartDate(), period.getEndDate(), unit );
+            Double value = aggregationStrategy.equals( AGGREGATION_STRATEGY_REAL_TIME ) ?
+                aggregationService.getAggregatedIndicatorValue( indicator, period.getStartDate(), period.getEndDate(), unit ) :
+                aggregatedDataValueService.getAggregatedValue( indicator, period, unit );
             
             grid.addValue( value );
             
-            for (int i=1; i< orderedOptionCombos.size(); i++ )
+            for ( int i = 0; i < orderedOptionCombos.size() - 1; i++ )
             {
-                grid.addValue( "" );
+                grid.addValue( NULL_REPLACEMENT );
             }
         }
         
@@ -389,17 +378,14 @@ public class DefaultDataSetReportService
 
                 if ( selectedUnitOnly )
                 {
-                    DataValue dataValue = dataValueService
-                        .getDataValue( unit, dataElement, period, categoryOptionCombo );
+                    DataValue dataValue = dataValueService.getDataValue( unit, dataElement, period, categoryOptionCombo );
                     value = (dataValue != null) ? dataValue.getValue() : null;
                 }
                 else
                 {
-                    Double aggregatedValue = aggregationStrategy.equals( AGGREGATION_STRATEGY_REAL_TIME ) ? aggregationService
-                        .getAggregatedDataValue( dataElement, categoryOptionCombo, period.getStartDate(), period
-                            .getEndDate(), unit )
-                        : aggregatedDataValueService
-                            .getAggregatedValue( dataElement, categoryOptionCombo, period, unit );
+                    Double aggregatedValue = aggregationStrategy.equals( AGGREGATION_STRATEGY_REAL_TIME ) ? 
+                        aggregationService.getAggregatedDataValue( dataElement, categoryOptionCombo, period.getStartDate(), period.getEndDate(), unit ) : 
+                        aggregatedDataValueService.getAggregatedValue( dataElement, categoryOptionCombo, period, unit );
 
                     value = format.formatValue( aggregatedValue );
                 }
@@ -434,9 +420,9 @@ public class DefaultDataSetReportService
 
         for ( Indicator indicator : dataSet.getIndicators() )
         {
-            Double aggregatedValue = aggregationStrategy.equals( AGGREGATION_STRATEGY_REAL_TIME ) ? aggregationService
-                .getAggregatedIndicatorValue( indicator, period.getStartDate(), period.getEndDate(), unit )
-                : aggregatedDataValueService.getAggregatedValue( indicator, period, unit );
+            Double aggregatedValue = aggregationStrategy.equals( AGGREGATION_STRATEGY_REAL_TIME ) ? 
+                aggregationService.getAggregatedIndicatorValue( indicator, period.getStartDate(), period.getEndDate(), unit ) : 
+                aggregatedDataValueService.getAggregatedValue( indicator, period, unit );
 
             String value = format.formatValue( aggregatedValue );
 
