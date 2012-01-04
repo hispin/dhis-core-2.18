@@ -28,6 +28,7 @@
 package org.hisp.dhis.light.action.settings.action;
 
 import com.opensymphony.xwork2.Action;
+import org.apache.commons.lang.Validate;
 import org.hisp.dhis.i18n.I18nService;
 import org.hisp.dhis.i18n.locale.LocaleManager;
 import org.hisp.dhis.i18n.resourcebundle.ResourceBundleManager;
@@ -169,6 +170,7 @@ public class GetSettingsAction
         // ---------------------------------------------------------------------
 
         User user = currentUserService.getCurrentUser();
+        Validate.notNull( user );
 
         firstName = user.getFirstName();
         surname = user.getSurname();

@@ -146,9 +146,9 @@ public class SaveSettingsFormAction
     @Override
     public String execute()
     {
-        Validate.notEmpty( currentLocale );
-        Validate.notEmpty( firstName );
-        Validate.notEmpty( surname );
+        Validate.notNull( currentLocale );
+        Validate.notNull( firstName );
+        Validate.notNull( surname );
 
         // ---------------------------------------------------------------------
         // Update user account settings

@@ -33,6 +33,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.lang.Validate;
 import org.hisp.dhis.dataset.CompleteDataSetRegistration;
 import org.hisp.dhis.dataset.CompleteDataSetRegistrationService;
 import org.hisp.dhis.dataset.DataSet;
@@ -172,30 +173,31 @@ public class GetPeriodsAction
     @Override
     public String execute()
     {
-        if ( dataSetId != null )
+        Validate.notNull( organisationUnitId );
+        Validate.notNull( dataSetId );
+
+        OrganisationUnit organisationUnit = organisationUnitService.getOrganisationUnit( organisationUnitId );
+
+        dataSet = dataSetService.getDataSet( dataSetId );
+
+        CalendarPeriodType periodType = (CalendarPeriodType) dataSet.getPeriodType();
+        periods = periodType.generateLast5Years( new Date() );
+        FilterUtils.filter( periods, new PastAndCurrentPeriodFilter() );
+        Collections.reverse( periods );
+
+        if ( periods.size() > MAX_PERIODS )
         {
-            OrganisationUnit organisationUnit = organisationUnitService.getOrganisationUnit( organisationUnitId );
+            periods = periods.subList( 0, MAX_PERIODS );
+        }
 
-            dataSet = dataSetService.getDataSet( dataSetId );
-            CalendarPeriodType periodType = (CalendarPeriodType) dataSet.getPeriodType();
-            periods = periodType.generateLast5Years( new Date() );
-            FilterUtils.filter( periods, new PastAndCurrentPeriodFilter() );
-            Collections.reverse( periods );
+        for ( Period period : periods )
+        {
+            period.setName( format.formatPeriod( period ) );
 
-            if ( periods.size() > MAX_PERIODS )
-            {
-                periods = periods.subList( 0, MAX_PERIODS );
-            }
+            CompleteDataSetRegistration registration = registrationService.getCompleteDataSetRegistration( dataSet,
+                period, organisationUnit );
 
-            for ( Period period : periods )
-            {
-                period.setName( format.formatPeriod( period ) );
-
-                CompleteDataSetRegistration registration = registrationService.getCompleteDataSetRegistration( dataSet,
-                    period, organisationUnit );
-
-                periodCompletedMap.put( period, registration != null ? true : false );
-            }
+            periodCompletedMap.put( period, registration != null ? true : false );
         }
 
         return SUCCESS;

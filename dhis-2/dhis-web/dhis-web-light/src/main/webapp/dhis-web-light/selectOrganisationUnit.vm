@@ -7,7 +7,7 @@
 	#if( $organisationUnit.children.size() == 0 && $organisationUnit.dataSets.size() > 0 )
 		<li><a href="selectDataSet.action?organisationUnitId=$organisationUnit.id">$!encoder.htmlEncode( ${organisationUnit.name} )</a></li>
 	#else
-		#if( $organisationUnit.children.size() > 0 )
+        #if( $organisationUnit.children.size() > 0 )
 			#set( $children = $formUtils.organisationUnitWithDataSetsFilter( $organisationUnit.children ) )
 
 			#if( $organisationUnit.dataSets.size() > 0 )

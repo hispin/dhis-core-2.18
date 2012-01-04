@@ -30,6 +30,7 @@ package org.hisp.dhis.light.dataentry.action;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.lang.Validate;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
@@ -94,18 +95,17 @@ public class GetDataSetsAction
     @Override
     public String execute()
     {
-        if ( organisationUnitId != null )
+        Validate.notNull( organisationUnitId );
+
+        OrganisationUnit organisationUnit = organisationUnitService.getOrganisationUnit( organisationUnitId );
+
+        dataSets = new ArrayList<DataSet>( organisationUnit.getDataSets() );
+
+        UserCredentials userCredentials = currentUserService.getCurrentUser().getUserCredentials();
+
+        if ( !userCredentials.isSuper() )
         {
-            OrganisationUnit organisationUnit = organisationUnitService.getOrganisationUnit( organisationUnitId );
-            
-            dataSets = new ArrayList<DataSet>( organisationUnit.getDataSets() );
-
-            UserCredentials userCredentials = currentUserService.getCurrentUser().getUserCredentials();
-
-            if ( !userCredentials.isSuper() )
-            {
-                dataSets.retainAll( userCredentials.getAllDataSets() );
-            }
+            dataSets.retainAll( userCredentials.getAllDataSets() );
         }
 
         return SUCCESS;

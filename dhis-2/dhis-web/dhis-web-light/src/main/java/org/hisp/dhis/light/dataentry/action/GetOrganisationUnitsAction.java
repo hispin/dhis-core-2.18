@@ -27,17 +27,17 @@
 
 package org.hisp.dhis.light.dataentry.action;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-
+import com.opensymphony.xwork2.Action;
+import org.apache.commons.lang.Validate;
 import org.hisp.dhis.light.dataentry.utils.FormUtils;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.comparator.OrganisationUnitNameComparator;
 import org.hisp.dhis.user.CurrentUserService;
 import org.hisp.dhis.user.User;
 
-import com.opensymphony.xwork2.Action;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 /**
  * @author mortenoh
@@ -67,7 +67,7 @@ public class GetOrganisationUnitsAction
     {
         return formUtils;
     }
-    
+
     // -------------------------------------------------------------------------
     // Input & Output
     // -------------------------------------------------------------------------
@@ -87,12 +87,10 @@ public class GetOrganisationUnitsAction
     public String execute()
     {
         User user = currentUserService.getCurrentUser();
+        Validate.notNull( user );
 
-        if ( user != null )
-        {
-            organisationUnits = new ArrayList<OrganisationUnit>( user.getOrganisationUnits() );
-            Collections.sort( organisationUnits, new OrganisationUnitNameComparator() );
-        }
+        organisationUnits = new ArrayList<OrganisationUnit>( user.getOrganisationUnits() );
+        Collections.sort( organisationUnits, new OrganisationUnitNameComparator() );
 
         return SUCCESS;
     }
