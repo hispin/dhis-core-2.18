@@ -167,6 +167,10 @@ public class SaveSettingsFormAction
                 user.setEmail( email );
             }
         }
+        else
+        {
+            user.setEmail( email );
+        }
 
         userService.updateUser( user );
 
