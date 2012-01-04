@@ -27,17 +27,14 @@
 
 package org.hisp.dhis.light.action.settings.action;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Locale;
-
+import com.opensymphony.xwork2.Action;
 import org.hisp.dhis.i18n.I18nService;
 import org.hisp.dhis.i18n.locale.LocaleManager;
 import org.hisp.dhis.i18n.resourcebundle.ResourceBundleManager;
+import org.hisp.dhis.user.CurrentUserService;
+import org.hisp.dhis.user.User;
 
-import com.opensymphony.xwork2.Action;
+import java.util.*;
 
 /**
  * @author mortenoh
@@ -70,6 +67,13 @@ public class GetSettingsAction
         this.i18nService = i18nService;
     }
 
+    private CurrentUserService currentUserService;
+
+    public void setCurrentUserService( CurrentUserService currentUserService )
+    {
+        this.currentUserService = currentUserService;
+    }
+
     // -------------------------------------------------------------------------
     // Input & Output
     // -------------------------------------------------------------------------
@@ -88,18 +92,52 @@ public class GetSettingsAction
         return currentLocale;
     }
 
-    private List<Locale> availableLocalesDb;
+    private String firstName;
 
-    public List<Locale> getAvailableLocalesDb()
+    public String getFirstName()
     {
-        return availableLocalesDb;
+        return firstName;
     }
 
-    private Locale currentLocaleDb;
-
-    public Locale getCurrentLocaleDb()
+    public void setFirstName( String firstName )
     {
-        return currentLocaleDb;
+        this.firstName = firstName;
+    }
+
+    private String surname;
+
+    public String getSurname()
+    {
+        return surname;
+    }
+
+    public void setSurname( String surname )
+    {
+        this.surname = surname;
+    }
+
+    private String phoneNumber;
+
+    public String getPhoneNumber()
+    {
+        return phoneNumber;
+    }
+
+    public void setPhoneNumber( String phoneNumber )
+    {
+        this.phoneNumber = phoneNumber;
+    }
+
+    private String email;
+
+    public String getEmail()
+    {
+        return email;
+    }
+
+    public void setEmail( String email )
+    {
+        this.email = email;
     }
 
     // -------------------------------------------------------------------------
@@ -127,25 +165,15 @@ public class GetSettingsAction
         currentLocale = localeManager.getCurrentLocale();
 
         // ---------------------------------------------------------------------
-        // Get available locales in db
+        // Get settings for current user
         // ---------------------------------------------------------------------
 
-        availableLocalesDb = new ArrayList<Locale>( i18nService.getAvailableLocales() );
+        User user = currentUserService.getCurrentUser();
 
-        if ( !availableLocales.contains( localeManager.getFallbackLocale() ) )
-        {
-            availableLocales.add( localeManager.getFallbackLocale() );
-        }
-
-        Collections.sort( availableLocales, new Comparator<Locale>()
-        {
-            public int compare( Locale locale0, Locale locale1 )
-            {
-                return locale0.getDisplayName().compareTo( locale1.getDisplayName() );
-            }
-        } );
-
-        currentLocaleDb = localeManager.getCurrentLocale();
+        firstName = user.getFirstName();
+        surname = user.getSurname();
+        phoneNumber = user.getPhoneNumber();
+        email = user.getEmail();
 
         return SUCCESS;
     }

@@ -27,11 +27,16 @@
 
 package org.hisp.dhis.light.action.settings.action;
 
-import java.util.Locale;
-
-import org.hisp.dhis.i18n.locale.LocaleManager;
-
 import com.opensymphony.xwork2.Action;
+import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang.Validate;
+import org.apache.commons.validator.EmailValidator;
+import org.hisp.dhis.i18n.locale.LocaleManager;
+import org.hisp.dhis.user.CurrentUserService;
+import org.hisp.dhis.user.User;
+import org.hisp.dhis.user.UserService;
+
+import java.util.Locale;
 
 public class SaveSettingsFormAction
     implements Action
@@ -54,6 +59,20 @@ public class SaveSettingsFormAction
         this.localeManagerDB = localeManagerDB;
     }
 
+    private CurrentUserService currentUserService;
+
+    public void setCurrentUserService( CurrentUserService currentUserService )
+    {
+        this.currentUserService = currentUserService;
+    }
+
+    private UserService userService;
+
+    public void setUserService( UserService userService )
+    {
+        this.userService = userService;
+    }
+
     // -------------------------------------------------------------------------
     // Input & Output
     // -------------------------------------------------------------------------
@@ -72,6 +91,54 @@ public class SaveSettingsFormAction
         this.currentLocaleDb = currentLocaleDb;
     }
 
+    private String firstName;
+
+    public String getFirstName()
+    {
+        return firstName;
+    }
+
+    public void setFirstName( String firstName )
+    {
+        this.firstName = firstName;
+    }
+
+    private String surname;
+
+    public String getSurname()
+    {
+        return surname;
+    }
+
+    public void setSurname( String surname )
+    {
+        this.surname = surname;
+    }
+
+    private String phoneNumber;
+
+    public String getPhoneNumber()
+    {
+        return phoneNumber;
+    }
+
+    public void setPhoneNumber( String phoneNumber )
+    {
+        this.phoneNumber = phoneNumber;
+    }
+
+    private String email;
+
+    public String getEmail()
+    {
+        return email;
+    }
+
+    public void setEmail( String email )
+    {
+        this.email = email;
+    }
+
     // -------------------------------------------------------------------------
     // Action Implementation
     // -------------------------------------------------------------------------
@@ -79,9 +146,35 @@ public class SaveSettingsFormAction
     @Override
     public String execute()
     {
-        localeManagerInterface.setCurrentLocale( getRespectiveLocale( currentLocale ) );
+        Validate.notEmpty( currentLocale );
+        Validate.notEmpty( firstName );
+        Validate.notEmpty( surname );
 
-        localeManagerDB.setCurrentLocale( getRespectiveLocale( currentLocaleDb ) );
+        // ---------------------------------------------------------------------
+        // Update user account settings
+        // ---------------------------------------------------------------------
+
+        User user = currentUserService.getCurrentUser();
+
+        user.setFirstName( firstName );
+        user.setSurname( surname );
+        user.setPhoneNumber( phoneNumber );
+
+        if ( StringUtils.isNotBlank( email ) )
+        {
+            if ( EmailValidator.getInstance().isValid( email ) )
+            {
+                user.setEmail( email );
+            }
+        }
+
+        userService.updateUser( user );
+
+        // ---------------------------------------------------------------------
+        // Update locale settings (ui)
+        // ---------------------------------------------------------------------
+
+        localeManagerInterface.setCurrentLocale( getRespectiveLocale( currentLocale ) );
 
         return SUCCESS;
     }
@@ -97,19 +190,19 @@ public class SaveSettingsFormAction
 
         switch ( tokens.length )
         {
-        case 1:
-            newLocale = new Locale( tokens[0] );
-            break;
+            case 1:
+                newLocale = new Locale( tokens[0] );
+                break;
 
-        case 2:
-            newLocale = new Locale( tokens[0], tokens[1] );
-            break;
+            case 2:
+                newLocale = new Locale( tokens[0], tokens[1] );
+                break;
 
-        case 3:
-            newLocale = new Locale( tokens[0], tokens[1], tokens[2] );
-            break;
+            case 3:
+                newLocale = new Locale( tokens[0], tokens[1], tokens[2] );
+                break;
 
-        default:
+            default:
         }
 
         return newLocale;
