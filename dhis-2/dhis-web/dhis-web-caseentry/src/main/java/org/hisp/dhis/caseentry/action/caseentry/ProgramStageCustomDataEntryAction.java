@@ -248,14 +248,17 @@ public class ProgramStageCustomDataEntryAction
         programStage = programStageInstance.getProgramStage();
 
         programStageDataElements = new ArrayList<ProgramStageDataElement>( programStage.getProgramStageDataElements() );
-        
+
         Collections.sort( programStageDataElements, new ProgramStageDataElementSortOrderComparator() );
 
         program = programStage.getProgram();
 
         patient = programStageInstance.getProgramInstance().getPatient();
 
-        patientIdentifier = patientIdentifierService.getPatientIdentifier( patient );
+        if ( patient != null )
+        {
+            patientIdentifier = patientIdentifierService.getPatientIdentifier( patient );
+        }
 
         selectedStateManager.setSelectedProgramStageInstance( programStageInstance );
 

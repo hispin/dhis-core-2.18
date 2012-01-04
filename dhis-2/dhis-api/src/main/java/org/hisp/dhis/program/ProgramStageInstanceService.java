@@ -55,6 +55,8 @@ public interface ProgramStageInstanceService
     Collection<ProgramStageInstance> getProgramStageInstances( ProgramStage programStage );
 
     Collection<ProgramStageInstance> getProgramStageInstances( Collection<ProgramInstance> programInstances );
+    
+    List<ProgramStageInstance> getProgramStageInstances( ProgramInstance programInstance, int min, int max );
 
     Collection<ProgramStageInstance> getProgramStageInstances( Date dueDate );
 

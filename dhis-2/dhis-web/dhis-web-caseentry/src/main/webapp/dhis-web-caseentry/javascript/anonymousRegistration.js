@@ -8,6 +8,7 @@ function organisationUnitSelected( orgUnits )
 	
 	disable('createEventBtn');
 	disable('deleteCurrentEventBtn');
+	disable('showEventBtn');
 	
 	$.postJSON( 'loadAnonymousPrograms.action',{}
 		, function( json ) 
@@ -55,6 +56,7 @@ function loadEventForm()
 	var programId = getFieldValue('programId');
 	if( programId == '' )
 	{
+		disable('showEventBtn');
 		return;
 	}
 	
@@ -66,6 +68,7 @@ function loadEventForm()
 		}, 
 		function( json ) 
 		{    
+			enable('showEventBtn');
 			setFieldValue( 'programStageId', json.programStages[0].id );
 			setFieldValue( 'selectedProgramId', programId );
 			
@@ -75,13 +78,10 @@ function loadEventForm()
 			}
 			else
 			{
-				
 				enable( 'executionDate' );
 				enable('createEventBtn');
 				disable('deleteCurrentEventBtn');
 				disable('completeBtn');
-				disable('validationBtn');
-				
 				hideById('loaderDiv');
 			}
 			
@@ -104,7 +104,6 @@ function loadEventRegistrationForm()
 				enable('createEventBtn');
 				disable('deleteCurrentEventBtn');
 				disable('completeBtn');
-				disable('validationBtn');
 				enable( 'executionDate' );
 				$('#executionDate').bind('change');
 			}
@@ -116,14 +115,12 @@ function loadEventRegistrationForm()
 					enable('createEventBtn');
 					enable('deleteCurrentEventBtn');
 					disable('completeBtn');
-					disable('validationBtn');
 				} 
 				else
 				{
 					disable('createEventBtn');
 					enable('deleteCurrentEventBtn');
 					enable('completeBtn');
-					enable('validationBtn');
 					enable( 'executionDate' );
 					jQuery('#executionDate').bind('change');
 				}
@@ -197,4 +194,32 @@ function deleteCurrentEvent()
 				}
 			});
 	}
+}
+
+isAjax = true;
+function showHistoryEvents()
+{
+	contentDiv = 'dataEntryFormDiv';
+	$( '#dataEntryFormDiv' ).load( "getEventsByProgram.action", 
+		{ 
+			programInstanceId: jQuery('select[id=programId] option:selected').attr('programInstanceId')
+		},function( )
+		{
+		});
+}
+
+
+function viewRecords( programStageInstanceId ) 
+{
+	$('#viewEventDiv' )
+		.load( 'viewAnonymousEvents.action?programStageInstanceId=' + programStageInstanceId )
+		.dialog({
+			title: i18n_event_information,
+			maximize: true, 
+			closable: true,
+			modal:true,
+			overlay:{background:'#000000', opacity:0.1},
+			width: 800,
+			height: 400
+		});
 }

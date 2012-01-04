@@ -169,4 +169,9 @@ public class DefaultProgramStageInstanceService
     {
         return programStageInstanceStore.getProgramStageInstances( patient, completed );
     }
+    
+    public List<ProgramStageInstance> getProgramStageInstances( ProgramInstance programInstance, int min, int max )
+    {
+        return programStageInstanceStore.getProgramStageInstances( programInstance, min, max );
+    }
 }

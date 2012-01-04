@@ -33,9 +33,6 @@ import org.hibernate.criterion.Restrictions;
 import org.hisp.dhis.hibernate.HibernateGenericStore;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.program.Program;
-import org.hisp.dhis.program.ProgramAttribute;
-import org.hisp.dhis.program.ProgramAttributeOption;
-import org.hisp.dhis.program.ProgramAttributeOptionStore;
 import org.hisp.dhis.program.ProgramStore;
 
 /**

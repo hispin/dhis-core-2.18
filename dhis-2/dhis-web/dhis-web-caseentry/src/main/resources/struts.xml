@@ -456,6 +456,22 @@
 				/dhis-web-commons/ajax/jsonResponseError.vm</result>
 		</action>
 		
+		 <action name="getEventsByProgram"
+			class="org.hisp.dhis.caseentry.action.caseentry.GetEventsByProgramAction">
+			<result name="success" type="velocity">/content.vm</result>
+			<param name="page">/dhis-web-caseentry/historyAnonymousEvents.vm</param>
+			<param name="javascripts">javascript/anonymousRegistration.js</param>
+			<param name="stylesheets">
+                 ../dhis-web-caseentry/style/patient.css,
+                 ../dhis-web-commons/paging/paging.css</param>
+		</action>
+        
+        <action name="viewAnonymousEvents"
+                class="org.hisp.dhis.caseentry.action.caseentry.ProgramStageCustomDataEntryAction">
+                <result name="success" type="velocity">/content.vm</result>
+                <param name="page">/dhis-web-caseentry/dataEntryForm.vm</param>
+        </action>
+ 
 		<!-- Patient-Program Enrollment -->
 
 		<action name="showProgramEnrollmentForm"
