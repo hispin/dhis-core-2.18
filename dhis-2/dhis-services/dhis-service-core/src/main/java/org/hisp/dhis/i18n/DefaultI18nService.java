@@ -115,14 +115,8 @@ public class DefaultI18nService
 
             Map<String, String> translationsCurrentLocale = convertTranslations( translations );
 
-            Collection<Translation> translationsFallback = null; // Not
-                                                                    // initialized
-                                                                    // unless
-                                                                    // needed
-            Map<String, String> translationsFallbackLocale = null; // Not
-                                                                    // initialized
-                                                                    // unless
-                                                                    // needed
+            Collection<Translation> translationsFallback = null; // Not initialized unless needed
+            Map<String, String> translationsFallbackLocale = null; // Not initialized unless needed
 
             List<String> propertyNames = i18nObject.getPropertyNames();
 
@@ -171,16 +165,10 @@ public class DefaultI18nService
 
         if ( i18nObject != null && locale != null )
         {
-            Collection<Translation> allTranslations = translationService.getTranslations( i18nObject.getClassName(),
-                locale );
+            Collection<Translation> allTranslations = translationService.getTranslations( i18nObject.getClassName(), locale );
 
-            Collection<Translation> fallbackTranslations = null; // Not
-                                                                    // initialized
-                                                                    // unless
-                                                                    // needed
-            Map<String, String> fallbackTranslationsMap = null; // Not
-                                                                // initialized
-                                                                // unless needed
+            Collection<Translation> fallbackTranslations = null; // Not initialized unless needed
+            Map<String, String> fallbackTranslationsMap = null; // Not initialized unless needed
 
             for ( Object object : intObjects )
             {

@@ -35,7 +35,8 @@ import org.hisp.dhis.user.UserSettingService;
 
 /**
  * @author Torgeir Lorange Ostby
- * @version $Id: UserSettingLocaleManager.java 6335 2008-11-20 11:11:26Z larshelg $
+ * @version $Id: UserSettingLocaleManager.java 6335 2008-11-20 11:11:26Z
+ *          larshelg $
  */
 public class UserSettingLocaleManager
     implements LocaleManager

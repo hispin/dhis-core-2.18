@@ -74,11 +74,18 @@ public class GetGeneralSettingsAction
         this.i18nService = i18nService;
     }
 
-    private LocaleManager localeManager;
+    private LocaleManager localeManagerDB;
 
-    public void setLocaleManager( LocaleManager localeManager )
+    public void setLocaleManagerDB( LocaleManager localeManagerDB )
     {
-        this.localeManager = localeManager;
+        this.localeManagerDB = localeManagerDB;
+    }
+
+    private LocaleManager localeManagerInterface;
+
+    public void setLocaleManagerInterface( LocaleManager localeManagerInterface )
+    {
+        this.localeManagerInterface = localeManagerInterface;
     }
 
     private SortOrderManager sortOrderManager;
@@ -189,7 +196,7 @@ public class GetGeneralSettingsAction
     {
         return autoSave;
     }
-    
+
     private String currentStyle;
 
     public String getCurrentStyle()
@@ -225,7 +232,7 @@ public class GetGeneralSettingsAction
             }
         } );
 
-        currentLocale = localeManager.getCurrentLocale();
+        currentLocale = localeManagerInterface.getCurrentLocale();
 
         // ---------------------------------------------------------------------
         // Get available locales in db
@@ -233,12 +240,12 @@ public class GetGeneralSettingsAction
 
         availableLocalesDb = new ArrayList<Locale>( i18nService.getAvailableLocales() );
 
-        if ( !availableLocales.contains( localeManager.getFallbackLocale() ) )
+        if ( !availableLocalesDb.contains( localeManagerDB.getFallbackLocale() ) )
         {
-            availableLocales.add( localeManager.getFallbackLocale() );
+            availableLocalesDb.add( localeManagerDB.getFallbackLocale() );
         }
 
-        Collections.sort( availableLocales, new Comparator<Locale>()
+        Collections.sort( availableLocalesDb, new Comparator<Locale>()
         {
             public int compare( Locale locale0, Locale locale1 )
             {
@@ -246,7 +253,7 @@ public class GetGeneralSettingsAction
             }
         } );
 
-        currentLocaleDb = localeManager.getCurrentLocale();
+        currentLocaleDb = localeManagerDB.getCurrentLocale();
 
         // ---------------------------------------------------------------------
         // Get Sort orders

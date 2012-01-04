@@ -166,7 +166,7 @@ public class SetGeneralSettingsAction
         userSettingService.saveUserSetting( KEY_CHARTS_IN_DASHBOARD, chartsInDashboard );
 
         userSettingService.saveUserSetting( AUTO_SAVE_DATA_ENTRY_FORM, autoSave );
-        
+
         return SUCCESS;
     }
 
