@@ -28,6 +28,7 @@
 package org.hisp.dhis.light.dataentry.action;
 
 import com.opensymphony.xwork2.Action;
+import org.apache.commons.lang.Validate;
 import org.hisp.dhis.dataset.CompleteDataSetRegistration;
 import org.hisp.dhis.dataset.CompleteDataSetRegistrationService;
 import org.hisp.dhis.dataset.DataSet;
@@ -185,6 +186,10 @@ public class GetDataSetOverviewAction
     @Override
     public String execute()
     {
+        Validate.notNull( organisationUnitId );
+        Validate.notNull( periodId );
+        Validate.notNull( dataSetId );
+
         OrganisationUnit organisationUnit = organisationUnitService.getOrganisationUnit( organisationUnitId );
 
         Period period = periodService.getPeriodByExternalId( periodId );

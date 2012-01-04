@@ -28,6 +28,7 @@
 package org.hisp.dhis.light.dataentry.action;
 
 import com.opensymphony.xwork2.Action;
+import org.apache.commons.lang.Validate;
 import org.hisp.dhis.common.comparator.IdentifiableObjectNameComparator;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementOperand;
@@ -202,6 +203,10 @@ public class GetSectionFormAction
     @Override
     public String execute()
     {
+        Validate.notNull( organisationUnitId );
+        Validate.notNull( periodId );
+        Validate.notNull( dataSetId );
+
         OrganisationUnit organisationUnit = organisationUnitService.getOrganisationUnit( organisationUnitId );
 
         Period period = periodService.getPeriodByExternalId( periodId );

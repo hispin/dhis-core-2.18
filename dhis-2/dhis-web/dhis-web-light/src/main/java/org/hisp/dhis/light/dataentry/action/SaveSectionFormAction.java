@@ -29,6 +29,8 @@ package org.hisp.dhis.light.dataentry.action;
 
 import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionContext;
+import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang.Validate;
 import org.apache.struts2.ServletActionContext;
 import org.hisp.dhis.common.comparator.IdentifiableObjectNameComparator;
 import org.hisp.dhis.dataelement.DataElement;
@@ -261,6 +263,10 @@ public class SaveSectionFormAction
     @Override
     public String execute()
     {
+        Validate.notNull( organisationUnitId );
+        Validate.notNull( periodId );
+        Validate.notNull( dataSetId );
+
         OrganisationUnit organisationUnit = organisationUnitService.getOrganisationUnit( organisationUnitId );
 
         Period period = periodService.getPeriodByExternalId( periodId );
@@ -271,7 +277,7 @@ public class SaveSectionFormAction
 
         dataSet = dataSetService.getDataSet( dataSetId );
 
-        if ( storedBy == null )
+        if ( StringUtils.isNotBlank( storedBy ) )
         {
             storedBy = "[unknown]";
         }
