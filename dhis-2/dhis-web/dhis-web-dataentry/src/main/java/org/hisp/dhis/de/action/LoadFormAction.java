@@ -42,7 +42,7 @@ import org.hisp.dhis.dataelement.DataElementCategoryOption;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
 import org.hisp.dhis.dataelement.DataElementOperand;
 import org.hisp.dhis.dataelement.DataElementService;
-import org.hisp.dhis.dataelement.comparator.DataElementSortOrderComparator;
+import org.hisp.dhis.dataelement.comparator.DataElementNameComparator;
 import org.hisp.dhis.dataentryform.DataEntryForm;
 import org.hisp.dhis.dataentryform.DataEntryFormService;
 import org.hisp.dhis.dataset.DataSet;
@@ -50,7 +50,6 @@ import org.hisp.dhis.dataset.DataSetService;
 import org.hisp.dhis.dataset.Section;
 import org.hisp.dhis.dataset.comparator.SectionOrderComparator;
 import org.hisp.dhis.i18n.I18n;
-import org.hisp.dhis.options.displayproperty.DisplayPropertyHandler;
 
 import com.opensymphony.xwork2.Action;
 
@@ -101,17 +100,6 @@ public class LoadFormAction
     public void setDataElementComparator( Comparator<DataElement> dataElementComparator )
     {
         this.dataElementComparator = dataElementComparator;
-    }
-
-    // -------------------------------------------------------------------------
-    // DisplayPropertyHandler
-    // -------------------------------------------------------------------------
-
-    private DisplayPropertyHandler displayPropertyHandler;
-
-    public void setDisplayPropertyHandler( DisplayPropertyHandler displayPropertyHandler )
-    {
-        this.displayPropertyHandler = displayPropertyHandler;
     }
 
     // -------------------------------------------------------------------------
@@ -329,8 +317,8 @@ public class LoadFormAction
 
             for ( DataElementOperand operand : section.getGreyedFields() )
             {
-                greyedFields.put( operand.getDataElement().getId() + ":" + operand.getCategoryOptionCombo().getId(),
-                    true );
+                greyedFields.put( operand.getDataElement().getId() + ":" + 
+                    operand.getCategoryOptionCombo().getId(), true );
             }
         }
     }
@@ -351,8 +339,7 @@ public class LoadFormAction
         {
             des = (List<DataElement>) orderedDataElements.get( categoryCombo );
 
-            displayPropertyHandler.handle( des );
-            Collections.sort( des, new DataElementSortOrderComparator() );
+            Collections.sort( des, new DataElementNameComparator() );
 
             orderedDataElements.put( categoryCombo, des );
         }
