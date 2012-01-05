@@ -44,15 +44,10 @@ public class DataValueSet
    // ---------------------------------------------------------------------------
 
     public static final String ATTR_COMMENT = "comment";
-
     public static final String ATTR_DATASET = "dataSet";
-
     public static final String ATTR_IDSCHEME = "idScheme";
-
     public static final String ATTR_ORGUNIT = "orgUnit";
-
     public static final String ATTR_PERIOD = "period";
-
     public static final String ATTR_COMPLETE = "period";
 
     public static final String DATAVALUE = "dataValue";

@@ -27,14 +27,28 @@ package org.hisp.dhis.api.webdomain;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
+
 import org.codehaus.jackson.annotate.JsonProperty;
 import org.hisp.dhis.attribute.Attributes;
 import org.hisp.dhis.chart.Charts;
 import org.hisp.dhis.common.BaseCollection;
-import org.hisp.dhis.common.BaseLinkableObject;
 import org.hisp.dhis.common.Dxf2Namespace;
 import org.hisp.dhis.constant.Constants;
-import org.hisp.dhis.dataelement.*;
+import org.hisp.dhis.dataelement.DataElementCategories;
+import org.hisp.dhis.dataelement.DataElementCategoryCombos;
+import org.hisp.dhis.dataelement.DataElementCategoryOptionCombos;
+import org.hisp.dhis.dataelement.DataElementCategoryOptions;
+import org.hisp.dhis.dataelement.DataElementGroupSets;
+import org.hisp.dhis.dataelement.DataElementGroups;
+import org.hisp.dhis.dataelement.DataElements;
 import org.hisp.dhis.dataset.DataSets;
 import org.hisp.dhis.document.Documents;
 import org.hisp.dhis.indicator.IndicatorGroupSets;
@@ -55,14 +69,6 @@ import org.hisp.dhis.validation.ValidationRuleGroups;
 import org.hisp.dhis.validation.ValidationRules;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.RequestMethod;
-
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlRootElement;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 
 /**
  * At some point this class will be extended to show all available options
