@@ -119,7 +119,7 @@ public class ProgramEnrollmentSelectAction
         // Check the selected orgunit has any single-event program or not
         Collection<Program> programsbyOrgunit = programService.getPrograms( selectedOrgunit );
 
-        Collection<Program> singleEventPrograms = programService.getPrograms( true );
+        Collection<Program> singleEventPrograms = programService.getPrograms( true, false );
 
         singleEventPrograms.retainAll( programsbyOrgunit );
 
