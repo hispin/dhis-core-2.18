@@ -32,7 +32,7 @@ import java.util.Date;
 import java.util.List;
 
 import org.hibernate.Query;
-import org.hibernate.criterion.Order;
+import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.hisp.dhis.hibernate.HibernateGenericStore;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
@@ -144,12 +144,20 @@ public class HibernateProgramStageInstanceStore
 
         return getQuery( hql ).setEntity( "patient", patient ).setBoolean( "completed", completed ).list();
     }
-    
+
     @SuppressWarnings( "unchecked" )
-    public List<ProgramStageInstance> getProgramStageInstances( ProgramInstance programInstance, int min, int max )
+    public List<ProgramStageInstance> getProgramStageInstances( ProgramInstance programInstance, Date executionDate,
+        int min, int max )
     {
-        return getCriteria( Restrictions.eq( "programInstance.id", programInstance.getId() ) )
-            .addOrder(Order.desc("id")).setFirstResult( min )
-            .setMaxResults( max ).list();
+        return getCriteria( Restrictions.eq( "programInstance.id", programInstance.getId() ),
+            Restrictions.eq( "executionDate", executionDate ) ).setFirstResult( min ).setMaxResults( max ).list();
+    }
+
+    public int countProgramStageInstances( ProgramInstance programInstance, Date executionDate )
+    {
+        Number rs = (Number) getCriteria( Restrictions.eq( "programInstance.id", programInstance.getId() ),
+            Restrictions.eq( "executionDate", executionDate ) ).setProjection( Projections.rowCount() ).uniqueResult();
+
+        return rs != null ? rs.intValue() : 0;
     }
 }

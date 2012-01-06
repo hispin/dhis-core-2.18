@@ -1,18 +1,26 @@
 <h2>$i18n.getString('history_events')</h2>
-<table>
+
+<table width='100%'>
 	#foreach( $programStageInstance in $programStageInstances)
-	<tr>	
-		<td>
-			<a href="javascript:viewRecords( $programStageInstance.id )">
-				$format.formatDate( $programStageInstance.executionDate )
-			</a>
-		</td>
+	<tr>
+		<td id='td$programStageInstance.id'></td>
 	</tr>
 	#end
 	
 	<tr>
-		<div class="paging-container">
-			#parse( "/dhis-web-commons/paging/paging.vm" )
-		</div>
+		<td>&nbsp;</td>
+	</tr>
+	<tr>
+		<td>
+			<div class="paging-container">
+				#parse( "/dhis-web-commons/paging/paging.vm" )
+			</div>
+		</td>
 	</tr>
 </table>
+
+<script>
+	#foreach( $programStageInstance in $programStageInstances)
+		viewRecords( '$programStageInstance.id', 'td$programStageInstance.id' );
+	#end
+</script>

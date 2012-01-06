@@ -28,7 +28,9 @@
 package org.hisp.dhis.caseentry.action.caseentry;
 
 import java.util.Collection;
+import java.util.Date;
 
+import org.hisp.dhis.i18n.I18nFormat;
 import org.hisp.dhis.paging.ActionPagingSupport;
 import org.hisp.dhis.program.ProgramInstance;
 import org.hisp.dhis.program.ProgramInstanceService;
@@ -73,6 +75,20 @@ public class GetEventsByProgramAction
         this.programInstanceId = programInstanceId;
     }
 
+    private String executionDate;
+
+    public void setExecutionDate( String executionDate )
+    {
+        this.executionDate = executionDate;
+    }
+
+    private I18nFormat format;
+
+    public void setFormat( I18nFormat format )
+    {
+        this.format = format;
+    }
+
     private Collection<ProgramStageInstance> programStageInstances;
 
     public Collection<ProgramStageInstance> getProgramStageInstances()
@@ -96,12 +112,14 @@ public class GetEventsByProgramAction
     {
         ProgramInstance programInstance = programInstanceService.getProgramInstance( programInstanceId );
 
-        total = programInstance.getProgramStageInstances().size();
+        Date dateValue = format.parseDate( executionDate );
+
+        total = programStageInstanceService.countProgramStageInstances( programInstance, dateValue );
 
         this.paging = createPaging( total );
 
-        programStageInstances = programStageInstanceService.getProgramStageInstances( programInstance, paging
-            .getStartPos(), paging.getPageSize() );
+        programStageInstances = programStageInstanceService.getProgramStageInstances( programInstance, dateValue,
+            paging.getStartPos(), paging.getPageSize() );
 
         return SUCCESS;
     }
