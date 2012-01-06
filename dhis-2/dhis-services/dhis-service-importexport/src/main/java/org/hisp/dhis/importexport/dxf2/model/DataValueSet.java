@@ -52,12 +52,12 @@ public class DataValueSet
 
     public static final String DATAVALUE = "dataValue";
 
-    public enum IdentificationStrategy { INTERNAL, UUID, CODE  };
+    public enum IdentificationStrategy { INTERNAL, UID, CODE  };
 
     /**
      *  A default strategy to use.
      */
-    public static final IdentificationStrategy DEFAULT_STRATEGY = IdentificationStrategy.UUID;
+    public static final IdentificationStrategy DEFAULT_STRATEGY = IdentificationStrategy.UID;
 
     @XmlAttribute( name = ATTR_DATASET )
     private String dataSetIdentifier;
