@@ -80,7 +80,6 @@ function exportDataSetReport( type )
 function showCriteria()
 {
 	$( "#criteria" ).show( "fast" );
-	$( "#content" ).hide();
 }
 
 function hideCriteria()

@@ -57,6 +57,7 @@ function loadEventForm()
 	if( programId == '' )
 	{
 		disable('showEventBtn');
+		$('#executionDate').unbind('change');
 		return;
 	}
 	
@@ -71,6 +72,7 @@ function loadEventForm()
 			enable('showEventBtn');
 			setFieldValue( 'programStageId', json.programStages[0].id );
 			setFieldValue( 'selectedProgramId', programId );
+			$('#executionDate').bind('change');
 			
 			if( json.programStageInstances.length > 0 )
 			{
@@ -199,27 +201,24 @@ function deleteCurrentEvent()
 isAjax = true;
 function showHistoryEvents()
 {
+	$('#executionDate').unbind('change');
 	contentDiv = 'dataEntryFormDiv';
 	$( '#dataEntryFormDiv' ).load( "getEventsByProgram.action", 
 		{ 
-			programInstanceId: jQuery('select[id=programId] option:selected').attr('programInstanceId')
+			programInstanceId: jQuery('select[id=programId] option:selected').attr('programInstanceId'),
+			executionDate: getFieldValue('executionDate')
 		},function( )
 		{
 		});
 }
 
 
-function viewRecords( programStageInstanceId ) 
+function viewRecords( programStageInstanceId, div ) 
 {
-	$('#viewEventDiv' )
-		.load( 'viewAnonymousEvents.action?programStageInstanceId=' + programStageInstanceId )
-		.dialog({
-			title: i18n_event_information,
-			maximize: true, 
-			closable: true,
-			modal:true,
-			overlay:{background:'#000000', opacity:0.1},
-			width: 800,
-			height: 400
+	$( '#' + div )
+		.load( 'viewAnonymousEvents.action?programStageInstanceId=' + programStageInstanceId ,{}
+		,function( )
+		{
+			$('#executionDate').unbind('change');
 		});
 }

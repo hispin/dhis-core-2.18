@@ -37,7 +37,6 @@
 #parse( "dhis-web-commons/loader/loader.vm" )
 
 <div id="dataEntryFormDiv"> </div>
-<div id='viewEventDiv'></div>
 
 <script>
 	var i18n_please_select = '[ ' + '$encoder.jsEscape( $i18n.getString( "please_select" ) , "'" )' + ' ]';
