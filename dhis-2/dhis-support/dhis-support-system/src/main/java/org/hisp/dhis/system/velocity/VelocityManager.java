@@ -27,17 +27,17 @@ package org.hisp.dhis.system.velocity;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.io.StringWriter;
-
 import org.apache.velocity.VelocityContext;
 import org.apache.velocity.app.Velocity;
 import org.apache.velocity.app.VelocityEngine;
 import org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader;
 
+import java.io.StringWriter;
+
 public class VelocityManager
 {
     public static final String CONTEXT_KEY = "object";
-    
+
     private static final String RESOURCE_LOADER_NAME = "class";
     private static final String VM_SUFFIX = ".vm";
     private VelocityEngine velocity;
@@ -56,27 +56,31 @@ public class VelocityManager
     {
         return velocity;
     }
-    
+
+    public String render( String template )
+    {
+        return render( null, template );
+    }
+
     public String render( Object object, String template )
     {
         try
         {
             StringWriter writer = new StringWriter();
-            
+
             VelocityContext context = new VelocityContext();
-            
+
             if ( object != null )
             {
                 context.put( CONTEXT_KEY, object );
             }
-            
+
             velocity.getTemplate( template + VM_SUFFIX ).merge( context, writer );
-            
+
             return writer.toString();
-            
+
             // TODO include encoder in context
-        }
-        catch ( Exception ex )
+        } catch ( Exception ex )
         {
             throw new RuntimeException( "Failed to merge velocity template", ex );
         }
