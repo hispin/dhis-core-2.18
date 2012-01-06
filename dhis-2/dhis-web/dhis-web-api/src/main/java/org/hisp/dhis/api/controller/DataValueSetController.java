@@ -27,25 +27,22 @@ package org.hisp.dhis.api.controller;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.io.IOException;
-import java.util.Collection;
-
-import javax.servlet.http.HttpServletResponse;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hisp.dhis.importexport.dxf2.model.DataValueSet;
 import org.hisp.dhis.importexport.dxf2.service.DataValueSetService;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
+import org.hisp.dhis.system.velocity.VelocityManager;
 import org.hisp.dhis.user.User;
 import org.hisp.dhis.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
+
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.io.Writer;
+import java.util.Collection;
 
 @Controller
 @RequestMapping( value = DataValueSetController.RESOURCE_PATH )
@@ -60,6 +57,14 @@ public class DataValueSetController
 
     @Autowired
     private UserService userService;
+
+    @RequestMapping( method = RequestMethod.GET )
+    public void getDataValueSet( Writer writer ) throws Exception
+    {
+        VelocityManager velocityManager = new VelocityManager();
+        String str = velocityManager.render( "/templates/html/dataValueSet" );
+        writer.write( str );
+    }
 
     @RequestMapping( method = RequestMethod.POST )
     public void storeDataValueSet( @RequestBody DataValueSet dataValueSet, @RequestParam( required = false ) String phoneNumber )
@@ -96,11 +101,12 @@ public class DataValueSetController
      * @param phoneNumber The phone number to look up
      * @return the organisation unit uid
      * @throws IllegalArgumentException if
-     *         <ul>
-     *         <li>No user has phone number
-     *         <li>More than one user has phone number
-     *         <li>User not associated with org unit
-     *         <li>User associated with multiple org units
+     *                                  <ul>
+     *                                  <li>No user has phone number
+     *                                  <li>More than one user has phone number
+     *                                  <li>User not associated with org unit
+     *                                  <li>User associated with multiple org units
+     *                                  </ul>
      */
     private String findOrgUnit( String phoneNumber )
         throws IllegalArgumentException
@@ -134,5 +140,4 @@ public class DataValueSetController
         return organisationUnits.iterator().next().getUid();
 
     }
-
 }
