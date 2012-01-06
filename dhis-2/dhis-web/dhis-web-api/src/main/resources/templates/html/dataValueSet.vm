@@ -8,7 +8,7 @@ The supported format is XML, and the root dataValueSet is declared with the foll
 
 dataSet     - The UID of the dataset to report on
 period      - The period to report on
-orgUnit     - The organisation unit to report on
+orgUnit     - The UID of organisation unit to report on
 
 The actual dataValues are sent with a format matching this
 
