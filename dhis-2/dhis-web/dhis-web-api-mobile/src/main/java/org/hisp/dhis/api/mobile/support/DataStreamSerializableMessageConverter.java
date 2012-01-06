@@ -18,14 +18,24 @@ public class DataStreamSerializableMessageConverter
     @Override
     public boolean canRead( Class<?> clazz, MediaType mediaType )
     {
-        return MediaTypes.MEDIA_TYPES.contains( mediaType) && DataStreamSerializable.class.isAssignableFrom( clazz );
+    	if (mediaType == null){
+    		return DataStreamSerializable.class.isAssignableFrom( clazz );
+    	}
+    	else {
+    		return MediaTypes.MEDIA_TYPES.contains( mediaType) && DataStreamSerializable.class.isAssignableFrom( clazz );
+    	}
     }
 
 
     @Override
     public boolean canWrite( Class<?> clazz, MediaType mediaType )
     {
-        return MediaTypes.MEDIA_TYPES.contains( mediaType) && DataStreamSerializable.class.isAssignableFrom( clazz );
+    	if (mediaType == null){
+    		return DataStreamSerializable.class.isAssignableFrom( clazz );
+    	}
+    	else {
+    		return MediaTypes.MEDIA_TYPES.contains( mediaType) && DataStreamSerializable.class.isAssignableFrom( clazz );
+    	}
     }
 
     @Override
