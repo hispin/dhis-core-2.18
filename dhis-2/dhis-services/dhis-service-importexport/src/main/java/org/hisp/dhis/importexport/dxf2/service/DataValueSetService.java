@@ -120,7 +120,7 @@ public class DataValueSetService
      * <li>completed semantics: can't uncomplete but can complete and
      * "recomplete"
      * <li>what is 'comment' good for really?
-     * 
+     *
      * @param dataValueSet
      * @throws IllegalArgumentException if there are any inconsistencies
      */
@@ -134,7 +134,7 @@ public class DataValueSetService
         IdentificationStrategy idStrategy = dataValueSet.getIdScheme();
         if ( idStrategy != DataValueSet.DEFAULT_STRATEGY )
         {
-            throw new IllegalArgumentException( "Onlu UUID id strategy supported currently." );
+            throw new IllegalArgumentException( "Only UID id strategy supported currently." );
         }
 
         DataSet dataSet = getDataSet( dataValueSet );
@@ -143,8 +143,8 @@ public class DataValueSetService
 
         if ( !dataSet.getSources().contains( unit ) )
         {
-            throw new IllegalArgumentException( "Org unit with UUID " + unit.getUid()
-                + " does not report data set with UUID " + dataSet.getUid() );
+            throw new IllegalArgumentException( "Org unit with UID " + unit.getUid()
+                + " does not report data set with UID " + dataSet.getUid() );
         }
 
         Period period = getPeriod( dataValueSet.getPeriodIsoDate(), dataSet.getPeriodType() );
@@ -347,51 +347,51 @@ public class DataValueSetService
         return period;
     }
 
-    private OrganisationUnit getOrgUnit( String id )
+    private OrganisationUnit getOrgUnit( String uid )
     {
-        OrganisationUnit unit = organisationUnitService.getOrganisationUnit( id );
+        OrganisationUnit unit = organisationUnitService.getOrganisationUnit( uid );
 
         if ( unit == null )
         {
-            throw new IllegalArgumentException( "Org unit with UUID " + id + " does not exist" );
+            throw new IllegalArgumentException( "Org unit with UID " + uid + " does not exist" );
         }
         return unit;
     }
 
-    private DataElement getDataElement( String id )
+    private DataElement getDataElement( String uid )
     {
-        DataElement dataElement = dataElementService.getDataElement( id );
+        DataElement dataElement = dataElementService.getDataElement( uid );
 
         if ( dataElement == null )
         {
-            throw new IllegalArgumentException( "Data element with UUID " + id + " does not exist" );
+            throw new IllegalArgumentException( "Data element with UID " + uid + " does not exist" );
         }
 
         return dataElement;
     }
 
-    private DataElementCategoryOptionCombo getOptionCombo( String uuid, DataElement dataElement )
+    private DataElementCategoryOptionCombo getOptionCombo( String uid, DataElement dataElement )
     {
         DataElementCategoryOptionCombo combo;
 
-        if ( uuid == null )
+        if ( uid == null )
         {
             combo = categoryService.getDefaultDataElementCategoryOptionCombo();
         }
         else
         {
-            combo = categoryService.getDataElementCategoryOptionCombo( uuid );
+            combo = categoryService.getDataElementCategoryOptionCombo( uid );
         }
 
         if ( combo == null )
         {
-            throw new IllegalArgumentException( "DataElementCategoryOptionCombo with UUID '" + uuid
+            throw new IllegalArgumentException( "DataElementCategoryOptionCombo with UID '" + uid
                 + "' does not exist" );
         }
 
         if ( !dataElement.getCategoryCombo().getOptionCombos().contains( combo ) )
         {
-            throw new IllegalArgumentException( "DataElementCategoryOptionCombo with UUID '" + combo.getUid()
+            throw new IllegalArgumentException( "DataElementCategoryOptionCombo with UID '" + combo.getUid()
                 + "' isn't in DataElement '" + dataElement.getUid() + "'" );
         }
         return combo;

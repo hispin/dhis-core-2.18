@@ -453,7 +453,7 @@ public class StaXDataValueImportService
         OrganisationUnit ou;
         switch ( idScheme )
         {
-            case UUID:
+            case UID:
                 ou = organisationUnitService.getOrganisationUnit( orgunit );
                 break;
             case CODE:
