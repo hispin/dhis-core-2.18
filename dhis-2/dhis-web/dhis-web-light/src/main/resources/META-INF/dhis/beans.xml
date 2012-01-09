@@ -128,11 +128,19 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     <property name="messageService" ref="org.hisp.dhis.message.MessageService" />
   </bean>
 
-  <bean id="org.hisp.dhis.light.message.action.GetMessages" class="org.hisp.dhis.light.message.action.GetMessages">
+  <bean id="org.hisp.dhis.light.message.action.GetMessagesAction" class="org.hisp.dhis.light.message.action.GetMessagesAction">
     <property name="messageService" ref="org.hisp.dhis.message.MessageService" />
   </bean>
 
-  <bean id="org.hisp.dhis.light.message.action.GetMessage" class="org.hisp.dhis.light.message.action.GetMessage">
+  <bean id="org.hisp.dhis.light.message.action.GetMessageAction" class="org.hisp.dhis.light.message.action.GetMessageAction">
+    <property name="messageService" ref="org.hisp.dhis.message.MessageService" />
+  </bean>
+
+  <bean id="org.hisp.dhis.light.message.action.SendReplyAction" class="org.hisp.dhis.light.message.action.SendReplyAction">
+    <property name="messageService" ref="org.hisp.dhis.message.MessageService" />
+  </bean>
+
+  <bean id="org.hisp.dhis.light.message.action.SendFeedbackAction" class="org.hisp.dhis.light.message.action.SendFeedbackAction">
     <property name="messageService" ref="org.hisp.dhis.message.MessageService" />
   </bean>
 
