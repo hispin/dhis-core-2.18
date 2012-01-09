@@ -186,7 +186,7 @@ public class DefaultDataMartEngine
     {
         final int cpuCores = SystemUtils.getCpuCores();
         
-        Clock clock = new Clock().startClock().logTime( "Data mart export process started, number of CPU cores: " + cpuCores );
+        Clock clock = new Clock().startClock().logTime( "Data mart export process started, number of CPU cores: " + cpuCores + ", " + SystemUtils.getMemoryString() );
 
         // ---------------------------------------------------------------------
         // Replace null with empty collection
@@ -262,7 +262,7 @@ public class DefaultDataMartEngine
 
         indicatorOperands.retainAll( allOperands );
         
-        clock.logTime( "Number of operands with data: " + allOperands.size() );
+        clock.logTime( "Number of operands with data: " + allOperands.size() + ", " + SystemUtils.getMemoryString() );
 
         // ---------------------------------------------------------------------
         // Create crosstabtable
@@ -286,7 +286,7 @@ public class DefaultDataMartEngine
 
         ConcurrentUtils.waitForCompletion( crossTabFutures );
         
-        clock.logTime( "Populated crosstab table" );
+        clock.logTime( "Populated crosstab table, " + SystemUtils.getMemoryString() );
 
         final boolean isIndicators = indicators != null && indicators.size() > 0;
         
@@ -296,7 +296,7 @@ public class DefaultDataMartEngine
 
         crossTabService.createAggregatedDataCache( indicatorOperands, key );
         
-        clock.logTime( "Created aggregated data cache" );
+        clock.logTime( "Created aggregated data cache, number of indicator operands: " + indicatorOperands.size() + ", operands with data: " + allOperands.size() );
         
         // ---------------------------------------------------------------------
         // 2. Drop potential indexes
@@ -343,7 +343,7 @@ public class DefaultDataMartEngine
 
             ConcurrentUtils.waitForCompletion( futures );
             
-            clock.logTime( "Exported values for data element operands (" + allOperands.size() + "), number of pages: " + organisationUnitPages.size() );
+            clock.logTime( "Exported values for data element operands (" + allOperands.size() + "), pages: " + organisationUnitPages.size() + ", " + SystemUtils.getMemoryString() );
         }
 
         // ---------------------------------------------------------------------
@@ -379,7 +379,7 @@ public class DefaultDataMartEngine
 
             ConcurrentUtils.waitForCompletion( futures );
             
-            clock.logTime( "Exported values for indicators (" + indicators.size() + "), number of pages: " + organisationUnitPages.size() );
+            clock.logTime( "Exported values for indicators (" + indicators.size() + "), pages: " + organisationUnitPages.size() + ", " + SystemUtils.getMemoryString() );
         }
 
         // ---------------------------------------------------------------------
@@ -388,7 +388,7 @@ public class DefaultDataMartEngine
 
         crossTabService.dropAggregatedDataCache( key );
         
-        clock.logTime( "Dropped aggregated data cache" );
+        clock.logTime( "Dropped aggregated data cache, " + SystemUtils.getMemoryString() );
 
         // ---------------------------------------------------------------------
         // 8. Create potential indexes
@@ -466,7 +466,7 @@ public class DefaultDataMartEngine
 
                 ConcurrentUtils.waitForCompletion( futures );
                 
-                clock.logTime( "Exported values for data element operands (" + allOperands.size() + "), number of pages: " + organisationUnitPages.size() );
+                clock.logTime( "Exported values for data element operands (" + allOperands.size() + "), pages: " + organisationUnitPages.size()  + ", " + SystemUtils.getMemoryString() );
             }
 
             // ---------------------------------------------------------------------
@@ -502,7 +502,7 @@ public class DefaultDataMartEngine
 
                 ConcurrentUtils.waitForCompletion( futures );
                 
-                clock.logTime( "Exported values for indicators (" + indicators.size() + "), number of pages: " + organisationUnitPages.size() );
+                clock.logTime( "Exported values for indicators (" + indicators.size() + "), pages: " + organisationUnitPages.size() + ", " + SystemUtils.getMemoryString() );
             }
 
             // ---------------------------------------------------------------------
@@ -511,7 +511,7 @@ public class DefaultDataMartEngine
 
             crossTabService.dropAggregatedOrgUnitDataCache( key );
             
-            clock.logTime( "Dropped aggregated org unit data cache" );
+            clock.logTime( "Dropped aggregated org unit data cache, " + SystemUtils.getMemoryString() );
 
             // ---------------------------------------------------------------------
             // 8. Create potential indexes
@@ -524,8 +524,7 @@ public class DefaultDataMartEngine
                 clock.logTime( "Created org unit indexes" );
             }
 
-            clock.logTime( "Aggregated organisation unit data export done" );
-            
+            clock.logTime( "Aggregated organisation unit data export done" );            
         }
 
         // ---------------------------------------------------------------------

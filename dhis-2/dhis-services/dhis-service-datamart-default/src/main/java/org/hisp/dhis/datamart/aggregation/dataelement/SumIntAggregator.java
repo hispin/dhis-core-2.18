@@ -87,7 +87,7 @@ public class SumIntAggregator
         final Collection<CrossTabDataValue> crossTabValues = crossTabService.getCrossTabDataValues( operands, 
             aggregationCache.getPeriodsBetweenDates( period.getStartDate(), period.getEndDate() ), organisationUnits, key );
         
-        final Map<DataElementOperand, Double> values = new HashMap<DataElementOperand, Double>( crossTabValues.size() * operands.size() ); // <Operand, total value>
+        final Map<DataElementOperand, Double> values = new HashMap<DataElementOperand, Double>(); // <Operand, total value>
 
         for ( final CrossTabDataValue crossTabValue : crossTabValues )
         {

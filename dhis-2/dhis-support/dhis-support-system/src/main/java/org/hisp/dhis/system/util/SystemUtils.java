@@ -33,6 +33,8 @@ package org.hisp.dhis.system.util;
  */
 public class SystemUtils
 {
+    private static final int FACTOR_MB = 1024 * 1024;
+    
     public static boolean isRunningForUse()
     {
         try
@@ -50,5 +52,12 @@ public class SystemUtils
     public static int getCpuCores()
     {
         return Runtime.getRuntime().availableProcessors();
+    }
+    
+    public static String getMemoryString()
+    {
+        return "Mem used: " + ( Runtime.getRuntime().totalMemory() / FACTOR_MB ) + 
+            ", max: " + ( Runtime.getRuntime().maxMemory() / FACTOR_MB ) + 
+            ", free: " + ( Runtime.getRuntime().freeMemory() / FACTOR_MB );
     }
 }
