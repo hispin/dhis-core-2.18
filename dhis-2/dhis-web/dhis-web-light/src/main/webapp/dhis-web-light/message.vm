@@ -3,8 +3,9 @@
 
 <form method="POST" action="sendReply.action">
 <div class="header-box" align="center">
-	<h3 style="text-align: left;">Reply</h3>
+	<h3 style="text-align: left;">$i18n.getString( "reply" )</h3>
     <p style="text-align: left;">
+        <input type="hidden" name="conversationId" value="$conversationId" />
         <input type="text" maxlength="255" size="24" name="text" />
         <input type="submit" style="width: 100%;" value="$i18n.getString("send")" />
     </p>

@@ -98,17 +98,17 @@
 
     <!-- Messages -->
 
-    <action name="messages" class="org.hisp.dhis.light.message.action.GetMessages">
+    <action name="messages" class="org.hisp.dhis.light.message.action.GetMessagesAction">
       <result name="success" type="velocity">/dhis-web-light/main.vm</result>
       <param name="page">/dhis-web-light/messages.vm</param>
     </action>
 
-    <action name="reply" class="org.hisp.dhis.light.message.action.GetMessage">
+    <action name="reply" class="org.hisp.dhis.light.message.action.GetMessageAction">
       <result name="success" type="velocity">/dhis-web-light/main.vm</result>
       <param name="page">/dhis-web-light/message.vm</param>
     </action>
 
-    <action name="sendReply" class="org.hisp.dhis.light.action.NoAction">
+    <action name="sendReply" class="org.hisp.dhis.light.message.action.SendReplyAction">
       <result name="success" type="redirect">/mobile/messages.action</result>
     </action>
 
@@ -117,7 +117,7 @@
       <param name="page">/dhis-web-light/feedback.vm</param>
     </action>
 
-    <action name="sendFeedback" class="org.hisp.dhis.light.action.NoAction">
+    <action name="sendFeedback" class="org.hisp.dhis.light.message.action.SendFeedbackAction">
       <result name="success" type="redirect">/mobile/index.action</result>
     </action>
 

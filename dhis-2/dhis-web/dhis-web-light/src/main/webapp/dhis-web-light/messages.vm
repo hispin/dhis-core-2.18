@@ -12,7 +12,7 @@
 <p>
 <ul>
     #foreach( $conversation in $conversations )
-        #if( $conversation.read == false)
+        #if( $conversation.read == false )
             <li><a href="reply.action?conversationId=$conversation.uid" style="font-weight: bold;">$conversation.subject</a></li>
         #else
             <li><a href="reply.action?conversationId=$conversation.uid">$conversation.subject</a></li>
