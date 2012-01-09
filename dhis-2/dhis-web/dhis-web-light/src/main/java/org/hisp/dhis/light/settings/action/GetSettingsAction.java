@@ -1,5 +1,6 @@
+
 /*
- * Copyright (c) 2004-2011, University of Oslo
+ * Copyright (c) 2004-2012, University of Oslo
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -25,38 +26,47 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.hisp.dhis.light.action.settings.action;
+package org.hisp.dhis.light.settings.action;
 
 import com.opensymphony.xwork2.Action;
-import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.Validate;
-import org.apache.commons.validator.EmailValidator;
+import org.hisp.dhis.i18n.I18nService;
 import org.hisp.dhis.i18n.locale.LocaleManager;
+import org.hisp.dhis.i18n.resourcebundle.ResourceBundleManager;
 import org.hisp.dhis.user.CurrentUserService;
 import org.hisp.dhis.user.User;
-import org.hisp.dhis.user.UserService;
 
-import java.util.Locale;
+import java.util.*;
 
-public class SaveSettingsFormAction
+/**
+ * @author Morten Olav Hansen <mortenoh@gmail.com>
+ */
+public class GetSettingsAction
     implements Action
 {
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
 
-    private LocaleManager localeManagerInterface;
+    private ResourceBundleManager resourceBundleManager;
 
-    public void setLocaleManagerInterface( LocaleManager localeManagerInterface )
+    public void setResourceBundleManager( ResourceBundleManager resourceBundleManager )
     {
-        this.localeManagerInterface = localeManagerInterface;
+        this.resourceBundleManager = resourceBundleManager;
     }
 
-    private LocaleManager localeManagerDB;
+    private LocaleManager localeManager;
 
-    public void setLocaleManagerDB( LocaleManager localeManagerDB )
+    public void setLocaleManager( LocaleManager localeManager )
     {
-        this.localeManagerDB = localeManagerDB;
+        this.localeManager = localeManager;
+    }
+
+    private I18nService i18nService;
+
+    public void setI18nService( I18nService i18nService )
+    {
+        this.i18nService = i18nService;
     }
 
     private CurrentUserService currentUserService;
@@ -66,29 +76,22 @@ public class SaveSettingsFormAction
         this.currentUserService = currentUserService;
     }
 
-    private UserService userService;
-
-    public void setUserService( UserService userService )
-    {
-        this.userService = userService;
-    }
-
     // -------------------------------------------------------------------------
     // Input & Output
     // -------------------------------------------------------------------------
 
-    private String currentLocale;
+    private List<Locale> availableLocales;
 
-    public void setCurrentLocale( String locale )
+    public List<Locale> getAvailableLocales()
     {
-        this.currentLocale = locale;
+        return availableLocales;
     }
 
-    private String currentLocaleDb;
+    private Locale currentLocale;
 
-    public void setCurrentLocaleDb( String currentLocaleDb )
+    public Locale getCurrentLocale()
     {
-        this.currentLocaleDb = currentLocaleDb;
+        return currentLocale;
     }
 
     private String firstName;
@@ -145,70 +148,36 @@ public class SaveSettingsFormAction
 
     @Override
     public String execute()
+        throws Exception
     {
-        Validate.notNull( currentLocale );
-        Validate.notNull( firstName );
-        Validate.notNull( surname );
+        // ---------------------------------------------------------------------
+        // Get available locales
+        // ---------------------------------------------------------------------
+
+        availableLocales = new ArrayList<Locale>( resourceBundleManager.getAvailableLocales() );
+
+        Collections.sort( availableLocales, new Comparator<Locale>()
+        {
+            public int compare( Locale locale0, Locale locale1 )
+            {
+                return locale0.getDisplayName().compareTo( locale1.getDisplayName() );
+            }
+        } );
+
+        currentLocale = localeManager.getCurrentLocale();
 
         // ---------------------------------------------------------------------
-        // Update user account settings
+        // Get settings for current user
         // ---------------------------------------------------------------------
 
         User user = currentUserService.getCurrentUser();
+        Validate.notNull( user );
 
-        user.setFirstName( firstName );
-        user.setSurname( surname );
-        user.setPhoneNumber( phoneNumber );
-
-        if ( StringUtils.isNotBlank( email ) )
-        {
-            if ( EmailValidator.getInstance().isValid( email ) )
-            {
-                user.setEmail( email );
-            }
-        }
-        else
-        {
-            user.setEmail( email );
-        }
-
-        userService.updateUser( user );
-
-        // ---------------------------------------------------------------------
-        // Update locale settings (ui)
-        // ---------------------------------------------------------------------
-
-        localeManagerInterface.setCurrentLocale( getRespectiveLocale( currentLocale ) );
+        firstName = user.getFirstName();
+        surname = user.getSurname();
+        phoneNumber = user.getPhoneNumber();
+        email = user.getEmail();
 
         return SUCCESS;
-    }
-
-    // -------------------------------------------------------------------------
-    // Supportive methods
-    // -------------------------------------------------------------------------
-
-    private Locale getRespectiveLocale( String locale )
-    {
-        String[] tokens = locale.split( "_" );
-        Locale newLocale = null;
-
-        switch ( tokens.length )
-        {
-            case 1:
-                newLocale = new Locale( tokens[0] );
-                break;
-
-            case 2:
-                newLocale = new Locale( tokens[0], tokens[1] );
-                break;
-
-            case 3:
-                newLocale = new Locale( tokens[0], tokens[1], tokens[2] );
-                break;
-
-            default:
-        }
-
-        return newLocale;
     }
 }

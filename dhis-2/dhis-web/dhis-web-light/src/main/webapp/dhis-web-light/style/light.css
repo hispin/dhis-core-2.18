@@ -135,7 +135,7 @@ body div#footer ul {
     padding-right: 0;
 	margin-bottom: 0;
 	margin-top: 0;
-   
+
 }
 
 body div#footer ul li {
@@ -157,7 +157,7 @@ body div#footer ul li {
  * BASIC ELEMENTS
  * 
  */
- 
+
 /*body required as early browsers don't understand p by itself */
 body p {
 	margin-top: 0;
@@ -175,7 +175,7 @@ em {
 }
 /*
  * LINK STATES
- * 
+ *
  */
 a:link {
 	color:#003399;
@@ -199,7 +199,7 @@ a:active {
 body h1 {
 	font-size: 1.0em;
 	padding-left: 2%;
-	padding-right: 2%; 
+	padding-right: 2%;
 	margin-top: 0;
 	margin-bottom: 0.4em;
 	line-height: normal;
@@ -268,7 +268,7 @@ body h6 {
 }
 /*
  * IMAGE WITH OPTIONAL CAPTION
- * 
+ *
  */
 body img.captioned {
 	margin: 0 0 0 2%;
@@ -282,7 +282,7 @@ body p.caption-image {
 }
 /*
  * BLOCKQUOTE
- * 
+ *
  */
 blockquote {
 	margin: 0 4% 0.4em 4%;
@@ -297,7 +297,7 @@ blockquote p {
 }
 /*
  * LISTS
- * 
+ *
  */
 /* compensates for smaller Opera Mini margins */
 ol, ul, dl {
@@ -306,7 +306,7 @@ ol, ul, dl {
 }
 
 ul li {
-	list-style-type: none;	
+	list-style-type: none;
 }
 
 dd {
@@ -320,7 +320,7 @@ body ul, body ol, body dl {
 }
 /*
  * BREADCRUMBS
- * 
+ *
  */
 body ul.breadcrumbs {
 	padding-top: 0;
@@ -340,7 +340,7 @@ body ul.breadcrumbs li {
 }
 /*
  * FORMS
- * 
+ *
  */
 body fieldset {
 	margin: 0;
@@ -366,7 +366,7 @@ body form input {
 	font-size: 1.15em;
 }
 
-body input { 
+body input {
 	font-size: 1.15em;
 	padding: 0.2em;
 	margin-bottom: .5em;
@@ -387,7 +387,7 @@ body textarea {
 	display: block;
 }
 
-body form input[type='radio'], body form input[type='checkbox'] { 
+body form input[type='radio'], body form input[type='checkbox'] {
 	font-size: 1.15em;
 	margin:0.1em 0em;
 	padding: 0;
@@ -454,7 +454,7 @@ body caption {
  */
 body div.box p.box-text {
 	border: 1px solid #D8D8D8;
-	width: 92%;
+	width: 96%;
 	margin: 0 auto 0.6em auto;
 	padding: 0.4em 0.4em;
 	background-color: #F6F6F6;
@@ -463,7 +463,7 @@ body div.box p.box-text {
 body div.header-box p {
 	font-size: 0.6em;
 	border: 1px solid #C8DBEA;
-	width: 92%;
+	width: 96%;
 	margin: 0 auto 0.6em auto;
 	padding: 0.4em 0.4em;
 	background-color: #E8E8E8;
@@ -471,9 +471,9 @@ body div.header-box p {
 
 /* 2px border is required to ensure header is flush with the box */
 body div.header-box h3 {
-	font-size: 0.8em;
-	border: 2px solid #D8D8D8;
-	width: 92%;
+	font-size: 0.9em;
+	border: 2px solid #CBDDEB;
+	width: 96%;
 	margin: 0em auto;
 	padding: 0.3em 0.3em;
 	background-color: #CBDDEB;
@@ -482,7 +482,7 @@ body div.header-box h3 {
 
 /*
  * BACK TO TOP/HOME
- * 
+ *
  */
 p.top {
 	font-size: small;
@@ -495,6 +495,7 @@ p.top {
 	margin-bottom: 0.6em;
 	clear: both;
 }
+
 p.home {
 	font-size: small;
 	background-color: #F6F6F6;
@@ -506,6 +507,7 @@ p.home {
 	margin-bottom: 0.6em;
 	clear: both;
 }
+
 p.top a, p.home a {
 	color: #333333;
 	text-decoration: none;

@@ -25,47 +25,38 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.hisp.dhis.light.action.settings.action;
+package org.hisp.dhis.light.settings.action;
 
 import com.opensymphony.xwork2.Action;
+import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.Validate;
-import org.hisp.dhis.i18n.I18nService;
+import org.apache.commons.validator.EmailValidator;
 import org.hisp.dhis.i18n.locale.LocaleManager;
-import org.hisp.dhis.i18n.resourcebundle.ResourceBundleManager;
 import org.hisp.dhis.user.CurrentUserService;
 import org.hisp.dhis.user.User;
+import org.hisp.dhis.user.UserService;
 
-import java.util.*;
+import java.util.Locale;
 
-/**
- * @author mortenoh
- */
-public class GetSettingsAction
+public class SaveSettingsFormAction
     implements Action
 {
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
 
-    private ResourceBundleManager resourceBundleManager;
+    private LocaleManager localeManagerInterface;
 
-    public void setResourceBundleManager( ResourceBundleManager resourceBundleManager )
+    public void setLocaleManagerInterface( LocaleManager localeManagerInterface )
     {
-        this.resourceBundleManager = resourceBundleManager;
+        this.localeManagerInterface = localeManagerInterface;
     }
 
-    private LocaleManager localeManager;
+    private LocaleManager localeManagerDB;
 
-    public void setLocaleManager( LocaleManager localeManager )
+    public void setLocaleManagerDB( LocaleManager localeManagerDB )
     {
-        this.localeManager = localeManager;
-    }
-
-    private I18nService i18nService;
-
-    public void setI18nService( I18nService i18nService )
-    {
-        this.i18nService = i18nService;
+        this.localeManagerDB = localeManagerDB;
     }
 
     private CurrentUserService currentUserService;
@@ -75,22 +66,29 @@ public class GetSettingsAction
         this.currentUserService = currentUserService;
     }
 
+    private UserService userService;
+
+    public void setUserService( UserService userService )
+    {
+        this.userService = userService;
+    }
+
     // -------------------------------------------------------------------------
     // Input & Output
     // -------------------------------------------------------------------------
 
-    private List<Locale> availableLocales;
+    private String currentLocale;
 
-    public List<Locale> getAvailableLocales()
+    public void setCurrentLocale( String locale )
     {
-        return availableLocales;
+        this.currentLocale = locale;
     }
 
-    private Locale currentLocale;
+    private String currentLocaleDb;
 
-    public Locale getCurrentLocale()
+    public void setCurrentLocaleDb( String currentLocaleDb )
     {
-        return currentLocale;
+        this.currentLocaleDb = currentLocaleDb;
     }
 
     private String firstName;
@@ -147,36 +145,70 @@ public class GetSettingsAction
 
     @Override
     public String execute()
-        throws Exception
     {
-        // ---------------------------------------------------------------------
-        // Get available locales
-        // ---------------------------------------------------------------------
-
-        availableLocales = new ArrayList<Locale>( resourceBundleManager.getAvailableLocales() );
-
-        Collections.sort( availableLocales, new Comparator<Locale>()
-        {
-            public int compare( Locale locale0, Locale locale1 )
-            {
-                return locale0.getDisplayName().compareTo( locale1.getDisplayName() );
-            }
-        } );
-
-        currentLocale = localeManager.getCurrentLocale();
+        Validate.notNull( currentLocale );
+        Validate.notNull( firstName );
+        Validate.notNull( surname );
 
         // ---------------------------------------------------------------------
-        // Get settings for current user
+        // Update user account settings
         // ---------------------------------------------------------------------
 
         User user = currentUserService.getCurrentUser();
-        Validate.notNull( user );
 
-        firstName = user.getFirstName();
-        surname = user.getSurname();
-        phoneNumber = user.getPhoneNumber();
-        email = user.getEmail();
+        user.setFirstName( firstName );
+        user.setSurname( surname );
+        user.setPhoneNumber( phoneNumber );
+
+        if ( StringUtils.isNotBlank( email ) )
+        {
+            if ( EmailValidator.getInstance().isValid( email ) )
+            {
+                user.setEmail( email );
+            }
+        }
+        else
+        {
+            user.setEmail( email );
+        }
+
+        userService.updateUser( user );
+
+        // ---------------------------------------------------------------------
+        // Update locale settings (ui)
+        // ---------------------------------------------------------------------
+
+        localeManagerInterface.setCurrentLocale( getRespectiveLocale( currentLocale ) );
 
         return SUCCESS;
+    }
+
+    // -------------------------------------------------------------------------
+    // Supportive methods
+    // -------------------------------------------------------------------------
+
+    private Locale getRespectiveLocale( String locale )
+    {
+        String[] tokens = locale.split( "_" );
+        Locale newLocale = null;
+
+        switch ( tokens.length )
+        {
+            case 1:
+                newLocale = new Locale( tokens[0] );
+                break;
+
+            case 2:
+                newLocale = new Locale( tokens[0], tokens[1] );
+                break;
+
+            case 3:
+                newLocale = new Locale( tokens[0], tokens[1], tokens[2] );
+                break;
+
+            default:
+        }
+
+        return newLocale;
     }
 }
