@@ -88,7 +88,7 @@ public class AverageBoolAggregator
         final Map<DataElementOperand, double[]> entries = getAggregate( crossTabValues, period.getStartDate(), 
             period.getEndDate(), period.getStartDate(), period.getEndDate(), unitLevel ); // <Operand, [total value, total relevant days]>
 
-        final Map<DataElementOperand, Double> values = new HashMap<DataElementOperand, Double>( entries.size() ); // <Operand, total value>
+        final Map<DataElementOperand, Double> values = new HashMap<DataElementOperand, Double>(); // <Operand, total value>
 
         double average = 0.0;
         
