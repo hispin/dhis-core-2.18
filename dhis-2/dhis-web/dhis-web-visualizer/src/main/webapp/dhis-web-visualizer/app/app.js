@@ -1062,6 +1062,9 @@ Ext.onReady( function() {
                         this.filter.dimension = f.filter;
                         DV.cmp.settings.filter.setValue(DV.conf.finals.dimension[this.filter.dimension].value);
                         
+                        DV.store.indicator.selected.removeAll();                        
+                        DV.store.dataelement.selected.removeAll();                        
+                        
                         if (f.indicators) {
                             var records = [];
                             for (var i = 0; i < f.indicators.length; i++) {
@@ -1069,7 +1072,6 @@ Ext.onReady( function() {
                                 this.indicatorIds.push(f.indicators[i].internalId);
                                 records.push({id: f.indicators[i].internalId, s: DV.util.string.getEncodedString(f.indicators[i].shortName), name: DV.util.string.getEncodedString(f.indicators[i].shortName), parent: null});
                             }
-                            DV.store.indicator.selected.removeAll();
                             DV.store.indicator.selected.add(records);
                             DV.util.store.addToStorage(DV.store.indicator.available, records);
                             DV.util.multiselect.filterAvailable(DV.cmp.dimension.indicator.available, DV.cmp.dimension.indicator.selected);
@@ -1081,7 +1083,6 @@ Ext.onReady( function() {
                                 this.dataelementIds.push(f.dataElements[i].internalId);
                                 records.push({id: f.dataElements[i].internalId, s: DV.util.string.getEncodedString(f.dataElements[i].shortName), name: DV.util.string.getEncodedString(f.dataElements[i].shortName), parent: null});
                             }
-                            DV.store.dataelement.selected.removeAll();
                             DV.store.dataelement.selected.add(records);
                             DV.util.store.addToStorage(DV.store.dataelement.available, records);
                             DV.util.multiselect.filterAvailable(DV.cmp.dimension.dataelement.available, DV.cmp.dimension.dataelement.selected);
