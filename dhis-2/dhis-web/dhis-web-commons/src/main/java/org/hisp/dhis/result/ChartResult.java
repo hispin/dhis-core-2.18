@@ -15,6 +15,8 @@ package org.hisp.dhis.result;
  */
 
 import org.apache.commons.lang.StringUtils;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.apache.struts2.ServletActionContext;
 import com.opensymphony.xwork2.ActionInvocation;
 import com.opensymphony.xwork2.Result;
@@ -38,12 +40,11 @@ import java.io.OutputStream;
 public class ChartResult
     implements Result
 {
-    /**
-     * Determines if a de-serialized file is compatible with this class.
-     */
-    private static final long serialVersionUID = -8364233242858237681L;
-
+    private static final Log log = LogFactory.getLog( ChartResult.class );
+    
     private static final String DEFAULT_FILENAME = "chart.png";
+    private static final int DEFAULT_WIDTH = 700;
+    private static final int DEFAULT_HEIGHT = 500;
     
     private JFreeChart chart = null;
 
@@ -110,11 +111,11 @@ public class ChartResult
         
         Integer stackHeight = (Integer) invocation.getStack().findValue( "height" );
         
-        height = stackHeight != null && stackHeight > 0 ? stackHeight : height;
+        height = stackHeight != null && stackHeight > 0 ? stackHeight : height != null ? height: DEFAULT_HEIGHT;
         
         Integer stackWidth = (Integer) invocation.getStack().findValue( "width" );
         
-        width = stackWidth != null && stackWidth > 0 ? stackWidth : width;
+        width = stackWidth != null && stackWidth > 0 ? stackWidth : width != null ? width : DEFAULT_WIDTH;
         
         String stackFilename = (String) invocation.getStack().findValue( "filename" );
         
@@ -122,19 +123,10 @@ public class ChartResult
         
         if ( chart == null )
         {
-            throw new NullPointerException( "No chart found" );
+            log.warn( "No chart found" );
+            return;
         }
-        
-        if ( height == null )
-        {
-            throw new IllegalArgumentException( "Height not set" );
-        }
-
-        if ( width == null )
-        {
-            throw new IllegalArgumentException( "Width not set" );
-        }
-        
+                
         HttpServletResponse response = ServletActionContext.getResponse();
         ContextUtils.configureResponse( response, ContextUtils.CONTENT_TYPE_PNG, true, filename, false );
         

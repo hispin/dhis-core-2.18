@@ -186,15 +186,15 @@ public class DefaultChartService
     public JFreeChart getJFreeChart( String uid, I18nFormat format )
     {
         Chart chart = getChart( uid );
-
-        return getJFreeChart( chart, format );
+        
+        return chart != null ? getJFreeChart( chart, format ) : null;
     }
 
     public JFreeChart getJFreeChart( int id, I18nFormat format )
     {
         Chart chart = getChart( id );
 
-        return getJFreeChart( chart, format );
+        return chart != null ? getJFreeChart( chart, format ) : null;
     }
 
     public JFreeChart getJFreeChart( Chart chart, I18nFormat format )
