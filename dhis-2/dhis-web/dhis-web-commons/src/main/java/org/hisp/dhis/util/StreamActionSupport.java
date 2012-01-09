@@ -65,7 +65,7 @@ public abstract class StreamActionSupport
         
         ContextUtils.configureResponse( response, contentType, disallowCache, filename, attachment );
         
-        log.info( "Content type: " + contentType + ", disallow cache: " + 
+        log.debug( "Content type: " + contentType + ", disallow cache: " + 
             disallowCache + ", filename: " + filename + ", attachment: " + attachment );
         
         try

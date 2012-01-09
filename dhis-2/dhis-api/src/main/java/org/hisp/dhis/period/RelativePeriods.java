@@ -303,6 +303,16 @@ public class RelativePeriods
     }
 
     /**
+     * Gets a list of Periods relative to current date.
+     * 
+     * @param months the number of months to subtract from the current date.
+     */
+    public List<Period> getRelativePeriods( int months )
+    {
+        return getRelativePeriods( getDate( months, new Date() ), null, false );
+    }
+    
+    /**
      * Gets a list of Periods based on the given input and the state of this
      * RelativePeriods. The current date is set to todays date minus one month.
      *

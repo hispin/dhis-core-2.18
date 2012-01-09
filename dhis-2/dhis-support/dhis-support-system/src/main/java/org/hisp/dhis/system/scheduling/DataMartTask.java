@@ -127,7 +127,7 @@ public class DataMartTask
         
         Set<String> periodTypes = (Set<String>) systemSettingManager.getSystemSetting( KEY_SCHEDULED_PERIOD_TYPES, DEFAULT_SCHEDULED_PERIOD_TYPES );
 
-        List<Period> periods = new RelativePeriods().getRelativePeriods( periodTypes ).getRelativePeriods();
+        List<Period> periods = new RelativePeriods().getRelativePeriods( periodTypes ).getRelativePeriods( 0 );
         
         final Date date = new Cal().now().subtract( Calendar.MONTH, 6 ).time();
         
