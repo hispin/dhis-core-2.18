@@ -595,3 +595,71 @@ function formValidationsIndicator()
   	return true;
 } 
 // formValidations Function Indicators End
+
+ 
+//filter available indicators list
+function filterAvailableIndicators()
+{
+	var filter = document.getElementById( 'availableIndicatorsFilter' ).value;
+    var list = document.getElementById( 'availableIndicators' );
+    
+    list.options.length = 0;
+    
+    var selIndListId = document.getElementById( 'selectedIndicators' );
+    var selIndLength = selIndListId.options.length;
+    
+    for ( var id in availableIndicators )
+    {
+    	//alert( "id : " + id );
+        var value = availableIndicators[id];
+        
+        var flag = 1;
+        for( var i =0 ; i<selIndLength; i++ )
+        {
+        	//alert( selIndListId.options[i].text );
+        	//alert( selIndListId.options[i].value );
+        	if( id == selIndListId.options[i].value )
+        		{
+        		flag =2;
+        		//alert("aaaa");
+        		break;
+        		}
+        }
+        if ( value.toLowerCase().indexOf( filter.toLowerCase() ) != -1 && (flag == 1) )
+        {
+            list.add( new Option( value, id ), null );
+        }
+        //alert( flag );
+    }
+}
+//filter available data elements list
+function filterAvailableDataElements()
+{
+	var filter = document.getElementById( 'availableDataElementsFilter' ).value;
+    var list = document.getElementById( 'availableDataElements' );
+    
+    list.options.length = 0;
+    
+    var selDeListId = document.getElementById( 'selectedDataElements' );
+    var selDeLength = selDeListId.options.length;
+    
+    for ( var id in availableDataElements )
+    {
+        var value = availableDataElements[id];
+        
+        var flag = 1;
+        for( var i =0 ; i<selDeLength; i++ )
+        {
+        	if( id == selDeListId.options[i].value )
+        		{
+        		flag =2;
+        		//alert("aaaa");
+        		break;
+        		}
+        }
+        if ( value.toLowerCase().indexOf( filter.toLowerCase() ) != -1 && (flag == 1) )
+        {
+            list.add( new Option( value, id ), null );
+        }
+    }
+}

@@ -105,10 +105,22 @@
 		</td>
     </tr>
     <tr>
-      <td class="NormalB">&nbsp;</td>
+		<td class="NormalB">&nbsp;</td>
+		<td class="NormalB">&nbsp;</td>
+		<td class="NormalB">&nbsp;</td>
+    </tr>    
+    
+    <tr>
+      <td class="NormalB">$i18n.getString( "filter" ):&nbsp;<input type="text" id="availableDataElementsFilter" onkeyup="filterAvailableDataElements()" style="min-width:24em"></td>
       <td class="NormalB">&nbsp;</td>
       <td class="NormalB">&nbsp;</td>
     </tr>
+    <tr>
+		<td class="NormalB">&nbsp;</td>
+		<td class="NormalB">&nbsp;</td>
+		<td class="NormalB">&nbsp;</td>
+    </tr>    
+    
     <tr>
 		<td class="NormalB">$i18n.getString( "ga_available_delist" )<br>
 			<select multiple size="7" id="availableDataElements" name="availableDataElements"  style="width:325px; height:100px" ondblclick="moveSelectedById( 'availableDataElements', 'selectedDataElements' )">
@@ -214,4 +226,13 @@
 
 <script>
 	getPeriods();
+</script>
+
+<script type="text/javascript">
+
+	var availableDataElements = new Object();	
+    #foreach ( $availableDataElement in $dataElements )
+    	availableDataElements['$availableDataElement.id'] = '$encoder.jsEscape( $availableDataElement.name, "'" )';
+    #end
+	
 </script>
