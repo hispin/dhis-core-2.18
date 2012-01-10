@@ -27,6 +27,8 @@ package org.hisp.dhis.system.filter;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import static org.hisp.dhis.dataelement.DataElement.DOMAIN_TYPE_AGGREGATE;
+
 import java.util.HashSet;
 import java.util.Set;
 
@@ -50,6 +52,6 @@ public class AggregatableDataElementFilter
 
     public boolean retain( DataElement object )
     {
-        return object != null && types.contains( object.getType() );
+        return object != null && types.contains( object.getType() ) && DOMAIN_TYPE_AGGREGATE.equals( object.getDomainType() );
     }
 }
