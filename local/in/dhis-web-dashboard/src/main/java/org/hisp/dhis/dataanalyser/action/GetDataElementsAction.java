@@ -149,8 +149,9 @@ public class GetDataElementsAction
     {
         optionComboIds = new ArrayList<String>();
         optionComboNames = new ArrayList<String>();
-
-        if ( id == null || id == ALL )
+        
+        System.out.println(" id = " +id );
+        if ( id == null || id == 0 )
         {
             dataElements = new ArrayList<DataElement>( dataElementService.getAllDataElements() );
             System.out.println("id = "+id + " dataElements size = "+dataElements.size());

@@ -228,9 +228,32 @@ function getDataElements()
     
     var deSelectionList = document.getElementById("deSelection");    
     var deOptionValue = deSelectionList.options[ deSelectionList.selectedIndex ].value;
+    /*
+    if ( dataSetSectionId == 0 )
+    {
+    	alert( dataSetSectionId );
+    	document.getElementById( "availableDataElementsFilter" ).value = "";
+    	document.getElementById( "availableDataElementsFilter" ).disabled = false;
+    	return false;
+    }
+	*/
     if ( dataSetSectionId != null )
     {
-		$.post("getDataElements.action",
+    	document.getElementById( "availableDataElementsFilter" ).value = "";
+    	document.getElementById( "availableDataElementsFilter" ).disabled = true;
+    	
+        if ( dataSetSectionId == 0 )
+        {
+        	document.getElementById( "availableDataElementsFilter" ).value = "";
+        	document.getElementById( "availableDataElementsFilter" ).disabled = false;
+        }
+        else
+        {
+        	document.getElementById( "availableDataElementsFilter" ).value = "";
+        	document.getElementById( "availableDataElementsFilter" ).disabled = true;
+        }
+    	
+    	$.post("getDataElements.action",
 		{
 			//id:dataElementGroupId,
 			id:dataSetSectionId,
@@ -350,10 +373,36 @@ function getIndicators()
 {
     var indicatorGroupList = document.getElementById( "indicatorGroupId" );
     var indicatorGroupId = indicatorGroupList.options[ indicatorGroupList.selectedIndex ].value;
-	
+    
+    /*
+    if ( indicatorGroupId == "$ALL" )
+    {
+    	alert( indicatorGroupId );
+    	document.getElementById( "availableIndicatorsFilter" ).value = "";
+    	document.getElementById( "availableIndicatorsFilter" ).disabled = false;
+    	return false;
+    }
+    */
+    
     if ( indicatorGroupId != null )
     {
-		$.post("getIndicators.action",
+    	
+        if ( indicatorGroupId != "$ALL" )
+        {
+        	//alert( indicatorGroupId );
+        	document.getElementById( "availableIndicatorsFilter" ).value = "";
+        	document.getElementById( "availableIndicatorsFilter" ).disabled = true;
+        	//return false;
+        }
+        else
+        {
+        	document.getElementById( "availableIndicatorsFilter" ).value = "";
+        	document.getElementById( "availableIndicatorsFilter" ).disabled = false;
+        }
+    	//document.getElementById( "availableIndicatorsFilter" ).value = "";
+    	//document.getElementById( "availableIndicatorsFilter" ).disabled = false;
+        
+    	$.post("getIndicators.action",
 			{
 				id:indicatorGroupId
 			},

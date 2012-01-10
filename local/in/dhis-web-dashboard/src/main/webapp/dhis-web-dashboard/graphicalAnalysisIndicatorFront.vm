@@ -99,7 +99,17 @@
 		<td class="NormalB">&nbsp;</td>
 		<td class="NormalB">&nbsp;</td>
 		<td class="NormalB">&nbsp;</td>
+    </tr>    
+    <tr>
+		<td class="NormalB">$i18n.getString( "filter" ):&nbsp;<input type="text" id="availableIndicatorsFilter" onkeyup="filterAvailableIndicators()" style="min-width:24em"></td>
+		<td class="NormalB">&nbsp;</td>
+		<td class="NormalB">&nbsp;</td>
     </tr>
+    <tr>
+		<td class="NormalB">&nbsp;</td>
+		<td class="NormalB">&nbsp;</td>
+		<td class="NormalB">&nbsp;</td>
+    </tr>        
     <tr>
 		<td class="NormalB">$i18n.getString( "ga_available_indicatorList" )<br>
 			<select multiple size="7" id="availableIndicators" name="availableIndicators"  style="width:325px; height:100px" ondblclick="moveSelectedById( 'availableIndicators', 'selectedIndicators' )">
@@ -206,3 +216,15 @@
 <script>
 	getPeriods();
 </script>
+
+<script type="text/javascript">
+
+	var availableIndicators = new Object();	
+    #foreach ( $availableIndicator in $indicators )
+    	availableIndicators['$availableIndicator.id'] = '$encoder.jsEscape( $availableIndicator.name, "'" )';
+    #end
+
+</script>
+
+
+
