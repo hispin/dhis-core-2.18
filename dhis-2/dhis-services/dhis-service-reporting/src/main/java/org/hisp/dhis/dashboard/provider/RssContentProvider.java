@@ -29,7 +29,6 @@ package org.hisp.dhis.dashboard.provider;
 
 import static org.hisp.dhis.system.util.MathUtils.getMax;
 
-import java.io.IOException;
 import java.net.MalformedURLException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -123,7 +122,7 @@ public class RssContentProvider
         {
             throw new RuntimeException( "Malformed RSS URL", ex );
         }
-        catch ( IOException ex )
+        catch ( Exception ex )
         {
             log.error( "Error while reading RSS, you are probably not connected to the internet", ex );
             
