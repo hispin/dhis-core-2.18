@@ -479,6 +479,7 @@ function showProgramEnrollmentForm( patientId, programId )
 		setInnerHTML('dateOfIncidentDescription', '');
 		
 		hideById('programEnrollmentDiv');
+		hideEnrolmentField();
 		
 		return;
 	}
@@ -491,6 +492,7 @@ function showProgramEnrollmentForm( patientId, programId )
 		}, function()
 		{
 			showById('programEnrollmentDiv');
+			showEnrolmentField();
 			
 			var singleEvent = jQuery('#programId option:selected').attr('singleevent');
 			if(singleEvent=='true')
@@ -894,4 +896,18 @@ function showRepresentativeInfo( patientId)
 			width: 400,
 			height: 300
 		});
+}
+
+function hideEnrolmentField()
+{
+	hideById('enrollmentDateTR');
+	hideById('dateOfIncidentTR');
+	hideById('enrollBtn');
+}
+  
+function showEnrolmentField()
+{
+	showById('enrollmentDateTR');
+	showById('dateOfIncidentTR');
+	showById('enrollBtn');
 }
