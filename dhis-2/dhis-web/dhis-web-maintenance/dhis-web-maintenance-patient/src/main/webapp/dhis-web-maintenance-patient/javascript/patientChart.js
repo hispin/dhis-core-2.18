@@ -4,6 +4,7 @@ function showPatientChartDetails( patientChartId )
 	jQuery.postJSON( "getPatientChart.action", {
 			id:patientChartId 
 		}, function(json){
+			setInnerHTML( 'idField', json.id );
 			setInnerHTML( 'titleField', json.title );
 
 			var typeMap = {

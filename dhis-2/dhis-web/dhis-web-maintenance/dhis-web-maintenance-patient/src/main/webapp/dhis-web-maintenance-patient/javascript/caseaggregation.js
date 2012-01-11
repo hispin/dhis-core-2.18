@@ -148,6 +148,7 @@ function showCaseAggregationDetails( caseAggregationId )
 {
     jQuery.post( 'getCaseAggregation.action', { id:caseAggregationId }, function ( json )
 	{
+		setInnerHTML( 'idField', json.caseAggregation.id );
 		setInnerHTML( 'descriptionField', json.caseAggregation.description );	
 		setInnerHTML( 'operatorField', json.caseAggregation.operator );
 		setInnerHTML( 'aggregationDataElementField', json.caseAggregation.aggregationDataElement );

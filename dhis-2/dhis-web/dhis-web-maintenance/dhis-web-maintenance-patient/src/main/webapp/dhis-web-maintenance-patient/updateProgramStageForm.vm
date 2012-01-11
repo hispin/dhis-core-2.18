@@ -83,7 +83,10 @@ tr.selected{
 		<tr>
 			<th>$i18n.getString( "available_data_elements" )</th>
 			<th></th>
-			<th>$i18n.getString( "selected_data_elements" )</th>
+			<th>$i18n.getString( "selected_data_elements" )
+				<select id="selectedDataElementsValidator" name='selectedDataElementsValidator' multiple="multiple" class="{validate:{required:true}}" style="display:none"> </select>
+				<select id="compulsories" name='compulsories' multiple="multiple" style="display:none"></select>
+			</th>
 		</tr>
     </thead>
 	
@@ -105,7 +108,7 @@ tr.selected{
 					</thead>
 					<tbody id="selectedList">
 						#foreach ( $programStageDataElement in $programStageDataElements )
-							<tr ondblclick="unSelectDataElement( this )" id="$programStageDataElement.dataElement.id">
+							<tr ondblclick="unSelectDataElement( this )" id="$programStageDataElement.dataElement.id" class="selected">
 								<td onclick="select(this)">$encoder.htmlEncode( $programStageDataElement.dataElement.name )</td>
 								<td><input type="checkbox" name="compulsory" value="$programStageDataElement.dataElement.id" #if($programStageDataElement.compulsory == true ) checked #end /></td>
 							</tr>
@@ -123,8 +126,6 @@ tr.selected{
     </tr>
     </tbody>
 </table>
-<select id="selectedDataElementsValidator" name='selectedDataElementsValidator' multiple="multiple" class="{validate:{required:true}}" style="display:none"> </select>
-<select id="compulsories" name='compulsories' multiple="multiple" style="display:none"></select>
 <p>
 	<input type="submit" value="$i18n.getString( 'update' )" style="width:10em"/>
 	<input type="button" value="$i18n.getString( 'cancel' )" onclick="window.location.href='programStage.action?id=$programStage.program.id'" style="width:10em"/>

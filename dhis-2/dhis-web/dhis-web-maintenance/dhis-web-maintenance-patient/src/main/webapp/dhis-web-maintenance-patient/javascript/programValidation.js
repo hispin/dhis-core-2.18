@@ -12,6 +12,7 @@ jQuery(document).ready(	function(){
 function showProgramValidationDetails ( programValidationId )
 {
     jQuery.post( 'getProgramValidation.action', { validationId: programValidationId }, function ( json ) {
+		setInnerHTML( 'idField', json.validation.id );
 		setInnerHTML( 'descriptionField', json.validation.description );
 		setInnerHTML( 'leftSideField', json.validation.leftSide );
 		if( json.validation.rightSide != '1==1')

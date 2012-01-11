@@ -129,7 +129,6 @@ public class CreateAnonymousEncounterAction
             programStageInstance.setStageInProgram( programInstance.getProgramStageInstances().size() + 1 );
             programStageInstance.setDueDate( date );
             programStageInstance.setExecutionDate( date );
-            programStageInstance.setCompleted( false );
 
             programStageInstanceService.addProgramStageInstance( programStageInstance );
             

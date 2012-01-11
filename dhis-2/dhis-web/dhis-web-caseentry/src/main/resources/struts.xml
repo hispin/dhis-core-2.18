@@ -147,8 +147,8 @@
 			class="org.hisp.dhis.caseentry.action.caseentry.GetDataRecordsAction">
 			<result name="success" type="velocity">/content.vm</result>
 			<param name="page">/dhis-web-caseentry/dataentryRecords.vm</param>
-			<param name="javascripts"></param>
-			<param name="stylesheets">style/patient.css
+			<param name="javascripts">javascript/customcheckbox/prettyCheckboxes.js</param>
+			<param name="stylesheets">style/patient.css,javascript/customcheckbox/prettyCheckboxes.css
 				,../dhis-web-commons/paging/paging.css</param>
 		</action>
 
@@ -156,9 +156,7 @@
 			class="org.hisp.dhis.caseentry.action.caseentry.ProgramStageCustomDataEntryAction">
 			<result name="success" type="velocity">/content.vm</result>
 			<param name="page">/dhis-web-caseentry/programStageDataEntryForm.vm</param>
-			<param name="javascripts">javascript/form.js,javascript/entry.js
-				,javascript/customcheckbox/prettyCheckboxes.js,../dhis-web-commons/javascripts/date.js</param>
-			<param name="stylesheets">javascript/customcheckbox/prettyCheckboxes.css</param>
+			<param name="javascripts">javascript/form.js,javascript/entry.js,../dhis-web-commons/javascripts/date.js</param>
 		</action>
 
 		<action name="loadProgramStageRecords"
@@ -458,22 +456,22 @@
 				/dhis-web-commons/ajax/jsonResponseError.vm</result>
 		</action>
 		
-		<action name="getEventsByProgram"
+		 <action name="getEventsByProgram"
 			class="org.hisp.dhis.caseentry.action.caseentry.GetEventsByProgramAction">
 			<result name="success" type="velocity">/content.vm</result>
 			<param name="page">/dhis-web-caseentry/historyAnonymousEvents.vm</param>
 			<param name="javascripts">javascript/anonymousRegistration.js</param>
 			<param name="stylesheets">
-				../dhis-web-caseentry/style/patient.css,
-				../dhis-web-commons/paging/paging.css</param>
+                 ../dhis-web-caseentry/style/patient.css,
+                 ../dhis-web-commons/paging/paging.css</param>
 		</action>
-		
-		<action name="viewAnonymousEvents"
-			class="org.hisp.dhis.caseentry.action.caseentry.ProgramStageCustomDataEntryAction">
-			<result name="success" type="velocity">/content.vm</result>
-			<param name="page">/dhis-web-caseentry/dataEntryForm.vm</param>
-		</action>
-		
+        
+        <action name="viewAnonymousEvents"
+                class="org.hisp.dhis.caseentry.action.caseentry.ProgramStageCustomDataEntryAction">
+                <result name="success" type="velocity">/content.vm</result>
+                <param name="page">/dhis-web-caseentry/dataEntryForm.vm</param>
+        </action>
+ 
 		<!-- Patient-Program Enrollment -->
 
 		<action name="showProgramEnrollmentForm"

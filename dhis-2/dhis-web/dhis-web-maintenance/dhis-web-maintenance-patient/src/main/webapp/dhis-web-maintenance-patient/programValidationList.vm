@@ -47,6 +47,7 @@
 				<div style="float:right">
 					<a href="javascript:hideDetails()" title="$i18n.getString( "hide_details" )"><img src="../images/close.png" alt="$i18n.getString( "hide_details" )"></a>
 				</div>				
+				<p><label class="bold">$i18n.getString( "id" ):</label><br><span id="idField"></span></p>
 				<p><label class="bold">$i18n.getString( "name" ):</label><br><span id="descriptionField"></span></p>
 				<p><label class="bold" id='leftSideTitle'>$i18n.getString( "left_side" ):</label><br><span id="leftSideField"></span></p>
 				<p id='rightSideDiv'><label class="bold">$i18n.getString( "right_side" ):</label><br><span id="rightSideField"></span></p>

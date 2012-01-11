@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2004-2010, University of Oslo
+ * Copyright (c) 2004-2012, University of Oslo
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -118,17 +118,6 @@ public class GetPSDataElementsAction
             while ( deIterator.hasNext() )
             {
                 DataElement de = deIterator.next();
-
-                if ( de.getType().equals( DataElement.VALUE_TYPE_STRING ) && de.isMultiDimensional() )
-                {
-                    optionComboIds.add( "[DE:" + psId + "." + de.getId() + ".0]" );
-
-                    optionComboNames.add( de.getName() );
-
-                    optionComboType.add( "1:" + de.getType() );
-
-                    continue;
-                }
 
                 DataElementCategoryCombo dataElementCategoryCombo = de.getCategoryCombo();
 
