@@ -65,6 +65,8 @@ public class ValidationUtilsTest
         assertFalse( coordinateIsValid( "192.56789,-45.34332" ) );
         assertFalse( coordinateIsValid( "140.34,92.23323" ) );
         assertFalse( coordinateIsValid( "123.34,-94.23323" ) );
+        assertFalse( coordinateIsValid( "000.34,-94.23323" ) );
+        assertFalse( coordinateIsValid( "123.34,-00.23323" ) );
     }
 
     @Test

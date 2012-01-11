@@ -50,4 +50,10 @@ public interface MessageConversationStore
     List<MessageConversation> getMessageConversations( User user, Integer first, Integer max );
     
     long getUnreadUserMessageConversationCount( User user );
+    
+    int deleteMessages( User sender );
+    
+    int deleteUserMessages( User user );
+    
+    int removeUserFromMessageConversations( User lastSender );
 }

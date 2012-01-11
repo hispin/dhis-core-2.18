@@ -221,6 +221,13 @@ public class DefaultMessageService
         return messageConversationStore.getMessageConversations( null, null, null );
     }
 
+    public void deleteMessages( User user )
+    {
+        messageConversationStore.deleteMessages( user );
+        messageConversationStore.deleteUserMessages( user );
+        messageConversationStore.removeUserFromMessageConversations( user );
+    }
+        
     // -------------------------------------------------------------------------
     // Supportive methods
     // -------------------------------------------------------------------------
