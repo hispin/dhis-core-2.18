@@ -1,3 +1,4 @@
+<form id='dataRecordingSelectForm' name='dataRecordingSelectForm'>
    	
 <table class="mainPageTable" id='patientInfoDiv'> 
 	<tr>
@@ -95,3 +96,15 @@
 		</td>
 	</tr>
 </table>
+</form>
+
+<script>
+	jQuery('#dataRecordingSelectForm').ready(function(){ 
+		var programs = byId('programId');
+		if( programs.options.length == 2 )
+		{
+			 byId('programId').selectedIndex = 1;
+			 loadProgramStages();
+		}
+	});
+</script>
