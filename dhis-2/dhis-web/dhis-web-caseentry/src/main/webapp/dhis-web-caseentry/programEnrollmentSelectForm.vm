@@ -1,6 +1,6 @@
 <h3>$i18n.getString( "patient_registered" )</h3>
 
-<div id='programEnrollmentSelectDiv'>
+<form id='programEnrollmentSelectDiv' method='POST'>
 
     <input type="hidden" id="patientId" name="patientId" value="$patient.id">    
 
@@ -56,12 +56,12 @@
 					</td></td>
 				</tr>   
 				<tr>
-					<td><label for="enrollmentDate"><span id='enrollmentDateDescription'></span><em title="$i18n.getString( "required" )" class="required">*</em></label></td>
-					<td colspan='2' align='left'><input type="text" id="enrollmentDate" name="enrollmentDate" style='width:30em' disabled="disabled" ></td>
+					<td><label for="enrollmentDate"><span id='enrollmentDateDescription'></span><em title="$i18n.getString( "required" )" class="required"> * </em></label></td>
+                    <td colspan='2' align='left'><input type="text" id="enrollmentDate" name="enrollmentDate" style='width:30em' disabled="disabled" class="{validate:{required:true}}"></td>
 				</tr>
 				<tr>
-					<td><label for="dateOfIncident"><span id='dateOfIncidentDescription'></span><em title="$i18n.getString( "required" )" class="required">*</em></label></td>
-					<td colspan='2'><input type="text" id="dateOfIncident" name="dateOfIncident" style='width:30em' disabled="disabled" ></td>
+					<td><label for="dateOfIncident"><span id='dateOfIncidentDescription'></span><em title="$i18n.getString( "required" )" class="required"> * </em></label></td>
+					<td colspan='2'><input type="text" id="dateOfIncident" name="dateOfIncident" style='width:30em' disabled="disabled" class="{validate:{required:true}}"></td>
 				</tr>
 				<tr>
 					<td></td>
@@ -72,9 +72,12 @@
 				<tr>
 					<td style="width:180px"></td>
 					<td colspan='2'>
-						<input type="button" id='enrollBtn' name='enrollBtn' value="$i18n.getString( 'enroll_to_program' )" style='width:10em' onclick="validateProgramEnrollment();" disabled='disabled'/>
+						<input type="submit" id='enrollBtn' name='enrollBtn' value="$i18n.getString( 'enroll_to_program' )" style='width:10em' disabled='disabled'/>
 					</td>
 				</tr>
+				<tr>
+                	<td colspan='3'><span id='message'></span></td>
+                </tr>
 			</table>
 			
 			<div id='programEnrollmentDiv' style='display:none;'></div>
@@ -86,13 +89,17 @@
 			<div id='dataEntryFormDiv'  style='display:none;'></div>
 
 		</div>
-</div>
+</form>
 
 <script>
 	var i18n_enroll_to_program = '$encoder.jsEscape( $i18n.getString( "enroll_to_program" ) , "'")';
 	
 	jQuery('#programEnrollmentSelectDiv').ready(function()
 		{
+			validation( 'programEnrollmentSelectDiv', function(form){
+                validateProgramEnrollment();
+            });
+ 
 			jQuery("#tabs").tabs();
 			datePickerValid( 'enrollmentDate' );
 			datePickerValid( 'dateOfIncident' );

@@ -132,85 +132,46 @@ public class ValidatePatientProgramEnrollmentAction
 
         if ( criteria != null )
         {
-            message = i18n.getString( "can_not_enroll_into_the_program_because" ) + " " + criteria.getName();
-            return INPUT;
-        }
+            message = i18n.getString( "patient_could_not_be_enrolled_due_to_following_enrollment_criteria" ) + ": " + i18n.getString( criteria.getProperty() );
 
-        if ( enrollmentDate == null )
-        {
-            message = i18n.getString( "can_not_enrol_into_the_program_because" );
-
-            return INPUT;
-        }
-
-        else
-        {
-            enrollmentDate = enrollmentDate.trim();
-
-            if ( enrollmentDate.length() == 0 )
+            switch ( criteria.getOperator() )
             {
-                message = i18n.getString( "please_specify_enrollment_date" );
 
-                return INPUT;
+            case ValidationCriteria.OPERATOR_EQUAL_TO:
+                message += " = ";
+                break;
+            case ValidationCriteria.OPERATOR_GREATER_THAN:
+                message += " > ";
+                break;
+            default:
+                message += " < ";
+                break;
             }
 
-            if ( enrollmentDate.length() != 0 )
+            if ( criteria.getProperty() == "birthDate" )
             {
-                Date DateOfEnrollment = format.parseDate( enrollmentDate );
-
-                if ( DateOfEnrollment == null )
-                {
-                    message = i18n.getString( "please_specify_a_valid_enrollment_date" );
-
-                    return INPUT;
-                }
+                message += " " + format.formatValue( criteria.getValue() );
             }
-        }
-
-        if ( dateOfIncident == null )
-        {
-            message = i18n.getString( "please_specify_date_of_incident" );
+            else
+            {
+                message += " " + criteria.getValue().toString();
+            }
 
             return INPUT;
         }
 
-        else
+        Date DateOfEnrollment = format.parseDate( enrollmentDate );
+
+        Date DateOfIncident = format.parseDate( dateOfIncident );
+
+        if ( DateOfEnrollment.before( DateOfIncident ) )
         {
-            dateOfIncident = dateOfIncident.trim();
+            message = program.getDateOfEnrollmentDescription() + " "
+                + i18n.getString( "have_to_be_greater_or_equals_to" ) + " " + program.getDateOfIncidentDescription();
 
-            if ( dateOfIncident.length() == 0 )
-            {
-                message = i18n.getString( "please_specify_date_of_incident" );
+            return INPUT;
 
-                return INPUT;
-            }
-
-            if ( dateOfIncident.length() != 0 )
-            {
-                Date DateOfIncident = format.parseDate( dateOfIncident );
-
-                if ( DateOfIncident == null )
-                {
-                    message = i18n.getString( "please_specify_a_valid_date_of_incident" );
-
-                    return INPUT;
-                }
-
-                Date DateOfEnrollment = format.parseDate( enrollmentDate );
-
-                if ( DateOfEnrollment.before( DateOfIncident ) )
-                {
-                    message = i18n.getString( "date_of_incident_invalid" );
-
-                    return INPUT;
-                }
-            }
         }
-
-        // ---------------------------------------------------------------------
-        // Validation success
-        // ---------------------------------------------------------------------
-
         message = i18n.getString( "everything_is_ok" );
 
         return SUCCESS;

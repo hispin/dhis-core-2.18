@@ -521,6 +521,7 @@ function validateProgramEnrollment()
 		url: 'validatePatientProgramEnrollment.action',
 		data: getParamsForDiv('programEnrollmentSelectDiv'),
 		success: function(json) {
+			hideById('message');
 			var type = json.response;
 			if ( type == 'success' )
 			{
@@ -528,11 +529,11 @@ function validateProgramEnrollment()
 			}
 			else if ( type == 'error' )
 			{
-				showErrorMessage( i18n_program_enrollment_failed + ':' + '\n' + message );
+				setMessage( i18n_program_enrollment_failed + ':' + '\n' + message );
 			}
 			else if ( type == 'input' )
 			{
-				showWarningMessage( json.message );
+				setMessage( json.message );
 			}
       }
     });
