@@ -7,6 +7,14 @@
 
 <h2>$encoder.htmlEncode( $dataSetName )</h2>
 
+<div class="header-box" align="center">
+#if( $markComplete == true )
+    <h3 style="text-align: left;">$i18n.getString( "successfully_marked_as_complete" )</h3>
+#elseif( $markComplete == false )
+    <h3 style="text-align: left;">$i18n.getString( "successfully_marked_as_not_complete" )</h3>
+#end
+</div>
+
 #*
 #if( $validationRuleViolations.size() > 0 )
 <div class="header-box" align="center">
