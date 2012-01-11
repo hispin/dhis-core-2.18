@@ -184,8 +184,8 @@ proc synchData {orgunit level} {
 	    $::dhis($downloadtype,image) configure -image {}
 	    if {$::dhis($downloadtype,update) == 1} {
 		
-		lassign [split $downloadtype ,] periodtype valuetype
-		switch $valuetype {
+		lassign [split $downloadtype ,] periodType valueType
+		switch $valueType {
 		    datavalue {set valueTypeParam DataValues}
 		    indicator {set valueTypeParam IndicatorValues}
 		}
@@ -194,7 +194,7 @@ proc synchData {orgunit level} {
 		dhisdb::deleteValues db $periodType $level $orgunit $valueType $from $to
 		
 		${::log}::debug "Downloading for $periodType $valueType"
-		set tok [::dhisweb::fetchValues $::dhis(url) $level $orgunit $valueTypeParam $periodtype $from $to db]
+		set tok [::dhisweb::fetchValues $::dhis(url) $level $orgunit $valueTypeParam $periodType $from $to db]
 		
 		if {$tok ne 0} {
 		    # set up some bindings
