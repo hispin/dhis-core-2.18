@@ -2519,7 +2519,7 @@ a text editor (e.g. Notepad++) and do a search/replace to make sure this element
 		<title>Beneficiary registration </title>
         <para>Beneficiary registration section provides a mechanism for managing facilities which allow to registry new beneficiaries  or not.</para> 
 		<para>To access the beneficiary registration maintenance module, choose Maintenance->Beneficiaries and Programs->Beneficiary Registration.</para>
-		<para>There are two process for registering facilities. The first one is where the administrator will say which facility can register. The second is when end user logs in and then select a facility, system will display a waring message if the selected facility cannot register beneficiaries; else, the system will display the functions to register beneficiaries.</para>
+		<para>There are two processes for registering facilities. The first one is where the administrator will say that beneficiaries can register here. The second is where provides services ( Child Health program, Mother Care program, ...) for registered beneficiaries.</para>
 	</section>
 	<section id="program">
 		<title>Program</title>
