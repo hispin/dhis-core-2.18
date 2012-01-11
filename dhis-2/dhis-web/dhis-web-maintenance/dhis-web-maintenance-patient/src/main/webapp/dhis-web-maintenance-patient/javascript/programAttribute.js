@@ -5,7 +5,6 @@
 function showProgramAttributeDetails( programAttributeId )
 {
 	jQuery.post( 'getProgramAttribute.action', { id: programAttributeId }, function ( json ) {
-		setInnerHTML( 'idField', json.programAttribute.id );
 		setInnerHTML( 'nameField',  json.programAttribute.name );	
 		setInnerHTML( 'descriptionField', json.programAttribute.description );
 		

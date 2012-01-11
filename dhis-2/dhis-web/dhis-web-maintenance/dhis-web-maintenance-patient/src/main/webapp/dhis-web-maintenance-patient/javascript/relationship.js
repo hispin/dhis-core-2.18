@@ -5,7 +5,6 @@
 function showRelationshipTypeDetails( relationshipTypeId )
 {
   	jQuery.post( 'getRelationshipType.action', { id: relationshipTypeId }, function ( json ) {
-		setInnerHTML( 'idField', json.relationshipType.id );
 		setInnerHTML( 'aIsToBField', json.relationshipType.aIsToB );	
 		setInnerHTML( 'bIsToAField', json.relationshipType.bIsToA );       
 		setInnerHTML( 'descriptionField', json.relationshipType.description );

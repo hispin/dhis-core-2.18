@@ -34,14 +34,25 @@ import org.hisp.dhis.program.ProgramStageDataElement;
 public class ProgramStageDataElementSortOrderComparator
     implements Comparator<ProgramStageDataElement>
 {
+
     @Override
-    public int compare( ProgramStageDataElement object0, ProgramStageDataElement object1 )
+    public int compare( ProgramStageDataElement programStageDataElement0,
+        ProgramStageDataElement programStageDataElement1 )
     {
-        if ( object0.getDataElement().getSortOrder() == null ) 
+        if ( programStageDataElement0.getDataElement().getSortOrder() == null
+            || programStageDataElement0.getDataElement().getSortOrder() == 0 )
         {
-            return object1.getDataElement().getSortOrder() != null ? -1 : 0;
+            return programStageDataElement0.getDataElement().getName()
+                .compareTo( programStageDataElement1.getDataElement().getName() );
         }
-        
-        return object0.getDataElement().getSortOrder().compareTo( object1.getDataElement().getSortOrder() );
+        if ( programStageDataElement1.getDataElement().getSortOrder() == null
+            || programStageDataElement1.getDataElement().getSortOrder() == 0 )
+        {
+            return programStageDataElement0.getDataElement().getName()
+                .compareTo( programStageDataElement1.getDataElement().getName() );
+        }
+        return programStageDataElement0.getDataElement().getSortOrder()
+            - programStageDataElement1.getDataElement().getSortOrder();
     }
+
 }
