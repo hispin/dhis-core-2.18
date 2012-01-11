@@ -1022,10 +1022,10 @@ mapfish.widgets.geostat.Centroid = Ext.extend(Ext.Panel, {
 	},
     
     loadGeoJson: function() {
-        G.vars.mask.msg = G.i18n.loading_geojson;
+        G.vars.mask.msg = G.i18n.loading;
         G.vars.mask.show();
         G.vars.activeWidget = this;
-        this.updateValues = true;
+        this.updateValues = false;
         
         var url = G.conf.path_mapping + 'getGeoJsonWithValues.action?' + 
             'periodId=' + this.cmp.period.getValue() +
@@ -1035,12 +1035,13 @@ mapfish.widgets.geostat.Centroid = Ext.extend(Ext.Panel, {
         this.setUrl(url);
     },
 
-    classify: function(exception, lockPosition) {
+    classify: function(exception, lockPosition, loaded) {
         if (this.formValidation.validateForm.apply(this, [exception])) {
-            if (!this.layer.features.length) {
+            if (!this.layer.features.length && !loaded) {
                 this.loadGeoJson();
             }
-            G.vars.mask.msg = G.i18n.aggregating_map_values;
+            
+            G.vars.mask.msg = G.i18n.loading;
             G.vars.mask.show();
             
             G.vars.lockPosition = lockPosition;
@@ -1076,9 +1077,10 @@ mapfish.widgets.geostat.Centroid = Ext.extend(Ext.Panel, {
                             Ext.message.msg(false, G.i18n.current_selection_no_data);
                             G.vars.mask.hide();
                             return;
-                        }
+                        }                            
                         
                         for (var i = 0; i < this.layer.features.length; i++) {
+                            this.layer.features[i].attributes.value = 0;
                             for (var j = 0; j < mapvalues.length; j++) {
                                 if (this.layer.features[i].attributes.id == mapvalues[j].oi) {
                                     this.layer.features[i].attributes.value = parseFloat(mapvalues[j].v);

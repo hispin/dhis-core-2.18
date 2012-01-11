@@ -101,7 +101,7 @@ mapfish.GeoStat = OpenLayers.Class({
         G.vars.activeWidget.featureStorage = this.layer.features.slice(0);
         this.requestSuccess(request);
         
-        G.vars.activeWidget.classify();
+        G.vars.activeWidget.classify(false, false, true);
     },
 
     onSuccess2: function(request) {
@@ -113,15 +113,17 @@ mapfish.GeoStat = OpenLayers.Class({
         if (doc.length && G.vars.activeWidget != symbol) {
             doc = G.util.geoJsonDecode(doc);
         }
-        
         var format = this.format || new OpenLayers.Format.GeoJSON();
         this.layer.removeFeatures(this.layer.features);
         
-		for (var i = 0, a = null, p = null, geo = format.read(doc); i < geo.length; i++) {
-			p = G.util.getTransformedPoint(geo[i].geometry.getCentroid());
-			geo[i] = new OpenLayers.Feature.Vector(p, geo[i].attributes);;
+        var geo = format.read(doc);
+		for (var i = 0; i < geo.length; i++) {
+            var c = geo[i].geometry.getCentroid();
+            if (c instanceof Object) {
+                var p = G.util.getTransformedPoint(c);
+                geo[i] = new OpenLayers.Feature.Vector(p, geo[i].attributes);
+            }
 		}
-		
         this.layer.addFeatures(geo);
         G.vars.activeWidget.featureStorage = this.layer.features.slice(0);
         this.requestSuccess(request);
@@ -129,7 +131,7 @@ mapfish.GeoStat = OpenLayers.Class({
 		if (!G.vars.activeWidget.formValidation.validateForm.call(G.vars.activeWidget)) {
 			G.vars.mask.hide();
 		}
-		G.vars.activeWidget.classify();
+		G.vars.activeWidget.classify(false, false, true);
     },
 
     onFailure: function(request) {
