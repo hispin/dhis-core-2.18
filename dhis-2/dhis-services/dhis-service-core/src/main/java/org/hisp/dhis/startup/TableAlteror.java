@@ -323,7 +323,7 @@ public class TableAlteror
         executeSql( "ALTER TABLE messageconversation DROP COLUMN messageconversationkey" );
         executeSql( "ALTER TABLE message DROP COLUMN messagesubject" );
         executeSql( "ALTER TABLE message DROP COLUMN messagekey" );
-        executeSql( "ALTER TABLE message RENAME COLUMN sentdate TO lastupdated" );
+        executeSql( "ALTER TABLE message DROP COLUMN sentdate" );
         executeSql( "ALTER TABLE usermessage DROP COLUMN messagedate" );
         executeSql( "DROP TABLE message_usermessages" );
 

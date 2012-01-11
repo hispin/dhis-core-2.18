@@ -53,7 +53,7 @@ public class IdentityPopulator
         "indicatorgroup", "datadictionary", "validationrulegroup", "validationrule", "dataset", "orgunitlevel", "document",
         "organisationunit", "orgunitgroup", "orgunitgroupset", "dataelementcategoryoption", "dataelementgroup", "sqlview",
         "dataelement", "dataelementgroupset", "dataelementcategory", "categorycombo", "categoryoptioncombo", "mapview", 
-        "reporttable", "report", "messageconversation", "userinfo", "usergroup" };
+        "reporttable", "report", "messageconversation", "message", "userinfo", "usergroup" };
 
     // -------------------------------------------------------------------------
     // Dependencies
