@@ -54,7 +54,6 @@
             <div style="float:right;">
                 <a href="javascript:hideDetails()" title="$i18n.getString( 'hide_details' )"><img src="../images/close.png" alt="$i18n.getString( 'hide_details' )"></a>
             </div>              
-            <p><label class="bold">$i18n.getString( "id" ):</label><br><span id="idField"></span></p>
             <p><label class="bold">$i18n.getString( "a_is_to_b" ):</label><br><span id="aIsToBField"></span></p>
             <p><label class="bold">$i18n.getString( "b_is_to_a" ):</label><br><span id="bIsToAField"></span></p>
             <p><label class="bold">$i18n.getString( "description" ):</label><br><span id="descriptionField"></span></p>                            
