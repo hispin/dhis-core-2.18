@@ -84,7 +84,7 @@ body div#wrap
 
 body div#content ul li
 {
-    padding-bottom : 8px;
+    padding-bottom : 4px;
 }
 
 /*
@@ -95,9 +95,9 @@ body div#header
 {
     height           : 20px;
     background-color : #1d5288;
-    border-bottom    : 4px solid #184572;
-    padding-top      : 2px;
-    padding-bottom   : 2px;
+    border-bottom    : 2px solid #184572;
+    padding-top      : 1px;
+    padding-bottom   : 1px;
     margin-bottom    : .5em;
 }
 
@@ -345,7 +345,7 @@ blockquote p
 /* compensates for smaller Opera Mini margins */
 ol, ul, dl
 {
-    margin-left  : 2%;
+    margin-left  : 1%;
     padding-left : 5px;
 }
 
@@ -356,7 +356,7 @@ ul li
 
 dd
 {
-    margin-left : 2%;
+    margin-left : 1%;
 }
 
 /*forces native margin*/
