@@ -1,35 +1,31 @@
-<form id='dataRecordingSelectForm' name='dataRecordingSelectForm'>
-
+   	
 <table class="mainPageTable" id='patientInfoDiv'> 
 	<tr>
-		<td valign="top">
-			<table>
-				<tr>            
-					<td class="bold">$i18n.getString( "full_name" ):</td>
-					<td>$encoder.htmlEncode( $patient.getFullName() )<td>
-				</tr>
-				<tr>
-					<td class="bold">$i18n.getString( "gender" ):</td>
-					<td>$i18n.getString( $patient.gender )</td>
-				</tr>
-				<tr>
-					<td class="bold">$i18n.getString( "date_of_birth" ):</td>
-					<td>$format.formatDate( $patient.birthDate )<td>
-				</tr>
-				<tr>
-					<td class="bold">$i18n.getString( "age" ):</td>
-					<td>$encoder.htmlEncode( $patient.getAge() )</td>
-				</tr>
-			</table>
-		</td>
-		
-		<td style="vertical-align:top">
+		<td>
+	<table>
+		<tr>            
+			<td class="bold">$i18n.getString( "full_name" ):</td>
+			<td>$encoder.htmlEncode( $patient.getFullName() )<td>
+		</tr>
+		<tr>
+			<td class="bold">$i18n.getString( "gender" ):</td>
+			<td>$i18n.getString( $patient.gender )</td>
+		</tr>
+		<tr>
+			<td class="bold">$i18n.getString( "date_of_birth" ):</td>
+			<td>$format.formatDate( $patient.birthDate )<td>
+		</tr>
+		<tr>
+			<td class="bold">$i18n.getString( "age" ):</td>
+			<td>$encoder.htmlEncode( $patient.getAge() )</td>
+		</tr>
+		</table>
+		<td style="vertical-align:top" rowspan='4'>
 			<div id="currentSelection" style="float:right"></div>
 		</td>
 	</tr>
-
 	<tr>
-		<td colspan='2'><hr style="clear:both"/></td>
+		<td colspan='2'><hr style="clear:both"></td>
 	</tr>
 </table>
 
@@ -99,16 +95,3 @@
 		</td>
 	</tr>
 </table>
-
-</form>
-
-<script>
-	jQuery('#dataRecordingSelectForm').ready(function(){ 
-		var programs = byId('programId');
-		if( programs.options.length == 2 )
-		{
-			byId('programId').selectedIndex = 1;
-			loadProgramStages();
-		}
-	});
-</script>

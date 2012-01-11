@@ -40,9 +40,7 @@
 		   $customDataEntryFormCode
 
 			<script type="text/javascript"> 
-				#if( $!programStageInstance.programStage.program.anonymous == 'false' )
-					initCustomCheckboxes();
-				#end
+				initCustomCheckboxes();
 			</script>
 		</div>
 	#else
@@ -60,7 +58,7 @@
 					<th>$i18n.getString( "data_element" )</th>                   
 					<th>$i18n.getString( "entry" )</th>
 					#if( $programStageInstance.programInstance.program.anonymous == 'false' )
-					<th>$i18n.getString( "provided_elsewhere" )</th>   
+						<th>$i18n.getString( "provided_elsewhere" )</th>             
 					#end
 				</tr>
 			#set( $dataElementRowCount = 0 )
@@ -119,12 +117,13 @@
 								<input name="entryfield" data="{compulsory: $programStageDataElement.compulsory, deName:'$programStageDataElement.dataElement.name', deType:'$programStageDataElement.dataElement.getDetailedNumberType()' }" #if($programStageInstance.completed) disabled="disabled" #end id="$id" type="text" value="$!encoder.htmlEncode( $patientDataValue.value )" onchange="saveVal( $programStageDataElement.dataElement.id, $optionCombo.id )" onkeypress="return keyPress(event, this)" tabindex="$tabIndex"  style="text-align:center;">
 							#end
 						#end
-					</td>   
+					</td>  
 					
-					#set( $id = $programStageDataElement.programStage.id + '_' + $programStageDataElement.dataElement.id + '_facility' )
-					##providedByAnotherFacility   
-					#if( $programStageInstance.programInstance.program.anonymous == 'false' )
+					#if($programStageInstance.programInstance.program.anonymous == 'false') 					
+					
+					##providedByAnotherFacility                
 					<td>   
+						#set( $id = $programStageDataElement.programStage.id + '_' + $programStageDataElement.dataElement.id + '_facility' )
 						#if ( $patientDataValue.value )        
 							#if( !$patientDataValue.providedByAnotherFacility )
 								$patientDataValue.organisationUnit.name
@@ -136,11 +135,10 @@
 						 #else
 							<input name="providedByAnotherFacility" id="$id" type="checkbox" onclick="updateProvidingFacility( $programStageDataElement.dataElement.id, this )" #if($programStageInstance.completed) disabled="disabled" #end >
 						 #end                         
-					</td>    
+					</td>
+					
+					#end					
 				</tr>
-				#else
-					<input name="providedByAnotherFacility" id="$id" type="hidden">
-				#end
 				#set( $tabIndex = $tabIndex + 1 )
 			#end
 			</table>

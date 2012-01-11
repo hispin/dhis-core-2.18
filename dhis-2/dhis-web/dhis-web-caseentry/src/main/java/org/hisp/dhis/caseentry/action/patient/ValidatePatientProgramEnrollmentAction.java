@@ -132,46 +132,84 @@ public class ValidatePatientProgramEnrollmentAction
 
         if ( criteria != null )
         {
-            message = i18n.getString("violate_validation_criteria") + ": " + i18n.getString( criteria.getProperty() );
-
-            switch ( criteria.getOperator() )
-            {
-
-            case ValidationCriteria.OPERATOR_EQUAL_TO:
-                message += " = ";
-                break;
-            case ValidationCriteria.OPERATOR_GREATER_THAN:
-                message += " > ";
-                break;
-            default:
-                message += " < ";
-                break;
-            }
-
-            if ( criteria.getProperty() == "birthDate" )
-            {
-                message += " " + format.formatValue( criteria.getValue() );
-            }
-            else
-            {
-                message += " " + criteria.getValue().toString();
-            }
-
+            message = i18n.getString( "can_not_enroll_into_the_program_because" ) + " " + criteria.getName();
             return INPUT;
         }
 
-        Date DateOfEnrollment = format.parseDate( enrollmentDate );
-
-        Date DateOfIncident = format.parseDate( dateOfIncident );
-
-        if ( DateOfEnrollment.before( DateOfIncident ) )
+        if ( enrollmentDate == null )
         {
-            message = program.getDateOfEnrollmentDescription() + " "
-                + i18n.getString( "have_to_be_greater_or_equals_to" ) + " " + program.getDateOfIncidentDescription();
+            message = i18n.getString( "can_not_enrol_into_the_program_because" );
 
             return INPUT;
-
         }
+
+        else
+        {
+            enrollmentDate = enrollmentDate.trim();
+
+            if ( enrollmentDate.length() == 0 )
+            {
+                message = i18n.getString( "please_specify_enrollment_date" );
+
+                return INPUT;
+            }
+
+            if ( enrollmentDate.length() != 0 )
+            {
+                Date DateOfEnrollment = format.parseDate( enrollmentDate );
+
+                if ( DateOfEnrollment == null )
+                {
+                    message = i18n.getString( "please_specify_a_valid_enrollment_date" );
+
+                    return INPUT;
+                }
+            }
+        }
+
+        if ( dateOfIncident == null )
+        {
+            message = i18n.getString( "please_specify_date_of_incident" );
+
+            return INPUT;
+        }
+
+        else
+        {
+            dateOfIncident = dateOfIncident.trim();
+
+            if ( dateOfIncident.length() == 0 )
+            {
+                message = i18n.getString( "please_specify_date_of_incident" );
+
+                return INPUT;
+            }
+
+            if ( dateOfIncident.length() != 0 )
+            {
+                Date DateOfIncident = format.parseDate( dateOfIncident );
+
+                if ( DateOfIncident == null )
+                {
+                    message = i18n.getString( "please_specify_a_valid_date_of_incident" );
+
+                    return INPUT;
+                }
+
+                Date DateOfEnrollment = format.parseDate( enrollmentDate );
+
+                if ( DateOfEnrollment.before( DateOfIncident ) )
+                {
+                    message = i18n.getString( "date_of_incident_invalid" );
+
+                    return INPUT;
+                }
+            }
+        }
+
+        // ---------------------------------------------------------------------
+        // Validation success
+        // ---------------------------------------------------------------------
 
         message = i18n.getString( "everything_is_ok" );
 

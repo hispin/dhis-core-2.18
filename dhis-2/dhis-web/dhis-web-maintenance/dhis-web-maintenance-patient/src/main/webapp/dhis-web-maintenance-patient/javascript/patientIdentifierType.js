@@ -6,6 +6,7 @@ function showPatientIdentifierTypeDetails( patientIdentifierTypeId )
 {
 	jQuery.post( 'getPatientIdentifierType.action', { id: patientIdentifierTypeId },
 		function ( json ) {
+			setInnerHTML( 'idField', json.patientIdentifierType.id );
 			setInnerHTML( 'nameField', json.patientIdentifierType.name );	
 			setInnerHTML( 'descriptionField', json.patientIdentifierType.description );
 			

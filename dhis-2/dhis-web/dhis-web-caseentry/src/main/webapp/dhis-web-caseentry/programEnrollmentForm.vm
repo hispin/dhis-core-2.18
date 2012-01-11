@@ -1,6 +1,6 @@
 <input type='hidden' id='registerEvent' name='registerEvent' value='$registerEvent'>
 
-#if( $programStageInstances.size() > 0 )
+#if( $programStageInstances )
 	<table width=100%>
 		<col id="noCol">
 		<col id="stageCol">    

@@ -1,5 +1,5 @@
 
-<h3>$i18n.getString( "assign_validation_for_programs" ) </h3>
+<h3>$i18n.getString( "define_program_associations" ) </h3>
 
 <form action='defineProgramsForValidationCriteria.action' method='post' onsubmit="selectAllById('programIds');">
 <table>

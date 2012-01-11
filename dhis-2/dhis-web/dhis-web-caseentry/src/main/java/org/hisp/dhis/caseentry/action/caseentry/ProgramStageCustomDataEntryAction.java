@@ -259,7 +259,7 @@ public class ProgramStageCustomDataEntryAction
         {
             patientIdentifier = patientIdentifierService.getPatientIdentifier( patient );
         }
-        
+
         selectedStateManager.setSelectedProgramStageInstance( programStageInstance );
 
         selectedStateManager.setSelectedProgramStageInstance( programStageInstance );

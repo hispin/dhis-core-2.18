@@ -113,13 +113,13 @@ public class GetEventsByProgramAction
         ProgramInstance programInstance = programInstanceService.getProgramInstance( programInstanceId );
 
         Date dateValue = format.parseDate( executionDate );
-        
+
         total = programStageInstanceService.countProgramStageInstances( programInstance, dateValue );
 
         this.paging = createPaging( total );
 
-        programStageInstances = programStageInstanceService.getProgramStageInstances( programInstance, dateValue, paging
-            .getStartPos(), paging.getPageSize() );
+        programStageInstances = programStageInstanceService.getProgramStageInstances( programInstance, dateValue,
+            paging.getStartPos(), paging.getPageSize() );
 
         return SUCCESS;
     }
