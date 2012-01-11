@@ -55,11 +55,11 @@
 					<td></td>
 					</td></td>
 				</tr>   
-				<tr>
+				<tr id='enrollmentDateTR' style='display:none;'>
 					<td><label for="enrollmentDate"><span id='enrollmentDateDescription'></span><em title="$i18n.getString( "required" )" class="required"> * </em></label></td>
                     <td colspan='2' align='left'><input type="text" id="enrollmentDate" name="enrollmentDate" style='width:30em' disabled="disabled" class="{validate:{required:true}}"></td>
 				</tr>
-				<tr>
+				<tr id='dateOfIncidentTR' style='display:none;'>
 					<td><label for="dateOfIncident"><span id='dateOfIncidentDescription'></span><em title="$i18n.getString( "required" )" class="required"> * </em></label></td>
 					<td colspan='2'><input type="text" id="dateOfIncident" name="dateOfIncident" style='width:30em' disabled="disabled" class="{validate:{required:true}}"></td>
 				</tr>
@@ -72,7 +72,7 @@
 				<tr>
 					<td style="width:180px"></td>
 					<td colspan='2'>
-						<input type="submit" id='enrollBtn' name='enrollBtn' value="$i18n.getString( 'enroll_to_program' )" style='width:10em' disabled='disabled'/>
+						<input type="submit" id='enrollBtn' name='enrollBtn' value="$i18n.getString( 'enroll_to_program' )" style='width:12em; display:none;' disabled='disabled'/>
 					</td>
 				</tr>
 				<tr>
