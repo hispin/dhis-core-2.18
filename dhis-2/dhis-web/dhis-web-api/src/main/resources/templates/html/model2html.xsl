@@ -44,6 +44,7 @@
   <xsl:include href="grid.xsl" />
   <xsl:include href="messageConversations.xsl" />
   <xsl:include href="messageConversation.xsl" />
+  <xsl:include href="dataValueSets.xsl" />
 
   <!-- Config elements -->
 

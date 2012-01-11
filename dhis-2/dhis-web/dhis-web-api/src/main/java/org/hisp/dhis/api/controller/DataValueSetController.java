@@ -29,19 +29,19 @@ package org.hisp.dhis.api.controller;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.hisp.dhis.api.webdomain.DataValueSets;
 import org.hisp.dhis.importexport.dxf2.model.DataValueSet;
 import org.hisp.dhis.importexport.dxf2.service.DataValueSetService;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
-import org.hisp.dhis.system.velocity.VelocityManager;
 import org.hisp.dhis.user.User;
 import org.hisp.dhis.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.io.Writer;
 import java.util.Collection;
 
 @Controller
@@ -59,11 +59,11 @@ public class DataValueSetController
     private UserService userService;
 
     @RequestMapping( method = RequestMethod.GET )
-    public void getDataValueSet( Writer writer ) throws Exception
+    public String getDataValueSet( Model model ) throws Exception
     {
-        VelocityManager velocityManager = new VelocityManager();
-        String str = velocityManager.render( "/templates/html/dataValueSet" );
-        writer.write( str );
+        model.addAttribute( "model", new DataValueSets() );
+
+        return "dataValueSets";
     }
 
     @RequestMapping( method = RequestMethod.POST )
