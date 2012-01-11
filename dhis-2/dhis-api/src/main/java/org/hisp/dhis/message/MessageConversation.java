@@ -83,6 +83,11 @@ public class MessageConversation
 
     public void addMessage( Message message )
     {
+        if ( message != null )
+        {
+            message.setAutoFields();
+        }
+        
         this.messages.add( message );
     }
 
@@ -169,10 +174,10 @@ public class MessageConversation
         this.subject = subject;
     }
 
-/*    @XmlElementWrapper( name = "userMessages" )
+    /* @XmlElementWrapper( name = "userMessages" )
     @XmlElement( name = "userMessage" )
-    @JsonProperty */
-    // TODO waiting for idObject version of userMessage
+    @JsonProperty 
+    TODO waiting for idObject version of userMessage */
     public Set<UserMessage> getUserMessages()
     {
         return userMessages;
