@@ -7,7 +7,6 @@ function showProgramDetails( programId )
 	jQuery.post( "getProgram.action", {
 		id:programId
 	}, function(json){
-		setInnerHTML( 'idField', json.program.id );
 		setInnerHTML( 'nameField', json.program.name );
 		setInnerHTML( 'descriptionField', json.program.description );
 		

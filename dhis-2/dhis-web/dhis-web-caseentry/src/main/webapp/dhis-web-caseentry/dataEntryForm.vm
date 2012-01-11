@@ -50,16 +50,12 @@
 				<col id="noCol">
 				<col id="deCol">    
 				<col id="entryCol">
-				#if( $programStageInstance.programInstance.program.anonymous == 'false' )
 				<col id="facilityCol">       
-				#end
 				<tr>
 					<th>$i18n.getString( "nr" )</th>
 					<th>$i18n.getString( "data_element" )</th>                   
 					<th>$i18n.getString( "entry" )</th>
-					#if( $programStageInstance.programInstance.program.anonymous == 'false' )
-						<th>$i18n.getString( "provided_elsewhere" )</th>             
-					#end
+					<th>$i18n.getString( "provided_elsewhere" )</th>             
 				</tr>
 			#set( $dataElementRowCount = 0 )
 			#set( $mark = 0 )
@@ -117,10 +113,7 @@
 								<input name="entryfield" data="{compulsory: $programStageDataElement.compulsory, deName:'$programStageDataElement.dataElement.name', deType:'$programStageDataElement.dataElement.getDetailedNumberType()' }" #if($programStageInstance.completed) disabled="disabled" #end id="$id" type="text" value="$!encoder.htmlEncode( $patientDataValue.value )" onchange="saveVal( $programStageDataElement.dataElement.id, $optionCombo.id )" onkeypress="return keyPress(event, this)" tabindex="$tabIndex"  style="text-align:center;">
 							#end
 						#end
-					</td>  
-					
-					#if($programStageInstance.programInstance.program.anonymous == 'false') 					
-					
+					</td>   
 					##providedByAnotherFacility                
 					<td>   
 						#set( $id = $programStageDataElement.programStage.id + '_' + $programStageDataElement.dataElement.id + '_facility' )
@@ -135,9 +128,7 @@
 						 #else
 							<input name="providedByAnotherFacility" id="$id" type="checkbox" onclick="updateProvidingFacility( $programStageDataElement.dataElement.id, this )" #if($programStageInstance.completed) disabled="disabled" #end >
 						 #end                         
-					</td>
-					
-					#end					
+					</td>    
 				</tr>
 				#set( $tabIndex = $tabIndex + 1 )
 			#end

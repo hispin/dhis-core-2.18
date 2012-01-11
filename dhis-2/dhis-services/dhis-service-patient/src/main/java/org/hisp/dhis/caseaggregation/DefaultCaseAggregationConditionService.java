@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2004-2012, University of Oslo
+ * Copyright (c) 2004-2010, University of Oslo
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -204,7 +204,7 @@ public class DefaultCaseAggregationConditionService
         Period period )
     {
         String sql = convertCondition( aggregationCondition, orgunit, period );
-  
+        
         Collection<Integer> patientIds = aggregationConditionStore.executeSQL( sql );
 
         if ( patientIds == null )
@@ -798,11 +798,11 @@ public class DefaultCaseAggregationConditionService
             sql = "SELECT pi.patientid ";
         }
 
-        return sql + "FROM programinstance as pgi "
-                   + "INNER JOIN patient as pi ON pi.patientid = pgi.patientid  " 
-                   + "WHERE pgi.programid=" + programId + " "
-                       + "AND pi.organisationunitid = " + orgunitId + " " + "AND pgi.enrollmentdate >= '" + startDate
-                       + "' AND pgi.enrollmentdate <= '" + endDate + "' ";
+        return sql + "FROM programstageinstance as psi "
+            + "INNER JOIN programinstance as pgi ON psi.programinstanceid = pgi.programinstanceid "
+            + "INNER JOIN patient as pi ON pi.patientid = pgi.patientid " + "WHERE pgi.programid=" + programId + " "
+            + "AND pi.organisationunitid = " + orgunitId + " " + "AND pgi.enrollmentdate >= '" + startDate
+            + "' AND pgi.enrollmentdate <= '" + endDate + "' ";
     }
 
     private String getSQL( List<String> conditions, List<String> operators )

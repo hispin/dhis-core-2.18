@@ -39,7 +39,6 @@ function showSortProgramStage()
 function showProgramStageDetails( programStageId )
 {
 	jQuery.post( 'getProgramStage.action', { id: programStageId }, function ( json ) {
-		setInnerHTML( 'idField', json.programStage.id );
 		setInnerHTML( 'nameField', json.programStage.name );	
 		setInnerHTML( 'descriptionField', json.programStage.description );
 		setInnerHTML( 'stageInProgramField', json.programStage.stageInProgram );   
