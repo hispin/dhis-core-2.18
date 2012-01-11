@@ -26,7 +26,7 @@
 				<tr id="tr${criteria.id}">
 				  <td>$criteria.name</td>
 				  <td>
-					<a href="showProgramsForValidationCriteriaForm.action?criteriaId=$criteria.id" title="$i18n.getString( "define_associations" )"><img src="../images/assign.png" alt="$i18n.getString( 'assign_program' )"></a>
+					<a href="showProgramsForValidationCriteriaForm.action?criteriaId=$criteria.id" title="$i18n.getString( 'assign_validation_for_programs' )"><img src="../images/assign.png" alt="$i18n.getString( 'assign_validation_for_programs' )"></a>
 					<a href="showUpdateValidationCriteriaForm.action?id=$criteria.id" title="$i18n.getString( "edit" )"><img src="../images/edit.png" alt="$i18n.getString( 'edit' )"></a>
 					<a href="javascript:removeCriteria( '$criteria.id', '$encoder.jsEncode( $criteria.getName() )' )" title="$i18n.getString( "remove" )"><img src="../images/delete.png" alt="$i18n.getString( 'remove' )"></a>
 					<a href="javascript:showValidationCriteriaDetails( '$criteria.id' )" title="$i18n.getString( "show_details" )"><img src="../images/information.png" alt="$i18n.getString( 'show_details' )"></a>
