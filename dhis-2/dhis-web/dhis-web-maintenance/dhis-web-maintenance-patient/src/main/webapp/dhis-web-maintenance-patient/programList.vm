@@ -23,10 +23,8 @@
 					<td>$encoder.htmlEncode( $program.name )</td>                
 					
 					<td style="text-align:center">
-					  <a href="defineProgramAssociationsForm.action?id=$program.id" title="$i18n.getString( 'define_associations' )"><img src="../images/assign.png" alt="$i18n.getString( 'define_associations' )"></a>
-					  #if( $program.anonymous=='false')
-					  <a href="programValidation.action?programId=$program.id" title="$i18n.getString( 'program_validation_management' )"><img src="../images/assign_b.png" alt="$i18n.getString( 'define_program_validation' )"></a>
-					  #else
+					  <a href="defineProgramAssociationsForm.action?id=$program.id" title="$i18n.getString( 'assign_program_to_orgunits' )"><img src="../images/assign.png" alt="$i18n.getString( 'assign_program_to_orgunits' )"></a>					  #if( $program.anonymous=='false')
+					  <a href="programValidation.action?programId=$program.id" title="$i18n.getString( 'program_validation_management' )"><img src="../images/assign_b.png" alt="$i18n.getString( 'program_validation_management' )"></a>					  #else
 						&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 					  #end
 					  <a href="showUpdateProgramForm.action?id=$program.id" title="$i18n.getString( 'edit' )"><img src="../images/edit.png" alt="$i18n.getString( 'edit' )"></a>
