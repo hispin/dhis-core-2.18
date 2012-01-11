@@ -1243,6 +1243,10 @@ http://www.springframework.org/schema/security http://www.springframework.org/sc
 	<property name="jdbcTemplate" ref="jdbcTemplate" />
   </bean>
   
+  <bean id="org.hisp.dhis.message.MessageConversationDeletionHandler" class="org.hisp.dhis.message.MessageConversationDeletionHandler">
+	<property name="messageService" ref="org.hisp.dhis.message.MessageService"/>
+  </bean>
+  
   <!-- DeletionManager -->
 
   <bean class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
@@ -1279,6 +1283,7 @@ http://www.springframework.org/schema/security http://www.springframework.org/sc
           <ref local="org.hisp.dhis.dataelement.DataElementCategoryDeletionHandler" />
           <ref local="org.hisp.dhis.dataelement.DataElementGroupSetDeletionHandler" />
           <ref local="org.hisp.dhis.configuration.ConfigurationDeletionHandler" />
+		  <ref local="org.hisp.dhis.message.MessageConversationDeletionHandler" />
         </list>
       </list>
     </property>

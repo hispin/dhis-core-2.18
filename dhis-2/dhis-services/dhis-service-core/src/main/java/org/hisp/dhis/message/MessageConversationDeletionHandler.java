@@ -1,4 +1,4 @@
-package org.hisp.dhis.organisationunit;
+package org.hisp.dhis.message;
 
 /*
  * Copyright (c) 2004-2012, University of Oslo
@@ -27,36 +27,24 @@ package org.hisp.dhis.organisationunit;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.Iterator;
-
-import org.hisp.dhis.attribute.AttributeService;
-import org.hisp.dhis.attribute.AttributeValue;
-import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.system.deletion.DeletionHandler;
 import org.hisp.dhis.user.User;
 
 /**
  * @author Lars Helge Overland
  */
-public class OrganisationUnitDeletionHandler
+public class MessageConversationDeletionHandler
     extends DeletionHandler
 {
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
 
-    private OrganisationUnitService organisationUnitService;
+    private MessageService messageService;
 
-    public void setOrganisationUnitService( OrganisationUnitService organisationUnitService )
+    public void setMessageService( MessageService messageService )
     {
-        this.organisationUnitService = organisationUnitService;
-    }
-
-    private AttributeService attributeService;
-
-    public void setAttributeService( AttributeService attributeService )
-    {
-        this.attributeService = attributeService;
+        this.messageService = messageService;
     }
 
     // -------------------------------------------------------------------------
@@ -66,57 +54,12 @@ public class OrganisationUnitDeletionHandler
     @Override
     public String getClassName()
     {
-        return OrganisationUnit.class.getSimpleName();
-    }
-
-    @Override
-    public void deleteOrganisationUnit( OrganisationUnit unit )
-    {
-        Iterator<AttributeValue> iterator = unit.getAttributeValues().iterator();
-
-        while ( iterator.hasNext() )
-        {
-            AttributeValue attributeValue = iterator.next();
-            iterator.remove();
-            attributeService.deleteAttributeValue( attributeValue );
-        }
-
-        organisationUnitService.updateOrganisationUnit( unit );
-    }
-
-    @Override
-    public void deleteDataSet( DataSet dataSet )
-    {
-        for ( OrganisationUnit unit : organisationUnitService.getAllOrganisationUnits() )
-        {
-            if ( unit.getDataSets().remove( dataSet ) )
-            {
-                organisationUnitService.updateOrganisationUnit( unit );
-            }
-        }
+        return MessageConversation.class.getSimpleName();
     }
 
     @Override
     public void deleteUser( User user )
     {
-        for ( OrganisationUnit unit : organisationUnitService.getAllOrganisationUnits() )
-        {
-            if ( unit.getUsers().remove( user ) )
-            {
-                organisationUnitService.updateOrganisationUnit( unit );
-            }
-        }
-    }
-
-    @Override
-    public void deleteOrganisationUnitGroup( OrganisationUnitGroup group )
-    {
-        for ( OrganisationUnit unit : organisationUnitService.getAllOrganisationUnits() )
-        {
-            if ( unit.getGroups().remove( group ) )
-            {
-                organisationUnitService.updateOrganisationUnit( unit );
-            }
-        }
+        messageService.deleteMessages( user );
     }
 }

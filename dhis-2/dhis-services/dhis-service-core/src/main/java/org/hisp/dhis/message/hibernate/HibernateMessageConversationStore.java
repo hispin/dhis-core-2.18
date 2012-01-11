@@ -115,4 +115,31 @@ public class HibernateMessageConversationStore
         
         return (Long) query.uniqueResult();
     }
+    
+    public int deleteMessages( User sender )
+    {
+        String hql = "delete Message m where m.sender = :sender";
+
+        Query query = getQuery( hql );
+        query.setEntity( "sender", sender );
+        return query.executeUpdate();
+    }
+    
+    public int deleteUserMessages( User user )
+    {
+        String hql = "delete UserMessage u where u.user = :user";
+
+        Query query = getQuery( hql );
+        query.setEntity( "user", user );
+        return query.executeUpdate();
+    }
+    
+    public int removeUserFromMessageConversations( User lastSender )
+    {
+        String hql = "update MessageConversation m set m.lastSender = null where m.lastSender = :lastSender";
+
+        Query query = getQuery( hql );
+        query.setEntity( "lastSender", lastSender );
+        return query.executeUpdate();
+    }
 }
