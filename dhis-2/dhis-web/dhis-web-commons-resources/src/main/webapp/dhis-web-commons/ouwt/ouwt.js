@@ -285,7 +285,6 @@ function Selection()
 
                 if ( roots != selected )
                 {
-                    console.log( "They are not equal.. do nothing" )
                     return;
                 }
             }
