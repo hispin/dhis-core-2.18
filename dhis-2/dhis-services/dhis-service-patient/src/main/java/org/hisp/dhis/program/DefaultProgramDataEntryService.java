@@ -539,7 +539,7 @@ public class DefaultProgramDataEntryService
                     // Add ProvidedByOtherFacility checkbox
                     // -----------------------------------------------------------
 
-                    appendCode = addProvidedByOtherFacilityCheckbox( appendCode, patientDataValue );
+                    appendCode = addProvidedByOtherFacilityCheckbox( appendCode, patientDataValue, programStage );
                 }
                 else
                 {
@@ -770,7 +770,7 @@ public class DefaultProgramDataEntryService
                     // Add ProvidedByOtherFacility checkbox
                     // -----------------------------------------------------------
 
-                    appendCode = addProvidedByOtherFacilityCheckbox( appendCode, patientDataValue );
+                    appendCode = addProvidedByOtherFacilityCheckbox( appendCode, patientDataValue, programStage );
                 }
 
                 // -----------------------------------------------------------
@@ -994,7 +994,7 @@ public class DefaultProgramDataEntryService
                     // Add ProvidedByOtherFacility checkbox
                     // -----------------------------------------------------------
 
-                    appendCode = addProvidedByOtherFacilityCheckbox( appendCode, patientDataValue );
+                    appendCode = addProvidedByOtherFacilityCheckbox( appendCode, patientDataValue, programStage );
                 }
 
                 // -----------------------------------------------------------
@@ -1223,7 +1223,7 @@ public class DefaultProgramDataEntryService
                     // Add ProvidedByOtherFacility checkbox
                     // ---------------------------------------------------------
 
-                    appendCode = addProvidedByOtherFacilityCheckbox( appendCode, patientDataValue );
+                    appendCode = addProvidedByOtherFacilityCheckbox( appendCode, patientDataValue, programStage );
                 }
 
                 // -------------------------------------------------------------
@@ -1336,9 +1336,9 @@ public class DefaultProgramDataEntryService
      * @param patientDataValue: currrent PatientDataValue
      * @return full html code after append the check box
      */
-    private String addProvidedByOtherFacilityCheckbox( String appendCode, PatientDataValue patientDataValue )
+    private String addProvidedByOtherFacilityCheckbox( String appendCode, PatientDataValue patientDataValue, ProgramStage programStage )
     {
-        appendCode += "<label for=\"$PROGRAMSTAGEID_$DATAELEMENTID_facility\" title=\"is provided by another Facility ?\" ></label><input name=\"providedByAnotherFacility\"  title=\"is provided by another Facility ?\"  id=\"$PROGRAMSTAGEID_$DATAELEMENTID_facility\"  type=\"checkbox\" ";
+        appendCode += "<label for=\"$PROGRAMSTAGEID_$DATAELEMENTID_facility\" title=\"is provided by another Facility ?\" ></label><input name=\"providedByAnotherFacility\"  title=\"is provided by another Facility ?\"  id=\"$PROGRAMSTAGEID_$DATAELEMENTID_facility\"  type=\"checkbox\" style=\"display:$DISPLAY;\" ";
 
         if ( patientDataValue != null && patientDataValue.isProvidedByAnotherFacility() )
         {
@@ -1346,6 +1346,9 @@ public class DefaultProgramDataEntryService
         }
         appendCode += "onChange=\"updateProvidingFacility( $DATAELEMENTID, this )\"  >";
 
+        String display = ( programStage.getProgram().getAnonymous() ) ? "none" : "block";  
+        appendCode = appendCode.replace( "$DISPLAY", display );
+        
         return appendCode;
 
     }

@@ -32,6 +32,7 @@ import java.util.Date;
 import java.util.List;
 
 import org.hibernate.Query;
+import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.hisp.dhis.hibernate.HibernateGenericStore;
@@ -55,7 +56,7 @@ public class HibernateProgramStageInstanceStore
     {
         List<ProgramStageInstance> list = new ArrayList<ProgramStageInstance>( getCriteria(
             Restrictions.eq( "programInstance", programInstance ), Restrictions.eq( "programStage", programStage ) )
-            .list() );
+            .addOrder( Order.asc( "id" ) ).list() );
 
         return (list == null) ? null : list.get( list.size() - 1 );
     }
