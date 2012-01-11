@@ -34,14 +34,18 @@ function loadProgramStages()
 			// show history / plan
 			setInnerHTML( 'currentSelection', '' ); 
 			var history = '<h4>' + i18n_program_stages_history_plan + '</h4>';
-			history += '<table>';
+			history += '<table class="history">';
+			history += '<tr>';
+            history += '<td class="bold row">' + i18n_program_stage + '</td>';
+            history += '<td class="bold row">' + i18n_scheduled_for + '</td>';
+            history += '</tr>';
 			for ( i in json.programStageInstances ) 
 			{
-				history += '<tr>';
+				history += '<tr bgcolor=' + json.programStageInstances[i].colorMap + '>';
                 history += '<td>';
-                history += '<span class="bold">' + json.programStageInstances[i].name + '</span>';
+                history += '<span>' + json.programStageInstances[i].name + '</span>';
 				history += '</td>';
-                history += '<td style="text-align:center" bgcolor=' + json.programStageInstances[i].colorMap + '>';
+                history += '<td style="text-align:center">';
                 history += json.programStageInstances[i].infor;
                 history += '</td>';
                 history += '</tr>';

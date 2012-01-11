@@ -64,3 +64,15 @@ td.error {padding-left:1em}
   text-align: right;
 }
 
+td.row
+{
+	border-bottom-style:dotted;
+}
+
+table.history
+{
+	margin-top:10px;
+	margin-bottom:10px;
+	margin-right:10px;
+	margin-left:10px;
+}
