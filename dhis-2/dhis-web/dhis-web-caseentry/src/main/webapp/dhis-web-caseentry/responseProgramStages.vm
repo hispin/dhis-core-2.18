@@ -15,9 +15,9 @@
 		"name": "$programStageInstance.programStage.name",
 		"colorMap": "$colorMap.get( $programStageInstance.id )",
 		"infor": #if( $programStageInstance.completed )
-					"$i18n.getString( 'completed_on' )$format.formatDate( $programStageInstance.executionDate )"
+					"$format.formatDate( $programStageInstance.executionDate )"
 				#else
-					"$i18n.getString( 'scheduled_for' )$format.formatDate( $programStageInstance.dueDate )"
+					"$format.formatDate( $programStageInstance.dueDate )"
 				#end
 	  }#if( $velocityCount < $programInstance.programStageInstances.size() ),#end
 	#end]

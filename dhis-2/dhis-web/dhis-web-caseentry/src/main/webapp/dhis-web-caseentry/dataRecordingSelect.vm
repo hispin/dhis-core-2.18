@@ -2,7 +2,7 @@
    	
 <table class="mainPageTable" id='patientInfoDiv'> 
 	<tr>
-		<td>
+		<td valign="top">
 	<table>
 		<tr>            
 			<td class="bold">$i18n.getString( "full_name" ):</td>
@@ -21,7 +21,7 @@
 			<td>$encoder.htmlEncode( $patient.getAge() )</td>
 		</tr>
 		</table>
-		<td style="vertical-align:top" rowspan='4'>
+		<td style="vertical-align:top">
 			<div id="currentSelection" style="float:right"></div>
 		</td>
 	</tr>
