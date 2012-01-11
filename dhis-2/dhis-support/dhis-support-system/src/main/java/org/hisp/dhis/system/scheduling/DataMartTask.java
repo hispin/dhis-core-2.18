@@ -55,6 +55,7 @@ import org.hisp.dhis.period.Cal;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodService;
 import org.hisp.dhis.period.RelativePeriods;
+import org.hisp.dhis.period.YearlyPeriodType;
 import org.hisp.dhis.system.util.ConversionUtils;
 import org.hisp.dhis.system.util.Filter;
 import org.hisp.dhis.system.util.FilterUtils;
@@ -99,6 +100,10 @@ public class DataMartTask
         this.from6To12Months = from6To12Months;
     }
 
+    public DataMartTask()
+    {
+    }
+    
     public DataMartTask( DataMartService dataMartService, DataSetCompletenessService completenessService, 
         DataElementService dataElementService, IndicatorService indicatorService, PeriodService periodService,
         OrganisationUnitService organisationUnitService, OrganisationUnitGroupService organisationUnitGroupService,
@@ -115,8 +120,8 @@ public class DataMartTask
         this.systemSettingManager = systemSettingManager;
     }
     
-    @Override
-    @SuppressWarnings("unchecked")    
+    @Override  
+    @SuppressWarnings("unchecked")  
     public void run()
     {
         Collection<Integer> dataElementIds = ConversionUtils.getIdentifiers( DataElement.class, dataElementService.getAllDataElements() );
@@ -126,8 +131,28 @@ public class DataMartTask
         Collection<Integer> organisationUnitGroupIds = ConversionUtils.getIdentifiers( OrganisationUnitGroup.class, organisationUnitGroupService.getOrganisationUnitGroupsWithGroupSets() );
         
         Set<String> periodTypes = (Set<String>) systemSettingManager.getSystemSetting( KEY_SCHEDULED_PERIOD_TYPES, DEFAULT_SCHEDULED_PERIOD_TYPES );
+        
+        List<Period> periods = getPeriods( periodTypes );
+        
+        log.info( "Using periods: " + periods );
+        
+        Collection<Integer> periodIds = ConversionUtils.getIdentifiers( Period.class, periodService.reloadPeriods( periods ) );
+        
+        dataMartService.export( dataElementIds, indicatorIds, periodIds, organisationUnitIds, organisationUnitGroupIds, null, true );
+        completenessService.exportDataSetCompleteness( dataSetIds, periodIds, organisationUnitIds ); 
+    }
 
+    /**
+     * Generates periods based on parameters and period types argument.
+     */
+    private List<Period> getPeriods( Set<String> periodTypes )
+    {
         List<Period> periods = new RelativePeriods().getRelativePeriods( periodTypes ).getRelativePeriods( 0 );
+        
+        if ( periodTypes.contains( YearlyPeriodType.NAME ) ) // Add last year
+        {
+            periods.addAll( new RelativePeriods().setLastYear( true ).getRelativePeriods( 0 ) );
+        }
         
         final Date date = new Cal().now().subtract( Calendar.MONTH, 6 ).time();
         
@@ -148,15 +173,10 @@ public class DataMartTask
                 public boolean retain( Period period )
                 {
                     return period != null && period.getStartDate().compareTo( date ) <= 0;
-                }                
+                }
             } );
         }
         
-        log.info( "Using periods: " + periods );
-        
-        Collection<Integer> periodIds = ConversionUtils.getIdentifiers( Period.class, periodService.reloadPeriods( periods ) );
-        
-        dataMartService.export( dataElementIds, indicatorIds, periodIds, organisationUnitIds, organisationUnitGroupIds, null, true );
-        completenessService.exportDataSetCompleteness( dataSetIds, periodIds, organisationUnitIds ); 
+        return periods;
     }
 }
