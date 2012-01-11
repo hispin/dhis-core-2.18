@@ -1,12 +1,4 @@
 
-<h2>$i18n.getString( "feedback" )</h2>
-
-<p>
-<ul>
-    <li><a href="feedback.action">Write feedback</a></li>
-</ul>
-</p>
-
 <h2>$i18n.getString( "conversations" )</h2>
 
 <p>
