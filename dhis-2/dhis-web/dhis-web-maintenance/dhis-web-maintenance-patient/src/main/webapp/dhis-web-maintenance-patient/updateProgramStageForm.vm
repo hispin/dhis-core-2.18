@@ -108,7 +108,7 @@ tr.selected{
 					</thead>
 					<tbody id="selectedList">
 						#foreach ( $programStageDataElement in $programStageDataElements )
-							<tr ondblclick="unSelectDataElement( this )" id="$programStageDataElement.dataElement.id" class="selected">
+							 <tr ondblclick="unSelectDataElement( this )" id="$programStageDataElement.dataElement.id">
 								<td onclick="select(this)">$encoder.htmlEncode( $programStageDataElement.dataElement.name )</td>
 								<td><input type="checkbox" name="compulsory" value="$programStageDataElement.dataElement.id" #if($programStageDataElement.compulsory == true ) checked #end /></td>
 							</tr>
