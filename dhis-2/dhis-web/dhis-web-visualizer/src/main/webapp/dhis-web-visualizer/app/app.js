@@ -944,8 +944,8 @@ Ext.onReady( function() {
             },
             isLoaded: false,
             sorting: {
-                field: 'lastUpdated',
-                direction: 'DESC'
+                field: 'name',
+                direction: 'ASC'
             },
             sortStore: function() {
                 this.sort(this.sorting.field, this.sorting.direction);
@@ -1025,13 +1025,13 @@ Ext.onReady( function() {
             this.organisationunitIds = DV.util.dimension.organisationunit.getIds();
             
             this.isRendered = true;
-            DV.util.mask.setMask(DV.chart.chart, 'Loading...');
             
             if (exe) {
                 DV.value.getValues(true);
             }
         },
         getParams: function() {
+            this.getState();
             var obj = {};
             obj.type = this.type.toUpperCase();
             obj.series = this.series.dimension.toUpperCase();
@@ -1046,7 +1046,6 @@ Ext.onReady( function() {
         setState: function(exe, uid) {
             if (uid) {
                 this.resetState();
-                DV.util.mask.setMask(DV.cmp.region.center, 'Loading...');
                 Ext.Ajax.request({
                     url: DV.conf.finals.ajax.path_api + DV.conf.finals.ajax.favorite_get + uid + '.json',
                     scope: this,
@@ -1162,7 +1161,8 @@ Ext.onReady( function() {
     
     DV.value = {
         values: [],
-        getValues: function(exe) {            
+        getValues: function(exe) {
+            DV.util.mask.setMask(DV.cmp.region.center, 'Loading...');
             var params = [],
                 i = DV.conf.finals.dimension.indicator.value,
                 d = DV.conf.finals.dimension.dataelement.value;
