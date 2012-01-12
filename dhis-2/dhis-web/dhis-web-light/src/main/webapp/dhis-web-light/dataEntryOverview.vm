@@ -15,6 +15,12 @@
 #end
 </div>
 
+#if( $validated == true )
+<div class="header-box" align="center">
+    <h3 style="text-align: left;">$i18n.getString( "successfully_saved_section" )</h3>
+</div>
+#end
+
 #*
 #if( $validationRuleViolations.size() > 0 )
 <div class="header-box" align="center">

@@ -172,6 +172,18 @@ public class GetDataSetOverviewAction
         this.markComplete = markComplete;
     }
 
+    private boolean validated;
+
+    public boolean getValidated()
+    {
+        return validated;
+    }
+
+    public void setValidated( boolean validated )
+    {
+        this.validated = validated;
+    }
+
     private List<String> validationRuleViolations = new ArrayList<String>();
 
     public List<String> getValidationRuleViolations()
