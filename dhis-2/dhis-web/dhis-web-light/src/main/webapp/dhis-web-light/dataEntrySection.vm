@@ -31,7 +31,11 @@
 <input type="hidden" id="organisationUnitId" name="organisationUnitId" value="$organisationUnitId" />
 <input type="hidden" id="dataSetId" name="dataSetId" value="$dataSetId" />
 <input type="hidden" id="periodId" name="periodId" value="$periodId" />
+
+#if( $sectionId)
 <input type="hidden" id="sectionId" name="sectionId" value="$sectionId" />
+#end
+
 <input type="hidden" id="validated" name="validated" value="#if($validated)true#{else}false#end" />
 
 #macro( createSection $sectionName $dataElements )
