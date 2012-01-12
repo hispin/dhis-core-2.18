@@ -170,9 +170,6 @@ public class XMLStructureResponse
 
         xml.append( WORKBOOK_OPENTAG );
 
-        int i = 0;
-        int j = 0;
-
         for ( Integer sheetNo : collectSheets )
         {
             Sheet sheet = WORKBOOK.getSheetAt( sheetNo - 1 );
@@ -182,24 +179,19 @@ public class XMLStructureResponse
 
             for ( Row row : sheet )
             {
-                j = 0;
-
-                xml.append( "<row number='" + i + "'>" );
+                xml.append( "<row number='" + row.getRowNum() + "'>" );
 
                 for ( Cell cell : row )
                 {
                     if ( cell.getCellType() != Cell.CELL_TYPE_BLANK )
                     {
-                        xml.append( "<col number='" + j + "'>" );
-                        xml.append( "<![CDATA[" + readValueByPOI( i + 1, j + 1, sheet, evaluatorFormula ) + "]]>" );
+                        xml.append( "<col number='" + cell.getColumnIndex() + "'>" );
+                        xml.append( "<![CDATA["
+                            + readValueByPOI( row.getRowNum() + 1, cell.getColumnIndex() + 1, sheet, evaluatorFormula )
+                            + "]]>" );
                         xml.append( "</col>" );
                     }
-
-                    j++;
                 }
-
-                i++;
-
                 xml.append( "</row>" );
             }
             xml.append( "</sheet>" );
@@ -261,7 +253,8 @@ public class XMLStructureResponse
             for ( Cell cell : row )
             {
                 // Remember that empty cells can contain format information
-                if ( (cell.getCellStyle() != null) || cell.getCellType() != Cell.CELL_TYPE_BLANK )
+                if ( (cell.getCellStyle() != null || cell.getCellType() != Cell.CELL_TYPE_BLANK)
+                    && !s.isColumnHidden( cell.getColumnIndex() ) )
                 {
                     xml.append( "<col no='" + cell.getColumnIndex() + "'>" );
                     xml.append( "<data><![CDATA["
