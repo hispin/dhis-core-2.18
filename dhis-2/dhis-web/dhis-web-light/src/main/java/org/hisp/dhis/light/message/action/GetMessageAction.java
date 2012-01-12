@@ -31,6 +31,8 @@ import com.opensymphony.xwork2.Action;
 import org.hisp.dhis.message.Message;
 import org.hisp.dhis.message.MessageConversation;
 import org.hisp.dhis.message.MessageService;
+import org.hisp.dhis.user.CurrentUserService;
+import org.springframework.util.Assert;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -51,6 +53,13 @@ public class GetMessageAction
     public void setMessageService( MessageService messageService )
     {
         this.messageService = messageService;
+    }
+
+    private CurrentUserService currentUserService;
+
+    public void setCurrentUserService( CurrentUserService currentUserService )
+    {
+        this.currentUserService = currentUserService;
     }
 
     // -------------------------------------------------------------------------
@@ -90,11 +99,16 @@ public class GetMessageAction
     @Override
     public String execute() throws Exception
     {
+        Assert.hasText( conversationId );
+
         MessageConversation conversation = messageService.getMessageConversation( conversationId );
 
         subject = conversation.getSubject();
         messages = new ArrayList<Message>( conversation.getMessages() );
         Collections.reverse( messages );
+
+        conversation.markRead( currentUserService.getCurrentUser() );
+        messageService.updateMessageConversation( conversation );
 
         return SUCCESS;
     }

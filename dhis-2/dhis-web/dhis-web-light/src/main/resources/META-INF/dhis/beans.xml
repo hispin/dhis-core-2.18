@@ -134,6 +134,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 
   <bean id="org.hisp.dhis.light.message.action.GetMessageAction" class="org.hisp.dhis.light.message.action.GetMessageAction">
     <property name="messageService" ref="org.hisp.dhis.message.MessageService" />
+    <property name="currentUserService" ref="org.hisp.dhis.user.CurrentUserService" />
   </bean>
 
   <bean id="org.hisp.dhis.light.message.action.SendReplyAction" class="org.hisp.dhis.light.message.action.SendReplyAction">

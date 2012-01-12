@@ -32,6 +32,7 @@ import org.apache.struts2.ServletActionContext;
 import org.hisp.dhis.message.MessageConversation;
 import org.hisp.dhis.message.MessageService;
 import org.hisp.dhis.util.ContextUtils;
+import org.springframework.util.Assert;
 
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
@@ -75,6 +76,8 @@ public class SendReplyAction
     @Override
     public String execute() throws Exception
     {
+        Assert.hasText( text );
+
         String metaData = MessageService.META_USER_AGENT +
             ServletActionContext.getRequest().getHeader( ContextUtils.HEADER_USER_AGENT );
 
