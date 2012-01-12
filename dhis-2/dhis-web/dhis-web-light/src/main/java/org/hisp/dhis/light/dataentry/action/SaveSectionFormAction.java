@@ -271,13 +271,13 @@ public class SaveSectionFormAction
 
         Period period = periodService.getPeriodByExternalId( periodId );
 
-        String storedBy = currentUserService.getCurrentUsername();
-
         boolean needsValidation = false;
 
         dataSet = dataSetService.getDataSet( dataSetId );
 
-        if ( StringUtils.isNotBlank( storedBy ) )
+        String storedBy = currentUserService.getCurrentUsername();
+
+        if ( StringUtils.isBlank( storedBy ) )
         {
             storedBy = "[unknown]";
         }
