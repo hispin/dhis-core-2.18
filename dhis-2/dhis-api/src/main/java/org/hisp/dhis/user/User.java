@@ -168,11 +168,6 @@ public class User
     @Override
     public String getName()
     {
-        if ( userCredentials != null )
-        {
-            return userCredentials.getUsername();
-        }
-
         return firstName + " " + surname;
     }
 
