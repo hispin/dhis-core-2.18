@@ -83,7 +83,12 @@ DV.conf = {
         }
     },
     chart: {
-        inset: 30
+        style: {
+            inset: 30
+        },
+        theme: {
+            dv1: ['#94ae0a', '#115fa6', '#a61120', '#ff8809', '#7c7474', '#a61187', '#ffd13e', '#24ad9a', '#a66111', '#414141', '#4500c4', '#1d5700']
+        }
     },
     layout: {
         west_width: 424,
@@ -105,14 +110,22 @@ Ext.require('Ext.ux.form.MultiSelect');
 Ext.onReady( function() {
     Ext.override(Ext.form.FieldSet,{setExpanded:function(a){var b=this,c=b.checkboxCmp,d=b.toggleCmp,e;a=!!a;if(c){c.setValue(a)}if(d){d.setType(a?"up":"down")}if(a){e="expand";b.removeCls(b.baseCls+"-collapsed")}else{e="collapse";b.addCls(b.baseCls+"-collapsed")}b.collapsed=!a;b.doComponentLayout();b.fireEvent(e,b);return b}});
     Ext.QuickTips.init();
-    document.body.oncontextmenu = function(){return false;};
+    document.body.oncontextmenu = function(){return false;};     
+    Ext.chart.theme.dv1 = Ext.extend(Ext.chart.theme.Base, {
+        constructor: function(config) {
+            Ext.chart.theme.Base.prototype.constructor.call(this, Ext.apply({
+                seriesThemes: DV.conf.chart.theme.dv1,
+                colors: DV.conf.chart.theme.dv1
+            }, config));
+        }
+    });
     
     Ext.Ajax.request({
         url: DV.conf.finals.ajax.path_visualizer + DV.conf.finals.ajax.initialize,
         success: function(r) {
             
     DV.init = DV.conf.init.jsonfy(r);    
-    DV.init.initialize = function() {
+    DV.init.initialize = function() {        
         DV.util.combobox.filter.category();
         DV.store.column = DV.store.defaultChartStore;
         DV.store.stackedcolumn = DV.store.defaultChartStore;
@@ -561,7 +574,15 @@ Ext.onReady( function() {
                             type: 'line',
                             axis: 'left',
                             xField: DV.store.chart.bottom,
-                            yField: DV.store.chart.left[i]
+                            yField: DV.store.chart.left[i],
+                            style: {
+                                opacity: 0.8,
+                                'stroke-width': 3
+                            },
+                            markerConfig: {
+                                type: 'circle',
+                                radius: 4
+                            }
                         });
                     }
                     return a;
@@ -1233,7 +1254,7 @@ Ext.onReady( function() {
             this.chart = Ext.create('Ext.chart.Chart', {
                 animate: true,
                 store: DV.store.chart,
-                insetPadding: DV.conf.chart.inset,
+                insetPadding: DV.conf.chart.style.inset,
                 items: DV.util.chart.getTitle(),
                 legend: DV.util.chart.getLegend(),
                 axes: [
@@ -1265,7 +1286,8 @@ Ext.onReady( function() {
                             opacity: 0.8
                         }
                     }
-                ]
+                ],
+                theme: 'dv1'
             });
         },
         stackedcolumn: function() {
@@ -1275,7 +1297,7 @@ Ext.onReady( function() {
             this.chart = Ext.create('Ext.chart.Chart', {
                 animate: true,
                 store: DV.store.chart,
-                insetPadding: DV.conf.chart.inset,
+                insetPadding: DV.conf.chart.style.inset,
                 items: DV.util.chart.getTitle(),
                 legend: DV.util.chart.getLegend(DV.store.chart.bottom.length),
                 axes: [
@@ -1307,7 +1329,8 @@ Ext.onReady( function() {
                             opacity: 0.8
                         }
                     }
-                ]
+                ],
+                theme: 'dv1'
             });
         },
         stackedbar: function() {
@@ -1317,7 +1340,7 @@ Ext.onReady( function() {
             this.chart = Ext.create('Ext.chart.Chart', {
                 animate: true,
                 store: DV.store.chart,
-                insetPadding: DV.conf.chart.inset,
+                insetPadding: DV.conf.chart.style.inset,
                 items: DV.util.chart.getTitle(),
                 legend: DV.util.chart.getLegend(),
                 axes: [
@@ -1338,14 +1361,15 @@ Ext.onReady( function() {
                         label: DV.util.chart.label.getCategoryLabel()
                     }
                 ],
-                series: DV.util.chart.line.getSeriesArray()
+                series: DV.util.chart.line.getSeriesArray(),
+                theme: 'dv1'
             });
         },
         area: function() {
             this.chart = Ext.create('Ext.chart.Chart', {
                 animate: true,
                 store: DV.store.chart,
-                insetPadding: DV.conf.chart.inset,
+                insetPadding: DV.conf.chart.style.inset,
                 items: DV.util.chart.getTitle(),
                 legend: DV.util.chart.getLegend(),
                 axes: [
@@ -1374,7 +1398,8 @@ Ext.onReady( function() {
                     style: {
                         opacity: 0.65
                     }
-                }]
+                }],
+                theme: 'dv1'
             });
         },
         pie: function() {
@@ -1401,7 +1426,8 @@ Ext.onReady( function() {
                     style: {
                         opacity: 0.9
                     }
-                }]
+                }],
+                theme: 'dv1'
             });
         },
         reload: function() {
@@ -2980,12 +3006,12 @@ Ext.onReady( function() {
                                                     },
                                                     {
                                                         dataIndex: 'name',
-                                                        width: 289,
+                                                        width: 285,
                                                         style: 'display:none'
                                                     },
                                                     {
                                                         dataIndex: 'lastUpdated',
-                                                        width: 106,
+                                                        width: 110,
                                                         style: 'display:none'
                                                     }
                                                 ],
