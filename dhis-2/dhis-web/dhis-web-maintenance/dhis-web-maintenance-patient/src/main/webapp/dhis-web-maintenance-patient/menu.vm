@@ -4,7 +4,7 @@
 	<li><a href="patientAttributeGroup.action">$i18n.getString( "patient_attribute_group" )</a></li>
 	<li><a href="patientIdentifierType.action">$i18n.getString( "patient_identifier_type" )</a></li>
 	<li><a href="relationshipType.action">$i18n.getString( "relationship_type" )</a></li>
-	<li><a href="defineOrgunitRegistrationForm.action">$i18n.getString( "patient_registration" )</a></li>
+	<li><a href="defineOrgunitRegistrationForm.action">$i18n.getString( "patient_organisation_unit_registration" )</a></li>
 	<li><a href="program.action">$i18n.getString( "program" )</a></li>
 	<li><a href="programAttribute.action">$i18n.getString( "program_attribute" )</a></li>
 	<li><a href="caseAggregation.action">$i18n.getString( "beneficiary_aggregation_query_builder" )</a></li>

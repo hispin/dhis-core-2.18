@@ -2515,9 +2515,9 @@ a text editor (e.g. Notepad++) and do a search/replace to make sure this element
 		<para>To access the relationship type maintenance module, choose Maintenance->Beneficiaries and Programs->Relationship Type.</para>
 		<para>To define a new relationship type, click the "Add new" button. Fill all fields in "Add new Relationship Type" form, and click "Add" button.</para>
 	</section>
-	<section id="patient_registration">
-		<title>Beneficiary registration </title>
-        <para>Beneficiary registration section provides a mechanism for managing facilities which allow to registry new beneficiaries  or not.</para> 
+	<section id="patient_organisation_unit_registration">
+		<title>Beneficiary Organisation Unit Registration</title>
+        <para>Beneficiary organisation unit registration section provides a mechanism for managing facilities which allow to registry new beneficiaries  or not.</para> 
 		<para>To access the beneficiary registration maintenance module, choose Maintenance->Beneficiaries and Programs->Beneficiary Registration.</para>
 		<para>There are two processes for registering facilities. The first one is where the administrator will say that beneficiaries can register here. The second is where provides services ( Child Health program, Mother Care program, ...) for registered beneficiaries.</para>
 	</section>
