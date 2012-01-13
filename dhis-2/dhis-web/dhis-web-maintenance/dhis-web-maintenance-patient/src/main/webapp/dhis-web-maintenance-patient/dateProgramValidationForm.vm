@@ -29,7 +29,8 @@
 					<option value='-1' #if( $!validationMap.get($dataElement.id).rightSide=='-1' ) selected #end >$i18n.getString('before_due_date') </option>
 					<option value='-3' #if( $!validationMap.get($dataElement.id).rightSide=='-3' ) selected #end >$i18n.getString('after_due_date') </option>
 					<option value='-2' #if( $!validationMap.get($dataElement.id).rightSide=='-2' ) selected #end >$i18n.getString('before_or_equals_to_due_date') </option>
-					<option value='-4' #if( $!validationMap.get($dataElement.id).rightSide=='' ) selected #end >$i18n.getString('after_or_equals_to_due_date') </option>
+					<option value='-4' #if( $!validationMap.get($dataElement.id).rightSide=='-4' ) selected #end >$i18n.getString('after_or_equals_to_due_date') </option>
+					<option value='-5' #if( $!validationMap.get($dataElement.id).rightSide=='-5' ) selected #end >$i18n.getString('due_date_with_max_number_of_days_of_data_entry') </option>
 				</select>
 			</td>
 		</tr>
