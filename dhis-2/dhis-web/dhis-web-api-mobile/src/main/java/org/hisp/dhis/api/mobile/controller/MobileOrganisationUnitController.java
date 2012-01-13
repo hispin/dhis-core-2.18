@@ -50,10 +50,6 @@ public class MobileOrganisationUnitController
     @Autowired
     private I18nService i18nService;
 
-    private static final String DATASET_REPORT_IMPORT_SUCCESS_MESSAGE = "dataset_report_imported";
-
-    private static final String TRACKING_REPORT_IMPORT_SUCCESS_MESSAGE = "tracking_report_imported";
-
     @RequestMapping( method = RequestMethod.GET, value = "{id}/all" )
     @ResponseBody
     public MobileModel getAllDataForOrgUnit( @PathVariable int id, @RequestHeader( "accept-language" ) String locale )
@@ -92,12 +88,11 @@ public class MobileOrganisationUnitController
      * @throws NotAllowedException if the {@link DataSetValue} is invalid
      */
     @RequestMapping( method = RequestMethod.POST, value = "     {id}/dataSets" )
-    @ResponseBody
-    public String saveDataSetValues( @PathVariable int id, @RequestBody DataSetValue dataSetValue )
+    @ResponseStatus( value = HttpStatus.NO_CONTENT )
+    public void saveDataSetValues( @PathVariable int id, @RequestBody DataSetValue dataSetValue )
         throws NotAllowedException
     {
         facilityReportingService.saveDataSetValues( getUnit( id ), dataSetValue );
-        return DATASET_REPORT_IMPORT_SUCCESS_MESSAGE;
     }
 
     /**
@@ -108,12 +103,11 @@ public class MobileOrganisationUnitController
      *         is invalid
      */
     @RequestMapping( method = RequestMethod.POST, value = "{id}/activities" )
-    @ResponseBody
-    public String saveActivityReport( @PathVariable int id, @RequestBody ActivityValue activityValue )
+    @ResponseStatus( value = HttpStatus.NO_CONTENT )
+    public void saveActivityReport( @PathVariable int id, @RequestBody ActivityValue activityValue )
         throws NotAllowedException
     {
         activityReportingService.saveActivityReport( getUnit( id ), activityValue );
-        return TRACKING_REPORT_IMPORT_SUCCESS_MESSAGE;
     }
 
     @RequestMapping( method = RequestMethod.POST, value = "{id}/activitiyplan" )
