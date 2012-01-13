@@ -8,10 +8,8 @@
 <h2>$encoder.htmlEncode( $dataSetName )</h2>
 
 <div class="header-box" align="center">
-#if( $markComplete == true )
-    <h3 style="text-align: left;">$i18n.getString( "successfully_marked_as_complete" )</h3>
-#elseif( $markComplete == false )
-    <h3 style="text-align: left;">$i18n.getString( "successfully_marked_as_not_complete" )</h3>
+#if( $complete == true )
+    <h3 style="text-align: left;">$i18n.getString( "form_complete" )</h3>
 #end
 </div>
 
@@ -54,17 +52,15 @@
 <input type="hidden" id="dataSetId" name="dataSetId" value="$dataSetId" />
 <input type="hidden" id="periodId" name="periodId" value="$periodId" />
 
+#if( $complete == false )
 <div class="header-box" align="center">
     <p>
-        #if($complete)
-            <input type="hidden" name="markComplete" value="false" />
-            <input type="submit" style="width: 100%;" value="$i18n.getString("mark_as_not_complete")" />
-        #else
-            <input type="hidden" name="markComplete" value="true" />
-            <input type="submit" style="width: 100%;" value="$i18n.getString("mark_as_complete")" />
-        #end
+            <input type="hidden" name="formComplete" value="true" />
+            <input type="submit" style="width: 100%;" value="$i18n.getString("form_complete")" />
     </p>
 </div>
+#end
+
 </form>
 
 <div id="footer">

@@ -17,6 +17,14 @@
 </div>
 
 <div id="content" align="center" style="text-align: left;">
+
+#if( $failed == true )
+<div class="header-box" align="center">
+	<h3 style="text-align: left; background-color: red; color: black;">Wrong username or password</h3>
+</div>
+#end
+
+
 <form id='loginForm' action="../../dhis-web-commons-security/login.action" method="POST">
 
 <div class="header-box" align="center">
@@ -37,12 +45,6 @@
 </form>
 </div>
 </div>
-
-#if( $failed == true )
-<p style="color: #eee;">
-	Wrong username or password. Please try again.
-</p>
-#end
 
 </body>
 </html>

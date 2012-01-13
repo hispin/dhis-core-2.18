@@ -160,16 +160,16 @@ public class GetDataSetOverviewAction
         return complete;
     }
 
-    private Boolean markComplete;
+    private Boolean formComplete;
 
-    public Boolean getMarkComplete()
+    public Boolean getFormComplete()
     {
-        return markComplete;
+        return formComplete;
     }
 
-    public void setMarkComplete( Boolean markComplete )
+    public void setFormComplete( Boolean formComplete )
     {
-        this.markComplete = markComplete;
+        this.formComplete = formComplete;
     }
 
     private boolean validated;
@@ -213,9 +213,9 @@ public class GetDataSetOverviewAction
 
         complete = registration != null ? true : false;
 
-        if ( markComplete != null )
+        if ( formComplete != null )
         {
-            if ( markComplete && !complete )
+            if ( formComplete && !complete )
             {
                 registration = new CompleteDataSetRegistration();
                 registration.setDataSet( dataSet );
@@ -228,7 +228,7 @@ public class GetDataSetOverviewAction
 
                 complete = true;
             }
-            else if ( !markComplete && complete )
+            else if ( !formComplete && complete )
             {
                 registrationService.deleteCompleteDataSetRegistration( registration );
 

@@ -49,12 +49,6 @@
 				#set( $dataElementName = $dataElement.name )
 			#end
 
-            #if( $dataElement.code )
-                #set( $name = "[$dataElement.code] - $dataElementName")
-            #else
-                #set( $name = "$dataElementName" )
-            #end
-
             #set( $optionCombos = $formUtils.sortedCategoryOptionCombos( $dataElement.categoryCombo.optionCombos ) )
 
 			#foreach( $optionCombo in $optionCombos )
@@ -62,7 +56,7 @@
                 #if( !$greyedFields.get( "$dataElement.id:$optionCombo.id" ) )
 				#set( $key = "DE${dataElement.id}OC${optionCombo.id}" )
 
-				<label>$encoder.htmlEncode( $name ) #if( $optionCombo.name!="(default)")$encoder.htmlEncode( $optionCombo.name )#end</label>
+				<label>$encoder.htmlEncode( $dataElementName ) #if( $optionCombo.name!="(default)")$encoder.htmlEncode( $optionCombo.name )#end</label>
 
 				#if( $validationViolations.get( $key ) )
 					#set( $validationViolation = $validationViolations.get( $key ) )
