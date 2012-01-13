@@ -265,6 +265,12 @@ public class DefaultProgramValidationService
                 return value.after( dueDate );
             case -4:
                 return (value.after( dueDate ) || value.equals( dueDate ));
+            case -5:
+                Integer maxDaysInProgram = programStageInstance.getProgramStage().getProgram().getMaxDaysAllowedInputData();
+                long maxDays = dueDate.getTime() / 86400000 + maxDaysInProgram ;
+                long minDays = dueDate.getTime() / 86400000 - maxDaysInProgram ;
+                long valueDays = value.getTime() / 86400000;
+                return ( valueDays <= maxDays && valueDays >= minDays );
             default:
                 return true;
             }

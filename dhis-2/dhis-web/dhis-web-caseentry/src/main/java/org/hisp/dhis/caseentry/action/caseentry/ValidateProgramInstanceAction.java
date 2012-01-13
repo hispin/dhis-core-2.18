@@ -301,8 +301,11 @@ public class ValidateProgramInstanceAction
                     case -4:
                         rightsideFormulaMap.put( validation.getId(), i18n.getString( "after_or_equals_to_due_date" ) );
                         break;
+                    case -5:
+                        rightsideFormulaMap.put( validation.getId(), i18n.getString( "due_date_with_max_number_of_days_of_data_entry" ) );
+                        break;
                     default:
-                        rightsideFormulaMap.put( validation.getId(), i18n.getString( "before_current_date" ) );
+                        rightsideFormulaMap.put( validation.getId(), "" );
                         break;
                     }
                 }

@@ -64,6 +64,8 @@ public class ProgramValidation
     public int AFTER_DUE_DATE = -3;
 
     public int AFTER_OR_EQUALS_TO_DUE_DATE = -4;
+    
+    public int BEFORE_DUE_DATE_PULS_MAX_DAYS_OF_DATA_ENTRY = -5;
 
     // -------------------------------------------------------------------------
     // Fields
