@@ -89,9 +89,10 @@ public class ReadMessageAction
     {
         conversation = messageService.getMessageConversation( id );
         
-        conversation.markRead( currentUserService.getCurrentUser() );
-        
-        messageService.updateMessageConversation( conversation );
+        if ( conversation.markRead( currentUserService.getCurrentUser() ) )
+        {        
+            messageService.updateMessageConversation( conversation );
+        }
         
         return SUCCESS;
     }

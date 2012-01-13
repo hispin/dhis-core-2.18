@@ -91,30 +91,38 @@ public class MessageConversation
         this.messages.add( message );
     }
 
-    public void markRead( User user )
+    public boolean markRead( User user )
     {
         for ( UserMessage userMessage : userMessages )
         {
             if ( userMessage.getUser() != null && userMessage.getUser().equals( user ) )
             {
+                boolean read = userMessage.isRead();
+                
                 userMessage.setRead( true );
 
-                return;
+                return !read;
             }
         }
+        
+        return false;
     }
 
-    public void markUnread( User user )
+    public boolean markUnread( User user )
     {
         for ( UserMessage userMessage : userMessages )
         {
             if ( userMessage.getUser() != null && userMessage.getUser().equals( user ) )
             {
+                boolean read = userMessage.isRead();
+                
                 userMessage.setRead( false );
 
-                return;
+                return read;
             }
         }
+        
+        return false;
     }
 
     public void markReplied( User sender, Message message )
