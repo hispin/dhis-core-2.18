@@ -138,8 +138,6 @@ public class Chart
 
     private transient OrganisationUnit organisationUnit;
 
-    private transient List<OrganisationUnit> allOrganisationUnits = new ArrayList<OrganisationUnit>();
-
     // -------------------------------------------------------------------------
     // Constructors
     // -------------------------------------------------------------------------
@@ -184,6 +182,18 @@ public class Chart
         return filter().getName();
     }
     
+    public List<OrganisationUnit> getAllOrganisationUnits()
+    {
+        if ( organisationUnit != null )
+        {
+            return Arrays.asList( organisationUnit );
+        }
+        else
+        {
+            return organisationUnits;
+        }
+    }
+    
     private List<NameableObject> dimensionToList( String dimension )
     {
         List<NameableObject> list = new ArrayList<NameableObject>();
@@ -201,14 +211,7 @@ public class Chart
         }
         else if ( DIMENSION_ORGANISATIONUNIT.equals( dimension ) )
         {
-            if ( organisationUnit != null )
-            {
-                list.addAll( Arrays.asList( organisationUnit ) );
-            }
-            else
-            {
-                list.addAll( organisationUnits );
-            }
+            list.addAll( getAllOrganisationUnits() );
         }
         
         return list;
@@ -565,16 +568,6 @@ public class Chart
     public void setOrganisationUnit( OrganisationUnit organisationUnit )
     {
         this.organisationUnit = organisationUnit;
-    }
-
-    public List<OrganisationUnit> getAllOrganisationUnits()
-    {
-        return allOrganisationUnits;
-    }
-
-    public void setAllOrganisationUnits( List<OrganisationUnit> allOrganisationUnits )
-    {
-        this.allOrganisationUnits = allOrganisationUnits;
     }
 
     @XmlElement
