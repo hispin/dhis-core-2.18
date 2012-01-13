@@ -75,8 +75,7 @@ public class LoginAction
     @Override
     public String execute()
     {
-        HttpServletRequest request = ServletActionContext.getRequest();
-        Device device = deviceResolver.resolveDevice( request );
+        Device device = deviceResolver.resolveDevice( ServletActionContext.getRequest() );
 
         if ( device.isMobile() )
         {
