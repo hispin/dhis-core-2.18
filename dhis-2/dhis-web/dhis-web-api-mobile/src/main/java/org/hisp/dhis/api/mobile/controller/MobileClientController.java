@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServletRequest;
 import org.hisp.dhis.api.mobile.NotAllowedException;
 import org.hisp.dhis.api.mobile.model.MobileOrgUnitLinks;
 import org.hisp.dhis.api.mobile.model.OrgUnits;
+import org.hisp.dhis.api.mobile.support.MediaTypes;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.user.CurrentUserService;
 import org.hisp.dhis.user.User;
@@ -45,7 +46,7 @@ public class MobileClientController extends AbstractMobileController
         {
             unitList.add( getOrgUnit( unit, request ) );
         }
-
+       
         return new OrgUnits( unitList );
     }
 
@@ -70,9 +71,7 @@ public class MobileClientController extends AbstractMobileController
     private static String getUrl( HttpServletRequest request, int id, String path )
     {
         String url = UrlUtils.buildFullRequestUrl( request );
-        String base = "/mobile";
-        url = url.substring( 0, url.indexOf( base ) + base.length() );
-
-        return url + "/orgUnits/" + id + "/" + path;
+        url = url + "orgUnits/" + id + "/" + path;
+        return url;
     }
 }
