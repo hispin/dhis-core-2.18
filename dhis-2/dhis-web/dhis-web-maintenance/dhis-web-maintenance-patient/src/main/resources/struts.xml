@@ -867,6 +867,15 @@
 			<param name="javascripts">javascript/programValidation.js</param>
 			<param name="requiredAuthorities">F_PROGRAM_VALIDATION</param>
 		</action>
+		
+		<action name="defineDateProgramValidationForm"
+			class="org.hisp.dhis.patient.action.program.GetProgramAction">
+			<result name="success" type="velocity">/main.vm</result>
+			<param name="page">/dhis-web-maintenance-patient/addDateProgramValidationForm.vm</param>
+			<param name="menu">/dhis-web-maintenance-patient/patientAndProgramMenu.vm</param>
+			<param name="javascripts">javascript/programValidation.js</param>
+			<param name="requiredAuthorities">F_PROGRAM_VALIDATION</param>
+		</action>
 
 		<action name="addProgramValidation"
 			class="org.hisp.dhis.patient.action.validation.AddProgramValidationAction">
@@ -912,6 +921,26 @@
 			<result name="success" type="velocity-json">
 				/dhis-web-commons/ajax/jsonProgramValidation.vm</result>
 			<param name="onExceptionReturn">plainTextError</param>
+		</action>
+		
+		<action name="getDateDataElements"
+			class="org.hisp.dhis.patient.action.validation.GetDateDataElementsAction">
+			<result name="success" type="velocity">/content.vm</result>
+			<param name="page">/dhis-web-maintenance-patient/dateProgramValidationForm.vm</param>
+		</action>
+		
+		<action name="addDateProgramValidation"
+			class="org.hisp.dhis.patient.action.validation.AddProgramValidationAction">
+			<result name="success" type="velocity-json">
+				/dhis-web-commons/ajax/jsonResponseSuccess.vm</result>
+			<param name="requiredAuthorities">F_PROGRAM_VALIDATION</param>
+		</action>
+		
+		<action name="updateDateProgramValidation"
+			class="org.hisp.dhis.patient.action.validation.UpdateProgramValidationAction">
+			<result name="success" type="velocity-json">
+				/dhis-web-commons/ajax/jsonResponseSuccess.vm</result>
+			<param name="requiredAuthorities">F_PROGRAM_VALIDATION</param>
 		</action>
 
 		<!-- Configuration -->

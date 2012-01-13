@@ -205,36 +205,6 @@ function saveDate( dataElementId )
     });
 	
     var providedByAnotherFacility = document.getElementById( programStageId + '_' + dataElementId + '_facility' ).checked;
- 
-	if( fieldValue !="")
-    { 
-		var d2 = new Date( fieldValue );
-        if( d2 == 'Invalid Date' )
-        {
-            field.css({
-                "background-color":"#ffcc00"
-            });
-            window.alert('Incorrect format for date value. The correct format should be ' + dateFormat.replace('yy', 'yyyy') +' \n\n ' + data.deName );
-		  
-            field.focus();
-
-            return;
-        }
-    }
-	
-	var dueDate = new Date( jQuery('#dueDate').val() );
-	var inputtedDate = new Date( fieldValue );
-	if( inputtedDate < dueDate )
-	{
-		field.css({
-                "background-color":"#ffcc00"
-            });
-            window.alert( i18n_date_is_greater_then_or_equals_due_date );
-		  
-            field.focus();
-
-            return;
-	}
 	
     var dateSaver = new DateSaver( dataElementId, fieldValue, providedByAnotherFacility, '#ccffcc' );
     dateSaver.save();

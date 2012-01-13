@@ -232,8 +232,6 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
 			ref="org.hisp.dhis.dataelement.DataElementService" />
 		<property name="categoryService"
 			ref="org.hisp.dhis.dataelement.DataElementCategoryService" />
-		<property name="stageInstanceService"
-			ref="org.hisp.dhis.program.ProgramStageInstanceService" />
 		<property name="valueService"
 			ref="org.hisp.dhis.patientdatavalue.PatientDataValueService" />
 	</bean>

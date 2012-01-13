@@ -1,4 +1,6 @@
 
+var COLOR_GREEN = '#b9ffb9';
+
 jQuery(document).ready(	function(){
 	validation( 'programValidationForm', function( form ){			
 		form.submit();
@@ -158,4 +160,77 @@ function getRightPrgramStageDataElementsCompleted( dataelementElement )
 		jQuery(option).attr({data:"{type:'"+type+"'}"});
 		programstageDE.add(option, null); 
 	});
+}
+
+function getDateDataElements()
+{
+	hideById('dataElementValidation');
+	showLoader();
+	var programStageId = getFieldValue('programStage');
+	
+	if( programStageId == '')
+	{
+		hideById('loaderDiv');
+		hideById('dataElementValidation');
+		return;
+	}
+	
+	$( '#dataElementValidation' ).load( "getDateDataElements.action", 
+		{ 
+			psId:programStageId
+		},function( )
+		{	
+			hideById('loaderDiv');
+			showById('dataElementValidation');
+		});
+}
+
+function addDateValidation( id, fieldId, dataElementName )
+{
+	var expression = $("#" + fieldId + ' option:selected').val();
+	var validationid = $("#" + fieldId ).attr('validationid');
+	
+	if( validationid == '')
+	{
+		var description =  $('#programStage option:selected').text() + ' - ' + dataElementName;
+		jQuery.post( "addDateProgramValidation.action", {
+			description: description,
+			leftSide: id,
+			rightSide: expression,
+			programId: getFieldValue('programId'),
+			dateType: getFieldValue('dateType')
+		}, function( json )
+		{
+			byId( fieldId ).style.backgroundColor = COLOR_GREEN;
+			$("#" + fieldId ).attr('validationid', json.message );
+		});
+	}
+	else
+	{
+		var rightSide = $("#" + fieldId + ' option:selected').val();
+		if( rightSide == '')
+		{
+			jQuery.post( "removeProgramValidation.action", {
+				id:validationid
+			}, function( json )
+			{
+				byId( fieldId ).style.backgroundColor = COLOR_GREEN;
+				$("#" + fieldId ).attr('validationid', '' );
+			});
+		}
+		else
+		{
+			var description =  $('#programStage option:selected').text() + ' - ' + dataElementName;
+			jQuery.post( "updateDateProgramValidation.action", {
+				id:validationid,
+				description: description,
+				leftSide: id,
+				rightSide: expression,
+				programId: getFieldValue('programId')
+			}, function( json )
+			{
+				byId( fieldId ).style.backgroundColor = COLOR_GREEN;
+			});
+		}
+	}
 }

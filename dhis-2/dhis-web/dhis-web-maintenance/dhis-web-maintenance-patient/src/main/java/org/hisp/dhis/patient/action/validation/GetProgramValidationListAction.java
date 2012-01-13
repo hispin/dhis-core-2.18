@@ -99,7 +99,7 @@ public class GetProgramValidationListAction
     {
         Program program = programService.getProgram( programId );
 
-        validations = programValidationService.getProgramValidation( program );
+        validations = programValidationService.getProgramValidation( program, false );
 
         return SUCCESS;
     }

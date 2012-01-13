@@ -118,6 +118,7 @@ public class TableAlteror
 
         updateStageInProgram();
 
+        executeSql( "UPDATE programvalidation SET dateType = false WHERE dateType is null");
     }
 
     // -------------------------------------------------------------------------
