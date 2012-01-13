@@ -20,6 +20,12 @@
 			  </tr>
 
 			  <tbody id="list">
+				<tr id="tr${validation.id}">
+					<td>$i18n.getString( "validation_for_date_data_elements" )</td>
+					<td>
+					  <a href="defineDateProgramValidationForm.action?id=$programId" title="$i18n.getString( "edit" )"><img src="../images/edit.png" alt="$i18n.getString( 'edit' )"></a>						
+					</td>
+				</tr>
 				#foreach( $validation in $validations )
 				  <tr id="tr${validation.id}">
 					
@@ -45,8 +51,8 @@
 
 			<div id="detailsArea" style="display:none">
 				<div style="float:right">
-					<a href="javascript:hideDetails()" title="$i18n.getString( "hide_details" )"><img src="../images/close.png" alt="$i18n.getString( "hide_details" )"></a>
-				</div>				
+					<a href="javascript:hideDetails()" title="$i18n.getString( 'hide_details' )"><img src="../images/close.png" alt="$i18n.getString( 'hide_details' )"></a>
+				</div>			
 				<p><label class="bold">$i18n.getString( "name" ):</label><br><span id="descriptionField"></span></p>
 				<p><label class="bold" id='leftSideTitle'>$i18n.getString( "left_side" ):</label><br><span id="leftSideField"></span></p>
 				<p id='rightSideDiv'><label class="bold">$i18n.getString( "right_side" ):</label><br><span id="rightSideField"></span></p>

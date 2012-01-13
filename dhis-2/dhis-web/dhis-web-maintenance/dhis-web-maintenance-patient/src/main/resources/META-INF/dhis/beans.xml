@@ -863,6 +863,19 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 			<ref bean="org.hisp.dhis.program.ProgramValidationService" />
 		</property>
 	</bean>
+	
+	<bean
+		id="org.hisp.dhis.patient.action.validation.GetDateDataElementsAction"
+		class="org.hisp.dhis.patient.action.validation.GetDateDataElementsAction"
+		scope="prototype">
+		<property name="programStageService">
+			<ref bean="org.hisp.dhis.program.ProgramStageService" />
+		</property>
+		<property name="categoryService"
+			ref="org.hisp.dhis.dataelement.DataElementCategoryService" />
+		<property name="programValidationService"
+			ref="org.hisp.dhis.program.ProgramValidationService" />
+	</bean>
 
 	<!-- Configuration -->
 

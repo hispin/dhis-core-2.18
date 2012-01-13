@@ -49,4 +49,9 @@ public class HibernateProgramValidationStore
         return getCriteria( Restrictions.eq( "program", program ) ).list();
     }
 
+    @SuppressWarnings( "unchecked" )
+    public Collection<ProgramValidation> get( Program program, Boolean dateType )
+    {
+        return getCriteria( Restrictions.eq( "program", program ), Restrictions.eq( "dateType", dateType ) ).list();
+    }
 }

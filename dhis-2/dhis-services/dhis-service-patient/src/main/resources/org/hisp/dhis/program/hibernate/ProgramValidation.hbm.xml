@@ -19,6 +19,8 @@
 
 		<many-to-one name="program" class="org.hisp.dhis.program.Program"
 			column="programid" not-null="true" foreign-key="fk_programvalidation_programid" />
+			
+		<property name="dateType" />
 
 	</class>
 </hibernate-mapping>

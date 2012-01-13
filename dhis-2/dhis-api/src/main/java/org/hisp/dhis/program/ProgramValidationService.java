@@ -29,6 +29,7 @@ package org.hisp.dhis.program;
 
 import java.util.Collection;
 
+import org.hisp.dhis.i18n.I18nFormat;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 
 /**
@@ -51,5 +52,12 @@ public interface ProgramValidationService
 
     Collection<ProgramValidation> getProgramValidation( Program program );
 
-    boolean runValidation( ProgramValidation validation, ProgramInstance programInstance, OrganisationUnit orgunit );
+    Collection<ProgramValidation> getProgramValidation( Program program, Boolean dateType );
+    
+    Collection<ProgramValidation> getProgramValidation( ProgramStage programStage );
+
+    Collection<ProgramValidation> getProgramValidation( ProgramStageDataElement psdataElement );
+
+    boolean runValidation( ProgramValidation validation, ProgramStageInstance programStageInstance, OrganisationUnit orgunit,
+        I18nFormat format );
 }

@@ -34,12 +34,9 @@ import org.hisp.dhis.caseentry.state.SelectedStateManager;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
 import org.hisp.dhis.dataelement.DataElementService;
-import org.hisp.dhis.i18n.I18n;
-import org.hisp.dhis.i18n.I18nFormat;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.patientdatavalue.PatientDataValue;
 import org.hisp.dhis.patientdatavalue.PatientDataValueService;
-import org.hisp.dhis.program.Program;
 import org.hisp.dhis.program.ProgramStageInstance;
 import org.hisp.dhis.program.ProgramStageInstanceService;
 
@@ -84,13 +81,6 @@ public class SaveDateValueAction
     public void setSelectedStateManager( SelectedStateManager selectedStateManager )
     {
         this.selectedStateManager = selectedStateManager;
-    }
-
-    private I18nFormat format;
-
-    public void setFormat( I18nFormat format )
-    {
-        this.format = format;
     }
 
     // -------------------------------------------------------------------------
@@ -142,13 +132,6 @@ public class SaveDateValueAction
         return message;
     }
 
-    private I18n i18n;
-
-    public void setI18n( I18n i18n )
-    {
-        this.i18n = i18n;
-    }
-
     // -------------------------------------------------------------------------
     // Implementation Action
     // -------------------------------------------------------------------------
@@ -164,8 +147,6 @@ public class SaveDateValueAction
 
         ProgramStageInstance programStageInstance = selectedStateManager.getSelectedProgramStageInstance();
 
-        Program program = programStageInstance.getProgramInstance().getProgram();
-
         DataElement dataElement = dataElementService.getDataElement( dataElementId );
 
         DataElementCategoryOptionCombo optionCombo = dataElement.getCategoryCombo().getOptionCombos().iterator().next();
@@ -176,33 +157,6 @@ public class SaveDateValueAction
         if ( value != null && value.trim().length() == 0 )
         {
             value = null;
-        }
-
-        // ---------------------------------------------------------------------
-        // Check inputed value:
-        // value <= DueDate + program.maxDaysAllowedInputData
-        // ---------------------------------------------------------------------
-
-        if ( value != null )
-        {
-            Date dateValue = format.parseDate( value );
-
-            Date dueDate = programStageInstance.getDueDate();
-
-            long diffMillis = dateValue.getTime() - dueDate.getTime();
-
-            long diffMaxDays = diffMillis / 86400000;
-
-            if ( diffMaxDays > program.getMaxDaysAllowedInputData() )
-            {
-                statusCode = 2;
-
-                message = i18n.getString( "date_is_less_then_or_equals_plus_no_max_days" ) + " " + " ( "
-                    + i18n.getString( "max_days" ) + " : " + program.getMaxDaysAllowedInputData()
-                    + i18n.getString( "days" ) + " )";
-
-                return SUCCESS;
-            }
         }
 
         // ---------------------------------------------------------------------

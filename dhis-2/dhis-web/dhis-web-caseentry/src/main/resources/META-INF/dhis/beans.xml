@@ -372,6 +372,8 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 			ref="org.hisp.dhis.patientdatavalue.PatientDataValueService" />
 		<property name="programValidationService"
 			ref="org.hisp.dhis.program.ProgramValidationService" />
+		<property name="aggregationConditionService"
+			ref="org.hisp.dhis.caseaggregation.CaseAggregationConditionService" />
 	</bean>
 	
 	<bean id="org.hisp.dhis.caseentry.action.caseentry.LoadAnonymousProgramsAction"

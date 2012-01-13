@@ -40,4 +40,6 @@ public interface ProgramValidationStore
     String ID = ProgramValidation.class.getName();
 
     Collection<ProgramValidation> get( Program program );
+    
+    Collection<ProgramValidation> get( Program program, Boolean dateType );
 }

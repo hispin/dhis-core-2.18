@@ -50,7 +50,7 @@ public class AddProgramValidationAction
     private ProgramService programService;
 
     // -------------------------------------------------------------------------
-    // Input
+    // Input/Output
     // -------------------------------------------------------------------------
 
     private String description;
@@ -61,13 +61,22 @@ public class AddProgramValidationAction
 
     private Integer programId;
 
+    private Boolean dateType;
+
+    private String message;
+
     // -------------------------------------------------------------------------
     // Setters
     // -------------------------------------------------------------------------
-    
+
     public void setProgramService( ProgramService programService )
     {
         this.programService = programService;
+    }
+
+    public void setDateType( Boolean dateType )
+    {
+        this.dateType = dateType;
     }
 
     public void setProgramValidationService( ProgramValidationService programValidationService )
@@ -83,6 +92,11 @@ public class AddProgramValidationAction
     public void setLeftSide( String leftSide )
     {
         this.leftSide = leftSide;
+    }
+
+    public String getMessage()
+    {
+        return message;
     }
 
     public void setRightSide( String rightSide )
@@ -113,11 +127,12 @@ public class AddProgramValidationAction
         validation.setDescription( description.trim() );
         validation.setLeftSide( leftSide.trim() );
         validation.setRightSide( rightSide.trim() );
+        validation.setDateType( dateType );
 
         Program program = programService.getProgram( programId );
         validation.setProgram( program );
 
-        programValidationService.addProgramValidation( validation );
+        message = programValidationService.addProgramValidation( validation ) + "";
 
         return SUCCESS;
     }
