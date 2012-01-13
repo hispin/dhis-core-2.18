@@ -12,7 +12,7 @@ jQuery(function() {
     #introListImgItem( "patientAttributeGroup.action" "patient_attribute_group" "patient" )
     #introListImgItem( "patientIdentifierType.action" "patient_identifier_type" "patient" )
     #introListImgItem( "relationshipType.action" "relationship_type" "patient" )
-	#introListImgItem( "defineOrgunitRegistrationForm.action" "patient_registration" "patient" )
+	#introListImgItem( "defineOrgunitRegistrationForm.action" "patient_organisation_unit_registration" "patient" )
     #introListImgItem( "program.action" "program" "program" )
 	#introListImgItem( "programAttribute.action" "program_attribute" "program" )
     #introListImgItem( "caseAggregation.action" "beneficiary_aggregation_query_builder" "caseaggregationmapping" )

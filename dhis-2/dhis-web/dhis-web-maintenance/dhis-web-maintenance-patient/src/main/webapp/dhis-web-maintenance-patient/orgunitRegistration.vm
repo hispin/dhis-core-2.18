@@ -1,5 +1,5 @@
 
-<h3>$i18n.getString( "patient_registration_title" ) #openHelp( "patient_registration" )</h3>
+<h3>$i18n.getString( "patient_organisation_unit_registration" ) #openHelp( "patient_organisation_unit_registration" )</h3>
 
 <form action='defineOrgunitRegistration.action' method='post'>
 <table>
