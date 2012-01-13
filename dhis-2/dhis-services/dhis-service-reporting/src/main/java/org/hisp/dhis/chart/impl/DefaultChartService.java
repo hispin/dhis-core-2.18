@@ -213,7 +213,6 @@ public class DefaultChartService
         }
 
         chart.setFormat( format );
-        chart.init();
 
         return getJFreeChart( chart, !chart.isHideSubtitle() );
     }
@@ -237,8 +236,6 @@ public class DefaultChartService
         chart.setRelativePeriods( periods );
         chart.setOrganisationUnit( unit );
         chart.setFormat( format );
-
-        chart.init();
 
         return getJFreeChart( chart, title );
     }
@@ -264,8 +261,6 @@ public class DefaultChartService
         chart.setOrganisationUnits( parent.getSortedChildren() );
         chart.setFormat( format );
 
-        chart.init();
-
         return getJFreeChart( chart, title );
     }
 
@@ -286,8 +281,6 @@ public class DefaultChartService
         chart.setOrganisationUnits( organisationUnits );
         chart.setFormat( format );
         chart.setName( chart.getTitle() );
-
-        chart.init();
 
         return getJFreeChart( chart, false );
     }

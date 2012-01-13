@@ -153,16 +153,6 @@ public class Chart
         this.name = name;
     }
 
-    public void init()
-    {
-        allOrganisationUnits.addAll( organisationUnits );
-
-        if ( organisationUnit != null )
-        {
-            allOrganisationUnits.add( organisationUnit );
-        }
-    }
-
     // -------------------------------------------------------------------------
     // Logic
     // -------------------------------------------------------------------------
@@ -211,8 +201,14 @@ public class Chart
         }
         else if ( DIMENSION_ORGANISATIONUNIT.equals( dimension ) )
         {
-            list.addAll( organisationUnits );
-            list.addAll( organisationUnit != null ? Arrays.asList( organisationUnit ) : new ArrayList<NameableObject>() );
+            if ( organisationUnit != null )
+            {
+                list.addAll( Arrays.asList( organisationUnit ) );
+            }
+            else
+            {
+                list.addAll( organisationUnits );
+            }
         }
         
         return list;
@@ -225,39 +221,6 @@ public class Chart
             period.setName( format.formatPeriod( period ) );
             period.setShortName( format.formatPeriod( period ) );
         }
-    }
-    
-    /**
-     * TODO This method is a temporary hack while we phase out the old chart UI.
-     */
-    public String getDimension()
-    {
-        if ( DIMENSION_DATA.equals( series ) && DIMENSION_PERIOD.equals( category ) && !indicators.isEmpty() )
-        {
-            return DIMENSION_PERIOD_INDICATOR;
-        }
-        else if ( DIMENSION_DATA.equals( series ) && DIMENSION_ORGANISATIONUNIT.equals( category ) && !indicators.isEmpty() )
-        {
-            return DIMENSION_ORGANISATIONUNIT_INDICATOR;
-        }
-        else if ( DIMENSION_PERIOD.equals( series ) && DIMENSION_DATA.equals( category ) && !indicators.isEmpty() )
-        {
-            return DIMENSION_INDICATOR_PERIOD;
-        }
-        else if ( DIMENSION_DATA.equals( series ) && DIMENSION_PERIOD.equals( category ) )
-        {
-            return DIMENSION_PERIOD_DATAELEMENT;
-        }
-        else if ( DIMENSION_DATA.equals( series ) && DIMENSION_ORGANISATIONUNIT.equals( category ) )
-        {
-            return DIMENSION_ORGANISATIONUNIT_DATAELEMENT;
-        }
-        else if ( DIMENSION_PERIOD.equals( series ) && DIMENSION_DATA.equals( category ) )
-        {
-            return DIMENSION_DATAELEMENT_PERIOD;
-        }
-        
-        return null;
     }
     
     // -------------------------------------------------------------------------
