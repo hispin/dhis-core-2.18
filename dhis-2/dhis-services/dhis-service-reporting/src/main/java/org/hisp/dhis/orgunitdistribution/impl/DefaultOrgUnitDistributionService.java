@@ -135,9 +135,9 @@ public class DefaultOrgUnitDistributionService
         {
             grid.addHeader( new GridHeader( group.getName(), false, false )  );
         }
-        
-        grid.addHeader( new GridHeader( HEADER_NONE, false, false ) );
+
         grid.addHeader( new GridHeader( HEADER_TOTAL, false, false ) );
+        grid.addHeader( new GridHeader( HEADER_NONE, false, false ) );
         
         boolean hasNone = false;
         
@@ -163,9 +163,9 @@ public class DefaultOrgUnitDistributionService
             
             int total = subTree != null ? subTree.size() : 0;
             int none = total - totalGroup;
-            
+
+            grid.addValue( totalGroup );
             grid.addValue( none );
-            grid.addValue( total );
             
             if ( none > 0 )
             {
