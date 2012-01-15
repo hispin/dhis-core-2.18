@@ -25,11 +25,13 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.hisp.dhis.caseentry.action.caseentry;
+package org.hisp.dhis.caseentry.action.report;
 
 import java.util.Collection;
 import java.util.Date;
 
+import org.hisp.dhis.common.Grid;
+import org.hisp.dhis.i18n.I18n;
 import org.hisp.dhis.i18n.I18nFormat;
 import org.hisp.dhis.paging.ActionPagingSupport;
 import org.hisp.dhis.program.ProgramInstance;
@@ -40,10 +42,10 @@ import org.hisp.dhis.program.ProgramStageInstanceService;
 /**
  * @author Chau Thu Tran
  * 
- * @version $Id: GetEventsByProgramAction.java Jan 03, 2012 13:58:34 AM $
+ * @version $Id: GenerateSingleEventReportAction.java Jan 03, 2012 13:58:34 AM $
  */
 
-public class GetEventsByProgramAction
+public class GenerateSingleEventReportAction
     extends ActionPagingSupport<ProgramStageInstance>
 {
     // -------------------------------------------------------------------------
@@ -75,18 +77,18 @@ public class GetEventsByProgramAction
         this.programInstanceId = programInstanceId;
     }
 
-    private String executionDate;
+    private String startDate;
 
-    public void setExecutionDate( String executionDate )
+    public void setStartDate( String startDate )
     {
-        this.executionDate = executionDate;
+        this.startDate = startDate;
     }
 
-    private I18nFormat format;
+    private String endDate;
 
-    public void setFormat( I18nFormat format )
+    public void setEndDate( String endDate )
     {
-        this.format = format;
+        this.endDate = endDate;
     }
 
     private Collection<ProgramStageInstance> programStageInstances;
@@ -96,11 +98,32 @@ public class GetEventsByProgramAction
         return programStageInstances;
     }
 
+    private Grid grid;
+
+    public Grid getGrid()
+    {
+        return grid;
+    }
+
     private Integer total;
 
     public Integer getTotal()
     {
         return total;
+    }
+
+    private I18n i18n;
+
+    public void setI18n( I18n i18n )
+    {
+        this.i18n = i18n;
+    }
+
+    private I18nFormat format;
+
+    public void setFormat( I18nFormat format )
+    {
+        this.format = format;
     }
 
     // -------------------------------------------------------------------------
@@ -112,14 +135,16 @@ public class GetEventsByProgramAction
     {
         ProgramInstance programInstance = programInstanceService.getProgramInstance( programInstanceId );
 
-        Date dateValue = format.parseDate( executionDate );
+        Date startValue = format.parseDate( startDate );
+        
+        Date endValue = format.parseDate( endDate );
 
-        total = programStageInstanceService.countProgramStageInstances( programInstance, dateValue );
+        total = programStageInstanceService.countProgramStageInstances( programInstance, startValue, endValue );
 
         this.paging = createPaging( total );
 
-        programStageInstances = programStageInstanceService.getProgramStageInstances( programInstance, dateValue,
-            paging.getStartPos(), paging.getPageSize() );
+        grid = programStageInstanceService.getSingleEventReport( programInstance, startValue, endValue, paging.getStartPos(),
+            paging.getPageSize(), format, i18n );
 
         return SUCCESS;
     }

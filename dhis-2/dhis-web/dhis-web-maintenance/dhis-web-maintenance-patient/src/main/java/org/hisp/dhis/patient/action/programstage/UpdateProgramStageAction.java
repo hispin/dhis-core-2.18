@@ -120,6 +120,13 @@ public class UpdateProgramStageAction
         this.compulsories = compulsories;
     }
 
+    private List<Boolean> showOnReport = new ArrayList<Boolean>();
+    
+    public void setShowOnReport( List<Boolean> showOnReport )
+    {
+        this.showOnReport = showOnReport;
+    }
+
     private int programId;
 
     public int getProgramId()
@@ -164,15 +171,19 @@ public class UpdateProgramStageAction
             ProgramStageDataElement programStageDataElement = programStageDataElementService.get( programStage,
                 dataElement );
 
+            Boolean isShow =  ( showOnReport == null ) ? false : showOnReport.get( i );
+            
             if ( programStageDataElement == null )
             {
                 programStageDataElement = new ProgramStageDataElement( programStage, dataElement, this.compulsories
-                    .get( i ), new Integer( i ) );
+                    .get( i ), isShow,  new Integer( i ) );
                 programStageDataElementService.addProgramStageDataElement( programStageDataElement );
             }
             else
             {
                 programStageDataElement.setCompulsory( this.compulsories.get( i ) );
+                
+                programStageDataElement.setShowOnReport( isShow );
 
                 programStageDataElement.setSortOrder( new Integer( i ) );
 

@@ -31,6 +31,9 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
+import org.hisp.dhis.common.Grid;
+import org.hisp.dhis.i18n.I18n;
+import org.hisp.dhis.i18n.I18nFormat;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.patient.Patient;
 
@@ -83,8 +86,10 @@ public interface ProgramStageInstanceService
 
     List<ProgramStageInstance> getProgramStageInstances( Patient patient, Boolean completed );
     
-    List<ProgramStageInstance> getProgramStageInstances( ProgramInstance programInstance, Date executionDate, int min, int max );
+    List<ProgramStageInstance> getProgramStageInstances( ProgramInstance programInstance, Date startDate, Date endDate , int min, int max );
     
-    int countProgramStageInstances( ProgramInstance programInstance, Date executionDate);
+    int countProgramStageInstances( ProgramInstance programInstance, Date startDate, Date endDate );
+    
+    Grid getSingleEventReport( ProgramInstance programInstance, Date startDate, Date endDate, int min, int max, I18nFormat format, I18n i18n );
 
 }

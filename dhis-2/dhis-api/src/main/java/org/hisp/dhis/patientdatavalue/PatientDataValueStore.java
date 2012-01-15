@@ -91,6 +91,6 @@ public interface PatientDataValueStore
     Collection<PatientDataValue> get( DataElement dataElement, boolean providedByAnotherFacility );
     
     Collection<PatientDataValue> get( Patient patient, Collection<DataElement> dataElements, Date startDate, Date endDate );
-
-
+    
+    PatientDataValue get( ProgramStageInstance programStageInstance, DataElement dataElement );
 }

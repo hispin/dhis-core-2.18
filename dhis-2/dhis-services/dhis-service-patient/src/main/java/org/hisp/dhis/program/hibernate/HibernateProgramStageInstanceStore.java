@@ -147,17 +147,17 @@ public class HibernateProgramStageInstanceStore
     }
 
     @SuppressWarnings( "unchecked" )
-    public List<ProgramStageInstance> getProgramStageInstances( ProgramInstance programInstance, Date executionDate,
+    public List<ProgramStageInstance> getProgramStageInstances( ProgramInstance programInstance, Date startDate, Date endDate,
         int min, int max )
     {
         return getCriteria( Restrictions.eq( "programInstance.id", programInstance.getId() ),
-            Restrictions.eq( "executionDate", executionDate ) ).setFirstResult( min ).setMaxResults( max ).list();
+            Restrictions.between( "executionDate", startDate, endDate ) ).setFirstResult( min ).setMaxResults( max ).list();
     }
 
-    public int countProgramStageInstances( ProgramInstance programInstance, Date executionDate )
+    public int countProgramStageInstances( ProgramInstance programInstance, Date startDate, Date endDate )
     {
         Number rs = (Number) getCriteria( Restrictions.eq( "programInstance.id", programInstance.getId() ),
-            Restrictions.eq( "executionDate", executionDate ) ).setProjection( Projections.rowCount() ).uniqueResult();
+            Restrictions.between( "executionDate", startDate, endDate ) ).setProjection( Projections.rowCount() ).uniqueResult();
 
         return rs != null ? rs.intValue() : 0;
     }

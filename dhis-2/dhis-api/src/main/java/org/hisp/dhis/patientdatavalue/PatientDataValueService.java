@@ -99,5 +99,7 @@ public interface PatientDataValueService
     Collection<PatientDataValue> getPatientDataValues( Patient patient, Collection<DataElement> dataElements,
         Date startDate, Date endDate );
 
+    PatientDataValue getPatientDataValue( ProgramStageInstance programStageInstance, DataElement dataElement );
+
     Collection<PatientDataValue> getAllPatientDataValues();
 }

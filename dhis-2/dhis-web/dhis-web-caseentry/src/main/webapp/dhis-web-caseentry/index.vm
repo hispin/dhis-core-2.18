@@ -7,6 +7,7 @@
     #introListImgItem( "dataEntrySelect.action" "data_entry" "dataentry" )
 	#introListImgItem( "multipledataEntrySelect.action" "multiple_dataentry" "dataentry" )
     #introListImgItem( "reportSelect.action" "summary_report" "summaryreport" )
-    #introListImgItem( "visitplan.action" "visit_plan" "visitplan" )
+    #introListImgItem( "showSingleEventReportForm.action" "single_event_report" "summaryreport" )
+	#introListImgItem( "visitplan.action" "visit_plan" "visitplan" )
     #introListImgItem( "caseAggregationForm.action" "case_aggregation" "caseaggregation" )
 </ul>

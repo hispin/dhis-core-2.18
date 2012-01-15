@@ -2,6 +2,7 @@
 <a href="index.action"><h2>$i18n.getString( "reports" )&nbsp;</h2></a>
 <ul>
     <li><a href="reportSelect.action">$i18n.getString( "summary_report" )&nbsp;</a></li>
+	<li><a href="showSingleEventReportForm.action"> $i18n.getString( "single_event_report" )&nbsp;</a></li> 
     <li><a href="visitplan.action">$i18n.getString( "visit_plan" )&nbsp;</a></li>
 </ul>
 
