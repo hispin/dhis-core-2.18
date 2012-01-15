@@ -108,7 +108,7 @@ tr.selected{
 						<tr><th>$i18n.getString( "dataelement" )</th>
 						<th width="20px">$i18n.getString( "compulsory" )</th>
 						#if( $programStage.program.anonymous == 'true' )
-						<th width="20px">$i18n.getString( "shown_on_reports" )</th>
+						<th width="120px">$i18n.getString( "shown_on_reports" )</th>
 						#end
 					</thead>
 					<tbody id="selectedList">
