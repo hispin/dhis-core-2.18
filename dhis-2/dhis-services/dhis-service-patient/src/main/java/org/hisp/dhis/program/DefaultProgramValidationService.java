@@ -30,6 +30,15 @@ package org.hisp.dhis.program;
 import static org.hisp.dhis.program.ProgramValidation.OBJECT_PROGRAM_STAGE_DATAELEMENT;
 import static org.hisp.dhis.program.ProgramValidation.SEPARATOR_ID;
 import static org.hisp.dhis.program.ProgramValidation.SEPARATOR_OBJECT;
+import static org.hisp.dhis.program.ProgramValidation.BEFORE_CURRENT_DATE;
+import static org.hisp.dhis.program.ProgramValidation.BEFORE_OR_EQUALS_TO_CURRENT_DATE;
+import static org.hisp.dhis.program.ProgramValidation.AFTER_CURRENT_DATE;
+import static org.hisp.dhis.program.ProgramValidation.AFTER_OR_EQUALS_TO_CURRENT_DATE;
+import static org.hisp.dhis.program.ProgramValidation.BEFORE_DUE_DATE;
+import static org.hisp.dhis.program.ProgramValidation.BEFORE_OR_EQUALS_TO_DUE_DATE;
+import static org.hisp.dhis.program.ProgramValidation.AFTER_DUE_DATE;
+import static org.hisp.dhis.program.ProgramValidation.AFTER_OR_EQUALS_TO_DUE_DATE;
+import static org.hisp.dhis.program.ProgramValidation.BEFORE_DUE_DATE_PLUS_OR_MINUS_MAX_DAYS;
 
 import java.util.Collection;
 import java.util.Date;
@@ -242,40 +251,51 @@ public class DefaultProgramValidationService
                 return true;
             }
 
-            int rightSide = Integer.parseInt( programValidation.getRightSide() );
+            String rightSide = programValidation.getRightSide();
             Date dueDate = dataValue.getProgramStageInstance().getDueDate();
             Date currentDate = dataValue.getTimestamp();
             Date value = format.parseDate( dataValue.getValue() );
 
-            switch ( rightSide )
+            int index = rightSide.indexOf( 'D' );
+            if ( index < 0 )
             {
-            case 1:
-                return value.before( currentDate );
-            case 2:
-                return (value.before( currentDate ) || value.equals( currentDate ));
-            case 3:
-                return value.after( currentDate );
-            case 4:
-                return (value.after( currentDate ) || value.equals( currentDate ));
-            case -1:
-                return value.before( dueDate );
-            case -2:
-                return (value.before( dueDate ) || value.equals( dueDate ));
-            case -3:
-                return value.after( dueDate );
-            case -4:
-                return (value.after( dueDate ) || value.equals( dueDate ));
-            case -5:
-                Integer maxDaysInProgram = programStageInstance.getProgramStage().getProgram().getMaxDaysAllowedInputData();
-                long maxDays = dueDate.getTime() / 86400000 + maxDaysInProgram ;
-                long minDays = dueDate.getTime() / 86400000 - maxDaysInProgram ;
+                int rightValidation = Integer.parseInt( rightSide );
+
+                switch ( rightValidation )
+                {
+                case BEFORE_CURRENT_DATE:
+                    return value.before( currentDate );
+                case BEFORE_OR_EQUALS_TO_CURRENT_DATE:
+                    return (value.before( currentDate ) || value.equals( currentDate ));
+                case AFTER_CURRENT_DATE:
+                    return value.after( currentDate );
+                case AFTER_OR_EQUALS_TO_CURRENT_DATE:
+                    return (value.after( currentDate ) || value.equals( currentDate ));
+                case BEFORE_DUE_DATE:
+                    return value.before( dueDate );
+                case BEFORE_OR_EQUALS_TO_DUE_DATE:
+                    return (value.before( dueDate ) || value.equals( dueDate ));
+                case AFTER_DUE_DATE:
+                    return value.after( dueDate );
+                case AFTER_OR_EQUALS_TO_DUE_DATE:
+                    return (value.after( dueDate ) || value.equals( dueDate ));
+                default:
+                    return true;
+                }
+            }
+            
+            int rightValidation = Integer.parseInt( rightSide.substring( 0, index ) );
+
+            int daysValue = Integer.parseInt( rightSide.substring( index + 1, rightSide.length() ) );
+
+            if ( rightValidation == BEFORE_DUE_DATE_PLUS_OR_MINUS_MAX_DAYS )
+            {
+                long maxDays = dueDate.getTime() / 86400000 + daysValue;
+                long minDays = dueDate.getTime() / 86400000 - daysValue;
                 long valueDays = value.getTime() / 86400000;
-                return ( valueDays <= maxDays && valueDays >= minDays );
-            default:
-                return true;
+                return (valueDays <= maxDays && valueDays >= minDays);
             }
         }
-
         return true;
     }
 

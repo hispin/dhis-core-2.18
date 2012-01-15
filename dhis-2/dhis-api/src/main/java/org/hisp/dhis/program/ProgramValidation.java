@@ -48,24 +48,24 @@ public class ProgramValidation
     public static String OBJECT_PROGRAM_STAGE_DATAELEMENT = "DE";
     
 
-    public int BEFORE_CURRENT_DATE = 1;
+    public static final int BEFORE_CURRENT_DATE = 1;
 
-    public int BEFORE_OR_EQUALS_TO_CURRENT_DATE = 2;
+    public static final int BEFORE_OR_EQUALS_TO_CURRENT_DATE = 2;
 
-    public int AFTER_CURRENT_DATE = 3;
+    public static final int AFTER_CURRENT_DATE = 3;
 
-    public int AFTER_OR_EQUALS_TO_CURRENT_DATE = 4;
+    public static final int AFTER_OR_EQUALS_TO_CURRENT_DATE = 4;
     
 
-    public int BEFORE_DUE_DATE = -1;
+    public static final int BEFORE_DUE_DATE = -1;
 
-    public int BEFORE_OR_EQUALS_TO_DUE_DATE = -2;
+    public static final int BEFORE_OR_EQUALS_TO_DUE_DATE = -2;
 
-    public int AFTER_DUE_DATE = -3;
+    public static final int AFTER_DUE_DATE = -3;
 
-    public int AFTER_OR_EQUALS_TO_DUE_DATE = -4;
+    public static final int AFTER_OR_EQUALS_TO_DUE_DATE = -4;
     
-    public int BEFORE_DUE_DATE_PULS_MAX_DAYS_OF_DATA_ENTRY = -5;
+    public static final int BEFORE_DUE_DATE_PLUS_OR_MINUS_MAX_DAYS = -5;
 
     // -------------------------------------------------------------------------
     // Fields
