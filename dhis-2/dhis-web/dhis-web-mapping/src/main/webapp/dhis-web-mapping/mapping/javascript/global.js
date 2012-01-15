@@ -8,10 +8,10 @@ G.conf = {
     
 //  Layer names
 
-    thematic_layer_1: 'Thematic layer 1',
-    thematic_layer_2: 'Thematic layer 2',
-    symbol_layer: 'Facility layer',
-    centroid_layer: 'Symbol layer',
+    thematic_layer_1: G.i18n.thematic_layer  + ' 1',
+    thematic_layer_2: G.i18n.thematic_layer  + ' 2',
+    symbol_layer: G.i18n.symbol_layer,
+    centroid_layer: G.i18n.centroid_layer,
 	
 //	Help strings
     
@@ -624,7 +624,7 @@ G.util = {
         layer: function(id) {
             var w = new Ext.Window({
                 id: 'mapviewlayer_w',
-                title: '<span id="window-favorites-title">Favorite</span>',
+                title: '<span id="window-favorites-title">' + G.i18n.favorite + '</span>',
                 layout: 'fit',
                 modal: true,
                 width: 150,
@@ -634,7 +634,7 @@ G.util = {
                         xtype: 'panel',
                         bodyStyle: 'padding:14px;',
                         items: [
-                            { html: 'Open in which layer?' }
+                            { html: G.i18n.open_which_layer }
                         ]
                     }
                 ],
@@ -812,7 +812,7 @@ G.cls = {
                         parent: b,
                         items: [
                             {
-                                text: 'Edit layer..',
+                                text:  G.i18n.edit_layer + '..',
                                 iconCls: 'menu-layeroptions-edit',
                                 scope: this,
                                 handler: function() {
@@ -821,7 +821,7 @@ G.cls = {
                             },
                             '-',
                             {
-                                text: 'Refresh',
+                                text: G.i18n.refresh,
                                 iconCls: 'menu-layeroptions-refresh',
                                 scope: this,
                                 handler: function() {
@@ -830,7 +830,7 @@ G.cls = {
                                 }
                             },
                             {
-                                text: 'Clear',
+                                text: G.i18n.clear ,
                                 iconCls: 'menu-layeroptions-clear',
                                 scope: this,
                                 handler: function() {
@@ -839,7 +839,7 @@ G.cls = {
                             },
                             '-',
                             {
-                                text: 'Filter..',
+                                text: G.i18n.filter + '..',
                                 iconCls: 'menu-layeroptions-filter',
                                 scope: this,
                                 handler: function() {
@@ -847,7 +847,7 @@ G.cls = {
                                 }
                             },
                             {
-                                text: 'Search..',
+                                text: G.i18n.search + '..',
                                 iconCls: 'menu-layeroptions-locate',
                                 showSearchWindow: function() {
                                     var layer = this.parentMenu.parent.widget.layer;
@@ -868,7 +868,7 @@ G.cls = {
                                         });
                                         
                                         this.window = new Ext.Window({
-                                            title: '<span id="window-locate-title">Organisation unit search</span>',
+                                            title: '<span id="window-locate-title">' + G.i18n.organisationunit_search +'</span>',
                                             layout: 'fit',
                                             width: G.conf.window_width,
                                             height: G.util.getMultiSelectHeight() + 140,
@@ -878,7 +878,7 @@ G.cls = {
                                                     bodyStyle:'padding:8px',
                                                     labelWidth: G.conf.label_width,
                                                     items: [
-                                                        { html: '<div class="window-info">Locate organisation units on the map</div>' },
+                                                        { html: '<div class="window-info">' + G.i18n.locate_organisationunit_on_map + '</div>' },
                                                         {
                                                             xtype: 'colorfield',
                                                             id: 'highlightcolor',
@@ -945,7 +945,7 @@ G.cls = {
                                                                                 'fillColor': color
                                                                             });
                                                                         }
-                                                                        
+
                                                                         layer.drawFeature(feature,symbolizer);
                                                                     }
                                                                 }
@@ -964,7 +964,7 @@ G.cls = {
                                         this.window.show(this.parentMenu.parent.id);
                                     }
                                     else {
-                                        Ext.message.msg(false, '<span class="x-msg-hl">' + layer.name + '</span>: No features rendered');
+                                        Ext.message.msg(false, '<span class="x-msg-hl">' + layer.name + '</span>: ' + G.i18n.no_features_rendered);
                                     }
                                 },
                                 handler: function() {
@@ -973,7 +973,7 @@ G.cls = {
                             },
                             {
                                 name: 'labels',
-                                text: 'Labels..',
+                                text: G.i18n.labels + '..',
                                 iconCls: 'menu-layeroptions-labels',
                                 cmp: {
                                     fontSize: new Ext.form.NumberField({
@@ -1067,7 +1067,7 @@ G.cls = {
                                         }
                                         else {
                                             this.cmp.labelWindow = new Ext.Window({
-                                                title: '<span id="window-labels-title">Labels</span>',
+                                                title: '<span id="window-labels-title">' + G.i18n.labels + '</span>',
                                                 layout: 'fit',
                                                 closeAction: 'hide',
                                                 width: G.conf.window_width,
@@ -1078,7 +1078,7 @@ G.cls = {
                                                         bodyStyle: 'padding:8px',
                                                         labelWidth: G.conf.label_width,
                                                         items: [
-                                                            {html: '<div class="window-info">Show/hide feature labels</div>'},
+                                                            {html: '<div class="window-info">' + G.i18n.show_hide_feature_labels + '</div>'},
                                                             this.cmp.fontSize,
                                                             this.cmp.strong,
                                                             this.cmp.italic,
@@ -1100,7 +1100,7 @@ G.cls = {
                                                                     this.cmp.strong.getValue(), this.cmp.italic.getValue(), this.cmp.color.getValue());
                                                             }
                                                             else {
-                                                                Ext.message.msg(false, '<span class="x-msg-hl">' + layer.name + '</span>: No features rendered');
+                                                                Ext.message.msg(false, '<span class="x-msg-hl">' + layer.name + '</span>: ' + Gi.i18n.no_features_rednered );
                                                             }
                                                         }
                                                     }
@@ -1111,7 +1111,7 @@ G.cls = {
                                         }
                                     }
                                     else {
-                                        Ext.message.msg(false, '<span class="x-msg-hl">' + layer.name + '</span>: No features rendered');
+                                        Ext.message.msg(false, '<span class="x-msg-hl">' + layer.name + '</span>: ' + Gi.i18n.no_features_rednered );
                                     }
                                 },
                                 handler: function() {
@@ -1120,7 +1120,7 @@ G.cls = {
                             },
                             '-',
                             {
-                                text: 'Opacity',
+                                text: G.i18n.opacity,
                                 iconCls: 'menu-layeroptions-opacity',
                                 menu: { 
                                     items: G.conf.opacityItems,
@@ -1137,7 +1137,7 @@ G.cls = {
                             '-',
                             {
                                 name: 'history',
-                                text: 'History',
+                                text: G.i18n.history,
                                 iconCls: 'menu-history',
                                 disabled: true,
                                 menu: {},

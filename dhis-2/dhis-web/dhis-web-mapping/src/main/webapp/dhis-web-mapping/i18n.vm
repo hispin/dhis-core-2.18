@@ -25,7 +25,6 @@ G.i18n = {
     hide: '$encoder.jsEscape($i18n.getString( 'hide' ) , "'")',
     showhide: '$encoder.jsEscape($i18n.getString( 'showhide' ) , "'")',
     toggle: '$encoder.jsEscape($i18n.getString( 'toggle' ) , "'")',
-
     boundary: '$encoder.jsEscape($i18n.getString( 'boundary' ) , "'")',
     level: '$encoder.jsEscape($i18n.getString( 'level' ) , "'")',
     type: '$encoder.jsEscape($i18n.getString( 'type' ) , "'")',
@@ -41,7 +40,6 @@ G.i18n = {
     groups: '$encoder.jsEscape($i18n.getString( 'groups' ) , "'")',
     groupset: '$encoder.jsEscape($i18n.getString( 'groupset' ) , "'")',
     groupsets: '$encoder.jsEscape($i18n.getString( 'groupsets' ) , "'")',
-
     indicators: '$encoder.jsEscape($i18n.getString( 'indicators' ) , "'")',
     dataelements: '$encoder.jsEscape($i18n.getString( 'dataelements' ) , "'")',
     thematic_map: '$encoder.jsEscape($i18n.getString( 'thematic_map' ) , "'")',
@@ -245,7 +243,6 @@ G.i18n = {
     locate_features: '$encoder.jsEscape($i18n.getString( 'locate_features' ) , "'")',
     no_coordinates_found: '$encoder.jsEscape($i18n.getString( 'no_coordinates_found' ) , "'")',
     image_resolution: '$encoder.jsEscape($i18n.getString( 'image_resolution' ) , "'")',
-
     max: '$encoder.jsEscape($i18n.getString( 'max' ) , "'")',
     characters: '$encoder.jsEscape($i18n.getString( 'characters' ) , "'")',
     geojson_file: '$encoder.jsEscape($i18n.getString( 'geojson_file' ) , "'")',
@@ -305,5 +302,28 @@ G.i18n = {
     legend_symbolizer: '$encoder.jsEscape($i18n.getString( 'legend_symbolizer' ) , "'")',
     image: '$encoder.jsEscape($i18n.getString( 'image' ) , "'")',
     register_new_wms_overlay: '$encoder.jsEscape($i18n.getString( 'register_new_wms_overlay' ) , "'")',
-    register_new_vector_overlay: '$encoder.jsEscape($i18n.getString( 'register_new_vector_overlay' ) , "'")'    
+    register_new_vector_overlay: '$encoder.jsEscape($i18n.getString( 'register_new_vector_overlay' ) , "'")',
+    manage_favorites: '$encoder.jsEscape($i18n.getString( 'manage_favorites' ) , "'")',
+    layers: '$encoder.jsEscape($i18n.getString( 'layers' ) , "'")' ,
+    tools: '$encoder.jsEscape($i18n.getString( 'tools' ) , "'")',
+    edit_layer: '$encoder.jsEscape($i18n.getString( 'edit_layer' ) , "'")',
+    clear: '$encoder.jsEscape($i18n.getString( 'clear' ) , "'")',
+    search: '$encoder.jsEscape($i18n.getString( 'search' ) , "'")',
+    labels: '$encoder.jsEscape($i18n.getString( 'labels' ) , "'")',
+    show_hide_feature_labels:  '$encoder.jsEscape($i18n.getString( 'show_hide_feature_labels' ) , "'")' ,
+    opacity:  '$encoder.jsEscape($i18n.getString( 'opacity' ) , "'")',
+    history:  '$encoder.jsEscape($i18n.getString( 'history' ) , "'")',
+    data_options: '$encoder.jsEscape($i18n.getString( 'data_options' ) , "'")' ,
+    legend_options: '$encoder.jsEscape($i18n.getString( 'legend_options' ) , "'")',
+    parent_organisation_unit:  '$encoder.jsEscape($i18n.getString( 'parent_organisation_unit' ) , "'")',
+    resize:  '$encoder.jsEscape($i18n.getString( 'resize' ) , "'")',
+    facility_layer:    '$encoder.jsEscape($i18n.getString( 'facility_layer' ) , "'")',
+    open_which_layer:   '$encoder.jsEscape($i18n.getString( 'open_which_layer' ) , "'")',
+    organisationunit_search: '$encoder.jsEscape($i18n.getString( 'organisationunit_search' ) , "'")',
+    no_features_rendered:   '$encoder.jsEscape($i18n.getString( 'no_features_rendered' ) , "'")',
+    wms_overlays:  '$encoder.jsEscape($i18n.getString( 'wms_overlays' ) , "'")',
+    file_overlays:  '$encoder.jsEscape($i18n.getString( 'file_overlays' ) , "'")' ,
+    symbol_layer:    '$encoder.jsEscape($i18n.getString( 'symbol_layer' ) , "'")',
+    centroid_layer:    '$encoder.jsEscape($i18n.getString( 'centroid_layer' ) , "'")'
+
 };
