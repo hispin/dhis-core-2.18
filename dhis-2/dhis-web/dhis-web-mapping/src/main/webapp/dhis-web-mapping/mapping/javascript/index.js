@@ -473,7 +473,7 @@ Ext.onReady( function() {
                 xtype: 'form',
                 labelWidth: G.conf.label_width,
                 items: [
-                    {html: '<div class="window-info">Register current map as a favorite</div>'},
+                    {html: '<div class="window-info">' + G.i18n.register_map_favorite + '</div>'},
                     {
                         xtype: 'textfield',
                         id: 'favoritename_tf',
@@ -514,7 +514,7 @@ Ext.onReady( function() {
                     },
                     
                     {html: '<div class="window-p"></div>'},
-                    {html: '<div class="window-info">Delete favorite / Add to dashboard</div>'},
+                    {html: '<div class="window-info">' + G.i18n.delete_favorite + '/' + G.i18n.add_to_dashboard +'</div>'},
                     {
                         xtype: 'combo',
                         id: 'favorite_cb',
@@ -675,7 +675,7 @@ Ext.onReady( function() {
                 xtype: 'form',
                 labelWidth: G.conf.label_width,
                 items: [
-                    {html: '<div class="window-info">Export thematic layer 1 and 2 to PNG</div>'},
+                    {html: '<div class="window-info">' + G.i18n.export_thematic_map_to_png + '</div>'},
                     {
                         xtype: 'textfield',
                         id: 'exportimagetitle_tf',
@@ -821,7 +821,7 @@ Ext.onReady( function() {
                         xtype: 'form',
                         labelWidth: G.conf.label_width,
                         items: [
-                            {html: '<div class="window-info">Register new legend</div>'},
+                            {html: '<div class="window-info">' + G.i18n.register_new_legend +'</div>'},
                             {
                                 xtype: 'textfield',
                                 id: 'predefinedmaplegendname_tf',
@@ -907,7 +907,7 @@ Ext.onReady( function() {
                                 store: G.stores.mapLegendTypeIcon
                             },
                             {html: '<div class="window-p"></div>'},
-                            {html: '<div class="window-info">Delete legend</div>'},
+                            {html: '<div class="window-info">' + G.i18n.delete_legend + '</div>'},
                             {
                                 xtype: 'combo',
                                 id: 'predefinedmaplegend_cb',
@@ -1046,7 +1046,7 @@ Ext.onReady( function() {
                         xtype: 'form',
                         labelWidth: G.conf.label_width,
                         items: [
-                            {html: '<div class="window-info">Register new legend set</div>'},
+                            {html: '<div class="window-info">' + G.i18n.register_new_legend_set + '</div>'},
                             {
                                 xtype: 'textfield',
                                 id: 'predefinedmaplegendsetname_tf',
@@ -1100,7 +1100,7 @@ Ext.onReady( function() {
                                 store: G.stores.predefinedMapLegend
                             },
                             {html: '<div class="window-p"></div>'},
-                            {html: '<div class="window-info">Delete legend set</div>'},
+                            {html: '<div class="window-info">' + G.i18n.delete_legend_set + '</div>'},
                             {
                                 xtype: 'combo',
                                 id: 'predefinedmaplegendset_cb',
@@ -1285,7 +1285,7 @@ Ext.onReady( function() {
                         xtype: 'form',
                         labelWidth: G.conf.label_width,
                         items: [
-                            {html: '<div class="window-info">Assign indicators to legend set</div>'},
+                            {html: '<div class="window-info">' + G.i18n.assign_indicators_to_legend_set +'</div>'},
                             {
                                 xtype: 'combo',
                                 id: 'predefinedmaplegendsetindicator_cb',
@@ -1404,7 +1404,7 @@ Ext.onReady( function() {
                         xtype: 'form',
                         labelWidth: G.conf.label_width,
                         items: [
-                            {html: '<div class="window-info">Assign data elements to legend set</div>'},
+                            {html: '<div class="window-info">' + G.i18n. assign_dataelements_to_legend_set + '</div>'},
                             {
                                 xtype: 'combo',
                                 id: 'predefinedmaplegendsetdataelement_cb',
@@ -1976,7 +1976,7 @@ Ext.onReady( function() {
                 {
                     nodeType: 'gx_baselayercontainer',
                     expanded: true,
-                    text: 'Base layers'
+                    text: G.i18n.base_layers
                 },
                 {
                     nodeType: 'gx_overlaylayercontainer'
@@ -2117,16 +2117,16 @@ Ext.onReady( function() {
             ]
         }),
         clickEventFn: function(node, e) {
-            if (node.attributes.text !== 'Base layers' && node.attributes.text !== 'Overlays') {
+            if (node.attributes.text !== G.i18n.base_layers && node.attributes.text !== G.i18n.overlays ) {
                 node.select();
                 
-                if (node.parentNode.attributes.text === 'Base layers') {
+                if (node.parentNode.attributes.text === G.i18n.base_layers ) {
                     var cmb = node.getOwnerTree().contextMenuBaselayer;
                     cmb.contextNode = node;
                     cmb.showAt(e.getXY());
                 }
                 
-                else if (node.parentNode.attributes.text === 'Overlays') {
+                else if (node.parentNode.attributes.text === G.i18n.overlays ) {
                     var cmo = node.layer.overlayType === 'wms' ?
                         node.getOwnerTree().contextMenuOverlayWMS : node.getOwnerTree().contextMenuOverlayFile;
                     cmo.contextNode = node;
@@ -2146,7 +2146,7 @@ Ext.onReady( function() {
             {
                 xtype: 'button',
                 id: 'baselayers_b',
-                text: 'WMS overlays',
+                text: G.i18n.wms_overlays,
                 iconCls: 'icon-baselayer',
                 handler: function() {
                     Ext.getCmp('baselayers_w').setPagePosition(Ext.getCmp('east').x - (Ext.getCmp('overlays_w').width + 15), Ext.getCmp('center').y + 41);
@@ -2156,7 +2156,7 @@ Ext.onReady( function() {
             {
                 xtype: 'button',
                 id: 'overlays_b',
-                text: 'File overlays',
+                text: G.i18n.file_overlays,
                 iconCls: 'icon-overlay',
                 handler: function() {
                     Ext.getCmp('overlays_w').setPagePosition(Ext.getCmp('east').x - (Ext.getCmp('overlays_w').width + 15), Ext.getCmp('center').y + 41);
@@ -2184,7 +2184,7 @@ Ext.onReady( function() {
     });
     
     choropleth.window = new Ext.Window({
-        title: '<span id="window-thematic1-title">Thematic layer 1</span>',
+        title: '<span id="window-thematic1-title">' + G.conf.thematic_layer_1 + '</span>',
         layout: 'fit',
         bodyStyle: 'padding:8px; background-color:#fff',
         closeAction: 'hide',
@@ -2196,7 +2196,7 @@ Ext.onReady( function() {
         bbar: [
             {
                 xtype: 'button',
-                text: 'Resize',
+                text: G.i18n.resize,
                 iconCls: 'icon-resize',
                 scope: choropleth,
                 handler: function() {
@@ -2236,7 +2236,7 @@ Ext.onReady( function() {
             ' ',
             {
                 xtype: 'button',
-                text: 'Close',
+                text: G.i18n.close,
                 iconCls: 'icon-cancel',
                 scope: choropleth,
                 handler: function() {
@@ -2273,7 +2273,7 @@ Ext.onReady( function() {
     });
     
     point.window = new Ext.Window({
-        title: '<span id="window-thematic2-title">Thematic layer 2</span>',
+        title: '<span id="window-thematic2-title">' + G.conf.thematic_layer_2 + '</span>',
         layout: 'fit',
         bodyStyle: 'padding:8px; background-color:#fff',
         closeAction: 'hide',
@@ -2285,7 +2285,7 @@ Ext.onReady( function() {
         bbar: [
             {
                 xtype: 'button',
-                text: 'Resize',
+                text: G.i18n.resize,
                 iconCls: 'icon-resize',
                 scope: point,
                 handler: function() {
@@ -2373,7 +2373,7 @@ Ext.onReady( function() {
         bbar: [
             {
                 xtype: 'button',
-                text: 'Resize',
+                text: G.i18n.resize,
                 iconCls: 'icon-resize',
                 scope: symbol,
                 handler: function() {
@@ -2413,7 +2413,7 @@ Ext.onReady( function() {
             ' ',
             {
                 xtype: 'button',
-                text: 'Close',
+                text: G.i18n.close,
                 iconCls: 'icon-cancel',
                 scope: symbol,
                 handler: function() {
@@ -2452,7 +2452,7 @@ Ext.onReady( function() {
         bbar: [
             {
                 xtype: 'button',
-                text: 'Resize',
+                text: G.i18n.resize,
                 iconCls: 'icon-resize',
                 scope: centroid,
                 handler: function() {
@@ -2510,11 +2510,11 @@ Ext.onReady( function() {
 		style: 'font:bold 11px arial; color:#333;'
 	});
 	var layersLabel = new Ext.form.Label({
-		text: 'Layers',
+		text: G.i18n.layers,
 		style: 'font:bold 11px arial; color:#333;'
 	});
 	var toolsLabel = new Ext.form.Label({
-		text: 'Tools',
+		text: G.i18n.tools,
 		style: 'font:bold 11px arial; color:#333;'
 	});
 	
@@ -2580,7 +2580,7 @@ Ext.onReady( function() {
             this.menu = new Ext.menu.Menu({
                 items: [
                     {
-                        text: 'Manage favorites..',
+                        text:  G.i18n.manage_favorites,
                         iconCls: 'menu-layeroptions-edit',
                         scope: this,
                         handler: function() {
@@ -2670,7 +2670,7 @@ Ext.onReady( function() {
                                 layout: 'anchor',
                                 bodyStyle: 'padding:8px',
                                 items: [
-                                    {html: '<div class="window-info">Total distance</div>'},
+                                    {html: '<div class="window-info">' + G.i18n.total_distance + '</div>'},
                                     {html: '<div id="measureDistanceDiv"></div>'}
                                 ]
                             }

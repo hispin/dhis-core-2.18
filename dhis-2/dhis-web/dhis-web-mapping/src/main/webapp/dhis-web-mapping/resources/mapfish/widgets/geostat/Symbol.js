@@ -488,7 +488,7 @@ mapfish.widgets.geostat.Symbol = Ext.extend(Ext.Panel, {
                                 ]
                             },                            
                             { html: '<div class="thematic-br"></div><div class="thematic-br"></div>' },                            
-                            { html: '<div class="window-info">Parent organisation unit</div>' },                            
+                            { html: '<div class="window-info">' + G.i18n.parent_organisation_unit + '</div>' },
                             this.cmp.parent
                         ]
                     }

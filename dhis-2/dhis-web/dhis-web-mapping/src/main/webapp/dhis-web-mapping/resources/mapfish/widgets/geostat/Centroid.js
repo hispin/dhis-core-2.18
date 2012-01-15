@@ -660,7 +660,7 @@ mapfish.widgets.geostat.Centroid = Ext.extend(Ext.Panel, {
                         xtype: 'form',
                         width: 270,
                         items: [
-                            { html: '<div class="window-info">Data options</div>' },
+                            { html: '<div class="window-info">' + G.i18n.data_options + '</div>' },
                             this.cmp.mapValueType,
                             this.cmp.indicatorGroup,
                             this.cmp.indicator,
@@ -669,7 +669,7 @@ mapfish.widgets.geostat.Centroid = Ext.extend(Ext.Panel, {
                             this.cmp.periodType,
                             this.cmp.period,
                             { html: '<div class="thematic-br">' },
-                            { html: '<div class="window-info">Legend options</div>' },
+                            { html: '<div class="window-info">' +  G.i18n.legend_options+'</div>' },
                             this.cmp.mapLegendSet
                         ]
                     },
@@ -687,7 +687,7 @@ mapfish.widgets.geostat.Centroid = Ext.extend(Ext.Panel, {
                                 ]
                             },                            
                             { html: '<div class="thematic-br"></div><div class="thematic-br"></div>' },                            
-                            { html: '<div class="window-info">Parent organisation unit</div>' },                            
+                            { html: '<div class="window-info">' + G.i18n.parent_organisation_unit + '</div>' },
                             this.cmp.parent
                         ]
                     }
