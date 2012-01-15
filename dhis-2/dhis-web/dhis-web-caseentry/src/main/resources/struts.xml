@@ -227,6 +227,39 @@
 			<param name="page">/dhis-web-caseentry/records.vm</param>
 		</action>
 
+		 <action name="getSingleEventReport"
+			class="org.hisp.dhis.caseentry.action.report.GenerateSingleEventReportAction">
+			<result name="success" type="velocity">/content.vm</result>
+			<param name="page">/dhis-web-caseentry/historyAnonymousEvents.vm</param>
+			<param name="javascripts">javascript/anonymousRegistration.js</param>
+			<param name="stylesheets">
+                 ../dhis-web-caseentry/style/patient.css,
+                 ../dhis-web-commons/paging/paging.css</param>
+		</action>
+		
+		<action name="showSingleEventReportForm" 
+			class="org.hisp.dhis.caseentry.action.caseentry.LoadAnonymousProgramsAction">
+		   <result name="success" type="velocity">/main.vm</result>
+		   <param name="page">/dhis-web-caseentry/singleEventReportForm.vm</param>
+		   <param name="menu">/dhis-web-caseentry/reportsMenu.vm</param>
+		   <param name="javascripts">../dhis-web-commons/ouwt/ouwt.js,javascript/singleEventReport.js</param>
+		</action>
+		
+		<action name="generateSingleEventReport"
+			class="org.hisp.dhis.caseentry.action.report.GenerateSingleEventReportAction">
+			<result name="success" type="velocity">/content.vm</result>
+			<param name="page">/dhis-web-caseentry/historyAnonymousEvents.vm</param>
+			<param name="stylesheets">
+                 ../dhis-web-caseentry/style/patient.css,
+                 ../dhis-web-commons/paging/paging.css</param>
+		</action>
+		
+        <action name="viewAnonymousEvents"
+                class="org.hisp.dhis.caseentry.action.caseentry.ProgramStageCustomDataEntryAction">
+                <result name="success" type="velocity">/content.vm</result>
+                <param name="page">/dhis-web-caseentry/dataEntryForm.vm</param>
+        </action>
+        
 		<!-- Case Aggregation -->
 
 		<action name="caseAggregationForm"
@@ -455,22 +488,6 @@
 			<result name="error" type="velocity-json">
 				/dhis-web-commons/ajax/jsonResponseError.vm</result>
 		</action>
-		
-		 <action name="getEventsByProgram"
-			class="org.hisp.dhis.caseentry.action.caseentry.GetEventsByProgramAction">
-			<result name="success" type="velocity">/content.vm</result>
-			<param name="page">/dhis-web-caseentry/historyAnonymousEvents.vm</param>
-			<param name="javascripts">javascript/anonymousRegistration.js</param>
-			<param name="stylesheets">
-                 ../dhis-web-caseentry/style/patient.css,
-                 ../dhis-web-commons/paging/paging.css</param>
-		</action>
-        
-        <action name="viewAnonymousEvents"
-                class="org.hisp.dhis.caseentry.action.caseentry.ProgramStageCustomDataEntryAction">
-                <result name="success" type="velocity">/content.vm</result>
-                <param name="page">/dhis-web-caseentry/dataEntryForm.vm</param>
-        </action>
  
 		<!-- Patient-Program Enrollment -->
 

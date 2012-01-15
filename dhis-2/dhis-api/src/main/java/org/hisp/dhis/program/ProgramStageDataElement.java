@@ -58,7 +58,9 @@ public class ProgramStageDataElement
      * programStage
      */
     private boolean compulsory = false;
-    
+
+    private Boolean showOnReport = false;
+
     private Integer sortOrder;
 
     public ProgramStageDataElement( ProgramStage programStage, DataElement dataElement, boolean compulsory )
@@ -67,13 +69,24 @@ public class ProgramStageDataElement
         this.dataElement = dataElement;
         this.compulsory = compulsory;
     }
-    
+
     public ProgramStageDataElement( ProgramStage programStage, DataElement dataElement, boolean compulsory,
         Integer sortOrder )
     {
         this.programStage = programStage;
         this.dataElement = dataElement;
         this.compulsory = compulsory;
+        this.sortOrder = sortOrder;
+    }
+    
+    public ProgramStageDataElement( ProgramStage programStage, DataElement dataElement, boolean compulsory,
+        Boolean showOnReport, Integer sortOrder )
+    {
+        super();
+        this.programStage = programStage;
+        this.dataElement = dataElement;
+        this.compulsory = compulsory;
+        this.showOnReport = showOnReport;
         this.sortOrder = sortOrder;
     }
 
@@ -110,7 +123,7 @@ public class ProgramStageDataElement
     {
         this.compulsory = compulsory;
     }
-    
+
     public Integer getSortOrder()
     {
         return sortOrder;
@@ -119,6 +132,16 @@ public class ProgramStageDataElement
     public void setSortOrder( Integer sortOrder )
     {
         this.sortOrder = sortOrder;
+    }
+
+    public Boolean getShowOnReport()
+    {
+        return showOnReport;
+    }
+
+    public void setShowOnReport( Boolean showOnReport )
+    {
+        this.showOnReport = showOnReport;
     }
 
     // -------------------------------------------------------------------------

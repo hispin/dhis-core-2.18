@@ -1,26 +1,9 @@
-<h2>$i18n.getString('history_events')</h2>
+<div>
+	#parse( "dhis-web-caseentry/htmlGrid.vm" )
+</div>
 
-<table width='100%'>
-	#foreach( $programStageInstance in $programStageInstances)
-	<tr>
-		<td id='td$programStageInstance.id'></td>
-	</tr>
-	#end
-	
-	<tr>
-		<td>&nbsp;</td>
-	</tr>
-	<tr>
-		<td>
-			<div class="paging-container">
-				#parse( "/dhis-web-commons/paging/paging.vm" )
-			</div>
-		</td>
-	</tr>
-</table>
+<div class="paging-container">
+	#parse( "/dhis-web-commons/paging/paging.vm" )
+</div>
 
-<script>
-	#foreach( $programStageInstance in $programStageInstances)
-		viewRecords( '$programStageInstance.id', 'td$programStageInstance.id' );
-	#end
-</script>
+<div id='viewRecordsDiv'></div>

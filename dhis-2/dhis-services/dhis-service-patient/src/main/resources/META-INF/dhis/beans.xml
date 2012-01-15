@@ -208,6 +208,8 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
 		class="org.hisp.dhis.program.DefaultProgramStageInstanceService">
 		<property name="programStageInstanceStore"
 			ref="org.hisp.dhis.program.ProgramStageInstanceStore" />
+		<property name="patientDataValueService"
+			ref="org.hisp.dhis.patientdatavalue.PatientDataValueService" />
 	</bean>
 
 	<bean id="org.hisp.dhis.program.ProgramInstanceService" class="org.hisp.dhis.program.DefaultProgramInstanceService">

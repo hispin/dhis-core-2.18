@@ -205,4 +205,12 @@ public class HibernatePatientDataValueStore
         return getQuery( hql ).setParameterList( "dataElements", dataElements ).setEntity( "patient", patient )
             .setDate( "startDate", startDate ).setDate( "endDate", endDate ).list();
     }
+    
+    public PatientDataValue get( ProgramStageInstance programStageInstance, DataElement dataElement )
+    {
+        return (PatientDataValue) getCriteria( Restrictions.eq( "programStageInstance", programStageInstance ),
+            Restrictions.eq( "dataElement", dataElement ) )
+            .uniqueResult();
+    }
+
 }

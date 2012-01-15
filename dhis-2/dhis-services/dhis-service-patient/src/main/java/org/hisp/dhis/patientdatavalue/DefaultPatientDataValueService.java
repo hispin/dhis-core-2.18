@@ -198,4 +198,10 @@ public class DefaultPatientDataValueService
     {
         return patientDataValueStore.get( patient, dataElements, startDate, endDate );
     }
+
+    public PatientDataValue getPatientDataValue( ProgramStageInstance programStageInstance, DataElement dataElement )
+    {
+        return patientDataValueStore.get( programStageInstance, dataElement );
+    }
+
 }

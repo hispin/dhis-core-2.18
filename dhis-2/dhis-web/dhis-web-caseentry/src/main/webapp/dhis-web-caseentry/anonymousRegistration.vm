@@ -5,7 +5,6 @@
 	<input type="button" id="createEventBtn" value="$i18n.getString('create_new_event')" onClick="javascript: createNewEvent();" style="width:12em " disabled="disabled">
 	<input type="button" id="completeBtn" value="$i18n.getString('complete')" onClick="doComplete();" style="width:12em" disabled="disabled" >
 	<input type="button" id="deleteCurrentEventBtn" value="$i18n.getString('delete_current_event')" onClick="javascript: deleteCurrentEvent();" style="width:12em " disabled="disabled" >
-	<input type="button" id="showEventBtn" value="$i18n.getString('show_events')" onClick="javascript: showHistoryEvents();" style="width:12em " disabled="disabled" >
 </div>	
 			
 <div id="dataRecordingSelectDiv" class="inputCriteria" style="width:420px;height:80px;">

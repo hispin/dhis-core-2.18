@@ -119,6 +119,8 @@ public class TableAlteror
         updateStageInProgram();
 
         executeSql( "UPDATE programvalidation SET dateType = false WHERE dateType is null");
+        
+        executeSql( "UPDATE programstage_dataelements SET showOnReport = false WHERE showOnReport is null");
     }
 
     // -------------------------------------------------------------------------
