@@ -1,4 +1,4 @@
-<h3>$i18n.getString( "multiple_data_entry" ) #openHelp('multi_patient_entry_form')</h3>
+<h3>$i18n.getString( "multiple_name_based" ) #openHelp('multi_name_based_data_entry')</h3>
 
 <form id="dataEntryForm" name="dataEntryForm" method="post" action="multipledataEntrySelect.action">
 	<table> 

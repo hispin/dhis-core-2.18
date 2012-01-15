@@ -2614,9 +2614,9 @@ a text editor (e.g. Notepad++) and do a search/replace to make sure this element
         </listitem>
       </itemizedlist>
     </para>
-    <section id="single_patient_entry_form">
-		<title>Beneficiary data entry</title>
-        <para>Beneficiary data entry section provides a mechanism for inputting data in treatment stages for each beneficiary.</para>
+    <section id="name_based_data_entry">
+		<title>Name-based data entry</title>
+        <para>Name-based data entry section provides a mechanism for inputting data in treatment stages for each beneficiary.</para>
 		<para>To access the beneficiary data entry module, choose Services->Name-Based Data Records->Data Entry.</para>
 		<para>To enter data, you will first have to select a facility for which beneficiaries belong to in order to enter data. Simply clicking the concerned facility from the facilities hierarchy displayed on the left side of the data entry screen.</para>
 		<para>To open data entry form for a beneficiary, please do the steps as follows:</para>
@@ -2627,9 +2627,9 @@ a text editor (e.g. Notepad++) and do a search/replace to make sure this element
 		<para>5. Enter a report data for this stage. The form is shown below.</para>
 		<para>You will now enter data for the data entry form. The disabled data fields in data entry form are corresponding to these data elements belong to other stages.</para>
 	</section>
-	<section id="multi_patient_entry_form">
-		<title>Multiple beneficiary data entry</title>
-        <para>Multiple beneficiary data entry section provides a mechanism for inputting data for treatment stages of beneficiaries. The benefits of this advanced function is to optimize the time-transition consuming when entering data for a long list beneficiaries by not switching the main window/interface.</para>
+	<section id="multi_name_based_data_entry">
+		<title>Multiple name-based data entry</title>
+        <para>Multiple name-based data entry section provides a mechanism for inputting data for treatment stages of beneficiaries. The benefits of this advanced function is to optimize the time-transition consuming when entering data for a long list beneficiaries by not switching the main window/interface.</para>
 		<para>To access the multiple beneficiary data entry module, choose Services->Name-Based Data Records->Multiple Data Entry.</para>
 		<para>To enter data, you will first have to select the facility for which beneficiaries belong to in order to enter data. Simply clicking the concerned facility from the facilities hierarchy displayed on the left side of the data entry screen.</para>
 		<para>To open data entry form for a beneficiary with Multiple Data Entry function, please do the steps as follows:</para>
@@ -2638,9 +2638,9 @@ a text editor (e.g. Notepad++) and do a search/replace to make sure this element
 		<para>3. Enter a report data in the form. The data entry form is shown.</para>
 		<para>You will now enter data for the data entry form. The disabled data fields in data entry form are corresponding to these data elements belong to other stages.</para>
 	</section>
-	<section id="patient_summary_report">
-		<title>Report</title>
-        <para>Report section provides a mechanism for getting an overview of the services provided for a program.</para>
+	<section id="program_summary_report">
+		<title>Program summary report</title>
+        <para>Program summary report section provides a mechanism for getting an overview of the services provided for a program.</para>
 		<para>To access the report Management module, choose Services->Name-Based Data Records->Summary Report.</para>
 		<para>The first, you have to select the facility where you want to report. Simply clicking on the concerned organisation unit from the facilities hierarchy displayed on the left side of the data entry screen.</para>
 		<para>The second, select a program to report. Then enter a start date and an end date for which cases with report data should be included. The date picker widget may be used to select dates.</para>

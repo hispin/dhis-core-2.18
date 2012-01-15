@@ -2,12 +2,12 @@
 <h3>$i18n.getString( "dhis-web-caseentry" )</h3>
 
 <ul id="introList">
-	#introListImgItem( "patient.action" "patient_registration" "patient" )
-	#introListImgItem( "anonymousRegistration.action" "event_registration" "patient" )
-    #introListImgItem( "dataEntrySelect.action" "data_entry" "dataentry" )
-	#introListImgItem( "multipledataEntrySelect.action" "multiple_dataentry" "dataentry" )
-    #introListImgItem( "reportSelect.action" "summary_report" "summaryreport" )
-    #introListImgItem( "showSingleEventReportForm.action" "single_event_report" "summaryreport" )
+	#introListImgItem( "patient.action" "patient" "patient" )
+    #introListImgItem( "dataEntrySelect.action" "name_based" "dataentry" )
+	#introListImgItem( "multipledataEntrySelect.action" "multiple_name_based" "dataentry" )
+	#introListImgItem( "anonymousRegistration.action" "anonymous_events" "dataentry" )
+    #introListImgItem( "reportSelect.action" "program_summary" "summaryreport" )
+    #introListImgItem( "showSingleEventReportForm.action" "anonymous_event_reports" "summaryreport" )
 	#introListImgItem( "visitplan.action" "visit_plan" "visitplan" )
     #introListImgItem( "caseAggregationForm.action" "case_aggregation" "caseaggregation" )
 </ul>
