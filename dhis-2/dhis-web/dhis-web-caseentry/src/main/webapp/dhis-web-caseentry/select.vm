@@ -1,4 +1,4 @@
-<h3>$i18n.getString( "name_based_data_entry" ) #openHelp('single_patient_entry_form')</h3>
+<h3>$i18n.getString( "name_based_data_entry" ) #openHelp('name_based_data_entry')</h3>
 
 <div id='searchPatientDiv'>
 	<table>    

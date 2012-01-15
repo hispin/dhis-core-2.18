@@ -179,7 +179,7 @@
 			<interceptor-ref name="organisationUnitTreeStack" />
 			<result name="success" type="velocity">/main.vm</result>
 			<param name="page">/dhis-web-caseentry/visitPlan.vm</param>
-			<param name="menu">/dhis-web-caseentry/reportsMenu.vm</param>
+			<param name="menu">/dhis-web-caseentry/activityPlanningMenu.vm</param>
 			<param name="javascripts">../dhis-web-commons/ouwt/ouwt.js,javascript/visitPlan.js</param>
 		</action>
 
@@ -458,7 +458,7 @@
 			<interceptor-ref name="organisationUnitTreeStack" />
 			<result name="success" type="velocity">/main.vm</result>
 			<param name="page">/dhis-web-caseentry/anonymousRegistration.vm</param>
-			<param name="menu">/dhis-web-caseentry/registrationMenu.vm</param>
+			<param name="menu">/dhis-web-caseentry/dataEntryMenu.vm</param>
 			<param name="javascripts">../dhis-web-commons/ouwt/ouwt.js
 				,javascript/commons.js
 				,javascript/anonymousRegistration.js

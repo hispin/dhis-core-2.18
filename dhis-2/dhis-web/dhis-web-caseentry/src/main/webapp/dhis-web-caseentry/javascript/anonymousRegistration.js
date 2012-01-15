@@ -8,7 +8,6 @@ function organisationUnitSelected( orgUnits )
 	
 	disable('createEventBtn');
 	disable('deleteCurrentEventBtn');
-	disable('showEventBtn');
 	
 	$.postJSON( 'loadAnonymousPrograms.action',{}
 		, function( json ) 
@@ -56,7 +55,6 @@ function loadEventForm()
 	var programId = getFieldValue('programId');
 	if( programId == '' )
 	{
-		disable('showEventBtn');
 		$('#executionDate').unbind('change');
 		return;
 	}
@@ -69,7 +67,6 @@ function loadEventForm()
 		}, 
 		function( json ) 
 		{    
-			enable('showEventBtn');
 			setFieldValue( 'programStageId', json.programStages[0].id );
 			setFieldValue( 'selectedProgramId', programId );
 			$('#executionDate').bind('change');

@@ -6,7 +6,7 @@
 	});		
 </script>
 
-<h3>$i18n.getString( "single_event_report" )</h3>
+<h3>$i18n.getString( "anonymous_event_reports" )</h3>
 <form id="singleEventreportForm" name="singleEventreportForm" method="post" action="generateSingleEventReport.action">
 
 <table>	

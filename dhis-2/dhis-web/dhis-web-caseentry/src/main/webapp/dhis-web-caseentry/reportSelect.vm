@@ -6,7 +6,7 @@
 	});		
 </script>
 
-<h3>$i18n.getString( "report_management" ) #openHelp('patient_summary_report')</h3>
+<h3>$i18n.getString( "program_summary_report" ) #openHelp('program_summary_report')</h3>
 <form id="reportForm" name="reportForm" method="post" action="reportSelect.action">
 <table>	
     <tr>

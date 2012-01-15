@@ -1,6 +1,6 @@
 <div id='selectDiv'>
 	
-	<h3>$i18n.getString( "patient_registration_management" ) #openHelp( "patient" )</h3>
+	<h3>$i18n.getString( "patient_management" ) #openHelp( "patient" )</h3>
 	
 	<input type="hidden" id="isShowPatientList" name="isShowPatientList" />
 	<table>
