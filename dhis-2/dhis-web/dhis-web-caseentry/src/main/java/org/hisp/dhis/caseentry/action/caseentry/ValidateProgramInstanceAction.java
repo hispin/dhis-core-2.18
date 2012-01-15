@@ -27,6 +27,16 @@
 
 package org.hisp.dhis.caseentry.action.caseentry;
 
+import static org.hisp.dhis.program.ProgramValidation.AFTER_OR_EQUALS_TO_CURRENT_DATE;
+import static org.hisp.dhis.program.ProgramValidation.BEFORE_DUE_DATE_PLUS_OR_MINUS_MAX_DAYS;
+import static org.hisp.dhis.program.ProgramValidation.BEFORE_OR_EQUALS_TO_CURRENT_DATE;
+import static org.hisp.dhis.program.ProgramValidation.BEFORE_CURRENT_DATE;
+import static org.hisp.dhis.program.ProgramValidation.AFTER_CURRENT_DATE;
+import static org.hisp.dhis.program.ProgramValidation.BEFORE_DUE_DATE;
+import static org.hisp.dhis.program.ProgramValidation.BEFORE_OR_EQUALS_TO_DUE_DATE;
+import static org.hisp.dhis.program.ProgramValidation.AFTER_DUE_DATE;
+import static org.hisp.dhis.program.ProgramValidation.AFTER_OR_EQUALS_TO_DUE_DATE;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -258,7 +268,7 @@ public class ValidateProgramInstanceAction
                 }
             }
         }
-        
+
         if ( !programValidations.isEmpty() )
         {
             leftsideFormulaMap = new HashMap<Integer, String>( programValidations.size() );
@@ -271,42 +281,61 @@ public class ValidateProgramInstanceAction
 
                 if ( validation.getDateType() )
                 {
-                    int rightSide = Integer.parseInt( validation.getRightSide() );
-
-                    switch ( rightSide )
+                    String rightSide = validation.getRightSide();
+                    int index = rightSide.indexOf( 'D' );
+                    if ( index < 0 )
                     {
-                    case 1:
-                        rightsideFormulaMap.put( validation.getId(), i18n.getString( "before_current_date" ) );
-                        break;
-                    case 2:
-                        rightsideFormulaMap.put( validation.getId(), i18n
-                            .getString( "before_or_equals_to_current_date" ) );
-                        break;
-                    case 3:
-                        rightsideFormulaMap.put( validation.getId(), i18n.getString( "after_current_date" ) );
-                        break;
-                    case 4:
-                        rightsideFormulaMap
-                            .put( validation.getId(), i18n.getString( "after_or_equals_to_current_date" ) );
-                        break;
-                    case -1:
-                        rightsideFormulaMap.put( validation.getId(), i18n.getString( "before_due_date" ) );
-                        break;
-                    case -2:
-                        rightsideFormulaMap.put( validation.getId(), i18n.getString( "before_or_equals_to_due_date" ) );
-                        break;
-                    case -3:
-                        rightsideFormulaMap.put( validation.getId(), i18n.getString( "after_due_date" ) );
-                        break;
-                    case -4:
-                        rightsideFormulaMap.put( validation.getId(), i18n.getString( "after_or_equals_to_due_date" ) );
-                        break;
-                    case -5:
-                        rightsideFormulaMap.put( validation.getId(), i18n.getString( "due_date_with_max_number_of_days_of_data_entry" ) );
-                        break;
-                    default:
-                        rightsideFormulaMap.put( validation.getId(), "" );
-                        break;
+                        int rightValidation = Integer.parseInt( rightSide );
+
+                        switch ( rightValidation )
+                        {
+                        case BEFORE_CURRENT_DATE:
+                            rightsideFormulaMap.put( validation.getId(), i18n.getString( "before_current_date" ) );
+                            break;
+                        case BEFORE_OR_EQUALS_TO_CURRENT_DATE:
+                            rightsideFormulaMap.put( validation.getId(), i18n
+                                .getString( "before_or_equals_to_current_date" ) );
+                            break;
+                        case AFTER_CURRENT_DATE:
+                            rightsideFormulaMap.put( validation.getId(), i18n.getString( "after_current_date" ) );
+                            break;
+                        case AFTER_OR_EQUALS_TO_CURRENT_DATE:
+                            rightsideFormulaMap.put( validation.getId(), i18n
+                                .getString( "after_or_equals_to_current_date" ) );
+                            break;
+                        case BEFORE_DUE_DATE:
+                            rightsideFormulaMap.put( validation.getId(), i18n.getString( "before_due_date" ) );
+                            break;
+                        case BEFORE_OR_EQUALS_TO_DUE_DATE:
+                            rightsideFormulaMap.put( validation.getId(), i18n
+                                .getString( "before_or_equals_to_due_date" ) );
+                            break;
+                        case AFTER_DUE_DATE:
+                            rightsideFormulaMap.put( validation.getId(), i18n.getString( "after_due_date" ) );
+                            break;
+                        case AFTER_OR_EQUALS_TO_DUE_DATE:
+                            rightsideFormulaMap
+                                .put( validation.getId(), i18n.getString( "after_or_equals_to_due_date" ) );
+                            break;
+                        default:
+                            rightsideFormulaMap.put( validation.getId(), "" );
+                            break;
+
+                        }
+                    }
+                    else
+                    {
+
+                        int rightValidation = Integer.parseInt( rightSide.substring( 0, index ) );
+
+                        int daysValue = Integer.parseInt( rightSide.substring( index + 1, rightSide.length() ) );
+
+                        if ( rightValidation == BEFORE_DUE_DATE_PLUS_OR_MINUS_MAX_DAYS )
+                        {
+                            rightsideFormulaMap.put( validation.getId(), i18n
+                                .getString( "in_range_due_date_plus_or_minus" )
+                                + " " + daysValue + i18n.getString( "days" ) );
+                        }
                     }
                 }
                 else if ( validation.getRightSide().equals( "1==1" ) )

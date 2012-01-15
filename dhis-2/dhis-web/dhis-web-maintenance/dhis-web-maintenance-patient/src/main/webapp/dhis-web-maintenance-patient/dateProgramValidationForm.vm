@@ -2,7 +2,7 @@
 #if( $dataElementList.size() > 0 )
 	<col width="30"/>
     <col width="400"/>
-    <col/>
+    <col width="280"/>
 	
 	<tr>
 		<th>$i18n.getString('#')</th>
@@ -20,18 +20,28 @@
 			<td>$index</td>
 			<td>$dataElement.name</td>
 			<td> 
-				<select id="$dataElement.id" validationid="$!validationMap.get($dataElement.id).id" onchange="addDateValidation('$id','$dataElement.id' ,'$dataElement.name' )" >
-					<option value='' selected>[$i18n.getString('please_select')] </option>
-					<option value='1' #if( $!validationMap.get($dataElement.id).rightSide=='1' ) selected #end >$i18n.getString('before_current_date') </option>
-					<option value='3' #if( $!validationMap.get($dataElement.id).rightSide=='3' ) selected #end >$i18n.getString('after_current_date') </option>
-					<option value='2' #if( $!validationMap.get($dataElement.id).rightSide=='2' ) selected #end >$i18n.getString('before_or_equals_to_current_date') </option>
-					<option value='4' #if( $!validationMap.get($dataElement.id).rightSide=='4' ) selected #end >$i18n.getString('after_or_equals_to_current_date') </option>
-					<option value='-1' #if( $!validationMap.get($dataElement.id).rightSide=='-1' ) selected #end >$i18n.getString('before_due_date') </option>
-					<option value='-3' #if( $!validationMap.get($dataElement.id).rightSide=='-3' ) selected #end >$i18n.getString('after_due_date') </option>
-					<option value='-2' #if( $!validationMap.get($dataElement.id).rightSide=='-2' ) selected #end >$i18n.getString('before_or_equals_to_due_date') </option>
-					<option value='-4' #if( $!validationMap.get($dataElement.id).rightSide=='-4' ) selected #end >$i18n.getString('after_or_equals_to_due_date') </option>
-					<option value='-5' #if( $!validationMap.get($dataElement.id).rightSide=='-5' ) selected #end >$i18n.getString('due_date_with_max_number_of_days_of_data_entry') </option>
+				<select id="$dataElement.id" validationid="$!validationMap.get($dataElement.id).id" onchange="dateValidation('$id','$dataElement.id' ,'$dataElement.name' )" >
+					<option value=''>[$i18n.getString('please_select')] </option>
+					<option value='1'>$i18n.getString('before_current_date') </option>
+					<option value='3'>$i18n.getString('after_current_date') </option>
+					<option value='2'>$i18n.getString('before_or_equals_to_current_date') </option>
+					<option value='4'>$i18n.getString('after_or_equals_to_current_date') </option>
+					<option value='-1'>$i18n.getString('before_due_date') </option>
+					<option value='-3'>$i18n.getString('after_due_date') </option>
+					<option value='-2'>$i18n.getString('before_or_equals_to_due_date') </option>
+					<option value='-4'>$i18n.getString('after_or_equals_to_due_date') </option>
+					<option value='-5'>$i18n.getString('in_range_due_date')</option>
 				</select>
+				<span id="div$dataElement.id" style='display:none;'>
+					+/- <input type='text' id="days$dataElement.id" style="width:50px;" onchange="saveDateValidation('$id','$dataElement.id' ,'$dataElement.name' )">
+				<span>
+				
+				<script>
+					var dataElementId = '$dataElement.id';
+					var rightSide = '$!validationMap.get($dataElement.id).rightSide';
+					parseRightSide( dataElementId, rightSide );
+				</script>
+				
 			</td>
 		</tr>
 		#set ( $mark = !$mark)

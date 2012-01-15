@@ -1,5 +1,6 @@
 
 var COLOR_GREEN = '#b9ffb9';
+var COLOR_WHITE = '#ffffff'
 
 jQuery(document).ready(	function(){
 	validation( 'programValidationForm', function( form ){			
@@ -185,12 +186,36 @@ function getDateDataElements()
 		});
 }
 
-function addDateValidation( id, fieldId, dataElementName )
+function dateValidation( id, fieldId, dataElementName ) 
 {
 	var expression = $("#" + fieldId + ' option:selected').val();
 	var validationid = $("#" + fieldId ).attr('validationid');
 	
-	if( validationid == '')
+	if( expression != -5)
+	{
+		hideById( 'div' + fieldId );
+		setFieldValue('days' + fieldId, '' );
+		saveDateValidation( id, fieldId, dataElementName );
+	}
+	else
+	{
+		byId( fieldId ).style.backgroundColor = COLOR_WHITE;
+		byId( 'days' + fieldId ).style.backgroundColor = COLOR_WHITE;
+		showById( 'div' + fieldId );
+	}
+	
+} 
+
+function saveDateValidation( id, fieldId, dataElementName )
+{
+	var expression = $("#" + fieldId + ' option:selected').val();
+	if( expression == -5 )
+	{
+		expression += "D" + getFieldValue( 'days' + fieldId );
+	}
+	var validationid = $("#" + fieldId ).attr('validationid');
+	
+	if( validationid == '' )
 	{
 		var description =  $('#programStage option:selected').text() + ' - ' + dataElementName;
 		jQuery.post( "addDateProgramValidation.action", {
@@ -202,6 +227,7 @@ function addDateValidation( id, fieldId, dataElementName )
 		}, function( json )
 		{
 			byId( fieldId ).style.backgroundColor = COLOR_GREEN;
+			byId( 'days' + fieldId ).style.backgroundColor = COLOR_GREEN;
 			$("#" + fieldId ).attr('validationid', json.message );
 		});
 	}
@@ -215,6 +241,7 @@ function addDateValidation( id, fieldId, dataElementName )
 			}, function( json )
 			{
 				byId( fieldId ).style.backgroundColor = COLOR_GREEN;
+				byId( 'days' + fieldId ).style.backgroundColor = COLOR_GREEN;
 				$("#" + fieldId ).attr('validationid', '' );
 			});
 		}
@@ -230,7 +257,25 @@ function addDateValidation( id, fieldId, dataElementName )
 			}, function( json )
 			{
 				byId( fieldId ).style.backgroundColor = COLOR_GREEN;
+				byId( 'days' + fieldId ).style.backgroundColor = COLOR_GREEN;
 			});
 		}
+	}
+}
+
+function parseRightSide( dataElementId, rightSide )
+{
+	var index = rightSide.indexOf('D');
+	if( index < 0 )
+	{
+		$('#' + dataElementId ).val( rightSide );
+	}
+	else
+	{
+		var selectorValue = rightSide.substr( 0,index );
+		var daysValue = rightSide.substr( index + 1,rightSide.length);
+		$('#' + dataElementId).val(selectorValue);
+		$('#days' + dataElementId ).val(daysValue);
+		showById('div' + dataElementId );
 	}
 }
