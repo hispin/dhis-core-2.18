@@ -32,6 +32,7 @@
 #end
 *#
 
+#if( $complete != true)
 <p>
     <ul>
     #if( $dataSet.sections.size() > 0 )
@@ -45,6 +46,9 @@
     #end
     </ul>
 </p>
+#else
+<br />
+#end
 
 <form method="GET" action="dataEntry.action">
 
