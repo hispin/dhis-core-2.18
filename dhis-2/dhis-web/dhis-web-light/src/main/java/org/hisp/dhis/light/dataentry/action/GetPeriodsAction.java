@@ -26,14 +26,10 @@
  */
 package org.hisp.dhis.light.dataentry.action;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
+import com.opensymphony.xwork2.Action;
 import org.apache.commons.lang.Validate;
+import org.hisp.dhis.datalock.DataSetLock;
+import org.hisp.dhis.datalock.DataSetLockService;
 import org.hisp.dhis.dataset.CompleteDataSetRegistration;
 import org.hisp.dhis.dataset.CompleteDataSetRegistrationService;
 import org.hisp.dhis.dataset.DataSet;
@@ -46,7 +42,7 @@ import org.hisp.dhis.period.Period;
 import org.hisp.dhis.system.filter.PastAndCurrentPeriodFilter;
 import org.hisp.dhis.system.util.FilterUtils;
 
-import com.opensymphony.xwork2.Action;
+import java.util.*;
 
 /**
  * @author mortenoh
@@ -72,6 +68,13 @@ public class GetPeriodsAction
     public void setDataSetService( DataSetService dataSetService )
     {
         this.dataSetService = dataSetService;
+    }
+
+    private DataSetLockService dataSetLockService;
+
+    public void setDataSetLockService( DataSetLockService dataSetLockService )
+    {
+        this.dataSetLockService = dataSetLockService;
     }
 
     private CompleteDataSetRegistrationService registrationService;
@@ -142,6 +145,13 @@ public class GetPeriodsAction
         return periods;
     }
 
+    private List<Period> lockedPeriods = new ArrayList<Period>();
+
+    public List<Period> getLockedPeriods()
+    {
+        return lockedPeriods;
+    }
+
     private Boolean complete = false;
 
     public void setComplete( Boolean complete )
@@ -190,6 +200,8 @@ public class GetPeriodsAction
             periods = periods.subList( 0, MAX_PERIODS );
         }
 
+        markLockedDataSets( organisationUnit, dataSet, periods );
+
         for ( Period period : periods )
         {
             period.setName( format.formatPeriod( period ) );
@@ -201,5 +213,31 @@ public class GetPeriodsAction
         }
 
         return SUCCESS;
+    }
+
+    private void markLockedDataSets( OrganisationUnit organisationUnit, DataSet dataSet, List<Period> periods )
+    {
+        for ( Period period : periods )
+        {
+            boolean locked = dataSetLocked( organisationUnit, dataSet, period );
+
+            if ( locked )
+            {
+                lockedPeriods.add( period );
+            }
+        }
+    }
+
+    private boolean dataSetLocked( OrganisationUnit organisationUnit, DataSet dataSet, Period period )
+    {
+        // HACK workaround since get dataSetLock by unit/dataSet/period fails
+        DataSetLock dataSetLock = dataSetLockService.getDataSetLockByDataSetAndPeriod( dataSet, period );
+
+        if ( dataSetLock != null && dataSetLock.getSources().contains( organisationUnit ) )
+        {
+            return true;
+        }
+
+        return false;
     }
 }

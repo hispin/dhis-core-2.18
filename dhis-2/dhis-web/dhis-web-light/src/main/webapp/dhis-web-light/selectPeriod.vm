@@ -1,25 +1,18 @@
 
 <h2>$i18n.getString( "available_periods" )</h2>
 
-#if( $validated )
-<div class="header-box">
-	<h3 style="text-align: left;">Successfully Saved</h3>
-	<p style="text-align: left;">
-		#if( $complete )
-		DataSet $dataSet.name was saved and completed <br />
-		#else
-		DataSet $dataSet.name was saved<br />
-		#end
-	</p>
-</div>
-#end
-
 <p>
 <ul>
 #foreach( $period in $periods )
 <li>
-	<a href="dataEntry.action?organisationUnitId=$organisationUnitId&dataSetId=$dataSetId&periodId=$period.getExternalId()">$!encoder.htmlEncode( ${period.name} )</a>
-	#if( $periodCompletedMap.get($period) )<img src="../dhis-web-light/images/check.jpg" />#end
+    #if( ! $lockedPeriods.contains( $period ) && ! $periodCompletedMap.get($period) )
+        <a href="dataEntry.action?organisationUnitId=$organisationUnitId&dataSetId=$dataSetId&periodId=$period.getExternalId()">$!encoder.htmlEncode( ${period.name} )</a>
+    #else
+        $!encoder.htmlEncode( ${period.name} )
+    #end
+
+	#if( $periodCompletedMap.get($period) )<img src="../dhis-web-light/images/checkmark.jpg" />#end
+    #if( $lockedPeriods.contains( $period ) )<img src="../dhis-web-light/images/lock.jpg" />#end
 </li>
 #end
 </ul>

@@ -37,6 +37,8 @@ import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
 import org.hisp.dhis.dataelement.DataElementCategoryService;
 import org.hisp.dhis.dataelement.DataElementService;
+import org.hisp.dhis.datalock.DataSetLock;
+import org.hisp.dhis.datalock.DataSetLockService;
 import org.hisp.dhis.dataset.*;
 import org.hisp.dhis.datavalue.DataValue;
 import org.hisp.dhis.datavalue.DataValueService;
@@ -103,6 +105,13 @@ public class SaveSectionFormAction
     public void setDataSetService( DataSetService dataSetService )
     {
         this.dataSetService = dataSetService;
+    }
+
+    private DataSetLockService dataSetLockService;
+
+    public void setDataSetLockService( DataSetLockService dataSetLockService )
+    {
+        this.dataSetLockService = dataSetLockService;
     }
 
     private CompleteDataSetRegistrationService registrationService;
@@ -274,6 +283,9 @@ public class SaveSectionFormAction
         boolean needsValidation = false;
 
         dataSet = dataSetService.getDataSet( dataSetId );
+
+        // this should never happen, but validate that that dataset is not locked
+        Validate.isTrue( !dataSetLocked( organisationUnit, dataSet, period ) );
 
         String storedBy = currentUserService.getCurrentUsername();
 
@@ -462,5 +474,18 @@ public class SaveSectionFormAction
         validated = true;
 
         return SUCCESS;
+    }
+
+    private boolean dataSetLocked( OrganisationUnit organisationUnit, DataSet dataSet, Period period )
+    {
+        // HACK workaround since get dataSetLock by unit/dataSet/period fails
+        DataSetLock dataSetLock = dataSetLockService.getDataSetLockByDataSetAndPeriod( dataSet, period );
+
+        if ( dataSetLock != null && dataSetLock.getSources().contains( organisationUnit ) )
+        {
+            return true;
+        }
+
+        return false;
     }
 }
