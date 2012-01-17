@@ -57,6 +57,7 @@ public class EmailMessageSender
     
     private static final int SMTP_PORT = 587;
     private static final String FROM_ADDRESS = "noreply@dhis2.org";
+    private static final String FROM_NAME = "DHIS2 Message [No reply]";
     private static final String SUBJECT_PREFIX = "[DHIS2] ";
     private static final String LB = System.getProperty( "line.separator" );
 
@@ -143,7 +144,7 @@ public class EmailMessageSender
         email.setSmtpPort( SMTP_PORT );
         email.setAuthenticator( new DefaultAuthenticator( username, password ) );
         email.setTLS( true );
-        email.setFrom( FROM_ADDRESS );
+        email.setFrom( FROM_ADDRESS, FROM_NAME );
         
         return email;
     }
