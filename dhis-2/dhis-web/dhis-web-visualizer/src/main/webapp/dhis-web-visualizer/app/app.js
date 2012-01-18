@@ -42,23 +42,23 @@ DV.conf = {
         dimension: {
             data: {
                 value: 'data',
-                rawvalue: 'Data'  /*TODO i18n?*/
+                rawvalue: G.i18n.data
             },
             indicator: {
                 value: 'indicator',
-                rawvalue: 'Indicator'     /*TODO i18n?*/
+                rawvalue: G.i18n.indicator
             },
             dataelement: {
                 value: 'dataelement',
-                rawvalue: 'Data element'     /*TODO i18n?*/
+                rawvalue: G.i18n.data_element
             },
             period: {
                 value: 'period',
-                rawvalue: 'Period'         /*TODO i18n?*/
+                rawvalue: G.i18n.period
             },
             organisationunit: {
                 value: 'organisationunit',
-                rawvalue: 'Organisation unit'   /*TODO i18n?*/
+                rawvalue: G.i18n.organisation_unit
             }
         },        
         chart: {
@@ -768,7 +768,7 @@ Ext.onReady( function() {
                 },
                 updateName: function(name) {
                     if (DV.store.favorite.findExact('name', name) != -1) {
-                        alert('Name is already in use');
+                        alert(G.i18n.name_already_in_use);
                         return;
                     }
                     DV.util.mask.setMask(DV.cmp.favorite.window, G.i18n.renaming + '...');
@@ -1053,7 +1053,7 @@ Ext.onReady( function() {
                     success: function(r) {
                         if (!r.responseText) {
                             DV.mask.hide();
-                            alert('Invalid uid');
+                            alert(G.i18n.invalid_uid);
                             return;
                         }
                         var f = Ext.JSON.decode(r.responseText),
