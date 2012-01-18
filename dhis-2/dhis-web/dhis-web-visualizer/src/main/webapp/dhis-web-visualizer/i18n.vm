@@ -55,6 +55,7 @@ update:'$encoder.jsEscape($i18n.getString( 'update' ) , "'")',
 data_table:'$encoder.jsEscape($i18n.getString( 'data_table' ) , "'")',
 favorites:'$encoder.jsEscape($i18n.getString( 'favorites' ) , "'")',
 manage_favorites:'$encoder.jsEscape($i18n.getString( 'manage_favorites' ) , "'")',
+save_favorite:'$encoder.jsEscape($i18n.getString( 'save_favorite' ) , "'")',
 sort_by:'$encoder.jsEscape($i18n.getString( 'sort_by' ) , "'")',
 system:'$encoder.jsEscape($i18n.getString( 'system' ) , "'")',
 name:'$encoder.jsEscape($i18n.getString( 'name' ) , "'")',
@@ -83,6 +84,7 @@ indicator:'$encoder.jsEscape($i18n.getString( 'indicator' ) , "'")',
 data_element:'$encoder.jsEscape($i18n.getString( 'data_element' ) , "'")',
 period:'$encoder.jsEscape($i18n.getString( 'period' ) , "'")',
 organisation_unit:'$encoder.jsEscape($i18n.getString( 'organisation_unit' ) , "'")',
-invalid_uid:'$encoder.jsEscape($i18n.getString( 'invalid_uid' ) , "'")'
+invalid_uid:'$encoder.jsEscape($i18n.getString( 'invalid_uid' ) , "'")',
+system_favorite_overwrite_not_allowed:'$encoder.jsEscape($i18n.getString( 'system_favorite_overwrite_not_allowed' ) , "'")'
 
 };
