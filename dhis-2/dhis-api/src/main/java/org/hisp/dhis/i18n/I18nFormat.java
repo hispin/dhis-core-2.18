@@ -48,6 +48,7 @@ public class I18nFormat
     private static final DecimalFormat FORMAT_VALUE = new DecimalFormat( "#.#;#.#" ); // Fixed for now
     private static final String EMPTY = "";
     private static final String NAN = "NaN";
+    private static final String INVALID_DATE="Invalid date format";
     
     private ResourceBundle resourceBundle;
 
@@ -167,6 +168,12 @@ public class I18nFormat
         return commonFormatting( date, resourceBundle.getString( "format.datetime" ) );
     }
 
+    /**
+     * Formats a period. Returns null if value is null. Returns INVALID_DATE if formatting string is invalid.
+     *
+     *
+     * @param period the value to format.
+     */
     public String formatPeriod( Period period )
     {
         if ( period == null )
@@ -187,7 +194,14 @@ public class I18nFormat
         String startDate = commonFormatting( period.getStartDate(), resourceBundle.getString( keyStartDate ) );
         String endDate = commonFormatting( period.getEndDate(), resourceBundle.getString( keyEndDate ) );
 
-        return Character.toUpperCase( startDate.charAt( 0 ) ) + startDate.substring( 1 ) + endDate;
+        try
+        {
+            return Character.toUpperCase( startDate.charAt( 0 ) ) + startDate.substring( 1 ) + endDate;
+        }
+        catch ( IllegalArgumentException ex )
+        {
+            return INVALID_DATE;
+        }
     }
     
     /**
