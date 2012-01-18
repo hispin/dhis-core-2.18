@@ -27,13 +27,10 @@ package org.hisp.dhis.datadictionary;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import static org.hisp.dhis.i18n.I18nUtils.i18n;
-
 import java.util.Collection;
 
 import org.hisp.dhis.common.GenericIdentifiableObjectStore;
 import org.hisp.dhis.dataelement.DataElement;
-import org.hisp.dhis.i18n.I18nService;
 import org.hisp.dhis.system.util.Filter;
 import org.hisp.dhis.system.util.FilterUtils;
 import org.springframework.transaction.annotation.Transactional;
@@ -56,14 +53,7 @@ public class DefaultDataDictionaryService
     {
         this.dataDictionaryStore = dataDictionaryStore;
     }
-
-    private I18nService i18nService;
-
-    public void setI18nService( I18nService service )
-    {
-        i18nService = service;
-    }
-
+    
     // -------------------------------------------------------------------------
     // DataDictionary
     // -------------------------------------------------------------------------
@@ -75,7 +65,7 @@ public class DefaultDataDictionaryService
 
     public DataDictionary getDataDictionary( int id )
     {
-        return i18n( i18nService, dataDictionaryStore.get( id ) );
+        return dataDictionaryStore.get( id );
     }
 
     public Collection<DataDictionary> getDataDictionaries( final Collection<Integer> identifiers )
@@ -98,17 +88,17 @@ public class DefaultDataDictionaryService
 
     public DataDictionary getDataDictionaryByName( String name )
     {
-        return i18n( i18nService, dataDictionaryStore.getByName( name ) );
+        return dataDictionaryStore.getByName( name );
     }
 
     public Collection<DataDictionary> getAllDataDictionaries()
     {
-        return i18n( i18nService, dataDictionaryStore.getAll() );
+        return dataDictionaryStore.getAll();
     }
 
     public Collection<DataElement> getDataElementsByDictionaryId( int dictionaryId )
     {
-        return i18n( i18nService, dataDictionaryStore.get( dictionaryId ).getDataElements() );
+        return dataDictionaryStore.get( dictionaryId ).getDataElements();
     }
 
     public int getDataDictionaryCount()
@@ -123,11 +113,11 @@ public class DefaultDataDictionaryService
 
     public Collection<DataDictionary> getDataDictionarysBetween( int first, int max )
     {
-        return i18n( i18nService, dataDictionaryStore.getBetween( first, max ) );
+        return dataDictionaryStore.getBetween( first, max );
     }
 
     public Collection<DataDictionary> getDataDictionarysBetweenByName( String name, int first, int max )
     {
-        return i18n( i18nService, dataDictionaryStore.getBetweenByName( name, first, max ) );
+        return dataDictionaryStore.getBetweenByName( name, first, max );
     }
 }
