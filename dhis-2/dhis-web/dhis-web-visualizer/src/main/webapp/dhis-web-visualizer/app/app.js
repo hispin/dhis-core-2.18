@@ -1,4 +1,3 @@
-DV = {};
 DV.conf = {
     init: {
         data: [
@@ -42,23 +41,23 @@ DV.conf = {
         dimension: {
             data: {
                 value: 'data',
-                rawvalue: G.i18n.data
+                rawvalue: DV.i18n.data
             },
             indicator: {
                 value: 'indicator',
-                rawvalue: G.i18n.indicator
+                rawvalue: DV.i18n.indicator
             },
             dataelement: {
                 value: 'dataelement',
-                rawvalue: G.i18n.data_element
+                rawvalue: DV.i18n.data_element
             },
             period: {
                 value: 'period',
-                rawvalue: G.i18n.period
+                rawvalue: DV.i18n.period
             },
             organisationunit: {
                 value: 'organisationunit',
-                rawvalue: G.i18n.organisation_unit
+                rawvalue: DV.i18n.organisation_unit
             }
         },        
         chart: {
@@ -337,12 +336,12 @@ Ext.onReady( function() {
                             a.push(r.data.id);
                         });
                         if (exception && !a.length) {
-                            alert(G.i18n.no_data_elements_selected);
+                            alert(DV.i18n.no_data_elements_selected);
                         }
                         return a;
                     }
                     else {
-                        alert(G.i18n.data_element_store_does_not_exist);
+                        alert(DV.i18n.data_element_store_does_not_exist);
                     }
                 }
             },
@@ -368,7 +367,7 @@ Ext.onReady( function() {
                         });
                     }
                     if (exception && !a.length) {
-                        alert(G.i18n.alert_no_indicators_selected);
+                        alert(DV.i18n.alert_no_indicators_selected);
                     }
                     return a;
                 }                    
@@ -396,7 +395,7 @@ Ext.onReady( function() {
                         }
                     });
                     if (exception && !a.length) {
-                        alert(G.i18n.no_periods_selected);
+                        alert(DV.i18n.no_periods_selected);
                     }
                     return a;
                 },
@@ -435,7 +434,7 @@ Ext.onReady( function() {
                         }
                     });
                     if (exception && !a.length) {
-                        alert(G.i18n.no_periods_selected);
+                        alert(DV.i18n.no_periods_selected);
                     }
                     return a;
                 },
@@ -448,7 +447,7 @@ Ext.onReady( function() {
                         valid = item.getValue() ? true : valid;
                     });
                     if (exception && !valid) {
-                        alert(G.i18n.no_periods_selected);
+                        alert(DV.i18n.no_periods_selected);
                     }
                     return a;
                 }   
@@ -473,7 +472,7 @@ Ext.onReady( function() {
                         a.push(DV.util.string.getEncodedString(r.data.text));
                     });
                     if (exception && !a.length) {
-                        alert( G.i18n.no_orgunits_selected );
+                        alert( DV.i18n.no_orgunits_selected );
                     }
                     return a;
                 },
@@ -489,7 +488,7 @@ Ext.onReady( function() {
                         a.push(DV.util.string.getEncodedString(r.data.id));
                     });
                     if (exception && !a.length) {
-                        alert( G.i18n.no_orgunits_selected );
+                        alert( DV.i18n.no_orgunits_selected );
                     }
                     return a;
                 }                    
@@ -526,7 +525,7 @@ Ext.onReady( function() {
             getTitle: function() {
                 return {
                     type: 'text',
-                    text: DV.init.cmd === DV.conf.finals.cmd.init ? G.i18n.example_chart : DV.state.filter.names[0],
+                    text: DV.init.cmd === DV.conf.finals.cmd.init ? DV.i18n.example_chart : DV.state.filter.names[0],
                     font: 'bold 15px arial',
                     fill: '#222',
                     width: 300,
@@ -724,7 +723,7 @@ Ext.onReady( function() {
         crud: {
             favorite: {
                 create: function(fn, isUpdate) {
-                    DV.util.mask.setMask(DV.cmp.favorite.window, G.i18n.saving + '...');
+                    DV.util.mask.setMask(DV.cmp.favorite.window, DV.i18n.saving + '...');
                     var params = DV.state.getParams();
                     params.name = DV.cmp.favorite.name.getValue();
                     params.trendLine = DV.cmp.favorite.trendline.getValue();
@@ -768,10 +767,10 @@ Ext.onReady( function() {
                 },
                 updateName: function(name) {
                     if (DV.store.favorite.findExact('name', name) != -1) {
-                        alert(G.i18n.name_already_in_use);
+                        alert(DV.i18n.name_already_in_use);
                         return;
                     }
-                    DV.util.mask.setMask(DV.cmp.favorite.window, G.i18n.renaming + '...');
+                    DV.util.mask.setMask(DV.cmp.favorite.window, DV.i18n.renaming + '...');
                     var r = DV.cmp.favorite.grid.getSelectionModel().getSelection()[0];
                     var url = DV.cmp.favorite.system.getValue() ? DV.conf.finals.ajax.favorite_addorupdatesystem : DV.conf.finals.ajax.favorite_addorupdate;
                     Ext.Ajax.request({
@@ -788,7 +787,7 @@ Ext.onReady( function() {
                     });
                 },
                 del: function(fn) {
-                    DV.util.mask.setMask(DV.cmp.favorite.window, G.i18n.deleting + '...');
+                    DV.util.mask.setMask(DV.cmp.favorite.window, DV.i18n.deleting + '...');
                     var baseurl = DV.conf.finals.ajax.path_visualizer + DV.conf.finals.ajax.favorite_delete,
                         selection = DV.cmp.favorite.grid.getSelectionModel().getSelection();
                     Ext.Array.each(selection, function(item) {
@@ -1053,7 +1052,7 @@ Ext.onReady( function() {
                     success: function(r) {
                         if (!r.responseText) {
                             DV.mask.hide();
-                            alert(G.i18n.invalid_uid);
+                            alert(DV.i18n.invalid_uid);
                             return;
                         }
                         var f = Ext.JSON.decode(r.responseText),
@@ -1163,7 +1162,7 @@ Ext.onReady( function() {
     DV.value = {
         values: [],
         getValues: function(exe) {
-            DV.util.mask.setMask(DV.cmp.region.center, G.i18n.loading);
+            DV.util.mask.setMask(DV.cmp.region.center, DV.i18n.loading);
             var params = [],
                 i = DV.conf.finals.dimension.indicator.value,
                 d = DV.conf.finals.dimension.dataelement.value;
@@ -1183,7 +1182,7 @@ Ext.onReady( function() {
                     DV.value.values = DV.util.value.jsonfy(r);
                     if (!DV.value.values.length) {
                         DV.mask.hide();
-                        alert(G.i18n.no_data);
+                        alert(DV.i18n.no_data);
                         return;
                     }
                     
@@ -1473,7 +1472,7 @@ Ext.onReady( function() {
                         height: DV.conf.layout.east_gridcolumn_height
                     },
                     {
-                        text: G.i18n.value,
+                        text: DV.i18n.value,
                         dataIndex: 'v',
                         width: 80,
                         height: DV.conf.layout.east_gridcolumn_height
@@ -1544,14 +1543,14 @@ Ext.onReady( function() {
                         items: [
                             {
                                 xtype: 'label',
-                                text: G.i18n.chart_type,
+                                text: DV.i18n.chart_type,
                                 style: 'font-size:11px; font-weight:bold; padding:13px 8px 0 10px'
                             },
                             {
 								xtype: 'button',
                                 icon: 'images/column.png',
                                 name: DV.conf.finals.chart.column,
-                                tooltip: G.i18n.column_chart,
+                                tooltip: DV.i18n.column_chart,
 								width: 40,
                                 pressed: true
                             },
@@ -1559,42 +1558,42 @@ Ext.onReady( function() {
 								xtype: 'button',
                                 icon: 'images/column-stacked.png',
                                 name: DV.conf.finals.chart.stackedcolumn,
-                                tooltip: G.i18n.stacked_column_chart,
+                                tooltip: DV.i18n.stacked_column_chart,
 								width: 40
                             },
                             {
 								xtype: 'button',
                                 icon: 'images/bar.png',
                                 name: DV.conf.finals.chart.bar,
-                                tooltip: G.i18n.bar_chart,
+                                tooltip: DV.i18n.bar_chart,
 								width: 40
                             },
                             {
 								xtype: 'button',
                                 icon: 'images/bar-stacked.png',
                                 name: DV.conf.finals.chart.stackedbar,
-                                tooltip: G.i18n.stacked_bar_chart,
+                                tooltip: DV.i18n.stacked_bar_chart,
 								width: 40
                             },
                             {
 								xtype: 'button',
                                 icon: 'images/line.png',
                                 name: DV.conf.finals.chart.line,
-                                tooltip: G.i18n.line_chart,
+                                tooltip: DV.i18n.line_chart,
 								width: 40
                             },
                             {
 								xtype: 'button',
                                 icon: 'images/area.png',
                                 name: DV.conf.finals.chart.area,
-                                tooltip: G.i18n.area_chart,
+                                tooltip: DV.i18n.area_chart,
 								width: 40
                             },
                             {
 								xtype: 'button',
                                 icon: 'images/pie.png',
                                 name: DV.conf.finals.chart.pie,
-                                tooltip: G.i18n.pie_chart,
+                                tooltip: DV.i18n.pie_chart,
 								width: 40
                             }
                         ]
@@ -1610,7 +1609,7 @@ Ext.onReady( function() {
                                 items: [
                                     {
                                         xtype: 'label',
-                                        text: G.i18n.series,
+                                        text: DV.i18n.series,
                                         style: 'font-size:11px; font-weight:bold; padding:0 3px'
                                     },
                                     { bodyStyle: 'padding:1px 0; border-style:none;	background-color:transparent' },
@@ -1618,7 +1617,7 @@ Ext.onReady( function() {
                                         xtype: 'combobox',
                                         cls: 'dv-combo',
                                         name: DV.conf.finals.chart.series,
-                                        emptyText: G.i18n.series,
+                                        emptyText: DV.i18n.series,
                                         queryMode: 'local',
                                         editable: false,
                                         valueField: 'id',
@@ -1643,7 +1642,7 @@ Ext.onReady( function() {
                                 items: [
                                     {
                                         xtype: 'label',
-                                        text: G.i18n.category,
+                                        text: DV.i18n.category,
                                         style: 'font-size:11px; font-weight:bold; padding:0 3px'
                                     },
                                     { bodyStyle: 'padding:1px 0; border-style:none;	background-color:transparent' },
@@ -1651,7 +1650,7 @@ Ext.onReady( function() {
                                         xtype: 'combobox',
                                         cls: 'dv-combo',
                                         name: DV.conf.finals.chart.category,
-                                        emptyText: G.i18n.category,
+                                        emptyText: DV.i18n.category,
                                         queryMode: 'local',
                                         editable: false,
                                         lastQuery: '',
@@ -1685,7 +1684,7 @@ Ext.onReady( function() {
                                         xtype: 'combobox',
                                         cls: 'dv-combo',
                                         name: DV.conf.finals.chart.filter,
-                                        emptyText: G.i18n.filter,
+                                        emptyText: DV.i18n.filter,
                                         queryMode: 'local',
                                         editable: false,
                                         lastQuery: '',
@@ -1712,7 +1711,7 @@ Ext.onReady( function() {
                                 xtype: 'fieldset',
                                 cls: 'dv-fieldset',
                                 name: DV.conf.finals.dimension.indicator.value,
-                                title: '<a href="javascript:DV.util.fieldset.toggleIndicator();" class="dv-fieldset-title-link">' + G.i18n.indicators + '</a>',
+                                title: '<a href="javascript:DV.util.fieldset.toggleIndicator();" class="dv-fieldset-title-link">' + DV.i18n.indicators + '</a>',
                                 collapsible: true,
                                 width: DV.conf.layout.west_fieldset_width,
                                 items: [
@@ -1723,7 +1722,7 @@ Ext.onReady( function() {
                                         width: DV.conf.layout.west_fieldset_width - 22,
                                         valueField: 'id',
                                         displayField: 'name',
-                                        fieldLabel: G.i18n.select_group,
+                                        fieldLabel: DV.i18n.select_group,
                                         labelStyle: 'padding-left:7px;',
                                         labelWidth: 90,
                                         editable: false,
@@ -1740,7 +1739,7 @@ Ext.onReady( function() {
                                             },
                                             listeners: {
                                                 load: function(s) {
-                                                    s.add({id: 0, name: G.i18n.all_indicator_groups, index: -1});
+                                                    s.add({id: 0, name: DV.i18n.all_indicator_groups, index: -1});
                                                     s.sort('index', 'ASC');
                                                 }
                                             }
@@ -1778,7 +1777,7 @@ Ext.onReady( function() {
                                                 tbar: [
                                                     {
                                                         xtype: 'label',
-                                                        text: G.i18n.available_indicators,
+                                                        text: DV.i18n.available_indicators,
                                                         cls: 'dv-toolbar-multiselect-left-label'
                                                     },
                                                     '->',
@@ -1843,7 +1842,7 @@ Ext.onReady( function() {
                                                     '->',
                                                     {
                                                         xtype: 'label',
-                                                        text: G.i18n.selected_indicators,
+                                                        text: DV.i18n.selected_indicators,
                                                         cls: 'dv-toolbar-multiselect-right-label'
                                                     }
                                                 ],
@@ -1874,7 +1873,7 @@ Ext.onReady( function() {
                                 xtype: 'fieldset',
                                 cls: 'dv-fieldset',
                                 name: DV.conf.finals.dimension.dataelement.value,
-                                title: '<a href="javascript:DV.util.fieldset.toggleDataElement();" class="dv-fieldset-title-link">' + G.i18n.data_elements + '</a>',
+                                title: '<a href="javascript:DV.util.fieldset.toggleDataElement();" class="dv-fieldset-title-link">' + DV.i18n.data_elements + '</a>',
                                 collapsed: true,
                                 collapsible: true,
                                 items: [
@@ -1939,7 +1938,7 @@ Ext.onReady( function() {
                                                 tbar: [
                                                     {
                                                         xtype: 'label',
-                                                        text: G.i18n.available_data_elements,
+                                                        text: DV.i18n.available_data_elements,
                                                         cls: 'dv-toolbar-multiselect-left-label'
                                                     },
                                                     '->',
@@ -2004,7 +2003,7 @@ Ext.onReady( function() {
                                                     '->',
                                                     {
                                                         xtype: 'label',
-                                                        text: G.i18n.selected_data_elements,
+                                                        text: DV.i18n.selected_data_elements,
                                                         cls: 'dv-toolbar-multiselect-right-label'
                                                     }
                                                 ],
@@ -2035,7 +2034,7 @@ Ext.onReady( function() {
                                 xtype: 'fieldset',
                                 cls: 'dv-fieldset',
                                 name: DV.conf.finals.dimension.period.value,
-                                title: '<a href="javascript:DV.util.fieldset.togglePeriod();" class="dv-fieldset-title-link">' + G.i18n.periods +'</a>',
+                                title: '<a href="javascript:DV.util.fieldset.togglePeriod();" class="dv-fieldset-title-link">' + DV.i18n.periods +'</a>',
                                 collapsed: true,
                                 collapsible: true,
                                 cmp: [],
@@ -2062,18 +2061,18 @@ Ext.onReady( function() {
                                                 items: [
                                                     {
                                                         xtype: 'label',
-                                                        text: G.i18n.months,
+                                                        text: DV.i18n.months,
                                                         cls: 'dv-label-period-heading'
                                                     },
                                                     {
                                                         xtype: 'checkbox',
                                                         paramName: 'lastMonth',
-                                                        boxLabel: G.i18n.last_month
+                                                        boxLabel: DV.i18n.last_month
                                                     },
                                                     {
                                                         xtype: 'checkbox',
                                                         paramName: 'last12Months',
-                                                        boxLabel: G.i18n.last_12_months,
+                                                        boxLabel: DV.i18n.last_12_months,
                                                         checked: true
                                                     }
                                                 ]
@@ -2095,18 +2094,18 @@ Ext.onReady( function() {
                                                 items: [
                                                     {
                                                         xtype: 'label',
-                                                        text: G.i18n.quarters,
+                                                        text: DV.i18n.quarters,
                                                         cls: 'dv-label-period-heading'
                                                     },
                                                     {
                                                         xtype: 'checkbox',
                                                         paramName: 'lastQuarter',
-                                                        boxLabel: G.i18n.last_quarter
+                                                        boxLabel: DV.i18n.last_quarter
                                                     },
                                                     {
                                                         xtype: 'checkbox',
                                                         paramName: 'last4Quarters',
-                                                        boxLabel: G.i18n.last_4_quarters
+                                                        boxLabel: DV.i18n.last_4_quarters
                                                     }
                                                 ]
                                             },
@@ -2127,18 +2126,18 @@ Ext.onReady( function() {
                                                 items: [
                                                     {
                                                         xtype: 'label',
-                                                        text: G.i18n.six_months,
+                                                        text: DV.i18n.six_months,
                                                         cls: 'dv-label-period-heading'
                                                     },
                                                     {
                                                         xtype: 'checkbox',
                                                         paramName: 'lastSixMonth',
-                                                        boxLabel: G.i18n.last_six_month
+                                                        boxLabel: DV.i18n.last_six_month
                                                     },
                                                     {
                                                         xtype: 'checkbox',
                                                         paramName: 'last2SixMonths',
-                                                        boxLabel: G.i18n.last_two_six_month
+                                                        boxLabel: DV.i18n.last_two_six_month
                                                     }
                                                 ]
                                             }
@@ -2166,18 +2165,18 @@ Ext.onReady( function() {
                                                 items: [
                                                     {
                                                         xtype: 'label',
-                                                        text: G.i18n.years,
+                                                        text: DV.i18n.years,
                                                         cls: 'dv-label-period-heading'
                                                     },
                                                     {
                                                         xtype: 'checkbox',
                                                         paramName: 'thisYear',
-                                                        boxLabel: G.i18n.last_year
+                                                        boxLabel: DV.i18n.last_year
                                                     },
                                                     {
                                                         xtype: 'checkbox',
                                                         paramName: 'last5Years',
-                                                        boxLabel: G.i18n.last_5_years
+                                                        boxLabel: DV.i18n.last_5_years
                                                     }
                                                 ]
                                             }
@@ -2197,7 +2196,7 @@ Ext.onReady( function() {
                                 xtype: 'fieldset',
                                 cls: 'dv-fieldset',
                                 name: DV.conf.finals.dimension.organisationunit.value,
-                                title: '<a href="javascript:DV.util.fieldset.toggleOrganisationUnit();" class="dv-fieldset-title-link">' + G.i18n.organisation_units + '</a>',
+                                title: '<a href="javascript:DV.util.fieldset.toggleOrganisationUnit();" class="dv-fieldset-title-link">' + DV.i18n.organisation_units + '</a>',
                                 collapsed: true,
                                 collapsible: true,
                                 items: [
@@ -2253,7 +2252,7 @@ Ext.onReady( function() {
                                                 if (!r.data.leaf) {
                                                     v.menu.add({
                                                         id: 'treepanel-contextmenu-item',
-                                                        text: G.i18n.select_all_children,
+                                                        text: DV.i18n.select_all_children,
                                                         icon: 'images/node-select-child.png',
                                                         handler: function() {
                                                             r.expand(false, function() {
@@ -2291,12 +2290,12 @@ Ext.onReady( function() {
                                 xtype: 'fieldset',
                                 cls: 'dv-fieldset',
                                 name: 'options',
-                                title: '<a href="javascript:DV.util.fieldset.toggleOptions();" class="dv-fieldset-title-link-alt1">' + G.i18n.chart_options +'</a>',
+                                title: '<a href="javascript:DV.util.fieldset.toggleOptions();" class="dv-fieldset-title-link-alt1">' + DV.i18n.chart_options +'</a>',
                                 collapsed: true,
                                 collapsible: true,
                                 items: [
                                     {
-                                        html: G.i18n.png_only,
+                                        html: DV.i18n.png_only,
                                         bodyStyle: 'border:0 none; color:#555; font-style:italic; padding-bottom:10px'
                                     },
                                     {
@@ -2308,7 +2307,7 @@ Ext.onReady( function() {
                                                 xtype: 'checkbox',
                                                 cls: 'dv-checkbox-alt1',
                                                 style: 'margin-right:26px',
-                                                boxLabel: G.i18n.trend_line,
+                                                boxLabel: DV.i18n.trend_line,
                                                 labelWidth: DV.conf.layout.form_label_width,
                                                 listeners: {
                                                     added: function() {
@@ -2320,7 +2319,7 @@ Ext.onReady( function() {
                                                 xtype: 'checkbox',
                                                 cls: 'dv-checkbox-alt1',
                                                 style: 'margin-right:26px',
-                                                boxLabel: G.i18n.hide_subtitle,
+                                                boxLabel: DV.i18n.hide_subtitle,
                                                 labelWidth: DV.conf.layout.form_label_width,
                                                 listeners: {
                                                     added: function() {
@@ -2332,7 +2331,7 @@ Ext.onReady( function() {
                                                 xtype: 'checkbox',
                                                 cls: 'dv-checkbox-alt1',
                                                 style: 'margin-right:26px',
-                                                boxLabel: G.i18n.hide_legend,
+                                                boxLabel: DV.i18n.hide_legend,
                                                 labelWidth: DV.conf.layout.form_label_width,
                                                 listeners: {
                                                     added: function() {
@@ -2343,7 +2342,7 @@ Ext.onReady( function() {
                                             {
                                                 xtype: 'checkbox',
                                                 cls: 'dv-checkbox-alt1',
-                                                boxLabel: G.i18n.user_orgunit,
+                                                boxLabel: DV.i18n.user_orgunit,
                                                 labelWidth: DV.conf.layout.form_label_width,
                                                 listeners: {
                                                     added: function() {
@@ -2362,7 +2361,7 @@ Ext.onReady( function() {
                                                 xtype: 'textfield',
                                                 cls: 'dv-textfield-alt1',
                                                 style: 'margin-right:4px',
-                                                fieldLabel: G.i18n.x_axis_label,
+                                                fieldLabel: DV.i18n.x_axis_label,
                                                 labelAlign: 'top',
                                                 labelSeparator: '',
                                                 maxLength: 100,
@@ -2378,7 +2377,7 @@ Ext.onReady( function() {
                                             {
                                                 xtype: 'textfield',
                                                 cls: 'dv-textfield-alt1',
-                                                fieldLabel: G.i18n.y_axis_label,
+                                                fieldLabel: DV.i18n.y_axis_label,
                                                 labelAlign: 'top',
                                                 labelSeparator: '',
                                                 maxLength: 100,
@@ -2403,7 +2402,7 @@ Ext.onReady( function() {
                                                 cls: 'dv-textfield-alt1',
                                                 style: 'margin-right:4px',
                                                 hideTrigger: true,
-                                                fieldLabel: G.i18n.target_line_value,
+                                                fieldLabel: DV.i18n.target_line_value,
                                                 labelAlign: 'top',
                                                 labelSeparator: '',
                                                 maxLength: 100,
@@ -2421,7 +2420,7 @@ Ext.onReady( function() {
                                             {
                                                 xtype: 'textfield',
                                                 cls: 'dv-textfield-alt1',
-                                                fieldLabel: G.i18n.target_line_label,
+                                                fieldLabel: DV.i18n.target_line_label,
                                                 labelAlign: 'top',
                                                 labelSeparator: '',
                                                 maxLength: 100,
@@ -2489,7 +2488,7 @@ Ext.onReady( function() {
                             name: 'resizewest',
 							cls: 'dv-toolbar-btn-2',
                             text: '<<<',
-                            tooltip: G.i18n.show_hide_chart_settings,
+                            tooltip: DV.i18n.show_hide_chart_settings,
                             handler: function() {
                                 var p = DV.cmp.region.west;
                                 if (p.collapsed) {
@@ -2508,7 +2507,7 @@ Ext.onReady( function() {
                         {
                             xtype: 'button',
 							cls: 'dv-toolbar-btn-1',
-                            text: G.i18n.update,
+                            text: DV.i18n.update,
                             handler: function() {
                                 DV.exe.execute(true, DV.init.cmd);
                             }
@@ -2516,7 +2515,7 @@ Ext.onReady( function() {
                         {
                             xtype: 'button',
 							cls: 'dv-toolbar-btn-2',
-                            text: G.i18n.data_table,
+                            text: DV.i18n.data_table,
                             handler: function() {
                                 var p = DV.cmp.region.east;
                                 if (p.collapsed && p.items.length) {
@@ -2533,7 +2532,7 @@ Ext.onReady( function() {
                         {
                             xtype: 'button',
 							cls: 'dv-toolbar-btn-2',
-                            text: G.i18n.favorites,
+                            text: DV.i18n.favorites,
                             listeners: {
                                 afterrender: function(b) {
                                     this.menu = Ext.create('Ext.menu.Menu', {
@@ -2549,7 +2548,7 @@ Ext.onReady( function() {
                                                     }
                                                     else {
                                                         DV.cmp.favorite.window = Ext.create('Ext.window.Window', {
-                                                            title: G.i18n.manage_favorites,
+                                                            title: DV.i18n.manage_favorites,
                                                             iconCls: 'dv-window-title-favorite',
                                                             bodyStyle: 'padding:8px; background-color:#fff',
 															width: DV.conf.layout.grid_favorite_width,
@@ -2586,7 +2585,7 @@ Ext.onReady( function() {
                                                                             xtype: 'checkbox',
                                                                             cls: 'dv-checkbox',
                                                                             style: 'padding-bottom:2px',
-                                                                            fieldLabel: G.i18n.system,
+                                                                            fieldLabel: DV.i18n.system,
                                                                             labelWidth: DV.conf.layout.form_label_width,
                                                                             disabled: !DV.init.system.user.isAdmin,
                                                                             listeners: {
@@ -2631,7 +2630,7 @@ Ext.onReady( function() {
                                                                         },
                                                                         items: [
                                                                             {
-                                                                                text: G.i18n.sort_by + '..',
+                                                                                text: DV.i18n.sort_by + '..',
                                                                                 cls: 'dv-toolbar-btn-2',
                                                                                 listeners: {
                                                                                     added: function() {
@@ -2652,7 +2651,7 @@ Ext.onReady( function() {
                                                                                                     vertical: true,
                                                                                                     items: [
                                                                                                         {
-                                                                                                            boxLabel: G.i18n.name,
+                                                                                                            boxLabel: DV.i18n.name,
                                                                                                             name: 'sortby',
                                                                                                             handler: function() {
                                                                                                                 if (this.getValue()) {
@@ -2665,7 +2664,7 @@ Ext.onReady( function() {
                                                                                                             }
                                                                                                         },
                                                                                                         {
-                                                                                                            boxLabel: G.i18n.system,
+                                                                                                            boxLabel: DV.i18n.system,
                                                                                                             name: 'sortby',
                                                                                                             handler: function() {
                                                                                                                 if (this.getValue()) {
@@ -2678,7 +2677,7 @@ Ext.onReady( function() {
                                                                                                             }
                                                                                                         },
                                                                                                         {
-                                                                                                            boxLabel:  G.i18n.last_updated,
+                                                                                                            boxLabel:  DV.i18n.last_updated,
                                                                                                             name: 'sortby',
                                                                                                             checked: true,
                                                                                                             handler: function() {
@@ -2700,7 +2699,7 @@ Ext.onReady( function() {
                                                                             },
                                                                             '->',
                                                                             {
-                                                                                text: G.i18n.rename,
+                                                                                text: DV.i18n.rename,
                                                                                 cls: 'dv-toolbar-btn-2',
                                                                                 disabled: true,
                                                                                 xable: function() {
@@ -2714,7 +2713,7 @@ Ext.onReady( function() {
                                                                                 handler: function() {
                                                                                     var selected = DV.cmp.favorite.grid.getSelectionModel().getSelection()[0];
                                                                                     var w = Ext.create('Ext.window.Window', {
-                                                                                        title: G.i18n.rename_favorite,
+                                                                                        title: DV.i18n.rename_favorite,
                                                                                         layout: 'fit',
                                                                                         width: DV.conf.layout.window_confirm_width,
                                                                                         bodyStyle: 'padding:10px 5px; background-color:#fff; text-align:center',
@@ -2749,13 +2748,13 @@ Ext.onReady( function() {
 																							},
 																							'->',
                                                                                             {
-                                                                                                text: G.i18n.cancel,
+                                                                                                text: DV.i18n.cancel,
                                                                                                 handler: function() {
                                                                                                     this.up('window').close();
                                                                                                 }
                                                                                             },
                                                                                             {
-                                                                                                text: G.i18n.rename,
+                                                                                                text: DV.i18n.rename,
                                                                                                 disabled: true,
                                                                                                 xable: function() {
                                                                                                     var value = this.up('window').cmp.name.getValue();
@@ -2766,7 +2765,7 @@ Ext.onReady( function() {
 																											return;
 																										}
 																										else {
-																											DV.cmp.favorite.rename.label.setText(G.i18n.name_already_in_use);
+																											DV.cmp.favorite.rename.label.setText(DV.i18n.name_already_in_use);
 																										}
 																									}
 																									this.disable();
@@ -2800,7 +2799,7 @@ Ext.onReady( function() {
                                                                                 }
                                                                             },
                                                                             {
-                                                                                text: G.i18n.delete,
+                                                                                text: DV.i18n.delete,
                                                                                 cls: 'dv-toolbar-btn-2',
                                                                                 disabled: true,
                                                                                 xable: function() {
@@ -2820,13 +2819,13 @@ Ext.onReady( function() {
                                                                                             str += '<br/>' + out;
                                                                                         }
                                                                                         var w = Ext.create('Ext.window.Window', {
-                                                                                            title: G.i18n.delete_favorite,
+                                                                                            title: DV.i18n.delete_favorite,
                                                                                             width: DV.conf.layout.window_confirm_width,
                                                                                             bodyStyle: 'padding:10px 5px; background-color:#fff; text-align:center',
                                                                                             modal: true,
                                                                                             items: [
                                                                                                 {
-                                                                                                    html: G.i18n.are_you_sure,
+                                                                                                    html: DV.i18n.are_you_sure,
                                                                                                     bodyStyle: 'border-style:none'
                                                                                                 },
                                                                                                 {
@@ -2836,14 +2835,14 @@ Ext.onReady( function() {
                                                                                             ],
                                                                                             bbar: [
                                                                                                 {
-                                                                                                    text: G.i18n.cancel,
+                                                                                                    text: DV.i18n.cancel,
                                                                                                     handler: function() {
                                                                                                         this.up('window').close();
                                                                                                     }
                                                                                                 },
                                                                                                 '->',
                                                                                                 {
-                                                                                                    text: G.i18n.delete,
+                                                                                                    text: DV.i18n.delete,
                                                                                                     handler: function() {
                                                                                                         this.up('window').close();
                                                                                                         DV.util.crud.favorite.del(function() {
@@ -2894,7 +2893,7 @@ Ext.onReady( function() {
                                                                 },																
                                                                 '->',
                                                                 {
-                                                                    text: G.i18n.save,
+                                                                    text: DV.i18n.save,
                                                                     disabled: true,
                                                                     xable: function() {
                                                                         if (DV.state.isRendered) {
@@ -2909,7 +2908,7 @@ Ext.onReady( function() {
                                                                         }
                                                                         else {
                                                                             if (DV.cmp.favorite.name.getValue()) {
-                                                                                DV.cmp.favorite.label.setText(G.i18n.example_chart_cannot_be_saved);
+                                                                                DV.cmp.favorite.label.setText(DV.i18n.example_chart_cannot_be_saved);
                                                                             }
                                                                             else {
                                                                                 DV.cmp.favorite.label.setText('');
@@ -2929,7 +2928,7 @@ Ext.onReady( function() {
                                                                                     modal: true,
                                                                                     items: [
                                                                                         {
-                                                                                            html: G.i18n.area_you_sure,
+                                                                                            html: DV.i18n.area_you_sure,
                                                                                             bodyStyle: 'border-style:none'
                                                                                         },
                                                                                         {
@@ -2939,14 +2938,14 @@ Ext.onReady( function() {
                                                                                     ],
                                                                                     bbar: [
                                                                                         {
-                                                                                            text: G.i18n.cancel,
+                                                                                            text: DV.i18n.cancel,
                                                                                             handler: function() {
                                                                                                 DV.cmp.favorite.window.close();
                                                                                             }
                                                                                         },
                                                                                         '->',
                                                                                         {
-                                                                                            text: G.i18n.overwrite,
+                                                                                            text: DV.i18n.overwrite,
                                                                                             handler: function() {
                                                                                                 this.up('window').close();
                                                                                                 DV.util.crud.favorite.update(function() {
@@ -3052,12 +3051,12 @@ Ext.onReady( function() {
                         {
                             xtype: 'button',
 							cls: 'dv-toolbar-btn-2',
-                            text: G.i18n.download_as,
+                            text: DV.i18n.download_as,
                             execute: function(type) {
                                 var svg = document.getElementsByTagName('svg');
                                 
                                 if (svg.length < 1) {
-                                    alert(G.i18n.browser_download_alert);
+                                    alert(DV.i18n.browser_download_alert);
                                     return;
                                 }
                                 
@@ -3072,7 +3071,7 @@ Ext.onReady( function() {
                                     exportForm.submit();
                                 }
                                 else {
-                                    alert(G.i18n.no_svg_format);
+                                    alert(DV.i18n.no_svg_format);
                                 }
                             },
                             listeners: {
@@ -3082,7 +3081,7 @@ Ext.onReady( function() {
                                         showSeparator: false,
                                         items: [
                                             {
-                                                text: G.i18n.image_png,
+                                                text: DV.i18n.image_png,
                                                 iconCls: 'dv-menu-item-png',
                                                 minWidth: 105,
                                                 handler: function() {
@@ -3116,7 +3115,7 @@ Ext.onReady( function() {
                             name: 'resizeeast',
 							cls: 'dv-toolbar-btn-2',
                             text: '>>>',
-                            tooltip: G.i18n.hide_data_table,
+                            tooltip: DV.i18n.hide_data_table,
                             hidden: true,
                             handler: function() {
                                 DV.cmp.region.east.collapse();
