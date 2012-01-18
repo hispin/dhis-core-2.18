@@ -1,6 +1,4 @@
-var G = {};
-
-G.i18n = {
+DV.i18n = {
 title: '$encoder.jsEscape($i18n.getString( 'title' ) , "'")',
 chart_type: '$encoder.jsEscape($i18n.getString( 'chart_type' ) , "'")',
 column_chart: '$encoder.jsEscape($i18n.getString( 'column_chart' ) , "'")',
