@@ -32,6 +32,22 @@
 			}
 		});
 
+		jQuery("#totalSelector").dhisAjaxSelect({
+			source: "../dhis-web-commons-ajax-json/getDataElements.action",
+			iterator: "dataElements",
+			handler: function(item) {
+				var option = jQuery("<option />");
+				option.text( item.name );
+				option.data( "id", item.id );
+				option.dblclick(insertTotal);
+
+				return option;
+			},
+			params: {
+				dataSetId: $dataSet.id
+			}
+		});
+
 		jQuery("#indicatorSelector").dhisAjaxSelect({
 			source: "../dhis-web-commons-ajax-json/getIndicators.action",
 			iterator: "indicators",
@@ -86,7 +102,7 @@
 	padding: 2px;
 }
 
-#indicatorSelector, #dataElementSelector {
+#dataElementSelector, #totalSelector, #indicatorSelector,  {
 	padding: 2px;
 }
 </style>
@@ -156,6 +172,11 @@
 					<select id="dataElementSelector" multiple="multiple" style="height: 200px; width: 100%;"></select>
 				</td>
 			</tr>
+			<tr id="totalsTab">
+				<td colspan="2">
+					<select id="totalSelector" multiple="multiple" style="height: 200px; width: 100%;"></select>
+				</td>
+			</tr>
 			<tr id="indicatorsTab">
 				<td colspan="2">
 					<select id="indicatorSelector" multiple="multiple" style="height: 200px; width: 100%;"></select>
@@ -164,11 +185,12 @@
 			<tr>
 				<td>
 					<button type="button" id="dataElementsButton">$i18n.getString( "data_elements" )</button>
+					<button type="button" id="totalsButton">$i18n.getString( "totals" )</button>
 					<button type="button" id="indicatorsButton">$i18n.getString( "indicators" )</button>&nbsp;&nbsp;<span style="color:#606060">|</span>&nbsp;
 					<button type="button" id="insertButton">$i18n.getString( "insert" )</button>
-					<input type="checkbox" id="greyedField"><label for="greyedField">$i18n.getString( "greyed_field" )</label>
+					<input type="checkbox" id="greyedField"><label for="greyedField">$i18n.getString( "grey_field" )</label>
 				</td>
-				<td style="width: 190px;">
+				<td style="width:145px">
 					<span id="message_"></span>
 				</td>
 			</tr>

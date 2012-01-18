@@ -18,6 +18,31 @@
 var FORMULA_PATTERN = /\[.+?\]/g;
 var SEPARATOR = '.';
 
+function updateDataElementTotals()
+{
+	var currentTotals = [];
+	
+	$( 'input[name="total"]' ).each( function( index )
+	{
+		var targetId = $( this ).attr( 'dataelementid' );
+		
+		var totalValue = new Number();
+		
+		$( 'input[name="entryfield"]' ).each( function( index )
+		{	
+			var key = $( this ).attr( 'id' );
+			var entryFieldId = key.substring( 0, key.indexOf( '-' ) );
+			
+			if ( targetId && $( this ).attr( 'value' ) && targetId == entryFieldId )
+			{
+				totalValue += new Number( $( this ).attr( 'value' ) );
+			}
+		} );
+		
+		$( this ).attr( 'value', totalValue );
+	} );
+}
+
 /**
  * Updates all indicator input fields with the calculated value based on the
  * values in the input entry fields in the form.
@@ -174,7 +199,8 @@ function saveVal( dataElementId, optionComboId )
     	currentOrganisationUnitId, periodId, value, COLOR_GREEN );
     valueSaver.save();
 
-    updateIndicators(); // Update indicators in case of custom form
+    updateIndicators(); // Update indicators for custom form
+    updateDataElementTotals(); // Update data element totals for custom forms
 }
 
 function saveBoolean( dataElementId, optionComboId )

@@ -699,6 +699,7 @@ function insertDataValues()
 	        // Update indicator values in form
 	
 	        updateIndicators();
+	        updateDataElementTotals();
 	
 	        // Set completeness button
 	
