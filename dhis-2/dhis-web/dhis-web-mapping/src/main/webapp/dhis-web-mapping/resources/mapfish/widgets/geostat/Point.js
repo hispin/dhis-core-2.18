@@ -1731,6 +1731,7 @@ mapfish.widgets.geostat.Point = Ext.extend(Ext.Panel, {
     },
     
     applyValues: function() {
+        this.layer.features = this.featureStorage.slice(0);
         for (var i = 0; i < this.layer.features.length; i++) {
             var f = this.layer.features[i];
             if (!f.attributes.value) {
@@ -1741,6 +1742,11 @@ mapfish.widgets.geostat.Point = Ext.extend(Ext.Panel, {
                 f.attributes.labelString = f.attributes.name + ' (' + f.attributes.value + ')';
                 f.attributes.fixedName = G.util.cutString(f.attributes.name, 30);
             }
+        }
+        if (!this.layer.features.length) {
+            Ext.message.msg(false, G.i18n.current_selection_no_data);
+            G.vars.mask.hide();
+            return;
         }
 
         this.button.menu.find('name','history')[0].addItem(this);
