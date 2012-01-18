@@ -82,6 +82,12 @@
 		<action name="exportImage" class="org.hisp.dhis.visualizer.action.ExportImageAction">
 			<result name="success" type="outputStreamResult"/>
 		</action>
+
+        <!-- i18n -->
+
+        <action name="i18n" class="org.hisp.dhis.visualizer.action.NoAction">
+            <result name="success" type="velocity-javascript">/dhis-web-visualizer/i18n.vm</result>
+        </action>
 		
 	</package>
 </struts>
