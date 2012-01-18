@@ -17,10 +17,12 @@ $(document).ready(function() {
 
 	$("#selectionDialog").parent().bind("resize", function(e) {
 		var dialog = $("#selectionDialog");
-		var indicatorSelector = $("#indicatorSelector");
 		var dataElementSelector = $("#dataElementSelector");
+		var totalSelector = $("#totalSelector");
+		var indicatorSelector = $("#indicatorSelector");
 
 		dataElementSelector.height( dialog.height() - 97 );
+		totalSelector.height( dialog.height() - 97 );
 		indicatorSelector.height( dialog.height() - 97 );
 	});
 
@@ -28,6 +30,7 @@ $(document).ready(function() {
 	$(":submit").button();
 
 	$("#dataElementInsertButton").click(insertDataElement);
+	$("#totalInsertButton").click(insertTotal);
 	$("#indicatorInsertButton").click(insertIndicator);
 
 	$("#selectionDialog").bind("dialogopen", function(event, ui) {
@@ -46,18 +49,28 @@ $(document).ready(function() {
 	
 	showDataElements();
 
+	$("#dataElementsButton").addClass("ui-state-active2");
+
 	$("#dataElementsButton").click(function() {
 		$("#dataElementsButton").addClass("ui-state-active2");
+		$("#totalsButton").removeClass("ui-state-active2");
 		$("#indicatorsButton").removeClass("ui-state-active2");
 
 		showDataElements();
 	});
-
-	$("#dataElementsButton").addClass("ui-state-active2");
-
-	$("#indicatorsButton").click(function() {
-		$("#indicatorsButton").addClass("ui-state-active2");
+	
+	$("#totalsButton").click(function() {		
 		$("#dataElementsButton").removeClass("ui-state-active2");
+		$("#totalsButton").addClass("ui-state-active2");
+		$("#indicatorsButton").removeClass("ui-state-active2");
+		
+		showTotals();
+	});
+
+	$("#indicatorsButton").click(function() {	
+		$("#dataElementsButton").removeClass("ui-state-active2");
+		$("#totalsButton").removeClass("ui-state-active2");
+		$("#indicatorsButton").addClass("ui-state-active2");
 
 		showIndicators();
 	});
@@ -65,7 +78,11 @@ $(document).ready(function() {
 	$("#insertButton").click(function() {
 		if( $("#dataElementsTab").is(":visible") ) {
 			insertDataElement();
-		} else {
+		} 
+		else if( $("#totalsTab").is(":visible") ) {
+			insertTotals();
+		}
+		else {
 			insertIndicator();
 		}
 	});
@@ -86,6 +103,15 @@ $(document).ready(function() {
 		filterSelectList( 'dataElementSelector', $("#dataElementsFilterInput").val() );
 	});
 	
+	$("#totalsFilterButton").button({
+		icons: {
+			primary: "ui-icon-search"
+		},
+		text: false
+	}).click(function() {
+		filterSelectList( 'totalSelector', $("#totalsFilterInput").val() );
+	});
+	
 	$("#indicatorsFilterButton").button({
 		icons: {
 			primary: "ui-icon-search"
@@ -99,15 +125,28 @@ $(document).ready(function() {
 function showDataElements() {
 	$("#dataElementsTab").show();
 	$("#dataElementsFilter").show();
+	$("#totalsTab").hide();
+	$("#totalsFilter").hide();
+	$("#indicatorsTab").hide();
+	$("#indicatorsFilter").hide();
+}
+
+function showTotals() {
+	$("#dataElementsTab").hide();
+	$("#dataElementsFilter").hide();
+	$("#totalsTab").show();
+	$("#totalsFilter").show();
 	$("#indicatorsTab").hide();
 	$("#indicatorsFilter").hide();
 }
 
 function showIndicators() {
-	$("#indicatorsTab").show();
-	$("#indicatorsFilter").show();
 	$("#dataElementsTab").hide();
 	$("#dataElementsFilter").hide();
+	$("#totalsTab").hide();
+	$("#totalsFilter").hide();
+	$("#indicatorsTab").show();
+	$("#indicatorsFilter").show();
 }
 
 function filterSelectList( select_id, filter )
@@ -164,25 +203,6 @@ function showThenFadeOutMessage( message )
 	});
 }
 
-function insertIndicator() {
-	var oEditor = $("#designTextarea").ckeditorGet();
-	var $option = $("#indicatorSelector option:selected");
-
-	if( $option.length !== 0 ) {
-		var id = $option.data("id");
-		var title = $option.val();
-		var template = '<input id="indicator' + id + '" value="[ ' + title + ' ]" title="' + title + '" name="indicator" indicatorid="' + id + '" style="width:7em;text-align:center;" readonly="readonly" />';
-
-		if(!checkExisted("indicator" + id)) {
-			oEditor.insertHtml( template );
-		} else {
-			showThenFadeOutMessage( "<b>" + i18n_indicator_already_inserted + "</b>" );
-		}
-	} else {
-		showThenFadeOutMessage( "<b>" + i18n_no_indicator_was_selected + "</b>" );
-	}
-}
-
 function insertDataElement() {
 	var oEditor = $("#designTextarea").ckeditorGet();
 	var $option = $("#dataElementSelector option:selected");
@@ -222,6 +242,46 @@ function insertDataElement() {
 		}
 	} else {
 		showThenFadeOutMessage( "<b>" + i18n_no_dataelement_was_selected + "</b>" );
+	}
+}
+
+function insertTotal() {
+	var oEditor = $("#designTextarea").ckeditorGet();
+	var $option = $("#totalSelector option:selected");
+	
+	if( $option.length !== 0 )
+	{
+		var id = $option.data("id");
+		var title = $option.val();
+		var dataEntryId = 'total' + id;		
+		var template = '<input id="' + dataEntryId + '" name="total" value="[' + title + ']" title="' + title + '" dataelementid="' + id + '" style="width:7em;text-align:center;" readonly="readonly" />';
+		
+		if(!checkExisted(dataEntryId)) {
+			oEditor.insertHtml( template );
+		} else {
+			showThenFadeOutMessage( "<b>" + i18n_dataelement_already_inserted + "</b>" );
+		}
+	} else {
+		showThenFadeOutMessage( "<b>" + i18n_no_dataelement_was_selected + "</b>" );
+	}
+}
+
+function insertIndicator() {
+	var oEditor = $("#designTextarea").ckeditorGet();
+	var $option = $("#indicatorSelector option:selected");
+
+	if( $option.length !== 0 ) {
+		var id = $option.data("id");
+		var title = $option.val();
+		var template = '<input id="indicator' + id + '" value="[ ' + title + ' ]" title="' + title + '" name="indicator" indicatorid="' + id + '" style="width:7em;text-align:center;" readonly="readonly" />';
+
+		if(!checkExisted("indicator" + id)) {
+			oEditor.insertHtml( template );
+		} else {
+			showThenFadeOutMessage( "<b>" + i18n_indicator_already_inserted + "</b>" );
+		}
+	} else {
+		showThenFadeOutMessage( "<b>" + i18n_no_indicator_was_selected + "</b>" );
 	}
 }
 

@@ -172,7 +172,11 @@ public class DefaultDataEntryFormService
             String inputHtml = inputMatcher.group();
 
             Matcher identifierMatcher = IDENTIFIER_PATTERN.matcher( inputHtml );
+            Matcher dataElementTotalMatcher = DATAELEMENT_TOTAL_PATTERN.matcher( inputHtml );
             Matcher indicatorMatcher = INDICATOR_PATTERN.matcher( inputHtml );
+            
+            String displayValue = null;
+            String displayTitle = null;
 
             if ( identifierMatcher.find() && identifierMatcher.groupCount() > 0 )
             {
@@ -183,40 +187,39 @@ public class DefaultDataEntryFormService
                 DataElementCategoryOptionCombo categegoryOptionCombo = categoryService.getDataElementCategoryOptionCombo( optionComboId );
                 String optionComboName = categegoryOptionCombo != null ? categegoryOptionCombo.getName() : "[ " + i18n.getString( "cate_option_combo_not_exist" ) + " ]";
 
-                // -------------------------------------------------------------
-                // Insert name of data element operand as value and title
-                // -------------------------------------------------------------
-
                 StringBuilder title = dataElement != null ? 
                     new StringBuilder( "title=\"" ).append( dataElement.getId() ).append( " - " ).
                     append( dataElement.getName() ).append( " - " ).append( optionComboId ).append( " - " ).
                     append( optionComboName ).append( " - " ).append( dataElement.getType() ).append( "\"" ) : new StringBuilder();
 
-                String displayValue = dataElement != null ? "value=\"[ " + dataElement.getName() + " " + optionComboName + " ]\"" : "[ " + i18n.getString( "dataelement_not_exist" ) + " ]";
-                String displayTitle = dataElement != null ? title.toString() : "[ " + i18n.getString( "dataelement_not_exist" ) + " ]";
+                displayValue = dataElement != null ? "value=\"[ " + dataElement.getName() + " " + optionComboName + " ]\"" : "[ " + i18n.getString( "dataelement_not_exist" ) + " ]";
+                displayTitle = dataElement != null ? title.toString() : "[ " + i18n.getString( "dataelement_not_exist" ) + " ]";
+            }
+            else if ( dataElementTotalMatcher.find() && dataElementTotalMatcher.groupCount() > 0 )
+            {
+                int dataElementId = Integer.parseInt( dataElementTotalMatcher.group( 1 ) );
+                DataElement dataElement = dataElementService.getDataElement( dataElementId );
 
-                inputHtml = inputHtml.contains( EMPTY_VALUE_TAG ) ? inputHtml.replace( EMPTY_VALUE_TAG, displayValue ) : inputHtml + " " + displayValue;
-                inputHtml = inputHtml.contains( EMPTY_TITLE_TAG ) ? inputHtml.replace( EMPTY_TITLE_TAG, displayTitle ) : " " + displayTitle;
-
-                inputMatcher.appendReplacement( sb, inputHtml );
+                displayValue = dataElement != null ? "value=\"[ " + dataElement.getName() + " ]\"" : "[ " + i18n.getString( "dataelement_not_exist" ) + " ]";
+                displayTitle = dataElement != null ? "title=\"" + dataElement.getName() + "\"" : "[ " + i18n.getString( "dataelement_not_exist" ) + " ]";
             }
             else if ( indicatorMatcher.find() && indicatorMatcher.groupCount() > 0 )
             {
                 int indicatorId = Integer.parseInt( indicatorMatcher.group( 1 ) );
                 Indicator indicator = indicatorService.getIndicator( indicatorId );
 
-                // -------------------------------------------------------------
-                // Insert name of indicator as value and title
-                // -------------------------------------------------------------
+                displayValue = indicator != null ? "value=\"[ " + indicator.getName() + " ]\"" : "[ " + i18n.getString( "indicator_not_exist" ) + " ]";
+                displayTitle = indicator != null ? "title=\"" + indicator.getName() + "\"" : "[ " + i18n.getString( "indicator_not_exist" ) + " ]";
+            }            
 
-                String displayValue = indicator != null ? "value=\"[ " + indicator.getName() + " ]\"" : "[ " + i18n.getString( "indicator_not_exist" ) + " ]";
-                String displayTitle = indicator != null ? "title=\"" + indicator.getName() + "\"" : "[ " + i18n.getString( "indicator_not_exist" ) + " ]";
+            // -----------------------------------------------------------------
+            // Insert name of data element operand as value and title
+            // -----------------------------------------------------------------
 
-                inputHtml = inputHtml.contains( EMPTY_VALUE_TAG ) ? inputHtml.replace( EMPTY_VALUE_TAG, displayValue ) : inputHtml + " " + displayValue;
-                inputHtml = inputHtml.contains( EMPTY_TITLE_TAG ) ? inputHtml.replace( EMPTY_TITLE_TAG, displayTitle ) : " " + displayTitle;
+            inputHtml = inputHtml.contains( EMPTY_VALUE_TAG ) ? inputHtml.replace( EMPTY_VALUE_TAG, displayValue ) : inputHtml + " " + displayValue;
+            inputHtml = inputHtml.contains( EMPTY_TITLE_TAG ) ? inputHtml.replace( EMPTY_TITLE_TAG, displayTitle ) : " " + displayTitle;
 
-                inputMatcher.appendReplacement( sb, inputHtml );
-            }
+            inputMatcher.appendReplacement( sb, inputHtml );
         }
 
         inputMatcher.appendTail( sb );
