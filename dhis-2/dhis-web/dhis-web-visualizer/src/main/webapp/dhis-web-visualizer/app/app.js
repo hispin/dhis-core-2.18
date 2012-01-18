@@ -323,7 +323,7 @@ Ext.onReady( function() {
                         a.push(r.data.id);
                     });
                     if (exception && !a.length) {
-                        alert('No indicators selected');
+                        alert(DV.i18n.no_indicators_selected);
                     }
                     return a;
                 }
@@ -2577,6 +2577,7 @@ Ext.onReady( function() {
                                                                                     DV.cmp.favorite.name = this;
                                                                                 },
                                                                                 change: function() {
+                                                                                    DV.cmp.favorite.system.check();
                                                                                     DV.cmp.favorite.save.xable();
                                                                                 }
                                                                             }
@@ -2588,6 +2589,13 @@ Ext.onReady( function() {
                                                                             fieldLabel: DV.i18n.system,
                                                                             labelWidth: DV.conf.layout.form_label_width,
                                                                             disabled: !DV.init.system.user.isAdmin,
+                                                                            check: function() {
+                                                                                if (!DV.init.system.user.isAdmin) {
+                                                                                    if (DV.store.favorite.findExact('name', DV.cmp.favorite.name.getValue()) === -1) {
+                                                                                        this.setValue(false);
+                                                                                    }
+                                                                                }
+                                                                            },
                                                                             listeners: {
                                                                                 added: function() {
                                                                                     DV.cmp.favorite.system = this;
@@ -2876,7 +2884,9 @@ Ext.onReady( function() {
                                                                             DV.cmp.favorite.del.xable();
                                                                         },
                                                                         itemdblclick: function() {
-                                                                            DV.cmp.favorite.save.handler();
+                                                                            if (DV.cmp.favorite.save.xable()) {
+                                                                                DV.cmp.favorite.save.handler();
+                                                                            }
                                                                         }
                                                                     }
                                                                 }
@@ -2884,7 +2894,7 @@ Ext.onReady( function() {
                                                             bbar: [
                                                                 {
                                                                     xtype: 'label',
-                                                                    style: 'padding-left:2px; line-height:22px; font-size:10px; color:#666; width:50%',
+                                                                    style: 'padding-left:2px; line-height:22px; font-size:10px; color:#666; width:70%',
                                                                     listeners: {
                                                                         added: function() {
                                                                             DV.cmp.favorite.label = this;
@@ -2898,9 +2908,22 @@ Ext.onReady( function() {
                                                                     xable: function() {
                                                                         if (DV.state.isRendered) {
                                                                             if (DV.cmp.favorite.name.getValue()) {
-                                                                                this.enable();
-                                                                                DV.cmp.favorite.label.setText('');
-                                                                                return;
+                                                                                var index = DV.store.favorite.findExact('name', DV.cmp.favorite.name.getValue());
+                                                                                if (index != -1) {
+                                                                                    if (DV.store.favorite.getAt(index).data.userId || DV.init.system.user.isAdmin) {
+                                                                                        this.enable();
+                                                                                        DV.cmp.favorite.label.setText('');
+                                                                                        return true;
+                                                                                    }
+                                                                                    else {
+                                                                                        DV.cmp.favorite.label.setText(DV.i18n.system_favorite_overwrite_not_allowed);
+                                                                                    }
+                                                                                }
+                                                                                else {
+                                                                                    this.enable();
+                                                                                    DV.cmp.favorite.label.setText('');
+                                                                                    return true;
+                                                                                }
                                                                             }
                                                                             else {
                                                                                 DV.cmp.favorite.label.setText('');
@@ -2915,20 +2938,21 @@ Ext.onReady( function() {
                                                                             }																				
                                                                         }
                                                                         this.disable();
+                                                                        return false;
                                                                     },
                                                                     handler: function() {
-                                                                        var value = DV.cmp.favorite.name.getValue();
-                                                                        if (DV.state.isRendered && value) {
+                                                                        if (this.xable()) {
+                                                                            var value = DV.cmp.favorite.name.getValue();
                                                                             if (DV.store.favorite.findExact('name', value) != -1) {
                                                                                 var item = value.length > 40 ? (value.substr(0,40) + '...') : value;
                                                                                 var w = Ext.create('Ext.window.Window', {
-                                                                                    title: 'Save favorite',
+                                                                                    title: DV.i18n.save_favorite,
                                                                                     width: DV.conf.layout.window_confirm_width,
                                                                                     bodyStyle: 'padding:10px 5px; background-color:#fff; text-align:center',
                                                                                     modal: true,
                                                                                     items: [
                                                                                         {
-                                                                                            html: DV.i18n.area_you_sure,
+                                                                                            html: DV.i18n.are_you_sure,
                                                                                             bodyStyle: 'border-style:none'
                                                                                         },
                                                                                         {
@@ -3056,7 +3080,7 @@ Ext.onReady( function() {
                                 var svg = document.getElementsByTagName('svg');
                                 
                                 if (svg.length < 1) {
-                                    alert(DV.i18n.browser_download_alert);
+                                    alert(DV.i18n.alert_browser_download);
                                     return;
                                 }
                                 
