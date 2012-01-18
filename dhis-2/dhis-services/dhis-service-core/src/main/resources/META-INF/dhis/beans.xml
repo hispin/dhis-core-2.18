@@ -290,7 +290,6 @@ http://www.springframework.org/schema/security http://www.springframework.org/sc
 
   <bean id="org.hisp.dhis.datadictionary.DataDictionaryService" class="org.hisp.dhis.datadictionary.DefaultDataDictionaryService">
     <property name="dataDictionaryStore" ref="org.hisp.dhis.datadictionary.DataDictionaryStore" />
-    <property name="i18nService" ref="org.hisp.dhis.i18n.I18nService" />
   </bean>
 
   <bean id="org.hisp.dhis.indicator.IndicatorService" class="org.hisp.dhis.indicator.DefaultIndicatorService">
@@ -555,14 +554,16 @@ http://www.springframework.org/schema/security http://www.springframework.org/sc
         <ref bean="I18nDataElement" />
         <ref bean="I18nDataElementGroup" />
         <ref bean="I18nDataElementGroupSet" />
-        <ref bean="I18nDataDictionary" />
         <ref bean="I18nIndicator" />
         <ref bean="I18nIndicatorType" />
         <ref bean="I18nIndicatorGroup" />
         <ref bean="I18nIndicatorGroupSet" />
         <ref bean="I18nDataSet" />
         <ref bean="I18nOrganisationUnit" />
+		<ref bean="I18nOrganisationUnitGroup" />
+		<ref bean="I18nOrganisationUnitGroupSet" />
         <ref bean="I18nSection" />
+		<ref bean="I18nDataElementCategory" />
       </list>
     </property>
   </bean>
@@ -672,8 +673,6 @@ http://www.springframework.org/schema/security http://www.springframework.org/sc
         <value>name</value>
         <value>shortName</value>
         <value>description</value>
-        <value>numeratorDescription</value>
-        <value>denominatorDescription</value>
       </list>
     </property>
 
@@ -707,26 +706,6 @@ http://www.springframework.org/schema/security http://www.springframework.org/sc
             <entry key="required" value="false" />
             <entry key="minlength" value="0" />
             <entry key="maxlength" value="200" />
-            <entry key="regex" value="''" />
-            <entry key="message" value="" />
-          </map>
-        </entry>
-        <entry key="numeratorDescription">
-          <map>
-            <entry key="unique" value="false" />
-            <entry key="required" value="false" />
-            <entry key="minlength" value="0" />
-            <entry key="maxlength" value="100" />
-            <entry key="regex" value="''" />
-            <entry key="message" value="" />
-          </map>
-        </entry>
-        <entry key="denominatorDescription">
-          <map>
-            <entry key="unique" value="false" />
-            <entry key="required" value="false" />
-            <entry key="minlength" value="0" />
-            <entry key="maxlength" value="100" />
             <entry key="regex" value="''" />
             <entry key="message" value="" />
           </map>
@@ -807,59 +786,12 @@ http://www.springframework.org/schema/security http://www.springframework.org/sc
     </property>
   </bean>
 
-  <bean id="I18nDataDictionary" class="org.hisp.dhis.i18n.I18nObject">
-    <property name="className" value="DataDictionary" />
-    <property name="propertyNames">
-      <list>
-        <value>name</value>
-        <value>description</value>
-        <value>region</value>
-      </list>
-    </property>
-
-    <property name="rulePropertyNames">
-      <map>
-        <entry key="name">
-          <map>
-            <entry key="unique" value="true" />
-            <entry key="required" value="true" />
-            <entry key="minlength" value="2" />
-            <entry key="maxlength" value="160" />
-            <entry key="regex" value="''" />
-            <entry key="message" value="" />
-          </map>
-        </entry>
-        <entry key="description">
-          <map>
-            <entry key="unique" value="false" />
-            <entry key="required" value="false" />
-            <entry key="minlength" value="0" />
-            <entry key="maxlength" value="200" />
-            <entry key="regex" value="''" />
-            <entry key="message" value="" />
-          </map>
-        </entry>
-        <entry key="region">
-          <map>
-            <entry key="unique" value="false" />
-            <entry key="required" value="false" />
-            <entry key="minlength" value="0" />
-            <entry key="maxlength" value="255" />
-            <entry key="regex" value="''" />
-            <entry key="message" value="" />
-          </map>
-        </entry>
-      </map>
-    </property>
-  </bean>
-
   <bean id="I18nOrganisationUnit" class="org.hisp.dhis.i18n.I18nObject">
     <property name="className" value="OrganisationUnit" />
     <property name="propertyNames">
       <list>
         <value>name</value>
         <value>shortName</value>
-        <value>comment</value>
       </list>
     </property>
 
@@ -885,16 +817,6 @@ http://www.springframework.org/schema/security http://www.springframework.org/sc
               <value><![CDATA[/^[^\d][^\^\-(&lt;&gt;&apos;&quot;){=+}\[!@#$%*\]\\/`:~|;,\.\?]*$/]]></value>
             </entry>
             <entry key="message" value="translation_shortname_wellformed" />
-          </map>
-        </entry>
-        <entry key="comment">
-          <map>
-            <entry key="unique" value="false" />
-            <entry key="required" value="false" />
-            <entry key="minlength" value="0" />
-            <entry key="maxlength" value="360" />
-            <entry key="regex" value="''" />
-            <entry key="message" value="" />
           </map>
         </entry>
       </map>
@@ -997,8 +919,8 @@ http://www.springframework.org/schema/security http://www.springframework.org/sc
     </property>
   </bean>
 
-  <bean id="I18nDataElementCategory" class="org.hisp.dhis.i18n.I18nObject">
-    <property name="className" value="DataElementCategory" />
+  <bean id="I18nSection" class="org.hisp.dhis.i18n.I18nObject">
+    <property name="className" value="Section" />
     <property name="propertyNames">
       <list>
         <value>name</value>
@@ -1021,8 +943,8 @@ http://www.springframework.org/schema/security http://www.springframework.org/sc
     </property>
   </bean>
 
-  <bean id="I18nSection" class="org.hisp.dhis.i18n.I18nObject">
-    <property name="className" value="Section" />
+  <bean id="I18nDataElementCategory" class="org.hisp.dhis.i18n.I18nObject">
+    <property name="className" value="DataElementCategory" />
     <property name="propertyNames">
       <list>
         <value>name</value>
