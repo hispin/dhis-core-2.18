@@ -79,8 +79,12 @@ hide_data_table:'$encoder.jsEscape($i18n.getString( 'hide_data_table' ) , "'")',
 data_elemenent_store_does_not_exist:'$encoder.jsEscape($i18n.getString( 'data_elemenent_store_does_not_exist' ) , "'")',
 saving:'$encoder.jsEscape($i18n.getString( 'saving' ) , "'")',
 renaming:'$encoder.jsEscape($i18n.getString( 'renaming' ) , "'")',
-Deleting:'$encoder.jsEscape($i18n.getString( 'Deleting' ) , "'")'
-
-
+deleting:'$encoder.jsEscape($i18n.getString( 'deleting' ) , "'")',
+data:'$encoder.jsEscape($i18n.getString( 'data' ) , "'")',
+indicator:'$encoder.jsEscape($i18n.getString( 'indicator' ) , "'")',
+data_element:'$encoder.jsEscape($i18n.getString( 'data_element' ) , "'")',
+period:'$encoder.jsEscape($i18n.getString( 'period' ) , "'")',
+organisation_unit:'$encoder.jsEscape($i18n.getString( 'organisation_unit' ) , "'")',
+invalid_uid:'$encoder.jsEscape($i18n.getString( 'invalid_uid' ) , "'")'
 
 };
