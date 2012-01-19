@@ -66,11 +66,11 @@
 				<tbody id="list">
 				#foreach( $dataElement in $dataElements )
 				<tr id="tr${dataElement.id}">
-					<td onclick="showDataElementDetails( $dataElement.id )">$encoder.htmlEncode( $dataElement.name )</td>
+					<td onclick="showDataElementDetails( $dataElement.id )">$encoder.htmlEncode( $dataElement.displayName )</td>
 					<td style="text-align:right">
 					  <a href="showUpdateDataElementForm.action?id=$dataElement.id" title="$i18n.getString( 'edit' )"><img src="../images/edit.png" alt="$i18n.getString( 'edit' )"/></a>
 					  <a href="javascript:translate( 'DataElement', '$dataElement.id' )" title="$i18n.getString( 'translation_translate' )"><img src="../images/i18n.png" alt="$i18n.getString( 'translation_translate' )"/></a>
-					  <a href="javascript:removeDataElement( $dataElement.id, '$encoder.jsEncode( $dataElement.name )' )" title="$i18n.getString( 'remove' )"><img src="../images/delete.png" alt="$i18n.getString( 'remove' )"/></a>
+					  <a href="javascript:removeDataElement( $dataElement.id, '$encoder.jsEncode( $dataElement.displayName )' )" title="$i18n.getString( 'remove' )"><img src="../images/delete.png" alt="$i18n.getString( 'remove' )"/></a>
 					  <a href="javascript:showDataElementDetails( $dataElement.id )" title="$i18n.getString( 'show_details' )"><img src="../images/information.png" alt="$i18n.getString( 'show_details' )"/></a>
 					</td>
 				</tr>

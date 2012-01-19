@@ -21,8 +21,8 @@
 	<td style="width:20em">
         <select id="loc" name="loc" onchange="getTranslation()" style="min-width:20em">
             <option value="NONE">$i18n.getString( "translation_select_locale" )</option>
-			#foreach ( $locale in $availableLocales )
-				<option value="$locale" #if( $currentLocale == $locale ) selected="selected" #end>$!locale.displayName</option>
+			#foreach ( $loc in $availableLocales )
+				<option value="$loc" #if( $locale == $loc ) selected="selected" #end>$!loc.displayName</option>
 			#end
 		</select>
     </td>

@@ -297,14 +297,6 @@
       </result>
     </action>
 
-    <action name="validateAddDuplicatedTranslation" class="org.hisp.dhis.i18n.action.ValidateAddDuplicatedTranslationAction">
-      <result name="success" type="velocity-json">
-        /dhis-web-commons/ajax/jsonResponseSuccess.vm</result>
-      <result name="input" type="velocity-json">
-        /dhis-web-commons/ajax/jsonResponseInput.vm</result>
-      <param name="onExceptionReturn">plainTextError</param>
-    </action>
-
     <action name="getTranslations" class="org.hisp.dhis.i18n.action.GetTranslationsAction">
       <result name="success" type="velocity-json">
         /dhis-web-commons/i18n/jsonTranslations.vm</result>
