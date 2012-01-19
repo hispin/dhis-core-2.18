@@ -80,7 +80,7 @@ $(document).ready(function() {
 			insertDataElement();
 		} 
 		else if( $("#totalsTab").is(":visible") ) {
-			insertTotals();
+			insertTotal();
 		}
 		else {
 			insertIndicator();
