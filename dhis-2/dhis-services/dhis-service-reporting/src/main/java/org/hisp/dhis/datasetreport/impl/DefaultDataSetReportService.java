@@ -27,7 +27,7 @@ package org.hisp.dhis.datasetreport.impl;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import static org.hisp.dhis.dataentryform.DataEntryFormService.IDENTIFIER_PATTERN;
+import static org.hisp.dhis.dataentryform.DataEntryFormService.*;
 import static org.hisp.dhis.dataentryform.DataEntryFormService.INDICATOR_PATTERN;
 import static org.hisp.dhis.dataentryform.DataEntryFormService.INPUT_PATTERN;
 import static org.hisp.dhis.options.SystemSettingManager.AGGREGATION_STRATEGY_REAL_TIME;
@@ -395,6 +395,17 @@ public class DefaultDataSetReportService
                     map.put( dataElement.getId() + SEPARATOR + categoryOptionCombo.getId(), value );
                 }
             }
+            
+            Double aggregatedValue = aggregationStrategy.equals( AGGREGATION_STRATEGY_REAL_TIME ) ? 
+                aggregationService.getAggregatedDataValue( dataElement, null, period.getStartDate(), period.getEndDate(), unit ) : 
+                aggregatedDataValueService.getAggregatedValue( dataElement, period, unit );
+                
+            String value = format.formatValue( aggregatedValue );
+            
+            if ( value != null )
+            {
+                map.put( String.valueOf( dataElement.getId() ), value );
+            }
         }
 
         return map;
@@ -464,6 +475,7 @@ public class DefaultDataSetReportService
             String inputHtml = inputMatcher.group( 1 );
 
             Matcher identifierMatcher = IDENTIFIER_PATTERN.matcher( inputHtml );
+            Matcher dataElementTotalMatcher = DATAELEMENT_TOTAL_PATTERN.matcher( inputHtml );
             Matcher indicatorMatcher = INDICATOR_PATTERN.matcher( inputHtml );
 
             // -----------------------------------------------------------------
@@ -476,6 +488,16 @@ public class DefaultDataSetReportService
                 Integer optionComboId = Integer.parseInt( identifierMatcher.group( 2 ) );
 
                 String dataValue = dataValues.get( dataElementId + SEPARATOR + optionComboId );
+
+                dataValue = dataValue != null ? dataValue : NULL_REPLACEMENT;
+
+                inputMatcher.appendReplacement( buffer, dataValue );
+            }
+            else if ( dataElementTotalMatcher.find() && dataElementTotalMatcher.groupCount() > 0 )
+            {
+                Integer dataElementId = Integer.parseInt( dataElementTotalMatcher.group( 1 ) );
+                
+                String dataValue = dataValues.get( String.valueOf( dataElementId ) );
 
                 dataValue = dataValue != null ? dataValue : NULL_REPLACEMENT;
 
