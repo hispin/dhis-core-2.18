@@ -1,8 +1,5 @@
 package org.hisp.dhis.common;
 
-
-import java.util.Date;
-
 /*
  * Copyright (c) 2004-2012, University of Oslo
  * All rights reserved.
@@ -30,16 +27,18 @@ import java.util.Date;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import java.util.Date;
+
 public interface IdentifiableObject
     extends ImportableObject, LinkableObject, Comparable<IdentifiableObject>
 {
-    public abstract int getId();
+    int getId();
 
-    public abstract String getUid();
+    String getUid();
 
-    public abstract String getName();
+    String getName();
 
-    public abstract String getCode();
+    String getCode();
 
-    public abstract Date getLastUpdated();
+    Date getLastUpdated();
 }
