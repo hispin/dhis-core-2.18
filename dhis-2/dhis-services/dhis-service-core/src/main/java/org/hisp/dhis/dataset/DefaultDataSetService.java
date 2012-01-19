@@ -90,14 +90,10 @@ public class DefaultDataSetService
 
     public int addDataSet( DataSet dataSet )
     {
-        int id = dataSetStore.save( dataSet );
-
-        i18nService.addObject( dataSet );
-
         log.info( AuditLogUtil.logMessage( currentUserService.getCurrentUsername(),
             AuditLogUtil.ACTION_ADD, DataSet.class.getSimpleName(), dataSet.getName() ) );
 
-        return id;
+        return dataSetStore.save( dataSet );
     }
 
     public void updateDataSet( DataSet dataSet )
@@ -106,8 +102,6 @@ public class DefaultDataSetService
 
         log.info( AuditLogUtil.logMessage( currentUserService.getCurrentUsername(),
             AuditLogUtil.ACTION_EDIT, DataSet.class.getSimpleName(), dataSet.getName() ) );
-
-        i18nService.verify( dataSet );
     }
 
     public void deleteDataSet( DataSet dataSet )

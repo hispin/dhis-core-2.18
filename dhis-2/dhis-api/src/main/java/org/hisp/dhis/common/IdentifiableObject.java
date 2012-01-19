@@ -32,6 +32,8 @@ import java.util.Date;
 public interface IdentifiableObject
     extends ImportableObject, LinkableObject, Comparable<IdentifiableObject>
 {
+    final String[] I18N_PROPERTIES = { "name" };
+    
     int getId();
 
     String getUid();
@@ -41,4 +43,6 @@ public interface IdentifiableObject
     String getCode();
 
     Date getLastUpdated();
+
+    String getDisplayName();
 }

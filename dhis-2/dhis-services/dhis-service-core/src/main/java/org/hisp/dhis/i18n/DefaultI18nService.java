@@ -27,13 +27,16 @@ package org.hisp.dhis.i18n;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import static org.hisp.dhis.i18n.locale.LocaleManager.DHIS_STANDARD_LOCALE;
 import static org.hisp.dhis.system.util.ReflectionUtils.getClassName;
 import static org.hisp.dhis.system.util.ReflectionUtils.getId;
 import static org.hisp.dhis.system.util.ReflectionUtils.getProperty;
 import static org.hisp.dhis.system.util.ReflectionUtils.isCollection;
 import static org.hisp.dhis.system.util.ReflectionUtils.setProperty;
 
+import java.text.DateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Hashtable;
@@ -41,6 +44,8 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
+import org.hisp.dhis.common.IdentifiableObject;
+import org.hisp.dhis.common.NameableObject;
 import org.hisp.dhis.i18n.locale.LocaleManager;
 import org.hisp.dhis.translation.Translation;
 import org.hisp.dhis.translation.TranslationService;
@@ -70,17 +75,6 @@ public class DefaultI18nService
     }
 
     // -------------------------------------------------------------------------
-    // Setters
-    // -------------------------------------------------------------------------
-
-    private Collection<I18nObject> objects;
-
-    public void setObjects( Collection<I18nObject> objects )
-    {
-        this.objects = objects;
-    }
-
-    // -------------------------------------------------------------------------
     // Internationalise
     // -------------------------------------------------------------------------
 
@@ -94,7 +88,7 @@ public class DefaultI18nService
         internationalise( object, localeManager.getCurrentLocale() );
     }
 
-    public void localise( Object object, Locale locale )
+    public void localise( Object object, Locale locale ) //TODO remove/rename?
     {
         if ( isCollection( object ) )
         {
@@ -106,169 +100,96 @@ public class DefaultI18nService
 
     private void internationalise( Object object, Locale locale )
     {
-        I18nObject i18nObject = isI18nObject( object );
-
-        if ( i18nObject != null && locale != null )
-        {
-            Collection<Translation> translations = translationService.getTranslations( getClassName( object ),
-                getId( object ), locale );
-
-            Map<String, String> translationsCurrentLocale = convertTranslations( translations );
-
-            Collection<Translation> translationsFallback = null; // Not initialized unless needed
-            Map<String, String> translationsFallbackLocale = null; // Not initialized unless needed
-
-            List<String> propertyNames = i18nObject.getPropertyNames();
-
-            for ( String property : propertyNames )
-            {
-                String value = translationsCurrentLocale.get( property );
-
-                if ( value != null && !value.isEmpty() )
-                {
-                    setProperty( object, property, value );
-                }
-                else
-                {
-                    if ( translationsFallback == null )
-                    {
-                        translationsFallback = translationService.getTranslations( getClassName( object ),
-                            getId( object ), localeManager.getFallbackLocale() );
-
-                        translationsFallbackLocale = convertTranslations( translationsFallback );
-                    }
-
-                    value = translationsFallbackLocale.get( property );
-
-                    if ( value != null && !value.isEmpty() )
-                    {
-                        setProperty( object, property, value );
-                    }
-                }
-            }
-        }
-    }
-
-    private void internationaliseCollection( Collection<?> intObjects )
-    {
-        internationaliseCollection( intObjects, localeManager.getCurrentLocale() );
-    }
-
-    private void internationaliseCollection( Collection<?> intObjects, Locale locale )
-    {
-        if ( intObjects == null || intObjects.size() == 0 )
+        if ( object == null || DHIS_STANDARD_LOCALE.equals( locale ) )
         {
             return;
-        }
-
-        I18nObject i18nObject = isI18nObject( intObjects.iterator().next() );
-
-        if ( i18nObject != null && locale != null )
+        }        
+        
+        List<String> properties = getTranslationProperties( object );
+        
+        Collection<Translation> translations = translationService.getTranslations( getClassName( object ),
+            getId( object ), locale );
+        
+        Map<String, String> translationMap = convertTranslations( translations );
+        
+        for ( String property : properties )
         {
-            Collection<Translation> allTranslations = translationService.getTranslations( i18nObject.getClassName(), locale );
-
-            Collection<Translation> fallbackTranslations = null; // Not initialized unless needed
-            Map<String, String> fallbackTranslationsMap = null; // Not initialized unless needed
-
-            for ( Object object : intObjects )
+            String value = translationMap.get( property );
+            
+            if ( value != null && !value.isEmpty() )
             {
-                Map<String, String> translations = getTranslationsForObject( allTranslations, getId( object ) );
-                for ( Map.Entry<String, String> translation : translations.entrySet() )
-                {
-                    String property = translation.getKey();
-                    String value = translation.getValue();
-
-                    if ( value != null && !value.isEmpty() )
-                    {
-                        setProperty( object, property, value );
-                    }
-                    else
-                    {
-                        if ( fallbackTranslations == null )
-                        {
-                            fallbackTranslations = translationService.getTranslations( i18nObject.getClassName(),
-                                locale );
-
-                            fallbackTranslationsMap = getTranslationsForObject( fallbackTranslations, getId( object ) );
-                        }
-
-                        value = fallbackTranslationsMap.get( property );
-
-                        if ( value != null && !value.isEmpty() )
-                        {
-                            setProperty( object, property, value );
-                        }
-                    }
-                }
+                setProperty( object, "display", property, value );
             }
         }
     }
 
+    private void internationaliseCollection( Collection<?> objects )
+    {
+        internationaliseCollection( objects, localeManager.getCurrentLocale() );
+    }
+
+    private void internationaliseCollection( Collection<?> objects, Locale locale )
+    {
+        if ( objects == null || objects.size() == 0 || DHIS_STANDARD_LOCALE.equals( locale ) )
+        {
+            return;
+        }        
+        
+        Object peek = objects.iterator().next();
+
+        List<String> properties = getTranslationProperties( peek );
+        
+        Collection<Translation> translations = translationService.getTranslations( getClassName( peek ), locale );
+
+        for ( Object object : objects )
+        {
+            Map<String, String> translationMap = getTranslationsForObject( translations, getId( object ) );
+            
+            for ( String property : properties )
+            {
+                String value = translationMap.get( property );
+                
+                if ( value != null && !value.isEmpty() )
+                {
+                    setProperty( object, "display", property, value );
+                }
+            }
+        }
+    }
+    
+    public Map<String, String> getObjectTranslations( Object object )
+    {
+        List<String> properties = getTranslationProperties( object );
+        
+        Map<String, String> translations = new HashMap<String, String>();
+        
+        for ( String property : properties )
+        {
+            translations.put( property, getProperty( object, property ) );
+        }
+        
+        return translations;
+    }
+
+    public List<String> getTranslationProperties( Object object )
+    {
+        if ( object == null || !( object instanceof IdentifiableObject ) )
+        {
+            throw new IllegalArgumentException( "I18n objects must be not null and identifiable" );
+        }
+        
+        return ( object instanceof NameableObject ) ? Arrays.asList( NameableObject.I18N_PROPERTIES ) : Arrays.asList( IdentifiableObject.I18N_PROPERTIES );        
+    }
+    
     // -------------------------------------------------------------------------
     // Object
     // -------------------------------------------------------------------------
-
-    public void addObject( Object object )
-    {
-        I18nObject i18nObject = isI18nObject( object );
-
-        Locale locale = localeManager.getCurrentLocale();
-
-        if ( i18nObject != null && locale != null )
-        {
-            String className = getClassName( object );
-            int id = getId( object );
-
-            Map<String, String> translations = new Hashtable<String, String>();
-
-            for ( String property : i18nObject.getPropertyNames() )
-            {
-                String value = getProperty( object, property );
-
-                if ( value != null && !value.isEmpty() )
-                {
-                    translations.put( property, value );
-                }
-                else
-                {
-                	translations.put( property, "" );
-                }
-            }
-
-            updateTranslation( className, id, locale, translations );
-        }
-    }
-
-    public void verify( Object object )
-    {
-        if ( isI18nObject( object ) != null )
-        {
-            addObject( object );
-
-            // -----------------------------------------------------------------
-            // Set properties from fallback locale
-            // -----------------------------------------------------------------
-
-            if ( !localeManager.getCurrentLocale().equals( localeManager.getFallbackLocale() ) )
-            {
-                internationalise( object, localeManager.getFallbackLocale() );
-            }
-        }
-    }
 
     public void removeObject( Object object )
     {
         if ( object != null )
         {
             translationService.deleteTranslations( getClassName( object ), getId( object ) );
-        }
-    }
-
-    public void setToFallback( Object object )
-    {
-        if ( isI18nObject( object ) != null )
-        {
-            internationalise( object, localeManager.getFallbackLocale() );
         }
     }
 
@@ -309,123 +230,10 @@ public class DefaultI18nService
     {
         return convertTranslations( translationService.getTranslations( className, id, locale ) );
     }
-
-    // -------------------------------------------------------------------------
-    // Property
-    // -------------------------------------------------------------------------
-
-    public List<String> getPropertyNames( String className )
+    
+    public List<Locale> getAvailableLocales()
     {
-        for ( I18nObject i18nObject : objects )
-        {
-            if ( i18nObject.getClassName().equals( className ) )
-            {
-                return i18nObject.getPropertyNames();
-            }
-        }
-
-        return null;
-    }
-
-    public Map<String, String> getPropertyNamesLabel( String className )
-    {
-        for ( I18nObject i18nObject : objects )
-        {
-            if ( i18nObject.getClassName().equals( className ) )
-            {
-                Map<String, String> propertyNamesLabel = new Hashtable<String, String>();
-
-                for ( String property : i18nObject.getPropertyNames() )
-                {
-                    propertyNamesLabel.put( property, convertPropertyToKey( property ) );
-                }
-
-                return propertyNamesLabel;
-            }
-        }
-
-        return null;
-    }
-
-    public Map<String, Map<String, String>> getRulePropertyNames( String className )
-    {
-        for ( I18nObject i18nObject : objects )
-        {
-            if ( i18nObject.getClassName().equals( className ) )
-            {
-                return i18nObject.getRulePropertyNames();
-            }
-        }
-
-        return null;
-    }
-
-    public List<String> getUniquePropertyNames( String className )
-    {
-        for ( I18nObject i18nObject : objects )
-        {
-            if ( i18nObject.getClassName().equals( className ) )
-            {
-                List<String> uniqueProperyNames = new ArrayList<String>();
-                Map<String, Map<String, String>> rules = i18nObject.getRulePropertyNames();
-
-                for ( String property : getPropertyNames( className ) )
-                {
-                    if ( rules.get( property ).get( "unique" ).equals( "true" ) )
-                    {
-                        uniqueProperyNames.add( property );
-                    }
-                }
-
-                return uniqueProperyNames;
-            }
-        }
-
-        return null;
-    }
-
-    public Map<String, String> getUniquePropertyNamesLabel( String className )
-    {
-        for ( I18nObject i18Object : objects )
-        {
-            if ( i18Object.getClassName().equals( className ) )
-            {
-                Map<String, String> uniquePropertyNamesLabel = new HashMap<String, String>();
-
-                for ( String uniqueProperty : getUniquePropertyNames( className ) )
-                {
-                    uniquePropertyNamesLabel.put( uniqueProperty, convertPropertyToKey( uniqueProperty ) );
-                }
-
-                return uniquePropertyNamesLabel;
-            }
-        }
-
-        return null;
-    }
-
-    // -------------------------------------------------------------------------
-    // Locale
-    // -------------------------------------------------------------------------
-
-    public Collection<Locale> getAvailableLocales()
-    {
-        List<Locale> locales = localeManager.getLocalesOrderedByPriority();
-
-        Collection<Locale> translationLocales = translationService.getAvailableLocales();
-
-        if ( translationLocales != null )
-        {
-            for ( Locale locale : translationLocales )
-            {
-                if ( !locales.contains( locale ) )
-                {
-                    locales.add( locale );
-                }
-            }
-        }
-
-        return locales;
+        return Arrays.asList( DateFormat.getAvailableLocales() );
     }
 
     // -------------------------------------------------------------------------
@@ -476,56 +284,5 @@ public class DefaultI18nService
         }
 
         return translationMap;
-    }
-
-    /**
-     * Converts the property to a i18n keystring alternativeName produces
-     * alternative_name.
-     * 
-     * @param propName string to parse.
-     * @return the modified string.
-     */
-    private String convertPropertyToKey( String propName )
-    {
-        StringBuffer str = new StringBuffer();
-
-        char[] chars = propName.toCharArray();
-
-        for ( int i = 0; i < chars.length; i++ )
-        {
-            if ( Character.isUpperCase( chars[i] ) )
-            {
-                str.append( "_" ).append( Character.toLowerCase( chars[i] ) );
-            }
-            else
-            {
-                str.append( chars[i] );
-            }
-        }
-
-        return str.toString();
-    }
-
-    /**
-     * Test if an object is not null and enabled for i18n. Returns the
-     * I18nObject if so. Returns null if not so.
-     * 
-     * @param object the object to test.
-     * @return the I18nObject or null.
-     */
-    private I18nObject isI18nObject( Object object )
-    {
-        if ( object != null )
-        {
-            for ( I18nObject i18nObject : objects )
-            {
-                if ( i18nObject.match( object ) )
-                {
-                    return i18nObject;
-                }
-            }
-        }
-
-        return null;
     }
 }

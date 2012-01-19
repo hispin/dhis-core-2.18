@@ -1,13 +1,4 @@
-<script>
-//-----------------------------------------------------------------------
-//init jQuery validation for translateForm
-//-----------------------------------------------------------------------
-	jQuery(document).ready(	function(){
-		validation( 'translateForm', function( form ){ form.submit()} );	
-		setMessage( '$!message' );
-	});
 
-</script>
 <input type="hidden" id="curLocaleCode" value="$locale.getLanguage()_$locale.getCountry()"/>
 
 <form id="translateForm" action="translate.action" method="post">
@@ -29,32 +20,19 @@
 	<td style="width:12em"></td>
 	<td style="width:20em">
         <select id="loc" name="loc" onchange="getTranslation()" style="min-width:20em">
-            <option value="heading">$i18n.getString( "translation_select_locale" )</option>
-			#foreach ($locale in $availableLocales )
-				<option value="$locale" #if( $currentLocale == $locale ) selected="selected" #end>$locale.displayName</option>
+            <option value="NONE">$i18n.getString( "translation_select_locale" )</option>
+			#foreach ( $locale in $availableLocales )
+				<option value="$locale" #if( $currentLocale == $locale ) selected="selected" #end>$!locale.displayName</option>
 			#end
 		</select>
     </td>
-    <td style="width:20em">
-        <select id="referenceLoc" name="referenceLocal" onchange="getReference()" style="min-width:20em">
-            <option value="heading">$i18n.getString( "translation_select_ref" )</option>
-			#foreach ($locale in $availableLocales )
-			    <option value="$locale" #if( $currentRefLocale == $locale ) selected="selected" #end>$locale.displayName</option>
-			#end
-		</select>
-    </td>
+    <td style="width:20em"></td>
     </tr>
 	#foreach ( $propertyName in $propertyNames )
 	<tr>
-	    #set ($prop = $propertyNamesLabel.get( $propertyName ))
-	    #set ($rules = $rulePropertyNames.get( $propertyName ))
-		
-		<td style="width:10em"><label for="$propertyName" style="width:20em">$i18n.getString( "translation_label_$prop" ) </label></td>
-		<td>
-			<input type="text" id="$propertyName" name="$propertyName" maxlength="$rules.get('maxlength')" value="$encoder.htmlEncode( $translations.get( $propertyName ) )" style="width:20em" 
-				class="{validate:{required:$rules.get('required'),minlength:$rules.get('minlength'),custome_regex:[$rules.get('regex'),'$i18n.getString( $rules.get('message') )']}}"/>
-		</td>
-		<td><span id="$propertyName Ref" name="$propertyName Ref" style="width:20em">$encoder.htmlEncode( $referenceTranslations.get( $propertyName ) )</span></td>
+		<td style="width:10em"><label style="width:20em">$i18n.getString( "translation_label_$propertyName" )</label></td>
+		<td><input type="text" id="$propertyName" name="$propertyName" value="$!encoder.htmlEncode( $translations.get( $propertyName ) )" style="width:20em"/></td>
+		<td><span style="width:20em">$!encoder.htmlEncode( $referenceTranslations.get( $propertyName ) )</span></td>
 	</tr>
 	#end
 	<tr>
@@ -66,41 +44,14 @@
 	</tr>
 </table>
 </form>
-<h3>$i18n.getString( "translation_addlocale")</h3>
-<table>
-	<tr>
-		<th colspan="2">Details</th>
-	</tr>
-	<tr>
-		<td style="width:12em"><label for="language">$i18n.getString( "translation_languagecode" )</label></td>
-		<td><input type="text" id="language" name="language" size="2" style="width:20em"/></td>
-	</tr>
-	<tr>
-		<td><label for="country">$i18n.getString( "translation_countrycode" ) </label></td>
-		<td><input type="text" id="country" name="country" size="2" style="width:20em"/></td>
-	</tr>
-	<tr>
-		<td></td>
-		<td><input type="button" value="$i18n.getString( 'translation_add' )" onclick="addLocale()" style="width:10em"/></td>
-		<td></td>
-	</tr>
-</table>
 
 <span id="message"></span>
 
 <script type="text/javascript">
-
     var propNames = new Array()
     #set( $count = 0 )
     #foreach ( $propertyName in $propertyNames )
         propNames[$count] = "$propertyName";
         #set( $count = $count + 1 )
     #end
-
-    var locale_added = '$i18n.getString( "translation_locale_added" )';
-    var language_must_be_two_chars = '$i18n.getString( "translation_language_must_be_two_chars" )';
-    var country_must_be_two_chars = '$i18n.getString( "translation_country_must_be_two_chars" )';
-    var variant_must_be_specified = '$i18n.getString( "translation_variant_must_be_specified" )';
-    var locale_already_exists = '$i18n.getString( "translation_locale_already_exists" )';
-	
 </script>

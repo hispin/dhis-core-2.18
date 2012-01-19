@@ -27,7 +27,6 @@ package org.hisp.dhis.i18n.action;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.List;
 import java.util.Locale;
 
 import org.apache.commons.logging.Log;
@@ -35,7 +34,6 @@ import org.apache.commons.logging.LogFactory;
 import org.hisp.dhis.i18n.I18n;
 import org.hisp.dhis.i18n.I18nService;
 import org.hisp.dhis.system.util.LocaleUtils;
-import org.hisp.dhis.translation.Translation;
 import org.hisp.dhis.translation.TranslationService;
 
 import com.opensymphony.xwork2.Action;
@@ -169,6 +167,7 @@ public class ValidateAddDuplicatedTranslationAction
         // Checking duplicated name
         // -------------------------------------------------------------
 
+        /*
         List<String> propertyNames = i18nService.getPropertyNames( className );
 
         for ( String propertyName : propertyNames )
@@ -206,7 +205,7 @@ public class ValidateAddDuplicatedTranslationAction
                 }
             }
         }
-
+*/
         message = "OK";
 
         return SUCCESS;

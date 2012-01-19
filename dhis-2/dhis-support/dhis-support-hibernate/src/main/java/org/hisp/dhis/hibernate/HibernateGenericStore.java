@@ -69,7 +69,7 @@ public class HibernateGenericStore<T>
     /**
      * Could be overridden programmatically.
      */
-    protected Class<T> getClazz()
+    public Class<T> getClazz()
     {
         return clazz;
     }

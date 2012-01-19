@@ -62,6 +62,20 @@ public class BaseNameableObject
      * Description of this Object.
      */
     protected String description;
+    
+    /**
+     * The i18n variant of the short name. Should not be persisted.
+     */
+    protected transient String displayShortName;
+    
+    /**
+     * The i18n variant of the description. Should not be persisted.
+     */
+    protected transient String displayDescription;
+
+    // -------------------------------------------------------------------------
+    // Constructors
+    // -------------------------------------------------------------------------
 
     public BaseNameableObject()
     {
@@ -111,5 +125,25 @@ public class BaseNameableObject
     public void setDescription( String description )
     {
         this.description = description;
+    }
+
+    public String getDisplayShortName()
+    {
+        return displayShortName != null && !displayShortName.trim().isEmpty() ? displayShortName : shortName;
+    }
+
+    public void setDisplayShortName( String displayShortName )
+    {
+        this.displayShortName = displayShortName;
+    }
+
+    public String getDisplayDescription()
+    {
+        return displayDescription != null && !displayDescription.trim().isEmpty() ? displayDescription : description;
+    }
+
+    public void setDisplayDescription( String displayDescription )
+    {
+        this.displayDescription = displayDescription;
     }
 }

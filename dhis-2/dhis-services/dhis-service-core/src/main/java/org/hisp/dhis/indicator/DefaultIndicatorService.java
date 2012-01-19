@@ -92,18 +92,12 @@ public class DefaultIndicatorService
 
     public int addIndicator( Indicator indicator )
     {
-        int id = indicatorStore.save( indicator );
-
-        i18nService.addObject( indicator );
-
-        return id;
+        return indicatorStore.save( indicator );
     }
 
     public void updateIndicator( Indicator indicator )
     {
         indicatorStore.update( indicator );
-
-        i18nService.verify( indicator );
     }
 
     public void deleteIndicator( Indicator indicator )
@@ -207,18 +201,12 @@ public class DefaultIndicatorService
 
     public int addIndicatorType( IndicatorType indicatorType )
     {
-        int id = indicatorTypeStore.save( indicatorType );
-
-        i18nService.addObject( indicatorType );
-
-        return id;
+        return indicatorTypeStore.save( indicatorType );
     }
 
     public void updateIndicatorType( IndicatorType indicatorType )
     {
         indicatorTypeStore.update( indicatorType );
-
-        i18nService.verify( indicatorType );
     }
 
     public void deleteIndicatorType( IndicatorType indicatorType )
@@ -287,18 +275,12 @@ public class DefaultIndicatorService
 
     public int addIndicatorGroup( IndicatorGroup indicatorGroup )
     {
-        int id = indicatorGroupStore.save( indicatorGroup );
-
-        i18nService.addObject( indicatorGroup );
-
-        return id;
+        return indicatorGroupStore.save( indicatorGroup );
     }
 
     public void updateIndicatorGroup( IndicatorGroup indicatorGroup )
     {
         indicatorGroupStore.update( indicatorGroup );
-
-        i18nService.verify( indicatorGroup );
     }
 
     public void deleteIndicatorGroup( IndicatorGroup indicatorGroup )
@@ -386,18 +368,12 @@ public class DefaultIndicatorService
 
     public int addIndicatorGroupSet( IndicatorGroupSet groupSet )
     {
-        int id = indicatorGroupSetStore.save( groupSet );
-
-        i18nService.addObject( groupSet );
-
-        return id;
+        return indicatorGroupSetStore.save( groupSet );
     }
 
     public void updateIndicatorGroupSet( IndicatorGroupSet groupSet )
     {
         indicatorGroupSetStore.update( groupSet );
-
-        i18nService.verify( groupSet );
     }
 
     public void deleteIndicatorGroupSet( IndicatorGroupSet groupSet )
