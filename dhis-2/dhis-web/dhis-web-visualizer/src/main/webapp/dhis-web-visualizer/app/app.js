@@ -991,6 +991,7 @@ Ext.onReady( function() {
         dataelementIds: [],
         relativePeriods: {},
         organisationunitIds: [],
+        hideLegend: false,
         isRendered: false,
         getState: function(exe) {
             this.resetState();
@@ -1023,6 +1024,8 @@ Ext.onReady( function() {
             this.dataelementIds = DV.util.dimension.dataelement.getIds();
             this.relativePeriods = DV.util.dimension.period.getRelativePeriodObject();
             this.organisationunitIds = DV.util.dimension.organisationunit.getIds();
+            
+            this.hideLegend = DV.cmp.favorite.hidelegend.getValue();
             
             this.isRendered = true;
             
@@ -1127,6 +1130,7 @@ Ext.onReady( function() {
                         
                         DV.cmp.favorite.trendline.setValue(f.regression);
                         DV.cmp.favorite.hidesubtitle.setValue(f.hideSubtitle);
+                        this.hideLegend = f.hideLegend;
                         DV.cmp.favorite.hidelegend.setValue(f.hideLegend);
                         DV.cmp.favorite.userorganisationunit.setValue(f.userOrganisationUnit);
                         DV.cmp.favorite.xaxislabel.setValue(f.domainAxisLabel);
@@ -1256,7 +1260,7 @@ Ext.onReady( function() {
                 store: DV.store.chart,
                 insetPadding: DV.conf.chart.style.inset,
                 items: DV.util.chart.getTitle(),
-                legend: DV.util.chart.getLegend(),
+                legend: DV.state.hideLegend ? false : DV.util.chart.getLegend(),
                 axes: [
                     {
                         type: 'Numeric',
@@ -1299,7 +1303,7 @@ Ext.onReady( function() {
                 store: DV.store.chart,
                 insetPadding: DV.conf.chart.style.inset,
                 items: DV.util.chart.getTitle(),
-                legend: DV.util.chart.getLegend(DV.store.chart.bottom.length),
+                legend: DV.state.hideLegend ? false : DV.util.chart.getLegend(DV.store.chart.bottom.length),
                 axes: [
                     {
                         type: 'Category',
@@ -1342,7 +1346,7 @@ Ext.onReady( function() {
                 store: DV.store.chart,
                 insetPadding: DV.conf.chart.style.inset,
                 items: DV.util.chart.getTitle(),
-                legend: DV.util.chart.getLegend(),
+                legend: DV.state.hideLegend ? false : DV.util.chart.getLegend(),
                 axes: [
                     {
                         type: 'Numeric',
@@ -1371,7 +1375,7 @@ Ext.onReady( function() {
                 store: DV.store.chart,
                 insetPadding: DV.conf.chart.style.inset,
                 items: DV.util.chart.getTitle(),
-                legend: DV.util.chart.getLegend(),
+                legend: DV.state.hideLegend ? false : DV.util.chart.getLegend(),
                 axes: [
                     {
                         type: 'Numeric',
@@ -1409,7 +1413,7 @@ Ext.onReady( function() {
                 store: DV.store.chart,
                 insetPadding: 60,
                 items: DV.util.chart.pie.getTitle(),
-                legend: DV.util.chart.getLegend(DV.state.category.names.length),
+                legend: DV.state.hideLegend ? false : DV.util.chart.getLegend(DV.state.category.names.length),
                 series: [{
                     type: 'pie',
                     field: DV.store.chart.left[0],
