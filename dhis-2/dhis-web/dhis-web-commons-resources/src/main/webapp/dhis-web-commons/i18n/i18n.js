@@ -2,34 +2,38 @@ function getTranslation()
 {
 	clearFields();
 
-    var loc = getFieldValue( 'loc' );
+    var loc = $( '#loc :selected' ).val();
 	
-	if ( loc != "heading" )
+	if ( loc != 'NONE' )
 	{
 		jQuery.postJSON( 'getTranslations.action', {
 			id: getFieldValue( 'objectId' ),
 			className: getFieldValue( 'className' ),
 			loc: loc
-		}, function ( json ) {
-			
+		}, 
+		function ( json ) 
+		{			
 			var translations = json.translations;
 
 			for ( var i = 0; i < translations.length; i++ )
 			{
-				var field = byId( translations[i].key );
-
-				if ( field != null ) field.value = translations[i].value;
+				var fieldId = '#' + translations[i].key;
+				
+				if ( $( fieldId ).length )
+				{
+					var fieldValue = translations[i].value;
+					
+					$( fieldId ).val( fieldValue );
+				}
 			}
-		});
+		} );
 	}
 }
 
 function clearFields( prefix )
 {
-	prefix = prefix ? prefix : '';
-	
     for ( var i = 0; i < propNames.length; i++ )
     {
-        byId( propNames[i] + prefix ).innerHTML = "";
+        $( '#' + propNames[i] ).val( '' );
     }
 }

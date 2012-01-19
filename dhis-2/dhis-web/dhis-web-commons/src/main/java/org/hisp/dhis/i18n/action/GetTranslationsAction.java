@@ -38,13 +38,12 @@ import com.opensymphony.xwork2.ActionSupport;
 /**
  * @author Oyvind Brucker
  */
-@SuppressWarnings("serial")
 public class GetTranslationsAction 
     extends ActionSupport
 {
     private String className;
 
-    private String id;
+    private Integer id;
 
     private String loc;
 
@@ -70,7 +69,7 @@ public class GetTranslationsAction
         this.className = className;
     }
 
-    public void setId( String id )
+    public void setId( Integer id )
     {
         this.id = id;
     }
@@ -94,7 +93,7 @@ public class GetTranslationsAction
     {
         Locale locale = LocaleUtils.getLocale( loc );
 
-        translations = i18nService.getTranslations( className, Integer.parseInt( id ), locale );
+        translations = i18nService.getTranslations( className, id, locale );
         
         return SUCCESS;
     }
