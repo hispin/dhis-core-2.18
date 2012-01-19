@@ -730,11 +730,11 @@ Ext.onReady( function() {
                     params.hideSubtitle = DV.cmp.favorite.hidesubtitle.getValue();
                     params.hideLegend = DV.cmp.favorite.hidelegend.getValue();
                     params.userOrganisationUnit = DV.cmp.favorite.userorganisationunit.getValue();
-                    if (DV.cmp.favorite.xaxislabel.getValue()) {
-                        params.xAxisLabel = DV.cmp.favorite.xaxislabel.getValue();
+                    if (DV.cmp.favorite.domainaxislabel.getValue()) {
+                        params.domainAxisLabel = DV.cmp.favorite.domainaxislabel.getValue();
                     }
-                    if (DV.cmp.favorite.yaxislabel.getValue()) {
-                        params.yAxisLabel = DV.cmp.favorite.yaxislabel.getValue();
+                    if (DV.cmp.favorite.rangeaxislabel.getValue()) {
+                        params.rangeAxisLabel = DV.cmp.favorite.rangeaxislabel.getValue();
                     }
                     if (DV.cmp.favorite.targetlinevalue.getValue()) {
                         params.targetLineValue = DV.cmp.favorite.targetlinevalue.getValue();
@@ -992,6 +992,8 @@ Ext.onReady( function() {
         relativePeriods: {},
         organisationunitIds: [],
         hideLegend: false,
+        domainAxisLabel: null,
+        rangeAxisLabel: null,
         isRendered: false,
         getState: function(exe) {
             this.resetState();
@@ -1026,6 +1028,8 @@ Ext.onReady( function() {
             this.organisationunitIds = DV.util.dimension.organisationunit.getIds();
             
             this.hideLegend = DV.cmp.favorite.hidelegend.getValue();
+            this.domainAxisLabel = DV.cmp.favorite.domainaxislabel.getValue();
+            this.rangeAxisLabel = DV.cmp.favorite.rangeaxislabel.getValue();
             
             this.isRendered = true;
             
@@ -1133,8 +1137,10 @@ Ext.onReady( function() {
                         this.hideLegend = f.hideLegend;
                         DV.cmp.favorite.hidelegend.setValue(f.hideLegend);
                         DV.cmp.favorite.userorganisationunit.setValue(f.userOrganisationUnit);
-                        DV.cmp.favorite.xaxislabel.setValue(f.domainAxisLabel);
-                        DV.cmp.favorite.yaxislabel.setValue(f.rangeAxisLabel);
+                        this.domainAxisLabel = f.domainAxisLabel;
+                        DV.cmp.favorite.domainaxislabel.setValue(f.domainAxisLabel);
+                        this.rangeAxisLabel = f.rangeAxisLabel;
+                        DV.cmp.favorite.rangeaxislabel.setValue(f.rangeAxisLabel);
                         DV.cmp.favorite.targetlinevalue.setValue(f.targetLineValue);
                         DV.cmp.favorite.targetlinelabel.xable();
                         DV.cmp.favorite.targetlinelabel.setValue(f.targetLineLabel);
@@ -1160,6 +1166,7 @@ Ext.onReady( function() {
             this.dataelementIds = [];
             this.relativePeriods = {};
             this.organisationunitIds = [];
+            this.hideLegend = false;
         }
     };
     
@@ -1265,6 +1272,7 @@ Ext.onReady( function() {
                     {
                         type: 'Numeric',
                         position: 'left',
+                        title: DV.state.rangeAxisLabel || false,
                         minimum: 0,
                         fields: DV.store.chart.left,
                         label: DV.util.chart.label.getNumericLabel(),
@@ -1275,6 +1283,7 @@ Ext.onReady( function() {
                     {
                         type: 'Category',
                         position: 'bottom',
+                        title: DV.state.domainAxisLabel || false,
                         fields: DV.store.chart.bottom,
                         label: DV.util.chart.label.getCategoryLabel()
                     }
@@ -1308,12 +1317,14 @@ Ext.onReady( function() {
                     {
                         type: 'Category',
                         position: 'left',
+                        title: DV.state.domainAxisLabel || false,
                         fields: DV.store.chart.left,
                         label: DV.util.chart.bar.getCategoryLabel()
                     },
                     {
                         type: 'Numeric',
                         position: 'bottom',
+                        title: DV.state.rangeAxisLabel || false,
                         minimum: 0,
                         fields: DV.store.chart.bottom,
                         label: DV.util.chart.label.getNumericLabel(),
@@ -1351,6 +1362,7 @@ Ext.onReady( function() {
                     {
                         type: 'Numeric',
                         position: 'left',
+                        title: DV.state.rangeAxisLabel || false,
                         minimum: 0,
                         fields: DV.store.chart.left,
                         label: DV.util.chart.label.getNumericLabel(),
@@ -1361,6 +1373,7 @@ Ext.onReady( function() {
                     {
                         type: 'Category',
                         position: 'bottom',
+                        title: DV.state.domainAxisLabel || false,
                         fields: DV.store.chart.bottom,
                         label: DV.util.chart.label.getCategoryLabel()
                     }
@@ -1380,6 +1393,7 @@ Ext.onReady( function() {
                     {
                         type: 'Numeric',
                         position: 'left',
+                        title: DV.state.rangeAxisLabel || false,
                         minimum: 0,
                         fields: DV.store.chart.left,
                         label: DV.util.chart.label.getNumericLabel(),
@@ -1390,6 +1404,7 @@ Ext.onReady( function() {
                     {
                         type: 'Category',
                         position: 'bottom',
+                        title: DV.state.domainAxisLabel || false,
                         fields: DV.store.chart.bottom,
                         label: DV.util.chart.label.getCategoryLabel()
                     }
@@ -2310,7 +2325,7 @@ Ext.onReady( function() {
                                             {
                                                 xtype: 'checkbox',
                                                 cls: 'dv-checkbox-alt1',
-                                                style: 'margin-right:26px',
+                                                style: 'margin-right:25px',
                                                 boxLabel: DV.i18n.trend_line,
                                                 labelWidth: DV.conf.layout.form_label_width,
                                                 listeners: {
@@ -2322,7 +2337,7 @@ Ext.onReady( function() {
                                             {
                                                 xtype: 'checkbox',
                                                 cls: 'dv-checkbox-alt1',
-                                                style: 'margin-right:26px',
+                                                style: 'margin-right:24px',
                                                 boxLabel: DV.i18n.hide_subtitle,
                                                 labelWidth: DV.conf.layout.form_label_width,
                                                 listeners: {
@@ -2334,7 +2349,7 @@ Ext.onReady( function() {
                                             {
                                                 xtype: 'checkbox',
                                                 cls: 'dv-checkbox-alt1',
-                                                style: 'margin-right:26px',
+                                                style: 'margin-right:25px',
                                                 boxLabel: DV.i18n.hide_legend,
                                                 labelWidth: DV.conf.layout.form_label_width,
                                                 listeners: {
@@ -2365,7 +2380,7 @@ Ext.onReady( function() {
                                                 xtype: 'textfield',
                                                 cls: 'dv-textfield-alt1',
                                                 style: 'margin-right:4px',
-                                                fieldLabel: DV.i18n.x_axis_label,
+                                                fieldLabel: DV.i18n.domain_axis_label,
                                                 labelAlign: 'top',
                                                 labelSeparator: '',
                                                 maxLength: 100,
@@ -2374,14 +2389,14 @@ Ext.onReady( function() {
                                                 width: 188,
                                                 listeners: {
                                                     added: function() {
-                                                        DV.cmp.favorite.xaxislabel = this;
+                                                        DV.cmp.favorite.domainaxislabel = this;
                                                     }
                                                 }
                                             },
                                             {
                                                 xtype: 'textfield',
                                                 cls: 'dv-textfield-alt1',
-                                                fieldLabel: DV.i18n.y_axis_label,
+                                                fieldLabel: DV.i18n.range_axis_label,
                                                 labelAlign: 'top',
                                                 labelSeparator: '',
                                                 maxLength: 100,
@@ -2390,7 +2405,7 @@ Ext.onReady( function() {
                                                 width: 187,
                                                 listeners: {
                                                     added: function() {
-                                                        DV.cmp.favorite.yaxislabel = this;
+                                                        DV.cmp.favorite.rangeaxislabel = this;
                                                     }
                                                 }
                                             }
@@ -2514,23 +2529,6 @@ Ext.onReady( function() {
                             text: DV.i18n.update,
                             handler: function() {
                                 DV.exe.execute(true, DV.init.cmd);
-                            }
-                        },
-                        {
-                            xtype: 'button',
-							cls: 'dv-toolbar-btn-2',
-                            text: DV.i18n.data_table,
-                            handler: function() {
-                                var p = DV.cmp.region.east;
-                                if (p.collapsed && p.items.length) {
-                                    p.expand();
-                                    DV.cmp.toolbar.resizeeast.show();
-                                    DV.exe.datatable(true);
-                                }
-                                else {
-                                    p.collapse();
-                                    DV.cmp.toolbar.resizeeast.hide();
-                                }
                             }
                         },
                         {
@@ -3126,6 +3124,23 @@ Ext.onReady( function() {
                                             }
                                         ]                                            
                                     });
+                                }
+                            }
+                        },
+                        {
+                            xtype: 'button',
+							cls: 'dv-toolbar-btn-2',
+                            text: DV.i18n.data_table,
+                            handler: function() {
+                                var p = DV.cmp.region.east;
+                                if (p.collapsed && p.items.length) {
+                                    p.expand();
+                                    DV.cmp.toolbar.resizeeast.show();
+                                    DV.exe.datatable(true);
+                                }
+                                else {
+                                    p.collapse();
+                                    DV.cmp.toolbar.resizeeast.hide();
                                 }
                             }
                         },
