@@ -32,7 +32,7 @@ package org.hisp.dhis.common;
  */
 public interface LinkableObject
 {
-    public String getLink();
+    String getLink();
 
-    public void setLink( String link );
+    void setLink( String link );
 }

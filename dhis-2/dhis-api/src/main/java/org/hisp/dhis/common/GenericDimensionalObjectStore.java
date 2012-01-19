@@ -35,7 +35,8 @@ import org.hisp.dhis.concept.Concept;
  * @author bobj
  * @version created 23-Nov-2011
  */
-public interface GenericDimensionalObjectStore<T> extends GenericIdentifiableObjectStore<T>
+public interface GenericDimensionalObjectStore<T> 
+    extends GenericIdentifiableObjectStore<T>
 {
-    public Collection<T> getByConcept(Concept concept);    
+    Collection<T> getByConcept(Concept concept);    
 }
