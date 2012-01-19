@@ -307,15 +307,6 @@
 	</property>
   </bean>
 
-  <bean id="org.hisp.dhis.i18n.action.ValidateAddDuplicatedTranslationAction" class="org.hisp.dhis.i18n.action.ValidateAddDuplicatedTranslationAction">
-    <property name="i18nService">
-      <ref bean="org.hisp.dhis.i18n.I18nService" />
-    </property>
-    <property name="translationService">
-      <ref bean="org.hisp.dhis.translation.TranslationService" />
-    </property>
-  </bean>
-
   <!-- About -->
 
   <bean id="org.hisp.dhis.about.action.AboutAction" class="org.hisp.dhis.about.action.AboutAction" scope="prototype">

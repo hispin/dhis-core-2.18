@@ -86,18 +86,22 @@ public class DefaultI18nService
         {
             internationaliseCollection( (Collection<?>) object );
         }
-
-        internationalise( object, localeManager.getCurrentLocale() );
+        else
+        {
+            internationalise( object, localeManager.getCurrentLocale() );
+        }
     }
 
-    public void localise( Object object, Locale locale ) //TODO remove/rename?
+    public void localise( Object object, Locale locale )
     {
         if ( isCollection( object ) )
         {
             internationaliseCollection( (Collection<?>) object, locale );
         }
-
-        internationalise( object, locale );
+        else
+        {
+            internationalise( object, locale );
+        }
     }
 
     private void internationalise( Object object, Locale locale )
@@ -175,9 +179,9 @@ public class DefaultI18nService
 
     public List<String> getTranslationProperties( Object object )
     {
-        if ( object == null || !( object instanceof IdentifiableObject ) )
+        if ( !( object instanceof IdentifiableObject ) )
         {
-            throw new IllegalArgumentException( "I18n objects must be not null and identifiable" );
+            throw new IllegalArgumentException( "I18n object must be identifiable: " + object );
         }
         
         return ( object instanceof NameableObject ) ? Arrays.asList( NameableObject.I18N_PROPERTIES ) : Arrays.asList( IdentifiableObject.I18N_PROPERTIES );        

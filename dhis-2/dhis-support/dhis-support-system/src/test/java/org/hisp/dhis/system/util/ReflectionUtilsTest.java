@@ -38,6 +38,8 @@ import static org.hisp.dhis.system.util.ReflectionUtils.isCollection;
 import static org.hisp.dhis.system.util.ReflectionUtils.setProperty;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
 
 import org.hisp.dhis.dataelement.DataElement;
@@ -97,9 +99,13 @@ public class ReflectionUtilsTest
     @Test
     public void testIsCollection()
     {
-        List<Object> list = new ArrayList<Object>();
+        List<Object> colA = new ArrayList<Object>();
+        Collection<DataElement> colB = new HashSet<DataElement>();
+        Collection<DataElement> colC = new ArrayList<DataElement>();
         
-        assertTrue( isCollection( list ) );
+        assertTrue( isCollection( colA ) );
+        assertTrue( isCollection( colB ) );
+        assertTrue( isCollection( colC ) );
         assertFalse( isCollection( dataElementA ) );
     }
 }
