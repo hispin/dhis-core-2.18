@@ -30,7 +30,6 @@ package org.hisp.dhis.i18n;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
-import java.util.Collection;
 
 /**
  * @author Oyvind Brucker
@@ -49,17 +48,15 @@ public interface I18nService
     
     public void localise( Object object, Locale locale );
     
+    Map<String, String> getObjectTranslations( Object object );
+    
+    List<String> getTranslationProperties( Object object );
+    
     // -------------------------------------------------------------------------
     // Object
     // -------------------------------------------------------------------------
 
-    public void addObject( Object object );
-
-    public void verify( Object object );
-
     public void removeObject( Object object );
-
-    public void setToFallback( Object object );
 
     // -------------------------------------------------------------------------
     // Translation
@@ -68,24 +65,6 @@ public interface I18nService
     public void updateTranslation( String className, int id, Locale thisLocale, Map<String, String> translations );
 
     public Map<String, String> getTranslations( String className, int id, Locale locale );
-
-    // -------------------------------------------------------------------------
-    // Property
-    // -------------------------------------------------------------------------
-
-    public List<String> getPropertyNames( String className );
-
-    public List<String> getUniquePropertyNames( String className );
-
-    public Map<String, String> getPropertyNamesLabel( String className );
-
-    public Map<String, String> getUniquePropertyNamesLabel( String className );
     
-    public Map<String, Map<String, String>> getRulePropertyNames( String className );
-
-    // -------------------------------------------------------------------------
-    // Locale
-    // -------------------------------------------------------------------------
-
-    public Collection<Locale> getAvailableLocales();
+    List<Locale> getAvailableLocales();
 }

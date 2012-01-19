@@ -27,13 +27,14 @@ package org.hisp.dhis.i18n.action;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.Collection;
-import java.util.HashMap;
+import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
+import org.hisp.dhis.common.IdentifiableObject;
+import org.hisp.dhis.common.IdentifiableObjectManager;
 import org.hisp.dhis.i18n.I18nService;
 import org.hisp.dhis.i18n.locale.LocaleManager;
 
@@ -50,19 +51,19 @@ public class I18nAction
 {
     private String className;
 
-    private String objectId;
+    private Integer objectId;
 
     private String returnUrl;
 
     private String message;
 
+    private List<Locale> availableLocales = new ArrayList<Locale>();
+    
     private Map<String, String> translations = new Hashtable<String, String>();
 
     private Map<String, String> referenceTranslations = new Hashtable<String, String>();
-
-    private Map<String, String> propertyLabels = new Hashtable<String, String>();
-
-    private Map<String, Map<String, String>> rulePropertyNames = new HashMap<String, Map<String, String>>();
+    
+    private List<String> propertyNames = new ArrayList<String>();
 
     // -------------------------------------------------------------------------
     // Dependencies
@@ -81,6 +82,13 @@ public class I18nAction
     {
         this.localeManager = localeManager;
     }
+    
+    private IdentifiableObjectManager identifiableObjectManager;
+
+    public void setIdentifiableObjectManager( IdentifiableObjectManager identifiableObjectManager )
+    {
+        this.identifiableObjectManager = identifiableObjectManager;
+    }
 
     // -------------------------------------------------------------------------
     // Input
@@ -91,7 +99,7 @@ public class I18nAction
         this.className = className;
     }
 
-    public void setObjectId( String objectId )
+    public void setObjectId( Integer objectId )
     {
         this.objectId = objectId;
     }
@@ -115,7 +123,7 @@ public class I18nAction
         return className;
     }
 
-    public String getObjectId()
+    public Integer getObjectId()
     {
         return objectId;
     }
@@ -125,25 +133,14 @@ public class I18nAction
         return returnUrl;
     }
 
-    public Collection<Locale> getAvailableLocales()
-        throws Exception
+    public String getMessage()
     {
-        return i18nService.getAvailableLocales();
+        return message;
     }
 
-    public List<String> getPropertyNames()
+    public List<Locale> getAvailableLocales()
     {
-        return i18nService.getPropertyNames( className );
-    }
-
-    public Map<String, String> getPropertyNamesLabel()
-    {
-        return propertyLabels;
-    }
-    
-    public Map<String, Map<String, String>> getRulePropertyNames()
-    {
-        return rulePropertyNames;
+        return availableLocales;
     }
 
     public Map<String, String> getReferenceTranslations()
@@ -156,19 +153,9 @@ public class I18nAction
         return translations;
     }
 
-    public Locale getCurrentLocale()
+    public List<String> getPropertyNames()
     {
-        return localeManager.getCurrentLocale();
-    }
-
-    public Locale getCurrentRefLocale()
-    {
-        return localeManager.getFallbackLocale();
-    }
-
-    public String getMessage()
-    {
-        return message;
+        return propertyNames;
     }
 
     // -------------------------------------------------------------------------
@@ -178,32 +165,16 @@ public class I18nAction
     public String execute()
         throws Exception
     {
-        rulePropertyNames = i18nService.getRulePropertyNames( className );
+        availableLocales = i18nService.getAvailableLocales();
         
-        propertyLabels = i18nService.getPropertyNamesLabel( className );
+        translations = i18nService.getTranslations( className, objectId, localeManager.getCurrentLocale() );
 
-        translations = i18nService.getTranslations( className, Integer.parseInt( objectId ), getCurrentLocale() );
+        IdentifiableObject object = identifiableObjectManager.getObject( objectId, className );
 
-        referenceTranslations = i18nService.getTranslations( className, Integer.parseInt( objectId ),
-            getCurrentRefLocale() );
+        referenceTranslations = i18nService.getObjectTranslations( object );
 
-        /**
-         * Fill in empty strings for null values
-         */
-
-        for ( String property : getPropertyNames() )
-        {
-            if ( translations.get( property ) == null )
-            {
-                translations.put( property, "" );
-            }
-            if ( referenceTranslations.get( property ) == null )
-            {
-                referenceTranslations.put( property, "" );
-            }
-        }
+        propertyNames = i18nService.getTranslationProperties( object );
 
         return SUCCESS;
     }
-
 }

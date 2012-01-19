@@ -84,8 +84,8 @@ public class ReflectionUtils
      * if the operation fails.
      *
      * @param object Object to modify
-     * @param name   Name of property to set
-     * @param value  Value the property will be set to
+     * @param name Name of property to set
+     * @param value Value the property will be set to
      */
     public static void setProperty( Object object, String name, String value )
     {
@@ -108,6 +108,22 @@ public class ReflectionUtils
                 throw new UnsupportedOperationException( "Failed to set property", ex );
             }
         }
+    }
+
+    /**
+     * Sets a property for the supplied object. Throws an UnsupportedOperationException
+     * if the operation fails.
+     *
+     * @param object Object to modify
+     * @param namePrefix prefix of the property name to set 
+     * @param name Name of property to set
+     * @param value Value the property will be set to
+     */
+    public static void setProperty( Object object, String namePrefix, String name, String value )
+    {
+        String prefixed = namePrefix + name.substring( 0, 1 ).toUpperCase() + name.substring( 1, name.length() );
+        
+        setProperty( object, prefixed, value );
     }
 
     /**

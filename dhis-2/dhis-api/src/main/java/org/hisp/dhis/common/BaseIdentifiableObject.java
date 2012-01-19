@@ -76,6 +76,11 @@ public class BaseIdentifiableObject extends BaseLinkableObject
      * The date this object was last updated.
      */
     protected Date lastUpdated;
+    
+    /**
+     * The i18n variant of the name. Should not be persisted.
+     */
+    protected transient String displayName;
 
     // -------------------------------------------------------------------------
     // Constructors
@@ -163,6 +168,16 @@ public class BaseIdentifiableObject extends BaseLinkableObject
     public void setLastUpdated( Date lastUpdated )
     {
         this.lastUpdated = lastUpdated;
+    }
+
+    public String getDisplayName()
+    {
+        return displayName != null && !displayName.trim().isEmpty() ? displayName : name;
+    }
+
+    public void setDisplayName( String displayName )
+    {
+        this.displayName = displayName;
     }
 
     // -------------------------------------------------------------------------

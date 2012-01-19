@@ -37,28 +37,21 @@ import javax.servlet.http.HttpServletRequest;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.struts2.ServletActionContext;
-import org.hisp.dhis.i18n.I18n;
+import org.hisp.dhis.common.IdentifiableObject;
+import org.hisp.dhis.common.IdentifiableObjectManager;
 import org.hisp.dhis.i18n.I18nService;
 import org.hisp.dhis.system.util.LocaleUtils;
-import org.hisp.dhis.translation.Translation;
-import org.hisp.dhis.translation.TranslationService;
 
 import com.opensymphony.xwork2.Action;
 
 /**
  * @author Oyvind Brucker
- * @version $Id$
  * @modifier Dang Duy Hieu
- * @since 2010-03-24
  */
 public class TranslateAction
     implements Action
 {
     private static final Log log = LogFactory.getLog( TranslateAction.class );
-
-    private static final String SUFFIX_WARNING_MESSAGE = "_with";
-
-    private static final String PREFIX_WARNING_MESSAGE = "translation_duplicated_";
 
     private String className;
 
@@ -81,22 +74,11 @@ public class TranslateAction
         this.i18nService = i18nService;
     }
 
-    private TranslationService translationService;
+    private IdentifiableObjectManager identifiableObjectManager;
 
-    public void setTranslationService( TranslationService translationService )
+    public void setIdentifiableObjectManager( IdentifiableObjectManager identifiableObjectManager )
     {
-        this.translationService = translationService;
-    }
-
-    // -------------------------------------------------------------------------
-    // I18n Object
-    // -------------------------------------------------------------------------
-
-    private I18n i18n;
-
-    public void setI18n( I18n i18n )
-    {
-        this.i18n = i18n;
+        this.identifiableObjectManager = identifiableObjectManager;
     }
 
     // -------------------------------------------------------------------------
@@ -159,77 +141,35 @@ public class TranslateAction
     public String execute()
         throws Exception
     {
-        log.info( "\n\nClassname: " + className + ", id: " + objectId + ", loc: " + loc );
+        log.info( "Classname: " + className + ", id: " + objectId + ", loc: " + loc );
 
+        IdentifiableObject object = identifiableObjectManager.getObject( Integer.parseInt( objectId ), className );
+
+        List<String> propertyNames = i18nService.getTranslationProperties( object );
+        
         Locale thisLocale = LocaleUtils.getLocale( loc );
 
         HttpServletRequest request = ServletActionContext.getRequest();
 
         Map<String, String> translations = new Hashtable<String, String>();
-
-        List<String> propertyNames = i18nService.getPropertyNames( className );
-        List<String> uniquePropertyNames = i18nService.getUniquePropertyNames( className );
-
+        
         for ( String propertyName : propertyNames )
         {
             String[] translation = request.getParameterValues( propertyName );
 
-            if ( translation != null && translation.length > 0  )
+            if ( translation != null && translation.length > 0 && translation[0] != null && !translation[0].trim().isEmpty() )
             {
-                if ( uniquePropertyNames.contains( propertyName ) && translation[0].length() > 0 )
-                {
-                    if ( this.isDuplicatedInTranslation( thisLocale, propertyName, translation[0] ) )
-                    {
-                        return INPUT;
-                    }
-                }
-                else if ( translation[0].length() == 0 )
-                {
-                	translation[0] = "";
-                }
-
                 translations.put( propertyName, translation[0] );
             }
         }
 
-        log.info( "\nTranslations: " + translations );
+        log.info( "Translations: " + translations );
 
-        if ( thisLocale != null && !loc.equals( "heading" ) )
+        if ( thisLocale != null && !loc.equals( "NONE" ) )
         {
             i18nService.updateTranslation( className, Integer.parseInt( objectId ), thisLocale, translations );
         }
 
-        message = "";
-
         return SUCCESS;
     }
-
-    // -------------------------------------------------------------------------
-    // Supportive methods
-    // -------------------------------------------------------------------------
-
-    private String getBuildUpMessage( Translation obj, String property )
-    {
-        String message = i18n.getString( PREFIX_WARNING_MESSAGE + property + SUFFIX_WARNING_MESSAGE )
-            + " <br/><br/> <center><strong>[ " + className + " ]  -  [ "
-            + i18n.getString( "translation_label_" + property ) + " = \"" + obj.getValue() + "\" ]</strong></center>";
-
-        return message;
-    }
-
-    private boolean isDuplicatedInTranslation( Locale locale, String property, String value )
-    {
-        Translation objMatch = translationService.getTranslation( className, locale, property, value, Integer
-            .parseInt( objectId ) );
-
-        if ( objMatch != null )
-        {
-            message = this.getBuildUpMessage( objMatch, property.toLowerCase() );
-
-            return true;
-        }
-
-        return false;
-    }
-
 }

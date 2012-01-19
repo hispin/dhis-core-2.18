@@ -98,16 +98,12 @@ public class DefaultDataElementService
     {
         int id = dataElementStore.save( dataElement );
 
-        i18nService.addObject( dataElement );
-
         return id;
     }
 
     public void updateDataElement( DataElement dataElement )
     {
         dataElementStore.update( dataElement );
-
-        i18nService.verify( dataElement );
     }
 
     public void deleteDataElement( DataElement dataElement )
@@ -355,16 +351,12 @@ public class DefaultDataElementService
     {
         int id = dataElementGroupStore.save( dataElementGroup );
 
-        i18nService.addObject( dataElementGroup );
-
         return id;
     }
 
     public void updateDataElementGroup( DataElementGroup dataElementGroup )
     {
         dataElementGroupStore.update( dataElementGroup );
-
-        i18nService.verify( dataElementGroup );
     }
 
     public void deleteDataElementGroup( DataElementGroup dataElementGroup )
@@ -455,18 +447,12 @@ public class DefaultDataElementService
 
     public int addDataElementGroupSet( DataElementGroupSet groupSet )
     {
-        int id = dataElementGroupSetStore.save( groupSet );
-
-        i18nService.addObject( groupSet );
-
-        return id;
+        return dataElementGroupSetStore.save( groupSet );
     }
 
     public void updateDataElementGroupSet( DataElementGroupSet groupSet )
     {
         dataElementGroupSetStore.update( groupSet );
-
-        i18nService.verify( groupSet );
     }
 
     public void deleteDataElementGroupSet( DataElementGroupSet groupSet )

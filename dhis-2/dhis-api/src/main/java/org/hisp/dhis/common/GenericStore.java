@@ -36,6 +36,11 @@ import java.util.Collection;
 public interface GenericStore<T>
 {
     /**
+     * Class of the object for this store.
+     */
+    Class<T> getClazz();
+    
+    /**
      * Saves the given object instance.
      * 
      * @param object the object instance.

@@ -71,8 +71,6 @@ public class DefaultSectionService
     {
         int id = sectionStore.save( section );
 
-        i18nService.addObject( section );
-
         return id;
     }
 
@@ -101,7 +99,5 @@ public class DefaultSectionService
     public void updateSection( Section section )
     {
         sectionStore.update( section );
-
-        i18nService.verify( section );
     }
 }
