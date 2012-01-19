@@ -246,18 +246,18 @@ public class AddOrUpdateChartAction
         this.userOrganisationUnit = userOrganisationUnit;
     }
     
-    private String xAxisLabel;
+    private String domainAxisLabel;
 
-    public void setXAxisLabel( String xAxisLabel )
+    public void setDomainAxisLabel( String domainAxisLabel )
     {
-        this.xAxisLabel = xAxisLabel;
+        this.domainAxisLabel = domainAxisLabel;
     }
     
-    private String yAxisLabel;
+    private String rangeAxisLabel;
 
-    public void setYAxisLabel( String yAxisLabel )
+    public void setRangeAxisLabel( String rangeAxisLabel )
     {
-        this.yAxisLabel = yAxisLabel;
+        this.rangeAxisLabel = rangeAxisLabel;
     }
     
     private Double targetLineValue;
@@ -374,14 +374,14 @@ public class AddOrUpdateChartAction
             chart.setUserOrganisationUnit( userOrganisationUnit );
         }
         
-        if ( xAxisLabel != null )
+        if ( domainAxisLabel != null )
         {
-            chart.setDomainAxisLabel( xAxisLabel );
+            chart.setDomainAxisLabel( domainAxisLabel );
         }
         
-        if ( yAxisLabel != null )
+        if ( rangeAxisLabel != null )
         {
-            chart.setRangeAxisLabel( yAxisLabel );
+            chart.setRangeAxisLabel( rangeAxisLabel );
         }
         
         if ( targetLineValue != null )
