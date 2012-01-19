@@ -38,6 +38,8 @@ import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.List;
@@ -233,7 +235,17 @@ public class DefaultI18nService
     
     public List<Locale> getAvailableLocales()
     {
-        return Arrays.asList( DateFormat.getAvailableLocales() );
+        List<Locale> locales = Arrays.asList( DateFormat.getAvailableLocales() );
+        
+        Collections.sort( locales, new Comparator<Locale>()
+            {
+                public int compare( Locale l1, Locale l2 )
+                {
+                    return l1.getDisplayName().compareTo( l2.getDisplayName() );
+                }
+            } );
+        
+        return locales;
     }
 
     // -------------------------------------------------------------------------
