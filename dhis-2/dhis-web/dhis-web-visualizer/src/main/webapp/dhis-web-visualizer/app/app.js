@@ -1059,7 +1059,7 @@ Ext.onReady( function() {
             if (uid) {
                 this.resetState();
                 Ext.Ajax.request({
-                    url: DV.conf.finals.ajax.path_api + DV.conf.finals.ajax.favorite_get + uid + '.json',
+                    url: DV.conf.finals.ajax.path_api + DV.conf.finals.ajax.favorite_get + uid + '.json?links=false',
                     scope: this,
                     success: function(r) {
                         if (!r.responseText) {
