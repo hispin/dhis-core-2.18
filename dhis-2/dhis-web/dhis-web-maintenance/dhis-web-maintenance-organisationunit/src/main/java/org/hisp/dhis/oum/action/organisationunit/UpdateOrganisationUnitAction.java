@@ -28,6 +28,7 @@ package org.hisp.dhis.oum.action.organisationunit;
  */
 
 import static org.hisp.dhis.system.util.TextUtils.nullIfEmpty;
+import static org.hisp.dhis.system.util.ValidationUtils.coordinateIsValid;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -266,9 +267,6 @@ public class UpdateOrganisationUnitAction
 
         OrganisationUnit organisationUnit = organisationUnitService.getOrganisationUnit( id );
 
-        String coordinates = ( longitude != null && latitude != null ) ? ValidationUtils.getCoordinate( longitude,
-            latitude ) : ( organisationUnit.getCoordinates() != null ? organisationUnit.getCoordinates() : null );
-
         // ---------------------------------------------------------------------
         // Update organisation unit
         // ---------------------------------------------------------------------
@@ -285,7 +283,6 @@ public class UpdateOrganisationUnitAction
         organisationUnit.setOpeningDate( oDate );
         organisationUnit.setClosedDate( cDate );
         organisationUnit.setComment( comment );
-        organisationUnit.setCoordinates( coordinates );
         organisationUnit.setUrl( url );
         organisationUnit.setContactPerson( contactPerson );
         organisationUnit.setAddress( address );
@@ -298,6 +295,28 @@ public class UpdateOrganisationUnitAction
                 attributeService );
         }
 
+        // ---------------------------------------------------------------------
+        // Set coordinates and feature type to point if valid
+        // ---------------------------------------------------------------------
+
+        boolean point = organisationUnit.getCoordinates() == null || coordinateIsValid( organisationUnit.getCoordinates() );
+        
+        if ( point )
+        {
+            String coordinates = null;
+            String featureType = null;
+            
+            if ( longitude != null && latitude != null && 
+                ValidationUtils.coordinateIsValid( ValidationUtils.getCoordinate( longitude, latitude ) ) )
+            {
+                coordinates = ValidationUtils.getCoordinate( longitude, latitude );
+                featureType = OrganisationUnit.FEATURETYPE_POINT;
+            }
+            
+            organisationUnit.setCoordinates( coordinates );
+            organisationUnit.setFeatureType( featureType );
+        }
+        
         Set<DataSet> sets = new HashSet<DataSet>();
 
         for ( String id : dataSets )
