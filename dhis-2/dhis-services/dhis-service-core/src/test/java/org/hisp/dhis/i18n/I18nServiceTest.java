@@ -27,14 +27,27 @@ package org.hisp.dhis.i18n;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import static junit.framework.Assert.assertEquals;
+import static junit.framework.Assert.assertNotNull;
+import static junit.framework.Assert.assertTrue;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
+
 import org.hisp.dhis.DhisSpringTest;
+import org.hisp.dhis.dataelement.DataElement;
+import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.i18n.locale.LocaleManager;
 import org.hisp.dhis.mock.MockLocaleManager;
 import org.junit.Before;
 import org.junit.Test;
 
 /**
- * @author Oyvind Brucker
+ * @author Lars Helge Overland
  */
 public class I18nServiceTest
     extends DhisSpringTest
@@ -55,6 +68,8 @@ public class I18nServiceTest
         
         localeManager = new MockLocaleManager();
         
+        dataElementService = (DataElementService) getBean( DataElementService.ID );
+        
         setDependency( i18nService, "localeManager", localeManager );
     }
 
@@ -66,6 +81,116 @@ public class I18nServiceTest
     public void testUpdateTranslation()
         throws Exception
     {
+        Locale locale = Locale.FRANCE;
+        String className = DataElement.class.getSimpleName();
         
+        DataElement dataElementA = createDataElement( 'A' );
+        int idA = dataElementService.addDataElement( dataElementA );
+        
+        Map<String, String> translationsA = new HashMap<String, String>();
+        translationsA.put( "name", "frenchNameA" );
+        translationsA.put( "shortName", "frenchShortNameA" );
+        translationsA.put( "description", "frenchDescriptionA" );        
+        
+        i18nService.updateTranslation( className, idA, locale, translationsA );
+        
+        Map<String, String> actual = i18nService.getTranslations( className, idA, locale );
+        
+        assertNotNull( actual );
+        assertEquals( 3, actual.size() );
+        assertTrue( actual.keySet().contains( "name" ) );
+        assertTrue( actual.values().contains( "frenchNameA" ) );
+    }
+
+    @Test
+    public void testInternationaliseObject()
+    {
+        Locale locale = Locale.FRANCE;
+        String className = DataElement.class.getSimpleName();
+        
+        DataElement dataElementA = createDataElement( 'A' );
+        int idA = dataElementService.addDataElement( dataElementA );
+        
+        Map<String, String> translationsA = new HashMap<String, String>();
+        translationsA.put( "name", "frenchNameA" );
+        translationsA.put( "shortName", "frenchShortNameA" );
+        translationsA.put( "description", "frenchDescriptionA" );        
+        
+        i18nService.updateTranslation( className, idA, locale, translationsA );
+
+        assertEquals( "DataElementA", dataElementA.getDisplayName() );
+        assertEquals( "DataElementShortA", dataElementA.getDisplayShortName() );
+        assertEquals( "DataElementDescriptionA", dataElementA.getDisplayDescription() );
+        
+        i18nService.localise( dataElementA, locale );
+        
+        assertEquals( "frenchNameA", dataElementA.getDisplayName() );
+        assertEquals( "frenchShortNameA", dataElementA.getDisplayShortName() );
+        assertEquals( "frenchDescriptionA", dataElementA.getDisplayDescription() );
+    }    
+
+    @Test
+    public void testInternationaliseCollection()
+    {
+        Locale locale = Locale.FRANCE;
+        String className = DataElement.class.getSimpleName();
+        
+        DataElement dataElementA = createDataElement( 'A' );
+        int idA = dataElementService.addDataElement( dataElementA );
+
+        DataElement dataElementB = createDataElement( 'B' );
+        int idB = dataElementService.addDataElement( dataElementB );
+
+        DataElement dataElementC = createDataElement( 'C' );
+        int idC = dataElementService.addDataElement( dataElementC );
+        
+        List<DataElement> elements = new ArrayList<DataElement>();
+        elements.add( dataElementA );
+        elements.add( dataElementB );
+        elements.add( dataElementC );        
+        
+        Map<String, String> translationsA = new HashMap<String, String>();
+        translationsA.put( "name", "frenchNameA" );
+        translationsA.put( "shortName", "frenchShortNameA" );
+        translationsA.put( "description", "frenchDescriptionA" );
+        
+        Map<String, String> translationsB = new HashMap<String, String>();
+        translationsB.put( "name", "frenchNameB" );
+        translationsB.put( "shortName", "frenchShortNameB" );
+        translationsB.put( "description", "frenchDescriptionB" );
+        
+        Map<String, String> translationsC = new HashMap<String, String>();
+        translationsC.put( "name", "frenchNameC" );
+        translationsC.put( "shortName", "frenchShortNameC" );
+        translationsC.put( "description", "frenchDescriptionC" );        
+
+        i18nService.updateTranslation( className, idA, locale, translationsA );
+        i18nService.updateTranslation( className, idB, locale, translationsB );
+        i18nService.updateTranslation( className, idC, locale, translationsC );
+        
+        i18nService.localise( elements, locale );
+        
+        Iterator<DataElement> elementIter = elements.iterator();
+        
+        assertEquals( "frenchNameA", elementIter.next().getDisplayName() );
+        assertEquals( "frenchNameB", elementIter.next().getDisplayName() );
+        assertEquals( "frenchNameC", elementIter.next().getDisplayName() );
+    }
+    
+    @Test
+    public void testGetObjectPropertyValues()
+    {
+        DataElement dataElementA = createDataElement( 'A' );
+        
+        Map<String, String> values = i18nService.getObjectTranslations( dataElementA );
+        
+        assertNotNull( values );
+        assertEquals( 3, values.size() );
+        assertTrue( values.keySet().contains( "name" ) );
+        assertTrue( values.keySet().contains( "shortName" ) );
+        assertTrue( values.keySet().contains( "description" ) );
+        assertTrue( values.values().contains( "DataElementA" ) );
+        assertTrue( values.values().contains( "DataElementShortA" ) );
+        assertTrue( values.values().contains( "DataElementDescriptionA" ) );
     }
 }

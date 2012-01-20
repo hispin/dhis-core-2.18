@@ -45,6 +45,12 @@ where sd.dataelementid not in (
   where sc.datasetid=ds.datasetid)
 order by ds.name, de.name;
 
+-- Get categories with category memberships
+
+select co.name, c.name from dataelementcategory c 
+join categories_categoryoptions using(categoryid) 
+join dataelementcategoryoption co using(categoryoptionid) order by co.name, c.name;
+
 -- Get orgunit groups which an orgunit is member of
 
 select * from orgunitgroup g
@@ -105,11 +111,11 @@ select * from dataelementcategory where categoryid not in (select distinct categ
 
 select * from categorycombo where categorycomboid not in (select distinct categorycomboid from categorycombos_categories);
 
--- Get category options present in more than one category
+-- Get category options with count of memberships in categories (should only be 1)
 
-select categoryoptionid, (
+select cc.categoryoptionid, co.name, (
 select count(categoryoptionid) from categories_categoryoptions where categoryoptionid=cc.categoryoptionid )
-as categorycount from categories_categoryoptions as cc order by categorycount desc;
+as categorycount from categories_categoryoptions as cc join dataelementcategoryoption co on(cc.categoryoptionid=co.categoryoptionid) order by categorycount desc;
 
 -- Get category option combos without data values (not an error)
 
