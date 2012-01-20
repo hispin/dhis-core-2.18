@@ -51,13 +51,13 @@ public class I18nUtils
     
     public static <T> T i18n( I18nService i18nService, Locale locale, T object )
     {
-        i18nService.localise( object, locale );        
+        i18nService.internationalise( object, locale );        
         return object;
     }
     
     public static <T> Collection<T> i18n( I18nService i18nService, Locale locale, Collection<T> objects )
     {
-        i18nService.localise( objects, locale );        
+        i18nService.internationalise( objects, locale );        
         return objects;
     }
 }
