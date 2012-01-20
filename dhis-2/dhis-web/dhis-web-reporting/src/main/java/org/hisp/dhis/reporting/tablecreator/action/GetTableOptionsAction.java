@@ -53,7 +53,6 @@ import org.hisp.dhis.indicator.Indicator;
 import org.hisp.dhis.indicator.IndicatorGroup;
 import org.hisp.dhis.indicator.IndicatorService;
 import org.hisp.dhis.indicator.comparator.IndicatorGroupNameComparator;
-import org.hisp.dhis.options.displayproperty.DisplayPropertyHandler;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroup;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroupService;
@@ -152,20 +151,6 @@ public class GetTableOptionsAction
     public void setFormat( I18nFormat format )
     {
         this.format = format;
-    }
-
-    private Comparator<OrganisationUnit> organisationUnitComparator;
-
-    public void setOrganisationUnitComparator( Comparator<OrganisationUnit> organisationUnitComparator )
-    {
-        this.organisationUnitComparator = organisationUnitComparator;
-    }
-    
-    private DisplayPropertyHandler displayPropertyHandler;
-    
-    public void setDisplayPropertyHandler( DisplayPropertyHandler displayPropertyHandler )
-    {
-        this.displayPropertyHandler = displayPropertyHandler;
     }
 
     // -------------------------------------------------------------------------
@@ -357,15 +342,13 @@ public class GetTableOptionsAction
             
             dataElements = new ArrayList<DataElement>( dataElementService.getAllDataElements() );            
             Collections.sort( dataElements, new DataElementNameComparator() );            
-            FilterUtils.filter( dataElements, new AggregatableDataElementFilter() );            
-            displayPropertyHandler.handle( dataElements );
+            FilterUtils.filter( dataElements, new AggregatableDataElementFilter() );
             
             indicatorGroups = new ArrayList<IndicatorGroup>( indicatorService.getAllIndicatorGroups() );            
             Collections.sort( indicatorGroups, new IndicatorGroupNameComparator() );
             
             indicators = new ArrayList<Indicator>( indicatorService.getAllIndicators() );            
-            Collections.sort( indicators, indicatorComparator );            
-            displayPropertyHandler.handle( indicators );
+            Collections.sort( indicators, indicatorComparator );
             
             dataSets = new ArrayList<DataSet>( dataSetService.getAllDataSets() );            
             Collections.sort( dataSets, new DataSetNameComparator() ); 
@@ -380,8 +363,7 @@ public class GetTableOptionsAction
         levels = organisationUnitService.getOrganisationUnitLevels();
         
         organisationUnits = new ArrayList<OrganisationUnit>( organisationUnitService.getOrganisationUnitsAtLevel( 1 ) );
-        displayPropertyHandler.handle( organisationUnits );
-        Collections.sort( organisationUnits, organisationUnitComparator );
+        Collections.sort( organisationUnits, new IdentifiableObjectNameComparator() );
         
         organisationUnitGroups = new ArrayList<OrganisationUnitGroup>( organisationUnitGroupService.getOrganisationUnitGroupsWithGroupSets() );
         Collections.sort( organisationUnitGroups, new IdentifiableObjectNameComparator() );

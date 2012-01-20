@@ -29,13 +29,12 @@ package org.hisp.dhis.mapping.action;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 
+import org.hisp.dhis.common.comparator.IdentifiableObjectNameComparator;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementGroup;
 import org.hisp.dhis.dataelement.DataElementService;
-import org.hisp.dhis.options.displayproperty.DisplayPropertyHandler;
 
 import com.opensymphony.xwork2.Action;
 
@@ -55,20 +54,6 @@ public class GetDataElementsByDataElementGroupAction
     public void setDataElementService( DataElementService dataElementService )
     {
         this.dataElementService = dataElementService;
-    }
-
-    private DisplayPropertyHandler displayPropertyHandler;
-
-    public void setDisplayPropertyHandler( DisplayPropertyHandler displayPropertyHandler )
-    {
-        this.displayPropertyHandler = displayPropertyHandler;
-    }
-
-    private Comparator<DataElement> dataElementComparator;
-
-    public void setDataElementComparator( Comparator<DataElement> dataElementComparator )
-    {
-        this.dataElementComparator = dataElementComparator;
     }
 
     // -------------------------------------------------------------------------
@@ -106,9 +91,7 @@ public class GetDataElementsByDataElementGroupAction
         {
             object = new ArrayList<DataElement>( group.getMembers() );
 
-            Collections.sort( object, dataElementComparator );
-            
-            displayPropertyHandler.handle( object );
+            Collections.sort( object, new IdentifiableObjectNameComparator() );
         }
         
         return SUCCESS;

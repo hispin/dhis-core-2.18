@@ -29,16 +29,15 @@ package org.hisp.dhis.dataset.action.dataentryform;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 
+import org.hisp.dhis.common.comparator.IdentifiableObjectNameComparator;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataentryform.DataEntryForm;
 import org.hisp.dhis.dataentryform.DataEntryFormService;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.dataset.DataSetService;
 import org.hisp.dhis.i18n.I18n;
-import org.hisp.dhis.options.displayproperty.DisplayPropertyHandler;
 import org.hisp.dhis.user.UserSettingService;
 
 import com.opensymphony.xwork2.Action;
@@ -80,28 +79,6 @@ public class ViewDataEntryFormAction
     public void setI18n( I18n i18n )
     {
         this.i18n = i18n;
-    }
-
-    // -------------------------------------------------------------------------
-    // Comparator
-    // -------------------------------------------------------------------------
-
-    private Comparator<DataElement> dataElementComparator;
-
-    public void setDataElementComparator( Comparator<DataElement> dataElementComparator )
-    {
-        this.dataElementComparator = dataElementComparator;
-    }
-
-    // -------------------------------------------------------------------------
-    // DisplayPropertyHandler
-    // -------------------------------------------------------------------------
-
-    private DisplayPropertyHandler displayPropertyHandler;
-
-    public void setDisplayPropertyHandler( DisplayPropertyHandler displayPropertyHandler )
-    {
-        this.displayPropertyHandler = displayPropertyHandler;
     }
 
     // -------------------------------------------------------------------------
@@ -169,9 +146,7 @@ public class ViewDataEntryFormAction
         
         dataElementList = new ArrayList<DataElement>( dataSet.getDataElements() );
 
-        Collections.sort( dataElementList, dataElementComparator );
-
-        displayPropertyHandler.handle( dataElementList );
+        Collections.sort( dataElementList, new IdentifiableObjectNameComparator() );
 
         return SUCCESS;
     }

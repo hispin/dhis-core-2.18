@@ -34,7 +34,6 @@ import java.util.List;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.dataelement.comparator.DataElementSortOrderComparator;
-import org.hisp.dhis.options.displayproperty.DisplayPropertyHandler;
 
 import com.opensymphony.xwork2.Action;
 
@@ -57,17 +56,6 @@ public class GetDataElementListSortOrderAction
     }
 
     // -------------------------------------------------------------------------
-    // DisplayPropertyHandler
-    // -------------------------------------------------------------------------
-
-    private DisplayPropertyHandler displayPropertyHandler;
-
-    public void setDisplayPropertyHandler( DisplayPropertyHandler displayPropertyHandler )
-    {
-        this.displayPropertyHandler = displayPropertyHandler;
-    }
-
-    // -------------------------------------------------------------------------
     // Output
     // -------------------------------------------------------------------------
 
@@ -87,8 +75,6 @@ public class GetDataElementListSortOrderAction
         dataElements = new ArrayList<DataElement>( dataElementService.getAllDataElements() );
 
         Collections.sort( dataElements, new DataElementSortOrderComparator() );
-
-        displayPropertyHandler.handle( dataElements );
 
         return SUCCESS;
     }

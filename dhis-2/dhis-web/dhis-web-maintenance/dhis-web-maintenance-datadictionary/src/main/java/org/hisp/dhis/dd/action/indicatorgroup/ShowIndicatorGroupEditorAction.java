@@ -29,14 +29,13 @@ package org.hisp.dhis.dd.action.indicatorgroup;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 
+import org.hisp.dhis.common.comparator.IdentifiableObjectNameComparator;
 import org.hisp.dhis.indicator.Indicator;
 import org.hisp.dhis.indicator.IndicatorGroup;
 import org.hisp.dhis.indicator.IndicatorService;
 import org.hisp.dhis.indicator.comparator.IndicatorGroupNameComparator;
-import org.hisp.dhis.options.displayproperty.DisplayPropertyHandler;
 
 import com.opensymphony.xwork2.Action;
 
@@ -57,28 +56,6 @@ public class ShowIndicatorGroupEditorAction
     public void setIndicatorService( IndicatorService indicatorService )
     {
         this.indicatorService = indicatorService;
-    }
-
-    // -------------------------------------------------------------------------
-    // Comparator
-    // -------------------------------------------------------------------------
-
-    private Comparator<Indicator> indicatorComparator;
-
-    public void setIndicatorComparator( Comparator<Indicator> indicatorComparator )
-    {
-        this.indicatorComparator = indicatorComparator;
-    }
-
-    // -------------------------------------------------------------------------
-    // DisplayPropertyHandler
-    // -------------------------------------------------------------------------
-
-    private DisplayPropertyHandler displayPropertyHandler;
-
-    public void setDisplayPropertyHandler( DisplayPropertyHandler displayPropertyHandler )
-    {
-        this.displayPropertyHandler = displayPropertyHandler;
     }
 
     // -------------------------------------------------------------------------
@@ -110,12 +87,9 @@ public class ShowIndicatorGroupEditorAction
         
         Collections.sort( indicatorGroups, new IndicatorGroupNameComparator() );
 
-        
         indicators = new ArrayList<Indicator>( indicatorService.getAllIndicators() );
         
-        Collections.sort( indicators, indicatorComparator );
-        
-        displayPropertyHandler.handle( indicators );
+        Collections.sort( indicators, new IdentifiableObjectNameComparator() );
         
         return SUCCESS;
     }

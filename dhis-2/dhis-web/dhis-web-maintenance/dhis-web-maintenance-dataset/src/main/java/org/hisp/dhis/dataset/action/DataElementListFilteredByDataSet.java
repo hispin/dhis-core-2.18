@@ -29,14 +29,12 @@ package org.hisp.dhis.dataset.action;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 
+import org.hisp.dhis.common.comparator.IdentifiableObjectNameComparator;
 import org.hisp.dhis.dataelement.DataElement;
-
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.dataset.DataSetService;
-import org.hisp.dhis.options.displayproperty.DisplayPropertyHandler;
 
 import com.opensymphony.xwork2.Action;
 
@@ -52,20 +50,6 @@ public class DataElementListFilteredByDataSet
     public void setDataSetService( DataSetService dataSetService )
     {
         this.dataSetService = dataSetService;
-    }
-
-    private Comparator<DataElement> dataElementComparator;
-
-    public void setDataElementComparator( Comparator<DataElement> dataElementComparator )
-    {
-        this.dataElementComparator = dataElementComparator;
-    }
-
-    private DisplayPropertyHandler displayPropertyHandler;
-
-    public void setDisplayPropertyHandler( DisplayPropertyHandler displayPropertyHandler )
-    {
-        this.displayPropertyHandler = displayPropertyHandler;
     }
 
     private Integer dataSetId;
@@ -112,9 +96,7 @@ public class DataElementListFilteredByDataSet
             
             dataElements = new ArrayList<DataElement>( dataSet.getDataElements() );
 
-            Collections.sort( dataElements, dataElementComparator );
-
-            displayPropertyHandler.handle( dataElements );
+            Collections.sort( dataElements, new IdentifiableObjectNameComparator() );
 
             return SUCCESS;
         }

@@ -33,8 +33,6 @@ import static org.hisp.dhis.user.UserSettingService.KEY_CHARTS_IN_DASHBOARD;
 import java.util.Locale;
 
 import org.hisp.dhis.i18n.locale.LocaleManager;
-import org.hisp.dhis.options.displayproperty.DisplayPropertyManager;
-import org.hisp.dhis.options.sortorder.SortOrderManager;
 import org.hisp.dhis.options.style.StyleManager;
 import org.hisp.dhis.user.UserSettingService;
 
@@ -51,13 +49,6 @@ public class SetGeneralSettingsAction
     // Dependencies
     // -------------------------------------------------------------------------
 
-    private DisplayPropertyManager displayPropertyManager;
-
-    public void setDisplayPropertyManager( DisplayPropertyManager displayPropertyManager )
-    {
-        this.displayPropertyManager = displayPropertyManager;
-    }
-
     private LocaleManager localeManagerInterface;
 
     public void setLocaleManagerInterface( LocaleManager localeManagerInterface )
@@ -70,13 +61,6 @@ public class SetGeneralSettingsAction
     public void setLocaleManagerDB( LocaleManager localeManagerDB )
     {
         this.localeManagerDB = localeManagerDB;
-    }
-
-    private SortOrderManager sortOrderManager;
-
-    public void setSortOrderManager( SortOrderManager sortOrderManager )
-    {
-        this.sortOrderManager = sortOrderManager;
     }
 
     private StyleManager styleManager;
@@ -111,13 +95,6 @@ public class SetGeneralSettingsAction
         this.chartsInDashboard = chartsInDashboard;
     }
 
-    private String currentDisplayProperty;
-
-    public void setCurrentDisplayProperty( String currentDisplayProperty )
-    {
-        this.currentDisplayProperty = currentDisplayProperty;
-    }
-
     private String currentLocale;
 
     public void setCurrentLocale( String locale )
@@ -130,13 +107,6 @@ public class SetGeneralSettingsAction
     public void setCurrentLocaleDb( String currentLocaleDb )
     {
         this.currentLocaleDb = currentLocaleDb;
-    }
-
-    private String currentSortOrder;
-
-    public void setCurrentSortOrder( String currentSortOrder )
-    {
-        this.currentSortOrder = currentSortOrder;
     }
 
     private String currentStyle;
@@ -156,10 +126,6 @@ public class SetGeneralSettingsAction
         localeManagerInterface.setCurrentLocale( getRespectiveLocale( currentLocale ) );
 
         localeManagerDB.setCurrentLocale( getRespectiveLocale( currentLocaleDb ) );
-
-        sortOrderManager.setCurrentSortOrder( currentSortOrder );
-
-        displayPropertyManager.setCurrentDisplayProperty( currentDisplayProperty );
 
         styleManager.setUserStyle( currentStyle );
 

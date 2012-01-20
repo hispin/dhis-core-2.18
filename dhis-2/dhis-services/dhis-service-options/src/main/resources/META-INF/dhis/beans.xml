@@ -3,15 +3,6 @@
   xsi:schemaLocation="
 http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.1.xsd">
 
-  <bean id="org.hisp.dhis.options.sortorder.SortOrderManager" class="org.hisp.dhis.options.sortorder.DefaultSortOrderManager"
-    init-method="init">
-    <property name="userSettingService" ref="org.hisp.dhis.user.UserSettingService" />
-  </bean>
-
-  <bean id="org.hisp.dhis.options.displayproperty.DisplayPropertyManager" class="org.hisp.dhis.options.displayproperty.DefaultDisplayPropertyManager">
-    <property name="userSettingService" ref="org.hisp.dhis.user.UserSettingService" />
-  </bean>
-
   <bean id="org.hisp.dhis.options.style.StyleManager" class="org.hisp.dhis.options.style.DefaultStyleManager">
     <property name="systemSettingManager" ref="org.hisp.dhis.options.SystemSettingManager" />
 	<property name="userSettingService" ref="org.hisp.dhis.user.UserSettingService" />

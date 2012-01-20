@@ -29,16 +29,15 @@ package org.hisp.dhis.dataset.action;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 
+import org.hisp.dhis.common.comparator.IdentifiableObjectNameComparator;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryCombo;
 import org.hisp.dhis.dataentryform.DataEntryForm;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.dataset.DataSetService;
 import org.hisp.dhis.indicator.Indicator;
-import org.hisp.dhis.options.displayproperty.DisplayPropertyHandler;
 import org.hisp.dhis.oust.manager.SelectionTreeManager;
 
 import com.opensymphony.xwork2.Action;
@@ -59,27 +58,6 @@ public class GetDataSetAction
     public void setDataSetService( DataSetService dataSetService )
     {
         this.dataSetService = dataSetService;
-    }
-
-    private DisplayPropertyHandler displayPropertyHandler;
-
-    public void setDisplayPropertyHandler( DisplayPropertyHandler displayPropertyHandler )
-    {
-        this.displayPropertyHandler = displayPropertyHandler;
-    }
-
-    private Comparator<DataElement> dataElementComparator;
-
-    public void setDataElementComparator( Comparator<DataElement> dataElementComparator )
-    {
-        this.dataElementComparator = dataElementComparator;
-    }
-
-    private Comparator<Indicator> indicatorComparator;
-
-    public void setIndicatorComparator( Comparator<Indicator> indicatorComparator )
-    {
-        this.indicatorComparator = indicatorComparator;
     }
 
     private SelectionTreeManager selectionTreeManager;
@@ -151,13 +129,11 @@ public class GetDataSetAction
 
         dataSetDataElements = new ArrayList<DataElement>( dataSet.getDataElements() );
 
-        Collections.sort( dataSetDataElements, dataElementComparator );
+        Collections.sort( dataSetDataElements, new IdentifiableObjectNameComparator() );
 
         dataSetIndicators = new ArrayList<Indicator>( dataSet.getIndicators() );
 
-        Collections.sort( dataSetIndicators, indicatorComparator );
-
-        displayPropertyHandler.handle( dataSetDataElements );
+        Collections.sort( dataSetIndicators, new IdentifiableObjectNameComparator() );
 
         dataEntryForm = dataSet.getDataEntryForm();
 

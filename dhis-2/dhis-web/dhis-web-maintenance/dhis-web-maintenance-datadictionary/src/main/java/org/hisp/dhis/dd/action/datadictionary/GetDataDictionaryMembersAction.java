@@ -29,14 +29,13 @@ package org.hisp.dhis.dd.action.datadictionary;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 
+import org.hisp.dhis.common.comparator.IdentifiableObjectNameComparator;
 import org.hisp.dhis.datadictionary.DataDictionary;
 import org.hisp.dhis.datadictionary.DataDictionaryService;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.indicator.Indicator;
-import org.hisp.dhis.options.displayproperty.DisplayPropertyHandler;
 
 import com.opensymphony.xwork2.Action;
 
@@ -57,35 +56,6 @@ public class GetDataDictionaryMembersAction
         this.dataDictionaryService = dataDictionaryService;
     }    
 
-    // -------------------------------------------------------------------------
-    // Comparator
-    // -------------------------------------------------------------------------
-
-    private Comparator<DataElement> dataElementComparator;
-
-    public void setDataElementComparator( Comparator<DataElement> dataElementComparator )
-    {
-        this.dataElementComparator = dataElementComparator;
-    }
-    
-    private Comparator<Indicator> indicatorComparator;
-
-    public void setIndicatorComparator( Comparator<Indicator> indicatorComparator )
-    {
-        this.indicatorComparator = indicatorComparator;
-    }
-
-    // -------------------------------------------------------------------------
-    // DisplayPropertyHandler
-    // -------------------------------------------------------------------------
-
-    private DisplayPropertyHandler displayPropertyHandler;
-
-    public void setDisplayPropertyHandler( DisplayPropertyHandler displayPropertyHandler )
-    {
-        this.displayPropertyHandler = displayPropertyHandler;
-    }    
-    
     // -------------------------------------------------------------------------
     // Input
     // -------------------------------------------------------------------------
@@ -137,12 +107,10 @@ public class GetDataDictionaryMembersAction
             dataDictionary = dataDictionaryService.getDataDictionary( id );
             
             selectedDataElements = new ArrayList<DataElement>( dataDictionary.getDataElements() );
-            Collections.sort( selectedDataElements, dataElementComparator );            
-            displayPropertyHandler.handle( selectedDataElements );
+            Collections.sort( selectedDataElements, new IdentifiableObjectNameComparator() );
             
             selectedIndicators = new ArrayList<Indicator>( dataDictionary.getIndicators() );            
-            Collections.sort( selectedIndicators, indicatorComparator );            
-            displayPropertyHandler.handle( selectedIndicators );
+            Collections.sort( selectedIndicators, new IdentifiableObjectNameComparator() );
         }
         
         return SUCCESS;

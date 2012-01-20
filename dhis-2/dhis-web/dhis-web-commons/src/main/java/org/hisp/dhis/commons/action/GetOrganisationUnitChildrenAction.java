@@ -29,10 +29,9 @@ package org.hisp.dhis.commons.action;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 
-import org.hisp.dhis.options.displayproperty.DisplayPropertyHandler;
+import org.hisp.dhis.common.comparator.IdentifiableObjectNameComparator;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.paging.ActionPagingSupport;
@@ -52,28 +51,6 @@ public class GetOrganisationUnitChildrenAction
     public void setOrganisationUnitService( OrganisationUnitService organisationUnitService )
     {
         this.organisationUnitService = organisationUnitService;
-    }
-
-    // -------------------------------------------------------------------------
-    // DisplayPropertyHandler
-    // -------------------------------------------------------------------------
-
-    private DisplayPropertyHandler displayPropertyHandler;
-
-    public void setDisplayPropertyHandler( DisplayPropertyHandler displayPropertyHandler )
-    {
-        this.displayPropertyHandler = displayPropertyHandler;
-    }
-
-    // -------------------------------------------------------------------------
-    // Comparator
-    // -------------------------------------------------------------------------
-
-    private Comparator<OrganisationUnit> organisationUnitComparator;
-
-    public void setOrganisationUnitComparator( Comparator<OrganisationUnit> organisationUnitComparator )
-    {
-        this.organisationUnitComparator = organisationUnitComparator;
     }
 
     // -------------------------------------------------------------------------
@@ -109,7 +86,7 @@ public class GetOrganisationUnitChildrenAction
 
         organisationUnits = new ArrayList<OrganisationUnit>( unit.getChildren() );
 
-        Collections.sort( organisationUnits, organisationUnitComparator );
+        Collections.sort( organisationUnits, new IdentifiableObjectNameComparator() );
 
         if ( usePaging )
         {
@@ -117,8 +94,6 @@ public class GetOrganisationUnitChildrenAction
 
             organisationUnits = organisationUnits.subList( paging.getStartPos(), paging.getEndPos() );
         }
-
-        displayPropertyHandler.handle( organisationUnits );
 
         return SUCCESS;
     }

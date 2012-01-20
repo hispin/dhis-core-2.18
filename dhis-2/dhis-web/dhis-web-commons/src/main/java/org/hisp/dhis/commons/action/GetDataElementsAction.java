@@ -29,9 +29,9 @@ package org.hisp.dhis.commons.action;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 
+import org.hisp.dhis.common.comparator.IdentifiableObjectNameComparator;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryCombo;
 import org.hisp.dhis.dataelement.DataElementCategoryService;
@@ -39,7 +39,6 @@ import org.hisp.dhis.dataelement.DataElementGroup;
 import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.dataset.DataSetService;
-import org.hisp.dhis.options.displayproperty.DisplayPropertyHandler;
 import org.hisp.dhis.paging.ActionPagingSupport;
 import org.hisp.dhis.period.PeriodService;
 import org.hisp.dhis.period.PeriodType;
@@ -85,28 +84,6 @@ public class GetDataElementsAction
     public void setPeriodService( PeriodService periodService )
     {
         this.periodService = periodService;
-    }
-
-    // -------------------------------------------------------------------------
-    // Comparator
-    // -------------------------------------------------------------------------
-
-    private Comparator<DataElement> dataElementComparator;
-
-    public void setDataElementComparator( Comparator<DataElement> dataElementComparator )
-    {
-        this.dataElementComparator = dataElementComparator;
-    }
-
-    // -------------------------------------------------------------------------
-    // DisplayPropertyHandler
-    // -------------------------------------------------------------------------
-
-    private DisplayPropertyHandler displayPropertyHandler;
-
-    public void setDisplayPropertyHandler( DisplayPropertyHandler displayPropertyHandler )
-    {
-        this.displayPropertyHandler = displayPropertyHandler;
     }
 
     // -------------------------------------------------------------------------
@@ -233,7 +210,7 @@ public class GetDataElementsAction
             dataElements = IdentifiableObjectUtils.filterNameByKey( dataElements, key, true );
         }
 
-        Collections.sort( dataElements, dataElementComparator );
+        Collections.sort( dataElements, new IdentifiableObjectNameComparator() );
 
         if ( aggregate )
         {
@@ -246,8 +223,6 @@ public class GetDataElementsAction
 
             dataElements = dataElements.subList( paging.getStartPos(), paging.getEndPos() );
         }
-
-        displayPropertyHandler.handle( dataElements );
 
         return SUCCESS;
     }

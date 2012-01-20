@@ -34,7 +34,6 @@ import java.util.List;
 import org.hisp.dhis.indicator.Indicator;
 import org.hisp.dhis.indicator.IndicatorService;
 import org.hisp.dhis.indicator.comparator.IndicatorSortOrderComparator;
-import org.hisp.dhis.options.displayproperty.DisplayPropertyHandler;
 
 import com.opensymphony.xwork2.Action;
 
@@ -57,17 +56,6 @@ public class GetIndicatorListSortOrderAction
     }
 
     // -------------------------------------------------------------------------
-    // DisplayPropertyHandler
-    // -------------------------------------------------------------------------
-
-    private DisplayPropertyHandler displayPropertyHandler;
-
-    public void setDisplayPropertyHandler( DisplayPropertyHandler displayPropertyHandler )
-    {
-        this.displayPropertyHandler = displayPropertyHandler;
-    }
-
-    // -------------------------------------------------------------------------
     // Output
     // -------------------------------------------------------------------------
 
@@ -87,8 +75,6 @@ public class GetIndicatorListSortOrderAction
         indicators = new ArrayList<Indicator>( indicatorService.getAllIndicators() );
         
         Collections.sort( indicators, new IndicatorSortOrderComparator() );
-        
-        displayPropertyHandler.handle( indicators );
         
         return SUCCESS;
     }
