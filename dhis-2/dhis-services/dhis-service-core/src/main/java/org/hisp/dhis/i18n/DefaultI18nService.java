@@ -84,7 +84,7 @@ public class DefaultI18nService
     {
         if ( isCollection( object ) )
         {
-            internationaliseCollection( (Collection<?>) object );
+            internationaliseCollection( (Collection<?>) object, localeManager.getCurrentLocale() );
         }
         else
         {
@@ -127,11 +127,6 @@ public class DefaultI18nService
                 setProperty( object, "display", property, value );
             }
         }
-    }
-
-    private void internationaliseCollection( Collection<?> objects )
-    {
-        internationaliseCollection( objects, localeManager.getCurrentLocale() );
     }
 
     private void internationaliseCollection( Collection<?> objects, Locale locale )
