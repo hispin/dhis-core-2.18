@@ -1152,7 +1152,10 @@ Ext.onReady( function() {
                         DV.cmp.favorite.targetlinelabel.xable();
                         DV.cmp.favorite.targetlinelabel.setValue(f.targetLineLabel);
                         
-                        this.isRendered = true;
+                        if (!this.isRendered) {
+                            DV.cmp.toolbar.datatable.enable();
+                            this.isRendered = true;
+                        }
                         
                         if (exe) {
                             DV.value.getValues(true);
