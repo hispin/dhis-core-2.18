@@ -88,11 +88,11 @@ public class DefaultI18nService
         }
         else
         {
-            internationalise( object, localeManager.getCurrentLocale() );
+            internationaliseObject( object, localeManager.getCurrentLocale() );
         }
     }
 
-    public void localise( Object object, Locale locale )
+    public void internationalise( Object object, Locale locale )
     {
         if ( isCollection( object ) )
         {
@@ -100,18 +100,18 @@ public class DefaultI18nService
         }
         else
         {
-            internationalise( object, locale );
+            internationaliseObject( object, locale );
         }
     }
 
-    private void internationalise( Object object, Locale locale )
+    private void internationaliseObject( Object object, Locale locale )
     {
         if ( object == null || DHIS_STANDARD_LOCALE.equals( locale ) )
         {
             return;
         }        
         
-        List<String> properties = getTranslationProperties( object );
+        List<String> properties = getObjectPropertyNames( object );
         
         Collection<Translation> translations = translationService.getTranslations( getClassName( object ),
             getId( object ), locale );
@@ -138,7 +138,7 @@ public class DefaultI18nService
         
         Object peek = objects.iterator().next();
 
-        List<String> properties = getTranslationProperties( peek );
+        List<String> properties = getObjectPropertyNames( peek );
         
         Collection<Translation> translations = translationService.getTranslations( getClassName( peek ), locale );
 
@@ -158,9 +158,9 @@ public class DefaultI18nService
         }
     }
     
-    public Map<String, String> getObjectTranslations( Object object )
+    public Map<String, String> getObjectPropertyValues( Object object )
     {
-        List<String> properties = getTranslationProperties( object );
+        List<String> properties = getObjectPropertyNames( object );
         
         Map<String, String> translations = new HashMap<String, String>();
         
@@ -172,7 +172,7 @@ public class DefaultI18nService
         return translations;
     }
 
-    public List<String> getTranslationProperties( Object object )
+    public List<String> getObjectPropertyNames( Object object )
     {
         if ( !( object instanceof IdentifiableObject ) )
         {

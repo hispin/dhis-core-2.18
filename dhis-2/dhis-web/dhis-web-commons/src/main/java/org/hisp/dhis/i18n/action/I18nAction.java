@@ -171,9 +171,9 @@ public class I18nAction
 
         IdentifiableObject object = identifiableObjectManager.getObject( objectId, className );
 
-        referenceTranslations = i18nService.getObjectTranslations( object );
+        referenceTranslations = i18nService.getObjectPropertyValues( object );
 
-        propertyNames = i18nService.getTranslationProperties( object );
+        propertyNames = i18nService.getObjectPropertyNames( object );
 
         return SUCCESS;
     }

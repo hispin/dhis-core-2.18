@@ -122,7 +122,7 @@ public class I18nServiceTest
         assertEquals( "DataElementShortA", dataElementA.getDisplayShortName() );
         assertEquals( "DataElementDescriptionA", dataElementA.getDisplayDescription() );
         
-        i18nService.localise( dataElementA, locale );
+        i18nService.internationalise( dataElementA, locale );
         
         assertEquals( "frenchNameA", dataElementA.getDisplayName() );
         assertEquals( "frenchShortNameA", dataElementA.getDisplayShortName() );
@@ -168,7 +168,7 @@ public class I18nServiceTest
         i18nService.updateTranslation( className, idB, locale, translationsB );
         i18nService.updateTranslation( className, idC, locale, translationsC );
         
-        i18nService.localise( elements, locale );
+        i18nService.internationalise( elements, locale );
         
         Iterator<DataElement> elementIter = elements.iterator();
         
@@ -182,7 +182,7 @@ public class I18nServiceTest
     {
         DataElement dataElementA = createDataElement( 'A' );
         
-        Map<String, String> values = i18nService.getObjectTranslations( dataElementA );
+        Map<String, String> values = i18nService.getObjectPropertyValues( dataElementA );
         
         assertNotNull( values );
         assertEquals( 3, values.size() );

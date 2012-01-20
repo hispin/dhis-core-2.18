@@ -145,7 +145,7 @@ public class TranslateAction
 
         IdentifiableObject object = identifiableObjectManager.getObject( Integer.parseInt( objectId ), className );
 
-        List<String> propertyNames = i18nService.getTranslationProperties( object );
+        List<String> propertyNames = i18nService.getObjectPropertyNames( object );
         
         Locale thisLocale = LocaleUtils.getLocale( loc );
 

@@ -46,11 +46,11 @@ public interface I18nService
 
     public void internationalise( Object object );
     
-    public void localise( Object object, Locale locale );
+    public void internationalise( Object object, Locale locale );
     
-    Map<String, String> getObjectTranslations( Object object );
+    Map<String, String> getObjectPropertyValues( Object object );
     
-    List<String> getTranslationProperties( Object object );
+    List<String> getObjectPropertyNames( Object object );
     
     // -------------------------------------------------------------------------
     // Object
