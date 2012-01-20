@@ -806,6 +806,14 @@ Ext.onReady( function() {
                     }); 
                 }
             }
+        },
+        favorite: {
+            validate: function(f) {
+                if (!f.organisationUnits || !f.organisationUnits.length) {
+                    alert('Favorite has no organisation units');
+                    return;
+                }                
+            }
         }
     };
     
@@ -1069,6 +1077,10 @@ Ext.onReady( function() {
                         }
                         var f = Ext.JSON.decode(r.responseText),
                             indiment = [];
+                            
+                        if (!DV.util.favorite.validate(f)) {
+                            return;
+                        }
                             
                         f.type = f.type.toLowerCase();
                         f.series = f.series.toLowerCase();
