@@ -29,14 +29,13 @@ package org.hisp.dhis.dataset.action;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 
+import org.hisp.dhis.common.comparator.IdentifiableObjectNameComparator;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.dataset.DataSetService;
 import org.hisp.dhis.indicator.Indicator;
-import org.hisp.dhis.options.displayproperty.DisplayPropertyHandler;
 import org.hisp.dhis.period.PeriodService;
 import org.hisp.dhis.period.PeriodType;
 
@@ -64,27 +63,6 @@ public class EditDataSetFormAction
     public void setDataSetService( DataSetService dataSetService )
     {
         this.dataSetService = dataSetService;
-    }
-
-    private Comparator<Indicator> indicatorComparator;
-
-    public void setIndicatorComparator( Comparator<Indicator> indicatorComparator )
-    {
-        this.indicatorComparator = indicatorComparator;
-    }
-
-    private Comparator<DataElement> dataElementComparator;
-
-    public void setDataElementComparator( Comparator<DataElement> dataElementComparator )
-    {
-        this.dataElementComparator = dataElementComparator;
-    }
-
-    private DisplayPropertyHandler displayPropertyHandler;
-
-    public void setDisplayPropertyHandler( DisplayPropertyHandler displayPropertyHandler )
-    {
-        this.displayPropertyHandler = displayPropertyHandler;
     }
 
     // -------------------------------------------------------------------------
@@ -147,11 +125,8 @@ public class EditDataSetFormAction
             indicators = new ArrayList<Indicator>( dataSet.getIndicators() );
         }
 
-        Collections.sort( dataElements, dataElementComparator );
-        Collections.sort( indicators, indicatorComparator );
-
-        displayPropertyHandler.handle( dataElements );
-        displayPropertyHandler.handle( indicators );
+        Collections.sort( dataElements, new IdentifiableObjectNameComparator() );
+        Collections.sort( indicators, new IdentifiableObjectNameComparator() );
 
         return SUCCESS;
     }

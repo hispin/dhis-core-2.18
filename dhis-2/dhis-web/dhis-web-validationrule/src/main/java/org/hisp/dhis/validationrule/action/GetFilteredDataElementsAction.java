@@ -30,19 +30,18 @@ package org.hisp.dhis.validationrule.action;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
+import org.hisp.dhis.common.comparator.IdentifiableObjectNameComparator;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryService;
 import org.hisp.dhis.dataelement.DataElementOperand;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.dataset.DataSetService;
 import org.hisp.dhis.dataset.comparator.DataSetSortOrderComparator;
-import org.hisp.dhis.options.displayproperty.DisplayPropertyHandler;
 import org.hisp.dhis.period.PeriodService;
 import org.hisp.dhis.period.PeriodType;
 
@@ -81,28 +80,6 @@ public class GetFilteredDataElementsAction
     public void setPeriodService( PeriodService periodService )
     {
         this.periodService = periodService;
-    }
-
-    // -------------------------------------------------------------------------
-    // Comparator
-    // -------------------------------------------------------------------------
-
-    private Comparator<DataElement> dataElementComparator;
-
-    public void setDataElementComparator( Comparator<DataElement> dataElementComparator )
-    {
-        this.dataElementComparator = dataElementComparator;
-    }
-
-    // -------------------------------------------------------------------------
-    // DisplayPropertyHandler
-    // -------------------------------------------------------------------------
-
-    private DisplayPropertyHandler displayPropertyHandler;
-
-    public void setDisplayPropertyHandler( DisplayPropertyHandler displayPropertyHandler )
-    {
-        this.displayPropertyHandler = displayPropertyHandler;
     }
 
     // -------------------------------------------------------------------------
@@ -177,8 +154,6 @@ public class GetFilteredDataElementsAction
 
             Collections.sort( dataSets, new DataSetSortOrderComparator() );
 
-            displayPropertyHandler.handle( dataSets );
-
             // -----------------------------------------------------------------
             // Get available dataelements into the dataSets
             // -----------------------------------------------------------------
@@ -199,9 +174,7 @@ public class GetFilteredDataElementsAction
             dataElements = new ArrayList<DataElement>( getIntegerDataElements( members ) );
         }
 
-        Collections.sort( dataElements, dataElementComparator );
-
-        displayPropertyHandler.handle( dataElements );
+        Collections.sort( dataElements, new IdentifiableObjectNameComparator() );
 
         // ---------------------------------------------------------------------
         // Create Operands

@@ -28,19 +28,18 @@ package org.hisp.dhis.dd.action.indicator;
  */
 
 import static org.apache.commons.lang.StringUtils.isNotBlank;
-import static org.hisp.dhis.user.UserSettingService.*;
+import static org.hisp.dhis.user.UserSettingService.KEY_CURRENT_DATADICTIONARY;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 
+import org.hisp.dhis.common.comparator.IdentifiableObjectNameComparator;
 import org.hisp.dhis.datadictionary.DataDictionary;
 import org.hisp.dhis.datadictionary.DataDictionaryService;
 import org.hisp.dhis.datadictionary.comparator.DataDictionaryNameComparator;
 import org.hisp.dhis.indicator.Indicator;
 import org.hisp.dhis.indicator.IndicatorService;
-import org.hisp.dhis.options.displayproperty.DisplayPropertyHandler;
 import org.hisp.dhis.paging.ActionPagingSupport;
 import org.hisp.dhis.user.UserSettingService;
 
@@ -75,28 +74,6 @@ public class GetIndicatorListAction
     public void setDataDictionaryService( DataDictionaryService dataDictionaryService )
     {
         this.dataDictionaryService = dataDictionaryService;
-    }
-
-    // -------------------------------------------------------------------------
-    // Comparator
-    // -------------------------------------------------------------------------
-
-    private Comparator<Indicator> indicatorComparator;
-
-    public void setIndicatorComparator( Comparator<Indicator> indicatorComparator )
-    {
-        this.indicatorComparator = indicatorComparator;
-    }
-
-    // -------------------------------------------------------------------------
-    // DisplayPropertyHandler
-    // -------------------------------------------------------------------------
-
-    private DisplayPropertyHandler displayPropertyHandler;
-
-    public void setDisplayPropertyHandler( DisplayPropertyHandler displayPropertyHandler )
-    {
-        this.displayPropertyHandler = displayPropertyHandler;
     }
 
     // -------------------------------------------------------------------------
@@ -195,9 +172,7 @@ public class GetIndicatorListAction
             indicators = new ArrayList<Indicator>( indicatorService.getIndicatorsBetween( paging.getStartPos(), paging.getPageSize() ) );
         }
         
-        Collections.sort( indicators, indicatorComparator );
-
-        displayPropertyHandler.handle( indicators );
+        Collections.sort( indicators, new IdentifiableObjectNameComparator() );
 
         return SUCCESS;
     }

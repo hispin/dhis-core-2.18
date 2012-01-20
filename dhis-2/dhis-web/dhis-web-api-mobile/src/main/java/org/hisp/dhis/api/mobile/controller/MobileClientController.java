@@ -9,7 +9,6 @@ import javax.servlet.http.HttpServletRequest;
 import org.hisp.dhis.api.mobile.NotAllowedException;
 import org.hisp.dhis.api.mobile.model.MobileOrgUnitLinks;
 import org.hisp.dhis.api.mobile.model.OrgUnits;
-import org.hisp.dhis.api.mobile.support.MediaTypes;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.user.CurrentUserService;
 import org.hisp.dhis.user.User;

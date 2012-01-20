@@ -27,20 +27,15 @@
 
 package org.hisp.dhis.api.webdomain;
 
-import org.codehaus.jackson.annotate.JsonProperty;
-import org.codehaus.jackson.map.annotate.JsonSerialize;
-import org.hisp.dhis.common.BaseIdentifiableObject;
-import org.hisp.dhis.common.Dxf2Namespace;
-import org.hisp.dhis.common.adapter.DataElementXmlAdapter;
-import org.hisp.dhis.importexport.dxf2.model.DataValueSet;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
-import java.util.ArrayList;
-import java.util.List;
+
+import org.hisp.dhis.common.Dxf2Namespace;
+import org.hisp.dhis.importexport.dxf2.model.DataValueSet;
 
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>

@@ -559,10 +559,6 @@
 
   <!-- Interceptor -->
 
-  <bean id="org.hisp.dhis.interceptor.DisplayPropertyInterceptor" class="org.hisp.dhis.interceptor.DisplayPropertyInterceptor">
-    <property name="displayPropertyManager" ref="org.hisp.dhis.options.displayproperty.DisplayPropertyManager" />
-  </bean>
-
   <bean id="org.hisp.dhis.interceptor.ExceptionInterceptor" class="org.hisp.dhis.interceptor.ExceptionInterceptor">
     <property name="showStackTrace" value="true" />
     <property name="ignoredExceptions">
@@ -575,10 +571,6 @@
   <bean id="org.hisp.dhis.interceptor.I18nInterceptor" class="org.hisp.dhis.interceptor.I18nInterceptor">
     <property name="i18nManager" ref="org.hisp.dhis.i18n.I18nManager" />
     <property name="localeManager" ref="org.hisp.dhis.i18n.locale.LocaleManager" />
-  </bean>
-
-  <bean id="org.hisp.dhis.interceptor.SortOrderInterceptor" class="org.hisp.dhis.interceptor.SortOrderInterceptor">
-    <property name="sortOrderManager" ref="org.hisp.dhis.options.sortorder.SortOrderManager" />
   </bean>
 
   <bean id="org.hisp.dhis.interceptor.SystemSettingInterceptor" class="org.hisp.dhis.interceptor.SystemSettingInterceptor">

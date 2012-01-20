@@ -41,8 +41,6 @@ import java.util.SortedMap;
 import org.hisp.dhis.i18n.I18nService;
 import org.hisp.dhis.i18n.locale.LocaleManager;
 import org.hisp.dhis.i18n.resourcebundle.ResourceBundleManager;
-import org.hisp.dhis.options.displayproperty.DisplayPropertyManager;
-import org.hisp.dhis.options.sortorder.SortOrderManager;
 import org.hisp.dhis.options.style.StyleManager;
 import org.hisp.dhis.user.UserSettingService;
 
@@ -88,13 +86,6 @@ public class GetGeneralSettingsAction
         this.localeManagerInterface = localeManagerInterface;
     }
 
-    private SortOrderManager sortOrderManager;
-
-    public void setSortOrderManager( SortOrderManager sortOrderManager )
-    {
-        this.sortOrderManager = sortOrderManager;
-    }
-
     private UserSettingService userSettingService;
 
     public void setUserSettingService( UserSettingService userSettingService )
@@ -107,13 +98,6 @@ public class GetGeneralSettingsAction
     public void setStyleManager( StyleManager styleManager )
     {
         this.styleManager = styleManager;
-    }
-
-    private DisplayPropertyManager displayPropertyManager;
-
-    public void setDisplayPropertyManager( DisplayPropertyManager displayPropertyManager )
-    {
-        this.displayPropertyManager = displayPropertyManager;
     }
 
     // -------------------------------------------------------------------------
@@ -256,14 +240,6 @@ public class GetGeneralSettingsAction
         currentLocaleDb = localeManagerDB.getCurrentLocale();
 
         // ---------------------------------------------------------------------
-        // Get Sort orders
-        // ---------------------------------------------------------------------
-
-        sortOrders = sortOrderManager.getSortOrders();
-
-        currentSortOrder = sortOrderManager.getCurrentSortOrder();
-
-        // ---------------------------------------------------------------------
         // Get Charts in Dashboard
         // ---------------------------------------------------------------------
 
@@ -271,14 +247,6 @@ public class GetGeneralSettingsAction
             DEFAULT_CHARTS_IN_DASHBOARD );
 
         chartsInDashboardOptions = UserSettingService.DASHBOARD_CHARTS_TO_DISPLAY;
-
-        // ---------------------------------------------------------------------
-        // Get Display Properties
-        // ---------------------------------------------------------------------
-
-        displayProperties = displayPropertyManager.getDisplayProperties();
-
-        currentDisplayProperty = displayPropertyManager.getCurrentDisplayProperty();
 
         // ---------------------------------------------------------------------
         // Get Auto-save data entry form

@@ -29,11 +29,10 @@ package org.hisp.dhis.patient.action.dataentryform;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 
+import org.hisp.dhis.common.comparator.IdentifiableObjectNameComparator;
 import org.hisp.dhis.dataelement.DataElement;
-import org.hisp.dhis.options.displayproperty.DisplayPropertyHandler;
 import org.hisp.dhis.program.ProgramStage;
 import org.hisp.dhis.program.ProgramStageDataElementService;
 import org.hisp.dhis.program.ProgramStageService;
@@ -56,20 +55,6 @@ public class GetSelectedDataElementsAction
     public void setProgramStageService( ProgramStageService programStageService )
     {
         this.programStageService = programStageService;
-    }
-
-    private Comparator<DataElement> dataElementComparator;
-
-    public void setDataElementComparator( Comparator<DataElement> dataElementComparator )
-    {
-        this.dataElementComparator = dataElementComparator;
-    }
-
-    private DisplayPropertyHandler displayPropertyHandler;
-
-    public void setDisplayPropertyHandler( DisplayPropertyHandler displayPropertyHandler )
-    {
-        this.displayPropertyHandler = displayPropertyHandler;
     }
 
     private ProgramStageDataElementService programStageDataElementService;
@@ -108,9 +93,7 @@ public class GetSelectedDataElementsAction
 
         dataElementList = new ArrayList<DataElement>( programStageDataElementService.getListDataElement( programStage ) );
 
-        Collections.sort( dataElementList, dataElementComparator );
-
-        displayPropertyHandler.handle( dataElementList );
+        Collections.sort( dataElementList, new IdentifiableObjectNameComparator() );
 
         return SUCCESS;
     }

@@ -34,7 +34,6 @@ import java.util.List;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.dataset.DataSetService;
 import org.hisp.dhis.dataset.comparator.DataSetSortOrderComparator;
-import org.hisp.dhis.options.displayproperty.DisplayPropertyHandler;
 
 import com.opensymphony.xwork2.Action;
 
@@ -57,18 +56,7 @@ public class GetDataSetListSortOrderAction
     }
 
     // -------------------------------------------------------------------------
-    // DisplayPropertyHandler
-    // -------------------------------------------------------------------------
-
-    private DisplayPropertyHandler displayPropertyHandler;
-
-    public void setDisplayPropertyHandler( DisplayPropertyHandler displayPropertyHandler )
-    {
-        this.displayPropertyHandler = displayPropertyHandler;
-    }
-
-    // -------------------------------------------------------------------------
-    // DisplayPropertyHandler
+    // Output
     // -------------------------------------------------------------------------
 
     private List<DataSet> dataSets;
@@ -88,8 +76,6 @@ public class GetDataSetListSortOrderAction
         
         Collections.sort( dataSets, new DataSetSortOrderComparator() );
 
-        displayPropertyHandler.handle( dataSets );
-        
         return SUCCESS;
     }
 }

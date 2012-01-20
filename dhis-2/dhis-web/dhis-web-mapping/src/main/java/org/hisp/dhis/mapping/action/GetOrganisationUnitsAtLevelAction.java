@@ -29,10 +29,9 @@ package org.hisp.dhis.mapping.action;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 
-import org.hisp.dhis.options.displayproperty.DisplayPropertyHandler;
+import org.hisp.dhis.common.comparator.IdentifiableObjectNameComparator;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 
@@ -56,20 +55,6 @@ public class GetOrganisationUnitsAtLevelAction
         this.organisationUnitService = organisationUnitService;
     }
     
-    private Comparator<OrganisationUnit> organisationUnitComparator;
-
-    public void setOrganisationUnitComparator( Comparator<OrganisationUnit> organisationUnitComparator )
-    {
-        this.organisationUnitComparator = organisationUnitComparator;
-    }
-
-    private DisplayPropertyHandler displayPropertyHandler;
-
-    public void setDisplayPropertyHandler( DisplayPropertyHandler displayPropertyHandler )
-    {
-        this.displayPropertyHandler = displayPropertyHandler;
-    }
-
     // -------------------------------------------------------------------------
     // Input
     // -------------------------------------------------------------------------
@@ -101,9 +86,7 @@ public class GetOrganisationUnitsAtLevelAction
     {
         object = new ArrayList<OrganisationUnit>( organisationUnitService.getOrganisationUnitsAtLevel( level ) );
         
-        Collections.sort( object, organisationUnitComparator );
-        
-        displayPropertyHandler.handle( object );
+        Collections.sort( object, new IdentifiableObjectNameComparator() );
         
         return SUCCESS;
     }

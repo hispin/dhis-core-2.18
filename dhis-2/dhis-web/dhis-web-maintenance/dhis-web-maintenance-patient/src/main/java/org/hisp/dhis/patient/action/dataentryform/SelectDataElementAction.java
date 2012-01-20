@@ -30,11 +30,10 @@ package org.hisp.dhis.patient.action.dataentryform;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 
+import org.hisp.dhis.common.comparator.IdentifiableObjectNameComparator;
 import org.hisp.dhis.dataelement.DataElement;
-import org.hisp.dhis.options.displayproperty.DisplayPropertyHandler;
 import org.hisp.dhis.program.ProgramStage;
 import org.hisp.dhis.program.ProgramStageDataElementService;
 import org.hisp.dhis.program.ProgramStageService;
@@ -61,20 +60,6 @@ public class SelectDataElementAction
         this.programStageService = programStageService;
     }
 
-    private Comparator<DataElement> dataElementComparator;
-
-    public void setDataElementComparator( Comparator<DataElement> dataElementComparator )
-    {
-        this.dataElementComparator = dataElementComparator;
-    }
-
-    private DisplayPropertyHandler displayPropertyHandler;
-
-    public void setDisplayPropertyHandler( DisplayPropertyHandler displayPropertyHandler )
-    {
-        this.displayPropertyHandler = displayPropertyHandler;
-    }
-
     private ProgramStageDataElementService programStageDataElementService;
 
     public void setProgramStageDataElementService( ProgramStageDataElementService programStageDataElementService )
@@ -88,7 +73,8 @@ public class SelectDataElementAction
 
     private int associationId;
 
-    public void setAssociationId(int associationId) {
+    public void setAssociationId( int associationId ) 
+    {
         this.associationId = associationId;
     }
     
@@ -138,9 +124,7 @@ public class SelectDataElementAction
             	dataElements =  FilterUtils.filter( dataElements, new DataElementStringTypeFilter());
             }
             
-            Collections.sort( new ArrayList<DataElement>(dataElements), dataElementComparator );
-
-            displayPropertyHandler.handle( new ArrayList<DataElement>(dataElements) );
+            Collections.sort( new ArrayList<DataElement>( dataElements ), new IdentifiableObjectNameComparator() );
         }
 
         return SUCCESS;

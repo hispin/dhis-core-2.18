@@ -27,8 +27,6 @@
 
 package org.hisp.dhis.security.action;
 
-import javax.servlet.http.HttpServletRequest;
-
 import org.apache.struts2.ServletActionContext;
 import org.springframework.mobile.device.Device;
 import org.springframework.mobile.device.DeviceResolver;

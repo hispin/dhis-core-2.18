@@ -30,14 +30,13 @@ package org.hisp.dhis.importexport.action.exp;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 
 import org.apache.commons.collections.CollectionUtils;
+import org.hisp.dhis.common.comparator.IdentifiableObjectNameComparator;
 import org.hisp.dhis.datadictionary.DataDictionaryService;
 import org.hisp.dhis.indicator.Indicator;
 import org.hisp.dhis.indicator.IndicatorService;
-import org.hisp.dhis.options.displayproperty.DisplayPropertyHandler;
 
 import com.opensymphony.xwork2.Action;
 
@@ -65,28 +64,6 @@ public class GetIndicatorListAction
     public void setDataDictionaryService( DataDictionaryService dataDictionaryService )
     {
         this.dataDictionaryService = dataDictionaryService;
-    }
-
-    // -------------------------------------------------------------------------
-    // Comparator
-    // -------------------------------------------------------------------------
-
-    private Comparator<Indicator> indicatorComparator;
-
-    public void setIndicatorComparator( Comparator<Indicator> indicatorComparator )
-    {
-        this.indicatorComparator = indicatorComparator;
-    }
-
-    // -------------------------------------------------------------------------
-    // DisplayPropertyHandler
-    // -------------------------------------------------------------------------
-
-    private DisplayPropertyHandler displayPropertyHandler;
-
-    public void setDisplayPropertyHandler( DisplayPropertyHandler displayPropertyHandler )
-    {
-        this.displayPropertyHandler = displayPropertyHandler;
     }
 
     // -------------------------------------------------------------------------
@@ -146,10 +123,8 @@ public class GetIndicatorListAction
             indicators = new ArrayList<Indicator>( indicatorService.getAllIndicators() );
         }
         
-        Collections.sort( indicators, indicatorComparator );
+        Collections.sort( indicators, new IdentifiableObjectNameComparator() );
         
-        displayPropertyHandler.handle( indicators );
-
         return SUCCESS;
     }
 }

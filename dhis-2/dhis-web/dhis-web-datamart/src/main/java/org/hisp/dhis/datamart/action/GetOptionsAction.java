@@ -38,7 +38,6 @@ import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.datamart.DataMartExport;
 import org.hisp.dhis.datamart.DataMartService;
 import org.hisp.dhis.indicator.Indicator;
-import org.hisp.dhis.options.displayproperty.DisplayPropertyHandler;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitLevel;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
@@ -209,17 +208,6 @@ public class GetOptionsAction
     {
         this.organisationUnitComparator = organisationUnitComparator;
     }
-    
-    // -------------------------------------------------------------------------
-    // DisplayPropertyHandler
-    // -------------------------------------------------------------------------
-
-    private DisplayPropertyHandler displayPropertyHandler;
-
-    public void setDisplayPropertyHandler( DisplayPropertyHandler displayPropertyHandler )
-    {
-        this.displayPropertyHandler = displayPropertyHandler;
-    }
 
     // -------------------------------------------------------------------------
     // Action implementation
@@ -259,7 +247,6 @@ public class GetOptionsAction
             // -----------------------------------------------------------------
 
             selectedDataElements = new ArrayList<DataElement>( export.getDataElements() );
-            displayPropertyHandler.handle( selectedDataElements );
             Collections.sort( selectedDataElements, dataElementComparator );
             
             // ---------------------------------------------------------------------
@@ -267,7 +254,6 @@ public class GetOptionsAction
             // ---------------------------------------------------------------------
 
             selectedIndicators = new ArrayList<Indicator>( export.getIndicators() );
-            displayPropertyHandler.handle( selectedIndicators );
             Collections.sort( selectedIndicators, indicatorComparator );
             
             // ---------------------------------------------------------------------
@@ -275,7 +261,6 @@ public class GetOptionsAction
             // ---------------------------------------------------------------------
 
             selectedOrganisationUnits = new ArrayList<OrganisationUnit>( export.getOrganisationUnits() );
-            displayPropertyHandler.handle( selectedOrganisationUnits );
             Collections.sort( selectedOrganisationUnits, organisationUnitComparator );
             
             // ---------------------------------------------------------------------

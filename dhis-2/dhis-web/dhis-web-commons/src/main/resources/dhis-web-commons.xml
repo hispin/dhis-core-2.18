@@ -36,8 +36,6 @@
     <interceptors>
       <interceptor name="exceptionInterceptor" class="org.hisp.dhis.interceptor.ExceptionInterceptor" />
       <interceptor name="i18nInterceptor" class="org.hisp.dhis.interceptor.I18nInterceptor" />
-      <interceptor name="sortOrderInterceptor" class="org.hisp.dhis.interceptor.SortOrderInterceptor" />
-      <interceptor name="displayPropertyInterceptor" class="org.hisp.dhis.interceptor.DisplayPropertyInterceptor" />
       <interceptor name="systemSettingInterceptor" class="org.hisp.dhis.interceptor.SystemSettingInterceptor" />
       <interceptor name="userSettingInterceptor" class="org.hisp.dhis.interceptor.UserSettingInterceptor" />
       <interceptor name="contextInterceptor" class="org.hisp.dhis.interceptor.ContextInterceptor" />
@@ -58,8 +56,6 @@
         <!-- The securityInterceptor is put after the i18nInterceptor so that the access denied error pages can use internationalisation. -->
         <interceptor-ref name="securityInterceptor" />
         <interceptor-ref name="loginInterceptor" />
-        <interceptor-ref name="sortOrderInterceptor" />
-        <interceptor-ref name="displayPropertyInterceptor" />
         <interceptor-ref name="systemSettingInterceptor" />
         <interceptor-ref name="userSettingInterceptor" />
         <interceptor-ref name="contextInterceptor" />

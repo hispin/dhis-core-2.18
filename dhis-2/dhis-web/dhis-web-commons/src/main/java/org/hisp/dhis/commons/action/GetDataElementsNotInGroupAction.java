@@ -29,13 +29,12 @@ package org.hisp.dhis.commons.action;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 
+import org.hisp.dhis.common.comparator.IdentifiableObjectNameComparator;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementGroup;
 import org.hisp.dhis.dataelement.DataElementService;
-import org.hisp.dhis.options.displayproperty.DisplayPropertyHandler;
 import org.hisp.dhis.paging.ActionPagingSupport;
 
 /**
@@ -53,28 +52,6 @@ public class GetDataElementsNotInGroupAction
     public void setDataElementService( DataElementService dataElementService )
     {
         this.dataElementService = dataElementService;
-    }
-
-    // -------------------------------------------------------------------------
-    // Comparator
-    // -------------------------------------------------------------------------
-
-    private Comparator<DataElement> dataElementComparator;
-
-    public void setDataElementComparator( Comparator<DataElement> dataElementComparator )
-    {
-        this.dataElementComparator = dataElementComparator;
-    }
-
-    // -------------------------------------------------------------------------
-    // DisplayPropertyHandler
-    // -------------------------------------------------------------------------
-
-    private DisplayPropertyHandler displayPropertyHandler;
-
-    public void setDisplayPropertyHandler( DisplayPropertyHandler displayPropertyHandler )
-    {
-        this.displayPropertyHandler = displayPropertyHandler;
     }
 
     // -------------------------------------------------------------------------
@@ -122,9 +99,7 @@ public class GetDataElementsNotInGroupAction
 
             groupMembers = new ArrayList<DataElement>( group.getMembers() );
 
-            Collections.sort( groupMembers, dataElementComparator );
-
-            displayPropertyHandler.handle( groupMembers );
+            Collections.sort( groupMembers, new IdentifiableObjectNameComparator() );
         }
 
         // ---------------------------------------------------------------------
@@ -135,7 +110,7 @@ public class GetDataElementsNotInGroupAction
 
         dataElements.removeAll( groupMembers );
 
-        Collections.sort( dataElements, dataElementComparator );
+        Collections.sort( dataElements, new IdentifiableObjectNameComparator() );
 
         if ( usePaging )
         {
@@ -143,8 +118,6 @@ public class GetDataElementsNotInGroupAction
 
             dataElements = dataElements.subList( paging.getStartPos(), paging.getEndPos() );
         }
-
-        displayPropertyHandler.handle( dataElements );
 
         return SUCCESS;
     }

@@ -29,12 +29,11 @@ package org.hisp.dhis.user.action;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 
+import org.hisp.dhis.common.comparator.IdentifiableObjectNameComparator;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.dataset.DataSetService;
-import org.hisp.dhis.options.displayproperty.DisplayPropertyHandler;
 import org.hisp.dhis.report.Report;
 import org.hisp.dhis.security.authority.SystemAuthoritiesProvider;
 
@@ -63,20 +62,6 @@ public class SetupRoleAction
     public void setAuthoritiesProvider( SystemAuthoritiesProvider authoritiesProvider )
     {
         this.authoritiesProvider = authoritiesProvider;
-    }
-
-    private Comparator<DataSet> dataSetComparator;
-
-    public void setDataSetComparator( Comparator<DataSet> dataSetComparator )
-    {
-        this.dataSetComparator = dataSetComparator;
-    }
-
-    private DisplayPropertyHandler displayPropertyHandler;
-
-    public void setDisplayPropertyHandler( DisplayPropertyHandler displayPropertyHandler )
-    {
-        this.displayPropertyHandler = displayPropertyHandler;
     }
 
     // -------------------------------------------------------------------------
@@ -113,9 +98,7 @@ public class SetupRoleAction
     {
         availableDataSets = new ArrayList<DataSet>( dataSetService.getAllDataSets() );
 
-        Collections.sort( availableDataSets, dataSetComparator );
-
-        displayPropertyHandler.handle( availableDataSets );
+        Collections.sort( availableDataSets, new IdentifiableObjectNameComparator() );
 
         availableAuthorities = new ArrayList<String>( authoritiesProvider.getSystemAuthorities() );
 

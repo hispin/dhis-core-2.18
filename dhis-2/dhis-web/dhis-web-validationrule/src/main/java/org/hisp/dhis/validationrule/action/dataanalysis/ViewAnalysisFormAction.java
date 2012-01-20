@@ -29,12 +29,11 @@ package org.hisp.dhis.validationrule.action.dataanalysis;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 
+import org.hisp.dhis.common.comparator.IdentifiableObjectNameComparator;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.dataset.DataSetService;
-import org.hisp.dhis.options.displayproperty.DisplayPropertyHandler;
 
 import com.opensymphony.xwork2.Action;
 
@@ -59,20 +58,6 @@ public class ViewAnalysisFormAction
         this.dataSetService = dataSetService;
     }
     
-    private Comparator<DataSet> dataSetComparator;
-
-    public void setDataSetComparator( Comparator<DataSet> dataSetComparator )
-    {
-        this.dataSetComparator = dataSetComparator;
-    }
-    
-    private DisplayPropertyHandler displayPropertyHandler;
-    
-    public void setDisplayPropertyHandler( DisplayPropertyHandler displayPropertyHandler )
-    {
-        this.displayPropertyHandler = displayPropertyHandler;
-    }
-
     // -------------------------------------------------------------------------
     // Input & output
     // -------------------------------------------------------------------------
@@ -104,9 +89,7 @@ public class ViewAnalysisFormAction
     {
         dataSets = new ArrayList<DataSet>( dataSetService.getAllDataSets() );
         
-        Collections.sort( dataSets, dataSetComparator );
-        
-        displayPropertyHandler.handle( dataSets );
+        Collections.sort( dataSets, new IdentifiableObjectNameComparator() );
         
         return SUCCESS;
     }
