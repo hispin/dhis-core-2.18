@@ -235,9 +235,6 @@ public class AddOrganisationUnitAction
 
         Date date = format.parseDate( openingDate );
 
-        String coordinates = longitude != null && latitude != null ?
-            ValidationUtils.getCoordinate( longitude, latitude ) : null;
-        
         // ---------------------------------------------------------------------
         // Get parent
         // ---------------------------------------------------------------------
@@ -259,8 +256,6 @@ public class AddOrganisationUnitAction
 
         OrganisationUnit organisationUnit = new OrganisationUnit( name, shortName, code, date, null, true, comment );
 
-        organisationUnit.setCoordinates( coordinates );
-        organisationUnit.setFeatureType( OrganisationUnit.FEATURETYPE_POINT );
         organisationUnit.setUrl( url );
         organisationUnit.setParent( parent );
         organisationUnit.setContactPerson( contactPerson );
@@ -279,6 +274,21 @@ public class AddOrganisationUnitAction
                 attributeService );
         }
 
+        // ---------------------------------------------------------------------
+        // Set coordinates and feature type to point if valid
+        // ---------------------------------------------------------------------
+
+        if ( longitude != null && latitude != null )
+        {
+            String coordinates = ValidationUtils.getCoordinate( longitude, latitude );
+                
+            if ( ValidationUtils.coordinateIsValid( coordinates ) )
+            {
+                organisationUnit.setCoordinates( coordinates );
+                organisationUnit.setFeatureType( OrganisationUnit.FEATURETYPE_POINT );
+            }            
+        }
+        
         // ---------------------------------------------------------------------
         // Must persist org unit before adding data sets because association are
         // updated on both sides (and this side is inverse)
