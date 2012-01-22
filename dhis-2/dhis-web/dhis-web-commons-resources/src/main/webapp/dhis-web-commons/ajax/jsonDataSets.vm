@@ -3,8 +3,8 @@
 #foreach( $dataSet in $dataSets )
   {
     "id": $!{dataSet.id},
-    "name": "$!encoder.jsonEncode( ${dataSet.name} )",
-    "shortName": "$!encoder.jsonEncode( ${dataSet.shortName} )",
+    "name": "$!encoder.jsonEncode( ${dataSet.displayName} )",
+    "shortName": "$!encoder.jsonEncode( ${dataSet.displayShortName} )",
     "periodTypeId": "$!{dataSet.periodTypeId}",
     "version": "$!{dataSet.version}"
   }#if( $velocityCount < $size ),#end

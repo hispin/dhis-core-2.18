@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <indicator>
 	<id>$indicator.id</id>
-    <name>$!encoder.xmlEncode( $indicator.name )</name>
-    <shortName>$!encoder.xmlEncode( $indicator.shortName )</shortName>
+    <name>$!encoder.xmlEncode( $indicator.displayName )</name>
+    <shortName>$!encoder.xmlEncode( $indicator.displayShortName )</shortName>
     <alternativeName>$!encoder.xmlEncode( $indicator.alternativeName )</alternativeName>
     <code>$!encoder.xmlEncode( $indicator.code )</code>
-    <description>$!encoder.xmlEncode( $indicator.description )</description>
+    <description>$!encoder.xmlEncode( $indicator.displayDescription )</description>
     <annualized>$indicator.isAnnualized()</annualized>
     <indicatorTypeId>$indicator.indicatorType.id</indicatorTypeId>
     <indicatorTypeName>$!encoder.xmlEncode( $indicator.indicatorType.name )</indicatorTypeName>

@@ -3,7 +3,7 @@
 	#foreach( $dataElementGroup in $dataElementGroups )
 	<dataElementGroup>
 		<id>$dataElementGroup.id</id>
-		<name>$encoder.xmlEncode( $dataElementGroup.name )</name>
+		<name>$encoder.xmlEncode( $dataElementGroup.displayName )</name>
 	</dataElementGroup>	
 	#end	
 </dataElementGroups>

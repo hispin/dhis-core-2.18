@@ -5,9 +5,9 @@
 #set( $dataSets = $dataElement.dataSets )
   {
 	"id":  ${dataElement.id} ,
-	"name": "$!encoder.jsonEncode( ${dataElement.name} )",
+	"name": "$!encoder.jsonEncode( ${dataElement.displayName} )",
 	"alternativeName": "$!encoder.jsonEncode( ${dataElement.alternativeNamee} )",
-	"shortName": "$!encoder.jsonEncode( ${dataElement.shortName} )",
+	"shortName": "$!encoder.jsonEncode( ${dataElement.displayShortName} )",
 	"code": "$!encoder.jsonEncode( ${dataElement.code} )",
 	"type": "$!{dataElement.type}",
 	"aggregationOperator": "$!{dataElement.aggregationOperator}",

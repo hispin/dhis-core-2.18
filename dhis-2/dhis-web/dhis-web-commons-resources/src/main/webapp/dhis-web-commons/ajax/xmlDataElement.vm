@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <dataElement>
 	<id>$dataElement.id</id>
-	<name>$encoder.xmlEncode( $dataElement.name )</name>
-	<shortName>$encoder.xmlEncode( $dataElement.shortName )</shortName>
+	<name>$encoder.xmlEncode( $dataElement.displayName )</name>
+	<shortName>$encoder.xmlEncode( $dataElement.displayShortName )</shortName>
 	<alternativeName>$!encoder.xmlEncode( $dataElement.alternativeName )</alternativeName>
 	<code>$!encoder.xmlEncode( $dataElement.code )</code>
-	<description>$!encoder.xmlEncode( $dataElement.description )</description>
+	<description>$!encoder.xmlEncode( $dataElement.displayDescription )</description>
 	<active>$dataElement.active</active>
 	<domainType>$dataElement.getDomainTypeNullSafe()</domainType>
 	<valueType>$dataElement.type</valueType>

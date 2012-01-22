@@ -3,7 +3,7 @@
 #foreach( $indicatorGroup in $indicatorGroups )
   {
     "id": $!{indicatorGroup.id},
-    "name": "$!encoder.jsonEncode( ${indicatorGroup.name} )"    
+    "name": "$!encoder.jsonEncode( ${indicatorGroup.displayName} )"    
   }#if( $velocityCount < $size ),#end
 #end
 ]
