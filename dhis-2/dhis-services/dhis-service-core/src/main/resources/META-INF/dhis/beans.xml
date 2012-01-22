@@ -445,10 +445,6 @@ http://www.springframework.org/schema/security http://www.springframework.org/sc
     <property name="translationStore" ref="org.hisp.dhis.translation.TranslationStore" />
   </bean>
 
-  <bean id="org.hisp.dhis.i18n.locale.LocaleManagerDb" class="org.hisp.dhis.i18n.locale.DatabaseLocaleManager">
-    <property name="userSettingService" ref="org.hisp.dhis.user.UserSettingService" />
-  </bean>
-
   <bean id="org.hisp.dhis.aggregation.AggregatedDataValueService" class="org.hisp.dhis.aggregation.DefaultAggregatedDataValueService">
     <property name="aggregatedDataValueStore" ref="org.hisp.dhis.aggregation.AggregatedDataValueStore" />
   </bean>
@@ -590,12 +586,8 @@ http://www.springframework.org/schema/security http://www.springframework.org/sc
   <!-- I18nService -->
 
   <bean id="org.hisp.dhis.i18n.I18nService" class="org.hisp.dhis.i18n.DefaultI18nService">
-    <property name="localeManager">
-      <ref bean="org.hisp.dhis.i18n.locale.LocaleManagerDb" />
-    </property>
-    <property name="translationService">
-      <ref bean="org.hisp.dhis.translation.TranslationService" />
-    </property>
+    <property name="translationService" ref="org.hisp.dhis.translation.TranslationService" />
+	<property name="userSettingService" ref="org.hisp.dhis.user.UserSettingService" />
   </bean>
   
   <!-- Startup routine definitions -->

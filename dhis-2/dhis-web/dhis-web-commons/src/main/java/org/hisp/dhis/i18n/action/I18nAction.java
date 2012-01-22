@@ -36,7 +36,6 @@ import java.util.Map;
 import org.hisp.dhis.common.IdentifiableObject;
 import org.hisp.dhis.common.IdentifiableObjectManager;
 import org.hisp.dhis.i18n.I18nService;
-import org.hisp.dhis.i18n.locale.LocaleManager;
 
 import com.opensymphony.xwork2.Action;
 
@@ -57,6 +56,8 @@ public class I18nAction
 
     private String message;
 
+    private Locale currentLocale;
+    
     private List<Locale> availableLocales = new ArrayList<Locale>();
     
     private Map<String, String> translations = new Hashtable<String, String>();
@@ -74,13 +75,6 @@ public class I18nAction
     public void setI18nService( I18nService i18nService )
     {
         this.i18nService = i18nService;
-    }
-
-    private LocaleManager localeManager;
-
-    public void setLocaleManager( LocaleManager localeManager )
-    {
-        this.localeManager = localeManager;
     }
     
     private IdentifiableObjectManager identifiableObjectManager;
@@ -138,6 +132,11 @@ public class I18nAction
         return message;
     }
 
+    public Locale getCurrentLocale()
+    {
+        return currentLocale;
+    }
+
     public List<Locale> getAvailableLocales()
     {
         return availableLocales;
@@ -165,9 +164,11 @@ public class I18nAction
     public String execute()
         throws Exception
     {
+        currentLocale = i18nService.getCurrentLocale();
+        
         availableLocales = i18nService.getAvailableLocales();
         
-        translations = i18nService.getTranslations( className, objectId, localeManager.getCurrentLocale() );
+        translations = i18nService.getTranslations( className, objectId );
 
         IdentifiableObject object = identifiableObjectManager.getObject( objectId, className );
 

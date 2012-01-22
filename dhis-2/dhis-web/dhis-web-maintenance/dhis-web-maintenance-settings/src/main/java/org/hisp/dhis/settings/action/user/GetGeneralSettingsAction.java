@@ -72,18 +72,11 @@ public class GetGeneralSettingsAction
         this.i18nService = i18nService;
     }
 
-    private LocaleManager localeManagerDB;
+    private LocaleManager localeManager;
 
-    public void setLocaleManagerDB( LocaleManager localeManagerDB )
+    public void setLocaleManager( LocaleManager localeManager )
     {
-        this.localeManagerDB = localeManagerDB;
-    }
-
-    private LocaleManager localeManagerInterface;
-
-    public void setLocaleManagerInterface( LocaleManager localeManagerInterface )
-    {
-        this.localeManagerInterface = localeManagerInterface;
+        this.localeManager = localeManager;
     }
 
     private UserSettingService userSettingService;
@@ -216,18 +209,13 @@ public class GetGeneralSettingsAction
             }
         } );
 
-        currentLocale = localeManagerInterface.getCurrentLocale();
+        currentLocale = localeManager.getCurrentLocale();
 
         // ---------------------------------------------------------------------
         // Get available locales in db
         // ---------------------------------------------------------------------
 
         availableLocalesDb = new ArrayList<Locale>( i18nService.getAvailableLocales() );
-
-        if ( !availableLocalesDb.contains( localeManagerDB.getFallbackLocale() ) )
-        {
-            availableLocalesDb.add( localeManagerDB.getFallbackLocale() );
-        }
 
         Collections.sort( availableLocalesDb, new Comparator<Locale>()
         {
@@ -237,7 +225,7 @@ public class GetGeneralSettingsAction
             }
         } );
 
-        currentLocaleDb = localeManagerDB.getCurrentLocale();
+        currentLocaleDb = i18nService.getCurrentLocale();
 
         // ---------------------------------------------------------------------
         // Get Charts in Dashboard
