@@ -48,12 +48,6 @@
       <artifactId>dhis-service-datamart-default</artifactId>
     </dependency>
         
-    <!-- Other -->
-    
-    <dependency>
-      <groupId>jfree</groupId>
-      <artifactId>jfreechart</artifactId>
-    </dependency>    
   </dependencies>
   
   <properties>
