@@ -1,4 +1,4 @@
-package org.hisp.dhis.options.help;
+package org.hisp.dhis.help;
 
 /*
  * Copyright (c) 2004-2012, University of Oslo
@@ -27,46 +27,16 @@ package org.hisp.dhis.options.help;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.io.ByteArrayOutputStream;
-
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-import org.hisp.dhis.DhisSpringTest;
-import org.junit.Test;
+import java.io.OutputStream;
 
 /**
  * @author Lars Helge Overland
  */
-public class HelpManagerTest
-    extends DhisSpringTest
+public interface HelpManager
 {
-    private static final Log log = LogFactory.getLog( HelpManagerTest.class );
+    final String ID = HelpManager.class.getName();
     
-    private HelpManager helpManager;
+    void getHelpContent( OutputStream out, String id );
     
-    @Override
-    public void setUpTest()
-    {
-        helpManager = (HelpManager) getBean( HelpManager.ID );
-    }
-
-    @Test
-    public void testGetEmbeddedHelpContent()
-    {
-        ByteArrayOutputStream out = new ByteArrayOutputStream();
-                
-        helpManager.getHelpContent( out, "overview" );
-        
-        log.debug( out.toString() );        
-    }
-    
-    @Test
-    public void testGetHelpCenterContent()
-    {
-        ByteArrayOutputStream out = new ByteArrayOutputStream();
-        
-        helpManager.getHelpItems( out );
-        
-        log.debug( out.toString() );        
-    }
+    void getHelpItems( OutputStream out );
 }

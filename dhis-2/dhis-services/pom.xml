@@ -16,7 +16,6 @@
   <modules>
     <module>dhis-service-core</module>
     <module>dhis-service-i18n</module>
-    <module>dhis-service-options</module>
     <module>dhis-service-administration</module>
     <module>dhis-service-datamart-default</module>
     <module>dhis-service-importexport</module>

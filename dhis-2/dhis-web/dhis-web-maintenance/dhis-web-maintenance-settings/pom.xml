@@ -35,10 +35,6 @@
       <artifactId>dhis-web-commons-resources</artifactId>
       <type>war</type>
     </dependency>
-    <dependency>
-      <groupId>org.hisp.dhis</groupId>
-      <artifactId>dhis-service-options</artifactId>
-    </dependency>
         
   </dependencies>
   <properties>

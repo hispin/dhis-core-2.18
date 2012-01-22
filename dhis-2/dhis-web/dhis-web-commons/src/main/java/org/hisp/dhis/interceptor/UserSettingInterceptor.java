@@ -33,7 +33,7 @@ import static org.hisp.dhis.user.UserSettingService.*;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.hisp.dhis.options.style.StyleManager;
+import org.hisp.dhis.options.StyleManager;
 import org.hisp.dhis.user.UserSettingService;
 
 import com.opensymphony.xwork2.ActionInvocation;

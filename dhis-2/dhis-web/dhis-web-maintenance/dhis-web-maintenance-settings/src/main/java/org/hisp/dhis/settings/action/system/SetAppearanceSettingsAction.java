@@ -34,7 +34,7 @@ import static org.hisp.dhis.options.SystemSettingManager.KEY_START_MODULE;
 import org.apache.commons.lang.StringUtils;
 import org.hisp.dhis.i18n.I18n;
 import org.hisp.dhis.options.SystemSettingManager;
-import org.hisp.dhis.options.style.StyleManager;
+import org.hisp.dhis.options.StyleManager;
 
 import com.opensymphony.xwork2.Action;
 

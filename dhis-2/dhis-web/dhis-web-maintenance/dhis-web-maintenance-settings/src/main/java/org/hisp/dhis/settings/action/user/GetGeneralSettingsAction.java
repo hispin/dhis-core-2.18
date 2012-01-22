@@ -41,7 +41,7 @@ import java.util.SortedMap;
 import org.hisp.dhis.i18n.I18nService;
 import org.hisp.dhis.i18n.locale.LocaleManager;
 import org.hisp.dhis.i18n.resourcebundle.ResourceBundleManager;
-import org.hisp.dhis.options.style.StyleManager;
+import org.hisp.dhis.options.StyleManager;
 import org.hisp.dhis.user.UserSettingService;
 
 import com.opensymphony.xwork2.Action;

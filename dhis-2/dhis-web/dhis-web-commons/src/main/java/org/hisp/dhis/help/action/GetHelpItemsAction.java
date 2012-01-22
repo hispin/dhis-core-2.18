@@ -31,7 +31,7 @@ import java.io.OutputStream;
 
 import javax.servlet.http.HttpServletResponse;
 
-import org.hisp.dhis.options.help.HelpManager;
+import org.hisp.dhis.help.HelpManager;
 import org.hisp.dhis.util.ContextUtils;
 import org.hisp.dhis.util.StreamActionSupport;
 

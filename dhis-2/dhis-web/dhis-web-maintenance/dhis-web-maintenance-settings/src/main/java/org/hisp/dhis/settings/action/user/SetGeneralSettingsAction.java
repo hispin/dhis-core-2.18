@@ -34,7 +34,7 @@ import java.util.Locale;
 
 import org.apache.commons.lang.StringUtils;
 import org.hisp.dhis.i18n.locale.LocaleManager;
-import org.hisp.dhis.options.style.StyleManager;
+import org.hisp.dhis.options.StyleManager;
 import org.hisp.dhis.user.UserSettingService;
 
 import com.opensymphony.xwork2.Action;
