@@ -588,6 +588,27 @@ http://www.springframework.org/schema/security http://www.springframework.org/sc
   <bean id="org.hisp.dhis.i18n.I18nService" class="org.hisp.dhis.i18n.DefaultI18nService">
     <property name="translationService" ref="org.hisp.dhis.translation.TranslationService" />
 	<property name="userSettingService" ref="org.hisp.dhis.user.UserSettingService" />
+	<property name="locales">
+	<list>
+	  <value>af</value>
+	  <value>ar</value>
+	  <value>am</value>
+	  <value>de</value>
+	  <value>en</value>
+	  <value>es</value>
+	  <value>fr</value>
+	  <value>gu</value>
+	  <value>hi</value>
+	  <value>it</value>
+	  <value>ja</value>
+	  <value>nl</value>
+	  <value>no</value>
+	  <value>pt</value>
+	  <value>ru</value>
+	  <value>sw</value>
+	  <value>vi</value>
+	</list>
+	</property>
   </bean>
   
   <!-- Startup routine definitions -->

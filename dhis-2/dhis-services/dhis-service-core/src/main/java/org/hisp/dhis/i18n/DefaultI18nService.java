@@ -33,7 +33,6 @@ import static org.hisp.dhis.system.util.ReflectionUtils.getProperty;
 import static org.hisp.dhis.system.util.ReflectionUtils.isCollection;
 import static org.hisp.dhis.system.util.ReflectionUtils.setProperty;
 
-import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -47,6 +46,7 @@ import java.util.Map;
 
 import org.hisp.dhis.common.IdentifiableObject;
 import org.hisp.dhis.common.NameableObject;
+import org.hisp.dhis.system.util.LocaleUtils;
 import org.hisp.dhis.translation.Translation;
 import org.hisp.dhis.translation.TranslationService;
 import org.hisp.dhis.user.UserSettingService;
@@ -73,6 +73,33 @@ public class DefaultI18nService
     public void setUserSettingService( UserSettingService userSettingService )
     {
         this.userSettingService = userSettingService;
+    }
+
+    // -------------------------------------------------------------------------
+    // Properties
+    // -------------------------------------------------------------------------
+
+    private List<Locale> locales = new ArrayList<Locale>();
+
+    public void setLocales( List<String> localeStrings )
+    {
+        for ( String string : localeStrings )
+        {
+            Locale locale = LocaleUtils.getLocale( string );
+            
+            if ( locale != null )
+            {
+                locales.add( locale );
+            }
+        }
+        
+        Collections.sort( locales, new Comparator<Locale>()
+            {
+                public int compare( Locale l1, Locale l2 )
+                {
+                    return l1.getDisplayName().compareTo( l2.getDisplayName() );
+                }
+            } );
     }
 
     // -------------------------------------------------------------------------
@@ -254,17 +281,7 @@ public class DefaultI18nService
     }
     
     public List<Locale> getAvailableLocales()
-    {
-        List<Locale> locales = Arrays.asList( DateFormat.getAvailableLocales() );
-        
-        Collections.sort( locales, new Comparator<Locale>()
-            {
-                public int compare( Locale l1, Locale l2 )
-                {
-                    return l1.getDisplayName().compareTo( l2.getDisplayName() );
-                }
-            } );
-        
+    {        
         return locales;
     }
 
