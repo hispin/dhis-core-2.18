@@ -27,7 +27,6 @@ package org.hisp.dhis.i18n;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import static org.hisp.dhis.i18n.locale.LocaleManager.DHIS_STANDARD_LOCALE;
 import static org.hisp.dhis.system.util.ReflectionUtils.getClassName;
 import static org.hisp.dhis.system.util.ReflectionUtils.getId;
 import static org.hisp.dhis.system.util.ReflectionUtils.getProperty;
@@ -106,10 +105,10 @@ public class DefaultI18nService
 
     private void internationaliseObject( Object object, Locale locale )
     {
-        if ( object == null || DHIS_STANDARD_LOCALE.equals( locale ) )
+        if ( locale == null || object == null )
         {
             return;
-        }        
+        }
         
         List<String> properties = getObjectPropertyNames( object );
         
@@ -131,10 +130,10 @@ public class DefaultI18nService
 
     private void internationaliseCollection( Collection<?> objects, Locale locale )
     {
-        if ( objects == null || objects.size() == 0 || DHIS_STANDARD_LOCALE.equals( locale ) )
+        if ( locale == null || objects == null || objects.size() == 0 )
         {
             return;
-        }        
+        }
         
         Object peek = objects.iterator().next();
 
@@ -200,36 +199,44 @@ public class DefaultI18nService
 
     public void updateTranslation( String className, int id, Locale locale, Map<String, String> translations )
     {
-        for ( Map.Entry<String, String> translationEntry : translations.entrySet() )
+        if ( locale != null && className != null )
         {
-            String key = translationEntry.getKey();
-            String value = translationEntry.getValue();
-
-            Translation translation = translationService.getTranslation( className, id, locale, key );
-
-            if ( value != null && !value.trim().isEmpty() )
+            for ( Map.Entry<String, String> translationEntry : translations.entrySet() )
             {
-                if ( translation != null )
+                String key = translationEntry.getKey();
+                String value = translationEntry.getValue();
+    
+                Translation translation = translationService.getTranslation( className, id, locale, key );
+    
+                if ( value != null && !value.trim().isEmpty() )
                 {
-                    translation.setValue( value );
-                    translationService.updateTranslation( translation );
+                    if ( translation != null )
+                    {
+                        translation.setValue( value );
+                        translationService.updateTranslation( translation );
+                    }
+                    else
+                    {
+                        translation = new Translation( className, id, locale.toString(), key, value );
+                        translationService.addTranslation( translation );
+                    }
                 }
-                else
+                else if ( translation != null )
                 {
-                    translation = new Translation( className, id, locale.toString(), key, value );
-                    translationService.addTranslation( translation );
+                    translationService.deleteTranslation( translation );
                 }
-            }
-            else if ( translation != null )
-            {
-                translationService.deleteTranslation( translation );
             }
         }
     }
 
     public Map<String, String> getTranslations( String className, int id, Locale locale )
     {
-        return convertTranslations( translationService.getTranslations( className, id, locale ) );
+        if ( locale != null && className != null )
+        {
+            return convertTranslations( translationService.getTranslations( className, id, locale ) );
+        }
+        
+        return new HashMap<String, String>();
     }
     
     public List<Locale> getAvailableLocales()

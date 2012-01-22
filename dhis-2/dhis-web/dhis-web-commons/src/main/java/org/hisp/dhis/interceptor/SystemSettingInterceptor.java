@@ -52,11 +52,6 @@ import com.opensymphony.xwork2.interceptor.Interceptor;
 public class SystemSettingInterceptor
     implements Interceptor
 {
-    /**
-     * Determines if a de-serialized file is compatible with this class.
-     */
-    private static final long serialVersionUID = 7410474100313067470L;
-
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------

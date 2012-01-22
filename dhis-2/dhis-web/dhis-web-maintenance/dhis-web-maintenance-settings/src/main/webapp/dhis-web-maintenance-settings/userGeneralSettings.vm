@@ -6,8 +6,6 @@
 			jQuery.postJSON( 'setUserGeneralSettings.action', {
 				currentLocale: getFieldValue( 'currentLocale' ),
 				currentLocaleDb: getFieldValue( 'currentLocaleDb' ),
-				currentSortOrder: getFieldValue( 'currentSortOrder' ),
-				currentDisplayProperty: getFieldValue( 'currentDisplayProperty' ),
 				currentStyle: getFieldValue( 'currentStyle' ),
 				chartsInDashboard: getFieldValue( 'chartsInDashboard' ),
 				autoSave: jQuery( '#autoSave' ).is(':checked' )
@@ -32,24 +30,9 @@
 <h4>$i18n.getString( "db_language" )</h4>
 
 <select id="currentLocaleDb" name="currentLocaleDb" style="min-width:250px">
+	<option value="">[$i18n.getString( "use_db_locale_no_translation" )]</option>
 #foreach( $locale in $availableLocalesDb )
 	<option value="$locale.toString()" #if( $locale == $currentLocaleDb )selected="selected"#end>$locale.getDisplayName()</option>
-#end
-</select>
-
-<h4>$i18n.getString( "sort_order_property" )</h4>
-
-<select id="currentSortOrder" name="currentSortOrder" style="min-width:250px">
-#foreach( $sortOrder in $sortOrders )
-	<option value="$sortOrder" #if( $sortOrder == $currentSortOrder )selected="selected"#end>$i18n.getString( $sortOrder )</option>
-#end
-</select>
-
-<h4>$i18n.getString( "display_property" )</h4>
-
-<select id="currentDisplayProperty" name="currentDisplayProperty" style="min-width:250px">
-#foreach( $property in $displayProperties )
-	<option value="$property" #if( $property == $currentDisplayProperty )selected="selected"#end>$i18n.getString( $property )</option>
 #end
 </select>
 

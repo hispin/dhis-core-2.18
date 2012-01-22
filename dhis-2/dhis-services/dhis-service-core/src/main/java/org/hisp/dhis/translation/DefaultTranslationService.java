@@ -97,14 +97,4 @@ public class DefaultTranslationService
     {
         translationStore.deleteTranslations( className, id );
     }
-
-    public Collection<Locale> getAvailableLocales()
-    {
-        return translationStore.getAvailableLocales();
-    }
-
-    public Translation getTranslation( String className, Locale locale, String property, String value, int nonId )
-    {
-        return translationStore.getTranslation( className, locale, property, value, nonId );
-    }
 }
