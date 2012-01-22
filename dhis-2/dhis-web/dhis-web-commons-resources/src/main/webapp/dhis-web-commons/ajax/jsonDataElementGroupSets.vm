@@ -3,7 +3,7 @@
 #foreach( $dataElementGroupSet in $dataElementGroupSets )
   {
     "id":  ${dataElementGroupSet.id} ,
-    "name": "$!encoder.jsonEncode( ${dataElementGroupSet.name} )"
+    "name": "$!encoder.jsonEncode( ${dataElementGroupSet.displayName} )"
   }#if( $velocityCount < $size ),#end
 #end
 ]

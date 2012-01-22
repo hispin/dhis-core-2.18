@@ -1,11 +1,11 @@
 { "indicator": 
   {
     "id": $!{indicator.id},
-    "name": "$!encoder.jsonEncode( ${indicator.name} )",
+    "name": "$!encoder.jsonEncode( ${indicator.displayName} )",
     "alternativeName": "$!encoder.jsonEncode( ${indicator.alternativeNamee} )",
-    "shortName": "$!encoder.jsonEncode( ${indicator.shortName} )",
+    "shortName": "$!encoder.jsonEncode( ${indicator.displayShortName} )",
     "code": "$!encoder.jsonEncode( ${indicator.code} )",
-	"description": "$!encoder.xmlEncode( ${indicator.description} )",
+	"description": "$!encoder.xmlEncode( ${indicator.displayDescription} )",
     "annualized": "${indicator.annualized}",
     "indicatorTypeId": "$!{indicator.indicatorType.id}",
 	"indicatorTypeName": "$!encoder.xmlEncode( $!{indicator.indicatorType.name} )",

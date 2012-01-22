@@ -1,8 +1,8 @@
 { "indicatorGroup": 
   {
     "id": $!{indicatorGroup.id},
-    "name": "$!encoder.jsonEncode( ${indicatorGroup.name} )",
-    "alternativeName": "$!encoder.jsonEncode( ${indicatorGroup.alternativeNamee} )",
+    "name": "$!encoder.jsonEncode( ${indicatorGroup.displayName} )",
+    "alternativeName": "$!encoder.jsonEncode( ${indicatorGroup.alternativeName} )",
     "memberCount": "$memberCount"
   }
 }

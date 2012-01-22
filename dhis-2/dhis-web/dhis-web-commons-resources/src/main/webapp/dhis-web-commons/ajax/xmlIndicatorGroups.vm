@@ -3,7 +3,7 @@
 	#foreach( $indicatorGroup in $indicatorGroups )
 	<indicatorGroup>
 		<id>$indicatorGroup.id</id>
-		<name>$encoder.xmlEncode( $indicatorGroup.name )</name>
+		<name>$encoder.xmlEncode( $indicatorGroup.displayName )</name>
 	</indicatorGroup>
 	#end
 </indicatorGroups>

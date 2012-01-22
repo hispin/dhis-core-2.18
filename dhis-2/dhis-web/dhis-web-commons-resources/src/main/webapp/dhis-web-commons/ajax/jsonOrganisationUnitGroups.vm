@@ -3,7 +3,7 @@
 #foreach( $group in $organisationUnitGroups )
   {
     "id": "$group.id",
-    "name": "$!encoder.jsonEncode( ${group.name} )"
+    "name": "$!encoder.jsonEncode( ${group.displayName} )"
   }#if( $velocityCount < $size ),#end    
 #end
 ]

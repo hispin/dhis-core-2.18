@@ -1,7 +1,7 @@
 { "organisationUnitGroupSet":
   {
 	"id": "${organisationUnitGroupSet.id}",
-	"name": "$!encoder.jsonEncode( ${organisationUnitGroupSet.name} )",
+	"name": "$!encoder.jsonEncode( ${organisationUnitGroupSet.displayName} )",
 	"description": "$!encoder.jsonEncode( ${organisationUnitGroupSet.description} )",
 	"compulsory": "$!{organisationUnitGroupSet.compulsory}",
 	"memberCount": "$!{memberCount}"
