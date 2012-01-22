@@ -31,7 +31,7 @@ import java.util.List;
 import java.util.SortedMap;
 
 import org.hisp.dhis.options.SystemSettingManager;
-import org.hisp.dhis.options.style.StyleManager;
+import org.hisp.dhis.options.StyleManager;
 import org.hisp.dhis.system.util.Filter;
 import org.hisp.dhis.system.util.FilterUtils;
 import org.hisp.dhis.webportal.module.Module;

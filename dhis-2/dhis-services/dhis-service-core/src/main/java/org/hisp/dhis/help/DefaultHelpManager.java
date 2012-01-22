@@ -1,4 +1,4 @@
-package org.hisp.dhis.options.help;
+package org.hisp.dhis.help;
 
 /*
  * Copyright (c) 2004-2012, University of Oslo
@@ -38,6 +38,7 @@ import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.stream.StreamSource;
 
+import org.hisp.dhis.help.HelpManager;
 import org.springframework.core.io.ClassPathResource;
 
 /**

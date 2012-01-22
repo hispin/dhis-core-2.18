@@ -27,13 +27,13 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     scope="prototype">
     <property name="systemSettingManager" ref="org.hisp.dhis.options.SystemSettingManager" />
     <property name="moduleManager" ref="org.hisp.dhis.webportal.module.ModuleManager" />
-    <property name="styleManager" ref="org.hisp.dhis.options.style.StyleManager" />
+    <property name="styleManager" ref="org.hisp.dhis.options.StyleManager" />
   </bean>
 
   <bean id="org.hisp.dhis.settings.action.system.SetAppearanceSettingsAction" class="org.hisp.dhis.settings.action.system.SetAppearanceSettingsAction"
     scope="prototype">
     <property name="systemSettingManager" ref="org.hisp.dhis.options.SystemSettingManager" />
-    <property name="styleManager" ref="org.hisp.dhis.options.style.StyleManager" />
+    <property name="styleManager" ref="org.hisp.dhis.options.StyleManager" />
   </bean>
 
   <bean id="org.hisp.dhis.settings.action.system.GetSMTPSettingsAction" class="org.hisp.dhis.settings.action.system.GetSMTPSettingsAction"
@@ -68,7 +68,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
       <ref bean="org.hisp.dhis.user.UserSettingService" />
     </property>
     <property name="styleManager">
-      <ref bean="org.hisp.dhis.options.style.StyleManager" />
+      <ref bean="org.hisp.dhis.options.StyleManager" />
     </property>
   </bean>
 
@@ -84,7 +84,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
       <ref bean="org.hisp.dhis.user.UserSettingService" />
     </property>
     <property name="styleManager">
-      <ref bean="org.hisp.dhis.options.style.StyleManager" />
+      <ref bean="org.hisp.dhis.options.StyleManager" />
     </property>
   </bean>
   

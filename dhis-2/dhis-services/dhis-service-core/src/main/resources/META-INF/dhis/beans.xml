@@ -540,8 +540,50 @@ http://www.springframework.org/schema/security http://www.springframework.org/sc
     </property>
   </bean>
 
+  <bean id="org.hisp.dhis.options.StyleManager" class="org.hisp.dhis.options.style.DefaultStyleManager">
+    <property name="systemSettingManager" ref="org.hisp.dhis.options.SystemSettingManager" />
+	<property name="userSettingService" ref="org.hisp.dhis.user.UserSettingService" />
+    <property name="defaultStyle" value="light_blue" />
+    <property name="styles">
+      <map>
+        <entry>
+          <key>
+            <value>light_blue</value>
+          </key>
+          <value>light_blue/light_blue.css</value>
+        </entry>
+        <entry>
+          <key>
+            <value>blue</value>
+          </key>
+          <value>blue/blue.css</value>
+        </entry>
+        <entry>
+          <key>
+            <value>green</value>
+          </key>
+          <value>green/green.css</value>
+        </entry>
+        <entry>
+          <key>
+            <value>vietnam</value>
+          </key>
+          <value>vietnam/vietnam.css</value>
+        </entry>
+        <entry>
+          <key>
+            <value>india</value>
+          </key>
+          <value>india/india.css</value>
+        </entry>
+      </map>
+    </property>
+  </bean>
+  
   <bean id="org.hisp.dhis.common.IdentifiableObjectManager" class="org.hisp.dhis.common.DefaultIdentifiableObjectManager"/>  
 
+  <bean id="org.hisp.dhis.help.HelpManager" class="org.hisp.dhis.help.DefaultHelpManager" />
+  
   <!-- I18nService -->
 
   <bean id="org.hisp.dhis.i18n.I18nService" class="org.hisp.dhis.i18n.DefaultI18nService">
@@ -552,7 +594,7 @@ http://www.springframework.org/schema/security http://www.springframework.org/sc
       <ref bean="org.hisp.dhis.translation.TranslationService" />
     </property>
   </bean>
-
+  
   <!-- Startup routine definitions -->
 
   <bean id="org.hisp.dhis.startup.TableAlteror" class="org.hisp.dhis.startup.TableAlteror">

@@ -1,4 +1,4 @@
-package org.hisp.dhis.options.style;
+package org.hisp.dhis.options;
 
 /*
  * Copyright (c) 2004-2012, University of Oslo

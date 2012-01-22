@@ -321,12 +321,12 @@
 
   <bean id="org.hisp.dhis.help.action.GetHelpContentAction" class="org.hisp.dhis.help.action.GetHelpContentAction"
     scope="prototype">
-    <property name="helpManager" ref="org.hisp.dhis.options.help.HelpManager" />
+    <property name="helpManager" ref="org.hisp.dhis.help.HelpManager" />
   </bean>
 
   <bean id="org.hisp.dhis.help.action.GetHelpItemsAction" class="org.hisp.dhis.help.action.GetHelpItemsAction"
     scope="prototype">
-    <property name="helpManager" ref="org.hisp.dhis.options.help.HelpManager" />
+    <property name="helpManager" ref="org.hisp.dhis.help.HelpManager" />
   </bean>
 
   <!-- Common actions -->
@@ -583,7 +583,7 @@
 
   <bean id="org.hisp.dhis.interceptor.UserSettingInterceptor" class="org.hisp.dhis.interceptor.UserSettingInterceptor">
     <property name="userSettingService" ref="org.hisp.dhis.user.UserSettingService" />
-    <property name="styleManager" ref="org.hisp.dhis.options.style.StyleManager" />
+    <property name="styleManager" ref="org.hisp.dhis.options.StyleManager" />
   </bean>
 
   <bean id="org.hisp.dhis.useraccount.action.GetCurrentUserAction" class="org.hisp.dhis.useraccount.action.GetCurrentUserAction"
