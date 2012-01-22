@@ -44,11 +44,6 @@ import com.opensymphony.xwork2.interceptor.PreResultListener;
 public abstract class AbstractPreResultListener
     implements Interceptor, PreResultListener
 {
-    /**
-     * Determines if a de-serialized file is compatible with this class.
-     */
-    private static final long serialVersionUID = -4459571006411990169L;
-
     private static final Log LOG = LogFactory.getLog( AbstractPreResultListener.class );
 
     private boolean executePreResultListener;

@@ -32,7 +32,6 @@ import static junit.framework.Assert.assertNotNull;
 import static junit.framework.Assert.assertNull;
 import static junit.framework.Assert.assertTrue;
 
-import java.util.Collection;
 import java.util.Locale;
 
 import org.hisp.dhis.DhisSpringTest;
@@ -164,20 +163,5 @@ public class TranslationServiceTest
         translationService.addTranslation( translation2c );
         
         assertEquals( 5, translationService.getAllTranslations().size() );
-    }
-    
-    @Test
-    public void testGetAvailableLocales()
-        throws Exception
-    {
-        translationService.addTranslation( translation1a );
-        translationService.addTranslation( translation1b );
-        translationService.addTranslation( translation2a );
-        translationService.addTranslation( translation2b );
-        translationService.addTranslation( translation2c );
-
-        Collection<Locale> locales = translationService.getAvailableLocales();
-
-        assertEquals( 3, locales.size() );
     }
 }

@@ -32,6 +32,7 @@ import static org.hisp.dhis.user.UserSettingService.KEY_CHARTS_IN_DASHBOARD;
 
 import java.util.Locale;
 
+import org.apache.commons.lang.StringUtils;
 import org.hisp.dhis.i18n.locale.LocaleManager;
 import org.hisp.dhis.options.style.StyleManager;
 import org.hisp.dhis.user.UserSettingService;
@@ -125,7 +126,7 @@ public class SetGeneralSettingsAction
     {
         localeManagerInterface.setCurrentLocale( getRespectiveLocale( currentLocale ) );
 
-        localeManagerDB.setCurrentLocale( getRespectiveLocale( currentLocaleDb ) );
+        localeManagerDB.setCurrentLocale( getRespectiveLocale( StringUtils.trimToNull( currentLocaleDb ) ) );
 
         styleManager.setUserStyle( currentStyle );
 
@@ -142,6 +143,11 @@ public class SetGeneralSettingsAction
 
     private Locale getRespectiveLocale( String locale )
     {
+        if ( locale == null )
+        {
+            return null;
+        }
+        
         String[] tokens = locale.split( "_" );
         Locale newLocale = null;
 

@@ -50,11 +50,6 @@ import com.opensymphony.xwork2.interceptor.Interceptor;
 public class I18nInterceptor
     implements Interceptor
 {
-    /**
-     * Determines if a de-serialized file is compatible with this class.
-     */
-    private static final long serialVersionUID = -1684761883368013838L;
-
     private static final String KEY_I18N = "i18n";
     private static final String KEY_I18N_FORMAT = "format";
     private static final String KEY_LOCALE = "locale";
@@ -82,15 +77,11 @@ public class I18nInterceptor
     // -------------------------------------------------------------------------
 
     public void destroy()
-    {
-        // TODO Auto-generated method stub
-        
+    {        
     }
 
     public void init()
     {
-        // TODO Auto-generated method stub
-        
     }
 
     public String intercept( ActionInvocation invocation )
