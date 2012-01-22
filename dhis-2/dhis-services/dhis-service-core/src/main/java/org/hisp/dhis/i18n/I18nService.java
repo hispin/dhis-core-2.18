@@ -44,9 +44,9 @@ public interface I18nService
     // Internationalise
     // -------------------------------------------------------------------------
 
-    public void internationalise( Object object );
+    void internationalise( Object object );
     
-    public void internationalise( Object object, Locale locale );
+    void internationalise( Object object, Locale locale );
     
     Map<String, String> getObjectPropertyValues( Object object );
     
@@ -56,15 +56,23 @@ public interface I18nService
     // Object
     // -------------------------------------------------------------------------
 
-    public void removeObject( Object object );
+    void removeObject( Object object );
 
     // -------------------------------------------------------------------------
     // Translation
     // -------------------------------------------------------------------------
 
-    public void updateTranslation( String className, int id, Locale thisLocale, Map<String, String> translations );
+    void updateTranslation( String className, int id, Locale thisLocale, Map<String, String> translations );
 
-    public Map<String, String> getTranslations( String className, int id, Locale locale );
+    Map<String, String> getTranslations( String className, int id );
+
+    Map<String, String> getTranslations( String className, int id, Locale locale );
+    
+    // -------------------------------------------------------------------------
+    // Locale
+    // -------------------------------------------------------------------------
+
+    Locale getCurrentLocale();
     
     List<Locale> getAvailableLocales();
 }

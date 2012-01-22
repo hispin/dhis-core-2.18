@@ -22,7 +22,7 @@
         <select id="loc" name="loc" onchange="getTranslation()" style="min-width:20em">
             <option value="NONE">$i18n.getString( "translation_select_locale" )</option>
 			#foreach ( $loc in $availableLocales )
-				<option value="$loc" #if( $locale == $loc ) selected="selected" #end>$!loc.displayName</option>
+				<option value="$loc" #if( $currentLocale && $loc == $currentLocale ) selected="selected" #end>$!loc.displayName</option>
 			#end
 		</select>
     </td>

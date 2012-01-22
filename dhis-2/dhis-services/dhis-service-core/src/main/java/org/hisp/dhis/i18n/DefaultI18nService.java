@@ -47,9 +47,9 @@ import java.util.Map;
 
 import org.hisp.dhis.common.IdentifiableObject;
 import org.hisp.dhis.common.NameableObject;
-import org.hisp.dhis.i18n.locale.LocaleManager;
 import org.hisp.dhis.translation.Translation;
 import org.hisp.dhis.translation.TranslationService;
+import org.hisp.dhis.user.UserSettingService;
 
 /**
  * @author Oyvind Brucker
@@ -61,18 +61,18 @@ public class DefaultI18nService
     // Dependencies
     // -------------------------------------------------------------------------
 
-    private LocaleManager localeManager;
-
-    public void setLocaleManager( LocaleManager localeManager )
-    {
-        this.localeManager = localeManager;
-    }
-
     private TranslationService translationService;
 
     public void setTranslationService( TranslationService translationService )
     {
         this.translationService = translationService;
+    }
+
+    private UserSettingService userSettingService;
+
+    public void setUserSettingService( UserSettingService userSettingService )
+    {
+        this.userSettingService = userSettingService;
     }
 
     // -------------------------------------------------------------------------
@@ -83,11 +83,11 @@ public class DefaultI18nService
     {
         if ( isCollection( object ) )
         {
-            internationaliseCollection( (Collection<?>) object, localeManager.getCurrentLocale() );
+            internationaliseCollection( (Collection<?>) object, getCurrentLocale() );
         }
         else
         {
-            internationaliseObject( object, localeManager.getCurrentLocale() );
+            internationaliseObject( object, getCurrentLocale() );
         }
     }
 
@@ -229,6 +229,11 @@ public class DefaultI18nService
         }
     }
 
+    public Map<String, String> getTranslations( String className, int id )
+    {
+        return getTranslations( className, id, getCurrentLocale() );
+    }
+    
     public Map<String, String> getTranslations( String className, int id, Locale locale )
     {
         if ( locale != null && className != null )
@@ -237,6 +242,15 @@ public class DefaultI18nService
         }
         
         return new HashMap<String, String>();
+    }
+
+    // -------------------------------------------------------------------------
+    // Locale
+    // -------------------------------------------------------------------------
+    
+    public Locale getCurrentLocale()
+    {
+        return (Locale) userSettingService.getUserSetting( UserSettingService.KEY_DB_LOCALE );
     }
     
     public List<Locale> getAvailableLocales()

@@ -41,8 +41,6 @@ import java.util.Map;
 import org.hisp.dhis.DhisSpringTest;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementService;
-import org.hisp.dhis.i18n.locale.LocaleManager;
-import org.hisp.dhis.mock.MockLocaleManager;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -54,8 +52,6 @@ public class I18nServiceTest
 {
     private I18nService i18nService;
 
-    private LocaleManager localeManager;
-
     // -------------------------------------------------------------------------
     // Set up/tear down
     // -------------------------------------------------------------------------
@@ -66,11 +62,7 @@ public class I18nServiceTest
     {
         i18nService = (I18nService) getBean( I18nService.ID );
         
-        localeManager = new MockLocaleManager();
-        
         dataElementService = (DataElementService) getBean( DataElementService.ID );
-        
-        setDependency( i18nService, "localeManager", localeManager );
     }
 
     // -------------------------------------------------------------------------

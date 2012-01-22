@@ -281,30 +281,17 @@
   <!-- i18n -->
 
   <bean id="org.hisp.dhis.i18n.action.I18nAction" class="org.hisp.dhis.i18n.action.I18nAction" scope="prototype">
-    <property name="i18nService">
-      <ref bean="org.hisp.dhis.i18n.I18nService" />
-    </property>
-    <property name="localeManager">
-      <ref bean="org.hisp.dhis.i18n.locale.LocaleManagerDb" />
-    </property>
-	<property name="identifiableObjectManager">
-	  <ref bean="org.hisp.dhis.common.IdentifiableObjectManager" />
-	</property>
+    <property name="i18nService" ref="org.hisp.dhis.i18n.I18nService" />
+	<property name="identifiableObjectManager" ref="org.hisp.dhis.common.IdentifiableObjectManager" />
   </bean>
 
   <bean id="org.hisp.dhis.i18n.action.GetTranslationsAction" class="org.hisp.dhis.i18n.action.GetTranslationsAction">
-    <property name="i18nService">
-      <ref bean="org.hisp.dhis.i18n.I18nService" />
-    </property>
+    <property name="i18nService" ref="org.hisp.dhis.i18n.I18nService" />
   </bean>
 
   <bean id="org.hisp.dhis.i18n.action.TranslateAction" class="org.hisp.dhis.i18n.action.TranslateAction">
-    <property name="i18nService">
-      <ref bean="org.hisp.dhis.i18n.I18nService" />
-    </property>
-	<property name="identifiableObjectManager">
-	  <ref bean="org.hisp.dhis.common.IdentifiableObjectManager" />
-	</property>
+    <property name="i18nService" ref="org.hisp.dhis.i18n.I18nService" />
+	<property name="identifiableObjectManager" ref="org.hisp.dhis.common.IdentifiableObjectManager" />
   </bean>
 
   <!-- About -->
