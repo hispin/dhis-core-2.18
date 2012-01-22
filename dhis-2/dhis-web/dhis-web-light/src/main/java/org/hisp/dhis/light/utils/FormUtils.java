@@ -25,7 +25,7 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.hisp.dhis.light.dataentry.utils;
+package org.hisp.dhis.light.utils;
 
 import org.apache.commons.collections.CollectionUtils;
 import org.hisp.dhis.common.comparator.IdentifiableObjectNameComparator;

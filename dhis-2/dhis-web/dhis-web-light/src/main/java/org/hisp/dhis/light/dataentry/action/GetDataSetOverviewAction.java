@@ -29,19 +29,17 @@ package org.hisp.dhis.light.dataentry.action;
 
 import com.opensymphony.xwork2.Action;
 import org.apache.commons.lang.Validate;
-import org.hisp.dhis.dataset.CompleteDataSetRegistration;
-import org.hisp.dhis.dataset.CompleteDataSetRegistrationService;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.dataset.DataSetService;
-import org.hisp.dhis.light.dataentry.utils.FormUtils;
+import org.hisp.dhis.dataset.Section;
+import org.hisp.dhis.i18n.I18nFormat;
+import org.hisp.dhis.light.utils.FormUtils;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodService;
-import org.hisp.dhis.user.CurrentUserService;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -53,13 +51,6 @@ public class GetDataSetOverviewAction
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
-
-    private CurrentUserService currentUserService;
-
-    public void setCurrentUserService( CurrentUserService currentUserService )
-    {
-        this.currentUserService = currentUserService;
-    }
 
     private OrganisationUnitService organisationUnitService;
 
@@ -73,13 +64,6 @@ public class GetDataSetOverviewAction
     public void setDataSetService( DataSetService dataSetService )
     {
         this.dataSetService = dataSetService;
-    }
-
-    private CompleteDataSetRegistrationService registrationService;
-
-    public void setRegistrationService( CompleteDataSetRegistrationService registrationService )
-    {
-        this.registrationService = registrationService;
     }
 
     private PeriodService periodService;
@@ -101,6 +85,13 @@ public class GetDataSetOverviewAction
         return formUtils;
     }
 
+    private I18nFormat format;
+
+    public void setFormat( I18nFormat format )
+    {
+        this.format = format;
+    }
+
     // -------------------------------------------------------------------------
     // Input & Output
     // -------------------------------------------------------------------------
@@ -117,6 +108,13 @@ public class GetDataSetOverviewAction
         return organisationUnitId;
     }
 
+    private OrganisationUnit organisationUnit;
+
+    public OrganisationUnit getOrganisationUnit()
+    {
+        return organisationUnit;
+    }
+
     private String periodId;
 
     public void setPeriodId( String periodId )
@@ -127,6 +125,13 @@ public class GetDataSetOverviewAction
     public String getPeriodId()
     {
         return periodId;
+    }
+
+    private Period period;
+
+    public Period getPeriod()
+    {
+        return period;
     }
 
     private Integer dataSetId;
@@ -148,40 +153,18 @@ public class GetDataSetOverviewAction
         return dataSet;
     }
 
-    private Boolean complete;
+    private Integer sectionId;
 
-    public void setComplete( Boolean complete )
+    public void setSectionId( Integer sectionId )
     {
-        this.complete = complete;
+        this.sectionId = sectionId;
     }
 
-    public Boolean getComplete()
+    private String sectionName;
+
+    public String getSectionName()
     {
-        return complete;
-    }
-
-    private Boolean formComplete;
-
-    public Boolean getFormComplete()
-    {
-        return formComplete;
-    }
-
-    public void setFormComplete( Boolean formComplete )
-    {
-        this.formComplete = formComplete;
-    }
-
-    private boolean validated;
-
-    public boolean getValidated()
-    {
-        return validated;
-    }
-
-    public void setValidated( boolean validated )
-    {
-        this.validated = validated;
+        return sectionName;
     }
 
     private List<String> validationRuleViolations = new ArrayList<String>();
@@ -189,6 +172,18 @@ public class GetDataSetOverviewAction
     public List<String> getValidationRuleViolations()
     {
         return validationRuleViolations;
+    }
+
+    private boolean validated;
+
+    public boolean isValidated()
+    {
+        return validated;
+    }
+
+    public void setValidated( boolean validated )
+    {
+        this.validated = validated;
     }
 
     // -------------------------------------------------------------------------
@@ -202,38 +197,29 @@ public class GetDataSetOverviewAction
         Validate.notNull( periodId );
         Validate.notNull( dataSetId );
 
-        OrganisationUnit organisationUnit = organisationUnitService.getOrganisationUnit( organisationUnitId );
+        organisationUnit = organisationUnitService.getOrganisationUnit( organisationUnitId );
 
-        Period period = periodService.getPeriodByExternalId( periodId );
+        period = periodService.getPeriodByExternalId( periodId );
+
+        period.setName( format.formatPeriod( period ) );
 
         dataSet = dataSetService.getDataSet( dataSetId );
 
-        CompleteDataSetRegistration registration = registrationService.getCompleteDataSetRegistration( dataSet, period,
-            organisationUnit );
-
-        complete = registration != null ? true : false;
-
-        if ( formComplete != null )
+        if ( sectionId != null )
         {
-            if ( formComplete && !complete )
+            for ( Section section : dataSet.getSections() )
             {
-                registration = new CompleteDataSetRegistration();
-                registration.setDataSet( dataSet );
-                registration.setPeriod( period );
-                registration.setSource( organisationUnit );
-                registration.setDate( new Date() );
-                registration.setStoredBy( currentUserService.getCurrentUsername() );
+                if ( section.getId() == sectionId )
+                {
+                    sectionName = section.getName();
 
-                registrationService.saveCompleteDataSetRegistration( registration );
-
-                complete = true;
+                    break;
+                }
             }
-            else if ( !formComplete && complete )
-            {
-                registrationService.deleteCompleteDataSetRegistration( registration );
-
-                complete = false;
-            }
+        }
+        else
+        {
+            sectionName = "Default";
         }
 
         validationRuleViolations = formUtils.getValidationRuleViolations( organisationUnit, dataSet, period );

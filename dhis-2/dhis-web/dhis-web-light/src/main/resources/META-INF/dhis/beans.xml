@@ -5,9 +5,16 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 
   <bean id="org.hisp.dhis.light.action.NoAction" class="org.hisp.dhis.light.action.NoAction" />
 
+  <bean id="org.hisp.dhis.light.action.MenuAction" class="org.hisp.dhis.light.action.MenuAction">
+    <property name="messageService" ref="org.hisp.dhis.message.MessageService" />
+    <property name="organisationUnitService" ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
+    <property name="dataSetService" ref="org.hisp.dhis.dataset.DataSetService" />
+    <property name="periodService" ref="org.hisp.dhis.period.PeriodService" />
+  </bean>
+
   <!-- data entry -->
 
-  <bean id="org.hisp.dhis.light.dataentry.utils.FormUtils" class="org.hisp.dhis.light.dataentry.utils.FormUtils">
+  <bean id="org.hisp.dhis.light.dataentry.utils.FormUtils" class="org.hisp.dhis.light.utils.FormUtils">
     <property name="dataValueService" ref="org.hisp.dhis.datavalue.DataValueService" />
     <property name="stdDevOutlierAnalysisService" ref="org.hisp.dhis.dataanalysis.StdDevOutlierAnalysisService" />
     <property name="minMaxOutlierAnalysisService" ref="org.hisp.dhis.dataanalysis.MinMaxOutlierAnalysisService" />
@@ -45,12 +52,20 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
   <bean id="org.hisp.dhis.light.dataentry.action.GetDataSetOverviewAction"
       class="org.hisp.dhis.light.dataentry.action.GetDataSetOverviewAction"
       scope="prototype">
+    <property name="organisationUnitService" ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
+    <property name="dataSetService" ref="org.hisp.dhis.dataset.DataSetService" />
+    <property name="periodService" ref="org.hisp.dhis.period.PeriodService" />
+    <property name="formUtils" ref="org.hisp.dhis.light.dataentry.utils.FormUtils" />
+  </bean>
+
+  <bean id="org.hisp.dhis.light.dataentry.action.MarkComplete"
+      class="org.hisp.dhis.light.dataentry.action.MarkComplete"
+      scope="prototype">
     <property name="currentUserService" ref="org.hisp.dhis.user.CurrentUserService" />
     <property name="organisationUnitService" ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
     <property name="dataSetService" ref="org.hisp.dhis.dataset.DataSetService" />
     <property name="registrationService" ref="org.hisp.dhis.dataset.CompleteDataSetRegistrationService" />
     <property name="periodService" ref="org.hisp.dhis.period.PeriodService" />
-    <property name="formUtils" ref="org.hisp.dhis.light.dataentry.utils.FormUtils" />
   </bean>
 
   <bean id="org.hisp.dhis.light.dataentry.action.GetSectionFormAction"
@@ -126,9 +141,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     <property name="userService" ref="org.hisp.dhis.user.UserService" />
   </bean>
 
-  <bean id="org.hisp.dhis.light.action.MenuAction" class="org.hisp.dhis.light.action.MenuAction">
-    <property name="messageService" ref="org.hisp.dhis.message.MessageService" />
-  </bean>
+  <!-- Messages -->
 
   <bean id="org.hisp.dhis.light.message.action.GetMessagesAction" class="org.hisp.dhis.light.message.action.GetMessagesAction">
     <property name="messageService" ref="org.hisp.dhis.message.MessageService" />

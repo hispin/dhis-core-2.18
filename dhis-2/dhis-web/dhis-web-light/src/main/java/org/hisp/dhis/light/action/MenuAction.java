@@ -28,7 +28,14 @@
 package org.hisp.dhis.light.action;
 
 import com.opensymphony.xwork2.Action;
+import org.hisp.dhis.dataset.DataSet;
+import org.hisp.dhis.dataset.DataSetService;
+import org.hisp.dhis.i18n.I18nFormat;
 import org.hisp.dhis.message.MessageService;
+import org.hisp.dhis.organisationunit.OrganisationUnit;
+import org.hisp.dhis.organisationunit.OrganisationUnitService;
+import org.hisp.dhis.period.Period;
+import org.hisp.dhis.period.PeriodService;
 
 public class MenuAction
     implements Action
@@ -44,6 +51,34 @@ public class MenuAction
         this.messageService = messageService;
     }
 
+    private OrganisationUnitService organisationUnitService;
+
+    public void setOrganisationUnitService( OrganisationUnitService organisationUnitService )
+    {
+        this.organisationUnitService = organisationUnitService;
+    }
+
+    private DataSetService dataSetService;
+
+    public void setDataSetService( DataSetService dataSetService )
+    {
+        this.dataSetService = dataSetService;
+    }
+
+    private PeriodService periodService;
+
+    public void setPeriodService( PeriodService periodService )
+    {
+        this.periodService = periodService;
+    }
+
+    private I18nFormat format;
+
+    public void setFormat( I18nFormat format )
+    {
+        this.format = format;
+    }
+
     // -------------------------------------------------------------------------
     // Input & Output
     // -------------------------------------------------------------------------
@@ -55,6 +90,60 @@ public class MenuAction
         return unreadMessageConversationCount;
     }
 
+    private Integer organisationUnitId;
+
+    public void setOrganisationUnitId( Integer organisationUnitId )
+    {
+        this.organisationUnitId = organisationUnitId;
+    }
+
+    private OrganisationUnit organisationUnit;
+
+    public OrganisationUnit getOrganisationUnit()
+    {
+        return organisationUnit;
+    }
+
+    private String periodId;
+
+    public void setPeriodId( String periodId )
+    {
+        this.periodId = periodId;
+    }
+
+    private Period period;
+
+    public Period getPeriod()
+    {
+        return period;
+    }
+
+    private Integer dataSetId;
+
+    public void setDataSetId( Integer dataSetId )
+    {
+        this.dataSetId = dataSetId;
+    }
+
+    private DataSet dataSet;
+
+    public DataSet getDataSet()
+    {
+        return dataSet;
+    }
+
+    private boolean complete;
+
+    public void setComplete( boolean complete )
+    {
+        this.complete = complete;
+    }
+
+    public boolean isComplete()
+    {
+        return complete;
+    }
+
     // -------------------------------------------------------------------------
     // Action Implementation
     // -------------------------------------------------------------------------
@@ -62,6 +151,16 @@ public class MenuAction
     @Override
     public String execute()
     {
+        if ( complete )
+        {
+            organisationUnit = organisationUnitService.getOrganisationUnit( organisationUnitId );
+
+            period = periodService.getPeriodByExternalId( periodId );
+            period.setName( format.formatPeriod( period ) );
+
+            dataSet = dataSetService.getDataSet( dataSetId );
+        }
+
         unreadMessageConversationCount = messageService.getUnreadMessageConversationCount();
 
         return SUCCESS;
