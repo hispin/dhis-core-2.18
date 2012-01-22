@@ -37,7 +37,7 @@
 			<table class="listTable" id="listTable"> 
 				<col/>
 				<col/>
-				<col width="96px">				
+				<col width="120px">				
 				<thead>							
 				<tr>
 					<th>$i18n.getString( "name" )</th>
@@ -48,12 +48,13 @@
 				<tbody id="list">
 				#foreach( $validationRule in $validationRulesList )
 				<tr id="tr${validationRule.id}">
-					<td onclick="showValidationRuleDetails( $validationRule.id )">$!encoder.htmlEncode( $validationRule.name )</td>
+					<td onclick="showValidationRuleDetails( $validationRule.id )">$!encoder.htmlEncode( $validationRule.displayName )</td>
 					<td onclick="showValidationRuleDetails( $validationRule.id )">$i18n.getString($!validationRule.periodType.name) </td>
 					<td style="text-align:right">
 						<a href="showUpdateValidationRuleForm.action?id=$validationRule.id" title="$i18n.getString( 'edit' )"><img src="../images/edit.png" alt="$i18n.getString( 'edit' )"></a>
+						<a href="javascript:translate( 'ValidationRule', '$validationRule.id' )"><img src="../images/i18n.png" alt="$i18n.getString( 'translation_translate' )"/></a>
 						#if( $auth.hasAccess( "dhis-web-validationrule", "removeValidationRule" ) )
-						<a href="javascript:removeValidationRule( $validationRule.id, '$encoder.jsEncode( $validationRule.name )' )" title="$i18n.getString( 'remove' )"><img src="../images/delete.png" alt="$i18n.getString( 'remove' )"></a>
+						<a href="javascript:removeValidationRule( $validationRule.id, '$encoder.jsEncode( $validationRule.displayName )' )" title="$i18n.getString( 'remove' )"><img src="../images/delete.png" alt="$i18n.getString( 'remove' )"></a>
 						#else <img src="../images/delete-denied.png"> #end
 						<a href="javascript:showValidationRuleDetails( $validationRule.id )" title="$i18n.getString( 'show_details' )"><img src="../images/information.png" alt="$i18n.getString( 'show_details' )"></a>
 					</td>

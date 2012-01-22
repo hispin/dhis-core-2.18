@@ -27,6 +27,7 @@ package org.hisp.dhis.validation;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import static org.hisp.dhis.i18n.I18nUtils.i18n;
 import static org.hisp.dhis.system.util.MathUtils.expressionIsTrue;
 import static org.hisp.dhis.system.util.MathUtils.getRounded;
 
@@ -36,6 +37,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import org.apache.commons.lang.StringUtils;
 import org.hisp.dhis.common.GenericIdentifiableObjectStore;
 import org.hisp.dhis.common.Grid;
 import org.hisp.dhis.dataelement.DataElement;
@@ -43,6 +45,7 @@ import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.dataset.DataSetService;
 import org.hisp.dhis.expression.ExpressionService;
+import org.hisp.dhis.i18n.I18nService;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodService;
@@ -76,8 +79,7 @@ public class DefaultValidationRuleService
 
     private GenericIdentifiableObjectStore<ValidationRuleGroup> validationRuleGroupStore;
 
-    public void setValidationRuleGroupStore(
-        GenericIdentifiableObjectStore<ValidationRuleGroup> validationRuleGroupStore )
+    public void setValidationRuleGroupStore( GenericIdentifiableObjectStore<ValidationRuleGroup> validationRuleGroupStore )
     {
         this.validationRuleGroupStore = validationRuleGroupStore;
     }
@@ -110,6 +112,13 @@ public class DefaultValidationRuleService
         this.dataElementService = dataElementService;
     }
 
+    private I18nService i18nService;
+
+    public void setI18nService( I18nService service )
+    {
+        i18nService = service;
+    }
+
     // -------------------------------------------------------------------------
     // ValidationRule business logic
     // -------------------------------------------------------------------------
@@ -129,7 +138,7 @@ public class DefaultValidationRuleService
         }
 
         grid.addRow();
-        grid.addValue( "" );
+        grid.addValue( StringUtils.EMPTY );
 
         for ( Period period : periods )
         {
@@ -392,22 +401,22 @@ public class DefaultValidationRuleService
 
     public ValidationRule getValidationRule( int id )
     {
-        return validationRuleStore.get( id );
+        return i18n( i18nService, validationRuleStore.get( id ) );
     }
 
     public ValidationRule getValidationRule( String uid )
     {
-        return validationRuleStore.getByUid( uid );
+        return i18n( i18nService, validationRuleStore.getByUid( uid ) );
     }
 
     public ValidationRule getValidationRuleByName( String name )
     {
-        return validationRuleStore.getByName( name );
+        return i18n( i18nService, validationRuleStore.getByName( name ) );
     }
 
     public Collection<ValidationRule> getAllValidationRules()
     {
-        return validationRuleStore.getAll();
+        return i18n( i18nService, validationRuleStore.getAll() );
     }
 
     public Collection<ValidationRule> getValidationRules( final Collection<Integer> identifiers )
@@ -425,12 +434,32 @@ public class DefaultValidationRuleService
 
     public Collection<ValidationRule> getValidationRulesByName( String name )
     {        
-        return validationRuleStore.getLikeName( name );
+        return i18n( i18nService, validationRuleStore.getLikeName( name ) );
     }
     
     public Collection<ValidationRule> getValidationRulesByDataElements( Collection<DataElement> dataElements )
     {
-        return validationRuleStore.getValidationRulesByDataElements( dataElements );
+        return i18n( i18nService, validationRuleStore.getValidationRulesByDataElements( dataElements ) );
+    }
+
+    public int getValidationRuleCount()
+    {
+        return validationRuleStore.getCount();
+    }
+
+    public int getValidationRuleCountByName( String name )
+    {
+        return validationRuleStore.getCountByName( name );
+    }
+
+    public Collection<ValidationRule> getValidationRulesBetween( int first, int max )
+    {
+        return i18n( i18nService, validationRuleStore.getBetween( first, max ) );
+    }
+
+    public Collection<ValidationRule> getValidationRulesBetweenByName( String name, int first, int max )
+    {
+        return i18n( i18nService, validationRuleStore.getBetweenByName( name, first, max ) );
     }
 
     // -------------------------------------------------------------------------
@@ -454,42 +483,22 @@ public class DefaultValidationRuleService
 
     public ValidationRuleGroup getValidationRuleGroup( int id )
     {
-        return validationRuleGroupStore.get( id );
+        return i18n( i18nService, validationRuleGroupStore.get( id ) );
     }
 
     public ValidationRuleGroup getValidationRuleGroup( String uid )
     {
-        return validationRuleGroupStore.getByUid( uid );
+        return i18n( i18nService, validationRuleGroupStore.getByUid( uid ) );
     }
 
     public Collection<ValidationRuleGroup> getAllValidationRuleGroups()
     {
-        return validationRuleGroupStore.getAll();
+        return i18n( i18nService, validationRuleGroupStore.getAll() );
     }
 
     public ValidationRuleGroup getValidationRuleGroupByName( String name )
     {
-        return validationRuleGroupStore.getByName( name );
-    }
-
-    public int getValidationRuleCount()
-    {
-        return validationRuleStore.getCount();
-    }
-
-    public int getValidationRuleCountByName( String name )
-    {
-        return validationRuleStore.getCountByName( name );
-    }
-
-    public Collection<ValidationRule> getValidationRulesBetween( int first, int max )
-    {
-        return validationRuleStore.getBetween( first, max );
-    }
-
-    public Collection<ValidationRule> getValidationRulesBetweenByName( String name, int first, int max )
-    {
-        return validationRuleStore.getBetweenByName( name, first, max );
+        return i18n( i18nService, validationRuleGroupStore.getByName( name ) );
     }
 
     public int getValidationRuleGroupCount()
@@ -504,12 +513,11 @@ public class DefaultValidationRuleService
 
     public Collection<ValidationRuleGroup> getValidationRuleGroupsBetween( int first, int max )
     {
-        return validationRuleGroupStore.getBetween( first, max );
+        return i18n( i18nService, validationRuleGroupStore.getBetween( first, max ) );
     }
 
     public Collection<ValidationRuleGroup> getValidationRuleGroupsBetweenByName( String name, int first, int max )
     {
-        return validationRuleGroupStore.getBetweenByName( name, first, max );
+        return i18n( i18nService, validationRuleGroupStore.getBetweenByName( name, first, max ) );
     }
-
 }
