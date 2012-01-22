@@ -428,7 +428,7 @@ public class DefaultDataElementService
 
     public Collection<DataElementGroup> getDataElementGroupsBetweenByName( String name, int first, int max )
     {
-        return dataElementGroupStore.getBetweenByName( name, first, max );
+        return i18n( i18nService, dataElementGroupStore.getBetweenByName( name, first, max ) );
     }
 
     public int getDataElementGroupCount()
@@ -551,12 +551,12 @@ public class DefaultDataElementService
 
     public Collection<DataElementGroupSet> getDataElementGroupSetsBetween( int first, int max )
     {
-        return dataElementGroupSetStore.getBetween( first, max );
+        return i18n( i18nService, dataElementGroupSetStore.getBetween( first, max ) );
     }
 
     public Collection<DataElementGroupSet> getDataElementGroupSetsBetweenByName( String name, int first, int max )
     {
-        return dataElementGroupSetStore.getBetweenByName( name, first, max );
+        return i18n( i18nService, dataElementGroupSetStore.getBetweenByName( name, first, max ) );
     }
 
     // -------------------------------------------------------------------------

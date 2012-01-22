@@ -35,6 +35,7 @@
 					<td onclick="showDataDictionaryDetails( $dataDictionary.id )">$encoder.htmlEncode( $dataDictionary.name )</td>
 					<td style="text-align:right">
 						<a href="showUpdateDataDictionaryForm.action?id=$dataDictionary.id" title="$i18n.getString( 'edit' )"><img src="../images/edit.png" alt="$i18n.getString( 'edit' )"/></a>
+						<a href="javascript:translate( 'DataDictionary', '$dataDictionary.id' )"><img src="../images/i18n.png" alt="$i18n.getString( 'translation_translate' )"/></a>
 						<a href="javascript:removeDataDictionary( $dataDictionary.id, '$encoder.jsEncode( $dataDictionary.name )' )" title="$i18n.getString( 'remove' )"><img src="../images/delete.png" alt="$i18n.getString( 'remove' )"/></a>
 						<a href="javascript:showDataDictionaryDetails( $dataDictionary.id )" title="$i18n.getString( 'show_details' )"><img src="../images/information.png" alt="$i18n.getString( 'show_details' )"/></a>
 					</td>
