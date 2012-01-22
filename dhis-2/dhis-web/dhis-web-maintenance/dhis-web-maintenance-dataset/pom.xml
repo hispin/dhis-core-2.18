@@ -42,7 +42,7 @@
       <groupId>org.hisp.dhis</groupId>
       <artifactId>dhis-web-commons-resources</artifactId>
       <type>war</type>
-    </dependency>    
+    </dependency>
   </dependencies>
   <properties>
     <rootDir>../../../</rootDir>

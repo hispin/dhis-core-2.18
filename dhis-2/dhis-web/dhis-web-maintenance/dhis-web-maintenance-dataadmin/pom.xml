@@ -52,13 +52,6 @@
       <artifactId>dhis-service-datamart-default</artifactId>
     </dependency>
 	
-	<!-- Other -->
-	
-    <dependency>
-      <groupId>com.lowagie</groupId>
-      <artifactId>itext</artifactId>
-    </dependency>
-    
   </dependencies>
   <properties>
     <rootDir>../../../</rootDir>

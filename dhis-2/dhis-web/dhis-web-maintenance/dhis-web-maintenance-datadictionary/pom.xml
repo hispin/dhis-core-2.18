@@ -46,21 +46,6 @@
       <artifactId>dhis-web-commons-resources</artifactId>
       <type>war</type>
     </dependency>
-
-    <!-- Other -->
-
-    <dependency>
-      <groupId>commons-collections</groupId>
-      <artifactId>commons-collections</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>com.thoughtworks.xstream</groupId>
-      <artifactId>xstream</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>xpp3</groupId>
-      <artifactId>xpp3</artifactId>
-    </dependency>
   </dependencies>
 
   <properties>
