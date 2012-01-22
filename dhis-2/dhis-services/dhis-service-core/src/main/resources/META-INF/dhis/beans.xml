@@ -363,6 +363,7 @@ http://www.springframework.org/schema/security http://www.springframework.org/sc
   <bean id="org.hisp.dhis.organisationunit.OrganisationUnitGroupService" class="org.hisp.dhis.organisationunit.DefaultOrganisationUnitGroupService">
     <property name="organisationUnitGroupStore" ref="org.hisp.dhis.organisationunit.OrganisationUnitGroupStore" />
     <property name="organisationUnitGroupSetStore" ref="org.hisp.dhis.organisationunit.OrganisationUnitGroupSetStore" />
+    <property name="i18nService" ref="org.hisp.dhis.i18n.I18nService" />
   </bean>
 
   <bean id="org.hisp.dhis.dataanalysis.StdDevOutlierAnalysisService" class="org.hisp.dhis.dataanalysis.StdDevOutlierAnalysisService">

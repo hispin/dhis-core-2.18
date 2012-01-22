@@ -27,10 +27,13 @@ package org.hisp.dhis.organisationunit;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import static org.hisp.dhis.i18n.I18nUtils.i18n;
+
 import java.util.ArrayList;
 import java.util.Collection;
 
 import org.hisp.dhis.common.GenericIdentifiableObjectStore;
+import org.hisp.dhis.i18n.I18nService;
 import org.hisp.dhis.system.util.Filter;
 import org.hisp.dhis.system.util.FilterUtils;
 import org.springframework.transaction.annotation.Transactional;
@@ -61,6 +64,13 @@ public class DefaultOrganisationUnitGroupService
         this.organisationUnitGroupSetStore = organisationUnitGroupSetStore;
     }
 
+    private I18nService i18nService;
+
+    public void setI18nService( I18nService service )
+    {
+        i18nService = service;
+    }
+
     // -------------------------------------------------------------------------
     // OrganisationUnitGroup
     // -------------------------------------------------------------------------
@@ -82,7 +92,7 @@ public class DefaultOrganisationUnitGroupService
 
     public OrganisationUnitGroup getOrganisationUnitGroup( int id )
     {
-        return organisationUnitGroupStore.get( id );
+        return i18n( i18nService, organisationUnitGroupStore.get( id ) );
     }
     
     public Collection<OrganisationUnitGroup> getOrganisationUnitGroups( final Collection<Integer> identifiers )
@@ -100,24 +110,44 @@ public class DefaultOrganisationUnitGroupService
 
     public OrganisationUnitGroup getOrganisationUnitGroup( String uid )
     {
-        return organisationUnitGroupStore.getByUid( uid );
+        return i18n( i18nService, organisationUnitGroupStore.getByUid( uid ) );
     }
 
     public OrganisationUnitGroup getOrganisationUnitGroupByName( String name )
     {
-        return organisationUnitGroupStore.getByName( name );
+        return i18n( i18nService, organisationUnitGroupStore.getByName( name ) );
     }
 
     public Collection<OrganisationUnitGroup> getAllOrganisationUnitGroups()
     {
-        return organisationUnitGroupStore.getAll();
+        return i18n( i18nService, organisationUnitGroupStore.getAll() );
     }
     
     public Collection<OrganisationUnitGroup> getOrganisationUnitGroupsWithGroupSets()
     {
-        return organisationUnitGroupStore.getOrganisationUnitGroupsWithGroupSets();
+        return i18n( i18nService, organisationUnitGroupStore.getOrganisationUnitGroupsWithGroupSets() );
     }
 
+    public Collection<OrganisationUnitGroup> getOrganisationUnitGroupsBetween( int first, int max )
+    {
+        return i18n( i18nService, organisationUnitGroupStore.getBetween( first, max ) );
+    }
+
+    public Collection<OrganisationUnitGroup> getOrganisationUnitGroupsBetweenByName( String name, int first, int max )
+    {
+        return i18n( i18nService, organisationUnitGroupStore.getBetweenByName( name, first, max ) );
+    }
+
+    public int getOrganisationUnitGroupCount()
+    {
+        return organisationUnitGroupStore.getCount();
+    }
+
+    public int getOrganisationUnitGroupCountByName( String name )
+    {
+        return organisationUnitGroupStore.getCountByName( name );
+    }
+    
     // -------------------------------------------------------------------------
     // OrganisationUnitGroupSet
     // -------------------------------------------------------------------------
@@ -139,12 +169,12 @@ public class DefaultOrganisationUnitGroupService
 
     public OrganisationUnitGroupSet getOrganisationUnitGroupSet( int id )
     {
-        return organisationUnitGroupSetStore.get( id );
+        return i18n( i18nService, organisationUnitGroupSetStore.get( id ) );
     }
 
     public OrganisationUnitGroupSet getOrganisationUnitGroupSet( String uid )
     {
-        return organisationUnitGroupSetStore.getByUid( uid );
+        return i18n( i18nService, organisationUnitGroupSetStore.getByUid( uid ) );
     }
     
     public Collection<OrganisationUnitGroupSet> getOrganisationUnitGroupSets( final Collection<Integer> identifiers )
@@ -162,12 +192,12 @@ public class DefaultOrganisationUnitGroupService
 
     public OrganisationUnitGroupSet getOrganisationUnitGroupSetByName( String name )
     {
-        return organisationUnitGroupSetStore.getByName( name );
+        return i18n( i18nService, organisationUnitGroupSetStore.getByName( name ) );
     }
 
     public Collection<OrganisationUnitGroupSet> getAllOrganisationUnitGroupSets()
     {
-        return organisationUnitGroupSetStore.getAll();
+        return i18n( i18nService, organisationUnitGroupSetStore.getAll() );
     }
 
     public Collection<OrganisationUnitGroupSet> getCompulsoryOrganisationUnitGroupSets()
@@ -223,35 +253,15 @@ public class DefaultOrganisationUnitGroupService
         
         return groupSets;
     }
-
-    public Collection<OrganisationUnitGroup> getOrganisationUnitGroupsBetween( int first, int max )
-    {
-        return organisationUnitGroupStore.getBetween( first, max );
-    }
-
-    public Collection<OrganisationUnitGroup> getOrganisationUnitGroupsBetweenByName( String name, int first, int max )
-    {
-        return organisationUnitGroupStore.getBetweenByName( name, first, max );
-    }
-
-    public int getOrganisationUnitGroupCount()
-    {
-        return organisationUnitGroupStore.getCount();
-    }
-
-    public int getOrganisationUnitGroupCountByName( String name )
-    {
-        return organisationUnitGroupStore.getCountByName( name );
-    }
     
     public Collection<OrganisationUnitGroupSet> getOrganisationUnitGroupSetsBetween( int first, int max )
     {
-        return organisationUnitGroupSetStore.getBetween( first, max );
+        return i18n( i18nService, organisationUnitGroupSetStore.getBetween( first, max ) );
     }
     
     public Collection<OrganisationUnitGroupSet> getOrganisationUnitGroupSetsBetweenByName( String name, int first, int max )
     {
-        return organisationUnitGroupSetStore.getBetweenByName( name, first, max );
+        return i18n( i18nService, organisationUnitGroupSetStore.getBetweenByName( name, first, max ) );
     }
     
     public int getOrganisationUnitGroupSetCount()
@@ -263,5 +273,4 @@ public class DefaultOrganisationUnitGroupService
     {
         return organisationUnitGroupSetStore.getCountByName( name );
     }
-
 }
