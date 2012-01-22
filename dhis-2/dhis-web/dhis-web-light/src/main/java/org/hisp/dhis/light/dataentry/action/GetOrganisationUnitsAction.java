@@ -29,7 +29,7 @@ package org.hisp.dhis.light.dataentry.action;
 
 import com.opensymphony.xwork2.Action;
 import org.apache.commons.lang.Validate;
-import org.hisp.dhis.light.dataentry.utils.FormUtils;
+import org.hisp.dhis.light.utils.FormUtils;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.comparator.OrganisationUnitNameComparator;
 import org.hisp.dhis.user.CurrentUserService;

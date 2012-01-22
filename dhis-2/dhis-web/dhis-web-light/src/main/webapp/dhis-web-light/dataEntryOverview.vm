@@ -5,34 +5,25 @@
     #set( $dataSetName = $dataSet.name )
 #end
 
-<h2>$encoder.htmlEncode( $dataSetName )</h2>
-
 <div class="header-box" align="center">
-#if( $complete == true )
-    <h3 style="text-align: left;">$i18n.getString( "form_complete" )</h3>
-#end
+    <h3 style="text-align: left; background-color: #667b99; border-color: #667b99; color: white;">$dataSetName</h3>
+    <p style="text-align: left;">
+        $period.name <br />
+        $organisationUnit.name
+    </p>
 </div>
 
 #if( $validated == true )
 <div class="header-box" align="center">
-    <h3 style="text-align: left;">$i18n.getString( "successfully_saved_section" )</h3>
-</div>
-#end
-
-#*
-#if( $validationRuleViolations.size() > 0 )
-<div class="header-box" align="center">
-    <h3 style="text-align: left; background-color: #990000; color: white;">$i18n.getString("validation_rule_violation_warnings")</h3>
+    <h3 style="text-align: left; background-color: #719953; border-color: #719953; color: white;">$i18n.getString( "saved_section" )</h3>
     <p style="text-align: left;">
-        #foreach( $validationRuleViolation in $validationRuleViolations )
-            $validationRuleViolation <br />
-        #end
+        $sectionName
     </p>
 </div>
 #end
-*#
 
-#if( $complete != true)
+<h2>$i18n.getString( "sections" )</h2>
+
 <p>
     <ul>
     #if( $dataSet.sections.size() > 0 )
@@ -46,24 +37,19 @@
     #end
     </ul>
 </p>
-#else
-<br />
-#end
 
-<form method="GET" action="dataEntry.action">
+<form method="GET" action="markComplete.action">
 
 <input type="hidden" id="organisationUnitId" name="organisationUnitId" value="$organisationUnitId" />
 <input type="hidden" id="dataSetId" name="dataSetId" value="$dataSetId" />
 <input type="hidden" id="periodId" name="periodId" value="$periodId" />
 
-#if( $complete == false )
 <div class="header-box" align="center">
     <p>
         <input type="hidden" name="formComplete" value="true" />
         <input type="submit" style="width: 100%;" value="$i18n.getString("form_complete")" />
     </p>
 </div>
-#end
 
 </form>
 
@@ -74,3 +60,29 @@
         <li><a href="index.action">$i18n.getString("home")</a></li>
     </ul>
 </div>
+
+
+
+
+
+
+
+
+
+
+
+
+#* This might get reactivated later, as configurable setting? *#
+
+#*
+#if( $validationRuleViolations.size() > 0 )
+<div class="header-box" align="center">
+    <h3 style="text-align: left; background-color: #990000; color: white;">$i18n.getString("validation_rule_violation_warnings")</h3>
+    <p style="text-align: left;">
+        #foreach( $validationRuleViolation in $validationRuleViolations )
+            $validationRuleViolation <br />
+        #end
+    </p>
+</div>
+#end
+*#
