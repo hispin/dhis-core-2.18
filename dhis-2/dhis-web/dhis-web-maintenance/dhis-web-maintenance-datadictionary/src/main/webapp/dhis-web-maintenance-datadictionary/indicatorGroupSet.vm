@@ -32,11 +32,11 @@
 				<tbody id="list">
 					#foreach( $indicatorGroupSet in $indicatorGroupSets )
 					<tr id="tr${indicatorGroupSet.id}">
-						<td onclick="showIndicatorGroupSetDetails( $indicatorGroupSet.id )">$encoder.htmlEncode( $indicatorGroupSet.name )</td>
+						<td onclick="showIndicatorGroupSetDetails( $indicatorGroupSet.id )">$encoder.htmlEncode( $indicatorGroupSet.displayName )</td>
 						<td style="text-align:right">
 							<a href="openUpdateIndicatorGroupSet.action?id=$indicatorGroupSet.id" title="$i18n.getString( 'edit' )"><img src="../images/edit.png" alt="$i18n.getString( 'edit' )"/></a>
 							<a href="javascript:translate( 'IndicatorGroupSet', '$indicatorGroupSet.id' )"><img src="../images/i18n.png" alt="$i18n.getString( 'translation_translate' )"/></a>
-							<a href="javascript:deleteIndicatorGroupSet( $indicatorGroupSet.id, '$encoder.jsEncode( $indicatorGroupSet.name )' )" title="$i18n.getString( 'remove' )"><img src="../images/delete.png" alt="$i18n.getString( 'remove' )"/></a>
+							<a href="javascript:deleteIndicatorGroupSet( $indicatorGroupSet.id, '$encoder.jsEncode( $indicatorGroupSet.displayName )' )" title="$i18n.getString( 'remove' )"><img src="../images/delete.png" alt="$i18n.getString( 'remove' )"/></a>
 							<a href="javascript:showIndicatorGroupSetDetails( $indicatorGroupSet.id )" title="$i18n.getString( 'show_details' )"><img src="../images/information.png" alt="$i18n.getString( 'show_details' )"/></a>
 						</td>
 					</tr>

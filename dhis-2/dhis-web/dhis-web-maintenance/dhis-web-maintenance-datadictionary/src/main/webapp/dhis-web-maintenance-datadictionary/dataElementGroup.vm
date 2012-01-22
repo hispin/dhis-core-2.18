@@ -32,11 +32,11 @@
 				<tbody id="list">
 				#foreach( $dataElementGroup in $dataElementGroups )
 				<tr id="tr${dataElementGroup.id}">
-					<td onclick="showDataElementGroupDetails( $dataElementGroup.id )">$encoder.htmlEncode( $dataElementGroup.name )</td>
+					<td onclick="showDataElementGroupDetails( $dataElementGroup.id )">$encoder.htmlEncode( $dataElementGroup.displayName )</td>
 					<td style="text-align:right">
 						<a href="showUpdateDataElementGroupForm.action?id=$dataElementGroup.id" title="$i18n.getString( 'edit' )"><img src="../images/edit.png" alt="$i18n.getString( 'edit' )"/></a>
 						<a href="javascript:translate( 'DataElementGroup', '$dataElementGroup.id' )"><img src="../images/i18n.png" alt="$i18n.getString( 'translation_translate' )"/></a>
-						<a href="javascript:removeDataElementGroup( $dataElementGroup.id, '$encoder.jsEncode( $dataElementGroup.name )' )" title="$i18n.getString( 'remove' )"><img src="../images/delete.png" alt="$i18n.getString( 'remove' )"/></a>
+						<a href="javascript:removeDataElementGroup( $dataElementGroup.id, '$encoder.jsEncode( $dataElementGroup.displayName )' )" title="$i18n.getString( 'remove' )"><img src="../images/delete.png" alt="$i18n.getString( 'remove' )"/></a>
 						<a href="javascript:showDataElementGroupDetails( $dataElementGroup.id )" title="$i18n.getString( 'show_details' )"><img src="../images/information.png" alt="$i18n.getString( 'show_details' )"/></a>
 					</td>
 				</tr>

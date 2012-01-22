@@ -89,12 +89,6 @@ public interface DataDictionaryService
      */
     Collection<DataDictionary> getAllDataDictionaries();
     
-    /**
-     * Returns data elements with identifier in the given id.
-     * 
-     * @param dictionaryId is the id of data dictionary.
-     * @return data elements with identifier in the given id.
-     */
     Collection<DataElement> getDataElementsByDictionaryId( int dictionaryId );
     
     Collection<DataDictionary> getDataDictionarysBetween( int first, int max );

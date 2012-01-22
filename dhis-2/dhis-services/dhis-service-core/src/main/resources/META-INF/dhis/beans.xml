@@ -290,6 +290,7 @@ http://www.springframework.org/schema/security http://www.springframework.org/sc
 
   <bean id="org.hisp.dhis.datadictionary.DataDictionaryService" class="org.hisp.dhis.datadictionary.DefaultDataDictionaryService">
     <property name="dataDictionaryStore" ref="org.hisp.dhis.datadictionary.DataDictionaryStore" />
+    <property name="i18nService" ref="org.hisp.dhis.i18n.I18nService" />
   </bean>
 
   <bean id="org.hisp.dhis.indicator.IndicatorService" class="org.hisp.dhis.indicator.DefaultIndicatorService">

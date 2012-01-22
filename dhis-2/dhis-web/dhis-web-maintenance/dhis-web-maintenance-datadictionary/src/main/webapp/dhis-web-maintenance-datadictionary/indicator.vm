@@ -25,7 +25,7 @@
 							<select id="dataDictionaryList" name="dataDictionaryList" onchange="criteriaChanged()" style="min-width:140px">
 								<option value="-1">[ $i18n.getString( "all" ) ]</option>
 								#foreach( $dictionary in $dataDictionaries )
-								<option value="$dictionary.id"#if ( $dictionary.id == $dataDictionaryId ) selected="selected"#end>$dictionary.name</option>
+								<option value="$dictionary.id"#if ( $dictionary.id == $dataDictionaryId ) selected="selected"#end>$dictionary.displayName</option>
 								#end
 							</select>
 						</div>
@@ -53,11 +53,11 @@
 				<tbody id="list">
 				#foreach( $indicator in $indicators )
 				<tr id="tr${indicator.id}">
-					<td onclick="showIndicatorDetails( $indicator.id )">$encoder.htmlEncode( $indicator.name )</td>
+					<td onclick="showIndicatorDetails( $indicator.id )">$encoder.htmlEncode( $indicator.displayName )</td>
 					<td style="text-align:right">
 					<a href="showUpdateIndicatorForm.action?id=$indicator.id" title="$i18n.getString( 'edit' )"><img src="../images/edit.png" alt="$i18n.getString( 'edit' )"/></a>
 					<a href="javascript:translate( 'Indicator', '$indicator.id' )" title="$i18n.getString( 'translation_translate' )"><img src="../images/i18n.png" alt="$i18n.getString( 'translation_translate' )"/></a>
-					<a href="javascript:removeIndicator( $indicator.id, '$encoder.jsEncode( $indicator.name )' )" title="$i18n.getString( 'remove' )"><img src="../images/delete.png" alt="$i18n.getString( 'remove' )"/></a>
+					<a href="javascript:removeIndicator( $indicator.id, '$encoder.jsEncode( $indicator.displayName )' )" title="$i18n.getString( 'remove' )"><img src="../images/delete.png" alt="$i18n.getString( 'remove' )"/></a>
 					<a href="javascript:showIndicatorDetails( $indicator.id )" title="$i18n.getString( 'show_details' )"><img src="../images/information.png" alt="$i18n.getString( 'show_details' )"/></a>
 					</td>
 				</tr>

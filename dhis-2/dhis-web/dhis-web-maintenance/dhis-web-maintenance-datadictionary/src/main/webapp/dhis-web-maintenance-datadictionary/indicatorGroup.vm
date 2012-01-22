@@ -32,11 +32,11 @@
 				<tbody id="list">
 				#foreach( $indicatorGroup in $indicatorGroups )
 				<tr id="tr${indicatorGroup.id}">
-					<td onclick="showIndicatorGroupDetails( $indicatorGroup.id )">$encoder.htmlEncode( $indicatorGroup.name )</td>
+					<td onclick="showIndicatorGroupDetails( $indicatorGroup.id )">$encoder.htmlEncode( $indicatorGroup.displayName )</td>
 					<td style="text-align:right">
 						<a href="showUpdateIndicatorGroupForm.action?id=$indicatorGroup.id" title="$i18n.getString( 'edit' )"><img src="../images/edit.png" alt="$i18n.getString( 'edit' )"/></a>
 						<a href="javascript:translate( 'IndicatorGroup', '$indicatorGroup.id' )" title="$i18n.getString( 'translation_translate' )"><img src="../images/i18n.png" alt="$i18n.getString( 'translation_translate' )"/></a>				
-						<a href="javascript:removeIndicatorGroup( $indicatorGroup.id, '$encoder.jsEncode( $indicatorGroup.name )' )" title="$i18n.getString( 'remove' )"><img src="../images/delete.png" alt="$i18n.getString( 'remove' )"/></a>
+						<a href="javascript:removeIndicatorGroup( $indicatorGroup.id, '$encoder.jsEncode( $indicatorGroup.displayName )' )" title="$i18n.getString( 'remove' )"><img src="../images/delete.png" alt="$i18n.getString( 'remove' )"/></a>
 						<a href="javascript:showIndicatorGroupDetails( $indicatorGroup.id )" title="$i18n.getString( 'show_details' )"><img src="../images/information.png" alt="$i18n.getString( 'show_details' )"/></a>
 					</td>
 				</tr>
