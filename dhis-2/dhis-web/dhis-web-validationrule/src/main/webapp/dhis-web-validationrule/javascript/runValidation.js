@@ -2,7 +2,6 @@ var startDate;
 var endDate;
 var validationRuleGroupId;
 var aggregate;
-var doDataMart;
 var organisationUnitId;
 
 function organisationUnitSelected( ids )
@@ -35,11 +34,9 @@ function runValidationCompleted( messageElement )
         endDate = getFieldValue( 'endDate' );
         validationRuleGroupId = $( '#validationRuleGroupId' ).val();
         aggregate = $( '#aggregate' ).val();
-        doDataMart = $( '#doDataMart' ).val();
 
         var url = 'runValidationAction.action?organisationUnitId=' + organisationUnitId + '&startDate=' + startDate
-                + '&endDate=' + endDate + '&validationRuleGroupId=' + validationRuleGroupId + '&aggregate=' + aggregate
-                + '&doDataMart=' + doDataMart;
+                + '&endDate=' + endDate + '&validationRuleGroupId=' + validationRuleGroupId + '&aggregate=' + aggregate;
 
         $.get( url, function( data )
         {
@@ -62,8 +59,7 @@ function drillDownValidation( orgUnitId )
     setHeaderWaitMessage( i18n_analysing_please_wait );
 
     var url = 'runValidationAction.action?organisationUnitId=' + orgUnitId + '&startDate=' + startDate + '&endDate='
-            + endDate + '&validationRuleGroupId=' + validationRuleGroupId + '&aggregate=' + aggregate + '&doDataMart='
-            + doDataMart;
+            + endDate + '&validationRuleGroupId=' + validationRuleGroupId + '&aggregate=' + aggregate;
 
     $.get( url, function( data )
     {
@@ -98,11 +94,9 @@ function aggregateChanged()
     if ( aggregate == 'true' )
     {
         $( 'span#info' ).html( i18n_aggregate_data_info );
-        $( '#doDataMart' ).removeAttr( 'disabled' );
     } else
     {
         $( 'span#info' ).html( i18n_captured_data_info );
-        $( '#doDataMart' ).attr( 'disabled', 'disabled' );
     }
 }
 

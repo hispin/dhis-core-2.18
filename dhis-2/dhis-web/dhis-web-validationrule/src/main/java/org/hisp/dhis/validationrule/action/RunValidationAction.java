@@ -27,19 +27,14 @@ package org.hisp.dhis.validationrule.action;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import static org.hisp.dhis.system.util.ConversionUtils.getIdentifiers;
-
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.HashSet;
 import java.util.List;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hisp.dhis.common.Grid;
-import org.hisp.dhis.dataelement.DataElement;
-import org.hisp.dhis.datamart.DataMartService;
 import org.hisp.dhis.i18n.I18nFormat;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
@@ -90,13 +85,6 @@ public class RunValidationAction
         this.organisationUnitService = organisationUnitService;
     }
 
-    private DataMartService dataMartService;
-
-    public void setDataMartService( DataMartService dataMartService )
-    {
-        this.dataMartService = dataMartService;
-    }
-
     private PeriodService periodService;
 
     public void setPeriodService( PeriodService periodService )
@@ -107,13 +95,6 @@ public class RunValidationAction
     // -------------------------------------------------------------------------
     // Input/output
     // -------------------------------------------------------------------------
-
-    private boolean doDataMart;
-
-    public void setDoDataMart( boolean doDataMart )
-    {
-        this.doDataMart = doDataMart;
-    }
 
     private Integer organisationUnitId;
     
@@ -209,17 +190,7 @@ public class RunValidationAction
                 periodService.getPeriodsBetweenDates( format.parseDate( startDate ), format.parseDate( endDate ) ), format ) );
             
             log.info( "Number of periods: " + periods.size() + ", number of organisation units: " + organisationUnits.size() );
-            
-            if ( doDataMart )
-            {
-                log.info( "Generating datamart" );
-                
-                Collection<DataElement> dataElements = validationRuleService.getDataElementsInValidationRules();
-                
-                dataMartService.export( getIdentifiers( DataElement.class, dataElements ), new HashSet<Integer>(), 
-                    getIdentifiers( Period.class, periods ), getIdentifiers( OrganisationUnit.class, organisationUnits ) );
-            }
-            
+                        
             if ( validationRuleGroupId == -1 )
             {
                 log.info( "Validating aggregate data for all rules" );

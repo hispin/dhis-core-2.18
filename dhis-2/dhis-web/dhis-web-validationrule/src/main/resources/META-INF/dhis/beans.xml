@@ -191,9 +191,6 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     <property name="organisationUnitService">
       <ref bean="org.hisp.dhis.organisationunit.OrganisationUnitService" />
     </property>
-    <property name="dataMartService">
-      <ref bean="org.hisp.dhis.datamart.DataMartService" />
-    </property>
     <property name="periodService">
       <ref bean="org.hisp.dhis.period.PeriodService" />
     </property>
