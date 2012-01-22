@@ -25,17 +25,17 @@ package org.hisp.dhis.dataset.hibernate;
 
 import org.hibernate.Criteria;
 import org.hibernate.criterion.Restrictions;
+import org.hisp.dhis.common.hibernate.HibernateIdentifiableObjectStore;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.dataset.Section;
 import org.hisp.dhis.dataset.SectionStore;
-import org.hisp.dhis.hibernate.HibernateGenericStore;
 
 /**
  * @author Tri
  * @version $Id$
  */
 public class HibernateSectionStore
-    extends HibernateGenericStore<Section> implements SectionStore
+    extends HibernateIdentifiableObjectStore<Section> implements SectionStore
 {
     public Section getSectionByName( String name, DataSet dataSet )
     {
