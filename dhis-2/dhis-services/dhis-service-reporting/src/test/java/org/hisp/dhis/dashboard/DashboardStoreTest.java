@@ -39,7 +39,6 @@ import org.hisp.dhis.report.ReportService;
 import org.hisp.dhis.user.User;
 import org.hisp.dhis.user.UserStore;
 import org.junit.Test;
-import org.springframework.test.annotation.ExpectedException;
 
 /**
  * @author Lars Helge Overland
@@ -94,8 +93,7 @@ public class DashboardStoreTest
         assertEquals( reportA, dashboardContentStore.get( userA.getId() ).getReports().iterator().next() );
     }
     
-    @Test
-    @ExpectedException( NonUniqueObjectException.class )
+    @Test(expected=NonUniqueObjectException.class)
     public void duplicate()
     {
         contentA.setUser( userA );
