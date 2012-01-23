@@ -46,6 +46,7 @@ public class GetDataSetsActionTest
 
         // Initializing action
         getDataSetsAction.setOrganisationUnitId( 1 );
+        getDataSetsAction.setOrganisationUnitService( organisationUnitService );
         getDataSetsAction.setFormUtils( formUtils );
 
         // Populating mocks
