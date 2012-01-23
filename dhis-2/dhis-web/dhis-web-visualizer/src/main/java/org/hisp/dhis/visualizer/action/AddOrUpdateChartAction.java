@@ -316,11 +316,15 @@ public class AddOrUpdateChartAction
         {
             chart.setFilter( filter );
         }
-        
-        chart.setIndicators( indicatorIds != null ? new ArrayList<Indicator>( indicatorService.getIndicators( indicatorIds ) ) : new ArrayList<Indicator>() );
 
-        chart.setDataElements( dataElementIds != null ? new ArrayList<DataElement>( dataElementService
-            .getDataElements( dataElementIds ) ) : new ArrayList<DataElement>() );
+        if ( indicatorIds != null || dataElementIds != null )
+        {
+            chart.setIndicators( indicatorIds != null ? new ArrayList<Indicator>( indicatorService
+                .getIndicators( indicatorIds ) ) : new ArrayList<Indicator>() );
+
+            chart.setDataElements( dataElementIds != null ? new ArrayList<DataElement>( dataElementService
+                .getDataElements( dataElementIds ) ) : new ArrayList<DataElement>() );
+        }
 
         if ( lastMonth || last12Months || lastQuarter || last4Quarters || lastSixMonth || last2SixMonths || thisYear
             || last5Years )
@@ -381,7 +385,6 @@ public class AddOrUpdateChartAction
 
         if ( targetLineValue != null )
         {
-            chart.setTargetLine( true );
             chart.setTargetLineValue( targetLineValue );
         }
 
@@ -389,6 +392,8 @@ public class AddOrUpdateChartAction
         {
             chart.setTargetLineLabel( targetLineLabel );
         }
+        
+        chart.setTargetLine( targetLineValue != null );
 
         chartService.saveOrUpdate( chart );
 

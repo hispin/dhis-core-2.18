@@ -724,31 +724,23 @@ Ext.onReady( function() {
             favorite: {
                 create: function(fn, isUpdate) {
                     DV.util.mask.setMask(DV.cmp.favorite.window, DV.i18n.saving + '...');
+                    
                     var params = DV.state.getParams();
                     params.name = DV.cmp.favorite.name.getValue();
                     params.trendLine = DV.cmp.favorite.trendline.getValue();
                     params.hideSubtitle = DV.cmp.favorite.hidesubtitle.getValue();
                     params.hideLegend = DV.cmp.favorite.hidelegend.getValue();
                     params.userOrganisationUnit = DV.cmp.favorite.userorganisationunit.getValue();
-                    if (DV.cmp.favorite.domainaxislabel.getValue()) {
-                        params.domainAxisLabel = DV.cmp.favorite.domainaxislabel.getValue();
-                    }
-                    if (DV.cmp.favorite.rangeaxislabel.getValue()) {
-                        params.rangeAxisLabel = DV.cmp.favorite.rangeaxislabel.getValue();
-                    }
-                    if (DV.cmp.favorite.targetlinevalue.getValue()) {
-                        params.targetLineValue = DV.cmp.favorite.targetlinevalue.getValue();
-                    }
-                    if (params.targetLineValue && !DV.cmp.favorite.targetlinelabel.isDisabled()) {
-                        params.targetLineLabel = DV.cmp.favorite.targetlinelabel.getValue();
-                    }
+                    params.domainAxisLabel = DV.cmp.favorite.domainaxislabel.getValue();
+                    params.rangeAxisLabel = DV.cmp.favorite.rangeaxislabel.getValue();
+                    params.targetLineValue = DV.cmp.favorite.targetlinevalue.getValue();
+                    params.targetLineLabel = (params.targetLineValue && !DV.cmp.favorite.targetlinelabel.isDisabled()) ? DV.cmp.favorite.targetlinelabel.getValue() : null;
                     
                     if (isUpdate) {
-                        var store = DV.store.favorite;
-                        params.uid = store.getAt(store.findExact('name', params.name)).data.id;
+                        params.uid = DV.store.favorite.getAt(DV.store.favorite.findExact('name', params.name)).data.id;
                     }
-                    var url = DV.cmp.favorite.system.getValue() ? DV.conf.finals.ajax.favorite_addorupdatesystem : DV.conf.finals.ajax.favorite_addorupdate;
                     
+                    var url = DV.cmp.favorite.system.getValue() ? DV.conf.finals.ajax.favorite_addorupdatesystem : DV.conf.finals.ajax.favorite_addorupdate;                    
                     Ext.Ajax.request({
                         url: DV.conf.finals.ajax.path_visualizer + url,
                         params: params,

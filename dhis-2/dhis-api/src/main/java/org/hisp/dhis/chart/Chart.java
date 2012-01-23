@@ -412,7 +412,7 @@ public class Chart
     @JsonProperty
     public boolean isTargetLine()
     {
-        return targetLine;
+        return targetLineValue != null;
     }
 
     public void setTargetLine( boolean targetLine )
