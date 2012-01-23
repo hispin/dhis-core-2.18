@@ -280,7 +280,7 @@ public class AddOrUpdateChartAction
 
     public String execute()
         throws Exception
-    {
+    {        
         Chart chart = null;
 
         if ( uid != null )
@@ -383,18 +383,9 @@ public class AddOrUpdateChartAction
             chart.setRangeAxisLabel( rangeAxisLabel );
         }
 
-        if ( targetLineValue != null )
-        {
-            chart.setTargetLineValue( targetLineValue );
-        }
-
-        if ( targetLineLabel != null )
-        {
-            chart.setTargetLineLabel( targetLineLabel );
-        }
+        chart.setTargetLineValue( targetLineValue );
+        chart.setTargetLineLabel( targetLineLabel );
         
-        chart.setTargetLine( targetLineValue != null );
-
         chartService.saveOrUpdate( chart );
 
         return SUCCESS;
