@@ -3,9 +3,9 @@
     xsi:schemaLocation="
 http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.1.xsd">
 
-  <bean id="org.hisp.dhis.light.action.NoAction" class="org.hisp.dhis.light.action.NoAction" />
+  <bean id="org.hisp.dhis.light.action.NoAction" class="org.hisp.dhis.light.action.NoAction" scope="prototype" />
 
-  <bean id="org.hisp.dhis.light.action.MenuAction" class="org.hisp.dhis.light.action.MenuAction">
+  <bean id="org.hisp.dhis.light.action.MenuAction" class="org.hisp.dhis.light.action.MenuAction" scope="prototype">
     <property name="messageService" ref="org.hisp.dhis.message.MessageService" />
     <property name="organisationUnitService" ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
     <property name="dataSetService" ref="org.hisp.dhis.dataset.DataSetService" />
@@ -145,20 +145,24 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 
   <!-- Messages -->
 
-  <bean id="org.hisp.dhis.light.message.action.GetMessagesAction" class="org.hisp.dhis.light.message.action.GetMessagesAction">
+  <bean id="org.hisp.dhis.light.message.action.GetMessagesAction"
+      class="org.hisp.dhis.light.message.action.GetMessagesAction" scope="prototype">
     <property name="messageService" ref="org.hisp.dhis.message.MessageService" />
   </bean>
 
-  <bean id="org.hisp.dhis.light.message.action.GetMessageAction" class="org.hisp.dhis.light.message.action.GetMessageAction">
+  <bean id="org.hisp.dhis.light.message.action.GetMessageAction"
+      class="org.hisp.dhis.light.message.action.GetMessageAction" scope="prototype">
     <property name="messageService" ref="org.hisp.dhis.message.MessageService" />
     <property name="currentUserService" ref="org.hisp.dhis.user.CurrentUserService" />
   </bean>
 
-  <bean id="org.hisp.dhis.light.message.action.SendReplyAction" class="org.hisp.dhis.light.message.action.SendReplyAction">
+  <bean id="org.hisp.dhis.light.message.action.SendReplyAction"
+      class="org.hisp.dhis.light.message.action.SendReplyAction" scope="prototype">
     <property name="messageService" ref="org.hisp.dhis.message.MessageService" />
   </bean>
 
-  <bean id="org.hisp.dhis.light.message.action.SendFeedbackAction" class="org.hisp.dhis.light.message.action.SendFeedbackAction">
+  <bean id="org.hisp.dhis.light.message.action.SendFeedbackAction"
+      class="org.hisp.dhis.light.message.action.SendFeedbackAction" scope="prototype">
     <property name="messageService" ref="org.hisp.dhis.message.MessageService" />
   </bean>
 

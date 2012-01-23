@@ -207,7 +207,7 @@ public class DataSetLockServiceTest
     // DataSetLock
     // -------------------------------------------------------------------------
 
-    @Test
+    // Disabled for now. Will probably be removed altogether with the new dataset locking service.
     public void testAddDataSetLock()
     {
         Set<OrganisationUnit> lockSources = new HashSet<OrganisationUnit>();
@@ -237,7 +237,6 @@ public class DataSetLockServiceTest
         assertEq( dataSetLockBA, dataSetB, periodA, lockSources );
         assertEquals( idBB, dataSetLockBB.getId() );
         assertEq( dataSetLockBB, dataSetB, periodB, lockSources );
-
     }
 
     @Test

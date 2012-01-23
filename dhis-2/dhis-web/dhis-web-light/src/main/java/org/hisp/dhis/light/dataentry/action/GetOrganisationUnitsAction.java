@@ -28,6 +28,7 @@
 package org.hisp.dhis.light.dataentry.action;
 
 import com.opensymphony.xwork2.Action;
+import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.light.utils.FormUtils;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 
@@ -67,6 +68,20 @@ public class GetOrganisationUnitsAction
         return organisationUnits;
     }
 
+    private Integer organisationUnitId;
+
+    public Integer getOrganisationUnitId()
+    {
+        return organisationUnitId;
+    }
+
+    private Integer dataSetId;
+
+    public Integer getDataSetId()
+    {
+        return dataSetId;
+    }
+
     // -------------------------------------------------------------------------
     // Action Implementation
     // -------------------------------------------------------------------------
@@ -75,6 +90,33 @@ public class GetOrganisationUnitsAction
     public String execute()
     {
         organisationUnits = formUtils.getSortedOrganisationUnitsForCurrentUser();
+
+        if ( organisationUnits.size() == 1 )
+        {
+            for ( OrganisationUnit organisationUnit : organisationUnits )
+            {
+                for ( OrganisationUnit child : organisationUnit.getChildren() )
+                {
+                    if ( child.getDataSets().size() > 0 )
+                    {
+                        return SUCCESS;
+                    }
+                }
+            }
+
+            organisationUnitId = organisationUnits.get( 0 ).getId();
+
+            List<DataSet> dataSets = formUtils.getDataSetsForCurrentUser( organisationUnitId );
+
+            if ( dataSets.size() > 1 )
+            {
+                return "selectDataSet";
+            }
+
+            dataSetId = dataSets.get( 0 ).getId();
+
+            return "selectPeriod";
+        }
 
         return SUCCESS;
     }
