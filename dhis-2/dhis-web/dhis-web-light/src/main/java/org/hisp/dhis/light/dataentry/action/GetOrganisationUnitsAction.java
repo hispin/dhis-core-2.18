@@ -28,19 +28,14 @@
 package org.hisp.dhis.light.dataentry.action;
 
 import com.opensymphony.xwork2.Action;
-import org.apache.commons.lang.Validate;
 import org.hisp.dhis.light.utils.FormUtils;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
-import org.hisp.dhis.organisationunit.comparator.OrganisationUnitNameComparator;
-import org.hisp.dhis.user.CurrentUserService;
-import org.hisp.dhis.user.User;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 /**
- * @author mortenoh
+ * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
 public class GetOrganisationUnitsAction
     implements Action
@@ -48,13 +43,6 @@ public class GetOrganisationUnitsAction
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
-
-    private CurrentUserService currentUserService;
-
-    public void setCurrentUserService( CurrentUserService currentUserService )
-    {
-        this.currentUserService = currentUserService;
-    }
 
     private FormUtils formUtils;
 
@@ -86,11 +74,7 @@ public class GetOrganisationUnitsAction
     @Override
     public String execute()
     {
-        User user = currentUserService.getCurrentUser();
-        Validate.notNull( user );
-
-        organisationUnits = new ArrayList<OrganisationUnit>( user.getOrganisationUnits() );
-        Collections.sort( organisationUnits, new OrganisationUnitNameComparator() );
+        organisationUnits = formUtils.getSortedOrganisationUnitsForCurrentUser();
 
         return SUCCESS;
     }

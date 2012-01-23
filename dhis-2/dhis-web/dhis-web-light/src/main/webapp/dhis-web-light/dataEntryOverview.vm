@@ -6,10 +6,10 @@
 #end
 
 <div class="header-box" align="center">
-    <h3 style="text-align: left; background-color: #667b99; border-color: #667b99; color: white;">$dataSetName</h3>
+    <h3 style="text-align: left; background-color: #719953; border-color: #719953; color: white;">$dataSetName</h3>
     <p style="text-align: left;">
-        $period.name <br />
-        $organisationUnit.name
+        $organisationUnit.name <br />
+        $period.name
     </p>
 </div>
 

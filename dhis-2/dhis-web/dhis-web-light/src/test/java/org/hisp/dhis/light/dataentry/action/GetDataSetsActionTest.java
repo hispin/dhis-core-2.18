@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Set;
 
 import org.hisp.dhis.dataset.DataSet;
+import org.hisp.dhis.light.utils.FormUtils;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.user.CurrentUserService;
@@ -36,12 +37,16 @@ public class GetDataSetsActionTest
         Set<DataSet> unitDataSets = createUnitDataSets();
         Set<DataSet> userDataSets = createUserDataSets();
 
+        OrganisationUnitService organisationUnitService = mock( OrganisationUnitService.class );
+        CurrentUserService currentUserService = mock( CurrentUserService.class );
+
+        FormUtils formUtils = new FormUtils();
+        formUtils.setCurrentUserService( currentUserService );
+        formUtils.setOrganisationUnitService( organisationUnitService );
+
         // Initializing action
         getDataSetsAction.setOrganisationUnitId( 1 );
-        CurrentUserService currentUserService = mock( CurrentUserService.class );
-        getDataSetsAction.setCurrentUserService( currentUserService );
-        OrganisationUnitService organisationUnitService = mock( OrganisationUnitService.class );
-        getDataSetsAction.setOrganisationUnitService( organisationUnitService );
+        getDataSetsAction.setFormUtils( formUtils );
 
         // Populating mocks
         OrganisationUnit unit = new OrganisationUnit();
