@@ -23,6 +23,6 @@ function executeTasks()
 	
 	if ( ok )
 	{
-		window.location.href = 'scheduleTasks.action?execute=true';
+		$.get( 'scheduleTasks.action?execute=true' );
 	}
 }
