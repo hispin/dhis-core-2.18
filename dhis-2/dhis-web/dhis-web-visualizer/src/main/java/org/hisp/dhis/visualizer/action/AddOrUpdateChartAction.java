@@ -80,7 +80,7 @@ public class AddOrUpdateChartAction
     {
         this.organisationUnitService = organisationUnitService;
     }
-    
+
     private CurrentUserService currentUserService;
 
     public void setCurrentUserService( CurrentUserService currentUserService )
@@ -210,23 +210,23 @@ public class AddOrUpdateChartAction
     {
         this.organisationUnitIds = organisationUnitIds;
     }
-    
+
     private Boolean system;
 
     public void setSystem( Boolean system )
     {
         this.system = system;
     }
-    
+
     private Boolean trendLine;
-    
+
     public void setTrendLine( Boolean trendLine )
     {
         this.trendLine = trendLine;
     }
-    
+
     private Boolean hideSubtitle;
-    
+
     public void setHideSubtitle( Boolean hideSubtitle )
     {
         this.hideSubtitle = hideSubtitle;
@@ -238,28 +238,28 @@ public class AddOrUpdateChartAction
     {
         this.hideLegend = hideLegend;
     }
-    
+
     private Boolean userOrganisationUnit;
 
     public void setUserOrganisationUnit( Boolean userOrganisationUnit )
     {
         this.userOrganisationUnit = userOrganisationUnit;
     }
-    
+
     private String domainAxisLabel;
 
     public void setDomainAxisLabel( String domainAxisLabel )
     {
         this.domainAxisLabel = domainAxisLabel;
     }
-    
+
     private String rangeAxisLabel;
 
     public void setRangeAxisLabel( String rangeAxisLabel )
     {
         this.rangeAxisLabel = rangeAxisLabel;
     }
-    
+
     private Double targetLineValue;
 
     public void setTargetLineValue( Double targetLineValue )
@@ -316,19 +316,14 @@ public class AddOrUpdateChartAction
         {
             chart.setFilter( filter );
         }
+        
+        chart.setIndicators( indicatorIds != null ? new ArrayList<Indicator>( indicatorService.getIndicators( indicatorIds ) ) : new ArrayList<Indicator>() );
 
-        if ( indicatorIds != null )
-        {
-            chart.setIndicators( new ArrayList<Indicator>( indicatorService.getIndicators( indicatorIds ) ) );
-        }
+        chart.setDataElements( dataElementIds != null ? new ArrayList<DataElement>( dataElementService
+            .getDataElements( dataElementIds ) ) : new ArrayList<DataElement>() );
 
-        if ( dataElementIds != null )
-        {
-            chart.setDataElements( new ArrayList<DataElement>( dataElementService.getDataElements( dataElementIds ) ) );
-        }
-
-        if ( lastMonth || last12Months || lastQuarter || last4Quarters || lastSixMonth || last2SixMonths
-            || thisYear || last5Years )
+        if ( lastMonth || last12Months || lastQuarter || last4Quarters || lastSixMonth || last2SixMonths || thisYear
+            || last5Years )
         {
             RelativePeriods rp = new RelativePeriods();
             rp.setReportingMonth( lastMonth );
@@ -348,47 +343,48 @@ public class AddOrUpdateChartAction
             chart.setOrganisationUnits( new ArrayList<OrganisationUnit>( organisationUnitService
                 .getOrganisationUnits( organisationUnitIds ) ) );
         }
-        
+
         if ( system == null )
         {
             chart.setUser( currentUserService.getCurrentUser() );
         }
-        
+
         if ( trendLine != null )
         {
             chart.setRegression( trendLine );
         }
-        
+
         if ( hideSubtitle != null )
         {
             chart.setHideSubtitle( hideSubtitle );
         }
-        
+
         if ( hideLegend != null )
         {
             chart.setHideLegend( hideLegend );
         }
-        
+
         if ( userOrganisationUnit != null )
         {
             chart.setUserOrganisationUnit( userOrganisationUnit );
         }
-        
+
         if ( domainAxisLabel != null )
         {
             chart.setDomainAxisLabel( domainAxisLabel );
         }
-        
+
         if ( rangeAxisLabel != null )
         {
             chart.setRangeAxisLabel( rangeAxisLabel );
         }
-        
+
         if ( targetLineValue != null )
         {
+            chart.setTargetLine( true );
             chart.setTargetLineValue( targetLineValue );
         }
-        
+
         if ( targetLineLabel != null )
         {
             chart.setTargetLineLabel( targetLineLabel );
