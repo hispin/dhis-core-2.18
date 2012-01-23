@@ -84,15 +84,15 @@
 						<option value="false" #if($!dataValues.get($key) == "false")selected="selected"#end>No</option>
 					</select>
 				#elseif( $dataElement.type == "date" )
-					<input type="date" maxlength="255" size="24" name="$key" value="$!dataValues.get($key)" />
+					<input type="date" maxlength="255" size="20" name="$key" value="$!dataValues.get($key)" />
 				#elseif( $dataElement.type == "int" && $dataElement.numberType == "number" )
-					<input type="text" maxlength="255" size="24" name="$key" value="$!dataValues.get($key)" />
+					<input type="text" maxlength="255" size="20" name="$key" value="$!dataValues.get($key)" />
 				#elseif( $dataElement.type == "int" && $dataElement.numberType == "int" )
-					<input type="text" maxlength="255" size="24" name="$key" value="$!dataValues.get($key)" />
+					<input type="text" maxlength="255" size="20" name="$key" value="$!dataValues.get($key)" />
 				#elseif( $dataElement.type == "int" && $dataElement.numberType == "positiveNumber" )
-					<input type="text" maxlength="255" size="24" name="$key" value="$!dataValues.get($key)" />
+					<input type="text" maxlength="255" size="20" name="$key" value="$!dataValues.get($key)" />
 				#elseif( $dataElement.type == "int" && $dataElement.numberType == "negativeNumber" )
-					<input type="text" maxlength="255" size="24" name="$key" value="$!dataValues.get($key)" />
+					<input type="text" maxlength="255" size="20" name="$key" value="$!dataValues.get($key)" />
 				#end
 				#end
 			#end
@@ -105,7 +105,7 @@
 
 <div class="header-box" align="center">
 	<p>
-        <input type="submit" style="width: 100%;" value="$i18n.getString("save")" />
+        <input type="submit" style="width: 100%;" size="20" value="$i18n.getString("save")" />
 	</p>
 </div>
 
