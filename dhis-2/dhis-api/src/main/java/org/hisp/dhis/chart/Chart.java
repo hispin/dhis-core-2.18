@@ -106,8 +106,6 @@ public class Chart
 
     private boolean regression;
 
-    private boolean targetLine;
-
     private boolean hideSubtitle;
 
     private Double targetLineValue;
@@ -298,6 +296,11 @@ public class Chart
         return this.type != null && this.type.equals( type );
     }
 
+    public boolean isTargetLine()
+    {
+        return targetLineValue != null;
+    }
+
     public int getWidth()
     {
         return 700;
@@ -406,18 +409,6 @@ public class Chart
     public void setRegression( boolean regression )
     {
         this.regression = regression;
-    }
-
-    @XmlElement
-    @JsonProperty
-    public boolean isTargetLine()
-    {
-        return targetLineValue != null;
-    }
-
-    public void setTargetLine( boolean targetLine )
-    {
-        this.targetLine = targetLine;
     }
 
     @XmlElement

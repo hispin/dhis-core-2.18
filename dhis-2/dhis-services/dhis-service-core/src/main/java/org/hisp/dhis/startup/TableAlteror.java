@@ -258,6 +258,7 @@ public class TableAlteror
         executeSql( "ALTER TABLE chart ALTER COLUMN dimension DROP NOT NULL" );
         executeSql( "ALTER TABLE chart DROP COLUMN size" );
         executeSql( "ALTER TABLE chart DROP COLUMN verticallabels" );
+        executeSql( "ALTER TABLE chart DROP COLUMN targetline" );
         executeSql( "ALTER TABLE chart DROP COLUMN horizontalplotorientation" );
         executeSql( "ALTER TABLE chart ADD COLUMN targetline boolean NOT NULL DEFAULT false" );
         executeSql( "ALTER TABLE chart ADD COLUMN hidesubtitle boolean NOT NULL DEFAULT false" );

@@ -34,8 +34,6 @@
 
     <property name="regression" not-null="true" />
 
-    <property name="targetLine" not-null="true" />
-
     <property name="hideSubtitle" not-null="true" />
 
     <property name="targetLineValue" />
