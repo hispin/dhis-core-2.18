@@ -73,6 +73,13 @@ public class GetDataSetsAction
         return organisationUnitId;
     }
 
+    private Integer dataSetId;
+
+    public Integer getDataSetId()
+    {
+        return dataSetId;
+    }
+
     private List<DataSet> dataSets = new ArrayList<DataSet>();
 
     public List<DataSet> getDataSets()
@@ -90,6 +97,13 @@ public class GetDataSetsAction
         Validate.notNull( organisationUnitId );
 
         dataSets = formUtils.getDataSetsForCurrentUser( organisationUnitId );
+
+        if ( dataSets.size() == 1 )
+        {
+            dataSetId = dataSets.get( 0 ).getId();
+
+            return "selectPeriod";
+        }
 
         return SUCCESS;
     }

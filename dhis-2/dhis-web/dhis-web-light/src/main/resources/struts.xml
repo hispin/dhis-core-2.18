@@ -17,11 +17,16 @@
     <action name="selectOrganisationUnit" class="org.hisp.dhis.light.dataentry.action.GetOrganisationUnitsAction">
       <result name="success" type="velocity">/dhis-web-light/main.vm</result>
       <param name="page">/dhis-web-light/selectOrganisationUnit.vm</param>
+
+      <result name="selectDataSet" type="redirect">/mobile/selectDataSet.action?organisationUnitId=${organisationUnitId}</result>
+      <result name="selectPeriod" type="redirect">/mobile/selectPeriod.action?organisationUnitId=${organisationUnitId}&amp;dataSetId=${dataSetId}</result>
     </action>
 
     <action name="selectDataSet" class="org.hisp.dhis.light.dataentry.action.GetDataSetsAction">
       <result name="success" type="velocity">/dhis-web-light/main.vm</result>
       <param name="page">/dhis-web-light/selectDataSet.vm</param>
+
+      <result name="selectPeriod" type="redirect">/mobile/selectPeriod.action?organisationUnitId=${organisationUnitId}&amp;dataSetId=${dataSetId}</result>
     </action>
 
     <action name="selectPeriod" class="org.hisp.dhis.light.dataentry.action.GetPeriodsAction">

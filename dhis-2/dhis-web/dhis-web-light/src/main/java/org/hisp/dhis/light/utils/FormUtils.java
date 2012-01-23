@@ -259,7 +259,7 @@ public class FormUtils
         List<OrganisationUnit> organisationUnits = new ArrayList<OrganisationUnit>( user.getOrganisationUnits() );
         Collections.sort( organisationUnits, new OrganisationUnitNameComparator() );
 
-        return organisationUnits;
+        return organisationUnitWithDataSetsFilter( organisationUnits );
     }
 
     public List<DataSet> getDataSetsForCurrentUser( Integer organisationUnitId )
