@@ -118,6 +118,13 @@ public class GetPeriodsAction
         return organisationUnitId;
     }
 
+    private OrganisationUnit organisationUnit;
+
+    public OrganisationUnit getOrganisationUnit()
+    {
+        return organisationUnit;
+    }
+
     private Integer dataSetId;
 
     public void setDataSetId( String dataSetId )
@@ -197,7 +204,7 @@ public class GetPeriodsAction
         Validate.notNull( organisationUnitId );
         Validate.notNull( dataSetId );
 
-        OrganisationUnit organisationUnit = organisationUnitService.getOrganisationUnit( organisationUnitId );
+        organisationUnit = organisationUnitService.getOrganisationUnit( organisationUnitId );
 
         dataSet = dataSetService.getDataSet( dataSetId );
 

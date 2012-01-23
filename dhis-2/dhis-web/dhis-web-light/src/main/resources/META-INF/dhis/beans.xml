@@ -39,6 +39,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
       class="org.hisp.dhis.light.dataentry.action.GetDataSetsAction"
       scope="prototype">
     <property name="formUtils" ref="org.hisp.dhis.light.dataentry.utils.FormUtils" />
+    <property name="organisationUnitService" ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
   </bean>
 
   <bean id="org.hisp.dhis.light.dataentry.action.GetPeriodsAction"
