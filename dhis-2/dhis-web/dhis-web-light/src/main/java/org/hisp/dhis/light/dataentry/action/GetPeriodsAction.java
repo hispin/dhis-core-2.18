@@ -35,23 +35,22 @@ import org.hisp.dhis.dataset.CompleteDataSetRegistrationService;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.dataset.DataSetService;
 import org.hisp.dhis.i18n.I18nFormat;
+import org.hisp.dhis.light.utils.FormUtils;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
-import org.hisp.dhis.period.CalendarPeriodType;
 import org.hisp.dhis.period.Period;
-import org.hisp.dhis.system.filter.PastAndCurrentPeriodFilter;
-import org.hisp.dhis.system.util.FilterUtils;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
- * @author mortenoh
+ * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
 public class GetPeriodsAction
     implements Action
 {
-    private static final int MAX_PERIODS = 10;
-
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
@@ -82,6 +81,18 @@ public class GetPeriodsAction
     public void setRegistrationService( CompleteDataSetRegistrationService registrationService )
     {
         this.registrationService = registrationService;
+    }
+
+    private FormUtils formUtils;
+
+    public void setFormUtils( FormUtils formUtils )
+    {
+        this.formUtils = formUtils;
+    }
+
+    public FormUtils getFormUtils()
+    {
+        return formUtils;
     }
 
     private I18nFormat format;
@@ -190,15 +201,7 @@ public class GetPeriodsAction
 
         dataSet = dataSetService.getDataSet( dataSetId );
 
-        CalendarPeriodType periodType = (CalendarPeriodType) dataSet.getPeriodType();
-        periods = periodType.generateLast5Years( new Date() );
-        FilterUtils.filter( periods, new PastAndCurrentPeriodFilter() );
-        Collections.reverse( periods );
-
-        if ( periods.size() > MAX_PERIODS )
-        {
-            periods = periods.subList( 0, MAX_PERIODS );
-        }
+        periods = formUtils.getPeriodsForDataSet( dataSetId );
 
         markLockedDataSets( organisationUnit, dataSet, periods );
 

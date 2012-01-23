@@ -27,21 +27,16 @@
 
 package org.hisp.dhis.light.dataentry.action;
 
+import com.opensymphony.xwork2.Action;
+import org.apache.commons.lang.Validate;
+import org.hisp.dhis.dataset.DataSet;
+import org.hisp.dhis.light.utils.FormUtils;
+
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.commons.lang.Validate;
-import org.hisp.dhis.dataset.DataSet;
-import org.hisp.dhis.organisationunit.OrganisationUnit;
-import org.hisp.dhis.organisationunit.OrganisationUnitService;
-import org.hisp.dhis.user.CurrentUserService;
-import org.hisp.dhis.user.UserCredentials;
-import org.springframework.beans.factory.annotation.Required;
-
-import com.opensymphony.xwork2.Action;
-
 /**
- * @author mortenoh
+ * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
 public class GetDataSetsAction
     implements Action
@@ -50,19 +45,16 @@ public class GetDataSetsAction
     // Dependencies
     // -------------------------------------------------------------------------
 
-    private CurrentUserService currentUserService;
+    private FormUtils formUtils;
 
-    @Required
-    public void setCurrentUserService( CurrentUserService currentUserService )
+    public void setFormUtils( FormUtils formUtils )
     {
-        this.currentUserService = currentUserService;
+        this.formUtils = formUtils;
     }
 
-    private OrganisationUnitService organisationUnitService;
-
-    public void setOrganisationUnitService( OrganisationUnitService organisationUnitService )
+    public FormUtils getFormUtils()
     {
-        this.organisationUnitService = organisationUnitService;
+        return formUtils;
     }
 
     // -------------------------------------------------------------------------
@@ -97,18 +89,8 @@ public class GetDataSetsAction
     {
         Validate.notNull( organisationUnitId );
 
-        OrganisationUnit organisationUnit = organisationUnitService.getOrganisationUnit( organisationUnitId );
-
-        dataSets = new ArrayList<DataSet>( organisationUnit.getDataSets() );
-
-        UserCredentials userCredentials = currentUserService.getCurrentUser().getUserCredentials();
-
-        if ( !userCredentials.isSuper() )
-        {
-            dataSets.retainAll( userCredentials.getAllDataSets() );
-        }
+        dataSets = formUtils.getDataSetsForCurrentUser( organisationUnitId );
 
         return SUCCESS;
     }
-
 }

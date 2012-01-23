@@ -15,7 +15,10 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
   <!-- data entry -->
 
   <bean id="org.hisp.dhis.light.dataentry.utils.FormUtils" class="org.hisp.dhis.light.utils.FormUtils">
+    <property name="organisationUnitService" ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
+    <property name="currentUserService" ref="org.hisp.dhis.user.CurrentUserService" />
     <property name="dataValueService" ref="org.hisp.dhis.datavalue.DataValueService" />
+    <property name="dataSetService" ref="org.hisp.dhis.dataset.DataSetService" />
     <property name="stdDevOutlierAnalysisService" ref="org.hisp.dhis.dataanalysis.StdDevOutlierAnalysisService" />
     <property name="minMaxOutlierAnalysisService" ref="org.hisp.dhis.dataanalysis.MinMaxOutlierAnalysisService" />
     <property name="minMaxValuesGenerationService"
@@ -29,20 +32,19 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
   <bean id="org.hisp.dhis.light.dataentry.action.GetOrganisationUnitsAction"
       class="org.hisp.dhis.light.dataentry.action.GetOrganisationUnitsAction"
       scope="prototype">
-    <property name="currentUserService" ref="org.hisp.dhis.user.CurrentUserService" />
     <property name="formUtils" ref="org.hisp.dhis.light.dataentry.utils.FormUtils" />
   </bean>
 
   <bean id="org.hisp.dhis.light.dataentry.action.GetDataSetsAction"
       class="org.hisp.dhis.light.dataentry.action.GetDataSetsAction"
       scope="prototype">
-    <property name="currentUserService" ref="org.hisp.dhis.user.CurrentUserService" />
-    <property name="organisationUnitService" ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
+    <property name="formUtils" ref="org.hisp.dhis.light.dataentry.utils.FormUtils" />
   </bean>
 
   <bean id="org.hisp.dhis.light.dataentry.action.GetPeriodsAction"
       class="org.hisp.dhis.light.dataentry.action.GetPeriodsAction"
       scope="prototype">
+    <property name="formUtils" ref="org.hisp.dhis.light.dataentry.utils.FormUtils" />
     <property name="organisationUnitService" ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
     <property name="dataSetService" ref="org.hisp.dhis.dataset.DataSetService" />
     <property name="dataSetLockService" ref="org.hisp.dhis.datalock.DataSetLockService" />
