@@ -45,7 +45,6 @@
         <artifactId>maven-jetty-plugin</artifactId>
         <version>6.1.26</version>
         <configuration>
-          <scanIntervalSeconds>10</scanIntervalSeconds>
           <systemPropertyVariables>
             <org.mortbay.jetty.Request.maxFormContentSize>10000000</org.mortbay.jetty.Request.maxFormContentSize>
           </systemPropertyVariables>
