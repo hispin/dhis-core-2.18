@@ -43,14 +43,5 @@ public interface TransformCache
      * @throws TransformerConfigurationException  
      */
     Transformer getHtmlTransformer()
-        throws TransformerConfigurationException;
-
-    /**
-     * A transformer for rendering elements to xsl-fop
-     * 
-     * @return the transformer
-     * @throws TransformerConfigurationException  
-     */
-    Transformer getFopTransformer()
         throws TransformerConfigurationException;   
 }

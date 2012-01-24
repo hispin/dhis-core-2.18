@@ -770,13 +770,6 @@
         <version>2.2.2</version>
       </dependency>
 
-      <!-- XSL-FO -->
-      <dependency>
-        <groupId>org.apache.xmlgraphics</groupId>
-        <artifactId>fop</artifactId>
-        <version>1.0</version>
-      </dependency>
-
     </dependencies>
   </dependencyManagement>
 

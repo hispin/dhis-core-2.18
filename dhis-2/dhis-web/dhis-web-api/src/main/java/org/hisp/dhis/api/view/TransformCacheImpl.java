@@ -30,6 +30,7 @@ package org.hisp.dhis.api.view;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
 import javax.xml.transform.ErrorListener;
 import javax.xml.transform.Source;
 import javax.xml.transform.Templates;
@@ -37,6 +38,7 @@ import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerConfigurationException;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.stream.StreamSource;
+
 import org.amplecode.staxwax.transformer.LoggingErrorListener;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Component;
@@ -52,17 +54,11 @@ public class TransformCacheImpl
 {
     static final String MODEL2HTML = "model2html.xsl";
 
-    static final String MODEL2FOP = "model2fop.xsl";
-
     static final String HTMLXSLT_RESOURCE = "/templates/html/";
-
-    static final String FOPXSLT_RESOURCE = "/templates/pdf/";
 
     static private TransformCache instance;
 
     private Templates htmlCachedTransform;
-
-    private Templates fopCachedTransform;
 
     private TransformCacheImpl()
         throws IOException, TransformerConfigurationException
@@ -73,12 +69,9 @@ public class TransformCacheImpl
         factory.setErrorListener( errorListener );
 
         Source model2html = new StreamSource( new ClassPathResource( HTMLXSLT_RESOURCE + MODEL2HTML ).getInputStream() );
-        Source model2fop = new StreamSource( new ClassPathResource( FOPXSLT_RESOURCE + MODEL2FOP ).getInputStream() );
 
         factory.setURIResolver( new ClassPathUriResolver( HTMLXSLT_RESOURCE ) );
         htmlCachedTransform = factory.newTemplates( model2html );
-        factory.setURIResolver( new ClassPathUriResolver( FOPXSLT_RESOURCE ) );
-        fopCachedTransform = factory.newTemplates( model2fop );
     }
 
     protected static TransformCache instance()
@@ -102,12 +95,5 @@ public class TransformCacheImpl
         throws TransformerConfigurationException
     {
         return htmlCachedTransform.newTransformer();
-    }
-
-    @Override
-    public Transformer getFopTransformer()
-        throws TransformerConfigurationException
-    {
-        return fopCachedTransform.newTransformer();
     }
 }
