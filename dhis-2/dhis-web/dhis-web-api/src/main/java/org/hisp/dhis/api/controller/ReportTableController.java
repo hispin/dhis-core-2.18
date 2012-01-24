@@ -39,7 +39,7 @@ import org.hisp.dhis.reporttable.ReportTableService;
 import org.hisp.dhis.reporttable.ReportTables;
 import org.hisp.dhis.system.grid.GridUtils;
 import org.hisp.dhis.system.util.DateUtils;
-import org.hisp.dhis.util.ContextUtils;
+import org.hisp.dhis.api.utils.ContextUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;

@@ -66,7 +66,8 @@
     <listener-class>org.hisp.dhis.system.startup.StartupListener</listener-class>
   </listener>
 
-  <!-- For the dhis-web-api module -->
+  <!-- Web API -->
+  
   <servlet>
     <servlet-name>webapiServlet</servlet-name>
     <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
@@ -79,9 +80,15 @@
 
   <servlet-mapping>
     <servlet-name>webapiServlet</servlet-name>
+    <url-pattern>/api</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>webapiServlet</servlet-name>
     <url-pattern>/api/*</url-pattern>
   </servlet-mapping>
-
+  
+  <!-- Error page -->
+  
   <error-page>
     <exception-type>java.lang.Throwable</exception-type>
     <location>/error.html</location>
