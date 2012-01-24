@@ -44,7 +44,7 @@ import org.hisp.dhis.mapping.MappingService;
 import org.hisp.dhis.mapping.Maps;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
-import org.hisp.dhis.util.ContextUtils;
+import org.hisp.dhis.api.utils.ContextUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;

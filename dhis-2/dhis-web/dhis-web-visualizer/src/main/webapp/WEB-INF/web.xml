@@ -43,6 +43,10 @@
     <url-pattern>*.action</url-pattern>
   </filter-mapping>
   <filter-mapping>
+    <filter-name>OpenSessionInViewFilter</filter-name>
+    <url-pattern>/api/*</url-pattern>
+  </filter-mapping>
+  <filter-mapping>
     <filter-name>springSecurityFilterChain</filter-name>
     <url-pattern>/*</url-pattern>
   </filter-mapping>
@@ -57,4 +61,26 @@
   <listener>
     <listener-class>org.hisp.dhis.system.startup.StartupListener</listener-class>
   </listener>
+  
+  <!-- Web API -->
+  
+  <servlet>
+    <servlet-name>webapiServlet</servlet-name>
+    <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+    <init-param>
+      <param-name>contextConfigLocation</param-name>
+      <param-value>classpath*:/META-INF/dhis/servlet.xml</param-value>
+    </init-param>
+    <load-on-startup>1</load-on-startup>
+  </servlet>
+
+  <servlet-mapping>
+    <servlet-name>webapiServlet</servlet-name>
+    <url-pattern>/api</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>webapiServlet</servlet-name>
+    <url-pattern>/api/*</url-pattern>
+  </servlet-mapping>
+  
 </web-app>

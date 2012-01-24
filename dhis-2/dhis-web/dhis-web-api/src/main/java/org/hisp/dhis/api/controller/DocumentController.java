@@ -35,7 +35,7 @@ import org.hisp.dhis.document.Document;
 import org.hisp.dhis.document.DocumentService;
 import org.hisp.dhis.document.Documents;
 import org.hisp.dhis.external.location.LocationManager;
-import org.hisp.dhis.util.ContextUtils;
+import org.hisp.dhis.api.utils.ContextUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;

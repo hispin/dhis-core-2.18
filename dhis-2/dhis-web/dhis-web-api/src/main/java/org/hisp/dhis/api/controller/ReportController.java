@@ -38,7 +38,7 @@ import org.hisp.dhis.report.ReportService;
 import org.hisp.dhis.report.Reports;
 import org.hisp.dhis.system.util.CodecUtils;
 import org.hisp.dhis.system.util.DateUtils;
-import org.hisp.dhis.util.ContextUtils;
+import org.hisp.dhis.api.utils.ContextUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
