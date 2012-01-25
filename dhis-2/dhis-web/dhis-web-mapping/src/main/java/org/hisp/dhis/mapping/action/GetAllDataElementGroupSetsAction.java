@@ -31,9 +31,9 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import org.hisp.dhis.common.comparator.IdentifiableObjectNameComparator;
 import org.hisp.dhis.dataelement.DataElementGroupSet;
 import org.hisp.dhis.dataelement.DataElementService;
-import org.hisp.dhis.dataelement.comparator.DataElementGroupSetNameComparator;
 
 import com.opensymphony.xwork2.Action;
 
@@ -75,7 +75,7 @@ public class GetAllDataElementGroupSetsAction
     {
         object = new ArrayList<DataElementGroupSet>( dataElementService.getAllDataElementGroupSets() );
 
-        Collections.sort( object, new DataElementGroupSetNameComparator() );
+        Collections.sort( object, IdentifiableObjectNameComparator.INSTANCE );
 
         return SUCCESS;
     }

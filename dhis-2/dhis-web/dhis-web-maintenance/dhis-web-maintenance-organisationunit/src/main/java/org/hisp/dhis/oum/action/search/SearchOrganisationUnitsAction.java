@@ -38,13 +38,12 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hisp.dhis.common.Grid;
 import org.hisp.dhis.common.GridHeader;
+import org.hisp.dhis.common.comparator.IdentifiableObjectNameComparator;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroup;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroupService;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroupSet;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
-import org.hisp.dhis.organisationunit.comparator.OrganisationUnitGroupSetNameComparator;
-import org.hisp.dhis.organisationunit.comparator.OrganisationUnitNameComparator;
 import org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager;
 import org.hisp.dhis.system.grid.ListGrid;
 
@@ -182,7 +181,7 @@ public class SearchOrganisationUnitsAction
 
         groupSets = new ArrayList<OrganisationUnitGroupSet>( organisationUnitGroupService.getCompulsoryOrganisationUnitGroupSets() );
         
-        Collections.sort( groupSets, new OrganisationUnitGroupSetNameComparator() );
+        Collections.sort( groupSets, IdentifiableObjectNameComparator.INSTANCE );
         
         // ---------------------------------------------------------------------
         // Assemble groups and get search result
@@ -219,7 +218,7 @@ public class SearchOrganisationUnitsAction
             
             limited = organisationUnits != null && organisationUnits.size() == OrganisationUnitService.MAX_LIMIT;
             
-            Collections.sort( organisationUnits, new OrganisationUnitNameComparator() );
+            Collections.sort( organisationUnits, IdentifiableObjectNameComparator.INSTANCE );
             
             if ( type != null && !type.equalsIgnoreCase( DEFAULT_TYPE ) )
             {

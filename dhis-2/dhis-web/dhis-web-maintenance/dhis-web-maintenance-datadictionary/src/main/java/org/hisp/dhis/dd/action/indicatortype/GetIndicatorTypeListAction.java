@@ -36,10 +36,10 @@ import java.util.List;
 import org.hisp.dhis.attribute.Attribute;
 import org.hisp.dhis.attribute.AttributeService;
 import org.hisp.dhis.attribute.comparator.AttributeSortOrderComparator;
+import org.hisp.dhis.common.comparator.IdentifiableObjectNameComparator;
 import org.hisp.dhis.indicator.IndicatorGroupSet;
 import org.hisp.dhis.indicator.IndicatorService;
 import org.hisp.dhis.indicator.IndicatorType;
-import org.hisp.dhis.indicator.comparator.IndicatorTypeNameComparator;
 import org.hisp.dhis.paging.ActionPagingSupport;
 
 /**
@@ -128,7 +128,7 @@ public class GetIndicatorTypeListAction
 
         attributes = new ArrayList<Attribute>( attributeService.getIndicatorAttributes() );
 
-        Collections.sort( indicatorTypes, new IndicatorTypeNameComparator() );
+        Collections.sort( indicatorTypes, IdentifiableObjectNameComparator.INSTANCE );
         Collections.sort( attributes, new AttributeSortOrderComparator() );
 
         return SUCCESS;

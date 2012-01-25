@@ -31,9 +31,9 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import org.hisp.dhis.common.comparator.IdentifiableObjectNameComparator;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementService;
-import org.hisp.dhis.dataelement.comparator.DataElementNameComparator;
 import org.hisp.dhis.i18n.I18n;
 import org.hisp.dhis.i18n.I18nFormat;
 import org.hisp.dhis.importexport.ExportParams;
@@ -79,7 +79,7 @@ public class DataElementConverter
             elements = new ArrayList<DataElement>( params.getDataElementObjects() );
         }
         
-        Collections.sort( elements, new DataElementNameComparator() );
+        Collections.sort( elements, IdentifiableObjectNameComparator.INSTANCE );
         
         PDFUtils.printObjectFrontPage( document, elements, i18n, format, "data_elements" );
 

@@ -35,7 +35,7 @@ import java.util.List;
 
 import org.hisp.dhis.attribute.Attribute;
 import org.hisp.dhis.attribute.AttributeService;
-import org.hisp.dhis.attribute.comparator.AttributeNameComparator;
+import org.hisp.dhis.common.comparator.IdentifiableObjectNameComparator;
 import org.hisp.dhis.paging.ActionPagingSupport;
 
 /**
@@ -100,7 +100,7 @@ public class GetAttributeListAction
                 paging.getPageSize() ) );
         }
 
-        Collections.sort( attributes, new AttributeNameComparator() );
+        Collections.sort( attributes, IdentifiableObjectNameComparator.INSTANCE );
 
         return SUCCESS;
     }

@@ -66,7 +66,7 @@ public class ListUtils
         
         return false;
     }
-
+    
     /**
      * Returns the duplicates in the given list. List entries are compared
      * using the given comparator.

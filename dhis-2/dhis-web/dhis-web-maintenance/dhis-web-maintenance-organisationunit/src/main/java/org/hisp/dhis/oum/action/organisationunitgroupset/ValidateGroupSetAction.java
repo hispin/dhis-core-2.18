@@ -29,6 +29,7 @@ package org.hisp.dhis.oum.action.organisationunitgroupset;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Comparator;
 import java.util.HashSet;
 import java.util.List;
 
@@ -36,7 +37,6 @@ import org.hisp.dhis.i18n.I18n;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroupService;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroupSet;
-import org.hisp.dhis.organisationunit.comparator.OrganisationUnitNameComparator;
 import org.hisp.dhis.system.util.ListUtils;
 
 import com.opensymphony.xwork2.Action;
@@ -138,8 +138,13 @@ public class ValidateGroupSetAction
                 units.addAll( organisationUnitGroupService.getOrganisationUnitGroup( groupId ).getMembers() );
             }
 
-            Collection<OrganisationUnit> duplicates = ListUtils.getDuplicates( units,
-                new OrganisationUnitNameComparator() );
+            Collection<OrganisationUnit> duplicates = ListUtils.getDuplicates( units, new Comparator<OrganisationUnit>()
+            {
+                public int compare( OrganisationUnit o1, OrganisationUnit o2 )
+                {
+                    return o1.getName().compareTo( o2.getName() );
+                }
+            } );
 
             if ( duplicates.size() > 0 )
             {

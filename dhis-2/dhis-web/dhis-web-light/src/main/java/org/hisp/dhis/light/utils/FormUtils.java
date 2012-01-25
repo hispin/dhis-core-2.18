@@ -27,6 +27,14 @@
 
 package org.hisp.dhis.light.utils;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.Validate;
 import org.hisp.dhis.common.comparator.IdentifiableObjectNameComparator;
@@ -39,14 +47,12 @@ import org.hisp.dhis.datavalue.DataValue;
 import org.hisp.dhis.datavalue.DataValueService;
 import org.hisp.dhis.datavalue.DeflatedDataValue;
 import org.hisp.dhis.expression.ExpressionService;
-import org.hisp.dhis.i18n.I18nFormat;
 import org.hisp.dhis.minmax.MinMaxDataElement;
 import org.hisp.dhis.minmax.MinMaxDataElementService;
 import org.hisp.dhis.minmax.validation.MinMaxValuesGenerationService;
 import org.hisp.dhis.options.SystemSettingManager;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
-import org.hisp.dhis.organisationunit.comparator.OrganisationUnitNameComparator;
 import org.hisp.dhis.period.CalendarPeriodType;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.system.filter.OrganisationUnitWithDataSetsFilter;
@@ -61,8 +67,6 @@ import org.hisp.dhis.validation.ValidationRule;
 import org.hisp.dhis.validation.ValidationRuleService;
 import org.joda.time.format.DateTimeFormatter;
 import org.joda.time.format.ISODateTimeFormat;
-
-import java.util.*;
 
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
@@ -150,13 +154,6 @@ public class FormUtils
     public void setExpressionService( ExpressionService expressionService )
     {
         this.expressionService = expressionService;
-    }
-
-    private I18nFormat format;
-
-    public void setFormat( I18nFormat format )
-    {
-        this.format = format;
     }
 
     // -------------------------------------------------------------------------
@@ -257,7 +254,7 @@ public class FormUtils
         Validate.notNull( user );
 
         List<OrganisationUnit> organisationUnits = new ArrayList<OrganisationUnit>( user.getOrganisationUnits() );
-        Collections.sort( organisationUnits, new OrganisationUnitNameComparator() );
+        Collections.sort( organisationUnits, IdentifiableObjectNameComparator.INSTANCE );
 
         return organisationUnitWithDataSetsFilter( organisationUnits );
     }

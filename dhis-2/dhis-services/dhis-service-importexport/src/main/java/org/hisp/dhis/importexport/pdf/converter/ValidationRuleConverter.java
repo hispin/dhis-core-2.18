@@ -31,6 +31,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import org.hisp.dhis.common.comparator.IdentifiableObjectNameComparator;
 import org.hisp.dhis.expression.ExpressionService;
 import org.hisp.dhis.i18n.I18n;
 import org.hisp.dhis.i18n.I18nFormat;
@@ -39,7 +40,6 @@ import org.hisp.dhis.importexport.PDFConverter;
 import org.hisp.dhis.system.util.PDFUtils;
 import org.hisp.dhis.validation.ValidationRule;
 import org.hisp.dhis.validation.ValidationRuleService;
-import org.hisp.dhis.validation.comparator.ValidationRuleNameComparator;
 
 import com.lowagie.text.Document;
 
@@ -84,7 +84,7 @@ public class ValidationRuleConverter
             elements = new ArrayList<ValidationRule>( params.getValidationRuleObjects() );
         }
 
-        Collections.sort( elements, new ValidationRuleNameComparator() );
+        Collections.sort( elements, IdentifiableObjectNameComparator.INSTANCE );
 
         PDFUtils.printObjectFrontPage( document, elements, i18n, format, "validation_rules" );
 

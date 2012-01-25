@@ -31,9 +31,9 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import org.hisp.dhis.common.comparator.IdentifiableObjectNameComparator;
 import org.hisp.dhis.dataelement.DataElementGroup;
 import org.hisp.dhis.dataelement.DataElementService;
-import org.hisp.dhis.dataelement.comparator.DataElementGroupNameComparator;
 import org.hisp.dhis.paging.ActionPagingSupport;
 import org.hisp.dhis.system.filter.DataElementGroupWithoutGroupSetFilter;
 import org.hisp.dhis.system.util.FilterUtils;
@@ -101,7 +101,7 @@ public class GetDataElementGroupsAction
             dataElementGroups = IdentifiableObjectUtils.filterNameByKey( dataElementGroups, key, true );
         }
 
-        Collections.sort( this.dataElementGroups, new DataElementGroupNameComparator() );
+        Collections.sort( this.dataElementGroups, IdentifiableObjectNameComparator.INSTANCE );
 
         if ( usePaging )
         {

@@ -31,10 +31,10 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import org.hisp.dhis.common.comparator.IdentifiableObjectNameComparator;
 import org.hisp.dhis.validation.ValidationRule;
 import org.hisp.dhis.validation.ValidationRuleGroup;
 import org.hisp.dhis.validation.ValidationRuleService;
-import org.hisp.dhis.validation.comparator.ValidationRuleNameComparator;
 
 import com.opensymphony.xwork2.Action;
 
@@ -108,7 +108,7 @@ public class ShowUpdateValidationRuleGroupFormAction
 
         groupMembers = new ArrayList<ValidationRule>( validationRuleGroup.getMembers() );
 
-        Collections.sort( groupMembers, new ValidationRuleNameComparator() );
+        Collections.sort( groupMembers, IdentifiableObjectNameComparator.INSTANCE );
 
         return SUCCESS;
     }

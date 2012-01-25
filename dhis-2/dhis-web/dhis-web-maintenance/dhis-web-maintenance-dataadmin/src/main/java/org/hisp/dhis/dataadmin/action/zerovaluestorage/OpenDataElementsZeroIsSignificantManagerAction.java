@@ -31,16 +31,15 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import org.hisp.dhis.common.comparator.IdentifiableObjectNameComparator;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementService;
-import org.hisp.dhis.dataelement.comparator.DataElementNameComparator;
 
 import com.opensymphony.xwork2.Action;
 
 /**
  * @author Tran Thanh Tri
  */
-
 public class OpenDataElementsZeroIsSignificantManagerAction
     implements Action
 {
@@ -73,7 +72,7 @@ public class OpenDataElementsZeroIsSignificantManagerAction
         zeroDataValueElements = new ArrayList<DataElement>( dataElementService
             .getDataElementsByZeroIsSignificant( true ) );
 
-        Collections.sort( zeroDataValueElements, new DataElementNameComparator() );
+        Collections.sort( zeroDataValueElements, IdentifiableObjectNameComparator.INSTANCE );
 
         return SUCCESS;
     }

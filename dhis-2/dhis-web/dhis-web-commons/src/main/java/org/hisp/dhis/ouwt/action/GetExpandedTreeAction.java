@@ -34,8 +34,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.hisp.dhis.common.comparator.IdentifiableObjectNameComparator;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
-import org.hisp.dhis.organisationunit.comparator.OrganisationUnitNameComparator;
 import org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager;
 import org.hisp.dhis.ouwt.manager.TreeStateManager;
 
@@ -111,7 +111,7 @@ public class GetExpandedTreeAction
 
         roots = new ArrayList<OrganisationUnit>( selectionManager.getRootOrganisationUnits() );
 
-        Collections.sort( roots, new OrganisationUnitNameComparator() );
+        Collections.sort( roots, IdentifiableObjectNameComparator.INSTANCE );
 
         // ---------------------------------------------------------------------
         // Get the children of the roots

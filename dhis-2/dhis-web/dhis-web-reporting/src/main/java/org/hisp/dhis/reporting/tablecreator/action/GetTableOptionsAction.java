@@ -42,17 +42,12 @@ import org.hisp.dhis.dataelement.DataElementCategoryCombo;
 import org.hisp.dhis.dataelement.DataElementCategoryService;
 import org.hisp.dhis.dataelement.DataElementGroup;
 import org.hisp.dhis.dataelement.DataElementService;
-import org.hisp.dhis.dataelement.comparator.DataElementCategoryComboNameComparator;
-import org.hisp.dhis.dataelement.comparator.DataElementGroupNameComparator;
-import org.hisp.dhis.dataelement.comparator.DataElementNameComparator;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.dataset.DataSetService;
-import org.hisp.dhis.dataset.comparator.DataSetNameComparator;
 import org.hisp.dhis.i18n.I18nFormat;
 import org.hisp.dhis.indicator.Indicator;
 import org.hisp.dhis.indicator.IndicatorGroup;
 import org.hisp.dhis.indicator.IndicatorService;
-import org.hisp.dhis.indicator.comparator.IndicatorGroupNameComparator;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroup;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroupService;
@@ -333,25 +328,25 @@ public class GetTableOptionsAction
         if ( dimension )
         {
             categoryCombos = new ArrayList<DataElementCategoryCombo>( categoryService.getAllDataElementCategoryCombos() );            
-            Collections.sort( categoryCombos, new DataElementCategoryComboNameComparator() );            
+            Collections.sort( categoryCombos, IdentifiableObjectNameComparator.INSTANCE );            
         }
         else
         {        
             dataElementGroups = new ArrayList<DataElementGroup>( dataElementService.getAllDataElementGroups() );            
-            Collections.sort( dataElementGroups, new DataElementGroupNameComparator() );
+            Collections.sort( dataElementGroups, IdentifiableObjectNameComparator.INSTANCE );
             
             dataElements = new ArrayList<DataElement>( dataElementService.getAllDataElements() );            
-            Collections.sort( dataElements, new DataElementNameComparator() );            
+            Collections.sort( dataElements, IdentifiableObjectNameComparator.INSTANCE );            
             FilterUtils.filter( dataElements, new AggregatableDataElementFilter() );
             
             indicatorGroups = new ArrayList<IndicatorGroup>( indicatorService.getAllIndicatorGroups() );            
-            Collections.sort( indicatorGroups, new IndicatorGroupNameComparator() );
+            Collections.sort( indicatorGroups, IdentifiableObjectNameComparator.INSTANCE );
             
             indicators = new ArrayList<Indicator>( indicatorService.getAllIndicators() );            
             Collections.sort( indicators, indicatorComparator );
             
             dataSets = new ArrayList<DataSet>( dataSetService.getAllDataSets() );            
-            Collections.sort( dataSets, new DataSetNameComparator() ); 
+            Collections.sort( dataSets, IdentifiableObjectNameComparator.INSTANCE ); 
         }
         
         periodTypes = periodService.getAllPeriodTypes();

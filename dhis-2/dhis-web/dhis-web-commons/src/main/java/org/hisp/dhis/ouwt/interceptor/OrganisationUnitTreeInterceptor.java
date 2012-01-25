@@ -36,9 +36,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.hisp.dhis.common.comparator.IdentifiableObjectNameComparator;
 import org.hisp.dhis.interceptor.AbstractPreResultListener;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
-import org.hisp.dhis.organisationunit.comparator.OrganisationUnitNameComparator;
 import org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager;
 import org.hisp.dhis.ouwt.manager.TreeStateManager;
 
@@ -116,7 +116,7 @@ public class OrganisationUnitTreeInterceptor
         throws Exception
     {
         List<OrganisationUnit> childUnitsSorted = new ArrayList<OrganisationUnit>( childUnits );
-        Collections.sort( childUnitsSorted, new OrganisationUnitNameComparator() );
+        Collections.sort( childUnitsSorted, IdentifiableObjectNameComparator.INSTANCE );
 
         List<TreeNode> childNodes = new ArrayList<TreeNode>();
 

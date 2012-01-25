@@ -33,7 +33,7 @@ import java.util.List;
 
 import org.hisp.dhis.attribute.Attribute;
 import org.hisp.dhis.attribute.AttributeService;
-import org.hisp.dhis.attribute.comparator.AttributeNameComparator;
+import org.hisp.dhis.common.comparator.IdentifiableObjectNameComparator;
 
 import com.opensymphony.xwork2.Action;
 
@@ -74,7 +74,7 @@ public class GetAttributesAction
     {
         attributes = new ArrayList<Attribute>( attributeService.getAllAttributes() );
 
-        Collections.sort( attributes, new AttributeNameComparator() );
+        Collections.sort( attributes, IdentifiableObjectNameComparator.INSTANCE );
 
         return SUCCESS;
     }

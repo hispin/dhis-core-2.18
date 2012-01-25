@@ -33,9 +33,9 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import org.hisp.dhis.common.comparator.IdentifiableObjectNameComparator;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroupService;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroupSet;
-import org.hisp.dhis.organisationunit.comparator.OrganisationUnitGroupSetNameComparator;
 import org.hisp.dhis.paging.ActionPagingSupport;
 
 /**
@@ -99,10 +99,7 @@ public class GetGroupSetListAction
             organisationUnitGroupSets = new ArrayList<OrganisationUnitGroupSet>( organisationUnitGroupService.getOrganisationUnitGroupSetsBetween( paging.getStartPos(), paging.getPageSize() ) );
         }
 
-//        organisationUnitGroupSets = new ArrayList<OrganisationUnitGroupSet>( organisationUnitGroupService
-//            .getAllOrganisationUnitGroupSets() );
-
-        Collections.sort( organisationUnitGroupSets, new OrganisationUnitGroupSetNameComparator() );
+        Collections.sort( organisationUnitGroupSets, IdentifiableObjectNameComparator.INSTANCE );
 
         return SUCCESS;
     }

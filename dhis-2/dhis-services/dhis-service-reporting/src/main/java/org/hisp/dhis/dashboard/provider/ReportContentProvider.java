@@ -32,10 +32,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.hisp.dhis.common.comparator.IdentifiableObjectNameComparator;
 import org.hisp.dhis.dashboard.DashboardContent;
 import org.hisp.dhis.dashboard.DashboardService;
 import org.hisp.dhis.report.Report;
-import org.hisp.dhis.report.comparator.ReportComparator;
 import org.hisp.dhis.user.CurrentUserService;
 import org.hisp.dhis.user.User;
 
@@ -87,7 +87,7 @@ public class ReportContentProvider
             
             List<Report> reports = dashboardContent.getReports();
             
-            Collections.sort( reports, new ReportComparator() );
+            Collections.sort( reports, IdentifiableObjectNameComparator.INSTANCE );
             
             content.put( key, reports );
         }

@@ -36,6 +36,7 @@ import java.util.Map;
 
 import org.amplecode.quick.BatchHandler;
 import org.amplecode.quick.BatchHandlerFactory;
+import org.hisp.dhis.common.comparator.IdentifiableObjectNameComparator;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategory;
 import org.hisp.dhis.dataelement.DataElementCategoryOption;
@@ -44,23 +45,16 @@ import org.hisp.dhis.dataelement.DataElementCategoryService;
 import org.hisp.dhis.dataelement.DataElementGroup;
 import org.hisp.dhis.dataelement.DataElementGroupSet;
 import org.hisp.dhis.dataelement.DataElementService;
-import org.hisp.dhis.dataelement.comparator.DataElementCategoryNameComparator;
-import org.hisp.dhis.dataelement.comparator.DataElementGroupSetNameComparator;
-import org.hisp.dhis.dataelement.comparator.DataElementNameComparator;
 import org.hisp.dhis.indicator.Indicator;
 import org.hisp.dhis.indicator.IndicatorGroup;
 import org.hisp.dhis.indicator.IndicatorGroupSet;
 import org.hisp.dhis.indicator.IndicatorService;
-import org.hisp.dhis.indicator.comparator.IndicatorGroupSetNameComparator;
-import org.hisp.dhis.indicator.comparator.IndicatorNameComparator;
 import org.hisp.dhis.jdbc.batchhandler.GenericBatchHandler;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroup;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroupService;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroupSet;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
-import org.hisp.dhis.organisationunit.comparator.OrganisationUnitGroupSetNameComparator;
-import org.hisp.dhis.organisationunit.comparator.OrganisationUnitNameComparator;
 import org.hisp.dhis.period.PeriodType;
 import org.hisp.dhis.resourcetable.statement.CreateCategoryTableStatement;
 import org.hisp.dhis.resourcetable.statement.CreateDataElementGroupSetTableStatement;
@@ -213,11 +207,11 @@ public class DefaultResourceTableService
 
         List<DataElement> dataElements = new ArrayList<DataElement>( dataElementService.getAllDataElements() );
         
-        Collections.sort( dataElements, new DataElementNameComparator() );
+        Collections.sort( dataElements, IdentifiableObjectNameComparator.INSTANCE );
         
         List<DataElementGroupSet> groupSets = new ArrayList<DataElementGroupSet>( dataElementService.getAllDataElementGroupSets() );
         
-        Collections.sort( groupSets, new DataElementGroupSetNameComparator() );
+        Collections.sort( groupSets, IdentifiableObjectNameComparator.INSTANCE );
         
         resourceTableStore.createDataElementGroupSetStructure( groupSets );
 
@@ -260,11 +254,11 @@ public class DefaultResourceTableService
 
         List<Indicator> indicators = new ArrayList<Indicator>( indicatorService.getAllIndicators() );
         
-        Collections.sort( indicators, new IndicatorNameComparator() );
+        Collections.sort( indicators, IdentifiableObjectNameComparator.INSTANCE );
         
         List<IndicatorGroupSet> groupSets = new ArrayList<IndicatorGroupSet>( indicatorService.getAllIndicatorGroupSets() );
         
-        Collections.sort( groupSets, new IndicatorGroupSetNameComparator() );
+        Collections.sort( groupSets, IdentifiableObjectNameComparator.INSTANCE );
         
         resourceTableStore.createIndicatorGroupSetStructure( groupSets );
 
@@ -308,12 +302,12 @@ public class DefaultResourceTableService
         List<OrganisationUnit> units = new ArrayList<OrganisationUnit>( organisationUnitService
             .getAllOrganisationUnits() );
 
-        Collections.sort( units, new OrganisationUnitNameComparator() );
+        Collections.sort( units, IdentifiableObjectNameComparator.INSTANCE );
 
         List<OrganisationUnitGroupSet> groupSets = new ArrayList<OrganisationUnitGroupSet>(
             organisationUnitGroupService.getAllOrganisationUnitGroupSets() );
 
-        Collections.sort( groupSets, new OrganisationUnitGroupSetNameComparator() );
+        Collections.sort( groupSets, IdentifiableObjectNameComparator.INSTANCE );
 
         resourceTableStore.createOrganisationUnitGroupSetStructure( groupSets );
 
@@ -356,7 +350,7 @@ public class DefaultResourceTableService
 
         List<DataElementCategory> categories = new ArrayList<DataElementCategory>( categoryService.getAllDataElementCategories() );
         
-        Collections.sort( categories, new DataElementCategoryNameComparator() );
+        Collections.sort( categories, IdentifiableObjectNameComparator.INSTANCE );
         
         List<DataElementCategoryOptionCombo> categoryOptionCombos = 
             new ArrayList<DataElementCategoryOptionCombo>( categoryService.getAllDataElementCategoryOptionCombos() );

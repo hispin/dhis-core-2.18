@@ -33,9 +33,9 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import org.hisp.dhis.common.comparator.IdentifiableObjectNameComparator;
 import org.hisp.dhis.constant.Constant;
 import org.hisp.dhis.constant.ConstantService;
-import org.hisp.dhis.constant.comparator.ConstantNameComparator;
 import org.hisp.dhis.paging.ActionPagingSupport;
 
 /**
@@ -45,10 +45,6 @@ import org.hisp.dhis.paging.ActionPagingSupport;
 public class GetConstantsAction
     extends ActionPagingSupport<Constant>
 {
-    /**
-     * Determines if a de-serialized file is compatible with this class.
-     */
-
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
@@ -104,7 +100,7 @@ public class GetConstantsAction
                 paging.getPageSize() ) );
         }
 
-        Collections.sort( constants, new ConstantNameComparator() );
+        Collections.sort( constants, IdentifiableObjectNameComparator.INSTANCE );
 
         return SUCCESS;
     }

@@ -36,23 +36,17 @@ import java.util.SortedMap;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.hisp.dhis.common.comparator.IdentifiableObjectNameComparator;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementGroup;
-import org.hisp.dhis.dataelement.comparator.DataElementNameComparator;
 import org.hisp.dhis.dataintegrity.DataIntegrityService;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.dataset.Section;
-import org.hisp.dhis.dataset.comparator.DataSetNameComparator;
-import org.hisp.dhis.dataset.comparator.SectionOrderComparator;
 import org.hisp.dhis.indicator.Indicator;
 import org.hisp.dhis.indicator.IndicatorGroup;
-import org.hisp.dhis.indicator.comparator.IndicatorNameComparator;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroup;
-import org.hisp.dhis.organisationunit.comparator.OrganisationUnitGroupNameComparator;
-import org.hisp.dhis.organisationunit.comparator.OrganisationUnitNameComparator;
 import org.hisp.dhis.validation.ValidationRule;
-import org.hisp.dhis.validation.comparator.ValidationRuleNameComparator;
 
 import com.opensymphony.xwork2.Action;
 
@@ -267,17 +261,17 @@ public class GetDataIntegrityAction
 
         log.info( "Checked validation rules" );
         
-        Collections.sort( dataElementsWithoutDataSet, new DataElementNameComparator() );
-        Collections.sort( dataElementsWithoutGroups, new DataElementNameComparator() );
-        Collections.sort( dataSetsNotAssignedToOrganisationUnits, new DataSetNameComparator() );
-        Collections.sort( sectionsWithInvalidCategoryCombinations, new SectionOrderComparator() );
-        Collections.sort( indicatorsWithoutGroups, new IndicatorNameComparator() );
-        Collections.sort( organisationUnitsWithCyclicReferences, new OrganisationUnitNameComparator() );
-        Collections.sort( orphanedOrganisationUnits, new OrganisationUnitNameComparator() );
-        Collections.sort( organisationUnitsWithoutGroups, new OrganisationUnitNameComparator() );
-        Collections.sort( organisationUnitsViolatingCompulsoryGroupSets, new OrganisationUnitNameComparator() );
-        Collections.sort( organisationUnitGroupsWithoutGroupSets, new OrganisationUnitGroupNameComparator() );
-        Collections.sort( validationRulesWithoutGroups, new ValidationRuleNameComparator() );
+        Collections.sort( dataElementsWithoutDataSet, IdentifiableObjectNameComparator.INSTANCE );
+        Collections.sort( dataElementsWithoutGroups, IdentifiableObjectNameComparator.INSTANCE );
+        Collections.sort( dataSetsNotAssignedToOrganisationUnits, IdentifiableObjectNameComparator.INSTANCE );
+        Collections.sort( sectionsWithInvalidCategoryCombinations, IdentifiableObjectNameComparator.INSTANCE );
+        Collections.sort( indicatorsWithoutGroups, IdentifiableObjectNameComparator.INSTANCE );
+        Collections.sort( organisationUnitsWithCyclicReferences, IdentifiableObjectNameComparator.INSTANCE );
+        Collections.sort( orphanedOrganisationUnits, IdentifiableObjectNameComparator.INSTANCE );
+        Collections.sort( organisationUnitsWithoutGroups, IdentifiableObjectNameComparator.INSTANCE );
+        Collections.sort( organisationUnitsViolatingCompulsoryGroupSets, IdentifiableObjectNameComparator.INSTANCE );
+        Collections.sort( organisationUnitGroupsWithoutGroupSets, IdentifiableObjectNameComparator.INSTANCE );
+        Collections.sort( validationRulesWithoutGroups, IdentifiableObjectNameComparator.INSTANCE );
 
         return SUCCESS;
     }

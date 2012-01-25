@@ -49,7 +49,6 @@ import org.hisp.dhis.indicator.Indicator;
 import org.hisp.dhis.indicator.IndicatorService;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
-import org.hisp.dhis.organisationunit.comparator.OrganisationUnitNameComparator;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodService;
 import org.hisp.dhis.period.PeriodType;
@@ -66,8 +65,6 @@ import org.hisp.dhis.system.util.ConversionUtils;
 public class DefaultPivotTableService
     implements PivotTableService
 {
-    private static final Comparator<BaseIdentifiableObject> INDICATOR_COMPARATOR = new IdentifiableObjectNameComparator();
-    private static final Comparator<OrganisationUnit> ORGUNIT_COMPARATOR = new OrganisationUnitNameComparator();
     private static final Comparator<Period> PERIOD_COMPARATOR = new AscendingPeriodComparator();
     
     // -------------------------------------------------------------------------
@@ -178,8 +175,8 @@ public class DefaultPivotTableService
         pivotTable.setOrganisationUnits( organisationUnits );
         pivotTable.setIndicatorValues( aggregatedValues );
         
-        Collections.sort( pivotTable.getIndicators(), INDICATOR_COMPARATOR );
-        Collections.sort( pivotTable.getOrganisationUnits(), ORGUNIT_COMPARATOR );
+        Collections.sort( pivotTable.getIndicators(), IdentifiableObjectNameComparator.INSTANCE );
+        Collections.sort( pivotTable.getOrganisationUnits(), IdentifiableObjectNameComparator.INSTANCE );
         Collections.sort( pivotTable.getPeriods(), PERIOD_COMPARATOR );
         
         return pivotTable;

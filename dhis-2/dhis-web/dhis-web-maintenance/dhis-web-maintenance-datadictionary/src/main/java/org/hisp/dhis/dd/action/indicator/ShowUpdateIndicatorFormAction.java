@@ -36,12 +36,11 @@ import java.util.Map;
 import org.hisp.dhis.attribute.Attribute;
 import org.hisp.dhis.attribute.AttributeService;
 import org.hisp.dhis.attribute.comparator.AttributeSortOrderComparator;
+import org.hisp.dhis.common.comparator.IdentifiableObjectNameComparator;
 import org.hisp.dhis.indicator.Indicator;
 import org.hisp.dhis.indicator.IndicatorGroupSet;
 import org.hisp.dhis.indicator.IndicatorService;
 import org.hisp.dhis.indicator.IndicatorType;
-import org.hisp.dhis.indicator.comparator.IndicatorGroupSetNameComparator;
-import org.hisp.dhis.indicator.comparator.IndicatorTypeNameComparator;
 import org.hisp.dhis.system.util.AttributeUtils;
 
 import com.opensymphony.xwork2.Action;
@@ -155,8 +154,8 @@ public class ShowUpdateIndicatorFormAction
 
         attributeValues = AttributeUtils.getAttributeValueMap( indicator.getAttributeValues() );
 
-        Collections.sort( indicatorTypes, new IndicatorTypeNameComparator() );
-        Collections.sort( groupSets, new IndicatorGroupSetNameComparator() );
+        Collections.sort( indicatorTypes, IdentifiableObjectNameComparator.INSTANCE );
+        Collections.sort( groupSets, IdentifiableObjectNameComparator.INSTANCE );
         Collections.sort( attributes, new AttributeSortOrderComparator() );
 
         return SUCCESS;

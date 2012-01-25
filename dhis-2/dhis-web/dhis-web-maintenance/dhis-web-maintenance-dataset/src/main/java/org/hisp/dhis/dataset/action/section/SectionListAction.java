@@ -34,13 +34,13 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import org.hisp.dhis.common.comparator.IdentifiableObjectNameComparator;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryCombo;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.dataset.DataSetService;
 import org.hisp.dhis.dataset.Section;
 import org.hisp.dhis.dataset.SectionService;
-import org.hisp.dhis.dataset.comparator.DataSetNameComparator;
 import org.hisp.dhis.dataset.comparator.SectionOrderComparator;
 
 import com.opensymphony.xwork2.Action;
@@ -132,7 +132,7 @@ public class SectionListAction
     {
         datasets = new ArrayList<DataSet>( dataSetService.getAllDataSets() );
 
-        Collections.sort( datasets, new DataSetNameComparator() );
+        Collections.sort( datasets, IdentifiableObjectNameComparator.INSTANCE );
 
         Collection<Section> temp = sectionService.getAllSections();
 

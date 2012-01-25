@@ -33,10 +33,10 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import org.hisp.dhis.common.comparator.IdentifiableObjectNameComparator;
 import org.hisp.dhis.paging.ActionPagingSupport;
 import org.hisp.dhis.reporttable.ReportTable;
 import org.hisp.dhis.reporttable.ReportTableService;
-import org.hisp.dhis.reporttable.comparator.ReportTableComparator;
 
 /**
  * @author Lars Helge Overland
@@ -98,7 +98,7 @@ public class GetAllTablesAction
             tables = new ArrayList<ReportTable>( reportTableService.getReportTablesBetween( paging.getStartPos(), paging.getPageSize() ) );
         }
         
-        Collections.sort( tables, new ReportTableComparator() );
+        Collections.sort( tables, IdentifiableObjectNameComparator.INSTANCE );
         
         return SUCCESS;
     }

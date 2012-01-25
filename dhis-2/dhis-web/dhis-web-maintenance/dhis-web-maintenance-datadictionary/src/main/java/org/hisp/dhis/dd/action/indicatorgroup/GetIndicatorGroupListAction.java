@@ -33,9 +33,9 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import org.hisp.dhis.common.comparator.IdentifiableObjectNameComparator;
 import org.hisp.dhis.indicator.IndicatorGroup;
 import org.hisp.dhis.indicator.IndicatorService;
-import org.hisp.dhis.indicator.comparator.IndicatorGroupNameComparator;
 import org.hisp.dhis.paging.ActionPagingSupport;
 
 /**
@@ -98,7 +98,7 @@ public class GetIndicatorGroupListAction
             indicatorGroups = new ArrayList<IndicatorGroup>( indicatorService.getIndicatorGroupsBetween( paging.getStartPos(), paging.getPageSize() ) );
         }
 
-        Collections.sort( indicatorGroups, new IndicatorGroupNameComparator() );
+        Collections.sort( indicatorGroups, IdentifiableObjectNameComparator.INSTANCE );
 
         return SUCCESS;
     }

@@ -27,16 +27,28 @@ package org.hisp.dhis.organisationunit;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlElementWrapper;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
+
 import org.codehaus.jackson.annotate.JsonProperty;
 import org.codehaus.jackson.map.annotate.JsonSerialize;
 import org.hisp.dhis.common.BaseIdentifiableObject;
 import org.hisp.dhis.common.Dxf2Namespace;
+import org.hisp.dhis.common.IdentifiableObject;
 import org.hisp.dhis.common.adapter.OrganisationUnitGroupXmlAdapter;
-import org.hisp.dhis.organisationunit.comparator.OrganisationUnitGroupNameComparator;
-
-import javax.xml.bind.annotation.*;
-import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
-import java.util.*;
+import org.hisp.dhis.common.comparator.IdentifiableObjectNameComparator;
 
 /**
  * @author Kristian Nordal
@@ -50,7 +62,7 @@ public class OrganisationUnitGroupSet extends BaseIdentifiableObject
      */
     private static final long serialVersionUID = -221220579471558683L;
 
-    private static final Comparator<OrganisationUnitGroup> COMPARATOR = new OrganisationUnitGroupNameComparator();
+    private static final Comparator<IdentifiableObject> COMPARATOR = new IdentifiableObjectNameComparator();
 
     private Set<OrganisationUnitGroup> organisationUnitGroups = new HashSet<OrganisationUnitGroup>();
 

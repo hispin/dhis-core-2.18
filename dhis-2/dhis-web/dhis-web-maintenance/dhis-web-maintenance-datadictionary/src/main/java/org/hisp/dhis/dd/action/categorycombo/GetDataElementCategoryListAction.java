@@ -31,9 +31,9 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import org.hisp.dhis.common.comparator.IdentifiableObjectNameComparator;
 import org.hisp.dhis.dataelement.DataElementCategory;
 import org.hisp.dhis.dataelement.DataElementCategoryService;
-import org.hisp.dhis.dataelement.comparator.DataElementCategoryNameComparator;
 
 import com.opensymphony.xwork2.Action;
 
@@ -75,7 +75,7 @@ public class GetDataElementCategoryListAction
         dataElementCategories = new ArrayList<DataElementCategory>( dataElementCategoryService
             .getAllDataElementCategories() );
 
-        Collections.sort( dataElementCategories, new DataElementCategoryNameComparator() );
+        Collections.sort( dataElementCategories, IdentifiableObjectNameComparator.INSTANCE );
 
         return SUCCESS;
     }
