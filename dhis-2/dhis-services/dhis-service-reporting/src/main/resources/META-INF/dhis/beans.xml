@@ -54,7 +54,7 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
 
   <!-- Chart -->
 
-  <bean id="org.hisp.dhis.chart.ChartStore" class="org.hisp.dhis.common.hibernate.HibernateIdentifiableObjectStore">
+  <bean id="org.hisp.dhis.chart.ChartStore" class="org.hisp.dhis.chart.hibernate.HibernateChartStore">
     <property name="clazz" value="org.hisp.dhis.chart.Chart" />
     <property name="sessionFactory" ref="sessionFactory" />
     <property name="cacheable" value="true" />

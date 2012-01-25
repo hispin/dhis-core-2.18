@@ -56,7 +56,7 @@ import org.apache.commons.math.analysis.UnivariateRealInterpolator;
 import org.apache.commons.math.stat.regression.SimpleRegression;
 import org.hisp.dhis.chart.Chart;
 import org.hisp.dhis.chart.ChartService;
-import org.hisp.dhis.common.GenericIdentifiableObjectStore;
+import org.hisp.dhis.chart.ChartStore;
 import org.hisp.dhis.common.NameableObject;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
@@ -126,9 +126,9 @@ public class DefaultChartService
     // Dependencies
     // -------------------------------------------------------------------------
 
-    private GenericIdentifiableObjectStore<Chart> chartStore;
+    private ChartStore chartStore;
 
-    public void setChartStore( GenericIdentifiableObjectStore<Chart> chartStore )
+    public void setChartStore( ChartStore chartStore )
     {
         this.chartStore = chartStore;
     }
@@ -725,6 +725,11 @@ public class DefaultChartService
     public Collection<Chart> getAllCharts()
     {
         return chartStore.getAll();
+    }
+    
+    public Collection<Chart> getSystemAndUserCharts()
+    {
+        return chartStore.getSystemAndUserCharts( currentUserService.getCurrentUser() );
     }
 
     public Chart getChartByName( String name )
