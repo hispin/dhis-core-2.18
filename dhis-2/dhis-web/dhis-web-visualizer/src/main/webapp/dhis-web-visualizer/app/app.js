@@ -35,7 +35,7 @@ DV.conf = {
             favorite_addorupdate: 'addOrUpdateChart.action',
             favorite_addorupdatesystem: 'addOrUpdateSystemChart.action',            
             favorite_get: 'charts/',
-            favorite_getall: 'getAllCharts.action',
+            favorite_getall: 'getSystemAndCurrentUserCharts.action',
             favorite_delete: 'deleteCharts.action'
         },
         dimension: {
@@ -953,22 +953,15 @@ Ext.onReady( function() {
             },
             listeners: {
                 load: function(s) {
-                    s.filterBy(function(r) {
-                        if (!r.data.userId || r.data.userId == DV.init.system.user.id) {
-                            return true;
-                        }
-                        return false;
-                    });
-                        
+                    if (!s.isLoaded) {
+                        s.isLoaded = true;
+                    }                    
                     s.sortStore();
                     s.each(function(r) {
                         r.data.lastUpdated = r.data.lastUpdated.substr(0,16);
                         r.data.icon = '<img src="images/favorite.png" />';
                         r.commit();
                     });
-                    if (!s.isLoaded) {
-                        s.isLoaded = true;
-                    }
                 }
             }
         })            

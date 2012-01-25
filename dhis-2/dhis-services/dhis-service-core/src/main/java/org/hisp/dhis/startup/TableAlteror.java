@@ -272,6 +272,8 @@ public class TableAlteror
         executeSql( "ALTER TABLE chart DROP CONSTRAINT chart_title_key" );
         executeSql( "ALTER TABLE chart DROP CONSTRAINT chart_name_key" );
         
+        executeSql( "ALTER TABLE chart DROP COLUMN domainaxixlabel" );
+        
         // remove outdated relative periods
         
         executeSql( "ALTER TABLE reporttable DROP COLUMN last3months" );

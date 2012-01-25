@@ -65,8 +65,8 @@
                 /dhis-web-visualizer/void.vm</result>
         </action>
 
-        <action name="getAllCharts"
-            class="org.hisp.dhis.visualizer.action.GetAllChartsAction">
+        <action name="getSystemAndCurrentUserCharts"
+            class="org.hisp.dhis.visualizer.action.GetSystemAndCurrentUserChartsAction">
             <result name="success" type="velocity-json">
                 /dhis-web-visualizer/jsonminCharts.vm</result>
         </action>
