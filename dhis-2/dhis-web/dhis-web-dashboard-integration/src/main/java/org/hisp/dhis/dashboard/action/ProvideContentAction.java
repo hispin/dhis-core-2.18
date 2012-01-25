@@ -129,7 +129,7 @@ public class ProvideContentAction
 
         providerNames = manager.getContentProviderNames();
 
-        charts = new ArrayList<Chart>( chartService.getAllCharts() );
+        charts = new ArrayList<Chart>( chartService.getSystemAndUserCharts() );
 
         Collections.sort( charts, new ChartNameComparator() );
 

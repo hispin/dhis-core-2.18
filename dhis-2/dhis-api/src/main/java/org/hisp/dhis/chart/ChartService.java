@@ -78,6 +78,8 @@ public interface ChartService
     void deleteChart( Chart chart );
 
     Collection<Chart> getAllCharts();
+    
+    Collection<Chart> getSystemAndUserCharts();
 
     Chart getChartByName( String name );
 
