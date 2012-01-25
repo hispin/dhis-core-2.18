@@ -37,7 +37,7 @@ import com.opensymphony.xwork2.Action;
 /**
  * @author Jan Henrik Overland
  */
-public class GetAllChartsAction
+public class GetSystemAndCurrentUserChartsAction
     implements Action
 {
     // -------------------------------------------------------------------------
@@ -69,7 +69,7 @@ public class GetAllChartsAction
     public String execute()
         throws Exception
     {
-        object = chartService.getAllCharts();
+        object = chartService.getSystemAndUserCharts();
 
         return SUCCESS;
     }
