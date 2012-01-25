@@ -32,11 +32,11 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
+import org.hisp.dhis.common.comparator.IdentifiableObjectNameComparator;
 import org.hisp.dhis.configuration.Configuration;
 import org.hisp.dhis.configuration.ConfigurationService;
 import org.hisp.dhis.dataelement.DataElementGroup;
 import org.hisp.dhis.dataelement.DataElementService;
-import org.hisp.dhis.dataelement.comparator.DataElementGroupNameComparator;
 import org.hisp.dhis.options.SystemSettingManager;
 import org.hisp.dhis.period.PeriodService;
 import org.hisp.dhis.period.PeriodType;
@@ -161,7 +161,7 @@ public class GetGeneralSettingsAction
         
         dataElementGroups = new ArrayList<DataElementGroup>( dataElementService.getAllDataElementGroups() );
 
-        Collections.sort( dataElementGroups, new DataElementGroupNameComparator() );
+        Collections.sort( dataElementGroups, IdentifiableObjectNameComparator.INSTANCE );
 
         periodTypes = new ArrayList<PeriodType>( periodService.getAllPeriodTypes() );
 

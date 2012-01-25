@@ -32,9 +32,9 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
+import org.hisp.dhis.common.comparator.IdentifiableObjectNameComparator;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.dataset.DataSetService;
-import org.hisp.dhis.dataset.comparator.DataSetNameComparator;
 
 import com.opensymphony.xwork2.Action;
 
@@ -75,7 +75,7 @@ public class SelectTallySheetAction
         throws Exception
     {
         dataSets = new ArrayList<DataSet>( dataSetService.getAllDataSets() );
-        Collections.sort( dataSets, new DataSetNameComparator() );
+        Collections.sort( dataSets, IdentifiableObjectNameComparator.INSTANCE );
 
         return SUCCESS;
     }

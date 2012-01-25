@@ -31,9 +31,9 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import org.hisp.dhis.common.comparator.IdentifiableObjectNameComparator;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.dataset.DataSetService;
-import org.hisp.dhis.dataset.comparator.DataSetNameComparator;
 
 import com.opensymphony.xwork2.Action;
 
@@ -71,7 +71,7 @@ public class MobileDataSetListAction
         throws Exception
     {
         mobileDatasets = new ArrayList<DataSet>(dataSetService.getDataSetsForMobile());
-        Collections.sort( mobileDatasets, new DataSetNameComparator() );
+        Collections.sort( mobileDatasets, IdentifiableObjectNameComparator.INSTANCE );
         
         return SUCCESS;
     }

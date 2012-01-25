@@ -32,7 +32,7 @@ import org.codehaus.jackson.map.annotate.JsonSerialize;
 import org.hisp.dhis.common.BaseIdentifiableObject;
 import org.hisp.dhis.common.Dxf2Namespace;
 import org.hisp.dhis.common.adapter.DataElementGroupXmlAdapter;
-import org.hisp.dhis.dataelement.comparator.DataElementGroupNameComparator;
+import org.hisp.dhis.common.comparator.IdentifiableObjectNameComparator;
 
 import javax.xml.bind.annotation.*;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
@@ -147,7 +147,7 @@ public class DataElementGroupSet extends BaseIdentifiableObject
     {
         List<DataElementGroup> sortedGroups = new ArrayList<DataElementGroup>( members );
 
-        Collections.sort( sortedGroups, new DataElementGroupNameComparator() );
+        Collections.sort( sortedGroups, new IdentifiableObjectNameComparator() );
 
         return sortedGroups;
     }

@@ -30,10 +30,10 @@ package org.hisp.dhis.dd.action.indicatorgroupset;
 import java.util.Collections;
 import java.util.List;
 
+import org.hisp.dhis.common.comparator.IdentifiableObjectNameComparator;
 import org.hisp.dhis.indicator.IndicatorGroup;
 import org.hisp.dhis.indicator.IndicatorGroupSet;
 import org.hisp.dhis.indicator.IndicatorService;
-import org.hisp.dhis.indicator.comparator.IndicatorGroupNameComparator;
 
 import com.opensymphony.xwork2.Action;
 
@@ -89,7 +89,7 @@ public class OpenUpdateIndicatorGroupSetAction
 
         selectedGroups = indicatorGroupSet.getMembers();
         
-        Collections.sort( selectedGroups, new IndicatorGroupNameComparator() );
+        Collections.sort( selectedGroups, IdentifiableObjectNameComparator.INSTANCE );
         
         return SUCCESS;
     }

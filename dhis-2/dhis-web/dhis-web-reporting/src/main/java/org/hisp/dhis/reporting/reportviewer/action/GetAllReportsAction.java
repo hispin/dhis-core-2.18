@@ -33,10 +33,10 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import org.hisp.dhis.common.comparator.IdentifiableObjectNameComparator;
 import org.hisp.dhis.paging.ActionPagingSupport;
 import org.hisp.dhis.report.Report;
 import org.hisp.dhis.report.ReportService;
-import org.hisp.dhis.report.comparator.ReportComparator;
 
 /**
  * @author Lars Helge Overland
@@ -88,7 +88,7 @@ public class GetAllReportsAction
     {
         reports = new ArrayList<Report>( reportService.getAllReports() );
         
-        Collections.sort( reports, new ReportComparator() );
+        Collections.sort( reports, IdentifiableObjectNameComparator.INSTANCE );
         
         if ( isNotBlank( key ) )
         {

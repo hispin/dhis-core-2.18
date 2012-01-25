@@ -32,9 +32,9 @@ import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 
+import org.hisp.dhis.common.comparator.IdentifiableObjectNameComparator;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.dataset.DataSetService;
-import org.hisp.dhis.dataset.comparator.DataSetNameComparator;
 
 import com.opensymphony.xwork2.Action;
 
@@ -83,7 +83,7 @@ public class CaseAggregationFormAction
                 dataSetListIterator.remove();
         }
 
-        Collections.sort( datasets, new DataSetNameComparator() );
+        Collections.sort( datasets, IdentifiableObjectNameComparator.INSTANCE );
 
         return SUCCESS;
     }

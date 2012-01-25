@@ -31,10 +31,10 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import org.hisp.dhis.common.comparator.IdentifiableObjectNameComparator;
 import org.hisp.dhis.indicator.Indicator;
 import org.hisp.dhis.indicator.IndicatorGroup;
 import org.hisp.dhis.indicator.IndicatorService;
-import org.hisp.dhis.indicator.comparator.IndicatorGroupNameComparator;
 
 import com.opensymphony.xwork2.Action;
 
@@ -88,7 +88,7 @@ public class GetAssignedIndicatorGroupsAction
 
             indicatorGroups = new ArrayList<IndicatorGroup>( indicatorService.getGroupsContainingIndicator( indicator ) );
 
-            Collections.sort( indicatorGroups, new IndicatorGroupNameComparator() );
+            Collections.sort( indicatorGroups, IdentifiableObjectNameComparator.INSTANCE );
         }
 
         return SUCCESS;

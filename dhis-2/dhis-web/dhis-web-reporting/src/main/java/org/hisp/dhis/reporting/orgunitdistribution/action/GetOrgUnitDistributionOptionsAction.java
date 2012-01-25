@@ -29,12 +29,11 @@ package org.hisp.dhis.reporting.orgunitdistribution.action;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 
+import org.hisp.dhis.common.comparator.IdentifiableObjectNameComparator;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroupService;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroupSet;
-import org.hisp.dhis.organisationunit.comparator.OrganisationUnitGroupSetNameComparator;
 
 import com.opensymphony.xwork2.Action;
 
@@ -44,8 +43,6 @@ import com.opensymphony.xwork2.Action;
 public class GetOrgUnitDistributionOptionsAction
     implements Action
 {
-    private static final Comparator<OrganisationUnitGroupSet> GROUPSET_COMPARATOR = new OrganisationUnitGroupSetNameComparator();
-    
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
@@ -76,7 +73,7 @@ public class GetOrgUnitDistributionOptionsAction
     {
         groupSets = new ArrayList<OrganisationUnitGroupSet>( organisationUnitGroupService.getAllOrganisationUnitGroupSets() );
         
-        Collections.sort( groupSets, GROUPSET_COMPARATOR );        
+        Collections.sort( groupSets, IdentifiableObjectNameComparator.INSTANCE );        
         
         return SUCCESS;
     }

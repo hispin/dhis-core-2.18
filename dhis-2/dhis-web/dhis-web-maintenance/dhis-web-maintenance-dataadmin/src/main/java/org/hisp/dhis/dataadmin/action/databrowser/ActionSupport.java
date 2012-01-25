@@ -37,6 +37,7 @@ import java.util.Set;
 
 import org.hisp.dhis.common.Grid;
 import org.hisp.dhis.common.GridHeader;
+import org.hisp.dhis.common.comparator.IdentifiableObjectNameComparator;
 import org.hisp.dhis.databrowser.DataBrowserGridService;
 import org.hisp.dhis.databrowser.MetaValue;
 import org.hisp.dhis.dataelement.DataElementGroup;
@@ -47,7 +48,6 @@ import org.hisp.dhis.i18n.I18nFormat;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroupService;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
-import org.hisp.dhis.organisationunit.comparator.OrganisationUnitNameComparator;
 import org.hisp.dhis.oust.manager.SelectionTreeManager;
 import org.hisp.dhis.paging.ActionPagingSupport;
 import org.hisp.dhis.period.PeriodService;
@@ -348,7 +348,7 @@ public abstract class ActionSupport
                 list.add( o );
             }
         }
-        Collections.sort( list, new OrganisationUnitNameComparator() );
+        Collections.sort( list, IdentifiableObjectNameComparator.INSTANCE );
 
         return list;
     }

@@ -33,9 +33,9 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import org.hisp.dhis.common.comparator.IdentifiableObjectNameComparator;
 import org.hisp.dhis.dataelement.DataElementCategoryCombo;
 import org.hisp.dhis.dataelement.DataElementCategoryService;
-import org.hisp.dhis.dataelement.comparator.DataElementCategoryComboNameComparator;
 import org.hisp.dhis.paging.ActionPagingSupport;
 
 /**
@@ -108,7 +108,7 @@ public class GetDataElementCategoryComboListAction
             dataElementCategoryCombos = new ArrayList<DataElementCategoryCombo>( dataElementCategoryService.getDataElementCategoryCombosBetween( paging.getStartPos(), paging.getPageSize() ) );
         }
 
-        Collections.sort( dataElementCategoryCombos, new DataElementCategoryComboNameComparator() );
+        Collections.sort( dataElementCategoryCombos, IdentifiableObjectNameComparator.INSTANCE );
         
         return SUCCESS;
     }

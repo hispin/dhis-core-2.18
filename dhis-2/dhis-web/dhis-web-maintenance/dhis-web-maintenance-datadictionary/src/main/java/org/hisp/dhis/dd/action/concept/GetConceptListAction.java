@@ -33,9 +33,9 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import org.hisp.dhis.common.comparator.IdentifiableObjectNameComparator;
 import org.hisp.dhis.concept.Concept;
 import org.hisp.dhis.concept.ConceptService;
-import org.hisp.dhis.concept.comparator.ConceptNameComparator;
 import org.hisp.dhis.paging.ActionPagingSupport;
 
 /**
@@ -107,7 +107,7 @@ public class GetConceptListAction
             concepts = new ArrayList<Concept>( conceptService.getConceptsBetween( paging.getStartPos(), paging.getPageSize() ) );
         }
         
-        Collections.sort( concepts, new ConceptNameComparator() );
+        Collections.sort( concepts, IdentifiableObjectNameComparator.INSTANCE );
 
         return SUCCESS;
     }

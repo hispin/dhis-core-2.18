@@ -31,9 +31,9 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import org.hisp.dhis.common.comparator.IdentifiableObjectNameComparator;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.dataset.DataSetService;
-import org.hisp.dhis.dataset.comparator.DataSetNameComparator;
 import org.hisp.dhis.security.authority.SystemAuthoritiesProvider;
 import org.hisp.dhis.user.UserAuthorityGroup;
 import org.hisp.dhis.user.UserService;
@@ -139,11 +139,11 @@ public class GetRoleAction
 
         availableDataSets.removeAll( userAuthorityGroup.getDataSets() );
 
-        Collections.sort( availableDataSets, new DataSetNameComparator() );
+        Collections.sort( availableDataSets, IdentifiableObjectNameComparator.INSTANCE );
 
         roleDataSets = new ArrayList<DataSet>( userAuthorityGroup.getDataSets() );
 
-        Collections.sort( roleDataSets, new DataSetNameComparator() );
+        Collections.sort( roleDataSets, IdentifiableObjectNameComparator.INSTANCE );
 
         // ---------------------------------------------------------------------
         // Authorities

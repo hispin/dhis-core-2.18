@@ -31,10 +31,10 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import org.hisp.dhis.common.comparator.IdentifiableObjectNameComparator;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementGroup;
 import org.hisp.dhis.dataelement.DataElementService;
-import org.hisp.dhis.dataelement.comparator.DataElementGroupNameComparator;
 import org.hisp.dhis.patient.PatientAttribute;
 import org.hisp.dhis.patient.PatientAttributeService;
 import org.hisp.dhis.patient.comparator.PatientAttributeComparator;
@@ -134,7 +134,7 @@ public class ShowAddCaseAggregationConditionFormAction
         throws Exception
     {
         dataElementGroups = new ArrayList<DataElementGroup>( dataElementService.getAllDataElementGroups() );
-        Collections.sort( dataElementGroups, new DataElementGroupNameComparator() );
+        Collections.sort( dataElementGroups, IdentifiableObjectNameComparator.INSTANCE );
 
         programs = new ArrayList<Program>( programService.getAllPrograms() );
         Collections.sort( programs, new ProgramNameComparator() );

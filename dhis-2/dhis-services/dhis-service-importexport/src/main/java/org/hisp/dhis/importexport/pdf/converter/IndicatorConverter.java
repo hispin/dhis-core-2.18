@@ -31,6 +31,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import org.hisp.dhis.common.comparator.IdentifiableObjectNameComparator;
 import org.hisp.dhis.expression.ExpressionService;
 import org.hisp.dhis.i18n.I18n;
 import org.hisp.dhis.i18n.I18nFormat;
@@ -38,7 +39,6 @@ import org.hisp.dhis.importexport.ExportParams;
 import org.hisp.dhis.importexport.PDFConverter;
 import org.hisp.dhis.indicator.Indicator;
 import org.hisp.dhis.indicator.IndicatorService;
-import org.hisp.dhis.indicator.comparator.IndicatorNameComparator;
 import org.hisp.dhis.system.util.PDFUtils;
 
 import com.lowagie.text.Document;
@@ -82,7 +82,7 @@ public class IndicatorConverter
             elements = new ArrayList<Indicator>( params.getIndicatorObjects() );
         }
 
-        Collections.sort( elements, new IndicatorNameComparator() );
+        Collections.sort( elements, IdentifiableObjectNameComparator.INSTANCE );
 
         PDFUtils.printObjectFrontPage( document, elements, i18n, format, "indicators" );
 

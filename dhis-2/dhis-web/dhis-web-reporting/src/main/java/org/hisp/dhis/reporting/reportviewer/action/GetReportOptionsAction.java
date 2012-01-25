@@ -29,14 +29,13 @@ package org.hisp.dhis.reporting.reportviewer.action;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 
+import org.hisp.dhis.common.comparator.IdentifiableObjectNameComparator;
 import org.hisp.dhis.report.Report;
 import org.hisp.dhis.report.ReportService;
 import org.hisp.dhis.reporttable.ReportTable;
 import org.hisp.dhis.reporttable.ReportTableService;
-import org.hisp.dhis.reporttable.comparator.ReportTableComparator;
 
 import com.opensymphony.xwork2.Action;
 
@@ -47,8 +46,6 @@ import com.opensymphony.xwork2.Action;
 public class GetReportOptionsAction
     implements Action
 {
-    private static final Comparator<ReportTable> COMPARATOR = new ReportTableComparator();
-    
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
@@ -104,7 +101,7 @@ public class GetReportOptionsAction
     {
         reportTables = new ArrayList<ReportTable>( reportTableService.getAllReportTables() );
         
-        Collections.sort( reportTables, COMPARATOR );
+        Collections.sort( reportTables, IdentifiableObjectNameComparator.INSTANCE );
         
         if ( id != null )
         {

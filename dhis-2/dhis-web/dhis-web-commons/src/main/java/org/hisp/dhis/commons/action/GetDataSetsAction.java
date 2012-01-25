@@ -33,9 +33,9 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import org.hisp.dhis.common.comparator.IdentifiableObjectNameComparator;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.dataset.DataSetService;
-import org.hisp.dhis.dataset.comparator.DataSetNameComparator;
 import org.hisp.dhis.paging.ActionPagingSupport;
 import org.hisp.dhis.period.PeriodService;
 import org.hisp.dhis.user.CurrentUserService;
@@ -144,7 +144,7 @@ public class GetDataSetsAction
             dataSets.retainAll( ds );
         }
 
-        Collections.sort( dataSets, new DataSetNameComparator() );
+        Collections.sort( dataSets, IdentifiableObjectNameComparator.INSTANCE );
 
         if ( usePaging )
         {

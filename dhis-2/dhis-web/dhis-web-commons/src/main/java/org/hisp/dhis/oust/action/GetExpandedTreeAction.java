@@ -36,8 +36,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.hisp.dhis.common.comparator.IdentifiableObjectNameComparator;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
-import org.hisp.dhis.organisationunit.comparator.OrganisationUnitNameComparator;
 import org.hisp.dhis.oust.manager.SelectionTreeManager;
 
 import com.opensymphony.xwork2.Action;
@@ -102,7 +102,7 @@ public class GetExpandedTreeAction
         
         roots = new ArrayList<OrganisationUnit>( selectionTreeManager.getRootOrganisationUnits() );
 
-        Collections.sort( roots, new OrganisationUnitNameComparator() );
+        Collections.sort( roots, IdentifiableObjectNameComparator.INSTANCE );
 
         // ---------------------------------------------------------------------
         // Get the units that need to be expanded in order for the selected

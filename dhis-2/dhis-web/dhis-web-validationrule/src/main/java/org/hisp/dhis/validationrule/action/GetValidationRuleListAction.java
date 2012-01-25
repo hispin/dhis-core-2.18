@@ -33,10 +33,10 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import org.hisp.dhis.common.comparator.IdentifiableObjectNameComparator;
 import org.hisp.dhis.paging.ActionPagingSupport;
 import org.hisp.dhis.validation.ValidationRule;
 import org.hisp.dhis.validation.ValidationRuleService;
-import org.hisp.dhis.validation.comparator.ValidationRuleNameComparator;
 
 /**
  * @author Margrethe Store
@@ -98,7 +98,7 @@ public class GetValidationRuleListAction
             validationRulesList = new ArrayList<ValidationRule>( validationRuleService.getValidationRulesBetween( paging.getStartPos(), paging.getPageSize() ) );
         }
 
-        Collections.sort( validationRulesList, new ValidationRuleNameComparator() );
+        Collections.sort( validationRulesList, IdentifiableObjectNameComparator.INSTANCE );
         
         return SUCCESS;
     }

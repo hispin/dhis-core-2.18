@@ -27,6 +27,8 @@ package org.hisp.dhis.oum.action.organisationunit;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import static org.hisp.dhis.system.util.ValidationUtils.coordinateIsValid;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -35,21 +37,17 @@ import java.util.Map;
 
 import org.hisp.dhis.attribute.Attribute;
 import org.hisp.dhis.attribute.AttributeService;
-import org.hisp.dhis.attribute.comparator.AttributeSortOrderComparator;
+import org.hisp.dhis.common.comparator.IdentifiableObjectNameComparator;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.dataset.DataSetService;
-import org.hisp.dhis.dataset.comparator.DataSetNameComparator;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroupService;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroupSet;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
-import org.hisp.dhis.organisationunit.comparator.OrganisationUnitGroupSetNameComparator;
 import org.hisp.dhis.system.util.AttributeUtils;
 import org.hisp.dhis.system.util.ValidationUtils;
 
 import com.opensymphony.xwork2.Action;
-
-import static org.hisp.dhis.system.util.ValidationUtils.*;
 
 /**
  * @author Torgeir Lorange Ostby
@@ -193,10 +191,10 @@ public class GetOrganisationUnitAction
 
         attributeValues = AttributeUtils.getAttributeValueMap( organisationUnit.getAttributeValues() );
 
-        Collections.sort( availableDataSets, new DataSetNameComparator() );
-        Collections.sort( dataSets, new DataSetNameComparator() );
-        Collections.sort( groupSets, new OrganisationUnitGroupSetNameComparator() );
-        Collections.sort( attributes, new AttributeSortOrderComparator() );
+        Collections.sort( availableDataSets, IdentifiableObjectNameComparator.INSTANCE );
+        Collections.sort( dataSets, IdentifiableObjectNameComparator.INSTANCE );
+        Collections.sort( groupSets, IdentifiableObjectNameComparator.INSTANCE );
+        Collections.sort( attributes, IdentifiableObjectNameComparator.INSTANCE );
 
         // ---------------------------------------------------------------------
         // Allow update only if org unit does not have polygon coordinates

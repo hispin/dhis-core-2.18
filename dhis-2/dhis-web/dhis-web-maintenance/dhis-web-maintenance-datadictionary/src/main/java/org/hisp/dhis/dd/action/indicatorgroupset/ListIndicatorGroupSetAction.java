@@ -33,10 +33,10 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import org.hisp.dhis.common.comparator.IdentifiableObjectNameComparator;
 import org.hisp.dhis.indicator.IndicatorGroup;
 import org.hisp.dhis.indicator.IndicatorGroupSet;
 import org.hisp.dhis.indicator.IndicatorService;
-import org.hisp.dhis.indicator.comparator.IndicatorGroupSetNameComparator;
 import org.hisp.dhis.paging.ActionPagingSupport;
 
 /**
@@ -100,7 +100,7 @@ public class ListIndicatorGroupSetAction
             indicatorGroupSets = new ArrayList<IndicatorGroupSet>( indicatorService.getIndicatorGroupSetsBetween( paging.getStartPos(), paging.getPageSize() ) );
         }
         
-        Collections.sort( indicatorGroupSets, new IndicatorGroupSetNameComparator() );
+        Collections.sort( indicatorGroupSets, IdentifiableObjectNameComparator.INSTANCE );
 
         return SUCCESS;
     }

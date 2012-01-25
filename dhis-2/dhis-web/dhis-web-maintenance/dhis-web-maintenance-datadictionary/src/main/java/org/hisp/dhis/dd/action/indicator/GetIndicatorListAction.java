@@ -37,7 +37,6 @@ import java.util.List;
 import org.hisp.dhis.common.comparator.IdentifiableObjectNameComparator;
 import org.hisp.dhis.datadictionary.DataDictionary;
 import org.hisp.dhis.datadictionary.DataDictionaryService;
-import org.hisp.dhis.datadictionary.comparator.DataDictionaryNameComparator;
 import org.hisp.dhis.indicator.Indicator;
 import org.hisp.dhis.indicator.IndicatorService;
 import org.hisp.dhis.paging.ActionPagingSupport;
@@ -145,7 +144,7 @@ public class GetIndicatorListAction
         
         dataDictionaries = new ArrayList<DataDictionary>( dataDictionaryService.getAllDataDictionaries() );
 
-        Collections.sort( dataDictionaries, new DataDictionaryNameComparator() );
+        Collections.sort( dataDictionaries, IdentifiableObjectNameComparator.INSTANCE );
 
         // -------------------------------------------------------------------------
         // Criteria

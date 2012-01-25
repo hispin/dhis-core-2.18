@@ -39,11 +39,11 @@ import java.util.SortedMap;
 import java.util.TreeMap;
 
 import org.apache.commons.collections.CollectionUtils;
+import org.hisp.dhis.common.comparator.IdentifiableObjectNameComparator;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementGroup;
 import org.hisp.dhis.dataelement.DataElementGroupSet;
 import org.hisp.dhis.dataelement.DataElementService;
-import org.hisp.dhis.dataelement.comparator.DataElementNameComparator;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.dataset.DataSetService;
 import org.hisp.dhis.dataset.Section;
@@ -53,20 +53,17 @@ import org.hisp.dhis.indicator.Indicator;
 import org.hisp.dhis.indicator.IndicatorGroup;
 import org.hisp.dhis.indicator.IndicatorGroupSet;
 import org.hisp.dhis.indicator.IndicatorService;
-import org.hisp.dhis.indicator.comparator.IndicatorNameComparator;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroup;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroupService;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroupSet;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
-import org.hisp.dhis.organisationunit.comparator.OrganisationUnitNameComparator;
 import org.hisp.dhis.period.PeriodType;
 import org.hisp.dhis.system.filter.OrganisationUnitGroupWithoutGroupSetFilter;
 import org.hisp.dhis.system.util.Filter;
 import org.hisp.dhis.system.util.FilterUtils;
 import org.hisp.dhis.validation.ValidationRule;
 import org.hisp.dhis.validation.ValidationRuleService;
-import org.hisp.dhis.validation.comparator.ValidationRuleNameComparator;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
@@ -79,11 +76,7 @@ public class DefaultDataIntegrityService
     implements DataIntegrityService
 {
     private static final String FORMULA_SEPARATOR = "#";
-    private static final Comparator<DataElement> DATAELEMENT_COMPARATOR = new DataElementNameComparator();
-    private static final Comparator<Indicator> INDICATOR_COMPARATOR = new IndicatorNameComparator();
-    private static final Comparator<OrganisationUnit> ORGANISATIONUNIT_COMPARATOR = new OrganisationUnitNameComparator();
-    private static final Comparator<ValidationRule> VALIDATIONRULE_COMPARATOR = new ValidationRuleNameComparator();
-
+    
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
@@ -168,7 +161,7 @@ public class DefaultDataIntegrityService
 
         Collection<DataSet> dataSets = dataSetService.getAllDataSets();
 
-        SortedMap<DataElement, Collection<DataSet>> targets = new TreeMap<DataElement, Collection<DataSet>>( DATAELEMENT_COMPARATOR );
+        SortedMap<DataElement, Collection<DataSet>> targets = new TreeMap<DataElement, Collection<DataSet>>( IdentifiableObjectNameComparator.INSTANCE );
 
         for ( DataElement element : dataElements )
         {
@@ -198,12 +191,18 @@ public class DefaultDataIntegrityService
     {
         Collection<DataElementGroupSet> groupSets = dataElementService.getAllDataElementGroupSets();
 
-        SortedMap<DataElement, Collection<DataElementGroup>> targets = new TreeMap<DataElement, Collection<DataElementGroup>>( DATAELEMENT_COMPARATOR );
+        SortedMap<DataElement, Collection<DataElementGroup>> targets = new TreeMap<DataElement, Collection<DataElementGroup>>( IdentifiableObjectNameComparator.INSTANCE );
 
         for ( DataElementGroupSet groupSet : groupSets )
         {
-            Collection<DataElement> duplicates = getDuplicates( 
-                new ArrayList<DataElement>( groupSet.getDataElements() ), DATAELEMENT_COMPARATOR );
+            Collection<DataElement> duplicates = getDuplicates(  
+                new ArrayList<DataElement>( groupSet.getDataElements() ), new Comparator<DataElement>()
+                {
+                    public int compare( DataElement d1, DataElement d2 )
+                    {
+                        return d1.getName().compareTo( d2.getName() );
+                    }                    
+                } );
             
             for ( DataElement duplicate : duplicates )
             {
@@ -299,7 +298,7 @@ public class DefaultDataIntegrityService
 
     public SortedMap<Indicator, String> getInvalidIndicatorNumerators()
     {
-        SortedMap<Indicator, String> invalids = new TreeMap<Indicator, String>( INDICATOR_COMPARATOR );
+        SortedMap<Indicator, String> invalids = new TreeMap<Indicator, String>( IdentifiableObjectNameComparator.INSTANCE );
 
         for ( Indicator indicator : indicatorService.getAllIndicators() )
         {
@@ -316,7 +315,7 @@ public class DefaultDataIntegrityService
 
     public SortedMap<Indicator, String> getInvalidIndicatorDenominators()
     {
-        SortedMap<Indicator, String> invalids = new TreeMap<Indicator, String>( INDICATOR_COMPARATOR );
+        SortedMap<Indicator, String> invalids = new TreeMap<Indicator, String>( IdentifiableObjectNameComparator.INSTANCE );
 
         for ( Indicator indicator : indicatorService.getAllIndicators() )
         {
@@ -336,12 +335,18 @@ public class DefaultDataIntegrityService
     {
         Collection<IndicatorGroupSet> groupSets = indicatorService.getAllIndicatorGroupSets();
 
-        SortedMap<Indicator, Collection<IndicatorGroup>> targets = new TreeMap<Indicator, Collection<IndicatorGroup>>( INDICATOR_COMPARATOR );
+        SortedMap<Indicator, Collection<IndicatorGroup>> targets = new TreeMap<Indicator, Collection<IndicatorGroup>>( IdentifiableObjectNameComparator.INSTANCE );
 
         for ( IndicatorGroupSet groupSet : groupSets )
         {
             Collection<Indicator> duplicates = getDuplicates( 
-                new ArrayList<Indicator>( groupSet.getIndicators() ), INDICATOR_COMPARATOR );
+                new ArrayList<Indicator>( groupSet.getIndicators() ), new Comparator<Indicator>()
+                {
+                    public int compare( Indicator o1, Indicator o2 )
+                    {
+                        return o1.getName().compareTo( o2.getName() );
+                    }
+                } );
             
             for ( Indicator duplicate : duplicates )
             {
@@ -440,12 +445,18 @@ public class DefaultDataIntegrityService
         Collection<OrganisationUnitGroupSet> groupSets = organisationUnitGroupService.getAllOrganisationUnitGroupSets();
 
         TreeMap<OrganisationUnit, Collection<OrganisationUnitGroup>> targets = 
-            new TreeMap<OrganisationUnit, Collection<OrganisationUnitGroup>>( ORGANISATIONUNIT_COMPARATOR );
+            new TreeMap<OrganisationUnit, Collection<OrganisationUnitGroup>>( IdentifiableObjectNameComparator.INSTANCE );
 
         for ( OrganisationUnitGroupSet groupSet : groupSets )
         {
             Collection<OrganisationUnit> duplicates = getDuplicates( 
-                new ArrayList<OrganisationUnit>( groupSet.getOrganisationUnits() ), ORGANISATIONUNIT_COMPARATOR );
+                new ArrayList<OrganisationUnit>( groupSet.getOrganisationUnits() ), new Comparator<OrganisationUnit>()
+                {
+                    public int compare( OrganisationUnit o1, OrganisationUnit o2 )
+                    {
+                        return o1.getName().compareTo( o2.getName() );
+                    }                    
+                } );
             
             for ( OrganisationUnit duplicate : duplicates )
             {
@@ -483,7 +494,7 @@ public class DefaultDataIntegrityService
     public SortedMap<ValidationRule, String> getInvalidValidationRuleLeftSideExpressions()
     {
         SortedMap<ValidationRule, String> invalids = new TreeMap<ValidationRule, String>(
-            VALIDATIONRULE_COMPARATOR );
+            IdentifiableObjectNameComparator.INSTANCE );
 
         for ( ValidationRule rule : validationRuleService.getAllValidationRules() )
         {
@@ -501,7 +512,7 @@ public class DefaultDataIntegrityService
     public SortedMap<ValidationRule, String> getInvalidValidationRuleRightSideExpressions()
     {
         SortedMap<ValidationRule, String> invalids = new TreeMap<ValidationRule, String>(
-            VALIDATIONRULE_COMPARATOR );
+            IdentifiableObjectNameComparator.INSTANCE );
 
         for ( ValidationRule rule : validationRuleService.getAllValidationRules() )
         {

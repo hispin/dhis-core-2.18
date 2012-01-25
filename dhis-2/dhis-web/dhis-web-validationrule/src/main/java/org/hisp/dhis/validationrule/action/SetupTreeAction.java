@@ -32,13 +32,13 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
+import org.hisp.dhis.common.comparator.IdentifiableObjectNameComparator;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.oust.manager.SelectionTreeManager;
 import org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager;
 import org.hisp.dhis.user.CurrentUserService;
 import org.hisp.dhis.validation.ValidationRuleGroup;
 import org.hisp.dhis.validation.ValidationRuleService;
-import org.hisp.dhis.validation.comparator.ValidationRuleGroupNameComparator;
 
 import com.opensymphony.xwork2.Action;
 
@@ -118,7 +118,7 @@ public class SetupTreeAction
 
         validationRuleGroups = new ArrayList<ValidationRuleGroup>( validationRuleService.getAllValidationRuleGroups() );
 
-        Collections.sort( validationRuleGroups, new ValidationRuleGroupNameComparator() );
+        Collections.sort( validationRuleGroups, IdentifiableObjectNameComparator.INSTANCE );
 
         return SUCCESS;
     }

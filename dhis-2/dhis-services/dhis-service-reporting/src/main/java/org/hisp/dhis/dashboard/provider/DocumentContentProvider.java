@@ -32,10 +32,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.hisp.dhis.common.comparator.IdentifiableObjectNameComparator;
 import org.hisp.dhis.dashboard.DashboardContent;
 import org.hisp.dhis.dashboard.DashboardService;
 import org.hisp.dhis.document.Document;
-import org.hisp.dhis.document.comparator.DocumentNameComparator;
 import org.hisp.dhis.user.CurrentUserService;
 import org.hisp.dhis.user.User;
 
@@ -87,7 +87,7 @@ public class DocumentContentProvider
             
             List<Document> documents = dashboardContent.getDocuments();
             
-            Collections.sort( documents, new DocumentNameComparator() );
+            Collections.sort( documents, IdentifiableObjectNameComparator.INSTANCE );
             
             content.put( key, documents );
         }

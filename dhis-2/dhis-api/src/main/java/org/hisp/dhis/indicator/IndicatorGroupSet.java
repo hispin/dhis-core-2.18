@@ -27,19 +27,24 @@ package org.hisp.dhis.indicator;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
+
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlElementWrapper;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
+
 import org.codehaus.jackson.annotate.JsonProperty;
 import org.codehaus.jackson.map.annotate.JsonSerialize;
 import org.hisp.dhis.common.BaseIdentifiableObject;
 import org.hisp.dhis.common.Dxf2Namespace;
 import org.hisp.dhis.common.adapter.IndicatorGroupXmlAdapter;
-import org.hisp.dhis.indicator.comparator.IndicatorGroupNameComparator;
-
-import javax.xml.bind.annotation.*;
-import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
+import org.hisp.dhis.common.comparator.IdentifiableObjectNameComparator;
 
 /**
  * An IndicatorGroupSet is a set of IndicatorGroups. It is by default exclusive,
@@ -141,7 +146,7 @@ public class IndicatorGroupSet extends BaseIdentifiableObject
     {
         List<IndicatorGroup> sortedGroups = new ArrayList<IndicatorGroup>( members );
 
-        Collections.sort( sortedGroups, new IndicatorGroupNameComparator() );
+        Collections.sort( sortedGroups, new IdentifiableObjectNameComparator() );
 
         return sortedGroups;
     }

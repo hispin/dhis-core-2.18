@@ -37,13 +37,12 @@ import java.util.Set;
 
 import org.hisp.dhis.common.Grid;
 import org.hisp.dhis.common.GridHeader;
+import org.hisp.dhis.common.comparator.IdentifiableObjectNameComparator;
 import org.hisp.dhis.databrowser.MetaValue;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.dataset.DataSetService;
-import org.hisp.dhis.dataset.comparator.DataSetNameComparator;
 import org.hisp.dhis.i18n.I18n;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
-import org.hisp.dhis.organisationunit.comparator.OrganisationUnitNameComparator;
 import org.hisp.dhis.oust.manager.SelectionTreeManager;
 import org.hisp.dhis.system.grid.ListGrid;
 
@@ -159,9 +158,9 @@ public class ShowedAssociationsEditorAction
             children.addAll( parent.getChildren() );
         }
 
-        Collections.sort( dataSets, new DataSetNameComparator() );
+        Collections.sort( dataSets, IdentifiableObjectNameComparator.INSTANCE );
 
-        Collections.sort( children, new OrganisationUnitNameComparator() );
+        Collections.sort( children, IdentifiableObjectNameComparator.INSTANCE );
 
         grid.addHeader( new GridHeader( i18n.getString( "organisation_units" ), false, true ) );
 

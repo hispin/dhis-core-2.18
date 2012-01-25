@@ -31,9 +31,9 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import org.hisp.dhis.common.comparator.IdentifiableObjectNameComparator;
 import org.hisp.dhis.indicator.IndicatorGroup;
 import org.hisp.dhis.indicator.IndicatorService;
-import org.hisp.dhis.indicator.comparator.IndicatorGroupNameComparator;
 
 import com.opensymphony.xwork2.Action;
 
@@ -75,7 +75,7 @@ public class GetAllIndicatorGroupsAction
     {
         object = new ArrayList<IndicatorGroup>( indicatorService.getAllIndicatorGroups() );
         
-        Collections.sort( object, new IndicatorGroupNameComparator() );
+        Collections.sort( object, IdentifiableObjectNameComparator.INSTANCE );
         
         return SUCCESS;
     }    

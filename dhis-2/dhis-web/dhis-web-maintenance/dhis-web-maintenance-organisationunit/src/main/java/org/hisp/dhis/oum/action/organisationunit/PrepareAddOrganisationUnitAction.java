@@ -35,12 +35,11 @@ import java.util.List;
 import org.hisp.dhis.attribute.Attribute;
 import org.hisp.dhis.attribute.AttributeService;
 import org.hisp.dhis.attribute.comparator.AttributeSortOrderComparator;
+import org.hisp.dhis.common.comparator.IdentifiableObjectNameComparator;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.dataset.DataSetService;
-import org.hisp.dhis.dataset.comparator.DataSetNameComparator;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroupService;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroupSet;
-import org.hisp.dhis.organisationunit.comparator.OrganisationUnitGroupSetNameComparator;
 import org.hisp.dhis.period.Cal;
 
 import com.opensymphony.xwork2.Action;
@@ -124,8 +123,8 @@ public class PrepareAddOrganisationUnitAction
 
         attributes = new ArrayList<Attribute>( attributeService.getOrganisationUnitAttributes() );
 
-        Collections.sort( dataSets, new DataSetNameComparator() );
-        Collections.sort( groupSets, new OrganisationUnitGroupSetNameComparator() );
+        Collections.sort( dataSets, IdentifiableObjectNameComparator.INSTANCE );
+        Collections.sort( groupSets, IdentifiableObjectNameComparator.INSTANCE );
         Collections.sort( attributes, new AttributeSortOrderComparator() );
         
         return SUCCESS;

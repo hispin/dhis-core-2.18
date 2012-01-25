@@ -34,9 +34,9 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.UUID;
 
+import org.hisp.dhis.common.comparator.IdentifiableObjectNameComparator;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
-import org.hisp.dhis.organisationunit.comparator.OrganisationUnitNameComparator;
 import org.hisp.dhis.user.CurrentUserService;
 import org.hisp.dhis.user.User;
 import org.hisp.dhis.version.Version;
@@ -152,7 +152,7 @@ public class GetOrganisationUnitTreeAction
             }
         }
         
-        Collections.sort( rootOrganisationUnits, new OrganisationUnitNameComparator() );
+        Collections.sort( rootOrganisationUnits, IdentifiableObjectNameComparator.INSTANCE );
         
         version = getVersionString();
 

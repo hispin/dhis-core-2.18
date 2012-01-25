@@ -33,9 +33,9 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import org.hisp.dhis.common.comparator.IdentifiableObjectNameComparator;
 import org.hisp.dhis.datadictionary.DataDictionary;
 import org.hisp.dhis.datadictionary.DataDictionaryService;
-import org.hisp.dhis.datadictionary.comparator.DataDictionaryNameComparator;
 import org.hisp.dhis.paging.ActionPagingSupport;
 
 /**
@@ -99,7 +99,7 @@ public class GetDataDictionaryListAction
             dataDictionaries = new ArrayList<DataDictionary>( dataDictionaryService.getDataDictionarysBetween( paging.getStartPos(), paging.getPageSize() ) );
         }
         
-        Collections.sort( dataDictionaries, new DataDictionaryNameComparator() );        
+        Collections.sort( dataDictionaries, IdentifiableObjectNameComparator.INSTANCE );        
         
         return SUCCESS;
     }

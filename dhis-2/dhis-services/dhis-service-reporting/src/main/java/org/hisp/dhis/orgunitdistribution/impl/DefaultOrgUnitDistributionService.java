@@ -31,7 +31,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -40,12 +39,11 @@ import org.apache.commons.collections.CollectionUtils;
 import org.hisp.dhis.chart.ChartService;
 import org.hisp.dhis.common.Grid;
 import org.hisp.dhis.common.GridHeader;
+import org.hisp.dhis.common.comparator.IdentifiableObjectNameComparator;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroup;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroupSet;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
-import org.hisp.dhis.organisationunit.comparator.OrganisationUnitGroupNameComparator;
-import org.hisp.dhis.organisationunit.comparator.OrganisationUnitNameComparator;
 import org.hisp.dhis.orgunitdistribution.OrgUnitDistributionService;
 import org.hisp.dhis.system.grid.ListGrid;
 import org.jfree.chart.JFreeChart;
@@ -60,9 +58,6 @@ import org.springframework.util.Assert;
 public class DefaultOrgUnitDistributionService
     implements OrgUnitDistributionService
 {
-    private static final Comparator<OrganisationUnit> ORGUNIT_COMPARATOR = new OrganisationUnitNameComparator();
-    private static final Comparator<OrganisationUnitGroup> ORGUNIT_GROUP_COMPARATOR = new OrganisationUnitGroupNameComparator();
-
     private static final String TITLE_SEP = " - ";
     private static final String FIRST_COLUMN_TEXT = "Organisation unit";
     private static final String HEADER_NONE = "None";
@@ -121,8 +116,8 @@ public class DefaultOrgUnitDistributionService
         List<OrganisationUnit> units = organisationUnitOnly ? Arrays.asList( organisationUnit ) : new ArrayList<OrganisationUnit>( organisationUnit.getChildren() );
         List<OrganisationUnitGroup> groups = new ArrayList<OrganisationUnitGroup>( groupSet.getOrganisationUnitGroups() );
         
-        Collections.sort( units, ORGUNIT_COMPARATOR );
-        Collections.sort( groups, ORGUNIT_GROUP_COMPARATOR );
+        Collections.sort( units, IdentifiableObjectNameComparator.INSTANCE );
+        Collections.sort( groups, IdentifiableObjectNameComparator.INSTANCE );
         
         if ( !organisationUnitOnly )
         {

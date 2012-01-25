@@ -4,11 +4,11 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import org.hisp.dhis.common.comparator.IdentifiableObjectNameComparator;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroupService;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroupSet;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
-import org.hisp.dhis.organisationunit.comparator.OrganisationUnitGroupSetNameComparator;
 
 import com.opensymphony.xwork2.Action;
 
@@ -77,7 +77,7 @@ public class GetOrganisationUnitDetailsAction
 
         groupSets = new ArrayList<OrganisationUnitGroupSet>( organisationUnitGroupService.getCompulsoryOrganisationUnitGroupSets() );
         
-        Collections.sort( groupSets, new OrganisationUnitGroupSetNameComparator() );
+        Collections.sort( groupSets, IdentifiableObjectNameComparator.INSTANCE );
         
         return SUCCESS;
     }
