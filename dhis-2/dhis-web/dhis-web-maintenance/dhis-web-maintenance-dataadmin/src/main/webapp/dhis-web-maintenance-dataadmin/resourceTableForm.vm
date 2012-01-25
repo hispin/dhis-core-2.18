@@ -1,6 +1,7 @@
 <script type="text/javascript">
     var i18n_execute_tasks_confirmation = '$encoder.jsEscape( $i18n.getString( "execute_tasks_confirmation" ), "'" )';
 	var i18n_generating_resource_tables = '$encoder.jsEscape( $i18n.getString( "generating_resource_tables" ), "'" )';
+	var i18n_resource_tables_generated = '$encoder.jsEscape( $i18n.getString( "resource_tables_generated" ), "'" )';
 </script>
 
 <h3>$i18n.getString( "resource_table" ) #openHelp( "resourceTables" )</h3>
