@@ -280,6 +280,11 @@ public class DefaultI18nService
         return (Locale) userSettingService.getUserSetting( UserSettingService.KEY_DB_LOCALE );
     }
     
+    public boolean currentLocaleIsBase()
+    {
+        return getCurrentLocale() == null;
+    }
+    
     public List<Locale> getAvailableLocales()
     {        
         return locales;

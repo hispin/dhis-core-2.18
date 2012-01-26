@@ -27,6 +27,14 @@ package org.hisp.dhis.system.paging;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
+
+import org.hisp.dhis.common.IdentifiableObject;
+import org.hisp.dhis.common.comparator.IdentifiableObjectNameComparator;
+
 /**
  * @author Quang Nguyen
  */
@@ -154,5 +162,60 @@ public class Paging
     public void setLink( String link )
     {
         this.link = link;
+    }
+
+    // -------------------------------------------------------------------------
+    // Paging static utility methods
+    // -------------------------------------------------------------------------
+
+    public static <T extends IdentifiableObject> List<T> getObjectsBetweenByName( Collection<T> objects, String name, int first, int max )
+    {
+        final List<T> list = new ArrayList<T>();
+        
+        if ( name != null )
+        {
+            for ( T object : objects )
+            {
+                if ( object != null && object.getName() != null && object.getName().toLowerCase().contains( name.toLowerCase() ) )
+                {
+                    list.add( object );
+                }
+            }
+        }
+        
+        Collections.sort( list, IdentifiableObjectNameComparator.INSTANCE );
+
+        int last = first + max;
+        
+        return list.subList( first, last );
+    }
+    
+    public static <T extends IdentifiableObject> List<T> getObjectsBetween( Collection<T> objects, int first, int max )
+    {
+        final List<T> list = new ArrayList<T>( objects );
+
+        Collections.sort( list, IdentifiableObjectNameComparator.INSTANCE );
+        
+        int last = first + max;
+        
+        return list.subList( first, last );
+    }
+    
+    public static <T extends IdentifiableObject> int getCountByName( Collection<T> objects, String name )
+    {
+        int count = 0;
+        
+        if ( name != null )
+        {
+            for ( IdentifiableObject object : objects )
+            {
+                if ( object != null && object.getName() != null && object.getName().toLowerCase().contains( name.toLowerCase() ) )
+                {
+                    count++;
+                }
+            }
+        }
+        
+        return count;
     }
 }
