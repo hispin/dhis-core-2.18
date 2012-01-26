@@ -39,3 +39,9 @@ select code, count(code) as count
 from dataelement
 group by code
 order by count desc;
+
+-- Exploded category option combo view
+
+select cc.categorycomboid, cc.name as categorycomboname, cn.* from _categoryoptioncomboname cn
+join categorycombos_optioncombos co using(categoryoptioncomboid)
+join categorycombo cc using(categorycomboid);
