@@ -74,5 +74,7 @@ public interface I18nService
 
     Locale getCurrentLocale();
     
+    boolean currentLocaleIsBase();
+    
     List<Locale> getAvailableLocales();
 }
