@@ -27,7 +27,10 @@ package org.hisp.dhis.dataset;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import java.util.Iterator;
+
 import org.hisp.dhis.dataelement.DataElement;
+import org.hisp.dhis.dataelement.DataElementOperand;
 import org.hisp.dhis.indicator.Indicator;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.system.deletion.DeletionHandler;
@@ -65,7 +68,25 @@ public class DataSetDeletionHandler
     {
         for ( DataSet dataSet : dataSetService.getAllDataSets() )
         {
+            boolean update = false;
+            
             if ( dataSet.getDataElements().remove( dataElement ) )
+            {
+                update = true;
+            }
+            
+            Iterator<DataElementOperand> operands = dataSet.getCompulsoryDataElementOperands().iterator();
+            
+            while ( operands.hasNext() )
+            {
+                if ( operands.next().getDataElement().equals( dataElement ) )
+                {
+                    operands.remove();
+                    update = true;
+                }
+            }
+            
+            if ( update )
             {
                 dataSetService.updateDataSet( dataSet );
             }
