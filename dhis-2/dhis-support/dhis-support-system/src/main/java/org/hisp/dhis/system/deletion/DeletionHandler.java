@@ -402,6 +402,15 @@ public abstract class DeletionHandler
         return null;
     }
 
+    public String allowDeleteUserGroup ( UserGroup userGroup )
+    {
+        return null;
+    }
+
+    public void deleteUserGroup( UserGroup userGroup )
+    {
+    }
+    
     public void deleteUserSetting( UserSetting userSetting )
     {
     }
@@ -642,15 +651,6 @@ public abstract class DeletionHandler
     }
 
     public void deleteCaseAggregationCondition( CaseAggregationCondition caseAggregationCondition )
-    {
-    }
-
-    public String allowDeleteUserGroup ( UserGroup userGroup )
-    {
-        return null;
-    }
-
-    public void deleteUserGroup( UserGroup userGroup )
     {
     }
 }

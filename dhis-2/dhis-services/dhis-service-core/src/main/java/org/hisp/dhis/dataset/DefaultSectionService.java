@@ -76,8 +76,6 @@ public class DefaultSectionService
 
     public void deleteSection( Section section )
     {
-        i18nService.removeObject( section );
-
         sectionStore.delete( section );
     }
 

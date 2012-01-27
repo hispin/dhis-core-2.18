@@ -102,8 +102,6 @@ public class DefaultIndicatorService
 
     public void deleteIndicator( Indicator indicator )
     {
-        i18nService.removeObject( indicator );
-
         indicatorStore.delete( indicator );
     }
 
@@ -211,8 +209,6 @@ public class DefaultIndicatorService
 
     public void deleteIndicatorType( IndicatorType indicatorType )
     {
-        i18nService.removeObject( indicatorType );
-
         indicatorTypeStore.delete( indicatorType );
     }
 
@@ -285,8 +281,6 @@ public class DefaultIndicatorService
 
     public void deleteIndicatorGroup( IndicatorGroup indicatorGroup )
     {
-        i18nService.removeObject( indicatorGroup );
-
         indicatorGroupStore.delete( indicatorGroup );
     }
 
@@ -378,8 +372,6 @@ public class DefaultIndicatorService
 
     public void deleteIndicatorGroupSet( IndicatorGroupSet groupSet )
     {
-        i18nService.removeObject( groupSet );
-
         indicatorGroupSetStore.delete( groupSet );
     }
 
