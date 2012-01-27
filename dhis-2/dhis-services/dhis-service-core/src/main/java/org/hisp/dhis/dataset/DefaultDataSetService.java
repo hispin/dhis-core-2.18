@@ -106,8 +106,6 @@ public class DefaultDataSetService
 
     public void deleteDataSet( DataSet dataSet )
     {
-        i18nService.removeObject( dataSet );
-
         dataSetStore.delete( dataSet );
 
         log.info( AuditLogUtil.logMessage( currentUserService.getCurrentUsername(),

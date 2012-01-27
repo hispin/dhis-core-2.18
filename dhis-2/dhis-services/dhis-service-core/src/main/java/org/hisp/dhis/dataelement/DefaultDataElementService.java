@@ -107,10 +107,8 @@ public class DefaultDataElementService
     }
 
     public void deleteDataElement( DataElement dataElement )
-        throws HierarchyViolationException
+        throws HierarchyViolationException //TODO remove
     {
-        i18nService.removeObject( dataElement );
-
         dataElementStore.delete( dataElement );
     }
 
@@ -361,8 +359,6 @@ public class DefaultDataElementService
 
     public void deleteDataElementGroup( DataElementGroup dataElementGroup )
     {
-        i18nService.removeObject( dataElementGroup );
-
         dataElementGroupStore.delete( dataElementGroup );
     }
 
@@ -457,8 +453,6 @@ public class DefaultDataElementService
 
     public void deleteDataElementGroupSet( DataElementGroupSet groupSet )
     {
-        i18nService.removeObject( groupSet );
-
         dataElementGroupSetStore.delete( groupSet );
     }
 

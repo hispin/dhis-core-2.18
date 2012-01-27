@@ -813,6 +813,10 @@ http://www.springframework.org/schema/security http://www.springframework.org/sc
 	<property name="messageService" ref="org.hisp.dhis.message.MessageService"/>
   </bean>
   
+  <bean id="org.hisp.dhis.translation.TranslationDeletionHandler" class="org.hisp.dhis.translation.TranslationDeletionHandler">
+	<property name="i18nService" ref="org.hisp.dhis.i18n.I18nService"/>
+  </bean>
+  
   <!-- DeletionManager -->
 
   <bean class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
@@ -850,6 +854,7 @@ http://www.springframework.org/schema/security http://www.springframework.org/sc
           <ref local="org.hisp.dhis.dataelement.DataElementGroupSetDeletionHandler" />
           <ref local="org.hisp.dhis.configuration.ConfigurationDeletionHandler" />
 		  <ref local="org.hisp.dhis.message.MessageConversationDeletionHandler" />
+		  <ref local="org.hisp.dhis.translation.TranslationDeletionHandler" />
         </list>
       </list>
     </property>
