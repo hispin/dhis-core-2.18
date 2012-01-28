@@ -45,4 +45,4 @@ order by count desc;
 select cc.categorycomboid, cc.name as categorycomboname, cn.* from _categoryoptioncomboname cn
 join categorycombos_optioncombos co using(categoryoptioncomboid)
 join categorycombo cc using(categorycomboid)
-order by categorycomboname;
+order by categorycomboname, categoryoptioncomboname;

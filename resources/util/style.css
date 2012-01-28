@@ -1,5 +1,17 @@
 
-/* Handy styles for custom data entry forms */
+/* 
+
+Handy styles for custom data entry forms. Use with:
+
+<style type="text/css"></style>
+
+<div id="cde"></div>
+
+<h2></h2>
+
+<th></th>
+
+*/
 
 #cde table {
   border-collapse: collapse;
