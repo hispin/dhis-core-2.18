@@ -168,26 +168,22 @@ public class Paging
     // Paging static utility methods
     // -------------------------------------------------------------------------
 
-    public static <T extends IdentifiableObject> List<T> getObjectsBetweenByName( Collection<T> objects, String name, int first, int max )
+    public static <T extends IdentifiableObject> int getCountByName( Collection<T> objects, String name )
     {
-        final List<T> list = new ArrayList<T>();
+        int count = 0;
         
         if ( name != null )
         {
-            for ( T object : objects )
+            for ( IdentifiableObject object : objects )
             {
-                if ( object != null && object.getName() != null && object.getName().toLowerCase().contains( name.toLowerCase() ) )
+                if ( object != null && object.getDisplayName() != null && object.getDisplayName().toLowerCase().contains( name.toLowerCase() ) )
                 {
-                    list.add( object );
+                    count++;
                 }
             }
         }
         
-        Collections.sort( list, IdentifiableObjectNameComparator.INSTANCE );
-
-        int last = first + max;
-        
-        return list.subList( first, last );
+        return count;
     }
     
     public static <T extends IdentifiableObject> List<T> getObjectsBetween( Collection<T> objects, int first, int max )
@@ -198,24 +194,32 @@ public class Paging
         
         int last = first + max;
         
+        last = last < list.size() ? last : list.size();
+        
         return list.subList( first, last );
     }
-    
-    public static <T extends IdentifiableObject> int getCountByName( Collection<T> objects, String name )
+
+    public static <T extends IdentifiableObject> List<T> getObjectsBetweenByName( Collection<T> objects, String name, int first, int max )
     {
-        int count = 0;
+        final List<T> list = new ArrayList<T>();
         
         if ( name != null )
         {
-            for ( IdentifiableObject object : objects )
+            for ( T object : objects )
             {
-                if ( object != null && object.getName() != null && object.getName().toLowerCase().contains( name.toLowerCase() ) )
+                if ( object != null && object.getDisplayName() != null && object.getDisplayName().toLowerCase().contains( name.toLowerCase() ) )
                 {
-                    count++;
+                    list.add( object );
                 }
             }
         }
         
-        return count;
+        Collections.sort( list, IdentifiableObjectNameComparator.INSTANCE );
+
+        int last = first + max;
+
+        last = last < list.size() ? last : list.size();
+        
+        return list.subList( first, last );
     }
 }

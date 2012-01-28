@@ -27,7 +27,7 @@ package org.hisp.dhis.dataelement;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import static org.hisp.dhis.i18n.I18nUtils.i18n;
+import static org.hisp.dhis.i18n.I18nUtils.*;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -93,9 +93,7 @@ public class DefaultDataElementService
 
     public int addDataElement( DataElement dataElement )
     {
-        int id = dataElementStore.save( dataElement );
-
-        return id;
+        return dataElementStore.save( dataElement );
     }
 
     public void updateDataElement( DataElement dataElement )
@@ -302,19 +300,9 @@ public class DefaultDataElementService
         return dataElementStore.dataElementCategoryOptionComboExists( id );
     }
 
-    public Collection<DataElement> getDataElementsLikeName( String name )
+    public Collection<DataElement> getDataElementsLikeName( String name ) //TODO fix
     {
         return i18n( i18nService, dataElementStore.getLikeName( name ) );
-    }
-
-    public Collection<DataElement> getDataElementsBetween( int first, int max )
-    {
-        return i18n( i18nService, dataElementStore.getBetween( first, max ) );
-    }
-
-    public Collection<DataElement> getDataElementsBetweenByName( String name, int first, int max )
-    {
-        return i18n( i18nService, dataElementStore.getBetweenByName( name, first, max ) );
     }
 
     public int getDataElementCount()
@@ -324,7 +312,17 @@ public class DefaultDataElementService
 
     public int getDataElementCountByName( String name )
     {
-        return dataElementStore.getCountByName( name );
+        return getCountByName( i18nService, dataElementStore, name );
+    }
+
+    public Collection<DataElement> getDataElementsBetween( int first, int max )
+    {
+        return getObjectsBetween( i18nService, dataElementStore, first, max );
+    }
+
+    public Collection<DataElement> getDataElementsBetweenByName( String name, int first, int max )
+    {
+        return getObjectsBetweenByName( i18nService, dataElementStore, name, first, max );
     }
 
     public Collection<DataElement> getDataElementsByDataSets( Collection<DataSet> dataSets )
@@ -413,16 +411,6 @@ public class DefaultDataElementService
         return i18n( i18nService, dataElementGroupStore.get( groupId ).getMembers() );
     }
 
-    public Collection<DataElementGroup> getDataElementGroupsBetween( int first, int max )
-    {
-        return dataElementGroupStore.getBetween( first, max );
-    }
-
-    public Collection<DataElementGroup> getDataElementGroupsBetweenByName( String name, int first, int max )
-    {
-        return i18n( i18nService, dataElementGroupStore.getBetweenByName( name, first, max ) );
-    }
-
     public int getDataElementGroupCount()
     {
         return dataElementGroupStore.getCount();
@@ -430,7 +418,17 @@ public class DefaultDataElementService
 
     public int getDataElementGroupCountByName( String name )
     {
-        return dataElementGroupStore.getCountByName( name );
+        return getCountByName( i18nService, dataElementGroupStore, name );
+    }
+
+    public Collection<DataElementGroup> getDataElementGroupsBetween( int first, int max )
+    {
+        return getObjectsBetween( i18nService, dataElementGroupStore, first, max );
+    }
+
+    public Collection<DataElementGroup> getDataElementGroupsBetweenByName( String name, int first, int max )
+    {
+        return getObjectsBetweenByName( i18nService, dataElementGroupStore, name, first, max );
     }
 
     // -------------------------------------------------------------------------
@@ -536,17 +534,17 @@ public class DefaultDataElementService
 
     public int getDataElementGroupSetCountByName( String name )
     {
-        return dataElementGroupSetStore.getCountByName( name );
+        return getCountByName( i18nService, dataElementGroupSetStore, name );
     }
 
     public Collection<DataElementGroupSet> getDataElementGroupSetsBetween( int first, int max )
     {
-        return i18n( i18nService, dataElementGroupSetStore.getBetween( first, max ) );
+        return getObjectsBetween( i18nService, dataElementGroupSetStore, first, max );
     }
 
     public Collection<DataElementGroupSet> getDataElementGroupSetsBetweenByName( String name, int first, int max )
     {
-        return i18n( i18nService, dataElementGroupSetStore.getBetweenByName( name, first, max ) );
+        return getObjectsBetweenByName( i18nService, dataElementGroupSetStore, name, first, max );
     }
 
     // -------------------------------------------------------------------------

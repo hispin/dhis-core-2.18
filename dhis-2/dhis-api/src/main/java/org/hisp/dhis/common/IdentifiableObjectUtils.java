@@ -27,8 +27,11 @@ package org.hisp.dhis.common;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
+import java.util.List;
+import java.util.ListIterator;
 
 /**
  * @author Lars Helge Overland
@@ -36,7 +39,7 @@ import java.util.Iterator;
 public class IdentifiableObjectUtils
 {
     private static final String SEPARATOR_JOIN = ", ";
-        
+    
     /**
      * Joins the names of the IdentifiableObjects in the given list and separates 
      * them with a comma and space. Returns null if the given list is null or has 
@@ -51,16 +54,41 @@ public class IdentifiableObjectUtils
         {
             Iterator<? extends IdentifiableObject> iterator = objects.iterator();
             
-            StringBuilder builder = new StringBuilder( iterator.next().getName() );
+            StringBuilder builder = new StringBuilder( iterator.next().getDisplayName() );
             
             while ( iterator.hasNext() )
             {
-                builder.append( SEPARATOR_JOIN ).append( iterator.next().getName() );
+                builder.append( SEPARATOR_JOIN ).append( iterator.next().getDisplayName() );
             }
             
             return builder.toString();
         }
         
         return null;
+    }
+    
+    public static <T extends IdentifiableObject> List<T> filterNameByKey( List<T> identifiableObjects, String key,
+        boolean ignoreCase )
+    {
+        List<T> objects = new ArrayList<T>();
+        ListIterator<T> iterator = identifiableObjects.listIterator();
+
+        if ( ignoreCase )
+        {
+            key = key.toLowerCase();
+        }
+
+        while ( iterator.hasNext() )
+        {
+            T object = iterator.next();
+            String name = ignoreCase ? object.getDisplayName().toLowerCase() : object.getDisplayName();
+
+            if ( name.indexOf( key ) != -1 )
+            {
+                objects.add( object );
+            }
+        }
+
+        return objects;
     }
 }

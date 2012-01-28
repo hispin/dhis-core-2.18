@@ -27,7 +27,7 @@ package org.hisp.dhis.organisationunit;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import static org.hisp.dhis.i18n.I18nUtils.i18n;
+import static org.hisp.dhis.i18n.I18nUtils.*;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -128,16 +128,6 @@ public class DefaultOrganisationUnitGroupService
         return i18n( i18nService, organisationUnitGroupStore.getOrganisationUnitGroupsWithGroupSets() );
     }
 
-    public Collection<OrganisationUnitGroup> getOrganisationUnitGroupsBetween( int first, int max )
-    {
-        return i18n( i18nService, organisationUnitGroupStore.getBetween( first, max ) );
-    }
-
-    public Collection<OrganisationUnitGroup> getOrganisationUnitGroupsBetweenByName( String name, int first, int max )
-    {
-        return i18n( i18nService, organisationUnitGroupStore.getBetweenByName( name, first, max ) );
-    }
-
     public int getOrganisationUnitGroupCount()
     {
         return organisationUnitGroupStore.getCount();
@@ -145,9 +135,19 @@ public class DefaultOrganisationUnitGroupService
 
     public int getOrganisationUnitGroupCountByName( String name )
     {
-        return organisationUnitGroupStore.getCountByName( name );
+        return getCountByName( i18nService, organisationUnitGroupStore, name );
     }
     
+    public Collection<OrganisationUnitGroup> getOrganisationUnitGroupsBetween( int first, int max )
+    {
+        return getObjectsBetween( i18nService, organisationUnitGroupStore, first, max );
+    }
+
+    public Collection<OrganisationUnitGroup> getOrganisationUnitGroupsBetweenByName( String name, int first, int max )
+    {
+        return getObjectsBetweenByName( i18nService, organisationUnitGroupStore, name, first, max );
+    }
+
     // -------------------------------------------------------------------------
     // OrganisationUnitGroupSet
     // -------------------------------------------------------------------------
@@ -254,16 +254,6 @@ public class DefaultOrganisationUnitGroupService
         return groupSets;
     }
     
-    public Collection<OrganisationUnitGroupSet> getOrganisationUnitGroupSetsBetween( int first, int max )
-    {
-        return i18n( i18nService, organisationUnitGroupSetStore.getBetween( first, max ) );
-    }
-    
-    public Collection<OrganisationUnitGroupSet> getOrganisationUnitGroupSetsBetweenByName( String name, int first, int max )
-    {
-        return i18n( i18nService, organisationUnitGroupSetStore.getBetweenByName( name, first, max ) );
-    }
-    
     public int getOrganisationUnitGroupSetCount()
     {
         return organisationUnitGroupSetStore.getCount();
@@ -271,6 +261,16 @@ public class DefaultOrganisationUnitGroupService
     
     public int getOrganisationUnitGroupSetCountByName( String name )
     {
-        return organisationUnitGroupSetStore.getCountByName( name );
+        return getCountByName( i18nService, organisationUnitGroupSetStore, name );
+    }
+    
+    public Collection<OrganisationUnitGroupSet> getOrganisationUnitGroupSetsBetween( int first, int max )
+    {
+        return getObjectsBetween( i18nService, organisationUnitGroupSetStore, first, max );
+    }
+    
+    public Collection<OrganisationUnitGroupSet> getOrganisationUnitGroupSetsBetweenByName( String name, int first, int max )
+    {
+        return getObjectsBetweenByName( i18nService, organisationUnitGroupSetStore, name, first, max );
     }
 }

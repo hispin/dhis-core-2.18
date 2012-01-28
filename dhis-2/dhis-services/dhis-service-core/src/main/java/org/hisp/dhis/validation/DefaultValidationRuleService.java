@@ -27,7 +27,7 @@ package org.hisp.dhis.validation;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import static org.hisp.dhis.i18n.I18nUtils.i18n;
+import static org.hisp.dhis.i18n.I18nUtils.*;
 import static org.hisp.dhis.system.util.MathUtils.expressionIsTrue;
 import static org.hisp.dhis.system.util.MathUtils.getRounded;
 
@@ -449,17 +449,17 @@ public class DefaultValidationRuleService
 
     public int getValidationRuleCountByName( String name )
     {
-        return validationRuleStore.getCountByName( name );
+        return getCountByName( i18nService, validationRuleStore, name );
     }
 
     public Collection<ValidationRule> getValidationRulesBetween( int first, int max )
     {
-        return i18n( i18nService, validationRuleStore.getBetween( first, max ) );
+        return getObjectsBetween( i18nService, validationRuleStore, first, max );
     }
 
     public Collection<ValidationRule> getValidationRulesBetweenByName( String name, int first, int max )
     {
-        return i18n( i18nService, validationRuleStore.getBetweenByName( name, first, max ) );
+        return getObjectsBetweenByName( i18nService, validationRuleStore, name, first, max );
     }
 
     // -------------------------------------------------------------------------
@@ -508,16 +508,16 @@ public class DefaultValidationRuleService
 
     public int getValidationRuleGroupCountByName( String name )
     {
-        return validationRuleGroupStore.getCountByName( name );
+        return getCountByName( i18nService, validationRuleGroupStore, name );
     }
 
     public Collection<ValidationRuleGroup> getValidationRuleGroupsBetween( int first, int max )
     {
-        return i18n( i18nService, validationRuleGroupStore.getBetween( first, max ) );
+        return getObjectsBetween( i18nService, validationRuleGroupStore, first, max );
     }
 
     public Collection<ValidationRuleGroup> getValidationRuleGroupsBetweenByName( String name, int first, int max )
     {
-        return i18n( i18nService, validationRuleGroupStore.getBetweenByName( name, first, max ) );
+        return getObjectsBetweenByName( i18nService, validationRuleGroupStore, name, first, max );
     }
 }
