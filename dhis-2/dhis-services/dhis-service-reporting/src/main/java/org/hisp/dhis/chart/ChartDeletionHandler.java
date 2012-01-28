@@ -60,17 +60,15 @@ public class ChartDeletionHandler
     }
 
     @Override
-    public String allowDeleteIndicator( Indicator indicator )
+    public void deleteIndicator( Indicator indicator )
     {
         for ( Chart chart : chartService.getAllCharts() )
         {
-            if ( chart.getIndicators().contains( indicator ) )
+            if ( chart.getIndicators().remove( indicator ) )
             {
-                return chart.getName();
+                chartService.saveChart( chart );
             }
         }
-
-        return null;
     }
 
     @Override

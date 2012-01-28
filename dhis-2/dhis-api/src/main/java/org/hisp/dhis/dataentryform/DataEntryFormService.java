@@ -29,8 +29,10 @@ package org.hisp.dhis.dataentryform;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.Set;
 import java.util.regex.Pattern;
 
+import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.i18n.I18n;
 
@@ -138,6 +140,8 @@ public interface DataEntryFormService
      * @return HTML code for the form.
      */
     String prepareDataEntryFormForEntry( String htmlCode, I18n i18n, DataSet dataSet );
+    
+    Set<DataElement> getDataElementsInDataEntryForm( DataEntryForm form );
     
     Collection<DataEntryForm> listDisctinctDataEntryFormByProgramStageIds( List<Integer> programStageIds );
     

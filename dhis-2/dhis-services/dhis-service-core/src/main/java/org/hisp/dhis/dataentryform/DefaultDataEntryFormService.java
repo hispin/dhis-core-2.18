@@ -31,8 +31,10 @@ import static org.hisp.dhis.dataelement.DataElement.VALUE_TYPE_BOOL;
 
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.regex.Matcher;
 
 import org.hisp.dhis.dataelement.DataElement;
@@ -317,6 +319,41 @@ public class DefaultDataEntryFormService
         return sb.toString();
     }
 
+    public Set<DataElement> getDataElementsInDataEntryForm( DataEntryForm form )
+    {
+        Set<DataElement> dataElements = new HashSet<DataElement>();
+        
+        Matcher inputMatcher = INPUT_PATTERN.matcher( form.getHtmlCode() );
+        
+        while ( inputMatcher.find() )
+        {
+            String inputHtml = inputMatcher.group();
+            
+            Matcher identifierMatcher = IDENTIFIER_PATTERN.matcher( inputHtml );
+            Matcher dataElementTotalMatcher = DATAELEMENT_TOTAL_PATTERN.matcher( inputHtml );
+            
+            DataElement dataElement = null;
+            
+            if ( identifierMatcher.find() && identifierMatcher.groupCount() > 0 )
+            {
+                int dataElementId = Integer.parseInt( identifierMatcher.group( 1 ) );
+                dataElement = dataElementService.getDataElement( dataElementId );
+            }
+            else if ( dataElementTotalMatcher.find() && dataElementTotalMatcher.groupCount() > 0 )
+            {
+                int dataElementId = Integer.parseInt( dataElementTotalMatcher.group( 1 ) );
+                dataElement = dataElementService.getDataElement( dataElementId );
+            }
+            
+            if ( dataElement != null )
+            {
+                dataElements.add( dataElement );
+            }
+        }
+        
+        return dataElements;
+    }
+    
     public Collection<DataEntryForm> listDisctinctDataEntryFormByProgramStageIds( List<Integer> programStageIds )
     {
         if ( programStageIds == null || programStageIds.isEmpty() )

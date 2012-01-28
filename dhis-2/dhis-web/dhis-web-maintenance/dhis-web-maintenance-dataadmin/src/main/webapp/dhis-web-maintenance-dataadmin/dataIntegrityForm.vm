@@ -15,6 +15,7 @@
 #integrityItem( $i18n.getString( "data_elements_without_data_set" ) "dataElementsWithoutDataSet" )
 #integrityItem( $i18n.getString( "data_elements_without_groups" ) "dataElementsWithoutGroups" )
 #integrityItem( $i18n.getString( "data_elements_violating_exclusive_group_sets" ) "dataElementsViolatingExclusiveGroupSets" )
+#integrityItem( $i18n.getString( "data_elements_in_data_set_not_in_form" ) "dataElementsInDataSetNotInForm" )
 #integrityItem( $i18n.getString( "data_elements_assigned_to_period_types_with_different_period_types" ) "dataElementsAssignedToDataSetsWithDifferentPeriodTypes" )
 #integrityItem( $i18n.getString( "data_sets_not_assigned_to_organisation_units" ) "dataSetsNotAssignedToOrganisationUnits" )
 #integrityItem( $i18n.getString( "sections_with_invalid_category_combinations" ) "sectionsWithInvalidCategoryCombinations" )
