@@ -30,7 +30,10 @@ package org.hisp.dhis.i18n;
 import java.util.Collection;
 import java.util.Locale;
 
+import org.hisp.dhis.common.GenericIdentifiableObjectStore;
+import org.hisp.dhis.common.IdentifiableObject;
 import org.hisp.dhis.i18n.I18nService;
+import org.hisp.dhis.system.paging.Paging;
 
 /**
  * @author Lars Helge Overland
@@ -59,5 +62,29 @@ public class I18nUtils
     {
         i18nService.internationalise( objects, locale );        
         return objects;
+    }
+    
+    public static <T extends IdentifiableObject> int getCountByName( 
+        I18nService i18nService, GenericIdentifiableObjectStore<T> store, String name )
+    {
+        return i18nService.currentLocaleIsBase() ?
+            store.getCountByName( name ) :
+            Paging.getCountByName( i18n( i18nService, store.getAll() ), name );
+    }
+    
+    public static <T extends IdentifiableObject> Collection<T> getObjectsBetween( 
+        I18nService i18nService, GenericIdentifiableObjectStore<T> store, int first, int max )
+    {
+        return i18nService.currentLocaleIsBase() ?
+            i18n( i18nService, store.getBetween( first, max ) ) :
+            Paging.getObjectsBetween( i18n( i18nService, store.getAll() ), first, max );
+    }
+    
+    public static <T extends IdentifiableObject> Collection<T> getObjectsBetweenByName(
+        I18nService i18nService, GenericIdentifiableObjectStore<T> store, String name, int first, int max )
+    {
+        return i18nService.currentLocaleIsBase() ?
+            i18n( i18nService, store.getBetweenByName( name, first, max ) ) :
+            Paging.getObjectsBetweenByName( i18n( i18nService, store.getAll() ), name, first, max );
     }
 }

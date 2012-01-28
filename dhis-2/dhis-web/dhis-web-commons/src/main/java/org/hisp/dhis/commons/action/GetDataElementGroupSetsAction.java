@@ -35,7 +35,7 @@ import org.hisp.dhis.common.comparator.IdentifiableObjectNameComparator;
 import org.hisp.dhis.dataelement.DataElementGroupSet;
 import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.paging.ActionPagingSupport;
-import org.hisp.dhis.system.util.IdentifiableObjectUtils;
+import org.hisp.dhis.common.IdentifiableObjectUtils;
 
 /**
  * @author mortenoh

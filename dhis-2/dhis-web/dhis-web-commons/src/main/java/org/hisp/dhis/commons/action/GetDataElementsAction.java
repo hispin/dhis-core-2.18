@@ -44,7 +44,7 @@ import org.hisp.dhis.period.PeriodService;
 import org.hisp.dhis.period.PeriodType;
 import org.hisp.dhis.system.filter.AggregatableDataElementFilter;
 import org.hisp.dhis.system.util.FilterUtils;
-import org.hisp.dhis.system.util.IdentifiableObjectUtils;
+import org.hisp.dhis.common.IdentifiableObjectUtils;
 
 /**
  * @author Lars Helge Overland

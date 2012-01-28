@@ -27,7 +27,7 @@ package org.hisp.dhis.indicator;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import static org.hisp.dhis.i18n.I18nUtils.i18n;
+import static org.hisp.dhis.i18n.I18nUtils.*;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -168,6 +168,11 @@ public class DefaultIndicatorService
         return i18n( i18nService, indicatorStore.getIndicatorsWithDataSets() );
     }
 
+    public Collection<Indicator> getIndicatorsLikeName( String name ) //TODO fix
+    {
+        return i18n( i18nService, indicatorStore.getLikeName( name ) );
+    }
+
     public int getIndicatorCount()
     {
         return indicatorStore.getCount();
@@ -175,22 +180,17 @@ public class DefaultIndicatorService
 
     public int getIndicatorCountByName( String name )
     {
-        return indicatorStore.getCountByName( name );
-    }
-
-    public Collection<Indicator> getIndicatorsLikeName( String name )
-    {
-        return i18n( i18nService, indicatorStore.getLikeName( name ) );
+        return getCountByName( i18nService, indicatorStore, name );
     }
 
     public Collection<Indicator> getIndicatorsBetween( int first, int max )
     {
-        return i18n( i18nService, indicatorStore.getBetween( first, max ) );
+        return getObjectsBetween( i18nService, indicatorStore, first, max );
     }
 
     public Collection<Indicator> getIndicatorsBetweenByName( String name, int first, int max )
     {
-        return i18n( i18nService, indicatorStore.getBetweenByName( name, first, max ) );
+        return getObjectsBetweenByName( i18nService, indicatorStore, name, first, max );
     }
 
     // -------------------------------------------------------------------------
@@ -252,17 +252,17 @@ public class DefaultIndicatorService
 
     public int getIndicatorTypeCountByName( String name )
     {
-        return indicatorTypeStore.getCountByName( name );
+        return getCountByName( i18nService, indicatorTypeStore, name );
     }
 
     public Collection<IndicatorType> getIndicatorTypesBetween( int first, int max )
     {
-        return i18n( i18nService, indicatorTypeStore.getBetween( first, max ) );
+        return getObjectsBetween( i18nService, indicatorTypeStore, first, max );
     }
 
     public Collection<IndicatorType> getIndicatorTypesBetweenByName( String name, int first, int max )
     {
-        return i18n( i18nService, indicatorTypeStore.getBetweenByName( name, first, max ) );
+        return getObjectsBetweenByName( i18nService, indicatorTypeStore, name, first, max );
     }
 
     // -------------------------------------------------------------------------
@@ -343,17 +343,17 @@ public class DefaultIndicatorService
 
     public int getIndicatorGroupCountByName( String name )
     {
-        return indicatorGroupStore.getCountByName( name );
+        return getCountByName( i18nService, indicatorGroupStore, name );
     }
 
     public Collection<IndicatorGroup> getIndicatorGroupsBetween( int first, int max )
     {
-        return i18n( i18nService, indicatorGroupStore.getBetween( first, max ) );
+        return getObjectsBetween( i18nService, indicatorGroupStore, first, max );
     }
 
     public Collection<IndicatorGroup> getIndicatorGroupsBetweenByName( String name, int first, int max )
     {
-        return i18n( i18nService, indicatorGroupStore.getBetweenByName( name, first, max ) );
+        return getObjectsBetweenByName( i18nService, indicatorGroupStore, name, first, max );
     }
 
     // -------------------------------------------------------------------------
@@ -452,23 +452,23 @@ public class DefaultIndicatorService
         } );
     }
 
-    public int getIndicatorGroupSetCountByName( String name )
-    {
-        return indicatorGroupSetStore.getCountByName( name );
-    }
-
     public int getIndicatorGroupSetCount()
     {
         return indicatorGroupSetStore.getCount();
     }
 
+    public int getIndicatorGroupSetCountByName( String name )
+    {
+        return getCountByName( i18nService, indicatorGroupSetStore, name );
+    }
+
     public Collection<IndicatorGroupSet> getIndicatorGroupSetsBetween( int first, int max )
     {
-        return i18n( i18nService, indicatorGroupSetStore.getBetween( first, max ) );
+        return getObjectsBetween( i18nService, indicatorGroupSetStore, first, max );
     }
 
     public Collection<IndicatorGroupSet> getIndicatorGroupSetsBetweenByName( String name, int first, int max )
     {
-        return i18n( i18nService, indicatorGroupSetStore.getBetweenByName( name, first, max ) );
+        return getObjectsBetweenByName( i18nService, indicatorGroupSetStore, name, first, max );
     }
 }

@@ -37,7 +37,7 @@ import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.paging.ActionPagingSupport;
 import org.hisp.dhis.system.filter.DataElementGroupWithoutGroupSetFilter;
 import org.hisp.dhis.system.util.FilterUtils;
-import org.hisp.dhis.system.util.IdentifiableObjectUtils;
+import org.hisp.dhis.common.IdentifiableObjectUtils;
 
 /**
  * @author Tran Thanh Tri

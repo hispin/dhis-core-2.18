@@ -27,7 +27,7 @@ package org.hisp.dhis.dataset;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import static org.hisp.dhis.i18n.I18nUtils.i18n;
+import static org.hisp.dhis.i18n.I18nUtils.*;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -287,18 +287,18 @@ public class DefaultDataSetService
     @Override
     public int getDataSetCountByName( String name )
     {
-        return dataSetStore.getCountByName( name );
+        return getCountByName( i18nService, dataSetStore, name );
     }
 
     @Override
     public Collection<DataSet> getDataSetsBetween( int first, int max )
     {
-        return i18n( i18nService, dataSetStore.getBetween( first, max ) );
+        return getObjectsBetween( i18nService, dataSetStore, first, max );
     }
 
     @Override
     public Collection<DataSet> getDataSetsBetweenByName( String name, int first, int max )
     {
-        return i18n( i18nService, dataSetStore.getBetweenByName( name, first, max ) );
+        return getObjectsBetweenByName( i18nService, dataSetStore, name, first, max );
     }
 }
