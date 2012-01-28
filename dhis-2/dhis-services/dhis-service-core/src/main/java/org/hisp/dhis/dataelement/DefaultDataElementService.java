@@ -42,7 +42,6 @@ import java.util.Set;
 import org.hisp.dhis.common.GenericIdentifiableObjectStore;
 import org.hisp.dhis.dataelement.comparator.DataElementCategoryComboSizeComparator;
 import org.hisp.dhis.dataset.DataSet;
-import org.hisp.dhis.hierarchy.HierarchyViolationException;
 import org.hisp.dhis.i18n.I18nService;
 import org.hisp.dhis.period.PeriodType;
 import org.hisp.dhis.system.util.Filter;
@@ -51,8 +50,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 /**
  * @author Kristian Nordal
- * @version $Id: DefaultDataElementService.java 5243 2008-05-25 10:18:58Z
- *          larshelg $
  */
 @Transactional
 public class DefaultDataElementService
@@ -107,7 +104,6 @@ public class DefaultDataElementService
     }
 
     public void deleteDataElement( DataElement dataElement )
-        throws HierarchyViolationException //TODO remove
     {
         dataElementStore.delete( dataElement );
     }

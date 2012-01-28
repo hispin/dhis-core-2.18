@@ -73,8 +73,7 @@ public interface DataElementService
      * @param dataElement the DataElement to delete.
      * @throws HierarchyViolationException if the DataElement has children.
      */
-    void deleteDataElement( DataElement dataElement )
-        throws HierarchyViolationException;
+    void deleteDataElement( DataElement dataElement );
 
     /**
      * Returns a DataElement.

@@ -95,9 +95,6 @@ public class DefaultDataMergeService
         {
             dataElementService.deleteDataElement( sourceDataElemenet );
         }
-        catch ( HierarchyViolationException ex )
-        {
-        }
         catch ( DeleteNotAllowedException ex )
         {
             log.info( "Not deleting data element because it has custom dimensions and more data associated with it" );
