@@ -43,6 +43,7 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
     <property name="organisationUnitGroupService" ref="org.hisp.dhis.organisationunit.OrganisationUnitGroupService" />
     <property name="validationRuleService" ref="org.hisp.dhis.validation.ValidationRuleService" />
     <property name="expressionService" ref="org.hisp.dhis.expression.ExpressionService" />
+	<property name="dataEntryFormService" ref="org.hisp.dhis.dataentryform.DataEntryFormService" />
   </bean>
   
   <!-- Maintenance -->

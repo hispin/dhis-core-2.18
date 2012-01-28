@@ -14,6 +14,7 @@ function populateIntegrityItems( json )
     displayViolationList( json.dataElementsWithoutGroups, "dataElementsWithoutGroups" );
 	displayViolationList( json.dataElementsViolatingCompulsoryGroupSets, "dataElementsViolatingCompulsoryGroupSets" );
 	displayViolationList( json.dataElementsViolatingExclusiveGroupSets, "dataElementsViolatingExclusiveGroupSets" );
+	displayViolationList( json.dataElementsInDataSetNotInForm, "dataElementsInDataSetNotInForm" );
     displayViolationList( json.dataElementsAssignedToDataSetsWithDifferentPeriodTypes, "dataElementsAssignedToDataSetsWithDifferentPeriodTypes" );
     displayViolationList( json.dataSetsNotAssignedToOrganisationUnits, "dataSetsNotAssignedToOrganisationUnits" );
     displayViolationList( json.sectionsWithInvalidCategoryCombinations, "sectionsWithInvalidCategoryCombinations" );

@@ -44,6 +44,7 @@ import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementGroup;
 import org.hisp.dhis.dataelement.DataElementGroupSet;
 import org.hisp.dhis.dataelement.DataElementService;
+import org.hisp.dhis.dataentryform.DataEntryFormService;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.dataset.DataSetService;
 import org.hisp.dhis.dataset.Section;
@@ -136,6 +137,13 @@ public class DefaultDataIntegrityService
     {
         this.expressionService = expressionService;
     }
+    
+    private DataEntryFormService dataEntryFormService;
+
+    public void setDataEntryFormService( DataEntryFormService dataEntryFormService )
+    {
+        this.dataEntryFormService = dataEntryFormService;
+    }
 
     // -------------------------------------------------------------------------
     // DataIntegrityService implementation
@@ -186,7 +194,6 @@ public class DefaultDataIntegrityService
         return targets;
     }
 
-    @Override
     public SortedMap<DataElement, Collection<DataElementGroup>> getDataElementsViolatingExclusiveGroupSets()
     {
         Collection<DataElementGroupSet> groupSets = dataElementService.getAllDataElementGroupSets();
@@ -211,6 +218,41 @@ public class DefaultDataIntegrityService
         }
 
         return targets;
+    }
+    
+    public SortedMap<DataSet, Collection<DataElement>> getDataElementsInDataSetNotInForm()
+    {
+        SortedMap<DataSet, Collection<DataElement>> map = new TreeMap<DataSet, Collection<DataElement>>( IdentifiableObjectNameComparator.INSTANCE );
+        
+        Collection<DataSet> dataSets = dataSetService.getAllDataSets();
+        
+        for ( DataSet dataSet : dataSets )
+        {
+            if ( !DataSet.TYPE_DEFAULT.equals( dataSet.getDataSetType() ) )
+            {
+                Set<DataElement> formElements = new HashSet<DataElement>();
+                
+                if ( dataSet.hasDataEntryForm() )
+                {
+                    formElements.addAll( dataEntryFormService.getDataElementsInDataEntryForm( dataSet.getDataEntryForm() ) );
+                }
+                else if ( dataSet.hasSections() )
+                {
+                    formElements.addAll( dataSet.getDataElementsInSections() );
+                }
+                
+                Set<DataElement> dataSetElements = new HashSet<DataElement>( dataSet.getDataElements() );
+                
+                dataSetElements.removeAll( formElements );
+                
+                if ( dataSetElements.size() > 0 )
+                {
+                    map.put( dataSet, dataSetElements );
+                }
+            }
+        }
+        
+        return map;
     }
 
     // -------------------------------------------------------------------------

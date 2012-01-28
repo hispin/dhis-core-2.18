@@ -78,6 +78,12 @@ public interface DataIntegrityService
      */
     SortedMap<DataElement, Collection<DataSet>> getDataElementsAssignedToDataSetsWithDifferentPeriodTypes();
 
+    /**
+     * Returns all data elements which are member of a data set but not part of
+     * either the custom form or sections of the data set.
+     */
+    SortedMap<DataSet, Collection<DataElement>> getDataElementsInDataSetNotInForm();
+    
     // -------------------------------------------------------------------------
     // Section
     // -------------------------------------------------------------------------

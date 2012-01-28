@@ -88,11 +88,25 @@ public class GetDataIntegrityAction
         return dataElementsWithoutGroups;
     }
 
+    private Map<DataElement, Collection<DataSet>> dataElementsAssignedToDataSetsWithDifferentPeriodTypes;
+
+    public Map<DataElement, Collection<DataSet>> getDataElementsAssignedToDataSetsWithDifferentPeriodTypes()
+    {
+        return dataElementsAssignedToDataSetsWithDifferentPeriodTypes;
+    }
+
     private SortedMap<DataElement, Collection<DataElementGroup>> dataElementsViolatingExclusiveGroupSets;
 
     public SortedMap<DataElement, Collection<DataElementGroup>> getDataElementsViolatingExclusiveGroupSets()
     {
         return dataElementsViolatingExclusiveGroupSets;
+    }
+    
+    private SortedMap<DataSet, Collection<DataElement>> dataElementsInDataSetNotInForm;
+
+    public SortedMap<DataSet, Collection<DataElement>> getDataElementsInDataSetNotInForm()
+    {
+        return dataElementsInDataSetNotInForm;
     }
 
     private List<DataSet> dataSetsNotAssignedToOrganisationUnits;
@@ -107,13 +121,6 @@ public class GetDataIntegrityAction
     public List<Section> getSectionsWithInvalidCategoryCombinations()
     {
         return sectionsWithInvalidCategoryCombinations;
-    }
-
-    private Map<DataElement, Collection<DataSet>> dataElementsAssignedToDataSetsWithDifferentPeriodTypes;
-
-    public Map<DataElement, Collection<DataSet>> getDataElementsAssignedToDataSetsWithDifferentPeriodTypes()
-    {
-        return dataElementsAssignedToDataSetsWithDifferentPeriodTypes;
     }
 
     private Collection<Collection<Indicator>> indicatorsWithIdenticalFormulas;
@@ -224,6 +231,7 @@ public class GetDataIntegrityAction
         dataElementsWithoutGroups = new ArrayList<DataElement>( dataIntegrityService.getDataElementsWithoutGroups() );
         dataElementsAssignedToDataSetsWithDifferentPeriodTypes = dataIntegrityService.getDataElementsAssignedToDataSetsWithDifferentPeriodTypes();
         dataElementsViolatingExclusiveGroupSets = dataIntegrityService.getDataElementsViolatingExclusiveGroupSets();
+        dataElementsInDataSetNotInForm = dataIntegrityService.getDataElementsInDataSetNotInForm();
 
         log.info( "Checked data elements" );
         

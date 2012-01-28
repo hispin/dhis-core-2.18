@@ -236,6 +236,18 @@ public class DataSet extends BaseNameableObject
 
         return TYPE_DEFAULT;
     }
+    
+    public Set<DataElement> getDataElementsInSections()
+    {
+        Set<DataElement> dataElements = new HashSet<DataElement>();
+        
+        for ( Section section : sections )
+        {
+            dataElements.addAll( section.getDataElements() );
+        }
+        
+        return dataElements;
+    }
 
     public DataSet increaseVersion()
     {
