@@ -249,11 +249,11 @@ public class DataElementCategoryOptionCombo extends BaseNameableObject
         {
             Iterator<DataElementCategoryOption> iterator = categoryOptions.iterator();
 
-            name.append( "(" ).append( iterator.next().getName() );
+            name.append( "(" ).append( iterator.next().getDisplayName() );
 
             while ( iterator.hasNext() )
             {
-                name.append( ", " ).append( iterator.next().getName() );
+                name.append( ", " ).append( iterator.next().getDisplayName() );
             }
 
             name.append( ")" );
