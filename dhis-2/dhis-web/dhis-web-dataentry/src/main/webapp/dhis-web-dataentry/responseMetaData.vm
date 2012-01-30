@@ -23,7 +23,7 @@ ${dataElement.id}#if( $velocityCount < $size ),#end
 "dataSets": {
 #set( $size = $dataSets.size() )
 #foreach( $dataSet in $dataSets )
-"${dataSet.id}":{"name":"$encoder.jsonEncode( ${dataSet.name} )","periodType":"$encoder.jsonEncode( ${dataSet.periodType.name} )",
+"${dataSet.id}":{"name":"$encoder.jsonEncode( ${dataSet.displayName} )","periodType":"$encoder.jsonEncode( ${dataSet.periodType.name} )",
 "version":"${dataSet.version}","type":"${dataSet.getDataSetType()}"
 }#if( $velocityCount < $size ),#end
 #end },
