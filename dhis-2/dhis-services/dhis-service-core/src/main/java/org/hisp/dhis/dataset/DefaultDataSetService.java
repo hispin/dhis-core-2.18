@@ -117,12 +117,28 @@ public class DefaultDataSetService
         return i18n( i18nService, dataSetStore.get( id ) );
     }
     
-    @Override
     public DataSet getDataSet( String uid )
     {
         return i18n( i18nService, dataSetStore.getByUid( uid ) );
     }
-
+    
+    public DataSet getDataSet( int id, boolean i18nDataElements, boolean i18nOrgUnits )
+    {
+        DataSet dataSet = getDataSet( id );
+        
+        if ( i18nDataElements )
+        {
+            i18n( i18nService, dataSet.getDataElements() );
+        }
+        
+        if ( i18nOrgUnits )
+        {
+            i18n( i18nService, dataSet.getSources() );
+        }
+        
+        return dataSet;
+    }
+    
     public DataSet getDataSetByName( String name )
     {
         return i18n( i18nService, dataSetStore.getByName( name ) );
