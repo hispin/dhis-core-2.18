@@ -59,7 +59,8 @@ function selectDataElements()
 	jQuery("#availableList").children().each(function(i, item){
 		if( item.selected ){
 			html = "<tr class='selected' id='" + item.value + "' ondblclick='unSelectDataElement( this )'><td onclick='select(this)'>" + item.text + "</td>";
-			html += "<td><input type='checkbox' name='compulsory' value='" + item.value + "'></td>";
+			html += "<td align='center'><input type='checkbox' name='compulsory' value='" + item.value + "'></td>";
+			html += "<td align='center' ><input type='checkbox' name='showOnReport' value='" + item.value + "'></td>";
 			html += "</tr>";
 			selectedList.append( html );
 			jQuery( item ).remove();
