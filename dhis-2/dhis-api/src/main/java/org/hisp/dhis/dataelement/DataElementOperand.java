@@ -237,7 +237,7 @@ public class DataElementOperand
             return dataElement.getName() + SPACE + NAME_TOTAL;
         }
 
-        return categoryOptionCombo.isDefault() ? dataElement.getName() : dataElement.getName() + SPACE + categoryOptionCombo.getName();
+        return categoryOptionCombo.isDefault() ? dataElement.getDisplayName() : dataElement.getDisplayName() + SPACE + categoryOptionCombo.getName();
     }
 
     /**

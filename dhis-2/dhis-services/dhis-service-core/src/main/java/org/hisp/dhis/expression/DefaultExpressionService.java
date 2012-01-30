@@ -413,7 +413,7 @@ public class DefaultExpressionService
                         throw new IllegalArgumentException( "Identifier does not reference a constant: " + id );
                     }
                     
-                    match = constant.getName();
+                    match = constant.getDisplayName();
                 }
                 else
                 {
