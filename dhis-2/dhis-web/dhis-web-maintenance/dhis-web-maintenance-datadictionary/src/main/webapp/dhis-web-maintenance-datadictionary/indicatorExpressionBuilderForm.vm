@@ -10,7 +10,7 @@
 			modal: true,
 			autoOpen: false,
 			minWidth: 820,
-			minHeight: 500,
+			minHeight: 540,
 			width: 820,
 			height: 540
 		});
@@ -185,12 +185,11 @@
 		</td>
 		<td></td>
 		<td valign="top">
-			<label>$encoder.htmlEncode( $i18n.getString( "filter_by_name" ) )</label><br/>
 			<input type="text" id="filter" name="filter" style="width:370px">
 			<input type="button" value="$i18n.getString( 'filter' )" onclick="getOperandsPage()" style="width:60px">
 			<input type="button" value="$i18n.getString( 'clear' )" onclick="clearSearchText();" style="width:60px"><br/>
 
-			<select id="dataElementId" name="dataElementId" size="8" style="width:500px" ondblclick="insertText( 'expression', this.value )">
+			<select id="dataElementId" name="dataElementId" size="9" style="width:500px" ondblclick="insertText( 'expression', this.value )">
 			</select>
 		</td>
 	</tr>
