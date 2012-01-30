@@ -354,7 +354,7 @@ public class DataElement extends BaseNameableObject
      */
     public String getFormNameFallback()
     {
-        return formName != null && !formName.isEmpty() ? formName : name;
+        return formName != null && !formName.isEmpty() ? formName : getDisplayName();
     }
 
     public String toJSON()

@@ -77,6 +77,16 @@ public interface DataSetService
     DataSet getDataSet( int id );
 
     /**
+     * Get a DataSet
+     * 
+     * @param id The unique identifier for the DataSet to get.
+     * @param i18nDataElements whether to i18n the data elements of this data set.
+     * @param i18nOrgUnits whether to i18n the org units of this data set.
+     * @return The DataSet with the given id or null if it does not exist.
+     */
+    DataSet getDataSet( int id, boolean i18nDataElements, boolean i18nOrgUnits );
+    
+    /**
      * Returns the DataSet with the given UID.
      * 
      * @param uid the UID.
