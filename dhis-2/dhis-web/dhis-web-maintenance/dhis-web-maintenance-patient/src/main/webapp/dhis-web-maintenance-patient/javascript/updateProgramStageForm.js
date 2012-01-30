@@ -12,6 +12,7 @@ jQuery( document ).ready( function()
 		showOnReport = jQuery( "#showOnReport" );
 		showOnReport.empty();
 		
+		var hasDeShowReport = false;
 		jQuery("#selectedList").find("tr").each( function( i, item ){ 
 			selectedDataElementsValidator.append( "<option value='" + item.id + "' selected='true'>" + item.id + "</option>" );
 			var compulsory = jQuery( item ).find( "input[name='compulsory']:first");
@@ -22,6 +23,11 @@ jQuery( document ).ready( function()
 			
 			checked = isShow.attr('checked') ? true : false;
 			showOnReport.append( "<option value='" + checked + "' selected='true'>" + checked + "</option>" );
+			if( checked )
+			{
+				hasDeShowReport = true;
+				showOnReport = jQuery( "#checkShowOnReport" )..append( "<option value='" + checked + "' selected='true'>" + checked + "</option>" );
+			}
 		});
 	});
 	
