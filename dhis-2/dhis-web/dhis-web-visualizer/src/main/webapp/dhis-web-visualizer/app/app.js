@@ -642,6 +642,9 @@ Ext.onReady( function() {
 							type: 'Category',
 							position: 'bottom',
 							title: DV.state.domainAxisLabel || false,
+							labelTitle: {
+								font: '17px ' + DV.conf.chart.style.font
+							},
 							fields: DV.conf.finals.data.domain,
 							label: DV.util.chart.default.label.getCategory()
 						};
