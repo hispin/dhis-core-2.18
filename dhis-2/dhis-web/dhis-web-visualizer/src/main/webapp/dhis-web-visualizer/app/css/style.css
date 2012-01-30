@@ -411,11 +411,11 @@ body {
 /* Multiselect docked bar font size */
 .dv-toolbar-multiselect-left .dv-toolbar-multiselect-left-label {
     font-size: 11px;
-    padding-left: 5px;
+    padding-left: 6px;
 }
 .dv-toolbar-multiselect-right .dv-toolbar-multiselect-right-label {
     font-size: 11px;
-    padding-right: 5px;
+    padding-right: 7px;
 }
 
 /* Multiselect boundlist */
