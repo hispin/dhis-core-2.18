@@ -26,7 +26,7 @@ jQuery( document ).ready( function()
 			if( checked )
 			{
 				hasDeShowReport = true;
-				showOnReport = jQuery( "#checkShowOnReport" )..append( "<option value='" + checked + "' selected='true'>" + checked + "</option>" );
+				jQuery( "#checkShowOnReport" ).append( "<option value='" + checked + "' selected='true'>" + checked + "</option>" );
 			}
 		});
 	});
