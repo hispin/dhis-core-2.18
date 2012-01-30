@@ -434,7 +434,7 @@ public class DefaultValidationRuleService
 
     public Collection<ValidationRule> getValidationRulesByName( String name )
     {        
-        return i18n( i18nService, validationRuleStore.getLikeName( name ) );
+        return getObjectsByName( i18nService, validationRuleStore, name );
     }
     
     public Collection<ValidationRule> getValidationRulesByDataElements( Collection<DataElement> dataElements )

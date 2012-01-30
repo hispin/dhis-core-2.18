@@ -300,9 +300,9 @@ public class DefaultDataElementService
         return dataElementStore.dataElementCategoryOptionComboExists( id );
     }
 
-    public Collection<DataElement> getDataElementsLikeName( String name ) //TODO fix
+    public Collection<DataElement> getDataElementsLikeName( String name )
     {
-        return i18n( i18nService, dataElementStore.getLikeName( name ) );
+        return getObjectsByName( i18nService, dataElementStore, name );
     }
 
     public int getDataElementCount()

@@ -234,7 +234,7 @@ public class DataElementOperand
 
         if ( categoryOptionCombo == null ) // Total
         {
-            return dataElement.getName() + SPACE + NAME_TOTAL;
+            return dataElement.getDisplayName() + SPACE + NAME_TOTAL;
         }
 
         return categoryOptionCombo.isDefault() ? dataElement.getDisplayName() : dataElement.getDisplayName() + SPACE + categoryOptionCombo.getName();
@@ -287,7 +287,7 @@ public class DataElementOperand
     {
         this.dataElementId = dataElement.getId();
         this.operandId = String.valueOf( dataElement.getId() );
-        this.operandName = dataElement.getName() + SPACE + NAME_TOTAL;
+        this.operandName = dataElement.getDisplayName() + SPACE + NAME_TOTAL;
         this.aggregationOperator = dataElement.getAggregationOperator();
         this.frequencyOrder = dataElement.getFrequencyOrder();
         this.aggregationLevels = new ArrayList<Integer>( dataElement.getAggregationLevels() );

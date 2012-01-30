@@ -168,9 +168,9 @@ public class DefaultIndicatorService
         return i18n( i18nService, indicatorStore.getIndicatorsWithDataSets() );
     }
 
-    public Collection<Indicator> getIndicatorsLikeName( String name ) //TODO fix
+    public Collection<Indicator> getIndicatorsLikeName( String name )
     {
-        return i18n( i18nService, indicatorStore.getLikeName( name ) );
+        return getObjectsByName( i18nService, indicatorStore, name );
     }
 
     public int getIndicatorCount()
