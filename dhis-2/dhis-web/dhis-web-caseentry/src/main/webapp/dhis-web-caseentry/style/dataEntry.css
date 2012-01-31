@@ -5,7 +5,7 @@
 .entryScreen
 {
  margin-bottom:20px; 
- width:80%;
+ width:60%;
  font-size: 13px; 
  line-height:18px;
 }
@@ -19,7 +19,7 @@ input.inputText, select.inputText
 .textColumn
 {
 	text-align:left;
-	padding-right:35px; 
+	padding-right:20px; 
 	padding-left:5px; 
 }
 

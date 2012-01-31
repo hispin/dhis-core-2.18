@@ -160,13 +160,13 @@ public class DefaultPatientChartService
 
         CategoryDataset[] dataSets = getCategoryDataSet( patientChart );
 
-        if ( patientChart.isType( TYPE_LINE ) )
-        {
-            plot = new CategoryPlot( dataSets[0], new CategoryAxis(), new NumberAxis(), lineRenderer );
-        }
-        else if ( patientChart.isType( TYPE_BAR ) )
+        if ( patientChart.isType( TYPE_BAR ) )
         {
             plot = new CategoryPlot( dataSets[0], new CategoryAxis(), new NumberAxis(), barRenderer );
+        }
+        else
+        {
+            plot = new CategoryPlot( dataSets[0], new CategoryAxis(), new NumberAxis(), lineRenderer );
         }
 
         if ( patientChart.isRegression() )
