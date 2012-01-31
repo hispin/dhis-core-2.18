@@ -55,8 +55,8 @@
 							</select>
 						</td>
 					</tr>
-					<tr>
-						<td id='programStageIdLabel' class='textColumn'><label for="programStageId">$i18n.getString( "program_stage" )</label></td>
+					<tr id='programStageIdTR' >
+						<td class='textColumn'><label for="programStageId">$i18n.getString( "program_stage" )</label></td>
 						<td>
 							<select id="programStageId" name="programStageId" class="criteria" onchange="javascript:loadDataEntry();" >
 							</select>
@@ -72,8 +72,8 @@
 							</script>
 					</tr>
 					
-					<tr>
-						<td id='dueDateLabel' class='textColumn'><label for="dueDate">$i18n.getString( "due_date" ) </label></td>
+					<tr id='dueDateTR'>
+						<td class='textColumn'><label for="dueDate">$i18n.getString( "due_date" ) </label></td>
 						<td><input type="text" id="dueDate" name="dueDate" class="criteria" value="$!format.formatDate( $programStageInstance.dueDate )" readonly> </td>
 					</tr>
 				</table>
