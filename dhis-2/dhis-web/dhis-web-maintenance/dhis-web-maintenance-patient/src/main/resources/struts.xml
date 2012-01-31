@@ -827,8 +827,7 @@
 			class="org.hisp.dhis.patient.action.validation.GetProgramListForValidationCriteriaAction">
 			<result name="success" type="velocity">/main.vm</result>
 			<param name="page">/dhis-web-maintenance-patient/programsForValidationCriteriaAssociations.vm</param>
-			<param name="javascripts">
-				,javascript/program.js</param>
+			<param name="javascripts">javascript/program.js</param>
 			<param name="requiredAuthorities">F_PROGRAM_UPDATE</param>
 		</action>
 
