@@ -37,6 +37,8 @@ function loadProgramStages()
 			if(singleEvent=='true')
 			{
 				byId('programStageId').selectedIndex = 1;
+				jQuery('#programStageIdTR').attr('class','hidden');
+				jQuery('#dueDateTR').attr('class','hidden');
 				enable('completeBtn');
 				enable('validationBtn');
 				
@@ -70,6 +72,10 @@ function loadProgramStages()
 				
 				disable('completeBtn');
 				disable('validationBtn');
+				
+				jQuery('#programStageIdTR').removeAttr('class');
+				jQuery('#dueDateTR').removeAttr('class');
+				
 			}
 			
 	});
