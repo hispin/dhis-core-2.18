@@ -660,8 +660,9 @@ Ext.onReady( function() {
 					getTips: function() {
 						return {
 							trackMouse: true,
-							height: 31,
-							renderer: function(item) {
+							cls: 'dv-chart-tips',
+							renderer: function(si, item) {
+								this.update(item.value[1]);
 							}
 						};
 					},
@@ -758,7 +759,8 @@ Ext.onReady( function() {
 								markerConfig: {
 									type: 'circle',
 									radius: 4
-								}
+								},
+								tips: DV.util.chart.default.series.getTips()
 							});
 						}
 						return a;
@@ -794,10 +796,9 @@ Ext.onReady( function() {
 					getTips: function() {
 						return {
 							trackMouse: true,
-							height: 47,
+							cls: 'dv-chart-tips-pie',
 							renderer: function(item) {
-								this.setWidth((item.data[DV.conf.finals.data.domain].length * 8) + 15);
-								this.setTitle('<span class="dv-chart-tips">' + item.data[DV.conf.finals.data.domain] + '<br/><b>' + item.data[DV.state.series.names[0]] + '</b></span>');
+								this.update(item.data[DV.conf.finals.data.domain] + '<br/><b>' + item.data[DV.state.series.names[0]] + '</b>');
 							}
 						};
 					}
@@ -1474,7 +1475,8 @@ Ext.onReady( function() {
 				style: {
 					opacity: 0.8,
 					stroke: '#333'
-				}
+				},
+				tips: DV.util.chart.default.series.getTips()
 			});
 			if (DV.state.targetLineValue && !stacked) {
 				series.push(DV.util.chart.default.series.getTargetLine());
@@ -1504,7 +1506,8 @@ Ext.onReady( function() {
 				style: {
 					opacity: 0.8,
 					stroke: '#333'
-				}
+				},
+				tips: DV.util.chart.default.series.getTips()
 			});
 			if (DV.state.targetLineValue && !stacked) {
 				series.push(DV.util.chart.bar.series.getTargetLine());
@@ -1571,7 +1574,6 @@ Ext.onReady( function() {
                     type: 'pie',
                     field: DV.state.series.names[0],
                     showInLegend: true,
-                    tips: DV.util.chart.pie.series.getTips(),
                     label: {
                         field: DV.conf.finals.data.domain
                     },
@@ -1583,7 +1585,8 @@ Ext.onReady( function() {
                     style: {
                         opacity: 0.9,
 						stroke: '#555'
-                    }
+                    },
+                    tips: DV.util.chart.pie.series.getTips()
                 }],
                 theme: 'dv1'
             });

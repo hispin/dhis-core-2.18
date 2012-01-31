@@ -341,7 +341,7 @@ body {
     -ms-border-radius: 2px 2px 2px 2px;
     -khtml-border-radius: 2px 2px 2px 2px;
     border-radius: 2px 2px 2px 2px;
-    padding: 2px 5px 2px 2px;
+    padding: 0 2px;
     border-width: 2px;
     border-style: solid;
     background-color: #f1f1f1;
@@ -491,10 +491,11 @@ body {
 }
 
 /* Chart tips */
-.dv-chart-tips {
-    font-size: 13px;
-    padding: 0 0 3px 3px;
-    font-weight: normal;
+.dv-chart-tips .x-tip-body {
+    font-size: 27px;
+}
+.dv-chart-tips-pie .x-tip-body {
+    font-size: 17px;
 }
 
 /* Window */
