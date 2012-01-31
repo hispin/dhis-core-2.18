@@ -32,30 +32,8 @@ function loadProgramStages()
 				addOptionById( 'programStageId', json.programStages[i].id, json.programStages[i].name );
 			} 
 			
-			// show history / plan
-			setInnerHTML( 'currentSelection', '' ); 
-			var history = '<h4>' + i18n_program_stages_history_plan + '</h4>';
-			history += '<table class="history">';
-			history += '<tr>';
-            history += '<td class="bold row">' + i18n_program_stage + '</td>';
-            history += '<td class="bold row">' + i18n_scheduled_for + '</td>';
-            history += '</tr>';
-			for ( i in json.programStageInstances ) 
-			{
-				history += '<tr bgcolor=' + json.programStageInstances[i].colorMap + '>';
-                history += '<td>';
-                history += '<span>' + json.programStageInstances[i].name + '</span>';
-				history += '</td>';
-                history += '<td class="cent">';
-                history += json.programStageInstances[i].infor;
-                history += '</td>';
-                history += '</tr>';
-			}
-			history += '</table>';
-			setInnerHTML( 'currentSelection', history );
-			showById('currentSelection');
-			
 			var singleEvent = jQuery('#dataRecordingSelectDiv [name=programId] option:selected').attr('singleevent');
+				
 			if(singleEvent=='true')
 			{
 				byId('programStageId').selectedIndex = 1;
@@ -66,9 +44,34 @@ function loadProgramStages()
 			}
 			else
 			{
+				
+				// show history / plan
+				setInnerHTML( 'currentSelection', '' ); 
+				var history = '<h4>' + i18n_program_stages_history_plan + '</h4>';
+				history += '<table class="history">';
+				history += '<tr>';
+				history += '<td class="bold row">' + i18n_program_stage + '</td>';
+				history += '<td class="bold row">' + i18n_scheduled_for + '</td>';
+				history += '</tr>';
+				for ( i in json.programStageInstances ) 
+				{
+					history += '<tr bgcolor=' + json.programStageInstances[i].colorMap + '>';
+					history += '<td>';
+					history += '<span>' + json.programStageInstances[i].name + '</span>';
+					history += '</td>';
+					history += '<td class="cent">';
+					history += json.programStageInstances[i].infor;
+					history += '</td>';
+					history += '</tr>';
+				}
+				history += '</table>';
+				setInnerHTML( 'currentSelection', history );
+				showById('currentSelection');
+				
 				disable('completeBtn');
 				disable('validationBtn');
 			}
+			
 	});
 }
 

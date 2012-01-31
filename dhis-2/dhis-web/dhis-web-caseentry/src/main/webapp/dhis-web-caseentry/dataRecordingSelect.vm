@@ -1,4 +1,4 @@
-<form id='dataRecordingSelectForm' name='dataRecordingSelectForm'>
+<form id='dataRecordingSelectForm' name='dataRecordingSelectForm' method='post'>
    	
 <table class="mainPageTable" id='patientInfoDiv'> 
 	<tr>
