@@ -1,8 +1,6 @@
 <h3>$i18n.getString( "patient_registered" )</h3>
 
-<form id='programEnrollmentSelectDiv' method='POST'>
-
-    <input type="hidden" id="patientId" name="patientId" value="$patient.id">    
+<div >
 
 	<table width='100%'>
 		<tr>
@@ -41,7 +39,10 @@
 		
 		<!-- Enroll program TAB -->
 		<div id="tab-1">
-			<table width='100%'>    
+			<form id='programEnrollmentSelectDiv' name='programEnrollmentSelectDiv' method='POST'>
+    <input type="hidden" id="patientId" name="patientId" value="$patient.id">    
+
+	<table width='100%'>    
 				<tr>
 					<td style="width:180px"><label for="programId">$i18n.getString( "program" )</label></td>
 					<td>
@@ -81,6 +82,7 @@
 			</table>
 			
 			<div id='programEnrollmentDiv' style='display:none;'></div>
+			</form>
 		</div>
 
 		<!-- register-event TAB -->
@@ -89,7 +91,7 @@
 			<div id='dataEntryFormDiv'  style='display:none;'></div>
 
 		</div>
-</form>
+</div>
 
 <script>
 	var i18n_enroll_to_program = '$encoder.jsEscape( $i18n.getString( "enroll_to_program" ) , "'")';
@@ -99,7 +101,9 @@
 			validation( 'programEnrollmentSelectDiv', function(form){
                 validateProgramEnrollment();
             });
- 
+		}); 
+	
+	
 			jQuery("#tabs").tabs();
 			datePickerValid( 'enrollmentDate' );
 			datePickerValid( 'dateOfIncident' );
@@ -115,6 +119,4 @@
 			#else
 				$("#tabs").tabs("option", "disabled", [1]);
 			#end
-		});
-	
 </script>
