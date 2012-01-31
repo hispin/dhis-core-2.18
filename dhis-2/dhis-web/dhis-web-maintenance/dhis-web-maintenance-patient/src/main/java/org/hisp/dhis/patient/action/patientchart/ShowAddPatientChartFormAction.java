@@ -108,6 +108,7 @@ public class ShowAddPatientChartFormAction
         }
 
         FilterUtils.filter( dataElements, new AggregatableDataElementFilter() );
+
         
         return SUCCESS;
     }
