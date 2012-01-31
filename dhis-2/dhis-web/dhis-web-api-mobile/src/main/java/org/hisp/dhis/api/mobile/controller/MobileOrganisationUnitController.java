@@ -34,7 +34,10 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 public class MobileOrganisationUnitController
     extends AbstractMobileController
 {
-
+	private static final String ACTIVITY_REPORT_UPLOADED = "activity_report_uploaded";
+    
+    private static final String DATASET_REPORT_UPLOADED = "dataset_report_uploaded";
+	
     @Autowired
     private ActivityReportingService activityReportingService;
 
@@ -88,11 +91,12 @@ public class MobileOrganisationUnitController
      * @throws NotAllowedException if the {@link DataSetValue} is invalid
      */
     @RequestMapping( method = RequestMethod.POST, value = "     {id}/dataSets" )
-    @ResponseStatus( value = HttpStatus.NO_CONTENT )
-    public void saveDataSetValues( @PathVariable int id, @RequestBody DataSetValue dataSetValue )
+    @ResponseBody
+    public String saveDataSetValues( @PathVariable int id, @RequestBody DataSetValue dataSetValue )
         throws NotAllowedException
     {
         facilityReportingService.saveDataSetValues( getUnit( id ), dataSetValue );
+        return DATASET_REPORT_UPLOADED;
     }
 
     /**
@@ -103,11 +107,12 @@ public class MobileOrganisationUnitController
      *         is invalid
      */
     @RequestMapping( method = RequestMethod.POST, value = "{id}/activities" )
-    @ResponseStatus( value = HttpStatus.NO_CONTENT )
-    public void saveActivityReport( @PathVariable int id, @RequestBody ActivityValue activityValue )
+    @ResponseBody
+    public String saveActivityReport( @PathVariable int id, @RequestBody ActivityValue activityValue )
         throws NotAllowedException
     {
         activityReportingService.saveActivityReport( getUnit( id ), activityValue );
+        return ACTIVITY_REPORT_UPLOADED;
     }
 
     @RequestMapping( method = RequestMethod.POST, value = "{id}/activitiyplan" )
