@@ -1,20 +1,20 @@
 <h3>$i18n.getString( "anonymous_events" )</h3>	
 
 
-<div id="actions">	
-	<input type="button" id="createEventBtn" value="$i18n.getString('create_new_event')" onClick="javascript: createNewEvent();" style="width:12em " disabled="disabled">
-	<input type="button" id="completeBtn" value="$i18n.getString('complete')" onClick="doComplete();" style="width:12em" disabled="disabled" >
-	<input type="button" id="deleteCurrentEventBtn" value="$i18n.getString('delete_current_event')" onClick="javascript: deleteCurrentEvent();" style="width:12em " disabled="disabled" >
+<div class="actions">	
+	<input type="button" class='button' id="createEventBtn" value="$i18n.getString('create_new_event')" onClick="javascript: createNewEvent();" disabled="disabled">
+	<input type="button" class='button' id="completeBtn" value="$i18n.getString('complete')" onClick="doComplete();" disabled="disabled" >
+	<input type="button" class='button' id="deleteCurrentEventBtn" value="$i18n.getString('delete_current_event')" onClick="javascript: deleteCurrentEvent();" disabled="disabled" >
 </div>	
 			
-<div id="dataRecordingSelectDiv" class="inputCriteria" style="width:420px;height:80px;">
+<div id="dataRecordingSelectDiv" class="inputCriteria" style="width:500px;height:65px;">
 	<input type='hidden' id="programStageId">
 	<input type='hidden' id='selectedProgramId'>
 	<table>
 		<tr>
-			<td>$i18n.getString('program')</td>
+			<td class='textColumn'>$i18n.getString('program')</td>
 			<td>
-				<select id='programId' name='programId' style='width:300px' onchange='loadEventForm();'>
+				<select id='programId' name='programId' class='criteria' onchange='loadEventForm();'>
 					<option value="">[ $i18n.getString('please_select') ]</option>
 					#foreach( $programInstance in $programInstances)
 						<option value="$programInstance.program.id" singleevent='$programInstance.program.singleEvent' programInstanceId='$programInstance.id'>$programInstance.program.name</option>
@@ -23,8 +23,8 @@
 			</td>
 		</tr>
 		<tr>
-			<td><label for="executionDate">$i18n.getString( "report_date" ) </label></td>
-			<td><input type="text" id="executionDate" name="executionDate" style="width:300px" value="$!format.formatDate( $programStageInstance.executionDate )" >
+			<td class='textColumn'><label for="executionDate">$i18n.getString( "report_date" ) </label></td>
+			<td><input type="text" id="executionDate" name="executionDate" class='criteria' value="$!format.formatDate( $programStageInstance.executionDate )" >
 				<script type="text/javascript">
 				   datePickerValid( 'executionDate', false );
 				</script>

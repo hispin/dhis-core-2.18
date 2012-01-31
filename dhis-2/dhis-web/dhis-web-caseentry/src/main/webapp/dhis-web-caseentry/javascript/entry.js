@@ -17,6 +17,7 @@ function loadProgramStages()
 	var programId = jQuery('#dataRecordingSelectDiv [name=programId]').val();
 	if ( programId == 0 )
 	{
+		hideById('currentSelection');
 		return;
 	}
 	jQuery.postJSON( "loadProgramStages.action",
@@ -45,13 +46,14 @@ function loadProgramStages()
                 history += '<td>';
                 history += '<span>' + json.programStageInstances[i].name + '</span>';
 				history += '</td>';
-                history += '<td style="text-align:center">';
+                history += '<td class="cent">';
                 history += json.programStageInstances[i].infor;
                 history += '</td>';
                 history += '</tr>';
 			}
 			history += '</table>';
 			setInnerHTML( 'currentSelection', history );
+			showById('currentSelection');
 			
 			var singleEvent = jQuery('#dataRecordingSelectDiv [name=programId] option:selected').attr('singleevent');
 			if(singleEvent=='true')
@@ -710,11 +712,11 @@ function doComplete()
 					});
 					jQuery("#dataEntryFormDiv").find(".ui-datepicker-trigger").each(function()
 					{
-						jQuery(this).attr('style', 'display:none');
+						jQuery(this).attr('class', 'hidden');
 					});
 					jQuery("#dataEntryFormDiv").find(".holder").each(function()
 					{
-						jQuery(this).attr('style', 'display:none');
+						jQuery(this).attr('class', 'visible');
 					});
 					
 					disable('validationBtn');

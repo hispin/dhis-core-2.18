@@ -7,12 +7,14 @@
 		<td>$i18n.getString( $searchText )</td>
 	</tr>	
 </table>
- 
-<table class="mainPageTable">
+
+<br>
+<table class="entryScreen">
   <tr>
-    <td style="vertical-align:top">    
+    <td>    
       <table class="listTable">                   
           <col>
+		  <col>
           <col>
           <col>
           <col>  
@@ -22,16 +24,9 @@
           <col width="20">  
 		  <col width="20">                        
 		  <col width="20"> 
-		  <tr>
-		  	<td></td>
-		  	<td></td>
-		  	<td></td>
-		  	<td></td>  		  	
-		  	<td></td>
-			<td></td>
-			<td></td>
           <tr>
-            <th>$i18n.getString( "full_name" )</th>        
+            <th>#</th>
+			<th>$i18n.getString( "full_name" )</th>        
             <th>$i18n.getString( "gender" )</th>
             <th>$i18n.getString( "date_of_birth" )</th>
             <th>$i18n.getString( "age" )</th>   
@@ -46,6 +41,11 @@
           
           #foreach( $patient in $patients )
           	<tr #alternate( $mark )>
+				<td>
+					#set( $nr = ( ( $paging.getCurrentPage() - 1  ) * $paging.pageSize ) + $velocityCount )
+					$nr
+				</td>
+				
 				<td>			
 					$encoder.htmlEncode( $patient.getFullName() )
 				</td>			
@@ -62,13 +62,13 @@
 				<td>$!mapPatientOrgunit.get($patient.id)</td>
 				#end
 								
-				<td style="text-align:center"#alternate( $mark )>
+				<td>
                   <a href="javascript:showSelectedDataRecoding('$patient.id');" title="$i18n.getString( 'data_entry' )"><img src="images/data_entry.png" alt="$i18n.getString( 'data_entry' )"></a>                  
                 </td>
-				<td style="text-align:center"#alternate( $mark )>
+				<td>
                   <a href="javascript:patientChartList( '$patient.id' )" title="$i18n.getString( 'data_entry' )"><img src="../images/add_to_dashboard.png" alt="$i18n.getString( 'view_patient_chart' )"></a>                  
                 </td>
-                <td style="text-align:center"#alternate( $mark )>
+                <td>
                   <a href="javascript:showPatientDetails( $patient.id )" title="$i18n.getString( 'show_details' )"><img src="../images/information.png" alt="$i18n.getString( 'show_details' )"></a>
                 </td>               				
 			</tr>
@@ -90,17 +90,13 @@
 	  </tr>
 	  </table>
     </td>
-    <td style="width:20em; padding-left:2em; vertical-align:top">
-		<div id="detailsInfo">
-		</div>
-    </td>
   </tr>
 </table>
 
+<div id="detailsInfo"></div>
 <div id="patientChartListDiv"></div>
-
-<div id="chartView" style="display: none; padding: 0; margin: 0;'">
-	<img id="chartImage" src="" style="padding: 10px;"></img>
+<div id="chartView" class="hidden">
+	<img id="chartImage" src="" class="padding-chart"></img>
 </div>
 
 <span id="message"></span>
