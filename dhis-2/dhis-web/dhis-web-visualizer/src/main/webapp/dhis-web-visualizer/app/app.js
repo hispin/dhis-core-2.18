@@ -4,7 +4,7 @@ DV.conf = {
 			series: ['Series 1', 'Series 2', 'Series 3', 'Series 4'],
 			category: ['Category 1', 'Category 2', 'Category 3'],
 			filter: [DV.i18n.example_chart],
-			values: [51, 64, 48, 52, 72, 47, 66, 55, 62, 68, 63, 57],
+			values: [84, 77, 87, 82, 91, 69, 82, 78, 83, 76, 73, 85],
 			setState: function() {
 				DV.state.type = DV.conf.finals.chart.column;
 				DV.state.series.dimension = DV.conf.finals.dimension.data.value;
@@ -12,7 +12,7 @@ DV.conf = {
 				DV.state.category.dimension = DV.conf.finals.dimension.period.value;
 				DV.state.category.names = DV.conf.init.example.category;
 				DV.state.filter.names = DV.conf.init.example.filter;
-				DV.state.targetLineValue = 90;
+				DV.state.targetLineValue = 80;
 				DV.state.rangeAxisLabel = 'Range axis label';
 			},
 			setValues: function() {
@@ -920,7 +920,7 @@ Ext.onReady( function() {
                     
                     var url = DV.cmp.favorite.system.getValue() ? DV.conf.finals.ajax.favorite_addorupdatesystem : DV.conf.finals.ajax.favorite_addorupdate;                    
                     Ext.Ajax.request({
-                        url: DV.conf.finals.ajax.path_visexecualizer + url,
+                        url: DV.conf.finals.ajax.path_visualizer + url,
                         params: params,
                         success: function() {
                             DV.store.favorite.load({callback: function() {
@@ -2663,7 +2663,7 @@ Ext.onReady( function() {
                         {
                             xtype: 'button',
 							cls: 'dv-toolbar-btn-2',
-                            text: DV.i18n.favorites,
+                            text: DV.i18n.favorites + '..',
                             listeners: {
                                 afterrender: function(b) {
                                     this.menu = Ext.create('Ext.menu.Menu', {
@@ -3206,7 +3206,7 @@ Ext.onReady( function() {
                         {
                             xtype: 'button',
 							cls: 'dv-toolbar-btn-2',
-                            text: DV.i18n.download_as,
+                            text: DV.i18n.download + '..',
                             execute: function(type) {
                                 var svg = document.getElementsByTagName('svg');
                                 
