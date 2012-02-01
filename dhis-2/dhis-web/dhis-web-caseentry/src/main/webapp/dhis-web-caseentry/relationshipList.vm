@@ -1,86 +1,96 @@
 <h3>$i18n.getString( "relationship_management" )</h3>
 
 <input type="hidden" id="id" name="id" value="$patient.id">
-<div id="selectedPatientContainer" style="border:1px solid #808080; padding:10px;">
-    <table class="mainPageTable">                           
-        <tr>              
-            <td>
-                <span class="bold">$i18n.getString( "full_name" ):</span>$encoder.htmlEncode( $patient.getFullName() )<br>
-                <span class="bold">$i18n.getString( "gender" ):</span>$i18n.getString( $patient.gender )<br>
-                <span class="bold">$i18n.getString( "date_of_birth" ):</span>$format.formatDate( $patient.birthDate )<br>
-                <span class="bold">$i18n.getString( "age" ):</span>$encoder.htmlEncode( $patient.getAge() )
-            </td>               
-            <td style="vertical-align:top">
-                <div style="float:right">
-                    #foreach( $patientAttributeValue in $patientAttributeValues )
-                        <span class="bold">$encoder.htmlEncode( $patientAttributeValue.patientAttribute.name ):</span>$encoder.htmlEncode( $patientAttributeValue.value )<br>
-                    #end                         
-                </div>
-            </td>   
-        </tr>                              
-    </table>
-</div>
-
-<table class="mainPageTable">
-    <tr>
-        <td style="vertical-align:top">
-            <table class="listTable">
-                <col>
-                <col>
-                <col width="20">           
-                  
-                <tr>
-					<td style="text-align:right" colspan='3'>
-						<input type="button" value="$i18n.getString( 'add_new' )" onclick="javascript:showAddRelationship('$patient.id')" style="width:12em">                                                              
-						<input type="button" value="$i18n.getString( 'add_new_patient' )" onclick="javascript:showAddRelationshipPatient( '$patient.id',false )" style="width:12em">                                                              
-						<input type="button" value="$i18n.getString( "back_to_registration" )" onclick="onClickBackBtn();" style="width:12em">
-					</td>
+<table class="list-table infor">                           
+	<tr>              
+		<td>
+			<table>
+				<tr>
+					<td class="bold text-column">$i18n.getString( "full_name" ): </td>
+					<td>$encoder.htmlEncode( $patient.getFullName() )<td>
 				</tr>
-          
-                <tr>            
-                    <th>$i18n.getString( "relationship" )</th>
-                    <th>$i18n.getString( "full_name" )</th>
-                    <th style="text-align:center">$i18n.getString( "operations" )</th>
-                </tr>
-                <tbody id="list"> 
-					#set( $mark = false )
-                    #foreach( $relationship in $relationships )
-                        <tr id="tr${relationship.id}" #alternate( $mark ) >
-                            #set( $partnerId = false )    
-                            #if( $relationship.patientA.id == $patient.id )
-                                #set( $partnerId = $relationship.patientB.id )
-                                <td>                                
-                                    $encoder.htmlEncode( $relationship.relationshipType.BIsToA )
-                                </td>
-                                            
-                                <td>
-                                    $encoder.htmlEncode( $relationship.patientB.getFullName() )
-                                </td>
-                            #elseif($relationship.patientB.id == $patient.id )
-                                #set( $partnerId = $relationship.patientA.id )
-                                <td>                                
-                                    $encoder.htmlEncode( $relationship.relationshipType.AIsToB )
-                                </td>
-                                            
-                                <td>
-                                    $encoder.htmlEncode( $relationship.patientA.getFullName() )
-                                </td>
-                            #end                  
-                            
-                            <td style="text-align:center">
-                                <a href="javascript:manageRepresentative( '$patient.id', $partnerId )" title="$i18n.getString( 'manage_representative' )"><img src="../images/assign.png" alt="$i18n.getString( 'manage_representative' )"></a>
-                                <a href="javascript:removeRelationship( '$relationship.id', '$encoder.jsEncode( $relationship.patientA.getFullName() )', '$encoder.jsEncode( $relationship.relationshipType.aIsToB )', '$encoder.jsEncode( $relationship.patientB.getFullName() )' )" title="$i18n.getString( 'remove' )"><img src="../images/delete.png" alt="$i18n.getString( 'remove' )"></a>
-                            </td>   						
-                        </tr>
-						#set( $mark = !$mark)
-                    #end
-                </tbody>
-            </table>
-        </td> 
-    </tr>         
+				<tr>
+					<td class="bold text-column">$i18n.getString( "gender" ): </td>
+					<td>$i18n.getString( $patient.gender )<td>
+				</tr>
+				<tr>
+					<td class="bold text-column">$i18n.getString( "date_of_birth" ): </td>
+					<td>$format.formatDate( $patient.birthDate )<td>
+				</tr>
+				<tr>
+					<td class="bold text-column" style='vertical-align:top'>$i18n.getString( "age" ): </td>
+					<td>$encoder.htmlEncode( $patient.getAge() )</td>
+				</tr>
+			</table>
+		</td>
+	
+		#if( $patientAttributeValues.size() > 0 )
+		<td align="right">
+				<table>
+					#foreach( $patientAttributeValue in $patientAttributeValues )
+						<tr>
+							<td class="bold text-column">$encoder.htmlEncode( $patientAttributeValue.patientAttribute.name ):</td>
+							<td>$encoder.htmlEncode( $patientAttributeValue.value )</td>
+						</tr>
+					#end                         
+				</table>
+			
+		</td>
+		#end
+	</tr>
+	
 </table>
 
-<div id="detailsArea" style="display:none; width:100%; padding-left:2em; vertical-align:top">
+<div class='buttons'>
+	<input type="button" class='button' value="$i18n.getString( 'add_new' )" onclick="javascript:showAddRelationship('$patient.id')" >
+	<input type="button" class='button' value="$i18n.getString( 'add_new_patient' )" onclick="javascript:showAddRelationshipPatient( '$patient.id',false )" >
+	<input type="button" class='button' value="$i18n.getString( 'back_to_registration' )" onclick="onClickBackBtn();" >
+</div>
+
+<table class="list-table listTable">
+               
+	<tr>            
+		<th>$i18n.getString( "relationship" )</th>
+		<th>$i18n.getString( "full_name" )</th>
+		<th style="text-align:center">$i18n.getString( "operations" )</th>
+	</tr>
+	
+	<tbody id="list"> 
+		#set( $mark = false )
+		#foreach( $relationship in $relationships )
+			<tr id="tr${relationship.id}" #alternate( $mark ) >
+				#set( $partnerId = false )    
+				#if( $relationship.patientA.id == $patient.id )
+					#set( $partnerId = $relationship.patientB.id )
+					<td>                                
+						$encoder.htmlEncode( $relationship.relationshipType.BIsToA )
+					</td>
+								
+					<td>
+						$encoder.htmlEncode( $relationship.patientB.getFullName() )
+					</td>
+				#elseif($relationship.patientB.id == $patient.id )
+					#set( $partnerId = $relationship.patientA.id )
+					<td>                                
+						$encoder.htmlEncode( $relationship.relationshipType.AIsToB )
+					</td>
+								
+					<td>
+						$encoder.htmlEncode( $relationship.patientA.getFullName() )
+					</td>
+				#end                  
+				
+				<td style="text-align:center">
+					<a href="javascript:manageRepresentative( '$patient.id', $partnerId )" title="$i18n.getString( 'manage_representative' )"><img src="../images/assign.png" alt="$i18n.getString( 'manage_representative' )"></a>
+					<a href="javascript:removeRelationship( '$relationship.id', '$encoder.jsEncode( $relationship.patientA.getFullName() )', '$encoder.jsEncode( $relationship.relationshipType.aIsToB )', '$encoder.jsEncode( $relationship.patientB.getFullName() )' )" title="$i18n.getString( 'remove' )"><img src="../images/delete.png" alt="$i18n.getString( 'remove' )"></a>
+				</td>   						
+			</tr>
+			#set( $mark = !$mark)
+		#end
+	</tbody>
+</table>
+
+<div id="detailsArea" class="hidden">
 	<table>
 		<tr>
 			<td>

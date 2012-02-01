@@ -584,6 +584,7 @@ function showUnenrollmentForm( programInstanceId )
 {				
 	if( programInstanceId == 0 )
 	{
+		hideById( 'unenrollmentFormDiv' );
 		return;
 	}
 	
@@ -598,6 +599,8 @@ function showUnenrollmentForm( programInstanceId )
 			setFieldValue( 'dateOfIncident', json.enrollmentDate );
 			setFieldValue( 'dateOfEnrollmentDescription', json.dateOfEnrollmentDescription );
 			setFieldValue( 'dateOfIncidentDescription', json.dateOfIncidentDescription );
+			disable( 'enrollmentDate' );
+			disable( 'dateOfIncident' );
 			showById( 'unenrollmentFormDiv' );
 			jQuery( "#loaderDiv" ).hide();
 		});

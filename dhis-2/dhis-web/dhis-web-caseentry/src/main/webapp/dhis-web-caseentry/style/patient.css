@@ -1,26 +1,62 @@
-table 
+table
 {
  margin-bottom:20px; 
  font-size: 13px; 
  line-height:18px;
 }
 
-#patientInfo 
+input.button
 {
-  color: black;  
-  background-color: #D5FFC5;
-  border: 1px solid black;
-  font-size: 12px;  
+	width: 150px;
+	padding-left:5px;
+	padding-right:5px;
 }
 
-#currentSelection 
+input.imgButton
 {
-  color: black;  
-  background-color: #D5FFC5;
-  border: 1px solid black;
-  font-size: 12px; 
-
+	width:20px;
+	height:20px;
+	cursor: pointer;
 }
+
+.hidden
+{
+	display:none;
+}
+
+.text-column
+{
+	text-align:left;
+	padding-right:20px; 
+	padding-left:5px; 
+}
+
+.infor
+{
+	border:1px solid #808080; 
+	vertical-align:top;
+	padding:10px;
+}
+
+.buttons
+{
+	text-align:right;
+	padding-bottom:10px;
+	width:100%;
+}
+
+.list-table
+{
+	width:100%;
+}
+
+.heading-column { width : 450px;}
+td.input-column { width : 390px;}
+td.input-column input{ width: 360px;}
+td.input-column select { width: 367px;}
+td.error {padding-left:1em}
+
+.infor td{vertical-align: top;}
 
 .focusCell{background-color: #AFCCFF}
 .errorCell{background-color: #FFCFCF}
@@ -28,24 +64,6 @@ table
 .sectionClose{ display: none}
 .togglePanel.open {height:25px;padding-left:25px; background-image:  url(../images/open.gif) ; background-repeat: no-repeat; background-position: top left}
 .togglePanel.close {height:25px;padding-left:25px;  background-image:  url(../images/close.gif) ; background-repeat: no-repeat; background-position: top left}
-
-input.inputText{width: 8em}
-select.inputText{width: 8.4em}
-.inputColumn{ width:170px}
-
-#tooltip {
-    color:#000; font-size:11px; line-height:1.2;
-    background-color:#FFFFCC; border:1px solid #667295; 
-    width:210px; padding:4px;
-	z-index: 100000;
-	display: none;
-	position:absolute;
-}
-
-.heading-column { width : 30.5em;}
-td.input-column { width : 30.5em;}
-td.input-column input, td.input-column select { width: 28.5em;}
-td.error {padding-left:1em}
 
 .warnmessage {
 	color: red; 
@@ -55,11 +73,4 @@ td.error {padding-left:1em}
 #facilityCol
 {
 	width: 130px;
-}
-
-#actions
-{
-  float: right;
-  width:200px;
-  text-align: right;
 }

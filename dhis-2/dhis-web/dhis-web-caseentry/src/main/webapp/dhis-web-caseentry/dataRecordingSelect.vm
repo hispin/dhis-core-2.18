@@ -45,7 +45,7 @@
 			<td>
 				<table>
 				   <tr>
-						<td class='textColumn'><label for="programId">$i18n.getString( "program" )</label></td>
+						<td class='text-column'><label for="programId">$i18n.getString( "program" )</label></td>
 						<td>
 							<select id="programId" name="programId" class="criteria" onchange="loadProgramStages();" #if( $programs.size() == 0 ) disabled="disabled" #end>
 								<option value="0">[$i18n.getString( "select" )]</option>
@@ -56,7 +56,7 @@
 						</td>
 					</tr>
 					<tr id='programStageIdTR' >
-						<td class='textColumn'><label for="programStageId">$i18n.getString( "program_stage" )</label></td>
+						<td class='text-column'><label for="programStageId">$i18n.getString( "program_stage" )</label></td>
 						<td>
 							<select id="programStageId" name="programStageId" class="criteria" onchange="javascript:loadDataEntry();" >
 							</select>
@@ -64,7 +64,7 @@
 					</tr>
 					
 					<tr>
-						<td class='textColumn'><label for="executionDate">$i18n.getString( "report_date" ) </label></td>
+						<td class='text-column'><label for="executionDate">$i18n.getString( "report_date" ) </label></td>
 						<td><input type="text" id="executionDate" name="executionDate" class="criteria" value="$!format.formatDate( $programStageInstance.executionDate )" >
 							<script type="text/javascript">
 							   datePickerValid( 'executionDate', false );
@@ -73,7 +73,7 @@
 					</tr>
 					
 					<tr id='dueDateTR'>
-						<td class='textColumn'><label for="dueDate">$i18n.getString( "due_date" ) </label></td>
+						<td class='text-column'><label for="dueDate">$i18n.getString( "due_date" ) </label></td>
 						<td><input type="text" id="dueDate" name="dueDate" class="criteria" value="$!format.formatDate( $programStageInstance.dueDate )" readonly> </td>
 					</tr>
 				</table>

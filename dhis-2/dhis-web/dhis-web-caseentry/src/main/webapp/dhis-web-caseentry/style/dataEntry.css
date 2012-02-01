@@ -16,7 +16,7 @@ input.inputText, select.inputText
 	text-align:center;
 }
 
-.textColumn
+.text-column
 {
 	text-align:left;
 	padding-right:20px; 
@@ -54,6 +54,10 @@ table.history
 div#currentSelection
 {
 	float:right;
+	color: black;  
+	background-color: #D5FFC5;
+	border: 1px solid black;
+	font-size: 12px; 
 }
 
 /*----------------------------------------------------------------------------*/
