@@ -85,7 +85,7 @@ public class OpenUpdateIndicatorGroupSetAction
 
     public String execute()
     {
-        indicatorGroupSet = indicatorService.getIndicatorGroupSet( id );
+        indicatorGroupSet = indicatorService.getIndicatorGroupSet( id, true );
 
         selectedGroups = indicatorGroupSet.getMembers();
         

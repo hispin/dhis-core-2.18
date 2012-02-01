@@ -66,7 +66,7 @@
         <td>
             <select id="groupMembers" name="groupMembers" multiple="multiple" style="height: 200px; width: 100%; margin-top: 22px">
 			#foreach( $validationRule in $groupMembers )
-				<option value="$validationRule.id">$encoder.htmlEncode( $validationRule.name )</option>
+				<option value="$validationRule.id">$encoder.htmlEncode( $validationRule.displayName )</option>
 			#end
             </select>
         </td>      

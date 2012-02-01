@@ -19,7 +19,7 @@
 	});
 </script>
 
-<h3>$i18n.getString( "update_dataelementgroupset" ) : $dataElementGroupSet.name</h3>
+<h3>$i18n.getString( "update_dataelementgroupset" )</h3>
 
 <form id="updateDataElementGroupSet" action="updateDataElementGroupSet.action" method="post">
 
@@ -82,7 +82,7 @@
 		<td>
 			<select id="groupMembers" name="groupMembers" multiple="multiple" style="height: 200px; width: 100%; margin-top: 22px;">
 				#foreach( $dataElementGroup in $selectedGroups )
-                    <option value="$dataElementGroup.id">$encoder.htmlEncode( $dataElementGroup.name )</option>
+                    <option value="$dataElementGroup.id">$encoder.htmlEncode( $dataElementGroup.displayName )</option>
                 #end
 			</select>
 		</td>

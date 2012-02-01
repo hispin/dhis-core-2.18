@@ -91,7 +91,7 @@ public class GetOrganisationUnitGroupAction
     public String execute()
         throws Exception
     {
-        organisationUnitGroup = organisationUnitGroupService.getOrganisationUnitGroup( id.intValue() );
+        organisationUnitGroup = organisationUnitGroupService.getOrganisationUnitGroup( id );
 
         memberCount = organisationUnitGroup.getMembers().size();
         

@@ -82,7 +82,7 @@ public class GetGroupSetAction
     public String execute()
         throws Exception
     {
-        organisationUnitGroupSet = organisationUnitGroupService.getOrganisationUnitGroupSet( id.intValue() );
+        organisationUnitGroupSet = organisationUnitGroupService.getOrganisationUnitGroupSet( id );
 
         if ( organisationUnitGroupSet != null )
         {

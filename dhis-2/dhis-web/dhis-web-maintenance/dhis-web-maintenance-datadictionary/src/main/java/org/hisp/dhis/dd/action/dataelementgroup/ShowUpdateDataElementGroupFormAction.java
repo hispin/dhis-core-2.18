@@ -96,7 +96,7 @@ public class ShowUpdateDataElementGroupFormAction
         // Get group members
         // ---------------------------------------------------------------------
 
-        dataElementGroup = dataElementService.getDataElementGroup( id );
+        dataElementGroup = dataElementService.getDataElementGroup( id, true );
 
         groupMembers = new ArrayList<DataElement>( dataElementGroup.getMembers() );
 

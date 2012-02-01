@@ -68,7 +68,7 @@ public class RemoveGroupSetAction
         throws Exception
     {
         organisationUnitGroupService.deleteOrganisationUnitGroupSet( organisationUnitGroupService
-            .getOrganisationUnitGroupSet( id.intValue() ) );
+            .getOrganisationUnitGroupSet( id ) );
 
         return SUCCESS;
     }
