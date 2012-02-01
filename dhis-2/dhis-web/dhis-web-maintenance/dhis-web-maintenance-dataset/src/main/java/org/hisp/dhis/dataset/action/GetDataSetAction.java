@@ -129,11 +129,11 @@ public class GetDataSetAction
 
         dataSetDataElements = new ArrayList<DataElement>( dataSet.getDataElements() );
 
-        Collections.sort( dataSetDataElements, new IdentifiableObjectNameComparator() );
+        Collections.sort( dataSetDataElements, IdentifiableObjectNameComparator.INSTANCE );
 
         dataSetIndicators = new ArrayList<Indicator>( dataSet.getIndicators() );
 
-        Collections.sort( dataSetIndicators, new IdentifiableObjectNameComparator() );
+        Collections.sort( dataSetIndicators, IdentifiableObjectNameComparator.INSTANCE );
 
         dataEntryForm = dataSet.getDataEntryForm();
 

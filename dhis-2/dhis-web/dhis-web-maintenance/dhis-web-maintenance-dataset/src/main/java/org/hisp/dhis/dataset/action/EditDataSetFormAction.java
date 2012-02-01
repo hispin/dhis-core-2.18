@@ -120,7 +120,7 @@ public class EditDataSetFormAction
 
         if ( dataSetId != null )
         {
-            dataSet = dataSetService.getDataSet( dataSetId );
+            dataSet = dataSetService.getDataSet( dataSetId, true, true, false );
             dataElements = new ArrayList<DataElement>( dataSet.getDataElements() );
             indicators = new ArrayList<Indicator>( dataSet.getIndicators() );
         }
