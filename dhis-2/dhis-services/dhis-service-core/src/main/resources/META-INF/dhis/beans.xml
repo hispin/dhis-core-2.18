@@ -224,11 +224,6 @@ http://www.springframework.org/schema/security http://www.springframework.org/sc
     <property name="sessionFactory" ref="sessionFactory" />
   </bean>
 
-  <bean id="org.hisp.dhis.sequence.SequenceStore" class="org.hisp.dhis.hibernate.HibernateGenericStore">
-    <property name="sessionFactory" ref="sessionFactory" />
-    <property name="clazz" value="org.hisp.dhis.sequence.Sequence" />
-  </bean>
-
   <bean id="org.hisp.dhis.configuration.ConfigurationStore" class="org.hisp.dhis.hibernate.HibernateGenericStore">
     <property name="sessionFactory" ref="sessionFactory" />
     <property name="clazz" value="org.hisp.dhis.configuration.Configuration" />
@@ -466,10 +461,6 @@ http://www.springframework.org/schema/security http://www.springframework.org/sc
 
   <bean id="org.hisp.dhis.concept.ConceptService" class="org.hisp.dhis.concept.DefaultConceptService">
     <property name="conceptStore" ref="org.hisp.dhis.concept.ConceptStore" />
-  </bean>
-
-  <bean id="org.hisp.dhis.sequence.SequenceGenerator" class="org.hisp.dhis.sequence.DefaultSequenceGenerator">
-    <property name="sequenceStore" ref="org.hisp.dhis.sequence.SequenceStore" />
   </bean>
 
   <bean id="org.hisp.dhis.configuration.ConfigurationService" class="org.hisp.dhis.configuration.DefaultConfigurationService">
