@@ -43,21 +43,74 @@ import org.hisp.dhis.constant.Constant;
 import org.hisp.dhis.constant.ConstantService;
 import org.hisp.dhis.datadictionary.DataDictionary;
 import org.hisp.dhis.datadictionary.DataDictionaryService;
-import org.hisp.dhis.dataelement.*;
+import org.hisp.dhis.dataelement.DataElement;
+import org.hisp.dhis.dataelement.DataElementCategory;
+import org.hisp.dhis.dataelement.DataElementCategoryCombo;
+import org.hisp.dhis.dataelement.DataElementCategoryOption;
+import org.hisp.dhis.dataelement.DataElementCategoryService;
+import org.hisp.dhis.dataelement.DataElementGroup;
+import org.hisp.dhis.dataelement.DataElementGroupSet;
+import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.dataset.CompleteDataSetRegistration;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.dataset.DataSetService;
 import org.hisp.dhis.datavalue.DataValue;
 import org.hisp.dhis.expression.ExpressionService;
-import org.hisp.dhis.importexport.*;
+import org.hisp.dhis.importexport.ExportParams;
+import org.hisp.dhis.importexport.GroupMemberAssociation;
+import org.hisp.dhis.importexport.ImportDataValue;
+import org.hisp.dhis.importexport.ImportObjectService;
+import org.hisp.dhis.importexport.ImportParams;
+import org.hisp.dhis.importexport.XMLConverter;
 import org.hisp.dhis.importexport.analysis.DefaultImportAnalyser;
 import org.hisp.dhis.importexport.analysis.ImportAnalyser;
 import org.hisp.dhis.importexport.invoker.ConverterInvoker;
 import org.hisp.dhis.importexport.mapping.NameMappingUtil;
 import org.hisp.dhis.importexport.mapping.ObjectMappingGenerator;
-import org.hisp.dhis.indicator.*;
-import org.hisp.dhis.jdbc.batchhandler.*;
-import org.hisp.dhis.organisationunit.*;
+import org.hisp.dhis.indicator.Indicator;
+import org.hisp.dhis.indicator.IndicatorGroup;
+import org.hisp.dhis.indicator.IndicatorGroupSet;
+import org.hisp.dhis.indicator.IndicatorService;
+import org.hisp.dhis.indicator.IndicatorType;
+import org.hisp.dhis.jdbc.batchhandler.CategoryCategoryOptionAssociationBatchHandler;
+import org.hisp.dhis.jdbc.batchhandler.CategoryComboCategoryAssociationBatchHandler;
+import org.hisp.dhis.jdbc.batchhandler.CompleteDataSetRegistrationBatchHandler;
+import org.hisp.dhis.jdbc.batchhandler.ConceptBatchHandler;
+import org.hisp.dhis.jdbc.batchhandler.ConstantBatchHandler;
+import org.hisp.dhis.jdbc.batchhandler.DataDictionaryBatchHandler;
+import org.hisp.dhis.jdbc.batchhandler.DataDictionaryDataElementBatchHandler;
+import org.hisp.dhis.jdbc.batchhandler.DataDictionaryIndicatorBatchHandler;
+import org.hisp.dhis.jdbc.batchhandler.DataElementBatchHandler;
+import org.hisp.dhis.jdbc.batchhandler.DataElementCategoryBatchHandler;
+import org.hisp.dhis.jdbc.batchhandler.DataElementCategoryComboBatchHandler;
+import org.hisp.dhis.jdbc.batchhandler.DataElementCategoryOptionBatchHandler;
+import org.hisp.dhis.jdbc.batchhandler.DataElementGroupBatchHandler;
+import org.hisp.dhis.jdbc.batchhandler.DataElementGroupMemberBatchHandler;
+import org.hisp.dhis.jdbc.batchhandler.DataElementGroupSetBatchHandler;
+import org.hisp.dhis.jdbc.batchhandler.DataElementGroupSetMemberBatchHandler;
+import org.hisp.dhis.jdbc.batchhandler.DataSetBatchHandler;
+import org.hisp.dhis.jdbc.batchhandler.DataSetMemberBatchHandler;
+import org.hisp.dhis.jdbc.batchhandler.DataSetSourceAssociationBatchHandler;
+import org.hisp.dhis.jdbc.batchhandler.DataValueBatchHandler;
+import org.hisp.dhis.jdbc.batchhandler.GroupSetBatchHandler;
+import org.hisp.dhis.jdbc.batchhandler.GroupSetMemberBatchHandler;
+import org.hisp.dhis.jdbc.batchhandler.ImportDataValueBatchHandler;
+import org.hisp.dhis.jdbc.batchhandler.IndicatorBatchHandler;
+import org.hisp.dhis.jdbc.batchhandler.IndicatorGroupBatchHandler;
+import org.hisp.dhis.jdbc.batchhandler.IndicatorGroupMemberBatchHandler;
+import org.hisp.dhis.jdbc.batchhandler.IndicatorGroupSetBatchHandler;
+import org.hisp.dhis.jdbc.batchhandler.IndicatorGroupSetMemberBatchHandler;
+import org.hisp.dhis.jdbc.batchhandler.IndicatorTypeBatchHandler;
+import org.hisp.dhis.jdbc.batchhandler.OrganisationUnitBatchHandler;
+import org.hisp.dhis.jdbc.batchhandler.OrganisationUnitGroupBatchHandler;
+import org.hisp.dhis.jdbc.batchhandler.OrganisationUnitGroupMemberBatchHandler;
+import org.hisp.dhis.jdbc.batchhandler.PeriodBatchHandler;
+import org.hisp.dhis.jdbc.batchhandler.ReportTableBatchHandler;
+import org.hisp.dhis.organisationunit.OrganisationUnit;
+import org.hisp.dhis.organisationunit.OrganisationUnitGroup;
+import org.hisp.dhis.organisationunit.OrganisationUnitGroupService;
+import org.hisp.dhis.organisationunit.OrganisationUnitGroupSet;
+import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodService;
 import org.hisp.dhis.report.ReportService;
@@ -942,6 +995,7 @@ public class DXFConverter
                 && params.isDataValues() )
             {
                 log.debug("Starting CompleteDataSetRegistrations import");
+
                 state.setMessage( "importing_complete_data_set_registrations" );
 
                 BatchHandler<CompleteDataSetRegistration> batchHandler = batchHandlerFactory.createBatchHandler(
@@ -961,6 +1015,7 @@ public class DXFConverter
             else if ( reader.isStartElement( DataValueConverter.COLLECTION_NAME ) && params.isDataValues() )
             {
                 log.debug("Starting DataValues import");
+
                 state.setMessage( "importing_data_values" );
 
                 BatchHandler<DataValue> batchHandler = batchHandlerFactory.createBatchHandler(
