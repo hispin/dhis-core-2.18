@@ -88,7 +88,7 @@ public class ShowUpdateIndicatorGroupFormAction
 
     public String execute()
     {
-        indicatorGroup = indicatorService.getIndicatorGroup( id );
+        indicatorGroup = indicatorService.getIndicatorGroup( id, true );
 
         groupMembers = new ArrayList<Indicator>( indicatorGroup.getMembers() );
 

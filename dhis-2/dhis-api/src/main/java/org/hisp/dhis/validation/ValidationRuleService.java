@@ -242,6 +242,15 @@ public interface ValidationRuleService
     ValidationRuleGroup getValidationRuleGroup( int id );
 
     /**
+     * Get ValidationRuleGroup with the given identifier.
+     *
+     * @param id the unique identifier of the ValidationRuleGroup.
+     * @param i18nValidationRules whether to i18n the rules of this group.
+     * @return the ValidationRuleGroup or null if it doesn't exist.
+     */
+    ValidationRuleGroup getValidationRuleGroup( int id, boolean i18nValidationRules );
+
+    /**
      * Get ValidationRuleGroup with the given uid.
      *
      * @param uid the unique identifier of the ValidationRuleGroup.

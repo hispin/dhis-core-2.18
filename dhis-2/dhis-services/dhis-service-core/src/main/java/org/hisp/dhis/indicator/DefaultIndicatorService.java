@@ -289,6 +289,18 @@ public class DefaultIndicatorService
         return i18n( i18nService, indicatorGroupStore.get( id ) );
     }
 
+    public IndicatorGroup getIndicatorGroup( int id, boolean i18nIndicators )
+    {
+        IndicatorGroup group = getIndicatorGroup( id );
+        
+        if ( i18nIndicators )
+        {
+            i18n( i18nService, group.getMembers() );
+        }
+        
+        return group;
+    }
+
     public Collection<IndicatorGroup> getIndicatorGroups( final Collection<Integer> identifiers )
     {
         Collection<IndicatorGroup> groups = getAllIndicatorGroups();
@@ -378,6 +390,18 @@ public class DefaultIndicatorService
     public IndicatorGroupSet getIndicatorGroupSet( int id )
     {
         return i18n( i18nService, indicatorGroupSetStore.get( id ) );
+    }
+    
+    public IndicatorGroupSet getIndicatorGroupSet( int id, boolean i18nGroups )
+    {
+        IndicatorGroupSet groupSet = getIndicatorGroupSet( id );
+        
+        if ( i18nGroups )
+        {
+            i18n( i18nService, groupSet.getMembers() );
+        }
+        
+        return groupSet;
     }
 
     public IndicatorGroupSet getIndicatorGroupSet( String uid )

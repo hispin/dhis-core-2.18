@@ -75,9 +75,10 @@ public interface OrganisationUnitGroupService
     OrganisationUnitGroup getOrganisationUnitGroup( int id );
 
     /**
+     * Returns the OrganisationUnitGroup with the given identifiers.
      * 
-     * @param identifiers
-     * @return
+     * @param identifiers the collection of identifiers.
+     * @return the OrganisationUnitGroup with the given identifiers.
      */
     Collection<OrganisationUnitGroup> getOrganisationUnitGroups( Collection<Integer> identifiers );
     
@@ -147,6 +148,16 @@ public interface OrganisationUnitGroupService
      *         match.
      */
     OrganisationUnitGroupSet getOrganisationUnitGroupSet( int id );
+
+    /**
+     * Returns an OrganisationUnitGroupSet.
+     * 
+     * @param id the id of the OrganisationUnitGroupSet to return.
+     * @param i18nGroups whether to i18n the groups in this group set.
+     * @return the OrganisationUnitGroupSet with the given id, or null if no
+     *         match.
+     */
+    OrganisationUnitGroupSet getOrganisationUnitGroupSet( int id, boolean i18nGroups );
 
     /**
      * Returns an OrganisationUnitGroupSet.

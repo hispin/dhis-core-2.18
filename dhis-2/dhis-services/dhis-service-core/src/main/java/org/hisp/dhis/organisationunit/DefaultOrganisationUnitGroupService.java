@@ -172,6 +172,18 @@ public class DefaultOrganisationUnitGroupService
         return i18n( i18nService, organisationUnitGroupSetStore.get( id ) );
     }
 
+    public OrganisationUnitGroupSet getOrganisationUnitGroupSet( int id, boolean i18nGroups )
+    {
+        OrganisationUnitGroupSet groupSet = getOrganisationUnitGroupSet( id );
+        
+        if ( i18nGroups )
+        {
+            i18n( i18nService, groupSet.getOrganisationUnitGroups() );
+        }
+        
+        return groupSet;
+    }
+
     public OrganisationUnitGroupSet getOrganisationUnitGroupSet( String uid )
     {
         return i18n( i18nService, organisationUnitGroupSetStore.getByUid( uid ) );

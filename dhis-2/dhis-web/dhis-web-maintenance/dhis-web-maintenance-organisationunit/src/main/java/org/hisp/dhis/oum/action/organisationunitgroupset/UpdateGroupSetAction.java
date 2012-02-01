@@ -101,7 +101,7 @@ public class UpdateGroupSetAction
     public String execute()
         throws Exception
     {
-        OrganisationUnitGroupSet groupSet = organisationUnitGroupService.getOrganisationUnitGroupSet( id.intValue() );
+        OrganisationUnitGroupSet groupSet = organisationUnitGroupService.getOrganisationUnitGroupSet( id );
 
         groupSet.setName( name );
         groupSet.setDescription( description );

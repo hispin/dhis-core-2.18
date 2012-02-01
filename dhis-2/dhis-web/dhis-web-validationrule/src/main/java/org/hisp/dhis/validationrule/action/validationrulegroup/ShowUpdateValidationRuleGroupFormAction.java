@@ -104,7 +104,7 @@ public class ShowUpdateValidationRuleGroupFormAction
         // Get selected group
         // ---------------------------------------------------------------------
 
-        validationRuleGroup = validationRuleService.getValidationRuleGroup( id );
+        validationRuleGroup = validationRuleService.getValidationRuleGroup( id, true );
 
         groupMembers = new ArrayList<ValidationRule>( validationRuleGroup.getMembers() );
 

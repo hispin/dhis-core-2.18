@@ -82,7 +82,7 @@ public class OpenUpdateDataElementGroupSetAction
     public String execute()
         throws Exception
     {
-        dataElementGroupSet = dataElementService.getDataElementGroupSet( id );       
+        dataElementGroupSet = dataElementService.getDataElementGroupSet( id, true );       
         
         selectedGroups = dataElementGroupSet.getMembers();
         

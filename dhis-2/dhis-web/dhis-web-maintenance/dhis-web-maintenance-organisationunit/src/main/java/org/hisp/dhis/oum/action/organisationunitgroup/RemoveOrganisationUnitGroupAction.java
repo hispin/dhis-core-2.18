@@ -68,7 +68,7 @@ public class RemoveOrganisationUnitGroupAction
         throws Exception
     {
         organisationUnitGroupService.deleteOrganisationUnitGroup( organisationUnitGroupService
-            .getOrganisationUnitGroup( id.intValue() ) );
+            .getOrganisationUnitGroup( id ) );
 
         return SUCCESS;
     }

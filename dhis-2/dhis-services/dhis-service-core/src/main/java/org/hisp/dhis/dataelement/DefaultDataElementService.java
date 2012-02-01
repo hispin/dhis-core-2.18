@@ -361,6 +361,18 @@ public class DefaultDataElementService
         return i18n( i18nService, dataElementGroupStore.get( id ) );
     }
     
+    public DataElementGroup getDataElementGroup( int id, boolean i18nDataElements )
+    {
+        DataElementGroup group = getDataElementGroup( id );
+        
+        if ( i18nDataElements )
+        {
+            i18n( i18nService, group.getMembers() );
+        }
+        
+        return group;
+    }
+    
     public Collection<DataElementGroup> getDataElementGroups( final Collection<Integer> identifiers )
     {
         Collection<DataElementGroup> groups = getAllDataElementGroups();
@@ -453,6 +465,18 @@ public class DefaultDataElementService
     public DataElementGroupSet getDataElementGroupSet( int id )
     {
         return i18n( i18nService, dataElementGroupSetStore.get( id ) );
+    }
+    
+    public DataElementGroupSet getDataElementGroupSet( int id, boolean i18nGroups )
+    {
+        DataElementGroupSet groupSet = getDataElementGroupSet( id );
+        
+        if ( i18nGroups )
+        {
+            i18n( i18nService, groupSet.getDataElements() );
+        }
+        
+        return groupSet;
     }
 
     public DataElementGroupSet getDataElementGroupSet( String uid )

@@ -21,7 +21,7 @@
 	});
 </script>
 
-<h3>$i18n.getString( "update_indicatorgroupset" ) : $indicatorGroupSet.name</h3>
+<h3>$i18n.getString( "update_indicatorgroupset" )</h3>
 
 <form id="updateIndicatorGroupSet" action="updateIndicatorGroupSet.action" method="post">
 <input type=hidden id="id" name="id" value="$indicatorGroupSet.id"/>
@@ -82,7 +82,7 @@
 		<td>
 			<select id="groupMembers" name="groupMembers" multiple="multiple" style="height: 200px; width: 100%; margin-top: 22px;">
 				#foreach( $indicatorGroup in $selectedGroups )
-                    <option value="$indicatorGroup.id">$encoder.htmlEncode( $indicatorGroup.name )</option>
+                    <option value="$indicatorGroup.id">$encoder.htmlEncode( $indicatorGroup.displayName )</option>
                 #end
 			</select>
 		</td>

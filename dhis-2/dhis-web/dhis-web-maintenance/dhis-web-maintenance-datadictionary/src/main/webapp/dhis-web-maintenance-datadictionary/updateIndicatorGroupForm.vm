@@ -65,7 +65,7 @@
 		<td>
 			<select id="groupMembers" name="groupMembers" multiple="multiple" style="height: 200px; width: 100%; margin-top: 22px;">
 				#foreach( $indicator in $groupMembers )
-                    <option value="$indicator.id">$encoder.htmlEncode( $indicator.name )</option>
+                    <option value="$indicator.id">$encoder.htmlEncode( $indicator.displayName )</option>
                 #end
 			</select>
 		</td>

@@ -87,7 +87,7 @@ public class PrepareUpdateGroupSetAction
     public String execute()
         throws Exception
     {
-        organisationUnitGroupSet = organisationUnitGroupService.getOrganisationUnitGroupSet( id.intValue() );
+        organisationUnitGroupSet = organisationUnitGroupService.getOrganisationUnitGroupSet( id, true );
 
         selectedGroups = new ArrayList<OrganisationUnitGroup>( organisationUnitGroupSet.getOrganisationUnitGroups() );
 
@@ -95,5 +95,4 @@ public class PrepareUpdateGroupSetAction
 
         return SUCCESS;
     }
-
 }

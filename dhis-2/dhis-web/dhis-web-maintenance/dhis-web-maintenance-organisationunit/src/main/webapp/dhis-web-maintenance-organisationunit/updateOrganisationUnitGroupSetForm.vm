@@ -89,7 +89,7 @@
 		<td>
 			<select id="selectedGroups" name="selectedGroups" multiple="multiple" style="height: 200px; width: 100%; margin-top: 22px;">
 				#foreach ( $group in $selectedGroups )
-    				<option value="$group.id">$group.name</option>
+    				<option value="$group.id">$group.displayName</option>
     			#end
 			</select>
 		</td>

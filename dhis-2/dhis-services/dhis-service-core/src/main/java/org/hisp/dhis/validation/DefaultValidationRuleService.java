@@ -359,8 +359,6 @@ public class DefaultValidationRuleService
     {
         final Set<ValidationRule> relevantValidationRules = new HashSet<ValidationRule>();
 
-        // TODO move getDataElementsInExpression out of for-loop
-
         for ( ValidationRule validationRule : getAllValidationRules() )
         {
             for ( DataElement dataElement : dataElements )
@@ -486,11 +484,23 @@ public class DefaultValidationRuleService
         return i18n( i18nService, validationRuleGroupStore.get( id ) );
     }
 
+    public ValidationRuleGroup getValidationRuleGroup( int id, boolean i18nValidationRules )
+    {
+        ValidationRuleGroup group = getValidationRuleGroup( id );
+        
+        if ( i18nValidationRules )
+        {
+            i18n( i18nService, group.getMembers() );
+        }
+        
+        return group;
+    }
+
     public ValidationRuleGroup getValidationRuleGroup( String uid )
     {
         return i18n( i18nService, validationRuleGroupStore.getByUid( uid ) );
     }
-
+    
     public Collection<ValidationRuleGroup> getAllValidationRuleGroups()
     {
         return i18n( i18nService, validationRuleGroupStore.getAll() );
