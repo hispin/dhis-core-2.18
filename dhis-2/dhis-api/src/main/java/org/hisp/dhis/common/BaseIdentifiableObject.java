@@ -172,7 +172,7 @@ public class BaseIdentifiableObject extends BaseLinkableObject
 
     public String getDisplayName()
     {
-        return displayName != null && !displayName.trim().isEmpty() ? displayName : name;
+        return displayName != null && !displayName.trim().isEmpty() ? displayName : getName();
     }
 
     public void setDisplayName( String displayName )
