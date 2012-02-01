@@ -28,7 +28,6 @@
 package org.hisp.dhis.patientchart;
 
 import static org.hisp.dhis.chart.Chart.TYPE_BAR;
-import static org.hisp.dhis.chart.Chart.TYPE_LINE;
 
 import java.awt.Color;
 import java.awt.Font;

@@ -77,7 +77,7 @@
 				##dataElementRowCount
 				<td>$dataElementRowCount</td>        
 				##data element name
-				<td class='textColumn'>
+				<td class='text-column'>
 					<span id="value[$programStageDataElement.dataElement.id].name" title="$!encoder.htmlEncode( $programStageDataElement.dataElement.description )">
 						$encoder.htmlEncode( $programStageDataElement.dataElement.name ) 
 						#if ( $programStageDataElement.compulsory )

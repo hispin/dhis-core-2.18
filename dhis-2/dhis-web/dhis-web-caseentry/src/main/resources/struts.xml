@@ -349,6 +349,7 @@
 				,javascript/entry.js
 				,javascript/relationshipPatient.js
 			</param>
+			<param name="stylesheets">style/patient.css</param>
 		</action>
 		
 		<action name="selectDataRecordingFromRegistration"

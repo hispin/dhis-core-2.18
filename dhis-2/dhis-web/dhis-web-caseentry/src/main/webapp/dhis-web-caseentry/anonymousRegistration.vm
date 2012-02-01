@@ -12,7 +12,7 @@
 	<input type='hidden' id='selectedProgramId'>
 	<table>
 		<tr>
-			<td class='textColumn'>$i18n.getString('program')</td>
+			<td class='text-column'>$i18n.getString('program')</td>
 			<td>
 				<select id='programId' name='programId' class='criteria' onchange='loadEventForm();'>
 					<option value="">[ $i18n.getString('please_select') ]</option>
@@ -23,7 +23,7 @@
 			</td>
 		</tr>
 		<tr>
-			<td class='textColumn'><label for="executionDate">$i18n.getString( "report_date" ) </label></td>
+			<td class='text-column'><label for="executionDate">$i18n.getString( "report_date" ) </label></td>
 			<td><input type="text" id="executionDate" name="executionDate" class='criteria' value="$!format.formatDate( $programStageInstance.executionDate )" >
 				<script type="text/javascript">
 				   datePickerValid( 'executionDate', false );

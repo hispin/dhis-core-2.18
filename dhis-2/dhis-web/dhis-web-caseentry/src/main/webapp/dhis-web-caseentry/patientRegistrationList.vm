@@ -2,7 +2,7 @@
 <table>
 	
 	<tr>
-		<td>$i18n.getString( "search_result_matching_the_search_criteria" ):</td>
+		<td class='text-column' >$i18n.getString( "search_result_matching_the_search_criteria" ):</td>
 		<td>&nbsp;</td>
 		<td>&nbsp;</td>
 		<td>
@@ -15,7 +15,7 @@
 	</tr>	
 	
 	<tr>
-		<td>$i18n.getString( "total_result" )</td>
+		<td class='text-column' >$i18n.getString( "total_result" )</td>
 		<td>&nbsp;</td>
 		<td>&nbsp;</td>
 		<td>$!total</td>
@@ -91,7 +91,7 @@
 				
 				#end
 				
-				<td style="text-align:center">
+				<td>
 				  <a href="javascript:showProgramEnrollmentSelectForm( '$patient.id' )" title='$i18n.getString( "program_enrollment_management" )'><img src="../images/enroll.png" alt='$i18n.getString( "program_enrollment" )'></a>                  
 				  <a href="javascript:showUnenrollmentSelectForm('$patient.id')" title='$i18n.getString( "program_unenrollment_management" )'><img src="../images/unenroll.png" alt='$i18n.getString( "program_unenrollment_management" )'></a>
 				  <a href="javascript:showUpdatePatientForm( '$patient.id' )" title='$i18n.getString( "edit_profile" )'><img src="../images/edit.png" alt='$i18n.getString( "edit_profile" )'></a>
