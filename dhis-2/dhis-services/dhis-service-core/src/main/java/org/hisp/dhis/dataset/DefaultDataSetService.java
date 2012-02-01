@@ -122,13 +122,18 @@ public class DefaultDataSetService
         return i18n( i18nService, dataSetStore.getByUid( uid ) );
     }
     
-    public DataSet getDataSet( int id, boolean i18nDataElements, boolean i18nOrgUnits )
+    public DataSet getDataSet( int id, boolean i18nDataElements, boolean i18nIndicators, boolean i18nOrgUnits )
     {
         DataSet dataSet = getDataSet( id );
         
         if ( i18nDataElements )
         {
             i18n( i18nService, dataSet.getDataElements() );
+        }
+        
+        if ( i18nIndicators )
+        {
+            i18n( i18nService, dataSet.getIndicators() );
         }
         
         if ( i18nOrgUnits )

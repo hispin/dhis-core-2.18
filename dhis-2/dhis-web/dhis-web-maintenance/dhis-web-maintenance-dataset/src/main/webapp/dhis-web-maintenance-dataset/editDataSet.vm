@@ -113,7 +113,7 @@
         <td>
           <select id="dataElementsSelectedList" name="dataElementsSelectedList" multiple="multiple" style="height: 200px; width: 100%; margin-top: 45px;">
               #foreach ( $availableDataElement in $dataElements )
-                  <option value="$availableDataElement.id">$encoder.htmlEncode( $availableDataElement.name )</option>
+                  <option value="$availableDataElement.id">$encoder.htmlEncode( $availableDataElement.displayName )</option>
               #end   
           </select>
         </td>
@@ -149,7 +149,7 @@
         <td>
           <select id="indicatorsSelectedList" name="indicatorsSelectedList" multiple="multiple" style="height: 200px; width: 100%; margin-top: 45px;">
               #foreach ( $availableIndicator in $indicators )
-                  <option value="$availableIndicator.id">$encoder.htmlEncode( $availableIndicator.name )</option>
+                  <option value="$availableIndicator.id">$encoder.htmlEncode( $availableIndicator.displayName )</option>
               #end
           </select>
         </td>

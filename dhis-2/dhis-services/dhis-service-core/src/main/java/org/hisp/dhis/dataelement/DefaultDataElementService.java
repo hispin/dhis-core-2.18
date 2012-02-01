@@ -360,7 +360,7 @@ public class DefaultDataElementService
     {
         return i18n( i18nService, dataElementGroupStore.get( id ) );
     }
-
+    
     public Collection<DataElementGroup> getDataElementGroups( final Collection<Integer> identifiers )
     {
         Collection<DataElementGroup> groups = getAllDataElementGroups();

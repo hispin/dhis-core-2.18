@@ -201,7 +201,7 @@ public class LoadFormAction
     public String execute()
         throws Exception
     {
-        DataSet dataSet = dataSetService.getDataSet( dataSetId, true, false );
+        DataSet dataSet = dataSetService.getDataSet( dataSetId, true, false, false );
 
         List<DataElement> dataElements = new ArrayList<DataElement>( dataSet.getDataElements() );
 
