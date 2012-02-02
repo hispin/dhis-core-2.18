@@ -66,7 +66,7 @@ public class SimplisticHttpGetGateWay
     public void startGateway()
         throws TimeoutException, GatewayException, IOException, InterruptedException
     {
-        Logger.getInstance().logInfo( "Starting gateway.", null, getGatewayId() );
+        Logger.getInstance().logDebug( "Starting gateway.", null, getGatewayId() );
         super.startGateway();
     }
 
@@ -74,7 +74,7 @@ public class SimplisticHttpGetGateWay
     public void stopGateway()
         throws TimeoutException, GatewayException, IOException, InterruptedException
     {
-        Logger.getInstance().logInfo( "Stopping gateway.", null, getGatewayId() );
+        Logger.getInstance().logDebug( "Stopping gateway.", null, getGatewayId() );
         super.stopGateway();
     }
 
