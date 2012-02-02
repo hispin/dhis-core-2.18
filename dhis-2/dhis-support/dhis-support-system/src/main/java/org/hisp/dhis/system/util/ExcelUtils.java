@@ -122,10 +122,8 @@ public class ExcelUtils
         sheet.addCell( new Label( column++, row, i18n.getString( "annualized" ), format ) );
         sheet.addCell( new Label( column++, row, i18n.getString( "indicator_type" ), format ) );
         sheet.addCell( new Label( column++, row, i18n.getString( "numerator_description" ), format ) );
-        sheet.addCell( new Label( column++, row, i18n.getString( "numerator_aggregation_operator" ), format ) );
         sheet.addCell( new Label( column++, row, i18n.getString( "numerator_formula" ), format ) );
         sheet.addCell( new Label( column++, row, i18n.getString( "denominator_description" ), format ) );
-        sheet.addCell( new Label( column++, row, i18n.getString( "denominator_aggregation_operator" ), format ) );
         sheet.addCell( new Label( column++, row, i18n.getString( "denominator_formula" ), format ) );
 
     }
@@ -141,14 +139,10 @@ public class ExcelUtils
         sheet.addCell( new Label( column++, row, indicator.getDescription(), format ) );
         sheet.addCell( new Label( column++, row, getBoolean().get( indicator.isAnnualized() ), format ) );
         sheet.addCell( new Label( column++, row, getType().get( indicator.getIndicatorType().getName() ), format ) );
-
         sheet.addCell( new Label( column++, row, indicator.getNumeratorDescription(), format ) );
-        sheet.addCell( new Label( column++, row,
-            expressionService.getExpressionDescription( indicator.getNumerator() ), format ) );
-
+        sheet.addCell( new Label( column++, row, expressionService.getExpressionDescription( indicator.getNumerator() ), format ) );
         sheet.addCell( new Label( column++, row, indicator.getDenominatorDescription(), format ) );
-        sheet.addCell( new Label( column++, row, expressionService
-            .getExpressionDescription( indicator.getDenominator() ), format ) );
+        sheet.addCell( new Label( column++, row, expressionService.getExpressionDescription( indicator.getDenominator() ), format ) );
     }
 
     public static void printExtendedDataElementHeaders( WritableSheet sheet, WritableCellFormat format1,
