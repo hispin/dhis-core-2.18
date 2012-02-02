@@ -55,7 +55,7 @@
 			<td>
 				<select id="zeroDataValueElements" name="zeroDataValueElements" multiple="multiple" style="height: 200px; width: 100%; margin-top: 45px;">
 					#foreach( $zero in $zeroDataValueElements )
-						<option value='$zero.id'>$encoder.htmlEncode( $zero.name )</option>
+						<option value='$zero.id'>$encoder.htmlEncode( $zero.displayName )</option>
 					#end
 				</select>
 			</td>
