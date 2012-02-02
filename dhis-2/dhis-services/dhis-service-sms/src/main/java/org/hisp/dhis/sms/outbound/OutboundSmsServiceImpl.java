@@ -40,7 +40,7 @@ public class OutboundSmsServiceImpl
     protected void setTransportService( OutboundSmsTransportService transportService )
     {
         this.transportService = transportService;
-        log.info( "Got OutboundSmsTransportService: " + transportService.getClass().getSimpleName() );
+        log.debug( "Got OutboundSmsTransportService: " + transportService.getClass().getSimpleName() );
 
     }
 
@@ -87,7 +87,7 @@ public class OutboundSmsServiceImpl
         }
         catch ( SmsServiceException e )
         {
-            log.info( "Exception sending message " + sms, e );
+            log.debug( "Exception sending message " + sms, e );
             sms.setStatus( OutboundSmsStatus.ERROR );
         }
     }

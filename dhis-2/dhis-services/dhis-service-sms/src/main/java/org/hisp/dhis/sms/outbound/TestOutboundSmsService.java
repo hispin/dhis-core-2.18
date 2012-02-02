@@ -29,7 +29,7 @@ public class TestOutboundSmsService
         if (!enabled)
             throw new SmsServiceNotEnabledException();
             
-        log.info( "Send message: " + sms );
+        log.debug( "Send message: " + sms );
     }
 
     @Override
@@ -37,7 +37,7 @@ public class TestOutboundSmsService
         throws SmsServiceException
     {
         this.enabled = config.isEnabled();
-        log.info( "initialize()" );
+        log.debug( "initialize()" );
     }
 
     @Override

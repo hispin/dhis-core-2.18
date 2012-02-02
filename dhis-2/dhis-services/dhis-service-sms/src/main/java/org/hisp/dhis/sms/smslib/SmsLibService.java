@@ -111,28 +111,28 @@ public class SmsLibService
         // return;
         // }
 
-        log.info( "Initializing SmsLib" );
+        log.debug( "Initializing SmsLib" );
 
         this.config = smsConfiguration;
 
         ServiceStatus status = getService().getServiceStatus();
         if ( status == ServiceStatus.STARTED || status == ServiceStatus.STARTING )
         {
-            log.info( "Stopping SmsLib" );
+            log.debug( "Stopping SmsLib" );
             stopService();
         }
 
-        log.info( "Loading configuration" );
+        log.debug( "Loading configuration" );
         reloadConfig();
 
         if ( config.isEnabled() )
         {
-            log.info( "Starting SmsLib" );
+            log.debug( "Starting SmsLib" );
             startService();
         }
         else
         {
-            log.info( "Sms not enabled, won't start service" );
+            log.debug( "Sms not enabled, won't start service" );
         }
     }
 
@@ -219,7 +219,7 @@ public class SmsLibService
             try
             {
                 service.addGateway( gatewayFactory.create( gatewayConfig ) );
-                log.info( "Added gateway " + gatewayConfig.getName() );
+                log.debug( "Added gateway " + gatewayConfig.getName() );
             }
             catch ( GatewayException e )
             {
@@ -236,7 +236,7 @@ public class SmsLibService
         @Override
         public void process( AGateway gateway, OutboundMessage msg )
         {
-            log.info( "Sent message through gateway " + gateway.getGatewayId() + ": " + msg );
+            log.debug( "Sent message through gateway " + gateway.getGatewayId() + ": " + msg );
 
         }
     }
