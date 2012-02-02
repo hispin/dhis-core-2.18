@@ -37,6 +37,7 @@ import jxl.write.WritableWorkbook;
 
 import org.amplecode.quick.StatementManager;
 import org.apache.velocity.tools.generic.MathTool;
+import org.hisp.dhis.common.comparator.IdentifiableObjectNameComparator;
 import org.hisp.dhis.config.Configuration_IN;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
@@ -45,7 +46,6 @@ import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.i18n.I18nFormat;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
-import org.hisp.dhis.organisationunit.comparator.OrganisationUnitNameComparator;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodService;
 import org.hisp.dhis.reports.ReportService;
@@ -402,7 +402,7 @@ public class GenerateLinelistingWebPortalReportAnalyserResultAction
         {
             OrganisationUnit orgUnit = organisationUnitService.getOrganisationUnit( ouIDTB );
             orgUnitList = new ArrayList<OrganisationUnit>( orgUnit.getChildren() );
-            Collections.sort( orgUnitList, new OrganisationUnitNameComparator() );
+            Collections.sort( orgUnitList, new IdentifiableObjectNameComparator() );
         }
         else if ( reportModelTB.equalsIgnoreCase( "STATIC" ) || reportModelTB.equalsIgnoreCase( "STATIC-DATAELEMENTS" )
             || reportModelTB.equalsIgnoreCase( "STATIC-FINANCIAL" ) )
@@ -415,7 +415,7 @@ public class GenerateLinelistingWebPortalReportAnalyserResultAction
         {
             OrganisationUnit orgUnit = organisationUnitService.getOrganisationUnit( ouIDTB );
             orgUnitList = new ArrayList<OrganisationUnit>( orgUnit.getChildren() );
-            Collections.sort( orgUnitList, new OrganisationUnitNameComparator() );
+            Collections.sort( orgUnitList, new IdentifiableObjectNameComparator() );
             orgUnitList.add( orgUnit );
 
             parentUnit = orgUnit.getName();

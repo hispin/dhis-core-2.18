@@ -38,6 +38,7 @@ import java.util.Set;
 import java.util.UUID;
 
 import org.hibernate.SessionFactory;
+import org.hisp.dhis.common.comparator.IdentifiableObjectNameComparator;
 import org.hisp.dhis.dataanalyser.util.DashBoardService;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementGroup;
@@ -46,12 +47,9 @@ import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.dataset.DataSetService;
 import org.hisp.dhis.dataset.Section;
 import org.hisp.dhis.dataset.comparator.SectionOrderComparator;
-import org.hisp.dhis.options.displayproperty.DisplayPropertyHandler;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitLevel;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
-import org.hisp.dhis.organisationunit.comparator.OrganisationUnitNameComparator;
-import org.hisp.dhis.organisationunit.comparator.OrganisationUnitShortNameComparator;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodService;
 import org.hisp.dhis.period.PeriodType;
@@ -139,13 +137,14 @@ implements Action
         this.dashBoardService = dashBoardService;
     }
     
-    @SuppressWarnings("unused")
-        private DisplayPropertyHandler displayPropertyHandler;
+    /*
+    private DisplayPropertyHandler displayPropertyHandler;
 
     public void setDisplayPropertyHandler( DisplayPropertyHandler displayPropertyHandler )
     {
         this.displayPropertyHandler = displayPropertyHandler;
     }
+    */
 /*    
     private UserStore userStore;
 
@@ -464,7 +463,8 @@ implements Action
                     .parseInt( (String) orgUnitIterator.next() ) );
                 orgUnitList.add( o );
                 List<OrganisationUnit> organisationUnits = new ArrayList<OrganisationUnit>( o.getChildren() );
-                Collections.sort( organisationUnits, new OrganisationUnitShortNameComparator() );
+                //Collections.sort( organisationUnits, new OrganisationUnitShortNameComparator() );
+                Collections.sort( organisationUnits, new IdentifiableObjectNameComparator() );
                 orgUnitList.addAll( organisationUnits );
             }
         }
@@ -901,7 +901,8 @@ implements Action
         List<OrganisationUnit> orgUnitTree = new ArrayList<OrganisationUnit>();
         orgUnitTree.add( orgUnit );
         List<OrganisationUnit> children = new ArrayList<OrganisationUnit>( orgUnit.getChildren() );
-        Collections.sort( children, new OrganisationUnitNameComparator() );
+       // Collections.sort( children, new OrganisationUnitNameComparator() );
+        Collections.sort( children, new IdentifiableObjectNameComparator() );
         Iterator childIterator = children.iterator();
         OrganisationUnit child;
         

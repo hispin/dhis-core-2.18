@@ -35,11 +35,11 @@ import jxl.write.WritableSheet;
 import jxl.write.WritableWorkbook;
 
 import org.amplecode.quick.StatementManager;
+import org.hisp.dhis.common.comparator.IdentifiableObjectNameComparator;
 import org.hisp.dhis.config.Configuration_IN;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroup;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
-import org.hisp.dhis.organisationunit.comparator.OrganisationUnitNameComparator;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodService;
 import org.hisp.dhis.reports.ReportService;
@@ -219,7 +219,7 @@ public class GenerateMDReportAnalyserResultAction implements Action
         // Getting selected orgunit and its immediate children
         OrganisationUnit selOrgUnit = organisationUnitService.getOrganisationUnit( ouIDTB );
         orgUnitList = new ArrayList<OrganisationUnit>( selOrgUnit.getChildren() );
-        Collections.sort( orgUnitList, new OrganisationUnitNameComparator() );
+        Collections.sort( orgUnitList, new IdentifiableObjectNameComparator() );
         
         // Org unit Group Information
         OrganisationUnitGroup orgUnitGroup = selReportObj.getOrgunitGroup();        
@@ -609,7 +609,7 @@ public class GenerateMDReportAnalyserResultAction implements Action
         orgUnitTree.add( orgUnit );
 
         List<OrganisationUnit> children = new ArrayList<OrganisationUnit>( orgUnit.getChildren() );
-        Collections.sort( children, new OrganisationUnitNameComparator() );
+        Collections.sort( children, new IdentifiableObjectNameComparator() );
 
         Iterator childIterator = children.iterator();
         OrganisationUnit child;

@@ -9,11 +9,10 @@ import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryService;
 import org.hisp.dhis.dataelement.DataElementGroup;
 import org.hisp.dhis.dataelement.DataElementService;
-import org.hisp.dhis.options.displayproperty.DefaultDisplayPropertyHandler;
 
-import com.opensymphony.xwork2.ActionSupport;
+import com.opensymphony.xwork2.Action;
 
-public class GetDataElementsAction  extends ActionSupport
+public class GetDataElementsAction  implements Action
 {
 
     private final int ALL = 0;
@@ -50,14 +49,14 @@ public class GetDataElementsAction  extends ActionSupport
     // -------------------------------------------------------------------------
     // DisplayPropertyHandler
     // -------------------------------------------------------------------------
-
+    /*
     private DefaultDisplayPropertyHandler displayPropertyHandler;
 
     public void setDisplayPropertyHandler( DefaultDisplayPropertyHandler displayPropertyHandler )
     {
         this.displayPropertyHandler = displayPropertyHandler;
     }
-
+    */
     // -------------------------------------------------------------------------
     // Input & output
     // -------------------------------------------------------------------------
@@ -132,7 +131,7 @@ public class GetDataElementsAction  extends ActionSupport
 
         Collections.sort( dataElements, dataElementComparator );
 
-        displayPropertyHandler.handle( dataElements );
+        //displayPropertyHandler.handle( dataElements );
         
         /*
         if ( deOptionValue != null )

@@ -8,7 +8,6 @@ import java.util.List;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementGroup;
 import org.hisp.dhis.dataelement.DataElementService;
-import org.hisp.dhis.options.displayproperty.DefaultDisplayPropertyHandler;
 
 import com.opensymphony.xwork2.Action;
 
@@ -43,14 +42,14 @@ public class GetDataElementsAction
     // -------------------------------------------------------------------------
     // DisplayPropertyHandler
     // -------------------------------------------------------------------------
-
+    /*
     private DefaultDisplayPropertyHandler displayPropertyHandler;
 
     public void setDisplayPropertyHandler( DefaultDisplayPropertyHandler displayPropertyHandler )
     {
         this.displayPropertyHandler = displayPropertyHandler;
     }
-
+    */
     // -------------------------------------------------------------------------
     // Input & output
     // -------------------------------------------------------------------------
@@ -125,7 +124,7 @@ public class GetDataElementsAction
 
         Collections.sort( dataElements, dataElementComparator );
 
-        displayPropertyHandler.handle( dataElements );
+        //displayPropertyHandler.handle( dataElements );
 
         /*
          * if ( deOptionValue != null ) { if( deOptionValue.equalsIgnoreCase(

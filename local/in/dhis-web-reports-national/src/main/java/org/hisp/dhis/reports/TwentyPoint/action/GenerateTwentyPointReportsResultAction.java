@@ -36,6 +36,7 @@ import jxl.write.WritableWorkbook;
 import org.amplecode.quick.StatementManager;
 import org.apache.velocity.tools.generic.MathTool;
 import org.hisp.dhis.aggregation.AggregationService;
+import org.hisp.dhis.common.comparator.IdentifiableObjectNameComparator;
 import org.hisp.dhis.config.Configuration_IN;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
@@ -52,7 +53,6 @@ import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroup;
 import org.hisp.dhis.organisationunit.OrganisationUnitLevel;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
-import org.hisp.dhis.organisationunit.comparator.OrganisationUnitShortNameComparator;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodService;
 import org.hisp.dhis.period.PeriodType;
@@ -428,7 +428,7 @@ public class GenerateTwentyPointReportsResultAction
             {
                 OrganisationUnitGroup oug = (OrganisationUnitGroup) iterator1.next();
                 List<OrganisationUnit> tempList = new ArrayList<OrganisationUnit>( oug.getMembers() );
-                Collections.sort( tempList, new OrganisationUnitShortNameComparator() );
+                Collections.sort( tempList, new IdentifiableObjectNameComparator() );
                 orgUnitList.addAll( tempList );
                 ougmemberCountList.add( oug.getMembers().size() );
                 if ( tempCount1 != 0 && tempCount1 != orgUnitGroupList.size() )
@@ -439,14 +439,14 @@ public class GenerateTwentyPointReportsResultAction
         else if ( reportModelTB.equals( "dynamicwithrootfacility" ) )
         {
             orgUnitList = new ArrayList<OrganisationUnit>( selectedOrgUnit.getChildren() );
-            Collections.sort( orgUnitList, new OrganisationUnitShortNameComparator() );
+            Collections.sort( orgUnitList, new IdentifiableObjectNameComparator() );
             Collections.sort( orgUnitList, new OrganisationUnitCommentComparator() );
             orgUnitList.add( selectedOrgUnit );
         }
         else if ( reportModelTB.equals( "dynamicwithoutrootfacility" ) )
         {
             orgUnitList = new ArrayList<OrganisationUnit>( selectedOrgUnit.getChildren() );
-            Collections.sort( orgUnitList, new OrganisationUnitShortNameComparator() );
+            Collections.sort( orgUnitList, new IdentifiableObjectNameComparator() );
             Collections.sort( orgUnitList, new OrganisationUnitCommentComparator() );
         }
         else

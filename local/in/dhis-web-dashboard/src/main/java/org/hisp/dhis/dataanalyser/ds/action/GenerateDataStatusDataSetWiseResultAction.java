@@ -15,16 +15,16 @@ import jxl.format.BorderLineStyle;
 import jxl.format.Colour;
 import jxl.write.WritableCellFormat;
 
+import org.hisp.dhis.common.comparator.IdentifiableObjectNameComparator;
+import org.hisp.dhis.constant.Constant;
+import org.hisp.dhis.constant.ConstantService;
 import org.hisp.dhis.dataanalyser.util.DashBoardService;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.dataset.DataSetService;
-import org.hisp.dhis.options.displayproperty.DisplayPropertyHandler;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitLevel;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
-import org.hisp.dhis.organisationunit.comparator.OrganisationUnitNameComparator;
-import org.hisp.dhis.organisationunit.comparator.OrganisationUnitShortNameComparator;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodService;
 import org.hisp.dhis.period.PeriodType;
@@ -79,6 +79,15 @@ public class GenerateDataStatusDataSetWiseResultAction implements Action
     {
         this.dashBoardService = dashBoardService;
     }
+    
+    private ConstantService constantService;
+
+    public void setConstantService( ConstantService constantService )
+    {
+        this.constantService = constantService;
+    }
+    
+    private List<Constant> constants;
     // ---------------------------------------------------------------
     // Input Parameters
     // ---------------------------------------------------------------
@@ -136,14 +145,14 @@ public class GenerateDataStatusDataSetWiseResultAction implements Action
     {
         return orgUnitList;
     }
-    
+    /*
     private DisplayPropertyHandler displayPropertyHandler;
 
     public void setDisplayPropertyHandler( DisplayPropertyHandler displayPropertyHandler )
     {
         this.displayPropertyHandler = displayPropertyHandler;
     }
-    
+    */
     private Collection<Period> periodList;
 
     public Collection<Period> getPeriodList()
@@ -250,6 +259,9 @@ public class GenerateDataStatusDataSetWiseResultAction implements Action
     {
         this.ouMaporgChildCount = ouMaporgChildCount;
     }
+    
+    Double constValue = 0.0;
+    String constName = "";
     // ---------------------------------------------------------------
     // Action Implementation
     // ---------------------------------------------------------------
@@ -259,8 +271,23 @@ public class GenerateDataStatusDataSetWiseResultAction implements Action
         
         System.out.println( "DataSet Wise Data Status Generation Start Time is : " + new Date() );
         // Intialization
+        
         periodNameList = new ArrayList<String>();
         //dataViewName = "";
+        
+        constants = new ArrayList<Constant>( constantService.getAllConstants());
+        
+        for( Constant constant : constants )
+        {
+            //String name = constant.getName();
+            //Double value = constant.getValue();
+            if( constant.getName().equalsIgnoreCase( "temp" ))
+            {
+                constName =  constant.getName();
+                constValue = constant.getValue();
+                break;
+            }
+        }
         ouMapForChildDSAssociation = new HashMap<OrganisationUnit, Integer>();
         ouMapForColor =  new HashMap<OrganisationUnit, Integer>();
         orgUnitCount = 0;
@@ -309,7 +336,8 @@ public class GenerateDataStatusDataSetWiseResultAction implements Action
                     .parseInt( (String) orgUnitIterator.next() ) );
                 orgUnitList.add( o );
                 List<OrganisationUnit> organisationUnits = new ArrayList<OrganisationUnit>( o.getChildren() );
-                Collections.sort( organisationUnits, new OrganisationUnitShortNameComparator() );
+                //Collections.sort( organisationUnits, new OrganisationUnitShortNameComparator() );
+                Collections.sort( organisationUnits, new IdentifiableObjectNameComparator() );
                 orgUnitList.addAll( organisationUnits );              
             }
         }
@@ -321,8 +349,9 @@ public class GenerateDataStatusDataSetWiseResultAction implements Action
             {
                 o = organisationUnitService.getOrganisationUnit( Integer.parseInt( orgUnitIterator.next() ) );
                 orgUnitList.add( o );                
-                Collections.sort( orgUnitList, new OrganisationUnitShortNameComparator() );               
-                displayPropertyHandler.handle( orgUnitList );
+                //Collections.sort( orgUnitList, new OrganisationUnitShortNameComparator() );
+                Collections.sort( orgUnitList, new IdentifiableObjectNameComparator() );
+                //displayPropertyHandler.handle( orgUnitList );
             }
         }
         
@@ -493,7 +522,8 @@ public class GenerateDataStatusDataSetWiseResultAction implements Action
                             dataStatusPercentatge = Math.round( dataStatusPercentatge * Math.pow( 10, 0 ) )
                                 / Math.pow( 10, 0 );
 
-                            if ( dataStatusPercentatge >= 5.0 )
+                          //  if ( dataStatusPercentatge >= 5.0 )
+                            if ( dataStatusPercentatge >= constValue )
                             {
                                 dataStatusCount += 1;
                             }
@@ -539,8 +569,8 @@ public class GenerateDataStatusDataSetWiseResultAction implements Action
                         dataStatusPercentatge = 100;
 
                     dataStatusPercentatge = Math.round( dataStatusPercentatge * Math.pow( 10, 0 ) ) / Math.pow( 10, 0 );
-
-                    if ( dataStatusPercentatge >= 5.0 )
+                    //if ( dataStatusPercentatge >= 5.0 )
+                    if ( dataStatusPercentatge >= constValue )
                     {
                         dsSummaryResults.add( 1 );
                     }
@@ -630,7 +660,8 @@ public class GenerateDataStatusDataSetWiseResultAction implements Action
         orgUnitTree.add( orgUnit );
 
         List<OrganisationUnit> children = new ArrayList<OrganisationUnit>( orgUnit.getChildren() );
-        Collections.sort( children, new OrganisationUnitNameComparator() );
+        Collections.sort( children, new IdentifiableObjectNameComparator() );
+        //Collections.sort( children, new OrganisationUnitNameComparator() );
 
         Iterator childIterator = children.iterator();
         OrganisationUnit child;

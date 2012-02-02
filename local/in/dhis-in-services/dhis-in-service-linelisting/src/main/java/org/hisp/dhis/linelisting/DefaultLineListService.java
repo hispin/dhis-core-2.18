@@ -42,7 +42,8 @@ public class DefaultLineListService
     {
         int id = lineListStore.addLineListGroup( lineListGroup );
 
-        i18nService.addObject( lineListGroup );
+        //i18nService.addObject( lineListGroup );
+       
 
         return id;
     }
@@ -143,7 +144,7 @@ public class DefaultLineListService
 
         int id = lineListStore.addLineListElement( lineListElement );
 
-        i18nService.addObject( lineListElement );
+        //i18nService.addObject( lineListElement );
 
         return id;
 
@@ -200,7 +201,7 @@ public class DefaultLineListService
     {
         int id = lineListStore.addLineListOption( lineListOption );
 
-        i18nService.addObject( lineListOption );
+        //i18nService.addObject( lineListOption );
 
         return id;
     }

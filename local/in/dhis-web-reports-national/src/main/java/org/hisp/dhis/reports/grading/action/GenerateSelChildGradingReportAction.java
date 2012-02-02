@@ -37,6 +37,7 @@ import jxl.write.WritableWorkbook;
 import org.amplecode.quick.StatementManager;
 import org.apache.velocity.tools.generic.MathTool;
 import org.hisp.dhis.aggregation.AggregationService;
+import org.hisp.dhis.common.comparator.IdentifiableObjectNameComparator;
 import org.hisp.dhis.config.Configuration_IN;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
@@ -53,8 +54,6 @@ import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroup;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroupService;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
-import org.hisp.dhis.organisationunit.comparator.OrganisationUnitGroupNameComparator;
-import org.hisp.dhis.organisationunit.comparator.OrganisationUnitShortNameComparator;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodService;
 import org.hisp.dhis.period.PeriodType;
@@ -357,7 +356,7 @@ public class GenerateSelChildGradingReportAction extends ActionSupport
                 orgUnitList.add( orgU );
             }
         
-            Collections.sort( orgUnitList, new OrganisationUnitShortNameComparator() );
+            Collections.sort( orgUnitList, new IdentifiableObjectNameComparator() );
         }
         else
         {
@@ -368,7 +367,7 @@ public class GenerateSelChildGradingReportAction extends ActionSupport
                 orgUnitGroupList.add( oug );
             }
         
-            Collections.sort( orgUnitGroupList, new OrganisationUnitGroupNameComparator() );            
+            Collections.sort( orgUnitGroupList, new IdentifiableObjectNameComparator() );            
         }
         
         // Period Info

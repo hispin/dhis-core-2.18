@@ -44,16 +44,14 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 
 import org.hibernate.SessionFactory;
+import org.hisp.dhis.common.comparator.IdentifiableObjectNameComparator;
 import org.hisp.dhis.dataanalyser.util.DashBoardService;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.dataset.DataSetService;
-import org.hisp.dhis.options.displayproperty.DisplayPropertyHandler;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitLevel;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
-import org.hisp.dhis.organisationunit.comparator.OrganisationUnitNameComparator;
-import org.hisp.dhis.organisationunit.comparator.OrganisationUnitShortNameComparator;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodService;
 import org.hisp.dhis.period.PeriodType;
@@ -135,14 +133,14 @@ implements Action
     {
         this.dashBoardService = dashBoardService;
     }
-
+/*
     private DisplayPropertyHandler displayPropertyHandler;
 
     public void setDisplayPropertyHandler( DisplayPropertyHandler displayPropertyHandler )
     {
         this.displayPropertyHandler = displayPropertyHandler;
     }
-    
+ */   
     @SuppressWarnings("unused")
     private Comparator<OrganisationUnit> orgUnitComparator;
 
@@ -150,7 +148,7 @@ implements Action
     {
         this.orgUnitComparator = orgUnitComparator;
     }
-    
+    @SuppressWarnings("unused")
     private UserStore userStore;
 
     public void setUserStore( UserStore userStore )
@@ -479,7 +477,7 @@ implements Action
                     .parseInt( (String) orgUnitIterator.next() ) );
                 orgUnitList.add( o );
                 List<OrganisationUnit> organisationUnits = new ArrayList<OrganisationUnit>( o.getChildren() );
-                Collections.sort( organisationUnits, new OrganisationUnitShortNameComparator() );
+                Collections.sort( organisationUnits, new IdentifiableObjectNameComparator() );
                 orgUnitList.addAll( organisationUnits );              
             }
         }
@@ -491,8 +489,8 @@ implements Action
             {
                 o = organisationUnitService.getOrganisationUnit( Integer.parseInt( orgUnitIterator.next() ) );
                 orgUnitList.add( o );                
-                Collections.sort( orgUnitList, new OrganisationUnitShortNameComparator() );               
-                displayPropertyHandler.handle( orgUnitList );
+                Collections.sort( orgUnitList, new IdentifiableObjectNameComparator() );               
+                //displayPropertyHandler.handle( orgUnitList );
             }
         }
 
@@ -878,7 +876,7 @@ implements Action
         orgUnitTree.add( orgUnit );
 
         List<OrganisationUnit> children = new ArrayList<OrganisationUnit>( orgUnit.getChildren() );
-        Collections.sort( children, new OrganisationUnitNameComparator() );
+        Collections.sort( children, new IdentifiableObjectNameComparator() );
 
         Iterator childIterator = children.iterator();
         OrganisationUnit child;

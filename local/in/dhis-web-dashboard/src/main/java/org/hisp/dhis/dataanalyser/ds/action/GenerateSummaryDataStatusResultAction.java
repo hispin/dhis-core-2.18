@@ -14,6 +14,9 @@ import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
 
+import org.hisp.dhis.constant.Constant;
+import org.hisp.dhis.constant.ConstantService;
+import org.hisp.dhis.common.comparator.IdentifiableObjectNameComparator;
 import org.hisp.dhis.dataanalyser.util.DashBoardService;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataset.DataSet;
@@ -21,8 +24,6 @@ import org.hisp.dhis.dataset.DataSetService;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitLevel;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
-import org.hisp.dhis.organisationunit.comparator.OrganisationUnitNameComparator;
-import org.hisp.dhis.organisationunit.comparator.OrganisationUnitShortNameComparator;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodService;
 import org.hisp.dhis.period.PeriodType;
@@ -82,6 +83,15 @@ public class GenerateSummaryDataStatusResultAction
     {
         this.dashBoardService = dashBoardService;
     }
+    
+    private ConstantService constantService;
+
+    public void setConstantService( ConstantService constantService )
+    {
+        this.constantService = constantService;
+    }
+    
+    private List<Constant> constants;
 
     // ---------------------------------------------------------------
     // Output Parameters
@@ -281,6 +291,8 @@ public class GenerateSummaryDataStatusResultAction
 
     Map<String, Double> tempOuMapResult;
     
+    Double constValue = 0.0;
+    String constName = "";
     // ---------------------------------------------------------------
     // Action Implementation
     // ---------------------------------------------------------------
@@ -291,6 +303,21 @@ public class GenerateSummaryDataStatusResultAction
         dataViewName = "";
 
         // Intialization
+        
+        constants = new ArrayList<Constant>( constantService.getAllConstants());
+        
+        for( Constant constant : constants )
+        {
+            //String name = constant.getName();
+            //Double value = constant.getValue();
+            if( constant.getName().equalsIgnoreCase( "temp" ))
+            {
+                constName =  constant.getName();
+                constValue = constant.getValue();
+                break;
+            }
+        }
+        System.out.println( "------Constant Name is : ---- " + constName + ",------ Constant Value is : "  + constValue );
         tempOuMapResult = new HashMap<String, Double>();
         ouMapForChildDSAssociation = new HashMap<OrganisationUnit, Integer>();
         ouMapForColor =  new HashMap<OrganisationUnit, Integer>();
@@ -340,7 +367,7 @@ public class GenerateSummaryDataStatusResultAction
                 OrganisationUnit o = organisationUnitService.getOrganisationUnit( Integer.parseInt( (String) orgUnitIterator.next() ) );
                 orgUnitList.add( o );
                 List<OrganisationUnit> organisationUnits = new ArrayList<OrganisationUnit>( o.getChildren() );
-                Collections.sort( organisationUnits, new OrganisationUnitShortNameComparator() );
+                Collections.sort( organisationUnits, new IdentifiableObjectNameComparator() );
                 orgUnitList.addAll( organisationUnits );
             }
         }
@@ -526,8 +553,8 @@ public class GenerateSummaryDataStatusResultAction
                         {
                             dataStatusPercentatge = tempDataStatusCount;
                         }
-
-                        if ( dataStatusPercentatge >= 5.0 )
+                        //if ( dataStatusPercentatge >= 5.0 )
+                        if ( dataStatusPercentatge >= constValue )
                         {
                             dataStatusCount += 1;
                         }
@@ -575,8 +602,8 @@ public class GenerateSummaryDataStatusResultAction
                     dataStatusPercentatge = 100;
 
                 dataStatusPercentatge = Math.round( dataStatusPercentatge * Math.pow( 10, 0 ) ) / Math.pow( 10, 0 );
-
-                if ( dataStatusPercentatge >= 5.0 )
+                //if ( dataStatusPercentatge >= 5.0 )
+                if ( dataStatusPercentatge >= constValue )
                 {
                     dsSummaryResults.add( 1 );
                 }
@@ -726,7 +753,7 @@ public class GenerateSummaryDataStatusResultAction
         List<OrganisationUnit> orgUnitTree = new ArrayList<OrganisationUnit>();
         orgUnitTree.add( orgUnit );
         List<OrganisationUnit> children = new ArrayList<OrganisationUnit>( orgUnit.getChildren() );
-        Collections.sort( children, new OrganisationUnitNameComparator() );
+        Collections.sort( children, new IdentifiableObjectNameComparator() );
         Iterator childIterator = children.iterator();
         OrganisationUnit child;
         

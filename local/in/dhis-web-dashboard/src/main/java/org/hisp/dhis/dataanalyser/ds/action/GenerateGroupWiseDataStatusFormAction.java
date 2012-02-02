@@ -5,9 +5,9 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import org.hisp.dhis.common.comparator.IdentifiableObjectNameComparator;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.dataset.DataSetService;
-import org.hisp.dhis.dataset.comparator.DataSetNameComparator;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodService;
 
@@ -62,7 +62,7 @@ public class GenerateGroupWiseDataStatusFormAction
         
         dataSetList = new ArrayList<DataSet>( dataSetService.getAllDataSets() );
         
-        Collections.sort( dataSetList, new DataSetNameComparator() );
+        Collections.sort( dataSetList, new IdentifiableObjectNameComparator() );
 
         /* Monthly Periods */
         //monthlyPeriods = new ArrayList<Period>( periodService.getPeriodsByPeriodType( new MonthlyPeriodType() ) );

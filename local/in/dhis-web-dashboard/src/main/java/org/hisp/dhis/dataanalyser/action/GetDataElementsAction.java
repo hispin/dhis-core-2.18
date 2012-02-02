@@ -40,7 +40,7 @@ import org.hisp.dhis.dataelement.DataElementCategoryService;
 import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.dataset.Section;
 import org.hisp.dhis.dataset.SectionService;
-import org.hisp.dhis.options.displayproperty.DisplayPropertyHandler;
+//import org.hisp.dhis.options.displayproperty.DisplayPropertyHandler;
 
 import com.opensymphony.xwork2.Action;
 
@@ -91,13 +91,14 @@ public class GetDataElementsAction
     // -------------------------------------------------------------------------
     // DisplayPropertyHandler
     // -------------------------------------------------------------------------
+    /*
     private DisplayPropertyHandler displayPropertyHandler;
 
     public void setDisplayPropertyHandler( DisplayPropertyHandler displayPropertyHandler )
     {
         this.displayPropertyHandler = displayPropertyHandler;
     }
-
+    */
     // -------------------------------------------------------------------------
     // Input & output
     // -------------------------------------------------------------------------
@@ -194,7 +195,7 @@ public class GetDataElementsAction
         System.out.println(" dataElements size = "+dataElements.size());
         Collections.sort( dataElements, dataElementComparator );
 
-        displayPropertyHandler.handle( dataElements );
+        //displayPropertyHandler.handle( dataElements );
 
         if ( deOptionValue != null )
         {

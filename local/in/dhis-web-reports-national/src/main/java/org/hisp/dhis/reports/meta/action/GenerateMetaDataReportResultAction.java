@@ -24,31 +24,27 @@ import jxl.write.WritableSheet;
 import jxl.write.WritableWorkbook;
 
 import org.amplecode.quick.StatementManager;
+import org.hisp.dhis.common.comparator.IdentifiableObjectNameComparator;
 import org.hisp.dhis.config.Configuration_IN;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementGroup;
 import org.hisp.dhis.dataelement.DataElementService;
-import org.hisp.dhis.dataelement.comparator.DataElementNameComparator;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.dataset.DataSetService;
-import org.hisp.dhis.dataset.comparator.DataSetNameComparator;
 import org.hisp.dhis.expression.ExpressionService;
 import org.hisp.dhis.indicator.Indicator;
 import org.hisp.dhis.indicator.IndicatorGroup;
 import org.hisp.dhis.indicator.IndicatorService;
-import org.hisp.dhis.indicator.comparator.IndicatorNameComparator;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroup;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroupService;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
-import org.hisp.dhis.organisationunit.comparator.OrganisationUnitNameComparator;
 import org.hisp.dhis.reports.ReportService;
 import org.hisp.dhis.user.User;
 import org.hisp.dhis.user.UserStore;
 import org.hisp.dhis.validation.ValidationRule;
 import org.hisp.dhis.validation.ValidationRuleGroup;
 import org.hisp.dhis.validation.ValidationRuleService;
-import org.hisp.dhis.validation.comparator.ValidationRuleNameComparator;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.rowset.SqlRowSet;
 
@@ -441,7 +437,7 @@ public class GenerateMetaDataReportResultAction
         throws Exception
     {
         List<DataElement> dataElementList = new ArrayList<DataElement>( dataElementService.getAllDataElements() );
-        Collections.sort( dataElementList, new DataElementNameComparator() );
+        Collections.sort( dataElementList, new IdentifiableObjectNameComparator() );
 
         // String outputReportPath = System.getenv( "DHIS2_HOME" ) +
         // File.separator + raFolderName + File.separator
@@ -663,7 +659,7 @@ public class GenerateMetaDataReportResultAction
 
             List<DataElement> dataElementList = new ArrayList<DataElement>( dataElementGroup.getMembers() );
 
-            Collections.sort( dataElementList, new DataElementNameComparator() );
+            Collections.sort( dataElementList, new IdentifiableObjectNameComparator() );
 
             for ( DataElement dataElement : dataElementList )
             {
@@ -834,7 +830,7 @@ public class GenerateMetaDataReportResultAction
             List<OrganisationUnit> organisationUnitList = new ArrayList<OrganisationUnit>( organisationUnitGroup
                 .getMembers() );
 
-            Collections.sort( organisationUnitList, new OrganisationUnitNameComparator() );
+            Collections.sort( organisationUnitList, new IdentifiableObjectNameComparator() );
 
             for ( OrganisationUnit organisationUnit : organisationUnitList )
             {
@@ -1306,7 +1302,7 @@ public class GenerateMetaDataReportResultAction
         throws Exception
     {
         List<Indicator> indicatorList = new ArrayList<Indicator>( indicatorService.getAllIndicators() );
-        Collections.sort( indicatorList, new IndicatorNameComparator() );
+        Collections.sort( indicatorList, new IdentifiableObjectNameComparator() );
 
         String outputReportPath = System.getenv( "DHIS2_HOME" ) + File.separator + Configuration_IN.DEFAULT_TEMPFOLDER;
         File newdir = new File( outputReportPath );
@@ -1519,7 +1515,7 @@ public class GenerateMetaDataReportResultAction
             rowStart++;
 
             List<Indicator> indicatorList = new ArrayList<Indicator>( indicatorGroup.getMembers() );
-            Collections.sort( indicatorList, new IndicatorNameComparator() );
+            Collections.sort( indicatorList, new IdentifiableObjectNameComparator() );
             for ( Indicator indicator : indicatorList )
             {
                 if ( incID != null )
@@ -1586,7 +1582,7 @@ public class GenerateMetaDataReportResultAction
         throws Exception
     {
         List<DataSet> datasetList = new ArrayList<DataSet>( dataSetService.getAllDataSets() );
-        Collections.sort( datasetList, new DataSetNameComparator() );
+        Collections.sort( datasetList, new IdentifiableObjectNameComparator() );
 
         // String outputReportPath = System.getenv( "DHIS2_HOME" ) +
         // File.separator + raFolderName + File.separator
@@ -1678,7 +1674,7 @@ public class GenerateMetaDataReportResultAction
     {
         List<ValidationRule> validationRuleList = new ArrayList<ValidationRule>( validationRuleService
             .getAllValidationRules() );
-        Collections.sort( validationRuleList, new ValidationRuleNameComparator() );
+        Collections.sort( validationRuleList, new IdentifiableObjectNameComparator() );
 
         // String outputReportPath = System.getenv( "DHIS2_HOME" ) +
         // File.separator + raFolderName + File.separator
@@ -1865,7 +1861,7 @@ public class GenerateMetaDataReportResultAction
             rowStart++;
 
             List<ValidationRule> validationRuleList = new ArrayList<ValidationRule>( validationRuleGroup.getMembers() );
-            Collections.sort( validationRuleList, new ValidationRuleNameComparator() );
+            Collections.sort( validationRuleList, new IdentifiableObjectNameComparator() );
             for ( ValidationRule validationRule : validationRuleList )
             {
                 if ( incID != null )
@@ -2075,7 +2071,7 @@ public class GenerateMetaDataReportResultAction
         throws Exception
     {
         List<DataSet> datasetList = new ArrayList<DataSet>( dataSetService.getAllDataSets() );
-        Collections.sort( datasetList, new DataSetNameComparator() );
+        Collections.sort( datasetList, new IdentifiableObjectNameComparator() );
 
         // List<DataElement> tttt = new ArrayList<DataElement>(
         // dataSet.getDataElements() );
@@ -2149,7 +2145,7 @@ public class GenerateMetaDataReportResultAction
 
             List<DataElement> dataElementList = new ArrayList<DataElement>( dataSet.getDataElements() );
 
-            Collections.sort( dataElementList, new DataElementNameComparator() );
+            Collections.sort( dataElementList, new IdentifiableObjectNameComparator() );
 
             for ( DataElement dataElement : dataElementList )
             {
@@ -2245,7 +2241,7 @@ public class GenerateMetaDataReportResultAction
 
         List<OrganisationUnit> children = new ArrayList<OrganisationUnit>( orgUnit.getChildren() );
 
-        Collections.sort( children, new OrganisationUnitNameComparator() );
+        Collections.sort( children, new IdentifiableObjectNameComparator() );
 
         Iterator<OrganisationUnit> childIterator = children.iterator();
         OrganisationUnit child;

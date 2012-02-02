@@ -31,13 +31,13 @@ import jxl.write.WritableSheet;
 import jxl.write.WritableWorkbook;
 
 import org.amplecode.quick.StatementManager;
+import org.hisp.dhis.common.comparator.IdentifiableObjectNameComparator;
 import org.hisp.dhis.config.Configuration_IN;
 import org.hisp.dhis.indicator.Indicator;
 import org.hisp.dhis.indicator.IndicatorGroup;
 import org.hisp.dhis.indicator.IndicatorService;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
-import org.hisp.dhis.organisationunit.comparator.OrganisationUnitShortNameComparator;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodService;
 import org.hisp.dhis.reports.ReportService;
@@ -203,7 +203,7 @@ public class EDReportResultAction
             {
                 orgUnitName += orgUnit.getName() + ", ";
                 List<OrganisationUnit> childList = new ArrayList<OrganisationUnit>( orgUnit.getChildren() );
-                Collections.sort( childList, new OrganisationUnitShortNameComparator() );
+                Collections.sort( childList, new IdentifiableObjectNameComparator() );
                 orgUnitList.addAll( childList );
                 orgUnitList.add( orgUnit );
             }

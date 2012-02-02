@@ -12,6 +12,7 @@ import java.util.Map;
 
 import org.amplecode.quick.StatementManager;
 import org.hisp.dhis.aggregation.AggregationService;
+import org.hisp.dhis.common.comparator.IdentifiableObjectNameComparator;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryCombo;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
@@ -22,7 +23,6 @@ import org.hisp.dhis.datavalue.DataValue;
 import org.hisp.dhis.datavalue.DataValueService;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
-import org.hisp.dhis.organisationunit.comparator.OrganisationUnitNameComparator;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodService;
 import org.hisp.dhis.period.PeriodType;
@@ -602,7 +602,7 @@ public class GenerateNullReporterResultAction
         }
         
         //System.out.println("periods size is " + size );
-        Collections.sort( ouHavingNullValues, new OrganisationUnitNameComparator() );
+        Collections.sort( ouHavingNullValues, new IdentifiableObjectNameComparator() );
         Collections.sort( periods, new PeriodComparator() );
         Collections.sort( periods, new PeriodTypeComparator() );
         statementManager.destroy();
@@ -620,7 +620,7 @@ public class GenerateNullReporterResultAction
 
         ouChildCountMap.put( orgUnit, children.size() );
 
-        Collections.sort( children, new OrganisationUnitNameComparator() );
+        Collections.sort( children, new IdentifiableObjectNameComparator() );
 
         Iterator<OrganisationUnit> childIterator = children.iterator();
         OrganisationUnit child;

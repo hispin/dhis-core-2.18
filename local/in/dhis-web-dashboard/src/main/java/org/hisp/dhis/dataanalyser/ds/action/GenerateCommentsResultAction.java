@@ -13,6 +13,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.hisp.dhis.common.comparator.IdentifiableObjectNameComparator;
 import org.hisp.dhis.dataanalyser.util.DashBoardService;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataset.DataSet;
@@ -22,7 +23,6 @@ import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroup;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroupService;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
-import org.hisp.dhis.organisationunit.comparator.OrganisationUnitShortNameComparator;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodService;
 import org.hisp.dhis.period.PeriodType;
@@ -293,7 +293,8 @@ public class GenerateCommentsResultAction implements Action
                 if(oug != null)
                 {
                     List<OrganisationUnit> tempOUList = new ArrayList<OrganisationUnit>(oug.getMembers());
-                    Collections.sort( tempOUList, new OrganisationUnitShortNameComparator() );
+                    //Collections.sort( tempOUList, new OrganisationUnitShortNameComparator() );
+                    Collections.sort( tempOUList, new IdentifiableObjectNameComparator() );
                     orgUnitList.addAll( tempOUList );
                 }   
                 
@@ -301,7 +302,8 @@ public class GenerateCommentsResultAction implements Action
                 if(oug != null)
                 {
                     List<OrganisationUnit> tempOUList = new ArrayList<OrganisationUnit>(oug.getMembers());
-                    Collections.sort( tempOUList, new OrganisationUnitShortNameComparator() );
+                    //Collections.sort( tempOUList, new OrganisationUnitShortNameComparator() );
+                    Collections.sort( tempOUList, new IdentifiableObjectNameComparator() );
                     orgUnitList.addAll( tempOUList );
                 }   
             }
@@ -315,7 +317,8 @@ public class GenerateCommentsResultAction implements Action
                     OrganisationUnit o = organisationUnitService.getOrganisationUnit( Integer.parseInt( (String) orgUnitIterator.next() ) );
                     orgUnitList.add( o );
                     List<OrganisationUnit> organisationUnits = new ArrayList<OrganisationUnit>( o.getChildren() );
-                    Collections.sort( organisationUnits, new OrganisationUnitShortNameComparator() );
+                    //Collections.sort( organisationUnits, new OrganisationUnitShortNameComparator() );
+                    Collections.sort( organisationUnits, new IdentifiableObjectNameComparator() );
                     orgUnitList.addAll( organisationUnits );
                 }                
             }

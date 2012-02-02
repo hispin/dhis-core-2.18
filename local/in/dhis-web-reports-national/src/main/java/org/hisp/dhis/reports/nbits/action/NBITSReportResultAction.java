@@ -26,9 +26,9 @@ import jxl.write.WritableSheet;
 import jxl.write.WritableWorkbook;
 
 import org.amplecode.quick.StatementManager;
+import org.hisp.dhis.common.comparator.IdentifiableObjectNameComparator;
 import org.hisp.dhis.config.Configuration_IN;
 import org.hisp.dhis.dataelement.DataElement;
-import org.hisp.dhis.dataelement.comparator.DataElementNameComparator;
 import org.hisp.dhis.i18n.I18nFormat;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
@@ -250,7 +250,7 @@ public class NBITSReportResultAction implements Action
                     dataElements.add( programStageDataElement.getDataElement() );
                 }
                 
-                Collections.sort( dataElements, new DataElementNameComparator() );
+                Collections.sort( dataElements, new IdentifiableObjectNameComparator() );
                 programStageDataElementMap.put( programStage, dataElements );
             }
             

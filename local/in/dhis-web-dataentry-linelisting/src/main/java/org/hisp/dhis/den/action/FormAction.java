@@ -38,6 +38,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.hisp.dhis.common.comparator.IdentifiableObjectNameComparator;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategory;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
@@ -49,7 +50,6 @@ import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.dataset.DataSetService;
 import org.hisp.dhis.dataset.Section;
 import org.hisp.dhis.dataset.SectionService;
-import org.hisp.dhis.dataset.comparator.DataSetNameComparator;
 import org.hisp.dhis.datavalue.DataValue;
 import org.hisp.dhis.den.api.LLDataSets;
 import org.hisp.dhis.den.api.LLDataValue;
@@ -124,6 +124,10 @@ public class FormAction
         this.selectedStateManager = selectedStateManager;
     }
     
+    public SelectedStateManager getSelectedStateManager()
+    {
+        return selectedStateManager;
+    }    
     private DataSetLockService dataSetLockService;
     
     public void setDataSetLockService( DataSetLockService dataSetLockService)
@@ -522,7 +526,7 @@ public class FormAction
             }
         }
 
-        Collections.sort( dataSets, new DataSetNameComparator() );
+        Collections.sort( dataSets, new IdentifiableObjectNameComparator() );
 
         // ---------------------------------------------------------------------
         // Validate selected DataSet

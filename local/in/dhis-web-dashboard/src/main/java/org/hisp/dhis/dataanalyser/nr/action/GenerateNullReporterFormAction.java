@@ -35,11 +35,12 @@ import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
 
+import org.hisp.dhis.common.comparator.IdentifiableObjectNameComparator;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementGroup;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.dataset.DataSetService;
-import org.hisp.dhis.dataset.comparator.DataSetNameComparator;
+//import org.hisp.dhis.dataset.comparator.DataSetNameComparator;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.period.Period;
 
@@ -169,7 +170,8 @@ public class GenerateNullReporterFormAction
                         }
         }
         
-        Collections.sort( dataSetList, new DataSetNameComparator() );
+        //Collections.sort( dataSetList, new DataSetNameComparator() );
+        Collections.sort( dataSetList, new IdentifiableObjectNameComparator() );
         
         return SUCCESS;
     }

@@ -32,12 +32,11 @@ import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 
+import org.hisp.dhis.common.comparator.IdentifiableObjectNameComparator;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementGroup;
 import org.hisp.dhis.dataelement.DataElementService;
-import org.hisp.dhis.dataelement.comparator.DataElementGroupNameComparator;
 import org.hisp.dhis.dataset.DataSetService;
-import org.hisp.dhis.options.displayproperty.DisplayPropertyHandler;
 
 import com.opensymphony.xwork2.Action;
 
@@ -72,14 +71,14 @@ public class GetDataElementsGroupAndDataSetAction
     // DisplayPropertyHandler
     // -------------------------------------------------------------------------
 
-    @SuppressWarnings("unused")
+    /*
     private DisplayPropertyHandler displayPropertyHandler;
 
     public void setDisplayPropertyHandler( DisplayPropertyHandler displayPropertyHandler )
     {
         this.displayPropertyHandler = displayPropertyHandler;
     }
-
+    */
     // -------------------------------------------------------------------------
     // Input & output
     // -------------------------------------------------------------------------
@@ -150,7 +149,7 @@ public class GetDataElementsGroupAndDataSetAction
             }
         }
 
-        Collections.sort( applicableDataElementGroups, new DataElementGroupNameComparator() );
+        Collections.sort( applicableDataElementGroups, new IdentifiableObjectNameComparator() );
         
         return applicableDataElementGroups;
     }

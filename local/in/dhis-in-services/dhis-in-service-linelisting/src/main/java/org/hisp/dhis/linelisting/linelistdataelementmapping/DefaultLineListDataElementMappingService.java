@@ -74,7 +74,7 @@ public class DefaultLineListDataElementMappingService implements LineListDataEle
     {
         int id = lineListDataElementMappingStore.addLineListDataElementMapping( lineListDataElementMapping );
 
-        i18nService.addObject( lineListDataElementMapping );
+        //i18nService.addObject( lineListDataElementMapping );
 
         return id;
     }

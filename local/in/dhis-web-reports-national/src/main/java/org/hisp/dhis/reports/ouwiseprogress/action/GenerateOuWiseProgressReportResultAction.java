@@ -36,13 +36,13 @@ import jxl.write.WritableSheet;
 import jxl.write.WritableWorkbook;
 
 import org.amplecode.quick.StatementManager;
+import org.hisp.dhis.common.comparator.IdentifiableObjectNameComparator;
 import org.hisp.dhis.config.Configuration_IN;
 import org.hisp.dhis.i18n.I18nFormat;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroup;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroupService;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
-import org.hisp.dhis.organisationunit.comparator.OrganisationUnitShortNameComparator;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodService;
 import org.hisp.dhis.reports.ReportService;
@@ -244,7 +244,7 @@ public class GenerateOuWiseProgressReportResultAction
                 }
             }
             
-            Collections.sort( orgUnitList, new OrganisationUnitShortNameComparator() );
+            Collections.sort( orgUnitList, new IdentifiableObjectNameComparator() );
             
             //Hardcoded to level 2 to make report fast for state level
             if( selectedOrgUnitLevel != 2 )
