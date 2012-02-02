@@ -35,7 +35,7 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
     <property name="expressionService" ref="org.hisp.dhis.expression.ExpressionService" />
     <property name="organisationUnitService" ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
 	<property name="organisationUnitGroupService" ref="org.hisp.dhis.organisationunit.OrganisationUnitGroupService" />
-	<property name="systemSettingManager" ref="org.hisp.dhis.options.SystemSettingManager" />
+	<property name="systemSettingManager" ref="org.hisp.dhis.setting.SystemSettingManager" />
   </bean>
 
   <bean id="internal-process-DataMart" class="org.hisp.dhis.datamart.DataMartInternalProcess" scope="prototype">
@@ -111,7 +111,7 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
   <bean id="org.hisp.dhis.datamart.indicator.IndicatorDataMart" class="org.hisp.dhis.datamart.indicator.DefaultIndicatorDataMart">
     <property name="expressionService" ref="org.hisp.dhis.expression.ExpressionService" />
     <property name="aggregationCache" ref="org.hisp.dhis.datamart.aggregation.cache.AggregationCache" />
-    <property name="systemSettingManager" ref="org.hisp.dhis.options.SystemSettingManager" />
+    <property name="systemSettingManager" ref="org.hisp.dhis.setting.SystemSettingManager" />
     <property name="crossTabService" ref="org.hisp.dhis.datamart.crosstab.CrossTabService" />
 	<property name="constantService" ref="org.hisp.dhis.constant.ConstantService" />
     <property name="batchHandlerFactory" ref="batchHandlerFactory" />

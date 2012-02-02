@@ -27,13 +27,13 @@ package org.hisp.dhis.scheduling;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import static org.hisp.dhis.options.SystemSettingManager.KEY_SCHEDULED_TASKS;
+import static org.hisp.dhis.setting.SystemSettingManager.KEY_SCHEDULED_TASKS;
 import static org.hisp.dhis.system.scheduling.Scheduler.STATUS_NOT_STARTED;
 
 import java.util.HashMap;
 import java.util.Map;
 
-import org.hisp.dhis.options.SystemSettingManager;
+import org.hisp.dhis.setting.SystemSettingManager;
 import org.hisp.dhis.system.scheduling.Scheduler;
 
 /**

@@ -1,4 +1,4 @@
-package org.hisp.dhis.options.setting;
+package org.hisp.dhis.setting;
 
 /*
  * Copyright (c) 2004-2012, University of Oslo
@@ -35,8 +35,8 @@ import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
 import org.hisp.dhis.common.GenericIdentifiableObjectStore;
-import org.hisp.dhis.options.SystemSetting;
-import org.hisp.dhis.options.SystemSettingManager;
+import org.hisp.dhis.setting.SystemSetting;
+import org.hisp.dhis.setting.SystemSettingManager;
 import org.springframework.transaction.annotation.Transactional;
 
 /**

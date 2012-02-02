@@ -1,4 +1,4 @@
-package org.hisp.dhis.options.style;
+package org.hisp.dhis.setting;
 
 /*
  * Copyright (c) 2004-2012, University of Oslo
@@ -30,8 +30,8 @@ package org.hisp.dhis.options.style;
 import java.io.File;
 import java.util.SortedMap;
 
-import org.hisp.dhis.options.StyleManager;
-import org.hisp.dhis.options.SystemSettingManager;
+import org.hisp.dhis.setting.StyleManager;
+import org.hisp.dhis.setting.SystemSettingManager;
 import org.hisp.dhis.user.UserSettingService;
 
 /**

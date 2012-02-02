@@ -252,8 +252,8 @@ http://www.springframework.org/schema/security http://www.springframework.org/sc
     <property name="cacheable" value="true" />
   </bean>
 
-  <bean id="org.hisp.dhis.options.SystemSettingStore" class="org.hisp.dhis.hibernate.HibernateGenericStore">
-    <property name="clazz" value="org.hisp.dhis.options.SystemSetting" />
+  <bean id="org.hisp.dhis.setting.SystemSettingStore" class="org.hisp.dhis.hibernate.HibernateGenericStore">
+    <property name="clazz" value="org.hisp.dhis.setting.SystemSetting" />
     <property name="sessionFactory" ref="sessionFactory" />
     <property name="cacheable" value="true" />
   </bean>
@@ -455,7 +455,7 @@ http://www.springframework.org/schema/security http://www.springframework.org/sc
   </bean>
 
   <bean id="emailMessageSender" class="org.hisp.dhis.message.EmailMessageSender">
-	<property name="systemSettingManager" ref="org.hisp.dhis.options.SystemSettingManager" />
+	<property name="systemSettingManager" ref="org.hisp.dhis.setting.SystemSettingManager" />
 	<property name="userService" ref="org.hisp.dhis.user.UserService" />
   </bean>
 
@@ -480,8 +480,8 @@ http://www.springframework.org/schema/security http://www.springframework.org/sc
     <property name="attributeValueStore" ref="org.hisp.dhis.attribute.AttributeValueStore" />
   </bean>
 
-  <bean id="org.hisp.dhis.options.SystemSettingManager" class="org.hisp.dhis.options.setting.DefaultSystemSettingManager">
-    <property name="systemSettingStore" ref="org.hisp.dhis.options.SystemSettingStore" />
+  <bean id="org.hisp.dhis.setting.SystemSettingManager" class="org.hisp.dhis.setting.DefaultSystemSettingManager">
+    <property name="systemSettingStore" ref="org.hisp.dhis.setting.SystemSettingStore" />
     <property name="flags">
       <list>
         <value>armenia</value>
@@ -530,8 +530,8 @@ http://www.springframework.org/schema/security http://www.springframework.org/sc
     </property>
   </bean>
 
-  <bean id="org.hisp.dhis.options.StyleManager" class="org.hisp.dhis.options.style.DefaultStyleManager">
-    <property name="systemSettingManager" ref="org.hisp.dhis.options.SystemSettingManager" />
+  <bean id="org.hisp.dhis.setting.StyleManager" class="org.hisp.dhis.setting.DefaultStyleManager">
+    <property name="systemSettingManager" ref="org.hisp.dhis.setting.SystemSettingManager" />
 	<property name="userSettingService" ref="org.hisp.dhis.user.UserSettingService" />
     <property name="defaultStyle" value="light_blue" />
     <property name="styles">

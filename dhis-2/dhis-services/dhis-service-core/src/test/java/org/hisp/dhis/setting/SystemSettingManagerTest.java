@@ -1,4 +1,4 @@
-package org.hisp.dhis.options.setting;
+package org.hisp.dhis.setting;
 
 /*
  * Copyright (c) 2004-2012, University of Oslo
@@ -33,8 +33,8 @@ import static junit.framework.Assert.assertNotNull;
 import java.util.Collection;
 
 import org.hisp.dhis.DhisSpringTest;
-import org.hisp.dhis.options.SystemSetting;
-import org.hisp.dhis.options.SystemSettingManager;
+import org.hisp.dhis.setting.SystemSetting;
+import org.hisp.dhis.setting.SystemSettingManager;
 import org.junit.Test;
 
 /**

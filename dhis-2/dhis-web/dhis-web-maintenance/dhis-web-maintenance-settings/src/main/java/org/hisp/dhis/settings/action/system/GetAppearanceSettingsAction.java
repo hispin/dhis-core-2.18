@@ -30,8 +30,8 @@ package org.hisp.dhis.settings.action.system;
 import java.util.List;
 import java.util.SortedMap;
 
-import org.hisp.dhis.options.SystemSettingManager;
-import org.hisp.dhis.options.StyleManager;
+import org.hisp.dhis.setting.SystemSettingManager;
+import org.hisp.dhis.setting.StyleManager;
 import org.hisp.dhis.system.util.Filter;
 import org.hisp.dhis.system.util.FilterUtils;
 import org.hisp.dhis.webportal.module.Module;

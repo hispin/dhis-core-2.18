@@ -67,7 +67,7 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
     <property name="minMaxDataElementService" ref="org.hisp.dhis.minmax.MinMaxDataElementService" />
     <property name="currentUserService" ref="org.hisp.dhis.user.CurrentUserService" />
 	<property name="reportTableManager" ref="org.hisp.dhis.reporttable.jdbc.ReportTableManager" />
-    <property name="systemSettingManager" ref="org.hisp.dhis.options.SystemSettingManager" />
+    <property name="systemSettingManager" ref="org.hisp.dhis.setting.SystemSettingManager" />
   </bean>
 
   <!-- Document -->
@@ -116,7 +116,7 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
     <property name="dataElementService" ref="org.hisp.dhis.dataelement.DataElementService" />
     <property name="periodService" ref="org.hisp.dhis.period.PeriodService" />
     <property name="completenessStore" ref="org.hisp.dhis.completeness.DataSetCompletenessStore" />
-    <property name="systemSettingManager" ref="org.hisp.dhis.options.SystemSettingManager" />
+    <property name="systemSettingManager" ref="org.hisp.dhis.setting.SystemSettingManager" />
   </bean>
 
   <bean id="ratioDataCompletenessService" class="org.hisp.dhis.completeness.impl.RatioDataSetCompletenessService"
@@ -144,7 +144,7 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
 
   <bean id="org.hisp.dhis.datasetreport.DataSetReportService" class="org.hisp.dhis.datasetreport.impl.DefaultDataSetReportService">
     <property name="dataValueService" ref="org.hisp.dhis.datavalue.DataValueService" />
-    <property name="systemSettingManager" ref="org.hisp.dhis.options.SystemSettingManager" />
+    <property name="systemSettingManager" ref="org.hisp.dhis.setting.SystemSettingManager" />
     <property name="aggregatedDataValueService" ref="org.hisp.dhis.aggregation.AggregatedDataValueService" />
     <property name="aggregationService" ref="org.hisp.dhis.aggregation.AggregationService" />
   </bean>
@@ -184,7 +184,7 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
   <bean id="mapViewContentProvider" class="org.hisp.dhis.dashboard.provider.MapViewContentProvider">
     <property name="currentUserService" ref="org.hisp.dhis.user.CurrentUserService" />
     <property name="dashboardService" ref="org.hisp.dhis.dashboard.DashboardService" />
-    <property name="systemSettingManager" ref="org.hisp.dhis.options.SystemSettingManager" />
+    <property name="systemSettingManager" ref="org.hisp.dhis.setting.SystemSettingManager" />
     <property name="key" value="mapViews" />
   </bean>
 
@@ -252,7 +252,7 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
 
   <bean id="org.hisp.dhis.scheduling.SchedulingManager" class="org.hisp.dhis.scheduling.DefaultSchedulingManager"
     init-method="scheduleTasks">
-    <property name="systemSettingManager" ref="org.hisp.dhis.options.SystemSettingManager" />
+    <property name="systemSettingManager" ref="org.hisp.dhis.setting.SystemSettingManager" />
     <property name="scheduler" ref="scheduler" />
     <property name="tasks">
       <map>
@@ -272,7 +272,7 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
     <constructor-arg ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
     <constructor-arg ref="org.hisp.dhis.organisationunit.OrganisationUnitGroupService" />
     <constructor-arg ref="org.hisp.dhis.dataset.DataSetService" />
-	<constructor-arg ref="org.hisp.dhis.options.SystemSettingManager" />
+	<constructor-arg ref="org.hisp.dhis.setting.SystemSettingManager" />
   </bean>
     
   <bean id="dataMartLast6MonthsTask" class="org.hisp.dhis.system.scheduling.DataMartTask" parent="dataMartLast12MonthsTask">
