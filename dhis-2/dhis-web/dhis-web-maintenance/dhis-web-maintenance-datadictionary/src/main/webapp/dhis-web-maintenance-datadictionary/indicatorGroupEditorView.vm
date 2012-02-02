@@ -1,12 +1,12 @@
 <script type="text/javascript">
 	var indicatorGroups = new Array();
 	#foreach( $indicatorGroup in $indicatorGroups )
-		indicatorGroups['$indicatorGroup.id'] = '$encoder.jsEscape( $indicatorGroup.name, "'" )';
+		indicatorGroups['$indicatorGroup.id'] = '$encoder.jsEscape( $indicatorGroup.displayName, "'" )';
 	#end
 
 	var availableIndicators = new Array();
 	#foreach( $indicator in $indicators )
-		availableIndicators['$indicator.id'] = '$encoder.jsEscape( $indicator.name, "'" )';
+		availableIndicators['$indicator.id'] = '$encoder.jsEscape( $indicator.displayName, "'" )';
 	#end
 	var selectedIndicators = new Array();	
 

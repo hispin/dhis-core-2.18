@@ -1,12 +1,12 @@
 <script type="text/javascript">
 	var dataElementGroups = new Array();
 	#foreach( $dataElementGroup in $dataElementGroups )
-        dataElementGroups['$dataElementGroup.id'] = '$encoder.jsEscape( $dataElementGroup.name, "'" )';
+        dataElementGroups['$dataElementGroup.id'] = '$encoder.jsEscape( $dataElementGroup.displayName, "'" )';
 	#end
 
 	var availableDataElements = new Array();
 	#foreach( $dataElement in $dataElements )
-		availableDataElements['$dataElement.id'] = '$encoder.jsEscape( $dataElement.name, "'" )';
+		availableDataElements['$dataElement.id'] = '$encoder.jsEscape( $dataElement.displayName, "'" )';
 	#end
 	var selectedDataElements = new Array();
 
