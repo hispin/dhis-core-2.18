@@ -34,11 +34,10 @@ import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 
+import org.hisp.dhis.common.comparator.IdentifiableObjectNameComparator;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementGroup;
 import org.hisp.dhis.dataelement.DataElementService;
-import org.hisp.dhis.dataelement.comparator.DataElementGroupNameComparator;
-import org.hisp.dhis.dataelement.comparator.DataElementNameComparator;
 import org.hisp.dhis.dataset.Section;
 import org.hisp.dhis.dataset.SectionService;
 import org.hisp.dhis.dataset.comparator.SectionOrderComparator;
@@ -270,8 +269,8 @@ public class GenerateGraphicalAnalyserDataElementsFormAction implements Action
         
         dataElementGroups = new ArrayList<DataElementGroup>( dataElementService.getAllDataElementGroups() );
         
-        Collections.sort( dataElements, new DataElementNameComparator() );
-        Collections.sort( dataElementGroups, new DataElementGroupNameComparator() );
+        Collections.sort( dataElements, new IdentifiableObjectNameComparator() );
+        Collections.sort( dataElementGroups, new IdentifiableObjectNameComparator() );
         
         /* Periods Type */
         periodTypes = new ArrayList<PeriodType>( periodService.getAllPeriodTypes() );

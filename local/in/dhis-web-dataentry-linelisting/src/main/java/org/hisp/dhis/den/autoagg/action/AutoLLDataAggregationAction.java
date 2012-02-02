@@ -8,6 +8,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import org.hisp.dhis.common.comparator.IdentifiableObjectNameComparator;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
 import org.hisp.dhis.dataelement.DataElementCategoryService;
@@ -20,7 +21,6 @@ import org.hisp.dhis.den.api.LLDataSets;
 import org.hisp.dhis.den.api.LLDataValueService;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
-import org.hisp.dhis.organisationunit.comparator.OrganisationUnitNameComparator;
 import org.hisp.dhis.period.MonthlyPeriodType;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodService;
@@ -250,7 +250,7 @@ public class AutoLLDataAggregationAction implements Action
         orgUnitTree.add( orgUnit );
 
         List<OrganisationUnit> children = new ArrayList<OrganisationUnit>( orgUnit.getChildren() );
-        Collections.sort( children, new OrganisationUnitNameComparator() );
+        Collections.sort( children, new IdentifiableObjectNameComparator() );
 
         Iterator<OrganisationUnit> childIterator = children.iterator();
         OrganisationUnit child;

@@ -43,12 +43,12 @@ import java.util.Map;
 
 import org.amplecode.quick.StatementManager;
 import org.hisp.dhis.aggregation.AggregationService;
+import org.hisp.dhis.common.comparator.IdentifiableObjectNameComparator;
 import org.hisp.dhis.dataanalyser.util.DashBoardService;
 import org.hisp.dhis.indicator.Indicator;
 import org.hisp.dhis.indicator.IndicatorService;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
-import org.hisp.dhis.organisationunit.comparator.OrganisationUnitNameComparator;
 import org.hisp.dhis.period.MonthlyPeriodType;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodService;
@@ -306,7 +306,7 @@ public class DashBoardHomePageAction
             {
                 rootOrgUnitName = orgUnit.getName() + ", ";
                 List<OrganisationUnit> tempOuList = new ArrayList<OrganisationUnit>( orgUnit.getChildren() );
-                Collections.sort( tempOuList, new OrganisationUnitNameComparator() );
+                Collections.sort( tempOuList, new IdentifiableObjectNameComparator() );
     
                 immChildrenList.addAll( tempOuList );
     

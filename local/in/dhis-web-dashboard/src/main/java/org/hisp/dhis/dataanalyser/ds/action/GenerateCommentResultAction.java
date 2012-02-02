@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.amplecode.quick.StatementManager;
+import org.hisp.dhis.common.comparator.IdentifiableObjectNameComparator;
 import org.hisp.dhis.dataanalyser.util.DashBoardService;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryCombo;
@@ -20,8 +21,6 @@ import org.hisp.dhis.datavalue.DataValue;
 import org.hisp.dhis.datavalue.DataValueService;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
-import org.hisp.dhis.organisationunit.comparator.OrganisationUnitNameComparator;
-import org.hisp.dhis.organisationunit.comparator.OrganisationUnitShortNameComparator;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodService;
 import org.hisp.dhis.period.PeriodType;
@@ -316,7 +315,8 @@ public class GenerateCommentResultAction implements Action
                     .parseInt( (String) orgUnitIterator.next() ) );
                 orgUnitList.add( o );
                 List<OrganisationUnit> organisationUnits = new ArrayList<OrganisationUnit>( o.getChildren() );
-                Collections.sort( organisationUnits, new OrganisationUnitShortNameComparator() );
+                //Collections.sort( organisationUnits, new OrganisationUnitShortNameComparator() );
+                Collections.sort( organisationUnits, new IdentifiableObjectNameComparator() );
                 orgUnitList.addAll( organisationUnits );
             }
         }
@@ -328,7 +328,8 @@ public class GenerateCommentResultAction implements Action
             {
                 o = organisationUnitService.getOrganisationUnit( Integer.parseInt( orgUnitIterator.next() ) );
                 orgUnitList.add( o );
-                Collections.sort( orgUnitList, new OrganisationUnitShortNameComparator() );
+               // Collections.sort( orgUnitList, new OrganisationUnitShortNameComparator() );
+                Collections.sort( orgUnitList, new IdentifiableObjectNameComparator() );
             }
         }
         
@@ -423,7 +424,8 @@ public class GenerateCommentResultAction implements Action
         orgUnitTree.add( orgUnit );
 
         List<OrganisationUnit> children = new ArrayList<OrganisationUnit>( orgUnit.getChildren() );
-        Collections.sort( children, new OrganisationUnitNameComparator() );
+        //Collections.sort( children, new OrganisationUnitNameComparator() );
+        Collections.sort( children, new IdentifiableObjectNameComparator() );
 
         Iterator childIterator = children.iterator();
         OrganisationUnit child;

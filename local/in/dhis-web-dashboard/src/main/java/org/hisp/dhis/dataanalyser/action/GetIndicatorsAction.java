@@ -37,7 +37,6 @@ import java.util.List;
 import org.hisp.dhis.indicator.Indicator;
 import org.hisp.dhis.indicator.IndicatorGroup;
 import org.hisp.dhis.indicator.IndicatorService;
-import org.hisp.dhis.options.displayproperty.DisplayPropertyHandler;
 import org.hisp.dhis.survey.Survey;
 import org.hisp.dhis.survey.SurveyService;
 
@@ -84,14 +83,14 @@ public class GetIndicatorsAction
     // -------------------------------------------------------------------------
     // DisplayPropertyHandler
     // -------------------------------------------------------------------------
-
+    /*
     private DisplayPropertyHandler displayPropertyHandler;
 
     public void setDisplayPropertyHandler( DisplayPropertyHandler displayPropertyHandler )
     {
         this.displayPropertyHandler = displayPropertyHandler;
     }
-
+    */
     // -------------------------------------------------------------------------
     // Input & output
     // -------------------------------------------------------------------------
@@ -184,7 +183,7 @@ public class GetIndicatorsAction
         
        Collections.sort( indicators, indicatorComparator );
         
-       displayPropertyHandler.handle( indicators );
+       //displayPropertyHandler.handle( indicators );
 
        return SUCCESS;
     }

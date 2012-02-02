@@ -33,9 +33,9 @@ import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 
+import org.hisp.dhis.common.comparator.IdentifiableObjectNameComparator;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.dataset.DataSetService;
-import org.hisp.dhis.dataset.comparator.DataSetNameComparator;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroupService;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroupSet;
@@ -176,7 +176,7 @@ public class GenerateDataStatusOrgnisationunitGroupSetWiseFormAction
 				}	
 			}
         }
-        Collections.sort( dataSetList, new DataSetNameComparator() );
+        Collections.sort( dataSetList, new IdentifiableObjectNameComparator() );
 
        // Collection<OrganisationUnit> rootUnits = selectionTreeManager.getRootOrganisationUnits();
 

@@ -39,6 +39,7 @@ import jxl.write.WritableWorkbook;
 import org.amplecode.quick.StatementManager;
 import org.apache.velocity.tools.generic.MathTool;
 import org.hisp.dhis.aggregation.AggregationService;
+import org.hisp.dhis.common.comparator.IdentifiableObjectNameComparator;
 import org.hisp.dhis.config.Configuration_IN;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
@@ -55,7 +56,6 @@ import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroup;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroupService;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
-import org.hisp.dhis.organisationunit.comparator.OrganisationUnitShortNameComparator;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodService;
 import org.hisp.dhis.period.PeriodType;
@@ -374,7 +374,7 @@ public class GradingAbstractionResultAction  extends ActionSupport
         
         selectedOrgUnit = organisationUnitService.getOrganisationUnit( Integer.parseInt( (String) orgUnitListCB.get( 0 ) ) );
         orgUnitList = new ArrayList<OrganisationUnit>( selectedOrgUnit.getChildren() );        
-        Collections.sort( orgUnitList, new OrganisationUnitShortNameComparator() );
+        Collections.sort( orgUnitList, new IdentifiableObjectNameComparator() );
 
         // Period Info
         sDate = format.parseDate( startDate );            
@@ -503,7 +503,7 @@ public class GradingAbstractionResultAction  extends ActionSupport
                             
                 List<OrganisationUnit> cOUList = new ArrayList<OrganisationUnit>();
                 cOUList = getChildList(orgUnit);
-                Collections.sort( cOUList, new OrganisationUnitShortNameComparator() );
+                Collections.sort( cOUList, new IdentifiableObjectNameComparator() );
                 
                 int gradeATotal = 0;
                 int gradeBTotal = 0;

@@ -19,7 +19,7 @@ visibility:hidden;
 </div>
 
 
-<div id="currentSelection" text-align:right">
+<div id="currentSelection"><span style="float:left;cursor:pointer;margin-right:5px;"><img src="../images/hide.png" title="$i18n.getString( 'close' )" onclick="closeCurrentSelection()"></span>
 	#if ( $organisationUnit ) $encoder.htmlEncode( $organisationUnit.name )#else $i18n.getString("no_organisationunit_selected") #end - 
 	#set( $period = $selectedStateManager.getSelectedPeriod() )
 	#if ( $period ) $format.formatPeriod( $period ) #else $i18n.getString("no_period_selected") #end <br> 
@@ -91,3 +91,10 @@ visibility:hidden;
 </form>
 
 <hr style="clear:both;">
+
+<script>
+	function closeCurrentSelection()
+	{
+    	$( '#currentSelection' ).fadeOut();
+	}
+</script>

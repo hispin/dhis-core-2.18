@@ -22,6 +22,7 @@ import jxl.write.WritableCellFormat;
 import jxl.write.WritableSheet;
 import jxl.write.WritableWorkbook;
 
+import org.hisp.dhis.common.comparator.IdentifiableObjectNameComparator;
 import org.hisp.dhis.config.Configuration_IN;
 import org.hisp.dhis.datalock.DataSetLock;
 import org.hisp.dhis.datalock.DataSetLockService;
@@ -30,7 +31,6 @@ import org.hisp.dhis.dataset.DataSetService;
 import org.hisp.dhis.i18n.I18nFormat;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
-import org.hisp.dhis.organisationunit.comparator.OrganisationUnitNameComparator;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodService;
 import org.hisp.dhis.reports.ReportService;
@@ -269,7 +269,7 @@ public class GenerateDataSetLockReportResultAction
         {
             organisationUnitChildren = new ArrayList<OrganisationUnit>( organisationUnit.getChildren() );
 
-            Collections.sort( organisationUnitChildren, new OrganisationUnitNameComparator() );
+            Collections.sort( organisationUnitChildren, new IdentifiableObjectNameComparator() );
 
             int organisationUnitChildrenCounter = 0;
             for ( OrganisationUnit orgElement : organisationUnitChildren )

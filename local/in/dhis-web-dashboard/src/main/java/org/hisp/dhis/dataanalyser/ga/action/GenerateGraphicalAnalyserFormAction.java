@@ -36,6 +36,7 @@ import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 
+import org.hisp.dhis.common.comparator.IdentifiableObjectNameComparator;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementGroup;
 import org.hisp.dhis.dataset.Section;
@@ -44,7 +45,6 @@ import org.hisp.dhis.dataset.comparator.SectionOrderComparator;
 import org.hisp.dhis.indicator.Indicator;
 import org.hisp.dhis.indicator.IndicatorGroup;
 import org.hisp.dhis.indicator.IndicatorService;
-import org.hisp.dhis.indicator.comparator.IndicatorGroupNameComparator;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroupService;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroupSet;
@@ -235,7 +235,7 @@ public class GenerateGraphicalAnalyserFormAction
         indicatorGroups = new ArrayList<IndicatorGroup>(indicatorService.getAllIndicatorGroups());
         
         //Collections.sort(indicators, new IndicatorNameComparator());
-        Collections.sort(indicatorGroups, new IndicatorGroupNameComparator());
+        Collections.sort(indicatorGroups, new IdentifiableObjectNameComparator());
         
         /* Monthly Periods */
         monthlyPeriods = new ArrayList<Period>( periodService.getPeriodsByPeriodType( new MonthlyPeriodType() ) );

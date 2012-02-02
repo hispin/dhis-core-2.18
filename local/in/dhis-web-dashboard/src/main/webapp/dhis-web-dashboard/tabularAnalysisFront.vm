@@ -143,7 +143,11 @@
             <td class="NormalB">&nbsp;</td>
             <td class="NormalB">&nbsp;</td>
         </tr>
-                            
+        <tr>
+     	    <td class="NormalB">$i18n.getString( "filter" ):&nbsp;<input type="text" id="availableDataElementsFilter" onkeyup="filterAvailableDataElements()" style="min-width:26em"></td>
+            <td class="NormalB">&nbsp;</td>
+            <td class="NormalB">&nbsp;</td>
+        </tr>                           
         <tr>
             <td class="NormalB">$i18n.getString( "ga_available_delist" )<br>
                 <select multiple size="5" id="availableDataElements" name="availableDataElements" style="width:350px; height:85px" ondblclick="moveSelectedById( 'availableDataElements', 'selectedServices' )">                    
@@ -190,9 +194,8 @@
             </td>   
             <td class="NormalB">&nbsp;</td>
         </tr>
-
         <tr>
-            <td class="NormalB">&nbsp;</td>   
+            <td class="NormalB"><br>$i18n.getString( "filter" ):&nbsp;<input type="text" id="availableIndicatorsFilter" onkeyup="filterAvailableIndicators()" style="min-width:26em"></td>
             <td class="NormalB">&nbsp;</td>
         </tr>
                             
@@ -319,4 +322,21 @@
 
 <script>
   getPeriods();
+</script>
+
+<script type="text/javascript">
+
+	var availableDataElements = new Object();	
+    #foreach ( $availableDataElement in $dataElements )
+    	availableDataElements['$availableDataElement.id'] = '$encoder.jsEscape( $availableDataElement.name, "'" )';
+    #end
+	
+</script>
+<script type="text/javascript">
+
+	var availableIndicators = new Object();	
+    #foreach ( $availableIndicator in $indicators )
+    	availableIndicators['$availableIndicator.id'] = '$encoder.jsEscape( $availableIndicator.name, "'" )';
+    #end
+
 </script>

@@ -9,15 +9,14 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import org.hisp.dhis.common.comparator.IdentifiableObjectNameComparator;
 import org.hisp.dhis.dataanalyser.util.DashBoardService;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.dataset.DataSetService;
-import org.hisp.dhis.options.displayproperty.DisplayPropertyHandler;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitLevel;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
-import org.hisp.dhis.organisationunit.comparator.OrganisationUnitShortNameComparator;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodService;
 import org.hisp.dhis.period.PeriodType;
@@ -71,14 +70,14 @@ public class GenerateDataEntryStatusResultAction implements Action
     {
         this.dataSetService = dataSetService;
     }
-    
+    /*
     private DisplayPropertyHandler displayPropertyHandler;
 
     public void setDisplayPropertyHandler( DisplayPropertyHandler displayPropertyHandler )
     {
         this.displayPropertyHandler = displayPropertyHandler;
     }
-    
+    */
     // ---------------------------------------------------------------
     // Input/Output Parameters
     // ---------------------------------------------------------------
@@ -348,7 +347,7 @@ public class GenerateDataEntryStatusResultAction implements Action
                 OrganisationUnit o = organisationUnitService.getOrganisationUnit( Integer.parseInt( (String) orgUnitIterator.next() ) );
                 orgUnitList.add( o );
                 List<OrganisationUnit> organisationUnits = new ArrayList<OrganisationUnit>( o.getChildren() );
-                Collections.sort( organisationUnits, new OrganisationUnitShortNameComparator() );
+                Collections.sort( organisationUnits, new IdentifiableObjectNameComparator() );
                 orgUnitList.addAll( organisationUnits );
             }
         }
@@ -361,8 +360,8 @@ public class GenerateDataEntryStatusResultAction implements Action
                 o = organisationUnitService.getOrganisationUnit( Integer.parseInt( orgUnitIterator.next() ) );
                 orgUnitList.add( o );
             }
-            Collections.sort( orgUnitList, new OrganisationUnitShortNameComparator() );
-            displayPropertyHandler.handle( orgUnitList );
+            Collections.sort( orgUnitList, new IdentifiableObjectNameComparator() );
+            //displayPropertyHandler.handle( orgUnitList );
         }
         
         Iterator<OrganisationUnit> ouIt = orgUnitList.iterator();

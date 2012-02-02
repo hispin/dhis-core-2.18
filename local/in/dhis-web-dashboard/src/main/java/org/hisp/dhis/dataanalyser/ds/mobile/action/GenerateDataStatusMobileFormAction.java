@@ -32,9 +32,9 @@ import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 
+import org.hisp.dhis.common.comparator.IdentifiableObjectNameComparator;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.dataset.DataSetService;
-import org.hisp.dhis.dataset.comparator.DataSetNameComparator;
 import org.hisp.dhis.period.Period;
 
 import com.opensymphony.xwork2.Action;
@@ -128,7 +128,8 @@ implements Action
             }
         }
        
-        Collections.sort( dataSetList, new DataSetNameComparator() );
+        //Collections.sort( dataSetList, new DataSetNameComparator() );
+        Collections.sort( dataSetList, new IdentifiableObjectNameComparator() );
         System.out.println("Size of DataSet List is : " + dataSetList.size());
 
         /* Monthly Periods */

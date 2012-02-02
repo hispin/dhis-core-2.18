@@ -9,6 +9,7 @@ import java.util.List;
 
 import org.amplecode.quick.StatementManager;
 import org.hisp.dhis.aggregation.AggregationService;
+import org.hisp.dhis.common.comparator.IdentifiableObjectNameComparator;
 import org.hisp.dhis.dataanalyser.util.MotionChart;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
@@ -22,7 +23,6 @@ import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroup;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroupService;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
-import org.hisp.dhis.organisationunit.comparator.OrganisationUnitShortNameComparator;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodService;
 import org.hisp.dhis.period.PeriodType;
@@ -226,7 +226,7 @@ public class MotionChartResultAction
                     OrganisationUnitGroup oug = organisationUnitGroupService.getOrganisationUnitGroup( Integer
                         .parseInt( tmp ) );
                     List<OrganisationUnit> tempOUList = new ArrayList<OrganisationUnit>( oug.getMembers() );
-                    Collections.sort( tempOUList, new OrganisationUnitShortNameComparator() );
+                    Collections.sort( tempOUList, new IdentifiableObjectNameComparator() );
                     orgUnitList.addAll( tempOUList );
                 }
             }

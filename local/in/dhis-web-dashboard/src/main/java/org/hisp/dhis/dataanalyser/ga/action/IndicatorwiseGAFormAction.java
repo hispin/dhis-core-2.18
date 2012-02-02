@@ -33,11 +33,10 @@ import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 
+import org.hisp.dhis.common.comparator.IdentifiableObjectNameComparator;
 import org.hisp.dhis.indicator.Indicator;
 import org.hisp.dhis.indicator.IndicatorGroup;
 import org.hisp.dhis.indicator.IndicatorService;
-import org.hisp.dhis.indicator.comparator.IndicatorGroupNameComparator;
-import org.hisp.dhis.indicator.comparator.IndicatorNameComparator;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroup;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroupService;
 import org.hisp.dhis.period.DailyPeriodType;
@@ -205,8 +204,8 @@ public class IndicatorwiseGAFormAction implements Action
         /* DataElements and Groups */
         indicators = new ArrayList<Indicator>( indicatorService.getAllIndicators());
         indicatorGroups = new ArrayList<IndicatorGroup>( indicatorService.getAllIndicatorGroups()) ;
-        Collections.sort( indicators, new IndicatorNameComparator() );
-        Collections.sort( indicatorGroups, new IndicatorGroupNameComparator() );
+        Collections.sort( indicators, new IdentifiableObjectNameComparator() );
+        Collections.sort( indicatorGroups, new IdentifiableObjectNameComparator() );
         
         System.out.println( "--Size of Indicators is--" +  indicators.size() + ",----Size of Indicators Group is is-- "  + indicatorGroups.size() );
         /* Periods Type */

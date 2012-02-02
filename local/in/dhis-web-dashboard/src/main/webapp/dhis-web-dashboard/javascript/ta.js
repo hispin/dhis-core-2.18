@@ -252,7 +252,22 @@ function getDataElements()
     
     if ( dataSetSectionId != null )
     {
-		$.post("getDataElementsForTA.action",
+		
+    	document.getElementById( "availableDataElementsFilter" ).value = "";
+    	document.getElementById( "availableDataElementsFilter" ).disabled = true;
+    	
+        if ( dataSetSectionId == 0 )
+        {
+        	document.getElementById( "availableDataElementsFilter" ).value = "";
+        	document.getElementById( "availableDataElementsFilter" ).disabled = false;
+        }
+        else
+        {
+        	document.getElementById( "availableDataElementsFilter" ).value = "";
+        	document.getElementById( "availableDataElementsFilter" ).disabled = true;
+        }    	
+    	
+    	$.post("getDataElementsForTA.action",
 		{
 			id:dataSetSectionId,
 			deOptionValue:deOptionValue
@@ -297,7 +312,20 @@ function getIndicators()
 	
     if ( indicatorGroupId != null )
     {
-		$.post("getIndicators.action",
+        if ( indicatorGroupId != 0 )
+        {
+        	//alert( indicatorGroupId );
+        	document.getElementById( "availableIndicatorsFilter" ).value = "";
+        	document.getElementById( "availableIndicatorsFilter" ).disabled = true;
+        	//return false;
+        }
+        else
+        {
+        	document.getElementById( "availableIndicatorsFilter" ).value = "";
+        	document.getElementById( "availableIndicatorsFilter" ).disabled = false;
+        }
+        
+    	$.post("getIndicators.action",
 		{
 			id:indicatorGroupId
 		},
@@ -765,4 +793,71 @@ function hideOverlay()
 {
     var o = document.getElementById('overlay');
     o.style.visibility = 'hidden';
+}
+
+//filter available indicators list
+function filterAvailableIndicators()
+{
+	var filter = document.getElementById( 'availableIndicatorsFilter' ).value;
+    var list = document.getElementById( 'availableIndicators' );
+    
+    list.options.length = 0;
+    
+    var selIndListId = document.getElementById( 'selectedServices' );
+    var selIndLength = selIndListId.options.length;
+    
+    for ( var id in availableIndicators )
+    {
+    	//alert( "id : " + id );
+        var value = availableIndicators[id];
+        
+        var flag = 1;
+        for( var i =0 ; i<selIndLength; i++ )
+        {
+        	//alert( selIndListId.options[i].text );
+        	//alert( selIndListId.options[i].value );
+        	if( id == selIndListId.options[i].value )
+        		{
+        		flag =2;
+        		//alert("aaaa");
+        		break;
+        		}
+        }
+        if ( value.toLowerCase().indexOf( filter.toLowerCase() ) != -1 && (flag == 1) )
+        {
+            list.add( new Option( value, id ), null );
+        }
+        //alert( flag );
+    }
+}
+//filter available data elements list
+function filterAvailableDataElements()
+{
+	var filter = document.getElementById( 'availableDataElementsFilter' ).value;
+    var list = document.getElementById( 'availableDataElements' );
+    
+    list.options.length = 0;
+    
+    var selDeListId = document.getElementById( 'selectedServices' );
+    var selDeLength = selDeListId.options.length;
+    
+    for ( var id in availableDataElements )
+    {
+        var value = availableDataElements[id];
+        
+        var flag = 1;
+        for( var i =0 ; i<selDeLength; i++ )
+        {
+        	if( id == selDeListId.options[i].value )
+        		{
+        		flag =2;
+        		//alert("aaaa");
+        		break;
+        		}
+        }
+        if ( value.toLowerCase().indexOf( filter.toLowerCase() ) != -1 && (flag == 1) )
+        {
+            list.add( new Option( value, id ), null );
+        }
+    }
 }

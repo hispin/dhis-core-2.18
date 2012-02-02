@@ -36,6 +36,7 @@ import jxl.write.WritableSheet;
 import jxl.write.WritableWorkbook;
 
 import org.amplecode.quick.StatementManager;
+import org.hisp.dhis.common.comparator.IdentifiableObjectNameComparator;
 import org.hisp.dhis.config.Configuration_IN;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
@@ -46,7 +47,6 @@ import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroup;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroupService;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
-import org.hisp.dhis.organisationunit.comparator.OrganisationUnitNameComparator;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodService;
 import org.hisp.dhis.period.PeriodType;
@@ -256,13 +256,13 @@ public class GenerateColdChainReportAnalyserResultAction
         {
             OrganisationUnit orgUnit = organisationUnitService.getOrganisationUnit( ouIDTB );
             orgUnitList = new ArrayList<OrganisationUnit>( orgUnit.getChildren() );
-            Collections.sort( orgUnitList, new OrganisationUnitNameComparator() );
+            Collections.sort( orgUnitList, new IdentifiableObjectNameComparator() );
         }
         else if ( reportModelTB.equalsIgnoreCase( "dynamicwithrootfacility" ) )
         {
             OrganisationUnit orgUnit = organisationUnitService.getOrganisationUnit( ouIDTB );
             orgUnitList = new ArrayList<OrganisationUnit>( orgUnit.getChildren() );
-            Collections.sort( orgUnitList, new OrganisationUnitNameComparator() );
+            Collections.sort( orgUnitList, new IdentifiableObjectNameComparator() );
             orgUnitList.add( orgUnit );
 
             parentUnit = orgUnit.getName();

@@ -46,6 +46,7 @@ import org.apache.struts2.ServletActionContext;
 import org.hisp.dhis.aggregation.AggregationService;
 import org.hisp.dhis.caseaggregation.CaseAggregationCondition;
 import org.hisp.dhis.caseaggregation.CaseAggregationConditionService;
+import org.hisp.dhis.common.comparator.IdentifiableObjectNameComparator;
 import org.hisp.dhis.dataanalyser.util.SurveyData;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryCombo;
@@ -57,12 +58,10 @@ import org.hisp.dhis.datavalue.DataValue;
 import org.hisp.dhis.datavalue.DataValueService;
 import org.hisp.dhis.indicator.Indicator;
 import org.hisp.dhis.indicator.IndicatorService;
-import org.hisp.dhis.options.displayproperty.DisplayPropertyHandler;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroup;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroupService;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
-import org.hisp.dhis.organisationunit.comparator.OrganisationUnitShortNameComparator;
 import org.hisp.dhis.period.MonthlyPeriodType;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodService;
@@ -180,14 +179,14 @@ public class GenerateChartDataAction
     // DisplayPropertyHandler
     // -------------------------------------------------------------------------
 
-    @SuppressWarnings( "unused" )
+    /*
     private DisplayPropertyHandler displayPropertyHandler;
 
     public void setDisplayPropertyHandler( DisplayPropertyHandler displayPropertyHandler )
     {
         this.displayPropertyHandler = displayPropertyHandler;
     }
-
+    */
     // --------------------------------------------------------------------------
     // Parameters
     // --------------------------------------------------------------------------
@@ -1133,7 +1132,7 @@ public class GenerateChartDataAction
                     OrganisationUnitGroup oug = organisationUnitGroupService.getOrganisationUnitGroup( Integer
                         .parseInt( tmp ) );
                     List<OrganisationUnit> tempOUList = new ArrayList<OrganisationUnit>( oug.getMembers() );
-                    Collections.sort( tempOUList, new OrganisationUnitShortNameComparator() );
+                    Collections.sort( tempOUList, new IdentifiableObjectNameComparator() );
                     childOrgUnitList.addAll( tempOUList );
                 }
             }

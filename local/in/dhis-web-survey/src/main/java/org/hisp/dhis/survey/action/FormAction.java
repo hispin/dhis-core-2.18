@@ -35,7 +35,6 @@ import java.util.Map;
 
 import org.hisp.dhis.i18n.I18n;
 import org.hisp.dhis.indicator.Indicator;
-import org.hisp.dhis.options.displayproperty.DisplayPropertyHandler;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.survey.Survey;
 import org.hisp.dhis.survey.state.SelectedStateManager;
@@ -81,13 +80,14 @@ public class FormAction
     // -------------------------------------------------------------------------
 
     @SuppressWarnings("unused")
+    /*
     private DisplayPropertyHandler displayPropertyHandler;
 
     public void setDisplayPropertyHandler( DisplayPropertyHandler displayPropertyHandler )
     {
         this.displayPropertyHandler = displayPropertyHandler;
     }
-
+    */
     // -------------------------------------------------------------------------
     // Output
     // -------------------------------------------------------------------------
