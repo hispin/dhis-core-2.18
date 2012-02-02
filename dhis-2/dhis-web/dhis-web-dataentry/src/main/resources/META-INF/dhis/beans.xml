@@ -104,7 +104,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     <property name="minMaxOutlierAnalysisService" ref="org.hisp.dhis.dataanalysis.MinMaxOutlierAnalysisService" />
     <property name="minMaxValuesGenerationService" ref="org.hisp.dhis.minmax.validation.MinMaxValuesGenerationService" />
     <property name="minMaxDataElementService" ref="org.hisp.dhis.minmax.MinMaxDataElementService" />
-    <property name="systemSettingManager" ref="org.hisp.dhis.options.SystemSettingManager" />
+    <property name="systemSettingManager" ref="org.hisp.dhis.setting.SystemSettingManager" />
 	<property name="dataSetService" ref="org.hisp.dhis.dataset.DataSetService" />
     <property name="organisationUnitService" ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
   </bean>

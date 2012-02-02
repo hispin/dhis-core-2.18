@@ -31,9 +31,9 @@ import static org.hisp.dhis.dataentryform.DataEntryFormService.DATAELEMENT_TOTAL
 import static org.hisp.dhis.dataentryform.DataEntryFormService.IDENTIFIER_PATTERN;
 import static org.hisp.dhis.dataentryform.DataEntryFormService.INDICATOR_PATTERN;
 import static org.hisp.dhis.dataentryform.DataEntryFormService.INPUT_PATTERN;
-import static org.hisp.dhis.options.SystemSettingManager.AGGREGATION_STRATEGY_REAL_TIME;
-import static org.hisp.dhis.options.SystemSettingManager.DEFAULT_AGGREGATION_STRATEGY;
-import static org.hisp.dhis.options.SystemSettingManager.KEY_AGGREGATION_STRATEGY;
+import static org.hisp.dhis.setting.SystemSettingManager.AGGREGATION_STRATEGY_REAL_TIME;
+import static org.hisp.dhis.setting.SystemSettingManager.DEFAULT_AGGREGATION_STRATEGY;
+import static org.hisp.dhis.setting.SystemSettingManager.KEY_AGGREGATION_STRATEGY;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -64,7 +64,7 @@ import org.hisp.dhis.datavalue.DataValueService;
 import org.hisp.dhis.i18n.I18n;
 import org.hisp.dhis.i18n.I18nFormat;
 import org.hisp.dhis.indicator.Indicator;
-import org.hisp.dhis.options.SystemSettingManager;
+import org.hisp.dhis.setting.SystemSettingManager;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.system.filter.AggregatableDataElementFilter;

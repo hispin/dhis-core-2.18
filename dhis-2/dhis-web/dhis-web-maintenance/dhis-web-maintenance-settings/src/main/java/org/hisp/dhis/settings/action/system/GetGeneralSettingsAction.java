@@ -37,7 +37,7 @@ import org.hisp.dhis.configuration.Configuration;
 import org.hisp.dhis.configuration.ConfigurationService;
 import org.hisp.dhis.dataelement.DataElementGroup;
 import org.hisp.dhis.dataelement.DataElementService;
-import org.hisp.dhis.options.SystemSettingManager;
+import org.hisp.dhis.setting.SystemSettingManager;
 import org.hisp.dhis.period.PeriodService;
 import org.hisp.dhis.period.PeriodType;
 import org.hisp.dhis.user.UserGroup;

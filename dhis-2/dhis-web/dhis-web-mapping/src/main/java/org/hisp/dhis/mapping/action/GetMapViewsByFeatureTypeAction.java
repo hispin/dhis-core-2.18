@@ -27,9 +27,9 @@ package org.hisp.dhis.mapping.action;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import static org.hisp.dhis.options.SystemSettingManager.AGGREGATION_STRATEGY_BATCH;
-import static org.hisp.dhis.options.SystemSettingManager.DEFAULT_AGGREGATION_STRATEGY;
-import static org.hisp.dhis.options.SystemSettingManager.KEY_AGGREGATION_STRATEGY;
+import static org.hisp.dhis.setting.SystemSettingManager.AGGREGATION_STRATEGY_BATCH;
+import static org.hisp.dhis.setting.SystemSettingManager.DEFAULT_AGGREGATION_STRATEGY;
+import static org.hisp.dhis.setting.SystemSettingManager.KEY_AGGREGATION_STRATEGY;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -38,7 +38,7 @@ import java.util.List;
 import org.hisp.dhis.mapping.MapView;
 import org.hisp.dhis.mapping.MappingService;
 import org.hisp.dhis.mapping.comparator.MapViewNameComparator;
-import org.hisp.dhis.options.SystemSettingManager;
+import org.hisp.dhis.setting.SystemSettingManager;
 import org.hisp.dhis.system.filter.MapViewFixedDateTypeFilter;
 import org.hisp.dhis.system.util.FilterUtils;
 

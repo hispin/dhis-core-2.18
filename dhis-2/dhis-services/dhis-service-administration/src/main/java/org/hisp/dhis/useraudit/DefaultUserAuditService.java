@@ -32,11 +32,11 @@ import java.util.Date;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.hisp.dhis.options.SystemSettingManager;
+import org.hisp.dhis.setting.SystemSettingManager;
 import org.springframework.transaction.annotation.Transactional;
 
-import static org.hisp.dhis.options.SystemSettingManager.KEY_MAX_NUMBER_OF_ATTEMPTS;
-import static org.hisp.dhis.options.SystemSettingManager.KEY_TIMEFRAME_MINUTES;
+import static org.hisp.dhis.setting.SystemSettingManager.KEY_MAX_NUMBER_OF_ATTEMPTS;
+import static org.hisp.dhis.setting.SystemSettingManager.KEY_TIMEFRAME_MINUTES;
 
 /**
  * @author Saptarshi Purkayastha

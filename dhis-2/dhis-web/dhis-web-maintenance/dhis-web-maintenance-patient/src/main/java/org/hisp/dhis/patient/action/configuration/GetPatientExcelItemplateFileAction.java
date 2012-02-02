@@ -27,7 +27,7 @@
 
 package org.hisp.dhis.patient.action.configuration;
 
-import org.hisp.dhis.options.SystemSettingManager;
+import org.hisp.dhis.setting.SystemSettingManager;
 
 import com.opensymphony.xwork2.Action;
 

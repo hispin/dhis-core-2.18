@@ -26,12 +26,12 @@ package org.hisp.dhis.settings.action.system;
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-import static org.hisp.dhis.options.SystemSettingManager.KEY_EMAIL_HOST_NAME;
-import static org.hisp.dhis.options.SystemSettingManager.KEY_EMAIL_PASSWORD;
-import static org.hisp.dhis.options.SystemSettingManager.KEY_EMAIL_USERNAME;
+import static org.hisp.dhis.setting.SystemSettingManager.KEY_EMAIL_HOST_NAME;
+import static org.hisp.dhis.setting.SystemSettingManager.KEY_EMAIL_PASSWORD;
+import static org.hisp.dhis.setting.SystemSettingManager.KEY_EMAIL_USERNAME;
 
 import org.hisp.dhis.i18n.I18n;
-import org.hisp.dhis.options.SystemSettingManager;
+import org.hisp.dhis.setting.SystemSettingManager;
 
 import com.opensymphony.xwork2.Action;
 

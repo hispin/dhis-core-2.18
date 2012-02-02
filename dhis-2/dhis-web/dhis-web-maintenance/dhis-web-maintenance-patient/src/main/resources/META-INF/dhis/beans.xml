@@ -884,7 +884,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		class="org.hisp.dhis.patient.action.configuration.GetPatientExcelItemplateFileAction"
 		scope="prototype">
 		<property name="systemSettingManager">
-			<ref bean="org.hisp.dhis.options.SystemSettingManager" />
+			<ref bean="org.hisp.dhis.setting.SystemSettingManager" />
 		</property>
 	</bean>
 
@@ -893,7 +893,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		class="org.hisp.dhis.patient.action.configuration.SetPatientExcelItemplateFileAction"
 		scope="prototype">
 		<property name="systemSettingManager">
-			<ref bean="org.hisp.dhis.options.SystemSettingManager" />
+			<ref bean="org.hisp.dhis.setting.SystemSettingManager" />
 		</property>
 	</bean>
 
@@ -927,7 +927,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 			<ref bean="org.hisp.dhis.patient.PatientAttributeOptionService" />
 		</property>
 		<property name="systemSettingManager">
-			<ref bean="org.hisp.dhis.options.SystemSettingManager" />
+			<ref bean="org.hisp.dhis.setting.SystemSettingManager" />
 		</property>
 		<property name="organisationUnitService">
 			<ref bean="org.hisp.dhis.organisationunit.OrganisationUnitService" />

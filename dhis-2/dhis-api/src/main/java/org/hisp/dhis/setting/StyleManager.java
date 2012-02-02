@@ -1,4 +1,4 @@
-package org.hisp.dhis.options;
+package org.hisp.dhis.setting;
 
 /*
  * Copyright (c) 2004-2012, University of Oslo

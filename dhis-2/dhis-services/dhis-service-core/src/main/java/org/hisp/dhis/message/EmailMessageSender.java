@@ -27,9 +27,9 @@ package org.hisp.dhis.message;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import static org.hisp.dhis.options.SystemSettingManager.KEY_EMAIL_HOST_NAME;
-import static org.hisp.dhis.options.SystemSettingManager.KEY_EMAIL_PASSWORD;
-import static org.hisp.dhis.options.SystemSettingManager.KEY_EMAIL_USERNAME;
+import static org.hisp.dhis.setting.SystemSettingManager.KEY_EMAIL_HOST_NAME;
+import static org.hisp.dhis.setting.SystemSettingManager.KEY_EMAIL_PASSWORD;
+import static org.hisp.dhis.setting.SystemSettingManager.KEY_EMAIL_USERNAME;
 import static org.hisp.dhis.user.UserSettingService.*;
 
 import java.io.Serializable;
@@ -43,7 +43,7 @@ import org.apache.commons.mail.DefaultAuthenticator;
 import org.apache.commons.mail.Email;
 import org.apache.commons.mail.EmailException;
 import org.apache.commons.mail.SimpleEmail;
-import org.hisp.dhis.options.SystemSettingManager;
+import org.hisp.dhis.setting.SystemSettingManager;
 import org.hisp.dhis.user.User;
 import org.hisp.dhis.user.UserService;
 

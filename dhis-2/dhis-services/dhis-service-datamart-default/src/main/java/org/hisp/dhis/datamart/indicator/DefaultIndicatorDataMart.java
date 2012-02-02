@@ -27,7 +27,7 @@ package org.hisp.dhis.datamart.indicator;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import static org.hisp.dhis.options.SystemSettingManager.KEY_OMIT_INDICATORS_ZERO_NUMERATOR_DATAMART;
+import static org.hisp.dhis.setting.SystemSettingManager.KEY_OMIT_INDICATORS_ZERO_NUMERATOR_DATAMART;
 import static org.hisp.dhis.system.util.DateUtils.daysBetween;
 import static org.hisp.dhis.system.util.MathUtils.calculateExpression;
 import static org.hisp.dhis.system.util.MathUtils.getRounded;
@@ -50,7 +50,7 @@ import org.hisp.dhis.datamart.crosstab.CrossTabService;
 import org.hisp.dhis.datamart.engine.DataMartEngine;
 import org.hisp.dhis.expression.ExpressionService;
 import org.hisp.dhis.indicator.Indicator;
-import org.hisp.dhis.options.SystemSettingManager;
+import org.hisp.dhis.setting.SystemSettingManager;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroup;
 import org.hisp.dhis.period.Period;

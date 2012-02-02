@@ -1,4 +1,4 @@
-package org.hisp.dhis.options.setting;
+package org.hisp.dhis.setting;
 
 /*
  * Copyright (c) 2004-2012, University of Oslo
@@ -35,7 +35,7 @@ import java.util.Collection;
 
 import org.hisp.dhis.DhisSpringTest;
 import org.hisp.dhis.common.GenericIdentifiableObjectStore;
-import org.hisp.dhis.options.SystemSetting;
+import org.hisp.dhis.setting.SystemSetting;
 import org.junit.Test;
 
 /**
@@ -56,7 +56,7 @@ public class SystemSettingStoreTest
     public void setUpTest()
         throws Exception
     {
-        systemSettingStore = (GenericIdentifiableObjectStore<SystemSetting>) getBean( "org.hisp.dhis.options.SystemSettingStore" );
+        systemSettingStore = (GenericIdentifiableObjectStore<SystemSetting>) getBean( "org.hisp.dhis.setting.SystemSettingStore" );
 
         settingA = new SystemSetting();
         settingA.setName( "Setting1" );

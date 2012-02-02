@@ -27,14 +27,14 @@ package org.hisp.dhis.settings.action.system;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import static org.hisp.dhis.options.SystemSettingManager.KEY_APPLICATION_TITLE;
-import static org.hisp.dhis.options.SystemSettingManager.KEY_FLAG;
-import static org.hisp.dhis.options.SystemSettingManager.KEY_START_MODULE;
+import static org.hisp.dhis.setting.SystemSettingManager.KEY_APPLICATION_TITLE;
+import static org.hisp.dhis.setting.SystemSettingManager.KEY_FLAG;
+import static org.hisp.dhis.setting.SystemSettingManager.KEY_START_MODULE;
 
 import org.apache.commons.lang.StringUtils;
 import org.hisp.dhis.i18n.I18n;
-import org.hisp.dhis.options.SystemSettingManager;
-import org.hisp.dhis.options.StyleManager;
+import org.hisp.dhis.setting.SystemSettingManager;
+import org.hisp.dhis.setting.StyleManager;
 
 import com.opensymphony.xwork2.Action;
 

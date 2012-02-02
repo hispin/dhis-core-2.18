@@ -27,20 +27,12 @@ package org.hisp.dhis.interceptor;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import static org.hisp.dhis.options.SystemSettingManager.*;
-import static org.hisp.dhis.options.SystemSettingManager.DEFAULT_FACTOR_OF_DEVIATION;
-import static org.hisp.dhis.options.SystemSettingManager.KEY_AGGREGATION_STRATEGY;
-import static org.hisp.dhis.options.SystemSettingManager.KEY_APPLICATION_TITLE;
-import static org.hisp.dhis.options.SystemSettingManager.KEY_DISABLE_DATAENTRYFORM_WHEN_COMPLETED;
-import static org.hisp.dhis.options.SystemSettingManager.KEY_FACTOR_OF_DEVIATION;
-import static org.hisp.dhis.options.SystemSettingManager.KEY_FLAG;
-import static org.hisp.dhis.options.SystemSettingManager.KEY_OMIT_INDICATORS_ZERO_NUMERATOR_DATAMART;
-import static org.hisp.dhis.options.SystemSettingManager.KEY_START_MODULE;
+import static org.hisp.dhis.setting.SystemSettingManager.*;
 
 import java.util.HashMap;
 import java.util.Map;
 
-import org.hisp.dhis.options.SystemSettingManager;
+import org.hisp.dhis.setting.SystemSettingManager;
 
 import com.opensymphony.xwork2.ActionInvocation;
 import com.opensymphony.xwork2.interceptor.Interceptor;
