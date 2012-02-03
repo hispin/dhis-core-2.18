@@ -78,7 +78,7 @@ function getSortedListForSummary()
 
 	 getSortedList(chartDisplayOptionValue);
 }
-
+/*
 function getSortedList(chartDisplayOptionValue)
 {
 	//var url = "getSortedData.action?chartDisplayOption=" + chartDisplayOptionValue;
@@ -109,7 +109,7 @@ function getSortedListReceived(xmlObject)
     
     document.getElementById("headingInfoId").innerHTML = document.getElementById("testId").value; 	    	
 }
-
+*/
 //fucction for selected Button is ViewChart
 
 function exportToExcelFunction1( summaryOption )

@@ -26,7 +26,7 @@ function ouSelCBChange()
 
 function getOUDeatilsForNR( orgUnitIds )
 {
-	
+	/*
     var request = new Request();
     request.setResponseTypeXML( 'orgunit' );
     request.setCallbackSuccess( getOUDetailsForNRRecevied );
@@ -36,19 +36,18 @@ function getOUDeatilsForNR( orgUnitIds )
     var params = "orgUnitId=" + orgUnitIds+"&type=ta";
     request.sendAsPost( params );
     request.send( requestString ); 
+	*/
 	
-	
-	/*
 	$.post("getOrgUnitDetails.action",
 		{
-			orgUnitId:orgUnitIds,
+			orgUnitId:orgUnitIds[0],
 			type:"ta"
 		},
 		function (data)
 		{
 			getOUDetailsForNRRecevied(data);
 		},'xml');
-		*/
+		
 }
 
 function getOUDetailsForNRRecevied(xmlObject)
