@@ -38,6 +38,7 @@ import org.hisp.dhis.common.adapter.CategoryComboXmlAdapter;
 import org.hisp.dhis.common.adapter.DataElementGroupXmlAdapter;
 import org.hisp.dhis.common.adapter.DataSetXmlAdapter;
 import org.hisp.dhis.dataset.DataSet;
+import org.hisp.dhis.option.OptionSet;
 import org.hisp.dhis.period.PeriodType;
 import org.hisp.dhis.period.YearlyPeriodType;
 
@@ -167,9 +168,14 @@ public class DataElement extends BaseNameableObject
     private boolean zeroIsSignificant;
 
     /**
-     * Set of the dynamic attributes values that belong to this dataElement.
+     * Set of the dynamic attributes values that belong to this data element.
      */
     private Set<AttributeValue> attributeValues = new HashSet<AttributeValue>();
+    
+    /**
+     * The option set for this data element.
+     */
+    private OptionSet optionSet;
 
     // -------------------------------------------------------------------------
     // Constructors
@@ -549,5 +555,15 @@ public class DataElement extends BaseNameableObject
     public void setAttributeValues( Set<AttributeValue> attributeValues )
     {
         this.attributeValues = attributeValues;
+    }
+
+    public OptionSet getOptionSet()
+    {
+        return optionSet;
+    }
+
+    public void setOptionSet( OptionSet optionSet )
+    {
+        this.optionSet = optionSet;
     }
 }
