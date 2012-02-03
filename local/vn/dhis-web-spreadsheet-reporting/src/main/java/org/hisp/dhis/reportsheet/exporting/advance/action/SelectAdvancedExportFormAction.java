@@ -30,9 +30,9 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import org.hisp.dhis.common.comparator.IdentifiableObjectNameComparator;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroup;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroupService;
-import org.hisp.dhis.organisationunit.comparator.OrganisationUnitGroupNameComparator;
 import org.hisp.dhis.period.MonthlyPeriodType;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.reportsheet.ExportReportService;
@@ -120,7 +120,7 @@ public class SelectAdvancedExportFormAction
         organisationUnitGroups = new ArrayList<OrganisationUnitGroup>( organisationUnitGroupService
             .getAllOrganisationUnitGroups() );
 
-        Collections.sort( organisationUnitGroups, new OrganisationUnitGroupNameComparator() );
+        Collections.sort( organisationUnitGroups, new IdentifiableObjectNameComparator() );
 
         return SUCCESS;
     }

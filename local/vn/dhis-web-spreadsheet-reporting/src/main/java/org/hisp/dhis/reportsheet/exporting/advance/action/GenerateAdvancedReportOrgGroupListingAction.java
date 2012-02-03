@@ -33,13 +33,13 @@ import java.util.Collections;
 import java.util.List;
 
 import org.apache.poi.ss.usermodel.Sheet;
+import org.hisp.dhis.common.comparator.IdentifiableObjectNameComparator;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroup;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroupService;
-import org.hisp.dhis.organisationunit.comparator.OrganisationUnitNameComparator;
 import org.hisp.dhis.period.Period;
-import org.hisp.dhis.reportsheet.ExportReport;
 import org.hisp.dhis.reportsheet.ExportItem;
+import org.hisp.dhis.reportsheet.ExportReport;
 import org.hisp.dhis.reportsheet.ExportReportOganiztionGroupListing;
 import org.hisp.dhis.reportsheet.exporting.AbstractGenerateExcelReportSupport;
 import org.hisp.dhis.reportsheet.utils.ExcelUtils;
@@ -98,7 +98,7 @@ public class GenerateAdvancedReportOrgGroupListingAction
             List<OrganisationUnit> organisationUnits = new ArrayList<OrganisationUnit>( organisationUnitGroup
                 .getMembers() );
 
-            Collections.sort( organisationUnits, new OrganisationUnitNameComparator() );
+            Collections.sort( organisationUnits, new IdentifiableObjectNameComparator() );
 
             this.generateOutPutFile( exportReportInstance, exportItems, organisationUnits, sheet );
 

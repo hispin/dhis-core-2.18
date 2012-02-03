@@ -63,7 +63,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		class="org.hisp.dhis.reportsheet.impl.DefaultReportLocationManager"
 		init-method="init">
 		<property name="locationManager" ref="locationManager"/>
-		<property name="systemSettingManager" ref="org.hisp.dhis.options.SystemSettingManager" />
+		<property name="systemSettingManager" ref="org.hisp.dhis.setting.SystemSettingManager" />
 	</bean>
 	
 	<!-- DeletionHandlers -->

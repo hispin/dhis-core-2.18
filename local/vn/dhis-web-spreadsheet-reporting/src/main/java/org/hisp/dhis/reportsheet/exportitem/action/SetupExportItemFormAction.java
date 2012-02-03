@@ -31,15 +31,14 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import org.hisp.dhis.common.comparator.IdentifiableObjectNameComparator;
 import org.hisp.dhis.dataelement.DataElementGroup;
 import org.hisp.dhis.dataelement.DataElementService;
-import org.hisp.dhis.dataelement.comparator.DataElementGroupNameComparator;
 import org.hisp.dhis.indicator.IndicatorGroup;
 import org.hisp.dhis.indicator.IndicatorService;
-import org.hisp.dhis.indicator.comparator.IndicatorGroupNameComparator;
-import org.hisp.dhis.reportsheet.ExportReportService;
-import org.hisp.dhis.reportsheet.ExportReport;
 import org.hisp.dhis.reportsheet.ExportItem;
+import org.hisp.dhis.reportsheet.ExportReport;
+import org.hisp.dhis.reportsheet.ExportReportService;
 
 import com.opensymphony.xwork2.Action;
 
@@ -144,11 +143,11 @@ public class SetupExportItemFormAction
 
         dataElementGroups = new ArrayList<DataElementGroup>( dataElementService.getAllDataElementGroups() );
 
-        Collections.sort( dataElementGroups, new DataElementGroupNameComparator() );
+        Collections.sort( dataElementGroups, new IdentifiableObjectNameComparator() );
 
         indicatorGroups = new ArrayList<IndicatorGroup>( indicatorService.getAllIndicatorGroups() );
 
-        Collections.sort( indicatorGroups, new IndicatorGroupNameComparator() );
+        Collections.sort( indicatorGroups, new IdentifiableObjectNameComparator() );
 
         periodTypes = ExportItem.PERIODTYPE.getPeriodTypes();
 

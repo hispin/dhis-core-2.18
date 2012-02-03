@@ -32,9 +32,9 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import org.hisp.dhis.common.comparator.IdentifiableObjectNameComparator;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.dataset.DataSetService;
-import org.hisp.dhis.dataset.comparator.DataSetNameComparator;
 import org.hisp.dhis.reportsheet.ExportReportService;
 import org.hisp.dhis.reportsheet.status.DataEntryStatus;
 import org.hisp.dhis.user.CurrentUserService;
@@ -137,7 +137,7 @@ public class GetDataSetsAction
             dataSets.retainAll( dataSetUserAuthorityGroups );
         }
 
-        Collections.sort( dataSets, new DataSetNameComparator() );
+        Collections.sort( dataSets, new IdentifiableObjectNameComparator() );
 
         return SUCCESS;
     }

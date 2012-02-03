@@ -74,8 +74,6 @@ public class DefaultImportReportService
     {
         int id = importReportStore.addImportReport( importReport );
 
-        i18nService.addObject( importReport );
-
         return id;
     }
 
@@ -104,8 +102,6 @@ public class DefaultImportReportService
     public void updateImportReport( ImportReport importReport )
     {
         importReportStore.updateImportReport( importReport );
-
-        i18nService.verify( importReport );
     }
 
     public Collection<ImportReport> getImportReports( OrganisationUnit organisationUnit )
@@ -125,8 +121,6 @@ public class DefaultImportReportService
     {
         int id = importReportStore.addImportItem( excelItem );
 
-        i18nService.addObject( excelItem );
-
         return id;
     }
 
@@ -145,8 +139,6 @@ public class DefaultImportReportService
     public void updateImportItem( ImportItem excelItem )
     {
         importReportStore.updateImportItem( excelItem );
-
-        i18nService.verify( excelItem );
     }
 
     public ImportItem getImportItem( int id )

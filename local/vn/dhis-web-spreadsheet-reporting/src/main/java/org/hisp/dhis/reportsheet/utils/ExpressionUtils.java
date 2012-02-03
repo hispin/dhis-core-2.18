@@ -168,6 +168,8 @@ public class ExpressionUtils
     {
         Double aggregatedValue = aggregationService.getAggregatedDataValue( dataElement, optionCombo, startDate,
             endDate, organisationUnit );
+        // aggregatedDataValueService.getAggregatedValue( dataElement,
+        // optionCombo, startDate, endDate, );
 
         if ( aggregatedValue == null )
         {

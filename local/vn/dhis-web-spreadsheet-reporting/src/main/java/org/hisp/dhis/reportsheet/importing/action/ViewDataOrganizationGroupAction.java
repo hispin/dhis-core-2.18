@@ -32,9 +32,9 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
+import org.hisp.dhis.common.comparator.IdentifiableObjectNameComparator;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroup;
-import org.hisp.dhis.organisationunit.comparator.OrganisationUnitNameComparator;
 import org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager;
 import org.hisp.dhis.reportsheet.importing.ViewDataGeneric;
 import org.hisp.dhis.reportsheet.importitem.ImportItem;
@@ -101,7 +101,7 @@ public class ViewDataOrganizationGroupAction
             List<OrganisationUnit> organisationUnits = new ArrayList<OrganisationUnit>( getOrganisationUnits(
                 organisationUnitGroup, selectedUnit ) );
 
-            Collections.sort( organisationUnits, new OrganisationUnitNameComparator() );
+            Collections.sort( organisationUnits, new IdentifiableObjectNameComparator() );
 
             row ++;
             

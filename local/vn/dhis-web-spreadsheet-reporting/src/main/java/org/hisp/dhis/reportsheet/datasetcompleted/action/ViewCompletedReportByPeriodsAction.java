@@ -34,6 +34,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.hisp.dhis.common.comparator.IdentifiableObjectNameComparator;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategory;
 import org.hisp.dhis.dataset.CompleteDataSetRegistration;
@@ -43,7 +44,6 @@ import org.hisp.dhis.dataset.DataSetService;
 import org.hisp.dhis.datavalue.DataValue;
 import org.hisp.dhis.datavalue.DataValueService;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
-import org.hisp.dhis.organisationunit.comparator.OrganisationUnitNameComparator;
 import org.hisp.dhis.oust.manager.SelectionTreeManager;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodService;
@@ -216,7 +216,7 @@ public class ViewCompletedReportByPeriodsAction
 
         Collections.sort( periods, new PeriodComparator() );
 
-        Collections.sort( organisationUnits, new OrganisationUnitNameComparator() );
+        Collections.sort( organisationUnits, new IdentifiableObjectNameComparator() );
 
         return SUCCESS;
     }

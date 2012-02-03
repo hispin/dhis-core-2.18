@@ -35,17 +35,18 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.poi.ss.usermodel.Sheet;
+import org.hisp.dhis.common.comparator.IdentifiableObjectNameComparator;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroup;
 import org.hisp.dhis.organisationunit.OrganisationUnitLevel;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
-import org.hisp.dhis.organisationunit.comparator.OrganisationUnitNameComparator;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.reportsheet.ExportItem;
 import org.hisp.dhis.reportsheet.ExportReport;
 import org.hisp.dhis.reportsheet.ExportReportOganiztionGroupListing;
 import org.hisp.dhis.reportsheet.exporting.AbstractGenerateExcelReportSupport;
 import org.hisp.dhis.reportsheet.utils.ExcelUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * @author Tran Thanh Tri
@@ -62,12 +63,8 @@ public class GenerateReportOrgGroupListingAction
     // Dependency
     // -------------------------------------------------------------------------
 
+    @Autowired
     private OrganisationUnitService organisationUnitService;
-
-    public void setOrganisationUnitService( OrganisationUnitService organisationUnitService )
-    {
-        this.organisationUnitService = organisationUnitService;
-    }
 
     // -------------------------------------------------------------------------
     // Override
@@ -136,7 +133,7 @@ public class GenerateReportOrgGroupListingAction
                     organisationUnits.retainAll( childrens );
                 }
 
-                Collections.sort( organisationUnits, new OrganisationUnitNameComparator() );
+                Collections.sort( organisationUnits, new IdentifiableObjectNameComparator() );
 
                 int beginChapter = rowBegin;
 

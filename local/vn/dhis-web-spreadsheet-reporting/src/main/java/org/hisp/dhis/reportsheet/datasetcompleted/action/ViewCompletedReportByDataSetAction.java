@@ -33,14 +33,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.hisp.dhis.common.comparator.IdentifiableObjectNameComparator;
 import org.hisp.dhis.dataset.CompleteDataSetRegistration;
 import org.hisp.dhis.dataset.CompleteDataSetRegistrationService;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.dataset.DataSetService;
-import org.hisp.dhis.dataset.comparator.DataSetNameComparator;
 import org.hisp.dhis.i18n.I18nFormat;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
-import org.hisp.dhis.organisationunit.comparator.OrganisationUnitNameComparator;
 import org.hisp.dhis.oust.manager.SelectionTreeManager;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodService;
@@ -192,9 +191,9 @@ public class ViewCompletedReportByDataSetAction
 
         }
 
-        Collections.sort( dataSets, new DataSetNameComparator() );
+        Collections.sort( dataSets, new IdentifiableObjectNameComparator() );
 
-        Collections.sort( organisationUnits, new OrganisationUnitNameComparator() );
+        Collections.sort( organisationUnits, new IdentifiableObjectNameComparator() );
 
         return SUCCESS;
     }

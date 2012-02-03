@@ -31,8 +31,8 @@ import static org.apache.commons.io.FileUtils.deleteDirectory;
 
 import java.io.File;
 
-import org.hisp.dhis.options.SystemSettingManager;
 import org.hisp.dhis.reportsheet.ReportLocationManager;
+import org.hisp.dhis.setting.SystemSettingManager;
 
 import com.opensymphony.xwork2.Action;
 

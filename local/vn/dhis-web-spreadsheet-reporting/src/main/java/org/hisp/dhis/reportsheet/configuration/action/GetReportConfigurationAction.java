@@ -27,7 +27,7 @@ package org.hisp.dhis.reportsheet.configuration.action;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import org.hisp.dhis.options.SystemSettingManager;
+import org.hisp.dhis.setting.SystemSettingManager;
 
 import com.opensymphony.xwork2.Action;
 
@@ -38,7 +38,7 @@ import com.opensymphony.xwork2.Action;
 
 public class GetReportConfigurationAction
     implements Action
-{   
+{
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
@@ -53,9 +53,9 @@ public class GetReportConfigurationAction
     // -------------------------------------------------------------------------
     // Getter and Setter
     // -------------------------------------------------------------------------
-    
-    private String templateDirectory;   
-    
+
+    private String templateDirectory;
+
     public String getTemplateDirectory()
     {
         return templateDirectory;
@@ -64,12 +64,13 @@ public class GetReportConfigurationAction
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
-    
+
     public String execute()
         throws Exception
     {
-        templateDirectory = (String) systemSettingManager.getSystemSetting( SystemSettingManager.KEY_REPORT_TEMPLATE_DIRECTORY );
-        
+        templateDirectory = (String) systemSettingManager
+            .getSystemSetting( SystemSettingManager.KEY_REPORT_TEMPLATE_DIRECTORY );
+
         return SUCCESS;
     }
 }

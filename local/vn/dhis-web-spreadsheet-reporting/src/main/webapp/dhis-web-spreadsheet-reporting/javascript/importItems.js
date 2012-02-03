@@ -446,19 +446,3 @@ function saveCopiedImportItemsReceived( data ) {
 	
 	setMessage( warningMessages );
 }
-
-// ----------------------------------------------------
-// Select Items ALL
-// ----------------------------------------------------
-
-function selectedItemsAll() {
-    
-	var checked = byId('checkAll').checked;
-	
-	var list = document.getElementsByName('importItemChecked');
-	
-	for (var i=0 ;i<list.length; i++)
-	{
-		list.item(i).checked = checked;
-	}
-}

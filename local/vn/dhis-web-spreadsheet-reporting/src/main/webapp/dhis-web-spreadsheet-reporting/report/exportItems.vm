@@ -7,12 +7,6 @@
 		
 	});
 	
-	function exportItemSelect( checked )
-	{
-		if( checked ) checkALL( "input[type=checkbox][name=exportItemCheck]" );
-		else unCheckALL( "input[type=checkbox][name=exportItemCheck]" );
-	}
-	
 	var i18n_copy_successful = '$encoder.jsEscape( $i18n.getString( "copy_successful" ) , "'")';
 	var i18n_copy_items_duplicated = '$encoder.jsEscape( $i18n.getString( "copy_items_duplicated" ) , "'")';
 	var i18n_copy_items = '$encoder.jsEscape( $i18n.getString( "copy_items" ) , "'")';
@@ -81,7 +75,7 @@
 	<tbody id="list">	
 	#foreach($exportItem in $exportItems)
 		<tr id="tr${exportItem.id}">
-			<td align=center><input type="checkbox" exportItemID="$exportItem.id" exportItemName="$exportItem.name" name="exportItemCheck" id="exportItemCheck"/></td>
+			<td align="center"><input type="checkbox" exportItemID="$exportItem.id" exportItemName="$exportItem.name" name="exportItemCheck" id="exportItemCheck"/></td>
 			<td>$encoder.htmlEncode( $exportItem.name )</td>
 			<td>$i18n.getString( $exportItem.itemType )</td>
 			<td>$i18n.getString( $exportItem.periodType )</td>

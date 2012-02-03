@@ -132,16 +132,12 @@ public class DefaultExportReportService
     {
         int id = exportReportStore.addExportReport( report );
 
-        i18nService.addObject( report );
-
         return id;
     }
 
     public void updateExportReport( ExportReport report )
     {
         exportReportStore.updateExportReport( report );
-
-        i18nService.verify( report );
     }
 
     public void deleteExportReport( int id )
@@ -173,7 +169,6 @@ public class DefaultExportReportService
 
     public Collection<ExportReport> getExportReports( User user, boolean superUser, String group )
     {
-
         if ( user == null || superUser )
         {
             return i18n( i18nService, this.getExportReportsByGroup( group ) );
@@ -242,15 +237,11 @@ public class DefaultExportReportService
     public void addExportItem( ExportItem reportItem )
     {
         exportReportStore.addExportItem( reportItem );
-
-        i18nService.addObject( reportItem );
     }
 
     public void updateExportItem( ExportItem reportItem )
     {
         exportReportStore.updateExportItem( reportItem );
-
-        i18nService.verify( reportItem );
     }
 
     public void deleteExportItem( int id )
