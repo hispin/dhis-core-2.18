@@ -11,11 +11,22 @@ function getOUDeatilsForSurvey( orgUnitIds )
 
 function getOUDeatilsForAA(orgUnitIds)
 {
+	/*
 	var url = "getOrgUnitDetails.action?orgUnitId=" + orgUnitIds;
 	var request = new Request();
 	request.setResponseTypeXML( 'orgunit' );
 	request.setCallbackSuccess( getOUDetailsForAARecevied );
-	request.send( url );	
+	request.send( url );
+	*/
+	$.post("getOrgUnitDetails.action",
+			{
+				orgUnitId : orgUnitIds[0]
+			},
+			function (data)
+			{
+				getOUDetailsForAARecevied(data);
+			},'xml');
+
 }
 
 function getOUDetailsForAARecevied(xmlObject)
@@ -127,7 +138,18 @@ function getOUDeatilsForDataStatus( orgUnitIds )
 
 function getOUDetails(orgUnitIds)
 {
-    var request = new Request();
+    
+	$.post("getOrgUnitDetails.action",
+			{
+				orgUnitId : orgUnitIds[0]
+			},
+			function (data)
+			{
+				getOUDetailsRecevied(data);
+			},'xml');
+	
+	/*
+	var request = new Request();
     request.setResponseTypeXML( 'orgunit' );
     request.setCallbackSuccess( getOUDetailsRecevied );
 
@@ -135,6 +157,7 @@ function getOUDetails(orgUnitIds)
     var params = "orgUnitId=" + orgUnitIds;
     request.sendAsPost( params );
     request.send( requestString );
+    */
 }
 
 function getOUDetailsRecevied(xmlObject)
@@ -508,11 +531,20 @@ function viewPatientDataRecords( programId, orgUnitId, viewStatus )
 
 function showPatientDetails( patientId )
 {
-
+	/*
 	var request = new Request();
     request.setResponseTypeXML( 'patient' );
     request.setCallbackSuccess( patientReceived );
     request.send( 'getPatientDetails.action?id=' + patientId );
+    */
+	$.post("getPatientDetails.action",
+			{
+				id : patientId
+			},
+			function (data)
+			{
+				patientReceived(data);
+			},'xml');
 
 }
 

@@ -135,7 +135,8 @@
      
      iframeForChart.location.href = "generateChart1.action?currentChart="+chartTypeOptionValue+"&chartDisplayOption="+chartDisplayOptionValue;
        
-     getSortedList(chartDisplayOptionValue);     
+     //getSortedList(chartDisplayOptionValue);
+     getSortedListIndicator(chartDisplayOptionValue);    
    }
 
 function getSortedListForSummary()
@@ -143,10 +144,11 @@ function getSortedListForSummary()
      var chartDisplayOptionList = document.getElementById("chartDisplayOption");
      var chartDisplayOptionValue = chartDisplayOptionList.options[ chartDisplayOptionList.selectedIndex ].value;
 
-     getSortedList(chartDisplayOptionValue);
+     //getSortedList(chartDisplayOptionValue);
+     getSortedListIndicator(chartDisplayOptionValue);
 }
-
-function getSortedList(chartDisplayOptionValue)
+/*
+function getSortedListIndicator(chartDisplayOptionValue)
 {
     //var url = "getSortedData.action?chartDisplayOption=" + chartDisplayOptionValue;
         
@@ -177,7 +179,7 @@ function getSortedListReceived(xmlObject)
     
     document.getElementById("headingInfoId").innerHTML = document.getElementById("testId").value;           
 }
-
+*/
 //fucction for selected Button is ViewChart
 
 function exportToExcelFunction1( summaryOption )

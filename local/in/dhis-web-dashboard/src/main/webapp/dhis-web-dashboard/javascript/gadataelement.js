@@ -210,7 +210,7 @@ function getWeeks()
 	
 	$.post("getWeeklyPeriod.action",
 			{
-			 //periodTypeName:weeklyPeriodTypeName,
+			 	//periodTypeName:weeklyPeriodTypeName,
 				yearList:yearList
 			},
 			function (data)
@@ -663,3 +663,92 @@ function filterAvailableDataElements()
         }
     }
 }
+
+//Chart Display Option change for sorting
+function getSortedListIndicator(chartDisplayOptionValue)
+{
+    //var url = "getSortedData.action?chartDisplayOption=" + chartDisplayOptionValue;
+    /*
+    var request = new Request();
+    request.setResponseTypeXML( 'messages' );
+    request.setCallbackSuccess( getSortedListIndicatorReceived );
+    //request.send( url );
+    
+   	alert("inside sorting function");
+    var requestString = "getSortedIndicatorData.action";
+    var params = "chartDisplayOption=" + chartDisplayOptionValue;
+    request.sendAsPost( params );
+    request.send( requestString );
+    */
+    //alert("inside sorting function");
+	$.post("getSortedIndicatorData.action",
+			{
+				chartDisplayOption : chartDisplayOptionValue
+			},
+			function (data)
+			{
+				getSortedListIndicatorReceived(data);
+			},'xml');
+    
+    
+}
+
+function getSortedListIndicatorReceived(xmlObject)
+{   
+    var messages = xmlObject.getElementsByTagName("message");
+    document.getElementById("headingInfoId").innerHTML = "";
+    document.getElementById("testId").value = "";
+    
+    for ( var i = 0; i < messages.length; i++ )
+    {
+        var hinfo = messages[ i ].firstChild.nodeValue;
+        //document.getElementById("headingInfoId").innerHTML += hinfo;
+        document.getElementById("testId").value += hinfo;
+    }
+    
+    document.getElementById("headingInfoId").innerHTML = document.getElementById("testId").value;           
+}
+
+function getSortedListDataElement(chartDisplayOptionValue)
+{
+	//var url = "getSortedData.action?chartDisplayOption=" + chartDisplayOptionValue;
+    /*    
+    var request = new Request();
+    request.setResponseTypeXML( 'messages' );
+    request.setCallbackSuccess( getSortedListReceived );
+    //request.send( url );
+
+    var requestString = "getSortedDataElement.action";
+    var params = "chartDisplayOption=" + chartDisplayOptionValue;
+    request.sendAsPost( params );
+    request.send( requestString );
+    */
+    //alert("inside sorting function");
+	$.post("getSortedDataElement.action",
+			{
+				chartDisplayOption : chartDisplayOptionValue
+			},
+			function (data)
+			{
+				getSortedListDataElementReceived(data);
+			},'xml');
+
+}
+
+function getSortedListDataElementReceived(xmlObject)
+{   
+    var messages = xmlObject.getElementsByTagName("message");
+    document.getElementById("headingInfoId").innerHTML = "";
+    document.getElementById("testId").value = "";
+    
+    for ( var i = 0; i < messages.length; i++ )
+    {
+        var hinfo = messages[ i ].firstChild.nodeValue;
+        //document.getElementById("headingInfoId").innerHTML += hinfo;
+        document.getElementById("testId").value += hinfo;
+    }
+    
+    document.getElementById("headingInfoId").innerHTML = document.getElementById("testId").value;           
+}
+
+

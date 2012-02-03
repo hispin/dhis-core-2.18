@@ -351,7 +351,7 @@ function getdSetPeriodsReceived( xmlObject )
 
 function getOrgUDetails(orgUnitIds)
 {
-	
+	/*
     var request = new Request();
     request.setResponseTypeXML( 'orgunit' );
     request.setCallbackSuccess( getOrgUDetailsRecevied );
@@ -360,17 +360,17 @@ function getOrgUDetails(orgUnitIds)
     var params = "orgUnitId=" + orgUnitIds;
     request.sendAsPost( params );
     request.send( requestString );
-
-    /*
+	*/
+    
 	$.post("getOrgUnitDetails.action",
 	{
-		orgUnitId:orgUnitIds
+		orgUnitId:orgUnitIds[0]
 	},
 	function (data)
 	{
 		getOrgUDetailsRecevied(data);
 	},'xml');
-	*/
+	
 	
 //getReports(); 
 

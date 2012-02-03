@@ -185,3 +185,44 @@ function formValidations()
   	return true;
 } // formValidations Function End
 
+
+function getSortedList(chartDisplayOptionValue)
+{
+	//var url = "getSortedData.action?chartDisplayOption=" + chartDisplayOptionValue;
+	/*	
+	var request = new Request();
+	request.setResponseTypeXML( 'messages' );
+	request.setCallbackSuccess( getSortedListReceived );
+	//request.send( url );
+
+    var requestString = "getSortedData.action";
+    var params = "chartDisplayOption=" + chartDisplayOptionValue;
+    request.sendAsPost( params );
+    request.send( requestString );
+    */
+	$.post("getSortedData.action",
+			{
+				chartDisplayOption : chartDisplayOptionValue
+			},
+			function (data)
+			{
+				getSortedListReceived(data);
+			},'xml');
+}
+
+function getSortedListReceived(xmlObject)
+{	
+	var messages = xmlObject.getElementsByTagName("message");
+	document.getElementById("headingInfoId").innerHTML = "";
+	document.getElementById("testId").value = "";
+	
+	for ( var i = 0; i < messages.length; i++ )
+    {
+        var hinfo = messages[ i ].firstChild.nodeValue;
+        //document.getElementById("headingInfoId").innerHTML += hinfo;
+        document.getElementById("testId").value += hinfo;
+    }
+    
+    document.getElementById("headingInfoId").innerHTML = document.getElementById("testId").value; 	    	
+}
+
