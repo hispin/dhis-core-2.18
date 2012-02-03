@@ -32,9 +32,9 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import org.hisp.dhis.common.comparator.IdentifiableObjectNameComparator;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.dataset.DataSetService;
-import org.hisp.dhis.dataset.comparator.DataSetNameComparator;
 import org.hisp.dhis.period.PeriodType;
 import org.hisp.dhis.reportsheet.Bookmark;
 import org.hisp.dhis.reportsheet.BookmarkService;
@@ -139,7 +139,7 @@ public class DataSetCompletedReportFormAction
             periodTypes.add( dataSet.getPeriodType() );
         }
 
-        Collections.sort( dataSets, new DataSetNameComparator() );
+        Collections.sort( dataSets, new IdentifiableObjectNameComparator() );
 
         return SUCCESS;
     }

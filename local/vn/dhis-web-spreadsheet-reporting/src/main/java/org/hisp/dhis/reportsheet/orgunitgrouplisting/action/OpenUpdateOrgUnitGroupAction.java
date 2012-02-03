@@ -30,11 +30,11 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import org.hisp.dhis.common.comparator.IdentifiableObjectNameComparator;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroup;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroupService;
-import org.hisp.dhis.organisationunit.comparator.OrganisationUnitGroupNameComparator;
-import org.hisp.dhis.reportsheet.ExportReportService;
 import org.hisp.dhis.reportsheet.ExportReportOganiztionGroupListing;
+import org.hisp.dhis.reportsheet.ExportReportService;
 
 import com.opensymphony.xwork2.Action;
 
@@ -115,7 +115,7 @@ public class OpenUpdateOrgUnitGroupAction
 
         availableOrganisationUnitGroups.removeAll( selectedOrganisationUnitGroups );
 
-        Collections.sort( this.availableOrganisationUnitGroups, new OrganisationUnitGroupNameComparator() );
+        Collections.sort( this.availableOrganisationUnitGroups, new IdentifiableObjectNameComparator() );
 
         return SUCCESS;
     }

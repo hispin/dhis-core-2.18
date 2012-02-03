@@ -475,8 +475,6 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 			ref="org.hisp.dhis.indicator.IndicatorService" />
 		<property name="initPOIStylesManager"
 			ref="org.hisp.dhis.reportsheet.preview.manager.InitializePOIStylesManager" />
-		<property name="organisationUnitService"
-			ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
 		<property name="dataValueService"
 			ref="org.hisp.dhis.datavalue.DataValueService" />
 	</bean>

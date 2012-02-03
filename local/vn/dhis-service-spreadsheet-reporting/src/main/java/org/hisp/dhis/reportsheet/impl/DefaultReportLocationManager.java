@@ -32,10 +32,10 @@ import java.util.List;
 
 import org.hisp.dhis.external.location.LocationManager;
 import org.hisp.dhis.external.location.LocationManagerException;
-import org.hisp.dhis.options.SystemSettingManager;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.reportsheet.ExcelContentTypeMap;
 import org.hisp.dhis.reportsheet.ReportLocationManager;
+import org.hisp.dhis.setting.SystemSettingManager;
 
 /**
  * @author Tran Thanh Tri

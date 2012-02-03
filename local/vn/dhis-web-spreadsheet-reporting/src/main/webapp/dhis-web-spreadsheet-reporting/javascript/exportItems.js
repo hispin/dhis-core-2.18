@@ -29,7 +29,22 @@ function closeDialog( _dialog )
 
 // ---------------------------------------------------------------------------------
 // Methods
-// ---------------------------------------------------------------------------------
+// ---------------------------------------------------------------------------------	
+
+function toggleAll( elementList, checked ) {
+
+	var list = jQuery( elementList );
+	
+	for ( var i in list )
+	{
+		list[i].checked = checked;
+	}
+}
+
+function exportItemSelect( checked )
+{
+	toggleAll( "input[type=checkbox][name=exportItemCheck]", checked );
+}
 
 function changeItemType()
 {

@@ -33,6 +33,7 @@ import java.util.List;
 
 import org.amplecode.quick.StatementManager;
 import org.hisp.dhis.aggregation.AggregationService;
+import org.hisp.dhis.common.comparator.IdentifiableObjectNameComparator;
 import org.hisp.dhis.i18n.I18nFormat;
 import org.hisp.dhis.i18n.I18nManager;
 import org.hisp.dhis.i18n.I18nManagerException;
@@ -40,7 +41,6 @@ import org.hisp.dhis.jchart.JChart;
 import org.hisp.dhis.jchart.JChartSeries;
 import org.hisp.dhis.jchart.JChartSevice;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
-import org.hisp.dhis.organisationunit.comparator.OrganisationUnitNameComparator;
 import org.hisp.dhis.oust.manager.SelectionTreeManager;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodService;
@@ -184,7 +184,7 @@ public class DefaultJChartDataService
         List<OrganisationUnit> organisationUnits = new ArrayList<OrganisationUnit>( selectionTreeManager
             .getSelectedOrganisationUnits() );
 
-        Collections.sort( organisationUnits, new OrganisationUnitNameComparator() );
+        Collections.sort( organisationUnits, IdentifiableObjectNameComparator.INSTANCE );
 
         for ( JChartSeries series : jchart.getSeries() )
         {
