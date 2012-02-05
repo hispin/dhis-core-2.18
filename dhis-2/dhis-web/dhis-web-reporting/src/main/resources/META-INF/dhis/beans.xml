@@ -231,25 +231,6 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     <property name="periodService" ref="org.hisp.dhis.period.PeriodService" />
     <property name="selectionTreeManager" ref="org.hisp.dhis.oust.manager.SelectionTreeManager" />
   </bean>
-      
-  <!-- Tallysheet -->
-
-  <bean id="org.hisp.dhis.reporting.tallysheet.action.SelectTallySheetAction" class="org.hisp.dhis.reporting.tallysheet.action.SelectTallySheetAction"
-    scope="prototype">
-    <property name="dataSetService" ref="org.hisp.dhis.dataset.DataSetService" />
-  </bean>
-
-  <bean id="org.hisp.dhis.reporting.tallysheet.action.ViewTallySheetAction" class="org.hisp.dhis.reporting.tallysheet.action.ViewTallySheetAction"
-    scope="prototype">
-    <property name="tallySheetService" ref="org.hisp.dhis.tallysheet.TallySheetService" />
-    <property name="selectionTreeManager" ref="org.hisp.dhis.oust.manager.SelectionTreeManager" />
-    <property name="dataSetService" ref="org.hisp.dhis.dataset.DataSetService" />
-  </bean>
-
-  <bean id="org.hisp.dhis.reporting.tallysheet.action.GenerateTallySheetAction" class="org.hisp.dhis.reporting.tallysheet.action.GenerateTallySheetAction"
-    scope="prototype">
-    <property name="tallySheetPdfService" ref="org.hisp.dhis.tallysheet.TallySheetPdfService" />
-  </bean>
   
   <!-- Organisation Unit Distribution -->
 

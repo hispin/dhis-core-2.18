@@ -6,11 +6,6 @@
 	<li><a href="displayViewDataCompletenessForm.action">$i18n.getString( "reporting_rate_summary" )&nbsp;</a></li>
     <li><a href="displayViewDocumentForm.action">$i18n.getString( "resource" )&nbsp;</a></li>
     <li><a href="displayOrgUnitDistribution.action">$i18n.getString( "organisation_unit_report" )&nbsp;</a></li>
-	<li><a href="tallySheetGenerator.action">$i18n.getString( "tally_sheet_generator" )&nbsp;</a></li>
 	<li><a href="displayManageTableForm.action">$i18n.getString( "report_table" )&nbsp;</a></li>
-</ul>
-
-<h2>$i18n.getString( "pivot_table" )&nbsp;</h2>
-<ul>
 	<li><a href="displayPivotTableForm.action">$i18n.getString( "pivot_table" )&nbsp;</a></li>
 </ul>
