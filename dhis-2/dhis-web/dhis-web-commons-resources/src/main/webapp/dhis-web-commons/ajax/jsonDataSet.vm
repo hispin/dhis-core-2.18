@@ -6,6 +6,7 @@
     "periodTypeId": "$!{dataSet.periodTypeId}",
 	"frequency": "$i18n.getString( $!{dataSet.periodType.name} )",
     "dataElementCount": "$!{dataSet.dataElements.size()}"
+    #if( $dataSet.expiryDays ),"expiryDays": "$!encoder.jsonEncode( ${dataSet.expiryDays} ) #end
     #if( $!{dataSet.dataEntryForm} ),"dataentryform": "$!encoder.jsonEncode( ${dataSet.dataEntryForm.name} )"#end
   }
 }

@@ -152,6 +152,9 @@ var validationRules = {
             "notOnlyDigits" : false,
             "rangelength" : [ 0, 25 ]
         },
+        "expiryDays": {
+            "digits" : true
+        },
         "frequencySelect" : {
             "required" : true
         }

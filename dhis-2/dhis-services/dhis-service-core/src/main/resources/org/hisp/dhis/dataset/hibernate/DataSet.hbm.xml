@@ -1,9 +1,9 @@
 <?xml version="1.0"?>
 <!DOCTYPE hibernate-mapping PUBLIC
-  "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
-  "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd"
-  [<!ENTITY identifiableProperties SYSTEM "classpath://org/hisp/dhis/common/identifiableProperties.hbm">]
->
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd"
+    [<!ENTITY identifiableProperties SYSTEM "classpath://org/hisp/dhis/common/identifiableProperties.hbm">]
+    >
 
 <hibernate-mapping>
   <class name="org.hisp.dhis.dataset.DataSet" table="dataset">
@@ -14,33 +14,36 @@
       <generator class="native" />
     </id>
     &identifiableProperties;
-    
+
     <property name="shortName" unique="true" length="50" />
 
     <many-to-one name="periodType" lazy="false" class="org.hisp.dhis.period.PeriodType" column="periodtypeid"
-      not-null="true" foreign-key="fk_dataset_periodtypeid" />
+        not-null="true" foreign-key="fk_dataset_periodtypeid" />
 
     <set name="dataElements" table="datasetmembers">
       <cache usage="read-write" />
       <key column="datasetid" foreign-key="fk_datasetmembers_datasetid" />
-      <many-to-many class="org.hisp.dhis.dataelement.DataElement" column="dataelementid" foreign-key="fk_dataset_dataelementid" />
+      <many-to-many class="org.hisp.dhis.dataelement.DataElement" column="dataelementid"
+          foreign-key="fk_dataset_dataelementid" />
     </set>
-	
-	<set name="indicators" table="datasetindicators">
-	  <key column="datasetid" foreign-key="fk_datasetindicators_datasetid" />
-	  <many-to-many class="org.hisp.dhis.indicator.Indicator" column="indicatorid" foreign-key="fk_dataset_indicatorid" />
-	</set>
+
+    <set name="indicators" table="datasetindicators">
+      <key column="datasetid" foreign-key="fk_datasetindicators_datasetid" />
+      <many-to-many class="org.hisp.dhis.indicator.Indicator" column="indicatorid"
+          foreign-key="fk_dataset_indicatorid" />
+    </set>
 
     <set name="compulsoryDataElementOperands" table="datasetoperands" cascade="all-delete-orphan">
       <key column="datasetid" foreign-key="fk_datasetoperands_datasetid" />
       <many-to-many class="org.hisp.dhis.dataelement.DataElementOperand" column="dataelementoperandid"
-        foreign-key="fk_dataset_dataelementoperandid" />
+          foreign-key="fk_dataset_dataelementoperandid" />
     </set>
 
     <set name="sources" table="datasetsource">
       <cache usage="read-write" />
       <key column="datasetid" foreign-key="fk_datasetsource_datasetid" />
-      <many-to-many column="sourceid" class="org.hisp.dhis.organisationunit.OrganisationUnit" foreign-key="fk_dataset_organisationunit"/>
+      <many-to-many column="sourceid" class="org.hisp.dhis.organisationunit.OrganisationUnit"
+          foreign-key="fk_dataset_organisationunit" />
     </set>
 
     <set name="sections" order-by="sortorder" inverse="true">
@@ -51,11 +54,20 @@
 
     <property name="sortOrder" />
 
-    <many-to-one name="dataEntryForm" class="org.hisp.dhis.dataentryform.DataEntryForm" foreign-key="fk_dataset_dataentryform" cascade="all" />
+    <many-to-one name="dataEntryForm" class="org.hisp.dhis.dataentryform.DataEntryForm"
+        foreign-key="fk_dataset_dataentryform" cascade="all" />
 
     <property name="mobile" not-null="true" />
 
     <property name="version" />
+
+    <property name="expiryDays" not-null="false" />
+
+    <set name="lockExceptions" table="datasetlockexceptions">
+      <cache usage="read-write" />
+      <key column="datasetid" />
+      <many-to-many class="org.hisp.dhis.dataset.LockException" column="lockexceptionid" unique="true" />
+    </set>
 
   </class>
 </hibernate-mapping>

@@ -1,7 +1,7 @@
 package org.hisp.dhis.dataset;
 
 /*
- * Copyright (c) 2004-2011, University of Oslo
+ * Copyright (c) 2004-2012, University of Oslo
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -55,7 +55,8 @@ import java.util.Set;
  */
 @XmlRootElement( name = "dataSet", namespace = Dxf2Namespace.NAMESPACE )
 @XmlAccessorType( value = XmlAccessType.NONE )
-public class DataSet extends BaseNameableObject
+public class DataSet
+    extends BaseNameableObject
 {
     public static final String TYPE_DEFAULT = "default";
     public static final String TYPE_SECTION = "section";
@@ -117,6 +118,16 @@ public class DataSet extends BaseNameableObject
      * Indicating version number.
      */
     private Integer version;
+
+    /**
+     * How many days after period is over will this dataSet auto-lock
+     */
+    private Integer expiryDays;
+
+    /**
+     * Locking exceptions
+     */
+    private Set<LockException> lockExceptions = new HashSet<LockException>();
 
     // -------------------------------------------------------------------------
     // Contructors
@@ -236,16 +247,16 @@ public class DataSet extends BaseNameableObject
 
         return TYPE_DEFAULT;
     }
-    
+
     public Set<DataElement> getDataElementsInSections()
     {
         Set<DataElement> dataElements = new HashSet<DataElement>();
-        
+
         for ( Section section : sections )
         {
             dataElements.addAll( section.getDataElements() );
         }
-        
+
         return dataElements;
     }
 
@@ -422,5 +433,30 @@ public class DataSet extends BaseNameableObject
     public void setVersion( Integer version )
     {
         this.version = version;
+    }
+
+    @XmlElement
+    @JsonProperty
+    public Integer getExpiryDays()
+    {
+        return expiryDays;
+    }
+
+    public void setExpiryDays( Integer expiryDays )
+    {
+        this.expiryDays = expiryDays;
+    }
+
+    @XmlElementWrapper( name = "lockExceptions" )
+    @XmlElement( name = "lockException" )
+    @JsonProperty
+    public Set<LockException> getLockExceptions()
+    {
+        return lockExceptions;
+    }
+
+    public void setLockExceptions( Set<LockException> lockExceptions )
+    {
+        this.lockExceptions = lockExceptions;
     }
 }
