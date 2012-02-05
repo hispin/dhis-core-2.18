@@ -233,14 +233,6 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
     </property>
   </bean>
 
-  <!-- Tally Sheet -->
-
-  <bean id="org.hisp.dhis.tallysheet.TallySheetService" class="org.hisp.dhis.tallysheet.DefaultTallySheetService">
-    <property name="dataValueService" ref="org.hisp.dhis.datavalue.DataValueService" />
-  </bean>
-
-  <bean id="org.hisp.dhis.tallysheet.TallySheetPdfService" class="org.hisp.dhis.tallysheet.DefaultTallySheetPdfService" />
-
   <!-- Organisation Unit Distribution -->
 
   <bean id="org.hisp.dhis.orgunitdistribution.OrgUnitDistributionService" class="org.hisp.dhis.orgunitdistribution.impl.DefaultOrgUnitDistributionService">

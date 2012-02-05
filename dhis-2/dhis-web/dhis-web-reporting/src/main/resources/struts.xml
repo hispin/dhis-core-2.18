@@ -265,34 +265,7 @@
       <result name="xls" type="gridXlsResult" />
       <result name="pdf" type="gridPdfResult" />
     </action>
-	
-    <!-- Tally Sheet Forms Generator -->
-
-    <action name="tallySheetGenerator" class="org.hisp.dhis.reporting.tallysheet.action.SelectTallySheetAction">
-      <result name="success" type="velocity">/main.vm</result>
-      <param name="menuTreeHeight">420</param>
-      <param name="page">/dhis-web-reporting/selectTallySheetForm.vm</param>
-      <param name="menu">/dhis-web-reporting/menu.vm</param>
-      <param name="javascripts">../dhis-web-commons/oust/oust.js,javascript/tallySheet.js</param>
-    </action>
-
-    <action name="configureTallySheetGenerator" class="org.hisp.dhis.reporting.tallysheet.action.ViewTallySheetAction">
-      <result name="success" type="velocity">/main.vm</result>
-      <param name="menuTreeHeight">420</param>
-      <param name="page">/dhis-web-reporting/viewTallySheetForm.vm</param>
-      <param name="menu">/dhis-web-reporting/menu.vm</param>
-      <param name="javascripts">../dhis-web-commons/oust/oust.js,javascript/tallySheet.js</param>
-    </action>
-
-    <action name="generateTallySheetPDF" class="org.hisp.dhis.reporting.tallysheet.action.GenerateTallySheetAction">
-      <result name="success" type="stream">
-        <param name="contentType">application/pdf</param>
-        <param name="inputName">inputStream</param>
-        <param name="contentDisposition">filename="${fileName}"</param>
-        <param name="bufferSize">1024</param>
-      </result>
-    </action>
-        
+	        
     <!-- Organisation Unit Distribution -->
 
     <action name="getOrgUnitDistribution" class="org.hisp.dhis.reporting.orgunitdistribution.action.GetOrgUnitDistributionAction">
