@@ -108,6 +108,13 @@ public class UpdateDataSetAction
         this.code = code;
     }
 
+    private Integer expiryDays;
+
+    public void setExpiryDays( Integer expiryDays )
+    {
+        this.expiryDays = expiryDays;
+    }
+
     private String frequencySelect;
 
     public void setFrequencySelect( String frequencySelect )
@@ -174,6 +181,8 @@ public class UpdateDataSetAction
         PeriodType periodType = periodService.getPeriodTypeByName( frequencySelect );
 
         DataSet dataSet = dataSetService.getDataSet( dataSetId );
+
+        dataSet.setExpiryDays( expiryDays );
 
         if ( !( equalsNullSafe( name, dataSet.getName() ) && periodType.equals( dataSet.getPeriodType() ) && 
             dataElements.equals( dataSet.getDataElements() ) && indicators.equals( dataSet.getIndicators() ) ) )

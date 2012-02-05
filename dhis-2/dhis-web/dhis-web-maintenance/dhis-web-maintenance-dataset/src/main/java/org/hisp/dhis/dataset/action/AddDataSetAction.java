@@ -105,6 +105,13 @@ public class AddDataSetAction
         this.code = code;
     }
 
+    private Integer expiryDays;
+
+    public void setExpiryDays( Integer expiryDays )
+    {
+        this.expiryDays = expiryDays;
+    }
+
     private String frequencySelect;
 
     public void setFrequencySelect( String frequencySelect )
@@ -153,11 +160,13 @@ public class AddDataSetAction
         {
             code = null;
         }
-
+        
         PeriodType periodType = PeriodType.getPeriodTypeByName( frequencySelect );
 
         DataSet dataSet = new DataSet( name, shortName, code, periodType );
 
+        dataSet.setExpiryDays( expiryDays );
+        
         for ( String id : dataElementsSelectedList )
         {
             dataSet.addDataElement( dataElementService.getDataElement( Integer.parseInt( id ) ) );

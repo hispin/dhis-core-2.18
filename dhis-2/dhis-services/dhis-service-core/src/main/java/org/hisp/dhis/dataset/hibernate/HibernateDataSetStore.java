@@ -27,8 +27,6 @@ package org.hisp.dhis.dataset.hibernate;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.Collection;
-
 import org.hibernate.Criteria;
 import org.hibernate.Query;
 import org.hibernate.Session;
@@ -41,6 +39,8 @@ import org.hisp.dhis.period.PeriodStore;
 import org.hisp.dhis.period.PeriodType;
 import org.hisp.dhis.system.util.ConversionUtils;
 
+import java.util.Collection;
+
 /**
  * @author Kristian Nordal
  * @version $Id: HibernateDataSetStore.java 3303 2007-05-14 13:39:34Z larshelg $
@@ -52,7 +52,7 @@ public class HibernateDataSetStore
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
-    
+
     private PeriodStore periodStore;
 
     public void setPeriodStore( PeriodStore periodStore )
@@ -115,7 +115,7 @@ public class HibernateDataSetStore
 
         return query.list();
     }
-    
+
     @SuppressWarnings( "unchecked" )
     public Collection<DataSet> getDataSetsForMobile()
     {
