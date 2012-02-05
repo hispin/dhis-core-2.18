@@ -29,10 +29,10 @@ div.inputSection
 <input type="button" value='$i18n.getString( "data" )' style="width:120px" onclick="showCriteria()" />
 </div>
 
-<div id="criteria" class="inputCriteria" style="width:372px;height:434px;">
+<div id="criteria" class="inputCriteria" style="width:360px;height:450px;">
 <div class="inputSection">
 <label>$i18n.getString( "dataset" )</label><br>
-<select id="dataSetId" name="dataSetId" style="width:280px">
+<select id="dataSetId" name="dataSetId" style="width:330px">
   <option value="">[ $i18n.getString( "select" ) ]</option>
   #foreach( $dataSet in $dataSets )
   <option value="$dataSet.id">$encoder.htmlEncode( $dataSet.name )</option>
@@ -48,10 +48,10 @@ div.inputSection
   <option value="$type.name">$i18n.getString( $type.name )</option>
   #end
 </select>
-<input type="button" style="width:50px" value="$i18n.getString( 'prev' )" onclick="getAvailablePeriods( 'periodType', 'periodId', 'periodId', '-1' )" />
-<input type="button" style="width:50px" value="$i18n.getString( 'next' )" onclick="getAvailablePeriods( 'periodType', 'periodId', 'periodId', '1' )" /><br>
+<input type="button" style="width:75px" value="$i18n.getString( 'prev_year' )" onclick="getAvailablePeriods( 'periodType', 'periodId', 'periodId', '-1' )" />
+<input type="button" style="width:75px" value="$i18n.getString( 'next_year' )" onclick="getAvailablePeriods( 'periodType', 'periodId', 'periodId', '1' )" /><br>
 
-<select id="periodId" name="periodId" style="width:280px" disabled="disabled">
+<select id="periodId" name="periodId" style="width:330px" disabled="disabled">
 </select>
 </div>
 
@@ -62,7 +62,7 @@ div.inputSection
 
 <div class="inputSection">
 <label>$i18n.getString( "report_organisation_unit" )</label><br>
-<div id="selectionTree" style="width:280px;height:200px;overflow:auto;border:1px solid #cccccc"></div>
+<div id="selectionTree" style="width:328px;height:200px;overflow:auto;border:1px solid #cccccc"></div>
 </div>
 
 <div class="inputSection">
