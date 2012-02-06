@@ -71,7 +71,7 @@ public class DataElementCategoryOptionComboImporter
     @Override
     protected void importMatching( DataElementCategoryOptionCombo object, DataElementCategoryOptionCombo match )
     {
-        throw new UnsupportedOperationException( "DataElementCategoryOptionCombo can only be unique or duplicate" );
+        log.info( object.getName() + ": DataElementCategoryOptionCombo can only be unique or duplicate" );
     }
 
     @Override

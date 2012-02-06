@@ -73,7 +73,7 @@ public class ConceptImporter
     @Override
     protected void importMatching( Concept object, Concept match )
     {
-        throw new UnsupportedOperationException( "Concept can only be unique or duplicate" );
+        log.info( object.getName() + ": Concept can only be unique or duplicate" );
     }
 
     @Override

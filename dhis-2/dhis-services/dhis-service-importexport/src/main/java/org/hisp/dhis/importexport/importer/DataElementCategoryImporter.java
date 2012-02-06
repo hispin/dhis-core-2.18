@@ -71,7 +71,7 @@ public class DataElementCategoryImporter
     @Override
     protected void importMatching( DataElementCategory object, DataElementCategory match )
     {
-        throw new UnsupportedOperationException( "DataElementCategory can only be unique or duplicate" );
+        log.info( object.getName() + ": DataElementCategory can only be unique or duplicate" );
     }
 
     @Override
