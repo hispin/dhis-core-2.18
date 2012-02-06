@@ -103,7 +103,7 @@
       <result name="success" type="velocity-json">/dhis-web-commons/ajax/jsonDataElementGroup.vm</result>
     </action>
 
-    <action name="renameDataElementGroupEditor" class="org.hisp.dhis.dd.action.dataelementgroup.UpdateDataElementGroupAction">
+    <action name="renameDataElementGroupEditor" class="org.hisp.dhis.dd.action.dataelementgroup.RenameDEGroupNameEditorAction">
       <result name="success" type="velocity-json">/dhis-web-commons/ajax/jsonDataElementGroup.vm</result>
     </action>
 

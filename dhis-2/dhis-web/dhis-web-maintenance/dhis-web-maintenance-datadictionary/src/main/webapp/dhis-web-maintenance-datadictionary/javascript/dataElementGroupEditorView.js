@@ -108,7 +108,6 @@ function getDataElementsByGroup()
 
 function showAddGroup()
 {
-
     jQuery( '#addDataElementGroupForm' ).dialog( 'option', 'title', i18n_new );
     jQuery( '#addDataElementGroupForm' ).dialog( 'option', 'buttons', [ {
         text : i18n_save,
