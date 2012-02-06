@@ -136,6 +136,9 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     </property>
   </bean>
 
+  <bean id="org.hisp.dhis.dd.action.dataelementgroup.RenameDEGroupNameEditorAction" class="org.hisp.dhis.dd.action.dataelementgroup.RenameDEGroupNameEditorAction"
+    scope="prototype"/>
+
   <bean id="org.hisp.dhis.dd.action.dataelementgroup.GetDataElementGroupListAction" class="org.hisp.dhis.dd.action.dataelementgroup.GetDataElementGroupListAction"
     scope="prototype">
     <property name="dataElementService">

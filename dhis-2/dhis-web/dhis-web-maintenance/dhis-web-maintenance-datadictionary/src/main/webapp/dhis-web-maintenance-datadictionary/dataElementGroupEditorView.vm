@@ -134,7 +134,7 @@
 				<td></td>
 				<td>		
 					<input type="button" value="$i18n.getString( 'new' )" onclick="showAddGroupView2()" style="width:70px"/>
-					<input type="button" value="$i18n.getString( 'rename' )" onclick="showUpdateGroupView2()" style="width:70px"/>
+					<input type="button" value="$i18n.getString( 'rename' )" onclick="showUpdateGroup2()" style="width:70px"/>
 					<input type="button" value="$i18n.getString( 'delete' )" onclick="deleteDataElemenGroupView2()" style="width:70px"/>
 				</td>
 			</tr>
