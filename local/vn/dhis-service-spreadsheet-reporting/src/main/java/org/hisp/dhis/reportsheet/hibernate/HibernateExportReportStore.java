@@ -44,6 +44,7 @@ import org.hisp.dhis.reportsheet.ExportReport;
 import org.hisp.dhis.reportsheet.ExportReportCategory;
 import org.hisp.dhis.reportsheet.ExportReportNormal;
 import org.hisp.dhis.reportsheet.ExportReportOganiztionGroupListing;
+import org.hisp.dhis.reportsheet.ExportReportPeriodColumnListing;
 import org.hisp.dhis.reportsheet.ExportReportStore;
 import org.hisp.dhis.reportsheet.PeriodColumn;
 import org.hisp.dhis.reportsheet.status.DataEntryStatus;
@@ -203,6 +204,10 @@ public class HibernateExportReportStore
         else if ( reportType.equals( ExportReport.TYPE.ORGANIZATION_GROUP_LISTING ) )
         {
             clazz = ExportReportOganiztionGroupListing.class;
+        }
+        else
+        {
+            clazz = ExportReportPeriodColumnListing.class;
         }
 
         return getExportReportsByClazz( clazz );
