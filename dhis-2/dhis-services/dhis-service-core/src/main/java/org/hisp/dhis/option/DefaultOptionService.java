@@ -66,6 +66,11 @@ public class DefaultOptionService
         return optionSetStore.getByUid( uid );
     }
     
+    public OptionSet getOptionSetByName( String name )
+    {
+        return optionSetStore.getByName( name );
+    }
+
     public void deleteOptionSet( OptionSet optionSet )
     {
         optionSetStore.delete( optionSet );

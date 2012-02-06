@@ -130,6 +130,16 @@
 		<td style="width:200px">$i18n.getString( "aggregation_levels" )</td>
 		<td><input type="checkbox" onclick="toggleById( 'aggregationLevelsContainer' )"/></td>
 	</tr>
+	<tr>
+		<td>$i18n.getString( 'option_set' )</td>			
+		<td>
+			<select id="selectedOptionSetId" name="selectedOptionSetId" style="min-width: 244px;">
+				#foreach ( $optionSet in $optionSets )
+				<option value="$optionSet.id">$optionSet.name</option>
+				#end
+			</select>
+		</td>
+    </tr>
 </table>
 
 <div id="aggregationLevelsContainer" style="border:1px solid #808080; padding:10px; width:465px; display:none;">
@@ -166,6 +176,7 @@
         	<select multiple size="4" id="aggregationLevels" name="aggregationLevels" style="width:450px" ondblclick="moveSelectedById( 'aggregationLevels', 'organisationUnitLevels' )"></select>
         </td>
 	</tr>
+	
 </table>
 </div>
 

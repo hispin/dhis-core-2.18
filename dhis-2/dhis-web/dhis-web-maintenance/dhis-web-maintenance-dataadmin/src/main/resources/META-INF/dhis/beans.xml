@@ -333,4 +333,36 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 	<property name="organisationUnitService" ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
   </bean>
   
+  <!-- OptionSet -->
+  
+  <bean id="org.hisp.dhis.dataadmin.action.option.GetOptionSetListAction" class="org.hisp.dhis.dataadmin.action.option.GetOptionSetListAction"
+    scope="prototype">
+    <property name="optionService" ref="org.hisp.dhis.option.OptionService" />
+  </bean>
+  
+  <bean id="org.hisp.dhis.dataadmin.action.option.AddOptionSetAction" class="org.hisp.dhis.dataadmin.action.option.AddOptionSetAction"
+    scope="prototype">
+    <property name="optionService" ref="org.hisp.dhis.option.OptionService" />
+  </bean>
+  
+  <bean id="org.hisp.dhis.dataadmin.action.option.UpdateOptionSetAction" class="org.hisp.dhis.dataadmin.action.option.UpdateOptionSetAction"
+    scope="prototype">
+    <property name="optionService" ref="org.hisp.dhis.option.OptionService" />
+  </bean>
+  
+  <bean id="org.hisp.dhis.dataadmin.action.option.RemoveOptionSetAction" class="org.hisp.dhis.dataadmin.action.option.RemoveOptionSetAction"
+    scope="prototype">
+    <property name="optionService" ref="org.hisp.dhis.option.OptionService" />
+  </bean>
+  
+  <bean id="org.hisp.dhis.dataadmin.action.option.GetOptionSetAction" class="org.hisp.dhis.dataadmin.action.option.GetOptionSetAction"
+    scope="prototype">
+    <property name="optionService" ref="org.hisp.dhis.option.OptionService" />
+  </bean>
+  
+  <bean id="org.hisp.dhis.dataadmin.action.option.ValidateOptionSetAction" class="org.hisp.dhis.dataadmin.action.option.ValidateOptionSetAction"
+    scope="prototype">
+    <property name="optionService" ref="org.hisp.dhis.option.OptionService" />
+  </bean>
+  
 </beans>

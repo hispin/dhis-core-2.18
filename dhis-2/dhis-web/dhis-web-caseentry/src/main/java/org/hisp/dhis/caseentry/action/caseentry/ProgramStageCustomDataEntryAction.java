@@ -27,11 +27,15 @@
 
 package org.hisp.dhis.caseentry.action.caseentry;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import org.hisp.dhis.caseentry.state.SelectedStateManager;
 import org.hisp.dhis.dataelement.DataElement;
-import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
 import org.hisp.dhis.dataentryform.DataEntryForm;
 import org.hisp.dhis.i18n.I18n;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
@@ -44,7 +48,6 @@ import org.hisp.dhis.program.Program;
 import org.hisp.dhis.program.ProgramDataEntryService;
 import org.hisp.dhis.program.ProgramStage;
 import org.hisp.dhis.program.ProgramStageDataElement;
-import org.hisp.dhis.program.ProgramStageDataElementService;
 import org.hisp.dhis.program.ProgramStageInstance;
 import org.hisp.dhis.program.ProgramStageInstanceService;
 import org.hisp.dhis.program.comparator.ProgramStageDataElementSortOrderComparator;
@@ -91,13 +94,6 @@ public class ProgramStageCustomDataEntryAction
     public void setProgramDataEntryService( ProgramDataEntryService programDataEntryService )
     {
         this.programDataEntryService = programDataEntryService;
-    }
-
-    private ProgramStageDataElementService programStageDataElementService;
-
-    public void setProgramStageDataElementService( ProgramStageDataElementService programStageDataElementService )
-    {
-        this.programStageDataElementService = programStageDataElementService;
     }
 
     // -------------------------------------------------------------------------
@@ -168,17 +164,10 @@ public class ProgramStageCustomDataEntryAction
     {
         return dataElements;
     }
+    
+    private Map<String, PatientDataValue> patientDataValueMap;
 
-    private Map<Integer, Collection<DataElementCategoryOptionCombo>> optionMap = new HashMap<Integer, Collection<DataElementCategoryOptionCombo>>();
-
-    public Map<Integer, Collection<DataElementCategoryOptionCombo>> getOptionMap()
-    {
-        return optionMap;
-    }
-
-    private Map<Integer, PatientDataValue> patientDataValueMap;
-
-    public Map<Integer, PatientDataValue> getPatientDataValueMap()
+    public Map<String, PatientDataValue> getPatientDataValueMap()
     {
         return patientDataValueMap;
     }
@@ -263,18 +252,7 @@ public class ProgramStageCustomDataEntryAction
         selectedStateManager.setSelectedProgramStageInstance( programStageInstance );
 
         selectedStateManager.setSelectedProgramStageInstance( programStageInstance );
-
-        // ---------------------------------------------------------------------
-        // Get CategoryOptions
-        // ---------------------------------------------------------------------
-
-        Collection<DataElement> dataElements = programStageDataElementService.getListDataElement( programStage );
-
-        for ( DataElement dataElement : dataElements )
-        {
-            optionMap.put( dataElement.getId(), dataElement.getCategoryCombo().getOptionCombos() );
-        }
-
+        
         // ---------------------------------------------------------------------
         // Get data values
         // ---------------------------------------------------------------------
@@ -282,11 +260,12 @@ public class ProgramStageCustomDataEntryAction
         Collection<PatientDataValue> patientDataValues = patientDataValueService
             .getPatientDataValues( programStageInstance );
 
-        patientDataValueMap = new HashMap<Integer, PatientDataValue>( patientDataValues.size() );
+        patientDataValueMap = new HashMap<String, PatientDataValue>( patientDataValues.size() );
 
         for ( PatientDataValue patientDataValue : patientDataValues )
         {
-            patientDataValueMap.put( patientDataValue.getDataElement().getId(), patientDataValue );
+            String key = patientDataValue.getDataElement().getId()+"-" + patientDataValue.getOptionCombo().getId();
+            patientDataValueMap.put( key, patientDataValue );
         }
 
         DataEntryForm dataEntryForm = programStage.getDataEntryForm();

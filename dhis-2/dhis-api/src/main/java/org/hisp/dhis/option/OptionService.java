@@ -44,6 +44,8 @@ public interface OptionService
     
     OptionSet getOptionSet( String uid );
     
+    OptionSet getOptionSetByName( String name );
+    
     void deleteOptionSet( OptionSet optionSet );
 
     Collection<OptionSet> getAllOptionSets();

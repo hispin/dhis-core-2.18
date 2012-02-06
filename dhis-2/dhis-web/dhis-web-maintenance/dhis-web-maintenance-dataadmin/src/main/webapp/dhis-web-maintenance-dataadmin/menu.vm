@@ -17,6 +17,7 @@
 	<li><a href="displayPruneOrganisationUnitForm.action">$i18n.getString( "organisation_unit_pruning" )&nbsp;</a></li>
 	<li><a href="getMinMaxValidationParams.action">$i18n.getString( "min_max_value_generation")&nbsp;</a></li>
 	<li><a href="constant.action">$i18n.getString( "constant")&nbsp;</a></li>
+	<li><a href="optionSet.action">$i18n.getString( "option_set")&nbsp;</a></li>
 	<li><a href="showCache.action">$i18n.getString( "cache_statistics" )&nbsp;</a></li>
 </ul>
 

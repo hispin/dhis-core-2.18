@@ -41,6 +41,7 @@ function loadProgramStages()
 				jQuery('#dueDateTR').attr('class','hidden');
 				enable('completeBtn');
 				enable('validationBtn');
+				hideById('currentSelection');
 				
 				loadDataEntry();
 			}
@@ -148,6 +149,8 @@ function saveVal( dataElementId, optionComboId )
         name:'data'
     });
 	var field = byId( fieldId ); 
+	//var fieldValue = ( field.name = 'entryselect' ) ? 
+	
 	var dataElementName = data.deName; 
     var type = data.deType;
     var providedByAnotherFacility = document.getElementById( programStageId + '_' + dataElementId + '_facility' ).checked;
@@ -164,7 +167,6 @@ function saveVal( dataElementId, optionComboId )
 
                 window.alert( i18n_value_must_integer + '\n\n' + dataElementName );
 
-                field.select();
                 field.focus();
 
                 return;
@@ -173,7 +175,6 @@ function saveVal( dataElementId, optionComboId )
             {
                 field.style.backgroundColor = '#ffcc00';
                 window.alert( i18n_value_must_number + '\n\n' + dataElementName );
-                field.select();
                 field.focus();
 
                 return;
@@ -182,7 +183,6 @@ function saveVal( dataElementId, optionComboId )
             {
                 field.style.backgroundColor = '#ffcc00';
                 window.alert( i18n_value_must_positive_integer + '\n\n' + dataElementName );
-                field.select();
                 field.focus();
 
                 return;
@@ -191,7 +191,6 @@ function saveVal( dataElementId, optionComboId )
             {
                 field.style.backgroundColor = '#ffcc00';
                 window.alert( i18n_value_must_negative_integer + '\n\n' + dataElementName );
-                field.select();
                 field.focus();
 
                 return;

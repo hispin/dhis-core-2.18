@@ -41,6 +41,8 @@ import org.hisp.dhis.dataelement.DataElementCategoryService;
 import org.hisp.dhis.dataelement.DataElementGroup;
 import org.hisp.dhis.dataelement.DataElementGroupSet;
 import org.hisp.dhis.dataelement.DataElementService;
+import org.hisp.dhis.option.OptionService;
+import org.hisp.dhis.option.OptionSet;
 import org.hisp.dhis.organisationunit.OrganisationUnitLevel;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 
@@ -83,6 +85,13 @@ public class ShowAddDataElementForm
     public void setAttributeService( AttributeService attributeService )
     {
         this.attributeService = attributeService;
+    }
+
+    private OptionService optionService;
+
+    public void setOptionService( OptionService optionService )
+    {
+        this.optionService = optionService;
     }
 
     // -------------------------------------------------------------------------
@@ -131,6 +140,13 @@ public class ShowAddDataElementForm
         return attributes;
     }
 
+    private Collection<OptionSet> optionSets;
+
+    public Collection<OptionSet> getOptionSets()
+    {
+        return optionSets;
+    }
+
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
@@ -142,19 +158,21 @@ public class ShowAddDataElementForm
 
         dataElementGroups = dataElementService.getAllDataElementGroups();
 
-        dataElementCategoryCombos = new ArrayList<DataElementCategoryCombo>(
-            dataElementCategoryService.getAllDataElementCategoryCombos() );
+        dataElementCategoryCombos = new ArrayList<DataElementCategoryCombo>( dataElementCategoryService
+            .getAllDataElementCategoryCombos() );
 
         organisationUnitLevels = organisationUnitService.getOrganisationUnitLevels();
 
-        groupSets = new ArrayList<DataElementGroupSet>(
-            dataElementService.getCompulsoryDataElementGroupSetsWithMembers() );
+        groupSets = new ArrayList<DataElementGroupSet>( dataElementService
+            .getCompulsoryDataElementGroupSetsWithMembers() );
 
         attributes = new ArrayList<Attribute>( attributeService.getDataElementAttributes() );
 
         Collections.sort( dataElementCategoryCombos, IdentifiableObjectNameComparator.INSTANCE );
         Collections.sort( groupSets, IdentifiableObjectNameComparator.INSTANCE );
         Collections.sort( attributes, new AttributeSortOrderComparator() );
+
+        optionSets = optionService.getAllOptionSets();
 
         return SUCCESS;
     }
