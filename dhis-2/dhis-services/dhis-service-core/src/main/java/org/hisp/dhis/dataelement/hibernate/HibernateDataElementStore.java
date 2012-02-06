@@ -210,9 +210,9 @@ public class HibernateDataElementStore
     @SuppressWarnings( "unchecked" )
     public Collection<DataElement> getDataElementsWithoutDataSets()
     {
-        String hql = "from DataElement d where d.dataSets.size = 0";
+        String hql = "from DataElement d where d.dataSets.size = 0 and d.domainType =:domainType";
 
-        return getQuery( hql ).setCacheable( true ).list();
+        return getQuery( hql ).setParameter( "domainType", "aggregate" ).setCacheable( true ).list();
     }
 
     @SuppressWarnings( "unchecked" )
