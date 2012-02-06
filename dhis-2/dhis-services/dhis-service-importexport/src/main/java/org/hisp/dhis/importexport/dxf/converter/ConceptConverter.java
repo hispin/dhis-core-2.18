@@ -132,10 +132,8 @@ public class ConceptConverter
             concept.setId( Integer.parseInt( values.get( FIELD_ID ) ) );
             
             if (params.minorVersionGreaterOrEqual( "1.3") ) {
-                reader.moveToStartElement( FIELD_UID );
-                concept.setUid( reader.getElementValue() );
-                reader.moveToStartElement( FIELD_CODE );
-                concept.setCode( reader.getElementValue() );
+                concept.setUid( values.get(FIELD_UID) );
+                concept.setCode( values.get(FIELD_UID) );
             }
 
             
