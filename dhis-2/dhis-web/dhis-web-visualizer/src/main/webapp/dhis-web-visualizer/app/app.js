@@ -14,6 +14,7 @@ DV.conf = {
 				DV.state.filter.names = DV.conf.init.example.filter;
 				DV.state.targetLineValue = 80;
 				DV.state.rangeAxisLabel = 'Range axis label';
+				DV.state.domainAxisLabel = 'Domain axis label';
 			},
 			setValues: function() {
 				var obj1 = {}, obj2 = {}, obj3 = {}, obj4 = {}, obj5 = {}, obj6 = {}, obj7 = {}, obj8 = {}, obj9 = {}, obj10 = {}, obj11 = {}, obj12 = {};
@@ -662,7 +663,7 @@ Ext.onReady( function() {
 							trackMouse: true,
 							cls: 'dv-chart-tips',
 							renderer: function(si, item) {
-								this.update(item.value[1]);
+								this.update('' + item.value[1]);
 							}
 						};
 					},

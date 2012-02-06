@@ -296,7 +296,6 @@ G.i18n = {
     export_image: '$encoder.jsEscape($i18n.getString( 'export_image' ) , "'")',
     export_thematic_map_to_png: '$encoder.jsEscape($i18n.getString( 'export_thematic_map_to_png' ) , "'")',
     total_distance: '$encoder.jsEscape($i18n.getString( 'total_distance' ) , "'")',
-    symbol_layer: '$encoder.jsEscape($i18n.getString( 'symbol_layer' ) , "'")',
     set_thematic_map_date_type: '$encoder.jsEscape($i18n.getString( 'set_thematic_map_date_type' ) , "'")',
     date: '$encoder.jsEscape($i18n.getString( 'date' ) , "'")',
     legend_symbolizer: '$encoder.jsEscape($i18n.getString( 'legend_symbolizer' ) , "'")',
