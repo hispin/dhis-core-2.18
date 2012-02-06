@@ -146,6 +146,7 @@ public class AggregatedDataValueConverter
     
     public void read( XMLReader reader, ImportParams params )
     {
-        throw new UnsupportedOperationException( "Read operation for AggregatedDataValue not supported" );
+        // this code should never be called
+	throw new UnsupportedOperationException( "Read operation for AggregatedDataValue not supported" );
     }
 }

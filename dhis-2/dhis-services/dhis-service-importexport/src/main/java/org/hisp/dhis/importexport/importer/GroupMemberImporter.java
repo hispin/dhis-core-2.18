@@ -47,7 +47,7 @@ public abstract class GroupMemberImporter
 
     protected void importMatching( GroupMemberAssociation object, GroupMemberAssociation match )
     {
-        throw new UnsupportedOperationException( "GroupMemberAssociations can only be unique or duplicate" );
+        log.info( object.getName() + ": GroupMemberAssociations can only be unique or duplicate" );
     }
     
     protected GroupMemberAssociation getMatching( GroupMemberAssociation object )

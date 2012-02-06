@@ -73,7 +73,7 @@ public class ConstantImporter
     @Override
     protected void importMatching( Constant object, Constant match )
     {
-        throw new UnsupportedOperationException( "Constant can only be unique or duplicate" );
+        log.info( object.getName() + ": Constant can only be unique or duplicate" );
     }
 
     @Override
