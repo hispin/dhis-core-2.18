@@ -58,6 +58,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
       <ref bean="org.hisp.dhis.organisationunit.OrganisationUnitService" />
     </property>
     <property name="attributeService" ref="org.hisp.dhis.attribute.AttributeService" />
+    <property name="optionService" ref="org.hisp.dhis.option.OptionService" />
   </bean>
 
   <bean id="org.hisp.dhis.dd.action.dataelement.GetDataElementAction" class="org.hisp.dhis.dd.action.dataelement.GetDataElementAction"
@@ -86,6 +87,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
       <ref bean="org.hisp.dhis.dataelement.DataElementCategoryService" />
     </property>
     <property name="attributeService" ref="org.hisp.dhis.attribute.AttributeService" />
+    <property name="optionService" ref="org.hisp.dhis.option.OptionService" />
   </bean>
 
   <bean id="org.hisp.dhis.dd.action.dataelement.UpdateDataElementAction" class="org.hisp.dhis.dd.action.dataelement.UpdateDataElementAction"
@@ -100,6 +102,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
       <ref bean="org.hisp.dhis.dataset.DataSetService" />
     </property>
     <property name="attributeService" ref="org.hisp.dhis.attribute.AttributeService" />
+    <property name="optionService" ref="org.hisp.dhis.option.OptionService" />
   </bean>
 
   <bean id="org.hisp.dhis.dd.action.dataelement.ShowUpdateDataElementFormAction" class="org.hisp.dhis.dd.action.dataelement.ShowUpdateDataElementFormAction"
@@ -114,6 +117,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
       <ref bean="org.hisp.dhis.organisationunit.OrganisationUnitService" />
     </property>
     <property name="attributeService" ref="org.hisp.dhis.attribute.AttributeService" />
+    <property name="optionService" ref="org.hisp.dhis.option.OptionService" />
   </bean>
 
   <bean id="org.hisp.dhis.dd.action.dataelement.ValidateDataElementAction" class="org.hisp.dhis.dd.action.dataelement.ValidateDataElementAction"

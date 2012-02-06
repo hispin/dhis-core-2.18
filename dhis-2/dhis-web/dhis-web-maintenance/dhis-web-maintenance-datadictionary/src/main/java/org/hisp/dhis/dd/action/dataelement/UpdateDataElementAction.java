@@ -32,6 +32,8 @@ import org.hisp.dhis.attribute.AttributeService;
 import org.hisp.dhis.dataelement.*;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.dataset.DataSetService;
+import org.hisp.dhis.option.OptionService;
+import org.hisp.dhis.option.OptionSet;
 import org.hisp.dhis.system.util.AttributeUtils;
 import org.hisp.dhis.system.util.ConversionUtils;
 
@@ -78,6 +80,13 @@ public class UpdateDataElementAction
         this.attributeService = attributeService;
     }
 
+    private OptionService optionService;
+
+    public void setOptionService( OptionService optionService )
+    {
+        this.optionService = optionService;
+    }
+    
     // -------------------------------------------------------------------------
     // Input
     // -------------------------------------------------------------------------
@@ -215,6 +224,13 @@ public class UpdateDataElementAction
         this.jsonAttributeValues = jsonAttributeValues;
     }
 
+    private Integer selectedOptionSetId;
+    
+    public void setSelectedOptionSetId( Integer selectedOptionSetId )
+    {
+        this.selectedOptionSetId = selectedOptionSetId;
+    }
+    
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
@@ -253,6 +269,8 @@ public class UpdateDataElementAction
 
         DataElementCategoryCombo categoryCombo = dataElementCategoryService
             .getDataElementCategoryCombo( selectedCategoryComboId );
+        
+        OptionSet optionSet = optionService.getOptionSet( selectedOptionSetId );
 
         dataElement.setName( name );
         dataElement.setAlternativeName( alternativeName );
@@ -270,6 +288,7 @@ public class UpdateDataElementAction
         dataElement.setCategoryCombo( categoryCombo );
         dataElement.setAggregationLevels( new ArrayList<Integer>( ConversionUtils
             .getIntegerCollection( aggregationLevels ) ) );
+        dataElement.setOptionSet( optionSet );
 
         Set<DataSet> dataSets = dataElement.getDataSets();
 

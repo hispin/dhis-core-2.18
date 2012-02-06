@@ -569,5 +569,61 @@
       <param name="requiredAuthorities">F_SCHEDULING_ADMIN</param>
     </action>
 	
+	
+  <!-- OptionSet -->
+  
+   <action name="optionSet" class="org.hisp.dhis.dataadmin.action.option.GetOptionSetListAction">
+     <result name="success" type="velocity">/main.vm</result>
+     <param name="page">/dhis-web-maintenance-dataadmin/optionSet.vm</param>
+     <param name="menu">/dhis-web-maintenance-dataadmin/menu.vm</param>
+     <param name="javascripts">javascript/optionSet.js</param>
+     <param name="requiredAuthorities">F_OPTIONSET_MANAGEMENT</param>
+   </action>
+   
+   <action name="showAddOptionSetForm" class="org.hisp.dhis.dataadmin.action.NoAction">
+     <result name="success" type="velocity">/main.vm</result>
+     <param name="page">/dhis-web-maintenance-dataadmin/addOptionSetForm.vm</param>
+   <param name="javascripts">javascript/optionSet.js</param>
+     <param name="requiredAuthorities">F_OPTIONSET_ADD</param>
+   </action>
+
+   <action name="addOptionSet" class="org.hisp.dhis.dataadmin.action.option.AddOptionSetAction">
+     <result name="success" type="redirect">optionSet.action</result>
+     <param name="requiredAuthorities">F_OPTIONSET_ADD</param>
+   </action>
+   
+   <action name="showUpdateOptionSetForm" class="org.hisp.dhis.dataadmin.action.option.GetOptionSetAction">
+     <result name="success" type="velocity">/main.vm</result>
+     <param name="page">/dhis-web-maintenance-dataadmin/updateOptionSetForm.vm</param>
+   	 <param name="javascripts">javascript/optionSet.js</param>
+     <param name="requiredAuthorities">F_OPTIONSET_UPDATE</param>
+   </action>
+   
+   <action name="updateOptionSet" class="org.hisp.dhis.dataadmin.action.option.UpdateOptionSetAction">
+     <result name="success" type="redirect">optionSet.action</result>
+	 <param name="requiredAuthorities">F_OPTIONSET_UPDATE</param>
+   </action>
+    
+   <action name="removeOptionSet" class="org.hisp.dhis.dataadmin.action.option.RemoveOptionSetAction">
+     <result name="success" type="velocity-json">
+				/dhis-web-commons/ajax/jsonResponseSuccess.vm</result>
+	 <param name="requiredAuthorities">F_OPTIONSET_DELETE</param>
+   </action>
+   
+   <action name="validateOptionSet"
+		class="org.hisp.dhis.dataadmin.action.option.ValidateOptionSetAction">
+		<result name="success" type="velocity-json">
+			/dhis-web-commons/ajax/jsonResponseSuccess.vm</result>
+		<result name="error" type="velocity-json">
+			/dhis-web-commons/ajax/jsonResponseError.vm</result>
+		<param name="onExceptionReturn">plainTextError</param>
+	</action>
+	
+	<action name="getOptionSet"
+		class="org.hisp.dhis.dataadmin.action.option.GetOptionSetAction">
+		<result name="success" type="velocity-json">
+			/dhis-web-maintenance-dataadmin/jsonOptionSet.vm</result>
+	</action>
+   
   </package>
 </struts>

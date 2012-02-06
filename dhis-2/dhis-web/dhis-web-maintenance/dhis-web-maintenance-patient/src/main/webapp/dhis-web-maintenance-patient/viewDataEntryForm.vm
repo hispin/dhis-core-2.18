@@ -126,10 +126,20 @@
 		<tr>
 			<td>
 				<span class="bold">$i18n.getString( "dataelement" )</span><br>
+			</td>
+		</tr>
+		<tr>
+			<td>	
 				<input type="text" style="min-width:290px" onkeyup="filterDataElements( this.value, '#dataElementSelection', '#dataElementIds')"/>
-				<select id="dataElementIds" name="dataElementIds" style="min-width:300px" multiple="multiple" size="10" onchange="getOptionCombos( this.value, '#dataElementSelection #optionComboIds' )" class="{validate:{required:true}}">
+			</td>
+		</tr>
+		<tr>
+			<td>	
+				<select id="dataElementIds" name="dataElementIds" style="min-width:300px" multiple="multiple" size="10" ondblclick="insertDataElement( '#dataElementSelection', '$programStage.id')">
 					#foreach( $de in $dataElements)
-					<option value='$de.toJSON()'>$encoder.htmlEncode( $de.name )</option>
+						#foreach( $optionCombo in $de.categoryCombo.optionCombos)
+							<option value='$de.toJSON()' optionCombo='{"id":"$optionCombo.id","name":"$optionCombo.name" }' >$encoder.htmlEncode( $de.name ) $optionCombo.name</option>
+						#end
 					#end
 				</select>
 				<select id="dataElementIdsStore" multiple="multiple" style="display:none">
@@ -138,15 +148,13 @@
 					#end
 				</select>
 			</td>
-			<td>
-				<span class="bold">$i18n.getString( "optioncombo" )</span><br>
-				<select id="optionComboIds" name="optionComboIds" style="min-width:300px" size="10" class="{validate:{required:true}}"/>					
-			</td>
 		</tr>
 		<tr>
 			<td>
 				<input type="button" value="Insert" id="insert" name="insert" onclick="insertDataElement( '#dataElementSelection', '$programStage.id')"/>
 			</td>
+		</tr>
+		<tr>
 			<td>
 				<span id="message_"></span>
 			</td>
@@ -169,20 +177,26 @@
 		</tr>
 		<tr>
 			<td>
-				<span class="bold">$i18n.getString( "dataelement" )</span><br>
-				<input type="text" style="min-width:290px" onkeyup="filterDataElements( this.value, '#otherProgramStageDataElements', '#dataElementIds')"/>
-				<select id="dataElementIds" name="dataElementIds" style="min-width:300px" multiple="multiple" size="10" onchange="getOptionCombos( this.value, '#otherProgramStageDataElements #optionComboIds' )" class="{validate:{required:true}}"/>
-				<select id="dataElementIdsStore" style="min-width:300px;display:none" multiple="multiple" size="10"/>
+				<span class="bold">$i18n.getString( "dataelement" )</span>
 			</td>
+		</tr>
+		<tr>
 			<td>
-				<span class="bold">$i18n.getString( "optioncombo" )</span><br>
-				<select id="optionComboIds" name="optionComboIds" style="min-width:300px" size="10" class="{validate:{required:true}}"/>					
+				<input type="text" style="min-width:290px" onkeyup="filterDataElements( this.value, '#otherProgramStageDataElements', '#dataElementIds')"/>
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<select id="dataElementIds" name="dataElementIds" style="min-width:300px" multiple="multiple" size="10" ondblclick="insertDataElement( '#otherProgramStageDataElements', byId('programStageIds').value )"/>
+				<select id="dataElementIdsStore" style="min-width:300px;display:none" multiple="multiple" size="10"/>
 			</td>
 		</tr>
 		<tr>
 			<td>
 				<input type="button" value="Insert" id="insert" name="insert" onclick="insertDataElement( '#otherProgramStageDataElements', byId('programStageIds').value )"/>
 			</td>
+		</tr>
+		<tr>
 			<td>
 				<span id="message_"></span>
 			</td>
@@ -202,5 +216,4 @@
 
 <script>
 	var i18n_delete_program_data_entry_confirm = '$encoder.jsEscape( $i18n.getString( "delete_program_data_entry_confirm" ) , "'" )';
-
 </script>

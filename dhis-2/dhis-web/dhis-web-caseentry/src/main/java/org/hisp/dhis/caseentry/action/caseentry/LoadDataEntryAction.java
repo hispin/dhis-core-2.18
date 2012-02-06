@@ -35,8 +35,6 @@ import java.util.List;
 import java.util.Map;
 
 import org.hisp.dhis.caseentry.state.SelectedStateManager;
-import org.hisp.dhis.dataelement.DataElement;
-import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
 import org.hisp.dhis.dataentryform.DataEntryForm;
 import org.hisp.dhis.i18n.I18n;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
@@ -47,7 +45,6 @@ import org.hisp.dhis.program.ProgramDataEntryService;
 import org.hisp.dhis.program.ProgramInstance;
 import org.hisp.dhis.program.ProgramStage;
 import org.hisp.dhis.program.ProgramStageDataElement;
-import org.hisp.dhis.program.ProgramStageDataElementService;
 import org.hisp.dhis.program.ProgramStageInstance;
 import org.hisp.dhis.program.ProgramStageInstanceService;
 import org.hisp.dhis.program.ProgramStageService;
@@ -75,8 +72,6 @@ public class LoadDataEntryAction
 
     private ProgramStageInstanceService programStageInstanceService;
 
-    private ProgramStageDataElementService programStageDataElementService;
-
     private SelectedStateManager selectedStateManager;
 
     // -------------------------------------------------------------------------
@@ -93,9 +88,7 @@ public class LoadDataEntryAction
 
     private List<ProgramStageDataElement> programStageDataElements = new ArrayList<ProgramStageDataElement>();
 
-    private Map<Integer, PatientDataValue> patientDataValueMap;
-
-    private Map<Integer, Collection<DataElementCategoryOptionCombo>> optionMap = new HashMap<Integer, Collection<DataElementCategoryOptionCombo>>();
+    private Map<String, PatientDataValue> patientDataValueMap;
 
     private OrganisationUnit organisationUnit;
 
@@ -113,11 +106,6 @@ public class LoadDataEntryAction
     public Program getProgram()
     {
         return program;
-    }
-
-    public void setProgramStageDataElementService( ProgramStageDataElementService programStageDataElementService )
-    {
-        this.programStageDataElementService = programStageDataElementService;
     }
 
     public void setProgramStageService( ProgramStageService programStageService )
@@ -139,12 +127,7 @@ public class LoadDataEntryAction
     {
         this.patientDataValueService = patientDataValueService;
     }
-
-    public Map<Integer, Collection<DataElementCategoryOptionCombo>> getOptionMap()
-    {
-        return optionMap;
-    }
-
+    
     public OrganisationUnit getOrganisationUnit()
     {
         return organisationUnit;
@@ -175,7 +158,7 @@ public class LoadDataEntryAction
         return programStageDataElements;
     }
 
-    public Map<Integer, PatientDataValue> getPatientDataValueMap()
+    public Map<String, PatientDataValue> getPatientDataValueMap()
     {
         return patientDataValueMap;
     }
@@ -210,18 +193,7 @@ public class LoadDataEntryAction
             if ( programStageInstance != null )
             {
                 selectedStateManager.setSelectedProgramStageInstance( programStageInstance );
-
-                // ---------------------------------------------------------------------
-                // Get CategoryOptions
-                // ---------------------------------------------------------------------
-
-                Collection<DataElement> dataElements = programStageDataElementService.getListDataElement( programStage );
-
-                for ( DataElement dataElement : dataElements )
-                {
-                    optionMap.put( dataElement.getId(), dataElement.getCategoryCombo().getOptionCombos() );
-                }
-
+                
                 // ---------------------------------------------------------------------
                 // Get data values
                 // ---------------------------------------------------------------------
@@ -229,11 +201,12 @@ public class LoadDataEntryAction
                 Collection<PatientDataValue> patientDataValues = patientDataValueService
                     .getPatientDataValues( programStageInstance );
 
-                patientDataValueMap = new HashMap<Integer, PatientDataValue>( patientDataValues.size() );
+                patientDataValueMap = new HashMap<String, PatientDataValue>( patientDataValues.size() );
 
                 for ( PatientDataValue patientDataValue : patientDataValues )
                 {
-                    patientDataValueMap.put( patientDataValue.getDataElement().getId(), patientDataValue );
+                    String key = patientDataValue.getDataElement().getId() + "-" + patientDataValue.getOptionCombo().getId();
+                    patientDataValueMap.put( key, patientDataValue );
                 }
 
                 // ---------------------------------------------------------------------

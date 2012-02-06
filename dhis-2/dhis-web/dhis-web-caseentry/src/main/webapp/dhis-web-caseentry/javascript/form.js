@@ -14,8 +14,6 @@ function organisationUnitSelected( orgUnits, orgUnitNames )
 	enable('listPatientBtn');
 }
 
-selection.setListenerFunction( organisationUnitSelected );
-
 //--------------------------------------------------------------------------------------------
 // Show selected data-recording
 //--------------------------------------------------------------------------------------------

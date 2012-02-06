@@ -1,0 +1,66 @@
+<script type="text/javascript">
+	jQuery(document).ready(	function() {
+		validation2( 'updateOptionSetForm', function( form ){ form.submit() }, {
+			'beforeValidateHandler': function() { listValidator( 'memberValidator', 'options' ); }		});
+
+		checkValueIsExist( "name", "validateOptionSet.action",{id:getFieldValue('id')});	
+	});
+
+    var i18n_specify_option_name = '$encoder.jsEscape( $i18n.getString( "specify_option_name" ) , "'")';
+    var i18n_option_name_already_exists = '$encoder.jsEscape( $i18n.getString( "option_name_already_exists" ) , "'")';
+    var i18n_must_include_option = '$encoder.jsEscape( $i18n.getString( "must_include_option" ) , "'")';
+</script>
+
+<h3>$i18n.getString( "edit_option_set" )</h3>
+
+<form id="updateOptionSetForm" name="updateOptionSetForm" action="updateOptionSet.action" method="post">
+  <input id='id' name='id' value='$optionSet.id' type='hidden'>
+  <table>
+    <tr>
+      <th colspan='2'>$i18n.getString( "details" )</th>      
+    </tr>
+    <tr>
+      <td><label>$i18n.getString( "name" ) <em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
+      <td ><input type="text" id="name" name="name" value='$optionSet.name' style="width:25em" class="{validate:{required:true,minlength:2}}" /></td>
+    </tr>      
+    <tr>
+      <td style="height:15px"></td>
+    </tr>
+  	<tr>
+  	  <th colspan='2'>$i18n.getString( "options" )
+	  <select id="memberValidator" style="display:none"/></th>
+	</tr>
+	<tr>
+	  <td><label>$i18n.getString( "option" )</label></td>
+	  <td><input type="text" id="option" name="option" style="width:25em"/></td>
+    </tr>
+    <tr>
+      <td></td>
+      <td colspan="2">
+      	<input type="button" value="$i18n.getString( 'add_option' )" onclick="addOption()" style="width:200px"/>
+      </td>
+    </tr>
+    <tr>
+		<td></td>
+		<td>
+			<select multiple size="10" id="options" name="options" style="width:300px">  
+				#foreach( $option in $optionSet.options )
+					<option value='$option'>$option</option>
+				#end
+			</select>
+		</td>
+      </td>
+      <td style="width:30px; text-align:center">&nbsp;</td>
+    </tr>
+    <tr>
+      <td colspan="2" style="height:15px"></td>
+    </tr>
+	<tr>
+	  <td></td>
+	  <td colspan="2">
+		<input type="submit"  value="$i18n.getString( 'update' )" style="width:100px">
+		<input type="button" onclick="window.location.href='optionSet.action'" value="$i18n.getString( 'cancel' )" style="width:100px"/></p>
+      </td>
+	</tr>
+  </table>
+</form>

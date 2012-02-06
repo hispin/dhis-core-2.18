@@ -31,8 +31,6 @@ function multiDataEntryOrgunitSelected( orgUnits, orgUnitNames )
 
 selection.setListenerFunction( multiDataEntryOrgunitSelected );
 
-
-
 function selectProgram()
 {
 	setInnerHTML('listPatient', '');

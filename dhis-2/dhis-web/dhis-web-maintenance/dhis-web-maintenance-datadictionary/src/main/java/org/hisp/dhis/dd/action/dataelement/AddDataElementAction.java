@@ -38,6 +38,8 @@ import org.hisp.dhis.dataelement.DataElementCategoryCombo;
 import org.hisp.dhis.dataelement.DataElementCategoryService;
 import org.hisp.dhis.dataelement.DataElementGroup;
 import org.hisp.dhis.dataelement.DataElementService;
+import org.hisp.dhis.option.OptionService;
+import org.hisp.dhis.option.OptionSet;
 import org.hisp.dhis.system.util.AttributeUtils;
 import org.hisp.dhis.system.util.ConversionUtils;
 
@@ -72,6 +74,13 @@ public class AddDataElementAction
     public void setAttributeService( AttributeService attributeService )
     {
         this.attributeService = attributeService;
+    }
+    
+    private OptionService optionService;
+
+    public void setOptionService( OptionService optionService )
+    {
+        this.optionService = optionService;
     }
 
     // -------------------------------------------------------------------------
@@ -190,6 +199,13 @@ public class AddDataElementAction
         this.selectedGroups = selectedGroups;
     }
 
+    private Integer selectedOptionSetId;
+    
+    public void setSelectedOptionSetId( Integer selectedOptionSetId )
+    {
+        this.selectedOptionSetId = selectedOptionSetId;
+    }
+    
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
@@ -223,6 +239,8 @@ public class AddDataElementAction
 
         DataElementCategoryCombo categoryCombo = dataElementCategoryService
             .getDataElementCategoryCombo( selectedCategoryComboId );
+        
+        OptionSet optionSet = optionService.getOptionSet( selectedOptionSetId );
 
         dataElement.setName( name );
         dataElement.setAlternativeName( alternativeName );
@@ -240,6 +258,7 @@ public class AddDataElementAction
         dataElement.setCategoryCombo( categoryCombo );
         dataElement.setAggregationLevels( new ArrayList<Integer>( ConversionUtils
             .getIntegerCollection( aggregationLevels ) ) );
+        dataElement.setOptionSet( optionSet );
 
         if ( jsonAttributeValues != null )
         {

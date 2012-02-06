@@ -6,27 +6,24 @@ var existedDataEntry;
 jQuery(function(){
 	dataElementSelector = jQuery("#dataElementSelection").dialog({
 		title: i18n_dataelement,
-		minWidth: 650,
-		minHeight: 250,
-		width:650,
+		height: 350,
+		width:350,
 		autoOpen: false,
 		zIndex:99999
 	});
 	
 	otherProgramStageDataElements = jQuery("#otherProgramStageDataElements").dialog({
 		title: i18n_dataelement_of_orther_program_stage,
-		minWidth: 650,
-		minHeight: 250,
-		width:650,
+		height: 350,
+		width:350,
 		autoOpen: false,
 		zIndex:99999
 	});
 	
 	existedDataEntry = jQuery("#existedDataEntry").dialog({
 		title: i18n_choose_existing_dataentry,
-		minWidth: 400,
-		minHeight: 80,
-		width:400,
+		height: 350,
+		width:350,
 		autoOpen: false,
 		zIndex:99999
 	});	
@@ -84,34 +81,18 @@ function getProgramStageDataElements( id )
 		jQuery.post("getSelectedDataElements.action",{
 			associationId: id
 		}, function( xml ){			
-			jQuery( xml ).find( 'dataElement' ).each( function(i, item ){			
-				dataElements.append("<option value='" + jQuery( item ).find( "json" ).text() + "'>" + jQuery( item ).find( "name" ).text() + "</option>");
-				dataElementIdsStore.append("<option value='" + jQuery( item ).find( "json" ).text() + "'>" + jQuery( item ).find( "name" ).text() + "</option>");
+			jQuery( xml ).find( 'dataElement' ).each( function(i, item ){
+				jQuery( item ).find( 'optionCombo' ).each( function(i, optionCombo ){	
+					dataElements.append("<option value='" + jQuery( item ).find( "json" ).text() 
+						+ "' optionCombo='{\"id\":\"" + jQuery( optionCombo ).find( "optionComboid" ).text() 
+						+"\",\"name\":\"" + jQuery( optionCombo ).find( "optionComboname" ).text() + "\" }'>" 
+						+ jQuery( item ).find( "name" ).text() + jQuery( optionCombo ).find( "optionComboname" ).text() 
+						+ "</option>");
+					dataElementIdsStore.append("<option value='" + jQuery( item ).find( "json" ).text() + "'>" + jQuery( item ).find( "name" ).text() + "</option>");
+				});
 			});
 		});
 	}
-}
-
-function getOptionCombos( dataElement, target )
-{
-	var dataElement = JSON.parse( dataElement );
-	
-	var optionCombo = jQuery( target );
-	
-	if( dataElement.type=='string' ){
-		optionCombo.attr("multiple", "multiple" );
-	}else{
-		optionCombo.removeAttr( "multiple" );
-	}
-	
-	jQuery.postJSON("../dhis-web-commons-ajax-json/getCategoryOptionCombos.action", {
-		id: dataElement.id
-	}, function( json ){		
-		optionCombo.empty();
-		jQuery.each( json.categoryOptionCombos, function(i, item ){
-			optionCombo.append( "<option value='{\"id\":\"" + item.id + "\",\"name\":\"" + item.name + "\",\"default\":\"" + item.default + "\"}' selected='true'>" + item.name + "</option>" );
-		});
-	});
 }
 
 function getSelectedValues( jQueryString )
@@ -156,11 +137,11 @@ function filterDataElements( filter, container, list )
 	});	
 }
 
-function insertDataElement( source, associationId )
+function insertDataElement( source, programStageId )
 {
 	var oEditor = jQuery("#designTextarea").ckeditorGet();
-
 	var dataElement = JSON.parse( jQuery( source + ' #dataElementIds').val() );
+	var optionCombo = JSON.parse( jQuery( source + ' #dataElementIds option:selected').attr('optionCombo') );
 
 	if( dataElement == null )
 	{
@@ -176,51 +157,29 @@ function insertDataElement( source, associationId )
 	var dataElementName = dataElement.name;	
 	var dataElementType = dataElement.type;
 	
-	var id = "";
-
 	var htmlCode = "";
-
-	if( dataElementType == "string" )
-	{
-		if( categoryOptionCombos[0].default == 'true' )
-		{		
-			var titleValue = dataElementId + "." + dataElementName 
-					+ "-" + categoryOptionCombos[0].id + "." + categoryOptionCombos[0].id 
-					+ " "+dataElementType+"\"";
-			var displayName = dataElementName + "-" + categoryOptionCombos[0].name + " ]";
-			id  = associationId + "-" + dataElementId + "-" + categoryOptionCombos[0].id +"-val";
-			htmlCode += "<input name=\"entryfield\" id=\""+ id + "\" value=\"" + displayName + "\" title=\"" + displayName + "\" onkeypress=\"return keyPress(event, this)\" >";			
-		}else{	
-			var titleValue = "-- " + dataElementId + "." + dataElementName + " ("+dataElementType+") --";
-			var displayName = dataElementName;
-			id = associationId + "-" + dataElementId + "-val"; 
-			htmlCode = "<input name=\"entryselect\" id=\"" + id + "\" value=\"" + displayName + "\" title=\"" + displayName + "\">";
-		}
-	}
-	else if ( dataElementType == "bool" )
+	var id = programStageId + "-" + dataElementId + "-val" ;
+	
+	if ( dataElementType == "bool" )
 	{
 		var titleValue = "-- " + dataElementId + "." + dataElementName + " ("+dataElementType+") --";
 		var displayName = dataElementName;
-		id = associationId + "-" + dataElementId + "-val" ;
 		htmlCode = "<input name=\"entryselect\" id=\"" + id + "\" value=\"" + displayName + "\" title=\"" + displayName + "\">";
 	} 
 	else if ( dataElementType == "date" )
 	{
 		var titleValue = "-- " + dataElementId + "." + dataElementName + " ("+dataElementType+") --";
 		var displayName = dataElementName;
-		id = associationId + "-" + dataElementId + "-val" ;
 		htmlCode = "<input name=\"entryfield\" id=\"" + id + "\" value=\"" + displayName + "\" title=\"" + displayName + "\">";
 	} 
-	else if ( dataElementType == "int" ) 
+	else if ( dataElementType == "int" || dataElementType == "string" ) 
 	{
-		jQuery.each( categoryOptionCombos, function(i, item ){
-			optionComboName = item.name;
-			optionComboId = item.id;
-			var titleValue = "-- " + dataElementId + "." + dataElementName + "-" + optionComboId + "." + optionComboName+" ("+dataElementType+") --";
-			var displayName = dataElementName + "-" + optionComboName;
-			id = associationId + "-" + dataElementId + "-" + optionComboId + "-val";
-			htmlCode += "<input title=\"" + titleValue + "\" value=\"" + displayName + "\" name=\"entryfield\" id=\"" + id + "\" />";
-		});
+		var optionComboName = optionCombo.name;
+		var optionComboId = optionCombo.id;
+		var titleValue = "-- " + dataElementId + "." + dataElementName + "-" + optionComboId + "." + optionComboName+" ("+dataElementType+") --";
+		var displayName = dataElementName + "-" + optionComboName;
+		id = programStageId + "-" + dataElementId + "-" + optionComboId + "-val";
+		htmlCode += "<input title=\"" + titleValue + "\" value=\"" + displayName + "\" name=\"entryfield\" id=\"" + id + "\" />";
 	}
 	
 	if( checkExisted( id ) )
