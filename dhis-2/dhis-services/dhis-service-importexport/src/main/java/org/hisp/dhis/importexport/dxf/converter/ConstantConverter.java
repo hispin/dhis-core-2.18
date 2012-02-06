@@ -130,10 +130,8 @@ public class ConstantConverter
 
             constant.setId( Integer.parseInt( results.get( FIELD_ID ) ) );
             if (params.minorVersionGreaterOrEqual( "1.3") ) {
-                reader.moveToStartElement( FIELD_UID );
-                constant.setUid( reader.getElementValue() );
-                reader.moveToStartElement( FIELD_CODE );
-                constant.setCode( reader.getElementValue() );
+                constant.setUid( results.get(FIELD_UID) );
+                constant.setCode( results.get(FIELD_CODE) );
             }
 
             constant.setName( results.get( FIELD_NAME ) );
