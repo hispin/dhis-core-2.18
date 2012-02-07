@@ -324,5 +324,6 @@ G.i18n = {
     file_overlays:  '$encoder.jsEscape($i18n.getString( 'file_overlays' ) , "'")' ,
     symbol_layer:    '$encoder.jsEscape($i18n.getString( 'symbol_layer' ) , "'")',
     centroid_layer:    '$encoder.jsEscape($i18n.getString( 'centroid_layer' ) , "'")',
-    no_values_found:    '$encoder.jsEscape($i18n.getString( 'no_values_found' ) , "'")'
+    no_values_found:    '$encoder.jsEscape($i18n.getString( 'no_values_found' ) , "'")',
+    close: '$encoder.jsEscape($i18n.getString( 'close' ) , "'")'
 };
