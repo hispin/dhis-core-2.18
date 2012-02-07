@@ -183,7 +183,8 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
         <property name="programStageService" ref="org.hisp.dhis.program.ProgramStageService" />     	
         <property name="categoryService" ref="org.hisp.dhis.dataelement.DataElementCategoryService" />
         <property name="programService" ref="org.hisp.dhis.program.ProgramService" />
-        <property name="patientAttributeService" ref="org.hisp.dhis.patient.PatientAttributeService" />      	     	
+        <property name="patientAttributeService" ref="org.hisp.dhis.patient.PatientAttributeService" /> 
+        <property name="programStageInstanceService" ref="org.hisp.dhis.program.ProgramStageInstanceService" />      	     	
     </bean>
     
 	<bean id="org.hisp.dhis.program.nextvisit.NextVisitGenerator"

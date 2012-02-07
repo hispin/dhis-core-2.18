@@ -89,14 +89,24 @@ public class HibernatePatientDataValueStore
     {
         return (PatientDataValue) getCriteria( Restrictions.eq( "programStageInstance", programStageInstance ),
             Restrictions.eq( "dataElement", dataElement ), Restrictions.eq( "optionCombo", optionCombo ),
-            Restrictions.eq( "organisationUnit", organisationUnit ) )
-            .uniqueResult();
+            Restrictions.eq( "organisationUnit", organisationUnit ) ).uniqueResult();
     }
-    
+
     @SuppressWarnings( "unchecked" )
     public Collection<PatientDataValue> get( ProgramStageInstance programStageInstance )
     {
         return getCriteria( Restrictions.eq( "programStageInstance", programStageInstance ) ).list();
+    }
+
+    @SuppressWarnings( "unchecked" )
+    public Collection<PatientDataValue> get( ProgramStageInstance programStageInstance,
+        Collection<DataElement> dataElements )
+    {
+        String hql = "from PatientDataValue pdv where pdv.dataElement in ( :dataElements ) "
+            + "and pdv.programStageInstance = :programStageInstance";
+
+        return getQuery( hql ).setParameterList( "dataElements", dataElements ).setEntity( "programStageInstance",
+            programStageInstance ).list();
     }
 
     @SuppressWarnings( "unchecked" )
@@ -106,7 +116,7 @@ public class HibernatePatientDataValueStore
         {
             return new ArrayList<PatientDataValue>();
         }
-        
+
         return getCriteria( Restrictions.in( "programStageInstance", programStageInstances ) ).list();
     }
 
@@ -205,12 +215,11 @@ public class HibernatePatientDataValueStore
         return getQuery( hql ).setParameterList( "dataElements", dataElements ).setEntity( "patient", patient )
             .setDate( "startDate", startDate ).setDate( "endDate", endDate ).list();
     }
-    
+
     public PatientDataValue get( ProgramStageInstance programStageInstance, DataElement dataElement )
     {
         return (PatientDataValue) getCriteria( Restrictions.eq( "programStageInstance", programStageInstance ),
-            Restrictions.eq( "dataElement", dataElement ) )
-            .uniqueResult();
+            Restrictions.eq( "dataElement", dataElement ) ).uniqueResult();
     }
 
 }

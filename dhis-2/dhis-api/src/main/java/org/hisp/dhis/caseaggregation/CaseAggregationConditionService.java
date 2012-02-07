@@ -37,6 +37,7 @@ import org.hisp.dhis.patient.PatientAttribute;
 import org.hisp.dhis.patientdatavalue.PatientDataValue;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.program.Program;
+import org.hisp.dhis.program.ProgramStageInstance;
 
 /**
  * @author Chau Thu Tran
@@ -65,6 +66,8 @@ public interface CaseAggregationConditionService
     Collection<PatientDataValue> getPatientDataValues( CaseAggregationCondition aggregationCondition, OrganisationUnit orgunit, Period period );
     
     Collection<Patient> getPatients( CaseAggregationCondition aggregationCondition, OrganisationUnit orgunit, Period period );
+    
+    Collection<ProgramStageInstance> getProgramStageInstances( CaseAggregationCondition aggregationCondition, OrganisationUnit orgunit, Period period );
     
     Collection<DataElement> getDataElementsInCondition( String aggregationExpression );
     
