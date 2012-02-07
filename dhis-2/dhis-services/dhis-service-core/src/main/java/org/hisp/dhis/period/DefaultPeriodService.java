@@ -287,6 +287,6 @@ public class DefaultPeriodService
 
     public Period reloadPeriod( Period period )
     {
-        return periodStore.reloadPeriod( period );
+        return periodStore.reloadForceAddPeriod( period );
     }
 }

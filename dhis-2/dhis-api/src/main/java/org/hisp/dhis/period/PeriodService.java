@@ -261,6 +261,14 @@ public interface PeriodService
      */
     Collection<Period> namePeriods( Collection<Period> periods, I18nFormat format );
     
+    /**
+     * Checks if the given Period is associated with the current session. If not,
+     * replaces the Period with a Period associated with the current session.
+     * Persists the Period if not already persisted.
+     * 
+     * @param period the Period to reload.
+     * @return a Period.
+     */
     Period reloadPeriod( Period period );
     
     // -------------------------------------------------------------------------
