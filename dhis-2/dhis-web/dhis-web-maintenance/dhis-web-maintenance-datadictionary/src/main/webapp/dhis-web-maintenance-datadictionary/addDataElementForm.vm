@@ -134,6 +134,7 @@
 		<td>$i18n.getString( 'option_set' )</td>			
 		<td>
 			<select id="selectedOptionSetId" name="selectedOptionSetId" style="min-width: 244px;">
+				<option value="0">[$i18n.getString('please_select')]</option>
 				#foreach ( $optionSet in $optionSets )
 				<option value="$optionSet.id">$optionSet.name</option>
 				#end

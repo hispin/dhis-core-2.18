@@ -41,4 +41,7 @@ function addOption()
 	{
 		addOptionById( 'options', value, value );
 	}
+	
+	setFieldValue('option', '');
+	$("#option").focus();
 }
