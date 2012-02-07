@@ -138,6 +138,9 @@ public class PerformMaintenanceAction
             aggregatedDataValueService.deleteAggregatedDataValues();
             aggregatedDataValueService.deleteAggregatedIndicatorValues();
             
+            aggregatedOrgUnitDataValueService.deleteAggregatedDataValues();
+            aggregatedOrgUnitDataValueService.deleteAggregatedIndicatorValues();
+            
             log.info( "Cleared data mart" );
         }
         
