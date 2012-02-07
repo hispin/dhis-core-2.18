@@ -104,6 +104,12 @@ public class OrganisationUnitLevel extends BaseIdentifiableObject
         return level == other.level && name.equals( other.name );
     }
 
+    @Override
+    public String toString()
+    {
+        return "[Name: " + name + ", level: " + level + "]";
+    }
+
     // -------------------------------------------------------------------------
     // Getters and setters
     // -------------------------------------------------------------------------
