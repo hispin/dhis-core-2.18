@@ -191,7 +191,15 @@ public class MapController
         throws Exception
     {
         BufferedImage image = mapGenerationService.generateMapImage( mapView );
-        response.setContentType( ContextUtils.CONTENT_TYPE_PNG );
-        ImageIO.write( image, "PNG", response.getOutputStream() );
+        
+        if ( image != null )
+        {
+            response.setContentType( ContextUtils.CONTENT_TYPE_PNG );
+            ImageIO.write( image, "PNG", response.getOutputStream() );
+        }
+        else
+        {
+            response.setStatus( HttpServletResponse.SC_NO_CONTENT );
+        }
     }
 }

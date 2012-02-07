@@ -87,6 +87,11 @@ public class GeoToolsMapGenerationService
         // Build internal map layer representation
         InternalMapLayer mapLayer = buildSingleInternalMapLayer( mapView );
 
+        if ( mapLayer == null )
+        {
+            return null;
+        }
+        
         // Build internal representation of a map using GeoTools, then render it
         // to an image
         GeoToolsMap gtMap = new GeoToolsMap( mapLayer );
@@ -127,6 +132,24 @@ public class GeoToolsMapGenerationService
 
         boolean isIndicator = MappingService.MAP_VALUE_TYPE_INDICATOR.equals( mapView.getMapValueType() );
 
+        Collection<AggregatedMapValue> mapValues;
+        
+        if ( isIndicator )
+        {
+            mapValues = mappingService.getIndicatorMapValues( mapView.getIndicator().getId(), mapView.getPeriod()
+                .getId(), mapView.getParentOrganisationUnit().getId(), mapView.getOrganisationUnitLevel().getLevel() );
+        }
+        else
+        {
+            mapValues = mappingService.getDataElementMapValues( mapView.getDataElement().getId(), mapView.getPeriod()
+                .getId(), mapView.getParentOrganisationUnit().getId(), mapView.getOrganisationUnitLevel().getLevel() );
+        }
+        
+        if ( !( mapValues != null && mapValues.size() > 0 ) )
+        {
+            return null;
+        }
+        
         // Get the name from the external layer
         String name = mapView.getName();
 
@@ -165,25 +188,6 @@ public class GeoToolsMapGenerationService
         mapLayer.setStrokeColor( strokeColor );
         mapLayer.setStrokeWidth( strokeWidth );
 
-        // Get the aggregated map values
-        // TODO Might make version of getIndicatorMapValues that takes Indicator
-        // and parent OrganisationUnit *directly*, i.e. not from ID-s, since we have
-        // them
-        // NOTE There is no need to provide startDate and endDate as period is
-        // set
-        Collection<AggregatedMapValue> mapValues;
-        
-        if ( isIndicator )
-        {
-            mapValues = mappingService.getIndicatorMapValues( mapView.getIndicator().getId(), mapView.getPeriod()
-                .getId(), mapView.getParentOrganisationUnit().getId(), mapView.getOrganisationUnitLevel().getLevel() );
-        }
-        else
-        {
-            mapValues = mappingService.getDataElementMapValues( mapView.getDataElement().getId(), mapView.getPeriod()
-                .getId(), mapView.getParentOrganisationUnit().getId(), mapView.getOrganisationUnitLevel().getLevel() );
-        }
-        
         // Build and set the internal GeoTools map objects for the layer
         buildGeoToolsMapObjectsForMapLayer( mapLayer, mapValues );
 
