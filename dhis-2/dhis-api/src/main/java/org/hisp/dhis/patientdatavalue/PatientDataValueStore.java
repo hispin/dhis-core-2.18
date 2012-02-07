@@ -61,6 +61,8 @@ public interface PatientDataValueStore
         DataElementCategoryOptionCombo optionCombo, OrganisationUnit organisationUnit );
 
     Collection<PatientDataValue> get( ProgramStageInstance programStageInstance );
+    
+    Collection<PatientDataValue> get( ProgramStageInstance programStageInstance, Collection<DataElement> dataElements );
 
     Collection<PatientDataValue> get( Collection<ProgramStageInstance> programStageInstances );
 

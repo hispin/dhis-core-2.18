@@ -77,7 +77,10 @@
 					##data element name
 					<td class='text-column'>
 						<span id="value[$programStageDataElement.dataElement.id].name" title="$!encoder.htmlEncode( $programStageDataElement.dataElement.description )">
-							$encoder.htmlEncode( $programStageDataElement.dataElement.name ) $optionCombo.name
+							$encoder.htmlEncode( $programStageDataElement.dataElement.name ) 
+							#if( $!programStageDataElement.dataElement.categoryCombo.optionCombos.size() > 1 ) 
+								$encoder.htmlEncode( $optionCombo.name ) 
+							#end
 							#if ( $programStageDataElement.compulsory )
 								<em title="$i18n.getString( "required" )" class="required">*</em>
 							#end        

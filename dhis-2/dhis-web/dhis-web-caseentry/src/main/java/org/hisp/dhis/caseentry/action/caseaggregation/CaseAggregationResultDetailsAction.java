@@ -42,6 +42,7 @@ import org.hisp.dhis.patientdatavalue.PatientDataValue;
 import org.hisp.dhis.patientdatavalue.PatientDataValueService;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodService;
+import org.hisp.dhis.program.ProgramStageInstance;
 
 import com.opensymphony.xwork2.Action;
 
@@ -75,6 +76,8 @@ public class CaseAggregationResultDetailsAction
     private Integer periodId;
 
     private Map<Patient, Collection<PatientDataValue>> mapPatients;
+    
+    private Map<ProgramStageInstance, Collection<PatientDataValue>> mapEvents;
 
     // -------------------------------------------------------------------------
     // Getter/Setter
@@ -105,6 +108,11 @@ public class CaseAggregationResultDetailsAction
         return mapPatients;
     }
 
+    public Map<ProgramStageInstance, Collection<PatientDataValue>> getMapEvents()
+    {
+        return mapEvents;
+    }
+
     public void setOrgunitId( Integer orgunitId )
     {
         this.orgunitId = orgunitId;
@@ -128,8 +136,7 @@ public class CaseAggregationResultDetailsAction
     public String execute()
         throws Exception
     {
-        mapPatients = new HashMap<Patient, Collection<PatientDataValue>>();
-
+        
         OrganisationUnit orgunit = organisationUnitService.getOrganisationUnit( orgunitId );
 
         Period period = periodService.getPeriod( periodId );
@@ -137,22 +144,48 @@ public class CaseAggregationResultDetailsAction
         CaseAggregationCondition aggCondition = aggregationConditionService
             .getCaseAggregationCondition( aggregationConditionId );
 
-        Collection<Patient> patients = aggregationConditionService.getPatients( aggCondition, orgunit, period );
-
-        for ( Patient patient : patients )
+        if( aggCondition.getOperator().equals( CaseAggregationCondition.AGGRERATION_SUM ) )
         {
-            Collection<DataElement> dataElements = aggregationConditionService.getDataElementsInCondition( aggCondition
-                .getAggregationExpression() );
-
-            Collection<PatientDataValue> dataValues = new HashSet<PatientDataValue>();
-
-            if ( dataElements.size() > 0 )
-            {
-                dataValues = patientDataValueService.getPatientDataValues( patient,
-                    dataElements, period.getStartDate(), period.getEndDate() );
-            }
+            mapEvents = new HashMap<ProgramStageInstance, Collection<PatientDataValue>>();
             
-            mapPatients.put( patient, dataValues );
+            Collection<ProgramStageInstance> programStageInstances = aggregationConditionService.getProgramStageInstances( aggCondition, orgunit, period );
+
+            for ( ProgramStageInstance programStageInstance : programStageInstances )
+            {
+                Collection<DataElement> dataElements = aggregationConditionService.getDataElementsInCondition( aggCondition
+                    .getAggregationExpression() );
+
+                Collection<PatientDataValue> dataValues = new HashSet<PatientDataValue>();
+    
+                if ( dataElements.size() > 0 )
+                {
+                    dataValues = patientDataValueService.getPatientDataValues( programStageInstance, dataElements );
+                }
+                
+                mapEvents.put( programStageInstance, dataValues );
+            }
+        }
+        else
+        {
+            mapPatients = new HashMap<Patient, Collection<PatientDataValue>>();
+
+            Collection<Patient> patients = aggregationConditionService.getPatients( aggCondition, orgunit, period );
+    
+            for ( Patient patient : patients )
+            {
+                Collection<DataElement> dataElements = aggregationConditionService.getDataElementsInCondition( aggCondition
+                    .getAggregationExpression() );
+    
+                Collection<PatientDataValue> dataValues = new HashSet<PatientDataValue>();
+    
+                if ( dataElements.size() > 0 )
+                {
+                    dataValues = patientDataValueService.getPatientDataValues( patient,
+                        dataElements, period.getStartDate(), period.getEndDate() );
+                }
+                
+                mapPatients.put( patient, dataValues );
+            }
         }
 
         return SUCCESS;

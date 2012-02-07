@@ -121,6 +121,11 @@ public class DefaultPatientDataValueService
     {
         return patientDataValueStore.get( programStageInstance );
     }
+    
+    public Collection<PatientDataValue> getPatientDataValues( ProgramStageInstance programStageInstance, Collection<DataElement> dataElements )
+    {
+        return patientDataValueStore.get( programStageInstance, dataElements );
+    }
 
     public Collection<PatientDataValue> getPatientDataValues( Collection<ProgramStageInstance> programStageInstances )
     {
