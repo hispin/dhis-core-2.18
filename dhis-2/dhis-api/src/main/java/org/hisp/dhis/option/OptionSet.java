@@ -27,8 +27,8 @@ package org.hisp.dhis.option;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -42,7 +42,7 @@ public class OptionSet
 {
     private static final Pattern OPTION_PATTERN = Pattern.compile( "\\[(.*)\\]" );
     
-    private Set<String> options = new HashSet<String>();
+    private List<String> options = new ArrayList<String>();
 
     public OptionSet()
     {
@@ -53,15 +53,6 @@ public class OptionSet
         this.name = name;
     }
     
-    public Set<String> getOptions()
-    {
-        return options;
-    }
-
-    public void setOptions( Set<String> options )
-    {
-        this.options = options;
-    }
 
     @Override
     public int hashCode()
@@ -90,6 +81,16 @@ public class OptionSet
         final OptionSet other = (OptionSet) o;
 
         return name.equals( other.getName() );
+    }
+
+    public List<String> getOptions()
+    {
+        return options;
+    }
+    
+    public void setOptions( List<String> options )
+    {
+        this.options = options;
     }
 
     public static String optionEncode( String option )

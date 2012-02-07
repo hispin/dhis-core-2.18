@@ -27,6 +27,7 @@
 
 package org.hisp.dhis.dataadmin.action.option;
 
+import java.util.List;
 import java.util.Set;
 
 import org.hisp.dhis.option.OptionService;
@@ -56,7 +57,7 @@ public class UpdateOptionSetAction
     
     private String name;
 
-    private Set<String> options;
+    private List<String> options;
 
     // -------------------------------------------------------------------------------------------------
     // Setters
@@ -77,7 +78,7 @@ public class UpdateOptionSetAction
         this.name = name;
     }
 
-    public void setOptions( Set<String> options )
+    public void setOptions( List<String> options )
     {
         this.options = options;
     }
