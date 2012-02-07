@@ -27,13 +27,14 @@ package org.hisp.dhis.option;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.HashSet;
-import java.util.Set;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import org.hisp.dhis.DhisSpringTest;
 import org.junit.Test;
-
-import static org.junit.Assert.*;
 
 /**
  * @author Lars Helge Overland
@@ -43,7 +44,7 @@ public class OptionServiceTest
 {
     private OptionService optionService;
     
-    private Set<String> options = new HashSet<String>();
+    private List<String> options = new ArrayList<String>();
     
     private OptionSet optionSetA = new OptionSet( "OptionSetA" );
     private OptionSet optionSetB = new OptionSet( "OptionSetB" );
