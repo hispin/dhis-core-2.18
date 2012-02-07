@@ -2325,7 +2325,7 @@ Ext.onReady( function() {
             ' ',
             {
                 xtype: 'button',
-                text: 'Close',
+                text: G.i18n.close,
                 iconCls: 'icon-cancel',
                 scope: point,
                 handler: function() {
@@ -2493,7 +2493,7 @@ Ext.onReady( function() {
             ' ',
             {
                 xtype: 'button',
-                text: 'Close',
+                text: G.i18n.close,
                 iconCls: 'icon-cancel',
                 scope: centroid,
                 handler: function() {
