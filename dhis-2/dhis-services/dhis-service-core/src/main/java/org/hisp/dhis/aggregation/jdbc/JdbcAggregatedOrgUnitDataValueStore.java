@@ -90,6 +90,13 @@ public class JdbcAggregatedOrgUnitDataValueStore
         statementManager.getHolder().executeUpdate( sql );
     }
 
+    public void deleteAggregatedDataValues()
+    {
+        final String sql = "DELETE FROM aggregatedorgunitdatavalue";
+        
+        statementManager.getHolder().executeUpdate( sql );
+    }
+
     public void createIndex( boolean dataElement, boolean indicator )
     {
         if ( dataElement )
@@ -184,5 +191,12 @@ public class JdbcAggregatedOrgUnitDataValueStore
             "WHERE periodid IN ( " + getCommaDelimitedString( periodIds ) + " )";
 
         statementManager.getHolder().executeUpdate( sql );
-    }    
+    }
+    
+    public void deleteAggregatedIndicatorValues()
+    {
+        final String sql = "DELETE FROM aggregatedorgunitindicatorvalue ";
+        
+        statementManager.getHolder().executeUpdate( sql );
+    }
 }

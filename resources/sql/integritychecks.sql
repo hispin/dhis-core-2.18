@@ -6,6 +6,18 @@ join datasetmembers dm on (ds.datasetid=dm.datasetid)
 join dataelement de on (dm.dataelementid=de.dataelementid)
 where de.name = 'Adverse Events Following Immunization';
 
+-- Get dataelements not part of any dataset
+
+select dataelementid, name from dataelement where dataelementid not in (
+select dataelementid from datasetmembers)
+and domaintype='aggregate'
+order by name;
+
+-- Get category combo with no data elements
+
+select cc.categorycomboid, cc.name from categorycombo cc where cc.categorycomboid not in (
+select distinct categorycomboid from dataelement);
+
 -- Get dataelement name and category combo for a section
 
 select de.name as dataelementname, cc.name as categorycomboname from dataelement de
