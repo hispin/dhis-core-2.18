@@ -15,11 +15,12 @@
     </id>
     &identifiableProperties;
     
-    <set name="options" table="optionsetmembers">
+    <list name="options" table="optionsetmembers">
       <cache usage="read-write" />
       <key column="optionsetid" foreign-key="fk_optionsetmembers_optionsetid" />
+      <list-index column="sort_order" base="0" />
       <element type="string" column="option" />
-    </set>
+    </list>
 
   </class>
 </hibernate-mapping>
