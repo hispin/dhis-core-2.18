@@ -305,6 +305,9 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     </property>
   </bean>
 
+  <bean id="org.hisp.dhis.dd.action.indicatorgroup.RenameIndicatorGroupNameEditorAction" class="org.hisp.dhis.dd.action.indicatorgroup.RenameIndicatorGroupNameEditorAction"
+    scope="prototype"/>
+
   <bean id="org.hisp.dhis.dd.action.indicatorgroup.ValidateIndicatorGroupAction" class="org.hisp.dhis.dd.action.indicatorgroup.ValidateIndicatorGroupAction"
     scope="prototype">
     <property name="indicatorService">

@@ -319,7 +319,7 @@
       <result name="success" type="velocity-json">/dhis-web-commons/ajax/jsonIndicatorGroup.vm</result>
     </action>
 
-    <action name="renameIndicatorGroupEditor" class="org.hisp.dhis.dd.action.indicatorgroup.UpdateIndicatorGroupAction">
+    <action name="renameIndicatorGroupEditor" class="org.hisp.dhis.dd.action.indicatorgroup.RenameIndicatorGroupNameEditorAction">
       <result name="success" type="velocity-json">/dhis-web-commons/ajax/jsonIndicatorGroup.vm</result>
     </action>
 

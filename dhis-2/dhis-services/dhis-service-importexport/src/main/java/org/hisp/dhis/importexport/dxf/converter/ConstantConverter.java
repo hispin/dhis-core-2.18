@@ -56,7 +56,7 @@ public class ConstantConverter
     private static final String FIELD_ID = "id";
 
     private static final String FIELD_UID = "uid";
-    
+
     private static final String FIELD_CODE = "code";
 
     private static final String FIELD_NAME = "name";
@@ -98,7 +98,7 @@ public class ConstantConverter
     public void write( XMLWriter writer, ExportParams params )
     {
         Collection<Constant> constants = constantService.getAllConstants();
-        
+
         if ( constants != null && constants.size() > 0 )
         {
             writer.openElement( COLLECTION_NAME );
@@ -108,8 +108,8 @@ public class ConstantConverter
                 writer.openElement( ELEMENT_NAME );
 
                 writer.writeElement( FIELD_ID, String.valueOf( constant.getId() ) );
-                writer.writeElement( FIELD_UID,  constant.getUid() );
-                writer.writeElement( FIELD_CODE,  constant.getCode() );
+                writer.writeElement( FIELD_UID, constant.getUid() );
+                writer.writeElement( FIELD_CODE, constant.getCode() );
                 writer.writeElement( FIELD_NAME, constant.getName() );
                 writer.writeElement( FIELD_VALUE, String.valueOf( constant.getValue() ) );
 
@@ -129,9 +129,12 @@ public class ConstantConverter
             final Constant constant = new Constant();
 
             constant.setId( Integer.parseInt( results.get( FIELD_ID ) ) );
-            if (params.minorVersionGreaterOrEqual( "1.3") ) {
-                constant.setUid( results.get(FIELD_UID) );
-                constant.setCode( results.get(FIELD_CODE) );
+
+            if ( params.minorVersionGreaterOrEqual( "1.3" ) )
+            {
+                constant.setUid( results.get( FIELD_UID ) );
+                constant.setCode( results.get( FIELD_CODE ) );
+
             }
 
             constant.setName( results.get( FIELD_NAME ) );
