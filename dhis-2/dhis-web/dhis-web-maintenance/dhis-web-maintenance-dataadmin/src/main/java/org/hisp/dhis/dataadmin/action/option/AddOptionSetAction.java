@@ -28,7 +28,6 @@
 package org.hisp.dhis.dataadmin.action.option;
 
 import java.util.List;
-import java.util.Set;
 
 import org.hisp.dhis.option.OptionService;
 import org.hisp.dhis.option.OptionSet;

@@ -27,6 +27,8 @@
 
 package org.hisp.dhis.dataadmin.action.option;
 
+import org.hisp.dhis.common.DeleteNotAllowedException;
+import org.hisp.dhis.i18n.I18n;
 import org.hisp.dhis.option.OptionService;
 
 import com.opensymphony.xwork2.Action;
@@ -46,25 +48,39 @@ public class RemoveOptionSetAction
     private OptionService optionService;
 
     // -------------------------------------------------------------------------------------------------
-    // Input
+    // Input/Output
     // -------------------------------------------------------------------------------------------------
 
     private Integer id;
-
-    // -------------------------------------------------------------------------------------------------
-    // Setters
-    // -------------------------------------------------------------------------------------------------
     
+    private String message;
+   
+    private I18n i18n;
+    
+    // -------------------------------------------------------------------------------------------------
+    // Setters/Getters
+    // -------------------------------------------------------------------------------------------------
+
     public void setOptionService( OptionService optionService )
     {
         this.optionService = optionService;
     }
-    
+
     public void setId( Integer id )
     {
         this.id = id;
     }
 
+    public String getMessage()
+    {
+        return message;
+    }
+
+    public void setI18n( I18n i18n )
+    {
+        this.i18n = i18n;
+    }
+    
     // -------------------------------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------------------------------
@@ -73,8 +89,19 @@ public class RemoveOptionSetAction
     public String execute()
         throws Exception
     {
-        optionService.deleteOptionSet( optionService.getOptionSet( id ) );
-        
+        try
+        {
+            optionService.deleteOptionSet( optionService.getOptionSet( id ) );
+        }
+        catch ( DeleteNotAllowedException ex )
+        {
+            if ( ex.getErrorCode().equals( DeleteNotAllowedException.ERROR_ASSOCIATED_BY_OTHER_OBJECTS ) )
+            {
+                message = i18n.getString( "object_not_deleted_associated_by_objects" ) + " " + ex.getMessage();
+
+                return ERROR;
+            }
+        }
         return SUCCESS;
     }
 

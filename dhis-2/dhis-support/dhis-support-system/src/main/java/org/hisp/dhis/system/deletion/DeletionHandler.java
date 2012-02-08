@@ -56,6 +56,7 @@ import org.hisp.dhis.mapping.MapLegend;
 import org.hisp.dhis.mapping.MapLegendSet;
 import org.hisp.dhis.mapping.MapView;
 import org.hisp.dhis.minmax.MinMaxDataElement;
+import org.hisp.dhis.option.OptionSet;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroup;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroupSet;
@@ -651,6 +652,15 @@ public abstract class DeletionHandler
     }
 
     public void deleteCaseAggregationCondition( CaseAggregationCondition caseAggregationCondition )
+    {
+    }
+    
+    public String allowDeleteOptionSet( OptionSet optionSet )
+    {
+        return null;
+    }
+
+    public void deleteOptionSet( OptionSet optionSet )
     {
     }
 }
