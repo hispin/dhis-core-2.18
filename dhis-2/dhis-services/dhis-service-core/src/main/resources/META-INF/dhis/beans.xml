@@ -703,6 +703,7 @@ http://www.springframework.org/schema/security http://www.springframework.org/sc
     <property name="dataElementService" ref="org.hisp.dhis.dataelement.DataElementService" />
     <property name="categoryService" ref="org.hisp.dhis.dataelement.DataElementCategoryService" />
     <property name="attributeService" ref="org.hisp.dhis.attribute.AttributeService" />
+	<property name="jdbcTemplate" ref="jdbcTemplate"/>
   </bean>
 
   <bean id="org.hisp.dhis.dataelement.DataElementGroupDeletionHandler" class="org.hisp.dhis.dataelement.DataElementGroupDeletionHandler">
@@ -898,6 +899,7 @@ http://www.springframework.org/schema/security http://www.springframework.org/sc
       <aop:before pointcut="execution( * org.hisp.dhis.user.UserService.delete*(..) )" method="intercept" />
       <aop:before pointcut="execution( * org.hisp.dhis.concept.ConceptService.delete*(..) )" method="intercept" />
       <aop:before pointcut="execution( * org.hisp.dhis.user.UserGroupService.delete*(..) )" method="intercept" />
+      <aop:before pointcut="execution( * org.hisp.dhis.option.OptionService.delete*(..) )" method="intercept" />
     </aop:aspect>
 
     <aop:aspect ref="statementInterceptor">

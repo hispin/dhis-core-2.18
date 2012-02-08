@@ -606,7 +606,9 @@
     
    <action name="removeOptionSet" class="org.hisp.dhis.dataadmin.action.option.RemoveOptionSetAction">
      <result name="success" type="velocity-json">
-				/dhis-web-commons/ajax/jsonResponseSuccess.vm</result>
+     		/dhis-web-commons/ajax/jsonResponseSuccess.vm</result>
+	 <result name="error" type="velocity-json">
+				/dhis-web-commons/ajax/jsonResponseError.vm</result>
 	 <param name="requiredAuthorities">F_OPTIONSET_DELETE</param>
    </action>
    

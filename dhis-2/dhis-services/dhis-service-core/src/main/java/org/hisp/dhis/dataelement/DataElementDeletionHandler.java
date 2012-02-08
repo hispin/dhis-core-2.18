@@ -34,7 +34,9 @@ import java.util.Iterator;
 import org.hisp.dhis.attribute.AttributeService;
 import org.hisp.dhis.attribute.AttributeValue;
 import org.hisp.dhis.dataset.DataSet;
+import org.hisp.dhis.option.OptionSet;
 import org.hisp.dhis.system.deletion.DeletionHandler;
+import org.springframework.jdbc.core.JdbcTemplate;
 
 /**
  * @author Lars Helge Overland
@@ -67,7 +69,14 @@ public class DataElementDeletionHandler
     {
         this.attributeService = attributeService;
     }
+    
+    private JdbcTemplate jdbcTemplate;
 
+    public void setJdbcTemplate( JdbcTemplate jdbcTemplate )
+    {
+        this.jdbcTemplate = jdbcTemplate;
+    }
+    
     // -------------------------------------------------------------------------
     // DeletionHandler implementation
     // -------------------------------------------------------------------------
@@ -133,5 +142,12 @@ public class DataElementDeletionHandler
                 dataElementService.updateDataElement( dataElement );
             }
         }
+    }
+    
+    public String allowDeleteOptionSet( OptionSet optionSet )
+    {
+        String sql = "SELECT COUNT(*) " + "FROM dataelement " + "WHERE optionsetid=" + optionSet.getId();
+
+        return jdbcTemplate.queryForInt( sql ) == 0 ? null : ERROR;
     }
 }
