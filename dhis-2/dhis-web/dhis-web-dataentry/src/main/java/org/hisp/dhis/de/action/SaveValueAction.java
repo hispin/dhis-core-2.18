@@ -29,6 +29,8 @@ package org.hisp.dhis.de.action;
 
 import java.util.Date;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
 import org.hisp.dhis.dataelement.DataElementCategoryService;
@@ -49,6 +51,8 @@ import com.opensymphony.xwork2.Action;
 public class SaveValueAction
     implements Action
 {
+    private static final Log log = LogFactory.getLog( SaveValueAction.class );
+    
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
@@ -144,9 +148,14 @@ public class SaveValueAction
 
     public String execute()
     {
-        OrganisationUnit organisationUnit = organisationUnitService.getOrganisationUnit( organisationUnitId );
-
         Period period = PeriodType.createPeriodExternalId( periodId );
+        
+        if ( period == null )
+        {
+            return logError( "Illegal period identifier: " + periodId );
+        }
+
+        OrganisationUnit organisationUnit = organisationUnitService.getOrganisationUnit( organisationUnitId );
 
         DataElement dataElement = dataElementService.getDataElement( dataElementId );
 
@@ -193,6 +202,19 @@ public class SaveValueAction
             dataValueService.updateDataValue( dataValue );
         }
 
+        return SUCCESS;
+    }
+
+    // -------------------------------------------------------------------------
+    // Supportive methods
+    // -------------------------------------------------------------------------
+
+    private String logError( String message )
+    {
+        log.info( message );
+        
+        statusCode = 1;
+        
         return SUCCESS;
     }
 }
