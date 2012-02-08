@@ -214,7 +214,7 @@ public class DefaultCaseAggregationConditionService
         Period period )
     {
         String sql = convertCondition( aggregationCondition, orgunit, period );
-System.out.println("\n\n SQL : " + sql);
+
         Collection<Integer> patientIds = aggregationConditionStore.executeSQL( sql );
 
         if ( patientIds == null )
@@ -379,6 +379,20 @@ System.out.println("\n\n SQL : " + sql);
                     }
 
                     matcher.appendReplacement( description, "[" + OBJECT_PROGRAM + SEPARATOR_OBJECT + program.getName()
+                        + "]" );
+                }
+                else if ( info[0].equalsIgnoreCase( OBJECT_PROGRAM_STAGE ) )
+                {
+                    int objectId = Integer.parseInt( ids[0] );
+
+                    ProgramStage programStage = programStageService.getProgramStage( objectId );
+
+                    if ( programStage == null )
+                    {
+                        return INVALID_CONDITION;
+                    }
+
+                    matcher.appendReplacement( description, "[" + OBJECT_PROGRAM_STAGE + SEPARATOR_OBJECT + programStage.getName()
                         + "]" );
                 }
             }
