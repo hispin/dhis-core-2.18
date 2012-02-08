@@ -27,15 +27,7 @@ package org.hisp.dhis.dataset;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import static org.hisp.dhis.i18n.I18nUtils.*;
-
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Set;
-
+import org.apache.commons.lang.Validate;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hisp.dhis.dataelement.DataElement;
@@ -48,6 +40,10 @@ import org.hisp.dhis.system.util.Filter;
 import org.hisp.dhis.system.util.FilterUtils;
 import org.hisp.dhis.user.CurrentUserService;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.*;
+
+import static org.hisp.dhis.i18n.I18nUtils.*;
 
 /**
  * @author Lars Helge Overland
@@ -68,6 +64,13 @@ public class DefaultDataSetService
     public void setDataSetStore( DataSetStore dataSetStore )
     {
         this.dataSetStore = dataSetStore;
+    }
+
+    private LockExceptionStore lockExceptionStore;
+
+    public void setLockExceptionStore( LockExceptionStore lockExceptionStore )
+    {
+        this.lockExceptionStore = lockExceptionStore;
     }
 
     private I18nService i18nService;
@@ -116,34 +119,34 @@ public class DefaultDataSetService
     {
         return i18n( i18nService, dataSetStore.get( id ) );
     }
-    
+
     public DataSet getDataSet( String uid )
     {
         return i18n( i18nService, dataSetStore.getByUid( uid ) );
     }
-    
+
     public DataSet getDataSet( int id, boolean i18nDataElements, boolean i18nIndicators, boolean i18nOrgUnits )
     {
         DataSet dataSet = getDataSet( id );
-        
+
         if ( i18nDataElements )
         {
             i18n( i18nService, dataSet.getDataElements() );
         }
-        
+
         if ( i18nIndicators )
         {
             i18n( i18nService, dataSet.getIndicators() );
         }
-        
+
         if ( i18nOrgUnits )
         {
             i18n( i18nService, dataSet.getSources() );
         }
-        
+
         return dataSet;
     }
-    
+
     public DataSet getDataSetByName( String name )
     {
         return i18n( i18nService, dataSetStore.getByName( name ) );
@@ -258,7 +261,7 @@ public class DefaultDataSetService
         List<DataSet> dataSetListByPeriodType = new ArrayList<DataSet>( getDataSetsByPeriodType( periodType ) );
 
         Iterator<DataSet> dataSetIterator = dataSetListByPeriodType.iterator();
-        while( dataSetIterator.hasNext() )
+        while ( dataSetIterator.hasNext() )
         {
             DataSet dataSet = dataSetIterator.next();
             if ( dataSet.getSources() == null || dataSet.getSources().size() == 0 )
@@ -269,7 +272,7 @@ public class DefaultDataSetService
 
         return dataSetListByPeriodType;
     }
-    
+
     public Collection<DataElement> getDistinctDataElements( Collection<Integer> dataSetIdentifiers )
     {
         Collection<DataSet> dataSets = getDataSets( dataSetIdentifiers );
@@ -287,13 +290,13 @@ public class DefaultDataSetService
     public Collection<DataElement> getDataElements( DataSet dataSet )
     {
         return i18n( i18nService, dataSet.getDataElements() );
-    }    
-    
-    public Collection<DataSet> getDataSetsForMobile( OrganisationUnit source ) 
-    {
-        return i18n( i18nService, dataSetStore.getDataSetsForMobile(source) );		
     }
-    
+
+    public Collection<DataSet> getDataSetsForMobile( OrganisationUnit source )
+    {
+        return i18n( i18nService, dataSetStore.getDataSetsForMobile( source ) );
+    }
+
     public Collection<DataSet> getDataSetsForMobile()
     {
         return i18n( i18nService, dataSetStore.getDataSetsForMobile() );
@@ -321,5 +324,58 @@ public class DefaultDataSetService
     public Collection<DataSet> getDataSetsBetweenByName( String name, int first, int max )
     {
         return getObjectsBetweenByName( i18nService, dataSetStore, name, first, max );
+    }
+
+    // -------------------------------------------------------------------------
+    // DataSet LockExceptions
+    // -------------------------------------------------------------------------
+
+    @Override
+    public int addLockException( LockException lockException )
+    {
+        Validate.notNull( lockException );
+
+        return lockExceptionStore.save( lockException );
+    }
+
+    @Override
+    public void updateLockException( LockException lockException )
+    {
+        Validate.notNull( lockException );
+
+        lockExceptionStore.update( lockException );
+    }
+
+    @Override
+    public void deleteLockException( LockException lockException )
+    {
+        Validate.notNull( lockException );
+
+        lockExceptionStore.delete( lockException );
+    }
+
+    @Override
+    public LockException getLockException( int id )
+    {
+        return lockExceptionStore.get( id );
+    }
+
+    @Override
+    public int getLockExceptionCount()
+    {
+        return lockExceptionStore.getCount();
+    }
+
+    @Override
+    public Collection<LockException> getAllLockExceptions()
+    {
+        return lockExceptionStore.getAll();
+    }
+
+    @Override
+    public Collection<LockException> getLockExceptionsBetween( int first, int max )
+    {
+        // FIXME extend lockExceptionStore to include HQL query for this
+        return getAllLockExceptions();
     }
 }

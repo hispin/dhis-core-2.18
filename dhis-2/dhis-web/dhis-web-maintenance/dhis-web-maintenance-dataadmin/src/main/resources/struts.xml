@@ -476,6 +476,65 @@
       <param name="requiredAuthorities">F_CONSTANT_DELETE</param>
     </action>
 
+    <!-- DataSet LockExceptions -->
+
+    <action name="lockException" class="org.hisp.dhis.dataadmin.action.lockexception.GetLockExceptionListAction">
+      <result name="success" type="velocity">/main.vm</result>
+      <param name="menu">/dhis-web-maintenance-dataadmin/menu.vm</param>
+      <param name="page">/dhis-web-maintenance-dataadmin/lockException.vm</param>
+      <param name="stylesheets">../dhis-web-commons/paging/paging.css</param>
+    </action>
+
+    <action name="showAddLockExceptionForm" class="org.hisp.dhis.dataadmin.action.NoAction">
+      <result name="success" type="velocity">/main.vm</result>
+      <param name="menu">/dhis-web-maintenance-dataadmin/menu.vm</param>
+      <param name="page">/dhis-web-maintenance-dataadmin/addLockExceptionForm.vm</param>
+      <param name="stylesheets">../dhis-web-commons/paging/paging.css</param>
+      <param name="requiredAuthorities">F_DATASET_ADD</param>
+    </action>
+
+    <action name="showUpdateLockExceptionForm" class="org.hisp.dhis.dataadmin.action.lockexception.GetLockExceptionAction">
+      <result name="success" type="velocity">/main.vm</result>
+      <param name="menu">/dhis-web-maintenance-dataadmin/menu.vm</param>
+      <param name="page">/dhis-web-maintenance-dataadmin/updateLockExceptionForm.vm</param>
+      <param name="stylesheets">../dhis-web-commons/paging/paging.css</param>
+      <param name="requiredAuthorities">F_DATASET_UPDATE</param>
+    </action>
+
+    <action name="addLockException" class="org.hisp.dhis.dataadmin.action.lockexception.AddLockExceptionAction">
+      <result name="success" type="redirect">lockException.action</result>
+      <result name="error" type="redirect">index.action</result>
+      <param name="requiredAuthorities">F_DATASET_ADD</param>
+    </action>
+
+    <action name="updateLockException" class="org.hisp.dhis.dataadmin.action.lockexception.UpdateLockExceptionAction">
+      <result name="success" type="redirect">lockException.action</result>
+      <result name="error" type="redirect">index.action</result>
+      <param name="requiredAuthorities">F_DATASET_UPDATE</param>
+    </action>
+
+    <action name="removeLockException" class="org.hisp.dhis.dataadmin.action.lockexception.RemoveLockExceptionAction">
+      <result name="success" type="velocity-json">/dhis-web-commons/ajax/jsonResponseSuccess.vm</result>
+      <result name="error" type="velocity-json">/dhis-web-commons/ajax/jsonResponseError.vm</result>
+      <param name="onExceptionReturn">plainTextError</param>
+      <param name="requiredAuthorities">F_DATASET_DELETE</param>
+    </action>
+
+    <action name="getDataSets" class="org.hisp.dhis.dataadmin.action.lockexception.GetDataSets">
+      <result name="success" type="velocity-json">jsonDataSets.vm</result>
+      <param name="onExceptionReturn">plainTextError</param>
+    </action>
+
+    <action name="getPeriods" class="org.hisp.dhis.dataadmin.action.lockexception.GetPeriods">
+      <result name="success" type="velocity-json">jsonPeriods.vm</result>
+      <param name="onExceptionReturn">plainTextError</param>
+    </action>
+
+    <action name="getLockException" class="org.hisp.dhis.dataadmin.action.lockexception.GetLockExceptionAction">
+      <result name="success" type="velocity-json">jsonLockException.vm</result>
+      <param name="onExceptionReturn">plainTextError</param>
+    </action>
+
     <!-- Dynamic Attributes -->
 
     <action name="attribute" class="org.hisp.dhis.dataadmin.action.attribute.GetAttributeListAction">

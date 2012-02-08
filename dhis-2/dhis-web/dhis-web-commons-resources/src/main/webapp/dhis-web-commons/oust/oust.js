@@ -102,8 +102,9 @@ function SelectionTreeSelection()
             unitIds[i] = json.selectedUnits[i].id;
 			selectedOrganisationUnit.push( unitIds[i] );	
         }
-		
+
         listenerFunction( unitIds );
+        jQuery("body").trigger("oust.selected", unitIds);
     }
 
     function getTagId( unitId )
