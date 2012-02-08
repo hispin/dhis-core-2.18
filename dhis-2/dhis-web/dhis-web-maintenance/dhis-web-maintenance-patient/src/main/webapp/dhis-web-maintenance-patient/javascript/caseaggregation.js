@@ -80,6 +80,44 @@ function getProgramStagesCompleted( programstageElement )
 	}   
 }
 
+
+function getProgramStagesForFormula()
+{
+	clearListById( 'programStageFormula' );
+	
+	var program = document.getElementById( 'programFormula' );
+	var programId = program.options[ program.selectedIndex ].value;
+	if( programId == '0' ){
+		return;  
+	}
+
+	$.post( 'getProgramStages.action', { programId:programId }, getProgramStagesFomulaCompleted );
+}
+
+function getProgramStagesFomulaCompleted( programstageElement )
+{
+	var programstage = document.getElementById( 'programStageFormula' );
+	var programstageList = $(programstageElement).find( 'programstage' );
+
+	$( programstageList ).each( function( i, item )
+	{
+		var id = $( item ).find("id").text();
+		var name = $( item ).find("name").text();
+
+		var option = document.createElement("option");
+		option.value = "[PS:" + id + "]";
+		option.text = name;
+		option.title = name;
+
+		programstage.add(option, null);       	
+	});
+
+	if( programstage.options.length > 0 )
+	{
+		programstage.options[0].selected = true;
+	}   
+}
+
 //------------------------------------------------------------------------------
 // Get DataElements of Program-Stage
 //------------------------------------------------------------------------------
@@ -123,7 +161,6 @@ function insertInfo( element )
 	insertTextCommon('aggregationCondition', element.options[element.selectedIndex].value );
 	getConditionDescription();
 }
-
 
 function insertOperator( value )
 {
