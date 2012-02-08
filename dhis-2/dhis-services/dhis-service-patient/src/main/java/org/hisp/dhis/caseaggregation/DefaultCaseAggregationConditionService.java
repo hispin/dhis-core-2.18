@@ -34,6 +34,7 @@ import static org.hisp.dhis.caseaggregation.CaseAggregationCondition.OBJECT_PATI
 import static org.hisp.dhis.caseaggregation.CaseAggregationCondition.OBJECT_PROGRAM;
 import static org.hisp.dhis.caseaggregation.CaseAggregationCondition.OBJECT_PROGRAM_PROPERTY;
 import static org.hisp.dhis.caseaggregation.CaseAggregationCondition.OBJECT_PROGRAM_STAGE_DATAELEMENT;
+import static org.hisp.dhis.caseaggregation.CaseAggregationCondition.OBJECT_PROGRAM_STAGE;
 import static org.hisp.dhis.caseaggregation.CaseAggregationCondition.OPERATOR_AND;
 import static org.hisp.dhis.caseaggregation.CaseAggregationCondition.SEPARATOR_ID;
 import static org.hisp.dhis.caseaggregation.CaseAggregationCondition.SEPARATOR_OBJECT;
@@ -77,7 +78,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class DefaultCaseAggregationConditionService
     implements CaseAggregationConditionService
 {
-    private final String regExp = "\\[(" + OBJECT_PATIENT + "|" + OBJECT_PROGRAM + "|"
+    private final String regExp = "\\[(" + OBJECT_PATIENT + "|" + OBJECT_PROGRAM + "|" + OBJECT_PROGRAM_STAGE + "|" 
         + OBJECT_PROGRAM_STAGE_DATAELEMENT + "|" + OBJECT_PATIENT_ATTRIBUTE + "|" + OBJECT_PATIENT_PROPERTY + "|"
         + OBJECT_PROGRAM_PROPERTY + ")" + SEPARATOR_OBJECT + "([a-zA-Z0-9\\- ]+[" + SEPARATOR_ID + "[0-9]*]*)" + "\\]";
 
@@ -213,7 +214,7 @@ public class DefaultCaseAggregationConditionService
         Period period )
     {
         String sql = convertCondition( aggregationCondition, orgunit, period );
-
+System.out.println("\n\n SQL : " + sql);
         Collection<Integer> patientIds = aggregationConditionStore.executeSQL( sql );
 
         if ( patientIds == null )
@@ -665,7 +666,11 @@ public class DefaultCaseAggregationConditionService
                 {
                     condition = getConditionForProgram( info[1], operator, orgunitId, startDate, endDate );
                 }
-
+                else if ( info[0].equalsIgnoreCase( OBJECT_PROGRAM_STAGE ) )
+                {
+                    condition = getConditionForProgramStage( info[1], operator, orgunitId, startDate, endDate );
+                }
+                
                 // -------------------------------------------------------------
                 // Replacing the operand with 1 in order to later be able to
                 // verify
@@ -846,6 +851,26 @@ public class DefaultCaseAggregationConditionService
                        + "' AND pi.enrollmentdate <= '" + endDate + "' ";
     }
 
+    private String getConditionForProgramStage( String programStageId, String operator, int orgunitId, String startDate,
+        String endDate )
+    {
+        if( operator.equals( AGGRERATION_SUM ) )
+        {
+            return "SELECT psi.programstageinstanceid "
+                + "FROM programinstance as pi INNER JOIN programstageinstance psi "
+                + "ON pi.programinstanceid = psi.programinstanceid "
+                + "WHERE psi.programstageid=" + programStageId + " "
+                + "AND psi.executiondate >= '" + startDate
+                + "' AND psi.executiondate <= '" + endDate + "' ";
+        }
+
+        return "SELECT distinct(p.patientid) FROM programinstance as pi "
+                   + "INNER JOIN patient as p ON pi.patientid = p.patientid  " 
+                   + "WHERE psi.programstageid=" + programStageId + " "
+                   + "AND psi.executiondate >= '" + startDate
+                   + "' AND psi.executiondate <= '" + endDate + "' ";
+    }
+    
     private String getSQL( String aggregateOperator, List<String> conditions, List<String> operators )
     {
         String sql = conditions.get( 0 );

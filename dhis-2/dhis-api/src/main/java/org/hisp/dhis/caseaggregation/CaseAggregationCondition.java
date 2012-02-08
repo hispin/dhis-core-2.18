@@ -63,6 +63,8 @@ public class CaseAggregationCondition
     public static String OBJECT_PROGRAM = "PG";
     
     public static String OBJECT_PATIENT = "PT";
+    
+    public static String OBJECT_PROGRAM_STAGE = "PS";
 
     // -------------------------------------------------------------------------
     // Fields
