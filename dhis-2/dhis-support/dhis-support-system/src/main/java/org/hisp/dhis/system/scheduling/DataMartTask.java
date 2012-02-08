@@ -147,11 +147,11 @@ public class DataMartTask
      */
     private List<Period> getPeriods( Set<String> periodTypes )
     {
-        List<Period> periods = new RelativePeriods().getRelativePeriods( periodTypes ).getRelativePeriods( 0 );
+        List<Period> periods = new RelativePeriods().getRelativePeriods( periodTypes ).getRelativePeriods( 1 );
         
         if ( periodTypes.contains( YearlyPeriodType.NAME ) ) // Add last year
         {
-            periods.addAll( new RelativePeriods().setLastYear( true ).getRelativePeriods( 0 ) );
+            periods.addAll( new RelativePeriods().setLastYear( true ).getRelativePeriods( 1 ) );
         }
         
         final Date date = new Cal().now().subtract( Calendar.MONTH, 6 ).time();
