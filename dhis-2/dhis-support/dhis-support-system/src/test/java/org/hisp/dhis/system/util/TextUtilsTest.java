@@ -30,6 +30,7 @@ package org.hisp.dhis.system.util;
 import static junit.framework.Assert.assertEquals;
 import static org.hisp.dhis.system.util.TextUtils.subString;
 import static org.hisp.dhis.system.util.TextUtils.trimEnd;
+import static org.hisp.dhis.system.util.TextUtils.htmlLinks;
 
 import org.junit.Test;
 
@@ -40,6 +41,16 @@ import org.junit.Test;
 public class TextUtilsTest
 {
     private static final String STRING = "abcdefghij";
+    
+    @Test
+    public void testHtmlLinks()
+    {
+        assertEquals( "<a href=\"http://dhis2.org\">http://dhis2.org</a>", htmlLinks( "http://dhis2.org" ) );
+        assertEquals( "<a href=\"https://dhis2.org\">https://dhis2.org</a>", htmlLinks( "https://dhis2.org" ) );
+        assertEquals( "<a href=\"http://www.dhis2.org\">www.dhis2.org</a>", htmlLinks( "www.dhis2.org" ) );        
+        assertEquals( "Navigate to <a href=\"http://dhis2.org\">http://dhis2.org</a> or <a href=\"http://www.dhis2.com\">www.dhis2.com</a> to read more.", 
+            htmlLinks( "Navigate to http://dhis2.org or www.dhis2.com to read more." ) );
+    }
     
     @Test
     public void testSubString()

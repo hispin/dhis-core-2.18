@@ -88,7 +88,7 @@ public class ReadMessageAction
         throws Exception
     {
         conversation = messageService.getMessageConversation( id );
-        
+                
         if ( conversation.markRead( currentUserService.getCurrentUser() ) )
         {        
             messageService.updateMessageConversation( conversation );
