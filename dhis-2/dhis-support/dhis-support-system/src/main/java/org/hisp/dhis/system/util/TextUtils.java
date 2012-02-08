@@ -1,6 +1,8 @@
 package org.hisp.dhis.system.util;
 
 import java.util.Collection;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /*
  * Copyright (c) 2004-2012, University of Oslo
@@ -35,6 +37,45 @@ import java.util.Collection;
  */
 public class TextUtils
 {
+    public static final TextUtils INSTANCE = new TextUtils();
+    
+    private static final Pattern LINK_PATTERN = Pattern.compile( "(http://|https://|www\\.).+?($| )" );
+    
+    /**
+     * Substitutes links in the given text with valid HTML mark-up. For instance, 
+     * http://dhis2.org is replaced with <a href="http://dhis2.org">http://dhis2.org</a>,
+     * and www.dhis2.org is replaced with <a href="http://dhis2.org">www.dhis2.org</a>.
+     * 
+     * @param text the text to substitute links for.
+     * @return the substituted text.
+     */
+    public static String htmlLinks( String text )
+    {
+        if ( text == null || text.trim().isEmpty() )
+        {
+            return null;
+        }
+        
+        Matcher matcher = LINK_PATTERN.matcher( text );
+
+        StringBuffer buffer = new StringBuffer();
+        
+        while ( matcher.find() )
+        {
+            String match = matcher.group();
+
+            String suffix = match.endsWith( " " ) ? " " : "";
+            
+            String ref = match.trim().startsWith( "www." ) ? "http://" + match.trim() : match.trim();
+
+            match = "<a href=\"" + ref + "\">" + match.trim() + "</a>" + suffix;
+            
+            matcher.appendReplacement( buffer, match );
+        }
+        
+        return matcher.appendTail( buffer ).toString();
+    }
+    
     /**
      * Gets the sub string of the given string. If the beginIndex is larger than
      * the length of the string, the empty string is returned. If the beginIndex +
