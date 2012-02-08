@@ -282,6 +282,48 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     <property name="constantService" ref="org.hisp.dhis.constant.ConstantService" />
   </bean>
 
+  <!-- DataSet LockExceptions -->
+
+  <bean id="org.hisp.dhis.dataadmin.action.lockexception.GetLockExceptionListAction" class="org.hisp.dhis.dataadmin.action.lockexception.GetLockExceptionListAction"
+    scope="prototype">
+    <property name="dataSetService" ref="org.hisp.dhis.dataset.DataSetService" />
+  </bean>
+
+  <bean id="org.hisp.dhis.dataadmin.action.lockexception.AddLockExceptionAction" class="org.hisp.dhis.dataadmin.action.lockexception.AddLockExceptionAction"
+    scope="prototype">
+    <property name="dataSetService" ref="org.hisp.dhis.dataset.DataSetService" />
+    <property name="organisationUnitService" ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
+    <property name="periodService" ref="org.hisp.dhis.period.PeriodService" />
+  </bean>
+
+  <bean id="org.hisp.dhis.dataadmin.action.lockexception.GetLockExceptionAction" class="org.hisp.dhis.dataadmin.action.lockexception.GetLockExceptionAction"
+    scope="prototype">
+    <property name="dataSetService" ref="org.hisp.dhis.dataset.DataSetService" />
+  </bean>
+
+  <bean id="org.hisp.dhis.dataadmin.action.lockexception.RemoveLockExceptionAction" class="org.hisp.dhis.dataadmin.action.lockexception.RemoveLockExceptionAction"
+    scope="prototype">
+    <property name="dataSetService" ref="org.hisp.dhis.dataset.DataSetService" />
+  </bean>
+
+  <bean id="org.hisp.dhis.dataadmin.action.lockexception.UpdateLockExceptionAction" class="org.hisp.dhis.dataadmin.action.lockexception.UpdateLockExceptionAction"
+    scope="prototype">
+    <property name="dataSetService" ref="org.hisp.dhis.dataset.DataSetService" />
+    <property name="organisationUnitService" ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
+    <property name="periodService" ref="org.hisp.dhis.period.PeriodService" />
+  </bean>
+
+  <bean id="org.hisp.dhis.dataadmin.action.lockexception.GetDataSets" class="org.hisp.dhis.dataadmin.action.lockexception.GetDataSets"
+    scope="prototype">
+    <property name="currentUserService" ref="org.hisp.dhis.user.CurrentUserService" />
+    <property name="organisationUnitService" ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
+  </bean>
+
+  <bean id="org.hisp.dhis.dataadmin.action.lockexception.GetPeriods" class="org.hisp.dhis.dataadmin.action.lockexception.GetPeriods"
+    scope="prototype">
+    <property name="dataSetService" ref="org.hisp.dhis.dataset.DataSetService" />
+  </bean>
+
   <!-- Dynamic Attributes -->
 
   <bean id="org.hisp.dhis.dataadmin.action.attribute.GetAttributeListAction" class="org.hisp.dhis.dataadmin.action.attribute.GetAttributeListAction"

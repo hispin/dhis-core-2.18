@@ -27,12 +27,12 @@ package org.hisp.dhis.dataset;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.Collection;
-import java.util.List;
-
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.period.PeriodType;
+
+import java.util.Collection;
+import java.util.List;
 
 /**
  * @author Lars Helge Overland
@@ -48,7 +48,7 @@ public interface DataSetService
 
     /**
      * Adds a DataSet.
-     * 
+     *
      * @param dataSet The DataSet to add.
      * @return The generated unique identifier for this DataSet.
      */
@@ -56,21 +56,21 @@ public interface DataSetService
 
     /**
      * Updates a DataSet.
-     * 
+     *
      * @param dataSet The DataSet to update.
      */
     void updateDataSet( DataSet dataSet );
 
     /**
      * Deletes a DataSet.
-     * 
+     *
      * @param dataSet The DataSet to delete.
      */
     void deleteDataSet( DataSet dataSet );
 
     /**
      * Get a DataSet
-     * 
+     *
      * @param id The unique identifier for the DataSet to get.
      * @return The DataSet with the given id or null if it does not exist.
      */
@@ -78,18 +78,18 @@ public interface DataSetService
 
     /**
      * Get a DataSet
-     * 
-     * @param id The unique identifier for the DataSet to get.
+     *
+     * @param id               The unique identifier for the DataSet to get.
      * @param i18nDataElements whether to i18n the data elements of this data set.
-     * @param i18nIndicators whether to i18n the indicators of this data set.
-     * @param i18nOrgUnits whether to i18n the org units of this data set.
+     * @param i18nIndicators   whether to i18n the indicators of this data set.
+     * @param i18nOrgUnits     whether to i18n the org units of this data set.
      * @return The DataSet with the given id or null if it does not exist.
      */
     DataSet getDataSet( int id, boolean i18nDataElements, boolean i18nIndicators, boolean i18nOrgUnits );
-    
+
     /**
      * Returns the DataSet with the given UID.
-     * 
+     *
      * @param uid the UID.
      * @return the DataSet with the given UID, or null if no match.
      */
@@ -97,7 +97,7 @@ public interface DataSetService
 
     /**
      * Returns a DataSets with the given name.
-     * 
+     *
      * @param name The name.
      * @return A DataSet with the given name.
      */
@@ -105,7 +105,7 @@ public interface DataSetService
 
     /**
      * Returns the DataSet with the given short name.
-     * 
+     *
      * @param shortName The short name.
      * @return The DataSet with the given short name.
      */
@@ -113,7 +113,7 @@ public interface DataSetService
 
     /**
      * Returns the DataSet with the given code.
-     * 
+     *
      * @param shortName The code.
      * @return The DataSet with the given code.
      */
@@ -132,14 +132,14 @@ public interface DataSetService
 
     /**
      * Get all DataSets.
-     * 
+     *
      * @return A collection containing all DataSets.
      */
     Collection<DataSet> getAllDataSets();
 
     /**
      * Gets all DataSets associated with the given PeriodType.
-     * 
+     *
      * @param periodType the PeriodType.
      * @return a collection of DataSets.
      */
@@ -147,7 +147,7 @@ public interface DataSetService
 
     /**
      * Get all DataSets with corresponding identifiers.
-     * 
+     *
      * @param identifiers the collection of identifiers.
      * @return a collection of indicators.
      */
@@ -155,7 +155,7 @@ public interface DataSetService
 
     /**
      * Get list of available ie. unassigned datasets.
-     * 
+     *
      * @return A List containing all avialable DataSets.
      */
     List<DataSet> getAvailableDataSets();
@@ -163,7 +163,7 @@ public interface DataSetService
     /**
      * Get list of assigned (ie. which had corresponding dataentryform)
      * datasets.
-     * 
+     *
      * @return A List containing assigned DataSets.
      */
     List<DataSet> getAssignedDataSets();
@@ -171,7 +171,7 @@ public interface DataSetService
     /**
      * Get list of assigned (ie. which had corresponding dataentryform) datasets
      * for specific period type.
-     * 
+     *
      * @return A List containing assigned DataSets for specific period type.
      */
     List<DataSet> getAssignedDataSetsByPeriodType( PeriodType periodType );
@@ -183,8 +183,8 @@ public interface DataSetService
      * member of more than one data set, which period type being returned is
      * undefined. If null is passed as the second argument, all data sets will
      * be searched.
-     * 
-     * @param dataElement the data element to find the period type for.
+     *
+     * @param dataElement        the data element to find the period type for.
      * @param dataSetIdentifiers the data set identifiers to search through.
      * @return the period type of the given data element.
      */
@@ -193,7 +193,7 @@ public interface DataSetService
     /**
      * Returns a distinct collection of data elements associated with the data
      * sets with the given corresponding data set identifiers.
-     * 
+     *
      * @param dataSetIdentifiers the data set identifiers.
      * @return a distinct collection of data elements.
      */
@@ -202,7 +202,7 @@ public interface DataSetService
     /**
      * Returns a collection of data elements associated with the given
      * corresponding data set.
-     * 
+     *
      * @param dataSet the data set object.
      * @return a collection of data elements.
      */
@@ -227,4 +227,61 @@ public interface DataSetService
     int getDataSetCount();
 
     Collection<DataSet> getDataSetsBetween( int first, int max );
+
+    // -------------------------------------------------------------------------
+    // DataSet LockExceptions
+    // -------------------------------------------------------------------------
+
+    /**
+     * Add new lock exception
+     *
+     * @param lockException LockException instance to add
+     * @return
+     */
+    public int addLockException( LockException lockException );
+
+    /**
+     * Update lock exception
+     *
+     * @param lockException LockException instance to update
+     */
+    public void updateLockException( LockException lockException );
+
+    /**
+     * Delete lock exception
+     *
+     * @param lockException LockException instance to delete
+     */
+    public void deleteLockException( LockException lockException );
+
+    /**
+     * Get LockException by ID
+     *
+     * @param id ID of LockException to get
+     * @return LockException with given ID, or null if not found
+     */
+    public LockException getLockException( int id );
+
+    /**
+     * Get number of LockExceptions in total
+     *
+     * @return Total count of LockExceptions
+     */
+    public int getLockExceptionCount();
+
+    /**
+     * Returns all lock exceptions
+     *
+     * @return List of all the lock exceptions
+     */
+    public Collection<LockException> getAllLockExceptions();
+
+    /**
+     * Get all LockExceptions withing a specific range
+     *
+     * @param first Index to start at
+     * @param max   Number of results wanted
+     * @return Collection of LockExceptions withing the range specificed
+     */
+    public Collection<LockException> getLockExceptionsBetween( int first, int max );
 }

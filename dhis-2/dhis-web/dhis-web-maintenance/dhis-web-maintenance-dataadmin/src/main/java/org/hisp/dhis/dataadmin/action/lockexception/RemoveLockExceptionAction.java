@@ -1,4 +1,4 @@
-package org.hisp.dhis.dataset;
+package org.hisp.dhis.dataadmin.action.lockexception;
 
 /*
  * Copyright (c) 2004-2012, University of Oslo
@@ -27,69 +27,52 @@ package org.hisp.dhis.dataset;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import org.hisp.dhis.organisationunit.OrganisationUnit;
-import org.hisp.dhis.period.Period;
+import com.opensymphony.xwork2.Action;
+import org.hisp.dhis.dataset.DataSetService;
+import org.hisp.dhis.dataset.LockException;
 
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
-public class LockException
+public class RemoveLockExceptionAction
+    implements Action
 {
-    private int id;
+    // -------------------------------------------------------------------------
+    // Dependencies
+    // -------------------------------------------------------------------------
 
-    private Period period;
+    private DataSetService dataSetService;
 
-    private OrganisationUnit organisationUnit;
-
-    private DataSet dataSet;
-
-    public LockException()
+    public void setDataSetService( DataSetService dataSetService )
     {
-
+        this.dataSetService = dataSetService;
     }
 
-    public String getName()
+    // -------------------------------------------------------------------------
+    // Input & Output
+    // -------------------------------------------------------------------------
+
+    private int lockExceptionId;
+
+    public void setLockExceptionId( int lockExceptionId )
     {
-        return dataSet.getName() + " - " + organisationUnit.getName() + " - " + period.getName();
+        this.lockExceptionId = lockExceptionId;
     }
 
-    public int getId()
-    {
-        return id;
-    }
+    // -------------------------------------------------------------------------
+    // Action Implementation
+    // -------------------------------------------------------------------------
 
-    public void setId( int id )
+    @Override
+    public String execute() throws Exception
     {
-        this.id = id;
-    }
+        LockException lockException = dataSetService.getLockException( lockExceptionId );
 
-    public Period getPeriod()
-    {
-        return period;
-    }
+        if ( lockException != null )
+        {
+            dataSetService.deleteLockException( lockException );
+        }
 
-    public void setPeriod( Period period )
-    {
-        this.period = period;
-    }
-
-    public OrganisationUnit getOrganisationUnit()
-    {
-        return organisationUnit;
-    }
-
-    public void setOrganisationUnit( OrganisationUnit organisationUnit )
-    {
-        this.organisationUnit = organisationUnit;
-    }
-
-    public DataSet getDataSet()
-    {
-        return dataSet;
-    }
-
-    public void setDataSet( DataSet dataSet )
-    {
-        this.dataSet = dataSet;
+        return SUCCESS;
     }
 }
