@@ -73,30 +73,22 @@ public class ConstantImporter
     @Override
     protected void importMatching( Constant object, Constant match )
     {
-        log.info( object.getName() + ": Constant can only be unique or duplicate" );
+        match.setName( object.getName() );
+        match.setValue( object.getValue() );
+        
+        constantService.saveConstant( match );
     }
 
     @Override
     protected Constant getMatching( Constant object )
     {
-        Constant match = constantService.getConstantByName( object.getName() );
-
-        if ( match == null )
-        {
-            match = constantService.getConstant( object.getId() );
-        }
-
-        return match;
+        return constantService.getConstantByName( object.getName() );
     }
 
     @Override
     protected boolean isIdentical( Constant object, Constant existing )
     {
         if ( !object.getName().equals( existing.getName() ) )
-        {
-            return false;
-        }
-        if ( object.getId() != existing.getId() )
         {
             return false;
         }
