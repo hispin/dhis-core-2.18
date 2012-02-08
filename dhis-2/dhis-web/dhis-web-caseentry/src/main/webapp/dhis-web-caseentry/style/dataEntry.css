@@ -93,3 +93,7 @@ div.actions
   width:200px;
   text-align: right;
 }
+
+.small-button {
+	font-size: .8em !important;
+}

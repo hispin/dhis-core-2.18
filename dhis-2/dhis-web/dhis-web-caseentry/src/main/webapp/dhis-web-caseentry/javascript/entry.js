@@ -144,12 +144,14 @@ function saveVal( dataElementId, optionComboId )
 {
 	var programStageId = byId('programStageId').value;
 	var fieldId = programStageId + '-' + dataElementId + '-' + optionComboId + '-val';
+	
+	var field = byId( fieldId ); 
+	var fieldValue = jQuery.trim( field.value );
+
 	var data = jQuery( "#" + fieldId ).metadata({
         type:'attr',
         name:'data'
     });
-	var field = byId( fieldId ); 
-	//var fieldValue = ( field.name = 'entryselect' ) ? 
 	
 	var dataElementName = data.deName; 
     var type = data.deType;
@@ -157,11 +159,11 @@ function saveVal( dataElementId, optionComboId )
  
 	field.style.backgroundColor = '#ffffcc';
     
-    if( field.value != '' )
+    if( fieldValue != '' )
     {
         if ( type == 'int' || type == 'number' || type == 'positiveNumber' || type == 'negativeNumber' )
         {
-            if (  type == 'int' && !isInt( field.value ))
+            if (  type == 'int' && !isInt( fieldValue ))
             {
                 field.style.backgroundColor = '#ffcc00';
 
@@ -171,7 +173,7 @@ function saveVal( dataElementId, optionComboId )
 
                 return;
             }
-			else if ( type == 'number' && !isRealNumber( field.value ) )
+			else if ( type == 'number' && !isRealNumber( fieldValue ) )
             {
                 field.style.backgroundColor = '#ffcc00';
                 window.alert( i18n_value_must_number + '\n\n' + dataElementName );
@@ -179,7 +181,7 @@ function saveVal( dataElementId, optionComboId )
 
                 return;
             } 
-			else if ( type == 'positiveNumber' && !isPositiveInt( field.value ) )
+			else if ( type == 'positiveNumber' && !isPositiveInt( fieldValue ) )
             {
                 field.style.backgroundColor = '#ffcc00';
                 window.alert( i18n_value_must_positive_integer + '\n\n' + dataElementName );
@@ -187,7 +189,7 @@ function saveVal( dataElementId, optionComboId )
 
                 return;
             } 
-			else if ( type == 'negativeNumber' && !isNegativeInt( field.value ) )
+			else if ( type == 'negativeNumber' && !isNegativeInt( fieldValue ) )
             {
                 field.style.backgroundColor = '#ffcc00';
                 window.alert( i18n_value_must_negative_integer + '\n\n' + dataElementName );
@@ -199,7 +201,7 @@ function saveVal( dataElementId, optionComboId )
     	
     }
     
-	var valueSaver = new ValueSaver( dataElementId, optionComboId,  field.value, providedByAnotherFacility, type, '#ccffcc'  );
+	var valueSaver = new ValueSaver( dataElementId, optionComboId,  fieldValue, providedByAnotherFacility, type, '#ccffcc'  );
     valueSaver.save();
 }
 
@@ -208,7 +210,6 @@ function saveDate( dataElementId )
 	var programStageId = byId('programStageId').value;
 	var fieldId = programStageId + '-' + dataElementId + '-val';
 	var field = jQuery( "#" + fieldId ); 
-	var fieldValue = field.val();
 	var data = field.metadata({
         type:'attr',
         name:'data'
@@ -216,7 +217,7 @@ function saveDate( dataElementId )
 	
     var providedByAnotherFacility = document.getElementById( programStageId + '_' + dataElementId + '_facility' ).checked;
 	
-    var dateSaver = new DateSaver( dataElementId, fieldValue, providedByAnotherFacility, '#ccffcc' );
+    var dateSaver = new DateSaver( dataElementId, field.val(), providedByAnotherFacility, '#ccffcc' );
     dateSaver.save();
 }
 
@@ -817,4 +818,63 @@ function registerIrregularEncounter()
 		{   
 			loadDataEntry();
 		});
+}
+
+function autocompletedField( idField )
+{
+	hideById( idField );
+	var select = jQuery( "#" + idField );
+	var input = $("<input onkeypress='return keyPress(event, this);' name='entryfield' class='inputText'>")
+		.insertAfter(select)
+		.autocomplete({
+			source: function(request, response) {
+				var matcher = new RegExp(request.term, "i");
+				response(select.children("option").map(function() {
+					var text = $(this).text();
+					if (this.value && (!request.term || matcher.test(text)))
+						return {
+							id: this.value,
+							label: text,
+							value: text
+						};
+				}));
+			},
+			delay: 0,
+			change: function(event, ui) {
+				if (!ui.item) {
+					// remove invalid value, as it didn't match anything
+					$(this).val("");
+					return false;
+				}
+				select.val(ui.item.id);
+				select.change();
+			},
+			minLength: 0
+		});
+
+	// Set default value of the combobox
+	input.val( $("#" + idField + " option:selected").text());
+	$("<button>&nbsp;</button>")
+	.attr("tabIndex", -1)
+	.attr("title", "Show All Items")
+	.insertAfter(input)
+	.button({
+		icons: {
+			primary: "ui-icon-triangle-1-s"
+		},
+		text: false
+	}).removeClass("ui-corner-all")
+	.addClass("small-button ui-corner-right ui-button-icon")
+	.click(function() {
+		// close if already visible
+		if (input.autocomplete("widget").is(":visible")) {
+			input.autocomplete("close");
+			return;
+		}
+		// pass empty string as value to search for, displaying all results
+		input.autocomplete("search", "");
+		input.focus();
+	}).change(function(){
+		select.change();
+	});
 }

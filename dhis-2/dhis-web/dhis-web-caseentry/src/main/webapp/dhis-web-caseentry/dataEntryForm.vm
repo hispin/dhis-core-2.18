@@ -1,3 +1,4 @@
+
 <script>
 	jQuery("#entryFormContainer").ready(function(){
 	
@@ -23,6 +24,15 @@
 			enable('executionDate');
 		}
 		entryFormContainerOnReady();
+		
+		jQuery("#entryForm :input").each(function()
+		{ 
+			if( jQuery(this).attr( 'options' )!= null )
+			{
+				autocompletedField(jQuery(this).attr('id'));
+			}
+		});
+			
 	});
 </script>
 
@@ -93,7 +103,7 @@
 						#set( $id = $programStageDataElement.programStage.id + '-' + $programStageDataElement.dataElement.id + '-val' )
 						#if( $!programStageDataElement.dataElement.optionSet )
 							#set( $id = $programStageDataElement.programStage.id + '-' + $programStageDataElement.dataElement.id + '-' + $optionCombo.id + '-val' )
-							<select name="entryselect" data="{compulsory: $programStageDataElement.compulsory, deName:'$programStageDataElement.dataElement.name', deType:'$programStageDataElement.dataElement.getDetailedNumberType()' }" #if($programStageInstance.completed) disabled="disabled" #end id="$id" onchange="saveVal( $programStageDataElement.dataElement.id, $optionCombo.id )" tabindex="$tabIndex">              
+							<select name="entryselect" options='$programStageDataElement.dataElement.optionSet.options' data="{compulsory: $programStageDataElement.compulsory, deName:'$programStageDataElement.dataElement.name', deType:'$programStageDataElement.dataElement.getDetailedNumberType()' }" #if($programStageInstance.completed) disabled="disabled" #end id="$id" onchange="saveVal( $programStageDataElement.dataElement.id, $optionCombo.id )" tabindex="$tabIndex">              
 								<option value="">[$i18n.getString( "select_value" )]</option>
 								#foreach( $option in $programStageDataElement.dataElement.optionSet.options )
 									<option value="$option" #if( $patientDataValue.value == $option ) selected="selected" #end>$encoder.htmlEncode( $option )</option>
