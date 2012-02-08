@@ -236,7 +236,7 @@ public interface DataSetService
      * Add new lock exception
      *
      * @param lockException LockException instance to add
-     * @return
+     * @return Database ID of LockException
      */
     public int addLockException( LockException lockException );
 
@@ -277,11 +277,11 @@ public interface DataSetService
     public Collection<LockException> getAllLockExceptions();
 
     /**
-     * Get all LockExceptions withing a specific range
+     * Get all LockExceptions within a specific range
      *
      * @param first Index to start at
      * @param max   Number of results wanted
-     * @return Collection of LockExceptions withing the range specificed
+     * @return Collection of LockExceptions withing the range specified
      */
     public Collection<LockException> getLockExceptionsBetween( int first, int max );
 }
