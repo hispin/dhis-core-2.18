@@ -52,11 +52,11 @@ public class RemoveLockExceptionAction
     // Input & Output
     // -------------------------------------------------------------------------
 
-    private int lockExceptionId;
+    private int id;
 
-    public void setLockExceptionId( int lockExceptionId )
+    public void setId( int id )
     {
-        this.lockExceptionId = lockExceptionId;
+        this.id = id;
     }
 
     // -------------------------------------------------------------------------
@@ -66,7 +66,7 @@ public class RemoveLockExceptionAction
     @Override
     public String execute() throws Exception
     {
-        LockException lockException = dataSetService.getLockException( lockExceptionId );
+        LockException lockException = dataSetService.getLockException( id );
 
         if ( lockException != null )
         {
