@@ -33,6 +33,7 @@ import static junit.framework.Assert.assertNull;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.LinkedList;
 import java.util.List;
 
 import org.hisp.dhis.DhisSpringTest;
@@ -126,6 +127,22 @@ public class DataElementCategoryOptionComboServiceTest
         assertNotNull( categoryOptionComboA );
         assertEquals( categoryComboA, categoryOptionComboA.getCategoryCombo() );
         assertEquals( categoryOptions, categoryOptionComboA.getCategoryOptions() );
+    }
+    
+    @Test
+    public void testGetDataElementCategoryOptionCombo()
+    {
+        categoryService.generateOptionCombos( categoryComboA );
+        
+        DataElementCategoryOption catopt1 = new DataElementCategoryOption("Male");
+        DataElementCategoryOption catopt2 = new DataElementCategoryOption("0-20");
+
+        Collection<DataElementCategoryOption> catopts = new LinkedList<DataElementCategoryOption>();
+        catopts.add( catopt1 );
+        catopts.add( catopt2 );
+        
+        DataElementCategoryOptionCombo catoptcombo = categoryService.getDataElementCategoryOptionCombo( catopts );
+        assertNotNull(catoptcombo);
     }
 
     @Test
