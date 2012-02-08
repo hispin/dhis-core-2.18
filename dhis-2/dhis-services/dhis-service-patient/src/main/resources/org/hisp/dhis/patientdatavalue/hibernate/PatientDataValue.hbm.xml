@@ -11,13 +11,12 @@
         column="programstageinstanceid" foreign-key="fk_patientdatavalue_programstageinstanceid" />
       <key-many-to-one name="dataElement" class="org.hisp.dhis.dataelement.DataElement" column="dataelementid"
         foreign-key="fk_patientdatavalue_dataelementid" />
+      <key-many-to-one name="optionCombo" class="org.hisp.dhis.dataelement.DataElementCategoryOptionCombo" column="categoryoptioncomboid"
+      	foreign-key="fk_patientdatavalue_categoryoptioncomboid" />
       <key-many-to-one name="organisationUnit" class="org.hisp.dhis.organisationunit.OrganisationUnit"
         column="organisationunitid" foreign-key="fk_patientdatavalue_organisationunitid" />
     </composite-id>
-
-    <many-to-one name="optionCombo" class="org.hisp.dhis.dataelement.DataElementCategoryOptionCombo" column="categoryoptioncomboid"
-      foreign-key="fk_patientdatavalue_categoryoptioncomboid" />
-
+    
     <property name="value" />
 
     <property name="providedByAnotherFacility" column="providedbyanotherfacility" not-null="true" />

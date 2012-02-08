@@ -28,7 +28,6 @@
 package org.hisp.dhis.caseentry.action.caseentry;
 
 import java.util.Date;
-import java.util.Set;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -164,51 +163,13 @@ public class SaveValueAction
 
         DataElement dataElement = dataElementService.getDataElement( dataElementId );
 
-        if ( value != null && value.trim().length() == 0 )
-        {
-            value = null;
-        }
-
-        if ( value != null )
-        {
-            value = value.trim();
-        }
-
         DataElementCategoryOptionCombo optionCombo = null;
 
-        if ( optionComboId == 0 )
-        {
-            optionCombo = dataElement.getCategoryCombo().getOptionCombos().iterator().next();
-        }
-        else
-        {
-            Set<DataElementCategoryOptionCombo> options = dataElement.getCategoryCombo().getOptionCombos();
-            
-            if ( options != null )
-            {
-                for ( DataElementCategoryOptionCombo tmpOption : options )
-                {
-                    if ( tmpOption.getId() == optionComboId )
-                    {
-                        optionCombo = tmpOption;
-                        break;
-                    }
-                }
-            }
-        }
+        optionCombo = dataElementCategoryService.getDataElementCategoryOptionCombo( optionComboId );
 
         PatientDataValue patientDataValue = patientDataValueService.getPatientDataValue( programStageInstance,
-            dataElement, organisationUnit );
-
-        if ( dataElement.getType().equalsIgnoreCase( DataElement.VALUE_TYPE_STRING )
-            && dataElement.isMultiDimensional() )
-        {
-            if ( value != null )
-            {
-                optionCombo = dataElementCategoryService.getDataElementCategoryOptionCombo( Integer.parseInt( value ) );
-            }
-        }
-
+            dataElement, optionCombo, organisationUnit );
+        
         if ( programStageInstance.getExecutionDate() == null )
         {
             programStageInstance.setExecutionDate( new Date() );
