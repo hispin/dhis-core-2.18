@@ -28,37 +28,42 @@ package org.hisp.dhis.dataadmin.action.lockexception;
  */
 
 import com.opensymphony.xwork2.Action;
+import org.hisp.dhis.dataset.CompleteDataSetRegistration;
 import org.hisp.dhis.dataset.DataSet;
-import org.hisp.dhis.organisationunit.OrganisationUnit;
-import org.hisp.dhis.organisationunit.OrganisationUnitService;
-import org.hisp.dhis.user.CurrentUserService;
-import org.hisp.dhis.user.UserCredentials;
+import org.hisp.dhis.dataset.DataSetService;
+import org.hisp.dhis.i18n.I18nFormat;
+import org.hisp.dhis.period.CalendarPeriodType;
+import org.hisp.dhis.period.Period;
+import org.hisp.dhis.system.filter.PastAndCurrentPeriodFilter;
+import org.hisp.dhis.system.util.FilterUtils;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
-public class GetDataSets
+public class GetPeriodsAction
     implements Action
 {
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
 
-    private CurrentUserService currentUserService;
+    private DataSetService dataSetService;
 
-    public void setCurrentUserService( CurrentUserService currentUserService )
+    public void setDataSetService( DataSetService dataSetService )
     {
-        this.currentUserService = currentUserService;
+        this.dataSetService = dataSetService;
     }
 
-    private OrganisationUnitService organisationUnitService;
+    private I18nFormat format;
 
-    public void setOrganisationUnitService( OrganisationUnitService organisationUnitService )
+    public void setFormat( I18nFormat format )
     {
-        this.organisationUnitService = organisationUnitService;
+        this.format = format;
     }
 
     // -------------------------------------------------------------------------
@@ -72,11 +77,11 @@ public class GetDataSets
         this.id = id;
     }
 
-    private List<DataSet> dataSets;
+    private List<Period> periods;
 
-    public List<DataSet> getDataSets()
+    public List<Period> getPeriods()
     {
-        return dataSets;
+        return periods;
     }
 
     // -------------------------------------------------------------------------
@@ -86,34 +91,35 @@ public class GetDataSets
     @Override
     public String execute() throws Exception
     {
-        dataSets = getDataSetsForCurrentUser( id );
+        periods = getPeriodsForDataSet( id );
+
+        for ( Period period : periods )
+        {
+            period.setName( format.formatPeriod( period ) );
+        }
 
         return SUCCESS;
     }
 
-    public List<DataSet> getDataSetsForCurrentUser( int id )
+    private List<Period> getPeriodsForDataSet( int id )
     {
-        OrganisationUnit organisationUnit = organisationUnitService.getOrganisationUnit( id );
+        DataSet dataSet = dataSetService.getDataSet( id );
 
-        if ( organisationUnit == null )
+        if ( dataSet == null )
         {
-            return new ArrayList<DataSet>();
+            return new ArrayList<Period>();
         }
 
-        List<DataSet> dataSets = new ArrayList<DataSet>();
+        CalendarPeriodType periodType = (CalendarPeriodType) dataSet.getPeriodType();
+        List<Period> periods = periodType.generateLast5Years( new Date() );
+        FilterUtils.filter( periods, new PastAndCurrentPeriodFilter() );
+        Collections.reverse( periods );
 
-        if ( organisationUnit.getDataSets() != null )
+        if ( periods.size() > 10 )
         {
-            dataSets.addAll( organisationUnit.getDataSets() );
+            periods = periods.subList( 0, 10 );
         }
 
-        UserCredentials userCredentials = currentUserService.getCurrentUser().getUserCredentials();
-
-        if ( !userCredentials.isSuper() )
-        {
-            dataSets.retainAll( userCredentials.getAllDataSets() );
-        }
-
-        return dataSets;
+        return periods;
     }
 }

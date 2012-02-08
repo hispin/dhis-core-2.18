@@ -493,7 +493,7 @@
       <param name="requiredAuthorities">F_DATASET_ADD</param>
     </action>
 
-    <action name="showUpdateLockExceptionForm" class="org.hisp.dhis.dataadmin.action.lockexception.GetLockExceptionAction">
+    <action name="showUpdateLockExceptionForm" class="org.hisp.dhis.dataadmin.action.lockexception.GetLockExceptionFormAction">
       <result name="success" type="velocity">/main.vm</result>
       <param name="menu">/dhis-web-maintenance-dataadmin/menu.vm</param>
       <param name="page">/dhis-web-maintenance-dataadmin/updateLockExceptionForm.vm</param>
@@ -520,12 +520,12 @@
       <param name="requiredAuthorities">F_DATASET_DELETE</param>
     </action>
 
-    <action name="getDataSets" class="org.hisp.dhis.dataadmin.action.lockexception.GetDataSets">
+    <action name="getDataSets" class="org.hisp.dhis.dataadmin.action.lockexception.GetDataSetsAction">
       <result name="success" type="velocity-json">jsonDataSets.vm</result>
       <param name="onExceptionReturn">plainTextError</param>
     </action>
 
-    <action name="getPeriods" class="org.hisp.dhis.dataadmin.action.lockexception.GetPeriods">
+    <action name="getPeriods" class="org.hisp.dhis.dataadmin.action.lockexception.GetPeriodsAction">
       <result name="success" type="velocity-json">jsonPeriods.vm</result>
       <param name="onExceptionReturn">plainTextError</param>
     </action>
