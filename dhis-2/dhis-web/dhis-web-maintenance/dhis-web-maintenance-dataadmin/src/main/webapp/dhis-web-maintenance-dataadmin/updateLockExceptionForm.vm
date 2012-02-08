@@ -1,34 +1,43 @@
-<script type="text/javascript">
-	jQuery(document).ready(	function()
-	{
-
-    });
-</script>
+<script type="text/javascript" src="javascript/lockException.js"></script>
 
 <h3>$i18n.getString( "edit_lock_exception" )</h3>
 
 <form id="updateLockExceptionForm" action="updateLockException.action" method="post" >
+<input type="hidden" id="lockExceptionId" name="lockExceptionId" value="$lockException.id"/>
+<input type="hidden" id="organisationUnitId" name="organisationUnitId" value="$lockException.organisationUnit.id"/>
 
 <table>
 	<col style="width: 100px"/>
 	<col/>
 
     <tr>
-        <td>#organisationUnitSelectionTree( true, false, true )</td>
+        <td>#organisationUnitSelectionTree( false, false, true )</td>
     </tr>
 
     <tr>
         <td>
-            <select id="dataSets" name="dataSetId" disabled="disabled" style="width: 100%;">
-                <option>-- Please select an organisation unit --</option>
+            <select id="dataSets" name="dataSetId" style="width: 100%;">
+                #foreach( $dataSet in $dataSets )
+                    #if( $dataSet.id == $lockException.dataSet.id )
+                        <option selected="selected" value="$dataSet.id">$encoder.htmlEncode( $!dataSet.name )</option>
+                    #else
+                        <option value="$dataSet.id">$encoder.htmlEncode( $!dataSet.name )</option>
+                    #end
+                #end)
             </select>
         </td>
     </tr>
 
     <tr>
         <td>
-            <select id="periods" name="periodId" disabled="disabled" style="width: 100%;">
-                <option>-- Please select a dataset--</option>
+            <select id="periods" name="periodId" style="width: 100%;">
+                #foreach( $period in $periods )
+                    #if( $period.externalId == $lockException.period.externalId )
+                        <option selected="selected" value="$period.externalId">$encoder.htmlEncode( $!period.name )</option>
+                    #else
+                        <option value="$period.externalId">$encoder.htmlEncode( $!period.name )</option>
+                    #end
+                #end)
             </select>
         </td>
     </tr>

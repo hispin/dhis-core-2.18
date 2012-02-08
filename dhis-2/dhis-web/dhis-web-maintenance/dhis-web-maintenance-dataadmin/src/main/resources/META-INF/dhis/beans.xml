@@ -301,6 +301,14 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     <property name="dataSetService" ref="org.hisp.dhis.dataset.DataSetService" />
   </bean>
 
+  <bean id="org.hisp.dhis.dataadmin.action.lockexception.GetLockExceptionFormAction" class="org.hisp.dhis.dataadmin.action.lockexception.GetLockExceptionFormAction"
+    scope="prototype">
+    <property name="currentUserService" ref="org.hisp.dhis.user.CurrentUserService" />
+    <property name="organisationUnitService" ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
+    <property name="dataSetService" ref="org.hisp.dhis.dataset.DataSetService" />
+    <property name="selectionTreeManager" ref="org.hisp.dhis.oust.manager.SelectionTreeManager" />
+  </bean>
+
   <bean id="org.hisp.dhis.dataadmin.action.lockexception.RemoveLockExceptionAction" class="org.hisp.dhis.dataadmin.action.lockexception.RemoveLockExceptionAction"
     scope="prototype">
     <property name="dataSetService" ref="org.hisp.dhis.dataset.DataSetService" />
@@ -313,13 +321,13 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     <property name="periodService" ref="org.hisp.dhis.period.PeriodService" />
   </bean>
 
-  <bean id="org.hisp.dhis.dataadmin.action.lockexception.GetDataSets" class="org.hisp.dhis.dataadmin.action.lockexception.GetDataSets"
+  <bean id="org.hisp.dhis.dataadmin.action.lockexception.GetDataSetsAction" class="org.hisp.dhis.dataadmin.action.lockexception.GetDataSetsAction"
     scope="prototype">
     <property name="currentUserService" ref="org.hisp.dhis.user.CurrentUserService" />
     <property name="organisationUnitService" ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
   </bean>
 
-  <bean id="org.hisp.dhis.dataadmin.action.lockexception.GetPeriods" class="org.hisp.dhis.dataadmin.action.lockexception.GetPeriods"
+  <bean id="org.hisp.dhis.dataadmin.action.lockexception.GetPeriodsAction" class="org.hisp.dhis.dataadmin.action.lockexception.GetPeriodsAction"
     scope="prototype">
     <property name="dataSetService" ref="org.hisp.dhis.dataset.DataSetService" />
   </bean>

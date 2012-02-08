@@ -28,14 +28,19 @@ package org.hisp.dhis.dataadmin.action.lockexception;
  */
 
 import com.opensymphony.xwork2.Action;
-import org.hisp.dhis.dataset.CompleteDataSetRegistration;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.dataset.DataSetService;
+import org.hisp.dhis.dataset.LockException;
 import org.hisp.dhis.i18n.I18nFormat;
+import org.hisp.dhis.organisationunit.OrganisationUnit;
+import org.hisp.dhis.organisationunit.OrganisationUnitService;
+import org.hisp.dhis.oust.manager.SelectionTreeManager;
 import org.hisp.dhis.period.CalendarPeriodType;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.system.filter.PastAndCurrentPeriodFilter;
 import org.hisp.dhis.system.util.FilterUtils;
+import org.hisp.dhis.user.CurrentUserService;
+import org.hisp.dhis.user.UserCredentials;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -45,18 +50,39 @@ import java.util.List;
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
-public class GetPeriods
+public class GetLockExceptionFormAction
     implements Action
 {
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
 
+    private CurrentUserService currentUserService;
+
+    public void setCurrentUserService( CurrentUserService currentUserService )
+    {
+        this.currentUserService = currentUserService;
+    }
+
     private DataSetService dataSetService;
 
     public void setDataSetService( DataSetService dataSetService )
     {
         this.dataSetService = dataSetService;
+    }
+
+    private OrganisationUnitService organisationUnitService;
+
+    public void setOrganisationUnitService( OrganisationUnitService organisationUnitService )
+    {
+        this.organisationUnitService = organisationUnitService;
+    }
+
+    private SelectionTreeManager selectionTreeManager;
+
+    public void setSelectionTreeManager( SelectionTreeManager selectionTreeManager )
+    {
+        this.selectionTreeManager = selectionTreeManager;
     }
 
     private I18nFormat format;
@@ -70,11 +96,25 @@ public class GetPeriods
     // Input & Output
     // -------------------------------------------------------------------------
 
-    private int id;
+    private Integer id;
 
-    public void setId( int id )
+    public void setId( Integer id )
     {
         this.id = id;
+    }
+
+    private LockException lockException;
+
+    public LockException getLockException()
+    {
+        return lockException;
+    }
+
+    private List<DataSet> dataSets;
+
+    public List<DataSet> getDataSets()
+    {
+        return dataSets;
     }
 
     private List<Period> periods;
@@ -91,17 +131,29 @@ public class GetPeriods
     @Override
     public String execute() throws Exception
     {
-        periods = getPeriodsForDataSet( id );
-
-        for ( Period period : periods )
+        if ( id != null )
         {
-            period.setName( format.formatPeriod( period ) );
+            lockException = dataSetService.getLockException( id );
+
+            if ( lockException == null )
+            {
+                return INPUT;
+            }
+
+            selectionTreeManager.setSelectedOrganisationUnit( lockException.getOrganisationUnit() );
+            dataSets = getDataSetsForCurrentUser( lockException.getOrganisationUnit().getId() );
+            periods = getPeriodsForDataSet( lockException.getDataSet().getId() );
+
+            for ( Period period : periods )
+            {
+                period.setName( format.formatPeriod( period ) );
+            }
         }
 
         return SUCCESS;
     }
 
-    public List<Period> getPeriodsForDataSet( int id )
+    private List<Period> getPeriodsForDataSet( int id )
     {
         DataSet dataSet = dataSetService.getDataSet( id );
 
@@ -121,5 +173,31 @@ public class GetPeriods
         }
 
         return periods;
+    }
+
+    private List<DataSet> getDataSetsForCurrentUser( int id )
+    {
+        OrganisationUnit organisationUnit = organisationUnitService.getOrganisationUnit( id );
+
+        if ( organisationUnit == null )
+        {
+            return new ArrayList<DataSet>();
+        }
+
+        List<DataSet> dataSets = new ArrayList<DataSet>();
+
+        if ( organisationUnit.getDataSets() != null )
+        {
+            dataSets.addAll( organisationUnit.getDataSets() );
+        }
+
+        UserCredentials userCredentials = currentUserService.getCurrentUser().getUserCredentials();
+
+        if ( !userCredentials.isSuper() )
+        {
+            dataSets.retainAll( userCredentials.getAllDataSets() );
+        }
+
+        return dataSets;
     }
 }
