@@ -13,9 +13,25 @@
 	<col style="width: 100px"/>
 	<col/>
 
-	<tr>
-		<th colspan="2">$i18n.getString( "details" )</th>
-	</tr>
+    <tr>
+        <td>#organisationUnitSelectionTree( true, false, true )</td>
+    </tr>
+
+    <tr>
+        <td>
+            <select id="dataSets" name="dataSetId" disabled="disabled" style="width: 100%;">
+                <option>-- Please select an organisation unit --</option>
+            </select>
+        </td>
+    </tr>
+
+    <tr>
+        <td>
+            <select id="periods" name="periodId" disabled="disabled" style="width: 100%;">
+                <option>-- Please select a dataset--</option>
+            </select>
+        </td>
+    </tr>
 
 	<tr>
 		<td colspan="2">
