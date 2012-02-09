@@ -39,7 +39,7 @@ public class TextUtils
 {
     public static final TextUtils INSTANCE = new TextUtils();
     
-    private static final Pattern LINK_PATTERN = Pattern.compile( "(http://|https://|www\\.).+?($| )" );
+    private static final Pattern LINK_PATTERN = Pattern.compile( "((http://|https://|www\\.).+?)($| )" );
     
     /**
      * Substitutes links in the given text with valid HTML mark-up. For instance, 
@@ -62,15 +62,14 @@ public class TextUtils
         
         while ( matcher.find() )
         {
-            String match = matcher.group();
-
-            String suffix = match.endsWith( " " ) ? " " : "";
+            String url = matcher.group( 1 );            
+            String suffix = matcher.group( 3 );
             
-            String ref = match.trim().startsWith( "www." ) ? "http://" + match.trim() : match.trim();
+            String ref = url.startsWith( "www." ) ? "http://" + url : url;
 
-            match = "<a href=\"" + ref + "\">" + match.trim() + "</a>" + suffix;
+            url = "<a href=\"" + ref + "\">" + url + "</a>" + suffix;
             
-            matcher.appendReplacement( buffer, match );
+            matcher.appendReplacement( buffer, url );
         }
         
         return matcher.appendTail( buffer ).toString();
