@@ -87,7 +87,7 @@ function getParamsForDiv( patientDiv)
 			}
 			else if( $(this).attr('type') != 'button' )
 			{
-				params += elementId + "="+ jQuery(this).val() + "&";
+				params += elementId + "="+ htmlEncode(jQuery(this).val()) + "&";
 			}
 		});
 		
