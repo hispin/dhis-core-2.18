@@ -1732,7 +1732,7 @@ mapfish.widgets.geostat.Choropleth = Ext.extend(Ext.Panel, {
     
     applyValues: function() {
         for (var i = 0; i < this.layer.features.length; i++) {
-            var f = this.layer.features[i];            
+            var f = this.layer.features[i];
             if (!f.attributes.value) {
                 this.layer.features.splice(i,1);
                 i--;
