@@ -39,6 +39,9 @@
     background:url('../../resources/ext-ux/theme/gray-extend-ux/leaf.gif') center center;
     padding-right:1px;
 }
+.treepanel-node-icon-boundary {
+    background:url('../../../images/boundary_small.png') center center no-repeat !important;
+}
 .treepanel-node-icon-thematic1 {
     background:url('../../../images/thematic1_small.png') center center no-repeat !important;
 }
@@ -239,6 +242,9 @@ a.x-menu-item-custom {
 .x-btn button {
 	font:normal 10px lucida sans unicode,arial,ubuntu;
 }
+.x-btn .icon-boundary  {
+	background-image:url('../../../images/boundary.png');
+}
 .x-btn .icon-thematic1  {
 	background-image:url('../../../images/thematic1.png');
 }
@@ -311,12 +317,6 @@ a.x-menu-item-custom {
 .x-btn .icon-measure {
 	background-image:url('../../../images/measure.png');
 }
-.x-btn .icon-thematic1 {
-	background-image:url('../../../images/thematic1.png');
-}
-.x-btn .icon-thematic2 {
-	background-image:url('../../../images/thematic2.png');
-}
 .x-btn-noicon .x-btn-small .x-btn-text {
     height:16px;
     padding:0 5px;
@@ -361,6 +361,12 @@ a.x-menu-item-custom {
 	padding:6px 0 3px 4px;
 	font:normal 11px lucida sans unicode,arial,ubuntu;
 	color:#555555;	
+}
+#window-boundary-title {
+	padding:0 0 3px 21px;
+	background:url('../../../images/boundary.png') no-repeat 0 0 transparent;
+	font:bold 11px arial;
+	color:#111;
 }
 #window-thematic1-title {
 	padding:0 0 3px 21px;

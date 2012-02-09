@@ -334,12 +334,12 @@
 
         <action name="getGeoJson"
             class="org.hisp.dhis.mapping.action.GetGeoJsonAction">
-            <result name="success" type="velocity-json">/dhis-web-mapping/geojson.vm</result>
+            <result name="success" type="velocity-json">/dhis-web-mapping/geojsonmin.vm</result>
         </action>
 
         <action name="getGeoJsonWithValues"
             class="org.hisp.dhis.mapping.action.GetGeoJsonWithValuesAction">
-            <result name="success" type="velocity-json">/dhis-web-mapping/geojsonmin.vm</result>
+            <result name="success" type="velocity-json">/dhis-web-mapping/geojsonminValues.vm</result>
         </action>
 
         <action name="getGeoJsonFacilities"

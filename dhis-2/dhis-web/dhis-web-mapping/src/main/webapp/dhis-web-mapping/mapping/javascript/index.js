@@ -305,6 +305,23 @@ Ext.onReady( function() {
     };
     
 	/* Thematic layers */
+	boundaryLayer = new OpenLayers.Layer.Vector(G.i18n.boundary_layer, {
+        strategies: [ new OpenLayers.Strategy.Refresh({force:true}) ],
+        'visibility': false,
+        'displayInLayerSwitcher': false,
+        'styleMap': new OpenLayers.StyleMap({
+            'default': new OpenLayers.Style(
+                OpenLayers.Util.applyDefaults(
+                    {'fillOpacity': 0, 'strokeColor': '#000', 'strokeWidth': 1, 'pointRadius': 5},
+                    OpenLayers.Feature.Vector.style['default']
+                )
+            )
+        })
+    });
+    
+    boundaryLayer.layerType = G.conf.map_layer_type_thematic;
+    G.vars.map.addLayer(boundaryLayer);
+    
     polygonLayer = new OpenLayers.Layer.Vector(G.conf.thematic_layer_1, {
         strategies: [ new OpenLayers.Strategy.Refresh({force:true}) ],
         'visibility': false,
@@ -787,6 +804,7 @@ Ext.onReady( function() {
                     else {
                         var exportForm = document.getElementById('exportForm');
                         exportForm.action = '../exportImage.action';
+                        exportForm.method = 'post';
                         
                         document.getElementById('titleField').value = title;
                         document.getElementById('svgField').value = svg;
@@ -1976,10 +1994,16 @@ Ext.onReady( function() {
                 {
                     nodeType: 'gx_baselayercontainer',
                     expanded: true,
-                    text: G.i18n.base_layers
+                    text: G.i18n.baselayers
                 },
                 {
-                    nodeType: 'gx_overlaylayercontainer'
+                    nodeType: 'gx_overlaylayercontainer',
+                    text: G.i18n.overlays_
+                },
+                {
+                    nodeType: 'gx_layer',
+                    layer: G.conf.boundary_layer,
+                    iconCls: 'treepanel-node-icon-boundary'
                 },
                 {
                     nodeType: 'gx_layer',
@@ -2117,16 +2141,16 @@ Ext.onReady( function() {
             ]
         }),
         clickEventFn: function(node, e) {
-            if (node.attributes.text !== G.i18n.base_layers && node.attributes.text !== G.i18n.overlays ) {
+            if (node.attributes.text !== G.i18n.baselayers && node.attributes.text !== G.i18n.overlays_ ) {
                 node.select();
                 
-                if (node.parentNode.attributes.text === G.i18n.base_layers ) {
+                if (node.parentNode.attributes.text === G.i18n.baselayers ) {
                     var cmb = node.getOwnerTree().contextMenuBaselayer;
                     cmb.contextNode = node;
                     cmb.showAt(e.getXY());
                 }
                 
-                else if (node.parentNode.attributes.text === G.i18n.overlays ) {
+                else if (node.parentNode.attributes.text === G.i18n.overlays_ ) {
                     var cmo = node.layer.overlayType === 'wms' ?
                         node.getOwnerTree().contextMenuOverlayWMS : node.getOwnerTree().contextMenuOverlayFile;
                     cmo.contextNode = node;
@@ -2165,6 +2189,78 @@ Ext.onReady( function() {
             }
         ]
 	});
+	
+    /* Section: widgets */
+    boundary = new mapfish.widgets.geostat.Boundary({
+        map: G.vars.map,
+        layer: boundaryLayer,
+        featureSelection: false,
+        defaults: {width: 130},
+        listeners: {
+            'expand': function() {
+                //G.vars.activePanel.setPolygon();
+            },
+            'afterrender': function() {
+                this.layer.widget = this;
+            }
+        }
+    });
+    
+    boundary.window = new Ext.Window({
+        title: '<span id="window-boundary-title">' + G.i18n.boundary_layer + '</span>',
+        layout: 'fit',
+        bodyStyle: 'padding:8px; background-color:#fff',
+        closeAction: 'hide',
+        width: 287,
+        collapsed: false,
+        isUpdate: false,
+        cmp: {},
+        items: boundary,
+        bbar: [
+            '->',
+            {
+                xtype: 'button',
+                text: G.i18n.update,
+                iconCls: 'icon-assign',
+                disabled: true,
+                scope: boundary,
+                handler: function() {
+                    var node = this.cmp.parent.selectedNode;
+                    this.organisationUnitSelection.setValues(node.attributes.id, node.attributes.text, node.attributes.level,
+                        this.cmp.level.getValue(), this.cmp.level.getRawValue());
+                    this.window.isUpdate = true;                    
+                    this.loadGeoJson();
+                },
+                listeners: {
+                    'render': {
+                        fn: function(b) {
+                            b.scope.window.cmp.apply = b;
+                        }
+                    }
+                }
+            },
+            ' ',
+            {
+                xtype: 'button',
+                text: G.i18n.close,
+                iconCls: 'icon-cancel',
+                scope: boundary,
+                handler: function() {
+                    this.window.hide();
+                }
+            }
+        ],
+        listeners: {
+            'show': {
+                scope: boundary,
+                fn: function() {
+                    this.cmp.parent.isLoaded = true;
+                    this.window.isShown = true;
+                }
+            }
+        }
+    });    
+    boundary.window.setPagePosition(G.conf.window_x_left,G.conf.window_y_left);
 	
     /* Section: widgets */
     choropleth = new mapfish.widgets.geostat.Choropleth({
@@ -2544,6 +2640,8 @@ Ext.onReady( function() {
             G.util.zoomToVisibleExtent();
         }
 	});
+	
+	var boundaryButton = new G.cls.vectorLayerButton('icon-boundary', G.i18n.boundary_layer, boundary);
     
     var choroplethButton = new G.cls.vectorLayerButton('icon-thematic1', G.i18n.thematic_layer + ' 1', choropleth);
     
@@ -2733,7 +2831,8 @@ Ext.onReady( function() {
 			'-',
 			' ',' ',' ',
 			layersLabel,
-			' ',' ', 
+			' ',' ',
+			boundaryButton,
             choroplethButton,
             pointButton,
             symbolButton,
@@ -2834,13 +2933,14 @@ Ext.onReady( function() {
                 var svg = document.getElementsByTagName('svg');
                 
                 if (!Ext.isIE) {
-                    polygonLayer.svgId = svg[0].id;
-                    pointLayer.svgId = svg[1].id;
-                    symbolLayer.svgId = svg[2].id;
-                    centroidLayer.svgId = svg[3].id;
+					boundaryLayer.svgId = svg[0].id;
+                    polygonLayer.svgId = svg[1].id;
+                    pointLayer.svgId = svg[2].id;
+                    symbolLayer.svgId = svg[3].id;
+                    centroidLayer.svgId = svg[4].id;
                 }
                 
-                for (var i = 0, j = 3; i < G.vars.map.layers.length; i++) {
+                for (var i = 0, j = 4; i < G.vars.map.layers.length; i++) {
                     if (G.vars.map.layers[i].layerType == G.conf.map_layer_type_overlay) {
                         G.vars.map.layers[i].svgId = svg[j++].id;
                     }
@@ -2894,6 +2994,9 @@ Ext.onReady( function() {
                 
                 document.getElementById('featuredatatext').innerHTML = '<div style="color:#666">' + G.i18n.no_feature_selected + '</div>';
                 
+				boundaryButton.menu.remove(boundaryButton.menu.items.items[5]);
+                boundaryButton.menu.remove(boundaryButton.menu.items.last());
+                boundaryButton.menu.remove(boundaryButton.menu.items.last());
                 symbolButton.menu.remove(symbolButton.menu.items.last());
                 symbolButton.menu.remove(symbolButton.menu.items.last());
                 centroidButton.menu.remove(centroidButton.menu.items.last());

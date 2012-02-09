@@ -8,6 +8,7 @@ G.conf = {
     
 //  Layer names
 
+	boundary_layer: G.i18n.boundary_layer,
     thematic_layer_1: G.i18n.thematic_layer  + ' 1',
     thematic_layer_2: G.i18n.thematic_layer  + ' 2',
     symbol_layer: G.i18n.symbol_layer,
@@ -224,15 +225,15 @@ G.util = {
 
     labels: {
         vector: {
-            getActivatedOpenLayersStyleMap: function(fsize, fweight, fstyle, fcolor) {
+            getActivatedOpenLayersStyleMap: function(widget, fsize, fweight, fstyle, fcolor) {
                 return new OpenLayers.StyleMap({
                     'default' : new OpenLayers.Style(
                         OpenLayers.Util.applyDefaults({
-                            'fillOpacity': 1,
+                            'fillOpacity': widget == boundary ? 0 : 1,
+                            'strokeColor': widget == boundary ? '#000' : '#fff',
                             'strokeWidth': 1,
-                            'strokeColor': '#fff',
                             'label': '${labelString}',
-                            'fontFamily': 'arial,lucida sans unicode',
+                            'fontFamily': 'arial,sans-serif,ubuntu,consolas',
                             'fontSize': fsize ? fsize : 13,
                             'fontWeight': fweight ? 'bold' : 'normal',
                             'fontStyle': fstyle ? 'italic' : 'normal',
@@ -247,12 +248,12 @@ G.util = {
                     })
                 });
             },
-            getDeactivatedOpenLayersStyleMap: function() {
+            getDeactivatedOpenLayersStyleMap: function(widget) {
                 return new OpenLayers.StyleMap({
                     'default': new OpenLayers.Style(
                         OpenLayers.Util.applyDefaults({
-                            'fillOpacity': 1,
-                            'strokeColor': '#fff',
+                            'fillOpacity': widget == boundary ? 0 : 1,
+                            'strokeColor': widget == boundary ? '#000' : '#fff',
                             'strokeWidth': 1
                         },
                         OpenLayers.Feature.Vector.style['default'])
@@ -266,11 +267,11 @@ G.util = {
             },
             toggleFeatureLabels: function(widget, fsize, fweight, fstyle, fcolor) {
                 function activateLabels() {
-                    widget.layer.styleMap = this.getActivatedOpenLayersStyleMap(fsize, fweight, fstyle, fcolor);
+                    widget.layer.styleMap = this.getActivatedOpenLayersStyleMap(widget, fsize, fweight, fstyle, fcolor);
                     widget.labels = true;
                 }
                 function deactivateLabels(scope) {
-                    widget.layer.styleMap = this.getDeactivatedOpenLayersStyleMap();
+                    widget.layer.styleMap = this.getDeactivatedOpenLayersStyleMap(widget);
                     widget.labels = false;
                 }
                 
@@ -790,16 +791,16 @@ G.cls = {
         return new Ext.Button({
             iconCls: iconCls,
             tooltip: tooltip,
-            style: 'margin-top:1px',
             widget: widget,
+            style: 'margin-top:1px',
             enableItems: function(bool) {
-                var menuItems = [2,3,5,6,7,9];
-                for (var i = 0; i < menuItems.length; i++) {
+                var menuItems = widget == boundary ? [2,3,5,6,8] : [2,3,5,6,7,9];
+                for (var i = 0, items = this.menu.items.items; i < menuItems.length; i++) {
                     if (bool) {
-                        this.menu.items.items[menuItems[i]].enable();
+                        items[menuItems[i]].enable();
                     }
                     else {
-                        this.menu.items.items[menuItems[i]].disable();
+                        items[menuItems[i]].disable();
                     }
                 }
             },
