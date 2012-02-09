@@ -32,14 +32,6 @@ function organisationUnitSelected( orgUnits )
 			{
 				loadEventForm();
 			}
-			else
-			{
-				if( json.programInstances.length > 0 )
-				{
-					enable('createEventBtn');
-				}
-			}
-			
 		} );
 }
 
@@ -51,7 +43,9 @@ function loadEventForm()
 	hideById('dataEntryFormDiv');
 	setFieldValue('executionDate', '');
 	disable( 'executionDate' );
-	
+	disable('createEventBtn');
+	disable('deleteCurrentEventBtn');
+		
 	var programId = getFieldValue('programId');
 	if( programId == '' )
 	{
@@ -108,19 +102,19 @@ function loadEventRegistrationForm()
 			}
 			else
 			{
+				enable( 'executionDate' );
 				if( getFieldValue('completed') == 'true')
 				{
-					disable( 'executionDate' );
 					enable('createEventBtn');
-					enable('deleteCurrentEventBtn');
+					disable('deleteCurrentEventBtn');
 					disable('completeBtn');
+					jQuery('#executionDate').unbind('change');
 				} 
 				else
 				{
 					disable('createEventBtn');
 					enable('deleteCurrentEventBtn');
 					enable('completeBtn');
-					enable( 'executionDate' );
 					jQuery('#executionDate').bind('change');
 				}
 			}
@@ -151,7 +145,7 @@ function createNewEvent()
 			}
 			else
 			{
-				showWarmingMessage( json.message );
+				showWarningMessage( json.message );
 			}
 			
 		});

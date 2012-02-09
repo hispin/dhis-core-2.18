@@ -2,7 +2,9 @@
 <script>
 	jQuery("#entryFormContainer").ready(function(){
 	
-		#if( $programStageInstance )
+		#if( $!programStageInstance.programStage.program.anonymous=="true" && $!programStageInstance.completed=='true')
+			hideById('entryFormContainer');
+		#elseif( $programStageInstance )
 			setFieldValue( 'dueDate', "$!format.formatDate( $programStageInstance.dueDate )" );
 			setFieldValue( 'executionDate', "$!format.formatDate( $programStageInstance.executionDate )" );
 		#elseif( $program.singleEvent == "true" )
@@ -23,6 +25,7 @@
 		{
 			enable('executionDate');
 		}
+		
 		entryFormContainerOnReady();
 		
 		jQuery("#entryForm :input").each(function()
