@@ -99,6 +99,7 @@ function loadDataEntry()
 	if( getFieldValue('programStageId') == null
 		|| getFieldValue('programStageId') == 0 )
 	{
+		enable('newEncounterBtn');
 		return;
 	}
 	

@@ -180,10 +180,6 @@ public class LoadDataEntryAction
 
         program = programStage.getProgram();
 
-        programStageDataElements = new ArrayList<ProgramStageDataElement>( programStage.getProgramStageDataElements() );
-
-        Collections.sort( programStageDataElements, new ProgramStageDataElementSortOrderComparator() );
-
         ProgramInstance programInstance = selectedStateManager.getSelectedProgramInstance();
 
         if ( programInstance != null )
@@ -192,11 +188,20 @@ public class LoadDataEntryAction
 
             if ( programStageInstance != null )
             {
+                if( program.getAnonymous() && programStageInstance.isCompleted() )
+                {
+                    return SUCCESS;
+                }
+                
                 selectedStateManager.setSelectedProgramStageInstance( programStageInstance );
                 
                 // ---------------------------------------------------------------------
                 // Get data values
                 // ---------------------------------------------------------------------
+               
+                programStageDataElements = new ArrayList<ProgramStageDataElement>( programStage.getProgramStageDataElements() );
+
+                Collections.sort( programStageDataElements, new ProgramStageDataElementSortOrderComparator() );
 
                 Collection<PatientDataValue> patientDataValues = patientDataValueService
                     .getPatientDataValues( programStageInstance );
