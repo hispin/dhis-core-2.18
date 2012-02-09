@@ -29,12 +29,11 @@ package org.hisp.dhis.visualizer.action;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 import org.hisp.dhis.chart.Chart;
 import org.hisp.dhis.chart.ChartService;
-import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementService;
-import org.hisp.dhis.indicator.Indicator;
 import org.hisp.dhis.indicator.IndicatorService;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
@@ -134,16 +133,16 @@ public class AddOrUpdateChartAction
         this.filter = filter;
     }
 
-    private Collection<Integer> indicatorIds;
+    private List<Integer> indicatorIds = new ArrayList<Integer>();
 
-    public void setIndicatorIds( Collection<Integer> indicatorIds )
+    public void setIndicatorIds( List<Integer> indicatorIds )
     {
         this.indicatorIds = indicatorIds;
     }
 
-    private Collection<Integer> dataElementIds;
+    private List<Integer> dataElementIds = new ArrayList<Integer>();
 
-    public void setDataElementIds( Collection<Integer> dataElementIds )
+    public void setDataElementIds( List<Integer> dataElementIds )
     {
         this.dataElementIds = dataElementIds;
     }
@@ -317,13 +316,24 @@ public class AddOrUpdateChartAction
             chart.setFilter( filter );
         }
 
-        if ( indicatorIds != null || dataElementIds != null )
+        if ( indicatorIds != null )
         {
-            chart.setIndicators( indicatorIds != null ? new ArrayList<Indicator>( indicatorService
-                .getIndicators( indicatorIds ) ) : new ArrayList<Indicator>() );
-
-            chart.setDataElements( dataElementIds != null ? new ArrayList<DataElement>( dataElementService
-                .getDataElements( dataElementIds ) ) : new ArrayList<DataElement>() );
+            chart.getIndicators().clear();
+            
+            for ( Integer id : indicatorIds )
+            {
+                chart.getIndicators().add( indicatorService.getIndicator( id ) );
+            }
+        }
+        
+        if ( dataElementIds != null )
+        {
+            chart.getDataElements().clear();
+            
+            for ( Integer id : dataElementIds )
+            {
+                chart.getDataElements().add( dataElementService.getDataElement( id ) );
+            }
         }
 
         if ( lastMonth || last12Months || lastQuarter || last4Quarters || lastSixMonth || last2SixMonths || thisYear
