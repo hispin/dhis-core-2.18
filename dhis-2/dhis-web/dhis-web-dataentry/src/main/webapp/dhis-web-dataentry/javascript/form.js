@@ -38,6 +38,9 @@ var currentDataSetId = null;
 // value with one
 var currentPeriodOffset = 0;
 
+// Username of user who marked the current data set as complete if any
+var currentCompletedByUser = null;
+
 // Period type object
 var periodTypeFactory = new PeriodType();
 
@@ -713,6 +716,8 @@ function insertDataValues()
 	                $( '#infoDiv' ).css( 'display', 'block' );
 	                $( '#completedBy' ).html( json.storedBy );
 	                $( '#completedDate' ).html( json.date );
+	                
+	                currentCompletedByUser = json.storedBy;
 	            }
 	        }
 	        else
@@ -902,6 +907,30 @@ function disableCompleteButton()
 {
     $( '#completeButton' ).attr( 'disabled', 'disabled' );
     $( '#undoButton' ).removeAttr( 'disabled' );
+}
+
+function displayUserDetails()
+{
+	if ( currentCompletedByUser )
+	{
+		var url = '../dhis-web-commons-ajax-json/getUser.action';
+		
+		$.getJSON( url, { username:currentCompletedByUser }, function( json ) {
+			$( '#userFullName' ).html( json.user.firstName + " " + json.user.surname );
+			$( '#userUsername' ).html( json.user.username );
+			$( '#userEmail' ).html( json.user.email );
+			$( '#userPhoneNumber' ).html( json.user.phoneNumber );
+			$( '#userOrganisationUnits' ).html( joinNameableObjects( json.user.organisationUnits ) );
+			$( '#userUserRoles' ).html( joinNameableObjects( json.user.roles ) );
+				
+			$( '#completedByDiv' ).dialog( {
+	        	modal : true,
+	        	width : 350,
+	        	height : 350,
+	        	title : 'User'
+	    	} );
+		} );
+	}
 }
 
 // -----------------------------------------------------------------------------

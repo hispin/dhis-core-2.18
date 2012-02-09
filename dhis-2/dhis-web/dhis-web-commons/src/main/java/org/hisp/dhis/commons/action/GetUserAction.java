@@ -28,6 +28,7 @@ package org.hisp.dhis.commons.action;
  */
 
 import org.hisp.dhis.user.User;
+import org.hisp.dhis.user.UserCredentials;
 import org.hisp.dhis.user.UserService;
 
 import com.opensymphony.xwork2.Action;
@@ -59,6 +60,13 @@ public class GetUserAction
     {
         this.id = id;
     }
+    
+    private String username;
+
+    public void setUsername( String username )
+    {
+        this.username = username;
+    }
 
     private User user;
 
@@ -73,8 +81,16 @@ public class GetUserAction
 
     public String execute()
     {
-        user = userService.getUser( id );
-
+        if ( id != null )
+        {
+            user = userService.getUser( id );
+        }
+        else if ( username != null )
+        {
+            UserCredentials credentials = userService.getUserCredentialsByUsername( username );
+            
+            user = credentials != null ? credentials.getUser() : null;
+        }
         return SUCCESS;
     }
 }
