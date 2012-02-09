@@ -142,6 +142,7 @@ function sortPatients()
 
 function validateAddPatient()
 {	
+	$("#editPatientDiv :input").attr("disabled", true);
 	$.ajax({
 		type: "POST",
 		url: 'validatePatient.action',
@@ -160,17 +161,21 @@ function addValidationCompleted( data )
 		removeDisabledIdentifier( );
 		addPatient( );
 	}
-	else if ( type == 'error' )
+	else
 	{
-		showErrorMessage( i18n_adding_patient_failed + ':' + '\n' + message );
-	}
-	else if ( type == 'input' )
-	{
-		showWarningMessage( message );
-	}
-	else if( type == 'duplicate' )
-	{
-		showListPatientDuplicate(data, false);
+		$("#editPatientDiv :input").attr("disabled", true);
+		if ( type == 'error' )
+		{
+			showErrorMessage( i18n_adding_patient_failed + ':' + '\n' + message );
+		}
+		else if ( type == 'input' )
+		{
+			showWarningMessage( message );
+		}
+		else if( type == 'duplicate' )
+		{
+			showListPatientDuplicate(data, false);
+		}
 	}
 }
 
@@ -181,7 +186,8 @@ function addValidationCompleted( data )
 
 function validateUpdatePatient()
 {
-    $.post( 'validatePatient.action?' + getIdParams( ), 
+	$("#editPatientDiv :input").attr("disabled", true);
+	$.post( 'validatePatient.action?' + getIdParams( ), 
 		{ 
 			id: jQuery( '#patientForm [id=id]' ).val(),
 			fullName: jQuery( '#patientForm [id=fullName]' ).val(),
@@ -200,18 +206,22 @@ function updateValidationCompleted( messageElement )
     	removeDisabledIdentifier();
     	updatePatient();
     }
-    else if ( type == 'error' )
-    {
-        showErrorMessage( i18n_saving_patient_failed + ':' + '\n' + message );
-    }
-    else if ( type == 'input' )
-    {
-        showWarningMessage( message );
-    }
-    else if( type == 'duplicate' )
-    {
-    	showListPatientDuplicate(messageElement, true);
-    }
+	else
+	{
+		$("#editPatientDiv :input").attr("disabled", true);
+		if ( type == 'error' )
+		{
+			showErrorMessage( i18n_saving_patient_failed + ':' + '\n' + message );
+		}
+		else if ( type == 'input' )
+		{
+			showWarningMessage( message );
+		}
+		else if( type == 'duplicate' )
+		{
+			showListPatientDuplicate(messageElement, true);
+		}
+	}
 }
 // get and build a param String of all the identifierType id and its value
 // excluding inherited identifiers
