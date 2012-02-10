@@ -362,6 +362,10 @@ public class AddOrUpdateChartAction
         {
             chart.setUser( currentUserService.getCurrentUser() );
         }
+        else
+        {
+            chart.setUser( null );
+        }
 
         if ( trendLine != null )
         {
