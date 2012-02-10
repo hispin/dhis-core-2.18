@@ -1,5 +1,9 @@
 body {
-    font: normal 10px arial, ubuntu, sans-serif;
+    font: normal 10px arial,sans-serif,ubuntu,consolas;
+}
+
+.x-body, .x-btn-default-toolbar-small .x-btn-inner, .x-form-item {
+	font-family: arial,sans-serif,ubuntu,consolas;
 }
 
 .x-panel-body {
@@ -44,7 +48,7 @@ body {
 
 /* Combobox field label font */
 .x-form-item-label {
-    font: 11px arial, ubuntu;
+    font: 11px arial,sans-serif,ubuntu,consolas;
     color: #111;
 }
 
@@ -594,6 +598,13 @@ body {
 }
 
 /* DV menu grid background now looks like a menu*/
+.dv-menugrid .x-grid-view {
+    background-color: #f1f1f1;
+}
+w {
+    background-color: #f1f1f1;
+}
+nu*/
 .dv-menugrid .x-grid-view {
     background-color: #f1f1f1;
 }
