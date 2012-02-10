@@ -84,6 +84,9 @@ public class GridUtils
     
     private static final WritableCellFormat XLS_FORMAT_TTTLE = new WritableCellFormat( new WritableFont(
         WritableFont.TAHOMA, 13, WritableFont.NO_BOLD, false ) );
+
+    private static final WritableCellFormat XLS_FORMAT_SUBTTTLE = new WritableCellFormat( new WritableFont(
+        WritableFont.TAHOMA, 12, WritableFont.NO_BOLD, false ) );
     
     private static final WritableCellFormat XLS_FORMAT_LABEL = new WritableCellFormat( new WritableFont(
         WritableFont.ARIAL, 11, WritableFont.NO_BOLD, true ) );
@@ -210,6 +213,13 @@ public class GridUtils
 
         rowNumber++;
 
+        if ( StringUtils.isNotEmpty( grid.getSubtitle() ) )
+        {
+            sheet.addCell( new Label( 0, rowNumber++, grid.getSubtitle(), XLS_FORMAT_SUBTTTLE ) );
+            
+            rowNumber++;
+        }
+        
         for ( GridHeader header : grid.getVisibleHeaders() )
         {
             sheet.addCell( new Label( columnIndex++, rowNumber, header.getName(), XLS_FORMAT_LABEL ) );

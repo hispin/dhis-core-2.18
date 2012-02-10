@@ -1,7 +1,7 @@
 
 <input type="hidden" id="dataSetId" value="${selectedDataSet.id}">
 
-<h3>$i18n.getString('reporting_unit'): $encoder.htmlEncode( $selectedOrgunit.name ) &nbsp; $i18n.getString('reporting_period'): $format.formatPeriod( $selectedPeriod )</h3>
+<h3>$encoder.htmlEncode( $selectedOrgunit.name ) - $format.formatPeriod( $selectedPeriod )</h3>
 
 <div style="margin-bottom:15px">
 <input type="button" value="$i18n.getString( 'get_report_as_xls' )" onclick="exportDataSetReport( 'xls' )" style="width:140px">
