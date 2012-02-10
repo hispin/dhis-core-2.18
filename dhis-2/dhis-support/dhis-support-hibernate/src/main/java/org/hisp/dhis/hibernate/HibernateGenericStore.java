@@ -27,6 +27,9 @@ package org.hisp.dhis.hibernate;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import java.util.Collection;
+import java.util.List;
+
 import org.hibernate.Criteria;
 import org.hibernate.Query;
 import org.hibernate.SQLQuery;
@@ -35,12 +38,11 @@ import org.hibernate.criterion.Criterion;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
+import org.hisp.dhis.cache.HibernateCacheManager;
 import org.hisp.dhis.common.GenericNameableObjectStore;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Required;
 import org.springframework.jdbc.core.JdbcTemplate;
-
-import java.util.Collection;
-import java.util.List;
 
 /**
  * @author Lars Helge Overland
@@ -63,6 +65,9 @@ public class HibernateGenericStore<T>
     {
         this.jdbcTemplate = jdbcTemplate;
     }
+
+    @Autowired
+    protected HibernateCacheManager cacheManager;
 
     private Class<T> clazz;
 
@@ -107,7 +112,7 @@ public class HibernateGenericStore<T>
 
     /**
      * Creates a Query.
-     *
+     * 
      * @param hql the hql query.
      * @return a Query instance.
      */
@@ -118,7 +123,7 @@ public class HibernateGenericStore<T>
 
     /**
      * Creates a SqlQuery.
-     *
+     * 
      * @param sql the sql query.
      * @return a SqlQuery instance.
      */
@@ -131,7 +136,7 @@ public class HibernateGenericStore<T>
 
     /**
      * Creates a Critera for the implementation Class type.
-     *
+     * 
      * @return a Criteria instance.
      */
     protected final Criteria getCriteria()
@@ -147,7 +152,7 @@ public class HibernateGenericStore<T>
     /**
      * Creates a Criteria for the implementation Class type restricted by the
      * given Criterions.
-     *
+     * 
      * @param expressions the Criterions for the Criteria.
      * @return a Criteria instance.
      */
@@ -165,7 +170,7 @@ public class HibernateGenericStore<T>
 
     /**
      * Retrieves an object based on the given Criterions.
-     *
+     * 
      * @param expressions the Criterions for the Criteria.
      * @return an object of the implementation Class type.
      */
@@ -177,7 +182,7 @@ public class HibernateGenericStore<T>
 
     /**
      * Retrieves a List based on the given Criterions.
-     *
+     * 
      * @param expressions the Criterions for the Criteria.
      * @return a List with objects of the implementation Class type.
      */
@@ -271,6 +276,7 @@ public class HibernateGenericStore<T>
     public final void delete( T object )
     {
         sessionFactory.getCurrentSession().delete( object );
+        cacheManager.clearCache();
     }
 
     @Override
