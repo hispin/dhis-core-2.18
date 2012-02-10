@@ -9,7 +9,7 @@
 
 <input type="hidden" id="dataSetId" value="${selectedDataSet.id}">
 
-<h3>$i18n.getString('reporting_unit'): $encoder.htmlEncode( $selectedOrgunit.name ) &nbsp; $i18n.getString('reporting_period'): $format.formatPeriod( $selectedPeriod )</h3>
+<h3>$encoder.htmlEncode( $selectedOrgunit.name ) - $format.formatPeriod( $selectedPeriod )</h3>
 
 <div style="margin-bottom:15px">
 <input type="button" value="$i18n.getString( 'get_report_as_xls' )" onclick="exportDataSetReport( 'xls' )" style="width:140px">
@@ -20,7 +20,6 @@
 <div class="formSection" style="margin-bottom:30px">
 
 <div class="cent"><h3>$!encoder.htmlEncode( $grid.title )</h3></div>
-<div class="cent"><h5>$!encoder.htmlEncode( $grid.subtitle )</h5></div>
 
 <table class="listTable gridTable">
 <thead>

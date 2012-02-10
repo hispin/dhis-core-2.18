@@ -82,6 +82,7 @@ public class DefaultDataSetReportService
     private static final String SEPARATOR = ":";
     private static final String DEFAULT_HEADER = "Value";
     private static final String TOTAL_HEADER = "Total";
+    private static final String SPACE = " ";
 
     // -------------------------------------------------------------------------
     // Dependencies
@@ -148,7 +149,8 @@ public class DefaultDataSetReportService
 
         for ( Section section : sections )
         {
-            Grid grid = new ListGrid().setTitle( section.getName() );
+            Grid grid = new ListGrid().setTitle( section.getName() ).
+                setSubtitle( unit.getName() + SPACE + format.formatPeriod( period ) );
 
             DataElementCategoryCombo categoryCombo = section.getCategoryCombo();
 
@@ -270,7 +272,7 @@ public class DefaultDataSetReportService
         // ---------------------------------------------------------------------
 
         Grid grid = new ListGrid().setTitle( dataSet.getName() );
-        grid.setSubtitle( format.formatPeriod( period ) );
+        grid.setSubtitle( unit.getName() + SPACE + format.formatPeriod( period ) );
 
         // ---------------------------------------------------------------------
         // Headers
