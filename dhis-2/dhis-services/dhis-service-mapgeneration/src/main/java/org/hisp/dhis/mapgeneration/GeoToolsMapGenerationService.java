@@ -31,8 +31,6 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 import java.util.Collection;
-import java.util.LinkedList;
-import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
 import org.hisp.dhis.aggregation.AggregatedMapValue;
@@ -189,7 +187,17 @@ public class GeoToolsMapGenerationService
         mapLayer.setStrokeWidth( strokeWidth );
 
         // Build and set the internal GeoTools map objects for the layer
-        buildGeoToolsMapObjectsForMapLayer( mapLayer, mapValues );
+        
+        for ( AggregatedMapValue mapValue : mapValues )
+        {
+            // Get the org unit for this map value
+            OrganisationUnit orgUnit = organisationUnitService.getOrganisationUnit( mapValue.getOrganisationUnitId() );
+            
+            if ( orgUnit != null && orgUnit.hasCoordinates() && orgUnit.hasFeatureType() )
+            {
+                buildSingleGeoToolsMapObjectForMapLayer( mapLayer, mapValue, orgUnit );
+            }
+        }
 
         // Create an interval set for this map layer that distributes its map
         // objects into their respective intervals
@@ -204,27 +212,6 @@ public class GeoToolsMapGenerationService
         }
 
         return mapLayer;
-    }
-
-    private List<GeoToolsMapObject> buildGeoToolsMapObjectsForMapLayer( InternalMapLayer mapLayer,
-        Collection<AggregatedMapValue> mapValues )
-    {
-        // Create a list of map objects
-        List<GeoToolsMapObject> mapObjects = new LinkedList<GeoToolsMapObject>();
-
-        // Build internal map objects for each map value
-        for ( AggregatedMapValue mapValue : mapValues )
-        {
-            // Get the org unit for this map value
-            OrganisationUnit orgUnit = organisationUnitService.getOrganisationUnit( mapValue.getOrganisationUnitId() );
-            
-            if ( orgUnit != null && orgUnit.hasCoordinates() && orgUnit.hasFeatureType() )
-            {
-                mapObjects.add( buildSingleGeoToolsMapObjectForMapLayer( mapLayer, mapValue, orgUnit ) );
-            }
-        }
-
-        return mapObjects;
     }
 
     private GeoToolsMapObject buildSingleGeoToolsMapObjectForMapLayer( InternalMapLayer mapLayer,
