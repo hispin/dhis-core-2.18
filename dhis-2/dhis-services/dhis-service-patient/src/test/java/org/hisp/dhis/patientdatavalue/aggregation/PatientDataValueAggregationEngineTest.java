@@ -29,7 +29,6 @@ package org.hisp.dhis.patientdatavalue.aggregation;
 
 import org.hisp.dhis.DhisSpringTest;
 import org.hisp.dhis.dataelement.DataElement;
-import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
 import org.hisp.dhis.dataelement.DataElementCategoryService;
 import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
@@ -61,8 +60,6 @@ public class PatientDataValueAggregationEngineTest
     
     private Patient patientA;
     private Patient patientB;
-    
-    private DataElementCategoryOptionCombo categoryOptionCombo;
     
     private PatientDataValue valueA;
     private PatientDataValue valueB;
@@ -101,7 +98,6 @@ public class PatientDataValueAggregationEngineTest
         patientService.savePatient( patientA );
         patientService.savePatient( patientB );
         
-        categoryOptionCombo = categoryService.getDefaultDataElementCategoryOptionCombo();
     }
     
     @Test

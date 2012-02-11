@@ -33,8 +33,8 @@ import static org.hisp.dhis.caseaggregation.CaseAggregationCondition.OBJECT_PATI
 import static org.hisp.dhis.caseaggregation.CaseAggregationCondition.OBJECT_PATIENT_PROPERTY;
 import static org.hisp.dhis.caseaggregation.CaseAggregationCondition.OBJECT_PROGRAM;
 import static org.hisp.dhis.caseaggregation.CaseAggregationCondition.OBJECT_PROGRAM_PROPERTY;
-import static org.hisp.dhis.caseaggregation.CaseAggregationCondition.OBJECT_PROGRAM_STAGE_DATAELEMENT;
 import static org.hisp.dhis.caseaggregation.CaseAggregationCondition.OBJECT_PROGRAM_STAGE;
+import static org.hisp.dhis.caseaggregation.CaseAggregationCondition.OBJECT_PROGRAM_STAGE_DATAELEMENT;
 import static org.hisp.dhis.caseaggregation.CaseAggregationCondition.OPERATOR_AND;
 import static org.hisp.dhis.caseaggregation.CaseAggregationCondition.SEPARATOR_ID;
 import static org.hisp.dhis.caseaggregation.CaseAggregationCondition.SEPARATOR_OBJECT;
@@ -48,7 +48,6 @@ import java.util.regex.Pattern;
 
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
-import org.hisp.dhis.dataelement.DataElementCategoryService;
 import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.patient.Patient;
@@ -104,8 +103,6 @@ public class DefaultCaseAggregationConditionService
 
     private ProgramStageService programStageService;
 
-    private DataElementCategoryService categoryService;
-
     private ProgramService programService;
 
     private PatientAttributeService patientAttributeService;
@@ -140,12 +137,7 @@ public class DefaultCaseAggregationConditionService
     {
         this.programStageService = programStageService;
     }
-
-    public void setCategoryService( DataElementCategoryService categoryService )
-    {
-        this.categoryService = categoryService;
-    }
-
+    
     public void setDataElementService( DataElementService dataElementService )
     {
         this.dataElementService = dataElementService;
@@ -197,16 +189,15 @@ public class DefaultCaseAggregationConditionService
     }
 
     @Override
-    public CaseAggregationCondition getCaseAggregationCondition( DataElement dataElement,
-        DataElementCategoryOptionCombo optionCombo )
-    {
-        return aggregationConditionStore.get( dataElement, optionCombo );
-    }
-
-    @Override
     public Collection<CaseAggregationCondition> getCaseAggregationCondition( DataElement dataElement )
     {
         return aggregationConditionStore.get( dataElement );
+    }
+    
+    @Override
+    public CaseAggregationCondition getCaseAggregationCondition( DataElement dataElement, DataElementCategoryOptionCombo optionCombo )
+    {
+        return aggregationConditionStore.get( dataElement, optionCombo );
     }
 
     @Override
@@ -332,17 +323,13 @@ public class DefaultCaseAggregationConditionService
                 int dataElementId = Integer.parseInt( ids[1] );
                 DataElement dataElement = dataElementService.getDataElement( dataElementId );
 
-                int categoryOptionId = Integer.parseInt( ids[2] );
-                DataElementCategoryOptionCombo optionCombo = categoryService
-                    .getDataElementCategoryOptionCombo( categoryOptionId );
-
-                if ( programStage == null || dataElement == null || optionCombo == null )
+                if ( programStage == null || dataElement == null )
                 {
                     return INVALID_CONDITION;
                 }
 
                 matcher.appendReplacement( description, "[" + programStage.getName() + SEPARATOR_ID
-                    + dataElement.getName() + optionCombo.getName() + "]" );
+                    + dataElement.getName() + "]" );
             }
             else
             {
@@ -436,40 +423,7 @@ public class DefaultCaseAggregationConditionService
         return dataElements;
     }
 
-    @Override
-    public Collection<DataElementCategoryOptionCombo> getOptionCombosInCondition( String aggregationExpression )
-    {
-        String regExp = "\\[" + OBJECT_PROGRAM_STAGE_DATAELEMENT + SEPARATOR_OBJECT + "[0-9]+" + SEPARATOR_ID
-            + "[0-9]+" + SEPARATOR_ID + "[0-9]+" + "\\]";
-
-        Collection<DataElementCategoryOptionCombo> optionCombos = new HashSet<DataElementCategoryOptionCombo>();
-
-        // ---------------------------------------------------------------------
-        // parse expressions
-        // ---------------------------------------------------------------------
-
-        Pattern pattern = Pattern.compile( regExp );
-
-        Matcher matcher = pattern.matcher( aggregationExpression );
-
-        while ( matcher.find() )
-        {
-            String match = matcher.group();
-            match = match.replaceAll( "[\\[\\]]", "" );
-
-            String[] info = match.split( SEPARATOR_OBJECT );
-            String[] ids = info[1].split( SEPARATOR_ID );
-
-            int optionComboId = Integer.parseInt( ids[2] );
-            DataElementCategoryOptionCombo optionCombo = categoryService
-                .getDataElementCategoryOptionCombo( optionComboId );
-
-            optionCombos.add( optionCombo );
-        }
-
-        return optionCombos;
-    }
-    
+   
     public Collection<Program> getProgramsInCondition( String aggregationExpression )
     {
         String regExp = "\\[" + OBJECT_PROGRAM + SEPARATOR_OBJECT + "[0-9]+\\]";
@@ -646,20 +600,19 @@ public class DefaultCaseAggregationConditionService
 
                     int programStageId = Integer.parseInt( ids[0] );
                     int dataElementId = Integer.parseInt( ids[1] );
-                    int optionComboId = Integer.parseInt( ids[2] );
 
                     String valueToCompare = expression[i].replace( "[" + match + "]", "" ).trim();
 
                     if ( valueToCompare.equalsIgnoreCase( IS_NULL ) )
                     {
                         condition = getConditionForNotDataElement( programStageId, operator, dataElementId,
-                            optionComboId, orgunitId, startDate, endDate );
+                            orgunitId, startDate, endDate );
 
                         expression[i] = expression[i].replace( valueToCompare, "" );
                     }
                     else
                     {
-                        condition = getConditionForDataElement( programStageId, operator, dataElementId, optionComboId,
+                        condition = getConditionForDataElement( programStageId, operator, dataElementId, 
                             orgunitId, startDate, endDate );
                         if ( !expression[i].contains( "+" ) )
                         {
@@ -727,7 +680,7 @@ public class DefaultCaseAggregationConditionService
     }
 
     private String getConditionForNotDataElement( int programStageId, String operator, int dataElementId,
-        int optionComboId, int orgunitId, String startDate, String endDate )
+       int orgunitId, String startDate, String endDate )
     {
         String sql = "SELECT distinct(pi.patientid) ";
         String condition = "pi.patientid";
@@ -750,14 +703,14 @@ public class DefaultCaseAggregationConditionService
             + "INNER JOIN patientdatavalue as pd ON psi.programstageinstanceid = pd.programstageinstanceid "
             + "WHERE pd.organisationunitid = " + orgunitId + " AND ps.programstageid = " + programStageId + " "
             + "AND psi.executionDate >= '" + startDate + "' AND psi.executionDate <= '" + endDate + "' "
-            + "AND pd.dataelementid = " + dataElementId + " " + "AND pd.categoryoptioncomboid = " + optionComboId
+            + "AND pd.dataelementid = " + dataElementId + " "
             + "  ) ";
         
         return sql;
     }
 
     private String getConditionForDataElement( int programStageId, String operator, int dataElementId,
-        int optionComboId, int orgunitId, String startDate, String endDate )
+        int orgunitId, String startDate, String endDate )
     {
         String sql = "SELECT distinct(pi.patientid) ";
         
@@ -771,7 +724,7 @@ public class DefaultCaseAggregationConditionService
             + "INNER JOIN patientdatavalue as pd ON psi.programstageinstanceid = pd.programstageinstanceid "
             + "INNER JOIN programstage_dataelements as psd ON ps.programstageid = psd.programstageid " 
             + "INNER JOIN programinstance as pi ON pi.programinstanceid = psi.programinstanceid "
-            + "WHERE pd.categoryoptioncomboid = " + optionComboId + " AND psd.dataelementid = " + dataElementId + " "
+            + "WHERE psd.dataelementid = " + dataElementId + " "
             + "AND pd.organisationunitid = " + orgunitId + " AND ps.programstageid = " + programStageId + " "
             + "AND psi.executionDate >= '" + startDate + "' AND psi.executionDate <= '" + endDate + "' ";
     }

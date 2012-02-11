@@ -63,12 +63,12 @@ public class TableAlteror
     }
 
     private DataElementCategoryService categoryService;
-
+    
     public void setCategoryService( DataElementCategoryService categoryService )
     {
         this.categoryService = categoryService;
     }
-
+    
     // -------------------------------------------------------------------------
     // Action Implementation
     // -------------------------------------------------------------------------
@@ -121,6 +121,9 @@ public class TableAlteror
         executeSql( "UPDATE programvalidation SET dateType = false WHERE dateType is null");
         
         executeSql( "UPDATE programstage_dataelements SET showOnReport = false WHERE showOnReport is null");
+        
+        int categoryOptionId = categoryService.getDefaultDataElementCategoryOptionCombo().getId();
+        executeSql( "UPDATE dataelement SET categoryoptioncomboid = " + categoryOptionId + " WHERE domain='patient'");
     }
 
     // -------------------------------------------------------------------------
@@ -165,8 +168,6 @@ public class TableAlteror
     {
         StatementHolder holder = statementManager.getHolder();
 
-        int optionCombo = categoryService.getDefaultDataElementCategoryOptionCombo().getId();
-
         try
         {
             Statement statement = holder.getStatement();
@@ -192,10 +193,8 @@ public class TableAlteror
                 while ( resultSet.next() )
                 {
                     max++;
-                    String leftSide = "[" + resultSet.getString( 2 ) + "." + resultSet.getString( 3 ) + "."
-                        + optionCombo + "]";
-                    String rightSide = "[" + resultSet.getString( 4 ) + "." + resultSet.getString( 5 ) + "."
-                        + optionCombo + "]";
+                    String leftSide = "[" + resultSet.getString( 2 ) + "." + resultSet.getString( 3 ) + "." + "]";
+                    String rightSide = "[" + resultSet.getString( 4 ) + "." + resultSet.getString( 5 ) + "." + "]";
                     String operator = resultSet.getInt( 6 ) > 0 ? ">" : (resultSet.getInt( 6 ) < 0) ? "<" : "==";
 
                     String fomular = leftSide + operator + rightSide;

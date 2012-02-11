@@ -56,9 +56,9 @@ public interface CaseAggregationConditionService
     
     Collection<CaseAggregationCondition> getAllCaseAggregationCondition( );
    
-    CaseAggregationCondition getCaseAggregationCondition( DataElement dataElement, DataElementCategoryOptionCombo optionCombo);
-    
     Collection<CaseAggregationCondition> getCaseAggregationCondition( DataElement dataElement );
+    
+    CaseAggregationCondition getCaseAggregationCondition( DataElement dataElement, DataElementCategoryOptionCombo optionCombo );
 
     
     Double parseConditition( CaseAggregationCondition aggregationCondition, OrganisationUnit orgunit, Period period );
@@ -70,9 +70,7 @@ public interface CaseAggregationConditionService
     Collection<ProgramStageInstance> getProgramStageInstances( CaseAggregationCondition aggregationCondition, OrganisationUnit orgunit, Period period );
     
     Collection<DataElement> getDataElementsInCondition( String aggregationExpression );
-    
-    Collection<DataElementCategoryOptionCombo> getOptionCombosInCondition( String aggregationExpression );
-    
+        
     Collection<Program> getProgramsInCondition( String aggregationExpression );
     
     Collection<PatientAttribute> getPatientAttributesInCondition( String aggregationExpression );

@@ -43,10 +43,10 @@ public interface CaseAggregationConditionStore
     extends GenericStore<CaseAggregationCondition>
 {
     String ID = CaseAggregationConditionStore.class.getName();
-
-    CaseAggregationCondition get( DataElement dataElement, DataElementCategoryOptionCombo optionCombo);
    
     Collection<CaseAggregationCondition> get( DataElement dataElement );
+
+    CaseAggregationCondition get( DataElement dataElement, DataElementCategoryOptionCombo optionCombo );
     
     List<Integer> executeSQL( String sql );
 }

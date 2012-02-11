@@ -32,7 +32,6 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hisp.dhis.caseentry.state.SelectedStateManager;
 import org.hisp.dhis.dataelement.DataElement;
-import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
 import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.patientdatavalue.PatientDataValue;
@@ -149,8 +148,6 @@ public class SaveDateValueAction
 
         DataElement dataElement = dataElementService.getDataElement( dataElementId );
 
-        DataElementCategoryOptionCombo optionCombo = dataElement.getCategoryCombo().getOptionCombos().iterator().next();
-
         PatientDataValue patientDataValue = patientDataValueService.getPatientDataValue( programStageInstance,
             dataElement, organisationUnit );
 
@@ -173,7 +170,7 @@ public class SaveDateValueAction
         {
             LOG.debug( "Adding PatientDataValue, value added" );
 
-            patientDataValue = new PatientDataValue( programStageInstance, dataElement, optionCombo, organisationUnit,
+            patientDataValue = new PatientDataValue( programStageInstance, dataElement, organisationUnit,
                 new Date(), value, providedByAnotherFacility );
 
             patientDataValueService.savePatientDataValue( patientDataValue );

@@ -31,7 +31,6 @@ import java.util.Collection;
 import java.util.Date;
 
 import org.hisp.dhis.dataelement.DataElement;
-import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.patient.Patient;
 import org.hisp.dhis.program.ProgramStageInstance;
@@ -83,11 +82,6 @@ public class DefaultPatientDataValueService
         return patientDataValueStore.delete( dataElement );
     }
 
-    public int deletePatientDataValue( DataElementCategoryOptionCombo optionCombo )
-    {
-        return patientDataValueStore.delete( optionCombo );
-    }
-
     public void updatePatientDataValue( PatientDataValue patientDataValue )
     {
         if ( patientDataValue.getValue() == null )
@@ -110,12 +104,6 @@ public class DefaultPatientDataValueService
     {
         return patientDataValueStore.get( programStageInstance, dataElement, organisationUnit );
     }
-    
-    public PatientDataValue getPatientDataValue( ProgramStageInstance programStageInstance, DataElement dataElement,
-        DataElementCategoryOptionCombo optionCombo, OrganisationUnit organisationUnit )
-    {
-        return patientDataValueStore.get( programStageInstance, dataElement, optionCombo, organisationUnit );
-    }
 
     public Collection<PatientDataValue> getPatientDataValues( ProgramStageInstance programStageInstance )
     {
@@ -135,17 +123,6 @@ public class DefaultPatientDataValueService
     public Collection<PatientDataValue> getPatientDataValues( DataElement dataElement )
     {
         return patientDataValueStore.get( dataElement );
-    }
-
-    public Collection<PatientDataValue> getPatientDataValues( DataElement dataElement,
-        DataElementCategoryOptionCombo optionCombo )
-    {
-        return patientDataValueStore.get( dataElement, optionCombo );
-    }
-
-    public Collection<PatientDataValue> getPatientDataValues( DataElementCategoryOptionCombo optionCombo )
-    {
-        return patientDataValueStore.get( optionCombo );
     }
 
     public Collection<PatientDataValue> getPatientDataValues( OrganisationUnit organisationUnit )
@@ -168,12 +145,6 @@ public class DefaultPatientDataValueService
     public Collection<PatientDataValue> getPatientDataValues( OrganisationUnit organisationUnit, DataElement dataElement )
     {
         return patientDataValueStore.get( organisationUnit, dataElement );
-    }
-
-    public Collection<PatientDataValue> getPatientDataValues( OrganisationUnit organisationUnit,
-        DataElementCategoryOptionCombo optionCombo )
-    {
-        return patientDataValueStore.get( organisationUnit, optionCombo );
     }
 
     public Collection<PatientDataValue> getPatientDataValues( boolean providedByAnotherFacility )

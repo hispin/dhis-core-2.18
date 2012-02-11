@@ -73,8 +73,6 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		class="org.hisp.dhis.caseentry.action.caseentry.SaveValueAction"
 		scope="prototype">
 		<property name="dataElementService" ref="org.hisp.dhis.dataelement.DataElementService" />
-		<property name="dataElementCategoryService"
-			ref="org.hisp.dhis.dataelement.DataElementCategoryService" />
 		<property name="programStageInstanceService"
 			ref="org.hisp.dhis.program.ProgramStageInstanceService" />
 		<property name="patientDataValueService"
@@ -104,23 +102,6 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		<property name="dataElementService" ref="org.hisp.dhis.dataelement.DataElementService" />
 		<property name="patientDataValueService"
 			ref="org.hisp.dhis.patientdatavalue.PatientDataValueService" />
-	</bean>
-
-	<bean id="org.hisp.dhis.caseentry.screen.DataEntryScreenManager"
-		class="org.hisp.dhis.caseentry.screen.DefaultDataEntryScreenManager"
-		scope="prototype">
-		<property name="dataElementService" ref="org.hisp.dhis.dataelement.DataElementService" />
-		<property name="programStageInstanceService">
-			<ref bean="org.hisp.dhis.program.ProgramStageInstanceService" />
-		</property>
-		<property name="programStageService">
-			<ref bean="org.hisp.dhis.program.ProgramStageService" />
-		</property>
-		<property name="patientDataValueService">
-			<ref bean="org.hisp.dhis.patientdatavalue.PatientDataValueService" />
-		</property>
-		<property name="programStageDataElementService"
-			ref="org.hisp.dhis.program.ProgramStageDataElementService" />
 	</bean>
 
 	<bean

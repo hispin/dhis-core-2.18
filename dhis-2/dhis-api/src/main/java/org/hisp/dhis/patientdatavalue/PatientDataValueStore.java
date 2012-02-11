@@ -32,7 +32,6 @@ import java.util.Date;
 
 import org.hisp.dhis.common.GenericStore;
 import org.hisp.dhis.dataelement.DataElement;
-import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.patient.Patient;
 import org.hisp.dhis.program.ProgramStageInstance;
@@ -52,14 +51,9 @@ public interface PatientDataValueStore
 
     int delete( DataElement dataElement );
 
-    int delete( DataElementCategoryOptionCombo optionCombo );
-
     PatientDataValue get( ProgramStageInstance programStageInstance, DataElement dataElement,
         OrganisationUnit organisationUnit );
     
-    PatientDataValue get( ProgramStageInstance programStageInstance, DataElement dataElement,
-        DataElementCategoryOptionCombo optionCombo, OrganisationUnit organisationUnit );
-
     Collection<PatientDataValue> get( ProgramStageInstance programStageInstance );
     
     Collection<PatientDataValue> get( ProgramStageInstance programStageInstance, Collection<DataElement> dataElements );
@@ -67,10 +61,6 @@ public interface PatientDataValueStore
     Collection<PatientDataValue> get( Collection<ProgramStageInstance> programStageInstances );
 
     Collection<PatientDataValue> get( DataElement dataElement );
-
-    Collection<PatientDataValue> get( DataElement dataElement, DataElementCategoryOptionCombo optionCombo );
-
-    Collection<PatientDataValue> get( DataElementCategoryOptionCombo optionCombo );
 
     Collection<PatientDataValue> get( OrganisationUnit organisationUnit );
 
@@ -81,8 +71,6 @@ public interface PatientDataValueStore
         Collection<ProgramStageInstance> programStageInstances );
 
     Collection<PatientDataValue> get( OrganisationUnit organisationUnit, DataElement dataElement );
-
-    Collection<PatientDataValue> get( OrganisationUnit organisationUnit, DataElementCategoryOptionCombo optionCombo );
 
     Collection<PatientDataValue> get( boolean providedByAnotherFacility );
 

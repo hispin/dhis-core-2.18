@@ -33,8 +33,6 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hisp.dhis.caseentry.state.SelectedStateManager;
 import org.hisp.dhis.dataelement.DataElement;
-import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
-import org.hisp.dhis.dataelement.DataElementCategoryService;
 import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.patientdatavalue.PatientDataValue;
@@ -78,14 +76,7 @@ public class SaveValueAction
     {
         this.patientDataValueService = patientDataValueService;
     }
-
-    private DataElementCategoryService dataElementCategoryService;
-
-    public void setDataElementCategoryService( DataElementCategoryService dataElementCategoryService )
-    {
-        this.dataElementCategoryService = dataElementCategoryService;
-    }
-
+    
     private SelectedStateManager selectedStateManager;
 
     public void setSelectedStateManager( SelectedStateManager selectedStateManager )
@@ -163,12 +154,8 @@ public class SaveValueAction
 
         DataElement dataElement = dataElementService.getDataElement( dataElementId );
 
-        DataElementCategoryOptionCombo optionCombo = null;
-
-        optionCombo = dataElementCategoryService.getDataElementCategoryOptionCombo( optionComboId );
-
         PatientDataValue patientDataValue = patientDataValueService.getPatientDataValue( programStageInstance,
-            dataElement, optionCombo, organisationUnit );
+            dataElement, organisationUnit );
         
         if ( programStageInstance.getExecutionDate() == null )
         {
@@ -180,7 +167,7 @@ public class SaveValueAction
         {
             LOG.debug( "Adding PatientDataValue, value added" );
 
-            patientDataValue = new PatientDataValue( programStageInstance, dataElement, optionCombo, organisationUnit,
+            patientDataValue = new PatientDataValue( programStageInstance, dataElement, organisationUnit,
                 new Date(), value, providedByAnotherFacility );
 
             patientDataValueService.savePatientDataValue( patientDataValue );
@@ -190,7 +177,6 @@ public class SaveValueAction
             LOG.debug( "Updating PatientDataValue, value added/changed" );
 
             patientDataValue.setValue( value );
-            patientDataValue.setOptionCombo( optionCombo );
             patientDataValue.setProvidedByAnotherFacility( providedByAnotherFacility );
             patientDataValue.setTimestamp( new Date() );
 

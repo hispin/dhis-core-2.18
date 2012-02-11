@@ -30,7 +30,6 @@ import java.io.Serializable;
 import java.util.Date;
 
 import org.hisp.dhis.dataelement.DataElement;
-import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.program.ProgramStageInstance;
 
@@ -47,8 +46,6 @@ public class PatientDataValue
     private static final long serialVersionUID = 8538519573273769587L;
 
     private DataElement dataElement;
-
-    private DataElementCategoryOptionCombo optionCombo;
 
     private ProgramStageInstance programStageInstance;
 
@@ -69,42 +66,38 @@ public class PatientDataValue
     }
 
     public PatientDataValue( ProgramStageInstance programStageInstance, DataElement dataElement,
-        DataElementCategoryOptionCombo optionCombo, OrganisationUnit organisationUnit )
+        OrganisationUnit organisationUnit )
     {
         this.programStageInstance = programStageInstance;
         this.dataElement = dataElement;
-        this.optionCombo = optionCombo;
         this.organisationUnit = organisationUnit;
     }
 
     public PatientDataValue( ProgramStageInstance programStageInstance, DataElement dataElement,
-        DataElementCategoryOptionCombo optionCombo, OrganisationUnit organisationUnit, Date timeStamp )
+        OrganisationUnit organisationUnit, Date timeStamp )
     {
         this.programStageInstance = programStageInstance;
         this.dataElement = dataElement;
-        this.optionCombo = optionCombo;
         this.organisationUnit = organisationUnit;
         this.timestamp = timeStamp;
     }
 
     public PatientDataValue( ProgramStageInstance programStageInstance, DataElement dataElement,
-        DataElementCategoryOptionCombo optionCombo, OrganisationUnit organisationUnit, Date timeStamp, String value )
+        OrganisationUnit organisationUnit, Date timeStamp, String value )
     {
         this.programStageInstance = programStageInstance;
         this.dataElement = dataElement;
-        this.optionCombo = optionCombo;
         this.organisationUnit = organisationUnit;
         this.timestamp = timeStamp;
         this.value = value;
     }
 
     public PatientDataValue( ProgramStageInstance programStageInstance, DataElement dataElement,
-        DataElementCategoryOptionCombo optionCombo, OrganisationUnit organisationUnit, Date timeStamp, String value,
+        OrganisationUnit organisationUnit, Date timeStamp, String value,
         boolean providedByAnotherFacility )
     {
         this.programStageInstance = programStageInstance;
         this.dataElement = dataElement;
-        this.optionCombo = optionCombo;
         this.organisationUnit = organisationUnit;
         this.timestamp = timeStamp;
         this.value = value;
@@ -121,7 +114,6 @@ public class PatientDataValue
         final int prime = 31;
         int result = 1;
         result = prime * result + ((dataElement == null) ? 0 : dataElement.hashCode());
-        result = prime * result + ((optionCombo == null) ? 0 : optionCombo.hashCode());
         result = prime * result + ((organisationUnit == null) ? 0 : organisationUnit.hashCode());
         result = prime * result + ((programStageInstance == null) ? 0 : programStageInstance.hashCode());
         return result;
@@ -143,13 +135,6 @@ public class PatientDataValue
                 return false;
         }
         else if ( !dataElement.equals( other.dataElement ) )
-            return false;
-        if ( optionCombo == null )
-        {
-            if ( other.optionCombo != null )
-                return false;
-        }
-        else if ( !optionCombo.equals( other.optionCombo ) )
             return false;
         if ( organisationUnit == null )
         {
@@ -190,16 +175,6 @@ public class PatientDataValue
     public DataElement getDataElement()
     {
         return dataElement;
-    }
-
-    public void setOptionCombo( DataElementCategoryOptionCombo optionCombo )
-    {
-        this.optionCombo = optionCombo;
-    }
-
-    public DataElementCategoryOptionCombo getOptionCombo()
-    {
-        return optionCombo;
     }
 
     public Date getTimestamp()

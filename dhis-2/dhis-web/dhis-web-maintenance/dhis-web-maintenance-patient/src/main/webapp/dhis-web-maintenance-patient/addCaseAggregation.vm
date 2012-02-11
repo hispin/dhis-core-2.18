@@ -15,7 +15,7 @@
 <table> 
 	<thead>
       <tr>
-        <th colspan="2">$i18n.getString( "case_aggregation_condition_detail" )</th>
+        <th colspan="3">$i18n.getString( "case_aggregation_condition_detail" )</th>
       </tr>
     </thead>
 	
@@ -64,7 +64,7 @@
 <table>
 	<thead>
 		<tr>
-			<th colspan="3">$i18n.getString( "condition_detail" )</th>
+			<th colspan="4">$i18n.getString( "condition_detail" )</th>
 		</tr>
 	</thead>
 	
@@ -229,7 +229,7 @@
 		<td colspan='4'>
 			<fieldset style="border: 1px solid #3f5d8e;">
 				<legend>$i18n.getString( "condition" )</legend>
-				<textarea id="aggregationCondition" name="aggregationCondition" style="width:62.5em; height:10em" class="{validate:{required:true}}" onkeyup='getConditionDescription();'></textarea>
+				<textarea id="aggregationCondition" name="aggregationCondition" style="width:80.5em; height:10em" class="{validate:{required:true}}" onkeyup='getConditionDescription();'></textarea>
 			</fieldset>
 		</td>
 	</tr>

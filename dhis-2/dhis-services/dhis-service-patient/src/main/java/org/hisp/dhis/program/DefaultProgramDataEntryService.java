@@ -35,8 +35,6 @@ import java.util.regex.Pattern;
 
 import org.apache.commons.lang.BooleanUtils;
 import org.hisp.dhis.dataelement.DataElement;
-import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
-import org.hisp.dhis.dataelement.DataElementCategoryService;
 import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.i18n.I18n;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
@@ -102,13 +100,6 @@ public class DefaultProgramDataEntryService
     public void setProgramStageDataElementService( ProgramStageDataElementService programStageDataElementService )
     {
         this.programStageDataElementService = programStageDataElementService;
-    }
-
-    private DataElementCategoryService categoryService;
-
-    public void setCategoryService( DataElementCategoryService categoryService )
-    {
-        this.categoryService = categoryService;
     }
 
     // -------------------------------------------------------------------------
@@ -182,7 +173,7 @@ public class DefaultProgramDataEntryService
             String inputHTML = inputMatcher.group();
             inputHTML = inputHTML.replace( ">", "" );
 
-            Matcher identifierMatcher = IDENTIFIER_PATTERN_TEXTBOX.matcher( dataElementCode );
+            Matcher identifierMatcher = ProgramDataEntryService.IDENTIFIER_PATTERN_FIELD.matcher( dataElementCode );
 
             if ( identifierMatcher.find() && identifierMatcher.groupCount() > 0 )
             {
@@ -194,20 +185,14 @@ public class DefaultProgramDataEntryService
                 int dataElementId = Integer.parseInt( identifierMatcher.group( 2 ) );
                 DataElement dataElement = dataElementService.getDataElement( dataElementId );
 
-                int optionComboId = Integer.parseInt( identifierMatcher.group( 3 ) );
-                DataElementCategoryOptionCombo optionCombo = categoryService
-                    .getDataElementCategoryOptionCombo( optionComboId );
-
-                String displayValue = (dataElement == null || optionCombo == null) ? " value=\""
-                    + DATA_ELEMENT_DOES_NOT_EXIST + "\" " : " value=\"[ " + dataElement.getName() + " "
-                    + optionCombo.getName() + " ]\"";
+                String displayValue = (dataElement == null ) ? " value=\""
+                    + DATA_ELEMENT_DOES_NOT_EXIST + "\" " : " value=\"[ " + dataElement.getName() + " ]\"";
                 inputHTML = inputHTML.contains( EMPTY_VALUE_TAG ) ? inputHTML.replace( EMPTY_VALUE_TAG, displayValue )
                     : inputHTML + " " + displayValue;
 
-                String displayTitle = (dataElement == null || optionCombo == null) ? " title=\""
-                    + DATA_ELEMENT_DOES_NOT_EXIST + "\" " : " title=\"" + dataElement.getId() + "."
-                    + dataElement.getName() + "-" + optionComboId + "." + optionCombo.getName() + "-"
-                    + dataElement.getDetailedNumberType() + "\" ";
+                String displayTitle = (dataElement == null) ? " title=\"" + DATA_ELEMENT_DOES_NOT_EXIST + "\" "
+                    : " title=\"" + dataElement.getId() + "." + dataElement.getName() + "-"
+                        + dataElement.getDetailedNumberType() + "\" ";
                 inputHTML = inputHTML.contains( EMPTY_TITLE_TAG ) ? inputHTML.replace( EMPTY_TITLE_TAG, displayTitle )
                     : inputHTML + " " + displayTitle;
 
@@ -251,7 +236,7 @@ public class DefaultProgramDataEntryService
 
             String dataElementCode = inputMatcher.group( 1 );
 
-            Matcher identifierMatcher = IDENTIFIER_PATTERN_OTHERS.matcher( dataElementCode );
+            Matcher identifierMatcher = IDENTIFIER_PATTERN_FIELD.matcher( dataElementCode );
 
             if ( identifierMatcher.find() && identifierMatcher.groupCount() > 0 )
             {
@@ -319,7 +304,7 @@ public class DefaultProgramDataEntryService
 
             String dataElementCode = inputMatcher.group( 1 );
 
-            Matcher identifierMatcher = IDENTIFIER_PATTERN_OTHERS.matcher( dataElementCode );
+            Matcher identifierMatcher = IDENTIFIER_PATTERN_FIELD.matcher( dataElementCode );
 
             if ( identifierMatcher.find() && identifierMatcher.groupCount() > 0 )
             {
@@ -391,7 +376,7 @@ public class DefaultProgramDataEntryService
 
             String compulsory = "null";
             String dataElementCode = dataElementMatcher.group( 1 );
-            Matcher identifierMatcher = IDENTIFIER_PATTERN_OTHERS.matcher( dataElementCode );
+            Matcher identifierMatcher = IDENTIFIER_PATTERN_FIELD.matcher( dataElementCode );
             if ( identifierMatcher.find() && identifierMatcher.groupCount() > 0 )
             {
                 // -------------------------------------------------------------
@@ -598,7 +583,7 @@ public class DefaultProgramDataEntryService
         // Inline Javascript to add to HTML before outputting
         // ---------------------------------------------------------------------
 
-        final String jsCodeForInputs = " $DISABLED onchange=\"saveVal( $DATAELEMENTID, $OPTIONCOMBOID )\" data=\"{compulsory:$COMPULSORY, deName:'$DATAELEMENTNAME', deType:'$DATAELEMENTTYPE', provided:'$PROVIDED'}\" onkeypress=\"return keyPress(event, this)\" style=\" text-align:center;\"  ";
+        final String jsCodeForInputs = " $DISABLED onchange=\"saveVal( $DATAELEMENTID )\" data=\"{compulsory:$COMPULSORY, deName:'$DATAELEMENTNAME', deType:'$DATAELEMENTTYPE', provided:'$PROVIDED'}\" onkeypress=\"return keyPress(event, this)\" style=\" text-align:center;\"  ";
 
         StringBuffer sb = new StringBuffer();
 
@@ -624,7 +609,7 @@ public class DefaultProgramDataEntryService
             String compulsory = "null";
             String dataElementCode = dataElementMatcher.group( 1 );
 
-            Matcher identifierMatcher = IDENTIFIER_PATTERN_TEXTBOX.matcher( dataElementCode );
+            Matcher identifierMatcher = IDENTIFIER_PATTERN_FIELD.matcher( dataElementCode );
 
             if ( identifierMatcher.find() && identifierMatcher.groupCount() > 0 )
             {
@@ -635,8 +620,6 @@ public class DefaultProgramDataEntryService
                 int programStageId = Integer.parseInt( identifierMatcher.group( 1 ) );
 
                 int dataElementId = Integer.parseInt( identifierMatcher.group( 2 ) );
-
-                int optionComboId = Integer.parseInt( identifierMatcher.group( 3 ) );
 
                 DataElement dataElement = null;
 
@@ -666,6 +649,7 @@ public class DefaultProgramDataEntryService
                 {
                     continue;
                 }
+
 
                 if ( !DataElement.VALUE_TYPE_INT.equals( dataElement.getType() )
                     && !DataElement.VALUE_TYPE_STRING.equals( dataElement.getType() ) )
@@ -700,13 +684,13 @@ public class DefaultProgramDataEntryService
                         mapDataValue.put( programStageId, patientDataValues );
                     }
 
-                    patientDataValue = getValue( patientDataValues, dataElementId, optionComboId );
+                    patientDataValue = getValue( patientDataValues, dataElementId );
 
                     dataElementValue = patientDataValue != null ? patientDataValue.getValue() : dataElementValue;
                 }
                 else
                 {
-                    patientDataValue = getValue( dataValues, dataElementId, optionComboId );
+                    patientDataValue = getValue( dataValues, dataElementId );
 
                     dataElementValue = patientDataValue != null ? patientDataValue.getValue() : dataElementValue;
                 }
@@ -715,30 +699,26 @@ public class DefaultProgramDataEntryService
                 // Insert title information - Data element id, name, type, min,
                 // max
                 // -------------------------------------------------------------
-                
-                DataElementCategoryOptionCombo optionCombo = categoryService
-                    .getDataElementCategoryOptionCombo( optionComboId );
 
                 if ( dataElementCode.contains( "title=\"\"" ) )
                 {
                     dataElementCode = dataElementCode.replace( "title=\"\"", "title=\"" + dataElement.getId() + "."
-                        + dataElement.getName() + "-" + optionComboId + optionCombo.getName() + "-" + dataElementType
-                        + "\" " );
+                        + dataElement.getName() + " (" + dataElementType + ")\" " );
                 }
                 else
                 {
-                    dataElementCode += "title=\"" + dataElement.getId() + "." + dataElement.getName() + "-"
-                        + optionComboId + optionCombo.getName() + "-" + dataElementType + "\" ";
+                    dataElementCode += "title=\"" + dataElement.getId() + "." + dataElement.getName() + " (" + dataElementType + ")\" ";
                 }
 
                 // -------------------------------------------------------------
                 // Insert value of data element in output code
                 // -------------------------------------------------------------
-                String appendCode = dataElementCode;
 
+                String appendCode = dataElementCode;
+                
                 if ( dataElement.getOptionSet() != null )
                 {
-                    appendCode = appendCode.replaceFirst( "input", "select" );
+                    appendCode = appendCode.replaceFirst( "input", "select options='true'" );
                     appendCode = appendCode.replace( "name=\"entryfield\"", jsCodeForInputs );
 
                     appendCode += ">";
@@ -817,7 +797,6 @@ public class DefaultProgramDataEntryService
                 appendCode = appendCode.replace( "$PROGRAMSTAGEID", String.valueOf( programStageId ) );
                 appendCode = appendCode.replace( "$PROGRAMSTAGENAME", programStageName );
                 appendCode = appendCode.replace( "$ORGUNITNAME", orgUnitName );
-                appendCode = appendCode.replace( "$OPTIONCOMBOID", String.valueOf( optionComboId ) );
                 appendCode = appendCode.replace( "$DATAELEMENTNAME", dataElement.getName() );
                 appendCode = appendCode.replace( "$DATAELEMENTTYPE", dataElementType );
                 appendCode = appendCode.replace( "$DISABLED", disabled );
@@ -879,7 +858,7 @@ public class DefaultProgramDataEntryService
             String compulsory = "null";
             String dataElementCode = dataElementMatcher.group( 1 );
 
-            Matcher identifierMatcher = IDENTIFIER_PATTERN_OTHERS.matcher( dataElementCode );
+            Matcher identifierMatcher = IDENTIFIER_PATTERN_FIELD.matcher( dataElementCode );
 
             if ( identifierMatcher.find() && identifierMatcher.groupCount() > 0 )
             {
@@ -1060,28 +1039,6 @@ public class DefaultProgramDataEntryService
         dataElementMatcher.appendTail( sb );
 
         return sb.toString();
-    }
-
-    /**
-     * Returns the value of the PatientDataValue in the Collection of DataValues
-     * with the given data element identifier and category option combo id.
-     */
-    private PatientDataValue getValue( Collection<PatientDataValue> dataValues, int dataElementId,
-        int categoryOptionComboId )
-    {
-        for ( PatientDataValue dataValue : dataValues )
-        {
-            if ( dataValue.getOptionCombo() != null )
-            {
-                if ( dataValue.getDataElement().getId() == dataElementId
-                    && dataValue.getOptionCombo().getId() == categoryOptionComboId )
-                {
-                    return dataValue;
-                }
-            }
-        }
-
-        return null;
     }
 
     /**

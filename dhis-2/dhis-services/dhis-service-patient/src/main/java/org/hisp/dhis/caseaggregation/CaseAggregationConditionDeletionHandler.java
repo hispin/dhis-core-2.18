@@ -31,7 +31,6 @@ import java.util.Collection;
 
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryCombo;
-import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
 import org.hisp.dhis.patient.PatientAttribute;
 import org.hisp.dhis.program.Program;
 import org.hisp.dhis.system.deletion.DeletionHandler;
@@ -101,16 +100,6 @@ public class CaseAggregationConditionDeletionHandler
         for ( CaseAggregationCondition condition : conditions )
         {
             if ( categoryCombo.getOptionCombos().contains( condition.getOptionCombo() ) )
-            {
-                return ERROR;
-            }
-            
-            Collection<DataElementCategoryOptionCombo> optionCombos = aggregationConditionService
-                .getOptionCombosInCondition( condition.getAggregationExpression() );
-
-            optionCombos.retainAll( categoryCombo.getOptionCombos() );
-
-            if ( optionCombos != null && optionCombos.size() > 0 )
             {
                 return ERROR;
             }

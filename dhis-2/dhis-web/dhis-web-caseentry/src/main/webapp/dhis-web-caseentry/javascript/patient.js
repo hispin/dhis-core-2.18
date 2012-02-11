@@ -885,10 +885,8 @@ function showSelectedDataRecoding( patientId )
 			});
 			
 			jQuery('#backBtnFromEntry').hide();
-			hideById('dueDateLabel');
-			hideById('dueDate');
-			hideById('programStageIdLabel');
-			hideById('programStageId');
+			jQuery('#programStageIdTR').attr('class','hidden');
+			jQuery('#dueDateTR').attr('class','hidden');
 			hideById('patientInfoDiv');
 			hideById( 'newEncounterBtn' );
 			

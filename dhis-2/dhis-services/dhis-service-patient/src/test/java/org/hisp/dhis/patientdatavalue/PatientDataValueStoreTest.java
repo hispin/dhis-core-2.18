@@ -29,7 +29,6 @@ package org.hisp.dhis.patientdatavalue;
 
 import org.hisp.dhis.DhisSpringTest;
 import org.hisp.dhis.dataelement.DataElement;
-import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
 import org.hisp.dhis.dataelement.DataElementCategoryService;
 import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
@@ -55,9 +54,7 @@ public class PatientDataValueStoreTest
     
     private Patient patientA;
     private Patient patientB;
-    
-    private DataElementCategoryOptionCombo categoryOptionCombo;
-    
+        
     private PatientDataValue valueA;
     private PatientDataValue valueB;
     private PatientDataValue valueC;    
@@ -92,9 +89,7 @@ public class PatientDataValueStoreTest
         
         patientService.savePatient( patientA );
         patientService.savePatient( patientB );
-        
-        categoryOptionCombo = categoryService.getDefaultDataElementCategoryOptionCombo();
-        
+                
         //TODO Add values
     }
     

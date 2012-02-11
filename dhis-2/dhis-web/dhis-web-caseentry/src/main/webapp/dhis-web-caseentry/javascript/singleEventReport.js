@@ -65,7 +65,7 @@ function showDetails( programStageInstanceId )
 		.load( 'viewAnonymousEvents.action?programStageInstanceId=' + programStageInstanceId ,{}
 		,function( )
 		{
-			
+			showById('entryFormContainer');
 		}).dialog({
 			title: i18n_reports,
 			maximize: true, 
@@ -76,3 +76,5 @@ function showDetails( programStageInstanceId )
 			height: 400
 		});
 }
+
+function entryFormContainerOnReady (){}

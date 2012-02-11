@@ -31,7 +31,6 @@ import java.util.Collection;
 import java.util.Date;
 
 import org.hisp.dhis.dataelement.DataElement;
-import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.patient.Patient;
 import org.hisp.dhis.program.ProgramStageInstance;
@@ -54,13 +53,8 @@ public interface PatientDataValueService
 
     int deletePatientDataValue( DataElement dataElement );
 
-    int deletePatientDataValue( DataElementCategoryOptionCombo optionCombo );
-
     PatientDataValue getPatientDataValue( ProgramStageInstance programStageInstance, DataElement dataElement,
         OrganisationUnit organisationUnit );
-
-    PatientDataValue getPatientDataValue( ProgramStageInstance programStageInstance, DataElement dataElement,
-        DataElementCategoryOptionCombo optionCombo, OrganisationUnit organisationUnit );
 
     Collection<PatientDataValue> getPatientDataValues( ProgramStageInstance programStageInstance );
     
@@ -69,11 +63,6 @@ public interface PatientDataValueService
     Collection<PatientDataValue> getPatientDataValues( Collection<ProgramStageInstance> programStageInstances );
 
     Collection<PatientDataValue> getPatientDataValues( DataElement dataElement );
-
-    Collection<PatientDataValue> getPatientDataValues( DataElement dataElement,
-        DataElementCategoryOptionCombo optionCombo );
-
-    Collection<PatientDataValue> getPatientDataValues( DataElementCategoryOptionCombo optionCombo );
 
     Collection<PatientDataValue> getPatientDataValues( OrganisationUnit organisationUnit );
 
@@ -84,9 +73,6 @@ public interface PatientDataValueService
         Collection<ProgramStageInstance> programStageInstances );
 
     Collection<PatientDataValue> getPatientDataValues( OrganisationUnit organisationUnit, DataElement dataElement );
-
-    Collection<PatientDataValue> getPatientDataValues( OrganisationUnit organisationUnit,
-        DataElementCategoryOptionCombo optionCombo );
 
     Collection<PatientDataValue> getPatientDataValues( boolean providedByAnotherFacility );
 

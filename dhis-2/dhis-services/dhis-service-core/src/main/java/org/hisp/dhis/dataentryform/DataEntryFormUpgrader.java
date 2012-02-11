@@ -32,6 +32,8 @@ public class DataEntryFormUpgrader
 
     private final Pattern ID_PROGRAM_ENTRY_DATE = Pattern
         .compile( "id=\"value\\[(\\d+)\\].date:value\\[(\\d+)\\].date\"" );
+    
+    private final Pattern IDENTIFIER_PATTERN_TEXTBOX = Pattern.compile( "id=\"(\\d+)-(\\d+)-(\\d+)-val\"" );
 
     // -------------------------------------------------------------------------
     // Dependencies
@@ -65,6 +67,8 @@ public class DataEntryFormUpgrader
             customForm = upgradeProgramDataEntryFormForDate( customForm );
 
             customForm = upgradeProgramDataEntryFormForOption( customForm );
+            
+            customForm = upgradeProgramDataEntryForm( customForm );
 
             programDataEntryForm.setHtmlCode( customForm );
 
@@ -163,5 +167,23 @@ public class DataEntryFormUpgrader
         matcher.appendTail( out );
 
         return out.toString().replaceAll( "view=\"@@deshortname@@\"", "" );
+    }
+    
+    private String upgradeProgramDataEntryForm( String htmlCode )
+    {
+        Matcher matcher = IDENTIFIER_PATTERN_TEXTBOX.matcher( htmlCode );
+
+        StringBuffer out = new StringBuffer();
+
+        while ( matcher.find() )
+        {
+            String upgradedId = "id=\"" + matcher.group( 1 ) + "-" + matcher.group( 2 ) + "-val\"";
+
+            matcher.appendReplacement( out, upgradedId );
+        }
+
+        matcher.appendTail( out );
+        
+        return out.toString();
     }
 }

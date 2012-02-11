@@ -53,8 +53,6 @@ import org.hisp.dhis.api.mobile.model.PatientAttribute;
 import org.hisp.dhis.api.mobile.model.Task;
 import org.hisp.dhis.api.mobile.model.comparator.ActivityComparator;
 import org.hisp.dhis.dataelement.DataElement;
-import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
-import org.hisp.dhis.dataelement.DataElementCategoryService;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.patient.Patient;
 import org.hisp.dhis.patient.PatientAttributeService;
@@ -96,8 +94,6 @@ public class ActivityReportingServiceImpl
     private PatientAttributeValueService patientAttValueService;
 
     private PatientAttributeService patientAttService;
-
-    private DataElementCategoryService categoryService;
 
     private PatientDataValueService dataValueService;
 
@@ -253,8 +249,7 @@ public class ActivityReportingServiceImpl
         programStageInstance.setCompleted( true );
         programStageInstanceService.updateProgramStageInstance( programStageInstance );
         // Everything is fine, hence save
-        saveDataValues( activityValue, programStageInstance, dataElementMap, unit,
-            categoryService.getDefaultDataElementCategoryOptionCombo() );
+        saveDataValues( activityValue, programStageInstance, dataElementMap, unit );
 
     }
 
@@ -394,17 +389,15 @@ public class ActivityReportingServiceImpl
     }
 
     private void saveDataValues( ActivityValue activityValue, ProgramStageInstance programStageInstance,
-        Map<Integer, DataElement> dataElementMap, OrganisationUnit orgUnit, DataElementCategoryOptionCombo optionCombo )
+        Map<Integer, DataElement> dataElementMap, OrganisationUnit orgUnit )
     {
-
         org.hisp.dhis.dataelement.DataElement dataElement;
         String value;
 
         for ( DataValue dv : activityValue.getDataValues() )
         {
             value = dv.getValue();
-            DataElementCategoryOptionCombo cateOptCombo = categoryService.getDataElementCategoryOptionCombo( dv
-                .getCategoryOptComboID() );
+
             if ( value != null && value.trim().length() == 0 )
             {
                 value = null;
@@ -429,7 +422,7 @@ public class ActivityReportingServiceImpl
                         programStageInstanceService.updateProgramStageInstance( programStageInstance );
                     }
 
-                    dataValue = new PatientDataValue( programStageInstance, dataElement, cateOptCombo, orgUnit,
+                    dataValue = new PatientDataValue( programStageInstance, dataElement, orgUnit,
                         new Date(), value, false );
 
                     dataValueService.savePatientDataValue( dataValue );
@@ -444,7 +437,6 @@ public class ActivityReportingServiceImpl
                 }
 
                 dataValue.setValue( value );
-                dataValue.setOptionCombo( optionCombo );
                 dataValue.setProvidedByAnotherFacility( false );
                 dataValue.setTimestamp( new Date() );
 
@@ -472,12 +464,6 @@ public class ActivityReportingServiceImpl
     public void setPatientAttService( PatientAttributeService patientAttService )
     {
         this.patientAttService = patientAttService;
-    }
-
-    @Required
-    public void setCategoryService( org.hisp.dhis.dataelement.DataElementCategoryService categoryService )
-    {
-        this.categoryService = categoryService;
     }
 
     @Required
