@@ -31,13 +31,19 @@ import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.amplecode.quick.StatementHolder;
 import org.amplecode.quick.StatementManager;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.hisp.dhis.caseaggregation.CaseAggregationCondition;
+import org.hisp.dhis.caseaggregation.CaseAggregationConditionService;
 import org.hisp.dhis.dataelement.DataElementCategoryService;
 import org.hisp.dhis.patient.PatientIdentifierType;
+import org.hisp.dhis.program.ProgramValidation;
+import org.hisp.dhis.program.ProgramValidationService;
 import org.hisp.dhis.system.startup.AbstractStartupRoutine;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -47,9 +53,10 @@ import org.springframework.transaction.annotation.Transactional;
  * @version TableAlteror.java Sep 9, 2010 10:22:29 PM
  */
 public class TableAlteror
-    extends AbstractStartupRoutine
-{
+    extends AbstractStartupRoutine{
     private static final Log log = LogFactory.getLog( TableAlteror.class );
+
+    Pattern IDENTIFIER_PATTERN = Pattern.compile( "DE:(\\d+)\\.(\\d+)\\.(\\d+)" );
 
     // -------------------------------------------------------------------------
     // Dependencies
@@ -69,10 +76,24 @@ public class TableAlteror
         this.categoryService = categoryService;
     }
     
+    private CaseAggregationConditionService aggregationConditionService;
+    
+    public void setAggregationConditionService( CaseAggregationConditionService aggregationConditionService )
+    {
+        this.aggregationConditionService = aggregationConditionService;
+    }  
+    
+    private ProgramValidationService programValidationService;
+
+    public void setProgramValidationService( ProgramValidationService programValidationService )
+    {
+        this.programValidationService = programValidationService;
+    }
+  
     // -------------------------------------------------------------------------
     // Action Implementation
     // -------------------------------------------------------------------------
-
+  
     @Transactional
     public void execute()
         throws Exception
@@ -124,6 +145,10 @@ public class TableAlteror
         
         int categoryOptionId = categoryService.getDefaultDataElementCategoryOptionCombo().getId();
         executeSql( "UPDATE dataelement SET categoryoptioncomboid = " + categoryOptionId + " WHERE domain='patient'");
+        
+        upgradeCaseAggregationFormula();
+        
+        upgradeProgramValidationFormula();
     }
 
     // -------------------------------------------------------------------------
@@ -290,6 +315,50 @@ public class TableAlteror
         {
             holder.close();
         }
+    }
+    
+    private void upgradeCaseAggregationFormula()
+    {
+        Collection<CaseAggregationCondition> conditions = aggregationConditionService.getAllCaseAggregationCondition();
+        
+        for ( CaseAggregationCondition condition : conditions )
+        {
+            String formula = upgradeFormula( condition.getAggregationExpression() );
+            condition.setAggregationExpression( formula );
+            aggregationConditionService.updateCaseAggregationCondition( condition );
+        }
+    }
+    
+    private void upgradeProgramValidationFormula()
+    {
+        Collection<ProgramValidation> programValidations = programValidationService.getAllProgramValidation();
+        
+        for ( ProgramValidation programValidation : programValidations )
+        {
+            String leftSide = upgradeFormula( programValidation.getLeftSide() );
+            String rightSide = upgradeFormula( programValidation.getRightSide() );
+            programValidation.setLeftSide( leftSide );
+            programValidation.setRightSide( rightSide );
+            programValidationService.updateProgramValidation( programValidation );
+        }
+    }
+    
+    private String upgradeFormula( String formula )
+    {
+        Matcher matcher = IDENTIFIER_PATTERN.matcher( formula );
+
+        StringBuffer out = new StringBuffer();
+
+        while ( matcher.find() )
+        {
+            String upgradedId = "DE:" + matcher.group( 1 ) + "." + matcher.group( 2 );
+
+            matcher.appendReplacement( out, upgradedId );
+        }
+
+        matcher.appendTail( out );
+        
+        return out.toString();
     }
 
     private int executeSql( String sql )
