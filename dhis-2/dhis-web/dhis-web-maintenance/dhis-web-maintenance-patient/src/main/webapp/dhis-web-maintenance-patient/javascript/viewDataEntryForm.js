@@ -76,20 +76,13 @@ function getProgramStageDataElements( id )
 	var dataElementIdsStore = jQuery( "#otherProgramStageDataElements #dataElementIdsStore" );
 	dataElementIdsStore.empty();
 	
-	jQuery( "#otherProgramStageDataElements #optionComboIds" ).empty();
 	if( id != '' ){
 		jQuery.post("getSelectedDataElements.action",{
 			associationId: id
 		}, function( xml ){			
 			jQuery( xml ).find( 'dataElement' ).each( function(i, item ){
-				jQuery( item ).find( 'optionCombo' ).each( function(i, optionCombo ){	
-					dataElements.append("<option value='" + jQuery( item ).find( "json" ).text() 
-						+ "' optionCombo='{\"id\":\"" + jQuery( optionCombo ).find( "optionComboid" ).text() 
-						+"\",\"name\":\"" + jQuery( optionCombo ).find( "optionComboname" ).text() + "\" }'>" 
-						+ jQuery( item ).find( "name" ).text() + jQuery( optionCombo ).find( "optionComboname" ).text() 
-						+ "</option>");
-					dataElementIdsStore.append("<option value='" + jQuery( item ).find( "json" ).text() + "'>" + jQuery( item ).find( "name" ).text() + "</option>");
-				});
+				dataElements.append("<option value='" + jQuery( item ).find( "json" ).text() + "'>" + jQuery( item ).find( "name" ).text() + "</option>");
+				dataElementIdsStore.append("<option value='" + jQuery( item ).find( "json" ).text() + "'>" + jQuery( item ).find( "name" ).text() + "</option>");
 			});
 		});
 	}
@@ -141,7 +134,6 @@ function insertDataElement( source, programStageId )
 {
 	var oEditor = jQuery("#designTextarea").ckeditorGet();
 	var dataElement = JSON.parse( jQuery( source + ' #dataElementIds').val() );
-	var optionCombo = JSON.parse( jQuery( source + ' #dataElementIds option:selected').attr('optionCombo') );
 
 	if( dataElement == null )
 	{
@@ -150,8 +142,6 @@ function insertDataElement( source, programStageId )
 	} else {
 		jQuery( source + " #message_").html( "" );
 	}
-
-	var categoryOptionCombos = getSelectedValues( source + ' #optionComboIds' );
 
 	var dataElementId = dataElement.id;	
 	var dataElementName = dataElement.name;	
@@ -164,21 +154,18 @@ function insertDataElement( source, programStageId )
 	{
 		var titleValue = "-- " + dataElementId + "." + dataElementName + " ("+dataElementType+") --";
 		var displayName = dataElementName;
-		htmlCode = "<input name=\"entryselect\" id=\"" + id + "\" value=\"" + displayName + "\" title=\"" + displayName + "\">";
+		htmlCode = "<input title=\"" + titleValue + "\" name=\"entryselect\" id=\"" + id + "\" value=\"" + displayName + "\" title=\"" + displayName + "\">";
 	} 
 	else if ( dataElementType == "date" )
 	{
 		var titleValue = "-- " + dataElementId + "." + dataElementName + " ("+dataElementType+") --";
 		var displayName = dataElementName;
-		htmlCode = "<input name=\"entryfield\" id=\"" + id + "\" value=\"" + displayName + "\" title=\"" + displayName + "\">";
+		htmlCode = "<input title=\"" + titleValue + " \"name=\"entryfield\" id=\"" + id + "\" value=\"" + displayName + "\" title=\"" + displayName + "\">";
 	} 
 	else if ( dataElementType == "int" || dataElementType == "string" ) 
 	{
-		var optionComboName = optionCombo.name;
-		var optionComboId = optionCombo.id;
-		var titleValue = "-- " + dataElementId + "." + dataElementName + "-" + optionComboId + "." + optionComboName+" ("+dataElementType+") --";
-		var displayName = dataElementName + "-" + optionComboName;
-		id = programStageId + "-" + dataElementId + "-" + optionComboId + "-val";
+		var titleValue = "-- " + dataElementId + "." + dataElementName +" (" + dataElementType + ") --";
+		var displayName = dataElementName;
 		htmlCode += "<input title=\"" + titleValue + "\" value=\"" + displayName + "\" name=\"entryfield\" id=\"" + id + "\" />";
 	}
 	

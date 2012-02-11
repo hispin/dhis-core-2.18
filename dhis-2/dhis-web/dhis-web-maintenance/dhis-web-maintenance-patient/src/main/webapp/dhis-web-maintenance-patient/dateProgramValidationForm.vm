@@ -13,7 +13,7 @@
 	#set( $mark = false )
 	#set( $index = 0 )
 	#foreach( $dataElement in $dataElementList )
-		#set( $id= '[DE:' + $psId + '.' + $dataElement.id + '.' + $optionComboId + ']')
+		#set( $id= '[DE:' + $psId + '.' + $dataElement.id + ']')
 		#set( $validationId= $id + '.validation' )
 		#set( $index = $index + 1 )
 		<tr #alternate($mark) >

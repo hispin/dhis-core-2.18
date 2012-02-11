@@ -871,8 +871,6 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		<property name="programStageService">
 			<ref bean="org.hisp.dhis.program.ProgramStageService" />
 		</property>
-		<property name="categoryService"
-			ref="org.hisp.dhis.dataelement.DataElementCategoryService" />
 		<property name="programValidationService"
 			ref="org.hisp.dhis.program.ProgramValidationService" />
 	</bean>

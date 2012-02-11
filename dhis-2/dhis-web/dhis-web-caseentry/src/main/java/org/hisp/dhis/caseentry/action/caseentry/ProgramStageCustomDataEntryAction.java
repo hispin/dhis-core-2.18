@@ -165,9 +165,9 @@ public class ProgramStageCustomDataEntryAction
         return dataElements;
     }
     
-    private Map<String, PatientDataValue> patientDataValueMap;
+    private Map<Integer, PatientDataValue> patientDataValueMap;
 
-    public Map<String, PatientDataValue> getPatientDataValueMap()
+    public Map<Integer, PatientDataValue> getPatientDataValueMap()
     {
         return patientDataValueMap;
     }
@@ -260,11 +260,11 @@ public class ProgramStageCustomDataEntryAction
         Collection<PatientDataValue> patientDataValues = patientDataValueService
             .getPatientDataValues( programStageInstance );
 
-        patientDataValueMap = new HashMap<String, PatientDataValue>( patientDataValues.size() );
+        patientDataValueMap = new HashMap<Integer, PatientDataValue>( patientDataValues.size() );
 
         for ( PatientDataValue patientDataValue : patientDataValues )
         {
-            String key = patientDataValue.getDataElement().getId()+"-" + patientDataValue.getOptionCombo().getId();
+            int key = patientDataValue.getDataElement().getId() ;
             patientDataValueMap.put( key, patientDataValue );
         }
 

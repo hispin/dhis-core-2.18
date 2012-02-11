@@ -137,9 +137,7 @@
 			<td>	
 				<select id="dataElementIds" name="dataElementIds" style="min-width:300px" multiple="multiple" size="10" ondblclick="insertDataElement( '#dataElementSelection', '$programStage.id')">
 					#foreach( $de in $dataElements)
-						#foreach( $optionCombo in $de.categoryCombo.optionCombos)
-							<option value='$de.toJSON()' optionCombo='{"id":"$optionCombo.id","name":"$optionCombo.name" }' >$encoder.htmlEncode( $de.name ) $optionCombo.name</option>
-						#end
+					<option value='$de.toJSON()'>$encoder.htmlEncode( $de.name )</option>
 					#end
 				</select>
 				<select id="dataElementIdsStore" multiple="multiple" style="display:none">

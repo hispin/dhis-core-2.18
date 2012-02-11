@@ -84,7 +84,7 @@ public class DefaultPatientDataValueAggregationEngine
         Collection<Period> periods = periodService.getPeriodsBetweenDates( startDate, endDate );
     }
 
-    private void aggregate( DataElement dataElement, Collection<Integer> categoryOptionCombos, Period period,
+    private void aggregate( DataElement dataElement, Period period,
         Collection<Integer> patients )
     {
         // ---------------------------------------------------------------------
@@ -104,19 +104,6 @@ public class DefaultPatientDataValueAggregationEngine
             + "AND datetime > '" + DateUtils.getMediumDateString( period.getStartDate() ) + " " + "AND datetime <= "
             + DateUtils.getMediumDateString( period.getEndDate() ) + " " + "AND patientid IN ("
             + TextUtils.getCommaDelimitedString( patients ) + ") " + "AND value='T'";
-
-        // ---------------------------------------------------------------------
-        // count - int
-        // ---------------------------------------------------------------------
-
-        for ( Integer categoryOptionComboId : categoryOptionCombos )
-        {
-            sql = "SELECT count( * ) " + "FROM patientdatavalue " + "WHERE dataelementid = '" + dataElement.getId()
-                + "' " + "AND categoryoptioncomboid = '" + categoryOptionComboId + " " + "AND datetime > '"
-                + DateUtils.getMediumDateString( period.getStartDate() ) + " " + "AND datetime <= "
-                + DateUtils.getMediumDateString( period.getEndDate() ) + " " + "AND patientid IN ("
-                + TextUtils.getCommaDelimitedString( patients ) + ")";
-        }
     }
 
     private Collection<Period> filterPeriods( Collection<Period> periods, PeriodType periodType )

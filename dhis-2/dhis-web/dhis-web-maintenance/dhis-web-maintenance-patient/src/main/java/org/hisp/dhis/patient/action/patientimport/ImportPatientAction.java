@@ -36,7 +36,6 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
@@ -50,11 +49,9 @@ import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.hisp.dhis.dataelement.DataElement;
-import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
 import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.i18n.I18n;
 import org.hisp.dhis.i18n.I18nFormat;
-import org.hisp.dhis.setting.SystemSettingManager;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.patient.Patient;
@@ -78,6 +75,7 @@ import org.hisp.dhis.program.ProgramStage;
 import org.hisp.dhis.program.ProgramStageInstance;
 import org.hisp.dhis.program.ProgramStageInstanceService;
 import org.hisp.dhis.program.ProgramStageService;
+import org.hisp.dhis.setting.SystemSettingManager;
 import org.hisp.dhis.system.util.DateUtils;
 import org.hisp.dhis.system.util.StreamUtils;
 import org.w3c.dom.Document;
@@ -685,38 +683,7 @@ public class ImportPatientAction
 
             DataElement dataElement = dataElementService.getDataElement( Integer.parseInt( infor[1] ) );
 
-            int optionComboId = Integer.parseInt( infor[2] );
-            DataElementCategoryOptionCombo optionCombo = null;
-
-            if ( optionComboId == 0 )
-            {
-                String[] temp = value.trim().split( ":" );
-                if ( temp.length == 2 )
-                {
-                    optionComboId = Integer.parseInt( temp[1] );
-                }
-                else
-                {
-                    value = (value.equalsIgnoreCase( "yes" )) ? "true" : "false";
-                    optionComboId = dataElement.getCategoryCombo().getOptionCombos().iterator().next().getId();
-                }
-            }
-
-            Set<DataElementCategoryOptionCombo> options = dataElement.getCategoryCombo().getOptionCombos();
-            if ( options != null && options.size() > 0 )
-            {
-                Iterator<DataElementCategoryOptionCombo> i = options.iterator();
-                while ( i.hasNext() )
-                {
-                    DataElementCategoryOptionCombo tmpOption = i.next();
-                    if ( tmpOption.getId() == optionComboId )
-                    {
-                        optionCombo = tmpOption;
-                    }
-                }
-            }
-
-            if ( stage != null && dataElement != null && optionCombo != null )
+            if ( stage != null && dataElement != null )
             {
                 ProgramStageInstance stageInstance = programStageInstanceService.getProgramStageInstance(
                     programInstance, stage );
@@ -724,7 +691,6 @@ public class ImportPatientAction
                 PatientDataValue dataValue = new PatientDataValue();
 
                 dataValue.setDataElement( dataElement );
-                dataValue.setOptionCombo( optionCombo );
                 dataValue.setProgramStageInstance( stageInstance );
                 dataValue.setOrganisationUnit( orgunit );
                 dataValue.setTimestamp( new Date() );

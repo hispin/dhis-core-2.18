@@ -35,7 +35,6 @@ import java.util.List;
 import java.util.Map;
 
 import org.hisp.dhis.dataelement.DataElement;
-import org.hisp.dhis.dataelement.DataElementCategoryService;
 import org.hisp.dhis.program.ProgramStageDataElement;
 import org.hisp.dhis.program.ProgramStageService;
 import org.hisp.dhis.program.ProgramValidation;
@@ -62,20 +61,6 @@ public class GetDateDataElementsAction
         this.programStageService = programStageService;
     }
 
-//    private ProgramStageDataElementService programStageDataElementService;
-//
-//    public void setProgramStageDataElementService( ProgramStageDataElementService programStageDataElementService )
-//    {
-//        this.programStageDataElementService = programStageDataElementService;
-//    }
-    
-    private DataElementCategoryService categoryService;
-
-    public void setCategoryService( DataElementCategoryService categoryService )
-    {
-        this.categoryService = categoryService;
-    }
-
     private ProgramValidationService programValidationService;
 
     public void setProgramValidationService( ProgramValidationService programValidationService )
@@ -97,13 +82,6 @@ public class GetDateDataElementsAction
     public Integer getPsId()
     {
         return psId;
-    }
-
-    private int optionComboId;
-
-    public int getOptionComboId()
-    {
-        return optionComboId;
     }
 
     private List<DataElement> dataElementList = new ArrayList<DataElement>();
@@ -129,9 +107,7 @@ public class GetDateDataElementsAction
         Collection<ProgramStageDataElement> psDataElements = programStageService.getProgramStage( psId ).getProgramStageDataElements();
         
         if ( psDataElements != null && !psDataElements.isEmpty() )
-        {
-            optionComboId = categoryService.getDefaultDataElementCategoryOptionCombo().getId();
-           
+        {           
             Iterator<ProgramStageDataElement> iter = psDataElements.iterator();
 
             while ( iter.hasNext() )

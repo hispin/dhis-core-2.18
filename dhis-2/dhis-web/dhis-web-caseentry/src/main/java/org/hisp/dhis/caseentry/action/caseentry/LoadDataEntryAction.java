@@ -88,7 +88,7 @@ public class LoadDataEntryAction
 
     private List<ProgramStageDataElement> programStageDataElements = new ArrayList<ProgramStageDataElement>();
 
-    private Map<String, PatientDataValue> patientDataValueMap;
+    private Map<Integer, PatientDataValue> patientDataValueMap;
 
     private OrganisationUnit organisationUnit;
 
@@ -158,7 +158,7 @@ public class LoadDataEntryAction
         return programStageDataElements;
     }
 
-    public Map<String, PatientDataValue> getPatientDataValueMap()
+    public Map<Integer, PatientDataValue> getPatientDataValueMap()
     {
         return patientDataValueMap;
     }
@@ -206,11 +206,11 @@ public class LoadDataEntryAction
                 Collection<PatientDataValue> patientDataValues = patientDataValueService
                     .getPatientDataValues( programStageInstance );
 
-                patientDataValueMap = new HashMap<String, PatientDataValue>( patientDataValues.size() );
+                patientDataValueMap = new HashMap<Integer, PatientDataValue>( patientDataValues.size() );
 
                 for ( PatientDataValue patientDataValue : patientDataValues )
                 {
-                    String key = patientDataValue.getDataElement().getId() + "-" + patientDataValue.getOptionCombo().getId();
+                    int key = patientDataValue.getDataElement().getId() ;
                     patientDataValueMap.put( key, patientDataValue );
                 }
 

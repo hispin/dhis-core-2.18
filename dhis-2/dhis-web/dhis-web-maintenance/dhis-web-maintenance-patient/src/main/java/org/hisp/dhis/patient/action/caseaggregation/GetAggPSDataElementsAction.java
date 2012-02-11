@@ -31,10 +31,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import org.hisp.dhis.caseaggregation.CaseAggregationCondition;
 import org.hisp.dhis.dataelement.DataElement;
-import org.hisp.dhis.dataelement.DataElementCategoryCombo;
-import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
 import org.hisp.dhis.program.ProgramStageDataElementService;
 import org.hisp.dhis.program.ProgramStageService;
 
@@ -70,35 +67,24 @@ public class GetAggPSDataElementsAction
     // Input & Output
     // -------------------------------------------------------------------------
 
-    private List<String> optionComboNames;
-
-    public List<String> getOptionComboNames()
-    {
-        return optionComboNames;
-    }
-
-    private List<String> optionComboIds;
-
-    public List<String> getOptionComboIds()
-    {
-        return optionComboIds;
-    }
-
-    private List<String> optionComboType;
-
-    public List<String> getOptionComboType()
-    {
-        return optionComboType;
-    }
-
     private Integer psId;
 
     public void setPsId( Integer psId )
     {
         this.psId = psId;
     }
+    
+    public Integer getPsId()
+    {
+        return psId;
+    }
 
     private List<DataElement> dataElementList;
+
+    public List<DataElement> getDataElementList()
+    {
+        return dataElementList;
+    }
 
     // -------------------------------------------------------------------------
     // Action implementation
@@ -106,12 +92,6 @@ public class GetAggPSDataElementsAction
 
     public String execute()
     {
-        optionComboNames = new ArrayList<String>();
-
-        optionComboIds = new ArrayList<String>();
-
-        optionComboType = new ArrayList<String>();
-
         dataElementList = new ArrayList<DataElement>( programStageDataElementService
             .getListDataElement( programStageService.getProgramStage( psId ) ) );
 
@@ -123,29 +103,9 @@ public class GetAggPSDataElementsAction
             {
                 DataElement de = deIterator.next();
 
-                if ( de.getType().equals( DataElement.VALUE_TYPE_INT ) )
+                if ( !de.getType().equals( DataElement.VALUE_TYPE_INT ) )
                 {
-                    DataElementCategoryCombo dataElementCategoryCombo = de.getCategoryCombo();
-
-                    List<DataElementCategoryOptionCombo> optionCombos = new ArrayList<DataElementCategoryOptionCombo>(
-                        dataElementCategoryCombo.getOptionCombos() );
-
-                    Iterator<DataElementCategoryOptionCombo> optionComboIterator = optionCombos.iterator();
-
-                    while ( optionComboIterator.hasNext() )
-                    {
-                        DataElementCategoryOptionCombo decoc = optionComboIterator.next();
-
-                        optionComboIds.add( "[" + CaseAggregationCondition.OBJECT_PROGRAM_STAGE_DATAELEMENT + ":"
-                            + psId + "." + de.getId() + "." + decoc.getId() + "]" );
-
-                        optionComboNames.add( de.getName() + " " + decoc.getName() );
-
-                        if ( de.isMultiDimensional() )
-                            optionComboType.add( "1:" + de.getType() );
-                        else
-                            optionComboType.add( "0:" + de.getType() );
-                    }
+                    deIterator.remove();
                 }
             }
         }

@@ -141,10 +141,10 @@ function loadDataEntry()
 //Save value
 //------------------------------------------------------------------------------
 
-function saveVal( dataElementId, optionComboId )
+function saveVal( dataElementId )
 {
 	var programStageId = byId('programStageId').value;
-	var fieldId = programStageId + '-' + dataElementId + '-' + optionComboId + '-val';
+	var fieldId = programStageId + '-' + dataElementId + '-val';
 	
 	var field = byId( fieldId ); 
 	var fieldValue = jQuery.trim( field.value );
@@ -202,7 +202,7 @@ function saveVal( dataElementId, optionComboId )
     	
     }
     
-	var valueSaver = new ValueSaver( dataElementId, optionComboId,  fieldValue, providedByAnotherFacility, type, '#ccffcc'  );
+	var valueSaver = new ValueSaver( dataElementId, fieldValue, providedByAnotherFacility, type, '#ccffcc'  );
     valueSaver.save();
 }
 
@@ -230,7 +230,7 @@ function saveOpt( dataElementId )
 	field.style.backgroundColor = '#ffffcc';
 	var providedByAnotherFacility = document.getElementById( programStageId + '_' + dataElementId + '_facility' ).checked;
  
-	var valueSaver = new ValueSaver( dataElementId, 0, field.options[field.selectedIndex].value, providedByAnotherFacility, 'bool', '#ccffcc' );
+	var valueSaver = new ValueSaver( dataElementId, field.options[field.selectedIndex].value, providedByAnotherFacility, 'bool', '#ccffcc' );
     valueSaver.save();
 }
 
@@ -382,13 +382,12 @@ function getNextEntryField( field )
 // Save value for dataElement of type text, number, boolean, combo
 //-----------------------------------------------------------------
 
-function ValueSaver( dataElementId_, selectedOption_, value_, providedByAnotherFacility_, dataElementType_, resultColor_  )
+function ValueSaver( dataElementId_, value_, providedByAnotherFacility_, dataElementType_, resultColor_  )
 {
     var SUCCESS = '#ccffcc';
     var ERROR = '#ccccff';
 	
     var dataElementId = dataElementId_;
-    var selectedOption = selectedOption_;
 	var value = value_;
     var providedByAnotherFacility = providedByAnotherFacility_;
 	var type = dataElementType_;
@@ -397,7 +396,6 @@ function ValueSaver( dataElementId_, selectedOption_, value_, providedByAnotherF
     this.save = function()
     {
 		var params = 'dataElementId=' + dataElementId;
-			params += '&optionComboId=' + selectedOption;
 			params += '&value=' + value;
 			params += '&providedByAnotherFacility=' + providedByAnotherFacility;
 			
@@ -440,17 +438,7 @@ function ValueSaver( dataElementId_, selectedOption_, value_, providedByAnotherF
     function markValue( color )
     {
 		var programStageId = getFieldValue('programStageId');
-        var element;
-     
-        if( selectedOption )
-        {
-            element = byId( programStageId + "-" + dataElementId + "-" + selectedOption +'-val' );
-        }
-        else
-        {
-            element = byId( programStageId + "-" + dataElementId + '-val' );
-        }
-             
+        var element = byId( programStageId + "-" + dataElementId + '-val' );
         element.style.backgroundColor = color;
     }
 }
@@ -788,6 +776,15 @@ function entryFormContainerOnReady()
         });
 		
         TOGGLE.init();
+		
+		
+		/*jQuery("#entryForm :input").each(function()
+		{ 
+			if( jQuery(this).attr( 'options' )!= null )
+			{
+				autocompletedField(jQuery(this).attr('id'));
+			}
+		});*/
     }
 }
 

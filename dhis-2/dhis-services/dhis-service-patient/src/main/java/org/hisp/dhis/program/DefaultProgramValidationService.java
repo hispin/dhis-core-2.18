@@ -27,18 +27,18 @@
 
 package org.hisp.dhis.program;
 
+import static org.hisp.dhis.program.ProgramValidation.AFTER_CURRENT_DATE;
+import static org.hisp.dhis.program.ProgramValidation.AFTER_DUE_DATE;
+import static org.hisp.dhis.program.ProgramValidation.AFTER_OR_EQUALS_TO_CURRENT_DATE;
+import static org.hisp.dhis.program.ProgramValidation.AFTER_OR_EQUALS_TO_DUE_DATE;
+import static org.hisp.dhis.program.ProgramValidation.BEFORE_CURRENT_DATE;
+import static org.hisp.dhis.program.ProgramValidation.BEFORE_DUE_DATE;
+import static org.hisp.dhis.program.ProgramValidation.BEFORE_DUE_DATE_PLUS_OR_MINUS_MAX_DAYS;
+import static org.hisp.dhis.program.ProgramValidation.BEFORE_OR_EQUALS_TO_CURRENT_DATE;
+import static org.hisp.dhis.program.ProgramValidation.BEFORE_OR_EQUALS_TO_DUE_DATE;
 import static org.hisp.dhis.program.ProgramValidation.OBJECT_PROGRAM_STAGE_DATAELEMENT;
 import static org.hisp.dhis.program.ProgramValidation.SEPARATOR_ID;
 import static org.hisp.dhis.program.ProgramValidation.SEPARATOR_OBJECT;
-import static org.hisp.dhis.program.ProgramValidation.BEFORE_CURRENT_DATE;
-import static org.hisp.dhis.program.ProgramValidation.BEFORE_OR_EQUALS_TO_CURRENT_DATE;
-import static org.hisp.dhis.program.ProgramValidation.AFTER_CURRENT_DATE;
-import static org.hisp.dhis.program.ProgramValidation.AFTER_OR_EQUALS_TO_CURRENT_DATE;
-import static org.hisp.dhis.program.ProgramValidation.BEFORE_DUE_DATE;
-import static org.hisp.dhis.program.ProgramValidation.BEFORE_OR_EQUALS_TO_DUE_DATE;
-import static org.hisp.dhis.program.ProgramValidation.AFTER_DUE_DATE;
-import static org.hisp.dhis.program.ProgramValidation.AFTER_OR_EQUALS_TO_DUE_DATE;
-import static org.hisp.dhis.program.ProgramValidation.BEFORE_DUE_DATE_PLUS_OR_MINUS_MAX_DAYS;
 
 import java.util.Collection;
 import java.util.Date;
@@ -48,8 +48,6 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.hisp.dhis.dataelement.DataElement;
-import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
-import org.hisp.dhis.dataelement.DataElementCategoryService;
 import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.i18n.I18nFormat;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
@@ -77,8 +75,6 @@ public class DefaultProgramValidationService
 
     private PatientDataValueService valueService;
 
-    private DataElementCategoryService categoryService;
-
     // -------------------------------------------------------------------------
     // Setters
     // -------------------------------------------------------------------------
@@ -86,11 +82,6 @@ public class DefaultProgramValidationService
     public void setValidationStore( ProgramValidationStore validationStore )
     {
         this.validationStore = validationStore;
-    }
-
-    public void setCategoryService( DataElementCategoryService categoryService )
-    {
-        this.categoryService = categoryService;
     }
 
     public void setProgramStageService( ProgramStageService programStageService )
@@ -356,11 +347,7 @@ public class DefaultProgramValidationService
         int dataElementId = Integer.parseInt( ids[1] );
         DataElement dataElement = dataElementService.getDataElement( dataElementId );
 
-        int optionComboId = Integer.parseInt( ids[2] );
-        DataElementCategoryOptionCombo optionCombo = categoryService.getDataElementCategoryOptionCombo( optionComboId );
-
-        PatientDataValue dataValue = valueService.getPatientDataValue( programStageInstance, dataElement, optionCombo,
-            orgunit );
+        PatientDataValue dataValue = valueService.getPatientDataValue( programStageInstance, dataElement, orgunit );
 
         return dataValue;
     }
