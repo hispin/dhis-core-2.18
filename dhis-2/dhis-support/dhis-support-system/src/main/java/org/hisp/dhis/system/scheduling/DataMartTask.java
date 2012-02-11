@@ -145,7 +145,7 @@ public class DataMartTask
     /**
      * Generates periods based on parameters and period types argument.
      */
-    private List<Period> getPeriods( Set<String> periodTypes )
+    public List<Period> getPeriods( Set<String> periodTypes )
     {
         List<Period> periods = new RelativePeriods().getRelativePeriods( periodTypes ).getRelativePeriods( 1 );
         
@@ -154,7 +154,7 @@ public class DataMartTask
             periods.addAll( new RelativePeriods().setLastYear( true ).getRelativePeriods( 1 ) );
         }
         
-        final Date date = new Cal().now().subtract( Calendar.MONTH, 6 ).time();
+        final Date date = new Cal().now().subtract( Calendar.MONTH, 7 ).time();
         
         if ( last6Months )
         {
