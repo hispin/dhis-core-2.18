@@ -121,4 +121,28 @@ public abstract class CalendarPeriodType
         
         return periods;
     }
+    
+    /**
+     * Generates a list of all Periods between the given start and end date. The
+     * first period will span the start date. The last period will span the end
+     * date.
+     * 
+     * @param startDate the start date.
+     * @param endDate the end date.
+     * @return a list of Periods for the defined time span.
+     */
+    public List<Period> generatePeriods( Date startDate, Date endDate )
+    {
+        List<Period> periods = new ArrayList<Period>();
+        
+        Period period = createPeriod( startDate );
+        
+        while ( period.getStartDate().before( endDate ) )
+        {
+            periods.add( period );
+            period = getNextPeriod( period );
+        }
+        
+        return periods;
+    }
 }
