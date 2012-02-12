@@ -521,6 +521,6 @@ public class DataMartServiceOrgUnitTest
         assertEquals( 10.0, aggregatedOrgUnitDataValueService.getAggregatedIndicatorValue( indicatorA, periodA, unitD, groupA ) );
         assertEquals( 22.1, aggregatedOrgUnitDataValueService.getAggregatedIndicatorValue( indicatorA, periodA, unitD, groupB ) );        
         assertEquals( 51.3, aggregatedOrgUnitDataValueService.getAggregatedIndicatorValue( indicatorA, periodD, unitD, groupA ) );        
-        assertEquals( 480.6, aggregatedOrgUnitDataValueService.getAggregatedIndicatorValue( indicatorA, periodD, unitD, groupB ) );
+        assertEquals( 482.6, aggregatedOrgUnitDataValueService.getAggregatedIndicatorValue( indicatorA, periodD, unitD, groupB ) );
     }
 }
