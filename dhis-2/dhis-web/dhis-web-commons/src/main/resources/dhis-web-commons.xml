@@ -315,6 +315,11 @@
 
   <package name="dhis-web-commons-ajax" extends="dhis-web-commons" namespace="/dhis-web-commons-ajax">
 
+    <action name="getNotifications" class="org.hisp.dhis.commons.action.GetNotificationsAction">
+	  <result name="success" type="velocity">/dhis-web-commons/ajax/htmlNotifications.vm</result>
+      <param name="onExceptionReturn">plainTextError</param>
+    </action>
+
     <action name="getCategoryOptionCombos" class="org.hisp.dhis.commons.action.GetCategoryOptionCombosAction">
       <result name="success" type="velocity-xml">
         /dhis-web-commons/ajax/xmlCategoryOptionCombos.vm

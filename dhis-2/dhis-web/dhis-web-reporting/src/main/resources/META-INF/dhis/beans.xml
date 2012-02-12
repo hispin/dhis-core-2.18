@@ -242,6 +242,15 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     <property name="organisationUnitGroupService" ref="org.hisp.dhis.organisationunit.OrganisationUnitGroupService" />
   </bean>
   
+  <!-- Data mart -->
+  
+  <bean id="org.hisp.dhis.reporting.datamart.action.StartExportAction" class="org.hisp.dhis.reporting.datamart.action.StartExportAction"
+	scope="prototype">
+	<property name="scheduler" ref="scheduler"/>
+	<property name="dataMartTask" ref="dataMartLast12MonthsTask"/>
+	<property name="periodService" ref="org.hisp.dhis.period.PeriodService"/>
+  </bean>
+  
   <!-- Export -->
 
   <bean id="org.hisp.dhis.reporting.exp.ExportDataMartAction" class="org.hisp.dhis.reporting.exp.ExportDataMartAction"
