@@ -17,7 +17,6 @@
     <module>dhis-web-maintenance</module>
     <module>dhis-web-dataentry</module>
     <module>dhis-web-importexport</module>
-    <module>dhis-web-datamart</module>
     <module>dhis-web-validationrule</module>
     <module>dhis-web-reporting</module>
     <module>dhis-web-mapping</module>

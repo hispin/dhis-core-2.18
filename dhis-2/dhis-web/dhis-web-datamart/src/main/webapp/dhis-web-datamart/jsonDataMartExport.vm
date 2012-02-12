@@ -1,9 +1,0 @@
-{ "dataMartExport":
-  {
-    "name": "$!encoder.jsonEncode( ${dataMartExport.name} )",
-    "dataElements": "$!{dataMartExport.dataElements.size()}",
-    "indicators": "$!{dataMartExport.indicators.size()}",
-    "organisationUnits": "$!{dataMartExport.organisationUnits.size()}",
-    "periods": "$!{dataMartExport.periods.size()}"
-  }
-}
