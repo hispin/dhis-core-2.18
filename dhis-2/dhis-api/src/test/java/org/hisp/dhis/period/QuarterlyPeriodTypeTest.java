@@ -151,4 +151,18 @@ public class QuarterlyPeriodTypeTest
         assertEquals( periodType.createPeriod( new Cal( 2005, 7, 1 ).time() ), periods.get( 2 ) );
         assertEquals( periodType.createPeriod( new Cal( 2005, 10, 1 ).time() ), periods.get( 3 ) );
     }
+
+    @Test
+    public void testGeneratePeriodsBetweenDates()
+    {
+        startCal.set( 2009, 8, 15 );
+        endCal.set( 2010, 2, 20 );
+        
+        List<Period> periods = periodType.generatePeriods( startCal.time(), endCal.time() );
+
+        assertEquals( 3, periods.size() );
+        assertEquals( periodType.createPeriod( new Cal( 2009, 7, 1 ).time() ), periods.get( 0 ) );
+        assertEquals( periodType.createPeriod( new Cal( 2009, 10, 1 ).time() ), periods.get( 1 ) );
+        assertEquals( periodType.createPeriod( new Cal( 2010, 1, 1 ).time() ), periods.get( 2 ) );
+    }
 }
