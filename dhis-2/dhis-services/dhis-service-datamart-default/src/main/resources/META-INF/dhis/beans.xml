@@ -5,18 +5,10 @@
 http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.1.xsd
 http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.1.xsd">
   
-  <!-- DataMartExportStore -->
-
-  <bean id="org.hisp.dhis.datamart.DataMartExportStore" class="org.hisp.dhis.hibernate.HibernateGenericStore">
-    <property name="clazz" value="org.hisp.dhis.datamart.DataMartExport" />
-    <property name="sessionFactory" ref="sessionFactory" />
-  </bean>
-  
   <!-- DataMartService -->
 
   <bean id="org.hisp.dhis.datamart.DataMartService" class="org.hisp.dhis.datamart.impl.DefaultDataMartService">
     <property name="dataMartEngine" ref="org.hisp.dhis.datamart.engine.DataMartEngine" />
-    <property name="dataMartExportStore" ref="org.hisp.dhis.datamart.DataMartExportStore" />
     <property name="periodService" ref="org.hisp.dhis.period.PeriodService" />
   </bean>
   
@@ -37,12 +29,6 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
 	<property name="organisationUnitGroupService" ref="org.hisp.dhis.organisationunit.OrganisationUnitGroupService" />
 	<property name="systemSettingManager" ref="org.hisp.dhis.setting.SystemSettingManager" />
 	<property name="notifier" ref="notifier" />
-  </bean>
-
-  <bean id="internal-process-DataMart" class="org.hisp.dhis.datamart.DataMartInternalProcess" scope="prototype">
-    <property name="statementManager" ref="statementManager" />
-    <property name="inMemoryStatementManager" ref="inMemoryStatementManager" />
-    <property name="dataMartService" ref="org.hisp.dhis.datamart.DataMartService" />
   </bean>
   
   <!-- Crosstab -->
@@ -118,35 +104,10 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
     <property name="batchHandlerFactory" ref="batchHandlerFactory" />
 	<property name="statementManager" ref="inMemoryStatementManager" />
   </bean>
-    
-  <!-- DeletionHandler -->
-
-  <bean id="org.hisp.dhis.datamart.DataMartExportDeletionHandler" class="org.hisp.dhis.datamart.DataMartExportDeletionHandler">
-    <property name="dataMartService" ref="org.hisp.dhis.datamart.DataMartService" />
-  </bean>
-  
-  <!-- DeletionManager -->
-
-  <bean class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
-    <property name="targetObject" ref="deletionManager" />
-    <property name="targetMethod" value="addDeletionHandlers" />
-    <property name="arguments">
-      <list>
-        <list>
-          <ref local="org.hisp.dhis.datamart.DataMartExportDeletionHandler" />
-        </list>
-      </list>
-    </property>
-  </bean>
-  
+      
   <!-- Deletion AOP definitions -->
 
   <aop:config>
-
-    <aop:aspect ref="deletionInterceptor">
-      <aop:before pointcut="execution( * org.hisp.dhis.datamart.DataMartService.deleteDataMartExport(..) )"
-        method="intercept" />
-    </aop:aspect>
 
     <aop:aspect ref="inMemoryStatementInterceptor">
       <aop:around pointcut="execution( * org.hisp.dhis.datamart.DataMartService.export(..) )" method="intercept" />

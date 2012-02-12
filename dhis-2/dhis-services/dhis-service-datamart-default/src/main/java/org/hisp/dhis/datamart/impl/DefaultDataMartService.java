@@ -30,19 +30,12 @@ package org.hisp.dhis.datamart.impl;
 import static org.hisp.dhis.system.util.ConversionUtils.getIdentifiers;
 
 import java.util.Collection;
-import java.util.HashSet;
 
-import org.hisp.dhis.common.GenericIdentifiableObjectStore;
-import org.hisp.dhis.dataelement.DataElement;
-import org.hisp.dhis.datamart.DataMartExport;
 import org.hisp.dhis.datamart.DataMartService;
 import org.hisp.dhis.datamart.engine.DataMartEngine;
-import org.hisp.dhis.indicator.Indicator;
-import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodService;
 import org.hisp.dhis.period.RelativePeriods;
-import org.springframework.transaction.annotation.Transactional;
 
 /**
  * @author Lars Helge Overland
@@ -60,13 +53,6 @@ public class DefaultDataMartService
     {
         this.dataMartEngine = dataMartEngine;
     }
-
-    private GenericIdentifiableObjectStore<DataMartExport> dataMartExportStore;
-
-    public void setDataMartExportStore( GenericIdentifiableObjectStore<DataMartExport> dataMartExportStore )
-    {
-        this.dataMartExportStore = dataMartExportStore;
-    }
     
     private PeriodService periodService;
 
@@ -78,27 +64,6 @@ public class DefaultDataMartService
     // -------------------------------------------------------------------------
     // Export
     // -------------------------------------------------------------------------
-
-    @Transactional //TODO potential problem with reload periods inside same tx
-    public void export( int id )
-    {
-        DataMartExport dataMartExport = getDataMartExport( id );
-        
-        Collection<Period> allPeriods = new HashSet<Period>( dataMartExport.getPeriods() );
-        
-        if ( dataMartExport.getRelatives() != null )
-        {
-            allPeriods.addAll( periodService.reloadPeriods( dataMartExport.getRelatives().getRelativePeriods() ) );
-        }
-        
-        dataMartEngine.export( 
-            getIdentifiers( DataElement.class, dataMartExport.getDataElements() ), 
-            getIdentifiers( Indicator.class, dataMartExport.getIndicators() ), 
-            getIdentifiers( Period.class, allPeriods ),
-            getIdentifiers( OrganisationUnit.class, dataMartExport.getOrganisationUnits() ),
-            null, false );
-    }
-
  
     public void export( Collection<Integer> dataElementIds, Collection<Integer> indicatorIds,
         Collection<Integer> periodIds, Collection<Integer> organisationUnitIds )
@@ -122,63 +87,5 @@ public class DefaultDataMartService
         }
         
         dataMartEngine.export( dataElementIds, indicatorIds, periodIds, organisationUnitIds, organisationUnitGroupIds, completeExport );
-    }
-    
-    // -------------------------------------------------------------------------
-    // DataMartExport
-    // -------------------------------------------------------------------------
-    
-    @Transactional
-    public void saveDataMartExport( DataMartExport export )
-    {
-        dataMartExportStore.save( export );
-    }
-
-    @Transactional
-    public void deleteDataMartExport( DataMartExport export )
-    {
-        dataMartExportStore.delete( export );
-    }
-
-    @Transactional
-    public DataMartExport getDataMartExport( int id )
-    {
-        return dataMartExportStore.get( id );
-    }
-
-    @Transactional
-    public Collection<DataMartExport> getAllDataMartExports()
-    {
-        return dataMartExportStore.getAll();
-    }
-
-    @Transactional
-    public DataMartExport getDataMartExportByName( String name )
-    {
-        return dataMartExportStore.getByName( name );
-    }
-
-    @Transactional
-    public int getDataMartExportCount()
-    {
-        return dataMartExportStore.getCount();
-    }
-
-    @Transactional
-    public int getDataMartExportCountByName( String name )
-    {
-        return dataMartExportStore.getCountByName( name );
-    }
-
-    @Transactional
-    public Collection<DataMartExport> getDataMartExportsBetween( int first, int max )
-    {
-        return dataMartExportStore.getBetween( first, max );
-    }
-
-    @Transactional
-    public Collection<DataMartExport> getDataMartExportsBetweenByName( String name, int first, int max )
-    {
-        return dataMartExportStore.getBetweenByName( name, first, max );
     }
 }
