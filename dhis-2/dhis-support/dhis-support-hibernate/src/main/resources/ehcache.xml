@@ -64,7 +64,7 @@
 
   <cache name="org.hisp.dhis.user.UserCredentials.userAuthorityGroups" maxElementsInMemory="200" />
 
-  <cache name="org.hisp.dhis.options.SystemSetting" maxElementsInMemory="200" />
+  <cache name="org.hisp.dhis.setting.SystemSetting" maxElementsInMemory="200" />
 
   <cache name="org.hisp.dhis.translation.Translation" maxElementsInMemory="200000" />
 
@@ -94,6 +94,10 @@
 
   <cache name="org.hisp.dhis.attribute.AttributeValue" maxElementsInMemory="5000" />
 
+  <cache name="org.hisp.dhis.option.OptionSet" maxElementsInMemory="50" />
+  
+  <cache name="org.hisp.dhis.dataset.LockException" maxElementsInMemory="1000" />
+
   <!-- Hibernate Associations -->
 
   <cache name="org.hisp.dhis.dataelement.DataElementCategoryCombo.categories" maxElementsInMemory="300" />
@@ -111,6 +115,8 @@
   <cache name="org.hisp.dhis.dataset.DataSet.sources" maxElementsInMemory="120000" />
 
   <cache name="org.hisp.dhis.dataset.DataSet.sections" maxElementsInMemory="3000" />
+
+  <cache name="org.hisp.dhis.dataset.DataSet.lockExceptions" maxElementsInMemory="1000" />
 
   <cache name="org.hisp.dhis.dataelement.DataElement.groups" maxElementsInMemory="3000" />
 
@@ -150,8 +156,7 @@
 
   <cache name="org.hisp.dhis.organisationunit.OrganisationUnitGroup.members" maxElementsInMemory="10000" />
 
-  <cache name="org.hisp.dhis.organisationunit.OrganisationUnitGroupSet.organisationUnitGroups"
-    maxElementsInMemory="400" />
+  <cache name="org.hisp.dhis.organisationunit.OrganisationUnitGroupSet.organisationUnitGroups" maxElementsInMemory="400" />
 
   <cache name="org.hisp.dhis.reporttable.ReportTable.dataElements" maxElementsInMemory="1500" />
 
@@ -182,6 +187,8 @@
   <cache name="org.hisp.dhis.attribute.Attribute.attributeValues" maxElementsInMemory="5000" />
 
   <cache name="org.hisp.dhis.attribute.AttributeOption.attributes" maxElementsInMemory="500" />
+  
+  <cache name="org.hisp.dhis.option.OptionSet.options" maxElementsInMemory="2000" />
 
   <!-- Hibernate Query Cache -->
 
