@@ -27,6 +27,7 @@ package org.hisp.dhis.commons.action;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.hisp.dhis.system.notification.Notification;
@@ -74,13 +75,13 @@ public class GetNotificationsAction
     // Output
     // -------------------------------------------------------------------------
     
-    private List<Notification> notifications;
+    private List<Notification> notifications = new ArrayList<Notification>();
     
     public List<Notification> getNotifications()
     {
         return notifications;
     }
-
+    
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
@@ -101,7 +102,7 @@ public class GetNotificationsAction
         {
             notifications = notifier.getNotifications( max );
         }
-            
+        
         return SUCCESS;
     }
 }

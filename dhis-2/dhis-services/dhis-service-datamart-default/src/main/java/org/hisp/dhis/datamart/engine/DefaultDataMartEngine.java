@@ -230,7 +230,7 @@ public class DefaultDataMartEngine
         expressionService.filterInvalidIndicators( indicators );
 
         clock.logTime( "Filtered objects" );
-        notifier.notify( DATAMART, "Loading indicator formulas" );
+        notifier.notify( DATAMART, "Loading indicators" );
 
         // ---------------------------------------------------------------------
         // Explode indicator expressions

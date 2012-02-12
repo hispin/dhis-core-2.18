@@ -461,7 +461,6 @@ span.valid
 div.inputCriteria
 {
   position: relative;
-  left: 2px;
   width: 400px; /* Override this */
   height: 400px; /* Override this */
   border: 1px solid #a4d2a3;
