@@ -2,10 +2,13 @@ package org.hisp.dhis.reporting.datamart.action;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
+import org.hisp.dhis.period.CalendarPeriodType;
 import org.hisp.dhis.period.Period;
-import org.hisp.dhis.period.PeriodService;
+import org.hisp.dhis.period.PeriodType;
 import org.hisp.dhis.system.scheduling.DataMartTask;
 import org.hisp.dhis.system.scheduling.Scheduler;
 import org.hisp.dhis.system.util.DateUtils;
@@ -33,16 +36,16 @@ public class StartExportAction
         this.dataMartTask = dataMartTask;
     }
     
-    private PeriodService periodService;
-
-    public void setPeriodService( PeriodService periodService )
-    {
-        this.periodService = periodService;
-    }
-
     // -------------------------------------------------------------------------
     // Input
     // -------------------------------------------------------------------------
+
+    private Set<String> periodType = new HashSet<String>();
+    
+    public void setPeriodType( Set<String> periodType )
+    {
+        this.periodType = periodType;
+    }
 
     private String startDate;
     
@@ -69,11 +72,21 @@ public class StartExportAction
         Date start = DateUtils.getMediumDate( startDate );
         Date end = DateUtils.getMediumDate( endDate );
         
-        List<Period> periods = new ArrayList<Period>( periodService.getPeriodsBetweenDates( start, end ) );
+        List<Period> periods = new ArrayList<Period>();
         
-        dataMartTask.setPeriods( periods );
+        for ( String type : periodType )
+        {
+            CalendarPeriodType periodType = (CalendarPeriodType) PeriodType.getPeriodTypeByName( type );
+            
+            periods.addAll( periodType.generatePeriods( start, end ) );
+        }
         
-        scheduler.executeTask( dataMartTask );
+        if ( periods.size() > 0 )
+        {
+            dataMartTask.setPeriods( periods );
+        
+            scheduler.executeTask( dataMartTask );
+        }
         
         return SUCCESS;
     }

@@ -1,20 +1,30 @@
 
 $( document ).ready( function() {
 	datePickerInRange( 'startDate' , 'endDate' );
+	pingNotificationsTimeout();
 } );
 
 function startExport()
 {
-	var url = 'startExport.action';
 	var startDate = $( '#startDate' ).val();
 	var endDate = $( '#endDate' ).val();
 	
-	$.get( url, { startDate:startDate, endDate:endDate }, pingNotifications );
+	var url = 'startExport.action?startDate=' + startDate + '&endDate=' + endDate;
+	
+	$( 'input[name="periodType"]').each( function() {
+		url += "&periodType=" + $( this ).val();
+	} );
+	
+	$.get( url, pingNotifications );
 }
 
 function pingNotifications()
 {
-	$( '#notificationDiv' ).load( '../dhis-web-commons-ajax/getNotifications.action?category=DATAMART' );
-	
-	setTimeout( "pingNotifications()", 2000 );
+	$( '#notificationDiv' ).load( '../dhis-web-commons-ajax/getNotifications.action?category=DATAMART' );	
+}
+
+function pingNotificationsTimeout()
+{
+	pingNotifications();
+	setTimeout( "pingNotificationsTimeout()", 2000 );
 }

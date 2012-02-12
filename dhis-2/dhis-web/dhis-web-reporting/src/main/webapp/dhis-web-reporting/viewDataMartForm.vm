@@ -1,10 +1,19 @@
 
 <h3>$i18n.getString( "data_mart_management" )</h3>
 
-<div id="critiera" class="inputCriteria" style="width:380px;height:110px;">
+<div id="critiera" class="inputCriteria" style="width:380px;height:170px;">
 <table>
 <col width="120">
 <col width="240">
+<tr>
+	<td>$i18n.getString( "period_types" )</td>
+	<td><label for="monthly">$i18n.getString( "Monthly" )</label><input type="checkbox" id="monthly" name="periodType" value="Monthly" checked="checked">&nbsp;
+		<label for="biMonthly">$i18n.getString( "BiMonthly" )</label><input type="checkbox" id="biMonthly" name="periodType" value="BiMonthly" checked="checked">&nbsp;
+		<label for="quarterly">$i18n.getString( "Quarterly" )</label><input type="checkbox" id="quarterly" name="periodType" value="Quarterly" checked="checked"><br>
+		<label for="sixMonthly">$i18n.getString( "SixMonthly" )</label><input type="checkbox" id="sixMonthly" name="periodType" value="SixMonthly" checked="checked">&nbsp;
+		<label for="yearly">$i18n.getString( "Yearly" )</label><input type="checkbox" id="yearly" name="periodType" value="Yearly" checked="checked"><br><br>
+	</td>
+</tr>
 <tr>
 	<td>$i18n.getString( "start_date" )</td>
 	<td><input type="text" id="startDate" style="width:200px"></td>
@@ -20,4 +29,4 @@
 </table>
 </div>
 
-<div id="notificationDiv"></div>
+<div id="notificationDiv" class="notifications"></div>

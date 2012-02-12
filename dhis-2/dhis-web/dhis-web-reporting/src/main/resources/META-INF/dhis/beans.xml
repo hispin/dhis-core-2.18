@@ -248,7 +248,6 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 	scope="prototype">
 	<property name="scheduler" ref="scheduler"/>
 	<property name="dataMartTask" ref="dataMartLast12MonthsTask"/>
-	<property name="periodService" ref="org.hisp.dhis.period.PeriodService"/>
   </bean>
   
   <!-- Export -->
