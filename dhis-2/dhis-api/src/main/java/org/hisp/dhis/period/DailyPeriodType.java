@@ -71,17 +71,21 @@ public class DailyPeriodType
     @Override
     public Period createPeriod()
     {
-        Date date = createCalendarInstance().getTime();
-
-        return new Period( this, date, date );
+        return createPeriod( createCalendarInstance() );
     }
 
     @Override
     public Period createPeriod( Date date )
     {
-        Date fixedDate = createCalendarInstance( date ).getTime();
+        return createPeriod( createCalendarInstance( date ) );
+    }
+    
+    @Override
+    public Period createPeriod( Calendar cal )
+    {
+        Date date = cal.getTime();
 
-        return new Period( this, fixedDate, fixedDate );
+        return new Period( this, date, date );
     }
     
     @Override
