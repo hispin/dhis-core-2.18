@@ -1,8 +1,6 @@
 var MODE_REPORT = "report";
 var MODE_TABLE = "table";
 
-var reportType;
-
 // -----------------------------------------------------------------------------
 // Report params
 // -----------------------------------------------------------------------------
@@ -33,47 +31,15 @@ function validationError()
 // Report
 // -----------------------------------------------------------------------------
 
-function generateReport( type )
+function viewReport( type )
 {
-    reportType = type != null && type != "" ? type : "pdf";
+	var reportType = type != null && type != "" ? type : "pdf";
 
     if ( validationError() )
     {
         return false;
     }
-
-    setWaitMessage( i18n_please_wait );
-
-    var doDataMart = ( $( "#doDataMart" ).length && $( "#doDataMart" ).val() == "true" );
-
-    if ( doDataMart )
-    {
-    	$.get( "createTable.action?" + getUrlParams(), getReportStatus );
-    } 
-    else
-    {
-        viewReport();
-    }
-}
-
-function getReportStatus()
-{
-	$.get( "getStatus.action", function( json )
-	{
-		if ( json.response == "success" ) // Finished
-		{
-			setMessage( i18n_process_completed );
-        	viewReport();
-		}
-		else
-		{
-			setTimeout( "getReportStatus();", 1500 );
-		}
-	} );
-}
-
-function viewReport( urlParams )
-{
+    
     var mode = $( "#mode" ).val();
 
     setMessage( i18n_process_completed );
@@ -82,8 +48,7 @@ function viewReport( urlParams )
     {
         window.location.href = "renderReport.action?type=" + reportType + "&" + getUrlParams();
     } 
-    else
-    // MODE_TABLE
+    else // MODE_TABLE
     {
         window.location.href = "exportTable.action?type=html&" + getUrlParams();
     }
