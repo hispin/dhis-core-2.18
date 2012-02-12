@@ -1,6 +1,0 @@
-{ "status":
-  {
-	"message": "$!{encoder.htmlEncode( ${message} )}",
-	"running": "$!{running}"
-  }
-}
