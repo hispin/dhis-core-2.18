@@ -32,9 +32,14 @@ import org.hisp.dhis.chart.Chart;
 import org.hisp.dhis.concept.Concept;
 import org.hisp.dhis.constant.Constant;
 import org.hisp.dhis.datadictionary.DataDictionary;
-import org.hisp.dhis.dataelement.*;
+import org.hisp.dhis.dataelement.DataElement;
+import org.hisp.dhis.dataelement.DataElementCategory;
+import org.hisp.dhis.dataelement.DataElementCategoryCombo;
+import org.hisp.dhis.dataelement.DataElementCategoryOption;
+import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
+import org.hisp.dhis.dataelement.DataElementGroup;
+import org.hisp.dhis.dataelement.DataElementGroupSet;
 import org.hisp.dhis.dataentryform.DataEntryForm;
-import org.hisp.dhis.datamart.DataMartExport;
 import org.hisp.dhis.dataset.CompleteDataSetRegistration;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.dataset.LockException;
@@ -56,17 +61,30 @@ import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroup;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroupSet;
 import org.hisp.dhis.organisationunit.OrganisationUnitLevel;
-import org.hisp.dhis.patient.*;
+import org.hisp.dhis.patient.Patient;
+import org.hisp.dhis.patient.PatientAttribute;
+import org.hisp.dhis.patient.PatientAttributeGroup;
+import org.hisp.dhis.patient.PatientIdentifier;
+import org.hisp.dhis.patient.PatientIdentifierType;
 import org.hisp.dhis.patientattributevalue.PatientAttributeValue;
 import org.hisp.dhis.patientdatavalue.PatientDataValue;
 import org.hisp.dhis.period.Period;
-import org.hisp.dhis.program.*;
+import org.hisp.dhis.program.Program;
+import org.hisp.dhis.program.ProgramInstance;
+import org.hisp.dhis.program.ProgramStage;
+import org.hisp.dhis.program.ProgramStageDataElement;
+import org.hisp.dhis.program.ProgramStageInstance;
+import org.hisp.dhis.program.ProgramValidation;
 import org.hisp.dhis.programattributevalue.ProgramAttributeValue;
 import org.hisp.dhis.relationship.Relationship;
 import org.hisp.dhis.relationship.RelationshipType;
 import org.hisp.dhis.report.Report;
 import org.hisp.dhis.reporttable.ReportTable;
-import org.hisp.dhis.user.*;
+import org.hisp.dhis.user.User;
+import org.hisp.dhis.user.UserAuthorityGroup;
+import org.hisp.dhis.user.UserCredentials;
+import org.hisp.dhis.user.UserGroup;
+import org.hisp.dhis.user.UserSetting;
 import org.hisp.dhis.validation.ValidationCriteria;
 import org.hisp.dhis.validation.ValidationRule;
 import org.hisp.dhis.validation.ValidationRuleGroup;
@@ -399,15 +417,6 @@ public abstract class DeletionHandler
     }
 
     public String allowDeleteUserSetting( UserSetting userSetting )
-    {
-        return null;
-    }
-
-    public void deleteDataMartExport( DataMartExport dataMartExport )
-    {
-    }
-
-    public String allowDeleteDataMartExport( DataMartExport dataMartExport )
     {
         return null;
     }

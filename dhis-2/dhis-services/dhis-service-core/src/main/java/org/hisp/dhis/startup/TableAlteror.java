@@ -91,7 +91,12 @@ public class TableAlteror
         executeSql( "DROP TABLE dashboardcontent_olapurls" );
         executeSql( "DROP TABLE olapurl" );
         executeSql( "DROP TABLE calculateddataelement" );
-        executeSql( "DROP TABLE systemsequence" );        
+        executeSql( "DROP TABLE systemsequence" );
+        executeSql( "DROP TABLE datamartexport" );
+        executeSql( "DROP TABLE datamartexportdataelements" );
+        executeSql( "DROP TABLE datamartexportindicators" );
+        executeSql( "DROP TABLE datamartexportorgunits" );
+        executeSql( "DROP TABLE datamartexportperiods" );
         executeSql( "ALTER TABLE dataelementcategoryoption drop column categoryid" );
         executeSql( "ALTER TABLE reporttable DROP column dimension_type" );
         executeSql( "ALTER TABLE reporttable DROP column dimensiontype" );
@@ -300,18 +305,6 @@ public class TableAlteror
         executeSql( "ALTER TABLE chart DROP COLUMN last12individualmonths" );
         executeSql( "ALTER TABLE chart DROP COLUMN individualmonthsthisyear" );
         executeSql( "ALTER TABLE chart DROP COLUMN individualquartersthisyear" );
-
-        executeSql( "ALTER TABLE datamartexport DROP COLUMN last3months" );
-        executeSql( "ALTER TABLE datamartexport DROP COLUMN last6months" );
-        executeSql( "ALTER TABLE datamartexport DROP COLUMN last9months" );
-        executeSql( "ALTER TABLE datamartexport DROP COLUMN sofarthisyear" );
-        executeSql( "ALTER TABLE datamartexport DROP COLUMN sofarthisfinancialyear" );
-        executeSql( "ALTER TABLE datamartexport DROP COLUMN last3to6months" );
-        executeSql( "ALTER TABLE datamartexport DROP COLUMN last6to9months" );
-        executeSql( "ALTER TABLE datamartexport DROP COLUMN last9to12months" );
-        executeSql( "ALTER TABLE datamartexport DROP COLUMN last12individualmonths" );
-        executeSql( "ALTER TABLE datamartexport DROP COLUMN individualmonthsthisyear" );
-        executeSql( "ALTER TABLE datamartexport DROP COLUMN individualquartersthisyear" );
 
         // remove source
         
