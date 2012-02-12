@@ -58,7 +58,7 @@ import org.junit.Test;
 public class DataMartServiceAggregationLevelsTest
     extends DhisTest
 {
-    private DataMartService dataMartService;
+    private DataMartEngine dataMartEngine;
     
     private AggregatedDataValueService aggregatedDataValueService;
 
@@ -95,7 +95,7 @@ public class DataMartServiceAggregationLevelsTest
     @Override
     public void setUpTest()
     {
-        dataMartService = (DataMartService) getBean( DataMartService.ID );
+        dataMartEngine = (DataMartEngine) getBean( DataMartEngine.ID );
         
         aggregatedDataValueService = (AggregatedDataValueService) getBean( AggregatedDataValueService.ID );
         
@@ -218,7 +218,7 @@ public class DataMartServiceAggregationLevelsTest
         
         dataElementService.updateDataElement( dataElement );
         
-        dataMartService.export( dataElementIds, new ArrayList<Integer>(), periodIds, organisationUnitIds );
+        dataMartEngine.export( dataElementIds, new ArrayList<Integer>(), periodIds, organisationUnitIds );
         
         assertEquals( 280.0, aggregatedDataValueService.getAggregatedValue( dataElement, categoryOptionCombo, period, unitA ) );
         assertEquals( 240.0, aggregatedDataValueService.getAggregatedValue( dataElement, categoryOptionCombo, period, unitB ) );
@@ -244,7 +244,7 @@ public class DataMartServiceAggregationLevelsTest
         
         dataElementService.updateDataElement( dataElement );
         
-        dataMartService.export( dataElementIds, new ArrayList<Integer>(), periodIds, organisationUnitIds );
+        dataMartEngine.export( dataElementIds, new ArrayList<Integer>(), periodIds, organisationUnitIds );
         
         assertEquals( 280.0, aggregatedDataValueService.getAggregatedValue( dataElement, categoryOptionCombo, period, unitA ) );
         assertEquals( 240.0, aggregatedDataValueService.getAggregatedValue( dataElement, categoryOptionCombo, period, unitB ) );

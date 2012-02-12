@@ -58,7 +58,7 @@ import org.junit.Test;
 public class DataMartServiceTimeDimensionTest
     extends DhisTest
 {
-    private DataMartService dataMartService;
+    private DataMartEngine dataMartEngine;
 
     private AggregatedDataValueService aggregatedDataValueService;
 
@@ -74,7 +74,7 @@ public class DataMartServiceTimeDimensionTest
     @Override
     public void setUpTest()
     {
-        dataMartService = (DataMartService) getBean( DataMartService.ID );
+        dataMartEngine = (DataMartEngine) getBean( DataMartEngine.ID );
 
         aggregatedDataValueService = (AggregatedDataValueService) getBean( AggregatedDataValueService.ID );
         
@@ -138,7 +138,7 @@ public class DataMartServiceTimeDimensionTest
         periodIds.add( periodService.addPeriod( periodB ) );
         periodIds.add( periodService.addPeriod( periodC ) );
         
-        dataMartService.export( dataElementIds, indicatorIds, periodIds, organisationUnitIds );
+        dataMartEngine.export( dataElementIds, indicatorIds, periodIds, organisationUnitIds );
         
         assertEquals( 100.0, aggregatedDataValueService.getAggregatedValue( dataElement, categoryOptionCombo, periodA, unit ) );
         assertEquals( 100.0, aggregatedDataValueService.getAggregatedValue( dataElement, categoryOptionCombo, periodB, unit ) );
@@ -177,7 +177,7 @@ public class DataMartServiceTimeDimensionTest
         
         periodIds.add( periodService.addPeriod( periodA ) );
 
-        dataMartService.export( dataElementIds, indicatorIds, periodIds, organisationUnitIds );
+        dataMartEngine.export( dataElementIds, indicatorIds, periodIds, organisationUnitIds );
         
         assertEquals( 60.0, aggregatedDataValueService.getAggregatedValue( dataElement, categoryOptionCombo, periodA, unit ) );
     }

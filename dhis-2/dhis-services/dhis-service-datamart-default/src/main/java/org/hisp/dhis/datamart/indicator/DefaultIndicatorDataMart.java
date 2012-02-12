@@ -47,7 +47,7 @@ import org.hisp.dhis.constant.ConstantService;
 import org.hisp.dhis.dataelement.DataElementOperand;
 import org.hisp.dhis.datamart.aggregation.cache.AggregationCache;
 import org.hisp.dhis.datamart.crosstab.CrossTabService;
-import org.hisp.dhis.datamart.engine.DataMartEngine;
+import org.hisp.dhis.datamart.DataMartEngine;
 import org.hisp.dhis.expression.ExpressionService;
 import org.hisp.dhis.indicator.Indicator;
 import org.hisp.dhis.setting.SystemSettingManager;

@@ -1,4 +1,4 @@
-package org.hisp.dhis.datamart.engine;
+package org.hisp.dhis.datamart;
 
 /*
  * Copyright (c) 2004-2012, University of Oslo
@@ -38,10 +38,24 @@ import org.hisp.dhis.organisationunit.OrganisationUnitGroup;
  */
 public interface DataMartEngine
 {
+    final String ID = DataMartEngine.class.getName();
+    
     final Set<OrganisationUnitGroup> DUMMY_ORG_UNIT_GROUPS = new HashSet<OrganisationUnitGroup>()
     { {
         add( null );
     } };
+
+    /**
+     * Exports aggregated values to the data mart tables.
+     * 
+     * @param dataElementIds the data element identifiers.
+     * @param indicatorIds the indicator identifiers.
+     * @param periodIds the period identifiers.
+     * @param organisationUnitIds the organisation unit identifiers.
+     * @param processState the state object.
+     */
+    void export( Collection<Integer> dataElementIds, Collection<Integer> indicatorIds,
+        Collection<Integer> periodIds, Collection<Integer> organisationUnitIds );
     
     /**
      * Exports aggregated values to the data mart tables.
@@ -51,10 +65,8 @@ public interface DataMartEngine
      * @param periodIds the period identifiers.
      * @param organisationUnitIds the organisation unit identifiers.
      * @param organisationUnitGroupIds the organisation unit group identifiers.
-     * @param completeExport indicates whether this is a complete export.
      * @param processState the state object.
      */
     void export( Collection<Integer> dataElementIds, Collection<Integer> indicatorIds,
-        Collection<Integer> periodIds, Collection<Integer> organisationUnitIds, Collection<Integer> organisationUnitGroupIds,
-        boolean completeExport );
+        Collection<Integer> periodIds, Collection<Integer> organisationUnitIds, Collection<Integer> organisationUnitGroupIds );
 }

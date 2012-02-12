@@ -41,7 +41,7 @@ import org.apache.commons.logging.LogFactory;
 import org.hisp.dhis.completeness.DataSetCompletenessService;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementService;
-import org.hisp.dhis.datamart.DataMartService;
+import org.hisp.dhis.datamart.DataMartEngine;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.dataset.DataSetService;
 import org.hisp.dhis.indicator.Indicator;
@@ -68,7 +68,7 @@ public class DataMartTask
 {
     private static final Log log = LogFactory.getLog( DataMartTask.class );
     
-    private DataMartService dataMartService;
+    private DataMartEngine dataMartEngine;
 
     private DataSetCompletenessService completenessService;
     
@@ -119,12 +119,12 @@ public class DataMartTask
     {
     }
     
-    public DataMartTask( DataMartService dataMartService, DataSetCompletenessService completenessService, 
+    public DataMartTask( DataMartEngine dataMartEngine, DataSetCompletenessService completenessService, 
         DataElementService dataElementService, IndicatorService indicatorService, PeriodService periodService,
         OrganisationUnitService organisationUnitService, OrganisationUnitGroupService organisationUnitGroupService,
         DataSetService dataSetService, SystemSettingManager systemSettingManager )
     {
-        this.dataMartService = dataMartService;
+        this.dataMartEngine = dataMartEngine;
         this.completenessService = completenessService;
         this.dataElementService = dataElementService;
         this.indicatorService = indicatorService;
@@ -157,7 +157,7 @@ public class DataMartTask
         
         Collection<Integer> periodIds = ConversionUtils.getIdentifiers( Period.class, periodService.reloadPeriods( periods ) );
         
-        dataMartService.export( dataElementIds, indicatorIds, periodIds, organisationUnitIds, organisationUnitGroupIds, null, true );
+        dataMartEngine.export( dataElementIds, indicatorIds, periodIds, organisationUnitIds, organisationUnitGroupIds );
         completenessService.exportDataSetCompleteness( dataSetIds, periodIds, organisationUnitIds ); 
     }
 
