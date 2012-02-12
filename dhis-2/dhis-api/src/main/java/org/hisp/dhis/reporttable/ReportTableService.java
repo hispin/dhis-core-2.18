@@ -45,20 +45,6 @@ public interface ReportTableService
     final String MODE_REPORT_TABLE = "table";
 
     /**
-     * Populated data mart with the relevant aggregated data for this ReportTable.
-     *
-     * @param id                 the identifier.
-     * @param mode               the mode, can be <l>dataelements</i>, <i>indicators</i>, and <i>datasets</i>.
-     * @param reportingPeriod    the number of months back in time which will be used
-     *                           as basis for the generation of relative periods.
-     * @param organisationUnitId the identifier of the organisation unit of the
-     *                           report parameter, bot parent organisation unit and organisation unit.
-     * @param format             the I18nFormat to use.
-     */
-    void populateReportTableDataMart( int id, String mode, Date reportingPeriod,
-                                      Integer organisationUnitId, I18nFormat format );
-
-    /**
      * Saves a ReportTable.
      *
      * @param reportTable the ReportTable to save.

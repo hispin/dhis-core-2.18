@@ -38,7 +38,6 @@ import static org.hisp.dhis.reporttable.ReportTable.columnEncode;
 import static org.hisp.dhis.reporttable.ReportTable.getColumnName;
 import static org.hisp.dhis.reporttable.ReportTable.getIdentifier;
 import static org.hisp.dhis.reporttable.ReportTable.getPrettyColumnName;
-import static org.hisp.dhis.system.util.ConversionUtils.getIdentifiers;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -54,16 +53,10 @@ import org.hisp.dhis.common.Grid;
 import org.hisp.dhis.common.GridHeader;
 import org.hisp.dhis.common.IdentifiableObject;
 import org.hisp.dhis.common.NameableObject;
-import org.hisp.dhis.completeness.DataSetCompletenessService;
-import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryOption;
-import org.hisp.dhis.datamart.DataMartService;
-import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.i18n.I18nFormat;
-import org.hisp.dhis.indicator.Indicator;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
-import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodService;
 import org.hisp.dhis.report.ReportService;
 import org.hisp.dhis.reporttable.ReportTable;
@@ -127,45 +120,9 @@ public class DefaultReportTableService
         this.organisationUnitService = organisationUnitService;
     }
 
-    private DataMartService dataMartService;
-
-    public void setDataMartService( DataMartService dataMartService )
-    {
-        this.dataMartService = dataMartService;
-    }
-
-    private DataSetCompletenessService completenessService;
-
-    public void setCompletenessService( DataSetCompletenessService completenessService )
-    {
-        this.completenessService = completenessService;
-    }
-
     // -------------------------------------------------------------------------
     // ReportTableService implementation
     // -------------------------------------------------------------------------
-
-    public void populateReportTableDataMart( int id, String mode, Date reportingPeriod, Integer organisationUnitId,
-                                             I18nFormat format )
-    {
-        ReportTable reportTable = getReportTable( id, mode );
-
-        reportTable = initDynamicMetaObjects( reportTable, reportingPeriod, organisationUnitId, format );
-
-        if ( reportTable.hasDataElements() || reportTable.hasIndicators() )
-        {
-            dataMartService.export( getIdentifiers( DataElement.class, reportTable.getDataElements() ), getIdentifiers(
-                Indicator.class, reportTable.getIndicators() ), getIdentifiers( Period.class, reportTable
-                .getAllPeriods() ), getIdentifiers( OrganisationUnit.class, reportTable.getAllUnits() ) );
-        }
-
-        if ( reportTable.hasDataSets() )
-        {
-            completenessService.exportDataSetCompleteness( getIdentifiers( DataSet.class, reportTable.getDataSets() ),
-                getIdentifiers( Period.class, reportTable.getAllPeriods() ), getIdentifiers( OrganisationUnit.class,
-                reportTable.getAllUnits() ) );
-        }
-    }
 
     public Grid getReportTableGrid( String uid, I18nFormat format, Date reportingPeriod, String organisationUnitUid )
     {

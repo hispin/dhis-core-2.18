@@ -83,12 +83,6 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     <property name="dataSetService" ref="org.hisp.dhis.dataset.DataSetService" />
   </bean>
 
-  <bean id="org.hisp.dhis.reporting.tablecreator.action.CreateTableAction" class="org.hisp.dhis.reporting.tablecreator.action.CreateTableAction"
-    scope="prototype">
-    <property name="processCoordinator" ref="processCoordinator" />
-    <property name="currentUserService" ref="org.hisp.dhis.user.CurrentUserService" />
-  </bean>
-
   <bean id="org.hisp.dhis.reporting.tablecreator.action.GetReportParamsAction" class="org.hisp.dhis.reporting.tablecreator.action.GetReportParamsAction"
     scope="prototype">
     <property name="reportTableService" ref="org.hisp.dhis.reporttable.ReportTableService" />
@@ -107,11 +101,6 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
   <bean id="org.hisp.dhis.reporting.tablecreator.action.GetTableAction" class="org.hisp.dhis.reporting.tablecreator.action.GetTableAction"
     scope="prototype">
     <property name="reportTableService" ref="org.hisp.dhis.reporttable.ReportTableService" />
-  </bean>
-
-  <bean id="org.hisp.dhis.reporting.tablecreator.action.GetStatusAction" class="org.hisp.dhis.reporting.tablecreator.action.GetStatusAction"
-    scope="prototype">
-    <property name="processCoordinator" ref="processCoordinator" />
   </bean>
 
   <bean id="org.hisp.dhis.reporting.tablecreator.action.ValidateTableAction" class="org.hisp.dhis.reporting.tablecreator.action.ValidateTableAction"

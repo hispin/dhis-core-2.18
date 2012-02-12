@@ -94,10 +94,6 @@
       <param name="onExceptionReturn">plainTextError</param>
     </action>
 
-    <action name="createReportTable" class="org.hisp.dhis.reporting.tablecreator.action.CreateTableAction">
-      <result name="success" type="redirect">displayViewReportForm.action</result>
-    </action>
-
     <action name="displayViewReportForm" class="org.hisp.dhis.reporting.reportviewer.action.GetAllReportsAction">
       <result name="success" type="velocity">/main.vm</result>
       <param name="menuTreeHeight">420</param>
@@ -157,11 +153,6 @@
       <param name="requiredAuthorities">F_REPORTTABLE_ADD</param>
     </action>
 
-    <action name="createTable" class="org.hisp.dhis.reporting.tablecreator.action.CreateTableAction">
-      <result name="success" type="velocity-json">/dhis-web-commons/ajax/jsonResponseSuccess.vm</result>
-      <param name="onExceptionReturn">plainTextError</param>
-    </action>
-
     <action name="getReportParams" class="org.hisp.dhis.reporting.tablecreator.action.GetReportParamsAction">
       <result name="success" type="velocity">/main.vm</result>
       <param name="page">/dhis-web-reporting/inputReportParamsForm.vm</param>
@@ -179,12 +170,6 @@
 
     <action name="getTable" class="org.hisp.dhis.reporting.tablecreator.action.GetTableAction">
       <result name="success" type="velocity-json">/dhis-web-reporting/jsonTable.vm</result>
-      <param name="onExceptionReturn">plainTextError</param>
-    </action>
-
-    <action name="getStatus" class="org.hisp.dhis.reporting.tablecreator.action.GetStatusAction">
-      <result name="success" type="velocity-json">/dhis-web-commons/ajax/jsonResponseSuccess.vm</result>
-      <result name="input" type="velocity-json">/dhis-web-commons/ajax/jsonResponseInput.vm</result>
       <param name="onExceptionReturn">plainTextError</param>
     </action>
 
