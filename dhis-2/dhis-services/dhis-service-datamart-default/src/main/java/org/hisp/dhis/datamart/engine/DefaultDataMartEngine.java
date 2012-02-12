@@ -27,6 +27,10 @@ package org.hisp.dhis.datamart.engine;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import static org.hisp.dhis.setting.SystemSettingManager.DEFAULT_ORGUNITGROUPSET_AGG_LEVEL;
+import static org.hisp.dhis.setting.SystemSettingManager.KEY_ORGUNITGROUPSET_AGG_LEVEL;
+import static org.hisp.dhis.system.notification.NotificationCategory.DATAMART;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -42,6 +46,7 @@ import org.hisp.dhis.dataelement.DataElementCategoryService;
 import org.hisp.dhis.dataelement.DataElementOperand;
 import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.datamart.DataElementOperandList;
+import org.hisp.dhis.datamart.DataMartEngine;
 import org.hisp.dhis.datamart.crosstab.CrossTabService;
 import org.hisp.dhis.datamart.dataelement.DataElementDataMart;
 import org.hisp.dhis.datamart.indicator.IndicatorDataMart;
@@ -52,7 +57,6 @@ import org.hisp.dhis.jdbc.batchhandler.AggregatedDataValueBatchHandler;
 import org.hisp.dhis.jdbc.batchhandler.AggregatedIndicatorValueBatchHandler;
 import org.hisp.dhis.jdbc.batchhandler.AggregatedOrgUnitDataValueBatchHandler;
 import org.hisp.dhis.jdbc.batchhandler.AggregatedOrgUnitIndicatorValueBatchHandler;
-import org.hisp.dhis.setting.SystemSettingManager;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroup;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroupService;
@@ -60,6 +64,7 @@ import org.hisp.dhis.organisationunit.OrganisationUnitHierarchy;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodService;
+import org.hisp.dhis.setting.SystemSettingManager;
 import org.hisp.dhis.system.filter.AggregatableDataElementFilter;
 import org.hisp.dhis.system.filter.OrganisationUnitAboveOrEqualToLevelFilter;
 import org.hisp.dhis.system.filter.PastAndCurrentPeriodFilter;
@@ -71,9 +76,6 @@ import org.hisp.dhis.system.util.FilterUtils;
 import org.hisp.dhis.system.util.PaginatedList;
 import org.hisp.dhis.system.util.SystemUtils;
 import org.springframework.transaction.annotation.Transactional;
-
-import static org.hisp.dhis.setting.SystemSettingManager.*;
-import static org.hisp.dhis.system.notification.NotificationCategory.DATAMART;
 
 /**
  * @author Lars Helge Overland
@@ -189,8 +191,14 @@ public class DefaultDataMartEngine
 
     @Transactional
     public void export( Collection<Integer> dataElementIds, Collection<Integer> indicatorIds,
-        Collection<Integer> periodIds, Collection<Integer> organisationUnitIds, Collection<Integer> organisationUnitGroupIds, 
-        boolean completeExport )
+        Collection<Integer> periodIds, Collection<Integer> organisationUnitIds )
+    {
+        export( dataElementIds, indicatorIds, periodIds, organisationUnitIds, new HashSet<Integer>() );
+    }
+    
+    @Transactional
+    public void export( Collection<Integer> dataElementIds, Collection<Integer> indicatorIds,
+        Collection<Integer> periodIds, Collection<Integer> organisationUnitIds, Collection<Integer> organisationUnitGroupIds )
     {
         final int cpuCores = SystemUtils.getCpuCores();
         
@@ -325,15 +333,8 @@ public class DefaultDataMartEngine
         // 3. Delete existing aggregated datavalues
         // ---------------------------------------------------------------------
 
-        if ( completeExport )
-        {
-            aggregatedDataValueService.deleteAggregatedDataValues( periodIds );
-        }
-        else
-        {
-            aggregatedDataValueService.deleteAggregatedDataValues( dataElementIds, periodIds, organisationUnitIds );
-        }
-
+        aggregatedDataValueService.deleteAggregatedDataValues( periodIds );
+        
         clock.logTime( "Deleted existing aggregated datavalues" );
         notifier.notify( DATAMART, "Exporting data for data elements" );
         
@@ -365,15 +366,8 @@ public class DefaultDataMartEngine
         // 5. Delete existing aggregated indicatorvalues
         // ---------------------------------------------------------------------
 
-        if ( completeExport )
-        {
-            aggregatedDataValueService.deleteAggregatedIndicatorValues( periodIds );
-        }
-        else
-        {
-            aggregatedDataValueService.deleteAggregatedIndicatorValues( indicatorIds, periodIds, organisationUnitIds );
-        }
-
+        aggregatedDataValueService.deleteAggregatedIndicatorValues( periodIds );
+        
         clock.logTime( "Deleted existing aggregated indicatorvalues" );
         notifier.notify( DATAMART, "Exporting data for indicators" );
         
@@ -408,14 +402,10 @@ public class DefaultDataMartEngine
         // ---------------------------------------------------------------------
         // 8. Create potential indexes
         // ---------------------------------------------------------------------
-
-        if ( completeExport )
-        {
-            aggregatedDataValueService.createIndex( true, isIndicators );
-            
-            clock.logTime( "Created indexes" );
-        }
         
+        aggregatedDataValueService.createIndex( true, isIndicators );
+        
+        clock.logTime( "Created indexes" );        
         clock.logTime( "Aggregated data export done" );
         
         final boolean isGroups = organisationUnitGroups != null && organisationUnitGroups.size() > 0;
@@ -446,15 +436,8 @@ public class DefaultDataMartEngine
             // 3. Delete existing aggregated datavalues
             // ---------------------------------------------------------------------
 
-            if ( completeExport )
-            {
-                aggregatedOrgUnitDataValueService.deleteAggregatedDataValues( periodIds );
-            }
-            else
-            {
-                aggregatedOrgUnitDataValueService.deleteAggregatedDataValues( dataElementIds, periodIds, organisationUnitIds );
-            }
-
+            aggregatedOrgUnitDataValueService.deleteAggregatedDataValues( periodIds );
+            
             clock.logTime( "Deleted existing aggregated org unit datavalues" );
             notifier.notify( DATAMART, "Exporting data for data elements" );
 
@@ -490,15 +473,8 @@ public class DefaultDataMartEngine
             // 5. Delete existing aggregated indicatorvalues
             // ---------------------------------------------------------------------
 
-            if ( completeExport )
-            {
-                aggregatedOrgUnitDataValueService.deleteAggregatedIndicatorValues( periodIds );
-            }
-            else
-            {
-                aggregatedOrgUnitDataValueService.deleteAggregatedIndicatorValues( indicatorIds, periodIds, organisationUnitIds );
-            }
-
+            aggregatedOrgUnitDataValueService.deleteAggregatedIndicatorValues( periodIds );
+            
             clock.logTime( "Deleted existing aggregated org unit indicatorvalues" );
             notifier.notify( DATAMART, "Exporting data for indicators" );
 
@@ -534,13 +510,9 @@ public class DefaultDataMartEngine
             // 8. Create potential indexes
             // ---------------------------------------------------------------------
 
-            if ( completeExport )
-            {
-                aggregatedOrgUnitDataValueService.createIndex( true, isIndicators );
-                
-                clock.logTime( "Created org unit indexes" );
-            }
-
+            aggregatedOrgUnitDataValueService.createIndex( true, isIndicators );
+            
+            clock.logTime( "Created org unit indexes" );
             clock.logTime( "Aggregated organisation unit data export done" );            
         }
 

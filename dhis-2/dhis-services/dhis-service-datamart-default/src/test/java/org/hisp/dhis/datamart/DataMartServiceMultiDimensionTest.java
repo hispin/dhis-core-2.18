@@ -70,7 +70,7 @@ public class DataMartServiceMultiDimensionTest
     private final String T = "true";
     private final String F = "false";
     
-    private DataMartService dataMartService;
+    private DataMartEngine dataMartEngine;
 
     private AggregatedDataValueService aggregatedDataValueService;
 
@@ -107,7 +107,7 @@ public class DataMartServiceMultiDimensionTest
         // Dependencies
         // ---------------------------------------------------------------------
 
-        dataMartService = (DataMartService) getBean( DataMartService.ID );
+        dataMartEngine = (DataMartEngine) getBean( DataMartEngine.ID );
 
         aggregatedDataValueService = (AggregatedDataValueService) getBean( AggregatedDataValueService.ID );
         
@@ -262,7 +262,7 @@ public class DataMartServiceMultiDimensionTest
         // Test
         // ---------------------------------------------------------------------
 
-        dataMartService.export( dataElementIds, indicatorIds, periodIds, organisationUnitIds, null );
+        dataMartEngine.export( dataElementIds, indicatorIds, periodIds, organisationUnitIds, null );
         
         assertEquals( 90.0, aggregatedDataValueService.getAggregatedValue( dataElementA, categoryOptionComboA, periodA, unitB ) );
         assertEquals( 70.0, aggregatedDataValueService.getAggregatedValue( dataElementA, categoryOptionComboA, periodB, unitB ) );
@@ -316,7 +316,7 @@ public class DataMartServiceMultiDimensionTest
         // Test
         // ---------------------------------------------------------------------
 
-        dataMartService.export( dataElementIds, indicatorIds, periodIds, organisationUnitIds, null );
+        dataMartEngine.export( dataElementIds, indicatorIds, periodIds, organisationUnitIds, null );
 
         assertEquals( 90.0, aggregatedDataValueService.getAggregatedValue( dataElementA, categoryOptionComboA, periodA, unitB ) );
         assertEquals( 70.0, aggregatedDataValueService.getAggregatedValue( dataElementA, categoryOptionComboA, periodB, unitB ) );
@@ -370,7 +370,7 @@ public class DataMartServiceMultiDimensionTest
         // Test
         // ---------------------------------------------------------------------
 
-        dataMartService.export( dataElementIds, indicatorIds, periodIds, organisationUnitIds );
+        dataMartEngine.export( dataElementIds, indicatorIds, periodIds, organisationUnitIds );
 
         assertEquals( 1.0, aggregatedDataValueService.getAggregatedValue( dataElementA, categoryOptionComboA, periodA, unitB ) );
         assertEquals( 0.0, aggregatedDataValueService.getAggregatedValue( dataElementA, categoryOptionComboA, periodB, unitB ) );
@@ -424,7 +424,7 @@ public class DataMartServiceMultiDimensionTest
         // Test
         // ---------------------------------------------------------------------
 
-        dataMartService.export( dataElementIds, indicatorIds, periodIds, organisationUnitIds );
+        dataMartEngine.export( dataElementIds, indicatorIds, periodIds, organisationUnitIds );
 
         assertEquals( 100.0, aggregatedDataValueService.getAggregatedValue( dataElementA, categoryOptionComboA, periodA, unitB ) );
         assertEquals( 0.0, aggregatedDataValueService.getAggregatedValue( dataElementA, categoryOptionComboA, periodB, unitB ) );
@@ -493,7 +493,7 @@ public class DataMartServiceMultiDimensionTest
         // Test
         // ---------------------------------------------------------------------
 
-        dataMartService.export( dataElementIds, indicatorIds, periodIds, organisationUnitIds );
+        dataMartEngine.export( dataElementIds, indicatorIds, periodIds, organisationUnitIds );
         
         assertEquals( 2700.0, aggregatedDataValueService.getAggregatedValue( indicatorA, periodA, unitB ) );
         assertEquals( 600.0, aggregatedDataValueService.getAggregatedValue( indicatorA, periodB, unitB ) );
@@ -560,7 +560,7 @@ public class DataMartServiceMultiDimensionTest
         // Test
         // ---------------------------------------------------------------------
 
-        dataMartService.export( dataElementIds, indicatorIds, periodIds, organisationUnitIds );
+        dataMartEngine.export( dataElementIds, indicatorIds, periodIds, organisationUnitIds );
 
         assertEquals( 12.0, aggregatedDataValueService.getAggregatedValue( indicatorB, periodA, unitB ) );
         assertEquals( 5.0, aggregatedDataValueService.getAggregatedValue( indicatorB, periodB, unitB ) );
@@ -634,7 +634,7 @@ public class DataMartServiceMultiDimensionTest
         // Test
         // ---------------------------------------------------------------------
 
-        dataMartService.export( dataElementIds, indicatorIds, periodIds, organisationUnitIds );
+        dataMartEngine.export( dataElementIds, indicatorIds, periodIds, organisationUnitIds );
         
         assertEquals( 31790.3, aggregatedDataValueService.getAggregatedValue( indicatorA, periodA, unitB ) );
         assertEquals( 7064.5, aggregatedDataValueService.getAggregatedValue( indicatorA, periodB, unitB ) );

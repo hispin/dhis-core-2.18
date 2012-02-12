@@ -248,7 +248,7 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
   </bean>
 
   <bean id="dataMartLast12MonthsTask" class="org.hisp.dhis.system.scheduling.DataMartTask" scope="prototype">
-    <constructor-arg ref="org.hisp.dhis.datamart.DataMartService" />
+    <constructor-arg ref="org.hisp.dhis.datamart.DataMartEngine" />
     <constructor-arg ref="registrationDataCompletenessService" />
     <constructor-arg ref="org.hisp.dhis.dataelement.DataElementService" />
     <constructor-arg ref="org.hisp.dhis.indicator.IndicatorService" />
