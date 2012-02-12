@@ -9,3 +9,8 @@
 	<li><a href="displayManageTableForm.action">$i18n.getString( "report_table" )&nbsp;</a></li>
 	<li><a href="displayPivotTableForm.action">$i18n.getString( "pivot_table" )&nbsp;</a></li>
 </ul>
+
+<h2>$i18n.getString( "data_mart" )&nbsp;</h2>
+<ul>
+	<li><a href="displayDataMartForm.action">$i18n.getString( "data_mart" )&nbsp;</a></li>
+</ul>

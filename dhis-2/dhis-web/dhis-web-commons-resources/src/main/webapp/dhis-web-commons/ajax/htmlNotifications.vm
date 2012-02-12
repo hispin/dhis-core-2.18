@@ -1,0 +1,23 @@
+<style type="text/css">
+.notificationTable {
+  background-color: #ffffbf;
+  border: 1px solid #cccc00;
+  padding: 6px;
+  border-radius: 3px;
+}
+
+.notificationTable td {
+  padding: 3px;
+}
+</style>
+
+<table class="notificationTable">
+<col width="120">
+<col width="380">
+#foreach( $notification in $notifications )
+<tr>
+	<td>${format.formatDateTime( $notification.time )}:</td>
+	<td>${encoder.htmlEncode( $notification.message )} #if( $velocityCount == 1 )&nbsp;<img src='../images/ajax-loader-bar.gif'>#end</td>
+</tr>
+#end
+</table>

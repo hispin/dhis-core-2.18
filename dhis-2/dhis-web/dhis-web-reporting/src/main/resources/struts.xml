@@ -271,6 +271,20 @@
       <result name="success" type="chart"></result>
     </action>
 	
+	<!-- Data mart -->
+	
+	<action name="displayDataMartForm" class="org.hisp.dhis.reporting.action.NoAction">
+	  <result name="success" type="velocity">/main.vm</result>
+      <param name="page">/dhis-web-reporting/viewDataMartForm.vm</param>
+      <param name="menu">/dhis-web-reporting/menu.vm</param>
+      <param name="javascripts">javascript/dataMart.js</param>
+	</action>
+	
+	<action name="startExport" class="org.hisp.dhis.reporting.datamart.action.StartExportAction">
+	  <result name="success" type="velocity-json">/dhis-web-commons/ajax/jsonResponseSuccess.vm</result>
+      <param name="onExceptionReturn">plainTextError</param>
+	</action>
+	
 	<!-- Datamart CSV Export -->
 
     <action name="weeklyDataValues" class="org.hisp.dhis.reporting.exp.ExportDataMartAction">

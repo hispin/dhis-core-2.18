@@ -318,6 +318,10 @@
 
   <!-- Common actions -->
 
+  <bean id="org.hisp.dhis.commons.action.GetNotificationsAction" class="org.hisp.dhis.commons.action.GetNotificationsAction" scope="prototype">
+	<property name="notifier" ref="notifier" />
+  </bean>
+
   <bean id="org.hisp.dhis.commons.action.GetUserAction" class="org.hisp.dhis.commons.action.GetUserAction" scope="prototype">
     <property name="userService" ref="org.hisp.dhis.user.UserService" />
   </bean>

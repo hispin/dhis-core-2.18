@@ -42,7 +42,6 @@ import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodService;
 import org.hisp.dhis.period.RelativePeriods;
-import org.hisp.dhis.system.process.OutputHolderState;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
@@ -97,14 +96,14 @@ public class DefaultDataMartService
             getIdentifiers( Indicator.class, dataMartExport.getIndicators() ), 
             getIdentifiers( Period.class, allPeriods ),
             getIdentifiers( OrganisationUnit.class, dataMartExport.getOrganisationUnits() ),
-            null, false, new OutputHolderState() );
+            null, false );
     }
 
  
     public void export( Collection<Integer> dataElementIds, Collection<Integer> indicatorIds,
         Collection<Integer> periodIds, Collection<Integer> organisationUnitIds )
     {
-        dataMartEngine.export( dataElementIds, indicatorIds, periodIds, organisationUnitIds, null, false, new OutputHolderState() );
+        dataMartEngine.export( dataElementIds, indicatorIds, periodIds, organisationUnitIds, null, false );
     }
     
     public void export( Collection<Integer> dataElementIds, Collection<Integer> indicatorIds,
@@ -122,7 +121,7 @@ public class DefaultDataMartService
             periodIds.addAll( getIdentifiers( Period.class, periodService.reloadPeriods( relatives.getRelativePeriods() ) ) );
         }
         
-        dataMartEngine.export( dataElementIds, indicatorIds, periodIds, organisationUnitIds, organisationUnitGroupIds, completeExport, new OutputHolderState() );
+        dataMartEngine.export( dataElementIds, indicatorIds, periodIds, organisationUnitIds, organisationUnitGroupIds, completeExport );
     }
     
     // -------------------------------------------------------------------------

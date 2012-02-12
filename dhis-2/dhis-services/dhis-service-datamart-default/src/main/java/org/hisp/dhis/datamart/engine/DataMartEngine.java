@@ -31,7 +31,6 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
-import org.hisp.dhis.common.ProcessState;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroup;
 
 /**
@@ -57,5 +56,5 @@ public interface DataMartEngine
      */
     void export( Collection<Integer> dataElementIds, Collection<Integer> indicatorIds,
         Collection<Integer> periodIds, Collection<Integer> organisationUnitIds, Collection<Integer> organisationUnitGroupIds,
-        boolean completeExport, ProcessState processState );
+        boolean completeExport );
 }
