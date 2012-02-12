@@ -80,7 +80,8 @@ public class MonthlyPeriodType
         return createPeriod( createCalendarInstance( date ) );
     }
 
-    private Period createPeriod( Calendar cal )
+    @Override
+    public Period createPeriod( Calendar cal )
     {
         cal.set( Calendar.DAY_OF_MONTH, 1 );
         Date startDate = cal.getTime();

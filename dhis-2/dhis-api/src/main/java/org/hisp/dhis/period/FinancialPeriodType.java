@@ -67,7 +67,8 @@ public abstract class FinancialPeriodType
         return createPeriod( createCalendarInstance( date ) );
     }
 
-    private Period createPeriod( Calendar cal )
+    @Override
+    public Period createPeriod( Calendar cal )
     {
         boolean past = cal.get( Calendar.MONTH ) >= getBaseMonth();
         

@@ -77,7 +77,8 @@ public class WeeklyPeriodType
         return createPeriod( createCalendarInstance( date ) );
     }
 
-    private Period createPeriod( Calendar cal )
+    @Override
+    public Period createPeriod( Calendar cal )
     {    	
         cal.set( Calendar.DAY_OF_WEEK, Calendar.MONDAY );
         Date startDate = cal.getTime();

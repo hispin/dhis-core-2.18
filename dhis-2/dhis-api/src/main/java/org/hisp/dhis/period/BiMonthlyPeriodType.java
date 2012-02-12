@@ -69,7 +69,8 @@ public class BiMonthlyPeriodType
         return createPeriod( createCalendarInstance( date ) );
     }
 
-    private Period createPeriod( Calendar cal )
+    @Override
+    public Period createPeriod( Calendar cal )
     {
         cal.set( Calendar.MONTH, cal.get( Calendar.MONTH ) - cal.get( Calendar.MONTH ) % 2 );
         cal.set( Calendar.DAY_OF_MONTH, 1 );

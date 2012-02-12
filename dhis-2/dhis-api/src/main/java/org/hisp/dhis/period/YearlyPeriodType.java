@@ -76,7 +76,8 @@ public class YearlyPeriodType
         return createPeriod( createCalendarInstance( date ) );
     }
 
-    private Period createPeriod( Calendar cal )
+    @Override
+    public Period createPeriod( Calendar cal )
     {
         cal.set( Calendar.DAY_OF_YEAR, 1 );        
         Date startDate = cal.getTime();

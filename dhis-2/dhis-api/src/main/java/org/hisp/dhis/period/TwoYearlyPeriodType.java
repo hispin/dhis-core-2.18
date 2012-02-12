@@ -77,7 +77,8 @@ public class TwoYearlyPeriodType
         return createPeriod( createCalendarInstance( date ) );
     }
 
-    private Period createPeriod( Calendar cal )
+    @Override
+    public Period createPeriod( Calendar cal )
     {
         cal.set( Calendar.YEAR, cal.get( Calendar.YEAR ) - cal.get( Calendar.YEAR ) % 2 );
         cal.set( Calendar.DAY_OF_YEAR, 1 );

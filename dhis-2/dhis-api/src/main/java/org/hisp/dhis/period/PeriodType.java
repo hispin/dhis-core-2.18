@@ -181,6 +181,8 @@ public abstract class PeriodType
      * @return the valid Period based on the given date
      */
     public abstract Period createPeriod( Date date );
+    
+    public abstract Period createPeriod( Calendar cal );
 
     /**
      * Returns a comparable value for the frequency length of this PeriodType.
