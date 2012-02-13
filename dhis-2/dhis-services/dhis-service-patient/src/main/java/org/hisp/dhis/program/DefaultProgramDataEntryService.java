@@ -584,6 +584,7 @@ public class DefaultProgramDataEntryService
         // ---------------------------------------------------------------------
 
         final String jsCodeForInputs = " $DISABLED onchange=\"saveVal( $DATAELEMENTID )\" data=\"{compulsory:$COMPULSORY, deName:'$DATAELEMENTNAME', deType:'$DATAELEMENTTYPE', provided:'$PROVIDED'}\" onkeypress=\"return keyPress(event, this)\" style=\" text-align:center;\"  ";
+        final String jsCodeForOptions = " $DISABLED options='$OPTIONS' dataElementId=\"$DATAELEMENTID\" data=\"{compulsory:$COMPULSORY, deName:'$DATAELEMENTNAME', deType:'$DATAELEMENTTYPE', provided:'$PROVIDED'}\" onkeypress=\"return keyPress(event, this)\" style=\" text-align:center;\"  ";
 
         StringBuffer sb = new StringBuffer();
 
@@ -715,15 +716,29 @@ public class DefaultProgramDataEntryService
                 // -------------------------------------------------------------
 
                 String appendCode = dataElementCode;
+
+                if ( appendCode.contains( "value=\"\"" ) )
+                {
+                    appendCode = appendCode.replace( "value=\"\"", "value=\"" + dataElementValue + "\"" );
+                }
+                else
+                {
+                    appendCode += "value=\"" + dataElementValue + "\"";
+                }
                 
                 if ( dataElement.getOptionSet() != null )
                 {
-                    appendCode = appendCode.replaceFirst( "input", "select options='true'" );
+
+                   appendCode += jsCodeForOptions;
+                   
+                   appendCode = appendCode.replace( "$OPTIONS", dataElement.getOptionSet().getOptions().toString() ); 
+ 
+                    /*appendCode = appendCode.replaceFirst( "input", "select options='true'" );
                     appendCode = appendCode.replace( "name=\"entryfield\"", jsCodeForInputs );
 
                     appendCode += ">";
                     appendCode += "<option value=\"\">" + i18n.getString( "select_value" ) + "</option>";
-                    for ( String option : dataElement.getOptionSet().getOptions() )
+                    for ( String option :  )
                     {
                         appendCode += "<option value=\"" + option + "\">" + option + "</option>";
                     }
@@ -734,24 +749,15 @@ public class DefaultProgramDataEntryService
                             "<option value=\"" + patientDataValue.getValue() + "\" selected=\"selected\">" );
                     }
 
-                    appendCode += "</select>";
+                    appendCode += "</select>";*/
                 }
                 else
                 {
-                    if ( appendCode.contains( "value=\"\"" ) )
-                    {
-                        appendCode = appendCode.replace( "value=\"\"", "value=\"" + dataElementValue + "\"" );
-                    }
-                    else
-                    {
-                        appendCode += "value=\"" + dataElementValue + "\"";
-                    }
-
                     appendCode += jsCodeForInputs;
-
-                    appendCode += " />";
                 }
 
+                appendCode += " />";
+                
                 // -----------------------------------------------------------
                 // Check if this dataElement is from another programStage then
                 // disable
