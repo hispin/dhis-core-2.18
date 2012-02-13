@@ -223,7 +223,7 @@ public class LoadDataEntryAction
                 if ( dataEntryForm != null )
                 {
                     customDataEntryFormCode = programDataEntryService.prepareDataEntryFormForEntry( dataEntryForm
-                        .getHtmlCode(), patientDataValues, "", i18n, programStage, programStageInstance,
+                        .getHtmlCode(), patientDataValues, program.getDisplayProvidedOtherFacility().toString(), i18n, programStage, programStageInstance,
                         organisationUnit );
                 }
             }

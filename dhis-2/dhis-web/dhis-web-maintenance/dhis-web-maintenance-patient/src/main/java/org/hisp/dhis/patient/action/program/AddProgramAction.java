@@ -125,6 +125,13 @@ public class AddProgramAction
         this.anonymous = anonymous;
     }
 
+    private Boolean displayProvidedOtherFacility;
+
+    public void setDisplayProvidedOtherFacility( Boolean displayProvidedOtherFacility )
+    {
+        this.displayProvidedOtherFacility = displayProvidedOtherFacility;
+    }
+
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
@@ -134,7 +141,8 @@ public class AddProgramAction
     {
         singleEvent = (singleEvent == null) ? false : singleEvent;
         anonymous = (anonymous == null) ? false : anonymous;
-
+        displayProvidedOtherFacility = (displayProvidedOtherFacility == null) ? false : displayProvidedOtherFacility;
+        
         Program program = new Program();
 
         program.setName( name );
@@ -145,6 +153,7 @@ public class AddProgramAction
         program.setMaxDaysAllowedInputData( maxDaysAllowedInputData );
         program.setSingleEvent( singleEvent );
         program.setAnonymous( anonymous );
+        program.setDisplayProvidedOtherFacility( displayProvidedOtherFacility );
 
         programService.saveProgram( program );
 

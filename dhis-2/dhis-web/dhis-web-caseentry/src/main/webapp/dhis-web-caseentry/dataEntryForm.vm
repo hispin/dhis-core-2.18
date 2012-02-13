@@ -55,14 +55,14 @@
 			<col id="noCol">
 			<col id="deCol">    
 			<col id="entryCol">
-			#if( $programStageInstance.programInstance.program.anonymous == 'false' )
+			#if( $programStageInstance.programInstance.program.displayProvidedOtherFacility == 'false' )
 			<col id="facilityCol">       
 			#end
 			<tr>
 				<th>$i18n.getString( "nr" )</th>
 				<th>$i18n.getString( "data_element" )</th>                   
 				<th>$i18n.getString( "entry" )</th>
-				#if( $programStageInstance.programInstance.program.anonymous == 'false' )
+				#if( $programStageInstance.programInstance.program.displayProvidedOtherFacility == 'false' )
 					<th>$i18n.getString( "provided_elsewhere" )</th>             
 				#end
 			</tr>
@@ -119,7 +119,7 @@
 				
 				##providedByAnotherFacility 
 				#set( $id = $programStageDataElement.programStage.id + '_' + $programStageDataElement.dataElement.id + '_facility' )
-				#if($programStageInstance.programInstance.program.anonymous == 'false') 					
+				#if($programStageInstance.programInstance.program.displayProvidedOtherFacility == 'false') 					
 				<td>   
 					#if ( $patientDataValue.value )        
 						#if( !$patientDataValue.providedByAnotherFacility )

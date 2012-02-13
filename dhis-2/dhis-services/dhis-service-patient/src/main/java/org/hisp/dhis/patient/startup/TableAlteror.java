@@ -149,6 +149,8 @@ public class TableAlteror
         upgradeCaseAggregationFormula();
         
         upgradeProgramValidationFormula();
+        
+        executeSql( "UPDATE program SET displayProvidedOtherFacility = false WHERE displayProvidedOtherFacility is null" );
     }
 
     // -------------------------------------------------------------------------

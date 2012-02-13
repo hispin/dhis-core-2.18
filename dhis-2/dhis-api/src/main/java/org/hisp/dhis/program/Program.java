@@ -80,6 +80,8 @@ public class Program
     private Boolean singleEvent;
 
     private Boolean anonymous;
+    
+    private Boolean displayProvidedOtherFacility;
 
     // -------------------------------------------------------------------------
     // Constructors
@@ -140,6 +142,16 @@ public class Program
     public void setId( int id )
     {
         this.id = id;
+    }
+    
+    public Boolean getDisplayProvidedOtherFacility()
+    {
+        return displayProvidedOtherFacility;
+    }
+
+    public void setDisplayProvidedOtherFacility( Boolean displayProvidedOtherFacility )
+    {
+        this.displayProvidedOtherFacility = displayProvidedOtherFacility;
     }
 
     public String getName()
