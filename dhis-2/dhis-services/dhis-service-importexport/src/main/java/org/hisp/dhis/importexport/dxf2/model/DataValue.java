@@ -43,12 +43,9 @@ public class DataValue
    // ---------------------------------------------------------------------------
 
     public static final String ATTR_DATAELEMENT = "dataElement";
-
     public static final String ATTR_VALUE = "value";
-
     public static final String ATTR_CATEGORY_OPTION_COMBO = "categoryOptionCombo";
-
-    public static final String ATTR_ORGUNIT = "orgunit";
+    public static final String ATTR_ORGUNIT = "orgUnit";
 
     @XmlAttribute( name = ATTR_DATAELEMENT, required = true )
     private String dataElementIdentifier;
@@ -66,13 +63,13 @@ public class DataValue
      * optional - defaults to orgUnit id from datavalueset
      */
     @XmlAttribute( name = ATTR_ORGUNIT )
-    private String orgUnitIdentifier;
+    private String organisationUnitIdentifier;
 
     /**
      * Arbitrary attributes identifying dimensions by concept name
      */
     @XmlAnyAttribute
-    Map<QName,Object> dimensions;
+    private Map<QName,Object> dimensions;
 
     public String getDataElementIdentifier()
     {
@@ -92,6 +89,16 @@ public class DataValue
     public void setCategoryOptionComboIdentifier( String categoryOptionComboId )
     {
         this.categoryOptionComboIdentifier = categoryOptionComboId;
+    }
+
+    public String getOrganisationUnitIdentifier()
+    {
+        return organisationUnitIdentifier;
+    }
+
+    public void setOrganisationUnitIdentifier( String organisationUnitIdentifier )
+    {
+        this.organisationUnitIdentifier = organisationUnitIdentifier;
     }
 
     public Map<QName, Object> getDimensions()
