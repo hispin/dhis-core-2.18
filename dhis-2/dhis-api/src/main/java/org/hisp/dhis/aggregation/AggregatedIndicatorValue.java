@@ -27,38 +27,19 @@ package org.hisp.dhis.aggregation;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.io.Serializable;
-
 import org.hisp.dhis.common.AggregatedValue;
 
 /**
  * @author Lars Helge Overland
  */
 public class AggregatedIndicatorValue
-    implements AggregatedValue, Serializable
+    extends AggregatedValue
 {
-    /**
-     * Determines if a de-serialized file is compatible with this class.
-     */
-    private static final long serialVersionUID = -26851210554553790L;
-
     private int indicatorId;
-    
-    private int periodId;
-    
-    private int periodTypeId;
-    
-    private int organisationUnitId;
-
-    private int organisationUnitGroupId;
-    
-    private int level;
     
     private String annualized;
     
     private double factor;
-    
-    private double value;
     
     private double numeratorValue;
     
@@ -66,10 +47,6 @@ public class AggregatedIndicatorValue
 
     private transient String indicatorName;
     
-    private transient String periodName;
-    
-    private transient String organisationUnitName;
-
     // ----------------------------------------------------------------------
     // Constructors
     // ----------------------------------------------------------------------
@@ -158,16 +135,6 @@ public class AggregatedIndicatorValue
     // ----------------------------------------------------------------------
     // Getters and setters
     // ----------------------------------------------------------------------
-    
-    public double getDenominatorValue()
-    {
-        return denominatorValue;
-    }
-
-    public void setDenominatorValue( double denominatorValue )
-    {
-        this.denominatorValue = denominatorValue;
-    }
 
     public int getIndicatorId()
     {
@@ -187,6 +154,16 @@ public class AggregatedIndicatorValue
     public void setLevel( int level )
     {
         this.level = level;
+    }
+
+    public double getDenominatorValue()
+    {
+        return denominatorValue;
+    }
+
+    public void setDenominatorValue( double denominatorValue )
+    {
+        this.denominatorValue = denominatorValue;
     }
 
     public String getAnnualized()
@@ -219,56 +196,6 @@ public class AggregatedIndicatorValue
         this.numeratorValue = numeratorValue;
     }
 
-    public int getOrganisationUnitId()
-    {
-        return organisationUnitId;
-    }
-
-    public void setOrganisationUnitId( int organisationUnitId )
-    {
-        this.organisationUnitId = organisationUnitId;
-    }
-
-    public int getOrganisationUnitGroupId()
-    {
-        return organisationUnitGroupId;
-    }
-
-    public void setOrganisationUnitGroupId( int organisationUnitGroupId )
-    {
-        this.organisationUnitGroupId = organisationUnitGroupId;
-    }
-
-    public int getPeriodId()
-    {
-        return periodId;
-    }
-
-    public void setPeriodId( int periodId )
-    {
-        this.periodId = periodId;
-    }
-
-    public int getPeriodTypeId()
-    {
-        return periodTypeId;
-    }
-
-    public void setPeriodTypeId( int periodTypeId )
-    {
-        this.periodTypeId = periodTypeId;
-    }
-
-    public double getValue()
-    {
-        return value;
-    }
-
-    public void setValue( double value )
-    {
-        this.value = value;
-    }
-
     public String getIndicatorName()
     {
         return indicatorName;
@@ -277,26 +204,6 @@ public class AggregatedIndicatorValue
     public void setIndicatorName( String indicatorName )
     {
         this.indicatorName = indicatorName;
-    }
-
-    public String getPeriodName()
-    {
-        return periodName;
-    }
-
-    public void setPeriodName( String periodName )
-    {
-        this.periodName = periodName;
-    }
-
-    public String getOrganisationUnitName()
-    {
-        return organisationUnitName;
-    }
-
-    public void setOrganisationUnitName( String organisationUnitName )
-    {
-        this.organisationUnitName = organisationUnitName;
     }
 
     // ----------------------------------------------------------------------

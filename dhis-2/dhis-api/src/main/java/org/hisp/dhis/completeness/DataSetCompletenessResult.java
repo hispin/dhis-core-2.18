@@ -27,35 +27,20 @@ package org.hisp.dhis.completeness;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.io.Serializable;
-
 import org.hisp.dhis.common.AggregatedValue;
 
 /**
  * @author Lars Helge Overland
- * @version $Id$
  */
 public class DataSetCompletenessResult
-    implements AggregatedValue, Serializable
+    extends AggregatedValue
 {
-    /**
-     * Determines if a de-serialized file is compatible with this class.
-     */
-    private static final long serialVersionUID = 8726709312489400802L;
-
     // -------------------------------------------------------------------------
     // Properties 1
+    // Inherit periodId, periodName, organisationUnitId, organisationUnitGroupId 
     // -------------------------------------------------------------------------
 
     private int dataSetId;
-
-    private int periodId;
-
-    private String periodName;
-
-    private int organisationUnitId;
-    
-    private int organisationUnitGroupId;
 
     // -------------------------------------------------------------------------
     // Properties 2
@@ -219,46 +204,6 @@ public class DataSetCompletenessResult
     public void setDataSetId( int dataSetId )
     {
         this.dataSetId = dataSetId;
-    }
-
-    public int getPeriodId()
-    {
-        return periodId;
-    }
-
-    public void setPeriodId( int periodId )
-    {
-        this.periodId = periodId;
-    }
-
-    public String getPeriodName()
-    {
-        return periodName;
-    }
-
-    public void setPeriodName( String periodName )
-    {
-        this.periodName = periodName;
-    }
-
-    public int getOrganisationUnitId()
-    {
-        return organisationUnitId;
-    }
-
-    public void setOrganisationUnitId( int organisationUnitId )
-    {
-        this.organisationUnitId = organisationUnitId;
-    }
-
-    public int getOrganisationUnitGroupId()
-    {
-        return organisationUnitGroupId;
-    }
-
-    public void setOrganisationUnitGroupId( int organisationUnitGroupId )
-    {
-        this.organisationUnitGroupId = organisationUnitGroupId;
     }
 
     // -------------------------------------------------------------------------
