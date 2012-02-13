@@ -778,13 +778,13 @@ function entryFormContainerOnReady()
         TOGGLE.init();
 		
 		
-		/*jQuery("#entryForm :input").each(function()
+		jQuery("#entryForm :input").each(function()
 		{ 
 			if( jQuery(this).attr( 'options' )!= null )
 			{
 				autocompletedField(jQuery(this).attr('id'));
 			}
-		});*/
+		});
     }
 }
 
@@ -820,59 +820,67 @@ function registerIrregularEncounter()
 
 function autocompletedField( idField )
 {
-	hideById( idField );
-	var select = jQuery( "#" + idField );
-	var input = $("<input onkeypress='return keyPress(event, this);' name='entryfield' class='inputText'>")
-		.insertAfter(select)
-		.autocomplete({
-			source: function(request, response) {
-				var matcher = new RegExp(request.term, "i");
-				response(select.children("option").map(function() {
-					var text = $(this).text();
-					if (this.value && (!request.term || matcher.test(text)))
-						return {
-							id: this.value,
-							label: text,
-							value: text
-						};
-				}));
-			},
-			delay: 0,
-			change: function(event, ui) {
-				if (!ui.item) {
-					// remove invalid value, as it didn't match anything
-					$(this).val("");
-					return false;
-				}
-				select.val(ui.item.id);
-				select.change();
-			},
-			minLength: 0
-		});
+	var input = jQuery( "#" +  idField )
+	var dataElementId = input.attr( 'dataElementId' );
+	var options = new Array();
+	options = input.attr('options').replace('[', '').replace(']', '').split(', ');
+	options.push(" ");
 
-	// Set default value of the combobox
-	input.val( $("#" + idField + " option:selected").text());
-	$("<button>&nbsp;</button>")
-	.attr("tabIndex", -1)
-	.attr("title", "Show All Items")
-	.insertAfter(input)
-	.button({
-		icons: {
-			primary: "ui-icon-triangle-1-s"
-		},
-		text: false
-	}).removeClass("ui-corner-all")
-	.addClass("small-button ui-corner-right ui-button-icon")
-	.click(function() {
-		// close if already visible
-		if (input.autocomplete("widget").is(":visible")) {
-			input.autocomplete("close");
-			return;
-		}
-		// pass empty string as value to search for, displaying all results
-		input.autocomplete("search", "");
-		input.focus();
-	}).change(function(){
-		select.change();
-	});
+	input.autocomplete({
+			delay: 0,
+			minLength: 0,
+			source: options,
+			select: function( event, ui ) {
+				input.val(ui.item.value);
+				saveVal( dataElementId );
+				input.autocomplete( "close" );
+			},
+			change: function( event, ui ) {
+				if ( !ui.item ) {
+					var matcher = new RegExp( "^" + $.ui.autocomplete.escapeRegex( $(this).val() ) + "$", "i" ),
+						valid = false;
+					for (var i = 0; i < options.length; i++)
+					{
+						if (options[i].match( matcher ) ) {
+							this.selected = valid = true;
+							break;
+						}
+					}
+					if ( !valid ) {
+						// remove invalid value, as it didn't match anything
+						$( this ).val( "" );
+						input.data( "autocomplete" ).term = "";
+						return false;
+					}
+				}
+				saveVal( dataElementId );
+			}
+		})
+		.addClass( "ui-widget" );
+
+	this.button = $( "<button type='button'>&nbsp;</button>" )
+		.attr( "tabIndex", -1 )
+		.attr( "title", i18n_show_all_items )
+		.insertAfter( input )
+		.button({
+			icons: {
+				primary: "ui-icon-triangle-1-s"
+			},
+			text: false
+		})
+		.addClass( "small-button" )
+		.click(function() {
+			// close if already visible
+			if ( input.autocomplete( "widget" ).is( ":visible" ) ) {
+				input.autocomplete( "close" );
+				return;
+			}
+
+			// work around a bug (likely same cause as #5265)
+			$( this ).blur();
+
+			// pass empty string as value to search for, displaying all results
+			input.autocomplete( "search", "" );
+			input.focus();
+		});
 }
