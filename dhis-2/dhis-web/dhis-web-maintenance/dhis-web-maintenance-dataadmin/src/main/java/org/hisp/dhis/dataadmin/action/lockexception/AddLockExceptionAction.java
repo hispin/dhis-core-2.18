@@ -108,13 +108,19 @@ public class AddLockExceptionAction
             return INPUT;
         }
 
+        DataSet dataSet = dataSetService.getDataSet( dataSetId );
+        Period period = periodService.getPeriodByExternalId( periodId );
+
+        if ( dataSet == null || period == null )
+        {
+            return ERROR;
+        }
+
         for ( String id : organisationUnitId.split( "," ) )
         {
             OrganisationUnit organisationUnit = organisationUnitService.getOrganisationUnit( Integer.parseInt( id ) );
-            DataSet dataSet = dataSetService.getDataSet( dataSetId );
-            Period period = periodService.getPeriodByExternalId( periodId );
 
-            if ( organisationUnit == null || dataSet == null || period == null )
+            if ( organisationUnit == null )
             {
                 return ERROR;
             }
