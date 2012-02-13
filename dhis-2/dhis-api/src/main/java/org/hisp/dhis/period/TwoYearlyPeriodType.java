@@ -32,6 +32,8 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
+import org.apache.commons.lang.NotImplementedException;
+
 /**
  * PeriodType for two-yearly Periods. A valid two-yearly Period has startDate
  * set to January 1st on an even year (2000, 2002, 2004, etc), and endDate set
@@ -179,18 +181,18 @@ public class TwoYearlyPeriodType
     @Override
     public String getIsoDate( Period period )
     {
-        throw new UnsupportedOperationException( "Not supported yet." );
+        throw new NotImplementedException(); // TODO
     }
 
     @Override
     public Period createPeriod( String isoDate )
     {
-        throw new UnsupportedOperationException( "Not supported yet." );
+        throw new NotImplementedException(); // TODO
     }
 
     @Override
     public String getIsoFormat()
     {
-        return "Not supported yet.";
+        throw new NotImplementedException(); // TODO
     }
 }

@@ -48,6 +48,8 @@ public class WeeklyPeriodType
      */
     private static final long serialVersionUID = 6466760375688564528L;
 
+    private static final String ISO_FORMAT = "yyyyWn";
+
     /**
      * The name of the WeeklyPeriodType, which is "Weekly".
      */
@@ -225,9 +227,12 @@ public class WeeklyPeriodType
         return createPeriod( cal.getTime() );
     }
 
+    /**
+     * n refers to week number, can be [1-53].
+     */
     @Override
     public String getIsoFormat()
     {
-        return "yyyyWn (n: week number)";
+        return ISO_FORMAT;
     }
 }

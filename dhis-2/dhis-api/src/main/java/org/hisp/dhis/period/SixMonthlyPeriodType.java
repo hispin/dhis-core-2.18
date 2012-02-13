@@ -48,6 +48,8 @@ public class SixMonthlyPeriodType
      */
     private static final long serialVersionUID = 5709134010793412705L;
 
+    private static final String ISO_FORMAT = "yyyySn";
+
     /**
      * The name of the SixMonthlyPeriodType, which is "SixMonthly".
      */
@@ -177,10 +179,13 @@ public class SixMonthlyPeriodType
         return createPeriod( cal );
     }
 
+    /**
+     * n refers to the semester, can be [1-2].
+     */
     @Override
     public String getIsoFormat()
     {
-        return "yyyySn (n: 1-2)";
+        return ISO_FORMAT;
     }
 
     public enum Semester
