@@ -24,7 +24,6 @@
         ../dhis-web-commons/ouwt/ouwt.js,
         javascript/organisationUnit.js
       </param>
-      <param name="stylesheets">../dhis-web-commons/paging/paging.css</param>
       <interceptor-ref name="organisationUnitTreeStack" />
     </action>
 
@@ -102,7 +101,6 @@
       <param name="page">/dhis-web-maintenance-organisationunit/organisationUnitGroup.vm</param>
       <param name="menu">/dhis-web-maintenance-organisationunit/menu.vm</param>
       <param name="javascripts">../dhis-web-commons/ouwt/ouwt.js,javascript/organisationUnitGroup.js</param>
-      <param name="stylesheets">../dhis-web-commons/paging/paging.css</param>
     </action>
 
     <action name="getOrganisationUnitGroup" class="org.hisp.dhis.oum.action.organisationunitgroup.GetOrganisationUnitGroupAction">
@@ -162,7 +160,6 @@
       <param name="page">/dhis-web-maintenance-organisationunit/organisationUnitGroupSet.vm</param>
       <param name="menu">/dhis-web-maintenance-organisationunit/menu.vm</param>
       <param name="javascripts">javascript/organisationUnitGroupSet.js</param>
-      <param name="stylesheets">../dhis-web-commons/paging/paging.css</param>
     </action>
 
     <action name="getOrganisationUnitGroupSet" class="org.hisp.dhis.oum.action.organisationunitgroupset.GetGroupSetAction">

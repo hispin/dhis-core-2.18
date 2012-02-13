@@ -21,7 +21,6 @@
       <param name="page">/dhis-web-maintenance-dataset/dataSetList.vm</param>
       <param name="menu">/dhis-web-maintenance-dataset/menu.vm</param>
       <param name="javascripts">javascript/dataSet.js</param>
-      <param name="stylesheets">../dhis-web-commons/paging/paging.css</param>
     </action>
 
 	<!-- Section -->

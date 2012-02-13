@@ -1509,3 +1509,49 @@ function roundTo( number, decimals )
 		
 	return ( Math.round( number * factor ) / factor );
 }
+
+// -----------------------------------------------------------------------------
+// Paging
+// -----------------------------------------------------------------------------
+
+function pagingList( currentPage, pageSize )
+{
+	var baseLink = jQuery( "#baseLink" ).val();	
+	var url = baseLink + 'currentPage=' + currentPage + '&pageSize=' + pageSize;
+	window.location.href = url;
+}
+
+function changePageSize( event )
+{
+	var key = event.keyCode || event.charCode || event.which;
+	
+	if ( key == 13 || key == 1 ) // Enter
+	{
+		// ---------------------------------------------------
+		// Validate parameters
+		// ---------------------------------------------------
+		
+		var pageSize = jQuery( "#sizeOfPage" ).val();
+		
+		if ( pageSize < 1 )
+		{
+			pageSize = 1;
+		}
+
+		var currentPage = jQuery( "#jumpToPage" ).val();
+		var numberOfPages = jQuery( "#numberOfPages" ).val();
+		
+		if ( currentPage > numberOfPages )
+		{
+			currentPage = numberOfPages;
+		}
+		
+		jQuery.cookie( "pageSize", pageSize, {path: "/"} );
+		
+		// ---------------------------------------------------
+		// Paging
+		// ---------------------------------------------------
+		
+		pagingList( currentPage, pageSize );
+	}
+}
