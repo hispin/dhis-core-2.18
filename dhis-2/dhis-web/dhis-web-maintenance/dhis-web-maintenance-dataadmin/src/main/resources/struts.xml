@@ -493,24 +493,10 @@
       <param name="requiredAuthorities">F_DATASET_ADD</param>
     </action>
 
-    <action name="showUpdateLockExceptionForm" class="org.hisp.dhis.dataadmin.action.lockexception.GetLockExceptionFormAction">
-      <result name="success" type="velocity">/main.vm</result>
-      <param name="menu">/dhis-web-maintenance-dataadmin/menu.vm</param>
-      <param name="page">/dhis-web-maintenance-dataadmin/updateLockExceptionForm.vm</param>
-      <param name="stylesheets">../dhis-web-commons/paging/paging.css</param>
-      <param name="requiredAuthorities">F_DATASET_UPDATE</param>
-    </action>
-
     <action name="addLockException" class="org.hisp.dhis.dataadmin.action.lockexception.AddLockExceptionAction">
       <result name="success" type="redirect">lockException.action</result>
       <result name="error" type="redirect">index.action</result>
       <param name="requiredAuthorities">F_DATASET_ADD</param>
-    </action>
-
-    <action name="updateLockException" class="org.hisp.dhis.dataadmin.action.lockexception.UpdateLockExceptionAction">
-      <result name="success" type="redirect">lockException.action</result>
-      <result name="error" type="redirect">index.action</result>
-      <param name="requiredAuthorities">F_DATASET_UPDATE</param>
     </action>
 
     <action name="removeLockException" class="org.hisp.dhis.dataadmin.action.lockexception.RemoveLockExceptionAction">

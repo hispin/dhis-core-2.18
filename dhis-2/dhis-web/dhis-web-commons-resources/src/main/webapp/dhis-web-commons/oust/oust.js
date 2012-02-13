@@ -92,19 +92,19 @@ function SelectionTreeSelection()
         {
             return;
         }       
-        
+
 		selectedOrganisationUnit = new Array();
-	
+
 		var unitIds = new Array();
 
         for ( i in json.selectedUnits )
         {
             unitIds[i] = json.selectedUnits[i].id;
-			selectedOrganisationUnit.push( unitIds[i] );	
+			selectedOrganisationUnit.push( unitIds[i] );
         }
 
+        jQuery("body").trigger("oust.selected", selectedOrganisationUnit);
         listenerFunction( unitIds );
-        jQuery("body").trigger("oust.selected", unitIds);
     }
 
     function getTagId( unitId )
@@ -224,6 +224,8 @@ function SelectionTree()
         }
         
         clearLoadingMessage( treeTag );
+
+        jQuery("body").trigger( "oust.selected", selectedOrganisationUnit );
     }
 
     function createChildren( parentTag, parentElement )
@@ -270,7 +272,7 @@ function SelectionTree()
         {
             linkTag.className = 'selected';
 			selectedOrganisationUnit.push( childId );
-			
+
 			if ( typeof ( window.addSelectedOrganisationUnit__ ) == 'function' )
 			{ 
 				addSelectedOrganisationUnit__( childId );// This code is bad and must be removed
@@ -343,7 +345,7 @@ function SelectionTree()
 		imgTag.alt = '';
 		return imgTag;
 	}
-    
+
     function getToggleImage()
     {
         var imgTag = document.createElement( 'img' );
@@ -351,13 +353,13 @@ function SelectionTree()
         imgTag.height = '9';
         return imgTag;
     }
-    
+
     function setLoadingMessage( treeTag )
     {
         treeTag.style.backgroundImage = 'url(../images/ajax-loader-circle.gif)';
         treeTag.style.backgroundRepeat = 'no-repeat';
     }
-    
+
     function clearLoadingMessage( treeTag )
     {
         treeTag.style.backgroundImage = 'none';

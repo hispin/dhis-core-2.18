@@ -314,13 +314,6 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     <property name="dataSetService" ref="org.hisp.dhis.dataset.DataSetService" />
   </bean>
 
-  <bean id="org.hisp.dhis.dataadmin.action.lockexception.UpdateLockExceptionAction" class="org.hisp.dhis.dataadmin.action.lockexception.UpdateLockExceptionAction"
-    scope="prototype">
-    <property name="dataSetService" ref="org.hisp.dhis.dataset.DataSetService" />
-    <property name="organisationUnitService" ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
-    <property name="periodService" ref="org.hisp.dhis.period.PeriodService" />
-  </bean>
-
   <bean id="org.hisp.dhis.dataadmin.action.lockexception.GetDataSetsAction" class="org.hisp.dhis.dataadmin.action.lockexception.GetDataSetsAction"
     scope="prototype">
     <property name="currentUserService" ref="org.hisp.dhis.user.CurrentUserService" />
