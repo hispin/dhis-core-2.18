@@ -130,7 +130,9 @@ public class DefaultReportTableService
         
         OrganisationUnit organisationUnit = organisationUnitService.getOrganisationUnit( organisationUnitUid );
 
-        return getReportTableGrid( reportTable.getId(), format, reportingPeriod, organisationUnit.getId() );
+        Integer organisationUnitId = organisationUnit != null ? organisationUnit.getId() : null;
+        
+        return getReportTableGrid( reportTable.getId(), format, reportingPeriod, organisationUnitId );
     }
 
     public Grid getReportTableGrid( int id, I18nFormat format, Date reportingPeriod, Integer organisationUnitId )
