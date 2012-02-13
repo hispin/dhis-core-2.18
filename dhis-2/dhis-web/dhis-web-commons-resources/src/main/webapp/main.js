@@ -39,38 +39,37 @@ function pageInit()
 	var currentPath = '../dhis-web-commons-about/';
 	var backURL = '?backUrl=' + window.location;
 
-	$( "#menuDropDownHelpCenter" ).click(
-		function()
+	$( "#menuDropDownHelpCenter" ).click( function()
 		{
 			window.location.href = currentPath + 'help.action' + backURL;
 		});
 		
-	$( "#menuDropDownFeedBack" ).click(
-		function()
+	$( "#menuDropDownFeedBack" ).click(	function()
 		{
 			window.location.href = currentPath + 'displayFeedbackForm.action' + backURL;
 		});
 		
-	$( "#menuDropDownChangeLog" ).click(
-		function()
+	$( "#menuDropDownChangeLog" ).click( function()
 		{
 			window.location.href = currentPath + 'displayChangeLog.action' + backURL;
 		});
 		
-	$( "#menuDropDownSupportiveSoftware" ).click(
-		function()
+	$( "#menuDropDownSupportiveSoftware" ).click( function()
 		{
 			window.location.href= currentPath + 'displaySupportiveSoftware.action' + backURL;
 		});
 	
-	$( "#menuDropDownUserAccount" ).click(
-		function()
+	$( "#menuDropDownUserAccount" ).click( function()
 		{
 			window.location.href = currentPath + 'showUpdateUserAccountForm.action' + backURL;
 		});
 		
-	$( "#menuDropDownAboutDHIS2" ).click(
-		function()
+	$( "#menuDropDownWebApi" ).click( function()
+		{
+			window.location.href = '../api';
+		});
+		
+	$( "#menuDropDownAboutDHIS2" ).click( function()
 		{
 			window.location.href = currentPath + 'about.action' + backURL;
 		});
