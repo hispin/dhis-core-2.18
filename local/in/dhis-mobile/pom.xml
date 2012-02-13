@@ -5,7 +5,7 @@
   
   <groupId>org.hisp.dhis</groupId>
   <artifactId>dhis-sms</artifactId>
-  <version>2.6</version>
+  <version>2.7-SNAPSHOT</version>
   <packaging>pom</packaging>
   <name>Mobile SMS Modules</name>
 
@@ -24,8 +24,8 @@
   </organization>
   
   <modules>
-    <module>dhis-service-mobile</module>
-    <module>dhis-web-mobile</module>
+    <module>dhis-in-service-mobile</module>
+    <module>dhis-in-web-mobile</module>
   </modules>
       
 </project>

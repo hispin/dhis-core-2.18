@@ -23,6 +23,7 @@
 	<module>dhis-web-reports-in</module>-->
     <module>dhis-web-reports-national</module>
 	<module>dhis-web-survey</module> 
+	<module>dhis-web-alert</module> 
 <!--<module>dhis-web-validationrule-in</module>-->
   </modules>
   

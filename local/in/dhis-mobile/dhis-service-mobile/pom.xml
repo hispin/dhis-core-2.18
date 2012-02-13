@@ -9,7 +9,7 @@
         <version>2.7-SNAPSHOT</version>
     </parent>
 
-    <artifactId>dhis-service-mobile</artifactId>
+    <artifactId>dhis-in-service-mobile</artifactId>
     <packaging>jar</packaging>
     <name>DHIS Mobile Service</name>
 

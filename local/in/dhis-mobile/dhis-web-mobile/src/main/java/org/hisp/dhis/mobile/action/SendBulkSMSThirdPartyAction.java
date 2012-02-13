@@ -25,7 +25,7 @@ import org.hisp.dhis.mobile.api.SendSMS;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroup;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroupService;
-import org.hisp.dhis.organisationunit.comparator.OrganisationUnitGroupNameComparator;
+//import org.hisp.dhis.organisationunit.comparator.OrganisationUnitGroupNameComparator;
 import org.smslib.http.BulkSmsHTTPGateway;
 
 /**
@@ -157,7 +157,7 @@ public String isMessageDisabled;
 
         availableOrganisationUnitGroups = new ArrayList<OrganisationUnitGroup>( orgUnitGrpService.getAllOrganisationUnitGroups() );
         System.out.println( "size(bulksmsmaction)==" + availableOrganisationUnitGroups.size() );   
-        Collections.sort( availableOrganisationUnitGroups, new OrganisationUnitGroupNameComparator() );
+        //Collections.sort( availableOrganisationUnitGroups, new OrganisationUnitGroupNameComparator() );
         Iterator<OrganisationUnitGroup> it=orgUnitGrpService.getAllOrganisationUnitGroups().iterator();
         while(it.hasNext())
         {
