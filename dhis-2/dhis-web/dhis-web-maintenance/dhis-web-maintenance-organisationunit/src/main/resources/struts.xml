@@ -67,8 +67,7 @@
     </action>
 
     <action name="updateOrganisationUnit" class="org.hisp.dhis.oum.action.organisationunit.UpdateOrganisationUnitAction">
-      <result name="success" type="redirect">organisationUnit.action
-      </result>
+      <result name="success" type="redirect">organisationUnit.action?currentPage=${keyCurrentPage}</result>
       <param name="requiredAuthorities">F_ORGANISATIONUNIT_UPDATE</param>
     </action>
 
@@ -137,8 +136,7 @@
     </action>
 
     <action name="updateOrganisationUnitGroup" class="org.hisp.dhis.oum.action.organisationunitgroup.UpdateOrganisationUnitGroupAction">
-      <result name="success" type="redirect">organisationUnitGroup.action
-      </result>
+      <result name="success" type="redirect">organisationUnitGroup.action?currentPage=${keyCurrentPage}</result>
       <param name="requiredAuthorities">F_ORGUNITGROUP_UPDATE</param>
     </action>
 
@@ -211,8 +209,7 @@
     </action>
 
     <action name="updateOrganisationUnitGroupSet" class="org.hisp.dhis.oum.action.organisationunitgroupset.UpdateGroupSetAction">
-      <result name="success" type="redirect">organisationUnitGroupSet.action
-      </result>
+      <result name="success" type="redirect">organisationUnitGroupSet.action?currentPage=${keyCurrentPage}</result>
       <param name="requiredAuthorities">F_ORGUNITGROUPSET_UPDATE</param>
     </action>
 

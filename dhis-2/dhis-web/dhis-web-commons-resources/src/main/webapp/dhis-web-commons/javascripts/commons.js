@@ -1516,8 +1516,11 @@ function roundTo( number, decimals )
 
 function pagingList( currentPage, pageSize )
 {
+	jQuery.cookie( "currentPage", currentPage );
+	
 	var baseLink = jQuery( "#baseLink" ).val();	
 	var url = baseLink + 'currentPage=' + currentPage + '&pageSize=' + pageSize;
+	
 	window.location.href = url;
 }
 

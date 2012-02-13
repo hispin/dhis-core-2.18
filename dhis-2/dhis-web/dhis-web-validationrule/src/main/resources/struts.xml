@@ -68,7 +68,7 @@
     </action>
 
     <action name="updateValidationRule" class="org.hisp.dhis.validationrule.action.UpdateValidationRuleAction">
-      <result name="success" type="redirect">validationRule.action</result>
+      <result name="success" type="redirect">validationRule.action?currentPage=${keyCurrentPage}</result>
       <param name="requiredAuthorities">F_VALIDATIONRULE_UPDATE</param>
     </action>
 
@@ -118,7 +118,7 @@
     </action>
 
     <action name="updateValidationRuleGroup" class="org.hisp.dhis.validationrule.action.validationrulegroup.UpdateValidationRuleGroupAction">
-      <result name="success" type="redirect">showValidationRuleGroupForm.action</result>
+      <result name="success" type="redirect">showValidationRuleGroupForm.action?currentPage=${keyCurrentPage}</result>
       <param name="requiredAuthorities">F_VALIDATIONRULEGROUP_UPDATE</param>
     </action>
 
