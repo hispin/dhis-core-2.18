@@ -30,6 +30,7 @@ package org.hisp.dhis.mobile.action;
 import java.io.File;
 import java.util.List;
 
+import org.apache.commons.io.FileUtils;
 import org.hisp.dhis.mobile.SmsService;
 import org.hisp.dhis.mobile.api.MobileImportService;
 

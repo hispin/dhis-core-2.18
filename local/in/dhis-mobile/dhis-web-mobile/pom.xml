@@ -9,7 +9,7 @@
     <version>2.7-SNAPSHOT</version>
   </parent>
 
-  <artifactId>dhis-web-mobile</artifactId>
+  <artifactId>dhis-in-web-mobile</artifactId>
   <packaging>war</packaging>
   <name>DHIS Mobile</name>
 
@@ -31,7 +31,7 @@
     </dependency>
     <dependency>
       <groupId>org.hisp.dhis</groupId>
-      <artifactId>dhis-service-mobile</artifactId>
+      <artifactId>dhis-in-service-mobile</artifactId>
       <version>${project.version}</version>
       <type>jar</type>
     </dependency>
