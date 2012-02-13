@@ -148,6 +148,7 @@
           <li class="menuDropDownItem" id="menuDropDownChangeLog">$i18n.getString( "change_log" )&nbsp;</li>
           <li class="menuDropDownItem" id="menuDropDownSupportiveSoftware">$i18n.getString( "supportive_software" )&nbsp;</li>
           <li class="menuDropDownItem" id="menuDropDownUserAccount">$i18n.getString( "user_account" )&nbsp;</li>
+          <li class="menuDropDownItem" id="menuDropDownWebApi">$i18n.getString( "web_api" )&nbsp;</li>
           <li class="menuDropDownItem" id="menuDropDownAboutDHIS2">$i18n.getString( "about_dhis2" )&nbsp;</li>
         </ul>
       </div>

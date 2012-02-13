@@ -171,11 +171,11 @@ public class MonthlyPeriodType
         try
         {
             Date date = new SimpleDateFormat( ISO_FORMAT ).parse( isoDate );
-            return createPeriod(date);
+            return createPeriod( date );
         }
-        catch ( ParseException e )
+        catch ( ParseException ex )
         {
-            throw new RuntimeException( e );
+            throw new RuntimeException( ex );
         }
     }
 
