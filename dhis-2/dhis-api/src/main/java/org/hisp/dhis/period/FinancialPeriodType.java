@@ -32,6 +32,8 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
+import org.apache.commons.lang.NotImplementedException;
+
 /**
  * @author Lars Helge Overland
  */
@@ -160,18 +162,18 @@ public abstract class FinancialPeriodType
     @Override
     public String getIsoDate( Period period )
     {
-        throw new UnsupportedOperationException( "Not supported yet." );
+        throw new NotImplementedException(); // TODO
     }
 
     @Override
     public Period createPeriod( String isoDate )
     {
-        throw new UnsupportedOperationException( "Not supported yet." );
+        throw new NotImplementedException(); // TODO
     }
 
     @Override
     public String getIsoFormat()
     {
-        throw new UnsupportedOperationException( "Not supported yet." );
+        throw new NotImplementedException(); // TODO
     }
 }

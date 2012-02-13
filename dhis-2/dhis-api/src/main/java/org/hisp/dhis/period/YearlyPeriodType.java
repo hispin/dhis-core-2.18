@@ -47,6 +47,8 @@ public class YearlyPeriodType
      */
     private static final long serialVersionUID = 3893035414025085437L;
 
+    private static final String ISO_FORMAT = "yyyy";
+
     /**
      * The name of the YearlyPeriodType, which is "Yearly".
      */
@@ -170,6 +172,6 @@ public class YearlyPeriodType
     @Override
     public String getIsoFormat()
     {
-        return "yyyy";
+        return ISO_FORMAT;
     }
 }

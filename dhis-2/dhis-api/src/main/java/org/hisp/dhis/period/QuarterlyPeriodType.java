@@ -48,6 +48,8 @@ public class QuarterlyPeriodType
      */
     private static final long serialVersionUID = -5973809094923012052L;
 
+    private static final String ISO_FORMAT = "yyyyQn";
+
     /**
      * The name of the QuarterlyPeriodType, which is "Quarterly".
      */
@@ -181,10 +183,13 @@ public class QuarterlyPeriodType
         return createPeriod( cal );
     }
 
+    /**
+     * n refers to the quarter, can be [1-4].
+     */
     @Override
     public String getIsoFormat()
     {
-        return "yyyyQn (n: 1-4)";
+        return ISO_FORMAT;
     }
 
     public enum Quarter
