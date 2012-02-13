@@ -7,6 +7,7 @@
 	
 	<input type="hidden" id="baseLink" value="$!baseLink"/>
 	<input type="hidden" id="currentPage" value="$!currentPage"/>
+	<input type="hidden" id="numberOfPages" value="$!numberOfPages"/>
 	#if ( $numberOfPages > 0 )
 		<table style="background-color: #ebf0f6;" width='100%'>
 			<tr>
@@ -15,14 +16,14 @@
 				</td>
 				<td>
 					<span>$i18n.getString("rows_in_page"):</span>
-					<input type="text" id="sizeOfPage" value="$!pageSize" style="width:50px" onKeyPress="changePageSize(event,'$baseLink');">
+					<input type="text" id="sizeOfPage" value="$!pageSize" style="width:50px" onKeyPress="changePageSize(event);">
 				</td>
 				<td>
 					<span>$i18n.getString("jump_to_page"):</span>					
-					<input type="text" id="jumpToPage" value="$!currentPage" style="width:50px" onKeyPress="changePageSize(event,'$baseLink');">
+					<input type="text" id="jumpToPage" value="$!currentPage" style="width:50px" onKeyPress="changePageSize(event);">
 				</td>
 				<td>
-					<input type="button" id="submitButton" value="$i18n.getString('go')" onclick="changePageSize(event,'$baseLink');">
+					<input type="button" id="submitButton" value="$i18n.getString( 'go' )" onclick="changePageSize(event);">
 				</td>				
 			</tr>		
 			<tr>
@@ -71,70 +72,5 @@
 </div>
 
 <script>
-	
-var isAjax;
-var contentDiv;
-var isShowLoader;
-
-function pagingList( currentPage, pageSize )
-{
-	var url = '${baseLink}currentPage=' + currentPage + '&pageSize=' + pageSize;
-	if ( isAjax == undefined )
-	{
-		window.location.href = url;
-	}
-	else
-	{
-		var index = url.indexOf( '?' );
-		var link = url.substring( 0, index );
-		var data = url.substring( index + 1 );
-		
-		jQuery.postUTF8( link , data, function(html)
-		{
-			if ( contentDiv == undefined )
-			{
-				setInnerHTML( 'contentDiv', html );
-			}
-			else
-			{
-				setInnerHTML( contentDiv, html );
-			}
-		} );
-	}
-}
-
-function changePageSize( event, baseLink )
-{
-	var key = event.keyCode || event.charCode || event.which;
-	
-	if ( key == 13 || key == 1 )// Enter
-	{
-		// ---------------------------------------------------
-		// Validate parameters
-		// ---------------------------------------------------
-		
-		var pageSize = jQuery( "#sizeOfPage" ).val();
-		
-		if ( pageSize < 1)
-		{
-			pageSize = 1;
-		}
-
-		var currentPage = jQuery( "#jumpToPage" ).val();
-		var numberOfPages = eval( "$numberOfPages" );
-		if ( currentPage > numberOfPages )
-		{
-			currentPage = numberOfPages;
-		}
-		
-		jQuery.cookie( "pageSize", pageSize, {path: "/"} );
-		
-		// ---------------------------------------------------
-		// Paging
-		// ---------------------------------------------------
-		
-		pagingList( currentPage, pageSize );
-	}
-}
 
 </script>

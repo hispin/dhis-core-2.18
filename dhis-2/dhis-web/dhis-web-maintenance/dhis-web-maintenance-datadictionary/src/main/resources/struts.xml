@@ -21,7 +21,6 @@
       <param name="page">/dhis-web-maintenance-datadictionary/dataElement.vm</param>
       <param name="menu">/dhis-web-maintenance-datadictionary/menu.vm</param>
       <param name="javascripts">javascript/dataElement.js,javascript/dataDictionary.js</param>
-      <param name="stylesheets">../dhis-web-commons/paging/paging.css</param>
     </action>
 
     <action name="showSortDataElementForm" class="org.hisp.dhis.dd.action.dataelement.GetDataElementListSortOrderAction">
@@ -128,7 +127,6 @@
       <param name="page">/dhis-web-maintenance-datadictionary/dataElementGroup.vm</param>
       <param name="menu">/dhis-web-maintenance-datadictionary/menu.vm</param>
       <param name="javascripts">javascript/dataElementGroup.js</param>
-      <param name="stylesheets">../dhis-web-commons/paging/paging.css</param>
     </action>
 
     <action name="removeDataElementGroup" class="org.hisp.dhis.dd.action.dataelementgroup.RemoveDataElementGroupAction">
@@ -183,7 +181,6 @@
       <param name="page">/dhis-web-maintenance-datadictionary/dataElementGroupSet.vm</param>
       <param name="menu">/dhis-web-maintenance-datadictionary/menu.vm</param>
       <param name="javascripts">javascript/dataElementGroupSet.js</param>
-      <param name="stylesheets">../dhis-web-commons/paging/paging.css</param>
     </action>
 
     <action name="openAddDataElementGroupSet" class="org.hisp.dhis.dd.action.NoAction">
@@ -240,7 +237,6 @@
       <param name="page">/dhis-web-maintenance-datadictionary/indicator.vm</param>
       <param name="menu">/dhis-web-maintenance-datadictionary/menu.vm</param>
       <param name="javascripts">javascript/indicator.js,javascript/dataDictionary.js</param>
-      <param name="stylesheets">../dhis-web-commons/paging/paging.css</param>
     </action>
 
     <action name="showSortIndicatorForm" class="org.hisp.dhis.dd.action.indicator.GetIndicatorListSortOrderAction">
@@ -344,7 +340,6 @@
       <param name="page">/dhis-web-maintenance-datadictionary/indicatorGroup.vm</param>
       <param name="menu">/dhis-web-maintenance-datadictionary/menu.vm</param>
 	  <param name="javascripts">javascript/indicatorGroup.js</param>
-      <param name="stylesheets">../dhis-web-commons/paging/paging.css</param>
     </action>
 
     <action name="removeIndicatorGroup" class="org.hisp.dhis.dd.action.indicatorgroup.RemoveIndicatorGroupAction">
@@ -395,7 +390,6 @@
       <param name="page">/dhis-web-maintenance-datadictionary/indicatorGroupSet.vm</param>
       <param name="menu">/dhis-web-maintenance-datadictionary/menu.vm</param>
 	  <param name="javascripts">javascript/indicatorGroupSet.js</param>
-      <param name="stylesheets">../dhis-web-commons/paging/paging.css</param>
     </action>
 
     <action name="openAddIndicatorGroupSet" class="org.hisp.dhis.dd.action.NoAction">
@@ -446,7 +440,6 @@
       <result name="success" type="velocity">/main.vm</result>
       <param name="page">/dhis-web-maintenance-datadictionary/indicatorType.vm</param>
       <param name="menu">/dhis-web-maintenance-datadictionary/menu.vm</param>
-      <param name="stylesheets">../dhis-web-commons/paging/paging.css</param>
     </action>
 
     <action name="getIndicatorType" class="org.hisp.dhis.dd.action.indicatortype.GetIndicatorTypeAction">
@@ -508,7 +501,6 @@
       <param name="page">/dhis-web-maintenance-datadictionary/dataDictionary.vm</param>
       <param name="menu">/dhis-web-maintenance-datadictionary/menu.vm</param>
       <param name="javascripts">javascript/dataDictionary.js</param>
-      <param name="stylesheets">../dhis-web-commons/paging/paging.css</param>
     </action>
 
     <action name="getDataDictionary" class="org.hisp.dhis.dd.action.datadictionary.GetDataDictionaryAction">
@@ -587,7 +579,6 @@
       <result name="success" type="velocity">/main.vm</result>
       <param name="page">/dhis-web-maintenance-datadictionary/multidimensional/category.vm</param>
       <param name="menu">/dhis-web-maintenance-datadictionary/menu.vm</param>
-      <param name="stylesheets">../dhis-web-commons/paging/paging.css</param>
     </action>
 
     <action name="getDataElementCategory" class="org.hisp.dhis.dd.action.category.GetDataElementCategoryAction">
@@ -680,7 +671,6 @@
       <param name="page">/dhis-web-maintenance-datadictionary/multidimensional/categoryCombo.vm</param>
       <param name="menu">/dhis-web-maintenance-datadictionary/menu.vm</param>
       <param name="javascripts">javascript/categoryCombo.js</param>
-      <param name="stylesheets">../dhis-web-commons/paging/paging.css</param>
     </action>
 
     <action name="getDataElementCategoryCombo" class="org.hisp.dhis.dd.action.categorycombo.GetDataElementCategoryComboAction">
@@ -751,7 +741,6 @@
         /dhis-web-maintenance-datadictionary/multidimensional/concept.vm</param>
       <param name="javascripts">javascript/concept.js</param>
       <param name="requiredAuthorities">F_CONCEPT_MANAGEMENT</param>
-      <param name="stylesheets">../dhis-web-commons/paging/paging.css</param>
     </action>
 
     <action name="showAddConceptForm" class="org.hisp.dhis.dd.action.NoAction">

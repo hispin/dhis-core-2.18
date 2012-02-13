@@ -423,7 +423,6 @@
       <param name="page">
         /dhis-web-maintenance-dataadmin/constant.vm</param>
 	  <param name="javascripts">javascript/constant.js</param>
-	  <param name="stylesheets">../dhis-web-commons/paging/paging.css</param>
       <param name="requiredAuthorities">F_CONSTANT_MANAGEMENT</param>
     </action>
 
@@ -482,14 +481,12 @@
       <result name="success" type="velocity">/main.vm</result>
       <param name="menu">/dhis-web-maintenance-dataadmin/menu.vm</param>
       <param name="page">/dhis-web-maintenance-dataadmin/lockException.vm</param>
-      <param name="stylesheets">../dhis-web-commons/paging/paging.css</param>
     </action>
 
     <action name="showAddLockExceptionForm" class="org.hisp.dhis.dataadmin.action.NoAction">
       <result name="success" type="velocity">/main.vm</result>
       <param name="menu">/dhis-web-maintenance-dataadmin/menu.vm</param>
       <param name="page">/dhis-web-maintenance-dataadmin/addLockExceptionForm.vm</param>
-      <param name="stylesheets">../dhis-web-commons/paging/paging.css</param>
       <param name="requiredAuthorities">F_DATASET_ADD</param>
     </action>
 
@@ -527,14 +524,12 @@
       <result name="success" type="velocity">/main.vm</result>
       <param name="menu">/dhis-web-maintenance-dataadmin/menu.vm</param>
       <param name="page">/dhis-web-maintenance-dataadmin/attribute.vm</param>
-      <param name="stylesheets">../dhis-web-commons/paging/paging.css</param>
     </action>
 
     <action name="showAddAttributeForm" class="org.hisp.dhis.dataadmin.action.NoAction">
       <result name="success" type="velocity">/main.vm</result>
       <param name="menu">/dhis-web-maintenance-dataadmin/menu.vm</param>
       <param name="page">/dhis-web-maintenance-dataadmin/addAttributeForm.vm</param>
-      <param name="stylesheets">../dhis-web-commons/paging/paging.css</param>
       <param name="requiredAuthorities">F_DATAELEMENT_ADD</param>
     </action>
 
@@ -542,7 +537,6 @@
       <result name="success" type="velocity">/main.vm</result>
       <param name="menu">/dhis-web-maintenance-dataadmin/menu.vm</param>
       <param name="page">/dhis-web-maintenance-dataadmin/updateAttributeForm.vm</param>
-      <param name="stylesheets">../dhis-web-commons/paging/paging.css</param>
       <param name="requiredAuthorities">F_DATAELEMENT_UPDATE</param>
     </action>
 

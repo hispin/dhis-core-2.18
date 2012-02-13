@@ -48,7 +48,6 @@
 			class="org.hisp.dhis.caseentry.action.caseentry.SearchPatientAction">
 			<result name="success" type="velocity">/content.vm</result>
 			<param name="page">/dhis-web-caseentry/listPatient.vm</param>
-			<param name="stylesheets">../dhis-web-commons/paging/paging.css</param>
 		</action>
 
 		<action name="listAllPatients"
@@ -56,7 +55,6 @@
 			<result name="success" type="velocity">/content.vm</result>
 			<param name="listAll">true</param>
 			<param name="page">/dhis-web-caseentry/listPatient.vm</param>
-			<param name="stylesheets">../dhis-web-commons/paging/paging.css</param>
 		</action>
 
 		<action name="selectDataRecording"
@@ -149,8 +147,7 @@
 			<result name="success" type="velocity">/content.vm</result>
 			<param name="page">/dhis-web-caseentry/dataentryRecords.vm</param>
 			<param name="javascripts">javascript/customcheckbox/prettyCheckboxes.js</param>
-			<param name="stylesheets">style/patient.css,javascript/customcheckbox/prettyCheckboxes.css
-				,../dhis-web-commons/paging/paging.css</param>
+			<param name="stylesheets">style/patient.css,javascript/customcheckbox/prettyCheckboxes.css</param>
 		</action>
 
 		<action name="viewProgramStageRecords"
@@ -190,7 +187,6 @@
 			<result name="success" type="velocity">/content.vm</result>
 			<param name="page">/dhis-web-caseentry/loadVisitPlan.vm</param>
 			<param name="javascripts">javascript/visitPlan.js</param>
-			<param name="stylesheets">../dhis-web-commons/paging/paging.css</param>
 		</action>
 
 		<!-- Report -->
@@ -220,7 +216,6 @@
 			<result name="success" type="velocity">/content.vm</result>
 			<param name="page">/dhis-web-caseentry/report.vm</param>
 			<param name="javascripts">javascript/commons.js,javascript/report.js</param>
-			<param name="stylesheets">../dhis-web-commons/paging/paging.css</param>
 		</action>
 
 		<action name="viewRecords"
@@ -234,9 +229,7 @@
 			<result name="success" type="velocity">/content.vm</result>
 			<param name="page">/dhis-web-caseentry/historyAnonymousEvents.vm</param>
 			<param name="javascripts">javascript/anonymousRegistration.js</param>
-			<param name="stylesheets">
-                 ../dhis-web-caseentry/style/patient.css,
-                 ../dhis-web-commons/paging/paging.css</param>
+			<param name="stylesheets">../dhis-web-caseentry/style/patient.css</param>
 		</action>
 		
 		<action name="showSingleEventReportForm" 
@@ -251,9 +244,7 @@
 			class="org.hisp.dhis.caseentry.action.report.GenerateSingleEventReportAction">
 			<result name="success" type="velocity">/content.vm</result>
 			<param name="page">/dhis-web-caseentry/historyAnonymousEvents.vm</param>
-			<param name="stylesheets">
-                 ../dhis-web-caseentry/style/patient.css,
-                 ../dhis-web-commons/paging/paging.css</param>
+			<param name="stylesheets">../dhis-web-caseentry/style/patient.css</param>
 		</action>
 		
         <action name="viewAnonymousEvents"
@@ -371,7 +362,6 @@
 			class="org.hisp.dhis.caseentry.action.patient.SearchPatientAction">
 			<result name="success" type="velocity">/content.vm</result>
 			<param name="page">/dhis-web-caseentry/patientRegistrationList.vm</param>
-			<param name="stylesheets">../dhis-web-commons/paging/paging.css</param>
 		</action>
 		
 		<action name="removePatient"
@@ -452,7 +442,6 @@
 			class="org.hisp.dhis.caseentry.action.patient.GetPatientsByNameAction">
 			<result name="success" type="velocity">/content.vm</result>
 			<param name="page">/dhis-web-caseentry/resultSearchPatients.vm</param>
-			<param name="stylesheets">../dhis-web-commons/paging/paging.css</param>
 		</action>
 
 		<action name="anonymousRegistration"
