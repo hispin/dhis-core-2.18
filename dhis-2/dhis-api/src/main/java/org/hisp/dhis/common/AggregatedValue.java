@@ -30,17 +30,129 @@ package org.hisp.dhis.common;
 /**
  * @author Lars Helge Overland
  */
-public interface AggregatedValue
+public abstract class AggregatedValue
 {
-    final Double ZERO = 0d;
+    public static final Double ZERO = 0d;
+
+    // ----------------------------------------------------------------------
+    // Properties
+    // ----------------------------------------------------------------------
     
-    int getElementId();
+    protected int periodId;
     
-    int getPeriodId();
+    protected int periodTypeId;
     
-    int getOrganisationUnitId();
+    protected int organisationUnitId;
     
-    int getOrganisationUnitGroupId();
+    protected int organisationUnitGroupId;
     
-    double getValue();
+    protected int level;
+    
+    protected double value;
+
+    protected transient String periodName;
+    
+    protected transient String organisationUnitName;
+    
+    protected transient double trendValue;
+
+    // ----------------------------------------------------------------------
+    // Abstract methods
+    // ----------------------------------------------------------------------
+    
+    public abstract int getElementId();
+
+    // ----------------------------------------------------------------------
+    // Getters and setters
+    // ----------------------------------------------------------------------
+    
+    public int getPeriodId()
+    {
+        return periodId;
+    }
+
+    public void setPeriodId( int periodId )
+    {
+        this.periodId = periodId;
+    }
+
+    public int getPeriodTypeId()
+    {
+        return periodTypeId;
+    }
+
+    public void setPeriodTypeId( int periodTypeId )
+    {
+        this.periodTypeId = periodTypeId;
+    }
+
+    public int getOrganisationUnitId()
+    {
+        return organisationUnitId;
+    }
+
+    public void setOrganisationUnitId( int organisationUnitId )
+    {
+        this.organisationUnitId = organisationUnitId;
+    }
+
+    public int getOrganisationUnitGroupId()
+    {
+        return organisationUnitGroupId;
+    }
+
+    public void setOrganisationUnitGroupId( int organisationUnitGroupId )
+    {
+        this.organisationUnitGroupId = organisationUnitGroupId;
+    }
+
+    public int getLevel()
+    {
+        return level;
+    }
+
+    public void setLevel( int level )
+    {
+        this.level = level;
+    }
+
+    public double getValue()
+    {
+        return value;
+    }
+
+    public void setValue( double value )
+    {
+        this.value = value;
+    }
+
+    public String getPeriodName()
+    {
+        return periodName;
+    }
+
+    public void setPeriodName( String periodName )
+    {
+        this.periodName = periodName;
+    }
+
+    public String getOrganisationUnitName()
+    {
+        return organisationUnitName;
+    }
+
+    public void setOrganisationUnitName( String organisationUnitName )
+    {
+        this.organisationUnitName = organisationUnitName;
+    }
+
+    public double getTrendValue()
+    {
+        return trendValue;
+    }
+
+    public void setTrendValue( double trendValue )
+    {
+        this.trendValue = trendValue;
+    }
 }

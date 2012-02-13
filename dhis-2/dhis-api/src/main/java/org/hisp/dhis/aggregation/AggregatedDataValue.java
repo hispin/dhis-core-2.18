@@ -27,43 +27,20 @@ package org.hisp.dhis.aggregation;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.io.Serializable;
-
 import org.hisp.dhis.common.AggregatedValue;
 
 /**
  * @author Lars Helge Overland
  */
 public class AggregatedDataValue
-    implements AggregatedValue, Serializable
+    extends AggregatedValue
 {
-    /**
-     * Determines if a de-serialized file is compatible with this class.
-     */
-    private static final long serialVersionUID = -6569434956128470844L;
-
     private int dataElementId;
 
     private int categoryOptionComboId;
     
-    private int periodId;
-    
-    private int periodTypeId;
-    
-    private int organisationUnitId;
-    
-    private int organisationUnitGroupId;
-    
-    private int level;
-    
-    private double value;
-
     private transient String dataElementName;
     
-    private transient String periodName;
-    
-    private transient String organisationUnitName;
-
     // ----------------------------------------------------------------------
     // Constructors
     // ----------------------------------------------------------------------
@@ -78,8 +55,8 @@ public class AggregatedDataValue
      * @param periodId period id
      * @param periodTypeId period type id
      * @param organisationUnitId organisation unit id
-     * @param level level
-     * @param value value
+     * @param level level level
+     * @param value value value
      */
     public AggregatedDataValue( int dataElementId, int categoryOptionComboId, int periodId, 
         int periodTypeId, int organisationUnitId, int level, double value ) 
@@ -161,66 +138,6 @@ public class AggregatedDataValue
         this.categoryOptionComboId = categoryOptionComboId;
     }
 
-    public int getLevel()
-    {
-        return level;
-    }
-
-    public void setLevel( int level )
-    {
-        this.level = level;
-    }
-
-    public int getOrganisationUnitId()
-    {
-        return organisationUnitId;
-    }
-
-    public void setOrganisationUnitId( int organisationUnitId )
-    {
-        this.organisationUnitId = organisationUnitId;
-    }
-
-    public int getOrganisationUnitGroupId()
-    {
-        return organisationUnitGroupId;
-    }
-
-    public void setOrganisationUnitGroupId( int organisationUnitGroupId )
-    {
-        this.organisationUnitGroupId = organisationUnitGroupId;
-    }
-
-    public int getPeriodId()
-    {
-        return periodId;
-    }
-
-    public void setPeriodId( int periodId )
-    {
-        this.periodId = periodId;
-    }
-
-    public int getPeriodTypeId()
-    {
-        return periodTypeId;
-    }
-
-    public void setPeriodTypeId( int periodTypeId )
-    {
-        this.periodTypeId = periodTypeId;
-    }
-
-    public double getValue()
-    {
-        return value;
-    }
-
-    public void setValue( double value )
-    {
-        this.value = value;
-    }
-
     public String getDataElementName()
     {
         return dataElementName;
@@ -229,26 +146,6 @@ public class AggregatedDataValue
     public void setDataElementName( String dataElementName )
     {
         this.dataElementName = dataElementName;
-    }
-
-    public String getPeriodName()
-    {
-        return periodName;
-    }
-
-    public void setPeriodName( String periodName )
-    {
-        this.periodName = periodName;
-    }
-
-    public String getOrganisationUnitName()
-    {
-        return organisationUnitName;
-    }
-
-    public void setOrganisationUnitName( String organisationUnitName )
-    {
-        this.organisationUnitName = organisationUnitName;
     }
 
     // ----------------------------------------------------------------------
