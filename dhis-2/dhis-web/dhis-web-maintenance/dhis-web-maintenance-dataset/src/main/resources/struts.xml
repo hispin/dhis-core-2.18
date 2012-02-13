@@ -111,7 +111,7 @@
       <result name="success" type="redirect">dataSet.action</result>
     </action>
 
-		<!-- Show add DataSet form -->
+	<!-- Show add DataSet form -->
 
     <action name="addDataSetForm" class="org.hisp.dhis.dataset.action.PeriodTypeListAction">
       <result name="success" type="velocity">/main.vm</result>
@@ -143,7 +143,7 @@
     </action>
 
     <action name="updateDataSet" class="org.hisp.dhis.dataset.action.UpdateDataSetAction">
-      <result name="success" type="redirect">dataSet.action</result>
+      <result name="success" type="redirect">dataSet.action?currentPage=${keyCurrentPage}</result>
       <param name="requiredAuthorities">F_DATASET_UPDATE</param>
     </action>
 

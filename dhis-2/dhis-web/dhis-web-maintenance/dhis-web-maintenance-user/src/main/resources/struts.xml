@@ -67,7 +67,7 @@
 
     <action name="updateUser" class="org.hisp.dhis.user.action.UpdateUserAction">
       <result name="success" type="redirect">alluser.action</result>
-      <result name="error" type="redirect">showUpdateUserForm.action</result>
+      <result name="error" type="redirect">showUpdateUserForm.action?currentPage=${keyCurrentPage}</result>
       <param name="requiredAuthorities">F_USER_UPDATE</param>
     </action>
 
@@ -145,7 +145,7 @@
 
     <action name="updateRole" class="org.hisp.dhis.user.action.UpdateRoleAction">
       <result name="success" type="redirect">allRole.action</result>
-      <result name="error" type="redirect">showUpdateRoleForm.action</result>
+      <result name="error" type="redirect">showUpdateRoleForm.action?currentPage=${keyCurrentPage}</result>
       <param name="requiredAuthorities">F_USERROLE_UPDATE</param>
     </action>
 
@@ -165,7 +165,7 @@
       <result name="logout" type="redirect">/dhis-web-commons-security/logout.action</result>
     </action>
 
-  <!-- User Group -->
+	<!-- User Group -->
 
     <action name="getAllUserGroups" class="org.hisp.dhis.user.action.GetUserGroupListAction">
       <result name="success" type="velocity">/main.vm</result>
@@ -202,7 +202,8 @@
     </action>
 
     <action name="updateUserGroup" class="org.hisp.dhis.user.action.UpdateUserGroupAction">
-      <result name="success" type="redirect">getAllUserGroups.action</result>
+      <result name="success" type="redirect">getAllUserGroups.action?currentPage=${keyCurrentPage}</result>
+      <param name="requiredAuthorities">F_USER_GRUP_UPDATE</param>
     </action>
 
     <action name="removeUserGroup" class="org.hisp.dhis.user.action.RemoveUserGroupAction">
@@ -218,6 +219,7 @@
     </action>
 
     <!-- Json Actions -->
+	
     <action name="getSystemAuthorities" class="org.hisp.dhis.user.action.GetSystemAuthoritiesAction">
       <result name="success" type="velocity-json">
         /dhis-web-maintenance-user/ajax/jsonSystemAuthorities.vm</result>

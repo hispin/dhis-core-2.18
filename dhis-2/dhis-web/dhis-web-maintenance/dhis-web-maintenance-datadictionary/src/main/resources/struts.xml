@@ -71,7 +71,7 @@
     </action>
 
     <action name="updateDataElement" class="org.hisp.dhis.dd.action.dataelement.UpdateDataElementAction">
-      <result name="success" type="redirect">dataElement.action</result>
+      <result name="success" type="redirect">dataElement.action?currentPage=${keyCurrentPage}</result>
       <param name="requiredAuthorities">F_DATAELEMENT_UPDATE</param>
     </action>
 
@@ -160,7 +160,7 @@
     </action>
 
     <action name="updateDataElementGroup" class="org.hisp.dhis.dd.action.dataelementgroup.UpdateDataElementGroupAction">
-      <result name="success" type="redirect">dataElementGroup.action</result>
+      <result name="success" type="redirect">dataElementGroup.action?currentPage=${keyCurrentPage}</result>
       <param name="requiredAuthorities">F_DATAELEMENTGROUP_UPDATE</param>
     </action>
 
@@ -205,7 +205,7 @@
     </action>
 
     <action name="updateDataElementGroupSet" class="org.hisp.dhis.dd.action.dataelementgroupset.UpdateDataElementGroupSetAction">
-      <result name="success" type="redirect">dataElementGroupSet.action</result>
+      <result name="success" type="redirect">dataElementGroupSet.action?currentPage=${keyCurrentPage}</result>
       <param name="requiredAuthorities">F_DATAELEMENTGROUPSET_UPDATE</param>
     </action>
 
@@ -280,7 +280,7 @@
     </action>
 
     <action name="updateIndicator" class="org.hisp.dhis.dd.action.indicator.UpdateIndicatorAction">
-      <result name="success" type="redirect">indicator.action</result>
+      <result name="success" type="redirect">indicator.action?currentPage=${keyCurrentPage}</result>
       <param name="requiredAuthorities">F_INDICATOR_UPDATE</param>
     </action>
 
@@ -373,7 +373,7 @@
     </action>
 
     <action name="updateIndicatorGroup" class="org.hisp.dhis.dd.action.indicatorgroup.UpdateIndicatorGroupAction">
-      <result name="success" type="redirect">indicatorGroup.action</result>
+      <result name="success" type="redirect">indicatorGroup.action?currentPage=${keyCurrentPage}</result>
       <param name="requiredAuthorities">F_INDICATORGROUP_UPDATE</param>
     </action>
 
@@ -413,7 +413,7 @@
     </action>
 
     <action name="updateIndicatorGroupSet" class="org.hisp.dhis.dd.action.indicatorgroupset.UpdateIndicatorGroupSetAction">
-      <result name="success" type="redirect">indicatorGroupSet.action</result>
+      <result name="success" type="redirect">indicatorGroupSet.action?currentPage=${keyCurrentPage}</result>
       <param name="requiredAuthorities">F_INDICATORGROUPSET_UPDATE</param>
     </action>
 
@@ -480,7 +480,7 @@
     </action>
 
     <action name="updateIndicatorType" class="org.hisp.dhis.dd.action.indicatortype.UpdateIndicatorTypeAction">
-      <result name="success" type="redirect">indicatorType.action</result>
+      <result name="success" type="redirect">indicatorType.action?currentPage=${keyCurrentPage}</result>
       <param name="requiredAuthorities">F_INDICATORTYPE_UPDATE</param>
     </action>
 
@@ -541,7 +541,7 @@
     </action>
 
     <action name="updateDataDictionary" class="org.hisp.dhis.dd.action.datadictionary.UpdateDataDictionaryAction">
-      <result name="success" type="redirect">dataDictionary.action</result>
+      <result name="success" type="redirect">dataDictionary.action?currentPage=${keyCurrentPage}</result>
       <param name="requiredAuthorities">F_DATADICTIONARY_UPDATE</param>
     </action>
 
@@ -589,7 +589,7 @@
     </action>
 
     <action name="updateDataElementCategory" class="org.hisp.dhis.dd.action.category.UpdateDataElementCategoryAction">
-      <result name="success" type="redirect">category.action</result>
+      <result name="success" type="redirect">category.action?currentPage=${keyCurrentPage}</result>
       <param name="requiredAuthorities">F_DATAELEMENT_UPDATE</param>
     </action>
 
@@ -610,14 +610,6 @@
       <param name="onExceptionReturn">plainTextError</param>
       <param name="requiredAuthorities">F_DATAELEMENT_DELETE</param>
     </action>
-
-    <!--
-    <action name="showCategoryEditor" class="org.hisp.dhis.dd.action.category.ShowCategoryEditorAction">
-      <result name="success" type="velocity">/main.vm</result>
-      <param name="page">/dhis-web-maintenance-datadictionary/multidimensional/showCategoryEditor.vm</param>
-	  <param name="javascripts">javascript/category.js</param>
-      <param name="requiredAuthorities">F_DATAELEMENT_ADD</param>
-    </action> -->
 
     <!-- CategoryOption -->
 
@@ -681,7 +673,7 @@
     </action>
 
     <action name="updateDataElementCategoryCombo" class="org.hisp.dhis.dd.action.categorycombo.UpdateDataElementCategoryComboAction">
-      <result name="success" type="redirect">categoryCombo.action</result>
+      <result name="success" type="redirect">categoryCombo.action?currentPage=${keyCurrentPage}</result>
       <param name="requiredAuthorities">F_DATAELEMENT_UPDATE</param>
     </action>
 
@@ -778,7 +770,7 @@
     </action>
 
     <action name="updateConceptInstance" class="org.hisp.dhis.dd.action.concept.UpdateConceptAction">
-      <result name="success" type="redirect">concept.action</result>
+      <result name="success" type="redirect">concept.action?currentPage=${keyCurrentPage}</result>
       <result name="error" type="redirect">index.action</result>
       <param name="requiredAuthorities">F_CONCEPT_UPDATE</param>
     </action>

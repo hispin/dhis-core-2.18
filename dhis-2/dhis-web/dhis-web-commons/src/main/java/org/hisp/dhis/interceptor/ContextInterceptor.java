@@ -27,9 +27,12 @@ package org.hisp.dhis.interceptor;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import static org.hisp.dhis.util.ContextUtils.getCookieValue;
+
 import java.util.HashMap;
 import java.util.Map;
 
+import org.apache.struts2.ServletActionContext;
 import org.hisp.dhis.system.database.DatabaseInfoProvider;
 import org.hisp.dhis.system.util.TextUtils;
 
@@ -44,6 +47,7 @@ public class ContextInterceptor
 {
     private static final String KEY_IN_MEMORY_DATABASE = "inMemoryDatabase";
     private static final String KEY_TEXT_UTILS = "dhisTextUtils";
+    private static final String KEY_CURRENT_PAGE = "keyCurrentPage";
     
     private DatabaseInfoProvider databaseInfoProvider;
 
@@ -70,6 +74,7 @@ public class ContextInterceptor
         
         map.put( KEY_IN_MEMORY_DATABASE, databaseInfoProvider.isInMemory() );
         map.put( KEY_TEXT_UTILS, TextUtils.INSTANCE );
+        map.put( KEY_CURRENT_PAGE, getCookieValue( ServletActionContext.getRequest(), "currentPage" ) );
         
         invocation.getStack().push( map );
         
