@@ -2334,6 +2334,11 @@ Ext.onReady( function() {
                                                     {
                                                         xtype: 'checkbox',
                                                         paramName: 'thisYear',
+                                                        boxLabel: DV.i18n.this_year
+                                                    },
+                                                    {
+                                                        xtype: 'checkbox',
+                                                        paramName: 'lastYear',
                                                         boxLabel: DV.i18n.last_year
                                                     },
                                                     {

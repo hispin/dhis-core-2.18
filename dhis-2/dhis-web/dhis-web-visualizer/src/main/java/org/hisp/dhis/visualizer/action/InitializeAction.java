@@ -125,6 +125,13 @@ public class InitializeAction
         return last2SixMonths;
     }
     
+    private List<Period> lastYear;
+
+    public List<Period> getLastYear()
+    {
+        return lastYear;
+    }
+    
     private List<Period> thisYear;
 
     public List<Period> getThisYear()
@@ -170,6 +177,9 @@ public class InitializeAction
         
         rp.clear().setLast2SixMonths( true );
         last2SixMonths = periodService.reloadPeriods( setNames( rp.getRelativePeriods() ) );
+        
+        rp.clear().setLastYear( true );
+        lastYear = periodService.reloadPeriods( setNames( rp.getRelativePeriods() ) );
         
         rp.clear().setThisYear( true );
         thisYear = periodService.reloadPeriods( setNames( rp.getRelativePeriods() ) );
