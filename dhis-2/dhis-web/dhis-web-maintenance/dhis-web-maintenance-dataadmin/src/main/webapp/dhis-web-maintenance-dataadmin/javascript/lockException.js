@@ -4,10 +4,14 @@ jQuery(document).ready(function () {
     jQuery("#periods").bind("change", periodChanged);
 });
 
-function ouChanged( e, ou ) {
-    jQuery("#organisationUnitId").val(ou);
+function ouChanged( e ) {
+    // arguments is only "array-like", so it doesnt have splice
+    var args = Array.prototype.slice.call(arguments);
+    var selectedOus = args.splice(1, args.length);
 
-    jQuery.getJSON('getDataSets.action?id=' + ou, function ( data ) {
+    jQuery("#organisationUnitId").val(selectedOus.join(','));
+
+    jQuery.getJSON('getDataSets.action?id=' + selectedOus.join(','), function ( data ) {
         jQuery("#dataSets").children().remove();
 
         if ( data.dataSets.length == 0 ) {

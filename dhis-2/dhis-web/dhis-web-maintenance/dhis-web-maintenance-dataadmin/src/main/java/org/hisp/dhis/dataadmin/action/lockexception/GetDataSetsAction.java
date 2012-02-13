@@ -35,7 +35,9 @@ import org.hisp.dhis.user.CurrentUserService;
 import org.hisp.dhis.user.UserCredentials;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
@@ -65,9 +67,9 @@ public class GetDataSetsAction
     // Input & Output
     // -------------------------------------------------------------------------
 
-    private int id;
+    private String id;
 
-    public void setId( int id )
+    public void setId( String id )
     {
         this.id = id;
     }
@@ -91,20 +93,29 @@ public class GetDataSetsAction
         return SUCCESS;
     }
 
-    private List<DataSet> getDataSetsForCurrentUser( int id )
+    private List<DataSet> getDataSetsForCurrentUser( String ids )
     {
-        OrganisationUnit organisationUnit = organisationUnitService.getOrganisationUnit( id );
+        // start out with a Set, so that we don't get duplicates
+        Set<DataSet> dataSets = new HashSet<DataSet>();
 
-        if ( organisationUnit == null )
+        if ( ids.length() == 0 )
         {
             return new ArrayList<DataSet>();
         }
 
-        List<DataSet> dataSets = new ArrayList<DataSet>();
-
-        if ( organisationUnit.getDataSets() != null )
+        for ( String id : ids.split( "," ) )
         {
-            dataSets.addAll( organisationUnit.getDataSets() );
+            OrganisationUnit organisationUnit = organisationUnitService.getOrganisationUnit( Integer.parseInt( id ) );
+
+            if ( organisationUnit == null )
+            {
+                continue;
+            }
+
+            if ( organisationUnit.getDataSets() != null )
+            {
+                dataSets.addAll( organisationUnit.getDataSets() );
+            }
         }
 
         UserCredentials userCredentials = currentUserService.getCurrentUser().getUserCredentials();
@@ -114,6 +125,6 @@ public class GetDataSetsAction
             dataSets.retainAll( userCredentials.getAllDataSets() );
         }
 
-        return dataSets;
+        return new ArrayList<DataSet>( dataSets );
     }
 }

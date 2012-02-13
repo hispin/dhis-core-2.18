@@ -50,7 +50,6 @@
 				<tr id="tr${lockException.id}">
 					<td onclick="javascript:showLockExceptionDetails( $lockException.id )">$encoder.htmlEncode( $lockException.name )</td>
 					<td style="text-align:right">
-						<a href="showUpdateLockExceptionForm.action?id=$lockException.id" title="$i18n.getString( 'edit' )"><img src="../images/edit.png" alt="$i18n.getString( 'edit' )"/></a>
                         <a href="javascript:removeLockException( $lockException.id, '$encoder.jsEncode( $lockException.name )' )" title="$i18n.getString( 'remove' )"><img src="../images/delete.png" alt="$i18n.getString( 'remove' )"/></a>
                         <a href="javascript:showLockExceptionDetails( $lockException.id )" title="$i18n.getString( 'show_details' )"><img src="../images/information.png" alt="$i18n.getString( 'show_details' )"/></a>
 					</td>
@@ -68,7 +67,7 @@
                     <a href="javascript:hideDetails()" title="$i18n.getString( 'hide_details' )"><img src="../images/close.png" alt="$i18n.getString( 'hide_details' )"/></a>
                 </div>
                 <p><label>$i18n.getString( "organisation_unit" ):</label><br/><span id="organisationUnitField"></span></p>
-                <p><label>$i18n.getString( "data_set" ):</label><br/><span id="dataSetField"></span></p>
+                <p><label>$i18n.getString( "dataset" ):</label><br/><span id="dataSetField"></span></p>
                 <p><label>$i18n.getString( "period" ):</label><br/><span id="periodField"></span></p>
             </div>
 

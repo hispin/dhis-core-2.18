@@ -10,7 +10,7 @@
 	<col/>
 
     <tr>
-        <td>#organisationUnitSelectionTree( true, false, true )</td>
+        <td>#organisationUnitSelectionTree( true, true, true )</td>
     </tr>
 
     <tr>
