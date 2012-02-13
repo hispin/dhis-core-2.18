@@ -16,6 +16,9 @@ function showProgramDetails( programId )
 		var anonymous = ( json.program.anonymous == 'true') ? i18n_yes : i18n_no;
 		setInnerHTML( 'anonymousField', anonymous );   		
 		
+		var displayProvidedOtherFacility = ( json.program.displayProvidedOtherFacility == 'true') ? i18n_yes : i18n_no;
+		setInnerHTML( 'displayProvidedOtherFacilityField', displayProvidedOtherFacility );   	
+		
 		setInnerHTML( 'dateOfEnrollmentDescriptionField', json.program.dateOfEnrollmentDescription );   
 		setInnerHTML( 'dateOfIncidentDescriptionField', json.program.dateOfIncidentDescription );   		
 		setInnerHTML( 'programStageCountField',  json.program.programStageCount );

@@ -40,6 +40,8 @@
     <property name="singleEvent" />
     
     <property name="anonymous" />
-
+    
+    <property name="displayProvidedOtherFacility" />
+    
   </class>
 </hibernate-mapping>

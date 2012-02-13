@@ -122,6 +122,13 @@ public class UpdateProgramAction
         this.anonymous = anonymous;
     }
 
+    private Boolean displayProvidedOtherFacility;
+
+    public void setDisplayProvidedOtherFacility( Boolean displayProvidedOtherFacility )
+    {
+        this.displayProvidedOtherFacility = displayProvidedOtherFacility;
+    }
+
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
@@ -131,6 +138,7 @@ public class UpdateProgramAction
     {
         singleEvent = (singleEvent == null) ? false : singleEvent;
         anonymous = (anonymous == null) ? false : anonymous;
+        displayProvidedOtherFacility = (displayProvidedOtherFacility == null) ? false : displayProvidedOtherFacility;
 
         Program program = programService.getProgram( id );
         program.setName( name );
@@ -141,6 +149,7 @@ public class UpdateProgramAction
         program.setMaxDaysAllowedInputData( maxDaysAllowedInputData );
         program.setSingleEvent( singleEvent );
         program.setAnonymous( anonymous );
+        program.setDisplayProvidedOtherFacility( displayProvidedOtherFacility );
 
         programService.updateProgram( program );
 
