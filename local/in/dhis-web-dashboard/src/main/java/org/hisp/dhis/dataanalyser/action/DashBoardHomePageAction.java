@@ -273,7 +273,7 @@ public class DashBoardHomePageAction
             while( progIterator.hasNext() )
             {
                 Program prg = progIterator.next();
-                if( prg.getOrganisationUnits() == null || prg.getOrganisationUnits().size() <= 0)
+                if( prg.getOrganisationUnits() == null || prg.getOrganisationUnits().size() <= 0 || prg.getAnonymous() )
                 {
                     progIterator.remove();
                 }
