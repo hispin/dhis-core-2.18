@@ -28,6 +28,8 @@ package org.hisp.dhis.dataadmin.action.lockexception;
  */
 
 import com.opensymphony.xwork2.Action;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.dataset.DataSetService;
 import org.hisp.dhis.dataset.LockException;
@@ -42,6 +44,8 @@ import org.hisp.dhis.period.PeriodService;
 public class AddLockExceptionAction
     implements Action
 {
+    private static final Log log = LogFactory.getLog( AddLockExceptionAction.class );
+
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
@@ -71,9 +75,9 @@ public class AddLockExceptionAction
     // Input & Output
     // -------------------------------------------------------------------------
 
-    private int organisationUnitId;
+    private String organisationUnitId;
 
-    public void setOrganisationUnitId( int organisationUnitId )
+    public void setOrganisationUnitId( String organisationUnitId )
     {
         this.organisationUnitId = organisationUnitId;
     }
@@ -99,21 +103,40 @@ public class AddLockExceptionAction
     @Override
     public String execute() throws Exception
     {
-        OrganisationUnit organisationUnit = organisationUnitService.getOrganisationUnit( organisationUnitId );
-        DataSet dataSet = dataSetService.getDataSet( dataSetId );
-        Period period = periodService.getPeriodByExternalId( periodId );
-
-        if ( organisationUnit == null || dataSet == null || period == null )
+        if ( organisationUnitId.length() == 0 )
         {
-            return ERROR;
+            return INPUT;
         }
 
-        LockException lockException = new LockException();
-        lockException.setOrganisationUnit( organisationUnit );
-        lockException.setDataSet( dataSet );
-        lockException.setPeriod( period );
+        for ( String id : organisationUnitId.split( "," ) )
+        {
+            OrganisationUnit organisationUnit = organisationUnitService.getOrganisationUnit( Integer.parseInt( id ) );
+            DataSet dataSet = dataSetService.getDataSet( dataSetId );
+            Period period = periodService.getPeriodByExternalId( periodId );
 
-        dataSetService.addLockException( lockException );
+            if ( organisationUnit == null || dataSet == null || period == null )
+            {
+                return ERROR;
+            }
+
+            if ( organisationUnit.getDataSets().contains( dataSet ) )
+            {
+                LockException lockException = new LockException();
+
+                lockException.setOrganisationUnit( organisationUnit );
+                lockException.setDataSet( dataSet );
+                lockException.setPeriod( period );
+                dataSetService.addLockException( lockException );
+            }
+            else
+            {
+                if ( log.isDebugEnabled() )
+                {
+                    log.debug( "OrganisationUnit " + organisationUnit.getName() + " does not contain DataSet " +
+                        dataSet.getName() + ", ignoring." );
+                }
+            }
+        }
 
         return SUCCESS;
     }
