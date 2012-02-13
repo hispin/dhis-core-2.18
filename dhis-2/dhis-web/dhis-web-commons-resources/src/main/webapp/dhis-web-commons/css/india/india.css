@@ -1,12 +1,12 @@
 
 /*----------------------------------------------------------------------------*/
-/* General   Designed by Zafar Karimov, zafar.karimov@gmail.com               */
+/* General                                                                    */
 /*----------------------------------------------------------------------------*/
 
 * 
 {
-  font-family: arial, sans-serif;
-  line-height: 125%;
+  font-family: LiberationSansRegular, arial;
+  line-height: 140%;
 }
 
 html,body 
@@ -26,16 +26,40 @@ ul,ol
   padding: 0px;
 }
 
-.ui-widget {
+a
+{
+  text-decoration: none;
+  color: #3b73b8;
+}
+
+select
+{
+  padding: 1px;
+}
+
+a:hover
+{
+  text-decoration:underline;
+}
+
+a:visited
+{
+  color:#3b73b8;
+}
+
+.ui-widget 
+{
 	font-family: LiberationSansRegular, arial, sans-serif !important;
 	font-size: 11px;
 }
 
-.ui-widget .ui-widget {
+.ui-widget .ui-widget 
+{
 	font-size: 11px;
 }
 
-.ui-widget input, .ui-widget select, .ui-widget textarea, .ui-widget button {
+.ui-widget input, .ui-widget select, .ui-widget textarea, .ui-widget button 
+{
 	font-family: LiberationSansRegular, arial, sans-serif !important;
 	font-size: 11px;
 }
@@ -48,11 +72,11 @@ div#header
 {
   background-image: url('logo_background.png');
   background-repeat: repeat-x;
-  height: 83px;
+  height: 46px;
   position: absolute;
   top: 0px;
-  left: 10px;
-  right: 10px;
+  left: 0px;
+  right: 0px;
 }
 
 img#header1
@@ -63,8 +87,8 @@ img#header1
 img#header2
 {
   position: absolute;
-  left: 25px;
-  top: 12px;
+  top: 5px;
+  left: 59px;
 }
 
 img#header3
@@ -76,90 +100,87 @@ img#menuSeparator1
 {
   position: absolute;
   top: 0px;
-  left: 570px;
+  left: 580px;
 }
 
 img#menuSeparator2
 {
   position: absolute;
   top: 0px;
-  left: 670px;
+  left: 680px;
 }
 
 img#menuSeparator3
 {
   position: absolute;
   top: 0px;
-  left: 770px;
+  left: 780px;
 }
 
 img#menuSeparator4
 {
   position: absolute;
   top: 0px;
-  left: 870px;
+  left: 880px;
 }
 
 img#menuSeparator5
 {
   position: absolute;
   top: 0px;
-  left: 970px;
+  left: 980px;
 }
 
 .menuLink
 {
-  height: 68px;
+  height: 47px;
   width: 98px;
-  font-size: 12px;
+  font-family: LiberationSansRegular, arial;
+  font-size: 13px;
   color: #ffffff;
-  font-weight: bold;
   text-align: center;
-  line-height: 59px;
+  line-height: 45px;
   cursor: pointer;
 }
 
 div#menuLink1
 {
   position: absolute;
-  top: 7px;
-  left: 572px;
+  left: 582px;
 }
 
 div#menuLink2
 {
   position: absolute;
-  top: 7px;
-  left: 672px;
+  left: 682px;
 }
 
 div#menuLink3
 {
   position: absolute;
-  top: 7px;
-  left: 772px;
+  left: 782px;
 }
 
 div#menuLink4
 {
   position: absolute;
-  top: 7px;
-  left: 872px;
+  left: 882px;
 }
 
 span#headerText
 {
   position: absolute;
-  top: 25px;
-  left: 228px;
+  top: 13px;
+  left: 253px;
+  font-family: LiberationSansBold, arial;
   font-weight: lighter;
   color: white;
-  font-size: 13pt;
+  font-size: 16px;
 }
 
 div#popupHeader 
 {
-  background-color: #425073;
+  background-color: #1d5288;
   height: 34px;
   width: 100%;
   position: absolute;
@@ -172,7 +193,7 @@ span#popupHeaderText
 {
   position: absolute;
   top: 3px;
-  left: 30px;
+  left: 218px;
   font-size: 14px;
   color: white;
   margin: 5px;
@@ -181,37 +202,43 @@ span#popupHeaderText
 div#menuDropDown1
 {
   position: absolute;
-  top: 76px;
-  left: 570px;
+  top: 46px;
+  left: 580px;
 }
 
 div#menuDropDown2
 {
   position: absolute;
-  top: 76px;
-  left: 670px;
+  top: 46px;
+  left: 680px;
 }
 
 div#menuDropDown3
 {
   position: absolute;
-  top: 76px;
-  left: 770px;
+  top: 46px;
+  left: 780px;
 }
 
 .menuDropDownArea
 {
   font-size: 12px;
   color: #ffffff;
-  border: 1px solid #282c35;
+  border-right: 1px solid #282c35;
+  border-bottom: 1px solid #282c35;
+  border-left: 1px solid #282c35;
   padding-left: 5px;
   padding-right: 5px;
   width: 189px;
-  background-color: #518a0f;  /*add by zafar*/
+  background-color: #518a0f;
   display: none;
   z-index: 10;
   filter: alpha(opacity=90);
   opacity: 0.90;
+  border-bottom-left-radius: 3px;
+  border-bottom-right-radius: 3px;
+  -moz-border-radius-bottomleft: 3px; /* Firefox */
+  -moz-border-radius-bottomright: 3px; /* Firefox */
 }
 
 .menuDropDownBox
@@ -224,10 +251,12 @@ div#menuDropDown3
 {
   padding-top: 5px;
   padding-left: 10px;
-  padding-bottom: 5px;
+  padding-bottom: 4px;
   padding-right: 10px;
-  border: 1px solid #518a0f; /*add by Zafar*/
+  border: 1px solid #518a0f;
   cursor: pointer;
+  border-radius: 3px;
+  -moz-border-radius: 3px; /* Firefox */
 }
 
 /*----------------------------------------------------------------------------*/
@@ -236,18 +265,20 @@ div#menuDropDown3
 
 #leftBar
 {
-  background-color: #518a0f; /*Add by Zafar */
-  height: 472px;
-  width: 250px;
+  background-color: #518a0f;
+  height: 535px;
+  width: 235px;
   float: left;
   position: absolute;
-  top: 85px;
-  left: 10px;
-  border-style: solid;
-  border-width: 1px;
-  border-color: #343a47;
+  top: 46px;
+  left: 0px;
+  padding-top: 6px;
+  border-right: 1px solid #343a47;
+  border-bottom: 1px solid #343a47;
   filter: alpha(opacity=90);
   opacity: 0.90;
+  border-bottom-right-radius: 5px;
+  -moz-border-radius-bottomright: 5px; /* Firefox */
 }
 
 #leftBarContents
@@ -259,23 +290,22 @@ div#menuDropDown3
 #leftBarContents h2
 {
   font-size: 14px;
-  margin-top: 16px;
-  margin-right: 17px;
-  margin-left: 17px;
-  background-color: #f5790b; /*Add by Zafar, box background colorin left menu*/  
-  padding-top: 6px;
-  padding-bottom: 5px;
-  padding-left: 10px;
+  background-color: #f5790b;
+  margin: 16px 15px 0px 15px;
+  padding: 4px 0px 3px 10px;
   color: white;
   border-style: solid;
   border-width: 1px;
   border-color: #ffffff;
+  font-weight: normal;
+  border-radius: 3px;
+  -moz-border-radius: 3px; /* Firefox */
 }
 
 #leftBarContents ul
 {
-  margin-left: 40px;
-  list-style-type: square;
+  margin-left: 26px;
+  list-style-type: none;
   color: white;
 }
 
@@ -287,7 +317,7 @@ div#menuDropDown3
 
 #leftBarContents a:hover
 {
-  color: #D1D3FF;
+  color: #acc8de;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -351,22 +381,24 @@ div#menuDropDown3
   font-size: 9pt;
 }
 
-.page th, thead tr
+.page th, thead tr, .tabHead
 {
-  background-image: url('head.png');
+  background-color: #cbddeb;
   background-repeat: repeat-x;
   text-align: left;
-  color: #3f5d8e;
+  color: #39547d;
+  padding:3px 0px 2px 6px;
   border-style: solid;
   border-width: 1px;
-  border-color: #99bbe8;
-  padding-left: 7px;
-  height: 19px;
+  border-color: #c8dbea;
+  font-family: LiberationSansBold, arial;
+  font-size: 13px;
+  font-weight: normal;
 }
 
 #mainPage 
 {
-  margin: 102px 10px 10px 300px;
+  margin: 69px 10px 10px 270px;
 }
 
 #popupPage 
@@ -388,7 +420,7 @@ div#menuDropDown3
 
 .listTable td
 {
-  padding: 2px;
+  padding: 2px 2px 2px 5px;
 }
 
 .listRow
@@ -409,7 +441,7 @@ div#menuDropDown3
 
 .bold, .bold td
 {
-  font-weight: bold;
+  font-family: LiberationSansBold, arial;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -427,22 +459,57 @@ div#menuDropDown3
   padding-bottom: 20px;
   padding-left: 5px;
   padding-right: 5px;
-  -moz-border-radius: 5px;
-  -webkit-border-radius: 5px;
+  border-radius: 5px;
+  -moz-border-radius: 5px; /* Firefox */
 }
 	
 .introItem
 {
-  padding: 15px;
+  padding: 12px;
   cursor: pointer;
   border: 1px solid #d5efd5;
-  -moz-border-radius: 5px;
-  -webkit-border-radius: 5px;
+  border-radius: 3px;
+  -moz-border-radius: 3px; /* Firefox */
 }
 
 .introItemHeader
 {
+  font-family: LiberationSansBold, arial;
   color: #3c533c;
-  font-weight: bold;
+  font-size: 13px;
 }
 
+/*----------------------------------------------------------------------------*/
+/* jQuery overrides                                                           */
+/*----------------------------------------------------------------------------*/
+
+.ui-datepicker th {
+  padding: 0.5em 0;
+  font-size: 11px;
+}
+
+/*----------------------------------------------------------------------------*/
+/* @font-face                                                                 */
+/*----------------------------------------------------------------------------*/
+
+@font-face {
+    font-family: 'LiberationSansRegular';
+    src: url('../../fonts/LiberationSans-Regular-webfont.eot');
+    src: url('../../fonts/LiberationSans-Regular-webfont.eot?#iefix') format('eot'),
+         url('../../fonts/LiberationSans-Regular-webfont.woff') format('woff'),
+         url('../../fonts/LiberationSans-Regular-webfont.ttf') format('truetype'),
+         url('../../fonts/LiberationSans-Regular-webfont.svg#webfontc8rbNdBe') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'LiberationSansBold';
+    src: url('../../fonts/LiberationSans-Bold-webfont.eot');
+    src: url('../../fonts/LiberationSans-Bold-webfont.eot?#iefix') format('eot'),
+         url('../../fonts/LiberationSans-Bold-webfont.woff') format('woff'),
+         url('../../fonts/LiberationSans-Bold-webfont.ttf') format('truetype'),
+         url('../../fonts/LiberationSans-Bold-webfont.svg#webfontHyWb8e07') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}
