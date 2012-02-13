@@ -1,0 +1,32 @@
+
+<script>
+
+    leftBar.hideAnimated();
+
+	function changeOrgUnit()
+	{
+		var orgUnitObj = document.getElementById("orgUnit");
+		
+		var sleOrgUnitId = orgUnitObj.options[ orgUnitObj.selectedIndex ].value;
+		document.location.href = "dashboardPage.action?drillDownOrgUnitId="+sleOrgUnitId;
+	}
+	
+</script>
+
+<table width="100%">
+	<tr>
+		<td align="left" width="50%">$navigationString</td>
+		<td align="right" width="50%">
+			<select id="orgUnit" name="orgUnit" onchange="javascript:changeOrgUnit()">
+				#foreach( $orgUnit in $orgUnitList )
+					<option value="$orgUnit.id">$orgUnit.name</option>					
+				#end
+			</select>
+		</td>
+	</tr>
+</table>
+
+<br/>
+<div>
+	$customDataEntryFormCode
+</div>
