@@ -45,6 +45,8 @@ public class Notification
     private Date time;
     
     private String message;
+    
+    private boolean completed;
 
     // -------------------------------------------------------------------------
     // Constructors
@@ -55,13 +57,14 @@ public class Notification
         this.uid = CodeGenerator.generateCode();
     }
 
-    public Notification( NotificationLevel level, NotificationCategory category, Date time, String message )
+    public Notification( NotificationLevel level, NotificationCategory category, Date time, String message, boolean completed )
     {
         this.uid = CodeGenerator.generateCode();
         this.level = level;
         this.category = category;
         this.time = time;
         this.message = message;
+        this.completed = completed;
     }
 
     // -------------------------------------------------------------------------
@@ -116,6 +119,16 @@ public class Notification
     public void setMessage( String message )
     {
         this.message = message;
+    }
+
+    public boolean isCompleted()
+    {
+        return completed;
+    }
+
+    public void setCompleted( boolean completed )
+    {
+        this.completed = completed;
     }
 
     // -------------------------------------------------------------------------

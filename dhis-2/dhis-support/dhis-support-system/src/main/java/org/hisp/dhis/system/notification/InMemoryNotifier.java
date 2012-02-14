@@ -56,13 +56,13 @@ public class InMemoryNotifier
     @Override
     public void notify( NotificationCategory category, String message )
     {
-        notify( NotificationLevel.INFO, category, message );
+        notify( NotificationLevel.INFO, category, message, false );
     }
     
     @Override
-    public void notify( NotificationLevel level, NotificationCategory category, String message )
+    public void notify( NotificationLevel level, NotificationCategory category, String message, boolean completed )
     {
-        Notification notification = new Notification( level, category, new Date(), message );
+        Notification notification = new Notification( level, category, new Date(), message, completed );
         
         notifications.add( 0, notification );
         
