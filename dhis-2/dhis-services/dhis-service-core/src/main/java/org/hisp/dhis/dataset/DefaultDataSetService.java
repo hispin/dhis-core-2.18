@@ -376,8 +376,7 @@ public class DefaultDataSetService
     @Override
     public Collection<LockException> getLockExceptionsBetween( int first, int max )
     {
-        // FIXME extend lockExceptionStore to include HQL query for this
-        return getAllLockExceptions();
+        return lockExceptionStore.getBetween( first, max );
     }
 
     @Override

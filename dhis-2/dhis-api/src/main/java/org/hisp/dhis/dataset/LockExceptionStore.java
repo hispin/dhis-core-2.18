@@ -40,6 +40,8 @@ public interface LockExceptionStore
 {
     String ID = LockExceptionStore.class.getName();
 
+    Collection<LockException> getBetween( int first, int max );
+
     Collection<LockException> getCombinations();
 
     void deleteCombination( DataSet dataSet, Period period );

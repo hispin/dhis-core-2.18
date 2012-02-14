@@ -27,6 +27,7 @@ package org.hisp.dhis.dataset.hibernate;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import org.hibernate.Criteria;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hisp.dhis.dataset.DataSet;
@@ -115,5 +116,15 @@ public class HibernateLockExceptionStore
 
 //        final String sql = "DELETE FROM LockException WHERE dataSetId=? AND periodId=?";
 //        jdbcTemplate.update( sql, new Object[]{dataSet.getId(), period.getId()} );
+    }
+
+    @Override
+    public Collection<LockException> getBetween( int first, int max )
+    {
+        Criteria criteria = getCriteria();
+        criteria.setFirstResult( first );
+        criteria.setMaxResults( max );
+
+        return criteria.list();
     }
 }
