@@ -393,8 +393,7 @@ public class DefaultCaseAggregationConditionService
 
     public Collection<DataElement> getDataElementsInCondition( String aggregationExpression )
     {
-        String regExp = "\\[" + OBJECT_PROGRAM_STAGE_DATAELEMENT + SEPARATOR_OBJECT + "[0-9]+" + SEPARATOR_ID
-            + "[0-9]+" + SEPARATOR_ID + "[0-9]+" + "\\]";
+        String regExp = "\\[" + OBJECT_PROGRAM_STAGE_DATAELEMENT + SEPARATOR_OBJECT + "[0-9]+" + SEPARATOR_ID + "[0-9]+" + "\\]";
 
         Collection<DataElement> dataElements = new HashSet<DataElement>();
 
