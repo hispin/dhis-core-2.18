@@ -1,5 +1,7 @@
+package org.hisp.dhis.dataadmin.action.lockexception;
+
 /*
- * Copyright (c) 2004-2011, University of Oslo
+ * Copyright (c) 2004-2012, University of Oslo
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -25,21 +27,19 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.hisp.dhis.dataadmin.action.lockexception;
-
+import com.opensymphony.xwork2.Action;
 import org.hisp.dhis.dataset.DataSetService;
 import org.hisp.dhis.dataset.LockException;
 import org.hisp.dhis.i18n.I18nFormat;
-import org.hisp.dhis.paging.ActionPagingSupport;
 
 import java.util.ArrayList;
 import java.util.List;
 
 /**
- * @author mortenoh
+ * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
-public class GetLockExceptionListAction
-    extends ActionPagingSupport<LockException>
+public class PrepareBatchRemovalAction
+    implements Action
 {
     // -------------------------------------------------------------------------
     // Dependencies
@@ -70,39 +70,20 @@ public class GetLockExceptionListAction
         return lockExceptions;
     }
 
-    private String key;
-
-    public String getKey()
-    {
-        return key;
-    }
-
-    public void setKey( String key )
-    {
-        this.key = key;
-    }
-
     // -------------------------------------------------------------------------
-    // Action implementation
+    // Action Implementation
     // -------------------------------------------------------------------------
 
     @Override
-    public String execute()
+    public String execute() throws Exception
     {
-        lockExceptions = new ArrayList<LockException>( dataSetService.getAllLockExceptions() );
+        lockExceptions = new ArrayList<LockException>( dataSetService.getLockExceptionCombinations() );
 
         for ( LockException lockException : lockExceptions )
         {
             lockException.getPeriod().setName( format.formatPeriod( lockException.getPeriod() ) );
-        }
 
-        if ( usePaging )
-        {
-            paging = createPaging( dataSetService.getLockExceptionCount() );
-            lockExceptions = lockExceptions.subList( paging.getStartPos(), paging.getEndPos() );
         }
-
-        dataSetService.getLockExceptionCombinations();
 
         return SUCCESS;
     }

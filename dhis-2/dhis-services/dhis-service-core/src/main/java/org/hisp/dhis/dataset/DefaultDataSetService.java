@@ -34,6 +34,7 @@ import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataentryform.DataEntryForm;
 import org.hisp.dhis.i18n.I18nService;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
+import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodType;
 import org.hisp.dhis.system.util.AuditLogUtil;
 import org.hisp.dhis.system.util.Filter;
@@ -377,5 +378,17 @@ public class DefaultDataSetService
     {
         // FIXME extend lockExceptionStore to include HQL query for this
         return getAllLockExceptions();
+    }
+
+    @Override
+    public Collection<LockException> getLockExceptionCombinations()
+    {
+        return lockExceptionStore.getCombinations();
+    }
+
+    @Override
+    public void deleteLockExceptionCombination( DataSet dataSet, Period period )
+    {
+        lockExceptionStore.deleteCombination( dataSet, period );
     }
 }
