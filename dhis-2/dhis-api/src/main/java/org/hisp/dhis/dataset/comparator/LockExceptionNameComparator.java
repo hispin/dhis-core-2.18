@@ -1,4 +1,4 @@
-package org.hisp.dhis.dataset;
+package org.hisp.dhis.dataset.comparator;
 
 /*
  * Copyright (c) 2004-2012, University of Oslo
@@ -27,74 +27,19 @@ package org.hisp.dhis.dataset;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import org.hisp.dhis.organisationunit.OrganisationUnit;
-import org.hisp.dhis.period.Period;
+import org.hisp.dhis.dataset.LockException;
+
+import java.util.Comparator;
 
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
-public class LockException
+public class LockExceptionNameComparator
+    implements Comparator<LockException>
 {
-    private int id;
-
-    private Period period;
-
-    private OrganisationUnit organisationUnit;
-
-    private DataSet dataSet;
-
-    public LockException()
+    @Override
+    public int compare( LockException e, LockException e1 )
     {
-
-    }
-
-    public String getName()
-    {
-        if ( organisationUnit == null )
-        {
-            return dataSet.getName() + " (" + period.getName() + ")";
-        }
-
-        return dataSet.getName() + " (" + organisationUnit.getName() + ", " + period.getName() + ")";
-    }
-
-    public int getId()
-    {
-        return id;
-    }
-
-    public void setId( int id )
-    {
-        this.id = id;
-    }
-
-    public Period getPeriod()
-    {
-        return period;
-    }
-
-    public void setPeriod( Period period )
-    {
-        this.period = period;
-    }
-
-    public OrganisationUnit getOrganisationUnit()
-    {
-        return organisationUnit;
-    }
-
-    public void setOrganisationUnit( OrganisationUnit organisationUnit )
-    {
-        this.organisationUnit = organisationUnit;
-    }
-
-    public DataSet getDataSet()
-    {
-        return dataSet;
-    }
-
-    public void setDataSet( DataSet dataSet )
-    {
-        this.dataSet = dataSet;
+        return e.getName().compareTo( e1.getName() );
     }
 }

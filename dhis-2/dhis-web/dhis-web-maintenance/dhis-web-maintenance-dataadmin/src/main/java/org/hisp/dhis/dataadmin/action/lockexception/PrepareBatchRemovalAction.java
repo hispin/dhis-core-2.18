@@ -30,9 +30,11 @@ package org.hisp.dhis.dataadmin.action.lockexception;
 import com.opensymphony.xwork2.Action;
 import org.hisp.dhis.dataset.DataSetService;
 import org.hisp.dhis.dataset.LockException;
+import org.hisp.dhis.dataset.comparator.LockExceptionNameComparator;
 import org.hisp.dhis.i18n.I18nFormat;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -84,6 +86,8 @@ public class PrepareBatchRemovalAction
             lockException.getPeriod().setName( format.formatPeriod( lockException.getPeriod() ) );
 
         }
+
+        Collections.sort( lockExceptions, new LockExceptionNameComparator() );
 
         return SUCCESS;
     }

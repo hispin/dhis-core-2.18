@@ -62,10 +62,9 @@
 
 				#foreach( $lockException in $lockExceptions )
 				<tr id="ds${lockException.dataSet.id}p${lockException.period.id}">
-                    #set( $name = "$encoder.htmlEncode( $lockException.dataSet.name ) - $encoder.htmlEncode( $lockException.period.name )" )
-					<td>$name</td>
+					<td>$encoder.htmlEncode( $lockException.name )</td>
 					<td style="text-align:right">
-                        <a href="javascript:removeLockExceptions($lockException.dataSet.id, $lockException.period.id, '$name')" title="$i18n.getString( 'remove' )"><img src="../images/delete.png" alt="$i18n.getString( 'remove' )"/></a>
+                        <a href="javascript:removeLockExceptions($lockException.dataSet.id, $lockException.period.id, '$encoder.htmlEncode( $lockException.name )')" title="$i18n.getString( 'remove' )"><img src="../images/delete.png" alt="$i18n.getString( 'remove' )"/></a>
 					</td>
 				</tr>
 				#end
