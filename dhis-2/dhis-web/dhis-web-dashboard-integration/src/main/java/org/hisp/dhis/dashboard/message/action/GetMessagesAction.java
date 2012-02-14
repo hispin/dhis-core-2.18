@@ -31,14 +31,13 @@ import java.util.List;
 
 import org.hisp.dhis.message.MessageConversation;
 import org.hisp.dhis.message.MessageService;
-
-import com.opensymphony.xwork2.Action;
+import org.hisp.dhis.paging.ActionPagingSupport;
 
 /**
  * @author Lars Helge Overland
  */
 public class GetMessagesAction
-    implements Action
+    extends ActionPagingSupport<MessageConversation>
 {
     // -------------------------------------------------------------------------
     // Dependencies
@@ -68,7 +67,9 @@ public class GetMessagesAction
 
     public String execute()
     {
-        conversations = messageService.getMessageConversations( 0, 300 );
+        this.paging = createPaging( messageService.getMessageConversationCount() );
+        
+        conversations = messageService.getMessageConversations( paging.getStartPos(), paging.getPageSize() );
         
         return SUCCESS;
     }

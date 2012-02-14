@@ -49,6 +49,8 @@ public interface MessageConversationStore
      */
     List<MessageConversation> getMessageConversations( User user, Integer first, Integer max );
     
+    int getMessageConversationCount( User user );
+    
     long getUnreadUserMessageConversationCount( User user );
     
     int deleteMessages( User sender );

@@ -216,6 +216,11 @@ public class DefaultMessageService
         return messageConversationStore.getMessageConversations( currentUserService.getCurrentUser(), first, max );
     }
     
+    public int getMessageConversationCount()
+    {
+        return messageConversationStore.getMessageConversationCount( currentUserService.getCurrentUser() );
+    }
+    
     public List<MessageConversation> getAllMessageConversations()
     {
         return messageConversationStore.getMessageConversations( null, null, null );
