@@ -29,3 +29,6 @@
 	</tr>
 	#end
 </table>
+<p></p>
+#parse( "/dhis-web-commons/paging/paging.vm" )
+

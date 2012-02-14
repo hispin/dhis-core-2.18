@@ -104,6 +104,17 @@ public class HibernateMessageConversationStore
         
         return conversations;
     }
+
+    public int getMessageConversationCount( User user )
+    {
+        String sql = 
+            "select count(*) from messageconversation mc " +
+            "left join messageconversation_usermessages mu on mc.messageconversationid=mu.messageconversationid " +
+            "left join usermessage um on mu.usermessageid=um.usermessageid " +
+            "where um.userid=" + user.getId();
+
+        return jdbcTemplate.queryForInt( sql );
+    }
     
     public long getUnreadUserMessageConversationCount( User user )
     {

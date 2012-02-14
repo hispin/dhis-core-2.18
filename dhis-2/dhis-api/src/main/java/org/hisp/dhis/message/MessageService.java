@@ -64,6 +64,8 @@ public interface MessageService
     
     List<MessageConversation> getMessageConversations( int first, int max );
     
+    int getMessageConversationCount();
+    
     List<MessageConversation> getAllMessageConversations();    
 
     void deleteMessages( User sender );
