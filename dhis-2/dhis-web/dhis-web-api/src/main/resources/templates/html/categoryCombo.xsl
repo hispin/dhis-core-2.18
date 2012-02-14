@@ -23,7 +23,7 @@
         </tr>
       </table>
 
-      <xsl:apply-templates select="d:optionCombos|d:categories" mode="short"/>
+      <xsl:apply-templates select="d:categoryOptionCombos|d:categories" mode="short"/>
     </div>
   </xsl:template>
 
