@@ -30,7 +30,6 @@
 		<td style="vertical-align:top">
 			<table width="100%">
 				<tr>
-					<td>#filterDiv( "lockException" )</td>
 					<td colspan="4" style="text-align:right">
                         <input type="button" value="$i18n.getString( 'batch_delete' )" onclick="window.location.href='showLockExceptionBatchRemoval.action'" style="width:100px"/>
                         <input type="button" value="$i18n.getString( 'add_new' )" onclick="window.location.href='showAddLockExceptionForm.action'" style="width:80px"/>

@@ -72,17 +72,7 @@ public class GetLockExceptionListAction
         return lockExceptions;
     }
 
-    private String key;
-
-    public String getKey()
-    {
-        return key;
-    }
-
-    public void setKey( String key )
-    {
-        this.key = key;
-    }
+    private boolean usePaging = true;
 
     // -------------------------------------------------------------------------
     // Action implementation
@@ -91,19 +81,21 @@ public class GetLockExceptionListAction
     @Override
     public String execute()
     {
-        lockExceptions = new ArrayList<LockException>( dataSetService.getAllLockExceptions() );
-
-        for ( LockException lockException : lockExceptions )
+        if ( usePaging )
         {
-            lockException.getPeriod().setName( format.formatPeriod( lockException.getPeriod() ) );
+            paging = createPaging( dataSetService.getLockExceptionCount() );
+            lockExceptions = new ArrayList<LockException>( dataSetService.getLockExceptionsBetween( paging.getStartPos(), paging.getEndPos() ) );
+        }
+        else
+        {
+            lockExceptions = new ArrayList<LockException>( dataSetService.getAllLockExceptions() );
         }
 
         Collections.sort( lockExceptions, new LockExceptionNameComparator() );
 
-        if ( usePaging )
+        for ( LockException lockException : lockExceptions )
         {
-            paging = createPaging( dataSetService.getLockExceptionCount() );
-            lockExceptions = lockExceptions.subList( paging.getStartPos(), paging.getEndPos() );
+            lockException.getPeriod().setName( format.formatPeriod( lockException.getPeriod() ) );
         }
 
         return SUCCESS;
