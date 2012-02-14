@@ -496,13 +496,6 @@
       <param name="requiredAuthorities">F_DATASET_ADD</param>
     </action>
 
-    <action name="removeLockException" class="org.hisp.dhis.dataadmin.action.lockexception.RemoveLockExceptionAction">
-      <result name="success" type="velocity-json">/dhis-web-commons/ajax/jsonResponseSuccess.vm</result>
-      <result name="error" type="velocity-json">/dhis-web-commons/ajax/jsonResponseError.vm</result>
-      <param name="onExceptionReturn">plainTextError</param>
-      <param name="requiredAuthorities">F_DATASET_DELETE</param>
-    </action>
-
     <action name="getDataSets" class="org.hisp.dhis.dataadmin.action.lockexception.GetDataSetsAction">
       <result name="success" type="velocity-json">jsonDataSets.vm</result>
       <param name="onExceptionReturn">plainTextError</param>
@@ -516,6 +509,27 @@
     <action name="getLockException" class="org.hisp.dhis.dataadmin.action.lockexception.GetLockExceptionAction">
       <result name="success" type="velocity-json">jsonLockException.vm</result>
       <param name="onExceptionReturn">plainTextError</param>
+    </action>
+
+    <action name="showLockExceptionBatchRemoval" class="org.hisp.dhis.dataadmin.action.lockexception.PrepareBatchRemovalAction">
+      <result name="success" type="velocity">/main.vm</result>
+      <param name="menu">/dhis-web-maintenance-dataadmin/menu.vm</param>
+      <param name="page">/dhis-web-maintenance-dataadmin/removeLockExceptionBatch.vm</param>
+      <param name="requiredAuthorities">F_DATASET_DELETE</param>
+    </action>
+
+    <action name="removeLockException" class="org.hisp.dhis.dataadmin.action.lockexception.RemoveLockExceptionAction">
+      <result name="success" type="velocity-json">/dhis-web-commons/ajax/jsonResponseSuccess.vm</result>
+      <result name="error" type="velocity-json">/dhis-web-commons/ajax/jsonResponseError.vm</result>
+      <param name="onExceptionReturn">plainTextError</param>
+      <param name="requiredAuthorities">F_DATASET_DELETE</param>
+    </action>
+
+    <action name="batchRemoveLockException" class="org.hisp.dhis.dataadmin.action.lockexception.BatchRemoveLockExceptionsAction">
+      <result name="success" type="velocity-json">/dhis-web-commons/ajax/jsonResponseSuccess.vm</result>
+      <result name="error" type="velocity-json">/dhis-web-commons/ajax/jsonResponseError.vm</result>
+      <param name="onExceptionReturn">plainTextError</param>
+      <param name="requiredAuthorities">F_DATASET_DELETE</param>
     </action>
 
     <!-- Dynamic Attributes -->

@@ -28,6 +28,9 @@ package org.hisp.dhis.dataset;
  */
 
 import org.hisp.dhis.common.GenericStore;
+import org.hisp.dhis.period.Period;
+
+import java.util.Collection;
 
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
@@ -36,4 +39,8 @@ public interface LockExceptionStore
     extends GenericStore<LockException>
 {
     String ID = LockExceptionStore.class.getName();
+
+    Collection<LockException> getCombinations();
+
+    void deleteCombination( DataSet dataSet, Period period );
 }

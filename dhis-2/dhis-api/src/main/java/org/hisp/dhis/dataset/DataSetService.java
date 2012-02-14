@@ -29,6 +29,7 @@ package org.hisp.dhis.dataset;
 
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
+import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodType;
 
 import java.util.Collection;
@@ -284,4 +285,21 @@ public interface DataSetService
      * @return Collection of LockExceptions withing the range specified
      */
     public Collection<LockException> getLockExceptionsBetween( int first, int max );
+
+    /**
+     * Find all unique dataSet + period combinations
+     * (mainly used for batch removal)
+     *
+     * @return A collection of all unique combinations (only dataSet and period is set)
+     */
+    public Collection<LockException> getLockExceptionCombinations();
+
+    /**
+     * Delete a dataSet + period combination, used for batch removal, e.g. when you
+     * have a lock exception set on 100 OUs with the same dataSet + period combination.
+     *
+     * @param dataSet DataSet part of the combination
+     * @param period  Period part of the combination
+     */
+    public void deleteLockExceptionCombination( DataSet dataSet, Period period );
 }

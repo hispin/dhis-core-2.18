@@ -1,5 +1,7 @@
+package org.hisp.dhis.dataadmin.action.lockexception;
+
 /*
- * Copyright (c) 2004-2011, University of Oslo
+ * Copyright (c) 2004-2012, University of Oslo
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -25,21 +27,17 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.hisp.dhis.dataadmin.action.lockexception;
-
+import com.opensymphony.xwork2.Action;
+import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.dataset.DataSetService;
-import org.hisp.dhis.dataset.LockException;
-import org.hisp.dhis.i18n.I18nFormat;
-import org.hisp.dhis.paging.ActionPagingSupport;
-
-import java.util.ArrayList;
-import java.util.List;
+import org.hisp.dhis.period.Period;
+import org.hisp.dhis.period.PeriodService;
 
 /**
- * @author mortenoh
+ * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
-public class GetLockExceptionListAction
-    extends ActionPagingSupport<LockException>
+public class BatchRemoveLockExceptionsAction
+    implements Action
 {
     // -------------------------------------------------------------------------
     // Dependencies
@@ -52,57 +50,47 @@ public class GetLockExceptionListAction
         this.dataSetService = dataSetService;
     }
 
-    private I18nFormat format;
+    private PeriodService periodService;
 
-    public void setFormat( I18nFormat format )
+    public void setPeriodService( PeriodService periodService )
     {
-        this.format = format;
+        this.periodService = periodService;
     }
 
     // -------------------------------------------------------------------------
     // Input & Output
     // -------------------------------------------------------------------------
 
-    private List<LockException> lockExceptions;
+    private int dataSetId;
 
-    public List<LockException> getLockExceptions()
+    public void setDataSetId( int dataSetId )
     {
-        return lockExceptions;
+        this.dataSetId = dataSetId;
     }
 
-    private String key;
+    private int periodId;
 
-    public String getKey()
+    public void setPeriodId( int periodId )
     {
-        return key;
-    }
-
-    public void setKey( String key )
-    {
-        this.key = key;
+        this.periodId = periodId;
     }
 
     // -------------------------------------------------------------------------
-    // Action implementation
+    // Action Implementation
     // -------------------------------------------------------------------------
 
     @Override
-    public String execute()
+    public String execute() throws Exception
     {
-        lockExceptions = new ArrayList<LockException>( dataSetService.getAllLockExceptions() );
+        DataSet dataSet = dataSetService.getDataSet( dataSetId );
+        Period period = periodService.getPeriod( periodId );
 
-        for ( LockException lockException : lockExceptions )
+        if ( dataSet == null || period == null )
         {
-            lockException.getPeriod().setName( format.formatPeriod( lockException.getPeriod() ) );
+            return ERROR;
         }
 
-        if ( usePaging )
-        {
-            paging = createPaging( dataSetService.getLockExceptionCount() );
-            lockExceptions = lockExceptions.subList( paging.getStartPos(), paging.getEndPos() );
-        }
-
-        dataSetService.getLockExceptionCombinations();
+        dataSetService.deleteLockExceptionCombination( dataSet, period );
 
         return SUCCESS;
     }

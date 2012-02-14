@@ -27,9 +27,21 @@ package org.hisp.dhis.dataset.hibernate;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import org.hibernate.Query;
+import org.hibernate.Session;
+import org.hisp.dhis.dataset.DataSet;
+import org.hisp.dhis.dataset.DataSetService;
 import org.hisp.dhis.dataset.LockException;
 import org.hisp.dhis.dataset.LockExceptionStore;
 import org.hisp.dhis.hibernate.HibernateGenericStore;
+import org.hisp.dhis.period.Period;
+import org.hisp.dhis.period.PeriodService;
+import org.springframework.jdbc.core.RowCallbackHandler;
+
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.Collection;
 
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
@@ -38,4 +50,70 @@ public class HibernateLockExceptionStore
     extends HibernateGenericStore<LockException>
     implements LockExceptionStore
 {
+    // -------------------------------------------------------------------------
+    // Dependencies
+    // -------------------------------------------------------------------------
+
+    private DataSetService dataSetService;
+
+    public void setDataSetService( DataSetService dataSetService )
+    {
+        this.dataSetService = dataSetService;
+    }
+
+    private PeriodService periodService;
+
+    public void setPeriodService( PeriodService periodService )
+    {
+        this.periodService = periodService;
+    }
+
+    // -------------------------------------------------------------------------
+    // LockExceptionStore Implementation
+    // -------------------------------------------------------------------------
+
+    @Override
+    public Collection<LockException> getCombinations()
+    {
+        final String sql = "SELECT DISTINCT datasetid, periodid FROM LockException";
+
+        final Collection<LockException> lockExceptions = new ArrayList<LockException>();
+
+        jdbcTemplate.query( sql, new RowCallbackHandler()
+        {
+            @Override
+            public void processRow( ResultSet rs ) throws SQLException
+            {
+                int dataSetId = rs.getInt( 1 );
+                int periodId = rs.getInt( 2 );
+
+                LockException lockException = new LockException();
+                Period period = periodService.getPeriod( periodId );
+                DataSet dataSet = dataSetService.getDataSet( dataSetId );
+
+                lockException.setDataSet( dataSet );
+                lockException.setPeriod( period );
+
+                lockExceptions.add( lockException );
+            }
+        } );
+
+        return lockExceptions;
+    }
+
+    @Override
+    public void deleteCombination( DataSet dataSet, Period period )
+    {
+        Session session = sessionFactory.getCurrentSession();
+
+        final String hql = "DELETE FROM LockException WHERE dataSet=:dataSet AND period=:period";
+        Query query = session.createQuery( hql );
+        query.setParameter( "dataSet", dataSet );
+        query.setParameter( "period", period );
+
+        query.executeUpdate();
+
+//        final String sql = "DELETE FROM LockException WHERE dataSetId=? AND periodId=?";
+//        jdbcTemplate.update( sql, new Object[]{dataSet.getId(), period.getId()} );
+    }
 }

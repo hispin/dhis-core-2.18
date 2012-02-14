@@ -55,9 +55,7 @@ function dataSetChanged( e ) {
 }
 
 function periodChanged( e ) {
-    var periods = jQuery("#periods");
-
-    if ( periods.attr("disabled") ) {
+    if ( jQuery("#periods").attr("disabled") ) {
         jQuery("#submit").attr("disabled", true);
     } else {
         jQuery("#submit").removeAttr("disabled");
@@ -65,13 +63,9 @@ function periodChanged( e ) {
 }
 
 function resetDataSets() {
-    var option = jQuery("<option>-- Please select an organisation unit with a dataset --</option>");
-    jQuery("#dataSets").append(option);
-    jQuery("#dataSets").attr("disabled", true);
+    jQuery("#dataSets").append("<option>-- Please select an organisation unit with a dataset --</option>").attr("disabled", true);
 }
 
 function resetPeriods() {
-    var option = jQuery("<option>-- Please select a dataset --</option>");
-    jQuery("#periods").append(option);
-    jQuery("#periods").attr("disabled", true);
+    jQuery("#periods").append("<option>-- Please select a dataset --</option>").attr("disabled", true);
 }
