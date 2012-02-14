@@ -96,5 +96,11 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     <property name="messageService" ref="org.hisp.dhis.message.MessageService" />
     <property name="currentUserService" ref="org.hisp.dhis.user.CurrentUserService" />
   </bean>
+  
+  <bean id="org.hisp.dhis.dashboard.message.action.ToggleFollowUpAction" class="org.hisp.dhis.dashboard.message.action.ToggleFollowUpAction"
+	scope="prototype">
+    <property name="messageService" ref="org.hisp.dhis.message.MessageService" />
+    <property name="currentUserService" ref="org.hisp.dhis.user.CurrentUserService" />
+  </bean>
 
 </beans>

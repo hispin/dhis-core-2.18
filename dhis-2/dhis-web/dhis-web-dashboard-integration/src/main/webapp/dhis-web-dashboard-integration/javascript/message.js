@@ -70,9 +70,25 @@ function sendReply()
 	}
 	
 	$( "#replyButton" ).attr( "disabled", "disabled" );
+	
 	setHeaderWaitMessage( i18n_sending_message );
 	
-	$.postUTF8( "sendReply.action", { id:id, text:text }, function() {
+	$.postUTF8( "sendReply.action", { id:id, text:text }, function() 
+	{
 		window.location.href = "readMessage.action?id=" + id;
+	} );
+}
+
+function toggleFollowUp( id, followUp )
+{
+	var imageId = "followUp" + id;
+	
+	var url = "toggleFollowUp.action?id=" + id;
+	
+	$.getJSON( url, function( json )
+	{
+		var imageSrc = json.message == "true" ? "../images/marked.png" : "../images/unmarked.png";
+			
+		$( "#" + imageId ).attr( "src", imageSrc );
 	} );
 }

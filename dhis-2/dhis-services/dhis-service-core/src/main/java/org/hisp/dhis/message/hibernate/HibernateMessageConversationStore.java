@@ -66,7 +66,10 @@ public class HibernateMessageConversationStore
             "select mc.messageconversationid, mc.uid, mc.subject, mc.lastupdated, ui.surname, ui.firstname, ( " +
                 "select isread from usermessage " +
                 "where usermessage.usermessageid=mu.usermessageid " +
-                "and mu.messageconversationid=mc.messageconversationid ) as isread " +
+                "and mu.messageconversationid=mc.messageconversationid ) as isread, ( " +
+                "select isfollowup from usermessage " + 
+                "where usermessage.usermessageid=mu.usermessageid " +
+                "and mu.messageconversationid=mc.messageconversationid ) as isfollowup " +
             "from messageconversation mc " +
             "left join messageconversation_usermessages mu on mc.messageconversationid=mu.messageconversationid " +
             "left join usermessage um on mu.usermessageid=um.usermessageid " +
@@ -97,6 +100,7 @@ public class HibernateMessageConversationStore
                 conversation.setLastSenderSurname( resultSet.getString( 5 ) );
                 conversation.setLastSenderFirstname( resultSet.getString( 6 ) );                
                 conversation.setRead( resultSet.getBoolean( 7 ) );
+                conversation.setFollowUp( resultSet.getBoolean( 8 ) );
                 
                 return conversation;
             }            
