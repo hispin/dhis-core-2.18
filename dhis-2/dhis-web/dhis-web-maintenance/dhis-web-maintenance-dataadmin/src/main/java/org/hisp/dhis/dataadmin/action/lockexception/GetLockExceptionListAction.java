@@ -29,10 +29,12 @@ package org.hisp.dhis.dataadmin.action.lockexception;
 
 import org.hisp.dhis.dataset.DataSetService;
 import org.hisp.dhis.dataset.LockException;
+import org.hisp.dhis.dataset.comparator.LockExceptionNameComparator;
 import org.hisp.dhis.i18n.I18nFormat;
 import org.hisp.dhis.paging.ActionPagingSupport;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -96,13 +98,13 @@ public class GetLockExceptionListAction
             lockException.getPeriod().setName( format.formatPeriod( lockException.getPeriod() ) );
         }
 
+        Collections.sort( lockExceptions, new LockExceptionNameComparator() );
+
         if ( usePaging )
         {
             paging = createPaging( dataSetService.getLockExceptionCount() );
             lockExceptions = lockExceptions.subList( paging.getStartPos(), paging.getEndPos() );
         }
-
-        dataSetService.getLockExceptionCombinations();
 
         return SUCCESS;
     }
