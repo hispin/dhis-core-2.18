@@ -2,9 +2,6 @@
 /**
  * Partial js port of commons math SimpleRegression class.
  */
-
-var simpleRegression = new SimpleRegression();
-
 function SimpleRegression()
 {
 	var sumX = 0; // Sum of x values
@@ -39,9 +36,9 @@ function SimpleRegression()
 	
 	this.predict = function( x )
 	{
-		var b1 = simpleRegression.getSlope();
+		var b1 = this.getSlope();
 		
-		return simpleRegression.getIntercept( b1 ) + b1  * x;
+		return this.getIntercept( b1 ) + b1 * x;
 	};
 	
 	this.getSlope = function()
