@@ -134,21 +134,16 @@ function getPrgramStageDataElements()
 
 function getPrgramStageDataElementsCompleted( dataelementElement )
 {
-	var programstageDE = byId('programstageDE');
+	var programstageDE = jQuery('#programstageDE');
 	var psDataElements = $(dataelementElement).find( 'dataelement' );
 
 	$( psDataElements ).each( function( i, item )
 	{
 		var id = $(item).find("id").text();
 		var name = $(item).find("name").text();
-		var type =$(item).find("type").text();
-
-		var option = document.createElement("option");
-		option.value = id;
-		option.text = name;
-		option.title = name;
-		jQuery(option).attr({data:"{type:'"+type+"'}"});
-		programstageDE.add(option, null);       	
+		var optionset =$(item).find("optionset").text();
+		
+		programstageDE.append( "<option value='" + id + "' title='" + name + "' suggestedValues='" + optionset + "'>" + name + "</option>" );
 	} );	    
 }
 
@@ -233,3 +228,26 @@ function testCaseAggregationCondition()
 			}
 		});
 }
+
+function getSuggestedValues( sourceId, targetId )
+{
+	clearListById( targetId );
+	
+	var suggestedValues = jQuery('select[id=' + sourceId + '] option:selected').attr('suggestedValues');	
+	
+	var arrValues = new Array();
+	arrValues = suggestedValues.replace(/[//[]+/g,'').replace(/]/g, '').split(', ');
+
+	var suggestedValueSelector = byId( targetId );
+	for( var i=0; i< arrValues.length; i++ )
+	{
+		var option = document.createElement("option");
+		option.value = "'" + arrValues[i] + "'";
+		option.text = arrValues[i];
+		option.title = arrValues[i];
+
+		suggestedValueSelector.add(option, null); 
+	}
+}
+
+

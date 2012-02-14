@@ -144,7 +144,3 @@ function backBtnOnClick()
 	showById('caseAggregationForm');
 }
 
-function addDESuggestedValues()
-{
-	
-}

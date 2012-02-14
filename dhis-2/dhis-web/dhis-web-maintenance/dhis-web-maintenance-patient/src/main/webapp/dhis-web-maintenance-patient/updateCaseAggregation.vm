@@ -64,135 +64,173 @@
 </table>
 
 
-   
-<table>
-	<thead>
-		<tr>
-			<th colspan="4">$i18n.getString( "condition_detail" )</th>
+<div id="tabs" width="20em">
+	<ul>
+		<li><a href="#tab-1">$i18n.getString("dataelement")</a></li>
+		<li><a href="#tab-2">$i18n.getString("case_attributes")</a></li>
+		<li><a href="#tab-3">$i18n.getString("program")</a></li>
+	</ul>	
+	
+	<div id="tab-1">
+		<table>
+			<tr>
+				<td>
+				<fieldset style="border: 1px solid #3f5d8e; ">
+				<legend>$i18n.getString( "data_element" )</legend>
+				<table>
+					<tr>
+						<td>
+							<label for="program">$i18n.getString( "program_properties" )</label>
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<select id="program" name="program" style="width:20em" onChange="getProgramStages();">
+								<option value="0">[$i18n.getString('please_select')]</option>
+								#foreach( $program in $programs )
+									<option value="$program.id" title='$program.name'>$encoder.htmlEncode( $program.name )</option>
+								#end
+							</select>
+						</td>
+					</tr>
+					
+					<tr>
+						<td>
+							<label for="programStage">$i18n.getString( "program_stage" )</label>
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<select id="programStage" name="programStage" style="width:20em" onchange="getPrgramStageDataElements();" ondblclick="insertProgramStage(this);">
+							</select>
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<label for="dataelement">$i18n.getString( "dataelement" )</label>
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<input type='text' style="min-width:19.8em" onkeyup="filterDE(event, this.value, 'programstageDE');"/>
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<select id="programstageDE" name="programstageDE" size="5" style="width:20em; height: 6em" ondblclick="insertInfo(this);" onclick="getSuggestedValues(this.id, 'suggestedDEValues' )">
+							</select>
+						</td>
+					</tr>
+				</table>
+				</fieldset>
+			</td>
+			<td>
+				<fieldset style="border: 1px solid #3f5d8e; ">
+				<legend>$i18n.getString( "suggested_values" )</legend>
+				<select multiple size="10" id='suggestedDEValues' style="width:20em; height: 17em" ondblclick="insertInfo(this);" >
+				</select>
+			</td>
 		</tr>
-	</thead>
+		</table>
+	</div>
 	
-	<tbody>
+	<div id="tab-2">
+		<table>
+			<tr>
+				<td>
+					<fieldset style="border: 1px solid #3f5d8e; ">
+					<legend>$i18n.getString( "attribute" )</legend>
+				
+					<table>
+						<tr>
+							<td>
+								<select id="caseProperty" name="caseProperty" size="8" ondblclick="insertInfo(this);" style="width:18em; height:16.5em" onclick="getSuggestedValues(this.id, 'caSuggestedValues' )">
+									<option value="[PT:count]" suggestedValues=''>$i18n.getString( "patients_registered" )</option>
+									<option value="[CP:gender]" suggestedValues='F, M' title='$i18n.getString( "gender" )'>$i18n.getString( "gender" )</option>
+									<option value="[CP:dobType]" suggestedValues='V, D, A' title='$i18n.getString( "dob_type" )'>$i18n.getString( "dob_type" )</option>
+									<option value="[CP:age]" title='$i18n.getString( "age_month" )'>$i18n.getString( "age_month" )</option>
+									
+									#foreach( $patientAttribute in $patientAttributes )
+									<option value="[CA:$patientAttribute.id]" suggestedValues='$patientAttribute.attributeOptions' title='$patientAttribute.name'>$encoder.htmlEncode( $patientAttribute.name )</option>
+									#end
+								</select>
+							</td>
+						</tr>
+					</table>
+					</fieldset>
+				</td>
+				</td>
+				<td>
+					<fieldset style="border: 1px solid #3f5d8e; ">
+						<legend>$i18n.getString( "suggested_values" )</legend>
+						<select multiple size="10" id='caSuggestedValues' style="width:20em; height: 17em" ondblclick="insertInfo(this);">
+						</select>
+					</fieldset>
+				</td>
+				
+			</tr>
+		</table>
+	</div>
 	
-	<tr>
-		<td>
-		<fieldset style="border: 1px solid #3f5d8e; ">
-		<legend>$i18n.getString( "dataelement" )</legend>
+	<div id="tab-3">
 		<table>
 			<tr>
 				<td>
-					<label for="program">$i18n.getString( "program" )</label>
+					<fieldset style="border: 1px solid #3f5d8e; ">
+					<legend>$i18n.getString( "program_properties" )</legend>
+					<table>
+						<tr>
+							<td>
+								<select id="programProperty" name="programProperty" size="4" ondblclick="insertInfo(this);" style="width:18em; height:16.5em" >
+									#foreach( $program in $programs )
+										<option value="[PG:$program.id]" title='$program.name'>$i18n.getString('program'): $encoder.htmlEncode( $program.name )</option>
+									#end
+									<option value="[PP:enrollmentdate - dateofincident]">$i18n.getString( "enrolldate_minus_incidentdate" )</option>
+									<option value="[PP:enrollmentdate]">$i18n.getString( "date_of_enrollment" )</option>
+									<option value="[PP:incidentdate]">$i18n.getString( "date_of_incident" )</option>
+								</select>
+							</td>
+						</tr>
+					</table>
+					</fieldset>
 				</td>
-			</tr>
-			<tr>
 				<td>
-					<select id="program" name="program" style="min-width:20em" onChange="getProgramStages();">
-						<option value="0">[$i18n.getString('please_select')]</option>
-						#foreach( $program in $programs )
-							<option value="$program.id">$encoder.htmlEncode( $program.name )</option>
-						#end
-					</select>
-				</td>
-			</tr>
-			
-			<tr>
-				<td>
-					<label for="programStage">$i18n.getString( "program_stage" )</label>
-				</td>
-			</tr>
-			<tr>
-				<td>
-					<select id="programStage" name="programStage" style="min-width:20em" onClick="getPrgramStageDataElements();" ondblclick="insertProgramStage(this);">
-					</select>
-				</td>
-			</tr>
-			
-			<tr>
-				<td>
-					<label for="dataelement">$i18n.getString( "dataelement" )</label>
-				</td>
-			</tr>
-			<tr>
-				<td>
-					<select id="programstageDE" name="programstageDE" size="5" style="width:20em" ondblclick="insertInfo(this);">
-					</select>
+					<fieldset style="border: 1px solid #3f5d8e; ">
+					<legend>$i18n.getString( "program" )</legend>
+					<table>
+						<tr>
+							<td>
+								<select id="programFormula" name="programFormula" style="width:20em" onChange="getProgramStagesForFormula();">
+									<option value="0">[$i18n.getString('please_select')]</option>
+									#foreach( $program in $programs )
+										<option value="$program.id" title='$program.name'>$encoder.htmlEncode( $program.name )</option>
+									#end
+								</select>
+							</td>
+						</tr>
+						<tr>
+							<td>
+								<label for="programStageFormula">$i18n.getString( "program_stage" )</label>
+							</td>
+						</tr>
+						<tr>
+							<td>
+								<select multiple id="programStageFormula" name="programStageFormula" style="width:20em; height:12.5em" ondblclick="insertInfo(this);">
+								</select>
+							</td>
+						</tr>
+					</table>
+					</fieldset>
 				</td>
 			</tr>
 		</table>
-		</fieldset>
-		
-		</td>
-		
-		<td>
-		<fieldset style="border: 1px solid #3f5d8e; ">
-		<legend>$i18n.getString( "case_attributes" )</legend>
-		<table>
-			<tr>
-				<td>
-					<select id="caseProperty" name="caseProperty" size="10" ondblclick="insertInfo(this);" style="width:20em; height:16.5em" >
-						<option value="[PT:count]">$i18n.getString( "patients_registered" )</option>
-						<option value="[CP:gender]">$i18n.getString( "gender" )</option>
-						<option value="[CP:dobType]">$i18n.getString( "dob_type" )</option>
-						<option value="[CP:age]">$i18n.getString( "age_month" )</option>
-						
-						#foreach( $patientAttribute in $patientAttributes )
-						<option value="[CA:$patientAttribute.id]">$encoder.htmlEncode( $patientAttribute.name )</option>
-						#end
-					</select>
-				</td>
-			</tr>
-		</table>
-		</td>
-		
-		<td>
-		<fieldset style="border: 1px solid #3f5d8e; ">
-		<legend>$i18n.getString( "program_properties" )</legend>
-		<table>
-			<tr>
-				<td>
-					<select id="caseProperty" name="caseProperty" size="5" ondblclick="insertInfo(this);" style="min-width:15em; height:16.5em" >
-						#foreach( $program in $programs )
-							<option value="[PG:$program.id]">$i18n.getString('program'): $encoder.htmlEncode( $program.name )</option>
-						#end
-						<option value="[PP:enrollmentdate - dateofincident]">$i18n.getString( "enrolldate_minus_incidentdate" )</option>
-						<option value="[PP:enrollmentdate]">$i18n.getString( "date_of_enrollment" )</option>
-						<option value="[PP:incidentdate]">$i18n.getString( "date_of_incident" )</option>
-					</select>
-				</td>
-			</tr>
-		</table>
-		</td>
-		
-		<td>
-		<fieldset style="border: 1px solid #3f5d8e; ">
-		<legend>$i18n.getString( "program_stage" )</legend>
-		<table>
-			<tr>
-				<td>
-					<select id="programFormula" name="programFormula" style="width:20em" onChange="getProgramStagesForFormula();">
-						<option value="0">[$i18n.getString('please_select')]</option>
-						#foreach( $program in $programs )
-							<option value="$program.id" title='$program.name'>$encoder.htmlEncode( $program.name )</option>
-						#end
-					</select>
-				</td>
-			</tr>
-			
-			<tr>
-				<td>
-					<label for="programStageFormula">$i18n.getString( "program_stage" )</label>
-				</td>
-			</tr>
-			<tr>
-				<td>
-					<select multiple id="programStageFormula" name="programStageFormula" style="width:20em; height:12.5em" ondblclick="insertInfo(this);">
-					</select>
-				</td>
-			</tr>
-		</table>
-		</td>
-		
-	</tr>	
+	</div>
+	
+</div>
+
+<p></p>
+
+<table>
 	<tr>
 		<td colspan='4'>
 			<img src="../images/less.png" alt="$i18n.getString( 'less' )" onclick='insertOperator( "<" );' style="cursor:pointer;">
@@ -251,4 +289,5 @@
 	byId('description').focus();
 	var i18n_run_success = '$encoder.jsEscape( $i18n.getString( "run_success" ) , "'" )';
 	var i18n_run_fail = '$encoder.jsEscape( $i18n.getString( "run_fail" ) , "'" )';
+	jQuery("#tabs").tabs();
 </script>

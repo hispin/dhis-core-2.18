@@ -4,6 +4,7 @@
 		<dataelement>
 			<id>[DE:$psId.$dataElement.id]</id>
 			<name>$encoder.xmlEncode( $dataElement.name )</name>
+			<optionset>$!dataElement.optionSet.options</optionset>
 		</dataelement>	
 	#end
 </dataelements>
