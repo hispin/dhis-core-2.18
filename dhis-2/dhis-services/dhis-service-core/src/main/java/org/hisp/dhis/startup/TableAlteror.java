@@ -324,6 +324,7 @@ public class TableAlteror
         executeSql( "ALTER TABLE message DROP COLUMN messagekey" );
         executeSql( "ALTER TABLE message DROP COLUMN sentdate" );
         executeSql( "ALTER TABLE usermessage DROP COLUMN messagedate" );
+        executeSql( "UPDATE usermessage SET isfollowup=false WHERE isfollowup is null" );
         executeSql( "DROP TABLE message_usermessages" );
 
         // create code unique constraints

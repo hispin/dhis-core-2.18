@@ -113,6 +113,11 @@
     <action name="removeMessageRedirect" class="org.hisp.dhis.dashboard.message.action.RemoveMessageAction">
       <result name="success" type="redirect">message.action</result>
     </action>
+	
+	<action name="toggleFollowUp" class="org.hisp.dhis.dashboard.message.action.ToggleFollowUpAction">
+	  <result name="success" type="velocity-json">/dhis-web-commons/ajax/jsonResponseSuccess.vm</result>
+	  <param name="onExceptionReturn">plainTextError</param>
+	</action>
 
   </package>
 </struts>

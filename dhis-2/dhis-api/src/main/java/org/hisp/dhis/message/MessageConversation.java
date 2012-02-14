@@ -55,6 +55,8 @@ public class MessageConversation
     private User lastSender;
 
     private transient boolean read;
+    
+    private transient boolean followUp;
 
     private transient String lastSenderSurname;
 
@@ -91,6 +93,21 @@ public class MessageConversation
         this.messages.add( message );
     }
 
+    public boolean toggleFollowUp( User user )
+    {
+        for ( UserMessage userMessage : userMessages )
+        {
+            if ( userMessage.getUser() != null && userMessage.getUser().equals( user ) )
+            {
+                userMessage.setFollowUp( !userMessage.isFollowUp() );
+                
+                return userMessage.isFollowUp();
+            }
+        }
+        
+        return false;
+    }
+    
     public boolean markRead( User user )
     {
         for ( UserMessage userMessage : userMessages )
@@ -182,10 +199,6 @@ public class MessageConversation
         this.subject = subject;
     }
 
-    /* @XmlElementWrapper( name = "userMessages" )
-    @XmlElement( name = "userMessage" )
-    @JsonProperty 
-    TODO waiting for idObject version of userMessage */
     public Set<UserMessage> getUserMessages()
     {
         return userMessages;
@@ -223,8 +236,6 @@ public class MessageConversation
         this.lastSender = lastSender;
     }
 
-    @XmlElement
-    @JsonProperty
     public boolean isRead()
     {
         return read;
@@ -233,6 +244,16 @@ public class MessageConversation
     public void setRead( boolean read )
     {
         this.read = read;
+    }
+
+    public boolean isFollowUp()
+    {
+        return followUp;
+    }
+
+    public void setFollowUp( boolean followUp )
+    {
+        this.followUp = followUp;
     }
 
     public String getLastSenderName()

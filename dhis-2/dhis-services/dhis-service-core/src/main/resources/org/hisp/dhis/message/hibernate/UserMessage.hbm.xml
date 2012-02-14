@@ -19,5 +19,7 @@
 
     <property name="read" column="isread" not-null="true" />
 
+	<property name="followUp" column="isfollowup" not-null="false" />
+
   </class>
 </hibernate-mapping>

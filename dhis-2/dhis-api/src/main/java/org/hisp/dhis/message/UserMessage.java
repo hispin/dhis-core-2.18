@@ -55,6 +55,8 @@ public class UserMessage
     private User user;
 
     private boolean read;
+    
+    private boolean followUp;
 
     public UserMessage()
     {
@@ -121,6 +123,18 @@ public class UserMessage
     public void setRead( boolean read )
     {
         this.read = read;
+    }
+
+    @XmlElement
+    @JsonProperty
+    public boolean isFollowUp()
+    {
+        return followUp;
+    }
+
+    public void setFollowUp( boolean followUp )
+    {
+        this.followUp = followUp;
     }
 
     @Override
