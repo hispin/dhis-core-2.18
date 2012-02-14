@@ -30,6 +30,7 @@ package org.hisp.dhis.datamart.engine;
 import static org.hisp.dhis.setting.SystemSettingManager.DEFAULT_ORGUNITGROUPSET_AGG_LEVEL;
 import static org.hisp.dhis.setting.SystemSettingManager.KEY_ORGUNITGROUPSET_AGG_LEVEL;
 import static org.hisp.dhis.system.notification.NotificationCategory.DATAMART;
+import static org.hisp.dhis.system.notification.NotificationLevel.INFO;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -524,6 +525,6 @@ public class DefaultDataMartEngine
         
         clock.logTime( "Dropped crosstab table" );
         clock.logTime( "Data mart export process completed" );
-        notifier.notify( DATAMART, "Data mart process completed" );
+        notifier.notify( INFO, DATAMART, "Data mart process completed", true );
     }
 }

@@ -36,7 +36,7 @@ public interface Notifier
 {
     void notify( NotificationCategory category, String message );
     
-    void notify(  NotificationLevel level, NotificationCategory category, String message );
+    void notify(  NotificationLevel level, NotificationCategory category, String message, boolean completed );
     
     List<Notification> getNotifications( int max );
     
