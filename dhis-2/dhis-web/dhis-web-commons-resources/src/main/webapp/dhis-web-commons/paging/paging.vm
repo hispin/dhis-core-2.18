@@ -72,5 +72,5 @@
 </div>
 
 <script>
-
+jQuery.cookie( "currentPage", ${currentPage} );
 </script>

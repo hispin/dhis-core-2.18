@@ -46,6 +46,11 @@ public abstract class ActionPagingSupport<T>
 {
     protected Integer currentPage;
 
+    public Integer getCurrentPage()
+    {
+        return currentPage;
+    }
+
     public void setCurrentPage( Integer currentPage )
     {
         this.currentPage = currentPage;
