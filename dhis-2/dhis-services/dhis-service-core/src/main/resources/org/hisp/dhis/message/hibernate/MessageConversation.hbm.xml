@@ -13,6 +13,7 @@
     </id>
 	
     <property name="uid" column="uid" length="11" />
+	<property name="lastUpdated" type="timestamp"/>
 
     <property name="subject" column="subject" not-null="true" />
 

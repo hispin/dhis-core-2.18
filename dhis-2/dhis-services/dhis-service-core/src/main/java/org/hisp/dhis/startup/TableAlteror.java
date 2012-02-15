@@ -321,7 +321,6 @@ public class TableAlteror
 
         executeSql( "ALTER TABLE messageconversation DROP COLUMN messageconversationkey" );
         executeSql( "UPDATE messageconversation SET lastmessage=lastupdated WHERE lastmessage is null" );
-        executeSql( "ALTER TABLE messageconversation DROP COLUMN lastupdated" );
         executeSql( "ALTER TABLE message DROP COLUMN messagesubject" );
         executeSql( "ALTER TABLE message DROP COLUMN messagekey" );
         executeSql( "ALTER TABLE message DROP COLUMN sentdate" );
