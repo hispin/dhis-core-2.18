@@ -63,7 +63,7 @@ public class Jaxb2View extends AbstractView
 
         OutputStream outputStream = response.getOutputStream();
         
-        Marshaller marshaller = Jaxb2Utils.createMarshaller( domainModel, request );
+        Marshaller marshaller = Jaxb2Utils.createMarshaller( domainModel );
 
         marshaller.marshal( domainModel, outputStream );
 
