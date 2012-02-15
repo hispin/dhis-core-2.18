@@ -1,5 +1,5 @@
 <h3>$i18n.getString( "program_validation_management" )</h3>
-
+<h4>$i18n.getString( "program_validation_management" )</h4>
 <table class="mainPageTable">
 	<tr>
 		<td style="vertical-align:top">
