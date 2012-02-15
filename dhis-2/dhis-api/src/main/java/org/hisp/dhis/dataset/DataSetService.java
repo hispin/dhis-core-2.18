@@ -302,4 +302,14 @@ public interface DataSetService
      * @param period  Period part of the combination
      */
     public void deleteLockExceptionCombination( DataSet dataSet, Period period );
+
+    /**
+     * For a given ou + ds + period combination, is the data set locked or not
+     *
+     * @param organisationUnit OrganisationUnit instance
+     * @param dataSet DataSet instance
+     * @param period Period instance
+     * @return true or false depending on the lock status of the ou + ds + period combination
+     */
+    public boolean isLocked( OrganisationUnit organisationUnit, DataSet dataSet, Period period );
 }
