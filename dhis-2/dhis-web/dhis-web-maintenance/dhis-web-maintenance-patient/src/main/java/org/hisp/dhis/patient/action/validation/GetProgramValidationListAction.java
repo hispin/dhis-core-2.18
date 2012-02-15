@@ -58,7 +58,9 @@ public class GetProgramValidationListAction
     private Integer programId;
 
     private Collection<ProgramValidation> validations;
-
+    
+    private Program program;
+    
     // -------------------------------------------------------------------------
     // Getter && Setter
     // -------------------------------------------------------------------------
@@ -77,10 +79,10 @@ public class GetProgramValidationListAction
     {
         this.programValidationService = programValidationService;
     }
-
-    public Integer getProgramId()
+    
+    public Program getProgram()
     {
-        return programId;
+        return program;
     }
 
     public void setProgramId( Integer programId )
@@ -97,7 +99,7 @@ public class GetProgramValidationListAction
     public String execute()
         throws Exception
     {
-        Program program = programService.getProgram( programId );
+        program = programService.getProgram( programId );
 
         validations = programValidationService.getProgramValidation( program, false );
 

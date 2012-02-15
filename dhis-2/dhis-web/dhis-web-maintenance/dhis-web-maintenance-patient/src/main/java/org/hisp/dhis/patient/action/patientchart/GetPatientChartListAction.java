@@ -75,16 +75,18 @@ public class GetPatientChartListAction
         this.programId = programId;
     }
 
-    public Integer getProgramId()
-    {
-        return programId;
-    }
-
     private Collection<PatientChart> patientCharts;
 
     public Collection<PatientChart> getPatientCharts()
     {
         return patientCharts;
+    }
+
+    private Program program;
+
+    public Program getProgram()
+    {
+        return program;
     }
 
     // -------------------------------------------------------------------------
@@ -95,7 +97,7 @@ public class GetPatientChartListAction
     public String execute()
         throws Exception
     {
-        Program program = programService.getProgram( programId );
+        program = programService.getProgram( programId );
         Collection<Program> programs = new ArrayList<Program>();
         programs.add( program );
 
