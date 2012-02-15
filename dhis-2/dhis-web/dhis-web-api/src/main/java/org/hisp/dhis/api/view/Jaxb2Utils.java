@@ -29,7 +29,6 @@ package org.hisp.dhis.api.view;
 
 import java.io.InputStream;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
@@ -37,7 +36,7 @@ import javax.xml.bind.Unmarshaller;
 
 public class Jaxb2Utils
 {
-    public static Marshaller createMarshaller( Object domainModel, HttpServletRequest request )
+    public static Marshaller createMarshaller( Object domainModel )
         throws JAXBException
     {
         JAXBContext context = JAXBContext.newInstance( domainModel.getClass() );
