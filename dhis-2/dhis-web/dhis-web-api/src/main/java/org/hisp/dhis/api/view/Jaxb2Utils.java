@@ -28,6 +28,7 @@ package org.hisp.dhis.api.view;
  */
 
 import java.io.InputStream;
+import java.io.OutputStream;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
@@ -48,6 +49,12 @@ public class Jaxb2Utils
         return marshaller;
     }
 
+    public static void marshal( Object domainModel, OutputStream output )
+        throws JAXBException
+    {
+        Jaxb2Utils.createMarshaller( domainModel ).marshal( domainModel, output );
+    }
+    
     public static Unmarshaller createUnmarshaller( Class<?> clazz )
         throws JAXBException
     {
