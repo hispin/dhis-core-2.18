@@ -54,6 +54,8 @@ public class MessageConversation
 
     private User lastSender;
 
+    private Date lastMessage;
+    
     private transient boolean read;
     
     private transient boolean followUp;
@@ -70,6 +72,7 @@ public class MessageConversation
     {
         this.subject = subject;
         this.lastSender = lastSender;
+        this.lastMessage = new Date();
     }
 
     @Override
@@ -154,8 +157,8 @@ public class MessageConversation
 
         addMessage( message );
 
-        this.setLastUpdated( new Date() );
         this.lastSender = sender;
+        this.setLastMessage( new Date() );
     }
 
     public void remove( User user )
@@ -234,6 +237,18 @@ public class MessageConversation
     public void setLastSender( User lastSender )
     {
         this.lastSender = lastSender;
+    }
+
+    @XmlElement
+    @JsonProperty
+    public Date getLastMessage()
+    {
+        return lastMessage;
+    }
+
+    public void setLastMessage( Date lastMessage )
+    {
+        this.lastMessage = lastMessage;
     }
 
     public boolean isRead()
