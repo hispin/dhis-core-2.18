@@ -1,5 +1,6 @@
 <h3>$i18n.getString( "program_validation_management" )</h3>
-<h4>$i18n.getString( "program_validation_management" )</h4>
+<h4>$program.name</h4>
+
 <table class="mainPageTable">
 	<tr>
 		<td style="vertical-align:top">
@@ -9,9 +10,9 @@
 			  <tr>
 				<td></td>
 				<td>
-					<input type="button" value="$i18n.getString( "create_new_single_validation" )" onclick="window.location.href='showAddSingleProgramValidationForm.action?id=$programId'" style="width:200px">
-					<input type="button" value="$i18n.getString( "create_new_multi_validation" )" onclick="window.location.href='showAddMultiProgramValidationForm.action?id=$programId'" style="width:200px">
-					<input type="button" value="$i18n.getString( "cancel" )" onclick="window.location.href='program.action'" style="width:200px">
+					<input type="button" value="$i18n.getString( "create_new_single_validation" )" onclick="window.location.href='showAddSingleProgramValidationForm.action?id=$program.id'" style="width:200px">
+					<input type="button" value="$i18n.getString( "create_new_multi_validation" )" onclick="window.location.href='showAddMultiProgramValidationForm.action?id=$program.id'" style="width:200px">
+					<input type="button" value="$i18n.getString( "back" )" onclick="window.location.href='program.action'" style="width:200px">
 				</td>
 			  </tr>
 			  <tr>            
@@ -23,7 +24,7 @@
 				<tr id="tr${validation.id}">
 					<td>$i18n.getString( "validation_for_date_data_elements" )</td>
 					<td>
-					  <a href="defineDateProgramValidationForm.action?id=$programId" title="$i18n.getString( "edit" )"><img src="../images/edit.png" alt="$i18n.getString( 'edit' )"></a>						
+					  <a href="defineDateProgramValidationForm.action?id=$program.id" title="$i18n.getString( "edit" )"><img src="../images/edit.png" alt="$i18n.getString( 'edit' )"></a>						
 					</td>
 				</tr>
 				#foreach( $validation in $validations )
@@ -32,9 +33,9 @@
 					<td>$validation.description</td>
 					<td>
 						#if($validation.rightSide=="1==1")
-							<a href="showUpdateSingleProgramValidationForm.action?validationId=$validation.id&id=$programId" title="$i18n.getString( "edit" )"><img src="../images/edit.png" alt="$i18n.getString( "edit" )"></a>
+							<a href="showUpdateSingleProgramValidationForm.action?validationId=$validation.id&id=$program.id" title="$i18n.getString( "edit" )"><img src="../images/edit.png" alt="$i18n.getString( "edit" )"></a>
 						#else
-							<a href="showUpdateMultiProgramValidationForm.action?validationId=$validation.id&id=$programId" title="$i18n.getString( "edit" )"><img src="../images/edit.png" alt="$i18n.getString( "edit" )"></a>
+							<a href="showUpdateMultiProgramValidationForm.action?validationId=$validation.id&id=$program.id" title="$i18n.getString( "edit" )"><img src="../images/edit.png" alt="$i18n.getString( "edit" )"></a>
 						#end
 					  <a href="javascript:removeProgramValidation( '$validation.id', '$encoder.jsEncode( $validation.description )' )" title="$i18n.getString( "remove" )"><img src="../images/delete.png" alt="$i18n.getString( "remove" )"></a>
 					  <a href="javascript:showProgramValidationDetails( $validation.id )" title="$i18n.getString( "show_details" )"><img src="../images/information.png" alt="$i18n.getString( "show_details" )"></a>

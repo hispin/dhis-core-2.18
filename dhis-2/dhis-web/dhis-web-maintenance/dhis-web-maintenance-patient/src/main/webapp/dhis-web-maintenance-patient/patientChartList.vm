@@ -1,10 +1,11 @@
 <h3>$i18n.getString( "patient_chart_management" )</h3>
+<h4>$program.name</h4>
 
 <table class="mainPageTable">
 	<tr>
 		<td align="right">
-			<input type="button" value="$i18n.getString( "add_new" )" onclick="window.location.href='showAddPatientChart.action?programId=$programId'" style="width:100px"><br>
-			<input type="button" value="$i18n.getString( "cancel" )" onclick="window.location.href='program.action'" style="width:100px">
+			<input type="button" value="$i18n.getString( "add_new" )" onclick="window.location.href='showAddPatientChart.action?programId=$program.id'" style="width:100px"><br>
+			<input type="button" value="$i18n.getString( "back" )" onclick="window.location.href='program.action'" style="width:100px">
 		</td>
 	</tr>
   <tr>
