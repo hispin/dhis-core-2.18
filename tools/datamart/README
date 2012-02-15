@@ -1,6 +1,0 @@
-To build on windows run build.bat
-
-To build on linux, run 'make'
-Default target is windows binary. 'make linux-exe' creates linux bunary.
-
-Note that currently windows binary is included under bzr control.  This is bad practice but convenient :-)
