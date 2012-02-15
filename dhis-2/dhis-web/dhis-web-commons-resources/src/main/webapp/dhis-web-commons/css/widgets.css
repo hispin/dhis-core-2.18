@@ -412,6 +412,11 @@ div.warning
 	background: url(../images/warning.png) no-repeat 10px 10px
 }
 
+div.waiting
+{
+	background: url(../images/wrench.png) no-repeat 10px 10px
+}
+
 div.growlUI h1, div.growlUI h2 
 {
 	color: white; padding: 5px 5px 5px 75px; text-align: left;font-size:medium 

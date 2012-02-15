@@ -1258,6 +1258,11 @@ function showWarningMessage( message, time )
 	jQuery.growlUI( i18n_warning, message, 'warning', time ); 	
 }
 
+function showWaitMessage( message, time )
+{
+	jQuery.growlUI( i18n_waiting, message, 'waiting', time );
+}
+
 function markInvalid( elementId, message )
 {	
 	var element = jQuery("#" + elementId );

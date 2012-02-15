@@ -229,25 +229,10 @@ public class GetPeriodsAction
     {
         for ( Period period : periods )
         {
-            boolean locked = dataSetLocked( organisationUnit, dataSet, period );
-
-            if ( locked )
+            if ( dataSetService.isLocked( organisationUnit, dataSet, period ) )
             {
                 lockedPeriods.add( period );
             }
         }
-    }
-
-    private boolean dataSetLocked( OrganisationUnit organisationUnit, DataSet dataSet, Period period )
-    {
-        // HACK workaround since get dataSetLock by unit/dataSet/period fails
-        DataSetLock dataSetLock = dataSetLockService.getDataSetLockByDataSetAndPeriod( dataSet, period );
-
-        if ( dataSetLock != null && dataSetLock.getSources().contains( organisationUnit ) )
-        {
-            return true;
-        }
-
-        return false;
     }
 }

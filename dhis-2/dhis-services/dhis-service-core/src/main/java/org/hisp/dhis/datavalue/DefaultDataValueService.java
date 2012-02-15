@@ -204,12 +204,12 @@ public class DefaultDataValueService
     {
         return dataValueStore.getOperandsWithDataValues( operands );
     }
-    
+
     public int getDataValueCount( int days )
     {
         Calendar cal = PeriodType.createCalendarInstance();
         cal.add( Calendar.DAY_OF_YEAR, (days * -1) );
-        
+
         return dataValueStore.getDataValueCount( cal.getTime() );
     }
 }
