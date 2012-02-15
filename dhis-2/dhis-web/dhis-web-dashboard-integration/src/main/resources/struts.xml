@@ -101,7 +101,7 @@
     </action>
 
     <action name="unreadMessage" class="org.hisp.dhis.dashboard.message.action.UnreadMessageAction">
-      <result name="success" type="redirect">message.action</result>
+      <result name="success" type="redirect">message.action?currentPage=${keyCurrentPage}</result>
     </action>
 
     <action name="removeMessage" class="org.hisp.dhis.dashboard.message.action.RemoveMessageAction">
@@ -111,7 +111,7 @@
     </action>
 
     <action name="removeMessageRedirect" class="org.hisp.dhis.dashboard.message.action.RemoveMessageAction">
-      <result name="success" type="redirect">message.action</result>
+      <result name="success" type="redirect">message.action?currentPage=${keyCurrentPage}</result>
     </action>
 	
 	<action name="toggleFollowUp" class="org.hisp.dhis.dashboard.message.action.ToggleFollowUpAction">

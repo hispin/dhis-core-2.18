@@ -63,7 +63,7 @@ public class HibernateMessageConversationStore
     public List<MessageConversation> getMessageConversations( User user, Integer first, Integer max )
     {
         String sql = 
-            "select mc.messageconversationid, mc.uid, mc.subject, mc.lastupdated, ui.surname, ui.firstname, ( " +
+            "select mc.messageconversationid, mc.uid, mc.subject, mc.lastmessage, ui.surname, ui.firstname, ( " +
                 "select isread from usermessage " +
                 "where usermessage.usermessageid=mu.usermessageid " +
                 "and mu.messageconversationid=mc.messageconversationid ) as isread, ( " +
@@ -80,7 +80,7 @@ public class HibernateMessageConversationStore
             sql += "where um.userid=" + user.getId() + " ";
         }
         
-        sql += "order by mc.lastupdated desc ";
+        sql += "order by mc.lastmessage desc ";
         
         if ( first != null && max != null )
         {
@@ -96,7 +96,7 @@ public class HibernateMessageConversationStore
                 conversation.setId( resultSet.getInt( 1 ) );
                 conversation.setUid( resultSet.getString( 2 ) );
                 conversation.setSubject( resultSet.getString( 3 ) );
-                conversation.setLastUpdated( resultSet.getDate( 4 ) );
+                conversation.setLastMessage( resultSet.getDate( 4 ) );
                 conversation.setLastSenderSurname( resultSet.getString( 5 ) );
                 conversation.setLastSenderFirstname( resultSet.getString( 6 ) );                
                 conversation.setRead( resultSet.getBoolean( 7 ) );
