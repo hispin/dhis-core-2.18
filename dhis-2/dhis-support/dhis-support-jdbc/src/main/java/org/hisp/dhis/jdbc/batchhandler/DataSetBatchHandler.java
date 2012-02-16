@@ -92,12 +92,13 @@ public class DataSetBatchHandler
     {
         statementBuilder.setColumn( "uid" );
         statementBuilder.setColumn( "name" );
-        statementBuilder.setColumn( "shortName" );
+        statementBuilder.setColumn( "shortname" );
         statementBuilder.setColumn( "code" );
         statementBuilder.setColumn( "periodtypeid" );
         statementBuilder.setColumn( "sortorder" );
         statementBuilder.setColumn( "mobile" );
-        statementBuilder.setColumn( "dataEntryForm" );
+        statementBuilder.setColumn( "dataentryform" );
+        statementBuilder.setColumn( "expirydays" );
     }
 
     protected void setValues( DataSet dataSet )
@@ -110,6 +111,6 @@ public class DataSetBatchHandler
         statementBuilder.setValue( dataSet.getSortOrder() );
         statementBuilder.setValue( dataSet.isMobile() );
         statementBuilder.setValue( dataSet.getDataEntryForm() != null ? dataSet.getDataEntryForm().getId() : null );
-        
+        statementBuilder.setValue( dataSet.getExpiryDays() );       
     }
 }
