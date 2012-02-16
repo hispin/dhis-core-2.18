@@ -12,7 +12,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     <property name="periodService" ref="org.hisp.dhis.period.PeriodService" />
   </bean>
 
-  <!-- data entry -->
+  <!-- Data entry -->
 
   <bean id="org.hisp.dhis.light.dataentry.utils.FormUtils" class="org.hisp.dhis.light.utils.FormUtils">
     <property name="organisationUnitService" ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
@@ -93,7 +93,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     <property name="formUtils" ref="org.hisp.dhis.light.dataentry.utils.FormUtils" />
   </bean>
 
-  <!-- dashboard -->
+  <!-- Dashboard -->
 
   <bean id="org.hisp.dhis.light.dashboard.action.ProvideContentAction"
       class="org.hisp.dhis.light.dashboard.action.ProvideContentAction"
@@ -129,7 +129,6 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
       scope="prototype">
     <property name="resourceBundleManager" ref="org.hisp.dhis.i18n.resourcebundle.ResourceBundleManager" />
     <property name="localeManager" ref="org.hisp.dhis.i18n.locale.LocaleManager" />
-    <property name="i18nService" ref="org.hisp.dhis.i18n.I18nService" />
     <property name="currentUserService" ref="org.hisp.dhis.user.CurrentUserService" />
   </bean>
 
@@ -137,7 +136,6 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
       class="org.hisp.dhis.light.settings.action.SaveSettingsFormAction"
       scope="prototype">
     <property name="localeManagerInterface" ref="org.hisp.dhis.i18n.locale.LocaleManager" />
-    <property name="localeManagerDB" ref="org.hisp.dhis.i18n.locale.LocaleManagerDb" />
     <property name="currentUserService" ref="org.hisp.dhis.user.CurrentUserService" />
     <property name="userService" ref="org.hisp.dhis.user.UserService" />
   </bean>

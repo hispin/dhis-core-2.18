@@ -27,7 +27,8 @@
 
 package org.hisp.dhis.light.settings.action;
 
-import com.opensymphony.xwork2.Action;
+import java.util.Locale;
+
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.Validate;
 import org.apache.commons.validator.EmailValidator;
@@ -36,7 +37,7 @@ import org.hisp.dhis.user.CurrentUserService;
 import org.hisp.dhis.user.User;
 import org.hisp.dhis.user.UserService;
 
-import java.util.Locale;
+import com.opensymphony.xwork2.Action;
 
 public class SaveSettingsFormAction
     implements Action
@@ -50,13 +51,6 @@ public class SaveSettingsFormAction
     public void setLocaleManagerInterface( LocaleManager localeManagerInterface )
     {
         this.localeManagerInterface = localeManagerInterface;
-    }
-
-    private LocaleManager localeManagerDB;
-
-    public void setLocaleManagerDB( LocaleManager localeManagerDB )
-    {
-        this.localeManagerDB = localeManagerDB;
     }
 
     private CurrentUserService currentUserService;
@@ -82,13 +76,6 @@ public class SaveSettingsFormAction
     public void setCurrentLocale( String locale )
     {
         this.currentLocale = locale;
-    }
-
-    private String currentLocaleDb;
-
-    public void setCurrentLocaleDb( String currentLocaleDb )
-    {
-        this.currentLocaleDb = currentLocaleDb;
     }
 
     private String firstName;
