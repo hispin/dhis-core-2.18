@@ -776,11 +776,15 @@ function displayEntryFormCompleted()
     if( getLockStatus() )
     {
         $("#contentDiv :input").attr("disabled", true);
+        $( '#currentDataElement' ).html( i18n_dataset_is_locked );
     }
     else
     {
         $("#contentDiv :input").removeAttr("disabled");
+        $( '#currentDataElement' ).html( i18n_no_dataelement_selected );
     }
+
+    $("#contentDiv :input").css("backgroundColor", "white");
 }
 
 function valueFocus( e )
