@@ -305,14 +305,15 @@ public interface DataSetService
     void deleteLockExceptionCombination( DataSet dataSet, Period period );
 
     /**
-     * For a given ou + ds + period combination, is the data set locked or not
+     * Checks whether the system is locked for data entry for the given input.
      *
-     * @param organisationUnit OrganisationUnit instance
-     * @param dataSet DataSet instance
-     * @param period Period instance
-     * @return true or false depending on the lock status of the ou + ds + period combination
+     * @param dataSet the data set
+     * @param period Period the period.s
+     * @param organisationUnit the organisation unit.
+     * @param now the base date for deciding locked date, current date if null.
+     * @return true or false indicating whether the system is locked or not.
      */
-    boolean isLocked( OrganisationUnit organisationUnit, DataSet dataSet, Period period );
+    boolean isLocked( DataSet dataSet, Period period, OrganisationUnit organisationUnit, Date now );
     
     /**
      * Checks whether the system is locked for data entry for the given input.
@@ -320,7 +321,8 @@ public interface DataSetService
      * @param dataElement the data element.
      * @param period the period.
      * @param organisationUnit the organisation unit.
-     * @return true or false indicating whether the system is locked.
+     * @param now the base date for deciding locked date, current date if null.
+     * @return true or false indicating whether the system is locked or not.
      */
     boolean isLocked( DataElement dataElement, Period period, OrganisationUnit organisationUnit, Date now );
 }

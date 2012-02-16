@@ -27,7 +27,6 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
   <bean id="org.hisp.dhis.de.action.GetLockStatus" class="org.hisp.dhis.de.action.GetLockStatus" scope="prototype">
     <property name="dataSetService" ref="org.hisp.dhis.dataset.DataSetService" />
     <property name="organisationUnitService" ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
-    <property name="periodService" ref="org.hisp.dhis.period.PeriodService" />
   </bean>
 
   <bean id="org.hisp.dhis.de.action.GetDataValuesForDataSetAction"

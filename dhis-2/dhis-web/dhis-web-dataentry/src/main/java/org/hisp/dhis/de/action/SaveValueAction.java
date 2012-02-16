@@ -192,7 +192,7 @@ public class SaveValueAction
         // Check locked status
         // ---------------------------------------------------------------------
 
-        if ( dataSetService.isLocked( dataElement, period, organisationUnit, new Date() ) )
+        if ( dataSetService.isLocked( dataElement, period, organisationUnit, null ) )
         {
             return logError( "Entry locked for combination: " + dataElement + ", " + period + ", " + organisationUnit );
         }

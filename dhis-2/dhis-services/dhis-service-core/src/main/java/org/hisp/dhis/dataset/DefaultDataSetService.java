@@ -401,39 +401,20 @@ public class DefaultDataSetService
     }
 
     @Override
-    public boolean isLocked( OrganisationUnit organisationUnit, DataSet dataSet, Period period )
+    public boolean isLocked( DataSet dataSet, Period period, OrganisationUnit organisationUnit, Date now )
     {
-        // if we don't have any expiryDays, then just return false
-        if ( dataSet.getExpiryDays() == DataSet.NO_EXPIRY )
-        {
-            return false;
-        }
-
-        // using current time, see if we are over or under the current expiryDays limit
-        DateTime serverDate = new DateTime();
-        DateTime expiredDate = new DateTime( period.getEndDate() ).plusDays( dataSet.getExpiryDays() );
-
-        if ( serverDate.compareTo( expiredDate ) == -1 )
-        {
-            return false;
-        }
-
-        // if we are over the expiryDays limit, then check if there is an lockException for ou+ds+period combo
-        for ( LockException lockException : dataSet.getLockExceptions() )
-        {
-            if ( lockException.getOrganisationUnit().equals( organisationUnit ) &&
-                lockException.getDataSet().equals( dataSet ) && lockException.getPeriod().equals( period ) )
-            {
-                return false;
-            }
-        }
-
-        return true;
+        now = now != null ? now : new Date();
+        
+        boolean expired = dataSet.getExpiryDays() != DataSet.NO_EXPIRY && new DateTime( period.getEndDate() ).plusDays( dataSet.getExpiryDays() ).isBefore( new DateTime( now ) );
+        
+        return expired && lockExceptionStore.getCount( dataSet, period, organisationUnit ) == 0l;
     }
-
+    
     @Override
     public boolean isLocked( DataElement dataElement, Period period, OrganisationUnit organisationUnit, Date now )
     {
+        now = now != null ? now : new Date();
+        
         int expiryDays = dataElement.getExpiryDays();
         
         boolean expired = expiryDays != DataSet.NO_EXPIRY && new DateTime( period.getEndDate() ).plusDays( expiryDays ).isBefore( new DateTime( now ) );
