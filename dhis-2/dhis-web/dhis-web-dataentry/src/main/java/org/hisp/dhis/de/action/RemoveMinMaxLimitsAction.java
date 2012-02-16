@@ -27,6 +27,7 @@ package org.hisp.dhis.de.action;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import com.opensymphony.xwork2.Action;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
 import org.hisp.dhis.dataelement.DataElementCategoryService;
@@ -35,8 +36,6 @@ import org.hisp.dhis.minmax.MinMaxDataElement;
 import org.hisp.dhis.minmax.MinMaxDataElementService;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
-
-import com.opensymphony.xwork2.Action;
 
 /**
  * @author Torgeir Lorange Ostby
@@ -70,7 +69,7 @@ public class RemoveMinMaxLimitsAction
     }
 
     private DataElementCategoryService categoryService;
-    
+
     public void setCategoryService( DataElementCategoryService categoryService )
     {
         this.categoryService = categoryService;
@@ -93,7 +92,7 @@ public class RemoveMinMaxLimitsAction
     {
         this.dataElementId = dataElementId;
     }
-    
+
     private Integer categoryOptionComboId;
 
     public void setCategoryOptionComboId( Integer categoryOptionComboId )
@@ -111,7 +110,7 @@ public class RemoveMinMaxLimitsAction
         OrganisationUnit organisationUnit = organisationUnitService.getOrganisationUnit( organisationUnitId );
 
         DataElement dataElement = dataElementService.getDataElement( dataElementId );
-        
+
         DataElementCategoryOptionCombo optionCombo = categoryService.getDataElementCategoryOptionCombo( categoryOptionComboId );
 
         MinMaxDataElement minMaxDataElement = minMaxDataElementService.getMinMaxDataElement( organisationUnit,

@@ -27,6 +27,7 @@ package org.hisp.dhis.de.action;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import com.opensymphony.xwork2.Action;
 import org.hisp.dhis.chart.ChartService;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
@@ -38,8 +39,6 @@ import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodType;
 import org.jfree.chart.JFreeChart;
-
-import com.opensymphony.xwork2.Action;
 
 /**
  * @author Lars Helge Overland
@@ -54,14 +53,14 @@ public class GetHistoryChartAction
     // -------------------------------------------------------------------------
 
     private ChartService chartService;
-    
+
     public void setChartService( ChartService chartService )
     {
         this.chartService = chartService;
     }
 
     private DataElementService dataElementService;
-    
+
     public void setDataElementService( DataElementService dataElementService )
     {
         this.dataElementService = dataElementService;
@@ -93,7 +92,7 @@ public class GetHistoryChartAction
     // -------------------------------------------------------------------------
 
     private Integer dataElementId;
-    
+
     public void setDataElementId( Integer dataElementId )
     {
         this.dataElementId = dataElementId;
@@ -112,7 +111,7 @@ public class GetHistoryChartAction
     {
         this.periodId = periodId;
     }
-    
+
     private Integer organisationUnitId;
 
     public void setOrganisationUnitId( Integer organisationUnitId )
@@ -155,11 +154,11 @@ public class GetHistoryChartAction
         DataElementCategoryOptionCombo categoryOptionCombo = categoryService.getDataElementCategoryOptionCombo( categoryOptionComboId );
 
         Period period = PeriodType.createPeriodExternalId( periodId );
-        
+
         OrganisationUnit organisationUnit = organisationUnitService.getOrganisationUnit( organisationUnitId );
-        
+
         chart = chartService.getJFreeChartHistory( dataElement, categoryOptionCombo, period, organisationUnit, HISTORY_LENGTH, format );
-        
+
         return SUCCESS;
     }
 }

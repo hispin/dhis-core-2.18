@@ -27,8 +27,7 @@ package org.hisp.dhis.de.action;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.Date;
-
+import com.opensymphony.xwork2.Action;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
 import org.hisp.dhis.dataelement.DataElementCategoryService;
@@ -41,7 +40,7 @@ import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodType;
 import org.hisp.dhis.user.CurrentUserService;
 
-import com.opensymphony.xwork2.Action;
+import java.util.Date;
 
 /**
  * @author Torgeir Lorange Ostby
@@ -93,7 +92,7 @@ public class SaveCommentAction
     // -------------------------------------------------------------------------
 
     private String periodId;
-    
+
     public void setPeriodId( String periodId )
     {
         this.periodId = periodId;
@@ -175,7 +174,7 @@ public class SaveCommentAction
         {
             if ( commentValue != null )
             {
-                dataValue = new DataValue( dataElement, period, organisationUnit, null, 
+                dataValue = new DataValue( dataElement, period, organisationUnit, null,
                     storedBy, new Date(), commentValue, optionCombo );
 
                 dataValueService.addDataValue( dataValue );

@@ -27,6 +27,7 @@ package org.hisp.dhis.de.action;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import com.opensymphony.xwork2.Action;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hisp.dhis.dataelement.DataElement;
@@ -40,8 +41,6 @@ import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodType;
 
-import com.opensymphony.xwork2.Action;
-
 /**
  * @author Lars Helge Overland
  */
@@ -49,7 +48,7 @@ public class MarkForFollowupAction
     implements Action
 {
     private static final Log log = LogFactory.getLog( MarkForFollowupAction.class );
-    
+
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
@@ -135,19 +134,19 @@ public class MarkForFollowupAction
         Period period = PeriodType.createPeriodExternalId( periodId );
         OrganisationUnit source = organisationUnitService.getOrganisationUnit( organisationUnitId );
         DataElementCategoryOptionCombo categoryOptionCombo = categoryService.getDataElementCategoryOptionCombo( categoryOptionComboId );
-        
-        DataValue dataValue = dataValueService.getDataValue( source, dataElement, period, categoryOptionCombo ); 
+
+        DataValue dataValue = dataValueService.getDataValue( source, dataElement, period, categoryOptionCombo );
 
         boolean isMarked = dataValue.isFollowup();
-        
+
         dataValue.setFollowup( !isMarked );
-        
+
         dataValueService.updateDataValue( dataValue );
-        
+
         message = !isMarked ? "marked" : "unmarked";
-        
+
         log.info( !isMarked ? "Data value marked for follow-up" : "Data value unmarked for follow-up" );
-        
+
         return SUCCESS;
     }
 }

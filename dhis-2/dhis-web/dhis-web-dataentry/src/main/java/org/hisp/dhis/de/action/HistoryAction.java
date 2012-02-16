@@ -27,9 +27,7 @@ package org.hisp.dhis.de.action;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.Collection;
-import java.util.List;
-
+import com.opensymphony.xwork2.Action;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
 import org.hisp.dhis.dataelement.DataElementCategoryService;
@@ -47,7 +45,8 @@ import org.hisp.dhis.period.PeriodType;
 import org.hisp.dhis.user.UserCredentials;
 import org.hisp.dhis.user.UserService;
 
-import com.opensymphony.xwork2.Action;
+import java.util.Collection;
+import java.util.List;
 
 /**
  * @author Torgeir Lorange Ostby
@@ -74,7 +73,7 @@ public class HistoryAction
     {
         this.dataElementService = dataElementService;
     }
-    
+
     private DataValueService dataValueService;
 
     public void setDataValueService( DataValueService dataValueService )
@@ -83,12 +82,12 @@ public class HistoryAction
     }
 
     private DataElementCategoryService categoryService;
-    
+
     public void setCategoryService( DataElementCategoryService categoryService )
     {
         this.categoryService = categoryService;
     }
-    
+
     private DataValueAuditService dataValueAuditService;
 
     public void setDataValueAuditService( DataValueAuditService dataValueAuditService )
@@ -102,7 +101,7 @@ public class HistoryAction
     {
         this.organisationUnitService = organisationUnitService;
     }
-    
+
     private UserService userService;
 
     public void setUserService( UserService userService )
@@ -120,14 +119,14 @@ public class HistoryAction
     {
         this.dataElementId = dataElementId;
     }
-    
+
     private Integer optionComboId;
-    
+
     public void setOptionComboId( Integer optionComboId )
     {
-    	this.optionComboId = optionComboId;
+        this.optionComboId = optionComboId;
     }
-    
+
     private String periodId;
 
     public String getPeriodId()
@@ -139,7 +138,7 @@ public class HistoryAction
     {
         this.periodId = periodId;
     }
-    
+
     private Integer organisationUnitId;
 
     public void setOrganisationUnitId( Integer organisationUnitId )
@@ -157,9 +156,9 @@ public class HistoryAction
     {
         return dataElementHistory;
     }
-    
+
     private boolean historyInvalid;
-    
+
     public boolean isHistoryInvalid()
     {
         return historyInvalid;
@@ -171,7 +170,7 @@ public class HistoryAction
     {
         return dataValue;
     }
-    
+
     private List<String> standardComments;
 
     public List<String> getStandardComments()
@@ -180,12 +179,12 @@ public class HistoryAction
     }
 
     private Collection<DataValueAudit> dataValueAudits;
-    
+
     public Collection<DataValueAudit> getDataValueAudits()
     {
         return dataValueAudits;
     }
-    
+
     private String storedBy;
 
     public String getStoredBy()
@@ -200,10 +199,10 @@ public class HistoryAction
     public String execute()
         throws Exception
     {
-    	DataElement dataElement = dataElementService.getDataElement( dataElementId );       
-        
+        DataElement dataElement = dataElementService.getDataElement( dataElementId );
+
         DataElementCategoryOptionCombo optionCombo = categoryService.getDataElementCategoryOptionCombo( optionComboId );
-        
+
         if ( optionCombo == null )
         {
             optionCombo = categoryService.getDefaultDataElementCategoryOptionCombo();
@@ -217,7 +216,7 @@ public class HistoryAction
         Period period = PeriodType.createPeriodExternalId( periodId );
 
         OrganisationUnit organisationUnit = organisationUnitService.getOrganisationUnit( organisationUnitId );
-        
+
         dataValue = dataValueService.getDataValue( organisationUnit, dataElement, period, optionCombo );
 
         if ( dataValue != null )
@@ -225,15 +224,15 @@ public class HistoryAction
             UserCredentials credentials = userService.getUserCredentialsByUsername( dataValue.getStoredBy() );
             storedBy = credentials != null ? credentials.getName() : dataValue.getStoredBy();
         }
-        
+
         dataElementHistory = historyRetriever.getHistory( dataElement, optionCombo, organisationUnit, period, HISTORY_LENGTH );
-        
+
         historyInvalid = dataElementHistory == null;
-        
+
         // ---------------------------------------------------------------------
         // Data Value Audit
         // ---------------------------------------------------------------------
-        
+
         dataValueAudits = dataValueAuditService.getDataValueAuditByDataValue( dataValue );
 
         return SUCCESS;
