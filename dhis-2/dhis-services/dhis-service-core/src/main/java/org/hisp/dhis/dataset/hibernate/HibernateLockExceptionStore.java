@@ -125,10 +125,9 @@ public class HibernateLockExceptionStore
     @Override
     public void deleteCombination( DataSet dataSet, Period period )
     {
-        Session session = sessionFactory.getCurrentSession();
-
         final String hql = "DELETE FROM LockException WHERE dataSet=:dataSet AND period=:period";
-        Query query = session.createQuery( hql );
+        
+        Query query = getQuery( hql );
         query.setParameter( "dataSet", dataSet );
         query.setParameter( "period", period );
 
