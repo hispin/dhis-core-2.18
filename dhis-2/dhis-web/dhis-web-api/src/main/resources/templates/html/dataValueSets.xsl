@@ -18,9 +18,9 @@ be added to their orgUnit.
 Period values are given in ISO format. A complete example of a data value set would be:
 
 <dataValueSet xmlns="http://dhis2.org/schema/dxf/2.0" period="periodISODate" dataSet="dataSetID" orgUnit="orgUnitID">
-  <dataValue dataElement="dataElementId" categoryOptionCombo="categoryOptionComboId" value="1" />
-  <dataValue dataElement="dataElementId" categoryOptionCombo="categoryOptionComboId" value="2" />
-  <dataValue dataElement="dataElementId" categoryOptionCombo="categoryOptionComboId" value="3" />
+  <dataValue dataElement="dataElementID" categoryOptionCombo="categoryOptionComboID" value="1" />
+  <dataValue dataElement="dataElementID" categoryOptionCombo="categoryOptionComboID" value="2" />
+  <dataValue dataElement="dataElementID" categoryOptionCombo="categoryOptionComboID" value="3" />
 </dataValueSet>
     ]]>
     </pre>

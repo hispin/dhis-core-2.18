@@ -128,10 +128,10 @@ public class DataValueSetService
     public void saveDataValueSet( DataValueSet dataValueSet )
         throws IllegalArgumentException
     {
-
         Date timestamp = new Date();
 
         IdentificationStrategy idStrategy = dataValueSet.getIdScheme();
+        
         if ( idStrategy != DataValueSet.DEFAULT_STRATEGY )
         {
             throw new IllegalArgumentException( "Only UID id strategy supported currently." );
@@ -434,5 +434,4 @@ public class DataValueSetService
     {
         this.currentUserService = currentUserService;
     }
-
 }
