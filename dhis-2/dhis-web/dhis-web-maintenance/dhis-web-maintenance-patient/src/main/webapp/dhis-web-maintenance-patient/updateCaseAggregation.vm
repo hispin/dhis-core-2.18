@@ -24,12 +24,12 @@
     <tbody>
 	
     <tr>
-        <td width="20em" ><label>$i18n.getString( "description" ) <em title="$i18n.getString( "required" )" class="required">*</em></label></td>
+        <td><label>$i18n.getString( "description" ) <em title="$i18n.getString( "required" )" class="required">*</em></label></td>
         <td><input type="text" id="description" name="description" style="width:30em" class="{validate:{required:true}}" value="$caseAggregation.description"></td>
     </tr>
     
     <tr>
-		<td width="20em"><label for="dataElementGroup">$i18n.getString( "dataelement_group" )</label></td>
+		<td><label for="dataElementGroup">$i18n.getString( "dataelement_group" )</label></td>
 		<td>
 			<select id="dataElementGroup" name="dataElementGroup" style="width:30.5em" onchange="getAggDataElements();">
 				<option value="0">[$i18n.getString('please_select')]</option>
@@ -42,7 +42,7 @@
 	</tr>
     
     <tr>
-		<td width="20em"><label for="dataElement">$i18n.getString( "dataelement" )<em title="$i18n.getString( "required" )" class="required">*</em></label></td>
+		<td><label for="dataElement">$i18n.getString( "dataelement" )<em title="$i18n.getString( "required" )" class="required">*</em></label></td>
 		<td>
 			<select id="aggregationDataElementId" name="aggregationDataElementId" style="width:30.5em" class="{validate:{required:true}}" >
 				<option value="$caseAggregation.aggregationDataElement.id.$caseAggregation.optionCombo.id">$caseAggregation.aggregationDataElement.name ($caseAggregation.optionCombo.name)</option>
@@ -50,7 +50,7 @@
 		</td>				
 	</tr>
 	<tr>
-		<td width="20em"><label for="operator">$i18n.getString( "operator" )</label></td>
+		<td><label for="operator">$i18n.getString( "operator" )</label></td>
 		<td>
 			<input type="radio" id="operator" name="operator" value="COUNT" #if($caseAggregation.operator=="COUNT") checked #end >  $i18n.getString('count')
 			<input type="radio" id="operator" name="operator" value="SUM" #if($caseAggregation.operator=="SUM") checked #end > $i18n.getString('sum')
@@ -64,7 +64,7 @@
 </table>
 
 
-<div id="tabs" width="20em">
+<div id="tabs">
 	<ul>
 		<li><a href="#tab-1">$i18n.getString("dataelement")</a></li>
 		<li><a href="#tab-2">$i18n.getString("case_attributes")</a></li>
@@ -232,7 +232,7 @@
 
 <table>
 	<tr>
-		<td colspan='4'>
+		<td>
 			<img src="../images/less.png" alt="$i18n.getString( 'less' )" onclick='insertOperator( "<" );' style="cursor:pointer;">
 			<img src="../images/less_or_equal.png" alt="$i18n.getString( 'less_or_equal' )" onclick='insertOperator( "<=" );' style="cursor:pointer;">
 			<img src="../images/greater.png" alt="$i18n.getString( 'greater' )" onclick='insertOperator( ">" );' style="cursor:pointer;">
@@ -258,30 +258,30 @@
 	
     </tbody>
 	<tr>
-		<td colspan='4'>
+		<td>
 			<fieldset style="border: 1px solid #3f5d8e; ">
 				<legend>$i18n.getString( "condition" )</legend>
-				<textarea id="aggregationCondition" name="aggregationCondition" style="width:62.5em; height:10em" class="{validate:{required:true}}" onkeyup='getConditionDescription();'>$caseAggregation.aggregationExpression</textarea>
+				<textarea id="aggregationCondition" name="aggregationCondition" style="width:80.5em; height:10em" class="{validate:{required:true}}" onkeyup='getConditionDescription();'>$caseAggregation.aggregationExpression</textarea>
 			</fieldset>
 		</td>
 	</tr>
 	
 	<tr>
-		<td colspan='4'>
+		<td>
 			<fieldset style="border: 1px solid #3f5d8e; ">
 				<legend>$i18n.getString( "description" )</legend>
 				<div id='aggregationDescription'>$!description</div>
 			</fieldset>
 		</td>
 	</tr>
-	
+	<tr>
+		<td>
+			<input type="submit" value="$i18n.getString( 'update' )" style="width:10em">
+			<input type="button" value="$i18n.getString( 'test_condition' )" style="width:10em" onclick='testCaseAggregationCondition();'/>
+			<input type="button" value="$i18n.getString( 'cancel' )" onclick="window.location.href='caseAggregation.action'" style="width:10em">
+		</td>
+	<tr>
 </table>
-
-<p>
-    <input type="submit" value="$i18n.getString( "update" )" style="width:10em">
-    <input type="button" value="$i18n.getString( 'test_condition' )" style="width:10em" onclick='testCaseAggregationCondition();'/>
-	<input type="button" value="$i18n.getString( "cancel" )" onclick="window.location.href='caseAggregation.action'" style="width:10em">
-</p>
 
 </form>
 
