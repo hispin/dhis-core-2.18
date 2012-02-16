@@ -18,7 +18,6 @@ jQuery(function() {
     #introListImgItem( "displayOrganisationUnitMergeForm.action" "organisation_unit_merge" "organisationunitmerge" )
     #introListImgItem( "displayDuplicateDataEliminationForm.action" "duplicate_data_elimination" "duplicatedataelimination" )
     #introListImgItem( "viewStatistics.action" "data_statistics" "datastatistics" )
-    #introListImgItem( "displayLockingForm.action" "data_locking" "datalocking" )
     #introListImgItem( "lockException.action" "lock_exception" "datalocking" )
     #introListImgItem( "zeroValueStorageManagement.action" "zero_storage_management" "zerovaluestorage" )
     #introListImgItem( "displayPruneOrganisationUnitForm.action" "organisation_unit_pruning" "organisationunitpruning" )
