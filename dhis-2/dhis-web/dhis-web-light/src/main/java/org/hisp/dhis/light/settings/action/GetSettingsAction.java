@@ -28,15 +28,19 @@
 
 package org.hisp.dhis.light.settings.action;
 
-import com.opensymphony.xwork2.Action;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
+import java.util.Locale;
+
 import org.apache.commons.lang.Validate;
-import org.hisp.dhis.i18n.I18nService;
 import org.hisp.dhis.i18n.locale.LocaleManager;
 import org.hisp.dhis.i18n.resourcebundle.ResourceBundleManager;
 import org.hisp.dhis.user.CurrentUserService;
 import org.hisp.dhis.user.User;
 
-import java.util.*;
+import com.opensymphony.xwork2.Action;
 
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
@@ -60,13 +64,6 @@ public class GetSettingsAction
     public void setLocaleManager( LocaleManager localeManager )
     {
         this.localeManager = localeManager;
-    }
-
-    private I18nService i18nService;
-
-    public void setI18nService( I18nService i18nService )
-    {
-        this.i18nService = i18nService;
     }
 
     private CurrentUserService currentUserService;
