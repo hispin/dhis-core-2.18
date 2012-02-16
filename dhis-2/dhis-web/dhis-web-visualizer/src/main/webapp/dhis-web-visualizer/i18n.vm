@@ -6,7 +6,7 @@ stacked_column_chart: '$encoder.jsEscape($i18n.getString( 'stacked_column_chart'
 bar_chart:'$encoder.jsEscape($i18n.getString( 'bar_chart' ) , "'")',
 stacked_bar_chart: '$encoder.jsEscape($i18n.getString( 'stacked_bar_chart' ) , "'")',
 line_chart:'$encoder.jsEscape($i18n.getString( 'line_chart' ) , "'")',
-area_chart:'$encoder.jsEscape($i18n.getString( 'line_chart' ) , "'")',
+area_chart:'$encoder.jsEscape($i18n.getString( 'area_chart' ) , "'")',
 pie_chart:'$encoder.jsEscape($i18n.getString( 'pie_chart' ) , "'")',
 series: '$encoder.jsEscape($i18n.getString( 'series' ) , "'")' ,
 category:'$encoder.jsEscape($i18n.getString( 'category' ) , "'")',
@@ -87,6 +87,8 @@ organisation_unit:'$encoder.jsEscape($i18n.getString( 'organisation_unit' ) , "'
 invalid_uid:'$encoder.jsEscape($i18n.getString( 'invalid_uid' ) , "'")',
 system_favorite_overwrite_not_allowed:'$encoder.jsEscape($i18n.getString( 'system_favorite_overwrite_not_allowed' ) , "'")',
 favorite_no_orgunits:'$encoder.jsEscape($i18n.getString( 'favorite_no_orgunits' ) , "'")',
-this_year:'$encoder.jsEscape($i18n.getString( 'this_year' ) , "'")'
-
+this_year:'$encoder.jsEscape($i18n.getString( 'this_year' ) , "'")',
+trend:'$encoder.jsEscape($i18n.getString( 'trend' ) , "'")',
+min_two_categories:'$encoder.jsEscape($i18n.getString( 'min_two_categories' ) , "'")',
+chart_options:'$encoder.jsEscape($i18n.getString( 'chart_options' ) , "'")'
 };
