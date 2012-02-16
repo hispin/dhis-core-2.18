@@ -432,8 +432,12 @@ public class DefaultDataSetService
     }
 
     @Override
-    public boolean isLocked( DataElement dataElement, Period period, OrganisationUnit organisationUnit )
+    public boolean isLocked( DataElement dataElement, Period period, OrganisationUnit organisationUnit, Date now )
     {
-        return lockExceptionStore.getCount( dataElement, period, organisationUnit ) > 0l;
+        int expiryDays = dataElement.getExpiryDays();
+        
+        boolean expired = expiryDays != DataSet.NO_EXPIRY && new DateTime( period.getEndDate() ).plusDays( expiryDays ).isBefore( new DateTime( now ) );
+        
+        return expired && lockExceptionStore.getCount( dataElement, period, organisationUnit ) == 0l;
     }
 }
