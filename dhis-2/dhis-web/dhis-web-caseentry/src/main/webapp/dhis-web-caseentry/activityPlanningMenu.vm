@@ -5,3 +5,6 @@
 <ul>
     <li><a href="visitplan.action">$i18n.getString( "visit_plan" )&nbsp;</a></li>     
 </ul>
+
+<br>
+#parse( "/dhis-web-commons/ouwt/orgunittree.vm" )
