@@ -52,7 +52,6 @@ import org.hisp.dhis.datavalue.DataValue;
 import org.hisp.dhis.importexport.ImportException;
 import org.hisp.dhis.importexport.ImportParams;
 import org.hisp.dhis.importexport.dxf2.model.DataValueSet;
-import org.hisp.dhis.importexport.dxf2.model.Dxf;
 import org.hisp.dhis.importexport.importer.DataValueImporter;
 import org.hisp.dhis.jdbc.batchhandler.DataValueBatchHandler;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
@@ -96,6 +95,20 @@ public class StaXDataValueImportService
 
     public static final int DISPLAYCOUNT = 1000;
 
+    public static final String NAMESPACE_20 = "http://dhis2.org/schema/dxf/2.0";
+
+    public static final String DXFROOT = "dxf";
+
+    public static final String ATTRIBUTE_MINOR_VERSION = "minorVersion";
+
+    public static final String ATTRIBUTE_EXPORTED = "exported";
+
+    public static final String DATAVALUESETS = "dataValueSets";
+
+    public static final String DATAVALUESET = "dataValueSet";
+
+    public static final String MINOR_VERSION_10 = "1.0";
+    
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
@@ -170,25 +183,25 @@ public class StaXDataValueImportService
 
         try
         {
-            if ( !reader.moveToStartElement( Dxf.DXFROOT, Dxf.DXFROOT ) )
+            if ( !reader.moveToStartElement( DXFROOT, DXFROOT ) )
             {
                 throw new ImportException( NO_ROOT );
             }
             
             QName rootName = reader.getElementQName();
 
-            params.setNamespace( defaultIfEmpty( rootName.getNamespaceURI(), Dxf.NAMESPACE_20 ) );
-            String version = reader.getAttributeValue( Dxf.ATTRIBUTE_MINOR_VERSION );
-            params.setMinorVersion( version != null ? version : Dxf.MINOR_VERSION_10 );
+            params.setNamespace( defaultIfEmpty( rootName.getNamespaceURI(), NAMESPACE_20 ) );
+            String version = reader.getAttributeValue( ATTRIBUTE_MINOR_VERSION );
+            params.setMinorVersion( version != null ? version : MINOR_VERSION_10 );
 
             log.debug( String.format( "Importing %s minor version  %s", rootName.getNamespaceURI(), version ) );
 
             // move straight to the DataValue sets, we are not looking for metadata
-            reader.moveToStartElement( Dxf.DATAVALUESETS );
+            reader.moveToStartElement( DATAVALUESETS );
 
             Date timestamp = new Date();
 
-            if ( !reader.isStartElement( Dxf.DATAVALUESETS ) )
+            if ( !reader.isStartElement( DATAVALUESETS ) )
             {
                 throw new ImportException( NO_DATAVALUESETS );
             }
@@ -199,11 +212,11 @@ public class StaXDataValueImportService
             do
             {
                 // look for a  DataValue set
-                if ( !reader.isStartElement( Dxf.DATAVALUESET ) )
+                if ( !reader.isStartElement( DATAVALUESET ) )
                 {
                     try
                     {
-                       reader.moveToStartElement( Dxf.DATAVALUESET );
+                       reader.moveToStartElement( DATAVALUESET );
                     } 
                     catch ( java.util.NoSuchElementException ex )
                     {
