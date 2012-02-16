@@ -189,11 +189,7 @@ public class TableAlteror
         executeSql( "ALTER TABLE categoryoptioncombos_categoryoptions ADD CONSTRAINT categoryoptioncombos_categoryoptions_pkey PRIMARY KEY (categoryoptioncomboid, sort_order)" );
 
         // dataelementcategoryoption
-        executeSql( "ALTER TABLE dataelementcategoryoption DROP CONSTRAINT fk_dataelement_categoryid" );
-        // executeSql(
-        // "ALTER TABLE dataelementcategoryoption DROP CONSTRAINT
-        // dataelementcategoryoption_name_key"
-        // ); will be maintained in transition period
+        executeSql( "ALTER TABLE dataelementcategoryoption DROP CONSTRAINT fk_dataelement_categoryid" );        
         executeSql( "ALTER TABLE dataelementcategoryoption DROP CONSTRAINT dataelementcategoryoption_shortname_key" );
 
         // minmaxdataelement query index
@@ -202,7 +198,8 @@ public class TableAlteror
         // add mandatory boolean field to patientattribute
         executeSql( "ALTER TABLE patientattribute ADD mandatory bool" );
         
-        if ( executeSql( "ALTER TABLE patientattribute ADD groupby bool" ) >= 0){
+        if ( executeSql( "ALTER TABLE patientattribute ADD groupby bool" ) >= 0 )
+        {
             executeSql( "UPDATE patientattribute SET groupby=false" );
         }
         
@@ -376,6 +373,7 @@ public class TableAlteror
         executeSql( "update dataset set mobile = false where mobile is null" );
         executeSql( "update dataelement set zeroissignificant = false where zeroissignificant is null" );
         executeSql( "update organisationunit set haspatients = false where haspatients is null" );
+        executeSql( "update dataset set expirydays = 0 where expirydays is null" );
 
         executeSql( "update reporttable set reportingmonth = false where reportingmonth is null" );
         executeSql( "update reporttable set reportingbimonth = false where reportingbimonth is null" );

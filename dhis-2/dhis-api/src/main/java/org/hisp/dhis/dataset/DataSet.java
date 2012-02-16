@@ -62,6 +62,8 @@ public class DataSet
     public static final String TYPE_SECTION = "section";
     public static final String TYPE_CUSTOM = "custom";
 
+    public static final int NO_EXPIRY = 0; 
+    
     /**
      * Determines if a de-serialized file is compatible with this class.
      */
@@ -122,7 +124,7 @@ public class DataSet
     /**
      * How many days after period is over will this dataSet auto-lock
      */
-    private Integer expiryDays;
+    private int expiryDays;
 
     /**
      * Locking exceptions
@@ -437,12 +439,12 @@ public class DataSet
 
     @XmlElement
     @JsonProperty
-    public Integer getExpiryDays()
+    public int getExpiryDays()
     {
         return expiryDays;
     }
 
-    public void setExpiryDays( Integer expiryDays )
+    public void setExpiryDays( int expiryDays )
     {
         this.expiryDays = expiryDays;
     }
