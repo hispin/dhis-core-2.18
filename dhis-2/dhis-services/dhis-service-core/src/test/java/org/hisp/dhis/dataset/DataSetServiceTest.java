@@ -31,13 +31,18 @@ import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertNotNull;
 import static junit.framework.Assert.assertNull;
 import static junit.framework.Assert.assertTrue;
+import static junit.framework.Assert.assertFalse;
 
 import java.util.Collection;
 import java.util.HashSet;
 
 import org.hisp.dhis.DhisSpringTest;
+import org.hisp.dhis.dataelement.DataElement;
+import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
+import org.hisp.dhis.period.MonthlyPeriodType;
+import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodType;
 import org.junit.Test;
 
@@ -48,8 +53,6 @@ import org.junit.Test;
 public class DataSetServiceTest
     extends DhisSpringTest
 {
-    private DataSetService dataSetService;
-
     private PeriodType periodType;
 
     @Override
@@ -57,10 +60,12 @@ public class DataSetServiceTest
         throws Exception
     {
         dataSetService = (DataSetService) getBean( DataSetService.ID );
+        
+        dataElementService = (DataElementService) getBean( DataElementService.ID );
 
         organisationUnitService = (OrganisationUnitService) getBean( OrganisationUnitService.ID );
         
-        periodType = PeriodType.getAvailablePeriodTypes().iterator().next();
+        periodType = new MonthlyPeriodType();
     }
 
     // -------------------------------------------------------------------------
@@ -272,4 +277,55 @@ public class DataSetServiceTest
         assertEquals( 2, dataSetService.getSourcesAssociatedWithDataSet( dataSetA, sources ) );
         assertEquals( 2, dataSetService.getSourcesAssociatedWithDataSet( dataSetB, sources ) );
     }
+    
+    // -------------------------------------------------------------------------
+    // LockException
+    // -------------------------------------------------------------------------
+
+    @Test
+    public void testSaveGet()
+    {
+        OrganisationUnit unit = createOrganisationUnit( 'A' );
+        Period period = periodType.createPeriod();
+        DataSet dataSet = createDataSet( 'A', periodType );
+        
+        organisationUnitService.addOrganisationUnit( unit );
+        dataSetService.addDataSet( dataSet );
+        
+        LockException lockException = new LockException( period, unit, dataSet ); 
+        
+        int id = dataSetService.addLockException( lockException );
+        
+        lockException = dataSetService.getLockException( id );
+        
+        assertNotNull( lockException );
+        assertEquals( unit, lockException.getOrganisationUnit() );
+        assertEquals( period, lockException.getPeriod() );
+        assertEquals( dataSet, lockException.getDataSet() );
+    }
+    
+    @Test
+    public void testIsLocked()
+    {
+        OrganisationUnit unit = createOrganisationUnit( 'A' );
+        Period period = periodType.createPeriod();
+        DataSet dataSet = createDataSet( 'A', periodType );
+        
+        DataElement dataElementA = createDataElement( 'A' );
+        DataElement dataElementB = createDataElement( 'B' );
+        dataElementA.getDataSets().add( dataSet );
+        dataSet.getDataElements().add( dataElementA );        
+        
+        organisationUnitService.addOrganisationUnit( unit );
+        dataElementService.addDataElement( dataElementA );
+        dataElementService.addDataElement( dataElementB );
+        dataSetService.addDataSet( dataSet );
+        
+        LockException lockException = new LockException( period, unit, dataSet ); 
+        
+        dataSetService.addLockException( lockException );
+        
+        assertTrue( dataSetService.isLocked( dataElementA, period, unit ) );
+        assertFalse( dataSetService.isLocked( dataElementB, period, unit ) );
+    }        
 }

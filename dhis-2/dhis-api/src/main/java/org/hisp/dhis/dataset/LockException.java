@@ -45,7 +45,13 @@ public class LockException
 
     public LockException()
     {
-
+    }
+    
+    public LockException( Period period, OrganisationUnit organisationUnit, DataSet dataSet )
+    {
+        this.period = period;
+        this.organisationUnit = organisationUnit;
+        this.dataSet = dataSet;
     }
 
     public String getName()

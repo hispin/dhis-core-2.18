@@ -239,21 +239,21 @@ public interface DataSetService
      * @param lockException LockException instance to add
      * @return Database ID of LockException
      */
-    public int addLockException( LockException lockException );
+    int addLockException( LockException lockException );
 
     /**
      * Update lock exception
      *
      * @param lockException LockException instance to update
      */
-    public void updateLockException( LockException lockException );
+    void updateLockException( LockException lockException );
 
     /**
      * Delete lock exception
      *
      * @param lockException LockException instance to delete
      */
-    public void deleteLockException( LockException lockException );
+    void deleteLockException( LockException lockException );
 
     /**
      * Get LockException by ID
@@ -261,21 +261,21 @@ public interface DataSetService
      * @param id ID of LockException to get
      * @return LockException with given ID, or null if not found
      */
-    public LockException getLockException( int id );
+    LockException getLockException( int id );
 
     /**
      * Get number of LockExceptions in total
      *
      * @return Total count of LockExceptions
      */
-    public int getLockExceptionCount();
+    int getLockExceptionCount();
 
     /**
      * Returns all lock exceptions
      *
      * @return List of all the lock exceptions
      */
-    public Collection<LockException> getAllLockExceptions();
+    Collection<LockException> getAllLockExceptions();
 
     /**
      * Get all LockExceptions within a specific range
@@ -284,7 +284,7 @@ public interface DataSetService
      * @param max   Number of results wanted
      * @return Collection of LockExceptions withing the range specified
      */
-    public Collection<LockException> getLockExceptionsBetween( int first, int max );
+    Collection<LockException> getLockExceptionsBetween( int first, int max );
 
     /**
      * Find all unique dataSet + period combinations
@@ -301,7 +301,7 @@ public interface DataSetService
      * @param dataSet DataSet part of the combination
      * @param period  Period part of the combination
      */
-    public void deleteLockExceptionCombination( DataSet dataSet, Period period );
+    void deleteLockExceptionCombination( DataSet dataSet, Period period );
 
     /**
      * For a given ou + ds + period combination, is the data set locked or not
@@ -311,5 +311,15 @@ public interface DataSetService
      * @param period Period instance
      * @return true or false depending on the lock status of the ou + ds + period combination
      */
-    public boolean isLocked( OrganisationUnit organisationUnit, DataSet dataSet, Period period );
+    boolean isLocked( OrganisationUnit organisationUnit, DataSet dataSet, Period period );
+    
+    /**
+     * Checks whether the system is locked for data entry for the given input.
+     * 
+     * @param dataElement the data element.
+     * @param period the period.
+     * @param organisationUnit the organisation unit.
+     * @return true or false indicating whether the system is locked.
+     */
+    boolean isLocked( DataElement dataElement, Period period, OrganisationUnit organisationUnit );
 }
