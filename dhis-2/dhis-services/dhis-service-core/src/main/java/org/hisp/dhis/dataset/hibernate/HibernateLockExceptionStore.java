@@ -147,7 +147,7 @@ public class HibernateLockExceptionStore
     public long getCount( DataElement dataElement, Period period, OrganisationUnit organisationUnit )
     {
         Criteria criteria = getCriteria( 
-            Restrictions.eq( "period", period ),
+            Restrictions.eq( "period", periodService.reloadPeriod( period ) ),
             Restrictions.eq( "organisationUnit", organisationUnit ),
             Restrictions.in( "dataSet", dataElement.getDataSets() ) );
         
@@ -157,7 +157,7 @@ public class HibernateLockExceptionStore
     public long getCount( DataSet dataSet, Period period, OrganisationUnit organisationUnit )
     {
         Criteria criteria = getCriteria( 
-            Restrictions.eq( "period", period ),
+            Restrictions.eq( "period", periodService.reloadPeriod( period ) ),
             Restrictions.eq( "organisationUnit", organisationUnit ),
             Restrictions.eq( "dataSet", dataSet ) );
         
