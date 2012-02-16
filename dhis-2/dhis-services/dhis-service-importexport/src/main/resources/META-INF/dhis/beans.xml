@@ -334,19 +334,6 @@
     <property name="categoryService" ref="org.hisp.dhis.dataelement.DataElementCategoryService" />
   </bean>
 
-	<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
-	<!-- Locking                                                       -->
-	<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
-
-  <bean id="org.hisp.dhis.importexport.locking.LockingManager" class="org.hisp.dhis.importexport.locking.DefaultLockingManager">
-    <property name="objectMappingGenerator" ref="org.hisp.dhis.importexport.mapping.ObjectMappingGenerator" />
-    <property name="dataElementService" ref="org.hisp.dhis.dataelement.DataElementService" />
-    <property name="dataSetService" ref="org.hisp.dhis.dataset.DataSetService" />
-    <property name="periodService" ref="org.hisp.dhis.period.PeriodService" />
-    <property name="organisationUnitService" ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
-    <property name="dataSetLockService" ref="org.hisp.dhis.datalock.DataSetLockService" />
-  </bean>
-
   <bean id="org.hisp.dhis.importexport.dxf2.service.DataValueSetService" class="org.hisp.dhis.importexport.dxf2.service.DataValueSetService">
     <property name="categoryService" ref="org.hisp.dhis.dataelement.DataElementCategoryService" />
     <property name="organisationUnitService" ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />

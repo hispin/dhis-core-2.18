@@ -48,7 +48,6 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     <property name="formUtils" ref="org.hisp.dhis.light.dataentry.utils.FormUtils" />
     <property name="organisationUnitService" ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
     <property name="dataSetService" ref="org.hisp.dhis.dataset.DataSetService" />
-    <property name="dataSetLockService" ref="org.hisp.dhis.datalock.DataSetLockService" />
     <property name="registrationService" ref="org.hisp.dhis.dataset.CompleteDataSetRegistrationService" />
   </bean>
 
@@ -89,7 +88,6 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     <property name="categoryService" ref="org.hisp.dhis.dataelement.DataElementCategoryService" />
     <property name="dataValueService" ref="org.hisp.dhis.datavalue.DataValueService" />
     <property name="dataSetService" ref="org.hisp.dhis.dataset.DataSetService" />
-    <property name="dataSetLockService" ref="org.hisp.dhis.datalock.DataSetLockService" />
     <property name="registrationService" ref="org.hisp.dhis.dataset.CompleteDataSetRegistrationService" />
     <property name="periodService" ref="org.hisp.dhis.period.PeriodService" />
     <property name="formUtils" ref="org.hisp.dhis.light.dataentry.utils.FormUtils" />

@@ -78,6 +78,7 @@ public class HibernateDbmsManager
         emptyTable( "importobject" );
         emptyTable( "importdatavalue" );
         emptyTable( "constant" );
+        emptyTable( "sqlview" );
 
         emptyTable( "datavalue_audit" );
         emptyTable( "datavalue" );
