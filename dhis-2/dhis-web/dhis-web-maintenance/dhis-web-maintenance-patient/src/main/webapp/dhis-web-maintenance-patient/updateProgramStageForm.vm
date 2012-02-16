@@ -105,13 +105,13 @@ tr.selected{
 			<div style="overflow:auto; height:20em; width:40em;border:1px solid #9DA1AA">
 				<table width="100%">
 					<thead>
-						<tr><th>$i18n.getString( "dataelement" )</th>
-						<th width="20px">$i18n.getString( "compulsory" )</th>
-						#if( $programStage.program.anonymous == 'true' )
-						<th width="120px">$i18n.getString( "shown_on_reports" )
-							<select id='checkShowOnReport' class="{validate:{required:true}}" style="display:none"></select>
-						</th>
-						#end
+						<tr>
+							<th>$i18n.getString( "dataelement" )</th>
+							<th width="20px">$i18n.getString( "compulsory" )</th>
+							#if( $programStage.program.anonymous == 'true' )
+							<th width="120px">$i18n.getString( "shown_on_reports" )</th>
+							#end
+						</tr>
 					</thead>
 					<tbody id="selectedList">
 						#foreach ( $programStageDataElement in $programStageDataElements )
