@@ -509,6 +509,36 @@ function organisationUnitSelected( orgUnits, orgUnitNames )
 }
 
 // -----------------------------------------------------------------------------
+// Locking
+// -----------------------------------------------------------------------------
+function getLockStatus()
+{
+    var periodId = $( '#selectedPeriodId' ).val();
+    var dataSetId = $( '#selectedDataSetId' ).val();
+    var locked = false;
+
+    if(periodId == null || dataSetId == -1)
+    {
+        return false;
+    }
+
+    $.ajax({
+      url: 'getLockStatus.action',
+      async: false,
+      data: {
+          'organisationUnitId': currentOrganisationUnitId,
+          'dataSetId': dataSetId,
+          'periodId': periodId
+      },
+      success: function (data) {
+          locked = data.locked;
+      }
+    });
+
+    return locked;
+}
+
+// -----------------------------------------------------------------------------
 // Next/Previous Periods Selection
 // -----------------------------------------------------------------------------
 
@@ -740,6 +770,19 @@ function displayEntryFormCompleted()
 
     dataEntryFormIsLoaded = true;
     hideLoader();
+
+    var locked = getLockStatus();
+
+    if(locked)
+    {
+        $("#contentDiv").find("input").attr("disabled", true)
+        $("#completenessDiv").find("input").attr("disabled", true)
+    }
+    else
+    {
+        $("#contentDiv").find("input").removeAttr("disabled");
+        $("#completenessDiv").find("input").removeAttr("disabled");
+    }
 
     $( '#completenessDiv' ).css( 'display', 'block' );
 }
