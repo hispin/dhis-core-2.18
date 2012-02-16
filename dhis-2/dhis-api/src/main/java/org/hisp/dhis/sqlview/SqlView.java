@@ -1,4 +1,5 @@
 package org.hisp.dhis.sqlview;
+
 /*
  * Copyright (c) 2004-2012, University of Oslo
  * All rights reserved.
@@ -40,7 +41,8 @@ import javax.xml.bind.annotation.XmlRootElement;
  */
 @XmlRootElement( name = "sqlView", namespace = Dxf2Namespace.NAMESPACE )
 @XmlAccessorType( value = XmlAccessType.NONE )
-public class SqlView extends BaseIdentifiableObject
+public class SqlView 
+    extends BaseIdentifiableObject
 {
     // -------------------------------------------------------------------------
     // Variables
@@ -75,7 +77,7 @@ public class SqlView extends BaseIdentifiableObject
         final int prime = 31;
         int result = 1;
         result = prime * result + id;
-        result = prime * result + ((name == null) ? 0 : name.hashCode());
+        result = prime * result + ( ( name == null ) ? 0 : name.hashCode() );
         return result;
     }
 
@@ -97,29 +99,13 @@ public class SqlView extends BaseIdentifiableObject
 
         final SqlView other = (SqlView) obj;
 
-        if ( id != other.id )
-        {
-            return false;
-        }
-        if ( name == null )
-        {
-            if ( other.name != null )
-            {
-                return false;
-            }
-        }
-        else if ( !name.equals( other.name ) )
-        {
-            return false;
-        }
-
-        return true;
+        return name.equals( other.name );
     }
 
     @Override
     public String toString()
     {
-        return "[ Name: " + name + ",\n\n sqlQuery: " + sqlQuery + " ]";
+        return "[ Name: " + name + ", sql query: " + sqlQuery + " ]";
     }
 
     // -------------------------------------------------------------------------

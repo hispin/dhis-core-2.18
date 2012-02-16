@@ -86,8 +86,6 @@ public class FacilityReportingServiceImpl
 
     private org.hisp.dhis.i18n.I18nService i18nService;
 
-    private org.hisp.dhis.datalock.DataSetLockService dataSetLockService;
-
     private org.hisp.dhis.mobile.service.ModelMapping modelMapping;
 
     private CompleteDataSetRegistrationService registrationService;
@@ -311,13 +309,6 @@ public class FacilityReportingServiceImpl
         log.info( "Recieved data value set for: " + unit.getName() + ", " + dataSet.getName() + ", "
             + period.getIsoDate() );
 
-        if ( dataSetLocked( unit, dataSet, period ) )
-        {
-            log.info( "Failed to save data value set: " + unit.getName() + ", " + dataSet.getName() + ", "
-                + period.getIsoDate() + " - Data value set locked." );
-            throw NotAllowedException.DATASET_LOCKED;
-        }
-
         Map<Integer, org.hisp.dhis.dataelement.DataElement> dataElementMap = getDataElementIdMapping( dataSet );
 
         for ( DataValue dataValue : dataSetValue.getDataValues() )
@@ -409,11 +400,6 @@ public class FacilityReportingServiceImpl
     // Supportive method
     // -------------------------------------------------------------------------
 
-    private boolean dataSetLocked( OrganisationUnit unit, org.hisp.dhis.dataset.DataSet dataSet, Period selectedPeriod )
-    {
-        return dataSetLockService.getDataSetLockByDataSetPeriodAndSource( dataSet, selectedPeriod, unit ) != null;
-    }
-
     private boolean emptyString( String value )
     {
         return value == null || value.trim().isEmpty();
@@ -471,12 +457,6 @@ public class FacilityReportingServiceImpl
     public void setI18nService( org.hisp.dhis.i18n.I18nService i18nService )
     {
         this.i18nService = i18nService;
-    }
-
-    @Required
-    public void setDataSetLockService( org.hisp.dhis.datalock.DataSetLockService dataSetLockService )
-    {
-        this.dataSetLockService = dataSetLockService;
     }
 
     @Required

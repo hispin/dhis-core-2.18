@@ -53,7 +53,6 @@ import org.hisp.dhis.dataelement.DataElementGroup;
 import org.hisp.dhis.dataelement.DataElementGroupSet;
 import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.dataentryform.DataEntryFormService;
-import org.hisp.dhis.datalock.DataSetLock;
 import org.hisp.dhis.dataset.CompleteDataSetRegistrationService;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.dataset.DataSetService;
@@ -925,30 +924,6 @@ public abstract class DhisConvenienceTest
         sqlView.setSqlQuery( sql );
 
         return sqlView;
-    }
-
-    /**
-     * @param uniqueCharacter A unique character to identify the object.
-     * @param dataSet
-     * @param period
-     * @param sources
-     * @param storedBy
-     * @param timestamp
-     * 
-     * @return a dataSetLock instance
-     */
-    protected static DataSetLock createDataSetLock( DataSet dataSet, Period period, Set<OrganisationUnit> sources,
-        String storedBy, Date timestamp )
-    {
-        DataSetLock dataSetLock = new DataSetLock();
-
-        dataSetLock.setDataSet( dataSet );
-        dataSetLock.setPeriod( period );
-        dataSetLock.setSources( sources );
-        dataSetLock.setStoredBy( storedBy );
-        dataSetLock.setTimestamp( timestamp );
-
-        return dataSetLock;
     }
 
     /**

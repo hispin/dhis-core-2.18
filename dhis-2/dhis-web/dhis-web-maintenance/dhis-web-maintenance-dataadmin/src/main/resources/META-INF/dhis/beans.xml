@@ -3,44 +3,6 @@
     xsi:schemaLocation="
 http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.1.xsd">
 
-  <!-- Locking -->
-
-  <bean id="org.hisp.dhis.dataadmin.action.lock.GetPeriodTypesAction"
-      class="org.hisp.dhis.dataadmin.action.lock.GetPeriodTypesAction"
-      scope="prototype">
-    <property name="periodService" ref="org.hisp.dhis.period.PeriodService" />
-    <property name="selectionTreeManager" ref="org.hisp.dhis.oust.manager.SelectionTreeManager" />
-  </bean>
-
-  <bean id="org.hisp.dhis.dataadmin.action.lock.GetDataSetsForPeriodTypeAction"
-      class="org.hisp.dhis.dataadmin.action.lock.GetDataSetsForPeriodTypeAction"
-      scope="prototype">
-    <property name="dataSetService" ref="org.hisp.dhis.dataset.DataSetService" />
-    <property name="periodService" ref="org.hisp.dhis.period.PeriodService" />
-  </bean>
-
-  <bean id="org.hisp.dhis.dataadmin.action.lock.CollectiveDataLockingAction"
-      class="org.hisp.dhis.dataadmin.action.lock.CollectiveDataLockingAction"
-      scope="prototype">
-    <property name="periodService" ref="org.hisp.dhis.period.PeriodService" />
-    <property name="dataSetService" ref="org.hisp.dhis.dataset.DataSetService" />
-    <property name="dataSetLockService" ref="org.hisp.dhis.datalock.DataSetLockService" />
-    <property name="currentUserService" ref="org.hisp.dhis.user.CurrentUserService" />
-    <property name="selectionTreeManager" ref="org.hisp.dhis.oust.manager.SelectionTreeManager" />
-  </bean>
-
-  <bean id="org.hisp.dhis.dataadmin.action.lock.GetPeriodsForLockAction"
-      class="org.hisp.dhis.dataadmin.action.lock.GetPeriodsForLockAction"
-      scope="prototype">
-    <property name="periodService" ref="org.hisp.dhis.period.PeriodService" />
-  </bean>
-
-  <bean id="org.hisp.dhis.dataadmin.action.lock.ValidateCollectiveDataLockingAction"
-      class="org.hisp.dhis.dataadmin.action.lock.ValidateCollectiveDataLockingAction"
-      scope="prototype">
-    <property name="selectionTreeManager" ref="org.hisp.dhis.oust.manager.SelectionTreeManager" />
-  </bean>
-
   <!-- Maintenance -->
 
   <bean id="org.hisp.dhis.dataadmin.action.maintenance.PerformMaintenanceAction"

@@ -36,7 +36,6 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     <property name="minMaxDataElementService" ref="org.hisp.dhis.minmax.MinMaxDataElementService" />
     <property name="dataSetService" ref="org.hisp.dhis.dataset.DataSetService" />
     <property name="registrationService" ref="org.hisp.dhis.dataset.CompleteDataSetRegistrationService" />
-    <property name="dataSetLockService" ref="org.hisp.dhis.datalock.DataSetLockService" />
     <property name="organisationUnitService" ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
   </bean>
 

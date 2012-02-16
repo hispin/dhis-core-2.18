@@ -5,17 +5,6 @@
 http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.1.xsd
 http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.1.xsd">
   
-  <!-- DataLoking -->
-
-  <bean id="org.hisp.dhis.datalock.DataSetLockStore" class="org.hisp.dhis.datalock.hibernate.HibernateDataSetLockStore">
-    <property name="sessionFactory" ref="sessionFactory" />
-    <property name="periodService" ref="org.hisp.dhis.period.PeriodService" />
-  </bean>
-
-  <bean id="org.hisp.dhis.datalock.DataSetLockService" class="org.hisp.dhis.datalock.DefaultDataSetLockService">
-    <property name="dataSetLockStore" ref="org.hisp.dhis.datalock.DataSetLockStore" />
-  </bean>
-	
   <!-- ResourceTable -->
 
   <bean id="org.hisp.dhis.resourcetable.ResourceTableStore" class="org.hisp.dhis.resourcetable.jdbc.JdbcResourceTableStore">
@@ -130,10 +119,6 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
     <property name="jdbcTemplate" ref="jdbcTemplate" />
   </bean>
 
-  <bean id="org.hisp.dhis.datalock.DataSetLockDeletionHandler" class="org.hisp.dhis.datalock.DataSetLockDeletionHandler">
-    <property name="dataSetLockService" ref="org.hisp.dhis.datalock.DataSetLockService" />
-  </bean>
-  
   <!-- DeletionManager -->
 
   <bean class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
@@ -143,7 +128,6 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
       <list>
         <list>
           <ref local="org.hisp.dhis.dataarchive.ArchivedDataValueDeletionHandler" />
-          <ref local="org.hisp.dhis.datalock.DataSetLockDeletionHandler" />
         </list>
       </list>
     </property>

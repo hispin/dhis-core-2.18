@@ -14,56 +14,6 @@
       <param name="menu">/dhis-web-maintenance-dataadmin/menu.vm</param>
     </action>
 
-    <!-- Locking -->
-
-    <action name="displayLockingForm" class="org.hisp.dhis.dataadmin.action.lock.GetPeriodTypesAction">
-      <result name="success" type="velocity">/main.vm</result>
-      <param name="page">/dhis-web-maintenance-dataadmin/collectiveDataLockingForm.vm</param>
-      <param name="menu">/dhis-web-maintenance-dataadmin/menu.vm</param>
-      <param name="javascripts">../dhis-web-commons/oust/oust.js,
-        javascript/datasetLockReport.js,
-        javascript/collectiveDataLockingForm.js</param>
-    </action>
-
-    <action name="getDataSetsForPeriodType" class="org.hisp.dhis.dataadmin.action.lock.GetDataSetsForPeriodTypeAction">
-      <result name="success" type="velocity">
-        /dhis-web-maintenance-dataadmin/responseDataSet.vm
-      </result>
-      <param name="onExceptionReturn">plainTextError</param>
-
-    </action>
-
-    <action name="collectiveDataLocking" class="org.hisp.dhis.dataadmin.action.lock.CollectiveDataLockingAction">
-      <result name="success" type="velocity">/main.vm </result>
-      <param name="page">/dhis-web-maintenance-dataadmin/collectiveDataLockingStatus.vm</param>
-      <param name="menu">/dhis-web-maintenance-dataadmin/menu.vm</param>
-      <param name="requiredAuthorities">F_DATAADMIN_LOCK</param>
-    </action>
-
-    <action name="collectiveDataLockingForUnlocking" class="org.hisp.dhis.dataadmin.action.lock.CollectiveDataLockingAction">
-      <result name="success" type="velocity">/main.vm </result>
-      <param name="page">/dhis-web-maintenance-dataadmin/collectiveDataLockingStatus.vm</param>
-      <param name="menu">/dhis-web-maintenance-dataadmin/menu.vm</param>
-      <param name="requiredAuthorities">F_DATAADMIN_UNLOCK</param>
-    </action>
-
-    <action name="getPeriodsForLock" class="org.hisp.dhis.dataadmin.action.lock.GetPeriodsForLockAction">
-      <result name="success" type="velocity">
-        /dhis-web-commons/ajax/xmlPeriods.vm
-      </result>
-      <param name="onExceptionReturn">plainTextError</param>
-    </action>
-
-    <action name="validateCollectiveDataLocking" class="org.hisp.dhis.dataadmin.action.lock.ValidateCollectiveDataLockingAction">
-      <result name="success" type="velocity-json">
-        /dhis-web-commons/ajax/jsonResponseSuccess.vm
-      </result>
-      <result name="input" type="velocity-json">
-        /dhis-web-commons/ajax/jsonResponseInput.vm
-      </result>
-      <param name="onExceptionReturn">plainTextError</param>
-    </action>
-
     <!-- Maintenance -->
 
     <action name="displayMaintenanceForm" class="org.hisp.dhis.dataadmin.action.NoAction">

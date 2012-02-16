@@ -27,8 +27,9 @@ package org.hisp.dhis.de.action;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import com.opensymphony.xwork2.Action;
-import org.hisp.dhis.datalock.DataSetLockService;
+import java.util.Collection;
+import java.util.Date;
+
 import org.hisp.dhis.dataset.CompleteDataSetRegistration;
 import org.hisp.dhis.dataset.CompleteDataSetRegistrationService;
 import org.hisp.dhis.dataset.DataSet;
@@ -42,8 +43,7 @@ import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodType;
 
-import java.util.Collection;
-import java.util.Date;
+import com.opensymphony.xwork2.Action;
 
 /**
  * @author Lars Helge Overland
@@ -82,14 +82,7 @@ public class GetDataValuesForDataSetAction
     {
         this.registrationService = registrationService;
     }
-
-    private DataSetLockService dataSetLockService;
-
-    public void setDataSetLockService( DataSetLockService dataSetLockService )
-    {
-        this.dataSetLockService = dataSetLockService;
-    }
-
+    
     private OrganisationUnitService organisationUnitService;
 
     public void setOrganisationUnitService( OrganisationUnitService organisationUnitService )
@@ -189,18 +182,6 @@ public class GetDataValuesForDataSetAction
         // ---------------------------------------------------------------------
 
         minMaxDataElements = minMaxDataElementService.getMinMaxDataElements( organisationUnit, dataSet.getDataElements() );
-
-        // ---------------------------------------------------------------------
-        // Data locking info
-        // ---------------------------------------------------------------------
-
-        if ( dataSet != null && period != null && organisationUnit != null )
-        {
-            if ( dataSetService.isLocked( organisationUnit, dataSet, period ) )
-            {
-                locked = true;
-            }
-        }
 
         // ---------------------------------------------------------------------
         // Data set completeness info

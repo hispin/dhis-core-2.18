@@ -27,8 +27,15 @@
 
 package org.hisp.dhis.light.dataentry.action;
 
-import com.opensymphony.xwork2.Action;
-import com.opensymphony.xwork2.ActionContext;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import javax.servlet.http.HttpServletRequest;
+
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.Validate;
 import org.apache.struts2.ServletActionContext;
@@ -37,9 +44,11 @@ import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
 import org.hisp.dhis.dataelement.DataElementCategoryService;
 import org.hisp.dhis.dataelement.DataElementService;
-import org.hisp.dhis.datalock.DataSetLock;
-import org.hisp.dhis.datalock.DataSetLockService;
-import org.hisp.dhis.dataset.*;
+import org.hisp.dhis.dataset.CompleteDataSetRegistration;
+import org.hisp.dhis.dataset.CompleteDataSetRegistrationService;
+import org.hisp.dhis.dataset.DataSet;
+import org.hisp.dhis.dataset.DataSetService;
+import org.hisp.dhis.dataset.Section;
 import org.hisp.dhis.datavalue.DataValue;
 import org.hisp.dhis.datavalue.DataValueService;
 import org.hisp.dhis.datavalue.DeflatedDataValue;
@@ -52,8 +61,8 @@ import org.hisp.dhis.period.PeriodService;
 import org.hisp.dhis.user.CurrentUserService;
 import org.hisp.dhis.util.ContextUtils;
 
-import javax.servlet.http.HttpServletRequest;
-import java.util.*;
+import com.opensymphony.xwork2.Action;
+import com.opensymphony.xwork2.ActionContext;
 
 /**
  * @author mortenoh
@@ -105,13 +114,6 @@ public class SaveSectionFormAction
     public void setDataSetService( DataSetService dataSetService )
     {
         this.dataSetService = dataSetService;
-    }
-
-    private DataSetLockService dataSetLockService;
-
-    public void setDataSetLockService( DataSetLockService dataSetLockService )
-    {
-        this.dataSetLockService = dataSetLockService;
     }
 
     private CompleteDataSetRegistrationService registrationService;
@@ -283,9 +285,6 @@ public class SaveSectionFormAction
         boolean needsValidation = false;
 
         dataSet = dataSetService.getDataSet( dataSetId );
-
-        // this should never happen, but validate that that dataset is not locked
-        Validate.isTrue( !dataSetLocked( organisationUnit, dataSet, period ) );
 
         String storedBy = currentUserService.getCurrentUsername();
 
@@ -474,18 +473,5 @@ public class SaveSectionFormAction
         validated = true;
 
         return SUCCESS;
-    }
-
-    private boolean dataSetLocked( OrganisationUnit organisationUnit, DataSet dataSet, Period period )
-    {
-        // HACK workaround since get dataSetLock by unit/dataSet/period fails
-        DataSetLock dataSetLock = dataSetLockService.getDataSetLockByDataSetAndPeriod( dataSet, period );
-
-        if ( dataSetLock != null && dataSetLock.getSources().contains( organisationUnit ) )
-        {
-            return true;
-        }
-
-        return false;
     }
 }
