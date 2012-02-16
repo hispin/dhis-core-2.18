@@ -37,3 +37,22 @@ html,body
     display: block;
     width: 400px;
 }
+
+.button {
+  background: -webkit-linear-gradient(top, #f1f1f1, #d1d1d1);
+  background: -moz-linear-gradient(top, #f1f1f1, #d1d1d1);
+  background: -ms-linear-gradient(top, #f1f1f1, #d1d1d1);
+  background: -o-linear-gradient(top, #f1f1f1, #d1d1d1);
+  height: 26px;
+  border: 1px solid #444;
+  border-radius: 3px;
+  color: #222;
+}
+
+.button:hover {
+  background: -webkit-linear-gradient(top, #fafafa, #dadada);
+  background: -moz-linear-gradient(top, #fafafa, #dadada);
+  background: -ms-linear-gradient(top, #fafafa, #dadada);
+  background: -o-linear-gradient(top, #fafafa, #dadada);
+  border: 1px solid #333333;
+}

@@ -15,7 +15,7 @@
                 });
             });
         </script>
-        <link type="text/css" rel="stylesheet" media="screen" href="../css/login.css">
+        <link type="text/css" rel="stylesheet" href="../css/login.css">
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     </head>
     <body>
@@ -36,8 +36,8 @@
                     <tr>
                         <td></td>
                         <td>
-                        	<input id='submit' type="submit" value="Login" style="width:120px; height:26px;">
-                            <input id='reset' type="reset" value="Clear" style="width:120px; height:26px;">
+                        	<input id="submit" class="button" type="submit" value="Login" style="width:120px">
+                            <input id="reset" class="button" type="reset" value="Clear" style="width:120px">
 						</td>
                     </tr>
                 </table>
