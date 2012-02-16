@@ -27,22 +27,9 @@ package org.hisp.dhis.de.action;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
+import com.opensymphony.xwork2.Action;
 import org.hisp.dhis.common.comparator.IdentifiableObjectNameComparator;
-import org.hisp.dhis.dataelement.DataElement;
-import org.hisp.dhis.dataelement.DataElementCategory;
-import org.hisp.dhis.dataelement.DataElementCategoryCombo;
-import org.hisp.dhis.dataelement.DataElementCategoryOption;
-import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
-import org.hisp.dhis.dataelement.DataElementOperand;
-import org.hisp.dhis.dataelement.DataElementService;
+import org.hisp.dhis.dataelement.*;
 import org.hisp.dhis.dataentryform.DataEntryForm;
 import org.hisp.dhis.dataentryform.DataEntryFormService;
 import org.hisp.dhis.dataset.DataSet;
@@ -51,7 +38,7 @@ import org.hisp.dhis.dataset.Section;
 import org.hisp.dhis.dataset.comparator.SectionOrderComparator;
 import org.hisp.dhis.i18n.I18n;
 
-import com.opensymphony.xwork2.Action;
+import java.util.*;
 
 /**
  * @author Torgeir Lorange Ostby
@@ -317,7 +304,7 @@ public class LoadFormAction
 
             for ( DataElementOperand operand : section.getGreyedFields() )
             {
-                greyedFields.put( operand.getDataElement().getId() + ":" + 
+                greyedFields.put( operand.getDataElement().getId() + ":" +
                     operand.getCategoryOptionCombo().getId(), true );
             }
         }

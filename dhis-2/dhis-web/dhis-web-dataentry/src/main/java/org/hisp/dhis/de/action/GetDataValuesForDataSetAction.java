@@ -27,9 +27,7 @@ package org.hisp.dhis.de.action;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.Collection;
-import java.util.Date;
-
+import com.opensymphony.xwork2.Action;
 import org.hisp.dhis.dataset.CompleteDataSetRegistration;
 import org.hisp.dhis.dataset.CompleteDataSetRegistrationService;
 import org.hisp.dhis.dataset.DataSet;
@@ -43,7 +41,8 @@ import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodType;
 
-import com.opensymphony.xwork2.Action;
+import java.util.Collection;
+import java.util.Date;
 
 /**
  * @author Lars Helge Overland
@@ -82,7 +81,7 @@ public class GetDataValuesForDataSetAction
     {
         this.registrationService = registrationService;
     }
-    
+
     private OrganisationUnitService organisationUnitService;
 
     public void setOrganisationUnitService( OrganisationUnitService organisationUnitService )

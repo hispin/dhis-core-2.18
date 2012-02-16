@@ -27,8 +27,7 @@ package org.hisp.dhis.de.action;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.Date;
-
+import com.opensymphony.xwork2.Action;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hisp.dhis.dataset.CompleteDataSetRegistration;
@@ -43,7 +42,7 @@ import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodType;
 import org.hisp.dhis.user.CurrentUserService;
 
-import com.opensymphony.xwork2.Action;
+import java.util.Date;
 
 /**
  * @author Lars Helge Overland
@@ -77,9 +76,9 @@ public class RegisterCompleteDataSetAction
     {
         this.organisationUnitService = organisationUnitService;
     }
-    
+
     private CurrentUserService currentUserService;
-    
+
     public void setCurrentUserService( CurrentUserService currentUserService )
     {
         this.currentUserService = currentUserService;
@@ -91,7 +90,7 @@ public class RegisterCompleteDataSetAction
     {
         this.messageService = messageService;
     }
-        
+
     private I18nFormat format;
 
     public void setFormat( I18nFormat format )
@@ -133,11 +132,11 @@ public class RegisterCompleteDataSetAction
         CompleteDataSetRegistration registration = new CompleteDataSetRegistration();
 
         DataSet dataSet = dataSetService.getDataSet( dataSetId );
-        Period period = PeriodType.createPeriodExternalId( periodId );        
+        Period period = PeriodType.createPeriodExternalId( periodId );
         OrganisationUnit organisationUnit = organisationUnitService.getOrganisationUnit( organisationUnitId );
-        
+
         String storedBy = currentUserService.getCurrentUsername();
-        
+
         if ( registrationService.getCompleteDataSetRegistration( dataSet, period, organisationUnit ) == null )
         {
             registration.setDataSet( dataSet );
@@ -151,7 +150,7 @@ public class RegisterCompleteDataSetAction
             log.info( "DataSet registered as complete: " + registration );
 
             registration.getPeriod().setName( format.formatPeriod( registration.getPeriod() ) );
-            
+
             messageService.sendCompletenessMessage( registration );
         }
 

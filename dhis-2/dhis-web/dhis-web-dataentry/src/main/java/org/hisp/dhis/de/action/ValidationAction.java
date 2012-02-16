@@ -27,13 +27,7 @@ package org.hisp.dhis.de.action;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-
+import com.opensymphony.xwork2.Action;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -45,18 +39,18 @@ import org.hisp.dhis.expression.ExpressionService;
 import org.hisp.dhis.minmax.MinMaxDataElement;
 import org.hisp.dhis.minmax.MinMaxDataElementService;
 import org.hisp.dhis.minmax.validation.MinMaxValuesGenerationService;
-import org.hisp.dhis.setting.SystemSettingManager;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodService;
 import org.hisp.dhis.period.PeriodType;
+import org.hisp.dhis.setting.SystemSettingManager;
 import org.hisp.dhis.system.util.ListUtils;
 import org.hisp.dhis.validation.ValidationResult;
 import org.hisp.dhis.validation.ValidationRule;
 import org.hisp.dhis.validation.ValidationRuleService;
 
-import com.opensymphony.xwork2.Action;
+import java.util.*;
 
 /**
  * @author Margrethe Store

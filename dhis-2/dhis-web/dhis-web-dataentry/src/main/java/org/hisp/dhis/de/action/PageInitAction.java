@@ -27,9 +27,8 @@ package org.hisp.dhis.de.action;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager;
-
 import com.opensymphony.xwork2.Action;
+import org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager;
 
 /**
  * @author Lars Helge Overland
@@ -40,14 +39,14 @@ public class PageInitAction
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
-    
+
     private OrganisationUnitSelectionManager selectionManager;
 
     public void setSelectionManager( OrganisationUnitSelectionManager selectionManager )
     {
         this.selectionManager = selectionManager;
     }
-    
+
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
@@ -55,7 +54,7 @@ public class PageInitAction
     public String execute()
     {
         selectionManager.clearSelectedOrganisationUnits();
-        
+
         return SUCCESS;
     }
 }
