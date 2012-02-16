@@ -61,7 +61,7 @@
 
     <property name="version" />
 
-    <property name="expiryDays" not-null="false" />
+    <property name="expiryDays" />
 
     <set name="lockExceptions" table="datasetlockexceptions">
       <cache usage="read-write" />

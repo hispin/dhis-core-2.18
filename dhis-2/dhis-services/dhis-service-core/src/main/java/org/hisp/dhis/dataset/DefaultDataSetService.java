@@ -404,7 +404,7 @@ public class DefaultDataSetService
     public boolean isLocked( OrganisationUnit organisationUnit, DataSet dataSet, Period period )
     {
         // if we don't have any expiryDays, then just return false
-        if ( dataSet.getExpiryDays() == null || dataSet.getExpiryDays() <= 0 )
+        if ( dataSet.getExpiryDays() == DataSet.NO_EXPIRY )
         {
             return false;
         }
