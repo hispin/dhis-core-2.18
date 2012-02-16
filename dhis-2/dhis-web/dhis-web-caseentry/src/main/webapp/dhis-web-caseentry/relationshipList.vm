@@ -30,7 +30,13 @@
 					#foreach( $patientAttributeValue in $patientAttributeValues )
 						<tr>
 							<td class="bold text-column">$encoder.htmlEncode( $patientAttributeValue.patientAttribute.name ):</td>
-							<td>$encoder.htmlEncode( $patientAttributeValue.value )</td>
+							<td>
+							#if( $patientAttributeValue.patientAttribute.valueType=="YES/NO")
+								$i18n.getString("$patientAttributeValue.value")
+							#else
+								$encoder.htmlEncode( $patientAttributeValue.value )
+							#end
+							</td>
 						</tr>
 					#end                         
 				</table>
