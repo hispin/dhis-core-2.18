@@ -2585,15 +2585,6 @@ a text editor (e.g. Notepad++) and do a search/replace to make sure this element
 		<para>To create a new validation criterion, click the "Add new" button. Fill all fields with read asterisk, and click "Add" button.</para>
 		<para>You can assign facilities to a validation criterion in the Validation Criteria Management ( list of available validation criteria are shown ) by clicking on the blue folder icon, the first icon under Operations, corresponding to the validation criterion you would like to assign. Click the "Move selected" button to add the selected programs to the validation criterion. Click the "Remove selected" button to remove programs from the group that have been selected in the right panel. Finally, click the "Save" button to save changes, or the "Cancel" button to discard any changes.</para>
 	</section>
-	<section id="import_beneficiary_configuration">
-		<title>Import beneficiary configuration</title>
-		<para>Import beneficiary configuration section provides a mechanism for specifying a path to an Excel file which contains private information of many beneficiaries and corresponding treatment cases.</para>
-		<para>The Excel file have two sheets. One saves patient registration information like name, birthdate, gender, village, etc. Two saves treatment cases according to the beneficiaries into the sheet one.</para>
-	</section>
-	<section id="import_beneficiary_data">
-		<title>Import beneficiary data</title>
-		<para>Import beneficiary data section provides a mechanism for importing private information of beneficiaries and treatment cases from an Excel file.</para>
-	</section>
    </chapter>
    <chapter>
     <title>Name-Based Data Records</title>
