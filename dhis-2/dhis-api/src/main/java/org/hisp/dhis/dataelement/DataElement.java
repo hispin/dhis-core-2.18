@@ -49,6 +49,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import static org.hisp.dhis.dataset.DataSet.NO_EXPIRY;
+
 /**
  * A DataElement is a definition (meta-information about) of the entities that
  * are captured in the system. An example from public health care is a
@@ -361,6 +363,25 @@ public class DataElement extends BaseNameableObject
     public String getFormNameFallback()
     {
         return formName != null && !formName.isEmpty() ? formName : getDisplayName();
+    }
+    
+    /**
+     * Returns the minimum number of expiry days from the data sets of this data
+     * element.
+     */
+    public int getExpiryDays()
+    {
+        int expiryDays = Integer.MAX_VALUE;
+        
+        for ( DataSet dataSet : dataSets )
+        {
+            if ( dataSet.getExpiryDays() != NO_EXPIRY && dataSet.getExpiryDays() < expiryDays )
+            {
+                expiryDays = dataSet.getExpiryDays();
+            }
+        }
+        
+        return expiryDays == Integer.MAX_VALUE ? NO_EXPIRY : expiryDays;
     }
 
     public String toJSON()

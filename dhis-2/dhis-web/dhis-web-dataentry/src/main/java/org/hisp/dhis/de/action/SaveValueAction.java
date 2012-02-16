@@ -35,6 +35,7 @@ import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
 import org.hisp.dhis.dataelement.DataElementCategoryService;
 import org.hisp.dhis.dataelement.DataElementService;
+import org.hisp.dhis.dataset.DataSetService;
 import org.hisp.dhis.datavalue.DataValue;
 import org.hisp.dhis.datavalue.DataValueService;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
@@ -90,6 +91,13 @@ public class SaveValueAction
     public void setOrganisationUnitService( OrganisationUnitService organisationUnitService )
     {
         this.organisationUnitService = organisationUnitService;
+    }
+    
+    private DataSetService dataSetService;
+
+    public void setDataSetService( DataSetService dataSetService )
+    {
+        this.dataSetService = dataSetService;
     }
 
     // -------------------------------------------------------------------------
@@ -163,6 +171,8 @@ public class SaveValueAction
 
         DataElementCategoryOptionCombo optionCombo = categoryService.getDataElementCategoryOptionCombo( optionComboId );
 
+        Date now = new Date();
+        
         if ( storedBy == null )
         {
             storedBy = "[unknown]";
@@ -179,6 +189,15 @@ public class SaveValueAction
         }
 
         // ---------------------------------------------------------------------
+        // Check locked status
+        // ---------------------------------------------------------------------
+
+        if ( dataSetService.isLocked( dataElement, period, organisationUnit, new Date() ) )
+        {
+            return logError( "Entry locked for combination: " + dataElement + ", " + period + ", " + organisationUnit );
+        }
+        
+        // ---------------------------------------------------------------------
         // Update data
         // ---------------------------------------------------------------------
 
@@ -188,15 +207,14 @@ public class SaveValueAction
         {
             if ( value != null )
             {
-                dataValue = new DataValue( dataElement, period, organisationUnit, value, storedBy, new Date(), null,
-                    optionCombo );
+                dataValue = new DataValue( dataElement, period, organisationUnit, value, storedBy, now, null, optionCombo );
                 dataValueService.addDataValue( dataValue );
             }
         }
         else
         {
             dataValue.setValue( value );
-            dataValue.setTimestamp( new Date() );
+            dataValue.setTimestamp( now );
             dataValue.setStoredBy( storedBy );
 
             dataValueService.updateDataValue( dataValue );

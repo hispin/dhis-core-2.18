@@ -33,6 +33,7 @@ import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodType;
 
 import java.util.Collection;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -321,5 +322,5 @@ public interface DataSetService
      * @param organisationUnit the organisation unit.
      * @return true or false indicating whether the system is locked.
      */
-    boolean isLocked( DataElement dataElement, Period period, OrganisationUnit organisationUnit );
+    boolean isLocked( DataElement dataElement, Period period, OrganisationUnit organisationUnit, Date now );
 }

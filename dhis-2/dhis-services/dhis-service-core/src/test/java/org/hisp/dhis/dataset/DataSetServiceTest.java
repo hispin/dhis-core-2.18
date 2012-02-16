@@ -28,10 +28,10 @@ package org.hisp.dhis.dataset;
  */
 
 import static junit.framework.Assert.assertEquals;
+import static junit.framework.Assert.assertFalse;
 import static junit.framework.Assert.assertNotNull;
 import static junit.framework.Assert.assertNull;
 import static junit.framework.Assert.assertTrue;
-import static junit.framework.Assert.assertFalse;
 
 import java.util.Collection;
 import java.util.HashSet;
@@ -43,6 +43,7 @@ import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.period.MonthlyPeriodType;
 import org.hisp.dhis.period.Period;
+import org.hisp.dhis.period.PeriodService;
 import org.hisp.dhis.period.PeriodType;
 import org.junit.Test;
 
@@ -64,6 +65,8 @@ public class DataSetServiceTest
         dataElementService = (DataElementService) getBean( DataElementService.ID );
 
         organisationUnitService = (OrganisationUnitService) getBean( OrganisationUnitService.ID );
+        
+        periodService = (PeriodService) getBean( PeriodService.ID );
         
         periodType = new MonthlyPeriodType();
     }
@@ -308,24 +311,47 @@ public class DataSetServiceTest
     public void testIsLocked()
     {
         OrganisationUnit unit = createOrganisationUnit( 'A' );
-        Period period = periodType.createPeriod();
-        DataSet dataSet = createDataSet( 'A', periodType );
+        Period period = createPeriod( periodType, getDate( 2000, 3, 1 ), getDate( 2000, 3, 31 ) );
+        DataSet dataSetA = createDataSet( 'A', periodType );
+        DataSet dataSetB = createDataSet( 'B', periodType );
+        dataSetA.setExpiryDays( 20 );
+        dataSetB.setExpiryDays( 10 );
         
         DataElement dataElementA = createDataElement( 'A' );
         DataElement dataElementB = createDataElement( 'B' );
-        dataElementA.getDataSets().add( dataSet );
-        dataSet.getDataElements().add( dataElementA );        
+        dataElementA.getDataSets().add( dataSetA );
+        dataElementA.getDataSets().add( dataSetB );
+        dataSetA.getDataElements().add( dataElementA );
+        dataSetB.getDataElements().add( dataElementA );
         
         organisationUnitService.addOrganisationUnit( unit );
+        periodService.addPeriod( period );
         dataElementService.addDataElement( dataElementA );
         dataElementService.addDataElement( dataElementB );
-        dataSetService.addDataSet( dataSet );
+        dataSetService.addDataSet( dataSetA );
+        dataSetService.addDataSet( dataSetB );
+
+        // ---------------------------------------------------------------------
+        // Expiry days
+        // ---------------------------------------------------------------------
+
+        assertFalse( dataSetService.isLocked( dataElementA, period, unit, getDate( 2000, 4, 1 ) ) );
+        assertFalse( dataSetService.isLocked( dataElementA, period, unit, getDate( 2000, 4, 5 ) ) );
+        assertTrue( dataSetService.isLocked( dataElementA, period, unit, getDate( 2000, 4, 15 ) ) );
+        assertTrue( dataSetService.isLocked( dataElementA, period, unit, getDate( 2000, 4, 25 ) ) );
+        assertFalse( dataSetService.isLocked( dataElementB, period, unit, getDate( 2000, 4, 25 ) ) );
         
-        LockException lockException = new LockException( period, unit, dataSet ); 
-        
+        // ---------------------------------------------------------------------
+        // Lock exception
+        // ---------------------------------------------------------------------
+
+        LockException lockException = new LockException( period, unit, dataSetA );        
         dataSetService.addLockException( lockException );
-        
-        assertTrue( dataSetService.isLocked( dataElementA, period, unit ) );
-        assertFalse( dataSetService.isLocked( dataElementB, period, unit ) );
+
+        assertFalse( dataSetService.isLocked( dataElementA, period, unit, getDate( 2000, 4, 1 ) ) );
+        assertFalse( dataSetService.isLocked( dataElementA, period, unit, getDate( 2000, 4, 5 ) ) );
+        assertFalse( dataSetService.isLocked( dataElementA, period, unit, getDate( 2000, 4, 15 ) ) );
+        assertFalse( dataSetService.isLocked( dataElementA, period, unit, getDate( 2000, 4, 25 ) ) );
+        assertFalse( dataSetService.isLocked( dataElementB, period, unit, getDate( 2000, 4, 25 ) ) );      
     }        
 }
