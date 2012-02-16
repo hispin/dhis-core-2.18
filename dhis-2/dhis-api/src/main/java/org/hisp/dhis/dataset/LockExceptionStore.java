@@ -28,6 +28,8 @@ package org.hisp.dhis.dataset;
  */
 
 import org.hisp.dhis.common.GenericStore;
+import org.hisp.dhis.dataelement.DataElement;
+import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.period.Period;
 
 import java.util.Collection;
@@ -45,4 +47,6 @@ public interface LockExceptionStore
     Collection<LockException> getCombinations();
 
     void deleteCombination( DataSet dataSet, Period period );
+    
+    long getCount( DataElement dataElement, Period period, OrganisationUnit organisationUnit );
 }

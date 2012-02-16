@@ -256,6 +256,16 @@ public class DefaultPeriodService
         return periods;
     }
 
+    public Period getPeriodFromDates( Date startDate, Date endDate, PeriodType periodType )
+    {
+        return periodStore.getPeriodFromDates( startDate, endDate, periodType );
+    }
+
+    public Period reloadPeriod( Period period )
+    {
+        return periodStore.reloadForceAddPeriod( period );
+    }
+
     // -------------------------------------------------------------------------
     // PeriodType
     // -------------------------------------------------------------------------
@@ -278,15 +288,5 @@ public class DefaultPeriodService
     public PeriodType getPeriodTypeByClass( Class<? extends PeriodType> periodType )
     {
         return periodStore.getPeriodType( periodType );
-    }
-
-    public Period getPeriodFromDates( Date startDate, Date endDate, PeriodType periodType )
-    {
-        return periodStore.getPeriodFromDates( startDate, endDate, periodType );
-    }
-
-    public Period reloadPeriod( Period period )
-    {
-        return periodStore.reloadForceAddPeriod( period );
     }
 }

@@ -339,10 +339,7 @@ public class DefaultDataSetService
 
         DataSet dataSet = lockException.getDataSet();
 
-        if ( !dataSet.getLockExceptions().contains( lockException ) )
-        {
-            dataSet.getLockExceptions().add( lockException );
-        }
+        dataSet.getLockExceptions().add( lockException );
 
         return lockExceptionStore.save( lockException );
     }
@@ -362,10 +359,7 @@ public class DefaultDataSetService
 
         DataSet dataSet = lockException.getDataSet();
 
-        if ( dataSet.getLockExceptions().contains( lockException ) )
-        {
-            dataSet.getLockExceptions().remove( lockException );
-        }
+        dataSet.getLockExceptions().remove( lockException );
 
         lockExceptionStore.delete( lockException );
     }
@@ -435,5 +429,11 @@ public class DefaultDataSetService
         }
 
         return true;
+    }
+
+    @Override
+    public boolean isLocked( DataElement dataElement, Period period, OrganisationUnit organisationUnit )
+    {
+        return lockExceptionStore.getCount( dataElement, period, organisationUnit ) > 0l;
     }
 }
