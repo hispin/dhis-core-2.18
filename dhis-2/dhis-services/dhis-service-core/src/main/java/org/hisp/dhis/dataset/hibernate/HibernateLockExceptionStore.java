@@ -155,4 +155,14 @@ public class HibernateLockExceptionStore
         
         return (Long) criteria.setProjection( Projections.rowCount() ).uniqueResult();
     }
+    
+    public long getCount( DataSet dataSet, Period period, OrganisationUnit organisationUnit )
+    {
+        Criteria criteria = getCriteria( 
+            Restrictions.eq( "period", period ),
+            Restrictions.eq( "organisationUnit", organisationUnit ),
+            Restrictions.eq( "dataSet", dataSet ) );
+        
+        return (Long) criteria.setProjection( Projections.rowCount() ).uniqueResult();
+    }
 }

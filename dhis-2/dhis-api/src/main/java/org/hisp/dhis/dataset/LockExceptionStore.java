@@ -49,4 +49,6 @@ public interface LockExceptionStore
     void deleteCombination( DataSet dataSet, Period period );
     
     long getCount( DataElement dataElement, Period period, OrganisationUnit organisationUnit );
+    
+    long getCount( DataSet dataSet, Period period, OrganisationUnit organisationUnit );
 }
