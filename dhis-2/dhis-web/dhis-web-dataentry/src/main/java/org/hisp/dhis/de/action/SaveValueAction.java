@@ -27,8 +27,7 @@ package org.hisp.dhis.de.action;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.Date;
-
+import com.opensymphony.xwork2.Action;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hisp.dhis.dataelement.DataElement;
@@ -44,7 +43,7 @@ import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodType;
 import org.hisp.dhis.user.CurrentUserService;
 
-import com.opensymphony.xwork2.Action;
+import java.util.Date;
 
 /**
  * @author Abyot Asalefew
@@ -53,7 +52,7 @@ public class SaveValueAction
     implements Action
 {
     private static final Log log = LogFactory.getLog( SaveValueAction.class );
-    
+
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
@@ -92,7 +91,7 @@ public class SaveValueAction
     {
         this.organisationUnitService = organisationUnitService;
     }
-    
+
     private DataSetService dataSetService;
 
     public void setDataSetService( DataSetService dataSetService )
@@ -157,7 +156,7 @@ public class SaveValueAction
     public String execute()
     {
         Period period = PeriodType.createPeriodExternalId( periodId );
-        
+
         if ( period == null )
         {
             return logError( "Illegal period identifier: " + periodId );
@@ -172,7 +171,7 @@ public class SaveValueAction
         DataElementCategoryOptionCombo optionCombo = categoryService.getDataElementCategoryOptionCombo( optionComboId );
 
         Date now = new Date();
-        
+
         if ( storedBy == null )
         {
             storedBy = "[unknown]";
@@ -194,9 +193,9 @@ public class SaveValueAction
 
         if ( dataSetService.isLocked( dataElement, period, organisationUnit, null ) )
         {
-            return logError( "Entry locked for combination: " + dataElement + ", " + period + ", " + organisationUnit );
+            return logError( "Entry locked for combination: " + dataElement + ", " + period + ", " + organisationUnit, 2 );
         }
-        
+
         // ---------------------------------------------------------------------
         // Update data
         // ---------------------------------------------------------------------
@@ -229,10 +228,15 @@ public class SaveValueAction
 
     private String logError( String message )
     {
+        return logError( message, 1 );
+    }
+
+    private String logError( String message, int statusCode )
+    {
         log.info( message );
-        
-        statusCode = 1;
-        
+
+        this.statusCode = statusCode;
+
         return SUCCESS;
     }
 }

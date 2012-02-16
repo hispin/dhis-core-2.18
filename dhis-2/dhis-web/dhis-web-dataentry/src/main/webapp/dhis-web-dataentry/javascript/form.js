@@ -1586,7 +1586,7 @@ function StorageManager()
     };
 
     /**
-     * Indicators whether there exists data values or complete data set
+     * Indicates whether there exists data values or complete data set
      * registrations in the local storage.
      * 
      * @return true if local data exists, false otherwise.
