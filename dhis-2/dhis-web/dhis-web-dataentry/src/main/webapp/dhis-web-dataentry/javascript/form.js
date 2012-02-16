@@ -771,20 +771,16 @@ function displayEntryFormCompleted()
     dataEntryFormIsLoaded = true;
     hideLoader();
 
-    var locked = getLockStatus();
+    $( '#completenessDiv' ).css( 'display', 'block' );
 
-    if(locked)
+    if( getLockStatus() )
     {
-        $("#contentDiv").find("input").attr("disabled", true)
-        $("#completenessDiv").find("input").attr("disabled", true)
+        $("#contentDiv :input").attr("disabled", true);
     }
     else
     {
-        $("#contentDiv").find("input").removeAttr("disabled");
-        $("#completenessDiv").find("input").removeAttr("disabled");
+        $("#contentDiv :input").removeAttr("disabled");
     }
-
-    $( '#completenessDiv' ).css( 'display', 'block' );
 }
 
 function valueFocus( e )
