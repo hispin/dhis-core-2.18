@@ -176,6 +176,8 @@ function addValidationCompleted( data )
 		{
 			showListPatientDuplicate(data, false);
 		}
+			
+		$("#editPatientDiv :input").attr("disabled", false);
 	}
 }
 
@@ -221,6 +223,7 @@ function updateValidationCompleted( messageElement )
 		{
 			showListPatientDuplicate(messageElement, true);
 		}
+		$("#editPatientDiv :input").attr("disabled", false);
 	}
 }
 // get and build a param String of all the identifierType id and its value
