@@ -27,7 +27,19 @@ package org.hisp.dhis.dataset;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import org.apache.commons.lang.Validate;
+import static org.hisp.dhis.i18n.I18nUtils.getCountByName;
+import static org.hisp.dhis.i18n.I18nUtils.getObjectsBetween;
+import static org.hisp.dhis.i18n.I18nUtils.getObjectsBetweenByName;
+import static org.hisp.dhis.i18n.I18nUtils.i18n;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Date;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Set;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hisp.dhis.dataelement.DataElement;
@@ -42,10 +54,6 @@ import org.hisp.dhis.system.util.FilterUtils;
 import org.hisp.dhis.user.CurrentUserService;
 import org.joda.time.DateTime;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.*;
-
-import static org.hisp.dhis.i18n.I18nUtils.*;
 
 /**
  * @author Lars Helge Overland
@@ -335,32 +343,18 @@ public class DefaultDataSetService
     @Override
     public int addLockException( LockException lockException )
     {
-        Validate.notNull( lockException );
-
-        DataSet dataSet = lockException.getDataSet();
-
-        dataSet.getLockExceptions().add( lockException );
-
         return lockExceptionStore.save( lockException );
     }
 
     @Override
     public void updateLockException( LockException lockException )
     {
-        Validate.notNull( lockException );
-
         lockExceptionStore.update( lockException );
     }
 
     @Override
     public void deleteLockException( LockException lockException )
     {
-        Validate.notNull( lockException );
-
-        DataSet dataSet = lockException.getDataSet();
-
-        dataSet.getLockExceptions().remove( lockException );
-
         lockExceptionStore.delete( lockException );
     }
 

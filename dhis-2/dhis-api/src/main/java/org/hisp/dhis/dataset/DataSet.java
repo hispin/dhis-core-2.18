@@ -126,11 +126,6 @@ public class DataSet
      */
     private int expiryDays;
 
-    /**
-     * Locking exceptions
-     */
-    private Set<LockException> lockExceptions = new HashSet<LockException>();
-
     // -------------------------------------------------------------------------
     // Contructors
     // -------------------------------------------------------------------------
@@ -447,18 +442,5 @@ public class DataSet
     public void setExpiryDays( int expiryDays )
     {
         this.expiryDays = expiryDays;
-    }
-
-    @XmlElementWrapper( name = "lockExceptions" )
-    @XmlElement( name = "lockException" )
-    @JsonProperty
-    public Set<LockException> getLockExceptions()
-    {
-        return lockExceptions;
-    }
-
-    public void setLockExceptions( Set<LockException> lockExceptions )
-    {
-        this.lockExceptions = lockExceptions;
     }
 }
