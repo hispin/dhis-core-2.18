@@ -10,7 +10,9 @@
 	<li><a href="displayPivotTableForm.action">$i18n.getString( "pivot_table" )&nbsp;</a></li>
 </ul>
 
+#if( $auth.hasAccess( "dhis-web-reporting", "displayDataMartForm" ) )
 <h2>$i18n.getString( "data_mart" )&nbsp;</h2>
 <ul>
 	<li><a href="displayDataMartForm.action">$i18n.getString( "data_mart" )&nbsp;</a></li>
 </ul>
+#end
