@@ -228,21 +228,23 @@ function filterByIndicatorGroup( selectedIndicatorGroup )
  // var list = new Array();
   
   var params = 'indicatorGroupId=' + selectedIndicatorGroup;
-  
+  /*
   for ( var i = 0; i < selectedList.options.length; ++i)
   {
   	//params += '&selectedIndicators=' + selectedList.options[i].value;
   	params += '&selectedIndicators=' + selectedList.options[i].value;
 	//list[i] = selectedList.options[i].value;
   }
+  
   // Clear the list
   var availableList = document.getElementById( 'availableList' );
 
   availableList.options.length = 0;
-  
+  */
  // alert(list);
   //alert(list.length);
   
+  /*
   var request = new Request();
   request.setResponseTypeXML( 'indicatorgroup' );
   request.setCallbackSuccess( filterByIndicatorGroupCompleted );
@@ -252,7 +254,7 @@ function filterByIndicatorGroup( selectedIndicatorGroup )
  // var params = "indicatorGroupId=" + selectedIndicatorGroup + "&selectedIndicators=" + list;
   request.sendAsPost( params );
   request.send( requestString ); 
-  
+  */
  /* 
   
    $.post("filterAvailableIndicatorsByIndicatorGroup.action",
@@ -265,6 +267,28 @@ function filterByIndicatorGroup( selectedIndicatorGroup )
 			filterByIndicatorGroupCompleted(data);
 		},'xml');
 		*/
+  
+  var listValue = "";
+
+  // Clear the list
+  var availableList = document.getElementById( 'availableList' );
+
+  availableList.options.length = 0;
+
+  for ( var i = 0; i < selectedList.options.length; ++i)
+  {
+	  listValue+='&selectedIndicators=' + selectedList.options[i].value;
+  }
+	//alert( listValue);
+	$.post("filterAvailableIndicatorsByIndicatorGroup.action?"+listValue,
+	  {
+		indicatorGroupId : selectedIndicatorGroup
+	  },
+	  function (data)
+	  {
+		  filterByIndicatorGroupCompleted(data);
+	  },'xml');
+  
 }
 
 function filterByIndicatorGroupCompleted( indicatorGroup )

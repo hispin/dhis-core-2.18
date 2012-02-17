@@ -71,17 +71,21 @@
       <tr>
         <td>
           <!-- List of all available Indicators -->
-          <select size="15" id="availableList" name="availableList" multiple="multiple" style="min-width:20em;height:20em" ondblclick="addSurveyMembers()">            
+          <!--<select size="15" id="availableList" name="availableList" multiple="multiple" style="min-width:20em;height:20em" ondblclick="addSurveyMembers()">-->
+          <select size="15" id="availableList" name="availableList" multiple="multiple" style="min-width:20em;height:20em" ondblclick="moveSelectedById( 'availableList', 'selectedList' )">            
           </select>
         </td>
         <td>
-          <input type="button" value="&gt;" title="$i18n.getString('move_selected')" onclick="addSurveyMembers()">
+          <!--<input type="button" value="&gt;" title="$i18n.getString('move_selected')" onclick="addSurveyMembers()">-->
+          <input type="button" value="&gt;" title=$i18n.getString( 'move_selected' ) onClick="moveSelectedById( 'availableList', 'selectedList' )">
           <br>
-          <input type="button" value="&lt;" title="$i18n.getString('remove_selected')" onclick="removeSurveyMembers()">
+          <!--<input type="button" value="&lt;" title="$i18n.getString('remove_selected')" onclick="removeSurveyMembers()">-->
+          <input type="button" value="&lt;" title=$i18n.getString( 'remove_selected' ) onClick="moveSelectedById( 'selectedList', 'availableList' )">
         </td>
         <td>
           <!-- List of all selected Indicators -->
-          <select id="selectedList" name="selectedList" multiple="multiple" style="min-width:20em;height:20em" ondblclick="removeSurveyMembers()">
+          <!--<select id="selectedList" name="selectedList" multiple="multiple" style="min-width:20em;height:20em" ondblclick="removeSurveyMembers()">-->
+          <select id="selectedList" name="selectedList" multiple="multiple" style="min-width:20em;height:20em" ondblclick="moveSelectedById( 'selectedList', 'availableList' )">	
           </select>
         </td>
       </tr>

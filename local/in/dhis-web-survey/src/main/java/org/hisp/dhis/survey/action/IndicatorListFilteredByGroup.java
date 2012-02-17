@@ -145,7 +145,7 @@ public class IndicatorListFilteredByGroup
         if ( surveyId != null )
         {
         	Survey survey = surveyService.getSurvey( surveyId );
-
+        	
                 indicators.removeAll( survey.getIndicators() );
         }
 

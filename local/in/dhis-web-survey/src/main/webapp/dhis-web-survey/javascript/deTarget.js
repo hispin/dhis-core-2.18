@@ -44,7 +44,6 @@ function removeDeTargetCompleted( messageElement )
 		window.location.href = 'deTargetManagement.action';
    }
 }
-
 //validation for adding New DeTarget
 function validateAddDeTarget()
 {
@@ -260,6 +259,8 @@ function filterByDataElementGroup( selectedDataElementGroup )
  // alert(list);
   //alert(list.length);
   
+  /*
+  
   var request = new Request();
   request.setResponseTypeXML( 'indicatorgroup' );
   request.setCallbackSuccess( filterByDataElementGroupCompleted );
@@ -270,7 +271,17 @@ function filterByDataElementGroup( selectedDataElementGroup )
   request.sendAsPost( params );
   request.send( requestString ); 
   } 
- /* 
+ */
+	$.post("filterAvailableDataElementsByDataElementGroup.action",
+			{
+				dataElementGroupId : selectedDataElementGroup
+			},
+			function (data)
+			{
+				filterByDataElementGroupCompleted(data);
+			},'xml');
+	
+  /* 
   
    $.post("filterAvailableIndicatorsByIndicatorGroup.action",
 		{
@@ -282,12 +293,13 @@ function filterByDataElementGroup( selectedDataElementGroup )
 			filterByIndicatorGroupCompleted(data);
 		},'xml');
 		*/
+  }
+  
 }
-
 function filterByDataElementGroupCompleted( xmlObject )
 {
-  //var indicators = indicatorGroup.getElementsByTagName( 'indicators' )[0];
- // var indicatorList = indicators.getElementsByTagName( 'indicator' );
+	//var indicators = indicatorGroup.getElementsByTagName( 'indicators' )[0];
+	// var indicatorList = indicators.getElementsByTagName( 'indicator' );
 
   var availableList = document.getElementById( 'availableList' );
   var selectedList = document.getElementById( 'selectedList' );
