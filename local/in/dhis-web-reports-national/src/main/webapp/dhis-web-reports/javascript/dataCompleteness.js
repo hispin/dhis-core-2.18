@@ -224,7 +224,7 @@ function getPeriods()
     
     if ( periodTypeId != null )
     {       
-       /* // var url = "../dhis-web-commons-ajax/getPeriods.action?name=" + periodTypeId;
+    	/* // var url = "../dhis-web-commons-ajax/getPeriods.action?name=" + periodTypeId;
         
         var request = new Request();
         request.setResponseTypeXML( "period" );

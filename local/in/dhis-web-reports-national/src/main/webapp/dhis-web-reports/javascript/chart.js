@@ -35,7 +35,8 @@ function runAndViewChartReceived( messageElement )
 
 function getChartStatus()
 {   
-    /* //var url = "getStatus.action";
+    
+	/* //var url = "getStatus.action";
     
     var request = new Request();
     request.setResponseTypeXML( "status" );
@@ -86,7 +87,7 @@ function removeChart( chartId, chartTitle )
     
     if ( result )
     {
-        /* //window.location.href = "removeChart.action?id=" + chartId;
+    	/* //window.location.href = "removeChart.action?id=" + chartId;
         var request = new Request();
         var requestString = "removeChart.action";
         var params = "id=" + chartId;
@@ -111,7 +112,7 @@ function removeChart( chartId, chartTitle )
 
 function showChartDetails( chartId )
 {
-    /* var request = new Request();
+	/* var request = new Request();
     request.setResponseTypeXML( 'chart' );
     request.setCallbackSuccess( chartReceived );
     //request.send( 'getChart.action?id=' + chartId );

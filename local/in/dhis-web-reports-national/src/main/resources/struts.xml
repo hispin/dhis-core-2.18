@@ -846,6 +846,7 @@
             <param name="requiredAuthorities">F_REPORT_NBITS_PORTAL</param>
             <interceptor-ref name="organisationUnitTreeStack"/>
         </action>
+<!--
         <action name="generatePortalReport"
             class="org.hisp.dhis.reports.portal.action.PortalReportsResultAction">
             <result name="success" type="stream">
@@ -855,7 +856,29 @@
                 <param name="bufferSize">1024</param>
             </result>
         </action>
-
+-->	
+<!--	
+        <action name="generatePortalReport"
+            class="org.hisp.dhis.reports.portal.action.PortalReportsResult_Action">
+            <result name="success" type="stream">
+                <param name="contentType">application/vnd.ms-excel</param>
+                <param name="inputName">inputStream</param>
+                <param name="contentDisposition">filename="${fileName}"</param>
+                <param name="bufferSize">1024</param>
+            </result>
+        </action>
+-->	
+		
+        <action name="generatePortalReport"
+            class="org.hisp.dhis.reports.portal.action.PortalReportsResult_ACS">
+            <result name="success" type="stream">
+                <param name="contentType">application/vnd.ms-excel</param>
+                <param name="inputName">inputStream</param>
+                <param name="contentDisposition">filename="${fileName}"</param>
+                <param name="bufferSize">1024</param>
+            </result>
+        </action>
+		
         <!-- NBITS Reports -->
         <action name="nbitsReportsAnalyser"
             class="org.hisp.dhis.reports.nbits.action.NBITSReportFormAction">

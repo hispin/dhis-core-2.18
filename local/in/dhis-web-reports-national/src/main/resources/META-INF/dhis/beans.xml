@@ -1340,6 +1340,33 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
         </property>
         
     </bean>
+    <bean id="org.hisp.dhis.reports.portal.action.PortalReportsResult_Action"
+        class="org.hisp.dhis.reports.portal.action.PortalReportsResult_Action"
+        scope="prototype">
+        <property name="reportService" ref="org.hisp.dhis.reports.util.ReportService" />
+        <property name="organisationUnitService" ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
+        <property name="patientService" ref="org.hisp.dhis.patient.PatientService" />
+        <property name="patientIdentifierService" ref="org.hisp.dhis.patient.PatientIdentifierService" />
+        <property name="programStageInstanceService" ref="org.hisp.dhis.program.ProgramStageInstanceService" />
+        <property name="patientDataValueService" ref="org.hisp.dhis.patientdatavalue.PatientDataValueService" />
+		<property name="dataElementService" ref="org.hisp.dhis.dataelement.DataElementService" />
+		<property name="dataElementCategoryOptionComboService" ref="org.hisp.dhis.dataelement.DataElementCategoryService" />
+        <property name="jdbcTemplate" ref="jdbcTemplate"/>        
+    </bean>
+
+    <bean id="org.hisp.dhis.reports.portal.action.PortalReportsResult_ACS"
+        class="org.hisp.dhis.reports.portal.action.PortalReportsResult_ACS"
+        scope="prototype">
+        <property name="reportService" ref="org.hisp.dhis.reports.util.ReportService" />
+        <property name="organisationUnitService" ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
+        <property name="patientService" ref="org.hisp.dhis.patient.PatientService" />
+        <property name="patientIdentifierService" ref="org.hisp.dhis.patient.PatientIdentifierService" />
+        <property name="programStageInstanceService" ref="org.hisp.dhis.program.ProgramStageInstanceService" />
+        <property name="patientDataValueService" ref="org.hisp.dhis.patientdatavalue.PatientDataValueService" />
+		<property name="dataElementService" ref="org.hisp.dhis.dataelement.DataElementService" />
+		<property name="dataElementCategoryOptionComboService" ref="org.hisp.dhis.dataelement.DataElementCategoryService" />
+        <property name="jdbcTemplate" ref="jdbcTemplate"/>        
+    </bean>	
 
     <!-- NBITS Reports -->
     <bean id="org.hisp.dhis.reports.nbits.action.NBITSReportFormAction"

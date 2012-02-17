@@ -58,7 +58,7 @@ function checkEndDate( dtStr )
 
 function getOUDetails(orgUnitIds)
 {
-    /* //var url = "getOrgUnitDetails.action?orgUnitId=" + orgUnitIds;
+	/* //var url = "getOrgUnitDetails.action?orgUnitId=" + orgUnitIds;
 	
     var request = new Request();
     request.setResponseTypeXML( 'orgunit' );
@@ -155,7 +155,8 @@ function getDataElements()
 		},'xml');
 
     }
-}// getDataElements end           
+}
+// getDataElements end           
 
 function getDataElementsReceived( xmlObject )
 {
@@ -246,6 +247,7 @@ function getPeriodsForCumulative()
     }
  
 }
+
 /*
 function getReports( ouId, reportListFileName )
 { 
@@ -270,7 +272,7 @@ function getReports( ouId, reportListFileName )
     }
 }
 */
-// 23/08/2010
+
 
 function getReports( ouId, reportTypeName )
 { 
@@ -284,7 +286,7 @@ function getReports( ouId, reportTypeName )
           
     if ( periodType != "NA" && ouId != null && ouId != "" )
     {
-       /*  var request = new Request();
+    	/*  var request = new Request();
         request.setResponseTypeXML( 'report' );
         request.setCallbackSuccess( getReportsReceived );
 

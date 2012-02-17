@@ -7,7 +7,7 @@ function runAndViewReport( reportId, reportUrl )
     var params2;
     if ( document.getElementById( "reportingPeriod" ) != null )
     {
-        ///url += "&reportingPeriod=" + getListValue( "reportingPeriod" );
+    	//url += "&reportingPeriod=" + getListValue( "reportingPeriod" );
         
 		//params2 += "&reportingPeriod=" + getListValue( "reportingPeriod" );
 		
@@ -25,7 +25,7 @@ function runAndViewReport( reportId, reportUrl )
     
     if ( document.getElementById( "parentOrganisationUnitId" ) != null )
     {
-        ////url += "&parentOrganisationUnitId=" + getListValue( "parentOrganisationUnitId" );
+        //url += "&parentOrganisationUnitId=" + getListValue( "parentOrganisationUnitId" );
         //params2 += "&reportingPeriod=" + getListValue( "reportingPeriod" );
 		$.post("createTable.action",
 			{
@@ -41,7 +41,7 @@ function runAndViewReport( reportId, reportUrl )
     
     if ( document.getElementById( "organisationUnitId" ) != null )
     {
-        ////url += "&organisationUnitId=" + getListValue( "organisationUnitId" );
+        ///url += "&organisationUnitId=" + getListValue( "organisationUnitId" );
         //params2 += "&reportingPeriod=" + getListValue( "reportingPeriod" );
 		$.post("createTable.action",
 			{
