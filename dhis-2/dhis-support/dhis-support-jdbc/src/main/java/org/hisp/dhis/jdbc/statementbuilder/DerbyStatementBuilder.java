@@ -235,7 +235,6 @@ public class DerbyStatementBuilder
             + "WHERE d.programstageinstanceid=a.programstageinstanceid " 
             + "AND d.dataelementid=a.dataelementid "
             + "AND d.organisationunitid=a.organisationunitid " 
-            + "AND d.categoryoptioncomboid=a.categoryoptioncomboid "
             + "AND d.timestamp<a.timestamp;";
     }
 
@@ -245,8 +244,7 @@ public class DerbyStatementBuilder
             + "USING patientdatavalue AS d "
             + "WHERE d.programstageinstanceid=a.programstageinstanceid " 
             + "AND d.dataelementid=a.dataelementid "
-            + "AND d.organisationunitid=a.organisationunitid " 
-            + "AND d.categoryoptioncomboid=a.categoryoptioncomboid ";
+            + "AND d.organisationunitid=a.organisationunitid ";
     }
 
     public String deleteOldestOverlappingPatientDataValue()
@@ -256,7 +254,6 @@ public class DerbyStatementBuilder
             + "WHERE d.programstageinstanceid=a.programstageinstanceid " 
             + "AND d.dataelementid=a.dataelementid "
             + "AND d.organisationunitid=a.organisationunitid " 
-            + "AND d.categoryoptioncomboid=a.categoryoptioncomboid "
             + "AND d.timestamp<a.timestamp;";
     }
 
@@ -264,7 +261,7 @@ public class DerbyStatementBuilder
     {
         return "DELETE FROM patientdatavalue AS d " + "USING patientdatavaluearchive AS a "
             + "WHERE d.programstageinstanceid=a.programstageinstanceid " + "AND d.dataelementid=a.dataelementid "
-            + "AND d.organisationunitid=a.organisationunitid " + "AND d.categoryoptioncomboid=a.categoryoptioncomboid "
+            + "AND d.organisationunitid=a.organisationunitid "
             + "AND a.timestamp<=d.timestamp;";
     }
 

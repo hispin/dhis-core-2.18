@@ -192,7 +192,8 @@ public class JdbcDataArchiveStore
     {
         // Move data from patientdatavalue to patientdatavaluearchive
         String sql = "INSERT INTO patientdatavalue ( " 
-            + "SELECT pdv.* FROM patientdatavaluearchive AS pdv "
+            + "SELECT pdv.programstageinstanceid, pdv.dataelementid, pdv.organisationunitid, pdv.value, "
+                    +"pdv.providedbyanotherfacility, pdv.timestamp FROM patientdatavaluearchive AS pdv "
             + "INNER JOIN programstageinstance AS psi " 
                 + "ON pdv.programstageinstanceid = psi.programstageinstanceid "
             + "INNER JOIN programinstance AS pi " 

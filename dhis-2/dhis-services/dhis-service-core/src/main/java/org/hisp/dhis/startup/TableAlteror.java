@@ -418,6 +418,8 @@ public class TableAlteror
         executeSql( "DROP TABLE chartgroupmembers" );
         executeSql( "DROP TABLE chartgroup" );
         
+        executeSql( "ALTER TABLE patientdatavaluearchive DROP COLUMN categoryoptioncomboid" );
+        
         log.info( "Tables updated" );
     }
 

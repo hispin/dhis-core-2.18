@@ -247,8 +247,7 @@ public class PostgreSQLStatementBuilder
                 "USING patientdatavaluearchive AS a " +
                 "WHERE d.programstageinstanceid=a.programstageinstanceid " +
                 "AND d.dataelementid=a.dataelementid " +
-                "AND d.organisationunitid=a.organisationunitid " +
-                "AND d.categoryoptioncomboid=a.categoryoptioncomboid ";
+                "AND d.organisationunitid=a.organisationunitid; ";
     }
     
     public String deleteArchivedOverlappingPatientData()
@@ -257,8 +256,7 @@ public class PostgreSQLStatementBuilder
                 "USING patientdatavalue AS d " +
                 "WHERE d.programstageinstanceid=a.programstageinstanceid " +
                 "AND d.dataelementid=a.dataelementid " +
-                "AND d.organisationunitid=a.organisationunitid " +
-                "AND d.categoryoptioncomboid=a.categoryoptioncomboid ";
+                "AND d.organisationunitid=a.organisationunitid ";
     }
     
     public String deleteOldestOverlappingPatientDataValue()
@@ -268,7 +266,6 @@ public class PostgreSQLStatementBuilder
                 "WHERE d.programstageinstanceid=a.programstageinstanceid " +
                 "AND d.dataelementid=a.dataelementid " +
                 "AND d.organisationunitid=a.organisationunitid " +
-                "AND d.categoryoptioncomboid=a.categoryoptioncomboid " +
                 "AND d.timestamp<a.timestamp;";
     }
     
@@ -279,7 +276,6 @@ public class PostgreSQLStatementBuilder
                 "WHERE d.programstageinstanceid=a.programstageinstanceid " +
                 "AND d.dataelementid=a.dataelementid " +
                 "AND d.organisationunitid=a.organisationunitid " +
-                "AND d.categoryoptioncomboid=a.categoryoptioncomboid " +
                 "AND a.timestamp<=d.timestamp;";
     }
     
