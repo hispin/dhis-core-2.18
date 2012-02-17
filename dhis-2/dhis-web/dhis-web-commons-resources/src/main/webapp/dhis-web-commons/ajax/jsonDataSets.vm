@@ -6,8 +6,8 @@
     "name": "$!encoder.jsonEncode( ${dataSet.displayName} )",
     "shortName": "$!encoder.jsonEncode( ${dataSet.displayShortName} )",
     "periodTypeId": "$!{dataSet.periodTypeId}",
-    "version": "$!{dataSet.version}"
-    #if( $dataSet.expiryDays ),"expiryDays": "$!encoder.jsonEncode( ${dataSet.expiryDays} ) #end
+    "version": "$!{dataSet.version}",
+    "expiryDays": "$!encoder.jsonEncode( ${dataSet.expiryDays} )"
   }#if( $velocityCount < $size ),#end
 #end
 ]
