@@ -36,7 +36,7 @@ function createTable( tableId )
 	
 	if ( byId( "reportingPeriod" ) != null )
     {
-        ////url += "&reportingPeriod=" + getListValue( "reportingPeriod" );
+        //url += "&reportingPeriod=" + getListValue( "reportingPeriod" );
         //params += "&reportingPeriod=" + getListValue( "reportingPeriod" );
 		
 		$.post("createTable.action",
@@ -52,7 +52,7 @@ function createTable( tableId )
     
     if ( document.getElementById( "parentOrganisationUnitId" ) != null )
     {
-        ////url += "&parentOrganisationUnitId=" + getListValue( "parentOrganisationUnitId" );
+        //url += "&parentOrganisationUnitId=" + getListValue( "parentOrganisationUnitId" );
         //params += "&parentOrganisationUnitId=" + getListValue( "parentOrganisationUnitId" );
 		
 		$.post("createTable.action",
@@ -67,7 +67,7 @@ function createTable( tableId )
     
     if ( document.getElementById( "organisationUnitId" ) != null )
     {
-        ////url += "&organisationUnitId=" + getListValue( "organisationUnitId" );
+        //url += "&organisationUnitId=" + getListValue( "organisationUnitId" );
         //params += "&organisationUnitId=" + getListValue( "organisationUnitId" );
 		
 		$.post("createTable.action",
@@ -88,7 +88,7 @@ function createTableReceived( messageElement )
 
 function getTableStatus()
 {
-    /* //var url = "getStatus.action";
+	/* //var url = "getStatus.action";
     
     var request = new Request();
     request.setResponseTypeXML( 'status' );
@@ -218,7 +218,7 @@ function removeTable( tableId, tableName )
     
     if ( result )
     {
-        /* //window.location.href = "removeTable.action?id=" + tableId;
+    	/* //window.location.href = "removeTable.action?id=" + tableId;
         var request = new Request();
         var requestString = "removeTable.action";
         var params = "id=" + tableId;
@@ -332,7 +332,7 @@ function organisationUnitReportParamsChecked()
 
 function showTableDetails( tableId )
 {
-   /*  var request = new Request();
+	/*  var request = new Request();
     request.setResponseTypeXML( 'reportTable' );
     request.setCallbackSuccess( tableReceived );
     //request.send( 'getTable.action?id=' + tableId );

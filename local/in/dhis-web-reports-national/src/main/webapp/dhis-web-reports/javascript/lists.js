@@ -50,7 +50,7 @@ function getDataElementsReceived( xmlObject )
         
         if ( listContains( selectedDataElements, id ) == false )
         {               
-            /* var option = document.createElement( "option" );
+        	/* var option = document.createElement( "option" );
             option.value = id;
             option.text = dataElementName;
             availableDataElements.add( option, null ); */
@@ -67,7 +67,7 @@ function getCategoryComboDataElements()
     
     if ( categoryComboId != null )
     {
-        /* //var url = "../dhis-web-commons-ajax/getDataElements.action?categoryComboId=" + categoryComboId + "&aggregate=true";
+    	/* //var url = "../dhis-web-commons-ajax/getDataElements.action?categoryComboId=" + categoryComboId + "&aggregate=true";
         
         var request = new Request();
         request.setResponseTypeXML( 'dataElement' );
@@ -161,7 +161,7 @@ function getIndicatorsReceived( xmlObject )
         
         if ( listContains( selectedIndicators, id ) == false )
         {               
-            /* var option = document.createElement( "option" );
+        	/* var option = document.createElement( "option" );
             option.value = id;
             option.text = indicatorName;
             availableIndicators.add( option, null ); */
@@ -217,7 +217,7 @@ function getOrganisationUnitsReceived( xmlObject )
         
         if ( listContains( selectedOrganisationUnits, id ) == false )
         {                       
-            /* var option = document.createElement( "option" );
+        	/* var option = document.createElement( "option" );
             option.value = id;
             option.text = organisationUnitName;
             availableOrganisationUnits.add( option, null ); */
@@ -396,7 +396,7 @@ function getPeriodsToSelected()
     
     if ( periodTypeId != null )
     {       
-        /* //var url = "../dhis-web-commons-ajax/getPeriods.action?name=" + periodTypeId;
+    	/* //var url = "../dhis-web-commons-ajax/getPeriods.action?name=" + periodTypeId;
         
         var request = new Request();
         request.setResponseTypeXML( 'period' );

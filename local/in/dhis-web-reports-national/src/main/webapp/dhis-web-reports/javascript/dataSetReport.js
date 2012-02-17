@@ -89,7 +89,7 @@ function runAndViewDataSetReportReceived( messageElement )
 
 function getDataSetReportStatus()
 {   
-    /* //var url = "getStatus.action";
+	/* //var url = "getStatus.action";
     
     var request = new Request();
     request.setResponseTypeXML( "status" );

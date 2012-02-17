@@ -7,7 +7,7 @@ function getOrgUnitGroups()
 	
     if ( orgUnitGroupSetId != null )
     {
-        /* //var url = "getOrgUnitGroups.action?orgUnitGroupSetId=" + orgUnitGroupSetId;
+    	/* //var url = "getOrgUnitGroups.action?orgUnitGroupSetId=" + orgUnitGroupSetId;
 		
         var request = new Request();
         request.setResponseTypeXML( 'orgunitgroup' );
@@ -71,7 +71,6 @@ function orgUnitGroupSetCB()
     clearList(orgUnitList);
 }
 
-
 // Removes slected orgunits from the Organisation List
 function remOUFunction()
 {
@@ -98,7 +97,6 @@ function viewByCBChange()
         }
     }
 }
-
 // Grading Report Form Validations
 function formValidations()
 {			         

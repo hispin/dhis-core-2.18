@@ -196,6 +196,7 @@ public class NBITSReportResultAction implements Action
         
         Date eDate = format.parseDate( endDate );
 
+        System.out.println("Start Date" + sDate + "-----"  + "End Date: " + eDate );
         generateReport( selProgram, orgUnitList, sDate, eDate );
 
         System.out.println("NBITS Report_" + selOrgUnit.getName() + "_" + selProgram.getName() + "_EndTime: " + new Date() );
@@ -269,6 +270,10 @@ public class NBITSReportResultAction implements Action
             }
             
             sheet0.mergeCells( colCount, rowCount-1, colCount, rowCount );
+            sheet0.addCell( new Label( colCount, rowCount-1, "Benificiary ID", getCellFormat1() ) );
+            colCount++;
+            
+            sheet0.mergeCells( colCount, rowCount-1, colCount, rowCount );
             sheet0.addCell( new Label( colCount, rowCount-1, "Benificiary Name", getCellFormat1() ) );
             colCount++;
             sheet0.mergeCells( colCount, rowCount-1, colCount, rowCount );
@@ -283,6 +288,10 @@ public class NBITSReportResultAction implements Action
             sheet0.mergeCells( colCount, rowCount-1, colCount, rowCount );
             sheet0.addCell( new Label( colCount, rowCount-1, "Blood Group", getCellFormat1() ) );
             colCount++;
+            sheet0.mergeCells( colCount, rowCount-1, colCount, rowCount );
+            sheet0.addCell( new Label( colCount, rowCount-1, "Registration Date", getCellFormat1() ) );
+            colCount++;
+            
             
             for( PatientAttribute patientAttribute : patientAttributes )
             {
@@ -311,19 +320,36 @@ public class NBITSReportResultAction implements Action
 
                 for( DataElement dataElement : dataElementList )
                 {
-                    sheet0.addCell( new Label( colCount, rowCount, dataElement.getName(), getCellFormat1() ) );
+                    sheet0.addCell( new Label( colCount, rowCount, dataElement.getName() + "--" + dataElement.getType() , getCellFormat1() ) );
                     colCount++;
+                    
                 }
             }
             rowCount++;
             
             for( OrganisationUnit orgUnit : orgUnitList )
             {
-                query = "SELECT patient.patientid, programinstance.programinstanceid,programinstance.dateofincident,programinstance.enrollmentdate FROM programinstance INNER JOIN patient " +
-                                " ON programinstance.patientid = patient.patientid " +
-                                " WHERE patient.organisationunitid = "+ orgUnit.getId() +
-                                " AND programinstance.programid = "+ selProgram.getId() +
-                                " AND enddate IS NULL";
+                
+               
+                
+                if( sDate != null && eDate != null)
+                {
+                    query = "SELECT patient.patientid, programinstance.programinstanceid,programinstance.dateofincident,programinstance.enrollmentdate FROM programinstance INNER JOIN patient " +
+                            " ON programinstance.patientid = patient.patientid " +
+                            " WHERE patient.organisationunitid = "+ orgUnit.getId() +
+                            " AND programinstance.programid = "+ selProgram.getId() +
+                            " AND patient.registrationdate >= '"+startDate+"'" +
+                            " AND patient.registrationdate <= '"+endDate+"' "+
+                            " AND enddate IS NULL";
+                }
+                else
+                {
+                    query = "SELECT patient.patientid, programinstance.programinstanceid,programinstance.dateofincident,programinstance.enrollmentdate FROM programinstance INNER JOIN patient " +
+                            " ON programinstance.patientid = patient.patientid " +
+                            " WHERE patient.organisationunitid = "+ orgUnit.getId() +
+                            " AND programinstance.programid = "+ selProgram.getId() +
+                            " AND enddate IS NULL";
+                }
 
                 SqlRowSet sqlResultSet = jdbcTemplate.queryForRowSet( query );
                 if ( sqlResultSet != null )
@@ -384,6 +410,9 @@ public class NBITSReportResultAction implements Action
                         }
                         
                         //Patient Properties
+                        
+                        sheet0.addCell( new Label( colCount, rowCount, patient.getId().toString(), getCellFormat2() ) );
+                        colCount++;
                         sheet0.addCell( new Label( colCount, rowCount, patient.getFullName(), getCellFormat2() ) );
                         colCount++;
                         sheet0.addCell( new Label( colCount, rowCount, patient.getTextGender(), getCellFormat2() ) );
@@ -393,6 +422,8 @@ public class NBITSReportResultAction implements Action
                         sheet0.addCell( new Label( colCount, rowCount, simpleDateFormat.format( patient.getBirthDate() ), getCellFormat2() ) );
                         colCount++;
                         sheet0.addCell( new Label( colCount, rowCount, patient.getBloodGroup(), getCellFormat2() ) );
+                        colCount++;
+                        sheet0.addCell( new Label( colCount, rowCount, simpleDateFormat.format( patient.getRegistrationDate() ), getCellFormat2() ) );
                         colCount++;
 
                         //Patient Attribute Values
@@ -483,9 +514,20 @@ public class NBITSReportResultAction implements Action
                                                 " AND organisationunitid = " + orgUnit.getId(); 
 
                                 SqlRowSet sqlResultSet3 = jdbcTemplate.queryForRowSet( query );
+                                
                                 if ( sqlResultSet3 != null && sqlResultSet3.next() )
                                 {
                                     String value = sqlResultSet3.getString( 1 );
+                                    
+                                    if( dataElement.getType().equalsIgnoreCase( DataElement.VALUE_TYPE_BOOL) )
+                                    {
+                                        if( value.equalsIgnoreCase("false") )
+                                            value = "No";
+                                        else
+                                            value = "Yes";
+                                    }
+
+                                    
                                     if( value != null && !value.trim().equalsIgnoreCase("") )
                                     {
                                         sheet0.addCell( new Label( colCount, rowCount, value, getCellFormat2() ) );

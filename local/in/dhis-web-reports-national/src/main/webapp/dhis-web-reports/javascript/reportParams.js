@@ -9,7 +9,7 @@ function getOrganisationUnitsParent()
     
     if ( organisationUnitLevel != null )
     {
-       /* // var url = "../dhis-web-commons-ajax/getOrganisationUnits.action?level=" + organisationUnitLevel;
+    	/* // var url = "../dhis-web-commons-ajax/getOrganisationUnits.action?level=" + organisationUnitLevel;
         
         var request = new Request();
         request.setResponseTypeXML( 'organisationUnit' );

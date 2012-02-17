@@ -41,10 +41,7 @@ function getSelectedOrgUnit( orgUnitIds )
            setFieldValue( "ouNameTB",json.organisationUnit.name );
      });
 }
-
-
-
-/*
+	/*
 		
 		$.post("getOrgUnitName.action",
 			{
@@ -66,8 +63,6 @@ function responseGetSelectedOrgUnitName( dataelement )
     //document.reportForm.ouNameTB.value=element[0].getElementsByTagName("OugUnitName")[0].firstChild.nodeValue;
     document.reportForm.ouNameTB.value = orgUnitname;
 }
-
-
 
 //function getAllPeriods() {
 	//var periodTypeList = document.getElementById("periodTypeId");
@@ -157,7 +152,6 @@ function parseXML(xml) {
 		return new DOMParser().parseFromString(xml, 'text/xml');
 	throw new Error('No XML parser available');
 }
-
 // functions for get all corresponding dataSets
 function getDataSets() {
 	var periodTypeList = document.getElementById("periodTypeId");

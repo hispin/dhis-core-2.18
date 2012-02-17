@@ -48,7 +48,7 @@ function removeDocument( id )
     
     if ( dialog )
     {
-        /* //window.location.href = "removeDocument.action?id=" + id;
+    	/* //window.location.href = "removeDocument.action?id=" + id;
         var request = new Request();
         var requestString = "removeDocument.action";
         var params = "id=" + id ;
@@ -72,7 +72,7 @@ function addDocumentToDashboard( id )
     
     if ( dialog )
     {
-        /* var request = new Request(); 
+    	/* var request = new Request(); 
         //request.send( "addDocumentToDashboard.action?id=" + id );
         var requestString = "addDocumentToDashboard.action";
         var params = "id=" + id ;
