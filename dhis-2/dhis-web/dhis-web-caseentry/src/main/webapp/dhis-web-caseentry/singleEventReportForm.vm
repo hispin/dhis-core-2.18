@@ -9,7 +9,9 @@
 <h3>$i18n.getString( "anonymous_event_reports" )</h3>
 <form id="singleEventreportForm" name="singleEventreportForm" method="post" action="generateSingleEventReport.action">
 
-<table>	
+<div class="inputCriteria" style="width:530px;height:130px;margin-bottom:20px;">
+
+<table>
 
     <tr>
         <td><label for="programId">$i18n.getString( "program" ) <em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
@@ -52,9 +54,8 @@
 	</tr>
 	
 </table>
-<p>
-    
-<hr style="clear:both">
+
+</div>
 
 #parse( "dhis-web-commons/loader/loader.vm" )
 

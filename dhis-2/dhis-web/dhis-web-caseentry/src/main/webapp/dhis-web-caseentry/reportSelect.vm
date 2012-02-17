@@ -8,6 +8,9 @@
 
 <h3>$i18n.getString( "program_summary_report" ) #openHelp('program_summary_report')</h3>
 <form id="reportForm" name="reportForm" method="post" action="reportSelect.action">
+
+<div class="inputCriteria" style="width:530px;height:160px;margin-bottom:20px;">
+
 <table>	
     <tr>
 	  <td><label>$i18n.getString( "reporting_unit" )</label></td>
@@ -40,20 +43,24 @@
 				datePicker('endDate');
             </script> 				
         </td>      
-    </tr>    	                		
+    </tr>
+    
+    <tr>
+    	<td></td>
+    	<td><input type="submit" id='generateBtn' name='generateBtn' disabled value="$i18n.getString( 'generate' )" style="width:10em" />
+    		<input type="button" value="$i18n.getString( 'cancel' )" onclick="window.location.href='index.action'" style="width:10em"/>
+    	</td>
+    </tr>	                		
 </table>
-<p>
-    <input type="submit" id='generateBtn' name='generateBtn' disabled value="$i18n.getString( 'generate' )" style="width:10em" />
-    <input type="button" value="$i18n.getString( 'cancel' )" onclick="window.location.href='index.action'" style="width:10em"/>
-</p>  
+
+</div>
+
 </form>
 
 #parse( "dhis-web-commons/loader/loader.vm" )
 
-<hr style="clear:both">
-
 <div id="contentDiv"></div>
-<div id='patientDetailsArea' style='display:none;'></div>
+<div id="patientDetailsArea" style="display:none;"></div>
 
 <span id="message"></span>
 
