@@ -27,15 +27,16 @@ package org.hisp.dhis.ll.action.llelements;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import org.hisp.dhis.linelisting.LineListService;
-
-import com.opensymphony.xwork2.Action;
 import java.util.Collection;
 import java.util.Iterator;
+
 import org.hisp.dhis.common.DeleteNotAllowedException;
 import org.hisp.dhis.i18n.I18n;
 import org.hisp.dhis.linelisting.LineListElement;
 import org.hisp.dhis.linelisting.LineListGroup;
+import org.hisp.dhis.linelisting.LineListService;
+
+import com.opensymphony.xwork2.Action;
 
 public class RemoveLineListElementAction
     implements Action
@@ -109,7 +110,8 @@ public class RemoveLineListElementAction
         {
             if ( ex.getErrorCode().equals( DeleteNotAllowedException.ERROR_ASSOCIATED_BY_OTHER_OBJECTS ) )
             {
-                message = i18n.getString( "object_not_deleted_associated_by_objects" ) + " " + ex.getClassName();
+                //message = i18n.getString( "object_not_deleted_associated_by_objects" ) + " " + ex.getClassName();
+                message = i18n.getString( "object_not_deleted_associated_by_objects" ) + " " + ex.getMessage();
 
                 return ERROR;
             }

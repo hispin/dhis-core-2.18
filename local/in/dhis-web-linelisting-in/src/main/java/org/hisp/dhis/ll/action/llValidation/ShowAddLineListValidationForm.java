@@ -27,13 +27,14 @@ package org.hisp.dhis.ll.action.llValidation;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import org.hisp.dhis.linelisting.LineListService;
-
-import com.opensymphony.xwork2.Action;
 import java.util.ArrayList;
 import java.util.List;
+
 import org.hisp.dhis.linelisting.LineListGroup;
+import org.hisp.dhis.linelisting.LineListService;
 import org.hisp.dhis.ll.action.lldataentry.SelectedStateManager;
+
+import com.opensymphony.xwork2.Action;
 
 public class ShowAddLineListValidationForm
     implements Action

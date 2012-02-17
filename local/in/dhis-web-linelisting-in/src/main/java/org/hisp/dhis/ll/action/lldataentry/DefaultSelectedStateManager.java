@@ -27,6 +27,7 @@ package org.hisp.dhis.ll.action.lldataentry;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
@@ -41,11 +42,10 @@ import org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager;
 import org.hisp.dhis.period.CalendarPeriodType;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodType;
-
-import com.opensymphony.xwork2.ActionContext;
-import java.util.ArrayList;
 import org.hisp.dhis.user.CurrentUserService;
 import org.hisp.dhis.user.UserStore;
+
+import com.opensymphony.xwork2.ActionContext;
 
 public class DefaultSelectedStateManager
     implements SelectedStateManager

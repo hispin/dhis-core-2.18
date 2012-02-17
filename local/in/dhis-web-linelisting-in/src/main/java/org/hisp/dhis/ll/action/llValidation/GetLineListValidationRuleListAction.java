@@ -27,15 +27,13 @@ package org.hisp.dhis.ll.action.llValidation;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import com.opensymphony.xwork2.Action;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
-import com.opensymphony.xwork2.ActionSupport;
 import org.hisp.dhis.linelisting.LineListValidationRule;
 import org.hisp.dhis.linelisting.LineListValidationRuleService;
-import org.hisp.dhis.linelisting.comparator.LineListValidationRuleNameComparator;
+
+import com.opensymphony.xwork2.Action;
 
 
 public class GetLineListValidationRuleListAction

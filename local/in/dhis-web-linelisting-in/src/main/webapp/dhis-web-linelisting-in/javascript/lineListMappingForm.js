@@ -5,13 +5,27 @@
 
 function validateLineListMapping()
 {
-    var request = new Request();
+    /*
+	var request = new Request();
     request.setResponseTypeXML( 'message' );
     request.setCallbackSuccess( addLineListMappingCompleted );
     request.send( 'validateValidationRule.action?name=' + getFieldValue( 'name' )  +
     '&leftSideExpression=' + getFieldValue( 'leftSideExpression' ) +
     '&rightSideExpression=' + getFieldValue( 'rightSideExpression' ) +
-
+    */
+	
+	$.post("validateValidationRule.action",
+			{
+				name : getFieldValue( 'name' ),
+				leftSideExpression : getFieldValue( 'leftSideExpression' ),
+				rightSideExpression : getFieldValue( 'rightSideExpression' )
+			},
+			function (data)
+			{
+				addLineListMappingCompleted(data);
+			},'xml');
+    
+    
     return false;
 }
 
@@ -43,6 +57,7 @@ function addLineListMappingCompleted( messageElement )
 
 function validateUpdateLineListMapping()
 {
+	/*
 	var request = new Request();
     request.setResponseTypeXML( 'message' );
     request.setCallbackSuccess( updateLineListMappingCompleted );
@@ -50,7 +65,20 @@ function validateUpdateLineListMapping()
     '&name=' + getFieldValue( 'name' )  +
     '&leftSideExpression=' + getFieldValue( 'leftSideExpression' ) +
     '&rightSideExpression=' + getFieldValue( 'rightSideExpression' ) +
-
+    */
+	$.post("validateValidationRule.action",
+			{
+				id : getFieldValue( 'id' ),
+				name : getFieldValue( 'name' ),
+				leftSideExpression : getFieldValue( 'leftSideExpression' ),
+				rightSideExpression : getFieldValue( 'rightSideExpression' )
+			},
+			function (data)
+			{
+				updateLineListMappingCompleted(data);
+			},'xml');
+    
+    
     return false;
 }
 

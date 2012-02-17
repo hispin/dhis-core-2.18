@@ -27,6 +27,7 @@ package org.hisp.dhis.ll.action.llelements;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
 
@@ -35,7 +36,6 @@ import org.hisp.dhis.linelisting.LineListOption;
 import org.hisp.dhis.linelisting.LineListService;
 
 import com.opensymphony.xwork2.Action;
-import java.util.ArrayList;
 
 public class UpdateLineListElementAction
     implements Action

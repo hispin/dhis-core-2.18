@@ -28,9 +28,10 @@ package org.hisp.dhis.ll.action.llValidation;
  */
 
 
-import com.opensymphony.xwork2.ActionSupport;
-import org.hisp.dhis.linelisting.LineListValidationRuleService;
 import org.hisp.dhis.linelisting.LineListValidationRule;
+import org.hisp.dhis.linelisting.LineListValidationRuleService;
+
+import com.opensymphony.xwork2.ActionSupport;
 
 public class AddLineListValidationRuleAction
     extends ActionSupport

@@ -5,10 +5,20 @@
 
 function showLineListGroupDetails( lineListGroupId )
 {
-    var request = new Request();
+   /*
+	var request = new Request();
     request.setResponseTypeXML( 'getLineListGroups' );
     request.setCallbackSuccess( lineListGroupReceived );
     request.send( 'getLineListGroup.action?id=' + lineListGroupId );
+    */
+	$.post("getLineListGroup.action",
+			{
+				id : lineListGroupId
+			},
+			function (data)
+			{
+				lineListGroupReceived(data);
+			},'xml');
 }
 
 function lineListGroupReceived( lineListGroupElement )
@@ -45,12 +55,26 @@ function validateAddLineListGroup()
 {
     var selectedListOption	=	document.getElementById( 'selectedList' );
     var selectedListNumber	=	selectedListOption.options.length;
-	var request = new Request();
+	/*
+    var request = new Request();
     request.setResponseTypeXML( 'message' );
     request.setCallbackSuccess( addValidationCompleted );
     request.send( 'validateLineListGroupAdd.action?name=' + getFieldValue( 'name' ) + 
         '&shortName=' + htmlEncode( getFieldValue( 'shortName' ) ) +
         '&periodTypeSelect=' + htmlEncode( getFieldValue( 'periodTypeSelect' ) ) + '&selectedListNumber=' + selectedListNumber );
+    */
+	$.post("validateLineListGroupAdd.action",
+			{
+				name : getFieldValue( 'name' ),
+				shortName : htmlEncode( getFieldValue( 'shortName' ) ),
+				periodTypeSelect : htmlEncode( getFieldValue( 'periodTypeSelect' ) ),
+				selectedListNumber : selectedListNumber
+			},
+			function (data)
+			{
+				addValidationCompleted(data);
+			},'xml');
+    
 
     return false;
 }
@@ -85,21 +109,36 @@ function addValidationCompleted( messageElement )
 
 function validateUpdateLineListGroup()
 {
+	/*
     var request = new Request();
     request.setResponseTypeXML( 'message' );
     request.setCallbackSuccess( updateValidationCompleted );
     selectAllById( 'selectedList' );
+    */
     var selectedList = "";
+    
     for ( var id in groupMembers )
     {
         selectedList = selectedList +","+ id ;
     }
-    
+    /*
     request.send( 'validateLineListGroup.action?id=' + getFieldValue( 'id' ) +
         '&name=' + getFieldValue( 'name' ) +
         '&shortName=' + getFieldValue( 'shortName' ) +
         '&selectedList=' + selectedList );
-
+	*/
+	$.post("validateLineListGroup.action",
+			{
+				id : getFieldValue( 'id' ),
+				name : getFieldValue( 'name' ),
+				shortName : getFieldValue( 'shortName' ),
+				selectedList : selectedList
+			},
+			function (data)
+			{
+				updateValidationCompleted(data);
+			},'xml');
+    
     return false;
 }
 

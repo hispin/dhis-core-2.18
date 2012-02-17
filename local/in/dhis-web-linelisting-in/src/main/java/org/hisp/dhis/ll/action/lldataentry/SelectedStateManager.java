@@ -32,7 +32,6 @@ import java.util.List;
 import org.hisp.dhis.linelisting.LineListGroup;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.period.Period;
-import org.hisp.dhis.period.PeriodType;
 
 /**
  * @author Torgeir Lorange Ostby

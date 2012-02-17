@@ -27,16 +27,17 @@ package org.hisp.dhis.ll.action.llgroup;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+
+import org.hisp.dhis.dbmanager.DataBaseManagerInterface;
 import org.hisp.dhis.i18n.I18n;
+import org.hisp.dhis.linelisting.LineListElement;
 import org.hisp.dhis.linelisting.LineListGroup;
 import org.hisp.dhis.linelisting.LineListService;
 
 import com.opensymphony.xwork2.Action;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import org.hisp.dhis.dbmanager.DataBaseManagerInterface;
-import org.hisp.dhis.linelisting.LineListElement;
 
 public class ValidateLineListGroupAction
     implements Action

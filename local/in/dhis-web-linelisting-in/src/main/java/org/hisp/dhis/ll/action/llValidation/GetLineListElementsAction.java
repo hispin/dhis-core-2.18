@@ -33,15 +33,14 @@ import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
 
-import org.hisp.dhis.options.displayproperty.DisplayPropertyHandler;
-
-import com.opensymphony.xwork2.ActionSupport;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryCombo;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
 import org.hisp.dhis.dataelement.DataElementCategoryService;
 import org.hisp.dhis.dataelement.DataElementGroup;
 import org.hisp.dhis.dataelement.DataElementService;
+
+import com.opensymphony.xwork2.ActionSupport;
 
 /**
  * @author Lars Helge Overland
@@ -84,14 +83,14 @@ public class GetLineListElementsAction
     // -------------------------------------------------------------------------
     // DisplayPropertyHandler
     // -------------------------------------------------------------------------
-
+    /*
     private DisplayPropertyHandler displayPropertyHandler;
 
     public void setDisplayPropertyHandler( DisplayPropertyHandler displayPropertyHandler )
     {
         this.displayPropertyHandler = displayPropertyHandler;
     }
-
+    */
     // -------------------------------------------------------------------------
     // Input & output
     // -------------------------------------------------------------------------
@@ -166,7 +165,7 @@ public class GetLineListElementsAction
 
         Collections.sort( dataElements, dataElementComparator );
 
-        displayPropertyHandler.handle( dataElements );
+       // displayPropertyHandler.handle( dataElements );
         
         if ( deOptionValue != null )
         {
