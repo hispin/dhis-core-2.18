@@ -51,9 +51,13 @@ dhis2.availability.startAvailabilityCheck = function( onlineInterval, offlineInt
             url : "../dhis-web-commons-stream/ping.action",
             cache : false,
             timeout: 10000,
-    		dataType : "json",
+    		dataType : "text",
             success : function( data, textStatus, jqXHR )
             {
+                try {
+                    data = JSON.parse(data);
+                } catch(e) {}
+
                 dhis2.availability._isAvailable = true;
                 var loggedIn = data.loggedIn ? true : false;
 
