@@ -250,7 +250,6 @@ public class H2StatementBuilder
                 "WHERE d.programstageinstanceid=a.programstageinstanceid " +
                 "AND d.dataelementid=a.dataelementid " +
                 "AND d.organisationunitid=a.organisationunitid " +
-                "AND d.categoryoptioncomboid=a.categoryoptioncomboid " +
                 "AND d.timestamp<a.timestamp;";
     }
     
@@ -260,8 +259,7 @@ public class H2StatementBuilder
                 "USING patientdatavalue AS d " +
                 "WHERE d.programstageinstanceid=a.programstageinstanceid " +
                 "AND d.dataelementid=a.dataelementid " +
-                "AND d.organisationunitid=a.organisationunitid " +
-                "AND d.categoryoptioncomboid=a.categoryoptioncomboid ";
+                "AND d.organisationunitid=a.organisationunitid ";
     }
     
     public String deleteOldestOverlappingPatientDataValue()
@@ -271,7 +269,6 @@ public class H2StatementBuilder
                 "WHERE d.programstageinstanceid=a.programstageinstanceid " +
                 "AND d.dataelementid=a.dataelementid " +
                 "AND d.organisationunitid=a.organisationunitid " +
-                "AND d.categoryoptioncomboid=a.categoryoptioncomboid " +
                 "AND d.timestamp<a.timestamp;";
     }
     
@@ -282,7 +279,6 @@ public class H2StatementBuilder
                 "WHERE d.programstageinstanceid=a.programstageinstanceid " +
                 "AND d.dataelementid=a.dataelementid " +
                 "AND d.organisationunitid=a.organisationunitid " +
-                "AND d.categoryoptioncomboid=a.categoryoptioncomboid " +
                 "AND a.timestamp<=d.timestamp;";
     }
     

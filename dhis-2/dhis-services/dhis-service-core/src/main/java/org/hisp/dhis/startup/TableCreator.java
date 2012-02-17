@@ -102,7 +102,6 @@ public class TableCreator
              " programstageinstanceid integer NOT NULL, " +
              " dataelementid integer NOT NULL, " +
              " organisationunitid integer NOT NULL, " +
-             " categoryoptioncomboid integer default NULL, " +
              " value varchar(255) default NULL, " +
              " providedbyanotherfacility boolean NOT NULL, " +
              " timestamp TIMESTAMP, " +
