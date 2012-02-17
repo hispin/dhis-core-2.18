@@ -24,6 +24,7 @@
 		  <col width="20">                        
 		  <col width="20"> 
           <tr>
+			<th>#</th>
             <th>$i18n.getString( "full_name" )</th>        
             <th>$i18n.getString( "gender" )</th>
             <th>$i18n.getString( "date_of_birth" )</th>
@@ -39,7 +40,10 @@
           
           #foreach( $patient in $patients )
           	<tr #alternate( $mark )>
-				
+				<td>
+					#set( $nr = ( ( $paging.getCurrentPage() - 1  ) * $paging.pageSize ) + $velocityCount )
+					$nr
+                </td>
 				<td>			
 					$encoder.htmlEncode( $patient.getFullName() )
 				</td>			

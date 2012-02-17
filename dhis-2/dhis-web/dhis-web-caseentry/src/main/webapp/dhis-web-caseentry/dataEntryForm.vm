@@ -52,14 +52,12 @@
 		</div>
 	#else
 		<table id="defaultEntryScreenContainer" class='entryScreen formSection'>
-			<col id="noCol">
 			<col id="deCol">    
 			<col id="entryCol">
 			#if( $programStageInstance.programInstance.program.displayProvidedOtherFacility == 'true' )
 			<col id="facilityCol">       
 			#end
 			<tr>
-				<th>$i18n.getString( "nr" )</th>
 				<th>$i18n.getString( "data_element" )</th>                   
 				<th>$i18n.getString( "entry" )</th>
 				#if( $programStageInstance.programInstance.program.displayProvidedOtherFacility == 'true' )
@@ -76,8 +74,6 @@
 			#set( $key = $programStageDataElement.dataElement.id )
 			#set( $patientDataValue = $patientDataValueMap.get( $key ) )    
 			<tr #alternate( $mark )>
-				##dataElementRowCount
-				<td>$dataElementRowCount</td>        
 				##data element name
 				<td class='text-column'>
 					<span id="value[$programStageDataElement.dataElement.id].name" title="$!encoder.htmlEncode( $programStageDataElement.dataElement.description )">
