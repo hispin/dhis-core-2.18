@@ -33,8 +33,6 @@
 	</tr>
 </table>
 
-<hr style="clear:both">
-
 <table>    
    <tr>
         <td><label for="programId">$i18n.getString( "program" )</label></td>
