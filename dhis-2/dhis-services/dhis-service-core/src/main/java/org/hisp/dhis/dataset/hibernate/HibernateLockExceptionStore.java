@@ -31,10 +31,12 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 import org.hibernate.Criteria;
 import org.hibernate.Query;
 import org.hibernate.criterion.Projections;
+import org.hibernate.criterion.Property;
 import org.hibernate.criterion.Restrictions;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataset.DataSet;
@@ -94,7 +96,7 @@ public class HibernateLockExceptionStore
     
     @Override
     public Collection<LockException> getCombinations()
-    {       
+    {
         final String sql = "SELECT DISTINCT datasetid, periodid FROM LockException";
 
         final Collection<LockException> lockExceptions = new ArrayList<LockException>();
