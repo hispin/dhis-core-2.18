@@ -21,8 +21,11 @@
 			<td>$encoder.htmlEncode( $patient.getAge() )</td>
 		</tr>
 		</table>
-		<td class="history">
-			<div id="currentSelection" class="hidden"></div>
+	</tr>
+	<tr>
+		<td>
+			<a href="javascript:showHistoryPlan()" id='historyPlanLink' title="$i18n.getString( 'see_history_plan' )" class="hidden">$i18n.getString('see_history_plan')</a>
+			<div id="currentSelection" class="hidden history"></div>
 		</td>
 	</tr>
 	<tr>

@@ -17,7 +17,7 @@ function loadProgramStages()
 	var programId = jQuery('#dataRecordingSelectDiv [name=programId]').val();
 	if ( programId == 0 )
 	{
-		hideById('currentSelection');
+		hideById('historyPlanLink');
 		return;
 	}
 	jQuery.postJSON( "loadProgramStages.action",
@@ -50,8 +50,7 @@ function loadProgramStages()
 				
 				// show history / plan
 				setInnerHTML( 'currentSelection', '' ); 
-				var history = '<h4>' + i18n_program_stages_history_plan + '</h4>';
-				history += '<table class="history">';
+				var history = '<table class="history">';
 				history += '<tr>';
 				history += '<td class="bold row">' + i18n_program_stage + '</td>';
 				history += '<td class="bold row">' + i18n_scheduled_for + '</td>';
@@ -69,7 +68,7 @@ function loadProgramStages()
 				}
 				history += '</table>';
 				setInnerHTML( 'currentSelection', history );
-				showById('currentSelection');
+				showById('historyPlanLink');
 				
 				disable('completeBtn');
 				disable('validationBtn');
@@ -80,6 +79,19 @@ function loadProgramStages()
 			}
 			
 	});
+}
+
+function showHistoryPlan()
+{
+	$('#currentSelection' ).dialog({
+        title: i18n_program_stages_history_plan,
+		maximize: true, 
+		closable: true,
+		modal:false,
+		overlay:{background:'#000000', opacity:0.1},
+		width: 400,
+        height: 400
+    });
 }
 
 //--------------------------------------------------------------------------------------------
