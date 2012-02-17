@@ -97,6 +97,13 @@ public class UndoCompleteDataSetAction
         this.organisationUnitId = organisationUnitId;
     }
 
+    private int statusCode;
+
+    public int getStatusCode()
+    {
+        return statusCode;
+    }
+
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
@@ -105,9 +112,22 @@ public class UndoCompleteDataSetAction
     {
         DataSet dataSet = dataSetService.getDataSet( dataSetId );
         Period period = PeriodType.createPeriodExternalId( periodId );
-        OrganisationUnit unit = organisationUnitService.getOrganisationUnit( organisationUnitId );
+        OrganisationUnit organisationUnit = organisationUnitService.getOrganisationUnit( organisationUnitId );
 
-        CompleteDataSetRegistration registration = registrationService.getCompleteDataSetRegistration( dataSet, period, unit );
+        // ---------------------------------------------------------------------
+        // Check locked status
+        // ---------------------------------------------------------------------
+
+        if ( dataSetService.isLocked( dataSet, period, organisationUnit, null ) )
+        {
+            return logError( "Entry locked for combination: " + dataSet + ", " + period + ", " + organisationUnit, 2 );
+        }
+
+        // ---------------------------------------------------------------------
+        // Un-register as completed dataSet
+        // ---------------------------------------------------------------------
+
+        CompleteDataSetRegistration registration = registrationService.getCompleteDataSetRegistration( dataSet, period, organisationUnit );
 
         if ( registration != null )
         {
@@ -115,6 +135,24 @@ public class UndoCompleteDataSetAction
 
             log.info( "DataSet un-registered as complete: " + registration );
         }
+
+        return SUCCESS;
+    }
+
+    // -------------------------------------------------------------------------
+    // Supportive methods
+    // -------------------------------------------------------------------------
+
+    private String logError( String message )
+    {
+        return logError( message, 1 );
+    }
+
+    private String logError( String message, int statusCode )
+    {
+        log.info( message );
+
+        this.statusCode = statusCode;
 
         return SUCCESS;
     }

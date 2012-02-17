@@ -205,13 +205,21 @@ function uploadLocalData()
             cache: false,
             success: function( data, textStatus, jqXHR )
             {
-                log( 'Successfully saved complete dataset with value: ' + value );
-                storageManager.clearCompleteDataSet( value );
-                ( array = array.slice( 1 ) ).length && pushCompleteDataSets( array );
-
-                if ( array.length < 1 )
+                if( data.status == 2 )
                 {
-                    setHeaderDelayMessage( i18n_sync_success );
+                    log( 'DataSet is locked' );
+                    setHeaderMessage( i18n_register_complete_failed_dataset_is_locked );
+                }
+                else
+                {
+                    log( 'Successfully saved complete dataset with value: ' + value );
+                    storageManager.clearCompleteDataSet( value );
+                    ( array = array.slice( 1 ) ).length && pushCompleteDataSets( array );
+
+                    if ( array.length < 1 )
+                    {
+                        setHeaderDelayMessage( i18n_sync_success );
+                    }
                 }
             },
             error: function( jqXHR, textStatus, errorThrown )
@@ -251,11 +259,10 @@ function uploadLocalData()
             success: function( data, textStatus, jqXHR )
             {
                 if ( data.c == 2 ) {
-                    log( 'DataSet is now locked' );
-
+                    log( 'DataSet is locked' );
                     setHeaderMessage( i18n_saving_value_failed_dataset_is_locked );
                 } 
-                else 
+                else
                 {
                     storageManager.clearDataValueJSON( value );
                     log( 'Successfully saved data value with value: ' + value );
@@ -885,8 +892,6 @@ function validateCompleteDataSet()
     {
         var params = storageManager.getCurrentCompleteDataSetParams();
 
-        disableCompleteButton();
-
         $.ajax( { url: 'getValidationViolations.action',
         	cache: false,
         	data: params,
@@ -914,13 +919,23 @@ function registerCompleteDataSet( json )
     	url: 'registerCompleteDataSet.action',
     	data: params,
     	cache: false,
-    	success: function()
+    	success: function(data)
         {
-            storageManager.clearCompleteDataSet( params );
-
-            if ( json.response == 'input' )
+            if( data.status == 2 )
             {
-                validate();
+                log( 'DataSet is locked' );
+                setHeaderMessage( i18n_register_complete_failed_dataset_is_locked );
+            }
+            else
+            {
+                disableCompleteButton();
+
+                storageManager.clearCompleteDataSet( params );
+
+                if ( json.response == 'input' )
+                {
+                    validate();
+                }
             }
         }
     } );
@@ -933,15 +948,23 @@ function undoCompleteDataSet()
 
     if ( confirmed )
     {
-        disableUndoButton();
-
         $.ajax( {
         	url: 'undoCompleteDataSet.action',
         	data: params,
         	cache: false,
-        	success: function()
+        	success: function(data)
 	        {
-	            storageManager.clearCompleteDataSet( params );
+                if( data.status == 2 )
+                {
+                    log( 'DataSet is locked' );
+                    setHeaderMessage( i18n_unregister_complete_failed_dataset_is_locked );
+                }
+                else
+                {
+                    disableUndoButton();
+	                storageManager.clearCompleteDataSet( params );
+                }
+
 	        },
 	        error: function()
 	        {
