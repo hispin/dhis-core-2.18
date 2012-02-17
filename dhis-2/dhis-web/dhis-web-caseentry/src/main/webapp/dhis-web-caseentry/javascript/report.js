@@ -1,6 +1,6 @@
 isAjax = true;
 
-function organisationUnitSelected( orgUnits )
+function organisationUnitSelected( orgUnits, orgUnitNames )
 {
     showLoader();
 	setInnerHTML( 'contentDiv','' );
@@ -9,7 +9,7 @@ function organisationUnitSelected( orgUnits )
 	}, 
 	function( json ) 
 	{    
-		setFieldValue( 'orgunitname', json.organisationUnit );
+		setFieldValue( 'orgunitname', orgUnitNames[0] );
 		
 		clearListById('programId');
 		if( json.programs.length == 0)
