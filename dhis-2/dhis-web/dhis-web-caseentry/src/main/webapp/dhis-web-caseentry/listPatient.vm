@@ -13,16 +13,15 @@
   <tr>
     <td>    
       <table class="listTable">                   
+          <col width="40">
           <col>
-          <col>
-          <col>
-          <col>  
+          <col width="60">
+          <col width="90">
+          <col width="60">
 		  #if($mapPatientOrgunit.size()!=0)
-			<col/>
+		  <col>
 		  #end
-          <col width="20">  
-		  <col width="20">                        
-		  <col width="20"> 
+		  <col width="90">
           <tr>
 			<th>#</th>
             <th>$i18n.getString( "full_name" )</th>        
@@ -30,9 +29,9 @@
             <th>$i18n.getString( "date_of_birth" )</th>
             <th>$i18n.getString( "age" )</th>   
 			#if($mapPatientOrgunit.size()!=0)
-				<th>$i18n.getString( "hierachy_orgunit" )</th>
+			<th>$i18n.getString( "hierachy_orgunit" )</th>
 			#end			
-            <th colspan="3">$i18n.getString( "operations" )</th>
+            <th>$i18n.getString( "operations" )</th>
           </tr>
           
           <tbody id="list">	
@@ -61,12 +60,8 @@
 				#end
 								
 				<td>
-                  <a href="javascript:showSelectedDataRecoding('$patient.id');" title="$i18n.getString( 'data_entry' )"><img src="images/data_entry.png" alt="$i18n.getString( 'data_entry' )"></a>                  
-                </td>
-				<td>
-                  <a href="javascript:patientChartList( '$patient.id' )" title="$i18n.getString( 'data_entry' )"><img src="../images/add_to_dashboard.png" alt="$i18n.getString( 'view_patient_chart' )"></a>                  
-                </td>
-                <td>
+                  <a href="javascript:showSelectedDataRecoding('$patient.id');" title="$i18n.getString( 'data_entry' )"><img src="images/data_entry.png" alt="$i18n.getString( 'data_entry' )"></a>   
+                  <a href="javascript:patientChartList( '$patient.id' )" title="$i18n.getString( 'data_entry' )"><img src="../images/add_to_dashboard.png" alt="$i18n.getString( 'view_patient_chart' )"></a> 
                   <a href="javascript:showPatientDetails( $patient.id )" title="$i18n.getString( 'show_details' )"><img src="../images/information.png" alt="$i18n.getString( 'show_details' )"></a>
                 </td>               				
 			</tr>
