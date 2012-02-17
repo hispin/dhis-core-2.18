@@ -662,7 +662,7 @@ Ext.onReady( function() {
 						};
 					},
 					getTargetLine: function() {
-						var title = DV.state.targetLineLabel || DV.i18n.target_line;
+						var title = DV.state.targetLineLabel || DV.i18n.target;
 						title += ' (' + DV.state.targetLineValue + ')';
 						return {
 							type: 'line',
@@ -1227,12 +1227,17 @@ Ext.onReady( function() {
             this.targetLineLabel = DV.cmp.favorite.targetlinelabel.getValue();
             
             this.series.dimension = DV.cmp.settings.series.getValue();
-            this.series.names = DV.util.dimension[this.series.dimension].getNames(true);
-            
             this.category.dimension = DV.cmp.settings.category.getValue();
-            this.category.names = DV.util.dimension[this.category.dimension].getNames(true);
-            
             this.filter.dimension = DV.cmp.settings.filter.getValue();
+            
+            if (!this.series.dimension || !this.category.dimension || !this.filter.dimension) {
+				this.resetState();
+				alert(DV.i18n.select_dimensions);
+                return;
+            }
+            
+            this.series.names = DV.util.dimension[this.series.dimension].getNames(true);
+            this.category.names = DV.util.dimension[this.category.dimension].getNames(true);
             this.filter.names = DV.util.dimension[this.filter.dimension].getNames(true, true);
             
             if (!this.series.names.length || !this.category.names.length || !this.filter.names.length) {
@@ -2557,9 +2562,9 @@ Ext.onReady( function() {
 										}
 									},
                                     expand: function(fs) {
-										var h = DV.cmp.region.west.getHeight() - 395;
+										var h = DV.cmp.region.west.getHeight() - 405;
 										DV.cmp.fieldset.organisationunit.setHeight(h);
-										DV.cmp.dimension.organisationunit.treepanel.setHeight(h - 30);
+										DV.cmp.dimension.organisationunit.treepanel.setHeight(h - 40);
 
                                         DV.util.fieldset.collapseFieldsets([DV.cmp.fieldset.indicator, DV.cmp.fieldset.dataelement, DV.cmp.fieldset.period]);
                                         var tp = DV.cmp.dimension.organisationunit.treepanel;
@@ -3229,7 +3234,7 @@ Ext.onReady( function() {
                                                                                         {
                                                                                             text: DV.i18n.cancel,
                                                                                             handler: function() {
-                                                                                                DV.cmp.favorite.window.close();
+                                                                                                this.up('window').close();
                                                                                             }
                                                                                         },
                                                                                         '->',
