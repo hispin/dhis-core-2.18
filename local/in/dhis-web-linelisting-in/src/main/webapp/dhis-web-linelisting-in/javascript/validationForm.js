@@ -7,11 +7,23 @@ function getLineListElements()
     alert("inside getLineListElements groupid = "+lineListGroupId);
     if ( lineListGroupId != null )
     {
-        var url = "getFilteredLineListElements.action?id=" + lineListGroupId;
+        /*
+    	var url = "getFilteredLineListElements.action?id=" + lineListGroupId;
         var request = new Request();
         request.setResponseTypeXML('lineListElement');
         request.setCallbackSuccess(getLineListElementsReceived);
         request.send(url);
+    	*/
+    
+	$.post("getFilteredLineListElements.action",
+			{
+				id:lineListGroupId
+				//yearList:yearList
+			},
+			function (data)
+			{
+				getLineListElementsReceived(data);
+			},'xml');
     }
 }
 
@@ -46,6 +58,7 @@ function getLineListElementsReceived( xmlObject )
 
 function validateAddValidationRule()
 {
+	/*
     var request = new Request();
     request.setResponseTypeXML( 'message' );
     request.setCallbackSuccess( addValidationCompleted );
@@ -55,7 +68,22 @@ function validateAddValidationRule()
     '&leftSideDescription=' + getFieldValue( 'leftSideDescription' ) +
     '&rightSideExpression=' + getFieldValue( 'rightSideExpression' ) +
     '&rightSideDescription=' + getFieldValue( 'rightSideDescription' ) );
-
+    */
+    
+	$.post("validateValidationRule.action",
+			{
+				name:getFieldValue( 'name' ),
+				operator:getFieldValue( 'operator' ),
+				leftSideExpression : getFieldValue( 'leftSideExpression' ),
+				leftSideDescription : getFieldValue( 'leftSideDescription' ),
+				rightSideExpression : getFieldValue( 'rightSideExpression' ),
+				rightSideDescription : getFieldValue( 'rightSideDescription' )
+			},
+			function (data)
+			{
+				addValidationCompleted(data);
+			},'xml');
+    
     return false;
 }
 
@@ -87,6 +115,7 @@ function addValidationCompleted( messageElement )
 
 function validateUpdateValidationRule()
 {
+	/*
 	var request = new Request();
     request.setResponseTypeXML( 'message' );
     request.setCallbackSuccess( updateValidationCompleted );
@@ -97,7 +126,22 @@ function validateUpdateValidationRule()
     '&leftSideDescription=' + getFieldValue( 'leftSideDescription' ) +
     '&rightSideExpression=' + getFieldValue( 'rightSideExpression' ) +
     '&rightSideDescription=' + getFieldValue( 'rightSideDescription' ) );
-
+    */
+	$.post("validateValidationRule.action",
+			{
+				name:getFieldValue( 'name' ),
+				operator:getFieldValue( 'operator' ),
+				leftSideExpression : getFieldValue( 'leftSideExpression' ),
+				leftSideDescription : getFieldValue( 'leftSideDescription' ),
+				rightSideExpression : getFieldValue( 'rightSideExpression' ),
+				rightSideDescription : getFieldValue( 'rightSideDescription' )
+			},
+			function (data)
+			{
+				updateValidationCompleted(data);
+			},'xml');
+    
+    
     return false;
 }
 

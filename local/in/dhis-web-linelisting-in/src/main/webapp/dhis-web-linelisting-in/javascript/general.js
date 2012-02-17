@@ -1268,12 +1268,26 @@ function ValueSaver( dataElementId_, value_, resultColor_ )
     
     this.save = function()
     {
-        var request = new Request();
+       /*
+    	var request = new Request();
         request.setCallbackSuccess( handleResponse );
         request.setCallbackError( handleHttpError );
         request.setResponseTypeXML( 'status' );
         request.send( 'saveValue.action?dataElementId=' +
             dataElementId + '&value=' + value );
+        */
+    	$.post("saveValue.action",
+    			{
+    				dataElementId : dataElementId,
+    				value : value
+    			},
+    			function (data)
+    			{
+    				handleResponse(data);
+    			},'xml');
+        
+        
+        
     };
     
     function handleResponse( rootElement )
@@ -1346,12 +1360,25 @@ function CommentSaver( dataElementId_, value_ )
     
     this.save = function()
     {
-        var request = new Request();
+        /*
+    	var request = new Request();
         request.setCallbackSuccess( handleResponse );
         request.setCallbackError( handleHttpError );
         request.setResponseTypeXML( 'status' );
         request.send( 'saveComment.action?dataElementId=' +
             dataElementId + '&comment=' + value );
+        */
+    	$.post("saveComment.action",
+    			{
+    				dataElementId : dataElementId,
+    				comment : value
+    			},
+    			function (data)
+    			{
+    				handleResponse(data);
+    			},'xml');
+        
+        
     };
     
     function handleResponse( rootElement )
@@ -1473,10 +1500,21 @@ function getCalculatedDataElement( dataElementId )
 
 function calculateAndSaveCDEs()
 {
-    var request = new Request();
+    /*
+	var request = new Request();
     request.setCallbackSuccess( dataValuesReceived );
     request.setResponseTypeXML( 'dataValues' );
     request.send( 'calculateCDEs.action' );
+    */
+	$.post("calculateCDEs.action",
+			{
+				
+				
+			},
+			function (data)
+			{
+				dataValuesReceived(data);
+			},'xml');
 }
 
 function dataValuesReceived( node )
@@ -1497,10 +1535,22 @@ function dataValuesReceived( node )
 
 function saveLineListingAggData()
 {
-    var request = new Request();
+    /*
+	var request = new Request();
     request.setCallbackSuccess( saveLineListingAggDataReceived );
     request.setResponseTypeXML( 'dataValues' );
     request.send( 'saveLineListingAggData.action' );
+    */
+	$.post("saveLineListingAggData.action",
+			{
+				
+				
+			},
+			function (data)
+			{
+				saveLineListingAggDataReceived(data);
+			},'xml');
+    
 }
 
 function saveLineListingAggDataReceived( node )

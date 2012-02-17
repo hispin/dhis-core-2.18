@@ -29,7 +29,6 @@ package org.hisp.dhis.ll.action.llgroup;
 import org.hisp.dhis.common.DeleteNotAllowedException;
 import org.hisp.dhis.dbmanager.DataBaseManagerInterface;
 import org.hisp.dhis.i18n.I18n;
-import org.hisp.dhis.linelisting.LineListElement;
 import org.hisp.dhis.linelisting.LineListService;
 
 import com.opensymphony.xwork2.Action;
@@ -116,7 +115,8 @@ public class RemoveLineListGroupAction
             {
                 if ( ex.getErrorCode().equals( DeleteNotAllowedException.ERROR_ASSOCIATED_BY_OTHER_OBJECTS ) )
                 {
-                    message = i18n.getString( "object_not_deleted_associated_by_objects" ) + " " + ex.getClassName();
+                    //message = i18n.getString( "object_not_deleted_associated_by_objects" ) + " " + ex.getClassName();
+                    message = i18n.getString( "object_not_deleted_associated_by_objects" ) + " " + ex.getMessage();
     
                     return ERROR;
                 }

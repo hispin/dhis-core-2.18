@@ -51,12 +51,25 @@ function filterDataElements( dataElementGroupSelectName, filterName )
 	var dataElementGroupId = dataElementGroup.options[ dataElementGroup.selectedIndex ].value;
 	var filter = htmlEncode( document.getElementById( filterName ).value );
 	
+	/*
 	var url = "getFilteredDataElements.action?dataElementGroupId=" + dataElementGroupId + "&filter=" + filter;
 
     var request = new Request();
 	request.setResponseTypeXML( 'operand' );
     request.setCallbackSuccess( getFilteredDataElementsReceived );
     request.send( url );
+    */
+    
+	$.post("getFilteredDataElements.action",
+			{
+				dataElementGroupId : dataElementGroupId,
+				filter : filter
+			},
+			function (data)
+			{
+				getFilteredDataElementsReceived(data);
+			},'xml');
+    
 }
 
 function getFilteredDataElementsReceived( xmlObject )
@@ -83,11 +96,22 @@ function updateTextualExpression( expressionFieldName )
 {	
 	var expression = htmlEncode( document.getElementById( expressionFieldName ).value );
 	
+	/*
 	var url = "getTextualExpression.action?expression=" + expression;
 	
 	var request = new Request();
 	request.setCallbackSuccess( updateTextualExpressionReceived );
     request.send( url );
+    */
+	$.post("getTextualExpression.action",
+			{
+				expression : expression
+			},
+			function (data)
+			{
+				updateTextualExpressionReceived(data);
+			},'xml');
+    
 }
 
 function updateTextualExpressionReceived( messageElement )
@@ -99,13 +123,26 @@ function validateExpression()
 {
 	var description = htmlEncode( document.getElementById( "description" ).value );
 	var expression = htmlEncode( document.getElementById( "expression" ).value );
-    
+    /*
     var url = "validateExpression.action?description=" + description + "&expression=" + expression;
 
     var request = new Request();
     request.setResponseTypeXML( "message" );
     request.setCallbackSuccess( validateExpressionReceived );
-    request.send( url );    
+    request.send( url );
+    */
+	$.post("validateExpression.action",
+			{
+				description : description,
+				expression : expression
+			},
+			function (data)
+			{
+				validateExpressionReceived(data);
+			},'xml');
+    
+    
+    
 }
 
 function validateExpressionReceived( xmlObject )

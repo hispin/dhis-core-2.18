@@ -5,10 +5,20 @@
 
 function showLineListElementDetails( lineListElementId )
 {
+	/*
     var request = new Request();
     request.setResponseTypeXML( 'getLineListElements' );
     request.setCallbackSuccess( lineListElementReceived );
     request.send( 'getLineListElement.action?lineListElementId=' + lineListElementId );
+    */
+	$.post("getLineListElement.action",
+			{
+				lineListElementId : lineListElementId
+			},
+			function (data)
+			{
+				lineListElementReceived(data);
+			},'xml');
 }
 
 function lineListElementReceived( lineListElementElement )
@@ -44,10 +54,20 @@ function removeLineListElement( lineListElementId, lineListElementName )
     
     if ( result )
     {
-        var request = new Request();
+        /*
+    	var request = new Request();
         request.setResponseTypeXML( 'message' );
         request.setCallbackSuccess( removeLineListElementCompleted );
         request.send( 'removeLineListElement.action?lineListElementId=' + lineListElementId);
+        */
+    	$.post("removeLineListElement.action",
+    			{
+    				lineListElementId : lineListElementId
+    			},
+    			function (data)
+    			{
+    				removeLineListElementCompleted(data);
+    			},'xml');
     }
 }
 
@@ -75,7 +95,8 @@ function removeLineListElementCompleted( messageElement )
 
 function validateAddLineListElement()
 {
-  var request = new Request();
+  /*
+	var request = new Request();
   request.setResponseTypeXML( 'message' );
   request.setCallbackSuccess( addLineListElementValidationCompleted ); 
   
@@ -85,6 +106,20 @@ function validateAddLineListElement()
                       '&presentationType=' + document.getElementById( 'presentationType' ).value;
 
   request.send( requestString );
+  */
+  
+	$.post("validateLineListElement.action",
+			{
+				name : document.getElementById( 'name' ).value,
+				shortName : getFieldValue( 'shortName' ),
+				dataType : document.getElementById( 'dataType' ).value,
+				presentationType : document.getElementById( 'presentationType' ).value
+			},
+			function (data)
+			{
+				addLineListElementValidationCompleted(data);
+			},'xml');
+  
 
   return false;
 }
@@ -117,6 +152,7 @@ function addLineListElementValidationCompleted( messageElement )
 
 function validateUpdateLineListElement()
 {
+  /*
   var request = new Request();
   request.setResponseTypeXML( 'message' );
   request.setCallbackSuccess( editLineListElementValidationCompleted );
@@ -126,6 +162,19 @@ function validateUpdateLineListElement()
                       '&shortName=' + getFieldValue( 'shortName' ) +
                       '&dataType=' + getFieldValue( 'dataType' ) +
                       '&presentationType=' + getFieldValue( 'presentationType' ) );
+  */
+	$.post("validateLineListElement.action",
+			{
+				id : getFieldValue ( 'lineListElementId' ),
+				name : getFieldValue( 'name' ),
+				shortName : getFieldValue( 'shortName' ),
+				dataType : getFieldValue( 'dataType' ),
+				presentationType : getFieldValue( 'presentationType' )
+			},
+			function (data)
+			{
+				editLineListElementValidationCompleted(data);
+			},'xml');
 
   return false;
 }

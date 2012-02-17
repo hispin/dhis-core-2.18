@@ -9,6 +9,17 @@ function showLineListOptionDetails( LineListOptionId)
     request.setResponseTypeXML( 'lineListOption' );
     request.setCallbackSuccess( LineListOptionReceived );
     request.send( 'getLineListOption.action?id=' + LineListOptionId );
+    
+	$.post("getLineListOption.action",
+			{
+				id:LineListOptionId
+			},
+			function (data)
+			{
+				LineListOptionReceived(data);
+			},'xml');
+    
+    
 }
 
 function LineListOptionReceived( LineListOptionElement )
@@ -33,11 +44,21 @@ function getLineListOptions( LineListOptionGroupId, type )
 	{
 		url += "LineListOptionGroupId=" + LineListOptionGroupId;
 	}
-	
+	/*
     var request = new Request();
     request.setResponseTypeXML( 'LineListOption' );
     request.setCallbackSuccess( getLineListOptionsReceived );
-    request.send( url );	
+    request.send( url );
+    */
+	$.post("getLineListOptions.action",
+			{
+				LineListOptionGroupId:LineListOptionGroupId
+			},
+			function (data)
+			{
+				getLineListOptionsReceived(data);
+			},'xml');
+    
 }
 
 function getLineListOptionsReceived( xmlObject )
@@ -67,15 +88,25 @@ function getLineListOptionsReceived( xmlObject )
 
 function removeLineListOption( LineListOptionId, LineListOptionName )
 {
-    //var result = window.confirm( i18n_confirm_delete + '\n\n' + LineListOptionName );
+	//var result = window.confirm( i18n_confirm_delete + '\n\n' + LineListOptionName );
     var result = window.confirm( i18n_confirm_delete + '\n\nLine List Option Name: ' + LineListOptionName + '\n\n Line List Option Id: ' + LineListOptionId);
     
     if ( result )
     {
-       	var request = new Request();
+       	/*
+    	var request = new Request();
         request.setResponseTypeXML( 'message' );
         request.setCallbackSuccess( removeLineListOptionCompleted );
         request.send( 'removeLineListOption.action?id=' + LineListOptionId );
+        */
+    	$.post("removeLineListOption.action",
+    			{
+    				id:LineListOptionId
+    			},
+    			function (data)
+    			{
+    				removeLineListOptionCompleted(data);
+    			},'xml');
     }    
 }
 
@@ -103,7 +134,7 @@ function removeLineListOptionCompleted( messageElement )
 
 function validateAddLineListOption()
 {
-
+	/*
     var url = 'validateLineListOption.action?' +
         '&name=' + htmlEncode( getFieldValue( 'name' ) ) +
         '&shortName=' + htmlEncode( getFieldValue( 'shortName' ) );
@@ -112,6 +143,18 @@ function validateAddLineListOption()
     request.setResponseTypeXML( 'message' );
     request.setCallbackSuccess( addValidationCompleted );    
     request.send( url );
+    */
+	$.post("validateLineListOption.action",
+			{
+				name : htmlEncode( getFieldValue( 'name' ) ),
+				shortName : htmlEncode( getFieldValue( 'shortName' ) )
+			},
+			function (data)
+			{
+				addValidationCompleted(data);
+			},'xml');
+    
+    
 
     return false;
 }
@@ -251,7 +294,8 @@ function getInputValuesByParentId( parentId, fieldName )
 
 function validateUpdateLineListOption()
 {
-    var url = 'validateLineListOption.action?' +
+    /*
+	var url = 'validateLineListOption.action?' +
         '&id=' + getFieldValue( 'id' ) +
         '&name=' + htmlEncode( getFieldValue( 'name' ) ) +
         '&shortName=' + htmlEncode( getFieldValue( 'shortName' ) );
@@ -260,7 +304,19 @@ function validateUpdateLineListOption()
     request.setResponseTypeXML( 'message' );
     request.setCallbackSuccess( updateValidationCompleted );
     request.send( url );
-
+    */
+	$.post("validateLineListOption.action",
+			{
+				id : getFieldValue( 'id' ),
+				name : htmlEncode( getFieldValue( 'name' ) ),
+				shortName : htmlEncode( getFieldValue( 'shortName' ) )
+			},
+			function (data)
+			{
+				updateValidationCompleted(data);
+			},'xml');
+    
+    
     return false;
 }
 

@@ -8,6 +8,7 @@ import java.util.List;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.hisp.dhis.common.comparator.IdentifiableObjectNameComparator;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
 import org.hisp.dhis.dataset.DataSet;
@@ -18,8 +19,6 @@ import org.hisp.dhis.linelisting.llaggregation.LinelistAggMapService;
 import org.hisp.dhis.linelisting.llaggregation.LinelistAggregationMapping;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
-import org.hisp.dhis.organisationunit.comparator.OrganisationUnitNameComparator;
-import org.hisp.dhis.organisationunit.comparator.OrganisationUnitShortNameComparator;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodService;
 import org.hisp.dhis.period.PeriodType;
@@ -162,7 +161,7 @@ public class LinelistingAggregationResultAction implements Action
         {
             orgUnitList.add( selOrgUnit );
             List<OrganisationUnit> organisationUnits = new ArrayList<OrganisationUnit>( selOrgUnit.getChildren() );
-            Collections.sort( organisationUnits, new OrganisationUnitShortNameComparator() );
+            Collections.sort( organisationUnits, new IdentifiableObjectNameComparator() );
             orgUnitList.addAll( organisationUnits );
         }
         else
@@ -255,7 +254,7 @@ public class LinelistingAggregationResultAction implements Action
         orgUnitTree.add( orgUnit );
 
         List<OrganisationUnit> children = new ArrayList<OrganisationUnit>( orgUnit.getChildren() );
-        Collections.sort( children, new OrganisationUnitNameComparator() );
+        Collections.sort( children, new IdentifiableObjectNameComparator() );
 
         Iterator childIterator = children.iterator();
         OrganisationUnit child;

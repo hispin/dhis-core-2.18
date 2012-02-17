@@ -6,7 +6,8 @@ function getAggDataElements( )
 {
   var degroup = document.getElementById( 'degroup' );
   var degId = degroup.options[ degroup.selectedIndex ].value;
-
+  
+  /*
   var requestString = 'getAggDataElements.action?degId=' + degId;
 
   var request = new Request();
@@ -14,6 +15,15 @@ function getAggDataElements( )
   request.setCallbackSuccess( getAggDataElementsCompleted );
 
   request.send( requestString );
+  */
+	$.post("getAggDataElements.action",
+			{
+				degId : degId
+			},
+			function (data)
+			{
+				getAggDataElementsCompleted(data);
+			},'xml');
 }
 
 function getAggDataElementsCompleted( dataelementElement )
@@ -48,13 +58,25 @@ function getLinelistElements()
 	var llgroup = document.getElementById( 'llgroup' );
 	var llgId = llgroup.options[ llgroup.selectedIndex ].value;
 
+	/*
 	var requestString = 'getLLGroupElements.action?llgId=' + llgId;
 
 	var request = new Request();
 	request.setResponseTypeXML( 'lineListElement' );
 	request.setCallbackSuccess( getLinelistElementsCompleted );
 
-	request.send( requestString );	
+	request.send( requestString );
+	*/
+	
+	$.post("getLLGroupElements.action",
+			{
+				llgId : llgId
+			},
+			function (data)
+			{
+				getLinelistElementsCompleted(data);
+			},'xml');
+	
 }
 
 function getLinelistElementsCompleted( linelistelementElement )
@@ -87,6 +109,7 @@ function getLinelistAggExpression( )
   var aggde = document.getElementById( 'aggde' );
   var aggdeId = aggde.options[ aggde.selectedIndex ].value;
 
+  /*
   var requestString = 'getLinelistAggExpression.action?aggdeId=' + aggdeId;
 
   var request = new Request();
@@ -94,6 +117,16 @@ function getLinelistAggExpression( )
   request.setCallbackSuccess( getLinelistAggExpressionCompleted );
 
   request.send( requestString );
+  */
+	$.post("getLinelistAggExpression.action",
+			{
+				aggdeId : aggdeId
+			},
+			function (data)
+			{
+				getLinelistAggExpressionCompleted(data);
+			},'xml');
+  
 }
 
 function getLinelistAggExpressionCompleted( expressionElement )
@@ -125,12 +158,23 @@ function getdSetPeriods()
 {
   var dataSetList = document.getElementById("selectedDataSets");
   var dataSetId = dataSetList.options[ dataSetList.selectedIndex].value;
+  
+  /*
   var url = "getDataSetPeriods.action?id=" + dataSetId;
     
   var request = new Request();
   request.setResponseTypeXML( 'period' );
   request.setCallbackSuccess( getdSetPeriodsReceived );
-  request.send( url ); 
+  request.send( url );
+  */
+	$.post("getDataSetPeriods.action",
+			{
+				id : dataSetId
+			},
+			function (data)
+			{
+				getdSetPeriodsReceived(data);
+			},'xml');
 }	 
 
 function getdSetPeriodsReceived( xmlObject )
@@ -178,12 +222,23 @@ function getdSetPeriodsReceived( xmlObject )
 //--------------------------------------------------------------
 function getOrgUDetails(orgUnitIds)
 {
+	/*
 	var url = "getOrgUnitDetails.action?orgUnitId=" + orgUnitIds;
 	
 	var request = new Request();
 	request.setResponseTypeXML( 'orgunit' );
 	request.setCallbackSuccess( getOrgUDetailsRecevied );
 	request.send( url );
+	*/
+	$.post("getOrgUnitDetails.action",
+			{
+				orgUnitId : orgUnitIds
+			},
+			function (data)
+			{
+				getOrgUDetailsRecevied(data);
+			},'xml');
+	
 }
 
 function getOrgUDetailsRecevied(xmlObject)
@@ -231,7 +286,8 @@ function formValidationsForLLAggMapping()
   	  	 	
   	return true;
 
-} // formValidations Function End	
+} 
+	// formValidations Function End	
 
 
 //-----------------------------------------------------------------
