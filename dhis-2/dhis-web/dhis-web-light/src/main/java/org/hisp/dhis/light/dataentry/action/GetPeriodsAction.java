@@ -220,7 +220,7 @@ public class GetPeriodsAction
     {
         for ( Period period : periods )
         {
-            if ( dataSetService.isLocked( organisationUnit, dataSet, period ) )
+            if ( dataSetService.isLocked( dataSet, period, organisationUnit, null ) )
             {
                 lockedPeriods.add( period );
             }
