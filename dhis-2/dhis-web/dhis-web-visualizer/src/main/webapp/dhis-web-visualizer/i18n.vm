@@ -47,7 +47,7 @@ hide_legend:'$encoder.jsEscape($i18n.getString( 'hide_legend' ) , "'")',
 user_orgunit:'$encoder.jsEscape($i18n.getString( 'user_orgunit' ) , "'")',
 domain_axis_label:'$encoder.jsEscape($i18n.getString( 'domain_axis_label' ) , "'")',
 range_axis_label:'$encoder.jsEscape($i18n.getString( 'range_axis_label' ) , "'")',
-target_line:'$encoder.jsEscape($i18n.getString( 'target_line' ) , "'")',
+target:'$encoder.jsEscape($i18n.getString( 'target' ) , "'")',
 target_line_value:'$encoder.jsEscape($i18n.getString( 'target_line_value' ) , "'")',
 target_line_label:'$encoder.jsEscape($i18n.getString( 'target_line_label' ) , "'")',
 show_hide_chart_settings:'$encoder.jsEscape($i18n.getString( 'show_hide_chart_settings' ) , "'")',
@@ -90,5 +90,7 @@ favorite_no_orgunits:'$encoder.jsEscape($i18n.getString( 'favorite_no_orgunits' 
 this_year:'$encoder.jsEscape($i18n.getString( 'this_year' ) , "'")',
 trend:'$encoder.jsEscape($i18n.getString( 'trend' ) , "'")',
 min_two_categories:'$encoder.jsEscape($i18n.getString( 'min_two_categories' ) , "'")',
-chart_options:'$encoder.jsEscape($i18n.getString( 'chart_options' ) , "'")'
+chart_options:'$encoder.jsEscape($i18n.getString( 'chart_options' ) , "'")',
+select_dimensions:'$encoder.jsEscape($i18n.getString( 'select_dimensions' ) , "'")'
+
 };
