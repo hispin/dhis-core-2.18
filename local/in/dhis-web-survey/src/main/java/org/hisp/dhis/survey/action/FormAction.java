@@ -29,6 +29,7 @@ package org.hisp.dhis.survey.action;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -37,6 +38,8 @@ import org.hisp.dhis.i18n.I18n;
 import org.hisp.dhis.indicator.Indicator;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.survey.Survey;
+import org.hisp.dhis.survey.SurveyService;
+import org.hisp.dhis.survey.comparator.SurveyNameComparator;
 import org.hisp.dhis.survey.state.SelectedStateManager;
 import org.hisp.dhis.surveydatavalue.SurveyDataValue;
 import org.hisp.dhis.surveydatavalue.SurveyDataValueService;
@@ -67,6 +70,14 @@ public class FormAction
     {
         this.surveyDataValueService = surveyDataValueService;
     }
+    
+    private SurveyService surveyService;
+
+    public void setSurveyService( SurveyService surveyService )
+    {
+        this.surveyService = surveyService;
+    }
+    
     @SuppressWarnings("unused")
     private I18n i18n;
 
@@ -121,7 +132,33 @@ public class FormAction
     {
         return selectedSurveyId;
     }
-  
+    //code for Select Action
+    private OrganisationUnit organisationUnit;
+
+    public OrganisationUnit getOrganisationUnit()
+    {
+        return organisationUnit;
+    }
+
+    private List<Survey> surveys = new ArrayList<Survey>();
+
+    public Collection<Survey> getSurveys()
+    {
+        return surveys;
+    }
+
+    private int flage;
+    
+    public int getFlage()
+    {
+        return flage;
+    }
+
+    public void setFlage( int flage )
+    {
+        this.flage = flage;
+    }
+    
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
@@ -130,6 +167,64 @@ public class FormAction
         throws Exception
     {    	
    	
+        //code for Select Action
+        
+
+        // ---------------------------------------------------------------------
+        // Validate selected OrganisationUnit
+        // ---------------------------------------------------------------------
+        
+        organisationUnit = selectedStateManager.getSelectedOrganisationUnit();
+        
+        //System.out.println( "---organisationUnit --  " + organisationUnit.getName() );
+        
+        if ( organisationUnit == null )
+        {
+            selectedSurveyId = null;
+ 
+            selectedStateManager.clearSelectedSurvey();     
+
+            return SUCCESS;
+        }
+
+        // ---------------------------------------------------------------------
+        // Load and Sort surveys
+        // ---------------------------------------------------------------------
+
+        surveys = selectedStateManager.loadSurveysForSelectedOrgUnit( organisationUnit );       
+        
+        Collections.sort( surveys, new SurveyNameComparator() );
+
+        // ---------------------------------------------------------------------
+        // Validate selected surveys
+        // ---------------------------------------------------------------------
+
+        Survey selectedSurvey;
+
+        if ( selectedSurveyId != null )
+        {
+            selectedSurvey = surveyService.getSurvey( selectedSurveyId );
+        }
+        else
+        {
+            selectedSurvey = selectedStateManager.getSelectedSurvey();
+        }
+
+        if ( selectedSurvey != null && surveys.contains( selectedSurvey ) )
+        {
+            selectedSurveyId = selectedSurvey.getId();
+            selectedStateManager.setSelectedSurvey( selectedSurvey );
+        }
+        else
+        {
+            selectedSurveyId = null;
+            
+            selectedStateManager.clearSelectedSurvey();
+
+            return SUCCESS;
+        }
+        flage = 1;
+        
     	OrganisationUnit organisationUnit = selectedStateManager.getSelectedOrganisationUnit();
 
         Survey survey = selectedStateManager.getSelectedSurvey();

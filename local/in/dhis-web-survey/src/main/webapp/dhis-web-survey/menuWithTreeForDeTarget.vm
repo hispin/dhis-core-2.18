@@ -9,6 +9,8 @@
 </div>
 #parse( "/dhis-web-commons/ouwt/orgunittreesearch.vm" )
 ##parse( "/dhis-web-commons/ouwt/orgunittree.vm" )
+
+<!--
 <script>
 	function organisationUnitSelected( orgUnits )
 	{
@@ -17,3 +19,4 @@
 
 	selection.setListenerFunction( organisationUnitSelected );
 </script>
+-->

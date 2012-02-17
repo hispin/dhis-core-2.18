@@ -8,13 +8,31 @@
     <a href="index.action"><img src="images/goback.png" width="36" height="30" alt="$i18n.getString( "go_back" )"></a>
 </div>
 
-##parse( "/dhis-web-commons/ouwt/orgunittree.vm" )
-#parse( "/dhis-web-commons/ouwt/orgunittreesearch.vm" )
+#parse( "/dhis-web-commons/ouwt/orgunittree.vm" )
+##parse( "/dhis-web-commons/ouwt/orgunittreesearch.vm" )
+<!--
 <script>
+	
 	function organisationUnitSelected( orgUnits )
 	{
-  	  window.location.href = 'select.action';
+  	 	if(orgUnits != null && orgUnits != "" )
+		{
+			window.location.href = 'select.action';
+		}
+  	 	
+  	 	
+  	 	//window.location.href = 'select.action';
 	}
 
 	selection.setListenerFunction( organisationUnitSelected );
 </script>
+
+
+
+<script type="text/javascript">
+	jQuery(document).ready(function() {
+		selection.setListenerFunction( organisationUnitSelected );
+	});
+</script>
+
+-->
