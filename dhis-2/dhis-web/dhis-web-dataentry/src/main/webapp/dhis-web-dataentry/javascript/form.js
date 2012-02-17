@@ -253,7 +253,7 @@ function uploadLocalData()
                 if(data.c == 2) {
                     log( 'DataSet is now locked' );
 
-                    setHeaderMessage( i18n_dataset_is_locked );
+                    setHeaderMessage( i18n_saving_value_failed_dataset_is_locked );
                 } else {
                     storageManager.clearDataValueJSON( value );
                     log( 'Successfully saved data value with value: ' + value );
