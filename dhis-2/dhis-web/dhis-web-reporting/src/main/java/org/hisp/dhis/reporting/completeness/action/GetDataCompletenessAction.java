@@ -212,8 +212,8 @@ public class GetDataCompletenessAction
         OrganisationUnit unit, DataSet dataSet )
     {
         String title = i18n.getString( "reporting_rate_summary" );
-        String subtitle = (unit != null ? unit.getName() : EMPTY) + SPACE
-            + (dataSet != null ? dataSet.getName() : EMPTY);
+        String subtitle = ( unit != null ? unit.getName() : EMPTY ) + SPACE
+            + ( dataSet != null ? dataSet.getName() : EMPTY );
 
         Grid grid = new ListGrid().setTitle( title ).setSubtitle( subtitle );
 
