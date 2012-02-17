@@ -28,6 +28,8 @@ package org.hisp.dhis.dataadmin.action.lockexception;
  */
 
 import com.opensymphony.xwork2.Action;
+
+import org.hisp.dhis.common.comparator.IdentifiableObjectNameComparator;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
@@ -35,6 +37,7 @@ import org.hisp.dhis.user.CurrentUserService;
 import org.hisp.dhis.user.UserCredentials;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -90,12 +93,13 @@ public class GetDataSetsAction
     {
         dataSets = getDataSetsForCurrentUser( id );
 
+        Collections.sort( dataSets, IdentifiableObjectNameComparator.INSTANCE );
+        
         return SUCCESS;
     }
 
     private List<DataSet> getDataSetsForCurrentUser( String ids )
     {
-        // start out with a Set, so that we don't get duplicates
         Set<DataSet> dataSets = new HashSet<DataSet>();
 
         if ( ids.length() == 0 )
