@@ -272,7 +272,7 @@ function ValueSaver( dataElementId_, optionComboId_, organisationUnitId_, period
         else if(code == 2)
         {
             markValue( COLOR_RED );
-            window.alert( i18n_saving_value_failed_dataset_is_locked + '\n\n' + code );
+            window.alert( i18n_saving_value_failed_dataset_is_locked );
         }
         else // Server error during save
         {
