@@ -113,18 +113,19 @@
 			<result name="success" type="redirect">select.action</result>
 		</action>
 
-		<action name="select" class="org.hisp.dhis.survey.action.SelectAction">
+		<action name="select" class="org.hisp.dhis.survey.action.FormAction">
 			<interceptor-ref name="organisationUnitTreeStack"/>
 			<result name="success" type="velocity">/main.vm</result>
-			<param name="page">/dhis-web-survey/select.vm</param>
-			<param name="menu">/dhis-web-survey/menuWithTree.vm</param>
-			<result name="defaultform" type="velocity">/main.vm</result>
 			<param name="page">/dhis-web-survey/form.vm</param>
+			<!--<param name="page">/dhis-web-survey/select.vm</param>-->
 			<param name="menu">/dhis-web-survey/menuWithTree.vm</param>
+			<!--<result name="defaultform" type="velocity">/main.vm</result>
+			<param name="page">/dhis-web-survey/form.vm</param>-->
+			<!--<param name="menu">/dhis-web-survey/menuWithTree.vm</param>-->
 			<param name="menuTreeHeight">350</param>
-			<param name="javascripts">../dhis-web-commons/ouwt/ouwt.js,javascript/general.js,javascript/form.js</param>
+			<param name="javascripts">../dhis-web-commons/ouwt/ouwt.js,javascript/general.js,javascript/form.js,javascript/tempSurvey.js</param>
 			<param name="stylesheets">style/dhis-web-dataentry.css,style/custom_data_entry_form_styles.css</param>		
-		</action>		
+		</action>
 <!--		
 				
 		<action name="defaultform" class="org.hisp.dhis.survey.action.FormAction">
@@ -199,16 +200,17 @@
             <result name="success" type="redirect">selectTarget.action</result>
         </action>
 
-        <action name="selectTarget" class="org.hisp.dhis.detarget.action.SelectAction">
+        <action name="selectTarget" class="org.hisp.dhis.detarget.action.FormAction">
             <interceptor-ref name="organisationUnitTreeStack"/>
 			<result name="success" type="velocity">/main.vm</result>
-			<param name="page">/dhis-web-survey/selectTarget.vm</param>
-			<param name="menu">/dhis-web-survey/menuWithTreeForDeTarget.vm</param>
-			<result name="defaulttargetform" type="velocity">/main.vm</result>
 			<param name="page">/dhis-web-survey/targetForm.vm</param>
-            <param name="menu">/dhis-web-survey/menuWithTreeForDeTarget.vm</param>
+			<!--<param name="page">/dhis-web-survey/selectTarget.vm</param>-->
+			<param name="menu">/dhis-web-survey/menuWithTreeForDeTarget.vm</param>
+			<!--<result name="defaulttargetform" type="velocity">/main.vm</result>
+			<param name="page">/dhis-web-survey/targetForm.vm</param>
+            <param name="menu">/dhis-web-survey/menuWithTreeForDeTarget.vm</param>-->
             <param name="menuTreeHeight">350</param>
-            <param name="javascripts">../dhis-web-commons/ouwt/ouwt.js,javascript/general.js,javascript/form.js</param>
+            <param name="javascripts">../dhis-web-commons/ouwt/ouwt.js,javascript/general.js,javascript/form.js,javascript/tempDeTarget.js</param>
             <param name="stylesheets">style/dhis-web-dataentry.css,style/custom_data_entry_form_styles.css</param>
         </action>	
 		

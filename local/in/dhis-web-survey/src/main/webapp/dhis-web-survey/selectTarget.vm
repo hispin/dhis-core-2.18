@@ -3,7 +3,7 @@
 <br>
 
 <form id="selectForm" name="selectForm" method="post" action="selectTarget.action">
-
+<input type="hidden" name="temp" id="temp" value="deTarget">
     <table>	
 	   <tr>
     		<td><label>$i18n.getString( "organisation_unit" )</label></td>
@@ -27,9 +27,9 @@
 	   <tr>
 	   		<td><label for="selectedPeriodIndex">$i18n.getString( "period" )</label></td>
 	   		<td>
-			<input type="button" value="&lt;&lt;" title="$i18n.getString('earlier_periods')" onclick="previousPeriodsSelected()"/>
-			<input type="button" value="&gt;&gt;" title="$i18n.getString('later_periods')" onclick="nextPeriodsSelected()"/><br/>
-			<select id="selectedPeriodIndex" name="selectedPeriodIndex" style="min-width:350px" onchange="document.getElementById( 'selectForm' ).submit();">
+			<input type="button" value="&lt;&lt;" title="$i18n.getString('earlier_periods')" onclick="previousPeriodsSelected()" #if( $periods.size() == 0 ) disabled="disabled" #end />
+			<input type="button" value="&gt;&gt;" title="$i18n.getString('later_periods')" onclick="nextPeriodsSelected()" #if( $periods.size() == 0 ) disabled="disabled" #end /><br/>
+			<select id="selectedPeriodIndex" name="selectedPeriodIndex" style="min-width:350px" onchange="document.getElementById( 'selectForm' ).submit();" #if( $periods.size() == 0 ) disabled="disabled" #end>
     				<option value="-1">[$i18n.getString( "select" )]</option>
     				#set( $count = 0 )
     			    #foreach( $period in $periods )

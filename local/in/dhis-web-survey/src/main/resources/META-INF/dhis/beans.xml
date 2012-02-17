@@ -2,7 +2,7 @@
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:schemaLocation="
-http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.1.xsd">
+http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd">
   
   <bean id="org.hisp.dhis.survey.action.EmptyAction"
     class="org.hisp.dhis.survey.action.EmptyAction"/>
@@ -31,7 +31,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
       ref="org.hisp.dhis.survey.SurveyService"/>       
   </bean> 
 -->
-	
+<!--	
   <bean id="org.hisp.dhis.survey.action.SelectAction"
     class="org.hisp.dhis.survey.action.SelectAction" 
     scope="prototype">
@@ -42,17 +42,19 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     <property name="surveyDataValueService"
       ref="org.hisp.dhis.surveydatavalue.SurveyDataValueService"/>
   </bean> 	
-	
-<!--		
+-->	
+		
   <bean id="org.hisp.dhis.survey.action.FormAction"
     class="org.hisp.dhis.survey.action.FormAction" 
     scope="prototype">
     <property name="selectedStateManager"
       ref="org.hisp.dhis.survey.state.SelectedStateManager"/>    
     <property name="surveyDataValueService"
-      ref="org.hisp.dhis.surveydatavalue.SurveyDataValueService"/>      
+      ref="org.hisp.dhis.surveydatavalue.SurveyDataValueService"/>
+    <property name="surveyService"
+      ref="org.hisp.dhis.survey.SurveyService"/>	       
   </bean>
- -->
+
   <bean id="org.hisp.dhis.survey.action.SaveValueAction"
     class="org.hisp.dhis.survey.action.SaveValueAction" 
     scope="prototype">
@@ -245,6 +247,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
       ref="org.hisp.dhis.detarget.DeTargetService"/>       
   </bean> 
 -->
+<!--	
   <bean id="org.hisp.dhis.detarget.action.SelectAction"
     class="org.hisp.dhis.detarget.action.SelectAction" 
     scope="prototype">
@@ -257,9 +260,9 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     <property name="deTargetDataValueService"
       ref="org.hisp.dhis.detargetdatavalue.DeTargetDataValueService"/> 	  	      
   </bean> 	
+-->	
 	
-	
-<!--	    
+	    
   <bean id="org.hisp.dhis.detarget.action.FormAction"
     class="org.hisp.dhis.detarget.action.FormAction" 
     scope="prototype">
@@ -272,7 +275,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
      <property name="periodService"
       ref="org.hisp.dhis.period.PeriodService"/> 
   </bean> 
--->    
+    
   <bean id="org.hisp.dhis.detarget.action.SavetargetValueAction"
       class="org.hisp.dhis.detarget.action.SavetargetValueAction"
       scope="prototype">
