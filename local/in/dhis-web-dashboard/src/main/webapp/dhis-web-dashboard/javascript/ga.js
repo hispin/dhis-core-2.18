@@ -38,7 +38,9 @@ function deSelectionChangeFuntion(evt)
 	clearList(availableDataElements);
 	clearList(selectedDataElements);
 	
+	lockScreen();
 	getDataElements();
+	unLockScreen();
 }
 
 // Category ListBox Change function

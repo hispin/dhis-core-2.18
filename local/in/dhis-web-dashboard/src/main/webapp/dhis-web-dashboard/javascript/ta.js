@@ -266,7 +266,7 @@ function getDataElements()
         	document.getElementById( "availableDataElementsFilter" ).value = "";
         	document.getElementById( "availableDataElementsFilter" ).disabled = true;
         }    	
-    	
+        lockScreen();
     	$.post("getDataElementsForTA.action",
 		{
 			id:dataSetSectionId,
@@ -301,7 +301,7 @@ function getDataElementsReceived( xmlObject )
             availableDataElements.add(option, null);
         }
     }
-    
+    unLockScreen();
 }
 // getDataElementsReceived end
 
@@ -480,13 +480,6 @@ function getFinacialPeriodYear()
 	}
 	
 }
-
-
-
-
-
-
-
 //getting weekly Period
 function getWeeklyPeriod()
 {

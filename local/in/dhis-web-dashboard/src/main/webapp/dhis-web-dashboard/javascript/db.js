@@ -276,6 +276,7 @@ function getDataElements()
         	document.getElementById( "availableDataElementsFilter" ).disabled = true;
         }
     	
+        lockScreen();
     	$.post("getDataElements.action",
 		{
 			//id:dataElementGroupId,
@@ -358,7 +359,7 @@ function getDataElementsReceived( xmlObject )
             availableDataElements.add(option, null);
         }
     }
-    
+    unLockScreen(); 
 // If the list of available dataelements is empty, an empty placeholder will be added
 //addOptionPlaceHolder( availableDataElements );
 }// getDataElementsReceived end
