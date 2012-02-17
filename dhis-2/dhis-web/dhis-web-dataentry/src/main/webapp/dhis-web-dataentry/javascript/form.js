@@ -69,9 +69,9 @@ var FORMTYPE_DEFAULT = 'default';
  */
 $( document ).ready( function()
 {
-    $.ajaxSetup({
+    $.ajaxSetup( {
         type: 'POST'
-    });
+    } );
 
     selection.setListenerFunction( organisationUnitSelected );
     $( '#loaderSpan' ).show();
@@ -250,11 +250,13 @@ function uploadLocalData()
             cache: false,
             success: function( data, textStatus, jqXHR )
             {
-                if(data.c == 2) {
+                if ( data.c == 2 ) {
                     log( 'DataSet is now locked' );
 
                     setHeaderMessage( i18n_saving_value_failed_dataset_is_locked );
-                } else {
+                } 
+                else 
+                {
                     storageManager.clearDataValueJSON( value );
                     log( 'Successfully saved data value with value: ' + value );
                     ( array = array.slice( 1 ) ).length && pushDataValues( array );
@@ -517,18 +519,19 @@ function organisationUnitSelected( orgUnits, orgUnitNames )
 // -----------------------------------------------------------------------------
 // Locking
 // -----------------------------------------------------------------------------
+
 function getLockStatus()
 {
     var periodId = $( '#selectedPeriodId' ).val();
     var dataSetId = $( '#selectedDataSetId' ).val();
     var locked = false;
 
-    if(periodId == null || dataSetId == -1)
+    if ( periodId == null || dataSetId == -1 )
     {
         return false;
     }
 
-    $.ajax({
+    $.ajax( {
       url: 'getLockStatus.action',
       async: false,
       data: {
@@ -539,7 +542,7 @@ function getLockStatus()
       success: function (data) {
           locked = data.locked;
       }
-    });
+    } );
 
     return locked;
 }
@@ -781,16 +784,16 @@ function displayEntryFormCompleted()
 
     if( getLockStatus() )
     {
-        $("#contentDiv :input").attr("disabled", true);
+        $( '#contentDiv :input' ).attr( 'disabled', true );
         $( '#currentDataElement' ).html( i18n_dataset_is_locked );
     }
     else
     {
-        $("#contentDiv :input").removeAttr("disabled");
+        $( '#contentDiv :input' ).removeAttr( 'disabled' );
         $( '#currentDataElement' ).html( i18n_no_dataelement_selected );
     }
 
-    $("#contentDiv :input").css("backgroundColor", "white");
+    $( '#contentDiv :input' ).css( 'background-color', 'white' );
 }
 
 function valueFocus( e )
@@ -965,7 +968,7 @@ function displayUserDetails()
 		var url = '../dhis-web-commons-ajax-json/getUser.action';
 
 		$.getJSON( url, { username:currentCompletedByUser }, function( json ) {
-			$( '#userFullName' ).html( json.user.firstName + " " + json.user.surname );
+			$( '#userFullName' ).html( json.user.firstName + ' ' + json.user.surname );
 			$( '#userUsername' ).html( json.user.username );
 			$( '#userEmail' ).html( json.user.email );
 			$( '#userPhoneNumber' ).html( json.user.phoneNumber );
