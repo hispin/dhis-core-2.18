@@ -95,7 +95,7 @@ public class HibernateLockExceptionStore
     @Override
     public Collection<LockException> getCombinations()
     {
-        final String sql = "SELECT DISTINCT datasetid, periodid FROM LockException";
+        final String sql = "select distinct datasetid, periodid from LockException";
 
         final Collection<LockException> lockExceptions = new ArrayList<LockException>();
 
@@ -124,7 +124,7 @@ public class HibernateLockExceptionStore
     @Override
     public void deleteCombination( DataSet dataSet, Period period )
     {
-        final String hql = "DELETE FROM LockException WHERE dataSet=:dataSet AND period=:period";
+        final String hql = "delete from LockException where dataSet=:dataSet and period=:period";
         
         Query query = getQuery( hql );
         query.setParameter( "dataSet", dataSet );

@@ -38,7 +38,7 @@
 			</table>
 			<table class="listTable" id="listTable">
 				<col/>
-				<col width="96px"/>			
+				<col width="80px"/>			
                 <thead>				
 				<tr>
 					<th>$i18n.getString( "name" )</th>

@@ -63,11 +63,5 @@
 
     <property name="expiryDays" />
 
-    <set name="lockExceptions" table="datasetlockexceptions">
-      <cache usage="read-write" />
-      <key column="datasetid" />
-      <many-to-many class="org.hisp.dhis.dataset.LockException" column="lockexceptionid" unique="true" />
-    </set>
-
   </class>
 </hibernate-mapping>
