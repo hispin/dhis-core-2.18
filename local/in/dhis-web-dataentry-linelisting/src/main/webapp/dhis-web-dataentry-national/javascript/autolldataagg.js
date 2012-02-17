@@ -2,16 +2,27 @@
 function getOUDetails(orgUnitIds)
 {
 	//var url = "getOrgUnitDetails.action?orgUnitId=" + orgUnitIds;
-	
+	/*
 	var request = new Request();
 	request.setResponseTypeXML( 'orgunit' );
 	request.setCallbackSuccess( getOUDetailsRecevied );
-	//request.send( url );
-    
+	
     var requestString = "getOrgUnitDetails.action";
     var params = "orgUnitId=" + orgUnitIds;
     request.sendAsPost( params );
     request.send( requestString );
+    */
+	$.post("getOrgUnitDetails.action",
+			{
+				orgUnitId : orgUnitIds[0]
+			},
+			function (data)
+			{
+				getOUDetailsRecevied(data);
+			},'xml');
+
+    
+    
 }
 
 function getOUDetailsRecevied(xmlObject)

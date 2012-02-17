@@ -16,7 +16,6 @@ function changePage(){
     
    
 }
-
 //
 function checkCheckBox() {
     if (document.theForm.texttype.checked == false)

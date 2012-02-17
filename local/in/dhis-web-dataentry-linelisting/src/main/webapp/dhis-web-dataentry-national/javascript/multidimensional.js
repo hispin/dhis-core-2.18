@@ -184,7 +184,8 @@ function ValueSaver( dataElementId_, optionComboId_, value_, resultColor_ )
     
     this.save = function()
     {
-        var request = new Request();
+    	/*
+    	var request = new Request();
         request.setCallbackSuccess( handleResponse );
         request.setCallbackError( handleHttpError );
         request.setResponseTypeXML( 'status' );
@@ -195,6 +196,20 @@ function ValueSaver( dataElementId_, optionComboId_, value_, resultColor_ )
         var params = 'inputId=' + inputId + '&value=' + value;
         request.sendAsPost( params );
         request.send( requestString );
+        */
+    	$.post("saveMultiDimensionalValue.action",
+    			{
+    				inputId : inputId,
+    				value : value
+    			},
+    			function (data)
+    			{
+    				handleResponse(data);
+    				//handleHttpError(data);
+    			},'xml');
+        
+        
+        
 
     };
     
@@ -263,7 +278,8 @@ function CommentSaver( dataElementId_, value_ )
     
     this.save = function()
     {
-        var request = new Request();
+       /*
+    	var request = new Request();
         request.setCallbackSuccess( handleResponse );
         request.setCallbackError( handleHttpError );
         request.setResponseTypeXML( 'status' );
@@ -273,6 +289,28 @@ function CommentSaver( dataElementId_, value_ )
         var params = 'dataElementId=' + dataElementId + '&comment=' + value;
         request.sendAsPost( params );
         request.send( requestString );
+        */
+        /*
+        $.ajax({
+            url: url.action,
+            dataType: "xml",
+            success: ....,
+            error: .....
+        });
+    	*/
+    	
+    	
+    	
+    	$.post("saveComment.action",
+    			{
+    				dataElementId : dataElementId,
+    				comment : value
+    			},
+    			function (data)
+    			{
+    				handleResponse(data);
+    				//handleHttpError(data);
+    			},'xml');
     };
     
     function handleResponse( rootElement )
@@ -392,13 +430,25 @@ function getCalculatedDataElement( dataElementId )
 
 function calculateAndSaveCDEs()
 {
-    var request = new Request();
+	/*
+	var request = new Request();
     request.setCallbackSuccess( dataValuesReceived );
     request.setResponseTypeXML( 'dataValues' );
     //request.send( 'calculateCDEs.action' );
 
     var requestString = "calculateCDEs.action";
     request.send( requestString );
+    */
+    
+	$.post("calculateCDEs.action",
+			{
+
+			},
+			function (data)
+			{
+				dataValuesReceived(data);
+			},'xml');
+    
 }
 
 function dataValuesReceived( node )

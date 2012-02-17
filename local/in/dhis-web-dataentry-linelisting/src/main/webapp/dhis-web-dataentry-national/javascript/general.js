@@ -2643,7 +2643,8 @@ function ValueSaver( dataElementId_, value_, resultColor_ )
     
     this.save = function()
     {
-        var request = new Request();
+        /*
+    	var request = new Request();
         request.setCallbackSuccess( handleResponse );
         request.setCallbackError( handleHttpError );
         request.setResponseTypeXML( 'status' );
@@ -2653,6 +2654,17 @@ function ValueSaver( dataElementId_, value_, resultColor_ )
         var params = 'dataElementId=' + dataElementId + '&value=' + value;
         request.sendAsPost( params );
         request.send( requestString );
+        */
+    	$.post("saveValue.action",
+    			{
+    				dataElementId : dataElementId,
+    				value : value
+    			},
+    			function (data)
+    			{
+    				handleResponse(data);
+    				//handleHttpError(data);
+    			},'xml');
     };
     
     function handleResponse( rootElement )
@@ -2725,7 +2737,8 @@ function CommentSaver( dataElementId_, value_ )
     
     this.save = function()
     {
-        var request = new Request();
+        /*
+    	var request = new Request();
         request.setCallbackSuccess( handleResponse );
         request.setCallbackError( handleHttpError );
         request.setResponseTypeXML( 'status' );
@@ -2735,6 +2748,17 @@ function CommentSaver( dataElementId_, value_ )
         var params = 'dataElementId=' + dataElementId + '&value=' + value;
         request.sendAsPost( params );
         request.send( requestString );
+        */
+    	$.post("saveComment.action",
+    			{
+    				dataElementId : dataElementId,
+    				comment : value
+    			},
+    			function (data)
+    			{
+    				handleResponse(data);
+    				//handleHttpError(data);
+    			},'xml');
     };
     
     function handleResponse( rootElement )
@@ -2855,7 +2879,8 @@ function getCalculatedDataElement( dataElementId )
 }
 
 function calculateAndSaveCDEs()
-{
+{	
+	/*
     var request = new Request();
     request.setCallbackSuccess( dataValuesReceived );
     request.setResponseTypeXML( 'dataValues' );
@@ -2863,6 +2888,17 @@ function calculateAndSaveCDEs()
 
     var requestString = "calculateCDEs.action";
     request.send( requestString );
+    */
+	$.post("calculateCDEs.action",
+			{
+		
+			},
+			function (data)
+			{
+				dataValuesReceived(data);
+			},'xml');
+
+    
 }
 
 function dataValuesReceived( node )
@@ -2878,7 +2914,6 @@ function dataValuesReceived( node )
         document.getElementById( 'value[' + dataElementId + '].value' ).value = value;
     }
 }
-
 
 function showOverlay() {
     var o = document.getElementById('overlay');
@@ -2898,6 +2933,7 @@ function hideOverlay() {
 function saveLineListingAggData()
 {
     showOverlay();
+    /*
     var request = new Request();
     request.setCallbackSuccess( saveLineListingAggDataReceived );
     request.setResponseTypeXML( 'dataValues' );
@@ -2905,6 +2941,16 @@ function saveLineListingAggData()
 
     var requestString = "saveLineListingAggData.action";
     request.send( requestString );
+    */
+	$.post("saveLineListingAggData.action",
+			{
+		
+			},
+			function (data)
+			{
+				saveLineListingAggDataReceived(data);
+			},'xml');
+    
 }
 
 function saveLineListingAggDataReceived( node )
@@ -2945,7 +2991,7 @@ function removeLLRecord( nextRecordNo )
 
     if ( result )
     {
-        //window.location.href = 'delLLRecord.action?recordId=' + nextRecordNo;
+       //window.location.href = 'delLLRecord.action?recordId=' + nextRecordNo;
         document.getElementById("recordId").value = nextRecordNo;
         document.delForm.submit();
     }

@@ -48,7 +48,8 @@ function getDataElements()
 			getDataElementsReceived(data);
 		},'xml');
     }
-}// getDataElements end           
+}
+// getDataElements end           
 
 function getDataElementsReceived( xmlObject )
 {
@@ -72,7 +73,8 @@ function getDataElementsReceived( xmlObject )
             availableDataElements.add(option, null);
         }
     }    
-}// getDataElementsReceived end
+}
+// getDataElementsReceived end
 
 //---------------------------------------------------------------
 // Get Periods 
