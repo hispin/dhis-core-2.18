@@ -1,6 +1,7 @@
 
 function clearFolder( folderId )
 {
+	/*
 	var request = new Request();
 	request.setResponseTypeXML( 'message' );
 	request.setCallbackSuccess( clearFolderRecieved );
@@ -10,6 +11,16 @@ function clearFolder( folderId )
 	
 	request.sendAsPost( params );
 	request.send( requestString );
+	*/
+	$.post("clearFolder.action",
+			{
+				selectedButton : folderId
+			},
+			function (data)
+			{
+				clearFolderRecieved(data);
+			},'xml');
+	
 }
 
 function clearFolderRecieved( messageElement )

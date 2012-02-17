@@ -84,11 +84,11 @@ function saveMinLimit( organisationUnitId, dataElementId )
 {
     var minLimitField = document.getElementById( "minLimit" );
     var maxLimitField = document.getElementById( "maxLimit" );
-
+    /*
     var request = new Request();
     request.setCallbackSuccess( refreshWindow );
     request.setCallbackError( refreshWindow );
-
+	*/
     var requestString;
     var params;
     
@@ -96,10 +96,26 @@ function saveMinLimit( organisationUnitId, dataElementId )
     if ( minLimitField.value == '' )
     {
         //request.send( 'removeMinMaxLimits.action?organisationUnitId=' + organisationUnitId + '&dataElementId=' + dataElementId );
+    	/*
         requestString = "removeMinMaxLimits.action";
         params = 'organisationUnitId=' + organisationUnitId + '&dataElementId=' + dataElementId;
         request.sendAsPost( params );
         request.send( requestString );
+        */
+        
+    	$.post("removeMinMaxLimits.action",
+    			{
+    				organisationUnitId : organisationUnitId,
+    				dataElementId : dataElementId
+    			},
+    			function (data)
+    			{
+    				refreshWindow(data);
+    				//refreshWindow(data);
+    			},'xml');
+        
+        
+        
     }
     else
     {
@@ -119,10 +135,24 @@ function saveMinLimit( organisationUnitId, dataElementId )
             }
 
             //request.send( 'saveMinMaxLimits.action?organisationUnitId=' + organisationUnitId + '&dataElementId=' + dataElementId + '&minLimit=' + minLimit + '&maxLimit=' + maxLimit );
-            requestString = "saveMinMaxLimits.action";
+            
+            /*requestString = "saveMinMaxLimits.action";
             params = 'organisationUnitId=' + organisationUnitId + '&dataElementId=' + dataElementId + '&minLimit=' + minLimit + '&maxLimit=' + maxLimit;
             request.sendAsPost( params );
             request.send( requestString );
+            */
+            
+        	$.post("saveMinMaxLimits.action",
+        			{
+        				organisationUnitId : organisationUnitId,
+        				dataElementId : dataElementId
+        			},
+        			function (data)
+        			{
+        				refreshWindow(data);
+        				//refreshWindow(data);
+        			},'xml');
+            
         }
         else
         {
@@ -135,20 +165,33 @@ function saveMaxLimit( organisationUnitId, dataElementId )
 {
     var minLimitField = document.getElementById( "minLimit" );
     var maxLimitField = document.getElementById( "maxLimit" );
-
+    /*
     var request = new Request();
     request.setCallbackSuccess( refreshWindow );
     request.setCallbackError( refreshWindow );
     var requestString;
     var params;
-    
+    */
     if ( maxLimitField.value == '' )
     {
         //request.send( 'removeMinMaxLimits.action?organisationUnitId=' + organisationUnitId + '&dataElementId=' + dataElementId );
+        /*
         requestString = "removeMinMaxLimits.action";
         params = 'organisationUnitId=' + organisationUnitId + '&dataElementId=' + dataElementId;
         request.sendAsPost( params );
         request.send( requestString );
+        */
+    	$.post("removeMinMaxLimits.action",
+    			{
+    				organisationUnitId : organisationUnitId,
+    				dataElementId : dataElementId
+    			},
+    			function (data)
+    			{
+    				refreshWindow(data);
+    				//refreshWindow(data);
+    			},'xml');
+        
     }
     else
     {
@@ -172,10 +215,24 @@ function saveMaxLimit( organisationUnitId, dataElementId )
             }
 
             //request.send( 'saveMinMaxLimits.action?organisationUnitId=' + organisationUnitId + '&dataElementId=' + dataElementId + '&minLimit=' + minLimit + '&maxLimit=' + maxLimit );
+           /*
             requestString = "saveMinMaxLimits.action";
             params = 'organisationUnitId=' + organisationUnitId + '&dataElementId=' + dataElementId + '&minLimit=' + minLimit + '&maxLimit=' + maxLimit;
             request.sendAsPost( params );
             request.send( requestString );
+            */
+            
+        	$.post("saveMinMaxLimits.action",
+        			{
+        				organisationUnitId : organisationUnitId,
+        				dataElementId : dataElementId
+        			},
+        			function (data)
+        			{
+        				refreshWindow(data);
+        				//refreshWindow(data);
+        			},'xml');
+            
         }
         else
         {

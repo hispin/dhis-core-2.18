@@ -369,7 +369,8 @@ function SetGeneratedMinMaxValues()
 {
     this.save = function()
     {
-        var request = new Request();
+       /*
+    	var request = new Request();
         request.setCallbackSuccess( handleResponse );
         request.setCallbackError( handleHttpError );
         request.setResponseTypeXML( 'minmax' );
@@ -377,6 +378,16 @@ function SetGeneratedMinMaxValues()
 
         var requestString = "minMaxGeneration.action";
         request.send( requestString );
+        */
+    	$.post("minMaxGeneration.action",
+    			{
+    		
+    			},
+    			function (data)
+    			{
+    				handleResponse(data);
+    				//handleHttpError(data);
+    			},'xml');
 
     };
     
