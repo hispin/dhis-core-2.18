@@ -77,12 +77,7 @@
 				##data element name
 				<td class='text-column'>
 					<span id="value[$programStageDataElement.dataElement.id].name" title="$!encoder.htmlEncode( $programStageDataElement.dataElement.description )">
-						#if( $!programStageDataElement.dataElement.formName )
-							$encoder.htmlEncode( $programStageDataElement.dataElement.formName ) 
-						#else
-							$encoder.htmlEncode( $programStageDataElement.dataElement.name ) 
-						#end
-						
+						$encoder.htmlEncode( $programStageDataElement.dataElement.formNameFallback )						
 						#if ( $programStageDataElement.compulsory )
 							<em title="$i18n.getString( "required" )" class="required">*</em>
 						#end        
