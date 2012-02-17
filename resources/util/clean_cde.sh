@@ -38,7 +38,7 @@ sed -i 's/view="[^"]*"//g' $1
 
 # Remove weird stuff
 
-sed -i 's/<!--1-->"//g' $1
+sed -i 's/<!--1-->//g' $1
 sed -i 's/&nbsp;//g' $1
 
 # Put back correct style for input elements
