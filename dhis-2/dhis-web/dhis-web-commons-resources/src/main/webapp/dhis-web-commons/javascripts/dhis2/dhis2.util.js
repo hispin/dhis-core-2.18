@@ -31,7 +31,7 @@ dhis2['util'] = dhis2['util'] || {};
 /**
  * Creates namespace object based on path
  * 
- * @param path {String}�The path of the namespace, i.e. 'a.b.c'
+ * @param path {String} The path of the namespace, i.e. 'a.b.c'
  * 
  * @returns {object} Namespace object
  */

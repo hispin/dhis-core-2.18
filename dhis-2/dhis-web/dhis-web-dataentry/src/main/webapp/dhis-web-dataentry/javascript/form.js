@@ -205,19 +205,13 @@ function uploadLocalData()
             cache: false,
             success: function( data, textStatus, jqXHR )
             {
-                if(data.c == 2) {
-                    log( 'DataSet is now locked' );
+                log( 'Successfully saved complete dataset with value: ' + value );
+                storageManager.clearCompleteDataSet( value );
+                ( array = array.slice( 1 ) ).length && pushCompleteDataSets( array );
 
-                    setHeaderMessage( i18n_dataset_is_locked );
-                } else {
-                    log( 'Successfully saved complete dataset with value: ' + value );
-                    storageManager.clearCompleteDataSet( value );
-                    ( array = array.slice( 1 ) ).length && pushCompleteDataSets( array );
-
-                    if ( array.length < 1 )
-                    {
-                        setHeaderDelayMessage( i18n_sync_success );
-                    }
+                if ( array.length < 1 )
+                {
+                    setHeaderDelayMessage( i18n_sync_success );
                 }
             },
             error: function( jqXHR, textStatus, errorThrown )
@@ -256,17 +250,23 @@ function uploadLocalData()
             cache: false,
             success: function( data, textStatus, jqXHR )
             {
-                storageManager.clearDataValueJSON( value );
-                log( 'Successfully saved data value with value: ' + value );
-                ( array = array.slice( 1 ) ).length && pushDataValues( array );
+                if(data.c == 2) {
+                    log( 'DataSet is now locked' );
 
-                if ( array.length < 1 && completeDataSetsArray.length > 0 )
-                {
-                    pushCompleteDataSets( completeDataSetsArray );
-                }
-                else
-                {
-                    setHeaderDelayMessage( i18n_sync_success );
+                    setHeaderMessage( i18n_dataset_is_locked );
+                } else {
+                    storageManager.clearDataValueJSON( value );
+                    log( 'Successfully saved data value with value: ' + value );
+                    ( array = array.slice( 1 ) ).length && pushDataValues( array );
+
+                    if ( array.length < 1 && completeDataSetsArray.length > 0 )
+                    {
+                        pushCompleteDataSets( completeDataSetsArray );
+                    }
+                    else
+                    {
+                        setHeaderDelayMessage( i18n_sync_success );
+                    }
                 }
             },
             error: function( jqXHR, textStatus, errorThrown )
