@@ -346,6 +346,8 @@ function addEventListeners()
 
         $( this ).focus( valueFocus );
 
+        $( this ).blur( valueBlur );
+
         $( this ).change( function()
         {
             saveBoolean( dataElementId, optionComboId );
