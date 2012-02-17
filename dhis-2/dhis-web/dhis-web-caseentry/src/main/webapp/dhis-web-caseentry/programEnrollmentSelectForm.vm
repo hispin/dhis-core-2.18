@@ -4,20 +4,20 @@
 
 	<table>
 		<tr>
-			<td class='bold text-column'>$i18n.getString( "full_name" )</td>
-			<td>:$encoder.htmlEncode( $patient.getFullName() )</td>
+			<td class='bold text-column'>$i18n.getString( "full_name" ):</td>
+			<td>$encoder.htmlEncode( $patient.getFullName() )</td>
 		</tr>
 		<tr>
-			<td class='bold text-column'>$i18n.getString( "gender" )</td>
-			<td>:$i18n.getString( $patient.gender )</td>
+			<td class='bold text-column'>$i18n.getString( "gender" ):</td>
+			<td>$i18n.getString( $patient.gender )</td>
 		</tr>    
 		<tr>
-			<td class='bold text-column'>$i18n.getString( "date_of_birth" )</td>
-			<td>:$format.formatDate( $patient.birthDate )</td>
+			<td class='bold text-column'>$i18n.getString( "date_of_birth" ):</td>
+			<td>$format.formatDate( $patient.birthDate )</td>
 		</tr>
 		<tr>
-			<td class='bold text-column'>$i18n.getString( "age" )</td>
-			<td>:$encoder.htmlEncode( $patient.getAge() )</td>
+			<td class='bold text-column'>$i18n.getString( "age" ):</td>
+			<td>$encoder.htmlEncode( $patient.getAge() )</td>
 		</tr>
 		<tr>
 			<td>&nbsp;</td>
