@@ -28,9 +28,6 @@
 			<div id="currentSelection" class="hidden history"></div>
 		</td>
 	</tr>
-	<tr>
-		<td colspan='2'><hr style='clear:both;'></td>
-	</tr>
 </table>
 
 
@@ -41,7 +38,7 @@
 	<input type="button" class='button' value="$i18n.getString( 'back_to_search' )" id='backBtnFromEntry' onclick="javascript:showSearchForm();" >
 </div>
 		
-<div class="inputCriteria" style="width:530px;height:110px;">
+<div class="inputCriteria" style="width:530px;height:130px;">
 
 	<table> 
 		<tr>
