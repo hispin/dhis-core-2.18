@@ -10,9 +10,21 @@
  line-height:18px;
 }
 
-input.inputText, select.inputText
+input.inputText
 {
 	width:220px; 
+	text-align:center;
+}
+
+select.inputText
+{
+	width:225px; 
+	text-align:center;
+}
+
+input.optionset
+{
+	width:195px; 
 	text-align:center;
 }
 
@@ -55,8 +67,6 @@ div#currentSelection
 {
 	float:right;
 	color: black;  
-	background-color: #D5FFC5;
-	border: 1px solid black;
 	font-size: 12px; 
 }
 
