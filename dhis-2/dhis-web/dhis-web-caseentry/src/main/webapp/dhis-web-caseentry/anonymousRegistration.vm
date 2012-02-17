@@ -7,7 +7,7 @@
 	<input type="button" class='button' id="deleteCurrentEventBtn" value="$i18n.getString('delete_current_event')" onClick="javascript: deleteCurrentEvent();" disabled="disabled" >
 </div>	
 			
-<div id="dataRecordingSelectDiv" class="inputCriteria" style="width:500px;height:65px;">
+<div id="dataRecordingSelectDiv" class="inputCriteria" style="width:500px;height:75px;">
 	<input type='hidden' id="programStageId">
 	<input type='hidden' id='selectedProgramId'>
 	<table>
