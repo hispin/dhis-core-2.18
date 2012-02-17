@@ -789,16 +789,16 @@ function displayEntryFormCompleted()
     dataEntryFormIsLoaded = true;
     hideLoader();
 
-    $( '#completenessDiv' ).css( 'display', 'block' );
-
     if( getLockStatus() )
     {
         $( '#contentDiv :input' ).attr( 'disabled', true );
         $( '#currentDataElement' ).html( i18n_dataset_is_locked );
+        $( '#completenessDiv' ).css( 'display', 'none' );
     }
     else
     {
         $( '#contentDiv :input' ).removeAttr( 'disabled' );
+        $( '#completenessDiv' ).css( 'display', 'block' );
         $( '#currentDataElement' ).html( i18n_no_dataelement_selected );
     }
 
