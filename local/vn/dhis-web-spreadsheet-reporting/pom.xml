@@ -6,7 +6,7 @@
   <parent>
     <groupId>org.hisp.dhis</groupId>
     <artifactId>dhis-web</artifactId>
-    <version>2.7-SNAPSHOT</version>
+    <version>2.7</version>
   </parent>
   
   <artifactId>dhis-web-spreadsheet-reporting</artifactId>
@@ -33,7 +33,7 @@
     <dependency>
       <groupId>org.hisp.dhis</groupId>
       <artifactId>dhis-service-spreadsheet-reporting</artifactId>
-	  <version>2.7-SNAPSHOT</version>
+	  <version>2.7</version>
     </dependency>
 	<dependency>
       <groupId>org.hisp.dhis</groupId>

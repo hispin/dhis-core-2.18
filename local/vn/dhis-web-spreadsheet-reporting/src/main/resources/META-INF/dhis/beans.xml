@@ -84,7 +84,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		id="org.hisp.dhis.reportsheet.configuration.action.GetReportConfigurationAction"
 		class="org.hisp.dhis.reportsheet.configuration.action.GetReportConfigurationAction"
 		scope="prototype">
-		<property name="systemSettingManager" ref="org.hisp.dhis.options.SystemSettingManager" />
+		<property name="systemSettingManager" ref="org.hisp.dhis.setting.SystemSettingManager" />
 	</bean>
 
 	<bean
@@ -92,7 +92,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		class="org.hisp.dhis.reportsheet.configuration.action.SetReportConfigurationAction"
 		scope="prototype">
 		<property name="reportLocationManager" ref="org.hisp.dhis.reportsheet.ReportLocationManager" />
-		<property name="systemSettingManager" ref="org.hisp.dhis.options.SystemSettingManager" />
+		<property name="systemSettingManager" ref="org.hisp.dhis.setting.SystemSettingManager" />
 	</bean>
 	
 	<bean
