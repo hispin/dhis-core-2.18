@@ -195,4 +195,12 @@ public interface Grid
      * @oaram addHeader indicates whether to add a grid header for the regression column.
      */
     Grid addRegressionColumn( int columnIndex, boolean addHeader );
+    
+    /**
+     * Adds a cumulative column to the grid. Column must hold numeric data.
+     * 
+     * @param columnIndex the index of the base column.
+     * @param addHeader indicates whether to add a grid header for the regression column.
+     */
+    Grid addCumulativeColumn( int columnIndex, boolean addHeader );
 }

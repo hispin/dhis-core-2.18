@@ -426,7 +426,7 @@ public class GridTest
     @Test
     public void testAddRegressionColumn()
     {
-        grid = new ListGrid();        
+        grid = new ListGrid();
 
         grid.addRow();        
         grid.addValue( 10.0 );
@@ -446,6 +446,31 @@ public class GridTest
         assertTrue( column.contains( 29.0 ) );
         assertTrue( column.contains( 41.0 ) );
         assertTrue( column.contains( 53.0 ) );
+    }
+    
+    @Test
+    public void testAddCumulativeColumn()
+    {
+        grid = new ListGrid();
+
+        grid.addRow();        
+        grid.addValue( 10.0 );
+        grid.addRow();        
+        grid.addValue( 50.0 );
+        grid.addRow();        
+        grid.addValue( 20.0 );
+        grid.addRow();        
+        grid.addValue( 60.0 );
+        
+        grid.addCumulativeColumn( 0, true );
+
+        List<Object> column = grid.getColumn( 1 );
+        
+        assertTrue( column.size() == 4 );
+        assertTrue( column.contains( 10.0 ) );
+        assertTrue( column.contains( 60.0 ) );
+        assertTrue( column.contains( 80.0 ) );
+        assertTrue( column.contains( 140.0 ) );
     }
 
     @Test

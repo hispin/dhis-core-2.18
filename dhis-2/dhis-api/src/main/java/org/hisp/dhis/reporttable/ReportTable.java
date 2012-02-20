@@ -167,9 +167,14 @@ public class ReportTable extends BaseIdentifiableObject
     // -------------------------------------------------------------------------
 
     /**
-     * Whether the ReportTable contains regression columns.
+     * Indicates whether the ReportTable contains regression columns.
      */
     private boolean regression;
+    
+    /**    
+     * Indicates whether the ReportTable contains cumulative columns.
+     */
+    private boolean cumulative;
 
     /**
      * The list of DataElements the ReportTable contains.
@@ -352,7 +357,7 @@ public class ReportTable extends BaseIdentifiableObject
      * @param relatives       the relative periods.
      * @param i18nFormat      the i18n format. Not persisted.
      */
-    public ReportTable( String name, boolean regression, List<DataElement> dataElements, List<Indicator> indicators,
+    public ReportTable( String name, List<DataElement> dataElements, List<Indicator> indicators,
                         List<DataSet> dataSets, List<Period> periods, List<Period> relativePeriods, List<OrganisationUnit> units,
                         List<OrganisationUnit> relativeUnits, List<OrganisationUnitGroup> organisationUnitGroups,
                         DataElementCategoryCombo categoryCombo, boolean doIndicators,
@@ -360,7 +365,6 @@ public class ReportTable extends BaseIdentifiableObject
                         I18nFormat i18nFormat, String reportingPeriodName )
     {
         this.name = name;
-        this.regression = regression;
         this.dataElements = dataElements;
         this.indicators = indicators;
         this.dataSets = dataSets;
@@ -875,6 +879,16 @@ public class ReportTable extends BaseIdentifiableObject
     public void setRegression( boolean regression )
     {
         this.regression = regression;
+    }
+
+    public boolean isCumulative()
+    {
+        return cumulative;
+    }
+
+    public void setCumulative( boolean cumulative )
+    {
+        this.cumulative = cumulative;
     }
 
     @XmlElementWrapper( name = "dataElements" )

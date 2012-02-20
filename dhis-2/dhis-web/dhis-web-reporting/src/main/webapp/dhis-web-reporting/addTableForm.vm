@@ -76,7 +76,12 @@
 		<td></td>
 		<td></td>
 	</tr>
-	
+	<tr>
+		<td><label for="cumulative">$i18n.getString( "include_cumulative" )</label></td>
+		<td><input type="checkbox" onclick="toggleCumulative()" id="cumulative" name="cumulative" value="true"#if( $reportTable.isCumulative() ) checked#end></td>
+		<td></td>
+		<td></td>
+	</tr>
 	<tr>
 		<td colspan="4" style="height:15px"></td>
 	</tr>

@@ -160,6 +160,13 @@ public class SaveTableAction
         this.regression = regression;
     }    
     
+    private boolean cumulative;
+    
+    public void setCumulative( boolean cumulative )
+    {
+        this.cumulative = cumulative;
+    }
+
     private Integer categoryComboId;
 
     public void setCategoryComboId( Integer categoryComboId )
@@ -429,20 +436,15 @@ public class SaveTableAction
         
         if ( tableId == null )
         {
-            reportTable = new ReportTable( tableName, regression,
+            reportTable = new ReportTable( tableName,
                 dataElements, indicators, dataSets, periods, null, units, null, organisationUnitGroups,
                 categoryCombo, doIndicators, doPeriods, doOrganisationUnits, relatives, reportParams, null, null );
-            
-            reportTable.setSortOrder( sortOrder );
-            reportTable.setTopLimit( topLimit );
         }
         else
         {
             reportTable = reportTableService.getReportTable( tableId );
             
             reportTable.setName( tableName );
-            reportTable.setSortOrder( sortOrder );
-            reportTable.setTopLimit( topLimit );
             reportTable.setRegression( regression );
             reportTable.setDataElements( dataElements );
             reportTable.setIndicators( indicators );
@@ -457,6 +459,11 @@ public class SaveTableAction
             reportTable.setRelatives( relatives );
             reportTable.setReportParams( reportParams );
         }
+
+        reportTable.setRegression( regression );
+        reportTable.setCumulative( cumulative );
+        reportTable.setSortOrder( sortOrder );
+        reportTable.setTopLimit( topLimit );
         
         return reportTable;
     }

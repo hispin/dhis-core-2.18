@@ -35,6 +35,7 @@ import org.hisp.dhis.common.Dxf2Namespace;
 import org.hisp.dhis.common.Grid;
 import org.hisp.dhis.common.GridHeader;
 import org.hisp.dhis.common.adapter.GridRowsXmlAdapter;
+import org.hisp.dhis.system.util.MathUtils;
 
 import javax.xml.bind.annotation.*;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
@@ -52,6 +53,7 @@ public class ListGrid
     implements Grid
 {
     private static final String REGRESSION_SUFFIX = "_regression";
+    private static final String CUMULATIVE_SUFFIX = "_cumulative";
 
     /**
      * The title of the grid.
@@ -386,7 +388,7 @@ public class ListGrid
 
         for ( Object value : column )
         {
-            if ( Double.parseDouble( String.valueOf( value ) ) != 0.0 ) // 0 omitted from regression
+            if ( !MathUtils.isEqual( Double.parseDouble( String.valueOf( value ) ), 0d ) ) // 0 omitted from regression
             {
                 regression.addData( index++, Double.parseDouble( String.valueOf( value ) ) );
             }
@@ -425,7 +427,44 @@ public class ListGrid
 
         return this;
     }
+    
+    public Grid addCumulativeColumn( int columnIndex, boolean addHeader )
+    {
+        verifyGridState();
 
+        List<Object> column = getColumn( columnIndex );
+
+        List<Object> cumulativeColumn = new ArrayList<Object>();
+        
+        double sum = 0d;
+        
+        for ( Object value : column )
+        {
+            double number = value != null ? Double.parseDouble( String.valueOf( value ) ) : 0d;
+            
+            sum += number;
+            
+            cumulativeColumn.add( sum );
+        }
+        
+        addColumn( cumulativeColumn );
+        
+        if ( addHeader && columnIndex < headers.size() )
+        {
+            GridHeader header = headers.get( columnIndex );
+
+            if ( header != null )
+            {
+                GridHeader regressionHeader = new GridHeader( header.getName() + CUMULATIVE_SUFFIX,
+                    header.getColumn() + CUMULATIVE_SUFFIX, header.getType(), header.isHidden(), header.isMeta() );
+
+                addHeader( regressionHeader );
+            }
+        }
+        
+        return this;
+    }
+    
     // -------------------------------------------------------------------------
     // JRDataSource implementation
     // -------------------------------------------------------------------------

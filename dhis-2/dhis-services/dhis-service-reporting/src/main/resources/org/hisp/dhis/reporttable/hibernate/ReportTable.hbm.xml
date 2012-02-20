@@ -16,6 +16,8 @@
     &identifiableProperties;
 
     <property name="regression" />
+	
+	<property name="cumulative" />
 
     <list name="dataElements" table="reporttable_dataelements">
       <cache usage="read-write" />
