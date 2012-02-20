@@ -768,16 +768,16 @@ public class DefaultCaseAggregationConditionService
             sql = "SELECT pi.patientid ";
         }
         
-        sql += "FROM patient as pi ";
+        sql += "FROM patient as pi WHERE ";
 
         if ( propertyName.equals( PROPERTY_AGE ) )
         {
-            sql += "' AND ((  12 * ( EXTRACT(YEAR FROM '" + startDate + "' ) - EXTRACT(YEAR FROM birthdate ) ) ) + "
+            sql += "((  12 * ( EXTRACT(YEAR FROM '" + startDate + "' ) - EXTRACT(YEAR FROM birthdate ) ) ) + "
                 + "EXTRACT( MONTH FROM '" + startDate + "' ) - EXTRACT( MONTH FROM birthdate ) )" + " ";
         }
         else
         {
-            sql += "' AND pi." + propertyName + " ";
+            sql += " pi." + propertyName + " ";
         }
 
         return sql;
