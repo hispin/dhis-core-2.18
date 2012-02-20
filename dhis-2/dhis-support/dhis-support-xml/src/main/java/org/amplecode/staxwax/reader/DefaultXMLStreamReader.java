@@ -122,7 +122,7 @@ public class DefaultXMLStreamReader
         }
           catch ( XMLStreamException ex )
         {
-            throw new RuntimeException( "Failed to get element value", ex );
+            throw new RuntimeException( "Failed to move to start element", ex );
         }
     }
 
