@@ -28,14 +28,12 @@ package org.hisp.dhis.visualizer.action;
  */
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
 import org.hisp.dhis.chart.Chart;
 import org.hisp.dhis.chart.ChartService;
 import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.indicator.IndicatorService;
-import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.period.RelativePeriods;
 import org.hisp.dhis.user.CurrentUserService;
@@ -203,9 +201,9 @@ public class AddOrUpdateChartAction
         this.last5Years = last5Years;
     }
 
-    private Collection<Integer> organisationUnitIds;
+    private List<Integer> organisationUnitIds;
 
-    public void setOrganisationUnitIds( Collection<Integer> organisationUnitIds )
+    public void setOrganisationUnitIds( List<Integer> organisationUnitIds )
     {
         this.organisationUnitIds = organisationUnitIds;
     }
@@ -354,8 +352,12 @@ public class AddOrUpdateChartAction
 
         if ( organisationUnitIds != null )
         {
-            chart.setOrganisationUnits( new ArrayList<OrganisationUnit>( organisationUnitService
-                .getOrganisationUnits( organisationUnitIds ) ) );
+            chart.getOrganisationUnits().clear();
+            
+            for ( Integer id : organisationUnitIds )
+            {
+                chart.getOrganisationUnits().add( organisationUnitService.getOrganisationUnit( id ) );
+            }
         }
 
         if ( system == null )
