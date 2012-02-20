@@ -103,10 +103,8 @@
     #parse( "macros.vm" )
         
     <div id="header">
-      <img id="header1" src="../dhis-web-commons/css/${stylesheetDirectory}/logo_left.png">
-      <img id="header2" src="../dhis-web-commons/css/${stylesheetDirectory}/logo_banner.png"#if( $startModule ) onclick="window.location.href='../${startModule}/index.action'" style="cursor:pointer"#end>
-      <img id="header3" src="../dhis-web-commons/css/${stylesheetDirectory}/logo_right.png">
-
+      <img id="headerBanner" src="../dhis-web-commons/css/${stylesheetDirectory}/logo_banner.png"#if( $startModule ) onclick="window.location.href='../${startModule}/index.action'" style="cursor:pointer"#end>
+      
       <img id="menuSeparator1" src="../dhis-web-commons/css/${stylesheetDirectory}/logo_separator.png">
       <img id="menuSeparator2" src="../dhis-web-commons/css/${stylesheetDirectory}/logo_separator.png">
       <img id="menuSeparator3" src="../dhis-web-commons/css/${stylesheetDirectory}/logo_separator.png">

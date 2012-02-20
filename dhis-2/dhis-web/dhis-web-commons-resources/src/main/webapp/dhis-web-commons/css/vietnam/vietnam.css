@@ -41,21 +41,11 @@ div#header
   right: 10px;
 }
 
-img#header1
-{
-  float: left;
-}
-
-img#header2
+img#headerBanner
 {
   position: absolute;
   top: 13px;
   left: 25px;
-}
-
-img#header3
-{
-  float: right;
 }
 
 img#menuSeparator1
