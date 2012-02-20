@@ -564,12 +564,6 @@ http://www.springframework.org/schema/security http://www.springframework.org/sc
         </entry>
         <entry>
           <key>
-            <value>blue</value>
-          </key>
-          <value>blue/blue.css</value>
-        </entry>
-        <entry>
-          <key>
             <value>green</value>
           </key>
           <value>green/green.css</value>
