@@ -421,6 +421,8 @@ public class TableAlteror
         executeSql( "DROP TABLE chartgroup" );
         
         executeSql( "ALTER TABLE patientdatavaluearchive DROP COLUMN categoryoptioncomboid" );
+        executeSql( "delete from usersetting where name='currentStyle' and value like '%blue/blue.css'" );
+        executeSql( "delete from systemsetting where name='currentStyle' and value like '%blue/blue.css'" );
         
         log.info( "Tables updated" );
     }
