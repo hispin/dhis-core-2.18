@@ -41,8 +41,7 @@ function loadProgramStages()
 				jQuery('#dueDateTR').attr('class','hidden');
 				enable('completeBtn');
 				enable('validationBtn');
-				hideById('currentSelection');
-				
+				hideById('historyPlanLink');
 				loadDataEntry();
 			}
 			else
