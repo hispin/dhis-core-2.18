@@ -356,7 +356,7 @@ public class ReportTableTest
     @Test
     public void testOrganisationUnitGroupReportTableA()
     {
-        ReportTable reportTable = new ReportTable( "Embezzlement", false,
+        ReportTable reportTable = new ReportTable( "Embezzlement",
             new ArrayList<DataElement>(), indicators, new ArrayList<DataSet>(), periods, relativePeriods, new ArrayList<OrganisationUnit>(), relativeUnits, 
             groups, null, true, true, false, relatives, null, i18nFormat, "january_2000" );
 
@@ -414,7 +414,7 @@ public class ReportTableTest
     @Test
     public void testOrganisationUnitGroupReportTableB()
     {        
-        ReportTable reportTable = new ReportTable( "Embezzlement", false, 
+        ReportTable reportTable = new ReportTable( "Embezzlement",
             new ArrayList<DataElement>(), indicators, new ArrayList<DataSet>(), periods, relativePeriods, new ArrayList<OrganisationUnit>(), relativeUnits, 
             groups, null, true, false, true, relatives, null, i18nFormat, "january_2000" );
 
@@ -470,7 +470,7 @@ public class ReportTableTest
     @Test
     public void testIndicatorReportTableA()
     {
-        ReportTable reportTable = new ReportTable( "Embezzlement", false,
+        ReportTable reportTable = new ReportTable( "Embezzlement",
             new ArrayList<DataElement>(), indicators, new ArrayList<DataSet>(), periods, relativePeriods, units, new ArrayList<OrganisationUnit>(), 
             new ArrayList<OrganisationUnitGroup>(), null, true, true, false, relatives, null, i18nFormat, "january_2000" );
 
@@ -528,7 +528,7 @@ public class ReportTableTest
     @Test
     public void testIndicatorReportTableB()
     {
-        ReportTable reportTable = new ReportTable( "Embezzlement", false,
+        ReportTable reportTable = new ReportTable( "Embezzlement",
             new ArrayList<DataElement>(), indicators, new ArrayList<DataSet>(), periods, relativePeriods, units, new ArrayList<OrganisationUnit>(), 
             new ArrayList<OrganisationUnitGroup>(), null, false, false, true, relatives, null, i18nFormat, "january_2000" );
 
@@ -586,7 +586,7 @@ public class ReportTableTest
     @Test
     public void testIndicatorReportTableC()
     {        
-        ReportTable reportTable = new ReportTable( "Embezzlement", false, 
+        ReportTable reportTable = new ReportTable( "Embezzlement",
             new ArrayList<DataElement>(), indicators, new ArrayList<DataSet>(), periods, relativePeriods, units, new ArrayList<OrganisationUnit>(), 
             new ArrayList<OrganisationUnitGroup>(), null, true, false, true, relatives, null, i18nFormat, "january_2000" );
 
@@ -642,7 +642,7 @@ public class ReportTableTest
     @Test
     public void testIndicatorReportTableColumnsOnly()
     {
-        ReportTable reportTable = new ReportTable( "Embezzlement", false, 
+        ReportTable reportTable = new ReportTable( "Embezzlement",
             new ArrayList<DataElement>(), indicators, new ArrayList<DataSet>(), periods, relativePeriods, units, new ArrayList<OrganisationUnit>(), 
             new ArrayList<OrganisationUnitGroup>(), null, true, true, true, relatives, null, i18nFormat, "january_2000" );
 
@@ -672,7 +672,7 @@ public class ReportTableTest
     @Test
     public void testIndicatorReportTableRowsOnly()
     {
-        ReportTable reportTable = new ReportTable( "Embezzlement", false, 
+        ReportTable reportTable = new ReportTable( "Embezzlement",
             new ArrayList<DataElement>(), indicators, new ArrayList<DataSet>(), periods, relativePeriods, units, new ArrayList<OrganisationUnit>(), 
             new ArrayList<OrganisationUnitGroup>(), null, false, false, false, relatives, null, i18nFormat, "january_2000" );
 
@@ -702,7 +702,7 @@ public class ReportTableTest
     @Test
     public void testDataElementReportTableA()
     {
-        ReportTable reportTable = new ReportTable( "Embezzlement", false,
+        ReportTable reportTable = new ReportTable( "Embezzlement",
             dataElements, new ArrayList<Indicator>(), new ArrayList<DataSet>(), periods, relativePeriods, units, new ArrayList<OrganisationUnit>(), 
             new ArrayList<OrganisationUnitGroup>(), null, true, true, false, relatives, null, i18nFormat, "january_2000" );
 
@@ -744,7 +744,7 @@ public class ReportTableTest
     @Test
     public void testDataElementReportTableB()
     {
-        ReportTable reportTable = new ReportTable( "Embezzlement", false,
+        ReportTable reportTable = new ReportTable( "Embezzlement",
             dataElements, new ArrayList<Indicator>(), new ArrayList<DataSet>(), periods, relativePeriods, units, new ArrayList<OrganisationUnit>(), 
             new ArrayList<OrganisationUnitGroup>(), null, false, false, true, relatives, null, i18nFormat, "january_2000" );
 
@@ -786,7 +786,7 @@ public class ReportTableTest
     @Test
     public void testDataElementReportTableC()
     {
-        ReportTable reportTable = new ReportTable( "Embezzlement", false,
+        ReportTable reportTable = new ReportTable( "Embezzlement",
             dataElements, new ArrayList<Indicator>(), new ArrayList<DataSet>(), periods, relativePeriods, units, new ArrayList<OrganisationUnit>(), 
             new ArrayList<OrganisationUnitGroup>(), null, true, false, true, relatives, null, i18nFormat, "january_2000" );
 
@@ -828,7 +828,7 @@ public class ReportTableTest
     @Test
     public void testCategoryComboReportTableA()
     {
-        ReportTable reportTable = new ReportTable( "Embezzlement", false,
+        ReportTable reportTable = new ReportTable( "Embezzlement",
             dataElements, new ArrayList<Indicator>(), new ArrayList<DataSet>(), periods, relativePeriods, units, new ArrayList<OrganisationUnit>(), 
             new ArrayList<OrganisationUnitGroup>(), categoryCombo, true, true, false, relatives, null, i18nFormat, "january_2000" );
         
@@ -889,7 +889,7 @@ public class ReportTableTest
     @Test
     public void testCategoryComboReportTableB()
     {
-        ReportTable reportTable = new ReportTable( "Embezzlement", false,
+        ReportTable reportTable = new ReportTable( "Embezzlement",
             dataElements, new ArrayList<Indicator>(), new ArrayList<DataSet>(), periods, relativePeriods, units, new ArrayList<OrganisationUnit>(), 
             new ArrayList<OrganisationUnitGroup>(), categoryCombo, false, false, true, relatives, null, i18nFormat, "january_2000" );
 
@@ -946,7 +946,7 @@ public class ReportTableTest
     @Test
     public void testCategoryComboReportTableC()
     {
-        ReportTable reportTable = new ReportTable( "Embezzlement", false,
+        ReportTable reportTable = new ReportTable( "Embezzlement",
             dataElements, new ArrayList<Indicator>(), new ArrayList<DataSet>(), periods, relativePeriods, units, new ArrayList<OrganisationUnit>(), 
             new ArrayList<OrganisationUnitGroup>(), categoryCombo, true, false, true, relatives, null, i18nFormat, "january_2000" );
 
@@ -1001,7 +1001,7 @@ public class ReportTableTest
     @Test
     public void testDataSetReportTableA()
     {
-        ReportTable reportTable = new ReportTable( "Embezzlement", false,
+        ReportTable reportTable = new ReportTable( "Embezzlement",
             new ArrayList<DataElement>(), new ArrayList<Indicator>(), dataSets, periods, relativePeriods, units, new ArrayList<OrganisationUnit>(), 
             new ArrayList<OrganisationUnitGroup>(), null, true, true, false, relatives, null, i18nFormat, "january_2000" );
 
@@ -1043,7 +1043,7 @@ public class ReportTableTest
     @Test
     public void testDataSetReportTableB()
     {
-        ReportTable reportTable = new ReportTable( "Embezzlement", false,
+        ReportTable reportTable = new ReportTable( "Embezzlement",
             new ArrayList<DataElement>(), new ArrayList<Indicator>(), dataSets, periods, relativePeriods, units, new ArrayList<OrganisationUnit>(), 
             new ArrayList<OrganisationUnitGroup>(), null, false, false, true, relatives, null, i18nFormat, "january_2000" );
 
@@ -1085,7 +1085,7 @@ public class ReportTableTest
     @Test
     public void testDataSetReportTableC()
     {        
-        ReportTable reportTable = new ReportTable( "Embezzlement", false, 
+        ReportTable reportTable = new ReportTable( "Embezzlement",
             new ArrayList<DataElement>(), new ArrayList<Indicator>(), dataSets, periods, relativePeriods, units, new ArrayList<OrganisationUnit>(), 
             new ArrayList<OrganisationUnitGroup>(), null, true, false, true, relatives, null, i18nFormat, "january_2000" );
 

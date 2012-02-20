@@ -387,7 +387,7 @@ public class ReportTableGridTest
     @Test
     public void testGetOrgUnitIndicatorReportTableA()
     {
-        ReportTable reportTable = new ReportTable( "Prescriptions", false,
+        ReportTable reportTable = new ReportTable( "Prescriptions",
             new ArrayList<DataElement>(), indicators, new ArrayList<DataSet>(), periods, relativePeriods, new ArrayList<OrganisationUnit>(), new ArrayList<OrganisationUnit>(),
             groups, null, true, true, false, new RelativePeriods(), null, i18nFormat, "january_2000" );
 
@@ -411,7 +411,7 @@ public class ReportTableGridTest
     @Test
     public void testGetIndicatorOrgUnitReportTableB()
     {
-        ReportTable reportTable = new ReportTable( "Embezzlement", false,
+        ReportTable reportTable = new ReportTable( "Embezzlement",
             new ArrayList<DataElement>(), indicators, new ArrayList<DataSet>(), periods, relativePeriods, new ArrayList<OrganisationUnit>(), new ArrayList<OrganisationUnit>(), 
             groups, null, false, false, true, new RelativePeriods(), null, i18nFormat, "january_2000" );
 
@@ -437,7 +437,7 @@ public class ReportTableGridTest
     @Test
     public void testGetIndicatorOrgUnitReportTableC()
     {
-        ReportTable reportTable = new ReportTable( "Embezzlement", false, 
+        ReportTable reportTable = new ReportTable( "Embezzlement",
             new ArrayList<DataElement>(), indicators, new ArrayList<DataSet>(), periods, relativePeriods, new ArrayList<OrganisationUnit>(), new ArrayList<OrganisationUnit>(), 
             groups, null, true, false, true, new RelativePeriods(), null, i18nFormat, "january_2000" );
 
@@ -461,7 +461,7 @@ public class ReportTableGridTest
     @Test
     public void testGetDataElementOrgUnitReportTableA()
     {
-        ReportTable reportTable = new ReportTable( "Prescriptions", false,
+        ReportTable reportTable = new ReportTable( "Prescriptions",
             dataElements, new ArrayList<Indicator>(), new ArrayList<DataSet>(), periods, relativePeriods, new ArrayList<OrganisationUnit>(), new ArrayList<OrganisationUnit>(),
             groups, null, true, true, false, new RelativePeriods(), null, i18nFormat, "january_2000" );
 
@@ -485,7 +485,7 @@ public class ReportTableGridTest
     @Test
     public void testGetDataElementOrgUnitReportTableB()
     {
-        ReportTable reportTable = new ReportTable( "Embezzlement", false,
+        ReportTable reportTable = new ReportTable( "Embezzlement",
             dataElements, new ArrayList<Indicator>(), new ArrayList<DataSet>(), periods, relativePeriods, new ArrayList<OrganisationUnit>(), new ArrayList<OrganisationUnit>(), 
             groups, null, false, false, true, new RelativePeriods(), null, i18nFormat, "january_2000" );
 
@@ -511,7 +511,7 @@ public class ReportTableGridTest
     @Test
     public void testGetDataElementOrgUnitReportTableC()
     {
-        ReportTable reportTable = new ReportTable( "Embezzlement", false, 
+        ReportTable reportTable = new ReportTable( "Embezzlement",
             dataElements, new ArrayList<Indicator>(), new ArrayList<DataSet>(), periods, relativePeriods, new ArrayList<OrganisationUnit>(), new ArrayList<OrganisationUnit>(), 
             groups, null, true, false, true, new RelativePeriods(), null, i18nFormat, "january_2000" );
 
@@ -535,7 +535,7 @@ public class ReportTableGridTest
     @Test
     public void testGetIndicatorReportTableA()
     {
-        ReportTable reportTable = new ReportTable( "Prescriptions", false,
+        ReportTable reportTable = new ReportTable( "Prescriptions",
             new ArrayList<DataElement>(), indicators, new ArrayList<DataSet>(), periods, relativePeriods, units, new ArrayList<OrganisationUnit>(),
             new ArrayList<OrganisationUnitGroup>(), null, true, true, false, new RelativePeriods(), null, i18nFormat, "january_2000" );
 
@@ -557,7 +557,7 @@ public class ReportTableGridTest
     @Test
     public void testGetIndicatorReportTableB()
     {
-        ReportTable reportTable = new ReportTable( "Embezzlement", false,
+        ReportTable reportTable = new ReportTable( "Embezzlement",
             new ArrayList<DataElement>(), indicators, new ArrayList<DataSet>(), periods, relativePeriods, units, new ArrayList<OrganisationUnit>(), 
             new ArrayList<OrganisationUnitGroup>(), null, false, false, true, new RelativePeriods(), null, i18nFormat, "january_2000" );
 
@@ -581,7 +581,7 @@ public class ReportTableGridTest
     @Test
     public void testGetIndicatorReportTableC()
     {
-        ReportTable reportTable = new ReportTable( "Embezzlement", false, 
+        ReportTable reportTable = new ReportTable( "Embezzlement",
             new ArrayList<DataElement>(), indicators, new ArrayList<DataSet>(), periods, relativePeriods, units, new ArrayList<OrganisationUnit>(), 
             new ArrayList<OrganisationUnitGroup>(), null, true, false, true, new RelativePeriods(), null, i18nFormat, "january_2000" );
 
@@ -603,7 +603,7 @@ public class ReportTableGridTest
     @Test
     public void testGetDataElementReportTableA()
     {
-        ReportTable reportTable = new ReportTable( "Prescriptions", false,
+        ReportTable reportTable = new ReportTable( "Prescriptions",
             dataElements, new ArrayList<Indicator>(), new ArrayList<DataSet>(), periods, relativePeriods, units, new ArrayList<OrganisationUnit>(),
             new ArrayList<OrganisationUnitGroup>(), null, true, true, false, new RelativePeriods(), null, i18nFormat, "january_2000" );
 
@@ -625,7 +625,7 @@ public class ReportTableGridTest
     @Test
     public void testGetDataElementReportTableB()
     {
-        ReportTable reportTable = new ReportTable( "Embezzlement", false,
+        ReportTable reportTable = new ReportTable( "Embezzlement",
             dataElements, new ArrayList<Indicator>(), new ArrayList<DataSet>(), periods, relativePeriods, units, new ArrayList<OrganisationUnit>(), 
             new ArrayList<OrganisationUnitGroup>(), null, false, false, true, new RelativePeriods(), null, i18nFormat, "january_2000" );
 
@@ -649,7 +649,7 @@ public class ReportTableGridTest
     @Test
     public void testGetDataElementReportTableC()
     {
-        ReportTable reportTable = new ReportTable( "Embezzlement", false, 
+        ReportTable reportTable = new ReportTable( "Embezzlement",
             dataElements, new ArrayList<Indicator>(), new ArrayList<DataSet>(), periods, relativePeriods, units, new ArrayList<OrganisationUnit>(), 
             new ArrayList<OrganisationUnitGroup>(), null, true, false, true, new RelativePeriods(), null, i18nFormat, "january_2000" );
 
@@ -671,7 +671,7 @@ public class ReportTableGridTest
     @Test
     public void testGetDataSetReportTableA()
     {
-        ReportTable reportTable = new ReportTable( "Prescriptions", false,
+        ReportTable reportTable = new ReportTable( "Prescriptions",
             new ArrayList<DataElement>(), new ArrayList<Indicator>(), dataSets, periods, relativePeriods, units, new ArrayList<OrganisationUnit>(),
             new ArrayList<OrganisationUnitGroup>(), null, true, true, false, new RelativePeriods(), null, i18nFormat, "january_2000" );
 
@@ -693,7 +693,7 @@ public class ReportTableGridTest
     @Test
     public void testGetDataSetReportTableB()
     {
-        ReportTable reportTable = new ReportTable( "Embezzlement", false,
+        ReportTable reportTable = new ReportTable( "Embezzlement",
             new ArrayList<DataElement>(), new ArrayList<Indicator>(), dataSets, periods, relativePeriods, units, new ArrayList<OrganisationUnit>(), 
             new ArrayList<OrganisationUnitGroup>(), null, false, false, true, new RelativePeriods(), null, i18nFormat, "january_2000" );
 
@@ -717,7 +717,7 @@ public class ReportTableGridTest
     @Test
     public void testGetDataSetReportTableC()
     {
-        ReportTable reportTable = new ReportTable( "Embezzlement", false, 
+        ReportTable reportTable = new ReportTable( "Embezzlement",
             new ArrayList<DataElement>(), new ArrayList<Indicator>(), dataSets, periods, relativePeriods, units, new ArrayList<OrganisationUnit>(), 
             new ArrayList<OrganisationUnitGroup>(), null, true, false, true, new RelativePeriods(), null, i18nFormat, "january_2000" );
 
@@ -752,7 +752,7 @@ public class ReportTableGridTest
         
         batchHandler.flush();
         
-        ReportTable reportTable = new ReportTable( "Prescriptions", false,
+        ReportTable reportTable = new ReportTable( "Prescriptions",
             dataElements, new ArrayList<Indicator>(), new ArrayList<DataSet>(), periods, relativePeriods, units, new ArrayList<OrganisationUnit>(),
             new ArrayList<OrganisationUnitGroup>(), categoryComboA, true, true, false, new RelativePeriods(), null, i18nFormat, "january_2000" );
 
@@ -795,7 +795,7 @@ public class ReportTableGridTest
         
         batchHandler.flush();
         
-        ReportTable reportTable = new ReportTable( "Embezzlement", false,
+        ReportTable reportTable = new ReportTable( "Embezzlement",
             dataElements, new ArrayList<Indicator>(), new ArrayList<DataSet>(), periods, relativePeriods, units, new ArrayList<OrganisationUnit>(), 
             new ArrayList<OrganisationUnitGroup>(), categoryComboA, false, false, true, new RelativePeriods(), null, i18nFormat, "january_2000" );
 
@@ -840,7 +840,7 @@ public class ReportTableGridTest
         
         batchHandler.flush();
         
-        ReportTable reportTable = new ReportTable( "Embezzlement", false, 
+        ReportTable reportTable = new ReportTable( "Embezzlement",
             dataElements, new ArrayList<Indicator>(), new ArrayList<DataSet>(), periods, relativePeriods, units, new ArrayList<OrganisationUnit>(), 
             new ArrayList<OrganisationUnitGroup>(), categoryComboA, true, false, true, new RelativePeriods(), null, i18nFormat, "january_2000" );
 
@@ -883,7 +883,7 @@ public class ReportTableGridTest
         
         batchHandler.flush();
         
-        ReportTable reportTable = new ReportTable( "Embezzlement", false, 
+        ReportTable reportTable = new ReportTable( "Embezzlement",
             dataElements, new ArrayList<Indicator>(), new ArrayList<DataSet>(), periods, relativePeriods, units, new ArrayList<OrganisationUnit>(), 
             new ArrayList<OrganisationUnitGroup>(), categoryComboA, false, false, false, new RelativePeriods(), null, i18nFormat, "january_2000" );
 
@@ -927,7 +927,7 @@ public class ReportTableGridTest
     @Test
     public void testGetMultiReportTableA()
     {
-        ReportTable reportTable = new ReportTable( "Prescriptions", false,
+        ReportTable reportTable = new ReportTable( "Prescriptions",
             dataElements, indicators, dataSets, periods, relativePeriods, units, new ArrayList<OrganisationUnit>(),
             new ArrayList<OrganisationUnitGroup>(), null, true, true, false, new RelativePeriods(), null, i18nFormat, "january_2000" );
 
@@ -965,7 +965,7 @@ public class ReportTableGridTest
     @Test
     public void testGetMultiReportTableB()
     {
-        ReportTable reportTable = new ReportTable( "Embezzlement", false,
+        ReportTable reportTable = new ReportTable( "Embezzlement",
             dataElements, indicators, dataSets, periods, relativePeriods, units, new ArrayList<OrganisationUnit>(), 
             new ArrayList<OrganisationUnitGroup>(), null, false, false, true, new RelativePeriods(), null, i18nFormat, "january_2000" );
 
@@ -1013,7 +1013,7 @@ public class ReportTableGridTest
     @Test
     public void testGetMultiReportTableC()
     {
-        ReportTable reportTable = new ReportTable( "Embezzlement", false, 
+        ReportTable reportTable = new ReportTable( "Embezzlement",
             dataElements, indicators, dataSets, periods, relativePeriods, units, new ArrayList<OrganisationUnit>(), 
             new ArrayList<OrganisationUnitGroup>(), null, true, false, true, new RelativePeriods(), null, i18nFormat, "january_2000" );
 
@@ -1051,7 +1051,7 @@ public class ReportTableGridTest
     @Test
     public void testGetIndicatorReportTableColumnsOnly()
     {
-        ReportTable reportTable = new ReportTable( "Prescriptions", false,
+        ReportTable reportTable = new ReportTable( "Prescriptions",
             new ArrayList<DataElement>(), indicators, new ArrayList<DataSet>(), periods, relativePeriods, units, new ArrayList<OrganisationUnit>(),
             new ArrayList<OrganisationUnitGroup>(), null, true, true, true, new RelativePeriods(), null, i18nFormat, "january_2000" );
 
@@ -1072,7 +1072,7 @@ public class ReportTableGridTest
     @Test
     public void testGetIndicatorReportTableRowsOnly()
     {
-        ReportTable reportTable = new ReportTable( "Prescriptions", false,
+        ReportTable reportTable = new ReportTable( "Prescriptions",
             new ArrayList<DataElement>(), indicators, new ArrayList<DataSet>(), periods, relativePeriods, units, new ArrayList<OrganisationUnit>(),
             new ArrayList<OrganisationUnitGroup>(), null, false, false, false, new RelativePeriods(), null, i18nFormat, "january_2000" );
 
@@ -1093,7 +1093,7 @@ public class ReportTableGridTest
     @Test
     public void testGetIndicatorReportTableTopLimit()
     {
-        ReportTable reportTable = new ReportTable( "Embezzlement", false,
+        ReportTable reportTable = new ReportTable( "Embezzlement",
             new ArrayList<DataElement>(), indicators, new ArrayList<DataSet>(), periods, relativePeriods, units, new ArrayList<OrganisationUnit>(), 
             new ArrayList<OrganisationUnitGroup>(), null, false, false, true, new RelativePeriods(), null, i18nFormat, "january_2000" );
         reportTable.setTopLimit( 2 );
@@ -1114,7 +1114,7 @@ public class ReportTableGridTest
     @Test
     public void testGetIndicatorReportTableSortOrder()
     {
-        ReportTable reportTable = new ReportTable( "Embezzlement", false,
+        ReportTable reportTable = new ReportTable( "Embezzlement",
             new ArrayList<DataElement>(), indicators, new ArrayList<DataSet>(), periods, relativePeriods, units, new ArrayList<OrganisationUnit>(), 
             new ArrayList<OrganisationUnitGroup>(), null, false, false, true, new RelativePeriods(), null, i18nFormat, "january_2000" );
         reportTable.setSortOrder( ReportTable.DESC );
@@ -1139,10 +1139,12 @@ public class ReportTableGridTest
     @Test
     public void testGetDataElementReportTableRegression()
     {
-        ReportTable reportTable = new ReportTable( "Embezzlement", true, 
+        ReportTable reportTable = new ReportTable( "Embezzlement",
             dataElements, new ArrayList<Indicator>(), new ArrayList<DataSet>(), periods, relativePeriods, units, new ArrayList<OrganisationUnit>(), 
             new ArrayList<OrganisationUnitGroup>(), null, true, false, true, new RelativePeriods(), null, i18nFormat, "january_2000" );
-
+        
+        reportTable.setRegression( true );
+        
         int id = reportTableService.saveReportTable( reportTable );
 
         Grid grid = reportTableService.getReportTableGrid( id, i18nFormat, date, 0 );

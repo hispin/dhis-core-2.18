@@ -347,10 +347,10 @@ public class DefaultReportTableService
      */
     private Grid getGrid( ReportTable reportTable )
     {
-        String subtitle = StringUtils.trimToEmpty( reportTable.getParentOrganisationUnitName() ) + SPACE
+        final String subtitle = StringUtils.trimToEmpty( reportTable.getParentOrganisationUnitName() ) + SPACE
             + StringUtils.trimToEmpty( reportTable.getReportingPeriodName() );
 
-        Grid grid = new ListGrid().setTitle( reportTable.getName() ).setSubtitle( subtitle );
+        final Grid grid = new ListGrid().setTitle( reportTable.getName() ).setSubtitle( subtitle );
 
         final Map<String, Double> map = reportTableManager.getAggregatedValueMap( reportTable );
 
@@ -380,6 +380,9 @@ public class DefaultReportTableService
         grid.addHeader( new GridHeader( PRETTY_COLUMNS.get( ORGANISATION_UNIT_IS_PARENT_COLUMN_NAME ),
             ORGANISATION_UNIT_IS_PARENT_COLUMN_NAME, String.class.getName(), true, true ) );
 
+        final int startColumnIndex = grid.getHeaders().size();
+        final int numberOfColumns = reportTable.getColumns().size();
+        
         for ( List<NameableObject> column : reportTable.getColumns() )
         {
             grid.addHeader( new GridHeader( getPrettyColumnName( column ), getColumnName( column ), Double.class
@@ -453,9 +456,14 @@ public class DefaultReportTableService
             }
         }
 
-        if ( reportTable.isRegression() && !reportTable.doTotal() )
+        if ( reportTable.isRegression() )
         {
-            addRegressionToGrid( grid, reportTable.getColumns().size() );
+            addRegressionToGrid( grid, startColumnIndex, numberOfColumns );
+        }
+        
+        if ( reportTable.isCumulative() )
+        {
+            addCumulativesToGrid( grid, startColumnIndex, numberOfColumns );
         }
 
         // ---------------------------------------------------------------------
@@ -478,13 +486,12 @@ public class DefaultReportTableService
     /**
      * Adds columns with regression values to the given grid.
      *
-     * @param grid            the grid.
-     * @param numberOfColumns the number of columns.
+     * @param grid the grid.
+     * @param startColumnIndex the index of the first data column.
+     * @param numberOfColumns the number of data columns.
      */
-    private Grid addRegressionToGrid( Grid grid, int numberOfColumns )
+    private Grid addRegressionToGrid( Grid grid, int startColumnIndex, int numberOfColumns )
     {
-        int startColumnIndex = grid.getWidth() - numberOfColumns;
-
         for ( int i = 0; i < numberOfColumns; i++ )
         {
             int columnIndex = i + startColumnIndex;
@@ -492,6 +499,25 @@ public class DefaultReportTableService
             grid.addRegressionColumn( columnIndex, true );
         }
 
+        return grid;
+    }
+    
+    /**
+     * Adds columns with cumulative values to the given grid.
+     * 
+     * @param grid the grid.
+     * @param startColumnIndex the index of the first data column.
+     * @param numberOfColumns the number of data columns.
+     */
+    private Grid addCumulativesToGrid( Grid grid, int startColumnIndex, int numberOfColumns )
+    {
+        for ( int i = 0; i < numberOfColumns; i++ )
+        {
+            int columnIndex = i + startColumnIndex;
+            
+            grid.addCumulativeColumn( columnIndex, true );
+        }
+        
         return grid;
     }
 
