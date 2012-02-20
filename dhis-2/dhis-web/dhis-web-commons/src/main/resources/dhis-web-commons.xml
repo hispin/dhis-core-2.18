@@ -798,12 +798,6 @@
       <param name="menu">/dhis-web-commons/about/menu.vm</param>
     </action>
 
-    <action name="displayFeedbackForm" class="org.hisp.dhis.commons.action.NoAction">
-      <result name="success" type="velocity">/main.vm</result>
-      <param name="page">/dhis-web-commons/about/feedbackForm.vm</param>
-      <param name="menu">/dhis-web-commons/about/menu.vm</param>
-    </action>
-
     <action name="help" class="org.hisp.dhis.commons.action.NoAction">
       <result name="success" type="velocity">/main.vm</result>
       <param name="page">/dhis-web-commons/about/help.vm</param>
