@@ -77,6 +77,7 @@
       <property name="last12Months" />
       <property name="last4Quarters" />
       <property name="last2SixMonths" />
+	  <property name="lastYear" />
       <property name="last5Years" />
     </component>
 

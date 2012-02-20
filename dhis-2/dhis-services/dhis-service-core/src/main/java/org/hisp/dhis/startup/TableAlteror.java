@@ -272,7 +272,6 @@ public class TableAlteror
 
         executeSql( "ALTER TABLE chart DROP COLUMN monthsLastYear" );
         executeSql( "ALTER TABLE chart DROP COLUMN quartersLastYear" );
-        executeSql( "ALTER TABLE chart DROP COLUMN lastYear" );
         executeSql( "ALTER TABLE chart DROP COLUMN last6BiMonths" );
         
         executeSql( "DROP TABLE chart_periods" );
