@@ -193,6 +193,13 @@ public class AddOrUpdateChartAction
     {
         this.thisYear = thisYear;
     }
+    
+    private boolean lastYear;
+
+    public void setLastYear( boolean lastYear )
+    {
+        this.lastYear = lastYear;
+    }
 
     private boolean last5Years;
 
@@ -334,8 +341,8 @@ public class AddOrUpdateChartAction
             }
         }
 
-        if ( lastMonth || last12Months || lastQuarter || last4Quarters || lastSixMonth || last2SixMonths || thisYear
-            || last5Years )
+        if ( lastMonth || last12Months || lastQuarter || last4Quarters || lastSixMonth || 
+            last2SixMonths || thisYear || lastYear || last5Years )
         {
             RelativePeriods rp = new RelativePeriods();
             rp.setReportingMonth( lastMonth );
@@ -345,6 +352,7 @@ public class AddOrUpdateChartAction
             rp.setLastSixMonth( lastSixMonth );
             rp.setLast2SixMonths( last2SixMonths );
             rp.setThisYear( thisYear );
+            rp.setLastYear( lastYear );
             rp.setLast5Years( last5Years );
 
             chart.setRelatives( rp );
