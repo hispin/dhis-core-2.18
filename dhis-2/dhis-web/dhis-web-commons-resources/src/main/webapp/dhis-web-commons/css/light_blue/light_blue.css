@@ -79,21 +79,11 @@ div#header
   right: 0px;
 }
 
-img#header1
-{
-  float: left;
-}
-
-img#header2
+img#headerBanner
 {
   position: absolute;
   top: 5px;
   left: 59px;
-}
-
-img#header3
-{
-  float: right;
 }
 
 img#menuSeparator1
@@ -178,27 +168,6 @@ span#headerText
   font-size: 16px;
 }
 
-div#popupHeader 
-{
-  background-color: #1d5288;
-  height: 34px;
-  width: 100%;
-  position: absolute;
-  top: 0px;
-  left: 0px;
-  border-bottom: 1px solid #202020;
-}
-
-span#popupHeaderText
-{
-  position: absolute;
-  top: 3px;
-  left: 218px;
-  font-size: 14px;
-  color: white;
-  margin: 5px;
-}
-
 div#menuDropDown1
 {
   position: absolute;
@@ -237,8 +206,6 @@ div#menuDropDown3
   opacity: 0.90;
   border-bottom-left-radius: 3px;
   border-bottom-right-radius: 3px;
-  -moz-border-radius-bottomleft: 3px; /* Firefox */
-  -moz-border-radius-bottomright: 3px; /* Firefox */
 }
 
 .menuDropDownBox
@@ -249,14 +216,12 @@ div#menuDropDown3
 
 .menuDropDownItem
 {
-  padding-top: 5px;
+  padding-top: 6px;
   padding-left: 10px;
-  padding-bottom: 4px;
+  padding-bottom: 5px;
   padding-right: 10px;
-  border: 1px solid #2a5a8a;
   cursor: pointer;
   border-radius: 3px;
-  -moz-border-radius: 3px; /* Firefox */
 }
 
 /*----------------------------------------------------------------------------*/
@@ -278,7 +243,6 @@ div#menuDropDown3
   filter: alpha(opacity=90);
   opacity: 0.90;
   border-bottom-right-radius: 5px;
-  -moz-border-radius-bottomright: 5px; /* Firefox */
 }
 
 #leftBarContents
@@ -292,14 +256,10 @@ div#menuDropDown3
   font-size: 14px;
   background-color: #4a89ba;
   margin: 16px 15px 0px 15px;
-  padding: 4px 0px 3px 10px;
+  padding: 5px 0px 4px 10px;
   color: white;
-  border-style: solid;
-  border-width: 1px;
-  border-color: #4a89ba;
   font-weight: normal;
   border-radius: 3px;
-  -moz-border-radius: 3px; /* Firefox */
 }
 
 #leftBarContents ul
@@ -460,16 +420,13 @@ div#menuDropDown3
   padding-left: 5px;
   padding-right: 5px;
   border-radius: 5px;
-  -moz-border-radius: 5px; /* Firefox */
 }
-	
+
 .introItem
 {
   padding: 12px;
   cursor: pointer;
-  border: 1px solid #d5efd5;
   border-radius: 3px;
-  -moz-border-radius: 3px; /* Firefox */
 }
 
 .introItemHeader
