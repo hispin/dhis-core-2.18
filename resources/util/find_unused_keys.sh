@@ -19,8 +19,10 @@ for i in $( cat $1 ); do
     KEY=${BASH_REMATCH[1]}
     MATCH=`find . -name "*.java" -o -name "*.vm" -o -name "*.js" -o -name "*.html" | xargs grep $KEY`
     LENGTH_OF_MATCH=${#MATCH}
-    if [[ ${LENGTH_OF_MATCH} == 0 ]]; then
+    if [[ ${LENGTH_OF_MATCH} == 0 ]] && [[ ${KEY} != intro_* ]]; then
       echo ${KEY}
     fi
   fi
 done
+
+echo "- Done -"
