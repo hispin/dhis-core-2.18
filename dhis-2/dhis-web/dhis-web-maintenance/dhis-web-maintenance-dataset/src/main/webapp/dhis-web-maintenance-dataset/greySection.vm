@@ -5,9 +5,9 @@
 
 <h3>$i18n.getString( "section_grey_field_managment" ) #openHelp( "grey_field" )</h3>
   
-<table id="detailsList">
-	<col/> ## Labels
-	<col/> ## Input
+<table id="detailsList" style="margin-bottom:15px">
+	<col/>
+	<col/>
 	<thead>
 		<tr>
 			<th colspan="2">$i18n.getString( "section_details" )</th>
@@ -16,25 +16,21 @@
 
 	<tbody>
 		<tr>
-			<td><label>$i18n.getString( "name" ) <em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
-			<td><b>$section.name</b></td>        
+			<td><label>$i18n.getString( "name" ):</label></td>
+			<td>$section.name</td>        
 		</tr>
 		<tr>
-			<td><label>$i18n.getString( "dataset" ) <em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
-			<td><b>$section.dataSet.name</b></td>
+			<td><label>$i18n.getString( "dataset" ):</label></td>
+			<td>$section.dataSet.name</td>
 		</tr>
 		<tr>
-	    <td><label>$i18n.getString( "category_combo" ) <em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
-	        <td><b>$categoryCombo.name</b></td>
+	    <td><label>$i18n.getString( "category_combo" ):</label></td>
+	        <td>$categoryCombo.name</td>
 		</tr>
     </tbody>    
 </table>
 
-<br/>
-<hr style="clear:both"/>
-<br/> 
-
-<div style="border:1px solid #808080;width:98%">
+<div style="border:1px solid #cccccc; width:95%; padding:10px; margin-bottom:15px; border-radius:3px;">
 	#if( $sectionIsMultiDimensional == "true" )    
     	#parse( "/dhis-web-maintenance-dataset/sectionMultiDimensionalDataElement.vm" )
 	#else
@@ -42,10 +38,6 @@
 	#end	
 </div>
 
-<br/>
-<hr style="clear:both"/>
-<br/>
-	
 <p>
-	<input type="button" onclick="window.location.href='section.action'" value="$i18n.getString( 'done' )"/>
+	<input type="button" onclick="window.location.href='section.action'" value="$i18n.getString( 'done' )" style="width:120px"/>
 </p>
