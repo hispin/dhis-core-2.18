@@ -328,7 +328,7 @@
 
 </div>
 
-<span><a href="javascript:toggleFixedOrganisationUnits()">Toggle fixed organisation units</a>&nbsp;</span>
+<span><a href="javascript:toggleFixedOrganisationUnits()">$i18n.getString( "toggle_fixed_organisation_units" )</a>&nbsp;</span>
 
 <div id="fixedOrganisationUnits" style="display:none">
 
@@ -391,7 +391,7 @@
 
 </div>
 
-<span><a href="javascript:toggleFixedPeriods()">Toggle fixed periods</a>&nbsp;</span>
+<span><a href="javascript:toggleFixedPeriods()">$i18n.getString( "toggle_fixed_periods" )</a>&nbsp;</span>
 
 <div id="fixedPeriods" style="display:none">
 
