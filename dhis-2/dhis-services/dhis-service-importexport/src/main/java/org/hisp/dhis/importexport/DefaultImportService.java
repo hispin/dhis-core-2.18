@@ -106,7 +106,6 @@ public class DefaultImportService
         throws ImportException
     {
         log.info( "Importing stream" );
-        state.setMessage( "Importing stream" );
 
         File tempZipFile = null;
         ZipFile zipFile = null;
@@ -150,7 +149,6 @@ public class DefaultImportService
         catch ( Exception ex )
         {
             log.error( ex );
-            state.setMessage( "Error processing input stream" );
             throw new ImportException( "Error processing input stream", ex );
         }
 
@@ -173,7 +171,6 @@ public class DefaultImportService
             else
             {
                 log.info( "Transforming stream" );
-                state.setMessage( "Transforming stream" );
                 transformOutput = File.createTempFile( "TRANSFORM_", ".xml" );
                 Source source = new StreamSource( xmlDataStream );
                 FileOutputStream transformOutStream = new FileOutputStream( transformOutput );
