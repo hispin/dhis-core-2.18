@@ -7,8 +7,8 @@
 # First argument is the properties file to investigate.
 
 if [[ $# -lt 1 ]]; then
-    echo "Usage: $0 properties-file"
-    exit 1
+  echo "Usage: $0 properties-file"
+  exit 1
 fi
 
 echo "Keys not in use in file: $1"
