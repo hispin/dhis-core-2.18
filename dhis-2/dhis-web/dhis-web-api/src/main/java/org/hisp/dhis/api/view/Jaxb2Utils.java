@@ -52,7 +52,7 @@ public class Jaxb2Utils
     public static void marshal( Object domainModel, OutputStream output )
         throws JAXBException
     {
-        Jaxb2Utils.createMarshaller( domainModel ).marshal( domainModel, output );
+        createMarshaller( domainModel ).marshal( domainModel, output );
     }
     
     public static Unmarshaller createUnmarshaller( Class<?> clazz )
@@ -69,6 +69,6 @@ public class Jaxb2Utils
     public static <T> T unmarshal( Class<?> clazz, InputStream input ) 
         throws JAXBException
     {
-        return (T) Jaxb2Utils.createUnmarshaller( clazz ).unmarshal( input );
+        return (T) createUnmarshaller( clazz ).unmarshal( input );
     }
 }
