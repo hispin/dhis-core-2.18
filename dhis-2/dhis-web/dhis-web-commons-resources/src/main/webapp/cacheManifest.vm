@@ -4,12 +4,9 @@ NETWORK:
 *
 CACHE:
 css/light_blue/dom.js
-css/light_blue/head.png
 css/light_blue/light_blue.css
 css/light_blue/logo_background.png
 css/light_blue/logo_banner.png
-css/light_blue/logo_left.png
-css/light_blue/logo_right.png
 css/light_blue/logo_separator.png
 css/widgets.css
 ../dhis-web-dataentry/style/dhis-web-dataentry.css
