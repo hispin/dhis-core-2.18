@@ -195,7 +195,9 @@ public class GetDataValuesForDataSetAction
                 complete = true;
                 date = registration.getDate();
                 storedBy = registration.getStoredBy();
-            }
+            }            
+
+            locked = dataSetService.isLocked( dataSet, period, organisationUnit, null );
         }
 
         return SUCCESS;

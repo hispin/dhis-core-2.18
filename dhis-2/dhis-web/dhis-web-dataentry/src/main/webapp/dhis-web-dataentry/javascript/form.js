@@ -205,7 +205,7 @@ function uploadLocalData()
             cache: false,
             success: function( data, textStatus, jqXHR )
             {
-                if( data.status == 2 )
+                if ( data.status == 2 )
                 {
                     log( 'DataSet is locked' );
                     setHeaderMessage( i18n_register_complete_failed_dataset_is_locked );
@@ -526,37 +526,6 @@ function organisationUnitSelected( orgUnits, orgUnitNames )
 }
 
 // -----------------------------------------------------------------------------
-// Locking
-// -----------------------------------------------------------------------------
-
-function getLockStatus()
-{
-    var periodId = $( '#selectedPeriodId' ).val();
-    var dataSetId = $( '#selectedDataSetId' ).val();
-    var locked = false;
-
-    if ( periodId == null || dataSetId == -1 )
-    {
-        return false;
-    }
-
-    $.ajax( {
-      url: 'getLockStatus.action',
-      async: false,
-      data: {
-          'organisationUnitId': currentOrganisationUnitId,
-          'dataSetId': dataSetId,
-          'periodId': periodId
-      },
-      success: function (data) {
-          locked = data.locked;
-      }
-    } );
-
-    return locked;
-}
-
-// -----------------------------------------------------------------------------
 // Next/Previous Periods Selection
 // -----------------------------------------------------------------------------
 
@@ -711,6 +680,19 @@ function insertDataValues()
 	    dataType: 'json',
 	    success: function( json )
 	    {
+	    	if ( json.locked )
+	    	{
+	    		$( '#contentDiv' ).hide();
+	    		$( '#completenessDiv' ).hide();
+	    		setHeaderDelayMessage( i18n_dataset_is_locked );
+	    		return;
+	    	}
+	    	else
+	    	{	    		
+	    		$( '#contentDiv' ).show();
+	    		$( '#completenessDiv' ).show();
+	    	}
+	    	
 	        // Set data values, works for select lists too as data
 	        // value = select value
 
@@ -774,8 +756,6 @@ function insertDataValues()
 	            $( '#undoButton' ).attr( 'disabled', 'disabled' );
 	            $( '#infoDiv' ).css( 'display', 'none' );
 	        }
-
-	        // TODO locking
 	    }
 	} );
 }
@@ -788,21 +768,6 @@ function displayEntryFormCompleted()
 
     dataEntryFormIsLoaded = true;
     hideLoader();
-
-    if( getLockStatus() )
-    {
-        $( '#contentDiv :input' ).attr( 'disabled', true );
-        $( '#currentDataElement' ).html( i18n_dataset_is_locked );
-        $( '#completenessDiv' ).css( 'display', 'none' );
-    }
-    else
-    {
-        $( '#contentDiv :input' ).removeAttr( 'disabled' );
-        $( '#completenessDiv' ).css( 'display', 'block' );
-        $( '#currentDataElement' ).html( i18n_no_dataelement_selected );
-    }
-
-    $( '#contentDiv :input' ).css( 'background-color', 'white' );
 }
 
 function valueFocus( e )

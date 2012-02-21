@@ -143,11 +143,6 @@ public class UndoCompleteDataSetAction
     // Supportive methods
     // -------------------------------------------------------------------------
 
-    private String logError( String message )
-    {
-        return logError( message, 1 );
-    }
-
     private String logError( String message, int statusCode )
     {
         log.info( message );
