@@ -66,14 +66,5 @@ public class Jaxb2View extends AbstractView
         Marshaller marshaller = Jaxb2Utils.createMarshaller( domainModel );
 
         marshaller.marshal( domainModel, outputStream );
-
-/*
-        Marshaller.Listener listener = new IdentifiableObjectListener(request);
-        marshaller.setListener(listener);
-
-        marshaller.setProperty("com.sun.xml.internal.bind.xmlHeaders",
-                "\n<?xml-stylesheet type=\"text/xsl\" href=\"dhis-web-api/xslt/chart.xslt\"?>\n");
-*/
     }
-
 }

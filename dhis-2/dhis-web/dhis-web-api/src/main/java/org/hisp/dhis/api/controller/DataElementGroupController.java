@@ -193,8 +193,6 @@ public class DataElementGroupController
     @PreAuthorize( "hasRole('ALL') or hasRole('F_WEBAPI_DELETE')" )
     public void deleteDataElementGroup( @PathVariable( "uid" ) String uid ) throws Exception
     {
-        // throw new HttpRequestMethodNotSupportedException( RequestMethod.DELETE.toString() );
-
         DataElementGroup dataElementGroup = dataElementService.getDataElementGroup( uid );
 
         if ( dataElementGroup != null )

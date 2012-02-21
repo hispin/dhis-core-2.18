@@ -160,7 +160,8 @@ public class DataElementGroupSetController
                     response.setStatus( HttpServletResponse.SC_CREATED );
                     response.setHeader( "Location", DataElementController.RESOURCE_PATH + "/" + dataElementGroupSet.getUid() );
                 }
-            } catch ( Exception e )
+            } 
+            catch ( Exception e )
             {
                 response.setStatus( HttpServletResponse.SC_CONFLICT );
             }
@@ -196,8 +197,6 @@ public class DataElementGroupSetController
     @PreAuthorize( "hasRole('ALL') or hasRole('F_WEBAPI_DELETE')" )
     public void deleteDataElementGroupSet( @PathVariable( "uid" ) String uid ) throws Exception
     {
-        // throw new HttpRequestMethodNotSupportedException( RequestMethod.DELETE.toString() );
-
         DataElementGroupSet dataElementGroupSet = dataElementService.getDataElementGroupSet( uid );
 
         if ( dataElementGroupSet != null )
