@@ -105,9 +105,9 @@ public class AddDataSetAction
         this.code = code;
     }
 
-    private Integer expiryDays;
+    private int expiryDays;
 
-    public void setExpiryDays( Integer expiryDays )
+    public void setExpiryDays( int expiryDays )
     {
         this.expiryDays = expiryDays;
     }
