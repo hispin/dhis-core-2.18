@@ -127,9 +127,9 @@ public class OrganisationUnit extends BaseNameableObject
      */
     private Set<AttributeValue> attributeValues = new HashSet<AttributeValue>();
 
-    /*
-     * Transient fields
-     */
+    // -------------------------------------------------------------------------
+    // Transient fields
+    // -------------------------------------------------------------------------
 
     private transient boolean currentParent;
 
