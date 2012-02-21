@@ -134,7 +134,8 @@ public class OrganisationUnitGroupController
                     response.setStatus( HttpServletResponse.SC_CREATED );
                     response.setHeader( "Location", DataElementController.RESOURCE_PATH + "/" + organisationUnitGroup.getUid() );
                 }
-            } catch ( Exception e )
+            }
+            catch ( Exception ex )
             {
                 response.setStatus( HttpServletResponse.SC_CONFLICT );
             }

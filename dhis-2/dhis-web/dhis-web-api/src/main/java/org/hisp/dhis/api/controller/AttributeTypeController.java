@@ -152,7 +152,8 @@ public class AttributeTypeController
                     response.setStatus( HttpServletResponse.SC_CREATED );
                     response.setHeader( "Location", AttributeTypeController.RESOURCE_PATH + "/" + attribute.getUid() );
                 }
-            } catch ( Exception e )
+            } 
+            catch ( Exception e )
             {
                 response.setStatus( HttpServletResponse.SC_CONFLICT );
             }

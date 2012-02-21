@@ -66,7 +66,8 @@ public class Jaxb2Utils
     }
 
     @SuppressWarnings("unchecked")
-    public static <T> T unmarshal( Class<?> clazz, InputStream input ) throws JAXBException
+    public static <T> T unmarshal( Class<?> clazz, InputStream input ) 
+        throws JAXBException
     {
         return (T) Jaxb2Utils.createUnmarshaller( clazz ).unmarshal( input );
     }

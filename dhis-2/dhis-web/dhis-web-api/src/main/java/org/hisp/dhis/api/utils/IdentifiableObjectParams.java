@@ -40,17 +40,12 @@ public class IdentifiableObjectParams
 
     private String nameLike;
 
-    /**
-     * Paging related
-     */
-
     private boolean paging = true;
 
     private int page = 1;
 
     public IdentifiableObjectParams()
     {
-
     }
 
     public boolean hasLinks()
