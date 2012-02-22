@@ -717,15 +717,12 @@ function doComplete()
 				{
 					jQuery("#dataEntryFormDiv :input").each(function()
 					{
+						disable( jQuery(this).attr('id') );
+					});
+					
+					jQuery("#dataEntryFormDiv").find(".ui-button").each(function()
+					{
 						jQuery(this).attr('disabled', 'disabled');
-					});
-					jQuery("#dataEntryFormDiv").find(".ui-datepicker-trigger").each(function()
-					{
-						jQuery(this).attr('class', 'hidden');
-					});
-					jQuery("#dataEntryFormDiv").find(".holder").each(function()
-					{
-						jQuery(this).attr('class', 'visible');
 					});
 					
 					disable('validationBtn');

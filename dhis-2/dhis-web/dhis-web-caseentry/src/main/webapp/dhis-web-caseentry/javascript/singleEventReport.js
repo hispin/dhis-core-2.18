@@ -58,14 +58,13 @@ function loadGeneratedReport()
 }
 
 function showDetails( programStageInstanceId ) 
-{
-	$('#viewRecordsDiv' )
-		
+{	
 	$( '#viewRecordsDiv' )
 		.load( 'viewAnonymousEvents.action?programStageInstanceId=' + programStageInstanceId ,{}
 		,function( )
 		{
 			showById('entryFormContainer');
+			$("#entryForm :input").attr("disabled", true);
 		}).dialog({
 			title: i18n_reports,
 			maximize: true, 
