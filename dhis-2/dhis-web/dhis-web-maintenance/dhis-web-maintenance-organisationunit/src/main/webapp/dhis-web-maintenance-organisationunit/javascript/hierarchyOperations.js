@@ -3,60 +3,45 @@
 // Organisation unit to move
 // -----------------------------------------------------------------------------
 
+selection.setListenerFunction( organisationUnitToMoveSelected );
+
 function organisationUnitToMoveSelected( orgUnitIds )
 {
 	hideHeaderMessage();
 
     if ( orgUnitIds.length == 1 )
     {
-        var request = new Request();
-        request.setResponseTypeXML( 'organisationUnit' );
-        request.setCallbackSuccess( organisationUnitToMoveReceived );
-        request.send( '../dhis-web-commons-ajax/getOrganisationUnit.action?id=' + orgUnitIds[0] );
+    	var id = orgUnitIds[0];
+    	
+    	$.getJSON( '../dhis-web-commons-ajax-json/getOrganisationUnit.action', { id:id }, function( json ) 
+    	{
+    		$( '#organisationUnitToMoveId' ).val( id );
+    		$( '#toMoveNameField' ).html( json.organisationUnit.name );
+    		$( '#confirmOrganisationUnitToMoveButton' ).removeAttr( 'disabled' );
+    	} );
     }
-}
-
-selection.setListenerFunction( organisationUnitToMoveSelected );
-
-function organisationUnitToMoveReceived( unitElement )
-{
-    var organisationUnit = parseUnitElement( unitElement );
-    
-    document.getElementById( 'organisationUnitToMoveId' ).value = organisationUnit['id'];
-    document.getElementById( 'toMoveNameField' ).innerHTML = organisationUnit['name'];
-    
-    document.getElementById( 'confirmOrganisationUnitToMoveButton' ).disabled = false;
 }
 
 function organisationUnitToMoveConfirmed()
 {
-    var id = document.getElementById( 'organisationUnitToMoveId' ).value;
+    var id = $( '#organisationUnitToMoveId' ).val();
 
-    var request = new Request();
-    request.setResponseTypeXML( 'message' );
-    request.setCallbackSuccess( organisationUnitToMoveFeedback );
-    request.send( 'validateOrganisationUnitToMove.action?organisationUnitToMoveId=' + id );
-}
-
-function organisationUnitToMoveFeedback( messageElement )
-{
-    var type = messageElement.getAttribute( 'type' );
-    var message = messageElement.firstChild.nodeValue;
-    
-    if ( type == 'success' )
-    {
-        document.getElementById( 'confirmOrganisationUnitToMoveButton' ).disabled = true;
-        document.getElementById( 'confirmNewParentOrganisationUnitButton' ).disabled = false;
+	$.getJSON( 'validateOrganisationUnitToMove.action', { organisationUnitToMoveId:id }, function( json ) 
+	{
+		if ( json.response == 'success' )
+		{
+			$( '#confirmOrganisationUnitToMoveButton' ).attr( 'disabled', 'disabled' );
         
-        document.getElementById( 'step1' ).style.backgroundColor = 'white';
-        document.getElementById( 'step2' ).style.backgroundColor = '#ccffcc';
+        	$( '#step1' ).css( 'background-color', '#ffffff' );
+        	$( '#step2' ).css( 'background-color', '#ccffcc' );
         
-        selection.setListenerFunction( newParentSelected );
-    }
-    else if ( type == 'input' || type == 'error' )
-    {
-        setHeaderMessage( message );
-    }
+        	selection.setListenerFunction( newParentSelected );
+		}
+		else
+		{
+			setHeaderMessage( json.message );
+		}
+	} );
 }
 
 // -----------------------------------------------------------------------------
@@ -69,69 +54,43 @@ function newParentSelected( orgUnitIds )
 
     if ( orgUnitIds.length == 1 )
     {
-        var request = new Request();
-        request.setResponseTypeXML( 'organisationUnit' );
-        request.setCallbackSuccess( newParentOrganisationUnitReceived );
-        request.send( '../dhis-web-commons-ajax/getOrganisationUnit.action?id=' + orgUnitIds[0] );
+    	var id = orgUnitIds[0];
+    	
+    	$.getJSON( '../dhis-web-commons-ajax-json/getOrganisationUnit.action', { id:id }, function( json )
+    	{
+    		$( '#newParentOrganisationUnitId' ).val( id );
+    		$( '#newParentNameField' ).html( json.organisationUnit.name );
+        	$( '#confirmNewParentOrganisationUnitButton' ).removeAttr( 'disabled' );
+    	} );
     }
     else if ( orgUnitIds.length == 0 )
     {
-        document.getElementById( 'newParentOrganisationUnitId' ).value = '';
-        document.getElementById( 'newParentNameField' ).innerHTML = '[' + not_selected_moved_to_root_position + ']';
+        $( '#newParentOrganisationUnitId' ).val( '' );
+        $( '#newParentNameField' ).html( '[' + not_selected_moved_to_root_position + ']' );
     }
-}
-
-function newParentOrganisationUnitReceived( unitElement )
-{
-    var organisationUnit = parseUnitElement( unitElement );
-    
-    document.getElementById( 'newParentOrganisationUnitId' ).value = organisationUnit['id'];
-    document.getElementById( 'newParentNameField' ).innerHTML = organisationUnit['name'];
 }
 
 function newParentOrganisationUnitConfirmed()
 {
-    var toMoveId = document.getElementById( 'organisationUnitToMoveId' ).value;
-    var newParentId = document.getElementById( 'newParentOrganisationUnitId' ).value;
+    var toMoveId = $( '#organisationUnitToMoveId' ).val();
+    var newParentId = $( '#newParentOrganisationUnitId' ).val();
 
-    var request = new Request();
-    request.setResponseTypeXML( 'message' );
-    request.setCallbackSuccess( newParentOrganisationUnitFeedback );
-    request.send( 'validateNewParentOrganisationUnit.action?organisationUnitToMoveId=' + toMoveId +
-        '&newParentOrganisationUnitId=' + newParentId );
-}
-
-function newParentOrganisationUnitFeedback( messageElement )
-{
-    var type = messageElement.getAttribute( 'type' );
-    var message = messageElement.firstChild.nodeValue;
-    
-    if ( type == 'success' )
-    {
-        document.getElementById( 'confirmNewParentOrganisationUnitButton' ).disabled = true;
-        document.getElementById( 'submitButton' ).disabled = false;
-        
-        document.getElementById( 'step2' ).style.backgroundColor = 'white';
-        document.getElementById( 'step3' ).style.backgroundColor = '#ccffcc';
-        
-        selection.setListenerFunction( null );
-    }
-    else if ( type == 'input' || type == 'error' )
-    {
-    	setHeaderMessage( message );
-    }
-}
-
-// -----------------------------------------------------------------------------
-// Common
-// -----------------------------------------------------------------------------
-
-function parseUnitElement( unitElement )
-{
-    var organisationUnit = new Object();
-
-    organisationUnit['id'] = unitElement.getElementsByTagName( 'id' )[0].firstChild.nodeValue;
-    organisationUnit['name'] = unitElement.getElementsByTagName( 'name' )[0].firstChild.nodeValue;
-    
-    return organisationUnit;
+	$.getJSON( 'validateNewParentOrganisationUnit.action', {
+		organisationUnitToMoveId:toMoveId, newParentOrganisationUnitId:newParentId }, function( json ) 
+		{
+			if ( json.response == 'success' )
+		    {
+		        $( '#confirmNewParentOrganisationUnitButton' ).attr( 'disabled', 'disabled' );
+		        $( '#submitButton' ).removeAttr( 'disabled' );
+		        
+		        $( '#step2' ).css( 'background-color', '#ffffff' );
+		        $( '#step3' ).css( 'background-color', '#ccffcc' );
+		        
+		        selection.setListenerFunction( null );
+		    }
+		    else
+		    {
+		    	setHeaderMessage( message );
+		    }
+	} );
 }
