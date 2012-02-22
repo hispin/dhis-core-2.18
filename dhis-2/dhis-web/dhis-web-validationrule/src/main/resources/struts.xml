@@ -185,12 +185,11 @@
     </action>
 
     <action name="editDataValue" class="org.hisp.dhis.validationrule.action.dataanalysis.EditDataValueAction">
-      <result name="success" type="velocity">responseStatus.vm</result>
-      <result name="error" type="velocity">responseStatus.vm</result>
+      <result name="success" type="velocity-json">/dhis-web-commons/ajax/jsonResponseSuccess.vm</result>
     </action>
 
     <action name="markForFollowup" class="org.hisp.dhis.validationrule.action.dataanalysis.MarkForFollowupAction">
-      <result name="success" type="velocity-xml">/dhis-web-validationrule/responseSuccess.vm</result>
+      <result name="success" type="velocity-json">/dhis-web-commons/ajax/jsonResponseSuccess.vm</result>
     </action>
 
     <action name="validateRunAnalysis" class="org.hisp.dhis.validationrule.action.dataanalysis.ValidationRunAnalysisAction">

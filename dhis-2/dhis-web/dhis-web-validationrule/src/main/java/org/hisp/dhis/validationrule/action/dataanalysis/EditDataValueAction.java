@@ -137,18 +137,11 @@ public class EditDataValueAction
         this.categoryOptionComboId = categoryOptionComboId;
     }
 
-    private String message = "";
+    private int code = 0;
 
-    public String getMessage()
+    public int getCode()
     {
-        return message;
-    }
-
-    private int statusCode = 0;
-
-    public int getStatusCode()
-    {
-        return statusCode;
+        return code;
     }
 
     // -------------------------------------------------------------------------

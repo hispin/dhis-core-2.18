@@ -16,7 +16,7 @@
 <span id="info">$i18n.getString( "no_values_found" )</span>
 
 <input type="button" onclick="window.location.href='viewAnalysisForm.action?key=$!{key}'" value="Back" style="width:120px">
-	
+
 #else
 
 <span id="info">#if( $maxExceeded )$i18n.getString( "max_values_exceeded" ) #else$!dataValues.size() $i18n.getString( "values_found" ) #end</span>
@@ -40,7 +40,7 @@
 	#foreach( $value in $dataValues )	
 	#set( $count = $count + 1 )	
 	<tr>	
-		<td><span id="value[$count].name">$value.dataElementName $value.categoryOptionComboNameParsed</span></td>
+		<td><span id="value-${count}-name">$value.dataElementName $value.categoryOptionComboNameParsed</span></td>
 		
 		<td>$value.sourceName</td>
 		
@@ -49,23 +49,22 @@
 		<td style="text-align:center">$value.min</td>
 		
 		<td style="width:100px">
-			<input id="value[$count].value" value="$value.value"
-				style="width: 95%; text-align: center;" tabindex="$count" type="text" onchange="editValue( $count )">			
-            <input type="hidden" id="value[$count].dataElement" value="$value.dataElementId">
-            <input type="hidden" id="value[$count].period" value="$value.periodId">
-            <input type="hidden" id="value[$count].source" value="$value.sourceId">
-            <input type="hidden" id="value[$count].categoryOptionCombo" value="$value.categoryOptionComboId">
-            <input type="hidden" id="value[$count].min" value="$value.min">
-            <input type="hidden" id="value[$count].max" value="$value.max">
+			<input id="value-${count}-val" value="$value.value" style="width: 95%; text-align: center;" tabindex="$count" type="text" onchange="editValue( $count )">			
+            <input type="hidden" id="value-${count}-de" value="$value.dataElementId">
+            <input type="hidden" id="value-${count}-pe" value="$value.periodId">
+            <input type="hidden" id="value-${count}-ou" value="$value.sourceId">
+            <input type="hidden" id="value-${count}-coc" value="$value.categoryOptionComboId">
+            <input type="hidden" id="value-${count}-min" value="$value.min">
+            <input type="hidden" id="value-${count}-max" value="$value.max">
 		</td>
 		
 		<td style="text-align:center">$value.max</td>
 		
 		<td style="text-align:center">
 		#if ( $value.followup )
-			<img id="value[$count].followup" src="../images/marked.png" onclick="markValueForFollowup($count)" style="cursor:pointer">
+			<img id="value-${count}-followUp" src="../images/marked.png" onclick="markFollowUp($count)" style="cursor:pointer">
 		#else
-		    <img id="value[$count].followup" src="../images/unmarked.png" onclick="markValueForFollowup($count)" style="cursor:pointer">
+		    <img id="value-${count}-followUp" src="../images/unmarked.png" onclick="markFollowUp($count)" style="cursor:pointer">
 		#end
 		</td>		
 	</tr>
