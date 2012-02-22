@@ -138,9 +138,8 @@
     </action>
 
     <action name="validateRunValidation" class="org.hisp.dhis.validationrule.action.ValidateRunValidationAction">
-      <result name="success" type="velocity-xml">/dhis-web-validationrule/responseSuccess.vm</result>
-      <result name="error" type="velocity-xml">/dhis-web-validationrule/responseError.vm</result>
-      <result name="input" type="velocity-xml">/dhis-web-validationrule/responseInput.vm</result>
+      <result name="success" type="velocity-json">/dhis-web-commons/ajax/jsonResponseSuccess.vm</result>
+      <result name="input" type="velocity-json">/dhis-web-commons/ajax/jsonResponseInput.vm</result>
     </action>
 
     <action name="runValidationAction" class="org.hisp.dhis.validationrule.action.RunValidationAction">

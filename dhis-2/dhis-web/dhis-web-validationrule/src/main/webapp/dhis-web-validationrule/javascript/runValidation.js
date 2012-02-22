@@ -1,7 +1,7 @@
 var startDate;
 var endDate;
-var validationRuleGroupId;
 var aggregate;
+var validationRuleGroupId;
 var organisationUnitId;
 
 function organisationUnitSelected( ids )
@@ -11,47 +11,34 @@ function organisationUnitSelected( ids )
 
 function validateRunValidation()
 {
-    var request = new Request();
-    request.setResponseTypeXML( 'message' );
-    request.setCallbackSuccess( runValidationCompleted );
+	startDate = $( '#startDate' ).val();
+	endDate = $( '#endDate' ).val();
+	aggregate = $( '#aggregate' ).val();
+	validationRuleGroupId = $( '#validationRuleGroupId' ).val();
 
-    request.send( 'validateRunValidation.action?startDate=' + getFieldValue( 'startDate' ) + '&endDate='
-            + getFieldValue( 'endDate' ) + '&aggregate=' + getFieldValue( 'aggregate' ) );
+	$.getJSON( 'validateRunValidation.action',
+	{ startDate:startDate, endDate:endDate, aggregate:aggregate }, function( json )
+	{
+		if ( json.response == 'success' )
+	    {
+	        setWaitMessage( i18n_analysing_please_wait );
+
+	        $.get( 'runValidationAction.action', 
+	        { organisationUnitId:organisationUnitId, startDate:startDate, endDate:endDate, validationRuleGroupId:validationRuleGroupId, aggregate:aggregate }, function( data )
+	        {
+	            $( 'div#analysisInput' ).hide();
+	            $( 'div#analysisResult' ).show();
+	            $( 'div#analysisResult' ).html( data );
+	            pageInit();
+	        } );
+	    }
+	    else if ( json.response == 'input' )
+	    {
+	        setMessage( json.message );
+	    }
+	} );
 
     return false;
-}
-
-function runValidationCompleted( messageElement )
-{
-    var type = messageElement.getAttribute( 'type' );
-    var message = messageElement.firstChild.nodeValue;
-
-    if ( type == 'success' )
-    {
-        setWaitMessage( "Analysing data, please wait" );
-
-        startDate = getFieldValue( 'startDate' );
-        endDate = getFieldValue( 'endDate' );
-        validationRuleGroupId = $( '#validationRuleGroupId' ).val();
-        aggregate = $( '#aggregate' ).val();
-
-        var url = 'runValidationAction.action?organisationUnitId=' + organisationUnitId + '&startDate=' + startDate
-                + '&endDate=' + endDate + '&validationRuleGroupId=' + validationRuleGroupId + '&aggregate=' + aggregate;
-
-        $.get( url, function( data )
-        {
-            $( "div#analysisInput" ).hide();
-            $( "div#analysisResult" ).show();
-            $( "div#analysisResult" ).html( data );
-            pageInit();
-        } );
-    } else if ( type == 'error' )
-    {
-        window.alert( i18n_validation_failed + ':' + '\n' + message );
-    } else if ( type == 'input' )
-    {
-        setMessage( message );
-    }
 }
 
 function drillDownValidation( orgUnitId )
