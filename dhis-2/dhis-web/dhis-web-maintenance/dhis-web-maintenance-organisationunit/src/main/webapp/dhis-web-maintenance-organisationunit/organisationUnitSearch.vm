@@ -20,17 +20,14 @@
 		<th>$i18n.getString( "criteria" )</th>
 		<th>$i18n.getString( "options" )</th>
 	</tr>
-
 	<tr>
 		<td>$i18n.getString( "organisation_unit" )</td>
 		<td><input type="text" id="selectedOrganisationUnit" style="width:360px" readonly="true" value="${orgUnitText}"/></td>
 	</tr>
-
 	<tr>
 		<td>$i18n.getString( "name" )</th>
 		<td><input type="text" name="name" style="width:360px" value="$!{name}"/></td>
 	</tr>
-
 	#foreach( $groupSet in $groupSets )
 	<tr>
 		<td>$encoder.htmlEncode( $groupSet.name )</td>
@@ -45,26 +42,23 @@
 		</td>
 	</tr>
 	#end
-
 	<tr>
 		<td style="height:10px" colspan="2"></td>
 	</tr>
-
 	<tr>
 		<td></td>
 		<td><input type="button" value="$i18n.getString( 'search' )" style="width:120px" onclick="download( '' )"/><input 
 		type="button" onclick="window.location.href='organisationUnitSearch.action?skipSearch=true'" value="$i18n.getString( 'clear' )" style="width:120px"/></td>
 	</tr>
-
 	<tr>
 		<td style="height:2px" colspan="2"></td>
 	</tr>
-
 	<tr>
 		<td></td>
-		<td><input type="button" value="$i18n.getString( 'get_report_as_pdf' )" style="width:120px" onclick="download( 'pdf' )"/><input 
-		type="button" value="$i18n.getString( 'get_report_as_xls' )" style="width:120px" onclick="download( 'xls' )"/><input 
-		type="button" value="$i18n.getString( 'get_report_as_csv' )" style="width:120px" onclick="download( 'csv' )"/></td>
+		<td><input type="button" value="$i18n.getString( 'get_report_as_pdf' )" style="width:120px" onclick="download( 'pdf' )"/>
+			<input type="button" value="$i18n.getString( 'get_report_as_xls' )" style="width:120px" onclick="download( 'xls' )"/>
+			<input type="button" value="$i18n.getString( 'get_report_as_csv' )" style="width:120px" onclick="download( 'csv' )"/>
+		</td>
 	</tr>
 
 	<tr>
@@ -88,7 +82,7 @@
 			#foreach( $groupSet in $groupSets )
 			<th>$encoder.htmlEncode( $groupSet.name )</th>
 			#end
-			<th class="{sorter: false}"></th>
+			<th class="{sorter: false}" style="width:60px"></th>
 		</tr>
 	</thead>
 
