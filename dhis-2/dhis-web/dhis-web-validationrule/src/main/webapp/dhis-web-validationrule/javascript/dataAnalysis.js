@@ -9,26 +9,33 @@ function validateRunAnalyseData()
 {
     if ( analyseDataInvalid() )
     {
-        $.post( "validateRunAnalysis.action", {
+        $.getJSON( "validateRunAnalysis.action", {
             fromDate : getFieldValue( 'fromDate' ),
             toDate : getFieldValue( 'toDate' )
         }, 
-        function( data )
+        function( json )
         {
-            runValidationCompleted( data );
-        }, 'xml' );
+            if ( json.response == "success" )
+            {
+            	analyseData();
+            }
+            else
+            {
+            	setMessage( json.message );
+            }
+        } );
     }
 }
 
 function analyseDataInvalid()
 {
-    if ( $( '#fromDate' ).val().length == 0 )
+    if ( $( "#fromDate" ).val().length == 0 )
     {
         setMessage( i18n_specify_a_start_date );
         return false;
     }
 
-    if ( $( '#toDate' ).val().length == 0 )
+    if ( $( "#toDate" ).val().length == 0 )
     {
         setMessage( i18n_specify_an_ending_date );
         return false;
@@ -43,25 +50,6 @@ function analyseDataInvalid()
     }
 
     return true;
-}
-
-function runValidationCompleted( messageElement )
-{
-    var type = messageElement.firstChild.getAttribute( 'type' );
-    var message = messageElement.firstChild.firstChild.nodeValue;
-
-    if ( type == 'success' )
-    {
-        analyseData();
-    }
-    else if ( type == 'error' )
-    {
-        window.alert( i18n_validation_failed + ':' + '\n' + message );
-    }
-    else if ( type == 'input' )
-    {
-        setMessage( message );
-    }
 }
 
 function analyseData()
