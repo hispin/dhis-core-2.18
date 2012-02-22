@@ -45,7 +45,16 @@
 		<td><label for="openingDate">$i18n.getString( "opening_date" ) ($i18n.getString( "format.date.label" )) <em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
 		<td><input type="text" id="openingDate" name="openingDate" value="$format.formatDate( $defaultDate )" style="width:20em"/></td>
 		<td></td>
-	</tr>	
+	</tr>
+	<tr>
+		<td><label for="active">$i18n.getString( "registers_data" )</label></td>
+		<td>
+			<select id="active" name="active" style="min-width:20em">
+				<option value="true" selected="selected">$i18n.getString( "yes" )</option>
+				<option value="false">$i18n.getString( "no" )</option>
+			</select>
+		</td>
+	</tr>
 	<tr>
 		<td><label for="comment">$i18n.getString( "comment" )</label></td>
 		<td><textarea id="comment" name="comment" style="width:20em; height:5em"></textarea></td>
