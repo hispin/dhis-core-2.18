@@ -14,12 +14,15 @@ function showSectionDetails( sectionId )
 	});
 }
 
-function sortOrderSubmit() {
+function sortOrderSubmit() 
+{
 	var datasetId = document.getElementById('dataSetId').value;
 
-	if( datasetId == "null" ) {
+	if ( datasetId == "null" ) 
+	{
 		window.alert( i18n_please_select_dataset );
-	} else {
+	} else 
+	{
 		window.location.href = "showSortSectionForm.action?dataSetId=" + datasetId;
 	}
 }
@@ -49,19 +52,24 @@ function addSectionSubmit()
 	}
 }
 
-function toggle(dataElementId, optionComboId) {
+function toggle( dataElementId, optionComboId ) 
+{
 	var elementId = '[' + dataElementId;
 
-	if (optionComboId != '') {
+	if (optionComboId != '') 
+	{
 		elementId = elementId + ']_[' + optionComboId;
 	}
 
 	elementId = elementId + ']';
 
-	if (document.getElementById(elementId + '.text').disabled == true) {
+	if (document.getElementById(elementId + '.text').disabled == true) 
+	{
 		document.getElementById(elementId + '.text').disabled = false;
 		document.getElementById(elementId + '.button').value = i18n_disable;
-	} else {
+	} 
+	else 
+	{
 		document.getElementById(elementId + '.text').disabled = true;
 		document.getElementById(elementId + '.button').value = i18n_enable;
 	}
@@ -89,7 +97,7 @@ function saveGreyStatus( sectionId_, dataElementId_, optionComboId_ )
 	var txtElementId = elementId + '.txt';
 	var btnElementId = elementId + '.btn';
 
-	if (document.getElementById( txtElementId ).disabled == true) 
+	if ( document.getElementById( txtElementId ).disabled == true ) 
 	{
 		document.getElementById( txtElementId ).disabled = false;
 		document.getElementById( btnElementId ).value = i18n_disable;
@@ -104,23 +112,9 @@ function saveGreyStatus( sectionId_, dataElementId_, optionComboId_ )
 		isGreyed = true;
 	}
 	
-	var request = new Request();
-	request.setCallbackSuccess(handleResponse);
-	request.setCallbackError(handleHttpError);
-	request.setResponseTypeXML('status');
+	// TODO check result
 	
-	var requestString = 'saveSectionGreyStatus.action?sectionId=' + sectionId
-			+ '&dataElementId=' + dataElementId + '&optionComboId='
-			+ optionComboId + '&isGreyed=' + isGreyed;
-
-	request.send(requestString);
-}
-
-function handleResponse(rootElement) {
-}
-
-function handleHttpError(errorCode) {
-}
-
-function markValue(color) {
+	$.get( 'saveSectionGreyStatus.action',
+		{ sectionId:sectionId, dataElementId:dataElementId, optionComboId:optionComboId, isGreyed:isGreyed }, 
+		function() {} );
 }
