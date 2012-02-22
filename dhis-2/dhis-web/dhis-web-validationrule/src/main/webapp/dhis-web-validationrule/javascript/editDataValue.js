@@ -1,14 +1,12 @@
 
-var currentFollowupId = null;
-
 function editValue( valueId )
 {
-	var field = document.getElementById( 'value[' + valueId + '].value' );
+	var field = document.getElementById( 'value-' + valueId + '-val' );
 	
-	var dataElementId = document.getElementById( 'value[' + valueId + '].dataElement' ).value;
-    var categoryOptionComboId = document.getElementById( 'value[' + valueId + '].categoryOptionCombo' ).value;
-	var periodId = document.getElementById( 'value[' + valueId + '].period' ).value;
-	var sourceId = document.getElementById( 'value[' + valueId + '].source' ).value;
+	var dataElementId = $( '#value-' + valueId + '-de' ).val();
+    var categoryOptionComboId = $( '#value-' + valueId + '-coc' ).val();
+	var periodId = $( '#value-' + valueId + '-pe' ).val();
+	var sourceId = $( '#value-' + valueId + '-ou' ).val();
 	
 	if ( field.value != '' )
 	{
@@ -23,8 +21,8 @@ function editValue( valueId )
 		}
 		else
 		{
-			var minString = document.getElementById('value[' + valueId + '].min').value;
-			var maxString = document.getElementById('value[' + valueId + '].max').value;
+			var minString = $( '#value-' + valueId + '-min' ).val();
+			var maxString = $( '#value-' + valueId + '-max' ).val();
 			
 			var min = new Number( minString );
 			var max = new Number( maxString );
@@ -53,9 +51,8 @@ function editValue( valueId )
 		}
 	}
 	
-    var valueSaver = new ValueSaver( dataElementId, periodId, sourceId, categoryOptionComboId, field.value, valueId, '#ccffcc', '');
+    var valueSaver = new ValueSaver( dataElementId, periodId, sourceId, categoryOptionComboId, field.value, valueId, '#ccffcc' );
     valueSaver.save();
-
 }
 
 function isInt( value )
@@ -70,98 +67,76 @@ function isInt( value )
     return true;
 }
 
-function markValueForFollowup( valueId )
+function markFollowUp( valueId )
 {	
-	currentFollowupId = valueId;
-	
-    var dataElementId = document.getElementById( 'value[' + valueId + '].dataElement' ).value;
-    var categoryOptionComboId = document.getElementById( 'value[' + valueId + '].categoryOptionCombo' ).value;
-    var periodId = document.getElementById( 'value[' + valueId + '].period' ).value;
-    var sourceId = document.getElementById( 'value[' + valueId + '].source' ).value;
+    var dataElementId = $( '#value-' + valueId + '-de' ).val();
+    var categoryOptionComboId = $( '#value-' + valueId + '-coc' ).val();
+    var periodId = $( '#value-' + valueId + '-pe' ).val();
+    var sourceId = $( '#value-' + valueId + '-ou' ).val();
     
-    var url = 'markForFollowup.action?dataElementId=' + dataElementId + '&periodId=' + periodId +
-        '&sourceId=' + sourceId + '&categoryOptionComboId=' + categoryOptionComboId;
-    
-    var request = new Request();
-    request.setResponseTypeXML( 'message' );
-    request.setCallbackSuccess( markValueForFollowupReceived );    
-    request.send( url );
-}
-
-function markValueForFollowupReceived( messageElement )
-{   
-    var message = messageElement.firstChild.nodeValue;
-    var image = document.getElementById( 'value[' + currentFollowupId + '].followup' );
-    
-    if ( message == "marked" )
-    {
-        image.src = "../images/marked.png";
-        image.alt = i18n_unmark_value_for_followup;
-    }
-    else if ( message = "unmarked" )
-    {
-        image.src = "../images/unmarked.png";
-        image.alt = i18n_mark_value_for_followup;   
-    }
+    $.ajax( {
+    	url: 'markForFollowup.action',
+    	data: { dataElementId:dataElementId, periodId:periodId, sourceId:sourceId, categoryOptionComboId:categoryOptionComboId },
+    	type: 'POST',
+    	dataType: 'json',
+    	success: function( json )
+		{
+            var $image = $( '#value-' + valueId + '-followUp' );
+			
+            if ( json.message == "marked" )
+		    {
+		        $image.attr( "src", "../images/marked.png" );
+		        $image.attr( "title", i18n_unmark_value_for_followup );
+		    }
+		    else if ( json.message == "unmarked" )
+		    {
+		        $image.attr( "src", "../images/unmarked.png" );
+		        $image.attr( "title", i18n_mark_value_for_followup );   
+		    }
+		} } );
 }
 
 // -----------------------------------------------------------------------------
 // Saver object (modified version of dataentry/javascript/general.js)
 // -----------------------------------------------------------------------------
 
-function ValueSaver( dataElementId_, periodId_, sourceId_, categoryOptionComboId_, value_, valueId_, resultColor_, selectedOption_ )
+function ValueSaver( dataElementId, periodId, organisationUnitId, categoryOptionComboId, value, valueId_, resultColor_ )
 {
     var SUCCESS = '#ccffcc';
     var ERROR = '#ccccff';
 
-    var dataElementId = dataElementId_;
-    var periodId = periodId_;
-    var sourceId = sourceId_;
-    var categoryOptionComboId = categoryOptionComboId_;
-    var value = value_;
     var valueId = valueId_;
     var resultColor = resultColor_;
-    var selecteOption = selectedOption_;
     
     this.save = function()
-    {
-        var request = new Request();
-        request.setCallbackSuccess( handleResponse );
-        request.setCallbackError( handleHttpError );
-        request.setResponseTypeXML( 'status' );
-        request.send( 'editDataValue.action?'
-        		+ 'dataElementId=' + dataElementId
-        		+ '&periodId=' + periodId
-        		+ '&organisationUnitId=' + sourceId
-        		+ '&categoryOptionComboId=' + categoryOptionComboId
-        		+ '&value=' + value );
+    {        
+        $.ajax( {
+        	url: 'editDataValue.action',
+        	data: { dataElementId:dataElementId, periodId:periodId, organisationUnitId:organisationUnitId, categoryOptionComboId:categoryOptionComboId, value:value },
+        	type: 'POST',
+    		dataType: 'json',
+        	success: function( json )
+        	{
+        		if ( json.response == "success" )
+        		{
+        			markValue( resultColor );
+        		}
+        		else
+		        {
+		            markValue( ERROR );
+		            window.alert( "Failed saving value" );
+		        }
+        	},
+        	error: function( json )
+        	{
+        		markValue( ERROR );
+        		window.alert( "Failed saving value" );
+        	}
+        } );        
     };
-    
-    function handleResponse( rootElement )
-    {
-        var codeElement = rootElement.getElementsByTagName( 'code' )[0];
-        var code = parseInt( codeElement.firstChild.nodeValue );
-        
-        if ( code == 0 )
-        {
-            markValue( resultColor );
-        }
-        else
-        {
-            markValue( ERROR );
-            window.alert( "Failed saving value." );
-        }
-    }
-    
-    function handleHttpError( errorCode )
-    {
-        markValue( ERROR );
-        window.alert( "Failed saving value." );
-    }
     
     function markValue( color )
     {
-        var element = document.getElementById( 'value[' + valueId + '].value' );
-        element.style.backgroundColor = color;
+    	$( '#value-' + valueId + '-val' ).css( "background-color", color );
     }
 }

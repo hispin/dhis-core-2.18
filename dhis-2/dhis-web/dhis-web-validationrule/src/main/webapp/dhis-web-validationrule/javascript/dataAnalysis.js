@@ -12,7 +12,8 @@ function validateRunAnalyseData()
         $.post( "validateRunAnalysis.action", {
             fromDate : getFieldValue( 'fromDate' ),
             toDate : getFieldValue( 'toDate' )
-        }, function( data )
+        }, 
+        function( data )
         {
             runValidationCompleted( data );
         }, 'xml' );
@@ -52,10 +53,12 @@ function runValidationCompleted( messageElement )
     if ( type == 'success' )
     {
         analyseData();
-    } else if ( type == 'error' )
+    }
+    else if ( type == 'error' )
     {
         window.alert( i18n_validation_failed + ':' + '\n' + message );
-    } else if ( type == 'input' )
+    }
+    else if ( type == 'input' )
     {
         setMessage( message );
     }
