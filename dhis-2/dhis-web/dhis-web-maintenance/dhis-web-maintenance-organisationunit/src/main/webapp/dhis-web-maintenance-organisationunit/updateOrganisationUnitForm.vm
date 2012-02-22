@@ -63,7 +63,7 @@
 	</tr>
 	#end
 	<tr>
-		<td><label for="active">$i18n.getString( "registers_date" )</label></td>
+		<td><label for="active">$i18n.getString( "registers_data" )</label></td>
 		<td>
 			<select id="active" name="active" style="min-width:20em">
 				<option value="true" #if( $organisationUnit.active ) selected="selected" #end>$i18n.getString( "yes" )</option>

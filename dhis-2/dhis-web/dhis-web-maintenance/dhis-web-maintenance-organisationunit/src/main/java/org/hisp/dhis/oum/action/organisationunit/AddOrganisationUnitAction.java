@@ -131,6 +131,13 @@ public class AddOrganisationUnitAction
         this.openingDate = openingDate;
     }
 
+    private boolean active;
+
+    public void setActive( boolean active )
+    {
+        this.active = active;
+    }
+
     private String comment;
 
     public void setComment( String comment )
@@ -254,7 +261,7 @@ public class AddOrganisationUnitAction
         // Create organisation unit
         // ---------------------------------------------------------------------
 
-        OrganisationUnit organisationUnit = new OrganisationUnit( name, shortName, code, date, null, true, comment );
+        OrganisationUnit organisationUnit = new OrganisationUnit( name, shortName, code, date, null, active, comment );
 
         organisationUnit.setUrl( url );
         organisationUnit.setParent( parent );
