@@ -31,9 +31,12 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
+import org.apache.struts.taglib.html.FormTag;
 import org.hisp.dhis.caseaggregation.CaseAggregationCondition;
 import org.hisp.dhis.caseaggregation.CaseAggregationConditionService;
 import org.hisp.dhis.caseentry.state.PeriodGenericManager;
@@ -135,18 +138,39 @@ public class CaseAggregationResultAction
         this.dataSetId = dataSetId;
     }
 
-    private Map<DataValue, String> mapDataValues;
+    private Map<String, String> mapStatusValues = new HashMap<String, String>();
 
-    public Map<DataValue, String> getMapDataValues()
+    public Map<String, String> getMapStatusValues()
+    {
+        return mapStatusValues;
+    }
+
+    private Map<String, Set<DataValue>> mapDataValues = new HashMap<String, Set<DataValue>>();
+
+    public Map<String, Set<DataValue>> getMapDataValues()
     {
         return mapDataValues;
     }
 
-    private Map<DataValue, CaseAggregationCondition> mapCaseAggCondition;
+    private Map<DataValue, CaseAggregationCondition> mapCaseAggCondition = new HashMap<DataValue, CaseAggregationCondition>();
 
     public Map<DataValue, CaseAggregationCondition> getMapCaseAggCondition()
     {
         return mapCaseAggCondition;
+    }
+
+    private List<OrganisationUnit> orgunits = new ArrayList<OrganisationUnit>();
+
+    public List<OrganisationUnit> getOrgunits()
+    {
+        return orgunits;
+    }
+
+    private List<Period> periods = new ArrayList<Period>();
+
+    public List<Period> getPeriods()
+    {
+        return periods;
     }
 
     // -------------------------------------------------------------------------
@@ -156,9 +180,6 @@ public class CaseAggregationResultAction
     public String execute()
         throws Exception
     {
-        mapDataValues = new HashMap<DataValue, String>();
-        mapCaseAggCondition = new HashMap<DataValue, CaseAggregationCondition>();
-
         String storedBy = currentUserService.getCurrentUsername() + "_CAE";
 
         // ---------------------------------------------------------------------
@@ -172,21 +193,21 @@ public class CaseAggregationResultAction
             return SUCCESS;
         }
 
-        List<OrganisationUnit> orgUnitList = new ArrayList<OrganisationUnit>();
-        if ( facilityLB.equals( "children" ) )
+        if ( facilityLB.equals( "random" ) )
         {
-            orgUnitList = getChildOrgUnitTree( selectedOrgunit );
+            orgunits.add( selectedOrgunit );
         }
         else if ( facilityLB.equals( "immChildren" ) )
         {
-            orgUnitList.add( selectedOrgunit );
-            List<OrganisationUnit> organisationUnits = new ArrayList<OrganisationUnit>( selectedOrgunit.getChildren() );
-            Collections.sort( organisationUnits, IdentifiableObjectNameComparator.INSTANCE );
-            orgUnitList.addAll( organisationUnits );
+            orgunits.addAll( getChildOrgUnitTree( selectedOrgunit ) );
         }
         else
         {
-            orgUnitList.add( selectedOrgunit );
+            List<OrganisationUnit> organisationUnits = new ArrayList<OrganisationUnit>( selectedOrgunit.getChildren() );
+            Collections.sort( organisationUnits, IdentifiableObjectNameComparator.INSTANCE );
+
+            orgunits.addAll( organisationUnits );
+            orgunits.add( selectedOrgunit );
         }
 
         // ---------------------------------------------------------------------
@@ -201,8 +222,6 @@ public class CaseAggregationResultAction
         // Get selected periods list
         // ---------------------------------------------------------------------
 
-        List<Period> periodList = new ArrayList<Period>();
-
         Period startPeriod = periodGenericManager.getSelectedPeriod(
             PeriodGenericManager.SESSION_KEY_SELECTED_PERIOD_INDEX_START,
             PeriodGenericManager.SESSION_KEY_BASE_PERIOD_START );
@@ -211,13 +230,13 @@ public class CaseAggregationResultAction
             PeriodGenericManager.SESSION_KEY_SELECTED_PERIOD_INDEX_END,
             PeriodGenericManager.SESSION_KEY_BASE_PERIOD_END );
 
-        periodList = getPeriodList( (CalendarPeriodType) selectedDataSet.getPeriodType(), startPeriod, endPeriod );
+        periods = getPeriodList( (CalendarPeriodType) selectedDataSet.getPeriodType(), startPeriod, endPeriod );
 
         // ---------------------------------------------------------------------
         // Aggregation
         // ---------------------------------------------------------------------
 
-        for ( OrganisationUnit orgUnit : orgUnitList )
+        for ( OrganisationUnit orgUnit : orgunits )
         {
             for ( DataElement dElement : dataElementList )
             {
@@ -231,15 +250,16 @@ public class CaseAggregationResultAction
 
                     if ( condition != null )
                     {
-                        for ( Period period : periodList )
+                        for ( Period period : periods )
                         {
-                            String message = i18n.getString( "in" ) + " " + format.formatPeriod( period );
-
                             Double resultValue = aggregationConditionService.parseConditition( condition, orgUnit,
                                 period );
 
                             DataValue dataValue = dataValueService
                                 .getDataValue( orgUnit, dElement, period, optionCombo );
+
+                            String key = orgUnit.getId() + "-" + format.formatPeriod( period );
+                            String keyStatus = key + "-" + dElement.getId();
 
                             if ( resultValue != null && resultValue != 0.0 )
                             {
@@ -249,7 +269,7 @@ public class CaseAggregationResultAction
                                         new Date(), null, optionCombo );
 
                                     dataValueService.addDataValue( dataValue );
-                                    mapDataValues.put( dataValue, i18n.getString( "added" ) + " " + message );
+                                    mapStatusValues.put( keyStatus, i18n.getString( "added" ) );
                                 }
                                 else
                                 {
@@ -259,7 +279,7 @@ public class CaseAggregationResultAction
 
                                     dataValueService.updateDataValue( dataValue );
 
-                                    mapDataValues.put( dataValue, i18n.getString( "updated" ) + " " + message );
+                                    mapStatusValues.put( keyStatus, i18n.getString( "updated" ) );
                                 }
 
                                 mapCaseAggCondition.put( dataValue, condition );
@@ -267,18 +287,32 @@ public class CaseAggregationResultAction
                             }
                             else if ( dataValue != null )
                             {
-                                DataValue dvalue = new DataValue( dElement, period, orgUnit, "", storedBy, new Date(),
-                                    null, optionCombo );
-                                
-                                dvalue.setValue( dataValue.getValue() + " " + i18n.getString( "old_value" ) );
+                                String value = dataValue.getValue();
 
                                 dataValueService.deleteDataValue( dataValue );
 
-                                mapDataValues.put( dvalue, i18n.getString( "deleted" ) + " " + message );
+                                dataValue = new DataValue( dElement, period, orgUnit, value, storedBy, new Date(),
+                                    null, optionCombo );
+                                    
+                                mapStatusValues.put( keyStatus, i18n.getString( "deleted" ) );
                             }
+                            
+                            if ( dataValue != null )
+                            {
+                                Set<DataValue> dataValues = null;
+                                if ( mapDataValues.containsKey( key ) )
+                                {
+                                    dataValues = mapDataValues.get( key );
+                                }
+                                else
+                                {
+                                    dataValues = new HashSet<DataValue>();
+                                }
 
+                                dataValues.add( dataValue );
+                                mapDataValues.put( key, dataValues );
+                            }
                         }
-
                     }
                 }
             }
@@ -320,7 +354,7 @@ public class CaseAggregationResultAction
             period = periodType.getNextPeriod( period );
             periods.add( period );
         }
-        
+
         return periods;
     }
 }

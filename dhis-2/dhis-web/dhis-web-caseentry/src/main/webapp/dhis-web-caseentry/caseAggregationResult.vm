@@ -1,46 +1,58 @@
 <h4> $i18n.getString( "case_aggregation_result" )</h4>
-		
+
 <div>
     <input type="button" value="$i18n.getString( "back" )" onclick="backBtnOnClick();" style="width:10em">
 </div>
 
 <p></p>
-<div>
-#if( $mapDataValues.keySet().size() > 0 )
-<table class='mainPageTable listTable'>
-	<col width="40">          
-	<col>
-	<col>
-	<col>  
-	<thead>
-		<tr>
-			<th>#</th>
-			<th>$i18n.getString('name')</th>
-			<th>$i18n.getString('value')</th>
-			<th>$i18n.getString('status')</th>
-		</tr>
-	</thead>
-	
-	#set ( $keys = $mapDataValues.keySet() )
-	#set ($index = 1)
-	<tbody>
-		#set( $mark = false )
-		#foreach( $key in $keys)
-			<tr #alternate( $mark ) style="cursor: pointer" title="$i18n.getString('show_details')" onclick="viewResultDetails($key.source.id,$key.period.id,$mapCaseAggCondition.get($key).id)">
-				<td>$index</td>
-				<td>$key.dataElement.getName()</td>
-				<td>$key.getValue()</td>
-				<td>$mapDataValues.get($key)</td>
-			</tr>
-			#set( $mark = !$mark  )
-			#set ($index = $index + 1)
+
+#set( $index = 0 )
+#foreach( $orgunit in $orgunits)
+	<h2>$orgunit.name</h2>
+	#foreach( $period in $periods)
+		#set( $index = $index + 1 )
+		#set( $periodInfo = $orgunit.id + '-' + $index )
+		#set( $periodButton = $periodInfo + "-button")
+		#set( $periodDiv = $periodInfo + "-div")
+		#set( $key = $orgunit.id + '-' + $format.formatPeriod($period) )
+		
+		<h4>$format.formatPeriod( $period )
+		#if( $!mapDataValues.get( $key ) )
+			<img id='$periodButton' src="../images/down.png" onclick="toggleResult('$periodInfo');" style="cursor: pointer;"></h4>
+		
+			#set( $dataValues = $mapDataValues.get( $key ) ) 
+			<table class="formSection mainPageTable hidden" id='$periodDiv'>
+				<col width="40">          
+				<col>
+				<col>
+				<col>
+				<tbody>
+				#set( $mark = false )
+				#set($no = 1)
+					<tr>
+						<th>#</th>
+						<th>$i18n.getString('name')</th>
+						<th>$i18n.getString('value')</th>
+						<th>$i18n.getString('status')</th>
+					</tr>
+					#foreach( $dataValue in $dataValues)
+						#set( $statusKey = $key + '-' + $dataValue.dataElement.id )
+						<tr #alternate( $mark ) style="cursor: pointer" title="$i18n.getString('show_details')" onclick="viewResultDetails($orgunit.id,$period.id,$mapCaseAggCondition.get($dataValue).id)">
+							<td>$no</td>
+							<td>$dataValue.dataElement.name</td>
+							<td>$dataValue.value</td>
+							<td>$!mapStatusValues.get( $statusKey )</td>
+						</tr>
+						#set( $mark = !$mark  )
+						#set ($no = $no + 1)
+					#end
+				</tbody>
+			</table>
+		#else
+			($i18n.getString('no_value_added_or_update')) </h4>
 		#end
-	</tbody>
-</table>
-#else
-	$i18n.getString('no_value_added_or_update')
+	#end
 #end
-</div>
 
 <div id='contentDetails'></div>
 

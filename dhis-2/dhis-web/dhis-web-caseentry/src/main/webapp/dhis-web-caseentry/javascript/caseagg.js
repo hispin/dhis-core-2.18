@@ -144,3 +144,7 @@ function backBtnOnClick()
 	showById('caseAggregationForm');
 }
 
+function toggleResult( id )
+{
+	$( "#" + id + "-div" ).slideToggle( "fast" );
+}
