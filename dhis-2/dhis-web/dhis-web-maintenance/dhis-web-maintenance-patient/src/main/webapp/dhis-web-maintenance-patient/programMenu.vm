@@ -1,0 +1,9 @@
+<a href="index.action" title="$i18n.getString( 'back_to_main_menu' )"><img src="../images/up_left.png" alt="$i18n.getString( 'back_to_main_menu' )"></a>
+
+<a href="index.action"><h2>$i18n.getString( "programs" )</h2></a>
+<ul>
+	<li><a href="program.action">$i18n.getString( "program" )</a></li>
+	<li><a href="programAttribute.action">$i18n.getString( "program_attribute" )</a></li>
+	<li><a href="caseAggregation.action">$i18n.getString( "beneficiary_aggregation_query_builder" )</a></li>
+	<li><a href="validationCriteria.action">$i18n.getString( "validation_criteria" )</a></li>
+</ul>
