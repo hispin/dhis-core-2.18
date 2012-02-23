@@ -243,7 +243,7 @@ function getSuggestedValues( sourceId, targetId )
 	{
 		var option = document.createElement("option");
 		var value = jQuery.trim( arrValues[i] );
-		option.value = "'=" + value + "'";
+		option.value = "'" + value + "'";
 		option.text = value;
 		option.title = value;
 
@@ -251,4 +251,30 @@ function getSuggestedValues( sourceId, targetId )
 	}
 }
 
+function insertSingleValue( elementId )
+{
+	var element = byId( elementId );
+	insertTextCommon('aggregationCondition', "=" + element.options[element.selectedIndex].value );
+	getConditionDescription();
+}
+
+function insertMultiValues( elementId )
+{
+	var list = jQuery('select[id=' + elementId + '] option:selected')
+	if( list.length > 1 )
+	{
+		var selectedValues = "";
+		list.each(function(){
+			selectedValues += jQuery(this).val() + ", ";
+		});
+		selectedValues = " IN @ " + selectedValues.substring( 0, selectedValues.length - 2) + " #";
+		
+		insertTextCommon('aggregationCondition', selectedValues );
+		getConditionDescription();
+	}
+	else
+	{
+		insertSingleValue( elementId );
+	}
+}
 

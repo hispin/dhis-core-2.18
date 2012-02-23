@@ -88,6 +88,10 @@ public class DefaultCaseAggregationConditionService
     private final String INVALID_CONDITION = "Invalid condition";
 
     private final String NUMBER_PATIENTS_REGISTERED = "Registered Beneficiaries No";
+    
+    private final String IN_CONDITION_START_SIGN = "@";
+    
+    private final String IN_CONDITION_END_SIGN = "#";
 
     // -------------------------------------------------------------------------
     // Dependencies
@@ -529,7 +533,8 @@ public class DefaultCaseAggregationConditionService
             subSQL.add( sql );
         }
 
-        return getSQL( aggregationCondition.getOperator(), subSQL, operators );
+         sql = getSQL( aggregationCondition.getOperator(), subSQL, operators ).replace( IN_CONDITION_START_SIGN, "(" ).replaceAll( IN_CONDITION_END_SIGN , ")" );
+         return sql;
     }
 
     private String createSQL( String aggregationExpression, String operator, int orgunitId, String startDate, String endDate )
