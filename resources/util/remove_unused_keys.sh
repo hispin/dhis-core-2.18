@@ -1,12 +1,14 @@
 #!/bin/bash
 
-# Writes a property file to current directory without unused property keys.
+# Removes unused property keys from the given translation property file.
+
+# Warning: Some keys might be used in the service layer, not detected by this script.
 
 # Run this program from root of a web project after cleaning target dir.
 
-# First argument is the properties file to investigate.
+# First argument is the properties file to clean.
 
-# Requires a line-break after the last line in property file to investigate.
+# Requires a line-break after the last line in property file to clean.
 
 if [[ $# -lt 1 ]]; then
   echo "Usage: $0 properties-file"
@@ -23,14 +25,13 @@ TOTAL_LINES=0
 rm -f ${PROP_FILE}
 touch ${PROP_FILE}
 
-echo "Keys not in use in file: $1"
 echo
 
 while read -r LINE
 do
   if [[ ${LINE} =~ (^.*)(=| =).* ]]; then
     KEY=${BASH_REMATCH[1]}    
-    MATCH=`find . -name "*.java" -o -name "*.vm" -o -name "*.js" -o -name "*.html" | xargs grep $KEY`
+    MATCH=`find . -name "*.java" -o -name "*.vm" -o -name "*.js" -o -name "*.html" | xargs grep "${KEY}"`
     LENGTH_OF_MATCH=${#MATCH}
     if [[ ${LENGTH_OF_MATCH} == 0 ]] && [[ ${KEY} != intro_* ]]; then
       echo "Ignoring unused key: ${KEY}"
@@ -46,8 +47,8 @@ do
   let TOTAL_LINES++
 done < ${FILENAME}
 
-echo "" >> ${PROP_FILE}
+mv ${PROP_FILE} ${FILENAME}
 
-echo "- Done"
+echo "- Done investigating file ${FILENAME}"
 echo "- Ignored ${IGNORED_PROPS} unused keys and ${INVALID_LINES} invalid lines, retained ${RETAINED_PROPS} properties, looked at ${TOTAL_LINES} lines"
 echo "- Cleaned properties written to file ${PROP_FILE}"
