@@ -138,6 +138,7 @@ DV.conf = {
             pdf: 'pdf'
         },
         cmd: {
+			chartid: 'id',
             init: 'init'
         }
     },
@@ -150,6 +151,13 @@ DV.conf = {
             dv1: ['#94ae0a', '#0c4375', '#a61120', '#ff8809', '#7c7474', '#a61187', '#ffd13e', '#24ad9a', '#a66111', '#414141', '#4500c4', '#1d5700']
         }
     },
+    statusbar: {
+		icon: {
+			error: 'error_s.png',
+			warning: 'warning.png',
+			ok: 'ok.png'
+		}
+	},
     layout: {
         west_width: 424,
         west_fieldset_width: 402,
@@ -184,7 +192,7 @@ Ext.onReady( function() {
         DV.conf.init.example.setState();
         DV.conf.init.example.setValues();
         
-        DV.init.cmd = DV.util.getUrlParam('uid') || DV.conf.finals.cmd.init;
+        DV.init.cmd = DV.util.getUrlParam(DV.conf.finals.cmd.chartid) || DV.conf.finals.cmd.init;
         DV.exe.execute(true, DV.init.cmd);
     };
     
@@ -202,6 +210,7 @@ Ext.onReady( function() {
         toolbar: {
             menuitem: {}
         },
+        statusbar: {},
         favorite: {
             rename: {}
         }
@@ -417,9 +426,12 @@ Ext.onReady( function() {
                         });
                     }
                     if (exception && !a.length) {
-                        alert(DV.i18n.alert_no_indicators_selected);
+						DV.util.notification.error(DV.i18n.et_no_indicators_dataelements, DV.i18n.em_no_indicators_dataelements);
                     }
-                    return (isFilter && a.length > 1) ? a.slice(0,1) : a;
+                    if (isFilter && a.length > 1) {
+						DV.exe.warnings.push(DV.i18n.wm_first_filter_unit);
+					}
+					return (isFilter && a.length > 1) ? a.slice(0,1) : a;
                 }                    
             },
             period: {
@@ -445,8 +457,11 @@ Ext.onReady( function() {
                         }
                     });
                     if (exception && !a.length) {
-                        alert(DV.i18n.no_periods_selected);
+						DV.util.notification.error(DV.i18n.et_no_periods, DV.i18n.em_no_periods);
                     }
+                    if (isFilter && a.length > 1) {
+						DV.exe.warnings.push(DV.i18n.wm_first_filter_unit);
+					}
                     return (isFilter && a.length > 1) ? a.slice(0,1) : a;
                 },
                 getNamesByRelativePeriodsObject: function(rp) {
@@ -484,7 +499,7 @@ Ext.onReady( function() {
                         }
                     });
                     if (exception && !a.length) {
-                        alert(DV.i18n.no_periods_selected);
+						DV.util.notification.error(DV.i18n.et_no_periods, DV.i18n.em_no_periods);
                     }
                     return a;
                 },
@@ -497,7 +512,7 @@ Ext.onReady( function() {
                         valid = item.getValue() ? true : valid;
                     });
                     if (exception && !valid) {
-                        alert(DV.i18n.no_periods_selected);
+						DV.util.notification.error(DV.i18n.et_no_periods, DV.i18n.em_no_periods);
                     }
                     return a;
                 }   
@@ -522,7 +537,10 @@ Ext.onReady( function() {
 						a.push(DV.util.string.getEncodedString(r.data.text));
 					});
 					if (exception && !a.length) {
-						alert(DV.i18n.no_orgunits_selected);
+						DV.util.notification.error(DV.i18n.et_no_orgunits, DV.i18n.em_no_orgunits);
+					}
+                    if (isFilter && a.length > 1 && !DV.state.userOrganisationUnit) {
+						DV.exe.warnings.push(DV.i18n.wm_first_filter_unit);
 					}
                     return DV.state.userOrganisationUnit ? [DV.init.system.user.organisationUnit.name] : (isFilter && a.length > 1) ? a.slice(0,1) : a;
                 },
@@ -538,20 +556,56 @@ Ext.onReady( function() {
 						a.push(r.data.id);
 					});
 					if (exception && !a.length) {
-						alert(DV.i18n.no_orgunits_selected);
+						DV.util.notification.error(DV.i18n.et_no_orgunits, DV.i18n.em_no_orgunits);
 					}
                     return DV.state.userOrganisationUnit ? [DV.init.system.user.organisationUnit.id] : a;
                 }                    
             }
         },
+        notification: {
+			error: function(title, text) {
+				title = title || '';
+				text = text || '';
+				Ext.create('Ext.window.Window', {
+					title: title,
+					cls: 'dv-messagebox',
+					iconCls: 'dv-window-title-messagebox',
+					modal: true,
+					width: 300,
+					items: [
+						{
+							xtype: 'label',
+							width: 40,
+							text: text
+						}
+					]
+				}).show();
+				DV.cmp.statusbar.panel.setWidth(DV.cmp.region.center.getWidth());
+				DV.cmp.statusbar.panel.update('<img src="images/' + DV.conf.statusbar.icon.error + '" style="padding:0 5px 0 0"/>' + text);
+			},
+			warning: function(text) {
+				text = text || '';
+				DV.cmp.statusbar.panel.update('<img src="images/' + DV.conf.statusbar.icon.warning + '" style="padding:0 5px 0 0"/>' + text);
+				DV.cmp.statusbar.panel.setWidth(DV.cmp.region.center.getWidth());
+			},
+			ok: function() {
+				DV.cmp.statusbar.panel.setWidth(DV.cmp.region.center.getWidth());
+				DV.cmp.statusbar.panel.update('<img src="images/' + DV.conf.statusbar.icon.ok + '" style="padding:0 5px 0 0"/>&nbsp;&nbsp;');
+			}				
+		},
         mask: {
-            setMask: function(cmp, str) {
+            showMask: function(cmp, str) {
                 if (DV.mask) {
-                    DV.mask.hide();
+                    DV.mask.destroy();
                 }
                 DV.mask = new Ext.LoadMask(cmp, {msg: str});
                 DV.mask.show();
-            }
+            },
+            hideMask: function() {
+				if (DV.mask) {
+					DV.mask.hide();
+				}
+			}
         },
         chart: {
 			default: {
@@ -706,7 +760,7 @@ Ext.onReady( function() {
 					setTheme: function() {
 						var colors = DV.conf.chart.theme.dv1.slice(0, DV.state.series.names.length);						
 						if (DV.state.targetLineValue) {
-							colors.push('051a2e', '#051a2e');
+							colors.push('#051a2e', '#051a2e');
 						}						
 						Ext.chart.theme.dv1 = Ext.extend(Ext.chart.theme.Base, {
 							constructor: function(config) {
@@ -806,9 +860,11 @@ Ext.onReady( function() {
 					},
 					setTheme: function() {
 						var colors = DV.conf.chart.theme.dv1.slice(0, DV.state.series.names.length);
-						colors = colors.concat(colors);
+						if (DV.state.trendLine) {
+							colors = colors.concat(colors);
+						}
 						if (DV.state.targetLineValue) {
-							colors.push('051a2e', '#051a2e');
+							colors.push('#051a2e');
 						}						
 						Ext.chart.theme.dv1 = Ext.extend(Ext.chart.theme.Base, {
 							constructor: function(config) {
@@ -969,7 +1025,7 @@ Ext.onReady( function() {
         crud: {
             favorite: {
                 create: function(fn, isUpdate) {
-                    DV.util.mask.setMask(DV.cmp.favorite.window, DV.i18n.saving + '...');
+                    DV.util.mask.showMask(DV.cmp.favorite.window, DV.i18n.saving + '...');
                     
                     var params = DV.state.getParams();
                     params.name = DV.cmp.favorite.name.getValue();
@@ -984,7 +1040,7 @@ Ext.onReady( function() {
                         params: params,
                         success: function() {
                             DV.store.favorite.load({callback: function() {
-                                DV.mask.hide();
+                                DV.util.mask.hideMask();
                                 if (fn) {
                                     fn();
                                 }
@@ -997,10 +1053,9 @@ Ext.onReady( function() {
                 },
                 updateName: function(name) {
                     if (DV.store.favorite.findExact('name', name) != -1) {
-                        alert(DV.i18n.name_already_in_use);
                         return;
                     }
-                    DV.util.mask.setMask(DV.cmp.favorite.window, DV.i18n.renaming + '...');
+                    DV.util.mask.showMask(DV.cmp.favorite.window, DV.i18n.renaming + '...');
                     var r = DV.cmp.favorite.grid.getSelectionModel().getSelection()[0];
                     var url = DV.cmp.favorite.system.getValue() ? DV.conf.finals.ajax.favorite_addorupdatesystem : DV.conf.finals.ajax.favorite_addorupdate;
                     Ext.Ajax.request({
@@ -1009,7 +1064,7 @@ Ext.onReady( function() {
                         success: function() {
                             DV.store.favorite.load({callback: function() {
                                 DV.cmp.favorite.rename.window.close();
-                                DV.mask.hide();
+                                DV.util.mask.hideMask();
                                 DV.cmp.favorite.grid.getSelectionModel().select(DV.store.favorite.getAt(DV.store.favorite.findExact('name', name)));
                                 DV.cmp.favorite.name.setValue(name);
                             }});
@@ -1017,7 +1072,7 @@ Ext.onReady( function() {
                     });
                 },
                 del: function(fn) {
-                    DV.util.mask.setMask(DV.cmp.favorite.window, DV.i18n.deleting + '...');
+                    DV.util.mask.showMask(DV.cmp.favorite.window, DV.i18n.deleting + '...');
                     var baseurl = DV.conf.finals.ajax.path_visualizer + DV.conf.finals.ajax.favorite_delete,
                         selection = DV.cmp.favorite.grid.getSelectionModel().getSelection();
                     Ext.Array.each(selection, function(item) {
@@ -1027,7 +1082,7 @@ Ext.onReady( function() {
                         url: baseurl,
                         success: function() {
                             DV.store.favorite.load({callback: function() {
-                                DV.mask.hide();
+                                DV.util.mask.hideMask();
                                 if (fn) {
                                     fn();
                                 }
@@ -1035,15 +1090,6 @@ Ext.onReady( function() {
                         }
                     }); 
                 }
-            }
-        },
-        favorite: {
-            validate: function(f) {				
-                if (!f.organisationUnits || !f.organisationUnits.length) {
-                    alert(DV.i18n.favorite_no_orgunits);
-                    return false;
-                }
-                return true;
             }
         }
     };
@@ -1213,46 +1259,27 @@ Ext.onReady( function() {
         userOrganisationUnit: false,
         isRendered: false,
         getState: function(exe) {
-            this.resetState();
-            
             this.type = DV.util.button.type.getValue();
             
-            this.hideSubtitle = DV.cmp.favorite.hidesubtitle.getValue();
-            this.hideLegend = DV.cmp.favorite.hidelegend.getValue();
-            this.trendLine = DV.cmp.favorite.trendline.getValue();
-            this.userOrganisationUnit = DV.cmp.favorite.userorganisationunit.getValue();
-            this.domainAxisLabel = DV.cmp.favorite.domainaxislabel.getValue();
-            this.rangeAxisLabel = DV.cmp.favorite.rangeaxislabel.getValue();
-            this.targetLineValue = parseFloat(DV.cmp.favorite.targetlinevalue.getValue());
-            this.targetLineLabel = DV.cmp.favorite.targetlinelabel.getValue();
+            this.getOptions();
             
             this.series.dimension = DV.cmp.settings.series.getValue();
             this.category.dimension = DV.cmp.settings.category.getValue();
             this.filter.dimension = DV.cmp.settings.filter.getValue();
             
-            if (!this.series.dimension || !this.category.dimension || !this.filter.dimension) {
-				this.resetState();
-				alert(DV.i18n.select_dimensions);
-                return;
-            }
-            
-            this.series.names = DV.util.dimension[this.series.dimension].getNames(true);
-            this.category.names = DV.util.dimension[this.category.dimension].getNames(true);
-            this.filter.names = DV.util.dimension[this.filter.dimension].getNames(true, true);
-            
-            if (!this.series.names.length || !this.category.names.length || !this.filter.names.length) {
-				this.resetState();
-                return;
-            }
-            
-            if (this.type == DV.conf.finals.chart.line && this.category.names.length < 2) {
-				this.resetState();
-				alert(DV.i18n.line_chart + ': ' + DV.i18n.min_two_categories);
+            if (!this.validation.dimensions.call(this)) {
 				return;
-			}            
-            if (this.type == DV.conf.finals.chart.area && this.category.names.length < 2) {
-				this.resetState();
-				alert(DV.i18n.area_chart + ': ' + DV.i18n.min_two_categories);
+			}
+            
+            this.series.names = DV.util.dimension[this.series.dimension].getNames();
+            this.category.names = DV.util.dimension[this.category.dimension].getNames();
+            this.filter.names = DV.util.dimension[this.filter.dimension].getNames(false, true);
+            
+            if (!this.validation.names.call(this)) {
+				return;
+			}
+            
+            if (!this.validation.categories.call(this)) {
 				return;
 			}
             
@@ -1261,17 +1288,27 @@ Ext.onReady( function() {
             this.relativePeriods = DV.util.dimension.period.getRelativePeriodObject();
             this.organisationunitIds = DV.util.dimension.organisationunit.getIds();
             
-            if (!this.isRendered) {
-                DV.cmp.toolbar.datatable.enable();
-                this.isRendered = true;
-            }
+            this.validation.trendline.call(this);
+            
+            this.validation.targetline.call(this);
+            
+            this.validation.render.call(this);
             
             if (exe) {
                 DV.value.getValues(true);
             }
         },
+        getOptions: function() {            
+            this.hideSubtitle = DV.cmp.favorite.hidesubtitle.getValue();
+            this.hideLegend = DV.cmp.favorite.hidelegend.getValue();
+            this.trendLine = DV.cmp.favorite.trendline.getValue();
+            this.userOrganisationUnit = DV.cmp.favorite.userorganisationunit.getValue();
+            this.domainAxisLabel = DV.cmp.favorite.domainaxislabel.getValue();
+            this.rangeAxisLabel = DV.cmp.favorite.rangeaxislabel.getValue();
+            this.targetLineValue = parseFloat(DV.cmp.favorite.targetlinevalue.getValue());
+            this.targetLineLabel = DV.cmp.favorite.targetlinelabel.getValue();
+		},
         getParams: function() {
-            this.getState();
             var obj = {};
             obj.type = this.type.toUpperCase();
             
@@ -1297,31 +1334,28 @@ Ext.onReady( function() {
         },
         setFavorite: function(exe, uid) {
             if (uid) {
-                this.resetState();
                 Ext.Ajax.request({
                     url: DV.conf.finals.ajax.path_api + DV.conf.finals.ajax.favorite_get + uid + '.json?links=false',
                     scope: this,
                     success: function(r) {
-                        if (!r.responseText) {
-							if (DV.mask) {
-								DV.mask.hide();
-							}
-                            alert(DV.i18n.invalid_uid);
-                            return;
-                        }
+						if (!this.validation.response.call(this, r)) {
+							return;
+						}
 						
                         var f = Ext.JSON.decode(r.responseText),
-                            indiment = [];
+							indiment = [],
+							irec = [],
+							drec = [];	
                             
-                        if (!DV.util.favorite.validate(f)) {
-                            return;
-                        }
+						if (!this.validation.favorite(f)) {
+							return;
+						}
                         
                         f.type = f.type.toLowerCase();
                         f.series = f.series.toLowerCase();
                         f.category = f.category.toLowerCase();
-                        f.filter = f.filter.toLowerCase();
-                        
+                        f.filter = f.filter.toLowerCase();        
+                                        
                         f.names = {
                             data: [],
                             period: [],
@@ -1329,69 +1363,51 @@ Ext.onReady( function() {
                         };
                         
                         this.type = f.type;
-                        DV.util.button.type.setValue(this.type);
-                        
-                        this.trendLine = f.regression;
-                        DV.cmp.favorite.trendline.setValue(f.regression);
+						
                         this.hideSubtitle = f.hideSubtitle;
-                        DV.cmp.favorite.hidesubtitle.setValue(f.hideSubtitle);
-                        this.hideLegend = f.hideLegend;
-                        DV.cmp.favorite.hidelegend.setValue(f.hideLegend);
-                        DV.cmp.favorite.userorganisationunit.setValue(f.userOrganisationUnit);
-                        this.domainAxisLabel = f.domainAxisLabel;
-                        DV.cmp.favorite.domainaxislabel.setValue(f.domainAxisLabel);
-                        this.rangeAxisLabel = f.rangeAxisLabel;
-                        DV.cmp.favorite.rangeaxislabel.setValue(f.rangeAxisLabel);
-                        this.targetLineValue = f.targetLineValue ? parseFloat(f.targetLineValue) : null;
-                        DV.cmp.favorite.targetlinevalue.setValue(f.targetLineValue);
-                        DV.cmp.favorite.targetlinelabel.xable();
-                        this.targetLineLabel = f.targetLineLabel ? f.targetLineLabel : null;
-                        DV.cmp.favorite.targetlinelabel.setValue(f.targetLineLabel);
+                        this.hideLegend = f.hideLegend;                        
+                        this.trendLine = f.regression;
                         this.userOrganisationUnit = f.userOrganisationUnit;
-                        DV.cmp.favorite.userorganisationunit.setValue(f.userOrganisationUnit);
+                        this.domainAxisLabel = f.domainAxisLabel;
+                        this.rangeAxisLabel = f.rangeAxisLabel;
+                        this.targetLineValue = f.targetLineValue ? parseFloat(f.targetLineValue) : null;
+                        this.targetLineLabel = f.targetLineLabel ? f.targetLineLabel : null;
                         
                         this.series.dimension = f.series;
-                        DV.cmp.settings.series.setValue(DV.conf.finals.dimension[this.series.dimension].value);
-                        DV.util.combobox.filter.category();
-                        
                         this.category.dimension = f.category;
-                        DV.cmp.settings.category.setValue(DV.conf.finals.dimension[this.category.dimension].value);
-                        DV.util.combobox.filter.filter();
-                        
                         this.filter.dimension = f.filter;
-                        DV.cmp.settings.filter.setValue(DV.conf.finals.dimension[this.filter.dimension].value);
                         
-                        DV.store.indicator.selected.removeAll();                        
-                        DV.store.dataelement.selected.removeAll();                        
-                        
+                        if (!this.validation.dimensions.call(this)) {
+							return;
+						}
+						
+						if (!this.validation.categories.call(this)) {
+							return;
+						}
+						
+						this.validation.trendline.call(this);
+						
+						this.validation.targetline.call(this);
+						
                         if (f.indicators) {
-                            var records = [];
                             for (var i = 0; i < f.indicators.length; i++) {
                                 indiment.push(f.indicators[i]);
                                 this.indicatorIds.push(f.indicators[i].internalId);
-                                records.push({id: f.indicators[i].internalId, s: DV.util.string.getEncodedString(f.indicators[i].shortName), name: DV.util.string.getEncodedString(f.indicators[i].shortName), parent: null});
+                                irec.push({id: f.indicators[i].internalId, s: DV.util.string.getEncodedString(f.indicators[i].shortName), name: DV.util.string.getEncodedString(f.indicators[i].shortName), parent: null});
                             }
-                            DV.store.indicator.selected.add(records);
-                            DV.util.store.addToStorage(DV.store.indicator.available, records);
-                            DV.util.multiselect.filterAvailable(DV.cmp.dimension.indicator.available, DV.cmp.dimension.indicator.selected);
-                        }
+                        }                        
                         if (f.dataElements) {
-                            var records = [];
                             for (var i = 0; i < f.dataElements.length; i++) {
                                 indiment.push(f.dataElements[i]);
                                 this.dataelementIds.push(f.dataElements[i].internalId);
-                                records.push({id: f.dataElements[i].internalId, s: DV.util.string.getEncodedString(f.dataElements[i].shortName), name: DV.util.string.getEncodedString(f.dataElements[i].shortName), parent: null});
+                                drec.push({id: f.dataElements[i].internalId, s: DV.util.string.getEncodedString(f.dataElements[i].shortName), name: DV.util.string.getEncodedString(f.dataElements[i].shortName), parent: null});
                             }
-                            DV.store.dataelement.selected.add(records);
-                            DV.util.store.addToStorage(DV.store.dataelement.available, records);
-                            DV.util.multiselect.filterAvailable(DV.cmp.dimension.dataelement.available, DV.cmp.dimension.dataelement.selected);
                         }
                         for (var i = 0; i < indiment.length; i++) {
                             f.names.data.push(DV.util.string.getEncodedString(indiment[i].shortName));
                         }
                         
                         this.relativePeriods = f.relativePeriods;
-                        DV.util.checkbox.setRelativePeriods(this.relativePeriods);
                         f.names.period = DV.util.dimension.period.getNamesByRelativePeriodsObject(this.relativePeriods);
                         
                         for (var i = 0; i < f.organisationUnits.length; i++) {
@@ -1403,11 +1419,14 @@ Ext.onReady( function() {
                         this.series.names = f.names[this.series.dimension];
                         this.category.names = f.names[this.category.dimension];
                         this.filter.names = f.names[this.filter.dimension];
-                                    
-                        if (!this.isRendered) {
-                            DV.cmp.toolbar.datatable.enable();
-                            this.isRendered = true;
-                        }
+                        
+						if (!this.validation.names.call(this)) {
+							return;
+						}
+						
+						this.validation.render.call(this);
+						
+						this.setUI(f, irec, drec);
                         
                         if (exe) {
                             DV.value.getValues(true);
@@ -1416,8 +1435,43 @@ Ext.onReady( function() {
                 });
             }
         },
+        setUI: function(f, irec, drec) {
+			DV.util.button.type.setValue(f.type);
+			
+			DV.cmp.favorite.hidesubtitle.setValue(f.hideSubtitle);
+			DV.cmp.favorite.hidelegend.setValue(f.hideLegend);
+			DV.cmp.favorite.trendline.setValue(f.regression);
+			DV.cmp.favorite.userorganisationunit.setValue(f.userOrganisationUnit);
+			DV.cmp.favorite.domainaxislabel.setValue(f.domainAxisLabel);
+			DV.cmp.favorite.rangeaxislabel.setValue(f.rangeAxisLabel);
+			DV.cmp.favorite.targetlinevalue.setValue(f.targetLineValue);
+			DV.cmp.favorite.targetlinelabel.xable();
+			DV.cmp.favorite.targetlinelabel.setValue(f.targetLineLabel);
+
+			DV.cmp.settings.series.setValue(DV.conf.finals.dimension[f.series].value);
+			DV.util.combobox.filter.category();                        
+			DV.cmp.settings.category.setValue(DV.conf.finals.dimension[f.category].value);
+			DV.util.combobox.filter.filter();                        
+			DV.cmp.settings.filter.setValue(DV.conf.finals.dimension[f.filter].value);
+									
+			DV.store.indicator.selected.removeAll();
+			if (f.indicators) {
+				DV.store.indicator.selected.add(irec);
+				DV.util.store.addToStorage(DV.store.indicator.available, irec);
+				DV.util.multiselect.filterAvailable(DV.cmp.dimension.indicator.available, DV.cmp.dimension.indicator.selected);
+			}
+									
+			DV.store.dataelement.selected.removeAll();
+			if (f.dataElements) {
+				DV.store.dataelement.selected.add(drec);
+				DV.util.store.addToStorage(DV.store.dataelement.available, drec);
+				DV.util.multiselect.filterAvailable(DV.cmp.dimension.dataelement.available, DV.cmp.dimension.dataelement.selected);
+			}
+
+			DV.util.checkbox.setRelativePeriods(f.relativePeriods);
+		},						
         resetState: function() {
-            this.type = null;
+            this.type = DV.conf.finals.chart.column;
             this.series.dimension = null;
             this.series.names = [];
             this.category.dimension = null;
@@ -1431,18 +1485,126 @@ Ext.onReady( function() {
 			this.hideSubtitle = false,
             this.hideLegend = false;
 			this.trendLine = null;
+			this.userOrganisationUnit = false;
 			this.domainAxisLabel = null;
 			this.rangeAxisLabel = null;
 			this.targetLineValue = null;
 			this.targetLineLabel = null;
-			this.userOrganisationUnit = false;
-        }
+        },
+        validation: {
+			dimensions: function() {
+				if (!this.series.dimension || !this.category.dimension || !this.filter.dimension) {
+					DV.util.notification.error(DV.i18n.et_invalid_dimension_setup, DV.i18n.em_invalid_dimension_setup);
+					return false;
+				}
+				return true;
+			},
+			names: function() {            
+				if (!this.series.names.length) {
+					DV.util.notification.error(DV.i18n.et_no_indicators_dataelements, DV.i18n.em_no_indicators_dataelements);
+					return false;
+				}           
+				if (!this.category.names.length) {
+					DV.util.notification.error(DV.i18n.et_no_periods, DV.i18n.em_no_periods);
+					return false;
+				}           
+				if (!this.filter.names.length) {
+					DV.util.notification.error(DV.i18n.et_no_orgunits, DV.i18n.em_no_orgunits);
+					return false;
+				}
+				return true;
+			},
+			categories: function() {
+				if (this.category.names.length < 2 && (this.type === DV.conf.finals.chart.line || this.type === DV.conf.finals.chart.area)) {
+					DV.util.notification.error(DV.i18n.et_line_area_categories, DV.i18n.em_line_area_categories);
+					return false;
+				}
+				return true;
+			},
+			trendline: function() {
+				if (this.trendLine) {
+					var reasons = [];
+					if (this.type === DV.conf.finals.chart.stackedcolumn || this.type === DV.conf.finals.chart.stackedbar || this.type === DV.conf.finals.chart.area) {
+						reasons.push(DV.i18n.wm_not_applicable + ' ' + DV.i18n.wm_stacked_chart);
+						this.trendLine = false;
+					}
+					else if (this.type === DV.conf.finals.chart.pie) {
+						reasons.push(DV.i18n.wm_not_applicable + ' ' + DV.i18n.wm_pie_chart);
+						this.trendLine = false;
+					}
+					
+					if (this.category.names.length < 2) {
+						reasons.push(DV.i18n.wm_required_categories);
+						this.trendLine = false;
+					}
+					
+					if (reasons.length) {
+						var text = DV.i18n.wm_trendline_deactivated + ' (';
+						for (var i = 0; i < reasons.length; i++) {
+							text += i > 0 ? ' + ' : '';
+							text += reasons[i];
+						}
+						text += ').';
+						DV.exe.warnings.push(text);
+					}
+				}
+			},
+			targetline: function() {			
+				if (this.targetLineValue) {
+					var reasons = [];
+					if (this.type === DV.conf.finals.chart.stackedcolumn || this.type === DV.conf.finals.chart.stackedbar || this.type === DV.conf.finals.chart.area) {
+						reasons.push(DV.i18n.wm_not_applicable + ' ' + DV.i18n.wm_stacked_chart);
+						this.targetLineValue = null;
+					}
+					else if (this.type === DV.conf.finals.chart.pie) {
+						reasons.push(DV.i18n.wm_not_applicable + ' ' + DV.i18n.wm_pie_chart);
+						this.targetLineValue = null;
+					}
+					
+					if (this.category.names.length < 2) {
+						reasons.push(DV.i18n.wm_required_categories);
+						this.targetLineValue = null;
+					}
+					
+					if (reasons.length) {
+						var text = DV.i18n.wm_targetline_deactivated + ' (';
+						for (var i = 0; i < reasons.length; i++) {
+							text += i > 0 ? ' + ' : '';
+							text += reasons[i];
+						}
+						text += ').';
+						DV.exe.warnings.push(text);
+					}
+				}
+			},
+			render: function() {
+				if (!this.isRendered) {
+					DV.cmp.toolbar.datatable.enable();
+					this.isRendered = true;
+				}
+			},
+			response: function(r) {
+				if (!r.responseText) {
+					DV.util.mask.hideMask();
+					DV.util.notification.error(DV.i18n.et_invalid_uid, DV.i18n.em_invalid_uid);
+					return false;
+				}
+				return true;
+			},
+			favorite: function(f) {				
+				if (!f.organisationUnits || !f.organisationUnits.length) {
+					alert(DV.i18n.favorite_no_orgunits);
+					return false;
+				}
+				return true;
+			}
+		}
     };
     
     DV.value = {
         values: [],
         getValues: function(exe) {
-            DV.util.mask.setMask(DV.cmp.region.center, DV.i18n.loading);
+            DV.util.mask.showMask(DV.cmp.region.center, DV.i18n.loading);
             
             var params = [];
             params = params.concat(DV.util.dimension[DV.state.series.dimension].getUrl());
@@ -1458,9 +1620,10 @@ Ext.onReady( function() {
                 url: baseurl,
                 success: function(r) {                    
                     DV.value.values = DV.util.value.jsonfy(r);
+                    
                     if (!DV.value.values.length) {
-                        DV.mask.hide();
-                        alert(DV.i18n.no_data);
+						DV.util.mask.hideMask();
+                        DV.util.notification.error(DV.i18n.et_no_data, DV.i18n.em_no_data);
                         return;
                     }
                     
@@ -1511,40 +1674,30 @@ Ext.onReady( function() {
                 }
             });
             
-            if (DV.state.type === DV.conf.finals.chart.column || 
-				DV.state.type === DV.conf.finals.chart.bar ||
-				DV.state.type === DV.conf.finals.chart.line) {			
-				if (DV.state.trendLine) {
-					if (DV.state.category.names.length < 2) {
-						DV.state.trendLine = false;
-						alert(DV.i18n.trend_line + ': ' + DV.i18n.min_two_categories);
+			if (DV.state.trendLine) {
+				this.trendLine = [];
+				for (var i = 0; i < DV.state.series.names.length; i++) {
+					var s = DV.state.series.names[i],
+						reg = new SimpleRegression();
+					for (var j = 0; j < DV.chart.data.length; j++) {
+						reg.addData(j, DV.chart.data[j][s]);
 					}
-					else {
-						this.trendLine = [];
-						for (var i = 0; i < DV.state.series.names.length; i++) {
-							var s = DV.state.series.names[i],
-								reg = new SimpleRegression();
-							for (var j = 0; j < DV.chart.data.length; j++) {
-								reg.addData(j, DV.chart.data[j][s]);
-							}
-							var key = DV.conf.finals.data.trendline + s;
-							for (var j = 0; j < DV.chart.data.length; j++) {
-								var n = reg.predict(j);
-								DV.chart.data[j][key] = parseFloat(reg.predict(j).toFixed(1));
-							}
-							this.trendLine.push({
-								key: key,
-								name: DV.i18n.trend + ' (' + s + ')'
-							});
-						}
+					var key = DV.conf.finals.data.trendline + s;
+					for (var j = 0; j < DV.chart.data.length; j++) {
+						var n = reg.predict(j);
+						DV.chart.data[j][key] = parseFloat(reg.predict(j).toFixed(1));
 					}
-				}
-
-				if (DV.state.targetLineValue) {
-					Ext.Array.each(DV.chart.data, function(item) {
-						item[DV.conf.finals.data.targetline] = DV.state.targetLineValue;
+					this.trendLine.push({
+						key: key,
+						name: DV.i18n.trend + ' (' + s + ')'
 					});
 				}
+			}
+
+			if (DV.state.targetLineValue) {
+				Ext.Array.each(DV.chart.data, function(item) {
+					item[DV.conf.finals.data.targetline] = DV.state.targetLineValue;
+				});
 			}
             
             if (exe) {
@@ -1566,7 +1719,7 @@ Ext.onReady( function() {
         },
         column: function(stacked) {
 			var series = [];
-			if (DV.state.trendLine && !stacked) {
+			if (DV.state.trendLine) {
 				var a = DV.util.chart.default.series.getTrendLineArray();
 				for (var i = 0; i < a.length; i++) {
 					series.push(a[i]);
@@ -1584,7 +1737,7 @@ Ext.onReady( function() {
 				},				
 				tips: DV.util.chart.default.series.getTips()
 			});
-			if (DV.state.targetLineValue && !stacked) {
+			if (DV.state.targetLineValue) {
 				series.push(DV.util.chart.default.series.getTargetLine());
 			}
 			
@@ -1601,7 +1754,7 @@ Ext.onReady( function() {
         },
         bar: function(stacked) {
 			var series = [];
-			if (DV.state.trendLine && !stacked) {
+			if (DV.state.trendLine) {
 				var a = DV.util.chart.bar.series.getTrendLineArray();
 				for (var i = 0; i < a.length; i++) {
 					series.push(a[i]);
@@ -1619,7 +1772,7 @@ Ext.onReady( function() {
 				},
 				tips: DV.util.chart.default.series.getTips()
 			});
-			if (DV.state.targetLineValue && !stacked) {
+			if (DV.state.targetLineValue) {
 				series.push(DV.util.chart.bar.series.getTargetLine());
 			}
 			
@@ -1707,15 +1860,15 @@ Ext.onReady( function() {
             });
         },
         reload: function() {
+			DV.state.getOptions();
             DV.cmp.region.center.removeAll(true);
-            DV.cmp.region.center.add(this.chart);
+            DV.cmp.region.center.add(this.chart);            
             
-            if (DV.init.cmd !== DV.conf.finals.cmd.init) {
-                DV.mask.hide();
-                DV.store.getDataTableStore(true);
+            if (DV.init.cmd === DV.conf.finals.cmd.init) {
+				DV.exe.finalize();
             }
             else {
-                DV.init.cmd = false;
+                DV.store.getDataTableStore(true);
             }
         }
     };
@@ -1767,27 +1920,47 @@ Ext.onReady( function() {
         reload: function() {
             DV.cmp.region.east.removeAll(true);
             DV.cmp.region.east.add(this.datatable);
-            DV.init.cmd = false;
+            
+            DV.exe.finalize();
         }            
     };
     
     DV.exe = {
         execute: function(exe, cmd) {
+			DV.exe.warnings = [];			
             if (cmd) {
                 if (cmd === DV.conf.finals.cmd.init) {
                     DV.chart.getData(exe);
                 }
                 else {
+					DV.state.resetState();
                     DV.state.setFavorite(true, cmd);
                 }
             }
             else {
+				DV.state.resetState();
                 DV.state.getState(exe);
             }
         },
-        datatable: function(exe) {
-            DV.store.getDataTableStore(exe);
-        }
+        finalize: function() {
+			DV.init.cmd = false;
+			DV.util.mask.hideMask();
+            
+            if (DV.exe.warnings.length) {
+				DV.util.notification.warning(DV.exe.getWarnings());
+			}
+			else {
+				DV.util.notification.ok();
+			}
+        },
+        warnings: [],
+        getWarnings: function() {
+			var t = '';
+			for (var i = 0; i < this.warnings.length; i++) {
+				t += this.warnings[i] + ' ';
+			}
+			return t;
+		}				
     };
         
     DV.viewport = Ext.create('Ext.container.Viewport', {
@@ -2528,7 +2701,8 @@ Ext.onReady( function() {
                                                     v.menu.destroy();
                                                 }
                                                 v.menu = Ext.create('Ext.menu.Menu', {
-                                                    id: 'treepanel-contextmenu'
+                                                    id: 'treepanel-contextmenu',
+                                                    showSeparator: false
                                                 });
                                                 if (!r.data.leaf) {
                                                     v.menu.add({
@@ -2806,11 +2980,12 @@ Ext.onReady( function() {
                             listeners: {
                                 afterrender: function(b) {
                                     this.menu = Ext.create('Ext.menu.Menu', {
-                                        shadowOffset: 1,
+                                        margin: '2 0 0 0',
+                                        shadow: false,
                                         showSeparator: false,
                                         items: [
                                             {
-                                                text: 'Manage favorites',
+                                                text: DV.i18n.manage_favorites,
                                                 iconCls: 'dv-menu-item-edit',
                                                 handler: function() {
                                                     if (DV.cmp.favorite.window) {
@@ -3350,7 +3525,7 @@ Ext.onReady( function() {
                                 var svg = document.getElementsByTagName('svg');
                                 
                                 if (svg.length < 1) {
-                                    alert(DV.i18n.alert_browser_download);
+									DV.util.notification.error(DV.i18n.et_svg_browser, DV.i18n.em_svg_browser);
                                     return;
                                 }
                                 
@@ -3371,7 +3546,8 @@ Ext.onReady( function() {
                             listeners: {
                                 afterrender: function(b) {
                                     this.menu = Ext.create('Ext.menu.Menu', {
-                                        shadowOffset: 1,
+                                        margin: '2 0 0 0',
+                                        shadow: false,
                                         showSeparator: false,
                                         items: [
                                             {
@@ -3447,6 +3623,20 @@ Ext.onReady( function() {
                     
                     ]
                 },
+                bbar: {
+					items: [
+						{
+							xtype: 'panel',
+							cls: 'dv-statusbar',
+							height: 23,
+							listeners: {
+								added: function() {
+									DV.cmp.statusbar.panel = this;
+								}
+							}
+						}
+					]
+				},					
                 listeners: {
                     added: function() {
                         DV.cmp.region.center = this;
