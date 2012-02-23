@@ -242,9 +242,10 @@ function getSuggestedValues( sourceId, targetId )
 	for( var i=0; i< arrValues.length; i++ )
 	{
 		var option = document.createElement("option");
-		option.value = "'" + arrValues[i] + "'";
-		option.text = arrValues[i];
-		option.title = arrValues[i];
+		var value = jQuery.trim( arrValues[i] );
+		option.value = "'=" + value + "'";
+		option.text = value;
+		option.title = value;
 
 		suggestedValueSelector.add(option, null); 
 	}
