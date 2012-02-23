@@ -351,6 +351,10 @@ body {
     background-color: #f1f1f1;
 }
 
+.x-tip .x-tip-body {
+	padding: 5px;
+}
+
 /* Chart tips (tooltip) */
 .x-tip .x-tip-header .x-box-item {
     text-align: center;
@@ -521,6 +525,11 @@ body {
     padding-left: 19px;
     background-image: url('../images/datatable.png');
 }
+.dv-window-title-messagebox {
+    padding-left: 16px;
+    background-image: url('../images/error_m.png');
+    background-position-y: 1px;
+}
 
 /* Label heading periods */
 .dv-label-period-heading {
@@ -607,14 +616,29 @@ body {
     line-height: 16px;
 }
 
-/* DV menu grid background now looks like a menu*/
+/* DV menu grid background now looks like a menu */
 .dv-menugrid .x-grid-view {
     background-color: #f1f1f1;
 }
-w {
-    background-color: #f1f1f1;
+
+/* DV messagebox alert */
+.dv-messagebox .x-window-body-default {
+	background-color: #fff;
+	padding: 15px 10px 15px 15px;
+	color: #333;
+	font-size: 11px;
 }
-nu*/
-.dv-menugrid .x-grid-view {
-    background-color: #f1f1f1;
+
+.dv-messagebox .x-toolbar-footer-docked-bottom {
+	display: none;
+}
+
+/* DV statusbar */
+.dv-statusbar .x-panel-body-default {
+	padding: 5px 0 0 6px;
+	border: 0 none;
+	background-color: transparent;
+	color: #111;
+	vertical-align: top;
+	font-size: 10px
 }
