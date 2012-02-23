@@ -107,18 +107,16 @@ function getKeyCode(e)
 	 return (e)? e.which : null;
 }
  
-function validateSearch( event )
-{	
-	var request = new Request();
-	request.setResponseTypeXML( 'message' );
-	request.setCallbackSuccess( searchValidationCompleted );
-	request.sendAsPost('searchText=' + getFieldValue( 'searchText' ));
-	request.send( 'validateSearch.action' );
+function validateSearch()
+{
+	$.post( 'validateSearch.action',{ searchText:getFieldValue( 'searchText' )}
+		, searchValidationCompleted	);
 }
 
 function searchValidationCompleted( messageElement )
 {
-    var type = messageElement.getAttribute( 'type' );
+    messageElement = messageElement.getElementsByTagName( 'message' )[0];
+	var type = messageElement.getAttribute( 'type' );
     var message = messageElement.firstChild.nodeValue;
 	
     if ( type == 'success' )
@@ -146,7 +144,6 @@ function searchValidationCompleted( messageElement )
         showWarningMessage( message );
     }
 }
-
 // -------------------------------------------------------------------------
 // Show Patient chart list
 // -------------------------------------------------------------------------

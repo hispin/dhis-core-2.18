@@ -80,8 +80,8 @@
                         #end
                     </select> 
                     <em title="$i18n.getString( 'required' )" class="required">*</em>
-                    <input type="text" id="searchText" name="searchText" maxlength="30" onchange="validateSearchPartner('$patient.id');"/>        
-                    <input type="button" value="$i18n.getString( 'search' )" onclick="validateSearchPartner('$patient.id')"/>
+                    <input type="text" id="searchText" name="searchText" maxlength="30" onchange="validateSearchPartner();"/>        
+                    <input type="button" value="$i18n.getString( 'search' )" onclick="validateSearchPartner()"/>
                 </td> 
             </tr>                  
             <tr>  

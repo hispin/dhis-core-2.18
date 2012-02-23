@@ -43,18 +43,21 @@ function showAddRelationshipPatient( patientId, isShowPatientList )
 }
 
 function validateAddRelationshipPatient()
-{
-	var request = new Request();
-    request.setResponseTypeXML( 'message' );
-    request.setCallbackSuccess( addRelationshipPatientCompleted ); 
-	request.sendAsPost( getParamsForDiv('addRelationshipDiv') );	
-    request.send( "validateAddRelationshipPatient.action" );        
-
+{	
+	$.ajax({
+	   type: "POST",
+	   url: "validateAddRelationshipPatient.action",
+	   data: getParamsForDiv('addRelationshipDiv'),
+	   dataType: "xml",
+	   success:addRelationshipPatientCompleted
+	});
+	
     return false;
 }
 
 function addRelationshipPatientCompleted( messageElement )
 {
+	messageElement = messageElement.getElementsByTagName( 'message' )[0];
     var type = messageElement.getAttribute( 'type' );
     var message = messageElement.firstChild.nodeValue;
     
@@ -84,25 +87,24 @@ function addRelationshipPatient()
 {
 	jQuery('#loaderDiv').show();
 	$.ajax({
-      type: "POST",
-      url: 'addRelationshipPatient.action',
-      data: getParamsForDiv('addRelationshipDiv'),
-      success: function( json ) {
-		hideById('addRelationshipDiv');
-		showById('selectDiv');
-		showById('searchPatientDiv');
-		showById('listPatientDiv');
-		jQuery('#loaderDiv').hide();
-		
-		if( getFieldValue( 'isShowPatientList' ) == 'false' )
-		{
-			showRelationshipList( getFieldValue('id') );
-		}else
-		{
-			loadPatientList();
-		}
-      }
-     });
+		type: "POST",
+		url: 'addRelationshipPatient.action',
+		data: getParamsForDiv('addRelationshipDiv'),
+		success: function( json ) {
+			hideById('addRelationshipDiv');
+			showById('selectDiv');
+			showById('searchPatientDiv');
+			showById('listPatientDiv');
+			jQuery('#loaderDiv').hide();
+
+			if( getFieldValue( 'isShowPatientList' ) == 'false' )
+			{
+				showRelationshipList( getFieldValue('id') );
+			}else
+			{
+				loadPatientList();
+			}
+		}});
     return false;
 }
 
@@ -197,25 +199,24 @@ function removeRepresentativeCompleted( messageElement )
 	}
 }
 
-
-
 //-----------------------------------------------------------------------------
 // Search Relationship Partner
 //-----------------------------------------------------------------------------
 
 function validateSearchPartner()
-{	
-	var request = new Request();
-	request.setResponseTypeXML( 'message' );
-	request.setCallbackSuccess( searchValidationCompleted );    
-	request.sendAsPost(getParamsForDiv('relationshipSelectForm'));
-	request.send( 'validateSearchRelationship.action' );        
-
-	return false;
+{
+	$.ajax({
+		url: 'validateSearchRelationship.action',
+		type:"POST",
+		data: getParamsForDiv('relationshipSelectForm'),
+		dataType: "xml",
+		success: searchValidationCompleted
+		}); 
 }
 
 function searchValidationCompleted( messageElement )
 {
+	messageElement = messageElement.getElementsByTagName( 'message' )[0];
 	var type = messageElement.getAttribute( 'type' );
 	var message = messageElement.firstChild.nodeValue;
 	
@@ -266,24 +267,27 @@ function addRelationship()
 	var relTypeId = relationshipTypeId.substr( 0, relationshipTypeId.indexOf(':') );
 	var relName = relationshipTypeId.substr( relationshipTypeId.indexOf(':') + 1, relationshipTypeId.length );
 	
-	var url = 'saveRelationship.action?' + 
-		'patientId=' + getFieldValue('patientId') + 
+	var params = 'patientId=' + getFieldValue('patientId') + 
 		'&partnerId=' + partnerId + 
 		'&relationshipTypeId=' + relTypeId +
 		'&relationshipName=' + relName ;
 	
 	jQuery('#loaderDiv').show();
-	var request = new Request();
-	request.setResponseTypeXML( 'message' );
-	request.setCallbackSuccess( addRelationshipCompleted );    
-	request.send( url );
 	
+	$.ajax({
+		url: 'saveRelationship.action',
+		type:"POST",
+		data: params,
+		dataType: "xml",
+		success: addRelationshipCompleted
+		}); 
+		
 	return false;
-	
 }
 
 function addRelationshipCompleted( messageElement )
 {
+	messageElement = messageElement.getElementsByTagName( 'message' )[0];
 	var type = messageElement.getAttribute( 'type' );
 	var message = messageElement.firstChild.nodeValue;
 	

@@ -7,7 +7,7 @@
 </script>
 
 <h3>$i18n.getString( "program_summary_report" ) #openHelp('program_summary_report')</h3>
-<form id="reportForm" name="reportForm" method="post" action="reportSelect.action">
+<form id="reportForm" name="reportForm" method="post">
 
 <div class="inputCriteria" style="width:530px;height:160px;margin-bottom:20px;">
 
