@@ -406,16 +406,22 @@ function ValueSaver( dataElementId_, value_, providedByAnotherFacility_, dataEle
 	
     this.save = function()
     {
-		var params = 'dataElementId=' + dataElementId;
+		 var params = 'dataElementId=' + dataElementId;
 			params += '&value=' + value;
 			params += '&providedByAnotherFacility=' + providedByAnotherFacility;
-			
-        var request = new Request();
-        request.setCallbackSuccess( handleResponse );
-        request.setCallbackError( handleHttpError );
-        request.setResponseTypeXML( 'status' );
-		request.sendAsPost( params );
-        request.send( 'saveValue.action');
+		
+		$.ajax({
+			   type: "POST",
+			   url: "saveValue.action",
+			   data: params,
+			   dataType: "xml",
+			   success: function(result){
+					handleResponse (result);
+			   },
+			   error: function(request,status,errorThrown) {
+					handleHttpError (request);
+			   }
+			});
     };
  
     function handleResponse( rootElement )
@@ -469,13 +475,19 @@ function DateSaver( dataElementId_, value_, providedByAnotherFacility_, resultCo
 		var params = 'dataElementId=' + dataElementId;
 		params +=  '&value=' + value;
 		params +=  '&providedByAnotherFacility=' + providedByAnotherFacility;
-
-        var request = new Request();
-        request.setCallbackSuccess( handleResponse );
-        request.setCallbackError( handleHttpError );
-        request.setResponseTypeXML( 'status' );
-		request.sendAsPost( params );
-        request.send( 'saveDateValue.action' );
+		
+		$.ajax({
+			   type: "POST",
+			   url: "saveDateValue.action",
+			   data: params,
+			   dataType: "xml",
+			   success: function(result){
+					handleResponse (result);
+			   },
+			   error: function(request,status,errorThrown) {
+					handleHttpError (request);
+			   }
+			});
     };
 
     function handleResponse( rootElement )
@@ -551,12 +563,20 @@ function FacilitySaver( dataElementId_, providedByAnotherFacility_, resultColor_
 
     this.save = function()
     {
-        var request = new Request();
-        request.setCallbackSuccess( handleResponseCheckBox );
-        request.setCallbackError( handleHttpErrorCheckBox );
-        request.setResponseTypeXML( 'status' ); 
-        request.send( 'saveProvidingFacility.action?dataElementId=' + dataElementId 
-					+'&providedByAnotherFacility=' + providedByAnotherFacility );
+		var params = 'dataElementId=' + dataElementId 
+					+ '&providedByAnotherFacility=' + providedByAnotherFacility ;
+		$.ajax({
+			   type: "POST",
+			   url: "saveProvidingFacility.action",
+			   data: params,
+			   dataType: "xml",
+			   success: function(result){
+					handleResponse (result);
+			   },
+			   error: function(request,status,errorThrown) {
+					handleHttpError (request);
+			   }
+			});
     };
 
     function handleResponseCheckBox( rootElement )
@@ -606,20 +626,26 @@ function ExecutionDateSaver( programStageId_, executionDate_, resultColor_ )
 
     this.save = function()
     {
-        var request = new Request();
-        request.setCallbackSuccess( handleResponse );
-        request.setCallbackError( handleHttpError );
-        request.setResponseTypeXML( 'status' );
-		
 		var params  = "executionDate=" + executionDate;
 			params += "&programStageId=" + programStageId;
-		request.sendAsPost(params);
-		
-        request.send( "saveExecutionDate.action");
+			
+		$.ajax({
+			   type: "POST",
+			   url: "saveExecutionDate.action",
+			   data: params,
+			   dataType: "xml",
+			   success: function(result){
+					handleResponse (result);
+			   },
+			   error: function(request,status,errorThrown) {
+					handleHttpError (request);
+			   }
+			});
     };
 
     function handleResponse( rootElement )
     {
+		rootElement = rootElement.getElementsByTagName( 'message' )[0];
         var codeElement = rootElement.getAttribute( 'type' );
         if ( codeElement == 'success' )
         {

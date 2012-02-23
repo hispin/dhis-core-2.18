@@ -776,11 +776,19 @@ function DateDueSaver( programStageInstanceId_, dueDate_, resultColor_ )
 
 	this.save = function()
 	{
-		var request = new Request();
-		request.setCallbackSuccess( handleResponse );
-		request.setCallbackError( handleHttpError );
-		request.setResponseTypeXML( 'status' );
-		request.send( 'saveDueDate.action?programStageInstanceId=' + programStageInstanceId + '&dueDate=' + dueDate );
+		var params = 'programStageInstanceId=' + programStageInstanceId + '&dueDate=' + dueDate;
+		$.ajax({
+			   type: "POST",
+			   url: "saveDueDate.action",
+			   data: params,
+			   dataType: "xml",
+			   success: function(result){
+					handleResponse (result);
+			   },
+			   error: function(request,status,errorThrown) {
+					handleHttpError (request);
+			   }
+			});
 	};
 
 	function handleResponse( rootElement )
