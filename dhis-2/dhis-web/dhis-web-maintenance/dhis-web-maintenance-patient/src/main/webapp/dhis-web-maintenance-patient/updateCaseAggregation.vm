@@ -127,8 +127,11 @@
 			<td>
 				<fieldset style="border: 1px solid #3f5d8e; ">
 				<legend>$i18n.getString( "suggested_values" )</legend>
-				<select multiple size="10" id='suggestedDEValues' style="width:20em; height: 17em" ondblclick="insertInfo(this);" >
+				<select multiple size="10" id='suggestedDEValues' style="width:20em; height: 17em" ondblclick="insertSingleValue('suggestedDEValues');" >
 				</select>
+			</td>
+			<td>
+				<img src="../images/move_down.png" alt="$i18n.getString( 'add_all_values' )" title="$i18n.getString( 'add_all_values' )" style='cursor:pointer;' onclick="insertMultiValues('suggestedDEValues');">
 			</td>
 		</tr>
 		</table>
@@ -144,7 +147,7 @@
 					<table>
 						<tr>
 							<td>
-								<select id="caseProperty" name="caseProperty" size="8" ondblclick="insertInfo(this);" style="width:18em; height:16.5em" onclick="getSuggestedValues(this.id, 'caSuggestedValues' )">
+								<select id="caseProperty" name="caseProperty" size="8" ondblclick="insertSingleValue('caseProperty');" style="width:18em; height:16.5em" onclick="getSuggestedValues(this.id, 'caSuggestedValues' )">
 									<option value="[PT:count]" suggestedValues=''>$i18n.getString( "patients_registered" )</option>
 									<option value="[CP:gender]" suggestedValues='F, M' title='$i18n.getString( "gender" )'>$i18n.getString( "gender" )</option>
 									<option value="[CP:dobType]" suggestedValues='V, D, A' title='$i18n.getString( "dob_type" )'>$i18n.getString( "dob_type" )</option>
@@ -167,7 +170,9 @@
 						</select>
 					</fieldset>
 				</td>
-				
+				<td>
+					<img src="../images/move_down.png" alt="$i18n.getString( 'add_all_values' )" title="$i18n.getString( 'add_all_values' )" style='cursor:pointer;' onclick="insertMultiValues('caSuggestedValues');">
+				</td>
 			</tr>
 		</table>
 	</div>
@@ -251,7 +256,6 @@
 			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 			<img src="../images/and.png" alt="$i18n.getString( 'and' )" onclick='insertOperator( "AND" );' style="cursor:pointer;">
 			<img src="../images/or.png" alt="$i18n.getString( 'or' )" onclick='insertOperator( "OR" );' style="cursor:pointer;">
-			<img src="../images/in.png" alt="$i18n.getString( 'in' )" onclick='insertOperator( "IN" );' style="cursor:pointer;">
 			
 			<img src="../images/clear.png" align="right" alt="$i18n.getString( 'clear' )" onclick="byId('aggregationCondition').value='';" style="cursor:pointer;">
 		</td>
