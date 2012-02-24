@@ -24,22 +24,20 @@ function generateResourceTable()
             "&categoryOptionComboName=" + categoryOptionComboName +
             "&dataElementStructure=" + dataElementStructure;
             
-        var url = "generateResourceTable.action";
-        
-        var request = new Request();
-        request.sendAsPost( params );
-        request.setCallbackSuccess( generateResourceTableReceived );
-        request.send( url );
+		$.ajax({
+			   type: "POST",
+			   url: "generateResourceTable.action",
+			   data: params,
+			   dataType: "xml",
+			   success: function(result){
+					setMessage( i18n_resource_tables_generated );
+			   }
+			});
     }
     else
     {
         setMessage( i18n_select_options );
     }
-}
-
-function generateResourceTableReceived( messageElement )
-{
-    setMessage( i18n_resource_tables_generated );
 }
 
 function toggleAll()
