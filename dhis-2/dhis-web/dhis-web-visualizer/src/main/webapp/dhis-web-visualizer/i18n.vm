@@ -112,6 +112,9 @@ wm_not_applicable:'$encoder.jsEscape($i18n.getString( 'wm_not_applicable' ) , "'
 wm_stacked_chart:'$encoder.jsEscape($i18n.getString( 'wm_stacked_chart' ) , "'")',
 wm_pie_chart:'$encoder.jsEscape($i18n.getString( 'wm_pie_chart' ) , "'")',
 wm_required_categories:'$encoder.jsEscape($i18n.getString( 'wm_required_categories' ) , "'")',
-wm_first_filter_unit:'$encoder.jsEscape($i18n.getString( 'wm_first_filter_unit' ) , "'")'
+wm_multiple_filter_ind_de:'$encoder.jsEscape($i18n.getString( 'wm_multiple_filter_ind_de' ) , "'")',
+wm_multiple_filter_period:'$encoder.jsEscape($i18n.getString( 'wm_multiple_filter_period' ) , "'")',
+wm_multiple_filter_orgunit:'$encoder.jsEscape($i18n.getString( 'wm_multiple_filter_orgunit' ) , "'")',
+wm_first_filter_used:'$encoder.jsEscape($i18n.getString( 'wm_first_filter_used' ) , "'")'
 
 };
