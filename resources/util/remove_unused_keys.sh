@@ -25,8 +25,6 @@ TOTAL_LINES=0
 rm -f ${PROP_FILE}
 touch ${PROP_FILE}
 
-echo
-
 while read -r LINE
 do
   if [[ ${LINE} =~ (^.*)(=| =).* ]]; then
@@ -51,4 +49,3 @@ mv ${PROP_FILE} ${FILENAME}
 
 echo "- Done investigating file ${FILENAME}"
 echo "- Ignored ${IGNORED_PROPS} unused keys and ${INVALID_LINES} invalid lines, retained ${RETAINED_PROPS} properties, looked at ${TOTAL_LINES} lines"
-echo "- Cleaned properties written to file ${PROP_FILE}"
