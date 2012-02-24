@@ -34,3 +34,8 @@ function viewChart( url )
         title : "Viewing Chart"
     } );
 }
+
+function explore( uid )
+{
+	window.location.href = "../dhis-web-visualizer/app/index.html?uid=" + uid;
+}

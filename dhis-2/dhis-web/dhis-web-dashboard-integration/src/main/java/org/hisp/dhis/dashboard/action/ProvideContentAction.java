@@ -103,9 +103,9 @@ public class ProvideContentAction
         return charts;
     }
 
-    private List<Object> chartAreas = new ArrayList<Object>();
+    private List<Chart> chartAreas = new ArrayList<Chart>();
 
-    public List<Object> getChartAreas()
+    public List<Chart> getChartAreas()
     {
         return chartAreas;
     }
@@ -137,7 +137,16 @@ public class ProvideContentAction
 
         for ( int i = 1; i <= chartsInDashboardCount; i++ )
         {
-            chartAreas.add( content.get( DashboardManager.CHART_AREA_PREFIX + i ) );
+            Object id = content.get( DashboardManager.CHART_AREA_PREFIX + i );
+
+            Chart chart = null;
+            
+            if ( id != null )
+            {
+                chart = chartService.getChart( Integer.valueOf( String.valueOf( id ) ) );
+            }
+            
+            chartAreas.add( chart );
         }
 
         messageCount = messageService.getUnreadMessageConversationCount();
