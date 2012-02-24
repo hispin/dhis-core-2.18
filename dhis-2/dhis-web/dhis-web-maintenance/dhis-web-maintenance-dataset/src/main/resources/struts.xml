@@ -194,7 +194,6 @@
 
     <action name="delDataEntryForm" class="org.hisp.dhis.dataset.action.dataentryform.DelDataEntryFormAction">
       <result name="success" type="redirect">dataSet.action</result>
-      <result name="input" type="velocity-xml">/dhis-web-maintenance-dataset/responseInput.vm</result>
     </action>
 
     <action name="selectDataElement" class="org.hisp.dhis.dataset.action.dataentryform.SelectDataElementAction">

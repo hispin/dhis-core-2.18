@@ -5,72 +5,51 @@
 
 function removeDataEntryForm( dataSetIdField, dataEntryFormId, dataEntryFormName )
 {
-  var request = new Request();
-  request.setResponseTypeXML( 'message' );
-  request.setCallbackSuccess( removeDataEntryFormCompleted );
- 
-  var requestString = 'delDataEntryForm.action?dataSetId=' + dataSetIdField + "&dataEntryFormId=" + dataEntryFormId;
   var result = window.confirm( i18n_confirm_delete + '\n\n' + dataEntryFormName );
 
   if ( result )
   {
-    request.send( requestString );
-  }
-  
-  return false;
-}
-
-function removeDataEntryFormCompleted( messageElement )
-{
-  var type = messageElement.getAttribute( 'type' );
-  var message = messageElement.firstChild.nodeValue;
-
-  if ( type == 'input' )
-  {
-    document.getElementById( 'message' ).innerHTML = message;
-    document.getElementById( 'message' ).style.display = 'block';
-  }
-  else
-  {
-  	window.location.href = 'index.action';
+	window.location.href = 'delDataEntryForm.action?dataSetId=' + dataSetIdField + "&dataEntryFormId=" + dataEntryFormId;
   }
 }
-
 
 // ----------------------------------------------------------------------
 // Validation
 // ----------------------------------------------------------------------
 
 function validateDataEntryForm()
-{
-  var request = new Request();
-  request.setResponseTypeXML( 'message' );
-  if(autoSave == false){
-	request.setCallbackSuccess( dataEntryFormValidationCompleted );
-  }
-  else{
-	request.setCallbackSuccess( autoSaveDataEntryFormValidationCompleted );
-  }
-  
-  var requestString = 'validateDataEntryForm.action';
-
-  var params = 'name=' + document.getElementById( 'nameField' ).value;
-  
+{  
+  var params  = 'name=' + document.getElementById( 'nameField' ).value;
+	  params += '&dataSetId=' + document.getElementById( 'dataSetIdField' ).value;
   if(stat == "EDIT")
   {
     params += '&dataEntryFormId=' + dataEntryFormId;      
   }        
 
-  params += '&dataSetId=' + document.getElementById( 'dataSetIdField' ).value;
-  
-  request.sendAsPost( params );
-  request.send( requestString );
-
-  return false;
+  if(autoSave == false)
+  {
+	$.ajax({
+	   type: "POST",
+	   url: "validateDataEntryForm.action",
+	   data: params,
+	   dataType: "xml",
+	   success: dataEntryFormValidationCompleted
+	});
+  }
+  else{
+	$.ajax({
+	   type: "POST",
+	   url: "validateDataEntryForm.action",
+	   data: params,
+	   dataType: "xml",
+	   success: autoSaveDataEntryFormValidationCompleted
+	});
+  }
 }
 
 function dataEntryFormValidationCompleted( messageElement )
 {
+  messageElement = messageElement.getElementsByTagName( 'message' )[0];
   var type = messageElement.getAttribute( 'type' );
   var message = messageElement.firstChild.nodeValue;
 
@@ -100,24 +79,13 @@ function dataEntryFormValidationCompleted( messageElement )
 
 function findDataElementCount()
 {
-  var request = new Request();
-  request.setResponseTypeXML( 'dataSet' );
-  request.setCallbackSuccess( findDataElementCountCompleted );
-
-  // Clear the list
-  var dataElementList = document.getElementById( 'dataElementSelector' );
-  dataElementList.options.length = 0;
-
-  var requestString = 'getSelectedDataElements.action';
+  clearListById('dataElementSelector');
   
-  var params = 'dataSetId=' + document.getElementById( 'dataSetIdField' ).value;
-        
-  params += '&designCode=' + htmlCode;
-  
-  request.sendAsPost( params );
-  request.send( requestString );
-
-  return false;
+  $.post( 'getSelectedDataElements.action',
+	{
+		dataSetId:document.getElementById( 'dataSetIdField' ).value,
+		designCode:htmlCode
+	},findDataElementCountCompleted );
 }
 
 function findDataElementCountCompleted( dataSetElement )
@@ -152,6 +120,7 @@ function onloadFunction()
 
 function autoSaveDataEntryFormValidationCompleted( messageElement )
 {
+  messageElement = messageElement.getElementsByTagName( 'message' )[0];
   var type = messageElement.getAttribute( 'type' );
   var message = messageElement.firstChild.nodeValue;
 
@@ -177,18 +146,6 @@ function autoSaveDataEntryFormValidationCompleted( messageElement )
 function autoSaveDataEntryForm() {
 	var field = $("#designTextarea").ckeditorGet();
 	var designTextarea = htmlEncode(field.getData());
-
-	var request = new Request();
-	request.setResponseTypeXML( 'dataSet' );
-	request.setCallbackSuccess( 
-		function (xmlObject)
-			{
-				setMessage(i18n_save_success); 
-				stat = "EDIT";
-				dataEntryFormId = xmlObject.firstChild.nodeValue;
-				enable('delete');
-			} );
-	  
 	var params = 'nameField=' + getFieldValue('nameField');
 		params += '&designTextarea=' + designTextarea;
 		params += '&dataSetIdField=' + getFieldValue('dataSetIdField');
@@ -197,6 +154,16 @@ function autoSaveDataEntryForm() {
 		params += '&dataEntryFormId=' + getFieldValue('dataEntryFormId');
 	}
 	
-	request.sendAsPost(params);
-	request.send('autoSaveDataEntryForm.action');
+	$.ajax({
+		   type: "POST",
+		   url: "autoSaveDataEntryForm.action",
+		   data: params,
+		   dataType: "xml",
+		   success: function(xmlObject){
+				setMessage(i18n_save_success); 
+				stat = "EDIT";
+				dataEntryFormId = xmlObject.getElementsByTagName( 'message' )[0].firstChild.nodeValue;
+				enable('delete');
+		   }
+		});
 }

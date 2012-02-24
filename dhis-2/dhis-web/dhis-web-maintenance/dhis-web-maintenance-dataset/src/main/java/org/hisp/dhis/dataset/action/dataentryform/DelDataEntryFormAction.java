@@ -31,7 +31,6 @@ import org.hisp.dhis.dataentryform.DataEntryForm;
 import org.hisp.dhis.dataentryform.DataEntryFormService;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.dataset.DataSetService;
-import org.hisp.dhis.i18n.I18n;
 
 import com.opensymphony.xwork2.Action;
 
@@ -59,18 +58,7 @@ public class DelDataEntryFormAction
     {
         this.dataSetService = dataSetService;
     }
-
-    // -------------------------------------------------------------------------
-    // I18n
-    // -------------------------------------------------------------------------
-
-    private I18n i18n;
-
-    public void setI18n( I18n i18n )
-    {
-        this.i18n = i18n;
-    }
-
+    
     // -------------------------------------------------------------------------
     // Getters & setters
     // -------------------------------------------------------------------------
@@ -88,14 +76,7 @@ public class DelDataEntryFormAction
     {
         this.dataEntryFormId = dataEntryFormId;
     }
-
-    private String message;
-
-    public String getMessage()
-    {
-        return message;
-    }
-
+    
     // -------------------------------------------------------------------------
     // Action
     // -------------------------------------------------------------------------
@@ -106,14 +87,7 @@ public class DelDataEntryFormAction
         DataSet dataSet = dataSetService.getDataSet( dataSetId );
 
         DataEntryForm dataEntryForm = dataEntryFormService.getDataEntryForm( dataEntryFormId );
-        
-        if ( dataSet == null || dataEntryForm == null )
-        {
-            message = i18n.getString( "unable_delete" );
-
-            return INPUT;
-        }
-
+       
         dataSet.setDataEntryForm( null );
         dataSet.increaseVersion();
         
