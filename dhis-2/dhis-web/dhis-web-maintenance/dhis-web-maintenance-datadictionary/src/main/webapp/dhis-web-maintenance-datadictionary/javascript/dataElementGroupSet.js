@@ -16,25 +16,21 @@ function beforeSubmit()
 
 function validateAddDataElementGroupSet()
 {
-    var request = new Request();
-    request.setResponseTypeXML( 'message' );
-    request.setCallbackSuccess( validateAddDataElementGroupSetCompleted );
-    request.sendAsPost( "name=" + getFieldValue( "name" ) );
-    request.send( "validateDataElementGroupSet.action" );
-}
-
-function validateAddDataElementGroupSetCompleted( message )
-{
-    var type = message.getAttribute( "type" );
-
-    if ( type == "success" )
-    {
-        selectAllById( "groupMembers" );
-        document.forms['addDataElementGroupSet'].submit();
-    } else
-    {
-        setMessage( message.firstChild.nodeValue );
-    }
+   $.post( 'validateDataElementGroupSet.action',{name:getFieldValue( "name" )}
+		, function( messageElement ) 
+		{
+			messageElement = messageElement.getElementsByTagName( 'message' )[0];
+			var type = messageElement.getAttribute( "type" );
+			if ( type == "success" )
+			{
+				selectAllById( "groupMembers" );
+				document.forms['addDataElementGroupSet'].submit();
+			} 
+			else
+			{
+				setMessage( messageElement.firstChild.nodeValue );
+			}
+		} );
 }
 
 // -----------------------------------------------------------------------------
