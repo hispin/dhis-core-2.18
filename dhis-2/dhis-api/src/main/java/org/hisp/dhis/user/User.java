@@ -90,41 +90,6 @@ public class User
     // -------------------------------------------------------------------------
 
     @Override
-    public int hashCode()
-    {
-        final int prime = 31;
-        int result = 1;
-
-        result = result * prime + surname.hashCode();
-        result = result * prime + firstName.hashCode();
-
-        return result;
-    }
-
-    @Override
-    public boolean equals( Object o )
-    {
-        if ( this == o )
-        {
-            return true;
-        }
-
-        if ( o == null )
-        {
-            return false;
-        }
-
-        if ( !(o instanceof User) )
-        {
-            return false;
-        }
-
-        final User other = (User) o;
-
-        return surname.equals( other.getSurname() ) && firstName.equals( other.getFirstName() );
-    }
-
-    @Override
     public String toString()
     {
         return "[" + surname + " " + firstName + "]";
@@ -133,6 +98,93 @@ public class User
     // -------------------------------------------------------------------------
     // Logic
     // -------------------------------------------------------------------------
+
+    @Override
+    public int hashCode()
+    {
+        final int prime = 31;
+        
+        int result = 1;
+        
+        result = prime * result + ( ( email == null) ? 0 : email.hashCode() );
+        result = prime * result + ( ( firstName == null) ? 0 : firstName.hashCode() );
+        result = prime * result + ( ( phoneNumber == null) ? 0 : phoneNumber.hashCode() );
+        result = prime * result + ( ( surname == null) ? 0 : surname.hashCode() );
+        
+        return result;
+    }
+
+    // TODO fix, users might very well have the same name, should use credentials
+    
+    @Override
+    public boolean equals( Object object )
+    {
+        if ( this == object )
+        {
+            return true;
+        }
+        if ( object == null )
+        {
+            return false;
+        }
+        
+        if ( getClass() != object.getClass() )
+        {
+            return false;
+        }
+        
+        User other = (User) object;
+
+        if ( firstName == null )
+        {
+            if ( other.firstName != null )
+            {
+                return false;
+            }
+        }
+        else if ( !firstName.equals( other.firstName ) )
+        {
+            return false;
+        }
+
+        if ( surname == null )
+        {
+            if ( other.surname != null )
+            {
+                return false;
+            }
+        }
+        else if ( !surname.equals( other.surname ) )
+        {
+            return false;
+        }
+        
+        if ( email == null )
+        {
+            if ( other.email != null )
+            {
+                return false;
+            }
+        }
+        else if ( !email.equals( other.email ) )
+        {
+            return false;
+        }
+        
+        if ( phoneNumber == null )
+        {
+            if ( other.phoneNumber != null )
+            {
+                return false;
+            }
+        }
+        else if ( !phoneNumber.equals( other.phoneNumber ) )
+        {
+            return false;
+        }
+        
+        return true;
+    }
 
     public void addOrganisationUnit( OrganisationUnit unit )
     {
