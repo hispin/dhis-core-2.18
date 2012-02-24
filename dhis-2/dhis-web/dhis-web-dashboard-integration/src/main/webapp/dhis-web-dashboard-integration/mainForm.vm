@@ -7,6 +7,17 @@
 </div>
 #end
 
+#macro ( chartDropDownButtonDiv $dropDownId $areaDivId $chart )
+<div class="buttonArea">
+    <a href="javascript:showDropDown( '${dropDownId}' )">$i18n.getString( "insert" )</a>
+    <a href="javascript:hideDropDown()">$i18n.getString( "close" )</a>
+    <a href="javascript:clearArea( '${areaDivId}' )">$i18n.getString( "clear" )</a>
+    #if( $chart )
+    <a href="javascript:explore( '${chart.uid}' )">$i18n.getString( "explore" )</a>
+    #end
+</div>
+#end
+
 #macro ( linkDropDownListDiv $divId $listId $page )
 <div id="$divId" class="linkArea">
     <div id="$listId" class="menuDropDownArea">
@@ -24,17 +35,17 @@
 </div>
 #end
 
-#macro ( chartDropDownListDiv $divId $listId $chartId )
+#macro ( chartDropDownListDiv $divId $listId $chart )
 <div id="$divId" class="chartArea">
     <div id="$listId" class="menuDropDownArea">
         <ul class="menuDropDownBox">
-        #foreach( $chart in $charts )
-            <li class="menuDropDownItem" onclick="setAreaItem( '$divId', '$chart.id' )">${chart.name}&nbsp;</li>
+        #foreach( $availableChart in $charts )
+            <li class="menuDropDownItem" onclick="setAreaItem( '${divId}', '${availableChart.id}' )">${availableChart.name}&nbsp;</li>
         #end
         </ul>
     </div>
-    #if ( $chartId )
-        <img style="cursor:pointer" src="getChart.action?id=${chartId}" onclick="viewChart( 'getChart.action?id=${chartId}&width=700&height=500' )">
+    #if ( $chart )
+        <img style="cursor:pointer" src="getChart.action?id=${chart.id}" onclick="viewChart( 'getChart.action?id=${chart.id}&width=700&height=500' )">
     #else
         <span class="labelText">$i18n.getString( 'this_is_a_chart_area' )</span>
     #end
@@ -71,7 +82,7 @@
 
 #if( $startHr )<tr> #end
 	<td style="width:305px; padding-left: 10px;">
-		#dropDownButtonDiv( "chartDropDown${count1}" "chartArea${count1}" )
+		#chartDropDownButtonDiv( "chartDropDown${count1}" "chartArea${count1}" $chart )
 		#chartDropDownListDiv( "chartArea${count1}" "chartDropDown${count1}" $chart )
 	</td>
 #end
