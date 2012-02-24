@@ -37,5 +37,5 @@ function viewChart( url )
 
 function explore( uid )
 {
-	window.location.href = "../dhis-web-visualizer/app/index.html?uid=" + uid;
+	window.location.href = "../dhis-web-visualizer/app/index.html?id=" + uid;
 }
