@@ -79,6 +79,7 @@ DV.conf = {
             path_commons: '../../dhis-web-commons-ajax-json/',
             path_api: '../../api/',
             path_portal: '../../dhis-web-portal/',
+            path_images: 'images/',
             initialize: 'initialize.action',
             redirect: 'redirect.action',
             data_get: 'getAggregatedValues.action',
@@ -97,7 +98,10 @@ DV.conf = {
         dimension: {
             data: {
                 value: 'data',
-                rawvalue: DV.i18n.data
+                rawvalue: DV.i18n.data,
+                warning: {
+					filter: DV.i18n.wm_multiple_filter_ind_de
+				}
             },
             indicator: {
                 value: 'indicator',
@@ -109,11 +113,17 @@ DV.conf = {
             },
             period: {
                 value: 'period',
-                rawvalue: DV.i18n.period
+                rawvalue: DV.i18n.period,
+                warning: {
+					filter: DV.i18n.wm_multiple_filter_period
+				}
             },
             organisationunit: {
                 value: 'organisationunit',
-                rawvalue: DV.i18n.organisation_unit
+                rawvalue: DV.i18n.organisation_unit,
+                warning: {
+					filter: DV.i18n.wm_multiple_filter_orgunit
+				}
             }
         },        
         chart: {
@@ -138,8 +148,9 @@ DV.conf = {
             pdf: 'pdf'
         },
         cmd: {
-			chartid: 'id',
-            init: 'init'
+            init: 'init_',
+            datatable: 'datatable_',
+			urlparam: 'id'
         }
     },
     chart: {
@@ -192,7 +203,7 @@ Ext.onReady( function() {
         DV.conf.init.example.setState();
         DV.conf.init.example.setValues();
         
-        DV.init.cmd = DV.util.getUrlParam(DV.conf.finals.cmd.chartid) || DV.conf.finals.cmd.init;
+        DV.init.cmd = DV.util.getUrlParam(DV.conf.finals.cmd.urlparam) || DV.conf.finals.cmd.init;
         DV.exe.execute(true, DV.init.cmd);
     };
     
@@ -428,7 +439,7 @@ Ext.onReady( function() {
                     if (exception && !a.length) {
 						DV.util.notification.error(DV.i18n.et_no_indicators_dataelements, DV.i18n.em_no_indicators_dataelements);
                     }
-                    if (isFilter && a.length > 1) {
+                    if (exception && isFilter && a.length > 1) {
 						DV.exe.warnings.push(DV.i18n.wm_first_filter_unit);
 					}
 					return (isFilter && a.length > 1) ? a.slice(0,1) : a;
@@ -459,7 +470,7 @@ Ext.onReady( function() {
                     if (exception && !a.length) {
 						DV.util.notification.error(DV.i18n.et_no_periods, DV.i18n.em_no_periods);
                     }
-                    if (isFilter && a.length > 1) {
+                    if (exception && isFilter && a.length > 1) {
 						DV.exe.warnings.push(DV.i18n.wm_first_filter_unit);
 					}
                     return (isFilter && a.length > 1) ? a.slice(0,1) : a;
@@ -539,7 +550,7 @@ Ext.onReady( function() {
 					if (exception && !a.length) {
 						DV.util.notification.error(DV.i18n.et_no_orgunits, DV.i18n.em_no_orgunits);
 					}
-                    if (isFilter && a.length > 1 && !DV.state.userOrganisationUnit) {
+                    if (exception && isFilter && a.length > 1 && !DV.state.userOrganisationUnit) {
 						DV.exe.warnings.push(DV.i18n.wm_first_filter_unit);
 					}
                     return DV.state.userOrganisationUnit ? [DV.init.system.user.organisationUnit.name] : (isFilter && a.length > 1) ? a.slice(0,1) : a;
@@ -581,16 +592,16 @@ Ext.onReady( function() {
 					]
 				}).show();
 				DV.cmp.statusbar.panel.setWidth(DV.cmp.region.center.getWidth());
-				DV.cmp.statusbar.panel.update('<img src="images/' + DV.conf.statusbar.icon.error + '" style="padding:0 5px 0 0"/>' + text);
+				DV.cmp.statusbar.panel.update('<img src="' + DV.conf.finals.ajax.path_images + DV.conf.statusbar.icon.error + '" style="padding:0 5px 0 0"/>' + text);
 			},
 			warning: function(text) {
 				text = text || '';
-				DV.cmp.statusbar.panel.update('<img src="images/' + DV.conf.statusbar.icon.warning + '" style="padding:0 5px 0 0"/>' + text);
 				DV.cmp.statusbar.panel.setWidth(DV.cmp.region.center.getWidth());
+				DV.cmp.statusbar.panel.update('<img src="' + DV.conf.finals.ajax.path_images + DV.conf.statusbar.icon.warning + '" style="padding:0 5px 0 0"/>' + text);
 			},
 			ok: function() {
 				DV.cmp.statusbar.panel.setWidth(DV.cmp.region.center.getWidth());
-				DV.cmp.statusbar.panel.update('<img src="images/' + DV.conf.statusbar.icon.ok + '" style="padding:0 5px 0 0"/>&nbsp;&nbsp;');
+				DV.cmp.statusbar.panel.update('<img src="' + DV.conf.finals.ajax.path_images + DV.conf.statusbar.icon.ok + '" style="padding:0 5px 0 0"/>&nbsp;&nbsp;');
 			}				
 		},
         mask: {
@@ -1223,7 +1234,7 @@ Ext.onReady( function() {
                     s.sortStore();
                     s.each(function(r) {
                         r.data.lastUpdated = r.data.lastUpdated.substr(0,16);
-                        r.data.icon = '<img src="images/favorite.png" />';
+                        r.data.icon = '<img src="' + DV.conf.finals.ajax.path_images + 'favorite.png" />';
                         r.commit();
                     });
                 }
@@ -1273,15 +1284,13 @@ Ext.onReady( function() {
             
             this.series.names = DV.util.dimension[this.series.dimension].getNames();
             this.category.names = DV.util.dimension[this.category.dimension].getNames();
-            this.filter.names = DV.util.dimension[this.filter.dimension].getNames(false, true);
-            
+            this.filter.names = DV.util.dimension[this.filter.dimension].getNames();
+
             if (!this.validation.names.call(this)) {
 				return;
 			}
-            
-            if (!this.validation.categories.call(this)) {
-				return;
-			}
+			
+            this.validation.filter.call(this);
             
             this.indicatorIds = DV.util.dimension.indicator.getIds();
             this.dataelementIds = DV.util.dimension.dataelement.getIds();
@@ -1423,6 +1432,8 @@ Ext.onReady( function() {
 						if (!this.validation.names.call(this)) {
 							return;
 						}
+			
+						this.validation.filter.call(this);
 						
 						this.validation.render.call(this);
 						
@@ -1513,6 +1524,12 @@ Ext.onReady( function() {
 					return false;
 				}
 				return true;
+			},
+			filter: function() {
+				if (this.filter.names.length > 1) {
+					this.filter.names = this.filter.names.slice(0,1);
+					DV.exe.warnings.push(DV.conf.finals.dimension[this.filter.dimension].warning.filter + ' ' + DV.i18n.wm_first_filter_used);
+				}
 			},
 			categories: function() {
 				if (this.category.names.length < 2 && (this.type === DV.conf.finals.chart.line || this.type === DV.conf.finals.chart.area)) {
@@ -1863,11 +1880,9 @@ Ext.onReady( function() {
 			DV.state.getOptions();
             DV.cmp.region.center.removeAll(true);
             DV.cmp.region.center.add(this.chart);            
+            DV.exe.finalize();
             
-            if (DV.init.cmd === DV.conf.finals.cmd.init) {
-				DV.exe.finalize();
-            }
-            else {
+            if (DV.init.cmd !== DV.conf.finals.cmd.init) {
                 DV.store.getDataTableStore(true);
             }
         }
@@ -1920,8 +1935,6 @@ Ext.onReady( function() {
         reload: function() {
             DV.cmp.region.east.removeAll(true);
             DV.cmp.region.east.add(this.datatable);
-            
-            DV.exe.finalize();
         }            
     };
     
@@ -1932,6 +1945,9 @@ Ext.onReady( function() {
                 if (cmd === DV.conf.finals.cmd.init) {
                     DV.chart.getData(exe);
                 }
+                else if (cmd === DV.conf.finals.cmd.datatable) {
+					DV.store.getDataTableStore(exe);
+				}					
                 else {
 					DV.state.resetState();
                     DV.state.setFavorite(true, cmd);
@@ -1957,6 +1973,9 @@ Ext.onReady( function() {
         getWarnings: function() {
 			var t = '';
 			for (var i = 0; i < this.warnings.length; i++) {
+				if (i > 0) {
+					t += '<img src="' + DV.conf.finals.ajax.path_images + DV.conf.statusbar.icon.warning + '" style="padding:0 5px 0 8px" />';
+				}
 				t += this.warnings[i] + ' ';
 			}
 			return t;
@@ -3581,7 +3600,7 @@ Ext.onReady( function() {
                                 if (p.collapsed && p.items.length) {
                                     p.expand();
                                     DV.cmp.toolbar.resizeeast.show();
-                                    DV.exe.datatable(true);
+                                    DV.exe.execute(true, DV.conf.finals.cmd.datatable);
                                 }
                                 else {
                                     p.collapse();
@@ -3628,7 +3647,7 @@ Ext.onReady( function() {
 						{
 							xtype: 'panel',
 							cls: 'dv-statusbar',
-							height: 23,
+							height: 24,
 							listeners: {
 								added: function() {
 									DV.cmp.statusbar.panel = this;
@@ -3640,7 +3659,12 @@ Ext.onReady( function() {
                 listeners: {
                     added: function() {
                         DV.cmp.region.center = this;
-                    }
+                    },
+                    resize: function() {
+						if (DV.state.isRendered && DV.cmp.statusbar.panel) {
+							DV.cmp.statusbar.panel.setWidth(DV.cmp.region.center.getWidth());
+						}
+					}
                 }
             },
             {
