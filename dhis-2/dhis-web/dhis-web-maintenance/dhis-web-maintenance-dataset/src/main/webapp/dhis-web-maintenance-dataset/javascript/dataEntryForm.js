@@ -81,7 +81,7 @@ function findDataElementCount()
 {
   clearListById('dataElementSelector');
   
-  $.post( 'getSelectedDataElements.action',
+   jQuery.postUTF8( 'getSelectedDataElements.action',
 	{
 		dataSetId:document.getElementById( 'dataSetIdField' ).value,
 		designCode:htmlCode
