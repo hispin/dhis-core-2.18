@@ -16,21 +16,19 @@ function performMaintenance()
             "&zeroValues=" + zeroValues +
             "&dataSetCompleteness=" + dataSetCompleteness +
             "&prunePeriods=" + prunePeriods;
-            
-        var url = "performMaintenance.action";
         
-        var request = new Request();
-        request.sendAsPost( params );
-        request.setCallbackSuccess( performMaintenanceReceived );
-        request.send( url );
+		$.ajax({
+			   type: "POST",
+			   url: "performMaintenance.action",
+			   data: params,
+			   dataType: "xml",
+			   success: function(result){
+					setMessage( i18n_maintenance_performed );
+			   }
+			});
     }
     else
     {
         setMessage( i18n_select_options );
     }
-}
-
-function performMaintenanceReceived( messageElement )
-{
-    setMessage( i18n_maintenance_performed );
 }
