@@ -21,23 +21,20 @@ jQuery( document ).ready( function()
 
 function updateUser()
 {
-	var request = new Request();
-	request.setResponseTypeXML( 'xmlObject' );
-	request.setCallbackSuccess( updateUserReceived );
-
-	var params = "id=" + byId( 'id' ).value;
-	params += "&oldPassword=" + byId( 'oldPassword' ).value;
-	params += "&rawPassword=" + byId( 'rawPassword' ).value;
-	params += "&retypePassword=" + byId( 'retypePassword' ).value;
-	params += "&surname=" + byId( 'surname' ).value;
-	params += "&firstName=" + byId( 'firstName' ).value;
-	params += "&email=" + byId( 'email' ).value;
-	params += "&phoneNumber=" + byId( 'phoneNumber' ).value;
-	request.sendAsPost( params );
-	request.send( 'updateUserAccount.action' );
-}
-
-function updateUserReceived( xmlObject )
-{
-	setMessage( xmlObject.firstChild.nodeValue );
+	$.postUTF8( 'updateUserAccount.action',
+		{
+			id: getFieldValue( 'id' ),
+			oldPassword: getFieldValue( 'oldPassword' ),
+			rawPassword: getFieldValue( 'rawPassword' ),
+			retypePassword: getFieldValue( 'retypePassword' ),
+			surname: getFieldValue( 'surname' ),
+			firstName: getFieldValue( 'firstName' ),
+			email: getFieldValue( 'email' ),
+			phoneNumber: getFieldValue( 'phoneNumber' )
+		}
+		, function( xmlObject ) 
+		{
+			xmlObject = xmlObject.getElementsByTagName( 'message' )[0];
+			setMessage( xmlObject.firstChild.nodeValue );
+		} );
 }
