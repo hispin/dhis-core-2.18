@@ -234,6 +234,8 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		scope="prototype">
 		<property name="selectionManager"
 			ref="org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager" />
+		<property name="programService"
+			ref="org.hisp.dhis.program.ProgramService" />
 	</bean>
 
 	<bean
