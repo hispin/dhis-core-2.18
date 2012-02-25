@@ -27,7 +27,12 @@
 
 package org.hisp.dhis.caseentry.action.report;
 
+import java.util.Collection;
+
+import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager;
+import org.hisp.dhis.program.Program;
+import org.hisp.dhis.program.ProgramService;
 
 import com.opensymphony.xwork2.Action;
 
@@ -41,12 +46,37 @@ public class ReportSelectAction
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
-   
+
     private OrganisationUnitSelectionManager selectionManager;
 
     public void setSelectionManager( OrganisationUnitSelectionManager selectionManager )
     {
         this.selectionManager = selectionManager;
+    }
+
+    private ProgramService programService;
+
+    public void setProgramService( ProgramService programService )
+    {
+        this.programService = programService;
+    }
+
+    // -------------------------------------------------------------------------
+    // Dependencies
+    // -------------------------------------------------------------------------
+
+    private OrganisationUnit orgunit;
+    
+    public OrganisationUnit getOrgunit()
+    {
+        return orgunit;
+    }
+
+    private Collection<Program> programs;
+
+    public Collection<Program> getPrograms()
+    {
+        return programs;
     }
 
     // -------------------------------------------------------------------------
@@ -55,7 +85,11 @@ public class ReportSelectAction
 
     public String execute()
     {
-        selectionManager.clearSelectedOrganisationUnits();
+        orgunit = selectionManager.getSelectedOrganisationUnit();
+        
+        programs = programService.getPrograms( orgunit );
+        
+        programs.retainAll( programService.getPrograms( true, false ) );
         
         return SUCCESS;
     }
