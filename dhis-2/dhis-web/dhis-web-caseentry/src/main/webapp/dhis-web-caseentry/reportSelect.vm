@@ -60,7 +60,7 @@
 #parse( "dhis-web-commons/loader/loader.vm" )
 
 <div id="contentDiv"></div>
-<div id="patientDetailsArea" style="display:none;"></div>
+<div id="detailsInfo" style="display:none;"></div>
 
 <span id="message"></span>
 

@@ -109,7 +109,7 @@ function showPatientDetails( patientId )
 			title: i18n_patient_details,
 			maximize: true, 
 			closable: true,
-			modal:true,
+			modal:false,
 			overlay:{background:'#000000', opacity:0.1},
 			width: 450,
 			height: 400

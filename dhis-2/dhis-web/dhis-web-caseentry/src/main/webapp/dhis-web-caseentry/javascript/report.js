@@ -98,20 +98,3 @@ function viewRecords( programStageInstanceId )
 			height: 400
 		});
 }
-
-function patientDetails( patientId )
-{
-	jQuery('#patientDetailsArea' ).load( 'getPatientDetails.action?id=' + patientId 
-		,function(){
-			hideById('closeBtn');
-			$( "#loaderDiv" ).hide();
-		}).dialog({
-			title: i18n_patient_profile,
-			maximize: true, 
-			closable: true,
-			modal:true,
-			overlay:{background:'#000000', opacity:0.1},
-			width: 450,
-			height: 400
-		});
-}
