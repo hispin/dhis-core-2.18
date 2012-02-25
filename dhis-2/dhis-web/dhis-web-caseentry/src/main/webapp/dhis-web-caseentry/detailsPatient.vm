@@ -1,4 +1,7 @@
-<table>
+<table class='mainPageTable'>
+	<tr>
+		<th colspan='2'><label class="bold">$i18n.getString( "demographics" )</label></th>
+	</tr>
 	<tr>
 		<td>
 			<label class="bold">$i18n.getString('full_name') : </label>
@@ -7,7 +10,7 @@
 			$patient.getFullName()
 		</td>
 	</tr>
-	<tr>
+	<tr #alternate( true )>
 		<td>
 			<label class="bold">$i18n.getString('gender') : </label>
 		</td>
@@ -22,7 +25,7 @@
 			$!patient.dobType
 		</td>
 	</tr>
-	<tr>
+	<tr #alternate( true )>
 		<td><label class="bold">$i18n.getString('date_of_birth') : </label>
 		</td>
 		<td>
@@ -39,10 +42,11 @@
 	
 	<tr><td>&nbsp;</td></tr>
 	<tr>
-		<td><label class="bold">$i18n.getString( "identifiers" )</label></td>
+		<th colspan='2'><label class="bold">$i18n.getString( "identifiers" )</label></th>
 	</tr>
+	#set( $mark = false )
 	#foreach( $patientIdentifier in $patient.identifiers )
-	<tr>
+	<tr #alternate( $mark )>
 		<td>
 			<label class="bold">
 				#if($!patientIdentifier.identifierType)  $!patientIdentifier.identifierType.name
@@ -53,15 +57,17 @@
 			  $patientIdentifier.identifier
 		</td>
 	</tr>
+	#set( $mark = !$mark )
 	#end
 	
 	<tr><td colspan='2'>&nbsp;</td></tr>
 	<tr>
-		<td colspan='2'><label class="bold">$i18n.getString( "attributes" )</label></td>
+		<th colspan='2'><label class="bold">$i18n.getString( "attributes" )</label></th>
 	</tr>
+	#set( $mark = false )
 	#foreach( $attribute in $patient.attributes )
 		#if( $patientAttributeValueMap.get( $attribute.id ) != " " )
-		<tr>
+		<tr #alternate( $mark )>
 			<td><label class="bold">$attribute.name : </label>
 			</td>
 			<td>
@@ -72,16 +78,19 @@
 				#end
 			</td>
 		</tr>
+		#set( $mark = !$mark )
 		#end
 	#end
 	
 	<tr><td>&nbsp;</td></tr>
 	<tr>
-		<td><label class="bold">$i18n.getString( "enrolled_in_program" )</label></td>
-		<td>
-			#foreach( $program in $patient.programs )
-				$program.name<br>
-			#end
-		</td>
+		<th colspan='2'><label class="bold">$i18n.getString( "enrolled_in_program" )</label></th>
 	</tr>
+	#set( $mark = false )
+	#foreach( $program in $patient.programs )
+	<tr #alternate( $mark )>
+		<td colspan='2' >$program.name</td>
+	</tr>
+	#set( $mark = !$mark )
+	#end
 </table>

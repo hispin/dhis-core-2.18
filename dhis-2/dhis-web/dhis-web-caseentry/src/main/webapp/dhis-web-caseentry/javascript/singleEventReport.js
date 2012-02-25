@@ -64,7 +64,13 @@ function showDetails( programStageInstanceId )
 		,function( )
 		{
 			showById('entryFormContainer');
-			$("#entryForm :input").attr("disabled", true);
+			jQuery("#entryFormContainer :input").attr("disabled", true);
+			jQuery("#entryFormContainer .ui-datepicker-trigger").each(function()
+			{
+				jQuery(this).hide();
+			});
+			 
+					
 		}).dialog({
 			title: i18n_reports,
 			maximize: true, 
