@@ -137,13 +137,9 @@ function SelectionTree()
         var parentTag = document.getElementById( getTagId( unitId ));
         var children = $(parentTag).find( 'ul' );
 
-        var request = new Request();
-        request.setResponseTypeXML( 'units' );
-
         if ( children.length < 1 || !isVisible( children[0] ))
-        {
-            request.setCallbackSuccess( processExpand );
-            request.send( selectionTreePath + 'expandSubtree.action?parentId=' + unitId );
+        {	
+			$.post( selectionTreePath + 'expandSubtree.action',{parentId:unitId},processExpand );		
         }
         else
         {
