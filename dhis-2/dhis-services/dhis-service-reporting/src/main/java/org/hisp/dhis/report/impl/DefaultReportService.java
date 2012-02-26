@@ -157,7 +157,8 @@ public class DefaultReportService
                 try
                 {
                     print = JasperFillManager.fillReport( jasperReport, params, connection );
-                } finally
+                } 
+                finally
                 {
                     connection.close();
                 }
@@ -167,7 +168,8 @@ public class DefaultReportService
             {
                 JRExportUtils.export( type, out, print );
             }
-        } catch ( Exception ex )
+        } 
+        catch ( Exception ex )
         {
             throw new RuntimeException( "Failed to render report", ex );
         }
