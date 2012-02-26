@@ -58,11 +58,16 @@ public class JRExportUtils
     public static void export( String type, OutputStream out, JasperPrint jasperPrint )
         throws JRException
     {
-        JRAbstractExporter exporter = exporters.get( type ).provide();
+        JRExportProvider provider = exporters.get( type );
         
-        exporter.setParameter( JRExporterParameter.OUTPUT_STREAM, out );
-        exporter.setParameter( JRExporterParameter.JASPER_PRINT, jasperPrint );
-        exporter.exportReport();
+        if ( provider != null )
+        {
+            JRAbstractExporter exporter = provider.provide();
+            
+            exporter.setParameter( JRExporterParameter.OUTPUT_STREAM, out );
+            exporter.setParameter( JRExporterParameter.JASPER_PRINT, jasperPrint );
+            exporter.exportReport();
+        }
     }
     
     private interface JRExportProvider

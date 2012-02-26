@@ -28,6 +28,7 @@ package org.hisp.dhis.reporting.reportviewer.action;
  */
 
 import static org.apache.commons.lang.StringUtils.defaultIfEmpty;
+import static org.apache.commons.lang.StringUtils.trimToEmpty;
 
 import java.io.OutputStream;
 import java.util.Date;
@@ -109,7 +110,7 @@ public class RenderReportAction
     protected String execute( HttpServletResponse response, OutputStream out )
         throws Exception
     {
-        type = defaultIfEmpty( type, DEFAULT_TYPE );
+        type = defaultIfEmpty( trimToEmpty( type ), DEFAULT_TYPE );
         
         Report report = reportService.getReport( id );
 

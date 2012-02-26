@@ -305,7 +305,8 @@ public class DefaultReportTableService
         // Parent organisation unit report parameter
         // ---------------------------------------------------------------------
 
-        if ( reportTable.getReportParams() != null && reportTable.getReportParams().isParamParentOrganisationUnit() )
+        if ( reportTable.getReportParams() != null && 
+            reportTable.getReportParams().isParamParentOrganisationUnit() )
         {
             OrganisationUnit organisationUnit = organisationUnitService.getOrganisationUnit( organisationUnitId );
             organisationUnit.setCurrentParent( true );
@@ -320,7 +321,8 @@ public class DefaultReportTableService
         // Organisation unit report parameter
         // ---------------------------------------------------------------------
 
-        if ( reportTable.getReportParams() != null && reportTable.getReportParams().isParamOrganisationUnit() )
+        if ( reportTable.getReportParams() != null && 
+            reportTable.getReportParams().isParamOrganisationUnit() )
         {
             OrganisationUnit organisationUnit = organisationUnitService.getOrganisationUnit( organisationUnitId );
             reportTable.getRelativeUnits().add( organisationUnit );
