@@ -48,6 +48,7 @@ import org.hisp.dhis.aggregation.AggregatedDataValueStore;
 import org.hisp.dhis.aggregation.AggregatedIndicatorValue;
 import org.hisp.dhis.aggregation.AggregatedMapValue;
 import org.hisp.dhis.aggregation.StoreIterator;
+import org.hisp.dhis.completeness.DataSetCompletenessResult;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryOption;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
@@ -58,6 +59,7 @@ import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitLevel;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.system.objectmapper.AggregatedDataMapValueRowMapper;
+import org.hisp.dhis.system.objectmapper.AggregatedDataSetCompletenessRowMapper;
 import org.hisp.dhis.system.objectmapper.AggregatedDataValueRowMapper;
 import org.hisp.dhis.system.objectmapper.AggregatedIndicatorMapValueRowMapper;
 import org.hisp.dhis.system.objectmapper.AggregatedIndicatorValueRowMapper;
@@ -580,7 +582,7 @@ public class JdbcAggregatedDataValueStore
     }
 
     @Override
-    public StoreIterator<AggregatedIndicatorValue> getAggregatedIndicatorValuesAtLevel(OrganisationUnit rootOrgunit, OrganisationUnitLevel level, Collection<Period> periods)
+    public StoreIterator<AggregatedIndicatorValue> getAggregatedIndicatorValuesAtLevel( OrganisationUnit rootOrgunit, OrganisationUnitLevel level, Collection<Period> periods )
     {
         final StatementHolder holder = statementManager.getHolder( false );
 
@@ -669,6 +671,23 @@ public class JdbcAggregatedDataValueStore
             "AND a.organisationunitid IN (" + getCommaDelimitedString( organisationUnitIds ) + ")";
         
         return jdbcTemplate.query( sql, new AggregatedIndicatorMapValueRowMapper() );
+    }
+
+    // -------------------------------------------------------------------------
+    // DataSetCompleteness
+    // -------------------------------------------------------------------------
+
+    public Collection<DataSetCompletenessResult> getAggregatedDataSetCompleteness( Collection<Integer> dataSetIds, Collection<Integer> periodIds,
+        Collection<Integer> organisationUnitIds )
+    {
+        final String sql =
+            "SELECT datasetid, periodid, organisationunitid, value " +
+            "FROM aggregateddatasetcompleteness " +
+            "WHERE datasetid IN ( " + getCommaDelimitedString( dataSetIds ) + " ) " +
+            "AND periodid IN ( " + getCommaDelimitedString( periodIds ) + " ) " +
+            "AND organisationunitid IN ( " + getCommaDelimitedString( organisationUnitIds ) + " ) ";
+        
+        return jdbcTemplate.query( sql, new AggregatedDataSetCompletenessRowMapper() );
     }
     
     // -------------------------------------------------------------------------

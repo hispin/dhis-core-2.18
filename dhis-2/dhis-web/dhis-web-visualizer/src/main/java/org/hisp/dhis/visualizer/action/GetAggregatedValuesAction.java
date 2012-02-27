@@ -33,6 +33,7 @@ import java.util.HashSet;
 import org.hisp.dhis.aggregation.AggregatedDataValue;
 import org.hisp.dhis.aggregation.AggregatedDataValueService;
 import org.hisp.dhis.aggregation.AggregatedIndicatorValue;
+import org.hisp.dhis.completeness.DataSetCompletenessResult;
 
 import com.opensymphony.xwork2.Action;
 
@@ -70,6 +71,13 @@ public class GetAggregatedValuesAction
     {
         this.dataElementIds = dataElementIds;
     }
+    
+    private Collection<Integer> dataSetIds;
+
+    public void setDataSetIds( Collection<Integer> dataSetIds )
+    {
+        this.dataSetIds = dataSetIds;
+    }
 
     private Collection<Integer> periodIds;
 
@@ -102,6 +110,13 @@ public class GetAggregatedValuesAction
     {
         return dataValues;
     }
+    
+    private Collection<DataSetCompletenessResult> dataSetValues = new HashSet<DataSetCompletenessResult>();
+
+    public Collection<DataSetCompletenessResult> getDataSetValues()
+    {
+        return dataSetValues;
+    }
 
     // -------------------------------------------------------------------------
     // Action implementation
@@ -122,6 +137,11 @@ public class GetAggregatedValuesAction
             {
                 dataValues = aggregatedDataValueService.getAggregatedDataValueTotals( dataElementIds, periodIds,
                     organisationUnitIds );                
+            }
+            
+            if ( dataSetIds != null )
+            {
+                dataSetValues = aggregatedDataValueService.getAggregatedDataSetCompleteness( dataSetIds, periodIds, organisationUnitIds );
             }
         }
 
