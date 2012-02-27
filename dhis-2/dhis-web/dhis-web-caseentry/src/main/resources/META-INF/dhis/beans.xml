@@ -299,9 +299,24 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		<property name="aggregationConditionService"
 			ref="org.hisp.dhis.caseaggregation.CaseAggregationConditionService" />
 		<property name="dataValueService" ref="org.hisp.dhis.datavalue.DataValueService" />
-		<property name="currentUserService" ref="org.hisp.dhis.user.CurrentUserService" />
 		<property name="periodGenericManager"
 			ref="org.hisp.dhis.caseentry.state.PeriodGenericManager" />
+	</bean>
+	
+	<bean
+		id="org.hisp.dhis.caseentry.action.caseaggregation.SaveAggregateDataValueAction"
+		class="org.hisp.dhis.caseentry.action.caseaggregation.SaveAggregateDataValueAction"
+		scope="prototype">
+		<property name="organisationUnitService"
+			ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
+		<property name="dataElementService" ref="org.hisp.dhis.dataelement.DataElementService" />
+		<property name="categoryService"
+			ref="org.hisp.dhis.dataelement.DataElementCategoryService" />
+		<property name="periodService"
+			ref="org.hisp.dhis.period.PeriodService" />
+		<property name="dataValueService" ref="org.hisp.dhis.datavalue.DataValueService" />
+		<property name="currentUserService" ref="org.hisp.dhis.user.CurrentUserService" />
+		
 	</bean>
 
 	<bean
