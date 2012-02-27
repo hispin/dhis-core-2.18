@@ -76,7 +76,7 @@ public class SaveValueAction
     {
         this.patientDataValueService = patientDataValueService;
     }
-    
+
     private SelectedStateManager selectedStateManager;
 
     public void setSelectedStateManager( SelectedStateManager selectedStateManager )
@@ -140,35 +140,36 @@ public class SaveValueAction
     public String execute()
         throws Exception
     {
-        // ---------------------------------------------------------------------
-        // Get program-stage-instance
-        // ---------------------------------------------------------------------
-
         OrganisationUnit organisationUnit = selectedStateManager.getSelectedOrganisationUnit();
 
         ProgramStageInstance programStageInstance = selectedStateManager.getSelectedProgramStageInstance();
-
-        // ---------------------------------------------------------------------
-        // Save value
-        // ---------------------------------------------------------------------
 
         DataElement dataElement = dataElementService.getDataElement( dataElementId );
 
         PatientDataValue patientDataValue = patientDataValueService.getPatientDataValue( programStageInstance,
             dataElement, organisationUnit );
-        
+
+        if ( value != null && value.trim().length() == 0 )
+        {
+            value = null;
+        }
+
+        // ---------------------------------------------------------------------
+        // Save value
+        // ---------------------------------------------------------------------
+
         if ( programStageInstance.getExecutionDate() == null )
         {
             programStageInstance.setExecutionDate( new Date() );
             programStageInstanceService.updateProgramStageInstance( programStageInstance );
         }
 
-        if ( patientDataValue == null )
+        if ( patientDataValue == null  && value != null )
         {
             LOG.debug( "Adding PatientDataValue, value added" );
 
-            patientDataValue = new PatientDataValue( programStageInstance, dataElement, organisationUnit,
-                new Date(), value, providedByAnotherFacility );
+            patientDataValue = new PatientDataValue( programStageInstance, dataElement, organisationUnit, new Date(),
+                value, providedByAnotherFacility );
 
             patientDataValueService.savePatientDataValue( patientDataValue );
         }

@@ -81,18 +81,6 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 			ref="org.hisp.dhis.caseentry.state.SelectedStateManager" />
 	</bean>
 
-	<bean id="org.hisp.dhis.caseentry.action.caseentry.SaveDateValueAction"
-		class="org.hisp.dhis.caseentry.action.caseentry.SaveDateValueAction"
-		scope="prototype">
-		<property name="programStageInstanceService"
-			ref="org.hisp.dhis.program.ProgramStageInstanceService" />
-		<property name="dataElementService" ref="org.hisp.dhis.dataelement.DataElementService" />
-		<property name="patientDataValueService"
-			ref="org.hisp.dhis.patientdatavalue.PatientDataValueService" />
-		<property name="selectedStateManager"
-			ref="org.hisp.dhis.caseentry.state.SelectedStateManager" />
-	</bean>
-
 	<bean
 		id="org.hisp.dhis.caseentry.action.caseentry.SaveProvidingFacilityAction"
 		class="org.hisp.dhis.caseentry.action.caseentry.SaveProvidingFacilityAction"
