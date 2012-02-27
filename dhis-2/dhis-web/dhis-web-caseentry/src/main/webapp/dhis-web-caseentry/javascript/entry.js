@@ -652,6 +652,12 @@ function doComplete()
 						enable('newEncounterBtn');
 					}
 					
+					var selectedProgram = jQuery('#dataRecordingSelectForm [name=programId] option:selected');
+					if( selectedProgram.attr('singleevent')=='true' )
+					{
+						selectedProgram.remove();
+					}
+					
 					enable('createEventBtn');
 					selection.enable();
 		

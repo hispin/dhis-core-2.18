@@ -103,20 +103,19 @@
             });
 		}); 
 	
+	jQuery("#tabs").tabs();
+	datePickerValid( 'enrollmentDate' );
+	datePickerValid( 'dateOfIncident' );
 	
-			jQuery("#tabs").tabs();
-			datePickerValid( 'enrollmentDate' );
-			datePickerValid( 'dateOfIncident' );
-			
-			$( "#tabs" ).tabs( "option", "selected", 0 );
-			#if($registerEvent == 'true')
-				$('#tabs').bind('tabsselect', function(event, ui) {
-					if( ui.index == 1 )
-					{
-						showSelectedDataRecoding( getFieldValue('patientId') );
-					}
-				});
-			#else
-				$("#tabs").tabs("option", "disabled", [1]);
-			#end
+	$( "#tabs" ).tabs( "option", "selected", 0 );
+	#if($registerEvent == 'true')
+		$('#tabs').bind('tabsselect', function(event, ui) {
+			if( ui.index == 1 )
+			{
+				showSelectedDataRecoding( getFieldValue('patientId') );
+			}
+		});
+	#else
+		$("#tabs").tabs("option", "disabled", [1]);
+	#end
 </script>

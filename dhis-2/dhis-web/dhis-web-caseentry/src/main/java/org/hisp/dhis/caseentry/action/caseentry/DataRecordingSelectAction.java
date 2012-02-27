@@ -28,11 +28,15 @@ package org.hisp.dhis.caseentry.action.caseentry;
 
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.Iterator;
 
 import org.hisp.dhis.caseentry.state.SelectedStateManager;
+import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.patient.Patient;
 import org.hisp.dhis.patient.PatientService;
 import org.hisp.dhis.program.Program;
+import org.hisp.dhis.program.ProgramInstance;
+import org.hisp.dhis.program.ProgramInstanceService;
 import org.hisp.dhis.program.ProgramService;
 
 import com.opensymphony.xwork2.Action;
@@ -69,6 +73,13 @@ public class DataRecordingSelectAction
         this.selectedStateManager = selectedStateManager;
     }
 
+    private ProgramInstanceService programInstanceService;
+
+    public void setProgramInstanceService( ProgramInstanceService programInstanceService )
+    {
+        this.programInstanceService = programInstanceService;
+    }
+
     // -------------------------------------------------------------------------
     // Input/Output
     // -------------------------------------------------------------------------
@@ -101,13 +112,38 @@ public class DataRecordingSelectAction
     public String execute()
         throws Exception
     {
+        OrganisationUnit orgunit = selectedStateManager.getSelectedOrganisationUnit();
+
         patient = patientService.getPatient( patientId );
 
-        programs.addAll( patient.getPrograms() );
+        // ---------------------------------------------------------------------
+        // Get single programs with un-completed program-instances
+        // ---------------------------------------------------------------------
+
+        Collection<ProgramInstance> programInstances = programInstanceService
+            .getProgramInstances( patient, true );
+
+        Collection<Program> completedPrograms = new HashSet<Program>();
+
+        for ( ProgramInstance programInstance : programInstances )
+        {
+            if( programInstance.getProgram().getSingleEvent() )
+            {
+                completedPrograms.add( programInstance.getProgram() );
+            }
+        }
+
+        // ---------------------------------------------------------------------
+        // Get programs which patient enrolls
+        // ---------------------------------------------------------------------
+
+        programs = programService.getPrograms( orgunit );
+
+        programs.retainAll( patient.getPrograms() );
         
-        programs.addAll( programService.getPrograms( true, false ) );
-        
-        programs.retainAll( programService.getPrograms( selectedStateManager.getSelectedOrganisationUnit() ) );
+        programs.addAll( programService.getPrograms( true, false, orgunit ) );
+
+        programs.removeAll( completedPrograms );
 
         selectedStateManager.setSelectedPatient( patient );
 
