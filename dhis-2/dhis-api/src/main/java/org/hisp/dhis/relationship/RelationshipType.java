@@ -26,27 +26,30 @@
  */
 package org.hisp.dhis.relationship;
 
-import java.io.Serializable;
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlRootElement;
+
+import org.hisp.dhis.common.BaseIdentifiableObject;
+import org.hisp.dhis.common.Dxf2Namespace;
 
 /**
  * @author Abyot Asalefew
  * @version $Id$
  */
+@XmlRootElement( name = "relationshipType", namespace = Dxf2Namespace.NAMESPACE )
+@XmlAccessorType( value = XmlAccessType.NONE )
 public class RelationshipType
-    implements Serializable
+    extends BaseIdentifiableObject
 {
     /**
      * Determines if a de-serialized file is compatible with this class.
      */
     private static final long serialVersionUID = -8788979454816878770L;
 
-    private int id;
-
     private String aIsToB;
 
     private String bIsToA;
-    
-    private String description;
 
     // -------------------------------------------------------------------------
     // Constructors
@@ -106,68 +109,23 @@ public class RelationshipType
     // Getters and setters
     // -------------------------------------------------------------------------
 
-    /**
-     * @return the id
-     */
-    public int getId()
-    {
-        return id;
-    }
-
-    /**
-     * @param id the id to set
-     */
-    public void setId( int id )
-    {
-        this.id = id;
-    }
-
-    /**
-     * @return the aIsToB
-     */
     public String getaIsToB()
     {
         return aIsToB;
     }
 
-    /**
-     * @param aIsToB the aIsToB to set
-     */
     public void setaIsToB( String aIsToB )
     {
         this.aIsToB = aIsToB;
     }
 
-    /**
-     * @return the bIsToA
-     */
     public String getbIsToA()
     {
         return bIsToA;
     }
 
-    /**
-     * @param bIsToA the bIsToA to set
-     */
     public void setbIsToA( String bIsToA )
     {
         this.bIsToA = bIsToA;
     }
-
-    /**
-     * @param description the description to set
-     */
-    public void setDescription( String description )
-    {
-        this.description = description;
-    }
-
-    /**
-     * @return the description
-     */
-    public String getDescription()
-    {
-        return description;
-    }
-
 }

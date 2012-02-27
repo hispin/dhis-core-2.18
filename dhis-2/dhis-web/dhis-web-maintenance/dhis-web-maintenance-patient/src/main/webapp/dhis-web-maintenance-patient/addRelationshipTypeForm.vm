@@ -33,7 +33,7 @@
 		
 		<tr>
 			<td><label>$i18n.getString( "description" ) <em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
-			<td><input type="text" id="description" name="description" style="width:30em" class="{validate:{required:true,rangelength:[2,160]}}"/></td>
+			<td><input type="text" id="name" name="name" style="width:30em" class="{validate:{required:true,rangelength:[2,160]}}"/></td>
 		</tr>   
     </tbody>
 </table>

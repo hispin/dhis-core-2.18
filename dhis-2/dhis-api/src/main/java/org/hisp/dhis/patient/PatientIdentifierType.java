@@ -27,10 +27,17 @@
 
 package org.hisp.dhis.patient;
 
-import java.io.Serializable;
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlRootElement;
 
+import org.hisp.dhis.common.BaseIdentifiableObject;
+import org.hisp.dhis.common.Dxf2Namespace;
+
+@XmlRootElement( name = "patientIdentifierType", namespace = Dxf2Namespace.NAMESPACE )
+@XmlAccessorType( value = XmlAccessType.NONE )
 public class PatientIdentifierType
-    implements Serializable
+    extends BaseIdentifiableObject
 {
     /**
      * Determines if a de-serialized file is compatible with this class.
@@ -44,11 +51,6 @@ public class PatientIdentifierType
     public static final String VALUE_TYPE_NUMBER = "number";
 
     public static final String VALUE_TYPE_LETTER = "letter";
-
-    
-    private int id;
-
-    private String name;
 
     private String description;
 
@@ -180,5 +182,5 @@ public class PatientIdentifierType
     {
         this.type = type;
     }
-    
+
 }

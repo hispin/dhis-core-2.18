@@ -74,12 +74,12 @@ public class UpdateRelationshipTypeAction
     {
         this.bIsToA = bIsToA;
     }
-    
-    private String description;
 
-    public void setDescription( String description )
+    private String name;
+
+    public void setName( String name )
     {
-        this.description = description;
+        this.name = name;
     }
 
     // -------------------------------------------------------------------------
@@ -92,8 +92,8 @@ public class UpdateRelationshipTypeAction
         RelationshipType relationshipType = relationshipTypeService.getRelationshipType( id );
 
         relationshipType.setaIsToB( aIsToB );
-        relationshipType.setbIsToA( bIsToA );      
-        relationshipType.setDescription( description );
+        relationshipType.setbIsToA( bIsToA );
+        relationshipType.setName( name );
 
         relationshipTypeService.updateRelationshipType( relationshipType );
 

@@ -67,13 +67,13 @@ public class AddRelationshipTypeAction
     {
         this.bIsToA = bIsToA;
     }
-    
-    private String description;
 
-    public void setDescription( String description )
+    private String name;
+
+    public void setName( String name )
     {
-        this.description = description;
-    } 
+        this.name = name;
+    }
 
     // -------------------------------------------------------------------------
     // Action implementation
@@ -84,11 +84,11 @@ public class AddRelationshipTypeAction
     {
 
         RelationshipType relationshipType = new RelationshipType();
-        
+
         relationshipType.setaIsToB( aIsToB );
         relationshipType.setbIsToA( bIsToA );
-        relationshipType.setDescription( description );
-        
+        relationshipType.setName( name );
+
         relationshipTypeService.saveRelationshipType( relationshipType );
 
         return SUCCESS;

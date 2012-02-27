@@ -109,6 +109,7 @@ public class AddPatientIdentifierTypeAction
     {
         PatientIdentifierType patientIdentifierType = new PatientIdentifierType();
         patientIdentifierType.setName( name );
+        System.out.println("\n\n ==== \n description : " + description );
         patientIdentifierType.setDescription( description );
         patientIdentifierType.setRelated( related.booleanValue() );
         patientIdentifierType.setMandatory( mandatory.booleanValue() );

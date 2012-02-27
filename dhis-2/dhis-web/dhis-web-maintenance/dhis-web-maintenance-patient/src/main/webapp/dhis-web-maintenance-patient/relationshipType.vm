@@ -18,7 +18,7 @@
 		  </tr>
           <tr>
             <th>$i18n.getString( "relationship_type" )</th>            
-            <th>$i18n.getString( "description" )</th>
+            <th>$i18n.getString( "name" )</th>
             <th colspan="3">$i18n.getString( "operations" )</th>
           </tr>
 
@@ -28,7 +28,7 @@
               
                 <td>$encoder.htmlEncode( $relationshipType.aIsToB )/$encoder.htmlEncode( $relationshipType.bIsToA )</td>
                 
-                <td>$encoder.htmlEncode( $relationshipType.description )</td>               
+                <td>$encoder.htmlEncode( $relationshipType.name )</td>               
                 
                 <td style="text-align:center"#alternate( $mark )>
                   <a href="showUpdateRelationshipTypeForm.action?id=$relationshipType.id" title="$i18n.getString( 'edit' )"><img src="../images/edit.png" alt="$i18n.getString( 'edit' )"></a>

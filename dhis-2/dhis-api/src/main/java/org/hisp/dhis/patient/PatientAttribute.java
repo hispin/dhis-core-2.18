@@ -26,16 +26,24 @@
  */
 package org.hisp.dhis.patient;
 
-import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
+
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlRootElement;
+
+import org.hisp.dhis.common.BaseIdentifiableObject;
+import org.hisp.dhis.common.Dxf2Namespace;
 
 /**
  * @author Abyot Asalefew
  * @version $Id$
  */
+@XmlRootElement( name = "patientAttribute", namespace = Dxf2Namespace.NAMESPACE )
+@XmlAccessorType( value = XmlAccessType.NONE )
 public class PatientAttribute
-    implements Serializable
+    extends BaseIdentifiableObject
 {
     /**
      * Determines if a de-serialized file is compatible with this class.
@@ -52,10 +60,6 @@ public class PatientAttribute
 
     public static final String TYPE_COMBO = "COMBO";
 
-    private int id;
-
-    private String name;
-
     private String description;
 
     private String valueType;
@@ -63,7 +67,7 @@ public class PatientAttribute
     private boolean mandatory;
 
     private boolean inheritable;
-    
+
     private Integer noChars;
 
     private Boolean groupBy;
@@ -165,16 +169,6 @@ public class PatientAttribute
         return groupBy;
     }
     
-    public int getId()
-    {
-        return id;
-    }
-
-    public void setId( int id )
-    {
-        this.id = id;
-    }
-
     public boolean isMandatory()
     {
         return mandatory;
@@ -183,16 +177,6 @@ public class PatientAttribute
     public void setMandatory( boolean mandatory )
     {
         this.mandatory = mandatory;
-    }
-
-    public String getName()
-    {
-        return name;
-    }
-
-    public void setName( String name )
-    {
-        this.name = name;
     }
 
     public String getDescription()
@@ -234,6 +218,5 @@ public class PatientAttribute
     {
         this.inheritable = inheritable;
     }
-
 
 }

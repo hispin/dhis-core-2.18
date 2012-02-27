@@ -27,11 +27,11 @@
 
 package org.hisp.dhis.program;
 
-import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 
 import org.apache.commons.lang.StringUtils;
+import org.hisp.dhis.common.BaseIdentifiableObject;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.patient.Patient;
 import org.hisp.dhis.validation.ValidationCriteria;
@@ -40,16 +40,12 @@ import org.hisp.dhis.validation.ValidationCriteria;
  * @author Abyot Asalefew
  */
 public class Program
-    implements Serializable
+    extends BaseIdentifiableObject
 {
     /**
      * Determines if a de-serialized file is compatible with this class.
      */
     private static final long serialVersionUID = -2581751965520009382L;
-
-    private int id;
-
-    private String name;
 
     private String description;
 
@@ -80,7 +76,7 @@ public class Program
     private Boolean singleEvent;
 
     private Boolean anonymous;
-    
+
     private Boolean displayProvidedOtherFacility;
 
     // -------------------------------------------------------------------------
@@ -134,16 +130,6 @@ public class Program
     // Getters and setters
     // -------------------------------------------------------------------------
 
-    public int getId()
-    {
-        return id;
-    }
-
-    public void setId( int id )
-    {
-        this.id = id;
-    }
-    
     public Boolean getDisplayProvidedOtherFacility()
     {
         return displayProvidedOtherFacility;
@@ -153,17 +139,7 @@ public class Program
     {
         this.displayProvidedOtherFacility = displayProvidedOtherFacility;
     }
-
-    public String getName()
-    {
-        return name;
-    }
-
-    public void setName( String name )
-    {
-        this.name = name;
-    }
-
+    
     public String getDescription()
     {
         return description;
