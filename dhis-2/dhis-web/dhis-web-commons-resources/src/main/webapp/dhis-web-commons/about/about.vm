@@ -18,6 +18,7 @@
   <dt>$i18n.getString( "os_name" ):</dt><dd>$systemProperties.get( "os.name" )</dd>
   <dt>$i18n.getString( "os_architecture" ):</dt><dd>$systemProperties.get( "os.arch" )</dd>
   <dt>$i18n.getString( "os_version" ):</dt><dd>$systemProperties.get( "os.version" )</dd>
+  <dt>$i18n.getString( "server_date" ):</dt><dd>$format.formatDateTime( $serverDate )</dd>
   #end
 </dl>
 <br/>

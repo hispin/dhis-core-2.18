@@ -173,6 +173,13 @@ public class AboutAction
     {
         return currentUserIsSuper;
     }
+    
+    private Date serverDate = new Date();
+
+    public Date getServerDate()
+    {
+        return serverDate;
+    }
 
     // -------------------------------------------------------------------------
     // Action implementation
