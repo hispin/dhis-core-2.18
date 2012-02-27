@@ -88,6 +88,7 @@ DV.conf = {
             dataelement_get: 'getDataElementsMinified.action',
             dataelementgroup_get: 'getDataElementGroupsMinified.action',
             dataelement_get: 'getDataElementsMinified.action',
+            dataset_get: 'getDataSetsMinified.action',
             organisationunitchildren_get: 'getOrganisationUnitChildren.action',
             favorite_addorupdate: 'addOrUpdateChart.action',
             favorite_addorupdatesystem: 'addOrUpdateSystemChart.action',            
@@ -109,8 +110,12 @@ DV.conf = {
             },
             dataelement: {
                 value: 'dataelement',
-                rawvalue: DV.i18n.data_element
+                rawvalue: DV.i18n.dataelement
             },
+            dataset: {
+				value: 'dataset',
+                rawvalue: DV.i18n.dataset
+			},
             period: {
                 value: 'period',
                 rawvalue: DV.i18n.period,
@@ -149,7 +154,6 @@ DV.conf = {
         },
         cmd: {
             init: 'init_',
-            datatable: 'datatable_',
 			urlparam: 'id'
         }
     },
@@ -172,6 +176,7 @@ DV.conf = {
     layout: {
         west_width: 424,
         west_fieldset_width: 402,
+        west_fill_height: 440,
         center_tbar_height: 31,
         east_tbar_height: 31,
         east_gridcolumn_height: 30,
@@ -215,6 +220,7 @@ Ext.onReady( function() {
         dimension: {
             indicator: {},
             dataelement: {},
+            dataset: {},
             period: [],
             organisationunit: {}
         },
@@ -235,13 +241,15 @@ Ext.onReady( function() {
             var output = '';
             var href = window.location.href;
             if (href.indexOf('?') > -1 ) {
-                var query = href.substr(href.indexOf('?'));
+                var query = href.substr(href.indexOf('?') + 1);
                 var query = query.split('&');
                 for (var i = 0; i < query.length; i++) {
-                    if (query[i].indexOf(s + '=') > -1) {
+                    if (query[i].indexOf('=') > -1) {
                         var a = query[i].split('=');
-                        output = a[1];
-                        break;
+                        if (a[0].toLowerCase() === s) {
+							output = a[1];
+							break;
+						}
                     }
                 }
             }
@@ -313,6 +321,9 @@ Ext.onReady( function() {
             },
             toggleDataElement: function() {
                 DV.cmp.fieldset.dataelement.toggle();
+            },
+            toggleDataSet: function() {
+                DV.cmp.fieldset.dataset.toggle();
             },
             togglePeriod: function() {
                 DV.cmp.fieldset.period.toggle();
@@ -400,19 +411,26 @@ Ext.onReady( function() {
             },
             dataelement: {
                 getIds: function(exception) {
-                    if (DV.cmp.dimension.dataelement.selected.store) {
-                        var a = [];
-                        DV.cmp.dimension.dataelement.selected.store.each( function(r) {
-                            a.push(r.data.id);
-                        });
-                        if (exception && !a.length) {
-                            alert(DV.i18n.no_data_elements_selected);
-                        }
-                        return a;
-                    }
-                    else {
-                        alert(DV.i18n.data_element_store_does_not_exist);
-                    }
+					var a = [];
+					DV.cmp.dimension.dataelement.selected.store.each( function(r) {
+						a.push(r.data.id);
+					});
+					if (exception && !a.length) {
+						alert(DV.i18n.no_data_elements_selected);
+					}
+					return a;
+                }
+            },
+            dataset: {
+                getIds: function(exception) {
+					var a = [];
+					DV.cmp.dimension.dataset.selected.store.each( function(r) {
+						a.push(r.data.id);
+					});
+					if (exception && !a.length) {
+						alert(DV.i18n.no_datasets_selected);
+					}
+					return a;
                 }
             },
             data: {
@@ -423,6 +441,9 @@ Ext.onReady( function() {
                     });
                     Ext.Array.each(DV.state.dataelementIds, function(r) {
                         a.push('dataElementIds=' + r);
+                    });
+                    Ext.Array.each(DV.state.datasetIds, function(r) {
+                        a.push('dataSetIds=' + r);
                     });
                     return (isFilter && a.length > 1) ? a.slice(0,1) : a;
                 },
@@ -436,14 +457,19 @@ Ext.onReady( function() {
                             a.push(DV.util.string.getEncodedString(r.data.s));
                         });
                     }
+                    if (DV.cmp.dimension.dataset.selected.store) {
+                        DV.cmp.dimension.dataset.selected.store.each( function(r) {
+                            a.push(DV.util.string.getEncodedString(r.data.s));
+                        });
+                    }
                     if (exception && !a.length) {
-						DV.util.notification.error(DV.i18n.et_no_indicators_dataelements, DV.i18n.em_no_indicators_dataelements);
+						DV.util.notification.error(DV.i18n.et_no_indicators_dataelements_datasets, DV.i18n.em_no_indicators_dataelements_datasets);
                     }
                     if (exception && isFilter && a.length > 1) {
 						DV.exe.warnings.push(DV.i18n.wm_first_filter_unit);
 					}
 					return (isFilter && a.length > 1) ? a.slice(0,1) : a;
-                }                    
+                }
             },
             period: {
                 getUrl: function(isFilter) {
@@ -1164,6 +1190,31 @@ Ext.onReady( function() {
                 data: []
             })
         },
+        dataset: {
+            available: Ext.create('Ext.data.Store', {
+                fields: ['id', 's'],
+                proxy: {
+                    type: 'ajax',
+                    url: DV.conf.finals.ajax.path_commons + DV.conf.finals.ajax.dataset_get,
+                    reader: {
+                        type: 'json',
+                        root: 'dataSets'
+                    }
+                },
+                storage: {},
+                isLoaded: false,
+                listeners: {
+                    load: function(s) {
+                        DV.util.store.addToStorage(s);
+                        DV.util.multiselect.filterAvailable(DV.cmp.dimension.dataset.available, DV.cmp.dimension.dataset.selected);
+                    }
+                }
+            }),
+            selected: Ext.create('Ext.data.Store', {
+                fields: ['id', 's'],
+                data: []
+            })
+        },
         chart: null,
         getChartStore: function(exe) {
             var keys = [];
@@ -1258,6 +1309,7 @@ Ext.onReady( function() {
         },
         indicatorIds: [],
         dataelementIds: [],
+        datasetIds: [],
         relativePeriods: {},
         organisationunitIds: [],
         hideSubtitle: false,
@@ -1294,6 +1346,7 @@ Ext.onReady( function() {
             
             this.indicatorIds = DV.util.dimension.indicator.getIds();
             this.dataelementIds = DV.util.dimension.dataelement.getIds();
+            this.datasetIds = DV.util.dimension.dataset.getIds();
             this.relativePeriods = DV.util.dimension.period.getRelativePeriodObject();
             this.organisationunitIds = DV.util.dimension.organisationunit.getIds();
             
@@ -1336,6 +1389,7 @@ Ext.onReady( function() {
 			
             obj.indicatorIds = this.indicatorIds;
             obj.dataElementIds = this.dataelementIds;
+            obj.dataSetIds = this.datasetIds;
             obj = Ext.Object.merge(obj, this.relativePeriods);
             obj.organisationUnitIds = this.organisationunitIds;
             
@@ -1354,7 +1408,8 @@ Ext.onReady( function() {
                         var f = Ext.JSON.decode(r.responseText),
 							indiment = [],
 							irec = [],
-							drec = [];	
+							derec = [],
+							dsrec = [];
                             
 						if (!this.validation.favorite(f)) {
 							return;
@@ -1409,7 +1464,14 @@ Ext.onReady( function() {
                             for (var i = 0; i < f.dataElements.length; i++) {
                                 indiment.push(f.dataElements[i]);
                                 this.dataelementIds.push(f.dataElements[i].internalId);
-                                drec.push({id: f.dataElements[i].internalId, s: DV.util.string.getEncodedString(f.dataElements[i].shortName), name: DV.util.string.getEncodedString(f.dataElements[i].shortName), parent: null});
+                                derec.push({id: f.dataElements[i].internalId, s: DV.util.string.getEncodedString(f.dataElements[i].shortName), name: DV.util.string.getEncodedString(f.dataElements[i].shortName), parent: null});
+                            }
+                        }             
+                        if (f.dataSets) {
+                            for (var i = 0; i < f.dataSets.length; i++) {
+                                indiment.push(f.dataSets[i]);
+                                this.datasetIds.push(f.dataSets[i].internalId);
+                                dsrec.push({id: f.dataSets[i].internalId, s: DV.util.string.getEncodedString(f.dataSets[i].shortName), name: DV.util.string.getEncodedString(f.dataSets[i].shortName), parent: null});
                             }
                         }
                         for (var i = 0; i < indiment.length; i++) {
@@ -1437,7 +1499,7 @@ Ext.onReady( function() {
 						
 						this.validation.render.call(this);
 						
-						this.setUI(f, irec, drec);
+						this.setUI(f, irec, derec, dsrec);
                         
                         if (exe) {
                             DV.value.getValues(true);
@@ -1446,7 +1508,7 @@ Ext.onReady( function() {
                 });
             }
         },
-        setUI: function(f, irec, drec) {
+        setUI: function(f, irec, derec, dsrec) {
 			DV.util.button.type.setValue(f.type);
 			
 			DV.cmp.favorite.hidesubtitle.setValue(f.hideSubtitle);
@@ -1474,9 +1536,16 @@ Ext.onReady( function() {
 									
 			DV.store.dataelement.selected.removeAll();
 			if (f.dataElements) {
-				DV.store.dataelement.selected.add(drec);
-				DV.util.store.addToStorage(DV.store.dataelement.available, drec);
+				DV.store.dataelement.selected.add(derec);
+				DV.util.store.addToStorage(DV.store.dataelement.available, derec);
 				DV.util.multiselect.filterAvailable(DV.cmp.dimension.dataelement.available, DV.cmp.dimension.dataelement.selected);
+			}
+									
+			DV.store.dataset.selected.removeAll();
+			if (f.dataSets) {
+				DV.store.dataset.selected.add(dsrec);
+				DV.util.store.addToStorage(DV.store.dataset.available, dsrec);
+				DV.util.multiselect.filterAvailable(DV.cmp.dimension.dataset.available, DV.cmp.dimension.dataset.selected);
 			}
 
 			DV.util.checkbox.setRelativePeriods(f.relativePeriods);
@@ -1644,7 +1713,11 @@ Ext.onReady( function() {
                         return;
                     }
                     
-                    var storage = Ext.Object.merge(DV.store[DV.conf.finals.dimension.indicator.value].available.storage, DV.store[DV.conf.finals.dimension.dataelement.value].available.storage);
+                    var storage = Ext.Object.merge(
+						DV.store[DV.conf.finals.dimension.indicator.value].available.storage,
+						DV.store[DV.conf.finals.dimension.dataelement.value].available.storage,
+						DV.store[DV.conf.finals.dimension.dataset.value].available.storage
+					);
                     Ext.Array.each(DV.value.values, function(item) {
                         item[DV.conf.finals.dimension.data.value] = DV.util.string.getEncodedString(storage[item.d].name);
                         item[DV.conf.finals.dimension.period.value] = DV.util.string.getEncodedString(DV.util.dimension.period.getNameById(item.p));
@@ -2065,7 +2138,7 @@ Ext.onReady( function() {
 								width: 40
                             }
                         ]
-                    },                    
+                    },
                     {
                         xtype: 'toolbar',
                         id: 'chartsettings_tb',
@@ -2333,7 +2406,7 @@ Ext.onReady( function() {
                                         DV.cmp.fieldset.indicator = this;
                                     },
                                     expand: function() {
-                                        DV.util.fieldset.collapseFieldsets([DV.cmp.fieldset.dataelement, DV.cmp.fieldset.period, DV.cmp.fieldset.organisationunit]);
+                                        DV.util.fieldset.collapseFieldsets([DV.cmp.fieldset.dataelement, DV.cmp.fieldset.dataset, DV.cmp.fieldset.period, DV.cmp.fieldset.organisationunit]);
                                     }
                                 }
                             },
@@ -2494,7 +2567,127 @@ Ext.onReady( function() {
                                         DV.cmp.fieldset.dataelement = this;
                                     },
                                     expand: function() {
-                                        DV.util.fieldset.collapseFieldsets([DV.cmp.fieldset.indicator, DV.cmp.fieldset.period, DV.cmp.fieldset.organisationunit]);
+                                        DV.util.fieldset.collapseFieldsets([DV.cmp.fieldset.indicator, DV.cmp.fieldset.dataset, DV.cmp.fieldset.period, DV.cmp.fieldset.organisationunit]);
+                                    }
+                                }
+                            },
+                            {
+                                xtype: 'fieldset',
+                                cls: 'dv-fieldset',
+                                name: DV.conf.finals.dimension.dataset.value,
+                                title: '<a href="javascript:DV.util.fieldset.toggleDataSet();" class="dv-fieldset-title-link">' + DV.i18n.reporting_rates + '</a>',
+                                collapsed: true,
+                                collapsible: true,
+                                items: [
+                                    {
+                                        xtype: 'panel',
+                                        layout: 'column',
+                                        bodyStyle: 'border-style:none',
+                                        items: [
+                                            Ext.create('Ext.ux.form.MultiSelect', {
+                                                id: 'availableDataSets',
+                                                name: 'availableDataSets',
+                                                cls: 'dv-toolbar-multiselect-left',
+                                                width: (DV.conf.layout.west_fieldset_width - 22) / 2,
+                                                displayField: 's',
+                                                valueField: 'id',
+                                                queryMode: 'remote',
+                                                store: DV.store.dataset.available,
+                                                tbar: [
+                                                    {
+                                                        xtype: 'label',
+                                                        text: DV.i18n.available,
+                                                        cls: 'dv-toolbar-multiselect-left-label'
+                                                    },
+                                                    '->',
+                                                    {
+                                                        xtype: 'button',
+                                                        icon: 'images/arrowright.png',
+                                                        width: 22,
+                                                        handler: function() {
+                                                            DV.util.multiselect.select(DV.cmp.dimension.dataset.available, DV.cmp.dimension.dataset.selected);
+                                                        }
+                                                    },
+                                                    {
+                                                        xtype: 'button',
+                                                        icon: 'images/arrowrightdouble.png',
+                                                        width: 22,
+                                                        handler: function() {
+                                                            DV.util.multiselect.selectAll(DV.cmp.dimension.dataset.available, DV.cmp.dimension.dataset.selected);
+                                                        }
+                                                    },
+                                                    ' '
+                                                ],
+                                                listeners: {
+                                                    added: function() {
+                                                        DV.cmp.dimension.dataset.available = this;
+                                                    },                                                                
+                                                    afterrender: function() {
+                                                        this.boundList.on('itemdblclick', function() {
+                                                            DV.util.multiselect.select(this, DV.cmp.dimension.dataset.selected);
+                                                        }, this);
+                                                    }
+                                                }
+                                            }),                                            
+                                            {
+                                                xtype: 'multiselect',
+                                                id: 'selectedDataSets',
+                                                name: 'selectedDataSets',
+                                                cls: 'dv-toolbar-multiselect-right',
+                                                width: (DV.conf.layout.west_fieldset_width - 22) / 2,
+                                                displayField: 's',
+                                                valueField: 'id',
+                                                ddReorder: true,
+                                                queryMode: 'remote',
+                                                store: DV.store.dataset.selected,
+                                                tbar: [
+                                                    ' ',
+                                                    {
+                                                        xtype: 'button',
+                                                        icon: 'images/arrowleftdouble.png',
+                                                        width: 22,
+                                                        handler: function() {
+                                                            DV.util.multiselect.unselectAll(DV.cmp.dimension.dataset.available, DV.cmp.dimension.dataset.selected);
+                                                        }
+                                                    },
+                                                    {
+                                                        xtype: 'button',
+                                                        icon: 'images/arrowleft.png',
+                                                        width: 22,
+                                                        handler: function() {
+                                                            DV.util.multiselect.unselect(DV.cmp.dimension.dataset.available, DV.cmp.dimension.dataset.selected);
+                                                        }
+                                                    },
+                                                    '->',
+                                                    {
+                                                        xtype: 'label',
+                                                        text: DV.i18n.selected,
+                                                        cls: 'dv-toolbar-multiselect-right-label'
+                                                    }
+                                                ],
+                                                listeners: {
+                                                    added: function() {
+                                                        DV.cmp.dimension.dataset.selected = this;
+                                                    },          
+                                                    afterrender: function() {
+                                                        this.boundList.on('itemdblclick', function() {
+                                                            DV.util.multiselect.unselect(DV.cmp.dimension.dataset.available, this);
+                                                        }, this);
+                                                    }
+                                                }
+                                            }
+                                        ]
+                                    }
+                                ],
+                                listeners: {
+                                    afterrender: function() {
+                                        DV.cmp.fieldset.dataset = this;
+                                    },
+                                    expand: function() {
+										if (!DV.store.dataset.available.isLoaded) {
+											DV.store.dataset.available.load();
+										}
+                                        DV.util.fieldset.collapseFieldsets([DV.cmp.fieldset.indicator, DV.cmp.fieldset.dataelement, DV.cmp.fieldset.period, DV.cmp.fieldset.organisationunit]);
                                     }
                                 }
                             },
@@ -2661,7 +2854,7 @@ Ext.onReady( function() {
                                         DV.cmp.fieldset.period = this;
                                     },
                                     expand: function() {
-                                        DV.util.fieldset.collapseFieldsets([DV.cmp.fieldset.indicator, DV.cmp.fieldset.dataelement, DV.cmp.fieldset.organisationunit]);
+                                        DV.util.fieldset.collapseFieldsets([DV.cmp.fieldset.indicator, DV.cmp.fieldset.dataelement, DV.cmp.fieldset.dataset, DV.cmp.fieldset.organisationunit]);
                                     }
                                 }
                             },
@@ -2755,11 +2948,11 @@ Ext.onReady( function() {
 										}
 									},
                                     expand: function(fs) {
-										var h = DV.cmp.region.west.getHeight() - 405;
+										var h = DV.cmp.region.west.getHeight() - DV.conf.layout.west_fill_height;
 										DV.cmp.fieldset.organisationunit.setHeight(h);
 										DV.cmp.dimension.organisationunit.treepanel.setHeight(h - 40);
 
-                                        DV.util.fieldset.collapseFieldsets([DV.cmp.fieldset.indicator, DV.cmp.fieldset.dataelement, DV.cmp.fieldset.period]);
+                                        DV.util.fieldset.collapseFieldsets([DV.cmp.fieldset.indicator, DV.cmp.fieldset.dataelement, DV.cmp.fieldset.dataset, DV.cmp.fieldset.period]);
                                         var tp = DV.cmp.dimension.organisationunit.treepanel;
                                         if (!tp.isRendered) {
                                             tp.isRendered = true;
@@ -2954,7 +3147,7 @@ Ext.onReady( function() {
                 id: 'center',
                 region: 'center',
                 layout: 'fit',
-                bodyStyle: 'padding:10px',
+                bodyStyle: 'padding-top:5px',
                 tbar: {
                     xtype: 'toolbar',
                     cls: 'dv-toolbar',
