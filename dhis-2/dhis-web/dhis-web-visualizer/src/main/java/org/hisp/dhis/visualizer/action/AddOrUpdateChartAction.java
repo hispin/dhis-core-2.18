@@ -33,6 +33,7 @@ import java.util.List;
 import org.hisp.dhis.chart.Chart;
 import org.hisp.dhis.chart.ChartService;
 import org.hisp.dhis.dataelement.DataElementService;
+import org.hisp.dhis.dataset.DataSetService;
 import org.hisp.dhis.indicator.IndicatorService;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.period.RelativePeriods;
@@ -69,6 +70,13 @@ public class AddOrUpdateChartAction
     public void setDataElementService( DataElementService dataElementService )
     {
         this.dataElementService = dataElementService;
+    }
+
+    private DataSetService dataSetService;
+
+    public void setDataSetService( DataSetService dataSetService )
+    {
+        this.dataSetService = dataSetService;
     }
 
     private OrganisationUnitService organisationUnitService;
@@ -143,6 +151,13 @@ public class AddOrUpdateChartAction
     public void setDataElementIds( List<Integer> dataElementIds )
     {
         this.dataElementIds = dataElementIds;
+    }
+    
+    private List<Integer> dataSetIds = new ArrayList<Integer>();
+    
+    public void setDataSetIds( List<Integer> dataSetIds )
+    {
+        this.dataSetIds = dataSetIds;
     }
 
     private boolean lastMonth;
@@ -338,6 +353,16 @@ public class AddOrUpdateChartAction
             for ( Integer id : dataElementIds )
             {
                 chart.getDataElements().add( dataElementService.getDataElement( id ) );
+            }
+        }
+        
+        if ( dataSetIds != null )
+        {
+            chart.getDataSets().clear();
+            
+            for ( Integer id : dataSetIds )
+            {
+                chart.getDataSets().add( dataSetService.getDataSet( id ) );
             }
         }
 
