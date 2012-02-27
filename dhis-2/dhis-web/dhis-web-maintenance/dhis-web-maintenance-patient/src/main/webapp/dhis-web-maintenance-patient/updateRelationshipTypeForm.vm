@@ -34,7 +34,7 @@
 		</tr>
 		<tr>
 			<td><label>$i18n.getString( "description" ) <em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
-			<td><input type="text" id="description" name="description" value="$encoder.htmlEncode( $relationshipType.description )" style="width:30em" class="{validate:{required:true,rangelength:[2,160]}}"/></td>
+			<td><input type="text" id="name" name="name" value="$encoder.htmlEncode( $relationshipType.name )" style="width:30em" class="{validate:{required:true,rangelength:[2,160]}}"/></td>
 		</tr>       
 		<tr>
 			<td colspan="2" style="height:15px"></td>

@@ -26,30 +26,34 @@
  */
 package org.hisp.dhis.patient;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlRootElement;
+
+import org.hisp.dhis.common.BaseIdentifiableObject;
+import org.hisp.dhis.common.Dxf2Namespace;
 
 /**
  * @author Chau Thu Tran
  * @version $Id$
  */
+@XmlRootElement( name = "patientAttributeGroup", namespace = Dxf2Namespace.NAMESPACE )
+@XmlAccessorType( value = XmlAccessType.NONE )
 public class PatientAttributeGroup
-    implements Serializable
+    extends BaseIdentifiableObject
 {
     /**
      * Determines if a de-serialized file is compatible with this class.
      */
     private static final long serialVersionUID = -7084277284999239111L;
 
-    private int id;
-
-    private String name;
-
     private String description;
 
     private Integer sortOrder;
-    
+
     private List<PatientAttribute> attributes = new ArrayList<PatientAttribute>();
 
     // -------------------------------------------------------------------------
@@ -102,26 +106,6 @@ public class PatientAttributeGroup
     // -------------------------------------------------------------------------
     // Getters and setters
     // -------------------------------------------------------------------------
-
-    public int getId()
-    {
-        return id;
-    }
-
-    public void setId( int id )
-    {
-        this.id = id;
-    }
-
-    public String getName()
-    {
-        return name;
-    }
-
-    public void setName( String name )
-    {
-        this.name = name;
-    }
 
     public String getDescription()
     {

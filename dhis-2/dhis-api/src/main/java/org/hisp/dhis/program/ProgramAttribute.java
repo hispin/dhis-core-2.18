@@ -27,16 +27,24 @@
 
 package org.hisp.dhis.program;
 
-import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
+
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlRootElement;
+
+import org.hisp.dhis.common.BaseIdentifiableObject;
+import org.hisp.dhis.common.Dxf2Namespace;
 
 /**
  * @author Chau Thu Tran
  * @version $Id ProgramAttribute.java 2010-10-30 19:30:09Z $
  */
+@XmlRootElement( name = "programAttribute", namespace = Dxf2Namespace.NAMESPACE )
+@XmlAccessorType( value = XmlAccessType.NONE )
 public class ProgramAttribute
-    implements Serializable
+    extends BaseIdentifiableObject
 {
     /**
      * Determines if a de-serialized file is compatible with this class.
@@ -46,7 +54,7 @@ public class ProgramAttribute
     // -------------------------------------------------------------------------
     // Define ValueType
     // -------------------------------------------------------------------------
-    
+
     public static final String TYPE_DATE = "DATE";
 
     public static final String TYPE_STRING = "TEXT";
@@ -69,10 +77,6 @@ public class ProgramAttribute
     // Properties
     // -------------------------------------------------------------------------
 
-    private Integer id;
-
-    private String name;
-
     private String description;
 
     private String valueType;
@@ -89,7 +93,7 @@ public class ProgramAttribute
         {
             attributeOptions = new HashSet<ProgramAttributeOption>();
         }
-        
+
         attributeOptions.add( option );
     }
 
@@ -113,19 +117,19 @@ public class ProgramAttribute
         {
             return true;
         }
-        
+
         if ( obj == null )
         {
             return false;
         }
-        
+
         if ( getClass() != obj.getClass() )
         {
             return false;
         }
-            
+
         ProgramAttribute other = (ProgramAttribute) obj;
-        
+
         if ( name == null )
         {
             if ( other.name != null )
@@ -137,23 +141,13 @@ public class ProgramAttribute
         {
             return false;
         }
-        
+
         return true;
     }
 
     // -------------------------------------------------------------------------
     // Getters and setters
     // -------------------------------------------------------------------------
-
-    public Integer getId()
-    {
-        return id;
-    }
-
-    public void setId( Integer id )
-    {
-        this.id = id;
-    }
 
     public String getValueType()
     {
@@ -163,16 +157,6 @@ public class ProgramAttribute
     public void setValueType( String valueType )
     {
         this.valueType = valueType;
-    }
-
-    public String getName()
-    {
-        return name;
-    }
-
-    public void setName( String name )
-    {
-        this.name = name;
     }
 
     public String getDescription()

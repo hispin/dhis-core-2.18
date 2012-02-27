@@ -26,41 +26,37 @@
  */
 package org.hisp.dhis.program;
 
-import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.hisp.dhis.common.BaseIdentifiableObject;
 import org.hisp.dhis.dataentryform.DataEntryForm;
 
 /**
  * @author Abyot Asalefew
  */
 public class ProgramStage
-    implements Serializable
+    extends BaseIdentifiableObject
 {
     /**
      * Determines if a de-serialized file is compatible with this class.
      */
     private static final long serialVersionUID = 6876401001559656214L;
 
-    private int id;
-
-    private String name;
-
     private String description;
 
     private int stageInProgram;
 
-    private int minDaysFromStart;    
-    
+    private int minDaysFromStart;
+
     private Boolean irregular;
-    
+
     private Program program;
 
     private Set<ProgramStageDataElement> programStageDataElements = new HashSet<ProgramStageDataElement>();
 
     private DataEntryForm dataEntryForm;
-    
+
     // -------------------------------------------------------------------------
     // Constructors
     // -------------------------------------------------------------------------
@@ -118,23 +114,7 @@ public class ProgramStage
     // -------------------------------------------------------------------------
     // Getters and setters
     // -------------------------------------------------------------------------
-
-    /**
-     * @return the id
-     */
-    public int getId()
-    {
-        return id;
-    }
-
-    /**
-     * @param id the id to set
-     */
-    public void setId( int id )
-    {
-        this.id = id;
-    }
-
+  
     public DataEntryForm getDataEntryForm()
     {
         return dataEntryForm;
@@ -145,33 +125,11 @@ public class ProgramStage
         this.dataEntryForm = dataEntryForm;
     }
 
-    /**
-     * @return the name
-     */
-    public String getName()
-    {
-        return name;
-    }
-
-    /**
-     * @param name the name to set
-     */
-    public void setName( String name )
-    {
-        this.name = name;
-    }
-
-    /**
-     * @return the description
-     */
     public String getDescription()
     {
         return description;
     }
 
-    /**
-     * @param description the description to set
-     */
     public void setDescription( String description )
     {
         this.description = description;
@@ -187,54 +145,36 @@ public class ProgramStage
         this.irregular = irregular;
     }
 
-    /**
-     * @return the stageInProgram
-     */
     public int getStageInProgram()
     {
         return stageInProgram;
     }
 
-    /**
-     * @param stageInProgram the stageInProgram to set
-     */
     public void setStageInProgram( int stageInProgram )
     {
         this.stageInProgram = stageInProgram;
     }
-    
-    /**
-     * @return the minDaysFromStart
-     */
+
     public int getMinDaysFromStart()
     {
         return minDaysFromStart;
     }
 
-    /**
-     * @param minDaysFromStart the minDaysFromStart to set
-     */
     public void setMinDaysFromStart( int minDaysFromStart )
     {
         this.minDaysFromStart = minDaysFromStart;
-    }    
+    }
 
-    /**
-     * @param program the program to set
-     */
     public void setProgram( Program program )
     {
         this.program = program;
     }
 
-    /**
-     * @return the program
-     */
     public Program getProgram()
     {
         return program;
     }
-    
+
     public Set<ProgramStageDataElement> getProgramStageDataElements()
     {
         return programStageDataElements;
@@ -244,6 +184,5 @@ public class ProgramStage
     {
         this.programStageDataElements = programStageDataElements;
     }
-    
 
 }
