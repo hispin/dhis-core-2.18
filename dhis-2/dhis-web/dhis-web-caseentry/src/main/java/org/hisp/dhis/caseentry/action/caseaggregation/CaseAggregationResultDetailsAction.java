@@ -35,6 +35,7 @@ import java.util.Map;
 import org.hisp.dhis.caseaggregation.CaseAggregationCondition;
 import org.hisp.dhis.caseaggregation.CaseAggregationConditionService;
 import org.hisp.dhis.dataelement.DataElement;
+import org.hisp.dhis.i18n.I18nFormat;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.patient.Patient;
@@ -42,6 +43,7 @@ import org.hisp.dhis.patientdatavalue.PatientDataValue;
 import org.hisp.dhis.patientdatavalue.PatientDataValueService;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodService;
+import org.hisp.dhis.period.PeriodType;
 import org.hisp.dhis.program.ProgramStageInstance;
 
 import com.opensymphony.xwork2.Action;
@@ -65,6 +67,8 @@ public class CaseAggregationResultDetailsAction
 
     private PatientDataValueService patientDataValueService;
 
+    private I18nFormat format;
+
     // -------------------------------------------------------------------------
     // Input/Output
     // -------------------------------------------------------------------------
@@ -73,10 +77,12 @@ public class CaseAggregationResultDetailsAction
 
     private Integer aggregationConditionId;
 
-    private Integer periodId;
+    private String periodTypeName;
+
+    private String startDate;
 
     private Map<Patient, Collection<PatientDataValue>> mapPatients;
-    
+
     private Map<ProgramStageInstance, Collection<PatientDataValue>> mapEvents;
 
     // -------------------------------------------------------------------------
@@ -103,6 +109,16 @@ public class CaseAggregationResultDetailsAction
         this.periodService = periodService;
     }
 
+    public void setPeriodTypeName( String periodTypeName )
+    {
+        this.periodTypeName = periodTypeName;
+    }
+
+    public void setStartDate( String startDate )
+    {
+        this.startDate = startDate;
+    }
+
     public Map<Patient, Collection<PatientDataValue>> getMapPatients()
     {
         return mapPatients;
@@ -122,10 +138,10 @@ public class CaseAggregationResultDetailsAction
     {
         this.aggregationConditionId = aggregationConditionId;
     }
-
-    public void setPeriodId( Integer periodId )
+    
+    public void setFormat( I18nFormat format )
     {
-        this.periodId = periodId;
+        this.format = format;
     }
 
     // -------------------------------------------------------------------------
@@ -136,32 +152,33 @@ public class CaseAggregationResultDetailsAction
     public String execute()
         throws Exception
     {
-        
         OrganisationUnit orgunit = organisationUnitService.getOrganisationUnit( orgunitId );
 
-        Period period = periodService.getPeriod( periodId );
+        PeriodType periodType = periodService.getPeriodTypeByName( periodTypeName );
+        Period period = periodType.createPeriod( format.parseDate( startDate ) );
 
         CaseAggregationCondition aggCondition = aggregationConditionService
             .getCaseAggregationCondition( aggregationConditionId );
 
-        if( aggCondition.getOperator().equals( CaseAggregationCondition.AGGRERATION_SUM ) )
+        if ( aggCondition.getOperator().equals( CaseAggregationCondition.AGGRERATION_SUM ) )
         {
             mapEvents = new HashMap<ProgramStageInstance, Collection<PatientDataValue>>();
-            
-            Collection<ProgramStageInstance> programStageInstances = aggregationConditionService.getProgramStageInstances( aggCondition, orgunit, period );
+
+            Collection<ProgramStageInstance> programStageInstances = aggregationConditionService
+                .getProgramStageInstances( aggCondition, orgunit, period );
 
             for ( ProgramStageInstance programStageInstance : programStageInstances )
             {
-                Collection<DataElement> dataElements = aggregationConditionService.getDataElementsInCondition( aggCondition
-                    .getAggregationExpression() );
+                Collection<DataElement> dataElements = aggregationConditionService
+                    .getDataElementsInCondition( aggCondition.getAggregationExpression() );
 
                 Collection<PatientDataValue> dataValues = new HashSet<PatientDataValue>();
-    
+
                 if ( dataElements.size() > 0 )
                 {
                     dataValues = patientDataValueService.getPatientDataValues( programStageInstance, dataElements );
                 }
-                
+
                 mapEvents.put( programStageInstance, dataValues );
             }
         }
@@ -170,20 +187,20 @@ public class CaseAggregationResultDetailsAction
             mapPatients = new HashMap<Patient, Collection<PatientDataValue>>();
 
             Collection<Patient> patients = aggregationConditionService.getPatients( aggCondition, orgunit, period );
-    
+
             for ( Patient patient : patients )
             {
-                Collection<DataElement> dataElements = aggregationConditionService.getDataElementsInCondition( aggCondition
-                    .getAggregationExpression() );
-    
+                Collection<DataElement> dataElements = aggregationConditionService
+                    .getDataElementsInCondition( aggCondition.getAggregationExpression() );
+
                 Collection<PatientDataValue> dataValues = new HashSet<PatientDataValue>();
-    
+
                 if ( dataElements.size() > 0 )
                 {
-                    dataValues = patientDataValueService.getPatientDataValues( patient,
-                        dataElements, period.getStartDate(), period.getEndDate() );
+                    dataValues = patientDataValueService.getPatientDataValues( patient, dataElements, period
+                        .getStartDate(), period.getEndDate() );
                 }
-                
+
                 mapPatients.put( patient, dataValues );
             }
         }

@@ -50,7 +50,7 @@
 							<td>$dataValue.value</td>
 							<td>$!mapStatusValues.get( $statusKey )</td>
 							<td>
-								<a href="javascript:viewResultDetails($orgunit.id,$period.id,$mapCaseAggCondition.get($dataValue).id)" title="$i18n.getString( 'show_details' )"><img src="../images/information.png" alt="$i18n.getString( 'show_details' )"></a>
+								<a href='javascript:viewResultDetails($orgunit.id, "$period.periodType.name", "$format.formatDate($period.startDate)",$mapCaseAggCondition.get($dataValue).id)' title="$i18n.getString( 'show_details' )"><img src="../images/information.png" alt="$i18n.getString( 'show_details' )"></a>
 							</td>
 						</tr>
 						#set( $mark = !$mark  )

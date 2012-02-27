@@ -103,12 +103,13 @@ function validationCaseAggregationCompleted( message )
     }
 }
 
-function viewResultDetails( orgunitId, periodId, aggregationConditionId ) 
+function viewResultDetails( orgunitId, periodTypeName, startDate, aggregationConditionId ) 
 {
 	$('#contentDetails' ).val('');
 	var url = 'caseAggregationResultDetails.action?';
 		url+= 'orgunitId=' + orgunitId;
-		url+= '&periodId=' + periodId;
+		url+= '&periodTypeName=' + periodTypeName;
+		url+= '&startDate=' + startDate;
 		url+= '&aggregationConditionId=' + aggregationConditionId;
 		
 	$('#contentDetails' ).load(url).dialog({
