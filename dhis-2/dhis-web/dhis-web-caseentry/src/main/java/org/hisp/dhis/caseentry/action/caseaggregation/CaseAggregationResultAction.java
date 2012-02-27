@@ -36,7 +36,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import org.apache.struts.taglib.html.FormTag;
 import org.hisp.dhis.caseaggregation.CaseAggregationCondition;
 import org.hisp.dhis.caseaggregation.CaseAggregationConditionService;
 import org.hisp.dhis.caseentry.state.PeriodGenericManager;
@@ -53,13 +52,18 @@ import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.oust.manager.SelectionTreeManager;
 import org.hisp.dhis.period.CalendarPeriodType;
 import org.hisp.dhis.period.Period;
-import org.hisp.dhis.user.CurrentUserService;
 
 import com.opensymphony.xwork2.Action;
 
 public class CaseAggregationResultAction
     implements Action
 {
+    private String ADD_STATUS = "add";
+    
+    private String UPDATE_STATUS = "update";
+    
+    private String DELETE_STATUS = "delete";
+    
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
@@ -90,13 +94,6 @@ public class CaseAggregationResultAction
     public void setDataValueService( DataValueService dataValueService )
     {
         this.dataValueService = dataValueService;
-    }
-
-    private CurrentUserService currentUserService;
-
-    public void setCurrentUserService( CurrentUserService currentUserService )
-    {
-        this.currentUserService = currentUserService;
     }
 
     private PeriodGenericManager periodGenericManager;
@@ -180,8 +177,6 @@ public class CaseAggregationResultAction
     public String execute()
         throws Exception
     {
-        String storedBy = currentUserService.getCurrentUsername() + "_CAE";
-
         // ---------------------------------------------------------------------
         // Get selected orgunits
         // ---------------------------------------------------------------------
@@ -265,21 +260,17 @@ public class CaseAggregationResultAction
                             {
                                 if ( dataValue == null )
                                 {
-                                    dataValue = new DataValue( dElement, period, orgUnit, "" + resultValue, storedBy,
+                                    dataValue = new DataValue( dElement, period, orgUnit, "" + resultValue, "",
                                         new Date(), null, optionCombo );
 
-                                    dataValueService.addDataValue( dataValue );
-                                    mapStatusValues.put( keyStatus, i18n.getString( "added" ) );
+                                    mapStatusValues.put( keyStatus, i18n.getString( ADD_STATUS ) );
                                 }
                                 else
                                 {
                                     dataValue.setValue( "" + resultValue );
                                     dataValue.setTimestamp( new Date() );
-                                    dataValue.setStoredBy( storedBy );
 
-                                    dataValueService.updateDataValue( dataValue );
-
-                                    mapStatusValues.put( keyStatus, i18n.getString( "updated" ) );
+                                    mapStatusValues.put( keyStatus, i18n.getString( UPDATE_STATUS ) );
                                 }
 
                                 mapCaseAggCondition.put( dataValue, condition );
@@ -287,14 +278,7 @@ public class CaseAggregationResultAction
                             }
                             else if ( dataValue != null )
                             {
-                                String value = dataValue.getValue();
-
-                                dataValueService.deleteDataValue( dataValue );
-
-                                dataValue = new DataValue( dElement, period, orgUnit, value, storedBy, new Date(),
-                                    null, optionCombo );
-                                    
-                                mapStatusValues.put( keyStatus, i18n.getString( "deleted" ) );
+                                mapStatusValues.put( keyStatus, i18n.getString( DELETE_STATUS ) );
                             }
                             
                             if ( dataValue != null )

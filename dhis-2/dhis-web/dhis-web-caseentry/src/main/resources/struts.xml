@@ -281,6 +281,12 @@
 			<param name="menu">/dhis-web-caseentry/caseAggregationMenu.vm</param>
 			<param name="javascripts">javascript/caseagg.js</param>
 		</action>
+		
+		<action name="saveAggregateDataValue"
+			class="org.hisp.dhis.caseentry.action.caseaggregation.SaveAggregateDataValueAction">
+			<result name="success" type="velocity-json">
+				/dhis-web-commons/ajax/jsonResponseSuccess.vm</result>
+		</action>
 
 		<action name="caseAggregationResultDetails"
 			class="org.hisp.dhis.caseentry.action.caseaggregation.CaseAggregationResultDetailsAction">
