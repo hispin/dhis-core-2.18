@@ -67,7 +67,7 @@ body {
     -khtml-border-radius: 2px 2px 2px 2px;
     border-radius: 2px 2px 2px 2px;
     padding-top: 8px;
-    padding-bottom: 4px;
+    padding-bottom: 8px;
 }
 
 /* Fieldset header */
@@ -624,7 +624,7 @@ body {
 /* DV messagebox alert */
 .dv-messagebox .x-window-body-default {
 	background-color: #fff;
-	padding: 15px 10px 15px 15px;
+	padding: 14px 10px 15px 15px;
 	color: #333;
 	font-size: 11px;
 }
