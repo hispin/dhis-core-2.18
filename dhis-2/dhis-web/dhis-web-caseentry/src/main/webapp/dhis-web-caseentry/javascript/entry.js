@@ -217,22 +217,6 @@ function saveVal( dataElementId )
     valueSaver.save();
 }
 
-function saveDate( dataElementId )
-{	
-	var programStageId = byId('programStageId').value;
-	var fieldId = programStageId + '-' + dataElementId + '-val';
-	var field = jQuery( "#" + fieldId ); 
-	var data = field.metadata({
-        type:'attr',
-        name:'data'
-    });
-	
-    var providedByAnotherFacility = document.getElementById( programStageId + '_' + dataElementId + '_facility' ).checked;
-	
-    var dateSaver = new DateSaver( dataElementId, field.val(), providedByAnotherFacility, '#ccffcc' );
-    dateSaver.save();
-}
-
 function saveOpt( dataElementId )
 {
 	var programStageId = byId('programStageId').value;
@@ -460,98 +444,6 @@ function ValueSaver( dataElementId_, value_, providedByAnotherFacility_, dataEle
     }
 }
 
-function DateSaver( dataElementId_, value_, providedByAnotherFacility_, resultColor_ )
-{
-    var SUCCESS = '#ccffcc';
-    var ERROR = '#ffcc00';
-	
-    var dataElementId = dataElementId_;
-    var value = value_;
-    var providedByAnotherFacility = providedByAnotherFacility_;
-    var resultColor = resultColor_;
-
-    this.save = function()
-    {
-		var params = 'dataElementId=' + dataElementId;
-		params +=  '&value=' + value;
-		params +=  '&providedByAnotherFacility=' + providedByAnotherFacility;
-		
-		$.ajax({
-			   type: "POST",
-			   url: "saveDateValue.action",
-			   data: params,
-			   dataType: "xml",
-			   success: function(result){
-					handleResponse (result);
-			   },
-			   error: function(request,status,errorThrown) {
-					handleHttpError (request);
-			   }
-			});
-    };
-
-    function handleResponse( rootElement )
-    {
-        var codeElement = rootElement.getElementsByTagName( 'code' )[0];
-        var code = parseInt( codeElement.firstChild.nodeValue );
-        if ( code == 0 )
-        {
-            markValue( resultColor );
-        }
-        else if(code == 1)
-        {
-            if(value != "")
-            {
-                var dataelementList = rootElement.getElementsByTagName( 'validation' );
-                var message = '';
-
-                for ( var i = 0; i < dataelementList.length; i++ )
-                {
-                    message += "\n - " + dataelementList[i].firstChild.nodeValue;
-                }
-
-                markValue( ERROR );
-                window.alert( i18n_violate_validation + message);
-            }
-            else
-            {
-                markValue( resultColor );
-            }
-        }
-		else if(code == 2)
-        {
-			markValue( ERROR );
-            window.alert( i18n_invalid_date + ":\n" + rootElement.getElementsByTagName( 'message' )[0].firstChild.nodeValue );
-		}
-        else
-        {
-            if(value != "")
-            {
-                markValue( ERROR );
-                window.alert( i18n_invalid_date );
-            }
-            else
-            {
-                markValue( resultColor );
-            }
-        }
-    }
-
-    function handleHttpError( errorCode )
-    {
-        markValue( ERROR );
-        window.alert( i18n_saving_value_failed_error_code + '\n\n' + errorCode );
-    }
-
-    function markValue( color )
-    {
-		var programStageId = byId('programStageId').value;
-        var element = byId(  programStageId + "-" + dataElementId + '-val' );
-        
-        element.style.backgroundColor = color;
-    }
-}
-
 function FacilitySaver( dataElementId_, providedByAnotherFacility_, resultColor_ )
 {
     var SUCCESS = 'success';
@@ -579,7 +471,7 @@ function FacilitySaver( dataElementId_, providedByAnotherFacility_, resultColor_
 			});
     };
 
-    function handleResponseCheckBox( rootElement )
+    function handleResponse( rootElement )
     {
         var codeElement = rootElement.getElementsByTagName( 'code' )[0];
         var code = parseInt( codeElement.firstChild.nodeValue );
@@ -594,7 +486,7 @@ function FacilitySaver( dataElementId_, providedByAnotherFacility_, resultColor_
         }
     }
 
-    function handleHttpErrorCheckBox( errorCode )
+    function handleHttpError( errorCode )
     {
         markValue( ERROR );
         window.alert( i18n_saving_value_failed_error_code + '\n\n' + errorCode );

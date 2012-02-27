@@ -808,7 +808,7 @@ public class DefaultProgramDataEntryService
         // Inline Javascript to add to HTML before outputting
         // ---------------------------------------------------------------------
 
-        final String jsCodeForDate = " name=\"entryfield\" $DISABLED data=\"{compulsory:$COMPULSORY, deName:'$DATAELEMENTNAME', provided:'$PROVIDED'}\" onchange=\"saveDate( $DATAELEMENTID )\" style=\" text-align:center;\" ";
+        final String jsCodeForDate = " name=\"entryfield\" $DISABLED data=\"{compulsory:$COMPULSORY, deName:'$DATAELEMENTNAME', provided:'$PROVIDED'}\" onchange=\"saveVal( $DATAELEMENTID )\" style=\" text-align:center;\" ";
 
         // ---------------------------------------------------------------------
         // Metadata code to add to HTML before outputting
