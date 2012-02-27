@@ -183,7 +183,12 @@ DV.conf = {
         form_label_width: 55,
         window_favorite_ypos: 100,
         window_confirm_width: 250,
-        grid_favorite_width: 420
+        grid_favorite_width: 420,
+        treepanel_maxheight: 400,
+        treepanel_fill_default: 310,
+        multiselect_maxheight: 250,
+        multiselect_fill_default: 345,
+        multiselect_fill_reportingrates: 315
     }
 };
 
@@ -204,6 +209,7 @@ Ext.onReady( function() {
     
     DV.init.initialize = function() {
         DV.util.combobox.filter.category();
+        DV.util.fieldset.toggleIndicator();
         
         DV.conf.init.example.setState();
         DV.conf.init.example.setValues();
@@ -224,6 +230,7 @@ Ext.onReady( function() {
             period: [],
             organisationunit: {}
         },
+        options: {},
         toolbar: {
             menuitem: {}
         },
@@ -313,7 +320,16 @@ Ext.onReady( function() {
                     return filter;
                 });
                 a.store.sort('s', 'ASC');
-            }
+            },
+            setHeight: function(ms, fill) {
+				var h1 = DV.cmp.region.west.getHeight();
+				var h2 = DV.cmp.options.panel.getHeight();
+				var h = h1 - h2 - fill;
+				var m = DV.conf.layout.multiselect_maxheight;
+				for (var i = 0; i < ms.length; i++) {
+					ms[i].setHeight(h > m ? m : h);
+				}
+			}
         },
         fieldset: {
             toggleIndicator: function() {
@@ -338,8 +354,26 @@ Ext.onReady( function() {
                 for (var i = 0; i < fieldsets.length; i++) {
                     fieldsets[i].collapse();
                 }
-            }
+            },
+            reloadExpanded: function() {
+				var fs = DV.cmp.fieldset;
+				for (var f in fs) {
+					if (!fs[f].collapsed) {
+						fs[f].collapse();
+						fs[f].expand();
+					}
+				}
+			}
         },
+        treepanel: {
+			getHeight: function() {
+				var h1 = DV.cmp.region.west.getHeight();
+				var h2 = DV.cmp.options.panel.getHeight();
+				var h = h1 - h2 - DV.conf.layout.treepanel_fill_default;
+				var m = DV.conf.layout.treepanel_maxheight;
+				return h > m ? m : h;
+			}
+		},
         button: {
             type: {
                 getValue: function() {
@@ -2253,6 +2287,7 @@ Ext.onReady( function() {
                                 cls: 'dv-fieldset',
                                 name: DV.conf.finals.dimension.indicator.value,
                                 title: '<a href="javascript:DV.util.fieldset.toggleIndicator();" class="dv-fieldset-title-link">' + DV.i18n.indicators + '</a>',
+                                collapsed: true,
                                 collapsible: true,
                                 width: DV.conf.layout.west_fieldset_width,
                                 items: [
@@ -2299,7 +2334,7 @@ Ext.onReady( function() {
                                                 }
                                             }
                                         }
-                                    },                                    
+                                    },
                                     {
                                         xtype: 'panel',
                                         layout: 'column',
@@ -2307,7 +2342,6 @@ Ext.onReady( function() {
                                         items: [
                                             {
                                                 xtype: 'multiselect',
-                                                id: 'availableIndicators',
                                                 name: 'availableIndicators',
                                                 cls: 'dv-toolbar-multiselect-left',
                                                 width: (DV.conf.layout.west_fieldset_width - 22) / 2,
@@ -2353,7 +2387,6 @@ Ext.onReady( function() {
                                             },                                            
                                             {
                                                 xtype: 'multiselect',
-                                                id: 'selectedIndicators',
                                                 name: 'selectedIndicators',
                                                 cls: 'dv-toolbar-multiselect-right',
                                                 width: (DV.conf.layout.west_fieldset_width - 22) / 2,
@@ -2407,6 +2440,7 @@ Ext.onReady( function() {
                                     },
                                     expand: function() {
                                         DV.util.fieldset.collapseFieldsets([DV.cmp.fieldset.dataelement, DV.cmp.fieldset.dataset, DV.cmp.fieldset.period, DV.cmp.fieldset.organisationunit]);
+                                        DV.util.multiselect.setHeight([DV.cmp.dimension.indicator.available, DV.cmp.dimension.indicator.selected], DV.conf.layout.multiselect_fill_default);
                                     }
                                 }
                             },
@@ -2468,7 +2502,6 @@ Ext.onReady( function() {
                                         bodyStyle: 'border-style:none',
                                         items: [
                                             Ext.create('Ext.ux.form.MultiSelect', {
-                                                id: 'availableDataElements',
                                                 name: 'availableDataElements',
                                                 cls: 'dv-toolbar-multiselect-left',
                                                 width: (DV.conf.layout.west_fieldset_width - 22) / 2,
@@ -2514,7 +2547,6 @@ Ext.onReady( function() {
                                             }),                                            
                                             {
                                                 xtype: 'multiselect',
-                                                id: 'selectedDataElements',
                                                 name: 'selectedDataElements',
                                                 cls: 'dv-toolbar-multiselect-right',
                                                 width: (DV.conf.layout.west_fieldset_width - 22) / 2,
@@ -2568,6 +2600,7 @@ Ext.onReady( function() {
                                     },
                                     expand: function() {
                                         DV.util.fieldset.collapseFieldsets([DV.cmp.fieldset.indicator, DV.cmp.fieldset.dataset, DV.cmp.fieldset.period, DV.cmp.fieldset.organisationunit]);
+                                        DV.util.multiselect.setHeight([DV.cmp.dimension.dataelement.available, DV.cmp.dimension.dataelement.selected], DV.conf.layout.multiselect_fill_default);
                                     }
                                 }
                             },
@@ -2585,7 +2618,6 @@ Ext.onReady( function() {
                                         bodyStyle: 'border-style:none',
                                         items: [
                                             Ext.create('Ext.ux.form.MultiSelect', {
-                                                id: 'availableDataSets',
                                                 name: 'availableDataSets',
                                                 cls: 'dv-toolbar-multiselect-left',
                                                 width: (DV.conf.layout.west_fieldset_width - 22) / 2,
@@ -2631,7 +2663,6 @@ Ext.onReady( function() {
                                             }),                                            
                                             {
                                                 xtype: 'multiselect',
-                                                id: 'selectedDataSets',
                                                 name: 'selectedDataSets',
                                                 cls: 'dv-toolbar-multiselect-right',
                                                 width: (DV.conf.layout.west_fieldset_width - 22) / 2,
@@ -2688,6 +2719,7 @@ Ext.onReady( function() {
 											DV.store.dataset.available.load();
 										}
                                         DV.util.fieldset.collapseFieldsets([DV.cmp.fieldset.indicator, DV.cmp.fieldset.dataelement, DV.cmp.fieldset.period, DV.cmp.fieldset.organisationunit]);
+                                        DV.util.multiselect.setHeight([DV.cmp.dimension.dataset.available, DV.cmp.dimension.dataset.selected], DV.conf.layout.multiselect_fill_reportingrates);
                                     }
                                 }
                             },
@@ -2869,7 +2901,6 @@ Ext.onReady( function() {
                                     {
                                         xtype: 'treepanel',
                                         cls: 'dv-tree',
-                                        height: 260,
                                         width: DV.conf.layout.west_fieldset_width - 22,
                                         autoScroll: true,
                                         multiSelect: true,
@@ -2948,9 +2979,9 @@ Ext.onReady( function() {
 										}
 									},
                                     expand: function(fs) {
-										var h = DV.cmp.region.west.getHeight() - DV.conf.layout.west_fill_height;
-										DV.cmp.fieldset.organisationunit.setHeight(h);
-										DV.cmp.dimension.organisationunit.treepanel.setHeight(h - 40);
+										var h = DV.util.treepanel.getHeight();
+										DV.cmp.dimension.organisationunit.treepanel.setHeight(h);
+										fs.setHeight(h + 30);
 
                                         DV.util.fieldset.collapseFieldsets([DV.cmp.fieldset.indicator, DV.cmp.fieldset.dataelement, DV.cmp.fieldset.dataset, DV.cmp.fieldset.period]);
                                         var tp = DV.cmp.dimension.organisationunit.treepanel;
@@ -3124,7 +3155,12 @@ Ext.onReady( function() {
 											}
 										]
 									}
-								]
+								],
+								listeners: {
+									added: function() {
+										DV.cmp.options.panel = this;
+									}
+								}
 							}
 						]
 					}
@@ -3880,6 +3916,7 @@ Ext.onReady( function() {
             },
             resize: function(vp) {
                 DV.cmp.region.west.setWidth(DV.conf.layout.west_width);
+                DV.util.fieldset.reloadExpanded();
                 
                 if (DV.datatable.datatable) {
                     DV.datatable.datatable.setHeight(DV.util.viewport.getSize().y - DV.conf.layout.east_tbar_height);
