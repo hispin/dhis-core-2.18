@@ -14,7 +14,7 @@ DV.conf = {
 				DV.state.filter.dimension = DV.conf.finals.dimension.organisationunit.value;
 				DV.state.filter.names = DV.conf.init.example.filter;
 				DV.state.targetLineValue = 80;
-				DV.state.targetLineLabel = 'Target line label';
+				DV.state.targetLineLabel = 'Target label';
 				DV.state.rangeAxisLabel = 'Range axis label';
 				DV.state.domainAxisLabel = 'Domain axis label';
 			},
@@ -1375,7 +1375,11 @@ Ext.onReady( function() {
             if (!this.validation.names.call(this)) {
 				return;
 			}
-			
+						
+			if (!this.validation.categories.call(this)) {
+				return;
+			}
+
             this.validation.filter.call(this);
             
             this.indicatorIds = DV.util.dimension.indicator.getIds();
@@ -1479,10 +1483,6 @@ Ext.onReady( function() {
 							return;
 						}
 						
-						if (!this.validation.categories.call(this)) {
-							return;
-						}
-						
 						this.validation.trendline.call(this);
 						
 						this.validation.targetline.call(this);
@@ -1526,6 +1526,10 @@ Ext.onReady( function() {
                         this.filter.names = f.names[this.filter.dimension];
                         
 						if (!this.validation.names.call(this)) {
+							return;
+						}
+						
+						if (!this.validation.categories.call(this)) {
 							return;
 						}
 			
@@ -1615,7 +1619,7 @@ Ext.onReady( function() {
 			},
 			names: function() {            
 				if (!this.series.names.length) {
-					DV.util.notification.error(DV.i18n.et_no_indicators_dataelements, DV.i18n.em_no_indicators_dataelements);
+					DV.util.notification.error(DV.i18n.et_no_indicators_dataelements_datasets, DV.i18n.em_no_indicators_dataelements_datasets);
 					return false;
 				}           
 				if (!this.category.names.length) {
