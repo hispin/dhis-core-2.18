@@ -36,8 +36,8 @@ public class DataSetCompletenessResult
     extends AggregatedValue
 {
     // -------------------------------------------------------------------------
-    // Properties 1
-    // Inherit periodId, periodName, organisationUnitId, organisationUnitGroupId 
+    // Properties 1, inherits periodId, periodName, organisationUnitId, 
+    // organisationUnitGroupId, value
     // -------------------------------------------------------------------------
 
     private int dataSetId;
@@ -132,12 +132,6 @@ public class DataSetCompletenessResult
     public int getElementId()
     {
         return dataSetId;
-    }
-
-    @Override
-    public double getValue()
-    {
-        return registrations;
     }
 
     // -------------------------------------------------------------------------

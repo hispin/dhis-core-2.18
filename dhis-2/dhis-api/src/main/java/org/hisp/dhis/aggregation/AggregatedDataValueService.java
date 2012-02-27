@@ -30,6 +30,7 @@ package org.hisp.dhis.aggregation;
 import java.util.Collection;
 import java.util.Map;
 
+import org.hisp.dhis.completeness.DataSetCompletenessResult;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryOption;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
@@ -338,6 +339,21 @@ public interface AggregatedDataValueService
      * @param organisationUnitIds the collection of OrganisationUnit identifiers.
      */
     Collection<AggregatedMapValue> getAggregatedIndicatorMapValues( int indicatorId, int periodId, Collection<Integer> organisationUnitIds );
+
+    // ----------------------------------------------------------------------
+    // AggregatedDataSetCompleteness
+    // ----------------------------------------------------------------------
+    
+    /**
+     * Gets a collection of DataSetCompletenessResult. Populates the data set id,
+     * period id, organisation unit id and value properties.
+     * 
+     * @param dataSetIds a collection of DataSet identifiers.
+     * @param periodIds a collection of Period identifiers.
+     * @param organisationUnitIds a collection of OrganisationUnit identifiers.
+     */
+    Collection<DataSetCompletenessResult> getAggregatedDataSetCompleteness( Collection<Integer> dataSetIds, Collection<Integer> periodIds,
+        Collection<Integer> organisationUnitIds );
     
     // ----------------------------------------------------------------------
     // DataValue

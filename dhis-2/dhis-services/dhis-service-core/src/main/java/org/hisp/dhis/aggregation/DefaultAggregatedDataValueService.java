@@ -30,6 +30,7 @@ package org.hisp.dhis.aggregation;
 import java.util.Collection;
 import java.util.Map;
 
+import org.hisp.dhis.completeness.DataSetCompletenessResult;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryOption;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
@@ -224,6 +225,16 @@ public class DefaultAggregatedDataValueService
     public Collection<AggregatedMapValue> getAggregatedIndicatorMapValues( int indicatorId, int periodId, Collection<Integer> organisationUnitIds )
     {
         return aggregatedDataValueStore.getAggregatedIndicatorMapValues( indicatorId, periodId, organisationUnitIds );
+    }
+
+    // -------------------------------------------------------------------------
+    // AggregatedDataSetCompleteness
+    // -------------------------------------------------------------------------
+    
+    public Collection<DataSetCompletenessResult> getAggregatedDataSetCompleteness( Collection<Integer> dataSetIds, Collection<Integer> periodIds,
+        Collection<Integer> organisationUnitIds )
+    {
+        return aggregatedDataValueStore.getAggregatedDataSetCompleteness( dataSetIds, periodIds, organisationUnitIds );
     }
     
     // -------------------------------------------------------------------------
