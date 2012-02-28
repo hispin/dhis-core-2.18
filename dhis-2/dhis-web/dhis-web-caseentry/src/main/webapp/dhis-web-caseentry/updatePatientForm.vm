@@ -281,7 +281,7 @@
 </form> 	
 
 <div id="representativeInfo" class='hidden text-column'>
-	<table id='patientInfoDiv'>
+	<table>
 		<tr>
 			<td class="bold text-column">$i18n.getString("full_name"):</td>
 			<td>$!representative.getFullName()</td>
