@@ -33,20 +33,14 @@
 </form>
 <script language="javascript">
 	
-	var request = new Request();
-	request.setCallbackSuccess( dataSetResponse );	
-	request.setResponseTypeXML( 'xmlObject' );
-	request.send( 'getDataSets.action' );
-	
-	function dataSetResponse( xmlObject ){
-		var listDataSet = xmlObject.getElementsByTagName("dataset");
-		var dataSets = document.getElementById("dataSetId");
+	jQuery.postJSON( 'getDataSets.action', {}, function( json ) {
+		var listDataSet = json.dataSets;
+		var dataSets = byId( "dataSetId" );
 		dataSets.options.length = 0;
+
 		for ( var i=0 ; i < listDataSet.length ; i++ )
 		{
-			var id = listDataSet.item(i).getElementsByTagName('id')[0].firstChild.nodeValue;
-			var name = listDataSet.item(i).getElementsByTagName('name')[0].firstChild.nodeValue;
-			dataSets.options.add(new Option(name, id),null);			
+			dataSets.options.add( new Option(listDataSet[i].name, listDataSet[i].id), null );			
 		}
-	}
+	} );
 </script>

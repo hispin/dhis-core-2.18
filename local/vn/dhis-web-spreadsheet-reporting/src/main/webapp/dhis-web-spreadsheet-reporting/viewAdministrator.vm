@@ -14,13 +14,8 @@
 		window.location = action;
 	}
 	function cleanUp(){
-		var request = new Request();
-		request.setResponseTypeXML( 'xmlObject' );
-		request.setCallbackSuccess( cleanUpCompleted );
-		request.send( 'cleanUpDraftFile.action' );
-	}
-	
-	function cleanUpCompleted( xmlObject ){	
-		setHeaderDelayMessage( xmlObject.firstChild.nodeValue );
+		jQuery.postJSON( 'cleanUpDraftFile.action', {}, function( json ) {
+			setHeaderDelayMessage( json.message );
+		} );
 	}
 </script>

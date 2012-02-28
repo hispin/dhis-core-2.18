@@ -22,8 +22,7 @@
 				});
 			}
 		});
-
-	});	
+	});
 </script>
 <h3>$i18n.getString('export_reports') : $i18n.getString('add')</h3>
 

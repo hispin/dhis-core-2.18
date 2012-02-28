@@ -141,7 +141,7 @@
 		<action name="getExportReportGroups"
 			class="org.hisp.dhis.reportsheet.exportreport.action.GetExportReportGroupsAction">
 			<result name="success" type="velocity-json">
-				/dhis-web-spreadsheet-reporting/report/ajax/jsonExportGroups.vm</result>
+				/dhis-web-spreadsheet-reporting/jsonExportGroups.vm</result>
 		</action>
 
 		<action name="listAllExportReport"
@@ -155,14 +155,14 @@
 		
 		<action name="getAllExportReport"
 			class="org.hisp.dhis.reportsheet.exportreport.action.ListExportReportAction">
-			<result name="success" type="velocity-xml">
-				/dhis-web-spreadsheet-reporting/responseExportReports.vm</result>
+			<result name="success" type="velocity-json">
+				/dhis-web-spreadsheet-reporting/jsonExportReports.vm</result>
 		</action>
 		
 		<action name="getAllExportReportByType"
 			class="org.hisp.dhis.reportsheet.exportreport.action.ListExportReportByReportTypeAction">
-			<result name="success" type="velocity-xml">
-				/dhis-web-spreadsheet-reporting/responseExportReports.vm</result>
+			<result name="success" type="velocity-json">
+				/dhis-web-spreadsheet-reporting/jsonExportReports.vm</result>
 		</action>
 		
 		<action name="updateExportReportForm"
@@ -308,8 +308,8 @@
 
 		<action name="updateOrganisationUnitGroupAtLevel"
 			class="org.hisp.dhis.reportsheet.orgunitgrouplisting.action.UpdateOrgUnitGroupAtLevelAction">
-			<result name="success" type="velocity-xml">
-				/dhis-web-commons/ajax/xmlResponseSuccess.vm</result>
+			<result name="success" type="velocity-json">
+				/dhis-web-commons/ajax/jsonResponseSuccess.vm</result>
 		</action>
 
 		<!-- REPORT EXCEL ASSOCIATION ACTION -->
@@ -409,7 +409,7 @@
 		<action name="getDataElementCategoryOptionCombos"
 			class="org.hisp.dhis.reportsheet.exportitem.action.GetDataElementCategoryOptionCombosAction">
 			<result name="success" type="velocity-json">
-				/dhis-web-spreadsheet-reporting/report/ajax/jsonDataElementCategoryOptionCombos.vm</result>
+				/dhis-web-spreadsheet-reporting/jsonDataElementCategoryOptionCombos.vm</result>
 		</action>
 
 		<action name="deleteExportItem"
@@ -440,13 +440,13 @@
 
 		<action name="getExportItemsBySheet"
 			class="org.hisp.dhis.reportsheet.exportitem.action.GetExportItemsBySheetAction">
-			<result name="success" type="velocity-xml">
-				/dhis-web-spreadsheet-reporting/report/responseExportItems.vm</result>
+			<result name="success" type="velocity-json">
+				/dhis-web-spreadsheet-reporting/jsonExportItems.vm</result>
 		</action>
 		
 		<action name="copyExportItemToExportReport"
 			class="org.hisp.dhis.reportsheet.exportitem.action.CopyExportItemToExportReportAction">
-			<result name="success" type="velocity-xml">
+			<result name="success" type="velocity-json">
 				/dhis-web-commons/ajax/jsonResponseSuccess.vm</result>
 			<param name="requiredAuthorities">F_EXCEL_REPORT_ADMINISTRATION</param>
 		</action>
@@ -460,8 +460,8 @@
 		
 		<action name="getListSheet"
 			class="org.hisp.dhis.reportsheet.exportitem.action.GetListSheetAction">
-			<result name="success" type="velocity-xml">
-				/dhis-web-spreadsheet-reporting/responseSheets.vm</result>
+			<result name="success" type="velocity-json">
+				/dhis-web-spreadsheet-reporting/jsonSheets.vm</result>
 		</action>
 
 		<!-- GENERATE REPORT EXCEL ACTION -->
@@ -601,8 +601,8 @@
 
 		<action name="getDataSets"
 			class="org.hisp.dhis.reportsheet.dataentrystatus.action.GetDataSetsAction">
-			<result name="success" type="velocity-xml">
-				/dhis-web-spreadsheet-reporting/responseDataSets.vm</result>
+			<result name="success" type="velocity-json">
+				/dhis-web-commons/ajax/jsonDataSets.vm</result>
 		</action>
 
 		<!-- DATA SET COMPLETED REPORT ACTION -->
@@ -703,8 +703,8 @@
 
 		<action name="getALLExportReportByGroup"
 			class="org.hisp.dhis.reportsheet.exporting.advance.action.GetExportReportsByGroupAction">
-			<result name="success" type="velocity-xml">
-				/dhis-web-spreadsheet-reporting/responseExportReports.vm</result>
+			<result name="success" type="velocity-json">
+				/dhis-web-spreadsheet-reporting/jsonExportReports.vm</result>
 		</action>
 
 		<action name="generateAdvancedExportReport"
@@ -725,26 +725,26 @@
 
 		<action name="generateAdvancedReportNormal"
 			class="org.hisp.dhis.reportsheet.exporting.advance.action.GenerateAdvancedReportNormalAction">
-			<result name="success" type="velocity-xml">
-				/dhis-web-commons/ajax/xmlResponseSuccess.vm</result>
+			<result name="success" type="velocity-json">
+				/dhis-web-commons/ajax/jsonResponseSuccess.vm</result>
 		</action>
 
 		<action name="generateAdvancedReportOrganizationGroupListing"
 			class="org.hisp.dhis.reportsheet.exporting.advance.action.GenerateAdvancedReportOrgGroupListingAction">
-			<result name="success" type="velocity-xml">
-				/dhis-web-commons/ajax/xmlResponseSuccess.vm</result>
+			<result name="success" type="velocity-json">
+				/dhis-web-commons/ajax/jsonResponseSuccess.vm</result>
 		</action>
 
 		<action name="generateAdvancedReportPeriodColumnListing"
 			class="org.hisp.dhis.reportsheet.exporting.advance.action.GenerateAdvancedReportPeriodColumnListingAction">
-			<result name="success" type="velocity-xml">
-				/dhis-web-commons/ajax/xmlResponseSuccess.vm</result>
+			<result name="success" type="velocity-json">
+				/dhis-web-commons/ajax/jsonResponseSuccess.vm</result>
 		</action>
 
 		<action name="generateAdvancedReportCategory"
 			class="org.hisp.dhis.reportsheet.exporting.action.GenerateAdvancedReportCategoryAction">
-			<result name="success" type="velocity-xml">
-				/dhis-web-commons/ajax/xmlResponseSuccess.vm</result>
+			<result name="success" type="velocity-json">
+				/dhis-web-commons/ajax/jsonResponseSuccess.vm</result>
 		</action>
 
 		<!-- PREVIEW ADVANCED REPORT -->
@@ -829,14 +829,14 @@
 
 		<action name="getAllImportReport"
 			class="org.hisp.dhis.reportsheet.importreport.action.ListAllImportReportAction">
-			<result name="success" type="velocity-xml">
-				/dhis-web-spreadsheet-reporting/import/responseImportReports.vm</result>
+			<result name="success" type="velocity-json">
+				/dhis-web-spreadsheet-reporting/jsonImportReports.vm</result>
 		</action>
 		
 		<action name="getAllImportReportByType"
 			class="org.hisp.dhis.reportsheet.importreport.action.ListAllImportReportByTypeAction">
-			<result name="success" type="velocity-xml">
-				/dhis-web-spreadsheet-reporting/import/responseImportReports.vm</result>
+			<result name="success" type="velocity-json">
+				/dhis-web-spreadsheet-reporting/jsonImportReports.vm</result>
 		</action>
 
 		<action name="updateImportReportForm"
@@ -862,8 +862,8 @@
 
 		<action name="getImportReport"
 			class="org.hisp.dhis.reportsheet.importreport.action.GetImportReportAction">
-			<result name="success" type="velocity-xml">
-				/dhis-web-spreadsheet-reporting/import/responseImportReport.vm</result>
+			<result name="success" type="velocity-json">
+				/dhis-web-spreadsheet-reporting/jsonImportReport.vm</result>
 		</action>
 
 		<action name="updateImportReportAssociations"
@@ -917,8 +917,8 @@
 
 		<action name="getSelectedDataElements"
 			class="org.hisp.dhis.reportsheet.importitem.action.GetSelectedDataElementsAction">
-			<result name="success" type="velocity-xml">
-				/dhis-web-spreadsheet-reporting/responseDataElements.vm</result>
+			<result name="success" type="velocity-json">
+				/dhis-web-commons/ajax/jsonDataElements.vm</result>
 		</action>
 
 		<action name="getImportItemParam"
@@ -968,28 +968,28 @@
 
 		<action name="getImportItem"
 			class="org.hisp.dhis.reportsheet.importitem.action.GetImportItemByIdAction">
-			<result name="success" type="velocity-xml">
-				/dhis-web-spreadsheet-reporting/import/responseImportItem.vm</result>
+			<result name="success" type="velocity-json">
+				/dhis-web-spreadsheet-reporting/jsonImportItem.vm</result>
 		</action>
 
 		<action name="getImportItemsByImportReport"
 			class="org.hisp.dhis.reportsheet.importitem.action.ListImportItemAction">
-			<result name="success" type="velocity-xml">
-				/dhis-web-spreadsheet-reporting/import/responseImportItems.vm
+			<result name="success" type="velocity-json">
+				/dhis-web-spreadsheet-reporting/jsonImportItems.vm
 			</result>
 		</action>
 		
 		<action name="copyImportItemToImportReport"
 			class="org.hisp.dhis.reportsheet.importitem.action.CopyImportItemToImportReportAction">
-			<result name="success" type="velocity-xml">
-				/dhis-web-commons/ajax/xmlResponseSuccess.vm</result>
+			<result name="success" type="velocity-json">
+				/dhis-web-commons/ajax/jsonResponseSuccess.vm</result>
 			<param name="requiredAuthorities">F_COPY_IMPORT_ITEM_ADMINISTRATION</param>
 		</action>
 		
 		<action name="copyImportItemToExportReport"
 			class="org.hisp.dhis.reportsheet.importitem.action.CopyImportItemToExportReportAction">
-			<result name="success" type="velocity-xml">
-				/dhis-web-commons/ajax/xmlResponseSuccess.vm</result>
+			<result name="success" type="velocity-json">
+				/dhis-web-commons/ajax/jsonResponseSuccess.vm</result>
 			<param name="requiredAuthorities">F_COPY_IMPORT_ITEM_ADMINISTRATION</param>
 		</action>
 
@@ -997,19 +997,19 @@
 		
 		<action name="cleanUpDraftFile"
 			class="org.hisp.dhis.reportsheet.filemanager.action.CleanUpDraftFilesAction">
-			<result name="success" type="velocity-xml">
-				/dhis-web-commons/ajax/xmlResponseSuccess.vm</result>
+			<result name="success" type="velocity-json">
+				/dhis-web-commons/ajax/jsonResponseSuccess.vm</result>
 		</action>
 		
 		<action name="validateUploadExcelImport"
 			class="org.hisp.dhis.reportsheet.filemanager.action.ValidateUploadExcelFile">
 			<interceptor-ref name="fileUploadStack" />
-			<result name="success" type="velocity-xml">
-				/dhis-web-commons/ajax/xmlResponseSuccess.vm</result>
-			<result name="error" type="velocity-xml">
-				/dhis-web-commons/ajax/xmlResponseError.vm</result>
-			<result name="input" type="velocity-xml">
-				/dhis-web-commons/ajax/xmlResponseInput.vm</result>
+			<result name="success" type="velocity-json">
+				/dhis-web-commons/ajax/jsonResponseSuccess.vm</result>
+			<result name="error" type="velocity-json">
+				/dhis-web-commons/ajax/jsonResponseError.vm</result>
+			<result name="input" type="velocity-json">
+				/dhis-web-commons/ajax/jsonResponseInput.vm</result>
 		</action>
 
 		<action name="uploadExcelImport"
@@ -1075,7 +1075,7 @@
 		<!--  function - Prewiew Data - CATEGORY GROUP  -->
 		<action name="previewDataCategory"
 			class="org.hisp.dhis.reportsheet.importing.action.ViewDataCategoryAction">
-			<result name="success" type="velocity">
+			<result name="success" type="velocity-xml">
 				/dhis-web-spreadsheet-reporting/responseExportReportPreview.vm
 			</result>
 			<result name="error" type="velocity-xml">
@@ -1085,8 +1085,8 @@
 		<!--  function - Prewiew Data - ORGANISATION GROUP  -->
 		<action name="previewDataOrganizationGroup"
 			class="org.hisp.dhis.reportsheet.importing.action.ViewDataOrganizationGroupAction">
-			<result name="success" type="velocity">
-				/dhis-web-spreadsheet-reporting/responseImportItemValuesByOrgunits.vm
+			<result name="success" type="velocity-xml">
+				/dhis-web-spreadsheet-reporting/responseExportReportPreview.vm
 			</result>
 			<result name="error" type="velocity-xml">
 				/dhis-web-commons/ajax/xmlResponseError.vm</result>		
@@ -1158,8 +1158,8 @@
 
 		<action name="getPeriodColumn"
 			class="org.hisp.dhis.reportsheet.periodcolumn.action.GetPeriodColumnAction">
-			<result name="success" type="velocity-xml">
-				/dhis-web-spreadsheet-reporting/responsePeriodColumn.vm
+			<result name="success" type="velocity-json">
+				/dhis-web-spreadsheet-reporting/jsonPeriodColumn.vm
 			</result>
 		</action>
 
@@ -1193,12 +1193,12 @@
 
 		<action name="renameExcelTemplate"
 			class="org.hisp.dhis.reportsheet.filemanager.action.RenameExcelTemplateAction">
-			<result name="success" type="velocity-xml">
-				/dhis-web-commons/ajax/xmlResponseSuccess.vm</result>
-			<result name="error" type="velocity-xml">
-				/dhis-web-commons/ajax/xmlResponseError.vm</result>
-			<result name="none" type="velocity-xml">
-				/dhis-web-commons/ajax/xmlResponseInput.vm</result>
+			<result name="success" type="velocity-json">
+				/dhis-web-commons/ajax/jsonResponseSuccess.vm</result>
+			<result name="error" type="velocity-json">
+				/dhis-web-commons/ajax/jsonResponseError.vm</result>
+			<result name="none" type="velocity-json">
+				/dhis-web-commons/ajax/jsonResponseInput.vm</result>
 			<param name="requiredAuthorities">F_EXCEL_TEMPLATE_MANAGEMENT_RENAME</param>
 		</action>
 

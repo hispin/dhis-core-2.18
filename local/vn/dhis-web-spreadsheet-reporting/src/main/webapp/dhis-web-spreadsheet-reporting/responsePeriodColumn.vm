@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<periodColumn>
-	<id>$periodColumn.id</id>
-	<startdate>$encoder.xmlEncode($format.formatDate($periodColumn.startdate))</startdate>
-	<enddate>$encoder.xmlEncode($format.formatDate($periodColumn.enddate))</enddate>
-	<column>$periodColumn.column</column>
-	<periodType>$encoder.xmlEncode( $periodColumn.periodType )</periodType>
-</periodColumn>

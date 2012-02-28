@@ -1,3 +1,9 @@
+<script type="text/javascript">
+	jQuery(document).ready(function(){	
+		tableSorter( 'listTable' );	
+	});
+</script>
+
 <h3>$encoder.htmlEncode($exportReport.name)</h3>
 
 <table width="100%">
@@ -45,16 +51,17 @@
 </table>
 
 <script>
-	function updateOrganisationUnitGroupAtLevel(exportReportId, orgUnitGroupId, select){
+	function updateOrganisationUnitGroupAtLevel( exportReportId, orgUnitGroupId, select )
+	{
 		select.style.backgroundColor = "#FFFFFF";
-		var request = new Request();
-		request.setResponseTypeXML( 'message' );
-		request.setCallbackSuccess( function (message){
+		
+		jQuery.postJSON( "updateOrganisationUnitGroupAtLevel.action",
+		{
+			exportReportId: exportReportId,
+			orgUnitGroupId: orgUnitGroupId,
+			levelId: select.value
+		}, function ( json ) {
 			select.style.backgroundColor = "#D5FFC5";
-		});		
-		request.send( "updateOrganisationUnitGroupAtLevel.action?exportReportId=" + exportReportId + "&orgUnitGroupId=" + orgUnitGroupId + "&levelId=" + select.value);		
+		} );
 	}
-	jQuery(document).ready(function(){	
-		tableSorter( 'listTable' );	
-	});
 </script>

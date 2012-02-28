@@ -41,26 +41,16 @@ function closeDialog( _dialog )
 */
 function deleteExcelTemplate( fileName ) {
 
-	if ( window.confirm(i18n_confirm_delete) ) {
+	if ( window.confirm( i18n_confirm_delete ) ) {
 	
-		var request = new Request();
-		request.setResponseTypeXML( 'xmlObject' );
-		request.setCallbackSuccess( deleteExcelTemplateReceived );
-		request.send( "deleteExcelTemplate.action?fileName=" + fileName );
-	}
-}
-
-function deleteExcelTemplateReceived( xmlObject ) {
-
-	var type = xmlObject.getAttribute( 'type' );
-	
-	if ( type == 'error' )
-	{
-		setMessage( xmlObject.firstChild.nodeValue );
-	}
-	else
-	{
-		window.location.href = 'listAllExcelTemplates.action';
+		jQuery.postUTF8( "deleteExcelTemplate.action", { fileName: fileName }, function( json )
+		{			
+			if ( json.response == 'error' ) {
+				setMessage( json.message );
+			}else {
+				window.location.href = 'listAllExcelTemplates.action';
+			}
+		} );
 	}
 }
 
@@ -156,57 +146,43 @@ function checkingStatusExcelTemplate( newFileName, keyColumnIndex, statusColumnI
 
 function renamingExcelTemplate( curFileName, newFileName, renamingMode )
 {
-	var request = new Request();
-	request.setResponseTypeXML( 'xmlObject' );
-	request.setCallbackSuccess( renamingExcelTemplateReceived );
-	
-	var params = "newFileName=" + newFileName + "&curFileName=" + curFileName + "&renamingMode=" + renamingMode;
-	request.sendAsPost( params );
-	request.send( "renameExcelTemplate.action" );	
-}
-
-function renamingExcelTemplateReceived( xmlObject ) {
-
-	var type = xmlObject.getAttribute( 'type' );
-	var message = xmlObject.firstChild.nodeValue;
-	
-	if ( type == "success" )
-	{
-		closeDialog( dialog );
-	
-		if ( window.confirm( confirmUpdateSysMessage ) )
+	jQuery.postUTF8( "renameExcelTemplate.action", {
+		newFileName: newFileName,
+		curFileName: curFileName,
+		renamingMode: renamingMode
+	}, function( json ){
+		if ( json.response == "success" )
 		{
-			updateExportReportByTemplate();
+			closeDialog( dialog );
+		
+			if ( window.confirm( confirmUpdateSysMessage ) )
+			{
+				updateExportReportByTemplate();
+			}
+			else
+			{
+				window.location.href="listAllExcelTemplates.action?mode=" + mode + "&message=" + json.message;
+			}
 		}
-		else
+		else if ( json.response == "input" )
 		{
-			window.location.href="listAllExcelTemplates.action?mode=" + mode + "&message=" + message;
+			window.location.href="listAllExcelTemplates.action?mode=" + mode + "&message=" + json.message;
 		}
-	}
-	else if ( type == "input" )
-	{
-		window.location.href="listAllExcelTemplates.action?mode=" + mode + "&message=" + message;
-	}
-	else setMessage( message );
+		else setMessage( json.message );
+	} );
 }
 
 function updateExportReportByTemplate() {
 
-	var request = new Request();
-	request.setResponseTypeXML( 'xmlObject' );
-	request.setCallbackSuccess( updateExportReportByTemplateCompleted );
-	request.send( "updateExportReportByTemplate.action?curTemplateName=" + curTemplateName + "&newTemplateName=" + newTemplateName);
-}
-
-function updateExportReportByTemplateCompleted( xmlObject ) {
-
-	var type = xmlObject.getAttribute( 'type' );
-	
-	if ( type != "" )
-	{
-		var message = xmlObject.firstChild.nodeValue;
-		window.location.href="listAllExcelTemplates.action?mode=" + mode + "&message=" + message;
-	}
+	jQuery.postUTF8( "updateExportReportByTemplate.action", {
+		curTemplateName: curTemplateName,
+		newTemplateName: newTemplateName
+	}, function( json ) {
+		if ( json.response )
+		{
+			window.location.href="listAllExcelTemplates.action?mode=" + mode + "&message=" + json.message;
+		}
+	} );
 }
 
 //----------------------------------------------------------

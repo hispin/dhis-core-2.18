@@ -129,31 +129,26 @@ function generateExportReport() {
 
 function getALLExportReportByGroup() {
 
-	var request = new Request();
-	request.setResponseTypeXML( 'xmlObject' );
-	request.setCallbackSuccess( getALLExportReportByGroupReceived );
-	request.sendAsPost( "group=" + byId("group").value );
-	request.send( 'getALLExportReportByGroup.action');
-	
-}
-
-function getALLExportReportByGroupReceived( xmlObject ) {
-
-	clearListById('exportReport');
-	var list = xmlObject.getElementsByTagName("exportReport");
-	
-	for(var i=0;i<list.length;i++){
-		var item = list[i];
-		var id = item.getElementsByTagName('id')[0].firstChild.nodeValue;
-		var name = item.getElementsByTagName('name')[0].firstChild.nodeValue;
-		addOption('exportReport',name,id);
-	}
+	jQuery.postJSON( "getALLExportReportByGroup.action", {
+		group: byId("group").value
+	}, function( json ) {
+		clearListById( 'exportReport' );
+		var list = json.exportReports;
+		
+		for ( var i = 0 ; i < list.length ; i++ )
+		{
+			addOption( 'exportReport', item[i].name, item[i].id );
+		}
+	} );
 }
 
 function generateAdvancedExportReport()
 {
-	var request = new Request();
-	request.setResponseTypeXML( 'xmlObject' );
-	request.setCallbackSuccess( generateExportReportReceived );
-	request.send( 'generateAdvancedExportReport.action?organisationGroupId='+ byId("availableOrgunitGroups").value );
+	jQuery.postJSON( 'generateAdvancedExportReport.action', {
+		organisationGroupId: byId("availableOrgunitGroups").value
+	}, function( json ) {
+		if ( json.response == "success" ) {
+			showSuccessMessage( json.message );
+		}
+	} );
 }
