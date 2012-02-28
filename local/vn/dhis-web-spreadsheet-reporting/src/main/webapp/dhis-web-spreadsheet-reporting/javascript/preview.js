@@ -50,21 +50,14 @@ function validatePreviewReport( isAdvanced )
 	});
 }
 
-function previewExportReport() {
-
-	var request = new Request();
-	request.setResponseTypeXML( 'reportXML' );
-	request.setCallbackSuccess( previewExportReportReceived );
-	request.send( 'previewExportReport.action' );
+function previewExportReport()
+{
+	jQuery.post( "previewExportReport.action", {}, previewExportReportReceived );
 }
 
 function previewAdvandReport() 
 {	
-	var request = new Request();
-	request.setResponseTypeXML( 'reportXML' );
-	request.setCallbackSuccess( previewExportReportReceived );
-	request.sendAsPost( params );
-	request.send( "previewAdvancedExportReport.action?organisationGroupId=" + byId("availableOrgunitGroups").value );
+	jQuery.post( "previewAdvancedExportReport.action", { organisationGroupId: byId( "availableOrgunitGroups" ).value }, previewExportReportReceived );
 }
 
 function previewExportReportReceived( parentElement ) 

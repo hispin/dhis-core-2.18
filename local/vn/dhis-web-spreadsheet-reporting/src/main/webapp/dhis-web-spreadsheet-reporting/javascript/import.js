@@ -37,17 +37,11 @@ function importData()
 // @param isImport This is a global variable which declared in preview.js
 // -----------------------------------------------------------------------------
 
-function getPreviewImportData(){	
-	
+function getPreviewImportData()
+{	
 	lockScreen();
-	
 	isImport = true;
-	
-	var request = new Request();
-	request.setResponseTypeXML( 'xmlObject' );
-	request.setCallbackSuccess( previewExportReportReceived );
-	request.send( "previewDataFlow.action?importReportId=" + byId("importReportId").value );
-	
+	jQuery.postJSON( "previewDataFlow.action", { importReportId: byId( "importReportId" ).value }, previewExportReportReceived );
 }
 
 isToggled = true;
@@ -96,7 +90,7 @@ function getPeriodsByImportReport( importReportId ) {
 	
 	var url = 'getPeriodsByImportReport.action';
 	
-	jQuery.postJSON( url, {'importReportId':importReportId}, responseListPeriodReceived );
+	jQuery.postJSON( url, { 'importReportId' : importReportId }, responseListPeriodReceived );
 }
 
 function validateUploadExcelImportByJSON(){

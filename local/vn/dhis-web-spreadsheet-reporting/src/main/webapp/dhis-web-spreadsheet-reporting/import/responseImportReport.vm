@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<importReport>
-	<id>$report.id</id>
-	<name>$encoder.xmlEncode( $!report.name )</name>
-	<type>$report.type</type>
-	<periodType>$report.periodType.name</periodType>
-	<excelTemplateFile>$report.excelTemplateFile</excelTemplateFile>
-</importReport>
