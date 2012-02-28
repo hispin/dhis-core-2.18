@@ -150,7 +150,9 @@ public class TableAlteror
         
         upgradeProgramValidationFormula();
         
-        executeSql( "UPDATE program SET displayProvidedOtherFacility = false WHERE displayProvidedOtherFacility is null" );        
+        executeSql( "UPDATE program SET displayProvidedOtherFacility = false WHERE displayProvidedOtherFacility is null" );
+        
+        executeSql( "ALTER TABLE relationshiptype RENAME description TO name");
     }
 
     // -------------------------------------------------------------------------
