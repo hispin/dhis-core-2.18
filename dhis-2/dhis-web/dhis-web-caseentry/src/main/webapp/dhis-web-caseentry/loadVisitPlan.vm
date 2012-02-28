@@ -3,10 +3,10 @@
     <table class="mainPageTable"> 
         <tr>            
             <td>
-                <span class='bold'>$i18n.getString( "full_name" ):</span>$encoder.htmlEncode( $patient.getFullName() )<br>
-                <span class='bold'>$i18n.getString( "gender" ):</span>$i18n.getString( $patient.gender )<br>
-                <span class='bold'>$i18n.getString( "date_of_birth" ):</span>$format.formatDate( $patient.birthDate )<br>
-                <span class='bold'>$i18n.getString( "age" ):</span>$encoder.htmlEncode( $patient.getAge() )
+                <span class='bold'>$i18n.getString( "full_name" ):</span>$encoder.htmlEncode( $!patient.getFullName() )<br>
+                <span class='bold'>$i18n.getString( "gender" ):</span>$i18n.getString( "$!patient.gender" )<br>
+                <span class='bold'>$i18n.getString( "date_of_birth" ):</span>$format.formatDate( $!patient.birthDate )<br>
+                <span class='bold'>$i18n.getString( "age" ):</span>$encoder.htmlEncode( $!patient.getAge() )
             </td>   
             <td style="vertical-align:top">
                 <div style="float:right">                        

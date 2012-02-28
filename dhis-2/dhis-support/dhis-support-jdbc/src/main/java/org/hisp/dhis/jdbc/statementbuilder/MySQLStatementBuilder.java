@@ -346,7 +346,10 @@ public class MySQLStatementBuilder
                         "ON ps.programstageid=psi.programstageid " +
                     "INNER JOIN program_organisationunits po " +
                         "ON po.programid=pi.programid " +
+                    "INNER JOIN program pg " +
+                        "ON po.programid=pg.programid " +
                  "WHERE pi.completed = FALSE  " +
+                        "AND pg.singleEvent=FALSE "+
                         "AND po.organisationunitid = " + orgunitId + " AND psi.completed = FALSE " +
                         "AND ps.stageinprogram in ( SELECT min(ps1.stageinprogram) " +
                             "FROM programstageinstance psi1 " +

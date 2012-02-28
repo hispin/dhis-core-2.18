@@ -75,7 +75,7 @@ function showDetails( programStageInstanceId )
 			title: i18n_reports,
 			maximize: true, 
 			closable: true,
-			modal:true,
+			modal:false,
 			overlay:{background:'#000000', opacity:0.1},
 			width: 800,
 			height: 400

@@ -116,7 +116,7 @@ public class DefaultActivityPlanService
 
         List<ProgramInstance> programInstances = new ArrayList<ProgramInstance>();
 
-        Collection<Program> programs = programService.getPrograms( organisationUnit );
+        Collection<Program> programs = programService.getPrograms( false, false, organisationUnit );
 
         for ( Program program : programs )
         {
@@ -155,7 +155,7 @@ public class DefaultActivityPlanService
     {
         Collection<Activity> activities = new ArrayList<Activity>();
 
-        Collection<Program> programs = programService.getPrograms( organisationUnit );
+        Collection<Program> programs = programService.getPrograms( false, false, organisationUnit );
 
         if ( programs.size() > 0 )
         {
@@ -181,7 +181,7 @@ public class DefaultActivityPlanService
 
         Collection<Activity> activities = new ArrayList<Activity>();
 
-        if ( programService.getPrograms( organisationUnit ).containsAll( programs ) )
+        if ( programService.getPrograms( false, false, organisationUnit ).containsAll( programs ) )
         {
             Collection<ProgramInstance> programInstances = programInstanceService.getProgramInstances( programs, false );
 
@@ -313,7 +313,7 @@ public class DefaultActivityPlanService
     // Supportive methods
     // -------------------------------------------------------------------------
 
-    Collection<Activity> getActivties( Collection<ProgramInstance> programInstances )
+    private Collection<Activity> getActivties( Collection<ProgramInstance> programInstances )
     {
         Collection<Activity> activities = new ArrayList<Activity>();
 

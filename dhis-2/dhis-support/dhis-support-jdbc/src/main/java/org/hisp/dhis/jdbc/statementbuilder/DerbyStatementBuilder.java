@@ -320,28 +320,31 @@ public class DerbyStatementBuilder
            
     public String getActivityPlan( int orgunitId, int min, int max )
     {
-       return  "SELECT psi.programstageinstanceid " +
-               "FROM programstageinstance psi " +
-                   "INNER JOIN programinstance pi " +
-                       "ON pi.programinstanceid = psi.programinstanceid " +
-                   "INNER JOIN programstage ps " +
-                       "ON ps.programstageid=psi.programstageid " +
-                   "INNER JOIN program_organisationunits po " +
-                       "ON po.programid=pi.programid " +
-                "WHERE pi.completed = FALSE  " +
-                       "AND po.organisationunitid = " + orgunitId + " AND psi.completed = FALSE " +
-                       "AND ps.stageinprogram in ( SELECT min(ps1.stageinprogram) " +
-                           "FROM programstageinstance psi1 " +
-                           "INNER JOIN programinstance pi1 " +
-                               "ON pi1.programinstanceid = psi1.programinstanceid " +
-                           "INNER JOIN programstage ps1 " +
-                               "ON ps1.programstageid=psi1.programstageid " +
-                           "INNER JOIN program_organisationunits po1 " +
-                               "ON po1.programid=pi1.programid " +
-                           "WHERE pi1.completed = FALSE  " +
-                               "AND po1.organisationunitid = " + orgunitId + " AND psi1.completed = FALSE ) " +
-                "ORDER BY ps.stageinprogram " +
-                "LIMIT " + max + " OFFSET " + min;
+        return  "SELECT psi.programstageinstanceid " +
+                "FROM programstageinstance psi " +
+                    "INNER JOIN programinstance pi " +
+                        "ON pi.programinstanceid = psi.programinstanceid " +
+                    "INNER JOIN programstage ps " +
+                        "ON ps.programstageid=psi.programstageid " +
+                    "INNER JOIN program_organisationunits po " +
+                        "ON po.programid=pi.programid " +
+                    "INNER JOIN program pg " +
+                        "ON po.programid=pg.programid " +
+                 "WHERE pi.completed = FALSE  " +
+                        "AND pg.singleEvent=FALSE "+
+                        "AND po.organisationunitid = " + orgunitId + " AND psi.completed = FALSE " +
+                        "AND ps.stageinprogram in ( SELECT min(ps1.stageinprogram) " +
+                            "FROM programstageinstance psi1 " +
+                            "INNER JOIN programinstance pi1 " +
+                                "ON pi1.programinstanceid = psi1.programinstanceid " +
+                            "INNER JOIN programstage ps1 " +
+                                "ON ps1.programstageid=psi1.programstageid " +
+                            "INNER JOIN program_organisationunits po1 " +
+                                "ON po1.programid=pi1.programid " +
+                            "WHERE pi1.completed = FALSE  " +
+                                "AND po1.organisationunitid = " + orgunitId + " AND psi1.completed = FALSE ) " +
+                 "ORDER BY ps.stageinprogram " +
+                 "LIMIT " + max + " OFFSET " + min;
     }
 
     public String limitRecord( int min, int max )
