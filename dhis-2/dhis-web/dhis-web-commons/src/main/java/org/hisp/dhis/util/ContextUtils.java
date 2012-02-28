@@ -141,14 +141,17 @@ public class ContextUtils
     {
         Cookie[] cookies = request.getCookies();
 
-        for ( Cookie c : cookies )
+        if ( cookies != null )
         {
-            if ( c.getName().equalsIgnoreCase( cookieName ) )
+            for ( Cookie c : cookies )
             {
-                return c.getValue();
+                if ( c.getName().equalsIgnoreCase( cookieName ) )
+                {
+                    return c.getValue();
+                }
             }
         }
- 
+        
         return null;
     }
     
