@@ -27,6 +27,8 @@ package org.hisp.dhis.interceptor;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import static org.apache.commons.lang.StringUtils.defaultIfEmpty;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -39,8 +41,6 @@ import org.springframework.security.authentication.InsufficientAuthenticationExc
 
 import com.opensymphony.xwork2.ActionInvocation;
 import com.opensymphony.xwork2.interceptor.Interceptor;
-
-import static org.apache.commons.lang.StringUtils.defaultIfEmpty;
 
 /**
  * This interceptor will intercept exceptions and redirect to appropriate
@@ -126,12 +126,36 @@ public class ExceptionInterceptor
                 
                 return EXCEPTION_RESULT_ACCESS_DENIED; // Access denied as nice page
             }
- 
-            boolean ignore = ignoredExceptions.contains( e.getClass().getName() );
+
+            // -----------------------------------------------------------------
+            // Check if exception should be ignored
+            // -----------------------------------------------------------------
+
+            Throwable t = e;
+            
+            boolean ignore = false;
+            
+            checkIgnore : do
+            {
+                if ( ignoredExceptions.contains( t.getClass().getName() ) )
+                {
+                    ignore = true;
+                    break checkIgnore;
+                }
+            } 
+            while ( ( t = t.getCause() ) != null );
+
+            // -----------------------------------------------------------------
+            // Log exception
+            // -----------------------------------------------------------------
 
             if ( !ignore )
             {
                 LOG.error( "Error while executing action", e );
+            }
+            else
+            {
+                LOG.info( "Ignored exception: " + e.getClass().getName() );
             }
 
             exceptionResultName = defaultIfEmpty( exceptionResultName, EXCEPTION_RESULT_DEFAULT );
