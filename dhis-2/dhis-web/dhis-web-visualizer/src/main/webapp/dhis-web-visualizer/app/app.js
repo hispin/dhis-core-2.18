@@ -146,6 +146,7 @@ DV.conf = {
         data: {
 			domain: 'domain_',
 			targetline: 'targetline_',
+			baseline: 'baseline_',
 			trendline: 'trendline_'
 		},
         image: {
@@ -184,8 +185,10 @@ DV.conf = {
         window_favorite_ypos: 100,
         window_confirm_width: 250,
         grid_favorite_width: 420,
+        treepanel_minheight: 135,
         treepanel_maxheight: 400,
         treepanel_fill_default: 310,
+        multiselect_minheight: 100,
         multiselect_maxheight: 250,
         multiselect_fill_default: 345,
         multiselect_fill_reportingrates: 315
@@ -325,9 +328,10 @@ Ext.onReady( function() {
 				var h1 = DV.cmp.region.west.getHeight();
 				var h2 = DV.cmp.options.panel.getHeight();
 				var h = h1 - h2 - fill;
-				var m = DV.conf.layout.multiselect_maxheight;
+				var mx = DV.conf.layout.multiselect_maxheight;
+				var mn = DV.conf.layout.multiselect_minheight;
 				for (var i = 0; i < ms.length; i++) {
-					ms[i].setHeight(h > m ? m : h);
+					ms[i].setHeight(h > mx ? mx : h < mn ? mn : h);
 				}
 			}
         },
@@ -370,8 +374,9 @@ Ext.onReady( function() {
 				var h1 = DV.cmp.region.west.getHeight();
 				var h2 = DV.cmp.options.panel.getHeight();
 				var h = h1 - h2 - DV.conf.layout.treepanel_fill_default;
-				var m = DV.conf.layout.treepanel_maxheight;
-				return h > m ? m : h;
+				var mx = DV.conf.layout.treepanel_maxheight;
+				var mn = DV.conf.layout.treepanel_minheight;
+				return h > mx ? mx : h < mn ? mn : h;
 			}
 		},
         button: {
@@ -806,6 +811,26 @@ Ext.onReady( function() {
 							title: title
 						};
 					},
+					getBaseLine: function() {
+						var title = DV.state.baseLineLabel || DV.i18n.base;
+						title += ' (' + DV.state.baseLineValue + ')';
+						return {
+							type: 'line',
+							axis: 'left',
+							xField: DV.conf.finals.data.domain,
+							yField: DV.conf.finals.data.baseline,
+							style: {
+								opacity: 1,
+								lineWidth: 3,
+								stroke: '#051a2e'
+							},
+							markerConfig: {
+								type: 'circle',
+								radius: 0
+							},
+							title: title
+						};
+					},
 					getTrendLineArray: function() {
 						var a = [];
 						for (var i = 0; i < DV.chart.trendLine.length; i++) {
@@ -830,9 +855,15 @@ Ext.onReady( function() {
 					},
 					setTheme: function() {
 						var colors = DV.conf.chart.theme.dv1.slice(0, DV.state.series.names.length);						
+						if (DV.state.targetLineValue || DV.state.baseLine) {
+							colors.push('#051a2e');
+						}					
 						if (DV.state.targetLineValue) {
-							colors.push('#051a2e', '#051a2e');
-						}						
+							colors.push('#051a2e');
+						}					
+						if (DV.state.baseLineValue) {
+							colors.push('#051a2e');
+						}
 						Ext.chart.theme.dv1 = Ext.extend(Ext.chart.theme.Base, {
 							constructor: function(config) {
 								Ext.chart.theme.Base.prototype.constructor.call(this, Ext.apply({
@@ -876,11 +907,18 @@ Ext.onReady( function() {
 						};
 					},
 					getTargetLine: function() {
-						var tl = DV.util.chart.default.series.getTargetLine();
-						tl.axis = 'bottom';
-						tl.xField = DV.conf.finals.data.targetline;
-						tl.yField = DV.conf.finals.data.domain;
-						return tl;
+						var line = DV.util.chart.default.series.getTargetLine();
+						line.axis = 'bottom';
+						line.xField = DV.conf.finals.data.targetline;
+						line.yField = DV.conf.finals.data.domain;
+						return line;
+					},
+					getBaseLine: function() {
+						var line = DV.util.chart.default.series.getBaseLine();
+						line.axis = 'bottom';
+						line.xField = DV.conf.finals.data.baseline;
+						line.yField = DV.conf.finals.data.domain;
+						return line;
 					},
 					getTrendLineArray: function() {
 						var a = [];
@@ -1239,6 +1277,7 @@ Ext.onReady( function() {
                 isLoaded: false,
                 listeners: {
                     load: function(s) {
+						this.isLoaded = true;
                         DV.util.store.addToStorage(s);
                         DV.util.multiselect.filterAvailable(DV.cmp.dimension.dataset.available, DV.cmp.dimension.dataset.selected);
                     }
@@ -1392,6 +1431,8 @@ Ext.onReady( function() {
             
             this.validation.targetline.call(this);
             
+            this.validation.baseline.call(this);
+            
             this.validation.render.call(this);
             
             if (exe) {
@@ -1407,6 +1448,8 @@ Ext.onReady( function() {
             this.rangeAxisLabel = DV.cmp.favorite.rangeaxislabel.getValue();
             this.targetLineValue = parseFloat(DV.cmp.favorite.targetlinevalue.getValue());
             this.targetLineLabel = DV.cmp.favorite.targetlinelabel.getValue();
+            this.baseLineValue = parseFloat(DV.cmp.favorite.baselinevalue.getValue());
+            this.baseLineLabel = DV.cmp.favorite.baselinelabel.getValue();
 		},
         getParams: function() {
             var obj = {};
@@ -1420,6 +1463,8 @@ Ext.onReady( function() {
 			obj.rangeAxisLabel = DV.cmp.favorite.rangeaxislabel.getValue();
 			obj.targetLineValue = DV.cmp.favorite.targetlinevalue.getValue();
 			obj.targetLineLabel = (obj.targetLineValue && !DV.cmp.favorite.targetlinelabel.isDisabled()) ? DV.cmp.favorite.targetlinelabel.getValue() : null;
+			obj.baseLineValue = DV.cmp.favorite.baselinevalue.getValue();
+			obj.baseLineLabel = (obj.baseLineValue && !DV.cmp.favorite.baselinelabel.isDisabled()) ? DV.cmp.favorite.baselinelabel.getValue() : null;
 			
             obj.series = this.series.dimension.toUpperCase();
             obj.category = this.category.dimension.toUpperCase();
@@ -1456,8 +1501,8 @@ Ext.onReady( function() {
                         f.type = f.type.toLowerCase();
                         f.series = f.series.toLowerCase();
                         f.category = f.category.toLowerCase();
-                        f.filter = f.filter.toLowerCase();        
-                                        
+                        f.filter = f.filter.toLowerCase();
+                        
                         f.names = {
                             data: [],
                             period: [],
@@ -1467,13 +1512,15 @@ Ext.onReady( function() {
                         this.type = f.type;
 						
                         this.hideSubtitle = f.hideSubtitle;
-                        this.hideLegend = f.hideLegend;                        
+                        this.hideLegend = f.hideLegend;
                         this.trendLine = f.regression;
                         this.userOrganisationUnit = f.userOrganisationUnit;
                         this.domainAxisLabel = f.domainAxisLabel;
                         this.rangeAxisLabel = f.rangeAxisLabel;
                         this.targetLineValue = f.targetLineValue ? parseFloat(f.targetLineValue) : null;
                         this.targetLineLabel = f.targetLineLabel ? f.targetLineLabel : null;
+                        this.baseLineValue = f.baseLineValue ? parseFloat(f.baseLineValue) : null;
+                        this.baseLineLabel = f.baseLineLabel ? f.baseLineLabel : null;
                         
                         this.series.dimension = f.series;
                         this.category.dimension = f.category;
@@ -1486,6 +1533,8 @@ Ext.onReady( function() {
 						this.validation.trendline.call(this);
 						
 						this.validation.targetline.call(this);
+						
+						this.validation.baseline.call(this);
 						
                         if (f.indicators) {
                             for (var i = 0; i < f.indicators.length; i++) {
@@ -1558,6 +1607,9 @@ Ext.onReady( function() {
 			DV.cmp.favorite.targetlinevalue.setValue(f.targetLineValue);
 			DV.cmp.favorite.targetlinelabel.xable();
 			DV.cmp.favorite.targetlinelabel.setValue(f.targetLineLabel);
+			DV.cmp.favorite.baselinevalue.setValue(f.baseLineValue);
+			DV.cmp.favorite.baselinelabel.xable();
+			DV.cmp.favorite.baselinelabel.setValue(f.baseLineLabel);
 
 			DV.cmp.settings.series.setValue(DV.conf.finals.dimension[f.series].value);
 			DV.util.combobox.filter.category();                        
@@ -1701,6 +1753,34 @@ Ext.onReady( function() {
 					}
 				}
 			},
+			baseline: function() {			
+				if (this.baseLineValue) {
+					var reasons = [];
+					if (this.type === DV.conf.finals.chart.stackedcolumn || this.type === DV.conf.finals.chart.stackedbar || this.type === DV.conf.finals.chart.area) {
+						reasons.push(DV.i18n.wm_not_applicable + ' ' + DV.i18n.wm_stacked_chart);
+						this.baseLineValue = null;
+					}
+					else if (this.type === DV.conf.finals.chart.pie) {
+						reasons.push(DV.i18n.wm_not_applicable + ' ' + DV.i18n.wm_pie_chart);
+						this.baseLineValue = null;
+					}
+					
+					if (this.category.names.length < 2) {
+						reasons.push(DV.i18n.wm_required_categories);
+						this.baseLineValue = null;
+					}
+					
+					if (reasons.length) {
+						var text = DV.i18n.wm_baseline_deactivated + ' (';
+						for (var i = 0; i < reasons.length; i++) {
+							text += i > 0 ? ' + ' : '';
+							text += reasons[i];
+						}
+						text += ').';
+						DV.exe.warnings.push(text);
+					}
+				}
+			},
 			render: function() {
 				if (!this.isRendered) {
 					DV.cmp.toolbar.datatable.enable();
@@ -1827,6 +1907,12 @@ Ext.onReady( function() {
 					item[DV.conf.finals.data.targetline] = DV.state.targetLineValue;
 				});
 			}
+
+			if (DV.state.baseLineValue) {
+				Ext.Array.each(DV.chart.data, function(item) {
+					item[DV.conf.finals.data.baseline] = DV.state.baseLineValue;
+				});
+			}
             
             if (exe) {
                 DV.store.getChartStore(true);
@@ -1868,6 +1954,9 @@ Ext.onReady( function() {
 			if (DV.state.targetLineValue) {
 				series.push(DV.util.chart.default.series.getTargetLine());
 			}
+			if (DV.state.baseLineValue) {
+				series.push(DV.util.chart.default.series.getBaseLine());
+			}
 			
 			var axes = [];
 			var numeric = DV.util.chart.default.axis.getNumeric(stacked);
@@ -1903,6 +1992,9 @@ Ext.onReady( function() {
 			if (DV.state.targetLineValue) {
 				series.push(DV.util.chart.bar.series.getTargetLine());
 			}
+			if (DV.state.baseLineValue) {
+				series.push(DV.util.chart.bar.series.getBaseLine());
+			}
 			
 			var axes = [];
 			var numeric = DV.util.chart.bar.axis.getNumeric(stacked);
@@ -1926,6 +2018,9 @@ Ext.onReady( function() {
 			series = series.concat(DV.util.chart.line.series.getArray());
 			if (DV.state.targetLineValue) {
 				series.push(DV.util.chart.default.series.getTargetLine());
+			}
+			if (DV.state.baseLineValue) {
+				series.push(DV.util.chart.default.series.getBaseLine());
 			}
 			
 			var axes = [];
@@ -2730,6 +2825,7 @@ Ext.onReady( function() {
                             {
                                 xtype: 'fieldset',
                                 cls: 'dv-fieldset',
+                                style: 'padding-bottom:7px',
                                 name: DV.conf.finals.dimension.period.value,
                                 title: '<a href="javascript:DV.util.fieldset.togglePeriod();" class="dv-fieldset-title-link">' + DV.i18n.periods +'</a>',
                                 collapsed: true,
@@ -3109,7 +3205,7 @@ Ext.onReady( function() {
 									{
 										xtype: 'panel',
 										layout: 'column',
-										bodyStyle: 'border:0 none; background-color:transparent; padding-bottom:5px',
+										bodyStyle: 'border:0 none; background-color:transparent; padding-bottom:8px',
 										items: [
 											{
 												xtype: 'numberfield',
@@ -3154,6 +3250,59 @@ Ext.onReady( function() {
 												listeners: {
 													added: function() {
 														DV.cmp.favorite.targetlinelabel = this;
+													}
+												}
+											}
+										]
+									},
+									{
+										xtype: 'panel',
+										layout: 'column',
+										bodyStyle: 'border:0 none; background-color:transparent; padding-bottom:5px',
+										items: [
+											{
+												xtype: 'numberfield',
+												cls: 'dv-textfield-alt1',
+												style: 'margin-right:5px',
+												hideTrigger: true,
+												fieldLabel: DV.i18n.base_line_value,
+												labelAlign: 'top',
+												labelSeparator: '',
+												maxLength: 100,
+												enforceMaxLength: true,
+												width: 199,
+												spinUpEnabled: true,
+												spinDownEnabled: true,
+												listeners: {
+													added: function() {
+														DV.cmp.favorite.baselinevalue = this;
+													},
+													change: function() {
+														DV.cmp.favorite.baselinelabel.xable();
+													}
+												}
+											},
+											{
+												xtype: 'textfield',
+												cls: 'dv-textfield-alt1',
+												fieldLabel: DV.i18n.base_line_label,
+												labelAlign: 'top',
+												labelSeparator: '',
+												maxLength: 100,
+												enforceMaxLength: true,
+												width: 199,
+												disabled: true,
+												xable: function() {
+													if (DV.cmp.favorite.baselinevalue.getValue()) {
+														this.enable();
+													}
+													else {
+														this.disable();
+													}
+												},
+												listeners: {
+													added: function() {
+														DV.cmp.favorite.baselinelabel = this;
 													}
 												}
 											}

@@ -112,6 +112,10 @@ public class Chart
 
     private String targetLineLabel;
 
+    private Double baseLineValue;
+
+    private String baseLineLabel;
+
     private List<Indicator> indicators = new ArrayList<Indicator>();
 
     private List<DataElement> dataElements = new ArrayList<DataElement>();
@@ -301,6 +305,11 @@ public class Chart
         return targetLineValue != null;
     }
 
+    public boolean isBaseLine()
+    {
+        return baseLineValue != null;
+    }
+
     public int getWidth()
     {
         return 700;
@@ -433,6 +442,30 @@ public class Chart
     public void setTargetLineLabel( String targetLineLabel )
     {
         this.targetLineLabel = targetLineLabel;
+    }
+
+    @XmlElement
+    @JsonProperty
+    public Double getBaseLineValue()
+    {
+        return baseLineValue;
+    }
+
+    public void setBaseLineValue( Double baseLineValue )
+    {
+        this.baseLineValue = baseLineValue;
+    }
+
+    @XmlElement
+    @JsonProperty
+    public String getBaseLineLabel()
+    {
+        return baseLineLabel;
+    }
+
+    public void setBaseLineLabel( String baseLineLabel )
+    {
+        this.baseLineLabel = baseLineLabel;
     }
 
     @XmlElement

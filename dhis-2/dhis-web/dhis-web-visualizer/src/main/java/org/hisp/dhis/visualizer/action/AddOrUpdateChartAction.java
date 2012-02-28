@@ -292,6 +292,20 @@ public class AddOrUpdateChartAction
     {
         this.targetLineLabel = targetLineLabel;
     }
+    
+    private Double baseLineValue;
+
+    public void setBaseLineValue( Double baseLineValue )
+    {
+        this.baseLineValue = baseLineValue;
+    }
+    
+    private String baseLineLabel;
+
+    public void setBaseLineLabel( String baseLineLabel )
+    {
+        this.baseLineLabel = baseLineLabel;
+    }
 
     // -------------------------------------------------------------------------
     // Action implementation
@@ -434,6 +448,9 @@ public class AddOrUpdateChartAction
 
         chart.setTargetLineValue( targetLineValue );
         chart.setTargetLineLabel( targetLineLabel );
+
+        chart.setBaseLineValue( baseLineValue );
+        chart.setBaseLineLabel( baseLineLabel );
         
         chartService.saveOrUpdate( chart );
 
