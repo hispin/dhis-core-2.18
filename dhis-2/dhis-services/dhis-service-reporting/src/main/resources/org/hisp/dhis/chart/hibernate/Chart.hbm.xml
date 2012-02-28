@@ -40,6 +40,10 @@
 
     <property name="targetLineLabel" />
 
+    <property name="baseLineValue" />
+
+    <property name="baseLineLabel" />
+
     <list name="indicators" table="chart_indicators">
       <cache usage="read-write" />
       <key column="chartid" foreign-key="fk_chart_indicators_chartid" />
