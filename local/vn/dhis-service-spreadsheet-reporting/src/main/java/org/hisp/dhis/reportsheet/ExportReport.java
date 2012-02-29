@@ -33,6 +33,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import org.hisp.dhis.common.BaseIdentifiableObject;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.user.UserAuthorityGroup;
 
@@ -41,11 +42,8 @@ import org.hisp.dhis.user.UserAuthorityGroup;
  * @version $Id$
  */
 public abstract class ExportReport
+    extends BaseIdentifiableObject
 {
-    private int id;
-
-    private String name;
-
     private Integer periodRow;
 
     private Integer periodColumn;
@@ -197,7 +195,7 @@ public abstract class ExportReport
     public Collection<ExportItem> getExportItemsByItemType( String... types )
     {
         List<ExportItem> items = new ArrayList<ExportItem>();
-        
+
         for ( ExportItem e : this.exportItems )
         {
             for ( String type : types )
