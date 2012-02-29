@@ -855,7 +855,7 @@ Ext.onReady( function() {
 					},
 					setTheme: function() {
 						var colors = DV.conf.chart.theme.dv1.slice(0, DV.state.series.names.length);						
-						if (DV.state.targetLineValue || DV.state.baseLine) {
+						if (DV.state.targetLineValue || DV.state.baseLineValue) {
 							colors.push('#051a2e');
 						}					
 						if (DV.state.targetLineValue) {
