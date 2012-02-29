@@ -97,15 +97,6 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     <property name="organisationUnitService" ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
   </bean>
 
-  <!-- Prune Organisation unit -->
-
-  <bean id="org.hisp.dhis.dataadmin.action.dataprune.PruneOrganisationUnitAction"
-      class="org.hisp.dhis.dataadmin.action.dataprune.PruneOrganisationUnitAction"
-      scope="prototype">
-    <property name="dataPruneService" ref="org.hisp.dhis.dataprune.DataPruneService" />
-    <property name="selectionTreeManager" ref="org.hisp.dhis.oust.manager.SelectionTreeManager" />
-  </bean>
-
   <!-- Duplicate data elimination -->
 
   <bean id="org.hisp.dhis.dataadmin.action.duplicatedataelimination.EliminateDuplicateDataAction"
