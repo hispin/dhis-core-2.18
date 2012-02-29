@@ -20,7 +20,6 @@ jQuery(function() {
     #introListImgItem( "viewStatistics.action" "data_statistics" "datastatistics" )
     #introListImgItem( "lockException.action" "lock_exception" "datalocking" )
     #introListImgItem( "zeroValueStorageManagement.action" "zero_storage_management" "zerovaluestorage" )
-    #introListImgItem( "displayPruneOrganisationUnitForm.action" "organisation_unit_pruning" "organisationunitpruning" )
 	#introListImgItem( "getMinMaxValidationParams.action" "min_max_value_generation" "minmaxvaluegeneration" ) 
     #introListImgItem( "showCache.action" "cache_statistics" "cachestatistics" )
     #introListImgItem( "constant.action" "constant" "constant" )

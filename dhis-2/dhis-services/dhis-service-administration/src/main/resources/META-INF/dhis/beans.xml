@@ -79,18 +79,6 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
     <property name="organisationUnitService" ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
   </bean>
   
-  <!-- Data prune -->
-
-  <bean id="org.hisp.dhis.dataprune.DataPruneService" class="org.hisp.dhis.dataprune.DefaultDataPruneService">
-    <property name="organisationUnitService" ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
-    <property name="dataPruneStore" ref="org.hisp.dhis.dataprune.DataPruneStore" />
-  </bean>
-
-  <bean id="org.hisp.dhis.dataprune.DataPruneStore" class="org.hisp.dhis.dataprune.jdbc.JdbcDataPruneStore">
-    <property name="jdbcTemplate" ref="jdbcTemplate" />
-    <property name="statementManager" ref="statementManager" />
-  </bean> 
-  
   <!-- Data archive -->
 
   <bean id="org.hisp.dhis.dataarchive.DataArchiveStore" class="org.hisp.dhis.dataarchive.jdbc.JdbcDataArchiveStore">
