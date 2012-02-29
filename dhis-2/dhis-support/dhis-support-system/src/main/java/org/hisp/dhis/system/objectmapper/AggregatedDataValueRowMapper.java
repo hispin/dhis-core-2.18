@@ -35,7 +35,6 @@ import org.hisp.dhis.aggregation.AggregatedDataValue;
 
 /**
  * @author Lars Helge Overland
- * @version $Id$
  */
 public class AggregatedDataValueRowMapper
     implements RowMapper<AggregatedDataValue>, org.springframework.jdbc.core.RowMapper<AggregatedDataValue>
@@ -46,13 +45,13 @@ public class AggregatedDataValueRowMapper
     {
         final AggregatedDataValue value = new AggregatedDataValue();
         
-        value.setDataElementId( resultSet.getInt( 1 ) );
-        value.setCategoryOptionComboId( resultSet.getInt( 2 ) );
-        value.setPeriodId( resultSet.getInt( 3 ) );
-        value.setOrganisationUnitId( resultSet.getInt( 4 ) );
-        value.setPeriodTypeId( resultSet.getInt( 5 ) );
-        value.setLevel( resultSet.getInt( 6 ) );
-        value.setValue( resultSet.getDouble( 7 ) );
+        value.setDataElementId( resultSet.getInt( "dataelementid" ) );
+        value.setCategoryOptionComboId( resultSet.getInt( "categoryoptioncomboid" ) );
+        value.setPeriodId( resultSet.getInt( "periodid" ) );
+        value.setOrganisationUnitId( resultSet.getInt( "organisationunitid" ) );
+        value.setPeriodTypeId( resultSet.getInt( "periodtypeid" ) );
+        value.setLevel( resultSet.getInt( "level" ) );
+        value.setValue( resultSet.getDouble( "value" ) );
         
         return value;
     }

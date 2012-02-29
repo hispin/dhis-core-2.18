@@ -45,16 +45,16 @@ public class AggregatedIndicatorValueRowMapper
     {
         final AggregatedIndicatorValue value = new AggregatedIndicatorValue();
         
-        value.setIndicatorId( resultSet.getInt( 1 ) );
-        value.setPeriodId( resultSet.getInt( 2 ) );
-        value.setOrganisationUnitId( resultSet.getInt( 3 ) );
-        value.setPeriodTypeId( resultSet.getInt( 4 ) );
-        value.setLevel( resultSet.getInt( 5 ) );
-        value.setAnnualized( resultSet.getString( 6 ) );
-        value.setFactor( resultSet.getDouble( 7 ) );
-        value.setValue( resultSet.getDouble( 8 ) );
-        value.setNumeratorValue( resultSet.getDouble( 9 ) );
-        value.setDenominatorValue( resultSet.getDouble( 10 ) );
+        value.setIndicatorId( resultSet.getInt( "indicatorid" ) );
+        value.setPeriodId( resultSet.getInt( "periodid" ) );
+        value.setOrganisationUnitId( resultSet.getInt( "organisationunitid" ) );
+        value.setPeriodTypeId( resultSet.getInt( "periodtypeid" ) );
+        value.setLevel( resultSet.getInt( "level" ) );
+        value.setAnnualized( resultSet.getString( "annualized" ) );
+        value.setFactor( resultSet.getDouble( "factor" ) );
+        value.setValue( resultSet.getDouble( "value" ) );
+        value.setNumeratorValue( resultSet.getDouble( "numeratorvalue" ) );
+        value.setDenominatorValue( resultSet.getDouble( "denominatorvalue" ) );
         
         return value;
     }
