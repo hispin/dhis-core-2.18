@@ -36,32 +36,25 @@ import org.hisp.dhis.aggregation.AggregatedIndicatorValue;
 /**
  * @author Lars Helge Overland
  */
-public class AggregatedIndicatorValueRowMapper
+public class AggregatedOrgUnitIndicatorValueRowMapper
+    extends AggregatedIndicatorValueRowMapper
     implements RowMapper<AggregatedIndicatorValue>, org.springframework.jdbc.core.RowMapper<AggregatedIndicatorValue>
 {
+    @Override
     public AggregatedIndicatorValue mapRow( ResultSet resultSet )
         throws SQLException
     {
-        final AggregatedIndicatorValue value = new AggregatedIndicatorValue();
+        final AggregatedIndicatorValue value = super.mapRow( resultSet );
         
-        value.setIndicatorId( resultSet.getInt( "indicatorid" ) );
-        value.setPeriodId( resultSet.getInt( "periodid" ) );
-        value.setOrganisationUnitId( resultSet.getInt( "organisationunitid" ) );
-        value.setPeriodTypeId( resultSet.getInt( "periodtypeid" ) );
-        value.setLevel( resultSet.getInt( "level" ) );
-        value.setAnnualized( resultSet.getString( "annualized" ) );
-        value.setFactor( resultSet.getDouble( "factor" ) );
-        value.setValue( resultSet.getDouble( "value" ) );
-        value.setNumeratorValue( resultSet.getDouble( "numeratorvalue" ) );
-        value.setDenominatorValue( resultSet.getDouble( "denominatorvalue" ) );
+        value.setOrganisationUnitGroupId( resultSet.getInt( "organisationunitgroupid" ) );
         
         return value;
     }
-
+    
     @Override
     public AggregatedIndicatorValue mapRow( ResultSet resultSet, int rowNum )
         throws SQLException
     {
-        return mapRow( resultSet );
+        return this.mapRow( resultSet );
     }
 }

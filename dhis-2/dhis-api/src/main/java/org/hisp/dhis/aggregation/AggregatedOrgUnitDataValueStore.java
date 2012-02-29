@@ -37,6 +37,9 @@ public interface AggregatedOrgUnitDataValueStore
     
     Double getAggregatedDataValue( int dataElement, int categoryOptionCombo, int period, int organisationUnit, int organisationUnitGroup );
     
+    Collection<AggregatedDataValue> getAggregatedDataValueTotals( Collection<Integer> dataElementIds, 
+        Collection<Integer> periodIds, int organisationUnitId, Collection<Integer> organisationUnitGroupIds );
+    
     void deleteAggregatedDataValues( Collection<Integer> dataElementIds, Collection<Integer> periodIds, Collection<Integer> organisationUnitIds );
     
     void deleteAggregatedDataValues( Collection<Integer> periodIds );
@@ -52,6 +55,9 @@ public interface AggregatedOrgUnitDataValueStore
     // -------------------------------------------------------------------------
     
     Double getAggregatedIndicatorValue( int indicator, int period, int organisationUnit, int organisationUnitGroup );
+    
+    Collection<AggregatedIndicatorValue> getAggregatedIndicatorValues( Collection<Integer> indicatorIds, 
+        Collection<Integer> periodIds, int organisationUnitId, Collection<Integer> organisationUnitGroupIds );
     
     void deleteAggregatedIndicatorValues( Collection<Integer> indicatorIds, Collection<Integer> periodIds, Collection<Integer> organisationUnitIds );
     

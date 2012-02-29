@@ -63,6 +63,11 @@ public class DefaultAggregatedOrgUnitDataValueService
     {
         return aggregatedDataValueStore.getAggregatedDataValue( dataElement.getId(), optionCombo.getId(), period.getId(), organisationUnit.getId(), group.getId() );
     }
+    public Collection<AggregatedDataValue> getAggregatedDataValueTotals( Collection<Integer> dataElementIds, 
+        Collection<Integer> periodIds, int organisationUnitId, Collection<Integer> organisationUnitGroupIds )
+    {
+        return aggregatedDataValueStore.getAggregatedDataValueTotals( dataElementIds, periodIds, organisationUnitId, organisationUnitGroupIds );
+    }
     
     public void deleteAggregatedDataValues( Collection<Integer> dataElementIds, Collection<Integer> periodIds, Collection<Integer> organisationUnitIds )
     {
@@ -96,6 +101,12 @@ public class DefaultAggregatedOrgUnitDataValueService
     public Double getAggregatedIndicatorValue( Indicator indicator, Period period, OrganisationUnit organisationUnit, OrganisationUnitGroup group )
     {
         return aggregatedDataValueStore.getAggregatedIndicatorValue( indicator.getId(), period.getId(), organisationUnit.getId(), group.getId() );
+    }
+    
+    public Collection<AggregatedIndicatorValue> getAggregatedIndicatorValues( Collection<Integer> indicatorIds, 
+        Collection<Integer> periodIds, int organisationUnitId, Collection<Integer> organisationUnitGroupIds )
+    {
+        return aggregatedDataValueStore.getAggregatedIndicatorValues( indicatorIds, periodIds, organisationUnitId, organisationUnitGroupIds );
     }
     
     public void deleteAggregatedIndicatorValues( Collection<Integer> indicatorIds, Collection<Integer> periodIds, Collection<Integer> organisationUnitIds )
