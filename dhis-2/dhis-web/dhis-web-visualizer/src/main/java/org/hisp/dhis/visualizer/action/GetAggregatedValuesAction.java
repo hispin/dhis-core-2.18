@@ -33,7 +33,12 @@ import java.util.HashSet;
 import org.hisp.dhis.aggregation.AggregatedDataValue;
 import org.hisp.dhis.aggregation.AggregatedDataValueService;
 import org.hisp.dhis.aggregation.AggregatedIndicatorValue;
+import org.hisp.dhis.aggregation.AggregatedOrgUnitDataValueService;
 import org.hisp.dhis.completeness.DataSetCompletenessResult;
+import org.hisp.dhis.organisationunit.OrganisationUnitGroup;
+import org.hisp.dhis.organisationunit.OrganisationUnitGroupService;
+import org.hisp.dhis.organisationunit.OrganisationUnitGroupSet;
+import org.hisp.dhis.system.util.ConversionUtils;
 
 import com.opensymphony.xwork2.Action;
 
@@ -52,6 +57,20 @@ public class GetAggregatedValuesAction
     public void setAggregatedDataValueService( AggregatedDataValueService aggregatedDataValueService )
     {
         this.aggregatedDataValueService = aggregatedDataValueService;
+    }
+    
+    private AggregatedOrgUnitDataValueService aggregatedOrgUnitDataValueService;
+
+    public void setAggregatedOrgUnitDataValueService( AggregatedOrgUnitDataValueService aggregatedOrgUnitDataValueService )
+    {
+        this.aggregatedOrgUnitDataValueService = aggregatedOrgUnitDataValueService;
+    }
+    
+    private OrganisationUnitGroupService organisationUnitGroupService;
+
+    public void setOrganisationUnitGroupService( OrganisationUnitGroupService organisationUnitGroupService )
+    {
+        this.organisationUnitGroupService = organisationUnitGroupService;
     }
 
     // -------------------------------------------------------------------------
@@ -92,6 +111,13 @@ public class GetAggregatedValuesAction
     {
         this.organisationUnitIds = organisationUnitIds;
     }
+    
+    private Integer organisationUnitGroupSetId;
+
+    public void setOrganisationUnitGroupSetId( Integer organisationUnitGroupSetId )
+    {
+        this.organisationUnitGroupSetId = organisationUnitGroupSetId;
+    }
 
     // -------------------------------------------------------------------------
     // Output
@@ -125,18 +151,54 @@ public class GetAggregatedValuesAction
     public String execute()
         throws Exception
     {
-        if ( periodIds != null && organisationUnitIds != null )
+        // ---------------------------------------------------------------------
+        // Org unit group set data
+        // ---------------------------------------------------------------------
+
+        if ( organisationUnitGroupSetId != null && periodIds != null && organisationUnitIds != null && organisationUnitIds.size() > 0 )
         {
+            Integer organisationUnitId = organisationUnitIds.iterator().next();
+            
+            OrganisationUnitGroupSet groupSet = organisationUnitGroupService.getOrganisationUnitGroupSet( organisationUnitGroupSetId );
+            
+            if ( organisationUnitId == null || groupSet == null )
+            {
+                return SUCCESS;
+            }
+            
+            Collection<Integer> groupSetIds = ConversionUtils.getIdentifiers( OrganisationUnitGroup.class, groupSet.getOrganisationUnitGroups() );
+            
             if ( indicatorIds != null )
             {
-                indicatorValues = aggregatedDataValueService.getAggregatedIndicatorValues( indicatorIds, periodIds,
-                    organisationUnitIds );
+                indicatorValues = aggregatedOrgUnitDataValueService.getAggregatedIndicatorValues( indicatorIds, 
+                    periodIds, organisationUnitId, groupSetIds );
             }
             
             if ( dataElementIds != null )
             {
-                dataValues = aggregatedDataValueService.getAggregatedDataValueTotals( dataElementIds, periodIds,
-                    organisationUnitIds );                
+                dataValues = aggregatedOrgUnitDataValueService.getAggregatedDataValueTotals( dataElementIds, periodIds, organisationUnitId, groupSetIds );                
+            }
+            
+            if ( dataSetIds != null )
+            {
+                // FIXME will be implemented soon
+            }
+        }
+
+        // ---------------------------------------------------------------------
+        // Regular data
+        // ---------------------------------------------------------------------
+
+        else if ( periodIds != null && organisationUnitIds != null )
+        {
+            if ( indicatorIds != null )
+            {
+                indicatorValues = aggregatedDataValueService.getAggregatedIndicatorValues( indicatorIds, periodIds, organisationUnitIds );
+            }
+            
+            if ( dataElementIds != null )
+            {
+                dataValues = aggregatedDataValueService.getAggregatedDataValueTotals( dataElementIds, periodIds, organisationUnitIds );                
             }
             
             if ( dataSetIds != null )
