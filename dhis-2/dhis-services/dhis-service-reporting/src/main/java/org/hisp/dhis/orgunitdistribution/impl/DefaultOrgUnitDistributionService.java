@@ -93,7 +93,7 @@ public class DefaultOrgUnitDistributionService
         
         Assert.isTrue( grid != null && grid.getHeight() == 1 );
         
-        for ( int i = 1; i < grid.getWidth(); i++ ) // Skip name column
+        for ( int i = 1; i < grid.getWidth() - 2; i++ ) // Skip name, none and total column
         {
             categoryValues.put( grid.getHeaders().get( i ).getName(), Double.valueOf( String.valueOf( grid.getRow( 0 ).get( i ) ) ) );
         }
@@ -131,8 +131,8 @@ public class DefaultOrgUnitDistributionService
             grid.addHeader( new GridHeader( group.getName(), false, false )  );
         }
 
-        grid.addHeader( new GridHeader( HEADER_TOTAL, false, false ) );
         grid.addHeader( new GridHeader( HEADER_NONE, false, false ) );
+        grid.addHeader( new GridHeader( HEADER_TOTAL, false, false ) );
         
         boolean hasNone = false;
         
@@ -159,8 +159,8 @@ public class DefaultOrgUnitDistributionService
             int total = subTree != null ? subTree.size() : 0;
             int none = total - totalGroup;
 
-            grid.addValue( totalGroup );
             grid.addValue( none );
+            grid.addValue( totalGroup );
             
             if ( none > 0 )
             {
