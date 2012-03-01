@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<programStage>
-  <dataElements>
-	    #foreach( $programStage in $listProgramStage )
-	      <dataElement id="$programStage.id">$encoder.xmlEncode( $programStage.name )</dataElement>
-	    #end
-  </dataElements>
-</programStage>

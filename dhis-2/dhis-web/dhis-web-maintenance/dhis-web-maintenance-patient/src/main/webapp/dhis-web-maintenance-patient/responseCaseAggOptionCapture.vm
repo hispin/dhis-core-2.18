@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<dataelements>
-	#foreach( $optionCombo in $optionCombos )
-    	<dataelement status="success">							
-      		<id>$optionCombo.id</id>
-      		<name>$optionCombo.name</name>
-    	</dataelement>
-	#end	
-</dataelements>

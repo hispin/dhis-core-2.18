@@ -718,7 +718,7 @@
 		<action name="getPSDataElements"
 			class="org.hisp.dhis.patient.action.caseaggregation.GetPSDataElementsAction">
 			<result name="success" type="velocity-xml">
-				/dhis-web-maintenance-patient/responsePSDataElements.vm
+				/dhis-web-maintenance-patient/responsePSDataElement.vm
 			</result>
 		</action>
 		
