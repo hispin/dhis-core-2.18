@@ -141,7 +141,7 @@ public class AddProgramAction
     {
         singleEvent = (singleEvent == null) ? false : singleEvent;
         anonymous = (anonymous == null) ? false : anonymous;
-        displayProvidedOtherFacility = (displayProvidedOtherFacility == null) ? false : displayProvidedOtherFacility;
+        displayProvidedOtherFacility = (displayProvidedOtherFacility == null) ? true : displayProvidedOtherFacility;
         
         Program program = new Program();
 

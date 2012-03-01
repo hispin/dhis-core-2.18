@@ -728,28 +728,9 @@ public class DefaultProgramDataEntryService
                 
                 if ( dataElement.getOptionSet() != null )
                 {
-
                    appendCode += jsCodeForOptions;
                    
                    appendCode = appendCode.replace( "$OPTIONS", dataElement.getOptionSet().getOptions().toString() ); 
- 
-                    /*appendCode = appendCode.replaceFirst( "input", "select options='true'" );
-                    appendCode = appendCode.replace( "name=\"entryfield\"", jsCodeForInputs );
-
-                    appendCode += ">";
-                    appendCode += "<option value=\"\">" + i18n.getString( "select_value" ) + "</option>";
-                    for ( String option :  )
-                    {
-                        appendCode += "<option value=\"" + option + "\">" + option + "</option>";
-                    }
-
-                    if ( patientDataValue != null )
-                    {
-                        appendCode = appendCode.replace( "<option value=\"" + patientDataValue.getValue() + "\">",
-                            "<option value=\"" + patientDataValue.getValue() + "\" selected=\"selected\">" );
-                    }
-
-                    appendCode += "</select>";*/
                 }
                 else
                 {
@@ -1096,7 +1077,8 @@ public class DefaultProgramDataEntryService
     private String addProvidedByOtherFacilityCheckbox( String appendCode, PatientDataValue patientDataValue,
         ProgramStage programStage )
     {
-        appendCode += "<label style=\"display:$DISPLAY;\" for=\"$PROGRAMSTAGEID_$DATAELEMENTID_facility\" title=\"is provided by another Facility ?\" ></label><input name=\"providedByAnotherFacility\"  title=\"is provided by another Facility ?\"  id=\"$PROGRAMSTAGEID_$DATAELEMENTID_facility\"  type=\"checkbox\" ";
+        appendCode += "<label style=\"display:$DISPLAY;\" for=\"$PROGRAMSTAGEID_$DATAELEMENTID_facility\" title=\"is provided by another Facility ?\" >" +
+        		"<input name=\"providedByAnotherFacility\"  title=\"is provided by another Facility ?\"  id=\"$PROGRAMSTAGEID_$DATAELEMENTID_facility\"  type=\"checkbox\" ";
 
         if ( patientDataValue != null && patientDataValue.isProvidedByAnotherFacility() )
         {
@@ -1104,8 +1086,9 @@ public class DefaultProgramDataEntryService
         }
         appendCode += "onChange=\"updateProvidingFacility( $DATAELEMENTID, this )\"  >";
 
-        String display = (programStage.getProgram().getDisplayProvidedOtherFacility() ) ? "none" : "block";
+        String display = (programStage.getProgram().getDisplayProvidedOtherFacility() ) ? "block" : "none";
         appendCode = appendCode.replace( "$DISPLAY", display );
+        appendCode += "</label>";
 
         return appendCode;
 
