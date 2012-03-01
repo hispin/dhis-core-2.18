@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<dataelements>
+	#foreach( $dataElement in $dataElementList )
+		<dataelement>
+			<id>[DE:$psId.$dataElement.id]</id>
+			<name>$encoder.xmlEncode( $dataElement.name )</name>
+			<optionset>$encoder.xmlEncode( $dataElement.optionSet.options )</optionset>
+		</dataelement>	
+	#end
+</dataelements>
