@@ -142,7 +142,7 @@ public class JdbcSqlViewExpandStore
     }
 
     @Override
-    public boolean createView( SqlView sqlViewInstance )
+    public String createView( SqlView sqlViewInstance )
     {
         String viewName = setUpViewTableName( sqlViewInstance.getName() );
 
@@ -154,10 +154,10 @@ public class JdbcSqlViewExpandStore
         }
         catch ( BadSqlGrammarException bge )
         {
-            return false;
+            return bge.getCause().getMessage();
         }
 
-        return true;
+        return null;
     }
 
     @Override

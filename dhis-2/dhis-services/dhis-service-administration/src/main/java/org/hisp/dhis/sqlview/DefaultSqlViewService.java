@@ -157,7 +157,7 @@ public class DefaultSqlViewService
 
         for ( SqlView sqlView : getAllSqlViews() )
         {
-            if ( !createViewTable( sqlView ) )
+            if ( createViewTable( sqlView ) != null )
             {
                 success = false;
             }
@@ -167,7 +167,7 @@ public class DefaultSqlViewService
     }
 
     @Override
-    public boolean createViewTable( SqlView sqlViewInstance )
+    public String createViewTable( SqlView sqlViewInstance )
     {
         return sqlViewExpandStore.createView( sqlViewInstance );
     }

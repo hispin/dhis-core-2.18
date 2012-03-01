@@ -18,7 +18,7 @@ public interface SqlViewExpandStore
 
     boolean isViewTableExists( String viewTableName );
 
-    boolean createView( SqlView sqlViewInstance );
+    String createView( SqlView sqlViewInstance );
 
     void dropViewTable( String sqlViewName );
 
