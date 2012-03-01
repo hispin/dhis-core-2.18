@@ -75,7 +75,7 @@ public interface SqlViewService
 
     boolean createAllViewTables();
 
-    boolean createViewTable( SqlView sqlViewInstance );
+    String createViewTable( SqlView sqlViewInstance );
 
     void dropViewTable( String viewName );
 

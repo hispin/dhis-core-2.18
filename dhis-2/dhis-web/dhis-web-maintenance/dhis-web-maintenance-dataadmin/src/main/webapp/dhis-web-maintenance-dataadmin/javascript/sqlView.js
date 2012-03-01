@@ -57,13 +57,13 @@ function showSqlViewDetails( viewId )
 function runSqlViewQuery( viewId )
 {
 	$.getJSON(
-		"executeSqlViewQuery.action",
-		{
-			"id": viewId   
-		},
-		function( json )
-		{
-			setHeaderDelayMessage( json.message );
+		"executeSqlViewQuery.action", { "id": viewId },
+		function( json ) {
+			if ( json.response == "success" ) {
+				setHeaderDelayMessage( json.message );
+			} else {
+				setMessage( json.message );
+			}
 		}
 	);
 }
