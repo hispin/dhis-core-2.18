@@ -1,7 +1,7 @@
 package org.hisp.dhis.sms.config;
 
 /*
- * Copyright (c) 2011, University of Oslo
+ * Copyright (c) 2004-2012, University of Oslo
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -30,7 +30,6 @@ package org.hisp.dhis.sms.config;
 public class BulkSmsGatewayConfig
     extends SmsGatewayConfig
 {
-
     private static final long serialVersionUID = 5249703354480948250L;
 
     private String username;

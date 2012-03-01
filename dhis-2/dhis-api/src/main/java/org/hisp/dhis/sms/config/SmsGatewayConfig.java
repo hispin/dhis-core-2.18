@@ -1,7 +1,7 @@
 package org.hisp.dhis.sms.config;
 
 /*
- * Copyright (c) 2011, University of Oslo
+ * Copyright (c) 2004-2012, University of Oslo
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -33,9 +33,9 @@ import java.io.Serializable;
  * Super class for gateway configurations
  */
 @SuppressWarnings( "serial" )
-public abstract class SmsGatewayConfig implements Serializable
+public abstract class SmsGatewayConfig
+    implements Serializable
 {
-    
     private String name;
 
     public String getName()
@@ -51,5 +51,5 @@ public abstract class SmsGatewayConfig implements Serializable
     public abstract boolean isInbound();
 
     public abstract boolean isOutbound();
-    
+
 }

@@ -1,7 +1,7 @@
 package org.hisp.dhis.sms.config;
 
 /*
- * Copyright (c) 2011, University of Oslo
+ * Copyright (c) 2004-2012, University of Oslo
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -42,7 +42,6 @@ import javax.xml.bind.annotation.XmlRootElement;
 public class SmsConfiguration
     implements Serializable
 {
-
     private static final long serialVersionUID = 7460688383539123303L;
 
     private String longNumber;
@@ -84,9 +83,9 @@ public class SmsConfiguration
 
     @XmlElementWrapper( name = "gateways" )
     @XmlElements( { @XmlElement( name = "bulksms", type = BulkSmsGatewayConfig.class ),
-        @XmlElement( name = "clickatell", type = ClickatellGatewayConfig.class ),
-        @XmlElement( name = "http", type = GenericHttpGatewayConfig.class ),
-        @XmlElement( name = "modem", type = ModemGatewayConfig.class ) } )
+                    @XmlElement( name = "clickatell", type = ClickatellGatewayConfig.class ),
+                    @XmlElement( name = "http", type = GenericHttpGatewayConfig.class ),
+                    @XmlElement( name = "modem", type = ModemGatewayConfig.class ) } )
     public List<SmsGatewayConfig> getGateways()
     {
         return gateways;

@@ -3,7 +3,7 @@ package org.hisp.dhis.sms.outbound;
 import java.util.List;
 
 /*
- * Copyright (c) 2011, University of Oslo
+ * Copyright (c) 2004-2012, University of Oslo
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -31,13 +31,10 @@ import java.util.List;
 
 public interface OutboundSmsStore
 {
-
     public int save( OutboundSms sms );
 
     public List<OutboundSms> getAll();
 
     public OutboundSms get( int id );
-    
-    
     
 }

@@ -1,5 +1,32 @@
 package org.hisp.dhis.sms.smslib;
 
+/*
+ * Copyright (c) 2004-2011, University of Oslo
+ * All rights reserved.
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are met:
+ * * Redistributions of source code must retain the above copyright notice, this
+ *   list of conditions and the following disclaimer.
+ * * Redistributions in binary form must reproduce the above copyright notice,
+ *   this list of conditions and the following disclaimer in the documentation
+ *   and/or other materials provided with the distribution.
+ * * Neither the name of the HISP project nor the names of its contributors may
+ *   be used to endorse or promote products derived from this software without
+ *   specific prior written permission.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
+ * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+ * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR
+ * ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+ * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+ * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON
+ * ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+ * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+ * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ */
+
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
@@ -15,12 +42,15 @@ import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 
 /**
- * Simplistic http gateway sending smses through a get to a url constructed from the provided 
- * urlTemplate and map of static parameters. 
- * <p>This gateway is simplistic in that it can't evaluate the response from the provider, being most suitable as an 
- * example gateway. For production use a more robust gateway should be used implemented for the specific provider.
+ * Simplistic http gateway sending smses through a get to a url constructed from
+ * the provided urlTemplate and map of static parameters.
+ * <p>
+ * This gateway is simplistic in that it can't evaluate the response from the
+ * provider, being most suitable as an example gateway. For production use a
+ * more robust gateway should be used implemented for the specific provider.
  * 
- * <p>The gateway adds the following keys to the parameters:
+ * <p>
+ * The gateway adds the following keys to the parameters:
  * <ul>
  * <li>recipient
  * <li>message
@@ -39,7 +69,6 @@ import org.springframework.web.client.RestTemplate;
 public class SimplisticHttpGetGateWay
     extends AGateway
 {
-
     private static final String SENDER = "sender";
 
     private static final String RECIPIENT = "recipient";
@@ -49,10 +78,10 @@ public class SimplisticHttpGetGateWay
     RestTemplate restTemplate = new RestTemplate();
 
     private Map<String, String> parameters;
-    
+
     private String urlTemplate;
 
-    public SimplisticHttpGetGateWay( String id, String urlTemplate, Map<String, String> parameters)
+    public SimplisticHttpGetGateWay( String id, String urlTemplate, Map<String, String> parameters )
     {
         super( id );
         this.urlTemplate = urlTemplate;
@@ -83,13 +112,14 @@ public class SimplisticHttpGetGateWay
         throws TimeoutException, GatewayException, IOException, InterruptedException
     {
         Logger.getInstance().logDebug( "Sending message " + msg, null, getGatewayId() );
-        
-        Map<String, String> requestParameters = new HashMap<String, String>(parameters);
-        
+
+        Map<String, String> requestParameters = new HashMap<String, String>( parameters );
+
         requestParameters.put( MESSAGE, msg.getText() );
         requestParameters.put( RECIPIENT, msg.getRecipient() );
         String sender = msg.getFrom();
-        if (sender != null) {
+        if ( sender != null )
+        {
             Logger.getInstance().logDebug( "Adding sender " + sender, null, getGatewayId() );
             requestParameters.put( SENDER, sender );
         }
@@ -97,7 +127,8 @@ public class SimplisticHttpGetGateWay
         {
             ResponseEntity<String> response = restTemplate.getForEntity( urlTemplate, String.class, requestParameters );
 
-            if (response.getStatusCode().series() != HttpStatus.Series.SUCCESSFUL) {
+            if ( response.getStatusCode().series() != HttpStatus.Series.SUCCESSFUL )
+            {
                 Logger.getInstance().logWarn( "Couldn't send message, got response " + response, null, getGatewayId() );
                 return false;
             }
@@ -110,7 +141,7 @@ public class SimplisticHttpGetGateWay
         }
 
         return true;
-        
+
     }
 
     @Override

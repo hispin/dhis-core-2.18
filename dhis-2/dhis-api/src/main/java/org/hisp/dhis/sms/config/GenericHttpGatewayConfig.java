@@ -1,13 +1,7 @@
 package org.hisp.dhis.sms.config;
 
-import java.util.Map;
-
-import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
-
-import org.hisp.dhis.common.adapter.ParametersMapXmlAdapter;
-
 /*
- * Copyright (c) 2011, University of Oslo
+ * Copyright (c) 2004-2012, University of Oslo
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -33,10 +27,15 @@ import org.hisp.dhis.common.adapter.ParametersMapXmlAdapter;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import java.util.Map;
+
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
+
+import org.hisp.dhis.common.adapter.ParametersMapXmlAdapter;
+
 public class GenericHttpGatewayConfig
     extends SmsGatewayConfig
 {
-
     private static final long serialVersionUID = 6340853488475760213L;
 
     private String urlTemplate;

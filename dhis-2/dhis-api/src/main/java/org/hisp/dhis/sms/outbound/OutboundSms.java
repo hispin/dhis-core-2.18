@@ -1,7 +1,7 @@
 package org.hisp.dhis.sms.outbound;
 
 /*
- * Copyright (c) 2011, University of Oslo
+ * Copyright (c) 2004-2012, University of Oslo
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -34,7 +34,6 @@ import java.util.Set;
 
 public class OutboundSms
 {
-
     private int id;
 
     private Set<String> recipients;
@@ -115,7 +114,9 @@ public class OutboundSms
     private String getNumbers()
     {
         if ( this.recipients == null )
+        {
             return null;
+        }
 
         String numbers = "";
 
@@ -123,6 +124,7 @@ public class OutboundSms
         {
             numbers += recipient + ", ";
         }
+
         return numbers.substring( 0, numbers.length() - 2 );
     }
 }
