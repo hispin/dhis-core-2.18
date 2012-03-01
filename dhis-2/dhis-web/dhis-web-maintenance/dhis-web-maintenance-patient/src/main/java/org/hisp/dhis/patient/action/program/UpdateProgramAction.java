@@ -138,7 +138,7 @@ public class UpdateProgramAction
     {
         singleEvent = (singleEvent == null) ? false : singleEvent;
         anonymous = (anonymous == null) ? false : anonymous;
-        displayProvidedOtherFacility = (displayProvidedOtherFacility == null) ? false : displayProvidedOtherFacility;
+        displayProvidedOtherFacility = (displayProvidedOtherFacility == null) ? true : displayProvidedOtherFacility;
 
         Program program = programService.getProgram( id );
         program.setName( name );
