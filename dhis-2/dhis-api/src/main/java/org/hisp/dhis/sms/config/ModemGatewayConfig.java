@@ -1,8 +1,7 @@
 package org.hisp.dhis.sms.config;
 
-
 /*
- * Copyright (c) 2011, University of Oslo
+ * Copyright (c) 2004-2012, University of Oslo
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -31,7 +30,6 @@ package org.hisp.dhis.sms.config;
 public class ModemGatewayConfig
     extends SmsGatewayConfig
 {
-
     private static final long serialVersionUID = 5824899163489665038L;
 
     private String port;
@@ -44,11 +42,11 @@ public class ModemGatewayConfig
 
     private String pin;
 
+    private String simMemLocation;
+
     private boolean inbound;
 
     private boolean outbound;
-
-    private String simMemLocation;
 
     public String getPort()
     {

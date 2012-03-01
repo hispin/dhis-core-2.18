@@ -1,8 +1,7 @@
 package org.hisp.dhis.sms.config;
 
-
 /*
- * Copyright (c) 2011, University of Oslo
+ * Copyright (c) 2004-2012, University of Oslo
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -31,13 +30,14 @@ package org.hisp.dhis.sms.config;
 public class ClickatellGatewayConfig
     extends SmsGatewayConfig
 {
-
     private static final long serialVersionUID = -4286107769356591957L;
 
     private String username;
+
     private String password;
+
     private String apiId;
-    
+
     public String getUsername()
     {
         return username;

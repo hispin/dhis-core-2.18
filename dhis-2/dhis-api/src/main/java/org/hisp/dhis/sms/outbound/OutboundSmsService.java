@@ -1,7 +1,7 @@
 package org.hisp.dhis.sms.outbound;
 
 /*
- * Copyright (c) 2011, University of Oslo
+ * Copyright (c) 2004-2012, University of Oslo
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -33,9 +33,9 @@ import org.hisp.dhis.sms.config.SmsConfigurable;
 /**
  * OutboundSmsService provides support for sending SMSes.
  */
-public interface OutboundSmsService extends SmsConfigurable
+public interface OutboundSmsService
+    extends SmsConfigurable
 {
-
     String ID = OutboundSmsService.class.getName();
 
     public boolean isEnabled();

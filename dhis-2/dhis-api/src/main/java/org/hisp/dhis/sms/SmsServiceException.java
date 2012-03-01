@@ -1,7 +1,7 @@
 package org.hisp.dhis.sms;
 
 /*
- * Copyright (c) 2011, University of Oslo
+ * Copyright (c) 2004-2012, University of Oslo
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -33,7 +33,6 @@ package org.hisp.dhis.sms;
 public class SmsServiceException
     extends RuntimeException
 {
-
     private static final long serialVersionUID = -7927288362330380301L;
 
     public SmsServiceException( String message )
@@ -45,6 +44,4 @@ public class SmsServiceException
     {
         super( message, cause );
     }
-
-    
 }
