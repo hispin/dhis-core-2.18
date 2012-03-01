@@ -125,15 +125,15 @@ public class ContextUtils
 
         if ( disallowCache )
         {
-            response.addHeader( "Cache-Control", "no-cache" );
-            response.addHeader( "Expires", DateUtils.getExpiredHttpDateString() );
+            response.setHeader( "Cache-Control", "no-cache" );
+            response.setHeader( "Expires", DateUtils.getExpiredHttpDateString() );
         }
 
         if ( filename != null )
         {
             String type = attachment ? "attachment" : "inline";
 
-            response.addHeader( "Content-Disposition", type + "; filename=\"" + filename + "\"" );
+            response.setHeader( "Content-Disposition", type + "; filename=\"" + filename + "\"" );
         }
     }
 
