@@ -64,7 +64,12 @@ public class ContextUtils
 
         if ( disallowCache )
         {
-            response.addHeader( "Cache-Control", "no-cache" );
+            // -----------------------------------------------------------------
+            // Cache set to expire after 1 second as IE 8 will not save cached
+            // responses to disk over SSL, was "no-cache".
+            // -----------------------------------------------------------------
+
+            response.setHeader( "Cache-Control", "max-age=1" );
             response.addHeader( "Expires", DateUtils.getExpiredHttpDateString() );
         }
 
