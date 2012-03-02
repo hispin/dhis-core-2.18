@@ -28,6 +28,7 @@ package org.hisp.dhis.api.controller;
  */
 
 import org.apache.commons.io.IOUtils;
+import org.hisp.dhis.api.utils.ContextUtils;
 import org.hisp.dhis.api.utils.IdentifiableObjectParams;
 import org.hisp.dhis.api.utils.WebLinkPopulator;
 import org.hisp.dhis.common.Pager;
@@ -35,9 +36,9 @@ import org.hisp.dhis.document.Document;
 import org.hisp.dhis.document.DocumentService;
 import org.hisp.dhis.document.Documents;
 import org.hisp.dhis.external.location.LocationManager;
-import org.hisp.dhis.api.utils.ContextUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
@@ -144,6 +145,7 @@ public class DocumentController
     //-------------------------------------------------------------------------------------------------------
 
     @RequestMapping( method = RequestMethod.POST, headers = {"Content-Type=application/xml, text/xml"} )
+    @PreAuthorize( "hasRole('ALL') or hasRole('F_DOCUMENT_ADD')" )
     @ResponseStatus( value = HttpStatus.CREATED )
     public void postDocumentXML( HttpServletResponse response, InputStream input ) throws Exception
     {
@@ -151,6 +153,7 @@ public class DocumentController
     }
 
     @RequestMapping( method = RequestMethod.POST, headers = {"Content-Type=application/json"} )
+    @PreAuthorize( "hasRole('ALL') or hasRole('F_DOCUMENT_ADD')" )
     @ResponseStatus( value = HttpStatus.CREATED )
     public void postDocumentJSON( HttpServletResponse response, InputStream input ) throws Exception
     {
@@ -162,6 +165,7 @@ public class DocumentController
     //-------------------------------------------------------------------------------------------------------
 
     @RequestMapping( value = "/{uid}", method = RequestMethod.PUT, headers = {"Content-Type=application/xml, text/xml"} )
+    @PreAuthorize( "hasRole('ALL') or hasRole('F_DOCUMENT_ADD')" )
     @ResponseStatus( value = HttpStatus.NO_CONTENT )
     public void putDocumentXML( @PathVariable( "uid" ) String uid, InputStream input ) throws Exception
     {
@@ -169,6 +173,7 @@ public class DocumentController
     }
 
     @RequestMapping( value = "/{uid}", method = RequestMethod.PUT, headers = {"Content-Type=application/json"} )
+    @PreAuthorize( "hasRole('ALL') or hasRole('F_DOCUMENT_ADD')" )
     @ResponseStatus( value = HttpStatus.NO_CONTENT )
     public void putDocumentJSON( @PathVariable( "uid" ) String uid, InputStream input ) throws Exception
     {
@@ -180,6 +185,7 @@ public class DocumentController
     //-------------------------------------------------------------------------------------------------------
 
     @RequestMapping( value = "/{uid}", method = RequestMethod.DELETE )
+    @PreAuthorize( "hasRole('ALL') or hasRole('F_DOCUMENT_DELETE')" )
     @ResponseStatus( value = HttpStatus.NO_CONTENT )
     public void deleteDocument( @PathVariable( "uid" ) String uid ) throws Exception
     {

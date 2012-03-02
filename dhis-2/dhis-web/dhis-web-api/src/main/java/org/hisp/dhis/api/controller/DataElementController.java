@@ -125,7 +125,7 @@ public class DataElementController
     //-------------------------------------------------------------------------------------------------------
 
     @RequestMapping( method = RequestMethod.POST, headers = {"Content-Type=application/xml, text/xml"} )
-    @PreAuthorize( "hasRole('ALL') or hasRole('F_WEBAPI_CREATE')" )
+    @PreAuthorize( "hasRole('ALL') or hasRole('F_DATAELEMENT_ADD')" )
     public void postDataElementXML( HttpServletResponse response, InputStream input ) throws Exception
     {
         DataElement dataElement = Jaxb2Utils.unmarshal( DataElement.class, input );
@@ -133,7 +133,7 @@ public class DataElementController
     }
 
     @RequestMapping( method = RequestMethod.POST, headers = {"Content-Type=application/json"} )
-    @PreAuthorize( "hasRole('ALL') or hasRole('F_WEBAPI_CREATE')" )
+    @PreAuthorize( "hasRole('ALL') or hasRole('F_DATAELEMENT_ADD')" )
     public void postDataElementJSON( HttpServletResponse response, InputStream input ) throws Exception
     {
         throw new HttpRequestMethodNotSupportedException( RequestMethod.POST.toString() );
@@ -175,7 +175,7 @@ public class DataElementController
 
     @RequestMapping( value = "/{uid}", method = RequestMethod.PUT, headers = {"Content-Type=application/xml, text/xml"} )
     @ResponseStatus( value = HttpStatus.NO_CONTENT )
-    @PreAuthorize( "hasRole('ALL') or hasRole('F_WEBAPI_UPDATE')" )
+    @PreAuthorize( "hasRole('ALL') or hasRole('F_DATAELEMENT_UPDATE')" )
     public void putDataElementXML( @PathVariable( "uid" ) String uid, InputStream input ) throws Exception
     {
         throw new HttpRequestMethodNotSupportedException( RequestMethod.PUT.toString() );
@@ -183,7 +183,7 @@ public class DataElementController
 
     @RequestMapping( value = "/{uid}", method = RequestMethod.PUT, headers = {"Content-Type=application/json"} )
     @ResponseStatus( value = HttpStatus.NO_CONTENT )
-    @PreAuthorize( "hasRole('ALL') or hasRole('F_WEBAPI_UPDATE')" )
+    @PreAuthorize( "hasRole('ALL') or hasRole('F_DATAELEMENT_UPDATE')" )
     public void putDataElementJSON( @PathVariable( "uid" ) String uid, InputStream input ) throws Exception
     {
         throw new HttpRequestMethodNotSupportedException( RequestMethod.PUT.toString() );
@@ -195,7 +195,7 @@ public class DataElementController
 
     @RequestMapping( value = "/{uid}", method = RequestMethod.DELETE )
     @ResponseStatus( value = HttpStatus.NO_CONTENT )
-    @PreAuthorize( "hasRole('ALL') or hasRole('F_WEBAPI_DELETE')" )
+    @PreAuthorize( "hasRole('ALL') or hasRole('F_DATAELEMENT_DELETE')" )
     public void deleteDataElement( @PathVariable( "uid" ) String uid ) throws Exception
     {
         DataElement dataElement = dataElementService.getDataElement( uid );

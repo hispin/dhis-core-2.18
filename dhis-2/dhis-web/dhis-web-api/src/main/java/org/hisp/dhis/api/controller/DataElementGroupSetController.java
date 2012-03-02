@@ -125,7 +125,7 @@ public class DataElementGroupSetController
     //-------------------------------------------------------------------------------------------------------
 
     @RequestMapping( method = RequestMethod.POST, headers = {"Content-Type=application/xml, text/xml"} )
-    @PreAuthorize( "hasRole('ALL') or hasRole('F_WEBAPI_CREATE')" )
+    @PreAuthorize( "hasRole('ALL') or hasRole('F_DATAELEMENTGROUPSET_ADD')" )
     public void postDataElementGroupSetXML( HttpServletResponse response, InputStream input ) throws Exception
     {
         DataElementGroupSet dataElementGroupSet = Jaxb2Utils.unmarshal( DataElementGroupSet.class, input );
@@ -133,7 +133,7 @@ public class DataElementGroupSetController
     }
 
     @RequestMapping( method = RequestMethod.POST, headers = {"Content-Type=application/json"} )
-    @PreAuthorize( "hasRole('ALL') or hasRole('F_WEBAPI_CREATE')" )
+    @PreAuthorize( "hasRole('ALL') or hasRole('F_DATAELEMENTGROUPSET_ADD')" )
     public void postDataElementGroupSetJSON( HttpServletResponse response, InputStream input ) throws Exception
     {
         throw new HttpRequestMethodNotSupportedException( RequestMethod.POST.toString() );
@@ -174,7 +174,7 @@ public class DataElementGroupSetController
 
     @RequestMapping( value = "/{uid}", method = RequestMethod.PUT, headers = {"Content-Type=application/xml, text/xml"} )
     @ResponseStatus( value = HttpStatus.NO_CONTENT )
-    @PreAuthorize( "hasRole('ALL') or hasRole('F_WEBAPI_UPDATE')" )
+    @PreAuthorize( "hasRole('ALL') or hasRole('F_DATAELEMENTGROUPSET_UPDATE')" )
     public void putDataElementGroupSetXML( @PathVariable( "uid" ) String uid, InputStream input ) throws Exception
     {
         throw new HttpRequestMethodNotSupportedException( RequestMethod.PUT.toString() );
@@ -182,7 +182,7 @@ public class DataElementGroupSetController
 
     @RequestMapping( value = "/{uid}", method = RequestMethod.PUT, headers = {"Content-Type=application/json"} )
     @ResponseStatus( value = HttpStatus.NO_CONTENT )
-    @PreAuthorize( "hasRole('ALL') or hasRole('F_WEBAPI_UPDATE')" )
+    @PreAuthorize( "hasRole('ALL') or hasRole('F_DATAELEMENTGROUPSET_UPDATE')" )
     public void putDataElementGroupSetJSON( @PathVariable( "uid" ) String uid, InputStream input ) throws Exception
     {
         throw new HttpRequestMethodNotSupportedException( RequestMethod.PUT.toString() );
@@ -194,7 +194,7 @@ public class DataElementGroupSetController
 
     @RequestMapping( value = "/{uid}", method = RequestMethod.DELETE )
     @ResponseStatus( value = HttpStatus.NO_CONTENT )
-    @PreAuthorize( "hasRole('ALL') or hasRole('F_WEBAPI_DELETE')" )
+    @PreAuthorize( "hasRole('ALL') or hasRole('F_DATAELEMENTGROUPSET_DELETE')" )
     public void deleteDataElementGroupSet( @PathVariable( "uid" ) String uid ) throws Exception
     {
         DataElementGroupSet dataElementGroupSet = dataElementService.getDataElementGroupSet( uid );

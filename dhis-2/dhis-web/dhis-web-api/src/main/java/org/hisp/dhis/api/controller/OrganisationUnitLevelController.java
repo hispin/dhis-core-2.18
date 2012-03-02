@@ -103,57 +103,11 @@ public class OrganisationUnitLevelController
     }
 
     //-------------------------------------------------------------------------------------------------------
-    // POST
-    //-------------------------------------------------------------------------------------------------------
-
-    @RequestMapping( method = RequestMethod.POST, headers = {"Content-Type=application/xml, text/xml"} )
-    @PreAuthorize( "hasRole('ALL') or hasRole('F_WEBAPI_CREATE')" )
-    public void postOrganisationUnitLevelXML( HttpServletResponse response, InputStream input ) throws Exception
-    {
-        OrganisationUnitLevel organisationUnitLevel = Jaxb2Utils.unmarshal( OrganisationUnitLevel.class, input );
-        postOrganisationUnitLevel( organisationUnitLevel, response );
-    }
-
-    @RequestMapping( method = RequestMethod.POST, headers = {"Content-Type=application/json"} )
-    @PreAuthorize( "hasRole('ALL') or hasRole('F_WEBAPI_CREATE')" )
-    public void postOrganisationUnitLevelJSON( HttpServletResponse response, InputStream input ) throws Exception
-    {
-        throw new HttpRequestMethodNotSupportedException( RequestMethod.POST.toString() );
-    }
-
-    public void postOrganisationUnitLevel( OrganisationUnitLevel organisationUnitLevel, HttpServletResponse response )
-    {
-        if ( organisationUnitLevel == null )
-        {
-            response.setStatus( HttpServletResponse.SC_NOT_IMPLEMENTED );
-        }
-        else
-        {
-            try
-            {
-                organisationUnitLevel = objectPersister.persistOrganisationUnitLevel( organisationUnitLevel );
-
-                if ( organisationUnitLevel.getUid() == null )
-                {
-                    response.setStatus( HttpServletResponse.SC_INTERNAL_SERVER_ERROR );
-                }
-                else
-                {
-                    response.setStatus( HttpServletResponse.SC_CREATED );
-                    response.setHeader( "Location", DataElementController.RESOURCE_PATH + "/" + organisationUnitLevel.getUid() );
-                }
-            } catch ( Exception e )
-            {
-                response.setStatus( HttpServletResponse.SC_CONFLICT );
-            }
-        }
-    }
-
-    //-------------------------------------------------------------------------------------------------------
     // PUT
     //-------------------------------------------------------------------------------------------------------
 
     @RequestMapping( value = "/{uid}", method = RequestMethod.PUT, headers = {"Content-Type=application/xml, text/xml"} )
+    @PreAuthorize( "hasRole('ALL') or hasRole('F_ORGANISATIONUNITLEVEL_UPDATE')" )
     @ResponseStatus( value = HttpStatus.NO_CONTENT )
     public void putOrganisationUnitLevelXML( @PathVariable( "uid" ) String uid, InputStream input ) throws Exception
     {
@@ -161,20 +115,10 @@ public class OrganisationUnitLevelController
     }
 
     @RequestMapping( value = "/{uid}", method = RequestMethod.PUT, headers = {"Content-Type=application/json"} )
+    @PreAuthorize( "hasRole('ALL') or hasRole('F_ORGANISATIONUNITLEVEL_UPDATE')" )
     @ResponseStatus( value = HttpStatus.NO_CONTENT )
     public void putOrganisationUnitLevelJSON( @PathVariable( "uid" ) String uid, InputStream input ) throws Exception
     {
         throw new HttpRequestMethodNotSupportedException( RequestMethod.PUT.toString() );
-    }
-
-    //-------------------------------------------------------------------------------------------------------
-    // DELETE
-    //-------------------------------------------------------------------------------------------------------
-
-    @RequestMapping( value = "/{uid}", method = RequestMethod.DELETE )
-    @ResponseStatus( value = HttpStatus.NO_CONTENT )
-    public void deleteOrganisationUnitLevel( @PathVariable( "uid" ) String uid ) throws Exception
-    {
-        throw new HttpRequestMethodNotSupportedException( RequestMethod.DELETE.toString() );
     }
 }

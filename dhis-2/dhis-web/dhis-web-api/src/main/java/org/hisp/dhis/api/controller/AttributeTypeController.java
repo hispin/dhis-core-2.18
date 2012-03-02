@@ -36,6 +36,7 @@ import org.hisp.dhis.attribute.AttributeService;
 import org.hisp.dhis.attribute.Attributes;
 import org.hisp.dhis.common.Pager;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -118,6 +119,7 @@ public class AttributeTypeController
     //-------------------------------------------------------------------------------------------------------
 
     @RequestMapping( method = RequestMethod.POST, headers = {"Content-Type=application/xml, text/xml"} )
+    @PreAuthorize( "hasRole('ALL') or hasRole('F_ATTRIBUTE_ADD')" )
     public void postAttributeTypeXML( HttpServletResponse response, InputStream input ) throws Exception
     {
         Attribute attribute = (Attribute) Jaxb2Utils.unmarshal( Attribute.class, input );
@@ -125,6 +127,7 @@ public class AttributeTypeController
     }
 
     @RequestMapping( method = RequestMethod.POST, headers = {"Content-Type=application/json"} )
+    @PreAuthorize( "hasRole('ALL') or hasRole('F_ATTRIBUTE_ADD')" )
     public void postAttributeTypeJSON( HttpServletResponse response, InputStream input ) throws Exception
     {
         Attribute attribute = JacksonUtils.readValueAs( Attribute.class, input );
@@ -165,6 +168,7 @@ public class AttributeTypeController
     //-------------------------------------------------------------------------------------------------------
 
     @RequestMapping( value = "/{uid}", method = RequestMethod.PUT, headers = {"Content-Type=application/xml, text/xml"} )
+    @PreAuthorize( "hasRole('ALL') or hasRole('F_ATTRIBUTE_UPDATE')" )
     public void putAttributeTypeXML( @PathVariable( "uid" ) String uid, InputStream input, HttpServletResponse response ) throws Exception
     {
         Attribute updateAttribute = (Attribute) Jaxb2Utils.unmarshal( Attribute.class, input );
@@ -173,6 +177,7 @@ public class AttributeTypeController
     }
 
     @RequestMapping( value = "/{uid}", method = RequestMethod.PUT, headers = {"Content-Type=application/json"} )
+    @PreAuthorize( "hasRole('ALL') or hasRole('F_ATTRIBUTE_UPDATE')" )
     public void putAttributeTypeJSON( @PathVariable( "uid" ) String uid, InputStream input, HttpServletResponse response ) throws Exception
     {
         Attribute updateAttribute = JacksonUtils.readValueAs( Attribute.class, input );
@@ -223,6 +228,7 @@ public class AttributeTypeController
     //-------------------------------------------------------------------------------------------------------
 
     @RequestMapping( value = "/{uid}", method = RequestMethod.DELETE )
+    @PreAuthorize( "hasRole('ALL') or hasRole('F_ATTRIBUTE_DELETE')" )
     public void deleteAttributeType( @PathVariable( "uid" ) String uid, HttpServletResponse response ) throws Exception
     {
         Attribute attribute = attributeService.getAttribute( uid );

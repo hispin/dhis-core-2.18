@@ -468,14 +468,14 @@
       <result name="success" type="velocity">/main.vm</result>
       <param name="menu">/dhis-web-maintenance-dataadmin/menu.vm</param>
       <param name="page">/dhis-web-maintenance-dataadmin/addAttributeForm.vm</param>
-      <param name="requiredAuthorities">F_DATAELEMENT_ADD</param>
+      <param name="requiredAuthorities">F_ATTRIBUTE_ADD</param>
     </action>
 
     <action name="showUpdateAttributeForm" class="org.hisp.dhis.dataadmin.action.attribute.GetAttributeAction">
       <result name="success" type="velocity">/main.vm</result>
       <param name="menu">/dhis-web-maintenance-dataadmin/menu.vm</param>
       <param name="page">/dhis-web-maintenance-dataadmin/updateAttributeForm.vm</param>
-      <param name="requiredAuthorities">F_DATAELEMENT_UPDATE</param>
+      <param name="requiredAuthorities">F_ATTRIBUTE_UPDATE</param>
     </action>
 
     <action name="showSortAttributeForm" class="org.hisp.dhis.dataadmin.action.attribute.GetAttributeListSortOrderAction">
@@ -486,18 +486,18 @@
     <action name="addAttribute" class="org.hisp.dhis.dataadmin.action.attribute.AddAttributeAction">
       <result name="success" type="redirect">attribute.action</result>
       <result name="error" type="redirect">index.action</result>
-      <param name="requiredAuthorities">F_DATAELEMENT_ADD</param>
+      <param name="requiredAuthorities">F_ATTRIBUTE_ADD</param>
     </action>
 
     <action name="saveAttributeSortOrder" class="org.hisp.dhis.dataadmin.action.attribute.SaveAttributeSortOrderAction">
       <result name="success" type="redirect">attribute.action</result>
-      <param name="requiredAuthorities">F_DATAELEMENT_UPDATE</param>
+      <param name="requiredAuthorities">F_ATTRIBUTE_UPDATE</param>
     </action>
 
     <action name="updateAttribute" class="org.hisp.dhis.dataadmin.action.attribute.UpdateAttributeAction">
       <result name="success" type="redirect">attribute.action</result>
       <result name="error" type="redirect">index.action</result>
-      <param name="requiredAuthorities">F_DATAELEMENT_UPDATE</param>
+      <param name="requiredAuthorities">F_ATTRIBUTE_UPDATE</param>
     </action>
 
     <action name="removeAttribute" class="org.hisp.dhis.dataadmin.action.attribute.RemoveAttributeAction">
@@ -508,7 +508,7 @@
         /dhis-web-commons/ajax/jsonResponseError.vm
       </result>
       <param name="onExceptionReturn">plainTextError</param>
-      <param name="requiredAuthorities">F_DATAELEMENT_DELETE</param>
+      <param name="requiredAuthorities">F_ATTRIBUTE_DELETE</param>
     </action>
 
     <action name="getAttribute" class="org.hisp.dhis.dataadmin.action.attribute.GetAttributeAction">

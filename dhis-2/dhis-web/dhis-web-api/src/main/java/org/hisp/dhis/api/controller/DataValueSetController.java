@@ -33,6 +33,7 @@ import org.hisp.dhis.api.webdomain.DataValueSets;
 import org.hisp.dhis.importexport.dxf2.model.DataValueSet;
 import org.hisp.dhis.importexport.dxf2.service.DataValueSetService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -59,11 +60,12 @@ public class DataValueSetController
     }
 
     @RequestMapping( method = RequestMethod.POST )
+    @PreAuthorize( "hasRole('ALL') or hasRole('F_DATAVALUE_ADD')" )
     public void storeDataValueSet( @RequestBody DataValueSet dataValueSet )
     {
         dataValueSetService.saveDataValueSet( dataValueSet );
 
-        log.debug( "Saved data value set for data set: " + dataValueSet.getDataSetIdentifier() + 
-                ", org unit: " + dataValueSet.getOrganisationUnitIdentifier() + ", period: " + dataValueSet.getPeriodIsoDate() );
+        log.debug( "Saved data value set for data set: " + dataValueSet.getDataSetIdentifier() +
+            ", org unit: " + dataValueSet.getOrganisationUnitIdentifier() + ", period: " + dataValueSet.getPeriodIsoDate() );
     }
 }

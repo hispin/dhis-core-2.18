@@ -35,6 +35,7 @@ import org.hisp.dhis.indicator.IndicatorType;
 import org.hisp.dhis.indicator.IndicatorTypes;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
@@ -119,6 +120,7 @@ public class IndicatorTypeController
     //-------------------------------------------------------------------------------------------------------
 
     @RequestMapping( method = RequestMethod.POST, headers = {"Content-Type=application/xml, text/xml"} )
+    @PreAuthorize( "hasRole('ALL') or hasRole('F_INDICATORTYPE_ADD')" )
     @ResponseStatus( value = HttpStatus.CREATED )
     public void postIndicatorTypeXML( HttpServletResponse response, InputStream input ) throws Exception
     {
@@ -126,6 +128,7 @@ public class IndicatorTypeController
     }
 
     @RequestMapping( method = RequestMethod.POST, headers = {"Content-Type=application/json"} )
+    @PreAuthorize( "hasRole('ALL') or hasRole('F_INDICATORTYPE_ADD')" )
     @ResponseStatus( value = HttpStatus.CREATED )
     public void postIndicatorTypeJSON( HttpServletResponse response, InputStream input ) throws Exception
     {
@@ -137,6 +140,7 @@ public class IndicatorTypeController
     //-------------------------------------------------------------------------------------------------------
 
     @RequestMapping( value = "/{uid}", method = RequestMethod.PUT, headers = {"Content-Type=application/xml, text/xml"} )
+    @PreAuthorize( "hasRole('ALL') or hasRole('F_INDICATORTYPE_UPDATE')" )
     @ResponseStatus( value = HttpStatus.NO_CONTENT )
     public void putIndicatorTypeXML( @PathVariable( "uid" ) String uid, InputStream input ) throws Exception
     {
@@ -144,6 +148,7 @@ public class IndicatorTypeController
     }
 
     @RequestMapping( value = "/{uid}", method = RequestMethod.PUT, headers = {"Content-Type=application/json"} )
+    @PreAuthorize( "hasRole('ALL') or hasRole('F_INDICATORTYPE_UPDATE')" )
     @ResponseStatus( value = HttpStatus.NO_CONTENT )
     public void putIndicatorTypeJSON( @PathVariable( "uid" ) String uid, InputStream input ) throws Exception
     {
@@ -155,6 +160,7 @@ public class IndicatorTypeController
     //-------------------------------------------------------------------------------------------------------
 
     @RequestMapping( value = "/{uid}", method = RequestMethod.DELETE )
+    @PreAuthorize( "hasRole('ALL') or hasRole('F_INDICATORTYPE_DELETE')" )
     @ResponseStatus( value = HttpStatus.NO_CONTENT )
     public void deleteIndicatorType( @PathVariable( "uid" ) String uid ) throws Exception
     {

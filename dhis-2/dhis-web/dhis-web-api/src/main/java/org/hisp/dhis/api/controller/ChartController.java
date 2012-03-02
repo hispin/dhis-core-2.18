@@ -44,6 +44,7 @@ import org.jfree.chart.ChartUtilities;
 import org.jfree.chart.JFreeChart;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
@@ -173,6 +174,7 @@ public class ChartController
     //-------------------------------------------------------------------------------------------------------
 
     @RequestMapping( method = RequestMethod.POST, headers = {"Content-Type=application/xml, text/xml"} )
+    @PreAuthorize( "hasRole('ALL') or hasRole('F_CHART_ADD')" )
     @ResponseStatus( value = HttpStatus.CREATED )
     public void postChartXML( HttpServletResponse response, InputStream input ) throws Exception
     {
@@ -180,6 +182,7 @@ public class ChartController
     }
 
     @RequestMapping( method = RequestMethod.POST, headers = {"Content-Type=application/json"} )
+    @PreAuthorize( "hasRole('ALL') or hasRole('F_CHART_ADD')" )
     @ResponseStatus( value = HttpStatus.CREATED )
     public void postChartJSON( HttpServletResponse response, InputStream input ) throws Exception
     {
@@ -191,6 +194,7 @@ public class ChartController
     //-------------------------------------------------------------------------------------------------------
 
     @RequestMapping( value = "/{uid}", method = RequestMethod.PUT, headers = {"Content-Type=application/xml, text/xml"} )
+    @PreAuthorize( "hasRole('ALL') or hasRole('F_CHART_UPDATE')" )
     @ResponseStatus( value = HttpStatus.NO_CONTENT )
     public void putChartXML( @PathVariable( "uid" ) String uid, InputStream input ) throws Exception
     {
@@ -198,6 +202,7 @@ public class ChartController
     }
 
     @RequestMapping( value = "/{uid}", method = RequestMethod.PUT, headers = {"Content-Type=application/json"} )
+    @PreAuthorize( "hasRole('ALL') or hasRole('F_CHART_UPDATE')" )
     @ResponseStatus( value = HttpStatus.NO_CONTENT )
     public void putChartJSON( @PathVariable( "uid" ) String uid, InputStream input ) throws Exception
     {
@@ -209,6 +214,7 @@ public class ChartController
     //-------------------------------------------------------------------------------------------------------
 
     @RequestMapping( value = "/{uid}", method = RequestMethod.DELETE )
+    @PreAuthorize( "hasRole('ALL') or hasRole('F_CHART_DELETE')" )
     @ResponseStatus( value = HttpStatus.NO_CONTENT )
     public void deleteChart( @PathVariable( "uid" ) String uid ) throws Exception
     {

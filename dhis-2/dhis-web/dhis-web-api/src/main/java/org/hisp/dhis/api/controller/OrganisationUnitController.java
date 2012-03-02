@@ -98,7 +98,7 @@ public class OrganisationUnitController
     //-------------------------------------------------------------------------------------------------------
 
     @RequestMapping( method = RequestMethod.POST, headers = {"Content-Type=application/xml, text/xml"} )
-    @PreAuthorize( "hasRole('ALL') or hasRole('F_WEBAPI_CREATE')" )
+    @PreAuthorize( "hasRole('ALL') or hasRole('F_ORGANISATIONUNIT_ADD')" )
     public void postOrganisationUnitXML( HttpServletResponse response, InputStream input ) throws Exception
     {
         OrganisationUnit organisationUnit = Jaxb2Utils.unmarshal( OrganisationUnit.class, input );
@@ -106,7 +106,7 @@ public class OrganisationUnitController
     }
 
     @RequestMapping( method = RequestMethod.POST, headers = {"Content-Type=application/json"} )
-    @PreAuthorize( "hasRole('ALL') or hasRole('F_WEBAPI_CREATE')" )
+    @PreAuthorize( "hasRole('ALL') or hasRole('F_ORGANISATIONUNIT_ADD')" )
     public void postOrganisationUnitJSON( HttpServletResponse response, InputStream input ) throws Exception
     {
         throw new HttpRequestMethodNotSupportedException( RequestMethod.POST.toString() );
@@ -146,6 +146,7 @@ public class OrganisationUnitController
     //-------------------------------------------------------------------------------------------------------
 
     @RequestMapping( value = "/{uid}", method = RequestMethod.PUT, headers = {"Content-Type=application/xml, text/xml"} )
+    @PreAuthorize( "hasRole('ALL') or hasRole('F_ORGANISATIONUNIT_UPDATE')" )
     @ResponseStatus( value = HttpStatus.NO_CONTENT )
     public void putOrganisationUnitXML( @PathVariable( "uid" ) String uid, InputStream input ) throws Exception
     {
@@ -153,6 +154,7 @@ public class OrganisationUnitController
     }
 
     @RequestMapping( value = "/{uid}", method = RequestMethod.PUT, headers = {"Content-Type=application/json"} )
+    @PreAuthorize( "hasRole('ALL') or hasRole('F_ORGANISATIONUNIT_UPDATE')" )
     @ResponseStatus( value = HttpStatus.NO_CONTENT )
     public void putOrganisationUnitJSON( @PathVariable( "uid" ) String uid, InputStream input ) throws Exception
     {
@@ -164,6 +166,7 @@ public class OrganisationUnitController
     //-------------------------------------------------------------------------------------------------------
 
     @RequestMapping( value = "/{uid}", method = RequestMethod.DELETE )
+    @PreAuthorize( "hasRole('ALL') or hasRole('F_ORGANISATIONUNIT_DELETE')" )
     @ResponseStatus( value = HttpStatus.NO_CONTENT )
     public void deleteOrganisationUnit( @PathVariable( "uid" ) String uid ) throws Exception
     {

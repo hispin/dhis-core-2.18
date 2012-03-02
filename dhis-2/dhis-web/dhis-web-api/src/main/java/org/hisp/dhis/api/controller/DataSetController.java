@@ -35,6 +35,7 @@ import org.hisp.dhis.dataset.DataSetService;
 import org.hisp.dhis.dataset.DataSets;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
@@ -118,6 +119,7 @@ public class DataSetController
 
     @RequestMapping( method = RequestMethod.POST, headers = {"Content-Type=application/xml, text/xml"} )
     @ResponseStatus( value = HttpStatus.CREATED )
+    @PreAuthorize( "hasRole('ALL') or hasRole('F_DATASET_ADD')" )
     public void postDataSetXML( HttpServletResponse response, InputStream input ) throws Exception
     {
         throw new HttpRequestMethodNotSupportedException( RequestMethod.POST.toString() );
@@ -125,6 +127,7 @@ public class DataSetController
 
     @RequestMapping( method = RequestMethod.POST, headers = {"Content-Type=application/json"} )
     @ResponseStatus( value = HttpStatus.CREATED )
+    @PreAuthorize( "hasRole('ALL') or hasRole('F_DATASET_ADD')" )
     public void postDataSetJSON( HttpServletResponse response, InputStream input ) throws Exception
     {
         throw new HttpRequestMethodNotSupportedException( RequestMethod.POST.toString() );
@@ -136,6 +139,7 @@ public class DataSetController
 
     @RequestMapping( value = "/{uid}", method = RequestMethod.PUT, headers = {"Content-Type=application/xml, text/xml"} )
     @ResponseStatus( value = HttpStatus.NO_CONTENT )
+    @PreAuthorize( "hasRole('ALL') or hasRole('F_DATASET_UPDATE')" )
     public void putDataSetXML( @PathVariable( "uid" ) String uid, InputStream input ) throws Exception
     {
         throw new HttpRequestMethodNotSupportedException( RequestMethod.PUT.toString() );
@@ -143,6 +147,7 @@ public class DataSetController
 
     @RequestMapping( value = "/{uid}", method = RequestMethod.PUT, headers = {"Content-Type=application/json"} )
     @ResponseStatus( value = HttpStatus.NO_CONTENT )
+    @PreAuthorize( "hasRole('ALL') or hasRole('F_DATASET_UPDATE')" )
     public void putDataSetJSON( @PathVariable( "uid" ) String uid, InputStream input ) throws Exception
     {
         throw new HttpRequestMethodNotSupportedException( RequestMethod.PUT.toString() );
@@ -154,6 +159,7 @@ public class DataSetController
 
     @RequestMapping( value = "/{uid}", method = RequestMethod.DELETE )
     @ResponseStatus( value = HttpStatus.NO_CONTENT )
+    @PreAuthorize( "hasRole('ALL') or hasRole('F_DATASET_DELETE')" )
     public void deleteDataSet( @PathVariable( "uid" ) String uid ) throws Exception
     {
         throw new HttpRequestMethodNotSupportedException( RequestMethod.DELETE.toString() );

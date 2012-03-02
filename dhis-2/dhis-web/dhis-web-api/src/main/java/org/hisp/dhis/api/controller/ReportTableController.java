@@ -42,6 +42,7 @@ import org.hisp.dhis.system.util.DateUtils;
 import org.hisp.dhis.api.utils.ContextUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
@@ -221,6 +222,7 @@ public class ReportTableController
     //-------------------------------------------------------------------------------------------------------
 
     @RequestMapping( method = RequestMethod.POST, headers = {"Content-Type=application/xml, text/xml"} )
+    @PreAuthorize( "hasRole('ALL') or hasRole('F_REPORTTABLE_ADD')" )
     @ResponseStatus( value = HttpStatus.CREATED )
     public void postReportTableXML( HttpServletResponse response, InputStream input ) throws Exception
     {
@@ -228,6 +230,7 @@ public class ReportTableController
     }
 
     @RequestMapping( method = RequestMethod.POST, headers = {"Content-Type=application/json"} )
+    @PreAuthorize( "hasRole('ALL') or hasRole('F_REPORTTABLE_ADD')" )
     @ResponseStatus( value = HttpStatus.CREATED )
     public void postReportTableJSON( HttpServletResponse response, InputStream input ) throws Exception
     {
@@ -239,6 +242,7 @@ public class ReportTableController
     //-------------------------------------------------------------------------------------------------------
 
     @RequestMapping( value = "/{uid}", method = RequestMethod.PUT, headers = {"Content-Type=application/xml, text/xml"} )
+    @PreAuthorize( "hasRole('ALL') or hasRole('F_REPORTTABLE_ADD')" )
     @ResponseStatus( value = HttpStatus.NO_CONTENT )
     public void putReportTableXML( @PathVariable( "uid" ) String uid, InputStream input ) throws Exception
     {
@@ -246,6 +250,7 @@ public class ReportTableController
     }
 
     @RequestMapping( value = "/{uid}", method = RequestMethod.PUT, headers = {"Content-Type=application/json"} )
+    @PreAuthorize( "hasRole('ALL') or hasRole('F_REPORTTABLE_ADD')" )
     @ResponseStatus( value = HttpStatus.NO_CONTENT )
     public void putReportTableJSON( @PathVariable( "uid" ) String uid, InputStream input ) throws Exception
     {
@@ -257,6 +262,7 @@ public class ReportTableController
     //-------------------------------------------------------------------------------------------------------
 
     @RequestMapping( value = "/{uid}", method = RequestMethod.DELETE )
+    @PreAuthorize( "hasRole('ALL') or hasRole('F_REPORTTABLE_DELETE')" )
     @ResponseStatus( value = HttpStatus.NO_CONTENT )
     public void deleteReportTable( @PathVariable( "uid" ) String uid ) throws Exception
     {

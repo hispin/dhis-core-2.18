@@ -35,6 +35,7 @@ import org.hisp.dhis.indicator.IndicatorGroupSets;
 import org.hisp.dhis.indicator.IndicatorService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
@@ -119,6 +120,7 @@ public class IndicatorGroupSetController
     //-------------------------------------------------------------------------------------------------------
 
     @RequestMapping( method = RequestMethod.POST, headers = {"Content-Type=application/xml, text/xml"} )
+    @PreAuthorize( "hasRole('ALL') or hasRole('F_INDICATORGROUPSET_ADD')" )
     @ResponseStatus( value = HttpStatus.CREATED )
     public void postIndicatorGroupSetXML( HttpServletResponse response, InputStream input ) throws Exception
     {
@@ -126,6 +128,7 @@ public class IndicatorGroupSetController
     }
 
     @RequestMapping( method = RequestMethod.POST, headers = {"Content-Type=application/json"} )
+    @PreAuthorize( "hasRole('ALL') or hasRole('F_INDICATORGROUPSET_ADD')" )
     @ResponseStatus( value = HttpStatus.CREATED )
     public void postIndicatorGroupSetJSON( HttpServletResponse response, InputStream input ) throws Exception
     {
@@ -137,6 +140,7 @@ public class IndicatorGroupSetController
     //-------------------------------------------------------------------------------------------------------
 
     @RequestMapping( value = "/{uid}", method = RequestMethod.PUT, headers = {"Content-Type=application/xml, text/xml"} )
+    @PreAuthorize( "hasRole('ALL') or hasRole('F_INDICATORGROUPSET_UPDATE')" )
     @ResponseStatus( value = HttpStatus.NO_CONTENT )
     public void putIndicatorGroupSetXML( @PathVariable( "uid" ) String uid, InputStream input ) throws Exception
     {
@@ -144,6 +148,7 @@ public class IndicatorGroupSetController
     }
 
     @RequestMapping( value = "/{uid}", method = RequestMethod.PUT, headers = {"Content-Type=application/json"} )
+    @PreAuthorize( "hasRole('ALL') or hasRole('F_INDICATORGROUPSET_UPDATE')" )
     @ResponseStatus( value = HttpStatus.NO_CONTENT )
     public void putIndicatorGroupSetJSON( @PathVariable( "uid" ) String uid, InputStream input ) throws Exception
     {
@@ -155,6 +160,7 @@ public class IndicatorGroupSetController
     //-------------------------------------------------------------------------------------------------------
 
     @RequestMapping( value = "/{uid}", method = RequestMethod.DELETE )
+    @PreAuthorize( "hasRole('ALL') or hasRole('F_INDICATORGROUPSET_DELETE')" )
     @ResponseStatus( value = HttpStatus.NO_CONTENT )
     public void deleteIndicatorGroupSet( @PathVariable( "uid" ) String uid ) throws Exception
     {
