@@ -70,14 +70,14 @@ public class ContextUtils
             // -----------------------------------------------------------------
 
             response.setHeader( "Cache-Control", "max-age=1" );
-            response.addHeader( "Expires", DateUtils.getExpiredHttpDateString() );
+            response.setHeader( "Expires", DateUtils.getExpiredHttpDateString() );
         }
 
         if ( filename != null )
         {
             String type = attachment ? "attachment" : "inline";
 
-            response.addHeader( "Content-Disposition", type + "; filename=\"" + filename + "\"" );
+            response.setHeader( "Content-Disposition", type + "; filename=\"" + filename + "\"" );
         }
     }
 
