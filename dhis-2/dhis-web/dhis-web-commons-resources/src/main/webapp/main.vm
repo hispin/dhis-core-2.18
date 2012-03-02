@@ -119,10 +119,10 @@
       <div id="menuDropDown1" class="menuDropDownArea" >
         <ul class="menuDropDownBox">
         #foreach( $module in $maintenanceModules )
-          #set( $i18nName = false )
-          #set( $i18nName = $i18n.getString( $module.name ) )
           #if( $auth.hasAccess( $module.name, "index" ) )
-            <li class="menuDropDownItem" onclick="window.location.href='$module.defaultAction'">#if( $i18nName )$i18nName #else$module.name #end&nbsp;</li>
+            <li class="menuDropDownItem" onclick="window.location.href='${module.defaultAction}'">
+            	<a href="${module.defaultAction}">$i18n.getString( $module.name )&nbsp;</a>
+            </li>
           #end
         #end
         </ul>      
@@ -131,10 +131,10 @@
       <div id="menuDropDown2" class="menuDropDownArea">
         <ul class="menuDropDownBox">
         #foreach( $module in $serviceModules )
-          #set( $i18nName = false )
-          #set( $i18nName = $i18n.getString( $module.name ) )
           #if( $auth.hasAccess( $module.name, "index" ) )
-            <li class="menuDropDownItem" onclick="window.location.href='$module.defaultAction'">#if( $i18nName )$i18nName #else$module.name #end&nbsp;</li>
+            <li class="menuDropDownItem" onclick="window.location.href='${module.defaultAction}'">
+            	<a href="${module.defaultAction}">$i18n.getString( $module.name )&nbsp;</a>
+            </li>
           #end
         #end
         </ul>      
