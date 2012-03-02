@@ -93,18 +93,18 @@
   padding-bottom:15px;
 }
 
-a
+.page a
 {
   text-decoration:none;
   color:#3567cd;
 }
 
-a:hover
+.page a:hover
 {
   text-decoration:underline;
 }
 
-a:visited
+.page a:visited
 {
   color:#3567cd;
 }

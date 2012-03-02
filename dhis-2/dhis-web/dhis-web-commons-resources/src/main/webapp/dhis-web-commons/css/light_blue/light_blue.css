@@ -208,6 +208,16 @@ div#menuDropDown3
   border-bottom-right-radius: 3px;
 }
 
+.menuDropDownArea a
+{
+  color: #ffffff;
+}
+
+.menuDropDownArea a:hover
+{
+  text-decoration: none;
+}
+
 .menuDropDownBox
 {
   list-style-type:none;
@@ -216,9 +226,9 @@ div#menuDropDown3
 
 .menuDropDownItem
 {
-  padding-top: 6px;
+  padding-top: 8px;
   padding-left: 10px;
-  padding-bottom: 5px;
+  padding-bottom: 7px;
   padding-right: 10px;
   cursor: pointer;
   border-radius: 3px;
