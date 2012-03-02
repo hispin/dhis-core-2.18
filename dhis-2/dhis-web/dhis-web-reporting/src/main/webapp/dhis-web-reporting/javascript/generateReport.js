@@ -2,23 +2,12 @@ var MODE_REPORT = "report";
 var MODE_TABLE = "table";
 
 // -----------------------------------------------------------------------------
-// Report params
-// -----------------------------------------------------------------------------
-
-var paramOrganisationUnit = null;
-
-function paramOrganisationUnitSet( id )
-{
-    paramOrganisationUnit = id;
-}
-
-// -----------------------------------------------------------------------------
 // Validation
 // -----------------------------------------------------------------------------
 
 function validationError()
 {
-    if ( $( "#selectionTree" ).length && paramOrganisationUnit == null )
+    if ( $( "#selectionTree" ).length && !selectionTreeSelection.isSelected() )
     {
         setMessage( i18n_please_select_unit );
         return true;
@@ -63,9 +52,9 @@ function getUrlParams()
         url += "&reportingPeriod=" + $( "#reportingPeriod" ).val();
     }
 
-    if ( paramOrganisationUnit != null )
+    if ( selectionTreeSelection.isSelected() )
     {
-        url += "&organisationUnitId=" + paramOrganisationUnit;
+        url += "&organisationUnitId=" + selectedOrganisationUnit[0];
     }
 
     return url;
