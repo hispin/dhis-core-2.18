@@ -1,13 +1,17 @@
 
 <script type="text/javascript">
-	jQuery(document).ready(function() {
-		#if( !$!reportParams.isSet() )
-		viewReport( '' );
-		#end
-	});
+jQuery(document).ready(function() {
+	#if( !$!reportParams.isSet() )
+	viewReport( '' );
+	#end
+	
+	selectionTreeSelection.setMultipleSelectionAllowed( false );
+	selectionTree.clearSelectedOrganisationUnits();
+	selectionTree.buildSelectionTree();
+});
 
-    var i18n_process_completed = '$encoder.jsEscape( $i18n.getString( "process_completed" ), "'")';
-	var i18n_please_select_unit = '$encoder.jsEscape( $i18n.getString( "select_organisation_unit" ), "'")';
+var i18n_process_completed = '$encoder.jsEscape( $i18n.getString( "process_completed" ), "'")';
+var i18n_please_select_unit = '$encoder.jsEscape( $i18n.getString( "select_organisation_unit" ), "'")';
 </script>
 
 <h3>$i18n.getString( "report_table_parameters" )</h3>
@@ -48,13 +52,7 @@
     </tr>
     <tr>
 	    <td>
-			<div id="selectionTree" style="width:325px; height:200px"></div>	            
-			<script type="text/javascript">
-				selectionTreeSelection.setMultipleSelectionAllowed( false );
-				selectionTreeSelection.setListenerFunction( paramOrganisationUnitSet );
-				selectionTree.clearSelectedOrganisationUnits();
-			    selectionTree.buildSelectionTree();
-			</script>
+			<div id="selectionTree" style="width:325px; height:210px"></div>
 	    </td>
 	</tr>
     <tr>
