@@ -150,9 +150,6 @@
       <result name="success" type="velocity-xml">
         /dhis-web-commons/ouwt/responseSuccess.vm
       </result>
-      <result name="error" type="velocity-xml">
-        /dhis-web-commons/ouwt/responseError.vm
-      </result>
       <param name="onExceptionReturn">plainTextError</param>
     </action>
 
@@ -193,9 +190,6 @@
     <action name="clearselected" class="org.hisp.dhis.ouwt.action.ClearSelectedOrganisationUnitsAction">
       <result name="success" type="velocity-xml">
         /dhis-web-commons/ouwt/responseSuccess.vm
-      </result>
-      <result name="error" type="velocity-xml">
-        /dhis-web-commons/ouwt/responseError.vm
       </result>
       <param name="onExceptionReturn">plainTextError</param>
     </action>

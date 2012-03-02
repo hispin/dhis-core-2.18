@@ -122,13 +122,9 @@ function SelectionTree()
     this.clearSelectedOrganisationUnits = function()
     {
     	$.ajax({ 
-    		"url" : selectionTreePath + "clearSelectedOrganisationUnits.action",
-    		async : false,
-			dataType :"xml",
-    		"success" : function( data )
-    	   	{
-    			clearSelectedOrgUnitsCompleted( data );
-    	   	} 
+    		url: selectionTreePath + "clearSelectedOrganisationUnits.action",
+			async: false,
+			dataType: "xml"
     	});
     };
 
@@ -360,17 +356,4 @@ function SelectionTree()
     {
         treeTag.style.backgroundImage = 'none';
     }
-		
-	function clearSelectedOrgUnitsCompleted( xmlObject )
-	{
-		if ( xmlObject != null )
-		{
-			var type = xmlObject.documentElement.attributes.getNamedItem("type").nodeValue;
-			
-			if ( type == 'error' )
-			{
-				alert( xmlObject.documentElement.childNodes[0].nodeValue );
-			}
-		}		
-	}
 }

@@ -55,7 +55,7 @@ public class ClearSelectedOrganisationUnitsAction
     public String execute()
         throws Exception
     {
-         selectionManager.clearSelectedOrganisationUnits();
+        selectionManager.clearSelectedOrganisationUnits();
 
         return SUCCESS;
     }

@@ -51,35 +51,13 @@ public class ClearSelectedOrganisationUnitsAction
     }
 
     // -------------------------------------------------------------------------
-    // Output
-    // -------------------------------------------------------------------------
-    
-    private String message;
-
-    public String getMessage()
-    {
-        return message;
-    }
-
-    // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
     
     public String execute()
     {
-        try
-        {
-            selectionTreeManager.clearSelectedOrganisationUnits();
-        }
-        catch ( Exception e )
-        {
-            message = "cannot_clear_selected_orgunits";
-
-            return ERROR;
-        }
-
-        message = "OK";
-
+        selectionTreeManager.clearSelectedOrganisationUnits();
+        
         return SUCCESS;
     }
 }
