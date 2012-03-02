@@ -125,7 +125,7 @@ public class OrganisationUnitGroupSetController
     //-------------------------------------------------------------------------------------------------------
 
     @RequestMapping( method = RequestMethod.POST, headers = {"Content-Type=application/xml, text/xml"} )
-    @PreAuthorize( "hasRole('ALL') or hasRole('F_WEBAPI_CREATE')" )
+    @PreAuthorize( "hasRole('ALL') or hasRole('F_ORGUNITGROUPSET_ADD')" )
     public void postOrganisationUnitGroupSetXML( HttpServletResponse response, InputStream input ) throws Exception
     {
         OrganisationUnitGroupSet organisationUnitGroupSet = Jaxb2Utils.unmarshal( OrganisationUnitGroupSet.class, input );
@@ -133,7 +133,7 @@ public class OrganisationUnitGroupSetController
     }
 
     @RequestMapping( method = RequestMethod.POST, headers = {"Content-Type=application/json"} )
-    @PreAuthorize( "hasRole('ALL') or hasRole('F_WEBAPI_CREATE')" )
+    @PreAuthorize( "hasRole('ALL') or hasRole('F_ORGUNITGROUPSET_ADD')" )
     public void postOrganisationUnitGroupSetJSON( HttpServletResponse response, InputStream input ) throws Exception
     {
         throw new HttpRequestMethodNotSupportedException( RequestMethod.POST.toString() );
@@ -173,6 +173,7 @@ public class OrganisationUnitGroupSetController
     //-------------------------------------------------------------------------------------------------------
 
     @RequestMapping( value = "/{uid}", method = RequestMethod.PUT, headers = {"Content-Type=application/xml, text/xml"} )
+    @PreAuthorize( "hasRole('ALL') or hasRole('F_ORGUNITGROUPSET_UPDATE')" )
     @ResponseStatus( value = HttpStatus.NO_CONTENT )
     public void putOrganisationUnitGroupSetXML( @PathVariable( "uid" ) String uid, InputStream input ) throws Exception
     {
@@ -180,6 +181,7 @@ public class OrganisationUnitGroupSetController
     }
 
     @RequestMapping( value = "/{uid}", method = RequestMethod.PUT, headers = {"Content-Type=application/json"} )
+    @PreAuthorize( "hasRole('ALL') or hasRole('F_ORGUNITGROUPSET_UPDATE')" )
     @ResponseStatus( value = HttpStatus.NO_CONTENT )
     public void putOrganisationUnitGroupSetJSON( @PathVariable( "uid" ) String uid, InputStream input ) throws Exception
     {
@@ -191,6 +193,7 @@ public class OrganisationUnitGroupSetController
     //-------------------------------------------------------------------------------------------------------
 
     @RequestMapping( value = "/{uid}", method = RequestMethod.DELETE )
+    @PreAuthorize( "hasRole('ALL') or hasRole('F_ORGUNITGROUPSET_DELETE')" )
     @ResponseStatus( value = HttpStatus.NO_CONTENT )
     public void deleteOrganisationUnitGroupSet( @PathVariable( "uid" ) String uid ) throws Exception
     {

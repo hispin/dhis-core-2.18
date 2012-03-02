@@ -35,6 +35,7 @@ import org.hisp.dhis.dataelement.DataElementCategoryCombos;
 import org.hisp.dhis.dataelement.DataElementCategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
@@ -120,6 +121,7 @@ public class CategoryComboController
 
     @RequestMapping( method = RequestMethod.POST, headers = {"Content-Type=application/xml, text/xml"} )
     @ResponseStatus( value = HttpStatus.CREATED )
+    @PreAuthorize( "hasRole('ALL') or hasRole('F_DATAELEMENT_ADD')" )
     public void postCategoryComboXML( HttpServletResponse response, InputStream input ) throws Exception
     {
         throw new HttpRequestMethodNotSupportedException( RequestMethod.POST.toString() );
@@ -127,6 +129,7 @@ public class CategoryComboController
 
     @RequestMapping( method = RequestMethod.POST, headers = {"Content-Type=application/json"} )
     @ResponseStatus( value = HttpStatus.CREATED )
+    @PreAuthorize( "hasRole('ALL') or hasRole('F_DATAELEMENT_ADD')" )
     public void postCategoryComboJSON( HttpServletResponse response, InputStream input ) throws Exception
     {
         throw new HttpRequestMethodNotSupportedException( RequestMethod.POST.toString() );
@@ -137,6 +140,7 @@ public class CategoryComboController
     //-------------------------------------------------------------------------------------------------------
 
     @RequestMapping( value = "/{uid}", method = RequestMethod.PUT, headers = {"Content-Type=application/xml, text/xml"} )
+    @PreAuthorize( "hasRole('ALL') or hasRole('F_DATAELEMENT_UPDATE')" )
     @ResponseStatus( value = HttpStatus.NO_CONTENT )
     public void putCategoryComboXML( @PathVariable( "uid" ) String uid, InputStream input ) throws Exception
     {
@@ -144,6 +148,7 @@ public class CategoryComboController
     }
 
     @RequestMapping( value = "/{uid}", method = RequestMethod.PUT, headers = {"Content-Type=application/json"} )
+    @PreAuthorize( "hasRole('ALL') or hasRole('F_DATAELEMENT_UPDATE')" )
     @ResponseStatus( value = HttpStatus.NO_CONTENT )
     public void putCategoryComboJSON( @PathVariable( "uid" ) String uid, InputStream input ) throws Exception
     {
@@ -155,6 +160,7 @@ public class CategoryComboController
     //-------------------------------------------------------------------------------------------------------
 
     @RequestMapping( value = "/{uid}", method = RequestMethod.DELETE )
+    @PreAuthorize( "hasRole('ALL') or hasRole('F_DATAELEMENT_DELETE')" )
     @ResponseStatus( value = HttpStatus.NO_CONTENT )
     public void deleteCategoryCombo( @PathVariable( "uid" ) String uid ) throws Exception
     {

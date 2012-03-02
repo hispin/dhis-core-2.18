@@ -40,6 +40,7 @@ import org.hisp.dhis.user.UserService;
 import org.hisp.dhis.user.Users;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
@@ -102,6 +103,7 @@ public class UserController
     //-------------------------------------------------------------------------------------------------------
 
     @RequestMapping( method = RequestMethod.POST, headers = {"Content-Type=application/xml, text/xml"} )
+    @PreAuthorize( "hasRole('ALL') or hasRole('F_USER_ADD')" )
     @ResponseStatus( value = HttpStatus.CREATED )
     public void postUserXML( HttpServletResponse response, InputStream input ) throws Exception
     {
@@ -109,6 +111,7 @@ public class UserController
     }
 
     @RequestMapping( method = RequestMethod.POST, headers = {"Content-Type=application/json"} )
+    @PreAuthorize( "hasRole('ALL') or hasRole('F_USER_ADD')" )
     @ResponseStatus( value = HttpStatus.CREATED )
     public void postUserJSON( HttpServletResponse response, InputStream input ) throws Exception
     {
@@ -120,6 +123,7 @@ public class UserController
     //-------------------------------------------------------------------------------------------------------
 
     @RequestMapping( value = "/{uid}", method = RequestMethod.PUT, headers = {"Content-Type=application/xml, text/xml"} )
+    @PreAuthorize( "hasRole('ALL') or hasRole('F_USER_UPDATE')" )
     @ResponseStatus( value = HttpStatus.NO_CONTENT )
     public void putUserXML( @PathVariable( "uid" ) String uid, InputStream input ) throws Exception
     {
@@ -127,6 +131,7 @@ public class UserController
     }
 
     @RequestMapping( value = "/{uid}", method = RequestMethod.PUT, headers = {"Content-Type=application/json"} )
+    @PreAuthorize( "hasRole('ALL') or hasRole('F_USER_UPDATE')" )
     @ResponseStatus( value = HttpStatus.NO_CONTENT )
     public void putUserJSON( @PathVariable( "uid" ) String uid, InputStream input ) throws Exception
     {
@@ -138,6 +143,7 @@ public class UserController
     //-------------------------------------------------------------------------------------------------------
 
     @RequestMapping( value = "/{uid}", method = RequestMethod.DELETE )
+    @PreAuthorize( "hasRole('ALL') or hasRole('F_USER_DELETE')" )
     @ResponseStatus( value = HttpStatus.NO_CONTENT )
     public void deleteUser( @PathVariable( "uid" ) String uid ) throws Exception
     {

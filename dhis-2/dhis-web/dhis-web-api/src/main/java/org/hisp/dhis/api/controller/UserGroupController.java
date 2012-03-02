@@ -34,6 +34,7 @@ import org.hisp.dhis.user.UserGroupService;
 import org.hisp.dhis.user.UserGroups;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
@@ -101,6 +102,7 @@ public class UserGroupController
     //-------------------------------------------------------------------------------------------------------
 
     @RequestMapping( method = RequestMethod.POST, headers = {"Content-Type=application/xml, text/xml"} )
+    @PreAuthorize( "hasRole('ALL') or hasRole('F_USER_GRUP_ADD')" )
     @ResponseStatus( value = HttpStatus.CREATED )
     public void postUserGroupXML( HttpServletResponse response, InputStream input ) throws Exception
     {
@@ -108,6 +110,7 @@ public class UserGroupController
     }
 
     @RequestMapping( method = RequestMethod.POST, headers = {"Content-Type=application/json"} )
+    @PreAuthorize( "hasRole('ALL') or hasRole('F_USER_GRUP_ADD')" )
     @ResponseStatus( value = HttpStatus.CREATED )
     public void postUserGroupJSON( HttpServletResponse response, InputStream input ) throws Exception
     {
@@ -119,6 +122,7 @@ public class UserGroupController
     //-------------------------------------------------------------------------------------------------------
 
     @RequestMapping( value = "/{uid}", method = RequestMethod.PUT, headers = {"Content-Type=application/xml, text/xml"} )
+    @PreAuthorize( "hasRole('ALL') or hasRole('F_USER_GRUP_UPDATE')" )
     @ResponseStatus( value = HttpStatus.NO_CONTENT )
     public void putUserGroupXML( @PathVariable( "uid" ) String uid, InputStream input ) throws Exception
     {
@@ -126,6 +130,7 @@ public class UserGroupController
     }
 
     @RequestMapping( value = "/{uid}", method = RequestMethod.PUT, headers = {"Content-Type=application/json"} )
+    @PreAuthorize( "hasRole('ALL') or hasRole('F_USER_GRUP_UPDATE')" )
     @ResponseStatus( value = HttpStatus.NO_CONTENT )
     public void putUserGroupJSON( @PathVariable( "uid" ) String uid, InputStream input ) throws Exception
     {
@@ -137,6 +142,7 @@ public class UserGroupController
     //-------------------------------------------------------------------------------------------------------
 
     @RequestMapping( value = "/{uid}", method = RequestMethod.DELETE )
+    @PreAuthorize( "hasRole('ALL') or hasRole('F_USER_GRUP_DELETE')" )
     @ResponseStatus( value = HttpStatus.NO_CONTENT )
     public void deleteUserGroup( @PathVariable( "uid" ) String uid ) throws Exception
     {
