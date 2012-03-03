@@ -177,7 +177,7 @@ div#orgUnitTree li
   padding-bottom: 1px;
   padding-left: 14px;
   background-color: transparent;
-  background-image: url("../images/treeview-gray-line.gif");
+  background-image: url('../../images/treeview-gray-line.gif');
   background-repeat: no-repeat;
   background-attachment: scroll;
   background-position: 0pt 0pt;
@@ -338,54 +338,22 @@ div#headerMessage
 }
 
 /*----------------------------------------------------------------------------*/
-/* Icon                                                                       */
-/*----------------------------------------------------------------------------*/
-
-.icon 
-{
-  width: 16px;
-  height: 16px;
-  display: inline-block;
-  cursor: pointer;
-}
-
-.icon span 
-{
-  display: none;
-}
-
-.editIcon 
-{
-  background-image: url('../images/edit.png');
-}
-
-.deleteIcon 
-{
-  background-image: url('../images/delete.png');
-}
-
-.calendarIcon 
-{
-  background-image: url('../images/calendar_icon.gif');
-}
-
-/*----------------------------------------------------------------------------*/
 /* Sorting                                                                    */
 /*----------------------------------------------------------------------------*/
 
 table thead tr .header 
 {
-  background-image: url('../images/bg.gif');	
+  background-image: url('../../images/bg.gif');	
 }
 
 table thead tr .headerSortUp
 {
-  background-image: url('../images/asc.gif');	
+  background-image: url('../../images/asc.gif');	
 }
 
 table thead tr .headerSortDown 
 {
-  background-image: url('../images/desc.gif');	
+  background-image: url('../../images/desc.gif');	
 }
 
 table thead tr .headerSortUp,
@@ -399,22 +367,22 @@ table thead tr .header
 
 div.error 
 { 
-	background: url(../images/error.png) no-repeat 10px 10px 
+	background: url('../../images/error.png') no-repeat 10px 10px 
 }
 
 div.success 
 {
-	background: url(../images/success.png) no-repeat 10px 10px
+	background: url('../../images/success.png') no-repeat 10px 10px
 }
 
 div.warning
 { 
-	background: url(../images/warning.png) no-repeat 10px 10px
+	background: url('../../images/warning.png') no-repeat 10px 10px
 }
 
 div.waiting
 {
-	background: url(../images/wrench.png) no-repeat 10px 10px
+	background: url('../../images/wrench.png') no-repeat 10px 10px
 }
 
 div.growlUI h1, div.growlUI h2 
@@ -429,19 +397,19 @@ div.growlUI h2
 
 .ui-autocomplete-loading 
 { 
-	background: white url('../images/ui-anim_basic_16x16.gif') right center no-repeat; 
+	background: white url('../../images/ui-anim_basic.gif') right center no-repeat; 
 }
 
 span.error 
 {
-	background: url('../images/invalid.png') no-repeat;
+	background: url('../../images/invalid.png') no-repeat;
 	padding-left: 16px;
 	margin-left: .3em;
 }
 
 span.valid 
 {
-	background: url('../images/valid.png') no-repeat;	
+	background: url('../../images/valid.png') no-repeat;	
 	padding-left: 16px;
 	margin-left: .3em;
 }
