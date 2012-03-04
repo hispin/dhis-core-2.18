@@ -333,7 +333,6 @@
 			<result name="success" type="velocity">/main.vm</result>
 			<param name="page">/dhis-web-caseentry/selectPatient.vm</param>
 			<param name="menu">/dhis-web-caseentry/registrationMenu.vm</param>
-			<param name="menuTreeHeight">285</param>
 			<param name="javascripts">
 				../dhis-web-commons/ouwt/ouwt.js
 				,javascript/commons.js
