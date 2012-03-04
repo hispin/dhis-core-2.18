@@ -9,7 +9,7 @@ function getDataElements()
 
     if ( dataElementGroupId != null )
     {
-		$.post( '../dhis-web-commons-ajax/getDataElements.action',
+		$.get( '../dhis-web-commons-ajax/getDataElements.action',
 		{
 			id: dataElementGroupId,
 			aggregate: 'true'
@@ -47,10 +47,10 @@ function getCategoryComboDataElements()
 
     if ( categoryComboId != null )
     {
-		$.post( 'getCategoryComboDataElements.action',
+		$.get( 'getCategoryComboDataElements.action',
 		{
 			categoryComboId: categoryComboId
-		},getCategoryComboDataElementsReceived );
+		}, getCategoryComboDataElementsReceived );
     }
 }
 
@@ -83,7 +83,7 @@ function getIndicators()
 
     if ( indicatorGroupId != null )
     {
-		$.post( '../dhis-web-commons-ajax/getIndicators.action',
+		$.get( '../dhis-web-commons-ajax/getIndicators.action',
 		{
 			id: indicatorGroupId
 		},getIndicatorsReceived );
@@ -121,7 +121,7 @@ function getOrganisationUnits()
 
     if ( organisationUnitLevel != null )
     {
-		$.post( '../dhis-web-commons-ajax/getOrganisationUnits.action',
+		$.get( '../dhis-web-commons-ajax/getOrganisationUnits.action',
 		{
 			level: organisationUnitLevel
 		},getOrganisationUnitsReceived );
@@ -161,7 +161,7 @@ function getOrganisationUnitChildren()
 
 		if ( organisationUnitId != null )
 		{
-			$.post( '../dhis-web-commons-ajax/getOrganisationUnitChildren.action',
+			$.get( '../dhis-web-commons-ajax/getOrganisationUnitChildren.action',
 				{
 					id: organisationUnitId
 				},getOrganisationUnitChildrenReceived );

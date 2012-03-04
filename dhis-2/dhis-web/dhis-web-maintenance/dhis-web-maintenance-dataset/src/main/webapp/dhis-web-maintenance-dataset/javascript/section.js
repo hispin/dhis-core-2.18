@@ -4,7 +4,7 @@
 
 function showSectionDetails( sectionId )
 {
-	jQuery.post( 'getSection.action', { sectionId: sectionId }, function ( json ) {
+	jQuery.get( 'getSection.action', { sectionId: sectionId }, function ( json ) {
 		setInnerHTML( 'nameField', json.section.name );
 		setInnerHTML( 'dataSetField', json.section.dataSet );
 		setInnerHTML( 'categoryComboField', json.section.categoryCombo );
@@ -63,15 +63,15 @@ function toggle( dataElementId, optionComboId )
 
 	elementId = elementId + ']';
 
-	if (document.getElementById(elementId + '.text').disabled == true) 
+	if (byId(elementId + '.text').disabled == true) 
 	{
-		document.getElementById(elementId + '.text').disabled = false;
-		document.getElementById(elementId + '.button').value = i18n_disable;
+		byId(elementId + '.text').disabled = false;
+		byId(elementId + '.button').value = i18n_disable;
 	} 
 	else 
 	{
-		document.getElementById(elementId + '.text').disabled = true;
-		document.getElementById(elementId + '.button').value = i18n_enable;
+		byId(elementId + '.text').disabled = true;
+		byId(elementId + '.button').value = i18n_enable;
 	}
 }
 
@@ -114,7 +114,7 @@ function saveGreyStatus( sectionId_, dataElementId_, optionComboId_ )
 	
 	// TODO check result
 	
-	$.get( 'saveSectionGreyStatus.action',
+	$.post( 'saveSectionGreyStatus.action',
 		{ sectionId:sectionId, dataElementId:dataElementId, optionComboId:optionComboId, isGreyed:isGreyed }, 
 		function() {} );
 }
