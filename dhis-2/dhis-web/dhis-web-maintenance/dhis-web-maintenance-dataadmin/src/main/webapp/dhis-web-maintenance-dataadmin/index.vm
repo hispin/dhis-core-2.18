@@ -7,7 +7,7 @@ jQuery(function() {
 
 <h3>$i18n.getString( "data_administration" )</h3>
 
-<ul id="introList">
+<ul class="introList">
     #introListImgItem( "displayDataBrowserForm.action" "data_browser" "databrowser" )
     #introListImgItem( "displayDataIntegrityForm.action" "data_integrity" "dataintegrity" )
     #introListImgItem( "displayDataArchiveForm.action" "data_archive" "dataarchive" )

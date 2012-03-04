@@ -5,7 +5,7 @@ var redirectUrl;
 #if ( $startModule && $auth.hasAccess( $startModule, "index" ) )
 	redirectUrl = "../${startModule}/index.action";
 #else
-	redirectUrl = "intro.action";
+	redirectUrl = "../dhis-web-commons-about/modules.action";
 #end
 </script>
 

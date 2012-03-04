@@ -7,7 +7,7 @@ jQuery(function() {
 
 <h3>$i18n.getString( "dhis-web-maintenance-patient" )</h3>
 
-<ul id="introList">
+<ul class="introList">
     #introListImgItem( "patientAttribute.action" "patient_attribute" "patient" )
     #introListImgItem( "patientAttributeGroup.action" "patient_attribute_group" "patient" )
     #introListImgItem( "patientIdentifierType.action" "patient_identifier_type" "patient" )

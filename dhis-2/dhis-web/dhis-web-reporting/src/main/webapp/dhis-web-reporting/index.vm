@@ -7,7 +7,7 @@ jQuery(function() {
 
 <h3>$i18n.getString( "dhis-web-reporting" )</h3>
 
-<ul id="introList">
+<ul class="introList">
     #introListImgItem( "displayViewReportForm.action" "standard_report" "standardreport" )
     #introListImgItem( "showDataSetReportForm.action" "dataset_report" "datasetreport" )
     #introListImgItem( "displayViewDataCompletenessForm.action" "reporting_rate_summary" "reportingratesummary" )

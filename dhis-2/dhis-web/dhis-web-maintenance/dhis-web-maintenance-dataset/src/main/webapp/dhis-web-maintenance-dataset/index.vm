@@ -7,7 +7,7 @@ jQuery(function() {
 
 <h3>$i18n.getString( "dhis-web-maintenance-dataset" ) #openHelp( "datasets" )</h3>
 
-<ul id="introList">
+<ul class="introList">
     #introListImgItem( "dataSet.action" "dataset" "dataset" )
     #introListImgItem( "section.action" "dataset_section" "dataset" )
     #introListImgItem( "displayEditorForm.action" "dataset_assignment_editor" "dataset" )

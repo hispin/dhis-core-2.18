@@ -1,7 +1,7 @@
 
 <h3>$i18n.getString( "export_to_other_systems" )</h3>
 
-<ul id="introList">
+<ul class="introList">
     #introListImgItem( "displayMetaDataExportForm.action?exportFormat=DHIS14XML" "DHIS14_metadata_export" "dhis14" )
     #introListImgItem( "displayDetailedMetaDataExportForm.action?exportFormat=DHIS14XML" "DHIS14_detailed_metadata_export" "dhis14" )
     #introListImgItem( "displayDataValueExportForm.action?exportFormat=DHIS14XML" "DHIS14_data_export" "dhis14" )

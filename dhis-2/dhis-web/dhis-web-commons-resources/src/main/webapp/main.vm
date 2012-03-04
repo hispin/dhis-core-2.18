@@ -103,7 +103,7 @@
     #parse( "macros.vm" )
         
     <div id="header">
-      <img id="headerBanner" src="../dhis-web-commons/css/${stylesheetDirectory}/logo_banner.png"#if( $startModule ) onclick="window.location.href='../${startModule}/index.action'" style="cursor:pointer"#end>
+      <img id="headerBanner" src="../dhis-web-commons/css/${stylesheetDirectory}/logo_banner.png" onclick="window.location.href='../dhis-web-commons-about/modules.action'" style="cursor:pointer">
       
       <img id="menuSeparator1" src="../dhis-web-commons/css/${stylesheetDirectory}/logo_separator.png">
       <img id="menuSeparator2" src="../dhis-web-commons/css/${stylesheetDirectory}/logo_separator.png">
@@ -146,12 +146,13 @@
           <li class="menuDropDownItem" id="menuDropDownChangeLog">$i18n.getString( "change_log" )&nbsp;</li>
           <li class="menuDropDownItem" id="menuDropDownSupportiveSoftware">$i18n.getString( "supportive_software" )&nbsp;</li>
           <li class="menuDropDownItem" id="menuDropDownUserAccount">$i18n.getString( "user_account" )&nbsp;</li>
+          <li class="menuDropDownItem" id="menuDropDownModuleOverview">$i18n.getString( "system_overview" )&nbsp;</li>
           <li class="menuDropDownItem" id="menuDropDownWebApi">$i18n.getString( "web_api" )&nbsp;</li>
           <li class="menuDropDownItem" id="menuDropDownAboutDHIS2">$i18n.getString( "about_dhis2" )&nbsp;</li>
         </ul>
       </div>
 	  
-      <span id="headerText">
+      <span id="headerText" onclick="window.location.href='../dhis-web-commons-about/modules.action'" style="cursor:pointer">
         #if ( $applicationTitle )
           $encoder.htmlEncode( $applicationTitle )
         #else
