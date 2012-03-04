@@ -21,8 +21,9 @@ jQuery(function() {
     #introListImgItem( "lockException.action" "lock_exception" "datalocking" )
     #introListImgItem( "zeroValueStorageManagement.action" "zero_storage_management" "zerovaluestorage" )
 	#introListImgItem( "getMinMaxValidationParams.action" "min_max_value_generation" "minmaxvaluegeneration" ) 
-    #introListImgItem( "showCache.action" "cache_statistics" "cachestatistics" )
     #introListImgItem( "constant.action" "constant" "constant" )
 	#introListImgItem( "optionSet.action" "option_set" "resource" )
-	#introListImgItem( "attribute.action" "attribute" "constant" )
+    #introListImgItem( "showCache.action" "cache_statistics" "cachestatistics" )
+	#introListImgItem( "attribute.action" "attribute" "attribute" )
+	#introListImgItem( "viewScheduledTasks.action" "scheduling" "scheduling" )
 </ul>
