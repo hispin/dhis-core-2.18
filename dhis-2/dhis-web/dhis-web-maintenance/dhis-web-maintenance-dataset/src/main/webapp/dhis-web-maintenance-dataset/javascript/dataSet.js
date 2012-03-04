@@ -4,7 +4,7 @@
 
 function showDataSetDetails( dataSetId )
 {
-    jQuery.post( '../dhis-web-commons-ajax-json/getDataSet.action', {
+    jQuery.get( '../dhis-web-commons-ajax-json/getDataSet.action', {
         id : dataSetId
     }, function( json )
     {

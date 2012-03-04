@@ -19,32 +19,23 @@ function removeDataEntryForm( dataSetIdField, dataEntryFormId, dataEntryFormName
 
 function validateDataEntryForm()
 {  
-  var params  = 'name=' + document.getElementById( 'nameField' ).value;
-	  params += '&dataSetId=' + document.getElementById( 'dataSetIdField' ).value;
-  if(stat == "EDIT")
-  {
-    params += '&dataEntryFormId=' + dataEntryFormId;      
-  }        
-
-  if(autoSave == false)
-  {
-	$.ajax({
-	   type: "POST",
-	   url: "validateDataEntryForm.action",
-	   data: params,
-	   dataType: "xml",
-	   success: dataEntryFormValidationCompleted
-	});
-  }
-  else{
-	$.ajax({
-	   type: "POST",
-	   url: "validateDataEntryForm.action",
-	   data: params,
-	   dataType: "xml",
-	   success: autoSaveDataEntryFormValidationCompleted
-	});
-  }
+	$.postUTF8( 'validateDataEntryForm.action',
+		{
+			name: byId( 'nameField' ).value,
+			dataSetId: byId( 'dataSetIdField' ).value,
+			dataEntryFormId: dataEntryFormId
+		}
+		, function( xmlObject ) 
+		{
+			if(autoSave == false)
+			{
+				dataEntryFormValidationCompleted(xmlObject);
+			}
+			else
+			{
+				autoSaveDataEntryFormValidationCompleted(xmlObject);
+			}
+		} );
 }
 
 function dataEntryFormValidationCompleted( messageElement )
@@ -146,24 +137,19 @@ function autoSaveDataEntryFormValidationCompleted( messageElement )
 function autoSaveDataEntryForm() {
 	var field = $("#designTextarea").ckeditorGet();
 	var designTextarea = htmlEncode(field.getData());
-	var params = 'nameField=' + getFieldValue('nameField');
-		params += '&designTextarea=' + designTextarea;
-		params += '&dataSetIdField=' + getFieldValue('dataSetIdField');
-		
-	if(byId('dataEntryFormId') != null){
-		params += '&dataEntryFormId=' + getFieldValue('dataEntryFormId');
-	}
 	
-	$.ajax({
-		   type: "POST",
-		   url: "autoSaveDataEntryForm.action",
-		   data: params,
-		   dataType: "xml",
-		   success: function(xmlObject){
-				setMessage(i18n_save_success); 
-				stat = "EDIT";
-				dataEntryFormId = xmlObject.getElementsByTagName( 'message' )[0].firstChild.nodeValue;
-				enable('delete');
-		   }
-		});
+	$.postUTF8( 'autoSaveDataEntryForm.action',
+		{
+			nameField: getFieldValue('nameField'),
+			designTextarea: designTextarea,
+			dataSetIdField: getFieldValue('dataSetIdField'),
+			dataEntryFormId: dataEntryFormId
+		}
+		, function( xmlObject ) 
+		{
+			setMessage(i18n_save_success); 
+			stat = "EDIT";
+			dataEntryFormId = xmlObject.getElementsByTagName( 'message' )[0].firstChild.nodeValue;
+			enable('delete');
+		} );
 }
