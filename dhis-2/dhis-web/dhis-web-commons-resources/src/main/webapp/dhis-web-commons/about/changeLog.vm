@@ -2,6 +2,14 @@
 <h3>$i18n.getString( "change_log" )</h3>
 
 <dl>
+  <dt>$i18n.getString( "release" ) 2.7:</dt>
+  <dd><a href="https://blueprints.launchpad.net/dhis2/+milestone/2.7" target="_blank">Launchpad $i18n.getString( "online_release_page" )</a></dd>
+  <dt>$i18n.getString( "release" ) 2.6:</dt>
+  <dd><a href="https://blueprints.launchpad.net/dhis2/+milestone/2.6" target="_blank">Launchpad $i18n.getString( "online_release_page" )</a></dd>
+  <dt>$i18n.getString( "release" ) 2.5:</dt>
+  <dd><a href="https://blueprints.launchpad.net/dhis2/+milestone/2.5" target="_blank">Launchpad $i18n.getString( "online_release_page" )</a></dd>
+  <dt>$i18n.getString( "release" ) 2.4:</dt>
+  <dd><a href="https://blueprints.launchpad.net/dhis2/+milestone/2.4" target="_blank">Launchpad $i18n.getString( "online_release_page" )</a></dd>
   <dt>$i18n.getString( "release" ) 2.3:</dt>
   <dd><a href="https://blueprints.launchpad.net/dhis2/+milestone/2.3" target="_blank">Launchpad $i18n.getString( "online_release_page" )</a></dd>
   <dt>$i18n.getString( "release" ) 2.2:</dt>

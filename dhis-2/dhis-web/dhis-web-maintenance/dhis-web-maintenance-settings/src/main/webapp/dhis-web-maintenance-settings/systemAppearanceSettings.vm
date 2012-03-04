@@ -16,12 +16,10 @@
 
 <h3>$i18n.getString( "appearance_settings" )</h3>
 
-<!-- application_title -->
 <h4>$i18n.getString( "application_title" )</h4>
 
 <p><input type="text" id="applicationTitle" name="applicationTitle" style="width:30em" maxlength="40" value="$!applicationTitle"/></p>
 
-<!-- style -->
 <h4>$i18n.getString( "style" )</h4>
 
 <select id='currentStyle' name='currentStyle' style="width:30em">
@@ -30,7 +28,6 @@
 	#end
 </select>
 
-<!-- flag -->
 <h4>$i18n.getString( "flag" )</h4>
 
 <p>
@@ -42,12 +39,11 @@
 </select>
 </p>
 
-<!-- start_page -->
 <h4>$i18n.getString( "start_page" )</h4>
 
 <p>
 <select id="startModule" name="startModule" style="width:30em">
-    <option value="NO_START_PAGE">$i18n.getString( "no_start_page" )</option>
+    <option value="NO_START_PAGE">$i18n.getString( "system_overview" )</option>
 	#foreach ( $module in $modules )
 	<option value="$module.name" #if( $module.name == $startModule )selected="selected"#end>$i18n.getString( "$module.name" )</option>
 	#end

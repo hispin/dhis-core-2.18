@@ -98,6 +98,7 @@
   </package>
 
   <!-- Security -->
+  
   <package name="dhis-web-commons-security" extends="dhis-web-commons" namespace="/dhis-web-commons/security">
 
     <action name="login" class="org.hisp.dhis.security.action.LoginAction">
@@ -109,6 +110,7 @@
   </package>
 
   <!-- Organisation Unit Selection Tree -->
+  
   <package name="dhis-web-commons-oust" extends="dhis-web-commons" namespace="/dhis-web-commons/oust">
 
     <action name="expandSubtree" class="org.hisp.dhis.oust.action.ExpandSubtreeAction">
@@ -838,6 +840,12 @@
       <result name="input" type="velocity-xml">
         /dhis-web-commons/useraccount/updateUserInput.vm
       </result>
+    </action>
+
+    <action name="modules" class="org.hisp.dhis.commons.action.NoAction">
+      <result name="success" type="velocity">/main.vm</result>
+      <param name="page">/dhis-web-commons/about/modules.vm</param>
+      <param name="menu">/dhis-web-commons/about/menu.vm</param>
     </action>
 
   </package>

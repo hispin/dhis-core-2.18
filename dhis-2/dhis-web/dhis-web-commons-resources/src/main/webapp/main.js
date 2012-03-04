@@ -71,6 +71,11 @@ function pageInit()
 			window.location.href = currentPath + 'showUpdateUserAccountForm.action' + backURL;
 		});
 		
+	$( "#menuDropDownModuleOverview" ).click( function()
+		{
+			window.location.href = currentPath + 'modules.action' + backURL;
+		});
+		
 	$( "#menuDropDownWebApi" ).click( function()
 		{
 			window.location.href = '../api';
@@ -83,7 +88,7 @@ function pageInit()
 	
 	// Intro fade in
 	
-	$( "#introList" ).fadeIn();
+	$( ".introList" ).fadeIn();
 }
 
 // -----------------------------------------------------------------------------
