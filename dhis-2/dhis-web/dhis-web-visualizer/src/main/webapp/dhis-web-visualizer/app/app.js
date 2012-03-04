@@ -3655,7 +3655,7 @@ Ext.onReady( function() {
                                                                                 }
                                                                             },
                                                                             {
-                                                                                text: DV.i18n.delete,
+                                                                                text: DV.i18n.delete_object,
                                                                                 cls: 'dv-toolbar-btn-2',
                                                                                 disabled: true,
                                                                                 xable: function() {
@@ -3698,7 +3698,7 @@ Ext.onReady( function() {
                                                                                                 },
                                                                                                 '->',
                                                                                                 {
-                                                                                                    text: DV.i18n.delete,
+                                                                                                    text: DV.i18n.delete_object,
                                                                                                     handler: function() {
                                                                                                         this.up('window').close();
                                                                                                         DV.util.crud.favorite.del(function() {
