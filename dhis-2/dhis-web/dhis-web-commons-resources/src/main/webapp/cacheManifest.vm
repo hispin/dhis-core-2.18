@@ -1,5 +1,5 @@
 CACHE MANIFEST
-# 2.8-SNAPSHOT Version 1
+# 2.8-SNAPSHOT Version 2
 NETWORK:
 *
 CACHE:
@@ -36,7 +36,7 @@ fonts/LiberationSans-Bold-webfont.eot
 fonts/LiberationSans-Bold-webfont.woff
 fonts/LiberationSans-Bold-webfont.ttf
 fonts/LiberationSans-Bold-webfont.svg
-images/treeview-gray-line.gif
+../images/treeview-gray-line.gif
 ../images/show_menu.png
 ../images/hide_menu.png
 ../images/search.png
