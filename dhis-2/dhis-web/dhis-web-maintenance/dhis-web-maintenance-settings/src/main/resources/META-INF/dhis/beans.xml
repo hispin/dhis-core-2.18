@@ -7,7 +7,6 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 
   <bean id="org.hisp.dhis.settings.action.system.GetGeneralSettingsAction" class="org.hisp.dhis.settings.action.system.GetGeneralSettingsAction"
     scope="prototype">
-    <property name="systemSettingManager" ref="org.hisp.dhis.setting.SystemSettingManager" />
     <property name="configurationService" ref="org.hisp.dhis.configuration.ConfigurationService" />
     <property name="dataElementService" ref="org.hisp.dhis.dataelement.DataElementService" />
 	<property name="userGroupService" ref="org.hisp.dhis.user.UserGroupService" />

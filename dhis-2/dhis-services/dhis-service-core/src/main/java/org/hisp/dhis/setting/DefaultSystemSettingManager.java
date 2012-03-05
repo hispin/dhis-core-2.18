@@ -28,15 +28,12 @@ package org.hisp.dhis.setting;
  */
 
 import java.io.Serializable;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
 import org.hisp.dhis.common.GenericIdentifiableObjectStore;
-import org.hisp.dhis.setting.SystemSetting;
-import org.hisp.dhis.setting.SystemSettingManager;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
@@ -127,11 +124,6 @@ public class DefaultSystemSettingManager
     {
         Collections.sort( flags );
         return flags;
-    }
-
-    public List<String> getAggregationStrategies()
-    {
-        return Arrays.asList( AGGREGATION_STRATEGY_REAL_TIME, AGGREGATION_STRATEGY_BATCH );
     }
 
     public String getSystemIdentifier()

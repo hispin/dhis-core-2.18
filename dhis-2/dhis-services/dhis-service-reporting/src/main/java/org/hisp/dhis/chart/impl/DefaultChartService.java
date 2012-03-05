@@ -34,8 +34,6 @@ import static org.hisp.dhis.chart.Chart.TYPE_LINE;
 import static org.hisp.dhis.chart.Chart.TYPE_PIE;
 import static org.hisp.dhis.chart.Chart.TYPE_STACKED_BAR;
 import static org.hisp.dhis.chart.Chart.TYPE_STACKED_COLUMN;
-import static org.hisp.dhis.setting.SystemSettingManager.AGGREGATION_STRATEGY_REAL_TIME;
-import static org.hisp.dhis.setting.SystemSettingManager.KEY_AGGREGATION_STRATEGY;
 import static org.hisp.dhis.reporttable.ReportTable.getIdentifier;
 import static org.hisp.dhis.system.util.ConversionUtils.getArray;
 
@@ -66,7 +64,6 @@ import org.hisp.dhis.i18n.I18nFormat;
 import org.hisp.dhis.indicator.Indicator;
 import org.hisp.dhis.minmax.MinMaxDataElement;
 import org.hisp.dhis.minmax.MinMaxDataElementService;
-import org.hisp.dhis.setting.SystemSettingManager;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodService;
@@ -166,13 +163,6 @@ public class DefaultChartService
     public void setReportTableManager( ReportTableManager reportTableManager )
     {
         this.reportTableManager = reportTableManager;
-    }
-
-    private SystemSettingManager systemSettingManager;
-
-    public void setSystemSettingManager( SystemSettingManager systemSettingManager )
-    {
-        this.systemSettingManager = systemSettingManager;
     }
 
     // -------------------------------------------------------------------------
@@ -626,17 +616,8 @@ public class DefaultChartService
 
     private CategoryDataset[] getCategoryDataSet( Chart chart )
     {
-        Map<String, Double> valueMap = null;
-        
-        if ( AGGREGATION_STRATEGY_REAL_TIME.equals( systemSettingManager.getSystemSetting( KEY_AGGREGATION_STRATEGY, AGGREGATION_STRATEGY_REAL_TIME ) ) )
-        {
-            valueMap = reportTableManager.getAggregatedValueMapRealTime( chart ); // Temp fix
-        }
-        else
-        {
-            valueMap = reportTableManager.getAggregatedValueMap( chart );
-        }        
-        
+        Map<String, Double> valueMap = reportTableManager.getAggregatedValueMap( chart );
+                
         DefaultCategoryDataset regularDataSet = new DefaultCategoryDataset();
         DefaultCategoryDataset regressionDataSet = new DefaultCategoryDataset();
         

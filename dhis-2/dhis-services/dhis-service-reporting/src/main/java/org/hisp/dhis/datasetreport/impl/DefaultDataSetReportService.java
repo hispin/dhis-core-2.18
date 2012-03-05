@@ -31,9 +31,6 @@ import static org.hisp.dhis.dataentryform.DataEntryFormService.DATAELEMENT_TOTAL
 import static org.hisp.dhis.dataentryform.DataEntryFormService.IDENTIFIER_PATTERN;
 import static org.hisp.dhis.dataentryform.DataEntryFormService.INDICATOR_PATTERN;
 import static org.hisp.dhis.dataentryform.DataEntryFormService.INPUT_PATTERN;
-import static org.hisp.dhis.setting.SystemSettingManager.AGGREGATION_STRATEGY_REAL_TIME;
-import static org.hisp.dhis.setting.SystemSettingManager.DEFAULT_AGGREGATION_STRATEGY;
-import static org.hisp.dhis.setting.SystemSettingManager.KEY_AGGREGATION_STRATEGY;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -46,7 +43,6 @@ import java.util.TreeMap;
 import java.util.regex.Matcher;
 
 import org.hisp.dhis.aggregation.AggregatedDataValueService;
-import org.hisp.dhis.aggregation.AggregationService;
 import org.hisp.dhis.common.Grid;
 import org.hisp.dhis.common.GridHeader;
 import org.hisp.dhis.common.comparator.IdentifiableObjectNameComparator;
@@ -64,7 +60,6 @@ import org.hisp.dhis.datavalue.DataValueService;
 import org.hisp.dhis.i18n.I18n;
 import org.hisp.dhis.i18n.I18nFormat;
 import org.hisp.dhis.indicator.Indicator;
-import org.hisp.dhis.setting.SystemSettingManager;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.system.filter.AggregatableDataElementFilter;
@@ -95,25 +90,11 @@ public class DefaultDataSetReportService
         this.dataValueService = dataValueService;
     }
 
-    private AggregationService aggregationService;
-
-    public void setAggregationService( AggregationService aggregationService )
-    {
-        this.aggregationService = aggregationService;
-    }
-
     private AggregatedDataValueService aggregatedDataValueService;
 
     public void setAggregatedDataValueService( AggregatedDataValueService aggregatedDataValueService )
     {
         this.aggregatedDataValueService = aggregatedDataValueService;
-    }
-
-    private SystemSettingManager systemSettingManager;
-
-    public void setSystemSettingManager( SystemSettingManager systemSettingManager )
-    {
-        this.systemSettingManager = systemSettingManager;
     }
 
     // -------------------------------------------------------------------------
@@ -134,10 +115,6 @@ public class DefaultDataSetReportService
     public List<Grid> getSectionDataSetReport( DataSet dataSet, Period period, OrganisationUnit unit,
         boolean selectedUnitOnly, I18nFormat format, I18n i18n )
     {
-        String aggregationStrategy = (String) systemSettingManager.getSystemSetting( KEY_AGGREGATION_STRATEGY,
-            DEFAULT_AGGREGATION_STRATEGY );
-        boolean realTime = aggregationStrategy.equals( AGGREGATION_STRATEGY_REAL_TIME );
-
         List<Section> sections = new ArrayList<Section>( dataSet.getSections() );
         Collections.sort( sections, new SectionOrderComparator() );
 
@@ -205,9 +182,7 @@ public class DefaultDataSetReportService
                     }
                     else
                     {
-                        value = realTime ? aggregationService.getAggregatedDataValue( dataElement, optionCombo, period
-                            .getStartDate(), period.getEndDate(), unit ) : aggregatedDataValueService
-                            .getAggregatedValue( dataElement, optionCombo, period, unit );
+                        value = aggregatedDataValueService.getAggregatedValue( dataElement, optionCombo, period, unit );
                     }
 
                     grid.addValue( value );
@@ -217,9 +192,7 @@ public class DefaultDataSetReportService
                 {
                     for ( DataElementCategoryOption categoryOption : categoryCombo.getCategoryOptions() )
                     {
-                        Double value = realTime ? aggregationService.getAggregatedDataValue( dataElement, period
-                            .getStartDate(), period.getEndDate(), unit, categoryOption ) : aggregatedDataValueService
-                            .getAggregatedValue( dataElement, categoryOption, period, unit );
+                        Double value = aggregatedDataValueService.getAggregatedValue( dataElement, categoryOption, period, unit );
 
                         grid.addValue( value );
                     }
@@ -227,9 +200,7 @@ public class DefaultDataSetReportService
 
                 if ( categoryCombo.doTotal() && !selectedUnitOnly ) // Total
                 {
-                    Double value = realTime ? aggregationService.getAggregatedDataValue( dataElement, null, period
-                        .getStartDate(), period.getEndDate(), unit ) : aggregatedDataValueService.getAggregatedValue(
-                        dataElement, period, unit );
+                    Double value = aggregatedDataValueService.getAggregatedValue( dataElement, period, unit );
 
                     grid.addValue( value );
                 }
@@ -247,9 +218,6 @@ public class DefaultDataSetReportService
 
         Collections.sort( dataElements, IdentifiableObjectNameComparator.INSTANCE );
         FilterUtils.filter( dataElements, new AggregatableDataElementFilter() );
-
-        String aggregationStrategy = (String) systemSettingManager.getSystemSetting( KEY_AGGREGATION_STRATEGY,
-            DEFAULT_AGGREGATION_STRATEGY );
 
         // ---------------------------------------------------------------------
         // Get category option combos
@@ -306,9 +274,7 @@ public class DefaultDataSetReportService
                 }
                 else
                 {
-                    value = aggregationStrategy.equals( AGGREGATION_STRATEGY_REAL_TIME ) ? 
-                        aggregationService.getAggregatedDataValue( dataElement, optionCombo, period.getStartDate(), period.getEndDate(), unit ) : 
-                        aggregatedDataValueService.getAggregatedValue( dataElement, optionCombo, period, unit );
+                    value = aggregatedDataValueService.getAggregatedValue( dataElement, optionCombo, period, unit );
                 }
 
                 grid.addValue( value );
@@ -328,9 +294,7 @@ public class DefaultDataSetReportService
 
             grid.addValue( indicator.getName() );
             
-            Double value = aggregationStrategy.equals( AGGREGATION_STRATEGY_REAL_TIME ) ?
-                aggregationService.getAggregatedIndicatorValue( indicator, period.getStartDate(), period.getEndDate(), unit ) :
-                aggregatedDataValueService.getAggregatedValue( indicator, period, unit );
+            Double value = aggregatedDataValueService.getAggregatedValue( indicator, period, unit );
             
             grid.addValue( value );
             
@@ -363,9 +327,6 @@ public class DefaultDataSetReportService
     private Map<String, String> getAggregatedValueMap( DataSet dataSet, OrganisationUnit unit, Period period,
         boolean selectedUnitOnly, I18nFormat format )
     {
-        String aggregationStrategy = (String) systemSettingManager.getSystemSetting( KEY_AGGREGATION_STRATEGY,
-            DEFAULT_AGGREGATION_STRATEGY );
-
         Collection<DataElement> dataElements = new ArrayList<DataElement>( dataSet.getDataElements() );
 
         FilterUtils.filter( dataElements, new AggregatableDataElementFilter() );
@@ -385,9 +346,7 @@ public class DefaultDataSetReportService
                 }
                 else
                 {
-                    Double aggregatedValue = aggregationStrategy.equals( AGGREGATION_STRATEGY_REAL_TIME ) ? 
-                        aggregationService.getAggregatedDataValue( dataElement, categoryOptionCombo, period.getStartDate(), period.getEndDate(), unit ) : 
-                        aggregatedDataValueService.getAggregatedValue( dataElement, categoryOptionCombo, period, unit );
+                    Double aggregatedValue = aggregatedDataValueService.getAggregatedValue( dataElement, categoryOptionCombo, period, unit );
 
                     value = format.formatValue( aggregatedValue );
                 }
@@ -398,9 +357,7 @@ public class DefaultDataSetReportService
                 }
             }
             
-            Double aggregatedValue = aggregationStrategy.equals( AGGREGATION_STRATEGY_REAL_TIME ) ? 
-                aggregationService.getAggregatedDataValue( dataElement, null, period.getStartDate(), period.getEndDate(), unit ) : 
-                aggregatedDataValueService.getAggregatedValue( dataElement, period, unit );
+            Double aggregatedValue = aggregatedDataValueService.getAggregatedValue( dataElement, period, unit );
                 
             String value = format.formatValue( aggregatedValue );
             
@@ -426,16 +383,11 @@ public class DefaultDataSetReportService
     private Map<Integer, String> getAggregatedIndicatorValueMap( DataSet dataSet, OrganisationUnit unit, Period period,
         I18nFormat format )
     {
-        String aggregationStrategy = (String) systemSettingManager.getSystemSetting( KEY_AGGREGATION_STRATEGY,
-            DEFAULT_AGGREGATION_STRATEGY );
-
         Map<Integer, String> map = new TreeMap<Integer, String>();
 
         for ( Indicator indicator : dataSet.getIndicators() )
         {
-            Double aggregatedValue = aggregationStrategy.equals( AGGREGATION_STRATEGY_REAL_TIME ) ? 
-                aggregationService.getAggregatedIndicatorValue( indicator, period.getStartDate(), period.getEndDate(), unit ) : 
-                aggregatedDataValueService.getAggregatedValue( indicator, period, unit );
+            Double aggregatedValue = aggregatedDataValueService.getAggregatedValue( indicator, period, unit );
 
             String value = format.formatValue( aggregatedValue );
 

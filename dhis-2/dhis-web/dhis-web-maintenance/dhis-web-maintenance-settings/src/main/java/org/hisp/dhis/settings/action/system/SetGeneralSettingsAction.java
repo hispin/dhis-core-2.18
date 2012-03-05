@@ -27,7 +27,6 @@ package org.hisp.dhis.settings.action.system;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import static org.hisp.dhis.setting.SystemSettingManager.KEY_AGGREGATION_STRATEGY;
 import static org.hisp.dhis.setting.SystemSettingManager.KEY_COMPLETENESS_OFFSET;
 import static org.hisp.dhis.setting.SystemSettingManager.KEY_DISABLE_DATAENTRYFORM_WHEN_COMPLETED;
 import static org.hisp.dhis.setting.SystemSettingManager.KEY_FACTOR_OF_DEVIATION;
@@ -93,13 +92,6 @@ public class SetGeneralSettingsAction
     // -------------------------------------------------------------------------
     // Output
     // -------------------------------------------------------------------------
-
-    private String aggregationStrategy;
-
-    public void setAggregationStrategy( String aggregationStrategy )
-    {
-        this.aggregationStrategy = aggregationStrategy;
-    }
 
     private Integer infrastructuralDataElements;
 
@@ -177,7 +169,6 @@ public class SetGeneralSettingsAction
 
     public String execute()
     {
-        systemSettingManager.saveSystemSetting( KEY_AGGREGATION_STRATEGY, aggregationStrategy );
         systemSettingManager.saveSystemSetting( KEY_OMIT_INDICATORS_ZERO_NUMERATOR_DATAMART, omitIndicatorsZeroNumeratorDataMart );
         systemSettingManager.saveSystemSetting( KEY_DISABLE_DATAENTRYFORM_WHEN_COMPLETED, disableDataEntryWhenCompleted );
         systemSettingManager.saveSystemSetting( KEY_FACTOR_OF_DEVIATION, factorDeviation );

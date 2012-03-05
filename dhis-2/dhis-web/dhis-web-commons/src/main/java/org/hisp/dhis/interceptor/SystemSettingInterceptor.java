@@ -80,7 +80,6 @@ public class SystemSettingInterceptor
         map.put( KEY_OMIT_INDICATORS_ZERO_NUMERATOR_DATAMART, systemSettingManager.getSystemSetting( KEY_OMIT_INDICATORS_ZERO_NUMERATOR_DATAMART, false ) );
         map.put( KEY_DISABLE_DATAENTRYFORM_WHEN_COMPLETED, systemSettingManager.getSystemSetting( KEY_DISABLE_DATAENTRYFORM_WHEN_COMPLETED, false ) );
         map.put( KEY_FACTOR_OF_DEVIATION, systemSettingManager.getSystemSetting( KEY_FACTOR_OF_DEVIATION, DEFAULT_FACTOR_OF_DEVIATION ) );
-        map.put( KEY_AGGREGATION_STRATEGY, systemSettingManager.getSystemSetting( KEY_AGGREGATION_STRATEGY, DEFAULT_AGGREGATION_STRATEGY ) );
         map.put( KEY_COMPLETENESS_OFFSET, systemSettingManager.getSystemSetting( KEY_COMPLETENESS_OFFSET, DEFAULT_COMPLETENESS_OFFSET ) );
         
         invocation.getStack().push( map );

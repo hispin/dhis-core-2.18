@@ -32,8 +32,6 @@ import static org.hisp.dhis.reporttable.ReportTable.getIdentifier;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.amplecode.quick.StatementManager;
-import org.hisp.dhis.aggregation.AggregationService;
 import org.hisp.dhis.chart.Chart;
 import org.hisp.dhis.common.NameableObject;
 import org.hisp.dhis.dataelement.DataElement;
@@ -66,20 +64,6 @@ public class JDBCReportTableManager
     public void setJdbcTemplate( JdbcTemplate jdbcTemplate )
     {
         this.jdbcTemplate = jdbcTemplate;
-    }
-
-    private AggregationService aggregationService;
-
-    public void setAggregationService( AggregationService aggregationService )
-    {
-        this.aggregationService = aggregationService;
-    }
-
-    private StatementManager statementManager;
-
-    public void setStatementManager( StatementManager statementManager )
-    {
-        this.statementManager = statementManager;
     }
 
     // -------------------------------------------------------------------------
@@ -314,56 +298,6 @@ public class JDBCReportTableManager
                 map.put( id, rowSet.getDouble( 4 ) );
             }
         }
-        
-        return map;
-    }
-    
-    /**
-     * TODO Temporary fix, we will phase out support for aggregation engine
-     */
-    public Map<String, Double> getAggregatedValueMapRealTime( Chart chart )
-    {
-        statementManager.initialise();
-        
-        Map<String, Double> map = new HashMap<String, Double>();
-
-        if ( chart.hasDataElements() )
-        {
-            for ( DataElement dataElement : chart.getDataElements() )
-            {
-                for ( OrganisationUnit organisationUnit : chart.getOrganisationUnits() )
-                {
-                    for ( Period period : chart.getRelativePeriods() )
-                    {
-                        String id = getIdentifier( getIdentifier( DataElement.class, dataElement.getId() ),
-                            getIdentifier( Period.class, period.getId() ),
-                            getIdentifier( OrganisationUnit.class, organisationUnit.getId() ) );
-
-                        map.put( id, aggregationService.getAggregatedDataValue( dataElement, null, period.getStartDate(), period.getEndDate(), organisationUnit ) );
-                    }
-                }
-            }
-        }
-        
-        if ( chart.hasIndicators() )
-        {
-            for ( Indicator indicator : chart.getIndicators() )
-            {
-                for ( OrganisationUnit organisationUnit : chart.getOrganisationUnits() )
-                {
-                    for ( Period period : chart.getRelativePeriods() )
-                    {
-                        String id = getIdentifier( getIdentifier( Indicator.class, indicator.getId() ),
-                            getIdentifier( Period.class, period.getId() ),
-                            getIdentifier( OrganisationUnit.class, organisationUnit.getId() ) );
-                        
-                        map.put( id, aggregationService.getAggregatedIndicatorValue( indicator, period.getStartDate(), period.getEndDate(), organisationUnit ) );
-                    }
-                }
-            }
-        }
-        
-        statementManager.destroy();
         
         return map;
     }

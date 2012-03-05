@@ -37,7 +37,6 @@ import org.hisp.dhis.configuration.Configuration;
 import org.hisp.dhis.configuration.ConfigurationService;
 import org.hisp.dhis.dataelement.DataElementGroup;
 import org.hisp.dhis.dataelement.DataElementService;
-import org.hisp.dhis.setting.SystemSettingManager;
 import org.hisp.dhis.period.PeriodService;
 import org.hisp.dhis.period.PeriodType;
 import org.hisp.dhis.user.UserGroup;
@@ -56,13 +55,6 @@ public class GetGeneralSettingsAction
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
-
-    private SystemSettingManager systemSettingManager;
-
-    public void setSystemSettingManager( SystemSettingManager systemSettingManager )
-    {
-        this.systemSettingManager = systemSettingManager;
-    }
 
     private ConfigurationService configurationService;
 
@@ -151,8 +143,6 @@ public class GetGeneralSettingsAction
 
     public String execute()
     {
-        aggregationStrategies = systemSettingManager.getAggregationStrategies();
-
         configuration = configurationService.getConfiguration();
 
         feedbackRecipients = configurationService.getConfiguration().getFeedbackRecipients();
