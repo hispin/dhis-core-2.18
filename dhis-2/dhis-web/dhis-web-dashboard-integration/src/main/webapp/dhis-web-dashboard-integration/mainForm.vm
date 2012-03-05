@@ -1,5 +1,5 @@
 
-#macro ( dropDownButtonDiv $dropDownId $areaDivId )
+#macro ( linkDropDownButtonDiv $dropDownId $areaDivId )
 <div class="buttonArea">
     <a href="javascript:showDropDown( '${dropDownId}' )">$i18n.getString( "insert" )</a>
     <a href="javascript:hideDropDown()">$i18n.getString( "close" )</a>
@@ -30,7 +30,7 @@
     #if ( $page )
         #parse( "/dhis-web-dashboard-integration/${page}.vm" )
     #else
-        <span class="labelText">$i18n.getString( 'this_is_a_link_area' )</span>
+        <div class="labelText">$i18n.getString( 'this_is_a_link_area' )</div>
     #end
 </div>
 #end
@@ -47,7 +47,7 @@
     #if ( $chart )
         <img style="cursor:pointer" src="getChart.action?id=${chart.id}" onclick="viewChart( 'getChart.action?id=${chart.id}&width=700&height=500' )">
     #else
-        <span class="labelText">$i18n.getString( 'this_is_a_chart_area' )</span>
+        <div class="labelText">$i18n.getString( 'this_is_a_chart_area' )</div>
     #end
 </div>
 #end
@@ -59,13 +59,13 @@
 <table cellspacing="0" cellpadding="0" style="width:960px">
 <tr>
     <td style="width:305px">        
-        #dropDownButtonDiv( "dropDownA" "areaA" )
+        #linkDropDownButtonDiv( "dropDownA" "areaA" )
         #linkDropDownListDiv( "areaA" "dropDownA" $areaA )
 
-        #dropDownButtonDiv( "dropDownB" "areaB" )
+        #linkDropDownButtonDiv( "dropDownB" "areaB" )
         #linkDropDownListDiv( "areaB" "dropDownB" $areaB )
 
-        #dropDownButtonDiv( "dropDownC" "areaC" )
+        #linkDropDownButtonDiv( "dropDownC" "areaC" )
         #linkDropDownListDiv( "areaC" "dropDownC" $areaC )      
     </td>
 	<td>

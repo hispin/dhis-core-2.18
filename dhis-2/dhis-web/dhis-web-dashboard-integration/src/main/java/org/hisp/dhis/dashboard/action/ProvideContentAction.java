@@ -128,7 +128,7 @@ public class ProvideContentAction
         ActionContext.getContext().getActionInvocation().getStack().push( content );
 
         providerNames = manager.getContentProviderNames();
-
+        
         charts = new ArrayList<Chart>( chartService.getSystemAndUserCharts() );
 
         Collections.sort( charts, IdentifiableObjectNameComparator.INSTANCE );
