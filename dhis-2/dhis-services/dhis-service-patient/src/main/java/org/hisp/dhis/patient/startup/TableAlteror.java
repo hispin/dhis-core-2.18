@@ -389,6 +389,7 @@ public class TableAlteror
 
             executeSql( "ALTER TABLE patientdatavalue DROP COLUMN organisationUnitid" );
             executeSql( "ALTER TABLE patientdatavalue DROP COLUMN providedByAnotherFacility" );
+            executeSql( "ALTER TABLE patientdatavalue ADD PRIMARY KEY ( programstageinstanceid, dataelementid )" );
         }
         catch ( Exception ex )
         {

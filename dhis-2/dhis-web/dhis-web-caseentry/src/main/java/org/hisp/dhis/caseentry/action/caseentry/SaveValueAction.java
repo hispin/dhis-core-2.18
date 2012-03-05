@@ -121,8 +121,6 @@ public class SaveValueAction
     public String execute()
         throws Exception
     {
-        OrganisationUnit organisationUnit = selectedStateManager.getSelectedOrganisationUnit();
-
         ProgramStageInstance programStageInstance = selectedStateManager.getSelectedProgramStageInstance();
 
         DataElement dataElement = dataElementService.getDataElement( dataElementId );
@@ -142,7 +140,6 @@ public class SaveValueAction
         if ( programStageInstance.getExecutionDate() == null )
         {
             programStageInstance.setExecutionDate( new Date() );
-            programStageInstance.setOrganisationUnit( organisationUnit );
             programStageInstanceService.updateProgramStageInstance( programStageInstance );
         }
 
