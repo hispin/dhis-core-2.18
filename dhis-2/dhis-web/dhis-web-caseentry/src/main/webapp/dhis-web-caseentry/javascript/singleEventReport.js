@@ -5,7 +5,7 @@ function organisationUnitSelected( orgUnits )
 	setFieldValue('startDate', '');
 	setFieldValue('endDate', '');
 	
-	$.postJSON( 'loadAnonymousPrograms.action',{}
+	$.getJSON( 'loadAnonymousPrograms.action',{}
 		, function( json ) 
 		{
 			clearListById( 'programId' );
@@ -60,26 +60,29 @@ function loadGeneratedReport()
 function showDetails( programStageInstanceId ) 
 {	
 	$( '#viewRecordsDiv' )
-		.load( 'viewAnonymousEvents.action?programStageInstanceId=' + programStageInstanceId ,{}
-		,function( )
-		{
-			showById('entryFormContainer');
-			jQuery("#entryFormContainer :input").attr("disabled", true);
-			jQuery("#entryFormContainer .ui-datepicker-trigger").each(function()
+		.load( 'viewAnonymousEvents.action',
 			{
-				jQuery(this).hide();
+				programStageInstanceId: programStageInstanceId
+			}
+			,function( )
+			{
+				showById('entryFormContainer');
+				jQuery("#entryFormContainer :input").attr("disabled", true);
+				jQuery("#entryFormContainer .ui-datepicker-trigger").each(function()
+				{
+					jQuery(this).hide();
+				});
+				 
+						
+			}).dialog({
+				title: i18n_reports,
+				maximize: true, 
+				closable: true,
+				modal:false,
+				overlay:{background:'#000000', opacity:0.1},
+				width: 800,
+				height: 400
 			});
-			 
-					
-		}).dialog({
-			title: i18n_reports,
-			maximize: true, 
-			closable: true,
-			modal:false,
-			overlay:{background:'#000000', opacity:0.1},
-			width: 800,
-			height: 400
-		});
 }
 
 function entryFormContainerOnReady (){}

@@ -5,7 +5,7 @@ function organisationUnitSelected( orgUnits, orgUnitNames )
 	setFieldValue('startDate', '');
 	setFieldValue('endDate', '');
 	
-	$.postJSON( 'loadProgramsByOrgunit.action',{}
+	$.getJSON( 'loadProgramsByOrgunit.action',{}
 		, function( json ) 
 		{
 			clearListById( 'programId' );
@@ -42,7 +42,7 @@ function loadProgramStages()
 	{
 		return;
 	}
-	$.postJSON( 'loadTabularProgramStages.action',
+	$.getJSON( 'loadTabularProgramStages.action',
 		{
 			programId: getFieldValue('programId')
 		}
@@ -65,7 +65,7 @@ function loadDataElements()
 		return;
 	}
 	
-	$.postJSON( 'loadDataElements.action',
+	$.getJSON( 'loadDataElements.action',
 		{
 			programStageId: getFieldValue('programStageId')
 		}

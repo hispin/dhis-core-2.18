@@ -9,7 +9,7 @@ function organisationUnitSelected( orgUnits )
 	disable('createEventBtn');
 	disable('deleteCurrentEventBtn');
 	
-	$.postJSON( 'loadAnonymousPrograms.action',{}
+	$.getJSON( 'loadAnonymousPrograms.action',{}
 		, function( json ) 
 		{
 			clearListById( 'programId' );
@@ -55,7 +55,7 @@ function loadEventForm()
 	
 	showLoader();
 	
-	jQuery.postJSON( "loadProgramStages.action",
+	jQuery.getJSON( "loadProgramStages.action",
 		{
 			programId: programId
 		}, 

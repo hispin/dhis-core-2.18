@@ -109,7 +109,7 @@ function getKeyCode(e)
  
 function validateSearch()
 {
-	$.post( 'validateSearch.action',{ searchText:getFieldValue( 'searchText' )}
+	$.postUTF8( 'validateSearch.action',{ searchText:getFieldValue( 'searchText' )}
 		, searchValidationCompleted	);
 }
 

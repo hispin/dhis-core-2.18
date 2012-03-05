@@ -4,7 +4,7 @@ function organisationUnitSelected( orgUnits, orgUnitNames )
 {
     showLoader();
 	setInnerHTML( 'contentDiv','' );
-	jQuery.postJSON( "getPrograms.action",{}, 
+	jQuery.getJSON( "getPrograms.action",{}, 
 		function( json ) 
 		{    
 			setFieldValue( 'orgunitname', orgUnitNames[0] );
@@ -39,7 +39,7 @@ selection.setListenerFunction( organisationUnitSelected );
 
 function validateAndGenerateReport()
 {
-	$.post( 'validateReportParameters.action',
+	$.get( 'validateReportParameters.action',
 		{
 			startDate :getFieldValue( 'startDate' ) ,
 			endDate: getFieldValue( 'endDate' )
