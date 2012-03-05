@@ -1,6 +1,7 @@
 
+#if( $patient )
 <table> 
-    <tr>            
+	<tr>            
         <td>
             <span class='bold'>$i18n.getString( "full_name" ):</span>
 		</td>
@@ -13,7 +14,7 @@
             <span class='bold'>$i18n.getString( "gender" ):</span>
 		</td>
 		<td>
-			$i18n.getString( $patient.gender )
+			$i18n.getString( "$patient.gender" )
 		</td>
 	</tr>
 	<tr>
@@ -32,6 +33,7 @@
 		</td>
 	</tr>
 </table>
+#end
 
 <table>    
    <tr>
@@ -71,7 +73,7 @@
 </table>
 
 </form>
-
+<p></p>
 #parse( "dhis-web-commons/loader/loader.vm" )
 <div id='dataEntryFormDiv' name='dataEntryFormDiv'>
 	#parse( "dhis-web-caseentry/dataEntryForm.vm" )

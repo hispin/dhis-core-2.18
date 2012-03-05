@@ -1,4 +1,5 @@
 package org.hisp.dhis.patientdatavalue;
+
 /*
  * Copyright (c) 2004-2009, University of Oslo
  * All rights reserved.
@@ -30,7 +31,6 @@ import java.io.Serializable;
 import java.util.Date;
 
 import org.hisp.dhis.dataelement.DataElement;
-import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.program.ProgramStageInstance;
 
 /**
@@ -49,13 +49,9 @@ public class PatientDataValue
 
     private ProgramStageInstance programStageInstance;
 
-    private OrganisationUnit organisationUnit;
-
     private Date timestamp;
 
     private String value;
-
-    private boolean providedByAnotherFacility = false;
 
     // -------------------------------------------------------------------------
     // Constructors
@@ -65,43 +61,26 @@ public class PatientDataValue
     {
     }
 
-    public PatientDataValue( ProgramStageInstance programStageInstance, DataElement dataElement,
-        OrganisationUnit organisationUnit )
+    public PatientDataValue( ProgramStageInstance programStageInstance, DataElement dataElement )
     {
         this.programStageInstance = programStageInstance;
         this.dataElement = dataElement;
-        this.organisationUnit = organisationUnit;
     }
 
-    public PatientDataValue( ProgramStageInstance programStageInstance, DataElement dataElement,
-        OrganisationUnit organisationUnit, Date timeStamp )
+    public PatientDataValue( ProgramStageInstance programStageInstance, DataElement dataElement, Date timeStamp )
     {
         this.programStageInstance = programStageInstance;
         this.dataElement = dataElement;
-        this.organisationUnit = organisationUnit;
         this.timestamp = timeStamp;
     }
 
-    public PatientDataValue( ProgramStageInstance programStageInstance, DataElement dataElement,
-        OrganisationUnit organisationUnit, Date timeStamp, String value )
+    public PatientDataValue( ProgramStageInstance programStageInstance, DataElement dataElement, Date timeStamp,
+        String value )
     {
         this.programStageInstance = programStageInstance;
         this.dataElement = dataElement;
-        this.organisationUnit = organisationUnit;
         this.timestamp = timeStamp;
         this.value = value;
-    }
-
-    public PatientDataValue( ProgramStageInstance programStageInstance, DataElement dataElement,
-        OrganisationUnit organisationUnit, Date timeStamp, String value,
-        boolean providedByAnotherFacility )
-    {
-        this.programStageInstance = programStageInstance;
-        this.dataElement = dataElement;
-        this.organisationUnit = organisationUnit;
-        this.timestamp = timeStamp;
-        this.value = value;
-        this.providedByAnotherFacility = providedByAnotherFacility;
     }
 
     // -------------------------------------------------------------------------
@@ -114,7 +93,6 @@ public class PatientDataValue
         final int prime = 31;
         int result = 1;
         result = prime * result + ((dataElement == null) ? 0 : dataElement.hashCode());
-        result = prime * result + ((organisationUnit == null) ? 0 : organisationUnit.hashCode());
         result = prime * result + ((programStageInstance == null) ? 0 : programStageInstance.hashCode());
         return result;
     }
@@ -135,13 +113,6 @@ public class PatientDataValue
                 return false;
         }
         else if ( !dataElement.equals( other.dataElement ) )
-            return false;
-        if ( organisationUnit == null )
-        {
-            if ( other.organisationUnit != null )
-                return false;
-        }
-        else if ( !organisationUnit.equals( other.organisationUnit ) )
             return false;
         if ( programStageInstance == null )
         {
@@ -195,25 +166,5 @@ public class PatientDataValue
     public String getValue()
     {
         return value;
-    }
-
-    public void setOrganisationUnit( OrganisationUnit organisationUnit )
-    {
-        this.organisationUnit = organisationUnit;
-    }
-
-    public OrganisationUnit getOrganisationUnit()
-    {
-        return organisationUnit;
-    }
-
-    public void setProvidedByAnotherFacility( boolean providedByAnotherFacility )
-    {
-        this.providedByAnotherFacility = providedByAnotherFacility;
-    }
-
-    public boolean isProvidedByAnotherFacility()
-    {
-        return providedByAnotherFacility;
     }
 }

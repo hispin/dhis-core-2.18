@@ -368,7 +368,8 @@ public class ActivityReportingServiceImpl
                     idTypeName = identifierType.getName();
                 }
 
-                identifiers.add( new org.hisp.dhis.api.mobile.model.PatientIdentifier( idTypeName, id.getIdentifier() ) );
+                identifiers
+                    .add( new org.hisp.dhis.api.mobile.model.PatientIdentifier( idTypeName, id.getIdentifier() ) );
             }
 
             beneficiary.setIdentifiers( identifiers );
@@ -422,8 +423,7 @@ public class ActivityReportingServiceImpl
                         programStageInstanceService.updateProgramStageInstance( programStageInstance );
                     }
 
-                    dataValue = new PatientDataValue( programStageInstance, dataElement, orgUnit,
-                        new Date(), value, false );
+                    dataValue = new PatientDataValue( programStageInstance, dataElement, new Date(), value );
 
                     dataValueService.savePatientDataValue( dataValue );
                 }
@@ -437,7 +437,6 @@ public class ActivityReportingServiceImpl
                 }
 
                 dataValue.setValue( value );
-                dataValue.setProvidedByAnotherFacility( false );
                 dataValue.setTimestamp( new Date() );
 
                 dataValueService.updatePatientDataValue( dataValue );

@@ -21,8 +21,13 @@
     <property name="dueDate" column="duedate" />
 
     <property name="executionDate" column="executiondate" />
-
+    
     <property name="completed" not-null="true" />
+    
+    <many-to-one name="organisationUnit" class="org.hisp.dhis.organisationunit.OrganisationUnit"
+        column="organisationunitid" foreign-key="fk_programstageinstance_organisationunitid" />
+        
+    <property name="providedByAnotherFacility" column="providedbyanotherfacility"  />
 
   </class>
 </hibernate-mapping>

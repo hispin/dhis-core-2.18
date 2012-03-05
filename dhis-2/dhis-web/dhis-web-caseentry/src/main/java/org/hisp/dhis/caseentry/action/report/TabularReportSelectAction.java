@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2004-2009, University of Oslo
+ * Copyright (c) 2004-2012, University of Oslo
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -25,87 +25,70 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.hisp.dhis.caseentry.action.caseentry;
+package org.hisp.dhis.caseentry.action.report;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-import org.hisp.dhis.caseentry.state.SelectedStateManager;
-import org.hisp.dhis.dataelement.DataElement;
-import org.hisp.dhis.dataelement.DataElementService;
+import java.util.Collection;
+
 import org.hisp.dhis.organisationunit.OrganisationUnit;
-import org.hisp.dhis.patientdatavalue.PatientDataValue;
-import org.hisp.dhis.patientdatavalue.PatientDataValueService;
-import org.hisp.dhis.program.ProgramStageInstance;
-import org.hisp.dhis.program.ProgramStageInstanceService;
+import org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager;
+import org.hisp.dhis.program.Program;
+import org.hisp.dhis.program.ProgramService;
 
 import com.opensymphony.xwork2.Action;
 
 /**
- * @author Abyot Asalefew Gizaw
- * @version $Id$
+ * @author Chau Thu Tran
+ * 
+ * @version $TabularReportSelectAction.java Feb 29, 2012 2:57:50 PM$
  */
-public class SaveProvidingFacilityAction
+public class TabularReportSelectAction
     implements Action
 {
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
 
-    private SelectedStateManager selectedStateManager;
+    private OrganisationUnitSelectionManager selectionManager;
 
-    public void setSelectedStateManager( SelectedStateManager selectedStateManager )
+    public void setSelectionManager( OrganisationUnitSelectionManager selectionManager )
     {
-        this.selectedStateManager = selectedStateManager;
+        this.selectionManager = selectionManager;
     }
 
-    private ProgramStageInstanceService programStageInstanceService;
+    private ProgramService programService;
 
-    public void setProgramStageInstanceService( ProgramStageInstanceService programStageInstanceService )
+    public void setProgramService( ProgramService programService )
     {
-        this.programStageInstanceService = programStageInstanceService;
-    }
-
-    // -------------------------------------------------------------------------
-    // Input/Output
-    // -------------------------------------------------------------------------
-
-    private boolean providedByAnotherFacility;
-
-    public void setProvidedByAnotherFacility( boolean providedByAnotherFacility )
-    {
-        this.providedByAnotherFacility = providedByAnotherFacility;
-    }
-
-    private int statusCode;
-
-    public int getStatusCode()
-    {
-        return statusCode;
+        this.programService = programService;
     }
 
     // -------------------------------------------------------------------------
-    // Implementation Action
+    // Dependencies
+    // -------------------------------------------------------------------------
+
+    private OrganisationUnit orgunit;
+
+    public OrganisationUnit getOrgunit()
+    {
+        return orgunit;
+    }
+
+    private Collection<Program> programs;
+
+    public Collection<Program> getPrograms()
+    {
+        return programs;
+    }
+
+    // -------------------------------------------------------------------------
+    // Action implementation
     // -------------------------------------------------------------------------
 
     public String execute()
-        throws Exception
     {
-        ProgramStageInstance programStageInstance = selectedStateManager.getSelectedProgramStageInstance();
+        orgunit = selectionManager.getSelectedOrganisationUnit();
 
-        if ( programStageInstance != null )
-        {
-            if ( programStageInstance.getOrganisationUnit() == null )
-            {
-                OrganisationUnit organisationUnit = selectedStateManager.getSelectedOrganisationUnit();
-                programStageInstance.setOrganisationUnit( organisationUnit );
-            }
-            
-            programStageInstance.setProvidedByAnotherFacility( providedByAnotherFacility );
-
-            programStageInstanceService.updateProgramStageInstance( programStageInstance );
-        }
-
-        statusCode = 0;
+        programs = programService.getPrograms( orgunit );
 
         return SUCCESS;
     }

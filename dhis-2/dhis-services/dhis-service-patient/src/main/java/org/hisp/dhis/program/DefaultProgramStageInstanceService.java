@@ -153,27 +153,27 @@ public class DefaultProgramStageInstanceService
 
     public Collection<ProgramStageInstance> getProgramStageInstances( Collection<ProgramInstance> programInstances )
     {
-        return programStageInstanceStore.getProgramStageInstances( programInstances );
+        return programStageInstanceStore.get( programInstances );
     }
 
     public Collection<ProgramStageInstance> getProgramStageInstances( Date dueDate )
     {
-        return programStageInstanceStore.getProgramStageInstances( dueDate );
+        return programStageInstanceStore.get( dueDate );
     }
 
     public Collection<ProgramStageInstance> getProgramStageInstances( Date dueDate, Boolean completed )
     {
-        return programStageInstanceStore.getProgramStageInstances( dueDate, completed );
+        return programStageInstanceStore.get( dueDate, completed );
     }
 
     public Collection<ProgramStageInstance> getProgramStageInstances( Date startDate, Date endDate )
     {
-        return programStageInstanceStore.getProgramStageInstances( startDate, endDate );
+        return programStageInstanceStore.get( startDate, endDate );
     }
 
     public Collection<ProgramStageInstance> getProgramStageInstances( Date startDate, Date endDate, Boolean completed )
     {
-        return programStageInstanceStore.getProgramStageInstances( startDate, endDate, completed );
+        return programStageInstanceStore.get( startDate, endDate, completed );
     }
 
     public List<ProgramStageInstance> get( OrganisationUnit unit, Date after, Date before, Boolean completed )
@@ -183,25 +183,25 @@ public class DefaultProgramStageInstanceService
 
     public List<ProgramStageInstance> getProgramStageInstances( Patient patient, Boolean completed )
     {
-        return programStageInstanceStore.getProgramStageInstances( patient, completed );
+        return programStageInstanceStore.get( patient, completed );
     }
 
-    public List<ProgramStageInstance> getProgramStageInstances( ProgramInstance programInstance, Date startDate, Date endDate ,
-        int min, int max )
+    public List<ProgramStageInstance> getProgramStageInstances( ProgramInstance programInstance, Date startDate,
+        Date endDate, int min, int max )
     {
-        return programStageInstanceStore.getProgramStageInstances( programInstance, startDate, endDate , min, max );
+        return programStageInstanceStore.get( programInstance, startDate, endDate, min, max );
     }
 
-    public int countProgramStageInstances( ProgramInstance programInstance, Date startDate, Date endDate  )
+    public int countProgramStageInstances( ProgramInstance programInstance, Date startDate, Date endDate )
     {
-        return programStageInstanceStore.countProgramStageInstances( programInstance, startDate, endDate  );
+        return programStageInstanceStore.count( programInstance, startDate, endDate );
     }
 
-    public Grid getSingleEventReport( ProgramInstance programInstance, Date startDate, Date endDate , int min, int max,
+    public Grid getSingleEventReport( ProgramInstance programInstance, Date startDate, Date endDate, int min, int max,
         I18nFormat format, I18n i18n )
     {
-        List<ProgramStageInstance> programStageInstances = getProgramStageInstances( programInstance, startDate, endDate ,
-            min, max );
+        List<ProgramStageInstance> programStageInstances = getProgramStageInstances( programInstance, startDate,
+            endDate, min, max );
 
         ProgramStage programStage = programInstance.getProgram().getProgramStages().iterator().next();
 
@@ -221,7 +221,8 @@ public class DefaultProgramStageInstanceService
         // ---------------------------------------------------------------------
 
         Grid grid = new ListGrid().setTitle( programInstance.getProgram().getName() );
-        grid.setSubtitle( i18n.getString( "from" ) + " " + format.formatDate( startDate ) + " " + i18n.getString( "to" ) + " " + format.formatDate( endDate ) );
+        grid.setSubtitle( i18n.getString( "from" ) + " " + format.formatDate( startDate ) + " " + i18n.getString( "to" )
+            + " " + format.formatDate( endDate ) );
 
         // ---------------------------------------------------------------------
         // Headers
@@ -262,4 +263,117 @@ public class DefaultProgramStageInstanceService
 
         return grid;
     }
+
+    public List<ProgramStageInstance> searchProgramStageInstances( ProgramStage programStage,
+        Map<Integer, String> searchingKeys, OrganisationUnit orgunit, Date startDate, Date endDate, int min, int max )
+    {
+        return programStageInstanceStore.get( programStage, searchingKeys, orgunit, startDate, endDate, min, max );
+    }
+    
+    public List<ProgramStageInstance> searchProgramStageInstances( ProgramStage programStage,
+        Map<Integer, String> searchingKeys, OrganisationUnit orgunit, Date startDate, Date endDate )
+    {
+        return programStageInstanceStore.get( programStage, searchingKeys, orgunit, startDate, endDate );
+    }
+
+    public Grid getTabularReport( ProgramStage programStage, List<DataElement> dataElements,
+        Map<Integer, String> searchingKeys, OrganisationUnit orgunit, Date startDate, Date endDate, int min, int max,
+        I18nFormat format, I18n i18n )
+    {
+        List<ProgramStageInstance> programStageInstances = searchProgramStageInstances( programStage, searchingKeys,
+            orgunit, startDate, endDate, min, max );
+
+        return createTabularGrid( programStage, programStageInstances, dataElements, startDate, endDate, format, i18n );
+    }
+
+    public Grid getTabularReport( ProgramStage programStage, List<DataElement> dataElements,
+        Map<Integer, String> searchingKeys, OrganisationUnit orgunit, Date startDate, Date endDate, I18nFormat format,
+        I18n i18n )
+    {
+        List<ProgramStageInstance> programStageInstances = searchProgramStageInstances( programStage, searchingKeys,
+            orgunit, startDate, endDate );
+
+        return createTabularGrid( programStage, programStageInstances, dataElements, startDate, endDate, format, i18n );
+    }
+
+    @Override
+    public int countProgramStageInstances( ProgramStage programStage, Map<Integer, String> searchingKeys,
+        OrganisationUnit orgunit, Date startDate, Date endDate )
+    {
+        return programStageInstanceStore.count( programStage, searchingKeys, orgunit, startDate, endDate );
+    }
+
+    // -------------------------------------------------------------------------
+    // Supportive methods
+    // -------------------------------------------------------------------------
+
+    private Grid createTabularGrid( ProgramStage programStage, List<ProgramStageInstance> programStageInstances,
+        List<DataElement> dataElements, Date startDate, Date endDate, I18nFormat format, I18n i18n )
+    {
+        Grid grid = new ListGrid();
+
+        if ( dataElements != null && dataElements.size() > 0 && programStageInstances.size() > 0 )
+        {
+            Program program = programStage.getProgram();
+
+            // ---------------------------------------------------------------------
+            // Create a grid
+            // ---------------------------------------------------------------------
+
+            grid.setTitle( program.getName() );
+            grid.setSubtitle( i18n.getString( "from" ) + " " + format.formatDate( startDate ) + " "
+                + i18n.getString( "to" ) + " " + format.formatDate( endDate ) );
+
+            // ---------------------------------------------------------------------
+            // Headers
+            // ---------------------------------------------------------------------
+
+            for ( DataElement dataElement : dataElements )
+            {
+                grid.addHeader( new GridHeader( dataElement.getName(), false, false ) );
+            }
+
+            grid.addHeader( new GridHeader( i18n.getString( "operations" ), true, false ) );
+
+            grid.addHeader( new GridHeader( i18n.getString( "status" ), true, false ) );
+
+            // ---------------------------------------------------------------------
+            // Values
+            // ---------------------------------------------------------------------
+
+            for ( ProgramStageInstance programStageInstance : programStageInstances )
+            {
+                grid.addRow();
+
+                for ( DataElement dataElement : dataElements )
+                {
+                    PatientDataValue patientDataValue = patientDataValueService.getPatientDataValue(
+                        programStageInstance, dataElement );
+
+                    if ( patientDataValue != null )
+                    {
+                        if ( dataElement.getType().equals( DataElement.VALUE_TYPE_BOOL ) )
+                        {
+                            grid.addValue( i18n.getString( patientDataValue.getValue() ) );
+                        }
+                        else
+                        {
+                            grid.addValue( patientDataValue.getValue() );
+                        }
+                    }
+                    else
+                    {
+                        grid.addValue( "" );
+                    }
+                }
+
+                grid.addValue( programStageInstance.getId() );
+
+                grid.addValue( programStageInstance.isCompleted() );
+            }
+        }
+
+        return grid;
+    }
+
 }

@@ -14,8 +14,13 @@
 <h2>$i18n.getString( "reports" )&nbsp;</h2>
 <ul>
     <li><a href="reportSelect.action">$i18n.getString( "program_summary" )&nbsp;</a></li> 
-	<li><a href="showSingleEventReportForm.action"> $i18n.getString( "anonymous_event_reports" )&nbsp;</a></li>
-	<li><a href="visitplan.action">$i18n.getString( "visit_plan" )&nbsp;</a></li>
+	<li><a href="showSingleEventReportForm.action"> $i18n.getString( "anonymous_event_report" )&nbsp;</a></li> 	    
+	<li><a href="tabularReportSelect.action"> $i18n.getString( "tabular_report" )&nbsp;</a></li> 
+</ul>
+
+<h2>$i18n.getString( "activity_planning" )&nbsp;</h2>
+<ul>
+    <li><a href="visitplan.action">$i18n.getString( "visit_plan" )&nbsp;</a></li>     
 </ul>
 
 <h2>$i18n.getString( "case_aggregation" )&nbsp;</h2>

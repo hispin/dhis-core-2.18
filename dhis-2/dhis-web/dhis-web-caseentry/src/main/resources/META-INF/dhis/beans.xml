@@ -88,9 +88,8 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		scope="prototype">
 		<property name="selectedStateManager"
 			ref="org.hisp.dhis.caseentry.state.SelectedStateManager" />
-		<property name="dataElementService" ref="org.hisp.dhis.dataelement.DataElementService" />
-		<property name="patientDataValueService"
-			ref="org.hisp.dhis.patientdatavalue.PatientDataValueService" />
+		<property name="programStageInstanceService"
+			ref="org.hisp.dhis.program.ProgramStageInstanceService" />
 	</bean>
 
 	<bean
@@ -260,6 +259,40 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
         	ref="org.hisp.dhis.program.ProgramInstanceService" />
         <property name="programStageInstanceService"
  	       	ref="org.hisp.dhis.program.ProgramStageInstanceService" />
+	</bean>
+	
+	<bean id="org.hisp.dhis.caseentry.action.report.TabularReportSelectAction"
+		class="org.hisp.dhis.caseentry.action.report.TabularReportSelectAction"
+		scope="prototype">
+		<property name="selectionManager"
+			ref="org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager" />
+		<property name="programService"
+			ref="org.hisp.dhis.program.ProgramService" />
+	</bean>
+	
+	<bean id="org.hisp.dhis.caseentry.action.report.LoadProgramStagesAction"
+		class="org.hisp.dhis.caseentry.action.report.LoadProgramStagesAction"
+		scope="prototype">
+		<property name="programService"
+			ref="org.hisp.dhis.program.ProgramService" />
+	</bean>
+	
+	<bean id="org.hisp.dhis.caseentry.action.report.LoadDataElementsAction"
+    	class="org.hisp.dhis.caseentry.action.report.LoadDataElementsAction" scope="prototype">
+    	<property name="programStageService"
+        	ref="org.hisp.dhis.program.ProgramStageService" />
+	</bean>
+	
+	<bean id="org.hisp.dhis.caseentry.action.report.GenerateTabularReportAction"
+    	class="org.hisp.dhis.caseentry.action.report.GenerateTabularReportAction" scope="prototype">
+    	<property name="programStageService"
+        	ref="org.hisp.dhis.program.ProgramStageService" />
+        <property name="dataElementService"
+        	ref="org.hisp.dhis.dataelement.DataElementService" />
+        <property name="programStageInstanceService"
+        	ref="org.hisp.dhis.program.ProgramStageInstanceService" />
+        <property name="selectedStateManager"
+        	ref="org.hisp.dhis.caseentry.state.SelectedStateManager" />
 	</bean>
 
 	<!-- Case Aggregation -->

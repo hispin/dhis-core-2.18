@@ -1,0 +1,19 @@
+/*----------------------------------------------------------------------------*/
+/* For GRID form                                                              */
+/*----------------------------------------------------------------------------*/
+
+.grid tr {
+  background-color:#eee;
+  }
+  
+.grid th, .grid td
+{
+  text-align: center;
+  width: 150px;
+  line-height: 170%;
+  border:1px solid #fff;
+}
+
+.small-button {
+	font-size: .8em !important;
+}

@@ -32,6 +32,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.hisp.dhis.common.Grid;
+import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.i18n.I18n;
 import org.hisp.dhis.i18n.I18nFormat;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
@@ -64,7 +65,7 @@ public interface ProgramStageInstanceService
     Collection<ProgramStageInstance> getProgramStageInstances( Date dueDate, Boolean completed );
 
     Collection<ProgramStageInstance> getProgramStageInstances( Date startDate, Date endDate );
-
+    
     Collection<ProgramStageInstance> getProgramStageInstances( Date startDate, Date endDate, Boolean completed );
 
     Collection<ProgramStageInstance> getAllProgramStageInstances();
@@ -82,7 +83,7 @@ public interface ProgramStageInstanceService
      *        ) or uncompleted (<code>false</code>) instances.
      * @return
      */
-    public List<ProgramStageInstance> get( OrganisationUnit unit, Date after, Date before, Boolean completed );
+    List<ProgramStageInstance> get( OrganisationUnit unit, Date after, Date before, Boolean completed );
 
     List<ProgramStageInstance> getProgramStageInstances( Patient patient, Boolean completed );
     
@@ -91,5 +92,12 @@ public interface ProgramStageInstanceService
     int countProgramStageInstances( ProgramInstance programInstance, Date startDate, Date endDate );
     
     Grid getSingleEventReport( ProgramInstance programInstance, Date startDate, Date endDate, int min, int max, I18nFormat format, I18n i18n );
+    
+    List<ProgramStageInstance> searchProgramStageInstances( ProgramStage programStage, Map<Integer,String> searchingKeys, OrganisationUnit orgunit, Date startDate, Date endDate, int min, int max );
 
+    Grid getTabularReport( ProgramStage programStage, List<DataElement> dataElements, Map<Integer,String> searchingKeys, OrganisationUnit orgunit, Date startDate, Date endDate, int min, int max, I18nFormat format, I18n i18n );
+    
+    Grid getTabularReport( ProgramStage programStage, List<DataElement> dataElements, Map<Integer,String> searchingKeys, OrganisationUnit orgunit, Date startDate, Date endDate, I18nFormat format, I18n i18n );
+
+    int countProgramStageInstances( ProgramStage programStage, Map<Integer,String> searchingKeys, OrganisationUnit orgunit, Date startDate, Date endDate );
 }

@@ -50,7 +50,7 @@
 				<p><label class="bold">$i18n.getString( "description" ):</label><br><span id="descriptionField"></span></p>				
 				<p><label class="bold">$i18n.getString( "single_event" ):</label><br><span id="singleEventField"></span></p>				
 				<p><label class="bold">$i18n.getString( "anonymous" ):</label><br><span id="anonymousField"></span></p>
-				<p><label class="bold">$i18n.getString( "display_provided_other_facility" ):</label><br><span id="displayProvidedOtherFacilityField"></span></p>
+				<p><label class="bold">$i18n.getString( "display_provided_other_facility_column" ):</label><br><span id="displayProvidedOtherFacilityField"></span></p>
 				<p><label class="bold">$i18n.getString( "date_of_enrollment_description" ):</label><br><span id="dateOfEnrollmentDescriptionField"></span></p>				
 				<p><label class="bold">$i18n.getString( "date_of_incident_description" ):</label><br><span id="dateOfIncidentDescriptionField"></span></p>				
 				<p><label class="bold">$i18n.getString( "stage_in_program" ):</label><br><span id="programStageCountField"></span></p>
