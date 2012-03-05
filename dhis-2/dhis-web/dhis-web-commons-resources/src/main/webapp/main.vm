@@ -168,13 +168,15 @@
 
     <div id="leftBar">    
       <span id="hideLeftBar">
+        <a href="index.action" title="$i18n.getString( "show_main_menu" )">
+          <img src="../images/home_small.png" width="16" height="16" title="$i18n.getString( "show_main_menu" )"></a>
         <a href="javascript:leftBar.hideAnimated()" title="$i18n.getString( "hide_menu" )">
-          <img src="../images/hide_menu.png" width="16" height="16" alt="$i18n.getString( "hide_menu" )"></a>
+          <img src="../images/hide_menu.png" width="16" height="16" title="$i18n.getString( "hide_menu" )"></a>
       </span>
       
       <div id="leftBarContents">
         #parse( $menu )
-      </div>      
+      </div>
     </div>
         
     <div id="headerMessage" class="bold"></div>
