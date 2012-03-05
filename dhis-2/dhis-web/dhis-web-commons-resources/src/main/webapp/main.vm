@@ -8,8 +8,6 @@
 
     <link type="image/png" rel="icon" href="../images/favicon.png" />
 
-    #parse( "settings.vm" )
-        
     #foreach ( $style in $stylesheets )
       <link type="text/css" rel="stylesheet" href="$style">
     #end
@@ -103,7 +101,8 @@
     #parse( "macros.vm" )
         
     <div id="header">
-      <img id="headerBanner" src="../dhis-web-commons/css/${stylesheetDirectory}/logo_banner.png" onclick="window.location.href='../dhis-web-commons-about/modules.action'" style="cursor:pointer">
+      <img id="headerBanner" src="../dhis-web-commons/css/${stylesheetDirectory}/logo_banner.png" 
+        onclick="window.location.href='../dhis-web-commons-about/modules.action'" style="cursor:pointer" title="$i18n.getString( 'go_to_system_overview' )">
       
       <img id="menuSeparator1" src="../dhis-web-commons/css/${stylesheetDirectory}/logo_separator.png">
       <img id="menuSeparator2" src="../dhis-web-commons/css/${stylesheetDirectory}/logo_separator.png">

@@ -95,7 +95,6 @@
 
     <action name="displayViewReportForm" class="org.hisp.dhis.reporting.reportviewer.action.GetAllReportsAction">
       <result name="success" type="velocity">/main.vm</result>
-      <param name="menuTreeHeight">420</param>
       <param name="page">/dhis-web-reporting/viewReportForm.vm</param>
       <param name="menu">/dhis-web-reporting/menu.vm</param>
       <param name="javascripts">javascript/report.js</param>
@@ -234,7 +233,6 @@
 
     <action name="showDataSetReportForm" class="org.hisp.dhis.reporting.dataset.action.GetDataSetReportOptionsAction">
       <result name="success" type="velocity">/main.vm</result>
-      <param name="menuTreeHeight">420</param>
       <param name="page">/dhis-web-reporting/dataSetReportForm.vm</param>
       <param name="menu">/dhis-web-reporting/menu.vm</param>
       <param name="javascripts">../dhis-web-commons/oust/oust.js,javascript/dataSetReport.js</param>
