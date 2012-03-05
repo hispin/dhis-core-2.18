@@ -170,6 +170,8 @@ public class SaveExecutionDateAction
                     programStageInstance.setStageInProgram( programStage.getStageInProgram() );
                     programStageInstance.setDueDate( dateValue );
                     programStageInstance.setExecutionDate( dateValue );
+                    programStageInstance.setOrganisationUnit( selectedStateManager.getSelectedOrganisationUnit() );
+                    programStageInstance.setProvidedByAnotherFacility( false );
 
                     programStageInstanceService.addProgramStageInstance( programStageInstance );
 
@@ -180,6 +182,7 @@ public class SaveExecutionDateAction
             else
             {
                 programStageInstance.setExecutionDate( dateValue );
+                programStageInstance.setOrganisationUnit( selectedStateManager.getSelectedOrganisationUnit() );
 
                 if ( programStageInstance.getProgramInstance().getProgram().getSingleEvent() )
                 {

@@ -418,6 +418,8 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 	
 	<bean id="org.hisp.dhis.caseentry.action.caseentry.CreateAnonymousEncounterAction"
 		class="org.hisp.dhis.caseentry.action.caseentry.CreateAnonymousEncounterAction" scope="prototype">
+		<property name="selectedStateManager"
+			ref="org.hisp.dhis.caseentry.state.SelectedStateManager" />
 		<property name="programInstanceService"
 			ref="org.hisp.dhis.program.ProgramInstanceService" />
 		<property name="programStageInstanceService"
