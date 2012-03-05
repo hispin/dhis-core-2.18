@@ -684,14 +684,14 @@ Ext.onReady( function() {
 			}
         },
         chart: {
-			default: {
+			def: {
 				getChart: function(axes, series) {
 					return Ext.create('Ext.chart.Chart', {
 						animate: true,
 						store: DV.store.chart,
 						insetPadding: DV.conf.chart.style.inset,
-						items: DV.state.hideSubtitle ? false : DV.util.chart.default.getTitle(),
-						legend: DV.state.hideLegend ? false : DV.util.chart.default.getLegend(),
+						items: DV.state.hideSubtitle ? false : DV.util.chart.def.getTitle(),
+						legend: DV.state.hideLegend ? false : DV.util.chart.def.getLegend(),
 						axes: axes,
 						series: series,
 						theme: 'dv1'
@@ -746,7 +746,7 @@ Ext.onReady( function() {
 							},
 							minimum: 0,
 							fields: stacked ? DV.state.series.names : DV.store.chart.range,
-							label: DV.util.chart.default.label.getNumeric(),
+							label: DV.util.chart.def.label.getNumeric(),
 							grid: {
 								odd: {
 									opacity: 1,
@@ -777,7 +777,7 @@ Ext.onReady( function() {
 								font: '17px ' + DV.conf.chart.style.font
 							},
 							fields: DV.conf.finals.data.domain,
-							label: DV.util.chart.default.label.getCategory()
+							label: DV.util.chart.def.label.getCategory()
 						};
 					}
 				},
@@ -847,7 +847,7 @@ Ext.onReady( function() {
 									type: 'circle',
 									radius: 4
 								},
-								tips: DV.util.chart.default.series.getTips(),
+								tips: DV.util.chart.def.series.getTips(),
 								title: DV.chart.trendLine[i].name
 							});
 						}
@@ -885,12 +885,12 @@ Ext.onReady( function() {
 				},
 				axis: {
 					getNumeric: function() {
-						var num = DV.util.chart.default.axis.getNumeric();
+						var num = DV.util.chart.def.axis.getNumeric();
 						num.position = 'bottom';
 						return num;
 					},
 					getCategory: function() {
-						var cat = DV.util.chart.default.axis.getCategory();
+						var cat = DV.util.chart.def.axis.getCategory();
 						cat.position = 'left';
 						cat.label = DV.util.chart.bar.label.getCategory();
 						return cat;
@@ -907,14 +907,14 @@ Ext.onReady( function() {
 						};
 					},
 					getTargetLine: function() {
-						var line = DV.util.chart.default.series.getTargetLine();
+						var line = DV.util.chart.def.series.getTargetLine();
 						line.axis = 'bottom';
 						line.xField = DV.conf.finals.data.targetline;
 						line.yField = DV.conf.finals.data.domain;
 						return line;
 					},
 					getBaseLine: function() {
-						var line = DV.util.chart.default.series.getBaseLine();
+						var line = DV.util.chart.def.series.getBaseLine();
 						line.axis = 'bottom';
 						line.xField = DV.conf.finals.data.baseline;
 						line.yField = DV.conf.finals.data.domain;
@@ -962,7 +962,7 @@ Ext.onReady( function() {
 									type: 'circle',
 									radius: 4
 								},
-								tips: DV.util.chart.default.series.getTips()
+								tips: DV.util.chart.def.series.getTips()
 							});
 						}
 						return a;
@@ -1936,7 +1936,7 @@ Ext.onReady( function() {
         column: function(stacked) {
 			var series = [];
 			if (DV.state.trendLine) {
-				var a = DV.util.chart.default.series.getTrendLineArray();
+				var a = DV.util.chart.def.series.getTrendLineArray();
 				for (var i = 0; i < a.length; i++) {
 					series.push(a[i]);
 				}
@@ -1951,22 +1951,22 @@ Ext.onReady( function() {
 					opacity: 0.8,
 					stroke: '#333'
 				},				
-				tips: DV.util.chart.default.series.getTips()
+				tips: DV.util.chart.def.series.getTips()
 			});
 			if (DV.state.targetLineValue) {
-				series.push(DV.util.chart.default.series.getTargetLine());
+				series.push(DV.util.chart.def.series.getTargetLine());
 			}
 			if (DV.state.baseLineValue) {
-				series.push(DV.util.chart.default.series.getBaseLine());
+				series.push(DV.util.chart.def.series.getBaseLine());
 			}
 			
 			var axes = [];
-			var numeric = DV.util.chart.default.axis.getNumeric(stacked);
+			var numeric = DV.util.chart.def.axis.getNumeric(stacked);
 			axes.push(numeric);
-			axes.push(DV.util.chart.default.axis.getCategory());
+			axes.push(DV.util.chart.def.axis.getCategory());
 			
-			DV.util.chart.default.series.setTheme();
-			this.chart = DV.util.chart.default.getChart(axes, series);
+			DV.util.chart.def.series.setTheme();
+			this.chart = DV.util.chart.def.getChart(axes, series);
         },
         stackedcolumn: function() {
             this.column(true);
@@ -1989,7 +1989,7 @@ Ext.onReady( function() {
 					opacity: 0.8,
 					stroke: '#333'
 				},
-				tips: DV.util.chart.default.series.getTips()
+				tips: DV.util.chart.def.series.getTips()
 			});
 			if (DV.state.targetLineValue) {
 				series.push(DV.util.chart.bar.series.getTargetLine());
@@ -2003,8 +2003,8 @@ Ext.onReady( function() {
 			axes.push(numeric);
 			axes.push(DV.util.chart.bar.axis.getCategory());
 			
-			DV.util.chart.default.series.setTheme();			
-			this.chart = DV.util.chart.default.getChart(axes, series);
+			DV.util.chart.def.series.setTheme();			
+			this.chart = DV.util.chart.def.getChart(axes, series);
         },
         stackedbar: function() {
             this.bar(true);
@@ -2012,26 +2012,26 @@ Ext.onReady( function() {
         line: function() {
 			var series = [];
 			if (DV.state.trendLine) {
-				var a = DV.util.chart.default.series.getTrendLineArray();
+				var a = DV.util.chart.def.series.getTrendLineArray();
 				for (var i = 0; i < a.length; i++) {
 					series.push(a[i]);
 				}
 			}
 			series = series.concat(DV.util.chart.line.series.getArray());
 			if (DV.state.targetLineValue) {
-				series.push(DV.util.chart.default.series.getTargetLine());
+				series.push(DV.util.chart.def.series.getTargetLine());
 			}
 			if (DV.state.baseLineValue) {
-				series.push(DV.util.chart.default.series.getBaseLine());
+				series.push(DV.util.chart.def.series.getBaseLine());
 			}
 			
 			var axes = [];
-			var numeric = DV.util.chart.default.axis.getNumeric();
+			var numeric = DV.util.chart.def.axis.getNumeric();
 			axes.push(numeric);
-			axes.push(DV.util.chart.default.axis.getCategory());
+			axes.push(DV.util.chart.def.axis.getCategory());
 			
 			DV.util.chart.line.series.setTheme();
-			this.chart = DV.util.chart.default.getChart(axes, series);
+			this.chart = DV.util.chart.def.getChart(axes, series);
         },
         area: function() {
 			var series = [];
@@ -2047,12 +2047,12 @@ Ext.onReady( function() {
 			});
 			
 			var axes = [];
-			var numeric = DV.util.chart.default.axis.getNumeric();
+			var numeric = DV.util.chart.def.axis.getNumeric();
 			axes.push(numeric);
-			axes.push(DV.util.chart.default.axis.getCategory());
+			axes.push(DV.util.chart.def.axis.getCategory());
 			
 			DV.util.chart.line.series.setTheme();
-			this.chart = DV.util.chart.default.getChart(axes, series);
+			this.chart = DV.util.chart.def.getChart(axes, series);
         },
         pie: function() {
 			DV.util.chart.pie.series.setTheme();
@@ -2062,7 +2062,7 @@ Ext.onReady( function() {
                 store: DV.store.chart,
                 insetPadding: 60,
                 items: DV.state.hideSubtitle ? false : DV.util.chart.pie.getTitle(),
-                legend: DV.state.hideLegend ? false : DV.util.chart.default.getLegend(DV.state.category.names.length),
+                legend: DV.state.hideLegend ? false : DV.util.chart.def.getLegend(DV.state.category.names.length),
                 series: [{
                     type: 'pie',
                     field: DV.state.series.names[0],
