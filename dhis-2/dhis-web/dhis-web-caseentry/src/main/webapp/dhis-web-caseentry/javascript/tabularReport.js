@@ -295,7 +295,7 @@ function getParams()
 		if( item.value!= '' )
 		{
 			var value = item.value;
-			var flag = value.match(/[>|>=|<|<=|=|!=]'[%]?[\w]+[%]?'/);
+			var flag = value.match(/[>|>=|<|<=|=|!=]'[%]?.+[%]?'/);
 			
 			if( flag == null )
 			{
