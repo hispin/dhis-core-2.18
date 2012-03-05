@@ -2,6 +2,26 @@
 /* For GRID form                                                              */
 /*----------------------------------------------------------------------------*/
 
+.button
+{
+	width:140px; 
+}
+
+.inputCriteria input
+{
+	width:350px; 
+}
+
+.inputCriteria select
+{
+	width:355px; 
+}
+
+
+.grid input {
+  width:75%;
+}
+  
 .grid tr {
   background-color:#eee;
   }
