@@ -45,7 +45,6 @@
       <set>
         <value>page</value>
         <value>menu</value>
-        <value>menuTreeHeight</value>
         <value>offline</value>
       </set>
     </property>

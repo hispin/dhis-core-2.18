@@ -1,9 +1,0 @@
-
-<style type="text/css">
-  #if ( $menuTreeHeight )    
-  #leftBarContents div#orgUnitTree 
-  {
-    height: ${menuTreeHeight}px;
-  }
-  #end    
-</style> 
