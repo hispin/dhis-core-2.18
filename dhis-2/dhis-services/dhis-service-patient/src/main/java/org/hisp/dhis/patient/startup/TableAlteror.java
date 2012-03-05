@@ -53,7 +53,8 @@ import org.springframework.transaction.annotation.Transactional;
  * @version TableAlteror.java Sep 9, 2010 10:22:29 PM
  */
 public class TableAlteror
-    extends AbstractStartupRoutine{
+    extends AbstractStartupRoutine
+{
     private static final Log log = LogFactory.getLog( TableAlteror.class );
 
     Pattern IDENTIFIER_PATTERN = Pattern.compile( "DE:(\\d+)\\.(\\d+)\\.(\\d+)" );
@@ -70,30 +71,30 @@ public class TableAlteror
     }
 
     private DataElementCategoryService categoryService;
-    
+
     public void setCategoryService( DataElementCategoryService categoryService )
     {
         this.categoryService = categoryService;
     }
-    
+
     private CaseAggregationConditionService aggregationConditionService;
-    
+
     public void setAggregationConditionService( CaseAggregationConditionService aggregationConditionService )
     {
         this.aggregationConditionService = aggregationConditionService;
-    }  
-    
+    }
+
     private ProgramValidationService programValidationService;
 
     public void setProgramValidationService( ProgramValidationService programValidationService )
     {
         this.programValidationService = programValidationService;
     }
-  
+
     // -------------------------------------------------------------------------
     // Action Implementation
     // -------------------------------------------------------------------------
-  
+
     @Transactional
     public void execute()
         throws Exception
@@ -126,33 +127,36 @@ public class TableAlteror
         executeSql( "UPDATE dataset SET mobile = false WHERE mobile is null" );
 
         executeSql( "UPDATE dataset SET version = 1 WHERE version is null" );
-        
+
         executeSql( "UPDATE program SET singleEvent = false WHERE singleevent is null" );
-        
+
         executeSql( "UPDATE program SET anonymous = false WHERE anonymous is null" );
-        
+
         executeSql( "UPDATE programstage SET irregular = false WHERE irregular is null" );
 
-        executeSql( "Alter table programinstance modify patientid integer null");
-        		
+        executeSql( "Alter table programinstance modify patientid integer null" );
+
         updateSingleProgramValidation();
 
         updateStageInProgram();
 
-        executeSql( "UPDATE programvalidation SET dateType = false WHERE dateType is null");
-        
-        executeSql( "UPDATE programstage_dataelements SET showOnReport = false WHERE showOnReport is null");
-        
+        executeSql( "UPDATE programvalidation SET dateType = false WHERE dateType is null" );
+
+        executeSql( "UPDATE programstage_dataelements SET showOnReport = false WHERE showOnReport is null" );
+
         int categoryOptionId = categoryService.getDefaultDataElementCategoryOptionCombo().getId();
-        executeSql( "UPDATE dataelement SET categoryoptioncomboid = " + categoryOptionId + " WHERE domain='patient'");
-        
+        executeSql( "UPDATE dataelement SET categoryoptioncomboid = " + categoryOptionId + " WHERE domain='patient'" );
+        executeSql( "ALTER TABLE patientdatavalue DROP COLUMN categoryoptioncomboid" );
+
         upgradeCaseAggregationFormula();
-        
+
         upgradeProgramValidationFormula();
-        
+
         executeSql( "UPDATE program SET displayProvidedOtherFacility = false WHERE displayProvidedOtherFacility is null" );
-        
-        executeSql( "ALTER TABLE relationshiptype RENAME description TO name");
+
+        executeSql( "ALTER TABLE relationshiptype RENAME description TO name" );
+
+        updateProgramStageInstanceOrgunit();
     }
 
     // -------------------------------------------------------------------------
@@ -320,11 +324,11 @@ public class TableAlteror
             holder.close();
         }
     }
-    
+
     private void upgradeCaseAggregationFormula()
     {
         Collection<CaseAggregationCondition> conditions = aggregationConditionService.getAllCaseAggregationCondition();
-        
+
         for ( CaseAggregationCondition condition : conditions )
         {
             String formula = upgradeFormula( condition.getAggregationExpression() );
@@ -332,11 +336,11 @@ public class TableAlteror
             aggregationConditionService.updateCaseAggregationCondition( condition );
         }
     }
-    
+
     private void upgradeProgramValidationFormula()
     {
         Collection<ProgramValidation> programValidations = programValidationService.getAllProgramValidation();
-        
+
         for ( ProgramValidation programValidation : programValidations )
         {
             String leftSide = upgradeFormula( programValidation.getLeftSide() );
@@ -346,7 +350,7 @@ public class TableAlteror
             programValidationService.updateProgramValidation( programValidation );
         }
     }
-    
+
     private String upgradeFormula( String formula )
     {
         Matcher matcher = IDENTIFIER_PATTERN.matcher( formula );
@@ -361,8 +365,39 @@ public class TableAlteror
         }
 
         matcher.appendTail( out );
-        
+
         return out.toString();
+    }
+
+    private void updateProgramStageInstanceOrgunit()
+    {
+        StatementHolder holder = statementManager.getHolder();
+
+        try
+        {
+            Statement statement = holder.getStatement();
+
+            ResultSet resultSet = statement
+                .executeQuery( "SELECT distinct programstageinstanceid, organisationunitid, providedByAnotherFacility FROM patientdatavalue" );
+            resultSet.next();
+            while ( resultSet.next() )
+            {
+                executeSql( "UPDATE programstageinstance SET organisationunitid=" + resultSet.getInt( 2 )
+                    + ", providedByAnotherFacility=" + resultSet.getBoolean( 3 ) + "  WHERE programstageinstanceid="
+                    + resultSet.getInt( 1 ) );
+            }
+
+            executeSql( "ALTER TABLE patientdatavalue DROP COLUMN organisationUnitid" );
+            executeSql( "ALTER TABLE patientdatavalue DROP COLUMN providedByAnotherFacility" );
+        }
+        catch ( Exception ex )
+        {
+            log.debug( ex );
+        }
+        finally
+        {
+            holder.close();
+        }
     }
 
     private int executeSql( String sql )

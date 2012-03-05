@@ -242,11 +242,50 @@
 		</action>
 		
         <action name="viewAnonymousEvents"
-                class="org.hisp.dhis.caseentry.action.caseentry.ProgramStageCustomDataEntryAction">
-                <result name="success" type="velocity">/content.vm</result>
-                <param name="page">/dhis-web-caseentry/dataEntryForm.vm</param>
+             class="org.hisp.dhis.caseentry.action.caseentry.ProgramStageCustomDataEntryAction">
+             <result name="success" type="velocity">/content.vm</result>
+             <param name="page">/dhis-web-caseentry/dataEntryForm.vm</param>
         </action>
         
+        <action name="tabularReportSelect"
+			class="org.hisp.dhis.caseentry.action.report.TabularReportSelectAction">
+			<interceptor-ref name="organisationUnitTreeStack" />
+			<result name="success" type="velocity">/main.vm</result>
+			<param name="page">/dhis-web-caseentry/tabularReportSelect.vm</param>
+			<param name="menu">/dhis-web-caseentry/reportsMenu.vm</param>
+			<param name="javascripts">../dhis-web-commons/ouwt/ouwt.js,javascript/tabularReport.js</param>
+			<param name="stylesheets">../dhis-web-caseentry/style/report.css</param>
+		</action>
+		
+		<action name="loadProgramsByOrgunit"
+			class="org.hisp.dhis.caseentry.action.report.TabularReportSelectAction">
+			<interceptor-ref name="organisationUnitTreeStack" />
+			<result name="success" type="velocity-json">/dhis-web-caseentry/responsePrograms.vm</result>
+		</action>
+		
+		<action name="loadTabularProgramStages"
+			class="org.hisp.dhis.caseentry.action.report.LoadProgramStagesAction">
+			<result name="success" type="velocity-json">/dhis-web-caseentry/responseProgramStages.vm</result>
+		</action>
+		
+		<action name="loadDataElements"
+			class="org.hisp.dhis.caseentry.action.report.LoadDataElementsAction">
+			<result name="success" type="velocity-json">/dhis-web-caseentry/responseDataElements.vm</result>
+		</action>
+		
+        <action name="generateTabularReport"
+			class="org.hisp.dhis.caseentry.action.report.GenerateTabularReportAction">
+			<result name="success" type="velocity">/content.vm</result>
+			<result name="xls" type="gridXlsResult" />
+      		<result name="pdf" type="gridPdfResult" />
+			<param name="page">/dhis-web-caseentry/tabularReportResult.vm</param>
+		</action>
+		
+		<action name="searchTabularReport"
+			class="org.hisp.dhis.caseentry.action.report.GenerateTabularReportAction">
+			<result name="success" type="velocity">/dhis-web-caseentry/searchTabularReportResult.vm</result>
+		</action>
+		
 		<!-- Case Aggregation -->
 
 		<action name="caseAggregationForm"

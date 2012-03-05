@@ -29,6 +29,7 @@ package org.hisp.dhis.program;
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 import org.hisp.dhis.common.GenericStore;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
@@ -47,15 +48,15 @@ public interface ProgramStageInstanceStore
 
     Collection<ProgramStageInstance> get( ProgramStage programStage );
 
-    Collection<ProgramStageInstance> getProgramStageInstances( Date dueDate );
+    Collection<ProgramStageInstance> get( Date dueDate );
     
-    Collection<ProgramStageInstance> getProgramStageInstances( Date dueDate, Boolean completed );
+    Collection<ProgramStageInstance> get( Date dueDate, Boolean completed );
 
-    Collection<ProgramStageInstance> getProgramStageInstances( Date startDate, Date endDate );
-    
-    Collection<ProgramStageInstance> getProgramStageInstances( Date startDate, Date endDate, Boolean completed );
+    Collection<ProgramStageInstance> get( Date startDate, Date endDate );
+        
+    Collection<ProgramStageInstance> get( Date startDate, Date endDate, Boolean completed );
 
-    Collection<ProgramStageInstance> getProgramStageInstances( Collection<ProgramInstance> programInstances );
+    Collection<ProgramStageInstance> get( Collection<ProgramInstance> programInstances );
 
     /** Get all {@link ProgramStageInstance program stage instances} for unit.
      * @param unit - the unit to get instances for.
@@ -64,11 +65,20 @@ public interface ProgramStageInstanceStore
      * @param completed - optional flag to only get completed (<code>true</code>) or uncompleted (<code>false</code>) instances. 
      * @return
      */
-    public List<ProgramStageInstance> get(OrganisationUnit unit, Date after, Date before, Boolean completed);
+    public List<ProgramStageInstance> get( OrganisationUnit unit, Date after, Date before, Boolean completed );
 
-    List<ProgramStageInstance> getProgramStageInstances( Patient patient, Boolean completed);
+    List<ProgramStageInstance> get( Patient patient, Boolean completed);
     
-    List<ProgramStageInstance> getProgramStageInstances( ProgramInstance programInstance, Date startDate, Date endDate , int min, int max );
+    List<ProgramStageInstance> get( ProgramInstance programInstance, Date startDate, Date endDate , int min, int max );
+
+    int count( ProgramInstance programInstance, Date startDate, Date endDate );
     
-    int countProgramStageInstances( ProgramInstance programInstance, Date startDate, Date endDate );
+    List<ProgramStageInstance> get( ProgramStage programStage, OrganisationUnit orgunit, Date startDate, Date endDate, int min, int max );
+    
+    List<ProgramStageInstance> get( ProgramStage programStage, Map<Integer,String> searchingKeys, OrganisationUnit orgunit, Date startDate, Date endDate, int min, int max );
+    
+    List<ProgramStageInstance> get( ProgramStage programStage, Map<Integer,String> searchingKeys, OrganisationUnit orgunit, Date startDate, Date endDate );
+
+    int count( ProgramStage programStage, Map<Integer,String> searchingKeys, OrganisationUnit orgunit, Date startDate, Date endDate );
+    
 }

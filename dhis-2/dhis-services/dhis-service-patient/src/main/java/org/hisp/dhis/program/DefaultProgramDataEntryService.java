@@ -51,12 +51,6 @@ public class DefaultProgramDataEntryService
 {
     private static final String EMPTY = "";
 
-    private static final String UNKNOW_CLINIC = "unknow_clinic";
-
-    private static final String NOTAVAILABLE = "not_available";
-
-    private static final String OTHER_FACILITY = "other_facility";
-
     private static final String DATA_ELEMENT_DOES_NOT_EXIST = "[ Data element does not exist ]";
 
     private static final String EMPTY_VALUE_TAG = "value=\"\"";
@@ -116,13 +110,13 @@ public class DefaultProgramDataEntryService
         String result = "";
 
         result = populateCustomDataEntryForTextBox( htmlCode, dataValues, disabled, i18n, programStage,
-            programStageInstance, organisationUnit, mapDataValue );
+            programStageInstance, mapDataValue );
 
         result = populateCustomDataEntryForDate( result, dataValues, disabled, i18n, programStage,
-            programStageInstance, organisationUnit, mapDataValue );
+            programStageInstance, mapDataValue );
 
         result = populateCustomDataEntryForBoolean( result, dataValues, disabled, i18n, programStage,
-            programStageInstance, organisationUnit, mapDataValue );
+            programStageInstance, mapDataValue );
 
         result = populateI18nStrings( result, i18n );
 
@@ -185,8 +179,8 @@ public class DefaultProgramDataEntryService
                 int dataElementId = Integer.parseInt( identifierMatcher.group( 2 ) );
                 DataElement dataElement = dataElementService.getDataElement( dataElementId );
 
-                String displayValue = (dataElement == null ) ? " value=\""
-                    + DATA_ELEMENT_DOES_NOT_EXIST + "\" " : " value=\"[ " + dataElement.getName() + " ]\"";
+                String displayValue = (dataElement == null) ? " value=\"" + DATA_ELEMENT_DOES_NOT_EXIST + "\" "
+                    : " value=\"[ " + dataElement.getName() + " ]\"";
                 inputHTML = inputHTML.contains( EMPTY_VALUE_TAG ) ? inputHTML.replace( EMPTY_VALUE_TAG, displayValue )
                     : inputHTML + " " + displayValue;
 
@@ -344,15 +338,14 @@ public class DefaultProgramDataEntryService
 
     private String populateCustomDataEntryForBoolean( String dataEntryFormCode,
         Collection<PatientDataValue> dataValues, String disabled, I18n i18n, ProgramStage programStage,
-        ProgramStageInstance programStageInstance, OrganisationUnit organisationUnit,
-        Map<Integer, Collection<PatientDataValue>> mapDataValue )
+        ProgramStageInstance programStageInstance, Map<Integer, Collection<PatientDataValue>> mapDataValue )
     {
 
         // ---------------------------------------------------------------------
         // Inline Javascript to add to HTML before outputting
         // ---------------------------------------------------------------------
 
-        final String jsCodeForBoolean = " name=\"entryselect\" $DISABLED data=\"{compulsory:$COMPULSORY, deName:'$DATAELEMENTNAME', provided:'$PROVIDED'}\" onchange=\"saveOpt( $DATAELEMENTID )\" style=\"  text-align:center;\" ";
+        final String jsCodeForBoolean = " name=\"entryselect\" $DISABLED data=\"{compulsory:$COMPULSORY, deName:'$DATAELEMENTNAME' }\" onchange=\"saveOpt( $DATAELEMENTID )\" style=\"  text-align:center;\" ";
 
         StringBuffer sb = new StringBuffer();
 
@@ -518,40 +511,14 @@ public class DefaultProgramDataEntryService
                 {
                     disabled = "disabled";
                 }
-                else
-                {
-                    // -----------------------------------------------------------
-                    // Add ProvidedByOtherFacility checkbox
-                    // -----------------------------------------------------------
-
-                    appendCode = addProvidedByOtherFacilityCheckbox( appendCode, patientDataValue, programStage );
-                }
 
                 // -----------------------------------------------------------
                 // 
                 // -----------------------------------------------------------
 
-                String orgUnitName = i18n.getString( NOTAVAILABLE );
-                String provided = i18n.getString( NOTAVAILABLE );
-                ;
-                if ( patientDataValue != null )
-                {
-                    if ( patientDataValue.isProvidedByAnotherFacility() )
-                    {
-                        orgUnitName = i18n.getString( UNKNOW_CLINIC );
-                        provided = i18n.getString( OTHER_FACILITY );
-                    }
-                    else
-                    {
-                        orgUnitName = patientDataValue.getOrganisationUnit().getName();
-                        provided = patientDataValue.getOrganisationUnit().getName();
-                    }
-                }
-
                 appendCode = appendCode.replace( "$DATAELEMENTID", String.valueOf( dataElementId ) );
                 appendCode = appendCode.replace( "$PROGRAMSTAGEID", String.valueOf( programStageId ) );
                 appendCode = appendCode.replace( "$PROGRAMSTAGENAME", programStageName );
-                appendCode = appendCode.replace( "$ORGUNITNAME", orgUnitName );
                 appendCode = appendCode.replace( "$DATAELEMENTNAME", dataElement.getName() );
                 appendCode = appendCode.replace( "$DATAELEMENTTYPE", dataElementType );
                 appendCode = appendCode.replace( "$DISABLED", disabled );
@@ -560,8 +527,6 @@ public class DefaultProgramDataEntryService
                 appendCode = appendCode.replace( "i18n_no", i18n.getString( "no" ) );
                 appendCode = appendCode.replace( "i18n_select_value", i18n.getString( "select_value" ) );
                 appendCode = appendCode.replace( "$SAVEMODE", "false" );
-
-                appendCode = appendCode.replace( "$PROVIDED", provided );
 
                 appendCode = appendCode.replaceAll( "\\$", "\\\\\\$" );
 
@@ -576,15 +541,14 @@ public class DefaultProgramDataEntryService
 
     private String populateCustomDataEntryForTextBox( String dataEntryFormCode,
         Collection<PatientDataValue> dataValues, String disabled, I18n i18n, ProgramStage programStage,
-        ProgramStageInstance programStageInstance, OrganisationUnit organisationUnit,
-        Map<Integer, Collection<PatientDataValue>> mapDataValue )
+        ProgramStageInstance programStageInstance, Map<Integer, Collection<PatientDataValue>> mapDataValue )
     {
         // ---------------------------------------------------------------------
         // Inline Javascript to add to HTML before outputting
         // ---------------------------------------------------------------------
 
-        final String jsCodeForInputs = " $DISABLED onchange=\"saveVal( $DATAELEMENTID )\" data=\"{compulsory:$COMPULSORY, deName:'$DATAELEMENTNAME', deType:'$DATAELEMENTTYPE', provided:'$PROVIDED'}\" onkeypress=\"return keyPress(event, this)\" style=\" text-align:center;\"  ";
-        final String jsCodeForOptions = " $DISABLED options='$OPTIONS' dataElementId=\"$DATAELEMENTID\" data=\"{compulsory:$COMPULSORY, deName:'$DATAELEMENTNAME', deType:'$DATAELEMENTTYPE', provided:'$PROVIDED'}\" onkeypress=\"return keyPress(event, this)\" style=\" text-align:center;\"  ";
+        final String jsCodeForInputs = " $DISABLED onchange=\"saveVal( $DATAELEMENTID )\" data=\"{compulsory:$COMPULSORY, deName:'$DATAELEMENTNAME', deType:'$DATAELEMENTTYPE'}\" onkeypress=\"return keyPress(event, this)\" style=\" text-align:center;\"  ";
+        final String jsCodeForOptions = " $DISABLED options='$OPTIONS' dataElementId=\"$DATAELEMENTID\" data=\"{compulsory:$COMPULSORY, deName:'$DATAELEMENTNAME', deType:'$DATAELEMENTTYPE'}\" onkeypress=\"return keyPress(event, this)\" style=\" text-align:center;\"  ";
 
         StringBuffer sb = new StringBuffer();
 
@@ -651,7 +615,6 @@ public class DefaultProgramDataEntryService
                     continue;
                 }
 
-
                 if ( !DataElement.VALUE_TYPE_INT.equals( dataElement.getType() )
                     && !DataElement.VALUE_TYPE_STRING.equals( dataElement.getType() ) )
                 {
@@ -708,7 +671,8 @@ public class DefaultProgramDataEntryService
                 }
                 else
                 {
-                    dataElementCode += "title=\"" + dataElement.getId() + "." + dataElement.getName() + " (" + dataElementType + ")\" ";
+                    dataElementCode += "title=\"" + dataElement.getId() + "." + dataElement.getName() + " ("
+                        + dataElementType + ")\" ";
                 }
 
                 // -------------------------------------------------------------
@@ -725,12 +689,12 @@ public class DefaultProgramDataEntryService
                 {
                     appendCode += "value=\"" + dataElementValue + "\"";
                 }
-                
+
                 if ( dataElement.getOptionSet() != null )
                 {
-                   appendCode += jsCodeForOptions;
-                   
-                   appendCode = appendCode.replace( "$OPTIONS", dataElement.getOptionSet().getOptions().toString() ); 
+                    appendCode += jsCodeForOptions;
+
+                    appendCode = appendCode.replace( "$OPTIONS", dataElement.getOptionSet().getOptions().toString() );
                 }
                 else
                 {
@@ -738,7 +702,7 @@ public class DefaultProgramDataEntryService
                 }
 
                 appendCode += " />";
-                
+
                 // -----------------------------------------------------------
                 // Check if this dataElement is from another programStage then
                 // disable
@@ -750,46 +714,18 @@ public class DefaultProgramDataEntryService
                 {
                     disabled = "disabled=\"\"";
                 }
-                else
-                {
-                    // ---------------------------------------------------------
-                    // Add ProvidedByOtherFacility checkbox
-                    // ---------------------------------------------------------
 
-                    appendCode = addProvidedByOtherFacilityCheckbox( appendCode, patientDataValue, programStage );
-                }
-                
                 // -----------------------------------------------------------
                 // 
                 // -----------------------------------------------------------
 
-                String orgUnitName = i18n.getString( NOTAVAILABLE );
-                String provided = "";
-
-                if ( patientDataValue != null )
-                {
-                    if ( patientDataValue.isProvidedByAnotherFacility() )
-                    {
-                        orgUnitName = i18n.getString( UNKNOW_CLINIC );
-                        provided = i18n.getString( OTHER_FACILITY );
-                    }
-                    else
-                    {
-                        orgUnitName = patientDataValue.getOrganisationUnit().getName();
-                        provided = patientDataValue.getOrganisationUnit().getName();
-                    }
-                }
-
-                appendCode = appendCode.replace( "$DATAELEMENTID", String.valueOf( dataElementId ) );
                 appendCode = appendCode.replace( "$PROGRAMSTAGEID", String.valueOf( programStageId ) );
                 appendCode = appendCode.replace( "$PROGRAMSTAGENAME", programStageName );
-                appendCode = appendCode.replace( "$ORGUNITNAME", orgUnitName );
                 appendCode = appendCode.replace( "$DATAELEMENTNAME", dataElement.getName() );
                 appendCode = appendCode.replace( "$DATAELEMENTTYPE", dataElementType );
                 appendCode = appendCode.replace( "$DISABLED", disabled );
                 appendCode = appendCode.replace( "$COMPULSORY", compulsory );
                 appendCode = appendCode.replace( "$SAVEMODE", "false" );
-                appendCode = appendCode.replace( "$PROVIDED", provided );
 
                 dataElementMatcher.appendReplacement( sb, appendCode );
             }
@@ -802,13 +738,13 @@ public class DefaultProgramDataEntryService
 
     private String populateCustomDataEntryForDate( String dataEntryFormCode, Collection<PatientDataValue> dataValues,
         String disabled, I18n i18n, ProgramStage programStage, ProgramStageInstance programStageInstance,
-        OrganisationUnit organisationUnit, Map<Integer, Collection<PatientDataValue>> mapDataValue )
+        Map<Integer, Collection<PatientDataValue>> mapDataValue )
     {
         // ---------------------------------------------------------------------
         // Inline Javascript to add to HTML before outputting
         // ---------------------------------------------------------------------
 
-        final String jsCodeForDate = " name=\"entryfield\" $DISABLED data=\"{compulsory:$COMPULSORY, deName:'$DATAELEMENTNAME', provided:'$PROVIDED'}\" onchange=\"saveVal( $DATAELEMENTID )\" style=\" text-align:center;\" ";
+        final String jsCodeForDate = " name=\"entryfield\" $DISABLED data=\"{compulsory:$COMPULSORY, deName:'$DATAELEMENTNAME'}\" onchange=\"saveVal( $DATAELEMENTID )\" style=\" text-align:center;\" ";
 
         // ---------------------------------------------------------------------
         // Metadata code to add to HTML before outputting
@@ -975,47 +911,21 @@ public class DefaultProgramDataEntryService
                 {
                     disabled = "disabled=\"\"";
                 }
-                else
-                {
-                    appendCode += jQueryCalendar;
 
-                    // ---------------------------------------------------------
-                    // Add ProvidedByOtherFacility checkbox
-                    // ---------------------------------------------------------
-
-                    appendCode = addProvidedByOtherFacilityCheckbox( appendCode, patientDataValue, programStage );
-                }
+                appendCode += jQueryCalendar;
 
                 // -------------------------------------------------------------
-                // Get Org Unit name
+                // 
                 // -------------------------------------------------------------
-
-                String orgUnitName = i18n.getString( NOTAVAILABLE );
-                String provided = i18n.getString( NOTAVAILABLE );
-                if ( patientDataValue != null )
-                {
-                    if ( patientDataValue.isProvidedByAnotherFacility() )
-                    {
-                        orgUnitName = i18n.getString( UNKNOW_CLINIC );
-                        provided = i18n.getString( OTHER_FACILITY );
-                    }
-                    else
-                    {
-                        orgUnitName = patientDataValue.getOrganisationUnit().getName();
-                        provided = patientDataValue.getOrganisationUnit().getName();
-                    }
-                }
 
                 appendCode = appendCode.replace( "$DATAELEMENTID", String.valueOf( dataElementId ) );
                 appendCode = appendCode.replace( "$PROGRAMSTAGEID", String.valueOf( programStageId ) );
                 appendCode = appendCode.replace( "$PROGRAMSTAGENAME", programStageName );
-                appendCode = appendCode.replace( "$ORGUNITNAME", orgUnitName );
                 appendCode = appendCode.replace( "$DATAELEMENTNAME", dataElement.getName() );
                 appendCode = appendCode.replace( "$DATAELEMENTTYPE", dataElementType );
                 appendCode = appendCode.replace( "$DISABLED", disabled );
                 appendCode = appendCode.replace( "$COMPULSORY", compulsory );
                 appendCode = appendCode.replace( "$SAVEMODE", "false" );
-                appendCode = appendCode.replace( "$PROVIDED", provided );
 
                 appendCode = appendCode.replaceAll( "\\$", "\\\\\\$" );
 
@@ -1065,33 +975,6 @@ public class DefaultProgramDataEntryService
         }
 
         return map;
-    }
-
-    /**
-     * Append a ProvidedByOtherFacility Checkbox to the html code
-     * 
-     * @param appendCode: current html code
-     * @param patientDataValue: currrent PatientDataValue
-     * @return full html code after append the check box
-     */
-    private String addProvidedByOtherFacilityCheckbox( String appendCode, PatientDataValue patientDataValue,
-        ProgramStage programStage )
-    {
-        appendCode += "<label style=\"display:$DISPLAY;\" for=\"$PROGRAMSTAGEID_$DATAELEMENTID_facility\" title=\"is provided by another Facility ?\" >" +
-        		"<input name=\"providedByAnotherFacility\"  title=\"is provided by another Facility ?\"  id=\"$PROGRAMSTAGEID_$DATAELEMENTID_facility\"  type=\"checkbox\" ";
-
-        if ( patientDataValue != null && patientDataValue.isProvidedByAnotherFacility() )
-        {
-            appendCode += " checked=\"checked\" ";
-        }
-        appendCode += "onChange=\"updateProvidingFacility( $DATAELEMENTID, this )\"  >";
-
-        String display = (programStage.getProgram().getDisplayProvidedOtherFacility() ) ? "block" : "none";
-        appendCode = appendCode.replace( "$DISPLAY", display );
-        appendCode += "</label>";
-
-        return appendCode;
-
     }
 
     /**

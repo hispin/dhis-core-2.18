@@ -29,6 +29,8 @@ package org.hisp.dhis.program;
 import java.io.Serializable;
 import java.util.Date;
 
+import org.hisp.dhis.organisationunit.OrganisationUnit;
+
 /**
  * @author Abyot Asalefew
  * @version $Id$
@@ -61,7 +63,11 @@ public class ProgramStageInstance
 
     private Date executionDate;
     
+    private OrganisationUnit organisationUnit;
+
     private boolean completed = false;
+
+    private Boolean providedByAnotherFacility = false;
 
     // -------------------------------------------------------------------------
     // Constructors
@@ -236,4 +242,22 @@ public class ProgramStageInstance
         this.completed = completed;
     }
 
+    public OrganisationUnit getOrganisationUnit()
+    {
+        return organisationUnit;
+    }
+
+    public void setOrganisationUnit( OrganisationUnit organisationUnit )
+    {
+        this.organisationUnit = organisationUnit;
+    }
+    public void setProvidedByAnotherFacility( Boolean providedByAnotherFacility )
+    {
+        this.providedByAnotherFacility = providedByAnotherFacility;
+    }
+
+    public Boolean isProvidedByAnotherFacility()
+    {
+        return providedByAnotherFacility;
+    }
 }

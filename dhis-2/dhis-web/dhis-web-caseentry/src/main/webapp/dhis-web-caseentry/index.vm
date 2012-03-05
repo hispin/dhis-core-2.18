@@ -1,7 +1,7 @@
 
 <h3>$i18n.getString( "dhis-web-caseentry" )</h3>
 
-<ul class="introList">
+<ul id="introList">
 	#introListImgItem( "patient.action" "patient" "patient" )
     #introListImgItem( "dataEntrySelect.action" "name_based_data_entry" "dataentry" )
 	#introListImgItem( "multipledataEntrySelect.action" "multiple_name_based_data_entry" "dataentry" )

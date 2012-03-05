@@ -167,7 +167,6 @@ function saveVal( dataElementId )
 	
 	var dataElementName = data.deName; 
     var type = data.deType;
-    var providedByAnotherFacility = document.getElementById( programStageId + '_' + dataElementId + '_facility' ).checked;
  
 	field.style.backgroundColor = '#ffffcc';
     
@@ -213,29 +212,27 @@ function saveVal( dataElementId )
     	
     }
     
-	var valueSaver = new ValueSaver( dataElementId, fieldValue, providedByAnotherFacility, type, '#ccffcc'  );
+	var valueSaver = new ValueSaver( dataElementId, fieldValue, type, '#ccffcc'  );
     valueSaver.save();
 }
 
 function saveOpt( dataElementId )
 {
 	var programStageId = byId('programStageId').value;
-	var field = byId( programStageId + '-' + dataElementId + '-val' );
-	
+	var field = byId( programStageId + '-' + dataElementId + '-val' );	
 	field.style.backgroundColor = '#ffffcc';
-	var providedByAnotherFacility = document.getElementById( programStageId + '_' + dataElementId + '_facility' ).checked;
- 
-	var valueSaver = new ValueSaver( dataElementId, field.options[field.selectedIndex].value, providedByAnotherFacility, 'bool', '#ccffcc' );
+	
+	var valueSaver = new ValueSaver( dataElementId, field.options[field.selectedIndex].value, 'bool', '#ccffcc' );
     valueSaver.save();
 }
 
-function updateProvidingFacility( dataElementId, checkedBox )
+function updateProvidingFacility()
 {
 	var programStageId = byId( 'programStageId' ).value;
-    checkedBox.style.backgroundColor = '#ffffcc';
-    var providedByAnotherFacility = document.getElementById( programStageId + '_' + dataElementId + '_facility' ).checked;
+	var checkField = byId( programStageId + '_facility');
+    checkField.style.backgroundColor = '#ffffcc';
  
-    var facilitySaver = new FacilitySaver( dataElementId, providedByAnotherFacility, '#ccffcc' );
+    var facilitySaver = new FacilitySaver( checkField.checked, '#ccffcc' );
     facilitySaver.save();
     
 }
@@ -377,14 +374,13 @@ function getNextEntryField( field )
 // Save value for dataElement of type text, number, boolean, combo
 //-----------------------------------------------------------------
 
-function ValueSaver( dataElementId_, value_, providedByAnotherFacility_, dataElementType_, resultColor_  )
+function ValueSaver( dataElementId_, value_, dataElementType_, resultColor_  )
 {
     var SUCCESS = '#ccffcc';
     var ERROR = '#ccccff';
 	
     var dataElementId = dataElementId_;
 	var value = value_;
-    var providedByAnotherFacility = providedByAnotherFacility_;
 	var type = dataElementType_;
     var resultColor = resultColor_;
 	
@@ -392,7 +388,6 @@ function ValueSaver( dataElementId_, value_, providedByAnotherFacility_, dataEle
     {
 		 var params = 'dataElementId=' + dataElementId;
 			params += '&value=' + value;
-			params += '&providedByAnotherFacility=' + providedByAnotherFacility;
 		
 		$.ajax({
 			   type: "POST",
@@ -444,19 +439,17 @@ function ValueSaver( dataElementId_, value_, providedByAnotherFacility_, dataEle
     }
 }
 
-function FacilitySaver( dataElementId_, providedByAnotherFacility_, resultColor_ )
+function FacilitySaver( providedByAnotherFacility_, resultColor_ )
 {
     var SUCCESS = 'success';
     var ERROR = '#error';
 	
-    var dataElementId = dataElementId_;
     var providedByAnotherFacility = providedByAnotherFacility_;
     var resultColor = resultColor_;
 
     this.save = function()
     {
-		var params = 'dataElementId=' + dataElementId 
-					+ '&providedByAnotherFacility=' + providedByAnotherFacility ;
+		var params = 'providedByAnotherFacility=' + providedByAnotherFacility ;
 		$.ajax({
 			   type: "POST",
 			   url: "saveProvidingFacility.action",
@@ -497,12 +490,12 @@ function FacilitySaver( dataElementId_, providedByAnotherFacility_, resultColor_
 		var programStageId = byId( 'programStageId' ).value;
         if( result == SUCCESS )
         {
-            jQuery('label[for="'+programStageId+'_'+dataElementId+'_facility"]').toggleClass('checked');
+            jQuery('label[for="' + programStageId + '_facility"]').toggleClass('checked');
         }
         else if( result == ERROR )
         {
-            jQuery('label[for="'+programStageId+'_'+dataElementId+'_facility"]').removeClass('checked');
-            jQuery('label[for="'+programStageId+'_'+dataElementId+'_facility"]').addClass('error');
+            jQuery('label[for="' + programStageId + '_facility"]').removeClass('checked');
+            jQuery('label[for="' + programStageId + '_facility"]').addClass('error');
         }
     }
 }
@@ -663,7 +656,7 @@ function doComplete()
 		
 					hideLoader();
 					hideById('contentDiv');
-				},'xml');
+				});
 		}
     }
 }
@@ -709,6 +702,7 @@ function entryFormContainerOnReady()
 		
         TOGGLE.init();
 		
+		initCustomCheckboxes();
 		
 		jQuery("#entryForm :input").each(function()
 		{ 

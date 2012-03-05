@@ -539,7 +539,6 @@ public class DefaultCaseAggregationConditionService
 
     private String createSQL( String aggregationExpression, String operator, int orgunitId, String startDate, String endDate )
     {
-        
         // ---------------------------------------------------------------------
         // get operators
         // ---------------------------------------------------------------------
