@@ -2,7 +2,6 @@
 	jQuery(document).ready(function() {
 		jQuery("input[type=button]").click(function() {
 			jQuery.postUTF8( 'setSystemGeneralSettings.action', {
-				aggregationStrategy: getFieldValue( 'aggregationStrategy' ),
 				infrastructuralDataElements: getFieldValue( 'infrastructuralDataElements' ),
 				infrastructuralPeriodType: getFieldValue( 'infrastructuralPeriodType' ),
 				feedbackRecipients: getFieldValue( 'feedbackRecipients' ),
@@ -20,15 +19,6 @@
 </script>
 
 <h3>$i18n.getString( "general_settings" )</h3>
-
-<!-- aggregation_strategy -->
-<h4>$i18n.getString( "aggregation_strategy" )</h4>
-
-<p><select id="aggregationStrategy" name="aggregationStrategy" style="width:30em">
-	#foreach( $strategy in $aggregationStrategies )
-	<option value="$strategy" #if( $aggregationStrategy == $strategy )selected="selected"#end>$i18n.getString( $strategy )</option>
-	#end
-</select></p>
 
 <!-- infrastructural_data_elements -->
 <h4>$i18n.getString( "infrastructural_data_elements" )</h4>

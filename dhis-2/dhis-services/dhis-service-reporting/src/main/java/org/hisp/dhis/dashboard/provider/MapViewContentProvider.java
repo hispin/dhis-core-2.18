@@ -27,10 +27,6 @@ package org.hisp.dhis.dashboard.provider;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import static org.hisp.dhis.setting.SystemSettingManager.AGGREGATION_STRATEGY_BATCH;
-import static org.hisp.dhis.setting.SystemSettingManager.DEFAULT_AGGREGATION_STRATEGY;
-import static org.hisp.dhis.setting.SystemSettingManager.KEY_AGGREGATION_STRATEGY;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -72,13 +68,6 @@ public class MapViewContentProvider
         this.dashboardService = dashboardService;
     }
 
-    private SystemSettingManager systemSettingManager;
-
-    public void setSystemSettingManager( SystemSettingManager systemSettingManager )
-    {
-        this.systemSettingManager = systemSettingManager;
-    }
-
     private String key;
 
     public void setKey( String key )
@@ -101,14 +90,6 @@ public class MapViewContentProvider
             DashboardContent dashboardContent = dashboardService.getDashboardContent( user );
 
             List<MapView> mapViews = new ArrayList<MapView>( dashboardContent.getMapViews() );
-
-            String aggregationStrategy = (String) systemSettingManager.getSystemSetting( KEY_AGGREGATION_STRATEGY,
-                DEFAULT_AGGREGATION_STRATEGY );
-
-            if ( aggregationStrategy.equals( AGGREGATION_STRATEGY_BATCH ) )
-            {
-                FilterUtils.filter( mapViews, new MapViewFixedDateTypeFilter() );
-            }
 
             Collections.sort( mapViews, new MapViewNameComparator() );
 

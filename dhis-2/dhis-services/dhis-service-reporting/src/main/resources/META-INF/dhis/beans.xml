@@ -9,8 +9,6 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
 
   <bean id="org.hisp.dhis.reporttable.jdbc.ReportTableManager" class="org.hisp.dhis.reporttable.jdbc.JDBCReportTableManager">
 	<property name="jdbcTemplate" ref="jdbcTemplate" />
-    <property name="aggregationService" ref="org.hisp.dhis.aggregation.AggregationService" />
-	<property name="statementManager" ref="statementManager" />
   </bean>
 
   <bean id="org.hisp.dhis.reporttable.ReportTableStore" class="org.hisp.dhis.common.hibernate.HibernateIdentifiableObjectStore">
@@ -59,7 +57,6 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
     <property name="minMaxDataElementService" ref="org.hisp.dhis.minmax.MinMaxDataElementService" />
     <property name="currentUserService" ref="org.hisp.dhis.user.CurrentUserService" />
 	<property name="reportTableManager" ref="org.hisp.dhis.reporttable.jdbc.ReportTableManager" />
-    <property name="systemSettingManager" ref="org.hisp.dhis.setting.SystemSettingManager" />
   </bean>
 
   <!-- Document -->
@@ -136,9 +133,7 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
 
   <bean id="org.hisp.dhis.datasetreport.DataSetReportService" class="org.hisp.dhis.datasetreport.impl.DefaultDataSetReportService">
     <property name="dataValueService" ref="org.hisp.dhis.datavalue.DataValueService" />
-    <property name="systemSettingManager" ref="org.hisp.dhis.setting.SystemSettingManager" />
     <property name="aggregatedDataValueService" ref="org.hisp.dhis.aggregation.AggregatedDataValueService" />
-    <property name="aggregationService" ref="org.hisp.dhis.aggregation.AggregationService" />
   </bean>
 
   <!-- Dashboard -->
@@ -176,7 +171,6 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
   <bean id="mapViewContentProvider" class="org.hisp.dhis.dashboard.provider.MapViewContentProvider">
     <property name="currentUserService" ref="org.hisp.dhis.user.CurrentUserService" />
     <property name="dashboardService" ref="org.hisp.dhis.dashboard.DashboardService" />
-    <property name="systemSettingManager" ref="org.hisp.dhis.setting.SystemSettingManager" />
     <property name="key" value="mapViews" />
   </bean>
 

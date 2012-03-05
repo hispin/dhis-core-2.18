@@ -57,7 +57,6 @@ public interface SystemSettingManager
     final String KEY_GOOGLE_MAPS_API_KEY = "googleMapsAPIKey";
     final String KEY_DISABLE_DATAENTRYFORM_WHEN_COMPLETED = "dataEntryFormCompleted";
     final String KEY_FACTOR_OF_DEVIATION = "factorDeviation";
-    final String KEY_AGGREGATION_STRATEGY = "aggregationStrategy";
     final String KEY_COMPLETENESS_OFFSET = "completenessOffset";
     final String KEY_PATIENT_EXCEL_TEMPLATE_FILE_NAME = "patientExcelTemplateFileName";
     final String KEY_DATAMART_TASK = "keyDataMartTask";
@@ -76,9 +75,6 @@ public interface SystemSettingManager
     final int DEFAULT_ORGUNITGROUPSET_AGG_LEVEL = 3;    
     final String DEFAULT_GOOGLE_MAPS_API_KEY = "ABQIAAAAut6AhySExnYIXm5s2OFIkxRKNzJ-_9njnryRTbvC6CtrS4sRvRREWnxwlZUa630pLuPf3nD9i4fq9w";
     
-    final String AGGREGATION_STRATEGY_REAL_TIME = "real_time";
-    final String AGGREGATION_STRATEGY_BATCH = "batch";
-    final String DEFAULT_AGGREGATION_STRATEGY = AGGREGATION_STRATEGY_REAL_TIME;
     final int DEFAULT_COMPLETENESS_OFFSET = 15;
     
     final HashSet<String> DEFAULT_SCHEDULED_PERIOD_TYPES = new HashSet<String>() { {
@@ -98,8 +94,6 @@ public interface SystemSettingManager
     void deleteSystemSetting( String name );
     
     List<String> getFlags();
-    
-    List<String> getAggregationStrategies();
     
     String getSystemIdentifier();
     
