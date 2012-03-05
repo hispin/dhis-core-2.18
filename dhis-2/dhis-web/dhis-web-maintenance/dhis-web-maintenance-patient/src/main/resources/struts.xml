@@ -20,7 +20,7 @@
 			class="org.hisp.dhis.patient.action.relationship.GetRelationshipTypeListAction">
 			<result name="success" type="velocity">/main.vm</result>
 			<param name="page">/dhis-web-maintenance-patient/relationshipType.vm</param>
-			<param name="menu">/dhis-web-maintenance-patient/patientMenu.vm</param>
+			<param name="menu">/dhis-web-maintenance-patient/menu.vm</param>
 			<param name="javascripts">javascript/relationship.js</param>
 		</action>
 
@@ -85,7 +85,7 @@
 			<result name="success" type="velocity">/main.vm</result>
 			<param name="page">
 				/dhis-web-maintenance-patient/patientAttribute.vm</param>
-			<param name="menu">/dhis-web-maintenance-patient/patientMenu.vm</param>
+			<param name="menu">/dhis-web-maintenance-patient/menu.vm</param>
 			<param name="javascripts">javascript/patientAttribute.js</param>
 		</action>
 
@@ -178,7 +178,7 @@
 			class="org.hisp.dhis.patient.action.orgunitregistration.GetPatientOrgnunitRegistrationAction">
 			<result name="success" type="velocity">/main.vm</result>
 			<param name="page">/dhis-web-maintenance-patient/orgunitRegistration.vm</param>
-			<param name="menu">/dhis-web-maintenance-patient/patientMenu.vm</param>
+			<param name="menu">/dhis-web-maintenance-patient/menu.vm</param>
 			<param name="requiredAuthorities">F_PROGRAM_UPDATE</param>
 		</action>
 
@@ -194,7 +194,7 @@
 			class="org.hisp.dhis.patient.action.program.GetProgramListAction">
 			<result name="success" type="velocity">/main.vm</result>
 			<param name="page">/dhis-web-maintenance-patient/programList.vm</param>
-			<param name="menu">/dhis-web-maintenance-patient/programMenu.vm</param>
+			<param name="menu">/dhis-web-maintenance-patient/menu.vm</param>
 			<param name="javascripts">javascript/program.js</param>
 		</action>
 
@@ -262,7 +262,7 @@
 			class="org.hisp.dhis.patient.action.program.GetProgramAttributeListAction">
 			<result name="success" type="velocity">/main.vm</result>
 			<param name="page">/dhis-web-maintenance-patient/programAttributeList.vm</param>
-			<param name="menu">/dhis-web-maintenance-patient/programMenu.vm</param>
+			<param name="menu">/dhis-web-maintenance-patient/menu.vm</param>
 			<param name="javascripts">javascript/programAttribute.js</param>
 		</action>
 
@@ -495,7 +495,7 @@
 			class="org.hisp.dhis.patient.action.patientattributegroup.GetPatientAttributeGroupListAction">
 			<result name="success" type="velocity">/main.vm</result>
 			<param name="page">/dhis-web-maintenance-patient/patientAttributeGroup.vm</param>
-			<param name="menu">/dhis-web-maintenance-patient/patientMenu.vm</param>
+			<param name="menu">/dhis-web-maintenance-patient/menu.vm</param>
 			<param name="javascripts">javascript/patientAttributeGroup.js</param>
 		</action>
 
@@ -606,7 +606,7 @@
 			<result name="success" type="velocity">/main.vm</result>
 			<param name="page">
 				/dhis-web-maintenance-patient/listPatientIdentifierType.vm</param>
-			<param name="menu">/dhis-web-maintenance-patient/patientMenu.vm</param>
+			<param name="menu">/dhis-web-maintenance-patient/menu.vm</param>
 			<param name="javascripts">javascript/patientIdentifierType.js</param>
 		</action>
 
@@ -647,7 +647,7 @@
 			class="org.hisp.dhis.patient.action.caseaggregation.GetAllCaseAggregationConditionAction">
 			<result name="success" type="velocity">/main.vm</result>
 			<param name="page">/dhis-web-maintenance-patient/caseAggregation.vm</param>
-			<param name="menu">/dhis-web-maintenance-patient/programMenu.vm</param>
+			<param name="menu">/dhis-web-maintenance-patient/menu.vm</param>
 			<param name="javascripts">javascript/caseaggregation.js</param>
 		</action>
 
@@ -749,7 +749,7 @@
 			class="org.hisp.dhis.patient.action.validation.GetValidationCriteriaListAction">
 			<result name="success" type="velocity">/main.vm</result>
 			<param name="page">/dhis-web-maintenance-patient/validationCriteria.vm</param>
-			<param name="menu">/dhis-web-maintenance-patient/programMenu.vm</param>
+			<param name="menu">/dhis-web-maintenance-patient/menu.vm</param>
 			<param name="javascripts">javascript/validationcriteria.js</param>
 		</action>
 
