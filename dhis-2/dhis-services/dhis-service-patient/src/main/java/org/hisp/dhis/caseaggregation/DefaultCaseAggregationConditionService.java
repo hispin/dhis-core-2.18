@@ -77,7 +77,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class DefaultCaseAggregationConditionService
     implements CaseAggregationConditionService
 {
-    private final String regExp = "\\[(" + OBJECT_PATIENT + "|" + OBJECT_PROGRAM + "|" + OBJECT_PROGRAM_STAGE + "|" 
+    private final String regExp = "\\[(" + OBJECT_PATIENT + "|" + OBJECT_PROGRAM + "|" + OBJECT_PROGRAM_STAGE + "|"
         + OBJECT_PROGRAM_STAGE_DATAELEMENT + "|" + OBJECT_PATIENT_ATTRIBUTE + "|" + OBJECT_PATIENT_PROPERTY + "|"
         + OBJECT_PROGRAM_PROPERTY + ")" + SEPARATOR_OBJECT + "([a-zA-Z0-9\\- ]+[" + SEPARATOR_ID + "[0-9]*]*)" + "\\]";
 
@@ -88,9 +88,9 @@ public class DefaultCaseAggregationConditionService
     private final String INVALID_CONDITION = "Invalid condition";
 
     private final String NUMBER_PATIENTS_REGISTERED = "Registered Beneficiaries No";
-    
+
     private final String IN_CONDITION_START_SIGN = "@";
-    
+
     private final String IN_CONDITION_END_SIGN = "#";
 
     // -------------------------------------------------------------------------
@@ -141,7 +141,7 @@ public class DefaultCaseAggregationConditionService
     {
         this.programStageService = programStageService;
     }
-    
+
     public void setDataElementService( DataElementService dataElementService )
     {
         this.dataElementService = dataElementService;
@@ -197,9 +197,10 @@ public class DefaultCaseAggregationConditionService
     {
         return aggregationConditionStore.get( dataElement );
     }
-    
+
     @Override
-    public CaseAggregationCondition getCaseAggregationCondition( DataElement dataElement, DataElementCategoryOptionCombo optionCombo )
+    public CaseAggregationCondition getCaseAggregationCondition( DataElement dataElement,
+        DataElementCategoryOptionCombo optionCombo )
     {
         return aggregationConditionStore.get( dataElement, optionCombo );
     }
@@ -251,7 +252,7 @@ public class DefaultCaseAggregationConditionService
                 result.addAll( dataValues );
             }
         }
-        
+
         return result;
     }
 
@@ -259,7 +260,7 @@ public class DefaultCaseAggregationConditionService
         Period period )
     {
         Collection<Patient> result = new HashSet<Patient>();
-        
+
         // get params
         int orgunitId = orgunit.getId();
         String startDate = DateUtils.getMediumDateString( period.getStartDate() );
@@ -277,18 +278,18 @@ public class DefaultCaseAggregationConditionService
 
         return result;
     }
-    
-    public Collection<ProgramStageInstance> getProgramStageInstances( CaseAggregationCondition aggregationCondition, OrganisationUnit orgunit,
-        Period period )
+
+    public Collection<ProgramStageInstance> getProgramStageInstances( CaseAggregationCondition aggregationCondition,
+        OrganisationUnit orgunit, Period period )
     {
         Collection<ProgramStageInstance> result = new HashSet<ProgramStageInstance>();
         aggregationCondition.setOperator( AGGRERATION_SUM );
-        
+
         // get params
         int orgunitId = orgunit.getId();
         String startDate = DateUtils.getMediumDateString( period.getStartDate() );
         String endDate = DateUtils.getMediumDateString( period.getEndDate() );
-        
+
         String sql = createSQL( aggregationCondition.getAggregationExpression(), aggregationCondition.getOperator(),
             orgunitId, startDate, endDate );
 
@@ -383,8 +384,8 @@ public class DefaultCaseAggregationConditionService
                         return INVALID_CONDITION;
                     }
 
-                    matcher.appendReplacement( description, "[" + OBJECT_PROGRAM_STAGE + SEPARATOR_OBJECT + programStage.getName()
-                        + "]" );
+                    matcher.appendReplacement( description, "[" + OBJECT_PROGRAM_STAGE + SEPARATOR_OBJECT
+                        + programStage.getName() + "]" );
                 }
             }
 
@@ -397,7 +398,8 @@ public class DefaultCaseAggregationConditionService
 
     public Collection<DataElement> getDataElementsInCondition( String aggregationExpression )
     {
-        String regExp = "\\[" + OBJECT_PROGRAM_STAGE_DATAELEMENT + SEPARATOR_OBJECT + "[0-9]+" + SEPARATOR_ID + "[0-9]+" + "\\]";
+        String regExp = "\\[" + OBJECT_PROGRAM_STAGE_DATAELEMENT + SEPARATOR_OBJECT + "[0-9]+" + SEPARATOR_ID
+            + "[0-9]+" + "\\]";
 
         Collection<DataElement> dataElements = new HashSet<DataElement>();
 
@@ -426,7 +428,6 @@ public class DefaultCaseAggregationConditionService
         return dataElements;
     }
 
-   
     public Collection<Program> getProgramsInCondition( String aggregationExpression )
     {
         String regExp = "\\[" + OBJECT_PROGRAM + SEPARATOR_OBJECT + "[0-9]+\\]";
@@ -449,7 +450,7 @@ public class DefaultCaseAggregationConditionService
             String[] info = match.split( SEPARATOR_OBJECT );
 
             int programId = Integer.parseInt( info[1] );
-            
+
             Program program = programService.getProgram( programId );
 
             programs.add( program );
@@ -457,7 +458,7 @@ public class DefaultCaseAggregationConditionService
 
         return programs;
     }
-    
+
     public Collection<PatientAttribute> getPatientAttributesInCondition( String aggregationExpression )
     {
         String regExp = "\\[" + OBJECT_PATIENT_ATTRIBUTE + SEPARATOR_OBJECT + "[0-9]+\\]";
@@ -487,7 +488,7 @@ public class DefaultCaseAggregationConditionService
 
         return patientAttributes;
     }
-    
+
     // -------------------------------------------------------------------------
     // Support Methods
     // -------------------------------------------------------------------------
@@ -533,11 +534,13 @@ public class DefaultCaseAggregationConditionService
             subSQL.add( sql );
         }
 
-         sql = getSQL( aggregationCondition.getOperator(), subSQL, operators ).replace( IN_CONDITION_START_SIGN, "(" ).replaceAll( IN_CONDITION_END_SIGN , ")" );
-         return sql;
+        sql = getSQL( aggregationCondition.getOperator(), subSQL, operators ).replace( IN_CONDITION_START_SIGN, "(" )
+            .replaceAll( IN_CONDITION_END_SIGN, ")" );
+        return sql;
     }
 
-    private String createSQL( String aggregationExpression, String operator, int orgunitId, String startDate, String endDate )
+    private String createSQL( String aggregationExpression, String operator, int orgunitId, String startDate,
+        String endDate )
     {
         // ---------------------------------------------------------------------
         // get operators
@@ -608,15 +611,15 @@ public class DefaultCaseAggregationConditionService
 
                     if ( valueToCompare.equalsIgnoreCase( IS_NULL ) )
                     {
-                        condition = getConditionForNotDataElement( programStageId, operator, dataElementId,
-                            orgunitId, startDate, endDate );
+                        condition = getConditionForNotDataElement( programStageId, operator, dataElementId, orgunitId,
+                            startDate, endDate );
 
                         expression[i] = expression[i].replace( valueToCompare, "" );
                     }
                     else
                     {
-                        condition = getConditionForDataElement( programStageId, operator, dataElementId, 
-                            orgunitId, startDate, endDate );
+                        condition = getConditionForDataElement( programStageId, operator, dataElementId, orgunitId,
+                            startDate, endDate );
                         if ( !expression[i].contains( "+" ) )
                         {
                             condition += " AND pd.value ";
@@ -640,7 +643,7 @@ public class DefaultCaseAggregationConditionService
                 {
                     condition = getConditionForProgramStage( info[1], operator, orgunitId, startDate, endDate );
                 }
-                
+
                 // -------------------------------------------------------------
                 // Replacing the operand with 1 in order to later be able to
                 // verify
@@ -683,12 +686,12 @@ public class DefaultCaseAggregationConditionService
     }
 
     private String getConditionForNotDataElement( int programStageId, String operator, int dataElementId,
-       int orgunitId, String startDate, String endDate )
+        int orgunitId, String startDate, String endDate )
     {
         String sql = "SELECT distinct(pi.patientid) ";
         String condition = "pi.patientid";
-        
-        if( operator.equals( AGGRERATION_SUM ) )
+
+        if ( operator.equals( AGGRERATION_SUM ) )
         {
             sql = "SELECT psi.programstageinstanceid ";
             condition = "psi.programstageinstanceid";
@@ -698,38 +701,53 @@ public class DefaultCaseAggregationConditionService
             + "INNER JOIN programstage as ps ON psi.programstageid = ps.programstageid "
             + "INNER JOIN programinstance as pi ON pi.programinstanceid = psi.programinstanceid "
             + "LEFT OUTER JOIN patientdatavalue as pd ON psi.programstageinstanceid = pd.programstageinstanceid "
-            + "WHERE psi.executionDate >= '" + startDate + "' AND psi.executionDate <= '" + endDate + "' "
-            + "AND pd.value IS NULL AND " + condition + " NOT IN  ( "
-            + "SELECT distinct(" + condition + ") FROM programstageinstance as psi "
+            + "WHERE psi.executionDate >= '"
+            + startDate
+            + "' AND psi.executionDate <= '"
+            + endDate
+            + "' "
+            + "AND pd.value IS NULL AND "
+            + condition
+            + " NOT IN  ( "
+            + "SELECT distinct("
+            + condition
+            + ") FROM programstageinstance as psi "
             + "INNER JOIN programstage as ps ON psi.programstageid = ps.programstageid "
             + "INNER JOIN programinstance as pgi ON pi.programinstanceid = psi.programinstanceid "
             + "INNER JOIN patientdatavalue as pd ON psi.programstageinstanceid = pd.programstageinstanceid "
-            + "WHERE pd.organisationunitid = " + orgunitId + " AND ps.programstageid = " + programStageId + " "
-            + "AND psi.executionDate >= '" + startDate + "' AND psi.executionDate <= '" + endDate + "' "
-            + "AND pd.dataelementid = " + dataElementId + " "
-            + "  ) ";
-        
+            + "WHERE psi.organisationunitid = "
+            + orgunitId
+            + " AND ps.programstageid = "
+            + programStageId
+            + " "
+            + "AND psi.executionDate >= '"
+            + startDate
+            + "' AND psi.executionDate <= '"
+            + endDate
+            + "' "
+            + "AND pd.dataelementid = " + dataElementId + " " + "  ) ";
+
         return sql;
     }
 
-    private String getConditionForDataElement( int programStageId, String operator, int dataElementId,
-        int orgunitId, String startDate, String endDate )
+    private String getConditionForDataElement( int programStageId, String operator, int dataElementId, int orgunitId,
+        String startDate, String endDate )
     {
         String sql = "SELECT distinct(pi.patientid) ";
-        
-        if( operator.equals( AGGRERATION_SUM ) )
+
+        if ( operator.equals( AGGRERATION_SUM ) )
         {
             sql = "SELECT psi.programstageinstanceid ";
         }
-        
+
         return sql + "FROM programstageinstance as psi "
             + "INNER JOIN programstage as ps ON psi.programstageid = ps.programstageid "
             + "INNER JOIN patientdatavalue as pd ON psi.programstageinstanceid = pd.programstageinstanceid "
-            + "INNER JOIN programstage_dataelements as psd ON ps.programstageid = psd.programstageid " 
+            + "INNER JOIN programstage_dataelements as psd ON ps.programstageid = psd.programstageid "
             + "INNER JOIN programinstance as pi ON pi.programinstanceid = psi.programinstanceid "
-            + "WHERE psd.dataelementid = " + dataElementId + " "
-            + "AND pd.organisationunitid = " + orgunitId + " AND ps.programstageid = " + programStageId + " "
-            + "AND psi.executionDate >= '" + startDate + "' AND psi.executionDate <= '" + endDate + "' ";
+            + "WHERE psd.dataelementid = " + dataElementId + " " + "AND psi.organisationunitid = " + orgunitId
+            + " AND ps.programstageid = " + programStageId + " " + "AND psi.executionDate >= '" + startDate
+            + "' AND psi.executionDate <= '" + endDate + "' ";
     }
 
     private String getConditionForPatientAttribute( int attributeId, String operator )
@@ -741,10 +759,8 @@ public class DefaultCaseAggregationConditionService
             sql = "SELECT pi.patientid ";
         }
 
-        return sql + "FROM patient as pi "
-            + "INNER JOIN patientattributevalue as pav ON pav.patientid = pi.patientid "
-            + "WHERE pav.patientattributeid = " + attributeId + " "
-            + "AND pav.value ";
+        return sql + "FROM patient as pi " + "INNER JOIN patientattributevalue as pav ON pav.patientid = pi.patientid "
+            + "WHERE pav.patientattributeid = " + attributeId + " " + "AND pav.value ";
     }
 
     private String getConditionForPatient( int orgunitId, String operator, String startDate, String endDate )
@@ -762,8 +778,8 @@ public class DefaultCaseAggregationConditionService
         return sql;
     }
 
-    private String getConditionForPatientProperty( String propertyName, String operator,
-        String startDate, String endDate )
+    private String getConditionForPatientProperty( String propertyName, String operator, String startDate,
+        String endDate )
     {
         String sql = "SELECT distinct(pi.patientid) ";
 
@@ -771,7 +787,7 @@ public class DefaultCaseAggregationConditionService
         {
             sql = "SELECT pi.patientid ";
         }
-        
+
         sql += "FROM patient as pi WHERE ";
 
         if ( propertyName.equals( PROPERTY_AGE ) )
@@ -795,7 +811,7 @@ public class DefaultCaseAggregationConditionService
         {
             sql = "SELECT psi.programstageinstanceid ";
         }
-        
+
         return sql + "FROM programstageinstance as psi "
             + "INNER JOIN programinstance as pi ON psi.programinstanceid = pi.programinstanceid "
             + "WHERE psi.executionDate >= '" + startDate + "' AND psi.executionDate <= '" + endDate + "' AND ";
@@ -804,45 +820,35 @@ public class DefaultCaseAggregationConditionService
     private String getConditionForProgram( String programId, String operator, int orgunitId, String startDate,
         String endDate )
     {
-        if( operator.equals( AGGRERATION_SUM ) )
+        String select = "SELECT distinct(pi.patientid) ";
+
+        if ( operator.equals( AGGRERATION_SUM ) )
         {
-            return "SELECT psi.programstageinstanceid "
-                + "FROM programinstance as pi INNER JOIN programstageinstance psi "
-                + "ON pi.programinstanceid = psi.programinstanceid "
-                + "WHERE pi.programid=" + programId + " "
-                + "AND pi.enrollmentdate >= '" + startDate
-                + "' AND pi.enrollmentdate <= '" + endDate + "' ";
+            select = "SELECT psi.programstageinstanceid ";
         }
 
-        return "SELECT distinct(p.patientid) FROM programinstance as pi "
-                   + "INNER JOIN patient as p ON pi.patientid = p.patientid  " 
-                   + "WHERE pi.programid=" + programId + " "
-                       + "AND p.organisationunitid = " + orgunitId + " " + "AND pi.enrollmentdate >= '" + startDate
-                       + "' AND pi.enrollmentdate <= '" + endDate + "' ";
+        return select + "FROM programinstance as pi INNER JOIN programstageinstance psi "
+            + "ON pi.programinstanceid = psi.programinstanceid WHERE pi.programid=" + programId + " "
+            + "AND psi.organisationunitid = '" + orgunitId + "AND pi.enrollmentdate >= '" + startDate
+            + "' AND pi.enrollmentdate <= '" + endDate + "' ";
     }
 
-    private String getConditionForProgramStage( String programStageId, String operator, int orgunitId, String startDate,
-        String endDate )
+    private String getConditionForProgramStage( String programStageId, String operator, int orgunitId,
+        String startDate, String endDate )
     {
-        if( operator.equals( AGGRERATION_SUM ) )
+        String select = "SELECT distinct(pi.patientid) ";
+        
+        if ( operator.equals( AGGRERATION_SUM ) )
         {
-            return "SELECT psi.programstageinstanceid "
-                + "FROM programinstance as pi INNER JOIN programstageinstance psi "
-                + "ON pi.programinstanceid = psi.programinstanceid "
-                + "WHERE psi.programstageid=" + programStageId + " "
-                + "AND psi.executiondate >= '" + startDate
-                + "' AND psi.executiondate <= '" + endDate + "' ";
+            select = "SELECT psi.programstageinstanceid ";
         }
 
-        return "SELECT distinct(p.patientid) FROM programinstance as pi "
-                   + "INNER JOIN programstageinstance psi "
-                   + "ON pi.programinstanceid = psi.programinstanceid "
-                   + "INNER JOIN patient as p ON pi.patientid = p.patientid  " 
-                   + "WHERE psi.programstageid=" + programStageId + " "
-                   + "AND psi.executiondate >= '" + startDate
-                   + "' AND psi.executiondate <= '" + endDate + "' AND p.organisationunitid = " + orgunitId + " ";
+        return select + "FROM programinstance as pi INNER JOIN programstageinstance psi "
+            + "ON pi.programinstanceid = psi.programinstanceid WHERE psi.programstageid=" + programStageId + " "
+            + "AND psi.executiondate >= '" + startDate + "' AND psi.executiondate <= '" + endDate
+            + "' AND psi.organisationunitid = " + orgunitId + " ";
     }
-    
+
     private String getSQL( String aggregateOperator, List<String> conditions, List<String> operators )
     {
         String sql = conditions.get( 0 );
@@ -855,7 +861,7 @@ public class DefaultCaseAggregationConditionService
         {
             if ( operators.get( index ).equalsIgnoreCase( OPERATOR_AND ) )
             {
-                if( aggregateOperator.equals( AGGRERATION_SUM ) )
+                if ( aggregateOperator.equals( AGGRERATION_SUM ) )
                 {
                     sql += " AND psi.programstageinstanceid IN ( " + conditions.get( index + 1 );
                 }
