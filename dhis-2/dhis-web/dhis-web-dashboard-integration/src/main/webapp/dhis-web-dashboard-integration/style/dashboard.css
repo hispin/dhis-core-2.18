@@ -30,6 +30,11 @@
   position:absolute;
 }
 
+.linkArea div
+{
+  position:absolute;
+}
+
 .chartArea
 {
   border:1px solid #d0d0d0;
@@ -53,6 +58,7 @@
 .labelText
 {
   color:#808080;
+  padding:3px;
 }
 
 /*----------------------------------------------------------------------------*/

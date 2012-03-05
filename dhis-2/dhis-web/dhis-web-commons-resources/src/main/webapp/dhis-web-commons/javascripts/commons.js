@@ -12,9 +12,12 @@ var _loading_circle_html = "<img src='../images/ajax-loader-circle.gif'>";
  * 
  * @param defaultUrl if there is not document.referrer, use this url
  */
-function referrerBack( defaultUrl ) {
-	if(document.referrer !== undefined && document.referrer != "") {
-		if(document.referrer.indexOf("login.action") == -1) {
+function referrerBack( defaultUrl ) 
+{
+	if ( document.referrer !== undefined && document.referrer != "" ) 
+	{
+		if ( document.referrer.indexOf( "login.action" ) == -1 ) 
+		{
 			location.href = document.referrer;
 			return;
 		}

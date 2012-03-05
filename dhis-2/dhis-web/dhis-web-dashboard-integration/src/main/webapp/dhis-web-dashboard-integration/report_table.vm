@@ -15,3 +15,8 @@
     </tr>
     #end
 </table>
+
+#if( $reportTables.size() == 0 )
+<div class="labelText">$i18n.getString( "insert_links_by_going_to" ) 
+<a href="../dhis-web-reporting/displayManageTableForm.action">$i18n.getString( "report_table" )</a></div>
+#end

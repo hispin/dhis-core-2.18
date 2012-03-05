@@ -181,8 +181,13 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
   </bean>
 
   <bean id="rssHealthContentProvider" class="org.hisp.dhis.dashboard.provider.RssContentProvider">
-    <property name="url" value="http://health.yahoo.com/news/rss/health" />
+    <property name="url" value="http://news.yahoo.com/rss/health" />
     <property name="key" value="healthItems" />
+  </bean>
+
+  <bean id="rssDiseasesContentProvider" class="org.hisp.dhis.dashboard.provider.RssContentProvider">
+    <property name="url" value="http://news.yahoo.com/rss/diseases-conditions" />
+    <property name="key" value="diseasesItems" />
   </bean>
 
   <!-- Dashboard Manager -->
@@ -220,6 +225,12 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
             <value>rss_health</value>
           </key>
           <ref local="rssHealthContentProvider" />
+        </entry>
+        <entry>
+          <key>
+            <value>rss_diseases</value>
+          </key>
+          <ref local="rssDiseasesContentProvider" />
         </entry>
       </map>
     </property>

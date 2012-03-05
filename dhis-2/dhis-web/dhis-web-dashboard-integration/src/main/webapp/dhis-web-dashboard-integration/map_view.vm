@@ -15,3 +15,8 @@
     </tr>
     #end
 </table>
+
+#if( $mapViews.size() == 0 )
+<div class="labelText">$i18n.getString( "insert_links_by_going_to" ) 
+<a href="../dhis-web-mapping/mapping/index.html">$i18n.getString( "map_view" )</a></div>
+#end
