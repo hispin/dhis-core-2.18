@@ -1,9 +1,0 @@
-
-<a href="index.action"><h2>$i18n.getString( "patients" )</h2></a>
-<ul>
-	<li><a href="patientAttribute.action">$i18n.getString( "patient_attribute" )</a></li>
-	<li><a href="patientAttributeGroup.action">$i18n.getString( "patient_attribute_group" )</a></li>
-	<li><a href="patientIdentifierType.action">$i18n.getString( "patient_identifier_type" )</a></li>
-	<li><a href="relationshipType.action">$i18n.getString( "relationship_type" )</a></li>
-	<li><a href="defineOrgunitRegistrationForm.action">$i18n.getString( "patient_organisation_unit_registration" )</a></li>
-</ul>
