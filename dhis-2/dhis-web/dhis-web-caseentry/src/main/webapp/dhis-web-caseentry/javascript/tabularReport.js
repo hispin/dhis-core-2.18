@@ -170,17 +170,6 @@ function loadGeneratedReport()
 	isAjax = true;
 	contentDiv = 'contentDiv';
 	
-	/* var dataElementIds = "";
-	var listDataElementIds = jQuery( "select[id=dataElementIds] option:selected" );
-	listDataElementIds.each( function( i, item ){
-		dataElementIds += "dataElementIds=" + item.value;
-		dataElementIds += ( i < listDataElementIds.length - 1 ) ? "&" : "";
-	});
-	
-	var params = dataElementIds + "&" 
-				+ "programStageId=" + getFieldValue('programStageId') + "&" 
-				+ "startDate=" + getFieldValue('startDate') + "&" 
-				+ "endDate=" + getFieldValue('endDate'); */
 	var params = getParams();
 	if( params != '' )
 	{
@@ -199,28 +188,6 @@ function loadGeneratedReport()
 
 function searchTabularReport( event )
 {	
-	/* var dataElementIds = "";
-	var listDataElementIds = jQuery( "select[id=dataElementIds] option:selected" );
-	listDataElementIds.each( function( i, item ){
-		dataElementIds += "dataElementIds=" + item.value;
-		dataElementIds += ( i < listDataElementIds.length - 1 ) ? "&" : "";
-	});
-	
-	var searchingValues = "";
-	var listSeachingValues = jQuery("#gridTable input");
-	listSeachingValues.each( function( i, item ){
-		if( item.value!= '' )
-		{
-			searchingValues += "searchingValues=" + item.id + "_" + htmlEncode( item.value ) + "&";
-		}
-	});
-	
-	
-	var params = searchingValues + dataElementIds + "&" 
-				+ "programStageId=" + getFieldValue('programStageId') + "&" 
-				+ "startDate=" + getFieldValue('startDate') + "&" 
-				+ "endDate=" + getFieldValue('endDate'); */
-	
 	var key = event.keyCode || event.charCode || event.which;
 	
 	if ( key == 13 || key == 1 ) // Enter
@@ -253,28 +220,6 @@ function searchTabularReport( event )
 
 function exportTabularReport( type )
 {
-	/* var dataElementIds = "";
-	var listDataElementIds = jQuery( "select[id=dataElementIds] option:selected" );
-	listDataElementIds.each( function( i, item ){
-		dataElementIds += "dataElementIds=" + item.value;
-		dataElementIds += ( i < listDataElementIds.length - 1 ) ? "&" : "";
-	});
-	
-	var searchingValues = "";
-	var listSeachingValues = jQuery("#gridTable input");
-	listSeachingValues.each( function( i, item ){
-		if( item.value!= '' )
-		{
-			searchingValues += "searchingValues=" + item.id + "_" + htmlEncode( item.value ) + "&";
-		}
-	});
-	
-	var url = "generateTabularReport.action?" + searchingValues + dataElementIds
-				+ "&programStageId=" + getFieldValue('programStageId')
-				+ "&startDate=" + getFieldValue('startDate')
-				+ "&endDate=" + getFieldValue('endDate')
-				+ "&type=" + type; */
-
 	var params = getParams();
 	if( params != '' )
 	{

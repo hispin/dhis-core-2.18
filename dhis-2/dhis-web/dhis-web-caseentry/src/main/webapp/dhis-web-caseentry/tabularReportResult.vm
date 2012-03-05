@@ -6,9 +6,9 @@
 
 <h3>$!encoder.htmlEncode( $grid.title )</h3>
 
-<div style="margin-bottom:15px">
-<input type="button" value="$i18n.getString( 'get_report_as_xls' )" onclick="exportTabularReport( 'xls' )" style="width:140px">
-<input type="button" value="$i18n.getString( 'get_report_as_pdf' )" onclick="exportTabularReport( 'pdf' )" style="width:140px">
+<div>
+<input type="button" value="$i18n.getString( 'get_report_as_xls' )" onclick="exportTabularReport( 'xls' )" class="button" >
+<input type="button" value="$i18n.getString( 'get_report_as_pdf' )" onclick="exportTabularReport( 'pdf' )" class="button" >
 </div>
 
 <h5>$!encoder.htmlEncode( $grid.subtitle )</h5>
@@ -26,7 +26,7 @@
 		<td></td>
 		#foreach( $dataElement in $dataElements )
 			<td>
-				<input type='text' id='$dataElement.id' title='$i18n.getString("how_to_search_tabular_report")' onkeypress='searchTabularReport( event );' #if($dataElement.optionSet) options='$dataElement.optionSet.options' style='width:75%' #end />
+				<input type='text' id='$dataElement.id' title='$i18n.getString("how_to_search_tabular_report")' onkeypress='searchTabularReport( event );' #if($dataElement.optionSet) options='$dataElement.optionSet.options' #end />
 			</td>
 		#end
 	</tr>
