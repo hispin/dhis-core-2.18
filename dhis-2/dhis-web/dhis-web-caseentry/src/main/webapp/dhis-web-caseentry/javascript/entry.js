@@ -20,7 +20,7 @@ function loadProgramStages()
 		hideById('historyPlanLink');
 		return;
 	}
-	jQuery.postJSON( "loadProgramStages.action",
+	jQuery.getJSON( "loadProgramStages.action",
 		{
 			programId: programId
 		}, 
@@ -386,7 +386,7 @@ function ValueSaver( dataElementId_, value_, dataElementType_, resultColor_  )
 	
     this.save = function()
     {
-		 var params = 'dataElementId=' + dataElementId;
+		var params  = 'dataElementId=' + dataElementId;
 			params += '&value=' + value;
 		
 		$.ajax({

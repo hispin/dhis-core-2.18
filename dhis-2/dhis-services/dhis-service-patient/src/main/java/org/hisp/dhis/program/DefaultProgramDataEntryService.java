@@ -719,6 +719,7 @@ public class DefaultProgramDataEntryService
                 // 
                 // -----------------------------------------------------------
 
+                appendCode = appendCode.replace( "$DATAELEMENTID", String.valueOf( dataElementId ) );
                 appendCode = appendCode.replace( "$PROGRAMSTAGEID", String.valueOf( programStageId ) );
                 appendCode = appendCode.replace( "$PROGRAMSTAGENAME", programStageName );
                 appendCode = appendCode.replace( "$DATAELEMENTNAME", dataElement.getName() );
@@ -726,6 +727,7 @@ public class DefaultProgramDataEntryService
                 appendCode = appendCode.replace( "$DISABLED", disabled );
                 appendCode = appendCode.replace( "$COMPULSORY", compulsory );
                 appendCode = appendCode.replace( "$SAVEMODE", "false" );
+                appendCode = appendCode.replaceAll( "\\$", "\\\\\\$" );
 
                 dataElementMatcher.appendReplacement( sb, appendCode );
             }

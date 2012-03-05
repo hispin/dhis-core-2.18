@@ -4,28 +4,28 @@ function dataSetSelected()
 	
 	if ( dataSetId && dataSetId != 0 )
 	{
-		var url = 'loadPeriods.action?dataSetId=' + dataSetId;
-
 	    clearListById( 'sDateLB' );
 		clearListById( 'eDateLB' );
 	    
 	    addOptionById( 'sDateLB', '', '[' + i18n_please_select + ']' );
 		addOptionById( 'eDateLB', '', '[' + i18n_please_select + ']' );
-		
-	    $.getJSON( url, function( json ) {
-			
-	    	for ( i in json.periods ) {
-	    		addOptionById( 'sDateLB', i, json.periods[i].name );
-				addOptionById( 'eDateLB', i, json.periods[i].name );
-	    	}
 	    
-			enable('previousPeriodForStartBtn');
-			enable('nextPeriodForStartBtn');
-			enable('previousPeriodForEndBtn');
-			enable('nextPeriodForEndBtn');
-	
-	    } );
-		
+	    $.getJSON( "loadPeriods.action", 
+			{
+				dataSetId:dataSetId 
+			}
+			, function( json ) 
+			{
+				for ( i in json.periods ) {
+					addOptionById( 'sDateLB', i, json.periods[i].name );
+					addOptionById( 'eDateLB', i, json.periods[i].name );
+				}
+	    
+				enable('previousPeriodForStartBtn');
+				enable('nextPeriodForStartBtn');
+				enable('previousPeriodForEndBtn');
+				enable('nextPeriodForEndBtn');
+			} );
 	}
 	else
 	{
@@ -40,13 +40,21 @@ function dataSetSelected()
 function getPreviousPeriodForStart() 
 {
 	var index = byId('sDateLB').options[byId('sDateLB').selectedIndex].value;
-	jQuery.postJSON('previousPeriods.action?startField=true&index=' + index, {}, responseListPeriodForStartReceived );	
+	jQuery.getJSON('previousPeriods.action' , 
+		{
+			startField: 'true',
+			index: index
+		}, responseListPeriodForStartReceived );	
 }
 
 function getNextPeriodForStart() 
 {
 	var index = byId('sDateLB').options[byId('sDateLB').selectedIndex].value;
-	jQuery.postJSON('nextPeriods.action?startField=true&index=' + index, {}, responseListPeriodForStartReceived );	
+	jQuery.getJSON('nextPeriods.action', 
+		{
+			startField:'true',
+			index: index
+		}, responseListPeriodForStartReceived );	
 }
 
 function responseListPeriodForStartReceived( json ) 
@@ -61,13 +69,21 @@ function responseListPeriodForStartReceived( json )
 function getPreviousPeriodForEnd() 
 {
 	var index = byId('eDateLB').options[byId('eDateLB').selectedIndex].value;
-	jQuery.postJSON('previousPeriods.action?startField=false&index=' + index, {}, responseListPeriodForEndReceived );	
+	jQuery.getJSON('previousPeriods.action', 
+		{
+			startField: 'false',
+			index: index
+		}, responseListPeriodForEndReceived );	
 }
 
 function getNextPeriodForEnd() 
 {
 	var index = byId('eDateLB').options[byId('eDateLB').selectedIndex].value;
-	jQuery.postJSON('nextPeriods.action?startField=false&index=' + index, {}, responseListPeriodForEndReceived );	
+	jQuery.getJSON('nextPeriods.action', 
+		{
+			startField: 'false',
+			index: index
+		}, responseListPeriodForEndReceived );	
 }
 
 function responseListPeriodForEndReceived( json ) 
@@ -81,7 +97,7 @@ function responseListPeriodForEndReceived( json )
 	
 function validationCaseAggregation( )
 {
-	$.post( 'validateCaseAggregation.action', 
+	$.get( 'validateCaseAggregation.action', 
 		{ 
 			sDateLB:getFieldValue('sDateLB'), 
 			eDateLB:getFieldValue('eDateLB')
@@ -167,7 +183,7 @@ function saveAggregateDataValues( isSaveAll )
 				params += "aggregateValues=" + $(this).val() + "&";
 			}); 
 	}
-	
+		
 	$.ajax({
 		   type: "POST",
 		   url: "saveAggregateDataValue.action",

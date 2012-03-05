@@ -14,13 +14,13 @@
 <table>	
     <tr>
 	  <td><label>$i18n.getString( "reporting_unit" )</label></td>
-	  <td><input type="text" readonly="readonly" id='orgunitname' name='orgunitname' #if($!orgunit) value="$!orgunit.name" #else value="[$i18n.getString( "select" )]" #end style="min-width:350px"></td>
+	  <td><input type="text" readonly="readonly" id='orgunitname' name='orgunitname' #if($!orgunit) value="$!orgunit.name" #else value="[$i18n.getString( 'select' )]" #end ></td>
     </tr>
     
     <tr>
         <td><label for="programId">$i18n.getString( "program" ) <em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
         <td>
-            <select id="programId" name="programId" #if($!programs) #else disabled #end style="min-width:350px" class="{validate:{required:true}}" >
+            <select id="programId" name="programId" #if($!programs) #else disabled #end class="{validate:{required:true}}" >
 				<option>[$i18n.getString('please_select_a_program')]</option>
 				#foreach( $program in $programs )
 				<option value='$program.id'>$program.name</option>

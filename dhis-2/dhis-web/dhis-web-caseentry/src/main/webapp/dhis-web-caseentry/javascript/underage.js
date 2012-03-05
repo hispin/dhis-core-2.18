@@ -4,7 +4,7 @@
 
 function validateAddRepresentative()
 {	
-	$.post("validatePatient.action?" + getIdentifierTypeIdParams(),
+	$.postUTF8("validatePatient.action?" + getIdentifierTypeIdParams(),
 		{
 			fullName: jQuery( '#addRepresentativeForm [id=fullName]' ).val(),
 			gender: jQuery( '#addRepresentativeForm [id=gender]' ).val(),
@@ -30,10 +30,10 @@ function addValidationRepresentativeCompleted( messageElement )
 			,success: function(xml){ 
 				autoChoosePerson( xml );
 			}
-		   ,error: function()
-		   {
+			,error: function()
+			{
 				alert(i18n_error_connect_to_server);
-		   }
+			}
 		});
 		
 	 }
@@ -58,11 +58,11 @@ function getIdentifierTypeIdParams()
 {
 	var params = "";
 	jQuery("#addRepresentativeForm :input.idfield").each(
-			function()
-			{
-				if( jQuery(this).val() && !jQuery(this).is(":disabled") )
-					params += "&" + jQuery(this).attr("name") +"="+ jQuery(this).val();
-			}
+		function()
+		{
+			if( jQuery(this).val() && !jQuery(this).is(":disabled") )
+				params += "&" + jQuery(this).attr("name") +"="+ jQuery(this).val();
+		}
 	);
 	return params;
 }

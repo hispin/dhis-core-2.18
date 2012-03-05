@@ -229,7 +229,7 @@ function searchValidationCompleted( messageElement )
 			});
 			
 		$.ajax({
-			type: "POST",
+			type: "GET",
 			url: 'searchRelationshipPatient.action',
 			data: getParamsForDiv('relationshipSelectForm'),
 			success: function( json ) {

@@ -11,7 +11,7 @@ function organisationUnitSelected( orgUnits )
 	hideById('listRelationshipDiv');
 	hideById('addRelationshipDiv');
 			
-	$.postJSON( 'organisationUnitHasPatients.action', {orgunitId:orgUnits[0]}
+	$.getJSON( 'organisationUnitHasPatients.action', {orgunitId:orgUnits[0]}
 		, function( json ) 
 		{
 			var type = json.response;
@@ -189,7 +189,7 @@ function addValidationCompleted( data )
 function validateUpdatePatient()
 {
 	$("#editPatientDiv :input").attr("disabled", true);
-	$.post( 'validatePatient.action?' + getIdParams( ), 
+	$.postUTF8( 'validatePatient.action?' + getIdParams( ), 
 		{ 
 			id: jQuery( '#patientForm [id=id]' ).val(),
 			fullName: jQuery( '#patientForm [id=fullName]' ).val(),
@@ -244,7 +244,7 @@ function getIdParams()
 
 function checkDuplicate( divname )
 {
-	$.post( 'validatePatient.action', 
+	$.postUTF8( 'validatePatient.action', 
 		{
 			fullName: jQuery( '#' + divname + ' [id=fullName]' ).val(),
 			dobType: jQuery( '#' + divname + ' [id=dobType]' ).val(),
@@ -532,7 +532,7 @@ function showProgramEnrollmentForm( patientId, programId )
 function validateProgramEnrollment()
 {	
 	$.ajax({
-		type: "POST",
+		type: "GET",
 		url: 'validatePatientProgramEnrollment.action',
 		data: getParamsForDiv('programEnrollmentSelectDiv'),
 		success: function(json) {
@@ -602,7 +602,7 @@ function showUnenrollmentForm( programInstanceId )
 	}
 	
 	jQuery('#loaderDiv').show();
-	jQuery.postJSON( "getProgramInstance.action",
+	jQuery.getJSON( "getProgramInstance.action",
 		{
 			programInstanceId:programInstanceId
 		}, 
@@ -629,21 +629,20 @@ function unenrollmentForm( programInstanceId )
 		
 	jQuery('#loaderDiv').show();
 	$.ajax({
-      type: "POST",
-      url: 'removeEnrollment.action',
-      data: getParamsForDiv('enrollmentDiv'),
-      success: function( json ) 
-	  {
-		var list = byId( 'programInstanceId' );
-		list.remove( list.selectedIndex );
-		
-		if( list.value == 0 )
+		type: "POST",
+		url: 'removeEnrollment.action',
+		data: getParamsForDiv('enrollmentDiv'),
+		success: function( json ) 
 		{
-			hideById( 'unenrollmentFormDiv' );
+			var list = byId( 'programInstanceId' );
+			list.remove( list.selectedIndex );
+			if( list.value == 0 )
+			{
+				hideById( 'unenrollmentFormDiv' );
+			}
+			jQuery('#loaderDiv').hide();
 		}
-		jQuery('#loaderDiv').hide();
-      }
-     });
+    });
 }
 
 //-----------------------------------------------------------------------------

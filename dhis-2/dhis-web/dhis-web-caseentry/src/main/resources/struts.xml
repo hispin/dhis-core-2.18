@@ -192,6 +192,7 @@
 			<param name="page">/dhis-web-caseentry/reportSelect.vm</param>
 			<param name="menu">/dhis-web-caseentry/reportsMenu.vm</param>
 			<param name="javascripts">../dhis-web-commons/ouwt/ouwt.js,javascript/report.js</param>
+			<param name="stylesheets">../dhis-web-caseentry/style/report.css</param>
 		</action>
 
 		<action name="validateReportParameters"
@@ -293,7 +294,7 @@
 			<result name="success" type="velocity">/main.vm</result>
 			<param name="page">/dhis-web-caseentry/caseAggregationForm.vm</param>
 			<param name="menu">/dhis-web-caseentry/caseAggregationMenu.vm</param>
-			<param name="javascripts">javascript/caseagg.js,javascript/date.js,javascript/caseAggregationForm.js</param>
+			<param name="javascripts">javascript/caseagg.js,javascript/caseAggregationForm.js</param>
 			<param name="stylesheets">style/dataEntry.css</param>
 		</action>
 
