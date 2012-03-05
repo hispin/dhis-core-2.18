@@ -1121,9 +1121,30 @@ public class WebLinkPopulator
     public static String createRootPath( HttpServletRequest request )
     {
         StringBuilder builder = new StringBuilder();
-        builder.append( request.getScheme() );
+        String xForwardedProto = request.getHeader( "X-Forwarded-Proto" );
+        String xForwardedPort = request.getHeader( "X-Forwarded-Port" );
+
+        if ( xForwardedProto != null && (xForwardedProto.equalsIgnoreCase( "http" ) || xForwardedProto.equalsIgnoreCase( "https" )) )
+        {
+            builder.append( xForwardedProto );
+        }
+        else
+        {
+            builder.append( request.getScheme() );
+        }
+
 
         builder.append( "://" ).append( request.getServerName() );
+
+        int port;
+
+        try
+        {
+            port = Integer.parseInt( xForwardedPort );
+        } catch ( NumberFormatException e )
+        {
+            port = request.getServerPort();
+        }
 
         if ( request.getServerPort() != 80 && request.getServerPort() != 443 )
         {
