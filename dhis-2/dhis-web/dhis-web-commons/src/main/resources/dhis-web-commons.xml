@@ -39,6 +39,7 @@
       <interceptor name="systemSettingInterceptor" class="org.hisp.dhis.interceptor.SystemSettingInterceptor" />
       <interceptor name="userSettingInterceptor" class="org.hisp.dhis.interceptor.UserSettingInterceptor" />
       <interceptor name="contextInterceptor" class="org.hisp.dhis.interceptor.ContextInterceptor" />
+	  <interceptor name="cacheInterceptor" class="org.hisp.dhis.interceptor.CacheInterceptor" />
 
       <interceptor name="portalParamsInterceptor" class="org.hisp.dhis.webportal.interceptor.XWorkPortalParamsInterceptor" />
       <interceptor name="portalModuleInterceptor" class="org.hisp.dhis.webportal.interceptor.XWorkPortalModuleInterceptor" />
@@ -296,13 +297,13 @@
     </action>
 
     <action name="i18nJavaScript" class="org.hisp.dhis.commons.action.NoAction">
-      <result name="success" type="velocity-javascript">/dhis-web-commons/i18n/i18n.vm
-      </result>
+      <result name="success" type="velocity-javascript">/dhis-web-commons/i18n/i18n.vm</result>
+	  <interceptor-ref name="cacheInterceptor"/>
     </action>
 
     <action name="messagesJavaScript" class="org.hisp.dhis.commons.action.NoAction">
-      <result name="success" type="velocity-javascript">/dhis-web-commons/i18n/messages.vm
-      </result>
+      <result name="success" type="velocity-javascript">/dhis-web-commons/i18n/messages.vm</result>
+	  <interceptor-ref name="cacheInterceptor"/>
     </action>
 
   </package>
