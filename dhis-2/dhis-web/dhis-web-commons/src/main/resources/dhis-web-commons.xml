@@ -82,6 +82,12 @@
         <interceptor-ref name="organisationUnitTreeInterceptor" />
         <interceptor-ref name="commonInterceptors" />
       </interceptor-stack>
+	  
+      <interceptor-stack name="cacheStack">
+        <interceptor-ref name="cacheInterceptor" />
+        <interceptor-ref name="commonInterceptors" />
+      </interceptor-stack>
+	  
     </interceptors>
 
     <default-interceptor-ref name="exceptionStack" />
@@ -298,12 +304,12 @@
 
     <action name="i18nJavaScript" class="org.hisp.dhis.commons.action.NoAction">
       <result name="success" type="velocity-javascript">/dhis-web-commons/i18n/i18n.vm</result>
-	  <interceptor-ref name="cacheInterceptor"/>
+	  <interceptor-ref name="cacheStack"/>
     </action>
 
     <action name="messagesJavaScript" class="org.hisp.dhis.commons.action.NoAction">
       <result name="success" type="velocity-javascript">/dhis-web-commons/i18n/messages.vm</result>
-	  <interceptor-ref name="cacheInterceptor"/>
+	  <interceptor-ref name="cacheStack"/>
     </action>
 
   </package>
