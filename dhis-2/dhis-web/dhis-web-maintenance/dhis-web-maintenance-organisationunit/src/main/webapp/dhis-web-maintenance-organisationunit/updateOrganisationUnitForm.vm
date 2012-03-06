@@ -40,20 +40,24 @@
 		<th colspan="2">$i18n.getString( "details" )</th>
 	</tr>
 	<tr>
-		<td style="width:200px"><label for="name">$i18n.getString( "name" ) <em title="$i18n.getString( "required" )" class="required">*</em></label></td>
-		<td><input type="text" id="name" name="name" value="$encoder.htmlEncode( $organisationUnit.name )" onchange="nameChanged()" style="width:20em"></td>
+		<td style="width:200px"><label for="name">$i18n.getString( "name" ) <em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
+		<td><input type="text" id="name" name="name" value="$encoder.htmlEncode( $organisationUnit.name )" onchange="nameChanged()" style="width:20em"/></td>
 	</tr>
 	<tr>
-		<td><label for="shortName">$i18n.getString( "short_name" ) <em title="$i18n.getString( "required" )" class="required">*</em></label></td>
-		<td><input type="text" id="shortName" name="shortName" value="$encoder.htmlEncode( $organisationUnit.shortName )" style="width:20em"></td>
+		<td><label for="shortName">$i18n.getString( "short_name" ) <em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
+		<td><input type="text" id="shortName" name="shortName" value="$encoder.htmlEncode( $organisationUnit.shortName )" style="width:20em"/></td>
+	</tr>
+	<tr>
+		<td><label for="description">$i18n.getString( "description" ) <em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
+		<td><input type="text" id="description" name="description" value="$encoder.htmlEncode( $organisationUnit.description )" style="width:20em"/></td>
 	</tr>
 	<tr>
 		<td><label for="code">$i18n.getString( "code" )</label></td>
 		<td><input type="text" id="code" name="code" value="$!encoder.htmlEncode( $organisationUnit.code )" style="width:20em"/></td>
 	</tr>
 	<tr>
-		<td><label for="openingDate">$i18n.getString( "opening_date" ) ($i18n.getString( "format.date.label" )) <em title="$i18n.getString( "required" )" class="required">*</em></label></td>
-		<td><input type="text" id="openingDate" name="openingDate" value="$!format.formatDate( $organisationUnit.openingDate )" style="width:20em"></td>
+		<td><label for="openingDate">$i18n.getString( "opening_date" ) ($i18n.getString( "format.date.label" )) <em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
+		<td><input type="text" id="openingDate" name="openingDate" value="$!format.formatDate( $organisationUnit.openingDate )" style="width:20em"/></td>
 		<td></td>
 	</tr>
 	#if( $numberOfChildren == 0 )
@@ -87,7 +91,7 @@
 	#end
     <tr>
         <td><label for="url">$i18n.getString( "url" )</label></td>
-        <td><input type="text" id="url" name="url" value="$!encoder.htmlEncode( $organisationUnit.url )" style="width:20em"></td>
+        <td><input type="text" id="url" name="url" value="$!encoder.htmlEncode( $organisationUnit.url )" style="width:20em"/></td>
     </tr>    
 </table>
 
@@ -103,19 +107,19 @@
     </tr>
 	<tr>
 		<td style="width:200px"><label for="contactPerson">$i18n.getString( "contact_person" ) </label></td>
-		<td><input type="text" id="contactPerson" name="contactPerson" value="$!encoder.htmlEncode( $organisationUnit.contactPerson )" style="width:20em"></td>
+		<td><input type="text" id="contactPerson" name="contactPerson" value="$!encoder.htmlEncode( $organisationUnit.contactPerson )" style="width:20em"/></td>
 	</tr>
 	<tr>
 		<td><label for="address">$i18n.getString( "address" ) </label></td>
-		<td><input type="text" id="address" name="address" value="$!encoder.htmlEncode( $organisationUnit.address )" style="width:20em"></td>
+		<td><input type="text" id="address" name="address" value="$!encoder.htmlEncode( $organisationUnit.address )" style="width:20em"/></td>
 	</tr>
 	<tr>
 		<td><label for="email">$i18n.getString( "email" )</label></td>
-		<td><input type="text" id="email" name="email" value="$!encoder.htmlEncode( $organisationUnit.email )" style="width:20em"></td>
+		<td><input type="text" id="email" name="email" value="$!encoder.htmlEncode( $organisationUnit.email )" style="width:20em"/></td>
 	</tr>
     <tr>
         <td><label for="phoneNumber">$i18n.getString( "phone_number" )</label></td>
-        <td><input type="text" id="phoneNumber" name="phoneNumber" value="$!encoder.htmlEncode( $organisationUnit.phoneNumber )" style="width:20em"></td>
+        <td><input type="text" id="phoneNumber" name="phoneNumber" value="$!encoder.htmlEncode( $organisationUnit.phoneNumber )" style="width:20em"/></td>
     </tr>
 
 	<tr>
@@ -140,8 +144,8 @@
     <tr>
     	<td></td>
     	<td>
-    		<input type="button" value="$i18n.getString( 'add' )" style="width:120px" onclick="moveSelectedById( 'availableDataSets', 'dataSets' )">
-			<input type="button" value="$i18n.getString( 'remove' )" style="width:120px" onclick="moveSelectedById( 'dataSets', 'availableDataSets' )">
+    		<input type="button" value="$i18n.getString( 'add' )" style="width:120px" onclick="moveSelectedById( 'availableDataSets', 'dataSets' )"/>
+			<input type="button" value="$i18n.getString( 'remove' )" style="width:120px" onclick="moveSelectedById( 'dataSets', 'availableDataSets' )"/>
 		</td>
     </tr>
     <tr>

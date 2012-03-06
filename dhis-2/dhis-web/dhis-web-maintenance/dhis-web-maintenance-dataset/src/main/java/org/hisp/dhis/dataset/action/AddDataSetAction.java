@@ -27,6 +27,8 @@ package org.hisp.dhis.dataset.action;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import static org.hisp.dhis.system.util.TextUtils.nullIfEmpty;
+
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
@@ -105,6 +107,13 @@ public class AddDataSetAction
         this.code = code;
     }
 
+    private String description;
+
+    public void setDescription( String description )
+    {
+        this.description = description;
+    }
+
     private int expiryDays;
 
     public void setExpiryDays( int expiryDays )
@@ -150,23 +159,17 @@ public class AddDataSetAction
         // ---------------------------------------------------------------------
         // Prepare values
         // ---------------------------------------------------------------------
-
-        if ( shortName != null && shortName.trim().length() == 0 )
-        {
-            shortName = null;
-        }
-
-        if ( code != null && code.trim().length() == 0 )
-        {
-            code = null;
-        }
         
+        code = nullIfEmpty( code );
+        shortName = nullIfEmpty( shortName );
+        description = nullIfEmpty( description );
+
         PeriodType periodType = PeriodType.getPeriodTypeByName( frequencySelect );
 
         DataSet dataSet = new DataSet( name, shortName, code, periodType );
 
         dataSet.setExpiryDays( expiryDays );
-        
+
         for ( String id : dataElementsSelectedList )
         {
             dataSet.addDataElement( dataElementService.getDataElement( Integer.parseInt( id ) ) );
@@ -179,9 +182,10 @@ public class AddDataSetAction
             indicators.add( indicatorService.getIndicator( Integer.parseInt( id ) ) );
         }
 
-        dataSet.setMobile( mobile );
         dataSet.setVersion( 1 );
+        dataSet.setMobile( mobile );
         dataSet.setIndicators( indicators );
+        dataSet.setDescription( description );
 
         dataSetService.addDataSet( dataSet );
 

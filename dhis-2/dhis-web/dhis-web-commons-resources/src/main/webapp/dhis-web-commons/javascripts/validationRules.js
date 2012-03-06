@@ -69,6 +69,9 @@ var validationRules = {
             "required" : true,
             "rangelength" : [ 2, 25 ]
         },
+        "description" : {
+            "required" : true
+        },
         "code" : {
             "rangelength" : [ 0, 25 ],
             "alphanumericwithbasicpuncspaces" : true,
@@ -146,6 +149,9 @@ var validationRules = {
             "required" : true,
             "alphanumericwithbasicpuncspaces" : true,
             "rangelength" : [ 2, 25 ]
+        },
+        "description" : {
+            "required" : true
         },
         "code" : {
             "alphanumericwithbasicpuncspaces" : true,

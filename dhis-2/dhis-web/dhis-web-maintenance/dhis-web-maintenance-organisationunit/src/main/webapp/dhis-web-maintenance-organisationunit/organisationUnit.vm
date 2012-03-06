@@ -64,6 +64,7 @@
 				</div>				
 				<p><label>$i18n.getString( "name" ):</label><br/><span id="nameField"></span></p>
 				<p><label>$i18n.getString( "short_name" ):</label><br/><span id="shortNameField"></span></p>
+				<p><label>$i18n.getString( "description" ):</label><br/><span id="descriptionField"></span></p>
 				<p><label>$i18n.getString( "code" ):</label><br/><span id="codeField"></span></p>
 				<p><label>$i18n.getString( "opening_date" ):</label><br/><span id="openingDateField"></span></p>
 				<p><label>$i18n.getString( "closed_date" ):</label><br/><span id="closedDateField"></span></p>

@@ -14,11 +14,11 @@
 
 <div id="critiera" class="inputCriteria" style="width:660px;height:310px;">
 <table>
-    <col width="300">
-    <col>
+    <col width="300"/>
+    <col/>
     <tr>
     	<td><label>$i18n.getString( "organisation_unit" )</label></td>
-    	</td></td>
+    	<td></td>
     </tr>
     <tr>
 	    <td><div id="selectionTree" style="width:280px; height:270px"></div></td>

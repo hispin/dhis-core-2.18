@@ -26,6 +26,8 @@
 
     <property name="shortName" column="shortname" not-null="true" unique="false" length="50" />
 
+	<property name="description" type="text" />
+
     <property name="openingDate" column="openingdate" type="date" />
 
     <property name="closedDate" column="closeddate" type="date" />

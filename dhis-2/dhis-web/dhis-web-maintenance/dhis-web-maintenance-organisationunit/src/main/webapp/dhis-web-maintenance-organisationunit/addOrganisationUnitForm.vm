@@ -38,6 +38,10 @@
 		<td><input type="text" id="shortName" name="shortName" style="width:20em"/></td>
 	</tr>
 	<tr>
+		<td><label for="description">$i18n.getString( "description" ) <em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
+		<td><input type="text" id="description" name="description" style="width:20em"/></td>
+	</tr>
+	<tr>
 		<td><label for="code">$i18n.getString( "code" )</label></td>
 		<td><input type="text" id="code" name="code" style="width:20em"/></td>
 	</tr>

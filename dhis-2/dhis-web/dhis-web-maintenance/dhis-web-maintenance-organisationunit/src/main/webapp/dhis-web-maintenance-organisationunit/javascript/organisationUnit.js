@@ -35,6 +35,7 @@ function showOrganisationUnitDetails( unitId )
 		{ id: unitId }, function ( json ) {
 		setInnerHTML( 'nameField', json.organisationUnit.name );
 		setInnerHTML( 'shortNameField', json.organisationUnit.shortName );
+		setInnerHTML( 'descriptionField', json.organisationUnit.description );
 		setInnerHTML( 'openingDateField', json.organisationUnit.openingDate );
 
 		var orgUnitCode = json.organisationUnit.code;
