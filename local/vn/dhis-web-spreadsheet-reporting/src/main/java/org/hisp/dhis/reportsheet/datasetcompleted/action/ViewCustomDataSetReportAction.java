@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2004-2011, University of Oslo
+ * Copyright (c) 2004-2012, University of Oslo
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -52,9 +52,9 @@ import com.opensymphony.xwork2.Action;
 public class ViewCustomDataSetReportAction
     implements Action
 {
-    // -------------------------------------------
+    // -------------------------------------------------------------------------
     // Dependency
-    // -------------------------------------------
+    // -------------------------------------------------------------------------
 
     private PeriodService periodService;
 
@@ -64,9 +64,9 @@ public class ViewCustomDataSetReportAction
 
     private OrganisationUnitService organisationUnitService;
 
-    // -------------------------------------------
+    // -------------------------------------------------------------------------
     // Input & Output
-    // -------------------------------------------
+    // -------------------------------------------------------------------------
 
     private Integer dataSetId;
 
@@ -82,9 +82,9 @@ public class ViewCustomDataSetReportAction
 
     private OrganisationUnit organisationUnit;
 
-    // -------------------------------------------
+    // -------------------------------------------------------------------------
     // Getter & Setter
-    // -------------------------------------------
+    // -------------------------------------------------------------------------
 
     public DataSet getDataSet()
     {
@@ -150,9 +150,9 @@ public class ViewCustomDataSetReportAction
 
         organisationUnit = organisationUnitService.getOrganisationUnit( organisationUnitId.intValue() );
 
-        Map<String, String> dataValues = new HashMap<String, String>();    
+        Map<String, String> dataValues = new HashMap<String, String>();
         for ( DataElement dataElement : dataSet.getDataElements() )
-        {        
+        {
             DataElementCategoryCombo catCombo = dataElement.getCategoryCombo();
             for ( DataElementCategoryOptionCombo optionCombo : catCombo.getOptionCombos() )
             {
@@ -170,9 +170,9 @@ public class ViewCustomDataSetReportAction
             }
         }
 
-        // -----------------------------------------------------------------
+        // ---------------------------------------------------------------------
         // Get the custom data entry form if any
-        // -----------------------------------------------------------------
+        // ---------------------------------------------------------------------
 
         DataEntryForm dataEntryForm = dataSet.getDataEntryForm();
 

@@ -1,7 +1,7 @@
 <script>
 	jQuery( function(){
-		var viewByPeriodForm = validation( 'viewByPeriodForm', function( form ){ form.submit()}, function(){ selectAllById( 'selectedPeriods' ) } );
-		var viewByDataSetForm = validation( 'viewByDataSetForm', function( form ){ form.submit()}, function(){ selectAllById( 'selectedDataSets' ) } );
+		var viewByPeriodForm = validation( 'viewByPeriodForm', function( form ){ showCompletedReportByPeriod(); } );
+		var viewByDataSetForm = validation( 'viewByDataSetForm', function( form ){ showCompletedReportByDataSet(); } );
 	});
 </script>
 
@@ -13,41 +13,27 @@
          <li><a href="#view_by_periods"><span>$i18n.getString('view_by') $i18n.getString( "period" )</span></a></li>
          <li><a href="#view_by_datasets"><span>$i18n.getString('view_by') $i18n.getString( "dataset" )</span></a></li>
 	</ul>
-	<!--
-	<div id="bookmark" style="padding:0px">
-		<table width="100%" class="listTable" id="listTable">
-			<tbody id="list">	
-				#foreach( $b in $bookmarks )
-				<tr id="tr${b.id}">
-					<td style="padding:5px">$encoder.htmlEncode( $b.description )</td>
-					<td></td>
-				</tr>
-				#end
-			</tbody>
-		</table>
-	</div>
-	-->
+
 	<div id="view_by_periods" style="padding:0px">
-		<form id="viewByPeriodForm" action="viewCompleteReportByPeriod.action" method="POST" target="_blank">
+		<form id="viewByPeriodForm">
 		<table>
 			<tr>
 				<td>
-					<br>
-					<b>$i18n.getString( "dataset" )</b><br>
-					<select style="width:300px" id="dataSetId" name="dataSetId" onchange="getPeriodsAndOrganisationUnit(this.value)">
-					<option value="">$i18n.getString( "select")</option>
+					<br/><b>$i18n.getString( "dataset" )</b><br/>
+					<select style="width:300px" id="dataSetId" name="dataSetId" onchange="getPeriodsAndOrganisationUnit( this.value );">
+					<option value="">$i18n.getString( "select" )</option>
 					#foreach( $dataSet in $dataSets )
-						<option value="$dataSet.id">$encoder.htmlEncode( $dataSet.name )</option>
+						<option value="$dataSet.id">$!encoder.htmlEncode( $dataSet.name )</option>
 					#end
 					</select>
 				</td>
 			</tr>
 			<tr>
 				<td>
-					<b>$i18n.getString( "period" )</b><br>
+					<b>$i18n.getString( "period" )</b><br/>
 					<table>
 						<tr>
-							<td><select id="availablePeriods" style="width:270px;" multiple size=10" ondblclick="moveSelectedById( 'availablePeriods', 'selectedPeriods' )"/></td>
+							<td><select id="availablePeriods" style="width:270px;" multiple size="10" ondblclick="moveSelectedById( 'availablePeriods', 'selectedPeriods' )"/></td>
 							<td style="text-align:center">
 								<input type="button" value="&gt;" title="$i18n.getString('move_selected')" style="width:50px" onclick="moveSelectedById( 'availablePeriods', 'selectedPeriods' )"><br>
 								<input type="button" value="&lt;" title="$i18n.getString('move_all')" style="width:50px" onclick="moveSelectedById( 'selectedPeriods', 'availablePeriods' )"><br>		
@@ -62,7 +48,7 @@
 			<tr>			
 				<td id="organisationUnitSelect">
 					<div style="padding-top:20px;width:400px;" id="organisationUnitContainer">
-						#organisationUnitSelectionTree( false, false, true )
+						#organisationUnitSelectionTree( true, false, true )
 					</div>
 				</td>
 			</tr>
@@ -74,7 +60,7 @@
 	</div>
 
 	<div id="view_by_datasets" style="padding:0px">
-		<form id="viewByDataSetForm" action="viewCompleteReportByDataSet.action" method="POST" target="_blank">
+		<form id="viewByDataSetForm">
 		<table>
 			<tr>				
 				<td>
@@ -118,8 +104,7 @@
 	</div>
 </div>
 
-
-
+<div id="contentDiv"></div>
 
 <script>
 
@@ -139,9 +124,9 @@ jQuery(function(){
 
 function getPeriodsAndOrganisationUnit( id )
 {	
-	if( id != '' )
+	if( id )
 	{
-		jQuery.postJSON("viewByPeriodForm.action",{id:id},function( json ){
+		jQuery.postJSON("viewByPeriodForm.action",{ id:id }, function( json ){
 			var availablePeriods = jQuery( "#view_by_periods #availablePeriods" );
 			availablePeriods.empty();
 			jQuery( "#view_by_periods #selectedPeriods" ).empty();
@@ -174,6 +159,48 @@ function getPeriodsAndDataSets( name )
 			});			
 		});
 	}
+}
+
+function showCompletedReportByPeriod()
+{
+	lockScreen();
+
+	var url = "viewCompleteReportByPeriod.action?" + getParamString( 'selectedPeriods', 'periodIds' );
+
+	jQuery( "#contentDiv" ).load( url, {
+		dataSetId : getFieldValue( "dataSetId" )
+	}, function ( data ) {
+		unLockScreen();
+		showDialog( 'completed_reports_by_period' );
+	} );
+}
+
+function showCompletedReportByDataSet()
+{
+	lockScreen();
+
+	var url = "viewCompleteReportByDataSet.action?" + getParamString( 'selectedDataSets', 'dataSetIds' );
+
+	jQuery( "#contentDiv" ).load( url, {
+		periodId : getFieldValue( "selectedPeriod" )
+	}, function( data ) {
+		unLockScreen();
+		showDialog( 'completed_reports_by_dataset' );
+	} );
+}
+
+function showDialog( title )
+{
+	jQuery( "#contentDiv" ).dialog
+	( {
+		title: title,
+		maximize: true, 
+		closable: true,
+		modal:false,
+		overlay:{ background:'#000000', opacity:0.1 },
+		width: 1200,
+		height: 500
+	} )
 }
 
 </script>

@@ -1,7 +1,7 @@
 package org.hisp.dhis.reportsheet.datasetcompleted.action;
 
 /*
- * Copyright (c) 2004-2011, University of Oslo
+ * Copyright (c) 2004-2012, University of Oslo
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -59,7 +59,6 @@ import com.opensymphony.xwork2.Action;
 public class ViewCompletedReportByPeriodsAction
     implements Action
 {
-
     // -------------------------------------------------------------------------
     // Dependency
     // -------------------------------------------------------------------------
@@ -111,7 +110,7 @@ public class ViewCompletedReportByPeriodsAction
         this.dataSetId = dataSetId;
     }
 
-    private List<Integer> periodIds;
+    private List<Integer> periodIds = new ArrayList<Integer>();
 
     public void setPeriodIds( List<Integer> periodIds )
     {
@@ -129,11 +128,18 @@ public class ViewCompletedReportByPeriodsAction
         return organisationUnits;
     }
 
-    private List<Period> periods;
+    private List<Period> periods = new ArrayList<Period>();
 
     public List<Period> getPeriods()
     {
         return periods;
+    }
+
+    private Map<String, Integer> completedValues = new HashMap<String, Integer>();
+
+    public Map<String, Integer> getCompletedValues()
+    {
+        return completedValues;
     }
 
     private DataSet dataSet;
@@ -141,13 +147,6 @@ public class ViewCompletedReportByPeriodsAction
     public DataSet getDataSet()
     {
         return dataSet;
-    }
-
-    private Map<String, Integer> completedValues;
-
-    public Map<String, Integer> getCompletedValues()
-    {
-        return completedValues;
     }
 
     // -------------------------------------------------------------------------
@@ -159,15 +158,12 @@ public class ViewCompletedReportByPeriodsAction
     {
         dataSet = dataSetService.getDataSet( dataSetId );
 
-        organisationUnits = new ArrayList<OrganisationUnit>( selectionTreeManager.getSelectedOrganisationUnits() );
-
-        periods = new ArrayList<Period>();
-
-        Period period = null;
+        organisationUnits = new ArrayList<OrganisationUnit>( selectionTreeManager
+            .getReloadedSelectedOrganisationUnits() );
 
         CompleteDataSetRegistration completeDataSetRegistration = null;
 
-        completedValues = new HashMap<String, Integer>();
+        Period period = null;
 
         for ( Integer id : periodIds )
         {
@@ -179,14 +175,18 @@ public class ViewCompletedReportByPeriodsAction
                 {
                     Collection<DataElement> dataElements = dataSet.getDataElements();
                     Collection<DataValue> values = dataValueService.getDataValues( o, period, dataElements );
+
                     int count = 0;
+
                     for ( DataElement de : dataElements )
                     {
                         int opCount = 1;
+
                         for ( DataElementCategory ca : de.getCategoryCombo().getCategories() )
                         {
                             opCount *= ca.getCategoryOptions().size();
                         }
+
                         count += opCount;
                     }
                     int percent = (values.size() * 100) / count;

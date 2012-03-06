@@ -623,20 +623,20 @@
 
 		<action name="viewCompleteReportByPeriod"
 			class="org.hisp.dhis.reportsheet.datasetcompleted.action.ViewCompletedReportByPeriodsAction">			
-			<result name="success" type="velocity">/popup.vm</result>
-			<param name="page">/dhis-web-spreadsheet-reporting/dataSetCompletedByPeriods.vm</param>			
+			<result name="success" type="velocity">
+				/dhis-web-spreadsheet-reporting/dataSetCompletedByPeriods.vm</result>
 		</action>
 
 		<action name="viewCompleteReportByDataSet"
 			class="org.hisp.dhis.reportsheet.datasetcompleted.action.ViewCompletedReportByDataSetAction">
-			<result name="success" type="velocity">/popup.vm</result>
-			<param name="page">/dhis-web-spreadsheet-reporting/dataSetCompletedByDataSets.vm</param>		
+			<result name="success" type="velocity">
+				/dhis-web-spreadsheet-reporting/dataSetCompletedByDataSets.vm</result>
 		</action>
 
 		<action name="viewCustomDataSetReport"
 			class="org.hisp.dhis.reportsheet.datasetcompleted.action.ViewCustomDataSetReportAction">
-			<result name="success" type="velocity">/popup.vm</result>
-			<param name="page">/dhis-web-spreadsheet-reporting/customDataSetReport.vm</param>			
+			<result name="success" type="velocity">
+				/dhis-web-spreadsheet-reporting/customDataSetReport.vm</result>
 		</action>	
 
 		<!-- PREVIEW REPORT EXCEL ACTION -->
