@@ -17,6 +17,8 @@
 
     <property name="shortName" unique="true" length="50" />
 
+    <property name="description" type="text" />
+
     <many-to-one name="periodType" lazy="false" class="org.hisp.dhis.period.PeriodType" column="periodtypeid"
         not-null="true" foreign-key="fk_dataset_periodtypeid" />
 

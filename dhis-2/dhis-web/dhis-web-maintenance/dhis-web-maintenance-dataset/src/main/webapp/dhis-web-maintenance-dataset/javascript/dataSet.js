@@ -9,6 +9,7 @@ function showDataSetDetails( dataSetId )
     }, function( json )
     {
         setInnerHTML( 'nameField', json.dataSet.name );
+        setInnerHTML( 'descriptionField', json.dataSet.description );
         setInnerHTML( 'frequencyField', json.dataSet.frequency );
         setInnerHTML( 'dataElementCountField', json.dataSet.dataElementCount );
         setInnerHTML( 'dataEntryFormField', json.dataSet.dataentryform );

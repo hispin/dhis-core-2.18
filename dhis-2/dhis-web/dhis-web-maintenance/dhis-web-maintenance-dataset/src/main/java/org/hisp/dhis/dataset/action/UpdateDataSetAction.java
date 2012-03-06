@@ -43,6 +43,7 @@ import org.hisp.dhis.period.PeriodType;
 import com.opensymphony.xwork2.Action;
 
 import static org.hisp.dhis.system.util.TextUtils.equalsNullSafe;
+import static org.hisp.dhis.system.util.TextUtils.nullIfEmpty;
 
 /**
  * @author Kristian
@@ -82,7 +83,7 @@ public class UpdateDataSetAction
     {
         this.indicatorService = indicatorService;
     }
-    
+
     // -------------------------------------------------------------------------
     // Input & output
     // -------------------------------------------------------------------------
@@ -106,6 +107,13 @@ public class UpdateDataSetAction
     public void setCode( String code )
     {
         this.code = code;
+    }
+
+    private String description;
+
+    public void setDescription( String description )
+    {
+        this.description = description;
     }
 
     private int expiryDays;
@@ -154,15 +162,9 @@ public class UpdateDataSetAction
         // Prepare values
         // ---------------------------------------------------------------------
 
-        if ( shortName != null && shortName.trim().length() == 0 )
-        {
-            shortName = null;
-        }
-
-        if ( code != null && code.trim().length() == 0 )
-        {
-            code = null;
-        }
+        code = nullIfEmpty( code );
+        shortName = nullIfEmpty( shortName );
+        description = nullIfEmpty( description );
 
         Set<DataElement> dataElements = new HashSet<DataElement>();
 
@@ -184,14 +186,15 @@ public class UpdateDataSetAction
 
         dataSet.setExpiryDays( expiryDays );
 
-        if ( !( equalsNullSafe( name, dataSet.getName() ) && periodType.equals( dataSet.getPeriodType() ) && 
-            dataElements.equals( dataSet.getDataElements() ) && indicators.equals( dataSet.getIndicators() ) ) )
+        if ( !(equalsNullSafe( name, dataSet.getName() ) && periodType.equals( dataSet.getPeriodType() )
+            && dataElements.equals( dataSet.getDataElements() ) && indicators.equals( dataSet.getIndicators() )) )
         {
-            dataSet.increaseVersion(); // Check if version must be updated            
+            dataSet.increaseVersion(); // Check if version must be updated
         }
-        
+
         dataSet.setName( name );
         dataSet.setShortName( shortName );
+        dataSet.setDescription( description );
         dataSet.setCode( code );
         dataSet.setPeriodType( periodService.getPeriodTypeByClass( periodType.getClass() ) );
         dataSet.updateDataElements( dataElements );

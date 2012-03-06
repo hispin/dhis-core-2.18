@@ -126,6 +126,13 @@ public class UpdateOrganisationUnitAction
         this.shortName = shortName;
     }
 
+    private String description;
+
+    public void setDescription( String description )
+    {
+        this.description = description;
+    }
+
     private String code;
 
     public void setCode( String code )
@@ -247,6 +254,7 @@ public class UpdateOrganisationUnitAction
     {
         code = nullIfEmpty( code );
         comment = nullIfEmpty( comment );
+        description = nullIfEmpty( description );
         longitude = nullIfEmpty( longitude );
         latitude = nullIfEmpty( latitude );
         url = nullIfEmpty( url );
@@ -278,6 +286,7 @@ public class UpdateOrganisationUnitAction
 
         organisationUnit.setName( name );
         organisationUnit.setShortName( shortName );
+        organisationUnit.setDescription( description );
         organisationUnit.setCode( code );
         organisationUnit.setActive( active );
         organisationUnit.setOpeningDate( oDate );
@@ -299,24 +308,25 @@ public class UpdateOrganisationUnitAction
         // Set coordinates and feature type to point if valid
         // ---------------------------------------------------------------------
 
-        boolean point = organisationUnit.getCoordinates() == null || coordinateIsValid( organisationUnit.getCoordinates() );
-        
+        boolean point = organisationUnit.getCoordinates() == null
+            || coordinateIsValid( organisationUnit.getCoordinates() );
+
         if ( point )
         {
             String coordinates = null;
             String featureType = null;
-            
-            if ( longitude != null && latitude != null && 
-                ValidationUtils.coordinateIsValid( ValidationUtils.getCoordinate( longitude, latitude ) ) )
+
+            if ( longitude != null && latitude != null
+                && ValidationUtils.coordinateIsValid( ValidationUtils.getCoordinate( longitude, latitude ) ) )
             {
                 coordinates = ValidationUtils.getCoordinate( longitude, latitude );
                 featureType = OrganisationUnit.FEATURETYPE_POINT;
             }
-            
+
             organisationUnit.setCoordinates( coordinates );
             organisationUnit.setFeatureType( featureType );
         }
-        
+
         Set<DataSet> sets = new HashSet<DataSet>();
 
         for ( String id : dataSets )

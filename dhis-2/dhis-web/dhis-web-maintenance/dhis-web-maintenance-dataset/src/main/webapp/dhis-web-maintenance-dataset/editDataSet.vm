@@ -61,19 +61,23 @@
     <tbody>
       <tr>
         <td><label>$i18n.getString( "name" ) <em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
-        <td><input type="text" id="name" name="name" style="width:20em" value="$!encoder.htmlEncode( $dataSet.name )"></td>
+        <td><input type="text" id="name" name="name" style="width:20em" value="$!encoder.htmlEncode( $dataSet.name )"/></td>
       </tr>
       <tr>
         <td><label>$i18n.getString( "short_name" ) <em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
-        <td><input type="text" id="shortName" name="shortName" style="width:20em" value="$!encoder.htmlEncode( $dataSet.shortName )"></td>
-      </tr>     
+        <td><input type="text" id="shortName" name="shortName" style="width:20em" value="$!encoder.htmlEncode( $dataSet.shortName )"/></td>
+      </tr>
+      <tr>
+        <td><label>$i18n.getString( "description" ) <em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
+        <td><input type="text" id="description" name="description" style="width:20em" value="$!encoder.htmlEncode( $dataSet.description )"/></td>
+      </tr>
       <tr>
         <td><label>$i18n.getString( "code" )</label></td>
-        <td><input type="text" id="code" name="code" style="width:20em" value="$!encoder.htmlEncode( $dataSet.code )"></td>
+        <td><input type="text" id="code" name="code" style="width:20em" value="$!encoder.htmlEncode( $dataSet.code )"/></td>
       </tr>
       <tr>
         <td><label>$i18n.getString( "expiry_days" )</label></td>
-        <td><input type="text" id="expiryDays" name="expiryDays" style="width:20em" value="$!encoder.htmlEncode( $dataSet.expiryDays )"></td>
+        <td><input type="text" id="expiryDays" name="expiryDays" style="width:20em" value="$!encoder.htmlEncode( $dataSet.expiryDays )"/></td>
       </tr>
       <tr>
         <td><label>$i18n.getString( "frequency" ) <em title="$i18n.getString( 'required' )" class="required">*</em></label></td>

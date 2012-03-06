@@ -3,6 +3,7 @@
     "id": $!{organisationUnit.id},
     "name": "$!encoder.jsonEncode( ${organisationUnit.name} )",
     "shortName": "$!encoder.jsonEncode( ${organisationUnit.shortName} )",
+    "description": "$!encoder.jsonEncode( ${organisationUnit.description} )",
     "code": "$!encoder.jsonEncode( ${organisationUnit.code} )",
     "openingDate": "$!{organisationUnit.openingDate}",
     "closedDate": "$!{organisationUnit.closedDate}",

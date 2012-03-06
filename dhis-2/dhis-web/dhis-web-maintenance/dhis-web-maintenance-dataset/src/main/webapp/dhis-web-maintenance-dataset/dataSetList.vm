@@ -71,6 +71,7 @@
 					<a href="javascript:hideDetails()" title="$i18n.getString( 'hide_details' )"><img src="../images/close.png" alt="$i18n.getString( 'hide_details' )"/></a>
 				</div>
 				<p><label>$i18n.getString( "name" ):</label><br/><span id="nameField"></span></p>
+				<p><label>$i18n.getString( "description" ):</label><br/><span id="descriptionField"></span></p>
 				<p><label>$i18n.getString( "frequency" ):</label><br/><span id="frequencyField"></span></p>
 				<p><label>$i18n.getString( "number_of_data_elements" ):</label><br/><span id="dataElementCountField"></span></p>
 				<p><label>$i18n.getString( "dataentryform" ):</label><br/><span id="dataEntryFormField"></span></p>

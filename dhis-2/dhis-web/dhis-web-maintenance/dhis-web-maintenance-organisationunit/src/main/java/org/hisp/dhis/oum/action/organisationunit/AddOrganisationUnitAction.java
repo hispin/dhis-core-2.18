@@ -117,6 +117,13 @@ public class AddOrganisationUnitAction
         this.shortName = shortName;
     }
 
+    private String description;
+
+    public void setDescription( String description )
+    {
+        this.description = description;
+    }
+
     private String code;
 
     public void setCode( String code )
@@ -231,6 +238,7 @@ public class AddOrganisationUnitAction
     {
         code = nullIfEmpty( code );
         comment = nullIfEmpty( comment );
+        description = nullIfEmpty( description );
         longitude = nullIfEmpty( longitude );
         latitude = nullIfEmpty( latitude );
         url = nullIfEmpty( url );
@@ -263,6 +271,7 @@ public class AddOrganisationUnitAction
 
         OrganisationUnit organisationUnit = new OrganisationUnit( name, shortName, code, date, null, active, comment );
 
+        organisationUnit.setDescription( description );
         organisationUnit.setUrl( url );
         organisationUnit.setParent( parent );
         organisationUnit.setContactPerson( contactPerson );
@@ -288,19 +297,19 @@ public class AddOrganisationUnitAction
         if ( longitude != null && latitude != null )
         {
             String coordinates = ValidationUtils.getCoordinate( longitude, latitude );
-                
+
             if ( ValidationUtils.coordinateIsValid( coordinates ) )
             {
                 organisationUnit.setCoordinates( coordinates );
                 organisationUnit.setFeatureType( OrganisationUnit.FEATURETYPE_POINT );
-            }            
+            }
         }
-        
+
         // ---------------------------------------------------------------------
         // Must persist org unit before adding data sets because association are
         // updated on both sides (and this side is inverse)
         // ---------------------------------------------------------------------
-        
+
         organisationUnitId = organisationUnitService.addOrganisationUnit( organisationUnit );
 
         for ( String id : dataSets )
