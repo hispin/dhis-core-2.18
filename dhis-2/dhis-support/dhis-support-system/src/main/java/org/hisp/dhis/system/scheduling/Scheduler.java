@@ -34,8 +34,8 @@ public interface Scheduler
 {
     final String CRON_DAILY_0AM = "0 0 0 * * ?";
     final String CRON_DAILY_1AM = "0 0 1 * * ?";
-    final String CRON_DAILY_0AM_EXCEPT_SUNDAY = "0 0 0 ? * 2-7";
-    final String CRON_WEEKLY_SUNDAY_0AM = "0 0 0 ? * 1";
+    final String CRON_DAILY_0AM_EXCEPT_SUNDAY = "0 0 0 ? * 1-6";
+    final String CRON_WEEKLY_SUNDAY_0AM = "0 0 0 ? * 0";
     final String CRON_TEST = "0 * * * * ?";
     
     final String STATUS_RUNNING = "running";
