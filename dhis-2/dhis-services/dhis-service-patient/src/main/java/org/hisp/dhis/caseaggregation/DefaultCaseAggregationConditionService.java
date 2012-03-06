@@ -829,7 +829,7 @@ public class DefaultCaseAggregationConditionService
 
         return select + "FROM programinstance as pi INNER JOIN programstageinstance psi "
             + "ON pi.programinstanceid = psi.programinstanceid WHERE pi.programid=" + programId + " "
-            + "AND psi.organisationunitid = '" + orgunitId + "AND pi.enrollmentdate >= '" + startDate
+            + "AND psi.organisationunitid = " + orgunitId + " AND pi.enrollmentdate >= '" + startDate
             + "' AND pi.enrollmentdate <= '" + endDate + "' ";
     }
 
