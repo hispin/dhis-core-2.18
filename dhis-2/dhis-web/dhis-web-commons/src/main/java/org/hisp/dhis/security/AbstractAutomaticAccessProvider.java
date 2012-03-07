@@ -35,6 +35,7 @@ import org.hisp.dhis.security.authority.SystemAuthoritiesProvider;
 import org.hisp.dhis.user.UserService;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.GrantedAuthorityImpl;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
 /**
  * Abstract automatic access provider class. Delegates methods initialise() and 
@@ -100,7 +101,7 @@ public abstract class AbstractAutomaticAccessProvider
 
         for ( String authority : systemAuthorities )
         {
-            grantedAuthorities.add( new GrantedAuthorityImpl( authority ) );
+            grantedAuthorities.add( new SimpleGrantedAuthority( authority ) );
         }
 
         return grantedAuthorities;

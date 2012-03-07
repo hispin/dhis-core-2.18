@@ -37,6 +37,7 @@ import org.hisp.dhis.user.UserService;
 import org.springframework.dao.DataAccessException;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.GrantedAuthorityImpl;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -93,7 +94,7 @@ public class DefaultUserDetailsService
         {
             for ( String authority : group.getAuthorities() )
             {
-                authorities.add( new GrantedAuthorityImpl( authority ) );
+                authorities.add( new SimpleGrantedAuthority( authority ) );
             }
         }
 
