@@ -106,11 +106,14 @@ public class GridUtils
      */
     public static void toPdf( Grid grid, OutputStream out )
     {
-        Document document = openDocument( out );
-        
-        toPdfInternal( grid, document, 0F );
-
-        closeDocument( document );
+        if ( isNonEmptyGrid( grid ) )
+        {
+            Document document = openDocument( out );
+            
+            toPdfInternal( grid, document, 0F );
+    
+            closeDocument( document );
+        }
     }
 
     /**
@@ -118,18 +121,26 @@ public class GridUtils
      */
     public static void toPdf( List<Grid> grids, OutputStream out )
     {
-        Document document = openDocument( out );
-        
-        for ( Grid grid : grids )
+        if ( hasNonEmptyGrid( grids ) )
         {
-            toPdfInternal( grid, document, 40F );
+            Document document = openDocument( out );
+            
+            for ( Grid grid : grids )
+            {
+                toPdfInternal( grid, document, 40F );
+            }
+            
+            closeDocument( document );
         }
-        
-        closeDocument( document );
     }
     
     private static void toPdfInternal( Grid grid, Document document, float spacing )
     {
+        if ( grid == null || grid.getVisibleWidth() == 0 )
+        {
+            return;
+        }
+        
         PdfPTable table = new PdfPTable( grid.getVisibleWidth() );
 
         table.setHeaderRows( 1 );
@@ -203,6 +214,11 @@ public class GridUtils
     private static void toXlsInternal( Grid grid, WritableWorkbook workbook, String sheetName, int sheetNo )
         throws Exception
     {
+        if ( grid == null )
+        {
+            return;
+        }
+        
         WritableSheet sheet = workbook.createSheet( sheetName, sheetNo );
 
         int rowNumber = 1;
@@ -255,6 +271,11 @@ public class GridUtils
     public static void toCsv( Grid grid, OutputStream out )
         throws Exception
     {
+        if ( grid == null )
+        {
+            return;
+        }
+        
         Iterator<GridHeader> headers = grid.getHeaders().iterator();
         
         while ( headers.hasNext() )
@@ -293,6 +314,11 @@ public class GridUtils
     public static void toJasperReport( Grid grid, Map<String, Object> params, OutputStream out )
         throws Exception
     {
+        if ( grid == null )
+        {
+            return;
+        }
+        
         final StringWriter writer = new StringWriter();
         
         render( grid, params, writer );
@@ -332,5 +358,33 @@ public class GridUtils
         context.put( KEY_PARAMS, params );
         
         new VelocityManager().getEngine().getTemplate( TEMPLATE ).merge( context, writer );
+    }
+    
+    /**
+     * Indicates whether the given list of grids have at least one grid which is 
+     * not null and has more than zero visible columns.
+     */
+    private static boolean hasNonEmptyGrid( List<Grid> grids )
+    {
+        if ( grids != null && grids.size() > 0 )
+        {
+            for ( Grid grid : grids )
+            {
+                if ( isNonEmptyGrid( grid ) )
+                {
+                    return true;
+                }
+            }
+        }
+        
+        return false;
+    }
+    
+    /**
+     * Indicates whether grid is not null and has more than zero visible columns.
+     */
+    private static boolean isNonEmptyGrid( Grid grid )
+    {
+        return grid != null && grid.getVisibleWidth() > 0;
     }
 }
