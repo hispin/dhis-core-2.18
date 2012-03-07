@@ -456,7 +456,7 @@ public class ReportTable extends BaseIdentifiableObject
 
     /**
      * Creates a map which contains mappings between the organisation unit
-     * identifier and the name of the group this organisation unit is a member
+     * uid and the name of the group this organisation unit is a member
      * of in all of the given group sets for all organisation units in this
      * report table.
      *
@@ -469,13 +469,13 @@ public class ReportTable extends BaseIdentifiableObject
 
         for ( OrganisationUnitGroupSet groupSet : groupSets )
         {
-            Map<Integer, String> map = new HashMap<Integer, String>();
+            Map<String, String> map = new HashMap<String, String>();
 
             for ( NameableObject unit : allUnits )
             {
                 if ( unit instanceof OrganisationUnit )
                 {
-                    map.put( unit.getId(), ((OrganisationUnit) unit).getGroupNameInGroupSet( groupSet ) );
+                    map.put( unit.getUid(), ((OrganisationUnit) unit).getGroupNameInGroupSet( groupSet ) );
                 }
             }
 
