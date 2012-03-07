@@ -186,42 +186,42 @@ public class DefaultProgramStageInstanceService
     }
 
     public List<ProgramStageInstance> searchProgramStageInstances( ProgramStage programStage,
-        Map<Integer, String> searchingKeys, OrganisationUnit orgunit, Date startDate, Date endDate, int min, int max )
+        Map<Integer, String> searchingKeys, Collection<Integer> orgunitIds, Date startDate, Date endDate, int min, int max )
     {
-        return programStageInstanceStore.get( programStage, searchingKeys, orgunit, startDate, endDate, min, max );
+        return programStageInstanceStore.get( programStage, searchingKeys, orgunitIds, startDate, endDate, min, max );
     }
     
     public List<ProgramStageInstance> searchProgramStageInstances( ProgramStage programStage,
-        Map<Integer, String> searchingKeys, OrganisationUnit orgunit, Date startDate, Date endDate )
+        Map<Integer, String> searchingKeys, Collection<Integer> orgunitIds, Date startDate, Date endDate )
     {
-        return programStageInstanceStore.get( programStage, searchingKeys, orgunit, startDate, endDate );
+        return programStageInstanceStore.get( programStage, searchingKeys, orgunitIds, startDate, endDate );
     }
 
     public Grid getTabularReport( ProgramStage programStage, List<DataElement> dataElements,
-        Map<Integer, String> searchingKeys, OrganisationUnit orgunit, Date startDate, Date endDate, int min, int max,
+        Map<Integer, String> searchingKeys, Collection<Integer> orgunitIds, Date startDate, Date endDate, int min, int max,
         I18nFormat format, I18n i18n )
     {
         List<ProgramStageInstance> programStageInstances = searchProgramStageInstances( programStage, searchingKeys,
-            orgunit, startDate, endDate, min, max );
+            orgunitIds, startDate, endDate, min, max );
 
         return createTabularGrid( programStage, programStageInstances, dataElements, startDate, endDate, format, i18n );
     }
 
     public Grid getTabularReport( ProgramStage programStage, List<DataElement> dataElements,
-        Map<Integer, String> searchingKeys, OrganisationUnit orgunit, Date startDate, Date endDate, I18nFormat format,
+        Map<Integer, String> searchingKeys, Collection<Integer> orgunitIds, Date startDate, Date endDate, I18nFormat format,
         I18n i18n )
     {
         List<ProgramStageInstance> programStageInstances = searchProgramStageInstances( programStage, searchingKeys,
-            orgunit, startDate, endDate );
+            orgunitIds, startDate, endDate );
 
         return createTabularGrid( programStage, programStageInstances, dataElements, startDate, endDate, format, i18n );
     }
 
     @Override
     public int countProgramStageInstances( ProgramStage programStage, Map<Integer, String> searchingKeys,
-        OrganisationUnit orgunit, Date startDate, Date endDate )
+        Collection<Integer> orgunitIds, Date startDate, Date endDate )
     {
-        return programStageInstanceStore.count( programStage, searchingKeys, orgunit, startDate, endDate );
+        return programStageInstanceStore.count( programStage, searchingKeys, orgunitIds, startDate, endDate );
     }
 
     // -------------------------------------------------------------------------

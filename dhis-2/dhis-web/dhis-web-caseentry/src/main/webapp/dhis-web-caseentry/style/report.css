@@ -7,7 +7,12 @@
 	width:140px; 
 }
 
-.inputCriteria input
+input[type="button"], input[type="submit"]
+{
+	width:150px;
+}
+
+.inputCriteria input[type="text"]
 {
 	width:350px; 
 }

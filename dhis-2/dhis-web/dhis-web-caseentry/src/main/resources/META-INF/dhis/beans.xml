@@ -285,6 +285,8 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
         	ref="org.hisp.dhis.program.ProgramStageInstanceService" />
         <property name="selectedStateManager"
         	ref="org.hisp.dhis.caseentry.state.SelectedStateManager" />
+         <property name="organisationUnitService"
+        	ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
 	</bean>
 
 	<!-- Case Aggregation -->

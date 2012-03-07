@@ -87,11 +87,11 @@ public interface ProgramStageInstanceService
 
     List<ProgramStageInstance> getProgramStageInstances( Patient patient, Boolean completed );
             
-    List<ProgramStageInstance> searchProgramStageInstances( ProgramStage programStage, Map<Integer,String> searchingKeys, OrganisationUnit orgunit, Date startDate, Date endDate, int min, int max );
+    List<ProgramStageInstance> searchProgramStageInstances( ProgramStage programStage, Map<Integer,String> searchingKeys, Collection<Integer> orgunitIds, Date startDate, Date endDate, int min, int max );
 
-    Grid getTabularReport( ProgramStage programStage, List<DataElement> dataElements, Map<Integer,String> searchingKeys, OrganisationUnit orgunit, Date startDate, Date endDate, int min, int max, I18nFormat format, I18n i18n );
+    Grid getTabularReport( ProgramStage programStage, List<DataElement> dataElements, Map<Integer,String> searchingKeys, Collection<Integer> orgunitIds, Date startDate, Date endDate, int min, int max, I18nFormat format, I18n i18n );
     
-    Grid getTabularReport( ProgramStage programStage, List<DataElement> dataElements, Map<Integer,String> searchingKeys, OrganisationUnit orgunit, Date startDate, Date endDate, I18nFormat format, I18n i18n );
+    Grid getTabularReport( ProgramStage programStage, List<DataElement> dataElements, Map<Integer,String> searchingKeys, Collection<Integer> orgunitIds, Date startDate, Date endDate, I18nFormat format, I18n i18n );
 
-    int countProgramStageInstances( ProgramStage programStage, Map<Integer,String> searchingKeys, OrganisationUnit orgunit, Date startDate, Date endDate );
+    int countProgramStageInstances( ProgramStage programStage, Map<Integer,String> searchingKeys, Collection<Integer> orgunitIds, Date startDate, Date endDate );
 }

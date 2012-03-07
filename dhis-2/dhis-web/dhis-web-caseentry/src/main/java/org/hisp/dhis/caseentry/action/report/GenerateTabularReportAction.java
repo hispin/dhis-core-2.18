@@ -43,6 +43,8 @@ import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.i18n.I18n;
 import org.hisp.dhis.i18n.I18nFormat;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
+import org.hisp.dhis.organisationunit.OrganisationUnitHierarchy;
+import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.paging.ActionPagingSupport;
 import org.hisp.dhis.program.ProgramInstance;
 import org.hisp.dhis.program.ProgramInstanceService;
@@ -68,6 +70,13 @@ public class GenerateTabularReportAction
     public void setSelectedStateManager( SelectedStateManager selectedStateManager )
     {
         this.selectedStateManager = selectedStateManager;
+    }
+
+    private OrganisationUnitService organisationUnitService;
+
+    public void setOrganisationUnitService( OrganisationUnitService organisationUnitService )
+    {
+        this.organisationUnitService = organisationUnitService;
     }
 
     private ProgramStageService programStageService;
@@ -172,6 +181,13 @@ public class GenerateTabularReportAction
         this.type = type;
     }
 
+    private String facilityLB;
+
+    public void setFacilityLB( String facilityLB )
+    {
+        this.facilityLB = facilityLB;
+    }
+
     // -------------------------------------------------------------------------
     // Implementation Action
     // -------------------------------------------------------------------------
@@ -179,7 +195,35 @@ public class GenerateTabularReportAction
     public String execute()
         throws Exception
     {
-        OrganisationUnit organisationUnit = selectedStateManager.getSelectedOrganisationUnit();
+        // ---------------------------------------------------------------------
+        // Get orgunitIds
+        // ---------------------------------------------------------------------
+
+        OrganisationUnit selectedOrgunit = selectedStateManager.getSelectedOrganisationUnit();
+
+        Set<Integer> orgunitIds = new HashSet<Integer>();
+
+        if ( facilityLB.equals( "random" ) )
+        {
+            orgunitIds.add( selectedOrgunit.getId() );
+        }
+        else
+        {
+            OrganisationUnitHierarchy hierarchy = organisationUnitService.getOrganisationUnitHierarchy();
+
+            Set<Integer> childOrgUnitIdentifiers = hierarchy.getChildren( selectedOrgunit.getId() );
+
+            orgunitIds.addAll( childOrgUnitIdentifiers );
+
+            if ( facilityLB.equals( "immChildren" ) )
+            {
+                orgunitIds.remove( selectedOrgunit.getId() );
+            }
+        }
+
+        // ---------------------------------------------------------------------
+        // Get program-stage, start-date, end-date
+        // ---------------------------------------------------------------------
 
         ProgramStage programStage = programStageService.getProgramStage( programStageId );
 
@@ -189,10 +233,18 @@ public class GenerateTabularReportAction
 
         dataElements = new ArrayList<DataElement>();
 
+        // ---------------------------------------------------------------------
+        // Get selected dataelements
+        // ---------------------------------------------------------------------
+
         for ( Integer dataElementId : dataElementIds )
         {
             dataElements.add( dataElementService.getDataElement( dataElementId ) );
         }
+
+        // ---------------------------------------------------------------------
+        // Get searching-keys
+        // ---------------------------------------------------------------------
 
         Map<Integer, String> searchingKeys = new HashMap<Integer, String>();
 
@@ -203,20 +255,24 @@ public class GenerateTabularReportAction
             searchingKeys.put( Integer.parseInt( infor[0] ), infor[1] );
         }
 
+        // ---------------------------------------------------------------------
+        // Generate tabular report
+        // ---------------------------------------------------------------------
+
         if ( type == null )
         {
             total = programStageInstanceService.countProgramStageInstances( programStage, searchingKeys,
-                organisationUnit, startValue, endValue );
+                orgunitIds, startValue, endValue );
 
             this.paging = createPaging( total );
 
             grid = programStageInstanceService.getTabularReport( programStage, dataElements, searchingKeys,
-                organisationUnit, startValue, endValue, paging.getStartPos(), paging.getPageSize(), format, i18n );
+                orgunitIds, startValue, endValue, paging.getStartPos(), paging.getPageSize(), format, i18n );
             return SUCCESS;
         }
-        
+
         grid = programStageInstanceService.getTabularReport( programStage, dataElements, searchingKeys,
-            organisationUnit, startValue, endValue, format, i18n );
+            orgunitIds, startValue, endValue, format, i18n );
 
         return type;
     }
