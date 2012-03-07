@@ -27,13 +27,11 @@
 
 package org.hisp.dhis.attribute;
 
+import org.codehaus.jackson.annotate.JsonIgnore;
 import org.codehaus.jackson.annotate.JsonProperty;
 import org.hisp.dhis.common.Dxf2Namespace;
 
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlAttribute;
-import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.*;
 import java.io.Serializable;
 
 /**
@@ -65,6 +63,8 @@ public class AttributeValue
         this.value = value;
     }
 
+    @XmlTransient
+    @JsonIgnore
     public int getId()
     {
         return id;
@@ -82,11 +82,21 @@ public class AttributeValue
         return attribute.getUid();
     }
 
+    public void setAttributeTypeRef( String uid )
+    {
+        // this is just here so that we don't confuse Jackson (it will try and use setId which takes an integer)
+    }
+
     @XmlAttribute( name = "name" )
     @JsonProperty( value = "name" )
     public String getAttributeName()
     {
         return attribute.getName();
+    }
+
+    public void setAttributeName( String name )
+    {
+        // this is just here so that we don't confuse Jackson
     }
 
     public Attribute getAttribute()

@@ -567,7 +567,7 @@ public class OrganisationUnit extends BaseNameableObject
 
     public void setAlternativeName( String alternativeName )
     {
-        throw new UnsupportedOperationException( "Cannot set alternativeName on OrganisationUnit: " + alternativeName );
+        // throw new UnsupportedOperationException( "Cannot set alternativeName on OrganisationUnit: " + alternativeName );
     }
 
     @XmlElement

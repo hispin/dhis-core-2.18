@@ -28,6 +28,7 @@ package org.hisp.dhis.dataelement;
  */
 
 import org.apache.commons.lang.StringEscapeUtils;
+import org.codehaus.jackson.annotate.JsonIgnore;
 import org.codehaus.jackson.annotate.JsonProperty;
 import org.codehaus.jackson.map.annotate.JsonSerialize;
 import org.hisp.dhis.common.BaseIdentifiableObject;
@@ -265,7 +266,7 @@ public class DataElementCategoryOptionCombo extends BaseNameableObject
     @Override
     public void setName( String name )
     {
-        throw new UnsupportedOperationException( "Cannot set name on DataElementCategoryOptionCombo: " + name );
+        // throw new UnsupportedOperationException( "Cannot set name on DataElementCategoryOptionCombo: " + name );
     }
 
     @Override
@@ -277,7 +278,7 @@ public class DataElementCategoryOptionCombo extends BaseNameableObject
     @Override
     public void setShortName( String shortName )
     {
-        throw new UnsupportedOperationException( "Cannot set shortName on DataElementCategoryOptionCombo: " + shortName );
+        // throw new UnsupportedOperationException( "Cannot set shortName on DataElementCategoryOptionCombo: " + shortName );
     }
 
     @Override
@@ -289,8 +290,8 @@ public class DataElementCategoryOptionCombo extends BaseNameableObject
     @Override
     public void setAlternativeName( String alternativeName )
     {
-        throw new UnsupportedOperationException( "Cannot set alternativename on DataElementCategoryOptionCombo: "
-            + alternativeName );
+        // throw new UnsupportedOperationException( "Cannot set alternativeName on DataElementCategoryOptionCombo: "
+        //    + alternativeName );
     }
 
     @XmlElement
