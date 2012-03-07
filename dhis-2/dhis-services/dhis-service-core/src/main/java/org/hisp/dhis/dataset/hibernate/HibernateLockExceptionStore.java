@@ -95,7 +95,7 @@ public class HibernateLockExceptionStore
     @Override
     public Collection<LockException> getCombinations()
     {
-        final String sql = "select distinct datasetid, periodid from LockException";
+        final String sql = "select distinct datasetid, periodid from lockexception";
 
         final Collection<LockException> lockExceptions = new ArrayList<LockException>();
 
