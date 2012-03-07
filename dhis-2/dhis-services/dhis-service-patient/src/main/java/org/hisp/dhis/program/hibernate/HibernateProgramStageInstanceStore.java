@@ -132,7 +132,7 @@ public class HibernateProgramStageInstanceStore
     @SuppressWarnings( "unchecked" )
     public List<ProgramStageInstance> get( OrganisationUnit unit, Date after, Date before, Boolean completed )
     {
-        String hql = "from ProgramStageInstance where programInstance.patient.organisationUnit = :unit";
+        String hql = "from ProgramStageInstance psi where psi.organisationUnit = :unit";
 
         if ( after != null )
         {
@@ -182,16 +182,17 @@ public class HibernateProgramStageInstanceStore
         Date endDate, int min, int max )
     {
         return getCriteria( Restrictions.eq( "programStage", programStage ),
-            Restrictions.between( "dueDate", startDate, endDate ) ).setFirstResult( min ).setMaxResults( max ).list();
+            Restrictions.eq( "organisationUnit", orgunit ), Restrictions.between( "dueDate", startDate, endDate ) )
+            .setFirstResult( min ).setMaxResults( max ).list();
     }
 
     @SuppressWarnings( "unchecked" )
     public List<ProgramStageInstance> get( ProgramStage programStage, Map<Integer, String> searchingKeys,
-        OrganisationUnit orgunit, Date startDate, Date endDate, int min, int max )
+        Collection<Integer> orgunitIds, Date startDate, Date endDate, int min, int max )
     {
         if ( searchingKeys.keySet().size() > 0 )
         {
-            String sql = getBySearchingValues( false, programStage, searchingKeys, orgunit, startDate, endDate )
+            String sql = getBySearchingValues( false, programStage, searchingKeys, orgunitIds, startDate, endDate )
                 + statementBuilder.limitRecord( min, max );
 
             List<Integer> ids = executeSQL( sql );
@@ -205,19 +206,20 @@ public class HibernateProgramStageInstanceStore
 
             return programStageInstances;
         }
-        
-        return (getCriteria( Restrictions.eq( "programStage", programStage ), Restrictions.eq( "organisationUnit",
-            orgunit ), Restrictions.between( "dueDate", startDate, endDate ) )).setFirstResult( min ).setMaxResults( max ).list();
+
+        return (getCriteria( Restrictions.eq( "programStage", programStage ), Restrictions.in( "organisationUnit.id",
+            orgunitIds ), Restrictions.between( "dueDate", startDate, endDate ) )).setFirstResult( min ).setMaxResults(
+            max ).list();
     }
-    
+
     @SuppressWarnings( "unchecked" )
     public List<ProgramStageInstance> get( ProgramStage programStage, Map<Integer, String> searchingKeys,
-        OrganisationUnit orgunit, Date startDate, Date endDate )
+        Collection<Integer> orgunitIds, Date startDate, Date endDate )
     {
         if ( searchingKeys.keySet().size() > 0 )
         {
-            String sql = getBySearchingValues( false, programStage, searchingKeys, orgunit, startDate, endDate );
-            
+            String sql = getBySearchingValues( false, programStage, searchingKeys, orgunitIds, startDate, endDate );
+
             List<Integer> ids = executeSQL( sql );
 
             List<ProgramStageInstance> programStageInstances = new ArrayList<ProgramStageInstance>();
@@ -229,37 +231,37 @@ public class HibernateProgramStageInstanceStore
 
             return programStageInstances;
         }
-        
-        return (getCriteria( Restrictions.eq( "programStage", programStage ), Restrictions.eq( "organisationUnit",
-            orgunit ), Restrictions.between( "dueDate", startDate, endDate ) )).list();
+
+        return (getCriteria( Restrictions.eq( "programStage", programStage ), Restrictions.in( "organisationUnit.id",
+            orgunitIds ), Restrictions.between( "dueDate", startDate, endDate ) )).list();
     }
 
-    public int count( ProgramStage programStage, Map<Integer, String> searchingKeys, OrganisationUnit orgunit,
+    public int count( ProgramStage programStage, Map<Integer, String> searchingKeys, Collection<Integer> orgunitIds,
         Date startDate, Date endDate )
     {
         if ( searchingKeys.keySet().size() > 0 )
         {
-            String sql = getBySearchingValues( true, programStage, searchingKeys, orgunit, startDate, endDate );
+            String sql = getBySearchingValues( true, programStage, searchingKeys, orgunitIds, startDate, endDate );
             List<Integer> countRow = executeSQL( sql );
             return (countRow != null && countRow.size() > 0) ? countRow.get( 0 ) : 0;
         }
 
-        Number rs = (Number) (getCriteria( Restrictions.eq( "programStage", programStage ), Restrictions.eq(
-            "organisationUnit", orgunit ), Restrictions.between( "dueDate", startDate, endDate ) )).setProjection(
-            Projections.rowCount() ).uniqueResult();
+        Number rs = (Number) (getCriteria( Restrictions.eq( "programStage", programStage ), Restrictions.in(
+            "organisationUnit.id", orgunitIds ), Restrictions.between( "dueDate", startDate, endDate ) ))
+            .setProjection( Projections.rowCount() ).uniqueResult();
 
         return rs != null ? rs.intValue() : 0;
     }
 
     private String getBySearchingValues( boolean isCount, ProgramStage programStage,
-        Map<Integer, String> searchingKeys, OrganisationUnit orgunit, Date startDate, Date endDate )
+        Map<Integer, String> searchingKeys, Collection<Integer> orgunitIds, Date startDate, Date endDate )
     {
         String sql = "select distinct( psi.programstageinstanceid) from patientdatavalue pdv "
             + "inner join programstageinstance psi on pdv.programstageinstanceid=psi.programstageinstanceid ";
 
         String condition = " WHERE psi.duedate >= '" + DateUtils.getMediumDateString( startDate )
             + "' AND psi.duedate <= '" + DateUtils.getMediumDateString( endDate ) + "' "
-            + " AND psi.organisationunitid=" + orgunit.getId() + " ";
+            + " AND psi.organisationunitid in( " + orgunitIds + ") ";
 
         Iterator<Integer> keys = searchingKeys.keySet().iterator();
         boolean index = false;

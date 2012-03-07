@@ -2,8 +2,8 @@
 function organisationUnitSelected( orgUnits, orgUnitNames )
 {
 	hideById('contentDiv');
-	setFieldValue('startDate', '');
-	setFieldValue('endDate', '');
+	clearListById( 'programStageId' );
+	clearListById( 'availableDataElementIds' );
 	
 	$.getJSON( 'loadProgramsByOrgunit.action',{}
 		, function( json ) 
@@ -36,12 +36,14 @@ selection.setListenerFunction( organisationUnitSelected );
 function loadProgramStages()
 {
 	clearListById( 'programStageId' );
-	clearListById( 'dataElementIds' );
+	clearListById( 'availableDataElementIds' );
 	
 	if( getFieldValue('programId') == '' )
 	{
 		return;
 	}
+	
+	clearListById( 'dataElementIds' );
 	$.getJSON( 'loadTabularProgramStages.action',
 		{
 			programId: getFieldValue('programId')
@@ -59,23 +61,34 @@ function loadProgramStages()
 
 function loadDataElements()
 {
-	clearListById( 'dataElementIds' );
 	if( getFieldValue('programStageId') == '' )
 	{
 		return;
 	}
-	
-	$.getJSON( 'loadDataElements.action',
+	else
+	{
+		var result = false;
+		if( byId( 'dataElementIds' ).options.length > 0 )
 		{
-			programStageId: getFieldValue('programStageId')
+			result = window.confirm( i18n_remove_selected_data_elements );
 		}
-		, function( json ) 
+		
+		if ( result || byId( 'dataElementIds' ).options.length == 0 )
 		{
-			for ( i in json.dataElements ) 
-			{ 
-				$('#dataElementIds').append('<option value=' + json.dataElements[i].id + '>' + json.dataElements[i].name + '</option>');
-			}
-		} );
+			clearListById( 'dataElementIds' );
+			$.getJSON( 'loadDataElements.action',
+				{
+					programStageId: getFieldValue('programStageId')
+				}
+				, function( json ) 
+				{
+					for ( i in json.dataElements ) 
+					{ 
+						$('#availableDataElementIds').append('<option value=' + json.dataElements[i].id + '>' + json.dataElements[i].name + '</option>');
+					}
+				} );
+		}
+	}
 }
 
 
@@ -257,7 +270,7 @@ function getParams()
 	});
 	
 	var dataElementIds = "";
-	var listDataElementIds = jQuery( "select[id=dataElementIds] option:selected" );
+	var listDataElementIds = jQuery( "select[id=dataElementIds] option" );
 	listDataElementIds.each( function( i, item ){
 		dataElementIds += "dataElementIds=" + item.value;
 		dataElementIds += ( i < listDataElementIds.length - 1 ) ? "&" : "";
@@ -266,5 +279,6 @@ function getParams()
 	return searchingValues + dataElementIds
 				+ "&programStageId=" + getFieldValue('programStageId')
 				+ "&startDate=" + getFieldValue('startDate')
-				+ "&endDate=" + getFieldValue('endDate');
+				+ "&endDate=" + getFieldValue('endDate')
+				+ "&facilityLB=" + getFieldValue('facilityLB');
 }

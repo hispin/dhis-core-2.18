@@ -49,7 +49,7 @@
 			</tr>
 			<tr>
 				<td>
-				   $i18n.getString( "ga_facilityby" )
+				   $i18n.getString( "facility_by" )
 				</td>
 				<td>
 					<select id="facilityLB" name="facilityLB" style="width: 30em">
