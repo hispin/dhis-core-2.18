@@ -50,6 +50,10 @@ public class I18nFormat
     private static final String NAN = "NaN";
     private static final String INVALID_DATE="Invalid date format";
     
+    public static final String FORMAT_DATE = "yyyy-MM-dd";
+    public static final String FORMAT_TIME = "HH:mm";
+    public static final String FORMAT_DATETIME = "yyyy-MM-dd HH:mm";
+    
     private ResourceBundle resourceBundle;
 
     public I18nFormat( ResourceBundle resourceBundle )
@@ -115,7 +119,7 @@ public class I18nFormat
             return null;
         }
 
-        return commonParsing( date, resourceBundle.getString( "format.date" ) );
+        return commonParsing( date, FORMAT_DATE );
     }
 
     public Date parseTime( String time )
@@ -125,7 +129,7 @@ public class I18nFormat
             return null;
         }
 
-        return commonParsing( time, resourceBundle.getString( "format.time" ) );
+        return commonParsing( time, FORMAT_TIME );
     }
 
     public Date parseDateTime( String dateTime )
@@ -135,7 +139,7 @@ public class I18nFormat
             return null;
         }
 
-        return commonParsing( dateTime, resourceBundle.getString( "format.datetime" ) );
+        return commonParsing( dateTime, FORMAT_DATETIME );
     }
 
     public String formatDate( Date date )
@@ -145,7 +149,7 @@ public class I18nFormat
             return null;
         }
 
-        return commonFormatting( date, resourceBundle.getString( "format.date" ) );
+        return commonFormatting( date, FORMAT_DATE );
     }
 
     public String formatTime( Date date )
@@ -155,7 +159,7 @@ public class I18nFormat
             return null;
         }
 
-        return commonFormatting( date, resourceBundle.getString( "format.time" ) );
+        return commonFormatting( date, FORMAT_TIME );
     }
 
     public String formatDateTime( Date date )
@@ -165,7 +169,7 @@ public class I18nFormat
             return null;
         }
 
-        return commonFormatting( date, resourceBundle.getString( "format.datetime" ) );
+        return commonFormatting( date, FORMAT_DATETIME );
     }
 
     /**

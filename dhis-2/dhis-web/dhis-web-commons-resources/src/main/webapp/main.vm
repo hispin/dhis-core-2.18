@@ -15,7 +15,7 @@
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
     <script type="text/javascript">
-		var dateFormat = '$encoder.jsEscape($i18n.getString( 'format.date.label.jquery' ) , "'")';
+		var dateFormat = 'yy-mm-dd';
 	</script>
 
     <script type="text/javascript" src="../dhis-web-commons/javascripts/jQuery/jquery.min.js"></script>
