@@ -1,9 +1,0 @@
-<div>
-	#parse( "dhis-web-caseentry/htmlGrid.vm" )
-</div>
-
-<div class="paging-container">
-	#parse( "/dhis-web-commons/paging/paging.vm" )
-</div>
-
-<div id='viewRecordsDiv'></div>

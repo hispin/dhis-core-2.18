@@ -30,7 +30,6 @@ import java.util.Calendar;
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 
@@ -186,84 +185,6 @@ public class DefaultProgramStageInstanceService
         return programStageInstanceStore.get( patient, completed );
     }
 
-    public List<ProgramStageInstance> getProgramStageInstances( ProgramInstance programInstance, Date startDate,
-        Date endDate, int min, int max )
-    {
-        return programStageInstanceStore.get( programInstance, startDate, endDate, min, max );
-    }
-
-    public int countProgramStageInstances( ProgramInstance programInstance, Date startDate, Date endDate )
-    {
-        return programStageInstanceStore.count( programInstance, startDate, endDate );
-    }
-
-    public Grid getSingleEventReport( ProgramInstance programInstance, Date startDate, Date endDate, int min, int max,
-        I18nFormat format, I18n i18n )
-    {
-        List<ProgramStageInstance> programStageInstances = getProgramStageInstances( programInstance, startDate,
-            endDate, min, max );
-
-        ProgramStage programStage = programInstance.getProgram().getProgramStages().iterator().next();
-
-        Collection<ProgramStageDataElement> psDataElements = programStage.getProgramStageDataElements();
-
-        Collection<DataElement> dataElements = new HashSet<DataElement>();
-        for ( ProgramStageDataElement psDataElement : psDataElements )
-        {
-            if ( psDataElement.getShowOnReport() )
-            {
-                dataElements.add( psDataElement.getDataElement() );
-            }
-        }
-
-        // ---------------------------------------------------------------------
-        // Create a grid
-        // ---------------------------------------------------------------------
-
-        Grid grid = new ListGrid().setTitle( programInstance.getProgram().getName() );
-        grid.setSubtitle( i18n.getString( "from" ) + " " + format.formatDate( startDate ) + " " + i18n.getString( "to" )
-            + " " + format.formatDate( endDate ) );
-
-        // ---------------------------------------------------------------------
-        // Headers
-        // ---------------------------------------------------------------------
-
-        for ( DataElement dataElement : dataElements )
-        {
-            grid.addHeader( new GridHeader( dataElement.getName(), false, false ) );
-        }
-
-        grid.addHeader( new GridHeader( i18n.getString( "operations" ), false, false ) );
-
-        // ---------------------------------------------------------------------
-        // Values
-        // ---------------------------------------------------------------------
-
-        for ( ProgramStageInstance programStageInstance : programStageInstances )
-        {
-            grid.addRow();
-
-            for ( DataElement dataElement : dataElements )
-            {
-                PatientDataValue patientDataValue = patientDataValueService.getPatientDataValue( programStageInstance,
-                    dataElement );
-
-                if ( patientDataValue != null )
-                {
-                    grid.addValue( patientDataValue.getValue() );
-                }
-                else
-                {
-                    grid.addValue( "" );
-                }
-            }
-
-            grid.addValue( programStageInstance.getId() );
-        }
-
-        return grid;
-    }
-
     public List<ProgramStageInstance> searchProgramStageInstances( ProgramStage programStage,
         Map<Integer, String> searchingKeys, OrganisationUnit orgunit, Date startDate, Date endDate, int min, int max )
     {
@@ -333,10 +254,6 @@ public class DefaultProgramStageInstanceService
                 grid.addHeader( new GridHeader( dataElement.getName(), false, false ) );
             }
 
-            grid.addHeader( new GridHeader( i18n.getString( "operations" ), true, false ) );
-
-            grid.addHeader( new GridHeader( i18n.getString( "status" ), true, false ) );
-
             // ---------------------------------------------------------------------
             // Values
             // ---------------------------------------------------------------------
@@ -366,10 +283,6 @@ public class DefaultProgramStageInstanceService
                         grid.addValue( "" );
                     }
                 }
-
-                grid.addValue( programStageInstance.getId() );
-
-                grid.addValue( programStageInstance.isCompleted() );
             }
         }
 

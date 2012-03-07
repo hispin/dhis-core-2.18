@@ -7,7 +7,6 @@
 	#introListImgItem( "multipledataEntrySelect.action" "multiple_name_based_data_entry" "dataentry" )
 	#introListImgItem( "anonymousRegistration.action" "anonymous_events" "dataentry" )
     #introListImgItem( "reportSelect.action" "program_summary" "summaryreport" )
-    #introListImgItem( "showSingleEventReportForm.action" "anonymous_event_reports" "summaryreport" )
 	#introListImgItem( "tabularReportSelect.action" "tabular_report" "summaryreport" )
 	#introListImgItem( "visitplan.action" "visit_plan" "visitplan" )
     #introListImgItem( "caseAggregationForm.action" "case_aggregation" "caseaggregation" )

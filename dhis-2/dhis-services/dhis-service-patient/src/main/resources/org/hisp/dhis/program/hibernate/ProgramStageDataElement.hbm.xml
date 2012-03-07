@@ -16,8 +16,6 @@
     <property name="compulsory" column="compulsory" not-null="true" />
 	  
 	<property name="sortOrder" column="sort_order" /> 
-	
-	<property name="showOnReport" />
 
   </class>
 </hibernate-mapping>
