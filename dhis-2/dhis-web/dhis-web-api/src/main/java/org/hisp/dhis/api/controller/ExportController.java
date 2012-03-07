@@ -28,6 +28,7 @@ package org.hisp.dhis.api.controller;
  */
 
 import org.hisp.dhis.api.utils.ContextUtils;
+import org.hisp.dhis.api.view.JacksonUtils;
 import org.hisp.dhis.api.view.Jaxb2Utils;
 import org.hisp.dhis.api.webdomain.DXF2;
 import org.hisp.dhis.dataelement.*;
@@ -59,7 +60,6 @@ import java.util.zip.ZipOutputStream;
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
 @Controller
-// @RequestMapping( value = ExportController.RESOURCE_PATH )
 public class ExportController
 {
     public static final String RESOURCE_PATH = "/export";
@@ -85,7 +85,7 @@ public class ExportController
     @Autowired
     private ValidationRuleService validationRuleService;
 
-    @RequestMapping( value = "/export", method = RequestMethod.GET )
+    @RequestMapping( value = ExportController.RESOURCE_PATH, method = RequestMethod.GET )
     @PreAuthorize( "hasRole('ALL') or hasRole('F_METADATA_EXPORT')" )
     public String export( Model model )
     {
@@ -118,12 +118,50 @@ public class ExportController
         return "export";
     }
 
-    @RequestMapping( value = "/export.zip", method = RequestMethod.GET )
+    @RequestMapping( value = ExportController.RESOURCE_PATH + ".zip", method = RequestMethod.GET )
     @PreAuthorize( "hasRole('ALL') or hasRole('F_METADATA_EXPORT')" )
-    public void exportZip( HttpServletResponse response ) throws IOException, JAXBException
+    public void exportZippedXML( HttpServletResponse response ) throws IOException, JAXBException
     {
-        System.err.println( "EXPORT ZIP!" );
+        DXF2 dxf2 = getExportObject();
 
+        response.setContentType( ContextUtils.CONTENT_TYPE_ZIP );
+        response.addHeader( "Content-Disposition", "attachment; filename=\"export.xml.zip\"" );
+        response.addHeader( "Content-Transfer-Encoding", "binary" );
+
+        ZipOutputStream zip = new ZipOutputStream( response.getOutputStream() );
+        zip.putNextEntry( new ZipEntry( "export.xml" ) );
+
+        Jaxb2Utils.marshal( dxf2, zip );
+
+        zip.closeEntry();
+        zip.close();
+    }
+
+    @RequestMapping( value = ExportController.RESOURCE_PATH + ".zip", method = RequestMethod.GET, headers = {"Accept=application/json"} )
+    @PreAuthorize( "hasRole('ALL') or hasRole('F_METADATA_EXPORT')" )
+    public void exportZippedJSON( HttpServletResponse response ) throws IOException, JAXBException
+    {
+        DXF2 dxf2 = getExportObject();
+
+        response.setContentType( ContextUtils.CONTENT_TYPE_ZIP );
+        response.addHeader( "Content-Disposition", "attachment; filename=\"export.json.zip\"" );
+        response.addHeader( "Content-Transfer-Encoding", "binary" );
+
+        ZipOutputStream zip = new ZipOutputStream( response.getOutputStream() );
+        zip.putNextEntry( new ZipEntry( "export.xml" ) );
+
+        JacksonUtils.writeObject( dxf2, zip );
+
+        zip.closeEntry();
+        zip.close();
+    }
+
+    //-------------------------------------------------------------------------------------------------------
+    // Helpers
+    //-------------------------------------------------------------------------------------------------------
+
+    private DXF2 getExportObject()
+    {
         DXF2 dxf2 = new DXF2();
 
         dxf2.setDataElements( new ArrayList<DataElement>( dataElementService.getAllDataElements() ) );
@@ -148,16 +186,6 @@ public class ExportController
         dxf2.setValidationRules( new ArrayList<ValidationRule>( validationRuleService.getAllValidationRules() ) );
         dxf2.setValidationRuleGroups( new ArrayList<ValidationRuleGroup>( validationRuleService.getAllValidationRuleGroups() ) );
 
-        response.setContentType( ContextUtils.CONTENT_TYPE_ZIP );
-        response.addHeader( "Content-Disposition", "attachment; filename=\"export.zip\"" );
-        response.addHeader( "Content-Transfer-Encoding", "binary" );
-
-        ZipOutputStream zip = new ZipOutputStream( response.getOutputStream() );
-        zip.putNextEntry( new ZipEntry( "export.xml" ) );
-
-        Jaxb2Utils.marshal( dxf2, zip );
-
-        zip.closeEntry();
-        zip.close();
+        return dxf2;
     }
 }
