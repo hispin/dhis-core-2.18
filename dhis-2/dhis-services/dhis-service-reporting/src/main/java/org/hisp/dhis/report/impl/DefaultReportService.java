@@ -145,7 +145,7 @@ public class DefaultReportService
 
                 if ( report.isUsingOrganisationUnitGroupSets() )
                 {
-                    params.putAll( reportTable.getOrganisationUnitGroupMap( organisationUnitGroupService.getAllOrganisationUnitGroupSets() ) );
+                    params.putAll( reportTable.getOrganisationUnitGroupMap( organisationUnitGroupService.getCompulsoryOrganisationUnitGroupSets() ) );
                 }
 
                 print = JasperFillManager.fillReport( jasperReport, params, grid );
@@ -168,7 +168,7 @@ public class DefaultReportService
             {
                 JRExportUtils.export( type, out, print );
             }
-        }
+        } 
         catch ( Exception ex )
         {
             throw new RuntimeException( "Failed to render report", ex );
