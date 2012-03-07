@@ -12,7 +12,6 @@
   filter: alpha(opacity=85);
   opacity: 0.85;
   border-radius: 3px;
-  -moz-border-radius: 3px; /* Firefox */
 }
 
 .currentRow

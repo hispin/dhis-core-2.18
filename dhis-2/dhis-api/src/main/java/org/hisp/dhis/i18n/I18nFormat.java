@@ -175,7 +175,6 @@ public class I18nFormat
     /**
      * Formats a period. Returns null if value is null. Returns INVALID_DATE if formatting string is invalid.
      *
-     *
      * @param period the value to format.
      */
     public String formatPeriod( Period period )

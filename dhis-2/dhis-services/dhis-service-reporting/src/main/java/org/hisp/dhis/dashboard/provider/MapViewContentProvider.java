@@ -37,9 +37,6 @@ import org.hisp.dhis.dashboard.DashboardContent;
 import org.hisp.dhis.dashboard.DashboardService;
 import org.hisp.dhis.mapping.MapView;
 import org.hisp.dhis.mapping.comparator.MapViewNameComparator;
-import org.hisp.dhis.setting.SystemSettingManager;
-import org.hisp.dhis.system.filter.MapViewFixedDateTypeFilter;
-import org.hisp.dhis.system.util.FilterUtils;
 import org.hisp.dhis.user.CurrentUserService;
 import org.hisp.dhis.user.User;
 
