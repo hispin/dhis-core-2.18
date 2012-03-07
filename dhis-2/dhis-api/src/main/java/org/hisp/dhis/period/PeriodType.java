@@ -235,9 +235,9 @@ public abstract class PeriodType
      */
     public static final void clearTimeOfDay( Calendar calendar )
     {
-        calendar.clear( Calendar.MILLISECOND );
-        calendar.clear( Calendar.SECOND );
-        calendar.clear( Calendar.MINUTE );
+        calendar.set( Calendar.MILLISECOND, 0 );
+        calendar.set( Calendar.SECOND, 0 );
+        calendar.set( Calendar.MINUTE, 0 );
         calendar.set( Calendar.HOUR_OF_DAY, 0 );
     }
 
