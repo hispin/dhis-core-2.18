@@ -405,9 +405,6 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
 		<property name="name" value="PatientTableAlteror" />
 		<property name="runlevel" value="4" />
 		<property name="skipInTests" value="true" />
-		<property name="categoryService" ref="org.hisp.dhis.dataelement.DataElementCategoryService" />
-		<property name="aggregationConditionService" ref="org.hisp.dhis.caseaggregation.CaseAggregationConditionService" />
-		<property name="programValidationService" ref="org.hisp.dhis.program.ProgramValidationService" />
 	</bean>
 	
 	<bean id="org.hisp.dhis.patient.startup.ProgramAttributePopulator" class="org.hisp.dhis.patient.startup.ProgramAttributePopulator">
