@@ -27,10 +27,6 @@ package org.hisp.dhis.security.vote;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.security.access.AccessDecisionManager;
@@ -39,13 +35,17 @@ import org.springframework.security.access.ConfigAttribute;
 import org.springframework.security.authentication.InsufficientAuthenticationException;
 import org.springframework.security.core.Authentication;
 
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
+
 /**
  * AccessDecisionManager which delegates to other AccessDecisionManagers in a
  * logical or fashion. Delegation is stopped at the first positive answer from
  * the delegates, where the order of execution is defined by the list of
  * AccessDecisionManagers. So if the first AccessDecisionManager grants access
- * for a specific target, no other AccessDecisionManager is questioned. 
- * 
+ * for a specific target, no other AccessDecisionManager is questioned.
+ *
  * @author Torgeir Lorange Ostby
  * @version $Id: LogicalOrAccessDecisionManager.java 6335 2008-11-20 11:11:26Z larshelg $
  */
@@ -74,21 +74,24 @@ public class LogicalOrAccessDecisionManager
 
         for ( AccessDecisionManager accessDecisionManager : accessDecisionManagers )
         {
-            try
+            // we can't assume that all decision managers can support the same type, so we need to check for
+            // every request.
+            if ( accessDecisionManager.supports( object.getClass() ) )
             {
-                accessDecisionManager.decide( authentication, object, configAttributes );
+                try
+                {
+                    accessDecisionManager.decide( authentication, object, configAttributes );
 
-                LOG.debug( "ACCESS GRANTED [" + object.toString() + "]" );
+                    LOG.debug( "ACCESS GRANTED [" + object.toString() + "]" );
 
-                return;
-            }
-            catch ( AccessDeniedException e )
-            {
-                ade = e;
-            }
-            catch ( InsufficientAuthenticationException e )
-            {
-                iae = e;
+                    return;
+                } catch ( AccessDeniedException e )
+                {
+                    ade = e;
+                } catch ( InsufficientAuthenticationException e )
+                {
+                    iae = e;
+                }
             }
         }
 
