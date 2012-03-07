@@ -126,7 +126,6 @@
       <result name="csv" type="gridCsvResult" />
       <result name="xls" type="gridXlsResult" />
       <result name="pdf" type="gridPdfResult" />
-      <result name="error" type="velocity-json">/dhis-web-commons/ajax/jsonResponseError.vm</result>
     </action>
 
     <!-- Organisation unit merge -->
