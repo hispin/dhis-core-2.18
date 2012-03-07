@@ -86,13 +86,7 @@ public interface ProgramStageInstanceService
     List<ProgramStageInstance> get( OrganisationUnit unit, Date after, Date before, Boolean completed );
 
     List<ProgramStageInstance> getProgramStageInstances( Patient patient, Boolean completed );
-    
-    List<ProgramStageInstance> getProgramStageInstances( ProgramInstance programInstance, Date startDate, Date endDate , int min, int max );
-    
-    int countProgramStageInstances( ProgramInstance programInstance, Date startDate, Date endDate );
-    
-    Grid getSingleEventReport( ProgramInstance programInstance, Date startDate, Date endDate, int min, int max, I18nFormat format, I18n i18n );
-    
+            
     List<ProgramStageInstance> searchProgramStageInstances( ProgramStage programStage, Map<Integer,String> searchingKeys, OrganisationUnit orgunit, Date startDate, Date endDate, int min, int max );
 
     Grid getTabularReport( ProgramStage programStage, List<DataElement> dataElements, Map<Integer,String> searchingKeys, OrganisationUnit orgunit, Date startDate, Date endDate, int min, int max, I18nFormat format, I18n i18n );

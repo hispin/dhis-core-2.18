@@ -86,7 +86,6 @@ tr.selected{
 			<th>$i18n.getString( "selected_data_elements" )
 				<select id="selectedDataElementsValidator" name='selectedDataElementsValidator' multiple="multiple" class="{validate:{required:true}}" style="display:none"> </select>
 				<select id="compulsories" name='compulsories' multiple="multiple" style="display:none"></select>
-				<select id="showOnReport" name='showOnReport' multiple="multiple" style="display:none"></select>				
 			</th>
 		</tr>
     </thead>
@@ -108,19 +107,13 @@ tr.selected{
 						<tr>
 							<th>$i18n.getString( "dataelement" )</th>
 							<th width="20px">$i18n.getString( "compulsory" )</th>
-							#if( $programStage.program.anonymous == 'true' )
-							<th width="120px">$i18n.getString( "shown_on_reports" )</th>
-							#end
 						</tr>
 					</thead>
 					<tbody id="selectedList">
 						#foreach ( $programStageDataElement in $programStageDataElements )
-							 <tr ondblclick="unSelectDataElement( this )" id="$programStageDataElement.dataElement.id">
+							<tr ondblclick="unSelectDataElement( this )" id="$programStageDataElement.dataElement.id">
 								<td onclick="select(this)">$encoder.htmlEncode( $programStageDataElement.dataElement.name )</td>
 								<td align="center"><input type="checkbox" name="compulsory" value="$programStageDataElement.dataElement.id" #if($programStageDataElement.compulsory == true ) checked #end /></td>
-								#if( $programStage.program.anonymous == 'true' )
-								<td align="center"><input type="checkbox" name="isShow" value="$programStageDataElement.dataElement.id" #if($programStageDataElement.showOnReport == true ) checked #end /></td>
-								#end
 							</tr>
 						#end
 					</tbody>

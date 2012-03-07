@@ -157,6 +157,8 @@ public class TableAlteror
         executeSql( "ALTER TABLE relationshiptype RENAME description TO name" );
 
         updateProgramStageInstanceOrgunit();
+        
+        executeSql("ALTER TABLE programstage_dataelements DROP COLUMN showOnReport"); 
     }
 
     // -------------------------------------------------------------------------

@@ -69,10 +69,6 @@ public interface ProgramStageInstanceStore
 
     List<ProgramStageInstance> get( Patient patient, Boolean completed);
     
-    List<ProgramStageInstance> get( ProgramInstance programInstance, Date startDate, Date endDate , int min, int max );
-
-    int count( ProgramInstance programInstance, Date startDate, Date endDate );
-    
     List<ProgramStageInstance> get( ProgramStage programStage, OrganisationUnit orgunit, Date startDate, Date endDate, int min, int max );
     
     List<ProgramStageInstance> get( ProgramStage programStage, Map<Integer,String> searchingKeys, OrganisationUnit orgunit, Date startDate, Date endDate, int min, int max );
