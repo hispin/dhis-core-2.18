@@ -33,6 +33,8 @@ import java.util.List;
 
 import org.hisp.dhis.i18n.I18nFormat;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
+import org.hisp.dhis.organisationunit.OrganisationUnitGroupService;
+import org.hisp.dhis.organisationunit.OrganisationUnitGroupSet;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodService;
@@ -56,6 +58,13 @@ public class InitializeAction
     public void setOrganisationUnitService( OrganisationUnitService organisationUnitService )
     {
         this.organisationUnitService = organisationUnitService;
+    }
+    
+    private OrganisationUnitGroupService organisationUnitGroupService;
+
+    public void setOrganisationUnitGroupService( OrganisationUnitGroupService organisationUnitGroupService )
+    {
+        this.organisationUnitGroupService = organisationUnitGroupService;
     }
     
     private PeriodService periodService;
@@ -83,6 +92,13 @@ public class InitializeAction
         return rootNode;
     }
     
+    private Collection<OrganisationUnitGroupSet> organisationUnitGroupSets;
+    
+    public Collection<OrganisationUnitGroupSet> getOrganisationUnitGroupSets()
+    {
+        return organisationUnitGroupSets;
+    }
+
     private List<Period> lastMonth;
     
     public List<Period> getLastMonth()
@@ -157,6 +173,8 @@ public class InitializeAction
             .getOrganisationUnitsAtLevel( 1 ) );
 
         rootNode = rootUnits.size() > 0 ? rootUnits.iterator().next() : new OrganisationUnit();
+        
+        organisationUnitGroupSets = organisationUnitGroupService.getAllOrganisationUnitGroupSets();
         
         RelativePeriods rp = new RelativePeriods();
         

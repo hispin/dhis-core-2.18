@@ -130,13 +130,13 @@ public class GetAggregatedValuesAction
         return indicatorValues;
     }
 
-    private Collection<AggregatedDataValue> dataValues = new HashSet<AggregatedDataValue>();
-
-    public Collection<AggregatedDataValue> getDataValues()
-    {
-        return dataValues;
-    }
+    private Collection<AggregatedDataValue> dataElementValues = new HashSet<AggregatedDataValue>();
     
+    public Collection<AggregatedDataValue> getDataElementValues()
+    {
+        return dataElementValues;
+    }
+
     private Collection<DataSetCompletenessResult> dataSetValues = new HashSet<DataSetCompletenessResult>();
 
     public Collection<DataSetCompletenessResult> getDataSetValues()
@@ -166,17 +166,17 @@ public class GetAggregatedValuesAction
                 return SUCCESS;
             }
             
-            Collection<Integer> groupSetIds = ConversionUtils.getIdentifiers( OrganisationUnitGroup.class, groupSet.getOrganisationUnitGroups() );
+            Collection<Integer> groupIds = ConversionUtils.getIdentifiers( OrganisationUnitGroup.class, groupSet.getOrganisationUnitGroups() );
             
             if ( indicatorIds != null )
             {
                 indicatorValues = aggregatedOrgUnitDataValueService.getAggregatedIndicatorValues( indicatorIds, 
-                    periodIds, organisationUnitId, groupSetIds );
+                    periodIds, organisationUnitId, groupIds );
             }
             
             if ( dataElementIds != null )
             {
-                dataValues = aggregatedOrgUnitDataValueService.getAggregatedDataValueTotals( dataElementIds, periodIds, organisationUnitId, groupSetIds );                
+                dataElementValues = aggregatedOrgUnitDataValueService.getAggregatedDataValueTotals( dataElementIds, periodIds, organisationUnitId, groupIds );                
             }
             
             if ( dataSetIds != null )
@@ -198,7 +198,7 @@ public class GetAggregatedValuesAction
             
             if ( dataElementIds != null )
             {
-                dataValues = aggregatedDataValueService.getAggregatedDataValueTotals( dataElementIds, periodIds, organisationUnitIds );                
+                dataElementValues = aggregatedDataValueService.getAggregatedDataValueTotals( dataElementIds, periodIds, organisationUnitIds );                
             }
             
             if ( dataSetIds != null )
