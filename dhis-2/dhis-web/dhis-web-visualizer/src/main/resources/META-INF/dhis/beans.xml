@@ -16,6 +16,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
         scope="prototype">
         <property name="organisationUnitService" ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
         <property name="periodService" ref="org.hisp.dhis.period.PeriodService" />
+        <property name="organisationUnitGroupService" ref="org.hisp.dhis.organisationunit.OrganisationUnitGroupService" />
     </bean>
     
     <!-- OrganisationUnit -->
@@ -34,6 +35,10 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
         scope="prototype">
         <property name="aggregatedDataValueService"
             ref="org.hisp.dhis.aggregation.AggregatedDataValueService" />
+        <property name="aggregatedOrgUnitDataValueService"
+            ref="org.hisp.dhis.aggregation.AggregatedOrgUnitDataValueService" />
+        <property name="organisationUnitGroupService"
+        	ref="org.hisp.dhis.organisationunit.OrganisationUnitGroupService" />
     </bean>
 
     <bean id="org.hisp.dhis.visualizer.action.GetAggregatedValuesPluginAction"
