@@ -34,7 +34,7 @@
 	#end
 	
 	<script type="text/javascript">
-		var dateFormat = '$encoder.jsEscape($i18n.getString( 'format.date.label.jquery' ) , "'")';
+		var dateFormat = 'yy-mm-dd';
 	</script>  
   </head>
   

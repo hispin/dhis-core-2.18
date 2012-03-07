@@ -125,12 +125,12 @@ div#pivotMenu
 </div>
 
 <div class="inputSection">
-<label>$i18n.getString( "start_date" ) ($i18n.getString( "format.date.label" ))</label><br>
+<label>$i18n.getString( "start_date" )</label><br>
 <input type="text" id="startDate" style="width:240px">
 </div>
 
 <div class="inputSection">
-<label>$i18n.getString( "end_date" ) ($i18n.getString( "format.date.label" ))</label><br>
+<label>$i18n.getString( "end_date" )</label><br>
 <input type="text" id="endDate" style="width:240px">
 </div>
 

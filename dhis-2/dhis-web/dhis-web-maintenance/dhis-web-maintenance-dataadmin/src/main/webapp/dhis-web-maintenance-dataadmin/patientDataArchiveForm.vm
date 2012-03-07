@@ -44,11 +44,11 @@
 <div id="contentDiv" style="display:none">
 <table width="100%">
     <tr>
-        <td style="width:170px">$i18n.getString( "start_date" ) ($i18n.getString( "format.date" ))</td>
+        <td style="width:170px">$i18n.getString( "start_date" )</td>
         <td><input type="text" id="startDate"/></td>
     </tr>
     <tr>
-        <td>$i18n.getString( "end_date" ) ($i18n.getString( "format.date" ))</td>
+        <td>$i18n.getString( "end_date" )</td>
         <td><input type="text" id="endDate"/></td>
     </tr>
     <tr>

@@ -92,9 +92,9 @@
 	<!-- Timespan -->
 	
 	<tr>
-		<th>$i18n.getString( "start_date" ) ($i18n.getString( "format.date.label" ))</th>
+		<th>$i18n.getString( "start_date" )</th>
 		<td></td>
-		<th>$i18n.getString( "end_date" ) ($i18n.getString( "format.date.label" ))</th>
+		<th>$i18n.getString( "end_date" )</th>
 	</tr>	
     <tr>
   		<td><input type="text" id="startDate" name="startDate" value="$!startDate" style="width:230px"></td>

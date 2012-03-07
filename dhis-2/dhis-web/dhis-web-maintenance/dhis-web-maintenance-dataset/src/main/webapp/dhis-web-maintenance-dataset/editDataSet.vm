@@ -68,7 +68,7 @@
         <td><input type="text" id="shortName" name="shortName" style="width:20em" value="$!encoder.htmlEncode( $dataSet.shortName )"/></td>
       </tr>
       <tr>
-        <td><label>$i18n.getString( "description" ) <em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
+        <td><label>$i18n.getString( "description" )</label></td>
         <td><input type="text" id="description" name="description" style="width:20em" value="$!encoder.htmlEncode( $dataSet.description )"/></td>
       </tr>
       <tr>

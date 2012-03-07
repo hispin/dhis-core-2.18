@@ -48,7 +48,7 @@
 		<td><input type="text" id="shortName" name="shortName" value="$encoder.htmlEncode( $organisationUnit.shortName )" style="width:20em"/></td>
 	</tr>
 	<tr>
-		<td><label for="description">$i18n.getString( "description" ) <em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
+		<td><label for="description">$i18n.getString( "description" )</label></td>
 		<td><input type="text" id="description" name="description" value="$encoder.htmlEncode( $organisationUnit.description )" style="width:20em"/></td>
 	</tr>
 	<tr>
@@ -56,13 +56,13 @@
 		<td><input type="text" id="code" name="code" value="$!encoder.htmlEncode( $organisationUnit.code )" style="width:20em"/></td>
 	</tr>
 	<tr>
-		<td><label for="openingDate">$i18n.getString( "opening_date" ) ($i18n.getString( "format.date.label" )) <em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
+		<td><label for="openingDate">$i18n.getString( "opening_date" ) <em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
 		<td><input type="text" id="openingDate" name="openingDate" value="$!format.formatDate( $organisationUnit.openingDate )" style="width:20em"/></td>
 		<td></td>
 	</tr>
 	#if( $numberOfChildren == 0 )
 	<tr>
-		<td><label for="closedDate">$i18n.getString( "closed_date" ) ($i18n.getString( "format.date.label" ))</label></td>
+		<td><label for="closedDate">$i18n.getString( "closed_date" )</label></td>
 		<td><input type="text" id="closedDate" name="closedDate" value="$!format.formatDate( $organisationUnit.closedDate )" style="width:20em"/></td>
 	</tr>
 	#end
