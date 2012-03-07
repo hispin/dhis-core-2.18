@@ -49,7 +49,7 @@
 	</tr>
 	<tr>
 		<td><label for="description">$i18n.getString( "description" )</label></td>
-		<td><input type="text" id="description" name="description" value="$encoder.htmlEncode( $organisationUnit.description )" style="width:20em"/></td>
+		<td><input type="text" id="description" name="description" value="$!encoder.htmlEncode( $organisationUnit.description )" style="width:20em"/></td>
 	</tr>
 	<tr>
 		<td><label for="code">$i18n.getString( "code" )</label></td>

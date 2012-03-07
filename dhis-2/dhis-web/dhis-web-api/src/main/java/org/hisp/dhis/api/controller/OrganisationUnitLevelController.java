@@ -30,7 +30,6 @@ package org.hisp.dhis.api.controller;
 import org.hisp.dhis.api.utils.IdentifiableObjectParams;
 import org.hisp.dhis.api.utils.ObjectPersister;
 import org.hisp.dhis.api.utils.WebLinkPopulator;
-import org.hisp.dhis.api.view.Jaxb2Utils;
 import org.hisp.dhis.organisationunit.OrganisationUnitLevel;
 import org.hisp.dhis.organisationunit.OrganisationUnitLevels;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
@@ -46,7 +45,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import java.io.InputStream;
 import java.util.ArrayList;
 
