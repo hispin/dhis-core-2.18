@@ -170,8 +170,7 @@ public class GetAggregatedValuesAction
             
             if ( indicatorIds != null )
             {
-                indicatorValues = aggregatedOrgUnitDataValueService.getAggregatedIndicatorValues( indicatorIds, 
-                    periodIds, organisationUnitId, groupIds );
+                indicatorValues = aggregatedOrgUnitDataValueService.getAggregatedIndicatorValues( indicatorIds, periodIds, organisationUnitId, groupIds );
             }
             
             if ( dataElementIds != null )
