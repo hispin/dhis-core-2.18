@@ -28,9 +28,14 @@ package org.hisp.dhis.program;
 
 import java.util.Date;
 import java.util.Collection;
+import java.util.List;
 
+import org.hisp.dhis.common.Grid;
+import org.hisp.dhis.i18n.I18n;
+import org.hisp.dhis.i18n.I18nFormat;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.patient.Patient;
+
 
 /**
  * @author Abyot Asalefew
@@ -80,4 +85,6 @@ public interface ProgramInstanceService
     int countProgramInstances( Program program, OrganisationUnit organisationUnit );
     
     int countProgramInstances( Program program, OrganisationUnit organisationUnit, Date startDate, Date endDate );
+    
+    List<Grid> getProgramInstanceReport( Patient patient, I18n i18n, I18nFormat format );
 }

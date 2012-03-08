@@ -1,4 +1,3 @@
-
 <table>
 	
 	<tr>
@@ -37,7 +36,7 @@
 		  #if($mapPatientOrgunit.size()!=0)
           <col/>
 		  #end
-          <col width="200"/>    
+          <col width="220"/>    
 		  
 		  <thead>
 			<tr>
@@ -98,6 +97,7 @@
 				  <a href="javascript:setFieldValue( 'isShowPatientList', false ); showRelationshipList('$patient.id')" title='$i18n.getString( "manage_relationship" )'><img src="../images/relationship.png" alt='$i18n.getString( "manage_relationship" )'></a>
 				  <a href="javascript:showAddRelationshipPatient( '$patient.id', true )" title='$i18n.getString( "add_dependent" )'><img src="../images/add.png" alt='$i18n.getString( "add_dependent" )'></a>
 				  <a href="javascript:removePatient( '$patient.id', '$encoder.jsEncode( $patient.getFullName() )' )" title='$i18n.getString( "remove" )'><img src="../images/delete.png" alt='$i18n.getString( "remove" )'></a>
+				  <a href="javascript:showPatientHistory( '$patient.id' )" title='$i18n.getString( "show_details" )'><img src="../images/edit_sections.png" alt='$i18n.getString( "show_details" )'></a>
 				  <a href="javascript:showPatientDetails( '$patient.id' )" title='$i18n.getString( "show_details" )'><img src="../images/information.png" alt='$i18n.getString( "show_details" )'></a>
 				</td>
 				
@@ -120,12 +120,14 @@
   </tr>
 </table>
 
-<div id="detailsInfo">
-</div>
+<div id="detailsInfo"></div>
+<div id="detailsHistory"></div>
+
 #end
 <script type="text/javascript">
 	jQuery(document).ready(function(){	
 		tableSorter( 'patientList' );
 	});
 	var i18n_patient_details = '$encoder.jsEscape( $i18n.getString( "patient_details" ) , "'" )';
+	var i18n_patient_history = '$encoder.jsEscape( $i18n.getString( "patient_history" ) , "'" )';
 </script>
