@@ -1610,27 +1610,27 @@ Ext.onReady( function() {
 			DV.cmp.favorite.baselinevalue.setValue(DV.c.baselinevalue);
 			DV.cmp.favorite.baselinelabel.xable();
 			DV.cmp.favorite.baselinelabel.setValue(DV.c.baselinelabel);
-
+			
 			DV.cmp.settings.series.setValue(DV.conf.finals.dimension[DV.c.dimension.series].value);
 			DV.util.combobox.filter.category();                        
 			DV.cmp.settings.category.setValue(DV.conf.finals.dimension[DV.c.dimension.category].value);
 			DV.util.combobox.filter.filter();                        
 			DV.cmp.settings.filter.setValue(DV.conf.finals.dimension[DV.c.dimension.filter].value);
-									
+			
 			DV.store.indicator.selected.removeAll();
 			if (DV.c.indicator.objects) {
 				DV.store.indicator.selected.add(DV.c.indicator.objects);
 				DV.util.store.addToStorage(DV.store.indicator.available, DV.c.indicator.objects);
 				DV.util.multiselect.filterAvailable(DV.cmp.dimension.indicator.available, DV.cmp.dimension.indicator.selected);
 			}
-									
+			
 			DV.store.dataelement.selected.removeAll();
 			if (DV.c.dataelement.objects) {
 				DV.store.dataelement.selected.add(DV.c.dataelement.objects);
 				DV.util.store.addToStorage(DV.store.dataelement.available, DV.c.dataelement.objects);
 				DV.util.multiselect.filterAvailable(DV.cmp.dimension.dataelement.available, DV.cmp.dimension.dataelement.selected);
 			}
-									
+												
 			DV.store.dataset.selected.removeAll();
 			if (DV.c.dataset.objects) {
 				DV.store.dataset.selected.add(DV.c.dataset.objects);
@@ -1639,6 +1639,8 @@ Ext.onReady( function() {
 			}
 			
 			DV.util.checkbox.setRelativePeriods(DV.c.period.rp);
+			
+			DV.cmp.dimension.organisationunit.treepanel.addToStorage(DV.c.organisationunit.objects);
 		},
         validation: {
 			dimensions: function() {
@@ -3060,6 +3062,11 @@ Ext.onReady( function() {
                                         multiSelect: true,
                                         isrendered: false,
                                         storage: {},
+                                        addToStorage: function(objects) {
+											for (var i = 0; i < objects.length; i++) {
+												this.storage[objects[i].id] = objects[i];
+											}
+										},
                                         selectRoot: function() {
                                             if (this.isrendered) {
                                                 if (!this.getSelectionModel().getSelection().length) {
@@ -3068,15 +3075,15 @@ Ext.onReady( function() {
                                             }
                                         },
                                         findNameById: function(id) {
-                                            var n = this.store.getNodeById(id) ? this.store.getNodeById(id).data.text : null;                                            
-                                            if (!n) {
+                                            var name = this.store.getNodeById(id) ? this.store.getNodeById(id).data.text : null;
+                                            if (!name) {
                                                 for (var k in this.storage) {
-                                                    if (k === id) {
-                                                        n = this.storage[k];
+                                                    if (k == id) {
+                                                        name = this.storage[k].name;
                                                     }
                                                 }
                                             }
-                                            return n;
+                                            return name;
                                         },
                                         store: Ext.create('Ext.data.TreeStore', {
                                             proxy: {
