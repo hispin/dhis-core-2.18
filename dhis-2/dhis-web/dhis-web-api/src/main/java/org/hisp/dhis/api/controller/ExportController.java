@@ -89,29 +89,7 @@ public class ExportController
     @PreAuthorize( "hasRole('ALL') or hasRole('F_METADATA_EXPORT')" )
     public String export( Model model )
     {
-        DXF2 dxf2 = new DXF2();
-
-        dxf2.setDataElements( new ArrayList<DataElement>( dataElementService.getAllDataElements() ) );
-        dxf2.setDataElementGroups( new ArrayList<DataElementGroup>( dataElementService.getAllDataElementGroups() ) );
-        dxf2.setDataElementGroupSets( new ArrayList<DataElementGroupSet>( dataElementService.getAllDataElementGroupSets() ) );
-        dxf2.setCategories( new ArrayList<DataElementCategory>( dataElementCategoryService.getAllDataElementCategories() ) );
-        dxf2.setCategoryCombos( new ArrayList<DataElementCategoryCombo>( dataElementCategoryService.getAllDataElementCategoryCombos() ) );
-        dxf2.setCategoryOptions( new ArrayList<DataElementCategoryOption>( dataElementCategoryService.getAllDataElementCategoryOptions() ) );
-        dxf2.setCategoryOptionCombos( new ArrayList<DataElementCategoryOptionCombo>( dataElementCategoryService.getAllDataElementCategoryOptionCombos() ) );
-
-        dxf2.setIndicators( new ArrayList<Indicator>( indicatorService.getAllIndicators() ) );
-        dxf2.setIndicatorGroups( new ArrayList<IndicatorGroup>( indicatorService.getAllIndicatorGroups() ) );
-        dxf2.setIndicatorGroupSets( new ArrayList<IndicatorGroupSet>( indicatorService.getAllIndicatorGroupSets() ) );
-
-        dxf2.setOrganisationUnits( new ArrayList<OrganisationUnit>( organisationUnitService.getAllOrganisationUnits() ) );
-        dxf2.setOrganisationUnitLevels( new ArrayList<OrganisationUnitLevel>( organisationUnitService.getOrganisationUnitLevels() ) );
-        dxf2.setOrganisationUnitGroups( new ArrayList<OrganisationUnitGroup>( organisationUnitGroupService.getAllOrganisationUnitGroups() ) );
-        dxf2.setOrganisationUnitGroupSets( new ArrayList<OrganisationUnitGroupSet>( organisationUnitGroupService.getAllOrganisationUnitGroupSets() ) );
-
-        dxf2.setDataSets( new ArrayList<DataSet>( dataSetService.getAllDataSets() ) );
-
-        dxf2.setValidationRules( new ArrayList<ValidationRule>( validationRuleService.getAllValidationRules() ) );
-        dxf2.setValidationRuleGroups( new ArrayList<ValidationRuleGroup>( validationRuleService.getAllValidationRuleGroups() ) );
+        DXF2 dxf2 = getExportObject();
 
         model.addAttribute( "model", dxf2 );
 
@@ -148,7 +126,7 @@ public class ExportController
         response.addHeader( "Content-Transfer-Encoding", "binary" );
 
         ZipOutputStream zip = new ZipOutputStream( response.getOutputStream() );
-        zip.putNextEntry( new ZipEntry( "export.xml" ) );
+        zip.putNextEntry( new ZipEntry( "export.json" ) );
 
         JacksonUtils.writeObject( dxf2, zip );
 
