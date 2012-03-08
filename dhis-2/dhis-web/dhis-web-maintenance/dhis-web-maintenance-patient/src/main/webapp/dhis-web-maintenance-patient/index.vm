@@ -17,6 +17,4 @@ jQuery(function() {
 	#introListImgItem( "programAttribute.action" "program_attribute" "program" )
     #introListImgItem( "caseAggregation.action" "beneficiary_aggregation_query_builder" "caseaggregationmapping" )
 	#introListImgItem( "validationCriteria.action" "validation_criteria" "validationcriteria" )
-	#introListImgItem( "configuration.action" "configuration" "systemsettings" )
-	#introListImgItem( "importPatientForm.action" "import_data" "excel" )
 </ul>
