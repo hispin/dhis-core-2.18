@@ -87,17 +87,13 @@
 		</td>
 		<td>
 			<select id="facilityLB" name="facilityLB" style="width: 30em">
-				<option value="random" selected>$i18n.getString( "selected" )</option>
+				<option value="children" selected="selected">$i18n.getString( "all_children" )</option>
 				<option value="immChildren" >$i18n.getString( "immediate_children" )</option>
-				<option value="children" >$i18n.getString( "all_child" )</option>
+				<option value="random">$i18n.getString( "selected" )</option>
 			</select>
 		</td>
 	</tr>
-	
-	<tr>
-		<td>&nbsp;</td>
-	</tr>
-    
+	    
 	<tr>
     	<td></td>
     	<td><input type="submit" id='generateBtn' name='generateBtn' #if($!programs) #else disabled #end value="$i18n.getString( 'generate' )" />

@@ -1,6 +1,6 @@
 table
 {
- margin-bottom:20px; 
+ margin-bottom:10px; 
  font-size: 13px; 
  line-height:18px;
 }
@@ -66,8 +66,7 @@ td.error {padding-left:1em}
 .togglePanel.close {height:25px;padding-left:25px;  background-image:  url(../images/close.gif) ; background-repeat: no-repeat; background-position: top left}
 
 .warnmessage {
-	color: red; 
-	font-style: italic;
+	color: red;
 }
 
 #facilityCol

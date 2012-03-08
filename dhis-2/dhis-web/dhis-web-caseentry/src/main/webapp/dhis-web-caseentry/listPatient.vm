@@ -61,7 +61,7 @@
 								
 				<td>
 					<a href="javascript:showSelectedDataRecoding('$patient.id');" title="$i18n.getString( 'data_entry' )"><img src="images/data_entry.png" alt="$i18n.getString( 'data_entry' )"></a>   
-					<a href="javascript:patientChartList( '$patient.id' )" title="$i18n.getString( 'data_entry' )"><img src="../images/add_to_dashboard.png" alt="$i18n.getString( 'view_patient_chart' )"></a> 
+					<a href="javascript:patientChartList( '$patient.id' )" title="$i18n.getString( 'view_patient_chart' )"><img src="../images/add_to_dashboard.png" alt="$i18n.getString( 'view_patient_chart' )"></a> 
 					<a href="javascript:showPatientHistory( '$patient.id' )" title='$i18n.getString( "show_details" )'><img src="../images/edit_sections.png" alt='$i18n.getString( "show_details" )'></a>
 					<a href="javascript:showPatientDetails( $patient.id )" title="$i18n.getString( 'show_details' )"><img src="../images/information.png" alt="$i18n.getString( 'show_details' )"></a>
                 </td>               				
