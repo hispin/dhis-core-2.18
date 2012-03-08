@@ -118,7 +118,7 @@ public class ExportController
         return "export";
     }
 
-    @RequestMapping( value = ExportController.RESOURCE_PATH + ".zip", method = RequestMethod.GET )
+    @RequestMapping( value = ExportController.RESOURCE_PATH + ".zip", method = RequestMethod.GET, headers = {"Accept=application/xml, text/*"} )
     @PreAuthorize( "hasRole('ALL') or hasRole('F_METADATA_EXPORT')" )
     public void exportZippedXML( HttpServletResponse response ) throws IOException, JAXBException
     {
