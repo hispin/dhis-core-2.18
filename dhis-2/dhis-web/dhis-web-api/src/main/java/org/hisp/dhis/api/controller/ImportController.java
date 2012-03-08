@@ -35,37 +35,83 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.xml.bind.JAXBException;
+import java.io.BufferedInputStream;
 import java.io.IOException;
-import java.io.InputStream;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipInputStream;
 
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
 @Controller
-@RequestMapping( value = ImportController.RESOURCE_PATH )
 public class ImportController
 {
     public static final String RESOURCE_PATH = "/import";
 
-    @RequestMapping( method = RequestMethod.POST, headers = {"Content-Type=application/xml, text/xml"} )
+    @RequestMapping( value = ImportController.RESOURCE_PATH, method = RequestMethod.POST, headers = {"Content-Type=application/xml, text/*"} )
     @PreAuthorize( "hasRole('ALL') or hasRole('F_METADATA_IMPORT')" )
-    public String importXML( HttpServletResponse response, InputStream input ) throws JAXBException
+    public void importXml( HttpServletResponse response, HttpServletRequest request ) throws JAXBException, IOException
     {
-        DXF2 dxf2 = Jaxb2Utils.unmarshal( DXF2.class, input );
-        System.err.println( dxf2.getDataSets().size() );
-
-        return "import";
+        DXF2 dxf2 = Jaxb2Utils.unmarshal( DXF2.class, request.getInputStream() );
+        print( dxf2 );
     }
 
-    @RequestMapping( method = RequestMethod.POST, headers = {"Content-Type=application/json"} )
+    @RequestMapping( value = ImportController.RESOURCE_PATH, method = RequestMethod.POST, headers = {"Content-Type=application/json"} )
     @PreAuthorize( "hasRole('ALL') or hasRole('F_METADATA_IMPORT')" )
-    public String importJSON( HttpServletResponse response, InputStream input ) throws IOException
+    public void importJson( HttpServletResponse response, HttpServletRequest request ) throws IOException
     {
-        DXF2 dxf2 = JacksonUtils.readValueAs( DXF2.class, input );
-        System.err.println( dxf2.getDataSets().size() );
+        DXF2 dxf2 = JacksonUtils.readValueAs( DXF2.class, request.getInputStream() );
+        print( dxf2 );
+    }
 
-        return "import";
+    @RequestMapping( value = ImportController.RESOURCE_PATH + ".zip", method = RequestMethod.POST, headers = {"Content-Type=application/xml, text/xml"} )
+    @PreAuthorize( "hasRole('ALL') or hasRole('F_METADATA_IMPORT')" )
+    public void importZippedXml( HttpServletResponse response, HttpServletRequest request ) throws JAXBException, IOException
+    {
+        ZipInputStream zip = new ZipInputStream( new BufferedInputStream( request.getInputStream() ) );
+        ZipEntry entry = zip.getNextEntry();
+
+        System.err.println( "(xml) Reading from file : " + entry.getName() );
+
+        DXF2 dxf2 = Jaxb2Utils.unmarshal( DXF2.class, zip );
+        print( dxf2 );
+    }
+
+    @RequestMapping( value = ImportController.RESOURCE_PATH + ".zip", method = RequestMethod.POST, headers = {"Content-Type=application/json"} )
+    @PreAuthorize( "hasRole('ALL') or hasRole('F_METADATA_IMPORT')" )
+    public void importZippedJson( HttpServletResponse response, HttpServletRequest request ) throws IOException
+    {
+        ZipInputStream zip = new ZipInputStream( request.getInputStream() );
+        ZipEntry entry = zip.getNextEntry();
+
+        System.err.println( "(json) Reading from file : " + entry.getName() );
+        DXF2 dxf2 = JacksonUtils.readValueAs( DXF2.class, zip );
+
+        print( dxf2 );
+    }
+
+    //-------------------------------------------------------------------------------------------------------
+    // Helpers
+    //-------------------------------------------------------------------------------------------------------
+
+    // just for debug..
+    private void print( DXF2 dxf2 )
+    {
+        System.err.println( "DataElements: " + dxf2.getDataElements().size() );
+        System.err.println( "DataElementGroups: " + dxf2.getDataElementGroups().size() );
+        System.err.println( "DataElementGroupSets: " + dxf2.getDataElementGroupSets().size() );
+
+        System.err.println( "DataSets: " + dxf2.getDataSets().size() );
+
+        System.err.println( "Indicators:" + dxf2.getIndicators().size() );
+        System.err.println( "IndicatorGroups:" + dxf2.getIndicatorGroups().size() );
+        System.err.println( "IndicatorGroupSets:" + dxf2.getIndicatorGroupSets().size() );
+
+        System.err.println( "OrganisationUnits: " + dxf2.getOrganisationUnits().size() );
+        System.err.println( "OrganisationUnitGroups: " + dxf2.getOrganisationUnitGroups().size() );
+        System.err.println( "OrganisationUnitGroupSets: " + dxf2.getOrganisationUnitGroupSets().size() );
     }
 }
