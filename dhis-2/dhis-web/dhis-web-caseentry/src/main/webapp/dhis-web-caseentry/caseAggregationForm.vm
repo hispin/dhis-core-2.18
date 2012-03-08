@@ -55,7 +55,7 @@
 					<select id="facilityLB" name="facilityLB" style="width: 30em">
 						<option value="random" selected>$i18n.getString( "selected" )</option>
 						<option value="immChildren" >$i18n.getString( "immediate_children" )</option>
-						<option value="children" >$i18n.getString( "child_tree" )</option>
+						<option value="children" >$i18n.getString( "all_children" )</option>
 					</select>
 				</td>
 			</tr>
