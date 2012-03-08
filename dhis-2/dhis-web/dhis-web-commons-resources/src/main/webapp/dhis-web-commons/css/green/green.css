@@ -424,7 +424,7 @@ div#menuDropDown3
 /* Intro                                                                      */
 /*----------------------------------------------------------------------------*/
 
-#introList
+.introList
 {
   display: none;
   list-style-type:none;
