@@ -349,18 +349,31 @@ public class DateUtils
     {
         return DateValidator.getInstance().isValid( dateString, DEFAULT_DATE_FORMAT, true );
     }
-
+    
     /**
      * Returns the number of seconds until the next day at the given hour.
+     * 
      * @param hour the hour.
      * @return number of seconds.
      */
     public static long getSecondsUntilTomorrow( int hour )
     {
+        Date date = getDateForTomorrow( hour );
+        return ( date.getTime() - new Date().getTime() ) / MS_PER_S;        
+    }
+    
+    /**
+     * Returns a date set to tomorrow at the given hour.
+     * 
+     * @param hour the hour. 
+     * @return a date.
+     */
+    public static Date getDateForTomorrow( int hour )
+    {
         Calendar cal = PeriodType.createCalendarInstance();
         cal.add( Calendar.DAY_OF_YEAR, 1 );
         cal.set( Calendar.HOUR_OF_DAY, hour );
-        return ( cal.getTimeInMillis() - new Date().getTime() ) / MS_PER_S;        
+        return cal.getTime();
     }
 
     /**
