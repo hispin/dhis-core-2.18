@@ -132,13 +132,6 @@ public class ValidatePatientAction
             return INPUT;
         }
 
-        if ( age == null && birthDate == null )
-        {
-            message = i18n.getString( "specfiy_birth_date_or_age" );
-
-            return INPUT;
-        }
-
         if ( dobType != null && (dobType == Patient.DOB_TYPE_VERIFIED || dobType == Patient.DOB_TYPE_DECLARED) )
         {
             birthDate = birthDate.trim();
