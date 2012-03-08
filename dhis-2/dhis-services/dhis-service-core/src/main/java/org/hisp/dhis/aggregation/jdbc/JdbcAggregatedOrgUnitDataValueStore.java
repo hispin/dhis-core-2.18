@@ -228,7 +228,7 @@ public class JdbcAggregatedOrgUnitDataValueStore
                 "AND periodid IN ( " + getCommaDelimitedString( periodIds ) + " ) " +
                 "AND organisationunitid = " + organisationUnitId + " " +
                 "AND organisationunitgroupid IN ( " + getCommaDelimitedString( organisationUnitGroupIds ) + " )";
-            
+            System.out.println( sql );
             final ResultSet resultSet = holder.getStatement().executeQuery( sql );
             
             return mapper.getCollection( resultSet, new AggregatedOrgUnitIndicatorValueRowMapper() );

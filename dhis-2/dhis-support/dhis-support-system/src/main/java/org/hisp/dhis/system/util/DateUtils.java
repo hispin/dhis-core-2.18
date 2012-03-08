@@ -36,6 +36,7 @@ import java.util.Date;
 
 import org.apache.commons.validator.DateValidator;
 import org.hisp.dhis.indicator.Indicator;
+import org.hisp.dhis.period.PeriodType;
 import org.joda.time.DateTime;
 import org.joda.time.Days;
 
@@ -48,6 +49,7 @@ public class DateUtils
     public static final double DAYS_IN_YEAR = 365.0;
 
     private static final long MS_PER_DAY = 86400000;
+    private static final long MS_PER_S = 1000;
 
     /**
      * Formats a Date to the Access date format.
@@ -346,6 +348,19 @@ public class DateUtils
     public static boolean dateIsValid( String dateString )
     {
         return DateValidator.getInstance().isValid( dateString, DEFAULT_DATE_FORMAT, true );
+    }
+
+    /**
+     * Returns the number of seconds until the next day at the given hour.
+     * @param hour the hour.
+     * @return number of seconds.
+     */
+    public static long getSecondsUntilTomorrow( int hour )
+    {
+        Calendar cal = PeriodType.createCalendarInstance();
+        cal.add( Calendar.DAY_OF_YEAR, 1 );
+        cal.set( Calendar.HOUR_OF_DAY, hour );
+        return ( cal.getTimeInMillis() - new Date().getTime() ) / MS_PER_S;        
     }
 
     /**
