@@ -112,6 +112,31 @@ function showPatientDetails( patientId )
 			modal:false,
 			overlay:{background:'#000000', opacity:0.1},
 			width: 450,
+			height: 300
+		});
+}
+
+function showPatientHistory( patientId )
+{
+	$('#detailsHistory').load("getPatientHistory.action", 
+		{
+			patientId:patientId
+		}
+		, function( ){
+			
+		}).dialog({
+			title: i18n_patient_history,
+			maximize: true, 
+			closable: true,
+			modal:false,
+			overlay:{background:'#000000', opacity:0.1},
+			width: 800,
 			height: 400
-		});;
+		});
+}
+
+function exportPatientHistory( patientId, type )
+{
+	var url = "getPatientHistory.action?patientId=" + patientId + "&type=" + type;
+	window.location.href = url;
 }

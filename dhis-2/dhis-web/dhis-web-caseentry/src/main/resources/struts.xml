@@ -99,6 +99,42 @@
 				/dhis-web-commons/ajax/jsonResponseSuccess.vm</result>
 		</action>
 
+		<action name="anonymousRegistration"
+			class="org.hisp.dhis.caseentry.action.caseentry.LoadAnonymousProgramsAction">
+			<interceptor-ref name="organisationUnitTreeStack" />
+			<result name="success" type="velocity">/main.vm</result>
+			<param name="page">/dhis-web-caseentry/anonymousRegistration.vm</param>
+			<param name="menu">/dhis-web-caseentry/dataEntryMenu.vm</param>
+			<param name="javascripts">../dhis-web-commons/ouwt/ouwt.js
+				,javascript/commons.js
+				,javascript/anonymousRegistration.js
+				,javascript/entry.js
+				,../dhis-web-commons/javascripts/date.js</param>
+			<param name="stylesheets">style/dataEntry.css,../dhis-web-caseentry/style/patient.css</param>
+		</action>
+		
+		<action name="createAnonymousEncounter"
+			class="org.hisp.dhis.caseentry.action.caseentry.CreateAnonymousEncounterAction">
+			<result name="success" type="velocity-json">
+				/dhis-web-commons/ajax/jsonResponseSuccess.vm</result>
+			<result name="input" type="velocity-json">
+				/dhis-web-commons/ajax/jsonResponseInput.vm</result>
+		</action>
+		
+		<action name="loadAnonymousPrograms"
+			class="org.hisp.dhis.caseentry.action.caseentry.LoadAnonymousProgramsAction">
+			<result name="success" type="velocity-json">
+				/dhis-web-caseentry/jsonProgramInstances.vm</result>
+		</action>
+		
+		<action name="removeCurrentEncounter"
+			class="org.hisp.dhis.caseentry.action.caseentry.RemoveCurrentEncounterAction">
+			<result name="success" type="velocity-json">
+				/dhis-web-commons/ajax/jsonResponseSuccess.vm</result>
+			<result name="error" type="velocity-json">
+				/dhis-web-commons/ajax/jsonResponseError.vm</result>
+		</action>
+		
 		<!-- save value -->
 
 		<action name="saveValue"
@@ -454,43 +490,15 @@
 			<result name="success" type="velocity">/content.vm</result>
 			<param name="page">/dhis-web-caseentry/resultSearchPatients.vm</param>
 		</action>
-
-		<action name="anonymousRegistration"
-			class="org.hisp.dhis.caseentry.action.caseentry.LoadAnonymousProgramsAction">
-			<interceptor-ref name="organisationUnitTreeStack" />
-			<result name="success" type="velocity">/main.vm</result>
-			<param name="page">/dhis-web-caseentry/anonymousRegistration.vm</param>
-			<param name="menu">/dhis-web-caseentry/dataEntryMenu.vm</param>
-			<param name="javascripts">../dhis-web-commons/ouwt/ouwt.js
-				,javascript/commons.js
-				,javascript/anonymousRegistration.js
-				,javascript/entry.js
-				,../dhis-web-commons/javascripts/date.js</param>
-			<param name="stylesheets">style/dataEntry.css,../dhis-web-caseentry/style/patient.css</param>
-		</action>
-		
-		<action name="createAnonymousEncounter"
-			class="org.hisp.dhis.caseentry.action.caseentry.CreateAnonymousEncounterAction">
-			<result name="success" type="velocity-json">
-				/dhis-web-commons/ajax/jsonResponseSuccess.vm</result>
-			<result name="input" type="velocity-json">
-				/dhis-web-commons/ajax/jsonResponseInput.vm</result>
-		</action>
-		
-		<action name="loadAnonymousPrograms"
-			class="org.hisp.dhis.caseentry.action.caseentry.LoadAnonymousProgramsAction">
-			<result name="success" type="velocity-json">
-				/dhis-web-caseentry/jsonProgramInstances.vm</result>
-		</action>
-		
-		<action name="removeCurrentEncounter"
-			class="org.hisp.dhis.caseentry.action.caseentry.RemoveCurrentEncounterAction">
-			<result name="success" type="velocity-json">
-				/dhis-web-commons/ajax/jsonResponseSuccess.vm</result>
-			<result name="error" type="velocity-json">
-				/dhis-web-commons/ajax/jsonResponseError.vm</result>
-		</action>
  
+   		<action name="getPatientHistory"
+			class="org.hisp.dhis.caseentry.action.patient.GetPatientHistoryAction">
+			<result name="success" type="velocity">/content.vm</result>
+			<result name="xls" type="gridXlsResult" />
+      		<result name="pdf" type="gridPdfResult" />
+			<param name="page">/dhis-web-caseentry/patientHistory.vm</param>
+		</action>
+		
 		<!-- Patient-Program Enrollment -->
 
 		<action name="showProgramEnrollmentForm"

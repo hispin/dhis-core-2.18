@@ -26,11 +26,23 @@
  */
 package org.hisp.dhis.program;
 
-import java.util.Date;
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Date;
+import java.util.List;
 
+import org.hisp.dhis.common.Grid;
+import org.hisp.dhis.common.GridHeader;
+import org.hisp.dhis.i18n.I18n;
+import org.hisp.dhis.i18n.I18nFormat;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.patient.Patient;
+import org.hisp.dhis.patient.PatientAttribute;
+import org.hisp.dhis.patient.PatientIdentifier;
+import org.hisp.dhis.patient.PatientIdentifierType;
+import org.hisp.dhis.patientattributevalue.PatientAttributeValue;
+import org.hisp.dhis.patientattributevalue.PatientAttributeValueService;
+import org.hisp.dhis.system.grid.ListGrid;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
@@ -52,10 +64,25 @@ public class DefaultProgramInstanceService
         this.programInstanceStore = programInstanceStore;
     }
 
+    private PatientAttributeValueService patientAttributeValueService;
+
+    public void setPatientAttributeValueService( PatientAttributeValueService patientAttributeValueService )
+    {
+        this.patientAttributeValueService = patientAttributeValueService;
+    }
+
+    private ProgramStageInstanceService programStageInstanceService;
+
+    public void setProgramStageInstanceService( ProgramStageInstanceService programStageInstanceService )
+    {
+        this.programStageInstanceService = programStageInstanceService;
+    }
+
     // -------------------------------------------------------------------------
     // Implementation methods
     // -------------------------------------------------------------------------
 
+ 
     public int addProgramInstance( ProgramInstance programInstance )
     {
         return programInstanceStore.save( programInstance );
@@ -157,5 +184,97 @@ public class DefaultProgramInstanceService
     public int countProgramInstances( Program program, OrganisationUnit organisationUnit, Date startDate, Date endDate )
     {
         return programInstanceStore.count( program, organisationUnit, startDate, endDate );
+    }
+
+    public List<Grid> getProgramInstanceReport( Patient patient, I18n i18n, I18nFormat format )
+    {
+        List<Grid> grids = new ArrayList<Grid>();
+
+        // ---------------------------------------------------------------------
+        // Get registered personal patient data
+        // ---------------------------------------------------------------------
+
+        Grid attrGrid = new ListGrid();
+
+        attrGrid.setTitle( patient.getFullName() );
+        attrGrid.setSubtitle( "" );
+
+        attrGrid.addHeader( new GridHeader( i18n.getString( "name" ), false, false ) );
+        attrGrid.addHeader( new GridHeader( i18n.getString( "value" ), false, false ) );
+
+        Collection<PatientAttribute> patientAttributes = patient.getAttributes();
+
+        // ---------------------------------------------------------------------
+        // Add fixed attribues
+        // ---------------------------------------------------------------------
+
+        attrGrid.addRow();
+        attrGrid.addValue( i18n.getString( "date_of_birth" ) );
+        attrGrid.addValue( format.formatDate( patient.getBirthDate() ) );
+
+        attrGrid.addRow();
+        attrGrid.addValue( i18n.getString( "age" ) );
+        attrGrid.addValue( patient.getAge() );
+        
+        attrGrid.addRow();
+        attrGrid.addValue( i18n.getString( "dob_type" ) );
+        attrGrid.addValue( i18n.getString( patient.getDobType() + "" ) );
+        
+        attrGrid.addRow();
+        attrGrid.addValue( i18n.getString( "blood_group" ) );
+        attrGrid.addValue( i18n.getString( patient.getBloodGroup() ) );
+        
+        // ---------------------------------------------------------------------
+        // Add dynamic attribues
+        // ---------------------------------------------------------------------
+
+        for ( PatientAttribute patientAttribute : patientAttributes )
+        {
+            attrGrid.addRow();
+            attrGrid.addValue( patientAttribute.getName() );
+            PatientAttributeValue attributeValue = patientAttributeValueService.getPatientAttributeValue( patient,
+                patientAttribute );
+            attrGrid.addValue( (attributeValue == null) ? PatientAttributeValue.UNKNOWN : attributeValue.getValue() );
+        }
+
+        // ---------------------------------------------------------------------
+        // Add identifier
+        // ---------------------------------------------------------------------
+
+        for ( PatientIdentifier identifier : patient.getIdentifiers() )
+        {
+            attrGrid.addRow();
+            
+            PatientIdentifierType idType = identifier.getIdentifierType();
+            if ( idType != null )
+            {
+                attrGrid.addValue( idType.getName() );
+                attrGrid.addValue( identifier.getIdentifier() );
+            }
+            else
+            {
+                attrGrid.addValue( i18n.getString( "system_identifier" ) );
+                attrGrid.addValue( identifier.getIdentifier() );
+            }
+        }
+        
+        grids.add( attrGrid );
+        
+        // ---------------------------------------------------------------------
+        // Get all program data registered
+        // ---------------------------------------------------------------------
+
+        Collection<ProgramInstance> programInstances = getProgramInstances( patient );
+
+        if ( programInstances.size() > 0 )
+        {
+            for ( ProgramInstance programInstance : programInstances )
+            {
+                Grid programGrid = programStageInstanceService.getProgramInstanceReport( programInstance, format, i18n );
+                grids.add( programGrid );
+            }
+        }
+
+        return grids;
     }
 }

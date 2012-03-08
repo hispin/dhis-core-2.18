@@ -94,4 +94,6 @@ public interface ProgramStageInstanceService
     Grid getTabularReport( ProgramStage programStage, List<DataElement> dataElements, Map<Integer,String> searchingKeys, Collection<Integer> orgunitIds, Date startDate, Date endDate, I18nFormat format, I18n i18n );
 
     int countProgramStageInstances( ProgramStage programStage, Map<Integer,String> searchingKeys, Collection<Integer> orgunitIds, Date startDate, Date endDate );
+    
+    Grid getProgramInstanceReport( ProgramInstance programInstance, I18nFormat format, I18n i18n );
 }
