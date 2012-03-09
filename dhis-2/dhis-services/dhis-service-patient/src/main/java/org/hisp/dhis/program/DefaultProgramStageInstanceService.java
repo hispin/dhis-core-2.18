@@ -27,15 +27,12 @@
 package org.hisp.dhis.program;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import org.hisp.dhis.common.Grid;
 import org.hisp.dhis.common.GridHeader;
@@ -73,13 +70,6 @@ public class DefaultProgramStageInstanceService
     public void setPatientDataValueService( PatientDataValueService patientDataValueService )
     {
         this.patientDataValueService = patientDataValueService;
-    }
-
-    private ProgramStageDataElementService programStageDataElementService;
-
-    public void setProgramStageDataElementService( ProgramStageDataElementService programStageDataElementService )
-    {
-        this.programStageDataElementService = programStageDataElementService;
     }
 
     // -------------------------------------------------------------------------
@@ -236,83 +226,71 @@ public class DefaultProgramStageInstanceService
         return programStageInstanceStore.count( programStage, searchingKeys, orgunitIds, startDate, endDate );
     }
 
-    public Grid getProgramInstanceReport( ProgramInstance programInstance, I18nFormat format, I18n i18n )
+    public List<Grid> getProgramStageInstancesReport( ProgramInstance programInstance, I18nFormat format, I18n i18n )
     {
-        Grid grid = new ListGrid();
-
-        // ---------------------------------------------------------------------
-        // Title
-        // ---------------------------------------------------------------------
-
-        grid.setTitle( programInstance.getProgram().getName() );
-        grid.setSubtitle( i18n.getString( "date_of_enrollment" ) + ": "
-            + format.formatDate( programInstance.getEnrollmentDate() ) + " - " + i18n.getString( "date_of_incident" )
-            + ": " + format.formatDate( programInstance.getDateOfIncident() ) );
-
-        // ---------------------------------------------------------------------
-        // Headers && Get dataelements belongs to programs
-        // ---------------------------------------------------------------------
-
-        Set<ProgramStage> programStages = programInstance.getProgram().getProgramStages();
-        Set<DataElement> dataElements = new HashSet<DataElement>();
-
-        grid.addHeader( new GridHeader( "", false, false ) );
-        for ( ProgramStage programStage : programStages )
-        {
-            grid.addHeader( new GridHeader( programStage.getName(), false, false ) );
-            dataElements.addAll( programStageDataElementService.getListDataElement( programStage ) );
-        }
-
-        // ---------------------------------------------------------------------
-        // First Column
-        // ---------------------------------------------------------------------
-
-        List<Object> deValues = new ArrayList<Object>();
-        Map<Integer, Integer> mapDataElements = new HashMap<Integer, Integer>();
-
-        int columnIndex = 0;
-        for ( DataElement dataElement : dataElements )
-        {
-            grid.addRow();
-            deValues.add( dataElement.getName() );
-
-            mapDataElements.put( dataElement.getId(), columnIndex );
-            columnIndex++;
-        }
-
-        grid.addColumn( deValues );
-
-        // ---------------------------------------------------------------------
-        // Values
-        // ---------------------------------------------------------------------
+        List<Grid> grids = new ArrayList<Grid>();
 
         Collection<ProgramStageInstance> programStageInstances = programInstance.getProgramStageInstances();
 
         for ( ProgramStageInstance programStageInstance : programStageInstances )
         {
-            Object[] columnValues = new Object[dataElements.size()];
+            Grid grid = new ListGrid();
 
+            // ---------------------------------------------------------------------
+            // Title
+            // ---------------------------------------------------------------------
+            Date executionDate = programStageInstance.getExecutionDate();
+            String executionDateValue = (executionDate != null) ? format.formatDate( programStageInstance
+                .getExecutionDate() ) : "[" + i18n.getString( "none" ) + "]";
+
+            grid.setTitle( programStageInstance.getProgramStage().getName() );
+            grid.setSubtitle( i18n.getString( "due_date" ) + ": "
+                + format.formatDate( programStageInstance.getDueDate() ) + " - " + i18n.getString( "report_date" )
+                + ": " + executionDateValue );
+
+            // ---------------------------------------------------------------------
+            // Headers
+            // ---------------------------------------------------------------------
+
+            grid.addHeader( new GridHeader( i18n.getString( "name" ), false, false ) );
+            grid.addHeader( new GridHeader( i18n.getString( "value" ), false, false ) );
+
+            // ---------------------------------------------------------------------
+            // Values
+            // ---------------------------------------------------------------------
             Collection<PatientDataValue> patientDataValues = patientDataValueService
                 .getPatientDataValues( programStageInstance );
 
-            for ( PatientDataValue patientDataValue : patientDataValues )
+            if ( executionDate == null || patientDataValues == null || patientDataValues.size() == 0 )
             {
-                DataElement dataElement = patientDataValue.getDataElement();
-
-                String value = patientDataValue.getValue();
-
-                if ( dataElement.getType().equals( DataElement.VALUE_TYPE_BOOL ) )
+                grid.addRow();
+                grid.addValue( "[" + i18n.getString( "none" ) + "]" );
+                grid.addValue( "" );
+            }
+            else
+            {
+                for ( PatientDataValue patientDataValue : patientDataValues )
                 {
-                    value = i18n.getString( patientDataValue.getValue() );
-                }
+                    DataElement dataElement = patientDataValue.getDataElement();
 
-                columnValues[mapDataElements.get( dataElement.getId() )] = value;
+                    grid.addRow();
+                    grid.addValue( dataElement.getName() );
+
+                    if ( dataElement.getType().equals( DataElement.VALUE_TYPE_BOOL ) )
+                    {
+                        grid.addValue( i18n.getString( patientDataValue.getValue() ) );
+                    }
+                    else
+                    {
+                        grid.addValue( patientDataValue.getValue() );
+                    }
+                }
             }
 
-            grid.addColumn( Arrays.asList( columnValues ) );
+            grids.add( grid );
         }
 
-        return grid;
+        return grids;
     }
 
     // -------------------------------------------------------------------------
