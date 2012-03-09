@@ -1160,7 +1160,7 @@ Ext.onReady( function() {
         },
         variable: {
 			hasValue: function(str) {
-				return (str & str !== 0 && str !== '0' && str !== '');
+				return (str !== 0 && str !== '0' && str !== '');
 			}
 		},
        /*FIXME:This is probably not going to work as intended with UNICODE?*/
@@ -1865,7 +1865,7 @@ Ext.onReady( function() {
             Ext.Ajax.request({
                 url: baseurl,
                 success: function(r) {
-                    DV.value.values = DV.util.value.jsonfy(r);
+                    DV.value.values = DV.util.value.jsonfy(r);                    
                     
                     if (!DV.state.validation.value()) {
 						return;
