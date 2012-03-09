@@ -224,7 +224,7 @@ public class AggregatedIndicatorValue
     @Override
     public int hashCode()
     {
-        return indicatorId * periodId * organisationUnitId * 17;
+        return indicatorId * periodId * organisationUnitId * organisationUnitGroupId * 17;
     }
 
     @Override
@@ -244,6 +244,7 @@ public class AggregatedIndicatorValue
         
         return this.indicatorId == that.getIndicatorId() && 
             this.periodId == that.getPeriodId() && 
-            this.organisationUnitId == that.getOrganisationUnitId(); 
+            this.organisationUnitId == that.getOrganisationUnitId() &&
+            this.organisationUnitGroupId == that.getOrganisationUnitGroupId();
     }
 }

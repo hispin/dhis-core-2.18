@@ -167,7 +167,7 @@ public class AggregatedDataValue
     @Override
     public int hashCode()
     {
-        return dataElementId * periodId * organisationUnitId * 17;
+        return dataElementId * periodId * organisationUnitId * organisationUnitGroupId * 17;
     }
     
     @Override
@@ -186,8 +186,9 @@ public class AggregatedDataValue
         AggregatedDataValue that = (AggregatedDataValue) object;
         
         return this.dataElementId == that.getDataElementId() &&
-            this.categoryOptionComboId == that.categoryOptionComboId &&
+            this.categoryOptionComboId == that.getCategoryOptionComboId() &&
     	    this.periodId == that.getPeriodId() &&
-    	    this.organisationUnitId == that.getOrganisationUnitId();
+    	    this.organisationUnitId == that.getOrganisationUnitId() &&
+    	    this.organisationUnitGroupId == that.getOrganisationUnitGroupId();
     }
 }
