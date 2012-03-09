@@ -25,7 +25,7 @@
 						#set( $nr = ( ( $paging.getCurrentPage() - 1  ) * $paging.pageSize ) + $velocityCount )
 						$nr
 					</td>
-					<td><a href="javascript:showPatientDetails( $programInstance.patient.id )" title='$i18n.getString( "show_details" )'>$programInstance.patient.getFullName()</a></td>                    
+					<td><a href="javascript:showPatientHistory( $programInstance.patient.id )" title='$i18n.getString( "patient_details_and_history" )'>$programInstance.patient.getFullName()</a></td>                    
                     #foreach( $programStageInstance in $programInstance.programStageInstances )
                         #if( $programStageInstance.executionDate )
                             <td style="text-align:center" bgcolor="$colorMap.get( $programStageInstance.id )">
@@ -61,5 +61,5 @@
 <div id="viewRecordsDiv"></div>
 #end
 <script>
-	var i18n_patient_details = '$encoder.jsEscape( $i18n.getString( "patient_details" ) , "'" )';
+	var i18n_patient_details_and_history = '$encoder.jsEscape( $i18n.getString( "patient_details_and_history" ) , "'" )';
 </script>

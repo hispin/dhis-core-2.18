@@ -95,6 +95,4 @@
 			 loadProgramStages();
 		}
 	});
-	
-	selection.setListenerFunction( organisationUnitSelected );
 </script>
