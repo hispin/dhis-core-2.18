@@ -2,7 +2,7 @@
 	#set( $mark = false )
 	#set( $i = 1 )
 	#foreach( $row in $grid.getVisibleRows() )
-		<tr id="tr${i}">
+		<tr id="tr${i}" class='rowGrid'>
 			<td>
 				#set( $nr = ( ( $paging.getCurrentPage() - 1  ) * $paging.pageSize ) + $velocityCount )
 				$nr

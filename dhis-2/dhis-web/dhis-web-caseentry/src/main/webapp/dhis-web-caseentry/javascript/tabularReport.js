@@ -5,7 +5,7 @@ function organisationUnitSelected( orgUnits, orgUnitNames )
 	clearListById( 'programStageId' );
 	clearListById( 'availableDataElementIds' );
 	
-	$.getJSON( 'loadProgramsByOrgunit.action',{}
+	$.getJSON( 'loadAllPrograms.action',{}
 		, function( json ) 
 		{
 			clearListById( 'programId' );
@@ -14,7 +14,9 @@ function organisationUnitSelected( orgUnits, orgUnitNames )
 			var preSelectedProgramId = getFieldValue('selectedProgramId');
 			for ( i in json.programs ) 
 			{ 
-				$('#programId').append('<option value=' + json.programs[i].id + '>' + json.programs[i].name + '</option>');
+				$('#programId').append( '<option value=' + json.programs[i].id 
+					+ ' singleevent=' + json.programs[i].singleEvent + '>' 
+					+ json.programs[i].name + '</option>' );
 			}
 
 			if( json.programs.length > 0 )
@@ -50,11 +52,20 @@ function loadProgramStages()
 		}
 		, function( json ) 
 		{
-			addOptionById( 'programStageId', '', i18n_please_select );
+			var singleEvent = jQuery('#programId option:selected').attr('singleevent');
+			if(singleEvent=='false')
+			{
+				addOptionById( 'programStageId', '', i18n_please_select );
+			}
 			
 			for ( i in json.programStages ) 
 			{ 
 				$('#programStageId').append('<option value=' + json.programStages[i].id + '>' + json.programStages[i].name + '</option>');
+			}
+			
+			if(singleEvent=='true')
+			{
+				loadDataElements();
 			}
 		} );
 }

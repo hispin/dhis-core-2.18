@@ -45,17 +45,17 @@
 					<input type="button" value=">>"  onclick="getNextPeriodForEnd()" id="nextPeriodForEndBtn" disabled />
 					<i><span id='warningMessage' style="color:red"></span></i>
 				</td>
-					
 			</tr>
+			
 			<tr>
 				<td>
 				   $i18n.getString( "facility_by" )
 				</td>
 				<td>
 					<select id="facilityLB" name="facilityLB" style="width: 30em">
-						<option value="random" selected>$i18n.getString( "selected" )</option>
-						<option value="immChildren" >$i18n.getString( "immediate_children" )</option>
-						<option value="children" >$i18n.getString( "all_children" )</option>
+						<option value="selected" selected="selected">$i18n.getString( "selected" )</option>
+						<option value="childrenOnly" >$i18n.getString( "children_only" )</option>
+						<option value="all">$i18n.getString( "all" )</option>
 					</select>
 				</td>
 			</tr>

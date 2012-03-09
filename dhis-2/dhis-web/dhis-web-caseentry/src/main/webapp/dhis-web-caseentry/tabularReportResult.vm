@@ -15,15 +15,16 @@
 
 <table class="listTable grid" id='gridTable'>
 	<tr>
-		<th>#</th>
+		<th></th>
 		#foreach( $dataElement in $dataElements )
 			<th>
 				$!encoder.htmlEncode( $dataElement.name )
 			</th>
 		#end
 	</tr>
-	<tr>
-		<td></td>
+	
+	<tr class='filter'>
+		<td>$i18n.getString('filter')</td>
 		#foreach( $dataElement in $dataElements )
 			<td>
 				<input type='text' id='$dataElement.id' title='$i18n.getString("how_to_search_tabular_report")' onkeypress='searchTabularReport( event );' #if($dataElement.optionSet) options='$dataElement.optionSet.options' #end />
