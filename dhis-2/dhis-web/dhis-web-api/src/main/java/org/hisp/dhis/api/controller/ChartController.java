@@ -39,6 +39,7 @@ import org.hisp.dhis.indicator.Indicator;
 import org.hisp.dhis.indicator.IndicatorService;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
+import org.hisp.dhis.system.util.CodecUtils;
 import org.hisp.dhis.api.utils.ContextUtils;
 import org.jfree.chart.ChartUtilities;
 import org.jfree.chart.JFreeChart;
@@ -136,10 +137,15 @@ public class ChartController
                           @RequestParam( value = "height", defaultValue = "500", required = false ) int height,
                           HttpServletResponse response ) throws IOException, I18nManagerException
     {
-        JFreeChart chart = chartService.getJFreeChart( uid, i18nManager.getI18nFormat() );
+        JFreeChart jFreeChart = chartService.getJFreeChart( uid, i18nManager.getI18nFormat() );
 
-        response.setContentType( ContextUtils.CONTENT_TYPE_PNG );
-        ChartUtilities.writeChartAsPNG( response.getOutputStream(), chart, width, height );
+        Chart chart = chartService.getChart( uid );
+        
+        String filename = CodecUtils.filenameEncode( chart.getName() ) + ".png";
+        
+        ContextUtils.configureResponse( response, ContextUtils.CONTENT_TYPE_PNG, true, filename, false );
+        
+        ChartUtilities.writeChartAsPNG( response.getOutputStream(), jFreeChart, width, height );
     }
 
     @RequestMapping( value = {"/data", "/data.png"}, method = RequestMethod.GET )
@@ -165,7 +171,8 @@ public class ChartController
             chart = chartService.getJFreeOrganisationUnitChart( indicator, unit, !skipTitle, i18nManager.getI18nFormat() );
         }
 
-        response.setContentType( ContextUtils.CONTENT_TYPE_PNG );
+        ContextUtils.configureResponse( response, ContextUtils.CONTENT_TYPE_PNG, true, "chart.png", false );
+        
         ChartUtilities.writeChartAsPNG( response.getOutputStream(), chart, width, height );
     }
 
