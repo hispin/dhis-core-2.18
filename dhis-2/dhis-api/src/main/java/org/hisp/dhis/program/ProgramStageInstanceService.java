@@ -95,5 +95,5 @@ public interface ProgramStageInstanceService
 
     int countProgramStageInstances( ProgramStage programStage, Map<Integer,String> searchingKeys, Collection<Integer> orgunitIds, Date startDate, Date endDate );
     
-    Grid getProgramInstanceReport( ProgramInstance programInstance, I18nFormat format, I18n i18n );
+    List<Grid> getProgramStageInstancesReport( ProgramInstance programInstance, I18nFormat format, I18n i18n );
 }

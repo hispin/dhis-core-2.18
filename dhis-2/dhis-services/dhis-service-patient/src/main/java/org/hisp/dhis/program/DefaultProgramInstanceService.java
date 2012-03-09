@@ -82,7 +82,6 @@ public class DefaultProgramInstanceService
     // Implementation methods
     // -------------------------------------------------------------------------
 
- 
     public int addProgramInstance( ProgramInstance programInstance )
     {
         return programInstanceStore.save( programInstance );
@@ -201,7 +200,8 @@ public class DefaultProgramInstanceService
 
         attrGrid.addHeader( new GridHeader( i18n.getString( "name" ), false, false ) );
         attrGrid.addHeader( new GridHeader( i18n.getString( "value" ), false, false ) );
-
+        attrGrid.addHeader( new GridHeader( "", true, false ) );
+        
         Collection<PatientAttribute> patientAttributes = patient.getAttributes();
 
         // ---------------------------------------------------------------------
@@ -215,15 +215,15 @@ public class DefaultProgramInstanceService
         attrGrid.addRow();
         attrGrid.addValue( i18n.getString( "age" ) );
         attrGrid.addValue( patient.getAge() );
-        
+
         attrGrid.addRow();
         attrGrid.addValue( i18n.getString( "dob_type" ) );
         attrGrid.addValue( i18n.getString( patient.getDobType() + "" ) );
-        
+
         attrGrid.addRow();
         attrGrid.addValue( i18n.getString( "blood_group" ) );
         attrGrid.addValue( i18n.getString( patient.getBloodGroup() ) );
-        
+
         // ---------------------------------------------------------------------
         // Add dynamic attribues
         // ---------------------------------------------------------------------
@@ -244,7 +244,7 @@ public class DefaultProgramInstanceService
         for ( PatientIdentifier identifier : patient.getIdentifiers() )
         {
             attrGrid.addRow();
-            
+
             PatientIdentifierType idType = identifier.getIdentifierType();
             if ( idType != null )
             {
@@ -257,9 +257,9 @@ public class DefaultProgramInstanceService
                 attrGrid.addValue( identifier.getIdentifier() );
             }
         }
-        
+
         grids.add( attrGrid );
-        
+
         // ---------------------------------------------------------------------
         // Get all program data registered
         // ---------------------------------------------------------------------
@@ -270,8 +270,39 @@ public class DefaultProgramInstanceService
         {
             for ( ProgramInstance programInstance : programInstances )
             {
-                Grid programGrid = programStageInstanceService.getProgramInstanceReport( programInstance, format, i18n );
-                grids.add( programGrid );
+                Grid gridProgram = new ListGrid();
+                gridProgram.setTitle( programInstance.getProgram().getName() );
+                gridProgram.setSubtitle( "" );
+                
+                // ---------------------------------------------------------------------
+                // Headers
+                // ---------------------------------------------------------------------
+
+                gridProgram.addHeader( new GridHeader( i18n.getString( "name" ), false, false ) );
+                gridProgram.addHeader( new GridHeader( i18n.getString( "value" ), false, false ) );
+                gridProgram.addHeader( new GridHeader( "", true, false ) );
+                
+                // ---------------------------------------------------------------------
+                // Values
+                // ---------------------------------------------------------------------
+
+                gridProgram.addRow();
+                gridProgram.addValue( i18n.getString( "date_of_enrollment" ) );
+                gridProgram.addValue( format.formatDate( programInstance.getEnrollmentDate() ) );
+
+                gridProgram.addRow();
+                gridProgram.addValue( i18n.getString( "date_of_incident" ) );
+                gridProgram.addValue( format.formatDate( programInstance.getDateOfIncident() ) );
+
+                grids.add( gridProgram );
+
+                // ---------------------------------------------------------------------
+                // Grids for program-stage-instance
+                // ---------------------------------------------------------------------
+
+                List<Grid> programInstanceGrids = programStageInstanceService.getProgramStageInstancesReport(
+                    programInstance, format, i18n );
+                grids.addAll( programInstanceGrids );
             }
         }
 
