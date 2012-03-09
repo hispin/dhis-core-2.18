@@ -23,11 +23,6 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     <property name="manager" ref="org.hisp.dhis.dashboard.DashboardManager" />
   </bean>
 
-  <bean id="org.hisp.dhis.dashboard.action.GetChartAction" class="org.hisp.dhis.dashboard.action.GetChartAction"
-    scope="prototype">
-    <property name="chartService" ref="org.hisp.dhis.chart.ChartService" />
-  </bean>
-
   <bean id="org.hisp.dhis.dashboard.action.RemoveReportAction" class="org.hisp.dhis.dashboard.action.RemoveReportAction"
     scope="prototype">
     <property name="currentUserService" ref="org.hisp.dhis.user.CurrentUserService" />

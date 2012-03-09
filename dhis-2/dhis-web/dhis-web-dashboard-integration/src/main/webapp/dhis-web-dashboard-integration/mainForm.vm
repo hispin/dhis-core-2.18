@@ -45,7 +45,7 @@
         </ul>
     </div>
     #if ( $chart )
-        <img style="cursor:pointer" src="getChart.action?id=${chart.id}" onclick="viewChart( 'getChart.action?id=${chart.id}&width=700&height=500' )">
+        <img style="cursor:pointer" src="../api/charts/${chart.uid}/data?width=310&height=310" onclick="viewChart( '../api/charts/${chart.uid}/data' )">
     #else
         <div class="labelText">$i18n.getString( 'this_is_a_chart_area' )</div>
     #end
