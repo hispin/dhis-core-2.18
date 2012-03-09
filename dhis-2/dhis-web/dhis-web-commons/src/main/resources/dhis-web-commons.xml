@@ -812,7 +812,7 @@
       <result name="success" type="velocity">/main.vm</result>
       <param name="page">/dhis-web-commons/about/help.vm</param>
       <param name="menu">/dhis-web-commons/about/menu.vm</param>
-      <param name="javascripts">../dhis-web-commons/util/jquery-ui.js,../dhis-web-commons/about/help.js</param>
+      <param name="javascripts">../dhis-web-commons/about/help.js</param>
     </action>
 
     <action name="getHelpContent" class="org.hisp.dhis.help.action.GetHelpContentAction">
