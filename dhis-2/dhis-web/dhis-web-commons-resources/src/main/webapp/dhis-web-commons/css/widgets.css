@@ -66,16 +66,13 @@ div#rightBar
 div#helpMenu
 {
   width: 260px;
-  padding-top: 7px;
-  padding-bottom: 13px;
-  padding-left: 20px;
-  padding-right: 20px;
-  border: 1px solid #a0a0a0;
+  margin-right: 15px;
 }
 
 div#helpMenu ul
 {
   list-style-type: none;
+  font-size: 9pt;
 }
 
 div#helpMenu a
@@ -83,20 +80,24 @@ div#helpMenu a
   text-decoration: none;
 }
 
-div#helpMenu h5
+div#helpMenu h6
 {
-  cursor:pointer;
+  cursor: pointer;
+  padding: 3px 0px 4px 25px;
 }
 
 div#helpContent
 {
-  padding-left: 20px;
-  padding-right: 20px;
+  margin-top: 1px;
+  margin-right: 15px;
+  border: 1px solid #c0c0c0; 
+  padding: 10px 20px 20px 20px;
+  border-radius: 3px;
 }
 
-div#helpContent ul,ol
+div#helpContent ul, ol
 {
-  padding-left: 17px;
+  padding-left: 15px;
 }
 
 /*----------------------------------------------------------------------------*/

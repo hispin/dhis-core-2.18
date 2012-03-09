@@ -3,7 +3,7 @@
 <xsl:output method="html" encoding="UTF-8"/>
 
 <xsl:template match="chapter">
-  <h5><xsl:value-of select="title"/></h5>
+  <h6><xsl:value-of select="title"/></h6>
   <div>
     <ul><xsl:apply-templates select="descendant::section[@id]"/></ul>
   </div>
