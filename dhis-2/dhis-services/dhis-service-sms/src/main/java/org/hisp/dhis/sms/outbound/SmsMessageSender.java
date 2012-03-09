@@ -36,7 +36,7 @@ import java.util.Set;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.hisp.dhis.message.MessageSender;
+import org.hisp.dhis.sms.MessageSender;
 import org.hisp.dhis.sms.SmsServiceException;
 import org.hisp.dhis.user.User;
 import org.hisp.dhis.user.UserService;
@@ -68,8 +68,9 @@ public class SmsMessageSender
     // MessageSender implementation
     // -------------------------------------------------------------------------
 
-    @Override
-    public void sendMessage( String subject, String text, User sender, Set<User> users )
+    @SuppressWarnings("unchecked")
+    public void sendMessage( String subject, String text, User sender, boolean isPhone, Set<?> recipients,
+        String gatewayId )
     {
         if ( outboundSmsService == null || !outboundSmsService.isEnabled() )
         {
@@ -78,11 +79,20 @@ public class SmsMessageSender
 
         text = createMessage( subject, text, sender );
 
-        Set<String> recipients = getRecipients( users );
+        Set<String> phones = null;
+
+        if ( isPhone )
+        {
+            phones = (Set<String>) recipients;
+        }
+        else
+        {
+            phones = getRecipients( (Set<User>) recipients );
+        }
 
         if ( !recipients.isEmpty() )
         {
-            sendMessage( text, recipients );
+            sendMessage( text, phones, gatewayId );
         }
         else if ( log.isDebugEnabled() )
         {
@@ -134,7 +144,7 @@ public class SmsMessageSender
         return (length > 160) ? text.substring( 0, 157 ) + "..." : text;
     }
 
-    private void sendMessage( String text, Set<String> recipients )
+    private void sendMessage( String text, Set<String> recipients, String id )
     {
         OutboundSms sms = new OutboundSms();
         sms.setMessage( text );
@@ -142,7 +152,7 @@ public class SmsMessageSender
 
         try
         {
-            outboundSmsService.sendMessage( sms );
+            outboundSmsService.sendMessage( sms, id );
 
             if ( log.isDebugEnabled() )
             {

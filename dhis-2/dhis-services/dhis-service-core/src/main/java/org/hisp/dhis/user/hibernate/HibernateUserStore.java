@@ -258,7 +258,7 @@ public class HibernateUserStore
     }
 
     public Collection<UserCredentials> getUsersByOrganisationUnitBetweenByName( OrganisationUnit orgUnit, String name,
-                                                                                int first, int max )
+        int first, int max )
     {
         return getBlockUser( findByName( toUserCredentials( orgUnit.getUsers() ), name ), first, max );
     }
@@ -485,5 +485,13 @@ public class HibernateUserStore
         }
 
         return credentials;
+    }
+
+    @SuppressWarnings("unchecked")
+    public Collection<User> getUsersByOrganisationUnits( Collection<OrganisationUnit> orgunits )
+    {
+        String hql = "select distinct u from User u join u.organisationUnits o where o.id in (:ids)";
+
+        return sessionFactory.getCurrentSession().createQuery( hql ).setParameterList( "ids", orgunits ).list();
     }
 }

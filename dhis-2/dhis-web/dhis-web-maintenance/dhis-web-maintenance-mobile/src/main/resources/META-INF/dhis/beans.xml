@@ -9,9 +9,8 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
   <bean id="org.hisp.dhis.mobile.action.MobileHomePageAction" class="org.hisp.dhis.mobile.action.MobileHomePageAction"
     scope="prototype" />
 
-  <bean id="org.hisp.dhis.mobile.action.SendSMSAction" class="org.hisp.dhis.mobile.action.SendSMSAction" scope="prototype">
-    <property name="outboundSmsService" ref="org.hisp.dhis.sms.outbound.OutboundSmsService" />
-  </bean>
+  <bean id="org.hisp.dhis.mobile.action.ProcessingSendSMSAction" class="org.hisp.dhis.mobile.action.ProcessingSendSMSAction"
+	scope="prototype" />
 
  <!-- Patient Mobile Settings -->
 
@@ -43,9 +42,9 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
   </bean>
 
   <!-- SMS Service Configuration -->	
-	 <bean id="org.hisp.dhis.mobile.action.ShowMobileConfigurationFormAction" class="org.hisp.dhis.mobile.action.ShowMobileConfigurationFormAction"
-    scope="prototype"/>
-	
-	<bean id="org.hisp.dhis.mobile.action.AddGateWayConfigAction" class="org.hisp.dhis.mobile.action.AddGateWayConfigAction" scope="prototype"/>
+  <bean id="org.hisp.dhis.mobile.action.ShowMobileConfigurationFormAction" class="org.hisp.dhis.mobile.action.ShowMobileConfigurationFormAction"
+	scope="prototype"/>
+
+  <bean id="org.hisp.dhis.mobile.action.AddGateWayConfigAction" class="org.hisp.dhis.mobile.action.AddGateWayConfigAction" scope="prototype"/>
 
 </beans>

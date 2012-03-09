@@ -27,18 +27,25 @@ package org.hisp.dhis.mobile.action;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import org.hisp.dhis.sms.SmsConfigurationManager;
-import org.hisp.dhis.sms.config.SmsConfiguration;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.Set;
+
+import org.hisp.dhis.organisationunit.OrganisationUnit;
+import org.hisp.dhis.oust.manager.SelectionTreeManager;
+import org.hisp.dhis.sms.MessageSender;
+import org.hisp.dhis.user.CurrentUserService;
+import org.hisp.dhis.user.User;
+import org.hisp.dhis.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.opensymphony.xwork2.Action;
 
 /**
- * @author 
+ * @author Dang Duy Hieu
  * @version $Id$
  */
-
-public class ShowMobileConfigurationFormAction
+public class ProcessingSendSMSAction
     implements Action
 {
     // -------------------------------------------------------------------------
@@ -46,37 +53,72 @@ public class ShowMobileConfigurationFormAction
     // -------------------------------------------------------------------------
 
     @Autowired
-    private SmsConfigurationManager smsConfigurationManager;
+    private SelectionTreeManager selectionTreeManager;
+
+    @Autowired
+    private UserService userService;
+
+    @Autowired
+    private CurrentUserService currentUserService;
+
+    @Autowired
+    private MessageSender messageSender;
 
     // -------------------------------------------------------------------------
-    // Output
+    // Input & Output
     // -------------------------------------------------------------------------
 
-    private SmsConfiguration smsConfig;
+    private String gatewayId;
 
-    public SmsConfiguration getSmsConfig()
+    public void setGatewayId( String gatewayId )
     {
-        return smsConfig;
+        this.gatewayId = gatewayId;
     }
 
-    public void setSmsConfig( SmsConfiguration smsConfig )
+    private String smsSubject;
+
+    public void setSmsSubject( String smsSubject )
     {
-        this.smsConfig = smsConfig;
+        this.smsSubject = smsSubject;
     }
 
-    public boolean getSmsServiceStatus()
+    private String smsMessage;
+
+    public void setSmsMessage( String smsMessage )
     {
-        return this.smsConfig != null && this.smsConfig.isEnabled();
+        this.smsMessage = smsMessage;
+    }
+
+    private Set<String> recipients = new HashSet<String>();
+
+    public void setRecipients( Set<String> recipients )
+    {
+        this.recipients = recipients;
     }
 
     // -------------------------------------------------------------------------
-    // Action implementation
+    // Action Implementation
     // -------------------------------------------------------------------------
 
     public String execute()
-        throws Exception
     {
-        smsConfig = smsConfigurationManager.getSmsConfiguration();
+        if ( smsMessage != null && !smsMessage.isEmpty() )
+        {
+            if ( recipients != null && !recipients.isEmpty() )
+            {
+                messageSender.sendMessage( smsSubject, smsMessage, currentUserService.getCurrentUser(), true,
+                    recipients, gatewayId );
+            }
+
+            Collection<OrganisationUnit> units = selectionTreeManager.getSelectedOrganisationUnits();
+
+            if ( units != null && !units.isEmpty() )
+            {
+                messageSender.sendMessage( smsSubject, smsMessage, currentUserService.getCurrentUser(), false,
+                    new HashSet<User>( userService.getUsersByOrganisationUnits( units ) ), gatewayId );
+            }
+        }
+
         return SUCCESS;
     }
 }

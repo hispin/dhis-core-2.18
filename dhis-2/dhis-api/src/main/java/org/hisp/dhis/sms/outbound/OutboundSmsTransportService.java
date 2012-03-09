@@ -26,7 +26,7 @@ package org.hisp.dhis.sms.outbound;
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
- 
+
 /**
  * Marker interface for {@code OutboundSmsService outbound sms services}
  * providing actual sms sending.

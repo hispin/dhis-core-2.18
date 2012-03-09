@@ -458,4 +458,9 @@ public class DefaultUserService
 
         return map;
     }
+
+    public Collection<User> getUsersByOrganisationUnits( Collection<OrganisationUnit> units )
+    {
+        return userStore.getUsersByOrganisationUnits( units );
+    }
 }

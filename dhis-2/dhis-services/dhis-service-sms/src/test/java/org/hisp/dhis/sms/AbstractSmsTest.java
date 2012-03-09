@@ -47,6 +47,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 public abstract class AbstractSmsTest
 {
+    protected String gatewayId;
 
     @Autowired
     protected SessionFactory sessionFactory;

@@ -21,7 +21,6 @@ import org.junit.Test;
 @SuppressWarnings( "serial" )
 public class SmsMessageSenderTest
 {
-    
     @Test
     public void testMessageSender()
     {
@@ -38,11 +37,11 @@ public class SmsMessageSenderTest
 
         smsMessageSender.setOutboundSmsService( outboundSmsService );
         smsMessageSender.setUserService( userService );
-        smsMessageSender.sendMessage( "Hello", "hello", user, getUserSet( user ) );
+        smsMessageSender.sendMessage( "Hello", "hello", user, false, getUserSet( user ), null );
 
         verify( outboundSmsService ).isEnabled();
         verify( userService ).getUserSettings( KEY_MESSAGE_SMS_NOTIFICATION, false );
-        verify( outboundSmsService ).sendMessage( refEq(getSms()) );
+        verify( outboundSmsService ).sendMessage( refEq(getSms()), anyString() );
     }
 
     private OutboundSms getSms()

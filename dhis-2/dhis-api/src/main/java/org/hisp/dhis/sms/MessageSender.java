@@ -1,4 +1,4 @@
-package org.hisp.dhis.sms.outbound;
+package org.hisp.dhis.sms;
 
 /*
  * Copyright (c) 2004-2012, University of Oslo
@@ -27,56 +27,21 @@ package org.hisp.dhis.sms.outbound;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.Date;
-import java.util.List;
+import java.util.Set;
 
-import org.hibernate.Session;
-import org.hibernate.SessionFactory;
-import org.hisp.dhis.sms.outbound.OutboundSms;
-import org.hisp.dhis.sms.outbound.OutboundSmsStore;
+import org.hisp.dhis.user.User;
 
-public class HibernateOutboundSmsStore
-    implements OutboundSmsStore
+/**
+ * @author Dang Duy Hieu
+ */
+public interface MessageSender
 {
-    // -------------------------------------------------------------------------
-    // Dependencies
-    // -------------------------------------------------------------------------
-
-    private SessionFactory sessionFactory;
-
-    public void setSessionFactory( SessionFactory sessionFactory )
-    {
-        this.sessionFactory = sessionFactory;
-    }
-
-    @Override
-    public int save( OutboundSms sms )
-    {
-        checkDate( sms );
-        return (Integer) sessionFactory.getCurrentSession().save( sms );
-    }
-
-    private void checkDate( OutboundSms sms )
-    {
-        if ( sms.getDate() == null )
-        {
-            sms.setDate( new Date() );
-        }
-
-    }
-
-    @Override
-    public OutboundSms get( int id )
-    {
-        Session session = sessionFactory.getCurrentSession();
-        return (OutboundSms) session.get( OutboundSms.class, id );
-    }
-
-    @Override
-    @SuppressWarnings( "unchecked" )
-    public List<OutboundSms> getAll()
-    {
-        Session session = sessionFactory.getCurrentSession();
-        return (List<OutboundSms>) session.createCriteria( OutboundSms.class ).list();
-    }
+    /**
+     * Sends a message. The given message will be sent to the given set of
+     * phones.
+     * 
+     * @param message the message to send.
+     * @param recipients the recipients will receive the sms message.
+     */
+    void sendMessage( String subject, String text, User sender, boolean isPhone, Set<?> recipients, String gatewayId );
 }
