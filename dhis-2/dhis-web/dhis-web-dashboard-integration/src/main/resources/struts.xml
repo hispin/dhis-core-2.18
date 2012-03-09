@@ -18,13 +18,6 @@
       <param name="javascripts">javascript/dropdown.js</param>
     </action>
 
-    <action name="getChart" class="org.hisp.dhis.dashboard.action.GetChartAction">
-      <result name="success" type="chart">
-        <param name="width">310</param>
-        <param name="height">310</param>
-      </result>
-    </action>
-
     <action name="setAreaItem" class="org.hisp.dhis.dashboard.action.SetAreaItemAction">
       <result name="success" type="velocity-xml">/dhis-web-dashboard-integration/responseSuccess.vm</result>
       <param name="onExceptionReturn">plainTextError</param>
