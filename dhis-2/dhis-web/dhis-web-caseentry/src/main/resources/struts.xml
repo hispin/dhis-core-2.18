@@ -261,14 +261,8 @@
 			<result name="success" type="velocity">/main.vm</result>
 			<param name="page">/dhis-web-caseentry/tabularReportSelect.vm</param>
 			<param name="menu">/dhis-web-caseentry/reportsMenu.vm</param>
-			<param name="javascripts">../dhis-web-commons/ouwt/ouwt.js,javascript/tabularReport.js</param>
+			<param name="javascripts">../dhis-web-commons/ouwt/ouwt.js,javascript/tabularReport.js,javascript/commons.js</param>
 			<param name="stylesheets">../dhis-web-caseentry/style/report.css</param>
-		</action>
-		
-		<action name="loadAllPrograms"
-			class="org.hisp.dhis.caseentry.action.report.TabularReportSelectAction">
-			<interceptor-ref name="organisationUnitTreeStack" />
-			<result name="success" type="velocity-json">/dhis-web-caseentry/responsePrograms.vm</result>
 		</action>
 		
 		<action name="loadTabularProgramStages"
