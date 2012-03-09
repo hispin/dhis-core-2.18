@@ -2,9 +2,6 @@
 function organisationUnitSelected( orgUnits, orgUnitNames )
 {
 	setInnerHTML( 'contentDiv' , '');
-	clearListById( 'programStageId' );
-	clearListById( 'availableDataElementIds' );
-	clearListById( 'dataElementIds' );
 	setFieldValue( 'orgunitname', orgUnitNames[0] );
 			
 	showCriteria();
