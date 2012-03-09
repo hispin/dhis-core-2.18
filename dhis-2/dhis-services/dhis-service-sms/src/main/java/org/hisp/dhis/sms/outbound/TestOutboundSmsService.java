@@ -17,13 +17,12 @@ import org.hisp.dhis.sms.outbound.OutboundSmsTransportService;
 public class TestOutboundSmsService
     implements OutboundSmsTransportService
 {
-
     private static final Log log = LogFactory.getLog( TestOutboundSmsService.class );
 
     private boolean enabled = true;
 
     @Override
-    public void sendMessage( OutboundSms sms )
+    public void sendMessage( OutboundSms sms, String gatewayId )
         throws SmsServiceException
     {
         if (!enabled)

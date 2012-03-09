@@ -89,7 +89,7 @@ public class OutboundSmsServiceImpl
 
     @Override
     @Transactional
-    public void sendMessage( OutboundSms sms )
+    public void sendMessage( OutboundSms sms, String gatewayId )
         throws SmsServiceException
     {
         if ( !enabled )
@@ -101,7 +101,7 @@ public class OutboundSmsServiceImpl
 
         if ( transportService != null )
         {
-            sendMessageInternal( sms );
+            sendMessageInternal( sms, gatewayId );
         }
     }
 
@@ -109,11 +109,11 @@ public class OutboundSmsServiceImpl
     // Support methods
     // -------------------------------------------------------------------------
 
-    private void sendMessageInternal( OutboundSms sms )
+    private void sendMessageInternal( OutboundSms sms, String id )
     {
         try
         {
-            transportService.sendMessage( sms );
+            transportService.sendMessage( sms, id );
             sms.setStatus( OutboundSmsStatus.SENT );
         }
         catch ( SmsServiceException e )

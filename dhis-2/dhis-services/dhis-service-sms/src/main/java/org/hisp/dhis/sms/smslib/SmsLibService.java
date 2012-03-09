@@ -61,13 +61,13 @@ public class SmsLibService
     }
 
     @Override
-    public void sendMessage( OutboundSms sms )
+    public void sendMessage( OutboundSms sms, String gatewayId )
         throws SmsServiceException
     {
         String recipient;
 
         Set<String> recipients = sms.getRecipients();
-
+        
         if ( recipients.size() == 0 )
         {
             log.warn( "Trying to send sms without recipients: " + sms );
@@ -96,7 +96,15 @@ public class SmsLibService
         try
         {
             log.debug( "Sending message " + sms );
-            sent = getService().sendMessage( message );
+
+            if ( gatewayId == null || gatewayId.isEmpty() )
+            {
+                sent = getService().sendMessage( message );
+            }
+            else
+            {
+                sent = getService().sendMessage( message, gatewayId );
+            }
         }
         catch ( SMSLibException e )
         {
@@ -267,7 +275,6 @@ public class SmsLibService
         public void process( AGateway gateway, OutboundMessage msg )
         {
             log.debug( "Sent message through gateway " + gateway.getGatewayId() + ": " + msg );
-
         }
     }
 

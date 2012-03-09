@@ -36,7 +36,6 @@ import com.opensymphony.xwork2.Action;
 public class SendSMSAction
     implements Action
 {
-
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
@@ -49,7 +48,7 @@ public class SendSMSAction
     }
 
     // -------------------------------------------------------------------------
-    // Action Implementation
+    // Input & Output
     // -------------------------------------------------------------------------
 
     String message = "";
@@ -59,7 +58,6 @@ public class SendSMSAction
         return message;
     }
 
-    
     public boolean getSmsServiceStatus()
     {
         return outboundSmsService.isEnabled();
@@ -86,6 +84,9 @@ public class SendSMSAction
         this.send = send;
     }
 
+    // -------------------------------------------------------------------------
+    // Action Implementation
+    // -------------------------------------------------------------------------
 
     @Override
     public String execute()
@@ -95,7 +96,7 @@ public class SendSMSAction
         {
             try
             {
-                outboundSmsService.sendMessage( new OutboundSms( msg, recipient ) );
+                outboundSmsService.sendMessage( new OutboundSms( msg, recipient ), null );
                 this.message = "Sent message to " + recipient;
             }
             catch ( SmsServiceException e )

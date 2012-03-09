@@ -29,6 +29,8 @@ package org.hisp.dhis.sms.outbound;
 
 import static org.junit.Assert.fail;
 import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.anyString;
+import static org.mockito.Matchers.same;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
@@ -58,14 +60,15 @@ public class OutboundSmsServiceTest
     private OutboundSmsStore outboundSmsStore;
 
     @Test
-    @Ignore //FIXME
+    @Ignore
+    // FIXME
     public void testIntegrationEnabledNoTransport()
     {
         outboundSmsService.initialize( new SmsConfiguration( true ) );
 
         OutboundSms outboundSms = getOutboundSms();
 
-        outboundSmsService.sendMessage( outboundSms );
+        outboundSmsService.sendMessage( outboundSms, gatewayId );
 
         List<OutboundSms> smses = outboundSmsStore.getAll();
         assertNotNullSize( smses, 1 );
@@ -81,13 +84,12 @@ public class OutboundSmsServiceTest
         OutboundSmsService tmpService = new OutboundSmsServiceImpl();
         try
         {
-            tmpService.sendMessage( getOutboundSms() );
-            fail("Should fail since service is not enabled");
+            tmpService.sendMessage( getOutboundSms(), gatewayId );
+            fail( "Should fail since service is not enabled" );
         }
         catch ( SmsServiceException e )
         {
         }
-
     }
 
     @Test
@@ -99,25 +101,28 @@ public class OutboundSmsServiceTest
         tmpService.setTransportService( transportService );
 
         OutboundSms outboundSms = getOutboundSms();
-   
+
         // Service not enabled
         try
         {
-            tmpService.sendMessage( outboundSms );
-            fail("Should fail since service is not enabled");
+            tmpService.sendMessage( outboundSms, gatewayId );
+            fail( "Should fail since service is not enabled" );
         }
         catch ( SmsServiceException e )
         {
         }
 
         // Not sent message to transport service
-        verify( transportService, never() ).sendMessage( any( OutboundSms.class ) );
+        verify( transportService, never() ).sendMessage( same( outboundSms ), anyString() );
 
         // Enable service
         tmpService.initialize( new SmsConfiguration( true ) );
 
-        tmpService.sendMessage( outboundSms );
-        verify( transportService ).sendMessage( outboundSms );
+        tmpService.sendMessage( outboundSms, gatewayId );
+
+        verify( transportService ).sendMessage( same( outboundSms ), anyString() );
+
+        verify( transportService ).sendMessage( same( outboundSms ), anyString() );
     }
 
     @Test
@@ -133,17 +138,19 @@ public class OutboundSmsServiceTest
 
         OutboundSms outboundSms = getOutboundSms();
 
-        doThrow( new SmsServiceException( "" ) ).when( transportService ).sendMessage( outboundSms );
+        doThrow( new SmsServiceException( "" ) ).when( transportService )
+            .sendMessage( same( outboundSms ), anyString() );
 
-        tmpService.sendMessage( outboundSms );
+        tmpService.sendMessage( outboundSms, gatewayId );
 
-        verify( transportService ).sendMessage( outboundSms );
+        verify( transportService ).sendMessage( any( OutboundSms.class ), anyString() );
         ArgumentCaptor<OutboundSms> argument = ArgumentCaptor.forClass( OutboundSms.class );
         verify( tmpStore, times( 1 ) ).save( argument.capture() );
 
         // Is the SMS Marked with error status in store?
         // Can't test this without using hibernate or adding update on store...
-        //assertEquals( OutboundSmsStatus.ERROR, argument.getValue().getStatus() );
+        // assertEquals( OutboundSmsStatus.ERROR,
+        // argument.getValue().getStatus() );
     }
 
 }
