@@ -194,7 +194,8 @@ public class MapController
         
         if ( image != null )
         {
-            response.setContentType( ContextUtils.CONTENT_TYPE_PNG );
+            ContextUtils.configureResponse( response, ContextUtils.CONTENT_TYPE_PNG, true, "mapview.png", false );
+            
             ImageIO.write( image, "PNG", response.getOutputStream() );
         }
         else
