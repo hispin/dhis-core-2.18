@@ -47,7 +47,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-import jxl.Workbook;
 import jxl.write.Label;
 import jxl.write.Number;
 import jxl.write.WritableCellFormat;
@@ -66,6 +65,7 @@ import org.hisp.dhis.common.Grid;
 import org.hisp.dhis.common.GridHeader;
 import org.hisp.dhis.system.util.CodecUtils;
 import org.hisp.dhis.system.util.Encoder;
+import org.hisp.dhis.system.util.ExcelUtils;
 import org.hisp.dhis.system.util.MathUtils;
 import org.hisp.dhis.system.util.StreamUtils;
 import org.hisp.dhis.system.velocity.VelocityManager;
@@ -180,8 +180,8 @@ public class GridUtils
     public static void toXls( List<Grid> grids, OutputStream out )
         throws Exception
     {
-        WritableWorkbook workbook = Workbook.createWorkbook( out );
-                
+        WritableWorkbook workbook = ExcelUtils.openWorkbook( out );
+        
         for ( int i = 0; i < grids.size(); i++ )
         {
             Grid grid = grids.get( i );
@@ -201,7 +201,7 @@ public class GridUtils
     public static void toXls( Grid grid, OutputStream out )
         throws Exception
     {
-        WritableWorkbook workbook = Workbook.createWorkbook( out );
+        WritableWorkbook workbook = ExcelUtils.openWorkbook( out );
         
         String sheetName = CodecUtils.filenameEncode( StringUtils.defaultIfEmpty( grid.getTitle(), XLS_SHEET_PREFIX + 1 ) );
 

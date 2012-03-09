@@ -39,8 +39,9 @@ public interface MessageSender
     /**
      * Sends a message. The given message will be sent to the given set of users.
      * 
-     * @param message the message to send.
+     * @param subject the message subject.
+     * @param text the message text.
      * @param users the users to send the message to.
      */
-    void sendMessage( String subject, String text, User sender, Set<User> users, String gatewayId );
+    void sendMessage( String subject, String text, User sender, Set<User> users );
 }
