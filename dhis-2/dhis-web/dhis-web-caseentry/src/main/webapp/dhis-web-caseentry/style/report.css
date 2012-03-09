@@ -27,9 +27,9 @@ input[type="button"], input[type="submit"]
   width:75%;
 }
   
-.grid tr {
-  background-color:#eee;
-  }
+.filter { background: #cccccc; } 
+  
+.rowGrid{ background-color:#eee; }
   
 .grid th, .grid td
 {
@@ -39,8 +39,6 @@ input[type="button"], input[type="submit"]
   border:1px solid #fff;
 }
 
-.small-button {
-	font-size: .8em !important;
-}
+.small-button { font-size: .8em !important; }
 
 .ui-autocomplete { height: 100px; overflow-y: scroll; overflow-x: hidden;}

@@ -17,20 +17,21 @@
 	  <td><label>$i18n.getString( "reporting_unit" )</label></td>
 	  <td colspan='2'><input type="text" readonly="readonly" id='orgunitname' name='orgunitname' #if($!orgunit) value="$!orgunit.name" #else value="[$i18n.getString( 'select' )]" #end ></td>
     </tr>
-    
+	
     <tr>
-        <td><label for="programId">$i18n.getString( "program" ) <em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
-        <td colspan='2'>
-            <select id="programId" name="programId" #if($!programs) #else disabled #end class="{validate:{required:true}}" onchange='loadProgramStages();'>
-				<option value=''>[$i18n.getString('please_select')]</option>
-				#foreach( $program in $programs )
-				<option value='$program.id'>$program.name</option>
-				#end
+		<td>
+		   $i18n.getString( "facility_by" )
+		</td>
+		<td>
+			<select id="facilityLB" name="facilityLB" style="width: 30em">
+				<option value="selected" selected="selected">$i18n.getString( "selected" )</option>
+				<option value="childrenOnly" >$i18n.getString( "children_only" )</option>
+				<option value="all">$i18n.getString( "all" )</option>
 			</select>
-        </td>
-    </tr>
-        
-    <tr>
+		</td>
+	</tr>
+	
+	<tr>
         <td><label>$i18n.getString( "start_date" ) <em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
         <td colspan='2'>
             <input type="text" id="startDate" name="startDate" class="{validate:{required:true}}" />
@@ -49,6 +50,20 @@
             </script> 				
         </td>      
     </tr>
+	
+    <tr>
+        <td><label for="programId">$i18n.getString( "program" ) <em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
+        <td colspan='2'>
+            <select id="programId" name="programId" #if($!programs) #else disabled #end class="{validate:{required:true}}" onchange='loadProgramStages();'>
+				<option value=''>[$i18n.getString('please_select')]</option>
+				#foreach( $program in $programs )
+				<option value='$program.id' singleevent='$program.singleEvent'>$program.name</option>
+				#end
+			</select>
+        </td>
+    </tr>
+        
+    
 	<tr>
         <td><label>$i18n.getString( "program_stage" ) <em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
         <td colspan='2'>
@@ -81,18 +96,7 @@
             <a href="javascript:moveDownSelectedOption('dataElementIds')"><img src="../images/move_down.png"/></a><br/><br/>
         </td>  			
     </tr>
-    <tr>
-		<td>
-		   $i18n.getString( "facility_by" )
-		</td>
-		<td>
-			<select id="facilityLB" name="facilityLB" style="width: 30em">
-				<option value="children" selected="selected">$i18n.getString( "all_children" )</option>
-				<option value="immChildren" >$i18n.getString( "immediate_children" )</option>
-				<option value="random">$i18n.getString( "selected" )</option>
-			</select>
-		</td>
-	</tr>
+   
 	    
 	<tr>
     	<td></td>

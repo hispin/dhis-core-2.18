@@ -188,11 +188,11 @@ public class CaseAggregationResultAction
             return SUCCESS;
         }
 
-        if ( facilityLB.equals( "random" ) )
+        if ( facilityLB.equals( "selected" ) )
         {
             orgunits.add( selectedOrgunit );
         }
-        else if ( facilityLB.equals( "immChildren" ) )
+        else if ( facilityLB.equals( "childrenOnly" ) )
         {
             orgunits.addAll( getChildOrgUnitTree( selectedOrgunit ) );
         }

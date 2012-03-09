@@ -203,7 +203,7 @@ public class GenerateTabularReportAction
 
         Set<Integer> orgunitIds = new HashSet<Integer>();
 
-        if ( facilityLB.equals( "random" ) )
+        if ( facilityLB.equals( "selected" ) )
         {
             orgunitIds.add( selectedOrgunit.getId() );
         }
@@ -215,7 +215,7 @@ public class GenerateTabularReportAction
 
             orgunitIds.addAll( childOrgUnitIdentifiers );
 
-            if ( facilityLB.equals( "immChildren" ) )
+            if ( facilityLB.equals( "childrenOnly" ) )
             {
                 orgunitIds.remove( selectedOrgunit.getId() );
             }

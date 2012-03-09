@@ -29,8 +29,6 @@ package org.hisp.dhis.caseentry.action.report;
 
 import java.util.Collection;
 
-import org.hisp.dhis.organisationunit.OrganisationUnit;
-import org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager;
 import org.hisp.dhis.program.Program;
 import org.hisp.dhis.program.ProgramService;
 
@@ -47,14 +45,7 @@ public class TabularReportSelectAction
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
-
-    private OrganisationUnitSelectionManager selectionManager;
-
-    public void setSelectionManager( OrganisationUnitSelectionManager selectionManager )
-    {
-        this.selectionManager = selectionManager;
-    }
-
+    
     private ProgramService programService;
 
     public void setProgramService( ProgramService programService )
@@ -65,13 +56,6 @@ public class TabularReportSelectAction
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
-
-    private OrganisationUnit orgunit;
-
-    public OrganisationUnit getOrgunit()
-    {
-        return orgunit;
-    }
 
     private Collection<Program> programs;
 
@@ -86,9 +70,7 @@ public class TabularReportSelectAction
 
     public String execute()
     {
-        orgunit = selectionManager.getSelectedOrganisationUnit();
-
-        programs = programService.getPrograms( orgunit );
+         programs = programService.getAllPrograms();
 
         return SUCCESS;
     }

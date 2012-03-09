@@ -261,7 +261,7 @@ public class HibernateProgramStageInstanceStore
 
         String condition = " WHERE psi.duedate >= '" + DateUtils.getMediumDateString( startDate )
             + "' AND psi.duedate <= '" + DateUtils.getMediumDateString( endDate ) + "' "
-            + " AND psi.organisationunitid in( " + orgunitIds + ") ";
+            + " AND psi.organisationunitid in " + splitListHelper ( orgunitIds ) + " ";
 
         Iterator<Integer> keys = searchingKeys.keySet().iterator();
         boolean index = false;
@@ -334,6 +334,35 @@ public class HibernateProgramStageInstanceStore
         {
             holder.close();
         }
+    }
+    
+    /**
+     * Splits a list of integers by comma. Use this method if you have a list
+     * that will be used in f.ins. a WHERE xxx IN (list) clause in SQL.
+     * 
+     * @param Collection <Integer> list of Integers
+     * @return the list as a string splitted by a comma.
+     */
+    private String splitListHelper( Collection<Integer> list )
+    {
+        StringBuffer sb = new StringBuffer();
+        int count = 0;
+
+        sb.append( "(" );
+        for ( Integer i : list )
+        {
+            sb.append( i );
+
+            count++;
+
+            if ( count < list.size() )
+            {
+                sb.append( "," );
+            }
+        }
+        sb.append( ")" );
+
+        return sb.toString();
     }
 
 }

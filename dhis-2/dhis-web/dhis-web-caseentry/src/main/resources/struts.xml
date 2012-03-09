@@ -265,7 +265,7 @@
 			<param name="stylesheets">../dhis-web-caseentry/style/report.css</param>
 		</action>
 		
-		<action name="loadProgramsByOrgunit"
+		<action name="loadAllPrograms"
 			class="org.hisp.dhis.caseentry.action.report.TabularReportSelectAction">
 			<interceptor-ref name="organisationUnitTreeStack" />
 			<result name="success" type="velocity-json">/dhis-web-caseentry/responsePrograms.vm</result>
