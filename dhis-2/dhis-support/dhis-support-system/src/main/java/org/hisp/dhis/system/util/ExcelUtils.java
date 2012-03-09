@@ -35,6 +35,7 @@ import java.util.List;
 import java.util.Map;
 
 import jxl.Workbook;
+import jxl.WorkbookSettings;
 import jxl.format.Alignment;
 import jxl.format.Border;
 import jxl.format.BorderLineStyle;
@@ -399,7 +400,10 @@ public class ExcelUtils
     {
         try
         {
-            return Workbook.createWorkbook( outputStream );
+            WorkbookSettings ws = new WorkbookSettings();
+            ws.setEncoding( "UTF-8" );
+            
+            return Workbook.createWorkbook( outputStream, ws );
         }
         catch ( IOException e )
         {

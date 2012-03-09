@@ -27,7 +27,6 @@
 
 package org.hisp.dhis.caseentry.action.patient;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.hisp.dhis.common.Grid;
@@ -35,7 +34,6 @@ import org.hisp.dhis.i18n.I18n;
 import org.hisp.dhis.i18n.I18nFormat;
 import org.hisp.dhis.patient.Patient;
 import org.hisp.dhis.patient.PatientService;
-import org.hisp.dhis.program.ProgramInstance;
 import org.hisp.dhis.program.ProgramInstanceService;
 
 import com.opensymphony.xwork2.Action;
