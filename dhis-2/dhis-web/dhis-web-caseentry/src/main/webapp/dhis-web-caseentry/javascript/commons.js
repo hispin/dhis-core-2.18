@@ -118,14 +118,14 @@ function showPatientDetails( patientId )
 
 function showPatientHistory( patientId )
 {
-	$('#detailsHistory').load("getPatientHistory.action", 
+	$('#detailsInfo').load("getPatientHistory.action", 
 		{
 			patientId:patientId
 		}
 		, function( ){
 			
 		}).dialog({
-			title: i18n_patient_history,
+			title: i18n_patient_details_and_history,
 			maximize: true, 
 			closable: true,
 			modal:false,

@@ -58,12 +58,10 @@
 				#if($mapPatientOrgunit.size()!=0)
 				<td>$!mapPatientOrgunit.get($patient.id)</td>
 				#end
-								
 				<td>
 					<a href="javascript:showSelectedDataRecoding('$patient.id');" title="$i18n.getString( 'data_entry' )"><img src="images/data_entry.png" alt="$i18n.getString( 'data_entry' )"></a>   
 					<a href="javascript:patientChartList( '$patient.id' )" title="$i18n.getString( 'view_patient_chart' )"><img src="../images/add_to_dashboard.png" alt="$i18n.getString( 'view_patient_chart' )"></a> 
-					<a href="javascript:showPatientHistory( '$patient.id' )" title='$i18n.getString( "show_details" )'><img src="../images/edit_sections.png" alt='$i18n.getString( "show_details" )'></a>
-					<a href="javascript:showPatientDetails( $patient.id )" title="$i18n.getString( 'show_details' )"><img src="../images/information.png" alt="$i18n.getString( 'show_details' )"></a>
+					<a href="javascript:showPatientHistory( '$patient.id' )" title='$i18n.getString( "patient_details_and_history" )'><img src="../images/information.png" alt='$i18n.getString( "patient_details_and_history" )'></a>
                 </td>               				
 			</tr>
 			#if( $mark )
@@ -74,10 +72,10 @@
     	#end
     	</tbody>
 		<tr>
-		<td colspan="8">
+		<td colspan="6">
 			<p></p>
 			<div class="paging-container">
-					#parse( "/dhis-web-commons/paging/paging.vm" )
+				#parse( "/dhis-web-commons/paging/paging.vm" )
 			</div>
 		</td>
 		<td></td>
@@ -88,7 +86,6 @@
 </table>
 
 <div id="detailsInfo"></div>
-<div id="detailsHistory"></div>
 <div id="patientChartListDiv"></div>
 <div id="chartView" class="hidden">
 	<img id="chartImage" src="" class="padding-chart"></img>
@@ -96,6 +93,5 @@
 
 <span id="message"></span>
 <script>
-	var i18n_patient_details = '$encoder.jsEscape( $i18n.getString( "patient_details" ) , "'" )';
-	var i18n_patient_history = '$encoder.jsEscape( $i18n.getString( "patient_history" ) , "'" )';
+	var i18n_patient_details_and_history = '$encoder.jsEscape( $i18n.getString( "patient_details_and_history" ) , "'" )';
 </script>

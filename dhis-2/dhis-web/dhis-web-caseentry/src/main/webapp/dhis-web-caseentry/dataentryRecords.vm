@@ -34,7 +34,7 @@
 						#if( $sortPatientAttribute )
 							<td>$!patientAttributeValueMap.get( $patient.id ).value</td>
 						#end
-                        <td><a href="javascript:showPatientDetails( '$patient.id' )" title="$i18n.getString( 'show_details' )">$patient.getFullName()</a></td>                    
+                        <td><a href="javascript:showPatientHistory( '$patient.id' )" title="$i18n.getString( 'patient_details_and_history' )">$patient.getFullName()</a></td>                    
                         #foreach( $programStageInstance in $programStageInstanceMap.get( $programInstance ) )
                             #if( $programStageInstance.executionDate )
                                 <td class="cent" bgcolor="$colorMap.get( $programStageInstance.id )">
@@ -76,5 +76,5 @@
 	jQuery(document).ready(function(){	
 		tableSorter( 'patientList' );
 	});
-	var i18n_patient_details = '$encoder.jsEscape( $i18n.getString( "patient_details" ) , "'" )';
+	var i18n_patient_details_and_history = '$encoder.jsEscape( $i18n.getString( "patient_details_and_history" ) , "'" )';
 </script>

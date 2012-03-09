@@ -245,8 +245,9 @@ public class DefaultProgramStageInstanceService
         // ---------------------------------------------------------------------
 
         grid.setTitle( programInstance.getProgram().getName() );
-        grid.setSubtitle( i18n.getString( "date_of_enrollment" ) + ": " + programInstance.getEnrollmentDate() + " - "
-            + i18n.getString( "date_of_incident" ) + ": " + programInstance.getDateOfIncident() );
+        grid.setSubtitle( i18n.getString( "date_of_enrollment" ) + ": "
+            + format.formatDate( programInstance.getEnrollmentDate() ) + " - " + i18n.getString( "date_of_incident" )
+            + ": " + format.formatDate( programInstance.getDateOfIncident() ) );
 
         // ---------------------------------------------------------------------
         // Headers && Get dataelements belongs to programs
@@ -265,7 +266,7 @@ public class DefaultProgramStageInstanceService
         // ---------------------------------------------------------------------
         // First Column
         // ---------------------------------------------------------------------
-       
+
         List<Object> deValues = new ArrayList<Object>();
         Map<Integer, Integer> mapDataElements = new HashMap<Integer, Integer>();
 
@@ -278,7 +279,7 @@ public class DefaultProgramStageInstanceService
             mapDataElements.put( dataElement.getId(), columnIndex );
             columnIndex++;
         }
-      
+
         grid.addColumn( deValues );
 
         // ---------------------------------------------------------------------
@@ -290,7 +291,7 @@ public class DefaultProgramStageInstanceService
         for ( ProgramStageInstance programStageInstance : programStageInstances )
         {
             Object[] columnValues = new Object[dataElements.size()];
-           
+
             Collection<PatientDataValue> patientDataValues = patientDataValueService
                 .getPatientDataValues( programStageInstance );
 
@@ -307,7 +308,7 @@ public class DefaultProgramStageInstanceService
 
                 columnValues[mapDataElements.get( dataElement.getId() )] = value;
             }
-            
+
             grid.addColumn( Arrays.asList( columnValues ) );
         }
 
