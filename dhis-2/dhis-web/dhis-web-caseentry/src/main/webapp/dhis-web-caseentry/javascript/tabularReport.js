@@ -1,36 +1,13 @@
 
 function organisationUnitSelected( orgUnits, orgUnitNames )
 {
-	hideById('contentDiv');
+	setInnerHTML( 'contentDiv' , '');
 	clearListById( 'programStageId' );
 	clearListById( 'availableDataElementIds' );
-	
-	$.getJSON( 'loadAllPrograms.action',{}
-		, function( json ) 
-		{
-			clearListById( 'programId' );
-			addOptionById( 'programId', '', i18n_please_select );
-			setFieldValue('orgunitname', orgUnitNames[0]);
-			var preSelectedProgramId = getFieldValue('selectedProgramId');
-			for ( i in json.programs ) 
-			{ 
-				$('#programId').append( '<option value=' + json.programs[i].id 
-					+ ' singleevent=' + json.programs[i].singleEvent + '>' 
-					+ json.programs[i].name + '</option>' );
-			}
-
-			if( json.programs.length > 0 )
-			{
-				enable('generateBtn');
-			}
-			else
-			{
-				disable('generateBtn');
-			}
+	clearListById( 'dataElementIds' );
+	setFieldValue( 'orgunitname', orgUnitNames[0] );
 			
-			showCriteria();
-			
-		} );
+	showCriteria();
 }
 
 selection.setListenerFunction( organisationUnitSelected );
@@ -196,7 +173,8 @@ function loadGeneratedReport()
 	
 	var params = getParams();
 	if( params != '' )
-	{
+	{	
+		setInnerHTML( 'contentDiv' , '');
 		$.ajax({
 			   type: "POST",
 			   url: "generateTabularReport.action",
@@ -224,7 +202,11 @@ function searchTabularReport( event )
 		contentDiv = 'gridContent';
 
 		var params = getParams();
-		if( params != '' )
+		if( params == '' )
+		{
+			hideById('loaderDiv');
+		}
+		else
 		{
 			$.ajax({
 				   type: "POST",

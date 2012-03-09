@@ -13,13 +13,21 @@
 
 <h5>$!encoder.htmlEncode( $grid.subtitle )</h5>
 
+#set( $anonymous = "true")
+#if( $grid.getVisibleHeaders().size() <  $grid.getHeaders().size() )
+	#set( $anonymous = "false" )
+#end
+
 <table class="listTable grid" id='gridTable'>
 	<tr>
-		<th></th>
+		<th>#</th>
 		#foreach( $dataElement in $dataElements )
 			<th>
 				$!encoder.htmlEncode( $dataElement.name )
 			</th>
+		#end
+		#if( $anonymous == "false" )
+			<th>$i18n.getString('operator')</th>
 		#end
 	</tr>
 	
@@ -29,6 +37,9 @@
 			<td>
 				<input type='text' id='$dataElement.id' title='$i18n.getString("how_to_search_tabular_report")' onkeypress='searchTabularReport( event );' #if($dataElement.optionSet) options='$dataElement.optionSet.options' #end />
 			</td>
+		#end
+		#if( $anonymous == "false" )
+			<td></td>
 		#end
 	</tr>
 	

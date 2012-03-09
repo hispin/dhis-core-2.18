@@ -306,6 +306,8 @@ public class DefaultProgramStageInstanceService
         {
             Program program = programStage.getProgram();
 
+            Boolean anonymous = program.getAnonymous();
+
             // ---------------------------------------------------------------------
             // Create a grid
             // ---------------------------------------------------------------------
@@ -321,6 +323,11 @@ public class DefaultProgramStageInstanceService
             for ( DataElement dataElement : dataElements )
             {
                 grid.addHeader( new GridHeader( dataElement.getName(), false, false ) );
+            }
+
+            if ( !anonymous )
+            {
+                grid.addHeader( new GridHeader( "", true, false ) );
             }
 
             // ---------------------------------------------------------------------
@@ -351,6 +358,16 @@ public class DefaultProgramStageInstanceService
                     {
                         grid.addValue( "" );
                     }
+                }
+                
+                if ( programStageInstance.getProgramInstance().getPatient() != null )
+                {
+                    grid.addValue( programStageInstance.getProgramInstance().getPatient()
+                        .getId() );
+                }
+                else
+                {
+                    grid.addValue( "" );
                 }
             }
         }
