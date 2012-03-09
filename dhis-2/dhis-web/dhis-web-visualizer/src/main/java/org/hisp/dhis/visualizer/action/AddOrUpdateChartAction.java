@@ -35,6 +35,7 @@ import org.hisp.dhis.chart.ChartService;
 import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.dataset.DataSetService;
 import org.hisp.dhis.indicator.IndicatorService;
+import org.hisp.dhis.organisationunit.OrganisationUnitGroupService;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.period.RelativePeriods;
 import org.hisp.dhis.user.CurrentUserService;
@@ -84,6 +85,13 @@ public class AddOrUpdateChartAction
     public void setOrganisationUnitService( OrganisationUnitService organisationUnitService )
     {
         this.organisationUnitService = organisationUnitService;
+    }
+
+    private OrganisationUnitGroupService organisationUnitGroupService;
+
+    public void setOrganisationUnitGroupService( OrganisationUnitGroupService organisationUnitGroupService )
+    {
+        this.organisationUnitGroupService = organisationUnitGroupService;
     }
 
     private CurrentUserService currentUserService;
@@ -152,9 +160,9 @@ public class AddOrUpdateChartAction
     {
         this.dataElementIds = dataElementIds;
     }
-    
+
     private List<Integer> dataSetIds = new ArrayList<Integer>();
-    
+
     public void setDataSetIds( List<Integer> dataSetIds )
     {
         this.dataSetIds = dataSetIds;
@@ -208,7 +216,7 @@ public class AddOrUpdateChartAction
     {
         this.thisYear = thisYear;
     }
-    
+
     private boolean lastYear;
 
     public void setLastYear( boolean lastYear )
@@ -228,6 +236,13 @@ public class AddOrUpdateChartAction
     public void setOrganisationUnitIds( List<Integer> organisationUnitIds )
     {
         this.organisationUnitIds = organisationUnitIds;
+    }
+
+    private Integer organisationUnitGroupSetId;
+
+    public void setOrganisationUnitGroupSetId( Integer organisationUnitGroupSetId )
+    {
+        this.organisationUnitGroupSetId = organisationUnitGroupSetId;
     }
 
     private Boolean system;
@@ -292,14 +307,14 @@ public class AddOrUpdateChartAction
     {
         this.targetLineLabel = targetLineLabel;
     }
-    
+
     private Double baseLineValue;
 
     public void setBaseLineValue( Double baseLineValue )
     {
         this.baseLineValue = baseLineValue;
     }
-    
+
     private String baseLineLabel;
 
     public void setBaseLineLabel( String baseLineLabel )
@@ -313,7 +328,7 @@ public class AddOrUpdateChartAction
 
     public String execute()
         throws Exception
-    {        
+    {
         Chart chart = null;
 
         if ( uid != null )
@@ -353,35 +368,35 @@ public class AddOrUpdateChartAction
         if ( indicatorIds != null )
         {
             chart.getIndicators().clear();
-            
+
             for ( Integer id : indicatorIds )
             {
                 chart.getIndicators().add( indicatorService.getIndicator( id ) );
             }
         }
-        
+
         if ( dataElementIds != null )
         {
             chart.getDataElements().clear();
-            
+
             for ( Integer id : dataElementIds )
             {
                 chart.getDataElements().add( dataElementService.getDataElement( id ) );
             }
         }
-        
+
         if ( dataSetIds != null )
         {
             chart.getDataSets().clear();
-            
+
             for ( Integer id : dataSetIds )
             {
                 chart.getDataSets().add( dataSetService.getDataSet( id ) );
             }
         }
 
-        if ( lastMonth || last12Months || lastQuarter || last4Quarters || lastSixMonth || 
-            last2SixMonths || thisYear || lastYear || last5Years )
+        if ( lastMonth || last12Months || lastQuarter || last4Quarters || lastSixMonth || last2SixMonths || thisYear
+            || lastYear || last5Years )
         {
             RelativePeriods rp = new RelativePeriods();
             rp.setReportingMonth( lastMonth );
@@ -400,11 +415,17 @@ public class AddOrUpdateChartAction
         if ( organisationUnitIds != null )
         {
             chart.getOrganisationUnits().clear();
-            
+
             for ( Integer id : organisationUnitIds )
             {
                 chart.getOrganisationUnits().add( organisationUnitService.getOrganisationUnit( id ) );
             }
+        }
+
+        if ( organisationUnitGroupSetId != null )
+        {
+            chart.setOrganisationUnitGroupSet( organisationUnitGroupService
+                .getOrganisationUnitGroupSet( organisationUnitGroupSetId ) );
         }
 
         if ( system == null )
@@ -451,7 +472,7 @@ public class AddOrUpdateChartAction
 
         chart.setBaseLineValue( baseLineValue );
         chart.setBaseLineLabel( baseLineLabel );
-        
+
         chartService.saveOrUpdate( chart );
 
         return SUCCESS;

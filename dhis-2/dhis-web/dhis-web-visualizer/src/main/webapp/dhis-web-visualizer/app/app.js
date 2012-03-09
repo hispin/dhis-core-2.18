@@ -131,7 +131,10 @@ DV.conf = {
                 warning: {
 					filter: DV.i18n.wm_multiple_filter_orgunit
 				}
-            }
+            },
+            organisationunitgroup: {
+				value: 'organisationunitgroup'
+			}
         },        
         chart: {
             series: 'series',
@@ -404,13 +407,13 @@ Ext.onReady( function() {
             addToStorage: function(s, records) {
                 s.each( function(r) {
                     if (!s.storage[r.data.id]) {
-                        s.storage[r.data.id] = {id: r.data.id, name: r.data.name, parent: s.parent};
+                        s.storage[r.data.id] = {id: r.data.id, name: DV.util.string.getEncodedString(r.data.name), parent: s.parent};
                     }
                 });
                 if (records) {
                     Ext.Array.each(records, function(r) {
                         if (!s.storage[r.data.id]) {
-                            s.storage[r.data.id] = {id: r.data.id, name: r.data.name, parent: s.parent};
+                            s.storage[r.data.id] = {id: r.data.id, name: DV.util.string.getEncodedString(r.data.name), parent: s.parent};
                         }
                     });
                 }                        
@@ -664,6 +667,17 @@ Ext.onReady( function() {
                 getGroupSetId: function() {
 					var value = DV.cmp.fieldset.organisationunit.groupsets.getValue();
 					return !value || value === DV.i18n.none || value === DV.conf.finals.cmd.none ? null : value;
+				},
+				getGroupNameByGroupId: function(id) {
+					var gs = DV.init.system.organisationunitgroupsets;
+					for (var k in gs) {
+						for (var i = 0; i < gs[k].length; i++) {
+							if (gs[k][i].id == id) {
+								return gs[k][i].name;
+							}
+						}
+					}
+					return null;
 				}
             }
         },
@@ -1144,6 +1158,11 @@ Ext.onReady( function() {
                 return this.allValuesAreIntegers(DV.value.values) ? '0' : '0.0';
             }
         },
+        variable: {
+			hasValue: function(str) {
+				return (str & str !== 0 && str !== '0' && str !== '');
+			}
+		},
        /*FIXME:This is probably not going to work as intended with UNICODE?*/
         string: {
             getEncodedString: function(text) {
@@ -1158,10 +1177,13 @@ Ext.onReady( function() {
 					var t = r[i][1];
                     values.push({
 						value: r[i][0],
-						type: t === 'in' ? DV.conf.finals.dimension.indicator.value : t === 'de' ? DV.conf.finals.dimension.dataelement.value : t === 'ds' ? DV.conf.finals.dimension.dataset.value : t,
+						type: r[i][1] === 'in' ? DV.conf.finals.dimension.indicator.value :
+							  r[i][1] === 'de' ? DV.conf.finals.dimension.dataelement.value :
+							  r[i][1] === 'ds' ? DV.conf.finals.dimension.dataset.value : t,
 						dataid: r[i][2],
 						periodid: r[i][3],
-						organisationunitid: r[i][4]
+						organisationunitid: r[i][4],
+						organisationunitgroupid: r[i][5]
 					});
                 }
                 return values;
@@ -1310,10 +1332,10 @@ Ext.onReady( function() {
                     }
                 },
                 storage: {},
-                isLoaded: false,
+                isloaded: false,
                 listeners: {
                     load: function(s) {
-						this.isLoaded = true;
+						this.isloaded = true;
                         DV.util.store.addToStorage(s);
                         DV.util.multiselect.filterAvailable(DV.cmp.dimension.dataset.available, DV.cmp.dimension.dataset.selected);
                     }
@@ -1378,7 +1400,7 @@ Ext.onReady( function() {
                     root: 'charts'
                 }
             },
-            isLoaded: false,
+            isloaded: false,
             sorting: {
                 field: 'name',
                 direction: 'ASC'
@@ -1388,7 +1410,7 @@ Ext.onReady( function() {
             },
             listeners: {
                 load: function(s) {
-					s.isLoaded = !s.isLoaded ? true : false;
+					s.isloaded = !s.isloaded ? true : false;
 					
                     s.sortStore();
                     s.each(function(r) {
@@ -1398,13 +1420,32 @@ Ext.onReady( function() {
                     });
                 }
             }
-        })            
+        }),
+        groupset: Ext.create('Ext.data.Store', {
+			fields: ['id', 'name', 'index'],
+			proxy: {
+				type: 'ajax',
+				url: DV.conf.finals.ajax.path_commons + DV.conf.finals.ajax.organisationunitgroupset_get,
+				reader: {
+					type: 'json',
+					root: 'organisationUnitGroupSets'
+				}
+			},
+			isloaded: false,
+			listeners: {
+				load: function() {
+					this.isloaded = true;
+					this.add({id: DV.conf.finals.cmd.none, name: DV.i18n.none, index: -1});
+					this.sort('index', 'ASC');
+				}
+			}
+		})
     };
     
     DV.state = {
         setChart: function(exe, id) {
 			DV.chart.reset();
-			
+						
 			if (id) {
                 Ext.Ajax.request({
                     url: DV.conf.finals.ajax.path_api + DV.conf.finals.ajax.favorite_get + id + '.json?links=false',
@@ -1415,7 +1456,7 @@ Ext.onReady( function() {
 						}
 						
 						var f = Ext.JSON.decode(r.responseText);
-                            
+						
 						if (!this.validation.favorite(f)) {
 							return;
 						}
@@ -1450,7 +1491,7 @@ Ext.onReady( function() {
 						for (var i = 0; i < f.organisationUnits.length; i++) {
 							DV.c.organisationunit.objects.push({id: f.organisationUnits[i].internalId, name: DV.util.string.getEncodedString(f.organisationUnits[i].shortName)});
 						}
-						DV.c.organisationunit.groupsetid = f.organisationUnitGroupSetId;
+						DV.c.organisationunit.groupsetid = f.organisationUnitGroupSet ? f.organisationUnitGroupSet.internalId : null;
 						
                         DV.c.hidesubtitle = f.hideSubtitle;
                         DV.c.hidelegend = f.hideLegend;
@@ -1593,7 +1634,9 @@ Ext.onReady( function() {
             p.dataSetIds = DV.c.dataset.ids;
             p = Ext.Object.merge(p, DV.c.period.rp);
             p.organisationUnitIds = DV.c.organisationunit.ids;
-            p.organisationUnitGroupSetId = DV.c.organisationunit.groupsetid;            
+            if (DV.c.organisationunit.groupsetid) {
+				p.organisationUnitGroupSetId = DV.c.organisationunit.groupsetid;
+			}
             return p;
         },
         setUI: function() {
@@ -1641,6 +1684,22 @@ Ext.onReady( function() {
 			DV.util.checkbox.setRelativePeriods(DV.c.period.rp);
 			
 			DV.cmp.dimension.organisationunit.treepanel.addToStorage(DV.c.organisationunit.objects);
+			
+			if (DV.c.organisationunit.groupsetid) {
+				if (DV.store.groupset.isloaded) {
+					DV.cmp.fieldset.organisationunit.groupsets.setValue(DV.c.organisationunit.groupsetid);
+				}
+				else {
+					DV.store.groupset.load({
+						callback: function() {
+							DV.cmp.fieldset.organisationunit.groupsets.setValue(DV.c.organisationunit.groupsetid);
+						}
+					});
+				}
+			}
+			else {
+				DV.cmp.fieldset.organisationunit.groupsets.setValue(DV.store.isloaded ? DV.conf.finals.cmd.none : DV.i18n.none);
+			}
 		},
         validation: {
 			dimensions: function() {
@@ -1815,7 +1874,9 @@ Ext.onReady( function() {
                     Ext.Array.each(DV.value.values, function(item) {
                         item[DV.conf.finals.dimension.data.value] = DV.util.string.getEncodedString(DV.store[item.type].available.storage[item.dataid].name);
                         item[DV.conf.finals.dimension.period.value] = DV.util.string.getEncodedString(DV.util.dimension.period.getNameById(item.periodid));
-                        item[DV.conf.finals.dimension.organisationunit.value] = DV.util.string.getEncodedString(DV.cmp.dimension.organisationunit.treepanel.findNameById(item.organisationunitid));
+                        item[DV.conf.finals.dimension.organisationunit.value] = DV.util.variable.hasValue(item.organisationunitgroupid) ?
+							DV.util.dimension.organisationunit.getGroupNameByGroupId(item.organisationunitgroupid) : DV.cmp.dimension.organisationunit.treepanel.findNameById(item.organisationunitid);
+                        item[DV.conf.finals.dimension.organisationunitgroup.value] = DV.util.variable.hasValue(item.organisationunitgroupid) ? DV.util.dimension.organisationunit.getGroupNameByGroupId(item.organisationunitgroupid) : null;
                         item.value = parseFloat(item.value);
                     });
                     
@@ -1852,32 +1913,30 @@ Ext.onReady( function() {
 			isrendered: false
 		},
 		reset: function() {
-			this.chart = {
-				type: DV.conf.finals.chart.column,
-				dimension: {},
-				series: null,
-				category: null,
-				filter: null,
-				indicator: {},
-				dataelement: {},
-				dataset: {},
-				period: {},
-				organisationunit: {},
-				hidesubtitle: false,
-				hidelegend: false,
-				trendline: false,
-				userorganisationunit: false,
-				domainaxislabel: null,
-				rangeaxislabel: null,
-				targetlinevalue: null,
-				targetlinelabel: null,
-				baselinevalue: null,
-				baselinelabel: null
-			};
+			this.chart.type = DV.conf.finals.chart.column;
+			this.chart.dimension = {};
+			this.chart.series = null;
+			this.chart.category = null;
+			this.chart.filter = null;
+			this.chart.indicator = {};
+			this.chart.dataelement = {};
+			this.chart.dataset = {};
+			this.chart.period = {};
+			this.chart.organisationunit = {};
+			this.chart.hidesubtitle = false;
+			this.chart.hidelegend = false;
+			this.chart.trendline = false;
+			this.chart.userorganisationunit = false;
+			this.chart.domainaxislabel = null;
+			this.chart.rangeaxislabel = null;
+			this.chart.targetlinevalue = null;
+			this.chart.targetlinelabel = null;
+			this.chart.baselinevalue = null;
+			this.chart.baselinelabel = null;
 		},
         data: [],
         getData: function(exe) {
-            this.data = [];            
+            this.data = [];
             
             Ext.Array.each(DV.c.category.names, function(item) {
                 var obj = {};
@@ -2834,7 +2893,7 @@ Ext.onReady( function() {
                                         DV.cmp.fieldset.dataset = this;
                                     },
                                     expand: function() {
-										if (!DV.store.dataset.available.isLoaded) {
+										if (!DV.store.dataset.available.isloaded) {
 											DV.store.dataset.available.load();
 										}
                                         DV.util.fieldset.collapseFieldsets([DV.cmp.fieldset.indicator, DV.cmp.fieldset.dataelement, DV.cmp.fieldset.period, DV.cmp.fieldset.organisationunit]);
@@ -3031,23 +3090,7 @@ Ext.onReady( function() {
 										editable: false,
 										queryMode: 'remote',
 										value: DV.i18n.none,
-										store: Ext.create('Ext.data.Store', {
-											fields: ['id', 'name', 'index'],
-											proxy: {
-												type: 'ajax',
-												url: DV.conf.finals.ajax.path_commons + DV.conf.finals.ajax.organisationunitgroupset_get,
-												reader: {
-													type: 'json',
-													root: 'organisationUnitGroupSets'
-												}
-											},
-											listeners: {
-												load: function() {
-													this.add({id: DV.conf.finals.cmd.none, name: DV.i18n.none, index: -1});
-													this.sort('index', 'ASC');
-												}
-											}
-										}),
+										store: DV.store.groupset,
 										listeners: {
 											added: function() {
 												this.up('fieldset').groupsets = this;
@@ -3965,7 +4008,7 @@ Ext.onReady( function() {
                                         ],
                                         listeners: {
                                             show: function() {
-                                                if (!DV.store.favorite.isLoaded) {
+                                                if (!DV.store.favorite.isloaded) {
                                                     DV.store.favorite.load({scope: this, callback: function() {
                                                         this.down('grid').setHeightInMenu(DV.store.favorite);
                                                     }});

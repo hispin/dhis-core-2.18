@@ -72,6 +72,8 @@
       <many-to-many column="organisationunitid" class="org.hisp.dhis.organisationunit.OrganisationUnit"
         foreign-key="fk_chart_organisationunits_organisationunitid" />
     </list>
+    
+    <many-to-one name="organisationUnitGroupSet" class="org.hisp.dhis.organisationunit.OrganisationUnitGroupSet" column="organisationunitgroupsetid" foreign-key="fk_chart_organisationunitgroupsetid" />       
 
     <component name="relatives">
       <property name="reportingMonth" />
