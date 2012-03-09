@@ -252,8 +252,8 @@ public class DefaultProgramStageInstanceService
             // Headers
             // ---------------------------------------------------------------------
 
-            grid.addHeader( new GridHeader( i18n.getString( "name" ), false, false ) );
-            grid.addHeader( new GridHeader( i18n.getString( "value" ), false, false ) );
+            grid.addHeader( new GridHeader( i18n.getString( "name" ), false, true ) );
+            grid.addHeader( new GridHeader( i18n.getString( "value" ), false, true ) );
 
             // ---------------------------------------------------------------------
             // Values
@@ -322,7 +322,7 @@ public class DefaultProgramStageInstanceService
 
             for ( DataElement dataElement : dataElements )
             {
-                grid.addHeader( new GridHeader( dataElement.getName(), false, false ) );
+                grid.addHeader( new GridHeader( dataElement.getName(), false, true ) );
             }
 
             if ( !anonymous )
@@ -365,7 +365,7 @@ public class DefaultProgramStageInstanceService
                     grid.addValue( programStageInstance.getProgramInstance().getPatient()
                         .getId() );
                 }
-                else
+                else if( !anonymous )
                 {
                     grid.addValue( "" );
                 }

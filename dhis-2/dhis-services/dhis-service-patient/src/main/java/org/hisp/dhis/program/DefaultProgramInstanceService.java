@@ -198,8 +198,8 @@ public class DefaultProgramInstanceService
         attrGrid.setTitle( patient.getFullName() );
         attrGrid.setSubtitle( "" );
 
-        attrGrid.addHeader( new GridHeader( i18n.getString( "name" ), false, false ) );
-        attrGrid.addHeader( new GridHeader( i18n.getString( "value" ), false, false ) );
+        attrGrid.addHeader( new GridHeader( i18n.getString( "name" ), false, true ) );
+        attrGrid.addHeader( new GridHeader( i18n.getString( "value" ), false, true ) );
         attrGrid.addHeader( new GridHeader( "", true, false ) );
         
         Collection<PatientAttribute> patientAttributes = patient.getAttributes();
