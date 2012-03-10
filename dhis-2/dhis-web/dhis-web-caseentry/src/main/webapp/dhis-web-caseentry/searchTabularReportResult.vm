@@ -20,10 +20,8 @@
 					#if($col)
 					<a href="javascript:showPatientHistory( '$col' )" title='$i18n.getString( "patient_details_and_history" )'><img src="../images/information.png" alt='$i18n.getString( "patient_details_and_history" )'></a>
 					#end
-				#elseif( $grid.getHeaders().get( $index ).meta )
-					$!encoder.htmlEncode( $col )
 				#else
-					$col
+					$!encoder.htmlEncode( $col )
 				#end
 			</td>
 		#end

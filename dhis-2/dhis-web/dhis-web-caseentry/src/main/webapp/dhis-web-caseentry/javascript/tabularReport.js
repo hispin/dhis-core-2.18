@@ -106,7 +106,7 @@ function autocompletedField( idField )
 	var attrValues = input.attr('options').replace('[', '').replace(']', '').split(', ');
 	for( var i in attrValues )
 	{
-		options.push("='" + attrValues[i] + "'")
+		options.push( attrValues[i] )
 	}
 	options.push(" ");
 
@@ -167,6 +167,7 @@ function loadGeneratedReport()
 	showLoader();
 	isAjax = true;
 	contentDiv = 'contentDiv';
+	jQuery( "#gridContent" ).html( "" );
 	
 	var params = getParams();
 	if( params != '' )
@@ -185,39 +186,44 @@ function loadGeneratedReport()
 	}
 }
 
-function searchTabularReport( event )
-{	
-	var key = event.keyCode || event.charCode || event.which;
+function onkeypressSearch( event )
+{
+var key = event.keyCode || event.charCode || event.which;
 	
 	if ( key == 13 || key == 1 ) // Enter
 	{
-		showById('loaderDiv');
-		hideById('gridContent');
-		hideById('pagingDiv');
-		
-		isAjax = true;
-		contentDiv = 'gridContent';
+		searchTabularReport();
+	}
+}
 
-		var params = getParams();
-		if( params == '' )
-		{
-			hideById('loaderDiv');
-		}
-		else
-		{
-			$.ajax({
-				   type: "POST",
-				   url: "searchTabularReport.action",
-				   data: params,
-				   dataType: "html",
-				   success: function( result ){
-						hideById('loaderDiv');
-						jQuery( "#gridContent" ).html( result );
-						showById( "gridContent" );
-						showById('pagingDiv');
-				   }
-				});
-		}
+function searchTabularReport()
+{	
+	showById('loaderDiv');
+	hideById('gridContent');
+	hideById('pagingDiv');
+	
+	isAjax = true;
+	contentDiv = 'gridContent';
+
+	var params = getParams();
+	if( params == '' )
+	{
+		hideById('loaderDiv');
+	}
+	else
+	{
+		$.ajax({
+			   type: "POST",
+			   url: "searchTabularReport.action",
+			   data: params,
+			   dataType: "html",
+			   success: function( result ){
+					hideById('loaderDiv');
+					jQuery( "#gridContent" ).html( result );
+					showById( "gridContent" );
+					showById('pagingDiv');
+			   }
+			});
 	}
 }
 
@@ -231,6 +237,22 @@ function exportTabularReport( type )
 	}
 }
 
+function onchangeOrderBy( element )
+{
+	searchTabularReport();
+	var isAcs = jQuery( element ).attr( 'orderBy' );
+	if( isAcs == 'true')
+	{
+		element.src = "../images/desc.gif";
+		jQuery( element ).attr( 'orderBy' ,'false' );
+	}
+	else
+	{
+		element.src = "../images/asc.gif";
+		jQuery( element ).attr( 'orderBy' ,'true' );
+	}
+}
+
 function getParams()
 {
 	hideMessage();
@@ -240,22 +262,10 @@ function getParams()
 	var regExp = new RegExp([]); 
 	
 	listSeachingValues.each( function( i, item ){
-		if( item.value!= '' )
+		if( item.value != '' )
 		{
-			var value = item.value;
-			var flag = value.match(/[>|>=|<|<=|=|!=]'[%]?.+[%]?'/);
-			
-			if( flag == null )
-			{
-				setMessage( i18n_syntax_error_in_search_value );
-				item.style.backgroundColor = '#ffcc00';
-				return "";
-			}
-			else
-			{
-				item.style.backgroundColor = '#ffffff';
-				searchingValues += "searchingValues=" + item.id + "_" + htmlEncode( item.value ) + "&";
-			}
+			var value = getFormula( item.value );
+			searchingValues += "searchingValues=" + item.id + "_" + htmlEncode( value ) + "&";
 		}
 	});
 	
@@ -266,9 +276,55 @@ function getParams()
 		dataElementIds += ( i < listDataElementIds.length - 1 ) ? "&" : "";
 	});
 	
+	var orderByOrgunitAsc = jQuery( '#orderByOrgunitAsc' ).attr('orderBy');
+	if( orderByOrgunitAsc == null )
+	{
+		orderByOrgunitAsc = 'true';
+	}
+	
+	var orderByExecutionDateByAsc = jQuery( '#orderByExecutionDateByAsc' ).attr('orderBy');
+	if( orderByExecutionDateByAsc == null )
+	{
+		orderByExecutionDateByAsc = 'true';
+	}
+	
 	return searchingValues + dataElementIds
 				+ "&programStageId=" + getFieldValue('programStageId')
 				+ "&startDate=" + getFieldValue('startDate')
 				+ "&endDate=" + getFieldValue('endDate')
-				+ "&facilityLB=" + getFieldValue('facilityLB');
+				+ "&facilityLB=" + getFieldValue('facilityLB')
+				+ "&orderByOrgunitAsc=" + orderByOrgunitAsc
+				+ "&orderByExecutionDateByAsc=" + orderByExecutionDateByAsc;
+}
+
+function getFormula( value )
+{
+	if( value.indexOf('"') != value.lastIndexOf('"') )
+	{
+		value = value.replace(/"/g,"'");
+	}
+	if( value.indexOf("'") == value.lastIndexOf("'") )
+	{
+		value += "'";
+		var flag = value.match(/[>|>=|<|<=|=|!=]+[ ]*/);
+	
+		if( flag == null )
+		{
+			value = "='"+ value;
+		}
+		else
+		{
+			value.replace( flag, flag + "'")
+		}
+	}
+	else
+	{
+		var flag = value.match(/[>|>=|<|<=|=|!=]+/);
+	
+		if( flag == null )
+		{
+			value = "="+ value;
+		}
+	}
+	return value;
 }

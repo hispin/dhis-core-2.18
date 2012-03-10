@@ -187,34 +187,37 @@ public class DefaultProgramStageInstanceService
     }
 
     public List<ProgramStageInstance> searchProgramStageInstances( ProgramStage programStage,
-        Map<Integer, String> searchingKeys, Collection<Integer> orgunitIds, Date startDate, Date endDate, int min,
-        int max )
+        Map<Integer, String> searchingKeys, Collection<Integer> orgunitIds, Date startDate, Date endDate,
+        boolean orderByOrgunitAsc, boolean orderByExecutionDateByAsc, int min, int max )
     {
-        return programStageInstanceStore.get( programStage, searchingKeys, orgunitIds, startDate, endDate, min, max );
+        return programStageInstanceStore.get( programStage, searchingKeys, orgunitIds, startDate, endDate,
+            orderByOrgunitAsc, orderByExecutionDateByAsc, min, max );
     }
 
     public List<ProgramStageInstance> searchProgramStageInstances( ProgramStage programStage,
-        Map<Integer, String> searchingKeys, Collection<Integer> orgunitIds, Date startDate, Date endDate )
+        Map<Integer, String> searchingKeys, Collection<Integer> orgunitIds, Date startDate, Date endDate,
+        boolean orderByOrgunitAsc, boolean orderByExecutionDateByAsc )
     {
-        return programStageInstanceStore.get( programStage, searchingKeys, orgunitIds, startDate, endDate );
+        return programStageInstanceStore.get( programStage, searchingKeys, orgunitIds, startDate, endDate,
+            orderByOrgunitAsc, orderByExecutionDateByAsc );
     }
 
     public Grid getTabularReport( ProgramStage programStage, List<DataElement> dataElements,
-        Map<Integer, String> searchingKeys, Collection<Integer> orgunitIds, Date startDate, Date endDate, int min,
-        int max, I18nFormat format, I18n i18n )
+        Map<Integer, String> searchingKeys, Collection<Integer> orgunitIds, Date startDate, Date endDate,
+        boolean orderByOrgunitAsc, boolean orderByExecutionDateByAsc, int min, int max, I18nFormat format, I18n i18n )
     {
         List<ProgramStageInstance> programStageInstances = searchProgramStageInstances( programStage, searchingKeys,
-            orgunitIds, startDate, endDate, min, max );
+            orgunitIds, startDate, endDate, orderByOrgunitAsc, orderByExecutionDateByAsc, min, max );
 
         return createTabularGrid( programStage, programStageInstances, dataElements, startDate, endDate, format, i18n );
     }
 
     public Grid getTabularReport( ProgramStage programStage, List<DataElement> dataElements,
         Map<Integer, String> searchingKeys, Collection<Integer> orgunitIds, Date startDate, Date endDate,
-        I18nFormat format, I18n i18n )
+        boolean orderByOrgunitAsc, boolean orderByExecutionDateByAsc, I18nFormat format, I18n i18n )
     {
         List<ProgramStageInstance> programStageInstances = searchProgramStageInstances( programStage, searchingKeys,
-            orgunitIds, startDate, endDate );
+            orgunitIds, startDate, endDate, orderByOrgunitAsc, orderByExecutionDateByAsc );
 
         return createTabularGrid( programStage, programStageInstances, dataElements, startDate, endDate, format, i18n );
     }
@@ -320,6 +323,9 @@ public class DefaultProgramStageInstanceService
             // Headers
             // ---------------------------------------------------------------------
 
+            grid.addHeader( new GridHeader( i18n.getString( "report_unit" ), false, true ) );
+            grid.addHeader( new GridHeader( i18n.getString( "report_date" ), false, true ) );
+
             for ( DataElement dataElement : dataElements )
             {
                 grid.addHeader( new GridHeader( dataElement.getName(), false, true ) );
@@ -337,6 +343,8 @@ public class DefaultProgramStageInstanceService
             for ( ProgramStageInstance programStageInstance : programStageInstances )
             {
                 grid.addRow();
+                grid.addValue( programStageInstance.getOrganisationUnit().getName() );
+                grid.addValue( format.formatDate( programStageInstance.getExecutionDate() ) );
 
                 for ( DataElement dataElement : dataElements )
                 {
@@ -359,13 +367,12 @@ public class DefaultProgramStageInstanceService
                         grid.addValue( "" );
                     }
                 }
-                
+
                 if ( programStageInstance.getProgramInstance().getPatient() != null )
                 {
-                    grid.addValue( programStageInstance.getProgramInstance().getPatient()
-                        .getId() );
+                    grid.addValue( programStageInstance.getProgramInstance().getPatient().getId() );
                 }
-                else if( !anonymous )
+                else if ( !anonymous )
                 {
                     grid.addValue( "" );
                 }
@@ -374,5 +381,4 @@ public class DefaultProgramStageInstanceService
 
         return grid;
     }
-
 }

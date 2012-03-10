@@ -3,7 +3,7 @@
 <form id="dataEntryForm" name="dataEntryForm" method="post" action="multipledataEntrySelect.action">
 	<table> 
 		<tr style="margin-bottom:8px">
-			<td><label>$i18n.getString( "reporting_unit" )</label></td>
+			<td><label>$i18n.getString( "orgunit" )</label></td>
 			<td>
 				<input type="text" readonly="readonly" id='orgunitName' name='orgunitName' #if( $organisationUnit ) value="$organisationUnit.name" #else value="[$i18n.getString( "select" )]" #end style="min-width:350px">
 			</td>
