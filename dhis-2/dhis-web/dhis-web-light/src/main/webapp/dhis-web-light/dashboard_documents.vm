@@ -5,7 +5,7 @@
 #if( $doc.external )
 #set( $link = $doc.url )
 #else
-#set( $link = "../dhis-web-commons-stream/loadDocument.action?id=${doc.id}" )
+#set( $link = "../api/documents/${doc.uid}/data" )
 #end
 
 <div class="contentItemDiv" onclick="javascript:window.location.href='${link}'">$encoder.htmlEncode( $doc.name )</div>
