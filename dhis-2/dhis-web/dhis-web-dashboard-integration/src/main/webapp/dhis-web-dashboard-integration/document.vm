@@ -7,9 +7,9 @@
     <tr>
         <td>
             #if ( $document.external )
-                <a href="$document.url">
+                <a href="${document.url}">
             #else
-                <a href="javascript:window.location.href='../dhis-web-commons-stream/loadDocument.action?id=$document.id'">
+                <a href="../api/documents/${document.uid}/data">
             #end
             $document.name</a>
         </td>

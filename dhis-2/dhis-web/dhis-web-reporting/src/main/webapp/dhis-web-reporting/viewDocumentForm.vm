@@ -39,7 +39,7 @@
 						#if ( $document.external )
                     	   <a href="${document.url}" title="$i18n.getString( 'view_report' )">
                     	#else
-                    	   <a href="../dhis-web-commons-stream/loadDocument.action?id=${document.id}" title="$i18n.getString( 'view_report' )">
+                    	   <a href="../api/documents/${document.uid}/data" title="$i18n.getString( 'view_report' )">
                     	#end
                     	<img src="../images/start_process.png" alt="$i18n.getString( 'view_report' )"></a>                    
                     	<a href="displayAddDocumentForm.action?id=$!document.id" title="$i18n.getString( "edit" )"><img src="../images/edit.png" alt="$i18n.getString( "edit" )"></a>
