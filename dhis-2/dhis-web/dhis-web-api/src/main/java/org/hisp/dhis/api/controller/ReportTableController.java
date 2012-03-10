@@ -27,6 +27,19 @@ package org.hisp.dhis.api.controller;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import static org.hisp.dhis.system.util.CodecUtils.filenameEncode;
+
+import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.List;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import org.hisp.dhis.api.utils.ContextUtils;
+import org.hisp.dhis.api.utils.ContextUtils.CacheStrategy;
 import org.hisp.dhis.api.utils.IdentifiableObjectParams;
 import org.hisp.dhis.api.utils.WebLinkPopulator;
 import org.hisp.dhis.common.Grid;
@@ -39,25 +52,22 @@ import org.hisp.dhis.reporttable.ReportTableService;
 import org.hisp.dhis.reporttable.ReportTables;
 import org.hisp.dhis.system.grid.GridUtils;
 import org.hisp.dhis.system.util.DateUtils;
-import org.hisp.dhis.api.utils.ContextUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseStatus;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
-
-import static org.hisp.dhis.system.util.CodecUtils.filenameEncode;
-
+/**
+ * @author Morten Olav Hansen <mortenoh@gmail.com>
+ * @author Lars Helge Overland
+ */
 @Controller
 @RequestMapping( value = ReportTableController.RESOURCE_PATH )
 public class ReportTableController
@@ -166,7 +176,7 @@ public class ReportTableController
         Grid grid = reportTableService.getReportTableGrid( uid, i18nManager.getI18nFormat(), date, organisationUnitUid );
 
         String filename = filenameEncode( grid.getTitle() ) + ".pdf";
-        ContextUtils.configureResponse( response, ContextUtils.CONTENT_TYPE_PDF, true, filename, false );
+        ContextUtils.configureResponse( response, ContextUtils.CONTENT_TYPE_PDF, CacheStrategy.NO_CACHE, filename, false );
 
         GridUtils.toPdf( grid, response.getOutputStream() );
     }
@@ -189,7 +199,7 @@ public class ReportTableController
         Grid grid = reportTableService.getReportTableGrid( uid, i18nManager.getI18nFormat(), date, organisationUnitUid );
 
         String filename = filenameEncode( grid.getTitle() ) + ".xls";
-        ContextUtils.configureResponse( response, ContextUtils.CONTENT_TYPE_EXCEL, true, filename, true );
+        ContextUtils.configureResponse( response, ContextUtils.CONTENT_TYPE_EXCEL, CacheStrategy.NO_CACHE, filename, true );
 
         GridUtils.toXls( grid, response.getOutputStream() );
     }
@@ -212,7 +222,7 @@ public class ReportTableController
         Grid grid = reportTableService.getReportTableGrid( uid, i18nManager.getI18nFormat(), date, organisationUnitUid );
 
         String filename = filenameEncode( grid.getTitle() ) + ".csv";
-        ContextUtils.configureResponse( response, ContextUtils.CONTENT_TYPE_CSV, true, filename, true );
+        ContextUtils.configureResponse( response, ContextUtils.CONTENT_TYPE_CSV, CacheStrategy.NO_CACHE, filename, true );
 
         GridUtils.toCsv( grid, response.getOutputStream() );
     }

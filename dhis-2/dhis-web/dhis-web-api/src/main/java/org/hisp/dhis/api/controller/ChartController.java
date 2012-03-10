@@ -58,8 +58,11 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
+import static org.hisp.dhis.api.utils.ContextUtils.CacheStrategy;
+
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
+ * @author Lars Helge Overland
  */
 @Controller
 @RequestMapping( value = ChartController.RESOURCE_PATH )
@@ -143,7 +146,7 @@ public class ChartController
         
         String filename = CodecUtils.filenameEncode( chart.getName() ) + ".png";
         
-        ContextUtils.configureResponse( response, ContextUtils.CONTENT_TYPE_PNG, true, filename, false );
+        ContextUtils.configureResponse( response, ContextUtils.CONTENT_TYPE_PNG, CacheStrategy.NO_CACHE, filename, false );
         
         ChartUtilities.writeChartAsPNG( response.getOutputStream(), jFreeChart, width, height );
     }
@@ -171,7 +174,7 @@ public class ChartController
             chart = chartService.getJFreeOrganisationUnitChart( indicator, unit, !skipTitle, i18nManager.getI18nFormat() );
         }
 
-        ContextUtils.configureResponse( response, ContextUtils.CONTENT_TYPE_PNG, true, "chart.png", false );
+        ContextUtils.configureResponse( response, ContextUtils.CONTENT_TYPE_PNG, CacheStrategy.NO_CACHE, "chart.png", false );
         
         ChartUtilities.writeChartAsPNG( response.getOutputStream(), chart, width, height );
     }

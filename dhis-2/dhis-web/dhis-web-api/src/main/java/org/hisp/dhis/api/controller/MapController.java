@@ -56,6 +56,12 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
+import static org.hisp.dhis.api.utils.ContextUtils.CacheStrategy;
+
+/**
+ * @author Morten Olav Hansen <mortenoh@gmail.com>
+ * @author Lars Helge Overland
+ */
 @Controller
 @RequestMapping( value = MapController.RESOURCE_PATH )
 public class MapController
@@ -194,7 +200,7 @@ public class MapController
         
         if ( image != null )
         {
-            ContextUtils.configureResponse( response, ContextUtils.CONTENT_TYPE_PNG, true, "mapview.png", false );
+            ContextUtils.configureResponse( response, ContextUtils.CONTENT_TYPE_PNG, CacheStrategy.NO_CACHE, "mapview.png", false );
             
             ImageIO.write( image, "PNG", response.getOutputStream() );
         }
