@@ -534,12 +534,6 @@
     <property name="periodService" ref="org.hisp.dhis.period.PeriodService" />
   </bean>
 
-  <bean id="org.hisp.dhis.commons.action.LoadDocumentAction" class="org.hisp.dhis.commons.action.LoadDocumentAction"
-    scope="prototype">
-    <property name="locationManager" ref="locationManager" />
-    <property name="documentService" ref="org.hisp.dhis.document.DocumentService" />
-  </bean>
-
   <bean id="org.hisp.dhis.commons.action.GetConstantsAction" class="org.hisp.dhis.commons.action.GetConstantsAction"
     scope="prototype">
     <property name="constantService" ref="org.hisp.dhis.constant.ConstantService" />

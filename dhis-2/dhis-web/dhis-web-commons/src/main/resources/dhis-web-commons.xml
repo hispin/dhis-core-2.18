@@ -786,10 +786,6 @@
 
   <package name="dhis-web-commons-stream" extends="dhis-web-commons" namespace="/dhis-web-commons-stream">
 
-    <action name="loadDocument" class="org.hisp.dhis.commons.action.LoadDocumentAction">
-      <result name="success" type="outputStreamResult" />
-    </action>
-
     <action name="ping" class="org.hisp.dhis.commons.action.GetPingAction">
       <result name="success" type="velocity-json">
         /dhis-web-commons/ajax/jsonPing.vm
