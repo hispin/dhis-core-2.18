@@ -54,9 +54,11 @@ import java.util.List;
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
 @Controller
-@RequestMapping( value = "/dataSets" )
+@RequestMapping( value = DataSetController.RESOURCE_PATH )
 public class DataSetController
 {
+    public static final String RESOURCE_PATH = "/dataSets";
+    
     @Autowired
     private DataSetService dataSetService;
 

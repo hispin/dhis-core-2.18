@@ -54,6 +54,12 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
+import static org.hisp.dhis.api.utils.ContextUtils.CacheStrategy;
+
+/**
+ * @author Morten Olav Hansen <mortenoh@gmail.com>
+ * @author Lars Helge Overland
+ */
 @Controller
 @RequestMapping( value = ReportController.RESOURCE_PATH )
 public class ReportController
@@ -159,7 +165,7 @@ public class ReportController
         Date date = period != null ? DateUtils.getMediumDate( period ) : new Cal().now().subtract( Calendar.MONTH, 1 ).time();
 
         String filename = CodecUtils.filenameEncode( report.getName() ) + "." + type;
-        ContextUtils.configureResponse( response, contentType, true, filename, attachment );
+        ContextUtils.configureResponse( response, contentType, CacheStrategy.NO_CACHE, filename, attachment );
 
         reportService.renderReport( response.getOutputStream(), uid, date, organisationUnitUid, type,
             i18nManager.getI18nFormat() );

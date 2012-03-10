@@ -53,8 +53,12 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
+import static org.hisp.dhis.api.utils.ContextUtils.CacheStrategy;
+import static org.hisp.dhis.api.utils.ContextUtils.*;
+
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
+ * @author Lars Helge Overland
  */
 @Controller
 @RequestMapping( value = DocumentController.RESOURCE_PATH )
@@ -132,7 +136,11 @@ public class DocumentController
         }
         else
         {
-            ContextUtils.configureResponse( response, document.getContentType(), true, document.getUrl(), true );
+            String ct = document.getContentType();
+            
+            boolean attachment = !( CONTENT_TYPE_PDF.equals( ct ) || CONTENT_TYPE_JPG.equals( ct ) || CONTENT_TYPE_PNG.equals( ct ) );
+            
+            ContextUtils.configureResponse( response, document.getContentType(), CacheStrategy.CACHE_TWO_WEEKS, document.getUrl(), attachment );
 
             InputStream in = locationManager.getInputStream( document.getUrl(), DocumentService.DIR );
 

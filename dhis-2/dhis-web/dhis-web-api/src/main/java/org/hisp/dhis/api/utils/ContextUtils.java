@@ -29,6 +29,7 @@ package org.hisp.dhis.api.utils;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.Calendar;
 
 import javax.servlet.http.HttpServletResponse;
 
@@ -48,13 +49,20 @@ public class ContextUtils
     public static final String CONTENT_TYPE_XML = "application/xml";
     public static final String CONTENT_TYPE_CSV = "application/csv";
     public static final String CONTENT_TYPE_PNG = "image/png";
-    public static final String CONTENT_TYPE_JPG = "image/jpg";
+    public static final String CONTENT_TYPE_JPG = "image/jpeg";
     public static final String CONTENT_TYPE_EXCEL = "application/vnd.ms-excel";
     public static final String CONTENT_TYPE_JAVASCRIPT = "application/javascript";
 
     public static final String HEADER_USER_AGENT = "User-Agent";
 
-    public static void configureResponse( HttpServletResponse response, String contentType, boolean disallowCache,
+    public enum CacheStrategy
+    {
+        NO_CACHE,
+        CACHE_TWO_WEEKS,
+        RESPECT_SYSTEM_SETTING
+    }
+    
+    public static void configureResponse( HttpServletResponse response, String contentType, CacheStrategy cacheStrategy,
         String filename, boolean attachment )
     {
         if ( contentType != null )
@@ -62,7 +70,7 @@ public class ContextUtils
             response.setContentType( contentType );
         }
 
-        if ( disallowCache )
+        if ( cacheStrategy == null || cacheStrategy.equals( CacheStrategy.NO_CACHE ) )
         {
             // -----------------------------------------------------------------
             // Cache set to expire after 1 second as IE 8 will not save cached
@@ -71,6 +79,14 @@ public class ContextUtils
 
             response.setHeader( "Cache-Control", "max-age=1" );
             response.setHeader( "Expires", DateUtils.getExpiredHttpDateString() );
+        }
+        else if ( cacheStrategy.equals( CacheStrategy.CACHE_TWO_WEEKS ) )
+        {
+            Calendar cal = Calendar.getInstance();
+            cal.add( Calendar.DAY_OF_YEAR, 14 );
+            
+            response.setHeader( "Cache-Control", "max-age=1209600" );
+            response.setHeader( "Expires", DateUtils.getHttpDateString( cal.getTime() ) );
         }
 
         if ( filename != null )
