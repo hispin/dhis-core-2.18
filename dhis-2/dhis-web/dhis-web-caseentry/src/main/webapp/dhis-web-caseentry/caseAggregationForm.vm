@@ -49,7 +49,7 @@
 			
 			<tr>
 				<td>
-				   $i18n.getString( "facility_by" )
+				   $i18n.getString( "orgunit_level" )
 				</td>
 				<td>
 					<select id="facilityLB" name="facilityLB" style="width: 30em">

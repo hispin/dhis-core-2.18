@@ -29,6 +29,8 @@ package org.hisp.dhis.caseentry.action.report;
 
 import java.util.Collection;
 
+import org.hisp.dhis.caseentry.state.SelectedStateManager;
+import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.program.Program;
 import org.hisp.dhis.program.ProgramService;
 
@@ -46,6 +48,13 @@ public class TabularReportSelectAction
     // Dependencies
     // -------------------------------------------------------------------------
     
+    private SelectedStateManager selectedStateManager;
+
+    public void setSelectedStateManager( SelectedStateManager selectedStateManager )
+    {
+        this.selectedStateManager = selectedStateManager;
+    }
+
     private ProgramService programService;
 
     public void setProgramService( ProgramService programService )
@@ -64,13 +73,22 @@ public class TabularReportSelectAction
         return programs;
     }
 
+    private OrganisationUnit orgunit;
+
+    public OrganisationUnit getOrgunit()
+    {
+        return orgunit;
+    }
+
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
 
     public String execute()
     {
-         programs = programService.getAllPrograms();
+        orgunit = selectedStateManager.getSelectedOrganisationUnit();
+
+        programs = programService.getAllPrograms();
 
         return SUCCESS;
     }

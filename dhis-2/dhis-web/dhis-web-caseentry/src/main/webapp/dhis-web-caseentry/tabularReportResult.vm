@@ -1,60 +1,75 @@
-<script>
-	$(document).ready(function() {
-		entryFormContainerOnReady();
-	});
-</script>
+#if( $grid.getRows().size() > 0 ) 
+	<script>
+		$(document).ready(function() {
+			entryFormContainerOnReady();
+		});
+	</script>
 
-<h3>$!encoder.htmlEncode( $grid.title )</h3>
+	<h3>$!encoder.htmlEncode( $grid.title )</h3>
 
-<div>
-<input type="button" value="$i18n.getString( 'get_report_as_xls' )" onclick="exportTabularReport( 'xls' )" class="button" >
-<input type="button" value="$i18n.getString( 'get_report_as_pdf' )" onclick="exportTabularReport( 'pdf' )" class="button" >
-</div>
+	<div>
+		<input type="button" value="$i18n.getString( 'get_report_as_xls' )" onclick="exportTabularReport( 'xls' )" class="button" >
+		<input type="button" value="$i18n.getString( 'get_report_as_pdf' )" onclick="exportTabularReport( 'pdf' )" class="button" >
+		<input type="button" value="$i18n.getString( 'refresh_values' )" onclick="searchTabularReport()" class="button" >
+	</div>
 
-<h5>$!encoder.htmlEncode( $grid.subtitle )</h5>
+	<h5>$!encoder.htmlEncode( $grid.subtitle )</h5>
 
-#set( $anonymous = "true")
-#if( $grid.getVisibleHeaders().size() <  $grid.getHeaders().size() )
-	#set( $anonymous = "false" )
-#end
+	#set( $anonymous = "true")
+	#if( $grid.getVisibleHeaders().size() <  $grid.getHeaders().size() )
+		#set( $anonymous = "false" )
+	#end
 
-<table class="listTable grid" id='gridTable'>
-	<tr>
-		<th>#</th>
-		#foreach( $dataElement in $dataElements )
+	<table class="listTable grid" id='gridTable'>
+		<tr>
+			<th>#</th>
 			<th>
-				$!encoder.htmlEncode( $dataElement.name )
+				$i18n.getString('report_unit')
+					<a href="javascript:searchTabularReport();" title='$i18n.getString( "order_by_orgunit" )'><img src="../images/asc.gif" alt='$i18n.getString( "asc" )' id='orderByOrgunitAsc' orderBy='true' onclick='onchangeOrderBy( this )' style='curser:pointer;'></a>
 			</th>
-		#end
-		#if( $anonymous == "false" )
-			<th>$i18n.getString('operator')</th>
-		#end
-	</tr>
-	
-	<tr class='filter'>
-		<td>$i18n.getString('filter')</td>
-		#foreach( $dataElement in $dataElements )
-			<td>
-				<input type='text' id='$dataElement.id' title='$i18n.getString("how_to_search_tabular_report")' onkeypress='searchTabularReport( event );' #if($dataElement.optionSet) options='$dataElement.optionSet.options' #end />
-			</td>
-		#end
-		#if( $anonymous == "false" )
+			<th>
+				$i18n.getString('report_date')
+					<a href="javascript:searchTabularReport();"  title='$i18n.getString( "order_by_report_date" )'><img src="../images/asc.gif" alt='$i18n.getString( "desc" )' id='orderByExecutionDateByAsc' orderBy='true' onclick='onchangeOrderBy( this )' style='curser:pointer;'></a>
+			</th>
+			#foreach( $dataElement in $dataElements )
+				<th>
+					$!encoder.htmlEncode( $dataElement.name )
+				</th>
+			#end
+			#if( $anonymous == "false" )
+				<th>$i18n.getString('operator')</th>
+			#end
+		</tr>
+		
+		<tr class='filter'>
+			<td>$i18n.getString('filter')</td>
 			<td></td>
-		#end
-	</tr>
-	
-	<tbody id="gridContent">
-		#parse( "/dhis-web-caseentry/searchTabularReportResult.vm" )
-	</tbody>
-	
-</table>
+			<td></td>
+			#foreach( $dataElement in $dataElements )
+				<td>
+					<input type='text' id='$dataElement.id' title='$i18n.getString("how_to_search_tabular_report")' onkeypress='onkeypressSearch( event );' #if($dataElement.optionSet) options='$dataElement.optionSet.options' #end />
+				</td>
+			#end
+			#if( $anonymous == "false" )
+				<td></td>
+			#end
+		</tr>
+		
+		<tbody id="gridContent">
+			#parse( "/dhis-web-caseentry/searchTabularReportResult.vm" )
+		</tbody>
+		
+	</table>
 
-#parse( "dhis-web-commons/loader/loader.vm" )
+	#parse( "dhis-web-commons/loader/loader.vm" )
 
-<p></p>
+	<p></p>
 
-<div class="paging-container" id='pagingDiv'>
-	#parse( "/dhis-web-commons/paging/paging.vm" )
-</div>
+	<div class="paging-container" id='pagingDiv'>
+		#parse( "/dhis-web-commons/paging/paging.vm" )
+	</div>
 
-<div id='viewRecordsDiv'></div>
+	<div id='viewRecordsDiv'></div>
+#else
+	$i18n.getString('no_result')
+#end

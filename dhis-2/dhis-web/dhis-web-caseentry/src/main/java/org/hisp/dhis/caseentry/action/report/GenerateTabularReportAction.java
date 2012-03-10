@@ -136,6 +136,20 @@ public class GenerateTabularReportAction
         this.searchingValues = searchingValues;
     }
 
+    private boolean orderByOrgunitAsc;
+
+    public void setOrderByOrgunitAsc( boolean orderByOrgunitAsc )
+    {
+        this.orderByOrgunitAsc = orderByOrgunitAsc;
+    }
+
+    private boolean orderByExecutionDateByAsc;
+
+    public void setOrderByExecutionDateByAsc( boolean orderByExecutionDateByAsc )
+    {
+        this.orderByExecutionDateByAsc = orderByExecutionDateByAsc;
+    }
+
     private Grid grid;
 
     public Grid getGrid()
@@ -258,18 +272,18 @@ public class GenerateTabularReportAction
 
         if ( type == null )
         {
-            total = programStageInstanceService.countProgramStageInstances( programStage, searchingKeys,
-                orgunitIds, startValue, endValue );
+            total = programStageInstanceService.countProgramStageInstances( programStage, searchingKeys, orgunitIds,
+                startValue, endValue );
 
             this.paging = createPaging( total );
 
-            grid = programStageInstanceService.getTabularReport( programStage, dataElements, searchingKeys,
-                orgunitIds, startValue, endValue, paging.getStartPos(), paging.getPageSize(), format, i18n );
+            grid = programStageInstanceService.getTabularReport( programStage, dataElements, searchingKeys, orgunitIds,
+                startValue, endValue, orderByOrgunitAsc, orderByExecutionDateByAsc, paging.getStartPos(), paging.getPageSize(), format, i18n );
             return SUCCESS;
         }
 
-        grid = programStageInstanceService.getTabularReport( programStage, dataElements, searchingKeys,
-            orgunitIds, startValue, endValue, format, i18n );
+        grid = programStageInstanceService.getTabularReport( programStage, dataElements, searchingKeys, orgunitIds,
+            startValue, endValue, orderByOrgunitAsc, orderByExecutionDateByAsc, format, i18n );
 
         return type;
     }
