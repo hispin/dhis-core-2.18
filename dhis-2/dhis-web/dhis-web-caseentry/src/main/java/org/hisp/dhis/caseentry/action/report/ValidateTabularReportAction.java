@@ -92,7 +92,7 @@ public class ValidateTabularReportAction
             return INPUT;
         }
         
-        if ( selectedOrgunit != null && facilityLB.equals( "childrenOnly" ) && !selectedOrgunit.hasChild() )
+        if ( facilityLB.equals( "childrenOnly" ) && !selectedOrgunit.hasChild() )
         {
             message = i18n.getString( "selected_orgunit_no_have_any_child" );
             return INPUT;
