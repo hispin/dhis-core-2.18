@@ -161,6 +161,22 @@ function autocompletedField( idField )
 		});
 }
 
+function validateTabularReport()
+{
+	$.post( 'validateTabularReport.action',{}
+		, function( json ) 
+		{
+			if( json.response == 'success' )
+			{
+				loadGeneratedReport();
+			}
+			else
+			{
+				setMessage( json.messsage );
+			}
+		} );
+}
+
 function loadGeneratedReport()
 {
 	hideCriteria();

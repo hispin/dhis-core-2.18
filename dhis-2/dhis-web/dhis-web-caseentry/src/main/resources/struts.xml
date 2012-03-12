@@ -231,17 +231,6 @@
 			<param name="stylesheets">../dhis-web-caseentry/style/report.css</param>
 		</action>
 
-		<action name="validateReportParameters"
-			class="org.hisp.dhis.caseentry.action.report.ValidateReportParametersAction">
-			<result name="success" type="velocity-xml">
-				/dhis-web-caseentry/responseSuccess.vm</result>
-			<result name="error" type="velocity-xml">
-				/dhis-web-caseentry/responseError.vm</result>
-			<result name="input" type="velocity-xml">
-				/dhis-web-caseentry/responseInput.vm</result>
-			<param name="onExceptionReturn">plainTextError</param>
-		</action>
-
 		<action name="generateReport"
 			class="org.hisp.dhis.caseentry.action.report.GenerateReportAction">
 			<result name="success" type="velocity">/content.vm</result>
@@ -273,6 +262,14 @@
 		<action name="loadDataElements"
 			class="org.hisp.dhis.caseentry.action.report.LoadDataElementsAction">
 			<result name="success" type="velocity-json">/dhis-web-caseentry/responseDataElements.vm</result>
+		</action>
+		
+		<action name="validateTabularReport"
+			class="org.hisp.dhis.caseentry.action.report.ValidateTabularReportAction">
+			<result name="success" type="velocity-json">
+				/dhis-web-commons/ajax/jsonResponseSuccess.vm</result>
+			<result name="input" type="velocity-json">
+				/dhis-web-commons/ajax/jsonResponseInput.vm</result>
 		</action>
 		
         <action name="generateTabularReport"
