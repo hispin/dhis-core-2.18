@@ -67,6 +67,7 @@ import org.hisp.dhis.user.CurrentUserService;
  * @author bobj
  */
 public class StaXDataValueImportService
+    implements DataValueImportService
 {
     private static final Log log = LogFactory.getLog( StaXDataValueImportService.class );
 

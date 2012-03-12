@@ -334,7 +334,7 @@
     <property name="categoryService" ref="org.hisp.dhis.dataelement.DataElementCategoryService" />
   </bean>
 
-  <bean id="org.hisp.dhis.importexport.dxf2.service.DataValueSetService" class="org.hisp.dhis.importexport.dxf2.service.DataValueSetService">
+  <bean id="org.hisp.dhis.importexport.dxf2.service.DataValueSetService" class="org.hisp.dhis.importexport.dxf2.service.DefaultDataValueSetService">
     <property name="categoryService" ref="org.hisp.dhis.dataelement.DataElementCategoryService" />
     <property name="organisationUnitService" ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
     <property name="dataElementService" ref="org.hisp.dhis.dataelement.DataElementService" />

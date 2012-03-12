@@ -1,10 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ehcache>
 
-  <diskStore path="java.io.tmpdir" />
-
   <defaultCache maxElementsInMemory="800000" eternal="false" timeToIdleSeconds="360" timeToLiveSeconds="720"
-    overflowToDisk="false" diskPersistent="false" diskExpiryThreadIntervalSeconds="720" memoryStoreEvictionPolicy="LRU" />
+    overflowToDisk="false" diskPersistent="false" />
+
+  <!-- Hibernate Query Cache -->
+
+  <cache name="org.hibernate.cache.internal.StandardQueryCache" maxElementsInMemory="200000" />
+
+  <cache name="org.hibernate.cache.spi.UpdateTimestampsCache" maxElementsInMemory="3000" />
 
   <!-- Hibernate entities -->
 
@@ -187,11 +191,5 @@
   <cache name="org.hisp.dhis.attribute.AttributeOption.attributes" maxElementsInMemory="500" />
   
   <cache name="org.hisp.dhis.option.OptionSet.options" maxElementsInMemory="2000" />
-
-  <!-- Hibernate Query Cache -->
-
-  <cache name="org.hibernate.cache.StandardQueryCache" maxElementsInMemory="200000" />
-
-  <cache name="org.hibernate.cache.UpdateTimestampsCache" maxElementsInMemory="1000" />
 
 </ehcache>

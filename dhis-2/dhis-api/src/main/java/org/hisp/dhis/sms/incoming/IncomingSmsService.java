@@ -33,7 +33,6 @@ package org.hisp.dhis.sms.incoming;
  */
 public interface IncomingSmsService
 {
-
     String ID = IncomingSmsService.class.getName();
 
     /**
@@ -41,10 +40,9 @@ public interface IncomingSmsService
      * 
      * @return the oldest sms in the INCOMING state.
      */
-    public IncomingSms getNextUnprocessed();
+    IncomingSms getNextUnprocessed();
 
-    public IncomingSms get(int id);
+    IncomingSms get(int id);
     
-    public void update( IncomingSms sms );
-
+    void update( IncomingSms sms );
 }

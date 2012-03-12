@@ -48,7 +48,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hisp.dhis.common.ProcessState;
 import org.hisp.dhis.importexport.dxf.converter.DXFConverter;
-import org.hisp.dhis.importexport.dxf2.service.StaXDataValueImportService;
+import org.hisp.dhis.importexport.dxf2.service.DataValueImportService;
 import org.hisp.dhis.importexport.xml.XMLPreConverter;
 import org.hisp.dhis.importexport.zip.ZipAnalyzer;
 import org.hisp.dhis.system.process.OutputHolderState;
@@ -83,9 +83,9 @@ public class DefaultImportService
         this.converter = converter;
     }
 
-    private StaXDataValueImportService dxf2converter;
+    private DataValueImportService dxf2converter;
 
-    public void setDxf2converter( StaXDataValueImportService dxf2converter )
+    public void setDxf2converter( DataValueImportService dxf2converter )
     {
         this.dxf2converter = dxf2converter;
     }
