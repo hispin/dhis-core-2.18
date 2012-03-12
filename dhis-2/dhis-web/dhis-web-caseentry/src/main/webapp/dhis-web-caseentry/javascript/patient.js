@@ -189,13 +189,12 @@ function addValidationCompleted( data )
 function validateUpdatePatient()
 {
 	$("#editPatientDiv :input").attr("disabled", true);
-	$.postUTF8( 'validatePatient.action?' + getIdParams( ), 
-		{ 
-			id: jQuery( '#patientForm [id=id]' ).val(),
-			fullName: jQuery( '#patientForm [id=fullName]' ).val(),
-			gender: jQuery( '#patientForm [id=gender]' ).val(),
-			birthDate: jQuery( '#patientForm [id=birthDate]' ).val()
-		}, updateValidationCompleted );
+	$.ajax({
+		type: "POST",
+		url: 'validatePatient.action',
+		data: getParamsForDiv('editPatientDiv'),
+		success:updateValidationCompleted
+     });
 }
 
 function updateValidationCompleted( messageElement )
