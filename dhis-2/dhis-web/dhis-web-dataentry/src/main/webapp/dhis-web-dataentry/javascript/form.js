@@ -858,8 +858,8 @@ function validateCompleteDataSet()
         var params = storageManager.getCurrentCompleteDataSetParams();
 
         $.ajax( { url: 'getValidationViolations.action',
-        	cache: false,
         	data: params,
+        	cache: false,
         	dataType: 'json',
         	success: function( data )
 	        {
@@ -884,6 +884,7 @@ function registerCompleteDataSet( json )
     	url: 'registerCompleteDataSet.action',
     	data: params,
     	cache: false,
+        dataType: 'json',
     	success: function(data)
         {
             if( data.status == 2 )
@@ -902,7 +903,11 @@ function registerCompleteDataSet( json )
                     validate();
                 }
             }
-        }
+        },
+	    error: function()
+	    {
+	    	disableCompleteButton();
+	    }
     } );
 }
 
@@ -917,6 +922,7 @@ function undoCompleteDataSet()
         	url: 'undoCompleteDataSet.action',
         	data: params,
         	cache: false,
+        	dataType: 'json',
         	success: function(data)
 	        {
                 if( data.status == 2 )
