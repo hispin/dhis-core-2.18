@@ -1,13 +1,15 @@
 <script>
 	jQuery(document).ready(	function(){
-			validation2( 'reportForm', function(form){
-				validateTabularReport();
-			}, {
-				'beforeValidateHandler' : function()
-				{
-					listValidator( 'memberValidator', 'dataElementIds' );
-				}
-			} ); 
+		validation2( 'reportForm', function(form){
+			validateTabularReport();
+		}, {
+			'beforeValidateHandler' : function()
+			{
+				listValidator( 'memberValidator', 'dataElementIds' );
+			}
+		} ); 
+
+		datePickerInRange( 'startDate' , 'endDate' );	
 	});		
 </script>
 
@@ -39,20 +41,14 @@
 	<tr>
         <td><label>$i18n.getString( "start_date" ) <em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
         <td colspan='2'>
-            <input type="text" id="startDate" name="startDate" class="{validate:{required:true}}" />
-			<script type="text/javascript">
-				datePicker('startDate');
-            </script>  	
-        </td>
+            <input type="text" id="startDate" name="startDate" />
+		</td>
     </tr>
     
     <tr>
         <td><label>$i18n.getString( "end_date" ) <em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
         <td colspan='2'>
-            <input type="text" id="endDate" name="endDate" class="{validate:{required:true, greaterOrEqualsDate:'#startDate' }}" />
-            <script type="text/javascript">
-				datePicker('endDate');
-            </script> 				
+            <input type="text" id="endDate" name="endDate" />
         </td>      
     </tr>
 	
