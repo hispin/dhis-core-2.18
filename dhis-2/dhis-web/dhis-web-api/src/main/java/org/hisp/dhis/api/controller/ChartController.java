@@ -81,6 +81,9 @@ public class ChartController
 
     @Autowired
     private I18nManager i18nManager;
+    
+    @Autowired
+    private ContextUtils contextUtils;
 
     //-------------------------------------------------------------------------------------------------------
     // GET
@@ -146,7 +149,7 @@ public class ChartController
         
         String filename = CodecUtils.filenameEncode( chart.getName() ) + ".png";
         
-        ContextUtils.configureResponse( response, ContextUtils.CONTENT_TYPE_PNG, CacheStrategy.NO_CACHE, filename, false );
+        contextUtils.configureResponse( response, ContextUtils.CONTENT_TYPE_PNG, CacheStrategy.RESPECT_SYSTEM_SETTING, filename, false );
         
         ChartUtilities.writeChartAsPNG( response.getOutputStream(), jFreeChart, width, height );
     }
@@ -174,7 +177,7 @@ public class ChartController
             chart = chartService.getJFreeOrganisationUnitChart( indicator, unit, !skipTitle, i18nManager.getI18nFormat() );
         }
 
-        ContextUtils.configureResponse( response, ContextUtils.CONTENT_TYPE_PNG, CacheStrategy.NO_CACHE, "chart.png", false );
+        contextUtils.configureResponse( response, ContextUtils.CONTENT_TYPE_PNG, CacheStrategy.RESPECT_SYSTEM_SETTING, "chart.png", false );
         
         ChartUtilities.writeChartAsPNG( response.getOutputStream(), chart, width, height );
     }

@@ -75,6 +75,9 @@ public class ReportController
     @Autowired
     private I18nManager i18nManager;
 
+    @Autowired
+    private ContextUtils contextUtils;
+
     // -------------------------------------------------------------------------------------------------------
     // GET
     // -------------------------------------------------------------------------------------------------------
@@ -165,7 +168,7 @@ public class ReportController
         Date date = period != null ? DateUtils.getMediumDate( period ) : new Cal().now().subtract( Calendar.MONTH, 1 ).time();
 
         String filename = CodecUtils.filenameEncode( report.getName() ) + "." + type;
-        ContextUtils.configureResponse( response, contentType, CacheStrategy.NO_CACHE, filename, attachment );
+        contextUtils.configureResponse( response, contentType, CacheStrategy.RESPECT_SYSTEM_SETTING, filename, attachment );
 
         reportService.renderReport( response.getOutputStream(), uid, date, organisationUnitUid, type,
             i18nManager.getI18nFormat() );

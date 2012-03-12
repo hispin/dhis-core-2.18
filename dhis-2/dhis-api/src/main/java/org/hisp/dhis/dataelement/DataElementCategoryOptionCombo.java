@@ -28,7 +28,6 @@ package org.hisp.dhis.dataelement;
  */
 
 import org.apache.commons.lang.StringEscapeUtils;
-import org.codehaus.jackson.annotate.JsonIgnore;
 import org.codehaus.jackson.annotate.JsonProperty;
 import org.codehaus.jackson.map.annotate.JsonSerialize;
 import org.hisp.dhis.common.BaseIdentifiableObject;

@@ -72,6 +72,9 @@ public class DocumentController
     @Autowired
     private LocationManager locationManager;
 
+    @Autowired
+    private ContextUtils contextUtils;
+
     //-------------------------------------------------------------------------------------------------------
     // GET
     //-------------------------------------------------------------------------------------------------------
@@ -140,7 +143,7 @@ public class DocumentController
             
             boolean attachment = !( CONTENT_TYPE_PDF.equals( ct ) || CONTENT_TYPE_JPG.equals( ct ) || CONTENT_TYPE_PNG.equals( ct ) );
             
-            ContextUtils.configureResponse( response, document.getContentType(), CacheStrategy.CACHE_TWO_WEEKS, document.getUrl(), attachment );
+            contextUtils.configureResponse( response, document.getContentType(), CacheStrategy.CACHE_TWO_WEEKS, document.getUrl(), attachment );
 
             InputStream in = locationManager.getInputStream( document.getUrl(), DocumentService.DIR );
 

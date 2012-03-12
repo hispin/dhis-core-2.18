@@ -68,6 +68,7 @@ public interface SystemSettingManager
     final String KEY_SCHEDULED_TASKS = "keyScheduledTasks";
     final String KEY_ORGUNITGROUPSET_AGG_LEVEL = "orgUnitGroupSetAggregationLevel";
     final String KEY_SMS_CONFIG = "SMS_CONFIG";
+    final String KEY_CACHE_STRATEGY = "keyCacheStrategy";
     
     final int DEFAULT_MAX_NUMBER_OF_ATTEMPTS = 20;
     final int DEFAULT_TIMEFRAME_MINUTES = 1;
