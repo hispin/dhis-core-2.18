@@ -77,6 +77,9 @@ public class MapController
     @Autowired
     private MapGenerationService mapGenerationService;
 
+    @Autowired
+    private ContextUtils contextUtils;
+
     //-------------------------------------------------------------------------------------------------------
     // GET
     //-------------------------------------------------------------------------------------------------------
@@ -200,7 +203,7 @@ public class MapController
         
         if ( image != null )
         {
-            ContextUtils.configureResponse( response, ContextUtils.CONTENT_TYPE_PNG, CacheStrategy.NO_CACHE, "mapview.png", false );
+            contextUtils.configureResponse( response, ContextUtils.CONTENT_TYPE_PNG, CacheStrategy.RESPECT_SYSTEM_SETTING, "mapview.png", false );
             
             ImageIO.write( image, "PNG", response.getOutputStream() );
         }

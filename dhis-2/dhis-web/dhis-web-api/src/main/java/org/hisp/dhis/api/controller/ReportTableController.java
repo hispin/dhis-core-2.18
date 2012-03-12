@@ -83,6 +83,9 @@ public class ReportTableController
     @Autowired
     private I18nManager i18nManager;
 
+    @Autowired
+    private ContextUtils contextUtils;
+
     //-------------------------------------------------------------------------------------------------------
     // GET
     //-------------------------------------------------------------------------------------------------------
@@ -176,7 +179,7 @@ public class ReportTableController
         Grid grid = reportTableService.getReportTableGrid( uid, i18nManager.getI18nFormat(), date, organisationUnitUid );
 
         String filename = filenameEncode( grid.getTitle() ) + ".pdf";
-        ContextUtils.configureResponse( response, ContextUtils.CONTENT_TYPE_PDF, CacheStrategy.NO_CACHE, filename, false );
+        contextUtils.configureResponse( response, ContextUtils.CONTENT_TYPE_PDF, CacheStrategy.RESPECT_SYSTEM_SETTING, filename, false );
 
         GridUtils.toPdf( grid, response.getOutputStream() );
     }
@@ -199,7 +202,7 @@ public class ReportTableController
         Grid grid = reportTableService.getReportTableGrid( uid, i18nManager.getI18nFormat(), date, organisationUnitUid );
 
         String filename = filenameEncode( grid.getTitle() ) + ".xls";
-        ContextUtils.configureResponse( response, ContextUtils.CONTENT_TYPE_EXCEL, CacheStrategy.NO_CACHE, filename, true );
+        contextUtils.configureResponse( response, ContextUtils.CONTENT_TYPE_EXCEL, CacheStrategy.RESPECT_SYSTEM_SETTING, filename, true );
 
         GridUtils.toXls( grid, response.getOutputStream() );
     }
@@ -222,7 +225,7 @@ public class ReportTableController
         Grid grid = reportTableService.getReportTableGrid( uid, i18nManager.getI18nFormat(), date, organisationUnitUid );
 
         String filename = filenameEncode( grid.getTitle() ) + ".csv";
-        ContextUtils.configureResponse( response, ContextUtils.CONTENT_TYPE_CSV, CacheStrategy.NO_CACHE, filename, true );
+        contextUtils.configureResponse( response, ContextUtils.CONTENT_TYPE_CSV, CacheStrategy.RESPECT_SYSTEM_SETTING, filename, true );
 
         GridUtils.toCsv( grid, response.getOutputStream() );
     }

@@ -72,7 +72,8 @@ public class SystemSettingInterceptor
     {
         Map<String, Object> map = new HashMap<String, Object>();
         
-        map.put( KEY_SYSTEM_IDENTIFIER, systemSettingManager.getSystemIdentifier() );
+        map.put( KEY_SYSTEM_IDENTIFIER, systemSettingManager.getSystemIdentifier() ); //TODO remove
+        map.put( KEY_CACHE_STRATEGY, systemSettingManager.getSystemSetting( KEY_CACHE_STRATEGY ) );
         map.put( KEY_APPLICATION_TITLE, systemSettingManager.getSystemSetting( KEY_APPLICATION_TITLE ) );
         map.put( KEY_FLAG, systemSettingManager.getSystemSetting( KEY_FLAG ) );
         map.put( KEY_FLAG_IMAGE, systemSettingManager.getFlagImage() );

@@ -33,11 +33,18 @@ import java.util.Calendar;
 
 import javax.servlet.http.HttpServletResponse;
 
+import org.hisp.dhis.setting.SystemSettingManager;
 import org.hisp.dhis.system.util.DateUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
+import static org.hisp.dhis.setting.SystemSettingManager.KEY_CACHE_STRATEGY;
+import static org.apache.commons.lang.StringUtils.trimToNull;
 
 /**
  * @author Lars Helge Overland
  */
+@Component
 public class ContextUtils
 {
     public static final String CONTENT_TYPE_PDF = "application/pdf";
@@ -54,15 +61,22 @@ public class ContextUtils
     public static final String CONTENT_TYPE_JAVASCRIPT = "application/javascript";
 
     public static final String HEADER_USER_AGENT = "User-Agent";
+    public static final String HEADER_CACHE_CONTROL = "Cache-Control";
+    public static final String HEADER_EXPIRES = "Expires";
+    public static final String HEADER_CONTENT_DISPOSITION = "Content-Disposition";
 
+    @Autowired
+    private SystemSettingManager systemSettingManager;
+    
     public enum CacheStrategy
     {
         NO_CACHE,
+        CACHE_6AM_TOMORROW,
         CACHE_TWO_WEEKS,
         RESPECT_SYSTEM_SETTING
     }
     
-    public static void configureResponse( HttpServletResponse response, String contentType, CacheStrategy cacheStrategy,
+    public void configureResponse( HttpServletResponse response, String contentType, CacheStrategy cacheStrategy,
         String filename, boolean attachment )
     {
         if ( contentType != null )
@@ -70,6 +84,13 @@ public class ContextUtils
             response.setContentType( contentType );
         }
 
+        if ( cacheStrategy.equals( CacheStrategy.RESPECT_SYSTEM_SETTING ) )
+        {
+            String strategy = trimToNull( (String) systemSettingManager.getSystemSetting( KEY_CACHE_STRATEGY ) );
+            
+            cacheStrategy = strategy != null ? CacheStrategy.valueOf( strategy ) : CacheStrategy.NO_CACHE;
+        }
+        
         if ( cacheStrategy == null || cacheStrategy.equals( CacheStrategy.NO_CACHE ) )
         {
             // -----------------------------------------------------------------
@@ -77,23 +98,28 @@ public class ContextUtils
             // responses to disk over SSL, was "no-cache".
             // -----------------------------------------------------------------
 
-            response.setHeader( "Cache-Control", "max-age=1" );
-            response.setHeader( "Expires", DateUtils.getExpiredHttpDateString() );
+            response.setHeader( HEADER_CACHE_CONTROL, "max-age=1" );
+            response.setHeader( HEADER_EXPIRES, DateUtils.getExpiredHttpDateString() );
+        }
+        else if ( cacheStrategy.equals( CacheStrategy.CACHE_6AM_TOMORROW ) )
+        {
+            response.setHeader( HEADER_CACHE_CONTROL, "max-age=" + DateUtils.getSecondsUntilTomorrow( 6 ) );
+            response.setHeader( HEADER_EXPIRES, DateUtils.getHttpDateString( DateUtils.getDateForTomorrow( 6 ) ) );
         }
         else if ( cacheStrategy.equals( CacheStrategy.CACHE_TWO_WEEKS ) )
         {
             Calendar cal = Calendar.getInstance();
             cal.add( Calendar.DAY_OF_YEAR, 14 );
             
-            response.setHeader( "Cache-Control", "max-age=1209600" );
-            response.setHeader( "Expires", DateUtils.getHttpDateString( cal.getTime() ) );
+            response.setHeader( HEADER_CACHE_CONTROL, "max-age=1209600" );
+            response.setHeader( HEADER_EXPIRES, DateUtils.getHttpDateString( cal.getTime() ) );
         }
 
         if ( filename != null )
         {
             String type = attachment ? "attachment" : "inline";
 
-            response.setHeader( "Content-Disposition", type + "; filename=\"" + filename + "\"" );
+            response.setHeader( HEADER_CONTENT_DISPOSITION, type + "; filename=\"" + filename + "\"" );
         }
     }
 

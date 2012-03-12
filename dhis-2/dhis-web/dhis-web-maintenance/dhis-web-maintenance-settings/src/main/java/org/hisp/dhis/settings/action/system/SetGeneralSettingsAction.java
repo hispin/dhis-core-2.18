@@ -31,6 +31,7 @@ import static org.hisp.dhis.setting.SystemSettingManager.KEY_COMPLETENESS_OFFSET
 import static org.hisp.dhis.setting.SystemSettingManager.KEY_DISABLE_DATAENTRYFORM_WHEN_COMPLETED;
 import static org.hisp.dhis.setting.SystemSettingManager.KEY_FACTOR_OF_DEVIATION;
 import static org.hisp.dhis.setting.SystemSettingManager.KEY_OMIT_INDICATORS_ZERO_NUMERATOR_DATAMART;
+import static org.hisp.dhis.setting.SystemSettingManager.KEY_CACHE_STRATEGY;
 
 import org.hisp.dhis.configuration.Configuration;
 import org.hisp.dhis.configuration.ConfigurationService;
@@ -92,6 +93,13 @@ public class SetGeneralSettingsAction
     // -------------------------------------------------------------------------
     // Output
     // -------------------------------------------------------------------------
+
+    private String cacheStrategy;
+    
+    public void setCacheStrategy( String cacheStrategy )
+    {
+        this.cacheStrategy = cacheStrategy;
+    }
 
     private Integer infrastructuralDataElements;
 
@@ -169,6 +177,7 @@ public class SetGeneralSettingsAction
 
     public String execute()
     {
+        systemSettingManager.saveSystemSetting( KEY_CACHE_STRATEGY, cacheStrategy );
         systemSettingManager.saveSystemSetting( KEY_OMIT_INDICATORS_ZERO_NUMERATOR_DATAMART, omitIndicatorsZeroNumeratorDataMart );
         systemSettingManager.saveSystemSetting( KEY_DISABLE_DATAENTRYFORM_WHEN_COMPLETED, disableDataEntryWhenCompleted );
         systemSettingManager.saveSystemSetting( KEY_FACTOR_OF_DEVIATION, factorDeviation );

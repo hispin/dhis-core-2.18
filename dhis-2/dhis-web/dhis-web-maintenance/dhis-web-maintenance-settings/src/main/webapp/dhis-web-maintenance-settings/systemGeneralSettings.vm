@@ -2,6 +2,7 @@
 	jQuery(document).ready(function() {
 		jQuery("input[type=button]").click(function() {
 			jQuery.postUTF8( 'setSystemGeneralSettings.action', {
+				cacheStrategy: getFieldValue( 'cacheStrategy' ),
 				infrastructuralDataElements: getFieldValue( 'infrastructuralDataElements' ),
 				infrastructuralPeriodType: getFieldValue( 'infrastructuralPeriodType' ),
 				feedbackRecipients: getFieldValue( 'feedbackRecipients' ),
@@ -19,6 +20,17 @@
 </script>
 
 <h3>$i18n.getString( "general_settings" )</h3>
+
+<!-- cache_strategy -->
+<h4>$i18n.getString( "cache_strategy" )</h4>
+
+<p>
+<select id="cacheStrategy" name="cacheStrategy" style="width:30em">
+	<option value="NO_CACHE" #if( $keyCacheStrategy == "NO_CACHE" )selected="selected"#end>$i18n.getString( "no_cache" )</option>
+	<option value="CACHE_6AM_TOMORROW" #if( $keyCacheStrategy == "CACHE_6AM_TOMORROW" )selected="selected"#end>$i18n.getString( "cache_until_6am_tomorrow" )</option>
+	<option value="CACHE_TWO_WEEKS" #if( $keyCacheStrategy == "CACHE_TWO_WEEKS" )selected="selected"#end>$i18n.getString( "cache_for_two_weeks" )</option>
+</select>
+</p>
 
 <!-- infrastructural_data_elements -->
 <h4>$i18n.getString( "infrastructural_data_elements" )</h4>
