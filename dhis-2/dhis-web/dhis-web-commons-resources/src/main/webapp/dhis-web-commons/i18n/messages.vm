@@ -48,6 +48,7 @@ var validationMessage	= {
         ,letterswithbasicspecialchars: '$encoder.jsEscape($i18n.getString( 'please_letters_numbers_spaces_or_some_special_chars_only' ) , "'")'
         ,lessthanequal: validatorFormat('$encoder.jsEscape($i18n.getString( 'please_enter_a_value_less_than_or_equal_to' ) , "'")')
         ,greaterthanequal: validatorFormat( '$encoder.jsEscape($i18n.getString( 'please_enter_a_value_greater_than_or_equal_to' ) , "'")' )
+		,greaterOrEqualsDate: validatorFormat( '$encoder.jsEscape($i18n.getString( 'please_enter_a_value_greater_than_or_equal_to_start_date' ) , "'")' )
         ,unique: '$encoder.jsEscape($i18n.getString( 'please_do_not_enter_same_values' ) , "'")'
         ,letterswithbasicpunc: '$encoder.jsEscape($i18n.getString( 'letters_or_punctuation_only_please' ) , "'")'
         ,maxWords : validatorFormat('$encoder.jsEscape($i18n.getString( 'please_enter_n_words_or_less' ) , "'")')

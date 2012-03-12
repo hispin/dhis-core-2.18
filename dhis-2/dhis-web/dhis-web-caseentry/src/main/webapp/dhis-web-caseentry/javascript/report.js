@@ -37,36 +37,6 @@ function organisationUnitSelected( orgUnits, orgUnitNames )
 
 selection.setListenerFunction( organisationUnitSelected );
 
-function validateAndGenerateReport()
-{
-	$.get( 'validateReportParameters.action',
-		{
-			startDate :getFieldValue( 'startDate' ) ,
-			endDate: getFieldValue( 'endDate' )
-		},reportValidationCompleted );
-}
-
-function reportValidationCompleted( messageElement )
-{   		
-	messageElement = messageElement.getElementsByTagName( 'message' )[0];
-    var type = messageElement.getAttribute( 'type' );
-	var message = messageElement.firstChild.nodeValue;
-	hideById( 'contentDiv' );
-	
-	if ( type == 'success' )
-	{
-		loadGeneratedReport();
-	}
-	else if ( type == 'error' )
-	{
-		window.alert( i18n_report_generation_failed + ':' + '\n' + message );
-	}
-	else if ( type == 'input' )
-	{
-		setMessage( message );
-	}
-}
-
 function loadGeneratedReport()
 {
 	showLoader();

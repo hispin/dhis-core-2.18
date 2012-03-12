@@ -49,7 +49,7 @@
     <tr>
         <td><label>$i18n.getString( "end_date" ) <em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
         <td colspan='2'>
-            <input type="text" id="endDate" name="endDate" class="{validate:{required:true}}" />
+            <input type="text" id="endDate" name="endDate" class="{validate:{required:true, greaterOrEqualsDate:'#startDate' }}" />
             <script type="text/javascript">
 				datePicker('endDate');
             </script> 				

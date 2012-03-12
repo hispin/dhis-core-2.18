@@ -211,7 +211,7 @@ public class GenerateTabularReportAction
         // ---------------------------------------------------------------------
 
         OrganisationUnit selectedOrgunit = selectedStateManager.getSelectedOrganisationUnit();
-
+        
         Set<Integer> orgunitIds = new HashSet<Integer>();
 
         if ( facilityLB.equals( "selected" ) )
@@ -231,7 +231,7 @@ public class GenerateTabularReportAction
                 orgunitIds.remove( selectedOrgunit.getId() );
             }
         }
-
+        
         // ---------------------------------------------------------------------
         // Get program-stage, start-date, end-date
         // ---------------------------------------------------------------------
