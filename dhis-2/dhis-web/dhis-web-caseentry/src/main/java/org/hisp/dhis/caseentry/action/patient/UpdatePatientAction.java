@@ -174,7 +174,7 @@ public class UpdatePatientAction
         patient.setUnderAge( underAge );
         patient.setOrganisationUnit( organisationUnit );
 
-        if ( birthDate != null && !birthDate.isEmpty() )
+        if ( dobType == Patient.DOB_TYPE_VERIFIED || dobType == Patient.DOB_TYPE_DECLARED )
         {
             birthDate = birthDate.trim();
             patient.setBirthDate( format.parseDate( birthDate ) );

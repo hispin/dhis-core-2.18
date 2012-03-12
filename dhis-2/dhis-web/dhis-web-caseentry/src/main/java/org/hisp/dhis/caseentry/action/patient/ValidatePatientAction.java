@@ -132,6 +132,18 @@ public class ValidatePatientAction
             return INPUT;
         }
 
+        if ( dobType != null && dobType == Patient.DOB_TYPE_APPROXIATED )
+        {
+            Patient patient = new Patient();
+            patient.setBirthDateFromAge( age.intValue(), ageType );
+            
+            if( patient.getIntegerValueOfAge() > 100 )
+            {
+                message = i18n.getString( "age_of_patient_must_be_less_or_equals_to_100" );
+                return INPUT;
+            }
+        }
+        
         if ( dobType != null && (dobType == Patient.DOB_TYPE_VERIFIED || dobType == Patient.DOB_TYPE_DECLARED) )
         {
             birthDate = birthDate.trim();
