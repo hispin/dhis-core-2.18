@@ -6,7 +6,6 @@ package org.hisp.dhis.sms;
 public class SmsTransportProviderNotFoundException
     extends SmsServiceException
 {
-
     private static final long serialVersionUID = 8644436214252461786L;
 
     public SmsTransportProviderNotFoundException( String message, Exception cause )
@@ -18,5 +17,4 @@ public class SmsTransportProviderNotFoundException
     {
         super( message );
     }
-
 }

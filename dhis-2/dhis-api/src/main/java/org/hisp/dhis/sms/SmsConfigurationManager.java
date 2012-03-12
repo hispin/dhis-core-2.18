@@ -31,8 +31,8 @@ import org.hisp.dhis.sms.config.SmsConfiguration;
 
 public interface SmsConfigurationManager
 {
-    public SmsConfiguration getSmsConfiguration();
+    SmsConfiguration getSmsConfiguration();
 
-    public void updateSmsConfiguration( SmsConfiguration config );
+    void updateSmsConfiguration( SmsConfiguration config );
 
 }

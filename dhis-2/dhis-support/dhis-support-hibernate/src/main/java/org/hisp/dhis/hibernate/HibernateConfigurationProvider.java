@@ -44,8 +44,6 @@ public interface HibernateConfigurationProvider
     Configuration getConfiguration()
         throws HibernateException;
 
-    void setEventListener( String type, Object eventListener );
-    
     List<Resource> getJarResources();
     
     List<Resource> getDirectoryResources();

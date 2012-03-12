@@ -181,11 +181,6 @@ public class DefaultHibernateConfigurationProvider
         return configuration;
     }
 
-    public void setEventListener( String type, Object listener )
-    {
-        configuration.setListener( type, listener );
-    }
-
     public List<Resource> getJarResources() 
     {
         return jarResources;

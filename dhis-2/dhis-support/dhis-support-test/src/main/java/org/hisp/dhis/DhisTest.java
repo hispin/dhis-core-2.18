@@ -38,8 +38,8 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
-import org.springframework.orm.hibernate3.SessionFactoryUtils;
-import org.springframework.orm.hibernate3.SessionHolder;
+import org.springframework.orm.hibernate4.SessionFactoryUtils;
+import org.springframework.orm.hibernate4.SessionHolder;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.support.TransactionSynchronizationManager;
@@ -157,7 +157,7 @@ public abstract class DhisTest
     {        
         SessionFactory sessionFactory = (SessionFactory) getBean( "sessionFactory" );
         
-        Session session = SessionFactoryUtils.getSession( sessionFactory, true );
+        Session session = SessionFactoryUtils.openSession( sessionFactory );
         
         TransactionSynchronizationManager.bindResource( sessionFactory, new SessionHolder( session ) );     
     }

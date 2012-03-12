@@ -34,20 +34,19 @@ import java.util.Collection;
  */
 public interface IncomingSmsStore
 {
-
-    public static final String ID = IncomingSmsStore.class.getName();
+    static final String ID = IncomingSmsStore.class.getName();
     
-    public int save( IncomingSms incomingSms );
+    int save( IncomingSms incomingSms );
 
-    public IncomingSms get( int id );
+    IncomingSms get( int id );
 
-    public Collection<IncomingSms> getSmsByStatus( SmsMessageStatus status );
+    Collection<IncomingSms> getSmsByStatus( SmsMessageStatus status );
 
-    public Collection<IncomingSms> getSmsByOriginator( String originator );
+    Collection<IncomingSms> getSmsByOriginator( String originator );
 
-    public long getSmsCount();
+    long getSmsCount();
 
-    public Collection<IncomingSms> getAllSmses();
+    Collection<IncomingSms> getAllSmses();
 
 //    public Collection<IncomingSms> getSms( String originator, Date startDate, Date endDate);
 //    

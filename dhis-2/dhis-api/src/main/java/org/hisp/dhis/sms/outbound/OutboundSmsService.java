@@ -38,7 +38,7 @@ public interface OutboundSmsService
 {
     String ID = OutboundSmsService.class.getName();
 
-    public boolean isEnabled();
+    boolean isEnabled();
 
     /**
      * Send an SMS message.
@@ -46,7 +46,7 @@ public interface OutboundSmsService
      * @param sms the message to be sent
      * @throws SmsServiceException if unable to sent Message
      */
-    public void sendMessage( OutboundSms sms, String gatewayId )
+    void sendMessage( OutboundSms sms, String gatewayId )
         throws SmsServiceException;
 
 }
