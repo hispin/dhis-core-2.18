@@ -10,7 +10,7 @@
 	<div>
 		<input type="button" value="$i18n.getString( 'get_report_as_xls' )" onclick="exportTabularReport( 'xls' )" class="button" >
 		<input type="button" value="$i18n.getString( 'get_report_as_pdf' )" onclick="exportTabularReport( 'pdf' )" class="button" >
-		<input type="button" value="$i18n.getString( 'refresh_values' )" onclick="searchTabularReport()" class="button" >
+		<input type="button" value="$i18n.getString( 'filter' )" onclick="searchTabularReport()" class="button" >
 	</div>
 
 	<h5>$!encoder.htmlEncode( $grid.subtitle )</h5>
@@ -25,11 +25,11 @@
 			<th>#</th>
 			<th>
 				$i18n.getString('report_unit')
-					<a href="javascript:searchTabularReport();" title='$i18n.getString( "order_by_orgunit" )'><img src="../images/asc.gif" alt='$i18n.getString( "asc" )' id='orderByOrgunitAsc' orderBy='true' onclick='onchangeOrderBy( this )' style='curser:pointer;'></a>
+					<a href="javascript:onchangeOrderBy( 'orderByOrgunitAsc' );" title='$i18n.getString( "order_by_orgunit" )'><img src="../images/asc.gif" alt='$i18n.getString( "asc" )' id='orderByOrgunitAsc' orderBy='true' style='curser:pointer;'></a>
 			</th>
 			<th>
 				$i18n.getString('report_date')
-					<a href="javascript:searchTabularReport();"  title='$i18n.getString( "order_by_report_date" )'><img src="../images/asc.gif" alt='$i18n.getString( "desc" )' id='orderByExecutionDateByAsc' orderBy='true' onclick='onchangeOrderBy( this )' style='curser:pointer;'></a>
+					<a href="javascript:onchangeOrderBy( 'orderByExecutionDateByAsc' );"  title='$i18n.getString( "order_by_report_date" )'><img src="../images/asc.gif" alt='$i18n.getString( "desc" )' id='orderByExecutionDateByAsc' orderBy='true' style='curser:pointer;'></a>
 			</th>
 			#foreach( $dataElement in $dataElements )
 				<th>
@@ -42,7 +42,9 @@
 		</tr>
 		
 		<tr class='filter'>
-			<td>$i18n.getString('filter')</td>
+			<td>
+				<input type="button" value="$i18n.getString( 'clear_filter' )" onclick="clearFilter();" class="button" >
+			</td>
 			<td></td>
 			<td></td>
 			#foreach( $dataElement in $dataElements )
