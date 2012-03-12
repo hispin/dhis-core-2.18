@@ -1,7 +1,7 @@
 <script>
 	jQuery(document).ready(	function(){
 			validation2( 'reportForm', function(form){
-				loadGeneratedReport();
+				validateTabularReport();
 			}, {
 				'beforeValidateHandler' : function()
 				{

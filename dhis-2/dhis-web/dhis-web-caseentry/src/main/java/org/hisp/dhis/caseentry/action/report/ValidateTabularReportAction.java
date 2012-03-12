@@ -89,11 +89,13 @@ public class ValidateTabularReportAction
         if ( selectedOrgunit == null )
         {
             message = i18n.getString( "please_specify_an_orgunit" );
+            return INPUT;
         }
         
         if ( selectedOrgunit != null && facilityLB.equals( "childrenOnly" ) && !selectedOrgunit.hasChild() )
         {
             message = i18n.getString( "selected_orgunit_no_have_any_child" );
+            return INPUT;
         }
 
         return SUCCESS;
