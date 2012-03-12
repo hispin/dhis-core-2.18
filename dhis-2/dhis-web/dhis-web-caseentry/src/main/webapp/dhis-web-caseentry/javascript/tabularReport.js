@@ -163,7 +163,10 @@ function autocompletedField( idField )
 
 function validateTabularReport()
 {
-	$.post( 'validateTabularReport.action',{}
+	$.post( 'validateTabularReport.action',
+		{
+			facilityLB: getFieldValue('facilityLB')
+		}
 		, function( json ) 
 		{
 			if( json.response == 'success' )
@@ -172,7 +175,7 @@ function validateTabularReport()
 			}
 			else
 			{
-				setMessage( json.messsage );
+				setMessage( json.message );
 			}
 		} );
 }
