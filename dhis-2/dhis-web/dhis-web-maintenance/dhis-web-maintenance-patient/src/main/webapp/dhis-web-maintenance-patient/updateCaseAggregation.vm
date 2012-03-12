@@ -80,7 +80,7 @@
 				<table>
 					<tr>
 						<td>
-							<label for="program">$i18n.getString( "program_properties" )</label>
+							<label for="program">$i18n.getString( "program" )</label>
 						</td>
 					</tr>
 					<tr>

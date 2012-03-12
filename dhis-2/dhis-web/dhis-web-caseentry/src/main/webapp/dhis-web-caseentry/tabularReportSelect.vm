@@ -1,8 +1,13 @@
 <script>
 	jQuery(document).ready(	function(){
-		validation( 'reportForm', function(form){
-			loadGeneratedReport();
-		}); 
+			validation2( 'reportForm', function(form){
+				loadGeneratedReport();
+			}, {
+				'beforeValidateHandler' : function()
+				{
+					listValidator( 'memberValidator', 'dataElementIds' );
+				}
+			} ); 
 	});		
 </script>
 
@@ -24,9 +29,9 @@
 		</td>
 		<td>
 			<select id="facilityLB" name="facilityLB" style="width: 30em">
-				<option value="selected" selected="selected">$i18n.getString( "selected" )</option>
+				<option value="all" selected="selected" >$i18n.getString( "all" )</option>
 				<option value="childrenOnly" >$i18n.getString( "children_only" )</option>
-				<option value="all">$i18n.getString( "all" )</option>
+				<option value="selected" >$i18n.getString( "selected" )</option>
 			</select>
 		</td>
 	</tr>
@@ -80,17 +85,19 @@
 	
 	<tr>
         <td></td>
-		<td> <input type="button" value="$i18n.getString( 'add_selected' )" title="$i18n.getString( 'add_selected' )" style="width:120px" onclick="moveSelectedById( 'availableDataElementIds', 'dataElementIds' )" />
-            <input type="button" value="$i18n.getString( 'add_all' )" title="$i18n.getString( 'add_all' )" style="width:120px" onclick="moveAllById( 'availableDataElementIds', 'dataElementIds' )" /> <br>
-            <input type="button" value="$i18n.getString( 'remove_selected' )" title="$i18n.getString( 'remove_selected' )" style="width:120px" onclick="moveSelectedById( 'dataElementIds', 'availableDataElementIds' )" />
-            <input type="button" value="$i18n.getString( 'remove_all' )" title="$i18n.getString( 'remove_all' )" style="width:120px" onclick="moveAllById( 'dataElementIds', 'availableDataElementIds' )" />
+		<td> 
+			<input type="button" value="$i18n.getString( 'add_selected' )" title="$i18n.getString( 'add_selected' )" style="width:120px" onclick="moveSelectedById( 'availableDataElementIds', 'dataElementIds' )" class="button" />
+            <input type="button" value="$i18n.getString( 'add_all' )" title="$i18n.getString( 'add_all' )" style="width:120px" onclick="moveAllById( 'availableDataElementIds', 'dataElementIds' )" class="button" /> <br>
+            <input type="button" value="$i18n.getString( 'remove_selected' )" title="$i18n.getString( 'remove_selected' )" style="width:120px" onclick="moveSelectedById( 'dataElementIds', 'availableDataElementIds' )" class="button" />
+            <input type="button" value="$i18n.getString( 'remove_all' )" title="$i18n.getString( 'remove_all' )" style="width:120px" onclick="moveAllById( 'dataElementIds', 'availableDataElementIds' )" class="button" />
         </td>
     </tr>
 	
 	<tr>
 		<td><label>$i18n.getString( "selected_data_elements" ) <em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
         <td>
-			<select id="dataElementIds" name="dataElementIds" multiple size='6' class="{validate:{required:true}}" ondblclick="moveSelectedById( 'dataElementIds', 'availableDataElementIds' )" ></select>
+			<select id="dataElementIds" name="dataElementIds" multiple size='6' ondblclick="moveSelectedById( 'dataElementIds', 'availableDataElementIds' )" ></select>
+			<select id="memberValidator" multiple="multiple" style="display:none" class="{validate:{required:true}}"/>
         </td> 
 		<td style="width:30px; text-align:center">
             <a href="javascript:moveUpSelectedOption('dataElementIds')"><img src="../images/move_up.png"/></a><br/><br/>

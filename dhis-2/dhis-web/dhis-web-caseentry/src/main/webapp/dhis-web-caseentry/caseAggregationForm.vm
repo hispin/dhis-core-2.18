@@ -53,9 +53,9 @@
 				</td>
 				<td>
 					<select id="facilityLB" name="facilityLB" style="width: 30em">
-						<option value="selected" selected="selected">$i18n.getString( "selected" )</option>
+						<option value="all" selected="selected" >$i18n.getString( "all" )</option>
 						<option value="childrenOnly" >$i18n.getString( "children_only" )</option>
-						<option value="all">$i18n.getString( "all" )</option>
+						<option value="selected" >$i18n.getString( "selected" )</option>
 					</select>
 				</td>
 			</tr>

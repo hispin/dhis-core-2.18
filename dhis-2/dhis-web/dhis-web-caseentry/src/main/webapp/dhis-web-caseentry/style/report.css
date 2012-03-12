@@ -22,8 +22,7 @@ input[type="button"], input[type="submit"]
 	width:355px; 
 }
 
-
-.grid input {
+.grid input[type="text"] {
   width:75%;
 }
   
