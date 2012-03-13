@@ -649,8 +649,8 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		id="org.hisp.dhis.patient.action.caseaggregation.ShowAddCaseAggregationConditionFormAction"
 		class="org.hisp.dhis.patient.action.caseaggregation.ShowAddCaseAggregationConditionFormAction"
 		scope="prototype">
-		<property name="dataElementService">
-			<ref bean="org.hisp.dhis.dataelement.DataElementService" />
+		<property name="dataSetService">
+			<ref bean="org.hisp.dhis.dataset.DataSetService" />
 		</property>
 		<property name="programService">
 			<ref bean="org.hisp.dhis.program.ProgramService" />
@@ -664,8 +664,8 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		id="org.hisp.dhis.patient.action.caseaggregation.ShowUpdateCaseAggregationConditionFormAction"
 		class="org.hisp.dhis.patient.action.caseaggregation.ShowUpdateCaseAggregationConditionFormAction"
 		scope="prototype">
-		<property name="dataElementService">
-			<ref bean="org.hisp.dhis.dataelement.DataElementService" />
+		<property name="dataSetService">
+			<ref bean="org.hisp.dhis.dataset.DataSetService" />
 		</property>
 		<property name="programService">
 			<ref bean="org.hisp.dhis.program.ProgramService" />

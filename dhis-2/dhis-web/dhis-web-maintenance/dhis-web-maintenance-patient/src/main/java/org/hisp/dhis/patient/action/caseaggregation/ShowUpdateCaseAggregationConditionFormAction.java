@@ -37,6 +37,8 @@ import org.hisp.dhis.common.comparator.IdentifiableObjectNameComparator;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementGroup;
 import org.hisp.dhis.dataelement.DataElementService;
+import org.hisp.dhis.dataset.DataSet;
+import org.hisp.dhis.dataset.DataSetService;
 import org.hisp.dhis.patient.PatientAttribute;
 import org.hisp.dhis.patient.PatientAttributeService;
 import org.hisp.dhis.patient.comparator.PatientAttributeComparator;
@@ -60,7 +62,7 @@ public class ShowUpdateCaseAggregationConditionFormAction
 
     private CaseAggregationConditionService aggregationConditionService;
 
-    public DataElementService dataElementService;
+    public DataSetService dataSetService;
 
     public ProgramService programService;
 
@@ -78,9 +80,7 @@ public class ShowUpdateCaseAggregationConditionFormAction
 
     private List<PatientAttribute> patientAttributes;
 
-    private List<DataElementGroup> dataElementGroups;
-
-    private List<DataElement> dataElements;
+    private List<DataSet> dataSets;
 
     private List<Program> programs;
 
@@ -93,9 +93,9 @@ public class ShowUpdateCaseAggregationConditionFormAction
         this.aggregationConditionService = aggregationConditionService;
     }
 
-    public void setDataElementService( DataElementService dataElementService )
+    public void setDataSetService( DataSetService dataSetService )
     {
-        this.dataElementService = dataElementService;
+        this.dataSetService = dataSetService;
     }
 
     public void setProgramService( ProgramService programService )
@@ -123,19 +123,14 @@ public class ShowUpdateCaseAggregationConditionFormAction
         return caseAggregation;
     }
 
-    public List<DataElementGroup> getDataElementGroups()
+    public List<DataSet> getDataSets()
     {
-        return dataElementGroups;
+        return dataSets;
     }
 
     public List<Program> getPrograms()
     {
         return programs;
-    }
-
-    public List<DataElement> getDataElements()
-    {
-        return dataElements;
     }
 
     public List<PatientAttribute> getPatientAttributes()
@@ -151,8 +146,8 @@ public class ShowUpdateCaseAggregationConditionFormAction
     public String execute()
         throws Exception
     {
-        dataElementGroups = new ArrayList<DataElementGroup>( dataElementService.getAllDataElementGroups() );
-        Collections.sort( dataElementGroups, IdentifiableObjectNameComparator.INSTANCE );
+        dataSets = new ArrayList<DataSet>( dataSetService.getAllDataSets() );
+        Collections.sort( dataSets, IdentifiableObjectNameComparator.INSTANCE );
 
         programs = new ArrayList<Program>( programService.getAllPrograms() );
         Collections.sort( programs, new ProgramNameComparator() );
@@ -162,7 +157,7 @@ public class ShowUpdateCaseAggregationConditionFormAction
 
         caseAggregation = aggregationConditionService.getCaseAggregationCondition( id );
         description = aggregationConditionService.getConditionDescription( caseAggregation.getAggregationExpression() );
-        
+
         return SUCCESS;
     }
 }

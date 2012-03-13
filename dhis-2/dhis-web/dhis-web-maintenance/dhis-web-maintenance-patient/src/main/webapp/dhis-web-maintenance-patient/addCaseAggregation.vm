@@ -27,14 +27,13 @@
     </tr>
     
     <tr>
-		<td><label for="dataElementGroup">$i18n.getString( "dataelement_group" )</label></td>
+		<td><label for="dataSets">$i18n.getString( "dataset" )</label></td>
 		<td>
-			<select id="dataElementGroup" name="dataElementGroup" style="width:30.5em" onchange="getAggDataElements();">
+			<select id="dataSets" name="dataSets" style="width:30.5em" onchange="getDataElementsByDataset();">
 				<option value="">[$i18n.getString('please_select')]</option>
-				#foreach( $dataElementGroup in $dataElementGroups)
-					<option value="$dataElementGroup.id" >$dataElementGroup.name</option>
+				#foreach( $dataSet in $dataSets)
+					<option value="$dataSet.id" >$dataSet.name</option>
 				#end
-				<option value="0">$i18n.getString('others')</option>
 			</select>
 		</td>				
 	</tr>
@@ -288,8 +287,6 @@
 
 <script>
 	byId('description').focus();
-	getAggDataElements();
-	getProgramStages();
 	var i18n_run_success = '$encoder.jsEscape( $i18n.getString( "run_success" ) , "'" )';
 	var i18n_run_fail = '$encoder.jsEscape( $i18n.getString( "run_fail" ) , "'" )';
 	jQuery("#tabs").tabs();
