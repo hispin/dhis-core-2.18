@@ -689,6 +689,12 @@
 				/dhis-web-maintenance-patient/responseAggDataElement.vm
 			</result>
 		</action>
+		
+		<action name="getDataElementsByDataset"
+			class="org.hisp.dhis.commons.action.GetDataSetAction">
+			<result name="success" type="velocity-json">
+				/dhis-web-maintenance-patient/responseAggerateDataElement.vm</result>
+		</action>
 
 		<action name="getProgramStages"
 			class="org.hisp.dhis.patient.action.caseaggregation.GetProgramStagesAction">

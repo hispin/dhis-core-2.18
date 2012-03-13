@@ -1,40 +1,38 @@
 
 //------------------------------------------------------------------------------
-// Get Aggregated Dataelements
+// Get dataelements by dataset
 //------------------------------------------------------------------------------
 
-function getAggDataElements( )
+function getDataElementsByDataset()
 {
-	var dataElementGroup = document.getElementById( 'dataElementGroup' );
-	var dataElementGroupId = dataElementGroup.options[ dataElementGroup.selectedIndex ].value;
-	if( dataElementGroupId == "" ){
+	var dataSets = document.getElementById( 'dataSets' );
+	var dataSetId = dataSets.options[ dataSets.selectedIndex ].value;
+	if( dataSetId == "" ){
 		clearList( byId('aggregationDataElementId'));
 		return;
 	}
 
-	$.post( 'getAggDataElements.action', { dataElementGroupId:dataElementGroupId }, getAggDataElementsCompleted );
-}
+	jQuery.getJSON( 'getDataElementsByDataset.action', 
+		{ 
+			id:dataSetId 
+		}, function( json )
+        {
+			var de = document.getElementById( 'aggregationDataElementId' );
+			clearList( de );
+		  
+			for ( i in json.dataElements ) 
+			{ 
+				var id = json.dataElements[i].id;
+				var name = json.dataElements[i].name;
 
-function getAggDataElementsCompleted( dataelementElement )
-{
-	var de = document.getElementById( 'aggregationDataElementId' );
-  
-	clearList( de );
-  
-	var dataElementList = $(dataelementElement).find( 'dataelement' );
-  
-	$( dataElementList ).each( function( i, item )
-	{
-        var id = $(item).find("id").text();
-        var name = $(item).find("name").text();
-
-        var option = document.createElement("option");
-        option.value = id;
-        option.text = name;
-        option.title = name;
-        
-        de.add(option, null);  			
-	} );
+				var option = document.createElement("option");
+				option.value = id;
+				option.text = name;
+				option.title = name;
+				
+				de.add(option, null);  			
+			}
+		});
 }
 
 //------------------------------------------------------------------------------

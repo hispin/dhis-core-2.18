@@ -29,14 +29,13 @@
     </tr>
     
     <tr>
-		<td><label for="dataElementGroup">$i18n.getString( "dataelement_group" )</label></td>
+		<td><label for="dataSets">$i18n.getString( "dataset" )</label></td>
 		<td>
-			<select id="dataElementGroup" name="dataElementGroup" style="width:30.5em" onchange="getAggDataElements();">
-				<option value="0">[$i18n.getString('please_select')]</option>
-				#foreach( $dataElementGroup in $dataElementGroups)
-					<option value="$dataElementGroup.id" >$dataElementGroup.name</option>
+			<select id="dataSets" name="dataSets" style="width:30.5em" onchange="getDataElementsByDataset();">
+				<option value="">[$i18n.getString('please_select')]</option>
+				#foreach( $dataSet in $dataSets)
+					<option value="$dataSet.id" >$dataSet.name</option>
 				#end
-				<option value="0">$i18n.getString('others')</option>
 			</select>
 		</td>				
 	</tr>
@@ -45,7 +44,7 @@
 		<td><label for="dataElement">$i18n.getString( "dataelement" )<em title="$i18n.getString( "required" )" class="required">*</em></label></td>
 		<td>
 			<select id="aggregationDataElementId" name="aggregationDataElementId" style="width:30.5em" class="{validate:{required:true}}" >
-				<option value="$caseAggregation.aggregationDataElement.id.$caseAggregation.optionCombo.id">$caseAggregation.aggregationDataElement.name ($caseAggregation.optionCombo.name)</option>
+				<option value="$caseAggregation.aggregationDataElement.id.$caseAggregation.optionCombo.id">$caseAggregation.aggregationDataElement.name $caseAggregation.optionCombo.name</option>
 			</select>
 		</td>				
 	</tr>

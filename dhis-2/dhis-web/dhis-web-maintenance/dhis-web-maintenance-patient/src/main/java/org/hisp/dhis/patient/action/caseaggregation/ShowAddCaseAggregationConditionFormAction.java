@@ -35,6 +35,8 @@ import org.hisp.dhis.common.comparator.IdentifiableObjectNameComparator;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementGroup;
 import org.hisp.dhis.dataelement.DataElementService;
+import org.hisp.dhis.dataset.DataSet;
+import org.hisp.dhis.dataset.DataSetService;
 import org.hisp.dhis.patient.PatientAttribute;
 import org.hisp.dhis.patient.PatientAttributeService;
 import org.hisp.dhis.patient.comparator.PatientAttributeComparator;
@@ -56,7 +58,7 @@ public class ShowAddCaseAggregationConditionFormAction
     // Dependencies
     // -------------------------------------------------------------------------
 
-    public DataElementService dataElementService;
+    public DataSetService dataSetService;
 
     public ProgramService programService;
 
@@ -70,7 +72,7 @@ public class ShowAddCaseAggregationConditionFormAction
 	
     private List<PatientAttribute> patientAttributes;
 
-    private List<DataElementGroup> dataElementGroups;
+    private List<DataSet> dataSets;
 
     private List<DataElement> dataElements;
 
@@ -79,37 +81,7 @@ public class ShowAddCaseAggregationConditionFormAction
     // -------------------------------------------------------------------------
     // Getters && Setters
     // -------------------------------------------------------------------------
-    
-    public Integer getId()
-    {
-        return id;
-    }
-
-    public void setId( Integer id )
-    {
-        this.id = id;
-    }
-	
-    public List<DataElementGroup> getDataElementGroups()
-    {
-        return dataElementGroups;
-    }
-
-    public List<Program> getPrograms()
-    {
-        return programs;
-    }
-
-    public List<DataElement> getDataElements()
-    {
-        return dataElements;
-    }
-
-    public void setDataElementService( DataElementService dataElementService )
-    {
-        this.dataElementService = dataElementService;
-    }
-
+ 
     public void setProgramService( ProgramService programService )
     {
         this.programService = programService;
@@ -120,6 +92,36 @@ public class ShowAddCaseAggregationConditionFormAction
         this.patientAttributeService = patientAttributeService;
     }
 
+    public Integer getId()
+    {
+        return id;
+    }
+
+    public void setId( Integer id )
+    {
+        this.id = id;
+    }
+
+    public List<Program> getPrograms()
+    {
+        return programs;
+    }
+
+    public List<DataSet> getDataSets()
+    {
+        return dataSets;
+    }
+
+    public List<DataElement> getDataElements()
+    {
+        return dataElements;
+    }
+
+    public void setDataSetService( DataSetService dataSetService )
+    {
+        this.dataSetService = dataSetService;
+    }
+   
     public List<PatientAttribute> getPatientAttributes()
     {
         return patientAttributes;
@@ -131,11 +133,10 @@ public class ShowAddCaseAggregationConditionFormAction
 
     @Override
     public String execute()
-        throws Exception
     {
-        dataElementGroups = new ArrayList<DataElementGroup>( dataElementService.getAllDataElementGroups() );
-        Collections.sort( dataElementGroups, IdentifiableObjectNameComparator.INSTANCE );
-
+        dataSets = new ArrayList<DataSet>( dataSetService.getAllDataSets() );
+        Collections.sort( dataSets, IdentifiableObjectNameComparator.INSTANCE );
+        
         programs = new ArrayList<Program>( programService.getAllPrograms() );
         Collections.sort( programs, new ProgramNameComparator() );
 
