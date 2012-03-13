@@ -656,11 +656,5 @@
 			<param name="requiredAuthorities">F_PATIENT_ADD</param>
 		</action>
 		
-		<action name="getPatientDetails"
-			class="org.hisp.dhis.caseentry.action.patient.GetPatientAction">
-			<result name="success" type="velocity">/content.vm</result>
-			<param name="page">/dhis-web-caseentry/detailsPatient.vm</param>
-		</action>
-		
 	</package>
 </struts>
