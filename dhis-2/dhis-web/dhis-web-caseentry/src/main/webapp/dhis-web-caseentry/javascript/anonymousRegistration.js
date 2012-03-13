@@ -9,7 +9,7 @@ function organisationUnitSelected( orgUnits )
 	disable('createEventBtn');
 	disable('deleteCurrentEventBtn');
 	
-	$.getJSON( 'loadAnonymousPrograms.action',{}
+	$.get( 'loadAnonymousPrograms.action',{}
 		, function( json ) 
 		{
 			clearListById( 'programId' );
