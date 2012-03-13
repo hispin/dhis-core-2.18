@@ -4,7 +4,7 @@
 
 function showRelationshipTypeDetails( relationshipTypeId )
 {
-  	jQuery.post( 'getRelationshipType.action', { id: relationshipTypeId }, function ( json ) {
+  	jQuery.getJSON( 'getRelationshipType.action', { id: relationshipTypeId }, function ( json ) {
 		setInnerHTML( 'aIsToBField', json.relationshipType.aIsToB );	
 		setInnerHTML( 'bIsToAField', json.relationshipType.bIsToA );       
 		setInnerHTML( 'descriptionField', json.relationshipType.description );
@@ -19,7 +19,7 @@ function showRelationshipTypeDetails( relationshipTypeId )
 
 function validateAddRelationshipType()
 {
-	$.postJSON(
+	$.postUTF8(
     	    'validateRelationshipType.action',
     	    {
     	        "aIsToB": getFieldValue( 'aIsToB' ),

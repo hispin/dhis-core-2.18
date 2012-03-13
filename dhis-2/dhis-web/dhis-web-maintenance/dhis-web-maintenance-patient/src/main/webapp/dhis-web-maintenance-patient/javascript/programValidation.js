@@ -14,7 +14,7 @@ jQuery(document).ready(	function(){
 
 function showProgramValidationDetails ( programValidationId )
 {
-    jQuery.post( 'getProgramValidation.action', { validationId: programValidationId }, function ( json ) {
+    jQuery.getJSON( 'getProgramValidation.action', { validationId: programValidationId }, function ( json ) {
 		setInnerHTML( 'descriptionField', json.validation.description );
 		setInnerHTML( 'leftSideField', json.validation.leftSide );
 		if( json.validation.rightSide != '1==1')
@@ -69,7 +69,7 @@ function insertOperator( decriptionDiv, target, value )
 
 function getValidationDescription( decriptionDiv, sideDiv )
 {
-	$.post("getCaseAggregationDescription.action",
+	$.get("getCaseAggregationDescription.action",
 		{
 			condition: getFieldValue( sideDiv )
 		},

@@ -4,7 +4,7 @@
 
 function showPatientAttributeGroupDetails( patientAttributeGroupId )
 {
-	jQuery.post( 'getPatientAttributeGroup.action', { id: patientAttributeGroupId },
+	jQuery.getJSON( 'getPatientAttributeGroup.action', { id: patientAttributeGroupId },
 		function ( json ) {
 			setInnerHTML( 'nameField', json.patientAttributeGroup.name );	
 			setInnerHTML( 'descriptionField', json.patientAttributeGroup.description );

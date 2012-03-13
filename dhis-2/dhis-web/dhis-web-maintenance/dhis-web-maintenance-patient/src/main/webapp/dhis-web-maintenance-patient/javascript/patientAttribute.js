@@ -4,7 +4,7 @@
 
 function showPatientAttributeDetails( patientAttributeId )
 {
-	jQuery.post( 'getPatientAttribute.action', { id: patientAttributeId },
+	jQuery.getJSON( 'getPatientAttribute.action', { id: patientAttributeId },
 		function ( json ) {
 			setInnerHTML( 'nameField', json.patientAttribute.name );	
 			setInnerHTML( 'descriptionField', json.patientAttribute.description );
