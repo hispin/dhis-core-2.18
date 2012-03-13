@@ -50,7 +50,7 @@ function getProgramStages()
 		return;  
 	}
 
-	$.post( 'getProgramStages.action', { programId:programId }, getProgramStagesCompleted );
+	$.getJSON( 'getProgramStages.action', { programId:programId }, getProgramStagesCompleted );
 }
 
 function getProgramStagesCompleted( programstageElement )
@@ -89,7 +89,7 @@ function getProgramStagesForFormula()
 		return;  
 	}
 
-	$.post( 'getProgramStages.action', { programId:programId }, getProgramStagesFomulaCompleted );
+	$.getJSON( 'getProgramStages.action', { programId:programId }, getProgramStagesFomulaCompleted );
 }
 
 function getProgramStagesFomulaCompleted( programstageElement )
@@ -127,7 +127,7 @@ function getPrgramStageDataElements()
 	var programStage = document.getElementById( 'programStage' );
 	var psId = programStage.options[ programStage.selectedIndex ].value;
 	
-	$.post( 'getPSDataElements.action', { psId:psId }, getPrgramStageDataElementsCompleted );
+	$.getJSON( 'getPSDataElements.action', { psId:psId }, getPrgramStageDataElementsCompleted );
 }
 
 function getPrgramStageDataElementsCompleted( dataelementElement )
@@ -176,7 +176,7 @@ function removeCaseAggregation( caseAggregationId, caseAggregationName )
 
 function showCaseAggregationDetails( caseAggregationId )
 {
-    jQuery.post( 'getCaseAggregation.action', { id:caseAggregationId }, function ( json )
+    jQuery.getJSON( 'getCaseAggregation.action', { id:caseAggregationId }, function ( json )
 	{
 		setInnerHTML( 'descriptionField', json.caseAggregation.description );	
 		setInnerHTML( 'operatorField', json.caseAggregation.operator );
@@ -194,7 +194,7 @@ function showCaseAggregationDetails( caseAggregationId )
 
 function getConditionDescription()
 {
-	$.post( 'getCaseAggregationDescription.action', 
+	$.postUTF8( 'getCaseAggregationDescription.action', 
 		{ 
 			condition:getFieldValue('aggregationCondition') 
 		},function (data)
@@ -209,7 +209,7 @@ function getConditionDescription()
 
 function testCaseAggregationCondition()
 {
-	$.postJSON( 'testCaseAggregationCondition.action', 
+	$.postUTF8( 'testCaseAggregationCondition.action', 
 		{ 
 			condition:getFieldValue('aggregationCondition') 
 		},function (json)

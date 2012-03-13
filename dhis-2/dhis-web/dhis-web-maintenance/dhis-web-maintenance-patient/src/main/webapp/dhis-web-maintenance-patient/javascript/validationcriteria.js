@@ -13,7 +13,7 @@ function removeCriteria( id, name )
 
 function showValidationCriteriaDetails( criteriaId )
 {
-	jQuery.post( 'getValidationCriteria.action', { id: criteriaId }, function ( json ) {
+	jQuery.getJSON( 'getValidationCriteria.action', { id: criteriaId }, function ( json ) {
 		setInnerHTML( 'nameField', json.validationCriteria.name );
 		setInnerHTML( 'descriptionField', json.validationCriteria.description );
 		

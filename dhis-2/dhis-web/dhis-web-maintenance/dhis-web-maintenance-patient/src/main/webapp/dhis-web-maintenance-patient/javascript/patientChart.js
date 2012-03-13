@@ -1,9 +1,9 @@
 
 function showPatientChartDetails( patientChartId )
 {
-	jQuery.postJSON( "getPatientChart.action", {
+	jQuery.getJSON( "getPatientChart.action", {
 			id:patientChartId 
-		}, function(json){
+		}, function( json ){
 			setInnerHTML( 'titleField', json.title );
 
 			var typeMap = {

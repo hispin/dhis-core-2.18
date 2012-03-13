@@ -46,7 +46,7 @@ function openloadExistedForm()
 
 function loadExistedForm()
 {
-	jQuery.post("showDataEntryForm.action",{
+	jQuery.get("showDataEntryForm.action",{
 		dataEntryFormId: getFieldValue( 'existedDataEntryId' )
 	}, function( html ){
 		jQuery("#designTextarea").ckeditorGet().setData( html );
