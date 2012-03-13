@@ -3,6 +3,7 @@
 		validation( 'reportForm', function(form){
 			loadGeneratedReport();
 		}); 
+		datePickerInRange( 'startDate' , 'endDate' );
 	});		
 </script>
 
@@ -32,20 +33,14 @@
     <tr>
         <td><label>$i18n.getString( "start_date" ) <em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
         <td>
-            <input type="text" id="startDate" name="startDate" class="{validate:{required:true}}" />
-			<script type="text/javascript">
-				datePicker('startDate');
-            </script>  	
+            <input type="text" id="startDate" name="startDate" />
         </td>
     </tr>
     
     <tr>
         <td><label>$i18n.getString( "end_date" ) <em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
         <td>
-            <input type="text" id="endDate" name="endDate" class="{validate:{required:true, greaterOrEqualsDate:'#startDate' }}"  />
-            <script type="text/javascript">
-				datePicker('endDate');
-            </script> 				
+            <input type="text" id="endDate" name="endDate" />
         </td>      
     </tr>
     
