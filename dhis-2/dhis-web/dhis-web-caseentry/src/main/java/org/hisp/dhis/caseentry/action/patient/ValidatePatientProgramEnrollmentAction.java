@@ -27,8 +27,6 @@
 
 package org.hisp.dhis.caseentry.action.patient;
 
-import java.util.Date;
-
 import org.hisp.dhis.i18n.I18n;
 import org.hisp.dhis.i18n.I18nFormat;
 import org.hisp.dhis.patient.Patient;
@@ -89,20 +87,6 @@ public class ValidatePatientProgramEnrollmentAction
         this.programId = programId;
     }
 
-    private String enrollmentDate;
-
-    public void setEnrollmentDate( String enrollmentDate )
-    {
-        this.enrollmentDate = enrollmentDate;
-    }
-
-    private String dateOfIncident;
-
-    public void setDateOfIncident( String dateOfIncident )
-    {
-        this.dateOfIncident = dateOfIncident;
-    }
-
     private String message;
 
     public String getMessage()
@@ -160,18 +144,6 @@ public class ValidatePatientProgramEnrollmentAction
             return INPUT;
         }
 
-        Date DateOfEnrollment = format.parseDate( enrollmentDate );
-
-        Date DateOfIncident = format.parseDate( dateOfIncident );
-
-        if ( DateOfEnrollment.before( DateOfIncident ) )
-        {
-            message = program.getDateOfEnrollmentDescription() + " "
-                + i18n.getString( "have_to_be_greater_or_equals_to" ) + " " + program.getDateOfIncidentDescription();
-
-            return INPUT;
-
-        }
         message = i18n.getString( "everything_is_ok" );
 
         return SUCCESS;
