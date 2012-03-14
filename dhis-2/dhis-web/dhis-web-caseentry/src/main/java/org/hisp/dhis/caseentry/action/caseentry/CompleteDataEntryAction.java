@@ -120,7 +120,7 @@ public class CompleteDataEntryAction
 
             for ( ProgramStageInstance stageInstance : stageInstances )
             {
-                if ( !stageInstance.isCompleted() )
+                if ( !stageInstance.isCompleted() && !stageInstance.getProgramStage().getIrregular()  )
                 {
                     return SUCCESS;
                 }
