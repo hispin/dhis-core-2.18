@@ -2552,31 +2552,30 @@ a text editor (e.g. Notepad++) and do a search/replace to make sure this element
         <para>To access "Beneficiary Aggregation" module, choose Services->Name Based Data Records->Beneficiary Aggregation.</para>
         <para>For instance, find the number of the children vaccinated BCG by defining a linking rule between the data elements of aggregate dataset named "Number of children - BCG" and the data element of a program stage named "BCG dose given date".</para>
         <para>1. Choose Maintenance->Data Element and Indicators->Data Element, define two new data elements. One is "Number of children - BCG" with "Aggregate" Domain Type. Two is "BCG dose give date" with "Patient" Domain Type.</para>
-        <para>2. Choose Maintenance->Data Element and Indicators->Data Element Group, create a new data element group named "BCG DataElement Group" and add "Number of children - BCG" data element into the group.</para>
-        <para>3. Choose Maintenance->Datasets->Dataset, create a new dataset named "BCG Report" and add "Number of children - BCG" data element into the dataset.</para>
-        <para>4. Choose Maintenance->Beneficiaries and Programs->Program, create a program named "Child Health Program" with a stage named "Birth Details" and add the "BCG dose give date" data element into this stage. Then assign it to "Ho Chi Minh city" facility.</para>
-        <para>5. Choose Maintenance->Beneficiaries and Program->Beneficiary, select "Ho Chi Minh city" and create three beneficiaries named "Micheal", "Alice" and "Tom" and enroll them into "Child Health Program".</para>
-        <para>6. Create a new beneficiary aggregation query builder named "Number of children - BCG Builder" to linking between the data elements.</para>
-        <para>6.1. Choose Maintenance->Beneficiaries and Programs->Beneficiary Aggregation Query Builder, click the "Add new" button.</para>
-        <para>6.2. Fill in "The number of children - BCG Builder" for the description field.</para>
-        <para>6.3. In the Data Element Group combobox, select "BCG DataElement Group".</para>
-        <para>6.4. In the Data Element combobox, select "Number of children - BCG (default)"</para>
-        <para>6.5. In the Program combobox, select "Child Health Program".</para>
-        <para>6.6. In the Program Stage combobox, select "Birth Details".</para>
-        <para>6.7. In the Data Element list box, double click the "BCG dose give date". And click the "Is not null" button</para>
-        <para>6.8. Click the "is not null" operator button.</para>
-        <para>6.9. Click "Add" button.</para>
-        <para>7. Choose Services->Name-Based Data Records->Data Entry, click the "List All Beneficiaries" button.</para>
-        <para>7.1. Select beneficiary with name "Micheal" and open the "Birth Details" stage of "Child Health Program". Enter value "2011-02-18" for "BCG dose give date" data element.</para>
-        <para>7.2. Select beneficiary with name "Alice" and open the "Birth Details" stage of "Child Health Program". Enter value "2011-02-18" for "BCG dose give date" data element.</para>
-        <para>7.3. Select beneficiary with name "Tom" and open the "Birth Details" stage of "Child Health Program". No enter value for "Birth Details" stage.</para>
+        <para>2. Choose Maintenance->Datasets->Dataset, create a new dataset named "BCG Report" and add "Number of children - BCG" data element into the dataset.</para>
+        <para>3. Choose Maintenance->Beneficiaries and Programs->Program, create a program named "Child Health Program" with a stage named "Birth Details" and add the "BCG dose give date" data element into this stage. Then assign it to "Ho Chi Minh city" facility.</para>
+        <para>4. Choose Maintenance->Beneficiaries and Program->Beneficiary, select "Ho Chi Minh city" and create three beneficiaries named "Micheal", "Alice" and "Tom" and enroll them into "Child Health Program".</para>
+        <para>5. Create a new beneficiary aggregation query builder named "Number of children - BCG Builder" to linking between the data elements.</para>
+        <para>5.1. Choose Maintenance->Beneficiaries and Programs->Beneficiary Aggregation Query Builder, click the "Add new" button.</para>
+        <para>5.2. Fill in "The number of children - BCG Builder" for the description field.</para>
+        <para>5.3. In the Dataset combobox, select "BCG Report".</para>
+        <para>5.4. In the Data Element combobox, select "Number of children - BCG (default)"</para>
+        <para>5.5. In the Program combobox, select "Child Health Program".</para>
+        <para>5.6. In the Program Stage combobox, select "Birth Details".</para>
+        <para>5.7. In the Data Element list box, double click the "BCG dose give date". And click the "Is not null" button</para>
+        <para>5.8. Click the "is not null" operator button.</para>
+        <para>5.9. Click "Add" button.</para>
+        <para>6. Choose Services->Name-Based Data Records->Data Entry, click the "List All Beneficiaries" button.</para>
+        <para>6.1. Select beneficiary with name "Micheal" and open the "Birth Details" stage of "Child Health Program". Enter value "2011-02-18" for "BCG dose give date" data element.</para>
+        <para>6.2. Select beneficiary with name "Alice" and open the "Birth Details" stage of "Child Health Program". Enter value "2011-02-18" for "BCG dose give date" data element.</para>
+        <para>6.3. Select beneficiary with name "Tom" and open the "Birth Details" stage of "Child Health Program". No enter value for "Birth Details" stage.</para>
         <para>Before entering patient data value of the beneficiaries for the stage, choose "Report Date" as "2011-02-28".</para>
-        <para>8. Choose Services->Name-Based Data Records->Case Aggregation</para>
-        <para>8.1. In Dataset list combo box, select "BCG Report".</para>
-        <para>8.2. In From combo box, select "January 2011".</para>
-        <para>8.2. In To combo box, select "February 2011".</para>
-        <para>8.3. In Organisation Unit Tree Section box, select "Ho Chi Minh city".</para>
-        <para>8.4. Click the "Aggregate" button. The result will be shown after running successfully.</para>
+        <para>7. Choose Services->Name-Based Data Records->Case Aggregation</para>
+        <para>7.1. In Dataset list combo box, select "BCG Report".</para>
+        <para>7.2. In From combo box, select "January 2011".</para>
+        <para>7.3. In To combo box, select "February 2011".</para>
+        <para>7.4. In Organisation Unit Tree Section box, select "Ho Chi Minh city".</para>
+        <para>7.5. Click the "Aggregate" button. The result will be shown after running successfully.</para>
 	</section>
 	<section id="validation_criteria">
 		<title>Validation criteria</title>
