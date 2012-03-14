@@ -1,5 +1,8 @@
 package org.hisp.dhis.sms.outbound;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hisp.dhis.sms.SmsServiceException;
@@ -10,9 +13,12 @@ import org.hisp.dhis.sms.outbound.OutboundSmsService;
 import org.hisp.dhis.sms.outbound.OutboundSmsTransportService;
 
 /**
- * Simple {@link OutboundSmsService} just logging invocations, only to be used for test purposes
+ * Simple {@link OutboundSmsService} just logging invocations, only to be used
+ * for test purposes
  * 
- * <p>Has the property enabled, defaulting to true, which is configured using {@link TestOutboundSmsService#initialize(SmsConfiguration)}
+ * <p>
+ * Has the property enabled, defaulting to true, which is configured using
+ * {@link TestOutboundSmsService#initialize(SmsConfiguration)}
  */
 public class TestOutboundSmsService
     implements OutboundSmsTransportService
@@ -25,14 +31,16 @@ public class TestOutboundSmsService
     public void sendMessage( OutboundSms sms, String gatewayId )
         throws SmsServiceException
     {
-        if (!enabled)
+        if ( !enabled )
+        {
             throw new SmsServiceNotEnabledException();
-            
+        }
+
         log.debug( "Send message: " + sms );
     }
 
     @Override
-    public void initialize(SmsConfiguration config)
+    public void initialize( SmsConfiguration config )
         throws SmsServiceException
     {
         this.enabled = config.isEnabled();
@@ -45,4 +53,9 @@ public class TestOutboundSmsService
         return this.enabled;
     }
 
+    @Override
+    public Map<String, String> getGatewayMap()
+    {
+        return new HashMap<String, String>();
+    }
 }

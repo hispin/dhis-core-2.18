@@ -28,11 +28,16 @@ package org.hisp.dhis.sms.smslib;
  */
 
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Set;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hisp.dhis.sms.SmsServiceException;
+import org.hisp.dhis.sms.config.BulkSmsGatewayConfig;
+import org.hisp.dhis.sms.config.ClickatellGatewayConfig;
+import org.hisp.dhis.sms.config.GenericHttpGatewayConfig;
 import org.hisp.dhis.sms.config.SmsConfiguration;
 import org.hisp.dhis.sms.config.SmsGatewayConfig;
 import org.hisp.dhis.sms.outbound.OutboundSms;
@@ -50,9 +55,23 @@ public class SmsLibService
 {
     private static final Log log = LogFactory.getLog( SmsLibService.class );
 
+    private Map<String, String> gatewayMap = new HashMap<String, String>();
+
     private GateWayFactory gatewayFactory = new GateWayFactory();
 
     private SmsConfiguration config;
+
+    private final String BULK_GATEWAY = "bulk_gw";
+
+    private final String CLICKATELL_GATEWAY = "clickatell_gw";
+
+    private final String HTTP_GATEWAY = "generic_http_gw";
+
+    private final String MODEM_GATEWAY = "modem_gateway";
+
+    // -------------------------------------------------------------------------
+    // Implementation methods
+    // -------------------------------------------------------------------------
 
     @Override
     public boolean isEnabled()
@@ -67,7 +86,7 @@ public class SmsLibService
         String recipient;
 
         Set<String> recipients = sms.getRecipients();
-        
+
         if ( recipients.size() == 0 )
         {
             log.warn( "Trying to send sms without recipients: " + sms );
@@ -252,12 +271,34 @@ public class SmsLibService
 
         service.getGateways().clear();
 
+        AGateway gateway = null;
+
         // Add gateways
         for ( SmsGatewayConfig gatewayConfig : config.getGateways() )
         {
             try
             {
-                service.addGateway( gatewayFactory.create( gatewayConfig ) );
+                gateway = gatewayFactory.create( gatewayConfig );
+
+                service.addGateway( gateway );
+
+                if ( gatewayConfig instanceof BulkSmsGatewayConfig )
+                {
+                    gatewayMap.put( BULK_GATEWAY, gateway.getGatewayId() );
+                }
+                else if ( gatewayConfig instanceof ClickatellGatewayConfig )
+                {
+                    gatewayMap.put( CLICKATELL_GATEWAY, gateway.getGatewayId() );
+                }
+                else if ( gatewayConfig instanceof GenericHttpGatewayConfig )
+                {
+                    gatewayMap.put( HTTP_GATEWAY, gateway.getGatewayId() );
+                }
+                else
+                {
+                    gatewayMap.put( MODEM_GATEWAY, gateway.getGatewayId() );
+                }
+
                 log.debug( "Added gateway " + gatewayConfig.getName() );
             }
             catch ( GatewayException e )
@@ -276,6 +317,17 @@ public class SmsLibService
         {
             log.debug( "Sent message through gateway " + gateway.getGatewayId() + ": " + msg );
         }
+    }
+
+    @Override
+    public Map<String, String> getGatewayMap()
+    {
+        if ( gatewayMap == null || gatewayMap.isEmpty() )
+        {
+            reloadConfig();
+        }
+        
+        return gatewayMap;
     }
 
 }

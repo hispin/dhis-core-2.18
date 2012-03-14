@@ -27,18 +27,19 @@ package org.hisp.dhis.mobile.action;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import org.hisp.dhis.sms.SmsConfigurationManager;
-import org.hisp.dhis.sms.config.SmsConfiguration;
+import java.util.Map;
+
+import org.hisp.dhis.sms.outbound.OutboundSmsTransportService;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.opensymphony.xwork2.Action;
 
 /**
- * @author 
+ * @author Dang Duy Hieu
  * @version $Id$
  */
 
-public class ShowMobileConfigurationFormAction
+public class ShowSendSMSFormAction
     implements Action
 {
     // -------------------------------------------------------------------------
@@ -46,27 +47,15 @@ public class ShowMobileConfigurationFormAction
     // -------------------------------------------------------------------------
 
     @Autowired
-    private SmsConfigurationManager smsConfigurationManager;
+    private OutboundSmsTransportService transportService;
 
     // -------------------------------------------------------------------------
     // Output
     // -------------------------------------------------------------------------
 
-    private SmsConfiguration smsConfig;
-
-    public SmsConfiguration getSmsConfig()
+    public Map<String, String> getGatewayMap()
     {
-        return smsConfig;
-    }
-
-    public void setSmsConfig( SmsConfiguration smsConfig )
-    {
-        this.smsConfig = smsConfig;
-    }
-
-    public boolean getSmsServiceStatus()
-    {
-        return this.smsConfig != null && this.smsConfig.isEnabled();
+        return transportService.getGatewayMap();
     }
 
     // -------------------------------------------------------------------------
@@ -76,7 +65,6 @@ public class ShowMobileConfigurationFormAction
     public String execute()
         throws Exception
     {
-        smsConfig = smsConfigurationManager.getSmsConfiguration();
         return SUCCESS;
     }
 }
