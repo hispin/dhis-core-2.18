@@ -101,6 +101,8 @@
 			validation( 'programEnrollmentSelectDiv', function(form){
                 validateProgramEnrollment();
             });
+			
+			datePickerInRange( 'dateOfIncident' , 'enrollmentDate' );
 		}); 
 	
 	jQuery("#tabs").tabs();
