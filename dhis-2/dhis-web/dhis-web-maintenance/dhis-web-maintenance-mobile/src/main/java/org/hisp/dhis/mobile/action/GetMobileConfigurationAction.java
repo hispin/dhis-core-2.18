@@ -1,7 +1,7 @@
 package org.hisp.dhis.mobile.action;
 
 /*
- * Copyright (c) 2004-2007, University of Oslo
+ * Copyright (c) 2004-2012, University of Oslo
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -27,15 +27,52 @@ package org.hisp.dhis.mobile.action;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import org.hisp.dhis.sms.SmsConfigurationManager;
+import org.hisp.dhis.sms.config.SmsConfiguration;
+import org.springframework.beans.factory.annotation.Autowired;
+
 import com.opensymphony.xwork2.Action;
 
-public class MobileHomePageAction
+/**
+ * @author 
+ * @version $Id$
+ */
+
+public class GetMobileConfigurationAction
     implements Action
 {
+    // -------------------------------------------------------------------------
+    // Dependencies
+    // -------------------------------------------------------------------------
 
-    @Override
-    public String execute() throws Exception
+    @Autowired
+    private SmsConfigurationManager smsConfigurationManager;
+
+    // -------------------------------------------------------------------------
+    // Output
+    // -------------------------------------------------------------------------
+
+    private SmsConfiguration smsConfig;
+
+    public SmsConfiguration getSmsConfig()
     {
+        return smsConfig;
+    }
+
+    public boolean getSmsServiceStatus()
+    {
+        return this.smsConfig != null && this.smsConfig.isEnabled();
+    }
+
+    // -------------------------------------------------------------------------
+    // Action implementation
+    // -------------------------------------------------------------------------
+
+    public String execute()
+        throws Exception
+    {
+        smsConfig = smsConfigurationManager.getSmsConfiguration();
+
         return SUCCESS;
     }
 }

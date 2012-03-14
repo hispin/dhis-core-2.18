@@ -15,20 +15,25 @@
       <param name="page">/dhis-web-maintenance-mobile/welcome.vm</param>
       <param name="menu">/dhis-web-maintenance-mobile/menu.vm</param>
     </action>
-
-    <action name="sendSMS" class="org.hisp.dhis.mobile.action.ProcessingSendSMSAction">
+  
+	<action name="showSMSConfigureForm" class="org.hisp.dhis.mobile.action.GetMobileConfigurationAction">
       <result name="success" type="velocity">/main.vm</result>
-      <param name="page">/dhis-web-maintenance-mobile/sendSMSPage.vm</param>
+      <param name="page">/dhis-web-maintenance-mobile/smsServiceConfiguration.vm</param>
       <param name="menu">/dhis-web-maintenance-mobile/menu.vm</param>
-      <param name="requiredAuthorities">F_MOBILE_SENDSMS</param>
+	  <param name="requiredAuthorities">F_MOBILE_SETTINGS</param>
     </action>
   
-	<action name="showSMSForm" class="org.hisp.dhis.mobile.action.NoAction">
+	<action name="showSMSForm" class="org.hisp.dhis.mobile.action.ShowSendSMSFormAction">
       <result name="success" type="velocity">/main.vm</result>
       <param name="page">/dhis-web-maintenance-mobile/sendSMSPage.vm</param>
       <param name="menu">/dhis-web-maintenance-mobile/menu.vm</param>
       <param name="javascripts">../dhis-web-commons/oust/oust.js</param>
 	  <param name="requiredAuthorities">F_MOBILE_SENDSMS</param>
+    </action>
+
+    <action name="sendSMS" class="org.hisp.dhis.mobile.action.ProcessingSendSMSAction">
+      <result name="success" type="velocity-json">../dhis-web-commons/ajax/jsonResponseSuccess.vm</result>
+      <param name="onExceptionReturn">plainTextError</param>
     </action>
 
     <action name="mobileSettings" class="org.hisp.dhis.mobile.action.MobileSettingsAction">

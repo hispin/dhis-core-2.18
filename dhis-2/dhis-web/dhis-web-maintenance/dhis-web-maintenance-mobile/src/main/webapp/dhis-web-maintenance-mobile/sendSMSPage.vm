@@ -1,3 +1,14 @@
+<script type="text/javascript">
+	jQuery(document).ready( function() {
+		validation2( "sendSMSForm", function( form )
+		{
+			sendSMSMessage( form );
+		}, {
+			'rules' : getValidationRulesForSMSPage()
+		} );
+	});
+</script>
+
 <style type="text/css">
     .statusBar{
         color: white;
@@ -11,7 +22,7 @@
 <h3>Send SMS</h3>
 #if ( $smsServiceStatus )
 
-<form method="post">
+<form id="sendSMSForm" name="sendSMSForm" action="sendSMS.action">
 	<table id="detailsList">
 	    <col width="300px"/>
 		<col width="80px"/>
@@ -22,17 +33,18 @@
 			<tr>
 				<td><label for="type">$i18n.getString( "type" ):</label></td>
 				<td>
-					<select style="width: 100%;">
-						<option value="0">Modem</option>
-						<option value="1">Clickatell</option>
-						<option value="2">BulkSMS</option>
+				#set( $keys = $gatewayMap.keySet() )
+					<select id="gatewayId" name="gatewayId" style="width: 100%;">
+						#foreach( $key in $keys )
+						<option value="$gatewayMap.get( $key )">$i18n.getString( $key )</option>
+						#end
 					</select>
 				</td>
 			</tr>
 			
 			<tr>
 				<td>$i18n.getString( "organisation_unit" )</td>
-				<td><input type="checkbox" onchange="toggleSMSGUI( this.checked );"/></td>
+				<td><input type="checkbox" id="sendTypeCB" onchange="toggleSMSGUI( this.checked );"/></td>
 			</tr>
 			
 			<tr><th colspan="2">$i18n.getString( "message" )</th></tr>
@@ -43,17 +55,17 @@
 	<table id="detailsList">
 		<col width="300px"/>
 		<col width="80px"/>
-		<tbody id="singleType">
+		<tbody id="phoneType">
 			<tr><th colspan="2">$i18n.getString( "phone" ):</th></tr>
 			<tr><td colspan="2"><input type="text" name="recipient" style="width:520px" /></td></tr>
 		</tbody>
 	
-		<tbody id="multipleType" style="display:none">
-			<tr><td>#organisationUnitSelectionTree( true, true, true )</td></tr>
+		<tbody id="orgunitType" style="display:none">
+			<tr><td>#organisationUnitSelectionTree( true, true, false )</td></tr>
 		</tbody>
 		
 		<tbody>
-			<tr><td><input type="submit" name="send" value="Send SMS"/></td></tr>
+			<tr><td><input type="submit" name="send" value="$i18n.getString( 'send_sms' )"/></td></tr>
 		</tbody>
 	</table>
 </form>
@@ -65,14 +77,55 @@
 #end
 
 <script type="text/javascript">
+
+	var isChecked = false;
+
 	function toggleSMSGUI( checked )
 	{
 		if ( checked ) {
-			hideById( 'singleType' );
-			showById( 'multipleType' );
+			hideById( 'phoneType' );
+			showById( 'orgunitType' );
 		} else {
-			showById( 'singleType' );
-			hideById( 'multipleType' );
+			showById( 'phoneType' );
+			hideById( 'orgunitType' );
 		}
+		
+		isChecked = checked;
+	}
+	
+	function sendSMSMessage( _form )
+	{
+		var params = "";
+
+		if ( !isChecked )
+		{
+			var list = getFieldValue( "recipient" ).split( ";" )
+			
+			for ( var i in list ) {
+				params += "recipients=" + list[i] + "&";
+			}
+
+			params = "?" + params.substring( 0, params.length - 1 );
+		}
+
+		jQuery.postUTF8( _form.action + params, {}, function ( json )
+		{
+			if ( json.response == "success" ) {
+				showSuccessMessage( json.message );
+			}
+		} );
+	}
+	
+	function getValidationRulesForSMSPage();
+	{
+		var rules = {};
+		
+		if ( isChecked ) {
+			rules = { 'treeSelectedId': { 'required': true } };
+		} else {
+			rules = { 'recipient': { 'required': true } };
+		}
+		
+		return rules;
 	}
 </script>

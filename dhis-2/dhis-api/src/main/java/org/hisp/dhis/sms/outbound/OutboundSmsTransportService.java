@@ -1,5 +1,7 @@
 package org.hisp.dhis.sms.outbound;
 
+import java.util.Map;
+
 /*
  * Copyright (c) 2004-2011, University of Oslo
  * All rights reserved.
@@ -34,4 +36,5 @@ package org.hisp.dhis.sms.outbound;
 public interface OutboundSmsTransportService
     extends OutboundSmsService
 {
+    Map<String, String> getGatewayMap();
 }

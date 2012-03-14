@@ -9,8 +9,8 @@
 }
 </style>
 
-<h3>$i18n.getString("sms_service_configuration")</h3>
-#if($smsServiceStatus)
+<h3>$i18n.getString( "sms_service_configuration" )</h3>
+#if( $smsServiceStatus )
 <form id="add" name="addGateWayConfig" action="addGateWayConfig.action" method="post" >
   <table id="detailsList">
     <col/> ## Labels
@@ -24,7 +24,7 @@
 		<tr>
 			<td colspan="2">
 				<div class="overlaps" id="noOverlapsDiv" style="display: block;">
-					#if($smsService.isRunning())
+					#if( $smsService.isRunning() )
 						$i18n.getString("sms_service_is_runnning")
 					#else
 						$i18n.getString("sms_service_is_stopped")
@@ -61,7 +61,7 @@
 					<thead>
 						<tr>
 							<th>$i18n.getString("gateways")</th>
-							<th style="text-align:center; width: 50px;">$i18n.getString("operation")</th>
+							<th style="text-align:center; width: 50px;">$i18n.getString( "operation" )</th>
 						</tr>
 					</thead>
 					<tbody>
@@ -70,8 +70,8 @@
 						<tr>
 							<td>$gateWay.name</td>
 							<td style="text-align:right">
-							  <a title="Edit" href="editGateWayConfig.action?gateWayID="><img alt="Edit" src="../images/edit.png"></a>
-							  <a title="Remove" href="#"><img alt="Remove" src="../images/delete.png"></a>
+							  <a title="$i18n.getString( 'edit' )" href="editGateWayConfig.action?gateWayID="><img alt="$i18n.getString( 'edit' )" src="../images/edit.png"/></a>
+							  <a title="$i18n.getString( 'remove' )" href="#"><img alt="$i18n.getString( 'remove' )" src="../images/delete.png"/></a>
 							</td>
 						</tr>
 					#end 					
