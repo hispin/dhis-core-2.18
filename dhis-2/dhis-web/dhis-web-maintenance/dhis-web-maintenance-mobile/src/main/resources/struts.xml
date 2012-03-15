@@ -10,7 +10,7 @@
 
     <!-- Pages -->
 
-    <action name="index" class="org.hisp.dhis.mobile.action.MobileHomePageAction">
+    <action name="index" class="org.hisp.dhis.mobile.action.NoAction">
       <result name="success" type="velocity">/main.vm</result>
       <param name="page">/dhis-web-maintenance-mobile/welcome.vm</param>
       <param name="menu">/dhis-web-maintenance-mobile/menu.vm</param>
