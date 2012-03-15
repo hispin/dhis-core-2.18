@@ -45,17 +45,17 @@
     <tbody>
       <tr>
         <td>$i18n.getString( "name" ) <em title="$i18n.getString( "required" )" class="required">*</em></td>
-        <td><input type="text" id="name" name="name" value="$encoder.htmlEncode( $patientAttribute.name )" style="width:30em" class="{validate:{required:true,rangelength:[2,160]}}"></td>
+        <td><input type="text" id="name" name="name" value="$encoder.htmlEncode( $patientAttribute.name )" class="{validate:{required:true,rangelength:[2,160]}}"></td>
       </tr>   
       <tr>
         <td>$i18n.getString( "description" ) <em title="$i18n.getString( "required" )" class="required">*</em></td>
-        <td><input type="text" id="description" name="description" value="$encoder.htmlEncode( $patientAttribute.description )" style="width:30em" class="{validate:{required:true,minlength:2}}"></td>
+        <td><input type="text" id="description" name="description" value="$encoder.htmlEncode( $patientAttribute.description )" class="{validate:{required:true,minlength:2}}"></td>
       </tr>
       
       <tr>
-		<td width="20em"><label for="mandatory">$i18n.getString( "mandatory" )<em title="$i18n.getString( "required" )" class="required">*</em></label></td>
+		<td><label for="mandatory">$i18n.getString( "mandatory" )<em title="$i18n.getString( "required" )" class="required">*</em></label></td>
 		<td>
-			<select id="mandatory" name="mandatory" style="min-width:30.5em">
+			<select id="mandatory" name="mandatory">
 				<option value="true" #if( $patientAttribute.mandatory ) selected="selected" #end>$i18n.getString( "yes" )</option>
 				<option value="false" #if( !$patientAttribute.mandatory ) selected="selected" #end>$i18n.getString( "no" )</option>
 			</select>
@@ -64,9 +64,9 @@
 	</tr>
 	
 	<tr>
-		<td width="20em"><label for="inheritable">$i18n.getString( "inheritable" )<em title="$i18n.getString( "required" )" class="required">*</em></label></td>
+		<td><label for="inheritable">$i18n.getString( "inheritable" )<em title="$i18n.getString( "required" )" class="required">*</em></label></td>
 		<td>
-			<select id="inheritable" name="inheritable" style="min-width:30.5em">
+			<select id="inheritable" name="inheritable">
 				<option value="true" #if( $patientAttribute.inheritable) selected="selected" #end>$i18n.getString( "yes" )</option>
 				<option value="false" #if( !$patientAttribute.inheritable) selected="selected" #end>$i18n.getString( "no" )</option>
 			</select>
@@ -74,16 +74,16 @@
 		<td></td>				
 	</tr>
 	<tr>
-		<td width="30em"><label for="noChar">$i18n.getString( "no_of_char" )</label></td>
+		<td><label for="noChar">$i18n.getString( "no_of_char" )</label></td>
 		<td>
-			<input type="text" name="noChars" id="noChars" class="{validate:{required:false, number:true}}" style="min-width:30em" value="$!patientAttribute.noChars">
+			<input type="text" name="noChars" id="noChars" class="{validate:{required:false, number:true}}" value="$!patientAttribute.noChars">
 		</td>		
 		<td></td>				
 	</tr>
     <tr>
         <td>$i18n.getString( "value_type" ) <em title="$i18n.getString( "required" )" class="required">*</em></td>
         <td>
-            <select id="valueType" name="valueType" style="min-width:30.5em" onchange="ATTRIBUTE_OPTION.selectValueType(this);">
+            <select id="valueType" name="valueType" onchange="ATTRIBUTE_OPTION.selectValueType(this);">
                 <option value="NUMBER" #if( $patientAttribute.valueType == 'NUMBER' ) selected="selected" #end>$i18n.getString( "number" )</option>
                 <option value="TEXT" #if( $patientAttribute.valueType == 'TEXT' ) selected="selected" #end>$i18n.getString( "text" )</option>
                 <option value="YES/NO" #if( $patientAttribute.valueType == 'YES/NO' ) selected="selected" #end>$i18n.getString( "yes_no" )</option>
@@ -94,7 +94,7 @@
     </tr>
       
 	  <tr id="attributeComboRow"> 
-    	<td width="20em"><label>$i18n.getString( "attribute_options" ) <em title="$i18n.getString( "required" )" class="required">*</em></label></td>
+    	<td><label>$i18n.getString( "attribute_options" ) <em title="$i18n.getString( "required" )" class="required">*</em></label></td>
     	<td >
     		<table id="attrOptionContainer">
     			 #foreach($option in $patientAttribute.attributeOptions) 
@@ -107,20 +107,21 @@
     	<td><span id="attrMessage"  name="attrMessage" style="color:red;"></span></td>
       </tr>
       <tr>
-        <td colspan="3" style="height:15px"></td>
+        <td colspan="3"></td>
       </tr>
 	  <tr>
-    	<td width="20em"><label for="groupBy">$i18n.getString( "groupBy" )</td>
+    	<td><label for="groupBy">$i18n.getString( "groupBy" )</td>
     	<td><input type="checkbox" name="groupBy" value="true" #if( $patientAttribute.groupBy == 'true' ) checked #end></td>
       </tr>
     </tbody>
+	<tr>
+		<td></td>
+		<td>
+			 <input type="submit" value="$i18n.getString( 'update' )">
+			<input type="button" value="$i18n.getString( 'cancel' )" onclick="window.location.href='patientAttribute.action'">
+		</td>
+	</tr>
   </table>  
-
-<p>
-    <input type="submit" value="$i18n.getString( "update" )" style="width:10em">
-    <input type="button" value="$i18n.getString( "cancel" )" onclick="window.location.href='patientAttribute.action'" style="width:10em">
-</p>
-
 </form>
 
 <script>

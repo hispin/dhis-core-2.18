@@ -19,7 +19,7 @@
 	</tr>
 	<tr>
 		<td colspan='2'>			
-			<input type="text" id='description' name='description' style="width:100%" value='$validation.description'>
+			<input type="text" id='description' name='description' value='$validation.description'>
 		</td>
 	</tr>
 	<tr>
@@ -29,7 +29,7 @@
 	</tr>
 	<tr>
 		<td>
-			<select style="width:30.2em" id='leftStage' name='leftStage' onchange="getLeftPrgramStageDataElements();">
+			<select id='leftStage' name='leftStage' onchange="getLeftPrgramStageDataElements();">
 				<option value=''>[$i18n.getString( "please_select" )]</option>
 				#foreach($stage in $validation.program.programStages)
 				<option value='$stage.id'>$stage.name</option>
@@ -39,42 +39,42 @@
 	</tr>
 	<tr>
 		<td>
-			<select style="width:30.2em" id='leftSideDE' name='leftSideDE' size='7' ondblclick="insertDataElement(this, 'leftSide');">
+			<select id='leftSideDE' name='leftSideDE' size='7' ondblclick="insertDataElement(this, 'leftSide');">
 			</select>
 		</td>
 	</tr>
 	<tr>
 		<td>
-			<img src="../images/plus.png" alt="$i18n.getString( 'plus' )" onclick='insertOperator( "leftStageDescription", "leftSide", "+" );' style="cursor:pointer;"/>
+			<img src="../images/plus.png" alt="$i18n.getString( 'plus' )" onclick='insertOperator( "leftStageDescription", "leftSide", "+" );' class="imgButton" />
 			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-			<img src="../images/less.png" alt="$i18n.getString( 'less' )" onclick='insertOperator( "leftStageDescription", "leftSide", "<" );' style="cursor:pointer;">
-			<img src="../images/less_or_equal.png" alt="$i18n.getString( 'less_or_equal' )" onclick='insertOperator( "leftStageDescription", "leftSide", "<=" );' style="cursor:pointer;">
-			<img src="../images/greater.png" alt="$i18n.getString( 'greater' )" onclick='insertOperator( "leftStageDescription", "leftSide", ">" );' style="cursor:pointer;">
-			<img src="../images/greater_or_equal.png" alt="$i18n.getString( 'greater_or_equal' )" onclick='insertOperator( "leftStageDescription", "leftSide", ">=" );' style="cursor:pointer;">
-			<img src="../images/equal.png" alt="$i18n.getString( 'equal' )" onclick='insertOperator( "leftStageDescription", "leftSide", "==" );' style="cursor:pointer;"/>
-			<img src="../images/diff.png" alt="$i18n.getString( 'diff' )" onclick='insertOperator( "leftStageDescription", "leftSide", "!=" );' style="cursor:pointer;"/>
+			<img src="../images/less.png" alt="$i18n.getString( 'less' )" onclick='insertOperator( "leftStageDescription", "leftSide", "<" );' class="imgButton" />
+			<img src="../images/less_or_equal.png" alt="$i18n.getString( 'less_or_equal' )" onclick='insertOperator( "leftStageDescription", "leftSide", "<=" );' class="imgButton" />
+			<img src="../images/greater.png" alt="$i18n.getString( 'greater' )" onclick='insertOperator( "leftStageDescription", "leftSide", ">" );' class="imgButton" />
+			<img src="../images/greater_or_equal.png" alt="$i18n.getString( 'greater_or_equal' )" onclick='insertOperator( "leftStageDescription", "leftSide", ">=" );' class="imgButton" />
+			<img src="../images/equal.png" alt="$i18n.getString( 'equal' )" onclick='insertOperator( "leftStageDescription", "leftSide", "==" );' class="imgButton" />
+			<img src="../images/diff.png" alt="$i18n.getString( 'diff' )" onclick='insertOperator( "leftStageDescription", "leftSide", "!=" );' class="imgButton"/>
 			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-			<img src="../images/clear.png" alt="$i18n.getString( 'clear' )" align='right' onclick="clearValidation( 'leftSide', 'leftStageDescription' )" style="cursor:pointer;margin-right:0.5em"/>
+			<img src="../images/clear.png" alt="$i18n.getString( 'clear' )" align='right'  onclick="clearValidation( 'leftSide', 'leftStageDescription' )" />
 		</td>
 	</tr>
 	<tr>
 		<td>
-			<textarea rows='5' style="width:30em" id='leftSide' name='leftSide' onkeyup="getValidationDescription('leftStageDescription', 'leftSide')">$validation.leftSide</textarea>
+			<textarea rows='5' id='leftSide' name='leftSide' onkeyup="getValidationDescription('leftStageDescription', 'leftSide')">$validation.leftSide</textarea>
 			<input type='hidden' id='rightSide' name='rightSide' value='1==1'>
 		</td>
 	</tr>
 	<tr>	
 		<td>
-			<fieldset style="border: 1px solid #3f5d8e; ">
+			<fieldset>
 				<legend>$i18n.getString( "description" )</legend>
-				<div id='leftStageDescription' style="width:29em">$!leftDescription</div>
+				<div id='leftStageDescription'>$!leftDescription</div>
 			</fieldset>
 		</td>
 	</tr>
 	<tr>
 		<td>
-			<input type='submit' value="$i18n.getString( "update" )" style="width:10em">
-			<input type='button' value="$i18n.getString( "cancel" )" style="width:10em" onclick="window.location.href='programValidation.action?programId=$validation.program.id'">
+			<input type='submit' value="$i18n.getString( 'update' )" >
+			<input type='button' value="$i18n.getString( 'cancel' )" onclick="window.location.href='programValidation.action?programId=$validation.program.id'">
 		</td>
 		<td></td>
 	</tr>

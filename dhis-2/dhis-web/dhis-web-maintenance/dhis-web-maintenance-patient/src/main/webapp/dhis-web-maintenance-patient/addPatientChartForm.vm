@@ -20,13 +20,13 @@
     </tr>
     <tr>
         <td><label for="title">$i18n.getString( "title" ) <em title="$i18n.getString( "required" )" class="required">*</em></label></td>
-        <td><input type="text" id="title" name="title" style="width:298px" class="{validate:{required:true,minlength:4}}"></td>
+        <td><input type="text" id="title" name="title" class="{validate:{required:true,minlength:4}}"></td>
     </tr>
 
     <tr>
     	<td><label for="type">$i18n.getString( "chart_type" ) <em title="$i18n.getString( "required" )" class="required">*</em></label></td>
     	<td>
-    		<select id="type" name="type" style="width:300px">
+    		<select id="type" name="type">
     			<option value="bar">$i18n.getString( "bar_chart" )</option>
     			<option value="bar3d">$i18n.getString( "bar3d_chart" )</option>
     			<option value="line">$i18n.getString( "line_chart" )</option>
@@ -37,7 +37,7 @@
     <tr>
         <td><label for="type">$i18n.getString( "chart_size" ) <em title="$i18n.getString( "required" )" class="required">*</em></label></td>
         <td>
-            <select id="size" name="size" style="width:300px">
+            <select id="size" name="size" >
                 <option value="normal"#if ( $!chart.size == "normal" ) selected#end>$i18n.getString( "normal" )</option>
                 <option value="wide"#if ( $!chart.size == "wide" ) selected#end>$i18n.getString( "wide" )</option>
                 <option value="tall"#if ( $!chart.size == "tall" ) selected#end>$i18n.getString( "tall" )</option>
@@ -49,7 +49,7 @@
         <td><input type="checkbox" id="regression" name="regression" value="true" ></td>
     </tr>
     <tr>
-        <td colspan="2" style="height:15px"></td>
+        <td>&nbsp;</td>
     </tr>
 	
 	<!-- dataelements -->
@@ -57,7 +57,7 @@
 	<tr>
         <td>$i18n.getString( "value_x_dataelements" ) <em title="$i18n.getString( "required" )" class="required">*</em></td>
         <td>
-            <select id="dataElementId" name="dataElementId" style="width:300px" class="{validate:{required:true}}">
+            <select id="dataElementId" name="dataElementId" class="{validate:{required:true}}">
 				<option value="">$i18n.getString('please_select')</option>
                 #foreach( $dataElement in $dataElements )
                     <option value="$dataElement.id">$dataElement.name</option>
@@ -66,19 +66,16 @@
         </td>
     </tr>
     <tr>
-        <td colspan="2" style="height:15px"></td>
+        <td>&nbsp;</td>
     </tr>
-
-</table>
-
-<table>
-    <tr>        
-        <td colspan="2">
-            <input type="submit" value="$i18n.getString( 'save' )" style="width:120px" />
-            <input type="button" value="$i18n.getString( 'back' )" onclick="javascript:window.location.href='patientChartList.action?programId=$programId'" style="width:120px" />
+	<tr>   
+		<td></td>
+        <td>
+            <input type="submit" value="$i18n.getString( 'save' )" />
+            <input type="button" value="$i18n.getString( 'back' )" onclick="javascript:window.location.href='patientChartList.action?programId=$programId'" />
         </td>
     </tr>
-    
+
 </table>
 
 </form>

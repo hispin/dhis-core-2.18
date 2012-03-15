@@ -1,3 +1,4 @@
+<link rel="stylesheet" type="text/css" href="style/basic.css" media="screen" />
 <script>
 	jQuery(document).ready(	function(){
 		
@@ -15,9 +16,7 @@
 <h3>$i18n.getString( "edit_program" )</h3>
 
 <form id="updateProgramForm" name="updateProgramForm" action="updateProgram.action" method="post" >
-<div style="display:inline">
   <input type="hidden" id="id" name="id" value="$program.id">
-</div>
   
   <table id="detailsList">
     <thead>
@@ -28,12 +27,12 @@
     <tbody>
       <tr>
 		<td><label>$i18n.getString( "name" ) <em title="$i18n.getString( "required" )" class="required">*</em></label></td>
-		<td><input type="text" id="name" name="name" value="$encoder.htmlEncode( $program.name )" style="width:30em" class="{validate:{required:true,minlength:4}}"></td>
+		<td><input type="text" id="name" name="name" value="$encoder.htmlEncode( $program.name )" class="{validate:{required:true,minlength:4}}"></td>
 		<td></td>
 	  </tr>	  
       <tr>
 		<td><label>$i18n.getString( "description" ) <em title="$i18n.getString( "required" )" class="required">*</em></label></td>
-		<td><input type="text" id="description" name="description" value="$encoder.htmlEncode( $program.description )" style="width:30em" class="{validate:{required:true,minlength:4}}"></td>
+		<td><input type="text" id="description" name="description" value="$encoder.htmlEncode( $program.description )" class="{validate:{required:true,minlength:4}}"></td>
 		<td></td>
 	  </tr>
 	  
@@ -57,35 +56,34 @@
 		
 	<tr>
 		<td><label>$i18n.getString( "version" ) <em title="$i18n.getString( "required" )" class="required">*</em></label></td>
-		<td><input type="text" id="version" name="version" value="$program.version" style="width:30em" class="{validate:{required:true,number:true}}"></td>
+		<td><input type="text" id="version" name="version" value="$program.version" class="{validate:{required:true,number:true}}"></td>
 		<td></td>
 	</tr>		
 	<tr>
 		<td><label>$i18n.getString( "date_of_enrollment_description" ) <em title="$i18n.getString( "required" )" class="required">*</em></label></td>
-		<td><input type="text" id="dateOfEnrollmentDescription" name="dateOfEnrollmentDescription"  value="$!program.dateOfEnrollmentDescription" style="width:30em" class="{validate:{required:true,minlength:4}}" #if( $program.singleEvent=='true' ) disabled #end></td>
+		<td><input type="text" id="dateOfEnrollmentDescription" name="dateOfEnrollmentDescription"  value="$!program.dateOfEnrollmentDescription" class="{validate:{required:true,minlength:4}}" #if( $program.singleEvent=='true' ) disabled #end></td>
 		<td></td>
 	</tr>	
 	<tr>
 		<td><label>$i18n.getString( "date_of_incident_description" ) <em title="$i18n.getString( "required" )" class="required">*</em></label></td>
-		<td><input type="text" id="dateOfIncidentDescription" name="dateOfIncidentDescription" value="$!program.dateOfIncidentDescription" style="width:30em" class="{validate:{required:true,minlength:4}}"></td>
+		<td><input type="text" id="dateOfIncidentDescription" name="dateOfIncidentDescription" value="$!program.dateOfIncidentDescription" class="{validate:{required:true,minlength:4}}"></td>
 		<td></td>
 	</tr>
 	
 	  <tr>
 		<td><label>$i18n.getString( "no_max_days_allowed_input_data" ) <em title="$i18n.getString( "required" )" class="required">*</em></label></td>
-		<td><input type="text" id="maxDaysAllowedInputData" name="maxDaysAllowedInputData" value="$!program.maxDaysAllowedInputData" style="width:30em" class="{validate:{required:true,number:true}}"></td>
+		<td><input type="text" id="maxDaysAllowedInputData" name="maxDaysAllowedInputData" value="$!program.maxDaysAllowedInputData" class="{validate:{required:true,number:true}}"></td>
 		<td></td>
 	  </tr>	
 		  
       <tr>
-      	<td colspan="2" style="height:15px"></td>
+		<td></td>
+      	<td>
+			<input type="submit" value="$i18n.getString( 'update' )">
+			<input type="button" value="$i18n.getString( 'cancel' )" onclick="window.location.href='program.action'">
+		</td>
       </tr>
     </tbody>
   </table>  
-
-<p>
-	<input type="submit" value="$i18n.getString( "update" )" style="width:10em">
-	<input type="button" value="$i18n.getString( "cancel" )" onclick="window.location.href='program.action'" style="width:10em">
-</p>
 
 </form> 	

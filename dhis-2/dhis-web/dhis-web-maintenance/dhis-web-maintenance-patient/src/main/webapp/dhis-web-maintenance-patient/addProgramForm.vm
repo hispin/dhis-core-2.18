@@ -23,13 +23,13 @@
 	<tbody>
 		<tr>
 			<td><label>$i18n.getString( "name" ) <em title="$i18n.getString( "required" )" class="required">*</em></label></td>
-			<td><input type="text" id="name" name="name" style="width:30em" class="{validate:{required:true,minlength:4}}"></td>
+			<td><input type="text" id="name" name="name" class="{validate:{required:true,minlength:4}}"></td>
 			<td></td>
 		</tr>	
 		
 		<tr>
 			<td><label>$i18n.getString( "description" ) <em title="$i18n.getString( "required" )" class="required">*</em></label></td>
-			<td><input type="text" id="description" name="description" style="width:30em" class="{validate:{required:true,minlength:4}}"></td>
+			<td><input type="text" id="description" name="description" class="{validate:{required:true,minlength:4}}"></td>
 			<td></td>
 		</tr>	
 		
@@ -53,31 +53,30 @@
 		
 		<tr>
 			<td><label>$i18n.getString( "date_of_enrollment_description" ) <em title="$i18n.getString( "required" )" class="required">*</em></label></td>
-			<td><input type="text" id="dateOfEnrollmentDescription" name="dateOfEnrollmentDescription" style="width:30em" class="{validate:{required:true,minlength:4}}"></td>
+			<td><input type="text" id="dateOfEnrollmentDescription" name="dateOfEnrollmentDescription" class="{validate:{required:true,minlength:4}}"></td>
 			<td></td>
 		</tr>	
 		
 		<tr>
 			<td><label>$i18n.getString( "date_of_incident_description" ) <em title="$i18n.getString( "required" )" class="required">*</em></label></td>
-			<td><input type="text" id="dateOfIncidentDescription" name="dateOfIncidentDescription" style="width:30em" class="{validate:{required:true,minlength:4}}"></td>
+			<td><input type="text" id="dateOfIncidentDescription" name="dateOfIncidentDescription" class="{validate:{required:true,minlength:4}}"></td>
 			<td></td>
 		</tr>	
 		
 		<tr>
 			<td><label>$i18n.getString( "no_max_days_allowed_input_data" ) <em title="$i18n.getString( "required" )" class="required">*</em></label></td>
-			<td><input type="text" id="maxDaysAllowedInputData" name="maxDaysAllowedInputData" style="width:30em" class="{validate:{required:true,number:true}}"></td>
+			<td><input type="text" id="maxDaysAllowedInputData" name="maxDaysAllowedInputData" class="{validate:{required:true,number:true}}"></td>
 			<td></td>
 		</tr>	
 		
 		<tr>
-			<td colspan="2" style="height:15px"></td>
+			<td></td>
+			<td>
+				<input type="submit" value="$i18n.getString( 'add' )" >
+				<input type="button" value="$i18n.getString( 'cancel' )" onclick="window.location.href='program.action'" >
+			</td>
 		</tr>
 	</tbody>
 </table>
-
-<p>
-	<input type="submit" value="$i18n.getString( "add" )" style="width:10em">
-	<input type="button" value="$i18n.getString( "cancel" )" onclick="window.location.href='program.action'" style="width:10em">
-</p>
 
 </form>
