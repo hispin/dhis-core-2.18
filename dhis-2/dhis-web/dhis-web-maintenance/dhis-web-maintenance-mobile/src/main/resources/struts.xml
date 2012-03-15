@@ -15,13 +15,15 @@
       <param name="page">/dhis-web-maintenance-mobile/welcome.vm</param>
       <param name="menu">/dhis-web-maintenance-mobile/menu.vm</param>
     </action>
-  
-	<action name="showSMSConfigureForm" class="org.hisp.dhis.mobile.action.GetMobileConfigurationAction">
+
+    <action name="mobileSettings" class="org.hisp.dhis.mobile.action.MobileSettingsAction">
       <result name="success" type="velocity">/main.vm</result>
-      <param name="page">/dhis-web-maintenance-mobile/smsServiceConfiguration.vm</param>
+      <param name="page">/dhis-web-maintenance-mobile/smsSettings.vm</param>
       <param name="menu">/dhis-web-maintenance-mobile/menu.vm</param>
-	  <param name="requiredAuthorities">F_MOBILE_SETTINGS</param>
+      <param name="requiredAuthorities">F_MOBILE_SETTINGS</param>
     </action>
+
+	<!-- Sending SMS Action -->
   
 	<action name="showSMSForm" class="org.hisp.dhis.mobile.action.ShowSendSMSFormAction">
       <result name="success" type="velocity">/main.vm</result>
@@ -35,14 +37,8 @@
       <result name="success" type="velocity-json">../dhis-web-commons/ajax/jsonResponseSuccess.vm</result>
       <param name="onExceptionReturn">plainTextError</param>
     </action>
-
-    <action name="mobileSettings" class="org.hisp.dhis.mobile.action.MobileSettingsAction">
-      <result name="success" type="velocity">/main.vm</result>
-      <param name="page">/dhis-web-maintenance-mobile/smsSettings.vm</param>
-      <param name="menu">/dhis-web-maintenance-mobile/menu.vm</param>
-      <param name="requiredAuthorities">F_MOBILE_SETTINGS</param>
-    </action>
-
+	
+	
     <!-- Patient Mobile Setting Action -->
 
     <action name="patientMobileSetting" class="org.hisp.dhis.mobile.action.ShowMobileSettingFormAction">
@@ -55,7 +51,7 @@
       <result name="success" type="redirect">patientMobileSetting.action</result>
     </action>
 	  
-	  	<!-- Mobile Dataset Action -->
+	<!-- Mobile Dataset Action -->
 
     <action name="showMobileDataSet" class="org.hisp.dhis.mobile.action.MobileDataSetListAction">
       <result name="success" type="velocity">/main.vm</result>
@@ -67,19 +63,20 @@
       <result name="success" type="redirect">showMobileDataSet.action</result>
     </action>
 	  
-		<!-- SMS Service Configuration Action -->
-	  
-	 <action name="showSMSServiceConfiguration" class="org.hisp.dhis.mobile.action.ShowMobileConfigurationFormAction">
+	<!-- SMS Service Configuration Action -->
+
+	<action name="showSMSConfigureForm" class="org.hisp.dhis.mobile.action.GetMobileConfigurationAction">
       <result name="success" type="velocity">/main.vm</result>
       <param name="page">/dhis-web-maintenance-mobile/smsServiceConfiguration.vm</param>
       <param name="menu">/dhis-web-maintenance-mobile/menu.vm</param>
-     </action>
-	  
-	  <action name="addGateWayConfig" class="org.hisp.dhis.mobile.action.AddGateWayConfigAction">
+	  <param name="requiredAuthorities">F_MOBILE_SETTINGS</param>
+    </action>
+	
+	<action name="addGateWayConfig" class="org.hisp.dhis.mobile.action.AddGateWayConfigAction">
       <result name="success" type="velocity">/main.vm</result>
       <param name="page">/dhis-web-maintenance-mobile/addGateway.vm</param>
       <param name="menu">/dhis-web-maintenance-mobile/menu.vm</param>
-     </action>
+    </action>
 	  
   </package>
 </struts>
