@@ -155,7 +155,8 @@ public class GetDataCompletenessAction
     {
         Grid _grid = (Grid) SessionUtils.getSessionVar( KEY_DATA_COMPLETENESS );
 
-        // Uselast grid for any format except html
+        // Use last grid for any format except HTML
+        
         if ( _grid != null && type != null && !type.equals( DEFAULT_TYPE ) )
         {
             grid = _grid;
@@ -180,8 +181,7 @@ public class GetDataCompletenessAction
 
                 DataSetCompletenessService completenessService = serviceProvider.provide( criteria );
 
-                if ( dataSetId != null && dataSetId != 0 )
-                // One data set for one organisation unit
+                if ( dataSetId != null && dataSetId != 0 ) // One ds for one ou
                 {
                     mainResults = new ArrayList<DataSetCompletenessResult>( completenessService.getDataSetCompleteness(
                         _periodId, getIdentifiers( OrganisationUnit.class, selectedUnit.getChildren() ), dataSetId ) );
@@ -192,8 +192,7 @@ public class GetDataCompletenessAction
 
                     dataSet = dataSetService.getDataSet( dataSetId );
                 }
-                else
-                // All data sets for children of one organisation unit
+                else // All ds for children of one ou               
                 {
                     mainResults = new ArrayList<DataSetCompletenessResult>( completenessService.getDataSetCompleteness(
                         _periodId, selectedUnit.getId() ) );
