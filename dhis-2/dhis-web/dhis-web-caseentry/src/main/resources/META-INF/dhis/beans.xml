@@ -68,6 +68,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		<property name="patientService" ref="org.hisp.dhis.patient.PatientService" />
 		<property name="selectedStateManager"
 			ref="org.hisp.dhis.caseentry.state.SelectedStateManager" />
+		<property name="currentUserService" ref="org.hisp.dhis.user.CurrentUserService" />
 	</bean>
 
 	<bean id="org.hisp.dhis.caseentry.action.caseentry.SaveValueAction"

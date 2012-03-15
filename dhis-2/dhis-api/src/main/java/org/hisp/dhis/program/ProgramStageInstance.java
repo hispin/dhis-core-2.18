@@ -68,6 +68,8 @@ public class ProgramStageInstance
     private boolean completed = false;
 
     private Boolean providedByAnotherFacility = false;
+    
+    private String storedBy;
 
     // -------------------------------------------------------------------------
     // Constructors
@@ -259,5 +261,15 @@ public class ProgramStageInstance
     public Boolean isProvidedByAnotherFacility()
     {
         return providedByAnotherFacility;
+    }
+
+    public String getStoredBy()
+    {
+        return storedBy;
+    }
+
+    public void setStoredBy( String storedBy )
+    {
+        this.storedBy = storedBy;
     }
 }

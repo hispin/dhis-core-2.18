@@ -42,6 +42,7 @@ import org.hisp.dhis.program.ProgramStage;
 import org.hisp.dhis.program.ProgramStageInstance;
 import org.hisp.dhis.program.ProgramStageInstanceService;
 import org.hisp.dhis.program.ProgramStageService;
+import org.hisp.dhis.user.CurrentUserService;
 
 import com.opensymphony.xwork2.Action;
 
@@ -99,7 +100,13 @@ public class SaveExecutionDateAction
     {
         this.format = format;
     }
+    
+    private CurrentUserService currentUserService;
 
+    public void setCurrentUserService( CurrentUserService currentUserService )
+    {
+        this.currentUserService = currentUserService;
+    }
     // -------------------------------------------------------------------------
     // Input/Output
     // -------------------------------------------------------------------------
@@ -133,6 +140,8 @@ public class SaveExecutionDateAction
         throws Exception
     {
         Date dateValue = format.parseDate( executionDate );
+
+        String storedBy = currentUserService.getCurrentUsername();
 
         if ( dateValue != null )
         {
@@ -170,6 +179,7 @@ public class SaveExecutionDateAction
                     programStageInstance.setStageInProgram( programStage.getStageInProgram() );
                     programStageInstance.setDueDate( dateValue );
                     programStageInstance.setExecutionDate( dateValue );
+                    programStageInstance.setStoredBy( storedBy );
                     programStageInstance.setOrganisationUnit( selectedStateManager.getSelectedOrganisationUnit() );
                     programStageInstance.setProvidedByAnotherFacility( false );
 
@@ -182,6 +192,7 @@ public class SaveExecutionDateAction
             else
             {
                 programStageInstance.setExecutionDate( dateValue );
+                programStageInstance.setStoredBy( storedBy );
                 programStageInstance.setOrganisationUnit( selectedStateManager.getSelectedOrganisationUnit() );
 
                 if ( programStageInstance.getProgramInstance().getProgram().getSingleEvent() )

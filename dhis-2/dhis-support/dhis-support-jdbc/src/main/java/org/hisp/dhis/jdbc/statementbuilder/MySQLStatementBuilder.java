@@ -247,8 +247,7 @@ public class MySQLStatementBuilder
         return "DELETE d FROM patientdatavalue AS d " +
             "INNER JOIN patientdatavaluearchive AS a " +
             "WHERE d.programstageinstanceid=a.programstageinstanceid " +
-            "AND d.dataelementid=a.dataelementid " +
-            "AND d.organisationunitid=a.organisationunitid; " ;
+            "AND d.dataelementid=a.dataelementid; " ;
     }
    
     public String deleteArchivedOverlappingPatientData()
@@ -256,8 +255,7 @@ public class MySQLStatementBuilder
         return "DELETE a FROM patientdatavaluearchive AS a " +
             "INNER JOIN patientdatavalue AS d " +
             "WHERE d.programstageinstanceid=a.programstageinstanceid " +
-            "AND d.dataelementid=a.dataelementid " +
-            "AND d.organisationunitid=a.organisationunitid ";
+            "AND d.dataelementid=a.dataelementid ";
     }
    
     public String deleteOldestOverlappingPatientDataValue()
@@ -266,7 +264,6 @@ public class MySQLStatementBuilder
             "INNER JOIN patientdatavaluearchive AS a " +
             "WHERE d.programstageinstanceid=a.programstageinstanceid " +
             "AND d.dataelementid=a.dataelementid " +
-            "AND d.organisationunitid=a.organisationunitid " +
             "AND d.timestamp<a.timestamp;";
     }
    
@@ -276,7 +273,6 @@ public class MySQLStatementBuilder
             "INNER JOIN patientdatavalue AS d " +
             "WHERE d.programstageinstanceid=a.programstageinstanceid " +
             "AND d.dataelementid=a.dataelementid " +
-            "AND d.organisationunitid=a.organisationunitid " +
             "AND a.timestamp<=d.timestamp;";
     }
 
