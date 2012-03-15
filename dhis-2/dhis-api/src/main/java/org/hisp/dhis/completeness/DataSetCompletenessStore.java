@@ -44,7 +44,17 @@ public interface DataSetCompletenessStore
     int getCompleteDataSetRegistrations( DataSet dataSet, Period period, Collection<Integer> relevantSources );
     
     int getCompleteDataSetRegistrations( DataSet dataSet, Period period, Collection<Integer> relevantSources, Date deadline );
+
+    int getCompulsoryDataElementRegistrations( DataSet dataSet, Collection<Integer> children, Period period );
     
+    int getCompulsoryDataElementRegistrations( DataSet dataSet, Collection<Integer> children, Period period, Date deadline );
+
+    int getNumberOfValues( DataSet dataSet, Collection<Integer> children, Period period, Date deadline );
+    
+    Collection<DataSet> getDataSetsWithRegistrations( Collection<DataSet> dataSets );
+    
+    Collection<Period> getPeriodsWithRegistrations( Collection<Period> periods );
+
     /**
      * Gets the percentage value for the datasetcompleteness with the given parameters.
      * 
@@ -68,16 +78,6 @@ public interface DataSetCompletenessStore
      * Deletes all datasetcompleteness entries.
      */
     void deleteDataSetCompleteness();
-    
-    int getRegistrations( DataSet dataSet, Collection<Integer> children, Period period );
-    
-    int getRegistrations( DataSet dataSet, Collection<Integer> children, Period period, Date deadline );
-    
-    int getNumberOfValues( DataSet dataSet, Collection<Integer> children, Period period, Date deadline );
-    
-    Collection<DataSet> getDataSetsWithRegistrations( Collection<DataSet> dataSets );
-    
-    Collection<Period> getPeriodsWithRegistrations( Collection<Period> periods );
     
     void createIndex();
     

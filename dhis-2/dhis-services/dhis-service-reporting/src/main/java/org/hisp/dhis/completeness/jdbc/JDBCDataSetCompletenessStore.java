@@ -67,6 +67,10 @@ public class JDBCDataSetCompletenessStore
     // DataSetCompletenessStore
     // -------------------------------------------------------------------------
 
+    // -------------------------------------------------------------------------
+    // Based on complete data set registrations
+    // -------------------------------------------------------------------------
+
     public int getCompleteDataSetRegistrations( DataSet dataSet, Period period, Collection<Integer> relevantSources )
     {
         if ( relevantSources == null || relevantSources.size() == 0 )
@@ -102,42 +106,16 @@ public class JDBCDataSetCompletenessStore
         return statementManager.getHolder().queryForInteger( sql );
     }
     
-    public double getPercentage( int dataSetId, int periodId, int organisationUnitId )
-    {
-        final String sql =
-            "SELECT value " +
-            "FROM aggregateddatasetcompleteness " +
-            "WHERE datasetid = " + dataSetId + " " +
-            "AND periodid = " + periodId + " " +
-            "AND organisationunitid = " + organisationUnitId;
-        
-        return statementManager.getHolder().queryForDouble( sql );
-    }
-    
-    public void deleteDataSetCompleteness( Collection<Integer> dataSetIds, Collection<Integer> periodIds, Collection<Integer> organisationUnitIds )
-    {
-        final String sql = 
-            "DELETE FROM aggregateddatasetcompleteness " +
-            "WHERE datasetid IN ( " + getCommaDelimitedString( dataSetIds ) + " ) " +
-            "AND periodid IN ( " + getCommaDelimitedString( periodIds ) + " ) " +
-            "AND organisationunitid IN ( " + getCommaDelimitedString( organisationUnitIds ) + " )";
-        
-        statementManager.getHolder().executeUpdate( sql );
-    }
-    
-    public void deleteDataSetCompleteness()
-    {
-        final String sql = "DELETE FROM aggregateddatasetcompleteness";
-        
-        statementManager.getHolder().executeUpdate( sql );
-    }
+    // -------------------------------------------------------------------------
+    // Based on compulsory data element operands
+    // -------------------------------------------------------------------------
 
-    public int getRegistrations( DataSet dataSet, Collection<Integer> children, Period period )
+    public int getCompulsoryDataElementRegistrations( DataSet dataSet, Collection<Integer> children, Period period )
     {
-        return getRegistrations( dataSet, children, period, null );
+        return getCompulsoryDataElementRegistrations( dataSet, children, period, null );
     }
     
-    public int getRegistrations( DataSet dataSet, Collection<Integer> children, Period period, Date deadline )
+    public int getCompulsoryDataElementRegistrations( DataSet dataSet, Collection<Integer> children, Period period, Date deadline )
     {           
         final int compulsoryElements = dataSet.getCompulsoryDataElementOperands().size();        
         final String childrenIds = TextUtils.getCommaDelimitedString( children );
@@ -158,7 +136,11 @@ public class JDBCDataSetCompletenessStore
         
         return statementManager.getHolder().queryForInteger( sql );
     }
-    
+
+    // -------------------------------------------------------------------------
+    // Based on number of data values
+    // -------------------------------------------------------------------------
+
     public int getNumberOfValues( DataSet dataSet, Collection<Integer> children, Period period, Date deadline )
     {
         final String childrenIds = TextUtils.getCommaDelimitedString( children );
@@ -208,7 +190,41 @@ public class JDBCDataSetCompletenessStore
         
         return selection;
     }
+
+    // -------------------------------------------------------------------------
+    // Aggregated data set completeness methods
+    // -------------------------------------------------------------------------
+
+    public double getPercentage( int dataSetId, int periodId, int organisationUnitId )
+    {
+        final String sql =
+            "SELECT value " +
+            "FROM aggregateddatasetcompleteness " +
+            "WHERE datasetid = " + dataSetId + " " +
+            "AND periodid = " + periodId + " " +
+            "AND organisationunitid = " + organisationUnitId;
+        
+        return statementManager.getHolder().queryForDouble( sql );
+    }
     
+    public void deleteDataSetCompleteness( Collection<Integer> dataSetIds, Collection<Integer> periodIds, Collection<Integer> organisationUnitIds )
+    {
+        final String sql = 
+            "DELETE FROM aggregateddatasetcompleteness " +
+            "WHERE datasetid IN ( " + getCommaDelimitedString( dataSetIds ) + " ) " +
+            "AND periodid IN ( " + getCommaDelimitedString( periodIds ) + " ) " +
+            "AND organisationunitid IN ( " + getCommaDelimitedString( organisationUnitIds ) + " )";
+        
+        statementManager.getHolder().executeUpdate( sql );
+    }
+    
+    public void deleteDataSetCompleteness()
+    {
+        final String sql = "DELETE FROM aggregateddatasetcompleteness";
+        
+        statementManager.getHolder().executeUpdate( sql );
+    }
+
     public void createIndex()
     {
         try

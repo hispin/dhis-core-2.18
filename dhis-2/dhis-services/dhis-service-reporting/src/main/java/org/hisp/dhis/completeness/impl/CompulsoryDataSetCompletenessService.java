@@ -41,12 +41,12 @@ public class CompulsoryDataSetCompletenessService
 {    
     public int getRegistrations( DataSet dataSet, Collection<Integer> relevantSources, Period period )
     {
-        return completenessStore.getRegistrations( dataSet, relevantSources, period );
+        return completenessStore.getCompulsoryDataElementRegistrations( dataSet, relevantSources, period );
     }
 
     public int getRegistrationsOnTime( DataSet dataSet, Collection<Integer> relevantSources, Period period, Date deadline )
     {
-        return completenessStore.getRegistrations( dataSet, relevantSources, period, deadline );
+        return completenessStore.getCompulsoryDataElementRegistrations( dataSet, relevantSources, period, deadline );
     }
     
     public int getSources( DataSet dataSet, Collection<Integer> relevantSources )
