@@ -47,9 +47,6 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 
   <!-- SMS Service Configuration -->
 
-  <bean id="org.hisp.dhis.mobile.action.ShowMobileConfigurationFormAction" class="org.hisp.dhis.mobile.action.ShowMobileConfigurationFormAction"
-	scope="prototype"/>
-
   <bean id="org.hisp.dhis.mobile.action.AddGateWayConfigAction" class="org.hisp.dhis.mobile.action.AddGateWayConfigAction" scope="prototype"/>
 
 </beans>
