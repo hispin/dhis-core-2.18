@@ -28,6 +28,8 @@
         column="organisationunitid" foreign-key="fk_programstageinstance_organisationunitid" />
         
     <property name="providedByAnotherFacility" column="providedbyanotherfacility"  />
-
+    
+    <property name="storedBy" column="storedby" length="31" />
+    
   </class>
 </hibernate-mapping>

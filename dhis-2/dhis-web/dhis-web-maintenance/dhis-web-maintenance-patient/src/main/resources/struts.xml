@@ -49,6 +49,7 @@
 			<result name="success" type="velocity">/main.vm</result>
 			<param name="page">/dhis-web-maintenance-patient/addRelationshipTypeForm.vm</param>
 			<param name="javascripts">javascript/relationship.js</param>
+			<param name="stylesheets">style/basic.css</param>
 			<param name="requiredAuthorities">F_RELATIONSHIPTYPE_ADD</param>
 		</action>
 
@@ -57,6 +58,7 @@
 			<result name="success" type="velocity">/main.vm</result>
 			<param name="page">/dhis-web-maintenance-patient/updateRelationshipTypeForm.vm</param>
 			<param name="javascripts">javascript/relationship.js</param>
+			<param name="stylesheets">style/basic.css</param>
 			<param name="requiredAuthorities">F_PATIENTATTRIBUTE_UPDATE</param>
 		</action>
 
@@ -131,6 +133,7 @@
 			<param name="page">
 				/dhis-web-maintenance-patient/addPatientAttributeForm.vm</param>
 			<param name="javascripts">javascript/patientAttribute.js</param>
+			<param name="stylesheets">style/basic.css</param>
 			<param name="requiredAuthorities">F_PATIENTATTRIBUTE_ADD</param>
 		</action>
 
@@ -141,7 +144,7 @@
 				/dhis-web-maintenance-patient/updatePatientAttibuteForm.vm</param>
 			<param name="javascripts">javascript/patientAttribute.js
 				,../dhis-web-commons/javascripts/jQuery/ui/jquery.cluetip.min.js</param>
-			<param name="stylesheets">../dhis-web-commons/javascripts/jQuery/ui/css/jquery.cluetip.css</param>
+			<param name="stylesheets">style/basic.css</param>
 			<param name="requiredAuthorities">F_PATIENTATTRIBUTE_UPDATE</param>
 		</action>
 
@@ -227,6 +230,7 @@
 			<result name="success" type="velocity">/main.vm</result>
 			<param name="page">/dhis-web-maintenance-patient/addProgramForm.vm</param>
 			<param name="javascripts">javascript/program.js</param>
+			<param name="stylesheets">style/basic.css</param>
 			<param name="requiredAuthorities">F_PROGRAM_ADD</param>
 		</action>
 
@@ -235,6 +239,7 @@
 			<result name="success" type="velocity">/main.vm</result>
 			<param name="page">/dhis-web-maintenance-patient/updateProgramForm.vm</param>
 			<param name="javascripts">javascript/program.js</param>
+			<param name="stylesheets">style/basic.css</param>
 			<param name="requiredAuthorities">F_PROGRAM_UPDATE</param>
 		</action>
 
@@ -309,6 +314,7 @@
 			<result name="success" type="velocity">/main.vm</result>
 			<param name="page">/dhis-web-maintenance-patient/addProgramAttributeForm.vm</param>
 			<param name="javascripts">javascript/programAttribute.js</param>
+			<param name="stylesheets">style/basic.css</param>
 			<param name="requiredAuthorities">F_PROGRAM_ATTRIBUTE_ADD</param>
 		</action>
 
@@ -317,6 +323,7 @@
 			<result name="success" type="velocity">/main.vm</result>
 			<param name="page">/dhis-web-maintenance-patient/updateProgramAttributeForm.vm</param>
 			<param name="javascripts">javascript/programAttribute.js</param>
+			<param name="stylesheets">style/basic.css</param>
 			<param name="requiredAuthorities">F_PROGRAM_ATTRIBUTE_UPDATE</param>
 		</action>
 
@@ -382,7 +389,7 @@
 			<param name="page">
 				/dhis-web-maintenance-patient/addProgramStageForm.vm</param>
 			<param name="javascripts">javascript/commons.js,javascript/programStage.js</param>
-			<param name="stylesheets">/dhis-web-maintenance-patient/style/basic.css</param>
+			<param name="stylesheets">style/basic.css</param>
 			<param name="requiredAuthorities">F_PROGRAMSTAGE_ADD</param>
 		</action>
 
@@ -415,7 +422,7 @@
 			<param name="page">
 				/dhis-web-maintenance-patient/updateProgramStageForm.vm</param>
 			<param name="javascripts">javascript/commons.js,javascript/programStage.js</param>
-			<param name="stylesheets">/dhis-web-maintenance-patient/style/basic.css</param>
+			<param name="stylesheets">style/basic.css</param>
 			<param name="requiredAuthorities">F_PROGRAMSTAGE_UPDATE</param>
 		</action>
 
@@ -535,6 +542,7 @@
 			<result name="success" type="velocity">/main.vm</result>
 			<param name="page">/dhis-web-maintenance-patient/updatePatientAttibuteGroupForm.vm</param>
 			<param name="javascripts">javascript/patientAttributeGroup.js</param>
+			<param name="stylesheets">style/basic.css</param>
 			<param name="requiredAuthorities">F_PATIENTATTRIBUTE_UPDATE</param>
 		</action>
 
@@ -578,6 +586,7 @@
 			<param name="page">
 				/dhis-web-maintenance-patient/addPatientIdentifierTypeForm.vm</param>
 			<param name="javascripts">javascript/patientIdentifierType.js</param>
+			<param name="stylesheets">style/basic.css</param>
 			<param name="requiredAuthorities">F_PATIENTIDENTIFIERTYPE_ADD</param>
 		</action>
 
@@ -598,6 +607,7 @@
 			<param name="page">
 				/dhis-web-maintenance-patient/updatePatientIdentifierType.vm</param>
 			<param name="javascripts">javascript/patientIdentifierType.js</param>
+			<param name="stylesheets">style/basic.css</param>
 			<param name="requiredAuthorities">F_PATIENTIDENTIFIERTYPE_UPDATE</param>
 		</action>
 
@@ -839,6 +849,7 @@
 			<result name="success" type="velocity">/main.vm</result>
 			<param name="page">/dhis-web-maintenance-patient/addMultiProgramValidationForm.vm</param>
 			<param name="javascripts">javascript/programValidation.js</param>
+			<param name="stylesheets">style/basic.css</param>
 			<param name="requiredAuthorities">F_PROGRAM_VALIDATION</param>
 		</action>
 
@@ -847,6 +858,7 @@
 			<result name="success" type="velocity">/main.vm</result>
 			<param name="page">/dhis-web-maintenance-patient/addSingleProgramValidationForm.vm</param>
 			<param name="javascripts">javascript/programValidation.js</param>
+			<param name="stylesheets">style/basic.css</param>
 			<param name="requiredAuthorities">F_PROGRAM_VALIDATION</param>
 		</action>
 		
@@ -870,6 +882,7 @@
 			<result name="success" type="velocity">/main.vm</result>
 			<param name="page">/dhis-web-maintenance-patient/updateMultiProgramValidationForm.vm</param>
 			<param name="javascripts">javascript/programValidation.js</param>
+			<param name="stylesheets">style/basic.css</param>
 			<param name="requiredAuthorities">F_PROGRAM_VALIDATION</param>
 		</action>
 
@@ -878,6 +891,7 @@
 			<result name="success" type="velocity">/main.vm</result>
 			<param name="page">/dhis-web-maintenance-patient/updateSingleProgramValidationForm.vm</param>
 			<param name="javascripts">javascript/programValidation.js</param>
+			<param name="stylesheets">style/basic.css</param>
 			<param name="requiredAuthorities">F_PROGRAM_VALIDATION</param>
 		</action>
 
@@ -935,6 +949,7 @@
 			class="org.hisp.dhis.patient.action.patientchart.ShowAddPatientChartFormAction">
 			<result name="success" type="velocity">/main.vm</result>
 			<param name="page">/dhis-web-maintenance-patient/addPatientChartForm.vm</param>
+			<param name="stylesheets">style/basic.css</param>
 		</action>
 
 		<action name="addPatientChart"
@@ -948,6 +963,7 @@
 			class="org.hisp.dhis.patient.action.patientchart.GetPatientChartAction">
 			<result name="success" type="velocity">/main.vm</result>
 			<param name="page">/dhis-web-maintenance-patient/updatePatientChartForm.vm</param>
+			<param name="stylesheets">style/basic.css</param>
 		</action>
 
 		<action name="updatePatientChart"
