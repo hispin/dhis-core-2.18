@@ -25,114 +25,101 @@
 	});
 </script>
 
-<style>
-tr.selected{
-	background-color:#3399FF;
-	color:#FFFFFF;
-}
-#selectedList tr{
-	cursor:pointer;
-}
-</style>
-
 <h3>$i18n.getString( "edit_program_stage" )</h3>
 
 <form id="updateProgramStageForm" name="updateProgramStageForm" action="updateProgramStage.action" method="post">
-
-<div style="display:inline">
 	<input type="hidden" id="id" name="id" value="$programStage.id"/>
-</div>
-  
-<table id="detailsList">
-    <thead>
-		<tr><th colspan="2">$i18n.getString( "program_stage_details" )</th></tr>
-    </thead>
-    <tbody>
-		<tr>
-			<td><label>$i18n.getString( "name" ) <em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
-			<td><input type="text" id="name" name="name" value="$encoder.htmlEncode( $programStage.name )" style="width:30em"  maxlength="160" class="{validate:{required:true,rangelength:[4,160]}}"/></td>
-		</tr>
+	  
+	<table id="detailsList">
+		<thead>
+			<tr><th colspan="2">$i18n.getString( "program_stage_details" )</th></tr>
+		</thead>
+		<tbody>
+			<tr>
+				<td><label>$i18n.getString( "name" ) <em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
+				<td><input type="text" id="name" name="name" value="$encoder.htmlEncode( $programStage.name )" class="{validate:{required:true,rangelength:[4,160]}}"/></td>
+			</tr>
 
-		<tr>
-			<td><label>$i18n.getString( "description" ) <em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
-			<td><input type="text" id="description" name="description" value="$encoder.htmlEncode( $programStage.description )" style="width:30em"  class="{validate:{required:true,minlength:4}}"/></td>
-		</tr>  
+			<tr>
+				<td><label>$i18n.getString( "description" ) <em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
+				<td><input type="text" id="description" name="description" value="$encoder.htmlEncode( $programStage.description )" class="{validate:{required:true,minlength:4}}"/></td>
+			</tr>  
 
-		<tr>
-			<td><label>$i18n.getString( "min_days_from_start" )</label></td>
-			<td><input type="text" id="minDaysFromStart" name="minDaysFromStart" maxlength="30" value="$programStage.minDaysFromStart" style="width:30em" class="{validate:{number:true,min:0}}"/></td>
-		</tr> 
+			<tr>
+				<td><label>$i18n.getString( "min_days_from_start" )</label></td>
+				<td><input type="text" id="minDaysFromStart" name="minDaysFromStart" value="$programStage.minDaysFromStart" class="{validate:{number:true,min:0}}"/></td>
+			</tr> 
 
-		<tr>
-			<td><label>$i18n.getString( "program" )</label></td>
-			<td><input type="text" id="program" name="program" maxlength="30" value="$encoder.htmlEncode( $programStage.program.name )" style="width:30em" disabled="disabled"/></td>
-		</tr>     
+			<tr>
+				<td><label>$i18n.getString( "program" )</label></td>
+				<td><input type="text" id="program" name="program" maxlength="30" value="$encoder.htmlEncode( $programStage.program.name )" disabled="disabled"/></td>
+			</tr>     
+			
+			<tr>
+				<td><label>$i18n.getString( "irregular_encounter" )</label></td>
+				<td><input type="checkbox" id="irregular" name="irregular" value='true' #if( $programStage.irregular=='true' ) checked #end/></td>
+			</tr>	
+		  
+			<tr><td>&nbsp;</td></tr>       
+		  
+		</tbody>
+	</table>
+
+	<table id="programStageMembersArea">
+		<thead>
+			<tr>
+				<th>$i18n.getString( "available_data_elements" )</th>
+				<th></th>
+				<th>$i18n.getString( "selected_data_elements" )
+					<select id="selectedDataElementsValidator" name='selectedDataElementsValidator' multiple="multiple" class="{validate:{required:true}} hidden" > </select>
+					<select id="compulsories" name='compulsories' multiple="multiple" class="hidden"></select>
+				</th>
+			</tr>
+		</thead>
+		
+		<tbody>
 		
 		<tr>
-			<td><label>$i18n.getString( "irregular_encounter" )</label></td>
-			<td><input type="checkbox" id="irregular" name="irregular" value='true' #if( $programStage.irregular=='true' ) checked #end/></td>
-		</tr>	
-      
-		<tr><td>&nbsp;</td><td>&nbsp;</td></tr>       
-      
-    </tbody>
-</table>
-
-<table id="programStageMembersArea">
-    <thead>
-		<tr>
-			<th>$i18n.getString( "available_data_elements" )</th>
-			<th></th>
-			<th>$i18n.getString( "selected_data_elements" )
-				<select id="selectedDataElementsValidator" name='selectedDataElementsValidator' multiple="multiple" class="{validate:{required:true}}" style="display:none"> </select>
-				<select id="compulsories" name='compulsories' multiple="multiple" style="display:none"></select>
-			</th>
-		</tr>
-    </thead>
-	
-	<tbody>
-	
-	<tr>
-        <td>
-            <select size="15" id="availableList" multiple="multiple" style="width:30em;height:20em" ondblclick="selectDataElements( )">
-            </select>
-        </td>
-        <td valign="top" align="center">         
-            <input type="button" value="&gt;" onclick="selectDataElements()"/><br/>    
-            <input type="button" value="&lt;" onclick="unSelectDataElements()"/><br/><br/>                    
-        <td>
-			<div style="overflow:auto; height:20em; width:40em;border:1px solid #9DA1AA">
-				<table width="100%">
-					<thead>
-						<tr>
-							<th>$i18n.getString( "dataelement" )</th>
-							<th width="20px">$i18n.getString( "compulsory" )</th>
-						</tr>
-					</thead>
-					<tbody id="selectedList">
-						#foreach ( $programStageDataElement in $programStageDataElements )
-							<tr ondblclick="unSelectDataElement( this )" id="$programStageDataElement.dataElement.id">
-								<td onclick="select(this)">$encoder.htmlEncode( $programStageDataElement.dataElement.name )</td>
-								<td align="center"><input type="checkbox" name="compulsory" value="$programStageDataElement.dataElement.id" #if($programStageDataElement.compulsory == true ) checked #end /></td>
+			<td>
+				<select size="15" id="availableList" multiple="multiple" ondblclick="selectDataElements( )">
+				</select>
+			</td>
+			<td valign="top" align="center">         
+				<input type="button" value="&gt;" onclick="selectDataElements()" class='filterButton' /><br/>    
+				<input type="button" value="&lt;" onclick="unSelectDataElements()" class='filterButton' /><br/><br/>                    
+			<td>
+				<div class="dataElementDiv">
+					<table>
+						<thead>
+							<tr>
+								<th>$i18n.getString( "dataelement" )</th>
+								<th width="20px">$i18n.getString( "compulsory" )</th>
 							</tr>
-						#end
-					</tbody>
-				</table>
-			</div>
-        </td>
-        
-        <td style="width:30px; text-align:center">
-            <a href="javascript:moveUpDataElement()"><img src="../images/move_up.png"/></a><br/><br/>
-            <a href="javascript:moveDownDataElement()"><img src="../images/move_down.png"/></a><br/><br/>
-        </td>  
-        
-    </tr>
-    </tbody>
-</table>
-<p>
-	<input type="submit" value="$i18n.getString( 'update' )" style="width:10em"/>
-	<input type="button" value="$i18n.getString( 'cancel' )" onclick="window.location.href='programStage.action?id=$programStage.program.id'" style="width:10em"/>
-</p>
+						</thead>
+						<tbody id="selectedList">
+							#foreach ( $programStageDataElement in $programStageDataElements )
+								<tr ondblclick="unSelectDataElement( this )" id="$programStageDataElement.dataElement.id">
+									<td onclick="select(this)">$encoder.htmlEncode( $programStageDataElement.dataElement.name )</td>
+									<td align="center"><input type="checkbox" name="compulsory" value="$programStageDataElement.dataElement.id" #if($programStageDataElement.compulsory == true ) checked #end /></td>
+								</tr>
+							#end
+						</tbody>
+					</table>
+				</div>
+			</td>
+			
+			<td>
+				<a href="javascript:moveUpDataElement()"><img src="../images/move_up.png"/></a><br/><br/>
+				<a href="javascript:moveDownDataElement()"><img src="../images/move_down.png"/></a><br/><br/>
+			</td>  
+			
+		</tr>
+		</tbody>
+	</table>
+	<p>
+		<input type="submit" value="$i18n.getString( 'update' )" />
+		<input type="button" value="$i18n.getString( 'cancel' )" onclick="window.location.href='programStage.action?id=$programStage.program.id'" />
+	</p>
 
 </form> 	
 

@@ -1,21 +1,9 @@
 <script>
 	var i18n_remove_option = '$encoder.jsEscape( $i18n.getString( "remove_option" ) , "'") ';
-
+	
 	jQuery(document).ready(	function(){
 		
 		jQuery('name').focus();
-		
-		validation2( 'addPatientAttributeGroupForm', function(form){
-			form.submit();
-		}, {
-			'beforeValidateHandler' : function()
-			{
-				listValidator( 'memberValidator', 'selectedAttributes' );
-			},
-			'rules' : getValidationRules( 'patientAttributeGroup' )
-		} ); 
-		
-		checkValueIsExist( "name", "validatePatientAttributeGroup.action" );
 		
 		jQuery("#availableAttributes").dhisAjaxSelect({
 			source: 'getProgramAttributeWithoutGroup.action',
@@ -29,6 +17,21 @@
 				return option;
 			}
 		});
+		
+		
+		validation2( 'addPatientAttributeGroupForm', function(form){
+			form.submit();
+		}, {
+			'beforeValidateHandler' : function()
+			{
+				listValidator( 'memberValidator', 'selectedAttributes' );
+			},
+			'rules' : getValidationRules( 'patientAttributeGroup' )
+		} ); 
+		
+		checkValueIsExist( "name", "validatePatientAttributeGroup.action" );
+		
+		
 	});		
 </script>
 	
@@ -42,51 +45,49 @@
 	</tr>
 	<tr>
 		<td>$i18n.getString( "name" ) <em title="$i18n.getString( 'required' )" class="required">*</em></td>
-		<td><input type="text" id="name" name="name" style="width:20em"/></td>
-	</tr>   
+		<td><input type="text" id="name" name="name"/></td>
+	</tr> 	
 	<tr>
 		<td>$i18n.getString( "description" ) <em title="$i18n.getString( 'required' )" class="required">*</em></td>
-		<td><input type="text" id="description" name="description" style="width:20em"/></td>
+		<td><input type="text" id="description" name="description"/></td>
 	</tr>
 	<tr>
-		<td colspan="2" height="15px"></td>
+		<td colspan="2">&nbsp;</td>
 	</tr>
 </table>
 
 <table>
-	<col style="width: 450px"/>
-	<col/>
-	<col style="width: 450px"/>
 	
 	<tr>
 		<th>$i18n.getString( "availableAttribute" )</th>
 		<th>$i18n.getString( "filter" )</th>
 		<th>$i18n.getString( "selectedAttribute" )
-			<select id="memberValidator" multiple="multiple" style="display:none" class="{validate:{required:true}}"/>
+			<select id="memberValidator" multiple="multiple" class="{validate:{required:true}} hidden"/>
 		</th>
 	</tr>
 	
 	<tr>
 		<td>
-			<select multiple id="availableAttributes" name="availableAttributes" size="15" style="width:100%"></select>
-		</td>
-		<td style="text-align:center">
-			<input type="button" value="&gt;" title="$i18n.getString('move_selected')" onclick="dhisAjaxSelect_moveAllSelected( 'availableAttributes', 'selectedAttributes' )"/><br/>
-			<input type="button" value="&lt;" title="$i18n.getString('remove_selected')" onclick="dhisAjaxSelect_moveAllSelected( 'selectedAttributes', 'availableAttributes' )"/>
+			<select multiple="multiple" id="availableAttributes" name="availableAttributes" size="15" ></select>
 		</td>
 		<td>
-			<select multiple id="selectedAttributes" name="selectedAttributes" size="15" style="width:100%"></select>
+			<input type="button" value="&gt;" title="$i18n.getString('move_selected')" onclick="dhisAjaxSelect_moveAllSelected( 'availableAttributes', 'selectedAttributes' )" class='filterButton'/><br/>
+			<input type="button" value="&lt;" title="$i18n.getString('remove_selected')" onclick="dhisAjaxSelect_moveAllSelected( 'selectedAttributes', 'availableAttributes' )" class='filterButton'/>
+		</td>
+		<td>
+			<select multiple="multiple" id="selectedAttributes" name="selectedAttributes" size="15" ></select>
 		</td>
 		<td>
 			<a href="javascript:moveUpSelectedOption( 'selectedAttributes')" title="$i18n.getString( 'move_up' )"><img src="../images/move_up.png" alt="$i18n.getString( 'move_up' )"/></a><br/><br/>
 			<a href="javascript:moveDownSelectedOption( 'selectedAttributes' )" title="$i18n.getString( 'move_down' )"><img src="../images/move_down.png" alt="$i18n.getString( 'move_up' )"/></a>
 		</td>
-	</tr>        
+	</tr>  
+	<tr>
+		<td>
+			<input type="submit" value="$i18n.getString( 'add' )" />
+			<input type="button" value="$i18n.getString( 'cancel' )" onclick="window.location.href='patientAttributeGroup.action'"/>
+		</td>
+	</tr>
 </table>
-
-<p>
-    <input type="submit" value="$i18n.getString( 'add' )" style="width:10em"/>
-    <input type="button" value="$i18n.getString( 'cancel' )" onclick="window.location.href='patientAttributeGroup.action'" style="width:10em"/>
-</p>
 
 </form>
