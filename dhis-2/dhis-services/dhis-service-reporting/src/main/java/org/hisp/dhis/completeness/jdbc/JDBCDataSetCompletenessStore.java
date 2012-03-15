@@ -71,7 +71,7 @@ public class JDBCDataSetCompletenessStore
     // Based on complete data set registrations
     // -------------------------------------------------------------------------
 
-    public int getCompleteDataSetRegistrations( DataSet dataSet, Period period, Collection<Integer> relevantSources )
+    public Integer getCompleteDataSetRegistrations( DataSet dataSet, Collection<Integer> periods, Collection<Integer> relevantSources )
     {
         if ( relevantSources == null || relevantSources.size() == 0 )
         {
@@ -82,13 +82,13 @@ public class JDBCDataSetCompletenessStore
             "SELECT COUNT(*) " +
             "FROM completedatasetregistration " +
             "WHERE datasetid = " + dataSet.getId() + " " +
-            "AND periodid = " + period.getId() + " " +
+            "AND periodid IN ( " + getCommaDelimitedString( periods ) + " ) " +
             "AND sourceid IN ( " + getCommaDelimitedString( relevantSources ) + " )";
         
         return statementManager.getHolder().queryForInteger( sql );
     }
 
-    public int getCompleteDataSetRegistrations( DataSet dataSet, Period period, Collection<Integer> relevantSources, Date deadline )
+    public Integer getCompleteDataSetRegistrations( DataSet dataSet, Collection<Integer> periods, Collection<Integer> relevantSources, Date deadline )
     {
         if ( relevantSources == null || relevantSources.size() == 0 )
         {
@@ -99,7 +99,7 @@ public class JDBCDataSetCompletenessStore
             "SELECT COUNT(*) " +
             "FROM completedatasetregistration " +
             "WHERE datasetid = " + dataSet.getId() + " " +
-            "AND periodid = " + period.getId() + " " +
+            "AND periodid IN ( " + getCommaDelimitedString( periods ) + " ) " +
             "AND sourceid IN ( " + getCommaDelimitedString( relevantSources ) + " ) " +
             "AND date <= '" + getMediumDateString( deadline ) + "'";
         
@@ -110,15 +110,14 @@ public class JDBCDataSetCompletenessStore
     // Based on compulsory data element operands
     // -------------------------------------------------------------------------
 
-    public int getCompulsoryDataElementRegistrations( DataSet dataSet, Collection<Integer> children, Period period )
+    public Integer getCompulsoryDataElementRegistrations( DataSet dataSet, Collection<Integer> children, Collection<Integer> periods )
     {
-        return getCompulsoryDataElementRegistrations( dataSet, children, period, null );
+        return getCompulsoryDataElementRegistrations( dataSet, children, periods, null );
     }
     
-    public int getCompulsoryDataElementRegistrations( DataSet dataSet, Collection<Integer> children, Period period, Date deadline )
+    public Integer getCompulsoryDataElementRegistrations( DataSet dataSet, Collection<Integer> children, Collection<Integer> periods, Date deadline )
     {           
-        final int compulsoryElements = dataSet.getCompulsoryDataElementOperands().size();        
-        final String childrenIds = TextUtils.getCommaDelimitedString( children );
+        final int compulsoryElements = dataSet.getCompulsoryDataElementOperands().size();
         final String deadlineCriteria = deadline != null ? "AND lastupdated < '" + DateUtils.getMediumDateString( deadline ) + "' " : "";
         
         final String sql = 
@@ -129,8 +128,8 @@ public class JDBCDataSetCompletenessStore
                 "ON dv.dataelementid=deo.dataelementid AND dv.categoryoptioncomboid=deo.categoryoptioncomboid " +
                 "JOIN datasetoperands dso " +
                 "ON deo.dataelementoperandid=dso.dataelementoperandid " +
-                "WHERE periodid = " + period.getId() + " " + deadlineCriteria +
-                "AND sourceid IN (" + childrenIds + ") " +
+                "WHERE periodid IN ( " + getCommaDelimitedString( periods ) + " ) " + deadlineCriteria +
+                "AND sourceid IN ( " + getCommaDelimitedString( children ) + " ) " +
                 "AND datasetid = " + dataSet.getId() + " GROUP BY sourceid) AS completed " +
             "WHERE completed.sources = " + compulsoryElements;
         
@@ -141,7 +140,7 @@ public class JDBCDataSetCompletenessStore
     // Based on number of data values
     // -------------------------------------------------------------------------
 
-    public int getNumberOfValues( DataSet dataSet, Collection<Integer> children, Period period, Date deadline )
+    public Integer getNumberOfValues( DataSet dataSet, Collection<Integer> children, Collection<Integer> periods, Date deadline )
     {
         final String childrenIds = TextUtils.getCommaDelimitedString( children );
         final String deadlineCriteria = deadline != null ? "AND lastupdated < '" + DateUtils.getMediumDateString( deadline ) + "' " : "";
@@ -151,7 +150,7 @@ public class JDBCDataSetCompletenessStore
             "JOIN datasetmembers dsm ON dv.dataelementid=dsm.dataelementid " +
             "JOIN dataset ds ON dsm.datasetid=ds.datasetid " +
             "WHERE ds.datasetid = " + dataSet.getId() + " " + deadlineCriteria +
-            "AND periodid = " + period.getId() + " " +
+            "AND periodid IN ( " + getCommaDelimitedString( periods ) + " ) " +
             "AND sourceid IN (" + childrenIds + ")";
 
         return statementManager.getHolder().queryForInteger( sql );
@@ -174,28 +173,11 @@ public class JDBCDataSetCompletenessStore
         return selection;
     }
 
-    public Collection<Period> getPeriodsWithRegistrations( Collection<Period> periods )
-    {
-        Collection<Period> selection = new ArrayList<Period>();
-        
-        for ( Period period : periods )
-        {
-            final String sql = "SELECT count(*) FROM completedatasetregistration WHERE periodid = " + period.getId();
-            
-            if ( statementManager.getHolder().queryForInteger( sql ) > 0 )
-            {
-                selection.add( period );
-            }
-        }
-        
-        return selection;
-    }
-
     // -------------------------------------------------------------------------
     // Aggregated data set completeness methods
     // -------------------------------------------------------------------------
 
-    public double getPercentage( int dataSetId, int periodId, int organisationUnitId )
+    public Double getPercentage( int dataSetId, int periodId, int organisationUnitId )
     {
         final String sql =
             "SELECT value " +

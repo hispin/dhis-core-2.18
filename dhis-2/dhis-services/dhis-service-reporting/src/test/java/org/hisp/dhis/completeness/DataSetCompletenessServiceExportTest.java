@@ -67,6 +67,7 @@ public class DataSetCompletenessServiceExportTest
     private Period periodA;
     private Period periodB;
     private Period periodC;
+    private Period periodD;
     
     private OrganisationUnit unitA;
     private OrganisationUnit unitB;
@@ -77,8 +78,6 @@ public class DataSetCompletenessServiceExportTest
     private Collection<DataSet> dataSets;
     private Collection<Period> periods;
     private Collection<OrganisationUnit> units;
-    
-    private ReportTable reportTable;
     
     @Override
     public void setUpTest()
@@ -100,19 +99,22 @@ public class DataSetCompletenessServiceExportTest
         units = new ArrayList<OrganisationUnit>();
         
         monthly = new MonthlyPeriodType();
-        quarterly = new QuarterlyPeriodType(); //TODO fix
+        quarterly = new QuarterlyPeriodType();
         
         periodA = createPeriod( monthly, getDate( 2000, 1, 1 ), getDate( 2000, 1, 31 ) );
         periodB = createPeriod( monthly, getDate( 2000, 2, 1 ), getDate( 2000, 2, 28 ) );
-        periodC = createPeriod( quarterly, getDate( 2000, 1, 1 ), getDate( 2000, 2, 28 ) );
+        periodC = createPeriod( monthly, getDate( 2000, 3, 1 ), getDate( 2000, 3, 31 ) );
+        periodD = createPeriod( quarterly, getDate( 2000, 1, 1 ), getDate( 2000, 3, 31 ) );
         
         periodService.addPeriod( periodA );
         periodService.addPeriod( periodB );
         periodService.addPeriod( periodC );
+        periodService.addPeriod( periodD );
         
         periods.add( periodA );
         periods.add( periodB );
         periods.add( periodC );
+        periods.add( periodD );
         
         unitA = createOrganisationUnit( 'A' );
         unitB = createOrganisationUnit( 'B' );
@@ -141,9 +143,6 @@ public class DataSetCompletenessServiceExportTest
         dataSetService.addDataSet( dataSetA );
         
         dataSets.add( dataSetA );
-        
-        reportTable = new ReportTable();
-        reportTable.setId( 1 );
     }
     
     @Override
@@ -159,6 +158,8 @@ public class DataSetCompletenessServiceExportTest
         registrationService.saveCompleteDataSetRegistration( new CompleteDataSetRegistration( dataSetA, periodA, unitC, null, "" ) );
         registrationService.saveCompleteDataSetRegistration( new CompleteDataSetRegistration( dataSetA, periodB, unitB, null, "" ) );
         registrationService.saveCompleteDataSetRegistration( new CompleteDataSetRegistration( dataSetA, periodB, unitA, null, "" ) );
+        registrationService.saveCompleteDataSetRegistration( new CompleteDataSetRegistration( dataSetA, periodC, unitA, null, "" ) );
+        registrationService.saveCompleteDataSetRegistration( new CompleteDataSetRegistration( dataSetA, periodC, unitC, null, "" ) );
         
         completenessService.exportDataSetCompleteness( getIdentifiers( DataSet.class, dataSets ),
             getIdentifiers( Period.class, periods ), getIdentifiers( OrganisationUnit.class, units ) );
@@ -170,5 +171,13 @@ public class DataSetCompletenessServiceExportTest
         assertEquals( 100.0, completenessStore.getPercentage( dataSetA.getId(), periodB.getId(), unitB.getId() ) );
         assertEquals( 0.0, completenessStore.getPercentage( dataSetA.getId(), periodB.getId(), unitC.getId() ) );
         assertEquals( 66.7, completenessStore.getPercentage( dataSetA.getId(), periodB.getId(), unitA.getId() ) );
+
+        assertEquals( 0.0, completenessStore.getPercentage( dataSetA.getId(), periodC.getId(), unitB.getId() ) );
+        assertEquals( 100.0, completenessStore.getPercentage( dataSetA.getId(), periodC.getId(), unitC.getId() ) );
+        assertEquals( 66.7, completenessStore.getPercentage( dataSetA.getId(), periodC.getId(), unitA.getId() ) );
+        
+        assertEquals( 66.7, completenessStore.getPercentage( dataSetA.getId(), periodD.getId(), unitB.getId() ) );
+        assertEquals( 66.7, completenessStore.getPercentage( dataSetA.getId(), periodD.getId(), unitC.getId() ) );
+        assertEquals( 66.7, completenessStore.getPercentage( dataSetA.getId(), periodD.getId(), unitA.getId() ) );
     }
 }

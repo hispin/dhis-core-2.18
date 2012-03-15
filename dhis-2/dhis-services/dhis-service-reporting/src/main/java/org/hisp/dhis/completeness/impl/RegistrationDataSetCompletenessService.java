@@ -31,7 +31,6 @@ import java.util.Collection;
 import java.util.Date;
 
 import org.hisp.dhis.dataset.DataSet;
-import org.hisp.dhis.period.Period;
 
 /**
  * @author Lars Helge Overland
@@ -39,18 +38,21 @@ import org.hisp.dhis.period.Period;
 public class RegistrationDataSetCompletenessService
     extends AbstractDataSetCompletenessService
 {
-    public int getRegistrations( DataSet dataSet, Collection<Integer> relevantSources, Period period )
+    @Override
+    public int getRegistrations( DataSet dataSet, Collection<Integer> relevantSources, Collection<Integer> periods )
     {
-        return completenessStore.getCompleteDataSetRegistrations( dataSet, period, relevantSources );
+        return completenessStore.getCompleteDataSetRegistrations( dataSet, periods, relevantSources );
     }
 
-    public int getRegistrationsOnTime( DataSet dataSet, Collection<Integer> relevantSources, Period period, Date deadline )
+    @Override
+    public int getRegistrationsOnTime( DataSet dataSet, Collection<Integer> relevantSources, Collection<Integer> periods, Date deadline )
     {
-        return completenessStore.getCompleteDataSetRegistrations( dataSet, period, relevantSources, deadline );
+        return completenessStore.getCompleteDataSetRegistrations( dataSet, periods, relevantSources, deadline );
     }
-    
-    public int getSources( DataSet dataSet, Collection<Integer> relevantSources )
+
+    @Override
+    public int getSources( DataSet dataSet, Collection<Integer> relevantSources, Collection<Integer> periods )
     {
-        return relevantSources.size();
+        return relevantSources.size() * periods.size();
     }
 }
