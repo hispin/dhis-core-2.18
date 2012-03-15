@@ -32,7 +32,6 @@ import java.util.Date;
 
 import org.hisp.dhis.dataelement.DataElementOperand;
 import org.hisp.dhis.dataset.DataSet;
-import org.hisp.dhis.period.Period;
 
 /**
  * @author Lars Helge Overland
@@ -41,20 +40,25 @@ import org.hisp.dhis.period.Period;
 public class RatioDataSetCompletenessService
     extends AbstractDataSetCompletenessService
 {
-    public int getRegistrations( DataSet dataSet, Collection<Integer> relevantSources, Period period )
+    @Override
+    public int getRegistrations( DataSet dataSet, Collection<Integer> relevantSources, Collection<Integer> periods )
     {
-        return completenessStore.getNumberOfValues( dataSet, relevantSources, period, null );
+        return completenessStore.getNumberOfValues( dataSet, relevantSources, periods, null );
     }
 
-    public int getRegistrationsOnTime( DataSet dataSet, Collection<Integer> relevantSources, Period period, Date deadline )
+    @Override
+    public int getRegistrationsOnTime( DataSet dataSet, Collection<Integer> relevantSources, Collection<Integer> periods, Date deadline )
     {
-        return completenessStore.getNumberOfValues( dataSet, relevantSources, period, null );
+        return completenessStore.getNumberOfValues( dataSet, relevantSources, periods, null );
     }
-    
-    public int getSources( DataSet dataSet, Collection<Integer> relevantSources )
+
+    @Override
+    public int getSources( DataSet dataSet, Collection<Integer> relevantSources, Collection<Integer> periods )
     {
         Collection<DataElementOperand> operands = dataElementService.getAllGeneratedOperands( dataSet.getDataElements() );
         
-        return operands != null && relevantSources != null ? operands.size() * relevantSources.size() : 0; // Number of operands in data set times number of organisation units
+        // Number of operands in data set times number of organisation units times number of periods
+        
+        return operands != null && relevantSources != null ? ( operands.size() * relevantSources.size() * periods.size() ) : 0; 
     }
 }

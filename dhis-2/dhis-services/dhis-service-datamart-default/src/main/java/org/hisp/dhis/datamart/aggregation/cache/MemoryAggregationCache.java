@@ -35,6 +35,7 @@ import java.util.Map;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodService;
+import org.hisp.dhis.period.PeriodType;
 import org.hisp.dhis.system.util.ConversionUtils;
 
 /**
@@ -51,7 +52,9 @@ public class MemoryAggregationCache
 
     private final ThreadLocal<Map<String, Collection<Integer>>> intersectingPeriodCache = new ThreadLocal<Map<String,Collection<Integer>>>();
 
-    private final ThreadLocal<Map<String, Collection<Integer>>> periodBetweenCache = new ThreadLocal<Map<String,Collection<Integer>>>();
+    private final ThreadLocal<Map<String, Collection<Integer>>> periodBetweenDatesCache = new ThreadLocal<Map<String,Collection<Integer>>>();
+
+    private final ThreadLocal<Map<String, Collection<Integer>>> periodBetweenDatesPeriodTypeCache = new ThreadLocal<Map<String,Collection<Integer>>>();
 
     private final ThreadLocal<Map<String, Period>> periodCache = new ThreadLocal<Map<String,Period>>();
 
@@ -107,7 +110,7 @@ public class MemoryAggregationCache
     {
         final String key = startDate.toString() + SEPARATOR + endDate.toString();
         
-        Map<String, Collection<Integer>> cache = periodBetweenCache.get();
+        Map<String, Collection<Integer>> cache = periodBetweenDatesCache.get();
         
         Collection<Integer> periods = null;
         
@@ -122,11 +125,35 @@ public class MemoryAggregationCache
         
         cache.put( key, periods );
         
-        periodBetweenCache.set( cache );
+        periodBetweenDatesCache.set( cache );
         
         return periods;
     }
+
+    public Collection<Integer> getPeriodsBetweenDatesPeriodType( final PeriodType periodType, final Date startDate, final Date endDate )
+    {
+        final String key = periodType.getName() + SEPARATOR + startDate.toString() + SEPARATOR + endDate.toString();
         
+        Map<String, Collection<Integer>> cache = periodBetweenDatesPeriodTypeCache.get();
+        
+        Collection<Integer> periods = null;
+        
+        if ( cache != null && ( periods = cache.get( key ) ) != null )
+        {
+            return periods;
+        }
+        
+        periods = ConversionUtils.getIdentifiers( Period.class, periodService.getPeriodsBetweenDates( periodType, startDate, endDate ) );
+        
+        cache = ( cache == null ) ? new HashMap<String, Collection<Integer>>() : cache;
+        
+        cache.put( key, periods );
+        
+        periodBetweenDatesPeriodTypeCache.set( cache );
+        
+        return periods;
+    }
+    
     public Period getPeriod( final int id )
     {
         final String key = String.valueOf( id );
@@ -178,7 +205,8 @@ public class MemoryAggregationCache
     public void clearCache()
     {
         intersectingPeriodCache.remove();
-        periodBetweenCache.remove();
+        periodBetweenDatesCache.remove();
+        periodBetweenDatesPeriodTypeCache.remove();
         periodCache.remove();
         organisationUnitLevelCache.remove();
     }

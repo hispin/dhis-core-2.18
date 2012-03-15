@@ -31,7 +31,6 @@ import java.util.Collection;
 import java.util.Date;
 
 import org.hisp.dhis.dataset.DataSet;
-import org.hisp.dhis.period.Period;
 
 /**
  * @author Lars Helge Overland
@@ -41,20 +40,18 @@ public interface DataSetCompletenessStore
 {
     String ID = DataSetCompletenessStore.class.getName();
     
-    int getCompleteDataSetRegistrations( DataSet dataSet, Period period, Collection<Integer> relevantSources );
+    Integer getCompleteDataSetRegistrations( DataSet dataSet, Collection<Integer> periods, Collection<Integer> relevantSources );
     
-    int getCompleteDataSetRegistrations( DataSet dataSet, Period period, Collection<Integer> relevantSources, Date deadline );
+    Integer getCompleteDataSetRegistrations( DataSet dataSet, Collection<Integer> periods, Collection<Integer> relevantSources, Date deadline );
 
-    int getCompulsoryDataElementRegistrations( DataSet dataSet, Collection<Integer> children, Period period );
+    Integer getCompulsoryDataElementRegistrations( DataSet dataSet, Collection<Integer> children, Collection<Integer> periods );
     
-    int getCompulsoryDataElementRegistrations( DataSet dataSet, Collection<Integer> children, Period period, Date deadline );
+    Integer getCompulsoryDataElementRegistrations( DataSet dataSet, Collection<Integer> children, Collection<Integer> periods, Date deadline );
 
-    int getNumberOfValues( DataSet dataSet, Collection<Integer> children, Period period, Date deadline );
+    Integer getNumberOfValues( DataSet dataSet, Collection<Integer> children, Collection<Integer> periods, Date deadline );
     
     Collection<DataSet> getDataSetsWithRegistrations( Collection<DataSet> dataSets );
     
-    Collection<Period> getPeriodsWithRegistrations( Collection<Period> periods );
-
     /**
      * Gets the percentage value for the datasetcompleteness with the given parameters.
      * 
@@ -63,7 +60,7 @@ public interface DataSetCompletenessStore
      * @param sourceId the Source identifier.
      * @return the percentage value for the datasetcompleteness result with the given parameters.
      */
-    double getPercentage( int dataSetId, int periodId, int sourceId );
+    Double getPercentage( int dataSetId, int periodId, int sourceId );
     
     /**
      * Deletes the datasetcompleteness entries with the given parameters.
