@@ -50,7 +50,7 @@ function getProgramStages()
 		return;  
 	}
 
-	$.getJSON( 'getProgramStages.action', { programId:programId }, getProgramStagesCompleted );
+	$.get( 'getProgramStages.action', { programId:programId }, getProgramStagesCompleted, 'xml');
 }
 
 function getProgramStagesCompleted( programstageElement )
@@ -127,7 +127,7 @@ function getPrgramStageDataElements()
 	var programStage = document.getElementById( 'programStage' );
 	var psId = programStage.options[ programStage.selectedIndex ].value;
 	
-	$.getJSON( 'getPSDataElements.action', { psId:psId }, getPrgramStageDataElementsCompleted );
+	$.get( 'getPSDataElements.action', { psId:psId }, getPrgramStageDataElementsCompleted, 'xml' );
 }
 
 function getPrgramStageDataElementsCompleted( dataelementElement )
