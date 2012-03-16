@@ -131,7 +131,7 @@
       <groupId>org.hisp.dhis</groupId>
       <artifactId>dhis-web-api-mobile</artifactId>
       <version>${project.version}</version>
-      <type>war</type>
+      <type>jar</type>
     </dependency>
     <dependency>
       <groupId>org.hisp.dhis</groupId>
