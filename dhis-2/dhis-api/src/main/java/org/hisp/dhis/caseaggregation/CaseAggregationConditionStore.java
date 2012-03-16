@@ -48,5 +48,7 @@ public interface CaseAggregationConditionStore
 
     CaseAggregationCondition get( DataElement dataElement, DataElementCategoryOptionCombo optionCombo );
     
+    Collection<CaseAggregationCondition> get( Collection<DataElement> dataElements );
+    
     List<Integer> executeSQL( String sql );
 }

@@ -602,6 +602,9 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		<property name="aggregationConditionService">
 			<ref bean="org.hisp.dhis.caseaggregation.CaseAggregationConditionService" />
 		</property>
+		<property name="dataSetService">
+			<ref bean="org.hisp.dhis.dataset.DataSetService" />
+		</property>
 	</bean>
 
 	<bean

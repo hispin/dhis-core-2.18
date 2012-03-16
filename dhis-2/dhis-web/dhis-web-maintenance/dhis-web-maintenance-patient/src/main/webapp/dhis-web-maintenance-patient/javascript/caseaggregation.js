@@ -276,3 +276,19 @@ function insertMultiValues( elementId )
 	}
 }
 
+function getCaseAggConditionByDataset()
+{
+	$.get( 'getCaseAggConditionByDataset.action',
+		{
+			dataSetId: getFieldValue( 'dataSetId' )
+		}
+		, function( html ) 
+		{
+			setInnerHTML('list', html );
+		} );
+}
+
+function addCaseAggConditionForm()
+{
+	
+}

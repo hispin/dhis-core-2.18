@@ -1,12 +1,25 @@
 <script>
 	jQuery(document).ready(	function(){
+	
 		validation( 'updateCaseAggregationForm', function(form){
 			form.submit();
 		}); 
 		
 		checkValueIsExist( "aggregationDataElementId", "validateCaseAggregation.action", {id:getFieldValue('id')});
+		
+		byId('description').focus();
+		var i18n_run_success = '$encoder.jsEscape( $i18n.getString( "run_success" ) , "'" )';
+		var i18n_run_fail = '$encoder.jsEscape( $i18n.getString( "run_fail" ) , "'" )';
+		jQuery("#tabs").tabs();
+		
 	});	
 	
+	#if( $dataSetId )
+		getDataElementsByDataset();
+		var selectedValue = "$caseAggregation.aggregationDataElement.id" + "." + "$caseAggregation.optionCombo.id";
+		jQuery("#aggregationDataElementId").val( selectedValue );
+		var avasdjl;
+	#end	
 </script>
 														
 <h3>$i18n.getString( "edit_case_aggregation_condition" )</h3>
@@ -34,7 +47,7 @@
 			<select id="dataSets" name="dataSets" style="width:30.5em" onchange="getDataElementsByDataset();">
 				<option value="">[$i18n.getString('please_select')]</option>
 				#foreach( $dataSet in $dataSets)
-					<option value="$dataSet.id" >$dataSet.name</option>
+					<option value="$dataSet.id" #if( $dataSetId=="$dataSet.id") selected #end >$dataSet.name</option>
 				#end
 			</select>
 		</td>				
@@ -281,16 +294,9 @@
 		<td>
 			<input type="submit" value="$i18n.getString( 'update' )" style="width:10em">
 			<input type="button" value="$i18n.getString( 'test_condition' )" style="width:10em" onclick='testCaseAggregationCondition();'/>
-			<input type="button" value="$i18n.getString( 'cancel' )" onclick="window.location.href='caseAggregation.action'" style="width:10em">
+			<input type="button" value="$i18n.getString( 'cancel' )" onclick="window.location.href='caseAggregation.action?dataSetId=$dataSetId'" style="width:10em">
 		</td>
 	<tr>
 </table>
 
 </form>
-
-<script>
-	byId('description').focus();
-	var i18n_run_success = '$encoder.jsEscape( $i18n.getString( "run_success" ) , "'" )';
-	var i18n_run_fail = '$encoder.jsEscape( $i18n.getString( "run_fail" ) , "'" )';
-	jQuery("#tabs").tabs();
-</script>

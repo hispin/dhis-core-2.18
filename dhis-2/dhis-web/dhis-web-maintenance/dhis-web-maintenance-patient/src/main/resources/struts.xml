@@ -659,6 +659,7 @@
 			<param name="page">/dhis-web-maintenance-patient/caseAggregation.vm</param>
 			<param name="menu">/dhis-web-maintenance-patient/menu.vm</param>
 			<param name="javascripts">javascript/caseaggregation.js</param>
+			<param name="stylesheets">style/basic.css</param>
 		</action>
 
 		<action name="showAddCaseAggregationForm"
@@ -759,6 +760,12 @@
 			<param name="onExceptionReturn">plainTextError</param>
 		</action>
 
+		<action name="getCaseAggConditionByDataset"
+			class="org.hisp.dhis.patient.action.caseaggregation.GetAllCaseAggregationConditionAction">
+			<result name="success" type="velocity">/content.vm</result>
+			<param name="page">/dhis-web-maintenance-patient/caseAggregationList.vm</param>
+		</action>
+		
 		<!-- Validation - PatientValidationCriteria -->
 
 		<action name="validationCriteria"

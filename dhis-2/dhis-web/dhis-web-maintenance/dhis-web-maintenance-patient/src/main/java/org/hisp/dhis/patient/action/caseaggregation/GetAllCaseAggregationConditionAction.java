@@ -31,6 +31,8 @@ import java.util.Collection;
 
 import org.hisp.dhis.caseaggregation.CaseAggregationCondition;
 import org.hisp.dhis.caseaggregation.CaseAggregationConditionService;
+import org.hisp.dhis.dataset.DataSet;
+import org.hisp.dhis.dataset.DataSetService;
 
 import com.opensymphony.xwork2.Action;
 
@@ -48,24 +50,46 @@ public class GetAllCaseAggregationConditionAction
 
     private CaseAggregationConditionService aggregationConditionService;
 
-    // -------------------------------------------------------------------------
-    // Input
-    // -------------------------------------------------------------------------
+    public void setAggregationConditionService( CaseAggregationConditionService aggregationConditionService )
+    {
+        this.aggregationConditionService = aggregationConditionService;
+    }
 
-    private Collection<CaseAggregationCondition> aggregationConditions;
+    public DataSetService dataSetService;
+
+    public void setDataSetService( DataSetService dataSetService )
+    {
+        this.dataSetService = dataSetService;
+    }
 
     // -------------------------------------------------------------------------
     // Getters && Setters
     // -------------------------------------------------------------------------
+    
+    private Integer dataSetId;
+
+    public void setDataSetId( Integer dataSetId )
+    {
+        this.dataSetId = dataSetId;
+    }
+
+    public Integer getDataSetId()
+    {
+        return dataSetId;
+    }
+
+    private Collection<CaseAggregationCondition> aggregationConditions;
 
     public Collection<CaseAggregationCondition> getAggregationConditions()
     {
         return aggregationConditions;
     }
 
-    public void setAggregationConditionService( CaseAggregationConditionService aggregationConditionService )
+    private Collection<DataSet> dataSets;
+
+    public Collection<DataSet> getDataSets()
     {
-        this.aggregationConditionService = aggregationConditionService;
+        return dataSets;
     }
 
     // -------------------------------------------------------------------------
@@ -76,7 +100,18 @@ public class GetAllCaseAggregationConditionAction
     public String execute()
         throws Exception
     {
-        aggregationConditions = aggregationConditionService.getAllCaseAggregationCondition();
+        dataSets = dataSetService.getAllDataSets();
+
+        if ( dataSetId == null )
+        {
+            aggregationConditions = aggregationConditionService.getAllCaseAggregationCondition();
+
+            return SUCCESS;
+        }
+
+        DataSet dataSet = dataSetService.getDataSet( dataSetId );
+
+        aggregationConditions = aggregationConditionService.getCaseAggregationCondition( dataSet.getDataElements() );
 
         return SUCCESS;
     }

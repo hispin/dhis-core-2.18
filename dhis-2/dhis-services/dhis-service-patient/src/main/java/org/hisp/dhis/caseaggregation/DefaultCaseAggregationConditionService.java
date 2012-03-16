@@ -489,6 +489,11 @@ public class DefaultCaseAggregationConditionService
         return patientAttributes;
     }
 
+    public Collection<CaseAggregationCondition> getCaseAggregationCondition( Collection<DataElement> dataElements )
+    {
+        return aggregationConditionStore.get( dataElements );
+    }
+
     // -------------------------------------------------------------------------
     // Support Methods
     // -------------------------------------------------------------------------
