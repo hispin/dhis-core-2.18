@@ -180,8 +180,7 @@ public class DataSetCompletenessResult
     @Override
     public String toString()
     {
-        String toString = "[Name: " + name + ", Reg: " + registrations + ", On time: " + registrationsOnTime
-            + ", Src: " + sources + "]";
+        String toString = "[Name: " + name + ", sources: " + sources+ ", registrations: " + registrations + ", on time: " + registrationsOnTime + "]";
 
         return toString;
     }

@@ -70,7 +70,7 @@ public class PostgreSQLStatementBuilder
 
     public String getDropDatasetForeignKeyForDataEntryFormTable()
     {
-        return  "ALTER TABLE dataentryform DROP CONSTRAINT fk_dataentryform_datasetid;" ;
+        return "ALTER TABLE dataentryform DROP CONSTRAINT fk_dataentryform_datasetid;" ;
     }
 
     @Override
@@ -364,5 +364,10 @@ public class PostgreSQLStatementBuilder
     public String limitRecord( int min, int max )
     {
         return " LIMIT " + max + " OFFSET " + min;
+    }
+    
+    public String getAddDate( String dateField, int days )
+    {
+        return "(" + dateField + "+" + days + ")";
     }
 }

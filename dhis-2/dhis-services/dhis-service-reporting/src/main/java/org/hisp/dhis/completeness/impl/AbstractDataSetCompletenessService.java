@@ -29,12 +29,10 @@ package org.hisp.dhis.completeness.impl;
 
 import static org.hisp.dhis.setting.SystemSettingManager.DEFAULT_COMPLETENESS_OFFSET;
 import static org.hisp.dhis.setting.SystemSettingManager.KEY_COMPLETENESS_OFFSET;
-import static org.hisp.dhis.system.util.ConversionUtils.*;
+import static org.hisp.dhis.system.util.ConversionUtils.getIdentifiers;
 
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Collection;
-import java.util.Date;
 
 import org.amplecode.quick.BatchHandler;
 import org.amplecode.quick.BatchHandlerFactory;
@@ -49,13 +47,13 @@ import org.hisp.dhis.datamart.aggregation.cache.AggregationCache;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.dataset.DataSetService;
 import org.hisp.dhis.jdbc.batchhandler.DataSetCompletenessResultBatchHandler;
-import org.hisp.dhis.setting.SystemSettingManager;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitHierarchy;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodService;
 import org.hisp.dhis.period.RelativePeriods;
+import org.hisp.dhis.setting.SystemSettingManager;
 import org.hisp.dhis.system.util.ConversionUtils;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -140,7 +138,7 @@ public abstract class AbstractDataSetCompletenessService
     public abstract int getRegistrations( DataSet dataSet, Collection<Integer> relevantSources, Collection<Integer> periods );
 
     public abstract int getRegistrationsOnTime( DataSet dataSet, Collection<Integer> relevantSources, Collection<Integer> periods,
-        Date deadline );
+        int completenessOffset );
 
     public abstract int getSources( DataSet dataSet, Collection<Integer> relevantSources, Period period );
 
@@ -204,13 +202,11 @@ public abstract class AbstractDataSetCompletenessService
                 {
                     if ( period.getPeriodType() != null && period.getPeriodType().getFrequencyOrder() >= dataSetFrequencyOrder )
                     {
-                        final Date deadline = getDeadline( period, days );
-
                         final Collection<Integer> periodsBetweenDates = 
                             aggregationCache.getPeriodsBetweenDatesPeriodType( dataSet.getPeriodType(), period.getStartDate(), period.getEndDate() );
                         
                         final DataSetCompletenessResult result = getDataSetCompleteness( period, 
-                            periodsBetweenDates, deadline, unit, relevantSources, dataSet );
+                            periodsBetweenDates, days, unit, relevantSources, dataSet );
 
                         if ( result.getSources() > 0 )
                         {
@@ -240,7 +236,6 @@ public abstract class AbstractDataSetCompletenessService
 
         int days = (Integer) systemSettingManager.getSystemSetting( KEY_COMPLETENESS_OFFSET,
             DEFAULT_COMPLETENESS_OFFSET );
-        Date deadline = getDeadline( period, days );
 
         final Collection<Integer> children = organisationUnitService.getOrganisationUnitHierarchy().getChildren(
             organisationUnitId );
@@ -264,8 +259,7 @@ public abstract class AbstractDataSetCompletenessService
             {
                 result.setName( dataSet.getName() );
                 result.setRegistrations( getRegistrations( dataSet, relevantSources, periodsBetweenDates ) );
-                result.setRegistrationsOnTime( deadline != null ? getRegistrationsOnTime( dataSet, relevantSources,
-                    periodsBetweenDates, deadline ) : 0 );
+                result.setRegistrationsOnTime( getRegistrationsOnTime( dataSet, relevantSources, periodsBetweenDates, days ) );
 
                 result.setDataSetId( dataSet.getId() );
                 result.setPeriodId( periodId );
@@ -289,7 +283,6 @@ public abstract class AbstractDataSetCompletenessService
 
         int days = (Integer) systemSettingManager.getSystemSetting( KEY_COMPLETENESS_OFFSET,
             DEFAULT_COMPLETENESS_OFFSET );
-        Date deadline = getDeadline( period, days );
 
         final Collection<DataSetCompletenessResult> results = new ArrayList<DataSetCompletenessResult>();
 
@@ -302,7 +295,7 @@ public abstract class AbstractDataSetCompletenessService
 
             final Collection<Integer> relevantSources = getRelevantSources( dataSet, children );
 
-            final DataSetCompletenessResult result = getDataSetCompleteness( period, periodsBetweenDates, deadline, unit, relevantSources, dataSet );
+            final DataSetCompletenessResult result = getDataSetCompleteness( period, periodsBetweenDates, days, unit, relevantSources, dataSet );
 
             if ( result.getSources() > 0 )
             {
@@ -336,7 +329,7 @@ public abstract class AbstractDataSetCompletenessService
     // Supportive methods
     // -------------------------------------------------------------------------
 
-    private DataSetCompletenessResult getDataSetCompleteness( Period period, Collection<Integer> periodsBetweenDates, Date deadline, OrganisationUnit unit,
+    private DataSetCompletenessResult getDataSetCompleteness( Period period, Collection<Integer> periodsBetweenDates, int completenessOffset, OrganisationUnit unit,
         Collection<Integer> relevantSources, DataSet dataSet )
     {
         final DataSetCompletenessResult result = new DataSetCompletenessResult();
@@ -347,8 +340,7 @@ public abstract class AbstractDataSetCompletenessService
         if ( result.getSources() > 0 )
         {
             result.setRegistrations( getRegistrations( dataSet, relevantSources, periodsBetweenDates ) );
-            result.setRegistrationsOnTime( deadline != null ? getRegistrationsOnTime( dataSet, relevantSources, periodsBetweenDates,
-                deadline ) : 0 );
+            result.setRegistrationsOnTime( getRegistrationsOnTime( dataSet, relevantSources, periodsBetweenDates, completenessOffset ) );
 
             result.setDataSetId( dataSet.getId() );
             result.setPeriodId( period.getId() );
@@ -366,23 +358,5 @@ public abstract class AbstractDataSetCompletenessService
             dataSet.getSources() );
 
         return CollectionUtils.intersection( dataSetSources, sources );
-    }
-
-    private Date getDeadline( Period period, int days )
-    {
-        Calendar cal = Calendar.getInstance();
-
-        Date date = null;
-
-        if ( period != null )
-        {
-            cal.clear();
-            cal.setTime( period.getEndDate() );
-            cal.add( Calendar.DAY_OF_MONTH, days );
-
-            date = cal.getTime();
-        }
-
-        return date;
     }
 }

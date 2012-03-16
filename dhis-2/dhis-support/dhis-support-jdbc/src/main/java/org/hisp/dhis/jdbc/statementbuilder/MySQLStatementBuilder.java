@@ -365,4 +365,9 @@ public class MySQLStatementBuilder
     {
         return " LIMIT " + min + " ," + max;
     }
+
+    public String getAddDate( String dateField, int days )
+    {
+        return "ADDDATE(" + dateField + "," + days + ")";
+    }
 }
