@@ -239,7 +239,7 @@ function validateCopyExportItemsToExportReport()
 	itemsDuplicated = new Array();
 	
 	jQuery.postJSON( "getExportItemsBySheet.action", {
-		exportReportId: getFieldValue( "targetExportReport" );
+		exportReportId: getFieldValue( "targetExportReport" ),
 		sheetNo: sheetId
 	}, function( json ) {
 		var items = json.exportItems;
@@ -503,7 +503,7 @@ function getIndicatorGroups()
 
 function filterIndicators()
 {
-	jQuery.postJSON( "../dhis-web-commons-ajax-json/getIndicators.action" {
+	jQuery.postJSON( "../dhis-web-commons-ajax-json/getIndicators.action", {
 		id: $("#indicatorGroups").val()
 	}, function( json ) {
 		var indiatorList = byId( "availableIndicators" );

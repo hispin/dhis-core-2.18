@@ -1,5 +1,5 @@
 <script>
-	jQuery(document).ready(function(){	
+	jQuery(document).ready(function(){
 		tableSorter( 'listTable', [[1,0]] );
 		
 		dialog1 = setUpDialog( 'copyToExportReport', i18n_copy_to_exportreport, 420, 170 );
