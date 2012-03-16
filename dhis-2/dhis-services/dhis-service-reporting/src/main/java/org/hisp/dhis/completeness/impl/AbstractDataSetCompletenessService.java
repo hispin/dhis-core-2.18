@@ -142,7 +142,7 @@ public abstract class AbstractDataSetCompletenessService
     public abstract int getRegistrationsOnTime( DataSet dataSet, Collection<Integer> relevantSources, Collection<Integer> periods,
         Date deadline );
 
-    public abstract int getSources( DataSet dataSet, Collection<Integer> relevantSources, Collection<Integer> periods );
+    public abstract int getSources( DataSet dataSet, Collection<Integer> relevantSources, Period period );
 
     // -------------------------------------------------------------------------
     // DataSetCompleteness
@@ -258,7 +258,7 @@ public abstract class AbstractDataSetCompletenessService
 
             final DataSetCompletenessResult result = new DataSetCompletenessResult();
 
-            result.setSources( getSources( dataSet, relevantSources, periodsBetweenDates ) );
+            result.setSources( getSources( dataSet, relevantSources, period ) );
 
             if ( result.getSources() > 0 )
             {
@@ -342,7 +342,7 @@ public abstract class AbstractDataSetCompletenessService
         final DataSetCompletenessResult result = new DataSetCompletenessResult();
 
         result.setName( unit.getName() );
-        result.setSources( getSources( dataSet, relevantSources, periodsBetweenDates ) );
+        result.setSources( getSources( dataSet, relevantSources, period ) );
 
         if ( result.getSources() > 0 )
         {

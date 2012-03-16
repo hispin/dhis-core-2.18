@@ -27,7 +27,6 @@ package org.hisp.dhis.period;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
@@ -44,37 +43,26 @@ import org.junit.Test;
  */
 public class WeeklyPeriodTypeTest
 {
-    /**
-     * Test method for
-     * {@link org.hisp.dhis.period.WeeklyPeriodType#generatePeriods(org.hisp.dhis.period.Period)}
-     * .
-     */
     @Test
     @Ignore
     public void testGeneratePeriods()
     {
-        // get calendar of default locale
         Calendar testCal = Calendar.getInstance();
         WeeklyPeriodType wpt = new WeeklyPeriodType();
+        
         for ( int year = 1990; year < 2020; year++ )
         {
             for ( int day = -7; day < 7; day++ )
             {
                 testCal.set( year, 0, 1 ); // 1st day of year
                 testCal.add( Calendar.DATE, day );
-                // System.err.println("testing "+testCal.getTime());
                 Period p1 = wpt.createPeriod( testCal.getTime() );
                 List<Period> generatedPeriods = wpt.generatePeriods( p1 );
                 assertTrue( "Period " + p1 + " in generated set", generatedPeriods.contains( p1 ) );
             }
         }
-
     }
 
-    /**
-     * Test method for
-     * {@link org.hisp.dhis.period.WeeklyPeriodType#createPeriod(Calendar)}.
-     */
     @Test
     public void testCreatePeriod()
     {
@@ -110,20 +98,19 @@ public class WeeklyPeriodTypeTest
 
         Period period = weekly.createPeriod( "2009W1" );
 
-        assertEquals(cal.getTime(), period.getStartDate());
+        assertEquals( cal.getTime(), period.getStartDate() );
 
         cal.set( 2011, 0, 3 );
 
         period = weekly.createPeriod( "2011W1" );
 
-        assertEquals(cal.getTime(), period.getStartDate());
+        assertEquals( cal.getTime(), period.getStartDate() );
 
         period = weekly.createPeriod( "2011W11" );
 
         cal.set( 2011, 2, 14 );
 
-        assertEquals(cal.getTime(), period.getStartDate());
-
+        assertEquals( cal.getTime(), period.getStartDate() );
     }
 
     @Test
@@ -134,5 +121,18 @@ public class WeeklyPeriodTypeTest
         WeeklyPeriodType wpt = new WeeklyPeriodType();
         Period p = wpt.createPeriod( cal.getTime() );
         assertEquals( p.getIsoDate(), "2011W1");
+    }
+    
+    @Test
+    public void testGetPeriodsBetween()
+    {
+        PeriodType periodType = new WeeklyPeriodType();
+
+        assertEquals( 1, periodType.createPeriod().getPeriodSpan( periodType ) );
+        assertEquals( 4, new MonthlyPeriodType().createPeriod().getPeriodSpan( periodType ) );
+        assertEquals( 9, new BiMonthlyPeriodType().createPeriod().getPeriodSpan( periodType ) );
+        assertEquals( 13, new QuarterlyPeriodType().createPeriod().getPeriodSpan( periodType ) );
+        assertEquals( 26, new SixMonthlyPeriodType().createPeriod().getPeriodSpan( periodType ) );
+        assertEquals( 52, new YearlyPeriodType().createPeriod().getPeriodSpan( periodType ) );
     }
 }

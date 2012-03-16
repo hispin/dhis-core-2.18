@@ -27,7 +27,7 @@ package org.hisp.dhis.period;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import static junit.framework.Assert.assertEquals;
+import static org.junit.Assert.assertEquals;
 
 import java.util.List;
 
@@ -164,5 +164,13 @@ public class QuarterlyPeriodTypeTest
         assertEquals( periodType.createPeriod( new Cal( 2009, 7, 1 ).time() ), periods.get( 0 ) );
         assertEquals( periodType.createPeriod( new Cal( 2009, 10, 1 ).time() ), periods.get( 1 ) );
         assertEquals( periodType.createPeriod( new Cal( 2010, 1, 1 ).time() ), periods.get( 2 ) );
+    }
+
+    @Test
+    public void testGetPeriodsBetween()
+    {
+        assertEquals( 1, periodType.createPeriod().getPeriodSpan( periodType ) );
+        assertEquals( 2, new SixMonthlyPeriodType().createPeriod().getPeriodSpan( periodType ) );
+        assertEquals( 4, new YearlyPeriodType().createPeriod().getPeriodSpan( periodType ) );
     }
 }

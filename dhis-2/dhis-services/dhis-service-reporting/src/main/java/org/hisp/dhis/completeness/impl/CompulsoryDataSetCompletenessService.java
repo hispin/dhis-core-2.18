@@ -31,6 +31,7 @@ import java.util.Collection;
 import java.util.Date;
 
 import org.hisp.dhis.dataset.DataSet;
+import org.hisp.dhis.period.Period;
 
 /**
  * @author Lars Helge Overland
@@ -51,8 +52,8 @@ public class CompulsoryDataSetCompletenessService
     }
 
     @Override
-    public int getSources( DataSet dataSet, Collection<Integer> relevantSources, Collection<Integer> periods )
+    public int getSources( DataSet dataSet, Collection<Integer> relevantSources, Period period )
     {
-        return relevantSources.size() * periods.size();
+        return relevantSources.size() * period.getPeriodSpan( dataSet.getPeriodType() );
     }
 }
