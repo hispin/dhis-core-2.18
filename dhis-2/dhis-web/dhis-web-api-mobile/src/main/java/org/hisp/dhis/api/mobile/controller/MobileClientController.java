@@ -70,7 +70,7 @@ public class MobileClientController extends AbstractMobileController
     private static String getUrl( HttpServletRequest request, int id, String path )
     {
         String url = UrlUtils.buildFullRequestUrl( request );
-        url = url + "orgUnits/" + id + "/" + path;
+        url = url + "/orgUnits/" + id + "/" + path;
         return url;
     }
 }

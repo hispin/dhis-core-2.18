@@ -113,7 +113,7 @@ public class DefaultProgramService
 
         org.hisp.dhis.program.Program program = programService.getProgram( programId );
 
-        program = i18n( i18nService, locale, program );
+        //program = i18n( i18nService, locale, program );
 
         Program pr = new Program();
 
@@ -125,7 +125,7 @@ public class DefaultProgramService
 
         for ( org.hisp.dhis.program.ProgramStage programStage : program.getProgramStages() )
         {
-            programStage = i18n( i18nService, locale, programStage );
+            //programStage = i18n( i18nService, locale, programStage );
 
             ProgramStage prStg = new ProgramStage();
 
@@ -139,7 +139,7 @@ public class DefaultProgramService
 
             for ( ProgramStageDataElement programStagedataElement : programStageDataElements )
             {
-                programStagedataElement = i18n( i18nService, locale, programStagedataElement );
+                //programStagedataElement = i18n( i18nService, locale, programStagedataElement );
 
                 org.hisp.dhis.dataelement.DataElement dataElement = programStagedataElement.getDataElement();
 

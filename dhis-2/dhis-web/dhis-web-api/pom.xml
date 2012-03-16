@@ -53,6 +53,11 @@
       <groupId>org.hisp.dhis</groupId>
       <artifactId>dhis-service-sms</artifactId>
     </dependency>
+	<dependency>
+      <groupId>org.hisp.dhis</groupId>
+      <artifactId>dhis-web-api-mobile</artifactId>
+	  <version>${project.version}</version>
+    </dependency>
 	
     <dependency>
       <groupId>javax.servlet</groupId>
