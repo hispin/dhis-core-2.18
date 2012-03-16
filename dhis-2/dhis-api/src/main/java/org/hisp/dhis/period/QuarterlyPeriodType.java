@@ -55,7 +55,7 @@ public class QuarterlyPeriodType
      */
     public static final String NAME = "Quarterly";
 
-    public static final int FREQUENCY_ORDER = 92;
+    public static final int FREQUENCY_ORDER = 91;
 
     // -------------------------------------------------------------------------
     // PeriodType functionality

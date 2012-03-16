@@ -219,7 +219,7 @@ public class Period
     {
         double no = (double) this.periodType.getFrequencyOrder() / type.getFrequencyOrder();
         
-        return (int) Math.round( no );
+        return (int) Math.floor( no );
     }
 
     // -------------------------------------------------------------------------
