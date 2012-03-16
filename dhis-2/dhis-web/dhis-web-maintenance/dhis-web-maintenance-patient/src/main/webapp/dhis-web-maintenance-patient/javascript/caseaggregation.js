@@ -287,8 +287,3 @@ function getCaseAggConditionByDataset()
 			setInnerHTML('list', html );
 		} );
 }
-
-function addCaseAggConditionForm()
-{
-	
-}

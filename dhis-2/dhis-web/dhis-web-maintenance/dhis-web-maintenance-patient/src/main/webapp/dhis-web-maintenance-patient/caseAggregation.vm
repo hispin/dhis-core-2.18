@@ -9,7 +9,7 @@
 			<td>$i18n.getString( "filter_by_data_set" )</td>
 			<td>
 				<select id='dataSetId' name='dataSetId' onchange='getCaseAggConditionByDataset();'>
-					<option value=''>[$i18n.getString( "all" )]</option>
+					<option value=''>[ $i18n.getString( "all" ) ]</option>
 					#foreach( $dataSet in $dataSets )
 					<option value='$dataSet.id' #if( $dataSetId=="$dataSet.id") selected #end >$dataSet.name</option>
 					#end
