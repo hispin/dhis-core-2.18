@@ -200,10 +200,26 @@ public class Period
             format.applyPattern( DEFAULT_DATE_FORMAT );
 
             return dateString != null ? format.parse( dateString ) : null;
-        } catch ( ParseException ex )
+        } 
+        catch ( ParseException ex )
         {
             throw new RuntimeException( "Failed to parse medium date", ex );
         }
+    }
+    
+    /**
+     * Return the potential number of periods of the given period type which is
+     * spanned by this period.
+     * 
+     * @param type the period type.
+     * @return the potential number of periods of the given period type spanned 
+     *         by this period.
+     */
+    public int getPeriodSpan( PeriodType type )
+    {
+        double no = (double) this.periodType.getFrequencyOrder() / type.getFrequencyOrder();
+        
+        return (int) Math.round( no );
     }
 
     // -------------------------------------------------------------------------
