@@ -130,7 +130,7 @@ public class WeeklyPeriodTypeTest
 
         assertEquals( 1, periodType.createPeriod().getPeriodSpan( periodType ) );
         assertEquals( 4, new MonthlyPeriodType().createPeriod().getPeriodSpan( periodType ) );
-        assertEquals( 9, new BiMonthlyPeriodType().createPeriod().getPeriodSpan( periodType ) );
+        assertEquals( 8, new BiMonthlyPeriodType().createPeriod().getPeriodSpan( periodType ) );
         assertEquals( 13, new QuarterlyPeriodType().createPeriod().getPeriodSpan( periodType ) );
         assertEquals( 26, new SixMonthlyPeriodType().createPeriod().getPeriodSpan( periodType ) );
         assertEquals( 52, new YearlyPeriodType().createPeriod().getPeriodSpan( periodType ) );

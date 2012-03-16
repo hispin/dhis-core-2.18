@@ -103,7 +103,6 @@ public class PostgreSQLStatementBuilder
             + "SELECT * FROM datavalue AS d2 " + "WHERE d2.dataelementid=" + destDataElementId + " "
             + "AND d2.categoryoptioncomboid=" + destCategoryOptionComboId + " " + "AND d1.periodid=d2.periodid "
             + "AND d1.sourceid=d2.sourceid );";
-
     }
 
     @Override

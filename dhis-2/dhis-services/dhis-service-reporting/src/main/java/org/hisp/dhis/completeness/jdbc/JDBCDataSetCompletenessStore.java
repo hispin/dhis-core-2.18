@@ -102,11 +102,11 @@ public class JDBCDataSetCompletenessStore
         final String sql =
             "SELECT COUNT(*) " +
             "FROM completedatasetregistration cr " +
-            "JOIN period p ON (cr.periodid = p.periodid) " +
+            "JOIN period pe ON (cr.periodid = pe.periodid) " +
             "WHERE cr.datasetid = " + dataSet.getId() + " " +
             "AND cr.periodid IN ( " + getCommaDelimitedString( periods ) + " ) " +
             "AND cr.sourceid IN ( " + getCommaDelimitedString( relevantSources ) + " ) " +
-            "AND cr.date <= " + statementBuilder.getAddDate( "p.enddate", completenessOffset );
+            "AND cr.date <= " + statementBuilder.getAddDate( "pe.enddate", completenessOffset );
         
         return statementManager.getHolder().queryForInteger( sql );
     }
@@ -117,13 +117,14 @@ public class JDBCDataSetCompletenessStore
 
     public Integer getCompulsoryDataElementRegistrations( DataSet dataSet, Collection<Integer> children, Collection<Integer> periods )
     {
-        return getCompulsoryDataElementRegistrations( dataSet, children, periods, 0 );
+        return getCompulsoryDataElementRegistrations( dataSet, children, periods, -1 );
     }
     
     public Integer getCompulsoryDataElementRegistrations( DataSet dataSet, Collection<Integer> children, Collection<Integer> periods, int completenessOffset )
     {           
         final int compulsoryElements = dataSet.getCompulsoryDataElementOperands().size();
-        final String deadlineCriteria = ""; //FIXME //deadline != null ? "AND lastupdated < '" + DateUtils.getMediumDateString( deadline ) + "' " : "";
+        
+        final String deadlineCriteria = completenessOffset >= 0 ? "AND lastupdated <= " + statementBuilder.getAddDate( "pe.enddate", completenessOffset ) : "";
         
         final String sql = 
             "SELECT COUNT(completed) FROM ( " +
@@ -133,7 +134,9 @@ public class JDBCDataSetCompletenessStore
                 "ON dv.dataelementid=deo.dataelementid AND dv.categoryoptioncomboid=deo.categoryoptioncomboid " +
                 "JOIN datasetoperands dso " +
                 "ON deo.dataelementoperandid=dso.dataelementoperandid " +
-                "WHERE periodid IN ( " + getCommaDelimitedString( periods ) + " ) " + deadlineCriteria +
+                "JOIN period pe " +
+                "ON dv.periodid=pe.periodid " +
+                "WHERE dv.periodid IN ( " + getCommaDelimitedString( periods ) + " ) " + deadlineCriteria +
                 "AND sourceid IN ( " + getCommaDelimitedString( children ) + " ) " +
                 "AND datasetid = " + dataSet.getId() + " GROUP BY sourceid) AS completed " +
             "WHERE completed.sources = " + compulsoryElements;
