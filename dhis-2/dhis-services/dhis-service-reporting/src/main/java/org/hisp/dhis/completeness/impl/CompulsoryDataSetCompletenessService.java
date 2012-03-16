@@ -28,7 +28,6 @@ package org.hisp.dhis.completeness.impl;
  */
 
 import java.util.Collection;
-import java.util.Date;
 
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.period.Period;
@@ -46,9 +45,9 @@ public class CompulsoryDataSetCompletenessService
     }
 
     @Override
-    public int getRegistrationsOnTime( DataSet dataSet, Collection<Integer> relevantSources, Collection<Integer> periods, Date deadline )
+    public int getRegistrationsOnTime( DataSet dataSet, Collection<Integer> relevantSources, Collection<Integer> periods, int completenessOffset )
     {
-        return completenessStore.getCompulsoryDataElementRegistrations( dataSet, relevantSources, periods, deadline );
+        return completenessStore.getCompulsoryDataElementRegistrations( dataSet, relevantSources, periods, completenessOffset );
     }
 
     @Override

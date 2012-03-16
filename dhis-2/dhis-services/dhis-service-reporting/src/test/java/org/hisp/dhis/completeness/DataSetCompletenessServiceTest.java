@@ -43,9 +43,11 @@ import org.hisp.dhis.dataset.DataSetService;
 import org.hisp.dhis.external.location.LocationManager;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
+import org.hisp.dhis.period.MonthlyPeriodType;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodService;
 import org.hisp.dhis.period.PeriodType;
+import org.hisp.dhis.period.QuarterlyPeriodType;
 import org.junit.Test;
 
 /**
@@ -65,8 +67,10 @@ public class DataSetCompletenessServiceTest
     
     private Period periodA;
     private Period periodB;
+    private Period periodC;
     
     private int periodIdA;
+    private int periodIdC;
     
     private OrganisationUnit unitA;
     private OrganisationUnit unitB;
@@ -92,6 +96,7 @@ public class DataSetCompletenessServiceTest
 
     private Date onTimeA;
     private Date tooLateA;
+    private Date onTimeB;
     private Date tooLateB;
 
     // -------------------------------------------------------------------------
@@ -115,13 +120,15 @@ public class DataSetCompletenessServiceTest
         
         completenessService = (DataSetCompletenessService) getBean( "registrationDataCompletenessService" );
 
-        periodType = periodService.getAllPeriodTypes().iterator().next();
+        periodType = new MonthlyPeriodType();
         
         periodA = createPeriod( periodType, getDate( 2000, 1, 1 ), getDate( 2000, 1, 31 ) );
         periodB = createPeriod( periodType, getDate( 2000, 2, 1 ), getDate( 2000, 2, 28 ) );
+        periodC = createPeriod( new QuarterlyPeriodType(), getDate( 2000, 1, 1 ), getDate( 2000, 3, 31 ) );        
         
         periodIdA = periodService.addPeriod( periodA );
         periodService.addPeriod( periodB );
+        periodIdC = periodService.addPeriod( periodC );
 
         unitA = createOrganisationUnit( 'A' );
         unitB = createOrganisationUnit( 'B' );
@@ -169,6 +176,7 @@ public class DataSetCompletenessServiceTest
 
         onTimeA = getDate( 2000, 2, 10 );
         tooLateA = getDate( 2000, 2, 25 );
+        onTimeB = getDate( 2000, 3, 10 );
         tooLateB = getDate( 2000, 3, 25 );
     }
 
@@ -213,26 +221,31 @@ public class DataSetCompletenessServiceTest
         
         registrationService.saveCompleteDataSetRegistration( new CompleteDataSetRegistration( dataSetA, periodA, unitA, tooLateA, "" ) );
         registrationService.saveCompleteDataSetRegistration( new CompleteDataSetRegistration( dataSetA, periodA, unitB, tooLateA, "" ) );
-        
-        registrationService.saveCompleteDataSetRegistration( new CompleteDataSetRegistration( dataSetB, periodA, unitA, tooLateA, "" ) );
-        registrationService.saveCompleteDataSetRegistration( new CompleteDataSetRegistration( dataSetB, periodA, unitC, tooLateA, "" ) );        
-
-        registrationService.saveCompleteDataSetRegistration( new CompleteDataSetRegistration( dataSetC, periodA, unitC, tooLateA, "" ) );
-
         registrationService.saveCompleteDataSetRegistration( new CompleteDataSetRegistration( dataSetA, periodB, unitA, tooLateB, "" ) );
         registrationService.saveCompleteDataSetRegistration( new CompleteDataSetRegistration( dataSetA, periodA, unitD, tooLateA, "" ) );
         
-        Collection<DataSetCompletenessResult> results = completenessService.getDataSetCompleteness( periodIdA, unitIdA );
+        registrationService.saveCompleteDataSetRegistration( new CompleteDataSetRegistration( dataSetB, periodA, unitA, tooLateA, "" ) );
+        registrationService.saveCompleteDataSetRegistration( new CompleteDataSetRegistration( dataSetB, periodA, unitC, tooLateA, "" ) );
+        registrationService.saveCompleteDataSetRegistration( new CompleteDataSetRegistration( dataSetB, periodB, unitB, onTimeB, "" ) );
+
+        registrationService.saveCompleteDataSetRegistration( new CompleteDataSetRegistration( dataSetC, periodA, unitC, tooLateA, "" ) );
+        registrationService.saveCompleteDataSetRegistration( new CompleteDataSetRegistration( dataSetC, periodB, unitA, tooLateB, "" ) );
         
-        DataSetCompletenessResult resultA = new DataSetCompletenessResult( dataSetA.getName(), 2, 2, 0 );
-        DataSetCompletenessResult resultB = new DataSetCompletenessResult( dataSetB.getName(), 2, 1, 0 );
-        DataSetCompletenessResult resultC = new DataSetCompletenessResult( dataSetC.getName(), 2, 0, 0 );        
+        Collection<DataSetCompletenessResult> results = completenessService.getDataSetCompleteness( periodIdA, unitIdA );
         
         assertNotNull( results );
         assertEquals( 3, results.size() );        
-        assertTrue( results.contains( resultA ) );
-        assertTrue( results.contains( resultB ) );
-        assertTrue( results.contains( resultC ) );        
+        assertTrue( results.contains( new DataSetCompletenessResult( dataSetA.getName(), 2, 2, 0 ) ) );
+        assertTrue( results.contains( new DataSetCompletenessResult( dataSetB.getName(), 2, 1, 0 ) ) );
+        assertTrue( results.contains( new DataSetCompletenessResult( dataSetC.getName(), 2, 0, 0 ) ) );  
+
+        results = completenessService.getDataSetCompleteness( periodIdC, unitIdA );
+   
+        assertNotNull( results );
+        assertEquals( 3, results.size() );
+        assertTrue( results.contains( new DataSetCompletenessResult( dataSetA.getName(), 6, 3, 0 ) ) );
+        assertTrue( results.contains( new DataSetCompletenessResult( dataSetB.getName(), 6, 2, 1 ) ) );
+        assertTrue( results.contains( new DataSetCompletenessResult( dataSetC.getName(), 6, 1, 0 ) ) );            
     }
 
     @Test

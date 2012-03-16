@@ -368,4 +368,9 @@ public class H2StatementBuilder
     {
         return " LIMIT " + max + " OFFSET " + min;
     }
+    
+    public String getAddDate( String dateField, int days )
+    {
+        return "DATEADD('DAY'," + days + "," + dateField + ")";
+    }
 }

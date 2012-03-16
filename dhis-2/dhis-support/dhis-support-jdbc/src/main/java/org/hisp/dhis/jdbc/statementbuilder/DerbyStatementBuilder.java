@@ -347,4 +347,9 @@ public class DerbyStatementBuilder
     {
         return " LIMIT " + max + " OFFSET " + min;
     }
+
+    public String getAddDate( String dateField, int days )
+    {
+        return "DATEADD('DAY'," + days + "," + dateField + ")";
+    }
 }

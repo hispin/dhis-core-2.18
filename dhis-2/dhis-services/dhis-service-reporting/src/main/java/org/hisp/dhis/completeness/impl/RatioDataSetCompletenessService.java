@@ -28,7 +28,6 @@ package org.hisp.dhis.completeness.impl;
  */
 
 import java.util.Collection;
-import java.util.Date;
 
 import org.hisp.dhis.dataelement.DataElementOperand;
 import org.hisp.dhis.dataset.DataSet;
@@ -44,13 +43,13 @@ public class RatioDataSetCompletenessService
     @Override
     public int getRegistrations( DataSet dataSet, Collection<Integer> relevantSources, Collection<Integer> periods )
     {
-        return completenessStore.getNumberOfValues( dataSet, relevantSources, periods, null );
+        return completenessStore.getNumberOfValues( dataSet, relevantSources, periods );
     }
 
     @Override
-    public int getRegistrationsOnTime( DataSet dataSet, Collection<Integer> relevantSources, Collection<Integer> periods, Date deadline )
+    public int getRegistrationsOnTime( DataSet dataSet, Collection<Integer> relevantSources, Collection<Integer> periods, int completenessOffset )
     {
-        return completenessStore.getNumberOfValues( dataSet, relevantSources, periods, null );
+        return completenessStore.getNumberOfValues( dataSet, relevantSources, periods );
     }
 
     @Override

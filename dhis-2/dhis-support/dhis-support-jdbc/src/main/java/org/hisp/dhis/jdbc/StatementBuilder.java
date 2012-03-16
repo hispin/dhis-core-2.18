@@ -167,4 +167,6 @@ public interface StatementBuilder
     String getActivityPlan( int orgunitId, int min, int max );
     
     String limitRecord( int min, int max );
+    
+    String getAddDate( String dateField, int days );
 }

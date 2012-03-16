@@ -28,7 +28,6 @@ package org.hisp.dhis.completeness;
  */
 
 import java.util.Collection;
-import java.util.Date;
 
 import org.hisp.dhis.dataset.DataSet;
 
@@ -42,13 +41,13 @@ public interface DataSetCompletenessStore
     
     Integer getCompleteDataSetRegistrations( DataSet dataSet, Collection<Integer> periods, Collection<Integer> relevantSources );
     
-    Integer getCompleteDataSetRegistrations( DataSet dataSet, Collection<Integer> periods, Collection<Integer> relevantSources, Date deadline );
+    Integer getCompleteDataSetRegistrations( DataSet dataSet, Collection<Integer> periods, Collection<Integer> relevantSources, int completenessOffset );
 
     Integer getCompulsoryDataElementRegistrations( DataSet dataSet, Collection<Integer> children, Collection<Integer> periods );
     
-    Integer getCompulsoryDataElementRegistrations( DataSet dataSet, Collection<Integer> children, Collection<Integer> periods, Date deadline );
+    Integer getCompulsoryDataElementRegistrations( DataSet dataSet, Collection<Integer> children, Collection<Integer> periods, int completenessOffset );
 
-    Integer getNumberOfValues( DataSet dataSet, Collection<Integer> children, Collection<Integer> periods, Date deadline );
+    Integer getNumberOfValues( DataSet dataSet, Collection<Integer> children, Collection<Integer> periods );
     
     Collection<DataSet> getDataSetsWithRegistrations( Collection<DataSet> dataSets );
     
