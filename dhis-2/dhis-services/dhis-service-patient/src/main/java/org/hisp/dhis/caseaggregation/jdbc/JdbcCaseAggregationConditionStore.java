@@ -119,4 +119,11 @@ public class JdbcCaseAggregationConditionStore
             Restrictions.eq( "optionCombo", optionCombo ))
             .uniqueResult();
     }
+
+    @SuppressWarnings("unchecked")
+    @Override
+    public Collection<CaseAggregationCondition> get( Collection<DataElement> dataElements )
+    {
+        return getCriteria( Restrictions.in( "aggregationDataElement", dataElements ) ).list();
+    }
 }

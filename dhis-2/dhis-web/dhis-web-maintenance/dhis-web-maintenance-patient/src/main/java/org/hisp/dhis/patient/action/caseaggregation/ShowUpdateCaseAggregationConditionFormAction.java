@@ -71,6 +71,8 @@ public class ShowUpdateCaseAggregationConditionFormAction
 
     private Integer id;
 
+    private Integer dataSetId;
+
     private CaseAggregationCondition caseAggregation;
 
     private String description;
@@ -108,6 +110,16 @@ public class ShowUpdateCaseAggregationConditionFormAction
     public void setId( Integer id )
     {
         this.id = id;
+    }
+
+    public void setDataSetId( Integer dataSetId )
+    {
+        this.dataSetId = dataSetId;
+    }
+
+    public Integer getDataSetId()
+    {
+        return dataSetId;
     }
 
     public String getDescription()
