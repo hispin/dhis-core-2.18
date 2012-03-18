@@ -1,6 +1,5 @@
 <script type="text/javascript">
 	jQuery(document).ready(function() {
-		selectionTreeSelection.setListenerFunction( organisationUnitSelected );
 		selectionTreeSelection.setMultipleSelectionAllowed( false );
 		selectionTree.clearSelectedOrganisationUnits();
 		selectionTree.buildSelectionTree();

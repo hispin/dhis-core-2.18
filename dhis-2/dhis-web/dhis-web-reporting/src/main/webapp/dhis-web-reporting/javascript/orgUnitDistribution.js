@@ -1,17 +1,5 @@
-var selectedOrganisationUnit = null;
 
 var distributionDivs = [ "chartDiv", "tableDiv", "loaderDiv" ];
-
-function organisationUnitSelected( units )
-{
-    if ( units && units[0] )
-    {
-        selectedOrganisationUnit = units[0];
-    } else
-    {
-        selectedOrganisationUnit = null;
-    }
-}
 
 function displayOrgUnitDistribution()
 {
@@ -61,15 +49,15 @@ function inputInvalid()
 {
     var groupSetId = $( "#groupSetId" ).val();
 
-    if ( groupSetId == null || groupSetId == 0 )
+    if ( !selectionTreeSelection.isSelected() )
     {
-        setHeaderDelayMessage( i18n_select_group_set );
+        setHeaderDelayMessage( i18n_select_org_unit );
         return true;
     }
 
-    if ( selectedOrganisationUnit == null || selectedOrganisationUnit == "" )
+    if ( groupSetId == null || groupSetId == 0 )
     {
-        setHeaderDelayMessage( i18n_select_org_unit );
+        setHeaderDelayMessage( i18n_select_group_set );
         return true;
     }
 

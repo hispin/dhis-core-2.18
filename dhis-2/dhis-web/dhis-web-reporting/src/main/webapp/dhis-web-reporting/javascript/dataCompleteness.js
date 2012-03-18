@@ -1,9 +1,3 @@
-var isOrganisationUnit = false;
-
-function organisationUnitSelected( units )
-{
-    isOrganisationUnit = units && units.length > 0;
-}
 
 function getPeriods( periodTypeList, availableList, selectedList, timespan )
 {
@@ -38,7 +32,7 @@ function displayCompleteness()
 
 function completenessIsValid( periodId )
 {
-    if ( !isOrganisationUnit )
+    if ( !selectionTreeSelection.isSelected() )
     {
         setHeaderDelayMessage( i18n_please_select_org_unit );
         return false;
