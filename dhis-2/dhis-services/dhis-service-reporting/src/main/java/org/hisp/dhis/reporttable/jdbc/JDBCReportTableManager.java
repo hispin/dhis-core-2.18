@@ -259,6 +259,8 @@ public class JDBCReportTableManager
             ConversionUtils.getIdentifiers( DataElement.class, chart.getDataElements() ) );
         String indicatorIds = TextUtils.getCommaDelimitedString( 
             ConversionUtils.getIdentifiers( Indicator.class, chart.getIndicators() ) );
+        String dataSetIds = TextUtils.getCommaDelimitedString(
+            ConversionUtils.getIdentifiers( DataSet.class, chart.getDataSets() ) );
         String periodIds = TextUtils.getCommaDelimitedString( 
             ConversionUtils.getIdentifiers( Period.class, chart.getRelativePeriods() ) );
         String unitIds = TextUtils.getCommaDelimitedString( 
@@ -292,6 +294,23 @@ public class JDBCReportTableManager
             while ( rowSet.next() )
             {
                 String id = getIdentifier( getIdentifier( Indicator.class, rowSet.getInt( 1 ) ),
+                    getIdentifier( Period.class, rowSet.getInt( 2 ) ),
+                    getIdentifier( OrganisationUnit.class, rowSet.getInt( 3 ) ) );
+
+                map.put( id, rowSet.getDouble( 4 ) );
+            }
+        }
+        
+        if ( chart.hasDataSets() )
+        {
+            final String sql = "SELECT datasetid, periodid, organisationunitid, value FROM aggregateddatasetcompleteness " +
+                "WHERE datasetid IN (" + dataSetIds + ") AND periodid IN (" + periodIds + ") AND organisationunitid IN (" + unitIds + ")";
+
+            SqlRowSet rowSet = jdbcTemplate.queryForRowSet( sql );
+            
+            while ( rowSet.next() )
+            {
+                String id = getIdentifier( getIdentifier( DataSet.class, rowSet.getInt( 1 ) ),
                     getIdentifier( Period.class, rowSet.getInt( 2 ) ),
                     getIdentifier( OrganisationUnit.class, rowSet.getInt( 3 ) ) );
 

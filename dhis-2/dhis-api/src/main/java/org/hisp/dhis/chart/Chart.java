@@ -207,6 +207,7 @@ public class Chart
         {
             list.addAll( dataElements );
             list.addAll( indicators );
+            list.addAll( dataSets );
         }
         else if ( DIMENSION_PERIOD.equals( dimension ) )
         {
@@ -296,6 +297,11 @@ public class Chart
     public boolean hasDataElements()
     {
         return dataElements != null && dataElements.size() > 0;
+    }
+    
+    public boolean hasDataSets()
+    {
+        return dataSets != null && dataSets.size() > 0;
     }
     
     public boolean isType( String type )

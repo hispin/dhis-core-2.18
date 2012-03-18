@@ -459,6 +459,21 @@ public class DefaultChartService
     }
 
     /**
+     * Returns a horizontal line marker for the given x value and label.
+     */
+    private Marker getMarker( Double value, String label )
+    {
+        Marker marker = new ValueMarker( value );
+        marker.setPaint( Color.BLACK );
+        marker.setStroke( new BasicStroke( 1.1f ) );
+        marker.setLabel( label );
+        marker.setLabelOffset( new RectangleInsets( -10, 50, 0, 0 ) );
+        marker.setLabelFont( subTitleFont );
+        
+        return marker;
+    }
+
+    /**
      * Returns a JFreeChart of type defined in the chart argument.
      */
     private JFreeChart getJFreeChart( Chart chart, boolean subTitle )
@@ -501,14 +516,12 @@ public class DefaultChartService
 
         if ( chart.isTargetLine() )
         {
-            Marker marker = new ValueMarker( chart.getTargetLineValue() );
-            marker.setPaint( Color.BLACK );
-            marker.setStroke( new BasicStroke( 1.1f ) );
-            marker.setLabel( chart.getTargetLineLabel() );
-            marker.setLabelOffset( new RectangleInsets( -10, 40, 0, 0 ) );
-            marker.setLabelFont( subTitleFont );
-
-            plot.addRangeMarker( marker );
+            plot.addRangeMarker( getMarker( chart.getTargetLineValue(), chart.getTargetLineLabel() ) );
+        }
+        
+        if ( chart.isBaseLine() )
+        {
+            plot.addRangeMarker( getMarker( chart.getBaseLineValue(), chart.getBaseLineLabel() ) );
         }
 
         if ( subTitle )
@@ -543,7 +556,7 @@ public class DefaultChartService
 
         return jFreeChart;
     }
-
+    
     private JFreeChart getStackedBarChart( Chart chart, CategoryDataset dataSet )
     {
         JFreeChart stackedBarChart = null;

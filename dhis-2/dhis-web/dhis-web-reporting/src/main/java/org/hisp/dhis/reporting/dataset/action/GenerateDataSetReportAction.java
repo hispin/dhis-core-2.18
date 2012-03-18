@@ -122,6 +122,11 @@ public class GenerateDataSetReportAction
 
     private boolean selectedUnitOnly;
 
+    public boolean isSelectedUnitOnly()
+    {
+        return selectedUnitOnly;
+    }
+
     public void setSelectedUnitOnly( boolean selectedUnitOnly )
     {
         this.selectedUnitOnly = selectedUnitOnly;
@@ -140,7 +145,7 @@ public class GenerateDataSetReportAction
     {
         this.type = type;
     }
-
+    
     // -------------------------------------------------------------------------
     // Output
     // -------------------------------------------------------------------------
