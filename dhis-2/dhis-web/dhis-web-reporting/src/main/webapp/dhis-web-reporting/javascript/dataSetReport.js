@@ -1,12 +1,5 @@
 
 // -----------------------------------------------------------------------------
-// Global variables
-// ----------------------------------------------------------------------------
-
-var selectedOrganisationUnitIds = null;
-var currentParams = null;
-
-// -----------------------------------------------------------------------------
 // Validation
 // ----------------------------------------------------------------------------
 
@@ -39,7 +32,7 @@ function validateDataSetReport()
         setHeaderMessage( i18n_select_period );
         return false;
     }
-    if ( !selectedOrganisationUnitIds || !selectedOrganisationUnitIds.length )
+    if ( !selectionTreeSelection.isSelected() )
     {
         setHeaderMessage( i18n_select_organisation_unit );
         return false;
@@ -54,7 +47,7 @@ function validateDataSetReport()
     var periodId = $( "#periodId" ).val();
     var selectedUnitOnly = $( "#selectedUnitOnly" ).is( ":checked" ); 
     
-    currentParams = { dataSetId: dataSetId, periodId: periodId, selectedUnitOnly: selectedUnitOnly };
+    var currentParams = { dataSetId: dataSetId, periodId: periodId, selectedUnitOnly: selectedUnitOnly };
     
     $( '#content' ).load( 'generateDataSetReport.action', currentParams, function() {
     	hideLoader();
@@ -65,16 +58,13 @@ function validateDataSetReport()
 
 function exportDataSetReport( type )
 {
-	if ( currentParams != null )
-	{
-	    var url = "generateDataSetReport.action?useLast=true" + 
-	    	"&dataSetId=" + currentParams.dataSetId +
-	    	"&periodId=" + currentParams.periodId +
-	    	"&selectedUnitOnly=" + currentParams.selectedUnitOnly +
-	    	"&type=" + type;
+	var url = "generateDataSetReport.action?useLast=true" + 
+		"&dataSetId=" + $( "#dataSetId" ).val() +
+	    "&periodId=" + $( "#periodId" ).val() +
+	    "&selectedUnitOnly=" + $( "#selectedUnitOnly" ).val() +
+	    "&type=" + type;
 	    
-	    window.location.href = url;
-	}
+	window.location.href = url;
 }
 
 function showCriteria()

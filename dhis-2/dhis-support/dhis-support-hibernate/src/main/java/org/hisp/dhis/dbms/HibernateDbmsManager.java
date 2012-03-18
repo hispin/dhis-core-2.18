@@ -84,7 +84,6 @@ public class HibernateDbmsManager
         emptyTable( "datavalue" );
         emptyTable( "completedatasetregistration" );
 
-        emptyTable( "reporttable_categoryoptioncombos" );
         emptyTable( "reporttable_dataelements" );
         emptyTable( "reporttable_datasets" );
         emptyTable( "reporttable_indicators" );
@@ -92,12 +91,6 @@ public class HibernateDbmsManager
         emptyTable( "reporttable_organisationunits" );
         emptyTable( "reporttable_orgunitgroups" );
         emptyTable( "reporttable" );
-
-        emptyTable( "datamartexportdataelements" );
-        emptyTable( "datamartexportindicators" );
-        emptyTable( "datamartexportorgunits" );
-        emptyTable( "datamartexportperiods" );
-        emptyTable( "datamartexport" );
 
         emptyTable( "orgunitgroupsetmembers" );
         emptyTable( "orgunitgroupset" );
@@ -114,6 +107,8 @@ public class HibernateDbmsManager
 
         emptyTable( "datasetsource" );
         emptyTable( "datasetmembers" );
+        emptyTable( "datasetindicators" );
+        emptyTable( "datasetoperands" );
         emptyTable( "dataset" );
 
         emptyTable( "minmaxdataelement" );
@@ -125,6 +120,7 @@ public class HibernateDbmsManager
         emptyTable( "dataelementgroupmembers" );
         emptyTable( "dataelementgroup" );
         emptyTable( "dataelementaggregationlevels" );
+        emptyTable( "dataelementoperand" );
         emptyTable( "dataelement" );
         emptyTable( "categoryoptioncombos_categoryoptions" );
         emptyTable( "categorycombos_optioncombos" );
@@ -134,7 +130,6 @@ public class HibernateDbmsManager
         emptyTable( "organisationunit" );
         emptyTable( "version" );
         emptyTable( "mocksource" );
-        emptyTable( "source" );
         emptyTable( "period" );
 
         emptyTable( "indicatorgroupsetmembers" );

@@ -1,5 +1,7 @@
 
 <input type="hidden" id="dataSetId" value="${selectedDataSet.id}">
+<input type="hidden" id="periodId" value="${selectedPeriod.externalId}">
+<input type="hidden" id="selectedUnitOnly" value="${selectedUnitOnly}">
 
 <h3>$encoder.htmlEncode( $selectedOrgunit.name ) - $format.formatPeriod( $selectedPeriod )</h3>
 
