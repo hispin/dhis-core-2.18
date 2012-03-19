@@ -57,7 +57,7 @@ public class JdbcActivityPlanStore
     private StatementManager statementManager;
 
     private StatementBuilder statementBuilder;
-    
+
     // -------------------------------------------------------------------------
     // Setters
     // -------------------------------------------------------------------------
@@ -86,10 +86,24 @@ public class JdbcActivityPlanStore
         {
             Statement statement = holder.getStatement();
 
-            String sql = statementBuilder.getActivityPlan( orgunitId, min, max );
-            
+            // String sql = statementBuilder.getActivityPlan( orgunitId, min,
+            // max );
+            String sql = "SELECT psi.programstageinstanceid " + "FROM programstageinstance psi "
+                + "INNER JOIN programinstance pi " + "ON pi.programinstanceid = psi.programinstanceid "
+                + "INNER JOIN programstage ps " + "ON ps.programstageid=psi.programstageid "
+                + "INNER JOIN program_organisationunits po " + "ON po.programid=pi.programid "
+                + "INNER JOIN program pg " + "ON po.programid=pg.programid " + "WHERE pi.completed = FALSE  "
+                + "AND pg.singleEvent=FALSE " + "AND po.organisationunitid = " + orgunitId
+                + " AND psi.completed = FALSE " + "AND ps.stageinprogram in ( SELECT min(ps1.stageinprogram) "
+                + "FROM programstageinstance psi1 " + "INNER JOIN programinstance pi1 "
+                + "ON pi1.programinstanceid = psi1.programinstanceid " + "INNER JOIN programstage ps1 "
+                + "ON ps1.programstageid=psi1.programstageid " + "INNER JOIN program_organisationunits po1 "
+                + "ON po1.programid=pi1.programid " + "WHERE pi1.completed = FALSE  " + "AND po1.organisationunitid = "
+                + orgunitId + " AND psi1.completed = FALSE ) " + "ORDER BY ps.stageinprogram "
+                + statementBuilder.limitRecord( min, max );
+
             ResultSet resultSet = statement.executeQuery( sql );
-            
+
             while ( resultSet.next() )
             {
                 programStageInstanceIds.add( resultSet.getInt( 1 ) );
@@ -101,7 +115,7 @@ public class JdbcActivityPlanStore
         catch ( Exception ex )
         {
             log.debug( ex );
-            
+
             return null;
         }
         finally
@@ -114,38 +128,29 @@ public class JdbcActivityPlanStore
     public int countActivitiesByProvider( Integer orgunitId )
     {
         StatementHolder holder = statementManager.getHolder();
-        
+
         try
         {
             Statement statement = holder.getStatement();
 
-            String sql = "SELECT count(psi.programstageinstanceid) " +
-                         "FROM programstageinstance psi " +
-                             "INNER JOIN programinstance pi " +
-                                "ON pi.programinstanceid = psi.programinstanceid " +
-                             "INNER JOIN programstage ps " +
-                                "ON ps.programstageid=psi.programstageid " +
-                             "INNER JOIN program_organisationunits po " +
-                                "ON po.programid=pi.programid " +
-                         "WHERE pi.completed = FALSE  " +
-                            "AND po.organisationunitid = " + orgunitId + " AND psi.completed = FALSE " +
-                            "AND ps.stageinprogram in ( SELECT min(ps1.stageinprogram) " +
-                                "FROM programstageinstance psi1 " +
-                                "INNER JOIN programinstance pi1 " +
-                                    "ON pi1.programinstanceid = psi1.programinstanceid " +
-                                "INNER JOIN programstage ps1 " +
-                                    "ON ps1.programstageid=psi1.programstageid " +
-                                "INNER JOIN program_organisationunits po1 " +
-                                    "ON po1.programid=pi1.programid " +
-                                "WHERE pi1.completed = FALSE  " +
-                                    "AND po1.organisationunitid = " + orgunitId + " AND psi1.completed = FALSE ) ";
+            String sql = "SELECT count(psi.programstageinstanceid) " + "FROM programstageinstance psi "
+                + "INNER JOIN programinstance pi " + "ON pi.programinstanceid = psi.programinstanceid "
+                + "INNER JOIN programstage ps " + "ON ps.programstageid=psi.programstageid "
+                + "INNER JOIN program_organisationunits po " + "ON po.programid=pi.programid "
+                + "WHERE pi.completed = FALSE  " + "AND po.organisationunitid = " + orgunitId
+                + " AND psi.completed = FALSE " + "AND ps.stageinprogram in ( SELECT min(ps1.stageinprogram) "
+                + "FROM programstageinstance psi1 " + "INNER JOIN programinstance pi1 "
+                + "ON pi1.programinstanceid = psi1.programinstanceid " + "INNER JOIN programstage ps1 "
+                + "ON ps1.programstageid=psi1.programstageid " + "INNER JOIN program_organisationunits po1 "
+                + "ON po1.programid=pi1.programid " + "WHERE pi1.completed = FALSE  " + "AND po1.organisationunitid = "
+                + orgunitId + " AND psi1.completed = FALSE ) ";
 
             ResultSet resultSet = statement.executeQuery( sql );
-            if(resultSet.next())
+            if ( resultSet.next() )
             {
                 return resultSet.getInt( 1 );
             }
-                
+
             return 0;
         }
         catch ( Exception ex )

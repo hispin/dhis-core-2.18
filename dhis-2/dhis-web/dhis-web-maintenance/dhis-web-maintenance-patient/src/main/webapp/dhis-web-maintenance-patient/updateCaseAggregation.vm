@@ -294,7 +294,7 @@
 		<td>
 			<input type="submit" value="$i18n.getString( 'update' )" style="width:10em">
 			<input type="button" value="$i18n.getString( 'test_condition' )" style="width:10em" onclick='testCaseAggregationCondition();'/>
-			<input type="button" value="$i18n.getString( 'cancel' )" onclick="window.location.href='caseAggregation.action?dataSetId=$dataSetId'" style="width:10em">
+			<input type="button" value="$i18n.getString( 'cancel' )" onclick="window.location.href='caseAggregation.action?dataSetId=$!dataSetId'" style="width:10em">
 		</td>
 	<tr>
 </table>

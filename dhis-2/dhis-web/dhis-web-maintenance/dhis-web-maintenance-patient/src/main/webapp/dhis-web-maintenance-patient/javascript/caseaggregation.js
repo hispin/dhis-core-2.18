@@ -89,7 +89,7 @@ function getProgramStagesForFormula()
 		return;  
 	}
 
-	$.getJSON( 'getProgramStages.action', { programId:programId }, getProgramStagesFomulaCompleted );
+	$.get( 'getProgramStages.action', { programId:programId }, getProgramStagesFomulaCompleted, 'xml' );
 }
 
 function getProgramStagesFomulaCompleted( programstageElement )
@@ -286,4 +286,9 @@ function getCaseAggConditionByDataset()
 		{
 			setInnerHTML('list', html );
 		} );
+}
+
+function showAddCaseAggregationForm()
+{
+	window.location.href='showAddCaseAggregationForm.action?dataSetId=' + getFieldValue( 'dataSetId' );
 }
