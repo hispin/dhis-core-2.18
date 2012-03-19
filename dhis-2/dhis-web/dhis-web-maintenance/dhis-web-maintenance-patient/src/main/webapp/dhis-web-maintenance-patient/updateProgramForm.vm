@@ -1,17 +1,4 @@
-<link rel="stylesheet" type="text/css" href="style/basic.css" media="screen" />
-<script>
-	jQuery(document).ready(	function(){
-		
-		validation( 'updateProgramForm', function( form ){ 
-			enable('dateOfEnrollmentDescription');
-			form.submit();			
-		});	
-		
-		checkValueIsExist( "name", "validateProgram.action", {id:getFieldValue('id')});
-
-	});		
-</script>
-
+<script type="text/javascript" src="javascript/updateProgramForm.js"></script>
 
 <h3>$i18n.getString( "edit_program" )</h3>
 

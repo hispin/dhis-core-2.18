@@ -1,15 +1,4 @@
-<script>
-	jQuery(document).ready(	function(){
-			
-		jQuery('name').focus();
-		
-		validation( 'addPatientIdentifierTypeForm', function(form){
-			form.submit();
-		}); 
-		
-		checkValueIsExist( "name", "validatePatientIdentifierType.action");			
-	});		
-</script>
+<script type="text/javascript" src="javascript/addPatientIdentifierTypeForm.js"></script>
 
 <h3>$i18n.getString( "create_new_patient_identifier_type" )</h3>
 								

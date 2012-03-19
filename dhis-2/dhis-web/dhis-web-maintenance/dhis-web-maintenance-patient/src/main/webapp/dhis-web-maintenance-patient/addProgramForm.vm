@@ -1,13 +1,4 @@
-<script>
-	jQuery(document).ready(	function(){
-		validation( 'addProgramForm', function( form ){		
-			enable('dateOfEnrollmentDescription');
-			form.submit();
-		});				
-		
-		checkValueIsExist( "name", "validateProgram.action");
-	});		
-</script>
+<script type="text/javascript" src="javascript/addProgramForm.js"></script>
 
 <h3>$i18n.getString( "create_new_program" )</h3>
 									

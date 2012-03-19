@@ -1,31 +1,4 @@
-<script>
-	var i18n_remove_option = '$encoder.jsEscape( $i18n.getString( "remove_option" ) , "'") ';
-	var i18n_field_is_required = '$encoder.jsEscape( $i18n.getString( "field_is_required" ) , "'") ';
-	var i18n_at_least_2_option = '$encoder.jsEscape( $i18n.getString( "at_least_2_option" ) , "'") ';
-
-	var isSubmit = true;
-	jQuery(document).ready(	function(){
-			
-			validation( 'addProgramAttributeForm', function(form){
-				if( isSubmit && ATTRIBUTE_OPTION.checkOnSubmit() ) {
-					form.submit();
-				}
-			}, function(){
-				isSubmit = true;
-				jQuery.each($('#addProgramAttributeForm').serializeArray(), function(i, field) {
-					if( field.value == ""){
-						setInnerHTML("attrMessage", i18n_field_is_required);
-						isSubmit = false;
-					}
-				});
-			});
-		
-		jQuery("#attributeComboRow").hide();
-			
-		checkValueIsExist( "name", "validateProgramAttribute.action");
-	});		
-</script>
-
+<script type="text/javascript" src="javascript/addProgramAttributeForm.js"></script>
 																		
 <h3>$i18n.getString( "create_new_program_attribute" )</h3>
 <form id="addProgramAttributeForm" action="addProgramAttribute.action" method="post" >
@@ -37,19 +10,19 @@
 	
     <tbody>
 		<tr>
-			<td width="20em"><label>$i18n.getString( "name" )</label></td>
-			<td><input type="text" id="name" name="name" /></td>
+			<td><label>$i18n.getString( "name" ) <em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
+			<td><input type="text" id="name" name="name" class="{validate:{required:true}}"/></td>
 			<td></td>
 		</tr>   
 		
 		<tr>
-			<td width="20em" ><label>$i18n.getString( "description" ) <em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
+			<td><label>$i18n.getString( "description" ) <em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
 			<td><input type="text" id="description" name="description" class="{validate:{required:true,minlength:2}}"/></td>
 			<td></td>
 		</tr>
 		
 		<tr>
-			<td width="20em"><label for="valueType">$i18n.getString( "value_type" ) <em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
+			<td><label for="valueType">$i18n.getString( "value_type" ) <em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
 			<td>
 				<select id="valueType" name="valueType" onchange="ATTRIBUTE_OPTION.selectValueType(this);">
 					<option value="NUMBER" selected="selected">$i18n.getString( "number" )</option>
@@ -63,7 +36,7 @@
 		</tr>
 		
 		<tr id="attributeComboRow"> 
-			<td width="20em"><label>$i18n.getString( "attribute_options" ) <em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
+			<td><label>$i18n.getString( "attribute_options" ) <em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
 			<td ><table id="attrOptionContainer"></table><a href="#" style="text-decoration: none;margin-top: 0.5em" onclick="ATTRIBUTE_OPTION.addOption()">[ $i18n.getString( "add_more_option" ) ]</a>
 			</td>
 			<td><span id="attrMessage"  name="attrMessage" style="color:red;"></span></td>
@@ -78,4 +51,12 @@
 	</tr>
 </table>
 
-</form>   
+</form>  
+
+<script>
+	var i18n_remove_option = '$encoder.jsEscape( $i18n.getString( "remove_option" ) , "'") ';
+	var i18n_field_is_required = '$encoder.jsEscape( $i18n.getString( "field_is_required" ) , "'") ';
+	var i18n_at_least_2_option = '$encoder.jsEscape( $i18n.getString( "at_least_2_option" ) , "'") ';
+
+	var isSubmit = true;
+</script> 

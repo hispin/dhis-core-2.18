@@ -1,36 +1,5 @@
-<script>
-	var i18n_remove_option = '$encoder.jsEscape( $i18n.getString( "remove_option" ) , "'") ';
+<script type="text/javascript" src="javascript/updatePatientAttributeGroupForm.js"></script>
 
-	jQuery(document).ready(	function() {
-	
-		jQuery('name').focus();
-
-		validation2( 'updatePatientAttributeGroupForm', function(form){
-			form.submit();
-		}, {
-			'beforeValidateHandler' : function()
-			{
-				listValidator( 'memberValidator', 'selectedAttributes' );
-			},
-			'rules' : getValidationRules( 'patientAttributeGroup' )
-		} );
-
-		checkValueIsExist( "name", "validatePatientAttributeGroup.action", {id:getFieldValue('id')});
-		
-		jQuery("#availableAttributes").dhisAjaxSelect({
-			source: 'getProgramAttributeWithoutGroup.action',
-			iterator: 'patientAttributes',
-			connectedTo: 'selectedAttributes',
-			handler: function(item){
-				var option = jQuery( "<option/>" );
-				option.attr( "value", item.id );
-				option.text( item.name );
-				
-				return option;
-			}
-		});
-	});		
-</script>
 <h3>$i18n.getString( "edit_patient_attribute_group" )</h3>
 <form id="updatePatientAttributeGroupForm" name="updatePatientAttributeGroupForm" action="updatePatientAttributeGroup.action" method="post" >
 
@@ -94,8 +63,10 @@
 			<input type="button" value="$i18n.getString( 'cancel' )" onclick="window.location.href='patientAttributeGroup.action'" />
 		</td>
 	</tr>
-</table>  
-
-
+</table> 
 
 </form>     
+
+<script>
+	var i18n_remove_option = '$encoder.jsEscape( $i18n.getString( "remove_option" ) , "'") ';
+</script>

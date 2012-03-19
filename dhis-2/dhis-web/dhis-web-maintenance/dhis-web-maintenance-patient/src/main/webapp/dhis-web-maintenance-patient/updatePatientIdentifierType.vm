@@ -1,16 +1,4 @@
-<script>
-	jQuery(document).ready(	function(){
-		
-		jQuery('name').focus();
-			
-		validation( 'updatePatientIdentifierTypeForm', function(form){
-			form.submit();
-		}); 
-		
-		checkValueIsExist( "name", "validatePatientIdentifierType.action", {id:getFieldValue('id')});
-	});		
-</script>
-
+<script type="text/javascript" src="javascript/updatePatientIdentifierTypeForm.js"></script>
 
 <h3>$i18n.getString( "edit_patient_identifier_type" )</h3>
 									
