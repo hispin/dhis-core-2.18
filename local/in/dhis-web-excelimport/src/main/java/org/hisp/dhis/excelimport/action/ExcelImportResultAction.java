@@ -35,8 +35,6 @@ import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
 import org.hisp.dhis.dataelement.DataElementCategoryService;
 import org.hisp.dhis.dataelement.DataElementService;
-import org.hisp.dhis.datalock.DataSetLock;
-import org.hisp.dhis.datalock.DataSetLockService;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.dataset.DataSetService;
 import org.hisp.dhis.datavalue.DataValue;
@@ -137,14 +135,14 @@ public class ExcelImportResultAction
     {
         this.currentUserService = currentUserService;
     }
-
+    /*
     private DataSetLockService dataSetLockService;
     
     public void setDataSetLockService( DataSetLockService dataSetLockService )
     {
         this.dataSetLockService = dataSetLockService;
     }
-
+    */
     private SessionFactory sessionFactory;
 
     public void setSessionFactory( SessionFactory sessionFactory )
@@ -504,6 +502,14 @@ public class ExcelImportResultAction
 
     OrganisationUnit orgUnit;
     
+    private boolean lockStatus;
+    
+    public boolean isLockStatus()
+    {
+        return lockStatus;
+    }
+    
+    
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
@@ -601,9 +607,12 @@ public class ExcelImportResultAction
 
         eDate = format.parseDate( String.valueOf( selectedPeriod.getEndDate() ) );
 
-        DataSetLock dataSetLock = dataSetLockService.getDataSetLockByDataSetPeriodAndSource( dataSet, selectedPeriod, orgUnit );
+        //DataSetLock dataSetLock = dataSetLockService.getDataSetLockByDataSetPeriodAndSource( dataSet, selectedPeriod, orgUnit );
         
-        if( dataSetLock != null )
+        lockStatus = dataSetService.isLocked( dataSet, selectedPeriod, orgUnit, null );
+        
+        //if( dataSetLock != null )
+        if( lockStatus )
         {
             message = "Unable to Import : Corresponding Dataset ( "+dataSet.getName()+" ) for the selected Excel Template is locked.";
             

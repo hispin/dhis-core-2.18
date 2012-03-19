@@ -45,7 +45,6 @@ import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
 import org.hisp.dhis.dataelement.DataElementCategoryService;
 import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.dataentryform.DataEntryForm;
-import org.hisp.dhis.datalock.DataSetLockService;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.dataset.DataSetService;
 import org.hisp.dhis.dataset.Section;
@@ -127,14 +126,15 @@ public class FormAction
     public SelectedStateManager getSelectedStateManager()
     {
         return selectedStateManager;
-    }    
+    }
+    /*
     private DataSetLockService dataSetLockService;
     
     public void setDataSetLockService( DataSetLockService dataSetLockService)
     {
         this.dataSetLockService = dataSetLockService;
     }
-
+    */
     private I18n i18n;
 
     public void setI18n( I18n i18n )
@@ -449,9 +449,21 @@ public class FormAction
     private static final String SECTION_FORM = "sectionform";
  */   
     
+    private boolean lockStatus;
+    
+    public boolean isLockStatus()
+    {
+        return lockStatus;
+    }
+
+
+    
+    
+    
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
+
 
     public String execute()
         throws Exception
@@ -796,6 +808,11 @@ public class FormAction
             
         }
         
+        lockStatus = dataSetService.isLocked( dataSet, period, organisationUnit, null );
+        
+        
+        
+        /*
         if( dataSetLockService == null )
         {
             System.out.println(" DataSetLockService is null");
@@ -807,6 +824,22 @@ public class FormAction
                 locked = true;
             }
         }
+        */
+        if( !lockStatus )
+        {
+            System.out.println(" DataSet Not Lock");
+        }
+        
+        if( lockStatus )
+        {
+            System.out.println(" DataSet Lockd");
+            //if( dataSetLockService.getDataSetLockByDataSetAndPeriod( dataSet, period ).getSources().contains(organisationUnit) ) 
+            //{
+                locked = true;
+            //}
+        }
+        
+        
         
         maxRecordNo = dataValueService.getMaxRecordNo();
         

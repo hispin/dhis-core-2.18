@@ -21,8 +21,6 @@ import jxl.write.WritableSheet;
 import jxl.write.WritableWorkbook;
 
 import org.amplecode.quick.StatementManager;
-import org.hisp.dhis.datalock.DataSetLock;
-import org.hisp.dhis.datalock.DataSetLockService;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.dataset.DataSetService;
 import org.hisp.dhis.excelimport.util.ExcelImport_DeCode;
@@ -110,14 +108,14 @@ public class PortalExcelImportResultAction implements Action
     {
         this.currentUserService = currentUserService;
     }
-    
+    /*
     private DataSetLockService dataSetLockService;
     
     public void setDataSetLockService( DataSetLockService dataSetLockService )
     {
         this.dataSetLockService = dataSetLockService;
     }
-
+    */
     private DataSetService dataSetService;
 
     public void setDataSetService( DataSetService dataSetService )
@@ -219,6 +217,13 @@ public class PortalExcelImportResultAction implements Action
     }
 
     private String raFolderName;
+    
+    private boolean lockStatus;
+    
+    public boolean isLockStatus()
+    {
+        return lockStatus;
+    }
 
     // -------------------------------------------------------------------------
     // Action implementation
@@ -575,8 +580,10 @@ public class PortalExcelImportResultAction implements Action
                     if( portalOrgUnit != null && orgUnitList.contains( portalOrgUnit ) )
                     {
                         System.out.println("--------Importing started for :"+portalOrgUnit.getName() + "-------------" );
-                        DataSetLock dataSetLock = dataSetLockService.getDataSetLockByDataSetPeriodAndSource( dataSet, selectedPeriod, portalOrgUnit );
-                        if( dataSetLock != null )
+                        lockStatus = dataSetService.isLocked( dataSet, selectedPeriod, portalOrgUnit, null );
+                        //DataSetLock dataSetLock = dataSetLockService.getDataSetLockByDataSetPeriodAndSource( dataSet, selectedPeriod, portalOrgUnit );
+                        //if( dataSetLock != null )
+                        if( lockStatus )
                         {
                             message += "<br><font color=red><strong>Unable to Import : Corresponding Dataset ( "+dataSet.getName()+" ) for " + portalOrgUnit.getName() + " and for period : " + periodFormat.format( selectedPeriod.getStartDate() ) + " is locked.</strong></font>";
                             System.out.println("Unable to Import : Corresponding Dataset ( "+dataSet.getName()+" ) for " + portalOrgUnit.getName() + " and for period : " + periodFormat.format( selectedPeriod.getStartDate() ) + " is locked.");
