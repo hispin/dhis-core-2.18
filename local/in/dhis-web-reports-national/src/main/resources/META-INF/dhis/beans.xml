@@ -341,9 +341,9 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
         <property name="dataSetService">
             <ref bean="org.hisp.dhis.dataset.DataSetService"/>
         </property>
-        <property name="dataSetLockService">
+<!--        <property name="dataSetLockService">
             <ref bean="org.hisp.dhis.datalock.DataSetLockService"/>
-        </property>
+        </property>-->
         <property name="reportService" ref="org.hisp.dhis.reports.ReportService">
         </property>
     </bean>

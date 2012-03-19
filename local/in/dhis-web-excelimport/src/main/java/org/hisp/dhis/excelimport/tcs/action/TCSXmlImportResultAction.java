@@ -12,7 +12,6 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 
 import org.amplecode.quick.StatementManager;
-import org.hisp.dhis.datalock.DataSetLockService;
 import org.hisp.dhis.dataset.DataSetService;
 import org.hisp.dhis.excelimport.util.ReportService;
 import org.hisp.dhis.excelimport.util.TCSXMLMap;
@@ -81,14 +80,14 @@ public class TCSXmlImportResultAction implements Action
     {
         this.currentUserService = currentUserService;
     }
-    
+ /*   
     private DataSetLockService dataSetLockService;
     
     public void setDataSetLockService( DataSetLockService dataSetLockService )
     {
         this.dataSetLockService = dataSetLockService;
     }
-
+*/
     private DataSetService dataSetService;
 
     public void setDataSetService( DataSetService dataSetService )

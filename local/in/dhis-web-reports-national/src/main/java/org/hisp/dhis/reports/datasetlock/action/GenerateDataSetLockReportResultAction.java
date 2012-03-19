@@ -24,8 +24,6 @@ import jxl.write.WritableWorkbook;
 
 import org.hisp.dhis.common.comparator.IdentifiableObjectNameComparator;
 import org.hisp.dhis.config.Configuration_IN;
-import org.hisp.dhis.datalock.DataSetLock;
-import org.hisp.dhis.datalock.DataSetLockService;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.dataset.DataSetService;
 import org.hisp.dhis.i18n.I18nFormat;
@@ -65,14 +63,14 @@ public class GenerateDataSetLockReportResultAction
     {
         this.dataSetService = dataSetService;
     }
-
+/*
     private DataSetLockService dataSetLockService;
 
     public void setDataSetLockService( DataSetLockService dataSetLockService )
     {
         this.dataSetLockService = dataSetLockService;
     }
-
+*/
     private ReportService reportService;
 
     public void setReportService( ReportService reportService )
@@ -316,9 +314,11 @@ public class GenerateDataSetLockReportResultAction
                 sheet0.mergeCells( colStart + columnNo, rowStart + rowNo + 1, colStart + columnNo, x + 1 );
                 for ( Period periodElement : periods )
                 {
-                    DataSetLock dataSetLock = dataSetLockService.getDataSetLockByDataSetPeriodAndSource( dataSet,
-                        periodElement, organisationUnit );
-                    if ( dataSetLock != null )
+                    
+                    boolean lockStatus = dataSetService.isLocked( dataSet, periodElement, organisationUnit, null );
+                    //DataSetLock dataSetLock = dataSetLockService.getDataSetLockByDataSetPeriodAndSource( dataSet, periodElement, organisationUnit );
+                    //if ( dataSetLock != null )
+                    if ( lockStatus )
                     {
                         sheet0.addCell( new Number( colStart
                             + organisationUnitService.getNumberOfOrganisationalLevels() + 1 + periodsCounter, rowStart
@@ -389,9 +389,10 @@ public class GenerateDataSetLockReportResultAction
                 int periodsCounter = 0;
                 for ( Period periodElement : periods )
                 {
-                    DataSetLock dataSetLock = dataSetLockService.getDataSetLockByDataSetPeriodAndSource( dataSet,
-                        periodElement, organisationUnit );
-                    if ( dataSetLock != null )
+                    //DataSetLock dataSetLock = dataSetLockService.getDataSetLockByDataSetPeriodAndSource( dataSet, periodElement, organisationUnit );
+                    boolean lockStatus = dataSetService.isLocked( dataSet, periodElement, organisationUnit, null );
+                    //if ( dataSetLock != null )
+                    if ( lockStatus )
                     {
                         sheet0.addCell( new Number( colStart
                             + organisationUnitService.getNumberOfOrganisationalLevels() + 1 + periodsCounter, rowStart

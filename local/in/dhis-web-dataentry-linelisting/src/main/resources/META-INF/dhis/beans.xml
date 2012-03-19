@@ -103,8 +103,8 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
       ref="org.hisp.dhis.den.state.SelectedStateManager"/>    
 	<property name="dataElementCategoryService"
       ref="org.hisp.dhis.dataelement.DataElementCategoryService"/>
-	<property name="dataSetLockService"
-      ref="org.hisp.dhis.datalock.DataSetLockService"/>  
+	<!--<property name="dataSetLockService"
+      ref="org.hisp.dhis.datalock.DataSetLockService"/>-->
 	<property name="dataSetService"
       ref="org.hisp.dhis.dataset.DataSetService"/>
     <property name="sectionService" ref="org.hisp.dhis.dataset.SectionService"/>
