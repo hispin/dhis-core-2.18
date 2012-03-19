@@ -1,20 +1,4 @@
 <script type="text/javascript" src="javascript/addProgramStageForm.js"></script>
-<script type="text/javascript">
-	jQuery(function() {
-		jQuery("#availableList").dhisAjaxSelect({
-			source: "../dhis-web-commons-ajax-json/getDataElements.action?domain=patient",
-			iterator: "dataElements",
-			connectedTo: 'selectedDataElementsValidator',
-			handler: function(item) {
-				var option = jQuery("<option />");
-				option.text( item.name );
-				option.attr( "value", item.id );
-
-				return option;
-			}
-		});
-	});
-</script>
 
 <h3>$i18n.getString( "create_new_program_stage" )</h3>
 																		

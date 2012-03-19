@@ -1,14 +1,4 @@
-<script>
-	jQuery(document).ready(	function(){
-		
-		jQuery('aIsToB').focus();
-			
-		validation( 'updateRelationshipTypeForm', function(form){
-			validateUpdateRelationshipType();
-		}); 
-		
-	});		
-</script>
+<script type="text/javascript" src="javascript/updateRelationshipTypeForm.js"></script>
 
 <h3>$i18n.getString( "edit_relationship_type" )</h3>
 

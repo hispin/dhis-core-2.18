@@ -1,28 +1,4 @@
-<script>
-	var i18n_remove_option = '$encoder.jsEscape( $i18n.getString( "remove_option" ) , "'") ';
-	var i18n_field_is_required = '$encoder.jsEscape( $i18n.getString( "field_is_required" ) , "'") ';
-	var i18n_at_least_2_option = '$encoder.jsEscape( $i18n.getString( "at_least_2_option" ) , "'") ';
-	var isSubmit = true;
-	jQuery(document).ready(	function(){
-			
-			validation( 'updateProgramAttributeForm', function(form){
-				if( isSubmit && ATTRIBUTE_OPTION.checkOnSubmit() ) {
-					form.submit();
-				}
-			}, function(){
-				isSubmit = true;
-				jQuery.each($('#updateProgramAttributeForm').serializeArray(), function(i, field) {
-					if( field.value == ""){
-						setInnerHTML("attrMessage", i18n_field_is_required);
-						isSubmit = false;
-					}
-				});
-			}); 
-			
-		checkValueIsExist( "name", "validateProgramAttribute.action", {id:getFieldValue('id')});
-	});		
-</script>
-
+<script type="text/javascript" src="javascript/updateProgramAttributeForm.js"></script>
 																		
 <h3>$i18n.getString( "edit_program_attribute" )</h3>
 <form id="updateProgramAttributeForm" action="updateProgramAttribute.action" method="post" >
@@ -34,13 +10,13 @@
     <tbody>
 	
     <tr>
-        <td width="20em"><label>$i18n.getString( "name" )</label></td>
-        <td><input type="text" id="name" name="name" value='$programAttribute.name' /></td>
+        <td><label>$i18n.getString( "name" ) <em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
+        <td><input type="text" id="name" name="name" value='$programAttribute.name' class="{validate:{required:true}}" /></td>
         <td></td>
     </tr>   
     
     <tr>
-        <td width="20em" ><label>$i18n.getString( "description" ) <em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
+        <td><label>$i18n.getString( "description" ) <em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
         <td><input type="text" id="description" name="description" value='$programAttribute.description' class="{validate:{required:true,minlength:2}}"/></td>
         <td></td>
     </tr>
@@ -92,4 +68,9 @@
 	}else{
 		jQuery("#attributeComboRow").hide();
 	}
+	
+	var i18n_remove_option = '$encoder.jsEscape( $i18n.getString( "remove_option" ) , "'") ';
+	var i18n_field_is_required = '$encoder.jsEscape( $i18n.getString( "field_is_required" ) , "'") ';
+	var i18n_at_least_2_option = '$encoder.jsEscape( $i18n.getString( "at_least_2_option" ) , "'") ';
+	var isSubmit = true;
 </script>

@@ -1,15 +1,4 @@
-<script>
-	jQuery(document).ready(
-		function()
-		{
-			validation( 'validationCriteriaForm', function( form ){
-				form.submit();			
-			});
-					
-			checkValueIsExist( "name", "validateValidationCriteria.action");
-		}
-	);	
-</script>																
+<script type="text/javascript" src="javascript/addValidationCriteria.js"></script>																
 
 <h3>$i18n.getString( "create_validation_criteria" )</h3>
 <form id="validationCriteriaForm" action="addValidationCriteria.action" method="post" >
