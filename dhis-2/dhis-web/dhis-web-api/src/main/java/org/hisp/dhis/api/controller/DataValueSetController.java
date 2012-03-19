@@ -27,6 +27,10 @@ package org.hisp.dhis.api.controller;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import java.io.IOException;
+
+import javax.servlet.http.HttpServletResponse;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hisp.dhis.api.webdomain.DataValueSets;
@@ -36,6 +40,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -67,5 +72,12 @@ public class DataValueSetController
 
         log.debug( "Saved data value set for data set: " + dataValueSet.getDataSetIdentifier() +
             ", org unit: " + dataValueSet.getOrganisationUnitIdentifier() + ", period: " + dataValueSet.getPeriodIsoDate() );
+    }
+    
+    @ExceptionHandler(IllegalArgumentException.class)
+    public void handleException( HttpServletResponse response, IllegalArgumentException ex )
+        throws IOException
+    {
+        response.sendError( HttpServletResponse.SC_CONFLICT, ex.getMessage() );
     }
 }
