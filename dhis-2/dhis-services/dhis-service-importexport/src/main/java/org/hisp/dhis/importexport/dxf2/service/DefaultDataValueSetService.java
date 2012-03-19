@@ -53,7 +53,6 @@ import org.hisp.dhis.period.DailyPeriodType;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodType;
 import org.hisp.dhis.user.CurrentUserService;
-import org.springframework.beans.factory.annotation.Required;
 import org.springframework.transaction.annotation.Transactional;
 
 public class DefaultDataValueSetService
@@ -120,7 +119,6 @@ public class DefaultDataValueSetService
      * of add/update in data value store
      * <li>completed semantics: can't uncomplete but can complete and
      * "recomplete"
-     * <li>what is 'comment' good for really?
      *
      * @param dataValueSet
      * @throws IllegalArgumentException if there are any inconsistencies
@@ -202,7 +200,7 @@ public class DefaultDataValueSetService
             throw new IllegalArgumentException( "Data value set does not specify a data set and does not contain data values" );
         }
 
-        Set<DataSet> potential = null;
+        Set<DataSet> potentialDataSets = new HashSet<DataSet>();
 
         for ( org.hisp.dhis.importexport.dxf2.model.DataValue value : dataValueSet.getDataValues() )
         {
@@ -219,36 +217,19 @@ public class DefaultDataValueSetService
             }
             else
             {
-                if ( potential == null )
-                {
-                    potential = new HashSet<DataSet>( dataSets );
-                }
-                else
-                {
-                    for ( DataSet set : dataSets )
-                    {
-                        if ( !potential.contains( set ) )
-                        {
-                            potential.remove( set );
-                        }
-                    }
-                    
-                    if ( potential.size() == 1 )
-                    {
-                        return potential.iterator().next();
-                    }
-                }
+                potentialDataSets.addAll( dataSets );
             }
         }
 
-        // TODO: Check if potential data sets are compatible
-
         String message = "Ambiguous which of these data set the data values belong to: ";
-        for ( DataSet p : potential )
+        
+        for ( DataSet ds : potentialDataSets )
         {
-            message += p.getUid() + ", ";
+            message += ds.getUid() + ", ";
         }
+        
         message.substring( 0, message.length() - 2 );
+        
         throw new IllegalArgumentException( message );
     }
 
@@ -268,8 +249,6 @@ public class DefaultDataValueSetService
         DataValue dv = dataValueService.getDataValue( unit, dataElement, period, combo );
 
         String value = dxfValue.getValue();
-
-        // dataElement.isValidValue(value);
 
         String storedBy = currentUserService.getCurrentUsername();
 
@@ -291,6 +270,7 @@ public class DefaultDataValueSetService
     {
         CompleteDataSetRegistration alreadyComplete = registrationService.getCompleteDataSetRegistration( dataSet,
             period, unit );
+        
         String completeDateString = dataValueSet.getCompleteDate();
 
         if ( alreadyComplete != null && completeDateString == null )
@@ -309,6 +289,7 @@ public class DefaultDataValueSetService
         {
             complete = getComplete( dataSet, unit, period, completeDateString, complete );
         }
+        
         if ( complete != null )
         {
             registrationService.saveCompleteDataSetRegistration( complete );
@@ -344,7 +325,7 @@ public class DefaultDataValueSetService
         }
         catch ( Exception e )
         {
-            throw new IllegalArgumentException( "Period " + periodIsoDate + " is not valid period of type "
+            throw new IllegalArgumentException( "Period " + periodIsoDate + " is not a valid period of type "
                 + periodType.getName() );
         }
         
@@ -359,6 +340,7 @@ public class DefaultDataValueSetService
         {
             throw new IllegalArgumentException( "Org unit with ID " + uid + " does not exist" );
         }
+        
         return unit;
     }
 
@@ -421,19 +403,16 @@ public class DefaultDataValueSetService
         this.dataElementService = dataElementService;
     }
 
-    @Required
     public void setDataValueService( DataValueService dataValueService )
     {
         this.dataValueService = dataValueService;
     }
 
-    @Required
     public void setRegistrationService( CompleteDataSetRegistrationService registrationService )
     {
         this.registrationService = registrationService;
     }
 
-    @Required
     public void setCurrentUserService( CurrentUserService currentUserService )
     {
         this.currentUserService = currentUserService;
