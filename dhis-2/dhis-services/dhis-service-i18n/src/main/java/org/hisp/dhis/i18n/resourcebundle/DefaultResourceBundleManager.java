@@ -199,7 +199,7 @@ public class DefaultResourceBundleManager
     private Locale getLocaleFromName( String name )
     {
         Pattern pattern = Pattern.compile( "^" + globalResourceBundleName
-            + "(?:_([a-z]{2})(?:_([A-Z]{2})(?:_(.+))?)?)?" + EXT_RESOURCE_BUNDLE + "$" );
+            + "(?:[_\-]([a-z]{2})(?:_([A-Z]{2})(?:_(.+))?)?)?" + EXT_RESOURCE_BUNDLE + "$" );
 
         Matcher matcher = pattern.matcher( name );
 
