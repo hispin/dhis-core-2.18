@@ -105,17 +105,18 @@ public class Resources extends BaseCollection
 
     private void generateResources()
     {
-        RequestMethod[] defaultRequestMethods = new RequestMethod[]{
+        RequestMethod[] defaultRequestMethods = new RequestMethod[] {
             RequestMethod.GET /* , RequestMethod.POST, RequestMethod.PUT, RequestMethod.DELETE */
         };
 
-        MediaType[] defaultMediaTypes = new MediaType[]{
+        MediaType[] defaultMediaTypes = new MediaType[] {
             MediaType.TEXT_HTML, MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON,
             new MediaType( "application", "javascript" ) /* , new MediaType( "application", "pdf" ) */
         };
 
         List<RequestMethod> requestMethods = Arrays.asList( defaultRequestMethods );
         List<MediaType> mediaTypes = Arrays.asList( defaultMediaTypes );
+        List<MediaType> htmlMediaType = Arrays.asList( MediaType.TEXT_HTML );
 
         resources.add( new Resource( "AttributeTypes", Attributes.class, requestMethods, mediaTypes ) );
         resources.add( new Resource( "Categories", DataElementCategories.class, requestMethods, mediaTypes ) );
@@ -128,6 +129,7 @@ public class Resources extends BaseCollection
         resources.add( new Resource( "DataElementGroups", DataElementGroups.class, requestMethods, mediaTypes ) );
         resources.add( new Resource( "DataElementGroupSets", DataElementGroupSets.class, requestMethods, mediaTypes ) );
         resources.add( new Resource( "DataSets", DataSets.class, requestMethods, mediaTypes ) );
+        resources.add( new Resource( "DataValueSets", DataValueSets.class, requestMethods, htmlMediaType ) );
         resources.add( new Resource( "Documents", Documents.class, requestMethods, mediaTypes ) );
         resources.add( new Resource( "Indicators", Indicators.class, requestMethods, mediaTypes ) );
         resources.add( new Resource( "IndicatorGroups", IndicatorGroups.class, requestMethods, mediaTypes ) );
