@@ -22,7 +22,7 @@
 				<input type="text" onkeyup="filterValues( this.value , 1)" />
 			</td>
 			<td colspan="3" style="text-align:right">
-				<input type="button" value="$i18n.getString( 'add_new' )" onclick="window.location.href='showAddCaseAggregationForm.action?dataSetId=$dataSetId'" >
+				<input type="button" value="$i18n.getString( 'add_new' )" onclick="showAddCaseAggregationForm();" >
 			</td>
 		</tr>
 		</table>

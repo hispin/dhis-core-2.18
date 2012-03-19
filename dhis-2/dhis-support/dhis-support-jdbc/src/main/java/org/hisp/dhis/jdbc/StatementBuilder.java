@@ -163,8 +163,6 @@ public interface StatementBuilder
     String queryDataElementStructureForOrgUnit();
 
     String queryRawDataElementsForOrgUnitBetweenPeriods( Integer orgUnitId, List<Integer> betweenPeriodIds);
-
-    String getActivityPlan( int orgunitId, int min, int max );
     
     String limitRecord( int min, int max );
     
