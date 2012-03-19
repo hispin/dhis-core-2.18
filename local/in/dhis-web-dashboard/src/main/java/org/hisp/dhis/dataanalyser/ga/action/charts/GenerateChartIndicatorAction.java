@@ -374,6 +374,16 @@ public class GenerateChartIndicatorAction
             aggChecked = "0";
         }
         
+        if( aggDataCB.equalsIgnoreCase( "false" ))
+        {
+            aggDataCB = null;
+        }
+        
+        if( ougGroupSetCB.equalsIgnoreCase( "false" ))
+        {
+            ougGroupSetCB = null;
+        }
+        
         
         // int flag = 0;
         // selOUList = new ArrayList<OrganisationUnit>();
@@ -710,13 +720,13 @@ public class GenerateChartIndicatorAction
             System.out.println( "Chart Generation Start Time is : \t" + new Date() );
             indicatorChartResult = generateChartDataPeriodWise( selStartPeriodList, selEndPeriodList, periodNames, indicatorList, selOUList.iterator().next() );
             
-           
+           /*
             for( String drillDown : selectedDrillDownData )
             {
                 System.out.println( "drill Down value is :" + drillDown );
                 System.out.println( "---------");
             }
-            
+            */
            // dataElementChartResult.getSeries()
 
         }

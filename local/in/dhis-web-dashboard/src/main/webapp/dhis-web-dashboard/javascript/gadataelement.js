@@ -109,7 +109,7 @@ function getPeriods()
 	}
     else if( periodTypeId == weeklyPeriodTypeName )
     {
-    	getRegularPeriodYear();
+    	//getRegularPeriodYear();
     	
         if( yearLB.selectedIndex < 0 ) 
         {
@@ -237,8 +237,23 @@ function getWeeklyPeriodReceived( xmlObject )
 	        option.title = weeklyPeriodName;
 	        periodList.add( option, null );
 	}
-}	
+}
+/*
+function trim(str) {
+    return str.replace(/^\s+|\s+$/g,'');
+} 
 
+function trim(str) {
+    while (str.substring(0, 1) == '') {
+        str = str.substring(1, str.length);
+    }
+    while (str.substring(str.length - 1, str.length) == '') {
+        str = str.substring(0, str.length - 1);
+    }
+    //alert( str );
+    return str;
+} 
+*/
 
 //get Financial Year  calling
 function getFinacialYear()
@@ -402,11 +417,19 @@ function selectSingleOrgUnitOption()
 */
 
 // Selected Button (ie ViewSummary or ViewChart) Function
+var tempselectedButtonDE ="";
 function selButtonFunction1(selButton)
 {
 	document.ChartGenerationForm.selectedButton.value = selButton;
+	tempselectedButtonDE = selButton;
+	
+	formValidationsDataElement();
+	
+	
 }
- // selButtonFunction end
+
+
+// selButtonFunction end
 
 
 //Graphical Analysis Form Validations
@@ -475,7 +498,8 @@ function formValidationsDataElement()
            return false;
        }
    }
-  
+ 
+    /*
 	if( selDEListSize > 0 )
 	{
 		for(k=0;k<document.ChartGenerationForm.selectedDataElements.options.length;k++)
@@ -499,8 +523,128 @@ function formValidationsDataElement()
 
     window.open('','chartWindowDataElement','width=' + sWidth + ', height=' + sHeight + ', ' + 'left=' + LeftPosition + ', top=' + TopPosition + ', ' + 'location=no, menubar=no, ' +  'status=no, toolbar=no, scrollbars=yes, resizable=yes');
   	return true;
+  	*/
+    
+  	generateChartDataElement();
 } 
- // formValidations Function DataElements End 
+
+// formValidations Function DataElements End 
+
+
+function generateChartDataElement()
+{
+
+	var url = "generateChartDataElement.action?" + getParamString( 'selectedDataElements', 'selectedDataElements' ) + "&"
+	          + getParamsStringBySelected( 'orgUnitGroupList', 'orgUnitGroupList' )+ "&" + getParamString( 'orgUnitListCB', 'orgUnitListCB' )+ "&"
+	          + getParamsStringBySelected( 'yearLB', 'yearLB' )+ "&" + getParamsStringBySelected( 'periodLB', 'periodLB' ) ;
+	
+	/*
+	var url = "generateChartDataElement.action?";
+		url += getParamString( 'selectedDataElements', 'selectedDataElements' ) + "&"
+		url += getParamsStringBySelected( 'orgUnitGroupList', 'orgUnitGroupList' )+ "&"
+		url += getParamString( 'orgUnitListCB', 'orgUnitListCB' )+ "&"
+		url += getParamsStringBySelected( 'yearLB', 'yearLB' )+ "&"
+		url += getParamsStringBySelected( 'periodLB', 'periodLB' )+ "&"
+	*/	
+		//alert(url);
+	jQuery( "#contentDiv" ).load( url,
+	{
+		deSelection : getFieldValue( 'deSelection' ),
+		categoryLB : getFieldValue( 'categoryLB' ),
+		periodTypeLB : getFieldValue( 'periodTypeLB' ),
+		ougGroupSetCB : isChecked( 'ougGroupSetCB' ),
+		aggDataCB : isChecked( 'aggDataCB' ),
+		selectedButton : tempselectedButtonDE,
+	} ).dialog( {
+		title: 'Data Element Wise Graphical Analysis',
+		maximize: true, 
+		closable: true,
+		modal:true,
+		overlay:{ background:'#000000', opacity:0.1 },
+		width: 1000,
+		height: 800
+	} );
+}
+
+function getParamsStringBySelected( elementId, param )
+{
+	//alert( "getParamsStringBySelected" );
+	var result = "";
+	var list = jQuery( "#" + elementId ).children( ":selected" );
+	
+	list.each( function( i, item ){
+		
+		//result += param + "=" + item.value + "&";
+		result += param + "=" + item.value;
+		result += ( i < list.length - 1 ) ? "&" : "";
+		
+	});
+	
+	//result = result.substring( 0, list.length - 1 );
+	//alert( result );
+	return result;
+}
+ 
+/*
+ 
+function generateChartDataElement()
+{
+    
+	   var yearLBString = "";
+       var listYearLB = jQuery( "select[id=yearLB] option:selected" );
+       listYearLB.each( function( i, item ){
+               yearLBString += "yearLB=" + item.value;
+               yearLBString += ( i < listYearLB.length - 1 ) ? "&" : "";
+       });	
+
+       var periodLBString = "";
+       var listPeriodLB = jQuery( "select[id=periodLB] option:selected" );
+       listPeriodLB.each( function( i, item ){
+    	   periodLBString += "periodLB=" + item.value;
+    	   periodLBString += ( i < listPeriodLB.length - 1 ) ? "&" : "";
+       });	
+       
+
+       
+       var listValue = "";
+
+       // Clear the list
+       var availableList = document.getElementById( 'availableList' );
+
+       availableList.options.length = 0;
+
+       for ( var i = 0; i < selectedList.options.length; ++i)
+       {
+     	  listValue+='&selectedIndicators=' + selectedList.options[i].value;
+       }       
+       
+jQuery( "#contentDiv" ).load('generateChartDataElement.action?' +
+       getQueryStringFromList ('selectedDataElements') + "&"
+       + getQueryStringFromList ('orgUnitListCB') + "&"
+       + getQueryStringFromList ('orgUnitGroupList') + "&"
+       + yearLBString  + "&" + periodLBString,
+             {
+                     dataElementGroupId: jQuery('select[id=dataElementGroupId ] option:selected').val(),
+                     deSelection:   jQuery('select[id=deSelection ] option:selected').val(),
+                     periodTypeLB : jQuery('select[id=periodTypeLB ] option:selected').val(),
+                     categoryLB : jQuery('select[id=categoryLB ] option:selected').val(),
+                     ougGroupSetCB : isChecked( 'ougGroupSetCB' ),
+             		 aggDataCB : isChecked( 'aggDataCB' ),
+                     //selectedDataElements:
+             } ).dialog({
+                     title: "Load jQuery.diaglog insteads of popup window",
+                     maximize: true,
+                     closable: true,
+                     modal:true,
+                     overlay:{background:'#000000', opacity:0.1},
+                     width: 1000,
+                     height: 1000
+             });
+
+}
+
+*/
+
 
 //Graphical Analysis Form Validation Indicators
 function formValidationsIndicator()
@@ -569,6 +713,7 @@ function formValidationsIndicator()
        }
    }
   
+ /*
 	if( selIndicatorsListSize > 0 )
 	{
 		for(k=0;k<document.ChartGenerationForm.selectedIndicators.options.length;k++)
@@ -593,7 +738,46 @@ function formValidationsIndicator()
     window.open('','chartWindowIndicator','width=' + sWidth + ', height=' + sHeight + ', ' + 'left=' + LeftPosition + ', top=' + TopPosition + ', ' + 'location=no, menubar=no, ' +  'status=no, toolbar=no, scrollbars=yes, resizable=yes');
   	
   	return true;
+  	*/
+  	generateChartIndicator();
 } 
+
+
+function generateChartIndicator()
+{
+
+	var url = "generateChartIndicator.action?" + getParamString( 'selectedIndicators', 'selectedIndicators' ) + "&"
+	          + getParamsStringBySelected( 'orgUnitGroupList', 'orgUnitGroupList' )+ "&" + getParamString( 'orgUnitListCB', 'orgUnitListCB' )+ "&"
+	          + getParamsStringBySelected( 'yearLB', 'yearLB' )+ "&" + getParamsStringBySelected( 'periodLB', 'periodLB' ) ;
+	
+	/*
+	var url = "generateChartDataElement.action?";
+		url += getParamString( 'selectedDataElements', 'selectedDataElements' ) + "&"
+		url += getParamsStringBySelected( 'orgUnitGroupList', 'orgUnitGroupList' )+ "&"
+		url += getParamString( 'orgUnitListCB', 'orgUnitListCB' )+ "&"
+		url += getParamsStringBySelected( 'yearLB', 'yearLB' )+ "&"
+		url += getParamsStringBySelected( 'periodLB', 'periodLB' )+ "&"
+	*/	
+		//alert(url);
+	jQuery( "#contentDiv" ).load( url,
+	{
+		categoryLB : getFieldValue( 'categoryLB' ),
+		periodTypeLB : getFieldValue( 'periodTypeLB' ),
+		ougGroupSetCB : isChecked( 'ougGroupSetCB' ),
+		aggDataCB : isChecked( 'aggDataCB' ),
+		selectedButton : tempselectedButtonIN,
+	} ).dialog( {
+		title: 'Indicator Wise Graphical Analysis',
+		maximize: true, 
+		closable: true,
+		modal:true,
+		overlay:{ background:'#000000', opacity:0.1 },
+		width: 1000,
+		height: 800
+	} );
+}
+
+
 // formValidations Function Indicators End
 
  
@@ -632,6 +816,7 @@ function filterAvailableIndicators()
         //alert( flag );
     }
 }
+
 //filter available data elements list
 function filterAvailableDataElements()
 {

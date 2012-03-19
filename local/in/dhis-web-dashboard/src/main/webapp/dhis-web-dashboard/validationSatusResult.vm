@@ -9,7 +9,21 @@
     function getImmChildInfo(evt, dsId, selOrgUnit)
     {
         immChildOption = "yes";
+        /*
         evt.target.href = "validationStatusResult.action?immChildOption="+immChildOption+"&dsId="+dsId+"&sDateLB="+startDate+"&eDateLB="+endDate+"&ouId="+selOrgUnit+"&selectedButton="+dsType;
+    	*/
+		var url = "validationStatusResult.action?immChildOption="+immChildOption+"&dsId="+dsId+"&sDateLB="+startDate+"&eDateLB="+endDate+"&ouId="+selOrgUnit+"&selectedButton="+dsType;
+		$('#contentDataRecord').dialog('destroy').remove();
+   	    $('<div id="contentDataRecord">' ).load(url).dialog({
+        title: 'Data Entry Status Result',
+		maximize: true,
+		closable: true,
+		modal:true,
+		overlay:{background:'#000000', opacity:0.1},
+		width: 1000,
+        height: 800
+    	});                             
+    
     }
 
     function exportDataStatusResultToWorkBook()

@@ -286,6 +286,11 @@ public class GenerateDataEntryStatusResultAction implements Action
         
         System.out.println( "immChildOption : "  + immChildOption + ", Ou Id is : " + ouId + ", DS id is : " + dsId );
         
+        if( includeZeros.equalsIgnoreCase( "false" ))
+        {
+            includeZeros = null;
+        }
+        
         if ( immChildOption != null && immChildOption.equalsIgnoreCase( "yes" ) )
         {
             System.out.println( "Inside Drill Down" );

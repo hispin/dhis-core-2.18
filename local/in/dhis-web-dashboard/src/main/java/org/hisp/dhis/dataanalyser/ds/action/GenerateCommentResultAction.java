@@ -90,19 +90,19 @@ public class GenerateCommentResultAction implements Action
     {
         this.selectedDataSets = selectedDataSets;
     }
-
+    /*
     private String includeZeros;
 
     public void setIncludeZeros( String includeZeros )
     {
         this.includeZeros = includeZeros;
     }
-
+    
     public String getIncludeZeros()
     {
         return includeZeros;
     }
-
+    */
     private String selectedButton;
 
     public void setselectedButton( String selectedButton )
@@ -249,7 +249,12 @@ public class GenerateCommentResultAction implements Action
     public String execute() throws Exception
     {
         statementManager.initialise();
-        
+        /*
+        if( includeZeros.equalsIgnoreCase( "false" ))
+        {
+            includeZeros = null;
+        }
+        */
         ouMapDataElement = new HashMap<OrganisationUnit, List<DataElement>>();
         ouMapComment = new HashMap<OrganisationUnit, List<String>>();
         comments = new ArrayList<String>();

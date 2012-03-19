@@ -27,7 +27,8 @@
 <body onload = "getdSetPeriods()">
 <h1> $i18n.getString( "DataStatus Orgnisationunit Group Set Wise Form" ) </h1>
 <hr />
-<form id="ChartGenerationForm" name="ChartGenerationForm" action="dataStatusOrgnisationunitGroupSetWiseResult.action" method="post" onsubmit="return formValidationsForOUwiseDataStatus()" target="chartWindow1">
+<!--<form id="ChartGenerationForm" name="ChartGenerationForm" action="dataStatusOrgnisationunitGroupSetWiseResult.action" method="post" onsubmit="return formValidationsForOUwiseDataStatus()" target="chartWindow1">-->
+<form id="ChartGenerationForm" name="ChartGenerationForm">
   <table align="center" style=" border-collapse: collapse; margin-top: 0;" cellpadding="0" cellspacing="0" width="730" border=0>
     <tr>
       <td class="NormalB" width="325">&nbsp;</td>
@@ -107,11 +108,14 @@
     <td>&nbsp;</td>
     </tr>
     <tr>
-      <td align="center" colspan="4"><input type="submit" name="ViewStatus" value="ViewStatus" style="width: 120; height: 25; font-family:Arial; font-weight:bold; color:#000000" >
+      <td align="center" colspan="4">
+      	<!--<input type="submit" name="ViewStatus" value="ViewStatus" style="width: 120; height: 25; font-family:Arial; font-weight:bold; color:#000000" >-->
+      	<input type="button" name="ViewStatus" value="ViewStatus" style="width: 120; height: 25; font-family:Arial; font-weight:bold; color:#000000" onClick="javascript:formValidationsForOUwiseDataStatus()">
       </td>
     </tr>
   </table>
 </form>
+<div id="contentDiv"></div>
 <script>
   getOrgUnitGroups();
 </script>

@@ -301,6 +301,11 @@ public class GenerateDataEntrySummaryStatusResultAction implements Action
         ouPeriodMapForPercentageResult = new HashMap<String, Integer>();// Map for percentage Results 
         ouMapForChildDSAssociation = new HashMap<OrganisationUnit, Integer>();
         
+        if( includeZeros.equalsIgnoreCase( "false" ))
+        {
+            includeZeros = null;
+        }
+        
         if ( immChildOption != null && immChildOption.equalsIgnoreCase( "yes" ) )
         {
             System.out.println( "Inside Drill Down" );

@@ -35,6 +35,7 @@ import com.opensymphony.xwork2.Action;
 public class GenerateSummaryDataStatusResultAction
     implements Action
 {
+    private final String SUMMARYSTATUSVARIABLE = "Summarystatusvariable";
     // ---------------------------------------------------------------
     // Dependencies
     // ---------------------------------------------------------------
@@ -304,6 +305,12 @@ public class GenerateSummaryDataStatusResultAction
 
         // Intialization
         
+        Constant constant = constantService.getConstantByName( SUMMARYSTATUSVARIABLE );
+        constName =  constant.getName();
+        constValue = constant.getValue();
+        
+        
+        /*
         constants = new ArrayList<Constant>( constantService.getAllConstants());
         
         for( Constant constant : constants )
@@ -317,6 +324,7 @@ public class GenerateSummaryDataStatusResultAction
                 break;
             }
         }
+        */
         System.out.println( "------Constant Name is : ---- " + constName + ",------ Constant Value is : "  + constValue );
         tempOuMapResult = new HashMap<String, Double>();
         ouMapForChildDSAssociation = new HashMap<OrganisationUnit, Integer>();
@@ -326,7 +334,12 @@ public class GenerateSummaryDataStatusResultAction
         ouMapSummaryStatusResult = new HashMap<OrganisationUnit, List<Integer>>();
         maxOULevel = 1;
         minOULevel = organisationUnitService.getNumberOfOrganisationalLevels();
-
+        
+        if( includeZeros.equalsIgnoreCase( "false" ))
+        {
+            includeZeros = null;
+        }
+        
         if ( immChildOption != null && immChildOption.equalsIgnoreCase( "yes" ) )
         {
             orgUnitListCB = new ArrayList<String>();

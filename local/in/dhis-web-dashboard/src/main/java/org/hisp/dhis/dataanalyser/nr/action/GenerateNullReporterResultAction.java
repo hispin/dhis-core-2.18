@@ -330,6 +330,14 @@ public class GenerateNullReporterResultAction
         System.out.println( "Null Report Generation Start Time is : " + new Date() );
         simpleDateFormat = new SimpleDateFormat( "MMM y" );
 
+        if( ouSelCB.equalsIgnoreCase( "false" ))
+        {
+            ouSelCB = null;
+        }       
+        if( includeZeros.equalsIgnoreCase( "false" ))
+        {
+            includeZeros = null;
+        }
         nullReportResult = new HashMap<OrganisationUnit, Map<Period, List<DataElement>>>();
         selOUList = new ArrayList<OrganisationUnit>();
         ouChildCountMap = new HashMap<OrganisationUnit, Integer>();

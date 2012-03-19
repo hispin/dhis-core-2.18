@@ -301,6 +301,7 @@ function getDataElementsWithOutOptionCombo()
     
     if ( dataSetSectionId != null )
     {
+    	lockScreen();
 		$.post("getDataElements.action",
 		{
 			id:dataSetSectionId
@@ -425,7 +426,27 @@ function getIndicators()
         }
     	//document.getElementById( "availableIndicatorsFilter" ).value = "";
     	//document.getElementById( "availableIndicatorsFilter" ).disabled = false;
-        
+        lockScreen();
+    	$.post("getIndicators.action",
+			{
+				id:indicatorGroupId
+			},
+			function (data)
+			{
+				getIndicatorsReceived(data);
+			},'xml');
+    }
+}
+
+
+function getIndicatorsForAnnual()
+{
+    var indicatorGroupList = document.getElementById( "indicatorGroupId" );
+    var indicatorGroupId = indicatorGroupList.options[ indicatorGroupList.selectedIndex ].value;
+
+    if ( indicatorGroupId != null )
+    {
+    	lockScreen();
     	$.post("getIndicators.action",
 			{
 				id:indicatorGroupId
@@ -451,6 +472,7 @@ function getSurveyIndicators()
 		request.setCallbackSuccess(getIndicatorsReceived);
 		request.send(url); 
     	*/
+    	lockScreen();
     	$.post("getIndicators.action",
 			{
 				id : indicatorGroupId,
@@ -487,7 +509,7 @@ function getIndicatorsReceived( xmlObject )
             availableIndicators.add( option, null );
         }
     }
-	
+    unLockScreen();
 // If the list of available indicators is empty, an empty placeholder will be added
 //addOptionPlaceHolder( availableIndicators );
 }

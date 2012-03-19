@@ -1,7 +1,7 @@
 
 <html>
 	<head>
-		<title>SummaryStatus Result</title>
+		<title>Summary Status Result</title>
 		<link type="text/css" rel="stylesheet" media="screen" href="css/StylesForTags.css">
 		<script>
 			var startDate = "$sDateLB";

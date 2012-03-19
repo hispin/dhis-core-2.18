@@ -80,8 +80,8 @@
 
 <h3>$i18n.getString( "dataelements_wise_graphical_analyser" )</h3>
 <hr />
-
-<form id="ChartGenerationForm" name="ChartGenerationForm" action="generateChartDataElement.action" method="post" onSubmit="return formValidationsDataElement()" target="chartWindowDataElement">
+<!--<form id="ChartGenerationForm" name="ChartGenerationForm" action="generateChartDataElement.action" method="post" onSubmit="return formValidationsDataElement()" target="chartWindowDataElement">-->
+<form id="ChartGenerationForm" name="ChartGenerationForm">
 	<table style=" border-collapse: collapse; margin-top: 0;" cellpadding="0" cellspacing="0" border=0>
 		<tr>
 		<td class="NormalB">$i18n.getString( "ga_filter_by_degroup" )<br>
@@ -213,17 +213,18 @@
         <td class="NormalB" align="center">
             <table>
                 <tr>
-		            <td><input type="submit" name="ViewChart" value="$i18n.getString( 'ga_viewchart' )" style="width:150px; height: 25; font-family:Arial; font-weight:bold; color:#000000" onClick="javascript:selButtonFunction1('ViewChart')"></td>
+		            <td><input type="button" name="ViewChart" value="$i18n.getString( 'ga_viewchart' )" style="width:150px; height: 25; font-family:Arial; font-weight:bold; color:#000000" onClick="javascript:selButtonFunction1('ViewChart')"></td>
 					<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
-					<td align="right"><input type="submit" name="ViewSummary" value="$i18n.getString( 'ga_viewsummary' )" style="width:175px; height: 25; font-family:Arial; font-weight:bold; color:#000000" onClick="javascript:selButtonFunction1('ViewSummary')"></td>
+					<td align="right"><input type="button" name="ViewSummary" value="$i18n.getString( 'ga_viewsummary' )" style="width:175px; height: 25; font-family:Arial; font-weight:bold; color:#000000" onClick="javascript:selButtonFunction1('ViewSummary')"></td>
 					<input type="hidden" name="selectedButton" id="selectedButton">
+					<input type="hidden" name="validation" id="validation" value="dataelement">
                 </tr>
             </table>
         </td>
     </tr>   			
   </table>
 </form>
-
+<div id="contentDiv"></div>
 <script>
 	getPeriods();
 </script>

@@ -2,7 +2,7 @@
 <script>
 	var orgUnitGroupIds = new Array();
 	var orgUnitGroupNames = new Array();
-
+	var tempSelButton = "";
 	#set( $count1 = 0 );
 	#foreach( $orgUnitGroup in $orgUnitGroups )
 	   orgUnitGroupIds[$count1] = $orgUnitGroup.id;
@@ -14,7 +14,8 @@
 <h3>Target Analysis Form</h3>
 <hr /><br/>
 
-<form id="targetAnalysisForm" name="targetAnalysisForm" action="generateChartDeTarget.action" method="post" onsubmit="return formValidationsForDeTarget()" target="chartWindow1">
+<!--<form id="targetAnalysisForm" name="targetAnalysisForm" action="generateChartDeTarget.action" method="post" onsubmit="return formValidationsForDeTarget()" target="chartWindow1">-->
+<form id="targetAnalysisForm" name="targetAnalysisForm">
 	<table align="center" style=" border-collapse: collapse; margin-top: 0;" cellpadding="0" cellspacing="0" width="100%" border=0>
   	    <tr>
 			<td class="NormalB">
@@ -63,7 +64,8 @@
 					<tr>
 						<td class="NormalB">
 							<input type="checkbox" id="ougGroupSetCB" name="ougGroupSetCB" onChange="getOrgUnitGroupsDataElements()"  disabled="true">$i18n.getString( "ga_orgUnitGroups" )<br>
-							<select name="orgUnitGroupList" id="orgUnitGroupList" size="8"  onChange="selectSingleOptionOrgUnitGroup()"  style="width: 170px;" disabled="true">
+							<!--<select name="orgUnitGroupList" id="orgUnitGroupList" size="8"  onChange="selectSingleOptionOrgUnitGroup()"  style="width: 170px;" disabled="true">-->
+							<select name="orgUnitGroupList" id="orgUnitGroupList" size="8" style="width: 170px;" disabled="true">
 							</select>
 						</td>
 						<td style="width:30px">&nbsp;</td>
@@ -95,11 +97,13 @@
 					<tr>
 						<td>
 							<input type="hidden" name="selButton" id="selButton" />
-							<input type="submit" id="ViewChart" name="ViewChart" value="$i18n.getString( 'viewchart' )" style="width:170px;height:25px;font-family:Arial;font-weight:bold;color:#000000" onclick="setButtonName('VIEWCHART')">
+							<input type="button" id="ViewChart" name="ViewChart" value="$i18n.getString( 'viewchart' )" style="width:170px;height:25px;font-family:Arial;font-weight:bold;color:#000000" onclick="setButtonName('VIEWCHART')">
+							<!--<input type="submit" id="ViewChart" name="ViewChart" value="$i18n.getString( 'viewchart' )" style="width:170px;height:25px;font-family:Arial;font-weight:bold;color:#000000" onclick="setButtonName('VIEWCHART')">-->
 						</td>
 						<td class="NormalB">&nbsp;</td>
 						<td>
-							<input type="submit" id="ViewCumulativeChart" name="ViewChart" value="$i18n.getString( 'view_cumulativechart' )" style="width:150px;height:25px; font-family:Arial; font-weight:bold; color:#000000" onclick="setButtonName('VIEWCCHART')">
+							<input type="button" id="ViewCumulativeChart" name="ViewChart" value="$i18n.getString( 'view_cumulativechart' )" style="width:150px;height:25px; font-family:Arial; font-weight:bold; color:#000000" onclick="setButtonName('VIEWCCHART')">
+							<!--<input type="submit" id="ViewCumulativeChart" name="ViewChart" value="$i18n.getString( 'view_cumulativechart' )" style="width:150px;height:25px; font-family:Arial; font-weight:bold; color:#000000" onclick="setButtonName('VIEWCCHART')">-->
 						</td>
 					</tr>
 				</table>
@@ -107,10 +111,12 @@
 		</tr>
 	</table>
 </form>
-
+<div id="contentDiv"></div>
 <script>
 	function setButtonName( selButton )
 	{
 		document.getElementById("selButton").value = selButton;
+		tempSelButton = selButton;
+		formValidationsForDeTarget();
 	}
 </script>

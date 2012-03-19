@@ -376,6 +376,13 @@ public class GenerateDataStatusResultAction
         maxOULevel = 1;
         minOULevel = organisationUnitService.getNumberOfOrganisationalLevels();
         
+        
+        if( includeZeros.equalsIgnoreCase( "false" ))
+        {
+            includeZeros = null;
+        }
+        
+        
         if ( immChildOption != null && immChildOption.equalsIgnoreCase( "yes" ) )
         {
             System.out.println( "Inside Drill Down" );
@@ -387,7 +394,11 @@ public class GenerateDataStatusResultAction
             selectedDataSets = new ArrayList<String>();
             selectedDataSets.add( dsId );
         }
-
+        
+        System.out.println( "selectedDataSets= " + selectedDataSets + "---,orgUnitListCB= " + orgUnitListCB + "---,,,,includeZeros= " + includeZeros );
+        System.out.println( "sDateLB= " + sDateLB + "---,eDateLB= " + eDateLB + ",,------facilityLB= " + facilityLB );
+        
+        
         // DataSet Related Info
         dataSetList = new ArrayList<DataSet>();
 

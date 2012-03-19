@@ -193,7 +193,10 @@ public class GenerateTargetAnalysisDataAction implements Action
     String yAxis_Title;
     Double data1[][];
     Double data2[][];
-
+    
+    // -------------------------------------------------------------------------
+    // Action Implementation
+    // -------------------------------------------------------------------------
     public String execute()
         throws Exception
     {
@@ -203,7 +206,12 @@ public class GenerateTargetAnalysisDataAction implements Action
         
         // OrgUnit Related Info
         selectedOrgUnit = organisationUnitService.getOrganisationUnit( ouIDTB );
-
+        
+        
+        if( ougGroupSetCB.equalsIgnoreCase( "false" ))
+        {
+            ougGroupSetCB = null;
+        }
         // Service Related Info
         String[] partsOfDEandOptionCombo = availableDataElements.split(":");
         selectedDataElement = dataElementService.getDataElement( Integer.parseInt( partsOfDEandOptionCombo[0] ) );

@@ -179,7 +179,8 @@ public class GenerateValidationStatusResultAction
     {
         this.dsId = dsId;
     }
-
+    
+    /*
     private String includeZeros;
 
     public void setIncludeZeros( String includeZeros )
@@ -191,7 +192,7 @@ public class GenerateValidationStatusResultAction
     {
         return includeZeros;
     }
-
+    */
     private String ouId;
 
     public void setOuId( String ouId )
@@ -304,7 +305,12 @@ public class GenerateValidationStatusResultAction
         results = new ArrayList<Integer>();
         maxOULevel = 1;
         minOULevel = organisationUnitService.getNumberOfOrganisationalLevels();
-
+        /*
+        if( includeZeros.equalsIgnoreCase( "false" ))
+        {
+            includeZeros = null;
+        }
+        */
         if ( immChildOption != null && immChildOption.equalsIgnoreCase( "yes" ) )
         {
             orgUnitListCB = new ArrayList<String>();

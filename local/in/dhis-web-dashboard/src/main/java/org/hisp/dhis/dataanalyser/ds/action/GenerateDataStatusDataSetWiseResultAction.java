@@ -36,6 +36,7 @@ import com.opensymphony.xwork2.Action;
 public class GenerateDataStatusDataSetWiseResultAction implements Action
 {
     
+    private final String SUMMARYSTATUSVARIABLE = "Summarystatusvariable";
     // ---------------------------------------------------------------
     // Dependencies
     // ---------------------------------------------------------------
@@ -275,8 +276,13 @@ public class GenerateDataStatusDataSetWiseResultAction implements Action
         periodNameList = new ArrayList<String>();
         //dataViewName = "";
         
-        constants = new ArrayList<Constant>( constantService.getAllConstants());
         
+        Constant constant = constantService.getConstantByName( SUMMARYSTATUSVARIABLE );
+        constName =  constant.getName();
+        constValue = constant.getValue();
+        
+        constants = new ArrayList<Constant>( constantService.getAllConstants());
+        /*
         for( Constant constant : constants )
         {
             //String name = constant.getName();
@@ -288,6 +294,15 @@ public class GenerateDataStatusDataSetWiseResultAction implements Action
                 break;
             }
         }
+        */
+        if( includeZeros.equalsIgnoreCase( "false" ))
+        {
+            includeZeros = null;
+        }
+        
+        System.out.println( "periodTypeId= " + periodTypeId + "----facilityLB= " + facilityLB + "----orgUnitListCB= " + orgUnitListCB );
+        System.out.println( "sDateLB= " + sDateLB + "-----eDateLB= " + eDateLB + "-----includeZeros= " + includeZeros );
+        
         ouMapForChildDSAssociation = new HashMap<OrganisationUnit, Integer>();
         ouMapForColor =  new HashMap<OrganisationUnit, Integer>();
         orgUnitCount = 0;

@@ -7,6 +7,7 @@
             var startDate = "$sDateLB"; 
             var endDate = "$eDateLB";
             var dsType = "$selectedButton";
+            var includeZeros = "$includeZeros";
             
             function getImmChildInfo(evt, dsId, selOrgUnit)
             {
@@ -16,11 +17,43 @@
                 
                 if( document.getElementById('includeZeros').checked )
                 {
+                    /*
                     evt.target.href = "groupWiseDataStatusResult.action?immChildOption="+immChildOption+"&dsId="+dsId+"&sDateLB="+startDate+"&eDateLB="+endDate+"&ouId="+selOrgUnit+"&selectedButton="+dsType+"&includeZeros="+includeZeros;
+                	*/
+                	//alert("inside include zero : " + immChildOption );
+ 			   		var url = "groupWiseDataStatusResult.action?immChildOption="+immChildOption+"&dsId="+dsId+"&sDateLB="+startDate+"&eDateLB="+endDate+"&ouId="+selOrgUnit+"&selectedButton="+dsType+"&includeZeros="+includeZeros;
+					//alert( url );
+					$('#contentDataRecord').dialog('destroy').remove();
+			   	    $('<div id="contentDataRecord">' ).load(url).dialog({
+			        title: 'Data Entry Status Result',
+					maximize: true, 
+					closable: true,
+					modal:true,
+					overlay:{background:'#000000', opacity:0.1},
+					width: 1000,
+			        height: 800
+			    	});                                
+                
+                
                 }
                 else
                 {
+                	alert("inside include zero null");
+                	/*
                     evt.target.href = "groupWiseDataStatusResult.action?immChildOption="+immChildOption+"&dsId="+dsId+"&sDateLB="+startDate+"&eDateLB="+endDate+"&ouId="+selOrgUnit+"&selectedButton="+dsType;
+                	*/
+ 			   		var url = "groupWiseDataStatusResult.action?immChildOption="+immChildOption+"&dsId="+dsId+"&sDateLB="+startDate+"&eDateLB="+endDate+"&ouId="+selOrgUnit+"&selectedButton="+dsType;
+					$('#contentDataRecord').dialog('destroy').remove();
+			   	    $('<div id="contentDataRecord">' ).load(url).dialog({
+			        title: 'Data Entry Status Result',
+					maximize: true, 
+					closable: true,
+					modal:true,
+					overlay:{background:'#000000', opacity:0.1},
+					width: 1000,
+			        height: 800
+			    	});                                
+                
                 }           
             }
             
@@ -68,7 +101,7 @@
                 #set($count2 = 0)
                     ##foreach($dataElementGroup in $dataElementGroups)
                     #foreach( $dataElementGroup in $sections )	
-            <br><br>
+            <br>
                         #set( $deGroupCount = $deMapGroupCount.get($dataElementGroup) )
                         #set( $ouMapDeCount = $ouGroupMapDeMapCount.get($dataElementGroup) )
                         <div align="left" class="NormalB">Data Element Group : $dataElementGroup.name  ( $!deGroupCount )</div>

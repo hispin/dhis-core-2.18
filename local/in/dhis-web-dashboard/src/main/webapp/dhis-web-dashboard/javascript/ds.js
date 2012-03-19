@@ -82,15 +82,27 @@ function textvalue(summary)
         	var dataEntryStatus = document.getElementById("usingDataEntryStatus").checked;
         	if ( dataEntryStatus == true )
         	{
+        		
+        		var url = "dataEntrySummaryStatusResult.action?" + getParamString( 'orgUnitListCB', 'orgUnitListCB' );
+        		
+        		generateDataStatusResult( url );
+        		/*
         		document.ChartGenerationForm.action = "dataEntrySummaryStatusResult.action";
                 document.ChartGenerationForm.submit();
+                */
         	}
         	
         	else
         	{
             	//document.getElementById("facilityLB").options[1].selected = true;
+        		var url = "summaryStatusResult.action?" + getParamString( 'orgUnitListCB', 'orgUnitListCB' );
+        		
+        		generateDataStatusResult( url );
+
+        		/*
                 document.ChartGenerationForm.action = "summaryStatusResult.action";
                 document.ChartGenerationForm.submit();
+                */
         	}
 
         }
@@ -103,11 +115,16 @@ function textvalue(summary)
         
         else if(summary == "GroupWiseStatus")
         {
-            document.ChartGenerationForm.action = "groupWiseDataStatusResult.action";
+    		var url = "groupWiseDataStatusResult.action?" + getParamString( 'orgUnitListCB', 'orgUnitListCB' );
+    		
+    		generateDataStatusResult( url );            
+        	/*
+        	document.ChartGenerationForm.action = "groupWiseDataStatusResult.action";
             document.ChartGenerationForm.submit();
+            */
   	 	
         }
-        //for Mobile Group wise data status
+       //for Mobile Group wise data status
         else if(summary == "GroupWiseMobileStatus")
         {
         	document.ChartGenerationForm.action = "groupWiseMobileDataStatusResult.action";
@@ -117,8 +134,13 @@ function textvalue(summary)
         else if(summary == "ValidationStatus")
         {
         	
+    		var url = "validationStatusResult.action?" + getParamString( 'orgUnitListCB', 'orgUnitListCB' );
+    		
+    		generateDataStatusResult( url );         	
+        	/*
         	document.ChartGenerationForm.action = "validationStatusResult.action";
             document.ChartGenerationForm.submit();
+            */
         }
         // for Mobile Validation Status
         else if(summary == "ValidationMobileStatus")
@@ -128,22 +150,36 @@ function textvalue(summary)
         }
         else if(summary == "LastUpdatedStatus")
         {
+        	
+    		var url = "lastUpdatedDataSetResult.action?" + getParamString( 'orgUnitListCB', 'orgUnitListCB' );
+    		
+    		generateDataStatusResult( url );       	
+        	/*
         	document.ChartGenerationForm.action = "lastUpdatedDataSetResult.action";
             document.ChartGenerationForm.submit();
+            */
         }
         //for view Comment
         else if(summary == "ViewComment")
         {
+        	
+    		var url = "commentResult.action?" + getParamString( 'orgUnitListCB', 'orgUnitListCB' );
+    		
+    		generateDataStatusResult( url );           	
+        	
+    		/*
         	document.ChartGenerationForm.action = "commentResult.action";
             document.ChartGenerationForm.submit();
+            */
         }
-        // for Mobile Last Updated Status
+        
+       // for Mobile Last Updated Status
         else if(summary == "LastUpdatedMobileStatus")
         {
         	document.ChartGenerationForm.action = "lastUpdatedMobileDataSetResult.action";
             document.ChartGenerationForm.submit();
         }
-        // for Mobile  dataStatus result
+       // for Mobile  dataStatus result
         else if(summary == "MobileDataStatus")
         {
         	
@@ -167,18 +203,82 @@ function textvalue(summary)
         	//alert( dataEntryStatus );
         	if ( dataEntryStatus == true )
         	{
+        		
+        		var url = "dataEntryStatusResult.action?" + getParamString( 'orgUnitListCB', 'orgUnitListCB' );
+        		
+        		generateDataStatusResult( url );
+        		/*
         		document.ChartGenerationForm.action = "dataEntryStatusResult.action";
                 document.ChartGenerationForm.submit();
+                */
         	}
         	else
-        	{
-               	document.ChartGenerationForm.action = "dataStatusResult.action";
-                document.ChartGenerationForm.submit();
+        	{	
+               	
+        		var url = "dataStatusResult.action?" + getParamString( 'orgUnitListCB', 'orgUnitListCB' );
+        		
+        		generateDataStatusResult( url );
+        		
+        		//document.ChartGenerationForm.action = "dataStatusResult.action";
+                //document.ChartGenerationForm.submit();
+                //generateDataStatusResult();
         	}
  
         }
     }
   	 
+}
+
+function generateDataStatusResult( url )
+{
+	//var url = "dataStatusResult.action?" + getParamString( 'orgUnitListCB', 'orgUnitListCB' );
+	
+	/*
+	var url = "generateChartDataElement.action?";
+	url += getParamString( 'selectedDataElements', 'selectedDataElements' ) + "&"
+	url += getParamsStringBySelected( 'orgUnitGroupList', 'orgUnitGroupList' )+ "&"
+	url += getParamString( 'orgUnitListCB', 'orgUnitListCB' )+ "&"
+	url += getParamsStringBySelected( 'yearLB', 'yearLB' )+ "&"
+	url += getParamsStringBySelected( 'periodLB', 'periodLB' )+ "&"
+	*/	
+	//alert(url);
+	jQuery( "#contentDiv" ).load( url,
+	{
+		selectedDataSets : getFieldValue( 'selectedDataSets' ),
+		facilityLB : getFieldValue( 'facilityLB' ),
+		sDateLB : getFieldValue( 'sDateLB' ),
+		eDateLB : getFieldValue( 'eDateLB' ),
+		includeZeros : isChecked( 'includeZeros' ),
+		//usingDataEntryStatus : isChecked( 'usingDataEntryStatus' ),
+		//selectedButton : tempselectedButtonDE,
+	} ).dialog( {
+		title: 'Data Entry Status Result',
+		maximize: true, 
+		closable: true,
+		modal:true,
+		overlay:{ background:'#000000', opacity:0.1 },
+		width: 1000,
+		height: 800
+	} );	
+}
+
+function getParamsStringBySelected( elementId, param )
+{
+	//alert( "getParamsStringBySelected" );
+	var result = "";
+	var list = jQuery( "#" + elementId ).children( ":selected" );
+	
+	list.each( function( i, item ){
+		
+		//result += param + "=" + item.value + "&";
+		result += param + "=" + item.value;
+		result += ( i < list.length - 1 ) ? "&" : "";
+		
+	});
+	
+	//result = result.substring( 0, list.length - 1 );
+	//alert( result );
+	return result;
 }
 
 // DataStatus Form Validations
@@ -217,18 +317,19 @@ function formValidationsForDataStatus()
     {
         document.ChartGenerationForm.orgUnitListCB.options[k].selected = true;
     }
-
+    /*
     var sWidth = 850;
     var sHeight = 650;
     var LeftPosition=(screen.width)?(screen.width-sWidth)/2:100;
     var TopPosition=(screen.height)?(screen.height-sHeight)/2:100;
 
     window.open('','chartWindow1','width=' + sWidth + ', height=' + sHeight + ', ' + 'left=' + LeftPosition + ', top=' + TopPosition + ', ' + 'location=no, menubar=no, ' +  'status=no, toolbar=no, scrollbars=yes, resizable=yes');
-  	
+  	*/
   	 	
     return true;
 
-} // formValidations Function End	
+} 
+// formValidations Function End	
 
 
 //DataStatus Form Validations
@@ -264,7 +365,7 @@ function formValidationsForOUwiseDataStatus()
         alert("Please Select OrganisationUnit"); return false;
     }
 
-   /*
+  /*
 	var k=0;
 	
 	 for(k=0;k<selOUListIndex;k++)
@@ -272,6 +373,7 @@ function formValidationsForOUwiseDataStatus()
 	 	document.ChartGenerationForm.orgUnitListCB.options[k].selected = true;
 	 }
 	*/
+	/*
     var sWidth = 850;
     var sHeight = 650;
     var LeftPosition=(screen.width)?(screen.width-sWidth)/2:100;
@@ -280,9 +382,48 @@ function formValidationsForOUwiseDataStatus()
     window.open('','chartWindow1','width=' + sWidth + ', height=' + sHeight + ', ' + 'left=' + LeftPosition + ', top=' + TopPosition + ', ' + 'location=no, menubar=no, ' +  'status=no, toolbar=no, scrollbars=yes, resizable=yes');
 		
     return true;
+    */
+    generateDataStatusOrgnisationunitGroupSetWiseResult();
 
 } 
-// formValidations Function End	
+// formValidations Function End
+
+
+
+function generateDataStatusOrgnisationunitGroupSetWiseResult()
+{
+	var url = "dataStatusOrgnisationunitGroupSetWiseResult.action?" + getParamsStringBySelected( 'orgUnitListCB', 'orgUnitListCB' );
+	
+	/*
+	var url = "generateChartDataElement.action?";
+	url += getParamString( 'selectedDataElements', 'selectedDataElements' ) + "&"
+	url += getParamsStringBySelected( 'orgUnitGroupList', 'orgUnitGroupList' )+ "&"
+	url += getParamString( 'orgUnitListCB', 'orgUnitListCB' )+ "&"
+	url += getParamsStringBySelected( 'yearLB', 'yearLB' )+ "&"
+	url += getParamsStringBySelected( 'periodLB', 'periodLB' )+ "&"
+	*/	
+	//alert(url);
+	jQuery( "#contentDiv" ).load( url,
+	{
+		selectedDataSets : getFieldValue( 'selectedDataSets' ),
+		orgUnitGroupSetListCB : getFieldValue( 'orgUnitGroupSetListCB' ),
+		sDateLB : getFieldValue( 'sDateLB' ),
+		eDateLB : getFieldValue( 'eDateLB' ),
+		includeZeros : isChecked( 'includeZeros' ),
+		ouIDTB : getFieldValue( 'ouIDTB' ),
+		//usingDataEntryStatus : isChecked( 'usingDataEntryStatus' ),
+		//selectedButton : tempselectedButtonDE,
+	} ).dialog( {
+		title: 'OrgUnit Group wise DataStatus Result',
+		maximize: true, 
+		closable: true,
+		modal:true,
+		overlay:{ background:'#000000', opacity:0.1 },
+		width: 1000,
+		height: 800
+	} );	
+}
+
 
 //  Getting corresponding Period List for Datasets. 
 function getdSetPeriods()
@@ -434,7 +575,6 @@ function getPeriodsForDataSetWiseReceived(xmlObject)
 		$("#eDateLB").append("<option value='"+ id +"'>" + periodName + "</option>");
 	}
 }
-
 //DataStatus Data set wise Form Validations
 function formValidationsDataStatusDataSetWise()
 {
@@ -475,25 +615,63 @@ function formValidationsDataStatusDataSetWise()
         alert("Please Select OrganisationUnit(s)"); return false;
     }
 
-   
+    /*
 	 var k=0;
 	
 	 for(k=0;k<selOUListIndex;k++)
 	 {
 	 	document.ChartGenerationDataSetWiseForm.orgUnitListCB.options[k].selected = true;
 	 }
-
+	 
     var sWidth = 850;
     var sHeight = 650;
     var LeftPosition=(screen.width)?(screen.width-sWidth)/2:100;
     var TopPosition=(screen.height)?(screen.height-sHeight)/2:100;
 	
     window.open('','chartWindow1','width=' + sWidth + ', height=' + sHeight + ', ' + 'left=' + LeftPosition + ', top=' + TopPosition + ', ' + 'location=no, menubar=no, ' +  'status=no, toolbar=no, scrollbars=yes, resizable=yes');
-		
+	
     return true;
+    */
+	 
+    generateDataStatusDataSetWiseResult();
 
-} 
+}
+
 //DataStatus Data set wise Form Validations
+
+function generateDataStatusDataSetWiseResult()
+{
+	var url = "dataStatusDataSetWiseResult.action?" + getParamString( 'orgUnitListCB', 'orgUnitListCB' );
+	
+	/*
+	var url = "generateChartDataElement.action?";
+	url += getParamString( 'selectedDataElements', 'selectedDataElements' ) + "&"
+	url += getParamsStringBySelected( 'orgUnitGroupList', 'orgUnitGroupList' )+ "&"
+	url += getParamString( 'orgUnitListCB', 'orgUnitListCB' )+ "&"
+	url += getParamsStringBySelected( 'yearLB', 'yearLB' )+ "&"
+	url += getParamsStringBySelected( 'periodLB', 'periodLB' )+ "&"
+	*/	
+	//alert(url);
+	jQuery( "#contentDiv" ).load( url,
+	{
+		periodTypeId : getFieldValue( 'periodTypeId' ),
+		facilityLB : getFieldValue( 'facilityLB' ),
+		sDateLB : getFieldValue( 'sDateLB' ),
+		eDateLB : getFieldValue( 'eDateLB' ),
+		includeZeros : isChecked( 'includeZeros' ),
+		//usingDataEntryStatus : isChecked( 'usingDataEntryStatus' ),
+		//selectedButton : tempselectedButtonDE,
+	} ).dialog( {
+		title: 'Data Entry Status Result',
+		maximize: true, 
+		closable: true,
+		modal:true,
+		overlay:{ background:'#000000', opacity:0.1 },
+		width: 1000,
+		height: 800
+	} );	
+}
+
 //Facility ListBox Change Function
 function facilityChangeDataSetWiseFunction(evt)
 {

@@ -151,7 +151,7 @@ public class GetWeeklyPeriodAction implements Action
           //  System.out.println( "Period  size : " + periods.size());
             for ( Period period : periods )
             {
-                String tempPeriodName = simpleDateFormat1.format( period.getStartDate() ) + " To " + simpleDateFormat2.format( period.getEndDate() );
+                String tempPeriodName = simpleDateFormat1.format( period.getStartDate() ) + "To" + simpleDateFormat2.format( period.getEndDate() );
                // System.out.println( "tempPeriodName : " + tempPeriodName );
                 weeklyPeriodList.add( tempPeriodName );
                // System.out.println( "weekly period is  : " + weeklyPeriodList );
