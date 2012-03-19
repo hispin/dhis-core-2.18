@@ -134,7 +134,7 @@ public class DefaultDataValueSetService
         
         if ( idStrategy != DataValueSet.DEFAULT_STRATEGY )
         {
-            throw new IllegalArgumentException( "Only UID id strategy supported currently." );
+            throw new IllegalArgumentException( "Only UID id strategy supported currently" );
         }
 
         DataSet dataSet = getDataSet( dataValueSet );
@@ -143,8 +143,8 @@ public class DefaultDataValueSetService
 
         if ( !dataSet.getSources().contains( unit ) )
         {
-            throw new IllegalArgumentException( "Org unit with UID " + unit.getUid()
-                + " does not report data set with UID " + dataSet.getUid() );
+            throw new IllegalArgumentException( "Organisation unit with ID " + unit.getUid()
+                + " does not report data set with ID " + dataSet.getUid() );
         }
 
         Period period = getPeriod( dataValueSet.getPeriodIsoDate(), dataSet.getPeriodType() );
@@ -162,7 +162,7 @@ public class DefaultDataValueSetService
     private void log( DataValueSet dataValueSet, OrganisationUnit unit, DataSet dataSet )
     {
         String message = "Saved data value set for " + dataSet.getName() + ", " + unit.getName() + ", "
-            + dataValueSet.getPeriodIsoDate() + " - Data values received: ";
+            + dataValueSet.getPeriodIsoDate() + " - data values received: ";
 
         for ( org.hisp.dhis.importexport.dxf2.model.DataValue value : dataValueSet.getDataValues() )
         {
@@ -177,19 +177,21 @@ public class DefaultDataValueSetService
         DataSet dataSet = null;
 
         String uid = dataValueSet.getDataSetIdentifier();
+        
         if ( uid != null )
         {
             dataSet = dataSetService.getDataSet( uid );
 
             if ( dataSet == null )
             {
-                throw new IllegalArgumentException( "Data set with UID " + uid + " does not exist" );
+                throw new IllegalArgumentException( "Data set with ID " + uid + " does not exist" );
             }
         }
         else
         {
             dataSet = resolveDataSet( dataValueSet );
         }
+        
         return dataSet;
     }
 
@@ -197,8 +199,7 @@ public class DefaultDataValueSetService
     {
         if ( dataValueSet.getDataValues() == null )
         {
-            throw new IllegalArgumentException(
-                "Data value set doesn't specify data set and does not contain data values." );
+            throw new IllegalArgumentException( "Data value set does not specify a data set and does not contain data values" );
         }
 
         Set<DataSet> potential = null;
@@ -210,7 +211,7 @@ public class DefaultDataValueSetService
 
             if ( dataSets == null || dataSets.isEmpty() )
             {
-                throw new IllegalArgumentException( "Data element '" + dataElement.getUid() + "' isn't in a data set." );
+                throw new IllegalArgumentException( "Data element " + dataElement.getUid() + " is not in a data set" );
             }
             else if ( dataSets.size() == 1 )
             {
@@ -231,6 +232,7 @@ public class DefaultDataValueSetService
                             potential.remove( set );
                         }
                     }
+                    
                     if ( potential.size() == 1 )
                     {
                         return potential.iterator().next();
@@ -257,7 +259,7 @@ public class DefaultDataValueSetService
 
         if ( !dataSet.getDataElements().contains( dataElement ) )
         {
-            throw new IllegalArgumentException( "Data element '" + dataElement.getUid() + "' isn't in data set "
+            throw new IllegalArgumentException( "Data element " + dataElement.getUid() + " is not in data set "
                 + dataSet.getUid() );
         }
 
@@ -293,8 +295,7 @@ public class DefaultDataValueSetService
 
         if ( alreadyComplete != null && completeDateString == null )
         {
-            throw new IllegalArgumentException(
-                "DataValueSet is complete, include a new complete date if you want to recomplete" );
+            throw new IllegalArgumentException( "Data value set is complete, include a new complete date if you want to recomplete" );
         }
 
         if ( alreadyComplete != null )
@@ -318,6 +319,7 @@ public class DefaultDataValueSetService
         String completeDateString, CompleteDataSetRegistration complete )
     {
         SimpleDateFormat format = new SimpleDateFormat( DailyPeriodType.ISO_FORMAT );
+        
         try
         {
             Date completeDate = format.parse( completeDateString );
@@ -328,6 +330,7 @@ public class DefaultDataValueSetService
         {
             throw new IllegalArgumentException( "Complete date not in valid format: " + DailyPeriodType.ISO_FORMAT );
         }
+        
         return complete;
     }
 
@@ -344,6 +347,7 @@ public class DefaultDataValueSetService
             throw new IllegalArgumentException( "Period " + periodIsoDate + " is not valid period of type "
                 + periodType.getName() );
         }
+        
         return period;
     }
 
@@ -353,7 +357,7 @@ public class DefaultDataValueSetService
 
         if ( unit == null )
         {
-            throw new IllegalArgumentException( "Org unit with UID " + uid + " does not exist" );
+            throw new IllegalArgumentException( "Org unit with ID " + uid + " does not exist" );
         }
         return unit;
     }
@@ -364,7 +368,7 @@ public class DefaultDataValueSetService
 
         if ( dataElement == null )
         {
-            throw new IllegalArgumentException( "Data element with UID " + uid + " does not exist" );
+            throw new IllegalArgumentException( "Data element with ID " + uid + " does not exist" );
         }
 
         return dataElement;
@@ -385,14 +389,14 @@ public class DefaultDataValueSetService
 
         if ( combo == null )
         {
-            throw new IllegalArgumentException( "DataElementCategoryOptionCombo with UID '" + uid
-                + "' does not exist" );
+            throw new IllegalArgumentException( "Data element category option combo with ID " + uid
+                + " does not exist" );
         }
 
         if ( !dataElement.getCategoryCombo().getOptionCombos().contains( combo ) )
         {
-            throw new IllegalArgumentException( "DataElementCategoryOptionCombo with UID '" + combo.getUid()
-                + "' isn't in DataElement '" + dataElement.getUid() + "'" );
+            throw new IllegalArgumentException( "Data element category option combo with ID " + combo.getUid()
+                + " is not in data element " + dataElement.getUid() );
         }
         return combo;
     }
