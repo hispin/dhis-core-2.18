@@ -31,10 +31,10 @@
 
 <h4>Replying to a conversation</h4>
 
-<p> This is done with a POST to <code>/api/messageConversations/{conversation-id}?subject=subject</code>. The request body will be the reply text.</p>
+<p> This is done with a POST to <code>/api/messageConversations/{conversation-id}</code>. The request body will be the reply text.</p>
 
 <p>Example using curl:<br/>
-<code>curl -d "This is my reply" "http://localhost:8080/api/messageConversations/adfad134?subject={message-subject}" -H "Content-Type:text/plain" -u admin:district -X POST -v</code>
+<code>curl -d "This is my reply" "http://localhost:8080/api/messageConversations/adfAd134GTh" -H "Content-Type:text/plain" -u admin:district -X POST -v</code>
 </p>
 
 <h4>Writing a feedback</h4>
