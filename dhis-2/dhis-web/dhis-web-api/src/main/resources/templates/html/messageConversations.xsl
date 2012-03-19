@@ -4,48 +4,51 @@
                 xmlns:d="http://dhis2.org/schema/dxf/2.0"
     >
 
-  <xsl:template match="d:messageConversations">
-    <h3> <xsl:value-of select="local-name()" /> </h3>
+<xsl:template match="d:messageConversations">
 
-    <h4>Starting a new conversation</h4>
-    <p>This is done through a POST to <code>/api/messageConversations</code> using the format below.</p>
+<h3> <xsl:value-of select="local-name()" /> </h3>
 
-  <pre style="font-size: 0.9em;">
-  <![CDATA[
-  <message>
-    <subject>The subject</subject>
-    <text>This is the text</text>
+<h4>Starting a new conversation</h4>
+<p>This is done through a POST to <code>/api/messageConversations</code> using the format below.</p>
 
-    <users>
-      <user id="uid1" />
-      <user id="uid2" />
-      <user id="uid3" />
-      <user id="uid4" />
-    </users>
-  </message>
-  ]]>
-  </pre>
+<pre style="font-size: 12pt;">
+<![CDATA[
+<message xmlns="http://dhis2.org/schema/dxf/2.0">
+  <subject>This is the subject</subject>
+  <text>This is the text</text>
+  <users>
+    <user id="user1ID" />
+    <user id="user2ID" />
+    <user id="user3ID" />
+  </users>
+</message>
+]]>
+</pre>
 
-    <p>
-      Example using curl:<br/>
-      <code>curl -u admin:district -X POST -H "Content-Type: application/xml" -d @input.xml http://localhost:8080/api/messageConversations</code>
-    </p>
-    <h4>Replying to a conversation</h4>
-    <p>
-      This is done with a POST to <code>/api/messageConversations/{uid-of-conversation}?subject=subject</code>. The body of this will be the actual reply.<br/>
-      <br/>Example using curl:<br/>
-      <code>curl -u admin:district -X POST -H "Content-Type: text/plain" -d "this is a reply" http://localhost:8080/api/messageConversations/adfad134?subject=subject</code>
-    </p>
+<p>Example using curl:<br/>
+<code>curl -d @input.xml "http://localhost:8080/api/messageConversations" -H "Content-Type:application/xml" -u admin:district -X POST -v</code>
+</p>
 
-    <h4>Writing a feedback</h4>
-    <p>This is done with a POST to <code>/api/messageConversations/feedback</code><br/>
-      <br/>Example using curl:<br/>
-      <code>curl -u admin:district -X POST -H "Content-Type: text/plain" -d "this is my feedback" http://localhost:8080/api/messageConversations/feedback</code>
-    </p>
+<h4>Replying to a conversation</h4>
+
+<p> This is done with a POST to <code>/api/messageConversations/{conversation-id}?subject=subject</code>. The request body will be the reply text.</p>
+
+<p>Example using curl:<br/>
+<code>curl -d "This is my reply" "http://localhost:8080/api/messageConversations/adfad134?subject={message-subject}" -H "Content-Type:text/plain" -u admin:district -X POST -v</code>
+</p>
+
+<h4>Writing a feedback</h4>
+
+<p>This is done with a POST to <code>/api/messageConversations/feedback</code></p>
+
+<p>Example using curl:<br/>
+<code>curl -d "This is my feedback" "http://localhost:8080/api/messageConversations/feedback?subject={message-subject}" -H "Content-Type:text/plain" -u admin:district -X POST -v</code>
+</p>
     
-    <table>
-      <xsl:apply-templates select="child::*" mode="row" />
-    </table>
-  </xsl:template>
+<table>
+  <xsl:apply-templates select="child::*" mode="row" />
+</table>
+
+</xsl:template>
 
 </xsl:stylesheet>
