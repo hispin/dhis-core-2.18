@@ -37,6 +37,7 @@ import org.hisp.dhis.message.MessageService;
 import org.hisp.dhis.user.User;
 import org.hisp.dhis.user.UserService;
 import org.hisp.dhis.api.utils.ContextUtils;
+import org.hisp.dhis.common.Pager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
@@ -73,7 +74,23 @@ public class MessageConversationController
     public String getMessageConversations( IdentifiableObjectParams params, Model model, HttpServletRequest request )
     {
         MessageConversations messageConversations = new MessageConversations();
-        messageConversations.setMessageConversations( new ArrayList<MessageConversation>( messageService.getMessageConversations( 0, 300 ) ) );
+        
+        if ( params.isPaging() )
+        {
+            int total = messageService.getMessageConversationCount();
+            
+            Pager pager = new Pager( params.getPage(), total );
+            messageConversations.setPager( pager );
+            
+            List<MessageConversation> list = new ArrayList<MessageConversation>(
+                messageService.getMessageConversations( pager.getPage(), pager.getPageSize() ) );
+            
+            messageConversations.setMessageConversations( list );
+        }
+        else
+        {
+            messageConversations.setMessageConversations( new ArrayList<MessageConversation>( messageService.getMessageConversations( 0, 1000 ) ) );
+        }
 
         if ( params.hasLinks() )
         {
