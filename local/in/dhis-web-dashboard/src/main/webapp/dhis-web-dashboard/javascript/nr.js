@@ -184,7 +184,7 @@ function formValidations()
 
     if( ouSelCB.checked)
     {
-	if(orgUnitListCB.options.length <=0 ) { alert( "Please select OrgUnit(s)" ); return false; }
+    	if(orgUnitListCB.options.length <=0 ) { alert( "Please select OrgUnit(s)" ); return false; }
     }
     else if( orgUnitLevelCB.selectedIndex < 0 ) { alert( "Please select OrgUnitLevel" ); return false; }
 
@@ -192,6 +192,7 @@ function formValidations()
     if(sDateIndex < 0) {alert("Please Select Starting Period");return false;}
     else if(eDateIndex < 0) {alert("Please Select Ending Period");return false;}
     else if(sDate > eDate) {alert("Starting Date is Greater");return false;}
+    
     //else if(selDEListSize <=0 ) {alert("Please Select Data elements");return false;}
 	/*
 	for(k=0;k<document.ChartGenerationForm.selectedDataElements.options.length;k++)
@@ -200,6 +201,8 @@ function formValidations()
         } 
 	// for l
 	*/
+    
+    /*
     for(k = 0; k < orgUnitListCB.options.length; k++)
 	{
 		orgUnitListCB.options[k].selected = true;
@@ -212,7 +215,64 @@ function formValidations()
 
     window.open('','chartWindow1','width=' + sWidth + ', height=' + sHeight + ', ' + 'left=' + LeftPosition + ', top=' + TopPosition + ', ' + 'location=no, menubar=no, ' +  'status=no, toolbar=no, scrollbars=yes, resizable=yes');
   	return true;
-} // formValidations Function End
+  	*/
+  	
+  	generateNullReporterResult();
+} 
+
+function generateNullReporterResult()
+{
+
+	var url = "NullReporterResult.action?" + getParamString( 'orgUnitListCB', 'orgUnitListCB' )+  "&" + getParamsStringBySelected( 'orgUnitLevelCB', 'orgUnitLevelCB' );
+	
+	/*
+	var url = "generateChartDataElement.action?";
+		url += getParamString( 'selectedDataElements', 'selectedDataElements' ) + "&"
+		url += getParamsStringBySelected( 'orgUnitGroupList', 'orgUnitGroupList' )+ "&"
+		url += getParamString( 'orgUnitListCB', 'orgUnitListCB' )+ "&"
+		url += getParamsStringBySelected( 'yearLB', 'yearLB' )+ "&"
+		url += getParamsStringBySelected( 'periodLB', 'periodLB' )+ "&"
+	*/	
+		//alert(url);
+	jQuery( "#contentDiv" ).load( url,
+	{
+		selectedDataSet : getFieldValue( 'selectedDataSet' ),
+		sDateLB : getFieldValue( 'sDateLB' ),
+		eDateLB : getFieldValue( 'eDateLB' ),
+		includeZeros : isChecked( 'includeZeros' ),
+		ouSelCB : isChecked( 'ouSelCB' ),
+	} ).dialog( {
+		title: 'Null Report',
+		maximize: true, 
+		closable: true,
+		modal:true,
+		overlay:{ background:'#000000', opacity:0.1 },
+		width: 1000,
+		height: 800
+	} );
+}
+
+function getParamsStringBySelected( elementId, param )
+{
+	//alert( "getParamsStringBySelected" );
+	var result = "";
+	var list = jQuery( "#" + elementId ).children( ":selected" );
+	
+	list.each( function( i, item ){
+		
+		//result += param + "=" + item.value + "&";
+		result += param + "=" + item.value;
+		result += ( i < list.length - 1 ) ? "&" : "";
+		
+	});
+	
+	//result = result.substring( 0, list.length - 1 );
+	//alert( result );
+	return result;
+}
+
+
+// formValidations Function End
 
 
 //Getting corresponding Period List for Data Sets Null reporter. 

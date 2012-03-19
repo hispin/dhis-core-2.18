@@ -11,7 +11,7 @@
 
 <script type="text/javascript">
 
-	selection.setListenerFunction( orgUnitHasBeenSelected );
+	//selection.setListenerFunction( orgUnitHasBeenSelected );
 	
 	function orgUnitHasBeenSelected( orgUnitIds )
 	{    
@@ -24,6 +24,7 @@
 			getOUDeatilsForGADataElements( orgUnitIds );
 		}       
 	}
+	selection.setListenerFunction( orgUnitHasBeenSelected );
 
 </script>
 

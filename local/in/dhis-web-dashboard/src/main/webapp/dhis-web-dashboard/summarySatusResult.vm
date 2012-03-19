@@ -7,6 +7,7 @@
             var startDate = "$sDateLB"; 
             var endDate = "$eDateLB";
             var dsType = "$selectedButton";
+            var includeZeros = "$includeZeros";
     
             function getImmChildInfo(evt, dsId, selOrgUnit)
             {
@@ -14,11 +15,44 @@
                       
                 if( document.getElementById('includeZeros').checked )
                 {
+                    /*
                     evt.target.href = "summaryStatusResult.action?immChildOption="+immChildOption+"&dsId="+dsId+"&sDateLB="+startDate+"&eDateLB="+endDate+"&ouId="+selOrgUnit+"&selectedButton="+dsType+"&includeZeros="+includeZeros;
+                	*/
+ 			   		
+ 			   		var url = "summaryStatusResult.action?immChildOption="+immChildOption+"&dsId="+dsId+"&sDateLB="+startDate+"&eDateLB="+endDate+"&ouId="+selOrgUnit+"&selectedButton="+dsType+"&includeZeros="+includeZeros;
+					$('#contentDataRecord').dialog('destroy').remove();
+			   	    $('<div id="contentDataRecord">' ).load(url).dialog({
+			        title: 'Data Entry Status Result',
+					maximize: true, 
+					closable: true,
+					modal:true,
+					overlay:{background:'#000000', opacity:0.1},
+					width: 1000,
+			        height: 800
+			    	});                                                   
+                
+                
                 }
                 else
                 {
+                    /*
                     evt.target.href = "summaryStatusResult.action?immChildOption="+immChildOption+"&dsId="+dsId+"&sDateLB="+startDate+"&eDateLB="+endDate+"&ouId="+selOrgUnit+"&selectedButton="+dsType;
+                	*/
+                	
+ 			   		var url = "summaryStatusResult.action?immChildOption="+immChildOption+"&dsId="+dsId+"&sDateLB="+startDate+"&eDateLB="+endDate+"&ouId="+selOrgUnit+"&selectedButton="+dsType;
+					$('#contentDataRecord').dialog('destroy').remove();
+			   	    $('<div id="contentDataRecord">' ).load(url).dialog({
+			        title: 'Data Entry Status Result',
+					maximize: true, 
+					closable: true,
+					modal:true,
+					overlay:{background:'#000000', opacity:0.1},
+					width: 1000,
+			        height: 800
+			    	});                
+                
+                
+                
                 }           
             }
                 
@@ -54,10 +88,7 @@
                         </tr>
                     </table>
                 </div>
-
-                                
-                <br><br>
-
+                <br>
                 <div align="left" class="NormalB">DataSet : $selDataSet.name</div>
                 <table border="1" cellpadding="0" cellspacing="0" style="border-collapse: collapse" width="100%">       
                     <tr class="TableHeadingCellStyles" align="center">

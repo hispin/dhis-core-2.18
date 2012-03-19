@@ -414,7 +414,12 @@ public class GenerateGroupWiseDataStatusResultAction
         
         maxOULevel = 1;
         minOULevel = organisationUnitService.getNumberOfOrganisationalLevels();
-
+        
+        if( includeZeros.equalsIgnoreCase( "false" ))
+        {
+            includeZeros = null;
+        }
+        
         if ( immChildOption != null && immChildOption.equalsIgnoreCase( "yes" ) )
         {
             orgUnitListCB = new ArrayList<String>();

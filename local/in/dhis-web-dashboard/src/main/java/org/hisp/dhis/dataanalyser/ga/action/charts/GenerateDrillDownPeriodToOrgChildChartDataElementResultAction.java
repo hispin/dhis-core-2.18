@@ -281,7 +281,7 @@ public class GenerateDrillDownPeriodToOrgChildChartDataElementResultAction imple
            for( OrganisationUnit orgChild : childOrgUnitList )
            {
                String drillDownData = orgChild.getId() + ":" + "0" + ":" + dataElement.getId() + ":"+ categoryCombo.getId() + ":"  + periodTypeLB + ":" + drillDownPeriodStartDate + ":" + drillDownPeriodEndDate + ":" + drillDownPeriodNames + ":" + deSelection + ":" + aggDataCB;
-               System.out.println(drillDownData);
+               //System.out.println(drillDownData);
                selectedDrillDownData.add( drillDownData );
            }
         }
@@ -297,7 +297,7 @@ public class GenerateDrillDownPeriodToOrgChildChartDataElementResultAction imple
            for( OrganisationUnit orgChild : selectedOUGroupMemberList )
            {
                 String drillDownData = orgChild.getId() + ":" + selectedOrgUnitGroup.getId() + ":" + dataElement.getId() + ":"+ categoryCombo.getId() + ":"  + periodTypeLB + ":" + drillDownPeriodStartDate + ":" + drillDownPeriodEndDate + ":" + drillDownPeriodNames + ":" + deSelection + ":" + aggDataCB;
-                System.out.println(drillDownData);
+                //System.out.println(drillDownData);
                 selectedDrillDownData.add( drillDownData );
            }
         }

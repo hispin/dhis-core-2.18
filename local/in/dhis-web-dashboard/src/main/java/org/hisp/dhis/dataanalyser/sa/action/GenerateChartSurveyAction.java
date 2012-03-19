@@ -325,7 +325,9 @@ public class GenerateChartSurveyAction implements Action
         return denumDataElement;
     }
     
-    
+    // -------------------------------------------------------------------------
+    // Action Implementation
+    // -------------------------------------------------------------------------    
     
     public String execute()throws Exception
     {
@@ -362,6 +364,8 @@ public class GenerateChartSurveyAction implements Action
         
         surveyList = new ArrayList<Survey>( surveyService.getSurveysByIndicator( selectedIndicator ) );
         
+        System.out.println( "availableIndicators= " + availableIndicators + ",,,ouIDTB= " + ouIDTB + "----sDateLB= " + sDateLB );
+        System.out.println( "eDateLB= " + eDateLB  );
         
         
        // Map<OrganisationUnitGroup, List<OrganisationUnit>> orgUnitGroupMap = new HashMap<OrganisationUnitGroup, List<OrganisationUnit>>();

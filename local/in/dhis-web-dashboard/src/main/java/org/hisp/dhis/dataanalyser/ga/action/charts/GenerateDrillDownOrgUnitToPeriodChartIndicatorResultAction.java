@@ -293,7 +293,7 @@ public class GenerateDrillDownOrgUnitToPeriodChartIndicatorResultAction implemen
         
         //String drillDownData = orgUnit.getId() + ":"+ dataElement.getId() + ":"+ decoc.getId() + ":"  + periodType + ":" + tempStartDate + ":" + tempEndDate + ":" + deSelection + ":" + aggDataCB;
         
-        System.out.println( selStartPeriodList + ":" + selEndPeriodList + ":" + periodNames  + ":"  + periodTypeLB + ":" +  indicatorList+ ":" + selectedOrgUnit + ":" + aggDataCB );
+        //System.out.println( selStartPeriodList + ":" + selEndPeriodList + ":" + periodNames  + ":"  + periodTypeLB + ":" +  indicatorList+ ":" + selectedOrgUnit + ":" + aggDataCB );
        // System.out.println( selStartPeriodList.size() + ":" + selEndPeriodList.size() );
         System.out.println( "Chart Generation Start Time is for drillDown: \t" + new Date() );
        

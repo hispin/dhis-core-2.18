@@ -36,6 +36,7 @@ function getDataElements()
     
     if ( dataSetSectionId != null )
     {
+    	lockScreen();
 		$.post("getDataElementsForTA.action",
 		{
 			id:dataSetSectionId,
@@ -67,7 +68,7 @@ function getDataElementsReceived( xmlObject )
             option.title = dataElementName;
             availableDataElements.add(option, null);
     }
-    
+    unLockScreen();
 }
 // getDataElementsReceived end
 
@@ -131,6 +132,7 @@ function hideOverlay()
     o.style.visibility = 'hidden';
 }
 
+
 //formValidationsForDeTarget Function Start
 function formValidationsForDeTarget()
 {
@@ -140,6 +142,8 @@ function formValidationsForDeTarget()
 	//var selOUListLength = document.ChartGenerationForm.orgUnitListCB.options.length;//alert(selOUListLength);
 	var orgUnitGroupListCB = document.getElementById("orgUnitGroupList");
     
+	var deTargettempSelButton = tempSelButton;
+	
     sDateIndex    = document.getElementById("sDateLB").selectedIndex;
     eDateIndex    = document.getElementById("eDateLB").selectedIndex;
     sDateTxt = document.getElementById("sDateLB").options[sDateIndex].text;
@@ -147,8 +151,6 @@ function formValidationsForDeTarget()
     eDateTxt = document.getElementById("eDateLB").options[eDateIndex].text;
     eDate = formatDate(new Date(getDateFromFormat(eDateTxt,"MMM-y")),"yyyy-MM-dd");
 
-   
-    
     if(avlDEListSize <= 0 ){alert( "Please Select DataElement" );return false;}
     else if(sDateIndex < 0) {alert("Please Select Starting Period");return false;}
     else if(eDateIndex < 0) {alert("Please Select Ending Period");return false;}
@@ -161,7 +163,7 @@ function formValidationsForDeTarget()
 		return false;
     
 	}
-    
+    /*
     var sWidth = 850;
 	var sHeight = 650;
     var LeftPosition=(screen.width)?(screen.width-sWidth)/2:100;
@@ -170,6 +172,66 @@ function formValidationsForDeTarget()
     window.open('','chartWindow1','width=' + sWidth + ', height=' + sHeight + ', ' + 'left=' + LeftPosition + ', top=' + TopPosition + ', ' + 'location=no, menubar=no, ' +  'status=no, toolbar=no, scrollbars=yes, resizable=yes');
 
     return true;
+    */
+    generateChartDeTarget( deTargettempSelButton );
 	
 }    
+
 // formValidationsForDeTarget Function End
+
+
+
+function generateChartDeTarget( deTargettempSelButton )
+{
+
+	var url = "generateChartDeTarget.action?" + getParamsStringBySelected( 'orgUnitGroupList', 'orgUnitGroupList' );
+	
+	/*
+	var url = "generateChartDataElement.action?";
+		url += getParamString( 'selectedDataElements', 'selectedDataElements' ) + "&"
+		url += getParamsStringBySelected( 'orgUnitGroupList', 'orgUnitGroupList' )+ "&"
+		url += getParamString( 'orgUnitListCB', 'orgUnitListCB' )+ "&"
+		url += getParamsStringBySelected( 'yearLB', 'yearLB' )+ "&"
+		url += getParamsStringBySelected( 'periodLB', 'periodLB' )+ "&"
+	*/	
+	//alert(url);
+	jQuery( "#contentDiv" ).load( url,
+	{
+		ouIDTB : getFieldValue( 'ouIDTB' ),
+		sDateLB : getFieldValue( 'sDateLB' ),
+		eDateLB : getFieldValue( 'eDateLB' ),
+		availableDataElements : getFieldValue( 'availableDataElements' ),
+		ougGroupSetCB : isChecked( 'ougGroupSetCB' ),
+		selButton : deTargettempSelButton,
+	} ).dialog( {
+		title: 'DataElement Target Graphical Analysis',
+		maximize: true, 
+		closable: true,
+		modal:true,
+		overlay:{ background:'#000000', opacity:0.1 },
+		width: 1000,
+		height: 800
+	} );
+}
+
+function getParamsStringBySelected( elementId, param )
+{
+	//alert( "getParamsStringBySelected" );
+	var result = "";
+	var list = jQuery( "#" + elementId ).children( ":selected" );
+	
+	list.each( function( i, item ){
+		
+		//result += param + "=" + item.value + "&";
+		result += param + "=" + item.value;
+		result += ( i < list.length - 1 ) ? "&" : "";
+		
+	});
+	
+	//result = result.substring( 0, list.length - 1 );
+	alert( result );
+	return result;
+}
+
+
+

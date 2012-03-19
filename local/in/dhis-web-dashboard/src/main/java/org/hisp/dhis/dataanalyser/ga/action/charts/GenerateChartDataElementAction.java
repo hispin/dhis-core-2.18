@@ -183,7 +183,9 @@ public class GenerateChartDataElementAction
     // Input
     // -------------------------------------------------------------------------
 
-    private List<String> selectedDataElements;
+    //private List<String> selectedDataElements;
+    
+    List<String> selectedDataElements = new ArrayList<String>();
 
     public void setSelectedDataElements( List<String> selectedDataElements )
     {
@@ -283,7 +285,8 @@ public class GenerateChartDataElementAction
         this.yearLB = yearLB;
     }
 
-    private List<String> periodLB;
+    List<String> periodLB = new ArrayList<String>();
+    //private List<String> periodLB;
 
     public void setPeriodLB( List<String> periodLB )
     {
@@ -373,7 +376,13 @@ public class GenerateChartDataElementAction
         selectedValues = new ArrayList<String>();
         selectedStatus = new ArrayList<String>();
         selectedDrillDownData = new ArrayList<String>();
-
+        
+        
+        if( aggDataCB.equalsIgnoreCase( "false" ))
+        {
+            aggDataCB = null;
+        }
+        
         aggChecked = "";
 
         if ( aggDataCB != null )
@@ -384,14 +393,22 @@ public class GenerateChartDataElementAction
         {
             aggChecked = "0";
         }
- /*      
+        
+        System.out.println( orgUnitListCB );
+        
+      
         System.out.println( ougGroupSetCB );
         
         if( ougGroupSetCB.equalsIgnoreCase( "false" ))
         {
             ougGroupSetCB = null;
         }
- */      
+        
+        System.out.println( "selectedDataElements= " + selectedDataElements + "orgUnitGroupList= " + orgUnitGroupList + "orgUnitListCB= " + orgUnitListCB );
+        System.out.println( "yearLB= " + yearLB + "periodLB= " + periodLB + "deSelection= " + deSelection );
+        System.out.println( "categoryLB= " + categoryLB + "periodTypeLB= " + periodTypeLB + "ougGroupSetCB= " + ougGroupSetCB );
+        System.out.println( "aggDataCB= " + aggDataCB );
+        
         // ----------------------------------------------------------------------
         // Period Info
         // ----------------------------------------------------------------------
@@ -415,9 +432,16 @@ public class GenerateChartDataElementAction
             int periodCount = 0;
             for ( String periodStr : periodLB )
             {
-                startD = periodStr.split( "To" )[0].trim();
-                endD = periodStr.split( "To" )[1].trim();
-
+                //startD = periodStr.split( "To" )[0].trim();
+                //endD = periodStr.split( "To" )[1].trim();
+                
+                String  startWeekDate = periodStr.split( "To" )[0] ; //for start week
+                String  endWeekDate = periodStr.split( "To" )[1] ; //for end week
+                
+                startD = startWeekDate.trim();
+                endD = endWeekDate.trim();
+                
+                
                 if ( periodCount == periodLB.size() - 1 )
                 {
                     drillDownPeriodStartDate += startD;

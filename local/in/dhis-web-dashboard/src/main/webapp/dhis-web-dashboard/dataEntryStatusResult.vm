@@ -18,12 +18,45 @@
                     //alert("inside include zero : " + immChildOption );
                    // var urlForImmChild = "dataStatusResult.action?immChildOption="+immChildOption+"&dsId="+dsId+"&sDateLB="+startDate+"&eDateLB="+endDate+"&ouId="+selOrgUnit+"&selectedButton="+dsType+"&includeZeros="+includeZeros;
                     //alert( urlForImmChild );
+                    
+                   /*
                     evt.target.href = "dataEntryStatusResult.action?immChildOption="+immChildOption+"&dsId="+dsId+"&sDateLB="+startDate+"&eDateLB="+endDate+"&ouId="+selOrgUnit+"&selectedButton="+dsType+"&includeZeros="+includeZeros;
+                	*/
+			   		var url = "dataEntryStatusResult.action?immChildOption="+immChildOption+"&dsId="+dsId+"&sDateLB="+startDate+"&eDateLB="+endDate+"&ouId="+selOrgUnit+"&selectedButton="+dsType+"&includeZeros="+includeZeros;
+					$('#contentDataRecord').dialog('destroy').remove();
+			   	    $('<div id="contentDataRecord">' ).load(url).dialog({
+			        title: 'Data Entry Status Result',
+					maximize: true, 
+					closable: true,
+					modal:true,
+					overlay:{background:'#000000', opacity:0.1},
+					width: 1000,
+			        height: 800
+			    	});                      
+                
+                
+                
+                
                 }
                 else
                 {
-               	    alert("inside include zero null");
+               	    //alert("inside include zero null");
+               	    /*
                     evt.target.href = "dataEntryStatusResult.action?immChildOption="+immChildOption+"&dsId="+dsId+"&sDateLB="+startDate+"&eDateLB="+endDate+"&ouId="+selOrgUnit+"&selectedButton="+dsType;
+                	*/
+			   		var url = "dataEntryStatusResult.action?immChildOption="+immChildOption+"&dsId="+dsId+"&sDateLB="+startDate+"&eDateLB="+endDate+"&ouId="+selOrgUnit+"&selectedButton="+dsType;
+					$('#contentDataRecord').dialog('destroy').remove();
+			   	    $('<div id="contentDataRecord">' ).load(url).dialog({
+			        title: 'Data Entry Status Result',
+					maximize: true, 
+					closable: true,
+					modal:true,
+					overlay:{background:'#000000', opacity:0.1},
+					width: 1000,
+			        height: 800
+			    	});                                  
+                
+                
                 }
             }
             function exportDataStatusResultToWorkBook()
@@ -92,8 +125,7 @@
                             </tr>                                                                    
                         </table>
                     </div>
-
-                    <br><br>
+                    <br>
                     <div align="left" class="NormalB">DataSet : $dataSetName ( $totalDataElementCount )</div>
                     <table border="1" cellpadding="0" cellspacing="0" style="border-collapse: collapse" width="100%">
                         <tr class="TableHeadingCellStyles" align="center">

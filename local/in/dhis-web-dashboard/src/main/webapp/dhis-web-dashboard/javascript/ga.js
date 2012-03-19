@@ -109,14 +109,24 @@ function riradioSelection(evt)
 	    
 	    document.ChartGenerationForm.aggDataCB.checked = true;
 	    document.ChartGenerationForm.aggDataCB.disabled = true;
-	}// else end
-}// function riradioSelection end
+	}
+ // else end
+}
+// function riradioSelection end
 
 // Selected Button (ie ViewSummary or ViewChart) Function
+
+var tempselectedButtonIN ="";
 function selButtonFunction(selButton)
 {
 	document.ChartGenerationForm.selectedButton.value = selButton;
-}// selButtonFunction end
+	tempselectedButtonIN = selButton;
+	
+	formValidationsIndicator();
+	
+}
+
+// selButtonFunction end
 
 
 //Graphical Analysis Form Validations

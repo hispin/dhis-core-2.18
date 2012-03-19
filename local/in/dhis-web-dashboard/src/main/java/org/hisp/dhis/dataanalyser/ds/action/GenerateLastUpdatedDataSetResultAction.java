@@ -236,7 +236,7 @@ implements Action
     {
         this.dsId = dsId;
     }
-
+    /*
     private String includeZeros;
 
     public void setIncludeZeros( String includeZeros )
@@ -248,7 +248,7 @@ implements Action
     {
         return includeZeros;
     }
-
+    */
     private String selectedButton;
 
     public void setselectedButton( String selectedButton )
@@ -380,7 +380,12 @@ implements Action
         results = new ArrayList<Integer>();
         maxOULevel = 1;
         minOULevel = organisationUnitService.getNumberOfOrganisationalLevels();
-      
+        /*
+        if( includeZeros.equalsIgnoreCase( "false" ))
+        {
+            includeZeros = null;
+        }
+        */
         if ( immChildOption != null && immChildOption.equalsIgnoreCase( "yes" ) )
         {
             orgUnitListCB = new ArrayList<String>();

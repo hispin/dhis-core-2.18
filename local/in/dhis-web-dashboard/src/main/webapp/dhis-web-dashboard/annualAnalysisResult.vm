@@ -58,7 +58,14 @@
    {
      var chartTypeOptionList = document.getElementById("chartTypeOption");
      var chartTypeOptionValue = chartTypeOptionList.options[ chartTypeOptionList.selectedIndex ].value;
-     iframeForChart.location.href = "generateChart.action?currentChart="+chartTypeOptionValue;
+     
+     var tempSRC = "generateChart.action?currentChart=" + chartTypeOptionValue;
+	
+	//document.getElementById('iframeForChart').src = null;
+	 document.getElementById('iframeForChart').src = tempSRC;
+	
+     
+     //iframeForChart.location.href = "generateChart.action?currentChart="+chartTypeOptionValue;
      
    }
 //for export into excel   

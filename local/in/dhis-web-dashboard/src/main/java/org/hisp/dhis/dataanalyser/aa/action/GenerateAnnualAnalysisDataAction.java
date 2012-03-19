@@ -301,7 +301,10 @@ public class GenerateAnnualAnalysisDataAction
     {
         return selectedIndicatorId;
     }
-
+    // -------------------------------------------------------------------------
+    // Action Implementation
+    // -------------------------------------------------------------------------
+    
     public String execute() throws Exception 
     {
         dataList = new ArrayList<List<Double>>();
@@ -321,6 +324,13 @@ public class GenerateAnnualAnalysisDataAction
         
         numDataElement = new String();
         denumDataElement = new String();
+        
+        System.out.println( "availableIndicators= " + availableIndicators + ",,,availableDataElements= " + availableDataElements + "ouIDTB= " + ouIDTB );
+        System.out.println( "annualPeriodsListCB= " + annualPeriodsListCB + ",,,,---monthlyPeriodsListCB= " + monthlyPeriodsListCB );
+        System.out.println( "riRadio= " + riRadio );
+        
+        
+        
         //selectedIndicator = new Indicator();
         //selectedIndicator = indicatorService.getIndicator( availableIndicators );
         //selectedIndicatorId = selectedIndicator.getId();
@@ -336,7 +346,7 @@ public class GenerateAnnualAnalysisDataAction
             // for numeratorDataElement,denominatorDataElement
             numDataElement = expressionService.getExpressionDescription( selectedIndicator.getNumerator());
             denumDataElement = expressionService.getExpressionDescription( selectedIndicator.getDenominator());
-
+            
         } 
         else 
         {

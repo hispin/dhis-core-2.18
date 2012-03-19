@@ -352,7 +352,12 @@ public class GenerateDataStatusOrgnisationunitGroupSetWiseResultAction
         results = new ArrayList<Integer>();
         maxOULevel = 1;
         minOULevel = organisationUnitService.getNumberOfOrganisationalLevels();
-
+        
+        if( includeZeros.equalsIgnoreCase( "false" ))
+        {
+            includeZeros = null;
+        }
+        
         // DataSet Related Info
         dataSetList = new ArrayList<DataSet>();
         deInfo = "-1";
