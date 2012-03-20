@@ -27,19 +27,22 @@ package org.hisp.dhis.dashboard;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import org.codehaus.jackson.annotate.JsonProperty;
-import org.codehaus.jackson.map.annotate.JsonSerialize;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonView;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlElementWrapper;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 import org.hisp.dhis.common.BaseIdentifiableObject;
 import org.hisp.dhis.common.Dxf2Namespace;
-import org.hisp.dhis.common.adapter.*;
+import org.hisp.dhis.common.view.DetailedView;
+import org.hisp.dhis.common.view.IdentifiableObjectView;
 import org.hisp.dhis.document.Document;
 import org.hisp.dhis.mapping.MapView;
 import org.hisp.dhis.report.Report;
 import org.hisp.dhis.reporttable.ReportTable;
 import org.hisp.dhis.user.User;
 
-import javax.xml.bind.annotation.*;
-import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -49,8 +52,7 @@ import java.util.List;
  *
  * @author Lars Helge Overland
  */
-@XmlRootElement( name = "dashboardContent", namespace = Dxf2Namespace.NAMESPACE )
-@XmlAccessorType( value = XmlAccessType.NONE )
+@JacksonXmlRootElement( localName = "dashboardContent", namespace = Dxf2Namespace.NAMESPACE )
 public class DashboardContent
 {
     private final static int MAX_DASHBOARD_ELEMENTS = 6;
@@ -163,8 +165,9 @@ public class DashboardContent
     // Getters & setters
     // -------------------------------------------------------------------------
 
-    @XmlAttribute( name = "internalId" )
     @JsonProperty( value = "internalId" )
+    @JsonView( {IdentifiableObjectView.class} )
+    @JacksonXmlProperty( isAttribute = true )
     public int getId()
     {
         return id;
@@ -175,10 +178,9 @@ public class DashboardContent
         this.id = id;
     }
 
-    @XmlElement( name = "user" )
-    @XmlJavaTypeAdapter( UserXmlAdapter.class )
     @JsonProperty
     @JsonSerialize( contentAs = BaseIdentifiableObject.class )
+    @JsonView( {DetailedView.class} )
     public User getUser()
     {
         return user;
@@ -189,11 +191,11 @@ public class DashboardContent
         this.user = user;
     }
 
-    @XmlElementWrapper( name = "reports" )
-    @XmlElement( name = "report" )
-    @XmlJavaTypeAdapter( ReportXmlAdapter.class )
     @JsonProperty
     @JsonSerialize( contentAs = BaseIdentifiableObject.class )
+    @JsonView( {DetailedView.class} )
+    @JacksonXmlElementWrapper( localName = "reports" )
+    @JacksonXmlProperty( localName = "report" )
     public List<Report> getReports()
     {
         return reports;
@@ -204,11 +206,11 @@ public class DashboardContent
         this.reports = reports;
     }
 
-    @XmlElementWrapper( name = "documents" )
-    @XmlElement( name = "document" )
-    @XmlJavaTypeAdapter( DocumentXmlAdapter.class )
     @JsonProperty
     @JsonSerialize( contentAs = BaseIdentifiableObject.class )
+    @JsonView( {DetailedView.class} )
+    @JacksonXmlElementWrapper( localName = "documents" )
+    @JacksonXmlProperty( localName = "document" )
     public List<Document> getDocuments()
     {
         return documents;
@@ -219,11 +221,11 @@ public class DashboardContent
         this.documents = documents;
     }
 
-    @XmlElementWrapper( name = "reportTables" )
-    @XmlElement( name = "reportTable" )
-    @XmlJavaTypeAdapter( ReportTableXmlAdapter.class )
     @JsonProperty
     @JsonSerialize( contentAs = BaseIdentifiableObject.class )
+    @JsonView( {DetailedView.class} )
+    @JacksonXmlElementWrapper( localName = "reportTables" )
+    @JacksonXmlProperty( localName = "reportTable" )
     public List<ReportTable> getReportTables()
     {
         return reportTables;
@@ -234,11 +236,11 @@ public class DashboardContent
         this.reportTables = reportTables;
     }
 
-    @XmlElementWrapper( name = "mapViews" )
-    @XmlElement( name = "mapView" )
-    @XmlJavaTypeAdapter( MapViewXmlAdapter.class )
     @JsonProperty
     @JsonSerialize( contentAs = BaseIdentifiableObject.class )
+    @JsonView( {DetailedView.class} )
+    @JacksonXmlElementWrapper( localName = "mapViews" )
+    @JacksonXmlProperty( localName = "mapView" )
     public List<MapView> getMapViews()
     {
         return mapViews;

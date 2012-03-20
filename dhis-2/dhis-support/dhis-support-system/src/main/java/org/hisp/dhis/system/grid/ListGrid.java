@@ -27,18 +27,21 @@ package org.hisp.dhis.system.grid;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonView;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlElementWrapper;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JRField;
 import org.apache.commons.math.stat.regression.SimpleRegression;
-import org.codehaus.jackson.annotate.JsonProperty;
 import org.hisp.dhis.common.Dxf2Namespace;
 import org.hisp.dhis.common.Grid;
 import org.hisp.dhis.common.GridHeader;
-import org.hisp.dhis.common.adapter.GridRowsXmlAdapter;
+import org.hisp.dhis.common.view.DetailedView;
 import org.hisp.dhis.system.util.MathUtils;
 
-import javax.xml.bind.annotation.*;
-import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
+import javax.xml.bind.annotation.XmlElement;
 import java.util.*;
 
 import static org.hisp.dhis.system.util.MathUtils.getRounded;
@@ -47,8 +50,7 @@ import static org.hisp.dhis.system.util.MathUtils.getRounded;
  * @author Lars Helge Overland
  * @version $Id$
  */
-@XmlRootElement( name = "grid", namespace = Dxf2Namespace.NAMESPACE )
-@XmlAccessorType( value = XmlAccessType.NONE )
+@JacksonXmlRootElement( localName = "grid", namespace = Dxf2Namespace.NAMESPACE )
 public class ListGrid
     implements Grid
 {
@@ -109,8 +111,8 @@ public class ListGrid
     // Public methods
     // ---------------------------------------------------------------------
 
-    @XmlElement( namespace = Dxf2Namespace.NAMESPACE )
     @JsonProperty
+    @JsonView( {DetailedView.class} )
     public String getTitle()
     {
         return title;
@@ -123,8 +125,8 @@ public class ListGrid
         return this;
     }
 
-    @XmlElement( namespace = Dxf2Namespace.NAMESPACE )
     @JsonProperty
+    @JsonView( {DetailedView.class} )
     public String getSubtitle()
     {
         return subtitle;
@@ -137,8 +139,8 @@ public class ListGrid
         return this;
     }
 
-    @XmlElement
     @JsonProperty
+    @JsonView( {DetailedView.class} )
     public String getTable()
     {
         return table;
@@ -160,9 +162,10 @@ public class ListGrid
         return this;
     }
 
-    @XmlElementWrapper( name = "headers", namespace = Dxf2Namespace.NAMESPACE )
-    @XmlElement( name = "header", namespace = Dxf2Namespace.NAMESPACE )
-    @JsonProperty( value = "headers" )
+    @JsonProperty
+    @JsonView( {DetailedView.class} )
+    @JacksonXmlElementWrapper( localName = "headers" )
+    @JacksonXmlProperty( localName = "header" )
     public List<GridHeader> getHeaders()
     {
         return headers;
@@ -183,15 +186,15 @@ public class ListGrid
         return tempHeaders;
     }
 
-    @XmlElement( namespace = Dxf2Namespace.NAMESPACE )
     @JsonProperty
+    @JsonView( {DetailedView.class} )
     public int getHeight()
     {
         return (grid != null && grid.size() > 0) ? grid.size() : 0;
     }
 
-    @XmlElement( namespace = Dxf2Namespace.NAMESPACE )
     @JsonProperty
+    @JsonView( {DetailedView.class} )
     public int getWidth()
     {
         verifyGridState();
@@ -227,9 +230,8 @@ public class ListGrid
         return grid.get( rowIndex );
     }
 
-    @XmlElement( namespace = Dxf2Namespace.NAMESPACE )
-    @XmlJavaTypeAdapter( GridRowsXmlAdapter.class )
     @JsonProperty
+    @JsonView( {DetailedView.class} )
     public List<List<Object>> getRows()
     {
         return grid;
@@ -427,7 +429,7 @@ public class ListGrid
 
         return this;
     }
-    
+
     public Grid addCumulativeColumn( int columnIndex, boolean addHeader )
     {
         verifyGridState();
@@ -435,20 +437,20 @@ public class ListGrid
         List<Object> column = getColumn( columnIndex );
 
         List<Object> cumulativeColumn = new ArrayList<Object>();
-        
+
         double sum = 0d;
-        
+
         for ( Object value : column )
         {
             double number = value != null ? Double.parseDouble( String.valueOf( value ) ) : 0d;
-            
+
             sum += number;
-            
+
             cumulativeColumn.add( sum );
         }
-        
+
         addColumn( cumulativeColumn );
-        
+
         if ( addHeader && columnIndex < headers.size() )
         {
             GridHeader header = headers.get( columnIndex );
@@ -461,10 +463,10 @@ public class ListGrid
                 addHeader( regressionHeader );
             }
         }
-        
+
         return this;
     }
-    
+
     // -------------------------------------------------------------------------
     // JRDataSource implementation
     // -------------------------------------------------------------------------

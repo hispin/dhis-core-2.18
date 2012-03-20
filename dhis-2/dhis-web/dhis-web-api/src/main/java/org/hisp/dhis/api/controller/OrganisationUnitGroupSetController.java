@@ -160,7 +160,7 @@ public class OrganisationUnitGroupSetController
                     response.setStatus( HttpServletResponse.SC_CREATED );
                     response.setHeader( "Location", DataElementController.RESOURCE_PATH + "/" + organisationUnitGroupSet.getUid() );
                 }
-            } 
+            }
             catch ( Exception e )
             {
                 response.setStatus( HttpServletResponse.SC_CONFLICT );

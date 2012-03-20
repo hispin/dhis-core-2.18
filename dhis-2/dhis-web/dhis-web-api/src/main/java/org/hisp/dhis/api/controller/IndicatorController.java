@@ -111,6 +111,7 @@ public class IndicatorController
         }
 
         model.addAttribute( "model", indicator );
+        model.addAttribute( "view", "detailed" );
 
         return "indicator";
     }

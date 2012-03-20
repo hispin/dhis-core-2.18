@@ -27,31 +27,28 @@ package org.hisp.dhis.dashboard;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.ArrayList;
-import java.util.List;
-
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlElementWrapper;
-import javax.xml.bind.annotation.XmlRootElement;
-
-import org.codehaus.jackson.annotate.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlElementWrapper;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 import org.hisp.dhis.common.BaseCollection;
 import org.hisp.dhis.common.Dxf2Namespace;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
-@XmlRootElement( name = "dashboardContents", namespace = Dxf2Namespace.NAMESPACE )
-@XmlAccessorType( value = XmlAccessType.NONE )
-public class DashboardContents extends BaseCollection
+@JacksonXmlRootElement( localName = "dxf2", namespace = Dxf2Namespace.NAMESPACE )
+public class DashboardContents
+    extends BaseCollection
 {
     private List<DashboardContent> dashboardContents = new ArrayList<DashboardContent>();
 
-    @XmlElementWrapper( name = "dashboardContents" )
-    @XmlElement( name = "dashboardContent" )
-    @JsonProperty( value = "dashboardContents" )
+    @JsonProperty
+    @JacksonXmlElementWrapper( localName = "dashboardContents" )
+    @JacksonXmlProperty( localName = "dashboardContent" )
     public List<DashboardContent> getDashboardContents()
     {
         return dashboardContents;

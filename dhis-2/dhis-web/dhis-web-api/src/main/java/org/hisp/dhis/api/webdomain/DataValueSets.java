@@ -27,25 +27,27 @@
 
 package org.hisp.dhis.api.webdomain;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlRootElement;
-
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlElementWrapper;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 import org.hisp.dhis.common.Dxf2Namespace;
 import org.hisp.dhis.importexport.dxf2.model.DataValueSet;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
-@XmlRootElement( name = "dataValueSets", namespace = Dxf2Namespace.NAMESPACE )
-@XmlAccessorType( value = XmlAccessType.NONE )
+@JacksonXmlRootElement( localName = "dxf2", namespace = Dxf2Namespace.NAMESPACE )
 public class DataValueSets
 {
     private List<DataValueSet> dataValueSets = new ArrayList<DataValueSet>();
 
+    @JsonProperty
+    @JacksonXmlElementWrapper( localName = "dataValueSets", namespace = Dxf2Namespace.NAMESPACE )
+    @JacksonXmlProperty( localName = "dataValueSet", namespace = Dxf2Namespace.NAMESPACE )
     public List<DataValueSet> getDataValueSets()
     {
         return dataValueSets;

@@ -27,32 +27,41 @@ package org.hisp.dhis.option;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonView;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlElementWrapper;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
+import org.hisp.dhis.common.BaseIdentifiableObject;
+import org.hisp.dhis.common.Dxf2Namespace;
+import org.hisp.dhis.common.view.DetailedView;
+import org.hisp.dhis.common.view.ExportView;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.hisp.dhis.common.BaseIdentifiableObject;
-
 /**
  * @author Lars Helge Overland
  */
+@JacksonXmlRootElement( localName = "optionSet", namespace = Dxf2Namespace.NAMESPACE )
 public class OptionSet
     extends BaseIdentifiableObject
 {
     private static final Pattern OPTION_PATTERN = Pattern.compile( "\\[(.*)\\]" );
-    
+
     private List<String> options = new ArrayList<String>();
 
     public OptionSet()
     {
     }
-    
+
     public OptionSet( String name )
     {
         this.name = name;
     }
-    
+
 
     @Override
     public int hashCode()
@@ -83,11 +92,15 @@ public class OptionSet
         return name.equals( other.getName() );
     }
 
+    @JsonProperty
+    @JsonView( {DetailedView.class, ExportView.class} )
+    @JacksonXmlElementWrapper( localName = "options" )
+    @JacksonXmlProperty( localName = "option" )
     public List<String> getOptions()
     {
         return options;
     }
-    
+
     public void setOptions( List<String> options )
     {
         this.options = options;
@@ -95,9 +108,9 @@ public class OptionSet
 
     public static String optionEncode( String option )
     {
-        return option != null ? ( "[" + option.replaceAll( " ", "_" ) + "]" ) : null;
+        return option != null ? ("[" + option.replaceAll( " ", "_" ) + "]") : null;
     }
-    
+
     public static String optionDecode( String option )
     {
         Matcher matcher = OPTION_PATTERN.matcher( option );

@@ -27,26 +27,33 @@ package org.hisp.dhis.user;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonView;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlElementWrapper;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
+import org.hisp.dhis.common.BaseIdentifiableObject;
+import org.hisp.dhis.common.Dxf2Namespace;
+import org.hisp.dhis.common.view.DetailedView;
+import org.hisp.dhis.common.view.ExportView;
+import org.hisp.dhis.dataset.DataSet;
+
 import java.util.HashSet;
 import java.util.Set;
 
-import org.hisp.dhis.dataset.DataSet;
-
 /**
  * @author Nguyen Hong Duc
- * @version $Id: UserAuthorityGroup.java 5701 2008-09-14 20:34:46Z larshelg $
  */
+@JacksonXmlRootElement( localName = "userAuthorityGroup", namespace = Dxf2Namespace.NAMESPACE )
 public class UserAuthorityGroup
+    extends BaseIdentifiableObject
 {
     public static final String AUTHORITY_ALL = "ALL";
-    
-    private int id;
 
     /**
      * Required and unique.
      */
-    private String name;
-
     private String description;
 
     private Set<String> authorities = new HashSet<String>();
@@ -92,26 +99,9 @@ public class UserAuthorityGroup
     // Getters and setters
     // -------------------------------------------------------------------------
 
-    public int getId()
-    {
-        return id;
-    }
-
-    public void setId( int id )
-    {
-        this.id = id;
-    }
-
-    public String getName()
-    {
-        return name;
-    }
-
-    public void setName( String name )
-    {
-        this.name = name;
-    }
-
+    @JsonProperty
+    @JsonView( {DetailedView.class, ExportView.class} )
+    @JacksonXmlProperty
     public String getDescription()
     {
         return description;
@@ -122,6 +112,10 @@ public class UserAuthorityGroup
         this.description = description;
     }
 
+    @JsonProperty
+    @JsonView( {DetailedView.class, ExportView.class} )
+    @JacksonXmlElementWrapper( localName = "authorities" )
+    @JacksonXmlProperty( localName = "authority" )
     public Set<String> getAuthorities()
     {
         return authorities;
@@ -142,6 +136,11 @@ public class UserAuthorityGroup
         this.members = members;
     }
 
+    @JsonProperty
+    @JsonSerialize( contentAs = BaseIdentifiableObject.class )
+    @JsonView( {DetailedView.class, ExportView.class} )
+    @JacksonXmlElementWrapper( localName = "dataSets" )
+    @JacksonXmlProperty( localName = "dataSet" )
     public Set<DataSet> getDataSets()
     {
         return dataSets;

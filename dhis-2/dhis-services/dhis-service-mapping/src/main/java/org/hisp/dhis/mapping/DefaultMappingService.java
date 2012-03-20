@@ -27,10 +27,6 @@ package org.hisp.dhis.mapping;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.Set;
-
 import org.hisp.dhis.aggregation.AggregatedDataValueService;
 import org.hisp.dhis.aggregation.AggregatedMapValue;
 import org.hisp.dhis.configuration.ConfigurationService;
@@ -53,6 +49,10 @@ import org.hisp.dhis.user.CurrentUserService;
 import org.hisp.dhis.user.User;
 import org.hisp.dhis.user.UserSettingService;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * @author Jan Henrik Overland
@@ -140,9 +140,9 @@ public class DefaultMappingService
     /**
      * Returns the relevant OrganisationUnits for the given parent identifier
      * and / or level.
-     * 
+     *
      * @param parentOrganisationUnitId the OrganisationUnit level.
-     * @param level the OrganisationUnit level.
+     * @param level                    the OrganisationUnit level.
      * @return a collection of OrganisationUnits.
      */
     private Collection<OrganisationUnit> getOrganisationUnits( Integer parentOrganisationUnitId, Integer level )
@@ -176,22 +176,22 @@ public class DefaultMappingService
      * and level must be specified. Period should be specified with "real time"
      * aggregation strategy, any may be specified with "batch" aggregation
      * strategy.
-     * 
-     * @param indicatorId the Indicator identifier.
-     * @param period the Period identifier. Ignored if null.
+     *
+     * @param indicatorId              the Indicator identifier.
+     * @param periodId                 the Period identifier. Ignored if null.
      * @param parentOrganisationUnitId the parent OrganisationUnit identifier.
-     *        Ignored if null.
-     * @param level the OrganisationUnit level. Ignored if null.
+     *                                 Ignored if null.
+     * @param level                    the OrganisationUnit level. Ignored if null.
      * @return a collection of AggregatedMapValues.
      */
     public Collection<AggregatedMapValue> getIndicatorMapValues( int indicatorId, int periodId,
-        int parentOrganisationUnitId, Integer level )
+                                                                 int parentOrganisationUnitId, Integer level )
     {
         Collection<OrganisationUnit> units = getOrganisationUnits( parentOrganisationUnitId, level );
-        
+
         return getIndicatorMapValues( indicatorId, periodId, units );
     }
-    
+
     public Collection<AggregatedMapValue> getIndicatorMapValues( int indicatorId, int periodId, Collection<OrganisationUnit> units )
     {
         Collection<AggregatedMapValue> values = aggregatedDataValueService.getAggregatedIndicatorMapValues(
@@ -201,7 +201,7 @@ public class DefaultMappingService
         {
             value.setValue( MathUtils.getRounded( value.getValue(), 2 ) );
         }
-        
+
         return values;
     }
 
@@ -215,24 +215,22 @@ public class DefaultMappingService
      * and level must be specified. Period should be specified with "real time"
      * aggregation strategy, any may be specified with "batch" aggregation
      * strategy.
-     * 
-     * @param indicatorId the Indicator identifier.
-     * @param period the Period identifier. Ignored if null.
-     * @param startDate the start date. Ignored if null.
-     * @param endDate the end date. Ignored if null.
+     *
+     * @param dataElementId            the DataElement identifier.
+     * @param periodId                 the Period identifier. Ignored if null.
      * @param parentOrganisationUnitId the parent OrganisationUnit identifier.
-     *        Ignored if null.
-     * @param level the OrganisationUnit level. Ignored if null.
+     *                                 Ignored if null.
+     * @param level                    the OrganisationUnit level. Ignored if null.
      * @return a collection of AggregatedMapValues.
      */
     public Collection<AggregatedMapValue> getDataElementMapValues( int dataElementId, int periodId,
-        int parentOrganisationUnitId, Integer level )
+                                                                   int parentOrganisationUnitId, Integer level )
     {
         Collection<OrganisationUnit> units = getOrganisationUnits( parentOrganisationUnitId, level );
-        
+
         return getDataElementMapValues( dataElementId, periodId, units );
     }
-    
+
     public Collection<AggregatedMapValue> getDataElementMapValues( int dataElementId, int periodId, Collection<OrganisationUnit> units )
     {
         Collection<AggregatedMapValue> values = aggregatedDataValueService.getAggregatedDataMapValues( dataElementId,
@@ -247,7 +245,7 @@ public class DefaultMappingService
     }
 
     public Collection<AggregatedMapValue> getInfrastructuralDataElementMapValues( Integer periodId,
-        Integer organisationUnitId )
+                                                                                  Integer organisationUnitId )
     {
         DataElementGroup group = configurationService.getConfiguration().getInfrastructuralDataElements();
 
@@ -255,10 +253,10 @@ public class DefaultMappingService
         {
             return new HashSet<AggregatedMapValue>();
         }
-        
+
         Collection<Integer> dataElementIds = ConversionUtils.getIdentifiers( DataElement.class, group.getMembers() );
-            
-        return aggregatedDataValueService.getAggregatedDataMapValues( dataElementIds, periodId, organisationUnitId );        
+
+        return aggregatedDataValueService.getAggregatedDataMapValues( dataElementIds, periodId, organisationUnitId );
     }
 
     // -------------------------------------------------------------------------
@@ -295,6 +293,12 @@ public class DefaultMappingService
     public MapLegend getMapLegend( int id )
     {
         return mappingStore.getMapLegend( id );
+    }
+
+    @Override
+    public MapLegend getMapLegend( String uid )
+    {
+        return mappingStore.getMapLegend( uid );
     }
 
     public MapLegend getMapLegendByName( String name )
@@ -355,6 +359,12 @@ public class DefaultMappingService
     public MapLegendSet getMapLegendSet( int id )
     {
         return mappingStore.getMapLegendSet( id );
+    }
+
+    @Override
+    public MapLegendSet getMapLegendSet( String uid )
+    {
+        return mappingStore.getMapLegendSet( uid );
     }
 
     public MapLegendSet getMapLegendSetByName( String name )
@@ -433,10 +443,10 @@ public class DefaultMappingService
     }
 
     public void addMapView( String name, boolean system, String mapValueType, Integer indicatorGroupId,
-        Integer indicatorId, Integer dataElementGroupId, Integer dataElementId, String periodTypeName,
-        Integer periodId, Integer parentOrganisationUnitId, Integer organisationUnitLevel, String mapLegendType,
-        Integer method, Integer classes, String bounds, String colorLow, String colorHigh, Integer mapLegendSetId,
-        Integer radiusLow, Integer radiusHigh, String longitude, String latitude, int zoom )
+                            Integer indicatorId, Integer dataElementGroupId, Integer dataElementId, String periodTypeName,
+                            Integer periodId, Integer parentOrganisationUnitId, Integer organisationUnitLevel, String mapLegendType,
+                            Integer method, Integer classes, String bounds, String colorLow, String colorHigh, Integer mapLegendSetId,
+                            Integer radiusLow, Integer radiusHigh, String longitude, String latitude, int zoom )
     {
         User user = system ? null : currentUserService.getCurrentUser();
 
@@ -509,7 +519,7 @@ public class DefaultMappingService
     {
         if ( mapView != null )
         {
-            mapView.getParentOrganisationUnit().setLevel( organisationUnitService.getLevelOfOrganisationUnit( 
+            mapView.getParentOrganisationUnit().setLevel( organisationUnitService.getLevelOfOrganisationUnit(
                 mapView.getParentOrganisationUnit().getId() ) );
         }
     }
@@ -522,20 +532,20 @@ public class DefaultMappingService
     public MapView getIndicatorLastYearMapView( String indicatorUid, String organisationUnitUid, int level )
     {
         MapView mapView = new MapView();
-        
-        Period period = periodService.reloadPeriod( 
+
+        Period period = periodService.reloadPeriod(
             new RelativePeriods().setThisYear( true ).getRelativePeriods().iterator().next() );
-        
+
         Indicator indicator = indicatorService.getIndicator( indicatorUid );
         OrganisationUnit unit = organisationUnitService.getOrganisationUnit( organisationUnitUid );
-        
+
         mapView.setIndicator( indicator );
         mapView.setPeriod( period );
         mapView.setParentOrganisationUnit( unit );
         mapView.setOrganisationUnitLevel( new OrganisationUnitLevel( level, "" ) );
         mapView.setName( indicator.getName() );
         mapView.setMapValueType( MappingService.MAP_VALUE_TYPE_INDICATOR );
-        
+
         return mapView;
     }
 
@@ -549,7 +559,7 @@ public class DefaultMappingService
         {
             for ( MapView mapView : mapViews )
             {
-                mapView.getParentOrganisationUnit().setLevel( organisationUnitService.getLevelOfOrganisationUnit( 
+                mapView.getParentOrganisationUnit().setLevel( organisationUnitService.getLevelOfOrganisationUnit(
                     mapView.getParentOrganisationUnit().getId() ) );
             }
         }
@@ -565,13 +575,13 @@ public class DefaultMappingService
 
         for ( MapView mapView : mapViews )
         {
-            mapView.getParentOrganisationUnit().setLevel( organisationUnitService.getLevelOfOrganisationUnit( 
+            mapView.getParentOrganisationUnit().setLevel( organisationUnitService.getLevelOfOrganisationUnit(
                 mapView.getParentOrganisationUnit().getId() ) );
         }
 
         return mapViews;
     }
-    
+
     // -------------------------------------------------------------------------
     // MapLayer
     // -------------------------------------------------------------------------
@@ -587,7 +597,7 @@ public class DefaultMappingService
     }
 
     public void addOrUpdateMapLayer( String name, String type, String url, String layers, String time,
-        String fillColor, double fillOpacity, String strokeColor, int strokeWidth )
+                                     String fillColor, double fillOpacity, String strokeColor, int strokeWidth )
     {
         MapLayer mapLayer = mappingStore.getMapLayerByName( name );
 
@@ -619,6 +629,12 @@ public class DefaultMappingService
     public MapLayer getMapLayer( int id )
     {
         return mappingStore.getMapLayer( id );
+    }
+
+    @Override
+    public MapLayer getMapLayer( String uid )
+    {
+        return mappingStore.getMapLayer( uid );
     }
 
     public MapLayer getMapLayerByName( String name )

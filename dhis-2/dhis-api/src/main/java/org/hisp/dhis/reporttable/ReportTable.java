@@ -27,35 +27,20 @@ package org.hisp.dhis.reporttable;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlElementWrapper;
-import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
-
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonView;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlElementWrapper;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 import org.apache.commons.lang.StringUtils;
-import org.codehaus.jackson.annotate.JsonProperty;
-import org.codehaus.jackson.map.annotate.JsonSerialize;
 import org.hisp.dhis.common.BaseIdentifiableObject;
-import org.hisp.dhis.common.BaseNameableObject;
 import org.hisp.dhis.common.CombinationGenerator;
 import org.hisp.dhis.common.Dxf2Namespace;
 import org.hisp.dhis.common.NameableObject;
-import org.hisp.dhis.common.adapter.CategoryComboXmlAdapter;
-import org.hisp.dhis.common.adapter.DataElementXmlAdapter;
-import org.hisp.dhis.common.adapter.DataSetXmlAdapter;
-import org.hisp.dhis.common.adapter.IndicatorXmlAdapter;
-import org.hisp.dhis.common.adapter.OrganisationUnitGroupXmlAdapter;
-import org.hisp.dhis.common.adapter.OrganisationUnitXmlAdapter;
+import org.hisp.dhis.common.view.DetailedView;
+import org.hisp.dhis.common.view.ExportView;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryCombo;
 import org.hisp.dhis.dataelement.DataElementCategoryOption;
@@ -70,6 +55,8 @@ import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.RelativePeriods;
 import org.hisp.dhis.period.comparator.AscendingPeriodComparator;
 
+import java.util.*;
+
 /**
  * The ReportTable object represents a customizable database table. It has
  * features like crosstabulation, relative periods, parameters, and display
@@ -78,9 +65,9 @@ import org.hisp.dhis.period.comparator.AscendingPeriodComparator;
  * @author Lars Helge Overland
  * @version $Id$
  */
-@XmlRootElement( name = "reportTable", namespace = Dxf2Namespace.NAMESPACE )
-@XmlAccessorType( value = XmlAccessType.NONE )
-public class ReportTable extends BaseIdentifiableObject
+@JacksonXmlRootElement( localName = "reportTable", namespace = Dxf2Namespace.NAMESPACE )
+public class ReportTable
+    extends BaseIdentifiableObject
 {
     /**
      * Determines if a de-serialized file is compatible with this class.
@@ -170,8 +157,8 @@ public class ReportTable extends BaseIdentifiableObject
      * Indicates whether the ReportTable contains regression columns.
      */
     private boolean regression;
-    
-    /**    
+
+    /**
      * Indicates whether the ReportTable contains cumulative columns.
      */
     private boolean cumulative;
@@ -205,7 +192,7 @@ public class ReportTable extends BaseIdentifiableObject
      * The list of OrganisationUnitGroups the ReportTable contains.
      */
     private List<OrganisationUnitGroup> organisationUnitGroups = new ArrayList<OrganisationUnitGroup>();
-    
+
     /**
      * The DataElementCategoryCombo for the ReportTable.
      */
@@ -318,7 +305,7 @@ public class ReportTable extends BaseIdentifiableObject
      * The parent organisation unit.
      */
     private OrganisationUnit parentOrganisationUnit;
-    
+
     /**
      * The category option combos derived from the dimension set.
      */
@@ -339,7 +326,6 @@ public class ReportTable extends BaseIdentifiableObject
      * Default constructor.
      *
      * @param name            the name.
-     * @param regression      include regression columns.
      * @param dataElements    the data elements.
      * @param indicators      the indicators.
      * @param dataSets        the datasets.
@@ -421,7 +407,7 @@ public class ReportTable extends BaseIdentifiableObject
 
         Collections.sort( allPeriods, new AscendingPeriodComparator() );
         setNames( allPeriods ); // Set names on periods
-        
+
         if ( isOrganisationUnitGroupBased() )
         {
             allUnits.addAll( organisationUnitGroups );
@@ -555,7 +541,7 @@ public class ReportTable extends BaseIdentifiableObject
 
         return column.length() > 0 ? column.substring( 0, column.lastIndexOf( SEPARATOR ) ) : TOTAL_COLUMN_NAME;
     }
-    
+
     /**
      * Generates a grid identifier based on the internal identifiers of the
      * argument objects.
@@ -679,7 +665,7 @@ public class ReportTable extends BaseIdentifiableObject
     {
         return topLimit != null ? topLimit : 0;
     }
-    
+
     /**
      * Tests whether this report table has report params.
      */
@@ -687,7 +673,7 @@ public class ReportTable extends BaseIdentifiableObject
     {
         return reportParams != null;
     }
-    
+
     /**
      * Returns the name of the parent organisation unit, or an empty string if null.
      */
@@ -695,7 +681,7 @@ public class ReportTable extends BaseIdentifiableObject
     {
         return parentOrganisationUnit != null ? parentOrganisationUnit.getName() : EMPTY;
     }
-    
+
     /**
      * Indicates whether this report table is based on organisation unit groups
      * or the organisation unit hierarchy.
@@ -869,8 +855,9 @@ public class ReportTable extends BaseIdentifiableObject
     // Get- and set-methods for persisted properties
     // -------------------------------------------------------------------------
 
-    @XmlElement
     @JsonProperty
+    @JsonView( {DetailedView.class, ExportView.class} )
+    @JacksonXmlProperty
     public boolean isRegression()
     {
         return regression;
@@ -881,6 +868,9 @@ public class ReportTable extends BaseIdentifiableObject
         this.regression = regression;
     }
 
+    @JsonProperty
+    @JsonView( {DetailedView.class, ExportView.class} )
+    @JacksonXmlProperty
     public boolean isCumulative()
     {
         return cumulative;
@@ -891,11 +881,11 @@ public class ReportTable extends BaseIdentifiableObject
         this.cumulative = cumulative;
     }
 
-    @XmlElementWrapper( name = "dataElements" )
-    @XmlElement( name = "dataElement" )
-    @XmlJavaTypeAdapter( DataElementXmlAdapter.class )
     @JsonProperty
-    @JsonSerialize( contentAs = BaseNameableObject.class )
+    @JsonSerialize( contentAs = BaseIdentifiableObject.class )
+    @JsonView( {DetailedView.class, ExportView.class} )
+    @JacksonXmlElementWrapper( localName = "dataElements" )
+    @JacksonXmlProperty( localName = "dataElement" )
     public List<DataElement> getDataElements()
     {
         return dataElements;
@@ -906,11 +896,11 @@ public class ReportTable extends BaseIdentifiableObject
         this.dataElements = dataElements;
     }
 
-    @XmlElementWrapper( name = "indicators" )
-    @XmlElement( name = "indicator" )
-    @XmlJavaTypeAdapter( IndicatorXmlAdapter.class )
     @JsonProperty
-    @JsonSerialize( contentAs = BaseNameableObject.class )
+    @JsonSerialize( contentAs = BaseIdentifiableObject.class )
+    @JsonView( {DetailedView.class, ExportView.class} )
+    @JacksonXmlElementWrapper( localName = "indicators" )
+    @JacksonXmlProperty( localName = "indicator" )
     public List<Indicator> getIndicators()
     {
         return indicators;
@@ -921,6 +911,11 @@ public class ReportTable extends BaseIdentifiableObject
         this.indicators = indicators;
     }
 
+    @JsonProperty
+    @JsonSerialize( contentAs = BaseIdentifiableObject.class )
+    @JsonView( {DetailedView.class, ExportView.class} )
+    @JacksonXmlElementWrapper( localName = "periods" )
+    @JacksonXmlProperty( localName = "period" )
     public List<Period> getPeriods()
     {
         return periods;
@@ -931,11 +926,11 @@ public class ReportTable extends BaseIdentifiableObject
         this.periods = periods;
     }
 
-    @XmlElementWrapper( name = "dataSets" )
-    @XmlElement( name = "dataSet" )
-    @XmlJavaTypeAdapter( DataSetXmlAdapter.class )
     @JsonProperty
-    @JsonSerialize( contentAs = BaseNameableObject.class )
+    @JsonSerialize( contentAs = BaseIdentifiableObject.class )
+    @JsonView( {DetailedView.class, ExportView.class} )
+    @JacksonXmlElementWrapper( localName = "dataSets" )
+    @JacksonXmlProperty( localName = "dataSet" )
     public List<DataSet> getDataSets()
     {
         return dataSets;
@@ -946,11 +941,11 @@ public class ReportTable extends BaseIdentifiableObject
         this.dataSets = dataSets;
     }
 
-    @XmlElementWrapper( name = "organisationUnits" )
-    @XmlElement( name = "organisationUnit" )
-    @XmlJavaTypeAdapter( OrganisationUnitXmlAdapter.class )
-    @JsonProperty
-    @JsonSerialize( contentAs = BaseNameableObject.class )
+    @JsonProperty( value = "organisationUnits" )
+    @JsonSerialize( contentAs = BaseIdentifiableObject.class )
+    @JsonView( {DetailedView.class, ExportView.class} )
+    @JacksonXmlElementWrapper( localName = "organisationUnits" )
+    @JacksonXmlProperty( localName = "organisationUnit" )
     public List<OrganisationUnit> getUnits()
     {
         return units;
@@ -961,11 +956,11 @@ public class ReportTable extends BaseIdentifiableObject
         this.units = units;
     }
 
-    @XmlElementWrapper( name = "organisationUnitGroups" )
-    @XmlElement( name = "organisationUnitGroup" )
-    @XmlJavaTypeAdapter( OrganisationUnitGroupXmlAdapter.class )
     @JsonProperty
-    @JsonSerialize( contentAs = BaseNameableObject.class )
+    @JsonSerialize( contentAs = BaseIdentifiableObject.class )
+    @JsonView( {DetailedView.class, ExportView.class} )
+    @JacksonXmlElementWrapper( localName = "organisationUnitGroups" )
+    @JacksonXmlProperty( localName = "organisationUnitGroup" )
     public List<OrganisationUnitGroup> getOrganisationUnitGroups()
     {
         return organisationUnitGroups;
@@ -976,10 +971,10 @@ public class ReportTable extends BaseIdentifiableObject
         this.organisationUnitGroups = organisationUnitGroups;
     }
 
-    @XmlElement
-    @XmlJavaTypeAdapter( CategoryComboXmlAdapter.class )
     @JsonProperty
     @JsonSerialize( as = BaseIdentifiableObject.class )
+    @JsonView( {DetailedView.class, ExportView.class} )
+    @JacksonXmlProperty
     public DataElementCategoryCombo getCategoryCombo()
     {
         return categoryCombo;
@@ -990,8 +985,9 @@ public class ReportTable extends BaseIdentifiableObject
         this.categoryCombo = categoryCombo;
     }
 
-    @XmlElement
     @JsonProperty
+    @JsonView( {DetailedView.class, ExportView.class} )
+    @JacksonXmlProperty
     public boolean isDoIndicators()
     {
         return doIndicators;
@@ -1002,8 +998,9 @@ public class ReportTable extends BaseIdentifiableObject
         this.doIndicators = doIndicators;
     }
 
-    @XmlElement
     @JsonProperty
+    @JsonView( {DetailedView.class, ExportView.class} )
+    @JacksonXmlProperty
     public boolean isDoPeriods()
     {
         return doPeriods;
@@ -1014,8 +1011,9 @@ public class ReportTable extends BaseIdentifiableObject
         this.doPeriods = doPeriods;
     }
 
-    @XmlElement
     @JsonProperty
+    @JsonView( {DetailedView.class, ExportView.class} )
+    @JacksonXmlProperty
     public boolean isDoUnits()
     {
         return doUnits;
@@ -1026,8 +1024,9 @@ public class ReportTable extends BaseIdentifiableObject
         this.doUnits = doUnits;
     }
 
-    @XmlElement( name = "relativePeriods" )
     @JsonProperty( value = "relativePeriods" )
+    @JsonView( {DetailedView.class, ExportView.class} )
+    @JacksonXmlProperty
     public RelativePeriods getRelatives()
     {
         return relatives;
@@ -1038,8 +1037,9 @@ public class ReportTable extends BaseIdentifiableObject
         this.relatives = relatives;
     }
 
-    @XmlElement
     @JsonProperty
+    @JsonView( {DetailedView.class, ExportView.class} )
+    @JacksonXmlProperty
     public ReportParams getReportParams()
     {
         return reportParams;
@@ -1050,8 +1050,9 @@ public class ReportTable extends BaseIdentifiableObject
         this.reportParams = reportParams;
     }
 
-    @XmlElement
     @JsonProperty
+    @JsonView( {DetailedView.class, ExportView.class} )
+    @JacksonXmlProperty
     public Integer getSortOrder()
     {
         return sortOrder;
@@ -1062,8 +1063,9 @@ public class ReportTable extends BaseIdentifiableObject
         this.sortOrder = sortOrder;
     }
 
-    @XmlElement
     @JsonProperty
+    @JsonView( {DetailedView.class, ExportView.class} )
+    @JacksonXmlProperty
     public Integer getTopLimit()
     {
         return topLimit;
@@ -1078,31 +1080,37 @@ public class ReportTable extends BaseIdentifiableObject
     // Get- and set-methods for transient properties
     // -------------------------------------------------------------------------
 
+    @JsonIgnore
     public List<Period> getRelativePeriods()
     {
         return relativePeriods;
     }
 
+    @JsonIgnore
     public void setRelativePeriods( List<Period> relativePeriods )
     {
         this.relativePeriods = relativePeriods;
     }
 
+    @JsonIgnore
     public List<Period> getAllPeriods()
     {
         return allPeriods;
     }
 
+    @JsonIgnore
     public List<OrganisationUnit> getRelativeUnits()
     {
         return relativeUnits;
     }
 
+    @JsonIgnore
     public void setRelativeUnits( List<OrganisationUnit> relativeUnits )
     {
         this.relativeUnits = relativeUnits;
     }
 
+    @JsonIgnore
     public List<NameableObject> getAllUnits()
     {
         return allUnits;
@@ -1118,56 +1126,67 @@ public class ReportTable extends BaseIdentifiableObject
         i18nFormat = format;
     }
 
+    @JsonIgnore
     public String getReportingPeriodName()
     {
         return reportingPeriodName;
     }
 
+    @JsonIgnore
     public void setReportingPeriodName( String reportingPeriodName )
     {
         this.reportingPeriodName = reportingPeriodName;
     }
 
+    @JsonIgnore
     public List<List<NameableObject>> getColumns()
     {
         return columns;
     }
 
+    @JsonIgnore
     public List<List<NameableObject>> getRows()
     {
         return rows;
     }
 
+    @JsonIgnore
     public List<String> getIndexColumns()
     {
         return indexColumns;
     }
 
+    @JsonIgnore
     public List<String> getIndexNameColumns()
     {
         return indexNameColumns;
     }
 
+    @JsonIgnore
     public List<String> getIndexCodeColumns()
     {
         return indexCodeColumns;
     }
-    
+
+    @JsonIgnore
     public OrganisationUnit getParentOrganisationUnit()
     {
         return parentOrganisationUnit;
     }
 
+    @JsonIgnore
     public void setParentOrganisationUnit( OrganisationUnit parentOrganisationUnit )
     {
         this.parentOrganisationUnit = parentOrganisationUnit;
     }
 
+    @JsonIgnore
     public List<DataElementCategoryOptionCombo> getCategoryOptionCombos()
     {
         return categoryOptionCombos;
     }
 
+    @JsonIgnore
     public void setCategoryOptionCombos( List<DataElementCategoryOptionCombo> categoryOptionCombos )
     {
         this.categoryOptionCombos = categoryOptionCombos;

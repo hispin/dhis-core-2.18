@@ -27,14 +27,11 @@ package org.hisp.dhis.dataentryform;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import org.codehaus.jackson.annotate.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 import org.hisp.dhis.common.Dxf2Namespace;
 import org.hisp.dhis.common.ImportableObject;
 
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlRootElement;
 import java.io.Serializable;
 import java.util.Map;
 import java.util.regex.Matcher;
@@ -43,8 +40,7 @@ import java.util.regex.Pattern;
 /**
  * @author Bharath Kumar
  */
-@XmlRootElement( name = "dataEntryForm", namespace = Dxf2Namespace.NAMESPACE )
-@XmlAccessorType( value = XmlAccessType.NONE )
+@JacksonXmlRootElement( localName = "dataEntryForm", namespace = Dxf2Namespace.NAMESPACE )
 public class DataEntryForm
     implements Serializable, ImportableObject
 {
@@ -189,7 +185,6 @@ public class DataEntryForm
         this.id = id;
     }
 
-    @XmlElement
     @JsonProperty
     public String getName()
     {
@@ -201,7 +196,6 @@ public class DataEntryForm
         this.name = name;
     }
 
-    @XmlElement
     @JsonProperty
     public String getHtmlCode()
     {

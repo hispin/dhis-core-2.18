@@ -27,15 +27,18 @@ package org.hisp.dhis.dataelement;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import org.codehaus.jackson.annotate.JsonProperty;
-import org.codehaus.jackson.map.annotate.JsonSerialize;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonView;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlElementWrapper;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 import org.hisp.dhis.common.BaseIdentifiableObject;
 import org.hisp.dhis.common.Dxf2Namespace;
-import org.hisp.dhis.common.adapter.DataElementGroupXmlAdapter;
 import org.hisp.dhis.common.comparator.IdentifiableObjectNameComparator;
+import org.hisp.dhis.common.view.DetailedView;
+import org.hisp.dhis.common.view.ExportView;
 
-import javax.xml.bind.annotation.*;
-import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -48,9 +51,9 @@ import java.util.List;
  *
  * @author Lars Helge Overland
  */
-@XmlRootElement( name = "dataElementGroupSet", namespace = Dxf2Namespace.NAMESPACE )
-@XmlAccessorType( value = XmlAccessType.NONE )
-public class DataElementGroupSet extends BaseIdentifiableObject
+@JacksonXmlRootElement( localName = "dataElementGroupSet", namespace = Dxf2Namespace.NAMESPACE )
+public class DataElementGroupSet
+    extends BaseIdentifiableObject
 {
     /**
      * Determines if a de-serialized file is compatible with this class.
@@ -195,8 +198,8 @@ public class DataElementGroupSet extends BaseIdentifiableObject
     // Getters and setters
     // -------------------------------------------------------------------------
 
-    @XmlElement
     @JsonProperty
+    @JsonView( {DetailedView.class, ExportView.class} )
     public String getDescription()
     {
         return description;
@@ -207,8 +210,8 @@ public class DataElementGroupSet extends BaseIdentifiableObject
         this.description = description;
     }
 
-    @XmlElement
     @JsonProperty
+    @JsonView( {DetailedView.class, ExportView.class} )
     public Boolean isCompulsory()
     {
         if ( compulsory == null )
@@ -224,11 +227,11 @@ public class DataElementGroupSet extends BaseIdentifiableObject
         this.compulsory = compulsory;
     }
 
-    @XmlElementWrapper( name = "dataElementGroups" )
-    @XmlElement( name = "dataElementGroup" )
-    @XmlJavaTypeAdapter( DataElementGroupXmlAdapter.class )
     @JsonProperty( value = "dataElementGroups" )
     @JsonSerialize( contentAs = BaseIdentifiableObject.class )
+    @JsonView( {DetailedView.class, ExportView.class} )
+    @JacksonXmlElementWrapper( localName = "dataElementGroups" )
+    @JacksonXmlProperty( localName = "dataElementGroup" )
     public List<DataElementGroup> getMembers()
     {
         return members;

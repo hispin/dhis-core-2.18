@@ -27,16 +27,22 @@ package org.hisp.dhis.mapping;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonView;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
+import org.hisp.dhis.common.BaseIdentifiableObject;
+import org.hisp.dhis.common.Dxf2Namespace;
+import org.hisp.dhis.common.view.DetailedView;
+import org.hisp.dhis.common.view.ExportView;
+
 /**
  * @author Jan Henrik Overland
- * @version $Id$
  */
+@JacksonXmlRootElement( localName = "mapLegendSet", namespace = Dxf2Namespace.NAMESPACE )
 public class MapLegend
+    extends BaseIdentifiableObject
 {
-    private int id;
-
-    private String name;
-
     private Double startValue;
 
     private Double endValue;
@@ -95,26 +101,9 @@ public class MapLegend
     // Getters and setters
     // -------------------------------------------------------------------------
 
-    public int getId()
-    {
-        return id;
-    }
-
-    public void setId( int id )
-    {
-        this.id = id;
-    }
-
-    public String getName()
-    {
-        return name;
-    }
-
-    public void setName( String name )
-    {
-        this.name = name;
-    }
-
+    @JsonProperty
+    @JsonView( {DetailedView.class, ExportView.class} )
+    @JacksonXmlProperty
     public Double getStartValue()
     {
         return startValue;
@@ -125,6 +114,9 @@ public class MapLegend
         this.startValue = startValue;
     }
 
+    @JsonProperty
+    @JsonView( {DetailedView.class, ExportView.class} )
+    @JacksonXmlProperty
     public Double getEndValue()
     {
         return endValue;
@@ -135,6 +127,9 @@ public class MapLegend
         this.endValue = endValue;
     }
 
+    @JsonProperty
+    @JsonView( {DetailedView.class, ExportView.class} )
+    @JacksonXmlProperty
     public String getColor()
     {
         return color;
@@ -145,6 +140,9 @@ public class MapLegend
         this.color = color;
     }
 
+    @JsonProperty
+    @JsonView( {DetailedView.class, ExportView.class} )
+    @JacksonXmlProperty
     public String getImage()
     {
         return image;

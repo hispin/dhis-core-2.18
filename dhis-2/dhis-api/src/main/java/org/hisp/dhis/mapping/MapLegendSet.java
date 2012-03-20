@@ -27,22 +27,29 @@ package org.hisp.dhis.mapping;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.HashSet;
-import java.util.Set;
-
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonView;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlElementWrapper;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
+import org.hisp.dhis.common.BaseIdentifiableObject;
+import org.hisp.dhis.common.Dxf2Namespace;
+import org.hisp.dhis.common.view.DetailedView;
+import org.hisp.dhis.common.view.ExportView;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.indicator.Indicator;
 
+import java.util.HashSet;
+import java.util.Set;
+
 /**
  * @author Jan Henrik Overland
- * @version $Id$
  */
+@JacksonXmlRootElement( localName = "mapLegendSet", namespace = Dxf2Namespace.NAMESPACE )
 public class MapLegendSet
+    extends BaseIdentifiableObject
 {
-    private int id;
-
-    private String name;
-
     private String type;
 
     private String symbolizer;
@@ -58,7 +65,7 @@ public class MapLegendSet
     }
 
     public MapLegendSet( String name, String type, String symbolizer, Set<MapLegend> mapLegends,
-        Set<Indicator> indicators, Set<DataElement> dataElements )
+                         Set<Indicator> indicators, Set<DataElement> dataElements )
     {
         this.name = name;
         this.type = type;
@@ -105,26 +112,9 @@ public class MapLegendSet
     // Getters and setters
     // -------------------------------------------------------------------------
 
-    public int getId()
-    {
-        return id;
-    }
-
-    public void setId( int id )
-    {
-        this.id = id;
-    }
-
-    public String getName()
-    {
-        return name;
-    }
-
-    public void setName( String name )
-    {
-        this.name = name;
-    }
-
+    @JsonProperty
+    @JsonView( {DetailedView.class, ExportView.class} )
+    @JacksonXmlProperty
     public String getType()
     {
         return type;
@@ -135,6 +125,9 @@ public class MapLegendSet
         this.type = type;
     }
 
+    @JsonProperty
+    @JsonView( {DetailedView.class, ExportView.class} )
+    @JacksonXmlProperty
     public String getSymbolizer()
     {
         return symbolizer;
@@ -145,6 +138,11 @@ public class MapLegendSet
         this.symbolizer = symbolizer;
     }
 
+    @JsonProperty
+    @JsonSerialize( contentAs = BaseIdentifiableObject.class )
+    @JsonView( {DetailedView.class, ExportView.class} )
+    @JacksonXmlElementWrapper( localName = "mapLegends" )
+    @JacksonXmlProperty( localName = "mapLegend" )
     public Set<MapLegend> getMapLegends()
     {
         return mapLegends;
@@ -155,6 +153,11 @@ public class MapLegendSet
         this.mapLegends = mapLegends;
     }
 
+    @JsonProperty
+    @JsonSerialize( contentAs = BaseIdentifiableObject.class )
+    @JsonView( {DetailedView.class, ExportView.class} )
+    @JacksonXmlElementWrapper( localName = "indicators" )
+    @JacksonXmlProperty( localName = "indicator" )
     public Set<Indicator> getIndicators()
     {
         return indicators;
@@ -165,6 +168,11 @@ public class MapLegendSet
         this.indicators = indicators;
     }
 
+    @JsonProperty
+    @JsonSerialize( contentAs = BaseIdentifiableObject.class )
+    @JsonView( {DetailedView.class, ExportView.class} )
+    @JacksonXmlElementWrapper( localName = "dataElements" )
+    @JacksonXmlProperty( localName = "dataElement" )
     public Set<DataElement> getDataElements()
     {
         return dataElements;

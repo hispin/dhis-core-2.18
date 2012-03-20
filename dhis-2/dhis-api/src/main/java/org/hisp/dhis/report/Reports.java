@@ -27,30 +27,25 @@ package org.hisp.dhis.report;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlElementWrapper;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
+import org.hisp.dhis.common.BaseCollection;
+import org.hisp.dhis.common.Dxf2Namespace;
+
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
-
-import org.codehaus.jackson.annotate.JsonProperty;
-import org.codehaus.jackson.map.annotate.JsonSerialize;
-import org.hisp.dhis.common.*;
-import org.hisp.dhis.common.adapter.ReportXmlAdapter;
-
-@XmlRootElement( name = "reports", namespace = Dxf2Namespace.NAMESPACE )
-@XmlAccessorType( value = XmlAccessType.NONE )
-public class Reports extends BaseCollection
+@JacksonXmlRootElement( localName = "dxf2", namespace = Dxf2Namespace.NAMESPACE )
+public class Reports
+    extends BaseCollection
 {
     private List<Report> reports = new ArrayList<Report>();
 
-    @XmlElement( name = "report" )
-    @XmlJavaTypeAdapter( ReportXmlAdapter.class )
-    @JsonProperty( value = "reports" )
-    @JsonSerialize( contentAs = BaseIdentifiableObject.class )
+    @JsonProperty
+    @JacksonXmlElementWrapper( localName = "reports", namespace = Dxf2Namespace.NAMESPACE )
+    @JacksonXmlProperty( localName = "report", namespace = Dxf2Namespace.NAMESPACE )
     public List<Report> getReports()
     {
         return reports;

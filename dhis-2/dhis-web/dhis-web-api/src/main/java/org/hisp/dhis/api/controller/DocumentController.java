@@ -124,6 +124,7 @@ public class DocumentController
         }
 
         model.addAttribute( "model", document );
+        model.addAttribute( "view", "detailed" );
 
         return "document";
     }

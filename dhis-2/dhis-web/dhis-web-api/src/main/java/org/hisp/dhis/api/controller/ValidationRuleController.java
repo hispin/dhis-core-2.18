@@ -111,6 +111,7 @@ public class ValidationRuleController
         }
 
         model.addAttribute( "model", validationRule );
+        model.addAttribute( "view", "detailed" );
 
         return "validationRule";
     }

@@ -113,6 +113,7 @@ public class MapController
         }
 
         model.addAttribute( "model", mapView );
+        model.addAttribute( "view", "detailed" );
 
         return "map";
     }

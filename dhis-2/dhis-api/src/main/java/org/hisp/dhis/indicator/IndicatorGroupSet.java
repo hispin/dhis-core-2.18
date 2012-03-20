@@ -27,24 +27,22 @@ package org.hisp.dhis.indicator;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonView;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlElementWrapper;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
+import org.hisp.dhis.common.BaseIdentifiableObject;
+import org.hisp.dhis.common.Dxf2Namespace;
+import org.hisp.dhis.common.comparator.IdentifiableObjectNameComparator;
+import org.hisp.dhis.common.view.DetailedView;
+import org.hisp.dhis.common.view.ExportView;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
-
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlElementWrapper;
-import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
-
-import org.codehaus.jackson.annotate.JsonProperty;
-import org.codehaus.jackson.map.annotate.JsonSerialize;
-import org.hisp.dhis.common.BaseIdentifiableObject;
-import org.hisp.dhis.common.Dxf2Namespace;
-import org.hisp.dhis.common.adapter.IndicatorGroupXmlAdapter;
-import org.hisp.dhis.common.comparator.IdentifiableObjectNameComparator;
 
 /**
  * An IndicatorGroupSet is a set of IndicatorGroups. It is by default exclusive,
@@ -53,9 +51,9 @@ import org.hisp.dhis.common.comparator.IdentifiableObjectNameComparator;
  *
  * @author Lars Helge Overland
  */
-@XmlRootElement( name = "indicatorGroupSet", namespace = Dxf2Namespace.NAMESPACE )
-@XmlAccessorType( value = XmlAccessType.NONE )
-public class IndicatorGroupSet extends BaseIdentifiableObject
+@JacksonXmlRootElement( localName = "indicatorGroupSet", namespace = Dxf2Namespace.NAMESPACE )
+public class IndicatorGroupSet
+    extends BaseIdentifiableObject
 {
     /**
      * Determines if a de-serialized file is compatible with this class.
@@ -194,8 +192,8 @@ public class IndicatorGroupSet extends BaseIdentifiableObject
     // Getters and setters
     // -------------------------------------------------------------------------
 
-    @XmlElement
     @JsonProperty
+    @JsonView( {DetailedView.class, ExportView.class} )
     public String getDescription()
     {
         return description;
@@ -206,8 +204,8 @@ public class IndicatorGroupSet extends BaseIdentifiableObject
         this.description = description;
     }
 
-    @XmlElement
     @JsonProperty
+    @JsonView( {DetailedView.class, ExportView.class} )
     public Boolean isCompulsory()
     {
         if ( compulsory == null )
@@ -223,11 +221,11 @@ public class IndicatorGroupSet extends BaseIdentifiableObject
         this.compulsory = compulsory;
     }
 
-    @XmlElementWrapper( name = "indicatorGroups" )
-    @XmlElement( name = "indicatorGroup" )
-    @XmlJavaTypeAdapter( IndicatorGroupXmlAdapter.class )
     @JsonProperty( value = "indicatorGroups" )
     @JsonSerialize( contentAs = BaseIdentifiableObject.class )
+    @JsonView( {DetailedView.class, ExportView.class} )
+    @JacksonXmlElementWrapper( localName = "indicatorGroups" )
+    @JacksonXmlProperty( localName = "indicatorGroup" )
     public List<IndicatorGroup> getMembers()
     {
         return members;

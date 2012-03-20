@@ -1,7 +1,9 @@
 <?xml version="1.0"?>
 <!DOCTYPE hibernate-mapping PUBLIC
   "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
-  "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+  "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd"
+  [<!ENTITY identifiableProperties SYSTEM "classpath://org/hisp/dhis/common/identifiableProperties.hbm">]
+>
 
 <hibernate-mapping>
   <class name="org.hisp.dhis.mapping.MapLegendSet" table="maplegendset">
@@ -9,8 +11,7 @@
     <id name="id" column="maplegendsetid">
       <generator class="native" />
     </id>
-
-    <property name="name" column="name" unique="true" />
+    &identifiableProperties;
 
     <property name="type" column="type" />
 

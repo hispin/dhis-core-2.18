@@ -93,6 +93,7 @@ public class UserGroupController
         }
 
         model.addAttribute( "model", userGroup );
+        model.addAttribute( "view", "detailed" );
 
         return "userGroup";
     }

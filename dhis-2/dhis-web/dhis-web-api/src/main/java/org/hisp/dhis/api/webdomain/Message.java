@@ -1,22 +1,23 @@
 package org.hisp.dhis.api.webdomain;
 
+import com.fasterxml.jackson.annotation.JsonView;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlElementWrapper;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 import org.codehaus.jackson.annotate.JsonProperty;
 import org.codehaus.jackson.map.annotate.JsonSerialize;
 import org.hisp.dhis.common.BaseIdentifiableObject;
 import org.hisp.dhis.common.Dxf2Namespace;
-import org.hisp.dhis.common.adapter.UserXmlAdapter;
+import org.hisp.dhis.common.view.DetailedView;
 import org.hisp.dhis.user.User;
 
-import javax.xml.bind.annotation.*;
-import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import java.util.HashSet;
 import java.util.Set;
 
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
-@XmlRootElement( name = "message", namespace = Dxf2Namespace.NAMESPACE )
-@XmlAccessorType( value = XmlAccessType.NONE )
+@JacksonXmlRootElement( localName = "message", namespace = Dxf2Namespace.NAMESPACE )
 public class Message
 {
     private String subject;
@@ -25,8 +26,8 @@ public class Message
 
     private Set<User> users = new HashSet<User>();
 
-    @XmlElement
     @JsonProperty
+    @JsonView( {DetailedView.class} )
     public String getSubject()
     {
         return subject;
@@ -37,8 +38,8 @@ public class Message
         this.subject = subject;
     }
 
-    @XmlElement
     @JsonProperty
+    @JsonView( {DetailedView.class} )
     public String getText()
     {
         return text;
@@ -49,11 +50,11 @@ public class Message
         this.text = text;
     }
 
-    @XmlElementWrapper( name = "users" )
-    @XmlElement( name = "user" )
-    @XmlJavaTypeAdapter( UserXmlAdapter.class )
     @JsonProperty
     @JsonSerialize( contentAs = BaseIdentifiableObject.class )
+    @JsonView( {DetailedView.class} )
+    @JacksonXmlElementWrapper( localName = "users" )
+    @JacksonXmlProperty( localName = "user" )
     public Set<User> getUsers()
     {
         return users;

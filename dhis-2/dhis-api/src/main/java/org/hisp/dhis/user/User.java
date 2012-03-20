@@ -27,28 +27,30 @@ package org.hisp.dhis.user;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonView;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlElementWrapper;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 import org.apache.commons.collections.CollectionUtils;
-import org.codehaus.jackson.annotate.JsonProperty;
-import org.codehaus.jackson.map.annotate.JsonSerialize;
 import org.hisp.dhis.attribute.AttributeValue;
 import org.hisp.dhis.common.BaseIdentifiableObject;
 import org.hisp.dhis.common.Dxf2Namespace;
 import org.hisp.dhis.common.IdentifiableObjectUtils;
-import org.hisp.dhis.common.adapter.OrganisationUnitXmlAdapter;
+import org.hisp.dhis.common.view.DetailedView;
+import org.hisp.dhis.common.view.ExportView;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 
-import javax.xml.bind.annotation.*;
-import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
 /**
  * @author Nguyen Hong Duc
- * @version $Id: User.java 5554 2008-08-20 09:18:38Z abyot $
  */
-@XmlRootElement( name = "user", namespace = Dxf2Namespace.NAMESPACE )
-@XmlAccessorType( value = XmlAccessType.NONE )
+@JacksonXmlRootElement( localName = "user", namespace = Dxf2Namespace.NAMESPACE )
 public class User
     extends BaseIdentifiableObject
 {
@@ -103,19 +105,19 @@ public class User
     public int hashCode()
     {
         final int prime = 31;
-        
+
         int result = 1;
-        
-        result = prime * result + ( ( email == null) ? 0 : email.hashCode() );
-        result = prime * result + ( ( firstName == null) ? 0 : firstName.hashCode() );
-        result = prime * result + ( ( phoneNumber == null) ? 0 : phoneNumber.hashCode() );
-        result = prime * result + ( ( surname == null) ? 0 : surname.hashCode() );
-        
+
+        result = prime * result + ((email == null) ? 0 : email.hashCode());
+        result = prime * result + ((firstName == null) ? 0 : firstName.hashCode());
+        result = prime * result + ((phoneNumber == null) ? 0 : phoneNumber.hashCode());
+        result = prime * result + ((surname == null) ? 0 : surname.hashCode());
+
         return result;
     }
 
     // TODO fix, users might very well have the same name, should use credentials
-    
+
     @Override
     public boolean equals( Object object )
     {
@@ -127,12 +129,12 @@ public class User
         {
             return false;
         }
-        
+
         if ( getClass() != object.getClass() )
         {
             return false;
         }
-        
+
         User other = (User) object;
 
         if ( firstName == null )
@@ -158,7 +160,7 @@ public class User
         {
             return false;
         }
-        
+
         if ( email == null )
         {
             if ( other.email != null )
@@ -170,7 +172,7 @@ public class User
         {
             return false;
         }
-        
+
         if ( phoneNumber == null )
         {
             if ( other.phoneNumber != null )
@@ -182,7 +184,7 @@ public class User
         {
             return false;
         }
-        
+
         return true;
     }
 
@@ -255,8 +257,9 @@ public class User
     // Getters and setters
     // -------------------------------------------------------------------------
 
-    @XmlElement
     @JsonProperty
+    @JsonView( {DetailedView.class, ExportView.class} )
+    @JacksonXmlProperty
     public String getFirstName()
     {
         return firstName;
@@ -267,8 +270,9 @@ public class User
         this.firstName = firstName;
     }
 
-    @XmlElement
     @JsonProperty
+    @JsonView( {DetailedView.class, ExportView.class} )
+    @JacksonXmlProperty
     public String getSurname()
     {
         return surname;
@@ -279,8 +283,9 @@ public class User
         this.surname = surname;
     }
 
-    @XmlElement
     @JsonProperty
+    @JsonView( {DetailedView.class, ExportView.class} )
+    @JacksonXmlProperty
     public String getEmail()
     {
         return email;
@@ -291,8 +296,9 @@ public class User
         this.email = email;
     }
 
-    @XmlElement
     @JsonProperty
+    @JsonView( {DetailedView.class, ExportView.class} )
+    @JacksonXmlProperty
     public String getPhoneNumber()
     {
         return phoneNumber;
@@ -303,6 +309,9 @@ public class User
         this.phoneNumber = phoneNumber;
     }
 
+    @JsonProperty
+    @JsonView( {DetailedView.class, ExportView.class} )
+    @JacksonXmlProperty
     public UserCredentials getUserCredentials()
     {
         return userCredentials;
@@ -313,11 +322,11 @@ public class User
         this.userCredentials = userCredentials;
     }
 
-    @XmlElementWrapper( name = "organisationUnits" )
-    @XmlElement( name = "organisationUnit" )
-    @XmlJavaTypeAdapter( OrganisationUnitXmlAdapter.class )
     @JsonProperty
     @JsonSerialize( contentAs = BaseIdentifiableObject.class )
+    @JsonView( {DetailedView.class, ExportView.class} )
+    @JacksonXmlElementWrapper( localName = "organisationUnits" )
+    @JacksonXmlProperty( localName = "organisationUnit" )
     public Collection<OrganisationUnit> getOrganisationUnits()
     {
         return organisationUnits;
@@ -328,9 +337,10 @@ public class User
         this.organisationUnits = organisationUnits;
     }
 
-    @XmlElementWrapper( name = "attributes" )
-    @XmlElement( name = "attribute" )
     @JsonProperty( value = "attributes" )
+    @JsonView( {DetailedView.class, ExportView.class} )
+    @JacksonXmlElementWrapper( localName = "attributes" )
+    @JacksonXmlProperty( localName = "attribute" )
     public Set<AttributeValue> getAttributeValues()
     {
         return attributeValues;

@@ -27,26 +27,28 @@ package org.hisp.dhis.dataelement;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import org.codehaus.jackson.annotate.JsonProperty;
-import org.codehaus.jackson.map.annotate.JsonSerialize;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonView;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlElementWrapper;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 import org.hisp.dhis.common.BaseIdentifiableObject;
 import org.hisp.dhis.common.BaseNameableObject;
 import org.hisp.dhis.common.Dxf2Namespace;
-import org.hisp.dhis.common.adapter.BaseIdentifiableObjectXmlAdapter;
-import org.hisp.dhis.common.adapter.CategoryOptionComboXmlAdapter;
+import org.hisp.dhis.common.view.DetailedView;
 import org.hisp.dhis.concept.Concept;
 
-import javax.xml.bind.annotation.*;
-import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import java.util.HashSet;
 import java.util.Set;
 
 /**
  * @author Abyot Asalefew
  */
-@XmlRootElement( name = "categoryOption", namespace = Dxf2Namespace.NAMESPACE )
-@XmlAccessorType( value = XmlAccessType.NONE )
-public class DataElementCategoryOption extends BaseNameableObject
+@JacksonXmlRootElement( localName = "dataElement", namespace = Dxf2Namespace.NAMESPACE )
+public class DataElementCategoryOption
+    extends BaseNameableObject
 {
     /**
      * Determines if a de-serialized file is compatible with this class.
@@ -127,15 +129,15 @@ public class DataElementCategoryOption extends BaseNameableObject
     // -------------------------------------------------------------------------
 
     @Override
+    @JsonIgnore
     public String getShortName()
     {
         return name;
     }
 
-    @XmlElement
-    @XmlJavaTypeAdapter( BaseIdentifiableObjectXmlAdapter.class )
     @JsonProperty
     @JsonSerialize( as = BaseIdentifiableObject.class )
+    @JsonView( {DetailedView.class} )
     public DataElementCategory getCategory()
     {
         return category;
@@ -146,7 +148,6 @@ public class DataElementCategoryOption extends BaseNameableObject
         this.category = category;
     }
 
-    // TODO Serialize this when bobs concept stuff is in place
     public Concept getConcept()
     {
         return concept;
@@ -157,11 +158,11 @@ public class DataElementCategoryOption extends BaseNameableObject
         this.concept = concept;
     }
 
-    @XmlElementWrapper( name = "categoryOptionCombos" )
-    @XmlJavaTypeAdapter( CategoryOptionComboXmlAdapter.class )
-    @XmlElement( name = "categoryOptionCombo" )
     @JsonProperty
     @JsonSerialize( contentAs = BaseIdentifiableObject.class )
+    @JsonView( {DetailedView.class} )
+    @JacksonXmlElementWrapper( localName = "categoryOptionCombos" )
+    @JacksonXmlProperty( localName = "categoryOptionCombo" )
     public Set<DataElementCategoryOptionCombo> getCategoryOptionCombos()
     {
         return categoryOptionCombos;

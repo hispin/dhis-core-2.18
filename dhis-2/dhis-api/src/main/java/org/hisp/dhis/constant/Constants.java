@@ -28,32 +28,28 @@ package org.hisp.dhis.constant;
  */
 
 
-import org.codehaus.jackson.annotate.JsonProperty;
-import org.codehaus.jackson.map.annotate.JsonSerialize;
-import org.hisp.dhis.common.*;
-import org.hisp.dhis.common.adapter.ConstantXmlAdapter;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlElementWrapper;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
+import org.hisp.dhis.common.BaseCollection;
+import org.hisp.dhis.common.Dxf2Namespace;
 
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import java.util.ArrayList;
 import java.util.List;
 
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
-@XmlRootElement( name = "constants", namespace = Dxf2Namespace.NAMESPACE )
-@XmlAccessorType( value = XmlAccessType.NONE )
-public class Constants extends BaseCollection
+@JacksonXmlRootElement( localName = "dxf2", namespace = Dxf2Namespace.NAMESPACE )
+public class Constants
+    extends BaseCollection
 {
     private List<Constant> constants = new ArrayList<Constant>();
 
-    @XmlElement( name = "constant" )
-    @XmlJavaTypeAdapter( ConstantXmlAdapter.class )
-    @JsonProperty( value = "constants" )
-    @JsonSerialize( contentAs = BaseIdentifiableObject.class )
+    @JsonProperty
+    @JacksonXmlElementWrapper( localName = "constants", namespace = Dxf2Namespace.NAMESPACE )
+    @JacksonXmlProperty( localName = "constant", namespace = Dxf2Namespace.NAMESPACE )
     public List<Constant> getConstants()
     {
         return constants;

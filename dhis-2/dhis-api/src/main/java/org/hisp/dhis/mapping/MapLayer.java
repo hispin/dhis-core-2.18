@@ -27,16 +27,22 @@ package org.hisp.dhis.mapping;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonView;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
+import org.hisp.dhis.common.BaseIdentifiableObject;
+import org.hisp.dhis.common.Dxf2Namespace;
+import org.hisp.dhis.common.view.DetailedView;
+import org.hisp.dhis.common.view.ExportView;
+
 /**
  * @author Jan Henrik Overland
- * @version $Id$
  */
+@JacksonXmlRootElement( localName = "mapLayer", namespace = Dxf2Namespace.NAMESPACE )
 public class MapLayer
+    extends BaseIdentifiableObject
 {
-    private int id;
-
-    private String name;
-
     private String type;
 
     private String url;
@@ -58,7 +64,7 @@ public class MapLayer
     }
 
     public MapLayer( String name, String type, String url, String layers, String time, String fillColor,
-        double fillOpacity, String strokeColor, int strokeWidth )
+                     double fillOpacity, String strokeColor, int strokeWidth )
     {
         this.name = name;
         this.type = type;
@@ -108,26 +114,9 @@ public class MapLayer
     // Getters and setters
     // -------------------------------------------------------------------------
 
-    public int getId()
-    {
-        return id;
-    }
-
-    public void setId( int id )
-    {
-        this.id = id;
-    }
-
-    public String getName()
-    {
-        return name;
-    }
-
-    public void setName( String name )
-    {
-        this.name = name;
-    }
-
+    @JsonProperty
+    @JsonView( {DetailedView.class, ExportView.class} )
+    @JacksonXmlProperty
     public String getType()
     {
         return type;
@@ -138,6 +127,9 @@ public class MapLayer
         this.type = type;
     }
 
+    @JsonProperty
+    @JsonView( {DetailedView.class, ExportView.class} )
+    @JacksonXmlProperty
     public String getUrl()
     {
         return url;
@@ -148,6 +140,9 @@ public class MapLayer
         this.url = url;
     }
 
+    @JsonProperty
+    @JsonView( {DetailedView.class, ExportView.class} )
+    @JacksonXmlProperty
     public String getLayers()
     {
         return layers;
@@ -158,6 +153,9 @@ public class MapLayer
         this.layers = layers;
     }
 
+    @JsonProperty
+    @JsonView( {DetailedView.class, ExportView.class} )
+    @JacksonXmlProperty
     public String getTime()
     {
         return time;
@@ -168,6 +166,9 @@ public class MapLayer
         this.time = time;
     }
 
+    @JsonProperty
+    @JsonView( {DetailedView.class, ExportView.class} )
+    @JacksonXmlProperty
     public String getFillColor()
     {
         return fillColor;
@@ -178,6 +179,9 @@ public class MapLayer
         this.fillColor = fillColor;
     }
 
+    @JsonProperty
+    @JsonView( {DetailedView.class, ExportView.class} )
+    @JacksonXmlProperty
     public double getFillOpacity()
     {
         return fillOpacity;
@@ -188,6 +192,9 @@ public class MapLayer
         this.fillOpacity = fillOpacity;
     }
 
+    @JsonProperty
+    @JsonView( {DetailedView.class, ExportView.class} )
+    @JacksonXmlProperty
     public String getStrokeColor()
     {
         return strokeColor;
@@ -198,6 +205,9 @@ public class MapLayer
         this.strokeColor = strokeColor;
     }
 
+    @JsonProperty
+    @JsonView( {DetailedView.class, ExportView.class} )
+    @JacksonXmlProperty
     public int getStrokeWidth()
     {
         return strokeWidth;

@@ -27,30 +27,24 @@ package org.hisp.dhis.dataset;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import org.codehaus.jackson.annotate.JsonProperty;
-import org.codehaus.jackson.map.annotate.JsonSerialize;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonView;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 import org.hisp.dhis.common.BaseIdentifiableObject;
 import org.hisp.dhis.common.Dxf2Namespace;
 import org.hisp.dhis.common.ImportableObject;
-import org.hisp.dhis.common.adapter.DataSetXmlAdapter;
-import org.hisp.dhis.common.adapter.OrganisationUnitXmlAdapter;
-import org.hisp.dhis.common.adapter.PeriodXmlAdapter;
+import org.hisp.dhis.common.view.DetailedView;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.period.Period;
 
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import java.io.Serializable;
 import java.util.Date;
 
 /**
  * @author Lars Helge Overland
  */
-@XmlRootElement( name = "completeDataSetRegistration", namespace = Dxf2Namespace.NAMESPACE )
-@XmlAccessorType( value = XmlAccessType.NONE )
+@JacksonXmlRootElement( localName = "completeDataSetRegistration", namespace = Dxf2Namespace.NAMESPACE )
 public class CompleteDataSetRegistration
     implements ImportableObject, Serializable
 {
@@ -180,10 +174,9 @@ public class CompleteDataSetRegistration
     // Getters and setters
     // -------------------------------------------------------------------------
 
-    @XmlElement
-    @XmlJavaTypeAdapter( DataSetXmlAdapter.class )
     @JsonProperty
     @JsonSerialize( as = BaseIdentifiableObject.class )
+    @JsonView( {DetailedView.class} )
     public DataSet getDataSet()
     {
         return dataSet;
@@ -194,10 +187,9 @@ public class CompleteDataSetRegistration
         this.dataSet = dataSet;
     }
 
-    @XmlElement
-    @XmlJavaTypeAdapter( PeriodXmlAdapter.class )
     @JsonProperty
     @JsonSerialize( as = BaseIdentifiableObject.class )
+    @JsonView( {DetailedView.class} )
     public Period getPeriod()
     {
         return period;
@@ -208,10 +200,9 @@ public class CompleteDataSetRegistration
         this.period = period;
     }
 
-    @XmlElement( name = "organisationUnit" )
-    @XmlJavaTypeAdapter( OrganisationUnitXmlAdapter.class )
     @JsonProperty( value = "organisationUnit" )
     @JsonSerialize( as = BaseIdentifiableObject.class )
+    @JsonView( {DetailedView.class} )
     public OrganisationUnit getSource()
     {
         return source;
@@ -222,8 +213,8 @@ public class CompleteDataSetRegistration
         this.source = source;
     }
 
-    @XmlElement
     @JsonProperty
+    @JsonView( {DetailedView.class} )
     public Date getDate()
     {
         return date;
@@ -234,8 +225,8 @@ public class CompleteDataSetRegistration
         this.date = date;
     }
 
-    @XmlElement
     @JsonProperty
+    @JsonView( {DetailedView.class} )
     public String getStoredBy()
     {
         return storedBy;

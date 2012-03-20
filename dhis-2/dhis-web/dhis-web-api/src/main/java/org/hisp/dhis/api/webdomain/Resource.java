@@ -1,7 +1,7 @@
 package org.hisp.dhis.api.webdomain;
 
 /*
- * Copyright (c) 2004-2011, University of Oslo
+ * Copyright (c) 2004-2012, University of Oslo
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -27,27 +27,17 @@ package org.hisp.dhis.api.webdomain;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.ArrayList;
-import java.util.List;
-
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlAttribute;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlElementWrapper;
-import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
-
-import org.codehaus.jackson.annotate.JsonProperty;
-import org.codehaus.jackson.map.annotate.JsonSerialize;
-import org.hisp.dhis.api.adapter.MediaTypeCollectionJsonSerializer;
-import org.hisp.dhis.api.adapter.MediaTypeXmlAdapter;
-import org.hisp.dhis.api.adapter.RequestMethodCollectionJsonSerializer;
-import org.hisp.dhis.api.adapter.RequestMethodXmlAdapter;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonView;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlElementWrapper;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 import org.hisp.dhis.common.BaseLinkableObject;
 import org.hisp.dhis.common.Dxf2Namespace;
-import org.springframework.http.MediaType;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.hisp.dhis.common.view.DetailedView;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * At some point this class will be extended to show all available options
@@ -55,24 +45,24 @@ import org.springframework.web.bind.annotation.RequestMethod;
  *
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
-@XmlRootElement( name = "resource", namespace = Dxf2Namespace.NAMESPACE )
-@XmlAccessorType( value = XmlAccessType.NONE )
-public class Resource extends BaseLinkableObject
+@JacksonXmlRootElement( localName = "resource", namespace = Dxf2Namespace.NAMESPACE )
+public class Resource
+    extends BaseLinkableObject
 {
     private String name;
 
     private Class<?> clazz;
 
-    private List<RequestMethod> methods = new ArrayList<RequestMethod>();
+    private List<String> methods = new ArrayList<String>();
 
-    private List<MediaType> mediaTypes = new ArrayList<MediaType>();
+    private List<String> mediaTypes = new ArrayList<String>();
 
     public Resource()
     {
 
     }
 
-    public Resource( String name, Class<?> clazz, List<RequestMethod> methods, List<MediaType> mediaTypes )
+    public Resource( String name, Class<?> clazz, List<String> methods, List<String> mediaTypes )
     {
         this.name = name;
         this.clazz = clazz;
@@ -80,8 +70,9 @@ public class Resource extends BaseLinkableObject
         this.mediaTypes = mediaTypes;
     }
 
-    @XmlAttribute
     @JsonProperty
+    @JsonView( {DetailedView.class} )
+    @JacksonXmlProperty( isAttribute = true )
     public String getName()
     {
         return name;
@@ -92,30 +83,28 @@ public class Resource extends BaseLinkableObject
         this.name = name;
     }
 
-    @XmlElementWrapper( name = "methods" )
-    @XmlElement( name = "method" )
-    @XmlJavaTypeAdapter( RequestMethodXmlAdapter.class )
-    @JsonSerialize( using = RequestMethodCollectionJsonSerializer.class )
-    public List<RequestMethod> getMethods()
+    @JsonProperty
+    @JacksonXmlElementWrapper( localName = "methods", namespace = Dxf2Namespace.NAMESPACE )
+    @JacksonXmlProperty( localName = "method", namespace = Dxf2Namespace.NAMESPACE )
+    public List<String> getMethods()
     {
         return methods;
     }
 
-    public void setMethods( List<RequestMethod> methods )
+    public void setMethods( List<String> methods )
     {
         this.methods = methods;
     }
 
-    @XmlElementWrapper( name = "mediaTypes" )
-    @XmlElement( name = "mediaType" )
-    @XmlJavaTypeAdapter( MediaTypeXmlAdapter.class )
-    @JsonSerialize( using = MediaTypeCollectionJsonSerializer.class )
-    public List<MediaType> getMediaTypes()
+    @JsonProperty
+    @JacksonXmlElementWrapper( localName = "mediaTypes", namespace = Dxf2Namespace.NAMESPACE )
+    @JacksonXmlProperty( localName = "mediaType", namespace = Dxf2Namespace.NAMESPACE )
+    public List<String> getMediaTypes()
     {
         return mediaTypes;
     }
 
-    public void setMediaTypes( List<MediaType> mediaTypes )
+    public void setMediaTypes( List<String> mediaTypes )
     {
         this.mediaTypes = mediaTypes;
     }

@@ -27,21 +27,19 @@ package org.hisp.dhis.common;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlAttribute;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlRootElement;
-
-import org.codehaus.jackson.annotate.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonView;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
+import org.hisp.dhis.common.view.DetailedView;
+import org.hisp.dhis.common.view.ExportView;
 
 /**
  * @author Bob Jolliffe
  */
-@XmlRootElement( name = "nameableObject", namespace = Dxf2Namespace.NAMESPACE )
-@XmlAccessorType( value = XmlAccessType.NONE )
+@JacksonXmlRootElement( localName = "nameableObject", namespace = Dxf2Namespace.NAMESPACE )
 public class BaseNameableObject
-    extends BaseIdentifiableObject implements NameableObject
+    extends BaseIdentifiableObject
+    implements NameableObject
 {
     /**
      * Determines if a de-serialized file is compatible with this class.
@@ -62,12 +60,12 @@ public class BaseNameableObject
      * Description of this Object.
      */
     protected String description;
-    
+
     /**
      * The i18n variant of the short name. Should not be persisted.
      */
     protected transient String displayShortName;
-    
+
     /**
      * The i18n variant of the description. Should not be persisted.
      */
@@ -82,7 +80,7 @@ public class BaseNameableObject
     }
 
     public BaseNameableObject( int id, String uuid, String name, String alternativeName, String shortName,
-                                   String code, String description )
+                               String code, String description )
     {
         super( id, uuid, name );
         this.alternativeName = alternativeName;
@@ -91,8 +89,8 @@ public class BaseNameableObject
         this.description = description;
     }
 
-    @XmlAttribute
     @JsonProperty
+    @JsonView( {DetailedView.class, ExportView.class} )
     public String getAlternativeName()
     {
         return alternativeName;
@@ -103,8 +101,8 @@ public class BaseNameableObject
         this.alternativeName = alternativeName;
     }
 
-    @XmlAttribute
     @JsonProperty
+    @JsonView( {DetailedView.class, ExportView.class} )
     public String getShortName()
     {
         return shortName;
@@ -115,8 +113,8 @@ public class BaseNameableObject
         this.shortName = shortName;
     }
 
-    @XmlElement
     @JsonProperty
+    @JsonView( {DetailedView.class, ExportView.class} )
     public String getDescription()
     {
         return description;

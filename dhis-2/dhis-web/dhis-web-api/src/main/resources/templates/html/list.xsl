@@ -7,7 +7,7 @@
   <xsl:include href="identifiable-row.xsl"/>
 
   <!-- match all plural elements -->
-  <xsl:template match="d:resources|d:maps|d:charts|d:categoryCombos|d:categories|
+  <xsl:template match="d:dxf2/resources|d:maps|d:charts|d:categoryCombos|d:categories|
     d:categoryOptions|d:categoryOptionCombos|d:dataElements|d:indicators|
     d:organisationUnits|d:dataElementGroups|d:dataElementGroupSets|d:dataSets|
     d:documents|d:indicatorGroups|d:indicatorGroupSets|d:organisationUnitGroups|

@@ -27,23 +27,24 @@ package org.hisp.dhis.api.view;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.io.OutputStream;
-import java.util.Map;
+import org.springframework.util.Assert;
+import org.springframework.web.servlet.view.AbstractUrlBasedView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.xml.bind.Marshaller;
-import javax.xml.bind.util.JAXBSource;
 import javax.xml.transform.Source;
 import javax.xml.transform.Transformer;
 import javax.xml.transform.stream.StreamResult;
-
-import org.springframework.web.servlet.view.AbstractUrlBasedView;
+import javax.xml.transform.stream.StreamSource;
+import java.io.ByteArrayInputStream;
+import java.io.InputStream;
+import java.util.Map;
 
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
-public class XsltHtmlView extends AbstractUrlBasedView
+public class XsltHtmlView
+    extends AbstractUrlBasedView
 {
     public static final String HTML_CONTENT_TYPE = "text/html";
 
@@ -53,32 +54,23 @@ public class XsltHtmlView extends AbstractUrlBasedView
     }
 
     @Override
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings( "unchecked" )
     protected void renderMergedOutputModel( Map<String, Object> model, HttpServletRequest request, HttpServletResponse response )
         throws Exception
     {
+        Object object = model.get( "model" );
         response.setContentType( getContentType() );
-        model = ViewUtils.filterModel( model );
 
-        Object domainModel = model.get( "model" );
+        Assert.notNull( object );
 
-        if ( domainModel == null )
-        {
-            // TODO throw exception
-            return;
-        }
-
-        Marshaller marshaller = Jaxb2Utils.createMarshaller( domainModel );
-
-        Source xmlSource = new JAXBSource( marshaller, domainModel );
+        InputStream input = new ByteArrayInputStream( JacksonUtils.toXmlAsString( object ).getBytes() );
+        Source xmlSource = new StreamSource( input );
 
         Transformer transformer = TransformCacheImpl.instance().getHtmlTransformer();
 
-        OutputStream output = response.getOutputStream();
-
         // pass on any parameters set in xslt-params
         Map<String, String> params = (Map<String, String>) model.get( "xslt-params" );
-        
+
         if ( params != null )
         {
             for ( Map.Entry<String, String> entry : params.entrySet() )
@@ -87,6 +79,6 @@ public class XsltHtmlView extends AbstractUrlBasedView
             }
         }
 
-        transformer.transform( xmlSource, new StreamResult( output ) );
+        transformer.transform( xmlSource, new StreamResult( response.getOutputStream() ) );
     }
 }

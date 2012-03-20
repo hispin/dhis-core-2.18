@@ -27,21 +27,20 @@ package org.hisp.dhis.sqlview;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import org.codehaus.jackson.annotate.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonView;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 import org.hisp.dhis.common.BaseIdentifiableObject;
 import org.hisp.dhis.common.Dxf2Namespace;
-
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlRootElement;
+import org.hisp.dhis.common.view.DetailedView;
+import org.hisp.dhis.common.view.ExportView;
 
 /**
  * @author Dang Duy Hieu
  */
-@XmlRootElement( name = "sqlView", namespace = Dxf2Namespace.NAMESPACE )
-@XmlAccessorType( value = XmlAccessType.NONE )
-public class SqlView 
+@JacksonXmlRootElement( localName = "sqlView", namespace = Dxf2Namespace.NAMESPACE )
+public class SqlView
     extends BaseIdentifiableObject
 {
     // -------------------------------------------------------------------------
@@ -77,7 +76,7 @@ public class SqlView
         final int prime = 31;
         int result = 1;
         result = prime * result + id;
-        result = prime * result + ( ( name == null ) ? 0 : name.hashCode() );
+        result = prime * result + ((name == null) ? 0 : name.hashCode());
         return result;
     }
 
@@ -112,8 +111,9 @@ public class SqlView
     // Getters and setters
     // -------------------------------------------------------------------------
 
-    @XmlElement
     @JsonProperty
+    @JsonView( {DetailedView.class, ExportView.class} )
+    @JacksonXmlProperty
     public String getDescription()
     {
         return description;
@@ -124,8 +124,9 @@ public class SqlView
         this.description = description;
     }
 
-    @XmlElement
     @JsonProperty
+    @JsonView( {DetailedView.class, ExportView.class} )
+    @JacksonXmlProperty
     public String getSqlQuery()
     {
         return sqlQuery;

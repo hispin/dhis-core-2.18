@@ -111,6 +111,7 @@ public class SqlViewController
         }
 
         model.addAttribute( "model", sqlView );
+        model.addAttribute( "view", "detailed" );
 
         return "sqlView";
     }

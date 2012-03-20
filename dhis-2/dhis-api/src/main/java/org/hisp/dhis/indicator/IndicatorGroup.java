@@ -27,24 +27,26 @@ package org.hisp.dhis.indicator;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import org.codehaus.jackson.annotate.JsonProperty;
-import org.codehaus.jackson.map.annotate.JsonSerialize;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonView;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlElementWrapper;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 import org.hisp.dhis.common.BaseIdentifiableObject;
 import org.hisp.dhis.common.Dxf2Namespace;
-import org.hisp.dhis.common.adapter.IndicatorGroupSetXmlAdapter;
-import org.hisp.dhis.common.adapter.IndicatorXmlAdapter;
+import org.hisp.dhis.common.view.DetailedView;
+import org.hisp.dhis.common.view.ExportView;
 
-import javax.xml.bind.annotation.*;
-import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import java.util.HashSet;
 import java.util.Set;
 
 /**
  * @author Lars Helge Overland
  */
-@XmlRootElement( name = "indicatorGroup", namespace = Dxf2Namespace.NAMESPACE )
-@XmlAccessorType( value = XmlAccessType.NONE )
-public class IndicatorGroup extends BaseIdentifiableObject
+@JacksonXmlRootElement( localName = "indicatorGroup", namespace = Dxf2Namespace.NAMESPACE )
+public class IndicatorGroup
+    extends BaseIdentifiableObject
 {
     /**
      * Determines if a de-serialized file is compatible with this class.
@@ -143,11 +145,11 @@ public class IndicatorGroup extends BaseIdentifiableObject
     // Getters and setters
     // -------------------------------------------------------------------------
 
-    @XmlElementWrapper( name = "indicators" )
-    @XmlElement( name = "indicator" )
-    @XmlJavaTypeAdapter( IndicatorXmlAdapter.class )
     @JsonProperty( value = "indicators" )
     @JsonSerialize( contentAs = BaseIdentifiableObject.class )
+    @JsonView( {DetailedView.class, ExportView.class} )
+    @JacksonXmlElementWrapper( localName = "indicators" )
+    @JacksonXmlProperty( localName = "indicator" )
     public Set<Indicator> getMembers()
     {
         return members;
@@ -158,10 +160,11 @@ public class IndicatorGroup extends BaseIdentifiableObject
         this.members = members;
     }
 
-    @XmlElement( name = "indicatorGroupSet" )
-    @XmlJavaTypeAdapter( IndicatorGroupSetXmlAdapter.class )
     @JsonProperty( value = "indicatorGroupSet" )
     @JsonSerialize( as = BaseIdentifiableObject.class )
+    @JsonView( {DetailedView.class, ExportView.class} )
+    @JacksonXmlElementWrapper( localName = "indicatorGroupSets" )
+    @JacksonXmlProperty( localName = "indicatorGroupSet" )
     public IndicatorGroupSet getGroupSet()
     {
         return groupSet;

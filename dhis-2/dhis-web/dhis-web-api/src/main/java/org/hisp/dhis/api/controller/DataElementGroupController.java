@@ -113,6 +113,7 @@ public class DataElementGroupController
         }
 
         model.addAttribute( "model", dataElementGroup );
+        model.addAttribute( "view", "detailed" );
 
         return "dataElementGroup";
     }
