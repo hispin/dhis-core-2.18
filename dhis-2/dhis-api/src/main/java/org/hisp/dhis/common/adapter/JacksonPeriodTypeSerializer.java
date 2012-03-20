@@ -17,8 +17,6 @@ public class JacksonPeriodTypeSerializer
     @Override
     public void serialize( PeriodType value, JsonGenerator jgen, SerializerProvider provider ) throws IOException, JsonProcessingException
     {
-        System.err.println( "Deserialized: " + value.getName() );
-
         jgen.writeString( value.getName() );
     }
 }
