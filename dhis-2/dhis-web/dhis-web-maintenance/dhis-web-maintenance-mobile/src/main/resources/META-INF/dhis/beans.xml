@@ -46,7 +46,20 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
   </bean>
 
   <!-- SMS Service Configuration -->
-
-  <bean id="org.hisp.dhis.mobile.action.AddGateWayConfigAction" class="org.hisp.dhis.mobile.action.AddGateWayConfigAction" scope="prototype"/>
+  
+  <bean id="org.hisp.dhis.mobile.action.UpdateBulkGateWayConfigAction" 
+	class="org.hisp.dhis.mobile.action.UpdateBulkGateWayConfigAction" scope="prototype"/>
+  
+  <bean id="org.hisp.dhis.mobile.action.UpdateModemGateWayConfigAction" 
+	class="org.hisp.dhis.mobile.action.UpdateModemGateWayConfigAction" scope="prototype"/>
+  
+  <bean id="org.hisp.dhis.mobile.action.UpdateClickatellGateWayConfigAction" 
+	class="org.hisp.dhis.mobile.action.UpdateClickatellGateWayConfigAction" scope="prototype"/>
+  
+  <bean id="org.hisp.dhis.mobile.action.UpdateGenericHTTPGateWayConfigAction" 
+	class="org.hisp.dhis.mobile.action.UpdateGenericHTTPGateWayConfigAction" scope="prototype"/>
+  
+  <bean id="org.hisp.dhis.mobile.action.ShowUpdateGateWayConfigFormAction" 
+	class="org.hisp.dhis.mobile.action.ShowUpdateGateWayConfigFormAction" scope="prototype"/>
 
 </beans>

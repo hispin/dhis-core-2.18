@@ -72,9 +72,9 @@
 	  <param name="requiredAuthorities">F_MOBILE_SETTINGS</param>
     </action>
 	
-	<action name="addGateWayConfig" class="org.hisp.dhis.mobile.action.AddGateWayConfigAction">
+	<action name="showUpdateGateWayConfigForm" class="org.hisp.dhis.mobile.action.ShowUpdateGateWayConfigFormAction">
       <result name="success" type="velocity">/main.vm</result>
-      <param name="page">/dhis-web-maintenance-mobile/addGateway.vm</param>
+      <param name="page">/dhis-web-maintenance-mobile/updateGateway.vm</param>
       <param name="menu">/dhis-web-maintenance-mobile/menu.vm</param>
     </action>
 	  
