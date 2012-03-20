@@ -326,15 +326,4 @@ public class DataElementCategoryOptionCombo
     {
         this.categoryOptions = categoryOptions;
     }
-
-    public String toJSON()
-    {
-        StringBuilder result = new StringBuilder();
-        result.append( "{" );
-        result.append( "\"id\":" + this.getId() + "\"" );
-        result.append( ",\"name\":" + StringEscapeUtils.escapeJavaScript( this.getName() ) + "\"" );
-        result.append( ",\"isDefault\":" + this.isDefault() + "\"" );
-        result.append( "}" );
-        return result.toString();
-    }
 }

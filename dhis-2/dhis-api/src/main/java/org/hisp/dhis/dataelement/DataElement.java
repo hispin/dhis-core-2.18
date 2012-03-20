@@ -384,19 +384,6 @@ public class DataElement
         return expiryDays == Integer.MAX_VALUE ? NO_EXPIRY : expiryDays;
     }
 
-    public String toJSON()
-    {
-        StringBuffer result = new StringBuffer();
-
-        result.append( "{" );
-        result.append( "\"id\":\"" + this.id + "\"" );
-        result.append( ",\"name\":\"" + StringEscapeUtils.escapeJavaScript( this.name ) + "\"" );
-        result.append( ",\"shortName\":\"" + StringEscapeUtils.escapeJavaScript( this.shortName ) + "\"" );
-        result.append( ",\"type\":\"" + StringEscapeUtils.escapeJavaScript( this.type ) + "\"" );
-        result.append( "}" );
-        return result.toString();
-    }
-
     // -------------------------------------------------------------------------
     // Getters and setters
     // -------------------------------------------------------------------------
