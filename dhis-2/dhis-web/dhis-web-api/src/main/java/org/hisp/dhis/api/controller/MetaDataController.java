@@ -255,7 +255,7 @@ public class MetaDataController
     private DXF2 getExportObject()
     {
         DXF2 dxf2 = new DXF2();
-
+/*
         dxf2.setAttributeTypes( new ArrayList<Attribute>( attributeService.getAllAttributes() ) );
 
         dxf2.setUsers( new ArrayList<User>( userService.getAllUsers() ) );
@@ -284,9 +284,9 @@ public class MetaDataController
         dxf2.setOrganisationUnitLevels( new ArrayList<OrganisationUnitLevel>( organisationUnitService.getOrganisationUnitLevels() ) );
         dxf2.setOrganisationUnitGroups( new ArrayList<OrganisationUnitGroup>( organisationUnitGroupService.getAllOrganisationUnitGroups() ) );
         dxf2.setOrganisationUnitGroupSets( new ArrayList<OrganisationUnitGroupSet>( organisationUnitGroupService.getAllOrganisationUnitGroupSets() ) );
-
+*/
         dxf2.setDataSets( new ArrayList<DataSet>( dataSetService.getAllDataSets() ) );
-
+/*
         dxf2.setValidationRules( new ArrayList<ValidationRule>( validationRuleService.getAllValidationRules() ) );
         dxf2.setValidationRuleGroups( new ArrayList<ValidationRuleGroup>( validationRuleService.getAllValidationRuleGroups() ) );
 
@@ -303,7 +303,7 @@ public class MetaDataController
         dxf2.setMapLayers( new ArrayList<MapLayer>( mappingService.getAllMapLayers() ) );
 
         dxf2.setDataDictionaries( new ArrayList<DataDictionary>( dataDictionaryService.getAllDataDictionaries() ) );
-
+*/
         return dxf2;
     }
 

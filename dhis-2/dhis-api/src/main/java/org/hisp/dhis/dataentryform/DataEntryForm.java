@@ -28,9 +28,13 @@ package org.hisp.dhis.dataentryform;
  */
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonView;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 import org.hisp.dhis.common.Dxf2Namespace;
 import org.hisp.dhis.common.ImportableObject;
+import org.hisp.dhis.common.view.DetailedView;
+import org.hisp.dhis.common.view.ExportView;
 
 import java.io.Serializable;
 import java.util.Map;
@@ -186,6 +190,8 @@ public class DataEntryForm
     }
 
     @JsonProperty
+    @JsonView( {DetailedView.class, ExportView.class} )
+    @JacksonXmlProperty
     public String getName()
     {
         return name;
@@ -197,6 +203,8 @@ public class DataEntryForm
     }
 
     @JsonProperty
+    @JsonView( {DetailedView.class, ExportView.class} )
+    @JacksonXmlProperty
     public String getHtmlCode()
     {
         return htmlCode;
