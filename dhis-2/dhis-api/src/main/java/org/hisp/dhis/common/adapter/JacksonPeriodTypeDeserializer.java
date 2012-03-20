@@ -19,8 +19,6 @@ public class JacksonPeriodTypeDeserializer
     {
         String periodTypeString = jp.readValueAs( String.class );
 
-        System.err.println( "Deserialized: " + periodTypeString );
-
         return PeriodType.getPeriodTypeByName( periodTypeString );
     }
 }
