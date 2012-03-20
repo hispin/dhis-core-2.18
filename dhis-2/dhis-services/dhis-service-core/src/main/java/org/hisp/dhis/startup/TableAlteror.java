@@ -92,6 +92,7 @@ public class TableAlteror
         executeSql( "DROP TABLE olapurl" );
         executeSql( "DROP TABLE calculateddataelement" );
         executeSql( "DROP TABLE systemsequence" );
+        executeSql( "DROP TABLE reporttablecolumn" );
         executeSql( "DROP TABLE datamartexport" );
         executeSql( "DROP TABLE datamartexportdataelements" );
         executeSql( "DROP TABLE datamartexportindicators" );
