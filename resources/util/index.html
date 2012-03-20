@@ -1,0 +1,94 @@
+<html>
+<head>
+
+<title>DHIS Web Portal</title>
+
+<style type="text/css">
+
+body {
+  font-family: Georgia, sans-serif;
+  color: #3B3B3B;
+  line-height: 1.5;
+}
+
+h1 {
+  color: black;
+}
+
+h1, h3 {
+  font-weight: lighter;
+}
+
+</style>
+
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+
+<script type="text/javascript">
+
+var base = "http://apps.dhis2.org/demo/";
+	
+function setDivs() {
+  jQuery("#map1").attr("src", base + "api/maps/mVHksDN1dIP/data");
+  jQuery("#map2").attr("src", base + "api/maps/Y8dSQ3fH0Xe/data");
+  jQuery("#map3").attr("src", base + "api/maps/JlXSUIcLsmd/data");
+  jQuery("#chart1").attr("src", base + "api/charts/j1gNXBgwKVm/data");
+  jQuery("#chart2").attr("src", base + "api/charts/R0DVGvXDUNP/data");
+  jQuery("#chart3").attr("src", base + "api/charts/EbRN2VIbPdV/data");
+}
+
+jQuery(document).ready(function() {
+  $.ajax({
+        beforeSend: function(xhr) {
+            xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+        },
+	url: base + "dhis-web-commons-security/login.action",
+	type: "POST",
+        data: {
+            j_username: "admin",
+            j_password: "district"
+        },
+	success: setDivs
+  });
+});
+
+</script>
+
+</head>
+<body>
+
+<h1>Web Portal</h1>
+
+<p><a href="http://dhis2.org">Home</a></p>
+
+<p>This page illustrates how the DHIS Web API can be used as back-end for a Web portal. All content on this 
+page is loaded dynamically from the Web API running with the demo DHIS instance. Right-click on the page and 
+view the page source to see how authentication and requests are handled. Notice that the portal must be 
+hosted at the same domain as the DHIS instance to avoid "same origin policy" issues for authentication and 
+loading of resources.</p>
+
+<h3>Reports</h3>
+<ul>
+<li><a href="http://apps.dhis2.org/demo/api/reports/KlcaBsIqTV4/data">EPI Report by Facility Type</a></li>
+<li><a href="http://apps.dhis2.org/demo/api/reports/hUMx9D1e5a1/data">Nutrition Indicators</a></li>
+<li><a href="http://apps.dhis2.org/demo/api/reports/KUb4jJluGAF/data">HIV Indicators</a></li>
+</ul>
+
+<h3>Tables</h3>
+<ul>
+<li><a href="http://apps.dhis2.org/demo/api/reportTables/NBt7kGTOQTb/data">District Feedback Indicators</a> | <a href="http://apps.dhis2.org/demo/api/reportTables/NBt7kGTOQTb/data.pdf">PDF</a> | <a href="http://apps.dhis2.org/demo/api/reportTables/NBt7kGTOQTb/data.xls">XLS</a> | <a href="http://apps.dhis2.org/demo/api/reportTables/NBt7kGTOQTb/data.csv">CSV</a></li>
+<li><a href="http://apps.dhis2.org/demo/api/reportTables/xIWpSo5jjT1/data">District Maternal Health</a> | <a href="http://apps.dhis2.org/demo/api/reportTables/xIWpSo5jjT1/data.pdf">PDF</a> | <a href="http://apps.dhis2.org/demo/api/reportTables/xIWpSo5jjT1/data.xls">XLS</a> | <a href="http://apps.dhis2.org/demo/api/reportTables/xIWpSo5jjT1/data.csv">CSV</a></li>
+<li><a href="http://apps.dhis2.org/demo/api/reportTables/GXG56cBuqcm/data">ANC Visits Fixed and Outreach</a> | <a href="http://apps.dhis2.org/demo/api/reportTables/GXG56cBuqcm/data.pdf">PDF</a> | <a href="http://apps.dhis2.org/demo/api/reportTables/GXG56cBuqcm/data.xls">XLS</a> | <a href="http://apps.dhis2.org/demo/api/reportTables/GXG56cBuqcm/data.csv">CSV</a></li>
+</ul>
+
+<h3>Maps</h3>
+<img style="padding: 15px; margin: 15px; border: 1px solid #c0c0c0;" id="map1" />
+<img style="padding: 15px; margin: 15px; border: 1px solid #c0c0c0;" id="map2" />
+<img style="padding: 15px; margin: 15px; border: 1px solid #c0c0c0;" id="map3" />
+
+<h3>Charts</h3>
+<img style="padding: 15px; margin: 15px; border: 1px solid #c0c0c0;" id="chart1" />
+<img style="padding: 15px; margin: 15px; border: 1px solid #c0c0c0;" id="chart2" />
+<img style="padding: 15px; margin: 15px; border: 1px solid #c0c0c0;" id="chart3" />
+
+</body>
+</html>
