@@ -27,10 +27,10 @@ package org.hisp.dhis.mapping;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.Collection;
-
 import org.hisp.dhis.common.GenericIdentifiableObjectStore;
 import org.hisp.dhis.user.User;
+
+import java.util.Collection;
 
 /**
  * @author Jan Henrik Overland
@@ -53,6 +53,8 @@ public interface MappingStore
 
     MapLegend getMapLegend( int id );
 
+    MapLegend getMapLegend( String uid );
+
     MapLegend getMapLegendByName( String name );
 
     Collection<MapLegend> getAllMapLegends();
@@ -68,6 +70,8 @@ public interface MappingStore
     void deleteMapLegendSet( MapLegendSet legendSet );
 
     MapLegendSet getMapLegendSet( int id );
+
+    MapLegendSet getMapLegendSet( String uid );
 
     MapLegendSet getMapLegendSetByName( String name );
 
@@ -104,6 +108,8 @@ public interface MappingStore
     void deleteMapLayer( MapLayer mapLayer );
 
     MapLayer getMapLayer( int id );
+
+    MapLayer getMapLayer( String uid );
 
     MapLayer getMapLayerByName( String name );
 

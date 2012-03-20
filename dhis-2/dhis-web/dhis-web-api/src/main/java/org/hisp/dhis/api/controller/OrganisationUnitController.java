@@ -133,7 +133,7 @@ public class OrganisationUnitController
                     response.setStatus( HttpServletResponse.SC_CREATED );
                     response.setHeader( "Location", DataElementController.RESOURCE_PATH + "/" + organisationUnit.getUid() );
                 }
-            } 
+            }
             catch ( Exception ex )
             {
                 response.setStatus( HttpServletResponse.SC_CONFLICT );

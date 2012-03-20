@@ -27,21 +27,31 @@ package org.hisp.dhis.user;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonView;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlElementWrapper;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
+import org.hisp.dhis.common.BaseIdentifiableObject;
+import org.hisp.dhis.common.Dxf2Namespace;
+import org.hisp.dhis.common.view.DetailedView;
+import org.hisp.dhis.common.view.ExportView;
+import org.hisp.dhis.dataset.DataSet;
+
 import java.io.Serializable;
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
-import org.hisp.dhis.dataset.DataSet;
-
 /**
  * @author Nguyen Hong Duc
- * @version $Id: UserCredentials.java 2869 2007-02-20 14:26:09Z andegje $
  */
+@JacksonXmlRootElement( localName = "userCredentials", namespace = Dxf2Namespace.NAMESPACE )
 public class UserCredentials
     implements Serializable
-{    
+{
     /**
      * Determines if a de-serialized file is compatible with this class.
      */
@@ -65,7 +75,7 @@ public class UserCredentials
     private String password;
 
     private Set<UserAuthorityGroup> userAuthorityGroups = new HashSet<UserAuthorityGroup>();
-    
+
     private Date lastLogin;
 
     // -------------------------------------------------------------------------
@@ -79,15 +89,15 @@ public class UserCredentials
     public Set<String> getAllAuthorities()
     {
         Set<String> authorities = new HashSet<String>();
-        
+
         for ( UserAuthorityGroup group : userAuthorityGroups )
         {
             authorities.addAll( group.getAuthorities() );
         }
-        
+
         return authorities;
     }
-    
+
     /**
      * Indicates whether this user credentials is a super user, implying that the
      * ALL authority is present in at least one of the user authority groups of
@@ -102,10 +112,10 @@ public class UserCredentials
                 return true;
             }
         }
-        
+
         return false;
     }
-    
+
     /**
      * Returns a set of the aggregated data sets for all user authority groups
      * of this user credentials.
@@ -113,23 +123,23 @@ public class UserCredentials
     public Set<DataSet> getAllDataSets()
     {
         Set<DataSet> dataSets = new HashSet<DataSet>();
-        
+
         for ( UserAuthorityGroup group : userAuthorityGroups )
         {
             dataSets.addAll( group.getDataSets() );
         }
-        
+
         return dataSets;
     }
-    
+
     /**
      * Indicates whether this user credentials can issue the given user authority
-     * group. First the given authority group must not be null. Second this 
+     * group. First the given authority group must not be null. Second this
      * user credentials must not contain the given authority group. Third
      * the authority group must be a subset of the aggregated user authorities
      * of this user credentials, or this user credentials must have the ALL
      * authority.
-     * 
+     *
      * @param group the user authority group.
      */
     public boolean canIssue( UserAuthorityGroup group )
@@ -140,19 +150,19 @@ public class UserCredentials
         }
 
         final Set<String> authorities = getAllAuthorities();
-        
+
         if ( authorities.contains( UserAuthorityGroup.AUTHORITY_ALL ) )
         {
             return true;
         }
-        
+
         return !userAuthorityGroups.contains( group ) && authorities.containsAll( group.getAuthorities() );
     }
-    
+
     /**
      * Indicates whether this user credentials can issue all of the user authority
      * groups in the given collection.
-     * 
+     *
      * @param groups the collection of user authority groups.
      */
     public boolean canIssueAll( Collection<UserAuthorityGroup> groups )
@@ -164,22 +174,22 @@ public class UserCredentials
                 return false;
             }
         }
-        
+
         return true;
     }
-    
+
     /**
      * Return the name of this user credentials. More specifically, if this
      * credentials has a user it will return the first name and surname of that
      * user, if not it returns the username of this credentials.
-     * 
+     *
      * @return the name.
      */
     public String getName()
     {
         return user != null ? user.getName() : username;
     }
-    
+
     // -------------------------------------------------------------------------
     // hashCode and equals
     // -------------------------------------------------------------------------
@@ -212,7 +222,7 @@ public class UserCredentials
 
         return username.equals( other.getUsername() );
     }
-    
+
     @Override
     public String toString()
     {
@@ -232,7 +242,10 @@ public class UserCredentials
     {
         this.id = id;
     }
-    
+
+    @JsonProperty
+    @JsonView( {DetailedView.class, ExportView.class} )
+    @JacksonXmlProperty
     public String getPassword()
     {
         return password;
@@ -253,6 +266,11 @@ public class UserCredentials
         this.user = user;
     }
 
+    @JsonProperty
+    @JsonSerialize( contentAs = BaseIdentifiableObject.class )
+    @JsonView( {DetailedView.class, ExportView.class} )
+    @JacksonXmlElementWrapper( localName = "userAuthorityGroups" )
+    @JacksonXmlProperty( localName = "userAuthorityGroup" )
     public Set<UserAuthorityGroup> getUserAuthorityGroups()
     {
         return userAuthorityGroups;
@@ -263,6 +281,9 @@ public class UserCredentials
         this.userAuthorityGroups = userAuthorityGroups;
     }
 
+    @JsonProperty
+    @JsonView( {DetailedView.class, ExportView.class} )
+    @JacksonXmlProperty
     public String getUsername()
     {
         return username;
@@ -273,6 +294,9 @@ public class UserCredentials
         this.username = username;
     }
 
+    @JsonProperty
+    @JsonView( {DetailedView.class, ExportView.class} )
+    @JacksonXmlProperty
     public Date getLastLogin()
     {
         return lastLogin;

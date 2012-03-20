@@ -111,6 +111,7 @@ public class DataSetController
         }
 
         model.addAttribute( "model", dataSet );
+        model.addAttribute( "view", "detailed" );
 
         return "dataSet";
     }

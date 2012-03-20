@@ -27,23 +27,23 @@ package org.hisp.dhis.common;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import javax.xml.bind.annotation.XmlAttribute;
-
-import org.codehaus.jackson.annotate.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
-public class BaseLinkableObject implements LinkableObject
+public class BaseLinkableObject
+    implements LinkableObject
 {
     /**
-     * As part of the marshalling process, this field can be set to indicate a link to this
+     * As part of the serializing process, this field can be set to indicate a link to this
      * identifiable object (will be used on the web layer for navigating the REST API)
      */
     private transient String link;
 
-    @XmlAttribute
     @JsonProperty
+    @JacksonXmlProperty( isAttribute = true )
     public String getLink()
     {
         return link;

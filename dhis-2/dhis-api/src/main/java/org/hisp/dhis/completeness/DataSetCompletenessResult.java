@@ -81,7 +81,6 @@ public class DataSetCompletenessResult
      * @param periodId the period identifier.
      * @param periodName the period name.
      * @param organisationUnitId the organisation unit identifier.
-     * @param reportTableId the report table identifier.
      * @param name the name.
      * @param sources the number of sources.
      * @param registrations the number of registrations.

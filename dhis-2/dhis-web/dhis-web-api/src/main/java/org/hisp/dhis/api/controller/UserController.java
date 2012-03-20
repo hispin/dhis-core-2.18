@@ -94,6 +94,7 @@ public class UserController
         }
 
         model.addAttribute( "model", user );
+        model.addAttribute( "view", "detailed" );
 
         return "user";
     }

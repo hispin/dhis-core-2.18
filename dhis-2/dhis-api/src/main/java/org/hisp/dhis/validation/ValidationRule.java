@@ -27,25 +27,27 @@ package org.hisp.dhis.validation;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import org.codehaus.jackson.annotate.JsonProperty;
-import org.codehaus.jackson.map.annotate.JsonSerialize;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonView;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlElementWrapper;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 import org.hisp.dhis.common.BaseIdentifiableObject;
 import org.hisp.dhis.common.Dxf2Namespace;
-import org.hisp.dhis.common.adapter.ValidationRuleGroupXmlAdapter;
+import org.hisp.dhis.common.view.DetailedView;
+import org.hisp.dhis.common.view.ExportView;
 import org.hisp.dhis.expression.Expression;
 import org.hisp.dhis.expression.Operator;
 import org.hisp.dhis.period.PeriodType;
 
-import javax.xml.bind.annotation.*;
-import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import java.util.HashSet;
 import java.util.Set;
 
 /**
  * @author Kristian Nordal
  */
-@XmlRootElement( name = "validationRule", namespace = Dxf2Namespace.NAMESPACE )
-@XmlAccessorType( value = XmlAccessType.NONE )
+@JacksonXmlRootElement( localName = "validationRule", namespace = Dxf2Namespace.NAMESPACE )
 public class ValidationRule
     extends BaseIdentifiableObject
 {
@@ -135,8 +137,9 @@ public class ValidationRule
     // Set and get methods
     // -------------------------------------------------------------------------  
 
-    @XmlElement
     @JsonProperty
+    @JsonView( {DetailedView.class, ExportView.class} )
+    @JacksonXmlProperty
     public String getDescription()
     {
         return description;
@@ -157,8 +160,9 @@ public class ValidationRule
         this.periodType = periodType;
     }
 
-    @XmlElement
     @JsonProperty
+    @JsonView( {DetailedView.class, ExportView.class} )
+    @JacksonXmlProperty
     public Operator getOperator()
     {
         return operator;
@@ -169,8 +173,9 @@ public class ValidationRule
         this.operator = operator;
     }
 
-    @XmlElement
     @JsonProperty
+    @JsonView( {DetailedView.class, ExportView.class} )
+    @JacksonXmlProperty
     public String getType()
     {
         return type;
@@ -181,8 +186,10 @@ public class ValidationRule
         this.type = type;
     }
 
-    @XmlElement
+    // TODO fix serialization of this..
     @JsonProperty
+    @JsonView( {DetailedView.class, ExportView.class} )
+    @JacksonXmlProperty
     public Expression getLeftSide()
     {
         return leftSide;
@@ -193,8 +200,10 @@ public class ValidationRule
         this.leftSide = leftSide;
     }
 
-    @XmlElement
+    // TODO fix serialization of this..
     @JsonProperty
+    @JsonView( {DetailedView.class, ExportView.class} )
+    @JacksonXmlProperty
     public Expression getRightSide()
     {
         return rightSide;
@@ -205,11 +214,11 @@ public class ValidationRule
         this.rightSide = rightSide;
     }
 
-    @XmlElementWrapper( name = "validationRuleGroups" )
-    @XmlElement( name = "validationRuleGroup" )
-    @XmlJavaTypeAdapter( ValidationRuleGroupXmlAdapter.class )
     @JsonProperty( value = "validationRuleGroups" )
     @JsonSerialize( contentAs = BaseIdentifiableObject.class )
+    @JsonView( {DetailedView.class} )
+    @JacksonXmlElementWrapper( localName = "validationRuleGroups" )
+    @JacksonXmlProperty( localName = "validationRuleGroup" )
     public Set<ValidationRuleGroup> getGroups()
     {
         return groups;

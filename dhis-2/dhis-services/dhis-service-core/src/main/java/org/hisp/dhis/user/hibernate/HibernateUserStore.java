@@ -342,6 +342,7 @@ public class HibernateUserStore
     public int addUserAuthorityGroup( UserAuthorityGroup userAuthorityGroup )
     {
         Session session = sessionFactory.getCurrentSession();
+        userAuthorityGroup.setAutoFields();
 
         return (Integer) session.save( userAuthorityGroup );
     }
@@ -349,6 +350,7 @@ public class HibernateUserStore
     public void updateUserAuthorityGroup( UserAuthorityGroup userAuthorityGroup )
     {
         Session session = sessionFactory.getCurrentSession();
+        userAuthorityGroup.setAutoFields();
 
         session.update( userAuthorityGroup );
     }

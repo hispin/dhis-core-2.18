@@ -27,11 +27,15 @@ package org.hisp.dhis.mapping;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import org.codehaus.jackson.annotate.JsonProperty;
-import org.codehaus.jackson.map.annotate.JsonSerialize;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonView;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 import org.hisp.dhis.common.BaseIdentifiableObject;
 import org.hisp.dhis.common.Dxf2Namespace;
-import org.hisp.dhis.common.adapter.*;
+import org.hisp.dhis.common.view.DetailedView;
+import org.hisp.dhis.common.view.ExportView;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementGroup;
 import org.hisp.dhis.indicator.Indicator;
@@ -42,18 +46,10 @@ import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodType;
 import org.hisp.dhis.user.User;
 
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
-
 /**
  * @author Jan Henrik Overland
- * @version $Id$
  */
-@XmlRootElement( name = "map", namespace = Dxf2Namespace.NAMESPACE )
-@XmlAccessorType( XmlAccessType.NONE )
+@JacksonXmlRootElement( localName = "map", namespace = Dxf2Namespace.NAMESPACE )
 public class MapView
     extends BaseIdentifiableObject
 {
@@ -173,11 +169,11 @@ public class MapView
 
         return name.equals( other.name );
     }
-    
+
     @Override
     public String toString()
     {
-        return "[Name: " + name + ", indicator: " + indicator + ", org unit: " + 
+        return "[Name: " + name + ", indicator: " + indicator + ", org unit: " +
             parentOrganisationUnit + ", period: " + period + ", value type: " + mapValueType + "]";
     }
 
@@ -194,8 +190,10 @@ public class MapView
     // Getters and setters
     // -------------------------------------------------------------------------
 
-    @XmlElement
     @JsonProperty
+    @JsonSerialize( as = BaseIdentifiableObject.class )
+    @JsonView( {DetailedView.class, ExportView.class} )
+    @JacksonXmlProperty
     public User getUser()
     {
         return user;
@@ -206,8 +204,9 @@ public class MapView
         this.user = user;
     }
 
-    @XmlElement
     @JsonProperty
+    @JsonView( {DetailedView.class, ExportView.class} )
+    @JacksonXmlProperty
     public String getMapValueType()
     {
         return mapValueType;
@@ -218,10 +217,10 @@ public class MapView
         this.mapValueType = mapValueType;
     }
 
-    @XmlElement
-    @XmlJavaTypeAdapter( IndicatorGroupXmlAdapter.class )
     @JsonProperty
     @JsonSerialize( as = BaseIdentifiableObject.class )
+    @JsonView( {DetailedView.class, ExportView.class} )
+    @JacksonXmlProperty
     public IndicatorGroup getIndicatorGroup()
     {
         return indicatorGroup;
@@ -232,10 +231,10 @@ public class MapView
         this.indicatorGroup = indicatorGroup;
     }
 
-    @XmlElement
-    @XmlJavaTypeAdapter( IndicatorXmlAdapter.class )
     @JsonProperty
     @JsonSerialize( as = BaseIdentifiableObject.class )
+    @JsonView( {DetailedView.class, ExportView.class} )
+    @JacksonXmlProperty
     public Indicator getIndicator()
     {
         return indicator;
@@ -246,10 +245,10 @@ public class MapView
         this.indicator = indicator;
     }
 
-    @XmlElement
-    @XmlJavaTypeAdapter( DataElementGroupXmlAdapter.class )
     @JsonProperty
     @JsonSerialize( as = BaseIdentifiableObject.class )
+    @JsonView( {DetailedView.class, ExportView.class} )
+    @JacksonXmlProperty
     public DataElementGroup getDataElementGroup()
     {
         return dataElementGroup;
@@ -260,10 +259,10 @@ public class MapView
         this.dataElementGroup = dataElementGroup;
     }
 
-    @XmlElement
-    @XmlJavaTypeAdapter( DataElementXmlAdapter.class )
     @JsonProperty
     @JsonSerialize( as = BaseIdentifiableObject.class )
+    @JsonView( {DetailedView.class, ExportView.class} )
+    @JacksonXmlProperty
     public DataElement getDataElement()
     {
         return dataElement;
@@ -274,8 +273,9 @@ public class MapView
         this.dataElement = dataElement;
     }
 
-    @XmlElement
     @JsonProperty
+    @JsonView( {DetailedView.class, ExportView.class} )
+    @JacksonXmlProperty
     public String getMapDateType()
     {
         return mapDateType;
@@ -296,10 +296,10 @@ public class MapView
         this.periodType = periodType;
     }
 
-    @XmlElement
-    @XmlJavaTypeAdapter( BaseIdentifiableObjectXmlAdapter.class )
     @JsonProperty
     @JsonSerialize( as = BaseIdentifiableObject.class )
+    @JsonView( {DetailedView.class, ExportView.class} )
+    @JacksonXmlProperty
     public Period getPeriod()
     {
         return period;
@@ -310,10 +310,10 @@ public class MapView
         this.period = period;
     }
 
-    @XmlElement
-    @XmlJavaTypeAdapter( OrganisationUnitXmlAdapter.class )
     @JsonProperty
     @JsonSerialize( as = BaseIdentifiableObject.class )
+    @JsonView( {DetailedView.class, ExportView.class} )
+    @JacksonXmlProperty
     public OrganisationUnit getParentOrganisationUnit()
     {
         return parentOrganisationUnit;
@@ -324,10 +324,10 @@ public class MapView
         this.parentOrganisationUnit = parentOrganisationUnit;
     }
 
-    @XmlElement
-    @XmlJavaTypeAdapter( OrganisationUnitLevelXmlAdapter.class )
     @JsonProperty
     @JsonSerialize( as = BaseIdentifiableObject.class )
+    @JsonView( {DetailedView.class, ExportView.class} )
+    @JacksonXmlProperty
     public OrganisationUnitLevel getOrganisationUnitLevel()
     {
         return organisationUnitLevel;
@@ -338,8 +338,9 @@ public class MapView
         this.organisationUnitLevel = organisationUnitLevel;
     }
 
-    @XmlElement
     @JsonProperty
+    @JsonView( {DetailedView.class, ExportView.class} )
+    @JacksonXmlProperty
     public String getMapLegendType()
     {
         return mapLegendType;
@@ -350,8 +351,9 @@ public class MapView
         this.mapLegendType = mapLegendType;
     }
 
-    @XmlElement
     @JsonProperty
+    @JsonView( {DetailedView.class, ExportView.class} )
+    @JacksonXmlProperty
     public Integer getMethod()
     {
         return method;
@@ -362,8 +364,9 @@ public class MapView
         this.method = method;
     }
 
-    @XmlElement
     @JsonProperty
+    @JsonView( {DetailedView.class, ExportView.class} )
+    @JacksonXmlProperty
     public Integer getClasses()
     {
         return classes;
@@ -374,8 +377,9 @@ public class MapView
         this.classes = classes;
     }
 
-    @XmlElement
     @JsonProperty
+    @JsonView( {DetailedView.class, ExportView.class} )
+    @JacksonXmlProperty
     public String getBounds()
     {
         return bounds;
@@ -386,8 +390,9 @@ public class MapView
         this.bounds = bounds;
     }
 
-    @XmlElement
     @JsonProperty
+    @JsonView( {DetailedView.class, ExportView.class} )
+    @JacksonXmlProperty
     public String getColorLow()
     {
         return colorLow;
@@ -398,8 +403,9 @@ public class MapView
         this.colorLow = colorLow;
     }
 
-    @XmlElement
     @JsonProperty
+    @JsonView( {DetailedView.class, ExportView.class} )
+    @JacksonXmlProperty
     public String getColorHigh()
     {
         return colorHigh;
@@ -410,8 +416,10 @@ public class MapView
         this.colorHigh = colorHigh;
     }
 
-    @XmlElement
     @JsonProperty
+    @JsonSerialize( as = BaseIdentifiableObject.class )
+    @JsonView( {DetailedView.class, ExportView.class} )
+    @JacksonXmlProperty
     public MapLegendSet getMapLegendSet()
     {
         return mapLegendSet;
@@ -422,8 +430,9 @@ public class MapView
         this.mapLegendSet = mapLegendSet;
     }
 
-    @XmlElement
     @JsonProperty
+    @JsonView( {DetailedView.class, ExportView.class} )
+    @JacksonXmlProperty
     public Integer getRadiusLow()
     {
         return radiusLow;
@@ -434,8 +443,9 @@ public class MapView
         this.radiusLow = radiusLow;
     }
 
-    @XmlElement
     @JsonProperty
+    @JsonView( {DetailedView.class, ExportView.class} )
+    @JacksonXmlProperty
     public Integer getRadiusHigh()
     {
         return radiusHigh;
@@ -446,8 +456,9 @@ public class MapView
         this.radiusHigh = radiusHigh;
     }
 
-    @XmlElement
     @JsonProperty
+    @JsonView( {DetailedView.class, ExportView.class} )
+    @JacksonXmlProperty
     public String getLongitude()
     {
         return longitude;
@@ -458,8 +469,9 @@ public class MapView
         this.longitude = longitude;
     }
 
-    @XmlElement
     @JsonProperty
+    @JsonView( {DetailedView.class, ExportView.class} )
+    @JacksonXmlProperty
     public String getLatitude()
     {
         return latitude;
@@ -470,8 +482,9 @@ public class MapView
         this.latitude = latitude;
     }
 
-    @XmlElement
     @JsonProperty
+    @JsonView( {DetailedView.class, ExportView.class} )
+    @JacksonXmlProperty
     public Integer getZoom()
     {
         return zoom;

@@ -102,7 +102,6 @@ public class OrganisationUnitGroupController
     public void postOrganisationUnitGroupXML( HttpServletResponse response, InputStream input ) throws Exception
     {
         OrganisationUnitGroup organisationUnitGroup = Jaxb2Utils.unmarshal( OrganisationUnitGroup.class, input );
-
         postOrganisationUnitGroup( organisationUnitGroup, response );
     }
 

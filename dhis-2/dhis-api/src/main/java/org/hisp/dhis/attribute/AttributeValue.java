@@ -27,18 +27,23 @@
 
 package org.hisp.dhis.attribute;
 
-import org.codehaus.jackson.annotate.JsonIgnore;
-import org.codehaus.jackson.annotate.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonView;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
+import org.hisp.dhis.common.BaseIdentifiableObject;
 import org.hisp.dhis.common.Dxf2Namespace;
+import org.hisp.dhis.common.view.DetailedView;
+import org.hisp.dhis.common.view.ExportView;
 
-import javax.xml.bind.annotation.*;
 import java.io.Serializable;
 
 /**
  * @author mortenoh
  */
-@XmlRootElement( name = "attribute", namespace = Dxf2Namespace.NAMESPACE )
-@XmlAccessorType( value = XmlAccessType.NONE )
+@JacksonXmlRootElement( localName = "attribute", namespace = Dxf2Namespace.NAMESPACE )
 public class AttributeValue
     implements Serializable
 {
@@ -63,7 +68,6 @@ public class AttributeValue
         this.value = value;
     }
 
-    @XmlTransient
     @JsonIgnore
     public int getId()
     {
@@ -75,30 +79,10 @@ public class AttributeValue
         this.id = id;
     }
 
-    @XmlAttribute( name = "id" )
-    @JsonProperty( value = "id" )
-    public String getAttributeTypeRef()
-    {
-        return attribute.getUid();
-    }
-
-    public void setAttributeTypeRef( String uid )
-    {
-        // this is just here so that we don't confuse Jackson (it will try and use setId which takes an integer)
-    }
-
-    @XmlAttribute( name = "name" )
-    @JsonProperty( value = "name" )
-    public String getAttributeName()
-    {
-        return attribute.getName();
-    }
-
-    public void setAttributeName( String name )
-    {
-        // this is just here so that we don't confuse Jackson
-    }
-
+    @JsonProperty
+    @JsonSerialize( as = BaseIdentifiableObject.class )
+    @JsonView( {DetailedView.class, ExportView.class} )
+    @JacksonXmlProperty
     public Attribute getAttribute()
     {
         return attribute;
@@ -109,8 +93,9 @@ public class AttributeValue
         this.attribute = attribute;
     }
 
-    @XmlAttribute
     @JsonProperty
+    @JsonView( {DetailedView.class, ExportView.class} )
+    @JacksonXmlProperty
     public String getValue()
     {
         return value;

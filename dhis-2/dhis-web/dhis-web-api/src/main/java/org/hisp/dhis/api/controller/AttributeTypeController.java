@@ -30,7 +30,6 @@ package org.hisp.dhis.api.controller;
 import org.hisp.dhis.api.utils.IdentifiableObjectParams;
 import org.hisp.dhis.api.utils.WebLinkPopulator;
 import org.hisp.dhis.api.view.JacksonUtils;
-import org.hisp.dhis.api.view.Jaxb2Utils;
 import org.hisp.dhis.attribute.Attribute;
 import org.hisp.dhis.attribute.AttributeService;
 import org.hisp.dhis.attribute.Attributes;
@@ -110,6 +109,7 @@ public class AttributeTypeController
         }
 
         model.addAttribute( "model", attribute );
+        model.addAttribute( "view", "detailed" );
 
         return "attributeType";
     }
@@ -122,7 +122,7 @@ public class AttributeTypeController
     @PreAuthorize( "hasRole('ALL') or hasRole('F_ATTRIBUTE_ADD')" )
     public void postAttributeTypeXML( HttpServletResponse response, InputStream input ) throws Exception
     {
-        Attribute attribute = (Attribute) Jaxb2Utils.unmarshal( Attribute.class, input );
+        Attribute attribute = JacksonUtils.fromXml( input, Attribute.class );
         postAttributeType( attribute, response );
     }
 
@@ -130,7 +130,7 @@ public class AttributeTypeController
     @PreAuthorize( "hasRole('ALL') or hasRole('F_ATTRIBUTE_ADD')" )
     public void postAttributeTypeJSON( HttpServletResponse response, InputStream input ) throws Exception
     {
-        Attribute attribute = JacksonUtils.readValueAs( Attribute.class, input );
+        Attribute attribute = JacksonUtils.fromJson( input, Attribute.class );
         postAttributeType( attribute, response );
     }
 
@@ -155,8 +155,7 @@ public class AttributeTypeController
                     response.setStatus( HttpServletResponse.SC_CREATED );
                     response.setHeader( "Location", AttributeTypeController.RESOURCE_PATH + "/" + attribute.getUid() );
                 }
-            } 
-            catch ( Exception e )
+            } catch ( Exception e )
             {
                 response.setStatus( HttpServletResponse.SC_CONFLICT );
             }
@@ -171,7 +170,7 @@ public class AttributeTypeController
     @PreAuthorize( "hasRole('ALL') or hasRole('F_ATTRIBUTE_UPDATE')" )
     public void putAttributeTypeXML( @PathVariable( "uid" ) String uid, InputStream input, HttpServletResponse response ) throws Exception
     {
-        Attribute updateAttribute = (Attribute) Jaxb2Utils.unmarshal( Attribute.class, input );
+        Attribute updateAttribute = JacksonUtils.fromXml( input, Attribute.class );
         updateAttribute.setUid( uid );
         putAttributeType( updateAttribute, response );
     }
@@ -180,7 +179,7 @@ public class AttributeTypeController
     @PreAuthorize( "hasRole('ALL') or hasRole('F_ATTRIBUTE_UPDATE')" )
     public void putAttributeTypeJSON( @PathVariable( "uid" ) String uid, InputStream input, HttpServletResponse response ) throws Exception
     {
-        Attribute updateAttribute = JacksonUtils.readValueAs( Attribute.class, input );
+        Attribute updateAttribute = JacksonUtils.fromJson( input, Attribute.class );
         updateAttribute.setUid( uid );
         putAttributeType( updateAttribute, response );
     }

@@ -27,14 +27,11 @@ package org.hisp.dhis.period;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import org.codehaus.jackson.annotate.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 import org.hisp.dhis.common.Dxf2Namespace;
 import org.hisp.dhis.i18n.I18nFormat;
 
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlRootElement;
 import java.io.Serializable;
 import java.util.*;
 
@@ -42,8 +39,7 @@ import java.util.*;
  * @author Lars Helge Overland
  * @version $Id$
  */
-@XmlRootElement( name = "relativePeriods", namespace = Dxf2Namespace.NAMESPACE )
-@XmlAccessorType( value = XmlAccessType.NONE )
+@JacksonXmlRootElement( localName = "relativePeriods", namespace = Dxf2Namespace.NAMESPACE )
 public class RelativePeriods
     implements Serializable
 {
@@ -141,7 +137,7 @@ public class RelativePeriods
     private boolean reportingQuarter = false; // TODO rename to lastQuarter
 
     private boolean lastSixMonth = false;
-    
+
     private boolean monthsThisYear = false;
 
     private boolean quartersThisYear = false;
@@ -259,7 +255,7 @@ public class RelativePeriods
         {
             return PeriodType.getPeriodTypeByName( QuarterlyPeriodType.NAME );
         }
-        
+
         if ( isLastSixMonth() )
         {
             return PeriodType.getPeriodTypeByName( SixMonthlyPeriodType.NAME );
@@ -304,14 +300,14 @@ public class RelativePeriods
 
     /**
      * Gets a list of Periods relative to current date.
-     * 
+     *
      * @param months the number of months to subtract from the current date.
      */
     public List<Period> getRelativePeriods( int months )
     {
         return getRelativePeriods( getDate( months, new Date() ), null, false );
     }
-    
+
     /**
      * Gets a list of Periods based on the given input and the state of this
      * RelativePeriods. The current date is set to todays date minus one month.
@@ -350,7 +346,7 @@ public class RelativePeriods
         {
             periods.add( getRelativePeriod( new QuarterlyPeriodType(), REPORTING_QUARTER, date, dynamicNames, format ) );
         }
-        
+
         if ( isLastSixMonth() )
         {
             periods.add( getRelativePeriod( new SixMonthlyPeriodType(), LAST_SIXMONTH, date, dynamicNames, format ) );
@@ -541,7 +537,6 @@ public class RelativePeriods
     // Getters & setters
     // -------------------------------------------------------------------------
 
-    @XmlElement( name = "lastMonth" )
     @JsonProperty( value = "lastMonth" )
     public boolean isReportingMonth()
     {
@@ -554,7 +549,6 @@ public class RelativePeriods
         return this;
     }
 
-    @XmlElement( name = "lastBimonth" )
     @JsonProperty( value = "lastBimonth" )
     public boolean isReportingBimonth()
     {
@@ -567,7 +561,6 @@ public class RelativePeriods
         return this;
     }
 
-    @XmlElement( name = "lastQuarter" )
     @JsonProperty( value = "lastQuarter" )
     public boolean isReportingQuarter()
     {
@@ -579,8 +572,7 @@ public class RelativePeriods
         this.reportingQuarter = reportingQuarter;
         return this;
     }
-    
-    @XmlElement
+
     @JsonProperty
     public boolean isLastSixMonth()
     {
@@ -592,7 +584,6 @@ public class RelativePeriods
         this.lastSixMonth = lastSixMonth;
     }
 
-    @XmlElement
     @JsonProperty
     public boolean isMonthsThisYear()
     {
@@ -605,7 +596,6 @@ public class RelativePeriods
         return this;
     }
 
-    @XmlElement
     @JsonProperty
     public boolean isQuartersThisYear()
     {
@@ -618,7 +608,6 @@ public class RelativePeriods
         return this;
     }
 
-    @XmlElement
     @JsonProperty
     public boolean isThisYear()
     {
@@ -631,7 +620,6 @@ public class RelativePeriods
         return this;
     }
 
-    @XmlElement
     @JsonProperty
     public boolean isMonthsLastYear()
     {
@@ -644,7 +632,6 @@ public class RelativePeriods
         return this;
     }
 
-    @XmlElement
     @JsonProperty
     public boolean isQuartersLastYear()
     {
@@ -657,7 +644,6 @@ public class RelativePeriods
         return this;
     }
 
-    @XmlElement
     @JsonProperty
     public boolean isLastYear()
     {
@@ -670,7 +656,6 @@ public class RelativePeriods
         return this;
     }
 
-    @XmlElement
     @JsonProperty
     public boolean isLast5Years()
     {
@@ -683,7 +668,6 @@ public class RelativePeriods
         return this;
     }
 
-    @XmlElement
     @JsonProperty
     public boolean isLast12Months()
     {
@@ -696,7 +680,6 @@ public class RelativePeriods
         return this;
     }
 
-    @XmlElement
     @JsonProperty
     public boolean isLast6BiMonths()
     {
@@ -709,7 +692,6 @@ public class RelativePeriods
         return this;
     }
 
-    @XmlElement
     @JsonProperty
     public boolean isLast4Quarters()
     {
@@ -722,7 +704,6 @@ public class RelativePeriods
         return this;
     }
 
-    @XmlElement
     @JsonProperty
     public boolean isLast2SixMonths()
     {
@@ -799,7 +780,7 @@ public class RelativePeriods
         {
             return false;
         }
-        
+
         if ( !lastSixMonth == other.last2SixMonths )
         {
             return false;

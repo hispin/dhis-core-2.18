@@ -27,10 +27,6 @@ package org.hisp.dhis.api.controller;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.io.IOException;
-
-import javax.servlet.http.HttpServletResponse;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hisp.dhis.api.webdomain.DataValueSets;
@@ -44,6 +40,9 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 
 @Controller
 @RequestMapping( value = DataValueSetController.RESOURCE_PATH )
@@ -73,8 +72,8 @@ public class DataValueSetController
         log.debug( "Saved data value set for data set: " + dataValueSet.getDataSetIdentifier() +
             ", org unit: " + dataValueSet.getOrganisationUnitIdentifier() + ", period: " + dataValueSet.getPeriodIsoDate() );
     }
-    
-    @ExceptionHandler(IllegalArgumentException.class)
+
+    @ExceptionHandler( IllegalArgumentException.class )
     public void handleException( HttpServletResponse response, IllegalArgumentException ex )
         throws IOException
     {

@@ -27,25 +27,26 @@ package org.hisp.dhis.organisationunit;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import org.codehaus.jackson.annotate.JsonProperty;
-import org.codehaus.jackson.map.annotate.JsonSerialize;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonView;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlElementWrapper;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 import org.hisp.dhis.common.BaseIdentifiableObject;
 import org.hisp.dhis.common.BaseNameableObject;
 import org.hisp.dhis.common.Dxf2Namespace;
-import org.hisp.dhis.common.adapter.OrganisationUnitGroupSetXmlAdapter;
-import org.hisp.dhis.common.adapter.OrganisationUnitXmlAdapter;
+import org.hisp.dhis.common.view.DetailedView;
+import org.hisp.dhis.common.view.ExportView;
 
-import javax.xml.bind.annotation.*;
-import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import java.util.HashSet;
 import java.util.Set;
 
 /**
  * @author Kristian Nordal
  */
-@XmlRootElement( name = "organisationUnitGroup", namespace = Dxf2Namespace.NAMESPACE )
-@XmlAccessorType( value = XmlAccessType.NONE )
-public class OrganisationUnitGroup 
+@JacksonXmlRootElement( localName = "organisationUnitGroup", namespace = Dxf2Namespace.NAMESPACE )
+public class OrganisationUnitGroup
     extends BaseNameableObject
 {
     /**
@@ -79,13 +80,13 @@ public class OrganisationUnitGroup
     {
         return name;
     }
-    
+
     @Override
     public String getCode()
     {
         return name;
     }
-    
+
     public void addOrganisationUnit( OrganisationUnit organisationUnit )
     {
         members.add( organisationUnit );
@@ -157,11 +158,11 @@ public class OrganisationUnitGroup
     // Getters and setters
     // -------------------------------------------------------------------------
 
-    @XmlElementWrapper( name = "organisationUnits" )
-    @XmlElement( name = "organisationUnit" )
-    @XmlJavaTypeAdapter( OrganisationUnitXmlAdapter.class )
     @JsonProperty( value = "organisationUnits" )
     @JsonSerialize( contentAs = BaseIdentifiableObject.class )
+    @JsonView( {DetailedView.class, ExportView.class} )
+    @JacksonXmlElementWrapper( localName = "organisationUnits" )
+    @JacksonXmlProperty( localName = "organisationUnit" )
     public Set<OrganisationUnit> getMembers()
     {
         return members;
@@ -172,10 +173,9 @@ public class OrganisationUnitGroup
         this.members = members;
     }
 
-    @XmlElement( name = "organisationUnitGroupSet" )
-    @XmlJavaTypeAdapter( OrganisationUnitGroupSetXmlAdapter.class )
     @JsonProperty( value = "organisationUnitGroupSet" )
     @JsonSerialize( as = BaseIdentifiableObject.class )
+    @JsonView( {DetailedView.class, ExportView.class} )
     public OrganisationUnitGroupSet getGroupSet()
     {
         return groupSet;

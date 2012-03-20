@@ -30,14 +30,23 @@ package org.hisp.dhis.datadictionary;
 import java.util.HashSet;
 import java.util.Set;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonView;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlElementWrapper;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 import org.hisp.dhis.common.BaseIdentifiableObject;
+import org.hisp.dhis.common.Dxf2Namespace;
+import org.hisp.dhis.common.view.DetailedView;
+import org.hisp.dhis.common.view.ExportView;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.indicator.Indicator;
 
 /**
  * @author Lars Helge Overland
- * @version $Id$
  */
+@JacksonXmlRootElement( localName = "dataDictionary", namespace = Dxf2Namespace.NAMESPACE )
 public class DataDictionary
     extends BaseIdentifiableObject
 {
@@ -106,6 +115,9 @@ public class DataDictionary
     // Set and get methods
     // -------------------------------------------------------------------------
 
+    @JsonProperty
+    @JsonView( {DetailedView.class, ExportView.class} )
+    @JacksonXmlProperty
     public String getDescription()
     {
         return description;
@@ -116,6 +128,9 @@ public class DataDictionary
         this.description = description;
     }
     
+    @JsonProperty
+    @JsonView( {DetailedView.class, ExportView.class} )
+    @JacksonXmlProperty
     public String getRegion()
     {
         return region;
@@ -126,6 +141,11 @@ public class DataDictionary
         this.region = region;
     }
 
+    @JsonProperty
+    @JsonSerialize( contentAs = BaseIdentifiableObject.class )
+    @JsonView( {DetailedView.class, ExportView.class} )
+    @JacksonXmlElementWrapper( localName = "dataElements" )
+    @JacksonXmlProperty( localName = "dataElement" )
     public Set<DataElement> getDataElements()
     {
         return dataElements;
@@ -136,6 +156,11 @@ public class DataDictionary
         this.dataElements = dataElements;
     }
 
+    @JsonProperty
+    @JsonSerialize( contentAs = BaseIdentifiableObject.class )
+    @JsonView( {DetailedView.class, ExportView.class} )
+    @JacksonXmlElementWrapper( localName = "indicators" )
+    @JacksonXmlProperty( localName = "indicator" )
     public Set<Indicator> getIndicators()
     {
         return indicators;

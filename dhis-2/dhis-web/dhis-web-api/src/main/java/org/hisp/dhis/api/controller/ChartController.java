@@ -27,6 +27,7 @@ package org.hisp.dhis.api.controller;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import org.hisp.dhis.api.utils.ContextUtils;
 import org.hisp.dhis.api.utils.IdentifiableObjectParams;
 import org.hisp.dhis.api.utils.WebLinkPopulator;
 import org.hisp.dhis.chart.Chart;
@@ -40,7 +41,6 @@ import org.hisp.dhis.indicator.IndicatorService;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.system.util.CodecUtils;
-import org.hisp.dhis.api.utils.ContextUtils;
 import org.jfree.chart.ChartUtilities;
 import org.jfree.chart.JFreeChart;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -81,7 +81,7 @@ public class ChartController
 
     @Autowired
     private I18nManager i18nManager;
-    
+
     @Autowired
     private ContextUtils contextUtils;
 
@@ -133,6 +133,7 @@ public class ChartController
         }
 
         model.addAttribute( "model", chart );
+        model.addAttribute( "view", "detailed" );
 
         return "chart";
     }
@@ -146,11 +147,11 @@ public class ChartController
         JFreeChart jFreeChart = chartService.getJFreeChart( uid, i18nManager.getI18nFormat() );
 
         Chart chart = chartService.getChart( uid );
-        
+
         String filename = CodecUtils.filenameEncode( chart.getName() ) + ".png";
-        
+
         contextUtils.configureResponse( response, ContextUtils.CONTENT_TYPE_PNG, CacheStrategy.RESPECT_SYSTEM_SETTING, filename, false );
-        
+
         ChartUtilities.writeChartAsPNG( response.getOutputStream(), jFreeChart, width, height );
     }
 
@@ -178,7 +179,7 @@ public class ChartController
         }
 
         contextUtils.configureResponse( response, ContextUtils.CONTENT_TYPE_PNG, CacheStrategy.RESPECT_SYSTEM_SETTING, "chart.png", false );
-        
+
         ChartUtilities.writeChartAsPNG( response.getOutputStream(), chart, width, height );
     }
 

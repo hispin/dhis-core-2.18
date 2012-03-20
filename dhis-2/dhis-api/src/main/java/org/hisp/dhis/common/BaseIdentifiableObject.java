@@ -27,24 +27,25 @@ package org.hisp.dhis.common;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonView;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
+import org.hisp.dhis.common.view.DetailedView;
+import org.hisp.dhis.common.view.ExportView;
+import org.hisp.dhis.common.view.IdentifiableObjectView;
+
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlAttribute;
-import javax.xml.bind.annotation.XmlRootElement;
-
-import org.codehaus.jackson.annotate.JsonProperty;
-
 /**
  * @author Bob Jolliffe
  */
-@XmlRootElement( name = "identifiableObject", namespace = Dxf2Namespace.NAMESPACE )
-@XmlAccessorType( value = XmlAccessType.NONE )
-public class BaseIdentifiableObject extends BaseLinkableObject
+@JacksonXmlRootElement( localName = "identifiableObject", namespace = Dxf2Namespace.NAMESPACE )
+public class BaseIdentifiableObject
+    extends BaseLinkableObject
     implements IdentifiableObject
 {
     /**
@@ -76,7 +77,7 @@ public class BaseIdentifiableObject extends BaseLinkableObject
      * The date this object was last updated.
      */
     protected Date lastUpdated;
-    
+
     /**
      * The i18n variant of the name. Should not be persisted.
      */
@@ -104,14 +105,16 @@ public class BaseIdentifiableObject extends BaseLinkableObject
     @Override
     public int compareTo( IdentifiableObject object )
     {
-        return name == null ? ( object.getName() == null ? 0 : -1 ) : name.compareTo( object.getName() );
+        return name == null ? (object.getName() == null ? 0 : -1) : name.compareTo( object.getName() );
     }
-    
+
     // -------------------------------------------------------------------------
     // Setters and getters
     // -------------------------------------------------------------------------
 
     @JsonProperty( value = "internalId" )
+    @JsonView( {DetailedView.class, IdentifiableObjectView.class, ExportView.class} )
+    @JacksonXmlProperty( isAttribute = true )
     public int getId()
     {
         return id;
@@ -122,8 +125,8 @@ public class BaseIdentifiableObject extends BaseLinkableObject
         this.id = id;
     }
 
-    @XmlAttribute( name = "id" )
     @JsonProperty( value = "id" )
+    @JacksonXmlProperty( isAttribute = true )
     public String getUid()
     {
         return uid;
@@ -134,8 +137,9 @@ public class BaseIdentifiableObject extends BaseLinkableObject
         this.uid = uid;
     }
 
-    @XmlAttribute(required = false)
     @JsonProperty
+    @JsonView( {DetailedView.class, IdentifiableObjectView.class, ExportView.class} )
+    @JacksonXmlProperty( isAttribute = true )
     public String getCode()
     {
         return code;
@@ -146,8 +150,9 @@ public class BaseIdentifiableObject extends BaseLinkableObject
         this.code = code;
     }
 
-    @XmlAttribute(required = false)
     @JsonProperty
+    @JsonView( {DetailedView.class, IdentifiableObjectView.class, ExportView.class} )
+    @JacksonXmlProperty( isAttribute = true )
     public String getName()
     {
         return name;
@@ -158,8 +163,9 @@ public class BaseIdentifiableObject extends BaseLinkableObject
         this.name = name;
     }
 
-    @XmlAttribute(required = false)
     @JsonProperty
+    @JsonView( {DetailedView.class, IdentifiableObjectView.class, ExportView.class} )
+    @JacksonXmlProperty( isAttribute = true )
     public Date getLastUpdated()
     {
         return lastUpdated;

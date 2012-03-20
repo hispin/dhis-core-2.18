@@ -27,11 +27,11 @@ package org.hisp.dhis.mapping;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.Collection;
-import java.util.Set;
-
 import org.hisp.dhis.aggregation.AggregatedMapValue;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
+
+import java.util.Collection;
+import java.util.Set;
 
 /**
  * @author Jan Henrik Overland
@@ -68,7 +68,7 @@ public interface MappingService
     // -------------------------------------------------------------------------
 
     Collection<AggregatedMapValue> getIndicatorMapValues( int indicatorId, int periodId, int parentOrganisationUnitId,
-        Integer level );
+                                                          Integer level );
 
     Collection<AggregatedMapValue> getIndicatorMapValues( int indicatorId, int periodId, Collection<OrganisationUnit> units );
 
@@ -77,7 +77,7 @@ public interface MappingService
     // -------------------------------------------------------------------------
 
     Collection<AggregatedMapValue> getDataElementMapValues( int dataElementId, int periodId,
-        int parentOrganisationUnitId, Integer level );
+                                                            int parentOrganisationUnitId, Integer level );
 
     Collection<AggregatedMapValue> getDataElementMapValues( int dataElementId, int periodId, Collection<OrganisationUnit> units );
 
@@ -92,6 +92,8 @@ public interface MappingService
     void deleteMapLegend( MapLegend legend );
 
     MapLegend getMapLegend( int id );
+
+    MapLegend getMapLegend( String uid );
 
     MapLegend getMapLegendByName( String name );
 
@@ -110,6 +112,8 @@ public interface MappingService
     void deleteMapLegendSet( MapLegendSet legendSet );
 
     MapLegendSet getMapLegendSet( int id );
+
+    MapLegendSet getMapLegendSet( String uid );
 
     MapLegendSet getMapLegendSetByName( String name );
 
@@ -130,10 +134,10 @@ public interface MappingService
     int addMapView( MapView mapView );
 
     void addMapView( String name, boolean system, String mapValueType, Integer indicatorGroupId, Integer indicatorId,
-        Integer dataElementGroupId, Integer dataElementId, String periodTypeName, Integer periodId,
-        Integer parentOrganisationUnitId, Integer organisationUnitLevel, String mapLegendType, Integer method,
-        Integer classes, String bounds, String colorLow, String colorHigh, Integer mapLegendSetId, Integer radiusLow,
-        Integer radiusHigh, String longitude, String latitude, int zoom );
+                     Integer dataElementGroupId, Integer dataElementId, String periodTypeName, Integer periodId,
+                     Integer parentOrganisationUnitId, Integer organisationUnitLevel, String mapLegendType, Integer method,
+                     Integer classes, String bounds, String colorLow, String colorHigh, Integer mapLegendSetId, Integer radiusLow,
+                     Integer radiusHigh, String longitude, String latitude, int zoom );
 
     void updateMapView( MapView mapView );
 
@@ -142,11 +146,11 @@ public interface MappingService
     MapView getMapView( int id );
 
     MapView getMapView( String uid );
-    
+
     MapView getMapViewByName( String name );
 
     MapView getIndicatorLastYearMapView( String indicatorUid, String organisationUnitUid, int level );
-    
+
     Collection<MapView> getAllMapViews();
 
     Collection<MapView> getMapViewsByFeatureType( String featureType );
@@ -160,11 +164,13 @@ public interface MappingService
     void updateMapLayer( MapLayer mapLayer );
 
     void addOrUpdateMapLayer( String name, String type, String url, String layers, String time, String fillColor,
-        double fillOpacity, String strokeColor, int strokeWidth );
+                              double fillOpacity, String strokeColor, int strokeWidth );
 
     void deleteMapLayer( MapLayer mapLayer );
 
     MapLayer getMapLayer( int id );
+
+    MapLayer getMapLayer( String uid );
 
     MapLayer getMapLayerByName( String name );
 

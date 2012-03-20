@@ -128,6 +128,7 @@ public class ReportController
         }
 
         model.addAttribute( "model", report );
+        model.addAttribute( "view", "detailed" );
 
         return "report";
     }

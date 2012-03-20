@@ -27,12 +27,14 @@ package org.hisp.dhis.period;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import org.codehaus.jackson.annotate.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonView;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 import org.hisp.dhis.common.BaseNameableObject;
 import org.hisp.dhis.common.Dxf2Namespace;
 import org.hisp.dhis.common.Weighted;
+import org.hisp.dhis.common.view.DetailedView;
 
-import javax.xml.bind.annotation.*;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -40,10 +42,10 @@ import java.util.Date;
 /**
  * @author Kristian Nordal
  */
-@XmlRootElement( name = "period", namespace = Dxf2Namespace.NAMESPACE )
-@XmlAccessorType( value = XmlAccessType.NONE )
+@JacksonXmlRootElement( localName = "period", namespace = Dxf2Namespace.NAMESPACE )
 public class Period
-    extends BaseNameableObject implements Weighted
+    extends BaseNameableObject
+    implements Weighted
 {
     /**
      * Determines if a de-serialized file is compatible with this class.
@@ -274,8 +276,8 @@ public class Period
     // Getters and setters
     // -------------------------------------------------------------------------
 
-    @XmlElement
     @JsonProperty
+    @JsonView( {DetailedView.class} )
     public Date getEndDate()
     {
         return endDate;
@@ -297,8 +299,8 @@ public class Period
         this.periodType = periodType;
     }
 
-    @XmlElement
     @JsonProperty
+    @JsonView( {DetailedView.class} )
     public Date getStartDate()
     {
         return startDate;

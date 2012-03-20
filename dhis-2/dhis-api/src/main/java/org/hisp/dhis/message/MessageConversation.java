@@ -27,25 +27,31 @@ package org.hisp.dhis.message;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import org.codehaus.jackson.annotate.JsonProperty;
-import org.codehaus.jackson.map.annotate.JsonSerialize;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonView;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlElementWrapper;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 import org.hisp.dhis.common.BaseIdentifiableObject;
 import org.hisp.dhis.common.Dxf2Namespace;
-import org.hisp.dhis.common.adapter.UserXmlAdapter;
+import org.hisp.dhis.common.view.DetailedView;
+import org.hisp.dhis.common.view.ExportView;
 import org.hisp.dhis.user.User;
 
-import javax.xml.bind.annotation.*;
-import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import java.util.*;
 
 /**
  * @author Lars Helge Overland
  */
-@XmlRootElement( name = "messageConversation", namespace = Dxf2Namespace.NAMESPACE )
-@XmlAccessorType( value = XmlAccessType.NONE )
+@JacksonXmlRootElement( localName = "messageConversation", namespace = Dxf2Namespace.NAMESPACE )
 public class MessageConversation
     extends BaseIdentifiableObject
 {
+    //-------------------------------------------------------------------------------------------------------
+    // Persistent fields
+    //-------------------------------------------------------------------------------------------------------
+
     private String subject;
 
     private Set<UserMessage> userMessages = new HashSet<UserMessage>();
@@ -55,9 +61,13 @@ public class MessageConversation
     private User lastSender;
 
     private Date lastMessage;
-    
+
+    //-------------------------------------------------------------------------------------------------------
+    // Transient fields
+    //-------------------------------------------------------------------------------------------------------
+
     private transient boolean read;
-    
+
     private transient boolean followUp;
 
     private transient String lastSenderSurname;
@@ -75,10 +85,43 @@ public class MessageConversation
         this.lastMessage = new Date();
     }
 
+    //-------------------------------------------------------------------------------------------------------
+    // Logic
+    //-------------------------------------------------------------------------------------------------------
+
     @Override
-    public String getName()
+    public int hashCode()
     {
-        return subject;
+        return uid.hashCode();
+    }
+
+    @Override
+    public boolean equals( Object object )
+    {
+        if ( this == object )
+        {
+            return true;
+        }
+
+        if ( object == null )
+        {
+            return false;
+        }
+
+        if ( getClass() != object.getClass() )
+        {
+            return false;
+        }
+
+        final MessageConversation other = (MessageConversation) object;
+
+        return uid.equals( other.uid );
+    }
+
+    @Override
+    public String toString()
+    {
+        return "[" + subject + "]";
     }
 
     public void addUserMessage( UserMessage userMessage )
@@ -92,7 +135,7 @@ public class MessageConversation
         {
             message.setAutoFields();
         }
-        
+
         this.messages.add( message );
     }
 
@@ -103,14 +146,14 @@ public class MessageConversation
             if ( userMessage.getUser() != null && userMessage.getUser().equals( user ) )
             {
                 userMessage.setFollowUp( !userMessage.isFollowUp() );
-                
+
                 return userMessage.isFollowUp();
             }
         }
-        
+
         return false;
     }
-    
+
     public boolean markRead( User user )
     {
         for ( UserMessage userMessage : userMessages )
@@ -118,13 +161,13 @@ public class MessageConversation
             if ( userMessage.getUser() != null && userMessage.getUser().equals( user ) )
             {
                 boolean read = userMessage.isRead();
-                
+
                 userMessage.setRead( true );
 
                 return !read;
             }
         }
-        
+
         return false;
     }
 
@@ -135,13 +178,13 @@ public class MessageConversation
             if ( userMessage.getUser() != null && userMessage.getUser().equals( user ) )
             {
                 boolean read = userMessage.isRead();
-                
+
                 userMessage.setRead( false );
 
                 return read;
             }
         }
-        
+
         return false;
     }
 
@@ -190,8 +233,19 @@ public class MessageConversation
         return users;
     }
 
-    @XmlElement
+    //-------------------------------------------------------------------------------------------------------
+    // Persistent fields
+    //-------------------------------------------------------------------------------------------------------
+
+    @Override
+    public String getName()
+    {
+        return subject;
+    }
+
     @JsonProperty
+    @JsonView( {DetailedView.class, ExportView.class} )
+    @JacksonXmlProperty
     public String getSubject()
     {
         return subject;
@@ -202,6 +256,10 @@ public class MessageConversation
         this.subject = subject;
     }
 
+    @JsonProperty
+    @JsonView( {DetailedView.class, ExportView.class} )
+    @JacksonXmlElementWrapper( localName = "userMessages" )
+    @JacksonXmlProperty( localName = "userMessage" )
     public Set<UserMessage> getUserMessages()
     {
         return userMessages;
@@ -212,9 +270,11 @@ public class MessageConversation
         this.userMessages = userMessages;
     }
 
-    @XmlElementWrapper( name = "messages" )
-    @XmlElement( name = "message" )
     @JsonProperty
+    @JsonSerialize( contentAs = BaseIdentifiableObject.class )
+    @JsonView( {DetailedView.class, ExportView.class} )
+    @JacksonXmlElementWrapper( localName = "messages" )
+    @JacksonXmlProperty( localName = "message" )
     public List<Message> getMessages()
     {
         return messages;
@@ -225,10 +285,10 @@ public class MessageConversation
         this.messages = messages;
     }
 
-    @XmlElement
-    @XmlJavaTypeAdapter( UserXmlAdapter.class )
     @JsonProperty
     @JsonSerialize( as = BaseIdentifiableObject.class )
+    @JsonView( {DetailedView.class, ExportView.class} )
+    @JacksonXmlProperty
     public User getLastSender()
     {
         return lastSender;
@@ -239,8 +299,9 @@ public class MessageConversation
         this.lastSender = lastSender;
     }
 
-    @XmlElement
     @JsonProperty
+    @JsonView( {DetailedView.class, ExportView.class} )
+    @JacksonXmlProperty
     public Date getLastMessage()
     {
         return lastMessage;
@@ -251,6 +312,12 @@ public class MessageConversation
         this.lastMessage = lastMessage;
     }
 
+    //-------------------------------------------------------------------------------------------------------
+    // Transient fields
+    //-------------------------------------------------------------------------------------------------------
+
+    @JsonProperty
+    @JsonView( {DetailedView.class} )
     public boolean isRead()
     {
         return read;
@@ -261,6 +328,8 @@ public class MessageConversation
         this.read = read;
     }
 
+    @JsonProperty
+    @JsonView( {DetailedView.class} )
     public boolean isFollowUp()
     {
         return followUp;
@@ -294,40 +363,5 @@ public class MessageConversation
     public void setLastSenderFirstname( String lastSenderFirstname )
     {
         this.lastSenderFirstname = lastSenderFirstname;
-    }
-
-    @Override
-    public int hashCode()
-    {
-        return uid.hashCode();
-    }
-
-    @Override
-    public boolean equals( Object object )
-    {
-        if ( this == object )
-        {
-            return true;
-        }
-
-        if ( object == null )
-        {
-            return false;
-        }
-
-        if ( getClass() != object.getClass() )
-        {
-            return false;
-        }
-
-        final MessageConversation other = (MessageConversation) object;
-
-        return uid.equals( other.uid );
-    }
-
-    @Override
-    public String toString()
-    {
-        return "[" + subject + "]";
     }
 }

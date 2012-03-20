@@ -27,27 +27,26 @@ package org.hisp.dhis.dataelement;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import org.codehaus.jackson.annotate.JsonProperty;
-import org.codehaus.jackson.map.annotate.JsonSerialize;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonView;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlElementWrapper;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 import org.hisp.dhis.common.BaseIdentifiableObject;
 import org.hisp.dhis.common.Dxf2Namespace;
-import org.hisp.dhis.common.adapter.DataElementGroupSetXmlAdapter;
-import org.hisp.dhis.common.adapter.DataElementXmlAdapter;
+import org.hisp.dhis.common.view.DetailedView;
+import org.hisp.dhis.common.view.ExportView;
 
-import javax.xml.bind.annotation.*;
-import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import java.util.HashSet;
 import java.util.Set;
 
 /**
- * o
- *
  * @author Kristian Nordal
- * @version $Id: DataElementGroup.java 5540 2008-08-19 10:47:07Z larshelg $
  */
-@XmlRootElement( name = "dataElementGroup", namespace = Dxf2Namespace.NAMESPACE )
-@XmlAccessorType( value = XmlAccessType.NONE )
-public class DataElementGroup extends BaseIdentifiableObject
+@JacksonXmlRootElement( localName = "dataElementGroup", namespace = Dxf2Namespace.NAMESPACE )
+public class DataElementGroup
+    extends BaseIdentifiableObject
 {
     /**
      * Determines if a de-serialized file is compatible with this class.
@@ -146,11 +145,11 @@ public class DataElementGroup extends BaseIdentifiableObject
     // Getters and setters
     // -------------------------------------------------------------------------
 
-    @XmlElementWrapper( name = "dataElements" )
-    @XmlElement( name = "dataElement" )
-    @XmlJavaTypeAdapter( DataElementXmlAdapter.class )
     @JsonProperty( value = "dataElements" )
     @JsonSerialize( contentAs = BaseIdentifiableObject.class )
+    @JsonView( {DetailedView.class, ExportView.class} )
+    @JacksonXmlElementWrapper( localName = "dataElements" )
+    @JacksonXmlProperty( localName = "dataElement" )
     public Set<DataElement> getMembers()
     {
         return members;
@@ -161,10 +160,9 @@ public class DataElementGroup extends BaseIdentifiableObject
         this.members = members;
     }
 
-    @XmlElement( name = "dataElementGroupSet" )
-    @XmlJavaTypeAdapter( DataElementGroupSetXmlAdapter.class )
     @JsonProperty( value = "dataElementGroupSet" )
     @JsonSerialize( as = BaseIdentifiableObject.class )
+    @JsonView( {DetailedView.class} )
     public DataElementGroupSet getGroupSet()
     {
         return groupSet;

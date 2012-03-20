@@ -47,8 +47,7 @@ import org.hisp.dhis.dataset.DataSets;
 import org.hisp.dhis.document.Document;
 import org.hisp.dhis.document.Documents;
 import org.hisp.dhis.indicator.*;
-import org.hisp.dhis.mapping.MapView;
-import org.hisp.dhis.mapping.Maps;
+import org.hisp.dhis.mapping.*;
 import org.hisp.dhis.message.MessageConversation;
 import org.hisp.dhis.message.MessageConversations;
 import org.hisp.dhis.organisationunit.*;
@@ -259,6 +258,22 @@ public class WebLinkPopulator
         else if ( source instanceof MapView )
         {
             populateMap( (MapView) source, true );
+        }
+        else if ( source instanceof MapLegends )
+        {
+            populateMapLegends( (MapLegends) source, true );
+        }
+        else if ( source instanceof MapLegend )
+        {
+            populateMapLegend( (MapLegend) source, true );
+        }
+        else if ( source instanceof MapLegendSets )
+        {
+            populateMapLegendSets( (MapLegendSets) source, true );
+        }
+        else if ( source instanceof MapLegendSet )
+        {
+            populateMapLegendSet( (MapLegendSet) source, true );
         }
         else if ( source instanceof Documents )
         {
@@ -630,6 +645,53 @@ public class WebLinkPopulator
             populateIdentifiableObject( map.getOrganisationUnitLevel() );
             populateIdentifiableObject( map.getParentOrganisationUnit() );
             populateIdentifiableObject( map.getPeriod() );
+        }
+    }
+
+    private void populateMapLegends( MapLegends mapLegends, boolean root )
+    {
+        mapLegends.setLink( getBasePath( mapLegends.getClass() ) );
+
+        if ( root )
+        {
+            for ( MapLegend mapLegend : mapLegends.getMapLegends() )
+            {
+                populateMapLegend( mapLegend, false );
+            }
+        }
+    }
+
+    private void populateMapLegend( MapLegend mapLegend, boolean root )
+    {
+        populateIdentifiableObject( mapLegend );
+
+        if ( root )
+        {
+        }
+    }
+
+    private void populateMapLegendSets( MapLegendSets mapLegendSets, boolean root )
+    {
+        mapLegendSets.setLink( getBasePath( mapLegendSets.getClass() ) );
+
+        if ( root )
+        {
+            for ( MapLegendSet mapLegendSet : mapLegendSets.getMapLegendSets() )
+            {
+                populateMapLegendSet( mapLegendSet, false );
+            }
+        }
+    }
+
+    private void populateMapLegendSet( MapLegendSet mapLegendSet, boolean root )
+    {
+        populateIdentifiableObject( mapLegendSet );
+
+        if ( root )
+        {
+            handleIdentifiableObjectCollection( mapLegendSet.getIndicators() );
+            handleIdentifiableObjectCollection( mapLegendSet.getDataElements() );
+            handleIdentifiableObjectCollection( mapLegendSet.getMapLegends() );
         }
     }
 
@@ -1141,15 +1203,14 @@ public class WebLinkPopulator
         try
         {
             port = Integer.parseInt( xForwardedPort );
-        } 
-        catch ( NumberFormatException e )
+        } catch ( NumberFormatException e )
         {
             port = request.getServerPort();
         }
 
-        if ( request.getServerPort() != 80 && request.getServerPort() != 443 )
+        if ( port != 80 && port != 443 )
         {
-            builder.append( ":" ).append( request.getServerPort() );
+            builder.append( ":" ).append( port );
         }
 
         builder.append( request.getContextPath() );

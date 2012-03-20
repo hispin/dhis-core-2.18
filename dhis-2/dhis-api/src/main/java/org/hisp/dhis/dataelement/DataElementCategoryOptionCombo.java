@@ -27,25 +27,28 @@ package org.hisp.dhis.dataelement;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonView;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlElementWrapper;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 import org.apache.commons.lang.StringEscapeUtils;
-import org.codehaus.jackson.annotate.JsonProperty;
-import org.codehaus.jackson.map.annotate.JsonSerialize;
 import org.hisp.dhis.common.BaseIdentifiableObject;
 import org.hisp.dhis.common.BaseNameableObject;
 import org.hisp.dhis.common.Dxf2Namespace;
-import org.hisp.dhis.common.adapter.CategoryComboXmlAdapter;
-import org.hisp.dhis.common.adapter.CategoryOptionXmlAdapter;
+import org.hisp.dhis.common.view.DetailedView;
+import org.hisp.dhis.common.view.ExportView;
 
-import javax.xml.bind.annotation.*;
-import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import java.util.*;
 
 /**
  * @author Abyot Aselefew
  */
-@XmlRootElement( name = "categoryOptionCombo", namespace = Dxf2Namespace.NAMESPACE )
-@XmlAccessorType( value = XmlAccessType.NONE )
-public class DataElementCategoryOptionCombo extends BaseNameableObject
+@JacksonXmlRootElement( localName = "categoryOptionCombo", namespace = Dxf2Namespace.NAMESPACE )
+public class DataElementCategoryOptionCombo
+    extends BaseNameableObject
 {
     /**
      * Determines if a de-serialized file is compatible with this class.
@@ -269,6 +272,7 @@ public class DataElementCategoryOptionCombo extends BaseNameableObject
     }
 
     @Override
+    @JsonIgnore
     public String getShortName()
     {
         return getName();
@@ -281,6 +285,7 @@ public class DataElementCategoryOptionCombo extends BaseNameableObject
     }
 
     @Override
+    @JsonIgnore
     public String getAlternativeName()
     {
         return getName();
@@ -293,10 +298,10 @@ public class DataElementCategoryOptionCombo extends BaseNameableObject
         //    + alternativeName );
     }
 
-    @XmlElement
-    @XmlJavaTypeAdapter( CategoryComboXmlAdapter.class )
     @JsonProperty
     @JsonSerialize( contentAs = BaseIdentifiableObject.class )
+    @JsonView( {DetailedView.class, ExportView.class} )
+    @JacksonXmlProperty
     public DataElementCategoryCombo getCategoryCombo()
     {
         return categoryCombo;
@@ -307,11 +312,11 @@ public class DataElementCategoryOptionCombo extends BaseNameableObject
         this.categoryCombo = categoryCombo;
     }
 
-    @XmlElementWrapper( name = "categoryOptions" )
-    @XmlJavaTypeAdapter( CategoryOptionXmlAdapter.class )
-    @XmlElement( name = "categoryOption" )
     @JsonProperty
     @JsonSerialize( contentAs = BaseIdentifiableObject.class )
+    @JsonView( {DetailedView.class, ExportView.class} )
+    @JacksonXmlElementWrapper( localName = "categoryOptions" )
+    @JacksonXmlProperty( localName = "categoryOption" )
     public List<DataElementCategoryOption> getCategoryOptions()
     {
         return categoryOptions;

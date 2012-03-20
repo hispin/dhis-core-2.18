@@ -27,17 +27,18 @@ package org.hisp.dhis.common;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import org.codehaus.jackson.annotate.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonView;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
+import org.hisp.dhis.common.view.DetailedView;
 
-import javax.xml.bind.annotation.*;
 import java.util.Arrays;
 import java.util.List;
 
 /**
  * @author Lars Helge Overland
  */
-@XmlRootElement( name = "header", namespace = Dxf2Namespace.NAMESPACE )
-@XmlAccessorType( value = XmlAccessType.NONE )
+@JacksonXmlRootElement( localName = "header", namespace = Dxf2Namespace.NAMESPACE )
 public class GridHeader
 {
     private static final List<String> NUMERIC_TYPES = Arrays.asList( Float.class.getName(), Double.class.getName(), Long.class.getName(), Integer.class.getName() );
@@ -88,15 +89,13 @@ public class GridHeader
         this.meta = meta;
     }
 
-    @XmlElement
-    @JsonProperty
     public boolean isNumeric()
     {
         return type != null && NUMERIC_TYPES.contains( type );
     }
 
-    @XmlAttribute( namespace = Dxf2Namespace.NAMESPACE )
     @JsonProperty
+    @JsonView( {DetailedView.class} )
     public String getName()
     {
         return name;
@@ -107,8 +106,8 @@ public class GridHeader
         this.name = name;
     }
 
-    @XmlElement
     @JsonProperty
+    @JsonView( {DetailedView.class} )
     public String getColumn()
     {
         return column;
@@ -119,8 +118,8 @@ public class GridHeader
         this.column = column;
     }
 
-    @XmlElement
     @JsonProperty
+    @JsonView( {DetailedView.class} )
     public String getType()
     {
         return type;
@@ -131,8 +130,8 @@ public class GridHeader
         this.type = type;
     }
 
-    @XmlElement
     @JsonProperty
+    @JsonView( {DetailedView.class} )
     public boolean isHidden()
     {
         return hidden;
@@ -143,8 +142,8 @@ public class GridHeader
         this.hidden = hidden;
     }
 
-    @XmlElement
     @JsonProperty
+    @JsonView( {DetailedView.class} )
     public boolean isMeta()
     {
         return meta;

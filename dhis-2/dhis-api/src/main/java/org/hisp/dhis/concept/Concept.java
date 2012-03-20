@@ -27,25 +27,22 @@ package org.hisp.dhis.concept;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 import org.hisp.dhis.common.BaseIdentifiableObject;
 import org.hisp.dhis.common.Dxf2Namespace;
-
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  * A Concept Name is a short name which is used as an attribute name
  * when representing a data value in xml which does not use
  * category-option-combo, eg. <DataElement='3' AGE='2' SEX='1' Value='23' />
- * 
+ * <p/>
  * SDMX-HD is one such case.
- * 
+ *
  * @author Dang Duy Hieu
  */
-@XmlRootElement( name = "concept", namespace = Dxf2Namespace.NAMESPACE )
-@XmlAccessorType( value = XmlAccessType.NONE )
-public class Concept extends BaseIdentifiableObject
+@JacksonXmlRootElement( localName = "concept", namespace = Dxf2Namespace.NAMESPACE )
+public class Concept
+    extends BaseIdentifiableObject
 {
     /**
      * Determines if a de-serialized file is compatible with this class.
@@ -53,7 +50,7 @@ public class Concept extends BaseIdentifiableObject
     private static final long serialVersionUID = 5017726436040704261L;
 
     public static String DEFAULT_CONCEPT_NAME = "default";
-    
+
     // -------------------------------------------------------------------------
     // Constructors
     // -------------------------------------------------------------------------

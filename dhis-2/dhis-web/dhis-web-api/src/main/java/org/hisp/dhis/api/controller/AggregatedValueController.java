@@ -30,6 +30,7 @@ package org.hisp.dhis.api.controller;
 import org.hisp.dhis.aggregation.AggregatedDataValue;
 import org.hisp.dhis.aggregation.AggregatedDataValueService;
 import org.hisp.dhis.aggregation.AggregatedIndicatorValue;
+import org.hisp.dhis.api.utils.ContextUtils;
 import org.hisp.dhis.api.view.JacksonUtils;
 import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.i18n.I18nManager;
@@ -39,7 +40,6 @@ import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodService;
 import org.hisp.dhis.period.RelativePeriods;
-import org.hisp.dhis.api.utils.ContextUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -200,7 +200,7 @@ public class AggregatedValueController
             }
         }
 
-        JacksonUtils.writeObject( valueList, response.getOutputStream() );
+        JacksonUtils.toJson( response.getOutputStream(), valueList );
 
         response.setContentType( ContextUtils.CONTENT_TYPE_JSON );
         response.setStatus( HttpServletResponse.SC_OK );

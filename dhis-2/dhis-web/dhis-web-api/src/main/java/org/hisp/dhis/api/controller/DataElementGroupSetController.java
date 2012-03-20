@@ -116,6 +116,7 @@ public class DataElementGroupSetController
         }
 
         model.addAttribute( "model", dataElementGroupSet );
+        model.addAttribute( "view", "detailed" );
 
         return "dataElementGroupSet";
     }

@@ -111,6 +111,7 @@ public class IndicatorGroupController
         }
 
         model.addAttribute( "model", indicatorGroup );
+        model.addAttribute( "view", "detailed" );
 
         return "indicatorGroup";
     }

@@ -1,3 +1,5 @@
+package org.hisp.dhis.attribute;
+
 /*
  * Copyright (c) 2004-2012, University of Oslo
  * All rights reserved.
@@ -25,25 +27,24 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.hisp.dhis.attribute;
-
-import org.codehaus.jackson.annotate.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonView;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 import org.hisp.dhis.common.BaseIdentifiableObject;
 import org.hisp.dhis.common.Dxf2Namespace;
+import org.hisp.dhis.common.view.DetailedView;
+import org.hisp.dhis.common.view.ExportView;
 
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlRootElement;
 import java.util.HashSet;
 import java.util.Set;
 
 /**
  * @author mortenoh
  */
-@XmlRootElement( name = "attributeType", namespace = Dxf2Namespace.NAMESPACE )
-@XmlAccessorType( value = XmlAccessType.NONE )
-public class Attribute extends BaseIdentifiableObject
+@JacksonXmlRootElement( localName = "attributeType", namespace = Dxf2Namespace.NAMESPACE )
+public class Attribute
+    extends BaseIdentifiableObject
 {
     /**
      * Determines if a de-serialized file is compatible with this class.
@@ -52,8 +53,6 @@ public class Attribute extends BaseIdentifiableObject
 
     private String valueType;
 
-    private boolean mandatory;
-
     private boolean dataElementAttribute;
 
     private boolean indicatorAttribute;
@@ -61,6 +60,8 @@ public class Attribute extends BaseIdentifiableObject
     private boolean organisationUnitAttribute;
 
     private boolean userAttribute;
+
+    private boolean mandatory;
 
     private Integer sortOrder;
 
@@ -77,8 +78,9 @@ public class Attribute extends BaseIdentifiableObject
         this.valueType = valueType;
     }
 
-    @XmlElement
     @JsonProperty
+    @JsonView( {DetailedView.class, ExportView.class} )
+    @JacksonXmlProperty
     public String getValueType()
     {
         return valueType;
@@ -89,8 +91,9 @@ public class Attribute extends BaseIdentifiableObject
         this.valueType = valueType;
     }
 
-    @XmlElement
     @JsonProperty
+    @JsonView( {DetailedView.class, ExportView.class} )
+    @JacksonXmlProperty
     public boolean isMandatory()
     {
         return mandatory;
@@ -101,8 +104,9 @@ public class Attribute extends BaseIdentifiableObject
         this.mandatory = mandatory;
     }
 
-    @XmlElement
     @JsonProperty
+    @JsonView( {DetailedView.class, ExportView.class} )
+    @JacksonXmlProperty
     public boolean isDataElementAttribute()
     {
         return dataElementAttribute;
@@ -113,8 +117,9 @@ public class Attribute extends BaseIdentifiableObject
         this.dataElementAttribute = dataElementAttribute;
     }
 
-    @XmlElement
     @JsonProperty
+    @JsonView( {DetailedView.class, ExportView.class} )
+    @JacksonXmlProperty
     public boolean isIndicatorAttribute()
     {
         return indicatorAttribute;
@@ -125,8 +130,9 @@ public class Attribute extends BaseIdentifiableObject
         this.indicatorAttribute = indicatorAttribute;
     }
 
-    @XmlElement
     @JsonProperty
+    @JsonView( {DetailedView.class, ExportView.class} )
+    @JacksonXmlProperty
     public boolean isOrganisationUnitAttribute()
     {
         return organisationUnitAttribute;
@@ -137,8 +143,9 @@ public class Attribute extends BaseIdentifiableObject
         this.organisationUnitAttribute = organisationUnitAttribute;
     }
 
-    @XmlElement
     @JsonProperty
+    @JsonView( {DetailedView.class, ExportView.class} )
+    @JacksonXmlProperty
     public boolean isUserAttribute()
     {
         return userAttribute;
@@ -149,7 +156,6 @@ public class Attribute extends BaseIdentifiableObject
         this.userAttribute = userAttribute;
     }
 
-    // TODO expose attribute values? probably not..
     public Set<AttributeValue> getAttributeValues()
     {
         return attributeValues;
@@ -160,8 +166,9 @@ public class Attribute extends BaseIdentifiableObject
         this.attributeValues = attributeValues;
     }
 
-    @XmlElement
     @JsonProperty
+    @JsonView( {DetailedView.class, ExportView.class} )
+    @JacksonXmlProperty
     public Integer getSortOrder()
     {
         return sortOrder;

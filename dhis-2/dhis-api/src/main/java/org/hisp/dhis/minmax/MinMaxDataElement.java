@@ -35,7 +35,6 @@ import org.hisp.dhis.organisationunit.OrganisationUnit;
 
 /**
  * @author Kristian Nordal
- * @version $Id: MinMaxDataElement.java 5180 2008-05-20 15:09:18Z larshelg $
  */
 public class MinMaxDataElement
     implements Serializable

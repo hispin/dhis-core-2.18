@@ -27,14 +27,18 @@ package org.hisp.dhis.dataelement;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import org.codehaus.jackson.map.annotate.JsonSerialize;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonView;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlElementWrapper;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 import org.hisp.dhis.common.BaseIdentifiableObject;
 import org.hisp.dhis.common.Dxf2Namespace;
-import org.hisp.dhis.common.adapter.CategoryOptionXmlAdapter;
+import org.hisp.dhis.common.view.DetailedView;
+import org.hisp.dhis.common.view.ExportView;
 import org.hisp.dhis.concept.Concept;
 
-import javax.xml.bind.annotation.*;
-import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -46,9 +50,9 @@ import java.util.List;
  *
  * @author Abyot Asalefew
  */
-@XmlRootElement( name = "category", namespace = Dxf2Namespace.NAMESPACE )
-@XmlAccessorType( value = XmlAccessType.NONE )
-public class DataElementCategory extends BaseIdentifiableObject
+@JacksonXmlRootElement( localName = "category", namespace = Dxf2Namespace.NAMESPACE )
+public class DataElementCategory
+    extends BaseIdentifiableObject
 {
     /**
      * Determines if a de-serialized file is compatible with this class.
@@ -147,10 +151,11 @@ public class DataElementCategory extends BaseIdentifiableObject
     // Getters and setters
     // ------------------------------------------------------------------------
 
-    @XmlElementWrapper( name = "categoryOptions" )
-    @XmlJavaTypeAdapter( CategoryOptionXmlAdapter.class )
-    @XmlElement( name = "categoryOption" )
+    @JsonProperty
     @JsonSerialize( contentAs = BaseIdentifiableObject.class )
+    @JsonView( {DetailedView.class, ExportView.class} )
+    @JacksonXmlElementWrapper( localName = "categoryOptions" )
+    @JacksonXmlProperty( localName = "categoryOption" )
     public List<DataElementCategoryOption> getCategoryOptions()
     {
         return categoryOptions;
@@ -161,15 +166,10 @@ public class DataElementCategory extends BaseIdentifiableObject
         this.categoryOptions = categoryOptions;
     }
 
-    /**
-     * TODO Null problem here.. should investigate
-     */
-
-/*    @XmlElement
-    @XmlJavaTypeAdapter( BaseIdentifiableObjectXmlAdapter.class )
     @JsonProperty
-    @JsonSerialize( using = JsonIdentifiableObjectSerializer.class )
-*/
+    @JsonSerialize( contentAs = BaseIdentifiableObject.class )
+    @JsonView( {DetailedView.class, ExportView.class} )
+    @JacksonXmlProperty
     public Concept getConcept()
     {
         return concept;
