@@ -546,22 +546,4 @@ public class DataElementOperand
 
         return this.getOptionComboId() - other.getOptionComboId();
     }
-
-    public String toJSON()
-    {
-        StringBuffer stringBuffer = new StringBuffer();
-
-        stringBuffer.append( "{" );
-        stringBuffer.append( "\"dataElement\":{\"id\":\"" + this.dataElementId + "\", \"name\":\""
-            + StringEscapeUtils.escapeJavaScript( this.dataElement.getName() ) + "\",\"shortName\":\""
-            + StringEscapeUtils.escapeJavaScript( this.dataElement.getShortName() ) + "\",\"type\":\""
-            + this.dataElement.getType() + "\"}" );
-
-        stringBuffer.append( ",\"optionCombo\":{\"id\":\"" + this.optionComboId + "\",\"name\":\""
-            + StringEscapeUtils.escapeJavaScript( this.categoryOptionCombo.getName() ) + "\"}" );
-
-        stringBuffer.append( "}" );
-
-        return stringBuffer.toString();
-    }
 }
