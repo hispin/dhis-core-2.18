@@ -50,7 +50,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 public class OutboundSmsServiceTest
     extends AbstractSmsTest
 {
-
     // These are only used for the integration test with store
 
     @Autowired

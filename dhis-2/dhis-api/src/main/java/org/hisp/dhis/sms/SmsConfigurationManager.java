@@ -28,11 +28,13 @@ package org.hisp.dhis.sms;
  */
 
 import org.hisp.dhis.sms.config.SmsConfiguration;
+import org.hisp.dhis.sms.config.SmsGatewayConfig;
 
 public interface SmsConfigurationManager
 {
     SmsConfiguration getSmsConfiguration();
 
     void updateSmsConfiguration( SmsConfiguration config );
-
+    
+    SmsGatewayConfig checkInstanceOfGateway( Class<?> clazz );
 }

@@ -34,9 +34,9 @@ import javax.annotation.PostConstruct;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hisp.dhis.setting.SystemSettingManager;
-import org.hisp.dhis.sms.SmsConfigurationManager;
 import org.hisp.dhis.sms.config.SmsConfigurable;
 import org.hisp.dhis.sms.config.SmsConfiguration;
+import org.hisp.dhis.sms.config.SmsGatewayConfig;
 import org.springframework.beans.factory.annotation.Autowired;
 
 /**
@@ -101,5 +101,19 @@ public class SmsConfigurationManagerImpl
 
         // Reinitialize components relying on sms config.
         initializeSmsConfigurables();
+    }
+
+    @Override
+    public SmsGatewayConfig checkInstanceOfGateway( Class<?> clazz )
+    {
+        for ( SmsGatewayConfig gateway : getSmsConfiguration().getGateways() )
+        {
+            if ( gateway.getClass().equals( clazz ) )
+            {
+                return gateway;
+            }
+        }
+
+        return null;
     }
 }
