@@ -68,7 +68,7 @@ public class SmsMessageSender
     // MessageSender implementation
     // -------------------------------------------------------------------------
 
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings( "unchecked" )
     public void sendMessage( String subject, String text, User sender, boolean isPhone, Set<?> recipients,
         String gatewayId )
     {
@@ -136,7 +136,16 @@ public class SmsMessageSender
             name = sender.getUsername();
         }
 
-        text = "From " + name + " - " + subject + ": " + text;
+        if ( subject == null || subject.isEmpty() )
+        {
+            subject = "";
+        }
+        else
+        {
+            subject = " - " + subject;
+        }
+
+        text = "From " + name + subject + ": " + text;
 
         // Simplistic cutoff 160 characters..
         int length = text.length();

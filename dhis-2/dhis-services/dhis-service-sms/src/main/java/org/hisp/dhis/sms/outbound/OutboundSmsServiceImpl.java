@@ -51,6 +51,7 @@ public class OutboundSmsServiceImpl
     // Dependencies
     // -------------------------------------------------------------------------
 
+    @Autowired
     private OutboundSmsStore outboundSmsStore;
 
     public void setOutboundSmsStore( OutboundSmsStore outboundSmsStore )

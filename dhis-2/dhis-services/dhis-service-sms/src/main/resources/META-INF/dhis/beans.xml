@@ -8,16 +8,16 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
   
   <!-- Outbound SMS service -->
 
-  <bean id="org.hisp.dhis.sms.outbound.OutboundSmsService" class="org.hisp.dhis.sms.outbound.OutboundSmsServiceImpl" />
-
-  <bean id="OutboundSmsStore" class="org.hisp.dhis.sms.outbound.HibernateOutboundSmsStore">
+  <bean id="outboundSmsStore" class="org.hisp.dhis.sms.outbound.HibernateOutboundSmsStore">
     <property name="sessionFactory" ref="sessionFactory" />
   </bean>
   
-  <!--  Only for testing! OutboundSmsService stub just logging invocations, replacing the deafult one or use as the OutboundSmsTransportService..  -->
+  <bean id="org.hisp.dhis.sms.outbound.OutboundSmsService" class="org.hisp.dhis.sms.outbound.OutboundSmsServiceImpl" />
+  
+  <!--  Only for testing! OutboundSmsService stub just logging invocations, replacing the default one or use as the OutboundSmsTransportService..  -->
   <!--  <bean id="TestOutboundSmsService" class="org.hisp.dhis.sms.outbound.TestOutboundSmsService" /> -->
 
-  <bean id="SmsLibService" class="org.hisp.dhis.sms.smslib.SmsLibService" />
+  <bean id="smsLibService" class="org.hisp.dhis.sms.smslib.SmsLibService" />
 
   <!--  SMS Message sender -->
 
@@ -25,6 +25,5 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     <property name="outboundSmsService" ref="org.hisp.dhis.sms.outbound.OutboundSmsService" />
     <property name="userService" ref="org.hisp.dhis.user.UserService" />
   </bean>
-
 
 </beans>
