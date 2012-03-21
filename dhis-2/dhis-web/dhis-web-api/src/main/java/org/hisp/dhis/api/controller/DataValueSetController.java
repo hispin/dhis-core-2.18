@@ -58,7 +58,10 @@ public class DataValueSetController
     @RequestMapping( method = RequestMethod.GET )
     public String getDataValueSet( Model model ) throws Exception
     {
-        model.addAttribute( "model", new DataValueSets() );
+        DataValueSets dataValueSets = new DataValueSets();
+        dataValueSets.getDataValueSets().add( new DataValueSet() );
+
+        model.addAttribute( "model", dataValueSets );
 
         return "dataValueSets";
     }
