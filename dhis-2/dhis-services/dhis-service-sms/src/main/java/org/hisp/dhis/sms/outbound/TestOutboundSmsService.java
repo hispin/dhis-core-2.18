@@ -58,4 +58,11 @@ public class TestOutboundSmsService
     {
         return new HashMap<String, String>();
     }
+
+    @Override
+    public String stopService()
+    {
+        log.debug( "stopService()" );
+        return null;
+    }
 }
