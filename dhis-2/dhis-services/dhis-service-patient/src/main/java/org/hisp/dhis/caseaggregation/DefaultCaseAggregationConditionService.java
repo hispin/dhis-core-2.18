@@ -210,7 +210,7 @@ public class DefaultCaseAggregationConditionService
         Period period )
     {
         String sql = convertCondition( aggregationCondition, orgunit, period );
-
+        
         Collection<Integer> patientIds = aggregationConditionStore.executeSQL( sql );
 
         if ( patientIds == null )
@@ -777,8 +777,11 @@ public class DefaultCaseAggregationConditionService
             sql = "SELECT pi.patientid ";
         }
 
-        sql += "FROM patient as pi WHERE pi.organisationunitid = " + orgunitId + " " + "AND pi.registrationdate >= '"
-            + startDate + "' AND pi.registrationdate <= '" + endDate + "' ";
+        sql += "FROM patient as pi INNER JOIN programinstance pgi ON pi.patientid = pgi.patientid "
+            + "INNER JOIN programstageinstance psi ON psi.programinstanceid = pgi.programinstanceid "
+            + "INNER JOIN patientattributevalue as pav ON pav.patientid = pi.patientid "
+            + "WHERE pi.organisationunitid = " + orgunitId + " " + "AND pi.registrationdate >= '" + startDate
+            + "' AND pi.registrationdate <= '" + endDate + "' ";
 
         return sql;
     }
@@ -793,12 +796,13 @@ public class DefaultCaseAggregationConditionService
             sql = "SELECT pi.patientid ";
         }
 
-        sql += "FROM patient as pi WHERE ";
+        sql += "FROM patient as pi INNER JOIN programinstance pgi ON pi.patientid = pgi.patientid "
+            + "INNER JOIN programstageinstance psi ON psi.programinstanceid = pgi.programinstanceid WHERE ";
 
         if ( propertyName.equals( PROPERTY_AGE ) )
         {
-            sql += "((  12 * ( EXTRACT(YEAR FROM '" + startDate + "' ) - EXTRACT(YEAR FROM birthdate ) ) ) + "
-                + "EXTRACT( MONTH FROM '" + startDate + "' ) - EXTRACT( MONTH FROM birthdate ) )" + " ";
+            sql += "((  12 * ( EXTRACT(YEAR FROM DATE '" + startDate + "' ) - EXTRACT(YEAR FROM birthdate ) ) ) + "
+                + "EXTRACT( MONTH FROM DATE '" + startDate + "' ) - EXTRACT( MONTH FROM birthdate ) )" + " ";
         }
         else
         {
@@ -842,7 +846,7 @@ public class DefaultCaseAggregationConditionService
         String startDate, String endDate )
     {
         String select = "SELECT distinct(pi.patientid) ";
-        
+
         if ( operator.equals( AGGRERATION_SUM ) )
         {
             select = "SELECT psi.programstageinstanceid ";

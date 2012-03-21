@@ -138,7 +138,7 @@
 					<table>
 						<tr>
 							<td>
-								<select id="caseProperty" name="caseProperty" size="8" ondblclick="insertSingleValue('caseProperty');" style="width:18em; height:16.5em" onclick="getSuggestedValues(this.id, 'caSuggestedValues' )">
+								<select id="caseProperty" name="caseProperty" size="8" ondblclick="insertInfo(this);" style="width:18em; height:16.5em" onclick="getSuggestedValues(this.id, 'caSuggestedValues' )">
 									<option value="[PT:count]" suggestedValues=''>$i18n.getString( "patients_registered" )</option>
 									<option value="[CP:gender]" suggestedValues='F, M' title='$i18n.getString( "gender" )'>$i18n.getString( "gender" )</option>
 									<option value="[CP:dobType]" suggestedValues='V, D, A' title='$i18n.getString( "dob_type" )'>$i18n.getString( "dob_type" )</option>
@@ -157,7 +157,7 @@
 				<td>
 					<fieldset style="border: 1px solid #3f5d8e; ">
 						<legend>$i18n.getString( "suggested_values" )</legend>
-						<select multiple size="10" id='caSuggestedValues' style="width:20em; height: 17em" ondblclick="insertInfo(this);">
+						<select multiple size="10" id='caSuggestedValues' style="width:20em; height: 17em" ondblclick="insertSingleValue('caSuggestedValues');" >
 						</select>
 					</fieldset>
 				</td>
