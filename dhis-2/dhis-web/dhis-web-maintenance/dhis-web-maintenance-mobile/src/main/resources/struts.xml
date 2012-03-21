@@ -65,18 +65,49 @@
 	  
 	<!-- SMS Service Configuration Action -->
 
-	<action name="showSMSConfigureForm" class="org.hisp.dhis.mobile.action.GetMobileConfigurationAction">
+	<action name="showSMSConfigureForm" class="org.hisp.dhis.mobile.action.GetSmsConfigurationAction">
       <result name="success" type="velocity">/main.vm</result>
       <param name="page">/dhis-web-maintenance-mobile/smsServiceConfiguration.vm</param>
       <param name="menu">/dhis-web-maintenance-mobile/menu.vm</param>
 	  <param name="requiredAuthorities">F_MOBILE_SETTINGS</param>
     </action>
 	
-	<action name="showUpdateGateWayConfigForm" class="org.hisp.dhis.mobile.action.ShowUpdateGateWayConfigFormAction">
+	<action name="showUpdateGateWayConfigForm" class="org.hisp.dhis.mobile.action.GetSmsConfigurationAction">
       <result name="success" type="velocity">/main.vm</result>
       <param name="page">/dhis-web-maintenance-mobile/updateGateway.vm</param>
       <param name="menu">/dhis-web-maintenance-mobile/menu.vm</param>
+	  <param name="javascripts">javascript/gateway.js</param>
+	  <param name="requiredAuthorities">F_MOBILE_SETTINGS</param>
     </action>
-	  
+
+    <action name="saveSmsConfiguration" class="org.hisp.dhis.mobile.action.SaveSmsConfigurationAction">
+      <result name="success" type="redirect">showSMSConfigureForm.action</result>
+    </action>
+
+    <action name="saveBulkSMSConfig" class="org.hisp.dhis.mobile.action.UpdateBulkGateWayConfigAction">
+      <result name="success" type="velocity-json">../dhis-web-commons/ajax/jsonResponseSuccess.vm</result>
+      <param name="onExceptionReturn">plainTextError</param>
+    </action>
+	
+    <action name="saveModemConfig" class="org.hisp.dhis.mobile.action.UpdateModemGateWayConfigAction">
+      <result name="success" type="velocity-json">../dhis-web-commons/ajax/jsonResponseSuccess.vm</result>
+      <param name="onExceptionReturn">plainTextError</param>
+    </action>
+
+    <action name="saveClickatellConfig" class="org.hisp.dhis.mobile.action.UpdateClickatellGateWayConfigAction">
+      <result name="success" type="velocity-json">../dhis-web-commons/ajax/jsonResponseSuccess.vm</result>
+      <param name="onExceptionReturn">plainTextError</param>
+    </action>
+	
+    <action name="saveHTTPConfig" class="org.hisp.dhis.mobile.action.UpdateGenericHTTPGateWayConfigAction">
+      <result name="success" type="velocity-json">../dhis-web-commons/ajax/jsonResponseSuccess.vm</result>
+      <param name="onExceptionReturn">plainTextError</param>
+    </action>
+	
+    <action name="removeGatewayConfig" class="org.hisp.dhis.mobile.action.RemoveGatewayConfigAction">
+      <result name="success" type="velocity-json">../dhis-web-commons/ajax/jsonResponseSuccess.vm</result>
+      <param name="onExceptionReturn">plainTextError</param>
+    </action>
+	
   </package>
 </struts>

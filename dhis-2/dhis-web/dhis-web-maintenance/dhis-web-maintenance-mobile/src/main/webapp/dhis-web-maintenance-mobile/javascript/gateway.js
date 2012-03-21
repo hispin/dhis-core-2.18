@@ -14,7 +14,7 @@ function changeValueType( value )
 	    showById( "genericHTTPFields" );
 	}
 	
-	currentType = type;
+	currentType = value;
 }
 
 function hideAll() 
@@ -69,11 +69,11 @@ function saveGatewayConfig()
 {
 	if ( currentType == 'modem' )
 	{
-		jQuery.postJSON( "saveBulkSMSConfig.action", {
+		jQuery.postJSON( "saveModemConfig.action", {
 			gatewayType: getFieldValue( 'gatewayType' ),
 			name: getFieldValue( 'modemFields input[id=name]' ),
 			port: getFieldValue( 'modemFields input[id=port]' ),
-			baudrate: getFieldValue( 'modemFields input[id=baudrate]' ),
+			baudRate: getFieldValue( 'modemFields input[id=baudRate]' ),
 			manufacturer: getFieldValue( 'modemFields input[id=manufacturer]' ),
 			model: getFieldValue( 'modemFields input[id=model]' ),
 			pin: getFieldValue( 'modemFields input[id=pin]' ),
@@ -96,7 +96,7 @@ function saveGatewayConfig()
 	}
 	else if ( currentType == 'clickatell' )
 	{
-		jQuery.postJSON( "saveBulkSMSConfig.action", {
+		jQuery.postJSON( "saveClickatellConfig.action", {
 			gatewayType: getFieldValue( 'gatewayType' ),
 			name: getFieldValue( 'clickatellFields input[id=name]' ),
 			username: getFieldValue( 'clickatellFields input[id=username]' ),
@@ -108,7 +108,7 @@ function saveGatewayConfig()
 	}
 	else
 	{
-		jQuery.postJSON( "saveBulkSMSConfig.action", {
+		jQuery.postJSON( "saveHTTPConfig.action", {
 			gatewayType: getFieldValue( 'gatewayType' ),
 			name: getFieldValue( 'genericHTTPFields input[id=name]' ),
 			username: getFieldValue( 'genericHTTPFields input[id=username]' ),

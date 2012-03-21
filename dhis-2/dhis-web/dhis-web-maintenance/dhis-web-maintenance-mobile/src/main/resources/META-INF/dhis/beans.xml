@@ -6,9 +6,6 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
   <bean id="org.hisp.dhis.mobile.action.NoAction" class="org.hisp.dhis.mobile.action.NoAction"
     scope="prototype" />
 
-  <bean id="org.hisp.dhis.mobile.action.GetMobileConfigurationAction" class="org.hisp.dhis.mobile.action.GetMobileConfigurationAction"
-    scope="prototype" />
-
   <bean id="org.hisp.dhis.mobile.action.ShowSendSMSFormAction" class="org.hisp.dhis.mobile.action.ShowSendSMSFormAction"
     scope="prototype" />
 
@@ -46,7 +43,13 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
   </bean>
 
   <!-- SMS Service Configuration -->
+
+  <bean id="org.hisp.dhis.mobile.action.GetSmsConfigurationAction" 
+	class="org.hisp.dhis.mobile.action.GetSmsConfigurationAction" scope="prototype"/>
   
+  <bean id="org.hisp.dhis.mobile.action.SaveSmsConfigurationAction" 
+	class="org.hisp.dhis.mobile.action.SaveSmsConfigurationAction" scope="prototype"/>
+
   <bean id="org.hisp.dhis.mobile.action.UpdateBulkGateWayConfigAction" 
 	class="org.hisp.dhis.mobile.action.UpdateBulkGateWayConfigAction" scope="prototype"/>
   
@@ -59,7 +62,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
   <bean id="org.hisp.dhis.mobile.action.UpdateGenericHTTPGateWayConfigAction" 
 	class="org.hisp.dhis.mobile.action.UpdateGenericHTTPGateWayConfigAction" scope="prototype"/>
   
-  <bean id="org.hisp.dhis.mobile.action.ShowUpdateGateWayConfigFormAction" 
-	class="org.hisp.dhis.mobile.action.ShowUpdateGateWayConfigFormAction" scope="prototype"/>
+  <bean id="org.hisp.dhis.mobile.action.RemoveGatewayConfigAction" 
+	class="org.hisp.dhis.mobile.action.RemoveGatewayConfigAction" scope="prototype"/>
 
 </beans>

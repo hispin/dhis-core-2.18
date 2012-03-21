@@ -27,15 +27,8 @@ package org.hisp.dhis.mobile.action;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.HashMap;
-import java.util.Map;
-
 import org.hisp.dhis.sms.SmsConfigurationManager;
-import org.hisp.dhis.sms.config.BulkSmsGatewayConfig;
-import org.hisp.dhis.sms.config.ClickatellGatewayConfig;
-import org.hisp.dhis.sms.config.ModemGatewayConfig;
 import org.hisp.dhis.sms.config.SmsConfiguration;
-import org.hisp.dhis.sms.config.SmsGatewayConfig;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.opensymphony.xwork2.Action;
@@ -45,7 +38,7 @@ import com.opensymphony.xwork2.Action;
  * @version $Id$
  */
 
-public class ShowUpdateGateWayConfigFormAction
+public class SaveSmsConfigurationAction
     implements Action
 {
     // -------------------------------------------------------------------------
@@ -59,11 +52,18 @@ public class ShowUpdateGateWayConfigFormAction
     // Output
     // -------------------------------------------------------------------------
 
-    private Map<Integer, SmsGatewayConfig> gatewayConfigMap = new HashMap<Integer, SmsGatewayConfig>();
+    private Integer pollingInterval;
 
-    public Map<Integer, SmsGatewayConfig> getGatewayConfigMap()
+    public void setPollingInterval( Integer pollingInterval )
     {
-        return gatewayConfigMap;
+        this.pollingInterval = pollingInterval;
+    }
+
+    private String serverPhoneNumber;
+
+    public void setServerPhoneNumber( String longNumber )
+    {
+        this.serverPhoneNumber = longNumber;
     }
 
     // -------------------------------------------------------------------------
@@ -75,28 +75,15 @@ public class ShowUpdateGateWayConfigFormAction
     {
         SmsConfiguration smsConfig = smsConfigurationManager.getSmsConfiguration();
 
-        if ( smsConfig != null )
+        if ( smsConfig == null )
         {
-            for ( SmsGatewayConfig gw : smsConfig.getGateways() )
-            {
-                if ( gw instanceof BulkSmsGatewayConfig )
-                {
-                    gatewayConfigMap.put( 0, gw );
-                }
-                else if ( gw instanceof ClickatellGatewayConfig )
-                {
-                    gatewayConfigMap.put( 1, gw );
-                }
-                else if ( gw instanceof ModemGatewayConfig )
-                {
-                    gatewayConfigMap.put( 2, gw );
-                }
-                else
-                {
-                    gatewayConfigMap.put( 3, gw );
-                }
-            }
+            smsConfig = new SmsConfiguration( true );
         }
+
+        smsConfig.setPollingInterval( pollingInterval );
+        smsConfig.setLongNumber( serverPhoneNumber );
+
+        smsConfigurationManager.updateSmsConfiguration( smsConfig );
 
         return SUCCESS;
     }

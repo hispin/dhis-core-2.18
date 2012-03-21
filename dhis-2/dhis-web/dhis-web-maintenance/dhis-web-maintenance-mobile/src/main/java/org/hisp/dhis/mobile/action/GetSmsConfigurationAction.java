@@ -31,8 +31,11 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.hisp.dhis.sms.SmsConfigurationManager;
-import org.hisp.dhis.sms.config.GenericHttpGatewayConfig;
+import org.hisp.dhis.sms.config.BulkSmsGatewayConfig;
+import org.hisp.dhis.sms.config.ClickatellGatewayConfig;
+import org.hisp.dhis.sms.config.ModemGatewayConfig;
 import org.hisp.dhis.sms.config.SmsConfiguration;
+import org.hisp.dhis.sms.config.SmsGatewayConfig;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.opensymphony.xwork2.Action;
@@ -42,7 +45,7 @@ import com.opensymphony.xwork2.Action;
  * @version $Id$
  */
 
-public class UpdateGenericHTTPGateWayConfigAction
+public class GetSmsConfigurationAction
     implements Action
 {
     // -------------------------------------------------------------------------
@@ -53,42 +56,33 @@ public class UpdateGenericHTTPGateWayConfigAction
     private SmsConfigurationManager smsConfigurationManager;
 
     // -------------------------------------------------------------------------
-    // Input
+    // Output
     // -------------------------------------------------------------------------
 
-    private String name;
+    private Map<Integer, SmsGatewayConfig> gatewayConfigMap1 = new HashMap<Integer, SmsGatewayConfig>();
 
-    public void setName( String name )
+    public Map<Integer, SmsGatewayConfig> getGatewayConfigMap1()
     {
-        this.name = name;
+        return gatewayConfigMap1;
     }
 
-    private String password;
+    private Map<Integer, Integer> gatewayConfigMap2 = new HashMap<Integer, Integer>();
 
-    public void setPassword( String password )
+    public Map<Integer, Integer> getGatewayConfigMap2()
     {
-        this.password = password;
+        return gatewayConfigMap2;
     }
 
-    private String username;
+    private SmsConfiguration smsConfig;
 
-    public void setUsername( String username )
+    public SmsConfiguration getSmsConfig()
     {
-        this.username = username;
+        return smsConfig;
     }
 
-    private String urlTemplate;
-
-    public void setUrlTemplate( String url )
+    public boolean getSmsServiceStatus()
     {
-        this.urlTemplate = url;
-    }
-
-    private String gatewayType;
-
-    public void setGatewayType( String gatewayType )
-    {
-        this.gatewayType = gatewayType;
+        return this.smsConfig != null && this.smsConfig.isEnabled();
     }
 
     // -------------------------------------------------------------------------
@@ -98,45 +92,34 @@ public class UpdateGenericHTTPGateWayConfigAction
     public String execute()
         throws Exception
     {
-        if ( gatewayType != null && gatewayType.equals( "http" ) )
+        smsConfig = smsConfigurationManager.getSmsConfiguration();
+
+        if ( smsConfig != null )
         {
-            SmsConfiguration config = smsConfigurationManager.getSmsConfiguration();
+            int index = 0;
 
-            if ( config != null )
+            for ( SmsGatewayConfig gw : smsConfig.getGateways() )
             {
-                GenericHttpGatewayConfig gatewayConfig = (GenericHttpGatewayConfig) smsConfigurationManager
-                    .checkInstanceOfGateway( GenericHttpGatewayConfig.class );
+                index = smsConfig.getGateways().indexOf( gw );
 
-                int index = -1;
+                gatewayConfigMap1.put( index, gw );
 
-                if ( gatewayConfig == null )
+                if ( gw instanceof BulkSmsGatewayConfig )
                 {
-                    gatewayConfig = new GenericHttpGatewayConfig();
+                    gatewayConfigMap2.put( 0, index );
+                }
+                else if ( gw instanceof ClickatellGatewayConfig )
+                {
+                    gatewayConfigMap2.put( 1, index );
+                }
+                else if ( gw instanceof ModemGatewayConfig )
+                {
+                    gatewayConfigMap2.put( 2, index );
                 }
                 else
                 {
-                    index = config.getGateways().indexOf( gatewayConfig );
+                    gatewayConfigMap2.put( 3, index );
                 }
-
-                Map<String, String> map = new HashMap<String, String>();
-
-                map.put( "username", username );
-                map.put( "password", password );
-
-                gatewayConfig.setParameters( map );
-                gatewayConfig.setName( name );
-                gatewayConfig.setUrlTemplate( urlTemplate );
-
-                if ( index >= 0 )
-                {
-                    config.getGateways().set( index, gatewayConfig );
-                }
-                else
-                {
-                    config.getGateways().add( gatewayConfig );
-                }
-
-                smsConfigurationManager.updateSmsConfiguration( config );
             }
         }
 

@@ -1,7 +1,7 @@
 package org.hisp.dhis.mobile.action;
 
 /*
- * Copyright (c) 2004-2011, University of Oslo
+ * Copyright (c) 2004-2012, University of Oslo
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -48,11 +48,6 @@ public class UpdateModemGateWayConfigAction
 
     @Autowired
     private SmsConfigurationManager smsConfigurationManager;
-
-    public void setSmsConfigurationManager( SmsConfigurationManager smsConfigurationManager )
-    {
-        this.smsConfigurationManager = smsConfigurationManager;
-    }
 
     // -------------------------------------------------------------------------
     // Input
@@ -137,7 +132,7 @@ public class UpdateModemGateWayConfigAction
                 ModemGatewayConfig gatewayConfig = (ModemGatewayConfig) smsConfigurationManager
                     .checkInstanceOfGateway( ModemGatewayConfig.class );
 
-                int index = 0;
+                int index = -1;
 
                 if ( gatewayConfig == null )
                 {

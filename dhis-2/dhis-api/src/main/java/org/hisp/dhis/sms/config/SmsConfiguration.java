@@ -28,11 +28,9 @@ package org.hisp.dhis.sms.config;
  */
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlElementWrapper;
-import javax.xml.bind.annotation.XmlElements;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
@@ -46,19 +44,21 @@ public class SmsConfiguration
 
     private String longNumber;
 
-    private List<SmsGatewayConfig> gateways;
-
     private Integer pollingInterval;
 
     private boolean enabled = false;
 
+    private List<SmsGatewayConfig> gateways;
+
     public SmsConfiguration()
     {
+        this.gateways = new ArrayList<SmsGatewayConfig>();
     }
 
     public SmsConfiguration( boolean enabled )
     {
         this.enabled = enabled;
+        this.gateways = new ArrayList<SmsGatewayConfig>();
     }
 
     public boolean isEnabled()
@@ -81,11 +81,13 @@ public class SmsConfiguration
         this.longNumber = longNumber;
     }
 
-    @XmlElementWrapper( name = "gateways" )
-    @XmlElements( { @XmlElement( name = "bulksms", type = BulkSmsGatewayConfig.class ),
-                    @XmlElement( name = "clickatell", type = ClickatellGatewayConfig.class ),
-                    @XmlElement( name = "http", type = GenericHttpGatewayConfig.class ),
-                    @XmlElement( name = "modem", type = ModemGatewayConfig.class ) } )
+    /*
+     * @XmlElementWrapper( name = "gateways" ) @XmlElements( { @XmlElement( name =
+     * "bulksms", type = BulkSmsGatewayConfig.class ), @XmlElement( name =
+     * "clickatell", type = ClickatellGatewayConfig.class ), @XmlElement( name =
+     * "http", type = GenericHttpGatewayConfig.class ), @XmlElement( name =
+     * "modem", type = ModemGatewayConfig.class ) } )
+     */
     public List<SmsGatewayConfig> getGateways()
     {
         return gateways;
