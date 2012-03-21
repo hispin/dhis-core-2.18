@@ -27,7 +27,7 @@ h1, h3 {
 
 var base = "http://apps.dhis2.org/demo/";
 	
-function setDivs() {
+function setLinks() {
   jQuery("#map1").attr("src", base + "api/maps/mVHksDN1dIP/data");
   jQuery("#map2").attr("src", base + "api/maps/Y8dSQ3fH0Xe/data");
   jQuery("#map3").attr("src", base + "api/maps/JlXSUIcLsmd/data");
@@ -37,15 +37,11 @@ function setDivs() {
 }
 
 jQuery(document).ready(function() {
-  $.ajax({
-	url: base + "dhis-web-commons-security/login.action",
-	type: "POST",
-        data: {
-            j_username: "admin",
-            j_password: "district"
-        },
-	success: setDivs
-  });
+  $.post( base + "dhis-web-commons-security/login.action", { 
+      j_username: "admin", j_password: "district" 
+    },
+    setLinks
+  );
 });
 
 </script>
