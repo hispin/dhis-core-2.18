@@ -733,6 +733,6 @@ body {
 	height: 24px;
 	padding-top: 2px;
 }
-.dv-accordion .dv-combo .x-form-item-label {
+.dv-accordion .dv-combo .x-form-item-label { /* accordion combo box label */
 	padding: 4px 0 0;
 }
