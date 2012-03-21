@@ -21,6 +21,7 @@ import javax.xml.bind.Unmarshaller;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
+import org.junit.Ignore;
 
 /*
  * Copyright (c) 2011, University of Oslo
@@ -98,6 +99,7 @@ public class GenericHttpGatewayConfigTest
     }
 
     @Test
+	@Ignore
     public void testUntmarshalling()
         throws JAXBException
     {
