@@ -9,9 +9,21 @@
 }
 </style>
 
+<script type="text/javascript">
+	jQuery(document).ready( function() {
+		validation2( "saveSmsConfigurationForm", function( form ) {
+			form.submit();
+		}, {
+			'rules': getValidationRules( 'SMSConfig' )
+		} );
+	} );
+
+	var i18n_confirm_delete = '$encoder.jsEscape( $i18n.getString( "confirm_delete_gateway" ) , "'")';
+</script>
+
 <h3>$i18n.getString( "sms_service_configuration" )</h3>
-#if( $smsServiceStatus )
-<form id="add" name="addGateWayConfig" action="addGateWayConfig.action" method="post" >
+
+<form id="saveSmsConfigurationForm" name="saveSmsConfigurationForm" action="saveSmsConfiguration.action" method="post" >
   <table id="detailsList">
     <col/> ## Labels
     <col/> ## Input
@@ -50,10 +62,11 @@
 		</tr>
 		<tr>
 			<td>$i18n.getString("server_phone_number"):</td>
-			<td><input type="text" id="serverPhoneNumber" name="serverPhoneNumber" style="width:20em" value="$!smsConfig.longNumber"></td>
+			<td><input type="text" id="serverPhoneNumber" name="serverPhoneNumber" style="width:20em" value="$!smsConfig.longNumber">
+			<input type="submit" value="$i18n.getString( 'save_settings' )" style="width:13em"/></td>
 		</tr>
 		<tr>
-			<td align="right" colspan="2"><input type="button" value="$i18n.getString('add')" onclick="window.location.href='showUpdateGateWayConfigForm.action'"/></td>
+			<td align="right" colspan="2"><input type="button" value="$i18n.getString('add_update_gw')" style="width:11em#if( !$smsServiceStatus );display:none#end" onclick="window.location.href='showUpdateGateWayConfigForm.action'"/></td>
 		</tr>
 		<tr>
 			<td colspan="2">
@@ -64,14 +77,15 @@
 							<th style="text-align:center; width: 50px;">$i18n.getString( "operation" )</th>
 						</tr>
 					</thead>
-					<tbody>
-					#set( $gateWays = $smsConfig.gateways )
-					#foreach ($gateWay in $gateWays)
-						<tr>
-							<td>$gateWay.name</td>
+					<tbody id="list">
+					#set( $keys = $!gatewayConfigMap1.keySet() )
+					#foreach ($key in $!keys )
+						<tr id="tr${key}">
+							#set( $gw = $!gatewayConfigMap1.get( $key ) )
+							<td>$!encoder.htmlEncode( $gw.name )</td>
 							<td style="text-align:right">
-							  <!--a title="$i18n.getString( 'edit' )" href="editGateWayConfig.action?gateWayID="><img alt="$i18n.getString( 'edit' )" src="../images/edit.png"/></a>
-							  <a title="$i18n.getString( 'remove' )" href="#"><img alt="$i18n.getString( 'remove' )" src="../images/delete.png"/></a-->
+							  <!--a title="$i18n.getString( 'edit' )" href="editGateWayConfig.action?gateWayID="><img alt="$i18n.getString( 'edit' )" src="../images/edit.png"/></a-->
+							  <a href="javascript:removeGateway( $key, '$!encoder.jsEncode( $gw.name )' )" title="$i18n.getString( 'remove' )"><img src="../images/delete.png" alt="$i18n.getString( 'remove' )"/></a>
 							</td>
 						</tr>
 					#end 					
@@ -82,6 +96,11 @@
 	</tbody>
 	</table>
 </form>
-#else
-	<p>SMS Service is not available</p>
-#end
+
+<script type="text/javascript">
+	
+	function removeGateway( key, name )
+	{
+		removeItem( key, name, i18n_confirm_delete, "removeGatewayConfig.action" );
+	}
+</script>

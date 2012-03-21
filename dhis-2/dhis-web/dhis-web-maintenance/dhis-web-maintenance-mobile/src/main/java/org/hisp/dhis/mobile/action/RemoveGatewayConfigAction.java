@@ -27,18 +27,21 @@ package org.hisp.dhis.mobile.action;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import java.util.Iterator;
+
 import org.hisp.dhis.sms.SmsConfigurationManager;
 import org.hisp.dhis.sms.config.SmsConfiguration;
+import org.hisp.dhis.sms.config.SmsGatewayConfig;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.opensymphony.xwork2.Action;
 
 /**
- * @author 
+ * @author Dang Duy Hieu
  * @version $Id$
  */
 
-public class GetMobileConfigurationAction
+public class RemoveGatewayConfigAction
     implements Action
 {
     // -------------------------------------------------------------------------
@@ -49,19 +52,14 @@ public class GetMobileConfigurationAction
     private SmsConfigurationManager smsConfigurationManager;
 
     // -------------------------------------------------------------------------
-    // Output
+    // Input
     // -------------------------------------------------------------------------
 
-    private SmsConfiguration smsConfig;
+    private Integer id;
 
-    public SmsConfiguration getSmsConfig()
+    public void setId( Integer id )
     {
-        return smsConfig;
-    }
-
-    public boolean getSmsServiceStatus()
-    {
-        return this.smsConfig != null && this.smsConfig.isEnabled();
+        this.id = id;
     }
 
     // -------------------------------------------------------------------------
@@ -71,7 +69,21 @@ public class GetMobileConfigurationAction
     public String execute()
         throws Exception
     {
-        smsConfig = smsConfigurationManager.getSmsConfiguration();
+        SmsConfiguration smsConfig = smsConfigurationManager.getSmsConfiguration();
+
+        Iterator<SmsGatewayConfig> it = smsConfig.getGateways().iterator();
+        
+        while( it.hasNext() )
+        {
+            if ( smsConfig.getGateways().indexOf( it.next() ) == id )
+            {
+                it.remove();
+                
+                smsConfigurationManager.updateSmsConfiguration( smsConfig );
+                
+                break;
+            }
+        }
 
         return SUCCESS;
     }

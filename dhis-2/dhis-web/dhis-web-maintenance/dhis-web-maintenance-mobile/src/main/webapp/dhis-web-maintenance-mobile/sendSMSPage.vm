@@ -33,10 +33,10 @@
 			<tr>
 				<td><label for="type">$i18n.getString( "type" ):</label></td>
 				<td>
-				#set( $keys = $gatewayMap.keySet() )
+				#set( $keys = $!gatewayMap.keySet() )
 					<select id="gatewayId" name="gatewayId" style="width: 100%;">
-						#foreach( $key in $keys )
-						<option value="$gatewayMap.get( $key )">$i18n.getString( $key )</option>
+						#foreach( $key in $!keys )
+						<option value="$!gatewayMap.get( $key )">$i18n.getString( $key )</option>
 						#end
 					</select>
 				</td>

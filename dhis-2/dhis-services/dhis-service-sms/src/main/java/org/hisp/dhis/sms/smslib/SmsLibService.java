@@ -65,9 +65,9 @@ public class SmsLibService
 
     private final String CLICKATELL_GATEWAY = "clickatell_gw";
 
-    private final String HTTP_GATEWAY = "generic_http_gw";
+    private final String HTTP_GATEWAY = "http_gw";
 
-    private final String MODEM_GATEWAY = "modem_gateway";
+    private final String MODEM_GATEWAY = "modem_gw";
 
     // -------------------------------------------------------------------------
     // Implementation methods
@@ -77,6 +77,17 @@ public class SmsLibService
     public boolean isEnabled()
     {
         return config != null && config.isEnabled();
+    }
+
+    @Override
+    public Map<String, String> getGatewayMap()
+    {
+        if ( gatewayMap == null || gatewayMap.isEmpty() )
+        {
+            reloadConfig();
+        }
+
+        return gatewayMap;
     }
 
     @Override
@@ -179,18 +190,20 @@ public class SmsLibService
 
         log.debug( "Loading configuration" );
 
-        reloadConfig();
-
-        if ( config.isEnabled() )
+        if ( config.isEnabled() && reloadConfig() )
         {
             log.debug( "Starting SmsLib" );
             startService();
         }
         else
         {
-            log.debug( "Sms not enabled, won't start service" );
+            log.debug( "Sms not enabled or there is no any gateway, won't start service" );
         }
     }
+
+    // -------------------------------------------------------------------------
+    // Supportive methods
+    // -------------------------------------------------------------------------
 
     private String createTmpGroup( Set<String> recipients )
     {
@@ -234,27 +247,38 @@ public class SmsLibService
         }
     }
 
-    private void stopService()
+    @Override
+    public String stopService()
     {
+        String status = "success";
+
         try
         {
             getService().stopService();
         }
         catch ( SMSLibException e )
         {
+            status = "Unable to stop smsLib service" + e.getCause().getMessage();
+
             log.warn( "Unable to stop smsLib service", e );
             throw new SmsServiceException( "Unable to stop smsLib service", e );
         }
         catch ( IOException e )
         {
+            status = "Unable to stop smsLib service" + e.getCause().getMessage();
+
             log.warn( "Unable to stop smsLib service", e );
             throw new SmsServiceException( "Unable to stop smsLib service", e );
         }
         catch ( InterruptedException e )
         {
+            status = "Unable to stop smsLib service" + e.getCause().getMessage();
+
             log.warn( "Unable to stop smsLib service", e );
             throw new SmsServiceException( "Unable to stop smsLib service", e );
         }
+
+        return status;
     }
 
     private Service getService()
@@ -262,7 +286,7 @@ public class SmsLibService
         return Service.getInstance();
     }
 
-    private void reloadConfig()
+    private boolean reloadConfig()
         throws SmsServiceException
     {
         Service service = Service.getInstance();
@@ -272,6 +296,8 @@ public class SmsLibService
         service.getGateways().clear();
 
         AGateway gateway = null;
+
+        boolean reloaded = false;
 
         // Add gateways
         for ( SmsGatewayConfig gatewayConfig : config.getGateways() )
@@ -299,14 +325,20 @@ public class SmsLibService
                     gatewayMap.put( MODEM_GATEWAY, gateway.getGatewayId() );
                 }
 
+                reloaded = true;
+
                 log.debug( "Added gateway " + gatewayConfig.getName() );
             }
             catch ( GatewayException e )
             {
+                reloaded = false;
+
                 log.warn( "Unable to load gateway " + gatewayConfig.getName(), e );
                 throw new SmsServiceException( "Unable to load gateway" + gatewayConfig.getName(), e );
             }
         }
+
+        return reloaded;
     }
 
     private class OutboundNotification
@@ -318,16 +350,4 @@ public class SmsLibService
             log.debug( "Sent message through gateway " + gateway.getGatewayId() + ": " + msg );
         }
     }
-
-    @Override
-    public Map<String, String> getGatewayMap()
-    {
-        if ( gatewayMap == null || gatewayMap.isEmpty() )
-        {
-            reloadConfig();
-        }
-        
-        return gatewayMap;
-    }
-
 }

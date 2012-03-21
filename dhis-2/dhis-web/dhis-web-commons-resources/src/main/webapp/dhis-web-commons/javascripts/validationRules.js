@@ -457,5 +457,13 @@ var validationRules = {
 		"smtpPassword" : {
 			"required" : true
 		}
+	},
+	"SMSConfig" : {
+		"pollingInterval" : {
+			"digits" : true
+		},
+		"serverPhoneNumber" : {
+			"digits" : true
+		}
 	}
 };

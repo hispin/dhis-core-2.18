@@ -83,7 +83,7 @@ public class SmsConfigurationManagerImpl
             {
                 // TODO: Need to make these problems available in GUI!
                 log.warn( "Unable to initialize service " + smsConfigurable.getClass().getSimpleName()
-                    + "with configuration " + smsConfiguration, t );
+                    + " with configuration " + smsConfiguration, t );
             }
         }
     }

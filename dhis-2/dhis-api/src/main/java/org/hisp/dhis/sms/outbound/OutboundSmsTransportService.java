@@ -37,4 +37,6 @@ public interface OutboundSmsTransportService
     extends OutboundSmsService
 {
     Map<String, String> getGatewayMap();
+
+    String stopService();
 }
