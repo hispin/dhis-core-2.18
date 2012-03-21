@@ -37,7 +37,7 @@
 			<select id="aggregationDataElementId" name="aggregationDataElementId" class="{validate:{required:true}} hidden" >
 				<option value="$caseAggregation.aggregationDataElement.id.$caseAggregation.optionCombo.id">$caseAggregation.aggregationDataElement.name $caseAggregation.optionCombo.name</option>
 			</select>
-			<input id="aggregationDataElementInput" name="aggregationDataElementInput" class='autocompleted-field' value='$caseAggregation.aggregationDataElement.name $caseAggregation.optionCombo.name'><button type='button' id='dataElementsButton' class='hidden'>&nbsp;</button>
+			<input id="aggregationDataElementInput" name="aggregationDataElementInput" class='autocompleted-field' value='$caseAggregation.aggregationDataElement.name $caseAggregation.optionCombo.name'><button type='button' id='dataElementsButton' class='small-button' disabled>&nbsp;</button>
 		</td>				
 	</tr>
 	<tr>

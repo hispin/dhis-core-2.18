@@ -36,7 +36,7 @@
 			<select id="aggregationDataElementId" name="aggregationDataElementId" class="{validate:{required:true}} hidden" >
 			</select>
 			<input type="text" id="aggregationDataElementInput" name="aggregationDataElementInput" class='autocompleted-field' >
-			<button type='button' id='dataElementsButton' class='small-button' disabled>&nbsp;</button>
+			<button type='button' id='dataElementsButton' class='small-button' disabled >&nbsp;</button>
 		</td>				
 	</tr>
 	
