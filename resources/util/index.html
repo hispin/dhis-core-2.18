@@ -38,9 +38,6 @@ function setDivs() {
 
 jQuery(document).ready(function() {
   $.ajax({
-        beforeSend: function(xhr) {
-            xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-        },
 	url: base + "dhis-web-commons-security/login.action",
 	type: "POST",
         data: {
