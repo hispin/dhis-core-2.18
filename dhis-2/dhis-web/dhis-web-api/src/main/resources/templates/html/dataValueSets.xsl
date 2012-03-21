@@ -4,7 +4,7 @@
                 xmlns:d="http://dhis2.org/schema/dxf/2.0"
     >
 
-<xsl:template match="d:dxf2">
+<xsl:template match="d:dxf2/d:dataValueSets">
 
 <p>The DataValueSet resource provides a way to POST data values into DHIS 2.</p>
 
