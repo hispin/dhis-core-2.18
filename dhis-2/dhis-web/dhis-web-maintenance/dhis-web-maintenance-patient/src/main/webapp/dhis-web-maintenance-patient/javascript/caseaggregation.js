@@ -10,7 +10,8 @@ function getDataElementsByDataset()
 	clearList( byId('aggregationDataElementId'));
 	
 	if( dataSetId == "" ){
-		disabled( 'dataElementsButton' );
+		disable( 'dataElementsButton' );
+		setFieldValue( 'aggregationDataElementInput','');
 		return;
 	}
 
@@ -45,10 +46,12 @@ function autoCompletedField( id )
 	$( "#dataElementsButton" ).unbind('click');
 	enable( 'dataElementsButton' );
 	hideById( id );
+	var selected = select.children( ":selected" );
+	var value = selected.val() ? selected.text() : "";
 	
 	var input = jQuery( "#aggregationDataElementInput" )
 		.insertAfter( select )
-		.val( "" )
+		.val( value )
 		.autocomplete({
 			delay: 0,
 			minLength: 0,
