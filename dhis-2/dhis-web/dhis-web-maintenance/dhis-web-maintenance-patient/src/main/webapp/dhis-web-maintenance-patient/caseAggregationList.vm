@@ -1,6 +1,6 @@
 #set( $mark = true )
 #foreach( $aggregationCondition in $aggregationConditions )
-	<tr #alternate( $mark )>
+	<tr  id="tr${aggregationCondition.id}" #alternate( $mark )>
 
 		<td>$encoder.htmlEncode( $aggregationCondition.description )</td>                
 
