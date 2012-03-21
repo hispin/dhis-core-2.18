@@ -665,6 +665,11 @@ Ext.onReady( function() {
 				setHeight: function(mx) {
 					var h = DV.cmp.region.west.getHeight() - DV.conf.layout.west_fill;
 					DV.cmp.dimension.panel.setHeight(h > mx ? mx : h);
+				},
+				setDimensionLabels: function() {
+					//alert(DV.cmp.settings.series.getValue());
+					//alert(DV.cmp.settings.series.getRawValue());
+					//DV.cmp.settings.series
 				}
 			}
         },
@@ -1447,7 +1452,7 @@ Ext.onReady( function() {
 						if (!this.validation.favorite(f)) {
 							return;
 						}
-                        
+						
                         DV.c.type = f.type.toLowerCase();
                         DV.c.dimension.series = f.series.toLowerCase();
                         DV.c.dimension.category = f.category.toLowerCase();
@@ -1461,22 +1466,23 @@ Ext.onReady( function() {
                         
                         if (f.indicators) {
 							for (var i = 0; i < f.indicators.length; i++) {
-								DV.c.indicator.objects.push({id: f.indicators[i].internalId, name: DV.util.string.getEncodedString(f.indicators[i].shortName)});
+								DV.c.indicator.objects.push({id: f.indicators[i].internalId, name: DV.util.string.getEncodedString(f.indicators[i].name)});
 							}
 						}
+						
 						if (f.dataElements) {
 							for (var i = 0; i < f.dataElements.length; i++) {
-								DV.c.dataelement.objects.push({id: f.dataElements[i].internalId, name: DV.util.string.getEncodedString(f.dataElements[i].shortName)});
+								DV.c.dataelement.objects.push({id: f.dataElements[i].internalId, name: DV.util.string.getEncodedString(f.dataElements[i].name)});
 							}
 						}
 						if (f.dataSets) {
 							for (var i = 0; i < f.dataSets.length; i++) {
-								DV.c.dataset.objects.push({id: f.dataSets[i].internalId, name: DV.util.string.getEncodedString(f.dataSets[i].shortName)});
+								DV.c.dataset.objects.push({id: f.dataSets[i].internalId, name: DV.util.string.getEncodedString(f.dataSets[i].name)});
 							}
 						}						
 						DV.c.period.rp = f.relativePeriods;
 						for (var i = 0; i < f.organisationUnits.length; i++) {
-							DV.c.organisationunit.objects.push({id: f.organisationUnits[i].internalId, name: DV.util.string.getEncodedString(f.organisationUnits[i].shortName)});
+							DV.c.organisationunit.objects.push({id: f.organisationUnits[i].internalId, name: DV.util.string.getEncodedString(f.organisationUnits[i].name)});
 						}
 						DV.c.organisationunit.groupsetid = f.organisationUnitGroupSet ? f.organisationUnitGroupSet.internalId : null;
 						
@@ -2366,11 +2372,12 @@ Ext.onReady( function() {
                                         store: DV.store.dimension(),
                                         value: DV.conf.finals.dimension.data.value,
                                         listeners: {
-                                            afterrender: function() {
+                                            added: function() {
                                                 DV.cmp.settings.series = this;
                                             },
                                             select: function() {
                                                 DV.util.combobox.filter.category();
+                                                DV.util.dimension.panel.setDimensionLabels();
                                             }
                                         }
                                     }
@@ -2459,7 +2466,6 @@ Ext.onReady( function() {
 									{
 										title: '<div style="height:17px">' + DV.i18n.indicators + '</div>',
 										hideCollapseTool: true,
-										layout: 'anchor',
 										items: [
 											{
 												xtype: 'combobox',
@@ -2891,6 +2897,10 @@ Ext.onReady( function() {
 													DV.cmp.dimension.dataset.panel,
 													DV.conf.layout.west_fill_accordion_dataset
 												);
+												
+												if (!DV.store.dataset.available.isloaded) {
+													DV.store.dataset.available.load();
+												}
 											}
 										}
 									},
@@ -3513,9 +3523,9 @@ Ext.onReady( function() {
                                                                             style: 'padding-bottom:2px',
                                                                             fieldLabel: DV.i18n.system,
                                                                             labelWidth: DV.conf.layout.form_label_width,
-                                                                            disabled: !DV.init.system.user.isAdmin,
+                                                                            disabled: !DV.init.system.user.isadmin,
                                                                             check: function() {
-                                                                                if (!DV.init.system.user.isAdmin) {
+                                                                                if (!DV.init.system.user.isadmin) {
                                                                                     if (DV.store.favorite.findExact('name', DV.cmp.favorite.name.getValue()) === -1) {
                                                                                         this.setValue(false);
                                                                                     }
@@ -3835,7 +3845,7 @@ Ext.onReady( function() {
                                                                             if (DV.cmp.favorite.name.getValue()) {
                                                                                 var index = DV.store.favorite.findExact('name', DV.cmp.favorite.name.getValue());
                                                                                 if (index != -1) {
-                                                                                    if (DV.store.favorite.getAt(index).data.userId || DV.init.system.user.isAdmin) {
+                                                                                    if (DV.store.favorite.getAt(index).data.userId || DV.init.system.user.isadmin) {
                                                                                         this.enable();
                                                                                         DV.cmp.favorite.label.setText('');
                                                                                         return true;
