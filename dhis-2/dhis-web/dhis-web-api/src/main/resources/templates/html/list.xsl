@@ -33,8 +33,22 @@
       <table>
         <tr>
           <td>Page
-            <xsl:value-of select="page" /> /
-            <xsl:value-of select="pageCount" />
+            <xsl:choose>
+              <xsl:when test="page">
+                <xsl:value-of select="page" />
+              </xsl:when>
+              <xsl:otherwise>1</xsl:otherwise>
+            </xsl:choose>
+
+            <xsl:text> / </xsl:text>
+
+            <xsl:choose>
+              <xsl:when test="page">
+                <xsl:value-of select="pageCount" />
+              </xsl:when>
+              <xsl:otherwise>1</xsl:otherwise>
+            </xsl:choose>
+
           </td>
 
           <xsl:if test="prevPage">

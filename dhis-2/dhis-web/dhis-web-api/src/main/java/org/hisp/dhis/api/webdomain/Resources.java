@@ -82,7 +82,7 @@ public class Resources
     }
 
     @JsonProperty
-    @JacksonXmlElementWrapper( localName = "resources" )
+    @JacksonXmlElementWrapper( localName = "resources", namespace = Dxf2Namespace.NAMESPACE )
     @JacksonXmlProperty( localName = "resource", namespace = Dxf2Namespace.NAMESPACE )
     public List<Resource> getResources()
     {
