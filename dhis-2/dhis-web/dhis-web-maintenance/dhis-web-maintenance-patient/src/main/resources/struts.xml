@@ -667,6 +667,7 @@
 			<result name="success" type="velocity">/main.vm</result>
 			<param name="page">/dhis-web-maintenance-patient/addCaseAggregation.vm</param>
 			<param name="javascripts">javascript/commons.js,javascript/caseaggregation.js</param>
+			<param name="stylesheets">style/basic.css</param>
 		</action>
 
 		<action name="showUpdateCaseAggregationForm"
@@ -674,6 +675,7 @@
 			<result name="success" type="velocity">/main.vm</result>
 			<param name="page">/dhis-web-maintenance-patient/updateCaseAggregation.vm</param>
 			<param name="javascripts">javascript/commons.js,javascript/caseaggregation.js</param>
+			<param name="stylesheets">style/basic.css</param>
 		</action>
 
 		<action name="addCaseAggregation"

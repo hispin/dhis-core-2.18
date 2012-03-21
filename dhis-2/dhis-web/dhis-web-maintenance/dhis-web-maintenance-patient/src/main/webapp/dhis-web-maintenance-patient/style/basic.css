@@ -75,3 +75,16 @@ tr.selected{
 {
 	width:100%;
 }
+
+.small-button {
+	font-size: .8em !important;
+}
+
+.ui-autocomplete { height: 100px; overflow-y: scroll; overflow-x: hidden; }
+
+
+input.autocompleted-field
+{
+	width:25em; 
+	text-align:center;
+}
