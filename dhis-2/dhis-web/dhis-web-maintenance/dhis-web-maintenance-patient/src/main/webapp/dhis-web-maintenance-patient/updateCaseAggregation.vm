@@ -16,13 +16,13 @@
 	
     <tr>
         <td><label>$i18n.getString( "description" ) <em title="$i18n.getString( "required" )" class="required">*</em></label></td>
-        <td><input type="text" id="description" name="description" style="width:30em" class="{validate:{required:true}}" value="$caseAggregation.description"></td>
+        <td><input type="text" id="description" name="description" class="{validate:{required:true}}" value="$caseAggregation.description"></td>
     </tr>
     
     <tr>
 		<td><label for="dataSets">$i18n.getString( "dataset" )</label></td>
 		<td>
-			<select id="dataSets" name="dataSets" style="width:30.5em" onchange="getDataElementsByDataset();">
+			<select id="dataSets" name="dataSets" onchange="getDataElementsByDataset();">
 				<option value="">[$i18n.getString('please_select')]</option>
 				#foreach( $dataSet in $dataSets)
 					<option value="$dataSet.id" #if( $dataSetId=="$dataSet.id") selected #end >$dataSet.name</option>
@@ -34,9 +34,10 @@
     <tr>
 		<td><label for="dataElement">$i18n.getString( "dataelement" )<em title="$i18n.getString( "required" )" class="required">*</em></label></td>
 		<td>
-			<select id="aggregationDataElementId" name="aggregationDataElementId" style="width:30.5em" class="{validate:{required:true}}" >
+			<select id="aggregationDataElementId" name="aggregationDataElementId" class="{validate:{required:true}} hidden" >
 				<option value="$caseAggregation.aggregationDataElement.id.$caseAggregation.optionCombo.id">$caseAggregation.aggregationDataElement.name $caseAggregation.optionCombo.name</option>
 			</select>
+			<input id="aggregationDataElementInput" name="aggregationDataElementInput" class='autocompleted-field' value='$caseAggregation.aggregationDataElement.name $caseAggregation.optionCombo.name'><button type='button' id='dataElementsButton' class='hidden'>&nbsp;</button>
 		</td>				
 	</tr>
 	<tr>
@@ -75,7 +76,7 @@
 					</tr>
 					<tr>
 						<td>
-							<select id="program" name="program" style="width:20em" onChange="getProgramStages();">
+							<select id="program" name="program" onChange="getProgramStages();">
 								<option value="0">[$i18n.getString('please_select')]</option>
 								#foreach( $program in $programs )
 									<option value="$program.id" title='$program.name'>$encoder.htmlEncode( $program.name )</option>
@@ -91,7 +92,7 @@
 					</tr>
 					<tr>
 						<td>
-							<select id="programStage" name="programStage" style="width:20em" onchange="getPrgramStageDataElements();" ondblclick="insertProgramStage(this);">
+							<select id="programStage" name="programStage" onchange="getPrgramStageDataElements();" ondblclick="insertProgramStage(this);">
 							</select>
 						</td>
 					</tr>
@@ -102,7 +103,7 @@
 					</tr>
 					<tr>
 						<td>
-							<input type='text' style="min-width:19.8em" onkeyup="filterDE(event, this.value, 'programstageDE');"/>
+							<input type='text' onkeyup="filterDE(event, this.value, 'programstageDE');"/>
 						</td>
 					</tr>
 					<tr>
@@ -195,7 +196,7 @@
 					<table>
 						<tr>
 							<td>
-								<select id="programFormula" name="programFormula" style="width:20em" onChange="getProgramStagesForFormula();">
+								<select id="programFormula" name="programFormula" onChange="getProgramStagesForFormula();">
 									<option value="0">[$i18n.getString('please_select')]</option>
 									#foreach( $program in $programs )
 										<option value="$program.id" title='$program.name'>$encoder.htmlEncode( $program.name )</option>
@@ -270,9 +271,9 @@
 	</tr>
 	<tr>
 		<td>
-			<input type="submit" value="$i18n.getString( 'update' )" style="width:10em">
-			<input type="button" value="$i18n.getString( 'test_condition' )" style="width:10em" onclick='testCaseAggregationCondition();'/>
-			<input type="button" value="$i18n.getString( 'cancel' )" onclick="window.location.href='caseAggregation.action?dataSetId=$!dataSetId'" style="width:10em">
+			<input type="submit" value="$i18n.getString( 'update' )" >
+			<input type="button" value="$i18n.getString( 'test_condition' )" onclick='testCaseAggregationCondition();'/>
+			<input type="button" value="$i18n.getString( 'cancel' )" onclick="window.location.href='caseAggregation.action?dataSetId=$!dataSetId'" >
 		</td>
 	<tr>
 </table>
@@ -288,4 +289,5 @@
 	
 	var i18n_run_success = '$encoder.jsEscape( $i18n.getString( "run_success" ) , "'" )';
 	var i18n_run_fail = '$encoder.jsEscape( $i18n.getString( "run_fail" ) , "'" )';
+	var i18n_show_all_items = '$encoder.jsEscape( $i18n.getString( "show_all_item" ) , "'" )';
 </script>
