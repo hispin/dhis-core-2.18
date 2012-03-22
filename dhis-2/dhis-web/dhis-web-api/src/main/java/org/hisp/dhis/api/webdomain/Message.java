@@ -93,7 +93,7 @@ public class Message
     @JsonSerialize( contentAs = BaseIdentifiableObject.class )
     @JsonView( {DetailedView.class} )
     @JacksonXmlElementWrapper( localName = "users" )
-    @JacksonXmlProperty( localName = "user" )
+    @JacksonXmlProperty( localName = "users" )
     public Set<User> getUsers()
     {
         return users;
