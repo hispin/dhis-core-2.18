@@ -57,28 +57,23 @@ public class JacksonUtils
 
     static
     {
-        jsonMapper.setSerializationInclusion( JsonInclude.Include.NON_NULL );
-        jsonMapper.configure( SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false );
-        jsonMapper.configure( SerializationFeature.WRITE_EMPTY_JSON_ARRAYS, false );
-        jsonMapper.configure( SerializationFeature.FAIL_ON_EMPTY_BEANS, false );
-        jsonMapper.disable( MapperFeature.AUTO_DETECT_FIELDS );
-        jsonMapper.disable( MapperFeature.AUTO_DETECT_CREATORS );
-        jsonMapper.disable( MapperFeature.AUTO_DETECT_GETTERS );
-        jsonMapper.disable( MapperFeature.AUTO_DETECT_SETTERS );
-        jsonMapper.disable( MapperFeature.AUTO_DETECT_IS_GETTERS );
+        ObjectMapper[] objectMappers = new ObjectMapper[]{ jsonMapper, xmlMapper };
+
+        for ( ObjectMapper objectMapper : objectMappers )
+        {
+            objectMapper.setSerializationInclusion( JsonInclude.Include.NON_NULL );
+            objectMapper.configure( SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false );
+            objectMapper.configure( SerializationFeature.WRITE_EMPTY_JSON_ARRAYS, false );
+            objectMapper.configure( SerializationFeature.FAIL_ON_EMPTY_BEANS, false );
+            objectMapper.disable( MapperFeature.AUTO_DETECT_FIELDS );
+            objectMapper.disable( MapperFeature.AUTO_DETECT_CREATORS );
+            objectMapper.disable( MapperFeature.AUTO_DETECT_GETTERS );
+            objectMapper.disable( MapperFeature.AUTO_DETECT_SETTERS );
+            objectMapper.disable( MapperFeature.AUTO_DETECT_IS_GETTERS );
+        }
 
         jsonMapper.getJsonFactory().enable( JsonGenerator.Feature.QUOTE_FIELD_NAMES );
-
-        xmlMapper.setSerializationInclusion( JsonInclude.Include.NON_NULL );
         xmlMapper.configure( ToXmlGenerator.Feature.WRITE_XML_DECLARATION, true );
-        xmlMapper.configure( SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false );
-        xmlMapper.configure( SerializationFeature.WRITE_EMPTY_JSON_ARRAYS, false );
-        xmlMapper.configure( SerializationFeature.FAIL_ON_EMPTY_BEANS, false );
-        xmlMapper.disable( MapperFeature.AUTO_DETECT_FIELDS );
-        xmlMapper.disable( MapperFeature.AUTO_DETECT_CREATORS );
-        xmlMapper.disable( MapperFeature.AUTO_DETECT_GETTERS );
-        xmlMapper.disable( MapperFeature.AUTO_DETECT_SETTERS );
-        xmlMapper.disable( MapperFeature.AUTO_DETECT_IS_GETTERS );
 
         // register view classes
         viewClasses.put( "default", IdentifiableObjectView.class );
