@@ -67,15 +67,6 @@ public class HibernatePatientDataValueStore
         return query.executeUpdate();
     }
 
-//    public PatientDataValue get( ProgramStageInstance programStageInstance, DataElement dataElement,
-//        OrganisationUnit organisationUnit )
-//    {
-//        return (PatientDataValue) getCriteria( Restrictions.eq( "programStageInstance", programStageInstance ),
-//            Restrictions.eq( "dataElement", dataElement ) )
-//            .createAlias( "programStageInstance", "programStageInstance" ).add(
-//                Restrictions.eq( "programStageInstance.organisationUnit", organisationUnit ) ).uniqueResult();
-//    }
-
     @SuppressWarnings( "unchecked" )
     public Collection<PatientDataValue> get( ProgramStageInstance programStageInstance )
     {
