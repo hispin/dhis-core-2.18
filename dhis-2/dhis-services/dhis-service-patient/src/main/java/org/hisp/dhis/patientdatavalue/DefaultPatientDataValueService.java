@@ -98,14 +98,6 @@ public class DefaultPatientDataValueService
         return patientDataValueStore.getAll();
     }
 
-    // public PatientDataValue getPatientDataValue( ProgramStageInstance
-    // programStageInstance, DataElement dataElement,
-    // OrganisationUnit organisationUnit )
-    // {
-    // return patientDataValueStore.get( programStageInstance, dataElement,
-    // organisationUnit );
-    // }
-
     public Collection<PatientDataValue> getPatientDataValues( ProgramStageInstance programStageInstance )
     {
         return patientDataValueStore.get( programStageInstance );
