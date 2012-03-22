@@ -56,7 +56,6 @@ import java.util.Set;
 
 /**
  * @author Jan Henrik Overland
- * @version $Id$
  */
 @Transactional
 public class DefaultMappingService
@@ -66,11 +65,32 @@ public class DefaultMappingService
     // Dependencies
     // -------------------------------------------------------------------------
 
-    private MappingStore mappingStore;
+    private MapViewStore mapViewStore;
 
-    public void setMappingStore( MappingStore mappingStore )
+    private MapLayerStore mapLayerStore;
+
+    private MapLegendStore mapLegendStore;
+
+    private MapLegendSetStore mapLegendSetStore;
+
+    public void setMapViewStore( MapViewStore mapViewStore )
     {
-        this.mappingStore = mappingStore;
+        this.mapViewStore = mapViewStore;
+    }
+
+    public void setMapLayerStore( MapLayerStore mapLayerStore )
+    {
+        this.mapLayerStore = mapLayerStore;
+    }
+
+    public void setMapLegendStore( MapLegendStore mapLegendStore )
+    {
+        this.mapLegendStore = mapLegendStore;
+    }
+
+    public void setMapLegendSetStore( MapLegendSetStore mapLegendSetStore )
+    {
+        this.mapLegendSetStore = mapLegendSetStore;
     }
 
     private OrganisationUnitService organisationUnitService;
@@ -275,40 +295,40 @@ public class DefaultMappingService
             mapLegend.setColor( color );
             mapLegend.setImage( image );
 
-            mappingStore.updateMapLegend( mapLegend );
+            mapLegendStore.update( mapLegend );
         }
         else
         {
             mapLegend = new MapLegend( name, startValue, endValue, color, image );
 
-            mappingStore.addMapLegend( mapLegend );
+            mapLegendStore.save( mapLegend );
         }
     }
 
     public void deleteMapLegend( MapLegend mapLegend )
     {
-        mappingStore.deleteMapLegend( mapLegend );
+        mapLegendStore.delete( mapLegend );
     }
 
     public MapLegend getMapLegend( int id )
     {
-        return mappingStore.getMapLegend( id );
+        return mapLegendStore.get( id );
     }
 
     @Override
     public MapLegend getMapLegend( String uid )
     {
-        return mappingStore.getMapLegend( uid );
+        return mapLegendStore.getByUid( uid );
     }
 
     public MapLegend getMapLegendByName( String name )
     {
-        return mappingStore.getMapLegendByName( name );
+        return mapLegendStore.getByName( name );
     }
 
     public Collection<MapLegend> getAllMapLegends()
     {
-        return mappingStore.getAllMapLegends();
+        return mapLegendStore.getAll();
     }
 
     // -------------------------------------------------------------------------
@@ -317,12 +337,12 @@ public class DefaultMappingService
 
     public int addMapLegendSet( MapLegendSet mapLegendSet )
     {
-        return mappingStore.addMapLegendSet( mapLegendSet );
+        return mapLegendSetStore.save( mapLegendSet );
     }
 
     public void updateMapLegendSet( MapLegendSet mapLegendSet )
     {
-        mappingStore.updateMapLegendSet( mapLegendSet );
+        mapLegendSetStore.update( mapLegendSet );
     }
 
     public void addOrUpdateMapLegendSet( String name, String type, String symbolizer, Set<MapLegend> mapLegends )
@@ -341,47 +361,47 @@ public class DefaultMappingService
             mapLegendSet.setIndicators( indicators );
             mapLegendSet.setDataElements( dataElements );
 
-            this.mappingStore.updateMapLegendSet( mapLegendSet );
+            mapLegendSetStore.update( mapLegendSet );
         }
         else
         {
             mapLegendSet = new MapLegendSet( name, type, symbolizer, mapLegends, indicators, dataElements );
 
-            this.mappingStore.addMapLegendSet( mapLegendSet );
+            mapLegendSetStore.save( mapLegendSet );
         }
     }
 
     public void deleteMapLegendSet( MapLegendSet mapLegendSet )
     {
-        mappingStore.deleteMapLegendSet( mapLegendSet );
+        mapLegendSetStore.delete( mapLegendSet );
     }
 
     public MapLegendSet getMapLegendSet( int id )
     {
-        return mappingStore.getMapLegendSet( id );
+        return mapLegendSetStore.get( id );
     }
 
     @Override
     public MapLegendSet getMapLegendSet( String uid )
     {
-        return mappingStore.getMapLegendSet( uid );
+        return mapLegendSetStore.getByUid( uid );
     }
 
     public MapLegendSet getMapLegendSetByName( String name )
     {
-        return mappingStore.getMapLegendSetByName( name );
+        return mapLegendSetStore.getByName( name );
     }
 
     public Collection<MapLegendSet> getMapLegendSetsByType( String type )
     {
-        return this.mappingStore.getMapLegendSetsByType( type );
+        return mapLegendSetStore.getMapLegendSetsByType( type );
     }
 
     public MapLegendSet getMapLegendSetByIndicator( int indicatorId )
     {
         Indicator indicator = indicatorService.getIndicator( indicatorId );
 
-        Collection<MapLegendSet> mapLegendSets = mappingStore.getAllMapLegendSets();
+        Collection<MapLegendSet> mapLegendSets = mapLegendSetStore.getAll();
 
         for ( MapLegendSet mapLegendSet : mapLegendSets )
         {
@@ -398,7 +418,7 @@ public class DefaultMappingService
     {
         DataElement dataElement = dataElementService.getDataElement( dataElementId );
 
-        Collection<MapLegendSet> mapLegendSets = mappingStore.getAllMapLegendSets();
+        Collection<MapLegendSet> mapLegendSets = mapLegendSetStore.getAll();
 
         for ( MapLegendSet mapLegendSet : mapLegendSets )
         {
@@ -413,14 +433,14 @@ public class DefaultMappingService
 
     public Collection<MapLegendSet> getAllMapLegendSets()
     {
-        return mappingStore.getAllMapLegendSets();
+        return mapLegendSetStore.getAll();
     }
 
     public boolean indicatorHasMapLegendSet( int indicatorId )
     {
         Indicator indicator = indicatorService.getIndicator( indicatorId );
 
-        Collection<MapLegendSet> mapLegendSets = mappingStore.getAllMapLegendSets();
+        Collection<MapLegendSet> mapLegendSets = mapLegendSetStore.getAll();
 
         for ( MapLegendSet mapLegendSet : mapLegendSets )
         {
@@ -439,7 +459,7 @@ public class DefaultMappingService
 
     public int addMapView( MapView mapView )
     {
-        return mappingStore.addMapView( mapView );
+        return mapViewStore.save( mapView );
     }
 
     public void addMapView( String name, boolean system, String mapValueType, Integer indicatorGroupId,
@@ -489,17 +509,17 @@ public class DefaultMappingService
 
     public void updateMapView( MapView mapView )
     {
-        mappingStore.updateMapView( mapView );
+        mapViewStore.update( mapView );
     }
 
-    public void deleteMapView( MapView view )
+    public void deleteMapView( MapView mapView )
     {
-        mappingStore.deleteMapView( view );
+        mapViewStore.delete( mapView );
     }
 
     public MapView getMapView( int id )
     {
-        MapView mapView = mappingStore.getMapView( id );
+        MapView mapView = mapViewStore.get( id );
 
         setMapViewLevel( mapView );
 
@@ -508,7 +528,7 @@ public class DefaultMappingService
 
     public MapView getMapView( String uid )
     {
-        MapView mapView = mappingStore.getByUid( uid );
+        MapView mapView = mapViewStore.getByUid( uid );
 
         setMapViewLevel( mapView );
 
@@ -526,7 +546,7 @@ public class DefaultMappingService
 
     public MapView getMapViewByName( String name )
     {
-        return mappingStore.getMapViewByName( name );
+        return mapViewStore.getByName( name );
     }
 
     public MapView getIndicatorLastYearMapView( String indicatorUid, String organisationUnitUid, int level )
@@ -553,7 +573,7 @@ public class DefaultMappingService
     {
         User user = currentUserService.getCurrentUser();
 
-        Collection<MapView> mapViews = mappingStore.getAllMapViews( user );
+        Collection<MapView> mapViews = mapViewStore.getAll();
 
         if ( mapViews.size() > 0 )
         {
@@ -571,7 +591,7 @@ public class DefaultMappingService
     {
         User user = currentUserService.getCurrentUser();
 
-        Collection<MapView> mapViews = mappingStore.getMapViewsByFeatureType( featureType, user );
+        Collection<MapView> mapViews = mapViewStore.getMapViewsByFeatureType( featureType, user );
 
         for ( MapView mapView : mapViews )
         {
@@ -588,18 +608,18 @@ public class DefaultMappingService
 
     public int addMapLayer( MapLayer mapLayer )
     {
-        return mappingStore.addMapLayer( mapLayer );
+        return mapLayerStore.save( mapLayer );
     }
 
     public void updateMapLayer( MapLayer mapLayer )
     {
-        mappingStore.updateMapLayer( mapLayer );
+        mapLayerStore.update( mapLayer );
     }
 
     public void addOrUpdateMapLayer( String name, String type, String url, String layers, String time,
                                      String fillColor, double fillOpacity, String strokeColor, int strokeWidth )
     {
-        MapLayer mapLayer = mappingStore.getMapLayerByName( name );
+        MapLayer mapLayer = mapLayerStore.getByName( name );
 
         if ( mapLayer != null )
         {
@@ -623,37 +643,37 @@ public class DefaultMappingService
 
     public void deleteMapLayer( MapLayer mapLayer )
     {
-        mappingStore.deleteMapLayer( mapLayer );
+        mapLayerStore.delete( mapLayer );
     }
 
     public MapLayer getMapLayer( int id )
     {
-        return mappingStore.getMapLayer( id );
+        return mapLayerStore.get( id );
     }
 
     @Override
     public MapLayer getMapLayer( String uid )
     {
-        return mappingStore.getMapLayer( uid );
+        return mapLayerStore.getByUid( uid );
     }
 
     public MapLayer getMapLayerByName( String name )
     {
-        return mappingStore.getMapLayerByName( name );
+        return mapLayerStore.getByName( name );
     }
 
     public Collection<MapLayer> getMapLayersByType( String type )
     {
-        return mappingStore.getMapLayersByType( type );
+        return mapLayerStore.getMapLayersByType( type );
     }
 
     public MapLayer getMapLayerByMapSource( String mapSource )
     {
-        return mappingStore.getMapLayerByMapSource( mapSource );
+        return mapLayerStore.getMapLayerByMapSource( mapSource );
     }
 
     public Collection<MapLayer> getAllMapLayers()
     {
-        return mappingStore.getAllMapLayers();
+        return mapLayerStore.getAll();
     }
 }
