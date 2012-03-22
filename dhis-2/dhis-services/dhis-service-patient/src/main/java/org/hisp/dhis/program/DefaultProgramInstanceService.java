@@ -201,7 +201,7 @@ public class DefaultProgramInstanceService
         attrGrid.addHeader( new GridHeader( i18n.getString( "name" ), false, true ) );
         attrGrid.addHeader( new GridHeader( i18n.getString( "value" ), false, true ) );
         attrGrid.addHeader( new GridHeader( "", true, false ) );
-        
+
         Collection<PatientAttribute> patientAttributes = patient.getAttributes();
 
         // ---------------------------------------------------------------------
@@ -234,7 +234,21 @@ public class DefaultProgramInstanceService
             attrGrid.addValue( patientAttribute.getName() );
             PatientAttributeValue attributeValue = patientAttributeValueService.getPatientAttributeValue( patient,
                 patientAttribute );
-            attrGrid.addValue( (attributeValue == null) ? PatientAttributeValue.UNKNOWN : attributeValue.getValue() );
+            String value = "";
+            if ( attributeValue == null )
+            {
+                value = PatientAttributeValue.UNKNOWN;
+            }
+            else if ( attributeValue.getPatientAttribute().getValueType().equals( PatientAttribute.TYPE_BOOL ) )
+            {
+                value = i18n.getString( attributeValue.getValue() );
+            }
+            else
+            {
+                value = attributeValue.getValue();
+            }
+
+            attrGrid.addValue( value );
         }
 
         // ---------------------------------------------------------------------
@@ -273,7 +287,7 @@ public class DefaultProgramInstanceService
                 Grid gridProgram = new ListGrid();
                 gridProgram.setTitle( programInstance.getProgram().getName() );
                 gridProgram.setSubtitle( "" );
-                
+
                 // ---------------------------------------------------------------------
                 // Headers
                 // ---------------------------------------------------------------------
@@ -281,7 +295,7 @@ public class DefaultProgramInstanceService
                 gridProgram.addHeader( new GridHeader( i18n.getString( "name" ), false, false ) );
                 gridProgram.addHeader( new GridHeader( i18n.getString( "value" ), false, false ) );
                 gridProgram.addHeader( new GridHeader( "", true, false ) );
-                
+
                 // ---------------------------------------------------------------------
                 // Values
                 // ---------------------------------------------------------------------
