@@ -27,17 +27,17 @@ package org.hisp.dhis.api.controller;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import org.hisp.dhis.api.utils.ContextUtils;
 import org.hisp.dhis.api.utils.IdentifiableObjectParams;
 import org.hisp.dhis.api.utils.WebLinkPopulator;
-import org.hisp.dhis.api.view.Jaxb2Utils;
+import org.hisp.dhis.api.view.JacksonUtils;
 import org.hisp.dhis.api.webdomain.Message;
+import org.hisp.dhis.common.Pager;
 import org.hisp.dhis.message.MessageConversation;
 import org.hisp.dhis.message.MessageConversations;
 import org.hisp.dhis.message.MessageService;
 import org.hisp.dhis.user.User;
 import org.hisp.dhis.user.UserService;
-import org.hisp.dhis.api.utils.ContextUtils;
-import org.hisp.dhis.common.Pager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
@@ -46,7 +46,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.xml.bind.JAXBException;
+import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
@@ -74,17 +74,17 @@ public class MessageConversationController
     public String getMessageConversations( IdentifiableObjectParams params, Model model, HttpServletRequest request )
     {
         MessageConversations messageConversations = new MessageConversations();
-        
+
         if ( params.isPaging() )
         {
             int total = messageService.getMessageConversationCount();
-            
+
             Pager pager = new Pager( params.getPage(), total );
             messageConversations.setPager( pager );
-            
+
             List<MessageConversation> list = new ArrayList<MessageConversation>(
-                messageService.getMessageConversations( pager.getPage(), pager.getPageSize() ) );
-            
+                messageService.getMessageConversations( pager.getOffset(), pager.getPageSize() ) );
+
             messageConversations.setMessageConversations( list );
         }
         else
@@ -115,6 +115,7 @@ public class MessageConversationController
         }
 
         model.addAttribute( "model", messageConversation );
+        model.addAttribute( "view", "detailed" );
 
         return "message";
     }
@@ -125,9 +126,9 @@ public class MessageConversationController
 
     @RequestMapping( method = RequestMethod.POST, headers = {"Content-Type=application/xml, text/xml"} )
     @PreAuthorize( "hasRole('ALL') or hasRole('F_SEND_MESSAGE')" )
-    public void postMessageConversationXML( HttpServletResponse response, HttpServletRequest request, InputStream input ) throws JAXBException
+    public void postMessageConversationXML( HttpServletResponse response, HttpServletRequest request, InputStream input ) throws IOException
     {
-        Message message = Jaxb2Utils.unmarshal( Message.class, input );
+        Message message = JacksonUtils.fromXml( input, Message.class );
 
         List<User> users = new ArrayList<User>( message.getUsers() );
         message.getUsers().clear();
