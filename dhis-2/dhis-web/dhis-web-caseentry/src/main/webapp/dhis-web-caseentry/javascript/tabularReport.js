@@ -46,6 +46,7 @@ function loadProgramStages()
 
 function loadDataElements()
 {
+	clearListById( 'availableDataElementIds' );
 	if( getFieldValue('programStageId') == '' )
 	{
 		return;
