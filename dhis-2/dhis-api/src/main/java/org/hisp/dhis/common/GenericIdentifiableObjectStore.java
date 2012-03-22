@@ -31,7 +31,6 @@ import java.util.Collection;
 
 /**
  * @author Lars Helge Overland
- * @version $Id$
  */
 public interface GenericIdentifiableObjectStore<T>
     extends GenericStore<T>
