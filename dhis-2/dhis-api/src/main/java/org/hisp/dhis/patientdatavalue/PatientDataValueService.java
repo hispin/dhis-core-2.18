@@ -31,7 +31,6 @@ import java.util.Collection;
 import java.util.Date;
 
 import org.hisp.dhis.dataelement.DataElement;
-import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.patient.Patient;
 import org.hisp.dhis.program.ProgramStageInstance;
 
@@ -53,9 +52,6 @@ public interface PatientDataValueService
 
     int deletePatientDataValue( DataElement dataElement );
 
-    PatientDataValue getPatientDataValue( ProgramStageInstance programStageInstance, DataElement dataElement,
-        OrganisationUnit organisationUnit );
-
     Collection<PatientDataValue> getPatientDataValues( ProgramStageInstance programStageInstance );
     
     Collection<PatientDataValue> getPatientDataValues( ProgramStageInstance programStageInstance, Collection<DataElement> dataElement );
@@ -63,26 +59,6 @@ public interface PatientDataValueService
     Collection<PatientDataValue> getPatientDataValues( Collection<ProgramStageInstance> programStageInstances );
 
     Collection<PatientDataValue> getPatientDataValues( DataElement dataElement );
-
-    Collection<PatientDataValue> getPatientDataValues( OrganisationUnit organisationUnit );
-
-    Collection<PatientDataValue> getPatientDataValues( OrganisationUnit organisationUnit,
-        ProgramStageInstance programStageInstance );
-
-    Collection<PatientDataValue> getPatientDataValues( OrganisationUnit organisationUnit,
-        Collection<ProgramStageInstance> programStageInstances );
-
-    Collection<PatientDataValue> getPatientDataValues( OrganisationUnit organisationUnit, DataElement dataElement );
-
-    Collection<PatientDataValue> getPatientDataValues( boolean providedByAnotherFacility );
-
-    Collection<PatientDataValue> getPatientDataValues( OrganisationUnit organisationUnit,
-        boolean providedByAnotherFacility );
-
-    Collection<PatientDataValue> getPatientDataValues( ProgramStageInstance programStageInstance,
-        boolean providedByAnotherFacility );
-
-    Collection<PatientDataValue> getPatientDataValues( DataElement dataElement, boolean providedByAnotherFacility );
 
     Collection<PatientDataValue> getPatientDataValues( Patient patient, Collection<DataElement> dataElements,
         Date startDate, Date endDate );

@@ -35,11 +35,11 @@ import org.hibernate.Query;
 import org.hibernate.criterion.Restrictions;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.hibernate.HibernateGenericStore;
-import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.patient.Patient;
 import org.hisp.dhis.patientdatavalue.PatientDataValue;
 import org.hisp.dhis.patientdatavalue.PatientDataValueStore;
 import org.hisp.dhis.program.ProgramStageInstance;
+
 /**
  * @author Abyot Asalefew Gizaw
  * @version $Id$
@@ -67,13 +67,14 @@ public class HibernatePatientDataValueStore
         return query.executeUpdate();
     }
 
-    public PatientDataValue get( ProgramStageInstance programStageInstance, DataElement dataElement,
-        OrganisationUnit organisationUnit )
-    {
-        return (PatientDataValue) getCriteria( Restrictions.eq( "programStageInstance", programStageInstance ),
-            Restrictions.eq( "dataElement", dataElement ), Restrictions.eq( "organisationUnit", organisationUnit ) )
-            .uniqueResult();
-    }
+//    public PatientDataValue get( ProgramStageInstance programStageInstance, DataElement dataElement,
+//        OrganisationUnit organisationUnit )
+//    {
+//        return (PatientDataValue) getCriteria( Restrictions.eq( "programStageInstance", programStageInstance ),
+//            Restrictions.eq( "dataElement", dataElement ) )
+//            .createAlias( "programStageInstance", "programStageInstance" ).add(
+//                Restrictions.eq( "programStageInstance.organisationUnit", organisationUnit ) ).uniqueResult();
+//    }
 
     @SuppressWarnings( "unchecked" )
     public Collection<PatientDataValue> get( ProgramStageInstance programStageInstance )
@@ -107,63 +108,6 @@ public class HibernatePatientDataValueStore
     public Collection<PatientDataValue> get( DataElement dataElement )
     {
         return getCriteria( Restrictions.eq( "dataElement", dataElement ) ).list();
-    }
-
-    @SuppressWarnings( "unchecked" )
-    public Collection<PatientDataValue> get( OrganisationUnit organisationUnit )
-    {
-        return getCriteria( Restrictions.eq( "organisationUnit", organisationUnit ) ).list();
-    }
-
-    @SuppressWarnings( "unchecked" )
-    public Collection<PatientDataValue> get( OrganisationUnit organisationUnit,
-        ProgramStageInstance programStageInstance )
-    {
-        return getCriteria( Restrictions.eq( "organisationUnit", organisationUnit ),
-            Restrictions.eq( "programStageInstance", programStageInstance ) ).list();
-    }
-
-    @SuppressWarnings( "unchecked" )
-    public Collection<PatientDataValue> get( OrganisationUnit organisationUnit,
-        Collection<ProgramStageInstance> programStageInstances )
-    {
-        return getCriteria( Restrictions.eq( "organisationUnit", organisationUnit ),
-            Restrictions.in( "programStageInstance", programStageInstances ) ).list();
-    }
-
-    @SuppressWarnings( "unchecked" )
-    public Collection<PatientDataValue> get( OrganisationUnit organisationUnit, DataElement dataElement )
-    {
-        return getCriteria( Restrictions.eq( "organisationUnit", organisationUnit ),
-            Restrictions.eq( "dataElement", dataElement ) ).list();
-    }
-
-    @SuppressWarnings( "unchecked" )
-    public Collection<PatientDataValue> get( boolean providedByAnotherFacility )
-    {
-        return getCriteria( Restrictions.eq( "providedByAnotherFacility", providedByAnotherFacility ) ).list();
-    }
-
-    @SuppressWarnings( "unchecked" )
-    public Collection<PatientDataValue> get( OrganisationUnit organisationUnit, boolean providedByAnotherFacility )
-    {
-        return getCriteria( Restrictions.eq( "organisationUnit", organisationUnit ),
-            Restrictions.eq( "providedByAnotherFacility", providedByAnotherFacility ) ).list();
-    }
-
-    @SuppressWarnings( "unchecked" )
-    public Collection<PatientDataValue> get( ProgramStageInstance programStageInstance,
-        boolean providedByAnotherFacility )
-    {
-        return getCriteria( Restrictions.eq( "programStageInstance", programStageInstance ),
-            Restrictions.eq( "providedByAnotherFacility", providedByAnotherFacility ) ).list();
-    }
-
-    @SuppressWarnings( "unchecked" )
-    public Collection<PatientDataValue> get( DataElement dataElement, boolean providedByAnotherFacility )
-    {
-        return getCriteria( Restrictions.eq( "dataElement", dataElement ),
-            Restrictions.eq( "providedByAnotherFacility", providedByAnotherFacility ) ).list();
     }
 
     @SuppressWarnings( "unchecked" )

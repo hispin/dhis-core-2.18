@@ -134,7 +134,7 @@ public class DefaultProgramValidationService
 
     @Override
     public boolean runValidation( ProgramValidation validation, ProgramStageInstance programStageInstance,
-        OrganisationUnit orgunit, I18nFormat format )
+        I18nFormat format )
     {
         if ( !validation.getDateType() )
         {
@@ -142,18 +142,18 @@ public class DefaultProgramValidationService
             // parse left-expressions
             // ---------------------------------------------------------------------
 
-            boolean resultLeft = runExpression( validation.getLeftSide(), programStageInstance, orgunit );
+            boolean resultLeft = runExpression( validation.getLeftSide(), programStageInstance );
 
             // ---------------------------------------------------------------------
             // parse right-expressions
             // ---------------------------------------------------------------------
 
-            boolean resultRight = runExpression( validation.getRightSide(), programStageInstance, orgunit );
+            boolean resultRight = runExpression( validation.getRightSide(), programStageInstance );
 
             return (resultLeft == resultRight);
         }
 
-        return runDateExpression( validation, programStageInstance, orgunit, format );
+        return runDateExpression( validation, programStageInstance, format );
     }
 
     public Collection<ProgramValidation> getProgramValidation( Program program )
@@ -192,8 +192,7 @@ public class DefaultProgramValidationService
     // Supportive methods
     // -------------------------------------------------------------------------
 
-    private boolean runExpression( String expression, ProgramStageInstance programStageInstance,
-        OrganisationUnit orgunit )
+    private boolean runExpression( String expression, ProgramStageInstance programStageInstance )
     {
         StringBuffer description = new StringBuffer();
 
@@ -205,7 +204,7 @@ public class DefaultProgramValidationService
         {
             String match = matcher.group();
 
-            PatientDataValue dataValue = getPatientDataValue( match, programStageInstance, orgunit );
+            PatientDataValue dataValue = getPatientDataValue( match, programStageInstance );
 
             if ( dataValue == null )
             {
@@ -225,7 +224,7 @@ public class DefaultProgramValidationService
     }
 
     public boolean runDateExpression( ProgramValidation programValidation, ProgramStageInstance programStageInstance,
-        OrganisationUnit orgunit, I18nFormat format )
+        I18nFormat format )
     {
         Pattern pattern = Pattern.compile( regExp );
 
@@ -235,7 +234,7 @@ public class DefaultProgramValidationService
         {
             String match = matcher.group();
 
-            PatientDataValue dataValue = getPatientDataValue( match, programStageInstance, orgunit );
+            PatientDataValue dataValue = getPatientDataValue( match, programStageInstance );
 
             if ( dataValue == null )
             {
@@ -274,7 +273,7 @@ public class DefaultProgramValidationService
                     return true;
                 }
             }
-            
+
             int rightValidation = Integer.parseInt( rightSide.substring( 0, index ) );
 
             int daysValue = Integer.parseInt( rightSide.substring( index + 1, rightSide.length() ) );
@@ -336,8 +335,7 @@ public class DefaultProgramValidationService
     // Supportive methods
     // -------------------------------------------------------------------------
 
-    private PatientDataValue getPatientDataValue( String match, ProgramStageInstance programStageInstance,
-        OrganisationUnit orgunit )
+    private PatientDataValue getPatientDataValue( String match, ProgramStageInstance programStageInstance )
     {
         match = match.replaceAll( "[\\[\\]]", "" );
 
@@ -347,7 +345,7 @@ public class DefaultProgramValidationService
         int dataElementId = Integer.parseInt( ids[1] );
         DataElement dataElement = dataElementService.getDataElement( dataElementId );
 
-        PatientDataValue dataValue = valueService.getPatientDataValue( programStageInstance, dataElement, orgunit );
+        PatientDataValue dataValue = valueService.getPatientDataValue( programStageInstance, dataElement );
 
         return dataValue;
     }
@@ -401,4 +399,5 @@ public class DefaultProgramValidationService
 
         return programStages;
     }
+
 }

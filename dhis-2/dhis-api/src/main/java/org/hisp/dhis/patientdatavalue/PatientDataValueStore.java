@@ -32,7 +32,6 @@ import java.util.Date;
 
 import org.hisp.dhis.common.GenericStore;
 import org.hisp.dhis.dataelement.DataElement;
-import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.patient.Patient;
 import org.hisp.dhis.program.ProgramStageInstance;
 
@@ -50,9 +49,6 @@ public interface PatientDataValueStore
     int delete( ProgramStageInstance programStageInstance );
 
     int delete( DataElement dataElement );
-
-    PatientDataValue get( ProgramStageInstance programStageInstance, DataElement dataElement,
-        OrganisationUnit organisationUnit );
     
     Collection<PatientDataValue> get( ProgramStageInstance programStageInstance );
     
@@ -61,24 +57,6 @@ public interface PatientDataValueStore
     Collection<PatientDataValue> get( Collection<ProgramStageInstance> programStageInstances );
 
     Collection<PatientDataValue> get( DataElement dataElement );
-
-    Collection<PatientDataValue> get( OrganisationUnit organisationUnit );
-
-    Collection<PatientDataValue> get( OrganisationUnit organisationUnit,
-        ProgramStageInstance programStageInstance );
-
-    Collection<PatientDataValue> get( OrganisationUnit organisationUnit,
-        Collection<ProgramStageInstance> programStageInstances );
-
-    Collection<PatientDataValue> get( OrganisationUnit organisationUnit, DataElement dataElement );
-
-    Collection<PatientDataValue> get( boolean providedByAnotherFacility );
-
-    Collection<PatientDataValue> get( OrganisationUnit organisationUnit, boolean providedByAnotherFacility );
-
-    Collection<PatientDataValue> get( ProgramStageInstance programStageInstance, boolean providedByAnotherFacility );
-
-    Collection<PatientDataValue> get( DataElement dataElement, boolean providedByAnotherFacility );
     
     Collection<PatientDataValue> get( Patient patient, Collection<DataElement> dataElements, Date startDate, Date endDate );
     

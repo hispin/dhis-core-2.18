@@ -27,15 +27,15 @@
 
 package org.hisp.dhis.caseentry.action.caseentry;
 
+import static org.hisp.dhis.program.ProgramValidation.AFTER_CURRENT_DATE;
+import static org.hisp.dhis.program.ProgramValidation.AFTER_DUE_DATE;
 import static org.hisp.dhis.program.ProgramValidation.AFTER_OR_EQUALS_TO_CURRENT_DATE;
+import static org.hisp.dhis.program.ProgramValidation.AFTER_OR_EQUALS_TO_DUE_DATE;
+import static org.hisp.dhis.program.ProgramValidation.BEFORE_CURRENT_DATE;
+import static org.hisp.dhis.program.ProgramValidation.BEFORE_DUE_DATE;
 import static org.hisp.dhis.program.ProgramValidation.BEFORE_DUE_DATE_PLUS_OR_MINUS_MAX_DAYS;
 import static org.hisp.dhis.program.ProgramValidation.BEFORE_OR_EQUALS_TO_CURRENT_DATE;
-import static org.hisp.dhis.program.ProgramValidation.BEFORE_CURRENT_DATE;
-import static org.hisp.dhis.program.ProgramValidation.AFTER_CURRENT_DATE;
-import static org.hisp.dhis.program.ProgramValidation.BEFORE_DUE_DATE;
 import static org.hisp.dhis.program.ProgramValidation.BEFORE_OR_EQUALS_TO_DUE_DATE;
-import static org.hisp.dhis.program.ProgramValidation.AFTER_DUE_DATE;
-import static org.hisp.dhis.program.ProgramValidation.AFTER_OR_EQUALS_TO_DUE_DATE;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -49,7 +49,6 @@ import org.hisp.dhis.caseentry.state.SelectedStateManager;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.i18n.I18n;
 import org.hisp.dhis.i18n.I18nFormat;
-import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.patientdatavalue.PatientDataValue;
 import org.hisp.dhis.patientdatavalue.PatientDataValueService;
 import org.hisp.dhis.program.ProgramInstance;
@@ -162,11 +161,6 @@ public class ValidateProgramInstanceAction
         this.i18n = i18n;
     }
 
-    public SelectedStateManager getSelectedStateManager()
-    {
-        return selectedStateManager;
-    }
-
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
@@ -183,8 +177,6 @@ public class ValidateProgramInstanceAction
         // Get selected objects
         // ---------------------------------------------------------------------
 
-        OrganisationUnit organisationUnit = selectedStateManager.getSelectedOrganisationUnit();
-
         ProgramStageInstance programStageInstance = selectedStateManager.getSelectedProgramStageInstance();
 
         ProgramStage programStage = programStageInstance.getProgramStage();
@@ -199,7 +191,7 @@ public class ValidateProgramInstanceAction
         {
             DataElement dataElement = psDataElement.getDataElement();
 
-            checkDataElementInMultiStage( programStageInstance, organisationUnit, dataElement );
+            checkDataElementInMultiStage( programStageInstance, dataElement );
         }
 
         // ---------------------------------------------------------------------
@@ -207,7 +199,7 @@ public class ValidateProgramInstanceAction
         // ---------------------------------------------------------------------
 
         runProgramValidation( programValidationService.getProgramValidation( programStageInstance.getProgramStage() ),
-            programStageInstance, organisationUnit );
+            programStageInstance );
 
         return SUCCESS;
     }
@@ -225,7 +217,7 @@ public class ValidateProgramInstanceAction
      **/
 
     private void checkDataElementInMultiStage( ProgramStageInstance programStageInstance,
-        OrganisationUnit organisationUnit, DataElement dataElement )
+        DataElement dataElement )
     {
         ProgramInstance programInstance = programStageInstance.getProgramInstance();
         List<ProgramStage> stages = new ArrayList<ProgramStage>( programInstance.getProgram().getProgramStages() );
@@ -237,8 +229,7 @@ public class ValidateProgramInstanceAction
             ProgramStage prevStage = stages.get( index - 1 );
             ProgramStageInstance prevStageInstance = programStageInstanceService.getProgramStageInstance(
                 programInstance, prevStage );
-            PatientDataValue prevValue = patientDataValueService.getPatientDataValue( prevStageInstance, dataElement,
-                organisationUnit );
+            PatientDataValue prevValue = patientDataValueService.getPatientDataValue( prevStageInstance, dataElement );
 
             if ( prevValue == null )
             {
@@ -253,14 +244,13 @@ public class ValidateProgramInstanceAction
     }
 
     private void runProgramValidation( Collection<ProgramValidation> validations,
-        ProgramStageInstance programStageInstance, OrganisationUnit orgunit )
+        ProgramStageInstance programStageInstance )
     {
         if ( validations != null )
         {
             for ( ProgramValidation validation : validations )
             {
-                boolean valid = programValidationService.runValidation( validation, programStageInstance, orgunit,
-                    format );
+                boolean valid = programValidationService.runValidation( validation, programStageInstance, format );
 
                 if ( !valid )
                 {

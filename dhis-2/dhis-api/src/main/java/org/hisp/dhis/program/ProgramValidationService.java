@@ -58,6 +58,6 @@ public interface ProgramValidationService
 
     Collection<ProgramValidation> getProgramValidation( ProgramStageDataElement psdataElement );
 
-    boolean runValidation( ProgramValidation validation, ProgramStageInstance programStageInstance, OrganisationUnit orgunit,
+    boolean runValidation( ProgramValidation validation, ProgramStageInstance programStageInstance,
         I18nFormat format );
 }

@@ -96,7 +96,7 @@ public class TableAlteror
 
             ResultSet resultSet = statement
                 .executeQuery( "SELECT distinct programstageinstanceid, organisationunitid, providedByAnotherFacility FROM patientdatavalue" );
-            resultSet.next();
+            
             while ( resultSet.next() )
             {
                 executeSql( "UPDATE programstageinstance SET organisationunitid=" + resultSet.getInt( 2 )
