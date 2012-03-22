@@ -30,7 +30,6 @@ package org.hisp.dhis.api.controller;
 import org.hisp.dhis.api.utils.IdentifiableObjectParams;
 import org.hisp.dhis.api.utils.ObjectPersister;
 import org.hisp.dhis.api.utils.WebLinkPopulator;
-import org.hisp.dhis.api.view.Jaxb2Utils;
 import org.hisp.dhis.common.Pager;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementService;
@@ -129,8 +128,8 @@ public class DataElementController
     @PreAuthorize( "hasRole('ALL') or hasRole('F_DATAELEMENT_ADD')" )
     public void postDataElementXML( HttpServletResponse response, InputStream input ) throws Exception
     {
-        DataElement dataElement = Jaxb2Utils.unmarshal( DataElement.class, input );
-        postDataElement( dataElement, response );
+        //DataElement dataElement = Jaxb2Utils.unmarshal( DataElement.class, input );
+        //postDataElement( dataElement, response );
     }
 
     @RequestMapping( method = RequestMethod.POST, headers = {"Content-Type=application/json"} )

@@ -30,7 +30,6 @@ package org.hisp.dhis.api.controller;
 import org.hisp.dhis.api.utils.IdentifiableObjectParams;
 import org.hisp.dhis.api.utils.ObjectPersister;
 import org.hisp.dhis.api.utils.WebLinkPopulator;
-import org.hisp.dhis.api.view.Jaxb2Utils;
 import org.hisp.dhis.common.Pager;
 import org.hisp.dhis.dataelement.DataElementGroupSet;
 import org.hisp.dhis.dataelement.DataElementGroupSets;
@@ -129,8 +128,8 @@ public class DataElementGroupSetController
     @PreAuthorize( "hasRole('ALL') or hasRole('F_DATAELEMENTGROUPSET_ADD')" )
     public void postDataElementGroupSetXML( HttpServletResponse response, InputStream input ) throws Exception
     {
-        DataElementGroupSet dataElementGroupSet = Jaxb2Utils.unmarshal( DataElementGroupSet.class, input );
-        postDataElementGroupSet( dataElementGroupSet, response );
+        //DataElementGroupSet dataElementGroupSet = Jaxb2Utils.unmarshal( DataElementGroupSet.class, input );
+        //postDataElementGroupSet( dataElementGroupSet, response );
     }
 
     @RequestMapping( method = RequestMethod.POST, headers = {"Content-Type=application/json"} )
@@ -161,8 +160,7 @@ public class DataElementGroupSetController
                     response.setStatus( HttpServletResponse.SC_CREATED );
                     response.setHeader( "Location", DataElementController.RESOURCE_PATH + "/" + dataElementGroupSet.getUid() );
                 }
-            } 
-            catch ( Exception e )
+            } catch ( Exception e )
             {
                 response.setStatus( HttpServletResponse.SC_CONFLICT );
             }

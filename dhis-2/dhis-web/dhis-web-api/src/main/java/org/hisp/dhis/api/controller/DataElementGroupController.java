@@ -30,7 +30,6 @@ package org.hisp.dhis.api.controller;
 import org.hisp.dhis.api.utils.IdentifiableObjectParams;
 import org.hisp.dhis.api.utils.ObjectPersister;
 import org.hisp.dhis.api.utils.WebLinkPopulator;
-import org.hisp.dhis.api.view.Jaxb2Utils;
 import org.hisp.dhis.common.Pager;
 import org.hisp.dhis.dataelement.DataElementGroup;
 import org.hisp.dhis.dataelement.DataElementGroups;
@@ -126,8 +125,8 @@ public class DataElementGroupController
     @PreAuthorize( "hasRole('ALL') or hasRole('F_DATAELEMENTGROUP_ADD')" )
     public void postDataElementGroupXML( HttpServletResponse response, InputStream input ) throws Exception
     {
-        DataElementGroup dataElementGroup = Jaxb2Utils.unmarshal( DataElementGroup.class, input );
-        postDataElementGroup( dataElementGroup, response );
+        //DataElementGroup dataElementGroup = Jaxb2Utils.unmarshal( DataElementGroup.class, input );
+        //postDataElementGroup( dataElementGroup, response );
     }
 
     @RequestMapping( method = RequestMethod.POST, headers = {"Content-Type=application/json"} )

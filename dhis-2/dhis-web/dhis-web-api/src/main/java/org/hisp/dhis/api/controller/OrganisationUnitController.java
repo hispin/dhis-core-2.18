@@ -3,7 +3,6 @@ package org.hisp.dhis.api.controller;
 import org.hisp.dhis.api.utils.IdentifiableObjectParams;
 import org.hisp.dhis.api.utils.ObjectPersister;
 import org.hisp.dhis.api.utils.WebLinkPopulator;
-import org.hisp.dhis.api.view.Jaxb2Utils;
 import org.hisp.dhis.common.Pager;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
@@ -101,8 +100,8 @@ public class OrganisationUnitController
     @PreAuthorize( "hasRole('ALL') or hasRole('F_ORGANISATIONUNIT_ADD')" )
     public void postOrganisationUnitXML( HttpServletResponse response, InputStream input ) throws Exception
     {
-        OrganisationUnit organisationUnit = Jaxb2Utils.unmarshal( OrganisationUnit.class, input );
-        postOrganisationUnit( organisationUnit, response );
+        //OrganisationUnit organisationUnit = Jaxb2Utils.unmarshal( OrganisationUnit.class, input );
+        //postOrganisationUnit( organisationUnit, response );
     }
 
     @RequestMapping( method = RequestMethod.POST, headers = {"Content-Type=application/json"} )
@@ -133,8 +132,7 @@ public class OrganisationUnitController
                     response.setStatus( HttpServletResponse.SC_CREATED );
                     response.setHeader( "Location", DataElementController.RESOURCE_PATH + "/" + organisationUnit.getUid() );
                 }
-            }
-            catch ( Exception ex )
+            } catch ( Exception ex )
             {
                 response.setStatus( HttpServletResponse.SC_CONFLICT );
             }
