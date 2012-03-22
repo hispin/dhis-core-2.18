@@ -249,7 +249,7 @@ public class ActivityReportingServiceImpl
         programStageInstance.setCompleted( true );
         programStageInstanceService.updateProgramStageInstance( programStageInstance );
         // Everything is fine, hence save
-        saveDataValues( activityValue, programStageInstance, dataElementMap, unit );
+        saveDataValues( activityValue, programStageInstance, dataElementMap );
 
     }
 
@@ -390,7 +390,7 @@ public class ActivityReportingServiceImpl
     }
 
     private void saveDataValues( ActivityValue activityValue, ProgramStageInstance programStageInstance,
-        Map<Integer, DataElement> dataElementMap, OrganisationUnit orgUnit )
+        Map<Integer, DataElement> dataElementMap )
     {
         org.hisp.dhis.dataelement.DataElement dataElement;
         String value;
@@ -410,8 +410,7 @@ public class ActivityReportingServiceImpl
             }
 
             dataElement = dataElementMap.get( dv.getId() );
-            PatientDataValue dataValue = dataValueService.getPatientDataValue( programStageInstance, dataElement,
-                orgUnit );
+            PatientDataValue dataValue = dataValueService.getPatientDataValue( programStageInstance, dataElement );
 
             if ( dataValue == null )
             {

@@ -31,7 +31,6 @@ import java.util.Collection;
 import java.util.Date;
 
 import org.hisp.dhis.dataelement.DataElement;
-import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.patient.Patient;
 import org.hisp.dhis.program.ProgramStageInstance;
 import org.springframework.transaction.annotation.Transactional;
@@ -99,18 +98,21 @@ public class DefaultPatientDataValueService
         return patientDataValueStore.getAll();
     }
 
-    public PatientDataValue getPatientDataValue( ProgramStageInstance programStageInstance, DataElement dataElement,
-        OrganisationUnit organisationUnit )
-    {
-        return patientDataValueStore.get( programStageInstance, dataElement, organisationUnit );
-    }
+    // public PatientDataValue getPatientDataValue( ProgramStageInstance
+    // programStageInstance, DataElement dataElement,
+    // OrganisationUnit organisationUnit )
+    // {
+    // return patientDataValueStore.get( programStageInstance, dataElement,
+    // organisationUnit );
+    // }
 
     public Collection<PatientDataValue> getPatientDataValues( ProgramStageInstance programStageInstance )
     {
         return patientDataValueStore.get( programStageInstance );
     }
-    
-    public Collection<PatientDataValue> getPatientDataValues( ProgramStageInstance programStageInstance, Collection<DataElement> dataElements )
+
+    public Collection<PatientDataValue> getPatientDataValues( ProgramStageInstance programStageInstance,
+        Collection<DataElement> dataElements )
     {
         return patientDataValueStore.get( programStageInstance, dataElements );
     }
@@ -123,50 +125,6 @@ public class DefaultPatientDataValueService
     public Collection<PatientDataValue> getPatientDataValues( DataElement dataElement )
     {
         return patientDataValueStore.get( dataElement );
-    }
-
-    public Collection<PatientDataValue> getPatientDataValues( OrganisationUnit organisationUnit )
-    {
-        return patientDataValueStore.get( organisationUnit );
-    }
-
-    public Collection<PatientDataValue> getPatientDataValues( OrganisationUnit organisationUnit,
-        ProgramStageInstance programStageInstance )
-    {
-        return patientDataValueStore.get( organisationUnit, programStageInstance );
-    }
-
-    public Collection<PatientDataValue> getPatientDataValues( OrganisationUnit organisationUnit,
-        Collection<ProgramStageInstance> programStageInstances )
-    {
-        return patientDataValueStore.get( organisationUnit, programStageInstances );
-    }
-
-    public Collection<PatientDataValue> getPatientDataValues( OrganisationUnit organisationUnit, DataElement dataElement )
-    {
-        return patientDataValueStore.get( organisationUnit, dataElement );
-    }
-
-    public Collection<PatientDataValue> getPatientDataValues( boolean providedByAnotherFacility )
-    {
-        return patientDataValueStore.get( providedByAnotherFacility );
-    }
-
-    public Collection<PatientDataValue> getPatientDataValues( OrganisationUnit organisationUnit,
-        boolean providedByAnotherFacility )
-    {
-        return patientDataValueStore.get( organisationUnit, providedByAnotherFacility );
-    }
-
-    public Collection<PatientDataValue> getPatientDataValues( ProgramStageInstance programStageInstance,
-        boolean providedByAnotherFacility )
-    {
-        return patientDataValueStore.get( programStageInstance, providedByAnotherFacility );
-    }
-
-    public Collection<PatientDataValue> getPatientDataValues( DataElement dataElement, boolean providedByAnotherFacility )
-    {
-        return patientDataValueStore.get( dataElement, providedByAnotherFacility );
     }
 
     public Collection<PatientDataValue> getPatientDataValues( Patient patient, Collection<DataElement> dataElements,
