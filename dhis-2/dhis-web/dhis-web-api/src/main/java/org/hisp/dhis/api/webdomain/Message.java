@@ -26,8 +26,19 @@ public class Message
 
     private Set<User> users = new HashSet<User>();
 
+    public Message()
+    {
+    }
+
+    public Message( String subject, String text )
+    {
+        this.subject = subject;
+        this.text = text;
+    }
+
     @JsonProperty
     @JsonView( {DetailedView.class} )
+    @JacksonXmlProperty
     public String getSubject()
     {
         return subject;
@@ -40,6 +51,7 @@ public class Message
 
     @JsonProperty
     @JsonView( {DetailedView.class} )
+    @JacksonXmlProperty
     public String getText()
     {
         return text;
