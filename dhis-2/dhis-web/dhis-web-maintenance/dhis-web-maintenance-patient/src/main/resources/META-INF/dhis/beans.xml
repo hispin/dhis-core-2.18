@@ -578,15 +578,6 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 	</bean>
 
 	<bean
-		id="org.hisp.dhis.patient.action.caseaggregation.GetAggDataElementsAction"
-		class="org.hisp.dhis.patient.action.caseaggregation.GetAggDataElementsAction"
-		scope="prototype">
-		<property name="dataElementService">
-			<ref bean="org.hisp.dhis.dataelement.DataElementService" />
-		</property>
-	</bean>
-
-	<bean
 		id="org.hisp.dhis.patient.action.caseaggregation.GetCaseAggregationConditionAction"
 		class="org.hisp.dhis.patient.action.caseaggregation.GetCaseAggregationConditionAction"
 		scope="prototype">

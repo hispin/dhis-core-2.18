@@ -696,13 +696,6 @@
 				/dhis-web-commons/ajax/jsonResponseSuccess.vm</result>
 		</action>
 
-		<action name="getAggDataElements"
-			class="org.hisp.dhis.patient.action.caseaggregation.GetAggDataElementsAction">
-			<result name="success" type="velocity-xml">
-				/dhis-web-maintenance-patient/responseAggDataElement.vm
-			</result>
-		</action>
-		
 		<action name="getDataElementsByDataset"
 			class="org.hisp.dhis.commons.action.GetDataSetAction">
 			<result name="success" type="velocity-json">
