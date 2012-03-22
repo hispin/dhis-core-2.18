@@ -203,9 +203,9 @@ public class JdbcSqlViewExpandStore
         {
             jdbcTemplate.queryForList( sql );
         }
-        catch ( BadSqlGrammarException ex )
+        catch ( Exception ex )
         {
-            return ex.getMessage();
+            return ex.getCause().getMessage();
         }
 
         return "";
