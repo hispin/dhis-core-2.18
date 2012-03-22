@@ -80,7 +80,3 @@
 	</tr>
 	
 </table>
-
-<script>
-	getLeftPrgramStageDataElements();
-</script>
