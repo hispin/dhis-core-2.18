@@ -27,16 +27,6 @@ package org.hisp.dhis.importexport.dhis14.xml.converter;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import static org.hisp.dhis.dataelement.DataElementCategoryCombo.DEFAULT_CATEGORY_COMBO_NAME;
-import static org.hisp.dhis.importexport.dhis14.util.Dhis14TypeHandler.convertAggregationOperatorFromDhis14;
-import static org.hisp.dhis.importexport.dhis14.util.Dhis14TypeHandler.convertAggregationOperatorToDhis14;
-import static org.hisp.dhis.importexport.dhis14.util.Dhis14TypeHandler.convertBooleanToDhis14;
-import static org.hisp.dhis.importexport.dhis14.util.Dhis14TypeHandler.convertTypeToDhis14;
-import static org.hisp.dhis.system.util.ConversionUtils.parseInt;
-
-import java.util.Collection;
-import java.util.Map;
-
 import org.amplecode.staxwax.reader.XMLReader;
 import org.amplecode.staxwax.writer.XMLWriter;
 import org.hisp.dhis.dataelement.DataElement;
@@ -53,6 +43,13 @@ import org.hisp.dhis.importexport.dhis14.util.Dhis14ObjectMappingUtil;
 import org.hisp.dhis.importexport.dhis14.util.Dhis14ParsingUtils;
 import org.hisp.dhis.importexport.importer.DataElementImporter;
 import org.hisp.dhis.importexport.mapping.NameMappingUtil;
+
+import java.util.Collection;
+import java.util.Map;
+
+import static org.hisp.dhis.dataelement.DataElementCategoryCombo.DEFAULT_CATEGORY_COMBO_NAME;
+import static org.hisp.dhis.importexport.dhis14.util.Dhis14TypeHandler.*;
+import static org.hisp.dhis.system.util.ConversionUtils.parseInt;
 
 /**
  * @author Lars Helge Overland
@@ -145,7 +142,7 @@ public class DataElementConverter
                 writer.writeElement( FIELD_NAME, object.getName() );
                 writer.writeElement( FIELD_SHORT_NAME, object.getShortName() );
                 writer.writeElement( FIELD_DOS, object.getShortName().replaceAll( "[^a-zA-Z0-9]", "" ) );
-                writer.writeElement( FIELD_PROMPT, object.getName() );
+                writer.writeElement( FIELD_PROMPT, object.getAlternativeName() );
                 writer.writeElement( FIELD_META, String.valueOf( 0 ) );
                 writer.writeElement( FIELD_DATA_TYPE, convertTypeToDhis14( object.getType() ) );
                 writer.writeElement( FIELD_PERIOD_TYPE, String.valueOf( 1 ) );
@@ -183,6 +180,7 @@ public class DataElementConverter
         element.setName( values.get( FIELD_NAME ) );
         element.setShortName( values.get( FIELD_SHORT_NAME ) );
         element.setDescription( Dhis14ParsingUtils.removeNewLine( values.get( FIELD_DESCRIPTION ) ) );
+        element.setAlternativeName(values.get(FIELD_PROMPT));
         element.setActive( true );        
         element.setType( Dhis14ObjectMappingUtil.getDataElementTypeMap().get( Integer.parseInt( values.get( FIELD_DATA_TYPE ) ) ) );            
         element.setAggregationOperator( convertAggregationOperatorFromDhis14( values.get( FIELD_AGGREGATION_OPERATOR ) ) );
