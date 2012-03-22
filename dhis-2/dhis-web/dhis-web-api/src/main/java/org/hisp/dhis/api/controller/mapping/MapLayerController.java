@@ -1,7 +1,7 @@
-package org.hisp.dhis.api.controller;
+package org.hisp.dhis.api.controller.mapping;
 
 /*
- * Copyright (c) 2004-2011, University of Oslo
+ * Copyright (c) 2011, University of Oslo
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -29,13 +29,9 @@ package org.hisp.dhis.api.controller;
 
 import org.hisp.dhis.api.utils.IdentifiableObjectParams;
 import org.hisp.dhis.api.utils.WebLinkPopulator;
-import org.hisp.dhis.common.Pager;
-import org.hisp.dhis.validation.ValidationRule;
-import org.hisp.dhis.validation.ValidationRuleService;
-import org.hisp.dhis.validation.ValidationRules;
+import org.hisp.dhis.mapping.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
@@ -46,74 +42,58 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
 @Controller
-@RequestMapping( value = ValidationRuleController.RESOURCE_PATH )
-public class ValidationRuleController
+@RequestMapping( value = MapLayerController.RESOURCE_PATH )
+public class MapLayerController
 {
-    public static final String RESOURCE_PATH = "/validationRules";
+    public static final String RESOURCE_PATH = "/mapLayers";
 
     @Autowired
-    private ValidationRuleService validationRuleService;
+    private MappingService mappingService;
 
     //-------------------------------------------------------------------------------------------------------
     // GET
     //-------------------------------------------------------------------------------------------------------
 
     @RequestMapping( method = RequestMethod.GET )
-    public String getValidationRules( IdentifiableObjectParams params, Model model, HttpServletRequest request )
+    public String getMapLayers( IdentifiableObjectParams params, Model model, HttpServletRequest request ) throws IOException
     {
-        ValidationRules validationRules = new ValidationRules();
-
-        if ( params.isPaging() )
-        {
-            int total = validationRuleService.getValidationRuleCount();
-
-            Pager pager = new Pager( params.getPage(), total );
-            validationRules.setPager( pager );
-
-            List<ValidationRule> validationRuleList = new ArrayList<ValidationRule>(
-                validationRuleService.getValidationRulesBetween( pager.getOffset(), pager.getPageSize() ) );
-
-            validationRules.setValidationRules( validationRuleList );
-        }
-        else
-        {
-            validationRules.setValidationRules( new ArrayList<ValidationRule>( validationRuleService.getAllValidationRules() ) );
-        }
+        MapLayers mapLayers = new MapLayers();
+        mapLayers.setMapLayers( new ArrayList<MapLayer>( mappingService.getAllMapLayers() ) );
 
         if ( params.hasLinks() )
         {
             WebLinkPopulator listener = new WebLinkPopulator( request );
-            listener.addLinks( validationRules );
+            listener.addLinks( mapLayers );
         }
 
-        model.addAttribute( "model", validationRules );
+        model.addAttribute( "model", mapLayers );
 
-        return "validationRules";
+        return "mapLayers";
     }
 
     @RequestMapping( value = "/{uid}", method = RequestMethod.GET )
-    public String getValidationRule( @PathVariable( "uid" ) String uid, IdentifiableObjectParams params, Model model, HttpServletRequest request )
+    public String getMapLayer( @PathVariable String uid, IdentifiableObjectParams params, Model model, HttpServletRequest request )
     {
-        ValidationRule validationRule = validationRuleService.getValidationRule( uid );
+        MapLayer mapLayer = mappingService.getMapLayer( uid );
 
         if ( params.hasLinks() )
         {
             WebLinkPopulator listener = new WebLinkPopulator( request );
-            listener.addLinks( validationRule );
+            listener.addLinks( mapLayer );
         }
 
-        model.addAttribute( "model", validationRule );
+        model.addAttribute( "model", mapLayer );
         model.addAttribute( "view", "detailed" );
 
-        return "validationRule";
+        return "mapLayer";
     }
 
     //-------------------------------------------------------------------------------------------------------
@@ -121,17 +101,15 @@ public class ValidationRuleController
     //-------------------------------------------------------------------------------------------------------
 
     @RequestMapping( method = RequestMethod.POST, headers = {"Content-Type=application/xml, text/xml"} )
-    @PreAuthorize( "hasRole('ALL') or hasRole('F_VALIDATIONRULE_ADD')" )
     @ResponseStatus( value = HttpStatus.CREATED )
-    public void postValidationRuleXML( HttpServletResponse response, InputStream input ) throws Exception
+    public void postMapLayerXML( HttpServletResponse response, InputStream input ) throws Exception
     {
         throw new HttpRequestMethodNotSupportedException( RequestMethod.POST.toString() );
     }
 
     @RequestMapping( method = RequestMethod.POST, headers = {"Content-Type=application/json"} )
-    @PreAuthorize( "hasRole('ALL') or hasRole('F_VALIDATIONRULE_ADD')" )
     @ResponseStatus( value = HttpStatus.CREATED )
-    public void postValidationRuleJSON( HttpServletResponse response, InputStream input ) throws Exception
+    public void postMapLayerJSON( HttpServletResponse response, InputStream input ) throws Exception
     {
         throw new HttpRequestMethodNotSupportedException( RequestMethod.POST.toString() );
     }
@@ -141,17 +119,15 @@ public class ValidationRuleController
     //-------------------------------------------------------------------------------------------------------
 
     @RequestMapping( value = "/{uid}", method = RequestMethod.PUT, headers = {"Content-Type=application/xml, text/xml"} )
-    @PreAuthorize( "hasRole('ALL') or hasRole('F_VALIDATIONRULE_UPDATE')" )
     @ResponseStatus( value = HttpStatus.NO_CONTENT )
-    public void putValidationRuleXML( @PathVariable( "uid" ) String uid, InputStream input ) throws Exception
+    public void putMapLayerXML( @PathVariable( "uid" ) String uid, InputStream input ) throws Exception
     {
         throw new HttpRequestMethodNotSupportedException( RequestMethod.PUT.toString() );
     }
 
     @RequestMapping( value = "/{uid}", method = RequestMethod.PUT, headers = {"Content-Type=application/json"} )
-    @PreAuthorize( "hasRole('ALL') or hasRole('F_VALIDATIONRULE_UPDATE')" )
     @ResponseStatus( value = HttpStatus.NO_CONTENT )
-    public void putValidationRuleJSON( @PathVariable( "uid" ) String uid, InputStream input ) throws Exception
+    public void putMapLayerJSON( @PathVariable( "uid" ) String uid, InputStream input ) throws Exception
     {
         throw new HttpRequestMethodNotSupportedException( RequestMethod.PUT.toString() );
     }
@@ -161,9 +137,8 @@ public class ValidationRuleController
     //-------------------------------------------------------------------------------------------------------
 
     @RequestMapping( value = "/{uid}", method = RequestMethod.DELETE )
-    @PreAuthorize( "hasRole('ALL') or hasRole('F_VALIDATIONRULE_DELETE')" )
     @ResponseStatus( value = HttpStatus.NO_CONTENT )
-    public void deleteValidationRule( @PathVariable( "uid" ) String uid ) throws Exception
+    public void deleteMapLayer( @PathVariable( "uid" ) String uid ) throws Exception
     {
         throw new HttpRequestMethodNotSupportedException( RequestMethod.DELETE.toString() );
     }

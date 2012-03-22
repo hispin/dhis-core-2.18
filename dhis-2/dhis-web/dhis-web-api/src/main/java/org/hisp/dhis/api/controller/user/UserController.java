@@ -1,7 +1,7 @@
-package org.hisp.dhis.api.controller;
+package org.hisp.dhis.api.controller.user;
 
 /*
- * Copyright (c) 2011, University of Oslo
+ * Copyright (c) 2004-2011, University of Oslo
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -27,13 +27,20 @@ package org.hisp.dhis.api.controller;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import java.io.InputStream;
+import java.util.ArrayList;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 import org.hisp.dhis.api.utils.IdentifiableObjectParams;
 import org.hisp.dhis.api.utils.WebLinkPopulator;
-import org.hisp.dhis.mapping.MapLegendSet;
-import org.hisp.dhis.mapping.MapLegendSets;
-import org.hisp.dhis.mapping.MappingService;
+import org.hisp.dhis.user.User;
+import org.hisp.dhis.user.UserService;
+import org.hisp.dhis.user.Users;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
@@ -42,60 +49,54 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.ArrayList;
-
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
 @Controller
-@RequestMapping( value = MapLegendSetController.RESOURCE_PATH )
-public class MapLegendSetController
+@RequestMapping( value = UserController.RESOURCE_PATH )
+public class UserController
 {
-    public static final String RESOURCE_PATH = "/mapLegendSets";
+    public static final String RESOURCE_PATH = "/users";
 
     @Autowired
-    private MappingService mappingService;
+    private UserService userService;
 
     //-------------------------------------------------------------------------------------------------------
     // GET
     //-------------------------------------------------------------------------------------------------------
 
     @RequestMapping( method = RequestMethod.GET )
-    public String getMapLegendSets( IdentifiableObjectParams params, Model model, HttpServletRequest request ) throws IOException
+    public String getUsers( IdentifiableObjectParams params, Model model, HttpServletRequest request )
     {
-        MapLegendSets mapLegendSets = new MapLegendSets();
-        mapLegendSets.setMapLegendSets( new ArrayList<MapLegendSet>( mappingService.getAllMapLegendSets() ) );
+        Users users = new Users();
+        users.setUsers( new ArrayList<User>( userService.getAllUsers() ) );
 
         if ( params.hasLinks() )
         {
             WebLinkPopulator listener = new WebLinkPopulator( request );
-            listener.addLinks( mapLegendSets );
+            listener.addLinks( users );
         }
 
-        model.addAttribute( "model", mapLegendSets );
+        model.addAttribute( "model", users );
 
-        return "mapLegendSets";
+        return "users";
     }
 
     @RequestMapping( value = "/{uid}", method = RequestMethod.GET )
-    public String getMapLegendSet( @PathVariable String uid, IdentifiableObjectParams params, Model model, HttpServletRequest request )
+    public String getUser( @PathVariable( "uid" ) String uid, IdentifiableObjectParams params, Model model, HttpServletRequest request )
     {
-        MapLegendSet mapLegendSet = mappingService.getMapLegendSet( uid );
+        User user = userService.getUser( uid );
 
         if ( params.hasLinks() )
         {
             WebLinkPopulator listener = new WebLinkPopulator( request );
-            listener.addLinks( mapLegendSet );
+            listener.addLinks( user );
         }
 
-        model.addAttribute( "model", mapLegendSet );
+        model.addAttribute( "model", user );
         model.addAttribute( "view", "detailed" );
 
-        return "mapLegendSet";
+        return "user";
     }
 
     //-------------------------------------------------------------------------------------------------------
@@ -103,15 +104,17 @@ public class MapLegendSetController
     //-------------------------------------------------------------------------------------------------------
 
     @RequestMapping( method = RequestMethod.POST, headers = {"Content-Type=application/xml, text/xml"} )
+    @PreAuthorize( "hasRole('ALL') or hasRole('F_USER_ADD')" )
     @ResponseStatus( value = HttpStatus.CREATED )
-    public void postMapLegendSetXML( HttpServletResponse response, InputStream input ) throws Exception
+    public void postUserXML( HttpServletResponse response, InputStream input ) throws Exception
     {
         throw new HttpRequestMethodNotSupportedException( RequestMethod.POST.toString() );
     }
 
     @RequestMapping( method = RequestMethod.POST, headers = {"Content-Type=application/json"} )
+    @PreAuthorize( "hasRole('ALL') or hasRole('F_USER_ADD')" )
     @ResponseStatus( value = HttpStatus.CREATED )
-    public void postMapLegendSetJSON( HttpServletResponse response, InputStream input ) throws Exception
+    public void postUserJSON( HttpServletResponse response, InputStream input ) throws Exception
     {
         throw new HttpRequestMethodNotSupportedException( RequestMethod.POST.toString() );
     }
@@ -121,15 +124,17 @@ public class MapLegendSetController
     //-------------------------------------------------------------------------------------------------------
 
     @RequestMapping( value = "/{uid}", method = RequestMethod.PUT, headers = {"Content-Type=application/xml, text/xml"} )
+    @PreAuthorize( "hasRole('ALL') or hasRole('F_USER_UPDATE')" )
     @ResponseStatus( value = HttpStatus.NO_CONTENT )
-    public void putMapLegendSetXML( @PathVariable( "uid" ) String uid, InputStream input ) throws Exception
+    public void putUserXML( @PathVariable( "uid" ) String uid, InputStream input ) throws Exception
     {
         throw new HttpRequestMethodNotSupportedException( RequestMethod.PUT.toString() );
     }
 
     @RequestMapping( value = "/{uid}", method = RequestMethod.PUT, headers = {"Content-Type=application/json"} )
+    @PreAuthorize( "hasRole('ALL') or hasRole('F_USER_UPDATE')" )
     @ResponseStatus( value = HttpStatus.NO_CONTENT )
-    public void putMapLegendSetJSON( @PathVariable( "uid" ) String uid, InputStream input ) throws Exception
+    public void putUserJSON( @PathVariable( "uid" ) String uid, InputStream input ) throws Exception
     {
         throw new HttpRequestMethodNotSupportedException( RequestMethod.PUT.toString() );
     }
@@ -139,8 +144,9 @@ public class MapLegendSetController
     //-------------------------------------------------------------------------------------------------------
 
     @RequestMapping( value = "/{uid}", method = RequestMethod.DELETE )
+    @PreAuthorize( "hasRole('ALL') or hasRole('F_USER_DELETE')" )
     @ResponseStatus( value = HttpStatus.NO_CONTENT )
-    public void deleteMapLegendSet( @PathVariable( "uid" ) String uid ) throws Exception
+    public void deleteUser( @PathVariable( "uid" ) String uid ) throws Exception
     {
         throw new HttpRequestMethodNotSupportedException( RequestMethod.DELETE.toString() );
     }

@@ -1,4 +1,4 @@
-package org.hisp.dhis.api.controller;
+package org.hisp.dhis.api.controller.dataelement;
 
 /*
  * Copyright (c) 2004-2011, University of Oslo
@@ -28,12 +28,11 @@ package org.hisp.dhis.api.controller;
  */
 
 import org.hisp.dhis.api.utils.IdentifiableObjectParams;
-import org.hisp.dhis.api.utils.ObjectPersister;
 import org.hisp.dhis.api.utils.WebLinkPopulator;
 import org.hisp.dhis.common.Pager;
-import org.hisp.dhis.dataelement.DataElementGroup;
-import org.hisp.dhis.dataelement.DataElementGroups;
-import org.hisp.dhis.dataelement.DataElementService;
+import org.hisp.dhis.dataelement.DataElementCategories;
+import org.hisp.dhis.dataelement.DataElementCategory;
+import org.hisp.dhis.dataelement.DataElementCategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -51,70 +50,69 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * @author Morten Olav Hansen <mortenoh@gmail.com>
+ */
 @Controller
-@RequestMapping( value = DataElementGroupController.RESOURCE_PATH )
-public class DataElementGroupController
+@RequestMapping( value = CategoryController.RESOURCE_PATH )
+public class CategoryController
 {
-    public static final String RESOURCE_PATH = "/dataElementGroups";
+    public static final String RESOURCE_PATH = "/categories";
 
     @Autowired
-    private DataElementService dataElementService;
-
-    @Autowired
-    private ObjectPersister objectPersister;
+    private DataElementCategoryService dataElementCategoryService;
 
     //-------------------------------------------------------------------------------------------------------
     // GET
     //-------------------------------------------------------------------------------------------------------
 
     @RequestMapping( method = RequestMethod.GET )
-    public String getDataElementGroups( IdentifiableObjectParams params, Model model, HttpServletRequest request )
+    public String getCategories( IdentifiableObjectParams params, Model model, HttpServletRequest request )
     {
-        DataElementGroups dataElementGroups = new DataElementGroups();
+        DataElementCategories categories = new DataElementCategories();
 
         if ( params.isPaging() )
         {
-            int total = dataElementService.getDataElementGroupCount();
+            int total = dataElementCategoryService.getDataElementCategoryCount();
 
             Pager pager = new Pager( params.getPage(), total );
-            dataElementGroups.setPager( pager );
+            categories.setPager( pager );
 
-            List<DataElementGroup> dataElementGroupList = new ArrayList<DataElementGroup>(
-                dataElementService.getDataElementGroupsBetween( pager.getOffset(), pager.getPageSize() ) );
+            List<DataElementCategory> categoryList = new ArrayList<DataElementCategory>(
+                dataElementCategoryService.getDataElementCategorysBetween( pager.getOffset(), pager.getPageSize() ) );
 
-            dataElementGroups.setDataElementGroups( dataElementGroupList );
+            categories.setCategories( categoryList );
         }
         else
         {
-            dataElementGroups.setDataElementGroups( new ArrayList<DataElementGroup>( dataElementService.getAllDataElementGroups() ) );
+            categories.setCategories( new ArrayList<DataElementCategory>( dataElementCategoryService.getAllDataElementCategories() ) );
         }
 
         if ( params.hasLinks() )
         {
             WebLinkPopulator listener = new WebLinkPopulator( request );
-            listener.addLinks( dataElementGroups );
+            listener.addLinks( categories );
         }
 
-        model.addAttribute( "model", dataElementGroups );
+        model.addAttribute( "model", categories );
 
-        return "dataElementGroups";
+        return "categories";
     }
 
     @RequestMapping( value = "/{uid}", method = RequestMethod.GET )
-    public String getDataElementGroup( @PathVariable( "uid" ) String uid, IdentifiableObjectParams params, Model model, HttpServletRequest request )
+    public String getCategory( @PathVariable( "uid" ) String uid, IdentifiableObjectParams params, Model model, HttpServletRequest request )
     {
-        DataElementGroup dataElementGroup = dataElementService.getDataElementGroup( uid );
+        DataElementCategory category = dataElementCategoryService.getDataElementCategory( uid );
 
         if ( params.hasLinks() )
         {
             WebLinkPopulator listener = new WebLinkPopulator( request );
-            listener.addLinks( dataElementGroup );
+            listener.addLinks( category );
         }
 
-        model.addAttribute( "model", dataElementGroup );
-        model.addAttribute( "view", "detailed" );
+        model.addAttribute( "model", category );
 
-        return "dataElementGroup";
+        return "category";
     }
 
     //-------------------------------------------------------------------------------------------------------
@@ -122,46 +120,19 @@ public class DataElementGroupController
     //-------------------------------------------------------------------------------------------------------
 
     @RequestMapping( method = RequestMethod.POST, headers = {"Content-Type=application/xml, text/xml"} )
-    @PreAuthorize( "hasRole('ALL') or hasRole('F_DATAELEMENTGROUP_ADD')" )
-    public void postDataElementGroupXML( HttpServletResponse response, InputStream input ) throws Exception
-    {
-        //DataElementGroup dataElementGroup = Jaxb2Utils.unmarshal( DataElementGroup.class, input );
-        //postDataElementGroup( dataElementGroup, response );
-    }
-
-    @RequestMapping( method = RequestMethod.POST, headers = {"Content-Type=application/json"} )
-    @PreAuthorize( "hasRole('ALL') or hasRole('F_DATAELEMENTGROUP_ADD')" )
-    public void postDataElementGroupJSON( HttpServletResponse response, InputStream input ) throws Exception
+    @ResponseStatus( value = HttpStatus.CREATED )
+    @PreAuthorize( "hasRole('ALL') or hasRole('F_DATAELEMENT_ADD')" )
+    public void postCategoryXML( HttpServletResponse response, InputStream input ) throws Exception
     {
         throw new HttpRequestMethodNotSupportedException( RequestMethod.POST.toString() );
     }
 
-    public void postDataElementGroup( DataElementGroup dataElementGroup, HttpServletResponse response )
+    @RequestMapping( method = RequestMethod.POST, headers = {"Content-Type=application/json"} )
+    @ResponseStatus( value = HttpStatus.CREATED )
+    @PreAuthorize( "hasRole('ALL') or hasRole('F_DATAELEMENT_ADD')" )
+    public void postCategoryJSON( HttpServletResponse response, InputStream input ) throws Exception
     {
-        if ( dataElementGroup == null )
-        {
-            response.setStatus( HttpServletResponse.SC_NOT_IMPLEMENTED );
-        }
-        else
-        {
-            try
-            {
-                dataElementGroup = objectPersister.persistDataElementGroup( dataElementGroup );
-
-                if ( dataElementGroup.getUid() == null )
-                {
-                    response.setStatus( HttpServletResponse.SC_INTERNAL_SERVER_ERROR );
-                }
-                else
-                {
-                    response.setStatus( HttpServletResponse.SC_CREATED );
-                    response.setHeader( "Location", DataElementController.RESOURCE_PATH + "/" + dataElementGroup.getUid() );
-                }
-            } catch ( Exception e )
-            {
-                response.setStatus( HttpServletResponse.SC_CONFLICT );
-            }
-        }
+        throw new HttpRequestMethodNotSupportedException( RequestMethod.POST.toString() );
     }
 
     //-------------------------------------------------------------------------------------------------------
@@ -169,17 +140,17 @@ public class DataElementGroupController
     //-------------------------------------------------------------------------------------------------------
 
     @RequestMapping( value = "/{uid}", method = RequestMethod.PUT, headers = {"Content-Type=application/xml, text/xml"} )
+    @PreAuthorize( "hasRole('ALL') or hasRole('F_DATAELEMENT_UPDATE')" )
     @ResponseStatus( value = HttpStatus.NO_CONTENT )
-    @PreAuthorize( "hasRole('ALL') or hasRole('F_DATAELEMENTGROUP_UPDATE')" )
-    public void putDataElementGroupXML( @PathVariable( "uid" ) String uid, InputStream input ) throws Exception
+    public void putCategoryXML( @PathVariable( "uid" ) String uid, InputStream input ) throws Exception
     {
-        throw new HttpRequestMethodNotSupportedException( RequestMethod.DELETE.toString() );
+        throw new HttpRequestMethodNotSupportedException( RequestMethod.PUT.toString() );
     }
 
     @RequestMapping( value = "/{uid}", method = RequestMethod.PUT, headers = {"Content-Type=application/json"} )
+    @PreAuthorize( "hasRole('ALL') or hasRole('F_DATAELEMENT_UPDATE')" )
     @ResponseStatus( value = HttpStatus.NO_CONTENT )
-    @PreAuthorize( "hasRole('ALL') or hasRole('F_DATAELEMENTGROUP_UPDATE')" )
-    public void putDataElementGroupJSON( @PathVariable( "uid" ) String uid, InputStream input ) throws Exception
+    public void putCategoryJSON( @PathVariable( "uid" ) String uid, InputStream input ) throws Exception
     {
         throw new HttpRequestMethodNotSupportedException( RequestMethod.PUT.toString() );
     }
@@ -189,15 +160,10 @@ public class DataElementGroupController
     //-------------------------------------------------------------------------------------------------------
 
     @RequestMapping( value = "/{uid}", method = RequestMethod.DELETE )
+    @PreAuthorize( "hasRole('ALL') or hasRole('F_DATAELEMENT_DELETE')" )
     @ResponseStatus( value = HttpStatus.NO_CONTENT )
-    @PreAuthorize( "hasRole('ALL') or hasRole('F_DATAELEMENTGROUP_DELETE')" )
-    public void deleteDataElementGroup( @PathVariable( "uid" ) String uid ) throws Exception
+    public void deleteCategory( @PathVariable( "uid" ) String uid ) throws Exception
     {
-        DataElementGroup dataElementGroup = dataElementService.getDataElementGroup( uid );
-
-        if ( dataElementGroup != null )
-        {
-            dataElementService.deleteDataElementGroup( dataElementGroup );
-        }
+        throw new HttpRequestMethodNotSupportedException( RequestMethod.DELETE.toString() );
     }
 }

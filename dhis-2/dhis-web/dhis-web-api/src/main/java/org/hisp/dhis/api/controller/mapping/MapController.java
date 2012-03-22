@@ -1,7 +1,7 @@
-package org.hisp.dhis.api.controller;
+package org.hisp.dhis.api.controller.mapping;
 
 /*
- * Copyright (c) 2004-2011, University of Oslo
+ * Copyright (c) 2011, University of Oslo
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -27,75 +27,123 @@ package org.hisp.dhis.api.controller;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import java.awt.image.BufferedImage;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.ArrayList;
+
+import javax.imageio.ImageIO;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 import org.hisp.dhis.api.utils.IdentifiableObjectParams;
 import org.hisp.dhis.api.utils.WebLinkPopulator;
-import org.hisp.dhis.user.UserGroup;
-import org.hisp.dhis.user.UserGroupService;
-import org.hisp.dhis.user.UserGroups;
+import org.hisp.dhis.mapgeneration.MapGenerationService;
+import org.hisp.dhis.mapping.MapView;
+import org.hisp.dhis.mapping.MappingService;
+import org.hisp.dhis.mapping.Maps;
+import org.hisp.dhis.organisationunit.OrganisationUnit;
+import org.hisp.dhis.organisationunit.OrganisationUnitService;
+import org.hisp.dhis.api.utils.ContextUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.io.InputStream;
-import java.util.ArrayList;
+import static org.hisp.dhis.api.utils.ContextUtils.CacheStrategy;
 
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
+ * @author Lars Helge Overland
  */
 @Controller
-@RequestMapping( value = UserGroupController.RESOURCE_PATH )
-public class UserGroupController
+@RequestMapping( value = MapController.RESOURCE_PATH )
+public class MapController
 {
-    public static final String RESOURCE_PATH = "/userGroups";
+    public static final String RESOURCE_PATH = "/maps";
+    
+    @Autowired
+    private MappingService mappingService;
+    
+    @Autowired
+    private OrganisationUnitService organisationUnitService;
 
     @Autowired
-    private UserGroupService userGroupService;
+    private MapGenerationService mapGenerationService;
+
+    @Autowired
+    private ContextUtils contextUtils;
 
     //-------------------------------------------------------------------------------------------------------
     // GET
     //-------------------------------------------------------------------------------------------------------
 
     @RequestMapping( method = RequestMethod.GET )
-    public String getUserGroups( IdentifiableObjectParams params, Model model, HttpServletRequest request )
+    public String getMaps(IdentifiableObjectParams params, Model model, HttpServletRequest request ) throws IOException
     {
-        UserGroups userGroups = new UserGroups();
-        userGroups.setUserGroups( new ArrayList<UserGroup>( userGroupService.getAllUserGroups() ) );
+        Maps maps = new Maps();
+        maps.setMaps( new ArrayList<MapView>( mappingService.getAllMapViews() ) );
 
         if ( params.hasLinks() )
         {
             WebLinkPopulator listener = new WebLinkPopulator( request );
-            listener.addLinks( userGroups );
+            listener.addLinks( maps );
         }
+        
+        model.addAttribute( "model", maps );
 
-        model.addAttribute( "model", userGroups );
-
-        return "userGroups";
+        return "maps";
     }
 
     @RequestMapping( value = "/{uid}", method = RequestMethod.GET )
-    public String getUserGroup( @PathVariable( "uid" ) String uid, IdentifiableObjectParams params, Model model, HttpServletRequest request )
+    public String getMap( @PathVariable String uid, IdentifiableObjectParams params, Model model, HttpServletRequest request )
     {
-        UserGroup userGroup = userGroupService.getUserGroup( uid );
-
+        MapView mapView = mappingService.getMapView( uid );
+        
         if ( params.hasLinks() )
         {
             WebLinkPopulator listener = new WebLinkPopulator( request );
-            listener.addLinks( userGroup );
+            listener.addLinks( mapView );
         }
 
-        model.addAttribute( "model", userGroup );
+        model.addAttribute( "model", mapView );
         model.addAttribute( "view", "detailed" );
 
-        return "userGroup";
+        return "map";
+    }
+    
+    @RequestMapping( value = {"/{uid}/data","/{uid}/data.png"}, method = RequestMethod.GET )
+    public void getMap( @PathVariable String uid, HttpServletResponse response ) throws Exception
+    {
+        MapView mapView = mappingService.getMapView( uid );
+        
+        renderMapViewPng( mapView, response );
+    }
+    
+    @RequestMapping( value = {"/data","/data.png"}, method = RequestMethod.GET )
+    public void getMap( Model model,
+                        @RequestParam( value = "in" ) String indicatorUid, 
+                        @RequestParam( value = "ou" ) String organisationUnitUid,
+                        @RequestParam( value = "level", required = false ) Integer level,
+                        HttpServletResponse response ) throws Exception
+    {
+        if ( level == null )
+        {
+            OrganisationUnit unit = organisationUnitService.getOrganisationUnit( organisationUnitUid );
+            
+            level = organisationUnitService.getLevelOfOrganisationUnit( unit.getId() );
+            level++;
+        }
+        
+        MapView mapView = mappingService.getIndicatorLastYearMapView( indicatorUid, organisationUnitUid, level );
+        
+        renderMapViewPng( mapView, response );
     }
 
     //-------------------------------------------------------------------------------------------------------
@@ -103,17 +151,15 @@ public class UserGroupController
     //-------------------------------------------------------------------------------------------------------
 
     @RequestMapping( method = RequestMethod.POST, headers = {"Content-Type=application/xml, text/xml"} )
-    @PreAuthorize( "hasRole('ALL') or hasRole('F_USER_GRUP_ADD')" )
     @ResponseStatus( value = HttpStatus.CREATED )
-    public void postUserGroupXML( HttpServletResponse response, InputStream input ) throws Exception
+    public void postMapXML( HttpServletResponse response, InputStream input ) throws Exception
     {
         throw new HttpRequestMethodNotSupportedException( RequestMethod.POST.toString() );
     }
 
     @RequestMapping( method = RequestMethod.POST, headers = {"Content-Type=application/json"} )
-    @PreAuthorize( "hasRole('ALL') or hasRole('F_USER_GRUP_ADD')" )
     @ResponseStatus( value = HttpStatus.CREATED )
-    public void postUserGroupJSON( HttpServletResponse response, InputStream input ) throws Exception
+    public void postMapJSON( HttpServletResponse response, InputStream input ) throws Exception
     {
         throw new HttpRequestMethodNotSupportedException( RequestMethod.POST.toString() );
     }
@@ -123,17 +169,15 @@ public class UserGroupController
     //-------------------------------------------------------------------------------------------------------
 
     @RequestMapping( value = "/{uid}", method = RequestMethod.PUT, headers = {"Content-Type=application/xml, text/xml"} )
-    @PreAuthorize( "hasRole('ALL') or hasRole('F_USER_GRUP_UPDATE')" )
     @ResponseStatus( value = HttpStatus.NO_CONTENT )
-    public void putUserGroupXML( @PathVariable( "uid" ) String uid, InputStream input ) throws Exception
+    public void putMapXML( @PathVariable( "uid" ) String uid, InputStream input ) throws Exception
     {
         throw new HttpRequestMethodNotSupportedException( RequestMethod.PUT.toString() );
     }
 
     @RequestMapping( value = "/{uid}", method = RequestMethod.PUT, headers = {"Content-Type=application/json"} )
-    @PreAuthorize( "hasRole('ALL') or hasRole('F_USER_GRUP_UPDATE')" )
     @ResponseStatus( value = HttpStatus.NO_CONTENT )
-    public void putUserGroupJSON( @PathVariable( "uid" ) String uid, InputStream input ) throws Exception
+    public void putMapJSON( @PathVariable( "uid" ) String uid, InputStream input ) throws Exception
     {
         throw new HttpRequestMethodNotSupportedException( RequestMethod.PUT.toString() );
     }
@@ -143,10 +187,30 @@ public class UserGroupController
     //-------------------------------------------------------------------------------------------------------
 
     @RequestMapping( value = "/{uid}", method = RequestMethod.DELETE )
-    @PreAuthorize( "hasRole('ALL') or hasRole('F_USER_GRUP_DELETE')" )
     @ResponseStatus( value = HttpStatus.NO_CONTENT )
-    public void deleteUserGroup( @PathVariable( "uid" ) String uid ) throws Exception
+    public void deleteMap( @PathVariable( "uid" ) String uid ) throws Exception
     {
         throw new HttpRequestMethodNotSupportedException( RequestMethod.DELETE.toString() );
+    }
+
+    //-------------------------------------------------------------------------------------------------------
+    // Supportive methods
+    //-------------------------------------------------------------------------------------------------------
+
+    private void renderMapViewPng( MapView mapView, HttpServletResponse response )
+        throws Exception
+    {
+        BufferedImage image = mapGenerationService.generateMapImage( mapView );
+        
+        if ( image != null )
+        {
+            contextUtils.configureResponse( response, ContextUtils.CONTENT_TYPE_PNG, CacheStrategy.RESPECT_SYSTEM_SETTING, "mapview.png", false );
+            
+            ImageIO.write( image, "PNG", response.getOutputStream() );
+        }
+        else
+        {
+            response.setStatus( HttpServletResponse.SC_NO_CONTENT );
+        }
     }
 }
