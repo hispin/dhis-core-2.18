@@ -1,7 +1,7 @@
-package org.hisp.dhis.api.controller;
+package org.hisp.dhis.api.controller.dataelement;
 
 /*
- * Copyright (c) 2011, University of Oslo
+ * Copyright (c) 2004-2011, University of Oslo
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -27,123 +27,92 @@ package org.hisp.dhis.api.controller;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.awt.image.BufferedImage;
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.ArrayList;
-
-import javax.imageio.ImageIO;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
 import org.hisp.dhis.api.utils.IdentifiableObjectParams;
 import org.hisp.dhis.api.utils.WebLinkPopulator;
-import org.hisp.dhis.mapgeneration.MapGenerationService;
-import org.hisp.dhis.mapping.MapView;
-import org.hisp.dhis.mapping.MappingService;
-import org.hisp.dhis.mapping.Maps;
-import org.hisp.dhis.organisationunit.OrganisationUnit;
-import org.hisp.dhis.organisationunit.OrganisationUnitService;
-import org.hisp.dhis.api.utils.ContextUtils;
+import org.hisp.dhis.common.Pager;
+import org.hisp.dhis.dataelement.DataElementCategoryCombo;
+import org.hisp.dhis.dataelement.DataElementCategoryCombos;
+import org.hisp.dhis.dataelement.DataElementCategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
-import static org.hisp.dhis.api.utils.ContextUtils.CacheStrategy;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
- * @author Lars Helge Overland
  */
 @Controller
-@RequestMapping( value = MapController.RESOURCE_PATH )
-public class MapController
+@RequestMapping( value = CategoryComboController.RESOURCE_PATH )
+public class CategoryComboController
 {
-    public static final String RESOURCE_PATH = "/maps";
-    
-    @Autowired
-    private MappingService mappingService;
-    
-    @Autowired
-    private OrganisationUnitService organisationUnitService;
+    public static final String RESOURCE_PATH = "/categoryCombos";
 
     @Autowired
-    private MapGenerationService mapGenerationService;
-
-    @Autowired
-    private ContextUtils contextUtils;
+    private DataElementCategoryService dataElementCategoryService;
 
     //-------------------------------------------------------------------------------------------------------
     // GET
     //-------------------------------------------------------------------------------------------------------
 
     @RequestMapping( method = RequestMethod.GET )
-    public String getMaps(IdentifiableObjectParams params, Model model, HttpServletRequest request ) throws IOException
+    public String getCategoryCombos( IdentifiableObjectParams params, Model model, HttpServletRequest request )
     {
-        Maps maps = new Maps();
-        maps.setMaps( new ArrayList<MapView>( mappingService.getAllMapViews() ) );
+        DataElementCategoryCombos categoryCombos = new DataElementCategoryCombos();
+
+        if ( params.isPaging() )
+        {
+            int total = dataElementCategoryService.getDataElementCategoryComboCount();
+
+            Pager pager = new Pager( params.getPage(), total );
+            categoryCombos.setPager( pager );
+
+            List<DataElementCategoryCombo> categoryComboList = new ArrayList<DataElementCategoryCombo>(
+                dataElementCategoryService.getDataElementCategoryCombosBetween( pager.getOffset(), pager.getPageSize() ) );
+
+            categoryCombos.setCategoryCombos( categoryComboList );
+        }
+        else
+        {
+            categoryCombos.setCategoryCombos( new ArrayList<DataElementCategoryCombo>( dataElementCategoryService.getAllDataElementCategoryCombos() ) );
+        }
 
         if ( params.hasLinks() )
         {
             WebLinkPopulator listener = new WebLinkPopulator( request );
-            listener.addLinks( maps );
+            listener.addLinks( categoryCombos );
         }
-        
-        model.addAttribute( "model", maps );
 
-        return "maps";
+        model.addAttribute( "model", categoryCombos );
+
+        return "categoryCombos";
     }
 
     @RequestMapping( value = "/{uid}", method = RequestMethod.GET )
-    public String getMap( @PathVariable String uid, IdentifiableObjectParams params, Model model, HttpServletRequest request )
+    public String getCategoryCombo( @PathVariable( "uid" ) String uid, IdentifiableObjectParams params, Model model, HttpServletRequest request )
     {
-        MapView mapView = mappingService.getMapView( uid );
-        
+        DataElementCategoryCombo categoryCombo = dataElementCategoryService.getDataElementCategoryCombo( uid );
+
         if ( params.hasLinks() )
         {
             WebLinkPopulator listener = new WebLinkPopulator( request );
-            listener.addLinks( mapView );
+            listener.addLinks( categoryCombo );
         }
 
-        model.addAttribute( "model", mapView );
-        model.addAttribute( "view", "detailed" );
+        model.addAttribute( "model", categoryCombo );
 
-        return "map";
-    }
-    
-    @RequestMapping( value = {"/{uid}/data","/{uid}/data.png"}, method = RequestMethod.GET )
-    public void getMap( @PathVariable String uid, HttpServletResponse response ) throws Exception
-    {
-        MapView mapView = mappingService.getMapView( uid );
-        
-        renderMapViewPng( mapView, response );
-    }
-    
-    @RequestMapping( value = {"/data","/data.png"}, method = RequestMethod.GET )
-    public void getMap( Model model,
-                        @RequestParam( value = "in" ) String indicatorUid, 
-                        @RequestParam( value = "ou" ) String organisationUnitUid,
-                        @RequestParam( value = "level", required = false ) Integer level,
-                        HttpServletResponse response ) throws Exception
-    {
-        if ( level == null )
-        {
-            OrganisationUnit unit = organisationUnitService.getOrganisationUnit( organisationUnitUid );
-            
-            level = organisationUnitService.getLevelOfOrganisationUnit( unit.getId() );
-            level++;
-        }
-        
-        MapView mapView = mappingService.getIndicatorLastYearMapView( indicatorUid, organisationUnitUid, level );
-        
-        renderMapViewPng( mapView, response );
+        return "categoryCombo";
     }
 
     //-------------------------------------------------------------------------------------------------------
@@ -152,14 +121,16 @@ public class MapController
 
     @RequestMapping( method = RequestMethod.POST, headers = {"Content-Type=application/xml, text/xml"} )
     @ResponseStatus( value = HttpStatus.CREATED )
-    public void postMapXML( HttpServletResponse response, InputStream input ) throws Exception
+    @PreAuthorize( "hasRole('ALL') or hasRole('F_DATAELEMENT_ADD')" )
+    public void postCategoryComboXML( HttpServletResponse response, InputStream input ) throws Exception
     {
         throw new HttpRequestMethodNotSupportedException( RequestMethod.POST.toString() );
     }
 
     @RequestMapping( method = RequestMethod.POST, headers = {"Content-Type=application/json"} )
     @ResponseStatus( value = HttpStatus.CREATED )
-    public void postMapJSON( HttpServletResponse response, InputStream input ) throws Exception
+    @PreAuthorize( "hasRole('ALL') or hasRole('F_DATAELEMENT_ADD')" )
+    public void postCategoryComboJSON( HttpServletResponse response, InputStream input ) throws Exception
     {
         throw new HttpRequestMethodNotSupportedException( RequestMethod.POST.toString() );
     }
@@ -169,15 +140,17 @@ public class MapController
     //-------------------------------------------------------------------------------------------------------
 
     @RequestMapping( value = "/{uid}", method = RequestMethod.PUT, headers = {"Content-Type=application/xml, text/xml"} )
+    @PreAuthorize( "hasRole('ALL') or hasRole('F_DATAELEMENT_UPDATE')" )
     @ResponseStatus( value = HttpStatus.NO_CONTENT )
-    public void putMapXML( @PathVariable( "uid" ) String uid, InputStream input ) throws Exception
+    public void putCategoryComboXML( @PathVariable( "uid" ) String uid, InputStream input ) throws Exception
     {
         throw new HttpRequestMethodNotSupportedException( RequestMethod.PUT.toString() );
     }
 
     @RequestMapping( value = "/{uid}", method = RequestMethod.PUT, headers = {"Content-Type=application/json"} )
+    @PreAuthorize( "hasRole('ALL') or hasRole('F_DATAELEMENT_UPDATE')" )
     @ResponseStatus( value = HttpStatus.NO_CONTENT )
-    public void putMapJSON( @PathVariable( "uid" ) String uid, InputStream input ) throws Exception
+    public void putCategoryComboJSON( @PathVariable( "uid" ) String uid, InputStream input ) throws Exception
     {
         throw new HttpRequestMethodNotSupportedException( RequestMethod.PUT.toString() );
     }
@@ -187,30 +160,10 @@ public class MapController
     //-------------------------------------------------------------------------------------------------------
 
     @RequestMapping( value = "/{uid}", method = RequestMethod.DELETE )
+    @PreAuthorize( "hasRole('ALL') or hasRole('F_DATAELEMENT_DELETE')" )
     @ResponseStatus( value = HttpStatus.NO_CONTENT )
-    public void deleteMap( @PathVariable( "uid" ) String uid ) throws Exception
+    public void deleteCategoryCombo( @PathVariable( "uid" ) String uid ) throws Exception
     {
         throw new HttpRequestMethodNotSupportedException( RequestMethod.DELETE.toString() );
-    }
-
-    //-------------------------------------------------------------------------------------------------------
-    // Supportive methods
-    //-------------------------------------------------------------------------------------------------------
-
-    private void renderMapViewPng( MapView mapView, HttpServletResponse response )
-        throws Exception
-    {
-        BufferedImage image = mapGenerationService.generateMapImage( mapView );
-        
-        if ( image != null )
-        {
-            contextUtils.configureResponse( response, ContextUtils.CONTENT_TYPE_PNG, CacheStrategy.RESPECT_SYSTEM_SETTING, "mapview.png", false );
-            
-            ImageIO.write( image, "PNG", response.getOutputStream() );
-        }
-        else
-        {
-            response.setStatus( HttpServletResponse.SC_NO_CONTENT );
-        }
     }
 }

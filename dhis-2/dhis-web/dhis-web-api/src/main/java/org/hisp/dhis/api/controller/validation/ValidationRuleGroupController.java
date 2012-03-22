@@ -1,4 +1,4 @@
-package org.hisp.dhis.api.controller;
+package org.hisp.dhis.api.controller.validation;
 
 /*
  * Copyright (c) 2004-2011, University of Oslo
@@ -30,9 +30,9 @@ package org.hisp.dhis.api.controller;
 import org.hisp.dhis.api.utils.IdentifiableObjectParams;
 import org.hisp.dhis.api.utils.WebLinkPopulator;
 import org.hisp.dhis.common.Pager;
-import org.hisp.dhis.indicator.IndicatorService;
-import org.hisp.dhis.indicator.IndicatorType;
-import org.hisp.dhis.indicator.IndicatorTypes;
+import org.hisp.dhis.validation.ValidationRuleGroup;
+import org.hisp.dhis.validation.ValidationRuleGroups;
+import org.hisp.dhis.validation.ValidationRuleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -54,65 +54,66 @@ import java.util.List;
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
 @Controller
-@RequestMapping( value = IndicatorTypeController.RESOURCE_PATH )
-public class IndicatorTypeController
+@RequestMapping( value = ValidationRuleGroupController.RESOURCE_PATH )
+public class ValidationRuleGroupController
 {
-    public static final String RESOURCE_PATH = "/indicatorTypes";
+    public static final String RESOURCE_PATH = "/validationRuleGroups";
 
     @Autowired
-    private IndicatorService indicatorService;
+    private ValidationRuleService validationRuleService;
 
     //-------------------------------------------------------------------------------------------------------
     // GET
     //-------------------------------------------------------------------------------------------------------
 
     @RequestMapping( method = RequestMethod.GET )
-    public String getIndicatorTypes( IdentifiableObjectParams params, Model model, HttpServletRequest request )
+    public String getValidationRuleGroups( IdentifiableObjectParams params, Model model, HttpServletRequest request )
     {
-        IndicatorTypes indicatorTypes = new IndicatorTypes();
+        ValidationRuleGroups validationRuleGroups = new ValidationRuleGroups();
 
         if ( params.isPaging() )
         {
-            int total = indicatorService.getIndicatorTypeCount();
+            int total = validationRuleService.getValidationRuleGroupCount();
 
             Pager pager = new Pager( params.getPage(), total );
-            indicatorTypes.setPager( pager );
+            validationRuleGroups.setPager( pager );
 
-            List<IndicatorType> indicatorTypeList = new ArrayList<IndicatorType>(
-                indicatorService.getIndicatorTypesBetween( pager.getOffset(), pager.getPageSize() ) );
+            List<ValidationRuleGroup> validationRuleGroupList = new ArrayList<ValidationRuleGroup>(
+                validationRuleService.getValidationRuleGroupsBetween( pager.getOffset(), pager.getPageSize() ) );
 
-            indicatorTypes.setIndicatorTypes( indicatorTypeList );
+            validationRuleGroups.setValidationRuleGroups( validationRuleGroupList );
         }
         else
         {
-            indicatorTypes.setIndicatorTypes( new ArrayList<IndicatorType>( indicatorService.getAllIndicatorTypes() ) );
+            validationRuleGroups.setValidationRuleGroups( new ArrayList<ValidationRuleGroup>( validationRuleService.getAllValidationRuleGroups() ) );
         }
 
         if ( params.hasLinks() )
         {
             WebLinkPopulator listener = new WebLinkPopulator( request );
-            listener.addLinks( indicatorTypes );
+            listener.addLinks( validationRuleGroups );
         }
 
-        model.addAttribute( "model", indicatorTypes );
+        model.addAttribute( "model", validationRuleGroups );
 
-        return "indicatorTypes";
+        return "validationRuleGroups";
     }
 
     @RequestMapping( value = "/{uid}", method = RequestMethod.GET )
-    public String getIndicator( @PathVariable( "uid" ) String uid, IdentifiableObjectParams params, Model model, HttpServletRequest request )
+    public String getValidationRuleGroup( @PathVariable( "uid" ) String uid, IdentifiableObjectParams params, Model model, HttpServletRequest request )
     {
-        IndicatorType indicatorType = indicatorService.getIndicatorType( uid );
+        ValidationRuleGroup validationRuleGroup = validationRuleService.getValidationRuleGroup( uid );
 
         if ( params.hasLinks() )
         {
             WebLinkPopulator listener = new WebLinkPopulator( request );
-            listener.addLinks( indicatorType );
+            listener.addLinks( validationRuleGroup );
         }
 
-        model.addAttribute( "model", indicatorType );
+        model.addAttribute( "model", validationRuleGroup );
+        model.addAttribute( "view", "detailed" );
 
-        return "indicatorType";
+        return "validationRuleGroup";
     }
 
     //-------------------------------------------------------------------------------------------------------
@@ -120,17 +121,17 @@ public class IndicatorTypeController
     //-------------------------------------------------------------------------------------------------------
 
     @RequestMapping( method = RequestMethod.POST, headers = {"Content-Type=application/xml, text/xml"} )
-    @PreAuthorize( "hasRole('ALL') or hasRole('F_INDICATORTYPE_ADD')" )
+    @PreAuthorize( "hasRole('ALL') or hasRole('F_VALIDATIONRULEGROUP_ADD')" )
     @ResponseStatus( value = HttpStatus.CREATED )
-    public void postIndicatorTypeXML( HttpServletResponse response, InputStream input ) throws Exception
+    public void postValidationRuleGroupXML( HttpServletResponse response, InputStream input ) throws Exception
     {
         throw new HttpRequestMethodNotSupportedException( RequestMethod.POST.toString() );
     }
 
     @RequestMapping( method = RequestMethod.POST, headers = {"Content-Type=application/json"} )
-    @PreAuthorize( "hasRole('ALL') or hasRole('F_INDICATORTYPE_ADD')" )
+    @PreAuthorize( "hasRole('ALL') or hasRole('F_VALIDATIONRULEGROUP_ADD')" )
     @ResponseStatus( value = HttpStatus.CREATED )
-    public void postIndicatorTypeJSON( HttpServletResponse response, InputStream input ) throws Exception
+    public void postValidationRuleGroupJSON( HttpServletResponse response, InputStream input ) throws Exception
     {
         throw new HttpRequestMethodNotSupportedException( RequestMethod.POST.toString() );
     }
@@ -140,17 +141,17 @@ public class IndicatorTypeController
     //-------------------------------------------------------------------------------------------------------
 
     @RequestMapping( value = "/{uid}", method = RequestMethod.PUT, headers = {"Content-Type=application/xml, text/xml"} )
-    @PreAuthorize( "hasRole('ALL') or hasRole('F_INDICATORTYPE_UPDATE')" )
+    @PreAuthorize( "hasRole('ALL') or hasRole('F_VALIDATIONRULEGROUP_UPDATE')" )
     @ResponseStatus( value = HttpStatus.NO_CONTENT )
-    public void putIndicatorTypeXML( @PathVariable( "uid" ) String uid, InputStream input ) throws Exception
+    public void putValidationRuleGroupXML( @PathVariable( "uid" ) String uid, InputStream input ) throws Exception
     {
         throw new HttpRequestMethodNotSupportedException( RequestMethod.PUT.toString() );
     }
 
     @RequestMapping( value = "/{uid}", method = RequestMethod.PUT, headers = {"Content-Type=application/json"} )
-    @PreAuthorize( "hasRole('ALL') or hasRole('F_INDICATORTYPE_UPDATE')" )
+    @PreAuthorize( "hasRole('ALL') or hasRole('F_VALIDATIONRULEGROUP_UPDATE')" )
     @ResponseStatus( value = HttpStatus.NO_CONTENT )
-    public void putIndicatorTypeJSON( @PathVariable( "uid" ) String uid, InputStream input ) throws Exception
+    public void putValidationRuleGroupJSON( @PathVariable( "uid" ) String uid, InputStream input ) throws Exception
     {
         throw new HttpRequestMethodNotSupportedException( RequestMethod.PUT.toString() );
     }
@@ -160,9 +161,9 @@ public class IndicatorTypeController
     //-------------------------------------------------------------------------------------------------------
 
     @RequestMapping( value = "/{uid}", method = RequestMethod.DELETE )
-    @PreAuthorize( "hasRole('ALL') or hasRole('F_INDICATORTYPE_DELETE')" )
+    @PreAuthorize( "hasRole('ALL') or hasRole('F_VALIDATIONRULEGROUP_DELETE')" )
     @ResponseStatus( value = HttpStatus.NO_CONTENT )
-    public void deleteIndicatorType( @PathVariable( "uid" ) String uid ) throws Exception
+    public void deleteValidationGroupRule( @PathVariable( "uid" ) String uid ) throws Exception
     {
         throw new HttpRequestMethodNotSupportedException( RequestMethod.DELETE.toString() );
     }

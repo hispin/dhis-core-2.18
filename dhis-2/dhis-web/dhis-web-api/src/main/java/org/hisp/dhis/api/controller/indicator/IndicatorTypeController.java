@@ -1,4 +1,4 @@
-package org.hisp.dhis.api.controller;
+package org.hisp.dhis.api.controller.indicator;
 
 /*
  * Copyright (c) 2004-2011, University of Oslo
@@ -30,9 +30,9 @@ package org.hisp.dhis.api.controller;
 import org.hisp.dhis.api.utils.IdentifiableObjectParams;
 import org.hisp.dhis.api.utils.WebLinkPopulator;
 import org.hisp.dhis.common.Pager;
-import org.hisp.dhis.indicator.IndicatorGroup;
-import org.hisp.dhis.indicator.IndicatorGroups;
 import org.hisp.dhis.indicator.IndicatorService;
+import org.hisp.dhis.indicator.IndicatorType;
+import org.hisp.dhis.indicator.IndicatorTypes;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -54,10 +54,10 @@ import java.util.List;
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
 @Controller
-@RequestMapping( value = IndicatorGroupController.RESOURCE_PATH )
-public class IndicatorGroupController
+@RequestMapping( value = IndicatorTypeController.RESOURCE_PATH )
+public class IndicatorTypeController
 {
-    public static final String RESOURCE_PATH = "/indicatorGroups";
+    public static final String RESOURCE_PATH = "/indicatorTypes";
 
     @Autowired
     private IndicatorService indicatorService;
@@ -67,53 +67,52 @@ public class IndicatorGroupController
     //-------------------------------------------------------------------------------------------------------
 
     @RequestMapping( method = RequestMethod.GET )
-    public String getIndicatorGroups( IdentifiableObjectParams params, Model model, HttpServletRequest request )
+    public String getIndicatorTypes( IdentifiableObjectParams params, Model model, HttpServletRequest request )
     {
-        IndicatorGroups indicatorGroups = new IndicatorGroups();
+        IndicatorTypes indicatorTypes = new IndicatorTypes();
 
         if ( params.isPaging() )
         {
-            int total = indicatorService.getIndicatorGroupCount();
+            int total = indicatorService.getIndicatorTypeCount();
 
             Pager pager = new Pager( params.getPage(), total );
-            indicatorGroups.setPager( pager );
+            indicatorTypes.setPager( pager );
 
-            List<IndicatorGroup> indicatorGroupList = new ArrayList<IndicatorGroup>(
-                indicatorService.getIndicatorGroupsBetween( pager.getOffset(), pager.getPageSize() ) );
+            List<IndicatorType> indicatorTypeList = new ArrayList<IndicatorType>(
+                indicatorService.getIndicatorTypesBetween( pager.getOffset(), pager.getPageSize() ) );
 
-            indicatorGroups.setIndicatorGroups( indicatorGroupList );
+            indicatorTypes.setIndicatorTypes( indicatorTypeList );
         }
         else
         {
-            indicatorGroups.setIndicatorGroups( new ArrayList<IndicatorGroup>( indicatorService.getAllIndicatorGroups() ) );
+            indicatorTypes.setIndicatorTypes( new ArrayList<IndicatorType>( indicatorService.getAllIndicatorTypes() ) );
         }
 
         if ( params.hasLinks() )
         {
             WebLinkPopulator listener = new WebLinkPopulator( request );
-            listener.addLinks( indicatorGroups );
+            listener.addLinks( indicatorTypes );
         }
 
-        model.addAttribute( "model", indicatorGroups );
+        model.addAttribute( "model", indicatorTypes );
 
-        return "indicatorGroups";
+        return "indicatorTypes";
     }
 
     @RequestMapping( value = "/{uid}", method = RequestMethod.GET )
-    public String getIndicatorGroup( @PathVariable( "uid" ) String uid, IdentifiableObjectParams params, Model model, HttpServletRequest request )
+    public String getIndicator( @PathVariable( "uid" ) String uid, IdentifiableObjectParams params, Model model, HttpServletRequest request )
     {
-        IndicatorGroup indicatorGroup = indicatorService.getIndicatorGroup( uid );
+        IndicatorType indicatorType = indicatorService.getIndicatorType( uid );
 
         if ( params.hasLinks() )
         {
             WebLinkPopulator listener = new WebLinkPopulator( request );
-            listener.addLinks( indicatorGroup );
+            listener.addLinks( indicatorType );
         }
 
-        model.addAttribute( "model", indicatorGroup );
-        model.addAttribute( "view", "detailed" );
+        model.addAttribute( "model", indicatorType );
 
-        return "indicatorGroup";
+        return "indicatorType";
     }
 
     //-------------------------------------------------------------------------------------------------------
@@ -121,17 +120,17 @@ public class IndicatorGroupController
     //-------------------------------------------------------------------------------------------------------
 
     @RequestMapping( method = RequestMethod.POST, headers = {"Content-Type=application/xml, text/xml"} )
-    @PreAuthorize( "hasRole('ALL') or hasRole('F_INDICATORGROUP_ADD')" )
+    @PreAuthorize( "hasRole('ALL') or hasRole('F_INDICATORTYPE_ADD')" )
     @ResponseStatus( value = HttpStatus.CREATED )
-    public void postIndicatorGroupXML( HttpServletResponse response, InputStream input ) throws Exception
+    public void postIndicatorTypeXML( HttpServletResponse response, InputStream input ) throws Exception
     {
         throw new HttpRequestMethodNotSupportedException( RequestMethod.POST.toString() );
     }
 
     @RequestMapping( method = RequestMethod.POST, headers = {"Content-Type=application/json"} )
-    @PreAuthorize( "hasRole('ALL') or hasRole('F_INDICATORGROUP_ADD')" )
+    @PreAuthorize( "hasRole('ALL') or hasRole('F_INDICATORTYPE_ADD')" )
     @ResponseStatus( value = HttpStatus.CREATED )
-    public void postIndicatorGroupJSON( HttpServletResponse response, InputStream input ) throws Exception
+    public void postIndicatorTypeJSON( HttpServletResponse response, InputStream input ) throws Exception
     {
         throw new HttpRequestMethodNotSupportedException( RequestMethod.POST.toString() );
     }
@@ -141,17 +140,17 @@ public class IndicatorGroupController
     //-------------------------------------------------------------------------------------------------------
 
     @RequestMapping( value = "/{uid}", method = RequestMethod.PUT, headers = {"Content-Type=application/xml, text/xml"} )
-    @PreAuthorize( "hasRole('ALL') or hasRole('F_INDICATORGROUP_UPDATE')" )
+    @PreAuthorize( "hasRole('ALL') or hasRole('F_INDICATORTYPE_UPDATE')" )
     @ResponseStatus( value = HttpStatus.NO_CONTENT )
-    public void putIndicatorGroupXML( @PathVariable( "uid" ) String uid, InputStream input ) throws Exception
+    public void putIndicatorTypeXML( @PathVariable( "uid" ) String uid, InputStream input ) throws Exception
     {
         throw new HttpRequestMethodNotSupportedException( RequestMethod.PUT.toString() );
     }
 
     @RequestMapping( value = "/{uid}", method = RequestMethod.PUT, headers = {"Content-Type=application/json"} )
-    @PreAuthorize( "hasRole('ALL') or hasRole('F_INDICATORGROUP_UPDATE')" )
+    @PreAuthorize( "hasRole('ALL') or hasRole('F_INDICATORTYPE_UPDATE')" )
     @ResponseStatus( value = HttpStatus.NO_CONTENT )
-    public void putIndicatorGroupJSON( @PathVariable( "uid" ) String uid, InputStream input ) throws Exception
+    public void putIndicatorTypeJSON( @PathVariable( "uid" ) String uid, InputStream input ) throws Exception
     {
         throw new HttpRequestMethodNotSupportedException( RequestMethod.PUT.toString() );
     }
@@ -161,9 +160,9 @@ public class IndicatorGroupController
     //-------------------------------------------------------------------------------------------------------
 
     @RequestMapping( value = "/{uid}", method = RequestMethod.DELETE )
-    @PreAuthorize( "hasRole('ALL') or hasRole('F_INDICATORGROUP_DELETE')" )
+    @PreAuthorize( "hasRole('ALL') or hasRole('F_INDICATORTYPE_DELETE')" )
     @ResponseStatus( value = HttpStatus.NO_CONTENT )
-    public void deleteIndicatorGroup( @PathVariable( "uid" ) String uid ) throws Exception
+    public void deleteIndicatorType( @PathVariable( "uid" ) String uid ) throws Exception
     {
         throw new HttpRequestMethodNotSupportedException( RequestMethod.DELETE.toString() );
     }

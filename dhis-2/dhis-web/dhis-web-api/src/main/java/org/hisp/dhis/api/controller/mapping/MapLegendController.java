@@ -1,7 +1,7 @@
-package org.hisp.dhis.api.controller;
+package org.hisp.dhis.api.controller.mapping;
 
 /*
- * Copyright (c) 2004-2011, University of Oslo
+ * Copyright (c) 2011, University of Oslo
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -28,15 +28,12 @@ package org.hisp.dhis.api.controller;
  */
 
 import org.hisp.dhis.api.utils.IdentifiableObjectParams;
-import org.hisp.dhis.api.utils.ObjectPersister;
 import org.hisp.dhis.api.utils.WebLinkPopulator;
-import org.hisp.dhis.common.Pager;
-import org.hisp.dhis.dataelement.DataElementGroupSet;
-import org.hisp.dhis.dataelement.DataElementGroupSets;
-import org.hisp.dhis.dataelement.DataElementService;
+import org.hisp.dhis.mapping.MapLegend;
+import org.hisp.dhis.mapping.MapLegends;
+import org.hisp.dhis.mapping.MappingService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
@@ -47,77 +44,58 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
 @Controller
-@RequestMapping( value = DataElementGroupSetController.RESOURCE_PATH )
-public class DataElementGroupSetController
+@RequestMapping( value = MapLegendController.RESOURCE_PATH )
+public class MapLegendController
 {
-    public static final String RESOURCE_PATH = "/dataElementGroupSets";
+    public static final String RESOURCE_PATH = "/mapLegends";
 
     @Autowired
-    private DataElementService dataElementService;
-
-    @Autowired
-    private ObjectPersister objectPersister;
+    private MappingService mappingService;
 
     //-------------------------------------------------------------------------------------------------------
     // GET
     //-------------------------------------------------------------------------------------------------------
 
     @RequestMapping( method = RequestMethod.GET )
-    public String getDataElementGroupSets( IdentifiableObjectParams params, Model model, HttpServletRequest request )
+    public String getMapLegends( IdentifiableObjectParams params, Model model, HttpServletRequest request ) throws IOException
     {
-        DataElementGroupSets dataElementGroupSets = new DataElementGroupSets();
-
-        if ( params.isPaging() )
-        {
-            int total = dataElementService.getDataElementGroupSetCount();
-
-            Pager pager = new Pager( params.getPage(), total );
-            dataElementGroupSets.setPager( pager );
-
-            List<DataElementGroupSet> dataElementGroupSetList = new ArrayList<DataElementGroupSet>(
-                dataElementService.getDataElementGroupSetsBetween( pager.getOffset(), pager.getPageSize() ) );
-
-            dataElementGroupSets.setDataElementGroupSets( dataElementGroupSetList );
-        }
-        else
-        {
-            dataElementGroupSets.setDataElementGroupSets( new ArrayList<DataElementGroupSet>( dataElementService.getAllDataElementGroupSets() ) );
-        }
+        MapLegends mapLegends = new MapLegends();
+        mapLegends.setMapLegends( new ArrayList<MapLegend>( mappingService.getAllMapLegends() ) );
 
         if ( params.hasLinks() )
         {
             WebLinkPopulator listener = new WebLinkPopulator( request );
-            listener.addLinks( dataElementGroupSets );
+            listener.addLinks( mapLegends );
         }
 
-        model.addAttribute( "model", dataElementGroupSets );
+        model.addAttribute( "model", mapLegends );
 
-        return "dataElementGroupSets";
+        return "mapLegends";
     }
 
     @RequestMapping( value = "/{uid}", method = RequestMethod.GET )
-    public String getDataElementGroupSet( @PathVariable( "uid" ) String uid, IdentifiableObjectParams params, Model model, HttpServletRequest request )
+    public String getMapLegend( @PathVariable String uid, IdentifiableObjectParams params, Model model, HttpServletRequest request )
     {
-        DataElementGroupSet dataElementGroupSet = dataElementService.getDataElementGroupSet( uid );
+        MapLegend mapLegend = mappingService.getMapLegend( uid );
 
         if ( params.hasLinks() )
         {
             WebLinkPopulator listener = new WebLinkPopulator( request );
-            listener.addLinks( dataElementGroupSet );
+            listener.addLinks( mapLegend );
         }
 
-        model.addAttribute( "model", dataElementGroupSet );
+        model.addAttribute( "model", mapLegend );
         model.addAttribute( "view", "detailed" );
 
-        return "dataElementGroupSet";
+        return "mapLegend";
     }
 
     //-------------------------------------------------------------------------------------------------------
@@ -125,46 +103,17 @@ public class DataElementGroupSetController
     //-------------------------------------------------------------------------------------------------------
 
     @RequestMapping( method = RequestMethod.POST, headers = {"Content-Type=application/xml, text/xml"} )
-    @PreAuthorize( "hasRole('ALL') or hasRole('F_DATAELEMENTGROUPSET_ADD')" )
-    public void postDataElementGroupSetXML( HttpServletResponse response, InputStream input ) throws Exception
-    {
-        //DataElementGroupSet dataElementGroupSet = Jaxb2Utils.unmarshal( DataElementGroupSet.class, input );
-        //postDataElementGroupSet( dataElementGroupSet, response );
-    }
-
-    @RequestMapping( method = RequestMethod.POST, headers = {"Content-Type=application/json"} )
-    @PreAuthorize( "hasRole('ALL') or hasRole('F_DATAELEMENTGROUPSET_ADD')" )
-    public void postDataElementGroupSetJSON( HttpServletResponse response, InputStream input ) throws Exception
+    @ResponseStatus( value = HttpStatus.CREATED )
+    public void postMapLegendXML( HttpServletResponse response, InputStream input ) throws Exception
     {
         throw new HttpRequestMethodNotSupportedException( RequestMethod.POST.toString() );
     }
 
-    public void postDataElementGroupSet( DataElementGroupSet dataElementGroupSet, HttpServletResponse response )
+    @RequestMapping( method = RequestMethod.POST, headers = {"Content-Type=application/json"} )
+    @ResponseStatus( value = HttpStatus.CREATED )
+    public void postMapLegendJSON( HttpServletResponse response, InputStream input ) throws Exception
     {
-        if ( dataElementGroupSet == null )
-        {
-            response.setStatus( HttpServletResponse.SC_NOT_IMPLEMENTED );
-        }
-        else
-        {
-            try
-            {
-                dataElementGroupSet = objectPersister.persistDataElementGroupSet( dataElementGroupSet );
-
-                if ( dataElementGroupSet.getUid() == null )
-                {
-                    response.setStatus( HttpServletResponse.SC_INTERNAL_SERVER_ERROR );
-                }
-                else
-                {
-                    response.setStatus( HttpServletResponse.SC_CREATED );
-                    response.setHeader( "Location", DataElementController.RESOURCE_PATH + "/" + dataElementGroupSet.getUid() );
-                }
-            } catch ( Exception e )
-            {
-                response.setStatus( HttpServletResponse.SC_CONFLICT );
-            }
-        }
+        throw new HttpRequestMethodNotSupportedException( RequestMethod.POST.toString() );
     }
 
     //-------------------------------------------------------------------------------------------------------
@@ -173,16 +122,14 @@ public class DataElementGroupSetController
 
     @RequestMapping( value = "/{uid}", method = RequestMethod.PUT, headers = {"Content-Type=application/xml, text/xml"} )
     @ResponseStatus( value = HttpStatus.NO_CONTENT )
-    @PreAuthorize( "hasRole('ALL') or hasRole('F_DATAELEMENTGROUPSET_UPDATE')" )
-    public void putDataElementGroupSetXML( @PathVariable( "uid" ) String uid, InputStream input ) throws Exception
+    public void putMapLegendXML( @PathVariable( "uid" ) String uid, InputStream input ) throws Exception
     {
         throw new HttpRequestMethodNotSupportedException( RequestMethod.PUT.toString() );
     }
 
     @RequestMapping( value = "/{uid}", method = RequestMethod.PUT, headers = {"Content-Type=application/json"} )
     @ResponseStatus( value = HttpStatus.NO_CONTENT )
-    @PreAuthorize( "hasRole('ALL') or hasRole('F_DATAELEMENTGROUPSET_UPDATE')" )
-    public void putDataElementGroupSetJSON( @PathVariable( "uid" ) String uid, InputStream input ) throws Exception
+    public void putMapLegendJSON( @PathVariable( "uid" ) String uid, InputStream input ) throws Exception
     {
         throw new HttpRequestMethodNotSupportedException( RequestMethod.PUT.toString() );
     }
@@ -193,14 +140,8 @@ public class DataElementGroupSetController
 
     @RequestMapping( value = "/{uid}", method = RequestMethod.DELETE )
     @ResponseStatus( value = HttpStatus.NO_CONTENT )
-    @PreAuthorize( "hasRole('ALL') or hasRole('F_DATAELEMENTGROUPSET_DELETE')" )
-    public void deleteDataElementGroupSet( @PathVariable( "uid" ) String uid ) throws Exception
+    public void deleteMapLegend( @PathVariable( "uid" ) String uid ) throws Exception
     {
-        DataElementGroupSet dataElementGroupSet = dataElementService.getDataElementGroupSet( uid );
-
-        if ( dataElementGroupSet != null )
-        {
-            dataElementService.deleteDataElementGroupSet( dataElementGroupSet );
-        }
+        throw new HttpRequestMethodNotSupportedException( RequestMethod.DELETE.toString() );
     }
 }

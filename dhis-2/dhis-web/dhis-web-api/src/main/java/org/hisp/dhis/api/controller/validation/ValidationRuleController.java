@@ -1,4 +1,4 @@
-package org.hisp.dhis.api.controller;
+package org.hisp.dhis.api.controller.validation;
 
 /*
  * Copyright (c) 2004-2011, University of Oslo
@@ -27,17 +27,12 @@ package org.hisp.dhis.api.controller;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.io.InputStream;
-import java.util.ArrayList;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
 import org.hisp.dhis.api.utils.IdentifiableObjectParams;
 import org.hisp.dhis.api.utils.WebLinkPopulator;
-import org.hisp.dhis.user.User;
-import org.hisp.dhis.user.UserService;
-import org.hisp.dhis.user.Users;
+import org.hisp.dhis.common.Pager;
+import org.hisp.dhis.validation.ValidationRule;
+import org.hisp.dhis.validation.ValidationRuleService;
+import org.hisp.dhis.validation.ValidationRules;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -49,54 +44,76 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
 @Controller
-@RequestMapping( value = UserController.RESOURCE_PATH )
-public class UserController
+@RequestMapping( value = ValidationRuleController.RESOURCE_PATH )
+public class ValidationRuleController
 {
-    public static final String RESOURCE_PATH = "/users";
+    public static final String RESOURCE_PATH = "/validationRules";
 
     @Autowired
-    private UserService userService;
+    private ValidationRuleService validationRuleService;
 
     //-------------------------------------------------------------------------------------------------------
     // GET
     //-------------------------------------------------------------------------------------------------------
 
     @RequestMapping( method = RequestMethod.GET )
-    public String getUsers( IdentifiableObjectParams params, Model model, HttpServletRequest request )
+    public String getValidationRules( IdentifiableObjectParams params, Model model, HttpServletRequest request )
     {
-        Users users = new Users();
-        users.setUsers( new ArrayList<User>( userService.getAllUsers() ) );
+        ValidationRules validationRules = new ValidationRules();
+
+        if ( params.isPaging() )
+        {
+            int total = validationRuleService.getValidationRuleCount();
+
+            Pager pager = new Pager( params.getPage(), total );
+            validationRules.setPager( pager );
+
+            List<ValidationRule> validationRuleList = new ArrayList<ValidationRule>(
+                validationRuleService.getValidationRulesBetween( pager.getOffset(), pager.getPageSize() ) );
+
+            validationRules.setValidationRules( validationRuleList );
+        }
+        else
+        {
+            validationRules.setValidationRules( new ArrayList<ValidationRule>( validationRuleService.getAllValidationRules() ) );
+        }
 
         if ( params.hasLinks() )
         {
             WebLinkPopulator listener = new WebLinkPopulator( request );
-            listener.addLinks( users );
+            listener.addLinks( validationRules );
         }
 
-        model.addAttribute( "model", users );
+        model.addAttribute( "model", validationRules );
 
-        return "users";
+        return "validationRules";
     }
 
     @RequestMapping( value = "/{uid}", method = RequestMethod.GET )
-    public String getUser( @PathVariable( "uid" ) String uid, IdentifiableObjectParams params, Model model, HttpServletRequest request )
+    public String getValidationRule( @PathVariable( "uid" ) String uid, IdentifiableObjectParams params, Model model, HttpServletRequest request )
     {
-        User user = userService.getUser( uid );
+        ValidationRule validationRule = validationRuleService.getValidationRule( uid );
 
         if ( params.hasLinks() )
         {
             WebLinkPopulator listener = new WebLinkPopulator( request );
-            listener.addLinks( user );
+            listener.addLinks( validationRule );
         }
 
-        model.addAttribute( "model", user );
+        model.addAttribute( "model", validationRule );
         model.addAttribute( "view", "detailed" );
 
-        return "user";
+        return "validationRule";
     }
 
     //-------------------------------------------------------------------------------------------------------
@@ -104,17 +121,17 @@ public class UserController
     //-------------------------------------------------------------------------------------------------------
 
     @RequestMapping( method = RequestMethod.POST, headers = {"Content-Type=application/xml, text/xml"} )
-    @PreAuthorize( "hasRole('ALL') or hasRole('F_USER_ADD')" )
+    @PreAuthorize( "hasRole('ALL') or hasRole('F_VALIDATIONRULE_ADD')" )
     @ResponseStatus( value = HttpStatus.CREATED )
-    public void postUserXML( HttpServletResponse response, InputStream input ) throws Exception
+    public void postValidationRuleXML( HttpServletResponse response, InputStream input ) throws Exception
     {
         throw new HttpRequestMethodNotSupportedException( RequestMethod.POST.toString() );
     }
 
     @RequestMapping( method = RequestMethod.POST, headers = {"Content-Type=application/json"} )
-    @PreAuthorize( "hasRole('ALL') or hasRole('F_USER_ADD')" )
+    @PreAuthorize( "hasRole('ALL') or hasRole('F_VALIDATIONRULE_ADD')" )
     @ResponseStatus( value = HttpStatus.CREATED )
-    public void postUserJSON( HttpServletResponse response, InputStream input ) throws Exception
+    public void postValidationRuleJSON( HttpServletResponse response, InputStream input ) throws Exception
     {
         throw new HttpRequestMethodNotSupportedException( RequestMethod.POST.toString() );
     }
@@ -124,17 +141,17 @@ public class UserController
     //-------------------------------------------------------------------------------------------------------
 
     @RequestMapping( value = "/{uid}", method = RequestMethod.PUT, headers = {"Content-Type=application/xml, text/xml"} )
-    @PreAuthorize( "hasRole('ALL') or hasRole('F_USER_UPDATE')" )
+    @PreAuthorize( "hasRole('ALL') or hasRole('F_VALIDATIONRULE_UPDATE')" )
     @ResponseStatus( value = HttpStatus.NO_CONTENT )
-    public void putUserXML( @PathVariable( "uid" ) String uid, InputStream input ) throws Exception
+    public void putValidationRuleXML( @PathVariable( "uid" ) String uid, InputStream input ) throws Exception
     {
         throw new HttpRequestMethodNotSupportedException( RequestMethod.PUT.toString() );
     }
 
     @RequestMapping( value = "/{uid}", method = RequestMethod.PUT, headers = {"Content-Type=application/json"} )
-    @PreAuthorize( "hasRole('ALL') or hasRole('F_USER_UPDATE')" )
+    @PreAuthorize( "hasRole('ALL') or hasRole('F_VALIDATIONRULE_UPDATE')" )
     @ResponseStatus( value = HttpStatus.NO_CONTENT )
-    public void putUserJSON( @PathVariable( "uid" ) String uid, InputStream input ) throws Exception
+    public void putValidationRuleJSON( @PathVariable( "uid" ) String uid, InputStream input ) throws Exception
     {
         throw new HttpRequestMethodNotSupportedException( RequestMethod.PUT.toString() );
     }
@@ -144,9 +161,9 @@ public class UserController
     //-------------------------------------------------------------------------------------------------------
 
     @RequestMapping( value = "/{uid}", method = RequestMethod.DELETE )
-    @PreAuthorize( "hasRole('ALL') or hasRole('F_USER_DELETE')" )
+    @PreAuthorize( "hasRole('ALL') or hasRole('F_VALIDATIONRULE_DELETE')" )
     @ResponseStatus( value = HttpStatus.NO_CONTENT )
-    public void deleteUser( @PathVariable( "uid" ) String uid ) throws Exception
+    public void deleteValidationRule( @PathVariable( "uid" ) String uid ) throws Exception
     {
         throw new HttpRequestMethodNotSupportedException( RequestMethod.DELETE.toString() );
     }

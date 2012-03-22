@@ -1,4 +1,4 @@
-package org.hisp.dhis.api.controller;
+package org.hisp.dhis.api.controller.dataelement;
 
 /*
  * Copyright (c) 2004-2011, University of Oslo

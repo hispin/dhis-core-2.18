@@ -1,4 +1,4 @@
-package org.hisp.dhis.api.controller;
+package org.hisp.dhis.api.controller.dataelement;
 
 /*
  * Copyright (c) 2004-2011, University of Oslo
@@ -31,9 +31,9 @@ import org.hisp.dhis.api.utils.IdentifiableObjectParams;
 import org.hisp.dhis.api.utils.ObjectPersister;
 import org.hisp.dhis.api.utils.WebLinkPopulator;
 import org.hisp.dhis.common.Pager;
-import org.hisp.dhis.organisationunit.OrganisationUnitGroupService;
-import org.hisp.dhis.organisationunit.OrganisationUnitGroupSet;
-import org.hisp.dhis.organisationunit.OrganisationUnitGroupSets;
+import org.hisp.dhis.dataelement.DataElementGroupSet;
+import org.hisp.dhis.dataelement.DataElementGroupSets;
+import org.hisp.dhis.dataelement.DataElementService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -55,13 +55,13 @@ import java.util.List;
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
 @Controller
-@RequestMapping( value = OrganisationUnitGroupSetController.RESOURCE_PATH )
-public class OrganisationUnitGroupSetController
+@RequestMapping( value = DataElementGroupSetController.RESOURCE_PATH )
+public class DataElementGroupSetController
 {
-    public static final String RESOURCE_PATH = "/organisationUnitGroupSets";
+    public static final String RESOURCE_PATH = "/dataElementGroupSets";
 
     @Autowired
-    private OrganisationUnitGroupService organisationUnitGroupService;
+    private DataElementService dataElementService;
 
     @Autowired
     private ObjectPersister objectPersister;
@@ -71,52 +71,53 @@ public class OrganisationUnitGroupSetController
     //-------------------------------------------------------------------------------------------------------
 
     @RequestMapping( method = RequestMethod.GET )
-    public String getOrganisationUnitGroupSets( IdentifiableObjectParams params, Model model, HttpServletRequest request )
+    public String getDataElementGroupSets( IdentifiableObjectParams params, Model model, HttpServletRequest request )
     {
-        OrganisationUnitGroupSets organisationUnitGroupSets = new OrganisationUnitGroupSets();
+        DataElementGroupSets dataElementGroupSets = new DataElementGroupSets();
 
         if ( params.isPaging() )
         {
-            int total = organisationUnitGroupService.getOrganisationUnitGroupSetCount();
+            int total = dataElementService.getDataElementGroupSetCount();
 
             Pager pager = new Pager( params.getPage(), total );
-            organisationUnitGroupSets.setPager( pager );
+            dataElementGroupSets.setPager( pager );
 
-            List<OrganisationUnitGroupSet> organisationUnitGroupSetList = new ArrayList<OrganisationUnitGroupSet>(
-                organisationUnitGroupService.getOrganisationUnitGroupSetsBetween( pager.getOffset(), pager.getPageSize() ) );
+            List<DataElementGroupSet> dataElementGroupSetList = new ArrayList<DataElementGroupSet>(
+                dataElementService.getDataElementGroupSetsBetween( pager.getOffset(), pager.getPageSize() ) );
 
-            organisationUnitGroupSets.setOrganisationUnitGroupSets( organisationUnitGroupSetList );
+            dataElementGroupSets.setDataElementGroupSets( dataElementGroupSetList );
         }
         else
         {
-            organisationUnitGroupSets.setOrganisationUnitGroupSets( new ArrayList<OrganisationUnitGroupSet>( organisationUnitGroupService.getAllOrganisationUnitGroupSets() ) );
+            dataElementGroupSets.setDataElementGroupSets( new ArrayList<DataElementGroupSet>( dataElementService.getAllDataElementGroupSets() ) );
         }
 
         if ( params.hasLinks() )
         {
             WebLinkPopulator listener = new WebLinkPopulator( request );
-            listener.addLinks( organisationUnitGroupSets );
+            listener.addLinks( dataElementGroupSets );
         }
 
-        model.addAttribute( "model", organisationUnitGroupSets );
+        model.addAttribute( "model", dataElementGroupSets );
 
-        return "organisationUnitGroupSets";
+        return "dataElementGroupSets";
     }
 
     @RequestMapping( value = "/{uid}", method = RequestMethod.GET )
-    public String getOrganisationUnitGroupSet( @PathVariable( "uid" ) String uid, IdentifiableObjectParams params, Model model, HttpServletRequest request )
+    public String getDataElementGroupSet( @PathVariable( "uid" ) String uid, IdentifiableObjectParams params, Model model, HttpServletRequest request )
     {
-        OrganisationUnitGroupSet organisationUnitGroupSet = organisationUnitGroupService.getOrganisationUnitGroupSet( uid );
+        DataElementGroupSet dataElementGroupSet = dataElementService.getDataElementGroupSet( uid );
 
         if ( params.hasLinks() )
         {
             WebLinkPopulator listener = new WebLinkPopulator( request );
-            listener.addLinks( organisationUnitGroupSet );
+            listener.addLinks( dataElementGroupSet );
         }
 
-        model.addAttribute( "model", organisationUnitGroupSet );
+        model.addAttribute( "model", dataElementGroupSet );
+        model.addAttribute( "view", "detailed" );
 
-        return "organisationUnitGroupSet";
+        return "dataElementGroupSet";
     }
 
     //-------------------------------------------------------------------------------------------------------
@@ -124,23 +125,23 @@ public class OrganisationUnitGroupSetController
     //-------------------------------------------------------------------------------------------------------
 
     @RequestMapping( method = RequestMethod.POST, headers = {"Content-Type=application/xml, text/xml"} )
-    @PreAuthorize( "hasRole('ALL') or hasRole('F_ORGUNITGROUPSET_ADD')" )
-    public void postOrganisationUnitGroupSetXML( HttpServletResponse response, InputStream input ) throws Exception
+    @PreAuthorize( "hasRole('ALL') or hasRole('F_DATAELEMENTGROUPSET_ADD')" )
+    public void postDataElementGroupSetXML( HttpServletResponse response, InputStream input ) throws Exception
     {
-        //OrganisationUnitGroupSet organisationUnitGroupSet = Jaxb2Utils.unmarshal( OrganisationUnitGroupSet.class, input );
-        //postOrganisationUnitGroupSet( organisationUnitGroupSet, response );
+        //DataElementGroupSet dataElementGroupSet = Jaxb2Utils.unmarshal( DataElementGroupSet.class, input );
+        //postDataElementGroupSet( dataElementGroupSet, response );
     }
 
     @RequestMapping( method = RequestMethod.POST, headers = {"Content-Type=application/json"} )
-    @PreAuthorize( "hasRole('ALL') or hasRole('F_ORGUNITGROUPSET_ADD')" )
-    public void postOrganisationUnitGroupSetJSON( HttpServletResponse response, InputStream input ) throws Exception
+    @PreAuthorize( "hasRole('ALL') or hasRole('F_DATAELEMENTGROUPSET_ADD')" )
+    public void postDataElementGroupSetJSON( HttpServletResponse response, InputStream input ) throws Exception
     {
         throw new HttpRequestMethodNotSupportedException( RequestMethod.POST.toString() );
     }
 
-    public void postOrganisationUnitGroupSet( OrganisationUnitGroupSet organisationUnitGroupSet, HttpServletResponse response )
+    public void postDataElementGroupSet( DataElementGroupSet dataElementGroupSet, HttpServletResponse response )
     {
-        if ( organisationUnitGroupSet == null )
+        if ( dataElementGroupSet == null )
         {
             response.setStatus( HttpServletResponse.SC_NOT_IMPLEMENTED );
         }
@@ -148,16 +149,16 @@ public class OrganisationUnitGroupSetController
         {
             try
             {
-                organisationUnitGroupSet = objectPersister.persistOrganisationUnitGroupSet( organisationUnitGroupSet );
+                dataElementGroupSet = objectPersister.persistDataElementGroupSet( dataElementGroupSet );
 
-                if ( organisationUnitGroupSet.getUid() == null )
+                if ( dataElementGroupSet.getUid() == null )
                 {
                     response.setStatus( HttpServletResponse.SC_INTERNAL_SERVER_ERROR );
                 }
                 else
                 {
                     response.setStatus( HttpServletResponse.SC_CREATED );
-                    response.setHeader( "Location", DataElementController.RESOURCE_PATH + "/" + organisationUnitGroupSet.getUid() );
+                    response.setHeader( "Location", DataElementController.RESOURCE_PATH + "/" + dataElementGroupSet.getUid() );
                 }
             } catch ( Exception e )
             {
@@ -171,17 +172,17 @@ public class OrganisationUnitGroupSetController
     //-------------------------------------------------------------------------------------------------------
 
     @RequestMapping( value = "/{uid}", method = RequestMethod.PUT, headers = {"Content-Type=application/xml, text/xml"} )
-    @PreAuthorize( "hasRole('ALL') or hasRole('F_ORGUNITGROUPSET_UPDATE')" )
     @ResponseStatus( value = HttpStatus.NO_CONTENT )
-    public void putOrganisationUnitGroupSetXML( @PathVariable( "uid" ) String uid, InputStream input ) throws Exception
+    @PreAuthorize( "hasRole('ALL') or hasRole('F_DATAELEMENTGROUPSET_UPDATE')" )
+    public void putDataElementGroupSetXML( @PathVariable( "uid" ) String uid, InputStream input ) throws Exception
     {
         throw new HttpRequestMethodNotSupportedException( RequestMethod.PUT.toString() );
     }
 
     @RequestMapping( value = "/{uid}", method = RequestMethod.PUT, headers = {"Content-Type=application/json"} )
-    @PreAuthorize( "hasRole('ALL') or hasRole('F_ORGUNITGROUPSET_UPDATE')" )
     @ResponseStatus( value = HttpStatus.NO_CONTENT )
-    public void putOrganisationUnitGroupSetJSON( @PathVariable( "uid" ) String uid, InputStream input ) throws Exception
+    @PreAuthorize( "hasRole('ALL') or hasRole('F_DATAELEMENTGROUPSET_UPDATE')" )
+    public void putDataElementGroupSetJSON( @PathVariable( "uid" ) String uid, InputStream input ) throws Exception
     {
         throw new HttpRequestMethodNotSupportedException( RequestMethod.PUT.toString() );
     }
@@ -191,10 +192,15 @@ public class OrganisationUnitGroupSetController
     //-------------------------------------------------------------------------------------------------------
 
     @RequestMapping( value = "/{uid}", method = RequestMethod.DELETE )
-    @PreAuthorize( "hasRole('ALL') or hasRole('F_ORGUNITGROUPSET_DELETE')" )
     @ResponseStatus( value = HttpStatus.NO_CONTENT )
-    public void deleteOrganisationUnitGroupSet( @PathVariable( "uid" ) String uid ) throws Exception
+    @PreAuthorize( "hasRole('ALL') or hasRole('F_DATAELEMENTGROUPSET_DELETE')" )
+    public void deleteDataElementGroupSet( @PathVariable( "uid" ) String uid ) throws Exception
     {
-        throw new HttpRequestMethodNotSupportedException( RequestMethod.DELETE.toString() );
+        DataElementGroupSet dataElementGroupSet = dataElementService.getDataElementGroupSet( uid );
+
+        if ( dataElementGroupSet != null )
+        {
+            dataElementService.deleteDataElementGroupSet( dataElementGroupSet );
+        }
     }
 }

@@ -1,4 +1,4 @@
-package org.hisp.dhis.api.controller;
+package org.hisp.dhis.api.controller.dataelement;
 
 /*
  * Copyright (c) 2004-2011, University of Oslo
@@ -30,8 +30,8 @@ package org.hisp.dhis.api.controller;
 import org.hisp.dhis.api.utils.IdentifiableObjectParams;
 import org.hisp.dhis.api.utils.WebLinkPopulator;
 import org.hisp.dhis.common.Pager;
-import org.hisp.dhis.dataelement.DataElementCategoryCombo;
-import org.hisp.dhis.dataelement.DataElementCategoryCombos;
+import org.hisp.dhis.dataelement.DataElementCategoryOption;
+import org.hisp.dhis.dataelement.DataElementCategoryOptions;
 import org.hisp.dhis.dataelement.DataElementCategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -54,10 +54,10 @@ import java.util.List;
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
 @Controller
-@RequestMapping( value = CategoryComboController.RESOURCE_PATH )
-public class CategoryComboController
+@RequestMapping( value = CategoryOptionController.RESOURCE_PATH )
+public class CategoryOptionController
 {
-    public static final String RESOURCE_PATH = "/categoryCombos";
+    public static final String RESOURCE_PATH = "/categoryOptions";
 
     @Autowired
     private DataElementCategoryService dataElementCategoryService;
@@ -67,52 +67,52 @@ public class CategoryComboController
     //-------------------------------------------------------------------------------------------------------
 
     @RequestMapping( method = RequestMethod.GET )
-    public String getCategoryCombos( IdentifiableObjectParams params, Model model, HttpServletRequest request )
+    public String getCategoryOptions( IdentifiableObjectParams params, Model model, HttpServletRequest request )
     {
-        DataElementCategoryCombos categoryCombos = new DataElementCategoryCombos();
+        DataElementCategoryOptions categoryOptions = new DataElementCategoryOptions();
 
         if ( params.isPaging() )
         {
-            int total = dataElementCategoryService.getDataElementCategoryComboCount();
+            int total = dataElementCategoryService.getDataElementCategoryOptionCount();
 
             Pager pager = new Pager( params.getPage(), total );
-            categoryCombos.setPager( pager );
+            categoryOptions.setPager( pager );
 
-            List<DataElementCategoryCombo> categoryComboList = new ArrayList<DataElementCategoryCombo>(
-                dataElementCategoryService.getDataElementCategoryCombosBetween( pager.getOffset(), pager.getPageSize() ) );
+            List<DataElementCategoryOption> categoryOptionList = new ArrayList<DataElementCategoryOption>(
+                dataElementCategoryService.getDataElementCategoryOptionsBetween( pager.getOffset(), pager.getPageSize() ) );
 
-            categoryCombos.setCategoryCombos( categoryComboList );
+            categoryOptions.setCategoryOptions( categoryOptionList );
         }
         else
         {
-            categoryCombos.setCategoryCombos( new ArrayList<DataElementCategoryCombo>( dataElementCategoryService.getAllDataElementCategoryCombos() ) );
+            categoryOptions.setCategoryOptions( new ArrayList<DataElementCategoryOption>( dataElementCategoryService.getAllDataElementCategoryOptions() ) );
         }
 
         if ( params.hasLinks() )
         {
             WebLinkPopulator listener = new WebLinkPopulator( request );
-            listener.addLinks( categoryCombos );
+            listener.addLinks( categoryOptions );
         }
 
-        model.addAttribute( "model", categoryCombos );
+        model.addAttribute( "model", categoryOptions );
 
-        return "categoryCombos";
+        return "categoryOptions";
     }
 
     @RequestMapping( value = "/{uid}", method = RequestMethod.GET )
-    public String getCategoryCombo( @PathVariable( "uid" ) String uid, IdentifiableObjectParams params, Model model, HttpServletRequest request )
+    public String getCategoryOption( @PathVariable( "uid" ) String uid, IdentifiableObjectParams params, Model model, HttpServletRequest request )
     {
-        DataElementCategoryCombo categoryCombo = dataElementCategoryService.getDataElementCategoryCombo( uid );
+        DataElementCategoryOption categoryOption = dataElementCategoryService.getDataElementCategoryOption( uid );
 
         if ( params.hasLinks() )
         {
             WebLinkPopulator listener = new WebLinkPopulator( request );
-            listener.addLinks( categoryCombo );
+            listener.addLinks( categoryOption );
         }
 
-        model.addAttribute( "model", categoryCombo );
+        model.addAttribute( "model", categoryOption );
 
-        return "categoryCombo";
+        return "categoryOption";
     }
 
     //-------------------------------------------------------------------------------------------------------
@@ -120,17 +120,17 @@ public class CategoryComboController
     //-------------------------------------------------------------------------------------------------------
 
     @RequestMapping( method = RequestMethod.POST, headers = {"Content-Type=application/xml, text/xml"} )
-    @ResponseStatus( value = HttpStatus.CREATED )
     @PreAuthorize( "hasRole('ALL') or hasRole('F_DATAELEMENT_ADD')" )
-    public void postCategoryComboXML( HttpServletResponse response, InputStream input ) throws Exception
+    @ResponseStatus( value = HttpStatus.CREATED )
+    public void postCategoryOptionXML( HttpServletResponse response, InputStream input ) throws Exception
     {
         throw new HttpRequestMethodNotSupportedException( RequestMethod.POST.toString() );
     }
 
     @RequestMapping( method = RequestMethod.POST, headers = {"Content-Type=application/json"} )
-    @ResponseStatus( value = HttpStatus.CREATED )
     @PreAuthorize( "hasRole('ALL') or hasRole('F_DATAELEMENT_ADD')" )
-    public void postCategoryComboJSON( HttpServletResponse response, InputStream input ) throws Exception
+    @ResponseStatus( value = HttpStatus.CREATED )
+    public void postCategoryOptionJSON( HttpServletResponse response, InputStream input ) throws Exception
     {
         throw new HttpRequestMethodNotSupportedException( RequestMethod.POST.toString() );
     }
@@ -142,15 +142,15 @@ public class CategoryComboController
     @RequestMapping( value = "/{uid}", method = RequestMethod.PUT, headers = {"Content-Type=application/xml, text/xml"} )
     @PreAuthorize( "hasRole('ALL') or hasRole('F_DATAELEMENT_UPDATE')" )
     @ResponseStatus( value = HttpStatus.NO_CONTENT )
-    public void putCategoryComboXML( @PathVariable( "uid" ) String uid, InputStream input ) throws Exception
+    public void putCategoryOptionXML( @PathVariable( "uid" ) String uid, InputStream input ) throws Exception
     {
-        throw new HttpRequestMethodNotSupportedException( RequestMethod.PUT.toString() );
+        throw new HttpRequestMethodNotSupportedException( RequestMethod.DELETE.toString() );
     }
 
     @RequestMapping( value = "/{uid}", method = RequestMethod.PUT, headers = {"Content-Type=application/json"} )
     @PreAuthorize( "hasRole('ALL') or hasRole('F_DATAELEMENT_UPDATE')" )
     @ResponseStatus( value = HttpStatus.NO_CONTENT )
-    public void putCategoryComboJSON( @PathVariable( "uid" ) String uid, InputStream input ) throws Exception
+    public void putCategoryOptionJSON( @PathVariable( "uid" ) String uid, InputStream input ) throws Exception
     {
         throw new HttpRequestMethodNotSupportedException( RequestMethod.PUT.toString() );
     }
@@ -162,7 +162,7 @@ public class CategoryComboController
     @RequestMapping( value = "/{uid}", method = RequestMethod.DELETE )
     @PreAuthorize( "hasRole('ALL') or hasRole('F_DATAELEMENT_DELETE')" )
     @ResponseStatus( value = HttpStatus.NO_CONTENT )
-    public void deleteCategoryCombo( @PathVariable( "uid" ) String uid ) throws Exception
+    public void deleteCategoryOption( @PathVariable( "uid" ) String uid ) throws Exception
     {
         throw new HttpRequestMethodNotSupportedException( RequestMethod.DELETE.toString() );
     }
