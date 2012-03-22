@@ -29,7 +29,7 @@ package org.hisp.dhis.api.controller;
 
 import org.hisp.dhis.api.utils.IdentifiableObjectParams;
 import org.hisp.dhis.api.utils.WebLinkPopulator;
-import org.hisp.dhis.api.view.JacksonUtils;
+import org.hisp.dhis.dxf2.utils.JacksonUtils;
 import org.hisp.dhis.attribute.Attribute;
 import org.hisp.dhis.attribute.AttributeService;
 import org.hisp.dhis.attribute.Attributes;

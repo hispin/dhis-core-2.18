@@ -31,7 +31,7 @@ import org.hisp.dhis.aggregation.AggregatedDataValue;
 import org.hisp.dhis.aggregation.AggregatedDataValueService;
 import org.hisp.dhis.aggregation.AggregatedIndicatorValue;
 import org.hisp.dhis.api.utils.ContextUtils;
-import org.hisp.dhis.api.view.JacksonUtils;
+import org.hisp.dhis.dxf2.utils.JacksonUtils;
 import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.i18n.I18nManager;
 import org.hisp.dhis.i18n.I18nManagerException;
