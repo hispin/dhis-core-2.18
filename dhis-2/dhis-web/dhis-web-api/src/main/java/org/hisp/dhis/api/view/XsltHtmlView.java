@@ -27,6 +27,7 @@ package org.hisp.dhis.api.view;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import org.hisp.dhis.dxf2.utils.JacksonUtils;
 import org.springframework.util.Assert;
 import org.springframework.web.servlet.view.AbstractUrlBasedView;
 

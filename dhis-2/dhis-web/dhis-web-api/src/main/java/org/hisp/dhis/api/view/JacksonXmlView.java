@@ -28,6 +28,7 @@ package org.hisp.dhis.api.view;
  */
 
 
+import org.hisp.dhis.dxf2.utils.JacksonUtils;
 import org.springframework.web.servlet.view.AbstractView;
 
 import javax.servlet.http.HttpServletRequest;

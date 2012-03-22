@@ -28,7 +28,7 @@ package org.hisp.dhis.api.controller;
  */
 
 import org.hisp.dhis.api.utils.ContextUtils;
-import org.hisp.dhis.api.view.JacksonUtils;
+import org.hisp.dhis.dxf2.utils.JacksonUtils;
 import org.hisp.dhis.api.webdomain.DXF2;
 import org.hisp.dhis.attribute.Attribute;
 import org.hisp.dhis.attribute.AttributeService;
