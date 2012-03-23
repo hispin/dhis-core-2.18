@@ -19,9 +19,7 @@ import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
 
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
-import org.junit.Ignore;
 
 /*
  * Copyright (c) 2011, University of Oslo
@@ -52,7 +50,6 @@ import org.junit.Ignore;
 
 public class GenericHttpGatewayConfigTest
 {
-
     private String urlTemplate = "http://bulksms.vsms.net:5567/eapi/submission/send_sms/2/2.0?username={username}&password={password}&source_id={sender}&message={message}&msisdn={recipient}";
 
     private String bulk = "<bulksms><name>bulk</name><username>username</username><password>password</password></bulksms>";
@@ -75,11 +72,9 @@ public class GenericHttpGatewayConfigTest
     }
 
     @Test
-    @Ignore
     public void testMarshalling()
         throws IOException, JAXBException
     {
-
         Writer writer = new StringWriter();
         Map<String, String> parameters = new HashMap<String, String>();
         parameters.put( "username", "u1" );
@@ -99,7 +94,6 @@ public class GenericHttpGatewayConfigTest
     }
 
     @Test
-	@Ignore
     public void testUntmarshalling()
         throws JAXBException
     {

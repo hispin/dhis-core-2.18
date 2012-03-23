@@ -10,7 +10,7 @@
         changeValueType("bulksms");
     });
 </script>
-<h3>$i18n.getString( "add_update_gateway" )</h3>
+<h3>$i18n.getString( "add_update_gateway_management" )</h3>
 <form id="addGateWayConfigForm" name="addGateWayConfigForm">
 	<table id="detailsList">
 		<tr>

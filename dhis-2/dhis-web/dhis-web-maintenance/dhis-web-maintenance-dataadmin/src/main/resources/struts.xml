@@ -272,6 +272,7 @@
       <result name="input" type="velocity-json">
         /dhis-web-commons/ajax/jsonResponseInput.vm
       </result>
+	  <param name="onExceptionReturn">plainTextError</param>
     </action>
 
     <action name="addSqlView" class="org.hisp.dhis.dataadmin.action.sqlview.AddSqlViewAction">

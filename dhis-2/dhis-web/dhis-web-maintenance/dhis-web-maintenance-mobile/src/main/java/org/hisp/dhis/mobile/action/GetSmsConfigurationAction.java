@@ -36,6 +36,7 @@ import org.hisp.dhis.sms.config.ClickatellGatewayConfig;
 import org.hisp.dhis.sms.config.ModemGatewayConfig;
 import org.hisp.dhis.sms.config.SmsConfiguration;
 import org.hisp.dhis.sms.config.SmsGatewayConfig;
+import org.hisp.dhis.sms.outbound.OutboundSmsTransportService;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.opensymphony.xwork2.Action;
@@ -54,6 +55,9 @@ public class GetSmsConfigurationAction
 
     @Autowired
     private SmsConfigurationManager smsConfigurationManager;
+    
+    @Autowired
+    private OutboundSmsTransportService smsLibService;
 
     // -------------------------------------------------------------------------
     // Output
@@ -80,9 +84,11 @@ public class GetSmsConfigurationAction
         return smsConfig;
     }
 
-    public boolean getSmsServiceStatus()
+    private String smsServiceStatus;
+    
+    public String getSmsServiceStatus()
     {
-        return this.smsConfig != null && this.smsConfig.isEnabled();
+        return this.smsServiceStatus;
     }
 
     // -------------------------------------------------------------------------
@@ -92,6 +98,8 @@ public class GetSmsConfigurationAction
     public String execute()
         throws Exception
     {
+        smsServiceStatus = smsLibService.getServiceStatus();
+        
         smsConfig = smsConfigurationManager.getSmsConfiguration();
 
         if ( smsConfig != null )
