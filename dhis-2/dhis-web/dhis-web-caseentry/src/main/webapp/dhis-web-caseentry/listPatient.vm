@@ -21,7 +21,7 @@
 		  #if($mapPatientOrgunit.size()!=0)
 		  <col>
 		  #end
-		  <col width="120">
+		  <col width="80">
           <tr>
 			<th>#</th>
             <th>$i18n.getString( "full_name" )</th>        
@@ -60,7 +60,6 @@
 				#end
 				<td>
 					<a href="javascript:showSelectedDataRecoding('$patient.id');" title="$i18n.getString( 'data_entry' )"><img src="images/data_entry.png" alt="$i18n.getString( 'data_entry' )"></a>   
-					<a href="javascript:patientChartList( '$patient.id' )" title="$i18n.getString( 'view_patient_chart' )"><img src="../images/add_to_dashboard.png" alt="$i18n.getString( 'view_patient_chart' )"></a> 
 					<a href="javascript:showPatientHistory( '$patient.id' )" title='$i18n.getString( "patient_details_and_history" )'><img src="../images/information.png" alt='$i18n.getString( "patient_details_and_history" )'></a>
                 </td>               				
 			</tr>
@@ -86,10 +85,6 @@
 </table>
 
 <div id="detailsInfo"></div>
-<div id="patientChartListDiv"></div>
-<div id="chartView" class="hidden">
-	<img id="chartImage" src="" class="padding-chart"></img>
-</div>
 
 <span id="message"></span>
 <script>

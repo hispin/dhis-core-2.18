@@ -423,25 +423,6 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 			ref="org.hisp.dhis.program.ProgramStageInstanceService" />
 	</bean>
  
-	<!--  Patient chart -->
-
-	<bean
-		id="org.hisp.dhis.caseentry.action.patientchart.GetPatientChartListAction"
-		class="org.hisp.dhis.caseentry.action.patientchart.GetPatientChartListAction"
-		scope="prototype">
-		<property name="patientChartService"
-			ref="org.hisp.dhis.patientchart.PatientChartService" />
-		<property name="patientService" ref="org.hisp.dhis.patient.PatientService" />
-	</bean>
-
-	<bean
-		id="org.hisp.dhis.caseentry.action.patientchart.GeneratePatientChartAction"
-		class="org.hisp.dhis.caseentry.action.patientchart.GeneratePatientChartAction"
-		scope="prototype">
-		<property name="patientChartService"
-			ref="org.hisp.dhis.patientchart.PatientChartService" />
-	</bean>
-
 	<!-- Patient -->
 
 	<bean id="org.hisp.dhis.caseentry.action.patient.SearchPersonAction"
