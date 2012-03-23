@@ -2407,7 +2407,7 @@ Ext.onReady( function() {
                                         store: DV.store.dimension(),
                                         value: DV.conf.finals.dimension.period.value,
                                         listeners: {
-                                            afterrender: function(cb) {
+                                            added: function(cb) {
                                                 DV.cmp.settings.category = this;
                                             },
                                             select: function(cb) {
@@ -2441,7 +2441,7 @@ Ext.onReady( function() {
                                         store: DV.store.dimension(),
                                         value: DV.conf.finals.dimension.organisationunit.value,
                                         listeners: {
-                                            afterrender: function(cb) {
+                                            added: function(cb) {
                                                 DV.cmp.settings.filter = this;
                                             }
                                         }

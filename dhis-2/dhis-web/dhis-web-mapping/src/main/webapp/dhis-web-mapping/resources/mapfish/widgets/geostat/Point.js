@@ -421,7 +421,6 @@ mapfish.widgets.geostat.Point = Ext.extend(Ext.Panel, {
             emptyText: G.i18n.optional,
             selectOnFocus: true,
             width: G.conf.combo_width,
-            listWidth: 'auto',
             store: G.stores.mapView,
             listeners: {
                 'select': {
