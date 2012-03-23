@@ -61,6 +61,8 @@ public class SmsLibService
 
     private SmsConfiguration config;
 
+    private String message = "success";
+
     private final String BULK_GATEWAY = "bulk_gw";
 
     private final String CLICKATELL_GATEWAY = "clickatell_gw";
@@ -94,12 +96,23 @@ public class SmsLibService
     public void sendMessage( OutboundSms sms, String gatewayId )
         throws SmsServiceException
     {
+        message = getServiceStatus();
+
+        if ( message != null && (message.equals( "service_stopped" ) || message.equals( "service_stopping" )) )
+        {
+            message = "service_stopped_cannot_send_sms";
+
+            return;
+        }
+
         String recipient;
 
         Set<String> recipients = sms.getRecipients();
 
         if ( recipients.size() == 0 )
         {
+            message = "there_is_no_recipient_cannot_send_sms";
+
             log.warn( "Trying to send sms without recipients: " + sms );
             return;
         }
@@ -112,13 +125,13 @@ public class SmsLibService
             recipient = createTmpGroup( recipients );
         }
 
-        OutboundMessage message = new OutboundMessage( recipient, sms.getMessage() );
+        OutboundMessage outboundMessage = new OutboundMessage( recipient, sms.getMessage() );
 
         String longNumber = config.getLongNumber();
 
         if ( longNumber != null && !longNumber.isEmpty() )
         {
-            message.setFrom( longNumber );
+            outboundMessage.setFrom( longNumber );
         }
 
         boolean sent = false;
@@ -129,25 +142,31 @@ public class SmsLibService
 
             if ( gatewayId == null || gatewayId.isEmpty() )
             {
-                sent = getService().sendMessage( message );
+                sent = getService().sendMessage( outboundMessage );
             }
             else
             {
-                sent = getService().sendMessage( message, gatewayId );
+                sent = getService().sendMessage( outboundMessage, gatewayId );
             }
         }
         catch ( SMSLibException e )
         {
+            message = "Unable to send message: " + sms + " " + e.getCause().getMessage();
+
             log.warn( "Unable to send message: " + sms, e );
             throw new SmsServiceException( "Unable to send message: " + sms, e );
         }
         catch ( IOException e )
         {
+            message = "Unable to send message: " + sms + " " + e.getCause().getMessage();
+
             log.warn( "Unable to send message: " + sms, e );
             throw new SmsServiceException( "Unable to send message: " + sms, e );
         }
         catch ( InterruptedException e )
         {
+            message = "Unable to send message: " + sms + " " + e.getCause().getMessage();
+
             log.warn( "Unable to send message: " + sms, e );
             throw new SmsServiceException( "Unable to send message: " + sms, e );
         }
@@ -160,8 +179,13 @@ public class SmsLibService
             }
         }
 
-        if ( !sent )
+        if ( sent )
         {
+            message = "success";
+        }
+        else
+        {
+            message = "message_not_sent";
             log.warn( "Message not sent" );
         }
     }
@@ -189,104 +213,14 @@ public class SmsLibService
         }
 
         log.debug( "Loading configuration" );
+        reloadConfig();
 
-        if ( config.isEnabled() && reloadConfig() )
-        {
-            log.debug( "Starting SmsLib" );
-            startService();
-        }
-        else
-        {
-            log.debug( "Sms not enabled or there is no any gateway, won't start service" );
-        }
-    }
-
-    // -------------------------------------------------------------------------
-    // Supportive methods
-    // -------------------------------------------------------------------------
-
-    private String createTmpGroup( Set<String> recipients )
-    {
-        String groupName = Thread.currentThread().getName();
-
-        getService().createGroup( groupName );
-
-        for ( String recepient : recipients )
-        {
-            getService().addToGroup( groupName, recepient );
-        }
-
-        return groupName;
-    }
-
-    private void removeGroup( String groupName )
-    {
-        getService().removeGroup( groupName );
-    }
-
-    private void startService()
-    {
-        try
-        {
-            getService().startService();
-        }
-        catch ( SMSLibException e )
-        {
-            log.warn( "Unable to start smsLib service", e );
-            throw new SmsServiceException( "Unable to start smsLib service", e );
-        }
-        catch ( IOException e )
-        {
-            log.warn( "Unable to start smsLib service", e );
-            throw new SmsServiceException( "Unable to start smsLib service", e );
-        }
-        catch ( InterruptedException e )
-        {
-            log.warn( "Unable to start smsLib service", e );
-            throw new SmsServiceException( "Unable to start smsLib service", e );
-        }
+        log.debug( "Starting SmsLib" );
+        startService();
     }
 
     @Override
-    public String stopService()
-    {
-        String status = "success";
-
-        try
-        {
-            getService().stopService();
-        }
-        catch ( SMSLibException e )
-        {
-            status = "Unable to stop smsLib service" + e.getCause().getMessage();
-
-            log.warn( "Unable to stop smsLib service", e );
-            throw new SmsServiceException( "Unable to stop smsLib service", e );
-        }
-        catch ( IOException e )
-        {
-            status = "Unable to stop smsLib service" + e.getCause().getMessage();
-
-            log.warn( "Unable to stop smsLib service", e );
-            throw new SmsServiceException( "Unable to stop smsLib service", e );
-        }
-        catch ( InterruptedException e )
-        {
-            status = "Unable to stop smsLib service" + e.getCause().getMessage();
-
-            log.warn( "Unable to stop smsLib service", e );
-            throw new SmsServiceException( "Unable to stop smsLib service", e );
-        }
-
-        return status;
-    }
-
-    private Service getService()
-    {
-        return Service.getInstance();
-    }
-
-    private boolean reloadConfig()
+    public void reloadConfig()
         throws SmsServiceException
     {
         Service service = Service.getInstance();
@@ -297,9 +231,12 @@ public class SmsLibService
 
         AGateway gateway = null;
 
-        boolean reloaded = false;
-
         // Add gateways
+        if ( config.getGateways() == null || config.getGateways().isEmpty() )
+        {
+            message = "unable_load_configuration_cause_of_there_is_no_gateway";
+        }
+
         for ( SmsGatewayConfig gatewayConfig : config.getGateways() )
         {
             try
@@ -325,20 +262,146 @@ public class SmsLibService
                     gatewayMap.put( MODEM_GATEWAY, gateway.getGatewayId() );
                 }
 
-                reloaded = true;
+                message = "success";
 
                 log.debug( "Added gateway " + gatewayConfig.getName() );
             }
             catch ( GatewayException e )
             {
-                reloaded = false;
+                message = "Unable to load gateway " + gatewayConfig.getName() + e.getCause().getMessage();
 
                 log.warn( "Unable to load gateway " + gatewayConfig.getName(), e );
                 throw new SmsServiceException( "Unable to load gateway" + gatewayConfig.getName(), e );
             }
         }
+    }
 
-        return reloaded;
+    @Override
+    public void startService()
+    {
+        if ( config.isEnabled() && (message != null && message.equals( "success" )) )
+        {
+            try
+            {
+                getService().startService();
+            }
+            catch ( SMSLibException e )
+            {
+                message = "Unable to start smsLib service " + e.getCause().getMessage();
+
+                log.warn( "Unable to start smsLib service", e );
+                throw new SmsServiceException( "Unable to start smsLib service", e );
+            }
+            catch ( IOException e )
+            {
+                message = "Unable to start smsLib service" + e.getCause().getMessage();
+
+                log.warn( "Unable to start smsLib service", e );
+                throw new SmsServiceException( "Unable to start smsLib service", e );
+            }
+            catch ( InterruptedException e )
+            {
+                message = "Unable to start smsLib service" + e.getCause().getMessage();
+
+                log.warn( "Unable to start smsLib service", e );
+                throw new SmsServiceException( "Unable to start smsLib service", e );
+            }
+        }
+        else
+        {
+            message = "sms_unable_or_there_is_no_gatewat_service_not_started";
+
+            log.debug( "Sms not enabled or there is no any gateway, won't start service" );
+        }
+    }
+
+    @Override
+    public void stopService()
+    {
+        message = "success";
+
+        try
+        {
+            getService().stopService();
+        }
+        catch ( SMSLibException e )
+        {
+            message = "Unable to stop smsLib service " + e.getCause().getMessage();
+
+            log.warn( "Unable to stop smsLib service", e );
+            throw new SmsServiceException( "Unable to stop smsLib service", e );
+        }
+        catch ( IOException e )
+        {
+            message = "Unable to stop smsLib service" + e.getCause().getMessage();
+
+            log.warn( "Unable to stop smsLib service", e );
+            throw new SmsServiceException( "Unable to stop smsLib service", e );
+        }
+        catch ( InterruptedException e )
+        {
+            message = "Unable to stop smsLib service" + e.getCause().getMessage();
+
+            log.warn( "Unable to stop smsLib service", e );
+            throw new SmsServiceException( "Unable to stop smsLib service", e );
+        }
+    }
+
+    @Override
+    public String getServiceStatus()
+    {
+        ServiceStatus serviceStatus = getService().getServiceStatus();
+
+        if ( serviceStatus == ServiceStatus.STARTED )
+        {
+            return "service_started";
+        }
+        else if ( serviceStatus == ServiceStatus.STARTING )
+        {
+            return "service_starting";
+        }
+        else if ( serviceStatus == ServiceStatus.STOPPED )
+        {
+            return "service_stopped";
+        }
+        else
+        {
+            return "service_stopping";
+        }
+    }
+
+    @Override
+    public String getMessageStatus()
+    {
+        return message;
+    }
+
+    // -------------------------------------------------------------------------
+    // Supportive methods
+    // -------------------------------------------------------------------------
+
+    private Service getService()
+    {
+        return Service.getInstance();
+    }
+
+    private String createTmpGroup( Set<String> recipients )
+    {
+        String groupName = Thread.currentThread().getName();
+
+        getService().createGroup( groupName );
+
+        for ( String recepient : recipients )
+        {
+            getService().addToGroup( groupName, recepient );
+        }
+
+        return groupName;
+    }
+
+    private void removeGroup( String groupName )
+    {
+        getService().removeGroup( groupName );
     }
 
     private class OutboundNotification

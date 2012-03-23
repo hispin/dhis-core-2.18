@@ -60,9 +60,35 @@ public class TestOutboundSmsService
     }
 
     @Override
-    public String stopService()
+    public void stopService()
     {
         log.debug( "stopService()" );
+    }
+
+    @Override
+    public void startService()
+    {
+        log.debug( "startService()" );
+    }
+
+    @Override
+    public String getServiceStatus()
+    {
+        log.debug( "getServiceStatus()" );
+        return "STARTED";
+    }
+
+    @Override
+    public void reloadConfig()
+        throws SmsServiceException
+    {
+        log.debug( "reloadConfig()" );
+    }
+
+    @Override
+    public String getMessageStatus()
+    {
+        log.debug( "getMessageStatus()" );
         return null;
     }
 }

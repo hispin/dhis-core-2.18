@@ -2,6 +2,8 @@ package org.hisp.dhis.sms.outbound;
 
 import java.util.Map;
 
+import org.hisp.dhis.sms.SmsServiceException;
+
 /*
  * Copyright (c) 2004-2011, University of Oslo
  * All rights reserved.
@@ -38,5 +40,14 @@ public interface OutboundSmsTransportService
 {
     Map<String, String> getGatewayMap();
 
-    String stopService();
+    void stopService();
+
+    void startService();
+
+    void reloadConfig()
+        throws SmsServiceException;
+
+    String getServiceStatus();
+
+    String getMessageStatus();
 }

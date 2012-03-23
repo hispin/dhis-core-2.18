@@ -31,6 +31,9 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlElementWrapper;
+import javax.xml.bind.annotation.XmlElements;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
@@ -81,13 +84,11 @@ public class SmsConfiguration
         this.longNumber = longNumber;
     }
 
-    /*
-     * @XmlElementWrapper( name = "gateways" ) @XmlElements( { @XmlElement( name =
-     * "bulksms", type = BulkSmsGatewayConfig.class ), @XmlElement( name =
-     * "clickatell", type = ClickatellGatewayConfig.class ), @XmlElement( name =
-     * "http", type = GenericHttpGatewayConfig.class ), @XmlElement( name =
-     * "modem", type = ModemGatewayConfig.class ) } )
-     */
+    @XmlElementWrapper( name = "gateways" )
+    @XmlElements( { @XmlElement( name = "bulksms", type = BulkSmsGatewayConfig.class ),
+        @XmlElement( name = "clickatell", type = ClickatellGatewayConfig.class ),
+        @XmlElement( name = "http", type = GenericHttpGatewayConfig.class ),
+        @XmlElement( name = "modem", type = ModemGatewayConfig.class ) } )
     public List<SmsGatewayConfig> getGateways()
     {
         return gateways;

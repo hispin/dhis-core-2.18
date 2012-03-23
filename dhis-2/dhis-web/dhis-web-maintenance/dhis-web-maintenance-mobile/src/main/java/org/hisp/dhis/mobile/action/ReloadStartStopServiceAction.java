@@ -27,18 +27,9 @@ package org.hisp.dhis.mobile.action;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.Set;
-
 import org.hisp.dhis.i18n.I18n;
-import org.hisp.dhis.organisationunit.OrganisationUnit;
-import org.hisp.dhis.oust.manager.SelectionTreeManager;
-import org.hisp.dhis.sms.MessageSender;
+import org.hisp.dhis.sms.SmsConfigurationManager;
 import org.hisp.dhis.sms.outbound.OutboundSmsTransportService;
-import org.hisp.dhis.user.CurrentUserService;
-import org.hisp.dhis.user.User;
-import org.hisp.dhis.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.opensymphony.xwork2.Action;
@@ -47,7 +38,8 @@ import com.opensymphony.xwork2.Action;
  * @author Dang Duy Hieu
  * @version $Id$
  */
-public class ProcessingSendSMSAction
+
+public class ReloadStartStopServiceAction
     implements Action
 {
     // -------------------------------------------------------------------------
@@ -55,17 +47,8 @@ public class ProcessingSendSMSAction
     // -------------------------------------------------------------------------
 
     @Autowired
-    private SelectionTreeManager selectionTreeManager;
+    private SmsConfigurationManager smsConfigurationManager;
 
-    @Autowired
-    private UserService userService;
-
-    @Autowired
-    private CurrentUserService currentUserService;
-
-    @Autowired
-    private MessageSender messageSender;
-    
     @Autowired
     private OutboundSmsTransportService smsLibService;
 
@@ -73,32 +56,11 @@ public class ProcessingSendSMSAction
     // Input & Output
     // -------------------------------------------------------------------------
 
-    private String gatewayId;
+    private String actionType;
 
-    public void setGatewayId( String gatewayId )
+    public void setActionType( String actionType )
     {
-        this.gatewayId = gatewayId;
-    }
-
-    private String smsSubject;
-
-    public void setSmsSubject( String smsSubject )
-    {
-        this.smsSubject = smsSubject;
-    }
-
-    private String smsMessage;
-
-    public void setSmsMessage( String smsMessage )
-    {
-        this.smsMessage = smsMessage;
-    }
-
-    private Set<String> recipients = new HashSet<String>();
-
-    public void setRecipients( Set<String> recipients )
-    {
-        this.recipients = recipients;
+        this.actionType = actionType;
     }
 
     private String message;
@@ -108,11 +70,11 @@ public class ProcessingSendSMSAction
         return message;
     }
 
-    private I18n i18n;
-
     // -------------------------------------------------------------------------
     // I18n
     // -------------------------------------------------------------------------
+
+    private I18n i18n;
 
     public void setI18n( I18n i18n )
     {
@@ -120,48 +82,40 @@ public class ProcessingSendSMSAction
     }
 
     // -------------------------------------------------------------------------
-    // Action Implementation
+    // Action implementation
     // -------------------------------------------------------------------------
 
     public String execute()
+        throws Exception
     {
-        if ( gatewayId == null || gatewayId.isEmpty() )
+        if ( smsConfigurationManager.getSmsConfiguration() == null )
         {
-            message = i18n.getString( "please_select_a_gateway_type_to_send_sms" );
+            message = i18n.getString( "smsconfiguration_not_available" );
 
-            return ERROR;
+            return INPUT;
         }
 
-        if ( smsMessage != null && !smsMessage.isEmpty() )
+        if ( actionType != null && actionType.equals( "start" ) )
         {
-            if ( recipients != null && !recipients.isEmpty() )
-            {
-                messageSender.sendMessage( smsSubject, smsMessage, currentUserService.getCurrentUser(), true,
-                    recipients, gatewayId );
-
-                message = smsLibService.getMessageStatus();
-                
-                if ( message != null && !message.equals( "success" ) )
-                {
-                    return ERROR;
-                }
-            }
-
-            Collection<OrganisationUnit> units = selectionTreeManager.getSelectedOrganisationUnits();
-
-            if ( units != null && !units.isEmpty() )
-            {
-                messageSender.sendMessage( smsSubject, smsMessage, currentUserService.getCurrentUser(), false,
-                    new HashSet<User>( userService.getUsersByOrganisationUnits( units ) ), gatewayId );
-   
-                message = smsLibService.getMessageStatus();
-                
-                if ( message != null && !message.equals( "success" ) )
-                {
-                    return ERROR;
-                }
-            }
+            smsLibService.startService();
         }
+        else if ( actionType.equals( "stop" ) )
+        {
+            smsLibService.stopService();
+        }
+        else
+        {
+            smsLibService.reloadConfig();
+        }
+
+        message = smsLibService.getMessageStatus();
+        
+        if ( message != null && !message.equals( "success" ) )
+        {            
+            return INPUT;
+        }
+        
+        message = i18n.getString( message );
 
         return SUCCESS;
     }

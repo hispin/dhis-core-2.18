@@ -35,9 +35,9 @@
 
     <action name="sendSMS" class="org.hisp.dhis.mobile.action.ProcessingSendSMSAction">
       <result name="success" type="velocity-json">../dhis-web-commons/ajax/jsonResponseSuccess.vm</result>
+      <result name="error" type="velocity-json">../dhis-web-commons/ajax/jsonResponseError.vm</result>
       <param name="onExceptionReturn">plainTextError</param>
-    </action>
-	
+    </action>	
 	
     <!-- Patient Mobile Setting Action -->
 
@@ -80,6 +80,12 @@
 	  <param name="requiredAuthorities">F_MOBILE_SETTINGS</param>
     </action>
 
+    <action name="reloadStartStopService" class="org.hisp.dhis.mobile.action.ReloadStartStopServiceAction">
+      <result name="success" type="velocity-json">../dhis-web-commons/ajax/jsonResponseSuccess.vm</result>
+      <result name="input" type="velocity-json">../dhis-web-commons/ajax/jsonResponseInput.vm</result>
+      <param name="onExceptionReturn">plainTextError</param>
+    </action>
+	
     <action name="saveSmsConfiguration" class="org.hisp.dhis.mobile.action.SaveSmsConfigurationAction">
       <result name="success" type="redirect">showSMSConfigureForm.action</result>
     </action>
