@@ -546,7 +546,6 @@ Ext.onReady( function() {
                         labelSeparator: G.conf.labelseparator,
                         selectOnFocus: true,
                         width: G.conf.combo_width_fieldset,
-                        listWidth: 'auto',
                         store: G.stores.mapView
                     }
                 ]

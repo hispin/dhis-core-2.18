@@ -288,7 +288,7 @@ G.util = {
         },
         fileOverlay: {
             getActivatedOpenLayersStyleMap: function(layer) {
-                var style = layer.styleMap.styles.default.defaultStyle;
+                var style = layer.styleMap.styles['default'].defaultStyle;
                 return new OpenLayers.StyleMap({
                     'default' : new OpenLayers.Style(
                         OpenLayers.Util.applyDefaults({
@@ -308,7 +308,7 @@ G.util = {
                 });
             },
             getDeactivatedOpenLayersStyleMap: function(layer) {
-                var style = layer.styleMap.styles.default.defaultStyle;
+                var style = layer.styleMap.styles['default'].defaultStyle;
                 return new OpenLayers.StyleMap({
                     'default' : new OpenLayers.Style(
                         OpenLayers.Util.applyDefaults({
