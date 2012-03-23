@@ -79,7 +79,9 @@ public class TableAlteror
 
         executeSql( "ALTER TABLE patientdatavaluearchive DROP COLUMN providedbyanotherfacility" );
         executeSql( "ALTER TABLE patientdatavaluearchive DROP COLUMN organisationunitid" );
-        executeSql( "ALTER TABLE patientdatavaluearchive DROP COLUMN storedby" );        
+        executeSql( "ALTER TABLE patientdatavaluearchive DROP COLUMN storedby" );  
+        executeSql( "DROP TABLE patientchart" ); 
+        executeSql( "DROP TABLE patientchart" ); 
     }
 
     // -------------------------------------------------------------------------

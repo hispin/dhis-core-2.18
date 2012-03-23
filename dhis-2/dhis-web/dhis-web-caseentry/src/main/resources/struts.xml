@@ -370,21 +370,6 @@
 				/dhis-web-commons/ajax/jsonPeriods.vm</result>
 		</action>
 
-		<!-- Patient chart -->
-
-		<action name="patientChartList"
-			class="org.hisp.dhis.caseentry.action.patientchart.GetPatientChartListAction">
-			<result name="success" type="velocity">/content.vm</result>
-			<param name="page">/dhis-web-caseentry/patientChartList.vm</param>
-			<param name="javascripts">javascript/patientChart.js</param>
-		</action>
-
-		<action name="generatePatientChart"
-			class="org.hisp.dhis.caseentry.action.patientchart.GeneratePatientChartAction">
-			<result name="success" type="chart"></result>
-			<param name="requiredAuthorities">F_GENERATE_PATIENT_CHART</param>
-		</action>
-
 		<!-- Patient -->
 
 		<action name="patient"

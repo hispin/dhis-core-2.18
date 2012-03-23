@@ -1,8 +1,0 @@
-{
-	"id":"$patientChart.id",
-	"title":"$!encoder.jsEncode( ${patientChart.title} )",
-	"type": "$!encoder.jsEncode( ${patientChart.type} )",
-	"size": "$patientChart.size",
-	"regression": "$patientChart.regression",
-	"dataElement": "$!encoder.jsEncode( ${patientChart.dataElement.name} )"
-}
