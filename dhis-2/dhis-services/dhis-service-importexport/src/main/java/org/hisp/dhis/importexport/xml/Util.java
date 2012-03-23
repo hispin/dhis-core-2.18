@@ -1,7 +1,10 @@
 package org.hisp.dhis.importexport.xml;
 
+import java.text.NumberFormat;
+import java.text.ParseException;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
+import java.util.Locale;
 
 /*
  * Copyright (c) 2004-2005, University of Oslo
@@ -70,8 +73,11 @@ public class Util
      * @param coordinates
      * @return
      */
-    public static String gmlToCoords(String coordinates, String decimalPlacesAsString)
+    public static String gmlToCoords(String coordinates, String decimalPlacesAsString) 
+            throws ParseException
     {
+        NumberFormat nf = NumberFormat.getInstance(Locale.FRANCE);
+        
         int decimalPlaces = Integer.parseInt( decimalPlacesAsString);
         String formatString = "%."+decimalPlaces+"f,%."+decimalPlaces+"f";
         StringBuilder sb = new StringBuilder();
@@ -80,8 +86,8 @@ public class Util
         for (String coordAsString : coords)
         {
             String[] latlon = coordAsString.split( ",");
-            double lat = Double.parseDouble( latlon[0] );
-            double lon = Double.parseDouble( latlon[1] );
+            double lat = nf.parse( latlon[0] ).doubleValue();
+            double lon = nf.parse( latlon[1] ).doubleValue();
             sb.append( "<coord>");
             sb.append( String.format(formatString, lat, lon));
             sb.append( "</coord>");
