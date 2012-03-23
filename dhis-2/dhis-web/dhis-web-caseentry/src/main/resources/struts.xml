@@ -114,7 +114,7 @@
 				,javascript/anonymousRegistration.js
 				,javascript/entry.js
 				,../dhis-web-commons/javascripts/date.js</param>
-			<param name="stylesheets">style/dataEntry.css,../dhis-web-caseentry/style/patient.css</param>
+			<param name="stylesheets">style/dataEntry.css,style/patient.css</param>
 			<param name="requiredAuthorities">F_NAME_BASED_DATA_ENTRY</param>
 		</action>
 		
@@ -247,7 +247,7 @@
 			<param name="page">/dhis-web-caseentry/reportSelect.vm</param>
 			<param name="menu">/dhis-web-caseentry/reportsMenu.vm</param>
 			<param name="javascripts">../dhis-web-commons/ouwt/ouwt.js,javascript/report.js</param>
-			<param name="stylesheets">../dhis-web-caseentry/style/report.css</param>
+			<param name="stylesheets">style/report.css</param>
 			<param name="requiredAuthorities">F_GENERATE_PROGRAM_SUMMARY_REPORT</param>
 		</action>
 
@@ -272,7 +272,7 @@
 			<param name="page">/dhis-web-caseentry/tabularReportSelect.vm</param>
 			<param name="menu">/dhis-web-caseentry/reportsMenu.vm</param>
 			<param name="javascripts">../dhis-web-commons/ouwt/ouwt.js,javascript/tabularReport.js,javascript/commons.js</param>
-			<param name="stylesheets">../dhis-web-caseentry/style/report.css</param>
+			<param name="stylesheets">style/report.css</param>
 			<param name="requiredAuthorities">F_GENERATE_BENEFICIARY_TABULAR_REPORT</param>
 		</action>
 		

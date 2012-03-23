@@ -150,6 +150,13 @@ public class GenerateTabularReportAction
         this.orderByExecutionDateByAsc = orderByExecutionDateByAsc;
     }
 
+    private Integer level;
+
+    public void setLevel( Integer level )
+    {
+        this.level = level;
+    }
+
     private Grid grid;
 
     public Grid getGrid()
@@ -211,7 +218,7 @@ public class GenerateTabularReportAction
         // ---------------------------------------------------------------------
 
         OrganisationUnit selectedOrgunit = selectedStateManager.getSelectedOrganisationUnit();
-        
+
         Set<Integer> orgunitIds = new HashSet<Integer>();
 
         if ( facilityLB.equals( "selected" ) )
@@ -231,7 +238,7 @@ public class GenerateTabularReportAction
                 orgunitIds.remove( selectedOrgunit.getId() );
             }
         }
-        
+
         // ---------------------------------------------------------------------
         // Get program-stage, start-date, end-date
         // ---------------------------------------------------------------------
@@ -278,12 +285,13 @@ public class GenerateTabularReportAction
             this.paging = createPaging( total );
 
             grid = programStageInstanceService.getTabularReport( programStage, dataElements, searchingKeys, orgunitIds,
-                startValue, endValue, orderByOrgunitAsc, orderByExecutionDateByAsc, paging.getStartPos(), paging.getPageSize(), format, i18n );
+                level, startValue, endValue, orderByOrgunitAsc, orderByExecutionDateByAsc, paging
+                    .getStartPos(), paging.getPageSize(), format, i18n );
             return SUCCESS;
         }
 
         grid = programStageInstanceService.getTabularReport( programStage, dataElements, searchingKeys, orgunitIds,
-            startValue, endValue, orderByOrgunitAsc, orderByExecutionDateByAsc, format, i18n );
+            level, startValue, endValue, orderByOrgunitAsc, orderByExecutionDateByAsc, format, i18n );
 
         return type;
     }

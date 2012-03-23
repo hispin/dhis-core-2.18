@@ -15,9 +15,9 @@
 
 <h3>$i18n.getString( "tabular_report" )</h3>
 <form id="reportForm" name="reportForm" method="post">
-<p><input type="button" value="$i18n.getString('data')" onclick="showCriteria();" style="width:150px;" ></p>
+<p><input type="button" value="$i18n.getString('data')" onclick="showCriteria();" ></p>
 
-<div class="inputCriteria" id='criteriaDiv' style="width:550px;height:460px;margin-bottom:20px;">
+<div class="inputCriteria" id='criteriaDiv' style="width:600px;height:480px;margin-bottom:20px;">
 
 <table>	
     <tr>
@@ -30,10 +30,23 @@
 		   $i18n.getString( "orgunit_level" )
 		</td>
 		<td>
-			<select id="facilityLB" name="facilityLB" style="width: 30em">
+			<select id="facilityLB" name="facilityLB">
 				<option value="all" selected="selected" >$i18n.getString( "all" )</option>
 				<option value="childrenOnly" >$i18n.getString( "children_only" )</option>
 				<option value="selected" >$i18n.getString( "selected" )</option>
+			</select>
+		</td>
+	</tr>
+	
+	<tr>
+		<td>
+		   $i18n.getString( "orgunit_hiererachy_included_on" )
+		</td>
+		<td>
+			<select id="level" name="level">
+				#foreach( $level in $levels )
+					<option value="$level.level">$i18n.getString( "level" ) $level.level</option>
+				#end
 			</select>
 		</td>
 	</tr>
@@ -82,10 +95,10 @@
 	<tr>
         <td></td>
 		<td> 
-			<input type="button" value="$i18n.getString( 'add_selected' )" title="$i18n.getString( 'add_selected' )" style="width:120px" onclick="moveSelectedById( 'availableDataElementIds', 'dataElementIds' )" class="button" />
-            <input type="button" value="$i18n.getString( 'add_all' )" title="$i18n.getString( 'add_all' )" style="width:120px" onclick="moveAllById( 'availableDataElementIds', 'dataElementIds' )" class="button" /> <br>
-            <input type="button" value="$i18n.getString( 'remove_selected' )" title="$i18n.getString( 'remove_selected' )" style="width:120px" onclick="moveSelectedById( 'dataElementIds', 'availableDataElementIds' )" class="button" />
-            <input type="button" value="$i18n.getString( 'remove_all' )" title="$i18n.getString( 'remove_all' )" style="width:120px" onclick="moveAllById( 'dataElementIds', 'availableDataElementIds' )" class="button" />
+			<input type="button" value="$i18n.getString( 'add_selected' )" title="$i18n.getString( 'add_selected' )" onclick="moveSelectedById( 'availableDataElementIds', 'dataElementIds' )" class="button" />
+            <input type="button" value="$i18n.getString( 'add_all' )" title="$i18n.getString( 'add_all' )" onclick="moveAllById( 'availableDataElementIds', 'dataElementIds' )" class="button" /> <br>
+            <input type="button" value="$i18n.getString( 'remove_selected' )" title="$i18n.getString( 'remove_selected' )" onclick="moveSelectedById( 'dataElementIds', 'availableDataElementIds' )" class="button" />
+            <input type="button" value="$i18n.getString( 'remove_all' )" title="$i18n.getString( 'remove_all' )" onclick="moveAllById( 'dataElementIds', 'availableDataElementIds' )" class="button" />
         </td>
     </tr>
 	
@@ -93,7 +106,7 @@
 		<td><label>$i18n.getString( "selected_data_elements" ) <em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
         <td>
 			<select id="dataElementIds" name="dataElementIds" multiple size='6' ondblclick="moveSelectedById( 'dataElementIds', 'availableDataElementIds' )" ></select>
-			<select id="memberValidator" multiple="multiple" style="display:none" class="{validate:{required:true}}"/>
+			<select id="memberValidator" multiple="multiple" class="{validate:{required:true}} hidden"/>
         </td> 
 		<td style="width:30px; text-align:center">
             <a href="javascript:moveUpSelectedOption('dataElementIds')"><img src="../images/move_up.png"/></a><br/><br/>
@@ -117,7 +130,9 @@
 <span id="message"></span>
 <div id="detailsInfo"></div>
 
-<div id="contentDiv"></div>
+	#parse( "dhis-web-commons/loader/loader.vm" )
+<div id="contentDiv">
+</div>
 
 <script type="text/javascript">   
     var i18n_report_generation_failed = '$encoder.jsEscape( $i18n.getString( "report_generation_failed" ), "'")';    

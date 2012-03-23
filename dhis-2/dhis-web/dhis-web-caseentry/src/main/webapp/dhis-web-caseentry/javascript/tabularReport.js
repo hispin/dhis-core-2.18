@@ -315,7 +315,8 @@ function getParams()
 				+ "&endDate=" + getFieldValue('endDate')
 				+ "&facilityLB=" + getFieldValue('facilityLB')
 				+ "&orderByOrgunitAsc=" + orderByOrgunitAsc
-				+ "&orderByExecutionDateByAsc=" + orderByExecutionDateByAsc;
+				+ "&orderByExecutionDateByAsc=" + orderByExecutionDateByAsc
+				+ "&level=" + getFieldValue('level');
 }
 
 function getFormula( value )

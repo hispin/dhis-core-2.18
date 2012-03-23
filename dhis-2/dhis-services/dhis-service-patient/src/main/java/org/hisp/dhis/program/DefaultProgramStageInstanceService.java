@@ -40,6 +40,7 @@ import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.i18n.I18n;
 import org.hisp.dhis.i18n.I18nFormat;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
+import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.patient.Patient;
 import org.hisp.dhis.patientdatavalue.PatientDataValue;
 import org.hisp.dhis.patientdatavalue.PatientDataValueService;
@@ -70,6 +71,13 @@ public class DefaultProgramStageInstanceService
     public void setPatientDataValueService( PatientDataValueService patientDataValueService )
     {
         this.patientDataValueService = patientDataValueService;
+    }
+
+    private OrganisationUnitService organisationUnitService;
+
+    public void setOrganisationUnitService( OrganisationUnitService organisationUnitService )
+    {
+        this.organisationUnitService = organisationUnitService;
     }
 
     // -------------------------------------------------------------------------
@@ -203,23 +211,25 @@ public class DefaultProgramStageInstanceService
     }
 
     public Grid getTabularReport( ProgramStage programStage, List<DataElement> dataElements,
-        Map<Integer, String> searchingKeys, Collection<Integer> orgunitIds, Date startDate, Date endDate,
+        Map<Integer, String> searchingKeys, Collection<Integer> orgunitIds, int level, Date startDate, Date endDate,
         boolean orderByOrgunitAsc, boolean orderByExecutionDateByAsc, int min, int max, I18nFormat format, I18n i18n )
     {
         List<ProgramStageInstance> programStageInstances = searchProgramStageInstances( programStage, searchingKeys,
             orgunitIds, startDate, endDate, orderByOrgunitAsc, orderByExecutionDateByAsc, min, max );
 
-        return createTabularGrid( programStage, programStageInstances, dataElements, startDate, endDate, format, i18n );
+        return createTabularGrid( level, programStage, programStageInstances, dataElements, startDate, endDate, format,
+            i18n );
     }
 
     public Grid getTabularReport( ProgramStage programStage, List<DataElement> dataElements,
-        Map<Integer, String> searchingKeys, Collection<Integer> orgunitIds, Date startDate, Date endDate,
+        Map<Integer, String> searchingKeys, Collection<Integer> orgunitIds, int level, Date startDate, Date endDate,
         boolean orderByOrgunitAsc, boolean orderByExecutionDateByAsc, I18nFormat format, I18n i18n )
     {
         List<ProgramStageInstance> programStageInstances = searchProgramStageInstances( programStage, searchingKeys,
             orgunitIds, startDate, endDate, orderByOrgunitAsc, orderByExecutionDateByAsc );
 
-        return createTabularGrid( programStage, programStageInstances, dataElements, startDate, endDate, format, i18n );
+        return createTabularGrid( level, programStage, programStageInstances, dataElements, startDate, endDate, format,
+            i18n );
     }
 
     @Override
@@ -300,8 +310,9 @@ public class DefaultProgramStageInstanceService
     // Supportive methods
     // -------------------------------------------------------------------------
 
-    private Grid createTabularGrid( ProgramStage programStage, List<ProgramStageInstance> programStageInstances,
-        List<DataElement> dataElements, Date startDate, Date endDate, I18nFormat format, I18n i18n )
+    private Grid createTabularGrid( Integer level, ProgramStage programStage,
+        List<ProgramStageInstance> programStageInstances, List<DataElement> dataElements, Date startDate, Date endDate,
+        I18nFormat format, I18n i18n )
     {
         Grid grid = new ListGrid();
 
@@ -343,7 +354,7 @@ public class DefaultProgramStageInstanceService
             for ( ProgramStageInstance programStageInstance : programStageInstances )
             {
                 grid.addRow();
-                grid.addValue( programStageInstance.getOrganisationUnit().getName() );
+                grid.addValue( getHierarchyOrgunit( programStageInstance.getOrganisationUnit(), level ) );
                 grid.addValue( format.formatDate( programStageInstance.getExecutionDate() ) );
 
                 for ( DataElement dataElement : dataElements )
@@ -367,18 +378,30 @@ public class DefaultProgramStageInstanceService
                         grid.addValue( "" );
                     }
                 }
-
-                if ( programStageInstance.getProgramInstance().getPatient() != null )
+                
+                if ( !anonymous )
                 {
                     grid.addValue( programStageInstance.getProgramInstance().getPatient().getId() );
-                }
-                else if ( !anonymous )
-                {
-                    grid.addValue( "" );
                 }
             }
         }
 
         return grid;
+    }
+
+    private String getHierarchyOrgunit( OrganisationUnit orgunit, int level )
+    {
+        String hierarchyOrgunit = orgunit.getName();
+        
+        orgunit = orgunit.getParent();
+        
+        while ( orgunit != null && organisationUnitService.getLevelOfOrganisationUnit( orgunit.getId() ) >= level )
+        {
+            hierarchyOrgunit = orgunit.getName() + " / " + hierarchyOrgunit;
+
+            orgunit = orgunit.getParent();
+        }
+
+        return hierarchyOrgunit;
     }
 }

@@ -3,6 +3,7 @@
 #set( $i = 1 )
 
 #set( $anonymous = "true")
+
 #if( $grid.getVisibleHeaders().size() <  $grid.getHeaders().size() )
 	#set( $anonymous = "false" )
 #end
@@ -15,7 +16,7 @@
 		</td>
 		#foreach( $col in $row )
 			<td>
-				#set( $index = ( $velocityCount - 1 ) )
+				#set( $index = ( $velocityCount - 1 ) ) 
 				#if( $anonymous == "false" && ( $index == $row.size() - 1 ) )
 					#if($col)
 					<a href="javascript:showPatientHistory( '$col' )" title='$i18n.getString( "patient_details_and_history" )'><img src="../images/information.png" alt='$i18n.getString( "patient_details_and_history" )'></a>
