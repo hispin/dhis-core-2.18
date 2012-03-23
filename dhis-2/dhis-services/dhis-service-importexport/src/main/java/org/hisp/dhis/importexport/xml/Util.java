@@ -76,7 +76,7 @@ public class Util
     public static String gmlToCoords(String coordinates, String decimalPlacesAsString) 
             throws ParseException
     {
-        NumberFormat nf = NumberFormat.getInstance(Locale.FRANCE);
+        NumberFormat nf = NumberFormat.getInstance(Locale.ENGLISH);
         
         int decimalPlaces = Integer.parseInt( decimalPlacesAsString);
         String formatString = "%."+decimalPlaces+"f,%."+decimalPlaces+"f";
