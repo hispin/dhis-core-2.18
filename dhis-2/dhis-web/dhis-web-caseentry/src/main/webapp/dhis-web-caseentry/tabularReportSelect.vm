@@ -130,9 +130,10 @@
 <span id="message"></span>
 <div id="detailsInfo"></div>
 
-	#parse( "dhis-web-commons/loader/loader.vm" )
 <div id="contentDiv">
 </div>
+
+#parse( "dhis-web-commons/loader/loader.vm" )
 
 <script type="text/javascript">   
     var i18n_report_generation_failed = '$encoder.jsEscape( $i18n.getString( "report_generation_failed" ), "'")';    
