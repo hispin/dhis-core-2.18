@@ -89,9 +89,9 @@ public interface ProgramStageInstanceService
             
     List<ProgramStageInstance> searchProgramStageInstances( ProgramStage programStage, Map<Integer,String> searchingKeys, Collection<Integer> orgunitIds, Date startDate, Date endDate, boolean orderByOrgunitAsc, boolean orderByExecutionDateByAsc, int min, int max );
 
-    Grid getTabularReport( ProgramStage programStage, List<DataElement> dataElements, Map<Integer,String> searchingKeys, Collection<Integer> orgunitIds, Date startDate, Date endDate, boolean orderByOrgunitAsc, boolean orderByExecutionDateByAsc, int min, int max, I18nFormat format, I18n i18n );
+    Grid getTabularReport( ProgramStage programStage, List<DataElement> dataElements, Map<Integer,String> searchingKeys, Collection<Integer> orgunitIds, int level, Date startDate, Date endDate, boolean orderByOrgunitAsc, boolean orderByExecutionDateByAsc, int min, int max, I18nFormat format, I18n i18n );
     
-    Grid getTabularReport( ProgramStage programStage, List<DataElement> dataElements, Map<Integer,String> searchingKeys, Collection<Integer> orgunitIds, Date startDate, Date endDate, boolean orderByOrgunitAsc, boolean orderByExecutionDateByAsc, I18nFormat format, I18n i18n );
+    Grid getTabularReport( ProgramStage programStage, List<DataElement> dataElements, Map<Integer,String> searchingKeys, Collection<Integer> orgunitIds, int level, Date startDate, Date endDate, boolean orderByOrgunitAsc, boolean orderByExecutionDateByAsc, I18nFormat format, I18n i18n );
 
     int countProgramStageInstances( ProgramStage programStage, Map<Integer,String> searchingKeys, Collection<Integer> orgunitIds, Date startDate, Date endDate );
     

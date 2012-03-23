@@ -28,9 +28,12 @@
 package org.hisp.dhis.caseentry.action.report;
 
 import java.util.Collection;
+import java.util.List;
 
 import org.hisp.dhis.caseentry.state.SelectedStateManager;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
+import org.hisp.dhis.organisationunit.OrganisationUnitLevel;
+import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.program.Program;
 import org.hisp.dhis.program.ProgramService;
 
@@ -47,12 +50,19 @@ public class TabularReportSelectAction
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
-    
+
     private SelectedStateManager selectedStateManager;
 
     public void setSelectedStateManager( SelectedStateManager selectedStateManager )
     {
         this.selectedStateManager = selectedStateManager;
+    }
+
+    private OrganisationUnitService organisationUnitService;
+
+    public void setOrganisationUnitService( OrganisationUnitService organisationUnitService )
+    {
+        this.organisationUnitService = organisationUnitService;
     }
 
     private ProgramService programService;
@@ -63,7 +73,7 @@ public class TabularReportSelectAction
     }
 
     // -------------------------------------------------------------------------
-    // Dependencies
+    // Input/Output
     // -------------------------------------------------------------------------
 
     private Collection<Program> programs;
@@ -80,6 +90,13 @@ public class TabularReportSelectAction
         return orgunit;
     }
 
+    private List<OrganisationUnitLevel> levels;
+
+    public List<OrganisationUnitLevel> getLevels()
+    {
+        return levels;
+    }
+
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
@@ -87,6 +104,8 @@ public class TabularReportSelectAction
     public String execute()
     {
         orgunit = selectedStateManager.getSelectedOrganisationUnit();
+
+        levels = organisationUnitService.getFilledOrganisationUnitLevels();
 
         programs = programService.getAllPrograms();
 
