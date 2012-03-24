@@ -1350,6 +1350,6 @@
 				/dhis-web-spreadsheet-reporting/jsonBookmarks.vm
 			</result>
 		</action>
-
+		
 	</package>
 </struts>
