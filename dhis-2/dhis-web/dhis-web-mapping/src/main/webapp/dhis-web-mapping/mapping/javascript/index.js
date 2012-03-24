@@ -15,7 +15,7 @@ Ext.onReady( function() {
 	
     Ext.Ajax.request({
         url: G.conf.path_mapping + 'initialize' + G.conf.type,
-        method: 'POST',
+        method: 'GET',
         params: {id: G.vars.parameter.id || null},
         success: function(r) {
             var init = Ext.util.JSON.decode(r.responseText);
