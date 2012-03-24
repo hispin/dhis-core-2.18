@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="
+http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.1.xsd">
+
+	<!-- LocalDataElementService -->
+	
+	<bean id="org.hisp.dhis.dataelement.LocalDataElementService"
+		class="org.hisp.dhis.dataelement.DefaultLocalDataElementService">
+		<property name="dataElementStore" ref="org.hisp.dhis.dataelement.LocalDataElementStore"/>
+	</bean>
+	
+	<bean id="org.hisp.dhis.dataelement.LocalDataElementStore" 
+		class="org.hisp.dhis.dataelement.hibernate.HibernateLocalDataElementStore">		
+		<property name="clazz" value="org.hisp.dhis.dataelement.DataElement" />
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
+</beans>

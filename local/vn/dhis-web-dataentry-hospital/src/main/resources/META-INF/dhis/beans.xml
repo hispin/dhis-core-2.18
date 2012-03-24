@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="
+http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.1.xsd">
+	
+	<bean id="org.hisp.dhis.dataelement.LoadFormAction" class="org.hisp.dhis.dataelement.LoadFormAction" scope="prototype">
+	    <property name="dataEntryFormService" ref="org.hisp.dhis.dataentryform.DataEntryFormService" />
+	    <property name="dataElementService" ref="org.hisp.dhis.dataelement.DataElementService" />
+		<property name="dataSetService" ref="org.hisp.dhis.dataset.DataSetService" />
+		<property name="attributeService" ref="org.hisp.dhis.attribute.AttributeService" />
+		<property name="localDataElementService" ref="org.hisp.dhis.dataelement.LocalDataElementService" />
+  	</bean>
+	
+
+</beans>
