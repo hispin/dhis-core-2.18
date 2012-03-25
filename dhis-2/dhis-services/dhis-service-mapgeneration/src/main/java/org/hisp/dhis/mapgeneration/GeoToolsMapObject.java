@@ -27,12 +27,8 @@ package org.hisp.dhis.mapgeneration;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.io.IOException;
-
 import org.codehaus.jackson.JsonNode;
-import org.codehaus.jackson.JsonParseException;
 import org.codehaus.jackson.JsonParser;
-import org.codehaus.jackson.JsonProcessingException;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 
@@ -130,17 +126,9 @@ public class GeoToolsMapObject
             JsonParser parser = new ObjectMapper().getJsonFactory().createJsonParser( coords );
             root = parser.readValueAsTree();
         }
-        catch ( JsonParseException ex )
+        catch ( Exception ex )
         {
-            ex.printStackTrace();
-        }
-        catch ( JsonProcessingException ex )
-        {
-            ex.printStackTrace();
-        }
-        catch ( IOException ex )
-        {
-            ex.printStackTrace();
+            throw new RuntimeException( ex );
         }
 
         // Use the factory to build the correct type based on the feature type
