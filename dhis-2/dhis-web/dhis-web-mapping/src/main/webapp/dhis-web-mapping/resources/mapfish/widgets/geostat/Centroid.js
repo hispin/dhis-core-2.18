@@ -875,7 +875,6 @@ mapfish.widgets.geostat.Centroid = Ext.extend(Ext.Panel, {
 		var mls = this.cmp.mapLegendSet.getValue();
 		Ext.Ajax.request({
 			url: G.conf.path_mapping + 'getMapLegendsByMapLegendSet' + G.conf.type,
-			method: 'POST',
 			params: {mapLegendSetId: mls},
             scope: this,
 			success: function(r) {
@@ -1066,7 +1065,6 @@ mapfish.widgets.geostat.Centroid = Ext.extend(Ext.Panel, {
                 
                 Ext.Ajax.request({
                     url: G.conf.path_mapping + dataUrl + G.conf.type,
-                    method: 'POST',
                     params: params,
                     scope: this,
                     success: function(r) {

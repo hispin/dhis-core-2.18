@@ -513,7 +513,6 @@ mapfish.widgets.geostat.Point = Ext.extend(Ext.Panel, {
                         this.updateValues = true;
                         Ext.Ajax.request({
                             url: G.conf.path_mapping + 'getMapLegendSetByIndicator' + G.conf.type,
-                            method: 'POST',
                             params: {indicatorId: cb.getValue()},
                             scope: this,
                             success: function(r) {
@@ -592,7 +591,6 @@ mapfish.widgets.geostat.Point = Ext.extend(Ext.Panel, {
                         this.updateValues = true;
                         Ext.Ajax.request({
                             url: G.conf.path_mapping + 'getMapLegendSetByDataElement' + G.conf.type,
-                            method: 'POST',
                             params: {dataElementId: cb.getValue()},
                             scope: this,
                             success: function(r) {
@@ -1040,7 +1038,6 @@ mapfish.widgets.geostat.Point = Ext.extend(Ext.Panel, {
                     showInfo: function() {                        
                         Ext.Ajax.request({
                             url: G.conf.path_mapping + 'getFacilityInfo' + G.conf.type,
-                            method: 'POST',
                             params: {id: feature.attributes.id},
                             success: function(r) {
                                 var ou = Ext.util.JSON.decode(r.responseText);
@@ -1460,7 +1457,6 @@ mapfish.widgets.geostat.Point = Ext.extend(Ext.Panel, {
 		var mls = this.cmp.mapLegendSet.getValue();
 		Ext.Ajax.request({
 			url: G.conf.path_mapping + 'getMapLegendsByMapLegendSet' + G.conf.type,
-			method: 'POST',
 			params: {mapLegendSetId: mls},
             scope: this,
 			success: function(r) {
@@ -1695,7 +1691,6 @@ mapfish.widgets.geostat.Point = Ext.extend(Ext.Panel, {
                 
                 Ext.Ajax.request({
                     url: G.conf.path_mapping + dataUrl + G.conf.type,
-                    method: 'POST',
                     params: params,
                     scope: this,
                     success: function(r) {
