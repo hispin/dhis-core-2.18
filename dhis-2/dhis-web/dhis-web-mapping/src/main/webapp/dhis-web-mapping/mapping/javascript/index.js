@@ -1,5 +1,6 @@
 Ext.onReady( function() {
     Ext.BLANK_IMAGE_URL = '../resources/ext-ux/theme/gray-extend/gray-extend/s.gif';
+    Ext.Ajax.method = 'GET';
 	Ext.layout.FormLayout.prototype.trackLabels = true;
     Ext.QuickTips.init();
 	document.body.oncontextmenu = function(){return false;};
@@ -15,7 +16,6 @@ Ext.onReady( function() {
 	
     Ext.Ajax.request({
         url: G.conf.path_mapping + 'initialize' + G.conf.type,
-        method: 'GET',
         params: {id: G.vars.parameter.id || null},
         success: function(r) {
             var init = Ext.util.JSON.decode(r.responseText);
@@ -1538,7 +1538,6 @@ Ext.onReady( function() {
 	function setHelpText(topic, tab) {
 		Ext.Ajax.request({
 			url: '../../dhis-web-commons-about/getHelpContent.action',
-			method: 'POST',
 			params: {id: topic},
 			success: function(r) {
 				tab.body.update('<div id="help">' + r.responseText + '</div>');
@@ -1724,6 +1723,7 @@ Ext.onReady( function() {
                     
                     Ext.Ajax.request({
                         url: G.conf.path_mapping + 'addOrUpdateMapLayer' + G.conf.type,
+                        method: 'POST',
                         params: params,
                         success: function(r) {
                             Ext.message.msg(true, 'WMS ' + G.i18n.overlay + ' <span class="x-msg-hl">' + bln + '</span> ' + G.i18n.registered);

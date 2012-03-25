@@ -528,7 +528,6 @@ mapfish.widgets.geostat.Symbol = Ext.extend(Ext.Panel, {
                     showInfo: function() {                        
                         Ext.Ajax.request({
                             url: G.conf.path_mapping + 'getFacilityInfo' + G.conf.type,
-                            method: 'POST',
                             params: {id: feature.attributes.id},
                             success: function(r) {
                                 var ou = Ext.util.JSON.decode(r.responseText);
