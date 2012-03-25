@@ -1196,6 +1196,7 @@ Ext.onReady( function() {
                     var url = DV.cmp.favorite.system.getValue() ? DV.conf.finals.ajax.favorite_addorupdatesystem : DV.conf.finals.ajax.favorite_addorupdate;                    
                     Ext.Ajax.request({
                         url: DV.conf.finals.ajax.path_visualizer + url,
+                        method: 'POST',
                         params: p,
                         success: function() {
                             DV.store.favorite.load({callback: function() {
@@ -1219,6 +1220,7 @@ Ext.onReady( function() {
                     var url = DV.cmp.favorite.system.getValue() ? DV.conf.finals.ajax.favorite_addorupdatesystem : DV.conf.finals.ajax.favorite_addorupdate;
                     Ext.Ajax.request({
                         url: DV.conf.finals.ajax.path_visualizer + url,
+                        method: 'POST',
                         params: {uid: r.data.id, name: name},
                         success: function() {
                             DV.store.favorite.load({callback: function() {
@@ -1239,6 +1241,7 @@ Ext.onReady( function() {
                     });
                     Ext.Ajax.request({
                         url: baseurl,
+                        method: 'POST',
                         success: function() {
                             DV.store.favorite.load({callback: function() {
                                 DV.util.mask.hideMask();
