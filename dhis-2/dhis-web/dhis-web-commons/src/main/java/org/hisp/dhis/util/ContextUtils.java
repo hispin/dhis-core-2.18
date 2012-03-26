@@ -29,6 +29,7 @@ package org.hisp.dhis.util;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.Collection;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Map;
@@ -37,6 +38,8 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.hisp.dhis.common.IdentifiableObject;
+import org.hisp.dhis.common.IdentifiableObjectUtils;
 import org.hisp.dhis.system.util.DateUtils;
 
 /**
@@ -59,10 +62,13 @@ public class ContextUtils
     public static final String CONTENT_TYPE_JAVASCRIPT = "application/javascript";
 
     public static final String HEADER_USER_AGENT = "User-Agent";
+    public static final String HEADER_IF_NONE_MATCH = "If-None-Match";
+    public static final String HEADER_ETAG = "ETag";
 
     private static final String SEPARATOR = "/";
     private static final String PORT_SEPARATOR = ":";
     private static final String PROTOCOL = "http://";
+    private static final String QUOTE = "\"";
     
     private static final Map<String, String> CONTENT_TYPE_MAP = new HashMap<String, String>() 
     { {
@@ -165,5 +171,34 @@ public class ContextUtils
         PrintWriter writer = response.getWriter();
         writer.println( message );
         writer.flush();
+    }
+    
+    /**
+     * Clears the given collection if it is not modified according to the HTTP
+     * cache validation. This method looks up the ETag sent in the request from 
+     * the "If-None-Match" header value, generates an ETag based on the given 
+     * collection of IdentifiableObjects and compares them for equality. If this
+     * evaluates to true, it will set status code 304 Not Modified on the response
+     * and remove all elements from the given list. It will also set the ETag header
+     * on the response in any case.
+     * 
+     * @param request the HttpServletRequest.
+     * @param response the HttpServletResponse.
+     * @return true if the eTag values are equals, false otherwise.
+     */
+    public static void clearIfNotModified( HttpServletRequest request, HttpServletResponse response, Collection<? extends IdentifiableObject> objects )
+    {
+        String tag = QUOTE + IdentifiableObjectUtils.getLastUpdatedTag( objects ) + QUOTE;
+        
+        response.setHeader( HEADER_ETAG, tag );
+        
+        String inputTag = request.getHeader( HEADER_IF_NONE_MATCH );
+
+        if ( objects != null && inputTag != null && tag != null && inputTag.equals( tag ) )
+        {
+            response.setStatus( HttpServletResponse.SC_NOT_MODIFIED );
+            
+            objects.clear();
+        }
     }
 }

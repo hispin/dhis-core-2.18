@@ -32,10 +32,12 @@ import java.util.Collections;
 import java.util.List;
 import java.util.ListIterator;
 
+import org.apache.struts2.ServletActionContext;
 import org.hisp.dhis.paging.ActionPagingSupport;
 import org.hisp.dhis.user.User;
 import org.hisp.dhis.user.UserService;
 import org.hisp.dhis.user.comparator.UserComparator;
+import org.hisp.dhis.util.ContextUtils;
 
 /**
  * @author mortenoh
@@ -82,6 +84,8 @@ public class GetUsersAction
     {
         users = new ArrayList<User>( userService.getAllUsers() );
 
+        ContextUtils.clearIfNotModified( ServletActionContext.getRequest(), ServletActionContext.getResponse(), users );
+        
         if ( key != null )
         {
             filterByKey( key, true );

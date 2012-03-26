@@ -31,9 +31,11 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import org.apache.struts2.ServletActionContext;
 import org.hisp.dhis.attribute.Attribute;
 import org.hisp.dhis.attribute.AttributeService;
 import org.hisp.dhis.common.comparator.IdentifiableObjectNameComparator;
+import org.hisp.dhis.util.ContextUtils;
 
 import com.opensymphony.xwork2.Action;
 
@@ -73,7 +75,9 @@ public class GetAttributesAction
     public String execute()
     {
         attributes = new ArrayList<Attribute>( attributeService.getAllAttributes() );
-
+        
+        ContextUtils.clearIfNotModified( ServletActionContext.getRequest(), ServletActionContext.getResponse(), attributes );
+        
         Collections.sort( attributes, IdentifiableObjectNameComparator.INSTANCE );
 
         return SUCCESS;

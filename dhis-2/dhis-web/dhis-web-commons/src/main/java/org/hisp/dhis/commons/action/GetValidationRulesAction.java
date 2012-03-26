@@ -31,7 +31,9 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import org.apache.struts2.ServletActionContext;
 import org.hisp.dhis.common.comparator.IdentifiableObjectNameComparator;
+import org.hisp.dhis.util.ContextUtils;
 import org.hisp.dhis.validation.ValidationRule;
 import org.hisp.dhis.validation.ValidationRuleService;
 
@@ -73,6 +75,8 @@ public class GetValidationRulesAction
     {
         validationRules = new ArrayList<ValidationRule>( validationRuleService.getAllValidationRules() );
 
+        ContextUtils.clearIfNotModified( ServletActionContext.getRequest(), ServletActionContext.getResponse(), validationRules );
+        
         Collections.sort( validationRules, IdentifiableObjectNameComparator.INSTANCE );
 
         return SUCCESS;

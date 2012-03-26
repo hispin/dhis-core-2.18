@@ -70,7 +70,8 @@ var FORMTYPE_DEFAULT = 'default';
 $( document ).ready( function()
 {
     $.ajaxSetup( {
-        type: 'POST'
+        type: 'POST',
+        cache: false
     } );
 
     selection.setListenerFunction( organisationUnitSelected );
@@ -144,7 +145,6 @@ function loadMetaData()
 
     $.ajax( {
     	url: 'getMetaData.action',
-    	cache: false,
     	dataType: 'json',
     	success: function( json )
 	    {
@@ -202,7 +202,6 @@ function uploadLocalData()
             url: 'registerCompleteDataSet.action',
             data: value,
             dataType: 'json',
-            cache: false,
             success: function( data, textStatus, jqXHR )
             {
                 if ( data.status == 2 )
@@ -255,7 +254,6 @@ function uploadLocalData()
             url: 'saveValue.action',
             data: value,
             dataType: 'json',
-            cache: false,
             success: function( data, textStatus, jqXHR )
             {
                 if ( data.c == 2 ) {
@@ -676,7 +674,6 @@ function insertDataValues()
 	        dataSetId : dataSetId,
 	        organisationUnitId : currentOrganisationUnitId
 	    },
-	    cache: false,
 	    dataType: 'json',
 	    success: function( json )
 	    {
@@ -859,7 +856,6 @@ function validateCompleteDataSet()
 
         $.ajax( { url: 'getValidationViolations.action',
         	data: params,
-        	cache: false,
         	dataType: 'json',
         	success: function( data )
 	        {
@@ -883,7 +879,6 @@ function registerCompleteDataSet( json )
     $.ajax( {
     	url: 'registerCompleteDataSet.action',
     	data: params,
-    	cache: false,
         dataType: 'json',
     	success: function(data)
         {
@@ -921,7 +916,6 @@ function undoCompleteDataSet()
         $.ajax( {
         	url: 'undoCompleteDataSet.action',
         	data: params,
-        	cache: false,
         	dataType: 'json',
         	success: function(data)
 	        {
@@ -1316,7 +1310,6 @@ function StorageManager()
             },
             dataSetId: dataSetId,
             formVersion: formVersion,
-            cache: false,
             dataType: 'text',
             success: function( data, textStatus, jqXHR )
             {
