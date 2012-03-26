@@ -194,7 +194,7 @@ public class DefaultExportReportService
 
     public Collection<String> getExportReportGroups()
     {
-        return i18n( i18nService, exportReportStore.getExportReportGroups() );
+        return exportReportStore.getExportReportGroups();
     }
 
     public Collection<ExportReport> getExportReportsByGroup( String group )
@@ -204,12 +204,12 @@ public class DefaultExportReportService
 
     public Collection<ExportReport> getExportReportsByClazz( Class<?> clazz )
     {
-        return exportReportStore.getExportReportsByClazz( clazz );
+        return i18n( i18nService, exportReportStore.getExportReportsByClazz( clazz ) );
     }
 
     public Collection<ExportReport> getExportReportsByReportType( String reportType )
     {
-        return exportReportStore.getExportReportsByReportType( reportType );
+        return i18n( i18nService, exportReportStore.getExportReportsByReportType( reportType ) );
     }
 
     public Collection<String> getAllExportReportTemplates()
