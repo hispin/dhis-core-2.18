@@ -17,4 +17,17 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
 	
+	<!-- LocalAttributeValue -->
+	
+	<bean id="org.hisp.dhis.attribute.LocalAttributeValueService"
+		class="org.hisp.dhis.attribute.DefaultLocalAttributeValueService">
+		<property name="localAttributeValueStore" ref="org.hisp.dhis.attribute.LocalAttributeValueStore"/>
+	</bean>
+	
+	<bean id="org.hisp.dhis.attribute.LocalAttributeValueStore" 
+		class="org.hisp.dhis.attribute.hibernate.HibernateLocalAttributeValueStore">		
+		<property name="clazz" value="org.hisp.dhis.attribute.AttributeValue" />
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
 </beans>

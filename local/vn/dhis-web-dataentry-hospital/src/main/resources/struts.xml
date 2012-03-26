@@ -10,7 +10,7 @@
 		namespace="/dhis-web-dataentry-hospital">
 
 		<action name="index" class="org.hisp.dhis.dataelement.LoadFormAction">
-			<result name="success" type="redirect">loadForm.action
+			<result name="success" type="redirect">../dhis-web-dataentry/index.action
 			</result>
 		</action>
 
@@ -21,6 +21,10 @@
 	      <result name="section" type="velocity">/dhis-web-dataentry/sectionForm.vm</result>
 	      <result name="default" type="velocity">/dhis-web-dataentry/defaultForm.vm</result>
 	      <result name="input" type="velocity">/dhis-web-dataentry/responseVoid.vm</result>
+	    </action>
+	    
+	    <action name="loadAttributeValuesByAttribute" class="org.hisp.dhis.dataelement.LoadAttributeValuesByAttributeAction">
+	      <result name="success" type="velocity-json">/dhis-web-dataentry/jsonAttributeValues.vm</result>
 	    </action>
 
 	</package>
