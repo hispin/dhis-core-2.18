@@ -111,11 +111,11 @@ public class ReloadStartStopServiceAction
         message = smsLibService.getMessageStatus();
         
         if ( message != null && !message.equals( "success" ) )
-        {            
+        {
+            message = i18n.getString( message );
+
             return INPUT;
         }
-        
-        message = i18n.getString( message );
 
         return SUCCESS;
     }

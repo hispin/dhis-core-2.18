@@ -58,34 +58,45 @@ public class SmsConfigurationManagerImpl
     private List<SmsConfigurable> smsConfigurables;
 
     @PostConstruct
-    public void initializeSmsConfigurables()
+    public String initializeSmsConfigurables()
     {
         if ( smsConfigurables == null )
         {
-            return;
+            return null;
         }
 
         SmsConfiguration smsConfiguration = getSmsConfiguration();
 
         if ( smsConfiguration == null )
         {
-            return;
+            return null;
         }
+
+        String message = null;
 
         for ( SmsConfigurable smsConfigurable : smsConfigurables )
         {
             try
             {
-                smsConfigurable.initialize( smsConfiguration );
                 log.debug( "Initialized " + smsConfigurable );
+
+                message = smsConfigurable.initialize( smsConfiguration );
+
+                if ( message != null && !message.equals( "success" ) )
+                {
+                    return message;
+                }
             }
             catch ( Throwable t )
             {
-                // TODO: Need to make these problems available in GUI!
                 log.warn( "Unable to initialize service " + smsConfigurable.getClass().getSimpleName()
                     + " with configuration " + smsConfiguration, t );
+                return "Unable to initialize service " + smsConfigurable.getClass().getSimpleName()
+                    + " with configuration " + smsConfiguration + t.getMessage();
             }
         }
+
+        return message;
     }
 
     @Override

@@ -73,13 +73,15 @@ public class OutboundSmsServiceImpl
     // -------------------------------------------------------------------------
 
     @Override
-    public void initialize( SmsConfiguration smsConfiguration )
+    public String initialize( SmsConfiguration smsConfiguration )
         throws SmsServiceException
     {
         if ( smsConfiguration != null )
         {
             enabled = smsConfiguration.isEnabled();
         }
+
+        return "success";
     }
 
     @Override
@@ -90,7 +92,7 @@ public class OutboundSmsServiceImpl
 
     @Override
     @Transactional
-    public void sendMessage( OutboundSms sms, String gatewayId )
+    public String sendMessage( OutboundSms sms, String gatewayId )
         throws SmsServiceException
     {
         if ( !enabled )
@@ -102,25 +104,29 @@ public class OutboundSmsServiceImpl
 
         if ( transportService != null )
         {
-            sendMessageInternal( sms, gatewayId );
+            return sendMessageInternal( sms, gatewayId );
         }
+
+        return "outboundsms_saved";
     }
 
     // -------------------------------------------------------------------------
     // Support methods
     // -------------------------------------------------------------------------
 
-    private void sendMessageInternal( OutboundSms sms, String id )
+    private String sendMessageInternal( OutboundSms sms, String id )
     {
         try
         {
-            transportService.sendMessage( sms, id );
             sms.setStatus( OutboundSmsStatus.SENT );
+            return transportService.sendMessage( sms, id );
         }
         catch ( SmsServiceException e )
         {
             log.debug( "Exception sending message " + sms, e );
             sms.setStatus( OutboundSmsStatus.ERROR );
+            
+            return "Exception sending message " + sms + e.getMessage();
         }
     }
 }

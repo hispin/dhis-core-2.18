@@ -9,6 +9,8 @@
 	 
         changeValueType("bulksms");
     });
+	
+	var i18n_add_update_success = '$encoder.jsEscape( $i18n.getString( "add_update_gateway_success" ) , "'")';
 </script>
 <h3>$i18n.getString( "add_update_gateway_management" )</h3>
 <form id="addGateWayConfigForm" name="addGateWayConfigForm">
