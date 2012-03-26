@@ -338,7 +338,7 @@ mapfish.widgets.geostat.Boundary = Ext.extend(Ext.Panel, {
 							this.cmp.level
 						]
 					},                            
-					{ html: '<div class="thematic-br"></div><div class="thematic-br"></div>' },                            
+					{ html: '<div class="thematic-br"></div>' },                            
 					{ html: '<div class="window-info">' + G.i18n.parent_organisation_unit + '</div>' },
 					this.cmp.parent
 				]

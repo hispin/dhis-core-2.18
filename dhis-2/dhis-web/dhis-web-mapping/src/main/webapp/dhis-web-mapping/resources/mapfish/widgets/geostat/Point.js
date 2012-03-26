@@ -819,7 +819,7 @@ mapfish.widgets.geostat.Point = Ext.extend(Ext.Panel, {
         this.cmp.startColor = new Ext.ux.ColorField({
             fieldLabel: G.i18n.low_color,
             allowBlank: false,
-            width: G.conf.combo_width,
+            width: 73,
             value: "#FF0000",
             listeners: {
                 'select': {
@@ -832,9 +832,8 @@ mapfish.widgets.geostat.Point = Ext.extend(Ext.Panel, {
         });
         
         this.cmp.endColor = new Ext.ux.ColorField({
-            fieldLabel: G.i18n.high_color,
             allowBlank: false,
-            width: G.conf.combo_width,
+            width: 73,
             value: "#FFFF00",
             listeners: {
                 'select': {
@@ -848,7 +847,7 @@ mapfish.widgets.geostat.Point = Ext.extend(Ext.Panel, {
         
         this.cmp.radiusLow = new Ext.form.NumberField({
             fieldLabel: G.i18n.low_point_size,
-            width: G.conf.combo_number_width_small,
+            width: 73,
             allowDecimals: false,
             allowNegative: false,
             minValue: 1,
@@ -865,7 +864,7 @@ mapfish.widgets.geostat.Point = Ext.extend(Ext.Panel, {
         
         this.cmp.radiusHigh = new Ext.form.NumberField({
             fieldLabel: G.i18n.high_point_size,
-            width: G.conf.combo_number_width_small,
+            width: 73,
             allowDecimals: false,
             allowNegative: false,
             minValue: 1,
@@ -943,6 +942,42 @@ mapfish.widgets.geostat.Point = Ext.extend(Ext.Panel, {
                 }
             }
         });
+        
+        this.cmp.colorPanel = new Ext.Panel({
+			layout: 'hbox',
+			style: 'padding-bottom:4px',
+			items: [
+				{
+					html: 'Low / high color:',
+					width: 107,
+					style: 'padding:3px 0 0 4px; color:#444'
+				},
+				this.cmp.startColor,
+				{
+					style: 'width:4px'
+				},
+				this.cmp.endColor,
+				{
+					style: 'height:4px'
+				}
+			]
+		});
+		
+		this.cmp.radiusPanel = new Ext.Panel({
+			layout: 'hbox',
+			items: [
+				{
+					html: 'Low / high radius:',
+					width: 107,
+					style: 'padding:3px 0 0 4px; color:#444'
+				},
+				this.cmp.radiusLow,
+				{
+					style: 'width:4px'
+				},
+				this.cmp.radiusHigh
+			]
+		});
     },
     
     addItems: function() {
@@ -952,12 +987,13 @@ mapfish.widgets.geostat.Point = Ext.extend(Ext.Panel, {
                 xtype: 'panel',
                 layout: 'column',
                 width: 570,
+                style: 'padding-bottom:3px',
                 items: [
                     {
                         xtype: 'form',
                         width: 270,
                         items: [
-                            {  html: '<div class="window-info">' + G.i18n.data_options + '</div>' },
+                            { html: '<div class="window-info">' + G.i18n.data_options + '</div>' },
                             this.cmp.mapview,
                             { html: '<div class="thematic-br">' },
                             this.cmp.mapValueType,
@@ -974,11 +1010,8 @@ mapfish.widgets.geostat.Point = Ext.extend(Ext.Panel, {
                             this.cmp.method,
                             this.cmp.bounds,
                             this.cmp.classes,
-                            this.cmp.startColor,
-                            this.cmp.endColor,
-                            { html: '<div class="thematic-br">' },
-                            this.cmp.radiusLow,
-                            this.cmp.radiusHigh
+                            this.cmp.colorPanel,
+                            this.cmp.radiusPanel
                         ]
                     },
                     {
@@ -994,7 +1027,7 @@ mapfish.widgets.geostat.Point = Ext.extend(Ext.Panel, {
                                     this.cmp.level
                                 ]
                             },                            
-                            { html: '<div class="thematic-br"></div><div class="thematic-br"></div>' },                            
+                            { html: '<div class="thematic-br"></div>' },                            
                             { html: '<div class="window-info">' + G.i18n.parent_organisation_unit + '</div>' },
                             this.cmp.parent
                         ]
@@ -1328,8 +1361,7 @@ mapfish.widgets.geostat.Point = Ext.extend(Ext.Panel, {
         
         if (this.legend.value == G.conf.map_legendset_type_automatic) {
             this.cmp.method.show();
-            this.cmp.startColor.show();
-            this.cmp.endColor.show();
+            this.cmp.colorPanel.show();
             this.cmp.mapLegendSet.hide();
             
             if (this.legend.method == G.conf.classify_with_bounds) {
@@ -1345,8 +1377,7 @@ mapfish.widgets.geostat.Point = Ext.extend(Ext.Panel, {
             this.cmp.method.hide();
             this.cmp.classes.hide();
             this.cmp.bounds.hide();
-            this.cmp.startColor.hide();
-            this.cmp.endColor.hide();
+            this.cmp.colorPanel.hide();
             this.cmp.mapLegendSet.show();
         }
     },
