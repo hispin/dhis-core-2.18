@@ -31,6 +31,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import org.apache.struts2.ServletActionContext;
 import org.hisp.dhis.common.comparator.IdentifiableObjectNameComparator;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.dataset.DataSetService;
@@ -38,6 +39,7 @@ import org.hisp.dhis.indicator.Indicator;
 import org.hisp.dhis.indicator.IndicatorGroup;
 import org.hisp.dhis.indicator.IndicatorService;
 import org.hisp.dhis.paging.ActionPagingSupport;
+import org.hisp.dhis.util.ContextUtils;
 import org.hisp.dhis.common.IdentifiableObjectUtils;
 
 /**
@@ -126,11 +128,8 @@ public class GetIndicatorsAction
         else
         {
             indicators = new ArrayList<Indicator>( indicatorService.getAllIndicators() );
-        }
-
-        if ( indicators == null )
-        {
-            indicators = new ArrayList<Indicator>();
+            
+            ContextUtils.clearIfNotModified( ServletActionContext.getRequest(), ServletActionContext.getResponse(), indicators );
         }
 
         if ( key != null )
@@ -138,7 +137,7 @@ public class GetIndicatorsAction
             indicators = IdentifiableObjectUtils.filterNameByKey( indicators, key, true );
         }
 
-        Collections.sort( indicators, new IdentifiableObjectNameComparator() );
+        Collections.sort( indicators, IdentifiableObjectNameComparator.INSTANCE );
 
         if ( usePaging )
         {

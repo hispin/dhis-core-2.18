@@ -7,13 +7,6 @@ $( document ).ready( function() { pageInit(); } );
 
 function pageInit()
 {
-	// jQuery ajax setup
-	
-	$.ajaxSetup(
-	{
-  		cache: false
-	} );
-	
 	// Zebra stripes in lists
 	
 	$( "table.listTable tbody tr:odd" ).addClass( "listAlternateRow" );

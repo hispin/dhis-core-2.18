@@ -33,6 +33,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import org.apache.struts2.ServletActionContext;
 import org.hisp.dhis.common.comparator.IdentifiableObjectNameComparator;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.dataset.DataSetService;
@@ -41,6 +42,7 @@ import org.hisp.dhis.period.PeriodService;
 import org.hisp.dhis.user.CurrentUserService;
 import org.hisp.dhis.user.UserAuthorityGroup;
 import org.hisp.dhis.user.UserService;
+import org.hisp.dhis.util.ContextUtils;
 
 /**
  * @author Lars Helge Overland
@@ -116,11 +118,7 @@ public class GetDataSetsAction
     public String execute()
         throws Exception
     {
-        if ( id == null && name == null )
-        {
-            dataSets = new ArrayList<DataSet>( dataSetService.getAllDataSets() );
-        }
-        else if ( id != null )
+        if ( id != null )
         {
             dataSets = new ArrayList<DataSet>(
                 dataSetService.getDataSetsByPeriodType( periodService.getPeriodType( id ) ) );
@@ -130,18 +128,24 @@ public class GetDataSetsAction
             dataSets = new ArrayList<DataSet>( dataSetService.getDataSetsByPeriodType( periodService
                 .getPeriodTypeByName( name ) ) );
         }
+        else
+        {
+            dataSets = new ArrayList<DataSet>( dataSetService.getAllDataSets() );
+            
+            ContextUtils.clearIfNotModified( ServletActionContext.getRequest(), ServletActionContext.getResponse(), dataSets );
+        }
 
         if ( !currentUserService.currentUserIsSuper() )
         {
-            Set<DataSet> ds = new HashSet<DataSet>();
+            Set<DataSet> accessibleDataSets = new HashSet<DataSet>();
 
             for ( UserAuthorityGroup u : userService.getUserCredentials( currentUserService.getCurrentUser() )
                 .getUserAuthorityGroups() )
             {
-                ds.addAll( u.getDataSets() );
+                accessibleDataSets.addAll( u.getDataSets() );
             }
 
-            dataSets.retainAll( ds );
+            dataSets.retainAll( accessibleDataSets );
         }
 
         Collections.sort( dataSets, IdentifiableObjectNameComparator.INSTANCE );

@@ -27,8 +27,10 @@ package org.hisp.dhis.common;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
@@ -39,6 +41,8 @@ import java.util.ListIterator;
 public class IdentifiableObjectUtils
 {
     private static final String SEPARATOR_JOIN = ", ";
+    private static final String SEPARATOR = "-";
+    private static final SimpleDateFormat LONG_DATE_FORMAT = new SimpleDateFormat( "yyyy-MM-dd'T'HH:mm:ss" );
     
     /**
      * Joins the names of the IdentifiableObjects in the given list and separates 
@@ -67,6 +71,14 @@ public class IdentifiableObjectUtils
         return null;
     }
     
+    /**
+     * Filters the given list of IdentifiableObjects based on the given key.
+     * 
+     * @param identifiableObjects the list of IdentifiableObjects.
+     * @param key the key.
+     * @param ignoreCase indicates whether to ignore case when filtering.
+     * @return a filtered list of IdentifiableObjects.
+     */
     public static <T extends IdentifiableObject> List<T> filterNameByKey( List<T> identifiableObjects, String key,
         boolean ignoreCase )
     {
@@ -90,5 +102,30 @@ public class IdentifiableObjectUtils
         }
 
         return objects;
+    }
+    
+    /**
+     * Generates a tag reflecting when the date of when the most recently updated
+     * IdentifiableObject in the given collection was modified.
+     * 
+     * @param objects the collection of IdentifiableObjects.
+     * @return a string tag.
+     */
+    public static <T extends IdentifiableObject> String getLastUpdatedTag( Collection<T> objects )
+    {
+        Date latest = null;
+        
+        if ( objects != null )
+        {
+            for ( IdentifiableObject object : objects )
+            {
+                if ( object != null && object.getLastUpdated() != null && ( latest == null || object.getLastUpdated().after( latest ) ) )
+                {
+                    latest = object.getLastUpdated();
+                }
+            }
+        }
+        
+        return latest != null && objects != null ? objects.size() + SEPARATOR + LONG_DATE_FORMAT.format( latest ) : null;
     }
 }

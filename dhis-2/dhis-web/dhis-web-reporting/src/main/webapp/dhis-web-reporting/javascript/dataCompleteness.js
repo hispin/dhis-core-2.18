@@ -21,7 +21,7 @@ function displayCompleteness()
     showLoader();
 
     var url = "getDataCompleteness.action" + "?periodId=" + periodId + "&criteria=" + criteria + "&dataSetId="
-            + dataSetId + "&type=html";
+            + dataSetId + "&type=html&r=" + getRandomNumber();
 
     $( "#contentDiv" ).load( url, function()
     {
