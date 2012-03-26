@@ -26,9 +26,11 @@ public class TestOutboundSmsService
     private static final Log log = LogFactory.getLog( TestOutboundSmsService.class );
 
     private boolean enabled = true;
+    
+    private String message = "success";
 
     @Override
-    public void sendMessage( OutboundSms sms, String gatewayId )
+    public String sendMessage( OutboundSms sms, String gatewayId )
         throws SmsServiceException
     {
         if ( !enabled )
@@ -37,14 +39,17 @@ public class TestOutboundSmsService
         }
 
         log.debug( "Send message: " + sms );
+        
+        return message;
     }
 
     @Override
-    public void initialize( SmsConfiguration config )
+    public String initialize( SmsConfiguration config )
         throws SmsServiceException
     {
         this.enabled = config.isEnabled();
         log.debug( "initialize()" );
+        return message;
     }
 
     @Override

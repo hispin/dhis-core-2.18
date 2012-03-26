@@ -44,7 +44,7 @@ public interface SmsConfigurable
      * @throws SmsServiceException if the service cannot be initialized with the
      *         provided {@link SmsConfiguration}
      */
-    void initialize( SmsConfiguration smsConfiguration )
+    String initialize( SmsConfiguration smsConfiguration )
         throws SmsServiceException;
 
 }

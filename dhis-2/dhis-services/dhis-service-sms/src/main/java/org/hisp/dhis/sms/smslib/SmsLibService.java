@@ -93,28 +93,25 @@ public class SmsLibService
     }
 
     @Override
-    public void sendMessage( OutboundSms sms, String gatewayId )
+    public String sendMessage( OutboundSms sms, String gatewayId )
         throws SmsServiceException
     {
         message = getServiceStatus();
 
         if ( message != null && (message.equals( "service_stopped" ) || message.equals( "service_stopping" )) )
         {
-            message = "service_stopped_cannot_send_sms";
-
-            return;
+            return message = "service_stopped_cannot_send_sms";
         }
 
-        String recipient;
+        String recipient = null;
 
         Set<String> recipients = sms.getRecipients();
 
         if ( recipients.size() == 0 )
         {
-            message = "there_is_no_recipient_cannot_send_sms";
-
             log.warn( "Trying to send sms without recipients: " + sms );
-            return;
+
+            return message = "there_is_no_recipient_cannot_send_sms";
         }
         else if ( recipients.size() == 1 )
         {
@@ -151,24 +148,19 @@ public class SmsLibService
         }
         catch ( SMSLibException e )
         {
-            message = "Unable to send message: " + sms + " " + e.getCause().getMessage();
-
             log.warn( "Unable to send message: " + sms, e );
-            throw new SmsServiceException( "Unable to send message: " + sms, e );
+            message = "Unable to send message: " + sms + " " + e.getCause().getMessage();
         }
         catch ( IOException e )
         {
-            message = "Unable to send message: " + sms + " " + e.getCause().getMessage();
-
             log.warn( "Unable to send message: " + sms, e );
-            throw new SmsServiceException( "Unable to send message: " + sms, e );
+
+            message = "Unable to send message: " + sms + " " + e.getCause().getMessage();
         }
         catch ( InterruptedException e )
         {
-            message = "Unable to send message: " + sms + " " + e.getCause().getMessage();
-
             log.warn( "Unable to send message: " + sms, e );
-            throw new SmsServiceException( "Unable to send message: " + sms, e );
+            message = "Unable to send message: " + sms + " " + e.getCause().getMessage();
         }
         finally
         {
@@ -185,13 +177,15 @@ public class SmsLibService
         }
         else
         {
-            message = "message_not_sent";
             log.warn( "Message not sent" );
+            message = "message_not_sent";
         }
+
+        return message;
     }
 
     @Override
-    public void initialize( SmsConfiguration smsConfiguration )
+    public String initialize( SmsConfiguration smsConfiguration )
         throws SmsServiceException
     {
         // FIXME: Implement a decent equals..
@@ -210,13 +204,30 @@ public class SmsLibService
         {
             log.debug( "Stopping SmsLib" );
             stopService();
+
+            if ( message != null && !message.equals( "success" ) )
+            {
+                return message;
+            }
         }
 
         log.debug( "Loading configuration" );
         reloadConfig();
 
+        if ( message != null && !message.equals( "success" ) )
+        {
+            return message;
+        }
+
         log.debug( "Starting SmsLib" );
         startService();
+
+        if ( message != null && !message.equals( "success" ) )
+        {
+            return message;
+        }
+
+        return message;
     }
 
     @Override
@@ -231,47 +242,47 @@ public class SmsLibService
 
         AGateway gateway = null;
 
+        message = "success";
+
         // Add gateways
         if ( config.getGateways() == null || config.getGateways().isEmpty() )
         {
             message = "unable_load_configuration_cause_of_there_is_no_gateway";
         }
-
-        for ( SmsGatewayConfig gatewayConfig : config.getGateways() )
+        else
         {
-            try
+            for ( SmsGatewayConfig gatewayConfig : config.getGateways() )
             {
-                gateway = gatewayFactory.create( gatewayConfig );
-
-                service.addGateway( gateway );
-
-                if ( gatewayConfig instanceof BulkSmsGatewayConfig )
+                try
                 {
-                    gatewayMap.put( BULK_GATEWAY, gateway.getGatewayId() );
-                }
-                else if ( gatewayConfig instanceof ClickatellGatewayConfig )
-                {
-                    gatewayMap.put( CLICKATELL_GATEWAY, gateway.getGatewayId() );
-                }
-                else if ( gatewayConfig instanceof GenericHttpGatewayConfig )
-                {
-                    gatewayMap.put( HTTP_GATEWAY, gateway.getGatewayId() );
-                }
-                else
-                {
-                    gatewayMap.put( MODEM_GATEWAY, gateway.getGatewayId() );
-                }
+                    gateway = gatewayFactory.create( gatewayConfig );
 
-                message = "success";
+                    service.addGateway( gateway );
 
-                log.debug( "Added gateway " + gatewayConfig.getName() );
-            }
-            catch ( GatewayException e )
-            {
-                message = "Unable to load gateway " + gatewayConfig.getName() + e.getCause().getMessage();
+                    if ( gatewayConfig instanceof BulkSmsGatewayConfig )
+                    {
+                        gatewayMap.put( BULK_GATEWAY, gateway.getGatewayId() );
+                    }
+                    else if ( gatewayConfig instanceof ClickatellGatewayConfig )
+                    {
+                        gatewayMap.put( CLICKATELL_GATEWAY, gateway.getGatewayId() );
+                    }
+                    else if ( gatewayConfig instanceof GenericHttpGatewayConfig )
+                    {
+                        gatewayMap.put( HTTP_GATEWAY, gateway.getGatewayId() );
+                    }
+                    else
+                    {
+                        gatewayMap.put( MODEM_GATEWAY, gateway.getGatewayId() );
+                    }
 
-                log.warn( "Unable to load gateway " + gatewayConfig.getName(), e );
-                throw new SmsServiceException( "Unable to load gateway" + gatewayConfig.getName(), e );
+                    log.debug( "Added gateway " + gatewayConfig.getName() );
+                }
+                catch ( GatewayException e )
+                {
+                    log.warn( "Unable to load gateway " + gatewayConfig.getName(), e );
+                    message = "Unable to load gateway " + gatewayConfig.getName() + e.getCause().getMessage();
+                }
             }
         }
     }
@@ -279,7 +290,9 @@ public class SmsLibService
     @Override
     public void startService()
     {
-        if ( config.isEnabled() && (message != null && message.equals( "success" )) )
+        message = "success";
+
+        if ( config != null && config.isEnabled() && (config.getGateways() != null && !config.getGateways().isEmpty()) )
         {
             try
             {
@@ -287,30 +300,23 @@ public class SmsLibService
             }
             catch ( SMSLibException e )
             {
-                message = "Unable to start smsLib service " + e.getCause().getMessage();
-
+                message = "Unable to start smsLib service " + e.getMessage();
                 log.warn( "Unable to start smsLib service", e );
-                throw new SmsServiceException( "Unable to start smsLib service", e );
             }
             catch ( IOException e )
             {
-                message = "Unable to start smsLib service" + e.getCause().getMessage();
-
+                message = "Unable to start smsLib service" + e.getMessage();
                 log.warn( "Unable to start smsLib service", e );
-                throw new SmsServiceException( "Unable to start smsLib service", e );
             }
             catch ( InterruptedException e )
             {
-                message = "Unable to start smsLib service" + e.getCause().getMessage();
-
+                message = "Unable to start smsLib service" + e.getMessage();
                 log.warn( "Unable to start smsLib service", e );
-                throw new SmsServiceException( "Unable to start smsLib service", e );
             }
         }
         else
         {
-            message = "sms_unable_or_there_is_no_gatewat_service_not_started";
-
+            message = "sms_unable_or_there_is_no_gateway_service_not_started";
             log.debug( "Sms not enabled or there is no any gateway, won't start service" );
         }
     }
@@ -327,23 +333,17 @@ public class SmsLibService
         catch ( SMSLibException e )
         {
             message = "Unable to stop smsLib service " + e.getCause().getMessage();
-
             log.warn( "Unable to stop smsLib service", e );
-            throw new SmsServiceException( "Unable to stop smsLib service", e );
         }
         catch ( IOException e )
         {
             message = "Unable to stop smsLib service" + e.getCause().getMessage();
-
             log.warn( "Unable to stop smsLib service", e );
-            throw new SmsServiceException( "Unable to stop smsLib service", e );
         }
         catch ( InterruptedException e )
         {
             message = "Unable to stop smsLib service" + e.getCause().getMessage();
-
             log.warn( "Unable to stop smsLib service", e );
-            throw new SmsServiceException( "Unable to stop smsLib service", e );
         }
     }
 

@@ -69,12 +69,14 @@ public class SmsMessageSender
     // -------------------------------------------------------------------------
 
     @SuppressWarnings( "unchecked" )
-    public void sendMessage( String subject, String text, User sender, boolean isPhone, Set<?> recipients,
+    public String sendMessage( String subject, String text, User sender, boolean isPhone, Set<?> recipients,
         String gatewayId )
     {
+        String message = null;
+
         if ( outboundSmsService == null || !outboundSmsService.isEnabled() )
         {
-            return;
+            return "outboundsmsservice_is_null_or_unable";
         }
 
         text = createMessage( subject, text, sender );
@@ -90,15 +92,20 @@ public class SmsMessageSender
             phones = getRecipients( (Set<User>) recipients );
         }
 
-        if ( !recipients.isEmpty() )
+        if ( !phones.isEmpty() && phones.size() > 0 )
         {
-            sendMessage( text, phones, gatewayId );
+            message = sendMessage( text, phones, gatewayId );
         }
         else if ( log.isDebugEnabled() )
         {
             log.debug( "Not sending message to any of the recipients" );
         }
+        else
+        {
+            message = "not_sending_message_to_any_recipient";
+        }
 
+        return message;
     }
 
     private Set<String> getRecipients( Set<User> users )
@@ -153,15 +160,16 @@ public class SmsMessageSender
         return (length > 160) ? text.substring( 0, 157 ) + "..." : text;
     }
 
-    private void sendMessage( String text, Set<String> recipients, String id )
+    private String sendMessage( String text, Set<String> recipients, String id )
     {
+        String message = null;
         OutboundSms sms = new OutboundSms();
         sms.setMessage( text );
         sms.setRecipients( recipients );
 
         try
         {
-            outboundSmsService.sendMessage( sms, id );
+            message = outboundSmsService.sendMessage( sms, id );
 
             if ( log.isDebugEnabled() )
             {
@@ -170,8 +178,12 @@ public class SmsMessageSender
         }
         catch ( SmsServiceException e )
         {
+            message = "Unable to send message through sms: " + sms + e.getCause().getMessage();
+
             log.warn( "Unable to send message through sms: " + sms, e );
         }
+
+        return message;
     }
 
 }

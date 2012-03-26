@@ -46,7 +46,7 @@ public interface OutboundSmsService
      * @param sms the message to be sent
      * @throws SmsServiceException if unable to sent Message
      */
-    void sendMessage( OutboundSms sms, String gatewayId )
+    String sendMessage( OutboundSms sms, String gatewayId )
         throws SmsServiceException;
 
 }

@@ -123,7 +123,7 @@ function saveGatewayConfig()
 function showMessage( json )
 {
 	if ( json.response == "success" ) {
-		showSuccessMessage( json.message );
+		showSuccessMessage( i18n_add_update_success );
 	} else {
 		showErrorMessage( json.message );
 	}

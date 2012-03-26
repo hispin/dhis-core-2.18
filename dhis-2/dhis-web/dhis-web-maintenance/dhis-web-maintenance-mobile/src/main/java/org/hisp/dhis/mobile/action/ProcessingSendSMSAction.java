@@ -35,10 +35,8 @@ import org.hisp.dhis.i18n.I18n;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.oust.manager.SelectionTreeManager;
 import org.hisp.dhis.sms.MessageSender;
-import org.hisp.dhis.sms.outbound.OutboundSmsTransportService;
 import org.hisp.dhis.user.CurrentUserService;
 import org.hisp.dhis.user.User;
-import org.hisp.dhis.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.opensymphony.xwork2.Action;
@@ -58,16 +56,10 @@ public class ProcessingSendSMSAction
     private SelectionTreeManager selectionTreeManager;
 
     @Autowired
-    private UserService userService;
-
-    @Autowired
     private CurrentUserService currentUserService;
 
     @Autowired
     private MessageSender messageSender;
-    
-    @Autowired
-    private OutboundSmsTransportService smsLibService;
 
     // -------------------------------------------------------------------------
     // Input & Output
@@ -108,11 +100,11 @@ public class ProcessingSendSMSAction
         return message;
     }
 
-    private I18n i18n;
-
     // -------------------------------------------------------------------------
     // I18n
     // -------------------------------------------------------------------------
+
+    private I18n i18n;
 
     public void setI18n( I18n i18n )
     {
@@ -134,30 +126,47 @@ public class ProcessingSendSMSAction
 
         if ( smsMessage != null && !smsMessage.isEmpty() )
         {
-            if ( recipients != null && !recipients.isEmpty() )
-            {
-                messageSender.sendMessage( smsSubject, smsMessage, currentUserService.getCurrentUser(), true,
-                    recipients, gatewayId );
-
-                message = smsLibService.getMessageStatus();
-                
-                if ( message != null && !message.equals( "success" ) )
-                {
-                    return ERROR;
-                }
-            }
-
-            Collection<OrganisationUnit> units = selectionTreeManager.getSelectedOrganisationUnits();
+            Collection<OrganisationUnit> units = selectionTreeManager.getReloadedSelectedOrganisationUnits();
 
             if ( units != null && !units.isEmpty() )
             {
-                messageSender.sendMessage( smsSubject, smsMessage, currentUserService.getCurrentUser(), false,
-                    new HashSet<User>( userService.getUsersByOrganisationUnits( units ) ), gatewayId );
-   
-                message = smsLibService.getMessageStatus();
-                
+                Set<User> users = new HashSet<User>();
+
+                for ( OrganisationUnit unit : units )
+                {
+                    if ( unit.getUsers() == null || unit.getUsers().isEmpty() )
+                    {
+                        if ( unit.getPhoneNumber() != null && !unit.getPhoneNumber().isEmpty() )
+                        {
+                            recipients.add( unit.getPhoneNumber() );
+                        }
+                    }
+                    else
+                    {
+                        users.addAll( unit.getUsers() );
+                    }
+                }
+
+                message = messageSender.sendMessage( smsSubject, smsMessage, currentUserService.getCurrentUser(),
+                    false, users, gatewayId );
+
                 if ( message != null && !message.equals( "success" ) )
                 {
+                    message = i18n.getString( message );
+
+                    return ERROR;
+                }
+            }
+            
+            if ( recipients != null && !recipients.isEmpty() )
+            {
+                message = messageSender.sendMessage( smsSubject, smsMessage, currentUserService.getCurrentUser(), true,
+                    recipients, gatewayId );
+
+                if ( message != null && !message.equals( "success" ) )
+                {
+                    message = i18n.getString( message );
+
                     return ERROR;
                 }
             }
