@@ -564,10 +564,11 @@ td.x-grid3-hd-over, td.sort-desc, td.sort-asc, td.x-grid3-hd-menu-open {
 }
 .treepanel-layer-border {
     padding:3px 0 0 2px;
+    margin-left:3px;
     background-color:#fff;
-    width:253px;
-    height:310px;
-    border:1px solid #ccc;
+    width:250px;
+    height:258px;
+    border:1px solid #bbb;
     overflow:auto;
 }
 #east {

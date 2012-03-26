@@ -2209,7 +2209,7 @@ Ext.onReady( function() {
     boundary.window = new Ext.Window({
         title: '<span id="window-boundary-title">' + G.i18n.boundary_layer + '</span>',
         layout: 'fit',
-        bodyStyle: 'padding:8px; background-color:#fff',
+        bodyStyle: 'padding:8px 8px 11px 8px; background-color:#fff',
         closeAction: 'hide',
         width: 287,
         collapsed: false,
@@ -2261,8 +2261,7 @@ Ext.onReady( function() {
         }
     });    
     boundary.window.setPagePosition(G.conf.window_x_left,G.conf.window_y_left);
-	
-    /* Section: widgets */
+    
     choropleth = new mapfish.widgets.geostat.Choropleth({
         map: G.vars.map,
         layer: polygonLayer,
@@ -2539,7 +2538,7 @@ Ext.onReady( function() {
     centroid.window = new Ext.Window({
         title: '<span id="window-centroid-title">' + G.conf.centroid_layer + '</span>',
         layout: 'fit',
-        bodyStyle: 'padding:8px; background-color:#fff',
+        bodyStyle: 'padding:8px 8px 11px 8px; background-color:#fff',
         closeAction: 'hide',
         width: 570,
         isUpdate: false,

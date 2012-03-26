@@ -362,7 +362,7 @@ mapfish.widgets.geostat.Symbol = Ext.extend(Ext.Panel, {
         this.cmp.group = new Ext.Panel({
             layout: 'form',
             width: 257,
-            height: 344,
+            height: 288,
             bodyStyle: 'padding:8px 0px 8px 18px;overflow-x:hidden;overflow-y:auto;',
             labelWidth: 170,
             defaults: {
@@ -487,7 +487,7 @@ mapfish.widgets.geostat.Symbol = Ext.extend(Ext.Panel, {
                                     this.cmp.level
                                 ]
                             },                            
-                            { html: '<div class="thematic-br"></div><div class="thematic-br"></div>' },                            
+                            { html: '<div class="thematic-br"></div>' },                            
                             { html: '<div class="window-info">' + G.i18n.parent_organisation_unit + '</div>' },
                             this.cmp.parent
                         ]
