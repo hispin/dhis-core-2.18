@@ -4,6 +4,7 @@ G.conf = {
 
     path_mapping: '../',
     path_commons: '../../dhis-web-commons-ajax-json/',
+    path_api: '../../api/',
     type: '.action',
     
 //  Layer names
@@ -158,22 +159,24 @@ G.util = {
         widget.expand();
     },
     
-    getUrlParam: function(strParam) {
-        var output = '';
-        var strHref = window.location.href;
-        if (strHref.indexOf('?') > -1 ) {
-            var strQueryString = strHref.substr(strHref.indexOf('?')).toLowerCase();
-            var aQueryString = strQueryString.split('&');
-            for (var iParam = 0; iParam < aQueryString.length; iParam++) {
-                if (aQueryString[iParam].indexOf(strParam.toLowerCase() + '=') > -1) {
-                    var aParam = aQueryString[iParam].split('=');
-                    output = aParam[1];
-                    break;
-                }
-            }
-        }
-        return unescape(output);
-    },
+	getUrlParam: function(s) {
+		var output = '';
+		var href = window.location.href;
+		if (href.indexOf('?') > -1 ) {
+			var query = href.substr(href.indexOf('?') + 1);
+			var query = query.split('&');
+			for (var i = 0; i < query.length; i++) {
+				if (query[i].indexOf('=') > -1) {
+					var a = query[i].split('=');
+					if (a[0].toLowerCase() === s) {
+						output = a[1];
+						break;
+					}
+				}
+			}
+		}
+		return unescape(output);
+	},
 
     getKeys: function(obj) {
         var temp = [];

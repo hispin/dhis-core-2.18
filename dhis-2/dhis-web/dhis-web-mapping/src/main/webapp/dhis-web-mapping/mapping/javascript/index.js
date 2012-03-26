@@ -12,8 +12,9 @@ Ext.onReady( function() {
     });
     
     G.vars.mask = new Ext.LoadMask(Ext.getBody(),{msg:G.i18n.loading,msgCls:'x-mask-loading2'});
-    G.vars.parameter = G.util.getUrlParam('view') ? {id: G.util.getUrlParam('view')} : {id: null};
-	
+    G.vars.parameter = G.util.getUrlParam('id') ? {id: G.util.getUrlParam('id')} : {id: null};
+    G.vars.parameter.base = G.util.getUrlParam('base') ? G.util.getUrlParam('base') : 'none';
+    
     Ext.Ajax.request({
         url: G.conf.path_mapping + 'initialize' + G.conf.type,
         params: {id: G.vars.parameter.id || null},
@@ -416,7 +417,7 @@ Ext.onReady( function() {
         G.vars.map.addLayer(ghyb);
     }
 	
-    var osm = new OpenLayers.Layer.OSM.Osmarender("OpenStreetMap");
+    var osm = new OpenLayers.Layer.OSM("OpenStreetMap");
     osm.layerType = G.conf.map_layer_type_baselayer;
     G.vars.map.addLayer(osm);
     
@@ -2927,7 +2928,19 @@ Ext.onReady( function() {
                 G.util.setOpacityByLayerType(G.conf.map_layer_type_thematic, G.conf.defaultLayerOpacity);
                 symbolLayer.setOpacity(1);
                 centroidLayer.setOpacity(1);
-                G.vars.map.getLayersByName('Google Streets')[0].setVisibility(false);
+                
+				if (G.vars.parameter.base === 'googlestreets') {
+					G.vars.map.getLayersByName('Google Streets')[0].setVisibility(true);
+				}
+				else if (G.vars.parameter.base === 'googlehybrid') {
+					G.vars.map.getLayersByName('Google Hybrid')[0].setVisibility(true);
+				}
+				else if (G.vars.parameter.base === 'osm') {
+					G.vars.map.getLayersByName('OpenStreetMap')[0].setVisibility(true);
+				}
+				else {
+					G.vars.map.getLayersByName('Google Streets')[0].setVisibility(false);
+				}
                 
                 var svg = document.getElementsByTagName('svg');
                 
@@ -3007,7 +3020,7 @@ Ext.onReady( function() {
                 helpWindow.setPagePosition(c+((e-c)/2)-(helpWindow.width/2), Ext.getCmp('east').y + 100);
                 
                 if (G.vars.parameter.id) {
-                    G.util.mapView.mapView.call(choropleth, G.vars.parameter.id);
+                    G.util.mapView.launch.call(choropleth, G.vars.parameter.mapView);
                     G.vars.parameter.id = null;
                 }
             }
