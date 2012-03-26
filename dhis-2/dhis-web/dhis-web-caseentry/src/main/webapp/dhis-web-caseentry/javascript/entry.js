@@ -231,7 +231,7 @@ function updateProvidingFacility()
 	var programStageId = byId( 'programStageId' ).value;
 	var checkField = byId( programStageId + '_facility');
     checkField.style.backgroundColor = '#ffffcc';
- 
+	
     var facilitySaver = new FacilitySaver( checkField.checked, '#ccffcc' );
     facilitySaver.save();
     
@@ -581,11 +581,6 @@ function ExecutionDateSaver( programStageId_, executionDate_, resultColor_ )
 //
 //-----------------------------------------------------------------
 
-function initCustomCheckboxes()
-{
-    jQuery('input[type=checkbox][name="providedByAnotherFacility"]').prettyCheckboxes();
-}
-
 function toggleContentForReportDate(show)
 {
     if( show ){
@@ -681,6 +676,11 @@ TOGGLE = {
     }
 };
 
+function initCustomCheckboxes()
+{
+    jQuery('input[type=checkbox]').prettyCheckboxes();
+}
+
 function entryFormContainerOnReady()
 {
 	var currentFocus = undefined;
@@ -701,9 +701,7 @@ function entryFormContainerOnReady()
         });
 		
         TOGGLE.init();
-		
-		initCustomCheckboxes();
-		
+				
 		jQuery("#entryForm :input").each(function()
 		{ 
 			if( jQuery(this).attr( 'options' )!= null )
@@ -808,5 +806,27 @@ function autocompletedField( idField )
 			// pass empty string as value to search for, displaying all results
 			input.autocomplete( "search", "" );
 			input.focus();
+		});
+}
+
+
+//--------------------------------------------------------------------------------------------
+// Show selected data-recording
+//--------------------------------------------------------------------------------------------
+
+function showSelectedDataRecoding( patientId )
+{
+	showLoader();
+	hideById('searchPatientDiv');
+	hideById('dataEntryFormDiv');
+	jQuery('#dataRecordingSelectDiv').load( 'selectDataRecording.action', 
+		{
+			patientId: patientId
+		},
+		function()
+		{
+			showById('dataRecordingSelectDiv');
+			hideLoader();
+			hideById('contentDiv');
 		});
 }

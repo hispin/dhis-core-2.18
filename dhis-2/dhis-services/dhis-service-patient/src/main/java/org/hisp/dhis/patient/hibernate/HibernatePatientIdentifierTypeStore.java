@@ -33,6 +33,7 @@ import org.hibernate.criterion.Restrictions;
 import org.hisp.dhis.hibernate.HibernateGenericStore;
 import org.hisp.dhis.patient.PatientIdentifierType;
 import org.hisp.dhis.patient.PatientIdentifierTypeStore;
+import org.hisp.dhis.program.Program;
 
 public class HibernatePatientIdentifierTypeStore
     extends HibernateGenericStore<PatientIdentifierType>
@@ -44,4 +45,15 @@ public class HibernatePatientIdentifierTypeStore
         return getCriteria( Restrictions.eq( "mandatory", mandatory ) ).list();
     }
 
+    @SuppressWarnings( "unchecked" )
+    public Collection<PatientIdentifierType> get( Program program )
+    {
+        return getCriteria( Restrictions.eq( "program", program ) ).list();
+    }
+
+    @SuppressWarnings( "unchecked" )
+    public Collection<PatientIdentifierType> getWithoutProgram()
+    {
+        return getCriteria( Restrictions.isNull( "program" ) ).list();
+    }
 }

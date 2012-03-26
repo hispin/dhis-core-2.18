@@ -30,7 +30,6 @@ package org.hisp.dhis.program;
 import java.util.Collection;
 
 import org.hisp.dhis.i18n.I18nFormat;
-import org.hisp.dhis.organisationunit.OrganisationUnit;
 
 /**
  * @author Chau Thu Tran

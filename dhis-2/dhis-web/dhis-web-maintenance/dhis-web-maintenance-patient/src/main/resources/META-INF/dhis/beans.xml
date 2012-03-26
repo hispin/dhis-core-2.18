@@ -515,6 +515,9 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		<property name="patientIdentifierTypeService">
 			<ref bean="org.hisp.dhis.patient.PatientIdentifierTypeService" />
 		</property>
+		<property name="programService">
+			<ref bean="org.hisp.dhis.program.ProgramService" />
+		</property>
 	</bean>
 
 	<bean
@@ -550,6 +553,9 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		<property name="patientIdentifierTypeService">
 			<ref bean="org.hisp.dhis.patient.PatientIdentifierTypeService" />
 		</property>
+		<property name="programService">
+			<ref bean="org.hisp.dhis.program.ProgramService" />
+		</property>
 	</bean>
 	<bean
 		id="org.hisp.dhis.patient.action.patientidentifiertype.ValidatePatientIdentifierTypeAction"
@@ -560,6 +566,18 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		</property>
 	</bean>
 
+	<bean
+		id="org.hisp.dhis.patient.action.patientidentifiertype.ShowUpdatePatientIdentifierTypeForm"
+		class="org.hisp.dhis.patient.action.patientidentifiertype.ShowUpdatePatientIdentifierTypeForm"
+		scope="prototype">
+		<property name="patientIdentifierTypeService">
+			<ref bean="org.hisp.dhis.patient.PatientIdentifierTypeService" />
+		</property>
+		<property name="programService">
+			<ref bean="org.hisp.dhis.program.ProgramService" />
+		</property>
+	</bean>
+	
 	<!-- Case Aggregation Mapping -->
 
 	<bean

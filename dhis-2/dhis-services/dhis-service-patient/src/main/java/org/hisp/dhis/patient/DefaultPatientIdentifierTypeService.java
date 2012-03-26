@@ -28,6 +28,7 @@ package org.hisp.dhis.patient;
 
 import java.util.Collection;
 
+import org.hisp.dhis.program.Program;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
@@ -87,4 +88,16 @@ public class DefaultPatientIdentifierTypeService
     {
         return patientIdentifierTypeStore.get( mandatory );
     }
+    
+    public Collection<PatientIdentifierType> getPatientIdentifierTypes( Program program )
+    {
+        return patientIdentifierTypeStore.get( program );
+    }
+    
+    public Collection<PatientIdentifierType> getPatientIdentifierTypesWithoutProgram()
+    {
+        return patientIdentifierTypeStore.getWithoutProgram();
+    }
+
+
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2004-2009, University of Oslo
+ * Copyright (c) 2004-2012, University of Oslo
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -27,6 +27,8 @@
 
 package org.hisp.dhis.patient.action.patientidentifiertype;
 
+import java.util.Collection;
+
 import org.hisp.dhis.patient.PatientIdentifierType;
 import org.hisp.dhis.patient.PatientIdentifierTypeService;
 import org.hisp.dhis.program.Program;
@@ -35,11 +37,12 @@ import org.hisp.dhis.program.ProgramService;
 import com.opensymphony.xwork2.Action;
 
 /**
- * @author Viet
- * @version $Id$
+ * @author Chau Thu Tran
+ *
+ * @version $ShowUpdatePatientIdentifierTypeForm.java Mar 26, 2012 07:25:51 AM$
  */
-public class AddPatientIdentifierTypeAction
-    implements Action
+public class ShowUpdatePatientIdentifierTypeForm
+implements Action
 {
     // -------------------------------------------------------------------------
     // Dependency
@@ -48,47 +51,29 @@ public class AddPatientIdentifierTypeAction
     private PatientIdentifierTypeService patientIdentifierTypeService;
 
     private ProgramService programService;
-
+    
     // -------------------------------------------------------------------------
     // Input/Output
     // -------------------------------------------------------------------------
 
-    private String name;
+    private Integer id;
 
-    private String description;
-
-    private Boolean mandatory;
-
-    private Boolean related;
-
-    private Integer noChars;
-
-    private String type;
-
-    private Integer programId;
+    private PatientIdentifierType patientIdentifierType;
+    
+    private Collection<Program> programs;
 
     // -------------------------------------------------------------------------
     // Getters && Setters
     // -------------------------------------------------------------------------
 
-    public void setName( String name )
+    public PatientIdentifierType getPatientIdentifierType()
     {
-        this.name = name;
+        return patientIdentifierType;
     }
 
-    public void setNoChars( Integer noChars )
+    public Collection<Program> getPrograms()
     {
-        this.noChars = noChars;
-    }
-
-    public void setType( String type )
-    {
-        this.type = type;
-    }
-
-    public void setDescription( String description )
-    {
-        this.description = description;
+        return programs;
     }
 
     public void setProgramService( ProgramService programService )
@@ -96,24 +81,19 @@ public class AddPatientIdentifierTypeAction
         this.programService = programService;
     }
 
+    public Integer getId()
+    {
+        return id;
+    }
+
+    public void setId( Integer id )
+    {
+        this.id = id;
+    }
+
     public void setPatientIdentifierTypeService( PatientIdentifierTypeService patientIdentifierTypeService )
     {
         this.patientIdentifierTypeService = patientIdentifierTypeService;
-    }
-
-    public void setMandatory( Boolean mandatory )
-    {
-        this.mandatory = mandatory;
-    }
-
-    public void setRelated( Boolean related )
-    {
-        this.related = related;
-    }
-
-    public void setProgramId( Integer programId )
-    {
-        this.programId = programId;
     }
 
     // -------------------------------------------------------------------------
@@ -123,20 +103,11 @@ public class AddPatientIdentifierTypeAction
     public String execute()
         throws Exception
     {
-        PatientIdentifierType identifierType = new PatientIdentifierType();
-        identifierType.setName( name );
-        identifierType.setDescription( description );
-        identifierType.setRelated( related.booleanValue() );
-        identifierType.setMandatory( mandatory.booleanValue() );
-        identifierType.setNoChars( noChars );
-        identifierType.setType( type );
+        patientIdentifierType = patientIdentifierTypeService.getPatientIdentifierType( id );
 
-        Program program = (programId != null) ? programService.getProgram( programId ) : null;
-        identifierType.setProgram( program );
-
-        patientIdentifierTypeService.savePatientIdentifierType( identifierType );
-
+        programs = programService.getAllPrograms();
+        
         return SUCCESS;
     }
-
 }
+

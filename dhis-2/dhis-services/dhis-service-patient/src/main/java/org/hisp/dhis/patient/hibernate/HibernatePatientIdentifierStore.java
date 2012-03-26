@@ -115,4 +115,11 @@ public class HibernatePatientIdentifierStore
         return rs != null ? rs.intValue() : 0;
     }
 
+    @SuppressWarnings( "unchecked" )
+    public Collection<PatientIdentifier> get( Collection<PatientIdentifierType> identifierTypes, Patient patient )
+    {
+        return getCriteria( Restrictions.in( "identifierType", identifierTypes ), Restrictions.eq( "patient", patient ) )
+            .list();
+    }
+
 }

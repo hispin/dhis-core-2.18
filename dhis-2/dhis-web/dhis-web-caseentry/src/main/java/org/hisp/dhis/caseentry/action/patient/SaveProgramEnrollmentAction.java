@@ -29,9 +29,15 @@ package org.hisp.dhis.caseentry.action.patient;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.hisp.dhis.i18n.I18nFormat;
 import org.hisp.dhis.patient.Patient;
+import org.hisp.dhis.patient.PatientIdentifier;
+import org.hisp.dhis.patient.PatientIdentifierService;
+import org.hisp.dhis.patient.PatientIdentifierType;
+import org.hisp.dhis.patient.PatientIdentifierTypeService;
 import org.hisp.dhis.patient.PatientService;
 import org.hisp.dhis.program.Program;
 import org.hisp.dhis.program.ProgramInstance;
@@ -83,6 +89,35 @@ public class SaveProgramEnrollmentAction
         this.programStageInstanceService = programStageInstanceService;
     }
 
+    public Collection<PatientIdentifierType> getIdentifierTypes()
+    {
+        return identifierTypes;
+    }
+
+    public Map<Integer, String> getIdentiferMap()
+    {
+        return identiferMap;
+    }
+
+    public void setPatientIdentifierService( PatientIdentifierService patientIdentifierService )
+    {
+        this.patientIdentifierService = patientIdentifierService;
+    }
+
+    public void setIdentifierTypeService( PatientIdentifierTypeService identifierTypeService )
+    {
+        this.identifierTypeService = identifierTypeService;
+    }
+
+    public void setProgramStageInstances( Collection<ProgramStageInstance> programStageInstances )
+    {
+        this.programStageInstances = programStageInstances;
+    }
+
+    private PatientIdentifierService patientIdentifierService;
+
+    private PatientIdentifierTypeService identifierTypeService;
+
     private I18nFormat format;
 
     public void setFormat( I18nFormat format )
@@ -93,6 +128,10 @@ public class SaveProgramEnrollmentAction
     // -------------------------------------------------------------------------
     // Input/Output
     // -------------------------------------------------------------------------
+    
+    private Collection<PatientIdentifierType> identifierTypes;
+
+    private Map<Integer, String> identiferMap;
 
     private Integer patientId;
 
@@ -100,22 +139,23 @@ public class SaveProgramEnrollmentAction
     {
         this.patientId = patientId;
     }
-    
+
     private Integer programId;
-    
+
     public void setProgramId( Integer programId )
     {
         this.programId = programId;
     }
-    
+
     private Patient patient;
 
     public Patient getPatient()
     {
         return patient;
     }
+
     private Program program;
-    
+
     public Program getProgram()
     {
         return program;
@@ -219,7 +259,22 @@ public class SaveProgramEnrollmentAction
                 programStageInstances.add( programStageInstance );
             }
         }
-        
+
+        // ---------------------------------------------------------------------
+        // Load identifier types of the selected program
+        // ---------------------------------------------------------------------
+
+        identifierTypes = identifierTypeService.getPatientIdentifierTypes( program );
+        identiferMap = new HashMap<Integer, String>();
+
+        Collection<PatientIdentifier> patientIdentifiers = patientIdentifierService.getPatientIdentifiers(
+            identifierTypes, patient );
+
+        for ( PatientIdentifier identifier : patientIdentifiers )
+        {
+            identiferMap.put( identifier.getIdentifierType().getId(), identifier.getIdentifier() );
+        }
+
         return SUCCESS;
     }
 }

@@ -105,7 +105,7 @@ public class ShowAddPatientFormAction
 
     public String execute()
     {
-        identifierTypes = patientIdentifierTypeService.getAllPatientIdentifierTypes();
+        identifierTypes = patientIdentifierTypeService.getPatientIdentifierTypesWithoutProgram();
 
         noGroupAttributes = patientAttributeService.getPatientAttributesNotGroup();
 

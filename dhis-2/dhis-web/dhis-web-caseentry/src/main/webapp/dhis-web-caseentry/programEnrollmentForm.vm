@@ -1,7 +1,35 @@
-<input type='hidden' id='registerEvent' name='registerEvent' value='$registerEvent'>
+<hr>
+<!-- IDENTIFIERS -->
+#if( $identifierTypes.size() > 0)
+	<h3>$i18n.getString('patient_identifier_and_attributes') <img src='../images/down.png' onclick='toogleDiv( "enrollmentInforDiv" );'></h3>
+	<table class='mainPageTable' id='enrollmentInforDiv' name='enrollmentInforDiv' >
+		<col id="stageCol">    
+		<col id="entryCol">    
+		<tr>
+			<th>$i18n.getString( "patient_identifier" )</th>                   
+			<th>$i18n.getString( "value" )</th>        
+		</tr>
+		
+		#set( $tabIndex = 1 )
+		#set( $mark = false )
+		#foreach ($identifierType in $identifierTypes)
+			#set( $identifier = $identiferMap.get( $identifierType.id ) )
+			<tr #alternate( $mark )>
+				<td class='text-column'><label>$identifierType.name #if($identifierType.mandatory == true )<em title="$i18n.getString( 'required' )" class="required">*</em> #end</label></td>       
+					<td class="input-column">
+					<input type="text" id="iden$identifierType.id" name="iden$identifierType.id" value='$identifier' class="{validate:{required:$identifierType.mandatory, #if($!identifierType.noChars) maxlength:$identifierType.noChars, #end #if($identifierType.type=='number') number:true #elseif($!identifierType.type=='letter') lettersonly:true #end }}" onchange='savePatientIdentifier( $identifierType.id, this);' onkeypress="return keyPress(event, this)" onkeypress="return keyPress(event, this)" tabindex="$tabIndex" /></td>
+			</tr>
+		#set( $tabIndex = $tabIndex + 1 )
+		#set( $mark = !$mark  )
+		#end
+	</table>
+#end
+
+<!-- Program-stage-instance list -->
 
 #if( $programStageInstances.size() > 0 )
-	<table class='mainPageTable'>
+<h3>$i18n.getString('program_stage') <img src='../images/down.png' onclick='toogleDiv( "progarmStageListDiv" );'></h3>
+	<table class='mainPageTable hidden' id='progarmStageListDiv' name='progarmStageListDiv' >
 		<col id="noCol">
 		<col id="stageCol">    
 		<col id="entryCol">    

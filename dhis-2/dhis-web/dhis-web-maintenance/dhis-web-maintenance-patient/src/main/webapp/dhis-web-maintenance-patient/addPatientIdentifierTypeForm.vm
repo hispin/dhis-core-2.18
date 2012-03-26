@@ -64,6 +64,20 @@
 			</td>
 			<td></td>
 		</tr>
+		
+		<tr>
+			<td><label for="programId">$i18n.getString( "program" )</label></td>
+			<td>
+				<select type="text" name="programId" id="programId" value="$!patientIdentifierType.program" >
+					<option value=''>$i18n.getString('all')</option>
+					#foreach( $program in $programs)
+						<option value='$program.id'>$program.name</option>
+					#end
+				</select>
+			</td>		
+			<td></td>				
+		</tr> 
+		
 		<tbody>
 		<tr>
 			<td></td>

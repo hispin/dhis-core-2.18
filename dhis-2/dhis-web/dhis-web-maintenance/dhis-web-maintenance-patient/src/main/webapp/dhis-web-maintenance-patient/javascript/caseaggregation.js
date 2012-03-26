@@ -36,16 +36,15 @@ function getDataElementsByDataset()
 				de.add(option, null);  			
 			}
 			
-			autoCompletedField( '' );
+			autoCompletedField();
 		});
 }
 
-function autoCompletedField( id )
+function autoCompletedField( )
 {
 	var select = jQuery( "#aggregationDataElementId" );
 	$( "#dataElementsButton" ).unbind('click');
 	enable( 'dataElementsButton' );
-	hideById( id );
 	var selected = select.children( ":selected" );
 	var value = selected.val() ? selected.text() : "";
 	

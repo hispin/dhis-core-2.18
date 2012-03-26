@@ -34,7 +34,7 @@
 	<div id="tabs">
 		<ul>
 			<li><a href="#tab-1">$i18n.getString("enroll_to_program")</a></li>
-			<li><a href="#tab-2">$i18n.getString("register_event")</a></li>
+			<li><a href="#tab-2">$i18n.getString("name_based_data_entry")</a></li>
 		</ul>
 		
 		<!-- Enroll program TAB -->
@@ -110,14 +110,10 @@
 	datePickerValid( 'dateOfIncident' );
 	
 	$( "#tabs" ).tabs( "option", "selected", 0 );
-	#if($registerEvent == 'true')
-		$('#tabs').bind('tabsselect', function(event, ui) {
-			if( ui.index == 1 )
-			{
-				showSelectedDataRecoding( getFieldValue('patientId') );
-			}
-		});
-	#else
-		$("#tabs").tabs("option", "disabled", [1]);
-	#end
+	$('#tabs').bind('tabsselect', function(event, ui) {
+		if( ui.index == 1 )
+		{
+			showSelectedDataRecoding( getFieldValue('patientId') );
+		}
+	});
 </script>

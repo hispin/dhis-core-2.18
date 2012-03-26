@@ -4,9 +4,10 @@
 "http://struts.apache.org/dtds/struts-2.0.dtd">
 <struts>
 
-  <include file="dhis-web-commons.xml" />
+	<include file="dhis-web-commons.xml" />
 
-  <package name="dhis-web-maintenance-patient" extends="dhis-web-commons" namespace="/dhis-web-maintenance-patient">
+	<package name="dhis-web-maintenance-patient" extends="dhis-web-commons"
+		namespace="/dhis-web-maintenance-patient">
 
 		<action name="index" class="org.hisp.dhis.patient.action.NoAction">
 			<result name="success" type="velocity">/main.vm</result>
@@ -104,7 +105,7 @@
 				/dhis-web-commons/ajax/jsonPatientAttributes.vm</result>
 			<param name="onExceptionReturn">plainTextError</param>
 		</action>
-		
+
 		<action name="getProgramAttributeWithoutGroup"
 			class="org.hisp.dhis.patient.action.patientattribute.GetPatientAttributesWithoutGroupAction">
 			<result name="success" type="velocity-json">
@@ -224,7 +225,7 @@
 			<param name="requiredAuthorities">F_PROGRAM_ADD</param>
 		</action>
 
-		
+
 		<action name="showAddProgramForm"
 			class="org.hisp.dhis.patient.action.program.ShowAddProgramFormAction">
 			<result name="success" type="velocity">/main.vm</result>
@@ -528,8 +529,7 @@
 			<param name="requiredAuthorities">F_PATIENTATTRIBUTE_ADD</param>
 		</action>
 
-		<action name="showAddPatientAttributeGroupForm"
-			class="org.hisp.dhis.patient.action.NoAction">
+		<action name="showAddPatientAttributeGroupForm" class="org.hisp.dhis.patient.action.NoAction">
 			<result name="success" type="velocity">/main.vm</result>
 			<param name="page">/dhis-web-maintenance-patient/addPatientAttributeGroupForm.vm</param>
 			<param name="javascripts">javascript/patientAttributeGroup.js</param>
@@ -581,7 +581,8 @@
 
 		<!-- Patient Identifier Type -->
 
-		<action name="showAddPatientIdentifierTypeForm" class="org.hisp.dhis.patient.action.NoAction">
+		<action name="showAddPatientIdentifierTypeForm"
+			class="org.hisp.dhis.patient.action.program.GetProgramListAction">
 			<result name="success" type="velocity">/main.vm</result>
 			<param name="page">
 				/dhis-web-maintenance-patient/addPatientIdentifierTypeForm.vm</param>
@@ -602,7 +603,7 @@
 		</action>
 
 		<action name="showUpdatePatientIdentifierTypeForm"
-			class="org.hisp.dhis.patient.action.patientidentifiertype.GetPatientIdentifierTypeAction">
+			class="org.hisp.dhis.patient.action.patientidentifiertype.ShowUpdatePatientIdentifierTypeForm">
 			<result name="success" type="velocity">/main.vm</result>
 			<param name="page">
 				/dhis-web-maintenance-patient/updatePatientIdentifierType.vm</param>
@@ -696,10 +697,10 @@
 				/dhis-web-commons/ajax/jsonResponseSuccess.vm</result>
 		</action>
 
-		<action name="getDataElementsByDataset"
-			class="org.hisp.dhis.commons.action.GetDataSetAction">
+		<action name="getDataElementsByDataset" class="org.hisp.dhis.commons.action.GetDataSetAction">
 			<result name="success" type="velocity-json">
-				/dhis-web-maintenance-patient/responseAggerateDataElement.vm</result>
+				/dhis-web-maintenance-patient/responseAggerateDataElement.vm
+			</result>
 		</action>
 
 		<action name="getProgramStages"
@@ -715,7 +716,7 @@
 				/dhis-web-maintenance-patient/responsePSDataElement.vm
 			</result>
 		</action>
-		
+
 		<action name="getAggPSDataElements"
 			class="org.hisp.dhis.patient.action.caseaggregation.GetAggPSDataElementsAction">
 			<result name="success" type="velocity-xml">
@@ -745,7 +746,7 @@
 				/dhis-web-commons/ajax/jsonResponseInput.vm</result>
 			<param name="onExceptionReturn">plainTextError</param>
 		</action>
-		
+
 		<action name="testCaseAggregationCondition"
 			class="org.hisp.dhis.patient.action.caseaggregation.TestCaseAggregationConditionAction">
 			<result name="success" type="velocity-json">
@@ -760,7 +761,7 @@
 			<result name="success" type="velocity">/content.vm</result>
 			<param name="page">/dhis-web-maintenance-patient/caseAggregationList.vm</param>
 		</action>
-		
+
 		<!-- Validation - PatientValidationCriteria -->
 
 		<action name="validationCriteria"
@@ -863,7 +864,7 @@
 			<param name="stylesheets">style/basic.css</param>
 			<param name="requiredAuthorities">F_PROGRAM_VALIDATION</param>
 		</action>
-		
+
 		<action name="defineDateProgramValidationForm"
 			class="org.hisp.dhis.patient.action.program.GetProgramAction">
 			<result name="success" type="velocity">/main.vm</result>
@@ -917,20 +918,20 @@
 				/dhis-web-commons/ajax/jsonProgramValidation.vm</result>
 			<param name="onExceptionReturn">plainTextError</param>
 		</action>
-		
+
 		<action name="getDateDataElements"
 			class="org.hisp.dhis.patient.action.validation.GetDateDataElementsAction">
 			<result name="success" type="velocity">/content.vm</result>
 			<param name="page">/dhis-web-maintenance-patient/dateProgramValidationForm.vm</param>
 		</action>
-		
+
 		<action name="addDateProgramValidation"
 			class="org.hisp.dhis.patient.action.validation.AddProgramValidationAction">
 			<result name="success" type="velocity-json">
 				/dhis-web-commons/ajax/jsonResponseSuccess.vm</result>
 			<param name="requiredAuthorities">F_PROGRAM_VALIDATION</param>
 		</action>
-		
+
 		<action name="updateDateProgramValidation"
 			class="org.hisp.dhis.patient.action.validation.UpdateProgramValidationAction">
 			<result name="success" type="velocity-json">

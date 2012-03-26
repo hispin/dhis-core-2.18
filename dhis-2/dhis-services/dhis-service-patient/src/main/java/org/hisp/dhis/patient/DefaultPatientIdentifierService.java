@@ -128,4 +128,10 @@ public class DefaultPatientIdentifierService
     {
         return patientIdentifierStore.countGetPatientsByIdentifier( identifier );
     }
+    
+    public Collection<PatientIdentifier> getPatientIdentifiers(Collection<PatientIdentifierType> identifierTypes, Patient patient)
+    {
+        return patientIdentifierStore.get( identifierTypes, patient );
+    }
+
 }
