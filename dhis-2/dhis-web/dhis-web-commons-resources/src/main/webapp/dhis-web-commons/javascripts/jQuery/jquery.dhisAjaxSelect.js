@@ -176,7 +176,7 @@ function dhisAjaxSelect_selectedList_dblclick(sourceId, targetId)
             var $loader = $('#' + loader_id); 
             $loader.css('visibility', 'visible');
 
-            $.post(settings.source, $.param(settings.params), function(json)
+            $.getJSON(settings.source, $.param(settings.params), function(json)
             {
                 $select.empty();
 
