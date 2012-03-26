@@ -1607,7 +1607,7 @@ mapfish.widgets.geostat.Choropleth = Ext.extend(Ext.Panel, {
 		},
         
         clearForm: function(clearLayer) {
-            this.cmp.mapview.clearValue();            
+            this.cmp.mapview.clearValue();
             
             this.cmp.mapValueType.setValue(G.conf.map_value_type_indicator);
             this.valueType.setIndicator();

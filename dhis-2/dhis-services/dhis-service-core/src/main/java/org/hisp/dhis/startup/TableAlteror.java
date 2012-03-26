@@ -131,6 +131,7 @@ public class TableAlteror
         executeSql( "ALTER TABLE mapview DROP COLUMN enddate" );
         executeSql( "ALTER TABLE mapview DROP COLUMN mapsource" );
         executeSql( "ALTER TABLE mapview DROP COLUMN mapsourcetype" );
+        executeSql( "ALTER TABLE mapview DROP COLUMN mapdatetype" );
         executeSql( "DROP TABLE map" );
         executeSql( "DELETE FROM systemsetting WHERE name = 'longitude'" );
         executeSql( "DELETE FROM systemsetting WHERE name = 'latitude'" );

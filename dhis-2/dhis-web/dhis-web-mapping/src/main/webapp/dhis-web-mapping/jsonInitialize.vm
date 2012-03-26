@@ -10,7 +10,6 @@
     "indicatorId": "$!{mapView.indicator.id}",
     "dataElementGroupId": "$!{mapView.dataElementGroup.id}",
     "dataElementId": "$!{mapView.dataElement.id}",
-    "mapDateType": "$!encoder.jsonEncode( ${mapView.mapDateTypeNullSafe} )",
     "periodTypeId": "$!encoder.jsonEncode( ${mapView.periodType.name} )",
     "periodId": "$!{mapView.period.id}",
     "parentOrganisationUnitId": "$!{mapView.parentOrganisationUnit.id}",

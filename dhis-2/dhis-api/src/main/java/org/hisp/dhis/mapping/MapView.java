@@ -67,8 +67,6 @@ public class MapView
 
     private DataElement dataElement;
 
-    private String mapDateType;
-
     private PeriodType periodType;
 
     private Period period;
@@ -106,7 +104,7 @@ public class MapView
     }
 
     public MapView( String name, User user, String mapValueType, IndicatorGroup indicatorGroup, Indicator indicator,
-                    DataElementGroup dataElementGroup, DataElement dataElement, String mapDateType, PeriodType periodType,
+                    DataElementGroup dataElementGroup, DataElement dataElement, PeriodType periodType,
                     Period period, OrganisationUnit parentOrganisationUnit, OrganisationUnitLevel organisationUnitLevel,
                     String mapLegendType, Integer method, Integer classes, String bounds, String colorLow, String colorHigh,
                     MapLegendSet mapLegendSet, Integer radiusLow, Integer radiusHigh, String longitude, String latitude, int zoom )
@@ -118,7 +116,6 @@ public class MapView
         this.indicator = indicator;
         this.dataElementGroup = dataElementGroup;
         this.dataElement = dataElement;
-        this.mapDateType = mapDateType;
         this.periodType = periodType;
         this.period = period;
         this.parentOrganisationUnit = parentOrganisationUnit;
@@ -175,15 +172,6 @@ public class MapView
     {
         return "[Name: " + name + ", indicator: " + indicator + ", org unit: " +
             parentOrganisationUnit + ", period: " + period + ", value type: " + mapValueType + "]";
-    }
-
-    // -------------------------------------------------------------------------
-    // Logic
-    // -------------------------------------------------------------------------
-
-    public String getMapDateTypeNullSafe()
-    {
-        return mapDateType != null ? mapDateType : MappingService.MAP_DATE_TYPE_FIXED;
     }
 
     // -------------------------------------------------------------------------
@@ -271,19 +259,6 @@ public class MapView
     public void setDataElement( DataElement dataElement )
     {
         this.dataElement = dataElement;
-    }
-
-    @JsonProperty
-    @JsonView( {DetailedView.class, ExportView.class} )
-    @JacksonXmlProperty
-    public String getMapDateType()
-    {
-        return mapDateType;
-    }
-
-    public void setMapDateType( String mapDateType )
-    {
-        this.mapDateType = mapDateType;
     }
 
     public PeriodType getPeriodType()

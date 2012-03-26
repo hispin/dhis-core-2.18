@@ -91,9 +91,9 @@ public class InitializeAction
     // Input
     // -------------------------------------------------------------------------
 
-    private Integer id;
+    private String id;
 
-    public void setId( Integer id )
+    public void setId( String id )
     {
         this.id = id;
     }
@@ -107,13 +107,6 @@ public class InitializeAction
     public MapView getMapView()
     {
         return mapView;
-    }
-
-    private String mapDateType;
-
-    public String getMapDateType()
-    {
-        return mapDateType;
     }
 
     private List<MapLayer> baseLayers;
@@ -158,16 +151,9 @@ public class InitializeAction
     public String execute()
         throws Exception
     {
-        if ( id == null )
-        {
-            mapDateType = (String) userSettingService.getUserSetting( KEY_MAP_DATE_TYPE, MAP_DATE_TYPE_FIXED );
-        }
-
-        else
+        if ( id != null )
         {
             mapView = mappingService.getMapView( id );
-
-            mapDateType = mapView.getMapDateType();
         }
 
         baseLayers = new ArrayList<MapLayer>(

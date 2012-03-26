@@ -29,8 +29,6 @@
     <many-to-one name="dataElement" class="org.hisp.dhis.dataelement.DataElement" column="dataelementid"
       foreign-key="fk_mapview_dataelementid" />
 
-    <property name="mapDateType" />
-
     <many-to-one name="periodType" class="org.hisp.dhis.period.PeriodType" column="periodtypeid"
       foreign-key="fk_mapview_periodtypeid" />
 

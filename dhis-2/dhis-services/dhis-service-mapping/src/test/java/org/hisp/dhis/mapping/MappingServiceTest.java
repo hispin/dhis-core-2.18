@@ -334,7 +334,7 @@ public class MappingServiceTest
     public void testAddGetMapView()
     {
         MapView mapView = new MapView( "MapViewA", null, MappingService.MAP_VALUE_TYPE_INDICATOR, indicatorGroup,
-            indicator, dataElementGroup, dataElement, MappingService.MAP_DATE_TYPE_FIXED, periodType, period,
+            indicator, dataElementGroup, dataElement, periodType, period,
             organisationUnit, organisationUnitLevel, MappingService.MAPLEGENDSET_TYPE_AUTOMATIC, 1, 1, "", "A", "B",
             mapLegendSet, 5, 20, "1", "1", 1 );
 
@@ -351,7 +351,7 @@ public class MappingServiceTest
     public void testGetDeleteMapViewByName()
     {
         MapView mapView = new MapView( "MapViewA", null, MappingService.MAP_VALUE_TYPE_INDICATOR, indicatorGroup,
-            indicator, dataElementGroup, dataElement, MappingService.MAP_DATE_TYPE_FIXED, periodType, period,
+            indicator, dataElementGroup, dataElement, periodType, period,
             organisationUnit, organisationUnitLevel, MappingService.MAPLEGENDSET_TYPE_AUTOMATIC, 1, 1, "", "A", "B",
             mapLegendSet, 5, 20, "1", "1", 1 );
 
@@ -368,12 +368,12 @@ public class MappingServiceTest
     public void testGetAllMapViews()
     {
         MapView mapView1 = new MapView( "MapViewA", null, MappingService.MAP_VALUE_TYPE_INDICATOR, indicatorGroup,
-            indicator, dataElementGroup, dataElement, MappingService.MAP_DATE_TYPE_FIXED, periodType, period,
+            indicator, dataElementGroup, dataElement, periodType, period,
             organisationUnit, organisationUnitLevel, MappingService.MAPLEGENDSET_TYPE_AUTOMATIC, 1, 1, "", "A", "B",
             mapLegendSet, 5, 20, "1", "1", 1 );
 
         MapView mapView2 = new MapView( "MapViewB", null, MappingService.MAP_VALUE_TYPE_DATAELEMENT, indicatorGroup,
-            indicator, dataElementGroup, dataElement, MappingService.MAP_DATE_TYPE_START_END, periodType, period,
+            indicator, dataElementGroup, dataElement, periodType, period,
             organisationUnit, organisationUnitLevel, MappingService.MAPLEGENDSET_TYPE_AUTOMATIC, 1, 1, "", "A", "B",
             mapLegendSet, 5, 20, "2", "2", 1 );
 
@@ -389,17 +389,17 @@ public class MappingServiceTest
     public void testGetMapViewsByFeatureType()
     {
         MapView mapView1 = new MapView( "MapViewA", null, MappingService.MAP_VALUE_TYPE_INDICATOR, indicatorGroup,
-            indicator, dataElementGroup, dataElement, MappingService.MAP_DATE_TYPE_FIXED, periodType, period,
+            indicator, dataElementGroup, dataElement, periodType, period,
             organisationUnit, organisationUnitLevel, MappingService.MAPLEGENDSET_TYPE_AUTOMATIC, 1, 1, "", "A", "B",
             mapLegendSet, 5, 20, "1", "1", 1 );
 
         MapView mapView2 = new MapView( "MapViewB", null, MappingService.MAP_VALUE_TYPE_DATAELEMENT, indicatorGroup,
-            indicator, dataElementGroup, dataElement, MappingService.MAP_DATE_TYPE_START_END, periodType, period,
+            indicator, dataElementGroup, dataElement, periodType, period,
             organisationUnit, organisationUnitLevel, MappingService.MAPLEGENDSET_TYPE_AUTOMATIC, 1, 1, "", "A", "B",
             mapLegendSet, 5, 20, "2", "2", 1 );
 
         MapView mapView3 = new MapView( "MapViewC", null, MappingService.MAP_VALUE_TYPE_DATAELEMENT, indicatorGroup,
-            indicator, dataElementGroup, dataElement, MappingService.MAP_DATE_TYPE_START_END, periodType, period,
+            indicator, dataElementGroup, dataElement, periodType, period,
             organisationUnit, organisationUnitLevel, MappingService.MAPLEGENDSET_TYPE_AUTOMATIC, 1, 1, "", "A", "B",
             mapLegendSet, 5, 20, "3", "3", 1 );
 
