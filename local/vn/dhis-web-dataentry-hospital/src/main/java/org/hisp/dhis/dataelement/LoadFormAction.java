@@ -226,8 +226,7 @@ public class LoadFormAction
 
     public String execute()
         throws Exception
-    {System.out.println("\n\n\n dataSetService : " + dataSetService );
-    System.out.println("\n\n\n dataSetId : " + dataSetId ); 
+    {
         DataSet dataSet = dataSetService.getDataSet( dataSetId, true, false, false );
 
         List<DataElement> dataElements = new ArrayList<DataElement>( dataSet.getDataElements() );
