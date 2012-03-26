@@ -26,20 +26,20 @@ function sendSMSMessage( _form )
 	if ( !isChecked )
 	{
 		var list = getFieldValue( "recipient" );
-		
+
 		if ( list == '' )
 		{
 			showErrorMessage( i18n_no_recipient );
 			return;
 		}
 		
-		list = list.split( ";" )
+		list = list.split( ";" );
 
 		for ( var i in list )
 		{
 			if ( list[i] && list[i] != '' )
 			{
-				params += "recipients=" +  + "&";
+				params += "recipients=" + list[i] + "&";
 			}
 		}
 
