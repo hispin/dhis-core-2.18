@@ -608,7 +608,8 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		<property name="programService" ref="org.hisp.dhis.program.ProgramService" />
 		<property name="programInstanceService" ref="org.hisp.dhis.program.ProgramInstanceService" />
 		<property name="patientService" ref="org.hisp.dhis.patient.PatientService" />
-		<property name="selectionManager" ref="org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager" />
+		<property name="identifierTypeService" ref="org.hisp.dhis.patient.PatientIdentifierTypeService" />
+		<property name="patientIdentifierService" ref="org.hisp.dhis.patient.PatientIdentifierService" />
 	</bean>
 
 	<bean
@@ -620,6 +621,8 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		<property name="programInstanceService" ref="org.hisp.dhis.program.ProgramInstanceService" />
 		<property name="programStageInstanceService"
 			ref="org.hisp.dhis.program.ProgramStageInstanceService" />
+		<property name="identifierTypeService" ref="org.hisp.dhis.patient.PatientIdentifierTypeService" />
+		<property name="patientIdentifierService" ref="org.hisp.dhis.patient.PatientIdentifierService" />
 	</bean>
 
 	<bean id="org.hisp.dhis.caseentry.action.patient.SaveDueDateAction"
@@ -665,6 +668,15 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		scope="prototype">
 		<property name="patientService" ref="org.hisp.dhis.patient.PatientService" />
 		<property name="programService" ref="org.hisp.dhis.program.ProgramService" />
+	</bean>
+	
+	<bean
+		id="org.hisp.dhis.caseentry.action.patient.SavePatientIdentifierAction"
+		class="org.hisp.dhis.caseentry.action.patient.SavePatientIdentifierAction"
+		scope="prototype">
+		<property name="patientService" ref="org.hisp.dhis.patient.PatientService" />
+		<property name="identifierTypeService" ref="org.hisp.dhis.patient.PatientIdentifierTypeService" />
+		<property name="patientIdentifierService" ref="org.hisp.dhis.patient.PatientIdentifierService" />
 	</bean>
 	
 	<!--  Relationship -->

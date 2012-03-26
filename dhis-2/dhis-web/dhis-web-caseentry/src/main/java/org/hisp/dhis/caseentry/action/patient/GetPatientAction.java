@@ -117,7 +117,7 @@ public class GetPatientAction
 
         patientIdentifier = patientIdentifierService.getPatientIdentifier( patient );
 
-        identifierTypes = patientIdentifierTypeService.getAllPatientIdentifierTypes();
+        identifierTypes = patientIdentifierTypeService.getPatientIdentifierTypesWithoutProgram();
 
         identiferMap = new HashMap<Integer, String>();
 

@@ -870,41 +870,6 @@ function removeAttributeOption( rowId )
 	jQuery( '#' + rowId ).remove();
 }		
 
-function showSelectedDataRecoding( patientId )
-{
-	showLoader();
-	setInnerHTML('dataRecordingSelectDiv', "");
-	setInnerHTML('dataEntryFormDiv', "");
-	hideById('searchPatientDiv');
-	hideById('dataEntryFormDiv');
-	
-	jQuery('#dataRecordingSelectDiv').load( 'selectDataRecordingFromRegistration.action', 
-		{
-			patientId: patientId
-		},
-		function()
-		{
-			jQuery('#dataRecordingSelectDiv select[name=programId] option').each(function()
-			{
-				var singleEvent = jQuery(this).attr('singleevent');
-				if( singleEvent == 'false')
-				{
-					jQuery(this).remove();
-				}
-			});
-			
-			jQuery('#backBtnFromEntry').hide();
-			jQuery('#programStageIdTR').attr('class','hidden');
-			jQuery('#dueDateTR').attr('class','hidden');
-			hideById('patientInfoDiv');
-			hideById( 'newEncounterBtn' );
-			
-			showById('dataRecordingSelectDiv');
-			
-			hideLoader();
-		});
-}
-
 function showRepresentativeInfo( patientId)
 {
 	jQuery('#representativeInfo' ).dialog({
@@ -932,3 +897,86 @@ function showEnrolmentField()
 	showById('enrollBtn');
 }
 
+function toogleDiv( div )
+{
+	jQuery( "#" + div ).slideToggle( "fast" );
+}
+
+//--------------------------------------------------------------------------------------------
+// Show search-form
+//--------------------------------------------------------------------------------------------
+
+function savePatientIdentifier( identifierTypeId, field )
+{
+	var patientId = getFieldValue("patientId");
+	field.style.backgroundColor = '#ffffcc';
+	
+	var valueSaver = new PatientIdentifierSaver( patientId, identifierTypeId, field.value, '#ccffcc' );
+    valueSaver.save();
+}
+
+function PatientIdentifierSaver( patientId_, identifierTypeId_, value_, resultColor_  )
+{
+    var SUCCESS = '#ccffcc';
+    var ERROR = '#ccccff';
+	
+    var patientId = patientId_;
+	var identifierTypeId = identifierTypeId_;
+	var value = value_;
+    var resultColor = resultColor_;
+	
+    this.save = function()
+    {
+		var params  = 'patientId=' + patientId;
+			params += '&identifierTypeId=' + identifierTypeId;
+			params += '&value=' + value;
+		
+		$.ajax({
+			   url: "savePatientIdentifier.action",
+			   data: params,
+			   type: "POST",
+			   dataType: "xml",
+			   success: function(result){
+					handleResponse (result);
+			   },
+			   error: function(request,status,errorThrown) {
+					handleHttpError (request);
+			   }
+			});
+    };
+ 
+    function handleResponse( rootElement )
+    {
+        var codeElement = rootElement.getElementsByTagName( 'code' )[0];
+        var code = parseInt( codeElement.firstChild.nodeValue );
+        if ( code == 0 )
+        {
+            markValue( resultColor );
+        }
+        else
+        {
+            if(value!="")
+            {
+                markValue( ERROR );
+                window.alert( i18n_saving_value_failed_status_code + '\n\n' + code );
+            }
+            else
+            {
+                markValue( resultColor );
+            }
+        }
+    }
+ 
+    function handleHttpError( errorCode )
+    {
+        markValue( ERROR );
+        window.alert( i18n_saving_value_failed_error_code + '\n\n' + errorCode );
+    }
+ 
+    function markValue( color )
+    {
+		var programStageId = getFieldValue('programStageId');
+        var element = byId( 'iden' + identifierTypeId );
+        element.style.backgroundColor = color;
+    }
+}

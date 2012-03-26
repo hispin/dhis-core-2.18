@@ -62,4 +62,7 @@ public interface PatientIdentifierStore
     Collection<Patient> getPatientsByIdentifier( String identifier, int min, int max );
     
     int countGetPatientsByIdentifier( String identifier );
+        
+    Collection<PatientIdentifier> get(Collection<PatientIdentifierType> identifierTypes, Patient patient);
+
 }

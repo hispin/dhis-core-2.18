@@ -21,6 +21,9 @@ function showPatientIdentifierTypeDetails( patientIdentifierTypeId )
 			var valueType = json.patientIdentifierType.type;
 			setInnerHTML( 'typeField', valueTypeMap[valueType] );
 			
+			var valueType = json.patientIdentifierType.type;
+			setInnerHTML( 'programField', json.patientIdentifierType.program );
+			
 			showDetails();
 	});
 }

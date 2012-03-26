@@ -28,6 +28,8 @@ package org.hisp.dhis.patient;
 
 import java.util.Collection;
 
+import org.hisp.dhis.program.Program;
+
 /**
  * @author Abyot Asalefew
  * @version $Id$
@@ -49,5 +51,9 @@ public interface PatientIdentifierTypeService
     PatientIdentifierType getPatientIdentifierType( String name );
     
     Collection<PatientIdentifierType> getPatientIdentifierTypes( boolean mandatory );
+    
+    Collection<PatientIdentifierType> getPatientIdentifierTypes( Program program );
+    
+    Collection<PatientIdentifierType> getPatientIdentifierTypesWithoutProgram();
     
 }

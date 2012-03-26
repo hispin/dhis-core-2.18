@@ -55,6 +55,7 @@
 				<p><label class="bold">$i18n.getString( "related" ):</label><br><span id="relatedField"></span></p>
 				<p><label class="bold">$i18n.getString( "no_of_char" ):</label><br><span id="noCharsField"></span></p>
 				<p><label class="bold">$i18n.getString( "type" ):</label><br><span id="typeField"></span></p>
+				<p><label class="bold">$i18n.getString( "program" ):</label><br><span id="programField"></span></p>
 			</div>
 		</td>
   </tr>

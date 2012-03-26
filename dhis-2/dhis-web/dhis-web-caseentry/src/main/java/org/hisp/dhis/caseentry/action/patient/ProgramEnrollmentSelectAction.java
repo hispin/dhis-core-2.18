@@ -95,13 +95,6 @@ public class ProgramEnrollmentSelectAction
         return programs;
     }
 
-    private Boolean registerEvent;
-
-    public Boolean getRegisterEvent()
-    {
-        return registerEvent;
-    }
-
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
@@ -122,8 +115,6 @@ public class ProgramEnrollmentSelectAction
         Collection<Program> singleEventPrograms = programService.getPrograms( true, false );
 
         singleEventPrograms.retainAll( programsbyOrgunit );
-
-        registerEvent = (singleEventPrograms.size() > 0);
 
         return SUCCESS;
     }

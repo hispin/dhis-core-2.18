@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2004-2009, University of Oslo
+ * Copyright (c) 2004-2012, University of Oslo
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -25,117 +25,117 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.hisp.dhis.patient.action.patientidentifiertype;
+package org.hisp.dhis.caseentry.action.patient;
 
+import org.hisp.dhis.patient.Patient;
+import org.hisp.dhis.patient.PatientIdentifier;
+import org.hisp.dhis.patient.PatientIdentifierService;
 import org.hisp.dhis.patient.PatientIdentifierType;
 import org.hisp.dhis.patient.PatientIdentifierTypeService;
-import org.hisp.dhis.program.Program;
-import org.hisp.dhis.program.ProgramService;
+import org.hisp.dhis.patient.PatientService;
 
 import com.opensymphony.xwork2.Action;
 
 /**
- * @author Viet
- * @version $Id$
+ * @author Chau Thu Tran
+ * 
+ * @version $SavePatientIdentifierAction.java Mar 26, 2012 11:50:50 AM$
  */
-public class AddPatientIdentifierTypeAction
+public class SavePatientIdentifierAction
     implements Action
 {
     // -------------------------------------------------------------------------
-    // Dependency
+    // Dependencies
     // -------------------------------------------------------------------------
 
-    private PatientIdentifierTypeService patientIdentifierTypeService;
+    private PatientService patientService;
 
-    private ProgramService programService;
+    private PatientIdentifierTypeService identifierTypeService;
+
+    private PatientIdentifierService patientIdentifierService;
 
     // -------------------------------------------------------------------------
     // Input/Output
     // -------------------------------------------------------------------------
 
-    private String name;
+    private Integer patientId;
 
-    private String description;
+    private Integer identifierTypeId;
 
-    private Boolean mandatory;
+    private String value;
 
-    private Boolean related;
-
-    private Integer noChars;
-
-    private String type;
-
-    private Integer programId;
-
+    private Integer statusCode;
+    
     // -------------------------------------------------------------------------
-    // Getters && Setters
+    // Input/Output
     // -------------------------------------------------------------------------
 
-    public void setName( String name )
+    public void setPatientService( PatientService patientService )
     {
-        this.name = name;
+        this.patientService = patientService;
     }
 
-    public void setNoChars( Integer noChars )
+    public void setPatientIdentifierService( PatientIdentifierService patientIdentifierService )
     {
-        this.noChars = noChars;
+        this.patientIdentifierService = patientIdentifierService;
     }
 
-    public void setType( String type )
+    public void setIdentifierTypeService( PatientIdentifierTypeService identifierTypeService )
     {
-        this.type = type;
+        this.identifierTypeService = identifierTypeService;
     }
 
-    public void setDescription( String description )
+    public void setPatientId( Integer patientId )
     {
-        this.description = description;
+        this.patientId = patientId;
     }
 
-    public void setProgramService( ProgramService programService )
+    public Integer getStatusCode()
     {
-        this.programService = programService;
+        return statusCode;
     }
 
-    public void setPatientIdentifierTypeService( PatientIdentifierTypeService patientIdentifierTypeService )
+    public void setIdentifierTypeId( Integer identifierTypeId )
     {
-        this.patientIdentifierTypeService = patientIdentifierTypeService;
+        this.identifierTypeId = identifierTypeId;
     }
 
-    public void setMandatory( Boolean mandatory )
+    public void setValue( String value )
     {
-        this.mandatory = mandatory;
-    }
-
-    public void setRelated( Boolean related )
-    {
-        this.related = related;
-    }
-
-    public void setProgramId( Integer programId )
-    {
-        this.programId = programId;
+        this.value = value;
     }
 
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
 
+    @Override
     public String execute()
         throws Exception
     {
-        PatientIdentifierType identifierType = new PatientIdentifierType();
-        identifierType.setName( name );
-        identifierType.setDescription( description );
-        identifierType.setRelated( related.booleanValue() );
-        identifierType.setMandatory( mandatory.booleanValue() );
-        identifierType.setNoChars( noChars );
-        identifierType.setType( type );
+        Patient patient = patientService.getPatient( patientId );
+        PatientIdentifierType identifierType = identifierTypeService.getPatientIdentifierType( identifierTypeId );
 
-        Program program = (programId != null) ? programService.getProgram( programId ) : null;
-        identifierType.setProgram( program );
+        PatientIdentifier patientIdentifier = patientIdentifierService.getPatientIdentifier( identifierType, patient );
 
-        patientIdentifierTypeService.savePatientIdentifierType( identifierType );
+        if ( patientIdentifier == null )
+        {
+            patientIdentifier = new PatientIdentifier();
+            patientIdentifier.setIdentifierType( identifierType );
+            patientIdentifier.setPatient( patient );
+            patientIdentifier.setIdentifier( value.trim() );
+        }
+        else
+        {
+            patientIdentifier.setIdentifier( value.trim() );
+        }
+        
+        patient.getIdentifiers().add( patientIdentifier );
 
+        patientService.updatePatient( patient );
+
+        statusCode = 0;
+        
         return SUCCESS;
     }
 

@@ -385,16 +385,8 @@
 				,javascript/entry.js
 				,javascript/relationshipPatient.js
 			</param>
-			<param name="stylesheets">style/patient.css</param>
+			<param name="stylesheets">style/patient.css, style/dataEntry.css</param>
 			<param name="requiredAuthorities">F_PATIENT_MANAGEMENT</param>
-		</action>
-		
-		<action name="selectDataRecordingFromRegistration"
-			class="org.hisp.dhis.caseentry.action.caseentry.DataRecordingSelectAction">
-			<result name="success" type="velocity">/content.vm</result>
-			<param name="page">/dhis-web-caseentry/dataRecordingSelect.vm</param>
-			<param name="stylesheets">style/dataEntry.css</param>
-			<param name="requiredAuthorities">F_NAME_BASED_DATA_ENTRY</param>
 		</action>
 
 		<action name="organisationUnitHasPatients"
@@ -560,7 +552,13 @@
 			<param name="onExceptionReturn">plainTextError</param>
 			<param name="requiredAuthorities">F_PROGRAM_ENROLLMENT</param>
 		</action>
-
+		
+		<action name="savePatientIdentifier"
+			class="org.hisp.dhis.caseentry.action.patient.SavePatientIdentifierAction">
+			<result name="success" type="velocity">status.vm</result>
+			<param name="requiredAuthorities">F_PATIENT_UPDATE, F_PROGRAM_ENROLLMENT</param>
+		</action>
+		
 		<!-- Relationship -->
 
 		<action name="getPartner"

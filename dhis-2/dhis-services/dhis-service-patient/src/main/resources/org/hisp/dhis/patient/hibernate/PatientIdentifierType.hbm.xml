@@ -14,6 +14,8 @@
 
 	&identifiableProperties;
 	
+	<property name="description" not-null="true" />
+	
     <property name="mandatory" not-null="true" />
 
     <property name="related" not-null="true" />
@@ -21,6 +23,8 @@
     <property name="noChars" />
 
     <property name="type" />
+    
+    <many-to-one name="program" class="org.hisp.dhis.program.Program" column="programid" foreign-key="fk_identifiertype_program" />
 
   </class>
 </hibernate-mapping>

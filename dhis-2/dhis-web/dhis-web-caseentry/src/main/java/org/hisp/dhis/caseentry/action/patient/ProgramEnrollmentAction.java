@@ -28,10 +28,14 @@ package org.hisp.dhis.caseentry.action.patient;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
 
-import org.hisp.dhis.organisationunit.OrganisationUnit;
-import org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager;
 import org.hisp.dhis.patient.Patient;
+import org.hisp.dhis.patient.PatientIdentifier;
+import org.hisp.dhis.patient.PatientIdentifierService;
+import org.hisp.dhis.patient.PatientIdentifierType;
+import org.hisp.dhis.patient.PatientIdentifierTypeService;
 import org.hisp.dhis.patient.PatientService;
 import org.hisp.dhis.program.Program;
 import org.hisp.dhis.program.ProgramInstance;
@@ -58,7 +62,9 @@ public class ProgramEnrollmentAction
 
     private ProgramInstanceService programInstanceService;
 
-    private OrganisationUnitSelectionManager selectionManager;
+    private PatientIdentifierTypeService identifierTypeService;
+
+    private PatientIdentifierService patientIdentifierService;
 
     // -------------------------------------------------------------------------
     // Input/Output
@@ -68,15 +74,17 @@ public class ProgramEnrollmentAction
 
     private Integer programId;
 
+    private Map<Integer, String> identiferMap;
+
     private Patient patient;
 
     private Program program;
 
     private ProgramInstance programInstance;
 
-    private Boolean registerEvent;
-
     private Collection<ProgramStageInstance> programStageInstances = new ArrayList<ProgramStageInstance>();
+
+    private Collection<PatientIdentifierType> identifierTypes;
 
     // -------------------------------------------------------------------------
     // Getters/Setters
@@ -85,6 +93,21 @@ public class ProgramEnrollmentAction
     public void setPatientService( PatientService patientService )
     {
         this.patientService = patientService;
+    }
+
+    public Map<Integer, String> getIdentiferMap()
+    {
+        return identiferMap;
+    }
+
+    public void setPatientIdentifierService( PatientIdentifierService patientIdentifierService )
+    {
+        this.patientIdentifierService = patientIdentifierService;
+    }
+
+    public void setIdentifierTypeService( PatientIdentifierTypeService identifierTypeService )
+    {
+        this.identifierTypeService = identifierTypeService;
     }
 
     public void setProgramService( ProgramService programService )
@@ -97,9 +120,9 @@ public class ProgramEnrollmentAction
         this.programInstanceService = programInstanceService;
     }
 
-    public void setSelectionManager( OrganisationUnitSelectionManager selectionManager )
+    public Collection<PatientIdentifierType> getIdentifierTypes()
     {
-        this.selectionManager = selectionManager;
+        return identifierTypes;
     }
 
     public void setPatientId( Integer patientId )
@@ -132,11 +155,6 @@ public class ProgramEnrollmentAction
         return programStageInstances;
     }
 
-    public Boolean getRegisterEvent()
-    {
-        return registerEvent;
-    }
-
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
@@ -160,11 +178,22 @@ public class ProgramEnrollmentAction
             programInstance = programInstances.iterator().next();
 
             programStageInstances = programInstance.getProgramStageInstances();
-        }
 
-        OrganisationUnit selectedOrgunit = selectionManager.getSelectedOrganisationUnit();
-      
-        registerEvent = program.getOrganisationUnits().contains( selectedOrgunit );
+            // ---------------------------------------------------------------------
+            // Load identifier types of the selected program
+            // ---------------------------------------------------------------------
+
+            identifierTypes = identifierTypeService.getPatientIdentifierTypes( program );
+            identiferMap = new HashMap<Integer, String>();
+
+            Collection<PatientIdentifier> patientIdentifiers = patientIdentifierService.getPatientIdentifiers(
+                identifierTypes, patient );
+
+            for ( PatientIdentifier identifier : patientIdentifiers )
+            {
+                identiferMap.put( identifier.getIdentifierType().getId(), identifier.getIdentifier() );
+            }
+        }
 
         return SUCCESS;
     }
