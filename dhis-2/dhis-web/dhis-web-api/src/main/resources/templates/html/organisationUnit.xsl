@@ -30,16 +30,8 @@
           <td> <xsl:value-of select="d:openingDate" /> </td>
         </tr>
         <tr>
-          <td>Level</td>
-          <td> <xsl:value-of select="d:level" /> </td>
-        </tr>
-        <tr>
           <td>Active</td>
           <td> <xsl:value-of select="d:active" /> </td>
-        </tr>
-        <tr>
-          <td>Current Parent</td>
-          <td> <xsl:value-of select="d:currentParent" /> </td>
         </tr>
         <tr>
           <td>Has Patients</td>
@@ -61,7 +53,7 @@
       </table>
     </xsl:if>
   </xsl:template>
-  
+
   <xsl:template match="d:parent" mode="short">
     <h3>Parent OrganisationUnit</h3>
     <table>
