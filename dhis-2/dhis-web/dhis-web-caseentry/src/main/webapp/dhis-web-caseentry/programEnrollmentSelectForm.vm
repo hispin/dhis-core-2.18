@@ -29,17 +29,7 @@
 		</tr>
 	</table>
 	
-	<hr/>
-	<!-- TAB Header -->
-	<div id="tabs">
-		<ul>
-			<li><a href="#tab-1">$i18n.getString("enroll_to_program")</a></li>
-			<li><a href="#tab-2">$i18n.getString("name_based_data_entry")</a></li>
-		</ul>
-		
-		<!-- Enroll program TAB -->
-		<div id="tab-1">
-			<form id='programEnrollmentSelectDiv' name='programEnrollmentSelectDiv' method='POST'>
+	<form id='programEnrollmentSelectDiv' name='programEnrollmentSelectDiv' method='POST'>
 			<input type="hidden" id="patientId" name="patientId" value="$patient.id">    
 
 			<table>    
@@ -85,14 +75,8 @@
 			</form>
 			
 			<div id='programEnrollmentDiv' class='hidden'></div>
-		</div>
-
-		<!-- register-event TAB -->
-		<div id="tab-2">
-			<div id='dataRecordingSelectDiv' class='hidden'></div>
-			<div id='dataEntryFormDiv' class='hidden'></div>
-
-		</div>
+	<hr/>
+	
 </div>
 
 <script>
@@ -107,15 +91,6 @@
 			datePickerInRange( 'dateOfIncident' , 'enrollmentDate' );
 		}); 
 		
-	jQuery("#tabs").tabs();
 	datePickerValid( 'enrollmentDate' );
 	datePickerValid( 'dateOfIncident' );
-	
-	$( "#tabs" ).tabs( "option", "selected", 0 );
-	$('#tabs').bind('tabsselect', function(event, ui) {
-		if( ui.index == 1 )
-		{
-			showSelectedDataRecoding( getFieldValue('patientId') );
-		}
-	});
 </script>
