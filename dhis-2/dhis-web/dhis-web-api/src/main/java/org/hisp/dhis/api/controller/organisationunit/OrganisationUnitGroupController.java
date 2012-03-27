@@ -89,6 +89,7 @@ public class OrganisationUnitGroupController
         }
 
         model.addAttribute( "model", organisationUnitGroup );
+        model.addAttribute( "view", "detailed" );
 
         return "organisationUnitGroup";
     }
