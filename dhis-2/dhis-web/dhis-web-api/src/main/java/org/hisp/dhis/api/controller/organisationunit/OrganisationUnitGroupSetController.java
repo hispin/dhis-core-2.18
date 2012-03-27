@@ -116,6 +116,7 @@ public class OrganisationUnitGroupSetController
         }
 
         model.addAttribute( "model", organisationUnitGroupSet );
+        model.addAttribute( "view", "detailed" );
 
         return "organisationUnitGroupSet";
     }

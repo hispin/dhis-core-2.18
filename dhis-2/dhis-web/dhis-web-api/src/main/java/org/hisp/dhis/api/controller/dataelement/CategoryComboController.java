@@ -111,6 +111,7 @@ public class CategoryComboController
         }
 
         model.addAttribute( "model", categoryCombo );
+        model.addAttribute( "view", "detailed" );
 
         return "categoryCombo";
     }
