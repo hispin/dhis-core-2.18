@@ -58,8 +58,8 @@ public class HibernatePatientAttributeGroupStore
     @Override
     public Collection<PatientAttributeGroup> getWithoutProgram()
     {
-        return getCriteria().createAlias( "attributes", "attribute" ).add( Restrictions.isNull( "attribute.program" ) )
-            .list();
+        return getCriteria().setResultTransformer( Criteria.DISTINCT_ROOT_ENTITY ).createAlias( "attributes",
+            "attribute" ).add( Restrictions.isNull( "attribute.program" ) ).list();
     }
 
 }

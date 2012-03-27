@@ -52,7 +52,7 @@ input.imgButton
 
 .heading-column { width : 450px;}
 td.input-column { width : 390px;}
-td.input-column input{ width: 360px;}
+td.input-column input[type="text"]{ width: 360px;}
 td.input-column select { width: 367px;}
 td.error {padding-left:1em}
 

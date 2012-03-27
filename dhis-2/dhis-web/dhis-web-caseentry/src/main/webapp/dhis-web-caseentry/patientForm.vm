@@ -41,43 +41,23 @@
 </tr>
 
 <tr>
-	<td class='text-column'><label for="dobType">$i18n.getString( "dob_type" )<em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
-	<td class="input-column">
-		<select id='dobType' name="dobType" class="{validate:{required:true}}">
-			<option value="V" selected="selected">$i18n.getString( "verified" )</option>
-			<option value="D" >$i18n.getString( "declared" )</option>
-			<option value="A" >$i18n.getString( "approximated" )</option>
-		</select>
+	<td class='text-column'><label for="birthDate">$i18n.getString( "date_of_birth" )<em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
+	<td class="input-column">		
+		<input type="text" id="birthDate" name="birthDate" style='width:168px' />
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$i18n.getString( "verified" ) <input type='checkbox' id='verified' name='verified' onchange='verifiedOnchange();' value='true' checked >
+		$i18n.getString( "age" ) <input type="text" id="age" name="age" class="{validate:{number:true}}"  style="width:50px" disabled />
 	</td>
    <td></td>
 </tr>
 
-<tr id='birthdaySpan'>
-	<td class='text-column'><label for="birthDate">$i18n.getString( "date_of_birth" )<em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
-	<td class="input-column">			
-		<input type="text" id="birthDate" name="birthDate" />
-	</td>
-	<td></td>
-</tr>
-
-<tr id='ageSpan' class="hidden" >
-	<td class='text-column'><label for="age">$i18n.getString( "age" ) </label><em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
-	<td class="input-column">
-		<select id="ageType" name="ageType" style="width:80px">
-			<option value="D"> $i18n.getString('day')</option>
-			<option value="M"> $i18n.getString('month')</option>
-			<option value="Y"> $i18n.getString('year')</option>
-		</select>
-		<input type="text" id="age" name="age" class="{validate:{number:true, alphanumeric: true}}"  style="width:278px" />
-	</td>
-	<td></td>
-</tr>
-
 <tr>
 	<td></td>
-	<td><input id="memberValidator" class="hidden {validate:{required:true}}"/></td>
+	<td class="input-column" >
+		<span id='validateBirthdate' class="hidden"><i>$i18n.getString('please_fill_out_only_one_of_these_fields')</i></span>
+		<input id="memberValidator" class="hidden {validate:{required:true}}"/>
+	</td>
 </tr>
-
+	
 <tr>
 	<td class='text-column'><label for="bloodGroup">$i18n.getString( "blood_group" )</label></td>
 	<td class="input-column">
@@ -113,11 +93,14 @@
 	<tr><td colspan="2">&nbsp;</td></tr>	
 	<tr><th colspan="2" class="heading-column">$i18n.getString( "patient_identifiers" )</th></tr>
 	#foreach ($identifierType in $identifierTypes)
-	<tr>
-		<td class='text-column'><label>$identifierType.name #if($identifierType.mandatory == true )<em title="$i18n.getString( 'required' )" class="required">*</em> #end</label></td>       
-			<td class="input-column">
-			<input type="text" id="iden$identifierType.id" name="iden$identifierType.id" data="{related:$identifierType.related}" class="{validate:{required:$identifierType.mandatory, #if($!identifierType.noChars) maxlength:$identifierType.noChars, #end #if($identifierType.type=='number') number:true #elseif($!identifierType.type=='letter') lettersonly:true #end }}" /></td>
-	</tr>
+		#if( $identifierType.program )
+		#else
+		<tr>
+			<td class='text-column'><label>$identifierType.name #if($identifierType.mandatory == true )<em title="$i18n.getString( 'required' )" class="required">*</em> #end</label></td>       
+				<td class="input-column">
+				<input type="text" id="iden$identifierType.id" name="iden$identifierType.id" data="{related:$identifierType.related}" class="{validate:{required:$identifierType.mandatory, #if($!identifierType.noChars) maxlength:$identifierType.noChars, #end #if($identifierType.type=='number') number:true #elseif($!identifierType.type=='letter') lettersonly:true #end }}" /></td>
+		</tr>
+		#end
 	#end
 #end
 
@@ -126,7 +109,8 @@
 	<tr><td>&nbsp;</td></tr>
 	<tr><th colspan="2" class="heading-column">$attributeGroup.name</th></tr>
 	#foreach($attribute in $attributeGroup.attributes )
-		#if($!attribute)
+		#if( $attribute.program )
+		#else
 		<tr>
 			<td class='text-column'><label>$attribute.name #if($attribute.mandatory)<em title="$i18n.getString( 'required' )" class="required">*</em> #end</label></td>
 			<td class="input-column">
@@ -163,6 +147,8 @@
 #if ( $noGroupAttributes && $noGroupAttributes.size() > 0) 	
 	<tr><th colspan="2" class="heading-column">$i18n.getString( "other_details" )</th></tr>
 	#foreach($attribute in $noGroupAttributes )
+		#if( $attribute.program )
+		#else
 		<tr>
 			<td class='text-column'><label>$attribute.name #if($attribute.mandatory)<em title="$i18n.getString( 'required' )" class="required">*</em> #end</label></td>
 			<td class="input-column">
@@ -189,5 +175,6 @@
 				#end
 			</td>		
 		</tr>
+		#end
 	#end
 #end

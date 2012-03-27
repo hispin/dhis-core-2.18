@@ -96,10 +96,8 @@ public class UpdatePatientAction
 
     private Integer age;
 
-    private char ageType;
-
-    private Character dobType;
-
+    private Boolean verified;
+    
     private String gender;
 
     private String bloodGroup;
@@ -126,6 +124,8 @@ public class UpdatePatientAction
         OrganisationUnit organisationUnit = selectionManager.getSelectedOrganisationUnit();
 
         patient = patientService.getPatient( id );
+        
+        verified = ( verified == null ) ? false : true ;
 
         // ---------------------------------------------------------------------
         // Set FirstName, MiddleName, LastName by FullName
@@ -174,6 +174,13 @@ public class UpdatePatientAction
         patient.setUnderAge( underAge );
         patient.setOrganisationUnit( organisationUnit );
 
+        Character dobType = ( verified ) ? 'V' : 'D';
+        
+        if( !verified && age != null )
+        {
+            dobType = 'A';
+        }
+        
         if ( dobType == Patient.DOB_TYPE_VERIFIED || dobType == Patient.DOB_TYPE_DECLARED )
         {
             birthDate = birthDate.trim();
@@ -181,7 +188,7 @@ public class UpdatePatientAction
         }
         else
         {
-            patient.setBirthDateFromAge( age.intValue(), ageType );
+            patient.setBirthDateFromAge( age.intValue(), 'Y' );
         }
 
         patient.setDobType( dobType );
@@ -424,13 +431,9 @@ public class UpdatePatientAction
         this.relationshipTypeId = relationshipTypeId;
     }
 
-    public void setDobType( Character dobType )
+    public void setVerified( Boolean verified )
     {
-        this.dobType = dobType;
+        this.verified = verified;
     }
 
-    public void setAgeType( char ageType )
-    {
-        this.ageType = ageType;
-    }
 }

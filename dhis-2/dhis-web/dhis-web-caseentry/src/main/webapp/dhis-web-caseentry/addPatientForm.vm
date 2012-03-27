@@ -14,18 +14,31 @@
 					}
 				,beforeValidateHandler: function(form)
 					{
-						var dobType = $('#patientForm [id=dobType]').val();
+						var checked = byId( 'verified' ).checked;
 						
-						if( dobType=='V' || dobType=='D' ) 
+						var birthDate = $('#patientForm [id=birthDate]').val();
+						var age = $('#patientForm [id=age]').val();
+						if( birthDate != '' && age!='' )
 						{
-							var birthDate = $('#patientForm [id=birthDate]').val();
-							if( birthDate != '' ){
-								$("#patientForm [id=memberValidator]").val(birthDate);
-							}
-						}else{
-							var age = $('#patientForm [id=age]').val();
-							$("#patientForm [id=memberValidator]").val(age);
+							showById( 'validateBirthdate' );
+							$("#patientForm [id=memberValidator]").val("birthDate");
+							return false;
 						}
+						else if( birthDate == '' && age == '' ) {
+							jQuery( '#validateBirthdate' ).removeClass( 'error').addClass('error valid');
+							$("#patientForm [id=memberValidator]").val("");
+						}
+						else if ( birthDate != '' )
+						{
+							jQuery( '#validateBirthdate' ).removeClass( 'error').addClass('error valid');
+							$("#patientForm [id=memberValidator]").val("birthDate");
+						}
+						else if ( age=='' )
+						{
+							jQuery( '#validateBirthdate' ).removeClass( 'error').addClass('error valid');
+							$("#patientForm [id=memberValidator]").val("age");
+						}
+						hideById( 'validateBirthdate' );
 					}
 			});
 		
