@@ -20,7 +20,7 @@
 			<tr #alternate( $mark )>
 				<td class='text-column'><label>$identifierType.name #if($identifierType.mandatory == true )<em title="$i18n.getString( 'required' )" class="required">*</em> #end</label></td>       
 					<td class="input-column">
-					<input type="text" id="iden$identifierType.id" name="iden$identifierType.id" value='$identifier' class="{validate:{required:$identifierType.mandatory, #if($!identifierType.noChars) maxlength:$identifierType.noChars, #end #if($identifierType.type=='number') number:true #elseif($!identifierType.type=='letter') lettersonly:true #end }}" onchange='savePatientIdentifier( $identifierType.id, this);' onkeypress="return keyPress(event, this)" tabindex="$tabIndex" /></td>
+					<input type="text" id="iden$identifierType.id" name="iden$identifierType.id" value='$!identifier' class="{validate:{required:$identifierType.mandatory, #if($!identifierType.noChars) maxlength:$identifierType.noChars, #end #if($identifierType.type=='number') number:true #elseif($!identifierType.type=='letter') lettersonly:true #end }}" onchange='savePatientIdentifier( $identifierType.id, this);' onkeypress="return keyPress(event, this)" tabindex="$tabIndex" /></td>
 			</tr>
 			#set( $tabIndex = $tabIndex + 1 )
 			#set( $mark = !$mark  )

@@ -54,6 +54,7 @@
 				<p><label class="bold">$i18n.getString( "date_of_incident_description" ):</label><br><span id="dateOfIncidentDescriptionField"></span></p>				
 				<p><label class="bold">$i18n.getString( "stage_in_program" ):</label><br><span id="programStageCountField"></span></p>
 				<p><label class="bold">$i18n.getString( "max_days_from_start" ):</label><br><span id="maxDaysFromStartField"></span></p>
+				<p><label class="bold">$i18n.getString( "hide_date_of_incident" ):</label><br><span id="hideIncidentDateField"></span></p>
 			</div>
 
 		</td>

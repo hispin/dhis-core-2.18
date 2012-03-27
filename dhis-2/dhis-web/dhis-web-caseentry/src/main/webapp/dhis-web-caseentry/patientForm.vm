@@ -45,7 +45,7 @@
 	<td class="input-column">		
 		<input type="text" id="birthDate" name="birthDate" style='width:168px' />
 		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$i18n.getString( "verified" ) <input type='checkbox' id='verified' name='verified' onchange='verifiedOnchange();' value='true' checked >
-		$i18n.getString( "age" ) <input type="text" id="age" name="age" class="{validate:{number:true}}"  style="width:50px" disabled />
+		$i18n.getString( "age_year" ) <input type="text" id="age" name="age" class="{validate:{number:true}}"  style="width:50px" disabled />
 	</td>
    <td></td>
 </tr>

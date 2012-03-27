@@ -9,6 +9,7 @@
 	"dateOfEnrollmentDescription": "$!encoder.jsEncode( ${program.dateOfEnrollmentDescription} )",
 	"dateOfIncidentDescription": "$!encoder.jsEncode( ${program.dateOfIncidentDescription} )",
 	"programStageCount": "${program.programStages.size()}",
-	"maxDay": "${program.maxDaysAllowedInputData}"
+	"maxDay": "${program.maxDaysAllowedInputData}",
+	"hideDateOfIncident": "${program.hideDateOfIncident}"
   }
 }

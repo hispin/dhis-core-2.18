@@ -259,7 +259,7 @@ public class ProgramEnrollmentAction
             noGroupAttributes = patientAttributeService.getPatientAttributes( program, null );
 
             Collection<PatientAttributeValue> patientAttributeValues = patientAttributeValueService
-                .getPatientAttributeValues( patient, program );
+                .getPatientAttributeValues( patient );
 
             for ( PatientAttributeValue patientAttributeValue : patientAttributeValues )
             {

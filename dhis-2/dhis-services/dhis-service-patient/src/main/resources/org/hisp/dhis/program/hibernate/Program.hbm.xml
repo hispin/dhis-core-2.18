@@ -45,5 +45,7 @@
     
     <property name="displayProvidedOtherFacility" />
     
+    <property name="hideDateOfIncident" />
+    
   </class>
 </hibernate-mapping>

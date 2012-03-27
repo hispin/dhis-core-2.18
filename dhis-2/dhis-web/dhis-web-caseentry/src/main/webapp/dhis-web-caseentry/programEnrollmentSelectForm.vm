@@ -49,7 +49,7 @@
 						<select id="programId" name="programId" onchange="showProgramEnrollmentForm('$patient.id', this.value);" >
 							<option value="0">[$i18n.getString( "select" )]</option>
 							#foreach( $program in $programs )
-								<option value="$program.id" singleevent='$program.singleEvent'>$encoder.htmlEncode( $program.name )</option>
+								<option value="$program.id" singleevent='$program.singleEvent' hideDateOfIncident='$program.hideDateOfIncident'>$encoder.htmlEncode( $program.name )</option>
 							#end
 						</select>
 					</td>
@@ -60,10 +60,12 @@
 					<td class='text-column'><label for="enrollmentDate"><span id='enrollmentDateDescription'></span><em title="$i18n.getString( "required" )" class="required"> * </em></label></td>
                     <td colspan='2' class='input-column'><input type="text" id="enrollmentDate" name="enrollmentDate" disabled="disabled" class="{validate:{required:true}}"></td>
 				</tr>
-				<tr id='dateOfIncidentTR' class='hidden'>
+				
+				<tr id='dateOfIncidentTR' style='display:none'>
 					<td class='text-column'><label for="dateOfIncident"><span id='dateOfIncidentDescription'></span><em title="$i18n.getString( "required" )" class="required"> * </em></label></td>
 					<td colspan='2' class='input-column'><input type="text" id="dateOfIncident" name="dateOfIncident" disabled="disabled" class="{validate:{required:true}}"></td>
 				</tr>
+			
 				<tr>
 					<td></td>
 					<td></td>   

@@ -99,7 +99,7 @@
 		<td class="input-column" >
 			<input type="text" id="birthDate" name="birthDate" value="$format.formatDate( $!patient.birthDate )" style='width:168px' >
 			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$i18n.getString( "verified" ) <input type='checkbox' id='verified' name='verified' onchange='verifiedOnchange();' #if($patient.dobType=='V') checked #end >
-			$i18n.getString( "age" )<input type="text" id="age" name="age" class="{validate:{number:true, alphanumeric: true}}" style="width:50px" #if($patient.dobType!='V') disable #end >
+			$i18n.getString( "age_year" )<input type="text" id="age" name="age" class="{validate:{number:true, alphanumeric: true}}" style="width:50px" #if($patient.dobType!='V') disable #end >
 		</td>
 	</tr>
 	

@@ -79,6 +79,8 @@ public class Program
 
     private Boolean displayProvidedOtherFacility;
 
+    private Boolean hideDateOfIncident;
+
     // -------------------------------------------------------------------------
     // Constructors
     // -------------------------------------------------------------------------
@@ -139,7 +141,7 @@ public class Program
     {
         this.displayProvidedOtherFacility = displayProvidedOtherFacility;
     }
-    
+
     public String getDescription()
     {
         return description;
@@ -228,6 +230,16 @@ public class Program
     public void setDateOfIncidentDescription( String dateOfIncidentDescription )
     {
         this.dateOfIncidentDescription = dateOfIncidentDescription;
+    }
+
+    public Boolean getHideDateOfIncident()
+    {
+        return hideDateOfIncident;
+    }
+
+    public void setHideDateOfIncident( Boolean hideDateOfIncident )
+    {
+        this.hideDateOfIncident = hideDateOfIncident;
     }
 
     public Set<ValidationCriteria> getPatientValidationCriteria()
