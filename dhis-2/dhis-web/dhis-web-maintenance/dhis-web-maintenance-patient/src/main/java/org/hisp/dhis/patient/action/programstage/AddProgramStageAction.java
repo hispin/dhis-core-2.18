@@ -28,16 +28,23 @@ package org.hisp.dhis.patient.action.programstage;
  */
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Date;
 import java.util.List;
 
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.program.Program;
+import org.hisp.dhis.program.ProgramInstance;
+import org.hisp.dhis.program.ProgramInstanceService;
 import org.hisp.dhis.program.ProgramService;
 import org.hisp.dhis.program.ProgramStage;
 import org.hisp.dhis.program.ProgramStageDataElement;
 import org.hisp.dhis.program.ProgramStageDataElementService;
+import org.hisp.dhis.program.ProgramStageInstance;
+import org.hisp.dhis.program.ProgramStageInstanceService;
 import org.hisp.dhis.program.ProgramStageService;
+import org.hisp.dhis.system.util.DateUtils;
 
 import com.opensymphony.xwork2.Action;
 
@@ -79,6 +86,23 @@ public class AddProgramStageAction
     public void setProgramStageDataElementService( ProgramStageDataElementService programStageDataElementService )
     {
         this.programStageDataElementService = programStageDataElementService;
+    }
+
+    
+    
+    
+    private ProgramInstanceService programInstanceService;
+
+    public void setProgramInstanceService( ProgramInstanceService programInstanceService )
+    {
+        this.programInstanceService = programInstanceService;
+    }
+
+    private ProgramStageInstanceService programStageInstanceService;
+
+    public void setProgramStageInstanceService( ProgramStageInstanceService programStageInstanceService )
+    {
+        this.programStageInstanceService = programStageInstanceService;
     }
 
     // -------------------------------------------------------------------------
@@ -155,9 +179,9 @@ public class AddProgramStageAction
         programStage.setDescription( description );
         programStage.setStageInProgram( program.getProgramStages().size() + 1 );
         programStage.setProgram( program );
-        
-        irregular = (irregular==null) ? false : irregular;
-        programStage.setIrregular(irregular);
+
+        irregular = (irregular == null) ? false : irregular;
+        programStage.setIrregular( irregular );
 
         minDaysFromStart = (minDaysFromStart == null) ? 0 : minDaysFromStart;
         programStage.setMinDaysFromStart( minDaysFromStart );
@@ -170,6 +194,29 @@ public class AddProgramStageAction
             ProgramStageDataElement programStageDataElement = new ProgramStageDataElement( programStage, dataElement,
                 this.compulsories.get( i ), new Integer( i ) );
             programStageDataElementService.addProgramStageDataElement( programStageDataElement );
+        }
+
+        // ---------------------------------------------------------------------
+        // Create program-stage-instances for the available patients enrolled
+        // this program before
+        // ---------------------------------------------------------------------
+
+        Collection<ProgramInstance> programInstances = programInstanceService.getProgramInstances( program, false );
+
+        for ( ProgramInstance programInstance : programInstances )
+        {
+            ProgramStageInstance programStageInstance = new ProgramStageInstance();
+            programStageInstance.setProgramInstance( programInstance );
+            programStageInstance.setProgramStage( programStage );
+            programStageInstance.setStageInProgram( programStage.getStageInProgram() );
+
+            Date dueDate = DateUtils.getDateAfterAddition( programInstance.getDateOfIncident(), programStage
+                .getMinDaysFromStart() );
+
+            programStageInstance.setDueDate( dueDate );
+
+            programStageInstanceService.addProgramStageInstance( programStageInstance );
+
         }
 
         return SUCCESS;
