@@ -32,7 +32,7 @@
 
 
 <div class="actions">	
-	<input type="button" class='button' id="newEncounterBtn" value="$i18n.getString('enter_new_encounter')" onClick="javascript: registerIrregularEncounter();" disabled="disabled" >
+	<input type="button" class='button' id="newEncounterBtn" value="$i18n.getString('create_new_encounter')" onClick="javascript: registerIrregularEncounter( getFieldValue('executionDate') );" disabled="disabled" >
 	<input type="button" class='button' id="validationBtn" value="$i18n.getString('run_validation')" onClick="javascript: runValidation();" disabled="disabled" >
 	<input type="button" class='button' id="completeBtn" value="$i18n.getString('complete')" onClick="doComplete()" disabled="disabled" >
 	<input type="button" class='button' value="$i18n.getString( 'back_to_search' )" id='backBtnFromEntry' onclick="javascript:showSearchForm();" >
@@ -85,6 +85,24 @@
 </div>
 
 </form>
+
+
+<div id='createNewEncounterDiv' class='hidden'>
+	<table>
+		<tr>
+			<td>$i18n.getString( 'due_date' )</td>
+			<td><input id='dueDateNewEncounter' name='dueDateNewEncounter' ></td>
+			<script type="text/javascript">
+			   datePickerValid( 'dueDateNewEncounter', false );
+			</script>
+		</tr>
+		<tr>
+			<td></td>
+			<td>
+				<input type='button' value='$i18n.getString("create")' onclick='registerIrregularEncounter( getFieldValue("dueDateNewEncounter" ) );' />
+				<input type='button' value='$i18n.getString("cancel")' onclick="closeDueDateDiv();" />
+			</td>
+</div>
 
 <script>
 	jQuery('#dataRecordingSelectForm').ready(function(){ 
