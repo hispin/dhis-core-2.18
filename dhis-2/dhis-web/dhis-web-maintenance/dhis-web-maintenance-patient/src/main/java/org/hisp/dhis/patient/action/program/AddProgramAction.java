@@ -132,6 +132,13 @@ public class AddProgramAction
         this.displayProvidedOtherFacility = displayProvidedOtherFacility;
     }
 
+    private Boolean hideDateOfIncident;
+
+    public void setHideDateOfIncident( Boolean hideDateOfIncident )
+    {
+        this.hideDateOfIncident = hideDateOfIncident;
+    }
+
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
@@ -142,7 +149,8 @@ public class AddProgramAction
         singleEvent = (singleEvent == null) ? false : singleEvent;
         anonymous = (anonymous == null) ? false : anonymous;
         displayProvidedOtherFacility = (displayProvidedOtherFacility == null) ? true : displayProvidedOtherFacility;
-        
+        hideDateOfIncident = (hideDateOfIncident == null) ? false : displayProvidedOtherFacility;
+
         Program program = new Program();
 
         program.setName( name );
@@ -154,7 +162,8 @@ public class AddProgramAction
         program.setSingleEvent( singleEvent );
         program.setAnonymous( anonymous );
         program.setDisplayProvidedOtherFacility( displayProvidedOtherFacility );
-
+        program.setHideDateOfIncident( hideDateOfIncident );
+        
         programService.saveProgram( program );
 
         if ( singleEvent )

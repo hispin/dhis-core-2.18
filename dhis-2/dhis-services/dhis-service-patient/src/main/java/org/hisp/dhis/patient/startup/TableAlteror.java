@@ -82,6 +82,9 @@ public class TableAlteror
         executeSql( "ALTER TABLE patientdatavaluearchive DROP COLUMN storedby" );  
         executeSql( "DROP TABLE patientchart" ); 
         executeSql( "DROP TABLE patientchart" ); 
+        
+        executeSql( "UPDATE program set hideDateOfIncident=false WHERE hideDateOfIncident is null" );
+
     }
 
     // -------------------------------------------------------------------------

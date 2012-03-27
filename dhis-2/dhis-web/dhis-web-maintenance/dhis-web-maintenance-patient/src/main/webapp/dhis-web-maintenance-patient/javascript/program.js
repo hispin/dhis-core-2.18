@@ -23,7 +23,10 @@ function showProgramDetails( programId )
 		setInnerHTML( 'dateOfIncidentDescriptionField', json.program.dateOfIncidentDescription );   		
 		setInnerHTML( 'programStageCountField',  json.program.programStageCount );
 		setInnerHTML( 'maxDaysFromStartField',  json.program.maxDay );
-   
+		
+		var hideIncidentDateField = ( json.program.hideDateOfIncident == 'true') ? i18n_yes : i18n_no;
+		setInnerHTML( 'hideIncidentDateField',  hideIncidentDateField );
+		
 		showDetails();
 	});   
 }
@@ -51,6 +54,20 @@ function singleEventOnChange()
 		enable('dateOfEnrollmentDescription');
 		byId('anonymous').checked = false;
 		disable('anonymous');
+	}
+}
+
+function hideIncidentDateOnchange()
+{
+	var checked = byId( 'hideDateOfIncident' ).checked;
+	
+	if( checked)
+	{
+		disable( 'dateOfIncidentDescription' );
+	}
+	else
+	{
+		enable( 'dateOfIncidentDescription' );
 	}
 }
 

@@ -251,6 +251,11 @@ public class SaveProgramEnrollmentAction
 
         program = programService.getProgram( programId );
 
+        if( dateOfIncident == null )
+        {
+            dateOfIncident = enrollmentDate;
+        }
+        
         Collection<ProgramInstance> programInstances = programInstanceService.getProgramInstances( patient, program,
             false );
 
@@ -311,19 +316,22 @@ public class SaveProgramEnrollmentAction
             }
         }
 
-        // ---------------------------------------------------------------------
+     // ---------------------------------------------------------------------
         // Load identifier types of the selected program
         // ---------------------------------------------------------------------
 
         identifierTypes = identifierTypeService.getPatientIdentifierTypes( program );
         identiferMap = new HashMap<Integer, String>();
 
-        Collection<PatientIdentifier> patientIdentifiers = patientIdentifierService.getPatientIdentifiers(
-            identifierTypes, patient );
-
-        for ( PatientIdentifier identifier : patientIdentifiers )
+        if ( identifierTypes != null && identifierTypes.size() > 0 )
         {
-            identiferMap.put( identifier.getIdentifierType().getId(), identifier.getIdentifier() );
+            Collection<PatientIdentifier> patientIdentifiers = patientIdentifierService.getPatientIdentifiers(
+                identifierTypes, patient );
+
+            for ( PatientIdentifier identifier : patientIdentifiers )
+            {
+                identiferMap.put( identifier.getIdentifierType().getId(), identifier.getIdentifier() );
+            }
         }
 
         // ---------------------------------------------------------------------
@@ -337,7 +345,7 @@ public class SaveProgramEnrollmentAction
         noGroupAttributes = patientAttributeService.getPatientAttributes( program, null );
 
         Collection<PatientAttributeValue> patientAttributeValues = patientAttributeValueService
-            .getPatientAttributeValues( patient, program );
+            .getPatientAttributeValues( patient );
 
         for ( PatientAttributeValue patientAttributeValue : patientAttributeValues )
         {
@@ -353,6 +361,7 @@ public class SaveProgramEnrollmentAction
                     patientAttributeValue.getValue() );
             }
         }
+        
         return SUCCESS;
     }
 }
