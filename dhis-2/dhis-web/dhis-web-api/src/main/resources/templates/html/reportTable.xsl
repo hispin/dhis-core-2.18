@@ -6,15 +6,15 @@
 
   <xsl:template match="d:reportTable">
     <div class="reportTable">
-      <h2> <xsl:value-of select="@name" /> </h2>
+      <h2> <xsl:value-of select="@d:name" /> </h2>
 	  
 	  <table>
 		<tr>
 			<td>Resource Data</td>
-			<td><a href="{@link}/data">html</a></td>
-			<td><a href="{@link}/data.pdf">pdf</a></td>
-			<td><a href="{@link}/data.xls">xls</a></td>
-			<td><a href="{@link}/data.csv">csv</a></td>
+			<td><a href="{@d:link}/data">html</a></td>
+			<td><a href="{@d:link}/data.pdf">pdf</a></td>
+			<td><a href="{@d:link}/data.xls">xls</a></td>
+			<td><a href="{@d:link}/data.csv">csv</a></td>
 		</tr>
 		<tr>
 			<td>ou</td>
@@ -29,15 +29,15 @@
       <table>
         <tr>
           <td>ID</td>
-          <td> <xsl:value-of select="@id" /> </td>
+          <td> <xsl:value-of select="@d:id" /> </td>
         </tr>
         <tr>
           <td>Last Updated</td>
-          <td> <xsl:value-of select="@lastUpdated" /> </td>
+          <td> <xsl:value-of select="@d:lastUpdated" /> </td>
         </tr>
         <tr>
           <td>Code</td>
-          <td> <xsl:value-of select="@code" /> </td>
+          <td> <xsl:value-of select="@d:code" /> </td>
         </tr>
         <tr>
           <td>DoIndicators</td>
@@ -54,10 +54,6 @@
         <tr>
           <td>Regression</td>
           <td> <xsl:value-of select="d:regression" /> </td>
-        </tr>
-        <tr>
-          <td>SortOrder</td>
-          <td> <xsl:value-of select="d:sortOrder" /> </td>
         </tr>
         <tr>
           <td>TopLimit</td>

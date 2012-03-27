@@ -7,20 +7,20 @@
   <xsl:template match="d:indicator">
     <div class="indicator">
       <h2>
-        <xsl:value-of select="@name" />
+        <xsl:value-of select="@d:name" />
       </h2>
       <table>
         <tr>
           <td>ID</td>
-          <td> <xsl:value-of select="@id" /> </td>
+          <td> <xsl:value-of select="@d:id" /> </td>
         </tr>
         <tr>
           <td>Last Updated</td>
-          <td> <xsl:value-of select="@lastUpdated" /> </td>
+          <td> <xsl:value-of select="@d:lastUpdated" /> </td>
         </tr>
         <tr>
           <td>Code</td>
-          <td> <xsl:value-of select="@code" /> </td>
+          <td> <xsl:value-of select="@d:code" /> </td>
         </tr>
         <tr>
           <td>Short Name</td>
@@ -46,11 +46,6 @@
           <td>Annualized</td>
           <td> <xsl:value-of select="d:annualized" /> </td>
         </tr>
-        <tr>
-          <td>Sort Order</td>
-          <td> <xsl:value-of select="d:sortOrder" /> </td>
-        </tr>
-
       </table>
 
       <xsl:apply-templates select="d:indicatorGroups|d:dataSets" mode="short"/>

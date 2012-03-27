@@ -173,8 +173,8 @@ public class Section
     @JsonProperty
     @JsonSerialize( contentAs = BaseIdentifiableObject.class )
     @JsonView( {DetailedView.class, ExportView.class} )
-    @JacksonXmlElementWrapper( localName = "dataElements" )
-    @JacksonXmlProperty( localName = "dataElement" )
+    @JacksonXmlElementWrapper( localName = "dataElements", namespace = Dxf2Namespace.NAMESPACE )
+    @JacksonXmlProperty( localName = "dataElement", namespace = Dxf2Namespace.NAMESPACE )
     public List<DataElement> getDataElements()
     {
         return dataElements;
@@ -192,7 +192,7 @@ public class Section
 
     @JsonProperty
     @JsonView( {DetailedView.class, ExportView.class} )
-    @JacksonXmlProperty
+    @JacksonXmlProperty( namespace = Dxf2Namespace.NAMESPACE )
     public int getSortOrder()
     {
         return sortOrder;
@@ -205,8 +205,8 @@ public class Section
 
     @JsonProperty
     @JsonView( {DetailedView.class, ExportView.class} )
-    @JacksonXmlElementWrapper( localName = "greyedFields" )
-    @JacksonXmlProperty( localName = "greyedField" )
+    @JacksonXmlElementWrapper( localName = "greyedFields", namespace = Dxf2Namespace.NAMESPACE )
+    @JacksonXmlProperty( localName = "greyedField", namespace = Dxf2Namespace.NAMESPACE )
     public Set<DataElementOperand> getGreyedFields()
     {
         return greyedFields;

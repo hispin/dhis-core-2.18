@@ -113,7 +113,7 @@ public class ValidationRuleGroup
 
     @JsonProperty
     @JsonView( {DetailedView.class, ExportView.class} )
-    @JacksonXmlProperty
+    @JacksonXmlProperty( namespace = Dxf2Namespace.NAMESPACE )
     public String getDescription()
     {
         return description;
@@ -127,8 +127,8 @@ public class ValidationRuleGroup
     @JsonProperty( value = "validationRules" )
     @JsonSerialize( contentAs = BaseIdentifiableObject.class )
     @JsonView( {DetailedView.class, ExportView.class} )
-    @JacksonXmlElementWrapper( localName = "validationRules" )
-    @JacksonXmlProperty( localName = "validationRule" )
+    @JacksonXmlElementWrapper( localName = "validationRules", namespace = Dxf2Namespace.NAMESPACE )
+    @JacksonXmlProperty( localName = "validationRule", namespace = Dxf2Namespace.NAMESPACE )
     public Set<ValidationRule> getMembers()
     {
         return members;

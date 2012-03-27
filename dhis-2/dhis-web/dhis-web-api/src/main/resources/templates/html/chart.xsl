@@ -6,12 +6,12 @@
 
   <xsl:template match="d:chart">
     <div class="chart">
-      <h2> <xsl:value-of select="@name"/> </h2>
+      <h2> <xsl:value-of select="@d:name"/> </h2>
 	  
 	  <table>
 		<tr>
 			<td>Resource Data</td>
-			<td><a href="{@link}/data">png</a></td>
+			<td><a href="{@d:link}/data">png</a></td>
 		</tr>
 		<tr>
 			<td>width</td>
@@ -54,22 +54,22 @@
 		</tr>
 	  </table><br/>
 	  
-      <a href="{@link}/data"><img src="{@link}/data" style="border-style:solid; border-width: 1px; padding: 5px;" /></a>
+      <a href="{@d:link}/data"><img src="{@d:link}/data" style="border-style:solid; border-width: 1px; padding: 5px;" /></a>
 
       <h3>Details</h3>
 
       <table>
         <tr>
           <td>ID</td>
-          <td> <xsl:value-of select="@id"/> </td>
+          <td> <xsl:value-of select="@d:id"/> </td>
         </tr>
         <tr>
           <td>Last Updated</td>
-          <td> <xsl:value-of select="@lastUpdated"/> </td>
+          <td> <xsl:value-of select="@d:lastUpdated"/> </td>
         </tr>
         <tr>
           <td>Code</td>
-          <td> <xsl:value-of select="@code" /> </td>
+          <td> <xsl:value-of select="@d:code" /> </td>
         </tr>
         <tr>
           <td>Dimension</td>

@@ -161,8 +161,8 @@ public class OrganisationUnitGroup
     @JsonProperty( value = "organisationUnits" )
     @JsonSerialize( contentAs = BaseIdentifiableObject.class )
     @JsonView( {DetailedView.class, ExportView.class} )
-    @JacksonXmlElementWrapper( localName = "organisationUnits" )
-    @JacksonXmlProperty( localName = "organisationUnit" )
+    @JacksonXmlElementWrapper( localName = "organisationUnits", namespace = Dxf2Namespace.NAMESPACE )
+    @JacksonXmlProperty( localName = "organisationUnit", namespace = Dxf2Namespace.NAMESPACE )
     public Set<OrganisationUnit> getMembers()
     {
         return members;
@@ -176,6 +176,7 @@ public class OrganisationUnitGroup
     @JsonProperty( value = "organisationUnitGroupSet" )
     @JsonSerialize( as = BaseIdentifiableObject.class )
     @JsonView( {DetailedView.class, ExportView.class} )
+    @JacksonXmlProperty( namespace = Dxf2Namespace.NAMESPACE )
     public OrganisationUnitGroupSet getGroupSet()
     {
         return groupSet;

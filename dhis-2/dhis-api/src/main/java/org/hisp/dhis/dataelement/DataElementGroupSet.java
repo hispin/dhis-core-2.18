@@ -200,6 +200,7 @@ public class DataElementGroupSet
 
     @JsonProperty
     @JsonView( {DetailedView.class, ExportView.class} )
+    @JacksonXmlProperty( namespace = Dxf2Namespace.NAMESPACE )
     public String getDescription()
     {
         return description;
@@ -212,6 +213,7 @@ public class DataElementGroupSet
 
     @JsonProperty
     @JsonView( {DetailedView.class, ExportView.class} )
+    @JacksonXmlProperty( namespace = Dxf2Namespace.NAMESPACE )
     public Boolean isCompulsory()
     {
         if ( compulsory == null )
@@ -230,8 +232,8 @@ public class DataElementGroupSet
     @JsonProperty( value = "dataElementGroups" )
     @JsonSerialize( contentAs = BaseIdentifiableObject.class )
     @JsonView( {DetailedView.class, ExportView.class} )
-    @JacksonXmlElementWrapper( localName = "dataElementGroups" )
-    @JacksonXmlProperty( localName = "dataElementGroup" )
+    @JacksonXmlElementWrapper( localName = "dataElementGroups", namespace = Dxf2Namespace.NAMESPACE )
+    @JacksonXmlProperty( localName = "dataElementGroup", namespace = Dxf2Namespace.NAMESPACE )
     public List<DataElementGroup> getMembers()
     {
         return members;

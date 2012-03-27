@@ -80,7 +80,7 @@ public class Attribute
 
     @JsonProperty
     @JsonView( {DetailedView.class, ExportView.class} )
-    @JacksonXmlProperty
+    @JacksonXmlProperty(namespace = Dxf2Namespace.NAMESPACE)
     public String getValueType()
     {
         return valueType;
@@ -93,7 +93,7 @@ public class Attribute
 
     @JsonProperty
     @JsonView( {DetailedView.class, ExportView.class} )
-    @JacksonXmlProperty
+    @JacksonXmlProperty(namespace = Dxf2Namespace.NAMESPACE)
     public boolean isMandatory()
     {
         return mandatory;
@@ -106,7 +106,7 @@ public class Attribute
 
     @JsonProperty
     @JsonView( {DetailedView.class, ExportView.class} )
-    @JacksonXmlProperty
+    @JacksonXmlProperty(namespace = Dxf2Namespace.NAMESPACE)
     public boolean isDataElementAttribute()
     {
         return dataElementAttribute;
@@ -119,7 +119,7 @@ public class Attribute
 
     @JsonProperty
     @JsonView( {DetailedView.class, ExportView.class} )
-    @JacksonXmlProperty
+    @JacksonXmlProperty(namespace = Dxf2Namespace.NAMESPACE)
     public boolean isIndicatorAttribute()
     {
         return indicatorAttribute;
@@ -132,7 +132,7 @@ public class Attribute
 
     @JsonProperty
     @JsonView( {DetailedView.class, ExportView.class} )
-    @JacksonXmlProperty
+    @JacksonXmlProperty(namespace = Dxf2Namespace.NAMESPACE)
     public boolean isOrganisationUnitAttribute()
     {
         return organisationUnitAttribute;
@@ -145,7 +145,7 @@ public class Attribute
 
     @JsonProperty
     @JsonView( {DetailedView.class, ExportView.class} )
-    @JacksonXmlProperty
+    @JacksonXmlProperty(namespace = Dxf2Namespace.NAMESPACE)
     public boolean isUserAttribute()
     {
         return userAttribute;
@@ -166,9 +166,6 @@ public class Attribute
         this.attributeValues = attributeValues;
     }
 
-    @JsonProperty
-    @JsonView( {DetailedView.class, ExportView.class} )
-    @JacksonXmlProperty
     public Integer getSortOrder()
     {
         return sortOrder;

@@ -35,10 +35,7 @@ import org.hisp.dhis.attribute.AttributeValue;
 import org.hisp.dhis.attribute.Attributes;
 import org.hisp.dhis.chart.Chart;
 import org.hisp.dhis.chart.Charts;
-import org.hisp.dhis.common.BaseCollection;
-import org.hisp.dhis.common.BaseIdentifiableObject;
-import org.hisp.dhis.common.IdentifiableObject;
-import org.hisp.dhis.common.LinkableObject;
+import org.hisp.dhis.common.*;
 import org.hisp.dhis.constant.Constant;
 import org.hisp.dhis.constant.Constants;
 import org.hisp.dhis.dataelement.*;
@@ -363,21 +360,22 @@ public class WebLinkPopulator
             if ( baseCollection.getPager() != null )
             {
                 String basePath = getBasePath( source.getClass() );
+                Pager pager = baseCollection.getPager();
 
-                if ( baseCollection.getPage() < baseCollection.getPageCount() )
+                if ( pager.getPage() < pager.getPageCount() )
                 {
-                    baseCollection.getPager().setNextPage( basePath + "?page=" + (baseCollection.getPage() + 1) );
+                    pager.setNextPage( basePath + "?page=" + (pager.getPage() + 1) );
                 }
 
-                if ( baseCollection.getPage() > 1 )
+                if ( pager.getPage() > 1 )
                 {
-                    if ( (baseCollection.getPage() - 1) == 1 )
+                    if ( (pager.getPage() - 1) == 1 )
                     {
-                        baseCollection.getPager().setPrevPage( basePath );
+                        pager.setPrevPage( basePath );
                     }
                     else
                     {
-                        baseCollection.getPager().setPrevPage( basePath + "?page=" + (baseCollection.getPage() - 1) );
+                        pager.setPrevPage( basePath + "?page=" + (pager.getPage() - 1) );
                     }
 
                 }

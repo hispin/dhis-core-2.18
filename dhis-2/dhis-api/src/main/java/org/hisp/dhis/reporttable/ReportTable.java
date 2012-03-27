@@ -857,7 +857,7 @@ public class ReportTable
 
     @JsonProperty
     @JsonView( {DetailedView.class, ExportView.class} )
-    @JacksonXmlProperty
+    @JacksonXmlProperty( namespace = Dxf2Namespace.NAMESPACE )
     public boolean isRegression()
     {
         return regression;
@@ -870,7 +870,7 @@ public class ReportTable
 
     @JsonProperty
     @JsonView( {DetailedView.class, ExportView.class} )
-    @JacksonXmlProperty
+    @JacksonXmlProperty( namespace = Dxf2Namespace.NAMESPACE )
     public boolean isCumulative()
     {
         return cumulative;
@@ -884,8 +884,8 @@ public class ReportTable
     @JsonProperty
     @JsonSerialize( contentAs = BaseIdentifiableObject.class )
     @JsonView( {DetailedView.class, ExportView.class} )
-    @JacksonXmlElementWrapper( localName = "dataElements" )
-    @JacksonXmlProperty( localName = "dataElement" )
+    @JacksonXmlElementWrapper( localName = "dataElements", namespace = Dxf2Namespace.NAMESPACE )
+    @JacksonXmlProperty( localName = "dataElement", namespace = Dxf2Namespace.NAMESPACE )
     public List<DataElement> getDataElements()
     {
         return dataElements;
@@ -899,8 +899,8 @@ public class ReportTable
     @JsonProperty
     @JsonSerialize( contentAs = BaseIdentifiableObject.class )
     @JsonView( {DetailedView.class, ExportView.class} )
-    @JacksonXmlElementWrapper( localName = "indicators" )
-    @JacksonXmlProperty( localName = "indicator" )
+    @JacksonXmlElementWrapper( localName = "indicators", namespace = Dxf2Namespace.NAMESPACE )
+    @JacksonXmlProperty( localName = "indicator", namespace = Dxf2Namespace.NAMESPACE )
     public List<Indicator> getIndicators()
     {
         return indicators;
@@ -914,8 +914,8 @@ public class ReportTable
     @JsonProperty
     @JsonSerialize( contentAs = BaseIdentifiableObject.class )
     @JsonView( {DetailedView.class, ExportView.class} )
-    @JacksonXmlElementWrapper( localName = "periods" )
-    @JacksonXmlProperty( localName = "period" )
+    @JacksonXmlElementWrapper( localName = "periods", namespace = Dxf2Namespace.NAMESPACE )
+    @JacksonXmlProperty( localName = "period", namespace = Dxf2Namespace.NAMESPACE )
     public List<Period> getPeriods()
     {
         return periods;
@@ -929,8 +929,8 @@ public class ReportTable
     @JsonProperty
     @JsonSerialize( contentAs = BaseIdentifiableObject.class )
     @JsonView( {DetailedView.class, ExportView.class} )
-    @JacksonXmlElementWrapper( localName = "dataSets" )
-    @JacksonXmlProperty( localName = "dataSet" )
+    @JacksonXmlElementWrapper( localName = "dataSets", namespace = Dxf2Namespace.NAMESPACE )
+    @JacksonXmlProperty( localName = "dataSet", namespace = Dxf2Namespace.NAMESPACE )
     public List<DataSet> getDataSets()
     {
         return dataSets;
@@ -944,8 +944,8 @@ public class ReportTable
     @JsonProperty( value = "organisationUnits" )
     @JsonSerialize( contentAs = BaseIdentifiableObject.class )
     @JsonView( {DetailedView.class, ExportView.class} )
-    @JacksonXmlElementWrapper( localName = "organisationUnits" )
-    @JacksonXmlProperty( localName = "organisationUnit" )
+    @JacksonXmlElementWrapper( localName = "organisationUnits", namespace = Dxf2Namespace.NAMESPACE )
+    @JacksonXmlProperty( localName = "organisationUnit", namespace = Dxf2Namespace.NAMESPACE )
     public List<OrganisationUnit> getUnits()
     {
         return units;
@@ -959,8 +959,8 @@ public class ReportTable
     @JsonProperty
     @JsonSerialize( contentAs = BaseIdentifiableObject.class )
     @JsonView( {DetailedView.class, ExportView.class} )
-    @JacksonXmlElementWrapper( localName = "organisationUnitGroups" )
-    @JacksonXmlProperty( localName = "organisationUnitGroup" )
+    @JacksonXmlElementWrapper( localName = "organisationUnitGroups", namespace = Dxf2Namespace.NAMESPACE )
+    @JacksonXmlProperty( localName = "organisationUnitGroup", namespace = Dxf2Namespace.NAMESPACE )
     public List<OrganisationUnitGroup> getOrganisationUnitGroups()
     {
         return organisationUnitGroups;
@@ -974,7 +974,7 @@ public class ReportTable
     @JsonProperty
     @JsonSerialize( as = BaseIdentifiableObject.class )
     @JsonView( {DetailedView.class, ExportView.class} )
-    @JacksonXmlProperty
+    @JacksonXmlProperty( namespace = Dxf2Namespace.NAMESPACE )
     public DataElementCategoryCombo getCategoryCombo()
     {
         return categoryCombo;
@@ -987,7 +987,7 @@ public class ReportTable
 
     @JsonProperty
     @JsonView( {DetailedView.class, ExportView.class} )
-    @JacksonXmlProperty
+    @JacksonXmlProperty( namespace = Dxf2Namespace.NAMESPACE )
     public boolean isDoIndicators()
     {
         return doIndicators;
@@ -1000,7 +1000,7 @@ public class ReportTable
 
     @JsonProperty
     @JsonView( {DetailedView.class, ExportView.class} )
-    @JacksonXmlProperty
+    @JacksonXmlProperty( namespace = Dxf2Namespace.NAMESPACE )
     public boolean isDoPeriods()
     {
         return doPeriods;
@@ -1013,7 +1013,7 @@ public class ReportTable
 
     @JsonProperty
     @JsonView( {DetailedView.class, ExportView.class} )
-    @JacksonXmlProperty
+    @JacksonXmlProperty( namespace = Dxf2Namespace.NAMESPACE )
     public boolean isDoUnits()
     {
         return doUnits;
@@ -1026,7 +1026,7 @@ public class ReportTable
 
     @JsonProperty( value = "relativePeriods" )
     @JsonView( {DetailedView.class, ExportView.class} )
-    @JacksonXmlProperty
+    @JacksonXmlProperty( namespace = Dxf2Namespace.NAMESPACE )
     public RelativePeriods getRelatives()
     {
         return relatives;
@@ -1039,7 +1039,7 @@ public class ReportTable
 
     @JsonProperty
     @JsonView( {DetailedView.class, ExportView.class} )
-    @JacksonXmlProperty
+    @JacksonXmlProperty( namespace = Dxf2Namespace.NAMESPACE )
     public ReportParams getReportParams()
     {
         return reportParams;
@@ -1050,9 +1050,6 @@ public class ReportTable
         this.reportParams = reportParams;
     }
 
-    @JsonProperty
-    @JsonView( {DetailedView.class, ExportView.class} )
-    @JacksonXmlProperty
     public Integer getSortOrder()
     {
         return sortOrder;
@@ -1065,7 +1062,7 @@ public class ReportTable
 
     @JsonProperty
     @JsonView( {DetailedView.class, ExportView.class} )
-    @JacksonXmlProperty
+    @JacksonXmlProperty( namespace = Dxf2Namespace.NAMESPACE )
     public Integer getTopLimit()
     {
         return topLimit;

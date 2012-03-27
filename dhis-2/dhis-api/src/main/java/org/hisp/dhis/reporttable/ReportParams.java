@@ -128,7 +128,7 @@ public class ReportParams
 
     @JsonProperty
     @JsonView( {DetailedView.class, ExportView.class} )
-    @JacksonXmlProperty
+    @JacksonXmlProperty( namespace = Dxf2Namespace.NAMESPACE )
     public Boolean getParamReportingMonth()
     {
         return paramReportingMonth;
@@ -141,7 +141,7 @@ public class ReportParams
 
     @JsonProperty
     @JsonView( {DetailedView.class, ExportView.class} )
-    @JacksonXmlProperty
+    @JacksonXmlProperty( namespace = Dxf2Namespace.NAMESPACE )
     public Boolean getParamLeafParentOrganisationUnit()
     {
         return paramLeafParentOrganisationUnit;
@@ -154,7 +154,7 @@ public class ReportParams
 
     @JsonProperty
     @JsonView( {DetailedView.class, ExportView.class} )
-    @JacksonXmlProperty
+    @JacksonXmlProperty( namespace = Dxf2Namespace.NAMESPACE )
     public Boolean getParamGrandParentOrganisationUnit()
     {
         return paramGrandParentOrganisationUnit;
@@ -167,7 +167,7 @@ public class ReportParams
 
     @JsonProperty
     @JsonView( {DetailedView.class, ExportView.class} )
-    @JacksonXmlProperty
+    @JacksonXmlProperty( namespace = Dxf2Namespace.NAMESPACE )
     public Boolean getParamParentOrganisationUnit()
     {
         return paramParentOrganisationUnit;
@@ -180,7 +180,7 @@ public class ReportParams
 
     @JsonProperty
     @JsonView( {DetailedView.class, ExportView.class} )
-    @JacksonXmlProperty
+    @JacksonXmlProperty( namespace = Dxf2Namespace.NAMESPACE )
     public Boolean getParamOrganisationUnit()
     {
         return paramOrganisationUnit;

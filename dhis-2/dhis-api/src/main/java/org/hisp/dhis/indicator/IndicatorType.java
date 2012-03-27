@@ -112,7 +112,7 @@ public class IndicatorType
 
     @JsonProperty
     @JsonView( {DetailedView.class, ExportView.class} )
-    @JacksonXmlProperty
+    @JacksonXmlProperty(namespace = Dxf2Namespace.NAMESPACE)
     public int getFactor()
     {
         return factor;
@@ -125,7 +125,7 @@ public class IndicatorType
 
     @JsonProperty
     @JsonView( {DetailedView.class, ExportView.class} )
-    @JacksonXmlProperty
+    @JacksonXmlProperty(namespace = Dxf2Namespace.NAMESPACE)
     public boolean isNumber()
     {
         return number;

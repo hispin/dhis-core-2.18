@@ -162,6 +162,7 @@ public class Indicator
 
     @JsonProperty
     @JsonView( {DetailedView.class, ExportView.class} )
+    @JacksonXmlProperty( namespace = Dxf2Namespace.NAMESPACE )
     public boolean isAnnualized()
     {
         return annualized;
@@ -175,6 +176,7 @@ public class Indicator
     @JsonProperty
     @JsonSerialize( as = BaseIdentifiableObject.class )
     @JsonView( {DetailedView.class, ExportView.class} )
+    @JacksonXmlProperty( namespace = Dxf2Namespace.NAMESPACE )
     public IndicatorType getIndicatorType()
     {
         return indicatorType;
@@ -187,6 +189,7 @@ public class Indicator
 
     @JsonProperty
     @JsonView( {DetailedView.class, ExportView.class} )
+    @JacksonXmlProperty( namespace = Dxf2Namespace.NAMESPACE )
     public String getNumerator()
     {
         return numerator;
@@ -199,6 +202,7 @@ public class Indicator
 
     @JsonProperty
     @JsonView( {DetailedView.class, ExportView.class} )
+    @JacksonXmlProperty( namespace = Dxf2Namespace.NAMESPACE )
     public String getNumeratorDescription()
     {
         return numeratorDescription;
@@ -211,6 +215,7 @@ public class Indicator
 
     @JsonProperty
     @JsonView( {DetailedView.class, ExportView.class} )
+    @JacksonXmlProperty( namespace = Dxf2Namespace.NAMESPACE )
     public String getExplodedNumerator()
     {
         return explodedNumerator;
@@ -223,6 +228,7 @@ public class Indicator
 
     @JsonProperty
     @JsonView( {DetailedView.class, ExportView.class} )
+    @JacksonXmlProperty( namespace = Dxf2Namespace.NAMESPACE )
     public String getDenominator()
     {
         return denominator;
@@ -235,6 +241,7 @@ public class Indicator
 
     @JsonProperty
     @JsonView( {DetailedView.class, ExportView.class} )
+    @JacksonXmlProperty( namespace = Dxf2Namespace.NAMESPACE )
     public String getDenominatorDescription()
     {
         return denominatorDescription;
@@ -247,6 +254,7 @@ public class Indicator
 
     @JsonProperty
     @JsonView( {DetailedView.class, ExportView.class} )
+    @JacksonXmlProperty( namespace = Dxf2Namespace.NAMESPACE )
     public String getExplodedDenominator()
     {
         return explodedDenominator;
@@ -257,8 +265,6 @@ public class Indicator
         this.explodedDenominator = explodedDenominator;
     }
 
-    @JsonProperty
-    @JsonView( {DetailedView.class, ExportView.class} )
     public Integer getSortOrder()
     {
         return sortOrder;
@@ -271,6 +277,7 @@ public class Indicator
 
     @JsonProperty
     @JsonView( {DetailedView.class, ExportView.class} )
+    @JacksonXmlProperty( namespace = Dxf2Namespace.NAMESPACE )
     public String getUrl()
     {
         return url;
@@ -284,8 +291,8 @@ public class Indicator
     @JsonProperty( value = "indicatorGroups" )
     @JsonSerialize( contentAs = BaseIdentifiableObject.class )
     @JsonView( {DetailedView.class} )
-    @JacksonXmlElementWrapper( localName = "indicatorGroups" )
-    @JacksonXmlProperty( localName = "indicatorGroup" )
+    @JacksonXmlElementWrapper( localName = "indicatorGroups", namespace = Dxf2Namespace.NAMESPACE )
+    @JacksonXmlProperty( localName = "indicatorGroup", namespace = Dxf2Namespace.NAMESPACE )
     public Set<IndicatorGroup> getGroups()
     {
         return groups;
@@ -299,8 +306,8 @@ public class Indicator
     @JsonProperty
     @JsonSerialize( contentAs = BaseIdentifiableObject.class )
     @JsonView( {DetailedView.class} )
-    @JacksonXmlElementWrapper( localName = "dataSets" )
-    @JacksonXmlProperty( localName = "dataSet" )
+    @JacksonXmlElementWrapper( localName = "dataSets", namespace = Dxf2Namespace.NAMESPACE )
+    @JacksonXmlProperty( localName = "dataSet", namespace = Dxf2Namespace.NAMESPACE )
     public Set<DataSet> getDataSets()
     {
         return dataSets;
@@ -313,8 +320,8 @@ public class Indicator
 
     @JsonProperty( value = "attributes" )
     @JsonView( {DetailedView.class, ExportView.class} )
-    @JacksonXmlElementWrapper( localName = "attributes" )
-    @JacksonXmlProperty( localName = "attribute" )
+    @JacksonXmlElementWrapper( localName = "attributes", namespace = Dxf2Namespace.NAMESPACE )
+    @JacksonXmlProperty( localName = "attribute", namespace = Dxf2Namespace.NAMESPACE )
     public Set<AttributeValue> getAttributeValues()
     {
         return attributeValues;

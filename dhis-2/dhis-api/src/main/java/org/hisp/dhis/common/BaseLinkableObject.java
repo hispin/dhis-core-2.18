@@ -29,10 +29,12 @@ package org.hisp.dhis.common;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
+@JacksonXmlRootElement( localName = "linkableObject", namespace = Dxf2Namespace.NAMESPACE )
 public class BaseLinkableObject
     implements LinkableObject
 {
@@ -43,7 +45,7 @@ public class BaseLinkableObject
     private transient String link;
 
     @JsonProperty
-    @JacksonXmlProperty( isAttribute = true )
+    @JacksonXmlProperty( isAttribute = true, namespace = Dxf2Namespace.NAMESPACE )
     public String getLink()
     {
         return link;

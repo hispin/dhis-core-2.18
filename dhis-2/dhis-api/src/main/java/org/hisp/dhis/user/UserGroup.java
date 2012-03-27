@@ -112,8 +112,8 @@ public class UserGroup
     @JsonProperty( value = "users" )
     @JsonSerialize( contentAs = BaseIdentifiableObject.class )
     @JsonView( {DetailedView.class, ExportView.class} )
-    @JacksonXmlElementWrapper( localName = "users" )
-    @JacksonXmlProperty( localName = "user" )
+    @JacksonXmlElementWrapper( localName = "users", namespace = Dxf2Namespace.NAMESPACE )
+    @JacksonXmlProperty( localName = "user", namespace = Dxf2Namespace.NAMESPACE )
     public Set<User> getMembers()
     {
         return members;

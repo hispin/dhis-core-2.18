@@ -29,10 +29,12 @@ package org.hisp.dhis.common;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
+@JacksonXmlRootElement( localName = "collection", namespace = Dxf2Namespace.NAMESPACE )
 public class BaseCollection
     implements LinkableObject
 {
@@ -50,6 +52,7 @@ public class BaseCollection
     //-------------------------------------------------------------------------------------
 
     @JsonProperty
+    @JacksonXmlProperty( namespace = Dxf2Namespace.NAMESPACE )
     public Pager getPager()
     {
         return pager;
@@ -75,7 +78,7 @@ public class BaseCollection
     //-------------------------------------------------------------------------------------
 
     @JsonProperty
-    @JacksonXmlProperty( isAttribute = true )
+    @JacksonXmlProperty( isAttribute = true, namespace = Dxf2Namespace.NAMESPACE )
     public String getLink()
     {
         if ( linkableObject == null )
@@ -97,85 +100,5 @@ public class BaseCollection
         {
             linkableObject.setLink( link );
         }
-    }
-
-    /**
-     * Get current page.
-     *
-     * @return Current page
-     */
-    public Integer getPage()
-    {
-        if ( pager == null )
-        {
-            return null;
-        }
-
-        return pager.getPage();
-    }
-
-    /**
-     * Total number of items.
-     *
-     * @return number of items in collection
-     */
-    public Integer getTotal()
-    {
-        if ( pager == null )
-        {
-            return null;
-        }
-
-        return pager.getTotal();
-    }
-
-    /**
-     * How many items per page.
-     *
-     * @return items per page
-     */
-    public Integer getPageSize()
-    {
-        if ( pager == null )
-        {
-            return null;
-        }
-
-        return pager.getPageSize();
-    }
-
-    /**
-     * How many pages in total.
-     *
-     * @return total page count
-     */
-    public Integer getPageCount()
-    {
-        if ( pager == null )
-        {
-            return null;
-        }
-
-        return pager.getPageCount();
-    }
-
-    public String getNextPage()
-    {
-        if ( pager == null )
-        {
-            return null;
-        }
-
-        return pager.getNextPage();
-    }
-
-    public String getPrevPage()
-    {
-        if ( pager == null )
-        {
-            return null;
-        }
-
-        return pager.getPrevPage();
     }
 }

@@ -245,7 +245,7 @@ public class MessageConversation
 
     @JsonProperty
     @JsonView( {DetailedView.class, ExportView.class} )
-    @JacksonXmlProperty
+    @JacksonXmlProperty( namespace = Dxf2Namespace.NAMESPACE )
     public String getSubject()
     {
         return subject;
@@ -258,8 +258,8 @@ public class MessageConversation
 
     @JsonProperty
     @JsonView( {DetailedView.class, ExportView.class} )
-    @JacksonXmlElementWrapper( localName = "userMessages" )
-    @JacksonXmlProperty( localName = "userMessage" )
+    @JacksonXmlElementWrapper( localName = "userMessages", namespace = Dxf2Namespace.NAMESPACE )
+    @JacksonXmlProperty( localName = "userMessage", namespace = Dxf2Namespace.NAMESPACE )
     public Set<UserMessage> getUserMessages()
     {
         return userMessages;
@@ -273,8 +273,8 @@ public class MessageConversation
     @JsonProperty
     @JsonSerialize( contentAs = BaseIdentifiableObject.class )
     @JsonView( {DetailedView.class, ExportView.class} )
-    @JacksonXmlElementWrapper( localName = "messages" )
-    @JacksonXmlProperty( localName = "message" )
+    @JacksonXmlElementWrapper( localName = "messages", namespace = Dxf2Namespace.NAMESPACE )
+    @JacksonXmlProperty( localName = "message", namespace = Dxf2Namespace.NAMESPACE )
     public List<Message> getMessages()
     {
         return messages;
@@ -288,7 +288,7 @@ public class MessageConversation
     @JsonProperty
     @JsonSerialize( as = BaseIdentifiableObject.class )
     @JsonView( {DetailedView.class, ExportView.class} )
-    @JacksonXmlProperty
+    @JacksonXmlProperty( namespace = Dxf2Namespace.NAMESPACE )
     public User getLastSender()
     {
         return lastSender;
@@ -301,7 +301,7 @@ public class MessageConversation
 
     @JsonProperty
     @JsonView( {DetailedView.class, ExportView.class} )
-    @JacksonXmlProperty
+    @JacksonXmlProperty( namespace = Dxf2Namespace.NAMESPACE )
     public Date getLastMessage()
     {
         return lastMessage;
@@ -316,8 +316,6 @@ public class MessageConversation
     // Transient fields
     //-------------------------------------------------------------------------------------------------------
 
-    @JsonProperty
-    @JsonView( {DetailedView.class} )
     public boolean isRead()
     {
         return read;
@@ -328,8 +326,6 @@ public class MessageConversation
         this.read = read;
     }
 
-    @JsonProperty
-    @JsonView( {DetailedView.class} )
     public boolean isFollowUp()
     {
         return followUp;

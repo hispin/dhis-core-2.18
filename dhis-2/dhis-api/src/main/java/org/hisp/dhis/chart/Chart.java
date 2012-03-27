@@ -329,7 +329,7 @@ public class Chart
 
     @JsonProperty
     @JsonView( {DetailedView.class, ExportView.class} )
-    @JacksonXmlProperty
+    @JacksonXmlProperty( namespace = Dxf2Namespace.NAMESPACE )
     public String getDomainAxisLabel()
     {
         return domainAxisLabel;
@@ -342,7 +342,7 @@ public class Chart
 
     @JsonProperty
     @JsonView( {DetailedView.class, ExportView.class} )
-    @JacksonXmlProperty
+    @JacksonXmlProperty( namespace = Dxf2Namespace.NAMESPACE )
     public String getRangeAxisLabel()
     {
         return rangeAxisLabel;
@@ -355,7 +355,7 @@ public class Chart
 
     @JsonProperty
     @JsonView( {DetailedView.class, ExportView.class} )
-    @JacksonXmlProperty
+    @JacksonXmlProperty( namespace = Dxf2Namespace.NAMESPACE )
     public String getType()
     {
         return type;
@@ -368,7 +368,7 @@ public class Chart
 
     @JsonProperty
     @JsonView( {DetailedView.class, ExportView.class} )
-    @JacksonXmlProperty
+    @JacksonXmlProperty( namespace = Dxf2Namespace.NAMESPACE )
     public String getSeries()
     {
         return series;
@@ -381,7 +381,7 @@ public class Chart
 
     @JsonProperty
     @JsonView( {DetailedView.class, ExportView.class} )
-    @JacksonXmlProperty
+    @JacksonXmlProperty( namespace = Dxf2Namespace.NAMESPACE )
     public String getCategory()
     {
         return category;
@@ -394,7 +394,7 @@ public class Chart
 
     @JsonProperty
     @JsonView( {DetailedView.class, ExportView.class} )
-    @JacksonXmlProperty
+    @JacksonXmlProperty( namespace = Dxf2Namespace.NAMESPACE )
     public String getFilter()
     {
         return filter;
@@ -407,7 +407,7 @@ public class Chart
 
     @JsonProperty
     @JsonView( {DetailedView.class, ExportView.class} )
-    @JacksonXmlProperty
+    @JacksonXmlProperty( namespace = Dxf2Namespace.NAMESPACE )
     public boolean isHideLegend()
     {
         return hideLegend;
@@ -420,7 +420,7 @@ public class Chart
 
     @JsonProperty
     @JsonView( {DetailedView.class, ExportView.class} )
-    @JacksonXmlProperty
+    @JacksonXmlProperty( namespace = Dxf2Namespace.NAMESPACE )
     public boolean isRegression()
     {
         return regression;
@@ -433,7 +433,7 @@ public class Chart
 
     @JsonProperty
     @JsonView( {DetailedView.class, ExportView.class} )
-    @JacksonXmlProperty
+    @JacksonXmlProperty( namespace = Dxf2Namespace.NAMESPACE )
     public Double getTargetLineValue()
     {
         return targetLineValue;
@@ -446,7 +446,7 @@ public class Chart
 
     @JsonProperty
     @JsonView( {DetailedView.class, ExportView.class} )
-    @JacksonXmlProperty
+    @JacksonXmlProperty( namespace = Dxf2Namespace.NAMESPACE )
     public String getTargetLineLabel()
     {
         return targetLineLabel;
@@ -459,7 +459,7 @@ public class Chart
 
     @JsonProperty
     @JsonView( {DetailedView.class, ExportView.class} )
-    @JacksonXmlProperty
+    @JacksonXmlProperty( namespace = Dxf2Namespace.NAMESPACE )
     public Double getBaseLineValue()
     {
         return baseLineValue;
@@ -472,7 +472,7 @@ public class Chart
 
     @JsonProperty
     @JsonView( {DetailedView.class, ExportView.class} )
-    @JacksonXmlProperty
+    @JacksonXmlProperty( namespace = Dxf2Namespace.NAMESPACE )
     public String getBaseLineLabel()
     {
         return baseLineLabel;
@@ -485,7 +485,7 @@ public class Chart
 
     @JsonProperty
     @JsonView( {DetailedView.class, ExportView.class} )
-    @JacksonXmlProperty
+    @JacksonXmlProperty( namespace = Dxf2Namespace.NAMESPACE )
     public boolean isHideSubtitle()
     {
         return hideSubtitle;
@@ -499,8 +499,8 @@ public class Chart
     @JsonProperty
     @JsonSerialize( contentAs = BaseIdentifiableObject.class )
     @JsonView( {DetailedView.class, ExportView.class} )
-    @JacksonXmlElementWrapper( localName = "indicators" )
-    @JacksonXmlProperty( localName = "indicator" )
+    @JacksonXmlElementWrapper( localName = "indicators", namespace = Dxf2Namespace.NAMESPACE )
+    @JacksonXmlProperty( localName = "indicator", namespace = Dxf2Namespace.NAMESPACE )
     public List<Indicator> getIndicators()
     {
         return indicators;
@@ -514,8 +514,8 @@ public class Chart
     @JsonProperty
     @JsonSerialize( contentAs = BaseIdentifiableObject.class )
     @JsonView( {DetailedView.class, ExportView.class} )
-    @JacksonXmlElementWrapper( localName = "dataElements" )
-    @JacksonXmlProperty( localName = "dataElement" )
+    @JacksonXmlElementWrapper( localName = "dataElements", namespace = Dxf2Namespace.NAMESPACE )
+    @JacksonXmlProperty( localName = "dataElement", namespace = Dxf2Namespace.NAMESPACE )
     public List<DataElement> getDataElements()
     {
         return dataElements;
@@ -529,8 +529,8 @@ public class Chart
     @JsonProperty
     @JsonSerialize( contentAs = BaseIdentifiableObject.class )
     @JsonView( {DetailedView.class, ExportView.class} )
-    @JacksonXmlElementWrapper( localName = "dataSets" )
-    @JacksonXmlProperty( localName = "dataSet" )
+    @JacksonXmlElementWrapper( localName = "dataSets", namespace = Dxf2Namespace.NAMESPACE )
+    @JacksonXmlProperty( localName = "dataSet", namespace = Dxf2Namespace.NAMESPACE )
     public List<DataSet> getDataSets()
     {
         return dataSets;
@@ -544,8 +544,8 @@ public class Chart
     @JsonProperty
     @JsonSerialize( contentAs = BaseIdentifiableObject.class )
     @JsonView( {DetailedView.class, ExportView.class} )
-    @JacksonXmlElementWrapper( localName = "organisationUnits" )
-    @JacksonXmlProperty( localName = "organisationUnit" )
+    @JacksonXmlElementWrapper( localName = "organisationUnits", namespace = Dxf2Namespace.NAMESPACE )
+    @JacksonXmlProperty( localName = "organisationUnit", namespace = Dxf2Namespace.NAMESPACE )
     public List<OrganisationUnit> getOrganisationUnits()
     {
         return organisationUnits;
@@ -558,7 +558,7 @@ public class Chart
 
     @JsonProperty( value = "relativePeriods" )
     @JsonView( {DetailedView.class, ExportView.class} )
-    @JacksonXmlProperty
+    @JacksonXmlProperty( namespace = Dxf2Namespace.NAMESPACE )
     public RelativePeriods getRelatives()
     {
         return relatives;
@@ -571,7 +571,7 @@ public class Chart
 
     @JsonProperty
     @JsonView( {DetailedView.class, ExportView.class} )
-    @JacksonXmlProperty
+    @JacksonXmlProperty( namespace = Dxf2Namespace.NAMESPACE )
     public boolean isUserOrganisationUnit()
     {
         return userOrganisationUnit;
@@ -585,7 +585,7 @@ public class Chart
     @JsonProperty
     @JsonSerialize( contentAs = BaseIdentifiableObject.class )
     @JsonView( {DetailedView.class, ExportView.class} )
-    @JacksonXmlProperty
+    @JacksonXmlProperty( namespace = Dxf2Namespace.NAMESPACE )
     public User getUser()
     {
         return user;
@@ -598,7 +598,7 @@ public class Chart
 
     @JsonProperty
     @JsonView( {DetailedView.class, ExportView.class} )
-    @JacksonXmlProperty
+    @JacksonXmlProperty( namespace = Dxf2Namespace.NAMESPACE )
     public OrganisationUnitGroupSet getOrganisationUnitGroupSet()
     {
         return organisationUnitGroupSet;

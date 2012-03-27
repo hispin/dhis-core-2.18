@@ -217,8 +217,8 @@ public class DataElementCategoryCombo
     @JsonProperty
     @JsonSerialize( contentAs = BaseIdentifiableObject.class )
     @JsonView( {DetailedView.class, ExportView.class} )
-    @JacksonXmlElementWrapper( localName = "categories" )
-    @JacksonXmlProperty( localName = "category" )
+    @JacksonXmlElementWrapper( localName = "categories", namespace = Dxf2Namespace.NAMESPACE )
+    @JacksonXmlProperty( localName = "category", namespace = Dxf2Namespace.NAMESPACE )
     public List<DataElementCategory> getCategories()
     {
         return categories;
@@ -232,8 +232,8 @@ public class DataElementCategoryCombo
     @JsonProperty( value = "categoryOptionCombo" )
     @JsonSerialize( contentAs = BaseIdentifiableObject.class )
     @JsonView( {DetailedView.class} )
-    @JacksonXmlElementWrapper( localName = "categoryOptionCombos" )
-    @JacksonXmlProperty( localName = "categoryOptionCombo" )
+    @JacksonXmlElementWrapper( localName = "categoryOptionCombos", namespace = Dxf2Namespace.NAMESPACE )
+    @JacksonXmlProperty( localName = "categoryOptionCombo", namespace = Dxf2Namespace.NAMESPACE )
     public Set<DataElementCategoryOptionCombo> getOptionCombos()
     {
         return optionCombos;

@@ -113,7 +113,7 @@ public class SqlView
 
     @JsonProperty
     @JsonView( {DetailedView.class, ExportView.class} )
-    @JacksonXmlProperty
+    @JacksonXmlProperty(namespace = Dxf2Namespace.NAMESPACE)
     public String getDescription()
     {
         return description;
@@ -126,7 +126,7 @@ public class SqlView
 
     @JsonProperty
     @JsonView( {DetailedView.class, ExportView.class} )
-    @JacksonXmlProperty
+    @JacksonXmlProperty(namespace = Dxf2Namespace.NAMESPACE)
     public String getSqlQuery()
     {
         return sqlQuery;

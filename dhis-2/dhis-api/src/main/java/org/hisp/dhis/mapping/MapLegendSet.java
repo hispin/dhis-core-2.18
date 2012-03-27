@@ -114,7 +114,7 @@ public class MapLegendSet
 
     @JsonProperty
     @JsonView( {DetailedView.class, ExportView.class} )
-    @JacksonXmlProperty
+    @JacksonXmlProperty( namespace = Dxf2Namespace.NAMESPACE )
     public String getType()
     {
         return type;
@@ -127,7 +127,7 @@ public class MapLegendSet
 
     @JsonProperty
     @JsonView( {DetailedView.class, ExportView.class} )
-    @JacksonXmlProperty
+    @JacksonXmlProperty( namespace = Dxf2Namespace.NAMESPACE )
     public String getSymbolizer()
     {
         return symbolizer;
@@ -141,8 +141,8 @@ public class MapLegendSet
     @JsonProperty
     @JsonSerialize( contentAs = BaseIdentifiableObject.class )
     @JsonView( {DetailedView.class, ExportView.class} )
-    @JacksonXmlElementWrapper( localName = "mapLegends" )
-    @JacksonXmlProperty( localName = "mapLegend" )
+    @JacksonXmlElementWrapper( localName = "mapLegends", namespace = Dxf2Namespace.NAMESPACE )
+    @JacksonXmlProperty( localName = "mapLegend", namespace = Dxf2Namespace.NAMESPACE )
     public Set<MapLegend> getMapLegends()
     {
         return mapLegends;
@@ -156,8 +156,8 @@ public class MapLegendSet
     @JsonProperty
     @JsonSerialize( contentAs = BaseIdentifiableObject.class )
     @JsonView( {DetailedView.class, ExportView.class} )
-    @JacksonXmlElementWrapper( localName = "indicators" )
-    @JacksonXmlProperty( localName = "indicator" )
+    @JacksonXmlElementWrapper( localName = "indicators", namespace = Dxf2Namespace.NAMESPACE )
+    @JacksonXmlProperty( localName = "indicator", namespace = Dxf2Namespace.NAMESPACE )
     public Set<Indicator> getIndicators()
     {
         return indicators;
@@ -171,8 +171,8 @@ public class MapLegendSet
     @JsonProperty
     @JsonSerialize( contentAs = BaseIdentifiableObject.class )
     @JsonView( {DetailedView.class, ExportView.class} )
-    @JacksonXmlElementWrapper( localName = "dataElements" )
-    @JacksonXmlProperty( localName = "dataElement" )
+    @JacksonXmlElementWrapper( localName = "dataElements", namespace = Dxf2Namespace.NAMESPACE )
+    @JacksonXmlProperty( localName = "dataElement", namespace = Dxf2Namespace.NAMESPACE )
     public Set<DataElement> getDataElements()
     {
         return dataElements;

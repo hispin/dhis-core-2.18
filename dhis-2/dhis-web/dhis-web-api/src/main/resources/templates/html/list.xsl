@@ -8,7 +8,7 @@
 
   <!-- match all plural elements -->
   <xsl:template match="d:dxf2">
-    <xsl:apply-templates select="pager"/>
+    <!-- <xsl:apply-templates select="d:pager"/> -->
     <xsl:apply-templates select="d:*"/>
   </xsl:template>
 
@@ -29,13 +29,13 @@
 
   </xsl:template>
 
-  <xsl:template match="pager">
+  <xsl:template match="d:pager">
       <table>
         <tr>
           <td>Page
             <xsl:choose>
-              <xsl:when test="page">
-                <xsl:value-of select="page" />
+              <xsl:when test="d:page">
+                <xsl:value-of select="d:page" />
               </xsl:when>
               <xsl:otherwise>1</xsl:otherwise>
             </xsl:choose>
@@ -43,30 +43,30 @@
             <xsl:text> / </xsl:text>
 
             <xsl:choose>
-              <xsl:when test="page">
-                <xsl:value-of select="pageCount" />
+              <xsl:when test="d:page">
+                <xsl:value-of select="d:pageCount" />
               </xsl:when>
               <xsl:otherwise>1</xsl:otherwise>
             </xsl:choose>
 
           </td>
 
-          <xsl:if test="prevPage">
+          <xsl:if test="d:prevPage">
             <td>
               <xsl:element name="a">
                 <xsl:attribute name="href">
-                  <xsl:value-of select="prevPage" />
+                  <xsl:value-of select="d:prevPage" />
                 </xsl:attribute>
                 <xsl:text>Previous Page</xsl:text>
               </xsl:element>
             </td>
           </xsl:if>
 
-          <xsl:if test="nextPage">
+          <xsl:if test="d:nextPage">
             <td>
               <xsl:element name="a">
                 <xsl:attribute name="href">
-                  <xsl:value-of select="nextPage" />
+                  <xsl:value-of select="d:nextPage" />
                 </xsl:attribute>
                 <xsl:text>Next Page</xsl:text>
               </xsl:element>

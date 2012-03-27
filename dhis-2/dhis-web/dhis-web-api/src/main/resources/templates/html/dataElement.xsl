@@ -6,20 +6,20 @@
 
   <xsl:template match="d:dataElement">
     <div class="dataElement">
-      <h2> <xsl:value-of select="@name" /> </h2>
+      <h2> <xsl:value-of select="@d:name" /> </h2>
 
       <table>
         <tr>
           <td>ID</td>
-          <td> <xsl:value-of select="@id" /> </td>
+          <td> <xsl:value-of select="@d:id" /> </td>
         </tr>
         <tr>
           <td>Last Updated</td>
-          <td> <xsl:value-of select="@lastUpdated" /> </td>
+          <td> <xsl:value-of select="@d:lastUpdated" /> </td>
         </tr>
         <tr>
           <td>Code</td>
-          <td> <xsl:value-of select="@code" /> </td>
+          <td> <xsl:value-of select="@d:code" /> </td>
         </tr>
         <tr>
           <td>Short Name</td>
@@ -32,10 +32,6 @@
         <tr>
           <td>Zero is Significant</td>
           <td> <xsl:value-of select="d:zeroIsSignificant" /> </td>
-        </tr>
-        <tr>
-          <td>Sort Order</td>
-          <td> <xsl:value-of select="d:sortOrder" /> </td>
         </tr>
         <tr>
           <td>Active</td>
