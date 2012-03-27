@@ -118,7 +118,7 @@ public class Constant
 
     @JsonProperty
     @JsonView( {DetailedView.class, ExportView.class} )
-    @JacksonXmlProperty
+    @JacksonXmlProperty( namespace = Dxf2Namespace.NAMESPACE )
     public double getValue()
     {
         return value;
