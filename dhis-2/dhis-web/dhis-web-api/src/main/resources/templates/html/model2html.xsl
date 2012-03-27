@@ -18,6 +18,7 @@
   <xsl:include href="relativePeriods.xsl" />
   <xsl:include href="map.xsl" />
   <xsl:include href="chart.xsl" />
+  <xsl:include href="constant.xsl" />
   <xsl:include href="category.xsl" />
   <xsl:include href="categoryOption.xsl" />
   <xsl:include href="categoryCombo.xsl" />
