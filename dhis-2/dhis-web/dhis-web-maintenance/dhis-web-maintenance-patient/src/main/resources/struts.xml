@@ -129,7 +129,8 @@
 			<param name="requiredAuthorities">F_PATIENTATTRIBUTE_ADD</param>
 		</action>
 
-		<action name="showAddPatientAttributeForm" class="org.hisp.dhis.patient.action.NoAction">
+		<action name="showAddPatientAttributeForm"
+			class="org.hisp.dhis.patient.action.program.GetProgramListAction">
 			<result name="success" type="velocity">/main.vm</result>
 			<param name="page">
 				/dhis-web-maintenance-patient/addPatientAttributeForm.vm</param>
@@ -139,7 +140,7 @@
 		</action>
 
 		<action name="showUpdatePatientAttributeForm"
-			class="org.hisp.dhis.patient.action.patientattribute.GetPatientAttributeAction">
+			class="org.hisp.dhis.patient.action.patientattribute.ShowUpdatePatientAttributeAction">
 			<result name="success" type="velocity">/main.vm</result>
 			<param name="page">
 				/dhis-web-maintenance-patient/updatePatientAttibuteForm.vm</param>

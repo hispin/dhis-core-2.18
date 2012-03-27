@@ -555,7 +555,13 @@
 		
 		<action name="savePatientIdentifier"
 			class="org.hisp.dhis.caseentry.action.patient.SavePatientIdentifierAction">
-			<result name="success" type="velocity">status.vm</result>
+			<result name="success" type="velocity-xml">status.vm</result>
+			<param name="requiredAuthorities">F_PATIENT_UPDATE, F_PROGRAM_ENROLLMENT</param>
+		</action>
+		
+		<action name="savePatientAttribueValue"
+			class="org.hisp.dhis.caseentry.action.patient.SavePatientAttributeValueAction">
+			<result name="success" type="velocity-xml">status.vm</result>
 			<param name="requiredAuthorities">F_PATIENT_UPDATE, F_PROGRAM_ENROLLMENT</param>
 		</action>
 		
@@ -563,7 +569,7 @@
 
 		<action name="getPartner"
 			class="org.hisp.dhis.caseentry.action.patient.GetPartnerAction">
-			<result name="success" type="velocity">/content.vm</result>
+			<result name="success" type="velocity-xml">/content.vm</result>
 			<param name="page">/dhis-web-caseentry/detailsPartner.vm</param>
 		</action>
 

@@ -187,12 +187,14 @@
 		<!--IDENTIFIERS -->
 		<tr><th colspan="2" class="heading-column">$i18n.getString("patient_identifiers")</th></tr>
 		#foreach ($identifierType in $identifierTypes)
-		#set( $identifier = "" )
-		#set( $identifier = $identiferMap.get( $identifierType.id ) )
-		<tr>
-			<td class='text-column'><label for="bloodGroup">$identifierType.name #if($identifierType.mandatory)<em title="$i18n.getString( "required" )" class="required">*</em> #end</label></td>
-			<td class="input-column" ><input type="text" id="iden$identifierType.id" name="iden$identifierType.id" value="$identifier" data="{related:$identifierType.related}" #if($identifierType.related && $!patient.underAge) disabled="disabled" #end class="{validate:{required:$identifierType.mandatory, #if($!identifierType.noChars) maxlength:$identifierType.noChars, #end #if($identifierType.type=='number') number:true #elseif($!identifierType.type=='letter') lettersonly:true #end }}" /></td>	
-		</tr>
+			#if( $identifierType.program )
+			#else
+				#set( $identifier = $identiferMap.get( $identifierType.id ) )
+				<tr>
+					<td class='text-column'><label for="bloodGroup">$identifierType.name #if($identifierType.mandatory)<em title="$i18n.getString( "required" )" class="required">*</em> #end</label></td>
+					<td class="input-column" ><input type="text" id="iden$identifierType.id" name="iden$identifierType.id" value="$identifier" data="{related:$identifierType.related}" #if($identifierType.related && $!patient.underAge) disabled="disabled" #end class="{validate:{required:$identifierType.mandatory, #if($!identifierType.noChars) maxlength:$identifierType.noChars, #end #if($identifierType.type=='number') number:true #elseif($!identifierType.type=='letter') lettersonly:true #end }}" /></td>	
+				</tr>
+			#end
 		#end
 		<tr><td>&nbsp;</td></tr>
 	#end
@@ -202,8 +204,8 @@
 		<tr><td>&nbsp;</td></tr>	
 		<tr><th colspan="2" class="heading-column">$attributeGroup.name</th></tr>
 		#foreach($attribute in $attributeGroup.attributes)
-			#if($!attribute)
-				#set( $attributeValue = "" )
+			#if( $attribute.program )
+			#else
 				#set( $attributeValue = $!patientAttributeValueMap.get( $attribute.id ) )
 				<tr>
 					<td class='text-column'><label>$attribute.name #if($attribute.mandatory)<em title="$i18n.getString( "required" )" class="required">*</em> #end</label></td>

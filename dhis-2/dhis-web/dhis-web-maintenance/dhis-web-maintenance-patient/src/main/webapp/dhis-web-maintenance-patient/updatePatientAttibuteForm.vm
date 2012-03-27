@@ -52,6 +52,7 @@
 		</td>		
 		<td></td>				
 	</tr>
+	
     <tr>
         <td>$i18n.getString( "value_type" ) <em title="$i18n.getString( "required" )" class="required">*</em></td>
         <td>
@@ -65,27 +66,39 @@
         </td>
     </tr>
       
-	  <tr id="attributeComboRow"> 
-    	<td><label>$i18n.getString( "attribute_options" ) <em title="$i18n.getString( "required" )" class="required">*</em></label></td>
-    	<td >
-    		<table id="attrOptionContainer">
-    			 #foreach($option in $patientAttribute.attributeOptions) 
-    			 	<tr><td>
-    			 		<input type='text' name='attrOption$option.id' value="$option.name" style="width:28em;"/><a href='#' style='text-decoration: none; margin-left:0.5em;' title='$i18n.getString( "remove_option" )'  onClick='ATTRIBUTE_OPTION.remove(this,$option.id)'>[ - ]</a>
-   			 		</td>
-					</tr>
-    			 #end
-    		</table><a href="#" style="text-decoration: none;margin-top: 0.5em"  onclick="ATTRIBUTE_OPTION.addOption()">[ $i18n.getString( "add_more_option" ) ]</a></td>
-    	<td><span id="attrMessage"  name="attrMessage" style="color:red;"></span></td>
-      </tr>
-      <tr>
-        <td colspan="3"></td>
-      </tr>
-	  <tr>
+	<tr id="attributeComboRow"> 
+		<td><label>$i18n.getString( "attribute_options" ) <em title="$i18n.getString( "required" )" class="required">*</em></label></td>
+		<td >
+			<table id="attrOptionContainer">
+			 #foreach($option in $patientAttribute.attributeOptions) 
+				<tr><td>
+					<input type='text' name='attrOption$option.id' value="$option.name" style="width:28em;"/><a href='#' style='text-decoration: none; margin-left:0.5em;' title='$i18n.getString( "remove_option" )'  onClick='ATTRIBUTE_OPTION.remove(this,$option.id)'>[ - ]</a>
+				</td>
+				</tr>
+			 #end
+		</table><a href="#" style="text-decoration: none;margin-top: 0.5em"  onclick="ATTRIBUTE_OPTION.addOption()">[ $i18n.getString( "add_more_option" ) ]</a></td>
+		<td><span id="attrMessage"  name="attrMessage" style="color:red;"></span></td>
+	</tr>
+	
+	<tr>
+		<td><label for="programId">$i18n.getString( "program" )</label></td>
+		<td>
+			<select type="text" name="programId" id="programId" value="$!patientAttribute.program" >
+				<option value=''>[$i18n.getString('all')]</option>
+				#foreach( $program in $programs)
+					<option value='$program.id' #if($patientAttribute.program.id==$program.id) selected #end>$program.name</option>
+				#end
+			</select>
+		</td>		
+		<td></td>				
+	</tr> 
+	
+	<tr>
     	<td><label for="groupBy">$i18n.getString( "groupBy" )</td>
     	<td><input type="checkbox" name="groupBy" value="true" #if( $patientAttribute.groupBy == 'true' ) checked #end></td>
-      </tr>
+    </tr>
     </tbody>
+	
 	<tr>
 		<td></td>
 		<td>

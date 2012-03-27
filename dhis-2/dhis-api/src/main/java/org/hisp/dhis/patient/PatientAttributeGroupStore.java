@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2004-2009, University of Oslo
+ * Copyright (c) 2004-2012, University of Oslo
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -24,34 +24,23 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
+
 package org.hisp.dhis.patient;
 
 import java.util.Collection;
 
+import org.hisp.dhis.common.GenericNameableObjectStore;
 import org.hisp.dhis.program.Program;
 
 /**
  * @author Chau Thu Tran
- * @version $Id$
+ * 
+ * @version $PatientAttributeGroupStore.java Mar 26, 2012 1:43:53 PM$
  */
-public interface PatientAttributeGroupService
+public interface PatientAttributeGroupStore
+    extends GenericNameableObjectStore<PatientAttributeGroup>
 {
-    String ID = PatientAttributeGroupService.class.getName();
+    Collection<PatientAttributeGroup> get( Program program );
 
-    int savePatientAttributeGroup( PatientAttributeGroup patientAttributeGroup );
-
-    void deletePatientAttributeGroup( PatientAttributeGroup patientAttributeGroup );
-
-    void updatePatientAttributeGroup( PatientAttributeGroup patientAttributeGroup );
-
-    PatientAttributeGroup getPatientAttributeGroup( int id );
-
-    PatientAttributeGroup getPatientAttributeGroupByName( String name );
-
-    Collection<PatientAttributeGroup> getAllPatientAttributeGroups();
-    
-    Collection<PatientAttributeGroup> getPatientAttributeGroups( Program program );
-    
-    Collection<PatientAttributeGroup> getPatientAttributeGroupsWithoutProgram();
-    
+    Collection<PatientAttributeGroup> getWithoutProgram();
 }

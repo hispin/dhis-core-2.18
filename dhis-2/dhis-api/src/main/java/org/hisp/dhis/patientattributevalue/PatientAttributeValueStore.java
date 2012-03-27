@@ -33,6 +33,7 @@ import org.hisp.dhis.common.GenericStore;
 import org.hisp.dhis.patient.Patient;
 import org.hisp.dhis.patient.PatientAttribute;
 import org.hisp.dhis.patient.PatientAttributeOption;
+import org.hisp.dhis.program.Program;
 
 /**
  * @author Abyot Asalefew
@@ -74,4 +75,8 @@ public interface PatientAttributeValueStore
     int countSearchPatients( List<Integer> patientAttributeIds, List<String> searchTexts );
     
     void updatePatientAttributeValues( PatientAttributeOption patientAttributeOption);
+
+    Collection<PatientAttributeValue> get( Patient patient, Program program );
+    
+    Collection<PatientAttributeValue> getWithoutProgram( Patient patient );
 }

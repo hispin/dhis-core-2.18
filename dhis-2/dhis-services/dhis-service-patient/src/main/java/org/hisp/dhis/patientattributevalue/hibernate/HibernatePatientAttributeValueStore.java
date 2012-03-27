@@ -38,6 +38,7 @@ import org.hisp.dhis.patient.PatientAttribute;
 import org.hisp.dhis.patient.PatientAttributeOption;
 import org.hisp.dhis.patientattributevalue.PatientAttributeValue;
 import org.hisp.dhis.patientattributevalue.PatientAttributeValueStore;
+import org.hisp.dhis.program.Program;
 import org.springframework.jdbc.core.JdbcTemplate;
 
 /**
@@ -206,6 +207,35 @@ public class HibernatePatientAttributeValueStore
         return (rs != null) ? rs.intValue() : 0;
     }
 
+    public void updatePatientAttributeValues( PatientAttributeOption patientAttributeOption )
+    {
+        String sql = "UPDATE patientattributevalue SET value='" + patientAttributeOption.getName()
+            + "' WHERE patientattributeoptionid='" + patientAttributeOption.getId() + "'";
+
+        jdbcTemplate.execute( sql );
+    }
+
+    @SuppressWarnings( "unchecked" )
+    public Collection<PatientAttributeValue> get( Patient patient, Program program )
+    {
+        String hql = "SELECT pav FROM PatientAttributeValue as pav WHERE pav.patient=:patient and pav.patientAttribute.program=:program";
+        Query query = getQuery( hql );
+        query.setEntity( "patient", patient );
+        query.setEntity( "program", program );
+
+        return query.list();
+    }
+
+    @SuppressWarnings( "unchecked" )
+    public Collection<PatientAttributeValue> getWithoutProgram( Patient patient )
+    {
+        String hql = "SELECT pav FROM PatientAttributeValue as pav WHERE pav.patient=:patient and pav.patientAttribute.program IS NULL";
+        Query query = getQuery( hql );
+        query.setEntity( "patient", patient );
+
+        return query.list();
+    }
+
     // -------------------------------------------------------------------------
     // Supportive methods
     // -------------------------------------------------------------------------
@@ -288,11 +318,4 @@ public class HibernatePatientAttributeValueStore
 
     }
 
-    public void updatePatientAttributeValues( PatientAttributeOption patientAttributeOption )
-    {
-        String sql = "UPDATE patientattributevalue SET value='" + patientAttributeOption.getName()
-            + "' WHERE patientattributeoptionid='" + patientAttributeOption.getId() + "'";
-        
-        jdbcTemplate.execute( sql );
-    }
 }

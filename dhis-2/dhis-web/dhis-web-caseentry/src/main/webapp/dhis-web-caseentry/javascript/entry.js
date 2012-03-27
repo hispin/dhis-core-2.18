@@ -808,25 +808,3 @@ function autocompletedField( idField )
 			input.focus();
 		});
 }
-
-
-//--------------------------------------------------------------------------------------------
-// Show selected data-recording
-//--------------------------------------------------------------------------------------------
-
-function showSelectedDataRecoding( patientId )
-{
-	showLoader();
-	hideById('searchPatientDiv');
-	hideById('dataEntryFormDiv');
-	jQuery('#dataRecordingSelectDiv').load( 'selectDataRecording.action', 
-		{
-			patientId: patientId
-		},
-		function()
-		{
-			showById('dataRecordingSelectDiv');
-			hideLoader();
-			hideById('contentDiv');
-		});
-}

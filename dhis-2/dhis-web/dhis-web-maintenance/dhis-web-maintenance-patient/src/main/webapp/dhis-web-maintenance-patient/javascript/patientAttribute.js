@@ -17,6 +17,13 @@ function showPatientAttributeDetails( patientAttributeId )
 			
 			setInnerHTML( 'valueTypeField', json.patientAttribute.valueType );    
 	   
+			var programName = json.patientAttribute.program;
+			if( programName == '')
+			{
+				programName = i18n_all;
+			}
+			setInnerHTML( 'programField', programName );
+			
 			showDetails();
 	});
 }

@@ -21,8 +21,12 @@ function showPatientIdentifierTypeDetails( patientIdentifierTypeId )
 			var valueType = json.patientIdentifierType.type;
 			setInnerHTML( 'typeField', valueTypeMap[valueType] );
 			
-			var valueType = json.patientIdentifierType.type;
-			setInnerHTML( 'programField', json.patientIdentifierType.program );
+			var programName = json.patientIdentifierType.program;
+			if( programName == '')
+			{
+				programName = i18n_all;
+			}
+			setInnerHTML( 'programField', programName );
 			
 			showDetails();
 	});

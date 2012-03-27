@@ -65,7 +65,7 @@ public class SavePatientIdentifierAction
     private String value;
 
     private Integer statusCode;
-    
+
     // -------------------------------------------------------------------------
     // Input/Output
     // -------------------------------------------------------------------------
@@ -116,26 +116,33 @@ public class SavePatientIdentifierAction
         Patient patient = patientService.getPatient( patientId );
         PatientIdentifierType identifierType = identifierTypeService.getPatientIdentifierType( identifierTypeId );
 
+        if ( value != null && value.trim().length() == 0 )
+        {
+            value = null;
+        }
+
         PatientIdentifier patientIdentifier = patientIdentifierService.getPatientIdentifier( identifierType, patient );
 
-        if ( patientIdentifier == null )
+        if ( value != null )
         {
-            patientIdentifier = new PatientIdentifier();
-            patientIdentifier.setIdentifierType( identifierType );
-            patientIdentifier.setPatient( patient );
-            patientIdentifier.setIdentifier( value.trim() );
-        }
-        else
-        {
-            patientIdentifier.setIdentifier( value.trim() );
-        }
-        
-        patient.getIdentifiers().add( patientIdentifier );
+            if ( patientIdentifier == null )
+            {
+                patientIdentifier = new PatientIdentifier();
+                patientIdentifier.setIdentifierType( identifierType );
+                patientIdentifier.setPatient( patient );
+            }
 
-        patientService.updatePatient( patient );
+            patientIdentifier.setIdentifier( value.trim() );
+            patient.getIdentifiers().add( patientIdentifier );
+            patientService.updatePatient( patient );
+        }
+        else if ( patientIdentifier != null )
+        {
+            patientIdentifierService.deletePatientIdentifier( patientIdentifier );
+        }
 
         statusCode = 0;
-        
+
         return SUCCESS;
     }
 
