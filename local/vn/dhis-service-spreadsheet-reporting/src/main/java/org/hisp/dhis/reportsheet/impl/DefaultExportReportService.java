@@ -246,24 +246,22 @@ public class DefaultExportReportService
 
     public void deleteExportItem( int id )
     {
-        i18nService.removeObject( exportReportStore.getExportItem( id ) );
-
         exportReportStore.deleteExportItem( id );
     }
 
     public ExportItem getExportItem( int id )
     {
-        return i18n( i18nService, exportReportStore.getExportItem( id ) );
+        return exportReportStore.getExportItem( id );
     }
 
     public Collection<ExportItem> getAllExportItem()
     {
-        return i18n( i18nService, exportReportStore.getAllExportItem() );
+        return exportReportStore.getAllExportItem();
     }
 
     public Collection<ExportItem> getExportItem( int sheetNo, Integer reportId )
     {
-        return i18n( i18nService, exportReportStore.getExportItem( sheetNo, reportId ) );
+        return exportReportStore.getExportItem( sheetNo, reportId );
     }
 
     public Collection<Integer> getSheets( Integer reportId )
