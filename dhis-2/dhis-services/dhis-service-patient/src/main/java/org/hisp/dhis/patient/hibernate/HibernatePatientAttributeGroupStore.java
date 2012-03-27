@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2004-2009, University of Oslo
+ * Copyright (c) 2004-2012, University of Oslo
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -24,34 +24,42 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package org.hisp.dhis.patient;
+
+package org.hisp.dhis.patient.hibernate;
 
 import java.util.Collection;
 
+import org.hibernate.Criteria;
+import org.hibernate.criterion.Restrictions;
+import org.hisp.dhis.hibernate.HibernateGenericStore;
+import org.hisp.dhis.patient.PatientAttributeGroup;
+import org.hisp.dhis.patient.PatientAttributeGroupStore;
 import org.hisp.dhis.program.Program;
 
 /**
  * @author Chau Thu Tran
- * @version $Id$
+ * 
+ * @version $HibernatePatientAttributeGroupStore.java Mar 26, 2012 1:45:26 PM$
  */
-public interface PatientAttributeGroupService
+public class HibernatePatientAttributeGroupStore
+    extends HibernateGenericStore<PatientAttributeGroup>
+    implements PatientAttributeGroupStore
 {
-    String ID = PatientAttributeGroupService.class.getName();
 
-    int savePatientAttributeGroup( PatientAttributeGroup patientAttributeGroup );
+    @SuppressWarnings( "unchecked" )
+    @Override
+    public Collection<PatientAttributeGroup> get( Program program )
+    {
+        return getCriteria().setResultTransformer( Criteria.DISTINCT_ROOT_ENTITY ).createAlias( "attributes",
+            "attribute" ).add( Restrictions.eq( "attribute.program", program ) ).list();
+    }
 
-    void deletePatientAttributeGroup( PatientAttributeGroup patientAttributeGroup );
+    @SuppressWarnings( "unchecked" )
+    @Override
+    public Collection<PatientAttributeGroup> getWithoutProgram()
+    {
+        return getCriteria().createAlias( "attributes", "attribute" ).add( Restrictions.isNull( "attribute.program" ) )
+            .list();
+    }
 
-    void updatePatientAttributeGroup( PatientAttributeGroup patientAttributeGroup );
-
-    PatientAttributeGroup getPatientAttributeGroup( int id );
-
-    PatientAttributeGroup getPatientAttributeGroupByName( String name );
-
-    Collection<PatientAttributeGroup> getAllPatientAttributeGroups();
-    
-    Collection<PatientAttributeGroup> getPatientAttributeGroups( Program program );
-    
-    Collection<PatientAttributeGroup> getPatientAttributeGroupsWithoutProgram();
-    
 }

@@ -107,10 +107,10 @@ public class ShowAddPatientFormAction
     {
         identifierTypes = patientIdentifierTypeService.getPatientIdentifierTypesWithoutProgram();
 
-        noGroupAttributes = patientAttributeService.getPatientAttributesNotGroup();
+        noGroupAttributes = patientAttributeService.getPatientAttributes( null, null );
 
         attributeGroups = new ArrayList<PatientAttributeGroup>( patientAttributeGroupService
-            .getAllPatientAttributeGroups() );
+            .getPatientAttributeGroupsWithoutProgram() );
         Collections.sort( attributeGroups, new PatientAttributeGroupSortOrderComparator() );
 
         organisationUnit = selectionManager.getSelectedOrganisationUnit();

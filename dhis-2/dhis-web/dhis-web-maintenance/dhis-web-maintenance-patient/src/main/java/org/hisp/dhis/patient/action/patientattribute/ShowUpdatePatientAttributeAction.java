@@ -24,75 +24,80 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package org.hisp.dhis.patient;
+
+package org.hisp.dhis.patient.action.patientattribute;
 
 import java.util.Collection;
 
+import org.hisp.dhis.patient.PatientAttribute;
+import org.hisp.dhis.patient.PatientAttributeService;
 import org.hisp.dhis.program.Program;
-import org.springframework.transaction.annotation.Transactional;
+import org.hisp.dhis.program.ProgramService;
+
+import com.opensymphony.xwork2.Action;
 
 /**
  * @author Chau Thu Tran
- * @version $Id$
+ * 
+ * @version $ShowUpdatePatientAttributeAction.java Mar 26, 2012 1:58:26 PM$
  */
-@Transactional
-public class DefaultPatientAttributeGroupService
-    implements PatientAttributeGroupService
+public class ShowUpdatePatientAttributeAction
+    implements Action
 {
     // -------------------------------------------------------------------------
-    // Dependencies
+    // Dependency
     // -------------------------------------------------------------------------
 
-    private PatientAttributeGroupStore patientAttributeGroupStore;
+    private PatientAttributeService patientAttributeService;
 
-    public void setPatientAttributeGroupStore( PatientAttributeGroupStore patientAttributeGroupStore )
+    public void setPatientAttributeService( PatientAttributeService patientAttributeService )
     {
-        this.patientAttributeGroupStore = patientAttributeGroupStore;
+        this.patientAttributeService = patientAttributeService;
+    }
+
+    private ProgramService programService;
+
+    public void setProgramService( ProgramService programService )
+    {
+        this.programService = programService;
     }
 
     // -------------------------------------------------------------------------
-    // Implementation methods
+    // Input/Output
     // -------------------------------------------------------------------------
 
-    public int savePatientAttributeGroup( PatientAttributeGroup patientAttributeGroup )
+    private int id;
+
+    public void setId( int id )
     {
-        return patientAttributeGroupStore.save( patientAttributeGroup );
+        this.id = id;
     }
 
-    public void deletePatientAttributeGroup( PatientAttributeGroup patientAttributeGroup )
+    private PatientAttribute patientAttribute;
+
+    public PatientAttribute getPatientAttribute()
     {
-        patientAttributeGroupStore.delete( patientAttributeGroup );
+        return patientAttribute;
     }
 
-    public void updatePatientAttributeGroup( PatientAttributeGroup patientAttributeGroup )
+    private Collection<Program> programs;
+
+    public Collection<Program> getPrograms()
     {
-        patientAttributeGroupStore.update( patientAttributeGroup );
+        return programs;
     }
 
-    public PatientAttributeGroup getPatientAttributeGroup( int id )
-    {
-        return patientAttributeGroupStore.get( id );
-    }
+    // -------------------------------------------------------------------------
+    // Action implementation
+    // -------------------------------------------------------------------------
 
-    public PatientAttributeGroup getPatientAttributeGroupByName( String name )
+    public String execute()
+        throws Exception
     {
-        return patientAttributeGroupStore.getByName( name );
-    }
-
-    public Collection<PatientAttributeGroup> getAllPatientAttributeGroups()
-    {
-        return patientAttributeGroupStore.getAll();
-    }
-
-    @Override
-    public Collection<PatientAttributeGroup> getPatientAttributeGroups( Program program )
-    {
-        return patientAttributeGroupStore.get( program );
-    }
-
-    @Override
-    public Collection<PatientAttributeGroup> getPatientAttributeGroupsWithoutProgram()
-    {
-        return patientAttributeGroupStore.getWithoutProgram();
+        patientAttribute = patientAttributeService.getPatientAttribute( id );
+        
+        programs = programService.getAllPrograms();
+        
+        return SUCCESS;
     }
 }

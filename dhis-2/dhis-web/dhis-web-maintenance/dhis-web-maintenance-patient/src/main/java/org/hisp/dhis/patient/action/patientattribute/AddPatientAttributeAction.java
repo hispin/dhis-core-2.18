@@ -33,6 +33,8 @@ import org.hisp.dhis.patient.PatientAttribute;
 import org.hisp.dhis.patient.PatientAttributeOption;
 import org.hisp.dhis.patient.PatientAttributeOptionService;
 import org.hisp.dhis.patient.PatientAttributeService;
+import org.hisp.dhis.program.Program;
+import org.hisp.dhis.program.ProgramService;
 
 import com.opensymphony.xwork2.Action;
 
@@ -59,6 +61,13 @@ public class AddPatientAttributeAction
     public void setPatientAttributeOptionService( PatientAttributeOptionService patientAttributeOptionService )
     {
         this.patientAttributeOptionService = patientAttributeOptionService;
+    }
+
+    private ProgramService programService;
+
+    public void setProgramService( ProgramService programService )
+    {
+        this.programService = programService;
     }
 
     // -------------------------------------------------------------------------
@@ -121,6 +130,13 @@ public class AddPatientAttributeAction
         this.groupBy = groupBy;
     }
 
+    private Integer programId;
+
+    public void setProgramId( Integer programId )
+    {
+        this.programId = programId;
+    }
+
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
@@ -135,8 +151,11 @@ public class AddPatientAttributeAction
         patientAttribute.setValueType( valueType );
         patientAttribute.setMandatory( mandatory );
         patientAttribute.setInheritable( inheritable );
-        patientAttribute.setNoChars (noChars);
-        
+        patientAttribute.setNoChars( noChars );
+
+        Program program = (programId != null) ? programService.getProgram( programId ) : null;
+        patientAttribute.setProgram( program );
+
         patientAttribute.setGroupBy( groupBy );
         if ( groupBy )
         {

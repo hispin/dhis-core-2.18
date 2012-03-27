@@ -28,17 +28,26 @@ package org.hisp.dhis.caseentry.action.patient;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.hisp.dhis.i18n.I18nFormat;
 import org.hisp.dhis.patient.Patient;
+import org.hisp.dhis.patient.PatientAttribute;
+import org.hisp.dhis.patient.PatientAttributeGroup;
+import org.hisp.dhis.patient.PatientAttributeGroupService;
+import org.hisp.dhis.patient.PatientAttributeService;
 import org.hisp.dhis.patient.PatientIdentifier;
 import org.hisp.dhis.patient.PatientIdentifierService;
 import org.hisp.dhis.patient.PatientIdentifierType;
 import org.hisp.dhis.patient.PatientIdentifierTypeService;
 import org.hisp.dhis.patient.PatientService;
+import org.hisp.dhis.patient.comparator.PatientAttributeGroupSortOrderComparator;
+import org.hisp.dhis.patientattributevalue.PatientAttributeValue;
+import org.hisp.dhis.patientattributevalue.PatientAttributeValueService;
 import org.hisp.dhis.program.Program;
 import org.hisp.dhis.program.ProgramInstance;
 import org.hisp.dhis.program.ProgramInstanceService;
@@ -118,6 +127,12 @@ public class SaveProgramEnrollmentAction
 
     private PatientIdentifierTypeService identifierTypeService;
 
+    private PatientAttributeService patientAttributeService;
+
+    private PatientAttributeGroupService patientAttributeGroupService;
+
+    private PatientAttributeValueService patientAttributeValueService;
+    
     private I18nFormat format;
 
     public void setFormat( I18nFormat format )
@@ -128,8 +143,23 @@ public class SaveProgramEnrollmentAction
     // -------------------------------------------------------------------------
     // Input/Output
     // -------------------------------------------------------------------------
-    
+
     private Collection<PatientIdentifierType> identifierTypes;
+
+    public void setPatientAttributeService( PatientAttributeService patientAttributeService )
+    {
+        this.patientAttributeService = patientAttributeService;
+    }
+
+    public void setPatientAttributeGroupService( PatientAttributeGroupService patientAttributeGroupService )
+    {
+        this.patientAttributeGroupService = patientAttributeGroupService;
+    }
+
+    public void setPatientAttributeValueService( PatientAttributeValueService patientAttributeValueService )
+    {
+        this.patientAttributeValueService = patientAttributeValueService;
+    }
 
     private Map<Integer, String> identiferMap;
 
@@ -187,6 +217,27 @@ public class SaveProgramEnrollmentAction
     public Collection<ProgramStageInstance> getProgramStageInstances()
     {
         return programStageInstances;
+    }
+
+    private Collection<PatientAttribute> noGroupAttributes;
+
+    public Collection<PatientAttribute> getNoGroupAttributes()
+    {
+        return noGroupAttributes;
+    }
+
+    private List<PatientAttributeGroup> attributeGroups;
+
+    public List<PatientAttributeGroup> getAttributeGroups()
+    {
+        return attributeGroups;
+    }
+
+    private Map<Integer, String> patientAttributeValueMap = new HashMap<Integer, String>();
+
+    public Map<Integer, String> getPatientAttributeValueMap()
+    {
+        return patientAttributeValueMap;
     }
 
     // -------------------------------------------------------------------------
@@ -275,6 +326,33 @@ public class SaveProgramEnrollmentAction
             identiferMap.put( identifier.getIdentifierType().getId(), identifier.getIdentifier() );
         }
 
+        // ---------------------------------------------------------------------
+        // Load patient-attributes of the selected program
+        // ---------------------------------------------------------------------
+
+        attributeGroups = new ArrayList<PatientAttributeGroup>( patientAttributeGroupService
+            .getPatientAttributeGroups( program ) );
+        Collections.sort( attributeGroups, new PatientAttributeGroupSortOrderComparator() );
+
+        noGroupAttributes = patientAttributeService.getPatientAttributes( program, null );
+
+        Collection<PatientAttributeValue> patientAttributeValues = patientAttributeValueService
+            .getPatientAttributeValues( patient, program );
+
+        for ( PatientAttributeValue patientAttributeValue : patientAttributeValues )
+        {
+            if ( PatientAttribute.TYPE_COMBO.equalsIgnoreCase( patientAttributeValue.getPatientAttribute()
+                .getValueType() ) )
+            {
+                patientAttributeValueMap.put( patientAttributeValue.getPatientAttribute().getId(),
+                    patientAttributeValue.getPatientAttributeOption().getName() );
+            }
+            else
+            {
+                patientAttributeValueMap.put( patientAttributeValue.getPatientAttribute().getId(),
+                    patientAttributeValue.getValue() );
+            }
+        }
         return SUCCESS;
     }
 }

@@ -28,6 +28,8 @@ package org.hisp.dhis.patient;
 
 import java.util.Collection;
 
+import org.hisp.dhis.program.Program;
+
 /**
  * @author Abyot Asalefew
  * @version $Id$
@@ -50,12 +52,15 @@ public interface PatientAttributeService
 
     Collection<PatientAttribute> getPatientAttributesByValueType( String valueType );
     
-    Collection<PatientAttribute> getPatientAttributesNotGroup();
-
     Collection<PatientAttribute> getOptionalPatientAttributesWithoutGroup();
     
     Collection<PatientAttribute> getPatientAttributesByMandatory(boolean mandatory);
     
     PatientAttribute getPatientAttributeByGroupBy(boolean groupBy);
+    
+    Collection<PatientAttribute> getPatientAttributesWithoutGroup();
+    
+    Collection<PatientAttribute> getPatientAttributes( Program program, PatientAttributeGroup group );
+
 
 }

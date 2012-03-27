@@ -80,9 +80,9 @@
                 	<td colspan='3'><span id='message'></span></td>
                 </tr>
 			</table>
+			</form>
 			
 			<div id='programEnrollmentDiv' class='hidden'></div>
-			</form>
 		</div>
 
 		<!-- register-event TAB -->
@@ -104,7 +104,7 @@
 			
 			datePickerInRange( 'dateOfIncident' , 'enrollmentDate' );
 		}); 
-	
+		
 	jQuery("#tabs").tabs();
 	datePickerValid( 'enrollmentDate' );
 	datePickerValid( 'dateOfIncident' );

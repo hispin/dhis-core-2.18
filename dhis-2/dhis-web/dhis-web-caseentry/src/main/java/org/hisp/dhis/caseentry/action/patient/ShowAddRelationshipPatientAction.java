@@ -27,8 +27,11 @@
 
 package org.hisp.dhis.caseentry.action.patient;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.hisp.dhis.patient.Patient;
@@ -40,6 +43,7 @@ import org.hisp.dhis.patient.PatientIdentifier;
 import org.hisp.dhis.patient.PatientIdentifierType;
 import org.hisp.dhis.patient.PatientIdentifierTypeService;
 import org.hisp.dhis.patient.PatientService;
+import org.hisp.dhis.patient.comparator.PatientAttributeGroupSortOrderComparator;
 import org.hisp.dhis.patientattributevalue.PatientAttributeValue;
 import org.hisp.dhis.patientattributevalue.PatientAttributeValueService;
 import org.hisp.dhis.relationship.RelationshipType;
@@ -47,51 +51,50 @@ import org.hisp.dhis.relationship.RelationshipTypeService;
 
 import com.opensymphony.xwork2.Action;
 
-
 /**
  * @author Viet
- *
+ * 
  * @version $Id$
  */
-public class ShowAddRelationshipPatientAction 
+public class ShowAddRelationshipPatientAction
     implements Action
 {
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
-    
+
     private PatientService patientService;
 
     private PatientAttributeService patientAttributeService;
-    
+
     private PatientAttributeGroupService patientAttributeGroupService;
-    
+
     private PatientIdentifierTypeService patientIdentifierTypeService;
-    
+
     private RelationshipTypeService relationshipTypeService;
-    
+
     private PatientAttributeValueService patientAttributeValueService;
-    
+
     // -------------------------------------------------------------------------
     // Input/Output
     // -------------------------------------------------------------------------
 
     private Integer id;
-    
+
     private Collection<PatientAttribute> noGroupAttributes;
-   
-    private Collection<PatientAttributeGroup> attributeGroups;
-    
+
+    private List<PatientAttributeGroup> attributeGroups;
+
     private Collection<PatientIdentifierType> identifierTypes;
-    
+
     private Collection<RelationshipType> relationshipTypes;
-    
+
     private Patient patient;
-    
+
     private Map<Integer, String> identiferMap;
-    
+
     private Map<Integer, String> attributeMap;
-    
+
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
@@ -99,15 +102,13 @@ public class ShowAddRelationshipPatientAction
     public String execute()
     {
         patient = patientService.getPatient( id.intValue() );
-    
-        identifierTypes = patientIdentifierTypeService.getAllPatientIdentifierTypes(); 
-       
-        noGroupAttributes = patientAttributeService.getPatientAttributesNotGroup();
-        
-        attributeGroups = patientAttributeGroupService.getAllPatientAttributeGroups();
-        
+
+        identifierTypes = patientIdentifierTypeService.getAllPatientIdentifierTypes();
+
+        noGroupAttributes = new ArrayList<PatientAttribute>( patientAttributeService.getPatientAttributes( null, null ) );
+
         relationshipTypes = relationshipTypeService.getAllRelationshipTypes();
-        
+
         identiferMap = new HashMap<Integer, String>();
 
         for ( PatientIdentifier identifier : patient.getIdentifiers() )
@@ -115,22 +116,38 @@ public class ShowAddRelationshipPatientAction
             if ( identifier.getIdentifierType() != null )
                 identiferMap.put( identifier.getIdentifierType().getId(), identifier.getIdentifier() );
         }
-        
-        attributeMap = new HashMap<Integer , String>();
-        
-        Collection<PatientAttributeValue> attributeValues = patientAttributeValueService.getPatientAttributeValues( patient );
-        
-        if( attributeValues != null && attributeValues.size() > 0 )
+
+        // -------------------------------------------------------------------------
+        // Get patient-attribute values
+        // -------------------------------------------------------------------------
+
+        attributeGroups = new ArrayList<PatientAttributeGroup>( patientAttributeGroupService
+            .getPatientAttributeGroupsWithoutProgram() );
+        Collections.sort( attributeGroups, new PatientAttributeGroupSortOrderComparator() );
+
+        noGroupAttributes = patientAttributeService.getPatientAttributes( null, null );
+
+        Collection<PatientAttributeValue> patientAttributeValues = patientAttributeValueService
+            .getPatientAttributeValuesWithoutProgram( patient );
+
+        for ( PatientAttributeValue patientAttributeValue : patientAttributeValues )
         {
-            for( PatientAttributeValue attributeValue : attributeValues )
+            if ( PatientAttribute.TYPE_COMBO.equalsIgnoreCase( patientAttributeValue.getPatientAttribute()
+                .getValueType() ) )
             {
-                attributeMap.put( attributeValue.getPatientAttribute().getId(), attributeValue.getValue() );
+                attributeMap.put( patientAttributeValue.getPatientAttribute().getId(), patientAttributeValue
+                    .getPatientAttributeOption().getName() );
+            }
+            else
+            {
+                attributeMap
+                    .put( patientAttributeValue.getPatientAttribute().getId(), patientAttributeValue.getValue() );
             }
         }
-        
+
         return SUCCESS;
     }
-    
+
     // -------------------------------------------------------------------------
     // Getter/Setter
     // -------------------------------------------------------------------------
@@ -139,7 +156,7 @@ public class ShowAddRelationshipPatientAction
     {
         this.id = id;
     }
-    
+
     public Collection<PatientIdentifierType> getIdentifierTypes()
     {
         return identifierTypes;
@@ -149,6 +166,7 @@ public class ShowAddRelationshipPatientAction
     {
         return attributeGroups;
     }
+
     public Collection<PatientAttribute> getNoGroupAttributes()
     {
         return noGroupAttributes;
@@ -173,12 +191,12 @@ public class ShowAddRelationshipPatientAction
     {
         return identiferMap;
     }
-    
+
     public void setPatientIdentifierTypeService( PatientIdentifierTypeService patientIdentifierTypeService )
     {
         this.patientIdentifierTypeService = patientIdentifierTypeService;
     }
-    
+
     public void setPatientAttributeService( PatientAttributeService patientAttributeService )
     {
         this.patientAttributeService = patientAttributeService;

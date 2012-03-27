@@ -103,9 +103,9 @@ public class GetPatientAction
     private String childContactType;
 
     private String systemIdentifier;
-    
+
     private Patient representative;
-    
+
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
@@ -114,6 +114,12 @@ public class GetPatientAction
         throws Exception
     {
         patient = patientService.getPatient( id );
+
+        programs = programService.getAllPrograms();
+        
+        // -------------------------------------------------------------------------
+        // Get identifier
+        // -------------------------------------------------------------------------
 
         patientIdentifier = patientIdentifierService.getPatientIdentifier( patient );
 
@@ -151,13 +157,18 @@ public class GetPatientAction
             }
         }
 
-        for ( PatientAttribute patientAttribute : patient.getAttributes() )
-        {
-            patientAttributeValueMap.put( patientAttribute.getId(), PatientAttributeValue.UNKNOWN );
-        }
+        // -------------------------------------------------------------------------
+        // Get patient-attribute values
+        // -------------------------------------------------------------------------
 
+        attributeGroups = new ArrayList<PatientAttributeGroup>( patientAttributeGroupService
+            .getPatientAttributeGroupsWithoutProgram() );
+        Collections.sort( attributeGroups, new PatientAttributeGroupSortOrderComparator() );
+
+        noGroupAttributes = patientAttributeService.getPatientAttributes( null, null );
+        
         Collection<PatientAttributeValue> patientAttributeValues = patientAttributeValueService
-            .getPatientAttributeValues( patient );
+            .getPatientAttributeValuesWithoutProgram( patient );
 
         for ( PatientAttributeValue patientAttributeValue : patientAttributeValues )
         {
@@ -173,14 +184,6 @@ public class GetPatientAction
                     patientAttributeValue.getValue() );
             }
         }
-
-        programs = programService.getAllPrograms();
-
-        noGroupAttributes = patientAttributeService.getPatientAttributesNotGroup();
-
-        attributeGroups = new ArrayList<PatientAttributeGroup>( patientAttributeGroupService
-            .getAllPatientAttributeGroups() );
-        Collections.sort( attributeGroups, new PatientAttributeGroupSortOrderComparator() );
 
         return SUCCESS;
 

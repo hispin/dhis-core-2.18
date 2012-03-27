@@ -1,3 +1,9 @@
+var COLOR_GREEN = '#b9ffb9';
+var COLOR_YELLOW = '#fffe8c';
+var COLOR_WHITE = '#ffffff';
+var COLOR_ORANGE = '#ff6600';
+var COLOR_RED = '#ff8a8a';
+var COLOR_GREY = '#cccccc';
 
 function organisationUnitSelected( orgUnits )
 {	
@@ -765,9 +771,6 @@ function loadAllPatients()
 
 function DateDueSaver( programStageInstanceId_, dueDate_, resultColor_ )
 {
-	var SUCCESS = '#ccffcc';
-	var ERROR = '#ccccff';
-	
 	var programStageInstanceId = programStageInstanceId_;	
 	var dueDate = dueDate_;
 	var resultColor = resultColor_;	
@@ -800,14 +803,14 @@ function DateDueSaver( programStageInstanceId_, dueDate_, resultColor_ )
 		}
 		else
 		{
-			markValue( ERROR );
+			markValue( COLOR_GREY );
 			window.alert( i18n_saving_value_failed_status_code + '\n\n' + code );
 		}
 	}
 
 	function handleHttpError( errorCode )
 	{
-		markValue( ERROR );
+		markValue( COLOR_GREY );
 		window.alert( i18n_saving_value_failed_error_code + '\n\n' + errorCode );
 	}   
 
@@ -902,24 +905,54 @@ function toogleDiv( div )
 	jQuery( "#" + div ).slideToggle( "fast" );
 }
 
-//--------------------------------------------------------------------------------------------
-// Show search-form
-//--------------------------------------------------------------------------------------------
-
 function savePatientIdentifier( identifierTypeId, field )
 {
-	var patientId = getFieldValue("patientId");
-	field.style.backgroundColor = '#ffffcc';
-	
-	var valueSaver = new PatientIdentifierSaver( patientId, identifierTypeId, field.value, '#ccffcc' );
-    valueSaver.save();
+	field.blur();
+	field.style.backgroundColor = COLOR_WHITE;
+	if( validateValue( "iden" + identifierTypeId ) )
+	{
+		var patientId = getFieldValue("patientId");
+		field.style.backgroundColor = COLOR_YELLOW;
+		
+		var valueSaver = new PatientIdentifierSaver( patientId, identifierTypeId, field.value, COLOR_GREEN );
+		valueSaver.save();
+	}
+	else
+	{
+		field.style.backgroundColor = COLOR_ORANGE;
+	}
+}
+
+function savePatientAttrValue( patientAttributeId, field )
+{
+	field.blur();
+	field.style.backgroundColor = COLOR_WHITE;
+	if( validateValue( "attr" + patientAttributeId ) )
+	{
+		var patientId = getFieldValue("patientId");
+		field.style.backgroundColor = COLOR_YELLOW;
+		
+		var valueSaver = new PatientAttributeValueSaver( patientId, patientAttributeId, field.value, COLOR_GREEN );
+		valueSaver.save();
+	}
+	else
+	{
+		field.style.backgroundColor = COLOR_ORANGE;
+	}
+}
+
+//--------------------------------------------------------------------------------------------
+// For saving patient-identifier and patient-attribute-value
+//--------------------------------------------------------------------------------------------
+
+function validateValue( spanErrorId )
+{
+	var classes = jQuery( 'span[for=' + spanErrorId + ']' ).attr('class');
+	return ( classes == "error") ? false : true;
 }
 
 function PatientIdentifierSaver( patientId_, identifierTypeId_, value_, resultColor_  )
 {
-    var SUCCESS = '#ccffcc';
-    var ERROR = '#ccccff';
-	
     var patientId = patientId_;
 	var identifierTypeId = identifierTypeId_;
 	var value = value_;
@@ -957,7 +990,7 @@ function PatientIdentifierSaver( patientId_, identifierTypeId_, value_, resultCo
         {
             if(value!="")
             {
-                markValue( ERROR );
+                markValue( COLOR_GREY );
                 window.alert( i18n_saving_value_failed_status_code + '\n\n' + code );
             }
             else
@@ -969,7 +1002,7 @@ function PatientIdentifierSaver( patientId_, identifierTypeId_, value_, resultCo
  
     function handleHttpError( errorCode )
     {
-        markValue( ERROR );
+        markValue( COLOR_GREY );
         window.alert( i18n_saving_value_failed_error_code + '\n\n' + errorCode );
     }
  
@@ -979,4 +1012,89 @@ function PatientIdentifierSaver( patientId_, identifierTypeId_, value_, resultCo
         var element = byId( 'iden' + identifierTypeId );
         element.style.backgroundColor = color;
     }
+}
+	
+function PatientAttributeValueSaver( patientId_, attributeId_, value_, resultColor_  )
+{
+    var patientId = patientId_;
+	var attributeId = attributeId_;
+	var value = value_;
+    var resultColor = resultColor_;
+	
+    this.save = function()
+    {
+		var params  = 'patientId=' + patientId;
+			params += '&attributeId=' + attributeId;
+			params += '&value=' + value;
+		
+		$.ajax({
+			   url: "savePatientAttribueValue.action",
+			   data: params,
+			   type: "POST",
+			   dataType: "xml",
+			   success: function(result){
+					handleResponse (result);
+			   },
+			   error: function(request,status,errorThrown) {
+					handleHttpError (request);
+			   }
+			});
+    };
+ 
+    function handleResponse( rootElement )
+    {
+        var codeElement = rootElement.getElementsByTagName( 'code' )[0];
+        var code = parseInt( codeElement.firstChild.nodeValue );
+        if ( code == 0 )
+        {
+            markValue( resultColor );
+        }
+        else
+        {
+            if(value!="")
+            {
+                markValue( COLOR_GREY );
+                window.alert( i18n_saving_value_failed_status_code + '\n\n' + code );
+            }
+            else
+            {
+                markValue( resultColor );
+            }
+        }
+    }
+ 
+    function handleHttpError( errorCode )
+    {
+        markValue( COLOR_GREY );
+        window.alert( i18n_saving_value_failed_error_code + '\n\n' + errorCode );
+    }
+ 
+    function markValue( color )
+    {
+		var programStageId = getFieldValue('programStageId');
+        var element = byId( 'attr' + attributeId );
+        element.style.backgroundColor = color;
+    }
+}
+
+//--------------------------------------------------------------------------------------------
+// Show selected data-recording
+//--------------------------------------------------------------------------------------------
+
+function showSelectedDataRecoding( patientId )
+{
+	showLoader();
+	hideById('searchPatientDiv');
+	hideById('dataEntryFormDiv');
+	jQuery('#dataRecordingSelectDiv').load( 'selectDataRecording.action', 
+		{
+			patientId: patientId
+		},
+		function()
+		{
+			jQuery('#dataRecordingSelectDiv [id=patientInfoDiv]').hide();
+			showById('dataRecordingSelectDiv');
+			hideLoader();
+			hideById('contentDiv');
+		});
 }

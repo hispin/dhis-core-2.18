@@ -28,15 +28,24 @@ package org.hisp.dhis.caseentry.action.patient;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.hisp.dhis.patient.Patient;
+import org.hisp.dhis.patient.PatientAttribute;
+import org.hisp.dhis.patient.PatientAttributeGroup;
+import org.hisp.dhis.patient.PatientAttributeGroupService;
+import org.hisp.dhis.patient.PatientAttributeService;
 import org.hisp.dhis.patient.PatientIdentifier;
 import org.hisp.dhis.patient.PatientIdentifierService;
 import org.hisp.dhis.patient.PatientIdentifierType;
 import org.hisp.dhis.patient.PatientIdentifierTypeService;
 import org.hisp.dhis.patient.PatientService;
+import org.hisp.dhis.patient.comparator.PatientAttributeGroupSortOrderComparator;
+import org.hisp.dhis.patientattributevalue.PatientAttributeValue;
+import org.hisp.dhis.patientattributevalue.PatientAttributeValueService;
 import org.hisp.dhis.program.Program;
 import org.hisp.dhis.program.ProgramInstance;
 import org.hisp.dhis.program.ProgramInstanceService;
@@ -66,6 +75,12 @@ public class ProgramEnrollmentAction
 
     private PatientIdentifierService patientIdentifierService;
 
+    private PatientAttributeService patientAttributeService;
+
+    private PatientAttributeGroupService patientAttributeGroupService;
+
+    private PatientAttributeValueService patientAttributeValueService;
+
     // -------------------------------------------------------------------------
     // Input/Output
     // -------------------------------------------------------------------------
@@ -86,6 +101,12 @@ public class ProgramEnrollmentAction
 
     private Collection<PatientIdentifierType> identifierTypes;
 
+    private Collection<PatientAttribute> noGroupAttributes;
+
+    private List<PatientAttributeGroup> attributeGroups;
+
+    private Map<Integer, String> patientAttributeValueMap = new HashMap<Integer, String>();
+
     // -------------------------------------------------------------------------
     // Getters/Setters
     // -------------------------------------------------------------------------
@@ -93,6 +114,36 @@ public class ProgramEnrollmentAction
     public void setPatientService( PatientService patientService )
     {
         this.patientService = patientService;
+    }
+
+    public Collection<PatientAttribute> getNoGroupAttributes()
+    {
+        return noGroupAttributes;
+    }
+
+    public List<PatientAttributeGroup> getAttributeGroups()
+    {
+        return attributeGroups;
+    }
+
+    public Map<Integer, String> getPatientAttributeValueMap()
+    {
+        return patientAttributeValueMap;
+    }
+
+    public void setPatientAttributeService( PatientAttributeService patientAttributeService )
+    {
+        this.patientAttributeService = patientAttributeService;
+    }
+
+    public void setPatientAttributeGroupService( PatientAttributeGroupService patientAttributeGroupService )
+    {
+        this.patientAttributeGroupService = patientAttributeGroupService;
+    }
+
+    public void setPatientAttributeValueService( PatientAttributeValueService patientAttributeValueService )
+    {
+        this.patientAttributeValueService = patientAttributeValueService;
     }
 
     public Map<Integer, String> getIdentiferMap()
@@ -186,15 +237,46 @@ public class ProgramEnrollmentAction
             identifierTypes = identifierTypeService.getPatientIdentifierTypes( program );
             identiferMap = new HashMap<Integer, String>();
 
-            Collection<PatientIdentifier> patientIdentifiers = patientIdentifierService.getPatientIdentifiers(
-                identifierTypes, patient );
-
-            for ( PatientIdentifier identifier : patientIdentifiers )
+            if ( identifierTypes != null && identifierTypes.size() > 0 )
             {
-                identiferMap.put( identifier.getIdentifierType().getId(), identifier.getIdentifier() );
+                Collection<PatientIdentifier> patientIdentifiers = patientIdentifierService.getPatientIdentifiers(
+                    identifierTypes, patient );
+
+                for ( PatientIdentifier identifier : patientIdentifiers )
+                {
+                    identiferMap.put( identifier.getIdentifierType().getId(), identifier.getIdentifier() );
+                }
+            }
+
+            // ---------------------------------------------------------------------
+            // Load patient-attributes of the selected program
+            // ---------------------------------------------------------------------
+
+            attributeGroups = new ArrayList<PatientAttributeGroup>( patientAttributeGroupService
+                .getPatientAttributeGroups( program ) );
+            Collections.sort( attributeGroups, new PatientAttributeGroupSortOrderComparator() );
+
+            noGroupAttributes = patientAttributeService.getPatientAttributes( program, null );
+
+            Collection<PatientAttributeValue> patientAttributeValues = patientAttributeValueService
+                .getPatientAttributeValues( patient, program );
+
+            for ( PatientAttributeValue patientAttributeValue : patientAttributeValues )
+            {
+                if ( PatientAttribute.TYPE_COMBO.equalsIgnoreCase( patientAttributeValue.getPatientAttribute()
+                    .getValueType() ) )
+                {
+                    patientAttributeValueMap.put( patientAttributeValue.getPatientAttribute().getId(),
+                        patientAttributeValue.getPatientAttributeOption().getName() );
+                }
+                else
+                {
+                    patientAttributeValueMap.put( patientAttributeValue.getPatientAttribute().getId(),
+                        patientAttributeValue.getValue() );
+                }
             }
         }
-
+        
         return SUCCESS;
     }
 }

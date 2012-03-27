@@ -123,3 +123,24 @@ function searchValidationCompleted( messageElement )
         showWarningMessage( message );
     }
 }
+
+//--------------------------------------------------------------------------------------------
+// Show selected data-recording
+//--------------------------------------------------------------------------------------------
+
+function showSelectedDataRecoding( patientId )
+{
+	showLoader();
+	hideById('searchPatientDiv');
+	hideById('dataEntryFormDiv');
+	jQuery('#dataRecordingSelectDiv').load( 'selectDataRecording.action', 
+		{
+			patientId: patientId
+		},
+		function()
+		{
+			showById('dataRecordingSelectDiv');
+			hideLoader();
+			hideById('contentDiv');
+		});
+}

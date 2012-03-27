@@ -72,7 +72,7 @@ public class GetPatientAttributesWithoutGroupAction
     public String execute()
         throws Exception
     {
-        patientAttributes = patientAttributeService.getPatientAttributesNotGroup();
+        patientAttributes = patientAttributeService.getPatientAttributesWithoutGroup();
 
         return SUCCESS;
     }
