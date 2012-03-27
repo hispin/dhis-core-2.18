@@ -8,8 +8,9 @@
 
   <!-- match all plural elements -->
   <xsl:template match="d:dxf2">
-    <!-- <xsl:apply-templates select="d:pager"/> -->
-    <xsl:apply-templates select="d:*"/>
+    <xsl:apply-templates select="d:pager"/>
+    <!-- <xsl:apply-templates select="d:*"/> -->
+    <xsl:apply-templates select="d:*[local-name()!='pager']"/>
   </xsl:template>
 
   <xsl:template match="d:resources|d:maps|d:charts|d:categoryCombos|d:categories|
