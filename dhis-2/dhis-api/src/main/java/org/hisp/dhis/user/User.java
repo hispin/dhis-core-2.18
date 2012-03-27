@@ -258,7 +258,7 @@ public class User
 
     @JsonProperty
     @JsonView( {DetailedView.class, ExportView.class} )
-    @JacksonXmlProperty
+    @JacksonXmlProperty( namespace = Dxf2Namespace.NAMESPACE )
     public String getFirstName()
     {
         return firstName;
@@ -271,7 +271,7 @@ public class User
 
     @JsonProperty
     @JsonView( {DetailedView.class, ExportView.class} )
-    @JacksonXmlProperty
+    @JacksonXmlProperty( namespace = Dxf2Namespace.NAMESPACE )
     public String getSurname()
     {
         return surname;
@@ -284,7 +284,7 @@ public class User
 
     @JsonProperty
     @JsonView( {DetailedView.class, ExportView.class} )
-    @JacksonXmlProperty
+    @JacksonXmlProperty( namespace = Dxf2Namespace.NAMESPACE )
     public String getEmail()
     {
         return email;
@@ -297,7 +297,7 @@ public class User
 
     @JsonProperty
     @JsonView( {DetailedView.class, ExportView.class} )
-    @JacksonXmlProperty
+    @JacksonXmlProperty( namespace = Dxf2Namespace.NAMESPACE )
     public String getPhoneNumber()
     {
         return phoneNumber;
@@ -310,7 +310,7 @@ public class User
 
     @JsonProperty
     @JsonView( {DetailedView.class, ExportView.class} )
-    @JacksonXmlProperty
+    @JacksonXmlProperty( namespace = Dxf2Namespace.NAMESPACE )
     public UserCredentials getUserCredentials()
     {
         return userCredentials;
@@ -324,8 +324,8 @@ public class User
     @JsonProperty
     @JsonSerialize( contentAs = BaseIdentifiableObject.class )
     @JsonView( {DetailedView.class, ExportView.class} )
-    @JacksonXmlElementWrapper( localName = "organisationUnits" )
-    @JacksonXmlProperty( localName = "organisationUnit" )
+    @JacksonXmlElementWrapper( localName = "organisationUnits", namespace = Dxf2Namespace.NAMESPACE )
+    @JacksonXmlProperty( localName = "organisationUnit", namespace = Dxf2Namespace.NAMESPACE )
     public Collection<OrganisationUnit> getOrganisationUnits()
     {
         return organisationUnits;
@@ -338,8 +338,8 @@ public class User
 
     @JsonProperty( value = "attributes" )
     @JsonView( {DetailedView.class, ExportView.class} )
-    @JacksonXmlElementWrapper( localName = "attributes" )
-    @JacksonXmlProperty( localName = "attribute" )
+    @JacksonXmlElementWrapper( localName = "attributes", namespace = Dxf2Namespace.NAMESPACE )
+    @JacksonXmlProperty( localName = "attribute", namespace = Dxf2Namespace.NAMESPACE )
     public Set<AttributeValue> getAttributeValues()
     {
         return attributeValues;

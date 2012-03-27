@@ -27,6 +27,7 @@ package org.hisp.dhis.organisationunit;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonView;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
@@ -74,8 +75,6 @@ public class OrganisationUnit
 
     private static final String NAME_SEPARATOR = " - ";
 
-    private Set<OrganisationUnit> children = new HashSet<OrganisationUnit>();
-
     private OrganisationUnit parent;
 
     private Date openingDate;
@@ -119,6 +118,8 @@ public class OrganisationUnit
     // -------------------------------------------------------------------------
     // Transient fields
     // -------------------------------------------------------------------------
+
+    private Set<OrganisationUnit> children = new HashSet<OrganisationUnit>();
 
     private transient boolean currentParent;
 
@@ -525,20 +526,10 @@ public class OrganisationUnit
     // Getters and setters
     // -------------------------------------------------------------------------
 
-    public Set<OrganisationUnit> getChildren()
-    {
-        return children;
-    }
-
-    public void setChildren( Set<OrganisationUnit> children )
-    {
-        this.children = children;
-    }
-
     @JsonProperty
     @JsonSerialize( as = BaseIdentifiableObject.class )
     @JsonView( {DetailedView.class, ExportView.class} )
-    @JacksonXmlProperty
+    @JacksonXmlProperty( namespace = Dxf2Namespace.NAMESPACE )
     public OrganisationUnit getParent()
     {
         return parent;
@@ -549,6 +540,7 @@ public class OrganisationUnit
         this.parent = parent;
     }
 
+    @JsonIgnore
     public String getAlternativeName()
     {
         return getShortName();
@@ -561,7 +553,7 @@ public class OrganisationUnit
 
     @JsonProperty
     @JsonView( {DetailedView.class, ExportView.class} )
-    @JacksonXmlProperty
+    @JacksonXmlProperty( namespace = Dxf2Namespace.NAMESPACE )
     public Date getOpeningDate()
     {
         return openingDate;
@@ -574,7 +566,7 @@ public class OrganisationUnit
 
     @JsonProperty
     @JsonView( {DetailedView.class, ExportView.class} )
-    @JacksonXmlProperty
+    @JacksonXmlProperty( namespace = Dxf2Namespace.NAMESPACE )
     public Date getClosedDate()
     {
         return closedDate;
@@ -587,7 +579,7 @@ public class OrganisationUnit
 
     @JsonProperty
     @JsonView( {DetailedView.class, ExportView.class} )
-    @JacksonXmlProperty
+    @JacksonXmlProperty( namespace = Dxf2Namespace.NAMESPACE )
     public boolean isActive()
     {
         return active;
@@ -600,7 +592,7 @@ public class OrganisationUnit
 
     @JsonProperty
     @JsonView( {DetailedView.class, ExportView.class} )
-    @JacksonXmlProperty
+    @JacksonXmlProperty( namespace = Dxf2Namespace.NAMESPACE )
     public String getComment()
     {
         return comment;
@@ -613,7 +605,7 @@ public class OrganisationUnit
 
     @JsonProperty
     @JsonView( {DetailedView.class, ExportView.class} )
-    @JacksonXmlProperty
+    @JacksonXmlProperty( namespace = Dxf2Namespace.NAMESPACE )
     public String getGeoCode()
     {
         return geoCode;
@@ -626,7 +618,7 @@ public class OrganisationUnit
 
     @JsonProperty
     @JsonView( {DetailedView.class, ExportView.class} )
-    @JacksonXmlProperty
+    @JacksonXmlProperty( namespace = Dxf2Namespace.NAMESPACE )
     public String getFeatureType()
     {
         return featureType;
@@ -639,7 +631,7 @@ public class OrganisationUnit
 
     @JsonProperty
     @JsonView( {DetailedView.class, ExportView.class} )
-    @JacksonXmlProperty
+    @JacksonXmlProperty( namespace = Dxf2Namespace.NAMESPACE )
     public String getCoordinates()
     {
         return coordinates;
@@ -652,7 +644,7 @@ public class OrganisationUnit
 
     @JsonProperty
     @JsonView( {DetailedView.class, ExportView.class} )
-    @JacksonXmlProperty
+    @JacksonXmlProperty( namespace = Dxf2Namespace.NAMESPACE )
     public String getUrl()
     {
         return url;
@@ -666,8 +658,8 @@ public class OrganisationUnit
     @JsonProperty( value = "organisationUnitGroups" )
     @JsonSerialize( contentAs = BaseIdentifiableObject.class )
     @JsonView( {DetailedView.class} )
-    @JacksonXmlElementWrapper( localName = "organisationUnitGroups" )
-    @JacksonXmlProperty( localName = "organisationUnitGroup" )
+    @JacksonXmlElementWrapper( localName = "organisationUnitGroups", namespace = Dxf2Namespace.NAMESPACE )
+    @JacksonXmlProperty( localName = "organisationUnitGroup", namespace = Dxf2Namespace.NAMESPACE )
     public Set<OrganisationUnitGroup> getGroups()
     {
         return groups;
@@ -681,8 +673,8 @@ public class OrganisationUnit
     @JsonProperty
     @JsonSerialize( contentAs = BaseIdentifiableObject.class )
     @JsonView( {DetailedView.class} )
-    @JacksonXmlElementWrapper( localName = "dataSets" )
-    @JacksonXmlProperty( localName = "dataSet" )
+    @JacksonXmlElementWrapper( localName = "dataSets", namespace = Dxf2Namespace.NAMESPACE )
+    @JacksonXmlProperty( localName = "dataSet", namespace = Dxf2Namespace.NAMESPACE )
     public Set<DataSet> getDataSets()
     {
         return dataSets;
@@ -693,7 +685,11 @@ public class OrganisationUnit
         this.dataSets = dataSets;
     }
 
-    // TODO expose this when marshalling?
+    @JsonProperty
+    @JsonSerialize( contentAs = BaseIdentifiableObject.class )
+    @JsonView( {DetailedView.class} )
+    @JacksonXmlElementWrapper( localName = "users", namespace = Dxf2Namespace.NAMESPACE )
+    @JacksonXmlProperty( localName = "user", namespace = Dxf2Namespace.NAMESPACE )
     public Set<User> getUsers()
     {
         return users;
@@ -706,7 +702,7 @@ public class OrganisationUnit
 
     @JsonProperty
     @JsonView( {DetailedView.class, ExportView.class} )
-    @JacksonXmlProperty
+    @JacksonXmlProperty( namespace = Dxf2Namespace.NAMESPACE )
     public String getContactPerson()
     {
         return contactPerson;
@@ -719,7 +715,7 @@ public class OrganisationUnit
 
     @JsonProperty
     @JsonView( {DetailedView.class, ExportView.class} )
-    @JacksonXmlProperty
+    @JacksonXmlProperty( namespace = Dxf2Namespace.NAMESPACE )
     public String getAddress()
     {
         return address;
@@ -732,7 +728,7 @@ public class OrganisationUnit
 
     @JsonProperty
     @JsonView( {DetailedView.class, ExportView.class} )
-    @JacksonXmlProperty
+    @JacksonXmlProperty( namespace = Dxf2Namespace.NAMESPACE )
     public String getEmail()
     {
         return email;
@@ -745,7 +741,7 @@ public class OrganisationUnit
 
     @JsonProperty
     @JsonView( {DetailedView.class, ExportView.class} )
-    @JacksonXmlProperty
+    @JacksonXmlProperty( namespace = Dxf2Namespace.NAMESPACE )
     public String getPhoneNumber()
     {
         return phoneNumber;
@@ -758,7 +754,7 @@ public class OrganisationUnit
 
     @JsonProperty
     @JsonView( {DetailedView.class, ExportView.class} )
-    @JacksonXmlProperty
+    @JacksonXmlProperty( namespace = Dxf2Namespace.NAMESPACE )
     public boolean isHasPatients()
     {
         return hasPatients;
@@ -771,7 +767,7 @@ public class OrganisationUnit
 
     @JsonProperty
     @JsonView( {DetailedView.class, ExportView.class} )
-    @JacksonXmlProperty
+    @JacksonXmlProperty( namespace = Dxf2Namespace.NAMESPACE )
     public String getType()
     {
         return type;
@@ -784,8 +780,8 @@ public class OrganisationUnit
 
     @JsonProperty( value = "attributes" )
     @JsonView( {DetailedView.class, ExportView.class} )
-    @JacksonXmlElementWrapper( localName = "attributes" )
-    @JacksonXmlProperty( localName = "attribute" )
+    @JacksonXmlElementWrapper( localName = "attributes", namespace = Dxf2Namespace.NAMESPACE )
+    @JacksonXmlProperty( localName = "attribute", namespace = Dxf2Namespace.NAMESPACE )
     public Set<AttributeValue> getAttributeValues()
     {
         return attributeValues;
@@ -794,6 +790,20 @@ public class OrganisationUnit
     public void setAttributeValues( Set<AttributeValue> attributeValues )
     {
         this.attributeValues = attributeValues;
+    }
+
+    // -------------------------------------------------------------------------
+    // Getters and setters for transient fields
+    // -------------------------------------------------------------------------
+
+    public Set<OrganisationUnit> getChildren()
+    {
+        return children;
+    }
+
+    public void setChildren( Set<OrganisationUnit> children )
+    {
+        this.children = children;
     }
 
     public int getLevel()

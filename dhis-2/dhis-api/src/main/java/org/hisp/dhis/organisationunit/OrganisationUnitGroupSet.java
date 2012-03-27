@@ -190,6 +190,7 @@ public class OrganisationUnitGroupSet
 
     @JsonProperty
     @JsonView( {DetailedView.class, ExportView.class} )
+    @JacksonXmlProperty( namespace = Dxf2Namespace.NAMESPACE )
     public String getDescription()
     {
         return description;
@@ -202,6 +203,7 @@ public class OrganisationUnitGroupSet
 
     @JsonProperty
     @JsonView( {DetailedView.class, ExportView.class} )
+    @JacksonXmlProperty( namespace = Dxf2Namespace.NAMESPACE )
     public boolean isCompulsory()
     {
         return compulsory;
@@ -215,8 +217,8 @@ public class OrganisationUnitGroupSet
     @JsonProperty( value = "organisationUnitGroups" )
     @JsonSerialize( contentAs = BaseIdentifiableObject.class )
     @JsonView( {DetailedView.class, ExportView.class} )
-    @JacksonXmlElementWrapper( localName = "organisationUnitGroups" )
-    @JacksonXmlProperty( localName = "organisationUnitGroup" )
+    @JacksonXmlElementWrapper( localName = "organisationUnitGroups", namespace = Dxf2Namespace.NAMESPACE )
+    @JacksonXmlProperty( localName = "organisationUnitGroup", namespace = Dxf2Namespace.NAMESPACE )
     public Set<OrganisationUnitGroup> getOrganisationUnitGroups()
     {
         return organisationUnitGroups;

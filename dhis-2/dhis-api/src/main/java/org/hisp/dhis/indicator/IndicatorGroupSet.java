@@ -194,6 +194,7 @@ public class IndicatorGroupSet
 
     @JsonProperty
     @JsonView( {DetailedView.class, ExportView.class} )
+    @JacksonXmlProperty( namespace = Dxf2Namespace.NAMESPACE )
     public String getDescription()
     {
         return description;
@@ -206,6 +207,7 @@ public class IndicatorGroupSet
 
     @JsonProperty
     @JsonView( {DetailedView.class, ExportView.class} )
+    @JacksonXmlProperty( namespace = Dxf2Namespace.NAMESPACE )
     public Boolean isCompulsory()
     {
         if ( compulsory == null )
@@ -224,8 +226,8 @@ public class IndicatorGroupSet
     @JsonProperty( value = "indicatorGroups" )
     @JsonSerialize( contentAs = BaseIdentifiableObject.class )
     @JsonView( {DetailedView.class, ExportView.class} )
-    @JacksonXmlElementWrapper( localName = "indicatorGroups" )
-    @JacksonXmlProperty( localName = "indicatorGroup" )
+    @JacksonXmlElementWrapper( localName = "indicatorGroups", namespace = Dxf2Namespace.NAMESPACE )
+    @JacksonXmlProperty( localName = "indicatorGroup", namespace = Dxf2Namespace.NAMESPACE )
     public List<IndicatorGroup> getMembers()
     {
         return members;

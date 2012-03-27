@@ -82,7 +82,7 @@ public class AttributeValue
     @JsonProperty
     @JsonSerialize( as = BaseIdentifiableObject.class )
     @JsonView( {DetailedView.class, ExportView.class} )
-    @JacksonXmlProperty
+    @JacksonXmlProperty(namespace = Dxf2Namespace.NAMESPACE)
     public Attribute getAttribute()
     {
         return attribute;
@@ -95,7 +95,7 @@ public class AttributeValue
 
     @JsonProperty
     @JsonView( {DetailedView.class, ExportView.class} )
-    @JacksonXmlProperty
+    @JacksonXmlProperty(namespace = Dxf2Namespace.NAMESPACE)
     public String getValue()
     {
         return value;

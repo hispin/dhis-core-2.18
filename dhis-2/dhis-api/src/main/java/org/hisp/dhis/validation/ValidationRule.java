@@ -142,7 +142,7 @@ public class ValidationRule
 
     @JsonProperty
     @JsonView( {DetailedView.class, ExportView.class} )
-    @JacksonXmlProperty
+    @JacksonXmlProperty( namespace = Dxf2Namespace.NAMESPACE )
     public String getDescription()
     {
         return description;
@@ -157,7 +157,7 @@ public class ValidationRule
     @JsonSerialize( using = JacksonPeriodTypeSerializer.class )
     @JsonDeserialize( using = JacksonPeriodTypeDeserializer.class )
     @JsonView( {DetailedView.class, ExportView.class} )
-    @JacksonXmlProperty
+    @JacksonXmlProperty( namespace = Dxf2Namespace.NAMESPACE )
     public PeriodType getPeriodType()
     {
         return periodType;
@@ -170,7 +170,7 @@ public class ValidationRule
 
     @JsonProperty
     @JsonView( {DetailedView.class, ExportView.class} )
-    @JacksonXmlProperty
+    @JacksonXmlProperty( namespace = Dxf2Namespace.NAMESPACE )
     public Operator getOperator()
     {
         return operator;
@@ -183,7 +183,7 @@ public class ValidationRule
 
     @JsonProperty
     @JsonView( {DetailedView.class, ExportView.class} )
-    @JacksonXmlProperty
+    @JacksonXmlProperty( namespace = Dxf2Namespace.NAMESPACE )
     public String getType()
     {
         return type;
@@ -194,10 +194,9 @@ public class ValidationRule
         this.type = type;
     }
 
-    // TODO fix serialization of this..
     @JsonProperty
     @JsonView( {DetailedView.class, ExportView.class} )
-    @JacksonXmlProperty
+    @JacksonXmlProperty( namespace = Dxf2Namespace.NAMESPACE )
     public Expression getLeftSide()
     {
         return leftSide;
@@ -208,10 +207,9 @@ public class ValidationRule
         this.leftSide = leftSide;
     }
 
-    // TODO fix serialization of this..
     @JsonProperty
     @JsonView( {DetailedView.class, ExportView.class} )
-    @JacksonXmlProperty
+    @JacksonXmlProperty( namespace = Dxf2Namespace.NAMESPACE )
     public Expression getRightSide()
     {
         return rightSide;
@@ -225,8 +223,8 @@ public class ValidationRule
     @JsonProperty( value = "validationRuleGroups" )
     @JsonSerialize( contentAs = BaseIdentifiableObject.class )
     @JsonView( {DetailedView.class} )
-    @JacksonXmlElementWrapper( localName = "validationRuleGroups" )
-    @JacksonXmlProperty( localName = "validationRuleGroup" )
+    @JacksonXmlElementWrapper( localName = "validationRuleGroups", namespace = Dxf2Namespace.NAMESPACE )
+    @JacksonXmlProperty( localName = "validationRuleGroup", namespace = Dxf2Namespace.NAMESPACE )
     public Set<ValidationRuleGroup> getGroups()
     {
         return groups;

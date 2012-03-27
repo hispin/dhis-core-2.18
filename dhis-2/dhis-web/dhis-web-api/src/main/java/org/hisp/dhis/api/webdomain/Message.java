@@ -65,7 +65,7 @@ public class Message
 
     @JsonProperty
     @JsonView( {DetailedView.class} )
-    @JacksonXmlProperty
+    @JacksonXmlProperty( namespace = Dxf2Namespace.NAMESPACE )
     public String getSubject()
     {
         return subject;
@@ -78,7 +78,7 @@ public class Message
 
     @JsonProperty
     @JsonView( {DetailedView.class} )
-    @JacksonXmlProperty
+    @JacksonXmlProperty( namespace = Dxf2Namespace.NAMESPACE )
     public String getText()
     {
         return text;
@@ -92,8 +92,8 @@ public class Message
     @JsonProperty
     @JsonSerialize( contentAs = BaseIdentifiableObject.class )
     @JsonView( {DetailedView.class} )
-    @JacksonXmlElementWrapper( localName = "users" )
-    @JacksonXmlProperty( localName = "user" )
+    @JacksonXmlElementWrapper( localName = "users", namespace = Dxf2Namespace.NAMESPACE )
+    @JacksonXmlProperty( localName = "user", namespace = Dxf2Namespace.NAMESPACE )
     public Set<User> getUsers()
     {
         return users;

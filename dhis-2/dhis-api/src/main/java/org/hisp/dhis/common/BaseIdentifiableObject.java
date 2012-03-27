@@ -114,7 +114,7 @@ public class BaseIdentifiableObject
 
     @JsonProperty( value = "internalId" )
     @JsonView( {DetailedView.class, IdentifiableObjectView.class, ExportView.class} )
-    @JacksonXmlProperty( isAttribute = true )
+    @JacksonXmlProperty( isAttribute = true, namespace = Dxf2Namespace.NAMESPACE )
     public int getId()
     {
         return id;
@@ -126,7 +126,7 @@ public class BaseIdentifiableObject
     }
 
     @JsonProperty( value = "id" )
-    @JacksonXmlProperty( isAttribute = true )
+    @JacksonXmlProperty( isAttribute = true, namespace = Dxf2Namespace.NAMESPACE )
     public String getUid()
     {
         return uid;
@@ -139,7 +139,7 @@ public class BaseIdentifiableObject
 
     @JsonProperty
     @JsonView( {DetailedView.class, IdentifiableObjectView.class, ExportView.class} )
-    @JacksonXmlProperty( isAttribute = true )
+    @JacksonXmlProperty( isAttribute = true, namespace = Dxf2Namespace.NAMESPACE )
     public String getCode()
     {
         return code;
@@ -152,7 +152,7 @@ public class BaseIdentifiableObject
 
     @JsonProperty
     @JsonView( {DetailedView.class, IdentifiableObjectView.class, ExportView.class} )
-    @JacksonXmlProperty( isAttribute = true )
+    @JacksonXmlProperty( isAttribute = true, namespace = Dxf2Namespace.NAMESPACE )
     public String getName()
     {
         return name;
@@ -165,7 +165,7 @@ public class BaseIdentifiableObject
 
     @JsonProperty
     @JsonView( {DetailedView.class, IdentifiableObjectView.class, ExportView.class} )
-    @JacksonXmlProperty( isAttribute = true )
+    @JacksonXmlProperty( isAttribute = true, namespace = Dxf2Namespace.NAMESPACE )
     public Date getLastUpdated()
     {
         return lastUpdated;

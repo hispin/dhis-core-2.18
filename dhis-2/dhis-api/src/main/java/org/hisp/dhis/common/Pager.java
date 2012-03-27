@@ -28,6 +28,7 @@ package org.hisp.dhis.common;
  */
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 
 /**
@@ -87,12 +88,14 @@ public class Pager
     }
 
     @JsonProperty
+    @JacksonXmlProperty( namespace = Dxf2Namespace.NAMESPACE )
     public int getPage()
     {
         return page;
     }
 
     @JsonProperty
+    @JacksonXmlProperty( namespace = Dxf2Namespace.NAMESPACE )
     public int getTotal()
     {
         return total;
@@ -104,6 +107,7 @@ public class Pager
      * @return Number of items per page.
      */
     @JsonProperty
+    @JacksonXmlProperty( namespace = Dxf2Namespace.NAMESPACE )
     public int getPageSize()
     {
         return pageSize;
@@ -115,6 +119,7 @@ public class Pager
      * @return Total number of pages
      */
     @JsonProperty
+    @JacksonXmlProperty( namespace = Dxf2Namespace.NAMESPACE )
     public int getPageCount()
     {
         int pageCount = 1;
@@ -140,6 +145,7 @@ public class Pager
     }
 
     @JsonProperty
+    @JacksonXmlProperty( namespace = Dxf2Namespace.NAMESPACE )
     public String getNextPage()
     {
         return nextPage;
@@ -151,6 +157,7 @@ public class Pager
     }
 
     @JsonProperty
+    @JacksonXmlProperty( namespace = Dxf2Namespace.NAMESPACE )
     public String getPrevPage()
     {
         return prevPage;
