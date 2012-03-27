@@ -27,9 +27,8 @@
 
 package org.hisp.dhis.caseentry.action.caseentry;
 
-import java.util.Date;
-
 import org.hisp.dhis.caseentry.state.SelectedStateManager;
+import org.hisp.dhis.i18n.I18nFormat;
 import org.hisp.dhis.program.ProgramStageInstance;
 import org.hisp.dhis.program.ProgramStageInstanceService;
 
@@ -60,7 +59,25 @@ public class RegisterIrregularEncounterAction
     {
         this.selectedStateManager = selectedStateManager;
     }
-    
+
+    private I18nFormat format;
+
+    public void setFormat( I18nFormat format )
+    {
+        this.format = format;
+    }
+
+    // -------------------------------------------------------------------------
+    // Input
+    // -------------------------------------------------------------------------
+
+    private String dueDate;
+
+    public void setDueDate( String dueDate )
+    {
+        this.dueDate = dueDate;
+    }
+
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
@@ -75,13 +92,12 @@ public class RegisterIrregularEncounterAction
         programStageInstance.setProgramInstance( currentStageInstance.getProgramInstance() );
         programStageInstance.setProgramStage( currentStageInstance.getProgramStage() );
         programStageInstance.setStageInProgram( currentStageInstance.getStageInProgram() );
-        programStageInstance.setDueDate( new Date() );
-        programStageInstance.setExecutionDate( new Date() );
+        programStageInstance.setDueDate( format.parseDate( dueDate ) );
 
         programStageInstanceService.addProgramStageInstance( programStageInstance );
 
         selectedStateManager.setSelectedProgramStageInstance( programStageInstance );
-        
+
         return SUCCESS;
     }
 }

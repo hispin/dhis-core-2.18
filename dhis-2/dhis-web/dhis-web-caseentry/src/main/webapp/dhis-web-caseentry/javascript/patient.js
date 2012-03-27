@@ -1105,6 +1105,7 @@ function showSelectedDataRecoding( patientId )
 		function()
 		{
 			jQuery('#dataRecordingSelectDiv [id=patientInfoDiv]').hide();
+			jQuery('#dataRecordingSelectDiv [id=backBtnFromEntry]').hide();
 			showById('dataRecordingSelectDiv');
 			hideLoader();
 			hideById('contentDiv');
