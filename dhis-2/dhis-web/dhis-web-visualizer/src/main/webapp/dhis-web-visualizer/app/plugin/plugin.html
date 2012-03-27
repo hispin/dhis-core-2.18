@@ -1,10 +1,9 @@
 <html>
 <head>
-    <link rel="stylesheet" type="text/css" href="../lib/ext/resources/css/ext-all-gray.css" />
-    <script type="text/javascript" src="../lib/ext/ext-all.js"></script>
-    <script type="text/javascript" src="plugin.js"></script>
-    
-    <link rel="stylesheet" type="text/css" href="../css/plugin.css" />
+    <link rel="stylesheet" type="text/css" href="http://extjs-public.googlecode.com/svn/tags/extjs-4.0.7/release/resources/css/ext-all-gray.css" />
+    <link rel="stylesheet" type="text/css" href="http://apps.dhis2.org/demo/dhis-web-visualizer/app/css/plugin.css" />
+    <script type="text/javascript" src="http://extjs-public.googlecode.com/svn/tags/extjs-4.0.7/release/ext-all.js"></script>
+    <script type="text/javascript" src="http://apps.dhis2.org/demo/dhis-web-visualizer/app/plugin/plugin.js"></script>
 </head>
 
 <body>
@@ -17,7 +16,7 @@
 	
 	<script>
 		Ext.onReady( function() {
-			var url = 'http://localhost:8180/dhis/';
+			var url = 'http://apps.dhis2.org/demo/';
             
 /*
 CONFIG              TYPE            DEFAULT             DESCRIPTION
@@ -30,29 +29,31 @@ organisationunits   [integer]                           (Required) Organisation 
 series              string          'data'              (Optional) Series: 'data', 'period' or 'organisationunit'
 category            string          'period'            (Optional) Category: 'indicator', 'dataelement', 'period' or 'organisationunit'
 filter              string          'organisationunit'  (Optional) Filter: 'indicator', 'dataelement', 'period' or 'organisationunit'
-el                  string                              (Required) The element to render the chart.
+el                  string                              (Required) The element id to render the chart.
 width               integer         <el width>          (Optional) Chart width. Default is the element width.
 height              integer         <el height>         (Optional) Chart height. Default is the element height.
 legendPosition      string          'top'               (Optional) Positions: 'top', 'right', 'bottom' or 'left'
-url                 string                              (Required) The web service url.
-uid                 string                              (Optional) The uid of a store chart.
+url                 string                              (Required) The base url of the DHIS instance.
+uid                 string                              (Optional) The chart uid.
 
 Note: If a uid is provided, only 'el' and 'url' are required.
 */
 			
+            
+            DHIS.getChart({
+                uid: 'R0DVGvXDUNP',
+                el: 'chart1',
+                url: url
+            });
+            
 			DHIS.getChart({
                 type: 'stackedcolumn',
                 indicators: [52486, 52491],
-				organisationunits: [18],
-				el: 'chart1',
+                periods: 'last12Months',
+				organisationunits: [525],
+				el: 'chart2',
 				url: url
 			});
-            
-            DHIS.getChart({
-                uid: 'UlfTKWZWV4u',
-                el: 'chart2',
-                url: url
-            });
 	
 		});
 	</script>
