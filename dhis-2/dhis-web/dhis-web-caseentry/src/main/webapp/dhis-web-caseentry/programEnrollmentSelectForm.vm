@@ -28,7 +28,7 @@
 			</td>
 		</tr>
 	</table>
-	
+<hr/>
 	<form id='programEnrollmentSelectDiv' name='programEnrollmentSelectDiv' method='POST'>
 			<input type="hidden" id="patientId" name="patientId" value="$patient.id">    
 
@@ -75,7 +75,6 @@
 			</form>
 			
 			<div id='programEnrollmentDiv' class='hidden'></div>
-	<hr/>
 	
 </div>
 

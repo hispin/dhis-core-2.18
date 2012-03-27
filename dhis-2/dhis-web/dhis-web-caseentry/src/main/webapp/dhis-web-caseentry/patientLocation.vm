@@ -1,0 +1,20 @@
+
+<h3>$i18n.getString( "migration_patient" )</h3>
+
+<form method='post'>
+	<table>
+		<tr>
+			<td>
+				#organisationUnitSelectionTree( true, false, false )
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<input type="button" class='button' value="$i18n.getString('save')" style="width:10em" onclick='verifyOrgunitRegistration( "$patientId" )'>
+				<input type="button" class='button' value="$i18n.getString( 'back_to_registration' )" onclick="loadPatientList();" >
+			</td>
+			<td></td>
+			<td></td>
+		</tr>
+	</table>
+</form>

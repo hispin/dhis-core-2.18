@@ -592,6 +592,29 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		<property name="patientService" ref="org.hisp.dhis.patient.PatientService" />
 		<property name="programInstanceService" ref="org.hisp.dhis.program.ProgramInstanceService" />
 	</bean>
+	
+	<bean id="org.hisp.dhis.caseentry.action.patient.GetPatientLocationAction"
+		class="org.hisp.dhis.caseentry.action.patient.GetPatientLocationAction"
+		scope="prototype">
+		<property name="patientService" ref="org.hisp.dhis.patient.PatientService" />
+		<property name="selectionTreeManager"
+			ref="org.hisp.dhis.oust.manager.SelectionTreeManager" />
+	</bean>
+	
+	<bean id="org.hisp.dhis.caseentry.action.patient.VerifyOrgunitRegistrationAction"
+		class="org.hisp.dhis.caseentry.action.patient.VerifyOrgunitRegistrationAction"
+		scope="prototype">
+		<property name="selectionTreeManager"
+			ref="org.hisp.dhis.oust.manager.SelectionTreeManager" />
+	</bean>
+	
+	<bean id="org.hisp.dhis.caseentry.action.patient.RegisterPatientLocationAction"
+		class="org.hisp.dhis.caseentry.action.patient.RegisterPatientLocationAction"
+		scope="prototype">
+		<property name="patientService" ref="org.hisp.dhis.patient.PatientService" />
+		<property name="selectionTreeManager"
+			ref="org.hisp.dhis.oust.manager.SelectionTreeManager" />	
+	</bean>
 
 	<!-- Patient-Program Enrollment -->
 
