@@ -6,7 +6,7 @@
     #foreach ( $view in $mapViews )
     <tr>
         <td>
-            <a href="javascript:window.location.href='../dhis-web-mapping/mapping/index.html?view=$view.id'">$encoder.htmlEncode( $view.name )</a>
+            <a href="javascript:window.location.href='../dhis-web-mapping/mapping/index.html?id=${view.uid}'">$encoder.htmlEncode( $view.name )</a>
         </td>
         <td style="width:16px">
             <a href="javascript:window.location.href='removeMapView.action?id=$view.id'" title="$i18n.getString( 'remove' )">
