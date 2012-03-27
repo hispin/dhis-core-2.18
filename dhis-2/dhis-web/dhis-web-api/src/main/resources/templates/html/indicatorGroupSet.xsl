@@ -21,10 +21,21 @@
           <td>Code</td>
           <td> <xsl:value-of select="@d:code" /> </td>
         </tr>
+        <tr>
+          <td>Compulsory</td>
+          <td> <xsl:value-of select="d:compulsory" /> </td>
+        </tr>
       </table>
 
       <xsl:apply-templates select="d:indicatorGroups" mode="short"/>
     </div>
+  </xsl:template>
+
+  <xsl:template match="d:indicatorGroupSet" mode="short">
+    <h3>Indicator Group Set</h3>
+    <table class="indicatorGroupSet">
+      <xsl:apply-templates select="." mode="row"/>
+    </table>
   </xsl:template>
 
 </xsl:stylesheet>

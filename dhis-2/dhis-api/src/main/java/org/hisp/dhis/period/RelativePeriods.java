@@ -28,6 +28,7 @@ package org.hisp.dhis.period;
  */
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 import org.hisp.dhis.common.Dxf2Namespace;
 import org.hisp.dhis.i18n.I18nFormat;
@@ -538,6 +539,7 @@ public class RelativePeriods
     // -------------------------------------------------------------------------
 
     @JsonProperty( value = "lastMonth" )
+    @JacksonXmlProperty( namespace = Dxf2Namespace.NAMESPACE )
     public boolean isReportingMonth()
     {
         return reportingMonth;
@@ -550,6 +552,7 @@ public class RelativePeriods
     }
 
     @JsonProperty( value = "lastBimonth" )
+    @JacksonXmlProperty( namespace = Dxf2Namespace.NAMESPACE )
     public boolean isReportingBimonth()
     {
         return reportingBimonth;
@@ -562,6 +565,7 @@ public class RelativePeriods
     }
 
     @JsonProperty( value = "lastQuarter" )
+    @JacksonXmlProperty( namespace = Dxf2Namespace.NAMESPACE )
     public boolean isReportingQuarter()
     {
         return reportingQuarter;
@@ -574,6 +578,7 @@ public class RelativePeriods
     }
 
     @JsonProperty
+    @JacksonXmlProperty( namespace = Dxf2Namespace.NAMESPACE )
     public boolean isLastSixMonth()
     {
         return lastSixMonth;
@@ -585,6 +590,7 @@ public class RelativePeriods
     }
 
     @JsonProperty
+    @JacksonXmlProperty( namespace = Dxf2Namespace.NAMESPACE )
     public boolean isMonthsThisYear()
     {
         return monthsThisYear;
@@ -597,6 +603,7 @@ public class RelativePeriods
     }
 
     @JsonProperty
+    @JacksonXmlProperty( namespace = Dxf2Namespace.NAMESPACE )
     public boolean isQuartersThisYear()
     {
         return quartersThisYear;
@@ -609,6 +616,7 @@ public class RelativePeriods
     }
 
     @JsonProperty
+    @JacksonXmlProperty( namespace = Dxf2Namespace.NAMESPACE )
     public boolean isThisYear()
     {
         return thisYear;
@@ -621,6 +629,7 @@ public class RelativePeriods
     }
 
     @JsonProperty
+    @JacksonXmlProperty( namespace = Dxf2Namespace.NAMESPACE )
     public boolean isMonthsLastYear()
     {
         return monthsLastYear;
@@ -633,6 +642,7 @@ public class RelativePeriods
     }
 
     @JsonProperty
+    @JacksonXmlProperty( namespace = Dxf2Namespace.NAMESPACE )
     public boolean isQuartersLastYear()
     {
         return quartersLastYear;
@@ -645,6 +655,7 @@ public class RelativePeriods
     }
 
     @JsonProperty
+    @JacksonXmlProperty( namespace = Dxf2Namespace.NAMESPACE )
     public boolean isLastYear()
     {
         return lastYear;
@@ -657,6 +668,7 @@ public class RelativePeriods
     }
 
     @JsonProperty
+    @JacksonXmlProperty( namespace = Dxf2Namespace.NAMESPACE )
     public boolean isLast5Years()
     {
         return last5Years;
@@ -669,6 +681,7 @@ public class RelativePeriods
     }
 
     @JsonProperty
+    @JacksonXmlProperty( namespace = Dxf2Namespace.NAMESPACE )
     public boolean isLast12Months()
     {
         return last12Months;
@@ -681,6 +694,7 @@ public class RelativePeriods
     }
 
     @JsonProperty
+    @JacksonXmlProperty( namespace = Dxf2Namespace.NAMESPACE )
     public boolean isLast6BiMonths()
     {
         return last6BiMonths;
@@ -693,6 +707,7 @@ public class RelativePeriods
     }
 
     @JsonProperty
+    @JacksonXmlProperty( namespace = Dxf2Namespace.NAMESPACE )
     public boolean isLast4Quarters()
     {
         return last4Quarters;
@@ -705,6 +720,7 @@ public class RelativePeriods
     }
 
     @JsonProperty
+    @JacksonXmlProperty( namespace = Dxf2Namespace.NAMESPACE )
     public boolean isLast2SixMonths()
     {
         return last2SixMonths;
