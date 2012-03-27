@@ -815,11 +815,6 @@ function showEnrolmentField()
 	showById('enrollBtn');
 }
 
-function toogleDiv( div )
-{
-	jQuery( "#" + div ).slideToggle( "fast" );
-}
-
 function savePatientIdentifier( identifierTypeId, field )
 {
 	field.blur();
@@ -1010,6 +1005,12 @@ function showSelectedDataRecoding( patientId )
 			jQuery('#dataRecordingSelectDiv [id=patientInfoDiv]').hide();
 			jQuery('#dataRecordingSelectDiv [id=backBtnFromEntry]').hide();
 			showById('dataRecordingSelectDiv');
+			var programId = jQuery('#programEnrollmentSelectDiv [id=programId] option:selected').val();
+			var programName = jQuery('#programEnrollmentSelectDiv [id=programId] option:selected').text();
+			
+			$('#dataRecordingSelectDiv [id=programId]').find('option').remove().end().append('<option value="' + programId + '">' + programName + '</option>').val('whatever');
+
+			loadProgramStages();
 			hideLoader();
 			hideById('contentDiv');
 		});
