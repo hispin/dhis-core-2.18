@@ -72,8 +72,16 @@
           <td> <xsl:value-of select="@d:code" /> </td>
         </tr>
         <tr>
-          <td>Dimension</td>
-          <td> <xsl:value-of select="d:dimension"/> </td>
+          <td>Series</td>
+          <td> <xsl:value-of select="d:series"/> </td>
+        </tr>
+        <tr>
+          <td>Category</td>
+          <td> <xsl:value-of select="d:category"/> </td>
+        </tr>
+        <tr>
+          <td>Filter</td>
+          <td> <xsl:value-of select="d:filter"/> </td>
         </tr>
         <tr>
           <td>Hide legend</td>
@@ -84,20 +92,8 @@
           <td> <xsl:value-of select="d:hideSubtitle"/> </td>
         </tr>
         <tr>
-          <td>Horizontal Pilot  Orientation</td>
-          <td> <xsl:value-of select="d:horizontalPlotOrientation"/> </td>
-        </tr>
-        <tr>
           <td>Regression</td>
           <td> <xsl:value-of select="d:regression"/> </td>
-        </tr>
-        <tr>
-          <td>Size</td>
-          <td> <xsl:value-of select="d:size"/> </td>
-        </tr>
-        <tr>
-          <td>Target line</td>
-          <td> <xsl:value-of select="d:targetLine"/> </td>
         </tr>
         <tr>
           <td>Target line label</td>
@@ -111,13 +107,10 @@
           <td>User organisation unit</td>
           <td> <xsl:value-of select="d:userOrganisationUnit"/> </td>
         </tr>
-        <tr>
-          <td>Vertical labels</td>
-          <td> <xsl:value-of select="d:verticalLabels"/> </td>
-        </tr>
       </table>
 
       <xsl:apply-templates select="d:organisationUnits|d:dataElements|d:indicators" mode="short"/>
+      <xsl:apply-templates select="d:relativePeriods" />
 
     </div>
   </xsl:template>

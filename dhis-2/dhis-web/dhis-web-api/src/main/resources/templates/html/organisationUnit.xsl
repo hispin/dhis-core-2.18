@@ -26,6 +26,10 @@
           <td> <xsl:value-of select="d:shortName" /> </td>
         </tr>
         <tr>
+          <td>Period Type</td>
+          <td> <xsl:value-of select="d:periodType" /> </td>
+        </tr>
+        <tr>
           <td>Opening Date</td>
           <td> <xsl:value-of select="d:openingDate" /> </td>
         </tr>

@@ -191,7 +191,7 @@ public class DataEntryForm
 
     @JsonProperty
     @JsonView( {DetailedView.class, ExportView.class} )
-    @JacksonXmlProperty
+    @JacksonXmlProperty( namespace = Dxf2Namespace.NAMESPACE )
     public String getName()
     {
         return name;
@@ -204,7 +204,7 @@ public class DataEntryForm
 
     @JsonProperty
     @JsonView( {DetailedView.class, ExportView.class} )
-    @JacksonXmlProperty
+    @JacksonXmlProperty( namespace = Dxf2Namespace.NAMESPACE )
     public String getHtmlCode()
     {
         return htmlCode;

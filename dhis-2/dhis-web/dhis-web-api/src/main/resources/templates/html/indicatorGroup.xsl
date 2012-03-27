@@ -23,7 +23,7 @@
         </tr>
       </table>
 
-      <xsl:apply-templates select="d:indicators" mode="short"/>
+      <xsl:apply-templates select="d:indicators|d:indicatorGroupSet" mode="short"/>
     </div>
   </xsl:template>
 

@@ -27,6 +27,10 @@
           <td> <xsl:value-of select="d:shortName" /> </td>
         </tr>
         <tr>
+          <td>Description</td>
+          <td> <xsl:value-of select="d:description" /> </td>
+        </tr>
+        <tr>
           <td>Denominator</td>
           <td> <xsl:value-of select="d:denominator" /> </td>
         </tr>

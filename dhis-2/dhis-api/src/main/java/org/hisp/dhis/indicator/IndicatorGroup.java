@@ -163,7 +163,6 @@ public class IndicatorGroup
     @JsonProperty( value = "indicatorGroupSet" )
     @JsonSerialize( as = BaseIdentifiableObject.class )
     @JsonView( {DetailedView.class, ExportView.class} )
-    @JacksonXmlElementWrapper( localName = "indicatorGroupSets", namespace = Dxf2Namespace.NAMESPACE )
     @JacksonXmlProperty( localName = "indicatorGroupSet", namespace = Dxf2Namespace.NAMESPACE )
     public IndicatorGroupSet getGroupSet()
     {
