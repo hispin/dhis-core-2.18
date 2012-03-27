@@ -177,6 +177,18 @@ public class GetAggregatedValuesPluginAction
     {
         this.last5Years = last5Years;
     }
+    
+    public String callback;
+
+    public String getCallback()
+    {
+        return callback;
+    }
+
+    public void setCallback( String callback )
+    {
+        this.callback = callback;
+    }
 
     // -------------------------------------------------------------------------
     // Output

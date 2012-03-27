@@ -2,7 +2,7 @@ DHIS = {};
 DHIS.conf = {
     finals: {
         ajax: {
-            data_get: 'dhis-web-visualizer/app/getAggregatedValuesPlugin.action',
+            data_get: 'dhis-web-visualizer/getAggregatedValuesPlugin.action',
             favorite_get: 'api/charts/'
         },        
         dimension: {
@@ -278,8 +278,7 @@ Ext.onReady( function() {
             }
         },
         value: {
-            jsonfy: function(r) {
-                r = Ext.JSON.decode(r.responseText);
+            jsonfy: function(r) {                
                 var object = {
                     values: [],
                     periods: r.p
@@ -386,28 +385,28 @@ Ext.onReady( function() {
         },
         setState: function(conf) {
             if (conf.uid) {
-                Ext.Ajax.request({
-                    url: conf.url + DHIS.conf.finals.ajax.favorite_get + conf.uid + '.json',
+                Ext.data.JsonP.request({
+                    url: conf.url + DHIS.conf.finals.ajax.favorite_get + conf.uid + '.jsonp',
                     scope: this,
                     success: function(r) {
-                        if (!r.responseText) {
+                        if (!r) {
                             alert('Invalid uid');
                             return;
                         }
-                        var f = Ext.JSON.decode(r.responseText);
-                        conf.type = f.type.toLowerCase();
-                        conf.periods = DHIS.util.dimension.period.getRelativesFromObject(f.relativePeriods);
-                        conf.organisationunits = DHIS.util.dimension.organisationunit.getIdsFromObjects(f.organisationUnits);
-                        conf.series = f.series.toLowerCase();
-                        conf.category = f.category.toLowerCase();
-                        conf.filter = f.filter.toLowerCase();
+                        
+                        conf.type = r.type.toLowerCase();
+                        conf.periods = DHIS.util.dimension.period.getRelativesFromObject(r.relativePeriods);
+                        conf.organisationunits = DHIS.util.dimension.organisationunit.getIdsFromObjects(r.organisationUnits);
+                        conf.series = r.series.toLowerCase();
+                        conf.category = r.category.toLowerCase();
+                        conf.filter = r.filter.toLowerCase();
                         conf.legendPosition = conf.legendPosition || false;
                         
-                        if (f.indicators) {
-                            conf.indicators = DHIS.util.dimension.indicator.getIdsFromObjects(f.indicators);
+                        if (r.indicators) {
+                            conf.indicators = DHIS.util.dimension.indicator.getIdsFromObjects(r.indicators);
                         }
-                        if (f.dataelements) {
-                            conf.dataelements = DHIS.util.dimension.dataelement.getIdsFromObjects(f.dataelements);
+                        if (r.dataelements) {
+                            conf.dataelements = DHIS.util.dimension.dataelement.getIdsFromObjects(r.dataelements);
                         }
                         
                         this.getState(conf);                        
@@ -429,7 +428,7 @@ Ext.onReady( function() {
                 baseUrl = Ext.String.urlAppend(baseUrl, item);
             });
             
-            Ext.Ajax.request({
+            Ext.data.JsonP.request({
                 url: baseUrl,
                 success: function(r) {
                     var json = DHIS.util.value.jsonfy(r);
