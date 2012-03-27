@@ -33,6 +33,8 @@ import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager;
 import org.hisp.dhis.patient.PatientAttribute;
 import org.hisp.dhis.patient.PatientAttributeService;
+import org.hisp.dhis.program.Program;
+import org.hisp.dhis.program.ProgramService;
 
 import com.opensymphony.xwork2.Action;
 
@@ -61,6 +63,12 @@ public class DataEntrySelectAction
         this.patientAttributeService = patientAttributeService;
     }
 
+    private ProgramService programService;
+
+    public void setProgramService( ProgramService programService )
+    {
+        this.programService = programService;
+    }
     // -------------------------------------------------------------------------
     // Input/output
     // -------------------------------------------------------------------------
@@ -79,6 +87,14 @@ public class DataEntrySelectAction
         return patientAttributes;
     }
 
+
+    private Collection<Program> programs;
+
+    public Collection<Program> getPrograms()
+    {
+        return programs;
+    }
+
     // -------------------------------------------------------------------------
     // Implementation Action
     // -------------------------------------------------------------------------
@@ -89,6 +105,8 @@ public class DataEntrySelectAction
         organisationUnit = selectionManager.getSelectedOrganisationUnit();
 
         patientAttributes = patientAttributeService.getAllPatientAttributes();
+        
+        programs = programService.getAllPrograms();
 
         return SUCCESS;
     }

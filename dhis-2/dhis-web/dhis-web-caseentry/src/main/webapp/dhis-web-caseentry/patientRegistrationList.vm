@@ -1,5 +1,4 @@
 <table>
-	
 	<tr>
 		<td class='text-column' >$i18n.getString( "search_result_matching_the_search_criteria" ):</td>
 		<td>&nbsp;</td>
@@ -20,6 +19,7 @@
 		<td>$!total</td>
 	</tr>
 </table>
+
 #if( $patients.size() > 0 )
 <table class="mainPageTable">
 	<tr>

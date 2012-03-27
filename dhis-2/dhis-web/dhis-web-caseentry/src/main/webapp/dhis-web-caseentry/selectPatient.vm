@@ -34,7 +34,7 @@
 				</td>	
 				<td></td>
 				<td><input type="button" value='+' onclick='addAttributeOption();'>
-					<input type="button" value='$i18n.getString( "search" )' onclick='searchPatients();'>
+					<input type="button" value='$i18n.getString( "search" )' onclick='searchAdvancedPatients();'>
 				</td>
 				<td>&nbsp;</td>
 				<td><input type="button" value='$i18n.getString( "add_new" )' onclick="showAddPatientForm();"></td>

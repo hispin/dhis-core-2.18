@@ -144,3 +144,18 @@ function showSelectedDataRecoding( patientId )
 			hideById('contentDiv');
 		});
 }
+
+function searchPatient()
+{
+	$.ajax({
+		url: 'searchPatient.action',
+		type:"POST",
+		data: getParamsForDiv('searchPatientDiv'),
+		success: function( html ){
+				statusSearching = 1;
+				setInnerHTML( 'contentDiv', html );
+				showById('contentDiv');
+				jQuery( "#loaderDiv" ).hide();
+			}
+		});
+}
