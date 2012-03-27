@@ -25,6 +25,8 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 			ref="org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager" />
 		<property name="patientAttributeService"
 			ref="org.hisp.dhis.patient.PatientAttributeService" />
+		<property name="programService"
+			ref="org.hisp.dhis.program.ProgramService" />
 	</bean>
 
 	<bean id="org.hisp.dhis.caseentry.action.caseentry.ValidateSearchAction"

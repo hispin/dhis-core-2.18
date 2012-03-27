@@ -46,7 +46,7 @@
 		</action>
 
 		<action name="searchPatient"
-			class="org.hisp.dhis.caseentry.action.caseentry.SearchPatientAction">
+			class="org.hisp.dhis.caseentry.action.patient.SearchPatientAction">
 			<result name="success" type="velocity">/content.vm</result>
 			<param name="page">/dhis-web-caseentry/listPatient.vm</param>
 		</action>
