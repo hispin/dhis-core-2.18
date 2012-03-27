@@ -94,11 +94,9 @@ public class AddPatientAction
 
     private String birthDate;
 
-    private char ageType;
-
     private Integer age;
 
-    private Character dobType;
+    private Boolean verified;
 
     private String gender;
 
@@ -127,6 +125,8 @@ public class AddPatientAction
         OrganisationUnit organisationUnit = selectionManager.getSelectedOrganisationUnit();
 
         Patient patient = new Patient();
+        
+        verified = ( verified == null ) ? false : true ;
 
         // ---------------------------------------------------------------------
         // Set FirstName, MiddleName, LastName by FullName
@@ -170,6 +170,13 @@ public class AddPatientAction
         patient.setUnderAge( underAge );
         patient.setOrganisationUnit( organisationUnit );
 
+        Character dobType = ( verified ) ? 'V' : 'D';
+        
+        if( !verified && age != null )
+        {
+            dobType = 'A';
+        }
+        
         if ( dobType == Patient.DOB_TYPE_VERIFIED || dobType == Patient.DOB_TYPE_DECLARED )
         {
             birthDate = birthDate.trim();
@@ -177,7 +184,7 @@ public class AddPatientAction
         }
         else
         {
-            patient.setBirthDateFromAge( age.intValue(), ageType );
+            patient.setBirthDateFromAge( age.intValue(), 'Y' );
         }
 
         patient.setDobType( dobType );
@@ -309,6 +316,11 @@ public class AddPatientAction
         return message;
     }
 
+    public void setVerified( Boolean verified )
+    {
+        this.verified = verified;
+    }
+
     public void setPatientIdentifierTypeService( PatientIdentifierTypeService patientIdentifierTypeService )
     {
         this.patientIdentifierTypeService = patientIdentifierTypeService;
@@ -392,15 +404,5 @@ public class AddPatientAction
     public void setUnderAge( boolean underAge )
     {
         this.underAge = underAge;
-    }
-
-    public void setDobType( Character dobType )
-    {
-        this.dobType = dobType;
-    }
-
-    public void setAgeType( char ageType )
-    {
-        this.ageType = ageType;
     }
 }
