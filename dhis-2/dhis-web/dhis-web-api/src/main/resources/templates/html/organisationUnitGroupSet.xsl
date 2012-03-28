@@ -26,5 +26,13 @@
       <xsl:apply-templates select="d:organisationUnitGroups" mode="short"/>
     </div>
   </xsl:template>
-  
+
+  <xsl:template match="d:organisationUnitGroupSet" mode="short">
+    <h3>OrganisationUnit Group Set</h3>
+    <table class="organisationUnitGroupSet">
+      <xsl:apply-templates select="." mode="row"/>
+    </table>
+  </xsl:template>
+
+
 </xsl:stylesheet>

@@ -23,7 +23,7 @@
         </tr>
       </table>
 
-      <xsl:apply-templates select="d:organisationUnits" mode="short"/>
+      <xsl:apply-templates select="d:organisationUnitGroupSet|d:organisationUnits" mode="short"/>
     </div>
   </xsl:template>
 
