@@ -125,7 +125,7 @@ public class UpdatePatientAction
 
         patient = patientService.getPatient( id );
         
-        verified = ( verified == null ) ? false : true ;
+        verified = ( verified == null ) ? false : verified ;
 
         // ---------------------------------------------------------------------
         // Set FirstName, MiddleName, LastName by FullName
@@ -180,7 +180,7 @@ public class UpdatePatientAction
         {
             dobType = 'A';
         }
-        
+
         if ( dobType == Patient.DOB_TYPE_VERIFIED || dobType == Patient.DOB_TYPE_DECLARED )
         {
             birthDate = birthDate.trim();
@@ -188,7 +188,7 @@ public class UpdatePatientAction
         }
         else
         {
-            patient.setBirthDateFromAge( age.intValue(), 'Y' );
+            patient.setBirthDateFromAge( age.intValue(), Patient.AGE_TYPE_YEAR );
         }
 
         patient.setDobType( dobType );

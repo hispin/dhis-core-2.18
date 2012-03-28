@@ -126,7 +126,7 @@ public class AddPatientAction
 
         Patient patient = new Patient();
         
-        verified = ( verified == null ) ? false : true ;
+        verified = ( verified == null ) ? false : verified ;
 
         // ---------------------------------------------------------------------
         // Set FirstName, MiddleName, LastName by FullName
@@ -184,7 +184,7 @@ public class AddPatientAction
         }
         else
         {
-            patient.setBirthDateFromAge( age.intValue(), 'Y' );
+            patient.setBirthDateFromAge( age.intValue(), Patient.AGE_TYPE_YEAR );
         }
 
         patient.setDobType( dobType );
