@@ -163,7 +163,12 @@ function getParamsForDiv( patientDiv)
 			}
 			else if( $(this).attr('type') != 'button' )
 			{
-				params += elementId + "="+ jQuery(this).val() + "&";
+				var value = "";
+				if( jQuery(this).val() != '' )
+				{
+					value = htmlEncode(jQuery(this).val());
+				}
+				params += elementId + "="+ value + "&";
 			}
 		});
 		

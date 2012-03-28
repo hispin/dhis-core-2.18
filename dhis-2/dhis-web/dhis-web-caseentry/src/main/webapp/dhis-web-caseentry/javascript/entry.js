@@ -387,7 +387,9 @@ function ValueSaver( dataElementId_, value_, dataElementType_, resultColor_  )
     this.save = function()
     {
 		var params  = 'dataElementId=' + dataElementId;
-			params += '&value=' + value;
+			params += '&value=' ;
+		if( value != '')
+			params += htmlEncode(value);
 		
 		$.ajax({
 			   type: "POST",
