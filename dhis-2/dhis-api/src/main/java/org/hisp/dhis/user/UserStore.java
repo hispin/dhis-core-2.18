@@ -227,6 +227,14 @@ public interface UserStore
     UserAuthorityGroup getUserAuthorityGroup( int id );
 
     /**
+     * Retrieves the UserAuthorityGroup with the given identifier.
+     *
+     * @param id the identifier of the UserAuthorityGroup to retrieve.
+     * @return the UserAuthorityGroup.
+     */
+    UserAuthorityGroup getUserAuthorityGroup( String uid );
+
+    /**
      * Retrieves the UserAuthorityGroup with the given name.
      * 
      * @param name the name of the UserAuthorityGroup to retrieve.

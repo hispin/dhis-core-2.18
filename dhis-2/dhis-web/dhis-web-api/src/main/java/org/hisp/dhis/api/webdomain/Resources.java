@@ -54,6 +54,7 @@ import org.hisp.dhis.organisationunit.OrganisationUnits;
 import org.hisp.dhis.report.Reports;
 import org.hisp.dhis.reporttable.ReportTables;
 import org.hisp.dhis.sqlview.SqlViews;
+import org.hisp.dhis.user.UserAuthorityGroups;
 import org.hisp.dhis.user.UserGroups;
 import org.hisp.dhis.user.Users;
 import org.hisp.dhis.validation.ValidationRuleGroups;
@@ -139,6 +140,7 @@ public class Resources
         resources.add( new Resource( "SqlViews", SqlViews.class, requestMethods, mediaTypes ) );
         resources.add( new Resource( "Users", Users.class, requestMethods, mediaTypes ) );
         resources.add( new Resource( "UserGroups", UserGroups.class, requestMethods, mediaTypes ) );
+        resources.add( new Resource( "UserAuthorityGroups", UserAuthorityGroups.class, requestMethods, mediaTypes ) );
         resources.add( new Resource( "ValidationRules", ValidationRules.class, requestMethods, mediaTypes ) );
         resources.add( new Resource( "ValidationRuleGroups", ValidationRuleGroups.class, requestMethods, mediaTypes ) );
     }
