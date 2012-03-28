@@ -65,6 +65,7 @@ public class UserGroupController
     //-------------------------------------------------------------------------------------------------------
 
     @RequestMapping( method = RequestMethod.GET )
+    @PreAuthorize( "hasRole('ALL') or hasRole('M_dhis-web-maintenance-user')" )
     public String getUserGroups( IdentifiableObjectParams params, Model model, HttpServletRequest request )
     {
         UserGroups userGroups = new UserGroups();
@@ -82,6 +83,7 @@ public class UserGroupController
     }
 
     @RequestMapping( value = "/{uid}", method = RequestMethod.GET )
+    @PreAuthorize( "hasRole('ALL') or hasRole('M_dhis-web-maintenance-user')" )
     public String getUserGroup( @PathVariable( "uid" ) String uid, IdentifiableObjectParams params, Model model, HttpServletRequest request )
     {
         UserGroup userGroup = userGroupService.getUserGroup( uid );
