@@ -136,7 +136,7 @@ public class DefaultDataValueSetService
 
         DataSet dataSet = getDataSet( dataValueSet );
 
-        OrganisationUnit unit = getOrgUnit( dataValueSet.getOrganisationUnitIdentifier() );
+        OrganisationUnit unit = getOrgUnit( dataValueSet.getOrgUnit() );
 
         if ( !dataSet.getSources().contains( unit ) )
         {
@@ -144,7 +144,7 @@ public class DefaultDataValueSetService
                 + " does not report data set with ID " + dataSet.getUid() );
         }
 
-        Period period = getPeriod( dataValueSet.getPeriodIsoDate(), dataSet.getPeriodType() );
+        Period period = getPeriod( dataValueSet.getPeriod(), dataSet.getPeriodType() );
 
         handleComplete( dataValueSet, dataSet, unit, period );
 
@@ -159,7 +159,7 @@ public class DefaultDataValueSetService
     private void log( DataValueSet dataValueSet, OrganisationUnit unit, DataSet dataSet )
     {
         String message = "Saved data value set for " + dataSet.getName() + ", " + unit.getName() + ", "
-            + dataValueSet.getPeriodIsoDate() + " - data values received: ";
+            + dataValueSet.getPeriod() + " - data values received: ";
 
         for ( org.hisp.dhis.dxf2.datavalue.DataValue value : dataValueSet.getDataValues() )
         {
@@ -173,7 +173,7 @@ public class DefaultDataValueSetService
     {
         DataSet dataSet = null;
 
-        String uid = dataValueSet.getDataSetIdentifier();
+        String uid = dataValueSet.getDataSet();
         
         if ( uid != null )
         {
@@ -194,6 +194,8 @@ public class DefaultDataValueSetService
 
     private DataSet resolveDataSet( DataValueSet dataValueSet )
     {
+        //TODO make data set required
+        
         if ( dataValueSet.getDataValues() == null )
         {
             throw new IllegalArgumentException( "Data value set does not specify a data set and does not contain data values" );

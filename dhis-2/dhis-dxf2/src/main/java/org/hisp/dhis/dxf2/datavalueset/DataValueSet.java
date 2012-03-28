@@ -48,11 +48,11 @@ public class DataValueSet
      */
     public static final IdentificationStrategy DEFAULT_STRATEGY = IdentificationStrategy.UID;
 
-    private String dataSetIdentifier;
+    private String dataSet;
 
-    private String organisationUnitIdentifier;
+    private String orgUnit;
 
-    private String periodIsoDate;
+    private String period;
 
     private String completeDate;
 
@@ -72,40 +72,40 @@ public class DataValueSet
         this.idScheme = idScheme;
     }
 
-    @JsonProperty( value="dataSet" )
-    @JacksonXmlProperty( localName="dataSet", isAttribute=true, namespace = Dxf2Namespace.NAMESPACE )
-    public String getDataSetIdentifier()
+    @JsonProperty() //TODO make required
+    @JacksonXmlProperty( isAttribute=true, namespace = Dxf2Namespace.NAMESPACE )
+    public String getDataSet()
     {
-        return dataSetIdentifier;
+        return dataSet;
     }
 
-    public void setDataSetIdentifier( String dataSetId )
+    public void setDataSet( String dataSet )
     {
-        this.dataSetIdentifier = dataSetId;
+        this.dataSet = dataSet;
     }
 
-    @JsonProperty( value="orgUnit" )
-    @JacksonXmlProperty( localName="orgUnit", isAttribute=true, namespace = Dxf2Namespace.NAMESPACE )
-    public String getOrganisationUnitIdentifier()
+    @JsonProperty()
+    @JacksonXmlProperty( isAttribute=true, namespace = Dxf2Namespace.NAMESPACE )
+    public String getOrgUnit()
     {
-        return organisationUnitIdentifier;
+        return orgUnit;
     }
 
-    public void setOrganisationUnitIdentifier( String organisationUnitId )
+    public void setOrgUnit( String orgUnit )
     {
-        this.organisationUnitIdentifier = organisationUnitId;
+        this.orgUnit = orgUnit;
     }
 
-    @JsonProperty( value="period" )
-    @JacksonXmlProperty( localName="period", isAttribute=true, namespace = Dxf2Namespace.NAMESPACE )
-    public String getPeriodIsoDate()
+    @JsonProperty()
+    @JacksonXmlProperty( isAttribute=true, namespace = Dxf2Namespace.NAMESPACE )
+    public String getPeriod()
     {
-        return periodIsoDate;
+        return period;
     }
 
-    public void setPeriodIsoDate( String periodIsoDate )
+    public void setPeriod( String period )
     {
-        this.periodIsoDate = periodIsoDate;
+        this.period = period;
     }
 
     @JsonProperty
