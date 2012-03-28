@@ -1,13 +1,41 @@
 <html>
 <head>
     <link rel="stylesheet" type="text/css" href="http://extjs-public.googlecode.com/svn/tags/extjs-4.0.7/release/resources/css/ext-all-gray.css" />
-    <link rel="stylesheet" type="text/css" href="http://apps.dhis2.org/demo/dhis-web-visualizer/app/css/plugin.css" />
     <script type="text/javascript" src="http://extjs-public.googlecode.com/svn/tags/extjs-4.0.7/release/ext-all.js"></script>
     <script type="text/javascript" src="http://apps.dhis2.org/demo/dhis-web-visualizer/app/plugin/plugin.js"></script>
+    
+    <style>
+		body {margin: 0 0 0 60px;}
+		
+		h1 {font-size: 20px; margin: 20px 0;}
+		
+		#chart1 {width: 600px; height: 400px; border: 2px solid #ddd; margin-bottom: 100px;}
+
+		#chart2 {width: 1400px; height: 400px; border: 2px solid #ccc; margin-bottom: 100px;}
+    </style>
+    
+	<!--
+	CONFIG              TYPE            DEFAULT             DESCRIPTION
+		
+	type                string          'column'            (Optional) Chart types: 'column', 'stackedcolumn', 'bar', 'stackedbar', 'line', 'area', 'pie'
+	indicators          [integer]                           (Required*) Indicator ids. Required if no data elements are provided.
+	dataelements        [integer]                           (Required*) Data element ids. Required if no indicators are provided.
+	periods             [string]        'monthsThisYear'    (Optional) Relative period names.
+	organisationunits   [integer]                           (Required) Organisation unit ids.
+	series              string          'data'              (Optional) Series: 'data', 'period' or 'organisationunit'
+	category            string          'period'            (Optional) Category: 'indicator', 'dataelement', 'period' or 'organisationunit'
+	filter              string          'organisationunit'  (Optional) Filter: 'indicator', 'dataelement', 'period' or 'organisationunit'
+	el                  string                              (Required) The element id to render the chart.
+	width               integer         <el width>          (Optional) Chart width. Default is the element width.
+	height              integer         <el height>         (Optional) Chart height. Default is the element height.
+	legendPosition      string          'top'               (Optional) Positions: 'top', 'right', 'bottom' or 'left'
+	url                 string                              (Required) The base url of the DHIS instance.
+
+	uid                 string                              (Optional) A chart uid. If provided, only 'el' and 'url' are required.
+	-->
 </head>
 
-<body>
-	
+<body>	
 	<h1>My chart 1</h1>
 	<div id="chart1"></div>
     
@@ -16,29 +44,7 @@
 	
 	<script>
 		Ext.onReady( function() {
-			var url = 'http://apps.dhis2.org/demo/';
-            
-/*
-CONFIG              TYPE            DEFAULT             DESCRIPTION
-    
-type                string          'column'            (Optional) Chart types: 'column', 'stackedcolumn', 'bar', 'stackedbar', 'line', 'area', 'pie'
-indicators          [integer]                           (Required*) Indicator ids. Required if no data elements are provided.
-dataelements        [integer]                           (Required*) Data element ids. Required if no indicators are provided.
-periods             [string]        'monthsThisYear'    (Optional) Relative period names.
-organisationunits   [integer]                           (Required) Organisation unit ids.
-series              string          'data'              (Optional) Series: 'data', 'period' or 'organisationunit'
-category            string          'period'            (Optional) Category: 'indicator', 'dataelement', 'period' or 'organisationunit'
-filter              string          'organisationunit'  (Optional) Filter: 'indicator', 'dataelement', 'period' or 'organisationunit'
-el                  string                              (Required) The element id to render the chart.
-width               integer         <el width>          (Optional) Chart width. Default is the element width.
-height              integer         <el height>         (Optional) Chart height. Default is the element height.
-legendPosition      string          'top'               (Optional) Positions: 'top', 'right', 'bottom' or 'left'
-url                 string                              (Required) The base url of the DHIS instance.
-uid                 string                              (Optional) The chart uid.
-
-Note: If a uid is provided, only 'el' and 'url' are required.
-*/
-			
+			var url = 'http://apps.dhis2.org/demo/';			
             
             DHIS.getChart({
                 uid: 'R0DVGvXDUNP',
@@ -53,10 +59,8 @@ Note: If a uid is provided, only 'el' and 'url' are required.
 				organisationunits: [525],
 				el: 'chart2',
 				url: url
-			});
-	
+			});	
 		});
-	</script>
-	
+	</script>	
 </body>
 </html>
