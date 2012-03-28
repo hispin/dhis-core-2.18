@@ -27,22 +27,25 @@ package org.hisp.dhis.api.controller;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import java.io.IOException;
+import java.io.InputStream;
+
+import javax.servlet.http.HttpServletResponse;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.hisp.dhis.api.webdomain.DataValueSets;
-import org.hisp.dhis.importexport.dxf2.model.DataValueSet;
-import org.hisp.dhis.importexport.dxf2.service.DataValueSetService;
+import org.hisp.dhis.api.utils.ContextUtils;
+import org.hisp.dhis.dxf2.datavalueset.DataValueSet;
+import org.hisp.dhis.dxf2.datavalueset.DataValueSetService;
+import org.hisp.dhis.dxf2.datavalueset.DataValueSets;
+import org.hisp.dhis.dxf2.utils.JacksonUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-
-import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
 
 @Controller
 @RequestMapping( value = DataValueSetController.RESOURCE_PATH )
@@ -65,15 +68,20 @@ public class DataValueSetController
 
         return "dataValueSets";
     }
-
-    @RequestMapping( method = RequestMethod.POST )
+    
+    @RequestMapping( method = RequestMethod.POST, headers = {"Content-Type=application/xml"} )
     @PreAuthorize( "hasRole('ALL') or hasRole('F_DATAVALUE_ADD')" )
-    public void storeDataValueSet( @RequestBody DataValueSet dataValueSet )
+    public void postDataValueSet( HttpServletResponse response, InputStream input )
+        throws IOException
     {
+        DataValueSet dataValueSet = JacksonUtils.fromXml( input, DataValueSet.class );
+        
         dataValueSetService.saveDataValueSet( dataValueSet );
 
         log.debug( "Saved data value set for data set: " + dataValueSet.getDataSetIdentifier() +
             ", org unit: " + dataValueSet.getOrganisationUnitIdentifier() + ", period: " + dataValueSet.getPeriodIsoDate() );
+        
+        ContextUtils.okResponse( response, "Saved data value set succesfully" );
     }
 
     @ExceptionHandler( IllegalArgumentException.class )
@@ -82,4 +90,31 @@ public class DataValueSetController
     {
         response.sendError( HttpServletResponse.SC_CONFLICT, ex.getMessage() );
     }
+
+    /*
+    @RequestMapping( value = "/test",  method = RequestMethod.GET )
+    public String getDataValueSetTest( Model model ) throws Exception
+    {
+        DataValueSets dataValueSets = new DataValueSets();
+        
+        DataValue v1 = new DataValue();
+        v1.setDataElement( "de" );
+        v1.setValue( "va" );
+
+        DataValue v2 = new DataValue();
+        v2.setDataElement( "de" );
+        v2.setValue( "va" );
+        
+        DataValueSet d = new DataValueSet();
+        d.setDataSetIdentifier( "ds" );
+        d.setOrganisationUnitIdentifier( "ou" );
+        d.setPeriodIsoDate( "pe" );
+        d.getDataValues().add( v1 );
+        d.getDataValues().add( v2 );        
+        dataValueSets.getDataValueSets().add( d );
+
+        model.addAttribute( "model", dataValueSets );
+
+        return "dataValueSets";
+    }*/    
 }

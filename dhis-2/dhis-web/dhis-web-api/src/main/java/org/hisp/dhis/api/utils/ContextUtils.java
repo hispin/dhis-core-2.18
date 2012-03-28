@@ -133,4 +133,15 @@ public class ContextUtils
         writer.println( message );
         writer.flush();
     }
+    
+    public static void okResponse( HttpServletResponse response, String message )
+        throws IOException
+    {
+        response.setStatus( HttpServletResponse.SC_OK );
+        response.setContentType( CONTENT_TYPE_TEXT );
+
+        PrintWriter writer = response.getWriter();
+        writer.println( message );
+        writer.flush();
+    }
 }

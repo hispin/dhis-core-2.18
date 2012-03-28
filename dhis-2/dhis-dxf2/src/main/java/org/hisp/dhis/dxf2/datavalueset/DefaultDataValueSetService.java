@@ -1,4 +1,4 @@
-package org.hisp.dhis.importexport.dxf2.service;
+package org.hisp.dhis.dxf2.datavalueset;
 
 /*
  * Copyright (c) 2011, University of Oslo
@@ -45,8 +45,7 @@ import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.dataset.DataSetService;
 import org.hisp.dhis.datavalue.DataValue;
 import org.hisp.dhis.datavalue.DataValueService;
-import org.hisp.dhis.importexport.dxf2.model.DataValueSet;
-import org.hisp.dhis.importexport.dxf2.model.DataValueSet.IdentificationStrategy;
+import org.hisp.dhis.dxf2.datavalueset.DataValueSet.IdentificationStrategy;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.period.DailyPeriodType;
@@ -149,7 +148,7 @@ public class DefaultDataValueSetService
 
         handleComplete( dataValueSet, dataSet, unit, period );
 
-        for ( org.hisp.dhis.importexport.dxf2.model.DataValue dxfValue : dataValueSet.getDataValues() )
+        for ( org.hisp.dhis.dxf2.datavalue.DataValue dxfValue : dataValueSet.getDataValues() )
         {
             saveDataValue( timestamp, dataSet, unit, period, dxfValue );
         }
@@ -162,9 +161,9 @@ public class DefaultDataValueSetService
         String message = "Saved data value set for " + dataSet.getName() + ", " + unit.getName() + ", "
             + dataValueSet.getPeriodIsoDate() + " - data values received: ";
 
-        for ( org.hisp.dhis.importexport.dxf2.model.DataValue value : dataValueSet.getDataValues() )
+        for ( org.hisp.dhis.dxf2.datavalue.DataValue value : dataValueSet.getDataValues() )
         {
-            message += value.getDataElementIdentifier() + " = " + value.getValue() + ", ";
+            message += value.getDataElement() + " = " + value.getValue() + ", ";
         }
 
         log.info( message.substring( 0, message.length() - 3 ) );
@@ -202,9 +201,9 @@ public class DefaultDataValueSetService
 
         Set<DataSet> potentialDataSets = new HashSet<DataSet>();
 
-        for ( org.hisp.dhis.importexport.dxf2.model.DataValue value : dataValueSet.getDataValues() )
+        for ( org.hisp.dhis.dxf2.datavalue.DataValue value : dataValueSet.getDataValues() )
         {
-            DataElement dataElement = getDataElement( value.getDataElementIdentifier() );
+            DataElement dataElement = getDataElement( value.getDataElement() );
             Set<DataSet> dataSets = dataElement.getDataSets();
 
             if ( dataSets == null || dataSets.isEmpty() )
@@ -234,9 +233,9 @@ public class DefaultDataValueSetService
     }
 
     private void saveDataValue( Date timestamp, DataSet dataSet, OrganisationUnit unit, Period period,
-        org.hisp.dhis.importexport.dxf2.model.DataValue dxfValue )
+        org.hisp.dhis.dxf2.datavalue.DataValue dxfValue )
     {
-        DataElement dataElement = getDataElement( dxfValue.getDataElementIdentifier() );
+        DataElement dataElement = getDataElement( dxfValue.getDataElement() );
 
         if ( !dataSet.getDataElements().contains( dataElement ) )
         {
@@ -244,7 +243,7 @@ public class DefaultDataValueSetService
                 + dataSet.getUid() );
         }
 
-        DataElementCategoryOptionCombo combo = getOptionCombo( dxfValue.getCategoryOptionComboIdentifier(), dataElement );
+        DataElementCategoryOptionCombo combo = getOptionCombo( dxfValue.getCategoryOptionCombo(), dataElement );
 
         DataValue dv = dataValueService.getDataValue( unit, dataElement, period, combo );
 

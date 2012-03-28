@@ -37,12 +37,10 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
-import java.util.Map;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Unmarshaller;
-import javax.xml.namespace.QName;
 
 import org.hisp.dhis.DhisTest;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
@@ -53,11 +51,12 @@ import org.hisp.dhis.dataset.CompleteDataSetRegistrationService;
 import org.hisp.dhis.dataset.DataSetService;
 import org.hisp.dhis.datavalue.DataValue;
 import org.hisp.dhis.datavalue.DataValueService;
+import org.hisp.dhis.dxf2.datavalueset.DataValueSet;
+import org.hisp.dhis.dxf2.datavalueset.DataValueSetService;
 import org.hisp.dhis.importexport.ImportException;
 import org.hisp.dhis.importexport.ImportParams;
 import org.hisp.dhis.importexport.ImportService;
 import org.hisp.dhis.importexport.ImportStrategy;
-import org.hisp.dhis.importexport.dxf2.model.DataValueSet;
 import org.hisp.dhis.importexport.util.ImportExportUtils;
 import org.hisp.dhis.period.WeeklyPeriodType;
 import org.junit.Ignore;
@@ -121,11 +120,11 @@ public class DataValueSetServiceTest
         dataValueSet.setPeriodIsoDate( "2011W5" );
         dataValueSet.setOrganisationUnitIdentifier( ORGANISATION_UNIT_UUID );
 
-        final org.hisp.dhis.importexport.dxf2.model.DataValue dv = new org.hisp.dhis.importexport.dxf2.model.DataValue();
-        dv.setDataElementIdentifier( DATA_ELEMENT_UUID );
+        final org.hisp.dhis.dxf2.datavalue.DataValue dv = new org.hisp.dhis.dxf2.datavalue.DataValue();
+        dv.setDataElement( DATA_ELEMENT_UUID );
         dv.setValue( "11" );
 
-        dataValueSet.setDataValues( new ArrayList<org.hisp.dhis.importexport.dxf2.model.DataValue>()
+        dataValueSet.setDataValues( new ArrayList<org.hisp.dhis.dxf2.datavalue.DataValue>()
         {
             {
                 add( dv );
@@ -145,7 +144,7 @@ public class DataValueSetServiceTest
         throws JAXBException, IOException
     {
         JAXBContext jc = JAXBContext.newInstance( DataValueSet.class,
-            org.hisp.dhis.importexport.dxf2.model.DataValue.class );
+            org.hisp.dhis.dxf2.datavalue.DataValue.class );
         Unmarshaller u = jc.createUnmarshaller();
         InputStream is = classLoader.getResourceAsStream( "dxf2/dataValueSet.xml" );
 
@@ -158,44 +157,12 @@ public class DataValueSetServiceTest
 
         assertEquals( 1, dxfDataValueSet.getDataValues().size() );
 
-        org.hisp.dhis.importexport.dxf2.model.DataValue dv = dxfDataValueSet.getDataValues().get( 0 );
-        org.hisp.dhis.importexport.dxf2.model.DataValue dataValue = dataValueSet.getDataValues().get( 0 );
+        org.hisp.dhis.dxf2.datavalue.DataValue dv = dxfDataValueSet.getDataValues().get( 0 );
+        org.hisp.dhis.dxf2.datavalue.DataValue dataValue = dataValueSet.getDataValues().get( 0 );
 
-        assertEquals( dataValue.getDataElementIdentifier(), dv.getDataElementIdentifier() );
+        assertEquals( dataValue.getDataElement(), dv.getDataElement() );
 
-        assertNull( dv.getCategoryOptionComboIdentifier() );
-
-    }
-
-    @Test
-    @Ignore
-    public void testJaxbDimensions()
-        throws JAXBException, IOException
-    {
-        JAXBContext jc = JAXBContext.newInstance( DataValueSet.class,
-            org.hisp.dhis.importexport.dxf2.model.DataValue.class );
-        Unmarshaller u = jc.createUnmarshaller();
-        InputStream is = classLoader.getResourceAsStream( "dxf2/dataValueSet_dim.xml" );
-
-        DataValueSet dxfDataValueSet = (DataValueSet) u.unmarshal( is );
-        is.close();
-
-        assertEquals( "internal", dxfDataValueSet.getIdScheme() );
-
-        assertEquals( 1, dxfDataValueSet.getDataValues().size() );
-
-        org.hisp.dhis.importexport.dxf2.model.DataValue dv = dxfDataValueSet.getDataValues().get( 0 );
-
-        Map<QName,Object> dimensions = dv.getDimensions();
-        assertEquals( 2, dimensions.size() );
-
-        QName sex = new QName("sex");
-        QName age = new QName("age");
-
-        assertTrue(dimensions.containsKey( sex ));
-        assertTrue(dimensions.containsKey( age));
-        assertEquals("1", dimensions.get( sex ));
-        assertEquals("2", dimensions.get( age ));
+        assertNull( dv.getCategoryOptionCombo() );
 
     }
 
@@ -403,9 +370,8 @@ public class DataValueSetServiceTest
     @Test
     public void elementExistsAndNotInSet()
     {
-
-        org.hisp.dhis.importexport.dxf2.model.DataValue dv = new org.hisp.dhis.importexport.dxf2.model.DataValue();
-        dv.setDataElementIdentifier( "ladida" );
+        org.hisp.dhis.dxf2.datavalue.DataValue dv = new org.hisp.dhis.dxf2.datavalue.DataValue();
+        dv.setDataElement( "ladida" );
         dv.setValue( "11" );
         dataValueSet.getDataValues().add( dv );
 
@@ -419,7 +385,7 @@ public class DataValueSetServiceTest
             // Expected
         }
 
-        dv.setDataElementIdentifier( DATA_ELEMENT_NOT_IN_SET_UUID );
+        dv.setDataElement( DATA_ELEMENT_NOT_IN_SET_UUID );
 
         try
         {
@@ -436,11 +402,11 @@ public class DataValueSetServiceTest
     public void optionComboExistsAndInDataElement()
     {
 
-        dataValueSet.getDataValues().get( 0 ).setCategoryOptionComboIdentifier( DEFAULT_COMBO_UUID );
+        dataValueSet.getDataValues().get( 0 ).setCategoryOptionCombo( DEFAULT_COMBO_UUID );
 
         service.saveDataValueSet( dataValueSet );
 
-        dataValueSet.getDataValues().get( 0 ).setCategoryOptionComboIdentifier( "AAB2299E-ECD6-46CF-A61F-817D350" );
+        dataValueSet.getDataValues().get( 0 ).setCategoryOptionCombo( "AAB2299E-ECD6-46CF-A61F-817D350" );
 
         try
         {

@@ -1,4 +1,4 @@
-package org.hisp.dhis.importexport.dxf2.model;
+package org.hisp.dhis.dxf2.datavalueset;
 
 /*
  * Copyright (c) 2011, University of Oslo
@@ -27,31 +27,30 @@ package org.hisp.dhis.importexport.dxf2.model;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import java.util.ArrayList;
 import java.util.List;
 
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlAttribute;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlRootElement;
+import org.hisp.dhis.common.Dxf2Namespace;
+import org.hisp.dhis.dxf2.datavalue.DataValue;
 
-@XmlRootElement
-@XmlAccessorType( XmlAccessType.FIELD )
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlElementWrapper;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
+
+@JacksonXmlRootElement( localName = "dataValueSet", namespace = Dxf2Namespace.NAMESPACE )
 public class DataValueSet
 {
-   // ---------------------------------------------------------------------------
-   // Element and attribute names
-   // ---------------------------------------------------------------------------
-
+    /*
     public static final String ATTR_COMMENT = "comment";
     public static final String ATTR_DATASET = "dataSet";
     public static final String ATTR_IDSCHEME = "idScheme";
     public static final String ATTR_ORGUNIT = "orgUnit";
     public static final String ATTR_PERIOD = "period";
     public static final String ATTR_COMPLETE = "period";
-
     public static final String DATAVALUE = "dataValue";
-
+    */
+    
     public enum IdentificationStrategy { INTERNAL, UID, CODE  };
 
     /**
@@ -59,24 +58,20 @@ public class DataValueSet
      */
     public static final IdentificationStrategy DEFAULT_STRATEGY = IdentificationStrategy.UID;
 
-    @XmlAttribute( name = ATTR_DATASET )
     private String dataSetIdentifier;
 
-    @XmlAttribute( name = ATTR_ORGUNIT )
     private String organisationUnitIdentifier;
 
-    @XmlAttribute( name = ATTR_PERIOD, required = true )
     private String periodIsoDate;
 
-    @XmlAttribute( name = ATTR_COMPLETE )
     private String completeDate;
 
-    @XmlAttribute( name = ATTR_IDSCHEME )
     private IdentificationStrategy idScheme;
 
-    @XmlElement( name = DATAVALUE )
-    private List<DataValue> dataValues;
+    private List<DataValue> dataValues = new ArrayList<DataValue>();
 
+    @JsonProperty
+    @JacksonXmlProperty( isAttribute=true, namespace = Dxf2Namespace.NAMESPACE )
     public IdentificationStrategy getIdScheme()
     {
         return (idScheme != null) ? idScheme : DEFAULT_STRATEGY;
@@ -87,6 +82,8 @@ public class DataValueSet
         this.idScheme = idScheme;
     }
 
+    @JsonProperty( value="dataSet" )
+    @JacksonXmlProperty( localName="dataSet", isAttribute=true, namespace = Dxf2Namespace.NAMESPACE )
     public String getDataSetIdentifier()
     {
         return dataSetIdentifier;
@@ -97,6 +94,8 @@ public class DataValueSet
         this.dataSetIdentifier = dataSetId;
     }
 
+    @JsonProperty( value="orgUnit" )
+    @JacksonXmlProperty( localName="orgUnit", isAttribute=true, namespace = Dxf2Namespace.NAMESPACE )
     public String getOrganisationUnitIdentifier()
     {
         return organisationUnitIdentifier;
@@ -107,6 +106,8 @@ public class DataValueSet
         this.organisationUnitIdentifier = organisationUnitId;
     }
 
+    @JsonProperty( value="period" )
+    @JacksonXmlProperty( localName="period", isAttribute=true, namespace = Dxf2Namespace.NAMESPACE )
     public String getPeriodIsoDate()
     {
         return periodIsoDate;
@@ -117,6 +118,8 @@ public class DataValueSet
         this.periodIsoDate = periodIsoDate;
     }
 
+    @JsonProperty
+    @JacksonXmlProperty( isAttribute=true, namespace = Dxf2Namespace.NAMESPACE )
     public String getCompleteDate()
     {
         return completeDate;
@@ -127,6 +130,9 @@ public class DataValueSet
         this.completeDate = completeDate;
     }
 
+    @JsonProperty
+    @JacksonXmlElementWrapper( localName = "dataValues", namespace = Dxf2Namespace.NAMESPACE )
+    @JacksonXmlProperty( localName = "dataValue", namespace = Dxf2Namespace.NAMESPACE )
     public List<DataValue> getDataValues()
     {
         return dataValues;

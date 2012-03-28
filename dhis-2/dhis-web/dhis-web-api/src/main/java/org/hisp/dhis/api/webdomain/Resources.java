@@ -39,6 +39,7 @@ import org.hisp.dhis.constant.Constants;
 import org.hisp.dhis.dataelement.*;
 import org.hisp.dhis.dataset.DataSets;
 import org.hisp.dhis.document.Documents;
+import org.hisp.dhis.dxf2.datavalueset.DataValueSets;
 import org.hisp.dhis.indicator.IndicatorGroupSets;
 import org.hisp.dhis.indicator.IndicatorGroups;
 import org.hisp.dhis.indicator.IndicatorTypes;
