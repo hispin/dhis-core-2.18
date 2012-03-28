@@ -37,6 +37,10 @@
         <td>Code</td>
         <td> <xsl:value-of select="@d:code" /> </td>
       </tr>
+      <tr>
+        <td>UsingOrgUnitGroupSets</td>
+        <td> <xsl:value-of select="d:usingOrgUnitGroupSets" /> </td>
+      </tr>
     </table>
 
     <xsl:apply-templates select="d:reportTable" mode="short"/>
