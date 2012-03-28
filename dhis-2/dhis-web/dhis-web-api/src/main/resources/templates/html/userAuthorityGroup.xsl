@@ -3,8 +3,8 @@
                 xmlns:d="http://dhis2.org/schema/dxf/2.0"
     >
 
-  <xsl:template match="d:user">
-    <div class="user">
+  <xsl:template match="d:userAuthorityGroup">
+    <div class="userAuthorityGroup">
       <h2>
         <xsl:value-of select="@d:name" />
       </h2>
@@ -21,32 +21,29 @@
           <td>Code</td>
           <td> <xsl:value-of select="@d:code" /> </td>
         </tr>
-        <tr>
-          <td>First Name</td>
-          <td> <xsl:value-of select="d:firstName" /> </td>
-        </tr>
-        <tr>
-          <td>Surname</td>
-          <td> <xsl:value-of select="d:surname" /> </td>
-        </tr>
-        <tr>
-          <td>E-Mail</td>
-          <td> <xsl:value-of select="d:email" /> </td>
-        </tr>
-        <tr>
-          <td>PhoneNumber</td>
-          <td> <xsl:value-of select="d:phoneNumber" /> </td>
-        </tr>
       </table>
 
-      <xsl:apply-templates select="d:userCredentials|d:organisationUnits" mode="short" />
+      <xsl:apply-templates select="d:authorities|d:dataSets" mode="short" />
     </div>
   </xsl:template>
 
-  <xsl:template match="d:users" mode="short">
+  <xsl:template match="d:authorities" mode="short">
     <xsl:if test="count(child::*) > 0">
-      <h3>Users</h3>
-      <table class="users">
+      <h3>Authorities</h3>
+      <ul>
+        <xsl:apply-templates select="child::*" mode="row"/>
+      </ul>
+    </xsl:if>
+  </xsl:template>
+
+  <xsl:template match="d:authority" mode="row">
+    <li><xsl:value-of select="." /> </li>
+  </xsl:template>
+
+  <xsl:template match="d:userAuthorityGroups" mode="short">
+    <xsl:if test="count(child::*) > 0">
+      <h3>UserAuthorityGroups</h3>
+      <table class="userAuthorityGroups">
         <xsl:apply-templates select="child::*" mode="row"/>
       </table>
     </xsl:if>

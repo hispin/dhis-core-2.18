@@ -54,10 +54,7 @@ import org.hisp.dhis.reporttable.ReportTable;
 import org.hisp.dhis.reporttable.ReportTables;
 import org.hisp.dhis.sqlview.SqlView;
 import org.hisp.dhis.sqlview.SqlViews;
-import org.hisp.dhis.user.User;
-import org.hisp.dhis.user.UserGroup;
-import org.hisp.dhis.user.UserGroups;
-import org.hisp.dhis.user.Users;
+import org.hisp.dhis.user.*;
 import org.hisp.dhis.validation.ValidationRule;
 import org.hisp.dhis.validation.ValidationRuleGroup;
 import org.hisp.dhis.validation.ValidationRuleGroups;
@@ -336,6 +333,14 @@ public class WebLinkPopulator
         {
             populateUserGroup( (UserGroup) source, true );
         }
+        else if ( source instanceof UserAuthorityGroups )
+        {
+            populateUserAuthorityGroups( (UserAuthorityGroups) source, true );
+        }
+        else if ( source instanceof UserAuthorityGroup )
+        {
+            populateUserAuthorityGroup( (UserAuthorityGroup) source, true );
+        }
         else if ( source instanceof ReportTables )
         {
             populateReportTables( (ReportTables) source, true );
@@ -476,6 +481,29 @@ public class WebLinkPopulator
         if ( root )
         {
             handleIdentifiableObjectCollection( userGroup.getMembers() );
+        }
+    }
+
+    private void populateUserAuthorityGroups( UserAuthorityGroups userAuthorityGroups, boolean root )
+    {
+        userAuthorityGroups.setLink( getBasePath( userAuthorityGroups.getClass() ) );
+
+        if ( root )
+        {
+            for ( UserAuthorityGroup userAuthorityGroup : userAuthorityGroups.getUserAuthorityGroups() )
+            {
+                populateUserAuthorityGroup( userAuthorityGroup, false );
+            }
+        }
+    }
+
+    private void populateUserAuthorityGroup( UserAuthorityGroup userAuthorityGroup, boolean root )
+    {
+        populateIdentifiableObject( userAuthorityGroup );
+
+        if ( root )
+        {
+            handleIdentifiableObjectCollection( userAuthorityGroup.getDataSets() );
         }
     }
 
