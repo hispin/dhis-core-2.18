@@ -543,16 +543,8 @@
 
 		<action name="saveProgramEnrollment"
 			class="org.hisp.dhis.caseentry.action.patient.SaveProgramEnrollmentAction">
-			<result name="success" type="velocity">/content.vm</result>
-			<param name="page">/dhis-web-caseentry/programEnrollmentForm.vm</param>
+			<result name="success" type="redirect">enrollmentform.action?programId=${programId}&amp;patientId=${patientId}</result>
 			<param name="requiredAuthorities">F_PROGRAM_ENROLLMENT</param>
-		</action>
-
-		<action name="showProgramUnEnrollmentForm"
-			class="org.hisp.dhis.caseentry.action.patient.RemoveEnrollmentSelectAction">
-			<result name="success" type="velocity">/content.vm</result>
-			<param name="page">/dhis-web-caseentry/programUnenrollmentSelectForm.vm</param>
-			<param name="requiredAuthorities">F_PROGRAM_UNENROLLMENT</param>
 		</action>
 
 		<action name="getProgramInstance"

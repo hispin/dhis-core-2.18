@@ -624,7 +624,8 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		scope="prototype">
 		<property name="patientService" ref="org.hisp.dhis.patient.PatientService" />
 		<property name="programService" ref="org.hisp.dhis.program.ProgramService" />
-		<property name="selectionManager" ref="org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager" />
+		<property name="programInstanceService" ref="org.hisp.dhis.program.ProgramInstanceService" />
+		<property name="selectedStateManager" ref="org.hisp.dhis.caseentry.state.SelectedStateManager" />
 	</bean>
 
 	<bean id="org.hisp.dhis.caseentry.action.patient.ProgramEnrollmentAction"
@@ -638,6 +639,8 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		<property name="patientAttributeService" ref="org.hisp.dhis.patient.PatientAttributeService" />
 		<property name="patientAttributeGroupService" ref="org.hisp.dhis.patient.PatientAttributeGroupService" />
 		<property name="patientAttributeValueService" ref="org.hisp.dhis.patientattributevalue.PatientAttributeValueService" />
+		<property name="programAttributeService" ref="org.hisp.dhis.program.ProgramAttributeService" />
+		<property name="selectedStateManager" ref="org.hisp.dhis.caseentry.state.SelectedStateManager" />
 	</bean>
 
 	<bean
@@ -648,11 +651,6 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		<property name="programService" ref="org.hisp.dhis.program.ProgramService" />
 		<property name="programInstanceService" ref="org.hisp.dhis.program.ProgramInstanceService" />
 		<property name="programStageInstanceService" ref="org.hisp.dhis.program.ProgramStageInstanceService" />
-		<property name="identifierTypeService" ref="org.hisp.dhis.patient.PatientIdentifierTypeService" />
-		<property name="patientIdentifierService" ref="org.hisp.dhis.patient.PatientIdentifierService" />
-		<property name="patientAttributeService" ref="org.hisp.dhis.patient.PatientAttributeService" />
-		<property name="patientAttributeGroupService" ref="org.hisp.dhis.patient.PatientAttributeGroupService" />
-		<property name="patientAttributeValueService" ref="org.hisp.dhis.patientattributevalue.PatientAttributeValueService" />
 	</bean>
 
 	<bean id="org.hisp.dhis.caseentry.action.patient.SaveDueDateAction"
@@ -660,17 +658,6 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		scope="prototype">
 		<property name="programStageInstanceService"
 			ref="org.hisp.dhis.program.ProgramStageInstanceService" />
-	</bean>
-
-	<bean
-		id="org.hisp.dhis.caseentry.action.patient.RemoveEnrollmentSelectAction"
-		class="org.hisp.dhis.caseentry.action.patient.RemoveEnrollmentSelectAction"
-		scope="prototype">
-		<property name="programAttributeService"
-			ref="org.hisp.dhis.program.ProgramAttributeService" />
-		<property name="programInstanceService" ref="org.hisp.dhis.program.ProgramInstanceService" />
-		<property name="patientService" ref="org.hisp.dhis.patient.PatientService" />
-		<property name="programService" ref="org.hisp.dhis.program.ProgramService" />
 	</bean>
 
 	<bean id="org.hisp.dhis.caseentry.action.patient.GetProgramInstanceAction"

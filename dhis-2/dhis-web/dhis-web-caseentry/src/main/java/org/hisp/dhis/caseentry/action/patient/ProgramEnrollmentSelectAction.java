@@ -28,12 +28,15 @@ package org.hisp.dhis.caseentry.action.patient;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashSet;
 
+import org.hisp.dhis.caseentry.state.SelectedStateManager;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
-import org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager;
 import org.hisp.dhis.patient.Patient;
 import org.hisp.dhis.patient.PatientService;
 import org.hisp.dhis.program.Program;
+import org.hisp.dhis.program.ProgramInstance;
+import org.hisp.dhis.program.ProgramInstanceService;
 import org.hisp.dhis.program.ProgramService;
 
 import com.opensymphony.xwork2.Action;
@@ -63,11 +66,18 @@ public class ProgramEnrollmentSelectAction
         this.programService = programService;
     }
 
-    private OrganisationUnitSelectionManager selectionManager;
+    private ProgramInstanceService programInstanceService;
 
-    public void setSelectionManager( OrganisationUnitSelectionManager selectionManager )
+    public void setProgramInstanceService( ProgramInstanceService programInstanceService )
     {
-        this.selectionManager = selectionManager;
+        this.programInstanceService = programInstanceService;
+    }
+
+    private SelectedStateManager selectedStateManager;
+
+    public void setSelectedStateManager( SelectedStateManager selectedStateManager )
+    {
+        this.selectedStateManager = selectedStateManager;
     }
 
     // -------------------------------------------------------------------------
@@ -102,19 +112,37 @@ public class ProgramEnrollmentSelectAction
     public String execute()
         throws Exception
     {
+        OrganisationUnit orgunit = selectedStateManager.getSelectedOrganisationUnit();
+
         patient = patientService.getPatient( id );
 
-        OrganisationUnit selectedOrgunit = selectionManager.getSelectedOrganisationUnit();
-
-        // Get none single-event programs
+        // Get all programs
         programs = programService.getPrograms( false );
 
-        // Check the selected orgunit has any single-event program or not
-        Collection<Program> programsbyOrgunit = programService.getPrograms( selectedOrgunit );
+        // Except anonymous program
+        programs.removeAll( programService.getPrograms( true, true ) );
 
-        Collection<Program> singleEventPrograms = programService.getPrograms( true, false );
+        // Get single-event if patient no have any single event
+        // OR have un-completed single-event
+        Collection<ProgramInstance> programInstances = programInstanceService.getProgramInstances( patient, true );
 
-        singleEventPrograms.retainAll( programsbyOrgunit );
+        Collection<Program> completedPrograms = new HashSet<Program>();
+
+        for ( ProgramInstance programInstance : programInstances )
+        {
+            if ( programInstance.getProgram().getSingleEvent() )
+            {
+                completedPrograms.add( programInstance.getProgram() );
+            }
+        }
+System.out.println("\n\n completedPrograms : " + completedPrograms.iterator().next().getName() );
+        // Get single-event programs by the selected orgunit
+        Collection<Program> singleProgramsByOrgunit = programService.getPrograms( true, false, orgunit );
+System.out.println("\n\n singleProgramsByOrgunit : " + singleProgramsByOrgunit.iterator().next().getName() );
+        singleProgramsByOrgunit.remove( completedPrograms );
+System.out.println("\n\n singlePrograms 2 : " + singleProgramsByOrgunit.iterator().next().getName() );
+        programs.addAll( singleProgramsByOrgunit );
+System.out.println("\n\n programs : " + singleProgramsByOrgunit.iterator().next().getName() );
 
         return SUCCESS;
     }
