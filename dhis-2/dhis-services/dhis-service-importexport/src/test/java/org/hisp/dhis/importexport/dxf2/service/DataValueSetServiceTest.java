@@ -116,9 +116,9 @@ public class DataValueSetServiceTest
         is.close();
 
         dataValueSet = new DataValueSet();
-        dataValueSet.setDataSetIdentifier( DATA_SET_UUID );
-        dataValueSet.setPeriodIsoDate( "2011W5" );
-        dataValueSet.setOrganisationUnitIdentifier( ORGANISATION_UNIT_UUID );
+        dataValueSet.setDataSet( DATA_SET_UUID );
+        dataValueSet.setPeriod( "2011W5" );
+        dataValueSet.setOrgUnit( ORGANISATION_UNIT_UUID );
 
         final org.hisp.dhis.dxf2.datavalue.DataValue dv = new org.hisp.dhis.dxf2.datavalue.DataValue();
         dv.setDataElement( DATA_ELEMENT_UUID );
@@ -151,9 +151,9 @@ public class DataValueSetServiceTest
         DataValueSet dxfDataValueSet = (DataValueSet) u.unmarshal( is );
         is.close();
 
-        assertEquals( dataValueSet.getDataSetIdentifier(), dxfDataValueSet.getDataSetIdentifier() );
-        assertEquals( dataValueSet.getPeriodIsoDate(), dxfDataValueSet.getPeriodIsoDate() );
-        assertEquals( dataValueSet.getOrganisationUnitIdentifier(), dxfDataValueSet.getOrganisationUnitIdentifier() );
+        assertEquals( dataValueSet.getDataSet(), dxfDataValueSet.getDataSet() );
+        assertEquals( dataValueSet.getPeriod(), dxfDataValueSet.getPeriod() );
+        assertEquals( dataValueSet.getOrgUnit(), dxfDataValueSet.getOrgUnit() );
 
         assertEquals( 1, dxfDataValueSet.getDataValues().size() );
 
@@ -239,7 +239,7 @@ public class DataValueSetServiceTest
     @Test
     public void dataSetMissing()
     {
-        dataValueSet.setDataSetIdentifier( null );
+        dataValueSet.setDataSet( null );
         setValue( "999" );
         
         testSave( "999" );
@@ -249,7 +249,7 @@ public class DataValueSetServiceTest
     @Test
     public void orgunitMissingOrNotInSet()
     {
-        dataValueSet.setOrganisationUnitIdentifier( "ladlalad" );
+        dataValueSet.setOrgUnit( "ladlalad" );
         try
         {
             service.saveDataValueSet( dataValueSet );
@@ -261,7 +261,7 @@ public class DataValueSetServiceTest
             // Expected
         }
 
-        dataValueSet.setOrganisationUnitIdentifier( ORGANISATION_UNIT_NOT_IN_SET_UUID );
+        dataValueSet.setOrgUnit( ORGANISATION_UNIT_NOT_IN_SET_UUID );
 
         try
         {
@@ -279,7 +279,7 @@ public class DataValueSetServiceTest
     public void illegalPeriod()
     {
 
-        dataValueSet.setPeriodIsoDate( "2011" );
+        dataValueSet.setPeriod( "2011" );
 
         try
         {
