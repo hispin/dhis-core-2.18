@@ -27,12 +27,6 @@ package org.hisp.dhis.api.controller.user;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.io.InputStream;
-import java.util.ArrayList;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
 import org.hisp.dhis.api.utils.IdentifiableObjectParams;
 import org.hisp.dhis.api.utils.WebLinkPopulator;
 import org.hisp.dhis.user.User;
@@ -48,6 +42,11 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseStatus;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.InputStream;
+import java.util.ArrayList;
 
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
@@ -66,6 +65,7 @@ public class UserController
     //-------------------------------------------------------------------------------------------------------
 
     @RequestMapping( method = RequestMethod.GET )
+    @PreAuthorize( "hasRole('ALL') or hasRole('M_dhis-web-maintenance-user')" )
     public String getUsers( IdentifiableObjectParams params, Model model, HttpServletRequest request )
     {
         Users users = new Users();
@@ -83,6 +83,7 @@ public class UserController
     }
 
     @RequestMapping( value = "/{uid}", method = RequestMethod.GET )
+    @PreAuthorize( "hasRole('ALL') or hasRole('M_dhis-web-maintenance-user')" )
     public String getUser( @PathVariable( "uid" ) String uid, IdentifiableObjectParams params, Model model, HttpServletRequest request )
     {
         User user = userService.getUser( uid );
