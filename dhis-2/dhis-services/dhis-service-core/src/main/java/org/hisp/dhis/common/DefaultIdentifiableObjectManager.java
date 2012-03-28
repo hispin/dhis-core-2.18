@@ -27,6 +27,7 @@ package org.hisp.dhis.common;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
@@ -35,6 +36,8 @@ import javax.annotation.PostConstruct;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
+
+import static org.hisp.dhis.common.IdentifiableObject.IdentifiableProperty;
 
 /**
  * @author Lars Helge Overland
@@ -82,6 +85,38 @@ public class DefaultIdentifiableObjectManager
     public void delete( IdentifiableObject object )
     {
         objectStoreMap.get( object.getClass() ).delete( object );
+    }
+
+    @SuppressWarnings("unchecked")
+    public <T extends IdentifiableObject> Map<String, T> getIdMap( Class<T> clazz, IdentifiableProperty property )
+    {
+        Map<String, T> map = new HashMap<String, T>();
+        
+        GenericIdentifiableObjectStore<T> store = (GenericIdentifiableObjectStore<T>) objectStoreMap.get( clazz );
+        
+        Collection<T> objects = store.getAll();
+        
+        for ( T object : objects )
+        {
+            if ( IdentifiableProperty.ID.equals( property ) )
+            {
+                map.put( String.valueOf( object.getId() ), object );
+            }
+            else if ( IdentifiableProperty.UID.equals( property ) )
+            {
+                map.put( object.getUid(), object );
+            }
+            else if ( IdentifiableProperty.CODE.equals( property ) )
+            {
+                map.put( object.getCode(), object );
+            }
+            else if ( IdentifiableProperty.NAME.equals( property ) )
+            {
+                map.put( object.getName(), object );
+            }
+        }
+        
+        return map;
     }
     
     public IdentifiableObject getObject( String uid, String simpleClassName )

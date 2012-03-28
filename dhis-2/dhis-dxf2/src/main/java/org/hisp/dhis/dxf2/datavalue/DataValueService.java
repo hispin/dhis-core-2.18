@@ -1,7 +1,7 @@
-package org.hisp.dhis.common;
+package org.hisp.dhis.dxf2.datavalue;
 
 /*
- * Copyright (c) 2004-2012, University of Oslo
+ * Copyright (c) 2011, University of Oslo
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -27,27 +27,9 @@ package org.hisp.dhis.common;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.Date;
+import org.hisp.dhis.common.IdentifiableObject.IdentifiableProperty;
 
-public interface IdentifiableObject
-    extends ImportableObject, LinkableObject, Comparable<IdentifiableObject>
+public interface DataValueService
 {
-    final String[] I18N_PROPERTIES = { "name" };
-    
-    enum IdentifiableProperty
-    {
-        ID, UID, NAME, CODE, LAST_UPDATED
-    }
-    
-    int getId();
-
-    String getUid();
-
-    String getName();
-
-    String getCode();
-
-    Date getLastUpdated();
-
-    String getDisplayName();
+    void saveDataValues( DataValues dataValues, IdentifiableProperty idScheme );
 }

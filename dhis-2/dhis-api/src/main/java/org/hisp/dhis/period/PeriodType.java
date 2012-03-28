@@ -293,6 +293,27 @@ public abstract class PeriodType
 
         return null;
     }
+    
+    /**
+     * Returns a period type based on the given date string in ISO format. Returns
+     * null if the date string cannot be parsed to a date.
+     * 
+     * @param isoPeriod the date string in ISO format.
+     * @return a period.
+     */
+    public static Period getPeriodFromIsoString( String isoPeriod )
+    {
+        PeriodType periodType = getPeriodTypeFromIsoString( isoPeriod );
+        
+        try
+        {
+            return periodType != null ? periodType.createPeriod() : null;
+        }
+        catch ( Exception ex )
+        {
+            return null;
+        }
+    }
 
     /**
      * Creates a period based on the given external identifier, which is on the
