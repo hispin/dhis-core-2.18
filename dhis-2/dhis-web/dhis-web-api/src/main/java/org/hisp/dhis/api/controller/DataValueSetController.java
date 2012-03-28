@@ -78,8 +78,8 @@ public class DataValueSetController
         
         dataValueSetService.saveDataValueSet( dataValueSet );
 
-        log.debug( "Saved data value set for data set: " + dataValueSet.getDataSetIdentifier() +
-            ", org unit: " + dataValueSet.getOrganisationUnitIdentifier() + ", period: " + dataValueSet.getPeriodIsoDate() );
+        log.debug( "Saved data value set for data set: " + dataValueSet.getDataSet() +
+            ", org unit: " + dataValueSet.getOrgUnit() + ", period: " + dataValueSet.getPeriod() );
         
         ContextUtils.okResponse( response, "Saved data value set succesfully" );
     }
@@ -90,31 +90,4 @@ public class DataValueSetController
     {
         response.sendError( HttpServletResponse.SC_CONFLICT, ex.getMessage() );
     }
-
-    /*
-    @RequestMapping( value = "/test",  method = RequestMethod.GET )
-    public String getDataValueSetTest( Model model ) throws Exception
-    {
-        DataValueSets dataValueSets = new DataValueSets();
-        
-        DataValue v1 = new DataValue();
-        v1.setDataElement( "de" );
-        v1.setValue( "va" );
-
-        DataValue v2 = new DataValue();
-        v2.setDataElement( "de" );
-        v2.setValue( "va" );
-        
-        DataValueSet d = new DataValueSet();
-        d.setDataSetIdentifier( "ds" );
-        d.setOrganisationUnitIdentifier( "ou" );
-        d.setPeriodIsoDate( "pe" );
-        d.getDataValues().add( v1 );
-        d.getDataValues().add( v2 );        
-        dataValueSets.getDataValueSets().add( d );
-
-        model.addAttribute( "model", dataValueSets );
-
-        return "dataValueSets";
-    }*/    
 }
