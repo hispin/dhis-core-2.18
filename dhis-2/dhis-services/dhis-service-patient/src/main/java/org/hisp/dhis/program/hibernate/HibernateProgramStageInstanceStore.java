@@ -90,7 +90,7 @@ public class HibernateProgramStageInstanceStore
             Restrictions.eq( "programInstance", programInstance ), Restrictions.eq( "programStage", programStage ) )
             .addOrder( Order.asc( "id" ) ).list() );
 
-        return (list == null) ? null : list.get( list.size() - 1 );
+        return (list == null || list.size() == 0) ? null : list.get( list.size() - 1 );
     }
 
     @SuppressWarnings( "unchecked" )

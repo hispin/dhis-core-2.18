@@ -184,10 +184,28 @@ public class SaveExecutionDateAction
                     programStageInstance.setProvidedByAnotherFacility( false );
 
                     programStageInstanceService.addProgramStageInstance( programStageInstance );
-
                     selectedStateManager.setSelectedProgramInstance( programInstance );
-                    selectedStateManager.setSelectedProgramStageInstance( programStageInstance );
                 }
+                else if ( !programStage.getProgram().getSingleEvent() && !programStage.getProgram().getAnonymous() )
+                {
+                    ProgramInstance programInstance = programInstanceService.getProgramInstances( patient, program ).iterator().next();
+                    
+                    // Add a new program-stage-instance
+                    programStageInstance = new ProgramStageInstance();
+                    programStageInstance.setProgramInstance( programInstance );
+                    programStageInstance.setProgramStage( programStage );
+                    programStageInstance.setStageInProgram( programStage.getStageInProgram() );
+                    programStageInstance.setDueDate( dateValue );
+                    programStageInstance.setExecutionDate( dateValue );
+                    programStageInstance.setStoredBy( storedBy );
+                    programStageInstance.setOrganisationUnit( selectedStateManager.getSelectedOrganisationUnit() );
+                    programStageInstance.setProvidedByAnotherFacility( false );
+
+                    programStageInstanceService.addProgramStageInstance( programStageInstance );
+                    selectedStateManager.setSelectedProgramInstance( programInstance );
+                }
+
+                selectedStateManager.setSelectedProgramStageInstance( programStageInstance );
             }
             else
             {
