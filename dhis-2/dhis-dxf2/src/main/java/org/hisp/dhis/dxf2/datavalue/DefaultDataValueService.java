@@ -123,8 +123,6 @@ public class DefaultDataValueService
             {
                 batchHandler.addObject( internalValue );
             }
-            
-            System.out.println( "Inserted " + internalValue );
         }
         
         batchHandler.flush();

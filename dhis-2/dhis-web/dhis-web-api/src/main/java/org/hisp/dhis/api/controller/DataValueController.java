@@ -32,8 +32,6 @@ import java.io.InputStream;
 
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.hisp.dhis.api.utils.ContextUtils;
 import org.hisp.dhis.common.IdentifiableObject;
 import org.hisp.dhis.dxf2.datavalue.DataValueService;
@@ -51,8 +49,6 @@ public class DataValueController
 {
     public static final String RESOURCE_PATH = "/dataValues";
 
-    private static final Log log = LogFactory.getLog( DataValueController.class );
-    
     @Autowired
     private DataValueService dataValueService;
 
@@ -65,8 +61,6 @@ public class DataValueController
         
         dataValueService.saveDataValues( dataValues, IdentifiableObject.IdentifiableProperty.UID );
 
-        log.info( "SIZE " + dataValues.getDataValues().size() );
-        
         ContextUtils.okResponse( response, "Data values saved successfully" );
     }
 }

@@ -27,7 +27,6 @@ package org.hisp.dhis.dxf2.datavalueset;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-
 public interface DataValueSetService
 {
     void saveDataValueSet( DataValueSet dataValueSet );
