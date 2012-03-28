@@ -39,6 +39,16 @@
 							jQuery( '#validateBirthdate' ).removeClass( 'error').addClass('error valid');
 							$("#patientForm [id=memberValidator]").val("");
 						}
+						else if ( birthDate != '' )
+						{
+							jQuery( '#validateBirthdate' ).removeClass( 'error').addClass('error valid');
+							$("#patientForm [id=memberValidator]").val("birthDate");
+						}
+						else if ( age!='' )
+						{
+							jQuery( '#validateBirthdate' ).removeClass( 'error').addClass('error valid');
+							$("#patientForm [id=memberValidator]").val("age");
+						}
 						hideById( 'validateBirthdate' );
 						
 					}
@@ -97,8 +107,9 @@
 	<tr>
 		<td class='text-column'><label for="birthDate">$i18n.getString( "date_of_birth" )<em title="$i18n.getString( "required" )" class="required">*</em></label></td>
 		<td class="input-column" >
-			<input type="text" id="birthDate" name="birthDate" value="$format.formatDate( $!patient.birthDate )" style='width:168px' >
-			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$i18n.getString( "verified" ) <input type='checkbox' id='verified' name='verified' onchange='verifiedOnchange();' #if($patient.dobType=='V') checked #end >
+			<input type="text" id="birthDate" name="birthDate" value="$format.formatDate( $!patient.birthDate )" style='width:110px' >
+			<input type='button' onclick='setFieldValue("birthDate","")' value='$i18n.getString("clear")'>
+			$i18n.getString( "verified" ) <input type='checkbox' id='verified' name='verified' onchange='verifiedOnchange();' value='true' #if($patient.dobType=='V') checked #end >
 			$i18n.getString( "age_year" )<input type="text" id="age" name="age" class="{validate:{number:true, alphanumeric: true}}" style="width:50px" #if($patient.dobType!='V') disable #end >
 		</td>
 	</tr>

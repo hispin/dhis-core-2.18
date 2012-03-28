@@ -33,7 +33,7 @@
 							jQuery( '#validateBirthdate' ).removeClass( 'error').addClass('error valid');
 							$("#patientForm [id=memberValidator]").val("birthDate");
 						}
-						else if ( age=='' )
+						else if ( age!='' )
 						{
 							jQuery( '#validateBirthdate' ).removeClass( 'error').addClass('error valid');
 							$("#patientForm [id=memberValidator]").val("age");

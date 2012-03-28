@@ -135,14 +135,11 @@ public class ProgramEnrollmentSelectAction
                 completedPrograms.add( programInstance.getProgram() );
             }
         }
-System.out.println("\n\n completedPrograms : " + completedPrograms.iterator().next().getName() );
+        
         // Get single-event programs by the selected orgunit
         Collection<Program> singleProgramsByOrgunit = programService.getPrograms( true, false, orgunit );
-System.out.println("\n\n singleProgramsByOrgunit : " + singleProgramsByOrgunit.iterator().next().getName() );
         singleProgramsByOrgunit.remove( completedPrograms );
-System.out.println("\n\n singlePrograms 2 : " + singleProgramsByOrgunit.iterator().next().getName() );
         programs.addAll( singleProgramsByOrgunit );
-System.out.println("\n\n programs : " + singleProgramsByOrgunit.iterator().next().getName() );
 
         return SUCCESS;
     }
