@@ -1,4 +1,4 @@
-package org.hisp.dhis.api.webdomain;
+package org.hisp.dhis.dxf2.message;
 
 /*
 * Copyright (c) 2004-2012, University of Oslo
