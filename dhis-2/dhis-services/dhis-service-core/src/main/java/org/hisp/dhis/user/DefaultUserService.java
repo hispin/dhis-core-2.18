@@ -278,6 +278,11 @@ public class DefaultUserService
         return userStore.getUserAuthorityGroup( userAuthorityGroupId );
     }
 
+    public UserAuthorityGroup getUserAuthorityGroup( String uid )
+    {
+        return userStore.getUserAuthorityGroup( uid );
+    }
+
     public UserAuthorityGroup getUserAuthorityGroupByName( String userAuthorityGroupName )
     {
         return userStore.getUserAuthorityGroupByName( userAuthorityGroupName );

@@ -29,9 +29,10 @@ package org.hisp.dhis.api.controller.user;
 
 import org.hisp.dhis.api.utils.IdentifiableObjectParams;
 import org.hisp.dhis.api.utils.WebLinkPopulator;
-import org.hisp.dhis.user.UserGroup;
+import org.hisp.dhis.user.UserAuthorityGroup;
+import org.hisp.dhis.user.UserAuthorityGroups;
 import org.hisp.dhis.user.UserGroupService;
-import org.hisp.dhis.user.UserGroups;
+import org.hisp.dhis.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -52,13 +53,16 @@ import java.util.ArrayList;
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
 @Controller
-@RequestMapping( value = UserGroupController.RESOURCE_PATH )
-public class UserGroupController
+@RequestMapping( value = UserAuthorityGroupController.RESOURCE_PATH )
+public class UserAuthorityGroupController
 {
-    public static final String RESOURCE_PATH = "/userGroups";
+    public static final String RESOURCE_PATH = "/userAuthorityGroups";
 
     @Autowired
     private UserGroupService userGroupService;
+
+    @Autowired
+    private UserService userService;
 
     //-------------------------------------------------------------------------------------------------------
     // GET
@@ -66,35 +70,35 @@ public class UserGroupController
 
     @RequestMapping( method = RequestMethod.GET )
     @PreAuthorize( "hasRole('ALL')" )
-    public String getUserGroups( IdentifiableObjectParams params, Model model, HttpServletRequest request )
+    public String getUserAuthorityGroups( IdentifiableObjectParams params, Model model, HttpServletRequest request )
     {
-        UserGroups userGroups = new UserGroups();
-        userGroups.setUserGroups( new ArrayList<UserGroup>( userGroupService.getAllUserGroups() ) );
+        UserAuthorityGroups userAuthorityGroups = new UserAuthorityGroups();
+        userAuthorityGroups.setUserAuthorityGroups( new ArrayList<UserAuthorityGroup>( userService.getAllUserAuthorityGroups() ) );
 
         if ( params.hasLinks() )
         {
             WebLinkPopulator listener = new WebLinkPopulator( request );
-            listener.addLinks( userGroups );
+            listener.addLinks( userAuthorityGroups );
         }
 
-        model.addAttribute( "model", userGroups );
+        model.addAttribute( "model", userAuthorityGroups );
 
         return "userGroups";
     }
 
     @RequestMapping( value = "/{uid}", method = RequestMethod.GET )
     @PreAuthorize( "hasRole('ALL')" )
-    public String getUserGroup( @PathVariable( "uid" ) String uid, IdentifiableObjectParams params, Model model, HttpServletRequest request )
+    public String getUserAuthorityGroup( @PathVariable( "uid" ) String uid, IdentifiableObjectParams params, Model model, HttpServletRequest request )
     {
-        UserGroup userGroup = userGroupService.getUserGroup( uid );
+        UserAuthorityGroup userAuthorityGroup = userService.getUserAuthorityGroup( uid );
 
         if ( params.hasLinks() )
         {
             WebLinkPopulator listener = new WebLinkPopulator( request );
-            listener.addLinks( userGroup );
+            listener.addLinks( userAuthorityGroup );
         }
 
-        model.addAttribute( "model", userGroup );
+        model.addAttribute( "model", userAuthorityGroup );
         model.addAttribute( "view", "detailed" );
 
         return "userGroup";
@@ -107,7 +111,7 @@ public class UserGroupController
     @RequestMapping( method = RequestMethod.POST, headers = {"Content-Type=application/xml, text/xml"} )
     @PreAuthorize( "hasRole('ALL')" )
     @ResponseStatus( value = HttpStatus.CREATED )
-    public void postUserGroupXML( HttpServletResponse response, InputStream input ) throws Exception
+    public void postUserAuthorityGroupXML( HttpServletResponse response, InputStream input ) throws Exception
     {
         throw new HttpRequestMethodNotSupportedException( RequestMethod.POST.toString() );
     }
@@ -115,7 +119,7 @@ public class UserGroupController
     @RequestMapping( method = RequestMethod.POST, headers = {"Content-Type=application/json"} )
     @PreAuthorize( "hasRole('ALL')" )
     @ResponseStatus( value = HttpStatus.CREATED )
-    public void postUserGroupJSON( HttpServletResponse response, InputStream input ) throws Exception
+    public void postUserAuthorityGroupJSON( HttpServletResponse response, InputStream input ) throws Exception
     {
         throw new HttpRequestMethodNotSupportedException( RequestMethod.POST.toString() );
     }
@@ -127,7 +131,7 @@ public class UserGroupController
     @RequestMapping( value = "/{uid}", method = RequestMethod.PUT, headers = {"Content-Type=application/xml, text/xml"} )
     @PreAuthorize( "hasRole('ALL')" )
     @ResponseStatus( value = HttpStatus.NO_CONTENT )
-    public void putUserGroupXML( @PathVariable( "uid" ) String uid, InputStream input ) throws Exception
+    public void putUserAuthorityGroupXML( @PathVariable( "uid" ) String uid, InputStream input ) throws Exception
     {
         throw new HttpRequestMethodNotSupportedException( RequestMethod.PUT.toString() );
     }
@@ -135,7 +139,7 @@ public class UserGroupController
     @RequestMapping( value = "/{uid}", method = RequestMethod.PUT, headers = {"Content-Type=application/json"} )
     @PreAuthorize( "hasRole('ALL')" )
     @ResponseStatus( value = HttpStatus.NO_CONTENT )
-    public void putUserGroupJSON( @PathVariable( "uid" ) String uid, InputStream input ) throws Exception
+    public void putUserAuthorityGroupJSON( @PathVariable( "uid" ) String uid, InputStream input ) throws Exception
     {
         throw new HttpRequestMethodNotSupportedException( RequestMethod.PUT.toString() );
     }
@@ -147,7 +151,7 @@ public class UserGroupController
     @RequestMapping( value = "/{uid}", method = RequestMethod.DELETE )
     @PreAuthorize( "hasRole('ALL')" )
     @ResponseStatus( value = HttpStatus.NO_CONTENT )
-    public void deleteUserGroup( @PathVariable( "uid" ) String uid ) throws Exception
+    public void deleteUserAuthorityGroup( @PathVariable( "uid" ) String uid ) throws Exception
     {
         throw new HttpRequestMethodNotSupportedException( RequestMethod.DELETE.toString() );
     }

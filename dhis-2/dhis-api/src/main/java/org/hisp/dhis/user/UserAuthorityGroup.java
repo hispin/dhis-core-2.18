@@ -101,7 +101,7 @@ public class UserAuthorityGroup
 
     @JsonProperty
     @JsonView( {DetailedView.class, ExportView.class} )
-    @JacksonXmlProperty
+    @JacksonXmlProperty( namespace = Dxf2Namespace.NAMESPACE )
     public String getDescription()
     {
         return description;
@@ -114,8 +114,8 @@ public class UserAuthorityGroup
 
     @JsonProperty
     @JsonView( {DetailedView.class, ExportView.class} )
-    @JacksonXmlElementWrapper( localName = "authorities" )
-    @JacksonXmlProperty( localName = "authority" )
+    @JacksonXmlElementWrapper( localName = "authorities", namespace = Dxf2Namespace.NAMESPACE )
+    @JacksonXmlProperty( localName = "authority", namespace = Dxf2Namespace.NAMESPACE )
     public Set<String> getAuthorities()
     {
         return authorities;
@@ -139,8 +139,8 @@ public class UserAuthorityGroup
     @JsonProperty
     @JsonSerialize( contentAs = BaseIdentifiableObject.class )
     @JsonView( {DetailedView.class, ExportView.class} )
-    @JacksonXmlElementWrapper( localName = "dataSets" )
-    @JacksonXmlProperty( localName = "dataSet" )
+    @JacksonXmlElementWrapper( localName = "dataSets", namespace = Dxf2Namespace.NAMESPACE )
+    @JacksonXmlProperty( localName = "dataSet", namespace = Dxf2Namespace.NAMESPACE )
     public Set<DataSet> getDataSets()
     {
         return dataSets;
