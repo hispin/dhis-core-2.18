@@ -64,7 +64,7 @@ public class DataValue
     {
     }
 
-    @JsonProperty( required=true)
+    @JsonProperty( required=true )
     @JacksonXmlProperty( isAttribute=true, namespace = Dxf2Namespace.NAMESPACE )
     public String getDataElement()
     {

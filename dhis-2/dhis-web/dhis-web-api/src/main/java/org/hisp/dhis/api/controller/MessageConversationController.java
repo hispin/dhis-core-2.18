@@ -31,7 +31,7 @@ import org.hisp.dhis.api.utils.ContextUtils;
 import org.hisp.dhis.api.utils.IdentifiableObjectParams;
 import org.hisp.dhis.api.utils.WebLinkPopulator;
 import org.hisp.dhis.dxf2.utils.JacksonUtils;
-import org.hisp.dhis.api.webdomain.Message;
+import org.hisp.dhis.dxf2.message.Message;
 import org.hisp.dhis.common.Pager;
 import org.hisp.dhis.message.MessageConversation;
 import org.hisp.dhis.message.MessageConversations;
