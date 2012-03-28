@@ -27,9 +27,11 @@
 <pre style="font-size:12pt;">
 <![CDATA[
 <dataValueSet xmlns="http://dhis2.org/schema/dxf/2.0" period="periodISODate" dataSet="dataSetID" orgUnit="orgUnitID">
-  <dataValue dataElement="dataElementID" categoryOptionCombo="categoryOptionComboID" value="1" />
-  <dataValue dataElement="dataElementID" categoryOptionCombo="categoryOptionComboID" value="2" />
-  <dataValue dataElement="dataElementID" categoryOptionCombo="categoryOptionComboID" value="3" />
+  <dataValues>
+    <dataValue dataElement="dataElementID" categoryOptionCombo="categoryOptionComboID" value="1" />
+    <dataValue dataElement="dataElementID" categoryOptionCombo="categoryOptionComboID" value="2" />
+    <dataValue dataElement="dataElementID" categoryOptionCombo="categoryOptionComboID" value="3" />
+  </dataValues>
 </dataValueSet>
 ]]>
 </pre>

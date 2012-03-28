@@ -48,7 +48,6 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hisp.dhis.common.ProcessState;
 import org.hisp.dhis.importexport.dxf.converter.DXFConverter;
-import org.hisp.dhis.importexport.dxf2.service.DataValueImportService;
 import org.hisp.dhis.importexport.xml.XMLPreConverter;
 import org.hisp.dhis.importexport.zip.ZipAnalyzer;
 import org.hisp.dhis.system.process.OutputHolderState;
@@ -81,13 +80,6 @@ public class DefaultImportService
     public void setConverter( DXFConverter converter )
     {
         this.converter = converter;
-    }
-
-    private DataValueImportService dxf2converter;
-
-    public void setDxf2converter( DataValueImportService dxf2converter )
-    {
-        this.dxf2converter = dxf2converter;
     }
 
     // -------------------------------------------------------------------------
@@ -190,13 +182,8 @@ public class DefaultImportService
                 
             }
 
-            if (rootNameSpace.equals( DXF2URI )) {
-              log.debug( "Sending DXFv2 to converter" );
-              dxf2converter.read( dxfReader, params, state );
-            } else  {
-              log.debug( "Sending DXFv1 to converter" );
-              converter.read( dxfReader, params, state );
-            } 
+            log.debug( "Sending DXFv1 to converter" );
+            converter.read( dxfReader, params, state );
         }
         catch ( IOException ex )
         {

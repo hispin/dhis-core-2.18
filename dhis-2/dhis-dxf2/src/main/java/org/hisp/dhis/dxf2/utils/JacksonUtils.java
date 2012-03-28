@@ -130,6 +130,7 @@ public class JacksonUtils
         return jsonMapper.writerWithView( viewClass ).writeValueAsString( value );
     }
 
+    @SuppressWarnings("unchecked")
     public static <T> T fromJson( InputStream input, Class<?> clazz ) throws IOException
     {
         return (T) jsonMapper.readValue( input, clazz );
@@ -159,6 +160,7 @@ public class JacksonUtils
         return xmlMapper.writerWithView( viewClass ).writeValueAsString( value );
     }
 
+    @SuppressWarnings("unchecked")
     public static <T> T fromXml( InputStream input, Class<?> clazz ) throws IOException
     {
         return (T) xmlMapper.readValue( input, clazz );

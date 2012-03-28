@@ -1,19 +1,7 @@
-@XmlSchema(
-    namespace = "http://dhis2.org/schema/dxf/2.0",
-    xmlns = {   
-         @XmlNs(namespaceURI = "http://dhis2.org/schema/dxf/2.0", prefix = "d")  
-    },
-    elementFormDefault = XmlNsForm.QUALIFIED) 
-
-
-package org.hisp.dhis.importexport.dxf2.model;
-
-import javax.xml.bind.annotation.XmlSchema;
-import javax.xml.bind.annotation.XmlNs;
-import javax.xml.bind.annotation.XmlNsForm;
+package org.hisp.dhis.dxf2.datavalueset;
 
 /*
- * Copyright (c) 2011, University of Oslo
+ * Copyright (c) 2004-2005, University of Oslo
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -23,7 +11,7 @@ import javax.xml.bind.annotation.XmlNsForm;
  * * Redistributions in binary form must reproduce the above copyright notice,
  *   this list of conditions and the following disclaimer in the documentation
  *   and/or other materials provided with the distribution.
- * * Neither the name of the HISP project nor the names of its contributors may
+ * * Neither the name of the <ORGANIZATION> nor the names of its contributors may
  *   be used to endorse or promote products derived from this software without
  *   specific prior written permission.
  *
@@ -38,3 +26,9 @@ import javax.xml.bind.annotation.XmlNsForm;
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
+
+
+public interface DataValueSetService
+{
+    void saveDataValueSet( DataValueSet dataValueSet );
+}
