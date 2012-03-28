@@ -153,7 +153,26 @@ public class DateUtils
         
         return getHttpDateString( cal.getTime() );
     }
-    
+
+    /**
+     * Parses the given string into a Date using the default date format which is
+     * yyyy-MM-dd. Returns null if the string cannot be parsed.
+     * 
+     * @param dateString the date string.
+     * @return a date.
+     */
+    public static Date getDefaultDate( String dateString )
+    {
+        try
+        {
+            return new SimpleDateFormat( DEFAULT_DATE_FORMAT ).parse( dateString );
+        }
+        catch ( Exception ex )
+        {
+            return null;
+        }
+    }
+
     /**
      * Parses a date from a String on the format YYYY-MM-DD.
      * 

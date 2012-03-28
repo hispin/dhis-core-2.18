@@ -27,8 +27,6 @@ package org.hisp.dhis.dxf2.datavalue;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.Date;
-
 import org.hisp.dhis.common.Dxf2Namespace;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -50,7 +48,7 @@ public class DataValue
     
     private String storedBy;
 
-    private Date timestamp;
+    private String timestamp;
 
     private String comment;
 
@@ -138,12 +136,12 @@ public class DataValue
 
     @JsonProperty
     @JacksonXmlProperty( isAttribute=true, namespace = Dxf2Namespace.NAMESPACE )
-    public Date getTimestamp()
+    public String getTimestamp()
     {
         return timestamp;
     }
 
-    public void setTimestamp( Date timestamp )
+    public void setTimestamp( String timestamp )
     {
         this.timestamp = timestamp;
     }

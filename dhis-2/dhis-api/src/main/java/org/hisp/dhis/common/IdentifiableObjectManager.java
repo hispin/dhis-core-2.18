@@ -1,5 +1,9 @@
 package org.hisp.dhis.common;
 
+import java.util.Map;
+
+import org.hisp.dhis.common.IdentifiableObject.IdentifiableProperty;
+
 /*
  * Copyright (c) 2004-2005, University of Oslo
  * All rights reserved.
@@ -39,6 +43,8 @@ public interface IdentifiableObjectManager
     void get( Class<IdentifiableObject> clazz, String uid );
     
     void delete( IdentifiableObject object );
+    
+    <T extends IdentifiableObject> Map<String, T> getIdMap( Class<T> clazz, IdentifiableProperty property );
     
     IdentifiableObject getObject( String uid, String simpleClassName );
     
