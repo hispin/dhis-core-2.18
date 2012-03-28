@@ -92,7 +92,6 @@
 				
 				<td>
 				  <a href="javascript:showProgramEnrollmentSelectForm( '$patient.id' )" title='$i18n.getString( "program_enrollment_management" )'><img src="../images/enroll.png" alt='$i18n.getString( "program_enrollment" )'></a>                  
-				  <a href="javascript:showUnenrollmentSelectForm('$patient.id')" title='$i18n.getString( "program_unenrollment_management" )'><img src="../images/unenroll.png" alt='$i18n.getString( "program_unenrollment_management" )'></a>
 				  <a href="javascript:showUpdatePatientForm( '$patient.id' )" title='$i18n.getString( "edit_profile" )'><img src="../images/edit.png" alt='$i18n.getString( "edit_profile" )'></a>
 				  <a href="javascript:setFieldValue( 'isShowPatientList', false ); showRelationshipList('$patient.id')" title='$i18n.getString( "manage_relationship" )'><img src="../images/relationship.png" alt='$i18n.getString( "manage_relationship" )'></a>
 				  <a href="javascript:getPatientLocation( '$patient.id' ); " title='$i18n.getString( "migration_patient" )'><img src="../icons/dataentry.png" alt='$i18n.getString( "migration_patient" )' style='width:25px; height:25px'></a>

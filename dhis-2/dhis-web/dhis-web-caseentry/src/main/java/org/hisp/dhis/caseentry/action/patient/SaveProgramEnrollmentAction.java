@@ -26,28 +26,12 @@
  */
 package org.hisp.dhis.caseentry.action.patient;
 
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 import org.hisp.dhis.i18n.I18nFormat;
 import org.hisp.dhis.patient.Patient;
-import org.hisp.dhis.patient.PatientAttribute;
-import org.hisp.dhis.patient.PatientAttributeGroup;
-import org.hisp.dhis.patient.PatientAttributeGroupService;
-import org.hisp.dhis.patient.PatientAttributeService;
-import org.hisp.dhis.patient.PatientIdentifier;
-import org.hisp.dhis.patient.PatientIdentifierService;
-import org.hisp.dhis.patient.PatientIdentifierType;
-import org.hisp.dhis.patient.PatientIdentifierTypeService;
 import org.hisp.dhis.patient.PatientService;
-import org.hisp.dhis.patient.comparator.PatientAttributeGroupSortOrderComparator;
-import org.hisp.dhis.patientattributevalue.PatientAttributeValue;
-import org.hisp.dhis.patientattributevalue.PatientAttributeValueService;
 import org.hisp.dhis.program.Program;
 import org.hisp.dhis.program.ProgramInstance;
 import org.hisp.dhis.program.ProgramInstanceService;
@@ -98,41 +82,6 @@ public class SaveProgramEnrollmentAction
         this.programStageInstanceService = programStageInstanceService;
     }
 
-    public Collection<PatientIdentifierType> getIdentifierTypes()
-    {
-        return identifierTypes;
-    }
-
-    public Map<Integer, String> getIdentiferMap()
-    {
-        return identiferMap;
-    }
-
-    public void setPatientIdentifierService( PatientIdentifierService patientIdentifierService )
-    {
-        this.patientIdentifierService = patientIdentifierService;
-    }
-
-    public void setIdentifierTypeService( PatientIdentifierTypeService identifierTypeService )
-    {
-        this.identifierTypeService = identifierTypeService;
-    }
-
-    public void setProgramStageInstances( Collection<ProgramStageInstance> programStageInstances )
-    {
-        this.programStageInstances = programStageInstances;
-    }
-
-    private PatientIdentifierService patientIdentifierService;
-
-    private PatientIdentifierTypeService identifierTypeService;
-
-    private PatientAttributeService patientAttributeService;
-
-    private PatientAttributeGroupService patientAttributeGroupService;
-
-    private PatientAttributeValueService patientAttributeValueService;
-    
     private I18nFormat format;
 
     public void setFormat( I18nFormat format )
@@ -144,26 +93,12 @@ public class SaveProgramEnrollmentAction
     // Input/Output
     // -------------------------------------------------------------------------
 
-    private Collection<PatientIdentifierType> identifierTypes;
-
-    public void setPatientAttributeService( PatientAttributeService patientAttributeService )
-    {
-        this.patientAttributeService = patientAttributeService;
-    }
-
-    public void setPatientAttributeGroupService( PatientAttributeGroupService patientAttributeGroupService )
-    {
-        this.patientAttributeGroupService = patientAttributeGroupService;
-    }
-
-    public void setPatientAttributeValueService( PatientAttributeValueService patientAttributeValueService )
-    {
-        this.patientAttributeValueService = patientAttributeValueService;
-    }
-
-    private Map<Integer, String> identiferMap;
-
     private Integer patientId;
+
+    public Integer getPatientId()
+    {
+        return patientId;
+    }
 
     public void setPatientId( Integer patientId )
     {
@@ -175,6 +110,11 @@ public class SaveProgramEnrollmentAction
     public void setProgramId( Integer programId )
     {
         this.programId = programId;
+    }
+
+    public Integer getProgramId()
+    {
+        return programId;
     }
 
     private Patient patient;
@@ -191,13 +131,6 @@ public class SaveProgramEnrollmentAction
         return program;
     }
 
-    private ProgramInstance programInstance;
-
-    public ProgramInstance getProgramInstance()
-    {
-        return programInstance;
-    }
-
     private String enrollmentDate;
 
     public void setEnrollmentDate( String enrollmentDate )
@@ -212,34 +145,6 @@ public class SaveProgramEnrollmentAction
         this.dateOfIncident = dateOfIncident;
     }
 
-    private Collection<ProgramStageInstance> programStageInstances = new ArrayList<ProgramStageInstance>();
-
-    public Collection<ProgramStageInstance> getProgramStageInstances()
-    {
-        return programStageInstances;
-    }
-
-    private Collection<PatientAttribute> noGroupAttributes;
-
-    public Collection<PatientAttribute> getNoGroupAttributes()
-    {
-        return noGroupAttributes;
-    }
-
-    private List<PatientAttributeGroup> attributeGroups;
-
-    public List<PatientAttributeGroup> getAttributeGroups()
-    {
-        return attributeGroups;
-    }
-
-    private Map<Integer, String> patientAttributeValueMap = new HashMap<Integer, String>();
-
-    public Map<Integer, String> getPatientAttributeValueMap()
-    {
-        return patientAttributeValueMap;
-    }
-
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
@@ -251,13 +156,15 @@ public class SaveProgramEnrollmentAction
 
         program = programService.getProgram( programId );
 
-        if( dateOfIncident == null )
+        if ( dateOfIncident == null || dateOfIncident.isEmpty()  )
         {
             dateOfIncident = enrollmentDate;
         }
-        
+
         Collection<ProgramInstance> programInstances = programInstanceService.getProgramInstances( patient, program,
             false );
+
+        ProgramInstance programInstance = null;
 
         if ( programInstances.iterator().hasNext() )
         {
@@ -291,11 +198,8 @@ public class SaveProgramEnrollmentAction
                 programStageInstance.setDueDate( dueDate );
 
                 programStageInstanceService.addProgramStageInstance( programStageInstance );
-
-                programStageInstances.add( programStageInstance );
             }
         }
-
         else
         {
             programInstance.setEnrollmentDate( format.parseDate( enrollmentDate ) );
@@ -311,57 +215,9 @@ public class SaveProgramEnrollmentAction
                 programStageInstance.setDueDate( dueDate );
 
                 programStageInstanceService.updateProgramStageInstance( programStageInstance );
-
-                programStageInstances.add( programStageInstance );
             }
         }
 
-     // ---------------------------------------------------------------------
-        // Load identifier types of the selected program
-        // ---------------------------------------------------------------------
-
-        identifierTypes = identifierTypeService.getPatientIdentifierTypes( program );
-        identiferMap = new HashMap<Integer, String>();
-
-        if ( identifierTypes != null && identifierTypes.size() > 0 )
-        {
-            Collection<PatientIdentifier> patientIdentifiers = patientIdentifierService.getPatientIdentifiers(
-                identifierTypes, patient );
-
-            for ( PatientIdentifier identifier : patientIdentifiers )
-            {
-                identiferMap.put( identifier.getIdentifierType().getId(), identifier.getIdentifier() );
-            }
-        }
-
-        // ---------------------------------------------------------------------
-        // Load patient-attributes of the selected program
-        // ---------------------------------------------------------------------
-
-        attributeGroups = new ArrayList<PatientAttributeGroup>( patientAttributeGroupService
-            .getPatientAttributeGroups( program ) );
-        Collections.sort( attributeGroups, new PatientAttributeGroupSortOrderComparator() );
-
-        noGroupAttributes = patientAttributeService.getPatientAttributes( program, null );
-
-        Collection<PatientAttributeValue> patientAttributeValues = patientAttributeValueService
-            .getPatientAttributeValues( patient );
-
-        for ( PatientAttributeValue patientAttributeValue : patientAttributeValues )
-        {
-            if ( PatientAttribute.TYPE_COMBO.equalsIgnoreCase( patientAttributeValue.getPatientAttribute()
-                .getValueType() ) )
-            {
-                patientAttributeValueMap.put( patientAttributeValue.getPatientAttribute().getId(),
-                    patientAttributeValue.getPatientAttributeOption().getName() );
-            }
-            else
-            {
-                patientAttributeValueMap.put( patientAttributeValue.getPatientAttribute().getId(),
-                    patientAttributeValue.getValue() );
-            }
-        }
-        
         return SUCCESS;
     }
 }

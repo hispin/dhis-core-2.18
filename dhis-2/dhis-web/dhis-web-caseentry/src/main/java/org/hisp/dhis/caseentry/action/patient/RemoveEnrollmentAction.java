@@ -136,24 +136,11 @@ public class RemoveEnrollmentAction
     public String execute()
         throws Exception
     {
-
         ProgramInstance programInstance = programInstanceService.getProgramInstance( programInstanceId );
 
         Patient patient = programInstance.getPatient();
 
         Program program = programInstance.getProgram();
-
-        // ---------------------------------------------------------------------
-        // Update Information of programInstance
-        // ---------------------------------------------------------------------
-
-        programInstance.setEndDate( new Date() );
-        programInstance.setCompleted( true );
-
-        programInstanceService.updateProgramInstance( programInstance );
-
-        patient.getPrograms().remove( program );
-        patientService.updatePatient( patient );
 
         // ---------------------------------------------------------------------
         // Save Program Attributes
@@ -168,14 +155,18 @@ public class RemoveEnrollmentAction
         // ---------------------------------------------------------------------
         // End-user inputs attribute value for DEAD-attribute
         // ---------------------------------------------------------------------
-        
+
         boolean flag = false;
+        Date closedDate = new Date();
 
         if ( attributes != null && attributes.size() > 0 )
         {
             programInstance.getAttributes().clear();
 
+            // -----------------------------------------------------------------
             // Save other attributes
+            // -----------------------------------------------------------------
+
             for ( ProgramAttribute attribute : attributes )
             {
                 String value = request.getParameter( RemoveEnrollmentAction.PREFIX_ATTRIBUTE + attribute.getId() );
@@ -193,13 +184,22 @@ public class RemoveEnrollmentAction
                         attributeValue.setProgramInstance( programInstance );
                         attributeValue.setProgramAttribute( attribute );
 
-                        // DEAD program-attribute
-                        if ( attribute.getName().equalsIgnoreCase( ProgramAttribute.DEAD_NAME )
-                            && attribute.getValueType().equalsIgnoreCase( ProgramAttribute.TYPE_BOOL ) )
+                        // CLOSED-DATE program-attribute
+                        if ( attribute.getName().equalsIgnoreCase( ProgramAttribute.CLOSED_DATE )
+                            && attribute.getValueType().equalsIgnoreCase( ProgramAttribute.TYPE_DATE ) && flag )
                         {
                             attributeValue.setValue( value.trim() );
+
+                            closedDate = format.parseDate( value.trim() );
+                            patient.setDeathDate( closedDate );
+                            flag = true;
+                        }
+                        // IS-DEAD program-attribute
+                        else if ( attribute.getName().equalsIgnoreCase( ProgramAttribute.DEAD_NAME ) )
+                        {
+                            attributeValue.setValue( value.trim() );
+
                             patient.setIsDead( Boolean.parseBoolean( value.trim() ) );
-                            patientService.updatePatient( patient );
                             flag = true;
                         }
                         else if ( ProgramAttribute.TYPE_COMBO.equalsIgnoreCase( attribute.getValueType() ) )
@@ -215,14 +215,6 @@ public class RemoveEnrollmentAction
                         else
                         {
                             attributeValue.setValue( value.trim() );
-                        }
-
-                        // CLOSED-DATE program-attribute
-                        if ( attribute.getName().equalsIgnoreCase( ProgramAttribute.CLOSED_DATE )
-                            && attribute.getValueType().equalsIgnoreCase( ProgramAttribute.TYPE_DATE ) && flag )
-                        {
-                            patient.setDeathDate( format.parseDate( value.trim() ) );
-                            patientService.updatePatient( patient );
                         }
 
                         programAttributeValueService.saveProgramAttributeValue( attributeValue );
@@ -250,9 +242,37 @@ public class RemoveEnrollmentAction
             }
         }
 
-        programInstance.setAttributes( programAttributes );
+        // ---------------------------------------------------------------------
+        // Update Information of programInstance
+        // ---------------------------------------------------------------------
 
+        programInstance.setEndDate( closedDate );
+        programInstance.setCompleted( true );
+//        programInstanceService.updateProgramInstance( programInstance );
+        programInstance.setAttributes( programAttributes );
         programInstanceService.updateProgramInstance( programInstance );
+        
+        patient.getPrograms().remove( program );
+        
+        // ---------------------------------------------------------------------
+        // Set Completed status all program-instaces of Death case
+        // ---------------------------------------------------------------------
+
+        if ( flag )
+        {
+            Collection<ProgramInstance> programInstancesByPatient = programInstanceService.getProgramInstances(
+                patient, false );
+
+            for ( ProgramInstance _programInstance : programInstancesByPatient )
+            {
+                patient.getPrograms().remove( _programInstance.getProgram() );
+                _programInstance.setEndDate( closedDate );
+                _programInstance.setCompleted( true );
+                programInstanceService.updateProgramInstance( _programInstance );
+            }
+        }
+        
+        patientService.updatePatient( patient );
 
         return SUCCESS;
     }

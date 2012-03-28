@@ -399,7 +399,7 @@ function showProgramEnrollmentSelectForm( patientId )
 		{
 			id:patientId
 		}, function()
-		{
+		{	
 			showById('enrollmentDiv');
 			
 			jQuery('#loaderDiv').hide();
@@ -410,19 +410,10 @@ function showProgramEnrollmentForm( patientId, programId )
 {				
 	if( programId == 0 )
 	{
-		disable('enrollBtn');
-		disable('enrollmentDate');
-		disable('dateOfIncident');
-		
 		jQuery('#enrollBtn').attr('value',i18n_enroll_to_program);
-		
-		setFieldValue( 'enrollmentDate', '' );
-		setFieldValue( 'dateOfIncident', '' );
-		setInnerHTML('enrollmentDateDescription', '');
-		setInnerHTML('dateOfIncidentDescription', '');
-		
-		hideById('programEnrollmentDiv');
 		hideEnrolmentField();
+
+		hideById('programEnrollmentDiv');
 		
 		return;
 	}
@@ -437,33 +428,25 @@ function showProgramEnrollmentForm( patientId, programId )
 			showById('programEnrollmentDiv');
 			showEnrolmentField();
 			
-			var singleEvent = jQuery('#programId option:selected').attr('singleevent');
+			var singleEvent = jQuery('#enrollmentDiv [name=programId] option:selected').attr('singleevent');
+			
 			if(singleEvent=='true')
 			{
-				disable('enrollBtn');
-				disable('enrollmentDate');
-				disable('dateOfIncident');
-				setInnerHTML('enrollmentDateDescription', '');
-				setInnerHTML('dateOfIncidentDescription', '');
+				hideEnrolmentField();
 			}
 			else
 			{
-				enable('enrollBtn');
-				enable('enrollmentDate');
-				enable('dateOfIncident');
-				showById('enrollmentDateTD');
-				showById('dateOfIncidentTD');
-			}
-			
-			var hideDateOfIncident = jQuery('#programEnrollmentSelectDiv [name=programId] option:selected').attr('hidedateofincident');
-				
-			if( hideDateOfIncident=='true')
-			{
-				hideById( 'dateOfIncidentTR');
-			}
-			else
-			{
-				showById( 'dateOfIncidentTR');
+				showEnrolmentField();
+				var hideDateOfIncident = jQuery('#programEnrollmentSelectDiv [name=programId] option:selected').attr('hidedateofincident');
+					
+				if( hideDateOfIncident=='true')
+				{
+					hideById( 'dateOfIncidentTR');
+				}
+				else
+				{
+					showById( 'dateOfIncidentTR');
+				}
 			}
 			
 			jQuery('#loaderDiv').hide();
@@ -549,12 +532,6 @@ function showUnenrollmentForm( programInstanceId )
 		}, 
 		function( json ) 
 		{   
-			setFieldValue( 'enrollmentDate', json.dateOfIncident );
-			setFieldValue( 'dateOfIncident', json.enrollmentDate );
-			setFieldValue( 'dateOfEnrollmentDescription', json.dateOfEnrollmentDescription );
-			setFieldValue( 'dateOfIncidentDescription', json.dateOfIncidentDescription );
-			disable( 'enrollmentDate' );
-			disable( 'dateOfIncident' );
 			showById( 'unenrollmentFormDiv' );
 			jQuery( "#loaderDiv" ).hide();
 		});
@@ -568,20 +545,16 @@ function unenrollmentForm( programInstanceId )
 		return;
 	}
 		
-	jQuery('#loaderDiv').show();
 	$.ajax({
 		type: "POST",
 		url: 'removeEnrollment.action',
 		data: getParamsForDiv('enrollmentDiv'),
 		success: function( json ) 
 		{
-			var list = byId( 'programInstanceId' );
-			list.remove( list.selectedIndex );
-			if( list.value == 0 )
-			{
-				hideById( 'unenrollmentFormDiv' );
-			}
-			jQuery('#loaderDiv').hide();
+			showSuccessMessage( i18n_unenrol_success );
+			hideEnrolmentField( 'enrollmentDateTR' );
+			jQuery('#enrollmentDiv [name=programId]').val('0');
+			hideById( 'programEnrollmentDiv' );
 		}
     });
 }
@@ -807,6 +780,8 @@ function showRepresentativeInfo( patientId)
 
 function hideEnrolmentField()
 {
+	setFieldValue( 'enrollmentDate', '' );
+	setFieldValue( 'dateOfIncident', '' );
 	hideById('enrollmentDateTR');
 	hideById('dateOfIncidentTR');
 	hideById('enrollBtn');
@@ -821,8 +796,8 @@ function showEnrolmentField()
 
 function savePatientIdentifier( identifierTypeId, field )
 {
-	field.blur();
 	field.style.backgroundColor = COLOR_WHITE;
+	field.blur();
 	if( validateValue( "iden" + identifierTypeId ) )
 	{
 		var patientId = getFieldValue("patientId");
@@ -839,8 +814,8 @@ function savePatientIdentifier( identifierTypeId, field )
 
 function savePatientAttrValue( patientAttributeId, field )
 {
-	field.blur();
 	field.style.backgroundColor = COLOR_WHITE;
+	field.blur();
 	if( validateValue( "attr" + patientAttributeId ) )
 	{
 		var patientId = getFieldValue("patientId");
@@ -1011,10 +986,10 @@ function showSelectedDataRecoding( patientId )
 			jQuery('#dataRecordingSelectDiv [id=backBtnFromEntry]').hide();
 			showById('dataRecordingSelectDiv');
 			
-			//var programId = jQuery('#programEnrollmentSelectDiv [id=programId] option:selected').val();
-			//var programName = jQuery('#programEnrollmentSelectDiv [id=programId] option:selected').text();
-			//$('#dataRecordingSelectDiv [id=programId]').find('option').remove().end().append('<option value="' + programId + '">' + programName + '</option>').val('whatever');
-
+			var programId = jQuery('#programEnrollmentSelectDiv [id=programId] option:selected').val();
+			$('#dataRecordingSelectDiv [id=programId]').val( programId );
+			$('#dataRecordingSelectDiv [id=programIdTR]').hide();
+			
 			loadProgramStages();
 			hideLoader();
 			hideById('contentDiv');

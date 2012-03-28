@@ -33,6 +33,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.hisp.dhis.caseentry.state.SelectedStateManager;
+import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.patient.Patient;
 import org.hisp.dhis.patient.PatientAttribute;
 import org.hisp.dhis.patient.PatientAttributeGroup;
@@ -47,6 +49,8 @@ import org.hisp.dhis.patient.comparator.PatientAttributeGroupSortOrderComparator
 import org.hisp.dhis.patientattributevalue.PatientAttributeValue;
 import org.hisp.dhis.patientattributevalue.PatientAttributeValueService;
 import org.hisp.dhis.program.Program;
+import org.hisp.dhis.program.ProgramAttribute;
+import org.hisp.dhis.program.ProgramAttributeService;
 import org.hisp.dhis.program.ProgramInstance;
 import org.hisp.dhis.program.ProgramInstanceService;
 import org.hisp.dhis.program.ProgramService;
@@ -81,6 +85,10 @@ public class ProgramEnrollmentAction
 
     private PatientAttributeValueService patientAttributeValueService;
 
+    private ProgramAttributeService programAttributeService;
+
+    private SelectedStateManager selectedStateManager;
+
     // -------------------------------------------------------------------------
     // Input/Output
     // -------------------------------------------------------------------------
@@ -107,13 +115,32 @@ public class ProgramEnrollmentAction
 
     private Map<Integer, String> patientAttributeValueMap = new HashMap<Integer, String>();
 
+    private Collection<ProgramAttribute> programAttributes;
+
+    private Boolean hasDataEntry;
+
     // -------------------------------------------------------------------------
     // Getters/Setters
     // -------------------------------------------------------------------------
 
+    public void setSelectedStateManager( SelectedStateManager selectedStateManager )
+    {
+        this.selectedStateManager = selectedStateManager;
+    }
+
     public void setPatientService( PatientService patientService )
     {
         this.patientService = patientService;
+    }
+
+    public Collection<ProgramAttribute> getProgramAttributes()
+    {
+        return programAttributes;
+    }
+
+    public void setProgramAttributeService( ProgramAttributeService programAttributeService )
+    {
+        this.programAttributeService = programAttributeService;
     }
 
     public Collection<PatientAttribute> getNoGroupAttributes()
@@ -206,6 +233,11 @@ public class ProgramEnrollmentAction
         return programStageInstances;
     }
 
+    public Boolean getHasDataEntry()
+    {
+        return hasDataEntry;
+    }
+
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
@@ -213,6 +245,8 @@ public class ProgramEnrollmentAction
     public String execute()
         throws Exception
     {
+        OrganisationUnit orgunit = selectedStateManager.getSelectedOrganisationUnit();
+
         patient = patientService.getPatient( patientId );
 
         program = programService.getProgram( programId );
@@ -230,53 +264,90 @@ public class ProgramEnrollmentAction
 
             programStageInstances = programInstance.getProgramStageInstances();
 
-            // ---------------------------------------------------------------------
-            // Load identifier types of the selected program
-            // ---------------------------------------------------------------------
+            loadIdentifierTypes();
 
-            identifierTypes = identifierTypeService.getPatientIdentifierTypes( program );
-            identiferMap = new HashMap<Integer, String>();
+            loadPatientAttributes();
 
-            if ( identifierTypes != null && identifierTypes.size() > 0 )
-            {
-                Collection<PatientIdentifier> patientIdentifiers = patientIdentifierService.getPatientIdentifiers(
-                    identifierTypes, patient );
-
-                for ( PatientIdentifier identifier : patientIdentifiers )
-                {
-                    identiferMap.put( identifier.getIdentifierType().getId(), identifier.getIdentifier() );
-                }
-            }
-
-            // ---------------------------------------------------------------------
+            // -----------------------------------------------------------------
             // Load patient-attributes of the selected program
-            // ---------------------------------------------------------------------
+            // -----------------------------------------------------------------
 
-            attributeGroups = new ArrayList<PatientAttributeGroup>( patientAttributeGroupService
-                .getPatientAttributeGroups( program ) );
-            Collections.sort( attributeGroups, new PatientAttributeGroupSortOrderComparator() );
-
-            noGroupAttributes = patientAttributeService.getPatientAttributes( program, null );
-
-            Collection<PatientAttributeValue> patientAttributeValues = patientAttributeValueService
-                .getPatientAttributeValues( patient );
-
-            for ( PatientAttributeValue patientAttributeValue : patientAttributeValues )
-            {
-                if ( PatientAttribute.TYPE_COMBO.equalsIgnoreCase( patientAttributeValue.getPatientAttribute()
-                    .getValueType() ) )
-                {
-                    patientAttributeValueMap.put( patientAttributeValue.getPatientAttribute().getId(),
-                        patientAttributeValue.getPatientAttributeOption().getName() );
-                }
-                else
-                {
-                    patientAttributeValueMap.put( patientAttributeValue.getPatientAttribute().getId(),
-                        patientAttributeValue.getValue() );
-                }
-            }
+            programAttributes = programAttributeService.getAllProgramAttributes();
         }
-        
+
+        hasDataEntry = showDataEntry( orgunit, program, programInstance );
+
         return SUCCESS;
     }
+
+    // -------------------------------------------------------------------------
+    // Supportive methods
+    // -------------------------------------------------------------------------
+
+    private void loadIdentifierTypes()
+    {
+        // ---------------------------------------------------------------------
+        // Load identifier types of the selected program
+        // ---------------------------------------------------------------------
+
+        identifierTypes = identifierTypeService.getPatientIdentifierTypes( program );
+        identiferMap = new HashMap<Integer, String>();
+
+        if ( identifierTypes != null && identifierTypes.size() > 0 )
+        {
+            Collection<PatientIdentifier> patientIdentifiers = patientIdentifierService.getPatientIdentifiers(
+                identifierTypes, patient );
+
+            for ( PatientIdentifier identifier : patientIdentifiers )
+            {
+                identiferMap.put( identifier.getIdentifierType().getId(), identifier.getIdentifier() );
+            }
+        }
+    }
+
+    private void loadPatientAttributes()
+    {
+        // ---------------------------------------------------------------------
+        // Load patient-attributes of the selected program
+        // ---------------------------------------------------------------------
+
+        attributeGroups = new ArrayList<PatientAttributeGroup>( patientAttributeGroupService
+            .getPatientAttributeGroups( program ) );
+        Collections.sort( attributeGroups, new PatientAttributeGroupSortOrderComparator() );
+
+        noGroupAttributes = patientAttributeService.getPatientAttributes( program, null );
+
+        Collection<PatientAttributeValue> patientAttributeValues = patientAttributeValueService
+            .getPatientAttributeValues( patient );
+
+        for ( PatientAttributeValue patientAttributeValue : patientAttributeValues )
+        {
+            if ( PatientAttribute.TYPE_COMBO.equalsIgnoreCase( patientAttributeValue.getPatientAttribute()
+                .getValueType() ) )
+            {
+                patientAttributeValueMap.put( patientAttributeValue.getPatientAttribute().getId(),
+                    patientAttributeValue.getPatientAttributeOption().getName() );
+            }
+            else
+            {
+                patientAttributeValueMap.put( patientAttributeValue.getPatientAttribute().getId(),
+                    patientAttributeValue.getValue() );
+            }
+        }
+    }
+
+    private boolean showDataEntry( OrganisationUnit orgunit, Program program, ProgramInstance programInstance )
+    {
+        if ( !program.getOrganisationUnits().contains( orgunit ) )
+        {
+            return false;
+        }
+        else if ( !program.getSingleEvent() && programInstance == null )
+        {
+            return false;
+        }
+
+        return true;
+    }
+
 }

@@ -1,38 +1,39 @@
-<h3>$i18n.getString( "patient_registered" )</h3>
+<h3>$i18n.getString( "patient_info" )</h3>
 
 <div>
-
-	<table>
-		<tr>
-			<td class='bold text-column'>$i18n.getString( "full_name" ):</td>
-			<td>$encoder.htmlEncode( $patient.getFullName() )</td>
-		</tr>
-		<tr>
-			<td class='bold text-column'>$i18n.getString( "gender" ):</td>
-			<td>$i18n.getString( $patient.gender )</td>
-		</tr>    
-		<tr>
-			<td class='bold text-column'>$i18n.getString( "date_of_birth" ):</td>
-			<td>$format.formatDate( $patient.birthDate )</td>
-		</tr>
-		<tr>
-			<td class='bold text-column'>$i18n.getString( "age" ):</td>
-			<td>$encoder.htmlEncode( $patient.getAge() )</td>
-		</tr>
-		<tr>
-			<td>&nbsp;</td>
-		</tr>
-		<tr>
-			<td colspan='2'>
-				<input type="button" class='button' value="$i18n.getString( 'back_to_registration' )" onclick="loadPatientList();" >
-			</td>
-		</tr>
-	</table>
-<hr/>
-	<form id='programEnrollmentSelectDiv' name='programEnrollmentSelectDiv' method='POST'>
+	
+		<table>
+			<tr>
+				<td class='bold text-column'>$i18n.getString( "full_name" ):</td>
+				<td>$encoder.htmlEncode( $patient.getFullName() )</td>
+			</tr>
+			<tr>
+				<td class='bold text-column'>$i18n.getString( "gender" ):</td>
+				<td>$i18n.getString( $patient.gender )</td>
+			</tr>
+			<tr>
+				<td class='bold text-column'>$i18n.getString( "date_of_birth" ):</td>
+				<td>$format.formatDate( $patient.birthDate ) $patient.getAge()</td>
+			</tr>
+			<tr>
+				<td>&nbsp;</td>
+			</tr>
+			<tr>
+				<td colspan='2'>
+					<input type="button" class='button' value="$i18n.getString( 'back_to_registration' )" onclick="loadPatientList();" >
+				</td>
+			</tr>
+		</table>
+	
+	
+	<p></p>
+	
+	<fieldset>
+		<legend><strong>$i18n.getString( "program_enrolled_for" )</strong></legend>
+		<form id='programEnrollmentSelectDiv' name='programEnrollmentSelectDiv' method='POST'>
 			<input type="hidden" id="patientId" name="patientId" value="$patient.id">    
 
-			<table>    
+			<table>  
 				<tr>
 					<td class='text-column'><label for="programId">$i18n.getString( "program" )</label></td>
 					<td class='input-column'>
@@ -48,12 +49,12 @@
 				</tr>   
 				<tr id='enrollmentDateTR' class='hidden'>
 					<td class='text-column'><label for="enrollmentDate"><span id='enrollmentDateDescription'></span><em title="$i18n.getString( "required" )" class="required"> * </em></label></td>
-                    <td colspan='2' class='input-column'><input type="text" id="enrollmentDate" name="enrollmentDate" disabled="disabled" class="{validate:{required:true}}"></td>
+                    <td colspan='2' class='input-column'><input type="text" id="enrollmentDate" name="enrollmentDate" ></td>
 				</tr>
 				
-				<tr id='dateOfIncidentTR' style='display:none'>
+				<tr id='dateOfIncidentTR' class='hidden'>
 					<td class='text-column'><label for="dateOfIncident"><span id='dateOfIncidentDescription'></span><em title="$i18n.getString( "required" )" class="required"> * </em></label></td>
-					<td colspan='2' class='input-column'><input type="text" id="dateOfIncident" name="dateOfIncident" disabled="disabled" class="{validate:{required:true}}"></td>
+					<td colspan='2' class='input-column'><input type="text" id="dateOfIncident" name="dateOfIncident" ></td>
 				</tr>
 			
 				<tr>
@@ -72,9 +73,12 @@
                 	<td colspan='3'><span id='message'></span></td>
                 </tr>
 			</table>
-			</form>
-			
-			<div id='programEnrollmentDiv' class='hidden'></div>
+		</form>
+		
+		<p></p>
+	
+		<div id='programEnrollmentDiv' class='hidden'></div>
+	</fieldset>
 	
 </div>
 

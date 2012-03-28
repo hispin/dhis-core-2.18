@@ -14,11 +14,7 @@
 		</tr>
 		<tr>
 			<td class="bold">$i18n.getString( "date_of_birth" ):</td>
-			<td>$format.formatDate( $patient.birthDate )<td>
-		</tr>
-		<tr>
-			<td class="bold">$i18n.getString( "age" ):</td>
-			<td>$encoder.htmlEncode( $patient.getAge() )</td>
+			<td>$format.formatDate( $patient.birthDate ) $patient.getAge()<td>
 		</tr>
 		</table>
 	</tr>
@@ -44,7 +40,7 @@
 		<tr>
 			<td>
 				<table>
-				   <tr>
+				   <tr id='programIdTR'>
 						<td class='text-column'><label for="programId">$i18n.getString( "program" )</label></td>
 						<td>
 							<select id="programId" name="programId" class="criteria" onchange="loadProgramStages();" #if( $programs.size() == 0 ) disabled="disabled" #end>

@@ -34,7 +34,7 @@ function loadProgramStages()
 			
 			var singleEvent = jQuery('#dataRecordingSelectDiv [name=programId] option:selected').attr('singleevent');
 				
-			if(singleEvent=='true')
+			if(singleEvent=='true' || json.programStages.length == 1)
 			{
 				byId('programStageId').selectedIndex = 1;
 				jQuery('#programStageIdTR').attr('class','hidden');
@@ -628,7 +628,7 @@ function doComplete()
 					
 					jQuery("#dataEntryFormDiv").find(".ui-button").each(function()
 					{
-						jQuery(this).attr('disabled', 'disabled');
+						jQuery(this).autocomplete( "option", "disabled" );
 					});
 					
 					disable('validationBtn');
