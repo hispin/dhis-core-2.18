@@ -10,7 +10,7 @@
     <html>
       <head>
         <title>DHIS Web-API</title>
-        <link rel="stylesheet" href="../dhis-web-api/css/main.css" />
+        <link rel="stylesheet" href="/api/static/css/main.css" />
 
         <!-- stylesheets, javascript etc -->
       </head>

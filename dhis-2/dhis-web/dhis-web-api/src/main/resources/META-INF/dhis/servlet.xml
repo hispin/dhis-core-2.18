@@ -11,11 +11,13 @@
 
   <sec:global-method-security pre-post-annotations="enabled" />
 
-	<mvc:annotation-driven>
-		<mvc:message-converters>
-			<bean class="org.hisp.dhis.api.mobile.support.DataStreamSerializableMessageConverter"/>
-		</mvc:message-converters>
-	</mvc:annotation-driven>
+  <mvc:resources mapping="/static/**" location="classpath:/static/" />
+
+  <mvc:annotation-driven>
+    <mvc:message-converters>
+      <bean class="org.hisp.dhis.api.mobile.support.DataStreamSerializableMessageConverter" />
+    </mvc:message-converters>
+  </mvc:annotation-driven>
 
   <context:component-scan base-package="org.hisp.dhis.api" />
 

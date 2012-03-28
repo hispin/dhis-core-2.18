@@ -14,3 +14,7 @@ table, th, td
     border  : 1px solid #c0c0c0;
     padding : 3px;
 }
+
+h2 {
+    text-transform: capitalize;
+}
