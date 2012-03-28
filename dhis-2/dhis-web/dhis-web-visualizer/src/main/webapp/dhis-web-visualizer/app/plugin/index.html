@@ -2,14 +2,14 @@
 <head>
     <link rel="stylesheet" type="text/css" href="http://extjs-public.googlecode.com/svn/tags/extjs-4.0.7/release/resources/css/ext-all-gray.css" />
     <script type="text/javascript" src="http://extjs-public.googlecode.com/svn/tags/extjs-4.0.7/release/ext-all.js"></script>
-    <script type="text/javascript" src="http://apps.dhis2.org/demo/dhis-web-visualizer/app/plugin/plugin.js"></script>
+    <script type="text/javascript" src="http://apps.dhis2.org/dev/dhis-web-visualizer/app/plugin/plugin.js"></script>
     
     <style>
 		body {margin: 0 0 0 60px;}
 		
 		h1 {font-size: 20px; margin: 20px 0;}
 		
-		#chart1 {width: 600px; height: 400px; border: 2px solid #ddd; margin-bottom: 100px;}
+		#chart1 {width: 900px; height: 400px; border: 2px solid #ddd; margin-bottom: 100px;}
 
 		#chart2 {width: 1400px; height: 400px; border: 2px solid #ccc; margin-bottom: 100px;}
     </style>
@@ -18,10 +18,10 @@
 	CONFIG              TYPE            DEFAULT             DESCRIPTION
 		
 	type                string          'column'            (Optional) Chart types: 'column', 'stackedcolumn', 'bar', 'stackedbar', 'line', 'area', 'pie'
-	indicators          [integer]                           (Required*) Indicator ids. Required if no data elements are provided.
-	dataelements        [integer]                           (Required*) Data element ids. Required if no indicators are provided.
+	indicators          [integer]                           (Required*) Indicator uids. Required if no data elements are provided.
+	dataelements        [integer]                           (Required*) Data element uids. Required if no indicators are provided.
 	periods             [string]        'monthsThisYear'    (Optional) Relative period names.
-	organisationunits   [integer]                           (Required) Organisation unit ids.
+	organisationunits   [integer]                           (Required) Organisation unit uids.
 	series              string          'data'              (Optional) Series: 'data', 'period' or 'organisationunit'
 	category            string          'period'            (Optional) Category: 'indicator', 'dataelement', 'period' or 'organisationunit'
 	filter              string          'organisationunit'  (Optional) Filter: 'indicator', 'dataelement', 'period' or 'organisationunit'
@@ -35,7 +35,7 @@
 	-->
 </head>
 
-<body>	
+<body>
 	<h1>My chart 1</h1>
 	<div id="chart1"></div>
     
@@ -44,7 +44,7 @@
 	
 	<script>
 		Ext.onReady( function() {
-			var url = 'http://apps.dhis2.org/demo/';			
+			var url = 'http://apps.dhis2.org/dev/';
             
             DHIS.getChart({
                 uid: 'R0DVGvXDUNP',
@@ -54,13 +54,14 @@
             
 			DHIS.getChart({
                 type: 'stackedcolumn',
-                indicators: [52486, 52491],
+                indicators: ['Uvn6LCg7dVU', 'OdiHJayrsKo'],
                 periods: 'last12Months',
-				organisationunits: [525],
+				organisationunits: ['ImspTQPwCqd'],
 				el: 'chart2',
 				url: url
-			});	
+			});
+			
 		});
-	</script>	
+	</script>
 </body>
 </html>

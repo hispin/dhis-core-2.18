@@ -43,6 +43,7 @@ import org.hisp.dhis.common.GenericIdentifiableObjectStore;
 import org.hisp.dhis.dataelement.comparator.DataElementCategoryComboSizeComparator;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.i18n.I18nService;
+import org.hisp.dhis.indicator.Indicator;
 import org.hisp.dhis.period.PeriodType;
 import org.hisp.dhis.system.util.Filter;
 import org.hisp.dhis.system.util.FilterUtils;
@@ -137,6 +138,18 @@ public class DefaultDataElementService
                 return identifiers.contains( dataElement.getId() );
             }
         } );
+    }
+    
+    public Set<DataElement> getDataElementsByUid( Collection<String> uids )
+    {
+        Set<DataElement> dataElements = new HashSet<DataElement>();
+        
+        for ( String uid : uids )
+        {
+            dataElements.add( dataElementStore.getByUid( uid ) );
+        }
+        
+        return dataElements;
     }
 
     public void setZeroIsSignificantForDataElements( Collection<Integer> dataElementIds )
