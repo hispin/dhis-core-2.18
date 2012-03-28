@@ -31,7 +31,9 @@ import static org.hisp.dhis.i18n.I18nUtils.*;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.Iterator;
+import java.util.Set;
 
 import org.hisp.dhis.common.GenericIdentifiableObjectStore;
 import org.hisp.dhis.i18n.I18nService;
@@ -131,6 +133,18 @@ public class DefaultIndicatorService
                 return identifiers.contains( object.getId() );
             }
         } );
+    }
+    
+    public Set<Indicator> getIndicatorsByUid( Collection<String> uids )
+    {
+        Set<Indicator> indicators = new HashSet<Indicator>();
+        
+        for ( String uid : uids )
+        {
+            indicators.add( indicatorStore.getByUid( uid ) );
+        }
+        
+        return indicators;
     }
 
     public Indicator getIndicatorByName( String name )

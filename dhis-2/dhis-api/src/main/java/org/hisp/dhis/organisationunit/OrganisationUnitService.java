@@ -134,6 +134,14 @@ public interface OrganisationUnitService
     Collection<OrganisationUnit> getOrganisationUnits( Collection<Integer> identifiers );
 
     /**
+     * Returns all OrganisationUnits with corresponding identifiers.
+     *
+     * @param uids the collection of uids.
+     * @return a collection of OrganisationUnits.
+     */
+    Set<OrganisationUnit> getOrganisationUnitsByUid( Collection<String> uids );
+
+    /**
      * Returns an OrganisationUnit with a given name.
      *
      * @param name the name of the OrganisationUnit to return.

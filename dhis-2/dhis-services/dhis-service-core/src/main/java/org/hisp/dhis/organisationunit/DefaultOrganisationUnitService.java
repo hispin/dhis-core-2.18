@@ -43,6 +43,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.hierarchy.HierarchyViolationException;
+import org.hisp.dhis.indicator.Indicator;
 import org.hisp.dhis.organisationunit.comparator.OrganisationUnitLevelComparator;
 import org.hisp.dhis.system.util.AuditLogUtil;
 import org.hisp.dhis.system.util.ConversionUtils;
@@ -180,6 +181,18 @@ public class DefaultOrganisationUnitService
                 return identifiers.contains( object.getId() );
             }
         } );
+    }
+    
+    public Set<OrganisationUnit> getOrganisationUnitsByUid( Collection<String> uids )
+    {
+        Set<OrganisationUnit> organisationUnits = new HashSet<OrganisationUnit>();
+        
+        for ( String uid : uids )
+        {
+            organisationUnits.add( organisationUnitStore.getByUid( uid ) );
+        }
+        
+        return organisationUnits;
     }
 
     public OrganisationUnit getOrganisationUnit( String uid )

@@ -27,17 +27,22 @@ package org.hisp.dhis.visualizer.action;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.ArrayList;
+import static org.hisp.dhis.system.util.ConversionUtils.getIdentifiers;
+
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.hisp.dhis.aggregation.AggregatedDataValue;
 import org.hisp.dhis.aggregation.AggregatedDataValueService;
 import org.hisp.dhis.aggregation.AggregatedIndicatorValue;
+import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.i18n.I18nFormat;
+import org.hisp.dhis.indicator.Indicator;
 import org.hisp.dhis.indicator.IndicatorService;
+import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodService;
@@ -101,23 +106,23 @@ public class GetAggregatedValuesPluginAction
     // Input
     // -------------------------------------------------------------------------
 
-    private Collection<Integer> indicatorIds;
+    private Collection<String> indicatorIds;
 
-    public void setIndicatorIds( Collection<Integer> indicatorIds )
+    public void setIndicatorIds( Collection<String> indicatorIds )
     {
         this.indicatorIds = indicatorIds;
     }
 
-    private Collection<Integer> dataElementIds;
+    private Collection<String> dataElementIds;
 
-    public void setDataElementIds( Collection<Integer> dataElementIds )
+    public void setDataElementIds( Collection<String> dataElementIds )
     {
         this.dataElementIds = dataElementIds;
     }
 
-    private Collection<Integer> organisationUnitIds;
+    private Collection<String> organisationUnitIds;
 
-    public void setOrganisationUnitIds( Collection<Integer> organisationUnitIds )
+    public void setOrganisationUnitIds( Collection<String> organisationUnitIds )
     {
         this.organisationUnitIds = organisationUnitIds;
     }
@@ -177,7 +182,7 @@ public class GetAggregatedValuesPluginAction
     {
         this.last5Years = last5Years;
     }
-    
+
     public String callback;
 
     public String getCallback()
@@ -218,14 +223,14 @@ public class GetAggregatedValuesPluginAction
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
-    
+
     private List<Period> setNames( List<Period> periods )
     {
         for ( Period period : periods )
         {
             period.setName( format.formatPeriod( period ) );
         }
-        
+
         return periods;
     }
 
@@ -233,8 +238,7 @@ public class GetAggregatedValuesPluginAction
         throws Exception
     {
         if ( organisationUnitIds != null
-            && ( lastMonth || last12Months || lastQuarter || last4Quarters || lastSixMonth ||
-                    last2SixMonths || thisYear || last5Years ) )
+            && (lastMonth || last12Months || lastQuarter || last4Quarters || lastSixMonth || last2SixMonths || thisYear || last5Years) )
         {
             RelativePeriods rp = new RelativePeriods();
             rp.setReportingMonth( lastMonth );
@@ -248,17 +252,18 @@ public class GetAggregatedValuesPluginAction
 
             periods = periodService.reloadPeriods( setNames( rp.getRelativePeriods() ) );
 
-            Collection<Integer> periodIds = new ArrayList<Integer>();
+            Collection<Integer> periodIds = getIdentifiers( Period.class, periods );
 
-            for ( Period period : periods )
-            {
-                periodIds.add( period.getId() );
-            }
+            Set<OrganisationUnit> organisationUnits = organisationUnitService
+                .getOrganisationUnitsByUid( organisationUnitIds );
 
             if ( indicatorIds != null )
             {
-                indicatorValues = aggregatedDataValueService.getAggregatedIndicatorValues( indicatorIds, periodIds,
-                    organisationUnitIds );
+                Set<Indicator> indicators = indicatorService.getIndicatorsByUid( indicatorIds );
+
+                indicatorValues = aggregatedDataValueService.getAggregatedIndicatorValues(
+                    getIdentifiers( Indicator.class, indicators ), periodIds,
+                    getIdentifiers( OrganisationUnit.class, organisationUnits ) );
 
                 for ( AggregatedIndicatorValue value : indicatorValues )
                 {
@@ -271,8 +276,10 @@ public class GetAggregatedValuesPluginAction
 
             if ( dataElementIds != null )
             {
-                dataValues = aggregatedDataValueService.getAggregatedDataValueTotals( dataElementIds, periodIds,
-                    organisationUnitIds );
+                Set<DataElement> dataElements = dataElementService.getDataElementsByUid( dataElementIds );
+                
+                dataValues = aggregatedDataValueService.getAggregatedDataValueTotals( getIdentifiers( DataElement.class, dataElements ), periodIds,
+                    getIdentifiers( OrganisationUnit.class, organisationUnits ) );
 
                 for ( AggregatedDataValue value : dataValues )
                 {

@@ -151,6 +151,15 @@ public interface DataElementService
     Collection<DataElement> getDataElements( Collection<Integer> identifiers );
 
     /**
+     * Returns all DataElements with corresponding identifiers. Returns all
+     * DataElements if the given argument is null.
+     *
+     * @param uids the collection of uids.
+     * @return a collection of DataElements.
+     */
+    Set<DataElement> getDataElementsByUid( Collection<String> uids );
+
+    /**
      * Returns all DataElements with types that are possible to aggregate. The
      * types are currently INT and BOOL.
      *

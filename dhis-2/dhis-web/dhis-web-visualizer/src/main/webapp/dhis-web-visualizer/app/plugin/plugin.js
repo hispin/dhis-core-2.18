@@ -64,7 +64,7 @@ Ext.onReady( function() {
                 getIdsFromObjects: function(indicators) {
                     var a = []
                     for (var i = 0; i < indicators.length; i++) {
-                        a.push(indicators[i].internalId);
+                        a.push(indicators[i].id);
                     }
                     return a;
                 }
@@ -73,7 +73,7 @@ Ext.onReady( function() {
                 getIdsFromObjects: function(dataelements) {
                     var a = []
                     for (var i = 0; i < dataelements.length; i++) {
-                        a.push(dataelements[i].internalId);
+                        a.push(dataelements[i].id);
                     }
                     return a;
                 }
@@ -119,7 +119,7 @@ Ext.onReady( function() {
                 getIdsFromObjects: function(organisationunits) {
                     var a = []
                     for (var i = 0; i < organisationunits.length; i++) {
-                        a.push(organisationunits[i].internalId);
+                        a.push(organisationunits[i].id);
                     }
                     return a;
                 }

@@ -28,6 +28,7 @@ package org.hisp.dhis.indicator;
  */
 
 import java.util.Collection;
+import java.util.Set;
 
 /**
  * @author Lars Helge Overland
@@ -54,6 +55,8 @@ public interface IndicatorService
     Collection<Indicator> getAllIndicators();
 
     Collection<Indicator> getIndicators( Collection<Integer> identifiers );
+    
+    Set<Indicator> getIndicatorsByUid( Collection<String> uids );
 
     Indicator getIndicatorByName( String name );
 
