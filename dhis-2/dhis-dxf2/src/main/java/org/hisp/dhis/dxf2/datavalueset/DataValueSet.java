@@ -114,4 +114,10 @@ public class DataValueSet
     {
         this.dataValues = dataValues;
     }
+    
+    @Override
+    public String toString()
+    {
+        return "[" + dataSet + ", " + completeDate + ", " + period + ", " + orgUnit + ", " + dataValues.size() + "]";
+    }
 }

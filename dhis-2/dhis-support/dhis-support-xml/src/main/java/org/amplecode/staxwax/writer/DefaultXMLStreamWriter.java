@@ -52,7 +52,12 @@ public class DefaultXMLStreamWriter
     // -------------------------------------------------------------------------
     // XMLWriter implementation
     // -------------------------------------------------------------------------
-    
+
+    public void openDocument()
+    {
+        openDocument( "UTF-8", "1.0" );
+    }
+
     public void openDocument( String encoding, String version )
     {
         try
@@ -123,7 +128,10 @@ public class DefaultXMLStreamWriter
             {
                 for ( int i = 0; i < attributeNameValuePairs.length; i += 2 )
                 {
-                    writer.writeAttribute( verifyNotNull( attributeNameValuePairs[ i ] ), replaceNull( attributeNameValuePairs[ i + 1 ] ) );
+                    if ( attributeNameValuePairs[ i + 1 ] != null )
+                    {
+                        writer.writeAttribute( verifyNotNull( attributeNameValuePairs[ i ] ), attributeNameValuePairs[ i + 1 ] );
+                    }
                 }
             }
             

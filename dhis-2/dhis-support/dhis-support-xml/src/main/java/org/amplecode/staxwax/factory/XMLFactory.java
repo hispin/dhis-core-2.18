@@ -39,8 +39,6 @@ import javax.xml.stream.XMLStreamWriter;
 import org.amplecode.staxwax.reader.DefaultXMLEventReader;
 import org.amplecode.staxwax.reader.DefaultXMLStreamReader;
 import org.amplecode.staxwax.reader.XMLReader;
-import org.amplecode.staxwax.writer.DefaultIndentingXMLStreamWriter;
-import org.amplecode.staxwax.writer.DefaultLineBreakingXMLStreamWriter;
 import org.amplecode.staxwax.writer.DefaultXMLStreamWriter;
 import org.amplecode.staxwax.writer.XMLWriter;
 import org.codehaus.stax2.XMLEventReader2;
@@ -74,45 +72,14 @@ public class XMLFactory
             
             XMLStreamWriter streamWriter = factory.createXMLStreamWriter( outputStream );
 
-            XMLWriter xmlWriter = new DefaultXMLStreamWriter( streamWriter );
-
-            XMLWriter indentingWriter = new DefaultIndentingXMLStreamWriter( xmlWriter );
-                
-            return indentingWriter;
+            return new DefaultXMLStreamWriter( streamWriter );
         }
         catch ( XMLStreamException ex )
         {
             throw new RuntimeException( "Failed to create XMLWriter", ex );
         }
     }
-    
-    /**
-     * Creates an XMLWriter from a StAX-based XMLStreamWriter. The generated XML
-     * will have a line break after each natural line end and not be indented.
-     * 
-     * @param outputStream the OutputStream to write to.
-     * @return an XMLWriter.
-     */
-    public static XMLWriter getPlainXMLWriter( OutputStream outputStream )
-    {
-        try
-        {
-            XMLOutputFactory factory = new WstxOutputFactory();
-            
-            XMLStreamWriter streamWriter = factory.createXMLStreamWriter( outputStream );
-
-            XMLWriter xmlWriter = new DefaultXMLStreamWriter( streamWriter );
-
-            XMLWriter lineBreakingWriter = new DefaultLineBreakingXMLStreamWriter( xmlWriter );
-            
-            return lineBreakingWriter;
-        }
-        catch ( XMLStreamException ex )
-        {
-            throw new RuntimeException( "Failed to create XMLWriter", ex );
-        }
-    }
-    
+        
     /**
      * Creates an XMLReader from a StAX-based XMLStreamReader2.
      *

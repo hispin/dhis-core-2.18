@@ -37,11 +37,11 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hisp.dhis.common.IdentifiableObject.IdentifiableProperty;
-import org.hisp.dhis.dxf2.datavalue.DataValue;
 import org.hisp.dhis.dxf2.datavalueset.DataValueSet;
 import org.hisp.dhis.dxf2.datavalueset.DataValueSetService;
 import org.hisp.dhis.dxf2.datavalueset.DataValueSets;
 import org.hisp.dhis.dxf2.importsummary.ImportSummary;
+import org.hisp.dhis.dxf2.utils.DataValueSetMapper;
 import org.hisp.dhis.dxf2.utils.JacksonUtils;
 import org.hisp.dhis.importexport.ImportStrategy;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -69,7 +69,7 @@ public class DataValueSetController
     {
         DataValueSets dataValueSets = new DataValueSets();
         dataValueSets.getDataValueSets().add( new DataValueSet() );
-
+        
         model.addAttribute( "model", dataValueSets );
 
         return "dataValueSets";
@@ -87,11 +87,11 @@ public class DataValueSetController
         IdentifiableProperty _idScheme = IdentifiableProperty.valueOf( idScheme.toUpperCase() );        
         ImportStrategy _strategy = ImportStrategy.valueOf( strategy.toUpperCase() );
         
-        DataValueSet dataValueSet = JacksonUtils.fromXml( input, DataValueSet.class );
+        DataValueSet dataValueSet = DataValueSetMapper.fromXml( input );
         
         ImportSummary summary = dataValueSetService.saveDataValueSet( dataValueSet, _idScheme, dryRun, _strategy );
 
-        log.info( "Data values saved using id scheme: " + _idScheme + ", dry run: " + dryRun + ", strategy: " + _strategy );    
+        log.info( "Data values " + dataValueSet + " saved using id scheme: " + _idScheme + ", dry run: " + dryRun + ", strategy: " + _strategy );    
 
         response.setContentType( CONTENT_TYPE_XML );        
         JacksonUtils.toXml( response.getOutputStream(), summary );
@@ -102,31 +102,5 @@ public class DataValueSetController
         throws IOException
     {
         response.sendError( HttpServletResponse.SC_CONFLICT, ex.getMessage() );
-    }
-
-    @RequestMapping( value = "/test",  method = RequestMethod.GET )
-    public String getDataValueSetTest( Model model ) throws Exception
-    {
-        DataValueSets dataValueSets = new DataValueSets();
-        
-        DataValue v1 = new DataValue();
-        v1.setDataElement( "de" );
-        v1.setValue( "va" );
-
-        DataValue v2 = new DataValue();
-        v2.setDataElement( "de" );
-        v2.setValue( "va" );
-        
-        DataValueSet d = new DataValueSet();
-        d.setDataSet( "ds" );
-        d.setOrgUnit( "ou" );
-        d.setPeriod( "pe" );
-        d.getDataValues().add( v1 );
-        d.getDataValues().add( v2 );        
-        dataValueSets.getDataValueSets().add( d );
-
-        model.addAttribute( "model", dataValueSets );
-
-        return "dataValueSets";
     }
 }
