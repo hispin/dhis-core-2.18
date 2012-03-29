@@ -119,6 +119,7 @@
 						#end
 					#end
 				#end
+				<tr><td>&nbsp;</td></tr>
 				<tr>
 					<td></td>
 					<td><input type='submit' value='$i18n.getString("save")' class='button' /></td>

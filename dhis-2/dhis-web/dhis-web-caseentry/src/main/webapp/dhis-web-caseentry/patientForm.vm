@@ -45,8 +45,8 @@
 	<td class="input-column">		
 		<input type="text" id="birthDate" name="birthDate" style='width:110px' />
 		<input type='button' onclick='setFieldValue("birthDate","")' value='$i18n.getString("clear")'>
-		$i18n.getString( "verified" ) <input type='checkbox' id='verified' name='verified' onchange='verifiedOnchange();' value='true' checked >
-		$i18n.getString( "age_year" ) <input type="text" id="age" name="age" class="{validate:{number:true}}"  style="width:50px" disabled />
+		$i18n.getString( "verified" ) <input type='checkbox' id='verified' name='verified' onchange='verifiedOnchange();' value='true' >
+		$i18n.getString( "age_year" ) <input type="text" id="age" name="age" class="{validate:{number:true}}" style="width:50px" />
 	</td>
    <td></td>
 </tr>
@@ -54,7 +54,6 @@
 <tr>
 	<td></td>
 	<td class="input-column" >
-		<span id='validateBirthdate' class="hidden"><i>$i18n.getString('please_fill_out_only_one_of_these_fields')</i></span>
 		<input id="memberValidator" class="hidden {validate:{required:true}}"/>
 	</td>
 </tr>
