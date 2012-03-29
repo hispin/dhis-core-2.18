@@ -68,11 +68,10 @@ public class DataValueController
                                 @RequestParam(required=false, defaultValue="NEW_AND_UPDATES") String strategy,
                                 HttpServletResponse response, 
                                 InputStream input,
-                                Model model )
-        throws IOException
+                                Model model ) throws IOException
     {
-        IdentifiableProperty _idScheme = IdentifiableProperty.valueOf( idScheme );        
-        ImportStrategy _strategy = ImportStrategy.valueOf( strategy );
+        IdentifiableProperty _idScheme = IdentifiableProperty.valueOf( idScheme.toUpperCase() );        
+        ImportStrategy _strategy = ImportStrategy.valueOf( strategy.toUpperCase() );
         
         DataValues dataValues = JacksonUtils.fromXml( input, DataValues.class );
         

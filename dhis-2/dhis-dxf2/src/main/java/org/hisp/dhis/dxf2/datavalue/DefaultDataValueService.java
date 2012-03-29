@@ -81,11 +81,14 @@ public class DefaultDataValueService
         BatchHandler<DataValue> batchHandler = batchHandlerFactory.createBatchHandler( DataValueBatchHandler.class ).init();
 
         int importCount = 0;
-        int updateCount = 0;                
+        int updateCount = 0;
+        int totalCount = 0;
         
         for ( org.hisp.dhis.dxf2.datavalue.DataValue dataValue : dataValues.getDataValues() )
         {
             DataValue internalValue = new DataValue();
+
+            totalCount++;
             
             DataElement dataElement = dataElementMap.get( dataValue.getDataElement() );
             OrganisationUnit orgUnit = orgUnitMap.get( dataValue.getOrgUnit() );
@@ -135,7 +138,7 @@ public class DefaultDataValueService
                     }
 
                     updateCount++;
-                }
+                }                
             }
             else
             {
@@ -151,7 +154,9 @@ public class DefaultDataValueService
             }
         }
         
-        summary.getCounts().add( new ImportCount( DataValue.class.getSimpleName(), importCount, updateCount ) );
+        int ignores = totalCount - importCount - updateCount;
+        
+        summary.getCounts().add( new ImportCount( DataValue.class.getSimpleName(), importCount, updateCount, ignores ) );
         
         batchHandler.flush();
         
