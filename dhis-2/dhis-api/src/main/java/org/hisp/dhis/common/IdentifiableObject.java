@@ -36,7 +36,7 @@ public interface IdentifiableObject
     
     enum IdentifiableProperty
     {
-        ID, UID, NAME, CODE, LAST_UPDATED
+        ID, UID, NAME, CODE
     }
     
     int getId();

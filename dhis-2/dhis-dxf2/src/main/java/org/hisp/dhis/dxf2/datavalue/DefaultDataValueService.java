@@ -28,6 +28,7 @@ package org.hisp.dhis.dxf2.datavalue;
  */
 
 import static org.hisp.dhis.system.util.DateUtils.getDefaultDate;
+import static org.hisp.dhis.importexport.ImportStrategy.*;
 
 import java.util.Map;
 
@@ -39,6 +40,7 @@ import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
 import org.hisp.dhis.dataelement.DataElementCategoryService;
 import org.hisp.dhis.datavalue.DataValue;
+import org.hisp.dhis.importexport.ImportStrategy;
 import org.hisp.dhis.jdbc.batchhandler.DataValueBatchHandler;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.period.Period;
@@ -63,7 +65,7 @@ public class DefaultDataValueService
     private BatchHandlerFactory batchHandlerFactory;
     
     @Transactional
-    public void saveDataValues( DataValues dataValues, IdentifiableProperty idScheme, boolean dryRun )
+    public void saveDataValues( DataValues dataValues, IdentifiableProperty idScheme, boolean dryRun, ImportStrategy strategy )
     {
         Map<String, DataElement> dataElementMap = identifiableObjectManager.getIdMap( DataElement.class, idScheme );
         Map<String, OrganisationUnit> orgUnitMap = identifiableObjectManager.getIdMap( OrganisationUnit.class, idScheme );
@@ -101,7 +103,7 @@ public class DefaultDataValueService
             {
                 categoryOptionCombo = fallbackCategoryOptionCombo;
             }
-                   
+            
             internalValue.setDataElement( dataElement );
             internalValue.setPeriod( periodService.reloadPeriod( period ) );
             internalValue.setSource( orgUnit );
@@ -114,14 +116,14 @@ public class DefaultDataValueService
             
             if ( batchHandler.objectExists( internalValue ) )
             {
-                if ( !dryRun )
+                if ( !dryRun && ( NEW_AND_UPDATES.equals( strategy ) || UPDATES.equals( strategy ) ) )
                 {
                     batchHandler.updateObject( internalValue );
                 }
             }
             else
             {
-                if ( !dryRun )
+                if ( !dryRun && ( NEW_AND_UPDATES.equals( strategy ) || NEW.equals( strategy ) ) )
                 {
                     batchHandler.addObject( internalValue );
                 }
