@@ -118,6 +118,31 @@ public class DefaultIdentifiableObjectManager
         
         return map;
     }
+
+    @SuppressWarnings("unchecked")
+    public <T extends IdentifiableObject> T getObject( Class<T> clazz, IdentifiableProperty property, String id )
+    {
+        GenericIdentifiableObjectStore<T> store = (GenericIdentifiableObjectStore<T>) objectStoreMap.get( clazz );
+        
+        if ( IdentifiableProperty.ID.equals( property ) )
+        {
+            return store.get( Integer.valueOf( id ) );
+        }
+        else if ( IdentifiableProperty.UID.equals( property ) )
+        {
+            return store.getByUid( id );
+        }
+        else if ( IdentifiableProperty.CODE.equals( property ) )
+        {
+            return store.getByCode( id );
+        }
+        else if ( IdentifiableProperty.NAME.equals( property ) )
+        {
+            return store.getByName( id );
+        }
+        
+        throw new IllegalArgumentException( String.valueOf( property ) );
+    }
     
     public IdentifiableObject getObject( String uid, String simpleClassName )
     {

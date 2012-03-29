@@ -303,16 +303,21 @@ public abstract class PeriodType
      */
     public static Period getPeriodFromIsoString( String isoPeriod )
     {
-        PeriodType periodType = getPeriodTypeFromIsoString( isoPeriod );
+        if ( isoPeriod != null )
+        {
+            PeriodType periodType = getPeriodTypeFromIsoString( isoPeriod );
+            
+            try
+            {
+                return periodType != null ? periodType.createPeriod() : null;
+            }
+            catch ( Exception ex )
+            {
+                // Do nothing and return null
+            }
+        }
         
-        try
-        {
-            return periodType != null ? periodType.createPeriod() : null;
-        }
-        catch ( Exception ex )
-        {
-            return null;
-        }
+        return null;
     }
 
     /**

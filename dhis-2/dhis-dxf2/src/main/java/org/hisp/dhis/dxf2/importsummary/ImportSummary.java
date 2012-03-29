@@ -42,13 +42,15 @@ public class ImportSummary
 
     private List<ImportConflict> noneExistingIdentifiers = new ArrayList<ImportConflict>();
     
+    private String dataSetComplete;
+    
     public void increaseImportCount( Class<?> clazz )
     {
     }
     
     @JsonProperty
-    @JacksonXmlElementWrapper( localName = "importCounts" )
-    @JacksonXmlProperty( localName = "count" )
+    @JacksonXmlElementWrapper
+    @JacksonXmlProperty
     public List<ImportCount> getCounts()
     {
         return counts;
@@ -60,8 +62,8 @@ public class ImportSummary
     }
 
     @JsonProperty
-    @JacksonXmlElementWrapper( localName = "noneExistingIdentifiers" )
-    @JacksonXmlProperty( localName = "conflict" )
+    @JacksonXmlElementWrapper
+    @JacksonXmlProperty
     public List<ImportConflict> getNoneExistingIdentifiers()
     {
         return noneExistingIdentifiers;
@@ -70,5 +72,17 @@ public class ImportSummary
     public void setNoneExistingIdentifiers( List<ImportConflict> noneExistingIdentifiers )
     {
         this.noneExistingIdentifiers = noneExistingIdentifiers;
+    }
+
+    @JsonProperty
+    @JacksonXmlProperty
+    public String getDataSetComplete()
+    {
+        return dataSetComplete;
+    }
+
+    public void setDataSetComplete( String dataSetComplete )
+    {
+        this.dataSetComplete = dataSetComplete;
     }
 }

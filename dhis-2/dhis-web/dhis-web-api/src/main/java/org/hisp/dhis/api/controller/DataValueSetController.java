@@ -27,6 +27,8 @@ package org.hisp.dhis.api.controller;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import static org.hisp.dhis.api.utils.ContextUtils.CONTENT_TYPE_XML;
+
 import java.io.IOException;
 import java.io.InputStream;
 
@@ -34,11 +36,14 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.hisp.dhis.api.utils.ContextUtils;
+import org.hisp.dhis.common.IdentifiableObject.IdentifiableProperty;
+import org.hisp.dhis.dxf2.datavalue.DataValue;
 import org.hisp.dhis.dxf2.datavalueset.DataValueSet;
 import org.hisp.dhis.dxf2.datavalueset.DataValueSetService;
 import org.hisp.dhis.dxf2.datavalueset.DataValueSets;
+import org.hisp.dhis.dxf2.importsummary.ImportSummary;
 import org.hisp.dhis.dxf2.utils.JacksonUtils;
+import org.hisp.dhis.importexport.ImportStrategy;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
@@ -46,6 +51,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
 @RequestMapping( value = DataValueSetController.RESOURCE_PATH )
@@ -71,17 +77,24 @@ public class DataValueSetController
     
     @RequestMapping( method = RequestMethod.POST, headers = {"Content-Type=application/xml"} )
     @PreAuthorize( "hasRole('ALL') or hasRole('F_DATAVALUE_ADD')" )
-    public void postDataValueSet( HttpServletResponse response, InputStream input )
-        throws IOException
+    public void postDataValueSet( @RequestParam(required=false, defaultValue="UID") String idScheme,
+                                  @RequestParam(required=false) boolean dryRun,
+                                  @RequestParam(required=false, defaultValue="NEW_AND_UPDATES") String strategy,
+                                  HttpServletResponse response, 
+                                  InputStream input,
+                                  Model model ) throws IOException
     {
+        IdentifiableProperty _idScheme = IdentifiableProperty.valueOf( idScheme.toUpperCase() );        
+        ImportStrategy _strategy = ImportStrategy.valueOf( strategy.toUpperCase() );
+        
         DataValueSet dataValueSet = JacksonUtils.fromXml( input, DataValueSet.class );
         
-        dataValueSetService.saveDataValueSet( dataValueSet );
+        ImportSummary summary = dataValueSetService.saveDataValueSet( dataValueSet, _idScheme, dryRun, _strategy );
 
-        log.debug( "Saved data value set for data set: " + dataValueSet.getDataSet() +
-            ", org unit: " + dataValueSet.getOrgUnit() + ", period: " + dataValueSet.getPeriod() );
-        
-        ContextUtils.okResponse( response, "Saved data value set succesfully" );
+        log.info( "Data values saved using id scheme: " + _idScheme + ", dry run: " + dryRun + ", strategy: " + _strategy );    
+
+        response.setContentType( CONTENT_TYPE_XML );        
+        JacksonUtils.toXml( response.getOutputStream(), summary );
     }
 
     @ExceptionHandler( IllegalArgumentException.class )
@@ -89,5 +102,31 @@ public class DataValueSetController
         throws IOException
     {
         response.sendError( HttpServletResponse.SC_CONFLICT, ex.getMessage() );
+    }
+
+    @RequestMapping( value = "/test",  method = RequestMethod.GET )
+    public String getDataValueSetTest( Model model ) throws Exception
+    {
+        DataValueSets dataValueSets = new DataValueSets();
+        
+        DataValue v1 = new DataValue();
+        v1.setDataElement( "de" );
+        v1.setValue( "va" );
+
+        DataValue v2 = new DataValue();
+        v2.setDataElement( "de" );
+        v2.setValue( "va" );
+        
+        DataValueSet d = new DataValueSet();
+        d.setDataSet( "ds" );
+        d.setOrgUnit( "ou" );
+        d.setPeriod( "pe" );
+        d.getDataValues().add( v1 );
+        d.getDataValues().add( v2 );        
+        dataValueSets.getDataValueSets().add( d );
+
+        model.addAttribute( "model", dataValueSets );
+
+        return "dataValueSets";
     }
 }

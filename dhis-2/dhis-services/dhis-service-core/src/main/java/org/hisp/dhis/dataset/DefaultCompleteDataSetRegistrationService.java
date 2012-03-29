@@ -58,6 +58,12 @@ public class DefaultCompleteDataSetRegistrationService
     {
         completeDataSetRegistrationStore.saveCompleteDataSetRegistration( registration );
     }
+
+    public void updateCompleteDataSetRegistration( CompleteDataSetRegistration registration )
+    {
+        completeDataSetRegistrationStore.updateCompleteDataSetRegistration( registration );
+    }
+    
     public void deleteCompleteDataSetRegistration( CompleteDataSetRegistration registration )
     {
         completeDataSetRegistrationStore.deleteCompleteDataSetRegistration( registration );

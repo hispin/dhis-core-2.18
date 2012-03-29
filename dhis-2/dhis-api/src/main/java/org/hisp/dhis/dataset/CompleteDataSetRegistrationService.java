@@ -47,6 +47,13 @@ public interface CompleteDataSetRegistrationService
      * @param registration the CompleteDataSetRegistration to save.
      */
     void saveCompleteDataSetRegistration( CompleteDataSetRegistration registration );
+
+    /**
+     * Updates a CompleteDataSetRegistration.
+     * 
+     * @param registration the CompleteDataSetRegistration to update.
+     */
+    void updateCompleteDataSetRegistration( CompleteDataSetRegistration registration );
     
     /**
      * Retrieves the CompleteDataSetRegistration for the given DataSet, Period
