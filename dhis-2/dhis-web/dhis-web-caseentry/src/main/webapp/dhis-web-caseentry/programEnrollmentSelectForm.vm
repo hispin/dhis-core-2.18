@@ -15,6 +15,16 @@
 				<td class='bold text-column'>$i18n.getString( "date_of_birth" ):</td>
 				<td>$format.formatDate( $patient.birthDate ) $patient.getAge()</td>
 			</tr>
+			#if( $patient.programs)
+				<tr>
+					<td class='bold text-column'>$i18n.getString( "enrolled_for" ):</td>
+					#foreach( $program in $patient.programs ) 
+						<td>$program.name</td>
+					</tr>
+					<tr><td></td>
+					#end
+				</tr>
+			#end
 			<tr>
 				<td>&nbsp;</td>
 			</tr>
