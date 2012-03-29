@@ -567,14 +567,8 @@
 			<param name="requiredAuthorities">F_PROGRAM_ENROLLMENT</param>
 		</action>
 		
-		<action name="savePatientIdentifier"
-			class="org.hisp.dhis.caseentry.action.patient.SavePatientIdentifierAction">
-			<result name="success" type="velocity-xml">status.vm</result>
-			<param name="requiredAuthorities">F_PATIENT_UPDATE, F_PROGRAM_ENROLLMENT</param>
-		</action>
-		
-		<action name="savePatientAttribueValue"
-			class="org.hisp.dhis.caseentry.action.patient.SavePatientAttributeValueAction">
+		<action name="savePatientIdentifierAndAttribute"
+			class="org.hisp.dhis.caseentry.action.patient.SaveIdentifierAndAttributeAction">
 			<result name="success" type="velocity-xml">status.vm</result>
 			<param name="requiredAuthorities">F_PATIENT_UPDATE, F_PROGRAM_ENROLLMENT</param>
 		</action>

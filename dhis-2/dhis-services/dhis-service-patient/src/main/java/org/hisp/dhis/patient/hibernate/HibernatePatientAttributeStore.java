@@ -70,7 +70,6 @@ public class HibernatePatientAttributeStore
     }
 
     @SuppressWarnings("unchecked")
-    @Override
     public Collection<PatientAttribute> get( Program program, PatientAttributeGroup group )
     {
         Criteria criteria = getCriteria();
@@ -100,6 +99,13 @@ public class HibernatePatientAttributeStore
     public Collection<PatientAttribute> getWithoutGroup()
     {
         return getCriteria( Restrictions.isNull( "patientAttributeGroup" ) ).list();
+    }
+    
+    @SuppressWarnings("unchecked")
+    @Override
+    public Collection<PatientAttribute> get( Program program  )
+    {
+        return getCriteria( Restrictions.eq( "program", program ) ).list();
     }
 
 }
