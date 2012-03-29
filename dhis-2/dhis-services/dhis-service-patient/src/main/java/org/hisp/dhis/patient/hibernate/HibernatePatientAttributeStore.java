@@ -102,10 +102,8 @@ public class HibernatePatientAttributeStore
     }
     
     @SuppressWarnings("unchecked")
-    @Override
     public Collection<PatientAttribute> get( Program program  )
     {
         return getCriteria( Restrictions.eq( "program", program ) ).list();
     }
-
 }
