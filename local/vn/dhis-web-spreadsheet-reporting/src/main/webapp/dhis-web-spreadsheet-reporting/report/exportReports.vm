@@ -24,7 +24,7 @@
 	#foreach( $exportReport in $exportReports )
 	#set( $exist = $templateMap.get( $exportReport.excelTemplateFile ) )
 		<tr id="tr${exportReport.id}">
-			<td>$encoder.htmlEncode( $exportReport.name )</td>
+			<td>$!encoder.htmlEncode( $exportReport.displayName )</td>
 			<td>$i18n.getString( $exportReport.reportType )</td>
 			<td>
 				#if( $exist )
@@ -37,7 +37,7 @@
 				<a href="openDefineAssociationsForm.action?exportReportId=$exportReport.id" title="$i18n.getString( 'define_associations' )"><img src="../images/assign.png" alt="$i18n.getString( 'define_associations' )"/></a>
 				<a href="openExportReportUserRole.action?id=$exportReport.id" title="$i18n.getString( 'assign_exportreport_userrole' )"><img src="images/user_32.png" alt="$i18n.getString( 'update_exportreport_userrole' )"/></a>				
 				<a href="updateExportReportForm.action?id=$exportReport.id" title="$i18n.getString( 'edit' )"><img src="../images/edit.png" alt="$i18n.getString( 'edit' )"/></a>				
-				<a href="javascript:removeItem( $exportReport.id, '$exportReport.name', '$i18n.getString( 'confirm_delete' )', 'deleteExportReport.action');" title="$i18n.getString( 'remove' )"><img src="../images/delete.png" alt="$i18n.getString( 'remove' )"/></a>
+				<a href="javascript:removeItem( $exportReport.id, '$exportReport.displayName', '$i18n.getString( 'confirm_delete' )', 'deleteExportReport.action');" title="$i18n.getString( 'remove' )"><img src="../images/delete.png" alt="$i18n.getString( 'remove' )"/></a>
 			</td>
 			<td>	
 				<a href="listExportItemAction.action?exportReportId=$exportReport.id" title="$i18n.getString( 'export_item' )"><img src="../images/add_section.png" alt="$i18n.getString( 'export_item' )"/></a>

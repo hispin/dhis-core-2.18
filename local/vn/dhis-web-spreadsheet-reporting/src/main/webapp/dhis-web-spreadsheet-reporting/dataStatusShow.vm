@@ -6,9 +6,9 @@
 		<th></th>		
 	</tr>
 	#set( $mark = false )
-	#foreach($ds in $dataStatus)
+	#foreach($ds in $!dataStatus)
 		<tr #alternate( $mark )>
-			<td width="200px"><h3>$ds.dataSet.name</h3></td>
+			<td width="200px"><h3>$!ds.dataSet.displayName</h3></td>
 			<td>	
 				<table width="100%" style="background-color:#000000;" cellpadding="2" cellspacing="1">	
 					#foreach($ds_ in $maps.get($ds.dataSet))

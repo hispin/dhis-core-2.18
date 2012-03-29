@@ -20,8 +20,8 @@
 			<th colspan="2">$i18n.getString( 'export_report' )</th>
 		</tr>
 		<tr>
-			<td><label>$i18n.getString('name')</label></td>
-			<td>: $!encoder.htmlEncode( $!exportReport.name )</td>
+			<td><label>$i18n.getString('name')</label>: </td>
+			<td>$!encoder.htmlEncode( $!exportReport.displayName )</td>
 		</tr>
 		<tr>
 			<td><label>$i18n.getString('report_type')</label></td>
@@ -35,7 +35,7 @@
 		</tr>
 		<tr>
 			<td><label>$i18n.getString('name')<em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
-			<td><input type="text" id="name" name="name" value="$!encoder.htmlEncode($exportItem.name)" style="width:20em" class="{validate:{required:true}}"/></td>
+			<td><input type="text" id="name" name="name" value="$!encoder.htmlEncode( $exportItem.name )" style="width:20em" class="{validate:{required:true}}"/></td>
 		</tr>		
 		<tr>
 			<td><label>$i18n.getString('item_type')<em title="$i18n.getString( 'required' )" class="required">*</em></label></td>

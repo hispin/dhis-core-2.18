@@ -25,7 +25,7 @@
 
 <input type="hidden" id="exportReportType" value="$!exportReport.getReportType()"/>
 
-<h3>$!encoder.htmlEncode($!exportReport.name)</h3>
+<h3>$!encoder.htmlEncode( $!exportReport.displayName )</h3>
 
 <table width="100%">
 	<tr style="vertical-align:bottom;">

@@ -7,10 +7,10 @@
 	"memberCount": "${size}",
 	
 	"dataElements": [
-	#foreach( $de in $dataElementGroupOrder.dataElements )
+	#foreach( $de in $!dataElementGroupOrder.dataElements )
 	{
 	  "id": "${de.id}",
-	  "name": "$!encoder.jsonEncode( ${de.name} )"
+	  "name": "$!encoder.jsonEncode( ${de.displayName} )"
 	}#if( $velocityCount < $size ),#end
 	#end
 	]

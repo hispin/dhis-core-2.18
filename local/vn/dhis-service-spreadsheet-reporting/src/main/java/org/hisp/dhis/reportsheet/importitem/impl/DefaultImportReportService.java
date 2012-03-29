@@ -96,7 +96,7 @@ public class DefaultImportReportService
 
     public ImportReport getImportReport( String name )
     {
-        return importReportStore.getImportReport( name );
+        return i18n( i18nService, importReportStore.getImportReport( name ) );
     }
 
     public void updateImportReport( ImportReport importReport )
@@ -133,7 +133,7 @@ public class DefaultImportReportService
 
     public Collection<ImportItem> getAllImportItem()
     {
-        return i18n( i18nService, importReportStore.getAllImportItem() );
+        return importReportStore.getAllImportItem();
     }
 
     public void updateImportItem( ImportItem excelItem )
@@ -143,7 +143,7 @@ public class DefaultImportReportService
 
     public ImportItem getImportItem( int id )
     {
-        return i18n( i18nService, importReportStore.getImportItem( id ) );
+        return importReportStore.getImportItem( id );
     }
 
     public ImportItem getImportItem( String name )

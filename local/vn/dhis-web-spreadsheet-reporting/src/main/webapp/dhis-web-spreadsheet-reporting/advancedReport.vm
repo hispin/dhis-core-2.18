@@ -38,7 +38,7 @@
 	  <td>$i18n.getString('choose_orgunit_group')<em title="$i18n.getString( 'required' )" class="required">*</em> </td>
 	  <td><select id="availableOrgunitGroups" name="availableOrgunitGroups" style="width:20em" >
 	  	#foreach($organisationUnitGroup in $organisationUnitGroups)
-		<option value="$organisationUnitGroup.id">$organisationUnitGroup.name</option>
+		<option value="$organisationUnitGroup.id">$organisationUnitGroup.displayName</option>
 		#end
       </select></td>
   </tr>

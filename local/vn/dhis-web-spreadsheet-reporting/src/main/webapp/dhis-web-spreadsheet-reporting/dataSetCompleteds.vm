@@ -23,7 +23,7 @@
 					<select style="width:300px" id="dataSetId" name="dataSetId" onchange="getPeriodsAndOrganisationUnit( this.value );">
 					<option value="">$i18n.getString( "select" )</option>
 					#foreach( $dataSet in $dataSets )
-						<option value="$dataSet.id">$!encoder.htmlEncode( $dataSet.name )</option>
+						<option value="$dataSet.id">$!encoder.htmlEncode( $dataSet.displayName )</option>
 					#end
 					</select>
 				</td>

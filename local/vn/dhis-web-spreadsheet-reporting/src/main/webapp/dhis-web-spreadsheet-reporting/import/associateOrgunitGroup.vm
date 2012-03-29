@@ -20,7 +20,7 @@
 		<td>
 			<select multiple size="13" id="availableGroups" name="availableGroups" style="width:100%" ondblclick="moveSelectedById( 'availableGroups', 'selectedOrganisationUnitGroups' )">
 				#foreach ( $group in $availableOrganisationUnitGroups )
-    				<option value="$group.id">$group.name</option>
+    				<option value="$group.id">$group.displayName</option>
     			#end
 			</select>
 		</td>
@@ -33,7 +33,7 @@
 		<td>
 			<select multiple size="13" id="selectedOrganisationUnitGroups" name="selectedOrganisationUnitGroups" style="width:100%" ondblclick="moveSelectedById( 'selectedOrganisationUnitGroups', 'availableGroups' )">
 				#foreach ( $group in $selectedOrganisationUnitGroups )
-					<option value="$group.id">$group.name</option>
+					<option value="$group.id">$group.displayName</option>
     			#end
 			</select>
 		</td>

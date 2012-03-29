@@ -11,7 +11,7 @@
 <table>
 	<tr>
 		<td><label>$i18n.getString('name')<em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
-		<td><input type="text" id="name" name="name"  style="width:20em" class="{validate:{required:true,minlength:2,maxlength:160}}" value="$importReport.name"/></td>
+		<td><input type="text" id="name" name="name"  style="width:20em" class="{validate:{required:true,minlength:2,maxlength:160}}" value="$importReport.displayName"/></td>
 	</tr>
 	<tr>
 		<td><label>$i18n.getString('import_type')<em title="$i18n.getString( 'required' )" class="required">*</em></label></td>

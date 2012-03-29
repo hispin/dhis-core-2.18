@@ -27,11 +27,11 @@ package org.hisp.dhis.reportsheet.importitem;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
+import org.hisp.dhis.common.BaseIdentifiableObject;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroup;
 import org.hisp.dhis.period.PeriodType;
@@ -43,16 +43,9 @@ import org.hisp.dhis.reportsheet.DataElementGroupOrder;
  */
 
 public class ImportReport
-    implements Serializable
+    extends BaseIdentifiableObject
 {
-    /**
-     * 
-     */
     private static final long serialVersionUID = 1L;
-
-    private int id;
-
-    private String name;
 
     private String type;
 

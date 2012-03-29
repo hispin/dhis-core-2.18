@@ -20,9 +20,9 @@
 	</thead>
 	<tbody id="list">
 	#set( $mark = false )
-	#foreach($ds in $dataStatus)
+	#foreach($ds in $!dataStatus)
 		<tr #alternate( $mark )>
-			<td>$ds.dataSet.name</td>
+			<td>$!ds.dataSet.displayName</td>
 			<td id="td${ds.id}">
 				<input type="checkbox" #if($ds.makeDefault) checked="true" #end value="$ds.makeDefault" onchange="updateDefault( $ds.id, $ds.makeDefault )"/>
 			</td>
