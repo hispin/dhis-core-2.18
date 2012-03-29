@@ -241,7 +241,7 @@
     <!-- DataSets -->
     
     <tr>
-        <th>$i18n.getString( "available_dataset_completeness_percentages" )</th>
+        <th>$i18n.getString( "available_reporting_rates" )</th>
     </tr>
     <tr>
         <td>
@@ -261,7 +261,7 @@
         </td>
     </tr>
     <tr>
-        <th>$i18n.getString( "selected_dataset_completeness_percentages" )</th>
+        <th>$i18n.getString( "selected_reporting_rates" )</th>
     </tr>
     <tr>
         <td>
