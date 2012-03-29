@@ -149,6 +149,11 @@ public class DefaultDataValueSetService
                 categoryOptionCombo = fallbackCategoryOptionCombo;
             }
             
+            if ( dataValue.getValue() == null && dataValue.getComment() == null )
+            {
+                continue;
+            }
+            
             internalValue.setDataElement( dataElement );
             internalValue.setPeriod( periodService.reloadPeriod( period ) );
             internalValue.setSource( orgUnit );
@@ -206,23 +211,23 @@ public class DefaultDataValueSetService
             throw new IllegalArgumentException( "Period must be provided on data value set in order to complete data set" );
         }
 
-        CompleteDataSetRegistration complete = registrationService.getCompleteDataSetRegistration( dataSet, period, orgUnit );
+        CompleteDataSetRegistration completeAlready = registrationService.getCompleteDataSetRegistration( dataSet, period, orgUnit );
 
         String username = currentUserService.getCurrentUsername();
         
-        if ( completeDate == null && complete != null )
+        if ( completeDate == null && completeAlready != null )
         {
-            throw new IllegalArgumentException( "Data value set is complete - include a new complete date if you want to update it" );
+            throw new IllegalArgumentException( "Data value set is complete - a new complete date must be provided" );
         }
         
         if ( completeDate != null )
         {
-            if ( complete != null )
+            if ( completeAlready != null )
             {
-                complete.setStoredBy( username );
-                complete.setDate( completeDate );
+                completeAlready.setStoredBy( username );
+                completeAlready.setDate( completeDate );
                 
-                registrationService.updateCompleteDataSetRegistration( complete );
+                registrationService.updateCompleteDataSetRegistration( completeAlready );
             }        
             else
             {
