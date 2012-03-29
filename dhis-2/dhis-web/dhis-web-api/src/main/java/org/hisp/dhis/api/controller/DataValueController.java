@@ -59,7 +59,7 @@ public class DataValueController
     {
         DataValues dataValues = JacksonUtils.fromXml( input, DataValues.class );
         
-        dataValueService.saveDataValues( dataValues, IdentifiableObject.IdentifiableProperty.UID );
+        dataValueService.saveDataValues( dataValues, IdentifiableObject.IdentifiableProperty.UID, false );
 
         ContextUtils.okResponse( response, "Data values saved successfully" );
     }

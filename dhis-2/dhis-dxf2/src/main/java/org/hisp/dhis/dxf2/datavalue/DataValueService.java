@@ -31,5 +31,5 @@ import org.hisp.dhis.common.IdentifiableObject.IdentifiableProperty;
 
 public interface DataValueService
 {
-    void saveDataValues( DataValues dataValues, IdentifiableProperty idScheme );
+    void saveDataValues( DataValues dataValues, IdentifiableProperty idScheme, boolean dryRun );
 }
