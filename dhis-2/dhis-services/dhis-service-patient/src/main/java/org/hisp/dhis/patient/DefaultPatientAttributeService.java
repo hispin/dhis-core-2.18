@@ -113,5 +113,10 @@ public class DefaultPatientAttributeService
     {
         return patientAttributeStore.getWithoutGroup();
     }
+    
+    public Collection<PatientAttribute> getPatientAttributes( Program program )
+    {
+        return patientAttributeStore.get( program );
+    }
 
 }

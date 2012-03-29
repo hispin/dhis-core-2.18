@@ -52,4 +52,6 @@ public interface PatientAttributeStore
     Collection<PatientAttribute> getWithoutGroup();
 
     PatientAttribute getByGroupBy( boolean groupBy );
+    
+    Collection<PatientAttribute> get( Program program );
 }

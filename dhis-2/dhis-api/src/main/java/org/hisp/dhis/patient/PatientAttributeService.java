@@ -62,5 +62,6 @@ public interface PatientAttributeService
     
     Collection<PatientAttribute> getPatientAttributes( Program program, PatientAttributeGroup group );
 
+    Collection<PatientAttribute> getPatientAttributes( Program program );
 
 }
