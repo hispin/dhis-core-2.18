@@ -40,6 +40,9 @@ import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
 import org.hisp.dhis.dataelement.DataElementCategoryService;
 import org.hisp.dhis.datavalue.DataValue;
+import org.hisp.dhis.dxf2.importsummary.ImportConflict;
+import org.hisp.dhis.dxf2.importsummary.ImportCount;
+import org.hisp.dhis.dxf2.importsummary.ImportSummary;
 import org.hisp.dhis.importexport.ImportStrategy;
 import org.hisp.dhis.jdbc.batchhandler.DataValueBatchHandler;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
@@ -65,8 +68,10 @@ public class DefaultDataValueService
     private BatchHandlerFactory batchHandlerFactory;
     
     @Transactional
-    public void saveDataValues( DataValues dataValues, IdentifiableProperty idScheme, boolean dryRun, ImportStrategy strategy )
+    public ImportSummary saveDataValues( DataValues dataValues, IdentifiableProperty idScheme, boolean dryRun, ImportStrategy strategy )
     {
+        ImportSummary summary = new ImportSummary();
+        
         Map<String, DataElement> dataElementMap = identifiableObjectManager.getIdMap( DataElement.class, idScheme );
         Map<String, OrganisationUnit> orgUnitMap = identifiableObjectManager.getIdMap( OrganisationUnit.class, idScheme );
         Map<String, DataElementCategoryOptionCombo> categoryOptionComboMap = identifiableObjectManager.getIdMap( DataElementCategoryOptionCombo.class, IdentifiableProperty.UID );
@@ -74,6 +79,9 @@ public class DefaultDataValueService
         DataElementCategoryOptionCombo fallbackCategoryOptionCombo = categoryService.getDefaultDataElementCategoryOptionCombo();
 
         BatchHandler<DataValue> batchHandler = batchHandlerFactory.createBatchHandler( DataValueBatchHandler.class ).init();
+
+        int importCount = 0;
+        int updateCount = 0;                
         
         for ( org.hisp.dhis.dxf2.datavalue.DataValue dataValue : dataValues.getDataValues() )
         {
@@ -86,16 +94,19 @@ public class DefaultDataValueService
             
             if ( dataElement == null )
             {
+                summary.getNoneExistingIdentifiers().add( new ImportConflict( DataElement.class.getSimpleName(), dataValue.getDataElement() ) );
                 continue;
             }
             
             if ( orgUnit == null )
             {
+                summary.getNoneExistingIdentifiers().add( new ImportConflict( OrganisationUnit.class.getSimpleName(), dataValue.getOrgUnit() ) );
                 continue;
             }
 
             if ( period == null )
             {
+                summary.getNoneExistingIdentifiers().add( new ImportConflict( Period.class.getSimpleName(), dataValue.getPeriod() ) );
                 continue;
             }
             
@@ -116,20 +127,34 @@ public class DefaultDataValueService
             
             if ( batchHandler.objectExists( internalValue ) )
             {
-                if ( !dryRun && ( NEW_AND_UPDATES.equals( strategy ) || UPDATES.equals( strategy ) ) )
+                if ( NEW_AND_UPDATES.equals( strategy ) || UPDATES.equals( strategy ) )
                 {
-                    batchHandler.updateObject( internalValue );
+                    if ( !dryRun )
+                    {
+                        batchHandler.updateObject( internalValue );
+                    }
+
+                    updateCount++;
                 }
             }
             else
             {
-                if ( !dryRun && ( NEW_AND_UPDATES.equals( strategy ) || NEW.equals( strategy ) ) )
+                if ( NEW_AND_UPDATES.equals( strategy ) || NEW.equals( strategy ) )
                 {
-                    batchHandler.addObject( internalValue );
+                    if ( !dryRun )
+                    {
+                        batchHandler.addObject( internalValue );
+                    }
+                    
+                    importCount++;
                 }
             }
         }
         
+        summary.getCounts().add( new ImportCount( DataValue.class.getSimpleName(), importCount, updateCount ) );
+        
         batchHandler.flush();
+        
+        return summary;
     }
 }

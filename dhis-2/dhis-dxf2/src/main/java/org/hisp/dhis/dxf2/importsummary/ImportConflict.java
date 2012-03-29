@@ -1,4 +1,4 @@
-package org.hisp.dhis.dxf2.datavalue;
+package org.hisp.dhis.dxf2.importsummary;
 
 /*
  * Copyright (c) 2011, University of Oslo
@@ -27,11 +27,44 @@ package org.hisp.dhis.dxf2.datavalue;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import org.hisp.dhis.common.IdentifiableObject.IdentifiableProperty;
-import org.hisp.dhis.dxf2.importsummary.ImportSummary;
-import org.hisp.dhis.importexport.ImportStrategy;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 
-public interface DataValueService
+@JacksonXmlRootElement( localName = "conflict" )
+public class ImportConflict
 {
-    ImportSummary saveDataValues( DataValues dataValues, IdentifiableProperty idScheme, boolean dryRun, ImportStrategy strategy );
+    private String object;
+    
+    private String value;
+
+    public ImportConflict( String object, String value )
+    {
+        this.object = object;
+        this.value = value;
+    }
+    
+    @JsonProperty
+    @JacksonXmlProperty( isAttribute=true )
+    public String getObject()
+    {
+        return object;
+    }
+
+    public void setObject( String object )
+    {
+        this.object = object;
+    }
+
+    @JsonProperty
+    @JacksonXmlProperty( isAttribute=true )
+    public String getValue()
+    {
+        return value;
+    }
+
+    public void setValue( String value )
+    {
+        this.value = value;
+    }
 }
