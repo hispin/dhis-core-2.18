@@ -12,8 +12,8 @@
 	<tr>		
 		<td>
 			<select multiple size="30" id="availableList" name="availableList" style="min-width:300px;" ondblclick="moveSelectedById( 'availableList', 'selectedList' )">
-				#foreach( $dataElement in $dataElementGroupOrder.dataElements)
-    				<option value="$dataElement.id">$dataElement.name</option>
+				#foreach( $dataElement in $!dataElementGroupOrder.dataElements)
+    				<option value="$dataElement.id">$dataElement.displayName</option>
     			#end
 			</select>
 		</td>

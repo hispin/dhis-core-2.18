@@ -4,8 +4,8 @@
 	<tr>
 		<td>
 			<select id="sortdataElement" name="sortdataElement" multiple size="10">	
-				#foreach( $dataElement in $dataElementGroupOrder.dataElements)
-					<option value="$dataElement.id">$dataElement.name</option>
+				#foreach( $dataElement in $!dataElementGroupOrder.dataElements)
+					<option value="$dataElement.id">$dataElement.displayName</option>
 				#end
 			</select>
 		

@@ -1,4 +1,4 @@
-<h3>$encoder.htmlEncode( $dataSet.name )</h3>
+<h3>$encoder.htmlEncode( $dataSet.displayName )</h3>
 <table class="listTable" id="listTable">	
 	<thead>
 		<tr>

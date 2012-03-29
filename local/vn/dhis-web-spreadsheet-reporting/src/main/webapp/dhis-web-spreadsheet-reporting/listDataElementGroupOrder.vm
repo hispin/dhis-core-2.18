@@ -1,5 +1,5 @@
 <h3>$i18n.getString( 'dataelement_groups' )</h3>
-<h4><font color="green">$!encoder.htmlEncode( $!report.name )</font></h4>
+<h4><font color="green">$!encoder.htmlEncode( $!report.displayName )</font></h4>
 
 <table width="800px">
 	<tr>

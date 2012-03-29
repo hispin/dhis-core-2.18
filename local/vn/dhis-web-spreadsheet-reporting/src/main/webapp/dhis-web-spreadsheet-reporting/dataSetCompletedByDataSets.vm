@@ -3,7 +3,7 @@
 		<tr>
 			<th></th>
 		#foreach( $d in $dataSets )
-			<th>$!encoder.htmlEncode( $d.name )</th>
+			<th>$!encoder.htmlEncode( $d.displayName )</th>
 		#end
 		</tr>
 	</thead>

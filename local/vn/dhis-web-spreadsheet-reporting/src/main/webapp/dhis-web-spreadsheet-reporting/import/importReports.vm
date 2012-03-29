@@ -24,13 +24,13 @@
 	<tbody id="list">
 	#foreach($importReport in $importReports)
 		<tr id="tr${importReport.id}">
-			<td>$encoder.htmlEncode( $importReport.name )</td>
+			<td>$encoder.htmlEncode( $importReport.displayName )</td>
 			<td>$i18n.getString($importReport.type)</td>
 			<td>$encoder.htmlEncode( $importReport.periodType.name )</td>
 			<td align="left">
 				<a href="openImportReportAssociations.action?importReportId=$importReport.id" title="$i18n.getString( 'associations' )"><img src="../images/assign.png" alt="$i18n.getString( 'associations' )"/></a>
 				<a href="updateImportReportForm.action?id=$importReport.id" title="$i18n.getString( 'edit' )"><img src="../images/edit.png" alt="$i18n.getString( 'edit' )"/></a>
-				<a href="javascript:removeItem($importReport.id, '$importReport.name','$i18n.getString( 'confirm_delete' )', 'deleteImportReport.action');" title="$i18n.getString( 'remove' )"><img src="../images/delete.png" alt="$i18n.getString( 'remove' )"/></a>
+				<a href="javascript:removeItem($importReport.id, '$importReport.displayName','$i18n.getString( 'confirm_delete' )', 'deleteImportReport.action');" title="$i18n.getString( 'remove' )"><img src="../images/delete.png" alt="$i18n.getString( 'remove' )"/></a>
 			</td>
 			<td>
 				<a href="listImportItems.action?importReportId=$importReport.id" title="$i18n.getString( 'import_item' )"><img src="../images/add_section.png" alt="$i18n.getString( 'import_item' )"/></a>

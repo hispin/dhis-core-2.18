@@ -19,7 +19,7 @@
 		</tr>
 		<tr>
 			<td><label>$i18n.getString('name')</label></td>
-			<td>: $!encoder.htmlEncode($!exportReport.name)</td>
+			<td>: $!encoder.htmlEncode( $!exportReport.displayName )</td>
 		</tr>
 		<tr>
 			<td><label>$i18n.getString('export_report_type')</label></td>

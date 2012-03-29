@@ -5,7 +5,7 @@
   #foreach( $exportReport in $exportReports )
   {
     "id": "${exportReport.id}",
-    "name": "$!encoder.jsonEncode( ${exportReport.name} )",
+    "name": "$!encoder.jsonEncode( ${exportReport.displayName} )",
     "flag": "$!idMap.contains( $!{exportReport.id} )"
   }#if( $velocityCount < $size ),#end
   #end

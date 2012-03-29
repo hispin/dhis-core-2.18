@@ -22,7 +22,7 @@
 		<td>
 			<select type="text" id="importReportId" name="importReportId" #if(!$!fileExcel || !$!organisationUnit) disabled #end style="min-width:20em;" onchange="getPeriodsByImportReport(this.value)">					
 			#foreach($importReport in $importReports)
-				<option value="$!importReport.id">$!encoder.htmlEncode($!importReport.name)</option>
+				<option value="$!importReport.id">$!encoder.htmlEncode( $!importReport.displayName )</option>
 			#end
 			</select>
 		</td>
