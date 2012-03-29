@@ -231,6 +231,8 @@ public class LoadFormAction
 
         List<DataElement> dataElements = new ArrayList<DataElement>( dataSet.getDataElements() );
 
+        Collections.sort( dataElements, new DataElementFormNameComparator() );
+        
         if ( dataElements.isEmpty() )
         {
             return INPUT;
