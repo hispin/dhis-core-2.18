@@ -34,6 +34,6 @@ package org.hisp.dhis.importexport;
 public enum ImportStrategy 
 {
     NEW_AND_UPDATES,
-    NEW_NO_UPDATES,
-    UPDATES_NO_NEW
+    NEW,
+    UPDATES
 }

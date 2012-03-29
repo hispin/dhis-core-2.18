@@ -33,15 +33,18 @@ import java.io.InputStream;
 import javax.servlet.http.HttpServletResponse;
 
 import org.hisp.dhis.api.utils.ContextUtils;
-import org.hisp.dhis.common.IdentifiableObject;
 import org.hisp.dhis.dxf2.datavalue.DataValueService;
 import org.hisp.dhis.dxf2.datavalue.DataValues;
 import org.hisp.dhis.dxf2.utils.JacksonUtils;
+import org.hisp.dhis.importexport.ImportStrategy;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+
+import static org.hisp.dhis.common.IdentifiableObject.*;
 
 @Controller
 @RequestMapping( value = DataValueController.RESOURCE_PATH )
@@ -54,13 +57,21 @@ public class DataValueController
 
     @RequestMapping( method = RequestMethod.POST, headers = {"Content-Type=application/xml"} )
     @PreAuthorize( "hasRole('ALL') or hasRole('F_DATAVALUE_ADD')" )
-    public void postDataValues( HttpServletResponse response, InputStream input )
+    public void postDataValues( @RequestParam(required=false, defaultValue="UID") String idScheme,
+                                @RequestParam(required=false) boolean dryRun,
+                                @RequestParam(required=false, defaultValue="NEW_AND_UPDATES") String strategy,
+                                HttpServletResponse response, 
+                                InputStream input )
         throws IOException
     {
+        IdentifiableProperty _idScheme = IdentifiableProperty.valueOf( idScheme );
+        
+        ImportStrategy _strategy = ImportStrategy.valueOf( strategy );
+        
         DataValues dataValues = JacksonUtils.fromXml( input, DataValues.class );
         
-        dataValueService.saveDataValues( dataValues, IdentifiableObject.IdentifiableProperty.UID, false );
+        dataValueService.saveDataValues( dataValues, _idScheme, dryRun, _strategy );
 
-        ContextUtils.okResponse( response, "Data values saved successfully" );
+        ContextUtils.okResponse( response, "Data values saved using id scheme: " + _idScheme + ", dry run: " + dryRun + ", strategy: " + _strategy );
     }
 }

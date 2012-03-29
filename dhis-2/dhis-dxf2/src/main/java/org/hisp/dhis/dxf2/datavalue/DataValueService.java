@@ -28,8 +28,9 @@ package org.hisp.dhis.dxf2.datavalue;
  */
 
 import org.hisp.dhis.common.IdentifiableObject.IdentifiableProperty;
+import org.hisp.dhis.importexport.ImportStrategy;
 
 public interface DataValueService
 {
-    void saveDataValues( DataValues dataValues, IdentifiableProperty idScheme, boolean dryRun );
+    void saveDataValues( DataValues dataValues, IdentifiableProperty idScheme, boolean dryRun, ImportStrategy strategy );
 }
