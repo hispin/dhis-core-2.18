@@ -60,9 +60,6 @@ public class DefaultDataValueService
     private PeriodService periodService;
     
     @Autowired
-    private org.hisp.dhis.datavalue.DataValueService dataValueService;
-    
-    @Autowired
     private BatchHandlerFactory batchHandlerFactory;
     
     @Transactional
@@ -117,7 +114,7 @@ public class DefaultDataValueService
             
             if ( batchHandler.objectExists( internalValue ) )
             {
-                dataValueService.updateDataValue( internalValue );
+                batchHandler.updateObject( internalValue );
             }
             else
             {
