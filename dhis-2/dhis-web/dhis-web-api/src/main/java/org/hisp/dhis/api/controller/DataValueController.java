@@ -32,25 +32,31 @@ import java.io.InputStream;
 
 import javax.servlet.http.HttpServletResponse;
 
-import org.hisp.dhis.api.utils.ContextUtils;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.hisp.dhis.common.IdentifiableObject.IdentifiableProperty;
 import org.hisp.dhis.dxf2.datavalue.DataValueService;
 import org.hisp.dhis.dxf2.datavalue.DataValues;
+import org.hisp.dhis.dxf2.importsummary.ImportSummary;
 import org.hisp.dhis.dxf2.utils.JacksonUtils;
 import org.hisp.dhis.importexport.ImportStrategy;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import static org.hisp.dhis.common.IdentifiableObject.*;
+import static org.hisp.dhis.api.utils.ContextUtils.*;
 
 @Controller
 @RequestMapping( value = DataValueController.RESOURCE_PATH )
 public class DataValueController
 {
     public static final String RESOURCE_PATH = "/dataValues";
+    
+    private static final Log log = LogFactory.getLog( DataValueController.class );
 
     @Autowired
     private DataValueService dataValueService;
@@ -61,17 +67,20 @@ public class DataValueController
                                 @RequestParam(required=false) boolean dryRun,
                                 @RequestParam(required=false, defaultValue="NEW_AND_UPDATES") String strategy,
                                 HttpServletResponse response, 
-                                InputStream input )
+                                InputStream input,
+                                Model model )
         throws IOException
     {
-        IdentifiableProperty _idScheme = IdentifiableProperty.valueOf( idScheme );
-        
+        IdentifiableProperty _idScheme = IdentifiableProperty.valueOf( idScheme );        
         ImportStrategy _strategy = ImportStrategy.valueOf( strategy );
         
         DataValues dataValues = JacksonUtils.fromXml( input, DataValues.class );
         
-        dataValueService.saveDataValues( dataValues, _idScheme, dryRun, _strategy );
-
-        ContextUtils.okResponse( response, "Data values saved using id scheme: " + _idScheme + ", dry run: " + dryRun + ", strategy: " + _strategy );
+        ImportSummary summary = dataValueService.saveDataValues( dataValues, _idScheme, dryRun, _strategy );
+            
+        log.info( "Data values saved using id scheme: " + _idScheme + ", dry run: " + dryRun + ", strategy: " + _strategy );    
+        
+        response.setContentType( CONTENT_TYPE_XML );        
+        JacksonUtils.toXml( response.getOutputStream(), summary );
     }
 }

@@ -1,4 +1,4 @@
-package org.hisp.dhis.dxf2.datavalue;
+package org.hisp.dhis.dxf2.importsummary;
 
 /*
  * Copyright (c) 2011, University of Oslo
@@ -27,11 +27,59 @@ package org.hisp.dhis.dxf2.datavalue;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import org.hisp.dhis.common.IdentifiableObject.IdentifiableProperty;
-import org.hisp.dhis.dxf2.importsummary.ImportSummary;
-import org.hisp.dhis.importexport.ImportStrategy;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 
-public interface DataValueService
+@JacksonXmlRootElement( localName = "count" )
+public class ImportCount
 {
-    ImportSummary saveDataValues( DataValues dataValues, IdentifiableProperty idScheme, boolean dryRun, ImportStrategy strategy );
+    private String object;
+    
+    private int imports;
+    
+    private int updates;
+
+    public ImportCount( String object, int imports, int updates )
+    {
+        this.object = object;
+        this.imports = imports;
+        this.updates = updates;
+    }
+    
+    @JsonProperty
+    @JacksonXmlProperty( isAttribute=true )
+    public String getObject()
+    {
+        return object;
+    }
+
+    public void setObject( String object )
+    {
+        this.object = object;
+    }
+
+    @JsonProperty
+    @JacksonXmlProperty( isAttribute=true )
+    public int getImports()
+    {
+        return imports;
+    }
+
+    public void setImports( int imports )
+    {
+        this.imports = imports;
+    }
+
+    @JsonProperty
+    @JacksonXmlProperty( isAttribute=true )
+    public int getUpdates()
+    {
+        return updates;
+    }
+
+    public void setUpdates( int updates )
+    {
+        this.updates = updates;
+    }
 }

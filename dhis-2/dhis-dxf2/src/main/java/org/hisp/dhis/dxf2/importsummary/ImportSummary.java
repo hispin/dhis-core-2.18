@@ -1,4 +1,4 @@
-package org.hisp.dhis.dxf2.datavalue;
+package org.hisp.dhis.dxf2.importsummary;
 
 /*
  * Copyright (c) 2011, University of Oslo
@@ -27,11 +27,48 @@ package org.hisp.dhis.dxf2.datavalue;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import org.hisp.dhis.common.IdentifiableObject.IdentifiableProperty;
-import org.hisp.dhis.dxf2.importsummary.ImportSummary;
-import org.hisp.dhis.importexport.ImportStrategy;
+import java.util.ArrayList;
+import java.util.List;
 
-public interface DataValueService
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlElementWrapper;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
+
+@JacksonXmlRootElement( localName = "importSummary" )
+public class ImportSummary
 {
-    ImportSummary saveDataValues( DataValues dataValues, IdentifiableProperty idScheme, boolean dryRun, ImportStrategy strategy );
+    private List<ImportCount> counts = new ArrayList<ImportCount>();
+
+    private List<ImportConflict> noneExistingIdentifiers = new ArrayList<ImportConflict>();
+    
+    public void increaseImportCount( Class<?> clazz )
+    {
+    }
+    
+    @JsonProperty
+    @JacksonXmlElementWrapper( localName = "importCounts" )
+    @JacksonXmlProperty( localName = "count" )
+    public List<ImportCount> getCounts()
+    {
+        return counts;
+    }
+
+    public void setCounts( List<ImportCount> counts )
+    {
+        this.counts = counts;
+    }
+
+    @JsonProperty
+    @JacksonXmlElementWrapper( localName = "noneExistingIdentifiers" )
+    @JacksonXmlProperty( localName = "conflict" )
+    public List<ImportConflict> getNoneExistingIdentifiers()
+    {
+        return noneExistingIdentifiers;
+    }
+
+    public void setNoneExistingIdentifiers( List<ImportConflict> noneExistingIdentifiers )
+    {
+        this.noneExistingIdentifiers = noneExistingIdentifiers;
+    }
 }
