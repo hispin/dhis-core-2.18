@@ -39,12 +39,15 @@ public class ImportCount
     private int imports;
     
     private int updates;
+    
+    private int ignores;
 
-    public ImportCount( String object, int imports, int updates )
+    public ImportCount( String object, int imports, int updates, int ignores )
     {
         this.object = object;
         this.imports = imports;
         this.updates = updates;
+        this.ignores = ignores;
     }
     
     @JsonProperty
@@ -82,4 +85,16 @@ public class ImportCount
     {
         this.updates = updates;
     }
+
+    @JsonProperty
+    @JacksonXmlProperty( isAttribute=true )
+    public int getIgnores()
+    {
+        return ignores;
+    }
+
+    public void setIgnores( int ignores )
+    {
+        this.ignores = ignores;
+    }    
 }
