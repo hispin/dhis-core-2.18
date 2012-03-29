@@ -482,7 +482,7 @@
 			<input type="checkbox" id="lastYear" name="lastYear" value="true"#if( $reportTable.relatives.isLastYear() ) checked#end><br><br>
 				
 			<label for="last5years">$i18n.getString( "last_5_years" )</label>
-			<input type="checkbox" id="last5years" name="last5years" value="true"#if( $reportTable.relatives.isLast5Years() ) checked#end>&nbsp;
+			<input type="checkbox" id="last5Years" name="last5Years" value="true"#if( $reportTable.relatives.isLast5Years() ) checked#end>&nbsp;
 			<label for="last12Months">$i18n.getString( "last_12_months" )</label>
 			<input type="checkbox" id="last12Months" name="last12Months" value="true"#if( $reportTable.relatives.isLast12Months() ) checked#end>&nbsp;
 			<label for="last4Quarters">$i18n.getString( "last_4_quarters" )</label>
