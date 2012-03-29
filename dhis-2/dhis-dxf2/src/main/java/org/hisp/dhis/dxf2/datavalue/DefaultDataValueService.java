@@ -63,7 +63,7 @@ public class DefaultDataValueService
     private BatchHandlerFactory batchHandlerFactory;
     
     @Transactional
-    public void saveDataValues( DataValues dataValues, IdentifiableProperty idScheme )
+    public void saveDataValues( DataValues dataValues, IdentifiableProperty idScheme, boolean dryRun )
     {
         Map<String, DataElement> dataElementMap = identifiableObjectManager.getIdMap( DataElement.class, idScheme );
         Map<String, OrganisationUnit> orgUnitMap = identifiableObjectManager.getIdMap( OrganisationUnit.class, idScheme );
@@ -114,11 +114,17 @@ public class DefaultDataValueService
             
             if ( batchHandler.objectExists( internalValue ) )
             {
-                batchHandler.updateObject( internalValue );
+                if ( !dryRun )
+                {
+                    batchHandler.updateObject( internalValue );
+                }
             }
             else
             {
-                batchHandler.addObject( internalValue );
+                if ( !dryRun )
+                {
+                    batchHandler.addObject( internalValue );
+                }
             }
         }
         
