@@ -92,6 +92,13 @@ public class HibernateCompleteDataSetRegistrationStore
         sessionFactory.getCurrentSession().save( registration );
     }
 
+    public void updateCompleteDataSetRegistration( CompleteDataSetRegistration registration )
+    {
+        registration.setPeriod( reloadPeriod( registration.getPeriod() ) );
+        
+        sessionFactory.getCurrentSession().update( registration );
+    }
+
     public CompleteDataSetRegistration getCompleteDataSetRegistration( DataSet dataSet, Period period, OrganisationUnit source )
     {
         period = reloadPeriod( period );
