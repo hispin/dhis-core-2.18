@@ -44,6 +44,14 @@ public interface XMLWriter
      * @param encoding the encoding the XML file.
      * @param version the version of the XML file.
      */
+    void openDocument();
+    
+    /**
+     * Writes the XML declaration to ouput.
+     * 
+     * @param encoding the encoding the XML file.
+     * @param version the version of the XML file.
+     */
     void openDocument( String encoding, String version );
     
     /**

@@ -56,8 +56,7 @@ public class DefaultXMLStreamReader
 {
     private static final Log log = LogFactory.getLog( DefaultXMLStreamReader.class );
 
-    private static final String[] EVENTS = {
-        "None", "Start Element", "End Element", "Processing Instruction",
+    private static final String[] EVENTS = { "None", "Start Element", "End Element", "Processing Instruction",
         "Characters", "Comment", "Space", "Start Document", "End Document", "Entity Reference", "Attribute", "DTD",
         "CData", "Namespace", "Notation Declaration", "Entity Declaration" };
 
@@ -66,7 +65,7 @@ public class DefaultXMLStreamReader
     // -------------------------------------------------------------------------
     // Constructor
     // -------------------------------------------------------------------------
-    
+
     public DefaultXMLStreamReader( XMLStreamReader2 reader )
     {
         this.reader = reader;
@@ -75,7 +74,7 @@ public class DefaultXMLStreamReader
     // -------------------------------------------------------------------------
     // XMLReader implementation
     // -------------------------------------------------------------------------
-    
+
     @Override
     public String getElementName()
     {
@@ -100,27 +99,28 @@ public class DefaultXMLStreamReader
             reader.next();
 
             return this.getText();
-        } catch ( XMLStreamException ex )
+        }
+        catch ( XMLStreamException ex )
         {
             throw new RuntimeException( "Failed to get element value", ex );
         }
     }
 
     @Override
-    public void moveToStartElement( )
+    public void moveToStartElement()
     {
         try
         {
-           while (reader.hasNext())  
-           { 
-               reader.next();
-               if( reader.isStartElement())
-               {
-                   break;
-               }
-           } 
+            while ( reader.hasNext() )
+            {
+                reader.next();
+                if ( reader.isStartElement() )
+                {
+                    break;
+                }
+            }
         }
-          catch ( XMLStreamException ex )
+        catch ( XMLStreamException ex )
         {
             throw new RuntimeException( "Failed to move to start element", ex );
         }
@@ -140,7 +140,8 @@ public class DefaultXMLStreamReader
                     break;
                 }
             }
-        } catch ( XMLStreamException ex )
+        }
+        catch ( XMLStreamException ex )
         {
             throw new RuntimeException( "Failed to move to start element", ex );
         }
@@ -167,7 +168,8 @@ public class DefaultXMLStreamReader
             }
 
             return false;
-        } catch ( XMLStreamException ex )
+        }
+        catch ( XMLStreamException ex )
         {
             throw new RuntimeException( "Failed to move to start element", ex );
         }
@@ -191,7 +193,8 @@ public class DefaultXMLStreamReader
         try
         {
             return reader.next() != END_DOCUMENT;
-        } catch ( XMLStreamException ex )
+        }
+        catch ( XMLStreamException ex )
         {
             throw new RuntimeException( "Failed to move cursor to next event", ex );
         }
@@ -202,8 +205,9 @@ public class DefaultXMLStreamReader
     {
         try
         {
-            return !( reader.next() == END_ELEMENT && reader.getLocalName().equals( endElementName ) );
-        } catch ( XMLStreamException ex )
+            return !(reader.next() == END_ELEMENT && reader.getLocalName().equals( endElementName ));
+        }
+        catch ( XMLStreamException ex )
         {
             throw new RuntimeException( "Failed to move cursor to end element", ex );
         }
@@ -251,7 +255,7 @@ public class DefaultXMLStreamReader
                     reader.next();
 
                     // Read text if any
-                    elements.put( currentElementName, this.getText()  );
+                    elements.put( currentElementName, this.getText() );
                 }
                 else
                 {
@@ -261,7 +265,8 @@ public class DefaultXMLStreamReader
             }
 
             return elements;
-        } catch ( XMLStreamException ex )
+        }
+        catch ( XMLStreamException ex )
         {
             throw new RuntimeException( "Failed to read elements", ex );
         }
@@ -282,7 +287,7 @@ public class DefaultXMLStreamReader
 
             StringBuffer text = new StringBuffer( "\n" );
 
-            while ( ( e = reader.next() ) != END_DOCUMENT )
+            while ( (e = reader.next()) != END_DOCUMENT )
             {
                 text.append( "EVENT: " + EVENTS[e] + " " );
 
@@ -309,7 +314,8 @@ public class DefaultXMLStreamReader
             }
 
             log.info( text );
-        } catch ( XMLStreamException ex )
+        }
+        catch ( XMLStreamException ex )
         {
             throw new RuntimeException( "Failed to read elements", ex );
         }
@@ -321,7 +327,8 @@ public class DefaultXMLStreamReader
         try
         {
             reader.close();
-        } catch ( XMLStreamException ex )
+        }
+        catch ( XMLStreamException ex )
         {
             throw new RuntimeException( "Failed to close reader", ex );
         }
@@ -336,7 +343,8 @@ public class DefaultXMLStreamReader
         {
             XMLEventReader2 eventReader = (XMLEventReader2) fac.createXMLEventReader( reader );
             return eventReader;
-        } catch ( XMLStreamException ex )
+        }
+        catch ( XMLStreamException ex )
         {
             throw new RuntimeException( "Failed to create XML Event reader", ex );
         }
@@ -346,16 +354,16 @@ public class DefaultXMLStreamReader
         throws XMLStreamException
     {
         StringBuffer sb = new StringBuffer();
-        
+
         while ( reader.isCharacters() || reader.getEventType() == XMLStreamReader2.CDATA )
         {
             sb.append( reader.getText() );
             reader.next();
         }
-        
+
         return sb.length() == 0 ? null : sb.toString();
     }
-    
+
     private String nullIfEmpty( String value )
     {
         return value != null && value.isEmpty() ? null : value;

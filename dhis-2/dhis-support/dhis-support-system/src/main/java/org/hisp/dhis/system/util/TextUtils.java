@@ -168,4 +168,28 @@ public class TextUtils
     {
         return s1 == null ? s2 == null : s1.equals( s2 );
     }
+    
+    /**
+     * Returns the string value of the given boolean. Returns null if argument
+     * is null.
+     * 
+     * @param value the boolean.
+     * @return the string value.
+     */
+    public static String valueOf( Boolean value )
+    {
+        return value != null ? String.valueOf( value ) : null;
+    }
+    
+    /**
+     * Returns the boolean value of the given string. Returns null if argument
+     * is null.
+     * 
+     * @param value the string value.
+     * @return the boolean.
+     */
+    public static Boolean valueOf( String value )
+    {
+        return value != null ? Boolean.valueOf( value ) : null;
+    }
 }

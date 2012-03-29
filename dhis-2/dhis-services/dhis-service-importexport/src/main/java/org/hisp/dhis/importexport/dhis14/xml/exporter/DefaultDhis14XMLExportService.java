@@ -156,7 +156,7 @@ public class DefaultDhis14XMLExportService
             
             zipOut.putNextEntry( new ZipEntry( ZIP_ENTRY_NAME ) );
 
-            XMLWriter writer = XMLFactory.getPlainXMLWriter( zipOut );
+            XMLWriter writer = XMLFactory.getXMLWriter( zipOut );
 
             // -------------------------------------------------------------------------
             // Writes to one end of the pipe 
