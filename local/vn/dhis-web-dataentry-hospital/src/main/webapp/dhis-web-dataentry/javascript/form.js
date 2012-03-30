@@ -518,7 +518,7 @@ function organisationUnitSelected( orgUnits, orgUnitNames )
         if ( periodId && periodId != -1 && dataEntryFormIsLoaded )
         {
             showLoader();
-			loadForm( getFieldValue('dataSetId') );
+			loadForm( dataSetId );
             //loadDataValues();
         }
     }

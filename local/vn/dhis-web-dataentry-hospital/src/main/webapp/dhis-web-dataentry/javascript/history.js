@@ -36,7 +36,6 @@ function CommentSaver( dataElementId_, optionComboId_, organisationUnitId_, peri
             	commentValue: commentValue
             },
             dataType: 'json',
-            cache: false,
             success: handleResponse,
             error: handleError
         } );
@@ -87,8 +86,7 @@ function removeMinMaxLimit()
     		$( '#maxLimit' ).css( 'background-color', COLOR_WHITE );
     		
     		refreshChart()
-    	},
-    	cache: false
+    	}
     } );
 }
 
@@ -152,7 +150,6 @@ function saveMinMaxLimit()
     		maxLimit: maxValue
     	},
     	dataType: 'json',
-    	cache: false,
     	success: function() {
     		$( '#minLimit' ).css( 'background-color', COLOR_GREEN );
     		$( '#maxLimit' ).css( 'background-color', COLOR_GREEN );
@@ -188,7 +185,6 @@ function markValueForFollowup()
     		periodId: periodId,
     		organisationUnitId: currentOrganisationUnitId
     	},
-    	cache: false,
     	dataType: 'json',
     	success: function( json )
 	    {
