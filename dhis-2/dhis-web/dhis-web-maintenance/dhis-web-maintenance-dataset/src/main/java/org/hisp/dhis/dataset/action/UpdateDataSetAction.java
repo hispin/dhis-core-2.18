@@ -35,6 +35,8 @@ import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.dataset.DataSetService;
+import org.hisp.dhis.dataset.Section;
+import org.hisp.dhis.dataset.SectionService;
 import org.hisp.dhis.indicator.Indicator;
 import org.hisp.dhis.indicator.IndicatorService;
 import org.hisp.dhis.period.PeriodService;
@@ -76,12 +78,19 @@ public class UpdateDataSetAction
     {
         this.dataElementService = dataElementService;
     }
-
+    
     private IndicatorService indicatorService;
 
     public void setIndicatorService( IndicatorService indicatorService )
     {
         this.indicatorService = indicatorService;
+    }
+    
+    private SectionService sectionService;
+
+    public void setSectionService( SectionService sectionService )
+    {
+        this.sectionService = sectionService;
     }
 
     // -------------------------------------------------------------------------
@@ -202,6 +211,18 @@ public class UpdateDataSetAction
 
         dataSetService.updateDataSet( dataSet );
 
+        // ---------------------------------------------------------------------
+        // Remove data elements which are removed in data set from sections
+        // ---------------------------------------------------------------------
+
+        for ( Section section : dataSet.getSections() )
+        {
+            if ( section.getDataElements().retainAll( dataSet.getDataElements() ) )
+            {
+                sectionService.updateSection( section );
+            }
+        }
+        
         return SUCCESS;
     }
 }
