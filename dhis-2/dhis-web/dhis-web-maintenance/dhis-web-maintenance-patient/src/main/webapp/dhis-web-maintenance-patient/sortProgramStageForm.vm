@@ -1,6 +1,6 @@
 <h3>$i18n.getString( "program_stage_sort_order" )</h3>
 																		
-<form id="sortProgramStageForm" name="sortProgramStageForm" action="saveProgramStageSortOder.action" method="get" onsubmit="selectAllById('programStageList');">
+<form id="sortProgramStageForm" name="sortProgramStageForm" action="saveProgramStageSortOder.action" method="post" onsubmit="selectAllById('programStageList');">
 
 <div style="display:inline">
   <input type="hidden" id="id" name="id" value="$program.id">
