@@ -388,6 +388,7 @@ public class TableAlteror
         executeSql( "update reporttable set quarterslastyear = false where quarterslastyear is null" );
         executeSql( "update reporttable set lastyear = false where lastyear is null" );
         executeSql( "update reporttable set last5years = false where last5years is null" );
+        executeSql( "update reporttable set lastsixmonth = false where lastsixmonth is null" );
         executeSql( "update reporttable set last4quarters = false where last4quarters is null" );
         executeSql( "update reporttable set last12months = false where last12months is null" );
         executeSql( "update reporttable set last6bimonths = false where last6bimonths is null" );
