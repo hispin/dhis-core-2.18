@@ -74,6 +74,7 @@
       <property name="reportingMonth" />
       <property name="reportingBimonth" />
       <property name="reportingQuarter" />
+      <property name="lastSixMonth" />
       <property name="monthsThisYear" />
       <property name="quartersThisYear" />
       <property name="thisYear" />
@@ -83,6 +84,7 @@
       <property name="last5Years" />
       <property name="last12Months" />
       <property name="last4Quarters" />
+	  <property name="last2SixMonths" />
     </component>
 
     <component name="reportParams">

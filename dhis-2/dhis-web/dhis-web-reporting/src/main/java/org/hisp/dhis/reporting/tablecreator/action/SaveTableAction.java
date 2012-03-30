@@ -327,6 +327,13 @@ public class SaveTableAction
     {
         this.last4Quarters = last4Quarters;
     }
+    
+    private boolean last2SixMonths;
+
+    public void setLast2SixMonths( boolean last2SixMonths )
+    {
+        this.last2SixMonths = last2SixMonths;
+    }
 
     private boolean paramReportingMonth;
 
@@ -422,7 +429,7 @@ public class SaveTableAction
         RelativePeriods relatives = new RelativePeriods( reportingMonth, reportingBimonth, reportingQuarter, lastSixMonth,
             monthsThisYear, quartersThisYear, thisYear, 
             monthsLastYear, quartersLastYear, lastYear, 
-            last5years, last12Months, false, last4Quarters, false );
+            last5years, last12Months, false, last4Quarters, last2SixMonths );
         
         ReportParams reportParams = new ReportParams();
         
