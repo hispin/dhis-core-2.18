@@ -54,6 +54,7 @@
 <tr>
 	<td></td>
 	<td class="input-column" >
+		<span id='validateBirthdate' class="hidden" style='color:red'><i>$i18n.getString('please_fill_out_only_one_of_these_fields')</i></span>
 		<input id="memberValidator" class="hidden {validate:{required:true}}"/>
 	</td>
 </tr>
