@@ -29,7 +29,7 @@ package org.hisp.dhis.mapgeneration;
 
 import java.awt.Color;
 
-import org.codehaus.jackson.JsonNode;
+import com.fasterxml.jackson.databind.JsonNode;
 
 /**
  * Utility class.

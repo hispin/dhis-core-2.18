@@ -29,9 +29,9 @@ package org.hisp.dhis.mapgeneration;
 
 import net.sf.json.JSONException;
 
-import org.codehaus.jackson.JsonNode;
 import org.geotools.geometry.jts.JTSFactoryFinder;
 
+import com.fasterxml.jackson.databind.JsonNode;
 import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.geom.GeometryFactory;
 import com.vividsolutions.jts.geom.LinearRing;
