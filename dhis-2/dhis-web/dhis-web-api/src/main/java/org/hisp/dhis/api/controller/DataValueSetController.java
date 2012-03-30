@@ -77,21 +77,23 @@ public class DataValueSetController
     
     @RequestMapping( method = RequestMethod.POST, headers = {"Content-Type=application/xml"} )
     @PreAuthorize( "hasRole('ALL') or hasRole('F_DATAVALUE_ADD')" )
-    public void postDataValueSet( @RequestParam(required=false, defaultValue="UID") String idScheme,
+    public void postDataValueSet( @RequestParam(required=false, defaultValue="UID") String dataElementIdScheme,
+                                  @RequestParam(required=false, defaultValue="UID") String orgUnitIdScheme,
                                   @RequestParam(required=false) boolean dryRun,
                                   @RequestParam(required=false, defaultValue="NEW_AND_UPDATES") String strategy,
                                   HttpServletResponse response, 
                                   InputStream input,
                                   Model model ) throws IOException
     {
-        IdentifiableProperty _idScheme = IdentifiableProperty.valueOf( idScheme.toUpperCase() );        
+        IdentifiableProperty _dataElementidScheme = IdentifiableProperty.valueOf( dataElementIdScheme.toUpperCase() );
+        IdentifiableProperty _orgUnitIdScheme = IdentifiableProperty.valueOf( orgUnitIdScheme.toUpperCase() );
         ImportStrategy _strategy = ImportStrategy.valueOf( strategy.toUpperCase() );
         
         DataValueSet dataValueSet = DataValueSetMapper.fromXml( input );
         
-        ImportSummary summary = dataValueSetService.saveDataValueSet( dataValueSet, _idScheme, dryRun, _strategy );
+        ImportSummary summary = dataValueSetService.saveDataValueSet( dataValueSet, _dataElementidScheme, _orgUnitIdScheme, dryRun, _strategy );
 
-        log.info( "Data values " + dataValueSet + " saved using id scheme: " + _idScheme + ", dry run: " + dryRun + ", strategy: " + _strategy );    
+        log.info( "Data values " + dataValueSet + " saved, data element id scheme: " + _dataElementidScheme + ", org unit id scheme: " + _orgUnitIdScheme + ",  dry run: " + dryRun + ", strategy: " + _strategy );    
 
         response.setContentType( CONTENT_TYPE_XML );        
         JacksonUtils.toXml( response.getOutputStream(), summary );

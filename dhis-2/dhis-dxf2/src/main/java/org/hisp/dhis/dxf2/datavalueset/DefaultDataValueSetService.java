@@ -84,23 +84,26 @@ public class DefaultDataValueSetService
     @Transactional
     public ImportSummary saveDataValueSet( DataValueSet dataValueSet )
     {
-        return saveDataValueSet( dataValueSet, IdentifiableProperty.UID, false, ImportStrategy.NEW_AND_UPDATES );
+        return saveDataValueSet( dataValueSet, IdentifiableProperty.UID, IdentifiableProperty.UID, false, ImportStrategy.NEW_AND_UPDATES );
     }
     
     @Transactional
-    public ImportSummary saveDataValueSet( DataValueSet dataValueSet, IdentifiableProperty idScheme, boolean dryRun, ImportStrategy strategy )
+    public ImportSummary saveDataValueSet( DataValueSet dataValueSet, IdentifiableProperty dataElementIdScheme, IdentifiableProperty orgUnitIdScheme, boolean dryRun, ImportStrategy strategy )
     {
         ImportSummary summary = new ImportSummary();
         
-        Map<String, DataElement> dataElementMap = identifiableObjectManager.getIdMap( DataElement.class, idScheme );
-        Map<String, OrganisationUnit> orgUnitMap = identifiableObjectManager.getIdMap( OrganisationUnit.class, idScheme );
+        dataElementIdScheme = dataValueSet.getDataElementIdScheme() != null ? IdentifiableProperty.valueOf( dataValueSet.getDataElementIdScheme().toUpperCase() ) : dataElementIdScheme;
+        orgUnitIdScheme = dataValueSet.getOrgUnitIdScheme() != null ? IdentifiableProperty.valueOf( dataValueSet.getOrgUnitIdScheme().toUpperCase() ) : orgUnitIdScheme;
+        
+        Map<String, DataElement> dataElementMap = identifiableObjectManager.getIdMap( DataElement.class, dataElementIdScheme );
+        Map<String, OrganisationUnit> orgUnitMap = identifiableObjectManager.getIdMap( OrganisationUnit.class, orgUnitIdScheme );
         Map<String, DataElementCategoryOptionCombo> categoryOptionComboMap = identifiableObjectManager.getIdMap( DataElementCategoryOptionCombo.class, IdentifiableProperty.UID );
         
-        DataSet dataSet = dataValueSet.getDataSet() != null ? identifiableObjectManager.getObject( DataSet.class, idScheme, dataValueSet.getDataSet() ) : null;
+        DataSet dataSet = dataValueSet.getDataSet() != null ? identifiableObjectManager.getObject( DataSet.class, IdentifiableProperty.UID, dataValueSet.getDataSet() ) : null;
         Date completeDate = getDefaultDate( dataValueSet.getCompleteDate() );
         
         Period period = PeriodType.getPeriodFromIsoString( dataValueSet.getPeriod() );
-        OrganisationUnit orgUnit = dataValueSet.getOrgUnit() != null ? identifiableObjectManager.getObject( OrganisationUnit.class, idScheme, dataValueSet.getOrgUnit() ) : null;
+        OrganisationUnit orgUnit = dataValueSet.getOrgUnit() != null ? identifiableObjectManager.getObject( OrganisationUnit.class, orgUnitIdScheme, dataValueSet.getOrgUnit() ) : null;
 
         if ( dataSet != null )
         {
