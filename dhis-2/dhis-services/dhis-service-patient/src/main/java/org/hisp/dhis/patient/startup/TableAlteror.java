@@ -74,13 +74,10 @@ public class TableAlteror
         updateProgramStageInstanceOrgunit();
 
         executeSql( "ALTER TABLE programstage_dataelements DROP COLUMN showOnReport" );
-        
-        executeSql( "ALTER TABLE programstage_dataelements DROP COLUMN showOnReport" );
 
         executeSql( "ALTER TABLE patientdatavaluearchive DROP COLUMN providedbyanotherfacility" );
         executeSql( "ALTER TABLE patientdatavaluearchive DROP COLUMN organisationunitid" );
         executeSql( "ALTER TABLE patientdatavaluearchive DROP COLUMN storedby" );  
-        executeSql( "DROP TABLE patientchart" ); 
         executeSql( "DROP TABLE patientchart" ); 
         
         executeSql( "UPDATE program set hideDateOfIncident=false WHERE hideDateOfIncident is null" );
