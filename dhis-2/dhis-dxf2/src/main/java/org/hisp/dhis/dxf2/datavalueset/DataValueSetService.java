@@ -36,5 +36,5 @@ public interface DataValueSetService
 {
     ImportSummary saveDataValueSet( DataValueSet dataValueSet );
     
-    ImportSummary saveDataValueSet( DataValueSet dataValueSet, IdentifiableProperty idScheme, boolean dryRun, ImportStrategy strategy );
+    ImportSummary saveDataValueSet( DataValueSet dataValueSet, IdentifiableProperty dataElementIdScheme, IdentifiableProperty orgUnitIdScheme, boolean dryRun, ImportStrategy strategy );
 }

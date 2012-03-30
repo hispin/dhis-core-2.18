@@ -34,16 +34,23 @@ import org.hisp.dhis.common.Dxf2Namespace;
 import org.hisp.dhis.dxf2.datavalue.DataValue;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonUnwrapped;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 
 @JacksonXmlRootElement( localName = "dataValueSet", namespace = Dxf2Namespace.NAMESPACE )
 public class DataValueSet
-{    
-    public enum IdentificationStrategy { INTERNAL, UID, CODE  };
+{
+    //--------------------------------------------------------------------------
+    // Options
+    //--------------------------------------------------------------------------
 
-    public static final IdentificationStrategy DEFAULT_STRATEGY = IdentificationStrategy.UID;
+    private String dataElementIdScheme;
+    
+    private String orgUnitIdScheme;
+    
+    //--------------------------------------------------------------------------
+    // Properties
+    //--------------------------------------------------------------------------
 
     private String dataSet;
 
@@ -54,6 +61,34 @@ public class DataValueSet
     private String orgUnit;
 
     private List<DataValue> dataValues = new ArrayList<DataValue>();
+
+    //--------------------------------------------------------------------------
+    // Getters and setters
+    //--------------------------------------------------------------------------
+
+    @JsonProperty()
+    @JacksonXmlProperty( isAttribute=true, namespace = Dxf2Namespace.NAMESPACE )
+    public String getDataElementIdScheme()
+    {
+        return dataElementIdScheme;
+    }
+
+    public void setDataElementIdScheme( String dataElementIdScheme )
+    {
+        this.dataElementIdScheme = dataElementIdScheme;
+    }
+
+    @JsonProperty()
+    @JacksonXmlProperty( isAttribute=true, namespace = Dxf2Namespace.NAMESPACE )
+    public String getOrgUnitIdScheme()
+    {
+        return orgUnitIdScheme;
+    }
+
+    public void setOrgUnitIdScheme( String orgUnitIdScheme )
+    {
+        this.orgUnitIdScheme = orgUnitIdScheme;
+    }
 
     @JsonProperty()
     @JacksonXmlProperty( isAttribute=true, namespace = Dxf2Namespace.NAMESPACE )

@@ -43,7 +43,18 @@ public class DataValueSetMapper
 {
     private static final String XMLNS = "xmlns";
     private static final String NS = "http://dhis2.org/schema/dxf/2.0";
-    
+
+    //--------------------------------------------------------------------------
+    // Options
+    //--------------------------------------------------------------------------
+
+    private static final String FIELD_DATAELEMENTIDSCHEME = "dataElementIdScheme";
+    private static final String FIELD_ORGUNITIDSCHEME = "orgUnitIdScheme";
+
+    //--------------------------------------------------------------------------
+    // Properties
+    //--------------------------------------------------------------------------
+
     private static final String FIELD_DATAVALUESET = "dataValueSet";
     private static final String FIELD_DATAVALUE = "dataValue";
     private static final String FIELD_DATASET = "dataSet";
@@ -94,6 +105,9 @@ public class DataValueSetMapper
         reader.moveToStartElement( FIELD_DATAVALUESET );
         
         DataValueSet dataValueSet = new DataValueSet();
+        
+        dataValueSet.setDataElementIdScheme( reader.getAttributeValue( FIELD_DATAELEMENTIDSCHEME ) );
+        dataValueSet.setOrgUnitIdScheme( reader.getAttributeValue( FIELD_ORGUNITIDSCHEME ) );
         
         dataValueSet.setDataSet( reader.getAttributeValue( FIELD_DATASET ) );
         dataValueSet.setCompleteDate( reader.getAttributeValue( FIELD_COMPLETEDATE ) );
