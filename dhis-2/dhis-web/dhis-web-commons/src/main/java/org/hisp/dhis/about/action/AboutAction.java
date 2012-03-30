@@ -48,10 +48,7 @@ import org.hisp.dhis.util.ContextUtils;
 import com.opensymphony.xwork2.Action;
 
 /**
- * @author Hans S. Toemmerholt
- * @version $Id: AboutAction.java 3255 2007-04-23 09:58:06Z andegje $
- * @modifier Dang Duy Hieu
- * @since 2010-05-04
+ * @author Dang Duy Hieu
  */
 public class AboutAction
     implements Action
@@ -196,25 +193,23 @@ public class AboutAction
 
         InputStream in = classLoader.getResourceAsStream( "build.properties" );
 
-        if ( in == null )
+        if ( in != null )
         {
-            throw new IllegalStateException( "build.properties not found" );
+            Properties properties = new Properties();
+    
+            properties.load( in );
+    
+            version = properties.getProperty( "build.version" );
+    
+            revision = properties.getProperty( "build.revision" );
+    
+            String buildTime = properties.getProperty( "build.time" );
+
+            DateFormat dateFormat = new SimpleDateFormat( "yyyy-MM-dd HH:mm:ss" );
+
+            this.buildTime = dateFormat.parse( buildTime );
         }
-
-        Properties properties = new Properties();
-
-        properties.load( in );
-
-        version = properties.getProperty( "build.version" );
-
-        revision = properties.getProperty( "build.revision" );
-
-        String buildTime = properties.getProperty( "build.time" );
-
-        DateFormat dateFormat = new SimpleDateFormat( "yyyy-MM-dd HH:mm:ss" );
-
-        this.buildTime = dateFormat.parse( buildTime );
-
+        
         HttpServletRequest request = ServletActionContext.getRequest();
 
         // ---------------------------------------------------------------------
