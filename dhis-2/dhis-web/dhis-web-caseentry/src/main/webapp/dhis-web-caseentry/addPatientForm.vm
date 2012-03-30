@@ -25,8 +25,8 @@
 						if( birthDate != '' && age!='' )
 						{
 							$("#patientForm [id=memberValidator]").val("birthDate");
-							alert( i18n_please_fill_out_only_one_of_these_fields );
-							jQuery('#birthDate').focus();
+							showById( 'validateBirthdate' );
+							jQuery('#age').focus();
 							isSubmit = false;
 							return;
 						}
