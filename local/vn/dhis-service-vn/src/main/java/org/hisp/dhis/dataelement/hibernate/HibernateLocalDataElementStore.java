@@ -49,6 +49,6 @@ public class HibernateLocalDataElementStore
     {
         return getCriteria().createAlias( "attributeValues", "attributeValue" ).add(
             Restrictions.eq( "attributeValue.attribute", attribute ) ).add(
-            Restrictions.ilike( "attributeValue.value", value ) ).list();
+            Restrictions.eq( "attributeValue.value", value ).ignoreCase() ).list();
     }
 }

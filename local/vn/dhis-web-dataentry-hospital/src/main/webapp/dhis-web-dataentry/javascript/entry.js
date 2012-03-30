@@ -254,7 +254,6 @@ function ValueSaver( dataElementId_, optionComboId_, organisationUnitId_, period
             url: 'saveValue.action',
             data: dataValue,
             dataType: 'json',
-            cache: false,
             success: handleSuccess,
             error: handleError
         } );

@@ -36,14 +36,12 @@ package org.hisp.dhis.dataelement;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import org.hisp.dhis.attribute.Attribute;
 import org.hisp.dhis.attribute.AttributeService;
-import org.hisp.dhis.common.comparator.IdentifiableObjectNameComparator;
 import org.hisp.dhis.dataentryform.DataEntryForm;
 import org.hisp.dhis.dataentryform.DataEntryFormService;
 import org.hisp.dhis.dataset.DataSet;
@@ -111,17 +109,6 @@ public class LoadFormAction
     public void setI18n( I18n i18n )
     {
         this.i18n = i18n;
-    }
-
-    // -------------------------------------------------------------------------
-    // Comparator
-    // -------------------------------------------------------------------------
-
-    private Comparator<DataElement> dataElementComparator;
-
-    public void setDataElementComparator( Comparator<DataElement> dataElementComparator )
-    {
-        this.dataElementComparator = dataElementComparator;
     }
 
     // -------------------------------------------------------------------------
@@ -248,7 +235,7 @@ public class LoadFormAction
             dataElements.retainAll( dataElementsByAttr );
         }
 
-        Collections.sort( dataElements, dataElementComparator );
+//        Collections.sort( dataElements, dataElementComparator );
 
         orderedDataElements = dataElementService.getGroupedDataElementsByCategoryCombo( dataElements );
 
@@ -377,7 +364,7 @@ public class LoadFormAction
         {
             des = (List<DataElement>) orderedDataElements.get( categoryCombo );
 
-            Collections.sort( des, IdentifiableObjectNameComparator.INSTANCE );
+            Collections.sort( des, new DataElementFormNameComparator() );
 
             orderedDataElements.put( categoryCombo, des );
         }
