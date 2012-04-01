@@ -47,37 +47,87 @@ function pageInit()
 	$( "#menuDropDownFeedBack" ).click(	function()
 		{
 			window.location.href = currentPath + 'displayFeedbackForm.action' + backURL;
-		});
+		} );
 		
 	$( "#menuDropDownChangeLog" ).click( function()
 		{
 			window.location.href = currentPath + 'displayChangeLog.action' + backURL;
-		});
+		} );
 		
 	$( "#menuDropDownSupportiveSoftware" ).click( function()
 		{
 			window.location.href= currentPath + 'displaySupportiveSoftware.action' + backURL;
-		});
+		} );
 	
 	$( "#menuDropDownUserAccount" ).click( function()
 		{
 			window.location.href = currentPath + 'showUpdateUserAccountForm.action' + backURL;
-		});
+		} );
 		
 	$( "#menuDropDownModuleOverview" ).click( function()
 		{
 			window.location.href = currentPath + 'modules.action' + backURL;
-		});
+		} );
 		
 	$( "#menuDropDownWebApi" ).click( function()
 		{
 			window.location.href = '../api';
-		});
+		} );
 		
 	$( "#menuDropDownAboutDHIS2" ).click( function()
 		{
 			window.location.href = currentPath + 'about.action' + backURL;
-		});
+		} );
+	
+	// Set show and hide drop down events on top menu
+	
+	if ( maintenanceModulesNo > 0 )
+	{
+		$( "#menuLink1" ).hover( function() 
+		{
+			showDropDown( 'menuDropDown1' );
+		}, 
+		function() 
+		{
+			hideDropDownTimeout();
+		} );
+	}
+
+	if ( serviceModulesNo > 0 )
+	{
+		$( "#menuLink2" ).hover( function() 
+		{
+			showDropDown( 'menuDropDown2' );
+		}, 
+		function() 
+		{
+			hideDropDownTimeout();
+		} );
+	}
+
+	$( "#menuLink3" ).hover( function() 
+	{
+		showDropDown( 'menuDropDown3' );
+	}, 
+	function() 
+	{
+		hideDropDownTimeout();
+	} );
+
+	$( "#menuLink4" ).click( function() 
+	{
+		jQuery.cookie( 'pageSize', null, {path:'/'} );
+		window.location.href='../dhis-web-commons-security/logout.action';
+	} );
+
+	$( "#menuDropDown1, #menuDropDown2, #menuDropDown3" ).hover( function() 
+	{
+		cancelHideDropDownTimeout();
+	}, 
+	function() 
+	{
+		hideDropDownTimeout();
+	} );
 	
 	// Intro fade in
 	
