@@ -9,13 +9,15 @@
     <link type="image/png" rel="icon" href="../images/favicon.png" />
 
     #foreach ( $style in $stylesheets )
-      <link type="text/css" rel="stylesheet" href="$style">
+    <link type="text/css" rel="stylesheet" href="$style">
     #end
     
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
     <script type="text/javascript">
 		var dateFormat = 'yy-mm-dd';
+		var maintenanceModulesNo = ${maintenanceModules.size()};
+		var serviceModulesNo = ${serviceModules.size()};
 	</script>
 
     <script type="text/javascript" src="../dhis-web-commons/javascripts/jQuery/jquery.min.js"></script>
@@ -42,64 +44,21 @@
     <script type="text/javascript" src="../dhis-web-commons/javascripts/date.js"></script>
     <script type="text/javascript" src="../dhis-web-commons/javascripts/json2.js"></script>
     <script type="text/javascript" src="../dhis-web-commons/javascripts/validationRules.js"></script>
-
     <script type="text/javascript" src="../dhis-web-commons/javascripts/dhis2/dhis2.util.js"></script>
     <script type="text/javascript" src="../dhis-web-commons/javascripts/dhis2/dhis2.array.js"></script>
     <script type="text/javascript" src="../dhis-web-commons/javascripts/dhis2/dhis2.select.js"></script>
     <script type="text/javascript" src="../dhis-web-commons/javascripts/dhis2/dhis2.comparator.js"></script>
     <script type="text/javascript" src="../dhis-web-commons/javascripts/dhis2/dhis2.availability.js"></script>
-
-    <script type="text/javascript" src="../dhis-web-commons/css/${stylesheetDirectory}/dom.js"></script>
-		
-    <script type="text/javascript" src="../main.js"></script>
-  
+    <script type="text/javascript" src="../dhis-web-commons/css/${stylesheetDirectory}/dom.js"></script>		
+    <script type="text/javascript" src="../main.js"></script>  
     <script type="text/javascript" src="../request.js"></script>
     #foreach( $javascript in $javascripts )
-      <script type="text/javascript" src="$javascript"></script>
+    <script type="text/javascript" src="$javascript"></script>
     #end
-
-	<script type="text/javascript">
-		jQuery(document).ready(function() {
-			#if ( $maintenanceModules.size() > 0 )
-			jQuery("#menuLink1").hover(function() {
-				showDropDown( 'menuDropDown1' );
-			}, function() {
-				hideDropDownTimeout();
-			});
-			#end
-
-			#if ( $serviceModules.size() > 0 )
-			jQuery("#menuLink2").hover(function() {
-				showDropDown( 'menuDropDown2' );
-			}, function() {
-				hideDropDownTimeout();
-			});
-			#end
-
-			jQuery("#menuLink3").hover(function() {
-				showDropDown( 'menuDropDown3' );
-			}, function() {
-				hideDropDownTimeout();
-			});
-
-			jQuery("#menuLink4").click( function() {
-				jQuery.cookie('pageSize', null, {path:'/'});
-				window.location.href='../dhis-web-commons-security/logout.action';
-			});
-
-			jQuery("#menuDropDown1, #menuDropDown2, #menuDropDown3").hover(function() {
-				cancelHideDropDownTimeout();
-			}, function() {
-				hideDropDownTimeout();
-			});
-		});
-	</script>
   </head>
   
-  <body>
-    
-    #parse( "macros.vm" )
-        
+  <body>    
+    #parse( "macros.vm" )        
     <div id="header">
       <img id="headerBanner" src="../dhis-web-commons/css/${stylesheetDirectory}/logo_banner.png" 
         onclick="window.location.href='../dhis-web-commons-about/modules.action'" style="cursor:pointer" title="$i18n.getString( 'go_to_system_overview' )">
