@@ -41,7 +41,6 @@ import org.hisp.dhis.common.IdentifiableObject.IdentifiableProperty;
 import org.hisp.dhis.dxf2.datavalueset.DataValueSet;
 import org.hisp.dhis.dxf2.datavalueset.DataValueSetService;
 import org.hisp.dhis.dxf2.importsummary.ImportSummary;
-import org.hisp.dhis.dxf2.utils.DataValueSetMapper;
 import org.hisp.dhis.dxf2.utils.JacksonUtils;
 import org.hisp.dhis.importexport.ImportStrategy;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -94,18 +93,16 @@ public class DataValueSetController
                                   @RequestParam(required=false) boolean dryRun,
                                   @RequestParam(required=false, defaultValue="NEW_AND_UPDATES") String strategy,
                                   HttpServletResponse response, 
-                                  InputStream input,
+                                  InputStream in,
                                   Model model ) throws IOException
     {
         IdentifiableProperty _dataElementidScheme = IdentifiableProperty.valueOf( dataElementIdScheme.toUpperCase() );
         IdentifiableProperty _orgUnitIdScheme = IdentifiableProperty.valueOf( orgUnitIdScheme.toUpperCase() );
         ImportStrategy _strategy = ImportStrategy.valueOf( strategy.toUpperCase() );
         
-        DataValueSet dataValueSet = DataValueSetMapper.fromXml( input );
-        
-        ImportSummary summary = dataValueSetService.saveDataValueSet( dataValueSet, _dataElementidScheme, _orgUnitIdScheme, dryRun, _strategy );
+        ImportSummary summary = dataValueSetService.saveDataValueSet( in, _dataElementidScheme, _orgUnitIdScheme, dryRun, _strategy );
 
-        log.info( "Data values " + dataValueSet + " saved, data element id scheme: " + _dataElementidScheme + ", org unit id scheme: " + _orgUnitIdScheme + ",  dry run: " + dryRun + ", strategy: " + _strategy );    
+        log.info( "Data values set saved, data element id scheme: " + _dataElementidScheme + ", org unit id scheme: " + _orgUnitIdScheme + ",  dry run: " + dryRun + ", strategy: " + _strategy );    
 
         response.setContentType( CONTENT_TYPE_XML );        
         JacksonUtils.toXml( response.getOutputStream(), summary );

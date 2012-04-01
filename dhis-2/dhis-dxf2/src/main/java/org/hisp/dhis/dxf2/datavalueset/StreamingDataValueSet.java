@@ -113,13 +113,17 @@ public class StreamingDataValueSet
     }
 
     @Override
-    public DataValue getNextDataValue()
+    public boolean hasNextDataValue()
     {
-        boolean hasNext = reader.moveToStartElement( FIELD_DATAVALUE, FIELD_DATAVALUESET );
-        
-        return hasNext ? new StreamingDataValue( reader ) : null;
+        return reader.moveToStartElement( FIELD_DATAVALUE, FIELD_DATAVALUESET );        
     }
     
+    @Override
+    public DataValue getNextDataValue()
+    {
+        return new StreamingDataValue( reader );
+    }
+
     //--------------------------------------------------------------------------
     // Setters
     //--------------------------------------------------------------------------
