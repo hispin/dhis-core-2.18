@@ -56,6 +56,10 @@ public class SpringDataValueSetStore
     @Autowired
     private JdbcTemplate jdbcTemplate;
 
+    //--------------------------------------------------------------------------
+    // DataValueSetStore implementation
+    //--------------------------------------------------------------------------
+
     public void writeDataValueSet( DataSet dataSet, Date completeDate, OrganisationUnit orgUnit, Period period, 
         Set<DataElement> dataElements, Set<Period> periods, Set<OrganisationUnit> orgUnits, OutputStream out )
     {

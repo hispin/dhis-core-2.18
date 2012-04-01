@@ -27,8 +27,6 @@ package org.hisp.dhis.dxf2.metadata;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import org.springframework.stereotype.Service;
-
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */

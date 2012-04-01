@@ -32,9 +32,9 @@ package org.hisp.dhis.dxf2.metadata;
  */
 public class ExportOptions
 {
-    //---------------------------------------------------------------------------------------------------
+    //--------------------------------------------------------------------------
     // Static helpers
-    //---------------------------------------------------------------------------------------------------
+    //--------------------------------------------------------------------------
 
     static private final ExportOptions defaultExportOptions = new ExportOptions();
 
@@ -43,11 +43,11 @@ public class ExportOptions
         return defaultExportOptions;
     }
 
-    //---------------------------------------------------------------------------------------------------
-    // Fields for enabling/disabling options. This is very static ATM, but it is meant to be used by
-    // systems that auto-set beans, like Spring-MVC, which means it can be used as a simple argument in
-    // controller methods.
-    //---------------------------------------------------------------------------------------------------
+    //--------------------------------------------------------------------------
+    // Fields for enabling/disabling options. This is very static ATM, but it is 
+    // meant to be used by systems that auto-set beans, like Spring-MVC, which 
+    // means it can be used as a simple argument in controller methods.
+    //--------------------------------------------------------------------------
 
     private boolean attributeTypes = true;
 

@@ -27,11 +27,7 @@ package org.hisp.dhis.dxf2.datavalue;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import org.hisp.dhis.common.Dxf2Namespace;
 
-import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
-
-@JacksonXmlRootElement( localName = "dataValue", namespace = Dxf2Namespace.NAMESPACE )
 public class DataValue
 {
     //--------------------------------------------------------------------------
