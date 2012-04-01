@@ -142,6 +142,11 @@ public class DataValueSet
         this.dataValues = dataValues;
     }
     
+    public boolean hasNextDataValue()
+    {
+        return dataValues.iterator().hasNext();
+    }
+    
     public DataValue getNextDataValue()
     {
         return dataValues.iterator().next();

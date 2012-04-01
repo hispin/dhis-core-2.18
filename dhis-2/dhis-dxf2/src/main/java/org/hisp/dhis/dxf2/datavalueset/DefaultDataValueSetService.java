@@ -33,12 +33,14 @@ import static org.hisp.dhis.importexport.ImportStrategy.UPDATES;
 import static org.hisp.dhis.system.util.ConversionUtils.wrap;
 import static org.hisp.dhis.system.util.DateUtils.getDefaultDate;
 
+import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.Date;
 import java.util.Map;
 
 import org.amplecode.quick.BatchHandler;
 import org.amplecode.quick.BatchHandlerFactory;
+import org.amplecode.staxwax.factory.XMLFactory;
 import org.hisp.dhis.common.IdentifiableObject.IdentifiableProperty;
 import org.hisp.dhis.common.IdentifiableObjectManager;
 import org.hisp.dhis.dataelement.DataElement;
@@ -129,14 +131,16 @@ public class DefaultDataValueSetService
         dataValueSetStore.writeDataValueSet( dataSet_, completeDate, orgUnit_, period_, dataSet_.getDataElements(), wrap( period_ ), wrap( orgUnit_ ), out );
     }
     
-    public ImportSummary saveDataValueSet( DataValueSet dataValueSet )
+    public ImportSummary saveDataValueSet( InputStream in )
     {
-        return saveDataValueSet( dataValueSet, IdentifiableProperty.UID, IdentifiableProperty.UID, false, ImportStrategy.NEW_AND_UPDATES );
+        return saveDataValueSet( in, IdentifiableProperty.UID, IdentifiableProperty.UID, false, ImportStrategy.NEW_AND_UPDATES );
     }
     
-    public ImportSummary saveDataValueSet( DataValueSet dataValueSet, IdentifiableProperty dataElementIdScheme, IdentifiableProperty orgUnitIdScheme, boolean dryRun, ImportStrategy strategy )
+    public ImportSummary saveDataValueSet( InputStream in, IdentifiableProperty dataElementIdScheme, IdentifiableProperty orgUnitIdScheme, boolean dryRun, ImportStrategy strategy )
     {
         ImportSummary summary = new ImportSummary();
+        
+        DataValueSet dataValueSet = new StreamingDataValueSet( XMLFactory.getXMLReader( in ) );
         
         dataElementIdScheme = dataValueSet.getDataElementIdScheme() != null ? IdentifiableProperty.valueOf( dataValueSet.getDataElementIdScheme().toUpperCase() ) : dataElementIdScheme;
         orgUnitIdScheme = dataValueSet.getOrgUnitIdScheme() != null ? IdentifiableProperty.valueOf( dataValueSet.getOrgUnitIdScheme().toUpperCase() ) : orgUnitIdScheme;
@@ -168,8 +172,10 @@ public class DefaultDataValueSetService
         int updateCount = 0;
         int totalCount = 0;
         
-        for ( org.hisp.dhis.dxf2.datavalue.DataValue dataValue : dataValueSet.getDataValues() )
+        while ( dataValueSet.hasNextDataValue() )
         {
+            org.hisp.dhis.dxf2.datavalue.DataValue dataValue = dataValueSet.getNextDataValue();
+            
             DataValue internalValue = new DataValue();
 
             totalCount++;

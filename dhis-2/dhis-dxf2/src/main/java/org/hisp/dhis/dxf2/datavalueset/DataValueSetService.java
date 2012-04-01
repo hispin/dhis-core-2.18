@@ -27,6 +27,7 @@ package org.hisp.dhis.dxf2.datavalueset;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import java.io.InputStream;
 import java.io.OutputStream;
 
 import org.hisp.dhis.common.IdentifiableObject.IdentifiableProperty;
@@ -37,7 +38,7 @@ public interface DataValueSetService
 {
     void writeDataValueSet( String dataSet, String period, String orgUnit, OutputStream out );
     
-    ImportSummary saveDataValueSet( DataValueSet dataValueSet );
+    ImportSummary saveDataValueSet( InputStream in );
     
-    ImportSummary saveDataValueSet( DataValueSet dataValueSet, IdentifiableProperty dataElementIdScheme, IdentifiableProperty orgUnitIdScheme, boolean dryRun, ImportStrategy strategy );
+    ImportSummary saveDataValueSet( InputStream in, IdentifiableProperty dataElementIdScheme, IdentifiableProperty orgUnitIdScheme, boolean dryRun, ImportStrategy strategy );
 }
