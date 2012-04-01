@@ -238,7 +238,7 @@ public abstract class PeriodType
 
     /**
      * Parses a date from a String on the format YYYY-MM-DD.
-     *
+     * 
      * @param dateString the String to parse.
      * @return a Date based on the given String.
      */
@@ -249,7 +249,8 @@ public abstract class PeriodType
             final SimpleDateFormat format = new SimpleDateFormat();
             format.applyPattern( "yyyy-MM-dd" );
             return dateString != null ? format.parse( dateString ) : null;
-        } catch ( ParseException ex )
+        }
+        catch ( ParseException ex )
         {
             throw new RuntimeException( "Failed to parse medium date", ex );
         }
@@ -309,7 +310,7 @@ public abstract class PeriodType
             
             try
             {
-                return periodType != null ? periodType.createPeriod() : null;
+                return periodType != null ? periodType.createPeriod( isoPeriod ) : null;
             }
             catch ( Exception ex )
             {

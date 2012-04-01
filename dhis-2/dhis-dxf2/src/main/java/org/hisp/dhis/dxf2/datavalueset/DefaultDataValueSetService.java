@@ -30,8 +30,10 @@ package org.hisp.dhis.dxf2.datavalueset;
 import static org.hisp.dhis.importexport.ImportStrategy.NEW;
 import static org.hisp.dhis.importexport.ImportStrategy.NEW_AND_UPDATES;
 import static org.hisp.dhis.importexport.ImportStrategy.UPDATES;
+import static org.hisp.dhis.system.util.ConversionUtils.wrap;
 import static org.hisp.dhis.system.util.DateUtils.getDefaultDate;
 
+import java.io.OutputStream;
 import java.util.Date;
 import java.util.Map;
 
@@ -45,6 +47,7 @@ import org.hisp.dhis.dataelement.DataElementCategoryService;
 import org.hisp.dhis.dataset.CompleteDataSetRegistration;
 import org.hisp.dhis.dataset.CompleteDataSetRegistrationService;
 import org.hisp.dhis.dataset.DataSet;
+import org.hisp.dhis.dataset.DataSetService;
 import org.hisp.dhis.datavalue.DataValue;
 import org.hisp.dhis.dxf2.importsummary.ImportConflict;
 import org.hisp.dhis.dxf2.importsummary.ImportCount;
@@ -52,6 +55,7 @@ import org.hisp.dhis.dxf2.importsummary.ImportSummary;
 import org.hisp.dhis.importexport.ImportStrategy;
 import org.hisp.dhis.jdbc.batchhandler.DataValueBatchHandler;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
+import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodService;
 import org.hisp.dhis.period.PeriodType;
@@ -60,6 +64,7 @@ import org.hisp.dhis.user.CurrentUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
+@Transactional
 public class DefaultDataValueSetService
     implements DataValueSetService
 {
@@ -68,6 +73,12 @@ public class DefaultDataValueSetService
     
     @Autowired
     private DataElementCategoryService categoryService;
+    
+    @Autowired
+    private DataSetService dataSetService;
+    
+    @Autowired
+    private OrganisationUnitService organisationUnitService;
     
     @Autowired
     private PeriodService periodService;
@@ -81,13 +92,48 @@ public class DefaultDataValueSetService
     @Autowired
     private CurrentUserService currentUserService;
 
-    @Transactional
+    @Autowired
+    private DataValueSetStore dataValueSetStore;
+    
+    //--------------------------------------------------------------------------
+    // DataValueSet implementation
+    //--------------------------------------------------------------------------
+
+    public void writeDataValueSet( String dataSet, String period, String orgUnit, OutputStream out )
+    {
+        DataSet dataSet_ = dataSetService.getDataSet( dataSet );
+        Period period_ = PeriodType.getPeriodFromIsoString( period );
+        OrganisationUnit orgUnit_ = organisationUnitService.getOrganisationUnit( orgUnit );
+        
+        if ( dataSet_ == null )
+        {
+            throw new IllegalArgumentException( "Invalid data set: " + dataSet );
+        }
+        
+        if ( period_ == null )
+        {
+            throw new IllegalArgumentException( "Invalid period: " + period );
+        }
+        
+        if ( orgUnit_ == null )
+        {
+            throw new IllegalArgumentException( "Invalid org unit: " + orgUnit );
+        }
+        
+        CompleteDataSetRegistration registration = registrationService.getCompleteDataSetRegistration( dataSet_, period_, orgUnit_ );
+        
+        Date completeDate = registration != null ? registration.getDate() : null;
+        
+        period_ = periodService.reloadPeriod( period_ );
+        
+        dataValueSetStore.writeDataValueSet( dataSet_, completeDate, orgUnit_, period_, dataSet_.getDataElements(), wrap( period_ ), wrap( orgUnit_ ), out );
+    }
+    
     public ImportSummary saveDataValueSet( DataValueSet dataValueSet )
     {
         return saveDataValueSet( dataValueSet, IdentifiableProperty.UID, IdentifiableProperty.UID, false, ImportStrategy.NEW_AND_UPDATES );
     }
     
-    @Transactional
     public ImportSummary saveDataValueSet( DataValueSet dataValueSet, IdentifiableProperty dataElementIdScheme, IdentifiableProperty orgUnitIdScheme, boolean dryRun, ImportStrategy strategy )
     {
         ImportSummary summary = new ImportSummary();
@@ -104,10 +150,14 @@ public class DefaultDataValueSetService
         
         Period period = PeriodType.getPeriodFromIsoString( dataValueSet.getPeriod() );
         OrganisationUnit orgUnit = dataValueSet.getOrgUnit() != null ? identifiableObjectManager.getObject( OrganisationUnit.class, orgUnitIdScheme, dataValueSet.getOrgUnit() ) : null;
-
-        if ( dataSet != null )
+        
+        if ( dataSet != null && completeDate != null )
         {
             handleComplete( dataSet, completeDate, orgUnit, period, summary );
+        }
+        else
+        {
+            summary.setDataSetComplete( Boolean.FALSE.toString() );
         }
         
         DataElementCategoryOptionCombo fallbackCategoryOptionCombo = categoryService.getDefaultDataElementCategoryOptionCombo();
@@ -202,44 +252,40 @@ public class DefaultDataValueSetService
         return summary;
     }
 
+    //--------------------------------------------------------------------------
+    // Supportive methods
+    //--------------------------------------------------------------------------
+
     private void handleComplete( DataSet dataSet, Date completeDate, OrganisationUnit orgUnit, Period period, ImportSummary summary )
     {
         if ( orgUnit == null )
         {
-            throw new IllegalArgumentException( "Org unit must be provided on data value set in order to complete data set" );
+            throw new IllegalArgumentException( "Org unit id must be provided to complete data set" );
         }
         
         if ( period == null )
         {
-            throw new IllegalArgumentException( "Period must be provided on data value set in order to complete data set" );
+            throw new IllegalArgumentException( "Period id must be provided to complete data set" );
         }
 
         CompleteDataSetRegistration completeAlready = registrationService.getCompleteDataSetRegistration( dataSet, period, orgUnit );
 
         String username = currentUserService.getCurrentUsername();
         
-        if ( completeDate == null && completeAlready != null )
+        if ( completeAlready != null )
         {
-            throw new IllegalArgumentException( "Data value set is complete - a new complete date must be provided" );
+            completeAlready.setStoredBy( username );
+            completeAlready.setDate( completeDate );
+            
+            registrationService.updateCompleteDataSetRegistration( completeAlready );
+        }        
+        else
+        {
+            CompleteDataSetRegistration registration = new CompleteDataSetRegistration( dataSet, period, orgUnit, completeDate, username );
+            
+            registrationService.saveCompleteDataSetRegistration( registration );
         }
         
-        if ( completeDate != null )
-        {
-            if ( completeAlready != null )
-            {
-                completeAlready.setStoredBy( username );
-                completeAlready.setDate( completeDate );
-                
-                registrationService.updateCompleteDataSetRegistration( completeAlready );
-            }        
-            else
-            {
-                CompleteDataSetRegistration registration = new CompleteDataSetRegistration( dataSet, period, orgUnit, completeDate, username );
-                
-                registrationService.saveCompleteDataSetRegistration( registration );
-            }
-            
-            summary.setDataSetComplete( DateUtils.getMediumDateString( completeDate ) );
-        }
+        summary.setDataSetComplete( DateUtils.getMediumDateString( completeDate ) );
     }
 }

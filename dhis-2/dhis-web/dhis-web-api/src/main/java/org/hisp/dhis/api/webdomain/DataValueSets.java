@@ -1,4 +1,4 @@
-package org.hisp.dhis.dxf2.datavalueset;
+package org.hisp.dhis.api.webdomain;
 
 /*
 * Copyright (c) 2004-2012, University of Oslo
@@ -32,6 +32,7 @@ import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlElementWrapper;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 import org.hisp.dhis.common.Dxf2Namespace;
+import org.hisp.dhis.dxf2.datavalueset.DataValueSet;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -8,4 +8,7 @@
   <bean id="org.hisp.dhis.dxf2.datavalueset.DataValueSetService"
       class="org.hisp.dhis.dxf2.datavalueset.DefaultDataValueSetService" />
 
+  <bean id="org.hisp.dhis.dxf2.datavalueset.DataValueSetStore"
+	  class="org.hisp.dhis.dxf2.datavalueset.SpringDataValueSetStore" />
+
 </beans>
