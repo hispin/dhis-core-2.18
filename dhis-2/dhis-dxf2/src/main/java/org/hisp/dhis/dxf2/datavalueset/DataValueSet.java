@@ -30,12 +30,8 @@ package org.hisp.dhis.dxf2.datavalueset;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.hisp.dhis.common.Dxf2Namespace;
 import org.hisp.dhis.dxf2.datavalue.DataValue;
 
-import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
-
-@JacksonXmlRootElement( localName = "dataValueSet", namespace = Dxf2Namespace.NAMESPACE )
 public class DataValueSet
 {
     //--------------------------------------------------------------------------
