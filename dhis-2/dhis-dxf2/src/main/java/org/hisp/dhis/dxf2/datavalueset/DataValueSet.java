@@ -33,8 +33,6 @@ import java.util.List;
 import org.hisp.dhis.common.Dxf2Namespace;
 import org.hisp.dhis.dxf2.datavalue.DataValue;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 
 @JacksonXmlRootElement( localName = "dataValueSet", namespace = Dxf2Namespace.NAMESPACE )
@@ -44,30 +42,36 @@ public class DataValueSet
     // Options
     //--------------------------------------------------------------------------
 
-    private String dataElementIdScheme;
+    protected String dataElementIdScheme;
     
-    private String orgUnitIdScheme;
+    protected String orgUnitIdScheme;
     
     //--------------------------------------------------------------------------
     // Properties
     //--------------------------------------------------------------------------
 
-    private String dataSet;
+    protected String dataSet;
 
-    private String completeDate;
+    protected String completeDate;
 
-    private String period;
+    protected String period;
 
-    private String orgUnit;
+    protected String orgUnit;
 
-    private List<DataValue> dataValues = new ArrayList<DataValue>();
+    protected List<DataValue> dataValues = new ArrayList<DataValue>();
 
+    //--------------------------------------------------------------------------
+    // Constructors
+    //--------------------------------------------------------------------------
+
+    public DataValueSet()
+    {
+    }
+    
     //--------------------------------------------------------------------------
     // Getters and setters
     //--------------------------------------------------------------------------
 
-    @JsonProperty()
-    @JacksonXmlProperty( isAttribute=true, namespace = Dxf2Namespace.NAMESPACE )
     public String getDataElementIdScheme()
     {
         return dataElementIdScheme;
@@ -78,8 +82,6 @@ public class DataValueSet
         this.dataElementIdScheme = dataElementIdScheme;
     }
 
-    @JsonProperty()
-    @JacksonXmlProperty( isAttribute=true, namespace = Dxf2Namespace.NAMESPACE )
     public String getOrgUnitIdScheme()
     {
         return orgUnitIdScheme;
@@ -90,8 +92,6 @@ public class DataValueSet
         this.orgUnitIdScheme = orgUnitIdScheme;
     }
 
-    @JsonProperty()
-    @JacksonXmlProperty( isAttribute=true, namespace = Dxf2Namespace.NAMESPACE )
     public String getDataSet()
     {
         return dataSet;
@@ -102,20 +102,6 @@ public class DataValueSet
         this.dataSet = dataSet;
     }
 
-    @JsonProperty()
-    @JacksonXmlProperty( isAttribute=true, namespace = Dxf2Namespace.NAMESPACE )
-    public String getPeriod()
-    {
-        return period;
-    }
-
-    public void setPeriod( String period )
-    {
-        this.period = period;
-    }
-
-    @JsonProperty
-    @JacksonXmlProperty( isAttribute=true, namespace = Dxf2Namespace.NAMESPACE )
     public String getCompleteDate()
     {
         return completeDate;
@@ -126,8 +112,16 @@ public class DataValueSet
         this.completeDate = completeDate;
     }
 
-    @JsonProperty()
-    @JacksonXmlProperty( isAttribute=true, namespace = Dxf2Namespace.NAMESPACE )
+    public String getPeriod()
+    {
+        return period;
+    }
+
+    public void setPeriod( String period )
+    {
+        this.period = period;
+    }
+
     public String getOrgUnit()
     {
         return orgUnit;
@@ -138,8 +132,6 @@ public class DataValueSet
         this.orgUnit = orgUnit;
     }
 
-    @JsonProperty
-    @JacksonXmlProperty( namespace = Dxf2Namespace.NAMESPACE )
     public List<DataValue> getDataValues()
     {
         return dataValues;
@@ -148,6 +140,11 @@ public class DataValueSet
     public void setDataValues( List<DataValue> dataValues )
     {
         this.dataValues = dataValues;
+    }
+    
+    public DataValue getNextDataValue()
+    {
+        return dataValues.iterator().next();
     }
     
     @Override

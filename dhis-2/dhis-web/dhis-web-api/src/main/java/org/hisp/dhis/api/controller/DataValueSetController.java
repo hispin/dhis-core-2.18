@@ -36,10 +36,10 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.hisp.dhis.api.webdomain.DataValueSets;
 import org.hisp.dhis.common.IdentifiableObject.IdentifiableProperty;
 import org.hisp.dhis.dxf2.datavalueset.DataValueSet;
 import org.hisp.dhis.dxf2.datavalueset.DataValueSetService;
-import org.hisp.dhis.dxf2.datavalueset.DataValueSets;
 import org.hisp.dhis.dxf2.importsummary.ImportSummary;
 import org.hisp.dhis.dxf2.utils.DataValueSetMapper;
 import org.hisp.dhis.dxf2.utils.JacksonUtils;
@@ -63,9 +63,9 @@ public class DataValueSetController
 
     @Autowired
     private DataValueSetService dataValueSetService;
-
+    
     @RequestMapping( method = RequestMethod.GET )
-    public String getDataValueSet( Model model ) throws Exception
+    public String getDataValueSets( Model model ) throws Exception
     {
         DataValueSets dataValueSets = new DataValueSets();
         dataValueSets.getDataValueSets().add( new DataValueSet() );
@@ -73,6 +73,18 @@ public class DataValueSetController
         model.addAttribute( "model", dataValueSets );
 
         return "dataValueSets";
+    }
+
+    @RequestMapping( method = RequestMethod.GET, headers = {"Accept=application/xml"} )
+    public void getDataValueSet( @RequestParam String dataSet,
+                                 @RequestParam String period,
+                                 @RequestParam String orgUnit,
+                                 HttpServletResponse response ) throws IOException
+    {
+        log.info( "Get data value set for data set: " + dataSet + ", period: " + period + ", org unit: " + orgUnit );
+        
+        response.setContentType( CONTENT_TYPE_XML );
+        dataValueSetService.writeDataValueSet( dataSet, period, orgUnit, response.getOutputStream() );
     }
     
     @RequestMapping( method = RequestMethod.POST, headers = {"Content-Type=application/xml"} )

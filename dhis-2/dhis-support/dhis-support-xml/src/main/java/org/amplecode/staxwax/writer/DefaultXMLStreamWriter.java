@@ -92,13 +92,31 @@ public class DefaultXMLStreamWriter
             {
                 for ( int i = 0; i < attributeNameValuePairs.length; i += 2 )
                 {
-                    writer.writeAttribute( verifyNotNull( attributeNameValuePairs[ i ] ), replaceNull( attributeNameValuePairs[ i + 1 ] ) );
+                    if ( attributeNameValuePairs[ i + 1 ] != null )
+                    {
+                        writer.writeAttribute( verifyNotNull( attributeNameValuePairs[ i ] ), attributeNameValuePairs[ i + 1 ] );
+                    }
                 }
             }
         }
         catch ( XMLStreamException ex )
         {
             throw new RuntimeException( "Failed to open element: " + name, ex );
+        }
+    }
+    
+    public void writeAttribute( String name, String value )
+    {
+        try
+        {
+            if ( value != null )
+            {
+                writer.writeAttribute( verifyNotNull( name ), value ); 
+            }
+        }
+        catch ( XMLStreamException ex )
+        {
+            throw new RuntimeException( "Failed to write attribute: " + name, ex );
         }
     }
     

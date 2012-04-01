@@ -268,4 +268,17 @@ public class ConversionUtils
         
         return null;
     }
+    
+    /**
+     * Wraps an object in a set.
+     * 
+     * @param object the object to wrap.
+     * @return a set with the given object as element.
+     */
+    public static <T> Set<T> wrap( T object )
+    {
+        Set<T> set = new HashSet<T>();
+        set.add( object );
+        return set;
+    }
 }
