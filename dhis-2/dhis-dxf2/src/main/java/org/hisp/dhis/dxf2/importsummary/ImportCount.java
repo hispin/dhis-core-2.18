@@ -35,11 +35,11 @@ import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 public class ImportCount
 {
     private String object;
-    
+
     private int imports;
-    
+
     private int updates;
-    
+
     private int ignores;
 
     public ImportCount( String object, int imports, int updates, int ignores )
@@ -49,9 +49,9 @@ public class ImportCount
         this.updates = updates;
         this.ignores = ignores;
     }
-    
+
     @JsonProperty
-    @JacksonXmlProperty( isAttribute=true )
+    @JacksonXmlProperty( isAttribute = true )
     public String getObject()
     {
         return object;
@@ -63,7 +63,7 @@ public class ImportCount
     }
 
     @JsonProperty
-    @JacksonXmlProperty( isAttribute=true )
+    @JacksonXmlProperty( isAttribute = true )
     public int getImports()
     {
         return imports;
@@ -75,7 +75,7 @@ public class ImportCount
     }
 
     @JsonProperty
-    @JacksonXmlProperty( isAttribute=true )
+    @JacksonXmlProperty( isAttribute = true )
     public int getUpdates()
     {
         return updates;
@@ -87,7 +87,7 @@ public class ImportCount
     }
 
     @JsonProperty
-    @JacksonXmlProperty( isAttribute=true )
+    @JacksonXmlProperty( isAttribute = true )
     public int getIgnores()
     {
         return ignores;
@@ -96,5 +96,16 @@ public class ImportCount
     public void setIgnores( int ignores )
     {
         this.ignores = ignores;
-    }    
+    }
+
+    @Override
+    public String toString()
+    {
+        return "ImportCount{" +
+            "object='" + object + '\'' +
+            ", imports=" + imports +
+            ", updates=" + updates +
+            ", ignores=" + ignores +
+            '}';
+    }
 }

@@ -29,11 +29,11 @@ package org.hisp.dhis.api.controller;
 
 import org.hisp.dhis.api.utils.ContextUtils;
 import org.hisp.dhis.common.view.ExportView;
-import org.hisp.dhis.dxf2.metadata.DXF2;
-import org.hisp.dhis.dxf2.metadata.ExportOptions;
-import org.hisp.dhis.dxf2.metadata.ExportService;
+import org.hisp.dhis.dxf2.importsummary.ImportSummary;
+import org.hisp.dhis.dxf2.metadata.*;
 import org.hisp.dhis.dxf2.utils.JacksonUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -59,6 +59,9 @@ public class MetaDataController
 
     @Autowired
     private ExportService exportService;
+
+    @Autowired
+    private ImportService importService;
 
     //-------------------------------------------------------------------------------------------------------
     // Export
@@ -114,102 +117,59 @@ public class MetaDataController
 
     @RequestMapping( value = MetaDataController.RESOURCE_PATH, method = RequestMethod.POST, headers = {"Content-Type=application/xml, text/*"} )
     @PreAuthorize( "hasRole('ALL') or hasRole('F_METADATA_IMPORT')" )
-    public void importXml( HttpServletResponse response, HttpServletRequest request ) throws JAXBException, IOException
+    public void importXml( ImportOptions importOptions, HttpServletResponse response, HttpServletRequest request ) throws JAXBException, IOException
     {
         DXF2 dxf2 = JacksonUtils.fromXml( request.getInputStream(), DXF2.class );
+        System.err.println( dxf2 );
 
-        print( dxf2 );
+        ImportSummary summary = importService.importDxf2WithImportOptions( dxf2, importOptions );
+
+        response.setContentType( MediaType.APPLICATION_XML.toString() );
+        JacksonUtils.toXml( response.getOutputStream(), summary );
     }
 
     @RequestMapping( value = MetaDataController.RESOURCE_PATH, method = RequestMethod.POST, headers = {"Content-Type=application/json"} )
     @PreAuthorize( "hasRole('ALL') or hasRole('F_METADATA_IMPORT')" )
-    public void importJson( HttpServletResponse response, HttpServletRequest request ) throws IOException
+    public void importJson( ImportOptions importOptions, HttpServletResponse response, HttpServletRequest request ) throws IOException
     {
         DXF2 dxf2 = JacksonUtils.fromJson( request.getInputStream(), DXF2.class );
+        System.err.println( dxf2 );
 
-        print( dxf2 );
+        ImportSummary summary = importService.importDxf2WithImportOptions( dxf2, importOptions );
+
+        response.setContentType( MediaType.APPLICATION_JSON.toString() );
+        JacksonUtils.toJson( response.getOutputStream(), summary );
     }
 
     @RequestMapping( value = MetaDataController.RESOURCE_PATH + ".zip", method = RequestMethod.POST, headers = {"Content-Type=application/xml, text/xml"} )
     @PreAuthorize( "hasRole('ALL') or hasRole('F_METADATA_IMPORT')" )
-    public void importZippedXml( HttpServletResponse response, HttpServletRequest request ) throws JAXBException, IOException
+    public void importZippedXml( ImportOptions importOptions, HttpServletResponse response, HttpServletRequest request ) throws JAXBException, IOException
     {
         ZipInputStream zip = new ZipInputStream( new BufferedInputStream( request.getInputStream() ) );
         ZipEntry entry = zip.getNextEntry();
 
-        System.err.println( "(xml) Reading from file : " + entry.getName() );
-
         DXF2 dxf2 = JacksonUtils.fromXml( zip, DXF2.class );
+        System.err.println( dxf2 );
 
-        print( dxf2 );
+        ImportSummary summary = importService.importDxf2WithImportOptions( dxf2, importOptions );
+
+        response.setContentType( MediaType.APPLICATION_XML.toString() );
+        JacksonUtils.toXml( response.getOutputStream(), summary );
     }
 
     @RequestMapping( value = MetaDataController.RESOURCE_PATH + ".zip", method = RequestMethod.POST, headers = {"Content-Type=application/json"} )
     @PreAuthorize( "hasRole('ALL') or hasRole('F_METADATA_IMPORT')" )
-    public void importZippedJson( HttpServletResponse response, HttpServletRequest request ) throws IOException
+    public void importZippedJson( ImportOptions importOptions, HttpServletResponse response, HttpServletRequest request ) throws IOException
     {
         ZipInputStream zip = new ZipInputStream( request.getInputStream() );
         ZipEntry entry = zip.getNextEntry();
 
-        System.err.println( "(json) Reading from file : " + entry.getName() );
         DXF2 dxf2 = JacksonUtils.fromJson( zip, DXF2.class );
+        System.err.println( dxf2 );
 
-        print( dxf2 );
-    }
+        ImportSummary summary = importService.importDxf2WithImportOptions( dxf2, importOptions );
 
-
-    //-------------------------------------------------------------------------------------------------------
-    // Helpers
-    //-------------------------------------------------------------------------------------------------------
-
-    private void print( DXF2 dxf2 )
-    {
-        System.err.println( "AttributeTypes: " + dxf2.getAttributeTypes().size() );
-
-        System.err.println( "Users: " + dxf2.getUsers().size() );
-        System.err.println( "UserGroups: " + dxf2.getUserGroups().size() );
-        System.err.println( "UserAuthorityGroups: " + dxf2.getUserAuthorityGroups().size() );
-
-        System.err.println( "Documents: " + dxf2.getDocuments().size() );
-        System.err.println( "Reports: " + dxf2.getReports().size() );
-        System.err.println( "ReportTables: " + dxf2.getReportTables().size() );
-        System.err.println( "Charts: " + dxf2.getCharts().size() );
-
-        System.err.println( "Maps: " + dxf2.getMaps().size() );
-        System.err.println( "MapLegends: " + dxf2.getMapLegends().size() );
-        System.err.println( "MapLegendSets: " + dxf2.getMapLegendSets().size() );
-        System.err.println( "MapLayers: " + dxf2.getMapLayers().size() );
-
-        System.err.println( "Constants: " + dxf2.getConstants().size() );
-        System.err.println( "Concepts: " + dxf2.getConcepts().size() );
-
-        System.err.println( "SqlViews: " + dxf2.getSqlViews().size() );
-
-        System.err.println( "DataElements: " + dxf2.getDataElements().size() );
-        System.err.println( "OptionSets: " + dxf2.getOptionSets().size() );
-        System.err.println( "DataElementGroups: " + dxf2.getDataElementGroups().size() );
-        System.err.println( "DataElementGroupSets: " + dxf2.getDataElementGroupSets().size() );
-
-        System.err.println( "Categories: " + dxf2.getCategories().size() );
-        System.err.println( "CategoryOptions: " + dxf2.getCategoryOptions().size() );
-        System.err.println( "CategoryCombos: " + dxf2.getCategoryCombos().size() );
-        System.err.println( "CategoryOptionCombos: " + dxf2.getCategoryOptionCombos().size() );
-
-        System.err.println( "DataSets: " + dxf2.getDataSets().size() );
-
-        System.err.println( "Indicators:" + dxf2.getIndicators().size() );
-        System.err.println( "IndicatorGroups:" + dxf2.getIndicatorGroups().size() );
-        System.err.println( "IndicatorGroupSets:" + dxf2.getIndicatorGroupSets().size() );
-        System.err.println( "IndicatorTypes:" + dxf2.getIndicatorTypes().size() );
-
-        System.err.println( "OrganisationUnits: " + dxf2.getOrganisationUnits().size() );
-        System.err.println( "OrganisationUnitGroups: " + dxf2.getOrganisationUnitGroups().size() );
-        System.err.println( "OrganisationUnitGroupSets: " + dxf2.getOrganisationUnitGroupSets().size() );
-        System.err.println( "OrganisationUnitLevels: " + dxf2.getOrganisationUnitLevels().size() );
-
-        System.err.println( "ValidationRules: " + dxf2.getValidationRules().size() );
-        System.err.println( "ValidationRuleGroups: " + dxf2.getValidationRuleGroups().size() );
-
-        System.err.println( "DataDictionaries: " + dxf2.getDataDictionaries().size() );
+        response.setContentType( MediaType.APPLICATION_JSON.toString() );
+        JacksonUtils.toJson( response.getOutputStream(), summary );
     }
 }

@@ -187,19 +187,19 @@ public class DefaultDataValueSetService
             
             if ( dataElement == null )
             {
-                summary.getNoneExistingIdentifiers().add( new ImportConflict( DataElement.class.getSimpleName(), dataValue.getDataElement() ) );
+                summary.getConflicts().add( new ImportConflict( DataElement.class.getSimpleName(), dataValue.getDataElement() ) );
                 continue;
             }
 
             if ( period == null )
             {
-                summary.getNoneExistingIdentifiers().add( new ImportConflict( Period.class.getSimpleName(), dataValue.getPeriod() ) );
+                summary.getConflicts().add( new ImportConflict( Period.class.getSimpleName(), dataValue.getPeriod() ) );
                 continue;
             }
             
             if ( orgUnit == null )
             {
-                summary.getNoneExistingIdentifiers().add( new ImportConflict( OrganisationUnit.class.getSimpleName(), dataValue.getOrgUnit() ) );
+                summary.getConflicts().add( new ImportConflict( OrganisationUnit.class.getSimpleName(), dataValue.getOrgUnit() ) );
                 continue;
             }
 

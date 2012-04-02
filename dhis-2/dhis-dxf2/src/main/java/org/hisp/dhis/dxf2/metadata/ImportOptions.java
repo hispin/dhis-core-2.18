@@ -1,7 +1,7 @@
-package org.hisp.dhis.dxf2.importsummary;
+package org.hisp.dhis.dxf2.metadata;
 
 /*
- * Copyright (c) 2011, University of Oslo
+ * Copyright (c) 2012, University of Oslo
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -27,53 +27,65 @@ package org.hisp.dhis.dxf2.importsummary;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
-import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 
-@JacksonXmlRootElement( localName = "conflict" )
-public class ImportConflict
+/**
+ * @author Morten Olav Hansen <mortenoh@gmail.com>
+ */
+public class ImportOptions
 {
-    private String object;
+    private boolean dryRun = false;
 
-    private String value;
+    private IdScheme idScheme = IdScheme.getDefaultIdScheme();
 
-    public ImportConflict( String object, String value )
+    private ImportStrategy importStrategy;
+
+    private static ImportOptions defaultImportOptions = new ImportOptions( IdScheme.getDefaultIdScheme(),
+        ImportStrategy.getDefaultImportStrategy() );
+
+    public static ImportOptions getDefaultImportOptions()
     {
-        this.object = object;
-        this.value = value;
+        return defaultImportOptions;
     }
 
-    @JsonProperty
-    @JacksonXmlProperty( isAttribute = true )
-    public String getObject()
+    public ImportOptions()
     {
-        return object;
+        this.idScheme = IdScheme.getDefaultIdScheme();
+        this.importStrategy = ImportStrategy.getDefaultImportStrategy();
     }
 
-    public void setObject( String object )
+    public ImportOptions( IdScheme idScheme, ImportStrategy importStrategy )
     {
-        this.object = object;
+        this.idScheme = idScheme;
+        this.importStrategy = importStrategy;
     }
 
-    @JsonProperty
-    @JacksonXmlProperty( isAttribute = true )
-    public String getValue()
+    public boolean isDryRun()
     {
-        return value;
+        return dryRun;
     }
 
-    public void setValue( String value )
+    public void setDryRun( boolean dryRun )
     {
-        this.value = value;
+        this.dryRun = dryRun;
     }
 
-    @Override
-    public String toString()
+    public IdScheme getIdScheme()
     {
-        return "ImportConflict{" +
-            "object='" + object + '\'' +
-            ", value='" + value + '\'' +
-            '}';
+        return idScheme;
+    }
+
+    public void setIdScheme( IdScheme idScheme )
+    {
+        this.idScheme = idScheme;
+    }
+
+    public ImportStrategy getImportStrategy()
+    {
+        return importStrategy;
+    }
+
+    public void setImportStrategy( ImportStrategy importStrategy )
+    {
+        this.importStrategy = importStrategy;
     }
 }

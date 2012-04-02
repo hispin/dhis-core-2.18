@@ -1,7 +1,7 @@
-package org.hisp.dhis.dxf2.importsummary;
+package org.hisp.dhis.dxf2.metadata;
 
 /*
- * Copyright (c) 2011, University of Oslo
+ * Copyright (c) 2012, University of Oslo
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -27,53 +27,63 @@ package org.hisp.dhis.dxf2.importsummary;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
-import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 
-@JacksonXmlRootElement( localName = "conflict" )
-public class ImportConflict
+/**
+ * @author Morten Olav Hansen <mortenoh@gmail.com>
+ */
+public class IdScheme
 {
-    private String object;
+    public static String UID_SCHEME = "uid";
+    public static String CODE_SCHEME = "code";
+    public static String NAME_SCHEME = "name";
 
-    private String value;
+    private String scheme;
 
-    public ImportConflict( String object, String value )
+    private boolean uidScheme;
+
+    private boolean codeScheme;
+
+    private boolean nameScheme;
+
+    public static IdScheme getDefaultIdScheme()
     {
-        this.object = object;
-        this.value = value;
+        return new IdScheme( IdScheme.UID_SCHEME );
     }
 
-    @JsonProperty
-    @JacksonXmlProperty( isAttribute = true )
-    public String getObject()
+    public IdScheme( String scheme )
     {
-        return object;
+        setScheme( scheme );
     }
 
-    public void setObject( String object )
+    public String getScheme()
     {
-        this.object = object;
+        return scheme;
     }
 
-    @JsonProperty
-    @JacksonXmlProperty( isAttribute = true )
-    public String getValue()
+    public void setScheme( String scheme )
     {
-        return value;
+        this.scheme = scheme;
+
+        if ( scheme != null )
+        {
+            uidScheme = scheme.equals( IdScheme.UID_SCHEME );
+            codeScheme = scheme.equals( IdScheme.CODE_SCHEME );
+            nameScheme = scheme.equals( IdScheme.NAME_SCHEME );
+        }
     }
 
-    public void setValue( String value )
+    public boolean isUidScheme()
     {
-        this.value = value;
+        return uidScheme;
     }
 
-    @Override
-    public String toString()
+    public boolean isCodeScheme()
     {
-        return "ImportConflict{" +
-            "object='" + object + '\'' +
-            ", value='" + value + '\'' +
-            '}';
+        return codeScheme;
+    }
+
+    public boolean isNameScheme()
+    {
+        return nameScheme;
     }
 }

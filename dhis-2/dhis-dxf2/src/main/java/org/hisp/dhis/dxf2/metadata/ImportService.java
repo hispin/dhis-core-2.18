@@ -1,7 +1,7 @@
-package org.hisp.dhis.dxf2.importsummary;
+package org.hisp.dhis.dxf2.metadata;
 
 /*
- * Copyright (c) 2011, University of Oslo
+ * Copyright (c) 2012, University of Oslo
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -27,53 +27,16 @@ package org.hisp.dhis.dxf2.importsummary;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
-import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
+import org.hisp.dhis.dxf2.importsummary.ImportSummary;
+import org.springframework.stereotype.Service;
 
-@JacksonXmlRootElement( localName = "conflict" )
-public class ImportConflict
+/**
+ * @author Morten Olav Hansen <mortenoh@gmail.com>
+ */
+@Service
+public interface ImportService
 {
-    private String object;
+    ImportSummary importDxf2( DXF2 dxf2 );
 
-    private String value;
-
-    public ImportConflict( String object, String value )
-    {
-        this.object = object;
-        this.value = value;
-    }
-
-    @JsonProperty
-    @JacksonXmlProperty( isAttribute = true )
-    public String getObject()
-    {
-        return object;
-    }
-
-    public void setObject( String object )
-    {
-        this.object = object;
-    }
-
-    @JsonProperty
-    @JacksonXmlProperty( isAttribute = true )
-    public String getValue()
-    {
-        return value;
-    }
-
-    public void setValue( String value )
-    {
-        this.value = value;
-    }
-
-    @Override
-    public String toString()
-    {
-        return "ImportConflict{" +
-            "object='" + object + '\'' +
-            ", value='" + value + '\'' +
-            '}';
-    }
+    ImportSummary importDxf2WithImportOptions( DXF2 dxf2, ImportOptions importOptions );
 }

@@ -27,27 +27,27 @@ package org.hisp.dhis.dxf2.importsummary;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.ArrayList;
-import java.util.List;
-
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlElementWrapper;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @JacksonXmlRootElement( localName = "importSummary" )
 public class ImportSummary
 {
     private List<ImportCount> counts = new ArrayList<ImportCount>();
 
-    private List<ImportConflict> noneExistingIdentifiers = new ArrayList<ImportConflict>();
-    
+    private List<ImportConflict> conflicts = new ArrayList<ImportConflict>();
+
     private String dataSetComplete;
-    
+
     public void increaseImportCount( Class<?> clazz )
     {
     }
-    
+
     @JsonProperty
     @JacksonXmlElementWrapper
     @JacksonXmlProperty
@@ -64,14 +64,14 @@ public class ImportSummary
     @JsonProperty
     @JacksonXmlElementWrapper
     @JacksonXmlProperty
-    public List<ImportConflict> getNoneExistingIdentifiers()
+    public List<ImportConflict> getConflicts()
     {
-        return noneExistingIdentifiers;
+        return conflicts;
     }
 
-    public void setNoneExistingIdentifiers( List<ImportConflict> noneExistingIdentifiers )
+    public void setConflicts( List<ImportConflict> conflicts )
     {
-        this.noneExistingIdentifiers = noneExistingIdentifiers;
+        this.conflicts = conflicts;
     }
 
     @JsonProperty
@@ -84,5 +84,15 @@ public class ImportSummary
     public void setDataSetComplete( String dataSetComplete )
     {
         this.dataSetComplete = dataSetComplete;
+    }
+
+    @Override
+    public String toString()
+    {
+        return "ImportSummary{" +
+            "counts=" + counts +
+            ", noneExistingIdentifiers=" + conflicts +
+            ", dataSetComplete='" + dataSetComplete + '\'' +
+            '}';
     }
 }
