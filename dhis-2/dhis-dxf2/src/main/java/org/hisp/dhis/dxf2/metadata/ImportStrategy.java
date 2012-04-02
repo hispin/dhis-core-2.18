@@ -1,7 +1,7 @@
-package org.hisp.dhis.dxf2.importsummary;
+package org.hisp.dhis.dxf2.metadata;
 
 /*
- * Copyright (c) 2011, University of Oslo
+ * Copyright (c) 2012, University of Oslo
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -27,53 +27,63 @@ package org.hisp.dhis.dxf2.importsummary;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
-import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 
-@JacksonXmlRootElement( localName = "conflict" )
-public class ImportConflict
+/**
+ * @author Morten Olav Hansen <mortenoh@gmail.com>
+ */
+public class ImportStrategy
 {
-    private String object;
+    public static String NEW_AND_UPDATES_STRATEGY = "newAndUpdates";
+    public static String UPDATES_STRATEGY = "updates";
+    public static String NEW_STRATEGY = "new";
 
-    private String value;
+    private String strategy;
 
-    public ImportConflict( String object, String value )
+    private boolean newAndUpdatesStrategy;
+
+    private boolean updatesStrategy;
+
+    private boolean newStrategy;
+
+    public static ImportStrategy getDefaultImportStrategy()
     {
-        this.object = object;
-        this.value = value;
+        return new ImportStrategy( ImportStrategy.NEW_AND_UPDATES_STRATEGY );
     }
 
-    @JsonProperty
-    @JacksonXmlProperty( isAttribute = true )
-    public String getObject()
+    public ImportStrategy( String strategy )
     {
-        return object;
+        setStrategy( strategy );
     }
 
-    public void setObject( String object )
+    public String getStrategy()
     {
-        this.object = object;
+        return strategy;
     }
 
-    @JsonProperty
-    @JacksonXmlProperty( isAttribute = true )
-    public String getValue()
+    public void setStrategy( String strategy )
     {
-        return value;
+        this.strategy = strategy;
+
+        if ( strategy != null )
+        {
+            newAndUpdatesStrategy = strategy.equals( ImportStrategy.NEW_AND_UPDATES_STRATEGY );
+            updatesStrategy = strategy.equals( ImportStrategy.UPDATES_STRATEGY );
+            newStrategy = strategy.equals( ImportStrategy.NEW_STRATEGY );
+        }
     }
 
-    public void setValue( String value )
+    public boolean isNewAndUpdatesStrategy()
     {
-        this.value = value;
+        return newAndUpdatesStrategy;
     }
 
-    @Override
-    public String toString()
+    public boolean isUpdatesStrategy()
     {
-        return "ImportConflict{" +
-            "object='" + object + '\'' +
-            ", value='" + value + '\'' +
-            '}';
+        return updatesStrategy;
+    }
+
+    public boolean isNewStrategy()
+    {
+        return newStrategy;
     }
 }
