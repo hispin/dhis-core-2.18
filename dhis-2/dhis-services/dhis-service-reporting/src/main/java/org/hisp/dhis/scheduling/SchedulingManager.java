@@ -27,8 +27,6 @@ package org.hisp.dhis.scheduling;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.Map;
-
 import org.hisp.dhis.common.ListMap;
 
 /**
@@ -51,11 +49,9 @@ public interface SchedulingManager
     /**
      * Schedule the given tasks.
      * 
-     * @param keyCronMap map of tasks to be scheduled. The map key is the key of
-     *        the task, i.e. the task bean identifier. The map value is the cron 
-     *        expression to use when scheduling the task.
+     * @param cronKeyMap a mapping of cron expressions and task keys.
      */
-    void scheduleTasks( Map<String, String> keyCronMap );
+    void scheduleTasks( ListMap<String, String> cronKeyMap );
     
     /**
      * Stop all tasks.
@@ -63,17 +59,10 @@ public interface SchedulingManager
     void stopTasks();
     
     /**
-     * Execute all tasks immediately.
-     */
-    void executeTasks();
-    
-    /**
      * Get a mapping of cron expressions and list of task keys for all scheduled
      * tasks.
      */
     ListMap<String, String> getCronKeyMap();
-    
-    boolean isScheduled( String key );
     
     /**
      * Gets the task status. Can be STATUS_RUNNING, STATUS_DONE, STATUS_STOPPED,

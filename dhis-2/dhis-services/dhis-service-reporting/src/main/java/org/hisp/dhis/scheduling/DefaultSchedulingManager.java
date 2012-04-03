@@ -87,9 +87,9 @@ public class DefaultSchedulingManager
         }
     }
     
-    public void scheduleTasks( Map<String, String> keyCronMap )
+    public void scheduleTasks( ListMap<String, String> cronKeyMap )
     {
-        systemSettingManager.saveSystemSetting( KEY_SCHEDULED_TASKS, new HashMap<String, String>( keyCronMap ) );
+        systemSettingManager.saveSystemSetting( KEY_SCHEDULED_TASKS, new ListMap<String, String>( cronKeyMap ) );
         
         scheduleTasks();
     }
@@ -101,42 +101,10 @@ public class DefaultSchedulingManager
         scheduler.stopAllTasks();
     }
     
-    public void executeTasks()
-    {
-        ListMap<String, String> cronKeyMap = getCronKeyMap();
-        
-        for ( String cron : cronKeyMap.keySet() )
-        {
-            ScheduledTasks scheduledTasks = getScheduledTasksForCron( cron, cronKeyMap );
-            
-            if ( !scheduledTasks.isEmpty() )
-            {
-                scheduler.executeTask( scheduledTasks );
-            }
-        }
-    }
-
+    @SuppressWarnings("unchecked")
     public ListMap<String, String> getCronKeyMap()
     {
-        Map<String, String> keyCronMap = getKeyCronMap();
-        
-        ListMap<String, String> cronKeyMap = new ListMap<String, String>();
-        
-        for ( String key : keyCronMap.keySet() )
-        {
-            String cron = keyCronMap.get( key );
-            
-            cronKeyMap.putValue( cron, key );
-        }
-        
-        return cronKeyMap;
-    }
-
-    public boolean isScheduled( String key )
-    {
-        Map<String, String> keyCronMap = getKeyCronMap();
-        
-        return keyCronMap.get( key ) != null;
+        return (ListMap<String, String>) systemSettingManager.getSystemSetting( KEY_SCHEDULED_TASKS, new ListMap<String, String>() );
     }
     
     public String getTaskStatus()
@@ -171,14 +139,5 @@ public class DefaultSchedulingManager
         }
         
         return scheduledTasks;
-    }
-
-    /**
-     * Returns a mapping between task keys and cron expressions.
-     */
-    @SuppressWarnings("unchecked")
-    private Map<String, String> getKeyCronMap()
-    {
-        return (Map<String, String>) systemSettingManager.getSystemSetting( KEY_SCHEDULED_TASKS, new HashMap<String, String>() );
     }
 }

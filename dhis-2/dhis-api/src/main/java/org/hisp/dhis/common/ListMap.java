@@ -37,12 +37,22 @@ import java.util.List;
 public class ListMap<T, V>
     extends HashMap<T, List<V>>
 {
+    public ListMap()
+    {
+        super();
+    }
+    
+    public ListMap( ListMap<T, V> listMap )
+    {
+        super( listMap );
+    }
+    
     public List<V> putValue( T key, V value )
     {
         List<V> list = this.get( key );
         list = list == null ? new ArrayList<V>() : list;        
         list.add( value );
-        this.put( key, list );        
+        super.put( key, list );        
         return null;
     }
 }
