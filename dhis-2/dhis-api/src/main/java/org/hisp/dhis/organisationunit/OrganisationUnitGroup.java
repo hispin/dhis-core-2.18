@@ -84,7 +84,7 @@ public class OrganisationUnitGroup
     @Override
     public String getCode()
     {
-        return name;
+        return (name != null && name.length() > 50) ? name.substring( 0, 50 ) : name;
     }
 
     public void addOrganisationUnit( OrganisationUnit organisationUnit )
@@ -160,7 +160,7 @@ public class OrganisationUnitGroup
 
     @JsonProperty( value = "organisationUnits" )
     @JsonSerialize( contentAs = BaseIdentifiableObject.class )
-    @JsonView( {DetailedView.class, ExportView.class} )
+    @JsonView( { DetailedView.class, ExportView.class } )
     @JacksonXmlElementWrapper( localName = "organisationUnits", namespace = Dxf2Namespace.NAMESPACE )
     @JacksonXmlProperty( localName = "organisationUnit", namespace = Dxf2Namespace.NAMESPACE )
     public Set<OrganisationUnit> getMembers()
@@ -175,7 +175,7 @@ public class OrganisationUnitGroup
 
     @JsonProperty( value = "organisationUnitGroupSet" )
     @JsonSerialize( as = BaseIdentifiableObject.class )
-    @JsonView( {DetailedView.class, ExportView.class} )
+    @JsonView( { DetailedView.class, ExportView.class } )
     @JacksonXmlProperty( namespace = Dxf2Namespace.NAMESPACE )
     public OrganisationUnitGroupSet getGroupSet()
     {

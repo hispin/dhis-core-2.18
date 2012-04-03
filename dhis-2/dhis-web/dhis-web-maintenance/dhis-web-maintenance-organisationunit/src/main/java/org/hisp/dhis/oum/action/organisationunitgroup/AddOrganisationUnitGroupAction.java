@@ -39,7 +39,7 @@ import com.opensymphony.xwork2.ActionSupport;
 /**
  * @author Torgeir Lorange Ostby
  */
-@SuppressWarnings("serial")
+@SuppressWarnings( "serial" )
 public class AddOrganisationUnitGroupAction
     extends ActionSupport
 {
@@ -80,14 +80,15 @@ public class AddOrganisationUnitGroupAction
         throws Exception
     {
         OrganisationUnitGroup organisationUnitGroup = new OrganisationUnitGroup( name );
-
-        Collection<OrganisationUnit> selectedOrganisationUnits = selectionTreeManager.getReloadedSelectedOrganisationUnits();
+        
+        Collection<OrganisationUnit> selectedOrganisationUnits = selectionTreeManager
+            .getReloadedSelectedOrganisationUnits();
 
         for ( OrganisationUnit unit : selectedOrganisationUnits )
         {
             organisationUnitGroup.addOrganisationUnit( unit );
         }
-        
+
         organisationUnitGroupService.addOrganisationUnitGroup( organisationUnitGroup );
 
         return SUCCESS;
