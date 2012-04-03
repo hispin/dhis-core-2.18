@@ -137,12 +137,14 @@
 			<td>	
 				<select id="dataElementIds" name="dataElementIds" style="min-width:300px" multiple="multiple" size="10" ondblclick="insertDataElement( '#dataElementSelection', '$programStage.id')">
 					#foreach( $de in $dataElements)
-					<option value='$de.toJSON()'>$encoder.htmlEncode( $de.name )</option>
+					#set($deJSON = '{' + '"id"' + ":" + $de.id + "," + '"name"' + ':"' + "$de.name" + '",' + '"shortName"' + ':"' + "$de.shortName" + '",' + '"type"' + ':"' + "$de.type"  + '"}' );
+					<option value='$deJSON'>$encoder.htmlEncode( $de.name )</option>
 					#end
 				</select>
 				<select id="dataElementIdsStore" multiple="multiple" style="display:none">
 					#foreach( $de in $dataElements)
-					<option value='$de.toJSON()'>$encoder.htmlEncode( $de.name )</option>
+					#set($deJSON = '{' + '"id"' + ":" + $de.id + "," + '"name"' + ':"' + "$de.name" + '",' + '"shortName"' + ':"' + "$de.shortName" + '",' + '"type"' + ':"' + "$de.type"  + '"}' );
+					<option value='$deJSON'>$encoder.htmlEncode( $de.name )</option>
 					#end
 				</select>
 			</td>
