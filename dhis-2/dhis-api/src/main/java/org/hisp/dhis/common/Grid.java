@@ -27,6 +27,7 @@ package org.hisp.dhis.common;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import java.sql.ResultSet;
 import java.util.List;
 
 import net.sf.jasperreports.engine.JRDataSource;
@@ -203,4 +204,19 @@ public interface Grid
      * @param addHeader indicates whether to add a grid header for the regression column.
      */
     Grid addCumulativeColumn( int columnIndex, boolean addHeader );
+    
+    /**
+     * Adds a set of headers based on the column names of the given SQL result set.
+     * 
+     * @param rs the result set.
+     */
+    void addHeaders( ResultSet rs );
+    
+    /**
+     * Moves the cursor the next row and adds values for each column of the given
+     * SQL result set.
+     * 
+     * @param rs the result set.
+     */
+    void addRow( ResultSet rs );
 }
