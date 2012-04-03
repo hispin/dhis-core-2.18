@@ -27,36 +27,16 @@ package org.hisp.dhis.dxf2.metadata;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import org.hisp.dhis.attribute.AttributeService;
-import org.hisp.dhis.chart.ChartService;
 import org.hisp.dhis.common.IdentifiableObject;
-import org.hisp.dhis.common.NameableObject;
-import org.hisp.dhis.concept.ConceptService;
-import org.hisp.dhis.constant.Constant;
-import org.hisp.dhis.constant.ConstantService;
-import org.hisp.dhis.datadictionary.DataDictionaryService;
-import org.hisp.dhis.dataelement.DataElementCategoryService;
-import org.hisp.dhis.dataelement.DataElementService;
-import org.hisp.dhis.dataset.DataSetService;
-import org.hisp.dhis.document.DocumentService;
 import org.hisp.dhis.dxf2.importsummary.ImportConflict;
+import org.hisp.dhis.dxf2.importsummary.ImportCount;
 import org.hisp.dhis.dxf2.importsummary.ImportSummary;
-import org.hisp.dhis.indicator.IndicatorService;
-import org.hisp.dhis.mapping.MappingService;
-import org.hisp.dhis.option.OptionService;
-import org.hisp.dhis.organisationunit.OrganisationUnitGroupService;
-import org.hisp.dhis.organisationunit.OrganisationUnitService;
-import org.hisp.dhis.report.ReportService;
-import org.hisp.dhis.reporttable.ReportTableService;
-import org.hisp.dhis.sqlview.SqlViewService;
-import org.hisp.dhis.user.UserGroupService;
-import org.hisp.dhis.user.UserService;
-import org.hisp.dhis.validation.ValidationRuleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -124,14 +104,53 @@ public class DefaultImportService
     private DocumentService documentService;
 
     @Autowired
-    private ConstantService constantService;
-
-    @Autowired
     private MappingService mappingService;
 
     @Autowired
     private DataDictionaryService dataDictionaryService;
 */
+
+    @Autowired
+    private Set<Importer> importerClasses = new HashSet<Importer>();
+
+    private Importer findImporterClass( Collection<? extends IdentifiableObject> clazzes )
+    {
+        if ( clazzes.size() > 0 )
+        {
+            IdentifiableObject identifiableObject = clazzes.iterator().next();
+
+            return findImporterClass( identifiableObject.getClass() );
+        }
+
+        return null;
+    }
+
+    private Importer findImporterClass( Class<?> clazz )
+    {
+        for ( Importer i : importerClasses )
+        {
+            if ( i.canHandle( clazz ) )
+            {
+                return i;
+            }
+        }
+
+        return null;
+    }
+
+    private void doImport( Collection<? extends IdentifiableObject> objects, ImportOptions importOptions, ImportSummary importSummary )
+    {
+        Importer importer = findImporterClass( objects );
+
+        if ( importer != null )
+        {
+            List<ImportConflict> conflicts = importer.importCollection( objects, importOptions );
+            ImportCount count = importer.getImportCount();
+
+            importSummary.getConflicts().addAll( conflicts );
+            importSummary.getCounts().add( count );
+        }
+    }
 
     //-------------------------------------------------------------------------------------------------------
     // ImportService Implementation
@@ -146,6 +165,12 @@ public class DefaultImportService
     @Override
     public ImportSummary importDxf2WithImportOptions( DXF2 dxf2, ImportOptions importOptions )
     {
-        return new ImportSummary();
+        ImportSummary importSummary = new ImportSummary();
+
+        // Imports.. this could be made even more generic, just need to make sure that everything is imported in
+        // the correct order
+        doImport( dxf2.getConstants(), importOptions, importSummary );
+
+        return importSummary;
     }
 }
