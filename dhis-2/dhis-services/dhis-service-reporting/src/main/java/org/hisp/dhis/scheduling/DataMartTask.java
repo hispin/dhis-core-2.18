@@ -42,10 +42,8 @@ import org.hisp.dhis.datamart.DataMartEngine;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodService;
 import org.hisp.dhis.period.RelativePeriods;
-import org.hisp.dhis.scheduling.TaskId;
 import org.hisp.dhis.setting.SystemSettingManager;
 import org.hisp.dhis.system.util.ConversionUtils;
-import org.hisp.dhis.user.User;
 import org.springframework.beans.factory.annotation.Autowired;
 
 /**
@@ -89,25 +87,13 @@ public class DataMartTask
         this.last6To12Months = last6To12Months;
     }
 
-    // -------------------------------------------------------------------------
-    // Must be set externally
-    // -------------------------------------------------------------------------
+    private TaskId taskId;
 
-    private User user;
-
-    public void setUser( User user )
+    public void setTaskId( TaskId taskId )
     {
-        this.user = user;
+        this.taskId = taskId;
     }
 
-    // -------------------------------------------------------------------------
-    // Constructors
-    // -------------------------------------------------------------------------
-
-    public DataMartTask()
-    {
-    }
-    
     // -------------------------------------------------------------------------
     // Runnable implementation
     // -------------------------------------------------------------------------
@@ -116,8 +102,6 @@ public class DataMartTask
     @SuppressWarnings("unchecked")  
     public void run()
     {
-        TaskId taskId = new TaskId( TaskCategory.DATAMART, user );
-        
         Set<String> periodTypes = (Set<String>) systemSettingManager.getSystemSetting( KEY_SCHEDULED_PERIOD_TYPES, DEFAULT_SCHEDULED_PERIOD_TYPES );
         
         List<Period> periods = getPeriods( periodTypes );

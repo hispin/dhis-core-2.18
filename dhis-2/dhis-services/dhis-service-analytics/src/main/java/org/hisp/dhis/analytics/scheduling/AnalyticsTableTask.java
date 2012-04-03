@@ -38,7 +38,6 @@ import org.hisp.dhis.analytics.AnalyticsTableService;
 import org.hisp.dhis.scheduling.TaskId;
 import org.hisp.dhis.system.notification.Notifier;
 import org.hisp.dhis.system.util.DebugUtils;
-import org.hisp.dhis.user.User;
 import org.springframework.beans.factory.annotation.Autowired;
 
 /**
@@ -66,23 +65,11 @@ public class AnalyticsTableTask
         this.last3Years = last3Years;
     }
 
-    // -------------------------------------------------------------------------
-    // Must be set externally
-    // -------------------------------------------------------------------------
+    private TaskId taskId;
 
-    private User user;
-
-    public void setUser( User user )
+    public void setTaskId( TaskId taskId )
     {
-        this.user = user;
-    }
-
-    // -------------------------------------------------------------------------
-    // Constructor
-    // -------------------------------------------------------------------------
-
-    public AnalyticsTableTask()
-    { 
+        this.taskId = taskId;
     }
 
     // -------------------------------------------------------------------------
@@ -92,8 +79,6 @@ public class AnalyticsTableTask
     @Override
     public void run()
     {
-        TaskId taskId = new TaskId( ANALYTICS_UPDATE, user );
-        
         notifier.clear( taskId, ANALYTICS_UPDATE );
         
         try
