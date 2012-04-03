@@ -47,8 +47,16 @@ import java.util.Map;
 public abstract class AbstractImporter<T extends IdentifiableObject>
     implements Importer<T>
 {
+    //-------------------------------------------------------------------------------------------------------
+    // Dependencies
+    //-------------------------------------------------------------------------------------------------------
+
     @Autowired
     private IdentifiableObjectManager manager;
+
+    //-------------------------------------------------------------------------------------------------------
+    // Current import counts
+    //-------------------------------------------------------------------------------------------------------
 
     protected int imports;
 
@@ -56,11 +64,35 @@ public abstract class AbstractImporter<T extends IdentifiableObject>
 
     protected int ignores;
 
+    //-------------------------------------------------------------------------------------------------------
+    // Abstract methods that sub-classes needs to implement
+    //-------------------------------------------------------------------------------------------------------
+
+    /**
+     * Called every time a new object is to be imported.
+     *
+     * @param object Object to import
+     */
     protected abstract void newObject( T object );
 
+    /**
+     * Update object from old => new.
+     *
+     * @param object    Object to import
+     * @param oldObject The current version of the object
+     */
     protected abstract void updatedObject( T object, T oldObject );
 
+    /**
+     * Current object name, used to fill name part of a ImportConflict
+     *
+     * @return Name of object
+     */
     protected abstract String getObjectName();
+
+    //-------------------------------------------------------------------------------------------------------
+    // Importer<T> Implementation
+    //-------------------------------------------------------------------------------------------------------
 
     @Override
     public List<ImportConflict> importCollection( Collection<T> objects, ImportOptions options )
@@ -131,7 +163,7 @@ public abstract class AbstractImporter<T extends IdentifiableObject>
     }
 
     @Override
-    public ImportCount getImportCount()
+    public ImportCount getCurrentImportCount()
     {
         ImportCount importCount = new ImportCount( getObjectName() );
 
@@ -141,6 +173,10 @@ public abstract class AbstractImporter<T extends IdentifiableObject>
 
         return importCount;
     }
+
+    //-------------------------------------------------------------------------------------------------------
+    // Helpers
+    //-------------------------------------------------------------------------------------------------------
 
     protected Map<String, T> getIdMap( Class<T> clazz, IdScheme scheme )
     {

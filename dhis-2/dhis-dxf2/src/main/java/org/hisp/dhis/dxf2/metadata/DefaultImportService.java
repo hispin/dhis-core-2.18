@@ -145,7 +145,7 @@ public class DefaultImportService
         if ( importer != null )
         {
             List<ImportConflict> conflicts = importer.importCollection( objects, importOptions );
-            ImportCount count = importer.getImportCount();
+            ImportCount count = importer.getCurrentImportCount();
 
             importSummary.getConflicts().addAll( conflicts );
             importSummary.getCounts().add( count );
