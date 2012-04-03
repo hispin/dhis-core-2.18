@@ -27,13 +27,19 @@ package org.hisp.dhis.dataadmin.action.scheduling;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import static org.hisp.dhis.scheduling.SchedulingManager.TASK_ANALYTICS_ALL;
+import static org.hisp.dhis.scheduling.SchedulingManager.TASK_ANALYTICS_LAST_3_YEARS;
+import static org.hisp.dhis.scheduling.SchedulingManager.TASK_DATAMART_FROM_6_TO_12_MONTS;
+import static org.hisp.dhis.scheduling.SchedulingManager.TASK_DATAMART_LAST_12_MONTHS;
+import static org.hisp.dhis.scheduling.SchedulingManager.TASK_DATAMART_LAST_6_MONTHS;
+import static org.hisp.dhis.scheduling.SchedulingManager.TASK_RESOURCE_TABLE;
 import static org.hisp.dhis.setting.SystemSettingManager.DEFAULT_ORGUNITGROUPSET_AGG_LEVEL;
 import static org.hisp.dhis.setting.SystemSettingManager.DEFAULT_SCHEDULED_PERIOD_TYPES;
 import static org.hisp.dhis.setting.SystemSettingManager.KEY_ORGUNITGROUPSET_AGG_LEVEL;
 import static org.hisp.dhis.setting.SystemSettingManager.KEY_SCHEDULED_PERIOD_TYPES;
-
-import static org.hisp.dhis.scheduling.SchedulingManager.*;
-import static org.hisp.dhis.system.scheduling.Scheduler.*;
+import static org.hisp.dhis.system.scheduling.Scheduler.CRON_DAILY_0AM_EXCEPT_SUNDAY;
+import static org.hisp.dhis.system.scheduling.Scheduler.CRON_WEEKLY_SUNDAY_0AM;
+import static org.hisp.dhis.system.scheduling.Scheduler.STATUS_RUNNING;
 
 import java.util.HashMap;
 import java.util.HashSet;
@@ -218,7 +224,8 @@ public class ScheduleTasksAction
 
                 if ( STRATEGY_ALL_DAILY.equals( resourceTableStrategy ) )
                 {
-                    keyCronMap.put( TASK_RESOURCE_TABLE, CRON_DAILY_0AM );
+                    keyCronMap.put( TASK_RESOURCE_TABLE, CRON_DAILY_0AM_EXCEPT_SUNDAY );
+                    keyCronMap.put( TASK_RESOURCE_TABLE, CRON_WEEKLY_SUNDAY_0AM );
                 }
                 
                 // -------------------------------------------------------------
@@ -227,11 +234,13 @@ public class ScheduleTasksAction
 
                 if ( STRATEGY_ALL_DAILY.equals( analyticsStrategy ) )
                 {
-                    keyCronMap.put( TASK_ANALYTICS_ALL, CRON_DAILY_0AM );
+                    keyCronMap.put( TASK_ANALYTICS_ALL, CRON_DAILY_0AM_EXCEPT_SUNDAY );
+                    keyCronMap.put( TASK_ANALYTICS_ALL, CRON_WEEKLY_SUNDAY_0AM );
                 }
                 else if ( STRATEGY_LAST_3_YEARS_DAILY.equals( analyticsStrategy ) )
                 {
-                    keyCronMap.put( TASK_ANALYTICS_LAST_3_YEARS, CRON_DAILY_0AM );
+                    keyCronMap.put( TASK_ANALYTICS_LAST_3_YEARS, CRON_DAILY_0AM_EXCEPT_SUNDAY );
+                    keyCronMap.put( TASK_ANALYTICS_LAST_3_YEARS, CRON_WEEKLY_SUNDAY_0AM );
                 }
                 
                 // -------------------------------------------------------------
@@ -240,7 +249,8 @@ public class ScheduleTasksAction
                 
                 if ( STRATEGY_LAST_12_DAILY.equals( dataMartStrategy ) )
                 {
-                    keyCronMap.put( TASK_DATAMART_LAST_12_MONTHS, CRON_DAILY_0AM );
+                    keyCronMap.put( TASK_DATAMART_LAST_12_MONTHS, CRON_DAILY_0AM_EXCEPT_SUNDAY );
+                    keyCronMap.put( TASK_DATAMART_LAST_12_MONTHS, CRON_WEEKLY_SUNDAY_0AM );
                 }
                 else if ( STRATEGY_LAST_6_DAILY_6_TO_12_WEEKLY.equals( dataMartStrategy ) )
                 {
