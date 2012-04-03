@@ -40,13 +40,14 @@ import static org.hisp.dhis.setting.SystemSettingManager.KEY_SCHEDULED_PERIOD_TY
 import static org.hisp.dhis.system.scheduling.Scheduler.CRON_DAILY_0AM_EXCEPT_SUNDAY;
 import static org.hisp.dhis.system.scheduling.Scheduler.CRON_WEEKLY_SUNDAY_0AM;
 import static org.hisp.dhis.system.scheduling.Scheduler.STATUS_RUNNING;
+import static org.hisp.dhis.system.util.CollectionUtils.emptyIfNull;
 
-import java.util.HashMap;
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
+import org.hisp.dhis.common.ListMap;
 import org.hisp.dhis.organisationunit.OrganisationUnitLevel;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.scheduling.SchedulingManager;
@@ -94,13 +95,6 @@ public class ScheduleTasksAction
     // -------------------------------------------------------------------------
     // Input
     // -------------------------------------------------------------------------
-
-    private boolean execute;
-
-    public void setExecute( boolean execute )
-    {
-        this.execute = execute;
-    }
     
     private boolean schedule;
 
@@ -201,11 +195,7 @@ public class ScheduleTasksAction
     @SuppressWarnings("unchecked")
     public String execute()
     {
-        if ( execute )
-        {
-            schedulingManager.executeTasks();
-        }
-        else if ( schedule )
+        if ( schedule )
         {
             systemSettingManager.saveSystemSetting( KEY_SCHEDULED_PERIOD_TYPES, (HashSet<String>) scheduledPeriodTypes );
             systemSettingManager.saveSystemSetting( KEY_ORGUNITGROUPSET_AGG_LEVEL, orgUnitGroupSetAggLevel );
@@ -216,16 +206,16 @@ public class ScheduleTasksAction
             }
             else
             {
-                Map<String, String> keyCronMap = new HashMap<String, String>();
-
+                ListMap<String, String> cronKeyMap = new ListMap<String, String>();
+                
                 // -------------------------------------------------------------
                 // Resource tables
                 // -------------------------------------------------------------
 
                 if ( STRATEGY_ALL_DAILY.equals( resourceTableStrategy ) )
                 {
-                    keyCronMap.put( TASK_RESOURCE_TABLE, CRON_DAILY_0AM_EXCEPT_SUNDAY );
-                    keyCronMap.put( TASK_RESOURCE_TABLE, CRON_WEEKLY_SUNDAY_0AM );
+                    cronKeyMap.putValue( CRON_DAILY_0AM_EXCEPT_SUNDAY, TASK_RESOURCE_TABLE );
+                    cronKeyMap.putValue( CRON_WEEKLY_SUNDAY_0AM, TASK_RESOURCE_TABLE );
                 }
                 
                 // -------------------------------------------------------------
@@ -234,13 +224,13 @@ public class ScheduleTasksAction
 
                 if ( STRATEGY_ALL_DAILY.equals( analyticsStrategy ) )
                 {
-                    keyCronMap.put( TASK_ANALYTICS_ALL, CRON_DAILY_0AM_EXCEPT_SUNDAY );
-                    keyCronMap.put( TASK_ANALYTICS_ALL, CRON_WEEKLY_SUNDAY_0AM );
+                    cronKeyMap.putValue( CRON_DAILY_0AM_EXCEPT_SUNDAY, TASK_ANALYTICS_ALL );
+                    cronKeyMap.putValue( CRON_WEEKLY_SUNDAY_0AM, TASK_ANALYTICS_ALL );
                 }
                 else if ( STRATEGY_LAST_3_YEARS_DAILY.equals( analyticsStrategy ) )
                 {
-                    keyCronMap.put( TASK_ANALYTICS_LAST_3_YEARS, CRON_DAILY_0AM_EXCEPT_SUNDAY );
-                    keyCronMap.put( TASK_ANALYTICS_LAST_3_YEARS, CRON_WEEKLY_SUNDAY_0AM );
+                    cronKeyMap.putValue( CRON_DAILY_0AM_EXCEPT_SUNDAY, TASK_ANALYTICS_LAST_3_YEARS );
+                    cronKeyMap.putValue( CRON_WEEKLY_SUNDAY_0AM, TASK_ANALYTICS_LAST_3_YEARS );
                 }
                 
                 // -------------------------------------------------------------
@@ -249,25 +239,27 @@ public class ScheduleTasksAction
                 
                 if ( STRATEGY_LAST_12_DAILY.equals( dataMartStrategy ) )
                 {
-                    keyCronMap.put( TASK_DATAMART_LAST_12_MONTHS, CRON_DAILY_0AM_EXCEPT_SUNDAY );
-                    keyCronMap.put( TASK_DATAMART_LAST_12_MONTHS, CRON_WEEKLY_SUNDAY_0AM );
+                    cronKeyMap.putValue( CRON_DAILY_0AM_EXCEPT_SUNDAY, TASK_DATAMART_LAST_12_MONTHS );
+                    cronKeyMap.putValue( CRON_WEEKLY_SUNDAY_0AM, TASK_DATAMART_LAST_12_MONTHS );
                 }
                 else if ( STRATEGY_LAST_6_DAILY_6_TO_12_WEEKLY.equals( dataMartStrategy ) )
                 {
-                    keyCronMap.put( TASK_DATAMART_LAST_6_MONTHS, CRON_DAILY_0AM_EXCEPT_SUNDAY );
-                    keyCronMap.put( TASK_DATAMART_FROM_6_TO_12_MONTS, CRON_WEEKLY_SUNDAY_0AM );
+                    cronKeyMap.putValue( CRON_DAILY_0AM_EXCEPT_SUNDAY, TASK_DATAMART_LAST_6_MONTHS );
+                    cronKeyMap.putValue( CRON_WEEKLY_SUNDAY_0AM, TASK_DATAMART_FROM_6_TO_12_MONTS );
                 }
                 
-                schedulingManager.scheduleTasks( keyCronMap );
+                schedulingManager.scheduleTasks( cronKeyMap );
             }
         }
         else
         {
+            Collection<String> keys = emptyIfNull( schedulingManager.getCronKeyMap().get( CRON_DAILY_0AM_EXCEPT_SUNDAY ) );
+            
             // -----------------------------------------------------------------
             // Resource tables
             // -----------------------------------------------------------------
 
-            if ( schedulingManager.isScheduled( TASK_RESOURCE_TABLE ) )
+            if ( keys.contains( TASK_RESOURCE_TABLE ) )
             {
                 resourceTableStrategy = STRATEGY_ALL_DAILY;
             }
@@ -276,11 +268,11 @@ public class ScheduleTasksAction
             // Analytics
             // -----------------------------------------------------------------
 
-            if ( schedulingManager.isScheduled( TASK_ANALYTICS_ALL ) )
+            if ( keys.contains( TASK_ANALYTICS_ALL ) )
             {
                 analyticsStrategy = STRATEGY_ALL_DAILY;
             }
-            else if ( schedulingManager.isScheduled( TASK_ANALYTICS_LAST_3_YEARS ) )
+            else if ( keys.contains( TASK_ANALYTICS_LAST_3_YEARS ) )
             {
                 analyticsStrategy = STRATEGY_LAST_3_YEARS_DAILY;
             }
@@ -289,11 +281,11 @@ public class ScheduleTasksAction
             // Data mart
             // -----------------------------------------------------------------
 
-            if ( schedulingManager.isScheduled( TASK_DATAMART_LAST_12_MONTHS ) )
+            if ( keys.contains( TASK_DATAMART_LAST_12_MONTHS ) )
             {
                 dataMartStrategy = STRATEGY_LAST_12_DAILY;
             }
-            else if ( schedulingManager.isScheduled( TASK_DATAMART_LAST_6_MONTHS ) )
+            else if ( keys.contains( TASK_DATAMART_LAST_6_MONTHS ) )
             {
                 dataMartStrategy = STRATEGY_LAST_6_DAILY_6_TO_12_WEEKLY;
             }            

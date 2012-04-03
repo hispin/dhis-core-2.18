@@ -66,6 +66,7 @@ import org.hisp.dhis.resourcetable.statement.CreateDataElementGroupSetTableState
 import org.hisp.dhis.resourcetable.statement.CreateIndicatorGroupSetTableStatement;
 import org.hisp.dhis.resourcetable.statement.CreateOrganisationUnitGroupSetTableStatement;
 import org.hisp.dhis.sqlview.SqlViewService;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * @author Lars Helge Overland
@@ -144,17 +145,18 @@ public class DefaultResourceTableService
     // All
     // -------------------------------------------------------------------------
 
+    @Transactional
     public void generateAll()
     {
         sqlViewService.dropAllSqlViewTables();
-        
+
+        generateOrganisationUnitStructures();
         generateCategoryOptionComboNames();
         generateCategoryTable();
         generateDataElementGroupSetTable();
         generateDataElementTable();
         generateIndicatorGroupSetTable();
         generateOrganisationUnitGroupSetTable();
-        generateOrganisationUnitStructures();
         generatePeriodTable();
         
         sqlViewService.createAllViewTables();
@@ -222,6 +224,11 @@ public class DefaultResourceTableService
 
         BatchHandler<Object> batchHandler = batchHandlerFactory.createBatchHandler( GenericBatchHandler.class ).
             setTableName( ResourceTableStore.TABLE_NAME_CATEGORY_OPTION_COMBO_NAME ).init();
+        
+        
+        //TODO
+        
+        
         
         for ( DataElementCategoryOptionCombo combo : combos )
         {
