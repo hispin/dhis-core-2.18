@@ -57,3 +57,14 @@ select orgunitgroupid from orgunitgroupmembers om
 where ou.organisationunitid=om.organisationunitid
 and om.orgunitgroupid=22755);
 
+-- Facility overview --
+
+select ou.name, ou.uid, ou.code, ou.coordinates, oustr.level, gsstr.type, gsstr.ownership, 
+  (select name from organisationunit where organisationunitid=oustr.idlevel2) as province,
+  (select name from organisationunit where organisationunitid=oustr.idlevel3) as county,
+  (select name from organisationunit where organisationunitid=oustr.idlevel4) as district
+from _orgunitstructure as oustr
+join organisationunit as ou on oustr.organisationunitid=ou.organisationunitid
+join _organisationunitgroupsetstructure as gsstr on ou.organisationunitid=gsstr.organisationunitid
+where oustr.level >= 5;
+
