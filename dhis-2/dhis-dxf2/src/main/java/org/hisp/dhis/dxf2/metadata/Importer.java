@@ -39,6 +39,8 @@ import java.util.List;
 public interface Importer<T>
 {
     /**
+     * Import a single object, return null or a ImportConflict is there is a conflict
+     *
      * @param object  Object to import
      * @param options Import options
      * @return ImportConflict instance if a conflict occurred, if not null
@@ -61,5 +63,11 @@ public interface Importer<T>
      */
     ImportCount getCurrentImportCount();
 
+    /**
+     * Can this importer handle a certain Class type
+     *
+     * @param clazz Class to check for
+     * @return true or false depending on if class is supported
+     */
     boolean canHandle( Class<?> clazz );
 }
