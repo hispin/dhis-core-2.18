@@ -125,6 +125,6 @@ function showMessage( json )
 	if ( json.response == "success" ) {
 		showSuccessMessage( i18n_add_update_success );
 	} else {
-		showErrorMessage( json.message );
+		showErrorMessage( json.message, 7000 );
 	}
 }

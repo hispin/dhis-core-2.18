@@ -102,7 +102,7 @@ public class SmsMessageSender
         }
         else
         {
-            message = "not_sending_message_to_any_recipient";
+            message = "no_recipient";
         }
 
         return message;

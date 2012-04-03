@@ -1,7 +1,7 @@
 var isChecked = false;
 var isOrgunitSelected = false;
 
-function selectedOrganisationUnit( unitIds )
+function selectedOrganisationUnitSendSMS( unitIds )
 {
 	isOrgunitSelected = (unitIds && unitIds.length > 0);
 }
@@ -9,6 +9,9 @@ function selectedOrganisationUnit( unitIds )
 function toggleSMSGUI( checked )
 {
 	if ( checked ) {
+		selectionTree.clearSelectedOrganisationUnits();
+		selectionTree.buildSelectionTree();
+	
 		hideById( 'phoneType' );
 		showById( 'orgunitType' );
 	} else {
@@ -64,7 +67,7 @@ function sendSMSMessage( _form )
 			showSuccessMessage( json.message );
 		}
 		else {
-			showErrorMessage( json.message );
+			showErrorMessage( json.message, 7000 );
 		}
 	} );
 }

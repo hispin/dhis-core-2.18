@@ -2,8 +2,9 @@
 	jQuery(document).ready( function() {
 		validation( "sendSMSForm", function( form ) { sendSMSMessage( form ); } );
 		
-		selectionTreeSelection.setListenerFunction( selectedOrganisationUnit );
+		selectionTreeSelection.setListenerFunction( selectedOrganisationUnitSendSMS );
 
+		uncheck( "sendTypeCB" );
 		toggleSMSGUI( false );
 	});
 	

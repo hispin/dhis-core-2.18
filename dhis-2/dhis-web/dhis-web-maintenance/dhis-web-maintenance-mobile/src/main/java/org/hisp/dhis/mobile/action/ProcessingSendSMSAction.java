@@ -93,7 +93,7 @@ public class ProcessingSendSMSAction
         this.recipients = recipients;
     }
 
-    private String message;
+    private String message = "success";
 
     public String getMessage()
     {
@@ -126,38 +126,6 @@ public class ProcessingSendSMSAction
 
         if ( smsMessage != null && !smsMessage.isEmpty() )
         {
-            Collection<OrganisationUnit> units = selectionTreeManager.getReloadedSelectedOrganisationUnits();
-
-            if ( units != null && !units.isEmpty() )
-            {
-                Set<User> users = new HashSet<User>();
-
-                for ( OrganisationUnit unit : units )
-                {
-                    if ( unit.getUsers() == null || unit.getUsers().isEmpty() )
-                    {
-                        if ( unit.getPhoneNumber() != null && !unit.getPhoneNumber().isEmpty() )
-                        {
-                            recipients.add( unit.getPhoneNumber() );
-                        }
-                    }
-                    else
-                    {
-                        users.addAll( unit.getUsers() );
-                    }
-                }
-
-                message = messageSender.sendMessage( smsSubject, smsMessage, currentUserService.getCurrentUser(),
-                    false, users, gatewayId );
-
-                if ( message != null && !message.equals( "success" ) )
-                {
-                    message = i18n.getString( message );
-
-                    return ERROR;
-                }
-            }
-            
             if ( recipients != null && !recipients.isEmpty() )
             {
                 message = messageSender.sendMessage( smsSubject, smsMessage, currentUserService.getCurrentUser(), true,
@@ -168,6 +136,53 @@ public class ProcessingSendSMSAction
                     message = i18n.getString( message );
 
                     return ERROR;
+                }
+            }
+            else
+            {
+                Collection<OrganisationUnit> units = selectionTreeManager.getReloadedSelectedOrganisationUnits();
+
+                if ( units != null && !units.isEmpty() )
+                {
+                    recipients.clear();
+                    Set<User> users = new HashSet<User>();
+
+                    for ( OrganisationUnit unit : units )
+                    {
+                        if ( unit.getUsers() == null || unit.getUsers().isEmpty() )
+                        {
+                            if ( unit.getPhoneNumber() != null && !unit.getPhoneNumber().isEmpty() )
+                            {  
+                                recipients.add( unit.getPhoneNumber() );
+                            }
+                        }
+                        else
+                        {
+                            users.addAll( unit.getUsers() );
+                        }
+                    }
+
+                    message = messageSender.sendMessage( smsSubject, smsMessage, currentUserService.getCurrentUser(),
+                        true, recipients, gatewayId );
+
+                    if ( message != null && (message.equals( "no_recipient" ) || message.equals( "success" )) )
+                    {   
+                        message = messageSender.sendMessage( smsSubject, smsMessage, currentUserService
+                            .getCurrentUser(), false, users, gatewayId );
+                        
+                        if ( message != null && !message.equals( "success" ) )
+                        {
+                            message = i18n.getString( message );
+
+                            return ERROR;
+                        }
+                    }
+                    else
+                    {   
+                        message = i18n.getString( message );
+
+                        return ERROR;
+                    }
                 }
             }
         }
