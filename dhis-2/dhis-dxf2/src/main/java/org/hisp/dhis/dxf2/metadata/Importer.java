@@ -38,11 +38,28 @@ import java.util.List;
  */
 public interface Importer<T>
 {
+    /**
+     * @param object  Object to import
+     * @param options Import options
+     * @return ImportConflict instance if a conflict occurred, if not null
+     */
     ImportConflict importObject( T object, ImportOptions options );
 
+    /**
+     * Import a collection of objects.
+     *
+     * @param objects The collection to import
+     * @param options Import options
+     * @return List of all the ImportConflicts encountered
+     */
     List<ImportConflict> importCollection( Collection<T> objects, ImportOptions options );
 
-    ImportCount getImportCount();
+    /**
+     * Get an ImportCount instance for the current import numbers.
+     *
+     * @return ImportCount instance filled with current values
+     */
+    ImportCount getCurrentImportCount();
 
     boolean canHandle( Class<?> clazz );
 }
