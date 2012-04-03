@@ -6,6 +6,7 @@ function PeriodType()
     periodTypes['Daily'] = new DailyPeriodType( dateFormat );
     periodTypes['Weekly'] = new WeeklyPeriodType( dateFormat );
     periodTypes['Monthly'] = new MonthlyPeriodType( dateFormat );
+    periodTypes['BiMonthly'] = new BiMonthlyPeriodType( dateFormat );
     periodTypes['Quarterly'] = new QuarterlyPeriodType( dateFormat );
     periodTypes['SixMonthly'] = new SixMonthlyPeriodType( dateFormat );
     periodTypes['Yearly'] = new YearlyPeriodType( dateFormat );
