@@ -271,6 +271,7 @@ public class BaseIdentifiableObject
             ", code='" + code + '\'' +
             ", name='" + name + '\'' +
             ", lastUpdated=" + lastUpdated +
-            ", displayName='" + displayName + '\'' + '}';
+            ", displayName='" + displayName + '\'' +
+            '}';
     }
 }
