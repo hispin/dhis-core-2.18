@@ -27,13 +27,21 @@ package org.hisp.dhis.system.grid;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonView;
-import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlElementWrapper;
-import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
-import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
+import static org.hisp.dhis.system.util.MathUtils.getRounded;
+
+import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JRField;
+
 import org.apache.commons.math.stat.regression.SimpleRegression;
 import org.hisp.dhis.common.Dxf2Namespace;
 import org.hisp.dhis.common.Grid;
@@ -41,10 +49,11 @@ import org.hisp.dhis.common.GridHeader;
 import org.hisp.dhis.common.view.DetailedView;
 import org.hisp.dhis.system.util.MathUtils;
 
-import javax.xml.bind.annotation.XmlElement;
-import java.util.*;
-
-import static org.hisp.dhis.system.util.MathUtils.getRounded;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonView;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlElementWrapper;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 
 /**
  * @author Lars Helge Overland
@@ -492,6 +501,51 @@ public class ListGrid
         return index != null ? getRow( currentRowReadIndex ).get( index ) : null;
     }
 
+    // -------------------------------------------------------------------------
+    // SQL utility methods
+    // -------------------------------------------------------------------------
+
+    public void addHeaders( ResultSet rs )
+    {
+        try
+        {
+            ResultSetMetaData rsmd = rs.getMetaData();
+
+            int columnNo = rsmd.getColumnCount();
+
+            for ( int i = 1; i <= columnNo; i++ )
+            {
+                addHeader( new GridHeader( rsmd.getColumnLabel( i ), false, false ) );
+            }
+        }
+        catch ( SQLException ex )
+        {
+            throw new RuntimeException( ex );
+        }
+    }
+
+    public void addRow( ResultSet rs )
+    {
+        try
+        {
+            int columnNo = rs.getMetaData().getColumnCount();
+
+            while ( rs.next() )
+            {
+                addRow();
+                
+                for ( int i = 1; i <= columnNo; i++ )
+                {
+                    addValue( rs.getObject( i ) );
+                }
+            }
+        }
+        catch ( SQLException ex )
+        {
+            throw new RuntimeException( ex );
+        }
+    }
+    
     // -------------------------------------------------------------------------
     // Supportive methods
     // -------------------------------------------------------------------------

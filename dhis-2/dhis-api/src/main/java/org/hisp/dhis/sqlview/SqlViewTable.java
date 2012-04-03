@@ -8,7 +8,6 @@ import java.util.List;
 
 /**
  * @author Dang Duy Hieu
- * @version $Id ResourceViewerTable.java July 12, 2010$
  */
 public class SqlViewTable
 {
@@ -81,9 +80,9 @@ public class SqlViewTable
                 headers.add( rsmd.getColumnLabel( i ) );
             }
         }
-        catch ( SQLException e )
+        catch ( SQLException ex )
         {
-            e.printStackTrace();
+            throw new RuntimeException( ex );
         }
     }
 
@@ -93,24 +92,21 @@ public class SqlViewTable
         {
             int columnNo = rs.getMetaData().getColumnCount();
 
-            rs.beforeFirst();
+            while ( rs.next() )
             {
-                while ( rs.next() )
+                List<Object> rows = new ArrayList<Object>();
+
+                for ( int i = 1; i <= columnNo; i++ )
                 {
-                    List<Object> rows = new ArrayList<Object>();
-
-                    for ( int i = 1; i <= columnNo; i++ )
-                    {
-                        rows.add( rs.getObject( i ) );
-                    }
-
-                    records.add( rows );
+                    rows.add( rs.getObject( i ) );
                 }
+
+                records.add( rows );
             }
         }
-        catch ( SQLException e )
+        catch ( SQLException ex )
         {
-            e.printStackTrace();
+            throw new RuntimeException( ex );
         }
     }
 
@@ -170,15 +166,4 @@ public class SqlViewTable
         }
         return true;
     }
-
-    // -------------------------------------------------------------------------
-    // toString()
-    // -------------------------------------------------------------------------
-
-    public String toString()
-    {
-        return null;
-
-    }
-
 }
