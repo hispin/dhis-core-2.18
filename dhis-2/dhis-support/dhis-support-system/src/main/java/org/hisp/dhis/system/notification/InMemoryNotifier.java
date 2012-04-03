@@ -97,7 +97,7 @@ public class InMemoryNotifier
     {
         List<Notification> list = new ArrayList<Notification>();
         
-        if ( category != null )
+        if ( id != null && category != null )
         {
             for ( Notification notification : notifications.get( id ) )
             {
@@ -119,7 +119,7 @@ public class InMemoryNotifier
     @Override
     public Notifier clear( TaskId id, TaskCategory category )
     {
-        if ( category != null )
+        if ( id != null && category != null )
         {
             Iterator<Notification> iter = notifications.get( id ).iterator();
             

@@ -32,7 +32,6 @@ import org.hisp.dhis.scheduling.TaskCategory;
 import org.hisp.dhis.scheduling.TaskId;
 import org.hisp.dhis.system.notification.NotificationLevel;
 import org.hisp.dhis.system.notification.Notifier;
-import org.hisp.dhis.user.User;
 import org.springframework.beans.factory.annotation.Autowired;
 
 /**
@@ -46,24 +45,12 @@ public class ResourceTableTask
 
     @Autowired
     private Notifier notifier;
-    
-    // -------------------------------------------------------------------------
-    // Must be set externally
-    // -------------------------------------------------------------------------
 
-    private User user;
+    private TaskId taskId;
 
-    public void setUser( User user )
+    public void setTaskId( TaskId taskId )
     {
-        this.user = user;
-    }
-
-    // -------------------------------------------------------------------------
-    // Constructor
-    // -------------------------------------------------------------------------
-
-    public ResourceTableTask()
-    {
+        this.taskId = taskId;
     }
 
     // -------------------------------------------------------------------------
@@ -73,8 +60,6 @@ public class ResourceTableTask
     @Override
     public void run()
     {
-        TaskId taskId = new TaskId( TaskCategory.RESOURCETABLE_UPDATE, user );
-        
         notifier.notify( taskId, TaskCategory.RESOURCETABLE_UPDATE, "Generating resource tables" );
         
         resourceTableService.generateAll();

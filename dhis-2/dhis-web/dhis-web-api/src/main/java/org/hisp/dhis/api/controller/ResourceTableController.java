@@ -72,7 +72,7 @@ public class ResourceTableController
     @PreAuthorize( "hasRole('ALL') or hasRole('F_DATA_MART_ADMIN')" )
     public void data( HttpServletResponse response )
     {
-        analyticsTableService.update( null );
+        analyticsTableService.update( false, null );
         
         ContextUtils.okResponse( response, "Initiated analytics table update" );
     }
@@ -81,7 +81,7 @@ public class ResourceTableController
     @PreAuthorize( "hasRole('ALL') or hasRole('F_DATA_MART_ADMIN')" )
     public void completeness( HttpServletResponse response )
     {
-        completenessTableService.update( null );
+        completenessTableService.update( false, null );
         
         ContextUtils.okResponse( response, "Initiated completeness table update" );
     }
@@ -90,7 +90,7 @@ public class ResourceTableController
     @PreAuthorize( "hasRole('ALL') or hasRole('F_DATA_MART_ADMIN')" )
     public void completenessTarget( HttpServletResponse response )
     {
-        completenessTargetTableService.update( null );
+        completenessTargetTableService.update( false, null );
         
         ContextUtils.okResponse( response, "Initiated completeness target table update" );
     }
