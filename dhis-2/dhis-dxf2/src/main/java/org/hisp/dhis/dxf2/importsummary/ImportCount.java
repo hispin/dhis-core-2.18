@@ -42,6 +42,11 @@ public class ImportCount
 
     private int ignores;
 
+    public ImportCount( String object )
+    {
+        this.object = object;
+    }
+
     public ImportCount( String object, int imports, int updates, int ignores )
     {
         this.object = object;

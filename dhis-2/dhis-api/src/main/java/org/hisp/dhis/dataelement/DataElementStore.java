@@ -38,7 +38,6 @@ import org.hisp.dhis.dataset.DataSet;
  * Defines the functionality for persisting DataElements and DataElementGroups.
  * 
  * @author Torgeir Lorange Ostby
- * @version $Id: DataElementStore.java 6289 2008-11-14 17:53:24Z larshelg $
  */
 public interface DataElementStore
     extends GenericNameableObjectStore<DataElement>

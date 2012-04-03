@@ -61,7 +61,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
@@ -143,177 +142,177 @@ public class DefaultExportService
 
         if ( exportOptions.isAttributeTypes() )
         {
-            dxf2.setAttributeTypes( new HashSet<Attribute>( attributeService.getAllAttributes() ) );
+            dxf2.setAttributeTypes( new ArrayList<Attribute>( attributeService.getAllAttributes() ) );
         }
 
         if ( exportOptions.isUsers() )
         {
-            dxf2.setUsers( new HashSet<User>( userService.getAllUsers() ) );
+            dxf2.setUsers( new ArrayList<User>( userService.getAllUsers() ) );
         }
 
         if ( exportOptions.isUserAuthorityGroups() )
         {
-            dxf2.setUserAuthorityGroups( new HashSet<UserAuthorityGroup>( userService.getAllUserAuthorityGroups() ) );
+            dxf2.setUserAuthorityGroups( new ArrayList<UserAuthorityGroup>( userService.getAllUserAuthorityGroups() ) );
         }
 
         if ( exportOptions.isUserGroups() )
         {
-            dxf2.setUserGroups( new HashSet<UserGroup>( userGroupService.getAllUserGroups() ) );
+            dxf2.setUserGroups( new ArrayList<UserGroup>( userGroupService.getAllUserGroups() ) );
         }
 
         if ( exportOptions.isConstants() )
         {
-            dxf2.setConstants( new HashSet<Constant>( constantService.getAllConstants() ) );
+            dxf2.setConstants( new ArrayList<Constant>( constantService.getAllConstants() ) );
         }
 
         if ( exportOptions.isConcepts() )
         {
-            dxf2.setConcepts( new HashSet<Concept>( conceptService.getAllConcepts() ) );
+            dxf2.setConcepts( new ArrayList<Concept>( conceptService.getAllConcepts() ) );
         }
 
         if ( exportOptions.isDataElements() )
         {
-            dxf2.setDataElements( new HashSet<DataElement>( dataElementService.getAllDataElements() ) );
+            dxf2.setDataElements( new ArrayList<DataElement>( dataElementService.getAllDataElements() ) );
         }
 
         if ( exportOptions.isOptionSets() )
         {
-            dxf2.setOptionSets( new HashSet<OptionSet>( optionService.getAllOptionSets() ) );
+            dxf2.setOptionSets( new ArrayList<OptionSet>( optionService.getAllOptionSets() ) );
         }
 
         if ( exportOptions.isDataElementGroups() )
         {
-            dxf2.setDataElementGroups( new HashSet<DataElementGroup>( dataElementService.getAllDataElementGroups() ) );
+            dxf2.setDataElementGroups( new ArrayList<DataElementGroup>( dataElementService.getAllDataElementGroups() ) );
         }
 
         if ( exportOptions.isDataElementGroupSets() )
         {
-            dxf2.setDataElementGroupSets( new HashSet<DataElementGroupSet>( dataElementService.getAllDataElementGroupSets() ) );
+            dxf2.setDataElementGroupSets( new ArrayList<DataElementGroupSet>( dataElementService.getAllDataElementGroupSets() ) );
         }
 
         if ( exportOptions.isCategories() )
         {
-            dxf2.setCategories( new HashSet<DataElementCategory>( dataElementCategoryService.getAllDataElementCategories() ) );
+            dxf2.setCategories( new ArrayList<DataElementCategory>( dataElementCategoryService.getAllDataElementCategories() ) );
         }
 
         if ( exportOptions.isCategoryOptions() )
         {
-            dxf2.setCategoryOptions( new HashSet<DataElementCategoryOption>( dataElementCategoryService.getAllDataElementCategoryOptions() ) );
+            dxf2.setCategoryOptions( new ArrayList<DataElementCategoryOption>( dataElementCategoryService.getAllDataElementCategoryOptions() ) );
         }
 
         if ( exportOptions.isCategoryCombos() )
         {
-            dxf2.setCategoryCombos( new HashSet<DataElementCategoryCombo>( dataElementCategoryService.getAllDataElementCategoryCombos() ) );
+            dxf2.setCategoryCombos( new ArrayList<DataElementCategoryCombo>( dataElementCategoryService.getAllDataElementCategoryCombos() ) );
         }
 
         if ( exportOptions.isCategoryOptionCombos() )
         {
-            dxf2.setCategoryOptionCombos( new HashSet<DataElementCategoryOptionCombo>( dataElementCategoryService.getAllDataElementCategoryOptionCombos() ) );
+            dxf2.setCategoryOptionCombos( new ArrayList<DataElementCategoryOptionCombo>( dataElementCategoryService.getAllDataElementCategoryOptionCombos() ) );
         }
 
         if ( exportOptions.isIndicators() )
         {
-            dxf2.setIndicators( new HashSet<Indicator>( indicatorService.getAllIndicators() ) );
+            dxf2.setIndicators( new ArrayList<Indicator>( indicatorService.getAllIndicators() ) );
         }
 
         if ( exportOptions.isIndicatorGroups() )
         {
-            dxf2.setIndicatorGroups( new HashSet<IndicatorGroup>( indicatorService.getAllIndicatorGroups() ) );
+            dxf2.setIndicatorGroups( new ArrayList<IndicatorGroup>( indicatorService.getAllIndicatorGroups() ) );
         }
 
         if ( exportOptions.isIndicatorGroupSets() )
         {
-            dxf2.setIndicatorGroupSets( new HashSet<IndicatorGroupSet>( indicatorService.getAllIndicatorGroupSets() ) );
+            dxf2.setIndicatorGroupSets( new ArrayList<IndicatorGroupSet>( indicatorService.getAllIndicatorGroupSets() ) );
         }
 
         if ( exportOptions.isIndicatorTypes() )
         {
-            dxf2.setIndicatorTypes( new HashSet<IndicatorType>( indicatorService.getAllIndicatorTypes() ) );
+            dxf2.setIndicatorTypes( new ArrayList<IndicatorType>( indicatorService.getAllIndicatorTypes() ) );
         }
 
         if ( exportOptions.isOrganisationUnits() )
         {
-            dxf2.setOrganisationUnits( new HashSet<OrganisationUnit>( organisationUnitService.getAllOrganisationUnits() ) );
+            dxf2.setOrganisationUnits( new ArrayList<OrganisationUnit>( organisationUnitService.getAllOrganisationUnits() ) );
         }
 
         if ( exportOptions.isOrganisationUnitLevels() )
         {
-            dxf2.setOrganisationUnitLevels( new HashSet<OrganisationUnitLevel>( organisationUnitService.getOrganisationUnitLevels() ) );
+            dxf2.setOrganisationUnitLevels( new ArrayList<OrganisationUnitLevel>( organisationUnitService.getOrganisationUnitLevels() ) );
         }
 
         if ( exportOptions.isOrganisationUnitGroups() )
         {
-            dxf2.setOrganisationUnitGroups( new HashSet<OrganisationUnitGroup>( organisationUnitGroupService.getAllOrganisationUnitGroups() ) );
+            dxf2.setOrganisationUnitGroups( new ArrayList<OrganisationUnitGroup>( organisationUnitGroupService.getAllOrganisationUnitGroups() ) );
         }
 
         if ( exportOptions.isOrganisationUnitGroupSets() )
         {
-            dxf2.setOrganisationUnitGroupSets( new HashSet<OrganisationUnitGroupSet>( organisationUnitGroupService.getAllOrganisationUnitGroupSets() ) );
+            dxf2.setOrganisationUnitGroupSets( new ArrayList<OrganisationUnitGroupSet>( organisationUnitGroupService.getAllOrganisationUnitGroupSets() ) );
         }
 
         if ( exportOptions.isDataSets() )
         {
-            dxf2.setDataSets( new HashSet<DataSet>( dataSetService.getAllDataSets() ) );
+            dxf2.setDataSets( new ArrayList<DataSet>( dataSetService.getAllDataSets() ) );
         }
 
         if ( exportOptions.isValidationRules() )
         {
-            dxf2.setValidationRules( new HashSet<ValidationRule>( validationRuleService.getAllValidationRules() ) );
+            dxf2.setValidationRules( new ArrayList<ValidationRule>( validationRuleService.getAllValidationRules() ) );
         }
 
         if ( exportOptions.isValidationRuleGroups() )
         {
-            dxf2.setValidationRuleGroups( new HashSet<ValidationRuleGroup>( validationRuleService.getAllValidationRuleGroups() ) );
+            dxf2.setValidationRuleGroups( new ArrayList<ValidationRuleGroup>( validationRuleService.getAllValidationRuleGroups() ) );
         }
 
         if ( exportOptions.isSqlViews() )
         {
-            dxf2.setSqlViews( new HashSet<SqlView>( sqlViewService.getAllSqlViews() ) );
+            dxf2.setSqlViews( new ArrayList<SqlView>( sqlViewService.getAllSqlViews() ) );
         }
 
         if ( exportOptions.isDocuments() )
         {
-            dxf2.setDocuments( new HashSet<Document>( documentService.getAllDocuments() ) );
+            dxf2.setDocuments( new ArrayList<Document>( documentService.getAllDocuments() ) );
         }
 
         if ( exportOptions.isReportTables() )
         {
-            dxf2.setReportTables( new HashSet<ReportTable>( reportTableService.getAllReportTables() ) );
+            dxf2.setReportTables( new ArrayList<ReportTable>( reportTableService.getAllReportTables() ) );
         }
 
         if ( exportOptions.isReports() )
         {
-            dxf2.setReports( new HashSet<Report>( reportService.getAllReports() ) );
+            dxf2.setReports( new ArrayList<Report>( reportService.getAllReports() ) );
         }
 
         if ( exportOptions.isCharts() )
         {
-            dxf2.setCharts( new HashSet<Chart>( chartService.getAllCharts() ) );
+            dxf2.setCharts( new ArrayList<Chart>( chartService.getAllCharts() ) );
         }
 
         if ( exportOptions.isMaps() )
         {
-            dxf2.setMaps( new HashSet<MapView>( mappingService.getAllMapViews() ) );
+            dxf2.setMaps( new ArrayList<MapView>( mappingService.getAllMapViews() ) );
         }
 
         if ( exportOptions.isMapLegends() )
         {
-            dxf2.setMapLegends( new HashSet<MapLegend>( mappingService.getAllMapLegends() ) );
+            dxf2.setMapLegends( new ArrayList<MapLegend>( mappingService.getAllMapLegends() ) );
         }
 
         if ( exportOptions.isMapLegendSets() )
         {
-            dxf2.setMapLegendSets( new HashSet<MapLegendSet>( mappingService.getAllMapLegendSets() ) );
+            dxf2.setMapLegendSets( new ArrayList<MapLegendSet>( mappingService.getAllMapLegendSets() ) );
         }
 
         if ( exportOptions.isMapLayers() )
         {
-            dxf2.setMapLayers( new HashSet<MapLayer>( mappingService.getAllMapLayers() ) );
+            dxf2.setMapLayers( new ArrayList<MapLayer>( mappingService.getAllMapLayers() ) );
         }
 
         if ( exportOptions.isDataDictionaries() )
         {
-            dxf2.setDataDictionaries( new HashSet<DataDictionary>( dataDictionaryService.getAllDataDictionaries() ) );
+            dxf2.setDataDictionaries( new ArrayList<DataDictionary>( dataDictionaryService.getAllDataDictionaries() ) );
         }
 
         return dxf2;

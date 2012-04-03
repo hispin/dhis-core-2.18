@@ -1,7 +1,7 @@
-package org.hisp.dhis.common;
+package org.hisp.dhis.dxf2.metadata.importers;
 
 /*
- * Copyright (c) 2004-2005, University of Oslo
+ * Copyright (c) 2012, University of Oslo
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -11,7 +11,7 @@ package org.hisp.dhis.common;
  * * Redistributions in binary form must reproduce the above copyright notice,
  *   this list of conditions and the following disclaimer in the documentation
  *   and/or other materials provided with the distribution.
- * * Neither the name of the <ORGANIZATION> nor the names of its contributors may
+ * * Neither the name of the HISP project nor the names of its contributors may
  *   be used to endorse or promote products derived from this software without
  *   specific prior written permission.
  *
@@ -27,28 +27,41 @@ package org.hisp.dhis.common;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import org.hisp.dhis.common.IdentifiableObject.IdentifiableProperty;
-
-import java.util.Map;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.hisp.dhis.constant.Constant;
+import org.springframework.stereotype.Component;
 
 /**
- * @author Lars Helge Overland
+ * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
-public interface IdentifiableObjectManager
+@Component
+public class ConstantImporter
+    extends AbstractImporter<Constant>
 {
-    void save( IdentifiableObject object );
+    protected static final Log LOG = LogFactory.getLog( ConstantImporter.class );
 
-    void update( IdentifiableObject object );
+    @Override
+    protected void newObject( Constant constant )
+    {
+        LOG.info( "NEW OBJECT: " + constant );
+    }
 
-    void get( Class<IdentifiableObject> clazz, String uid );
+    @Override
+    protected void updatedObject( Constant constant, Constant oldConstant )
+    {
+        LOG.info( "UPDATED OBJECT: " + constant + ", OLD OBJECT: " + oldConstant );
+    }
 
-    void delete( IdentifiableObject object );
+    @Override
+    protected String getObjectName()
+    {
+        return this.getClass().getName();
+    }
 
-    <T extends IdentifiableObject> Map<String, T> getIdMap( Class<T> clazz, IdentifiableProperty property );
-
-    <T extends IdentifiableObject> T getObject( Class<T> clazz, IdentifiableProperty property, String id );
-
-    IdentifiableObject getObject( String uid, String simpleClassName );
-
-    IdentifiableObject getObject( int id, String simpleClassName );
+    @Override
+    public boolean canHandle( Class<?> clazz )
+    {
+        return Constant.class.equals( clazz );
+    }
 }

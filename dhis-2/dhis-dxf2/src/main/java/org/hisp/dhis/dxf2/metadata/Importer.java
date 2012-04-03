@@ -1,7 +1,7 @@
-package org.hisp.dhis.common;
+package org.hisp.dhis.dxf2.metadata;
 
 /*
- * Copyright (c) 2004-2005, University of Oslo
+ * Copyright (c) 2012, University of Oslo
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -11,7 +11,7 @@ package org.hisp.dhis.common;
  * * Redistributions in binary form must reproduce the above copyright notice,
  *   this list of conditions and the following disclaimer in the documentation
  *   and/or other materials provided with the distribution.
- * * Neither the name of the <ORGANIZATION> nor the names of its contributors may
+ * * Neither the name of the HISP project nor the names of its contributors may
  *   be used to endorse or promote products derived from this software without
  *   specific prior written permission.
  *
@@ -27,28 +27,22 @@ package org.hisp.dhis.common;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import org.hisp.dhis.common.IdentifiableObject.IdentifiableProperty;
+import org.hisp.dhis.dxf2.importsummary.ImportConflict;
+import org.hisp.dhis.dxf2.importsummary.ImportCount;
 
-import java.util.Map;
+import java.util.Collection;
+import java.util.List;
 
 /**
- * @author Lars Helge Overland
+ * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
-public interface IdentifiableObjectManager
+public interface Importer<T>
 {
-    void save( IdentifiableObject object );
+    ImportConflict importObject( T object, ImportOptions options );
 
-    void update( IdentifiableObject object );
+    List<ImportConflict> importCollection( Collection<T> objects, ImportOptions options );
 
-    void get( Class<IdentifiableObject> clazz, String uid );
+    ImportCount getImportCount();
 
-    void delete( IdentifiableObject object );
-
-    <T extends IdentifiableObject> Map<String, T> getIdMap( Class<T> clazz, IdentifiableProperty property );
-
-    <T extends IdentifiableObject> T getObject( Class<T> clazz, IdentifiableProperty property, String id );
-
-    IdentifiableObject getObject( String uid, String simpleClassName );
-
-    IdentifiableObject getObject( int id, String simpleClassName );
+    boolean canHandle( Class<?> clazz );
 }
