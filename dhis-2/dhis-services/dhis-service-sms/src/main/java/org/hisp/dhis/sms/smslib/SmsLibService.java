@@ -111,7 +111,7 @@ public class SmsLibService
         {
             log.warn( "Trying to send sms without recipients: " + sms );
 
-            return message = "there_is_no_recipient_cannot_send_sms";
+            return message = "no_recipient";
         }
         else if ( recipients.size() == 1 )
         {
