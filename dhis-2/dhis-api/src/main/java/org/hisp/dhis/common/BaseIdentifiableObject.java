@@ -113,7 +113,7 @@ public class BaseIdentifiableObject
     // -------------------------------------------------------------------------
 
     @JsonProperty( value = "internalId" )
-    @JsonView( {DetailedView.class, IdentifiableObjectView.class, ExportView.class} )
+    @JsonView( { DetailedView.class, IdentifiableObjectView.class, ExportView.class } )
     @JacksonXmlProperty( isAttribute = true )
     public int getId()
     {
@@ -138,7 +138,7 @@ public class BaseIdentifiableObject
     }
 
     @JsonProperty
-    @JsonView( {DetailedView.class, IdentifiableObjectView.class, ExportView.class} )
+    @JsonView( { DetailedView.class, IdentifiableObjectView.class, ExportView.class } )
     @JacksonXmlProperty( isAttribute = true )
     public String getCode()
     {
@@ -146,12 +146,12 @@ public class BaseIdentifiableObject
     }
 
     public void setCode( String code )
-    {
+    {  
         this.code = code;
     }
 
     @JsonProperty
-    @JsonView( {DetailedView.class, IdentifiableObjectView.class, ExportView.class} )
+    @JsonView( { DetailedView.class, IdentifiableObjectView.class, ExportView.class } )
     @JacksonXmlProperty( isAttribute = true )
     public String getName()
     {
@@ -164,7 +164,7 @@ public class BaseIdentifiableObject
     }
 
     @JsonProperty
-    @JsonView( {DetailedView.class, IdentifiableObjectView.class, ExportView.class} )
+    @JsonView( { DetailedView.class, IdentifiableObjectView.class, ExportView.class } )
     @JacksonXmlProperty( isAttribute = true )
     public Date getLastUpdated()
     {
@@ -205,13 +205,14 @@ public class BaseIdentifiableObject
 
     /**
      * Get a map of uids to internal identifiers
-     *
+     * 
      * @param objects the IdentifiableObjects to put in the map
      * @return the map
      */
     public static Map<String, Integer> getUIDMap( Collection<? extends BaseIdentifiableObject> objects )
     {
         Map<String, Integer> map = new HashMap<String, Integer>();
+
         for ( IdentifiableObject object : objects )
         {
             String uid = object.getUid();
@@ -225,7 +226,7 @@ public class BaseIdentifiableObject
 
     /**
      * Get a map of codes to internal identifiers
-     *
+     * 
      * @param objects the NameableObjects to put in the map
      * @return the map
      */
@@ -244,7 +245,7 @@ public class BaseIdentifiableObject
 
     /**
      * Get a map of names to internal identifiers
-     *
+     * 
      * @param objects the NameableObjects to put in the map
      * @return the map
      */
@@ -270,7 +271,6 @@ public class BaseIdentifiableObject
             ", code='" + code + '\'' +
             ", name='" + name + '\'' +
             ", lastUpdated=" + lastUpdated +
-            ", displayName='" + displayName + '\'' +
-            '}';
+            ", displayName='" + displayName + '\'' + '}';
     }
 }

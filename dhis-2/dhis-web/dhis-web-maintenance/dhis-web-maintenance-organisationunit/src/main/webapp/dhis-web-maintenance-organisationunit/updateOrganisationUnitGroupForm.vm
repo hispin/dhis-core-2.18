@@ -11,7 +11,7 @@
 	<input type="hidden" name="id" id="id" style="width:300px" value="$!organisationUnitGroup.id"/>
 	
 	<p>$i18n.getString( "name" )
-		<em title="$i18n.getString( "required" )" class="required">*</em>
+		<em title="$i18n.getString( 'required' )" class="required">*</em>
 		<input type="text" name="name" id="name" style="width:300px" value="$!organisationUnitGroup.name">
 	</p>
 	<table>
