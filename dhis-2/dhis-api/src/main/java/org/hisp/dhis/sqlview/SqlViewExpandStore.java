@@ -2,6 +2,8 @@ package org.hisp.dhis.sqlview;
 
 import java.util.Collection;
 
+import org.hisp.dhis.common.Grid;
+
 /**
  * @author Dang Duy Hieu
  * @version $Id SqlViewExpandStore.java July 06, 2010$
@@ -22,7 +24,7 @@ public interface SqlViewExpandStore
 
     void dropViewTable( String sqlViewName );
 
-    void setUpDataSqlViewTable( SqlViewTable sqlViewTable, String viewTableName );
+    void setUpDataSqlViewTable( Grid sqlViewGrid, String viewTableName );
 
     String setUpViewTableName( String input );
 

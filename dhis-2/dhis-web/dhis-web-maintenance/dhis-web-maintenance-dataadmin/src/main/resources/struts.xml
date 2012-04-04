@@ -331,8 +331,11 @@
       <param name="onExceptionReturn">plainTextError</param>
     </action>
 
-    <action name="showDataSqlViewForm" class="org.hisp.dhis.dataadmin.action.sqlview.ShowUpSqlViewTableAction">
-      <result name="success" type="velocity">/main.vm</result>
+    <action name="exportSqlView" class="org.hisp.dhis.dataadmin.action.sqlview.ExportSqlViewResultAction">
+	  <result name="csv" type="gridCsvResult" />
+      <result name="xls" type="gridXlsResult" />
+      <result name="pdf" type="gridPdfResult" />
+      <result name="html" type="velocity">/main.vm</result>
       <param name="menu">/dhis-web-maintenance-dataadmin/menu.vm</param>
       <param name="page">
         /dhis-web-maintenance-dataadmin/showDataSqlViewForm.vm</param>

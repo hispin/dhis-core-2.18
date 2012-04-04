@@ -39,9 +39,9 @@ import java.util.regex.Pattern;
 
 import org.amplecode.quick.StatementHolder;
 import org.amplecode.quick.StatementManager;
+import org.hisp.dhis.common.Grid;
 import org.hisp.dhis.sqlview.SqlView;
 import org.hisp.dhis.sqlview.SqlViewExpandStore;
-import org.hisp.dhis.sqlview.SqlViewTable;
 import org.springframework.jdbc.BadSqlGrammarException;
 import org.springframework.jdbc.core.JdbcTemplate;
 
@@ -161,7 +161,7 @@ public class JdbcSqlViewExpandStore
     }
 
     @Override
-    public void setUpDataSqlViewTable( SqlViewTable sqlViewTable, String viewTableName )
+    public void setUpDataSqlViewTable( Grid grid, String viewTableName )
     {
         final StatementHolder holder = statementManager.getHolder();
 
@@ -175,8 +175,8 @@ public class JdbcSqlViewExpandStore
             throw new RuntimeException( "Failed to get data from view " + viewTableName, e );
         }
 
-        sqlViewTable.createViewerStructure( rs );
-        sqlViewTable.addRecord( rs );
+        grid.addHeaders( rs );
+        grid.addRow( rs );
 
         holder.close();
     }
