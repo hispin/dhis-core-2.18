@@ -1,6 +1,6 @@
 ﻿<h3>$i18n.getString( "administration" )</h3>
 
-<ul id="introList">
+<ul class="introList">
     #introListImgItem( "getConfiguration.action" "configuration" "systemsettings")
     #introListImgItem( "listAllExportReport.action" "export_reports" "export")
 	#introListImgItem( "listAllImportReport.action" "import_reports" "import" )
