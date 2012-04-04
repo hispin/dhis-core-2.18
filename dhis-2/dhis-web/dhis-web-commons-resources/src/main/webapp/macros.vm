@@ -1,14 +1,3 @@
-
-#*
-Displays a table which lists a set of objects and it's common operations: Filter, 
-add, update, translate, remove and show details. The macro produces code against 
-some specific conventions for the scripts and actions to call. Call it this way:
-
-#objectList( [name of object, e.g. DataElement], [list of such objects, e.g. $dataElements] )
-
-@param objectName The litteral name of the type of object to display, e.g. DataElement
-@param objects A Velocity list of the objects to be formatted, typically prepared by an action.
-*#
 #macro( objectList $objectName $objects )
     <table class="objectListTable">
         <col>
@@ -44,20 +33,10 @@ some specific conventions for the scripts and actions to call. Call it this way:
     </table>
 #end
 
-#*
-Supportive method for displaying rows with alternating colors in a table.
-
-@param mark boolean alternating the color.
-*#
 #macro( alternate $mark )
 #if ( $mark ) class="listAlternateRow"#else class="listRow"#end
 #end
 
-#*
-Formats a boolean into a readable value
-
-@param bool the boolean to format.
-*#
 #macro( formatBool $bool )
 #if ( $bool )
   $i18n.getString( "yes" )
@@ -128,27 +107,12 @@ $i18n.getString( "filter_by_name" ):
 </form>
 #end
 
-
-
-
-#*************************************************************************************************************#
-#* Helpers for building attribute forms. Note that these will have dynamic validation rules applied to them. *#
-
 #macro( trHeader $text )
 <tr>
 	<th colspan="2">$text</th>
 </tr>
 #end
 
-#****************************************************
-	Required args:
-		id			
-		text		
-		mandatory	
-	Optional args:
-		name		Will use id if omitted.
-		value		
-*****************************************************#
 #macro( trTextInput $args )
 #if( "$!args.name" == "" )
 	#set( $name = $!args.id )
@@ -164,15 +128,6 @@ $i18n.getString( "filter_by_name" ):
 </tr>
 #end
 
-#****************************************************
-	Required args:
-		id			
-		text		
-		mandatory	
-	Optional args:
-		name		Will use id if omitted.
-		value		
-*****************************************************#
 #macro( trBooleanSelectInput $args )
 #if( "$!args.name" == "" )
 	#set( $name = $!args.id )
@@ -192,15 +147,6 @@ $i18n.getString( "filter_by_name" ):
 </tr>
 #end
 
-#****************************************************
-	Required args:
-		id			
-		text		
-		mandatory	
-	Optional args:
-		name		Will use id if omitted.
-		value		
-*****************************************************#
 #macro( trDateInput $args )
 #if( "$!args.name" == "" )
 	#set( $name = $!args.id )
@@ -222,15 +168,6 @@ jQuery(function() {
 </tr>
 #end
 
-#****************************************************
-	Required args:
-		id			
-		text		
-		mandatory	
-	Optional args:
-		name		Will use id if omitted.
-		value		
-*****************************************************#
 #macro( trNumberInput $args )
 #if( "$!args.name" == "" )
 	#set( $name = $!args.id )
@@ -246,15 +183,6 @@ jQuery(function() {
 </tr>
 #end
 
-#****************************************************
-	Required args:
-		id			
-		text		
-		mandatory	
-	Optional args:
-		name		Will use id if omitted.
-		value		
-*****************************************************#
 #macro( trIntegerInput $args ) 
 #if( "$!args.name" == "" )
 	#set( $name = $!args.id )
@@ -270,15 +198,6 @@ jQuery(function() {
 </tr>
 #end
 
-#****************************************************
-	Required args:
-		id			
-		text		
-		mandatory	
-	Optional args:
-		name		Will use id if omitted.
-		value		
-*****************************************************#
 #macro( trPositiveIntegerInput $args )
 #if( "$!args.name" == "" )
 	#set( $name = $!args.id )
@@ -294,15 +213,6 @@ jQuery(function() {
 </tr>
 #end
 
-#****************************************************
-	Required args:
-		id			
-		text		
-		mandatory	
-	Optional args:
-		name		Will use id if omitted.
-		value		
-*****************************************************#
 #macro( trNegativeIntegerInput $args )
 #if( "$!args.name" == "" )
 	#set( $name = $!args.id )
@@ -318,16 +228,6 @@ jQuery(function() {
 </tr>
 #end
 
-#****************************************************
-	Required args:
-		id			
-		text
-		mandatory	
-		choices		Array of choices.		
-	Optional args:
-		name		Will use id if omitted.
-		value		
-*****************************************************#
 #macro( trMultipleChoiceInput $args )
 #if( "$!args.name" == "" )
 	#set( $name = $!args.id )
@@ -378,12 +278,6 @@ jQuery.each(attributes, function(i, item) {
 });
 #end
 
-#****************************************************
-	Required args:
-		attributes	
-	Optional args:
-		attributeValues
-*****************************************************#
 #macro( tblDynamicAttributes $args )
 
 #if( $args.attributes.size() > 0 )

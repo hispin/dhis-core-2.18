@@ -5,38 +5,35 @@
 	<link type="text/css" rel="stylesheet" media="screen" href="../dhis-web-commons/javascripts/jQuery/ui/css/redmond/jquery-ui-1.8.12.custom.css" />
     <link type="text/css" rel="stylesheet" media="screen" href="../dhis-web-commons/css/${stylesheet}" />
     <link type="text/css" rel="stylesheet" media="screen" href="../dhis-web-commons/css/widgets.css" />
-
-    <link type="image/png" rel="icon" href="../images/favicon.png" />
-
     #foreach ( $style in $stylesheets )
     <link type="text/css" rel="stylesheet" href="$style">
-    #end
-    
+    #end    
+    <link type="image/png" rel="icon" href="../images/favicon.png" />
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
     <script type="text/javascript">
-		var dateFormat = 'yy-mm-dd';
-		var maintenanceModulesNo = ${maintenanceModules.size()};
-		var serviceModulesNo = ${serviceModules.size()};
-	</script>
+      var dateFormat = 'yy-mm-dd';
+      var maintenanceModulesNo = ${maintenanceModules.size()};
+      var serviceModulesNo = ${serviceModules.size()};
+    </script>
 
     <script type="text/javascript" src="../dhis-web-commons/javascripts/jQuery/jquery.min.js"></script>
     <script type="text/javascript" src="../dhis-web-commons/javascripts/jQuery/jquery.ext.js"></script>
-	<script type="text/javascript" src="../dhis-web-commons/javascripts/jQuery/jquery.metadata.js"></script>	
-	<script type="text/javascript" src="../dhis-web-commons/javascripts/jQuery/jquery.tablesorter.min.js"></script>
-	<script type="text/javascript" src="../dhis-web-commons/javascripts/jQuery/jquery.upload-1.0.2.min.js"></script>
-	<script type="text/javascript" src="../dhis-web-commons/javascripts/jQuery/jquery.dhisAjaxSelect.js"></script>
-	<script type="text/javascript" src="../dhis-web-commons/javascripts/jQuery/jquery.utils.js"></script>
-	<script type="text/javascript" src="../dhis-web-commons/javascripts/jQuery/ui/jquery-ui-1.8.12.custom.min.js"></script>
-	<script type="text/javascript" src="../dhis-web-commons/javascripts/jQuery/ui/jquery.blockUI.js"></script>
-	<script type="text/javascript" src="../dhis-web-commons/javascripts/jQuery/jquery.validate.js"></script>
-	<script type="text/javascript" src="../dhis-web-commons/javascripts/jQuery/jquery.validate.ext.js"></script>
-	<script type="text/javascript" src="../dhis-web-commons/javascripts/jQuery/jquery.cookie.js"></script>
-	<script type="text/javascript" src="../dhis-web-commons/javascripts/jQuery/jquery.glob.js"></script>
-	<script type="text/javascript" src="../dhis-web-commons/javascripts/jQuery/jquery.date.js"></script>
-	<script type="text/javascript" src="../dhis-web-commons/javascripts/jQuery/jquery.tmpl.js"></script>
-	<script type="text/javascript" src="../dhis-web-commons/i18nJavaScript.action"></script>
-	<script type="text/javascript" src="../dhis-web-commons/messagesJavaScript.action"></script>
+    <script type="text/javascript" src="../dhis-web-commons/javascripts/jQuery/jquery.metadata.js"></script>	
+    <script type="text/javascript" src="../dhis-web-commons/javascripts/jQuery/jquery.tablesorter.min.js"></script>
+    <script type="text/javascript" src="../dhis-web-commons/javascripts/jQuery/jquery.upload-1.0.2.min.js"></script>
+    <script type="text/javascript" src="../dhis-web-commons/javascripts/jQuery/jquery.dhisAjaxSelect.js"></script>
+    <script type="text/javascript" src="../dhis-web-commons/javascripts/jQuery/jquery.utils.js"></script>
+    <script type="text/javascript" src="../dhis-web-commons/javascripts/jQuery/ui/jquery-ui-1.8.12.custom.min.js"></script>
+    <script type="text/javascript" src="../dhis-web-commons/javascripts/jQuery/ui/jquery.blockUI.js"></script>
+    <script type="text/javascript" src="../dhis-web-commons/javascripts/jQuery/jquery.validate.js"></script>
+    <script type="text/javascript" src="../dhis-web-commons/javascripts/jQuery/jquery.validate.ext.js"></script>
+    <script type="text/javascript" src="../dhis-web-commons/javascripts/jQuery/jquery.cookie.js"></script>
+    <script type="text/javascript" src="../dhis-web-commons/javascripts/jQuery/jquery.glob.js"></script>
+    <script type="text/javascript" src="../dhis-web-commons/javascripts/jQuery/jquery.date.js"></script>
+    <script type="text/javascript" src="../dhis-web-commons/javascripts/jQuery/jquery.tmpl.js"></script>
+    <script type="text/javascript" src="../dhis-web-commons/i18nJavaScript.action"></script>
+    <script type="text/javascript" src="../dhis-web-commons/messagesJavaScript.action"></script>
     <script type="text/javascript" src="../dhis-web-commons/javascripts/commons.js"></script>
     <script type="text/javascript" src="../dhis-web-commons/javascripts/commons.ajax.js"></script>
     <script type="text/javascript" src="../dhis-web-commons/javascripts/lists.js"></script>
@@ -75,39 +72,37 @@
       <div id="menuLink4" class="menuLink">$i18n.getString( "log_out" )</div>
 
       <div id="menuDropDown1" class="menuDropDownArea" >
-        <ul class="menuDropDownBox">
-        #foreach( $module in $maintenanceModules )
-          #if( $auth.hasAccess( $module.name, "index" ) )
-            <li class="menuDropDownItem" onclick="window.location.href='${module.defaultAction}'">
-            	<a href="${module.defaultAction}">$i18n.getString( $module.name )&nbsp;</a>
-            </li>
-          #end
-        #end
-        </ul>      
+      <ul class="menuDropDownBox">
+      #foreach( $module in $maintenanceModules )
+      #if( $auth.hasAccess( $module.name, "index" ) )
+        <li class="menuDropDownItem" onclick="window.location.href='${module.defaultAction}'">
+          <a href="${module.defaultAction}">$i18n.getString( $module.name )&nbsp;</a></li>
+      #end
+      #end
+      </ul>      
       </div>
 
       <div id="menuDropDown2" class="menuDropDownArea">
-        <ul class="menuDropDownBox">
-        #foreach( $module in $serviceModules )
-          #if( $auth.hasAccess( $module.name, "index" ) )
-            <li class="menuDropDownItem" onclick="window.location.href='${module.defaultAction}'">
-            	<a href="${module.defaultAction}">$i18n.getString( $module.name )&nbsp;</a>
-            </li>
-          #end
-        #end
-        </ul>      
+      <ul class="menuDropDownBox">
+      #foreach( $module in $serviceModules )
+      #if( $auth.hasAccess( $module.name, "index" ) )
+        <li class="menuDropDownItem" onclick="window.location.href='${module.defaultAction}'">
+          <a href="${module.defaultAction}">$i18n.getString( $module.name )&nbsp;</a></li>
+      #end
+      #end
+      </ul>      
       </div>
 	  
       <div id="menuDropDown3" class="menuDropDownArea">
-        <ul class="menuDropDownBox">
-		  <li class="menuDropDownItem" id="menuDropDownHelpCenter">$i18n.getString( "help_center" )&nbsp;</li>
-          <li class="menuDropDownItem" id="menuDropDownChangeLog">$i18n.getString( "change_log" )&nbsp;</li>
-          <li class="menuDropDownItem" id="menuDropDownSupportiveSoftware">$i18n.getString( "supportive_software" )&nbsp;</li>
-          <li class="menuDropDownItem" id="menuDropDownUserAccount">$i18n.getString( "user_account" )&nbsp;</li>
-          <li class="menuDropDownItem" id="menuDropDownModuleOverview">$i18n.getString( "system_overview" )&nbsp;</li>
-          <li class="menuDropDownItem" id="menuDropDownWebApi">$i18n.getString( "web_api" )&nbsp;</li>
-          <li class="menuDropDownItem" id="menuDropDownAboutDHIS2">$i18n.getString( "about_dhis2" )&nbsp;</li>
-        </ul>
+      <ul class="menuDropDownBox">
+        <li class="menuDropDownItem" id="menuDropDownHelpCenter">$i18n.getString( "help_center" )&nbsp;</li>
+        <li class="menuDropDownItem" id="menuDropDownChangeLog">$i18n.getString( "change_log" )&nbsp;</li>
+        <li class="menuDropDownItem" id="menuDropDownSupportiveSoftware">$i18n.getString( "supportive_software" )&nbsp;</li>
+        <li class="menuDropDownItem" id="menuDropDownUserAccount">$i18n.getString( "user_account" )&nbsp;</li>
+        <li class="menuDropDownItem" id="menuDropDownModuleOverview">$i18n.getString( "system_overview" )&nbsp;</li>
+        <li class="menuDropDownItem" id="menuDropDownWebApi">$i18n.getString( "web_api" )&nbsp;</li>
+        <li class="menuDropDownItem" id="menuDropDownAboutDHIS2">$i18n.getString( "about_dhis2" )&nbsp;</li>
+      </ul>
       </div>
 	  
       <span id="headerText" onclick="window.location.href='../dhis-web-commons-about/modules.action'" style="cursor:pointer">
