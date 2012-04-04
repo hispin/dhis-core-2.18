@@ -27,8 +27,9 @@ package org.hisp.dhis.dxf2.metadata.importers;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import org.hisp.dhis.common.IdentifiableObject;
-import org.hisp.dhis.common.IdentifiableObjectManager;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.hisp.dhis.common.*;
 import org.hisp.dhis.dxf2.importsummary.ImportConflict;
 import org.hisp.dhis.dxf2.importsummary.ImportCount;
 import org.hisp.dhis.dxf2.metadata.IdScheme;
@@ -37,22 +38,23 @@ import org.hisp.dhis.dxf2.metadata.Importer;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
-public abstract class AbstractImporter<T extends IdentifiableObject>
+public abstract class AbstractImporter<T extends BaseIdentifiableObject>
     implements Importer<T>
 {
+    private static final Log LOG = LogFactory.getLog( AbstractImporter.class );
+
     //-------------------------------------------------------------------------------------------------------
     // Dependencies
     //-------------------------------------------------------------------------------------------------------
 
     @Autowired
-    private IdentifiableObjectManager manager;
+    protected IdentifiableObjectManager manager;
 
     //-------------------------------------------------------------------------------------------------------
     // Current import counts
@@ -64,6 +66,12 @@ public abstract class AbstractImporter<T extends IdentifiableObject>
 
     protected int ignores;
 
+    protected Map<String, T> uidMap;
+
+    protected Map<String, T> nameMap;
+
+    protected Map<String, T> codeMap;
+
     //-------------------------------------------------------------------------------------------------------
     // Abstract methods that sub-classes needs to implement
     //-------------------------------------------------------------------------------------------------------
@@ -71,17 +79,21 @@ public abstract class AbstractImporter<T extends IdentifiableObject>
     /**
      * Called every time a new object is to be imported.
      *
-     * @param object Object to import
+     * @param object  Object to import
+     * @param options Current import options
+     * @return An ImportConflict instance if there was a conflict, otherwise null
      */
-    protected abstract ImportConflict newObject( T object );
+    protected abstract ImportConflict newObject( T object, ImportOptions options );
 
     /**
      * Update object from old => new.
      *
      * @param object    Object to import
      * @param oldObject The current version of the object
+     * @param options   Current import options
+     * @return An ImportConflict instance if there was a conflict, otherwise null
      */
-    protected abstract ImportConflict updatedObject( T object, T oldObject );
+    protected abstract ImportConflict updatedObject( T object, T oldObject, ImportOptions options );
 
     /**
      * Current object name, used to fill name part of a ImportConflict
@@ -94,12 +106,25 @@ public abstract class AbstractImporter<T extends IdentifiableObject>
     // Importer<T> Implementation
     //-------------------------------------------------------------------------------------------------------
 
-    @Override
-    public List<ImportConflict> importCollection( Collection<T> objects, ImportOptions options )
+    private void reset( Object type )
     {
         imports = 0;
         updates = 0;
         ignores = 0;
+
+        uidMap = manager.getIdMap( (Class) type.getClass(), IdentifiableObject.IdentifiableProperty.UID );
+        nameMap = manager.getIdMap( (Class) type.getClass(), IdentifiableObject.IdentifiableProperty.NAME );
+        codeMap = manager.getIdMap( (Class) type.getClass(), IdentifiableObject.IdentifiableProperty.CODE );
+    }
+
+    @Override
+    public List<ImportConflict> importCollection( List<T> objects, ImportOptions options )
+    {
+        if ( !objects.isEmpty() )
+        {
+            Object object = objects.get( 0 );
+            reset( object );
+        }
 
         List<ImportConflict> conflicts = new ArrayList<ImportConflict>();
 
@@ -119,72 +144,14 @@ public abstract class AbstractImporter<T extends IdentifiableObject>
     @Override
     public ImportConflict importObject( T object, ImportOptions options )
     {
-        // move this to importCollection
-        Map<String, T> map = getIdMap( (Class) object.getClass(), options.getIdScheme() );
-        String identifier = getIdentifier( object, options.getIdScheme() );
-        T oldObject = map.get( identifier );
+        ImportConflict conflict = validateIdentifiableObject( object, options );
 
-        if ( options.getImportStrategy().isNewStrategy() )
+        if ( conflict == null )
         {
-            if ( oldObject != null )
-            {
-                ignores++;
-                return new ImportConflict( getDisplayName( object, options.getIdScheme() ), "Strategy is new, but identifier '" + identifier + "' already exists." );
-            }
-
-            ImportConflict conflict = newObject( object );
-
-            if ( conflict != null )
-            {
-                return conflict;
-            }
-
-            imports++;
-        }
-        else if ( options.getImportStrategy().isUpdatesStrategy() )
-        {
-            if ( oldObject == null )
-            {
-                ignores++;
-                return new ImportConflict( getDisplayName( object, options.getIdScheme() ), "Strategy is updates, but identifier '" + identifier + "' does not exist." );
-            }
-
-            ImportConflict conflict = updatedObject( object, oldObject );
-
-            if ( conflict != null )
-            {
-                return conflict;
-            }
-
-            updates++;
-        }
-        else if ( options.getImportStrategy().isNewAndUpdatesStrategy() )
-        {
-            if ( oldObject != null )
-            {
-                ImportConflict conflict = updatedObject( object, oldObject );
-
-                if ( conflict != null )
-                {
-                    return conflict;
-                }
-
-                updates++;
-            }
-            else
-            {
-                ImportConflict conflict = newObject( object );
-
-                if ( conflict != null )
-                {
-                    return conflict;
-                }
-
-                imports++;
-            }
+            conflict = startImport( object, options );
         }
 
-        return null;
+        return conflict;
     }
 
     @Override
@@ -203,42 +170,148 @@ public abstract class AbstractImporter<T extends IdentifiableObject>
     // Helpers
     //-------------------------------------------------------------------------------------------------------
 
-    protected Map<String, T> getIdMap( Class<T> clazz, IdScheme scheme )
+    private ImportConflict startImport( T object, ImportOptions options )
     {
-        if ( scheme.isUidScheme() )
+        T oldObject = getObject( object, options.getIdScheme() );
+        ImportConflict conflict = null;
+
+        if ( options.getImportStrategy().isNewStrategy() )
         {
-            return manager.getIdMap( clazz, IdentifiableObject.IdentifiableProperty.UID );
+            prepareIdentifiableObject( object );
+            conflict = newObject( object, options );
+
+            if ( conflict != null )
+            {
+                return conflict;
+            }
+
+            imports++;
         }
-        else if ( scheme.isNameScheme() )
+        else if ( options.getImportStrategy().isUpdatesStrategy() )
         {
-            return manager.getIdMap( clazz, IdentifiableObject.IdentifiableProperty.NAME );
+            conflict = updatedObject( object, oldObject, options );
+
+            if ( conflict != null )
+            {
+                return conflict;
+            }
+
+            updates++;
         }
-        else if ( scheme.isCodeScheme() )
+        else if ( options.getImportStrategy().isNewAndUpdatesStrategy() )
         {
-            return manager.getIdMap( clazz, IdentifiableObject.IdentifiableProperty.CODE );
+            if ( oldObject != null )
+            {
+                conflict = updatedObject( object, oldObject, options );
+
+                if ( conflict != null )
+                {
+                    return conflict;
+                }
+
+                updates++;
+            }
+            else
+            {
+                prepareIdentifiableObject( object );
+                conflict = newObject( object, options );
+
+                if ( conflict != null )
+                {
+                    return conflict;
+                }
+
+                imports++;
+            }
         }
 
         return null;
     }
 
-    protected String getIdentifier( T object, IdScheme scheme )
+    private ImportConflict validateIdentifiableObject( T object, ImportOptions options )
+    {
+        T uidObject = uidMap.get( object );
+        T nameObject = nameMap.get( object );
+        T codeObject = codeMap.get( object );
+
+        ImportConflict conflict = null;
+
+        if ( options.getImportStrategy().isNewStrategy() )
+        {
+            if ( uidObject != null )
+            {
+                conflict = new ImportConflict( getDisplayName( object, options.getIdScheme() ), "Object fails uniqueness constraint on identifier uid." );
+            }
+
+            if ( nameObject != null )
+            {
+                conflict = new ImportConflict( getDisplayName( object, options.getIdScheme() ), "Object fails uniqueness constraint on identifier name." );
+            }
+
+            if ( codeObject != null )
+            {
+                conflict = new ImportConflict( getDisplayName( object, options.getIdScheme() ), "Object fails uniqueness constraint on identifier code." );
+            }
+        }
+        else if ( options.getImportStrategy().isUpdatesStrategy() )
+        {
+            if ( options.getIdScheme().isUidScheme() && uidObject == null )
+            {
+                conflict = new ImportConflict( getDisplayName( object, options.getIdScheme() ), "Object does not exist, did lookup with identifier uid." );
+            }
+
+            if ( options.getIdScheme().isNameScheme() && nameObject == null )
+            {
+                conflict = new ImportConflict( getDisplayName( object, options.getIdScheme() ), "Object does not exist, did lookup with identifier name." );
+            }
+
+            if ( options.getIdScheme().isCodeScheme() && codeObject == null )
+            {
+                conflict = new ImportConflict( getDisplayName( object, options.getIdScheme() ), "Object does not exist, did lookup with identifier code." );
+            }
+        }
+        else if ( options.getImportStrategy().isNewAndUpdatesStrategy() )
+        {
+        }
+
+        return conflict;
+    }
+
+    private T getObject( T object, IdScheme scheme )
     {
         if ( scheme.isUidScheme() )
         {
-            return object.getUid();
+            return uidMap.get( object.getUid() );
         }
         else if ( scheme.isNameScheme() )
         {
-            return object.getName();
+            return nameMap.get( object.getName() );
         }
         else if ( scheme.isCodeScheme() )
         {
-            return object.getCode();
+            return codeMap.get( object.getCode() );
         }
 
         return null;
     }
 
+    protected void prepareIdentifiableObject( BaseIdentifiableObject object )
+    {
+        if ( object.getUid() == null )
+        {
+            object.setUid( generateUid() );
+        }
+    }
+
+    /**
+     * Try to get a usable display based on current idScheme, mainly used for error-reporting
+     * but can also be use elsewhere. Falls back to the name of the class, if no other alternative
+     * is available.
+     *
+     * @param object Object to get display name for
+     * @param scheme Current idScheme
+     * @return A usable display name
+     */
     protected String getDisplayName( IdentifiableObject object, IdScheme scheme )
     {
         if ( scheme.isUidScheme() )
@@ -264,5 +337,26 @@ public abstract class AbstractImporter<T extends IdentifiableObject>
         }
 
         return object.getClass().getName();
+    }
+
+    protected String generateUid()
+    {
+        return CodeGenerator.generateCode();
+    }
+
+    protected void mergeIdentifiableObject( BaseIdentifiableObject target, BaseIdentifiableObject source )
+    {
+        target.setId( source.getId() );
+        target.setUid( source.getUid() );
+        target.setName( source.getName() );
+        target.setCode( source.getCode() );
+    }
+
+    protected void mergeNameableObject( BaseNameableObject target, BaseNameableObject source )
+    {
+        mergeIdentifiableObject( target, source );
+
+        target.setShortName( source.getShortName() );
+        target.setDescription( source.getDescription() );
     }
 }

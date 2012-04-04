@@ -54,7 +54,7 @@ public interface Importer<T>
      * @param options Import options
      * @return List of all the ImportConflicts encountered
      */
-    List<ImportConflict> importCollection( Collection<T> objects, ImportOptions options );
+    List<ImportConflict> importCollection( List<T> objects, ImportOptions options );
 
     /**
      * Get an ImportCount instance for the current import numbers.
