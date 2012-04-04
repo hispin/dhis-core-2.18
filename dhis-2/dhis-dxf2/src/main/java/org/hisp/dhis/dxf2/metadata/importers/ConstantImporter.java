@@ -31,6 +31,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hisp.dhis.constant.Constant;
 import org.hisp.dhis.dxf2.importsummary.ImportConflict;
+import org.hisp.dhis.dxf2.metadata.ImportOptions;
 import org.springframework.stereotype.Component;
 
 /**
@@ -40,20 +41,36 @@ import org.springframework.stereotype.Component;
 public class ConstantImporter
     extends AbstractImporter<Constant>
 {
-    protected static final Log LOG = LogFactory.getLog( ConstantImporter.class );
+    private static final Log LOG = LogFactory.getLog( ConstantImporter.class );
 
     @Override
-    protected ImportConflict newObject( Constant constant )
+    protected ImportConflict newObject( Constant constant, ImportOptions options )
     {
         LOG.info( "NEW OBJECT: " + constant );
+
+        if ( !options.isDryRun() )
+        {
+            LOG.info( "Trying to save new object with UID: " + constant.getUid() );
+            manager.save( constant );
+            LOG.info( "Save successful." );
+        }
 
         return null;
     }
 
     @Override
-    protected ImportConflict updatedObject( Constant constant, Constant oldConstant )
+    protected ImportConflict updatedObject( Constant constant, Constant oldConstant, ImportOptions options )
     {
         LOG.info( "UPDATED OBJECT: " + constant + ", OLD OBJECT: " + oldConstant );
+
+        mergeIdentifiableObject( constant, oldConstant );
+
+        if ( !options.isDryRun() )
+        {
+            LOG.info( "Trying to update object with UID: " + constant.getUid() );
+            manager.update( constant );
+            LOG.info( "Update successful." );
+        }
 
         return null;
     }

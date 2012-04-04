@@ -35,7 +35,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -113,11 +112,11 @@ public class DefaultImportService
     @Autowired
     private Set<Importer> importerClasses = new HashSet<Importer>();
 
-    private Importer findImporterClass( Collection<? extends IdentifiableObject> clazzes )
+    private Importer findImporterClass( List<? extends IdentifiableObject> clazzes )
     {
-        if ( clazzes.size() > 0 )
+        if ( !clazzes.isEmpty() )
         {
-            IdentifiableObject identifiableObject = clazzes.iterator().next();
+            IdentifiableObject identifiableObject = clazzes.get( 0 );
 
             return findImporterClass( identifiableObject.getClass() );
         }
@@ -138,7 +137,7 @@ public class DefaultImportService
         return null;
     }
 
-    private void doImport( Collection<? extends IdentifiableObject> objects, ImportOptions importOptions, ImportSummary importSummary )
+    private void doImport( List<? extends IdentifiableObject> objects, ImportOptions importOptions, ImportSummary importSummary )
     {
         Importer importer = findImporterClass( objects );
 
