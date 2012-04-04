@@ -26,6 +26,13 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		<property name="systemSettingManager" ref="org.hisp.dhis.setting.SystemSettingManager" />
 		<property name="aggregatedDataValueService" ref="org.hisp.dhis.aggregation.AggregatedDataValueService" />
 		<property name="aggregationService" ref="org.hisp.dhis.aggregation.AggregationService" />
+		<property name="organisationUnitService" ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
+		<property name="reportService" ref="org.hisp.dhis.reports.ReportService" />
+    </bean>
+
+    <bean id="org.hisp.dhis.alert.action.ExportToExcelAction"
+        class="org.hisp.dhis.alert.action.ExportToExcelAction"
+        scope="prototype">
     </bean>
 	
 </beans>
