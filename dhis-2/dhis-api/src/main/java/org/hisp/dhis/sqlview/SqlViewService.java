@@ -29,6 +29,8 @@ package org.hisp.dhis.sqlview;
 
 import java.util.Collection;
 
+import org.hisp.dhis.common.Grid;
+
 /**
  * @author Dang Duy Hieu
  * @version $Id SqlViewService.java July 06, 2010$
@@ -81,7 +83,7 @@ public interface SqlViewService
 
     void dropAllSqlViewTables();
 
-    SqlViewTable getDataSqlViewTable( String viewTableName );
+    Grid getDataSqlViewGrid( String viewTableName );
 
     String testSqlGrammar( String sql );
 }

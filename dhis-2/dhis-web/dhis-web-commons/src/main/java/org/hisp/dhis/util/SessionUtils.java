@@ -41,6 +41,8 @@ public class SessionUtils
     public static final String KEY_REPORT_TABLE_GRID = "lastReportTableGrid";
     public static final String KEY_REPORT_TABLE_PARAMS = "lastReportTableParams";
     public static final String KEY_DATASET_REPORT_GRID = "lastDataSetReportGrid";
+    public static final String KEY_DATABROWSERGRID = "dataBrowserGridResults";
+    public static final String KEY_SQLVIEW_GRID = "sqlViewGrid";
     
     public static Object getSessionVar( String name )
     {

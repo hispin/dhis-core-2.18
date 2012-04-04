@@ -27,8 +27,9 @@ package org.hisp.dhis.dataadmin.action.sqlview;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import org.hisp.dhis.common.Grid;
 import org.hisp.dhis.sqlview.SqlViewService;
-import org.hisp.dhis.sqlview.SqlViewTable;
+import org.hisp.dhis.util.SessionUtils;
 
 import com.opensymphony.xwork2.Action;
 
@@ -36,11 +37,13 @@ import com.opensymphony.xwork2.Action;
  * Updates a existing sqlview in database.
  * 
  * @author Dang Duy Hieu
- * @version $Id ShowUpSqlViewTableAction.java July 12, 2010$
+ * @version $Id ExportSqlViewResultAction.java July 12, 2010$
  */
-public class ShowUpSqlViewTableAction
+public class ExportSqlViewResultAction
     implements Action
 {
+    private static final String DEFAULT_TYPE = "html";
+
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
@@ -63,6 +66,18 @@ public class ShowUpSqlViewTableAction
         this.viewTableName = viewTableName;
     }
 
+    private boolean useLast;
+
+    public void setUseLast( boolean useLast )
+    {
+        this.useLast = useLast;
+    }
+
+    public void setType( String type )
+    {
+        this.type = type;
+    }
+
     // -------------------------------------------------------------------------
     // Output
     // -------------------------------------------------------------------------
@@ -72,11 +87,18 @@ public class ShowUpSqlViewTableAction
         return viewTableName;
     }
 
-    private SqlViewTable sqlViewTable;
+    private Grid grid;
 
-    public SqlViewTable getSqlViewTable()
+    public Grid getGrid()
     {
-        return sqlViewTable;
+        return grid;
+    }
+
+    private String type;
+
+    public String getType()
+    {
+        return type;
     }
 
     // -------------------------------------------------------------------------
@@ -85,8 +107,17 @@ public class ShowUpSqlViewTableAction
 
     public String execute()
     {
-        sqlViewTable = sqlViewService.getDataSqlViewTable( viewTableName );
+        if ( useLast )
+        {
+            grid = (Grid) SessionUtils.getSessionVar( SessionUtils.KEY_SQLVIEW_GRID );
+        }
+        else
+        {
+            grid = sqlViewService.getDataSqlViewGrid( viewTableName );
+        }
 
-        return SUCCESS;
+        SessionUtils.setSessionVar( SessionUtils.KEY_SQLVIEW_GRID, grid );
+
+        return type != null ? type : DEFAULT_TYPE;
     }
 }

@@ -83,7 +83,7 @@ function showDataSqlViewForm( viewId )
 		{
 			if ( json.response == "success" )
 			{
-				window.location.href = "showDataSqlViewForm.action?viewTableName=" + json.message;
+				window.location.href = "exportSqlView.action?viewTableName=" + json.message;
 			}
 			else if ( json.response == "error" )
 			{
@@ -91,4 +91,11 @@ function showDataSqlViewForm( viewId )
 			}
 		}
 	);
+}
+
+function exportSqlView( type )
+{
+	var url = "exportSqlView.action?type=" + type + "&useLast=true";
+
+    window.location.href = url;
 }

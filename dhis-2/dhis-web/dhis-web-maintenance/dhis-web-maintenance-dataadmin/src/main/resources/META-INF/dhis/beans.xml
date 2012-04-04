@@ -236,8 +236,8 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     <property name="sqlViewService" ref="org.hisp.dhis.sqlview.SqlViewService" />
   </bean>
 
-  <bean id="org.hisp.dhis.dataadmin.action.sqlview.ShowUpSqlViewTableAction"
-      class="org.hisp.dhis.dataadmin.action.sqlview.ShowUpSqlViewTableAction"
+  <bean id="org.hisp.dhis.dataadmin.action.sqlview.ExportSqlViewResultAction"
+      class="org.hisp.dhis.dataadmin.action.sqlview.ExportSqlViewResultAction"
       scope="prototype">
     <property name="sqlViewService" ref="org.hisp.dhis.sqlview.SqlViewService" />
   </bean>

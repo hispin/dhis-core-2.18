@@ -1,7 +1,7 @@
 package org.hisp.dhis.dataadmin.action.databrowser;
 
 /*
- * Copyright (c) 2004-${year}, University of Oslo
+ * Copyright (c) 2004-2012, University of Oslo
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -39,8 +39,6 @@ import com.opensymphony.xwork2.Action;
 public class ExportResultAction
     implements Action
 {
-    private static final String KEY_DATABROWSERGRID = "dataBrowserGridResults";
-
     // -------------------------------------------------------------------------
     // Input / Output
     // -------------------------------------------------------------------------
@@ -70,7 +68,7 @@ public class ExportResultAction
 
     public String execute()
     {
-        Grid _grid = (Grid) SessionUtils.getSessionVar( KEY_DATABROWSERGRID );
+        Grid _grid = (Grid) SessionUtils.getSessionVar( SessionUtils.KEY_DATABROWSERGRID );
 
         if ( _grid != null && type != null )
         {

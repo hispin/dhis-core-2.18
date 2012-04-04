@@ -28,6 +28,8 @@ package org.hisp.dhis.sqlview;
  */
 
 import org.hisp.dhis.common.GenericIdentifiableObjectStore;
+import org.hisp.dhis.common.Grid;
+import org.hisp.dhis.system.grid.ListGrid;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Collection;
@@ -173,13 +175,13 @@ public class DefaultSqlViewService
     }
 
     @Override
-    public SqlViewTable getDataSqlViewTable( String viewTableName )
+    public Grid getDataSqlViewGrid( String viewTableName )
     {
-        SqlViewTable sqlViewTable = new SqlViewTable();
+        Grid sqlViewGrid = new ListGrid();
 
-        sqlViewExpandStore.setUpDataSqlViewTable( sqlViewTable, viewTableName );
+        sqlViewExpandStore.setUpDataSqlViewTable( sqlViewGrid, viewTableName );
 
-        return sqlViewTable;
+        return sqlViewGrid;
     }
 
     @Override
