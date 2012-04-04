@@ -454,7 +454,7 @@ public class DataElement
 
     @JsonProperty
     @JsonSerialize( as = BaseIdentifiableObject.class )
-    @JsonView( {DetailedView.class} )
+    @JsonView( {DetailedView.class, ExportView.class} )
     @JacksonXmlProperty( namespace = Dxf2Namespace.NAMESPACE )
     public DataElementCategoryCombo getCategoryCombo()
     {
