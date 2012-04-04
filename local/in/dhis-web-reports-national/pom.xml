@@ -19,6 +19,10 @@
 	
 	<dependencies>
 		
+    <dependency>
+      <groupId>javax.servlet</groupId>
+      <artifactId>servlet-api</artifactId>
+	</dependency>		
 		<!-- DHIS -->
 		
 		<dependency>
@@ -64,10 +68,10 @@
 			<groupId>org.hisp.dhis</groupId>
 			<artifactId>dhis-service-datamart-default</artifactId>
 		</dependency>
-		<dependency>
+<!--		<dependency>
 			<groupId>org.hisp.dhis</groupId>
 			<artifactId>dhis-service-core</artifactId>
-		</dependency>
+		</dependency>-->
 		<dependency>
 			<groupId>org.hisp.dhis</groupId>
 			<artifactId>dhis-service-aggregationengine-default</artifactId>
@@ -82,19 +86,23 @@
 			<groupId>org.hisp.dhis</groupId>
 			<artifactId>dhis-support-external</artifactId>
 		</dependency>
-		<dependency>
+		<!--<dependency>
 			<groupId>org.hisp.dhis</groupId>
 			<artifactId>dhis-in-api</artifactId>
 			<version>${project.version}</version>
-		</dependency>
+		</dependency>-->
 		<dependency>
 			<groupId>org.hisp.dhis</groupId>
 			<artifactId>dhis-in-service-survey</artifactId>
 			<version>${project.version}</version>
 		</dependency>
-		<dependency>
+		<!--<dependency>
 			<groupId>org.hisp.dhis</groupId>
 			<artifactId>dhis-service-patient</artifactId>
+		</dependency>-->
+		<dependency>
+		  <groupId>org.hisp.dhis</groupId>
+		  <artifactId>dhis-web-api</artifactId>
 		</dependency>
 		
 		<!-- Web -->
@@ -180,4 +188,7 @@
 		</dependency>
 		
 	</dependencies>
+  <properties>
+    <rootDir>../../</rootDir>
+  </properties>	
 </project>

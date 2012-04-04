@@ -434,7 +434,8 @@ public class PortalReportsResult_Action implements Action
                     else if( sType.equalsIgnoreCase("dataelement") )
                     {
                         DataElement de = dataElementService.getDataElement( Integer.parseInt( deCode ) );
-                        PatientDataValue patientDV = patientDataValueService.getPatientDataValue( prgStageInstance, de, selectedOrgUnit );
+                        //PatientDataValue patientDV = patientDataValueService.getPatientDataValue( prgStageInstance, de, selectedOrgUnit );
+                        PatientDataValue patientDV = patientDataValueService.getPatientDataValue( prgStageInstance, de );
                         if( patientDV != null && patientDV.getValue() != null )
                         {
                         	tempStr = patientDV.getValue();
@@ -443,7 +444,8 @@ public class PortalReportsResult_Action implements Action
                     else if( sType.equalsIgnoreCase("dataelement-dd") )
                     {
                         DataElement de = dataElementService.getDataElement( Integer.parseInt( deCode ) );
-                        PatientDataValue patientDV = patientDataValueService.getPatientDataValue( prgStageInstance, de, selectedOrgUnit );
+                        //PatientDataValue patientDV = patientDataValueService.getPatientDataValue( prgStageInstance, de, selectedOrgUnit );
+                        PatientDataValue patientDV = patientDataValueService.getPatientDataValue( prgStageInstance, de );
                         if( patientDV != null && patientDV.getValue() != null )
                         {
                         	Integer optionComboId = Integer.parseInt( patientDV.getValue() );
@@ -454,7 +456,8 @@ public class PortalReportsResult_Action implements Action
                     else if( sType.equalsIgnoreCase("dataelement-b") )
                     {
                         DataElement de = dataElementService.getDataElement( Integer.parseInt( deCode ) );
-                        PatientDataValue patientDV = patientDataValueService.getPatientDataValue( prgStageInstance, de, selectedOrgUnit );
+                        //PatientDataValue patientDV = patientDataValueService.getPatientDataValue( prgStageInstance, de, selectedOrgUnit );
+                        PatientDataValue patientDV = patientDataValueService.getPatientDataValue( prgStageInstance, de );
                         if( patientDV != null && patientDV.getValue() != null )
                         {
                         	if( patientDV.getValue().equalsIgnoreCase("false") )

@@ -1125,8 +1125,8 @@ public class ActivePlanReportsResultAction
                             {
                                 DataElement d1e = dataElementService.getDataElement( Integer.parseInt( deCodeString ) );
 
-                                PatientDataValue patientDataValue1 = patientDataValueService.getPatientDataValue(
-                                    programStageInstance, d1e, selectedOrgUnit );
+                                //PatientDataValue patientDataValue1 = patientDataValueService.getPatientDataValue( programStageInstance, d1e, selectedOrgUnit );
+                                PatientDataValue patientDataValue1 = patientDataValueService.getPatientDataValue( programStageInstance, d1e );
                                 if ( patientDataValue1 == null )
                                 {
                                     tempStr = " ";
@@ -1282,9 +1282,8 @@ public class ActivePlanReportsResultAction
                                             {
                                                 if ( !deCollectedNames.contains( dename ) )
                                                 {
-                                                    PatientDataValue patientDataValue1 = patientDataValueService
-                                                        .getPatientDataValue( programStageInstanceName, d1e,
-                                                            selectedOrgUnit );
+                                                    //PatientDataValue patientDataValue1 = patientDataValueService.getPatientDataValue( programStageInstanceName, d1e, selectedOrgUnit );
+                                                    PatientDataValue patientDataValue1 = patientDataValueService.getPatientDataValue( programStageInstanceName, d1e );
                                                     if ( patientDataValue1 != null )
                                                     {
                                                         valuePresent = true;
@@ -1319,9 +1318,8 @@ public class ActivePlanReportsResultAction
                                         {
                                             if ( !deCollectedNames.contains( dename ) )
                                             {
-                                                PatientDataValue patientDataValue1 = patientDataValueService
-                                                    .getPatientDataValue( programStageInstanceName, d1e,
-                                                        selectedOrgUnit );
+                                                //PatientDataValue patientDataValue1 = patientDataValueService.getPatientDataValue( programStageInstanceName, d1e,selectedOrgUnit );
+                                                PatientDataValue patientDataValue1 = patientDataValueService.getPatientDataValue( programStageInstanceName, d1e );
                                                 if ( patientDataValue1 != null )
                                                 {
                                                     valuePresent = true;
@@ -1369,8 +1367,8 @@ public class ActivePlanReportsResultAction
                                     // +deCollectedNames );
                                     if ( !deCollectedNames.contains( dename ) )
                                     {
-                                        PatientDataValue patientDataValue1 = patientDataValueService
-                                            .getPatientDataValue( programStageInstanceName, d1e, selectedOrgUnit );
+                                        //PatientDataValue patientDataValue1 = patientDataValueService.getPatientDataValue( programStageInstanceName, d1e, selectedOrgUnit );
+                                        PatientDataValue patientDataValue1 = patientDataValueService.getPatientDataValue( programStageInstanceName, d1e );
                                         if ( patientDataValue1 != null )
                                         {
                                             valuePresent = true;

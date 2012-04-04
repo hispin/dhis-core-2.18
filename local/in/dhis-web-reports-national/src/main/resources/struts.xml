@@ -188,8 +188,28 @@
             <param name="stylesheets">css/StylesForTags.css</param>
             <param name="requiredAuthorities">F_EDREPORT_GENERATE</param>
         </action>
+		
+		<action name="getIndicators"
+			class="org.hisp.dhis.reports.action.GetIndicatorsAction">
+			<result name="success" type="velocity-xml">/dhis-web-reports/responseIndicator.vm</result>
+			<param name="javascripts">javascript/reports.js,javascript/date.js</param>
+			<param name="onExceptionReturn">plainTextError</param>
+		</action>
+		
+		
+		
+		
         <action name="generateEDReport"
             class="org.hisp.dhis.reports.ed.action.EDReportResultAction">
+            <result name="success" type="stream">
+                <param name="contentType">application/vnd.ms-excel</param>
+                <param name="inputName">inputStream</param>
+                <param name="contentDisposition">filename="${fileName}"</param>
+                <param name="bufferSize">1024</param>
+            </result>
+        </action>
+        <action name="generateEDRankingReport"
+            class="org.hisp.dhis.reports.ed.action.RankingReportResultAction">
             <result name="success" type="stream">
                 <param name="contentType">application/vnd.ms-excel</param>
                 <param name="inputName">inputStream</param>
@@ -834,7 +854,48 @@
                 <param name="bufferSize">1024</param>
             </result>
         </action>
-        
+
+<!-- Patient Information Reports 20/03/2012 -->		
+		
+        <action name="patientInfoReportsAnalyser"
+            class="org.hisp.dhis.reports.benificiaryinfo.action.PatientInfoReportsFormAction">
+            <result name="success" type="velocity">/main.vm</result>
+            <param name="page">/dhis-web-reports/patientInfoReportsForm.vm</param>
+            <param name="menu">/dhis-web-reports/menuWithTreeForPatientInfo.vm</param>
+            <param name="javascripts">../dhis-web-commons/ouwt/ouwt.js,../dhis-web-commons/javascripts/lists.js,javascript/patient.js,javascript/hashtable.js</param>
+            <param name="stylesheets">css/StylesForTags.css</param>
+            <param name="requiredAuthorities">F_REPORT_BENIFICIARY_INFO</param>
+            <interceptor-ref name="organisationUnitTreeStack"/>
+        </action>		
+		
+        <action name="searchRegistredPatient"
+            class="org.hisp.dhis.reports.benificiaryinfo.action.GetRegistredPatientInformationAction">
+            <result name="success" type="velocity">/content.vm</result>
+            <param name="page">/dhis-web-reports/patientRegistrationList.vm</param>
+            <param name="javascripts">../dhis-web-commons/javascripts/lists.js,javascript/patient.js,javascript/hashtable.js</param>
+            <param name="stylesheets">css/StylesForTags.css</param>
+            <param name="requiredAuthorities">F_REPORT_BENIFICIARY_INFO</param>
+        </action>				
+		
+		<action name="getPatientDetails"
+			class="org.hisp.dhis.reports.benificiaryinfo.action.GetPatientDetailsAction">
+			<result name="success" type="velocity">/content.vm</result>
+			<param name="page">/dhis-web-reports/patientDetails.vm</param>
+		</action>		
+		
+		
+        <action name="generatePatientReport"
+            class="org.hisp.dhis.reports.benificiaryinfo.action.GetPatientReportResultAction">
+            <result name="success" type="stream">
+                <param name="contentType">application/vnd.ms-excel</param>
+                <param name="inputName">inputStream</param>
+                <param name="contentDisposition">filename="${fileName}"</param>
+                <param name="bufferSize">1024</param>
+            </result>
+        </action>		
+		
+		
+		       
         <!-- Portal Reports -->
         <action name="portalReportsAnalyser"
             class="org.hisp.dhis.reports.portal.action.PortalReportsFormAction">

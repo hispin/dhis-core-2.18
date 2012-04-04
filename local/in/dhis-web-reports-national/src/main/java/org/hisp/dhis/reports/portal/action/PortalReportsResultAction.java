@@ -765,7 +765,8 @@ public class PortalReportsResultAction implements Action
                                             if ( pStageInstance.getExecutionDate() != null ) {
                                                 if ( includePeriod.equalsIgnoreCase( "periodincluding" ) ) {
                                                     if ( pStageInstance.getExecutionDate().before( eDate ) ) {
-                                                        PatientDataValue patientDataValue1 = patientDataValueService.getPatientDataValue( pStageInstance, d1e, patientOuList.get(patient) );
+                                                        //PatientDataValue patientDataValue1 = patientDataValueService.getPatientDataValue( pStageInstance, d1e, patientOuList.get(patient) );
+                                                        PatientDataValue patientDataValue1 = patientDataValueService.getPatientDataValue( pStageInstance, d1e );
 
                                                         if ( patientDataValue1 == null ) {
                                                             tempStr = " ";
@@ -798,7 +799,8 @@ public class PortalReportsResultAction implements Action
                                                         }
                                                     }
                                                 } else {
-                                                    PatientDataValue patientDataValue1 = patientDataValueService.getPatientDataValue( pStageInstance, d1e, patientOuList.get(patient) );
+                                                    //PatientDataValue patientDataValue1 = patientDataValueService.getPatientDataValue( pStageInstance, d1e, patientOuList.get(patient) );
+                                                    PatientDataValue patientDataValue1 = patientDataValueService.getPatientDataValue( pStageInstance, d1e );
 
                                                     if ( patientDataValue1 == null ) {
                                                         tempStr = " ";
@@ -853,7 +855,8 @@ public class PortalReportsResultAction implements Action
                                             {
                                                 ProgramStageInstance programStageInstance = itrPSI.next();
 
-                                                PatientDataValue patientDataValue = patientDataValueService.getPatientDataValue( programStageInstance, d1e, patientOuList.get(patient) );
+                                                //PatientDataValue patientDataValue = patientDataValueService.getPatientDataValue( programStageInstance, d1e, patientOuList.get(patient) );
+                                                PatientDataValue patientDataValue = patientDataValueService.getPatientDataValue( programStageInstance, d1e );
                                                 //System.out.println("psi = "+programStageInstance.getId() + " de = "+d1e + " ou = "+patientOuList.get(patient));
                                                 if ( patientDataValue != null )
                                                 {
@@ -1006,7 +1009,8 @@ public class PortalReportsResultAction implements Action
                                         while ( itrPSI.hasNext() )
                                         {
                                             ProgramStageInstance programStageInstance = itrPSI.next();
-                                            PatientDataValue patientDataValue = patientDataValueService.getPatientDataValue( programStageInstance, d1e, patientOuList.get(patient) );
+                                            //PatientDataValue patientDataValue = patientDataValueService.getPatientDataValue( programStageInstance, d1e, patientOuList.get(patient) );
+                                            PatientDataValue patientDataValue = patientDataValueService.getPatientDataValue( programStageInstance, d1e );
                                             if ( patientDataValue != null )
                                             {
                                                 if ( d1e.getType().equalsIgnoreCase( DataElement.VALUE_TYPE_DATE ) )
@@ -1058,7 +1062,8 @@ public class PortalReportsResultAction implements Action
                                         {
 
                                             ProgramStageInstance programStageInstance = itrPSI.next();
-                                            PatientDataValue patientDataValue1 = patientDataValueService.getPatientDataValue( programStageInstance, d1e, patientOuList.get(patient) );
+                                            //PatientDataValue patientDataValue1 = patientDataValueService.getPatientDataValue( programStageInstance, d1e, patientOuList.get(patient) );
+                                            PatientDataValue patientDataValue1 = patientDataValueService.getPatientDataValue( programStageInstance, d1e );
                                             if ( patientDataValue1 != null )
                                             {
                                                 ifaCount = Integer.parseInt( patientDataValue1.getValue() ) + ifaCount;
@@ -1457,7 +1462,8 @@ public class PortalReportsResultAction implements Action
                                             if ( pStageInstance.getExecutionDate() != null ) {
                                                 if ( includePeriod.equalsIgnoreCase( "periodincluding" ) ) {
                                                     if ( pStageInstance.getExecutionDate().before( eDate ) ) {
-                                                        PatientDataValue patientDataValue1 = patientDataValueService.getPatientDataValue( pStageInstance, d1e, patientOuList.get(patient) );
+                                                        //PatientDataValue patientDataValue1 = patientDataValueService.getPatientDataValue( pStageInstance, d1e, patientOuList.get(patient) );
+                                                        PatientDataValue patientDataValue1 = patientDataValueService.getPatientDataValue( pStageInstance, d1e );
 
                                                         if ( patientDataValue1 == null ) {
                                                             tempStr = " ";
@@ -1490,8 +1496,8 @@ public class PortalReportsResultAction implements Action
                                                         }
                                                     }
                                                 } else {
-                                                    PatientDataValue patientDataValue1 = patientDataValueService.getPatientDataValue( pStageInstance, d1e, patientOuList.get(patient) );
-
+                                                    //PatientDataValue patientDataValue1 = patientDataValueService.getPatientDataValue( pStageInstance, d1e, patientOuList.get(patient) );
+                                                    PatientDataValue patientDataValue1 = patientDataValueService.getPatientDataValue( pStageInstance, d1e );
                                                     if ( patientDataValue1 == null ) {
                                                         tempStr = " ";
                                                     } else if ( d1e.getType().equalsIgnoreCase( DataElement.VALUE_TYPE_STRING ) && d1e.isMultiDimensional() ) {
@@ -1545,7 +1551,8 @@ public class PortalReportsResultAction implements Action
                                             {
                                                 ProgramStageInstance programStageInstance = itrPSI.next();
 
-                                                PatientDataValue patientDataValue = patientDataValueService.getPatientDataValue( programStageInstance, d1e, patientOuList.get(patient) );
+                                                //PatientDataValue patientDataValue = patientDataValueService.getPatientDataValue( programStageInstance, d1e, patientOuList.get(patient) );
+                                                PatientDataValue patientDataValue = patientDataValueService.getPatientDataValue( programStageInstance, d1e );
                                                 //System.out.println("psi = "+programStageInstance.getId() + " de = "+d1e + " ou = "+patientOuList.get(patient));
                                                 if ( patientDataValue != null )
                                                 {
@@ -1698,7 +1705,8 @@ public class PortalReportsResultAction implements Action
                                         while ( itrPSI.hasNext() )
                                         {
                                             ProgramStageInstance programStageInstance = itrPSI.next();
-                                            PatientDataValue patientDataValue = patientDataValueService.getPatientDataValue( programStageInstance, d1e, patientOuList.get(patient) );
+                                           // PatientDataValue patientDataValue = patientDataValueService.getPatientDataValue( programStageInstance, d1e, patientOuList.get(patient) );
+                                            PatientDataValue patientDataValue = patientDataValueService.getPatientDataValue( programStageInstance, d1e );
                                             if ( patientDataValue != null )
                                             {
                                                 if ( d1e.getType().equalsIgnoreCase( DataElement.VALUE_TYPE_DATE ) )
@@ -1750,7 +1758,8 @@ public class PortalReportsResultAction implements Action
                                         {
 
                                             ProgramStageInstance programStageInstance = itrPSI.next();
-                                            PatientDataValue patientDataValue1 = patientDataValueService.getPatientDataValue( programStageInstance, d1e, patientOuList.get(patient) );
+                                           // PatientDataValue patientDataValue1 = patientDataValueService.getPatientDataValue( programStageInstance, d1e, patientOuList.get(patient) );
+                                            PatientDataValue patientDataValue1 = patientDataValueService.getPatientDataValue( programStageInstance, d1e );
                                             if ( patientDataValue1 != null )
                                             {
                                                 ifaCount = Integer.parseInt( patientDataValue1.getValue() ) + ifaCount;

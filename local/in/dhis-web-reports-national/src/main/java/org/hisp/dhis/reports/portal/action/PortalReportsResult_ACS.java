@@ -354,7 +354,8 @@ public class PortalReportsResult_ACS implements Action
                     else if( sType.equalsIgnoreCase("dataelement") )
                     {
                         DataElement de = dataElementService.getDataElement( Integer.parseInt( deCode ) );
-                        PatientDataValue patientDV = patientDataValueService.getPatientDataValue( prgStageInstance, de, selectedOrgUnit );
+                        //PatientDataValue patientDV = patientDataValueService.getPatientDataValue( prgStageInstance, de, selectedOrgUnit );
+                        PatientDataValue patientDV = patientDataValueService.getPatientDataValue( prgStageInstance, de );
                         if( patientDV != null && patientDV.getValue() != null )
                         {
                                 tempStr = patientDV.getValue();
@@ -363,7 +364,8 @@ public class PortalReportsResult_ACS implements Action
                     else if( sType.equalsIgnoreCase("dataelement-dd") )
                     {
                         DataElement de = dataElementService.getDataElement( Integer.parseInt( deCode ) );
-                        PatientDataValue patientDV = patientDataValueService.getPatientDataValue( prgStageInstance, de, selectedOrgUnit );
+                        //PatientDataValue patientDV = patientDataValueService.getPatientDataValue( prgStageInstance, de, selectedOrgUnit );
+                        PatientDataValue patientDV = patientDataValueService.getPatientDataValue( prgStageInstance, de );
                         if( patientDV != null && patientDV.getValue() != null )
                         {
                                 Integer optionComboId = Integer.parseInt( patientDV.getValue() );
@@ -374,7 +376,8 @@ public class PortalReportsResult_ACS implements Action
                     else if( sType.equalsIgnoreCase("dataelement-b") )
                     {
                         DataElement de = dataElementService.getDataElement( Integer.parseInt( deCode ) );
-                        PatientDataValue patientDV = patientDataValueService.getPatientDataValue( prgStageInstance, de, selectedOrgUnit );
+                        //PatientDataValue patientDV = patientDataValueService.getPatientDataValue( prgStageInstance, de, selectedOrgUnit );
+                        PatientDataValue patientDV = patientDataValueService.getPatientDataValue( prgStageInstance, de );
                         if( patientDV != null && patientDV.getValue() != null )
                         {
                                 if( patientDV.getValue().equalsIgnoreCase("false") )
@@ -394,13 +397,15 @@ public class PortalReportsResult_ACS implements Action
                         //System.out.println( " dealy : " + dealy + " ,reason: " + reason );
                         
                         DataElement deDealy = dataElementService.getDataElement( Integer.parseInt( dealy ) );
-                        PatientDataValue patientDelayDV = patientDataValueService.getPatientDataValue( prgStageInstance, deDealy, selectedOrgUnit );
+                        //PatientDataValue patientDelayDV = patientDataValueService.getPatientDataValue( prgStageInstance, deDealy, selectedOrgUnit );
+                        PatientDataValue patientDelayDV = patientDataValueService.getPatientDataValue( prgStageInstance, deDealy );
                         if( patientDelayDV != null && patientDelayDV.getValue() != null )
                         {
                             if( patientDelayDV.getValue().equalsIgnoreCase("true") )
                             {
                                 DataElement deReason = dataElementService.getDataElement( Integer.parseInt( reason ) );
-                                PatientDataValue patientReasonDV = patientDataValueService.getPatientDataValue( prgStageInstance, deReason, selectedOrgUnit );
+                                //PatientDataValue patientReasonDV = patientDataValueService.getPatientDataValue( prgStageInstance, deReason, selectedOrgUnit );
+                                PatientDataValue patientReasonDV = patientDataValueService.getPatientDataValue( prgStageInstance, deReason );
                                 if( patientReasonDV != null && patientReasonDV.getValue() != null )
                                 {
                                         Integer optionComboId = Integer.parseInt( patientReasonDV.getValue() );
@@ -431,14 +436,16 @@ public class PortalReportsResult_ACS implements Action
                         }
                         
                         DataElement deWeight = dataElementService.getDataElement( Integer.parseInt( weightDE ) );
-                        PatientDataValue patientWeightDV = patientDataValueService.getPatientDataValue( prgStageInstance, deWeight, selectedOrgUnit );
+                       // PatientDataValue patientWeightDV = patientDataValueService.getPatientDataValue( prgStageInstance, deWeight, selectedOrgUnit );
+                        PatientDataValue patientWeightDV = patientDataValueService.getPatientDataValue( prgStageInstance, deWeight );
                         if( patientWeightDV != null && patientWeightDV.getValue() != null )
                         {
                             tempStrWeight = patientWeightDV.getValue();
                         }
                         
                         DataElement deHeight = dataElementService.getDataElement( Integer.parseInt( heightDE ) );
-                        PatientDataValue patientHeightDV = patientDataValueService.getPatientDataValue( prgStageInstance, deHeight, selectedOrgUnit );
+                        //PatientDataValue patientHeightDV = patientDataValueService.getPatientDataValue( prgStageInstance, deHeight, selectedOrgUnit );
+                        PatientDataValue patientHeightDV = patientDataValueService.getPatientDataValue( prgStageInstance, deHeight );
                         if( patientHeightDV != null && patientHeightDV.getValue() != null )
                         {
                             tempStrHeight = patientHeightDV.getValue();
@@ -485,14 +492,16 @@ public class PortalReportsResult_ACS implements Action
                         }
                         
                         DataElement deStart = dataElementService.getDataElement( Integer.parseInt( startDE ) );
-                        PatientDataValue patientStartDV = patientDataValueService.getPatientDataValue( prgStageInstance, deStart, selectedOrgUnit );
+                        //PatientDataValue patientStartDV = patientDataValueService.getPatientDataValue( prgStageInstance, deStart, selectedOrgUnit );
+                        PatientDataValue patientStartDV = patientDataValueService.getPatientDataValue( prgStageInstance, deStart );
                         if( patientStartDV != null && patientStartDV.getValue() != null )
                         {
                             tempStartDate = patientStartDV.getValue();
                         }
                         
                         DataElement deEnd = dataElementService.getDataElement( Integer.parseInt( endDE ) );
-                        PatientDataValue patientEndDV = patientDataValueService.getPatientDataValue( prgStageInstance, deEnd, selectedOrgUnit );
+                        //PatientDataValue patientEndDV = patientDataValueService.getPatientDataValue( prgStageInstance, deEnd, selectedOrgUnit );
+                        PatientDataValue patientEndDV = patientDataValueService.getPatientDataValue( prgStageInstance, deEnd );
                         if( patientEndDV != null && patientEndDV.getValue() != null )
                         {
                             tempEndDate = patientEndDV.getValue();
@@ -551,14 +560,16 @@ public class PortalReportsResult_ACS implements Action
                         }
                         
                         DataElement dePDate = dataElementService.getDataElement( Integer.parseInt( pdate ) );
-                        PatientDataValue patientPdateDV = patientDataValueService.getPatientDataValue( prgStageInstance, dePDate, selectedOrgUnit );
+                        //PatientDataValue patientPdateDV = patientDataValueService.getPatientDataValue( prgStageInstance, dePDate, selectedOrgUnit );
+                        PatientDataValue patientPdateDV = patientDataValueService.getPatientDataValue( prgStageInstance, dePDate );
                         if( patientPdateDV != null && patientPdateDV.getValue() != null )
                         {
                             tempPDate = patientPdateDV.getValue();
                         }
                         
                         DataElement dePTime = dataElementService.getDataElement( Integer.parseInt( pTime ) );
-                        PatientDataValue patientPTimeDV = patientDataValueService.getPatientDataValue( prgStageInstance, dePTime, selectedOrgUnit );
+                        //PatientDataValue patientPTimeDV = patientDataValueService.getPatientDataValue( prgStageInstance, dePTime, selectedOrgUnit );
+                        PatientDataValue patientPTimeDV = patientDataValueService.getPatientDataValue( prgStageInstance, dePTime );
                         if( patientPTimeDV != null && patientPTimeDV.getValue() != null )
                         {
                             tempPTime = patientPTimeDV.getValue();
@@ -603,7 +614,8 @@ public class PortalReportsResult_ACS implements Action
                         }
                         
                         DataElement deAcsDate = dataElementService.getDataElement( Integer.parseInt( acsDate ) );
-                        PatientDataValue patientAcsdateDV = patientDataValueService.getPatientDataValue( prgStageInstance, deAcsDate, selectedOrgUnit );
+                        //PatientDataValue patientAcsdateDV = patientDataValueService.getPatientDataValue( prgStageInstance, deAcsDate, selectedOrgUnit );
+                        PatientDataValue patientAcsdateDV = patientDataValueService.getPatientDataValue( prgStageInstance, deAcsDate );
                         if( patientAcsdateDV != null && patientAcsdateDV.getValue() != null )
                         {
                             tempAcsDate = patientAcsdateDV.getValue();
@@ -611,14 +623,16 @@ public class PortalReportsResult_ACS implements Action
                         
                         
                         DataElement deAcsTime = dataElementService.getDataElement( Integer.parseInt( acsTime ) );
-                        PatientDataValue patientAcsTimeDV = patientDataValueService.getPatientDataValue( prgStageInstance, deAcsTime, selectedOrgUnit );
+                        //PatientDataValue patientAcsTimeDV = patientDataValueService.getPatientDataValue( prgStageInstance, deAcsTime, selectedOrgUnit );
+                        PatientDataValue patientAcsTimeDV = patientDataValueService.getPatientDataValue( prgStageInstance, deAcsTime );
                         if( patientAcsTimeDV != null && patientAcsTimeDV.getValue() != null )
                         {
                             tempAcsTime = patientAcsTimeDV.getValue();
                         }
                         
                         DataElement dePreDate = dataElementService.getDataElement( Integer.parseInt( preDate ) );
-                        PatientDataValue patientPredateDV = patientDataValueService.getPatientDataValue( prgStageInstance, dePreDate, selectedOrgUnit );
+                        //PatientDataValue patientPredateDV = patientDataValueService.getPatientDataValue( prgStageInstance, dePreDate, selectedOrgUnit );
+                        PatientDataValue patientPredateDV = patientDataValueService.getPatientDataValue( prgStageInstance, dePreDate );
                         if( patientPredateDV != null && patientPredateDV.getValue() != null )
                         {
                             tempPreDate = patientPredateDV.getValue();
@@ -627,7 +641,8 @@ public class PortalReportsResult_ACS implements Action
                         
                         
                         DataElement dePreTime = dataElementService.getDataElement( Integer.parseInt( preTime ) );
-                        PatientDataValue patientPreTimeDV = patientDataValueService.getPatientDataValue( prgStageInstance, dePreTime, selectedOrgUnit );
+                        //PatientDataValue patientPreTimeDV = patientDataValueService.getPatientDataValue( prgStageInstance, dePreTime, selectedOrgUnit );
+                        PatientDataValue patientPreTimeDV = patientDataValueService.getPatientDataValue( prgStageInstance, dePreTime );
                         if( patientPreTimeDV != null && patientPreTimeDV.getValue() != null )
                         {
                             tempPreTime = patientPreTimeDV.getValue();
@@ -799,7 +814,8 @@ public class PortalReportsResult_ACS implements Action
                     else if( sType.equalsIgnoreCase("dataelement") )
                     {
                         DataElement de = dataElementService.getDataElement( Integer.parseInt( deCode ) );
-                        PatientDataValue patientDV = patientDataValueService.getPatientDataValue( prgStageInstance, de, selectedOrgUnit );
+                        PatientDataValue patientDV = patientDataValueService.getPatientDataValue( prgStageInstance, de );
+                        //PatientDataValue patientDV = patientDataValueService.getPatientDataValue( prgStageInstance, de, selectedOrgUnit );
                         if( patientDV != null && patientDV.getValue() != null )
                         {
                                 tempStr = patientDV.getValue();
@@ -808,7 +824,8 @@ public class PortalReportsResult_ACS implements Action
                     else if( sType.equalsIgnoreCase("dataelement-dd") )
                     {
                         DataElement de = dataElementService.getDataElement( Integer.parseInt( deCode ) );
-                        PatientDataValue patientDV = patientDataValueService.getPatientDataValue( prgStageInstance, de, selectedOrgUnit );
+                        //PatientDataValue patientDV = patientDataValueService.getPatientDataValue( prgStageInstance, de, selectedOrgUnit );
+                        PatientDataValue patientDV = patientDataValueService.getPatientDataValue( prgStageInstance, de );
                         if( patientDV != null && patientDV.getValue() != null )
                         {
                                 Integer optionComboId = Integer.parseInt( patientDV.getValue() );
@@ -819,7 +836,8 @@ public class PortalReportsResult_ACS implements Action
                     else if( sType.equalsIgnoreCase("dataelement-b") )
                     {
                         DataElement de = dataElementService.getDataElement( Integer.parseInt( deCode ) );
-                        PatientDataValue patientDV = patientDataValueService.getPatientDataValue( prgStageInstance, de, selectedOrgUnit );
+                        //PatientDataValue patientDV = patientDataValueService.getPatientDataValue( prgStageInstance, de, selectedOrgUnit );
+                        PatientDataValue patientDV = patientDataValueService.getPatientDataValue( prgStageInstance, de );
                         if( patientDV != null && patientDV.getValue() != null )
                         {
                                 if( patientDV.getValue().equalsIgnoreCase("false") )
