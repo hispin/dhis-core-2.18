@@ -24,8 +24,6 @@
 			actionType = "start";
 			jQuery( "#startStopButton" ).attr( "value", i18n_start_sms_service );
 		#end
-		
-		//alert(actionType);
 	} );
 
 	var i18n_confirm_delete = '$encoder.jsEscape( $i18n.getString( "confirm_delete_gateway" ) , "'")';
@@ -73,11 +71,11 @@
 	<tbody>
 		<tr>
 			<td>$i18n.getString("polling_interval_in_seconds"):</td>
-			<td><input type="text" id="pollingInterval" name="pollingInterval" style="width:20em" value="$!smsConfig.pollingInterval"></td>
+			<td><input type="text" id="pollingInterval" name="pollingInterval" style="width:20em" value="$!smsConfig.pollingInterval"/></td>
 		</tr>
 		<tr>
 			<td>$i18n.getString("server_phone_number"):</td>
-			<td><input type="text" id="serverPhoneNumber" name="serverPhoneNumber" style="width:20em" value="$!smsConfig.longNumber">
+			<td><input type="text" id="serverPhoneNumber" name="serverPhoneNumber" style="width:20em" value="$!smsConfig.longNumber"/>
 			<input type="submit" value="$i18n.getString( 'save_settings' )" style="width:13em"/></td>
 		</tr>
 		<tr>

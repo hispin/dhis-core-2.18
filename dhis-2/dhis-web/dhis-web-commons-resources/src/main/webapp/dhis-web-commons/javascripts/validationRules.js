@@ -460,6 +460,7 @@ var validationRules = {
 	},
 	"SMSConfig" : {
 		"pollingInterval" : {
+			"required" : true,
 			"digits" : true
 		},
 		"serverPhoneNumber" : {
