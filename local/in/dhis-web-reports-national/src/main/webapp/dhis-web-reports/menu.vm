@@ -82,19 +82,20 @@
 
 #if( $auth.hasAccess( "dhis-web-reports", "benificiaryInfoReportsAnalyser") )
     <ul>
-        <li>NameBased Reports</li>
+        <li>Tracker Reports</li>
         <ul>
+            <li><a href = "patientInfoReportsAnalyser.action">Patient Information</a></li>
             #if( $auth.hasAccess( "dhis-web-reports", "benificiaryInfoReportsAnalyser") )
-                <li><a href = "benificiaryInfoReportsAnalyser.action">NBITS Benificiary Info</a></li>
+                <li><a href = "benificiaryInfoReportsAnalyser.action">Tracker Benificiary Info</a></li>
             #end
             #if( $auth.hasAccess( "dhis-web-reports", "activePlanReportsAnalyser") )
-                <li><a href = "activePlanReportsAnalyser.action">NBITS ActivityPlan</a></li>
+                <li><a href = "activePlanReportsAnalyser.action">Tracker Activity Plan</a></li>
             #end
             #if( $auth.hasAccess( "dhis-web-reports", "portalReportsAnalyser") )
-                <li><a href = "portalReportsAnalyser.action">NBITS Portal Reports</a></li>
+                <li><a href = "portalReportsAnalyser.action">Tracker Portal Reports</a></li>
             #end
             #if( $auth.hasAccess( "dhis-web-reports", "nbitsReportsAnalyser") )
-                <li><a href = "nbitsReportsAnalyser.action">NBITS Reports</a></li>
+                <li><a href = "nbitsReportsAnalyser.action">Tracker Reports</a></li>
             #end
         </ul>
     </ul>

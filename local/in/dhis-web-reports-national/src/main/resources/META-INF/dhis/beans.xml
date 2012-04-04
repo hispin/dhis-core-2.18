@@ -208,6 +208,25 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		<property name="organisationUnitService" ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
     </bean>
 	
+    <bean id="org.hisp.dhis.reports.action.GetIndicatorsAction"
+        class="org.hisp.dhis.reports.action.GetIndicatorsAction"
+        scope="prototype">
+        
+        <property name="indicatorService" ref="org.hisp.dhis.indicator.IndicatorService" />
+    </bean>
+	
+	
+    <bean id="org.hisp.dhis.reports.ed.action.RankingReportResultAction"
+        class="org.hisp.dhis.reports.ed.action.RankingReportResultAction"
+        scope="prototype">
+        <property name="statementManager" ref="statementManager"/>
+        <property name="periodService" ref="org.hisp.dhis.period.PeriodService" />
+        <property name="indicatorService" ref="org.hisp.dhis.indicator.IndicatorService" />
+        <property name="reportService" ref="org.hisp.dhis.reports.ReportService" />
+        <property name="currentUserService" ref="org.hisp.dhis.user.CurrentUserService" />
+        <property name="organisationUnitService" ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
+    </bean>
+	
 	<!-- MD Report -->
     <bean id="org.hisp.dhis.reports.md.action.MDReportFormAction"
         class="org.hisp.dhis.reports.md.action.MDReportFormAction"
@@ -341,7 +360,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
         <property name="dataSetService">
             <ref bean="org.hisp.dhis.dataset.DataSetService"/>
         </property>
-<!--        <property name="dataSetLockService">
+        <!--<property name="dataSetLockService">
             <ref bean="org.hisp.dhis.datalock.DataSetLockService"/>
         </property>-->
         <property name="reportService" ref="org.hisp.dhis.reports.ReportService">
@@ -457,6 +476,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
         <property name="organisationUnitService" ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
         <property name="reportService" ref="org.hisp.dhis.reports.ReportService" />
         <property name="periodService" ref="org.hisp.dhis.period.PeriodService" />
+		<property name="organisationUnitGroupService" ref="org.hisp.dhis.organisationunit.OrganisationUnitGroupService" />
 <!--    <property name="dataSetService" ref="org.hisp.dhis.dataset.DataSetService" />
         <property name="dataElementService" ref="org.hisp.dhis.dataelement.DataElementService" />-->
     </bean>
@@ -1274,7 +1294,63 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
             <ref bean="org.hisp.dhis.relationship.RelationshipTypeService"/>
         </property>
     </bean>
-    
+
+<!-- Patient Information Reports 20/03/2012 -->	
+	
+    <bean
+        id="org.hisp.dhis.reports.benificiaryinfo.action.PatientInfoReportsFormAction"
+        class="org.hisp.dhis.reports.benificiaryinfo.action.PatientInfoReportsFormAction"
+        scope="prototype">
+        <property name="patientAttributeService"
+			ref="org.hisp.dhis.patient.PatientAttributeService" />
+    </bean>		
+	
+
+    <bean
+        id="org.hisp.dhis.reports.benificiaryinfo.action.GetRegistredPatientInformationAction"
+        class="org.hisp.dhis.reports.benificiaryinfo.action.GetRegistredPatientInformationAction"
+        scope="prototype">
+		<property name="patientAttributeValueService" ref="org.hisp.dhis.patientattributevalue.PatientAttributeValueService" />
+		<property name="patientAttributeService"
+			ref="org.hisp.dhis.patient.PatientAttributeService" />
+		<property name="reportService" ref="org.hisp.dhis.reports.ReportService" />
+		<property name="organisationUnitService" ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
+		<property name="patientService" ref="org.hisp.dhis.patient.PatientService" />
+    </bean>	
+
+	<bean id="org.hisp.dhis.reports.benificiaryinfo.action.GetPatientDetailsAction"
+		class="org.hisp.dhis.reports.benificiaryinfo.action.GetPatientDetailsAction" scope="prototype">
+		<property name="patientService" ref="org.hisp.dhis.patient.PatientService" />
+		<!--<property name="patientIdentifierService"
+			ref="org.hisp.dhis.patient.PatientIdentifierService" />-->
+		<!--<property name="programService" ref="org.hisp.dhis.program.ProgramService" />-->
+		<property name="patientAttributeValueService"
+			ref="org.hisp.dhis.patientattributevalue.PatientAttributeValueService" />
+		<!--<property name="patientAttributeService">
+			<ref bean="org.hisp.dhis.patient.PatientAttributeService" />
+		</property>
+		<property name="patientAttributeGroupService"
+			ref="org.hisp.dhis.patient.PatientAttributeGroupService" />
+		<property name="patientIdentifierTypeService">
+			<ref bean="org.hisp.dhis.patient.PatientIdentifierTypeService" />
+		</property>-->
+	</bean>	
+
+	<bean id="org.hisp.dhis.reports.benificiaryinfo.action.GetPatientReportResultAction"
+		class="org.hisp.dhis.reports.benificiaryinfo.action.GetPatientReportResultAction" scope="prototype">
+		<!--<property name="patientIdentifierService"
+			ref="org.hisp.dhis.patient.PatientIdentifierService" />-->
+		<property name="programService" ref="org.hisp.dhis.program.ProgramService" />
+		<property name="reportService" ref="org.hisp.dhis.reports.ReportService" />
+		<property name="patientService" ref="org.hisp.dhis.patient.PatientService" />
+		<property name="patientIdentifierService" ref="org.hisp.dhis.patient.PatientIdentifierService" />
+		<property name="patientAttributeValueService" ref="org.hisp.dhis.patientattributevalue.PatientAttributeValueService" />
+		<property name="jdbcTemplate" ref="jdbcTemplate"/>
+	</bean>	
+	
+	
+	
+			
     <!-- NBITS : Portal Reports -->
     
     <bean id="org.hisp.dhis.reports.portal.action.PortalReportsFormAction"
