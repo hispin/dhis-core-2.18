@@ -73,7 +73,7 @@ public abstract class AbstractImporter<T extends IdentifiableObject>
      *
      * @param object Object to import
      */
-    protected abstract void newObject( T object );
+    protected abstract ImportConflict newObject( T object );
 
     /**
      * Update object from old => new.
@@ -81,7 +81,7 @@ public abstract class AbstractImporter<T extends IdentifiableObject>
      * @param object    Object to import
      * @param oldObject The current version of the object
      */
-    protected abstract void updatedObject( T object, T oldObject );
+    protected abstract ImportConflict updatedObject( T object, T oldObject );
 
     /**
      * Current object name, used to fill name part of a ImportConflict
@@ -119,6 +119,7 @@ public abstract class AbstractImporter<T extends IdentifiableObject>
     @Override
     public ImportConflict importObject( T object, ImportOptions options )
     {
+        // move this to importCollection
         Map<String, T> map = getIdMap( (Class) object.getClass(), options.getIdScheme() );
         String identifier = getIdentifier( object, options.getIdScheme() );
         T oldObject = map.get( identifier );
@@ -128,34 +129,58 @@ public abstract class AbstractImporter<T extends IdentifiableObject>
             if ( oldObject != null )
             {
                 ignores++;
-                return new ImportConflict( object.getClass().getName(), "Strategy is new, but identifier '" + identifier + "' already exists." );
+                return new ImportConflict( getDisplayName( object, options.getIdScheme() ), "Strategy is new, but identifier '" + identifier + "' already exists." );
+            }
+
+            ImportConflict conflict = newObject( object );
+
+            if ( conflict != null )
+            {
+                return conflict;
             }
 
             imports++;
-            newObject( object );
         }
         else if ( options.getImportStrategy().isUpdatesStrategy() )
         {
             if ( oldObject == null )
             {
                 ignores++;
-                return new ImportConflict( object.getClass().getName(), "Strategy is updates, but identifier '" + identifier + "' does not exist." );
+                return new ImportConflict( getDisplayName( object, options.getIdScheme() ), "Strategy is updates, but identifier '" + identifier + "' does not exist." );
+            }
+
+            ImportConflict conflict = updatedObject( object, oldObject );
+
+            if ( conflict != null )
+            {
+                return conflict;
             }
 
             updates++;
-            updatedObject( object, oldObject );
         }
         else if ( options.getImportStrategy().isNewAndUpdatesStrategy() )
         {
             if ( oldObject != null )
             {
+                ImportConflict conflict = updatedObject( object, oldObject );
+
+                if ( conflict != null )
+                {
+                    return conflict;
+                }
+
                 updates++;
-                updatedObject( object, oldObject );
             }
             else
             {
+                ImportConflict conflict = newObject( object );
+
+                if ( conflict != null )
+                {
+                    return conflict;
+                }
+
                 imports++;
-                newObject( object );
             }
         }
 
@@ -212,5 +237,32 @@ public abstract class AbstractImporter<T extends IdentifiableObject>
         }
 
         return null;
+    }
+
+    protected String getDisplayName( IdentifiableObject object, IdScheme scheme )
+    {
+        if ( scheme.isUidScheme() )
+        {
+            if ( object.getUid() != null )
+            {
+                return object.getUid();
+            }
+        }
+        else if ( scheme.isNameScheme() )
+        {
+            if ( object.getName() != null )
+            {
+                return object.getName();
+            }
+        }
+        else if ( scheme.isCodeScheme() )
+        {
+            if ( object.getCode() != null )
+            {
+                return object.getCode();
+            }
+        }
+
+        return object.getClass().getName();
     }
 }
