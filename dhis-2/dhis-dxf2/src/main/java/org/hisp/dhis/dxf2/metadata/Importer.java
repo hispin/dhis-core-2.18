@@ -64,7 +64,7 @@ public interface Importer<T>
     ImportCount getCurrentImportCount();
 
     /**
-     * Can this importer handle a certain Class type
+     * Can this importer handle a certain Class type?
      *
      * @param clazz Class to check for
      * @return true or false depending on if class is supported

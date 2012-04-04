@@ -30,6 +30,7 @@ package org.hisp.dhis.dxf2.metadata.importers;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hisp.dhis.constant.Constant;
+import org.hisp.dhis.dxf2.importsummary.ImportConflict;
 import org.springframework.stereotype.Component;
 
 /**
@@ -42,15 +43,19 @@ public class ConstantImporter
     protected static final Log LOG = LogFactory.getLog( ConstantImporter.class );
 
     @Override
-    protected void newObject( Constant constant )
+    protected ImportConflict newObject( Constant constant )
     {
         LOG.info( "NEW OBJECT: " + constant );
+
+        return null;
     }
 
     @Override
-    protected void updatedObject( Constant constant, Constant oldConstant )
+    protected ImportConflict updatedObject( Constant constant, Constant oldConstant )
     {
         LOG.info( "UPDATED OBJECT: " + constant + ", OLD OBJECT: " + oldConstant );
+
+        return null;
     }
 
     @Override
