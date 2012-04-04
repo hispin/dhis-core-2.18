@@ -1,8 +1,12 @@
 package org.hisp.dhis.alert.action;
 
+import static org.hisp.dhis.system.util.ConversionUtils.getIdentifiers;
+import static org.hisp.dhis.system.util.TextUtils.getCommaDelimitedString;
+
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
@@ -51,6 +55,9 @@ import com.opensymphony.xwork2.Action;
 
 public class DashBoardAction implements Action
 {
+
+    private final String DASHBOARD_DATASET = "DASHBOARD";
+    
     // ---------------------------------------------------------------
     // Dependencies
     // ---------------------------------------------------------------
@@ -135,6 +142,13 @@ public class DashBoardAction implements Action
         return selOrgUnit;
     }
 
+    String aggOption;
+    
+    public void setAggOption( String aggOption )
+    {
+        this.aggOption = aggOption;
+    }
+
     // ---------------------------------------------------------------
     // Action Implementation
     // ---------------------------------------------------------------
@@ -145,31 +159,54 @@ public class DashBoardAction implements Action
         navigationString = "Dashboard";
         orgUnitList = new ArrayList<OrganisationUnit>();
         
+        if( aggOption == null || aggOption.trim().equals( "" ) )
+        {
+            aggOption = AlertUtility.USEEXISTINGAGGDATA;
+        }
+
+        // Period Info
+        
         Date toDay = new Date();
-        Calendar cal = Calendar.getInstance();
-        cal.setTime( toDay );
-        cal.add( Calendar.MONTH, -1 );
-        cal.set( Calendar.DATE, 1 );
+        Calendar endCal = Calendar.getInstance();
+        endCal.setTime( toDay );
+        endCal.add( Calendar.MONTH, -1 );
+        endCal.set( Calendar.DATE, 1 );
         
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
-        String periodId = "Monthly_"+simpleDateFormat.format( cal.getTime() )+"_";
+        //String periodId = "Monthly_"+simpleDateFormat.format( cal.getTime() )+"_";
                 
-        if ( ( Calendar.YEAR % 400 == 0 || Calendar.YEAR % 4 == 0 ) && Calendar.MONTH == 1 )
+        if ( ( endCal.get(  Calendar.YEAR ) % 400 == 0 || endCal.get( Calendar.YEAR ) % 4 == 0 ) && endCal.get( Calendar.MONTH ) == 1 )
         {
-            cal.set( Calendar.DATE, monthDays[Calendar.MONTH] + 1 );
+            endCal.set( Calendar.DATE, monthDays[Calendar.MONTH] + 1 );
         }
         else
         {
-            cal.set( Calendar.DATE, monthDays[Calendar.MONTH] );
+            endCal.set( Calendar.DATE, monthDays[Calendar.MONTH] );
         }
+        Date eDate = endCal.getTime();
         
-        periodId += simpleDateFormat.format( cal.getTime() );
         
-        System.out.println( "PeriodId : " + periodId );
+        if ( endCal.get( Calendar.MONTH ) < Calendar.APRIL )
+        {
+            endCal.roll( Calendar.YEAR, -1 );
+        }
+        endCal.set( Calendar.MONTH, Calendar.APRIL );
+        endCal.set( Calendar.DATE, 1 );
         
-        Period selectedPeriod = periodService.getPeriodByExternalId( periodId );
+        //periodId += simpleDateFormat.format( cal.getTime() );
+        Date sDate = endCal.getTime();
         
-        DataSet selectedDataSet = dataSetService.getDataSet( 1 ); 
+        
+        List<Period> periodList = new ArrayList<Period>( periodService.getIntersectingPeriods( sDate, eDate ) );
+        
+        Collection<Integer> periodIds = new ArrayList<Integer>( getIdentifiers(Period.class, periodList ) );
+        
+        String periodIdsByComma = getCommaDelimitedString( periodIds );
+        //System.out.println( "PeriodId : " + periodIdsByComma );
+        
+        //Period selectedPeriod = periodService.getPeriodByExternalId( periodId );
+        
+        DataSet selectedDataSet = dataSetService.getDataSetByCode( DASHBOARD_DATASET );
         
         List<OrganisationUnit> rootOrgUnitList = new ArrayList<OrganisationUnit>( );
         rootOrgUnitList.addAll( currentUserService.getCurrentUser().getOrganisationUnits() );
@@ -192,6 +229,8 @@ public class DashBoardAction implements Action
             navigationString += " -> " + selOrgUnit.getName();
         }
         
+        navigationString += " ( " + simpleDateFormat.format( sDate ) + " TO " + simpleDateFormat.format( eDate ) + " )";
+        
         for( OrganisationUnit orgUnit : rootOrgUnitList )
         {            
             List<OrganisationUnit> tempOuList = new ArrayList<OrganisationUnit>( orgUnit.getChildren() );
@@ -201,14 +240,16 @@ public class DashBoardAction implements Action
             orgUnitList.addAll( tempOuList );
         }
         
-        if( selectedDataSet == null || selOrgUnit == null || selectedPeriod == null )
+        
+        if( selectedDataSet == null || selOrgUnit == null || periodIdsByComma == null )
         {
             customDataEntryFormCode = " ";
         }
         else
         {
-            customDataEntryFormCode = alertUtility.getCustomDataSetReport( selectedDataSet, selOrgUnit, selectedPeriod, false, format );
+            customDataEntryFormCode = alertUtility.getCustomDataSetReport( selectedDataSet, selOrgUnit, periodIdsByComma, aggOption, format );
         }
+        
         
         return SUCCESS;
     }

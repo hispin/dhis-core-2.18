@@ -4,12 +4,13 @@ import static org.hisp.dhis.dataentryform.DataEntryFormService.DATAELEMENT_TOTAL
 import static org.hisp.dhis.dataentryform.DataEntryFormService.IDENTIFIER_PATTERN;
 import static org.hisp.dhis.dataentryform.DataEntryFormService.INDICATOR_PATTERN;
 import static org.hisp.dhis.dataentryform.DataEntryFormService.INPUT_PATTERN;
-import static org.hisp.dhis.setting.SystemSettingManager.AGGREGATION_STRATEGY_REAL_TIME;
-import static org.hisp.dhis.setting.SystemSettingManager.DEFAULT_AGGREGATION_STRATEGY;
-import static org.hisp.dhis.setting.SystemSettingManager.KEY_AGGREGATION_STRATEGY;
+import static org.hisp.dhis.system.util.ConversionUtils.getIdentifiers;
+import static org.hisp.dhis.system.util.TextUtils.getCommaDelimitedString;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 import java.util.regex.Matcher;
@@ -25,7 +26,9 @@ import org.hisp.dhis.datavalue.DataValueService;
 import org.hisp.dhis.i18n.I18nFormat;
 import org.hisp.dhis.indicator.Indicator;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
+import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.period.Period;
+import org.hisp.dhis.reports.ReportService;
 import org.hisp.dhis.setting.SystemSettingManager;
 import org.hisp.dhis.system.filter.AggregatableDataElementFilter;
 import org.hisp.dhis.system.util.FilterUtils;
@@ -34,7 +37,11 @@ import org.hisp.dhis.system.util.FilterUtils;
 public class AlertUtility
 {
     private static final String NULL_REPLACEMENT = "";
-    private static final String SEPARATOR = ":";
+    private static final String SEPARATOR = ".";
+    
+    public static final String GENERATEAGGDATA = "generateaggdata";
+    public static final String USEEXISTINGAGGDATA = "useexistingaggdata";
+    public static final String USECAPTUREDDATA = "usecaptureddata";
 
     // ---------------------------------------------------------------
     // Dependencies
@@ -66,21 +73,41 @@ public class AlertUtility
     {
         this.systemSettingManager = systemSettingManager;
     }
+    
+    private ReportService reportService;
+
+    public void setReportService( ReportService reportService )
+    {
+        this.reportService = reportService;
+    }
+
+    private OrganisationUnitService organisationUnitService;
+
+    public void setOrganisationUnitService( OrganisationUnitService organisationUnitService )
+    {
+        this.organisationUnitService = organisationUnitService;
+    }
+
 
     // ---------------------------------------------------------------
     // Supporting Methods
     // ---------------------------------------------------------------
-    public String getCustomDataSetReport( DataSet dataSet, OrganisationUnit unit, Period period,
-        boolean selectedUnitOnly, I18nFormat format )
+    public String getCustomDataSetReport( DataSet dataSet, OrganisationUnit unit, String periodIdsByComma,
+        String aggOption, I18nFormat format )
     {
-        Map<String, String> aggregatedDataValueMap = getAggregatedValueMap( dataSet, unit, period, selectedUnitOnly,
-            format );
+        //Map<String, String> aggregatedDataValueMap = getAggregatedValueMap( dataSet, unit, period, selectedUnitOnly,
+        //    format );
 
-        Map<Integer, String> aggregatedIndicatorMap = getAggregatedIndicatorValueMap( dataSet, unit, period, format );
+        Map<String, String> aggregatedDataValueMap = getAggregatedValueMap( dataSet, unit, periodIdsByComma, aggOption );
+        
+        //Map<Integer, String> aggregatedIndicatorMap = getAggregatedIndicatorValueMap( dataSet, unit, period, format );
+        
+        Map<Integer, String> aggregatedIndicatorMap = getAggregatedIndicatorValueMap( dataSet, unit, periodIdsByComma, aggOption );
 
         return prepareReportContent( dataSet.getDataEntryForm(), aggregatedDataValueMap, aggregatedIndicatorMap );
     }
 
+	/*
     private Map<String, String> getAggregatedValueMap( DataSet dataSet, OrganisationUnit unit, Period period,
         boolean selectedUnitOnly, I18nFormat format )
     {
@@ -133,7 +160,9 @@ public class AlertUtility
 
         return map;
     }
+*/
 
+/*	
     private Map<Integer, String> getAggregatedIndicatorValueMap( DataSet dataSet, OrganisationUnit unit, Period period,
         I18nFormat format )
     {
@@ -158,6 +187,7 @@ public class AlertUtility
 
         return map;
     }
+*/
 
     private String prepareReportContent( DataEntryForm dataEntryForm, Map<String, String> dataValues,
         Map<Integer, String> indicatorValues )
@@ -224,4 +254,108 @@ public class AlertUtility
         return buffer.toString();
     }
 
+
+   
+    
+    private Map<Integer, String> getAggregatedIndicatorValueMap( DataSet dataSet, OrganisationUnit unit, String periodIdsByComma, String aggOption )
+    {
+        Map<Integer, String> aggMap = new HashMap<Integer, String>();
+        
+        List<Indicator> indicatorList = new ArrayList<Indicator>( dataSet.getIndicators() );
+        String dataElmentIdsByComma = reportService.getDataelementIdsAsString( indicatorList );
+        
+        Map<String, String> aggDeMap = new HashMap<String, String>();
+        if( aggOption.equalsIgnoreCase( USEEXISTINGAGGDATA ) )
+        {
+            aggDeMap.putAll( reportService.getResultDataValueFromAggregateTable( unit.getId(), dataElmentIdsByComma, periodIdsByComma ) );
+        }
+        else if( aggOption.equalsIgnoreCase( GENERATEAGGDATA ) )
+        {
+            List<OrganisationUnit> childOrgUnitTree = new ArrayList<OrganisationUnit>( organisationUnitService.getOrganisationUnitWithChildren( unit.getId() ) );
+            List<Integer> childOrgUnitTreeIds = new ArrayList<Integer>( getIdentifiers( OrganisationUnit.class, childOrgUnitTree ) );
+            String childOrgUnitsByComma = getCommaDelimitedString( childOrgUnitTreeIds );
+
+            aggDeMap.putAll( reportService.getAggDataFromDataValueTable( childOrgUnitsByComma, dataElmentIdsByComma, periodIdsByComma ) );
+        }
+        else if( aggOption.equalsIgnoreCase( USECAPTUREDDATA ) )
+        {
+            aggDeMap.putAll( reportService.getAggDataFromDataValueTable( ""+unit.getId(), dataElmentIdsByComma, periodIdsByComma ) );
+        }
+        
+        for ( Indicator indicator : indicatorList )
+        {
+            Double numValue = 0.0;
+            Double denValue = 0.0;
+            Double indValue = 0.0;
+            
+            try
+            {
+                numValue = Double.parseDouble( reportService.getAggVal( indicator.getNumerator(), aggDeMap ) );
+            }
+            catch( Exception e )
+            {
+                numValue = 0.0;
+            }
+            
+            try
+            {
+                denValue = Double.parseDouble( reportService.getAggVal( indicator.getDenominator(), aggDeMap ) );    
+            }
+            catch( Exception e )
+            {
+                denValue = 0.0;
+            }
+
+            try
+            {
+                if( denValue != 0.0 )
+                {
+                    indValue = ( numValue / denValue ) * indicator.getIndicatorType().getFactor();
+                }
+                else
+                {
+                    indValue = 0.0;
+                }
+            }
+            catch( Exception e )
+            {
+                indValue = 0.0;
+            }
+            
+            indValue = Math.round( indValue * Math.pow( 10, 1 ) ) / Math.pow( 10, 1 );
+            
+            aggMap.put( indicator.getId(), indValue.toString() );
+        }
+        
+        return aggMap;
+    }
+    
+    private  Map<String, String> getAggregatedValueMap( DataSet dataSet, OrganisationUnit unit, String periodIdsByComma, String aggOption )
+    {
+        Map<String, String> aggDeMap = new HashMap<String, String>();
+        
+        List<DataElement> dataElementList = new ArrayList<DataElement>( dataSet.getDataElements() );
+        Collection<Integer> dataElementIds = new ArrayList<Integer>( getIdentifiers(DataElement.class, dataElementList ) );
+        String dataElmentIdsByComma = getCommaDelimitedString( dataElementIds );
+        
+        if( aggOption.equalsIgnoreCase( USEEXISTINGAGGDATA ) )
+        {
+            aggDeMap.putAll( reportService.getResultDataValueFromAggregateTable( unit.getId(), dataElmentIdsByComma, periodIdsByComma ) );
+        }
+        else if( aggOption.equalsIgnoreCase( GENERATEAGGDATA ) )
+        {
+            List<OrganisationUnit> childOrgUnitTree = new ArrayList<OrganisationUnit>( organisationUnitService.getOrganisationUnitWithChildren( unit.getId() ) );
+            List<Integer> childOrgUnitTreeIds = new ArrayList<Integer>( getIdentifiers( OrganisationUnit.class, childOrgUnitTree ) );
+            String childOrgUnitsByComma = getCommaDelimitedString( childOrgUnitTreeIds );
+
+            aggDeMap.putAll( reportService.getAggDataFromDataValueTable( childOrgUnitsByComma, dataElmentIdsByComma, periodIdsByComma ) );
+        }
+        else if( aggOption.equalsIgnoreCase( USECAPTUREDDATA ) )
+        {
+            aggDeMap.putAll( reportService.getAggDataFromDataValueTable( ""+unit.getId(), dataElmentIdsByComma, periodIdsByComma ) );
+        }
+        
+        return aggDeMap;
+    }
+    
 }

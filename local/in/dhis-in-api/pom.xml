@@ -15,6 +15,7 @@
     <dependency>
       <groupId>org.hisp.dhis</groupId>
       <artifactId>dhis-api</artifactId>
+	  <version>${project.version}</version>
     </dependency>
   </dependencies>
 			
