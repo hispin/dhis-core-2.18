@@ -106,17 +106,6 @@ public abstract class AbstractImporter<T extends BaseIdentifiableObject>
     // Importer<T> Implementation
     //-------------------------------------------------------------------------------------------------------
 
-    private void reset( Object type )
-    {
-        imports = 0;
-        updates = 0;
-        ignores = 0;
-
-        uidMap = manager.getIdMap( (Class) type.getClass(), IdentifiableObject.IdentifiableProperty.UID );
-        nameMap = manager.getIdMap( (Class) type.getClass(), IdentifiableObject.IdentifiableProperty.NAME );
-        codeMap = manager.getIdMap( (Class) type.getClass(), IdentifiableObject.IdentifiableProperty.CODE );
-    }
-
     @Override
     public List<ImportConflict> importCollection( List<T> objects, ImportOptions options )
     {
@@ -152,18 +141,6 @@ public abstract class AbstractImporter<T extends BaseIdentifiableObject>
         return importObjectLocal( object, options );
     }
 
-    private ImportConflict importObjectLocal( T object, ImportOptions options )
-    {
-        ImportConflict conflict = validateIdentifiableObject( object, options );
-
-        if ( conflict == null )
-        {
-            conflict = startImport( object, options );
-        }
-
-        return conflict;
-    }
-
     @Override
     public ImportCount getCurrentImportCount()
     {
@@ -177,8 +154,31 @@ public abstract class AbstractImporter<T extends BaseIdentifiableObject>
     }
 
     //-------------------------------------------------------------------------------------------------------
-    // Helpers
+    // Internal methods
     //-------------------------------------------------------------------------------------------------------
+
+    private void reset( Object type )
+    {
+        imports = 0;
+        updates = 0;
+        ignores = 0;
+
+        uidMap = manager.getIdMap( (Class) type.getClass(), IdentifiableObject.IdentifiableProperty.UID );
+        nameMap = manager.getIdMap( (Class) type.getClass(), IdentifiableObject.IdentifiableProperty.NAME );
+        codeMap = manager.getIdMap( (Class) type.getClass(), IdentifiableObject.IdentifiableProperty.CODE );
+    }
+
+    private ImportConflict importObjectLocal( T object, ImportOptions options )
+    {
+        ImportConflict conflict = validateIdentifiableObject( object, options );
+
+        if ( conflict == null )
+        {
+            conflict = startImport( object, options );
+        }
+
+        return conflict;
+    }
 
     private ImportConflict startImport( T object, ImportOptions options )
     {
@@ -313,6 +313,10 @@ public abstract class AbstractImporter<T extends BaseIdentifiableObject>
         }
     }
 
+    //-------------------------------------------------------------------------------------------------------
+    // Protected methods
+    //-------------------------------------------------------------------------------------------------------
+
     /**
      * Try to get a usable display based on current idScheme, mainly used for error-reporting
      * but can also be use elsewhere. Falls back to the name of the class, if no other alternative
@@ -352,21 +356,5 @@ public abstract class AbstractImporter<T extends BaseIdentifiableObject>
     protected String generateUid()
     {
         return CodeGenerator.generateCode();
-    }
-
-    protected void mergeIdentifiableObject( BaseIdentifiableObject target, BaseIdentifiableObject source )
-    {
-        target.setId( source.getId() );
-        target.setUid( source.getUid() );
-        target.setName( source.getName() );
-        target.setCode( source.getCode() );
-    }
-
-    protected void mergeNameableObject( BaseNameableObject target, BaseNameableObject source )
-    {
-        mergeIdentifiableObject( target, source );
-
-        target.setShortName( source.getShortName() );
-        target.setDescription( source.getDescription() );
     }
 }
