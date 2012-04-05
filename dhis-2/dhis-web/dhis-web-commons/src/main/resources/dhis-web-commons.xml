@@ -458,6 +458,19 @@
 
   </package>
 
+  <!-- Common actions HTML -->
+  
+  <package name="dhis-web-commons-ajax-html" extends="dhis-web-commons" namespace="/dhis-web-commons-ajax-html">
+
+    <action name="getUser" class="org.hisp.dhis.commons.action.GetUserAction">
+	  <result name="success" type="velocity">
+        /dhis-web-commons/ajax/htmlUser.vm
+      </result>
+      <param name="onExceptionReturn">plainTextError</param>
+	</action>
+
+  </package>
+
   <!-- Common actions JSON -->
 
   <package name="dhis-web-commons-ajax-json" extends="dhis-web-commons" namespace="/dhis-web-commons-ajax-json">

@@ -67,6 +67,18 @@ function exportDataSetReport( type )
 	window.location.href = url;
 }
 
+function setUserInfo( username )
+{
+	$( "#userInfo" ).load( "../dhis-web-commons-ajax-html/getUser.action?username=" + username, function() {
+		$( "#userInfo" ).dialog( {
+	        modal : true,
+	        width : 350,
+	        height : 350,
+	        title : "User"
+	    } );
+	} );	
+}
+
 function showCriteria()
 {
 	$( "#criteria" ).show( "fast" );
