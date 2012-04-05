@@ -109,6 +109,18 @@ public class Period
     // Logic
     // -------------------------------------------------------------------------
 
+    @Override
+    public String getUid()
+    {
+        return getIsoDate();
+    }
+
+    @Override
+    public String getCode()
+    {
+        return getIsoDate();
+    }
+    
     /**
      * Returns an ISO8601 formatted string version of the period
      *

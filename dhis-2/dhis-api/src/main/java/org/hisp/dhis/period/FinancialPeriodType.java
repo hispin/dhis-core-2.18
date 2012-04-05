@@ -32,8 +32,6 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
-import org.apache.commons.lang.NotImplementedException;
-
 /**
  * @author Lars Helge Overland
  */
@@ -162,18 +160,18 @@ public abstract class FinancialPeriodType
     @Override
     public String getIsoDate( Period period )
     {
-        throw new NotImplementedException(); // TODO
+        return null; // TODO
     }
 
     @Override
     public Period createPeriod( String isoDate )
     {
-        throw new NotImplementedException(); // TODO
+        return null; // TODO
     }
 
     @Override
     public String getIsoFormat()
     {
-        throw new NotImplementedException(); // TODO
+        return null; // TODO
     }
 }
