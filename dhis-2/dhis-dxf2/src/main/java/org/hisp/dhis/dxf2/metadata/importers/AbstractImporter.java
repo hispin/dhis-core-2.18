@@ -29,7 +29,10 @@ package org.hisp.dhis.dxf2.metadata.importers;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.hisp.dhis.common.*;
+import org.hisp.dhis.common.BaseIdentifiableObject;
+import org.hisp.dhis.common.CodeGenerator;
+import org.hisp.dhis.common.IdentifiableObject;
+import org.hisp.dhis.common.IdentifiableObjectManager;
 import org.hisp.dhis.dxf2.importsummary.ImportConflict;
 import org.hisp.dhis.dxf2.importsummary.ImportCount;
 import org.hisp.dhis.dxf2.metadata.IdScheme;
@@ -133,7 +136,7 @@ public abstract class AbstractImporter<T extends BaseIdentifiableObject>
     @Override
     public ImportConflict importObject( T object, ImportOptions options )
     {
-        if(object != null)
+        if ( object != null )
         {
             reset( object );
         }
