@@ -82,7 +82,8 @@
 		#end
 		
 		setFieldValue( 'dataelement textarea[id=formula]', getFieldValue('expression') );
-		
+		getExpression();
+
 		openDialog( deExpressionDialog );
 	}
 	
