@@ -50,7 +50,7 @@ import java.util.Map;
 public abstract class AbstractImporter<T extends BaseIdentifiableObject>
     implements Importer<T>
 {
-    private static final Log LOG = LogFactory.getLog( AbstractImporter.class );
+    private static final Log log = LogFactory.getLog( AbstractImporter.class );
 
     //-------------------------------------------------------------------------------------------------------
     // Dependencies
@@ -114,7 +114,7 @@ public abstract class AbstractImporter<T extends BaseIdentifiableObject>
     {
         if ( !objects.isEmpty() )
         {
-            Object object = objects.get( 0 );
+            T object = objects.get( 0 );
             reset( object );
         }
 
@@ -160,15 +160,15 @@ public abstract class AbstractImporter<T extends BaseIdentifiableObject>
     // Internal methods
     //-------------------------------------------------------------------------------------------------------
 
-    private void reset( Object type )
+    private void reset( T type )
     {
         imports = 0;
         updates = 0;
         ignores = 0;
-
-        uidMap = manager.getIdMap( (Class) type.getClass(), IdentifiableObject.IdentifiableProperty.UID );
-        nameMap = manager.getIdMap( (Class) type.getClass(), IdentifiableObject.IdentifiableProperty.NAME );
-        codeMap = manager.getIdMap( (Class) type.getClass(), IdentifiableObject.IdentifiableProperty.CODE );
+        
+        uidMap = manager.getIdMap( (Class<T>) type.getClass(), IdentifiableObject.IdentifiableProperty.UID );
+        nameMap = manager.getIdMap( (Class<T>) type.getClass(), IdentifiableObject.IdentifiableProperty.NAME );
+        codeMap = manager.getIdMap( (Class<T>) type.getClass(), IdentifiableObject.IdentifiableProperty.CODE );
     }
 
     private ImportConflict importObjectLocal( T object, ImportOptions options )
