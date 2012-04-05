@@ -112,13 +112,14 @@ public abstract class AbstractImporter<T extends BaseIdentifiableObject>
     @Override
     public List<ImportConflict> importCollection( List<T> objects, ImportOptions options )
     {
-        if ( !objects.isEmpty() )
+        List<ImportConflict> conflicts = new ArrayList<ImportConflict>();
+
+        if ( objects.isEmpty() )
         {
-            T object = objects.get( 0 );
-            reset( object );
+            return conflicts;
         }
 
-        List<ImportConflict> conflicts = new ArrayList<ImportConflict>();
+        reset( objects.get( 0 ) );
 
         for ( T object : objects )
         {
@@ -136,7 +137,7 @@ public abstract class AbstractImporter<T extends BaseIdentifiableObject>
     @Override
     public ImportConflict importObject( T object, ImportOptions options )
     {
-        if ( object != null )
+        if ( object == null )
         {
             reset( object );
         }
@@ -165,7 +166,7 @@ public abstract class AbstractImporter<T extends BaseIdentifiableObject>
         imports = 0;
         updates = 0;
         ignores = 0;
-        
+
         uidMap = manager.getIdMap( (Class<T>) type.getClass(), IdentifiableObject.IdentifiableProperty.UID );
         nameMap = manager.getIdMap( (Class<T>) type.getClass(), IdentifiableObject.IdentifiableProperty.NAME );
         codeMap = manager.getIdMap( (Class<T>) type.getClass(), IdentifiableObject.IdentifiableProperty.CODE );
