@@ -36,6 +36,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.hisp.dhis.common.Grid;
+import org.hisp.dhis.dataset.CompleteDataSetRegistration;
+import org.hisp.dhis.dataset.CompleteDataSetRegistrationService;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.dataset.DataSetService;
 import org.hisp.dhis.datasetreport.DataSetReportService;
@@ -79,6 +81,13 @@ public class GenerateDataSetReportAction
     public void setDataSetService( DataSetService dataSetService )
     {
         this.dataSetService = dataSetService;
+    }
+    
+    private CompleteDataSetRegistrationService registrationService;
+
+    public void setRegistrationService( CompleteDataSetRegistrationService registrationService )
+    {
+        this.registrationService = registrationService;
     }
 
     private PeriodService periodService;
@@ -171,6 +180,13 @@ public class GenerateDataSetReportAction
         return selectedPeriod;
     }
 
+    private CompleteDataSetRegistration registration;
+    
+    public CompleteDataSetRegistration getRegistration()
+    {
+        return registration;
+    }
+
     private String customDataEntryFormCode;
 
     public String getCustomDataEntryFormCode()
@@ -211,6 +227,8 @@ public class GenerateDataSetReportAction
         }
         
         String dataSetType = selectedDataSet.getDataSetType();
+
+        registration = registrationService.getCompleteDataSetRegistration( selectedDataSet, selectedPeriod, selectedOrgunit );
         
         if ( TYPE_CUSTOM.equals( dataSetType ) )
         {
