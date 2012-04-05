@@ -41,18 +41,18 @@ import org.springframework.stereotype.Component;
 public class ConstantImporter
     extends AbstractImporter<Constant>
 {
-    private static final Log LOG = LogFactory.getLog( ConstantImporter.class );
+    private static final Log log = LogFactory.getLog( ConstantImporter.class );
 
     @Override
     protected ImportConflict newObject( Constant constant, ImportOptions options )
     {
-        LOG.info( "NEW OBJECT: " + constant );
+        log.info( "NEW OBJECT: " + constant );
 
         if ( !options.isDryRun() )
         {
-            LOG.info( "Trying to save new object with UID: " + constant.getUid() );
+            log.info( "Trying to save new object with UID: " + constant.getUid() );
             manager.save( constant );
-            LOG.info( "Save successful." );
+            log.info( "Save successful." );
         }
 
         return null;
@@ -65,9 +65,9 @@ public class ConstantImporter
 
         if ( !options.isDryRun() )
         {
-            LOG.info( "Trying to update object with UID: " + oldConstant.getUid() );
+            log.info( "Trying to update object with UID: " + oldConstant.getUid() );
             manager.update( oldConstant );
-            LOG.info( "Update successful." );
+            log.info( "Update successful." );
         }
 
         return null;
