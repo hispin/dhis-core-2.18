@@ -5,6 +5,9 @@ var currentPeriodOffset = 0;
 // Period type object
 var periodTypeFactory = new PeriodType();
 
+// The current selected report type name
+var currentReportTypeName = '';
+
 // The current selected period type name
 var currentPeriodTypeName = '';
 
@@ -34,7 +37,7 @@ function getExportReportsByGroup( selectedOrgUnitName ) {
 		{
 			jQuery('#exportReport').empty();
 			jQuery.each( json.exportReports, function(i, item){
-				addOptionById( 'exportReport', item.id + '_' + item.flag, item.name );
+				addOptionById( 'exportReport', item.id + '_' + item.flag + '_' + item.reportType, item.name );
 			});
 
 			currentPeriodOffset = 0;
@@ -51,6 +54,13 @@ function reportSelected()
 	if ( value && value != null )
 	{
 		currentPeriodTypeName = (value.split( '_' )[1] == "true") ? 'Daily' : 'Monthly';
+		currentReportTypeName = value.split( '_' )[2];
+		
+		if ( currentReportTypeName == "P" ) { 
+			hideById( "periodRow" );
+		}else {
+			showById( "periodRow" );
+		}
 	}
 }
 
