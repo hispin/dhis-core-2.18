@@ -61,14 +61,12 @@ public class ConstantImporter
     @Override
     protected ImportConflict updatedObject( Constant constant, Constant oldConstant, ImportOptions options )
     {
-        LOG.info( "UPDATED OBJECT: " + constant + ", OLD OBJECT: " + oldConstant );
-
-        mergeIdentifiableObject( constant, oldConstant );
+        oldConstant.setValue( constant.getValue() );
 
         if ( !options.isDryRun() )
         {
-            LOG.info( "Trying to update object with UID: " + constant.getUid() );
-            manager.update( constant );
+            LOG.info( "Trying to update object with UID: " + oldConstant.getUid() );
+            manager.update( oldConstant );
             LOG.info( "Update successful." );
         }
 
