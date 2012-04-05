@@ -130,7 +130,7 @@ public abstract class AbstractImporter<T extends BaseIdentifiableObject>
 
         for ( T object : objects )
         {
-            ImportConflict importConflict = importObject( object, options );
+            ImportConflict importConflict = importObjectLocal( object, options );
 
             if ( importConflict != null )
             {
@@ -143,6 +143,16 @@ public abstract class AbstractImporter<T extends BaseIdentifiableObject>
 
     @Override
     public ImportConflict importObject( T object, ImportOptions options )
+    {
+        if(object != null)
+        {
+            reset( object );
+        }
+
+        return importObjectLocal( object, options );
+    }
+
+    private ImportConflict importObjectLocal( T object, ImportOptions options )
     {
         ImportConflict conflict = validateIdentifiableObject( object, options );
 
