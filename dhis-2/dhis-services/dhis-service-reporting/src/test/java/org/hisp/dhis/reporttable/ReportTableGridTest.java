@@ -397,15 +397,15 @@ public class ReportTableGridTest
 
         Grid grid = reportTableService.getReportTableGrid( id, i18nFormat, null, 0 );
         
-        assertEquals( 21.0, grid.getRow( 0 ).get( 6 ) );
-        assertEquals( 23.0, grid.getRow( 0 ).get( 7 ) );
-        assertEquals( 25.0, grid.getRow( 0 ).get( 8 ) );
-        assertEquals( 27.0, grid.getRow( 0 ).get( 9 ) );
+        assertEquals( 21.0, grid.getRow( 0 ).get( 8 ) );
+        assertEquals( 23.0, grid.getRow( 0 ).get( 9 ) );
+        assertEquals( 25.0, grid.getRow( 0 ).get( 10 ) );
+        assertEquals( 27.0, grid.getRow( 0 ).get( 11 ) );
         
-        assertEquals( 22.0, grid.getRow( 1 ).get( 6 ) );
-        assertEquals( 24.0, grid.getRow( 1 ).get( 7 ) );
-        assertEquals( 26.0, grid.getRow( 1 ).get( 8 ) );
-        assertEquals( 28.0, grid.getRow( 1 ).get( 9 ) );
+        assertEquals( 22.0, grid.getRow( 1 ).get( 8 ) );
+        assertEquals( 24.0, grid.getRow( 1 ).get( 9 ) );
+        assertEquals( 26.0, grid.getRow( 1 ).get( 10 ) );
+        assertEquals( 28.0, grid.getRow( 1 ).get( 11 ) );
     }
 
     @Test
@@ -421,17 +421,17 @@ public class ReportTableGridTest
 
         Grid grid = reportTableService.getReportTableGrid( id, i18nFormat, date, 0 );
 
-        assertEquals( 21.0, grid.getRow( 0 ).get( 9 ) );
-        assertEquals( 22.0, grid.getRow( 0 ).get( 10 ) );
+        assertEquals( 21.0, grid.getRow( 0 ).get( 13 ) );
+        assertEquals( 22.0, grid.getRow( 0 ).get( 14 ) );
         
-        assertEquals( 23.0, grid.getRow( 1 ).get( 9 ) );
-        assertEquals( 24.0, grid.getRow( 1 ).get( 10 ) );
+        assertEquals( 23.0, grid.getRow( 1 ).get( 13 ) );
+        assertEquals( 24.0, grid.getRow( 1 ).get( 14 ) );
         
-        assertEquals( 25.0, grid.getRow( 2 ).get( 9 ) );
-        assertEquals( 26.0, grid.getRow( 2 ).get( 10 ) );
+        assertEquals( 25.0, grid.getRow( 2 ).get( 13 ) );
+        assertEquals( 26.0, grid.getRow( 2 ).get( 14 ) );
         
-        assertEquals( 27.0, grid.getRow( 3 ).get( 9 ) );
-        assertEquals( 28.0, grid.getRow( 3 ).get( 10 ) );
+        assertEquals( 27.0, grid.getRow( 3 ).get( 13 ) );
+        assertEquals( 28.0, grid.getRow( 3 ).get( 14 ) );
     }
 
     @Test
@@ -447,15 +447,15 @@ public class ReportTableGridTest
 
         Grid grid = reportTableService.getReportTableGrid( id, i18nFormat, date, 0 );
 
-        assertEquals( 21.0, grid.getRow( 0 ).get( 6 ) );
-        assertEquals( 22.0, grid.getRow( 0 ).get( 7 ) );
-        assertEquals( 25.0, grid.getRow( 0 ).get( 8 ) );
-        assertEquals( 26.0, grid.getRow( 0 ).get( 9 ) );
+        assertEquals( 21.0, grid.getRow( 0 ).get( 8 ) );
+        assertEquals( 22.0, grid.getRow( 0 ).get( 9 ) );
+        assertEquals( 25.0, grid.getRow( 0 ).get( 10 ) );
+        assertEquals( 26.0, grid.getRow( 0 ).get( 11 ) );
         
-        assertEquals( 23.0, grid.getRow( 1 ).get( 6 ) );
-        assertEquals( 24.0, grid.getRow( 1 ).get( 7 ) );
-        assertEquals( 27.0, grid.getRow( 1 ).get( 8 ) );
-        assertEquals( 28.0, grid.getRow( 1 ).get( 9 ) );
+        assertEquals( 23.0, grid.getRow( 1 ).get( 8 ) );
+        assertEquals( 24.0, grid.getRow( 1 ).get( 9 ) );
+        assertEquals( 27.0, grid.getRow( 1 ).get( 10 ) );
+        assertEquals( 28.0, grid.getRow( 1 ).get( 11 ) );
     }
 
     @Test
@@ -471,15 +471,15 @@ public class ReportTableGridTest
 
         Grid grid = reportTableService.getReportTableGrid( id, i18nFormat, date, 0 );
 
-        assertEquals( 21.0, grid.getRow( 0 ).get( 6 ) );
-        assertEquals( 23.0, grid.getRow( 0 ).get( 7 ) );
-        assertEquals( 25.0, grid.getRow( 0 ).get( 8 ) );
-        assertEquals( 27.0, grid.getRow( 0 ).get( 9 ) );
+        assertEquals( 21.0, grid.getRow( 0 ).get( 8 ) );
+        assertEquals( 23.0, grid.getRow( 0 ).get( 9 ) );
+        assertEquals( 25.0, grid.getRow( 0 ).get( 10 ) );
+        assertEquals( 27.0, grid.getRow( 0 ).get( 11 ) );
         
-        assertEquals( 22.0, grid.getRow( 1 ).get( 6 ) );
-        assertEquals( 24.0, grid.getRow( 1 ).get( 7 ) );
-        assertEquals( 26.0, grid.getRow( 1 ).get( 8 ) );
-        assertEquals( 28.0, grid.getRow( 1 ).get( 9 ) );
+        assertEquals( 22.0, grid.getRow( 1 ).get( 8 ) );
+        assertEquals( 24.0, grid.getRow( 1 ).get( 9 ) );
+        assertEquals( 26.0, grid.getRow( 1 ).get( 10 ) );
+        assertEquals( 28.0, grid.getRow( 1 ).get( 11 ) );
     }
     
     @Test
@@ -495,17 +495,17 @@ public class ReportTableGridTest
 
         Grid grid = reportTableService.getReportTableGrid( id, i18nFormat, date, 0 );
         
-        assertEquals( 21.0, grid.getRow( 0 ).get( 9 ) );
-        assertEquals( 22.0, grid.getRow( 0 ).get( 10 ) );
+        assertEquals( 21.0, grid.getRow( 0 ).get( 13 ) );
+        assertEquals( 22.0, grid.getRow( 0 ).get( 14 ) );
         
-        assertEquals( 23.0, grid.getRow( 1 ).get( 9 ) );
-        assertEquals( 24.0, grid.getRow( 1 ).get( 10 ) );
+        assertEquals( 23.0, grid.getRow( 1 ).get( 13 ) );
+        assertEquals( 24.0, grid.getRow( 1 ).get( 14 ) );
         
-        assertEquals( 25.0, grid.getRow( 2 ).get( 9 ) );
-        assertEquals( 26.0, grid.getRow( 2 ).get( 10 ) );
+        assertEquals( 25.0, grid.getRow( 2 ).get( 13 ) );
+        assertEquals( 26.0, grid.getRow( 2 ).get( 14 ) );
         
-        assertEquals( 27.0, grid.getRow( 3 ).get( 9 ) );
-        assertEquals( 28.0, grid.getRow( 3 ).get( 10 ) );
+        assertEquals( 27.0, grid.getRow( 3 ).get( 13 ) );
+        assertEquals( 28.0, grid.getRow( 3 ).get( 14 ) );
     }
 
     @Test
@@ -521,15 +521,15 @@ public class ReportTableGridTest
 
         Grid grid = reportTableService.getReportTableGrid( id, i18nFormat, date, 0 );
         
-        assertEquals( 21.0, grid.getRow( 0 ).get( 6 ) );
-        assertEquals( 22.0, grid.getRow( 0 ).get( 7 ) );
-        assertEquals( 25.0, grid.getRow( 0 ).get( 8 ) );
-        assertEquals( 26.0, grid.getRow( 0 ).get( 9 ) );
+        assertEquals( 21.0, grid.getRow( 0 ).get( 8 ) );
+        assertEquals( 22.0, grid.getRow( 0 ).get( 9 ) );
+        assertEquals( 25.0, grid.getRow( 0 ).get( 10 ) );
+        assertEquals( 26.0, grid.getRow( 0 ).get( 11 ) );
         
-        assertEquals( 23.0, grid.getRow( 1 ).get( 6 ) );
-        assertEquals( 24.0, grid.getRow( 1 ).get( 7 ) );
-        assertEquals( 27.0, grid.getRow( 1 ).get( 8 ) );
-        assertEquals( 28.0, grid.getRow( 1 ).get( 9 ) );
+        assertEquals( 23.0, grid.getRow( 1 ).get( 8 ) );
+        assertEquals( 24.0, grid.getRow( 1 ).get( 9 ) );
+        assertEquals( 27.0, grid.getRow( 1 ).get( 10 ) );
+        assertEquals( 28.0, grid.getRow( 1 ).get( 11 ) );
     }
     
     @Test
@@ -543,15 +543,15 @@ public class ReportTableGridTest
 
         Grid grid = reportTableService.getReportTableGrid( id, i18nFormat, null, 0 );
         
-        assertEquals( 11.0, grid.getRow( 0 ).get( 6 ) );
-        assertEquals( 13.0, grid.getRow( 0 ).get( 7 ) );
-        assertEquals( 15.0, grid.getRow( 0 ).get( 8 ) );
-        assertEquals( 17.0, grid.getRow( 0 ).get( 9 ) );
+        assertEquals( 11.0, grid.getRow( 0 ).get( 8 ) );
+        assertEquals( 13.0, grid.getRow( 0 ).get( 9 ) );
+        assertEquals( 15.0, grid.getRow( 0 ).get( 10 ) );
+        assertEquals( 17.0, grid.getRow( 0 ).get( 11 ) );
         
-        assertEquals( 12.0, grid.getRow( 1 ).get( 6 ) );
-        assertEquals( 14.0, grid.getRow( 1 ).get( 7 ) );
-        assertEquals( 16.0, grid.getRow( 1 ).get( 8 ) );
-        assertEquals( 18.0, grid.getRow( 1 ).get( 9 ) );
+        assertEquals( 12.0, grid.getRow( 1 ).get( 8 ) );
+        assertEquals( 14.0, grid.getRow( 1 ).get( 9 ) );
+        assertEquals( 16.0, grid.getRow( 1 ).get( 10 ) );
+        assertEquals( 18.0, grid.getRow( 1 ).get( 11 ) );
     }
     
     @Test
@@ -565,17 +565,17 @@ public class ReportTableGridTest
 
         Grid grid = reportTableService.getReportTableGrid( id, i18nFormat, date, 0 );
 
-        assertEquals( 11.0, grid.getRow( 0 ).get( 9 ) );
-        assertEquals( 12.0, grid.getRow( 0 ).get( 10 ) );
+        assertEquals( 11.0, grid.getRow( 0 ).get( 13 ) );
+        assertEquals( 12.0, grid.getRow( 0 ).get( 14 ) );
         
-        assertEquals( 13.0, grid.getRow( 1 ).get( 9 ) );
-        assertEquals( 14.0, grid.getRow( 1 ).get( 10 ) );
+        assertEquals( 13.0, grid.getRow( 1 ).get( 13 ) );
+        assertEquals( 14.0, grid.getRow( 1 ).get( 14 ) );
         
-        assertEquals( 15.0, grid.getRow( 2 ).get( 9 ) );
-        assertEquals( 16.0, grid.getRow( 2 ).get( 10 ) );
+        assertEquals( 15.0, grid.getRow( 2 ).get( 13 ) );
+        assertEquals( 16.0, grid.getRow( 2 ).get( 14 ) );
         
-        assertEquals( 17.0, grid.getRow( 3 ).get( 9 ) );
-        assertEquals( 18.0, grid.getRow( 3 ).get( 10 ) );
+        assertEquals( 17.0, grid.getRow( 3 ).get( 13 ) );
+        assertEquals( 18.0, grid.getRow( 3 ).get( 14 ) );
     }
 
     @Test
@@ -589,15 +589,15 @@ public class ReportTableGridTest
 
         Grid grid = reportTableService.getReportTableGrid( id, i18nFormat, date, 0 );
 
-        assertEquals( 11.0, grid.getRow( 0 ).get( 6 ) );
-        assertEquals( 12.0, grid.getRow( 0 ).get( 7 ) );
-        assertEquals( 15.0, grid.getRow( 0 ).get( 8 ) );
-        assertEquals( 16.0, grid.getRow( 0 ).get( 9 ) );
+        assertEquals( 11.0, grid.getRow( 0 ).get( 8 ) );
+        assertEquals( 12.0, grid.getRow( 0 ).get( 9 ) );
+        assertEquals( 15.0, grid.getRow( 0 ).get( 10 ) );
+        assertEquals( 16.0, grid.getRow( 0 ).get( 11 ) );
         
-        assertEquals( 13.0, grid.getRow( 1 ).get( 6 ) );
-        assertEquals( 14.0, grid.getRow( 1 ).get( 7 ) );
-        assertEquals( 17.0, grid.getRow( 1 ).get( 8 ) );
-        assertEquals( 18.0, grid.getRow( 1 ).get( 9 ) );
+        assertEquals( 13.0, grid.getRow( 1 ).get( 8 ) );
+        assertEquals( 14.0, grid.getRow( 1 ).get( 9 ) );
+        assertEquals( 17.0, grid.getRow( 1 ).get( 10 ) );
+        assertEquals( 18.0, grid.getRow( 1 ).get( 11 ) );
     }
     
     @Test
@@ -611,15 +611,15 @@ public class ReportTableGridTest
 
         Grid grid = reportTableService.getReportTableGrid( id, i18nFormat, date, 0 );
 
-        assertEquals( 11.0, grid.getRow( 0 ).get( 6 ) );
-        assertEquals( 13.0, grid.getRow( 0 ).get( 7 ) );
-        assertEquals( 15.0, grid.getRow( 0 ).get( 8 ) );
-        assertEquals( 17.0, grid.getRow( 0 ).get( 9 ) );
+        assertEquals( 11.0, grid.getRow( 0 ).get( 8 ) );
+        assertEquals( 13.0, grid.getRow( 0 ).get( 9 ) );
+        assertEquals( 15.0, grid.getRow( 0 ).get( 10 ) );
+        assertEquals( 17.0, grid.getRow( 0 ).get( 11 ) );
         
-        assertEquals( 12.0, grid.getRow( 1 ).get( 6 ) );
-        assertEquals( 14.0, grid.getRow( 1 ).get( 7 ) );
-        assertEquals( 16.0, grid.getRow( 1 ).get( 8 ) );
-        assertEquals( 18.0, grid.getRow( 1 ).get( 9 ) );
+        assertEquals( 12.0, grid.getRow( 1 ).get( 8 ) );
+        assertEquals( 14.0, grid.getRow( 1 ).get( 9 ) );
+        assertEquals( 16.0, grid.getRow( 1 ).get( 10 ) );
+        assertEquals( 18.0, grid.getRow( 1 ).get( 11 ) );
     }
     
     @Test
@@ -633,17 +633,17 @@ public class ReportTableGridTest
 
         Grid grid = reportTableService.getReportTableGrid( id, i18nFormat, date, 0 );
         
-        assertEquals( 11.0, grid.getRow( 0 ).get( 9 ) );
-        assertEquals( 12.0, grid.getRow( 0 ).get( 10 ) );
+        assertEquals( 11.0, grid.getRow( 0 ).get( 13 ) );
+        assertEquals( 12.0, grid.getRow( 0 ).get( 14 ) );
         
-        assertEquals( 13.0, grid.getRow( 1 ).get( 9 ) );
-        assertEquals( 14.0, grid.getRow( 1 ).get( 10 ) );
+        assertEquals( 13.0, grid.getRow( 1 ).get( 13 ) );
+        assertEquals( 14.0, grid.getRow( 1 ).get( 14 ) );
         
-        assertEquals( 15.0, grid.getRow( 2 ).get( 9 ) );
-        assertEquals( 16.0, grid.getRow( 2 ).get( 10 ) );
+        assertEquals( 15.0, grid.getRow( 2 ).get( 13 ) );
+        assertEquals( 16.0, grid.getRow( 2 ).get( 14 ) );
         
-        assertEquals( 17.0, grid.getRow( 3 ).get( 9 ) );
-        assertEquals( 18.0, grid.getRow( 3 ).get( 10 ) );
+        assertEquals( 17.0, grid.getRow( 3 ).get( 13 ) );
+        assertEquals( 18.0, grid.getRow( 3 ).get( 14 ) );
     }
 
     @Test
@@ -657,15 +657,15 @@ public class ReportTableGridTest
 
         Grid grid = reportTableService.getReportTableGrid( id, i18nFormat, date, 0 );
         
-        assertEquals( 11.0, grid.getRow( 0 ).get( 6 ) );
-        assertEquals( 12.0, grid.getRow( 0 ).get( 7 ) );
-        assertEquals( 15.0, grid.getRow( 0 ).get( 8 ) );
-        assertEquals( 16.0, grid.getRow( 0 ).get( 9 ) );
+        assertEquals( 11.0, grid.getRow( 0 ).get( 8 ) );
+        assertEquals( 12.0, grid.getRow( 0 ).get( 9 ) );
+        assertEquals( 15.0, grid.getRow( 0 ).get( 10 ) );
+        assertEquals( 16.0, grid.getRow( 0 ).get( 11 ) );
         
-        assertEquals( 13.0, grid.getRow( 1 ).get( 6 ) );
-        assertEquals( 14.0, grid.getRow( 1 ).get( 7 ) );
-        assertEquals( 17.0, grid.getRow( 1 ).get( 8 ) );
-        assertEquals( 18.0, grid.getRow( 1 ).get( 9 ) );
+        assertEquals( 13.0, grid.getRow( 1 ).get( 8 ) );
+        assertEquals( 14.0, grid.getRow( 1 ).get( 9 ) );
+        assertEquals( 17.0, grid.getRow( 1 ).get( 10 ) );
+        assertEquals( 18.0, grid.getRow( 1 ).get( 11 ) );
     }
     
     @Test
@@ -679,15 +679,15 @@ public class ReportTableGridTest
 
         Grid grid = reportTableService.getReportTableGrid( id, i18nFormat, date, 0 );
         
-        assertEquals( 11.0, grid.getRow( 0 ).get( 6 ) );
-        assertEquals( 13.0, grid.getRow( 0 ).get( 7 ) );
-        assertEquals( 15.0, grid.getRow( 0 ).get( 8 ) );
-        assertEquals( 17.0, grid.getRow( 0 ).get( 9 ) );
+        assertEquals( 11.0, grid.getRow( 0 ).get( 8 ) );
+        assertEquals( 13.0, grid.getRow( 0 ).get( 9 ) );
+        assertEquals( 15.0, grid.getRow( 0 ).get( 10 ) );
+        assertEquals( 17.0, grid.getRow( 0 ).get( 11 ) );
         
-        assertEquals( 12.0, grid.getRow( 1 ).get( 6 ) );
-        assertEquals( 14.0, grid.getRow( 1 ).get( 7 ) );
-        assertEquals( 16.0, grid.getRow( 1 ).get( 8 ) );
-        assertEquals( 18.0, grid.getRow( 1 ).get( 9 ) );
+        assertEquals( 12.0, grid.getRow( 1 ).get( 8 ) );
+        assertEquals( 14.0, grid.getRow( 1 ).get( 9 ) );
+        assertEquals( 16.0, grid.getRow( 1 ).get( 10 ) );
+        assertEquals( 18.0, grid.getRow( 1 ).get( 11 ) );
     }
     
     @Test
@@ -701,17 +701,17 @@ public class ReportTableGridTest
 
         Grid grid = reportTableService.getReportTableGrid( id, i18nFormat, date, 0 );
 
-        assertEquals( 11.0, grid.getRow( 0 ).get( 9 ) );
-        assertEquals( 12.0, grid.getRow( 0 ).get( 10 ) );
+        assertEquals( 11.0, grid.getRow( 0 ).get( 13 ) );
+        assertEquals( 12.0, grid.getRow( 0 ).get( 14 ) );
         
-        assertEquals( 13.0, grid.getRow( 1 ).get( 9 ) );
-        assertEquals( 14.0, grid.getRow( 1 ).get( 10 ) );
+        assertEquals( 13.0, grid.getRow( 1 ).get( 13 ) );
+        assertEquals( 14.0, grid.getRow( 1 ).get( 14 ) );
         
-        assertEquals( 15.0, grid.getRow( 2 ).get( 9 ) );
-        assertEquals( 16.0, grid.getRow( 2 ).get( 10 ) );
+        assertEquals( 15.0, grid.getRow( 2 ).get( 13 ) );
+        assertEquals( 16.0, grid.getRow( 2 ).get( 14 ) );
         
-        assertEquals( 17.0, grid.getRow( 3 ).get( 9 ) );
-        assertEquals( 18.0, grid.getRow( 3 ).get( 10 ) );
+        assertEquals( 17.0, grid.getRow( 3 ).get( 13 ) );
+        assertEquals( 18.0, grid.getRow( 3 ).get( 14 ) );
     }
 
     @Test
@@ -725,15 +725,15 @@ public class ReportTableGridTest
 
         Grid grid = reportTableService.getReportTableGrid( id, i18nFormat, date, 0 );
 
-        assertEquals( 11.0, grid.getRow( 0 ).get( 6 ) );
-        assertEquals( 12.0, grid.getRow( 0 ).get( 7 ) );
-        assertEquals( 15.0, grid.getRow( 0 ).get( 8 ) );
-        assertEquals( 16.0, grid.getRow( 0 ).get( 9 ) );
+        assertEquals( 11.0, grid.getRow( 0 ).get( 8 ) );
+        assertEquals( 12.0, grid.getRow( 0 ).get( 9 ) );
+        assertEquals( 15.0, grid.getRow( 0 ).get( 10 ) );
+        assertEquals( 16.0, grid.getRow( 0 ).get( 11 ) );
         
-        assertEquals( 13.0, grid.getRow( 1 ).get( 6 ) );
-        assertEquals( 14.0, grid.getRow( 1 ).get( 7 ) );
-        assertEquals( 17.0, grid.getRow( 1 ).get( 8 ) );
-        assertEquals( 18.0, grid.getRow( 1 ).get( 9 ) );
+        assertEquals( 13.0, grid.getRow( 1 ).get( 8 ) );
+        assertEquals( 14.0, grid.getRow( 1 ).get( 9 ) );
+        assertEquals( 17.0, grid.getRow( 1 ).get( 10 ) );
+        assertEquals( 18.0, grid.getRow( 1 ).get( 11 ) );
     }
 
     @Test
@@ -760,23 +760,23 @@ public class ReportTableGridTest
 
         Grid grid = reportTableService.getReportTableGrid( id, i18nFormat, date, 0 );
         
-        assertEquals( 11.0, grid.getRow( 0 ).get( 6 ) );
-        assertEquals( 11.0, grid.getRow( 0 ).get( 7 ) );
-        assertEquals( 13.0, grid.getRow( 0 ).get( 8 ) );
-        assertEquals( 13.0, grid.getRow( 0 ).get( 9 ) );
-        assertEquals( 15.0, grid.getRow( 0 ).get( 10 ) );
-        assertEquals( 15.0, grid.getRow( 0 ).get( 11 ) );
-        assertEquals( 17.0, grid.getRow( 0 ).get( 12 ) );
-        assertEquals( 17.0, grid.getRow( 0 ).get( 13 ) );
+        assertEquals( 11.0, grid.getRow( 0 ).get( 8 ) );
+        assertEquals( 11.0, grid.getRow( 0 ).get( 9 ) );
+        assertEquals( 13.0, grid.getRow( 0 ).get( 10 ) );
+        assertEquals( 13.0, grid.getRow( 0 ).get( 11 ) );
+        assertEquals( 15.0, grid.getRow( 0 ).get( 12 ) );
+        assertEquals( 15.0, grid.getRow( 0 ).get( 13 ) );
+        assertEquals( 17.0, grid.getRow( 0 ).get( 14 ) );
+        assertEquals( 17.0, grid.getRow( 0 ).get( 15 ) );
 
-        assertEquals( 12.0, grid.getRow( 1 ).get( 6 ) );
-        assertEquals( 12.0, grid.getRow( 1 ).get( 7 ) );
-        assertEquals( 14.0, grid.getRow( 1 ).get( 8 ) );
-        assertEquals( 14.0, grid.getRow( 1 ).get( 9 ) );
-        assertEquals( 16.0, grid.getRow( 1 ).get( 10 ) );
-        assertEquals( 16.0, grid.getRow( 1 ).get( 11 ) );
-        assertEquals( 18.0, grid.getRow( 1 ).get( 12 ) );
-        assertEquals( 18.0, grid.getRow( 1 ).get( 13 ) );
+        assertEquals( 12.0, grid.getRow( 1 ).get( 8 ) );
+        assertEquals( 12.0, grid.getRow( 1 ).get( 9 ) );
+        assertEquals( 14.0, grid.getRow( 1 ).get( 10 ) );
+        assertEquals( 14.0, grid.getRow( 1 ).get( 11 ) );
+        assertEquals( 16.0, grid.getRow( 1 ).get( 12 ) );
+        assertEquals( 16.0, grid.getRow( 1 ).get( 13 ) );
+        assertEquals( 18.0, grid.getRow( 1 ).get( 14 ) );
+        assertEquals( 18.0, grid.getRow( 1 ).get( 15 ) );
     }
 
     @Test
@@ -803,25 +803,25 @@ public class ReportTableGridTest
 
         Grid grid = reportTableService.getReportTableGrid( id, i18nFormat, date, 0 );
         
-        assertEquals( 11.0, grid.getRow( 0 ).get( 9 ) );
-        assertEquals( 11.0, grid.getRow( 0 ).get( 10 ) );
-        assertEquals( 12.0, grid.getRow( 0 ).get( 11 ) );
-        assertEquals( 12.0, grid.getRow( 0 ).get( 12 ) );
+        assertEquals( 11.0, grid.getRow( 0 ).get( 13 ) );
+        assertEquals( 11.0, grid.getRow( 0 ).get( 14 ) );
+        assertEquals( 12.0, grid.getRow( 0 ).get( 15 ) );
+        assertEquals( 12.0, grid.getRow( 0 ).get( 16 ) );
         
-        assertEquals( 13.0, grid.getRow( 1 ).get( 9 ) );
-        assertEquals( 13.0, grid.getRow( 1 ).get( 10 ) );
-        assertEquals( 14.0, grid.getRow( 1 ).get( 11 ) );
-        assertEquals( 14.0, grid.getRow( 1 ).get( 12 ) );
+        assertEquals( 13.0, grid.getRow( 1 ).get( 13 ) );
+        assertEquals( 13.0, grid.getRow( 1 ).get( 14 ) );
+        assertEquals( 14.0, grid.getRow( 1 ).get( 15 ) );
+        assertEquals( 14.0, grid.getRow( 1 ).get( 16 ) );
         
-        assertEquals( 15.0, grid.getRow( 2 ).get( 9 ) );
-        assertEquals( 15.0, grid.getRow( 2 ).get( 10 ) );
-        assertEquals( 16.0, grid.getRow( 2 ).get( 11 ) );
-        assertEquals( 16.0, grid.getRow( 2 ).get( 12 ) );
+        assertEquals( 15.0, grid.getRow( 2 ).get( 13 ) );
+        assertEquals( 15.0, grid.getRow( 2 ).get( 14 ) );
+        assertEquals( 16.0, grid.getRow( 2 ).get( 15 ) );
+        assertEquals( 16.0, grid.getRow( 2 ).get( 16 ) );
 
-        assertEquals( 17.0, grid.getRow( 3 ).get( 9 ) );
-        assertEquals( 17.0, grid.getRow( 3 ).get( 10 ) );
-        assertEquals( 18.0, grid.getRow( 3 ).get( 11 ) );
-        assertEquals( 18.0, grid.getRow( 3 ).get( 12 ) );
+        assertEquals( 17.0, grid.getRow( 3 ).get( 13 ) );
+        assertEquals( 17.0, grid.getRow( 3 ).get( 14 ) );
+        assertEquals( 18.0, grid.getRow( 3 ).get( 15 ) );
+        assertEquals( 18.0, grid.getRow( 3 ).get( 16 ) );
     }
 
     @Test
@@ -848,23 +848,23 @@ public class ReportTableGridTest
 
         Grid grid = reportTableService.getReportTableGrid( id, i18nFormat, date, 0 );
                 
-        assertEquals( 11.0, grid.getRow( 0 ).get( 6 ) );
-        assertEquals( 11.0, grid.getRow( 0 ).get( 7 ) );
-        assertEquals( 12.0, grid.getRow( 0 ).get( 8 ) );
-        assertEquals( 12.0, grid.getRow( 0 ).get( 9 ) );
-        assertEquals( 15.0, grid.getRow( 0 ).get( 10 ) );
-        assertEquals( 15.0, grid.getRow( 0 ).get( 11 ) );
-        assertEquals( 16.0, grid.getRow( 0 ).get( 12 ) );
-        assertEquals( 16.0, grid.getRow( 0 ).get( 13 ) );
+        assertEquals( 11.0, grid.getRow( 0 ).get( 8 ) );
+        assertEquals( 11.0, grid.getRow( 0 ).get( 9 ) );
+        assertEquals( 12.0, grid.getRow( 0 ).get( 10 ) );
+        assertEquals( 12.0, grid.getRow( 0 ).get( 11 ) );
+        assertEquals( 15.0, grid.getRow( 0 ).get( 12 ) );
+        assertEquals( 15.0, grid.getRow( 0 ).get( 13 ) );
+        assertEquals( 16.0, grid.getRow( 0 ).get( 14 ) );
+        assertEquals( 16.0, grid.getRow( 0 ).get( 15 ) );
         
-        assertEquals( 13.0, grid.getRow( 1 ).get( 6 ) );
-        assertEquals( 13.0, grid.getRow( 1 ).get( 7 ) );
-        assertEquals( 14.0, grid.getRow( 1 ).get( 8 ) );
-        assertEquals( 14.0, grid.getRow( 1 ).get( 9 ) );
-        assertEquals( 17.0, grid.getRow( 1 ).get( 10 ) );
-        assertEquals( 17.0, grid.getRow( 1 ).get( 11 ) );
-        assertEquals( 18.0, grid.getRow( 1 ).get( 12 ) );
-        assertEquals( 18.0, grid.getRow( 1 ).get( 13 ) );
+        assertEquals( 13.0, grid.getRow( 1 ).get( 8 ) );
+        assertEquals( 13.0, grid.getRow( 1 ).get( 9 ) );
+        assertEquals( 14.0, grid.getRow( 1 ).get( 10 ) );
+        assertEquals( 14.0, grid.getRow( 1 ).get( 11 ) );
+        assertEquals( 17.0, grid.getRow( 1 ).get( 12 ) );
+        assertEquals( 17.0, grid.getRow( 1 ).get( 13 ) );
+        assertEquals( 18.0, grid.getRow( 1 ).get( 14 ) );
+        assertEquals( 18.0, grid.getRow( 1 ).get( 15 ) );
     }
 
     @Test
@@ -891,37 +891,37 @@ public class ReportTableGridTest
 
         Grid grid = reportTableService.getReportTableGrid( id, i18nFormat, date, 0 );
 
-        assertEquals( 11.0, grid.getRow( 0 ).get( 12 ) );
-        assertEquals( 11.0, grid.getRow( 0 ).get( 13 ) );
-        assertEquals( 22.0, grid.getRow( 0 ).get( 14 ) );
+        assertEquals( 11.0, grid.getRow( 0 ).get( 18 ) );
+        assertEquals( 11.0, grid.getRow( 0 ).get( 19 ) );
+        assertEquals( 22.0, grid.getRow( 0 ).get( 20 ) );
 
-        assertEquals( 12.0, grid.getRow( 1 ).get( 12 ) );
-        assertEquals( 12.0, grid.getRow( 1 ).get( 13 ) );
-        assertEquals( 24.0, grid.getRow( 1 ).get( 14 ) );
+        assertEquals( 12.0, grid.getRow( 1 ).get( 18 ) );
+        assertEquals( 12.0, grid.getRow( 1 ).get( 19 ) );
+        assertEquals( 24.0, grid.getRow( 1 ).get( 20 ) );
 
-        assertEquals( 13.0, grid.getRow( 2 ).get( 12 ) );
-        assertEquals( 13.0, grid.getRow( 2 ).get( 13 ) );
-        assertEquals( 26.0, grid.getRow( 2 ).get( 14 ) );
+        assertEquals( 13.0, grid.getRow( 2 ).get( 18 ) );
+        assertEquals( 13.0, grid.getRow( 2 ).get( 19 ) );
+        assertEquals( 26.0, grid.getRow( 2 ).get( 20 ) );
 
-        assertEquals( 14.0, grid.getRow( 3 ).get( 12 ) );
-        assertEquals( 14.0, grid.getRow( 3 ).get( 13 ) );
-        assertEquals( 28.0, grid.getRow( 3 ).get( 14 ) );
+        assertEquals( 14.0, grid.getRow( 3 ).get( 18 ) );
+        assertEquals( 14.0, grid.getRow( 3 ).get( 19 ) );
+        assertEquals( 28.0, grid.getRow( 3 ).get( 20 ) );
         
-        assertEquals( 15.0, grid.getRow( 4 ).get( 12 ) );
-        assertEquals( 15.0, grid.getRow( 4 ).get( 13 ) );
-        assertEquals( 30.0, grid.getRow( 4 ).get( 14 ) );
+        assertEquals( 15.0, grid.getRow( 4 ).get( 18 ) );
+        assertEquals( 15.0, grid.getRow( 4 ).get( 19 ) );
+        assertEquals( 30.0, grid.getRow( 4 ).get( 20 ) );
 
-        assertEquals( 16.0, grid.getRow( 5 ).get( 12 ) );
-        assertEquals( 16.0, grid.getRow( 5 ).get( 13 ) );
-        assertEquals( 32.0, grid.getRow( 5 ).get( 14 ) );
+        assertEquals( 16.0, grid.getRow( 5 ).get( 18 ) );
+        assertEquals( 16.0, grid.getRow( 5 ).get( 19 ) );
+        assertEquals( 32.0, grid.getRow( 5 ).get( 20 ) );
 
-        assertEquals( 17.0, grid.getRow( 6 ).get( 12 ) );
-        assertEquals( 17.0, grid.getRow( 6 ).get( 13 ) );
-        assertEquals( 34.0, grid.getRow( 6 ).get( 14 ) );
+        assertEquals( 17.0, grid.getRow( 6 ).get( 18 ) );
+        assertEquals( 17.0, grid.getRow( 6 ).get( 19 ) );
+        assertEquals( 34.0, grid.getRow( 6 ).get( 20 ) );
 
-        assertEquals( 18.0, grid.getRow( 7 ).get( 12 ) );
-        assertEquals( 18.0, grid.getRow( 7 ).get( 13 ) );
-        assertEquals( 36.0, grid.getRow( 7 ).get( 14 ) );
+        assertEquals( 18.0, grid.getRow( 7 ).get( 18 ) );
+        assertEquals( 18.0, grid.getRow( 7 ).get( 19 ) );
+        assertEquals( 36.0, grid.getRow( 7 ).get( 20 ) );
     }
     
     @Test
@@ -935,31 +935,31 @@ public class ReportTableGridTest
 
         Grid grid = reportTableService.getReportTableGrid( id, i18nFormat, date, 0 );
 
-        assertEquals( 11.0, grid.getRow( 0 ).get( 6 ) );
-        assertEquals( 13.0, grid.getRow( 0 ).get( 7 ) );
-        assertEquals( 15.0, grid.getRow( 0 ).get( 8 ) );
-        assertEquals( 17.0, grid.getRow( 0 ).get( 9 ) );
-        assertEquals( 11.0, grid.getRow( 0 ).get( 10 ) );
-        assertEquals( 13.0, grid.getRow( 0 ).get( 11 ) );
-        assertEquals( 15.0, grid.getRow( 0 ).get( 12 ) );
-        assertEquals( 17.0, grid.getRow( 0 ).get( 13 ) );
-        assertEquals( 11.0, grid.getRow( 0 ).get( 14 ) );
-        assertEquals( 13.0, grid.getRow( 0 ).get( 15 ) );
-        assertEquals( 15.0, grid.getRow( 0 ).get( 16 ) );
-        assertEquals( 17.0, grid.getRow( 0 ).get( 17 ) );
+        assertEquals( 11.0, grid.getRow( 0 ).get( 8 ) );
+        assertEquals( 13.0, grid.getRow( 0 ).get( 9 ) );
+        assertEquals( 15.0, grid.getRow( 0 ).get( 10 ) );
+        assertEquals( 17.0, grid.getRow( 0 ).get( 11 ) );
+        assertEquals( 11.0, grid.getRow( 0 ).get( 12 ) );
+        assertEquals( 13.0, grid.getRow( 0 ).get( 13 ) );
+        assertEquals( 15.0, grid.getRow( 0 ).get( 14 ) );
+        assertEquals( 17.0, grid.getRow( 0 ).get( 15 ) );
+        assertEquals( 11.0, grid.getRow( 0 ).get( 16 ) );
+        assertEquals( 13.0, grid.getRow( 0 ).get( 17 ) );
+        assertEquals( 15.0, grid.getRow( 0 ).get( 18 ) );
+        assertEquals( 17.0, grid.getRow( 0 ).get( 19 ) );
         
-        assertEquals( 12.0, grid.getRow( 1 ).get( 6 ) );
-        assertEquals( 14.0, grid.getRow( 1 ).get( 7 ) );
-        assertEquals( 16.0, grid.getRow( 1 ).get( 8 ) );
-        assertEquals( 18.0, grid.getRow( 1 ).get( 9 ) );
-        assertEquals( 12.0, grid.getRow( 1 ).get( 10 ) );
-        assertEquals( 14.0, grid.getRow( 1 ).get( 11 ) );
-        assertEquals( 16.0, grid.getRow( 1 ).get( 12 ) );
-        assertEquals( 18.0, grid.getRow( 1 ).get( 13 ) );
-        assertEquals( 12.0, grid.getRow( 1 ).get( 14 ) );
-        assertEquals( 14.0, grid.getRow( 1 ).get( 15 ) );
-        assertEquals( 16.0, grid.getRow( 1 ).get( 16 ) );
-        assertEquals( 18.0, grid.getRow( 1 ).get( 17 ) );        
+        assertEquals( 12.0, grid.getRow( 1 ).get( 8 ) );
+        assertEquals( 14.0, grid.getRow( 1 ).get( 9 ) );
+        assertEquals( 16.0, grid.getRow( 1 ).get( 10 ) );
+        assertEquals( 18.0, grid.getRow( 1 ).get( 11 ) );
+        assertEquals( 12.0, grid.getRow( 1 ).get( 12 ) );
+        assertEquals( 14.0, grid.getRow( 1 ).get( 13 ) );
+        assertEquals( 16.0, grid.getRow( 1 ).get( 14 ) );
+        assertEquals( 18.0, grid.getRow( 1 ).get( 15 ) );
+        assertEquals( 12.0, grid.getRow( 1 ).get( 16 ) );
+        assertEquals( 14.0, grid.getRow( 1 ).get( 17 ) );
+        assertEquals( 16.0, grid.getRow( 1 ).get( 18 ) );
+        assertEquals( 18.0, grid.getRow( 1 ).get( 19 ) );        
     }
     
     @Test
@@ -973,41 +973,41 @@ public class ReportTableGridTest
 
         Grid grid = reportTableService.getReportTableGrid( id, i18nFormat, date, 0 );
         
-        assertEquals( 11.0, grid.getRow( 0 ).get( 9 ) );
-        assertEquals( 12.0, grid.getRow( 0 ).get( 10 ) );
+        assertEquals( 11.0, grid.getRow( 0 ).get( 13 ) );
+        assertEquals( 12.0, grid.getRow( 0 ).get( 14 ) );
         
-        assertEquals( 13.0, grid.getRow( 1 ).get( 9 ) );
-        assertEquals( 14.0, grid.getRow( 1 ).get( 10 ) );
+        assertEquals( 13.0, grid.getRow( 1 ).get( 13 ) );
+        assertEquals( 14.0, grid.getRow( 1 ).get( 14 ) );
         
-        assertEquals( 15.0, grid.getRow( 2 ).get( 9 ) );
-        assertEquals( 16.0, grid.getRow( 2 ).get( 10 ) );
+        assertEquals( 15.0, grid.getRow( 2 ).get( 13 ) );
+        assertEquals( 16.0, grid.getRow( 2 ).get( 14 ) );
         
-        assertEquals( 17.0, grid.getRow( 3 ).get( 9 ) );
-        assertEquals( 18.0, grid.getRow( 3 ).get( 10 ) );
+        assertEquals( 17.0, grid.getRow( 3 ).get( 13 ) );
+        assertEquals( 18.0, grid.getRow( 3 ).get( 14 ) );
         
-        assertEquals( 11.0, grid.getRow( 4 ).get( 9 ) );
-        assertEquals( 12.0, grid.getRow( 4 ).get( 10 ) );
+        assertEquals( 11.0, grid.getRow( 4 ).get( 13 ) );
+        assertEquals( 12.0, grid.getRow( 4 ).get( 14 ) );
         
-        assertEquals( 13.0, grid.getRow( 5 ).get( 9 ) );
-        assertEquals( 14.0, grid.getRow( 5 ).get( 10 ) );
+        assertEquals( 13.0, grid.getRow( 5 ).get( 13 ) );
+        assertEquals( 14.0, grid.getRow( 5 ).get( 14 ) );
         
-        assertEquals( 15.0, grid.getRow( 6 ).get( 9 ) );
-        assertEquals( 16.0, grid.getRow( 6 ).get( 10 ) );
+        assertEquals( 15.0, grid.getRow( 6 ).get( 13 ) );
+        assertEquals( 16.0, grid.getRow( 6 ).get( 14 ) );
         
-        assertEquals( 17.0, grid.getRow( 7 ).get( 9 ) );
-        assertEquals( 18.0, grid.getRow( 7 ).get( 10 ) );
+        assertEquals( 17.0, grid.getRow( 7 ).get( 13 ) );
+        assertEquals( 18.0, grid.getRow( 7 ).get( 14 ) );
         
-        assertEquals( 11.0, grid.getRow( 8 ).get( 9 ) );
-        assertEquals( 12.0, grid.getRow( 8 ).get( 10 ) );
+        assertEquals( 11.0, grid.getRow( 8 ).get( 13 ) );
+        assertEquals( 12.0, grid.getRow( 8 ).get( 14 ) );
         
-        assertEquals( 13.0, grid.getRow( 9 ).get( 9 ) );
-        assertEquals( 14.0, grid.getRow( 9 ).get( 10 ) );
+        assertEquals( 13.0, grid.getRow( 9 ).get( 13 ) );
+        assertEquals( 14.0, grid.getRow( 9 ).get( 14 ) );
         
-        assertEquals( 15.0, grid.getRow( 10 ).get( 9 ) );
-        assertEquals( 16.0, grid.getRow( 10 ).get( 10 ) );
+        assertEquals( 15.0, grid.getRow( 10 ).get( 13 ) );
+        assertEquals( 16.0, grid.getRow( 10 ).get( 14 ) );
         
-        assertEquals( 17.0, grid.getRow( 11 ).get( 9 ) );
-        assertEquals( 18.0, grid.getRow( 11 ).get( 10 ) );
+        assertEquals( 17.0, grid.getRow( 11 ).get( 13 ) );
+        assertEquals( 18.0, grid.getRow( 11 ).get( 14 ) );
     }
     
     @Test
@@ -1021,31 +1021,31 @@ public class ReportTableGridTest
 
         Grid grid = reportTableService.getReportTableGrid( id, i18nFormat, date, 0 );
 
-        assertEquals( 11.0, grid.getRow( 0 ).get( 6 ) );
-        assertEquals( 12.0, grid.getRow( 0 ).get( 7 ) );
-        assertEquals( 15.0, grid.getRow( 0 ).get( 8 ) );
-        assertEquals( 16.0, grid.getRow( 0 ).get( 9 ) );
-        assertEquals( 11.0, grid.getRow( 0 ).get( 10 ) );
-        assertEquals( 12.0, grid.getRow( 0 ).get( 11 ) );
-        assertEquals( 15.0, grid.getRow( 0 ).get( 12 ) );
-        assertEquals( 16.0, grid.getRow( 0 ).get( 13 ) );
-        assertEquals( 11.0, grid.getRow( 0 ).get( 14 ) );
-        assertEquals( 12.0, grid.getRow( 0 ).get( 15 ) );
-        assertEquals( 15.0, grid.getRow( 0 ).get( 16 ) );
-        assertEquals( 16.0, grid.getRow( 0 ).get( 17 ) );
+        assertEquals( 11.0, grid.getRow( 0 ).get( 8 ) );
+        assertEquals( 12.0, grid.getRow( 0 ).get( 9 ) );
+        assertEquals( 15.0, grid.getRow( 0 ).get( 10 ) );
+        assertEquals( 16.0, grid.getRow( 0 ).get( 11 ) );
+        assertEquals( 11.0, grid.getRow( 0 ).get( 12 ) );
+        assertEquals( 12.0, grid.getRow( 0 ).get( 13 ) );
+        assertEquals( 15.0, grid.getRow( 0 ).get( 14 ) );
+        assertEquals( 16.0, grid.getRow( 0 ).get( 15 ) );
+        assertEquals( 11.0, grid.getRow( 0 ).get( 16 ) );
+        assertEquals( 12.0, grid.getRow( 0 ).get( 17 ) );
+        assertEquals( 15.0, grid.getRow( 0 ).get( 18 ) );
+        assertEquals( 16.0, grid.getRow( 0 ).get( 19 ) );
 
-        assertEquals( 13.0, grid.getRow( 1 ).get( 6 ) );
-        assertEquals( 14.0, grid.getRow( 1 ).get( 7 ) );
-        assertEquals( 17.0, grid.getRow( 1 ).get( 8 ) );
-        assertEquals( 18.0, grid.getRow( 1 ).get( 9 ) );
-        assertEquals( 13.0, grid.getRow( 1 ).get( 10 ) );
-        assertEquals( 14.0, grid.getRow( 1 ).get( 11 ) );
-        assertEquals( 17.0, grid.getRow( 1 ).get( 12 ) );
-        assertEquals( 18.0, grid.getRow( 1 ).get( 13 ) );
-        assertEquals( 13.0, grid.getRow( 1 ).get( 14 ) );
-        assertEquals( 14.0, grid.getRow( 1 ).get( 15 ) );
-        assertEquals( 17.0, grid.getRow( 1 ).get( 16 ) );
-        assertEquals( 18.0, grid.getRow( 1 ).get( 17 ) );
+        assertEquals( 13.0, grid.getRow( 1 ).get( 8 ) );
+        assertEquals( 14.0, grid.getRow( 1 ).get( 9 ) );
+        assertEquals( 17.0, grid.getRow( 1 ).get( 10 ) );
+        assertEquals( 18.0, grid.getRow( 1 ).get( 11 ) );
+        assertEquals( 13.0, grid.getRow( 1 ).get( 12 ) );
+        assertEquals( 14.0, grid.getRow( 1 ).get( 13 ) );
+        assertEquals( 17.0, grid.getRow( 1 ).get( 14 ) );
+        assertEquals( 18.0, grid.getRow( 1 ).get( 15 ) );
+        assertEquals( 13.0, grid.getRow( 1 ).get( 16 ) );
+        assertEquals( 14.0, grid.getRow( 1 ).get( 17 ) );
+        assertEquals( 17.0, grid.getRow( 1 ).get( 18 ) );
+        assertEquals( 18.0, grid.getRow( 1 ).get( 19 ) );
     }
 
     @Test
@@ -1080,14 +1080,14 @@ public class ReportTableGridTest
 
         Grid grid = reportTableService.getReportTableGrid( id, i18nFormat, date, 0 );
 
-        assertEquals( 11.0, grid.getRow( 0 ).get( 12 ) );
-        assertEquals( 12.0, grid.getRow( 1 ).get( 12 ) );
-        assertEquals( 13.0, grid.getRow( 2 ).get( 12 ) );
-        assertEquals( 14.0, grid.getRow( 3 ).get( 12 ) );
-        assertEquals( 15.0, grid.getRow( 4 ).get( 12 ) );
-        assertEquals( 16.0, grid.getRow( 5 ).get( 12 ) );
-        assertEquals( 17.0, grid.getRow( 6 ).get( 12 ) );
-        assertEquals( 18.0, grid.getRow( 7 ).get( 12 ) );
+        assertEquals( 11.0, grid.getRow( 0 ).get( 18 ) );
+        assertEquals( 12.0, grid.getRow( 1 ).get( 18 ) );
+        assertEquals( 13.0, grid.getRow( 2 ).get( 18 ) );
+        assertEquals( 14.0, grid.getRow( 3 ).get( 18 ) );
+        assertEquals( 15.0, grid.getRow( 4 ).get( 18 ) );
+        assertEquals( 16.0, grid.getRow( 5 ).get( 18 ) );
+        assertEquals( 17.0, grid.getRow( 6 ).get( 18 ) );
+        assertEquals( 18.0, grid.getRow( 7 ).get( 18 ) );
     }
 
     @Test
@@ -1104,11 +1104,11 @@ public class ReportTableGridTest
 
         assertEquals( 2, grid.getHeight() );
         
-        assertEquals( 11.0, grid.getRow( 0 ).get( 9 ) );
-        assertEquals( 12.0, grid.getRow( 0 ).get( 10 ) );
+        assertEquals( 11.0, grid.getRow( 0 ).get( 13 ) );
+        assertEquals( 12.0, grid.getRow( 0 ).get( 14 ) );
         
-        assertEquals( 13.0, grid.getRow( 1 ).get( 9 ) );
-        assertEquals( 14.0, grid.getRow( 1 ).get( 10 ) );
+        assertEquals( 13.0, grid.getRow( 1 ).get( 13 ) );
+        assertEquals( 14.0, grid.getRow( 1 ).get( 14 ) );
     }
 
     @Test
@@ -1123,17 +1123,17 @@ public class ReportTableGridTest
 
         Grid grid = reportTableService.getReportTableGrid( id, i18nFormat, date, 0 );
 
-        assertEquals( 17.0, grid.getRow( 0 ).get( 9 ) );
-        assertEquals( 18.0, grid.getRow( 0 ).get( 10 ) );
+        assertEquals( 17.0, grid.getRow( 0 ).get( 13 ) );
+        assertEquals( 18.0, grid.getRow( 0 ).get( 14 ) );
 
-        assertEquals( 15.0, grid.getRow( 1 ).get( 9 ) );
-        assertEquals( 16.0, grid.getRow( 1 ).get( 10 ) );
+        assertEquals( 15.0, grid.getRow( 1 ).get( 13 ) );
+        assertEquals( 16.0, grid.getRow( 1 ).get( 14 ) );
 
-        assertEquals( 13.0, grid.getRow( 2 ).get( 9 ) );
-        assertEquals( 14.0, grid.getRow( 2 ).get( 10 ) );
+        assertEquals( 13.0, grid.getRow( 2 ).get( 13 ) );
+        assertEquals( 14.0, grid.getRow( 2 ).get( 14 ) );
         
-        assertEquals( 11.0, grid.getRow( 3 ).get( 9 ) );
-        assertEquals( 12.0, grid.getRow( 3 ).get( 10 ) );
+        assertEquals( 11.0, grid.getRow( 3 ).get( 13 ) );
+        assertEquals( 12.0, grid.getRow( 3 ).get( 14 ) );
     }
 
     @Test
@@ -1149,24 +1149,24 @@ public class ReportTableGridTest
 
         Grid grid = reportTableService.getReportTableGrid( id, i18nFormat, date, 0 );
         
-        assertEquals( 11.0, grid.getRow( 0 ).get( 6 ) );
-        assertEquals( 12.0, grid.getRow( 0 ).get( 7 ) );
-        assertEquals( 15.0, grid.getRow( 0 ).get( 8 ) );
-        assertEquals( 16.0, grid.getRow( 0 ).get( 9 ) );
+        assertEquals( 11.0, grid.getRow( 0 ).get( 8 ) );
+        assertEquals( 12.0, grid.getRow( 0 ).get( 9 ) );
+        assertEquals( 15.0, grid.getRow( 0 ).get( 10 ) );
+        assertEquals( 16.0, grid.getRow( 0 ).get( 11 ) );
 
-        assertEquals( 11.0, grid.getRow( 0 ).get( 10 ) );
-        assertEquals( 12.0, grid.getRow( 0 ).get( 11 ) );
-        assertEquals( 15.0, grid.getRow( 0 ).get( 12 ) );
-        assertEquals( 16.0, grid.getRow( 0 ).get( 13 ) );
+        assertEquals( 11.0, grid.getRow( 0 ).get( 12 ) );
+        assertEquals( 12.0, grid.getRow( 0 ).get( 13 ) );
+        assertEquals( 15.0, grid.getRow( 0 ).get( 14 ) );
+        assertEquals( 16.0, grid.getRow( 0 ).get( 15 ) );
         
-        assertEquals( 13.0, grid.getRow( 1 ).get( 6 ) );
-        assertEquals( 14.0, grid.getRow( 1 ).get( 7 ) );
-        assertEquals( 17.0, grid.getRow( 1 ).get( 8 ) );
-        assertEquals( 18.0, grid.getRow( 1 ).get( 9 ) );
+        assertEquals( 13.0, grid.getRow( 1 ).get( 8 ) );
+        assertEquals( 14.0, grid.getRow( 1 ).get( 9 ) );
+        assertEquals( 17.0, grid.getRow( 1 ).get( 10 ) );
+        assertEquals( 18.0, grid.getRow( 1 ).get( 11 ) );
 
-        assertEquals( 13.0, grid.getRow( 1 ).get( 10 ) );
-        assertEquals( 14.0, grid.getRow( 1 ).get( 11 ) );
-        assertEquals( 17.0, grid.getRow( 1 ).get( 12 ) );
-        assertEquals( 18.0, grid.getRow( 1 ).get( 13 ) );
+        assertEquals( 13.0, grid.getRow( 1 ).get( 12 ) );
+        assertEquals( 14.0, grid.getRow( 1 ).get( 13 ) );
+        assertEquals( 17.0, grid.getRow( 1 ).get( 14 ) );
+        assertEquals( 18.0, grid.getRow( 1 ).get( 15 ) );
     }    
 }

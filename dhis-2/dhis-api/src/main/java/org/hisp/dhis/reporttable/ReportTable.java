@@ -77,19 +77,33 @@ public class ReportTable
     public static final String DATAELEMENT_ID = "dataelementid";
     public static final String CATEGORYCOMBO_ID = "categoryoptioncomboid";
     public static final String CATEGORYOPTION_ID = "categoryoptionid";
+    
     public static final String INDICATOR_ID = "indicatorid";
+    public static final String INDICATOR_UID = "indicatoruid";
     public static final String INDICATOR_NAME = "indicatorname";
     public static final String INDICATOR_CODE = "indicatorcode";
+    public static final String INDICATOR_DESCRIPTION = "indicatordescription";
+    
     public static final String DATASET_ID = "datasetid";
+    
     public static final String PERIOD_ID = "periodid";
+    public static final String PERIOD_UID = "perioduid";
     public static final String PERIOD_NAME = "periodname";
     public static final String PERIOD_CODE = "periodcode";
+    public static final String PERIOD_DESCRIPTION = "perioddescription";
+    
     public static final String ORGANISATIONUNIT_ID = "organisationunitid";
+    public static final String ORGANISATIONUNIT_UID = "organisationunituid";
     public static final String ORGANISATIONUNIT_NAME = "organisationunitname";
     public static final String ORGANISATIONUNIT_CODE = "organisationunitcode";
+    public static final String ORGANISATIONUNIT_DESCRIPTION = "organisationunitdescription";
+    
     public static final String ORGANISATIONUNITGROUP_ID = "organisationunitgroupid";
+    public static final String ORGANISATIONUNITGROUP_UID = "organisationunitgroupuid";
     public static final String ORGANISATIONUNITGROUP_NAME = "organisationunitgroupname";
     public static final String ORGANISATIONUNITGROUP_CODE = "organisationunitgroupcode";
+    public static final String ORGANISATIONUNITGROUP_DESCRIPTION = "organisationunitgroupdescription";
+    
     public static final String REPORTING_MONTH_COLUMN_NAME = "reporting_month_name";
     public static final String PARAM_ORGANISATIONUNIT_COLUMN_NAME = "param_organisationunit_name";
     public static final String ORGANISATION_UNIT_IS_PARENT_COLUMN_NAME = "organisation_unit_is_parent";
@@ -109,18 +123,31 @@ public class ReportTable
     {
         {
             put( CATEGORYCOMBO_ID, "Category combination ID" );
+            
             put( INDICATOR_ID, "Indicator ID" );
+            put( INDICATOR_UID, "Indicator UID" );
             put( INDICATOR_NAME, "Indicator" );
             put( INDICATOR_CODE, "Indicator code" );
+            put( INDICATOR_DESCRIPTION, "Indicator description" );
+            
             put( PERIOD_ID, "Period ID" );
+            put( PERIOD_UID, "Period UID" );
             put( PERIOD_NAME, "Period" );
             put( PERIOD_CODE, "Period code" );
+            put( PERIOD_DESCRIPTION, "Period description" );
+            
             put( ORGANISATIONUNIT_ID, "Organisation unit ID" );
+            put( ORGANISATIONUNIT_UID, "Organisation unit UID" );
             put( ORGANISATIONUNIT_NAME, "Organisation unit" );
             put( ORGANISATIONUNIT_CODE, "Organisation unit code" );
+            put( ORGANISATIONUNIT_DESCRIPTION, "Organisation unit description" );
+            
             put( ORGANISATIONUNITGROUP_ID, "Organisation unit group ID" );
+            put( ORGANISATIONUNITGROUP_UID, "Organisation unit group UID" );
             put( ORGANISATIONUNITGROUP_NAME, "Organisation unit group" );
             put( ORGANISATIONUNITGROUP_CODE, "Organisation unit group code" );
+            put( ORGANISATIONUNITGROUP_DESCRIPTION, "Organisation unit group description" );
+            
             put( REPORTING_MONTH_COLUMN_NAME, "Reporting month" );
             put( PARAM_ORGANISATIONUNIT_COLUMN_NAME, "Organisation unit parameter" );
             put( ORGANISATION_UNIT_IS_PARENT_COLUMN_NAME, "Organisation unit is parent" );
@@ -280,6 +307,12 @@ public class ReportTable
     private List<String> indexColumns = new ArrayList<String>();
 
     /**
+     * Names of the columns holding entry uids used to query the datavalue
+     * table.
+     */
+    private List<String> indexUidColumns = new ArrayList<String>();
+
+    /**
      * Names of the columns holding entry names used to query the datavalue
      * table.
      */
@@ -290,6 +323,11 @@ public class ReportTable
      * table.
      */
     private List<String> indexCodeColumns = new ArrayList<String>();
+
+    /**
+     * Names of the columns holding entry descriptions.
+     */
+    private List<String> indexDescriptionColumns = new ArrayList<String>();
 
     /**
      * The I18nFormat used for internationalization of ie. periods.
@@ -428,12 +466,22 @@ public class ReportTable
         add( indexColumns, INDICATOR_ID, doIndicators );
         add( indexColumns, PERIOD_ID, doPeriods );
         add( indexColumns, ORGANISATIONUNIT_ID, doUnits );
+        
+        add( indexUidColumns, INDICATOR_UID, doIndicators );
+        add( indexUidColumns, PERIOD_UID, doPeriods );
+        add( indexUidColumns, ORGANISATIONUNIT_UID, doUnits );
+        
         add( indexNameColumns, INDICATOR_NAME, doIndicators );
         add( indexNameColumns, PERIOD_NAME, doPeriods );
         add( indexNameColumns, ORGANISATIONUNIT_NAME, doUnits );
+        
         add( indexCodeColumns, INDICATOR_CODE, doIndicators );
         add( indexCodeColumns, PERIOD_CODE, doPeriods );
         add( indexCodeColumns, ORGANISATIONUNIT_CODE, doUnits );
+        
+        add( indexDescriptionColumns, INDICATOR_DESCRIPTION, doIndicators );
+        add( indexDescriptionColumns, PERIOD_DESCRIPTION, doPeriods );
+        add( indexDescriptionColumns, ORGANISATIONUNIT_DESCRIPTION, doUnits );
     }
 
     // -------------------------------------------------------------------------
@@ -1154,6 +1202,12 @@ public class ReportTable
     }
 
     @JsonIgnore
+    public List<String> getIndexUidColumns()
+    {
+        return indexUidColumns;
+    }
+
+    @JsonIgnore
     public List<String> getIndexNameColumns()
     {
         return indexNameColumns;
@@ -1163,6 +1217,12 @@ public class ReportTable
     public List<String> getIndexCodeColumns()
     {
         return indexCodeColumns;
+    }
+
+    @JsonIgnore
+    public List<String> getIndexDescriptionColumns()
+    {
+        return indexDescriptionColumns;
     }
 
     @JsonIgnore

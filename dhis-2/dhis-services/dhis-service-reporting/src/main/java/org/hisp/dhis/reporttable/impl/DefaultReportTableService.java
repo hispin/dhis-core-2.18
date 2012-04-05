@@ -365,12 +365,22 @@ public class DefaultReportTableService
             grid.addHeader( new GridHeader( PRETTY_COLUMNS.get( column ), column, Integer.class.getName(), true, true ) );
         }
 
+        for ( String column : reportTable.getIndexUidColumns() ) // Index uid columns
+        {
+            grid.addHeader( new GridHeader( PRETTY_COLUMNS.get( column ), column, String.class.getName(), true, true ) );
+        }
+
         for ( String column : reportTable.getIndexNameColumns() ) // Index name columns
         {
             grid.addHeader( new GridHeader( PRETTY_COLUMNS.get( column ), column, String.class.getName(), false, true ) );
         }
 
         for ( String column : reportTable.getIndexCodeColumns() ) // Index code columns
+        {
+            grid.addHeader( new GridHeader( PRETTY_COLUMNS.get( column ), column, String.class.getName(), true, true ) );
+        }
+
+        for ( String column : reportTable.getIndexDescriptionColumns() ) // Index description columns
         {
             grid.addHeader( new GridHeader( PRETTY_COLUMNS.get( column ), column, String.class.getName(), true, true ) );
         }
@@ -419,6 +429,11 @@ public class DefaultReportTableService
                 grid.addValue( object.getId() );
             }
 
+            for ( NameableObject object : row ) // Index uid columns
+            {
+                grid.addValue( object.getUid() );
+            }
+
             for ( NameableObject object : row ) // Index name columns
             {
                 grid.addValue( object.getName() );
@@ -427,6 +442,11 @@ public class DefaultReportTableService
             for ( NameableObject object : row ) // Index code columns
             {
                 grid.addValue( object.getCode() );
+            }
+
+            for ( NameableObject object : row ) // Index description columns
+            {
+                grid.addValue( object.getDescription() );
             }
 
             grid.addValue( reportTable.getReportingPeriodName() );
