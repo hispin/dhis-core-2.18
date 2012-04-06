@@ -98,6 +98,15 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
     </property>
   </bean>
 
+  <bean id="org.hisp.dhis.completeness.DataSetCompletenessEngine" class="org.hisp.dhis.completeness.engine.DefaultDataSetCompletenessEngine">
+	<property name="completenessService" ref="registrationDataCompletenessService"/>
+    <property name="completenessStore" ref="org.hisp.dhis.completeness.DataSetCompletenessStore" />
+    <property name="organisationUnitService" ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
+    <property name="periodService" ref="org.hisp.dhis.period.PeriodService" />
+    <property name="dataSetService" ref="org.hisp.dhis.dataset.DataSetService" />
+    <property name="systemSettingManager" ref="org.hisp.dhis.setting.SystemSettingManager" />
+  </bean>
+
   <bean id="compulsoryDataCompletenessService" class="org.hisp.dhis.completeness.impl.CompulsoryDataSetCompletenessService">
     <property name="batchHandlerFactory" ref="batchHandlerFactory" />
 	<property name="aggregationCache" ref="org.hisp.dhis.datamart.aggregation.cache.AggregationCache" />
@@ -256,7 +265,7 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
 
   <bean id="dataMartLast12MonthsTask" class="org.hisp.dhis.system.scheduling.DataMartTask" scope="prototype">
     <constructor-arg ref="org.hisp.dhis.datamart.DataMartEngine" />
-    <constructor-arg ref="registrationDataCompletenessService" />
+    <constructor-arg ref="org.hisp.dhis.completeness.DataSetCompletenessEngine" />
     <constructor-arg ref="org.hisp.dhis.dataelement.DataElementService" />
     <constructor-arg ref="org.hisp.dhis.indicator.IndicatorService" />
 	<constructor-arg ref="org.hisp.dhis.period.PeriodService" />

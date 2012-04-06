@@ -38,7 +38,7 @@ import java.util.Set;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.hisp.dhis.completeness.DataSetCompletenessService;
+import org.hisp.dhis.completeness.DataSetCompletenessEngine;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.datamart.DataMartEngine;
@@ -70,7 +70,7 @@ public class DataMartTask
     
     private DataMartEngine dataMartEngine;
 
-    private DataSetCompletenessService completenessService;
+    private DataSetCompletenessEngine completenessEngine;
     
     private DataElementService dataElementService;
     
@@ -119,13 +119,13 @@ public class DataMartTask
     {
     }
     
-    public DataMartTask( DataMartEngine dataMartEngine, DataSetCompletenessService completenessService, 
+    public DataMartTask( DataMartEngine dataMartEngine, DataSetCompletenessEngine completenessEngine, 
         DataElementService dataElementService, IndicatorService indicatorService, PeriodService periodService,
         OrganisationUnitService organisationUnitService, OrganisationUnitGroupService organisationUnitGroupService,
         DataSetService dataSetService, SystemSettingManager systemSettingManager )
     {
         this.dataMartEngine = dataMartEngine;
-        this.completenessService = completenessService;
+        this.completenessEngine = completenessEngine;
         this.dataElementService = dataElementService;
         this.indicatorService = indicatorService;
         this.periodService = periodService;
@@ -158,7 +158,7 @@ public class DataMartTask
         Collection<Integer> periodIds = ConversionUtils.getIdentifiers( Period.class, periodService.reloadPeriods( periods ) );
         
         dataMartEngine.export( dataElementIds, indicatorIds, periodIds, organisationUnitIds, organisationUnitGroupIds );
-        completenessService.exportDataSetCompleteness( dataSetIds, periodIds, organisationUnitIds ); 
+        completenessEngine.exportDataSetCompleteness( dataSetIds, periodIds, organisationUnitIds ); 
     }
 
     // -------------------------------------------------------------------------
