@@ -58,9 +58,7 @@ public class DefaultImportService
     {
         if ( !clazzes.isEmpty() )
         {
-            IdentifiableObject identifiableObject = clazzes.get( 0 );
-
-            return findImporterClass( identifiableObject.getClass() );
+            return findImporterClass( clazzes.get( 0 ).getClass() );
         }
 
         return null;
@@ -81,15 +79,18 @@ public class DefaultImportService
 
     private void doImport( List<? extends IdentifiableObject> objects, ImportOptions importOptions, ImportSummary importSummary )
     {
-        Importer importer = findImporterClass( objects );
-
-        if ( importer != null )
+        if ( !objects.isEmpty() )
         {
-            List<ImportConflict> conflicts = importer.importCollection( objects, importOptions );
-            ImportCount count = importer.getCurrentImportCount();
+            Importer importer = findImporterClass( objects );
 
-            importSummary.getConflicts().addAll( conflicts );
-            importSummary.getCounts().add( count );
+            if ( importer != null )
+            {
+                List<ImportConflict> conflicts = importer.importCollection( objects, importOptions );
+                ImportCount count = importer.getCurrentImportCount();
+
+                importSummary.getConflicts().addAll( conflicts );
+                importSummary.getCounts().add( count );
+            }
         }
     }
 

@@ -30,8 +30,6 @@ package org.hisp.dhis.dxf2.metadata.importers;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hisp.dhis.constant.Constant;
-import org.hisp.dhis.dxf2.importsummary.ImportConflict;
-import org.hisp.dhis.dxf2.metadata.ImportOptions;
 import org.springframework.stereotype.Component;
 
 /**
@@ -42,34 +40,6 @@ public class ConstantImporter
     extends AbstractImporter<Constant>
 {
     private static final Log log = LogFactory.getLog( ConstantImporter.class );
-
-    @Override
-    protected ImportConflict newObject( Constant constant, ImportOptions options )
-    {
-        if ( !options.isDryRun() )
-        {
-            log.info( "Trying to save new object with UID: " + constant.getUid() );
-            manager.save( constant );
-            log.info( "Save successful." );
-        }
-
-        return null;
-    }
-
-    @Override
-    protected ImportConflict updatedObject( Constant constant, Constant oldConstant, ImportOptions options )
-    {
-        oldConstant.setValue( constant.getValue() );
-
-        if ( !options.isDryRun() )
-        {
-            log.info( "Trying to update object with UID: " + oldConstant.getUid() );
-            manager.update( oldConstant );
-            log.info( "Update successful." );
-        }
-
-        return null;
-    }
 
     @Override
     protected String getObjectName()

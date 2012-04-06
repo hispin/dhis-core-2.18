@@ -148,4 +148,18 @@ public class BaseNameableObject
     {
         this.displayDescription = displayDescription;
     }
+
+    @Override
+    public void mergeWith( IdentifiableObject other )
+    {
+        super.mergeWith( other );
+
+        if ( other.getClass().isInstance( this ) )
+        {
+            NameableObject nameableObject = (NameableObject) other;
+
+            this.shortName = nameableObject.getShortName() == null ? this.shortName : nameableObject.getShortName();
+            this.description = nameableObject.getDescription() == null ? this.description : nameableObject.getDescription();
+        }
+    }
 }

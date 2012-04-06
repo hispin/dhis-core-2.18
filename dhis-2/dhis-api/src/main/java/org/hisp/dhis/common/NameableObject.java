@@ -27,7 +27,7 @@ package org.hisp.dhis.common;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-public interface NameableObject 
+public interface NameableObject
     extends IdentifiableObject
 {
     final String[] I18N_PROPERTIES = { "name", "shortName", "description" };
