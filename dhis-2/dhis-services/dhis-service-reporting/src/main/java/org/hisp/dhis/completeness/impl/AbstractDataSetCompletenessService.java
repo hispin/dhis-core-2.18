@@ -174,16 +174,14 @@ public abstract class AbstractDataSetCompletenessService
 
         log.info( "Deleted existing completeness data" );
 
-        BatchHandler<DataSetCompletenessResult> batchHandler = batchHandlerFactory
-            .createBatchHandler( DataSetCompletenessResultBatchHandler.class );
-
-        batchHandler.init();
-
         Collection<Period> periods = periodService.getPeriods( periodIds );
         Collection<OrganisationUnit> units = organisationUnitService.getOrganisationUnits( organisationUnitIds );
         Collection<DataSet> dataSets = dataSetService.getDataSets( dataSetIds );
 
         dataSets = completenessStore.getDataSetsWithRegistrations( dataSets );
+
+        BatchHandler<DataSetCompletenessResult> batchHandler = batchHandlerFactory
+            .createBatchHandler( DataSetCompletenessResultBatchHandler.class ).init();
 
         OrganisationUnitHierarchy hierarchy = organisationUnitService.getOrganisationUnitHierarchy();
         hierarchy.prepareChildren( units );
