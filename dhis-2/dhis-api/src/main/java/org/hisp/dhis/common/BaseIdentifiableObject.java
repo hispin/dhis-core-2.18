@@ -98,6 +98,14 @@ public class BaseIdentifiableObject
         this.name = name;
     }
 
+    public BaseIdentifiableObject(IdentifiableObject identifiableObject)
+    {
+        this.id = identifiableObject.getId();
+        this.uid = identifiableObject.getUid();
+        this.name = identifiableObject.getName();
+        this.lastUpdated = identifiableObject.getLastUpdated();
+    }
+
     // -------------------------------------------------------------------------
     // Comparable implementation
     // -------------------------------------------------------------------------
@@ -273,5 +281,15 @@ public class BaseIdentifiableObject
             ", lastUpdated=" + lastUpdated +
             ", displayName='" + displayName + '\'' +
             '}';
+    }
+
+    @Override
+    public void mergeWith( IdentifiableObject other )
+    {
+        this.id = other.getId() == 0 ? this.id : other.getId();
+        this.uid = other.getUid() == null ? this.uid : other.getUid();
+        this.name = other.getName() == null ? this.name : other.getName();
+        this.code = other.getCode() == null ? this.code : other.getCode();
+        this.lastUpdated = other.getLastUpdated() == null ? this.lastUpdated : other.getLastUpdated();
     }
 }

@@ -83,7 +83,7 @@ public abstract class AbstractImporter<T extends BaseIdentifiableObject>
     protected Map<String, T> codeMap;
 
     //-------------------------------------------------------------------------------------------------------
-    // Abstract methods that sub-classes needs to implement
+    // Generic implementations of newObject and updatedObject
     //-------------------------------------------------------------------------------------------------------
 
     /**
@@ -93,7 +93,18 @@ public abstract class AbstractImporter<T extends BaseIdentifiableObject>
      * @param options Current import options
      * @return An ImportConflict instance if there was a conflict, otherwise null
      */
-    protected abstract ImportConflict newObject( T object, ImportOptions options );
+    protected ImportConflict newObject( T object, ImportOptions options )
+    {
+        if ( !options.isDryRun() )
+        {
+            log.info( "Trying to save new object with UID: " + object.getUid() );
+            manager.save( object );
+            log.info( "Save successful." );
+            updateIdMaps( object );
+        }
+
+        return null;
+    }
 
     /**
      * Update object from old => new.
@@ -103,7 +114,20 @@ public abstract class AbstractImporter<T extends BaseIdentifiableObject>
      * @param options   Current import options
      * @return An ImportConflict instance if there was a conflict, otherwise null
      */
-    protected abstract ImportConflict updatedObject( T object, T oldObject, ImportOptions options );
+    protected ImportConflict updatedObject( T object, T oldObject, ImportOptions options )
+    {
+        oldObject.mergeWith( object );
+
+        if ( !options.isDryRun() )
+        {
+            log.info( "Trying to update object with UID: " + oldObject.getUid() );
+            manager.update( oldObject );
+            log.info( "Update successful." );
+
+        }
+
+        return null;
+    }
 
     /**
      * Current object name, used to fill name part of a ImportConflict
@@ -179,6 +203,24 @@ public abstract class AbstractImporter<T extends BaseIdentifiableObject>
         codeMap = manager.getIdMap( (Class<T>) type.getClass(), IdentifiableObject.IdentifiableProperty.CODE );
     }
 
+    protected void updateIdMaps( T object )
+    {
+        if ( object.getUid() != null )
+        {
+            uidMap.put( object.getUid(), object );
+        }
+
+        if ( object.getName() != null )
+        {
+            nameMap.put( object.getName(), object );
+        }
+
+        if ( object.getCode() != null )
+        {
+            codeMap.put( object.getCode(), object );
+        }
+    }
+
     private ImportConflict importObjectLocal( T object, ImportOptions options )
     {
         ImportConflict conflict = validateIdentifiableObject( object, options );
@@ -188,13 +230,18 @@ public abstract class AbstractImporter<T extends BaseIdentifiableObject>
             conflict = startImport( object, options );
         }
 
+        if ( conflict != null )
+        {
+            ignores++;
+        }
+
         return conflict;
     }
 
     private ImportConflict startImport( T object, ImportOptions options )
     {
         T oldObject = getObject( object, options.getIdScheme() );
-        ImportConflict conflict = null;
+        ImportConflict conflict;
 
         if ( options.getImportStrategy().isNewStrategy() )
         {
@@ -251,51 +298,169 @@ public abstract class AbstractImporter<T extends BaseIdentifiableObject>
 
     private ImportConflict validateIdentifiableObject( T object, ImportOptions options )
     {
-        T uidObject = uidMap.get( object );
-        T nameObject = nameMap.get( object );
-        T codeObject = codeMap.get( object );
+        T uidObject = uidMap.get( object.getUid() );
+        T nameObject = nameMap.get( object.getName() );
+        T codeObject = codeMap.get( object.getCode() );
 
         ImportConflict conflict = null;
 
         if ( options.getImportStrategy().isNewStrategy() )
         {
-            if ( uidObject != null )
-            {
-                conflict = new ImportConflict( getDisplayName( object, options.getIdScheme() ), "Object fails uniqueness constraint on identifier uid." );
-            }
-
-            if ( nameObject != null )
-            {
-                conflict = new ImportConflict( getDisplayName( object, options.getIdScheme() ), "Object fails uniqueness constraint on identifier name." );
-            }
-
-            if ( codeObject != null )
-            {
-                conflict = new ImportConflict( getDisplayName( object, options.getIdScheme() ), "Object fails uniqueness constraint on identifier code." );
-            }
+            conflict = validateForNewStrategy( object, options );
         }
         else if ( options.getImportStrategy().isUpdatesStrategy() )
         {
-            if ( options.getIdScheme().isUidScheme() && uidObject == null )
-            {
-                conflict = new ImportConflict( getDisplayName( object, options.getIdScheme() ), "Object does not exist, did lookup with identifier uid." );
-            }
-
-            if ( options.getIdScheme().isNameScheme() && nameObject == null )
-            {
-                conflict = new ImportConflict( getDisplayName( object, options.getIdScheme() ), "Object does not exist, did lookup with identifier name." );
-            }
-
-            if ( options.getIdScheme().isCodeScheme() && codeObject == null )
-            {
-                conflict = new ImportConflict( getDisplayName( object, options.getIdScheme() ), "Object does not exist, did lookup with identifier code." );
-            }
+            conflict = validateForUpdatesStrategy( object, options );
         }
         else if ( options.getImportStrategy().isNewAndUpdatesStrategy() )
         {
+            if ( options.getIdScheme().isUidScheme() )
+            {
+                if ( uidObject == null )
+                {
+                    conflict = validateForNewStrategy( object, options );
+                }
+                else
+                {
+                    conflict = validateForUpdatesStrategy( object, options );
+                }
+            }
+            else if ( options.getIdScheme().isNameScheme() )
+            {
+                if ( nameObject == null )
+                {
+                    conflict = validateForNewStrategy( object, options );
+                }
+                else
+                {
+                    conflict = validateForUpdatesStrategy( object, options );
+                }
+            }
+            else if ( options.getIdScheme().isCodeScheme() )
+            {
+                if ( codeObject == null )
+                {
+                    conflict = validateForNewStrategy( object, options );
+                }
+                else
+                {
+                    conflict = validateForUpdatesStrategy( object, options );
+                }
+            }
         }
 
         return conflict;
+    }
+
+    private ImportConflict validateForUpdatesStrategy( T object, ImportOptions options )
+    {
+        T uidObject = uidMap.get( object.getUid() );
+        T nameObject = nameMap.get( object.getName() );
+        T codeObject = codeMap.get( object.getCode() );
+
+        ImportConflict conflict = null;
+
+        if ( options.getIdScheme().isUidScheme() )
+        {
+            if ( uidObject == null )
+            {
+                conflict = reportUidLookupConflict( object, options );
+            }
+            else if ( nameObject != null && nameObject != uidObject )
+            {
+                conflict = reportNameConflict( object, options );
+            }
+            else if ( codeObject != null && codeObject != uidObject )
+            {
+                conflict = reportCodeConflict( object, options );
+            }
+        }
+        else if ( options.getIdScheme().isNameScheme() )
+        {
+            if ( nameObject == null )
+            {
+                conflict = reportNameLookupConflict( object, options );
+            }
+            else if ( uidObject != null && uidObject != nameObject )
+            {
+                conflict = reportNameConflict( object, options );
+            }
+            else if ( codeObject != null && codeObject != nameObject )
+            {
+                conflict = reportCodeConflict( object, options );
+            }
+        }
+        else if ( options.getIdScheme().isCodeScheme() )
+        {
+            if ( codeObject == null )
+            {
+                conflict = reportCodeLookupConflict( object, options );
+            }
+            else if ( uidObject != null && uidObject != codeObject )
+            {
+                conflict = reportNameConflict( object, options );
+            }
+            else if ( nameObject != null && nameObject != codeObject )
+            {
+                conflict = reportCodeConflict( object, options );
+            }
+        }
+
+        return conflict;
+    }
+
+    private ImportConflict validateForNewStrategy( T object, ImportOptions options )
+    {
+        T uidObject = uidMap.get( object.getUid() );
+        T nameObject = nameMap.get( object.getName() );
+        T codeObject = codeMap.get( object.getCode() );
+
+        ImportConflict conflict = null;
+
+        if ( uidObject != null )
+        {
+            conflict = reportUidConflict( object, options );
+        }
+        else if ( nameObject != null )
+        {
+            conflict = reportNameConflict( object, options );
+        }
+        else if ( codeObject != null )
+        {
+            conflict = reportCodeConflict( object, options );
+        }
+
+        return conflict;
+    }
+
+    private ImportConflict reportUidLookupConflict( IdentifiableObject object, ImportOptions options )
+    {
+        return new ImportConflict( getDisplayName( object, options.getIdScheme() ), "UID LOOKUP CONFLICT" );
+    }
+
+    private ImportConflict reportNameLookupConflict( IdentifiableObject object, ImportOptions options )
+    {
+        return new ImportConflict( getDisplayName( object, options.getIdScheme() ), "NAME LOOKUP CONFLICT" );
+    }
+
+    private ImportConflict reportCodeLookupConflict( IdentifiableObject object, ImportOptions options )
+    {
+        return new ImportConflict( getDisplayName( object, options.getIdScheme() ), "CODE LOOKUP CONFLICT" );
+    }
+
+    private ImportConflict reportUidConflict( IdentifiableObject object, ImportOptions options )
+    {
+        return new ImportConflict( getDisplayName( object, options.getIdScheme() ), "UID CONFLICT" );
+    }
+
+    private ImportConflict reportNameConflict( IdentifiableObject object, ImportOptions options )
+    {
+        return new ImportConflict( getDisplayName( object, options.getIdScheme() ), "NAME CONFLICT" );
+    }
+
+    private ImportConflict reportCodeConflict( IdentifiableObject object, ImportOptions options )
+    {
+        return new ImportConflict( getDisplayName( object, options.getIdScheme() ), "CODE CONFLICT" );
     }
 
     private T getObject( T object, IdScheme scheme )
@@ -318,9 +483,13 @@ public abstract class AbstractImporter<T extends BaseIdentifiableObject>
 
     protected void prepareIdentifiableObject( BaseIdentifiableObject object )
     {
-        if ( object.getUid() == null )
+        if ( object.getUid() == null && object.getLastUpdated() == null )
         {
-            object.setUid( generateUid() );
+            object.setAutoFields();
+        }
+        else if ( object.getUid() == null )
+        {
+            object.setUid( CodeGenerator.generateCode() );
         }
     }
 

@@ -1,7 +1,7 @@
 package org.hisp.dhis.common;
 
 /*
- * Copyright (c) 2004-2012, University of Oslo
+ * Copyright (c) 2012, University of Oslo
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -27,27 +27,10 @@ package org.hisp.dhis.common;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.Date;
-
-public interface IdentifiableObject
-    extends ImportableObject, LinkableObject, Comparable<IdentifiableObject>, Mergeable<IdentifiableObject>
+/**
+ * @author Morten Olav Hansen <mortenoh@gmail.com>
+ */
+public interface Mergeable<T>
 {
-    final String[] I18N_PROPERTIES = { "name" };
-    
-    enum IdentifiableProperty
-    {
-        ID, UID, NAME, CODE
-    }
-    
-    int getId();
-
-    String getUid();
-
-    String getName();
-
-    String getCode();
-
-    Date getLastUpdated();
-
-    String getDisplayName();
+    void mergeWith( T other );
 }
