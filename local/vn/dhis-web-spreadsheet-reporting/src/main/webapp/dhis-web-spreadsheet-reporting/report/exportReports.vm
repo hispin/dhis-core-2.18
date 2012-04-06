@@ -21,8 +21,8 @@
 		</tr>
 	</thead>	
 	<tbody id="list">	
-	#foreach( $exportReport in $exportReports )
-	#set( $exist = $templateMap.get( $exportReport.excelTemplateFile ) )
+	#foreach( $exportReport in $!exportReports )
+	#set( $exist = $!templateMap.get( $exportReport.excelTemplateFile ) )
 		<tr id="tr${exportReport.id}">
 			<td>$!encoder.htmlEncode( $exportReport.displayName )</td>
 			<td>$i18n.getString( $exportReport.reportType )</td>
@@ -30,7 +30,7 @@
 				#if( $exist )
 					<a href="downloadFile.action?fileName=$encoder.htmlEncode( $exportReport.excelTemplateFile )" title="download">$encoder.htmlEncode( $exportReport.excelTemplateFile )</a>
 				#else
-					$encoder.htmlEncode( $exportReport.excelTemplateFile ) <img src="../images/warning.png" alt="$i18n.getString( 'missing_template' )" title="$i18n.getString( 'missing_template' )"/>
+					$encoder.htmlEncode( $exportReport.excelTemplateFile ) <img src="images/question.png" alt="$i18n.getString( 'missing_template' )" title="$i18n.getString( 'missing_template' )"/>
 				#end
 			</td>
 			<td align="left">
