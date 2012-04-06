@@ -39,8 +39,8 @@ implements Comparator<DataElement>
 {
     public int compare( DataElement dataElement0, DataElement dataElement1 )
     {
-        String name0 = ( dataElement0.getFormName() != null || !dataElement0.getFormName().isEmpty() ) ? dataElement0.getFormName() : dataElement0.getName();
-        String name1 = ( dataElement1.getFormName() != null || !dataElement1.getFormName().isEmpty() ) ? dataElement1.getFormName() : dataElement1.getName();
+        String name0 = ( dataElement0.getFormName() != null && !dataElement0.getFormName().isEmpty() ) ? dataElement0.getFormName() : dataElement0.getName();
+        String name1 = ( dataElement1.getFormName() != null && !dataElement1.getFormName().isEmpty() ) ? dataElement1.getFormName() : dataElement1.getName();
         
         return name0.compareToIgnoreCase( name1 );
     }
