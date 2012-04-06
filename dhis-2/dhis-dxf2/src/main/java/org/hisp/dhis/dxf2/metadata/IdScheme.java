@@ -33,9 +33,9 @@ package org.hisp.dhis.dxf2.metadata;
  */
 public class IdScheme
 {
-    public static String UID_SCHEME = "uid";
-    public static String CODE_SCHEME = "code";
-    public static String NAME_SCHEME = "name";
+    public static final String UID_SCHEME = "uid";
+    public static final String CODE_SCHEME = "code";
+    public static final String NAME_SCHEME = "name";
 
     private String scheme;
 

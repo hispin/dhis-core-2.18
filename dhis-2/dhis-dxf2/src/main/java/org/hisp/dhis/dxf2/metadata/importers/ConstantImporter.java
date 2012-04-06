@@ -46,8 +46,6 @@ public class ConstantImporter
     @Override
     protected ImportConflict newObject( Constant constant, ImportOptions options )
     {
-        log.info( "NEW OBJECT: " + constant );
-
         if ( !options.isDryRun() )
         {
             log.info( "Trying to save new object with UID: " + constant.getUid() );

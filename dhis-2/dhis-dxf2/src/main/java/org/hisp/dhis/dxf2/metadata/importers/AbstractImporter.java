@@ -69,6 +69,13 @@ public abstract class AbstractImporter<T extends BaseIdentifiableObject>
 
     protected int ignores;
 
+    //-------------------------------------------------------------------------------------------------------
+    // Mappings from identifier (uid, name, code) to a db object.
+    //
+    // WARNING: These maps might be out-of-date, depending on if new inserts has been made after the were
+    //          fetched.
+    //-------------------------------------------------------------------------------------------------------
+
     protected Map<String, T> uidMap;
 
     protected Map<String, T> nameMap;
@@ -137,7 +144,7 @@ public abstract class AbstractImporter<T extends BaseIdentifiableObject>
     @Override
     public ImportConflict importObject( T object, ImportOptions options )
     {
-        if ( object == null )
+        if ( object != null )
         {
             reset( object );
         }
