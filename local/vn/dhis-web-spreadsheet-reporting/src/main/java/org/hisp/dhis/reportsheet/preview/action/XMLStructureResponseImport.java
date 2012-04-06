@@ -216,7 +216,7 @@ public class XMLStructureResponseImport
 
                     xml.append( "<data><![CDATA[" + readValueByPOI( i + 1, j + 1, s, evaluatorFormula ) + "]]></data>" );
 
-                    this.readingDetailsFormattedCell( cell );
+                    this.readingDetailsFormattedCell( s, cell );
 
                     xml.append( "</col>" );
                 }
@@ -249,13 +249,14 @@ public class XMLStructureResponseImport
         }
     }
 
-    private void readingDetailsFormattedCell( org.apache.poi.ss.usermodel.Cell objCell )
+    private void readingDetailsFormattedCell( Sheet sheet, Cell objCell )
     {
         CellStyle format = objCell.getCellStyle();
 
         if ( format != null )
         {
             xml.append( "<format align='" + convertAlignmentString( format.getAlignment() ) + "'" );
+            xml.append( " width='" + sheet.getColumnWidth( objCell.getColumnIndex() ) + "'" );
             xml.append( " border='" + format.getBorderBottom() + format.getBorderLeft() + format.getBorderRight()
                 + format.getBorderTop() + "'/>" );
         }

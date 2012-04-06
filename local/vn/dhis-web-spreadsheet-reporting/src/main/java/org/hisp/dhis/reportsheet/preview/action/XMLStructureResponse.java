@@ -261,7 +261,7 @@ public class XMLStructureResponse
                         + readValueByPOI( row.getRowNum() + 1, cell.getColumnIndex() + 1, s, evaluatorFormula )
                         + "]]></data>" );
 
-                    this.readingDetailsFormattedCell( cell, bDetailed );
+                    this.readingDetailsFormattedCell( s, cell, bDetailed );
 
                     xml.append( "</col>" );
                 }
@@ -271,7 +271,7 @@ public class XMLStructureResponse
         xml.append( "</sheet>" );
     }
 
-    private void readingDetailsFormattedCell( Cell objCell, boolean bDetailed )
+    private void readingDetailsFormattedCell( Sheet sheet, Cell objCell, boolean bDetailed )
     {
         // The format information
         CellStyle format = objCell.getCellStyle();
@@ -279,6 +279,7 @@ public class XMLStructureResponse
         if ( format != null )
         {
             xml.append( "<format align='" + convertAlignmentString( format.getAlignment() ) + "'" );
+            xml.append( " width='" + sheet.getColumnWidth( objCell.getColumnIndex() ) + "'" );
             xml.append( " border='"
                 + (format.getBorderBottom() + format.getBorderLeft() + format.getBorderRight() + format.getBorderTop())
                 + "'" );

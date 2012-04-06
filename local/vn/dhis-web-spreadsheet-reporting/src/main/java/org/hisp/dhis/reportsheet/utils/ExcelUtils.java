@@ -236,9 +236,9 @@ public class ExcelUtils
                 {
                     value = NumberUtils.getFormattedNumber( dataFormatter.formatCellValue( cellPOI, evaluator ) );
                 }
-                catch ( IllegalStateException ise )
+                catch ( Exception ex )
                 {
-                    value = cellPOI.getCellFormula();
+                    value = ErrorConstants.getText( cellPOI.getErrorCellValue() );
                 }
                 break;
             case org.apache.poi.ss.usermodel.Cell.CELL_TYPE_NUMERIC:

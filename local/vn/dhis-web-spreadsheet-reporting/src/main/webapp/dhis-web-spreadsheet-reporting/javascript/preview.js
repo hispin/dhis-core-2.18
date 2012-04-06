@@ -65,7 +65,7 @@ function previewExportReportReceived( parentElement )
 	var aKey 	= new Array();
 	var aMerged = new Array();	
 	var cells 	= parentElement.getElementsByTagName( 'cell' );
-	
+
 	for (var i  = 0 ; i < cells.length ; i ++)
 	{	
 		aKey[i]		= cells[i].getAttribute( 'iKey' );
@@ -80,30 +80,30 @@ function previewExportReportReceived( parentElement )
 	var _sheets		= parentElement.getElementsByTagName( 'sheet' );
 	var _sHTML		= [];
 	var tabsHTML 	= ['<div id="tabs"><ul>'];
-	
+
 	for (var s = 0 ; s < _sheets.length ; s ++)
 	{
 		// Create tab name
 		tabsHTML.push( '<li><a href="#tabs-', s, '">', getElementValue( _sheets[s], "name" ), '</a></li>' );
-	
+
 		_rows 		= _sheets[s].getElementsByTagName( 'row' );
 		_orderSheet	= getRootElementAttribute( _sheets[s], "id" );
-		
+
 		_sHTML.push( '<div id="tabs-', s, '">' );
 		_sHTML.push( "<table class='ui-preview-table'>" );
-		
+
 		for (var i = 0 ; i < _rows.length ; i ++)
 		{
 			_index	= 0;
 			_sHTML.push( "<tr>" );
-			
+
 			_cols 	= _rows[i].getElementsByTagName( 'col' );
-			
+
 			for (var j 	= 0 ; j < _cols.length ; )
 			{
 				var _number	= getRootElementAttribute( _cols[j], 'no' );
 				var keyId 	= getRootElementAttribute( _cols[j], 'id' );
-				
+
 				// Printing out the unformatted cells
 				for (; _index < _number ; _index ++)
 				{
@@ -115,19 +115,20 @@ function previewExportReportReceived( parentElement )
 					var _sData		= getElementValue( _cols[j], 'data' );
 					var _align		= getElementAttribute( _cols[j], 'format', 'align' );
 					var _border		= getElementAttribute( _cols[j], 'format', 'border' );
-				
+					var _width		= getElementAttribute( _cols[j], 'format', 'width' );
+
 					// If this cell is merged - Key's form: Sheet#Row#Col
 					_sPattern 		=  _orderSheet + "#" + i + "#" + _number;
 					var _colspan 	= getMergedNumberForEachCell( aKey, _sPattern, aMerged );
-					
+
 					// Jumping for <For Loop> AND <Empty Cells>
 					j 		= Number(j) + Number(_colspan);
 					_index 	= Number(_index) + Number(_colspan);
-					
-					_sHTML.push( "<td align='", _align, "' colspan='", _colspan, "'" );
+
+					_sHTML.push( "<td align='", _align, "' width='", _width, "px' colspan='", _colspan, "'" );
 					_sHTML.push( " class='printclass" );
 					_sHTML.push( _border > 0 ? " ui-widget-content" : "" );
-					
+
 					// Preview without importing
 					if ( keyId && keyId.length > 0 )
 					{
@@ -137,7 +138,6 @@ function previewExportReportReceived( parentElement )
 					{
 						_sHTML.push( " ui-preview-normal" );
 					}
-					
 					_sHTML.push( "'>", _sData, "</td>" );
 				}
 			}
