@@ -32,9 +32,9 @@ package org.hisp.dhis.dxf2.metadata;
  */
 public class ImportStrategy
 {
-    public static String NEW_AND_UPDATES_STRATEGY = "newAndUpdates";
-    public static String UPDATES_STRATEGY = "updates";
-    public static String NEW_STRATEGY = "new";
+    public static final String NEW_AND_UPDATES_STRATEGY = "newAndUpdates";
+    public static final String UPDATES_STRATEGY = "updates";
+    public static final String NEW_STRATEGY = "new";
 
     private String strategy;
 

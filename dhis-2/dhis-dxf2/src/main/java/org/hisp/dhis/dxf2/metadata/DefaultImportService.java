@@ -50,64 +50,6 @@ public class DefaultImportService
     //-------------------------------------------------------------------------------------------------------
     // Dependencies
     //-------------------------------------------------------------------------------------------------------
-/*
-    @Autowired
-    private AttributeService attributeService;
-
-    @Autowired
-    private UserService userService;
-
-    @Autowired
-    private UserGroupService userGroupService;
-
-    @Autowired
-    private DataElementService dataElementService;
-
-    @Autowired
-    private OptionService optionService;
-
-    @Autowired
-    private ConceptService conceptService;
-
-    @Autowired
-    private DataElementCategoryService dataElementCategoryService;
-
-    @Autowired
-    private IndicatorService indicatorService;
-
-    @Autowired
-    private OrganisationUnitService organisationUnitService;
-
-    @Autowired
-    private OrganisationUnitGroupService organisationUnitGroupService;
-
-    @Autowired
-    private DataSetService dataSetService;
-
-    @Autowired
-    private ValidationRuleService validationRuleService;
-
-    @Autowired
-    private SqlViewService sqlViewService;
-
-    @Autowired
-    private ChartService chartService;
-
-    @Autowired
-    private ReportService reportService;
-
-    @Autowired
-    private ReportTableService reportTableService;
-
-    @Autowired
-    private DocumentService documentService;
-
-    @Autowired
-    private MappingService mappingService;
-
-    @Autowired
-    private DataDictionaryService dataDictionaryService;
-*/
 
     @Autowired
     private Set<Importer> importerClasses = new HashSet<Importer>();
