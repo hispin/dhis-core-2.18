@@ -27,6 +27,7 @@ package org.hisp.dhis.visualizer.action;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import static org.hisp.dhis.api.utils.ContextUtils.CONTENT_TYPE_JSON;
 import static org.hisp.dhis.system.util.ConversionUtils.getIdentifiers;
 
 import java.util.Collection;
@@ -34,9 +35,12 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import org.apache.struts2.ServletActionContext;
 import org.hisp.dhis.aggregation.AggregatedDataValue;
 import org.hisp.dhis.aggregation.AggregatedDataValueService;
 import org.hisp.dhis.aggregation.AggregatedIndicatorValue;
+import org.hisp.dhis.api.utils.ContextUtils;
+import org.hisp.dhis.api.utils.ContextUtils.CacheStrategy;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.i18n.I18nFormat;
@@ -47,6 +51,7 @@ import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodService;
 import org.hisp.dhis.period.RelativePeriods;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import com.opensymphony.xwork2.Action;
 
@@ -101,6 +106,9 @@ public class GetAggregatedValuesPluginAction
     {
         this.format = format;
     }
+
+    @Autowired
+    private ContextUtils contextUtils;
 
     // -------------------------------------------------------------------------
     // Input
@@ -292,6 +300,8 @@ public class GetAggregatedValuesPluginAction
             }
         }
 
+        contextUtils.configureResponse( ServletActionContext.getResponse(), CONTENT_TYPE_JSON, CacheStrategy.RESPECT_SYSTEM_SETTING, null, false );
+        
         return SUCCESS;
     }
 }

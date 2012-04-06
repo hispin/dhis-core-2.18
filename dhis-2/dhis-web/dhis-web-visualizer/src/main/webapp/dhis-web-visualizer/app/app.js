@@ -1860,6 +1860,7 @@ Ext.onReady( function() {
             
             Ext.Ajax.request({
                 url: baseurl,
+                disableCaching: false,
                 success: function(r) {
                     DV.value.values = DV.util.value.jsonfy(r);                    
                     

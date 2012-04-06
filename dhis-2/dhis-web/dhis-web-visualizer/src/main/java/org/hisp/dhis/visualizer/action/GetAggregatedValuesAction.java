@@ -30,17 +30,23 @@ package org.hisp.dhis.visualizer.action;
 import java.util.Collection;
 import java.util.HashSet;
 
+import org.apache.struts2.ServletActionContext;
 import org.hisp.dhis.aggregation.AggregatedDataValue;
 import org.hisp.dhis.aggregation.AggregatedDataValueService;
 import org.hisp.dhis.aggregation.AggregatedIndicatorValue;
 import org.hisp.dhis.aggregation.AggregatedOrgUnitDataValueService;
+import org.hisp.dhis.api.utils.ContextUtils;
+import org.hisp.dhis.api.utils.ContextUtils.CacheStrategy;
 import org.hisp.dhis.completeness.DataSetCompletenessResult;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroup;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroupService;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroupSet;
 import org.hisp.dhis.system.util.ConversionUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import com.opensymphony.xwork2.Action;
+
+import static org.hisp.dhis.api.utils.ContextUtils.CONTENT_TYPE_JSON;
 
 /**
  * @author Jan Henrik Overland
@@ -72,6 +78,9 @@ public class GetAggregatedValuesAction
     {
         this.organisationUnitGroupService = organisationUnitGroupService;
     }
+    
+    @Autowired
+    private ContextUtils contextUtils;
 
     // -------------------------------------------------------------------------
     // Input
@@ -206,6 +215,8 @@ public class GetAggregatedValuesAction
             }
         }
 
+        contextUtils.configureResponse( ServletActionContext.getResponse(), CONTENT_TYPE_JSON, CacheStrategy.RESPECT_SYSTEM_SETTING, null, false );
+        
         return SUCCESS;
     }
 }
