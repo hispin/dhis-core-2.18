@@ -45,7 +45,6 @@ import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodService;
 import org.hisp.dhis.period.PeriodType;
 import org.hisp.dhis.period.QuarterlyPeriodType;
-import org.hisp.dhis.reporttable.ReportTable;
 import org.junit.Test;
 
 /**
@@ -55,9 +54,9 @@ import org.junit.Test;
 public class DataSetCompletenessServiceExportTest
     extends DhisTest
 {
+    private DataSetCompletenessEngine completenessEngine;
+    
     private DataSetCompletenessStore completenessStore;
-
-    private DataSetCompletenessService completenessService;
 
     private CompleteDataSetRegistrationService registrationService;
     
@@ -82,9 +81,9 @@ public class DataSetCompletenessServiceExportTest
     @Override
     public void setUpTest()
     {
-        completenessStore = (DataSetCompletenessStore) getBean( DataSetCompletenessStore.ID );
+        completenessEngine = (DataSetCompletenessEngine) getBean( DataSetCompletenessEngine.ID );
         
-        completenessService = (DataSetCompletenessService) getBean( "registrationDataCompletenessService" );
+        completenessStore = (DataSetCompletenessStore) getBean( DataSetCompletenessStore.ID );
         
         periodService = (PeriodService) getBean( PeriodService.ID );
         
@@ -161,7 +160,7 @@ public class DataSetCompletenessServiceExportTest
         registrationService.saveCompleteDataSetRegistration( new CompleteDataSetRegistration( dataSetA, periodC, unitA, null, "" ) );
         registrationService.saveCompleteDataSetRegistration( new CompleteDataSetRegistration( dataSetA, periodC, unitC, null, "" ) );
         
-        completenessService.exportDataSetCompleteness( getIdentifiers( DataSet.class, dataSets ),
+        completenessEngine.exportDataSetCompleteness( getIdentifiers( DataSet.class, dataSets ),
             getIdentifiers( Period.class, periods ), getIdentifiers( OrganisationUnit.class, units ) );
         
         assertEquals( 100.0, completenessStore.getPercentage( dataSetA.getId(), periodA.getId(), unitB.getId() ) );

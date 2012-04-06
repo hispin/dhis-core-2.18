@@ -33,6 +33,8 @@ import static org.hisp.dhis.system.util.ConversionUtils.getIdentifiers;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashSet;
+import java.util.concurrent.Future;
 
 import org.amplecode.quick.BatchHandler;
 import org.amplecode.quick.BatchHandlerFactory;
@@ -52,16 +54,15 @@ import org.hisp.dhis.organisationunit.OrganisationUnitHierarchy;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodService;
-import org.hisp.dhis.period.RelativePeriods;
 import org.hisp.dhis.setting.SystemSettingManager;
 import org.hisp.dhis.system.util.ConversionUtils;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
  * @author Lars Helge Overland
  * @version $Id$
  */
-@Transactional
 public abstract class AbstractDataSetCompletenessService
     implements DataSetCompletenessService
 {
@@ -135,51 +136,21 @@ public abstract class AbstractDataSetCompletenessService
     // Abstract methods
     // -------------------------------------------------------------------------
 
-    public abstract int getRegistrations( DataSet dataSet, Collection<Integer> relevantSources, Collection<Integer> periods );
+    protected abstract int getRegistrations( DataSet dataSet, Collection<Integer> relevantSources, Collection<Integer> periods );
 
-    public abstract int getRegistrationsOnTime( DataSet dataSet, Collection<Integer> relevantSources, Collection<Integer> periods,
+    protected abstract int getRegistrationsOnTime( DataSet dataSet, Collection<Integer> relevantSources, Collection<Integer> periods,
         int completenessOffset );
 
-    public abstract int getSources( DataSet dataSet, Collection<Integer> relevantSources, Period period );
+    protected abstract int getSources( DataSet dataSet, Collection<Integer> relevantSources, Period period );
 
     // -------------------------------------------------------------------------
     // DataSetCompleteness
     // -------------------------------------------------------------------------
 
-    public void exportDataSetCompleteness( Collection<Integer> dataSetIds, RelativePeriods relatives,
-        Collection<Integer> organisationUnitIds )
-    {
-        if ( relatives != null )
-        {
-            Collection<Integer> periodIds = ConversionUtils.getIdentifiers( Period.class,
-                periodService.reloadPeriods( relatives.getRelativePeriods() ) );
-
-            exportDataSetCompleteness( dataSetIds, periodIds, organisationUnitIds );
-        }
-    }
-
-    public void exportDataSetCompleteness( Collection<Integer> dataSetIds, Collection<Integer> periodIds,
-        Collection<Integer> organisationUnitIds )
-    {
-        log.info( "Data completeness export process started" );
-
-        completenessStore.dropIndex();
-
-        log.info( "Dropped potential index" );
-
-        int days = (Integer) systemSettingManager.getSystemSetting( KEY_COMPLETENESS_OFFSET,
-            DEFAULT_COMPLETENESS_OFFSET );
-
-        completenessStore.deleteDataSetCompleteness( dataSetIds, periodIds, organisationUnitIds );
-
-        log.info( "Deleted existing completeness data" );
-
-        Collection<Period> periods = periodService.getPeriods( periodIds );
-        Collection<OrganisationUnit> units = organisationUnitService.getOrganisationUnits( organisationUnitIds );
-        Collection<DataSet> dataSets = dataSetService.getDataSets( dataSetIds );
-
-        dataSets = completenessStore.getDataSetsWithRegistrations( dataSets );
-
+    @Async
+    public Future<?> exportDataSetCompleteness( Collection<DataSet> dataSets, Collection<Period> periods,
+        Collection<OrganisationUnit> units, int days )
+    {        
         BatchHandler<DataSetCompletenessResult> batchHandler = batchHandlerFactory
             .createBatchHandler( DataSetCompletenessResultBatchHandler.class ).init();
 
@@ -213,21 +184,18 @@ public abstract class AbstractDataSetCompletenessService
                     }
                 }
             }
-
-            log.info( "Exported completeness for data set: " + dataSet );
         }
 
         batchHandler.flush();
 
         aggregationCache.clearCache();
         
-        completenessStore.createIndex();
-
-        log.info( "Created index" );
-
-        log.info( "Completeness export process done" );
+        log.info( "Completeness export task done" );
+        
+        return null;
     }
 
+    @Transactional
     public Collection<DataSetCompletenessResult> getDataSetCompleteness( int periodId, int organisationUnitId )
     {
         final Period period = periodService.getPeriod( periodId );
@@ -270,6 +238,7 @@ public abstract class AbstractDataSetCompletenessService
         return results;
     }
 
+    @Transactional
     public Collection<DataSetCompletenessResult> getDataSetCompleteness( int periodId,
         Collection<Integer> organisationUnitIds, int dataSetId )
     {
@@ -303,7 +272,8 @@ public abstract class AbstractDataSetCompletenessService
 
         return results;
     }
-    
+
+    @Transactional
     public void deleteDataSetCompleteness()
     {
         completenessStore.deleteDataSetCompleteness();
@@ -313,11 +283,13 @@ public abstract class AbstractDataSetCompletenessService
     // Index
     // -------------------------------------------------------------------------
 
+    @Transactional
     public void createIndex()
     {
         completenessStore.createIndex();
     }
 
+    @Transactional
     public void dropIndex()
     {
         completenessStore.dropIndex();
@@ -353,7 +325,7 @@ public abstract class AbstractDataSetCompletenessService
     private Collection<Integer> getRelevantSources( DataSet dataSet, Collection<Integer> sources )
     {
         Collection<Integer> dataSetSources = ConversionUtils.getIdentifiers( OrganisationUnit.class,
-            dataSet.getSources() );
+            new HashSet<OrganisationUnit>( dataSet.getSources() ) );
 
         return CollectionUtils.intersection( dataSetSources, sources );
     }

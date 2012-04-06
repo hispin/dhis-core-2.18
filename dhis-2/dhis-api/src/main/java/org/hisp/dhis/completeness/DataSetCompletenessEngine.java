@@ -1,4 +1,4 @@
-package org.hisp.dhis.system.util;
+package org.hisp.dhis.completeness;
 
 /*
  * Copyright (c) 2004-2012, University of Oslo
@@ -28,35 +28,19 @@ package org.hisp.dhis.system.util;
  */
 
 import java.util.Collection;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.Future;
+
+import org.hisp.dhis.period.RelativePeriods;
 
 /**
  * @author Lars Helge Overland
  */
-public class ConcurrentUtils
+public interface DataSetCompletenessEngine
 {
-    /**
-     * Blocks and waits for all Futures in the given collection to complete.
-     * 
-     * @param futures the collection of Futures.
-     */
-    public static void waitForCompletion( Collection<Future<?>> futures )
-    {
-        for ( Future<?> future : futures )
-        {
-            try
-            {
-                future.get();
-            }
-            catch ( ExecutionException ex )
-            {
-                throw new RuntimeException( "Exception during execution", ex );
-            }
-            catch ( InterruptedException ex )
-            {
-                throw new RuntimeException( "Thread interrupted", ex );
-            }
-        }
-    }
+    final String ID = DataSetCompletenessEngine.class.getName();
+    
+    void exportDataSetCompleteness( Collection<Integer> dataSetIds, RelativePeriods relatives,
+        Collection<Integer> organisationUnitIds );
+    
+    void exportDataSetCompleteness( Collection<Integer> dataSetIds, Collection<Integer> periodIds,
+        Collection<Integer> organisationUnitIds );
 }

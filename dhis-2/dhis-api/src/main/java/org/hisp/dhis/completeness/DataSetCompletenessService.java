@@ -28,8 +28,11 @@ package org.hisp.dhis.completeness;
  */
 
 import java.util.Collection;
+import java.util.concurrent.Future;
 
-import org.hisp.dhis.period.RelativePeriods;
+import org.hisp.dhis.dataset.DataSet;
+import org.hisp.dhis.organisationunit.OrganisationUnit;
+import org.hisp.dhis.period.Period;
 
 /**
  * @author Lars Helge Overland
@@ -39,23 +42,8 @@ public interface DataSetCompletenessService
 {
     String ID = DataSetCompletenessService.class.getName();
 
-    /**
-     * 
-     * @param dataSetIds
-     * @param relatives
-     * @param organisationUnitIds
-     */
-    void exportDataSetCompleteness( Collection<Integer> dataSetIds, RelativePeriods relatives,
-        Collection<Integer> organisationUnitIds );
-
-    /**
-     * 
-     * @param dataSetIds
-     * @param periodIds
-     * @param organisationUnitIds
-     */
-    void exportDataSetCompleteness( Collection<Integer> dataSetIds, Collection<Integer> periodIds,
-        Collection<Integer> organisationUnitIds );
+    Future<?> exportDataSetCompleteness( Collection<DataSet> dataSets, Collection<Period> periods,
+        Collection<OrganisationUnit> units, int days );
 
     /**
      * Returns a Collection of DataSetCompletenessResults. The
