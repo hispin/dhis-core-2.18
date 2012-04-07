@@ -240,7 +240,6 @@ public class GetSectionFormAction
             name = "Default";
             dataElements = new ArrayList<DataElement>( dataSet.getDataElements() );
             Collections.sort( dataElements, new IdentifiableObjectNameComparator() );
-
         }
 
         validationViolations = formUtils.getValidationViolations( organisationUnit, dataElements, period );

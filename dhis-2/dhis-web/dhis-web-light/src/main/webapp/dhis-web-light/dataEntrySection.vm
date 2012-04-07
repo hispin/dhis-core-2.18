@@ -49,7 +49,7 @@
 				#set( $dataElementName = $dataElement.name )
 			#end
 
-            #set( $optionCombos = $formUtils.sortedCategoryOptionCombos( $dataElement.categoryCombo.optionCombos ) )
+            #set( $optionCombos = $dataElement.categoryCombo.getSortedOptionCombos() )
 
 			#foreach( $optionCombo in $optionCombos )
 
