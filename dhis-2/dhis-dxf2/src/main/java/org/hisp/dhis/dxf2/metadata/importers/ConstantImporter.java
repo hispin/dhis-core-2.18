@@ -37,7 +37,7 @@ import org.springframework.stereotype.Component;
  */
 @Component
 public class ConstantImporter
-    extends AbstractImporter<Constant>
+    extends AbstractIdentifiableObjectImporter<Constant>
 {
     private static final Log log = LogFactory.getLog( ConstantImporter.class );
 

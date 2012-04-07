@@ -47,10 +47,10 @@ import java.util.Map;
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
-public abstract class AbstractImporter<T extends BaseIdentifiableObject>
+public abstract class AbstractIdentifiableObjectImporter<T extends BaseIdentifiableObject>
     implements Importer<T>
 {
-    private static final Log log = LogFactory.getLog( AbstractImporter.class );
+    private static final Log log = LogFactory.getLog( AbstractIdentifiableObjectImporter.class );
 
     //-------------------------------------------------------------------------------------------------------
     // Dependencies
@@ -201,24 +201,6 @@ public abstract class AbstractImporter<T extends BaseIdentifiableObject>
         uidMap = manager.getIdMap( (Class<T>) type.getClass(), IdentifiableObject.IdentifiableProperty.UID );
         nameMap = manager.getIdMap( (Class<T>) type.getClass(), IdentifiableObject.IdentifiableProperty.NAME );
         codeMap = manager.getIdMap( (Class<T>) type.getClass(), IdentifiableObject.IdentifiableProperty.CODE );
-    }
-
-    protected void updateIdMaps( T object )
-    {
-        if ( object.getUid() != null )
-        {
-            uidMap.put( object.getUid(), object );
-        }
-
-        if ( object.getName() != null )
-        {
-            nameMap.put( object.getName(), object );
-        }
-
-        if ( object.getCode() != null )
-        {
-            codeMap.put( object.getCode(), object );
-        }
     }
 
     private ImportConflict importObjectLocal( T object, ImportOptions options )
@@ -481,6 +463,28 @@ public abstract class AbstractImporter<T extends BaseIdentifiableObject>
         return null;
     }
 
+    //-------------------------------------------------------------------------------------------------------
+    // Protected methods
+    //-------------------------------------------------------------------------------------------------------
+
+    protected void updateIdMaps( T object )
+    {
+        if ( object.getUid() != null )
+        {
+            uidMap.put( object.getUid(), object );
+        }
+
+        if ( object.getName() != null )
+        {
+            nameMap.put( object.getName(), object );
+        }
+
+        if ( object.getCode() != null )
+        {
+            codeMap.put( object.getCode(), object );
+        }
+    }
+
     protected void prepareIdentifiableObject( BaseIdentifiableObject object )
     {
         if ( object.getUid() == null && object.getLastUpdated() == null )
@@ -492,10 +496,6 @@ public abstract class AbstractImporter<T extends BaseIdentifiableObject>
             object.setUid( CodeGenerator.generateCode() );
         }
     }
-
-    //-------------------------------------------------------------------------------------------------------
-    // Protected methods
-    //-------------------------------------------------------------------------------------------------------
 
     /**
      * Try to get a usable display based on current idScheme, mainly used for error-reporting
@@ -531,10 +531,5 @@ public abstract class AbstractImporter<T extends BaseIdentifiableObject>
         }
 
         return object.getClass().getName();
-    }
-
-    protected String generateUid()
-    {
-        return CodeGenerator.generateCode();
     }
 }
