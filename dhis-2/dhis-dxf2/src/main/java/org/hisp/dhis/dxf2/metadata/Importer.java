@@ -38,7 +38,10 @@ import java.util.List;
 public interface Importer<T>
 {
     /**
-     * Import a single object, return null or a ImportConflict is there is a conflict
+     * Import a single object, return null or a ImportConflict is there is a conflict.
+     *
+     * This is meant to be a one-off import of a single object, if you want to import multiple
+     * objects, then use importObjects..
      *
      * @param object  Object to import
      * @param options Import options
@@ -53,7 +56,7 @@ public interface Importer<T>
      * @param options Import options
      * @return List of all the ImportConflicts encountered
      */
-    List<ImportConflict> importCollection( List<T> objects, ImportOptions options );
+    List<ImportConflict> importObjects( List<T> objects, ImportOptions options );
 
     /**
      * Get an ImportCount instance for the current import numbers.

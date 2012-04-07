@@ -67,8 +67,8 @@ public class IdScheme
         if ( scheme != null )
         {
             uidScheme = scheme.equals( IdScheme.UID_SCHEME );
-            codeScheme = scheme.equals( IdScheme.CODE_SCHEME );
             nameScheme = scheme.equals( IdScheme.NAME_SCHEME );
+            codeScheme = scheme.equals( IdScheme.CODE_SCHEME );
         }
     }
 
@@ -77,13 +77,13 @@ public class IdScheme
         return uidScheme;
     }
 
-    public boolean isCodeScheme()
-    {
-        return codeScheme;
-    }
-
     public boolean isNameScheme()
     {
         return nameScheme;
+    }
+
+    public boolean isCodeScheme()
+    {
+        return codeScheme;
     }
 }

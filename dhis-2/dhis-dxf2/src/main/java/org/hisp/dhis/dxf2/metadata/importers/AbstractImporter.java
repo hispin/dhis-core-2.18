@@ -141,7 +141,7 @@ public abstract class AbstractImporter<T extends BaseIdentifiableObject>
     //-------------------------------------------------------------------------------------------------------
 
     @Override
-    public List<ImportConflict> importCollection( List<T> objects, ImportOptions options )
+    public List<ImportConflict> importObjects( List<T> objects, ImportOptions options )
     {
         List<ImportConflict> conflicts = new ArrayList<ImportConflict>();
 
@@ -383,7 +383,7 @@ public abstract class AbstractImporter<T extends BaseIdentifiableObject>
             }
             else if ( uidObject != null && uidObject != nameObject )
             {
-                conflict = reportNameConflict( object, options );
+                conflict = reportUidConflict( object, options );
             }
             else if ( codeObject != null && codeObject != nameObject )
             {
@@ -398,11 +398,11 @@ public abstract class AbstractImporter<T extends BaseIdentifiableObject>
             }
             else if ( uidObject != null && uidObject != codeObject )
             {
-                conflict = reportNameConflict( object, options );
+                conflict = reportUidConflict( object, options );
             }
             else if ( nameObject != null && nameObject != codeObject )
             {
-                conflict = reportCodeConflict( object, options );
+                conflict = reportNameConflict( object, options );
             }
         }
 
@@ -435,32 +435,32 @@ public abstract class AbstractImporter<T extends BaseIdentifiableObject>
 
     private ImportConflict reportUidLookupConflict( IdentifiableObject object, ImportOptions options )
     {
-        return new ImportConflict( getDisplayName( object, options.getIdScheme() ), "UID LOOKUP CONFLICT" );
+        return new ImportConflict( getDisplayName( object, options.getIdScheme() ), "Object does not exist, lookup done using UID." );
     }
 
     private ImportConflict reportNameLookupConflict( IdentifiableObject object, ImportOptions options )
     {
-        return new ImportConflict( getDisplayName( object, options.getIdScheme() ), "NAME LOOKUP CONFLICT" );
+        return new ImportConflict( getDisplayName( object, options.getIdScheme() ), "Object does not exist, lookup done using NAME." );
     }
 
     private ImportConflict reportCodeLookupConflict( IdentifiableObject object, ImportOptions options )
     {
-        return new ImportConflict( getDisplayName( object, options.getIdScheme() ), "CODE LOOKUP CONFLICT" );
+        return new ImportConflict( getDisplayName( object, options.getIdScheme() ), "Object does not exist, lookup done using CODE." );
     }
 
     private ImportConflict reportUidConflict( IdentifiableObject object, ImportOptions options )
     {
-        return new ImportConflict( getDisplayName( object, options.getIdScheme() ), "UID CONFLICT" );
+        return new ImportConflict( getDisplayName( object, options.getIdScheme() ), "Object already exists, lookup done using UID." );
     }
 
     private ImportConflict reportNameConflict( IdentifiableObject object, ImportOptions options )
     {
-        return new ImportConflict( getDisplayName( object, options.getIdScheme() ), "NAME CONFLICT" );
+        return new ImportConflict( getDisplayName( object, options.getIdScheme() ), "Object already exists, lookup done using NAME." );
     }
 
     private ImportConflict reportCodeConflict( IdentifiableObject object, ImportOptions options )
     {
-        return new ImportConflict( getDisplayName( object, options.getIdScheme() ), "CODE CONFLICT" );
+        return new ImportConflict( getDisplayName( object, options.getIdScheme() ), "Object already exists, lookup done using CODE." );
     }
 
     private T getObject( T object, IdScheme scheme )
