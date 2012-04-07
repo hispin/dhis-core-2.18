@@ -160,7 +160,7 @@ public class ReflectionUtils
 
     public static boolean isCollection( String fieldName, Object object, Class<?> type )
     {
-        Field field = null;
+        Field field;
 
         try
         {
@@ -172,14 +172,17 @@ public class ReflectionUtils
 
         try
         {
-            ParameterizedType parameterizedType = (ParameterizedType) field.getGenericType();
-            Type[] actualTypeArguments = parameterizedType.getActualTypeArguments();
-
-            if ( actualTypeArguments.length > 0 )
+            if ( Collection.class.isAssignableFrom( field.getType() ) )
             {
-                if ( type.isAssignableFrom( (Class<?>) actualTypeArguments[0] ) )
+                ParameterizedType parameterizedType = (ParameterizedType) field.getGenericType();
+                Type[] actualTypeArguments = parameterizedType.getActualTypeArguments();
+
+                if ( actualTypeArguments.length > 0 )
                 {
-                    return true;
+                    if ( type.isAssignableFrom( (Class<?>) actualTypeArguments[0] ) )
+                    {
+                        return true;
+                    }
                 }
             }
 
@@ -214,9 +217,6 @@ public class ReflectionUtils
         try
         {
             return (T) method.invoke( object );
-        } catch ( ClassCastException e )
-        {
-            return null;
         } catch ( InvocationTargetException e )
         {
             return null;
@@ -226,11 +226,11 @@ public class ReflectionUtils
         }
     }
 
-    public static boolean isType(Field field, Class<?> clazz)
+    public static boolean isType( Field field, Class<?> clazz )
     {
         Class<?> type = field.getType();
 
-        if(clazz.isAssignableFrom( type ))
+        if ( clazz.isAssignableFrom( type ) )
         {
             return true;
         }
