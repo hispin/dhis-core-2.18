@@ -27,10 +27,24 @@ package org.hisp.dhis.api.controller;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import java.io.BufferedInputStream;
+import java.io.IOException;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipInputStream;
+import java.util.zip.ZipOutputStream;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.xml.bind.JAXBException;
+
 import org.hisp.dhis.api.utils.ContextUtils;
 import org.hisp.dhis.common.view.ExportView;
 import org.hisp.dhis.dxf2.importsummary.ImportSummary;
-import org.hisp.dhis.dxf2.metadata.*;
+import org.hisp.dhis.dxf2.metadata.DXF2;
+import org.hisp.dhis.dxf2.metadata.ExportOptions;
+import org.hisp.dhis.dxf2.metadata.ExportService;
+import org.hisp.dhis.dxf2.metadata.ImportOptions;
+import org.hisp.dhis.dxf2.metadata.ImportService;
 import org.hisp.dhis.dxf2.utils.JacksonUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -39,15 +53,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.xml.bind.JAXBException;
-import java.io.BufferedInputStream;
-import java.io.IOException;
-import java.util.zip.ZipEntry;
-import java.util.zip.ZipInputStream;
-import java.util.zip.ZipOutputStream;
 
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
@@ -71,7 +76,7 @@ public class MetaDataController
     @PreAuthorize( "hasRole('ALL') or hasRole('F_METADATA_EXPORT')" )
     public String export( ExportOptions exportOptions, Model model )
     {
-        DXF2 dxf2 = exportService.getMetaDataWithExportOptions( exportOptions );
+        DXF2 dxf2 = exportService.getMetaData( exportOptions );
 
         model.addAttribute( "model", dxf2 );
         model.addAttribute( "view", "export" );
@@ -83,7 +88,7 @@ public class MetaDataController
     @PreAuthorize( "hasRole('ALL') or hasRole('F_METADATA_EXPORT')" )
     public void exportZippedXML( ExportOptions exportOptions, HttpServletResponse response ) throws IOException, JAXBException
     {
-        DXF2 dxf2 = exportService.getMetaDataWithExportOptions( exportOptions );
+        DXF2 dxf2 = exportService.getMetaData( exportOptions );
 
         response.setContentType( ContextUtils.CONTENT_TYPE_ZIP );
         response.addHeader( "Content-Disposition", "attachment; filename=\"export.xml.zip\"" );
@@ -99,7 +104,7 @@ public class MetaDataController
     @PreAuthorize( "hasRole('ALL') or hasRole('F_METADATA_EXPORT')" )
     public void exportZippedJSON( ExportOptions exportOptions, HttpServletResponse response ) throws IOException, JAXBException
     {
-        DXF2 dxf2 = exportService.getMetaDataWithExportOptions( exportOptions );
+        DXF2 dxf2 = exportService.getMetaData( exportOptions );
 
         response.setContentType( ContextUtils.CONTENT_TYPE_ZIP );
         response.addHeader( "Content-Disposition", "attachment; filename=\"export.json.zip\"" );
