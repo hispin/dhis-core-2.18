@@ -27,15 +27,14 @@ package org.hisp.dhis.common;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
+
+import javax.annotation.PostConstruct;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
-
-import javax.annotation.PostConstruct;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.transaction.annotation.Transactional;
 
 import static org.hisp.dhis.common.IdentifiableObject.IdentifiableProperty;
 
@@ -55,12 +54,12 @@ public class DefaultIdentifiableObjectManager
     }
 
     private Map<Class<IdentifiableObject>, GenericIdentifiableObjectStore<IdentifiableObject>> objectStoreMap;
-    
+
     @PostConstruct
     public void init()
     {
         objectStoreMap = new HashMap<Class<IdentifiableObject>, GenericIdentifiableObjectStore<IdentifiableObject>>();
-        
+
         for ( GenericIdentifiableObjectStore<IdentifiableObject> store : objectStores )
         {
             objectStoreMap.put( store.getClazz(), store );
@@ -87,63 +86,83 @@ public class DefaultIdentifiableObjectManager
         objectStoreMap.get( object.getClass() ).delete( object );
     }
 
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings( "unchecked" )
     public <T extends IdentifiableObject> Map<String, T> getIdMap( Class<T> clazz, IdentifiableProperty property )
     {
         Map<String, T> map = new HashMap<String, T>();
-        
+
         GenericIdentifiableObjectStore<T> store = (GenericIdentifiableObjectStore<T>) objectStoreMap.get( clazz );
-        
+
         Collection<T> objects = store.getAll();
-        
+
         for ( T object : objects )
         {
             if ( IdentifiableProperty.ID.equals( property ) )
             {
-                map.put( String.valueOf( object.getId() ), object );
+                // since we are using primitives for ID, check that the ID is larger than 0, so that it is a valid
+                // hibernate identifier.
+                if ( object.getId() > 0 )
+                {
+                    map.put( String.valueOf( object.getId() ), object );
+                }
             }
             else if ( IdentifiableProperty.UID.equals( property ) )
             {
-                map.put( object.getUid(), object );
-            }
-            else if ( IdentifiableProperty.CODE.equals( property ) )
-            {
-                map.put( object.getCode(), object );
+                if ( object.getUid() != null )
+                {
+                    map.put( object.getUid(), object );
+                }
             }
             else if ( IdentifiableProperty.NAME.equals( property ) )
             {
-                map.put( object.getName(), object );
+                if ( object.getName() != null )
+                {
+                    map.put( object.getName(), object );
+                }
+            }
+            else if ( IdentifiableProperty.CODE.equals( property ) )
+            {
+                if ( object.getCode() != null )
+                {
+                    map.put( object.getCode(), object );
+                }
             }
         }
-        
+
         return map;
     }
 
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings( "unchecked" )
     public <T extends IdentifiableObject> T getObject( Class<T> clazz, IdentifiableProperty property, String id )
     {
         GenericIdentifiableObjectStore<T> store = (GenericIdentifiableObjectStore<T>) objectStoreMap.get( clazz );
-        
-        if ( IdentifiableProperty.ID.equals( property ) )
+
+        if ( id != null )
         {
-            return store.get( Integer.valueOf( id ) );
+            if ( IdentifiableProperty.ID.equals( property ) )
+            {
+                if ( Integer.valueOf( id ) > 0 )
+                {
+                    return store.get( Integer.valueOf( id ) );
+                }
+            }
+            else if ( IdentifiableProperty.UID.equals( property ) )
+            {
+                return store.getByUid( id );
+            }
+            else if ( IdentifiableProperty.CODE.equals( property ) )
+            {
+                return store.getByCode( id );
+            }
+            else if ( IdentifiableProperty.NAME.equals( property ) )
+            {
+                return store.getByName( id );
+            }
         }
-        else if ( IdentifiableProperty.UID.equals( property ) )
-        {
-            return store.getByUid( id );
-        }
-        else if ( IdentifiableProperty.CODE.equals( property ) )
-        {
-            return store.getByCode( id );
-        }
-        else if ( IdentifiableProperty.NAME.equals( property ) )
-        {
-            return store.getByName( id );
-        }
-        
+
         throw new IllegalArgumentException( String.valueOf( property ) );
     }
-    
+
     public IdentifiableObject getObject( String uid, String simpleClassName )
     {
         for ( GenericIdentifiableObjectStore<IdentifiableObject> objectStore : objectStores )
@@ -153,10 +172,10 @@ public class DefaultIdentifiableObjectManager
                 return objectStore.getByUid( uid );
             }
         }
-        
+
         return null;
     }
-    
+
     public IdentifiableObject getObject( int id, String simpleClassName )
     {
         for ( GenericIdentifiableObjectStore<IdentifiableObject> objectStore : objectStores )
@@ -166,7 +185,7 @@ public class DefaultIdentifiableObjectManager
                 return objectStore.get( id );
             }
         }
-        
+
         return null;
     }
 }
