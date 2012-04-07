@@ -29,6 +29,7 @@ package org.hisp.dhis.common;
 
 import org.hisp.dhis.common.IdentifiableObject.IdentifiableProperty;
 
+import java.util.Collection;
 import java.util.Map;
 
 /**
@@ -40,7 +41,9 @@ public interface IdentifiableObjectManager
 
     void update( IdentifiableObject object );
 
-    void get( Class<IdentifiableObject> clazz, String uid );
+    <T extends IdentifiableObject> void get( Class<T> clazz, String uid );
+    
+    <T extends IdentifiableObject> Collection<T> getAll( Class<T> clazz );
 
     void delete( IdentifiableObject object );
 
