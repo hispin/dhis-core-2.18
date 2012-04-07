@@ -38,9 +38,12 @@ import org.hisp.dhis.dxf2.importsummary.ImportCount;
 import org.hisp.dhis.dxf2.metadata.IdScheme;
 import org.hisp.dhis.dxf2.metadata.ImportOptions;
 import org.hisp.dhis.dxf2.metadata.Importer;
+import org.hisp.dhis.system.util.ReflectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.lang.reflect.Field;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
@@ -95,13 +98,17 @@ public abstract class AbstractIdentifiableObjectImporter<T extends BaseIdentifia
      */
     protected ImportConflict newObject( T object, ImportOptions options )
     {
-        if ( !options.isDryRun() )
+        if ( options.isDryRun() )
         {
-            log.info( "Trying to save new object with UID: " + object.getUid() );
-            manager.save( object );
-            log.info( "Save successful." );
-            updateIdMaps( object );
+            return null;
         }
+        log.info( "Trying to save new object with UID: " + object.getUid() );
+
+        findAndUpdateCollections( object );
+        //manager.save( object );
+        //updateIdMaps( object );
+
+        log.info( "Save successful." );
 
         return null;
     }
@@ -116,17 +123,46 @@ public abstract class AbstractIdentifiableObjectImporter<T extends BaseIdentifia
      */
     protected ImportConflict updatedObject( T object, T oldObject, ImportOptions options )
     {
-        oldObject.mergeWith( object );
-
-        if ( !options.isDryRun() )
+        if ( options.isDryRun() )
         {
-            log.info( "Trying to update object with UID: " + oldObject.getUid() );
-            manager.update( oldObject );
-            log.info( "Update successful." );
-
+            return null;
         }
 
+        log.info( "Trying to update object with UID: " + oldObject.getUid() );
+
+        findAndUpdateCollections( object );
+        // oldObject.mergeWith( object );
+        // manager.update( oldObject );
+
+        log.info( "Update successful." );
+
         return null;
+    }
+
+    private void findAndUpdateCollections( T object )
+    {
+        Field[] fields = object.getClass().getDeclaredFields();
+
+        for ( Field field : fields )
+        {
+            if(ReflectionUtils.isType( field, IdentifiableObject.class ))
+            {
+                IdentifiableObject identifiableObject = ReflectionUtils.invokeGetterMethod( field.getName(), object );
+                // we now have the identifiableObject, and can make sure that the reference is OK
+                log.info( identifiableObject );
+            }
+            else
+            {
+                boolean b = ReflectionUtils.isCollection( field.getName(), object, IdentifiableObject.class );
+
+                if ( b )
+                {
+                    Collection<IdentifiableObject> identifiableObjects = ReflectionUtils.invokeGetterMethod( field.getName(), object );
+                    // we now have the collection, and can make sure that references are OK
+                    log.info( identifiableObjects );
+                }
+            }
+        }
     }
 
     /**

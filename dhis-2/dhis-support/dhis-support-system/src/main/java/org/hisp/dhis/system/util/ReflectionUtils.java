@@ -27,7 +27,9 @@ package org.hisp.dhis.system.util;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.lang.reflect.Method;
+import org.springframework.util.StringUtils;
+
+import java.lang.reflect.*;
 import java.util.Collection;
 
 /**
@@ -35,6 +37,8 @@ import java.util.Collection;
  */
 public class ReflectionUtils
 {
+
+
     /**
      * Invokes method getId() for this object and returns the return value. An int
      * return type is expected. If the operation fails -1 is returned.
@@ -49,8 +53,7 @@ public class ReflectionUtils
             Method method = object.getClass().getMethod( "getId" );
 
             return (Integer) method.invoke( object );
-        }
-        catch ( Exception ex )
+        } catch ( Exception ex )
         {
             return -1;
         }
@@ -59,7 +62,7 @@ public class ReflectionUtils
     /**
      * Fetch a property off the object. Returns null if the operation fails.
      *
-     * @param object the object.
+     * @param object   the object.
      * @param property name of the property to get.
      * @return the value of the property or null.
      */
@@ -72,9 +75,8 @@ public class ReflectionUtils
             Method method = object.getClass().getMethod( "get" + property );
 
             return (String) method.invoke( object );
-        }
-        catch ( Exception ex )
-        {            
+        } catch ( Exception ex )
+        {
             return null;
         }
     }
@@ -84,14 +86,14 @@ public class ReflectionUtils
      * if the operation fails.
      *
      * @param object Object to modify
-     * @param name Name of property to set
-     * @param value Value the property will be set to
+     * @param name   Name of property to set
+     * @param value  Value the property will be set to
      */
     public static void setProperty( Object object, String name, String value )
     {
-        Object[] arguments = new Object[] { value };
+        Object[] arguments = new Object[]{value};
 
-        Class<?>[] parameterTypes = new Class<?>[] { String.class };
+        Class<?>[] parameterTypes = new Class<?>[]{String.class};
 
         if ( name.length() > 0 )
         {
@@ -100,10 +102,9 @@ public class ReflectionUtils
             try
             {
                 Method concatMethod = object.getClass().getMethod( name, parameterTypes );
-    
+
                 concatMethod.invoke( object, arguments );
-            }
-            catch ( Exception ex )
+            } catch ( Exception ex )
             {
                 throw new UnsupportedOperationException( "Failed to set property", ex );
             }
@@ -114,15 +115,15 @@ public class ReflectionUtils
      * Sets a property for the supplied object. Throws an UnsupportedOperationException
      * if the operation fails.
      *
-     * @param object Object to modify
-     * @param namePrefix prefix of the property name to set 
-     * @param name Name of property to set
-     * @param value Value the property will be set to
+     * @param object     Object to modify
+     * @param namePrefix prefix of the property name to set
+     * @param name       Name of property to set
+     * @param value      Value the property will be set to
      */
     public static void setProperty( Object object, String namePrefix, String name, String value )
     {
         String prefixed = namePrefix + name.substring( 0, 1 ).toUpperCase() + name.substring( 1, name.length() );
-        
+
         setProperty( object, prefixed, value );
     }
 
@@ -140,20 +141,100 @@ public class ReflectionUtils
 
     /**
      * Test whether the object is an array or a Collection.
-     * 
+     *
      * @param value the object.
      * @return true if the object is an array or a Collection, false otherwise.
      */
     public static boolean isCollection( Object value )
     {
         if ( value != null )
-        {                    
+        {
             if ( value.getClass().isArray() || value instanceof Collection<?> )
             {
                 return true;
             }
         }
-        
+
+        return false;
+    }
+
+    public static boolean isCollection( String fieldName, Object object, Class<?> type )
+    {
+        Field field = null;
+
+        try
+        {
+            field = object.getClass().getDeclaredField( fieldName );
+        } catch ( NoSuchFieldException e )
+        {
+            return false;
+        }
+
+        try
+        {
+            ParameterizedType parameterizedType = (ParameterizedType) field.getGenericType();
+            Type[] actualTypeArguments = parameterizedType.getActualTypeArguments();
+
+            if ( actualTypeArguments.length > 0 )
+            {
+                if ( type.isAssignableFrom( (Class<?>) actualTypeArguments[0] ) )
+                {
+                    return true;
+                }
+            }
+
+        } catch ( ClassCastException e )
+        {
+            return false;
+        }
+
+        return false;
+    }
+
+    public static Method findGetterMethod( String fieldName, Object object )
+    {
+        try
+        {
+            return object.getClass().getMethod( "get" + StringUtils.capitalize( fieldName ) );
+        } catch ( NoSuchMethodException e )
+        {
+            return null;
+        }
+    }
+
+    public static <T> T invokeGetterMethod( String fieldName, Object object )
+    {
+        Method method = findGetterMethod( fieldName, object );
+
+        if ( method == null )
+        {
+            return null;
+        }
+
+        try
+        {
+            return (T) method.invoke( object );
+        } catch ( ClassCastException e )
+        {
+            return null;
+        } catch ( InvocationTargetException e )
+        {
+            return null;
+        } catch ( IllegalAccessException e )
+        {
+            return null;
+        }
+    }
+
+    public static boolean isType(Field field, Class<?> clazz)
+    {
+        Class<?> type = field.getType();
+
+        if(clazz.isAssignableFrom( type ))
+        {
+            return true;
+        }
+
         return false;
     }
 }
