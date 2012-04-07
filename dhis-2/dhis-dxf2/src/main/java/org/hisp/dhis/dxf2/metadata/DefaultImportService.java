@@ -111,6 +111,7 @@ public class DefaultImportService
         // Imports.. this could be made even more generic, just need to make sure that everything is imported in
         // the correct order
         doImport( dxf2.getConstants(), importOptions, importSummary );
+        doImport( dxf2.getIndicators(), importOptions, importSummary );
 
         return importSummary;
     }
