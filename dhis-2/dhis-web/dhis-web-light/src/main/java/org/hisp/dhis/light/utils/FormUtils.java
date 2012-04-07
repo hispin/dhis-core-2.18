@@ -398,12 +398,4 @@ public class FormUtils
 
         return false;
     }
-
-    public static List<DataElementCategoryOptionCombo> sortedCategoryOptionCombos( Collection<DataElementCategoryOptionCombo> categoryOptionCombos )
-    {
-        List<DataElementCategoryOptionCombo> sortedCategoryOptionCombos = new ArrayList<DataElementCategoryOptionCombo>( categoryOptionCombos );
-        Collections.sort( sortedCategoryOptionCombos, new IdentifiableObjectNameComparator() );
-
-        return sortedCategoryOptionCombos;
-    }
 }
