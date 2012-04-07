@@ -53,7 +53,7 @@ public class DefaultImportService
     @Autowired
     private Set<Importer> importerClasses = new HashSet<Importer>();
 
-    private Importer findImporterClass( List<?> clazzes )
+    private <T> Importer<T> findImporterClass( List<?> clazzes )
     {
         if ( !clazzes.isEmpty() )
         {
@@ -63,9 +63,9 @@ public class DefaultImportService
         return null;
     }
 
-    private Importer findImporterClass( Class<?> clazz )
+    private <T> Importer<T> findImporterClass( Class<?> clazz )
     {
-        for ( Importer i : importerClasses )
+        for ( Importer<T> i : importerClasses )
         {
             if ( i.canHandle( clazz ) )
             {
@@ -76,11 +76,11 @@ public class DefaultImportService
         return null;
     }
 
-    private void doImport( List<?> objects, ImportOptions importOptions, ImportSummary importSummary )
+    private <T> void doImport( List<T> objects, ImportOptions importOptions, ImportSummary importSummary )
     {
         if ( !objects.isEmpty() )
         {
-            Importer importer = findImporterClass( objects );
+            Importer<T> importer = findImporterClass( objects );
 
             if ( importer != null )
             {
