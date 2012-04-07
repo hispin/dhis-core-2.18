@@ -100,11 +100,11 @@ public class DefaultImportService
     @Override
     public ImportSummary importDxf2( DXF2 dxf2 )
     {
-        return importDxf2WithImportOptions( dxf2, ImportOptions.getDefaultImportOptions() );
+        return importDxf2( dxf2, ImportOptions.getDefaultImportOptions() );
     }
 
     @Override
-    public ImportSummary importDxf2WithImportOptions( DXF2 dxf2, ImportOptions importOptions )
+    public ImportSummary importDxf2( DXF2 dxf2, ImportOptions importOptions )
     {
         ImportSummary importSummary = new ImportSummary();
 
