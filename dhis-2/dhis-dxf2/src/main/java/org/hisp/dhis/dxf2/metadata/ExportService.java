@@ -34,5 +34,5 @@ public interface ExportService
 {
     DXF2 getMetaData();
 
-    DXF2 getMetaDataWithExportOptions( ExportOptions options );
+    DXF2 getMetaData( ExportOptions options );
 }

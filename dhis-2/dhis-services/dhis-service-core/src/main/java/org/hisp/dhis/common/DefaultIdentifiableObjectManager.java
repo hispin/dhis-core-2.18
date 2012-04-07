@@ -27,16 +27,16 @@ package org.hisp.dhis.common;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.transaction.annotation.Transactional;
-
-import javax.annotation.PostConstruct;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
-import static org.hisp.dhis.common.IdentifiableObject.IdentifiableProperty;
+import javax.annotation.PostConstruct;
+
+import org.hisp.dhis.common.IdentifiableObject.IdentifiableProperty;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * @author Lars Helge Overland
@@ -76,9 +76,15 @@ public class DefaultIdentifiableObjectManager
         objectStoreMap.get( object.getClass() ).update( object );
     }
 
-    public void get( Class<IdentifiableObject> clazz, String uid )
+    public <T extends IdentifiableObject> void get( Class<T> clazz, String uid )
     {
         objectStoreMap.get( clazz ).getByUid( uid );
+    }
+    
+    @SuppressWarnings("unchecked")
+    public <T extends IdentifiableObject> Collection<T> getAll( Class<T> clazz )
+    {
+        return (Collection<T>) objectStoreMap.get( clazz ).getAll();
     }
 
     public void delete( IdentifiableObject object )
@@ -99,8 +105,6 @@ public class DefaultIdentifiableObjectManager
         {
             if ( IdentifiableProperty.ID.equals( property ) )
             {
-                // since we are using primitives for ID, check that the ID is larger than 0, so that it is a valid
-                // hibernate identifier.
                 if ( object.getId() > 0 )
                 {
                     map.put( String.valueOf( object.getId() ), object );
