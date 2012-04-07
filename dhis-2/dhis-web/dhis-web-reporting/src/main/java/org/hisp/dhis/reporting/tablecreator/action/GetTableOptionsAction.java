@@ -48,11 +48,9 @@ import org.hisp.dhis.i18n.I18nFormat;
 import org.hisp.dhis.indicator.Indicator;
 import org.hisp.dhis.indicator.IndicatorGroup;
 import org.hisp.dhis.indicator.IndicatorService;
-import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroup;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroupService;
-import org.hisp.dhis.organisationunit.OrganisationUnitLevel;
-import org.hisp.dhis.organisationunit.OrganisationUnitService;
+import org.hisp.dhis.oust.manager.SelectionTreeManager;
 import org.hisp.dhis.period.MonthlyPeriodType;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodService;
@@ -120,13 +118,6 @@ public class GetTableOptionsAction
         this.periodService = periodService;
     }
     
-    private OrganisationUnitService organisationUnitService;
-
-    public void setOrganisationUnitService( OrganisationUnitService organisationUnitService )
-    {
-        this.organisationUnitService = organisationUnitService;
-    }
-    
     private OrganisationUnitGroupService organisationUnitGroupService;
     
     public void setOrganisationUnitGroupService( OrganisationUnitGroupService organisationUnitGroupService )
@@ -139,6 +130,13 @@ public class GetTableOptionsAction
     public void setDataSetService( DataSetService dataSetService )
     {
         this.dataSetService = dataSetService;
+    }
+
+    private SelectionTreeManager selectionTreeManager;
+
+    public void setSelectionTreeManager( SelectionTreeManager selectionTreeManager )
+    {
+        this.selectionTreeManager = selectionTreeManager;
     }
     
     private I18nFormat format;
@@ -230,21 +228,7 @@ public class GetTableOptionsAction
     {
         return periods;
     }
-    
-    private List<OrganisationUnitLevel> levels = new ArrayList<OrganisationUnitLevel>();
-
-    public List<OrganisationUnitLevel> getLevels()
-    {
-        return levels;
-    }
-    
-    private List<OrganisationUnit> organisationUnits = new ArrayList<OrganisationUnit>();
-
-    public List<OrganisationUnit> getOrganisationUnits()
-    {
-        return organisationUnits;
-    }
-    
+            
     private List<OrganisationUnitGroup> organisationUnitGroups = new ArrayList<OrganisationUnitGroup>();
 
     public List<OrganisationUnitGroup> getOrganisationUnitGroups()
@@ -286,14 +270,7 @@ public class GetTableOptionsAction
     {
         return selectedPeriods;
     }
-    
-    private List<OrganisationUnit> selectedOrganisationUnits = new ArrayList<OrganisationUnit>();
-
-    public List<OrganisationUnit> getSelectedOrganisationUnits()
-    {
-        return selectedOrganisationUnits;
-    }
-    
+        
     private List<OrganisationUnitGroup> selectedOrganisationUnitGroups = new ArrayList<OrganisationUnitGroup>();
 
     public List<OrganisationUnitGroup> getSelectedOrganisationUnitGroups()
@@ -355,11 +332,6 @@ public class GetTableOptionsAction
         Collections.reverse( periods );
         FilterUtils.filter( periods, new PastAndCurrentPeriodFilter() );
         
-        levels = organisationUnitService.getOrganisationUnitLevels();
-        
-        organisationUnits = new ArrayList<OrganisationUnit>( organisationUnitService.getOrganisationUnitsAtLevel( 1 ) );
-        Collections.sort( organisationUnits, new IdentifiableObjectNameComparator() );
-        
         organisationUnitGroups = new ArrayList<OrganisationUnitGroup>( organisationUnitGroupService.getOrganisationUnitGroupsWithGroupSets() );
         Collections.sort( organisationUnitGroups, new IdentifiableObjectNameComparator() );
         
@@ -381,6 +353,8 @@ public class GetTableOptionsAction
             reportingPeriods.put( month, periodName );
         }
         
+        selectionTreeManager.clearSelectedOrganisationUnits();
+        
         // ---------------------------------------------------------------------
         // Report table
         // ---------------------------------------------------------------------
@@ -397,8 +371,6 @@ public class GetTableOptionsAction
             
             periods.removeAll( reportTable.getPeriods() );
             
-            organisationUnits.removeAll( reportTable.getUnits() );
-
             selectedDataElements = reportTable.getDataElements();
             
             selectedIndicators = reportTable.getIndicators();
@@ -407,9 +379,9 @@ public class GetTableOptionsAction
             
             selectedPeriods = reportTable.getPeriods();
             
-            selectedOrganisationUnits = reportTable.getUnits();
-            
             selectedOrganisationUnitGroups = reportTable.getOrganisationUnitGroups();
+
+            selectionTreeManager.setSelectedOrganisationUnits( reportTable.getUnits() );
         }
         
         return SUCCESS;

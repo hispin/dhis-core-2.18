@@ -114,44 +114,6 @@ function getIndicatorsReceived( xmlObject )
     }
 }
 
-function getOrganisationUnits()
-{
-    var organisationUnitLevelList = document.getElementById( "organisationUnitLevel" );
-    var organisationUnitLevel = organisationUnitLevelList.options[organisationUnitLevelList.selectedIndex].value;
-
-    if ( organisationUnitLevel != null )
-    {
-		$.get( '../dhis-web-commons-ajax/getOrganisationUnits.action',
-		{
-			level: organisationUnitLevel
-		},getOrganisationUnitsReceived );
-    }
-}
-
-function getOrganisationUnitsReceived( xmlObject )
-{
-    var availableOrganisationUnits = byId( "availableOrganisationUnits" );
-    var selectedOrganisationUnits = byId( "selectedOrganisationUnits" );
-
-    clearList( availableOrganisationUnits );
-
-    var organisationUnits = xmlObject.getElementsByTagName( "organisationUnit" );
-
-    for ( var i = 0; i < organisationUnits.length; i++ )
-    {
-        var id = organisationUnits[i].getElementsByTagName( "id" )[0].firstChild.nodeValue;
-        var organisationUnitName = organisationUnits[i].getElementsByTagName( "name" )[0].firstChild.nodeValue;
-
-        if ( listContains( selectedOrganisationUnits, id ) == false )
-        {
-            var option = document.createElement( "option" );
-            option.value = id;
-            option.text = organisationUnitName;
-            availableOrganisationUnits.add( option, null );
-        }
-    }
-}
-
 function getOrganisationUnitChildren()
 {
     var organisationUnitList = byId( "availableOrganisationUnits" );

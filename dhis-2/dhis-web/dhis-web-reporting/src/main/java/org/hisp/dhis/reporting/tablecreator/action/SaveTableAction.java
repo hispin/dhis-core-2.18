@@ -44,7 +44,7 @@ import org.hisp.dhis.indicator.IndicatorService;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroup;
 import org.hisp.dhis.organisationunit.OrganisationUnitGroupService;
-import org.hisp.dhis.organisationunit.OrganisationUnitService;
+import org.hisp.dhis.oust.manager.SelectionTreeManager;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodService;
 import org.hisp.dhis.period.RelativePeriods;
@@ -100,13 +100,6 @@ public class SaveTableAction
         this.periodService = periodService;
     }
     
-    private OrganisationUnitService organisationUnitService;
-
-    public void setOrganisationUnitService( OrganisationUnitService organisationUnitService )
-    {
-        this.organisationUnitService = organisationUnitService;
-    }
-    
     private OrganisationUnitGroupService organisationUnitGroupService;
     
     public void setOrganisationUnitGroupService( OrganisationUnitGroupService organisationUnitGroupService )
@@ -121,6 +114,13 @@ public class SaveTableAction
         this.dataSetService = dataSetService;
     }
 
+    private SelectionTreeManager selectionTreeManager;
+
+    public void setSelectionTreeManager( SelectionTreeManager selectionTreeManager )
+    {
+        this.selectionTreeManager = selectionTreeManager;
+    }
+    
     // -------------------------------------------------------------------------
     // Input
     // -------------------------------------------------------------------------
@@ -221,13 +221,6 @@ public class SaveTableAction
     public void setSelectedPeriods( List<String> selectedPeriods )
     {
         this.selectedPeriods = selectedPeriods;
-    }
-
-    private List<String> selectedOrganisationUnits = new ArrayList<String>();
-
-    public void setSelectedOrganisationUnits( List<String> selectedOrganisationUnits )
-    {
-        this.selectedOrganisationUnits = selectedOrganisationUnits;
     }
     
     private List<String> selectedOrganisationUnitGroups = new ArrayList<String>();
@@ -396,7 +389,7 @@ public class SaveTableAction
         List<DataElement> dataElements = new ArrayList<DataElement>();        
         List<Indicator> indicators = new ArrayList<Indicator>();
         List<DataSet> dataSets = new ArrayList<DataSet>();
-        List<OrganisationUnit> units = new ArrayList<OrganisationUnit>();
+        List<OrganisationUnit> units = new ArrayList<OrganisationUnit>( selectionTreeManager.getReloadedSelectedOrganisationUnits() );
         List<OrganisationUnitGroup> organisationUnitGroups = new ArrayList<OrganisationUnitGroup>(); 
 
         for ( Integer id : getIntegerCollection( selectedDataElements ) )
@@ -413,12 +406,7 @@ public class SaveTableAction
         {
             dataSets.add( dataSetService.getDataSet( id ) );
         }
-        
-        for ( Integer id : getIntegerCollection( selectedOrganisationUnits ) )
-        {
-            units.add( organisationUnitService.getOrganisationUnit( id ) );
-        }
-        
+                
         for ( Integer id : getIntegerCollection( selectedOrganisationUnitGroups ) )
         {
             organisationUnitGroups.add( organisationUnitGroupService.getOrganisationUnitGroup( id ) );

@@ -330,64 +330,11 @@
 
 <span><a href="javascript:toggleFixedOrganisationUnits()">$i18n.getString( "toggle_fixed_organisation_units" )</a>&nbsp;</span>
 
-<div id="fixedOrganisationUnits" style="display:none">
+<div id="fixedOrganisationUnits" style="display:none; margin-top:2px; margin-bottom:15px;">
 
-<table>
-	
-	<!-- OrganisationUnits -->
-	
-	<tr>
-		<th>$i18n.getString( "available_organisationunits" )</th>
-	</tr>
-	<tr>
-		<td>
-			<select id="organisationUnitLevel" name="organisationUnitLevel" style="min-width:640px" onchange="getOrganisationUnits()">
-				<option value="$ALL">[ $i18n.getString( "select_organisationunit_level_all" ) ]</option>
-				#foreach ( $level in $levels )
-					#if( $velocityCount == 1)
-					<option value="$level.level" selected="selected">$encoder.htmlEncode( $level.name )</option>
-					#else
-					<option value="$level.level">$encoder.htmlEncode( $level.name )</option>
-					#end
-				#end
-			</select>
-		</td>
-	</tr>
-	<tr>
-		<td>
-			<select multiple size="6" id="availableOrganisationUnits" name="availableOrganisationUnits" style="min-width:640px" ondblclick="moveSelectedById( 'availableOrganisationUnits', 'selectedOrganisationUnits' )">
-				#foreach ( $unit in $organisationUnits )
-					<option value="$unit.id">$encoder.htmlEncode( $unit.name )</option>
-				#end
-			</select>
-		</td>
-	</tr>
-	<tr>
-		<td>
-			<input type="button" value="$i18n.getString( 'add_selected' )" title="$i18n.getString( 'add_selected' )" style="width:120px" onclick="moveSelectedById( 'availableOrganisationUnits', 'selectedOrganisationUnits' )"><input 
-				type="button" value="$i18n.getString( 'add_all' )" title="$i18n.getString( 'add_all' )" style="width:120px" onclick="moveAllById( 'availableOrganisationUnits', 'selectedOrganisationUnits' )"><input 
-                type="button" value="$i18n.getString( 'add_children' )" title="$i18n.getString( 'add_children' )" style="width:120px" onclick="getOrganisationUnitChildren()"><input 
-				type="button" value="$i18n.getString( 'remove_selected' )" title="$i18n.getString( 'remove_selected' )" style="width:120px" onclick="moveSelectedById( 'selectedOrganisationUnits', 'availableOrganisationUnits' )"><input 
-				type="button" value="$i18n.getString( 'remove_all' )" title="$i18n.getString( 'remove_all' )" style="width:120px" onclick="moveAllById( 'selectedOrganisationUnits', 'availableOrganisationUnits' )">
-		</td>
-	</tr>
-	<tr>
-		<th>$i18n.getString( "selected_organisationunits" )</th>
-	</tr>
-	<tr>
-		<td>
-			<select multiple size="6" id="selectedOrganisationUnits" name="selectedOrganisationUnits" style="min-width:640px" ondblclick="moveSelectedById( 'selectedOrganisationUnits', 'availableOrganisationUnits' )">				
-				#foreach ( $unit in $selectedOrganisationUnits )
-					<option value="$unit.id">$encoder.htmlEncode( $unit.name )</option>
-				#end
-			</select>
-		</td>
-	</tr>
-	<tr>
-		<td style="height:15px"></td>
-	</tr>
-	
-</table>
+	<!-- Organisation Units -->
+
+#organisationUnitSelectionTree( false true false )
 
 </div>
 

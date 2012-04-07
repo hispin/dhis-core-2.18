@@ -75,7 +75,7 @@ function validateCollections()
         return false;
     }
 
-    if ( !hasElements( "selectedOrganisationUnits" ) && !hasElements( "selectedOrganisationUnitGroups" ) && !organisationUnitReportParamsChecked() )
+    if ( !selectionTreeSelection.isSelected() && !hasElements( "selectedOrganisationUnitGroups" ) && !organisationUnitReportParamsChecked() )
     {
         setMessage( i18n_must_select_at_least_one_unit );
 

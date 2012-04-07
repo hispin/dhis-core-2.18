@@ -160,7 +160,7 @@
       <result name="success" type="velocity">/main.vm</result>
       <param name="page">/dhis-web-reporting/addTableForm.vm</param>
       <param name="menu">/dhis-web-reporting/menu.vm</param>
-      <param name="javascripts">javascript/table.js,javascript/lists.js</param>
+      <param name="javascripts">../dhis-web-commons/oust/oust.js,javascript/table.js,javascript/lists.js</param>
       <param name="requiredAuthorities">F_REPORTTABLE_ADD</param>
     </action>
 
