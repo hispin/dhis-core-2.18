@@ -38,5 +38,5 @@ public interface ImportService
 {
     ImportSummary importDxf2( DXF2 dxf2 );
 
-    ImportSummary importDxf2WithImportOptions( DXF2 dxf2, ImportOptions importOptions );
+    ImportSummary importDxf2( DXF2 dxf2, ImportOptions importOptions );
 }
