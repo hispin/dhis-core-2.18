@@ -54,7 +54,7 @@ public class DefaultImportService
     @Autowired
     private Set<Importer> importerClasses = new HashSet<Importer>();
 
-    private Importer findImporterClass( List<? extends IdentifiableObject> clazzes )
+    private Importer findImporterClass( List<?> clazzes )
     {
         if ( !clazzes.isEmpty() )
         {
@@ -77,7 +77,7 @@ public class DefaultImportService
         return null;
     }
 
-    private void doImport( List<? extends IdentifiableObject> objects, ImportOptions importOptions, ImportSummary importSummary )
+    private void doImport( List<?> objects, ImportOptions importOptions, ImportSummary importSummary )
     {
         if ( !objects.isEmpty() )
         {
