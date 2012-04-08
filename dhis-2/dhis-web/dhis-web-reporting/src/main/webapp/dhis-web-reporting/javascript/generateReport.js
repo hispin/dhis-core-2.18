@@ -45,7 +45,7 @@ function viewReport( type )
 
 function getUrlParams()
 {
-    var url = "id=" + $( "#id" ).val() + "&mode=" + $( "#mode" ).val();
+    var url = "id=" + $( "#id" ).val();
 
     if ( $( "#reportingPeriod" ).length )
     {
