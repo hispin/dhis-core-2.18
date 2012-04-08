@@ -103,7 +103,7 @@ public class ContextUtils
         }
         else if ( cacheStrategy.equals( CacheStrategy.CACHE_6AM_TOMORROW ) )
         {
-            response.setHeader( HEADER_CACHE_CONTROL, "max-age=" + DateUtils.getSecondsUntilTomorrow( 6 ) );
+            response.setHeader( HEADER_CACHE_CONTROL, "public, max-age=" + DateUtils.getSecondsUntilTomorrow( 6 ) );
             response.setHeader( HEADER_EXPIRES, DateUtils.getHttpDateString( DateUtils.getDateForTomorrow( 6 ) ) );
         }
         else if ( cacheStrategy.equals( CacheStrategy.CACHE_TWO_WEEKS ) )
@@ -111,7 +111,7 @@ public class ContextUtils
             Calendar cal = Calendar.getInstance();
             cal.add( Calendar.DAY_OF_YEAR, 14 );
             
-            response.setHeader( HEADER_CACHE_CONTROL, "max-age=1209600" );
+            response.setHeader( HEADER_CACHE_CONTROL, "public, max-age=1209600" );
             response.setHeader( HEADER_EXPIRES, DateUtils.getHttpDateString( cal.getTime() ) );
         }
 
