@@ -5,7 +5,7 @@
     >
 
   <xsl:template match="d:header">
-	<th> <xsl:value-of select="@d:name"/> </th>
+	<th> <xsl:value-of select="@name"/> </th>
   </xsl:template>
   
   <xsl:template match="d:rows">

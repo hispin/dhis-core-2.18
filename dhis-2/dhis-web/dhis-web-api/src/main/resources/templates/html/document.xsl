@@ -6,23 +6,23 @@
 
   <xsl:template match="d:document">
     <div class="document">
-      <h2> <xsl:value-of select="@d:name" /> </h2>
+      <h2> <xsl:value-of select="@name" /> </h2>
 	  
 	  <table>
 		<tr>
 			<td>Resource Data</td>
-			<td><a href="{@d:link}/data">any</a></td>
+			<td><a href="{@link}/data">any</a></td>
 		</tr>
 	  </table><br/>
 	  
       <table>
         <tr>
           <td>ID</td>
-          <td> <xsl:value-of select="@d:id" /> </td>
+          <td> <xsl:value-of select="@id" /> </td>
         </tr>
         <tr>
           <td>Last Updated</td>
-          <td> <xsl:value-of select="@d:lastUpdated" /> </td>
+          <td> <xsl:value-of select="@lastUpdated" /> </td>
         </tr>
         <tr>
           <td>URL</td>

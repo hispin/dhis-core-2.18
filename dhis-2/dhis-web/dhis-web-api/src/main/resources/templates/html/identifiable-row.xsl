@@ -4,11 +4,11 @@
 
   <xsl:template match="*" mode="row">
     <tr>
-      <td> <xsl:value-of select="@d:name"/> </td>
-      <td> <a href="{@d:link}">html</a> </td>
-      <td> <a href="{@d:link}.xml">xml</a> </td>
-      <td> <a href="{@d:link}.json">json</a> </td>
-      <td> <a href="{@d:link}.jsonp">jsonp</a> </td>
+      <td> <xsl:value-of select="@name"/> </td>
+      <td> <a href="{@link}">html</a> </td>
+      <td> <a href="{@link}.xml">xml</a> </td>
+      <td> <a href="{@link}.json">json</a> </td>
+      <td> <a href="{@link}.jsonp">jsonp</a> </td>
     </tr>
   </xsl:template>
 

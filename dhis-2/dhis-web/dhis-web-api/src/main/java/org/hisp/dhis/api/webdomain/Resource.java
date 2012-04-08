@@ -72,7 +72,7 @@ public class Resource
 
     @JsonProperty
     @JsonView( {DetailedView.class} )
-    @JacksonXmlProperty( isAttribute = true, namespace = Dxf2Namespace.NAMESPACE )
+    @JacksonXmlProperty( isAttribute = true )
     public String getName()
     {
         return name;
