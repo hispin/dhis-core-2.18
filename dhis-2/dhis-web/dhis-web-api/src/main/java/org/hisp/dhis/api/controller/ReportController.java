@@ -136,8 +136,8 @@ public class ReportController
     @RequestMapping( value = {"/{uid}/data", "/{uid}/data.pdf"}, method = RequestMethod.GET )
     public void getReportAsPdf( @PathVariable( "uid" ) String uid,
                                 @RequestParam( value = "ou", required = false ) String organisationUnitUid,
-                                @RequestParam( value = "pe", required = false ) String period, HttpServletResponse response )
-        throws Exception
+                                @RequestParam( value = "pe", required = false ) String period, 
+                                HttpServletResponse response ) throws Exception
     {
         getReport( uid, organisationUnitUid, period, response, "pdf", ContextUtils.CONTENT_TYPE_PDF, false );
     }
@@ -145,8 +145,8 @@ public class ReportController
     @RequestMapping( value = "/{uid}/data.xls", method = RequestMethod.GET )
     public void getReportAsXls( @PathVariable( "uid" ) String uid,
                                 @RequestParam( value = "ou", required = false ) String organisationUnitUid,
-                                @RequestParam( value = "pe", required = false ) String period, HttpServletResponse response )
-        throws Exception
+                                @RequestParam( value = "pe", required = false ) String period, 
+                                HttpServletResponse response ) throws Exception
     {
         getReport( uid, organisationUnitUid, period, response, "xls", ContextUtils.CONTENT_TYPE_EXCEL, true );
     }
@@ -160,7 +160,7 @@ public class ReportController
     {
         Report report = reportService.getReport( uid );
 
-        if ( report.hasReportTable() && report.getReportTable().hasReportParams()
+        if ( organisationUnitUid == null && report.hasReportTable() && report.getReportTable().hasReportParams()
             && report.getReportTable().getReportParams().isOrganisationUnitSet() )
         {
             organisationUnitUid = organisationUnitService.getRootOrganisationUnits().iterator().next().getUid();
