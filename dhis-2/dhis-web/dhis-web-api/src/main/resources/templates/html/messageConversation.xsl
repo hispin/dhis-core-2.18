@@ -7,20 +7,20 @@
   <xsl:template match="d:messageConversation">
     <div class="messageConversation">
       <h2>
-        <xsl:value-of select="@d:name" />
+        <xsl:value-of select="@name" />
       </h2>
       <table>
         <tr>
           <td>ID</td>
-          <td> <xsl:value-of select="@d:id" /> </td>
+          <td> <xsl:value-of select="@id" /> </td>
         </tr>
         <tr>
           <td>Last Updated</td>
-          <td> <xsl:value-of select="@d:lastUpdated" /> </td>
+          <td> <xsl:value-of select="@lastUpdated" /> </td>
         </tr>
         <tr>
           <td>Code</td>
-          <td> <xsl:value-of select="@d:code" /> </td>
+          <td> <xsl:value-of select="@code" /> </td>
         </tr>
       </table>
 
@@ -49,7 +49,7 @@
       </tr>
       <tr>
         <td>Sender</td>
-        <td> <xsl:value-of select="d:sender/@d:name" /> </td>
+        <td> <xsl:value-of select="d:sender/@name" /> </td>
       </tr>
     </table>
     <br/>

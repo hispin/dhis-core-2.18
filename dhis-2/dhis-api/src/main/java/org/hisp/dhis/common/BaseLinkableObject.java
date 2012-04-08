@@ -45,7 +45,7 @@ public class BaseLinkableObject
     private transient String link;
 
     @JsonProperty
-    @JacksonXmlProperty( isAttribute = true, namespace = Dxf2Namespace.NAMESPACE )
+    @JacksonXmlProperty( isAttribute = true )
     public String getLink()
     {
         return link;

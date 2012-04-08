@@ -4,12 +4,12 @@
 
   <xsl:template match="d:map">
     <div class="map">
-      <h2><xsl:value-of select="@d:name"/></h2>
+      <h2><xsl:value-of select="@name"/></h2>
 	  
 	  <table>
 		<tr>
 			<td>Resource Data</td>
-			<td><a href="{@d:link}/data">png</a></td>
+			<td><a href="{@link}/data">png</a></td>
 		</tr>
 	  </table><br/>
 	  
@@ -32,7 +32,7 @@
 		</tr>
 	  </table><br/>
 	  
-      <a href="{@d:link}/data"><img src="{@d:link}/data" style="border-style:solid; border-width: 1px; padding: 5px;" /></a>
+      <a href="{@link}/data"><img src="{@link}/data" style="border-style:solid; border-width: 1px; padding: 5px;" /></a>
 
       <h3>Details</h3>
 
@@ -43,7 +43,7 @@
         <xsl:for-each select="child::*">
           <tr><td><xsl:value-of select="local-name()"/></td><td>
             <xsl:choose>
-              <xsl:when test="@d:name"><a href="{@d:link}"><xsl:value-of select="@d:name"/></a>
+              <xsl:when test="@name"><a href="{@link}"><xsl:value-of select="@name"/></a>
               </xsl:when>
               <xsl:otherwise><xsl:value-of select="."/></xsl:otherwise>
             </xsl:choose>
@@ -55,34 +55,34 @@
 
   <xsl:template match="d:map" mode="row">
     <tr>
-      <td><xsl:value-of select="@d:name"/></td>
+      <td><xsl:value-of select="@name"/></td>
       <td>
         <xsl:element name="a">
-          <xsl:attribute name="href"><xsl:value-of select="@d:link"/></xsl:attribute>
+          <xsl:attribute name="href"><xsl:value-of select="@link"/></xsl:attribute>
           <xsl:text>html</xsl:text>
         </xsl:element>
       </td>
       <td>
         <xsl:element name="a">
-          <xsl:attribute name="href"><xsl:value-of select="concat(@d:link,'.png')"/></xsl:attribute>
+          <xsl:attribute name="href"><xsl:value-of select="concat(@link,'.png')"/></xsl:attribute>
           <xsl:text>png</xsl:text>
         </xsl:element>
       </td>
       <td>
         <xsl:element name="a">
-          <xsl:attribute name="href"><xsl:value-of select="concat(@d:link,'.xml')"/></xsl:attribute>
+          <xsl:attribute name="href"><xsl:value-of select="concat(@link,'.xml')"/></xsl:attribute>
           <xsl:text>xml</xsl:text>
         </xsl:element>
       </td>
       <td>
         <xsl:element name="a">
-          <xsl:attribute name="href"><xsl:value-of select="concat(@d:link,'.json')"/></xsl:attribute>
+          <xsl:attribute name="href"><xsl:value-of select="concat(@link,'.json')"/></xsl:attribute>
           <xsl:text>json</xsl:text>
         </xsl:element>
       </td>
       <td>
         <xsl:element name="a">
-          <xsl:attribute name="href"><xsl:value-of select="concat(@d:link,'.jsonp')"/></xsl:attribute>
+          <xsl:attribute name="href"><xsl:value-of select="concat(@link,'.jsonp')"/></xsl:attribute>
           <xsl:text>jsonp</xsl:text>
         </xsl:element>
       </td>
