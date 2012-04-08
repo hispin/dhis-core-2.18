@@ -54,7 +54,7 @@ function getUrlParams()
 
     if ( selectionTreeSelection.isSelected() )
     {
-        url += "&organisationUnitId=" + selectedOrganisationUnit[0];
+        url += "&organisationUnitId=" + selectionTreeSelection.getSelected()[0];
     }
 
     return url;
