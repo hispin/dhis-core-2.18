@@ -27,9 +27,15 @@ package org.hisp.dhis.system.startup;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import java.sql.Driver;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+import java.util.Enumeration;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.context.support.WebApplicationContextUtils;
 
@@ -40,6 +46,8 @@ import org.springframework.web.context.support.WebApplicationContextUtils;
 public class StartupListener
     implements ServletContextListener
 {
+    
+    private static final Log LOG = LogFactory.getLog( StartupListener.class );
     // -------------------------------------------------------------------------
     // ServletContextListener implementation
     // -------------------------------------------------------------------------
@@ -64,5 +72,17 @@ public class StartupListener
 
     public void contextDestroyed( ServletContextEvent event )
     {
+        // cleanup jdbc drivers
+        Enumeration<Driver> drivers = DriverManager.getDrivers();
+        while (drivers.hasMoreElements()) {
+            Driver driver = drivers.nextElement();
+            try {
+                DriverManager.deregisterDriver(driver);
+                LOG.info("deregistering jdbc driver: " + driver);
+            } catch (SQLException e) {
+                LOG.info("Error deregistering driver " + driver + " :" + e.getMessage());
+            }
+        }
+        
     }
 }
