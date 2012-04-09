@@ -29,7 +29,6 @@ package org.hisp.dhis.dataadmin.action.sqlview;
 
 import org.hisp.dhis.common.Grid;
 import org.hisp.dhis.sqlview.SqlViewService;
-import org.hisp.dhis.util.SessionUtils;
 
 import com.opensymphony.xwork2.Action;
 
@@ -66,13 +65,6 @@ public class ExportSqlViewResultAction
         this.viewTableName = viewTableName;
     }
 
-    private boolean useLast;
-
-    public void setUseLast( boolean useLast )
-    {
-        this.useLast = useLast;
-    }
-
     public void setType( String type )
     {
         this.type = type;
@@ -107,16 +99,7 @@ public class ExportSqlViewResultAction
 
     public String execute()
     {
-        if ( useLast )
-        {
-            grid = (Grid) SessionUtils.getSessionVar( SessionUtils.KEY_SQLVIEW_GRID );
-        }
-        else
-        {
-            grid = sqlViewService.getDataSqlViewGrid( viewTableName );
-        }
-
-        SessionUtils.setSessionVar( SessionUtils.KEY_SQLVIEW_GRID, grid );
+        grid = sqlViewService.getDataSqlViewGrid( viewTableName );
 
         return type != null ? type : DEFAULT_TYPE;
     }
