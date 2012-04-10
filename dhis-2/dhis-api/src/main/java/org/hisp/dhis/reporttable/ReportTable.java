@@ -35,10 +35,7 @@ import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlElementWrapper;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 import org.apache.commons.lang.StringUtils;
-import org.hisp.dhis.common.BaseIdentifiableObject;
-import org.hisp.dhis.common.CombinationGenerator;
-import org.hisp.dhis.common.Dxf2Namespace;
-import org.hisp.dhis.common.NameableObject;
+import org.hisp.dhis.common.*;
 import org.hisp.dhis.common.view.DetailedView;
 import org.hisp.dhis.common.view.ExportView;
 import org.hisp.dhis.dataelement.DataElement;
@@ -77,33 +74,33 @@ public class ReportTable
     public static final String DATAELEMENT_ID = "dataelementid";
     public static final String CATEGORYCOMBO_ID = "categoryoptioncomboid";
     public static final String CATEGORYOPTION_ID = "categoryoptionid";
-    
+
     public static final String INDICATOR_ID = "indicatorid";
     public static final String INDICATOR_UID = "indicatoruid";
     public static final String INDICATOR_NAME = "indicatorname";
     public static final String INDICATOR_CODE = "indicatorcode";
     public static final String INDICATOR_DESCRIPTION = "indicatordescription";
-    
+
     public static final String DATASET_ID = "datasetid";
-    
+
     public static final String PERIOD_ID = "periodid";
     public static final String PERIOD_UID = "perioduid";
     public static final String PERIOD_NAME = "periodname";
     public static final String PERIOD_CODE = "periodcode";
     public static final String PERIOD_DESCRIPTION = "perioddescription";
-    
+
     public static final String ORGANISATIONUNIT_ID = "organisationunitid";
     public static final String ORGANISATIONUNIT_UID = "organisationunituid";
     public static final String ORGANISATIONUNIT_NAME = "organisationunitname";
     public static final String ORGANISATIONUNIT_CODE = "organisationunitcode";
     public static final String ORGANISATIONUNIT_DESCRIPTION = "organisationunitdescription";
-    
+
     public static final String ORGANISATIONUNITGROUP_ID = "organisationunitgroupid";
     public static final String ORGANISATIONUNITGROUP_UID = "organisationunitgroupuid";
     public static final String ORGANISATIONUNITGROUP_NAME = "organisationunitgroupname";
     public static final String ORGANISATIONUNITGROUP_CODE = "organisationunitgroupcode";
     public static final String ORGANISATIONUNITGROUP_DESCRIPTION = "organisationunitgroupdescription";
-    
+
     public static final String REPORTING_MONTH_COLUMN_NAME = "reporting_month_name";
     public static final String PARAM_ORGANISATIONUNIT_COLUMN_NAME = "param_organisationunit_name";
     public static final String ORGANISATION_UNIT_IS_PARENT_COLUMN_NAME = "organisation_unit_is_parent";
@@ -123,31 +120,31 @@ public class ReportTable
     {
         {
             put( CATEGORYCOMBO_ID, "Category combination ID" );
-            
+
             put( INDICATOR_ID, "Indicator ID" );
             put( INDICATOR_UID, "Indicator UID" );
             put( INDICATOR_NAME, "Indicator" );
             put( INDICATOR_CODE, "Indicator code" );
             put( INDICATOR_DESCRIPTION, "Indicator description" );
-            
+
             put( PERIOD_ID, "Period ID" );
             put( PERIOD_UID, "Period UID" );
             put( PERIOD_NAME, "Period" );
             put( PERIOD_CODE, "Period code" );
             put( PERIOD_DESCRIPTION, "Period description" );
-            
+
             put( ORGANISATIONUNIT_ID, "Organisation unit ID" );
             put( ORGANISATIONUNIT_UID, "Organisation unit UID" );
             put( ORGANISATIONUNIT_NAME, "Organisation unit" );
             put( ORGANISATIONUNIT_CODE, "Organisation unit code" );
             put( ORGANISATIONUNIT_DESCRIPTION, "Organisation unit description" );
-            
+
             put( ORGANISATIONUNITGROUP_ID, "Organisation unit group ID" );
             put( ORGANISATIONUNITGROUP_UID, "Organisation unit group UID" );
             put( ORGANISATIONUNITGROUP_NAME, "Organisation unit group" );
             put( ORGANISATIONUNITGROUP_CODE, "Organisation unit group code" );
             put( ORGANISATIONUNITGROUP_DESCRIPTION, "Organisation unit group description" );
-            
+
             put( REPORTING_MONTH_COLUMN_NAME, "Reporting month" );
             put( PARAM_ORGANISATIONUNIT_COLUMN_NAME, "Organisation unit parameter" );
             put( ORGANISATION_UNIT_IS_PARENT_COLUMN_NAME, "Organisation unit is parent" );
@@ -466,19 +463,19 @@ public class ReportTable
         add( indexColumns, INDICATOR_ID, doIndicators );
         add( indexColumns, PERIOD_ID, doPeriods );
         add( indexColumns, ORGANISATIONUNIT_ID, doUnits );
-        
+
         add( indexUidColumns, INDICATOR_UID, doIndicators );
         add( indexUidColumns, PERIOD_UID, doPeriods );
         add( indexUidColumns, ORGANISATIONUNIT_UID, doUnits );
-        
+
         add( indexNameColumns, INDICATOR_NAME, doIndicators );
         add( indexNameColumns, PERIOD_NAME, doPeriods );
         add( indexNameColumns, ORGANISATIONUNIT_NAME, doUnits );
-        
+
         add( indexCodeColumns, INDICATOR_CODE, doIndicators );
         add( indexCodeColumns, PERIOD_CODE, doPeriods );
         add( indexCodeColumns, ORGANISATIONUNIT_CODE, doUnits );
-        
+
         add( indexDescriptionColumns, INDICATOR_DESCRIPTION, doIndicators );
         add( indexDescriptionColumns, PERIOD_DESCRIPTION, doPeriods );
         add( indexDescriptionColumns, ORGANISATIONUNIT_DESCRIPTION, doUnits );
@@ -1247,5 +1244,57 @@ public class ReportTable
     public void setCategoryOptionCombos( List<DataElementCategoryOptionCombo> categoryOptionCombos )
     {
         this.categoryOptionCombos = categoryOptionCombos;
+    }
+
+    @Override
+    public void mergeWith( IdentifiableObject other )
+    {
+        super.mergeWith( other );
+
+        if ( other.getClass().isInstance( this ) )
+        {
+            ReportTable reportTable = (ReportTable) other;
+
+            regression = reportTable.isRegression();
+            cumulative = reportTable.isCumulative();
+            categoryCombo = categoryCombo != null ? categoryCombo : reportTable.getCategoryCombo();
+            doIndicators = reportTable.isDoIndicators();
+            doPeriods = reportTable.isDoPeriods();
+            doUnits = reportTable.isDoUnits();
+            relatives = relatives != null ? relatives : reportTable.getRelatives();
+            reportParams = reportParams != null ? reportParams : reportTable.getReportParams();
+            sortOrder = sortOrder != null ? sortOrder : reportTable.getSortOrder();
+            topLimit = topLimit != null ? topLimit : reportTable.getTopLimit();
+
+            for ( OrganisationUnitGroup organisationUnitGroup : reportTable.getOrganisationUnitGroups() )
+            {
+                organisationUnitGroups.add( organisationUnitGroup );
+            }
+
+            for ( OrganisationUnit organisationUnit : reportTable.getUnits() )
+            {
+                units.add( organisationUnit );
+            }
+
+            for ( Period period : reportTable.getPeriods() )
+            {
+                periods.add( period );
+            }
+
+            for ( DataSet dataSet : reportTable.getDataSets() )
+            {
+                dataSets.add( dataSet );
+            }
+
+            for ( Indicator indicator : reportTable.getIndicators() )
+            {
+                indicators.add( indicator );
+            }
+
+            for ( DataElement dataElement : reportTable.getDataElements() )
+            {
+                dataElements.add( dataElement );
+            }
+        }
     }
 }
