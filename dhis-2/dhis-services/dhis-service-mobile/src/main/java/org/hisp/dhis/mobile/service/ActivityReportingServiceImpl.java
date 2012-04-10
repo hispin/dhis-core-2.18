@@ -109,6 +109,7 @@ public class ActivityReportingServiceImpl
 
     private org.hisp.dhis.patient.PatientAttribute groupByAttribute;
 
+    @Override
     public ActivityPlan getCurrentActivityPlan( OrganisationUnit unit, String localeString )
     {
         long time = System.currentTimeMillis();
@@ -135,6 +136,32 @@ public class ActivityReportingServiceImpl
         if ( DEBUG )
             log.debug( "Found " + items.size() + " current activities in " + (System.currentTimeMillis() - time)
                 + " ms." );
+
+        return new ActivityPlan( items );
+    }
+
+    @Override
+    public ActivityPlan getAllActivityPlan( OrganisationUnit unit, String localeString )
+    {
+        long time = System.currentTimeMillis();
+
+        List<Activity> items = new ArrayList<Activity>();
+
+        this.setGroupByAttribute( patientAttService.getPatientAttributeByGroupBy( true ) );
+
+        Collection<org.hisp.dhis.activityplan.Activity> activities = activityPlanService.getActivitiesByProvider( unit );
+
+        for ( org.hisp.dhis.activityplan.Activity activity : activities )
+        {
+            items.add( getActivity( activity.getTask(), activity.getDueDate().getTime() < time ) );
+        }
+
+        if ( items.isEmpty() )
+        {
+            return null;
+        }
+
+        Collections.sort( items, activityComparator );
 
         return new ActivityPlan( items );
     }

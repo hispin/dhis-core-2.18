@@ -1,7 +1,5 @@
-package org.hisp.dhis.api.mobile;
-
 /*
- * Copyright (c) 2010, University of Oslo
+ * Copyright (c) 2004-2011, University of Oslo
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -27,24 +25,31 @@ package org.hisp.dhis.api.mobile;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import org.hisp.dhis.api.mobile.model.ActivityPlan;
-import org.hisp.dhis.api.mobile.model.ActivityValue;
-import org.hisp.dhis.organisationunit.OrganisationUnit;
+package org.hisp.dhis.light.beneficiaryregistration.action;
 
-/**
- * Provides services for activity reporting
- */
-public interface ActivityReportingService
+import com.opensymphony.xwork2.Action;
+
+public class RegisterBeneficiaryAction implements Action
 {
+    
+    private String orgUnitId;
+    
+    public String getOrgUnitId()
+    {
+        return orgUnitId;
+    }
 
-    public ActivityPlan getCurrentActivityPlan( OrganisationUnit unit, String localeString );
 
-    public ActivityPlan getAllActivityPlan( OrganisationUnit unit, String localeString );
+    public void setOrgUnitId( String orgUnitId )
+    {
+        this.orgUnitId = orgUnitId;
+    }
 
-    public ActivityPlan getActivitiesByIdentifier( String keyword )
-        throws NotAllowedException;
-
-    public void saveActivityReport( OrganisationUnit unit, ActivityValue activityValue )
-        throws NotAllowedException;
+    @Override
+    public String execute()
+        throws Exception
+    {
+        return SUCCESS;
+    }
 
 }

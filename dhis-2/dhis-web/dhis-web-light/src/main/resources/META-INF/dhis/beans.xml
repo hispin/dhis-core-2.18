@@ -92,7 +92,72 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     <property name="periodService" ref="org.hisp.dhis.period.PeriodService" />
     <property name="formUtils" ref="org.hisp.dhis.light.dataentry.utils.FormUtils" />
   </bean>
-
+	
+  <!-- Namebased Data entry -->
+   <bean id="org.hisp.dhis.light.namebaseddataentry.action.GetNamebasedOrganisationUnitsAction"
+      class="org.hisp.dhis.light.namebaseddataentry.action.GetNamebasedOrganisationUnitsAction"
+      scope="prototype">
+    <property name="currentUserService" ref="org.hisp.dhis.user.CurrentUserService" />
+  </bean>
+	
+   <bean id="org.hisp.dhis.light.namebaseddataentry.action.GetBeneficiaryListAction" class="org.hisp.dhis.light.namebaseddataentry.action.GetBeneficiaryListAction">
+	 <property name="organisationUnitService" ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
+  	 <property name="activityReportingService" ref="org.hisp.dhis.mobile.api.ActivityReportingService" />
+  </bean>
+	
+	<bean id="org.hisp.dhis.light.namebaseddataentry.action.ShowActivityTypeAction"
+      class="org.hisp.dhis.light.namebaseddataentry.action.ShowActivityTypeAction"
+      scope="prototype"/>
+	
+	<bean id="org.hisp.dhis.light.namebaseddataentry.action.GetActivityListAction" class="org.hisp.dhis.light.namebaseddataentry.action.GetActivityListAction">
+	 <property name="organisationUnitService" ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
+  	 <property name="activityReportingService" ref="org.hisp.dhis.mobile.api.ActivityReportingService" />
+	 <property name="util" ref="org.hisp.dhis.light.utils.NamebasedUtils" />
+  </bean>
+	
+	<bean id="org.hisp.dhis.light.namebaseddataentry.action.GetProgramStageFormAction" class="org.hisp.dhis.light.namebaseddataentry.action.GetProgramStageFormAction">
+	 <property name="organisationUnitService" ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
+	 <property name="util" ref="org.hisp.dhis.light.utils.NamebasedUtils" />
+  </bean>
+	
+	<bean id="org.hisp.dhis.light.utils.NamebasedUtils" class="org.hisp.dhis.light.utils.NamebasedUtils">
+	 <property name="programService" ref="org.hisp.dhis.mobile.api.IProgramService" />
+  </bean>
+	
+	<bean id="org.hisp.dhis.light.namebaseddataentry.action.SaveProgramStageFormAction" class="org.hisp.dhis.light.namebaseddataentry.action.SaveProgramStageFormAction">
+	 <property name="organisationUnitService" ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
+  	 <property name="activityReportingService" ref="org.hisp.dhis.mobile.api.ActivityReportingService" />
+	 <property name="dataElementService" ref="org.hisp.dhis.dataelement.DataElementService" />
+	 <property name="util" ref="org.hisp.dhis.light.utils.NamebasedUtils" />	
+  </bean>
+	
+  <bean id="org.hisp.dhis.light.namebaseddataentry.action.GetBeneficiaryDetailAction" class="org.hisp.dhis.light.namebaseddataentry.action.GetBeneficiaryDetailAction">
+	 <property name="patientService" ref="org.hisp.dhis.patient.PatientService" />
+  </bean>
+	
+  <!-- Beneficiary Registration -->
+	
+	<bean id="org.hisp.dhis.light.beneficiaryregistration.action.GetBeneficiaryRegistrationOrganisationUnitAction"
+      class="org.hisp.dhis.light.beneficiaryregistration.action.GetBeneficiaryRegistrationOrganisationUnitAction"
+      scope="prototype">
+    <property name="currentUserService" ref="org.hisp.dhis.user.CurrentUserService" />
+  </bean>
+	
+	<bean id="org.hisp.dhis.light.beneficiaryregistration.action.RegisterBeneficiaryAction"
+      class="org.hisp.dhis.light.beneficiaryregistration.action.RegisterBeneficiaryAction"
+      scope="prototype">
+  </bean>
+	
+	<bean
+		id="org.hisp.dhis.light.beneficiaryregistration.action.SaveBeneficiaryAction"
+		class="org.hisp.dhis.light.beneficiaryregistration.action.SaveBeneficiaryAction"
+		scope="prototype">
+		<property name="organisationUnitService"
+			ref="org.hisp.dhis.organisationunit.OrganisationUnitService"/>
+		<property name="patientService"
+			ref="org.hisp.dhis.patient.PatientService"/>
+	</bean>
+		
   <!-- Dashboard -->
 
   <bean id="org.hisp.dhis.light.dashboard.action.ProvideContentAction"

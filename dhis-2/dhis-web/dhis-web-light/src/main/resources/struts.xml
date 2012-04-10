@@ -17,7 +17,6 @@
     <action name="selectOrganisationUnit" class="org.hisp.dhis.light.dataentry.action.GetOrganisationUnitsAction">
       <result name="success" type="velocity">/dhis-web-light/main.vm</result>
       <param name="page">/dhis-web-light/selectOrganisationUnit.vm</param>
-
       <result name="selectDataSet" type="redirect">/mobile/selectDataSet.action?organisationUnitId=${organisationUnitId}</result>
       <result name="selectPeriod" type="redirect">/mobile/selectPeriod.action?organisationUnitId=${organisationUnitId}&amp;dataSetId=${dataSetId}</result>
     </action>
@@ -25,7 +24,6 @@
     <action name="selectDataSet" class="org.hisp.dhis.light.dataentry.action.GetDataSetsAction">
       <result name="success" type="velocity">/dhis-web-light/main.vm</result>
       <param name="page">/dhis-web-light/selectDataSet.vm</param>
-
       <result name="selectPeriod" type="redirect">/mobile/selectPeriod.action?organisationUnitId=${organisationUnitId}&amp;dataSetId=${dataSetId}</result>
     </action>
 
@@ -54,7 +52,62 @@
     <action name="markComplete" class="org.hisp.dhis.light.dataentry.action.MarkComplete">
       <result name="success" type="redirect">/mobile/index.action?organisationUnitId=${organisationUnitId}&amp;dataSetId=${dataSetId}&amp;periodId=${periodId}&amp;complete=true</result>
     </action>
-
+	
+	 <!-- Namebased Data Entry -->
+	  
+	<action name="selectNamebasedOrganisationUnit" class="org.hisp.dhis.light.namebaseddataentry.action.GetNamebasedOrganisationUnitsAction">
+      <result name="success" type="velocity">/dhis-web-light/main.vm</result>
+      <param name="page">/dhis-web-light/selectNamebasedOrganisationUnits.vm</param>
+    </action>
+	  
+	<action name="selectActivityType" class="org.hisp.dhis.light.namebaseddataentry.action.ShowActivityTypeAction">
+      <result name="success" type="velocity">/dhis-web-light/main.vm</result>
+      <param name="page">/dhis-web-light/selectActivityType.vm</param>
+    </action> 
+	
+	 <action name="selectBeneficiary" class="org.hisp.dhis.light.namebaseddataentry.action.GetBeneficiaryListAction">
+      <result name="success" type="velocity">/dhis-web-light/main.vm</result>
+      <param name="page">/dhis-web-light/beneficiaryList.vm</param>
+    </action>
+	  
+	 <action name="selectActivity" class="org.hisp.dhis.light.namebaseddataentry.action.GetActivityListAction">
+      <result name="success" type="velocity">/dhis-web-light/main.vm</result>
+      <param name="page">/dhis-web-light/selectActivity.vm</param>
+    </action>
+	  
+	 <action name="showProgramStageForm" class="org.hisp.dhis.light.namebaseddataentry.action.GetProgramStageFormAction">
+      <result name="success" type="velocity">/dhis-web-light/main.vm</result>
+      <param name="page">/dhis-web-light/programStageForm.vm</param>
+    </action>
+	  
+	<action name="saveProgramStageForm" class="org.hisp.dhis.light.namebaseddataentry.action.SaveProgramStageFormAction">
+      <result name="success" type="redirect">/mobile/selectBeneficiary.action?organisationUnitId=${orgUnitId}&amp;current=${current}&amp;validated=true</result>
+      <result name="error" type="velocity">/dhis-web-light/main.vm</result>
+	  <param name="page">/dhis-web-light/programStageForm.vm</param>
+    </action>
+	  
+	<action name="showBeneficiaryDetail" class="org.hisp.dhis.light.namebaseddataentry.action.GetBeneficiaryDetailAction">
+      <result name="success" type="velocity">/dhis-web-light/main.vm</result>
+      <param name="page">/dhis-web-light/beneficiaryDetail.vm</param>
+    </action>
+	  
+	  <!-- Beneficiary Registration -->
+	  
+	 <action name="selectRegistrationOrganisationUnit" class="org.hisp.dhis.light.beneficiaryregistration.action.GetBeneficiaryRegistrationOrganisationUnitAction">
+      <result name="success" type="velocity">/dhis-web-light/main.vm</result>
+      <param name="page">/dhis-web-light/selectRegistrationOrganisationUnits.vm</param>
+    </action>
+	  
+	 <action name="registerBeneficiary" class="org.hisp.dhis.light.beneficiaryregistration.action.RegisterBeneficiaryAction">
+      <result name="success" type="velocity">/dhis-web-light/main.vm</result>
+      <param name="page">/dhis-web-light/beneficiaryRegistrationForm.vm</param>
+    </action>
+	  
+	 <action name="saveBeneficiary" class="org.hisp.dhis.light.beneficiaryregistration.action.SaveBeneficiaryAction">
+      <result name="success" type="velocity">/dhis-web-light/main.vm</result>
+      <param name="page">/dhis-web-light/beneficiaryRegistrationForm.vm</param>
+    </action>           
+	   
     <!-- Reports -->
 
     <action name="reports" class="org.hisp.dhis.light.dashboard.action.ProvideContentAction">
