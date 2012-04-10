@@ -1,0 +1,54 @@
+<h2>$i18n.getString( "beneficiary_registration" )</h2>
+
+	#if( $validated )
+		<div class="header-box">
+			<h3 style="text-align: left;">$i18n.getString("successfully_saved")</h3>
+		</div>
+	#else
+	
+	#end
+
+<form action="saveBeneficiary.action" method="POST">
+<div class="header-box" align="center">
+<input type="hidden" name="orgUnitId" value="$orgUnitId"/>	
+	<p style="text-align: left;">
+		<label>$i18n.getString( "full_name" )</label>
+		<input type="text" name="patientFullName" value="$!prevDataValues.get($key)" />
+		<label>$i18n.getString( "gender" )</label>
+		<select name="gender">
+			<option value="M">$i18n.getString( "male" )</option>
+			<option value="F">$i18n.getString( "female" )</option>
+			<option value="T">$i18n.getString( "transgender" )</option>
+		</select>
+		<label>$i18n.getString( "date_of_birth" )</label>
+		<input type="text" name="dateOfBirth" value="$!prevDataValues.get($key)" />
+		<label>$i18n.getString( "blood_group" )</label>
+		<select name="bloodGroup">
+			<option value="">[Please select]</option>
+			<option value="A+">A+</option>
+			<option value="A-">A-</option>
+			<option value="AB+">AB+</option>
+			<option value="AB-">AB-</option>
+			<option value="B+">B+</option>
+			<option value="B-">B-</option>
+			<option value="O+">O+</option>
+			<option value="O-">O-</option>
+		</select>
+	</p>
+</div>
+
+<div class="header-box" align="center">
+	<p>
+		<input type="submit" style="width: 100%;" value="$i18n.getString("save")" />
+	</p>
+</div>
+
+</form>
+
+<div id="footer">
+<h2>$i18n.getString( "navigate_to" )</h2>
+<ul>
+	<li> <a href="activity.action?orgUnitId=$organisationUnit.id&beneficiaryId=$beneficiaryId&programStageId=$programStageId"> $i18n.getString("organisation_unit")</a> </li>
+	<li><a href="index.action">$i18n.getString("home")</a></li>
+</ul>
+</div>
