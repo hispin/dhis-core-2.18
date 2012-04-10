@@ -77,7 +77,7 @@ public class IndicatorGroup
     public void addIndicator( Indicator indicator )
     {
         members.add( indicator );
-        indicator.getGroups().remove( this );
+        indicator.getGroups().add( this );
     }
 
     public void removeIndicator( Indicator indicator )
