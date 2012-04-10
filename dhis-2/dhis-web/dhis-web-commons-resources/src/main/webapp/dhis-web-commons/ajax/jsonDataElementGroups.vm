@@ -2,7 +2,7 @@
 { "dataElementGroups": [
 #foreach( $dataElementGroup in $dataElementGroups )
   {
-    "id":  ${dataElementGroup.id} ,
+    "id": ${dataElementGroup.id} ,
     "name": "$!encoder.jsonEncode( ${dataElementGroup.displayName} )"
   }#if( $velocityCount < $size ),#end
 #end

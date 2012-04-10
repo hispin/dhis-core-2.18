@@ -64,6 +64,13 @@ public class GetNotificationsAction
         this.category = category;
     }
 
+    private String lastUid;
+    
+    public void setLastUid( String lastUid )
+    {
+        this.lastUid = lastUid;
+    }
+
     private Integer max;
 
     public void setMax( Integer max )
@@ -90,17 +97,18 @@ public class GetNotificationsAction
     public String execute()
         throws Exception
     {
-        max = max != null ? max : 20;
-        
         if ( category != null )
         {
             NotificationCategory notificationCategory = NotificationCategory.valueOf( category.toUpperCase() );
-            
-            notifications = notifier.getNotifications( notificationCategory, max );
-        }
-        else
-        {
-            notifications = notifier.getNotifications( max );
+
+            if ( max != null )
+            {
+                notifications = notifier.getNotifications( notificationCategory, max );
+            }
+            else
+            {
+                notifications = notifier.getNotifications( notificationCategory, lastUid );
+            }
         }
         
         return SUCCESS;
