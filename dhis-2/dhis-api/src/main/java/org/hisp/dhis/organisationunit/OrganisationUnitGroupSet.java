@@ -228,4 +228,28 @@ public class OrganisationUnitGroupSet
     {
         this.organisationUnitGroups = organisationUnitGroups;
     }
+
+    @Override
+    public void mergeWith( IdentifiableObject other )
+    {
+        super.mergeWith( other );
+
+        if ( other.getClass().isInstance( this ) )
+        {
+            OrganisationUnitGroupSet organisationUnitGroupSet = (OrganisationUnitGroupSet) other;
+
+            compulsory = organisationUnitGroupSet.isCompulsory();
+            description = description != null ? description : organisationUnitGroupSet.getDescription();
+
+            for ( OrganisationUnitGroup organisationUnitGroup : organisationUnitGroupSet.getOrganisationUnitGroups() )
+            {
+                organisationUnitGroups.add( organisationUnitGroup );
+
+                if ( organisationUnitGroup.getGroupSet() == null )
+                {
+                    organisationUnitGroup.setGroupSet( this );
+                }
+            }
+        }
+    }
 }

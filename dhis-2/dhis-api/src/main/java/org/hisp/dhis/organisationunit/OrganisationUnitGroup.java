@@ -36,6 +36,7 @@ import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 import org.hisp.dhis.common.BaseIdentifiableObject;
 import org.hisp.dhis.common.BaseNameableObject;
 import org.hisp.dhis.common.Dxf2Namespace;
+import org.hisp.dhis.common.IdentifiableObject;
 import org.hisp.dhis.common.view.DetailedView;
 import org.hisp.dhis.common.view.ExportView;
 
@@ -160,7 +161,7 @@ public class OrganisationUnitGroup
 
     @JsonProperty( value = "organisationUnits" )
     @JsonSerialize( contentAs = BaseIdentifiableObject.class )
-    @JsonView( { DetailedView.class, ExportView.class } )
+    @JsonView( {DetailedView.class, ExportView.class} )
     @JacksonXmlElementWrapper( localName = "organisationUnits", namespace = Dxf2Namespace.NAMESPACE )
     @JacksonXmlProperty( localName = "organisationUnit", namespace = Dxf2Namespace.NAMESPACE )
     public Set<OrganisationUnit> getMembers()
@@ -175,7 +176,7 @@ public class OrganisationUnitGroup
 
     @JsonProperty( value = "organisationUnitGroupSet" )
     @JsonSerialize( as = BaseIdentifiableObject.class )
-    @JsonView( { DetailedView.class, ExportView.class } )
+    @JsonView( {DetailedView.class, ExportView.class} )
     @JacksonXmlProperty( namespace = Dxf2Namespace.NAMESPACE )
     public OrganisationUnitGroupSet getGroupSet()
     {
@@ -185,5 +186,23 @@ public class OrganisationUnitGroup
     public void setGroupSet( OrganisationUnitGroupSet groupSet )
     {
         this.groupSet = groupSet;
+    }
+
+    @Override
+    public void mergeWith( IdentifiableObject other )
+    {
+        super.mergeWith( other );
+
+        if ( other.getClass().isInstance( this ) )
+        {
+            OrganisationUnitGroup organisationUnitGroup = (OrganisationUnitGroup) other;
+
+            groupSet = groupSet != null ? groupSet : organisationUnitGroup.getGroupSet();
+
+            for ( OrganisationUnit organisationUnit : organisationUnitGroup.getMembers() )
+            {
+                addOrganisationUnit( organisationUnit );
+            }
+        }
     }
 }

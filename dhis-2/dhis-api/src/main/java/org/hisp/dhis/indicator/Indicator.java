@@ -37,6 +37,7 @@ import org.hisp.dhis.attribute.AttributeValue;
 import org.hisp.dhis.common.BaseIdentifiableObject;
 import org.hisp.dhis.common.BaseNameableObject;
 import org.hisp.dhis.common.Dxf2Namespace;
+import org.hisp.dhis.common.IdentifiableObject;
 import org.hisp.dhis.common.view.DetailedView;
 import org.hisp.dhis.common.view.ExportView;
 import org.hisp.dhis.dataset.DataSet;
@@ -115,6 +116,18 @@ public class Indicator
         {
             addIndicatorGroup( group );
         }
+    }
+
+    public void addDataSet( DataSet dataSet )
+    {
+        this.dataSets.add( dataSet );
+        dataSet.getIndicators().add( this );
+    }
+
+    public void removeDataSet( DataSet dataSet )
+    {
+        this.dataSets.remove( dataSet );
+        dataSet.getIndicators().remove( this );
     }
 
     // -------------------------------------------------------------------------
@@ -330,5 +343,40 @@ public class Indicator
     public void setAttributeValues( Set<AttributeValue> attributeValues )
     {
         this.attributeValues = attributeValues;
+    }
+
+    @Override
+    public void mergeWith( IdentifiableObject other )
+    {
+        super.mergeWith( other );
+
+        if ( other.getClass().isInstance( this ) )
+        {
+            Indicator indicator = (Indicator) other;
+
+            annualized = indicator.isAnnualized();
+            denominator = denominator != null ? denominator : indicator.getDenominator();
+            denominatorDescription = denominatorDescription != null ? denominatorDescription : indicator.getDenominatorDescription();
+            numerator = numerator != null ? numerator : indicator.getNumerator();
+            numeratorDescription = numeratorDescription != null ? numeratorDescription : indicator.getNumeratorDescription();
+            explodedNumerator = explodedNumerator != null ? explodedNumerator : indicator.getExplodedNumerator();
+            explodedDenominator = explodedDenominator != null ? explodedDenominator : indicator.getExplodedDenominator();
+            indicatorType = indicatorType != null ? indicatorType : indicator.getIndicatorType();
+
+            for ( DataSet dataSet : indicator.getDataSets() )
+            {
+                addDataSet( dataSet );
+            }
+
+            for ( IndicatorGroup indicatorGroup : indicator.getGroups() )
+            {
+                addIndicatorGroup( indicatorGroup );
+            }
+
+            for ( AttributeValue attributeValue : indicator.getAttributeValues() )
+            {
+                attributeValues.add( attributeValue );
+            }
+        }
     }
 }

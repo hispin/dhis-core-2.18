@@ -37,6 +37,7 @@ import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 import org.hisp.dhis.common.BaseIdentifiableObject;
 import org.hisp.dhis.common.BaseNameableObject;
 import org.hisp.dhis.common.Dxf2Namespace;
+import org.hisp.dhis.common.IdentifiableObject;
 import org.hisp.dhis.common.adapter.JacksonPeriodTypeDeserializer;
 import org.hisp.dhis.common.adapter.JacksonPeriodTypeSerializer;
 import org.hisp.dhis.common.view.DetailedView;
@@ -221,6 +222,18 @@ public class DataSet
         {
             addDataElement( dataElement );
         }
+    }
+
+    public void addIndicator( Indicator indicator )
+    {
+        indicators.add( indicator );
+        indicator.getDataSets().add( this );
+    }
+
+    public void removeIndicator( Indicator indicator )
+    {
+        indicators.remove( indicator );
+        indicator.getDataSets().remove( this );
     }
 
     public boolean hasDataEntryForm()
@@ -456,5 +469,53 @@ public class DataSet
     public void setExpiryDays( int expiryDays )
     {
         this.expiryDays = expiryDays;
+    }
+
+    @Override
+    public void mergeWith( IdentifiableObject other )
+    {
+        super.mergeWith( other );
+
+        if ( other.getClass().isInstance( this ) )
+        {
+            DataSet dataSet = (DataSet) other;
+
+            periodType = periodType != null ? periodType : dataSet.getPeriodType();
+            sortOrder = sortOrder != null ? sortOrder : dataSet.getSortOrder();
+            mobile = dataSet.isMobile();
+            dataEntryForm = dataEntryForm != null ? dataEntryForm : dataSet.getDataEntryForm();
+            version = version != null ? version : dataSet.getVersion();
+            expiryDays = dataSet.getExpiryDays();
+
+            for ( DataElement dataElement : dataSet.getDataElements() )
+            {
+                addDataElement( dataElement );
+            }
+
+            for ( Indicator indicator : dataSet.getIndicators() )
+            {
+                addIndicator( indicator );
+            }
+
+            for ( DataElementOperand dataElementOperand : dataSet.getCompulsoryDataElementOperands() )
+            {
+                compulsoryDataElementOperands.add( dataElementOperand );
+            }
+
+            for ( OrganisationUnit organisationUnit : dataSet.getSources() )
+            {
+                addOrganisationUnit( organisationUnit );
+            }
+
+            for ( Section section : dataSet.getSections() )
+            {
+                sections.add( section );
+
+                if ( section.getDataSet() == null )
+                {
+                    section.setDataSet( this );
+                }
+            }
+        }
     }
 }
