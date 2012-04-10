@@ -381,7 +381,16 @@ public class DefaultProgramStageInstanceService
                 
                 if ( !anonymous )
                 {
-                    grid.addValue( programStageInstance.getProgramInstance().getPatient().getId() );
+                    ProgramInstance programInstance = programStageInstance.getProgramInstance();
+                    
+                    if ( programInstance != null && programInstance.getPatient() != null )
+                    {
+                        grid.addValue( programInstance.getPatient().getId() );
+                    }
+                    else
+                    {
+                        grid.addValue( "" );
+                    }
                 }
             }
         }
