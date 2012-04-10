@@ -36,6 +36,7 @@ import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 import org.hisp.dhis.common.BaseIdentifiableObject;
 import org.hisp.dhis.common.Dxf2Namespace;
+import org.hisp.dhis.common.IdentifiableObject;
 import org.hisp.dhis.common.adapter.JacksonPeriodTypeDeserializer;
 import org.hisp.dhis.common.adapter.JacksonPeriodTypeSerializer;
 import org.hisp.dhis.common.view.DetailedView;
@@ -134,6 +135,18 @@ public class ValidationRule
     {
         this.leftSide = null;
         this.rightSide = null;
+    }
+
+    public void addValidationRuleGroup( ValidationRuleGroup validationRuleGroup )
+    {
+        groups.add( validationRuleGroup );
+        validationRuleGroup.getMembers().add( this );
+    }
+
+    public void removeValidationRuleGroup( ValidationRuleGroup validationRuleGroup )
+    {
+        groups.remove( validationRuleGroup );
+        validationRuleGroup.getMembers().remove( this );
     }
 
     // -------------------------------------------------------------------------
@@ -235,4 +248,26 @@ public class ValidationRule
         this.groups = groups;
     }
 
+    @Override
+    public void mergeWith( IdentifiableObject other )
+    {
+        super.mergeWith( other );
+
+        if ( other.getClass().isInstance( this ) )
+        {
+            ValidationRule validationRule = (ValidationRule) other;
+
+            description = description != null ? description : validationRule.getDescription();
+            type = type != null ? type : validationRule.getType();
+            operator = operator != null ? operator : validationRule.getOperator();
+            leftSide = leftSide != null ? leftSide : validationRule.getLeftSide();
+            rightSide = rightSide != null ? rightSide : validationRule.getRightSide();
+            periodType = periodType != null ? periodType : validationRule.getPeriodType();
+
+            for ( ValidationRuleGroup validationRuleGroup : validationRule.getGroups() )
+            {
+                addValidationRuleGroup( validationRuleGroup );
+            }
+        }
+    }
 }

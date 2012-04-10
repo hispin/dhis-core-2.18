@@ -35,6 +35,7 @@ import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 import org.hisp.dhis.common.BaseIdentifiableObject;
 import org.hisp.dhis.common.Dxf2Namespace;
+import org.hisp.dhis.common.IdentifiableObject;
 import org.hisp.dhis.common.view.DetailedView;
 import org.hisp.dhis.common.view.ExportView;
 
@@ -70,6 +71,22 @@ public class ValidationRuleGroup
         this.name = name;
         this.description = description;
         this.members = members;
+    }
+
+    // -------------------------------------------------------------------------
+    // Logic
+    // -------------------------------------------------------------------------
+
+    public void addValidationRule( ValidationRule validationRule )
+    {
+        members.add( validationRule );
+        validationRule.getGroups().add( this );
+    }
+
+    public void removeValidationRule( ValidationRule validationRule )
+    {
+        members.remove( validationRule );
+        validationRule.getGroups().remove( this );
     }
 
     // -------------------------------------------------------------------------
@@ -137,5 +154,23 @@ public class ValidationRuleGroup
     public void setMembers( Set<ValidationRule> members )
     {
         this.members = members;
+    }
+
+    @Override
+    public void mergeWith( IdentifiableObject other )
+    {
+        super.mergeWith( other );
+
+        if ( other.getClass().isInstance( this ) )
+        {
+            ValidationRuleGroup validationRuleGroup = (ValidationRuleGroup) other;
+
+            description = description != null ? description : validationRuleGroup.getDescription();
+
+            for ( ValidationRule validationRule : validationRuleGroup.getMembers() )
+            {
+                addValidationRule( validationRule );
+            }
+        }
     }
 }

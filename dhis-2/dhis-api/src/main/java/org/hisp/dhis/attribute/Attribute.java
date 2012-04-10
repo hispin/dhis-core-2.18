@@ -33,6 +33,7 @@ import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 import org.hisp.dhis.common.BaseIdentifiableObject;
 import org.hisp.dhis.common.Dxf2Namespace;
+import org.hisp.dhis.common.IdentifiableObject;
 import org.hisp.dhis.common.view.DetailedView;
 import org.hisp.dhis.common.view.ExportView;
 
@@ -80,7 +81,7 @@ public class Attribute
 
     @JsonProperty
     @JsonView( {DetailedView.class, ExportView.class} )
-    @JacksonXmlProperty(namespace = Dxf2Namespace.NAMESPACE)
+    @JacksonXmlProperty( namespace = Dxf2Namespace.NAMESPACE )
     public String getValueType()
     {
         return valueType;
@@ -93,7 +94,7 @@ public class Attribute
 
     @JsonProperty
     @JsonView( {DetailedView.class, ExportView.class} )
-    @JacksonXmlProperty(namespace = Dxf2Namespace.NAMESPACE)
+    @JacksonXmlProperty( namespace = Dxf2Namespace.NAMESPACE )
     public boolean isMandatory()
     {
         return mandatory;
@@ -106,7 +107,7 @@ public class Attribute
 
     @JsonProperty
     @JsonView( {DetailedView.class, ExportView.class} )
-    @JacksonXmlProperty(namespace = Dxf2Namespace.NAMESPACE)
+    @JacksonXmlProperty( namespace = Dxf2Namespace.NAMESPACE )
     public boolean isDataElementAttribute()
     {
         return dataElementAttribute;
@@ -119,7 +120,7 @@ public class Attribute
 
     @JsonProperty
     @JsonView( {DetailedView.class, ExportView.class} )
-    @JacksonXmlProperty(namespace = Dxf2Namespace.NAMESPACE)
+    @JacksonXmlProperty( namespace = Dxf2Namespace.NAMESPACE )
     public boolean isIndicatorAttribute()
     {
         return indicatorAttribute;
@@ -132,7 +133,7 @@ public class Attribute
 
     @JsonProperty
     @JsonView( {DetailedView.class, ExportView.class} )
-    @JacksonXmlProperty(namespace = Dxf2Namespace.NAMESPACE)
+    @JacksonXmlProperty( namespace = Dxf2Namespace.NAMESPACE )
     public boolean isOrganisationUnitAttribute()
     {
         return organisationUnitAttribute;
@@ -145,7 +146,7 @@ public class Attribute
 
     @JsonProperty
     @JsonView( {DetailedView.class, ExportView.class} )
-    @JacksonXmlProperty(namespace = Dxf2Namespace.NAMESPACE)
+    @JacksonXmlProperty( namespace = Dxf2Namespace.NAMESPACE )
     public boolean isUserAttribute()
     {
         return userAttribute;
@@ -174,5 +175,34 @@ public class Attribute
     public void setSortOrder( Integer sortOrder )
     {
         this.sortOrder = sortOrder;
+    }
+
+    @Override
+    public void mergeWith( IdentifiableObject other )
+    {
+        super.mergeWith( other );
+
+        if ( other.getClass().isInstance( this ) )
+        {
+            Attribute attribute = (Attribute) other;
+
+            valueType = valueType != null ? valueType : attribute.getValueType();
+            dataElementAttribute = attribute.isDataElementAttribute();
+            indicatorAttribute = attribute.isIndicatorAttribute();
+            organisationUnitAttribute = attribute.isOrganisationUnitAttribute();
+            userAttribute = attribute.isUserAttribute();
+            mandatory = attribute.isMandatory();
+            sortOrder = sortOrder != null ? sortOrder : attribute.getSortOrder();
+
+            for ( AttributeValue attributeValue : attribute.getAttributeValues() )
+            {
+                attributeValues.add( attributeValue );
+
+                if ( attributeValue.getAttribute() == null )
+                {
+                    attributeValue.setAttribute( this );
+                }
+            }
+        }
     }
 }

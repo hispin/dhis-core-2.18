@@ -33,6 +33,7 @@ import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 import org.hisp.dhis.common.BaseIdentifiableObject;
 import org.hisp.dhis.common.Dxf2Namespace;
+import org.hisp.dhis.common.IdentifiableObject;
 import org.hisp.dhis.common.view.DetailedView;
 import org.hisp.dhis.common.view.ExportView;
 
@@ -113,7 +114,7 @@ public class SqlView
 
     @JsonProperty
     @JsonView( {DetailedView.class, ExportView.class} )
-    @JacksonXmlProperty(namespace = Dxf2Namespace.NAMESPACE)
+    @JacksonXmlProperty( namespace = Dxf2Namespace.NAMESPACE )
     public String getDescription()
     {
         return description;
@@ -126,7 +127,7 @@ public class SqlView
 
     @JsonProperty
     @JsonView( {DetailedView.class, ExportView.class} )
-    @JacksonXmlProperty(namespace = Dxf2Namespace.NAMESPACE)
+    @JacksonXmlProperty( namespace = Dxf2Namespace.NAMESPACE )
     public String getSqlQuery()
     {
         return sqlQuery;
@@ -135,5 +136,19 @@ public class SqlView
     public void setSqlQuery( String sqlQuery )
     {
         this.sqlQuery = sqlQuery;
+    }
+
+    @Override
+    public void mergeWith( IdentifiableObject other )
+    {
+        super.mergeWith( other );
+
+        if ( other.getClass().isInstance( this ) )
+        {
+            SqlView sqlView = (SqlView) other;
+
+            description = description != null ? description : sqlView.getDescription();
+            sqlQuery = sqlQuery != null ? sqlQuery : sqlView.getSqlQuery();
+        }
     }
 }
