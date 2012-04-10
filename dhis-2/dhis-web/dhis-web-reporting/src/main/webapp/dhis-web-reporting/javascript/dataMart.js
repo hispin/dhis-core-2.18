@@ -20,7 +20,7 @@ function startExport()
 
 function pingNotifications()
 {
-	$( '#notificationDiv' ).load( '../dhis-web-commons-ajax/getNotifications.action?category=DATAMART' );	
+	$( '#notificationDiv' ).load( '../dhis-web-commons-ajax-html/getNotifications.action?category=DATAMART&max=20' );
 }
 
 function pingNotificationsTimeout()

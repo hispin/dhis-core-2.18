@@ -76,23 +76,39 @@ public class InMemoryNotifier
     }
 
     @Override
-    public List<Notification> getNotifications( int max )
-    {
-        max = max > notifications.size() ? notifications.size() : max;
-        
-        return notifications.subList( 0, max );
-    }
-
-    @Override
     public List<Notification> getNotifications( NotificationCategory category, int max )
     {
         List<Notification> list = new ArrayList<Notification>();
         
-        if ( category != null && max > 0 )
+        if ( category != null )
         {
             for ( Notification notification : notifications )
             {
                 if ( list.size() == max )
+                {
+                    break;
+                }
+                
+                if ( category.equals( notification.getCategory() ) )
+                {
+                    list.add( notification );
+                }
+            }
+        }
+        
+        return list;
+    }
+
+    @Override
+    public List<Notification> getNotifications( NotificationCategory category, String lastUid )
+    {
+        List<Notification> list = new ArrayList<Notification>();
+        
+        if ( category != null )
+        {
+            for ( Notification notification : notifications )
+            {
+                if ( lastUid != null && lastUid.equals( notification.getUid() ) )
                 {
                     break;
                 }

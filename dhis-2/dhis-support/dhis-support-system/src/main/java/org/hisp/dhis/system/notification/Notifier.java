@@ -38,9 +38,9 @@ public interface Notifier
     
     Notifier notify( NotificationLevel level, NotificationCategory category, String message, boolean completed );
     
-    List<Notification> getNotifications( int max );
-    
     List<Notification> getNotifications( NotificationCategory category, int max );
+    
+    List<Notification> getNotifications( NotificationCategory category, String lastUid );
     
     Notifier clear( NotificationCategory category );
 }
