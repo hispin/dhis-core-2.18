@@ -117,7 +117,7 @@ public class EmailMessageSender
     
                 if ( emailNotification && user.getEmail() != null && !user.getEmail().trim().isEmpty() )
                 {
-                    email.addTo( user.getEmail() );
+                    email.addBcc( user.getEmail() );
                     
                     log.debug( "Sent email to user: " + user + " with email address: " + user.getEmail() );
                     
