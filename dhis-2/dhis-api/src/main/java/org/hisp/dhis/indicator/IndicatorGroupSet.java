@@ -35,6 +35,7 @@ import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 import org.hisp.dhis.common.BaseIdentifiableObject;
 import org.hisp.dhis.common.Dxf2Namespace;
+import org.hisp.dhis.common.IdentifiableObject;
 import org.hisp.dhis.common.comparator.IdentifiableObjectNameComparator;
 import org.hisp.dhis.common.view.DetailedView;
 import org.hisp.dhis.common.view.ExportView;
@@ -189,6 +190,20 @@ public class IndicatorGroupSet
     }
 
     // -------------------------------------------------------------------------
+    // Logic
+    // -------------------------------------------------------------------------
+
+    public void addIndicatorGroup( IndicatorGroup indicatorGroup )
+    {
+        if ( !members.contains( indicatorGroup ) )
+        {
+            this.members.add( indicatorGroup );
+        }
+
+        indicatorGroup.setGroupSet( this );
+    }
+
+    // -------------------------------------------------------------------------
     // Getters and setters
     // -------------------------------------------------------------------------
 
@@ -236,5 +251,32 @@ public class IndicatorGroupSet
     public void setMembers( List<IndicatorGroup> members )
     {
         this.members = members;
+    }
+
+    @Override
+    public void mergeWith( IdentifiableObject other )
+    {
+        super.mergeWith( other );
+
+        if ( other.getClass().isInstance( this ) )
+        {
+            IndicatorGroupSet indicatorGroupSet = (IndicatorGroupSet) other;
+
+            compulsory = compulsory != null ? compulsory : indicatorGroupSet.isCompulsory();
+            description = description != null ? description : indicatorGroupSet.getDescription();
+
+            for ( IndicatorGroup indicatorGroup : indicatorGroupSet.getMembers() )
+            {
+                if ( !members.contains( indicatorGroup ) )
+                {
+                    members.add( indicatorGroup );
+                }
+
+                if ( indicatorGroup.getGroupSet() == null )
+                {
+                    indicatorGroup.setGroupSet( this );
+                }
+            }
+        }
     }
 }

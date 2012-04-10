@@ -33,6 +33,7 @@ import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 import org.hisp.dhis.common.BaseIdentifiableObject;
 import org.hisp.dhis.common.Dxf2Namespace;
+import org.hisp.dhis.common.IdentifiableObject;
 import org.hisp.dhis.common.view.DetailedView;
 import org.hisp.dhis.common.view.ExportView;
 
@@ -134,5 +135,19 @@ public class IndicatorType
     public void setNumber( boolean number )
     {
         this.number = number;
+    }
+
+    @Override
+    public void mergeWith( IdentifiableObject other )
+    {
+        super.mergeWith( other );
+
+        if(other.getClass().isInstance( this ))
+        {
+            IndicatorType indicatorType = (IndicatorType) other;
+
+            factor = indicatorType.getFactor();
+            number = indicatorType.isNumber();
+        }
     }
 }

@@ -230,6 +230,18 @@ public class OrganisationUnit
         }
     }
 
+    public void addUser( User user )
+    {
+        user.getOrganisationUnits().add( this );
+        users.add( user );
+    }
+
+    public void removeUser( User user )
+    {
+        user.getOrganisationUnits().remove( this );
+        users.remove( user );
+    }
+
     public List<OrganisationUnit> getSortedChildren()
     {
         List<OrganisationUnit> sortedChildren = new ArrayList<OrganisationUnit>( children );
@@ -844,5 +856,46 @@ public class OrganisationUnit
     public void setCurrentParent( boolean currentParent )
     {
         this.currentParent = currentParent;
+    }
+
+    @Override
+    public void mergeWith( IdentifiableObject other )
+    {
+        super.mergeWith( other );
+
+        if ( other.getClass().isInstance( this ) )
+        {
+            OrganisationUnit organisationUnit = (OrganisationUnit) other;
+
+            openingDate = openingDate != null ? openingDate : organisationUnit.getOpeningDate();
+            closedDate = closedDate != null ? closedDate : organisationUnit.getClosedDate();
+            active = organisationUnit.isActive();
+            comment = comment != null ? comment : organisationUnit.getComment();
+            geoCode = geoCode != null ? geoCode : organisationUnit.getGeoCode();
+            featureType = featureType != null ? featureType : organisationUnit.getFeatureType();
+            coordinates = coordinates != null ? coordinates : organisationUnit.getCoordinates();
+            url = url != null ? url : organisationUnit.getUrl();
+            contactPerson = contactPerson != null ? contactPerson : organisationUnit.getContactPerson();
+            address = address != null ? address : organisationUnit.getAddress();
+            email = email != null ? email : organisationUnit.getEmail();
+            phoneNumber = phoneNumber != null ? phoneNumber : organisationUnit.getPhoneNumber();
+            hasPatients = organisationUnit.isHasPatients();
+            parent = parent != null ? parent : organisationUnit.getParent();
+
+            for ( DataSet dataSet : organisationUnit.getDataSets() )
+            {
+                addDataSet( dataSet );
+            }
+
+            for ( OrganisationUnitGroup organisationUnitGroup : organisationUnit.getGroups() )
+            {
+                addOrganisationUnitGroup( organisationUnitGroup );
+            }
+
+            for ( User user : organisationUnit.getUsers() )
+            {
+                addUser( user );
+            }
+        }
     }
 }
