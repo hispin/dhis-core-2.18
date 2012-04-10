@@ -29,6 +29,7 @@ package org.hisp.dhis.system.notification;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
@@ -54,13 +55,13 @@ public class InMemoryNotifier
     // -------------------------------------------------------------------------
 
     @Override
-    public void notify( NotificationCategory category, String message )
+    public Notifier notify( NotificationCategory category, String message )
     {
-        notify( NotificationLevel.INFO, category, message, false );
+        return notify( NotificationLevel.INFO, category, message, false );
     }
     
     @Override
-    public void notify( NotificationLevel level, NotificationCategory category, String message, boolean completed )
+    public Notifier notify( NotificationLevel level, NotificationCategory category, String message, boolean completed )
     {
         Notification notification = new Notification( level, category, new Date(), message, completed );
         
@@ -70,6 +71,8 @@ public class InMemoryNotifier
         {
             notifications.remove( MAX_SIZE );
         }
+        
+        return this;
     }
 
     @Override
@@ -85,19 +88,41 @@ public class InMemoryNotifier
     {
         List<Notification> list = new ArrayList<Notification>();
         
-        for ( Notification notification : notifications )
+        if ( category != null && max > 0 )
         {
-            if ( list.size() == max )
+            for ( Notification notification : notifications )
             {
-                break;
-            }
-            
-            if ( category.equals( notification.getCategory() ) )
-            {
-                list.add( notification );
+                if ( list.size() == max )
+                {
+                    break;
+                }
+                
+                if ( category.equals( notification.getCategory() ) )
+                {
+                    list.add( notification );
+                }
             }
         }
         
         return list;
+    }
+    
+    @Override
+    public Notifier clear( NotificationCategory category )
+    {
+        if ( category != null )
+        {
+            Iterator<Notification> iter = notifications.iterator();
+            
+            while ( iter.hasNext() )
+            {
+                if ( category.equals( iter.next() ) )
+                {
+                    iter.remove();
+                }
+            }
+        }
+        
+        return this;
     }
 }
