@@ -28,6 +28,7 @@ package org.hisp.dhis.common;
  */
 
 import org.hisp.dhis.common.IdentifiableObject.IdentifiableProperty;
+import org.hisp.dhis.common.NameableObject.NameableProperty;
 
 import java.util.Collection;
 import java.util.Map;
@@ -42,12 +43,14 @@ public interface IdentifiableObjectManager
     void update( IdentifiableObject object );
 
     <T extends IdentifiableObject> void get( Class<T> clazz, String uid );
-    
+
     <T extends IdentifiableObject> Collection<T> getAll( Class<T> clazz );
 
     void delete( IdentifiableObject object );
 
     <T extends IdentifiableObject> Map<String, T> getIdMap( Class<T> clazz, IdentifiableProperty property );
+
+    <T extends NameableObject> Map<String, T> getIdMap( Class<T> clazz, NameableProperty property );
 
     <T extends IdentifiableObject> T getObject( Class<T> clazz, IdentifiableProperty property, String id );
 

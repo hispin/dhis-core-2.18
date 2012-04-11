@@ -32,7 +32,7 @@ package org.hisp.dhis.dxf2.metadata;
  */
 public interface ExportService
 {
-    DXF2 getMetaData();
+    MetaData getMetaData();
 
-    DXF2 getMetaData( ExportOptions options );
+    MetaData getMetaData( ExportOptions options );
 }
