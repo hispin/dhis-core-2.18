@@ -355,13 +355,13 @@ public class Indicator
             Indicator indicator = (Indicator) other;
 
             annualized = indicator.isAnnualized();
-            denominator = denominator != null ? denominator : indicator.getDenominator();
-            denominatorDescription = denominatorDescription != null ? denominatorDescription : indicator.getDenominatorDescription();
-            numerator = numerator != null ? numerator : indicator.getNumerator();
-            numeratorDescription = numeratorDescription != null ? numeratorDescription : indicator.getNumeratorDescription();
-            explodedNumerator = explodedNumerator != null ? explodedNumerator : indicator.getExplodedNumerator();
-            explodedDenominator = explodedDenominator != null ? explodedDenominator : indicator.getExplodedDenominator();
-            indicatorType = indicatorType != null ? indicatorType : indicator.getIndicatorType();
+            denominator = indicator.getDenominator() == null ? denominator : indicator.getDenominator();
+            denominatorDescription = indicator.getDenominatorDescription() == null ? denominatorDescription : indicator.getDenominatorDescription();
+            numerator = indicator.getNumerator() == null ? numerator : indicator.getNumerator();
+            numeratorDescription = indicator.getNumeratorDescription() == null ? numeratorDescription : indicator.getNumeratorDescription();
+            explodedNumerator = indicator.getExplodedNumerator() == null ? explodedNumerator : indicator.getExplodedNumerator();
+            explodedDenominator = indicator.getExplodedDenominator() == null ? explodedDenominator : indicator.getExplodedDenominator();
+            indicatorType = indicator.getIndicatorType() == null ? indicatorType : indicator.getIndicatorType();
 
             for ( DataSet dataSet : indicator.getDataSets() )
             {

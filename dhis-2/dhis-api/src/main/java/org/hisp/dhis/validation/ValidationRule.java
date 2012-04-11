@@ -257,12 +257,12 @@ public class ValidationRule
         {
             ValidationRule validationRule = (ValidationRule) other;
 
-            description = description != null ? description : validationRule.getDescription();
-            type = type != null ? type : validationRule.getType();
-            operator = operator != null ? operator : validationRule.getOperator();
-            leftSide = leftSide != null ? leftSide : validationRule.getLeftSide();
-            rightSide = rightSide != null ? rightSide : validationRule.getRightSide();
-            periodType = periodType != null ? periodType : validationRule.getPeriodType();
+            description = validationRule.getDescription() == null ? description : validationRule.getDescription();
+            type = validationRule.getType() == null ? type : validationRule.getType();
+            operator = validationRule.getOperator() == null ? operator : validationRule.getOperator();
+            leftSide = validationRule.getLeftSide() == null ? leftSide : validationRule.getLeftSide();
+            rightSide = validationRule.getRightSide() == null ? rightSide : validationRule.getRightSide();
+            periodType = validationRule.getPeriodType() == null ? periodType : validationRule.getPeriodType();
 
             for ( ValidationRuleGroup validationRuleGroup : validationRule.getGroups() )
             {

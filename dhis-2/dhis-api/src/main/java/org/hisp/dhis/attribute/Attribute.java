@@ -186,13 +186,13 @@ public class Attribute
         {
             Attribute attribute = (Attribute) other;
 
-            valueType = valueType != null ? valueType : attribute.getValueType();
+            valueType = attribute.getValueType() == null ? valueType : attribute.getValueType();
             dataElementAttribute = attribute.isDataElementAttribute();
             indicatorAttribute = attribute.isIndicatorAttribute();
             organisationUnitAttribute = attribute.isOrganisationUnitAttribute();
             userAttribute = attribute.isUserAttribute();
             mandatory = attribute.isMandatory();
-            sortOrder = sortOrder != null ? sortOrder : attribute.getSortOrder();
+            sortOrder = attribute.getSortOrder() == null ? sortOrder : attribute.getSortOrder();
 
             for ( AttributeValue attributeValue : attribute.getAttributeValues() )
             {
