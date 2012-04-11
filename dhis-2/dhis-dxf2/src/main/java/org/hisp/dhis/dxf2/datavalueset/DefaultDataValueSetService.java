@@ -56,6 +56,7 @@ import org.hisp.dhis.datavalue.DataValue;
 import org.hisp.dhis.dxf2.importsummary.ImportConflict;
 import org.hisp.dhis.dxf2.importsummary.ImportCount;
 import org.hisp.dhis.dxf2.importsummary.ImportSummary;
+import org.hisp.dhis.dxf2.metadata.ImportOptions;
 import org.hisp.dhis.importexport.ImportStrategy;
 import org.hisp.dhis.jdbc.batchhandler.DataValueBatchHandler;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
@@ -69,6 +70,9 @@ import org.hisp.dhis.user.CurrentUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
+/**
+ * @author Lars Helge Overland
+ */
 @Transactional
 public class DefaultDataValueSetService
     implements DataValueSetService
@@ -144,10 +148,10 @@ public class DefaultDataValueSetService
     
     public ImportSummary saveDataValueSet( InputStream in )
     {
-        return saveDataValueSet( in, IdentifiableProperty.UID, IdentifiableProperty.UID, false, ImportStrategy.NEW_AND_UPDATES );
+        return saveDataValueSet( in, ImportOptions.getDefaultImportOptions() );
     }
     
-    public ImportSummary saveDataValueSet( InputStream in, IdentifiableProperty dataElementIdScheme, IdentifiableProperty orgUnitIdScheme, boolean dryRun, ImportStrategy strategy )
+    public ImportSummary saveDataValueSet( InputStream in, ImportOptions importOptions )
     {
         notifier.clear( DATAVALUE_IMPORT ).notify( DATAVALUE_IMPORT, "Process started" );
         
@@ -155,8 +159,9 @@ public class DefaultDataValueSetService
         
         DataValueSet dataValueSet = new StreamingDataValueSet( XMLFactory.getXMLReader( in ) );
         
-        dataElementIdScheme = dataValueSet.getDataElementIdScheme() != null ? IdentifiableProperty.valueOf( dataValueSet.getDataElementIdScheme().toUpperCase() ) : dataElementIdScheme;
-        orgUnitIdScheme = dataValueSet.getOrgUnitIdScheme() != null ? IdentifiableProperty.valueOf( dataValueSet.getOrgUnitIdScheme().toUpperCase() ) : orgUnitIdScheme;
+        IdentifiableProperty dataElementIdScheme = dataValueSet.getDataElementIdScheme() != null ? IdentifiableProperty.valueOf( dataValueSet.getDataElementIdScheme().toUpperCase() ) : importOptions.getDataElementIdScheme();
+        IdentifiableProperty orgUnitIdScheme = dataValueSet.getOrgUnitIdScheme() != null ? IdentifiableProperty.valueOf( dataValueSet.getOrgUnitIdScheme().toUpperCase() ) : importOptions.getOrgUnitIdScheme();
+        ImportStrategy strategy = importOptions.getImportStrategy();
         
         Map<String, DataElement> dataElementMap = identifiableObjectManager.getIdMap( DataElement.class, dataElementIdScheme );
         Map<String, OrganisationUnit> orgUnitMap = identifiableObjectManager.getIdMap( OrganisationUnit.class, orgUnitIdScheme );
@@ -242,7 +247,7 @@ public class DefaultDataValueSetService
             {
                 if ( NEW_AND_UPDATES.equals( strategy ) || UPDATES.equals( strategy ) )
                 {
-                    if ( !dryRun )
+                    if ( !importOptions.isDryRun() )
                     {
                         batchHandler.updateObject( internalValue );
                     }
@@ -254,7 +259,7 @@ public class DefaultDataValueSetService
             {
                 if ( NEW_AND_UPDATES.equals( strategy ) || NEW.equals( strategy ) )
                 {
-                    if ( !dryRun )
+                    if ( !importOptions.isDryRun() )
                     {
                         batchHandler.addObject( internalValue );
                     }

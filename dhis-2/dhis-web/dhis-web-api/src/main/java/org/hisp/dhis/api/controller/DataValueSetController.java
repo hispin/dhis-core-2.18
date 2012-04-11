@@ -37,17 +37,15 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hisp.dhis.api.webdomain.DataValueSets;
-import org.hisp.dhis.common.IdentifiableObject.IdentifiableProperty;
 import org.hisp.dhis.dxf2.datavalueset.DataValueSet;
 import org.hisp.dhis.dxf2.datavalueset.DataValueSetService;
 import org.hisp.dhis.dxf2.importsummary.ImportSummary;
+import org.hisp.dhis.dxf2.metadata.ImportOptions;
 import org.hisp.dhis.dxf2.utils.JacksonUtils;
-import org.hisp.dhis.importexport.ImportStrategy;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -88,30 +86,16 @@ public class DataValueSetController
     
     @RequestMapping( method = RequestMethod.POST, headers = {"Content-Type=application/xml"} )
     @PreAuthorize( "hasRole('ALL') or hasRole('F_DATAVALUE_ADD')" )
-    public void postDataValueSet( @RequestParam(required=false, defaultValue="UID") String dataElementIdScheme,
-                                  @RequestParam(required=false, defaultValue="UID") String orgUnitIdScheme,
-                                  @RequestParam(required=false) boolean dryRun,
-                                  @RequestParam(required=false, defaultValue="NEW_AND_UPDATES") String strategy,
+    public void postDataValueSet( ImportOptions importOptions,
                                   HttpServletResponse response, 
                                   InputStream in,
                                   Model model ) throws IOException
     {
-        IdentifiableProperty _dataElementidScheme = IdentifiableProperty.valueOf( dataElementIdScheme.toUpperCase() );
-        IdentifiableProperty _orgUnitIdScheme = IdentifiableProperty.valueOf( orgUnitIdScheme.toUpperCase() );
-        ImportStrategy _strategy = ImportStrategy.valueOf( strategy.toUpperCase() );
-        
-        ImportSummary summary = dataValueSetService.saveDataValueSet( in, _dataElementidScheme, _orgUnitIdScheme, dryRun, _strategy );
+        ImportSummary summary = dataValueSetService.saveDataValueSet( in, importOptions );
 
-        log.info( "Data values set saved, data element id scheme: " + _dataElementidScheme + ", org unit id scheme: " + _orgUnitIdScheme + ",  dry run: " + dryRun + ", strategy: " + _strategy );    
+        log.info( "Data values set saved " + importOptions );    
 
         response.setContentType( CONTENT_TYPE_XML );        
         JacksonUtils.toXml( response.getOutputStream(), summary );
-    }
-
-    @ExceptionHandler( IllegalArgumentException.class )
-    public void handleException( HttpServletResponse response, IllegalArgumentException ex )
-        throws IOException
-    {
-        response.sendError( HttpServletResponse.SC_CONFLICT, ex.getMessage() );
     }
 }

@@ -34,6 +34,7 @@ import org.hisp.dhis.dxf2.importsummary.ImportConflict;
 import org.hisp.dhis.dxf2.importsummary.ImportCount;
 import org.hisp.dhis.dxf2.metadata.ImportOptions;
 import org.hisp.dhis.dxf2.metadata.Importer;
+import org.hisp.dhis.importexport.ImportStrategy;
 import org.hisp.dhis.system.util.ReflectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -267,7 +268,7 @@ public abstract class AbstractImporter<T extends BaseIdentifiableObject>
         T oldObject = getObject( object );
         ImportConflict conflict;
 
-        if ( options.getImportStrategy().isNewStrategy() )
+        if ( ImportStrategy.NEW.equals( options.getImportStrategy() ) )
         {
             prepareIdentifiableObject( object );
             conflict = newObject( object, options );
@@ -279,7 +280,7 @@ public abstract class AbstractImporter<T extends BaseIdentifiableObject>
 
             imports++;
         }
-        else if ( options.getImportStrategy().isUpdatesStrategy() )
+        else if ( ImportStrategy.UPDATES.equals( options.getImportStrategy() ) )
         {
             conflict = updatedObject( object, oldObject, options );
 
@@ -290,7 +291,7 @@ public abstract class AbstractImporter<T extends BaseIdentifiableObject>
 
             updates++;
         }
-        else if ( options.getImportStrategy().isNewAndUpdatesStrategy() )
+        else if ( ImportStrategy.NEW_AND_UPDATES.equals( options.getImportStrategy() ) )
         {
             if ( oldObject != null )
             {
@@ -339,15 +340,15 @@ public abstract class AbstractImporter<T extends BaseIdentifiableObject>
 
         ImportConflict conflict = null;
 
-        if ( options.getImportStrategy().isNewStrategy() )
+        if ( ImportStrategy.NEW.equals( options.getImportStrategy() ) )
         {
             conflict = validateForNewStrategy( object, options );
         }
-        else if ( options.getImportStrategy().isUpdatesStrategy() )
+        else if ( ImportStrategy.UPDATES.equals( options.getImportStrategy() ) )
         {
             conflict = validateForUpdatesStrategy( object, options );
         }
-        else if ( options.getImportStrategy().isNewAndUpdatesStrategy() )
+        else if ( ImportStrategy.NEW_AND_UPDATES.equals( options.getImportStrategy() ) )
         {
             // if we have a match on at least one of the objects, then assume update
             if ( uidObject != null || codeObject != null || nameObject != null || shortNameObject != null || alternativeNameObject != null )
