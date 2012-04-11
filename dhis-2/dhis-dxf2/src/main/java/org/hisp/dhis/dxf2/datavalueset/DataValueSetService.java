@@ -30,9 +30,8 @@ package org.hisp.dhis.dxf2.datavalueset;
 import java.io.InputStream;
 import java.io.OutputStream;
 
-import org.hisp.dhis.common.IdentifiableObject.IdentifiableProperty;
 import org.hisp.dhis.dxf2.importsummary.ImportSummary;
-import org.hisp.dhis.importexport.ImportStrategy;
+import org.hisp.dhis.dxf2.metadata.ImportOptions;
 
 public interface DataValueSetService
 {
@@ -40,5 +39,5 @@ public interface DataValueSetService
     
     ImportSummary saveDataValueSet( InputStream in );
     
-    ImportSummary saveDataValueSet( InputStream in, IdentifiableProperty dataElementIdScheme, IdentifiableProperty orgUnitIdScheme, boolean dryRun, ImportStrategy strategy );
+    ImportSummary saveDataValueSet( InputStream in, ImportOptions importOptions );
 }
