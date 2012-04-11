@@ -28,6 +28,11 @@
       <interceptor-ref name="fileUploadStack" />
 	</action>
 
+    <action name="getDataValueImportSummary" class="org.hisp.dhis.importexport.action.GetImportSummaryAction">			
+      <result name="success" type="velocity">/dhis-web-importexport/importSummary.vm</result>
+      <param name="onExceptionReturn">plainTextError</param>
+    </action>
+
     <!-- Menu -->
 
     <action name="displayExternalImportMenu" class="org.hisp.dhis.importexport.action.NoAction">

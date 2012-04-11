@@ -88,7 +88,7 @@ public class DefaultImportService
                 ImportCount count = importer.getCurrentImportCount();
 
                 importSummary.getConflicts().addAll( conflicts );
-                importSummary.getCounts().add( count );
+                // importSummary.getCounts().add( count ); //FIXME
             }
         }
     }

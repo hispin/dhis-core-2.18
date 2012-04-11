@@ -34,37 +34,17 @@ import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 @JacksonXmlRootElement( localName = "count" )
 public class ImportCount
 {
-    private String object;
-
     private int imported;
 
     private int updated;
 
     private int ignored;
 
-    public ImportCount( String object )
+    public ImportCount( int imported, int updated, int ignored )
     {
-        this.object = object;
-    }
-
-    public ImportCount( String object, int imported, int updated, int ignored )
-    {
-        this.object = object;
         this.imported = imported;
         this.updated = updated;
         this.ignored = ignored;
-    }
-
-    @JsonProperty
-    @JacksonXmlProperty( isAttribute = true )
-    public String getObject()
-    {
-        return object;
-    }
-
-    public void setObject( String object )
-    {
-        this.object = object;
     }
 
     @JsonProperty
@@ -106,9 +86,6 @@ public class ImportCount
     @Override
     public String toString()
     {
-        return "[object='" + object + "'" +
-            ", imports=" + imported +
-            ", updates=" + updated +
-            ", ignores=" + ignored + "]";
+        return "[imports=" + imported + ", updates=" + updated + ", ignores=" + ignored + "]";
     }
 }

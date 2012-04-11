@@ -121,7 +121,7 @@ public class DataValueSetServiceTest
         ImportSummary summary = dataValueSetService.saveDataValueSet( new ClassPathResource( "dataValueSetA.xml" ).getInputStream() );
         
         assertNotNull( summary );
-        assertEquals( 1, summary.getCounts().size() );
+        assertNotNull( summary.getDataValueCount() );
         
         Collection<DataValue> dataValues = dataValueService.getAllDataValues();
         
