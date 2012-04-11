@@ -36,23 +36,23 @@ public class ImportCount
 {
     private String object;
 
-    private int imports;
+    private int imported;
 
-    private int updates;
+    private int updated;
 
-    private int ignores;
+    private int ignored;
 
     public ImportCount( String object )
     {
         this.object = object;
     }
 
-    public ImportCount( String object, int imports, int updates, int ignores )
+    public ImportCount( String object, int imported, int updated, int ignored )
     {
         this.object = object;
-        this.imports = imports;
-        this.updates = updates;
-        this.ignores = ignores;
+        this.imported = imported;
+        this.updated = updated;
+        this.ignored = ignored;
     }
 
     @JsonProperty
@@ -69,46 +69,46 @@ public class ImportCount
 
     @JsonProperty
     @JacksonXmlProperty( isAttribute = true )
-    public int getImports()
+    public int getImported()
     {
-        return imports;
+        return imported;
     }
 
-    public void setImports( int imports )
+    public void setImported( int imported )
     {
-        this.imports = imports;
-    }
-
-    @JsonProperty
-    @JacksonXmlProperty( isAttribute = true )
-    public int getUpdates()
-    {
-        return updates;
-    }
-
-    public void setUpdates( int updates )
-    {
-        this.updates = updates;
+        this.imported = imported;
     }
 
     @JsonProperty
     @JacksonXmlProperty( isAttribute = true )
-    public int getIgnores()
+    public int getUpdated()
     {
-        return ignores;
+        return updated;
     }
 
-    public void setIgnores( int ignores )
+    public void setUpdated( int updated )
     {
-        this.ignores = ignores;
+        this.updated = updated;
+    }
+
+    @JsonProperty
+    @JacksonXmlProperty( isAttribute = true )
+    public int getIgnored()
+    {
+        return ignored;
+    }
+
+    public void setIgnored( int ignored )
+    {
+        this.ignored = ignored;
     }
 
     @Override
     public String toString()
     {
         return "[object='" + object + "'" +
-            ", imports=" + imports +
-            ", updates=" + updates +
-            ", ignores=" + ignores + "]";
+            ", imports=" + imported +
+            ", updates=" + updated +
+            ", ignores=" + ignored + "]";
     }
 }
