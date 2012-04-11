@@ -37,6 +37,8 @@ import org.hisp.dhis.i18n.I18n;
 import org.hisp.dhis.i18n.I18nFormat;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.patient.Patient;
+import org.hisp.dhis.patient.PatientAttribute;
+import org.hisp.dhis.patient.PatientIdentifierType;
 
 /**
  * @author Abyot Asalefew
@@ -87,13 +89,13 @@ public interface ProgramStageInstanceService
 
     List<ProgramStageInstance> getProgramStageInstances( Patient patient, Boolean completed );
             
-    List<ProgramStageInstance> searchProgramStageInstances( ProgramStage programStage, Map<Integer,String> searchingKeys, Collection<Integer> orgunitIds, Date startDate, Date endDate, boolean orderByOrgunitAsc, boolean orderByExecutionDateByAsc, int min, int max );
+    List<ProgramStageInstance> searchProgramStageInstances( ProgramStage programStage, Map<Integer,String> searchingIdenKeys, Map<Integer,String> searchingAttrKeys, Map<Integer,String> searchingDEKeys, Collection<Integer> orgunitIds, Date startDate, Date endDate, boolean orderByOrgunitAsc, boolean orderByExecutionDateByAsc, int min, int max );
 
-    Grid getTabularReport( ProgramStage programStage, List<DataElement> dataElements, Map<Integer,String> searchingKeys, Collection<Integer> orgunitIds, int level, Date startDate, Date endDate, boolean orderByOrgunitAsc, boolean orderByExecutionDateByAsc, int min, int max, I18nFormat format, I18n i18n );
+    Grid getTabularReport( ProgramStage programStage, List<PatientIdentifierType> idens, List<PatientAttribute> attributes, List<DataElement> dataElements, Map<Integer,String> searchingIdenKeys, Map<Integer,String> searchingAttrKeys, Map<Integer,String> searchingDEKeys, Collection<Integer> orgunitIds, int level, Date startDate, Date endDate, boolean orderByOrgunitAsc, boolean orderByExecutionDateByAsc, int min, int max, I18nFormat format, I18n i18n );
     
-    Grid getTabularReport( ProgramStage programStage, List<DataElement> dataElements, Map<Integer,String> searchingKeys, Collection<Integer> orgunitIds, int level, Date startDate, Date endDate, boolean orderByOrgunitAsc, boolean orderByExecutionDateByAsc, I18nFormat format, I18n i18n );
+    Grid getTabularReport( ProgramStage programStage, List<PatientIdentifierType> idens, List<PatientAttribute> attributes, List<DataElement> dataElements, Map<Integer,String> searchingIdenKeys, Map<Integer,String> searchingAttrKeys, Map<Integer,String> searchingDEKeys, Collection<Integer> orgunitIds, int level, Date startDate, Date endDate, boolean orderByOrgunitAsc, boolean orderByExecutionDateByAsc, I18nFormat format, I18n i18n );
 
-    int countProgramStageInstances( ProgramStage programStage, Map<Integer,String> searchingKeys, Collection<Integer> orgunitIds, Date startDate, Date endDate );
+    int countProgramStageInstances( ProgramStage programStage, Map<Integer,String> searchingIdenKeys, Map<Integer,String> searchingAttrKeys, Map<Integer,String> searchingDEKeys, Collection<Integer> orgunitIds, Date startDate, Date endDate );
     
     List<Grid> getProgramStageInstancesReport( ProgramInstance programInstance, I18nFormat format, I18n i18n );
 }

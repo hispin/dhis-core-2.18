@@ -9,40 +9,68 @@ function organisationUnitSelected( orgUnits, orgUnitNames )
 
 selection.setListenerFunction( organisationUnitSelected );
 
-function loadProgramStages()
+
+// ---------------------------------------------------------------------
+// Load patient-identifiers && patient-attributes
+// ---------------------------------------------------------------------
+
+function getTabularParams()
 {
-	clearListById( 'programStageId' );
-	clearListById( 'availableDataElementIds' );
-	
-	if( getFieldValue('programId') == '' )
+	clearListById( 'availableIdenIds' );
+	clearListById( 'availableAttrIds' );
+	clearListById( 'programStageId');
+	if( getFieldValue('programStageId') == '' )
 	{
 		return;
 	}
-	
-	clearListById( 'dataElementIds' );
-	$.getJSON( 'loadTabularProgramStages.action',
-		{
-			programId: getFieldValue('programId')
-		}
-		, function( json ) 
-		{
-			var singleEvent = jQuery('#programId option:selected').attr('singleevent');
-			if(singleEvent=='false')
+	else
+	{		
+		clearListById( 'availableAttrIds' );
+		$.getJSON( 'getTabularParams.action',
 			{
-				addOptionById( 'programStageId', '', i18n_please_select );
+				programId: getFieldValue('programId')
 			}
-			
-			for ( i in json.programStages ) 
-			{ 
-				$('#programStageId').append('<option value=' + json.programStages[i].id + '>' + json.programStages[i].name + '</option>');
-			}
-			
-			if(singleEvent=='true')
+			, function( json ) 
 			{
-				loadDataElements();
-			}
-		} );
+				// Load patient-identifier-types
+				for ( i in json.identifierTypes ) 
+				{ 
+					$('#availableIdenIds').append('<option value="iden_' + json.identifierTypes[i].id + '_" >' + json.identifierTypes[i].name + '</option>');
+				}
+				
+				// Load patient-attributes
+				for ( i in json.patientAttributes ) 
+				{ 
+					$('#availableAttrIds').append('<option value="attr_' + json.patientAttributes[i].id + '_" >' + json.patientAttributes[i].name + '</option>');
+				}
+				
+				// Load program-stages
+				var noProgramStage = 0;
+				for ( i in json.programStages ) 
+				{ 
+					if( !json.programStages[i].irregular )
+					{
+						$('#programStageId').append('<option value=' + json.programStages[i].id + '>' + json.programStages[i].name + '</option>');
+						noProgramStage++;
+					}
+				}
+				
+				if( noProgramStage > 1 )
+				{
+					$('#programStageId').prepend('<option value="">' + i18n_please_select_a_program_stage + '</option>');
+					$('#programStageId option:first-child').attr("selected", "selected");
+				}
+				else if( noProgramStage == 1 )
+				{
+					loadDataElements();
+				}
+			} );
+	}
 }
+
+// ---------------------------------------------------------------------
+// Load dataelements by stage
+// ---------------------------------------------------------------------
 
 function loadDataElements()
 {
@@ -70,7 +98,7 @@ function loadDataElements()
 				{
 					for ( i in json.dataElements ) 
 					{ 
-						$('#availableDataElementIds').append('<option value=' + json.dataElements[i].id + ' >' + json.dataElements[i].name + '</option>');
+						$('#availableDataElementIds').append('<option value="de_' + json.dataElements[i].id + '_" >' + json.dataElements[i].name + '</option>');
 					}
 				} );
 		}
@@ -282,20 +310,37 @@ function getParams()
 	var searchingValues = "";
 	var listSeachingValues = jQuery("#gridTable input[type=text]");
 	
-	listSeachingValues.each( function( i, item ){
-		if( item.value != '' )
-		{
+	if( listSeachingValues.length > 0 )
+	{
+		listSeachingValues.each( function( i, item ){
 			var value = getFormula( item.value );
-			searchingValues += "searchingValues=" + item.id + "_" + htmlEncode( value ) + "&";
-		}
-	});
-	
-	var dataElementIds = "";
-	var listDataElementIds = jQuery( "select[id=dataElementIds] option" );
-	listDataElementIds.each( function( i, item ){
-		dataElementIds += "dataElementIds=" + item.value;
-		dataElementIds += ( i < listDataElementIds.length - 1 ) ? "&" : "";
-	});
+			searchingValues += "&searchingValues=" + item.id + "_" ;
+			if( item.value != '' )
+			{
+				searchingValues += htmlEncode( value );
+			}
+		});
+	}
+	else
+	{
+		var listIdentifierTypes = jQuery( "select[id=selectedIdenIds] option" );
+		listIdentifierTypes.each( function( i, item ){
+			searchingValues += "searchingValues=" + item.value;
+			searchingValues += ( i < listIdentifierTypes.length - 1 ) ? "&" : "";
+		});
+		
+		var listPatientAttributes = jQuery( "select[id=selectedAttrIds] option" );
+		listPatientAttributes.each( function( i, item ){
+			searchingValues += "searchingValues=" + item.value;
+			searchingValues += ( i < listPatientAttributes.length - 1 ) ? "&" : "";
+		});
+		
+		var listDataElementIds = jQuery( "select[id=dataElementIds] option" );
+		listDataElementIds.each( function( i, item ){
+			searchingValues += "searchingValues=" + item.value;
+			searchingValues += ( i < listDataElementIds.length - 1 ) ? "&" : "";
+		});
+	}
 	
 	var orderByOrgunitAsc = jQuery( '#orderByOrgunitAsc' ).attr('orderBy');
 	if( orderByOrgunitAsc == null )
@@ -309,8 +354,7 @@ function getParams()
 		orderByExecutionDateByAsc = 'true';
 	}
 	
-	return searchingValues + dataElementIds
-				+ "&programStageId=" + getFieldValue('programStageId')
+	return searchingValues + "&programStageId=" + getFieldValue('programStageId')
 				+ "&startDate=" + getFieldValue('startDate')
 				+ "&endDate=" + getFieldValue('endDate')
 				+ "&facilityLB=" + getFieldValue('facilityLB')
@@ -357,4 +401,39 @@ function clearFilter()
 	listSeachingValues.each( function( i, item ){
 		item.value = '';
 	});	
+}
+
+
+//------------------------------------------------------------------------------
+// Filter data-element
+//------------------------------------------------------------------------------
+
+function filterDE( event, value, fieldName )
+{
+	var field = byId(fieldName);
+	for ( var index = 0; index < field.options.length; index++ )
+    {
+		var option = field.options[index];
+		
+		if(value.length == 0 )
+		{
+			option.style.display = "block";
+		}
+		else
+		{
+			if (option.text.toLowerCase().indexOf( value.toLowerCase() ) != -1 )
+			{
+				option.style.display = "block";
+			}
+			else
+			{
+				option.style.display = "none";
+			}
+		}
+    }	    
+}
+
+function toogleTB(tbody)
+{
+	jQuery( '#' + tbody ).toggle();
 }

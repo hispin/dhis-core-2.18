@@ -28,47 +28,76 @@
 package org.hisp.dhis.caseentry.action.report;
 
 import java.util.Collection;
+import java.util.HashSet;
 
-import org.hisp.dhis.program.ProgramStageDataElement;
-import org.hisp.dhis.program.ProgramStageService;
+import org.hisp.dhis.patient.PatientAttribute;
+import org.hisp.dhis.patient.PatientAttributeGroupService;
+import org.hisp.dhis.patient.PatientAttributeService;
+import org.hisp.dhis.program.Program;
+import org.hisp.dhis.program.ProgramService;
 
 import com.opensymphony.xwork2.Action;
 
 /**
  * @author Chau Thu Tran
  * 
- * @version $LoadDataElementsAction.java Feb 29, 2012 9:40:40 AM$
+ * @version $LoadAttributesAction.java Apr 3, 2012 8:42:24 AM$
  */
-public class LoadDataElementsAction
+public class LoadAttributesAction
     implements Action
 {
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
 
-    private ProgramStageService programStageService;
+    private ProgramService programService;
 
-    public void setProgramStageService( ProgramStageService programStageService )
-    {
-        this.programStageService = programStageService;
-    }
+    private PatientAttributeGroupService attributeGroupService;
+
+    private PatientAttributeService attributeService;
 
     // -------------------------------------------------------------------------
-    // Input/output
+    // Input/Output
     // -------------------------------------------------------------------------
 
-    private Integer programStageId;
+    private Integer programId;
 
-    public void setProgramStageId( Integer programStageId )
+    private Integer attributeGroupId;
+
+    private Collection<PatientAttribute> patientAttributes = new HashSet<PatientAttribute>();
+
+    // -------------------------------------------------------------------------
+    // Getter && Setters
+    // -------------------------------------------------------------------------
+
+    public void setAttributeGroupService( PatientAttributeGroupService attributeGroupService )
     {
-        this.programStageId = programStageId;
+        this.attributeGroupService = attributeGroupService;
     }
 
-    private Collection<ProgramStageDataElement> psDataElements;
-
-    public Collection<ProgramStageDataElement> getPsDataElements()
+    public Collection<PatientAttribute> getPatientAttributes()
     {
-        return psDataElements;
+        return patientAttributes;
+    }
+
+    public void setAttributeGroupId( Integer attributeGroupId )
+    {
+        this.attributeGroupId = attributeGroupId;
+    }
+
+    public void setAttributeService( PatientAttributeService attributeService )
+    {
+        this.attributeService = attributeService;
+    }
+
+    public void setProgramService( ProgramService programService )
+    {
+        this.programService = programService;
+    }
+
+    public void setProgramId( Integer programId )
+    {
+        this.programId = programId;
     }
 
     // -------------------------------------------------------------------------
@@ -79,11 +108,21 @@ public class LoadDataElementsAction
     public String execute()
         throws Exception
     {
-        if ( programStageId != null )
+        Program program = programService.getProgram( programId );
+        patientAttributes = attributeService.getPatientAttributes( program );
+
+        if ( attributeGroupId == null )
         {
-            psDataElements = programStageService.getProgramStage( programStageId ).getProgramStageDataElements();
+            patientAttributes.addAll( attributeService.getPatientAttributes( null, null ) );
         }
-        
+        else
+        {
+            patientAttributes.retainAll( attributeGroupService.getPatientAttributeGroup( attributeGroupId )
+                .getAttributes() );
+        }
+
         return SUCCESS;
+
     }
+
 }

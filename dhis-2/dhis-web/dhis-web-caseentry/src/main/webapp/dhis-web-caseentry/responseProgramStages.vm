@@ -4,7 +4,8 @@
 	#foreach( $programStage in $programStages )
 	  {
 		"id":  ${programStage.id} ,
-		"name": "$!encoder.jsonEncode( ${programStage.name} )"
+		"name": "$!encoder.jsonEncode( ${programStage.name} )",
+		"irregular": "${programStage.irregular}"
 	  }#if( $velocityCount < $size ),#end
 	#end],
 	

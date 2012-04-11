@@ -28,47 +28,61 @@
 package org.hisp.dhis.caseentry.action.report;
 
 import java.util.Collection;
+import java.util.HashSet;
 
-import org.hisp.dhis.program.ProgramStageDataElement;
-import org.hisp.dhis.program.ProgramStageService;
+import org.hisp.dhis.patient.PatientIdentifierType;
+import org.hisp.dhis.patient.PatientIdentifierTypeService;
+import org.hisp.dhis.program.Program;
+import org.hisp.dhis.program.ProgramService;
 
 import com.opensymphony.xwork2.Action;
 
 /**
  * @author Chau Thu Tran
  * 
- * @version $LoadDataElementsAction.java Feb 29, 2012 9:40:40 AM$
+ * @version $LoadIdentifierTypesAction.java Apr 5, 2012 7:27:52 PM$
  */
-public class LoadDataElementsAction
+public class LoadIdentifierTypesAction
     implements Action
 {
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
 
-    private ProgramStageService programStageService;
+    private PatientIdentifierTypeService identifierTypeService;
 
-    public void setProgramStageService( ProgramStageService programStageService )
-    {
-        this.programStageService = programStageService;
-    }
+    private ProgramService programService;
 
     // -------------------------------------------------------------------------
-    // Input/output
+    // Input/Output
     // -------------------------------------------------------------------------
 
-    private Integer programStageId;
+    private Integer programId;
 
-    public void setProgramStageId( Integer programStageId )
+    private Collection<PatientIdentifierType> identifierTypes = new HashSet<PatientIdentifierType>();
+
+    // -------------------------------------------------------------------------
+    // Getter && Setters
+    // -------------------------------------------------------------------------
+
+    public void setProgramService( ProgramService programService )
     {
-        this.programStageId = programStageId;
+        this.programService = programService;
     }
 
-    private Collection<ProgramStageDataElement> psDataElements;
-
-    public Collection<ProgramStageDataElement> getPsDataElements()
+    public void setIdentifierTypeService( PatientIdentifierTypeService identifierTypeService )
     {
-        return psDataElements;
+        this.identifierTypeService = identifierTypeService;
+    }
+
+    public Collection<PatientIdentifierType> getIdentifierTypes()
+    {
+        return identifierTypes;
+    }
+
+    public void setProgramId( Integer programId )
+    {
+        this.programId = programId;
     }
 
     // -------------------------------------------------------------------------
@@ -79,11 +93,12 @@ public class LoadDataElementsAction
     public String execute()
         throws Exception
     {
-        if ( programStageId != null )
-        {
-            psDataElements = programStageService.getProgramStage( programStageId ).getProgramStageDataElements();
-        }
-        
+        Program program = programService.getProgram( programId );
+
+        identifierTypes = identifierTypeService.getPatientIdentifierTypesWithoutProgram();
+        identifierTypes.addAll( identifierTypeService.getPatientIdentifierTypes( program ) );
+
         return SUCCESS;
     }
+
 }

@@ -27,48 +27,65 @@
 
 package org.hisp.dhis.caseentry.action.report;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
 
-import org.hisp.dhis.program.ProgramStageDataElement;
-import org.hisp.dhis.program.ProgramStageService;
+import org.hisp.dhis.patient.PatientAttributeGroup;
+import org.hisp.dhis.patient.PatientAttributeGroupService;
+import org.hisp.dhis.patient.comparator.PatientAttributeGroupSortOrderComparator;
+import org.hisp.dhis.program.Program;
+import org.hisp.dhis.program.ProgramService;
 
 import com.opensymphony.xwork2.Action;
 
 /**
  * @author Chau Thu Tran
  * 
- * @version $LoadDataElementsAction.java Feb 29, 2012 9:40:40 AM$
+ * @version $LoadAttributeGroupsAction.java Apr 3, 2012 8:42:24 AM$
  */
-public class LoadDataElementsAction
+public class LoadAttributeGroupsAction
     implements Action
 {
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
 
-    private ProgramStageService programStageService;
+    private ProgramService programService;
 
-    public void setProgramStageService( ProgramStageService programStageService )
-    {
-        this.programStageService = programStageService;
-    }
+    private PatientAttributeGroupService attributeGroupService;
 
     // -------------------------------------------------------------------------
-    // Input/output
+    // Input/Output
     // -------------------------------------------------------------------------
 
-    private Integer programStageId;
+    private Integer programId;
 
-    public void setProgramStageId( Integer programStageId )
+    private List<PatientAttributeGroup> attributeGroups = new ArrayList<PatientAttributeGroup>();
+
+    // -------------------------------------------------------------------------
+    // Getter && Setters
+    // -------------------------------------------------------------------------
+
+    public Collection<PatientAttributeGroup> getAttributeGroups()
     {
-        this.programStageId = programStageId;
+        return attributeGroups;
     }
 
-    private Collection<ProgramStageDataElement> psDataElements;
-
-    public Collection<ProgramStageDataElement> getPsDataElements()
+    public void setAttributeGroupService( PatientAttributeGroupService attributeGroupService )
     {
-        return psDataElements;
+        this.attributeGroupService = attributeGroupService;
+    }
+
+    public void setProgramService( ProgramService programService )
+    {
+        this.programService = programService;
+    }
+
+    public void setProgramId( Integer programId )
+    {
+        this.programId = programId;
     }
 
     // -------------------------------------------------------------------------
@@ -79,11 +96,13 @@ public class LoadDataElementsAction
     public String execute()
         throws Exception
     {
-        if ( programStageId != null )
-        {
-            psDataElements = programStageService.getProgramStage( programStageId ).getProgramStageDataElements();
-        }
-        
+        Program program = programService.getProgram( programId );
+
+        attributeGroups = new ArrayList<PatientAttributeGroup>( attributeGroupService
+            .getPatientAttributeGroups( program ) );
+        Collections.sort( attributeGroups, new PatientAttributeGroupSortOrderComparator() );
+
         return SUCCESS;
     }
+
 }

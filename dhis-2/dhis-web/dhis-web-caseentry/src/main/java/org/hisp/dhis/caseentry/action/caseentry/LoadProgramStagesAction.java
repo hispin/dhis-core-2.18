@@ -131,6 +131,11 @@ public class LoadProgramStagesAction
     public String execute()
         throws Exception
     {
+        if ( programId == null )
+        {
+            return SUCCESS;
+        }
+
         selectedStateManager.clearSelectedProgramInstance();
         selectedStateManager.clearSelectedProgramStageInstance();
 
@@ -158,7 +163,7 @@ public class LoadProgramStagesAction
             programInstance = programInstances.iterator().next();
 
             selectedStateManager.setSelectedProgramInstance( programInstance );
-            
+
             if ( programInstance.getProgramStageInstances() != null )
             {
                 colorMap = programStageInstanceService.colorProgramStageInstances( programInstance
@@ -166,7 +171,6 @@ public class LoadProgramStagesAction
             }
         }
 
-       
         return SUCCESS;
     }
 

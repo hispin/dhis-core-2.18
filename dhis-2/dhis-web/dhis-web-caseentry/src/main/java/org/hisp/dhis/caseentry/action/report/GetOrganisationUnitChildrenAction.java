@@ -1,3 +1,5 @@
+package org.hisp.dhis.caseentry.action.report;
+
 /*
  * Copyright (c) 2004-2012, University of Oslo
  * All rights reserved.
@@ -25,50 +27,53 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.hisp.dhis.caseentry.action.report;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
-import java.util.Collection;
-
-import org.hisp.dhis.program.ProgramStageDataElement;
-import org.hisp.dhis.program.ProgramStageService;
+import org.hisp.dhis.common.comparator.IdentifiableObjectNameComparator;
+import org.hisp.dhis.organisationunit.OrganisationUnit;
+import org.hisp.dhis.organisationunit.OrganisationUnitService;
 
 import com.opensymphony.xwork2.Action;
 
 /**
- * @author Chau Thu Tran
- * 
- * @version $LoadDataElementsAction.java Feb 29, 2012 9:40:40 AM$
+ * @author Jan Henrik Overland
  */
-public class LoadDataElementsAction
+public class GetOrganisationUnitChildrenAction
     implements Action
 {
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
 
-    private ProgramStageService programStageService;
+    private OrganisationUnitService organisationUnitService;
 
-    public void setProgramStageService( ProgramStageService programStageService )
+    public void setOrganisationUnitService( OrganisationUnitService organisationUnitService )
     {
-        this.programStageService = programStageService;
+        this.organisationUnitService = organisationUnitService;
     }
 
     // -------------------------------------------------------------------------
-    // Input/output
+    // Input
     // -------------------------------------------------------------------------
 
-    private Integer programStageId;
-
-    public void setProgramStageId( Integer programStageId )
+    private Integer node;
+    
+    public void setNode( Integer node )
     {
-        this.programStageId = programStageId;
+        this.node = node;
     }
 
-    private Collection<ProgramStageDataElement> psDataElements;
+    // -------------------------------------------------------------------------
+    // Output
+    // -------------------------------------------------------------------------
 
-    public Collection<ProgramStageDataElement> getPsDataElements()
+    private List<OrganisationUnit> units = new ArrayList<OrganisationUnit>();
+    
+    public List<OrganisationUnit> getUnits()
     {
-        return psDataElements;
+        return units;
     }
 
     // -------------------------------------------------------------------------
@@ -79,9 +84,20 @@ public class LoadDataElementsAction
     public String execute()
         throws Exception
     {
-        if ( programStageId != null )
+        OrganisationUnit unit = organisationUnitService.getOrganisationUnit( node );
+        
+        int level = organisationUnitService.getLevelOfOrganisationUnit( unit.getId() ) + 1;
+        
+        if ( unit != null )
         {
-            psDataElements = programStageService.getProgramStage( programStageId ).getProgramStageDataElements();
+            units = new ArrayList<OrganisationUnit>( unit.getChildren() );
+            
+            for ( OrganisationUnit organisationUnit : units )
+            {
+                organisationUnit.setLevel( level );
+            }
+
+            Collections.sort( units, new IdentifiableObjectNameComparator() );
         }
         
         return SUCCESS;

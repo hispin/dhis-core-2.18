@@ -5,10 +5,10 @@
 		}, {
 			'beforeValidateHandler' : function()
 			{
-				listValidator( 'memberValidator', 'dataElementIds' );
+				listValidator( 'memberDEValidator', 'dataElementIds' );
 			}
 		} ); 
-
+		
 		datePickerInRange( 'startDate' , 'endDate' );	
 	});		
 </script>
@@ -17,9 +17,10 @@
 <form id="reportForm" name="reportForm" method="post">
 <p><input type="button" value="$i18n.getString('data')" onclick="showCriteria();" ></p>
 
-<div class="inputCriteria" id='criteriaDiv' style="width:600px;height:480px;margin-bottom:20px;">
+<div class="inputCriteria" id='criteriaDiv' style="width:900px;height:590px;margin-bottom:20px;">
 
 <table>	
+
     <tr>
 	  <td><label>$i18n.getString( "orgunit_boundary" )</label></td>
 	  <td colspan='2'><input type="text" readonly="readonly" id='orgunitname' name='orgunitname' #if($!orgunit) value="$!orgunit.name" #else value="[$i18n.getString( 'select' )]" #end ></td>
@@ -27,20 +28,20 @@
 	
     <tr>
 		<td>
-		   $i18n.getString( "orgunit_level" )
+		   $i18n.getString( "use_data_from_level" )
 		</td>
 		<td>
 			<select id="facilityLB" name="facilityLB">
 				<option value="all" selected="selected" >$i18n.getString( "all" )</option>
 				<option value="childrenOnly" >$i18n.getString( "children_only" )</option>
-				<option value="selected" >$i18n.getString( "selected" )</option>
+				<option value="selected" >$i18n.getString( "selected_boundary" )</option>
 			</select>
 		</td>
 	</tr>
 	
 	<tr>
 		<td>
-		   $i18n.getString( "orgunit_hiererachy_included_on" )
+		   $i18n.getString( "include_parent_orgunits_starting_from_level" )
 		</td>
 		<td>
 			<select id="level" name="level">
@@ -65,10 +66,10 @@
         </td>      
     </tr>
 	
-    <tr>
-        <td><label for="programId">$i18n.getString( "program" ) <em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
-        <td colspan='2'>
-            <select id="programId" name="programId" #if($!programs) #else disabled #end class="{validate:{required:true}}" onchange='loadProgramStages();'>
+	<tr>
+		<td><label>$i18n.getString( "program" )</label></td>
+		<td>
+            <select id="programId" name="programId" #if($!programs) #else disabled #end onchange='getTabularParams();'>
 				<option value=''>[$i18n.getString('please_select')]</option>
 				#foreach( $program in $programs )
 				<option value='$program.id' singleevent='$program.singleEvent'>$program.name</option>
@@ -76,48 +77,142 @@
 			</select>
         </td>
     </tr>
-        
     
-	<tr>
-        <td><label>$i18n.getString( "program_stage" ) <em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
-        <td colspan='2'>
-			<select id="programStageId" name="programStageId" class="{validate:{required:true}}" onchange='loadDataElements();'></select>
-        </td>      
-    </tr>
+</table>
+
+<p></p>
+<table width='100%'>
+	<tr onclick='toogleTB("idenTB")' style='cursor:pointer'>
+		<th>$i18n.getString( "available_identifier_types" )</td>
+		<th>$i18n.getString( "filter" )</th>
+		<th>$i18n.getString( "selected_identifier_types" ) <em title="$i18n.getString( 'required' )" class="required">*</em></td>
+	</tr>
 	
-	<tr>
-		<td><label>$i18n.getString( "available_data_elements" ) <em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
-        <td colspan='2'>
-			<select id="availableDataElementIds" name="availableDataElementIds" multiple size='6' ondblclick="moveSelectedById( 'availableDataElementIds', 'dataElementIds' )" ></select>
-        </td>      
-    </tr>
+	<tbody id='idenTB' style='display:none;'>
+		<tr>
+			<td>
+				<input type='text' id='searchAvailableIdenText' onkeyup="filterDE(event, this.value, 'searchAvailableIdenText');"/>
+				<input type="button" value="$i18n.getString( 'clear' )" onclick="setFieldValue('searchAvailableIdenText', '');" style="width:60px" >
+			</td> 
+			<td></td>
+			<td>
+				<input type='text' id='searchSelectedIdenText' onkeyup="filterDE(event, this.value, 'searchSelectedIdenText');"/>
+				<input type="button" value="$i18n.getString( 'clear' )" onclick="setFieldValue('searchSelectedIdenText', '');" class="button" >
+			</td>		
+		</tr>
+		
+		<tr>
+			<td>
+				<select id="availableIdenIds" name="availableAttrIds" multiple='true' size='16' ondblclick="moveSelectedById( 'availableIdenIds', 'selectedIdenIds' )" ></select>
+			</td>      
+			<td> 
+				<input type="button" value="$i18n.getString( '>' )" title="$i18n.getString( 'add_selected' )" onclick="moveSelectedById( 'availableIdenIds', 'selectedIdenIds' )" class="button" />
+				<input type="button" value="$i18n.getString( '>>' )" title="$i18n.getString( 'add_all' )" onclick="moveAllById( 'availableIdenIds', 'selectedIdenIds' )" class="button" /> <br>
+				<input type="button" value="$i18n.getString( '<' )" title="$i18n.getString( 'remove_selected' )" onclick="moveSelectedById( 'selectedIdenIds', 'availableIdenIds' )" class="button" />
+				<input type="button" value="$i18n.getString( '<<' )" title="$i18n.getString( 'remove_all' )" onclick="moveAllById( 'selectedIdenIds', 'availableIdenIds' )" class="button" />
+			</td>
+			<td>
+				<select id="selectedIdenIds" name="selectedIdenIds" multiple='true' size='16' ondblclick="moveSelectedById( 'selectedIdenIds', 'availableIdenIds' )" ></select>
+			</td> 
+			<td>
+				<a href="javascript:moveUpSelectedOption('selectedIdenIds')"><img src="../images/move_up.png"/></a><br/><br/>
+				<a href="javascript:moveDownSelectedOption('selectedIdenIds')"><img src="../images/move_down.png"/></a><br/><br/>
+			</td>  			
+		</tr>
 	
-	<tr>
-        <td></td>
-		<td> 
-			<input type="button" value="$i18n.getString( 'add_selected' )" title="$i18n.getString( 'add_selected' )" onclick="moveSelectedById( 'availableDataElementIds', 'dataElementIds' )" class="button" />
-            <input type="button" value="$i18n.getString( 'add_all' )" title="$i18n.getString( 'add_all' )" onclick="moveAllById( 'availableDataElementIds', 'dataElementIds' )" class="button" /> <br>
-            <input type="button" value="$i18n.getString( 'remove_selected' )" title="$i18n.getString( 'remove_selected' )" onclick="moveSelectedById( 'dataElementIds', 'availableDataElementIds' )" class="button" />
-            <input type="button" value="$i18n.getString( 'remove_all' )" title="$i18n.getString( 'remove_all' )" onclick="moveAllById( 'dataElementIds', 'availableDataElementIds' )" class="button" />
-        </td>
-    </tr>
+	</tbody>
 	
-	<tr>
-		<td><label>$i18n.getString( "selected_data_elements" ) <em title="$i18n.getString( 'required' )" class="required">*</em></label></td>
-        <td>
-			<select id="dataElementIds" name="dataElementIds" multiple size='6' ondblclick="moveSelectedById( 'dataElementIds', 'availableDataElementIds' )" ></select>
-			<select id="memberValidator" multiple="multiple" class="{validate:{required:true}} hidden"/>
-        </td> 
-		<td style="width:30px; text-align:center">
-            <a href="javascript:moveUpSelectedOption('dataElementIds')"><img src="../images/move_up.png"/></a><br/><br/>
-            <a href="javascript:moveDownSelectedOption('dataElementIds')"><img src="../images/move_down.png"/></a><br/><br/>
-        </td>  			
-    </tr>
+	<tr onclick='toogleTB("attrTB")' style='cursor:pointer'>
+		<th>$i18n.getString( "available_attribute" )</td>
+		<th>$i18n.getString( "filter" )</th>
+		<th>$i18n.getString( "selected_attribute" ) <em title="$i18n.getString( 'required' )" class="required">*</em></td>
+	</tr>
+		
+	<tbody id='attrTB' style='display:none;'>
+		
+		<tr>
+			<td>
+				<input type='text' id='searchAvailableAttrText' onkeyup="filterDE(event, this.value, 'searchAvailableAttrText');"/>
+				<input type="button" value="$i18n.getString( 'clear' )" onclick="setFieldValue('searchAvailableAttrText', '');" style="width:60px" >
+			</td> 
+			<td></td>
+			<td>
+				<input type='text' id='searchSelectedAttrText' onkeyup="filterDE(event, this.value, 'searchSelectedAttrText');"/>
+				<input type="button" value="$i18n.getString( 'clear' )" onclick="setFieldValue('searchSelectedAttrText', '');" class="button" >
+			</td>		
+		</tr>
+		
+		<tr>
+			<td>
+				<select id="availableAttrIds" name="availableAttrIds" multiple='true' size='16' ondblclick="moveSelectedById( 'availableAttrIds', 'selectedAttrIds' )" ></select>
+			</td>      
+			<td> 
+				<input type="button" value="$i18n.getString( '>' )" title="$i18n.getString( 'add_selected' )" onclick="moveSelectedById( 'availableAttrIds', 'selectedAttrIds' )" class="button" />
+				<input type="button" value="$i18n.getString( '>>' )" title="$i18n.getString( 'add_all' )" onclick="moveAllById( 'availableAttrIds', 'selectedAttrIds' )" class="button" /> <br>
+				<input type="button" value="$i18n.getString( '<' )" title="$i18n.getString( 'remove_selected' )" onclick="moveSelectedById( 'selectedAttrIds', 'availableAttrIds' )" class="button" />
+				<input type="button" value="$i18n.getString( '<<' )" title="$i18n.getString( 'remove_all' )" onclick="moveAllById( 'selectedAttrIds', 'availableAttrIds' )" class="button" />
+			</td>
+			<td>
+				<select id="selectedAttrIds" name="selectedAttrIds" multiple='true' size='16' ondblclick="moveSelectedById( 'selectedAttrIds', 'availableAttrIds' )" ></select>
+			</td> 
+			<td>
+				<a href="javascript:moveUpSelectedOption('selectedAttrIds')"><img src="../images/move_up.png"/></a><br/><br/>
+				<a href="javascript:moveDownSelectedOption('selectedAttrIds')"><img src="../images/move_down.png"/></a><br/><br/>
+			</td>  			
+		</tr>
+	</tbody>
+	
+	<tr onclick='toogleTB("deTB")' style='cursor:pointer'>
+		<th>$i18n.getString( "available_data_elements" )</td>
+		<th>$i18n.getString( "filter" )</th>
+		<th>$i18n.getString( "selected_data_elements" ) <em title="$i18n.getString( 'required' )" class="required">*</em></td>
+	</tr>
+	
+	<tbody id='deTB' style='display:none;'>
+	
+		<tr>
+			<td>
+				<select id="programStageId" name="programStageId" onchange='loadDataElements();'></select>
+			</td>      
+		</tr>
+		
+		<tr>
+			<td>
+				<input type='text' id='searchAvailableDEText' onkeyup="filterDE(event, this.value, 'availableDataElementIds');"/>
+				<input type="button" value="$i18n.getString( 'clear' )" onclick="setFieldValue('searchAvailableDEText', '');" style="width:60px" >
+			</td> 
+			<td></td>
+			<td>
+				<input type='text' id='searchSelectedDEText' onkeyup="filterDE(event, this.value, 'dataElementIds');"/>
+				<input type="button" value="$i18n.getString( 'clear' )" onclick="setFieldValue('searchSelectedDEText', '');" class="button" >
+			</td>		
+		</tr>
+		
+		<tr>
+			<td>
+				<select id="availableDataElementIds" name="availableDataElementIds" multiple='true' size='16' ondblclick="moveSelectedById( 'availableDataElementIds', 'dataElementIds' )" ></select>
+			</td>      
+			<td> 
+				<input type="button" value="$i18n.getString( '>' )" title="$i18n.getString( 'add_selected' )" onclick="moveSelectedById( 'availableDataElementIds', 'dataElementIds' )" class="button" />
+				<input type="button" value="$i18n.getString( '>>' )" title="$i18n.getString( 'add_all' )" onclick="moveAllById( 'availableDataElementIds', 'dataElementIds' )" class="button" /> <br>
+				<input type="button" value="$i18n.getString( '<' )" title="$i18n.getString( 'remove_selected' )" onclick="moveSelectedById( 'dataElementIds', 'availableDataElementIds' )" class="button" />
+				<input type="button" value="$i18n.getString( '<<' )" title="$i18n.getString( 'remove_all' )" onclick="moveAllById( 'dataElementIds', 'availableDataElementIds' )" class="button" />
+			</td>
+			<td>
+				<select id="dataElementIds" name="dataElementIds" multiple='true' size='16' ondblclick="moveSelectedById( 'dataElementIds', 'availableDataElementIds' )" ></select>
+				<select id="memberDEValidator" multiple="multiple" class="{validate:{required:true}} hidden"/>
+			</td> 
+			<td>
+				<a href="javascript:moveUpSelectedOption('dataElementIds')"><img src="../images/move_up.png"/></a><br/><br/>
+				<a href="javascript:moveDownSelectedOption('dataElementIds')"><img src="../images/move_down.png"/></a><br/><br/>
+			</td>  			
+		</tr>
+   </tbody>
    
-	    
+    <tr><td><p></p></td></tr>
 	<tr>
-    	<td></td>
-    	<td><input type="submit" id='generateBtn' name='generateBtn' #if($!programs) #else disabled #end value="$i18n.getString( 'generate' )" />
+    	<td>
+			<input type="submit" id='generateBtn' name='generateBtn' #if($!programs) #else disabled #end value="$i18n.getString( 'generate' )" />
     		<input type="button" value="$i18n.getString( 'cancel' )" onclick="hideCriteria();" />
     	</td>
     </tr>	                		
@@ -145,4 +240,5 @@
 	var i18n_syntax_error_in_search_value = '$encoder.jsEscape( $i18n.getString( "syntax_error_in_search_value" ) , "'")';
 	var i18n_remove_selected_data_elements = '$encoder.jsEscape( $i18n.getString( "remove_selected_data_elements" ) , "'")';
 	var i18n_patient_details_and_history = '$encoder.jsEscape( $i18n.getString( "patient_details_and_history" ) , "'" )';
+	var i18n_please_select_a_program_stage = '[' + '$encoder.jsEscape( $i18n.getString( "please_select_a_program_stage" ), "'")' + ']'; 
 </script>   

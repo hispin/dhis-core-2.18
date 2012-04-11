@@ -29,46 +29,39 @@ package org.hisp.dhis.caseentry.action.report;
 
 import java.util.Collection;
 
-import org.hisp.dhis.program.ProgramStageDataElement;
-import org.hisp.dhis.program.ProgramStageService;
+import org.hisp.dhis.program.Program;
+import org.hisp.dhis.program.ProgramService;
 
 import com.opensymphony.xwork2.Action;
 
 /**
  * @author Chau Thu Tran
  * 
- * @version $LoadDataElementsAction.java Feb 29, 2012 9:40:40 AM$
+ * @version $LoadProgramsAction.java Feb 28, 2012 9:35:50 AM$
  */
-public class LoadDataElementsAction
+public class LoadProgramsAction
     implements Action
 {
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
 
-    private ProgramStageService programStageService;
+    private ProgramService programService;
 
-    public void setProgramStageService( ProgramStageService programStageService )
+    public void setProgramService( ProgramService programService )
     {
-        this.programStageService = programStageService;
+        this.programService = programService;
     }
 
     // -------------------------------------------------------------------------
     // Input/output
     // -------------------------------------------------------------------------
 
-    private Integer programStageId;
+    private Collection<Program> programs;
 
-    public void setProgramStageId( Integer programStageId )
+    public Collection<Program> getPrograms()
     {
-        this.programStageId = programStageId;
-    }
-
-    private Collection<ProgramStageDataElement> psDataElements;
-
-    public Collection<ProgramStageDataElement> getPsDataElements()
-    {
-        return psDataElements;
+        return programs;
     }
 
     // -------------------------------------------------------------------------
@@ -79,11 +72,8 @@ public class LoadDataElementsAction
     public String execute()
         throws Exception
     {
-        if ( programStageId != null )
-        {
-            psDataElements = programStageService.getProgramStage( programStageId ).getProgramStageDataElements();
-        }
-        
+        programs = programService.getAllPrograms();
+
         return SUCCESS;
     }
 }
