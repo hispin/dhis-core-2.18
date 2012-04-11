@@ -35,6 +35,7 @@ import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 import org.hisp.dhis.common.BaseIdentifiableObject;
 import org.hisp.dhis.common.Dxf2Namespace;
+import org.hisp.dhis.common.IdentifiableObject;
 import org.hisp.dhis.common.view.DetailedView;
 import org.hisp.dhis.common.view.ExportView;
 import org.hisp.dhis.concept.Concept;
@@ -178,5 +179,28 @@ public class DataElementCategory
     public void setConcept( Concept concept )
     {
         this.concept = concept;
+    }
+
+    @Override
+    public void mergeWith( IdentifiableObject other )
+    {
+        super.mergeWith( other );
+
+        if ( other.getClass().isInstance( this ) )
+        {
+            DataElementCategory dataElementCategory = (DataElementCategory) other;
+
+            concept = dataElementCategory.getConcept() == null ? concept : dataElementCategory.getConcept();
+
+            for ( DataElementCategoryOption dataElementCategoryOption : dataElementCategory.getCategoryOptions() )
+            {
+                categoryOptions.add( dataElementCategoryOption );
+
+                if ( dataElementCategoryOption.getCategory() == null )
+                {
+                    dataElementCategoryOption.setCategory( this );
+                }
+            }
+        }
     }
 }

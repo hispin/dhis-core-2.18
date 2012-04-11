@@ -37,6 +37,7 @@ import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 import org.hisp.dhis.common.BaseIdentifiableObject;
 import org.hisp.dhis.common.BaseNameableObject;
 import org.hisp.dhis.common.Dxf2Namespace;
+import org.hisp.dhis.common.IdentifiableObject;
 import org.hisp.dhis.common.view.DetailedView;
 import org.hisp.dhis.common.view.ExportView;
 
@@ -324,5 +325,19 @@ public class DataElementCategoryOptionCombo
     public void setCategoryOptions( List<DataElementCategoryOption> categoryOptions )
     {
         this.categoryOptions = categoryOptions;
+    }
+
+    @Override
+    public void mergeWith( IdentifiableObject other )
+    {
+        super.mergeWith( other );
+
+        if ( other.getClass().isInstance( this ) )
+        {
+            DataElementCategoryOptionCombo dataElementCategoryOptionCombo = (DataElementCategoryOptionCombo) other;
+
+            categoryCombo = categoryCombo != null ? categoryCombo : dataElementCategoryOptionCombo.getCategoryCombo();
+            categoryOptions.addAll( dataElementCategoryOptionCombo.getCategoryOptions() );
+        }
     }
 }
