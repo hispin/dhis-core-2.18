@@ -32,6 +32,8 @@ import static org.hisp.dhis.importexport.ImportStrategy.NEW_AND_UPDATES;
 import static org.hisp.dhis.importexport.ImportStrategy.UPDATES;
 import static org.hisp.dhis.system.util.ConversionUtils.wrap;
 import static org.hisp.dhis.system.util.DateUtils.getDefaultDate;
+import static org.hisp.dhis.system.notification.NotificationCategory.DATAVALUE_IMPORT;
+import static org.hisp.dhis.system.notification.NotificationLevel.INFO;
 
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -61,6 +63,7 @@ import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodService;
 import org.hisp.dhis.period.PeriodType;
+import org.hisp.dhis.system.notification.Notifier;
 import org.hisp.dhis.system.util.DateUtils;
 import org.hisp.dhis.user.CurrentUserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -70,6 +73,11 @@ import org.springframework.transaction.annotation.Transactional;
 public class DefaultDataValueSetService
     implements DataValueSetService
 {
+    private static final String ERROR_INVALID_DATA_SET = "Invalid data set: ";
+    private static final String ERROR_INVALID_PERIOD = "Invalid period: ";
+    private static final String ERROR_INVALID_ORG_UNIT = "Invalid org unit: ";
+    private static final String ERROR_OBJECT_NEEDED_TO_COMPLETE = "Must be provided to complete data set";
+        
     @Autowired
     private IdentifiableObjectManager identifiableObjectManager;
     
@@ -97,6 +105,9 @@ public class DefaultDataValueSetService
     @Autowired
     private DataValueSetStore dataValueSetStore;
     
+    @Autowired
+    private Notifier notifier;
+    
     //--------------------------------------------------------------------------
     // DataValueSet implementation
     //--------------------------------------------------------------------------
@@ -109,17 +120,17 @@ public class DefaultDataValueSetService
         
         if ( dataSet_ == null )
         {
-            throw new IllegalArgumentException( "Invalid data set: " + dataSet );
+            throw new IllegalArgumentException( ERROR_INVALID_DATA_SET + dataSet );
         }
         
         if ( period_ == null )
         {
-            throw new IllegalArgumentException( "Invalid period: " + period );
+            throw new IllegalArgumentException( ERROR_INVALID_PERIOD + period );
         }
         
         if ( orgUnit_ == null )
         {
-            throw new IllegalArgumentException( "Invalid org unit: " + orgUnit );
+            throw new IllegalArgumentException( ERROR_INVALID_ORG_UNIT + orgUnit );
         }
         
         CompleteDataSetRegistration registration = registrationService.getCompleteDataSetRegistration( dataSet_, period_, orgUnit_ );
@@ -138,6 +149,8 @@ public class DefaultDataValueSetService
     
     public ImportSummary saveDataValueSet( InputStream in, IdentifiableProperty dataElementIdScheme, IdentifiableProperty orgUnitIdScheme, boolean dryRun, ImportStrategy strategy )
     {
+        notifier.clear( DATAVALUE_IMPORT ).notify( DATAVALUE_IMPORT, "Process started" );
+        
         ImportSummary summary = new ImportSummary();
         
         DataValueSet dataValueSet = new StreamingDataValueSet( XMLFactory.getXMLReader( in ) );
@@ -171,6 +184,8 @@ public class DefaultDataValueSetService
         int importCount = 0;
         int updateCount = 0;
         int totalCount = 0;
+        
+        notifier.notify( DATAVALUE_IMPORT, "Importing data values" );
         
         while ( dataValueSet.hasNextDataValue() )
         {
@@ -255,6 +270,8 @@ public class DefaultDataValueSetService
         
         batchHandler.flush();
         
+        notifier.notify( INFO, DATAVALUE_IMPORT, "Import done", true ).addTaskSummary( DATAVALUE_IMPORT, summary );
+        
         return summary;
     }
 
@@ -264,14 +281,18 @@ public class DefaultDataValueSetService
 
     private void handleComplete( DataSet dataSet, Date completeDate, OrganisationUnit orgUnit, Period period, ImportSummary summary )
     {
+        notifier.notify( DATAVALUE_IMPORT, "Completing data set" );
+        
         if ( orgUnit == null )
         {
-            throw new IllegalArgumentException( "Org unit id must be provided to complete data set" );
+            summary.getConflicts().add( new ImportConflict( OrganisationUnit.class.getSimpleName(), ERROR_OBJECT_NEEDED_TO_COMPLETE ) );
+            return;
         }
         
         if ( period == null )
         {
-            throw new IllegalArgumentException( "Period id must be provided to complete data set" );
+            summary.getConflicts().add( new ImportConflict( Period.class.getSimpleName(), ERROR_OBJECT_NEEDED_TO_COMPLETE ) );
+            return;
         }
 
         CompleteDataSetRegistration completeAlready = registrationService.getCompleteDataSetRegistration( dataSet, period, orgUnit );

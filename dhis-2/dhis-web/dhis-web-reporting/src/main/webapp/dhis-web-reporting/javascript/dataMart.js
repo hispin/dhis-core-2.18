@@ -6,6 +6,8 @@ $( document ).ready( function() {
 
 function startExport()
 {
+	$( '#notificationTable' ).show().prepend( '<tr><td>' + _loading_bar_html + '</td></tr>' );
+	
 	var startDate = $( '#startDate' ).val();
 	var endDate = $( '#endDate' ).val();
 	
@@ -15,16 +17,11 @@ function startExport()
 		url += "&periodType=" + $( this ).val();
 	} );
 	
-	$.get( url, pingNotifications );
-}
-
-function pingNotifications()
-{
-	$( '#notificationDiv' ).load( '../dhis-web-commons-ajax-html/getNotifications.action?category=DATAMART&max=20' );
+	$.get( url, pingNotificationsTimeout );
 }
 
 function pingNotificationsTimeout()
 {
-	pingNotifications();
-	setTimeout( "pingNotificationsTimeout()", 2000 );
+	pingNotifications( 'DATAMART', 'notificationTable' );
+	setTimeout( "pingNotificationsTimeout()", 2500 );
 }

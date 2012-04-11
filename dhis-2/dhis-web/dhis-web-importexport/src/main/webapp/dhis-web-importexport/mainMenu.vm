@@ -3,6 +3,7 @@
 
 <ul>
   <li><a href="setImportFormat.action?importFormat=DXF">$i18n.getString( "import" )&nbsp;</a></li>
+  <li><a href="displayImportDataValueForm.action">$i18n.getString( "data_value_import" )&nbsp;</a></li>
   <li><a href="displayExternalImportMenu.action">$i18n.getString( "dhis14_import" )&nbsp;</a></li>
 </ul>
 
