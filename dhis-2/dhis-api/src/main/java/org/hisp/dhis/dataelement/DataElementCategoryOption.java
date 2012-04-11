@@ -37,6 +37,7 @@ import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 import org.hisp.dhis.common.BaseIdentifiableObject;
 import org.hisp.dhis.common.BaseNameableObject;
 import org.hisp.dhis.common.Dxf2Namespace;
+import org.hisp.dhis.common.IdentifiableObject;
 import org.hisp.dhis.common.view.DetailedView;
 import org.hisp.dhis.concept.Concept;
 
@@ -125,6 +126,22 @@ public class DataElementCategoryOption
     }
 
     // -------------------------------------------------------------------------
+    // Logic
+    // -------------------------------------------------------------------------
+
+    public void addCategoryOptionCombo( DataElementCategoryOptionCombo dataElementCategoryOptionCombo )
+    {
+        categoryOptionCombos.add( dataElementCategoryOptionCombo );
+        dataElementCategoryOptionCombo.getCategoryOptions().add( this );
+    }
+
+    public void removeCategoryOptionCombo( DataElementCategoryOptionCombo dataElementCategoryOptionCombo )
+    {
+        categoryOptionCombos.remove( dataElementCategoryOptionCombo );
+        dataElementCategoryOptionCombo.getCategoryOptions().remove( this );
+    }
+
+    // -------------------------------------------------------------------------
     // Getters and setters
     // -------------------------------------------------------------------------
 
@@ -172,5 +189,24 @@ public class DataElementCategoryOption
     public void setCategoryOptionCombos( Set<DataElementCategoryOptionCombo> categoryOptionCombos )
     {
         this.categoryOptionCombos = categoryOptionCombos;
+    }
+
+    @Override
+    public void mergeWith( IdentifiableObject other )
+    {
+        super.mergeWith( other );
+
+        if ( other.getClass().isInstance( this ) )
+        {
+            DataElementCategoryOption dataElementCategoryOption = (DataElementCategoryOption) other;
+
+            concept = dataElementCategoryOption.getConcept() == null ? concept : dataElementCategoryOption.getConcept();
+            category = category != null ? category : dataElementCategoryOption.getCategory();
+
+            for ( DataElementCategoryOptionCombo dataElementCategoryOptionCombo : dataElementCategoryOption.getCategoryOptionCombos() )
+            {
+                addCategoryOptionCombo( dataElementCategoryOptionCombo );
+            }
+        }
     }
 }
