@@ -35,6 +35,7 @@ import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 import org.hisp.dhis.common.BaseIdentifiableObject;
 import org.hisp.dhis.common.Dxf2Namespace;
+import org.hisp.dhis.common.IdentifiableObject;
 import org.hisp.dhis.common.adapter.JacksonPeriodTypeDeserializer;
 import org.hisp.dhis.common.adapter.JacksonPeriodTypeSerializer;
 import org.hisp.dhis.common.view.DetailedView;
@@ -476,5 +477,39 @@ public class MapView
     public void setZoom( Integer zoom )
     {
         this.zoom = zoom;
+    }
+
+    @Override
+    public void mergeWith( IdentifiableObject other )
+    {
+        super.mergeWith( other );
+
+        if ( other.getClass().isInstance( this ) )
+        {
+            MapView mapView = (MapView) other;
+
+            user = mapView.getUser() == null ? user : mapView.getUser();
+            mapValueType = mapView.getMapValueType() == null ? mapValueType : mapView.getMapValueType();
+            indicatorGroup = mapView.getIndicatorGroup() == null ? indicatorGroup : mapView.getIndicatorGroup();
+            indicator = mapView.getIndicator() == null ? indicator : mapView.getIndicator();
+            dataElementGroup = mapView.getDataElementGroup() == null ? dataElementGroup : mapView.getDataElementGroup();
+            dataElement = mapView.getDataElement() == null ? dataElement : mapView.getDataElement();
+            periodType = mapView.getPeriodType() == null ? periodType : mapView.getPeriodType();
+            period = mapView.getPeriod() == null ? period : mapView.getPeriod();
+            parentOrganisationUnit = mapView.getParentOrganisationUnit() == null ? parentOrganisationUnit : mapView.getParentOrganisationUnit();
+            organisationUnitLevel = mapView.getOrganisationUnitLevel() == null ? organisationUnitLevel : mapView.getOrganisationUnitLevel();
+            mapLegendType = mapView.getMapLegendType() == null ? mapLegendType : mapView.getMapLegendType();
+            method = mapView.getMethod() == null ? method : mapView.getMethod();
+            classes = mapView.getClasses() == null ? classes : mapView.getClasses();
+            bounds = mapView.getBounds() == null ? bounds : mapView.getBounds();
+            colorLow = mapView.getColorLow() == null ? colorLow : mapView.getColorLow();
+            colorHigh = mapView.getColorHigh() == null ? colorHigh : mapView.getColorHigh();
+            mapLegendSet = mapView.getMapLegendSet() == null ? mapLegendSet : mapView.getMapLegendSet();
+            radiusLow = mapView.getRadiusLow() == null ? radiusLow : mapView.getRadiusLow();
+            radiusHigh = mapView.getRadiusHigh() == null ? radiusHigh : mapView.getRadiusHigh();
+            longitude = mapView.getLongitude() == null ? longitude : mapView.getLongitude();
+            latitude = mapView.getLatitude() == null ? latitude : mapView.getLatitude();
+            zoom = mapView.getZoom() == null ? zoom : mapView.getZoom();
+        }
     }
 }

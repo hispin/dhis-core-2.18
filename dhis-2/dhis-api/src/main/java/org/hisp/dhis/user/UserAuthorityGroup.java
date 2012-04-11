@@ -35,6 +35,7 @@ import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 import org.hisp.dhis.common.BaseIdentifiableObject;
 import org.hisp.dhis.common.Dxf2Namespace;
+import org.hisp.dhis.common.IdentifiableObject;
 import org.hisp.dhis.common.view.DetailedView;
 import org.hisp.dhis.common.view.ExportView;
 import org.hisp.dhis.dataset.DataSet;
@@ -96,6 +97,22 @@ public class UserAuthorityGroup
     }
 
     // -------------------------------------------------------------------------
+    // Logic
+    // -------------------------------------------------------------------------
+
+    public void addUserCredentials( UserCredentials userCredentials )
+    {
+        members.add( userCredentials );
+        userCredentials.getUserAuthorityGroups().add( this );
+    }
+
+    public void removeUserCredentials( UserCredentials userCredentials )
+    {
+        members.remove( userCredentials );
+        userCredentials.getUserAuthorityGroups().remove( this );
+    }
+
+    // -------------------------------------------------------------------------
     // Getters and setters
     // -------------------------------------------------------------------------
 
@@ -149,5 +166,26 @@ public class UserAuthorityGroup
     public void setDataSets( Set<DataSet> dataSets )
     {
         this.dataSets = dataSets;
+    }
+
+    @Override
+    public void mergeWith( IdentifiableObject other )
+    {
+        super.mergeWith( other );
+
+        if ( other.getClass().isInstance( this ) )
+        {
+            UserAuthorityGroup userAuthorityGroup = (UserAuthorityGroup) other;
+
+            description = userAuthorityGroup.getDescription() == null ? description : userAuthorityGroup.getDescription();
+
+            authorities.addAll( authorities );
+            dataSets.addAll( userAuthorityGroup.getDataSets() );
+
+            for ( UserCredentials userCredentials : userAuthorityGroup.getMembers() )
+            {
+                addUserCredentials( userCredentials );
+            }
+        }
     }
 }

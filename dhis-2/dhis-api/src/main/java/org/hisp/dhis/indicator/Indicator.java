@@ -363,6 +363,8 @@ public class Indicator
             explodedDenominator = indicator.getExplodedDenominator() == null ? explodedDenominator : indicator.getExplodedDenominator();
             indicatorType = indicator.getIndicatorType() == null ? indicatorType : indicator.getIndicatorType();
 
+            attributeValues.addAll( indicator.getAttributeValues() );
+
             for ( DataSet dataSet : indicator.getDataSets() )
             {
                 addDataSet( dataSet );
@@ -373,10 +375,6 @@ public class Indicator
                 addIndicatorGroup( indicatorGroup );
             }
 
-            for ( AttributeValue attributeValue : indicator.getAttributeValues() )
-            {
-                attributeValues.add( attributeValue );
-            }
         }
     }
 }

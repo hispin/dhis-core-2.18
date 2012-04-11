@@ -37,6 +37,7 @@ import org.hisp.dhis.attribute.AttributeValue;
 import org.hisp.dhis.common.BaseIdentifiableObject;
 import org.hisp.dhis.common.BaseNameableObject;
 import org.hisp.dhis.common.Dxf2Namespace;
+import org.hisp.dhis.common.IdentifiableObject;
 import org.hisp.dhis.common.view.DetailedView;
 import org.hisp.dhis.common.view.ExportView;
 import org.hisp.dhis.dataset.DataSet;
@@ -260,6 +261,18 @@ public class DataElement
         {
             addDataElementGroup( group );
         }
+    }
+
+    public void addDataSet( DataSet dataSet )
+    {
+        dataSets.add( dataSet );
+        dataSet.getDataElements().add( this );
+    }
+
+    public void removeDataSet( DataSet dataSet )
+    {
+        dataSets.remove( dataSet );
+        dataSet.getDataElements().remove( this );
     }
 
     /**
@@ -584,5 +597,41 @@ public class DataElement
     public void setOptionSet( OptionSet optionSet )
     {
         this.optionSet = optionSet;
+    }
+
+    @Override
+    public void mergeWith( IdentifiableObject other )
+    {
+        super.mergeWith( other );
+
+        if ( other.getClass().isInstance( this ) )
+        {
+            DataElement dataElement = (DataElement) other;
+
+            formName = dataElement.getFormName() == null ? formName : dataElement.getFormName();
+            active = dataElement.isActive();
+            zeroIsSignificant = dataElement.isZeroIsSignificant();
+            domainType = dataElement.getDomainType() == null ? domainType : dataElement.getDomainType();
+            type = dataElement.getType() == null ? type : dataElement.getType();
+            numberType = dataElement.getNumberType() == null ? numberType : dataElement.getNumberType();
+            aggregationOperator = dataElement.getAggregationOperator() == null ? aggregationOperator : dataElement.getAggregationOperator();
+            categoryCombo = dataElement.getCategoryCombo() == null ? categoryCombo : dataElement.getCategoryCombo();
+            sortOrder = dataElement.getSortOrder() == null ? sortOrder : dataElement.getSortOrder();
+            url = dataElement.getUrl() == null ? url : dataElement.getUrl();
+            optionSet = dataElement.getOptionSet() == null ? optionSet : dataElement.getOptionSet();
+
+            aggregationLevels.addAll( dataElement.getAggregationLevels() );
+            attributeValues.addAll( dataElement.getAttributeValues() );
+
+            for ( DataElementGroup dataElementGroup : dataElement.getGroups() )
+            {
+                addDataElementGroup( dataElementGroup );
+            }
+
+            for ( DataSet dataSet : dataElement.getDataSets() )
+            {
+                addDataSet( dataSet );
+            }
+        }
     }
 }
