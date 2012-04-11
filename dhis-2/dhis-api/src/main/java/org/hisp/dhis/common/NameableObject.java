@@ -30,15 +30,20 @@ package org.hisp.dhis.common;
 public interface NameableObject
     extends IdentifiableObject
 {
-    final String[] I18N_PROPERTIES = { "name", "shortName", "description" };
-            
+    final String[] I18N_PROPERTIES = {"name", "shortName", "description"};
+
+    enum NameableProperty
+    {
+        SHORT_NAME, ALTERNATIVE_NAME
+    }
+
     String getAlternativeName();
 
     String getShortName();
 
     String getDescription();
-    
+
     String getDisplayShortName();
-    
+
     String getDisplayDescription();
 }

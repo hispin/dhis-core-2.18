@@ -27,16 +27,16 @@ package org.hisp.dhis.common;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import org.hisp.dhis.common.IdentifiableObject.IdentifiableProperty;
+import org.hisp.dhis.common.NameableObject.NameableProperty;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
+
+import javax.annotation.PostConstruct;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
-
-import javax.annotation.PostConstruct;
-
-import org.hisp.dhis.common.IdentifiableObject.IdentifiableProperty;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.transaction.annotation.Transactional;
 
 /**
  * @author Lars Helge Overland
@@ -45,15 +45,15 @@ import org.springframework.transaction.annotation.Transactional;
 public class DefaultIdentifiableObjectManager
     implements IdentifiableObjectManager
 {
+    @Autowired
     private Set<GenericIdentifiableObjectStore<IdentifiableObject>> objectStores;
 
     @Autowired
-    public void setObjectStores( Set<GenericIdentifiableObjectStore<IdentifiableObject>> objectStores )
-    {
-        this.objectStores = objectStores;
-    }
+    private Set<GenericNameableObjectStore<NameableObject>> nameableObjectStores;
 
     private Map<Class<IdentifiableObject>, GenericIdentifiableObjectStore<IdentifiableObject>> objectStoreMap;
+
+    private Map<Class<NameableObject>, GenericNameableObjectStore<NameableObject>> nameableObjectStoreMap;
 
     @PostConstruct
     public void init()
@@ -63,6 +63,13 @@ public class DefaultIdentifiableObjectManager
         for ( GenericIdentifiableObjectStore<IdentifiableObject> store : objectStores )
         {
             objectStoreMap.put( store.getClazz(), store );
+        }
+
+        nameableObjectStoreMap = new HashMap<Class<NameableObject>, GenericNameableObjectStore<NameableObject>>();
+
+        for ( GenericNameableObjectStore<NameableObject> store : nameableObjectStores )
+        {
+            nameableObjectStoreMap.put( store.getClazz(), store );
         }
     }
 
@@ -80,8 +87,8 @@ public class DefaultIdentifiableObjectManager
     {
         objectStoreMap.get( clazz ).getByUid( uid );
     }
-    
-    @SuppressWarnings("unchecked")
+
+    @SuppressWarnings( "unchecked" )
     public <T extends IdentifiableObject> Collection<T> getAll( Class<T> clazz )
     {
         return (Collection<T>) objectStoreMap.get( clazz ).getAll();
@@ -129,6 +136,36 @@ public class DefaultIdentifiableObjectManager
                 if ( object.getCode() != null )
                 {
                     map.put( object.getCode(), object );
+                }
+            }
+        }
+
+        return map;
+    }
+
+    @Override
+    public <T extends NameableObject> Map<String, T> getIdMap( Class<T> clazz, NameableProperty property )
+    {
+        Map<String, T> map = new HashMap<String, T>();
+
+        GenericNameableObjectStore<T> store = (GenericNameableObjectStore<T>) nameableObjectStoreMap.get( clazz );
+
+        Collection<T> objects = store.getAll();
+
+        for ( T object : objects )
+        {
+            if ( property == NameableProperty.SHORT_NAME )
+            {
+                if ( object.getShortName() != null )
+                {
+                    map.put( object.getShortName(), object );
+                }
+            }
+            else if ( property == NameableProperty.ALTERNATIVE_NAME )
+            {
+                if ( object.getAlternativeName() != null )
+                {
+                    map.put( object.getAlternativeName(), object );
                 }
             }
         }

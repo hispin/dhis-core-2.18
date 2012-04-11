@@ -79,15 +79,15 @@ public class DefaultExportService
     protected IdentifiableObjectManager manager;
 
     @Override
-    public DXF2 getMetaData()
+    public MetaData getMetaData()
     {
         return getMetaData( ExportOptions.getDefaultExportOptions() );
     }
 
     @Override
-    public DXF2 getMetaData( ExportOptions exportOptions )
+    public MetaData getMetaData( ExportOptions exportOptions )
     {
-        DXF2 dxf2 = new DXF2();
+        MetaData dxf2 = new MetaData();
 
         if ( exportOptions.isAttributeTypes() )
         {

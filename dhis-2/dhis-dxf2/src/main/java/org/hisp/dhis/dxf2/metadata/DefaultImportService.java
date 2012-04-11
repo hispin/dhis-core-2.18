@@ -98,13 +98,13 @@ public class DefaultImportService
     //-------------------------------------------------------------------------------------------------------
 
     @Override
-    public ImportSummary importDxf2( DXF2 dxf2 )
+    public ImportSummary importDxf2( MetaData dxf2 )
     {
         return importDxf2( dxf2, ImportOptions.getDefaultImportOptions() );
     }
 
     @Override
-    public ImportSummary importDxf2( DXF2 dxf2, ImportOptions importOptions )
+    public ImportSummary importDxf2( MetaData dxf2, ImportOptions importOptions )
     {
         ImportSummary importSummary = new ImportSummary();
 

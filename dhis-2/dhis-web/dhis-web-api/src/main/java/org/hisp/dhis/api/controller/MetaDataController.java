@@ -40,11 +40,8 @@ import javax.xml.bind.JAXBException;
 import org.hisp.dhis.api.utils.ContextUtils;
 import org.hisp.dhis.common.view.ExportView;
 import org.hisp.dhis.dxf2.importsummary.ImportSummary;
-import org.hisp.dhis.dxf2.metadata.DXF2;
-import org.hisp.dhis.dxf2.metadata.ExportOptions;
-import org.hisp.dhis.dxf2.metadata.ExportService;
-import org.hisp.dhis.dxf2.metadata.ImportOptions;
-import org.hisp.dhis.dxf2.metadata.ImportService;
+import org.hisp.dhis.dxf2.metadata.*;
+import org.hisp.dhis.dxf2.metadata.MetaData;
 import org.hisp.dhis.dxf2.utils.JacksonUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -76,7 +73,7 @@ public class MetaDataController
     @PreAuthorize( "hasRole('ALL') or hasRole('F_METADATA_EXPORT')" )
     public String export( ExportOptions exportOptions, Model model )
     {
-        DXF2 dxf2 = exportService.getMetaData( exportOptions );
+        MetaData dxf2 = exportService.getMetaData( exportOptions );
 
         model.addAttribute( "model", dxf2 );
         model.addAttribute( "view", "export" );
@@ -88,7 +85,7 @@ public class MetaDataController
     @PreAuthorize( "hasRole('ALL') or hasRole('F_METADATA_EXPORT')" )
     public void exportZippedXML( ExportOptions exportOptions, HttpServletResponse response ) throws IOException, JAXBException
     {
-        DXF2 dxf2 = exportService.getMetaData( exportOptions );
+        MetaData dxf2 = exportService.getMetaData( exportOptions );
 
         response.setContentType( ContextUtils.CONTENT_TYPE_ZIP );
         response.addHeader( "Content-Disposition", "attachment; filename=\"export.xml.zip\"" );
@@ -104,7 +101,7 @@ public class MetaDataController
     @PreAuthorize( "hasRole('ALL') or hasRole('F_METADATA_EXPORT')" )
     public void exportZippedJSON( ExportOptions exportOptions, HttpServletResponse response ) throws IOException, JAXBException
     {
-        DXF2 dxf2 = exportService.getMetaData( exportOptions );
+        MetaData dxf2 = exportService.getMetaData( exportOptions );
 
         response.setContentType( ContextUtils.CONTENT_TYPE_ZIP );
         response.addHeader( "Content-Disposition", "attachment; filename=\"export.json.zip\"" );
@@ -124,7 +121,7 @@ public class MetaDataController
     @PreAuthorize( "hasRole('ALL') or hasRole('F_METADATA_IMPORT')" )
     public void importXml( ImportOptions importOptions, HttpServletResponse response, HttpServletRequest request ) throws JAXBException, IOException
     {
-        DXF2 dxf2 = JacksonUtils.fromXml( request.getInputStream(), DXF2.class );
+        MetaData dxf2 = JacksonUtils.fromXml( request.getInputStream(), MetaData.class );
         System.err.println( dxf2 );
 
         ImportSummary summary = importService.importDxf2( dxf2, importOptions );
@@ -137,7 +134,7 @@ public class MetaDataController
     @PreAuthorize( "hasRole('ALL') or hasRole('F_METADATA_IMPORT')" )
     public void importJson( ImportOptions importOptions, HttpServletResponse response, HttpServletRequest request ) throws IOException
     {
-        DXF2 dxf2 = JacksonUtils.fromJson( request.getInputStream(), DXF2.class );
+        MetaData dxf2 = JacksonUtils.fromJson( request.getInputStream(), MetaData.class );
         System.err.println( dxf2 );
 
         ImportSummary summary = importService.importDxf2( dxf2, importOptions );
@@ -153,7 +150,7 @@ public class MetaDataController
         ZipInputStream zip = new ZipInputStream( new BufferedInputStream( request.getInputStream() ) );
         ZipEntry entry = zip.getNextEntry();
 
-        DXF2 dxf2 = JacksonUtils.fromXml( zip, DXF2.class );
+        MetaData dxf2 = JacksonUtils.fromXml( zip, MetaData.class );
         System.err.println( dxf2 );
 
         ImportSummary summary = importService.importDxf2( dxf2, importOptions );
@@ -169,7 +166,7 @@ public class MetaDataController
         ZipInputStream zip = new ZipInputStream( request.getInputStream() );
         ZipEntry entry = zip.getNextEntry();
 
-        DXF2 dxf2 = JacksonUtils.fromJson( zip, DXF2.class );
+        MetaData dxf2 = JacksonUtils.fromJson( zip, MetaData.class );
         System.err.println( dxf2 );
 
         ImportSummary summary = importService.importDxf2( dxf2, importOptions );

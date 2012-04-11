@@ -69,8 +69,8 @@ import java.util.List;
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
-@JacksonXmlRootElement( localName = "dxf2", namespace = Dxf2Namespace.NAMESPACE )
-public class DXF2
+@JacksonXmlRootElement( localName = "metaData", namespace = Dxf2Namespace.NAMESPACE )
+public class MetaData
 {
     private List<Attribute> attributeTypes = new ArrayList<Attribute>();
 
@@ -144,7 +144,7 @@ public class DXF2
 
     private List<DataDictionary> dataDictionaries = new ArrayList<DataDictionary>();
 
-    public DXF2()
+    public MetaData()
     {
     }
 

@@ -37,7 +37,7 @@ import org.springframework.stereotype.Component;
  */
 @Component
 public class IndicatorImporter
-    extends AbstractIdentifiableObjectImporter<Indicator>
+    extends AbstractImporter<Indicator>
 {
     private static final Log log = LogFactory.getLog( IndicatorImporter.class );
 

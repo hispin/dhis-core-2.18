@@ -35,12 +35,9 @@ public class ImportOptions
 {
     private boolean dryRun = false;
 
-    private IdScheme idScheme = IdScheme.getDefaultIdScheme();
-
     private ImportStrategy importStrategy;
 
-    private static ImportOptions defaultImportOptions = new ImportOptions( IdScheme.getDefaultIdScheme(),
-        ImportStrategy.getDefaultImportStrategy() );
+    private static ImportOptions defaultImportOptions = new ImportOptions( ImportStrategy.getDefaultImportStrategy() );
 
     public static ImportOptions getDefaultImportOptions()
     {
@@ -49,13 +46,11 @@ public class ImportOptions
 
     public ImportOptions()
     {
-        this.idScheme = IdScheme.getDefaultIdScheme();
         this.importStrategy = ImportStrategy.getDefaultImportStrategy();
     }
 
-    public ImportOptions( IdScheme idScheme, ImportStrategy importStrategy )
+    public ImportOptions( ImportStrategy importStrategy )
     {
-        this.idScheme = idScheme;
         this.importStrategy = importStrategy;
     }
 
@@ -67,16 +62,6 @@ public class ImportOptions
     public void setDryRun( boolean dryRun )
     {
         this.dryRun = dryRun;
-    }
-
-    public IdScheme getIdScheme()
-    {
-        return idScheme;
-    }
-
-    public void setIdScheme( IdScheme idScheme )
-    {
-        this.idScheme = idScheme;
     }
 
     public ImportStrategy getImportStrategy()
