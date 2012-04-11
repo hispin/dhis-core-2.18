@@ -1,4 +1,6 @@
 
+var pingTimeout = null;
+
 function importDataValue()
 {
 	if ( !$( "#upload" ).val() )
@@ -12,6 +14,18 @@ function importDataValue()
 
 function pingNotificationsTimeout()
 {
-	pingNotifications( 'DATAVALUE_IMPORT', 'notificationTable' );
-	setTimeout( "pingNotificationsTimeout()", 2500 );
+	pingNotifications( 'DATAVALUE_IMPORT', 'notificationTable', displayImportSummaryTimeout );	
+	pingTimeout = setTimeout( "pingNotificationsTimeout()", 1500 );
+}
+
+function displayImportSummaryTimeout()
+{
+	setTimeout( "displayImportSummary()", 2000 );	
+}
+
+function displayImportSummary()
+{	
+	window.clearTimeout( pingTimeout );
+	$( '#notificationDiv' ).hide();
+	$( '#importSummaryDiv' ).show().load( 'getDataValueImportSummary.action' );
 }

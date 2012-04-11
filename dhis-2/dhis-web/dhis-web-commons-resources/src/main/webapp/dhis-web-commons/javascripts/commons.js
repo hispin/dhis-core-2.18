@@ -1591,7 +1591,7 @@ function changePageSize( event )
 // Notifications
 // -----------------------------------------------------------------------------
 
-function pingNotifications( category, tableId )
+function pingNotifications( category, tableId, completedCallback )
 {	
 	var lastUid = $( '#' + tableId ).prop( 'lastUid' );
 	
@@ -1617,6 +1617,11 @@ function pingNotifications( category, tableId )
 			html += '<tr><td>' + notification.time + '</td><td>' + notification.message + ' &nbsp;';
 			html += notification.completed == "true" ?  completedHtml : loaderHtml;
 			html += '</td></tr>';
+			
+			if ( notification.completed && completedCallback && completedCallback.call )
+			{
+				completedCallback();				
+			}
 		} );
 		
 		$( '#' + tableId ).prepend( html );

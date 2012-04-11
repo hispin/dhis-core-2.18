@@ -27,9 +27,21 @@ package org.hisp.dhis.dxf2.metadata.importers;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import java.lang.reflect.Field;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.hisp.dhis.common.*;
+import org.hisp.dhis.common.BaseIdentifiableObject;
+import org.hisp.dhis.common.CodeGenerator;
+import org.hisp.dhis.common.IdentifiableObject;
+import org.hisp.dhis.common.IdentifiableObjectManager;
+import org.hisp.dhis.common.NameableObject;
 import org.hisp.dhis.dxf2.importsummary.ImportConflict;
 import org.hisp.dhis.dxf2.importsummary.ImportCount;
 import org.hisp.dhis.dxf2.metadata.ImportOptions;
@@ -37,9 +49,6 @@ import org.hisp.dhis.dxf2.metadata.Importer;
 import org.hisp.dhis.importexport.ImportStrategy;
 import org.hisp.dhis.system.util.ReflectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-
-import java.lang.reflect.Field;
-import java.util.*;
 
 /**
  * Abstract importer that can handle IdentifiableObject and NameableObject.
@@ -213,14 +222,8 @@ public abstract class AbstractImporter<T extends BaseIdentifiableObject>
 
     @Override
     public ImportCount getCurrentImportCount()
-    {
-        ImportCount importCount = new ImportCount( getObjectName() );
-
-        importCount.setImported( imported );
-        importCount.setUpdated( updated );
-        importCount.setIgnored( ignored );
-
-        return importCount;
+    {        
+        return new ImportCount( imported, updated, ignored );
     }
 
     //-------------------------------------------------------------------------------------------------------

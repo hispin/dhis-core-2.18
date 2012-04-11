@@ -271,7 +271,7 @@ public class DefaultDataValueSetService
         
         int ignores = totalCount - importCount - updateCount;
         
-        summary.getCounts().add( new ImportCount( DataValue.class.getSimpleName(), importCount, updateCount, ignores ) );
+        summary.setDataValueCount( new ImportCount( importCount, updateCount, ignores ) );
         
         batchHandler.flush();
         

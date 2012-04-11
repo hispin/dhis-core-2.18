@@ -7,6 +7,10 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 
   <bean id="org.hisp.dhis.importexport.action.datavalue.ImportDataValueAction" class="org.hisp.dhis.importexport.action.datavalue.ImportDataValueAction"/>
 
+  <bean id="org.hisp.dhis.importexport.action.GetImportSummaryAction" class="org.hisp.dhis.importexport.action.GetImportSummaryAction">
+	<property name="category" value="DATAVALUE_IMPORT" />
+  </bean>
+
   <!-- Import -->
 
   <bean id="org.hisp.dhis.importexport.action.imp.ImportAction" class="org.hisp.dhis.importexport.action.imp.ImportAction"
