@@ -138,6 +138,7 @@ public class Constant
         if(other.getClass().isInstance( this ))
         {
             Constant constant = (Constant) other;
+
             this.value = constant.getValue();
         }
     }

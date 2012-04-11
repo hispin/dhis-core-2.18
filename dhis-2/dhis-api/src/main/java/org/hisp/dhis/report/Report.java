@@ -178,9 +178,9 @@ public class Report
         {
             Report report = (Report) other;
 
-            designContent = designContent != null ? designContent : report.getDesignContent();
-            reportTable = reportTable != null ? reportTable : report.getReportTable();
-            usingOrgUnitGroupSets = usingOrgUnitGroupSets != null ? usingOrgUnitGroupSets : report.isUsingOrganisationUnitGroupSets();
+            designContent = report.getDesignContent() == null ? designContent : report.getDesignContent();
+            reportTable = report.getReportTable() == null ? reportTable : report.getReportTable();
+            usingOrgUnitGroupSets = report.isUsingOrganisationUnitGroupSets();
         }
     }
 }

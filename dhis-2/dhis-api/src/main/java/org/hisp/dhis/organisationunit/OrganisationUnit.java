@@ -867,20 +867,20 @@ public class OrganisationUnit
         {
             OrganisationUnit organisationUnit = (OrganisationUnit) other;
 
-            openingDate = openingDate != null ? openingDate : organisationUnit.getOpeningDate();
-            closedDate = closedDate != null ? closedDate : organisationUnit.getClosedDate();
+            openingDate = organisationUnit.getOpeningDate() == null ? openingDate : organisationUnit.getOpeningDate();
+            closedDate = organisationUnit.getClosedDate() == null ? closedDate : organisationUnit.getClosedDate();
             active = organisationUnit.isActive();
-            comment = comment != null ? comment : organisationUnit.getComment();
-            geoCode = geoCode != null ? geoCode : organisationUnit.getGeoCode();
-            featureType = featureType != null ? featureType : organisationUnit.getFeatureType();
-            coordinates = coordinates != null ? coordinates : organisationUnit.getCoordinates();
-            url = url != null ? url : organisationUnit.getUrl();
-            contactPerson = contactPerson != null ? contactPerson : organisationUnit.getContactPerson();
-            address = address != null ? address : organisationUnit.getAddress();
-            email = email != null ? email : organisationUnit.getEmail();
-            phoneNumber = phoneNumber != null ? phoneNumber : organisationUnit.getPhoneNumber();
+            comment = organisationUnit.getComment() == null ? comment : organisationUnit.getComment();
+            geoCode = organisationUnit.getGeoCode() == null ? geoCode : organisationUnit.getGeoCode();
+            featureType = organisationUnit.getFeatureType() == null ? featureType : organisationUnit.getFeatureType();
+            coordinates = organisationUnit.getFeatureType() == null ? coordinates : organisationUnit.getCoordinates();
+            url = organisationUnit.getUrl() == null ? url : organisationUnit.getUrl();
+            contactPerson = organisationUnit.getContactPerson() == null ? contactPerson : organisationUnit.getContactPerson();
+            address = organisationUnit.getAddress() == null ? address : organisationUnit.getAddress();
+            email = organisationUnit.getEmail() == null ? email : organisationUnit.getEmail();
+            phoneNumber = organisationUnit.getPhoneNumber() == null ? phoneNumber : organisationUnit.getPhoneNumber();
             hasPatients = organisationUnit.isHasPatients();
-            parent = parent != null ? parent : organisationUnit.getParent();
+            parent = organisationUnit.getParent() == null ? parent : organisationUnit.getParent();
 
             for ( DataSet dataSet : organisationUnit.getDataSets() )
             {

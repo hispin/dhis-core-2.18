@@ -147,8 +147,8 @@ public class SqlView
         {
             SqlView sqlView = (SqlView) other;
 
-            description = description != null ? description : sqlView.getDescription();
-            sqlQuery = sqlQuery != null ? sqlQuery : sqlView.getSqlQuery();
+            description = sqlView.getDescription() == null ? description : sqlView.getDescription();
+            sqlQuery = sqlView.getSqlQuery() == null ? sqlQuery : sqlView.getSqlQuery();
         }
     }
 }

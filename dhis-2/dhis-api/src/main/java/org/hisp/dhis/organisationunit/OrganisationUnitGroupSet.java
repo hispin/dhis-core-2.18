@@ -239,7 +239,7 @@ public class OrganisationUnitGroupSet
             OrganisationUnitGroupSet organisationUnitGroupSet = (OrganisationUnitGroupSet) other;
 
             compulsory = organisationUnitGroupSet.isCompulsory();
-            description = description != null ? description : organisationUnitGroupSet.getDescription();
+            description = organisationUnitGroupSet.getDescription() == null ? description : organisationUnitGroupSet.getDescription();
 
             for ( OrganisationUnitGroup organisationUnitGroup : organisationUnitGroupSet.getOrganisationUnitGroups() )
             {

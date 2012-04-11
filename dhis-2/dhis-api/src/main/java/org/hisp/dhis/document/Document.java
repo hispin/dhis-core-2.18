@@ -139,8 +139,8 @@ public class Document
         {
             Document document = (Document) other;
 
-            url = url != null ? url : document.getUrl();
-            contentType = contentType != null ? contentType : document.getContentType();
+            url = document.getUrl() == null ? url : document.getUrl();
+            contentType = document.getContentType() == null ? contentType : document.getContentType();
             external = document.isExternal();
         }
     }

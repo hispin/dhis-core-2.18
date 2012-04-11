@@ -262,8 +262,8 @@ public class IndicatorGroupSet
         {
             IndicatorGroupSet indicatorGroupSet = (IndicatorGroupSet) other;
 
-            compulsory = compulsory != null ? compulsory : indicatorGroupSet.isCompulsory();
-            description = description != null ? description : indicatorGroupSet.getDescription();
+            compulsory = indicatorGroupSet.isCompulsory() == null ? compulsory : indicatorGroupSet.isCompulsory();
+            description = indicatorGroupSet.getDescription() == null ? description : indicatorGroupSet.getDescription();
 
             for ( IndicatorGroup indicatorGroup : indicatorGroupSet.getMembers() )
             {

@@ -1257,44 +1257,21 @@ public class ReportTable
 
             regression = reportTable.isRegression();
             cumulative = reportTable.isCumulative();
-            categoryCombo = categoryCombo != null ? categoryCombo : reportTable.getCategoryCombo();
+            categoryCombo = reportTable.getCategoryCombo() == null ? categoryCombo : reportTable.getCategoryCombo();
             doIndicators = reportTable.isDoIndicators();
             doPeriods = reportTable.isDoPeriods();
             doUnits = reportTable.isDoUnits();
-            relatives = relatives != null ? relatives : reportTable.getRelatives();
-            reportParams = reportParams != null ? reportParams : reportTable.getReportParams();
-            sortOrder = sortOrder != null ? sortOrder : reportTable.getSortOrder();
-            topLimit = topLimit != null ? topLimit : reportTable.getTopLimit();
+            relatives = reportTable.getRelatives() == null ? relatives : reportTable.getRelatives();
+            reportParams = reportTable.getReportParams() == null ? reportParams : reportTable.getReportParams();
+            sortOrder = reportTable.getSortOrder() == null ? sortOrder : reportTable.getSortOrder();
+            topLimit = reportTable.getTopLimit() == null ? topLimit : reportTable.getTopLimit();
 
-            for ( OrganisationUnitGroup organisationUnitGroup : reportTable.getOrganisationUnitGroups() )
-            {
-                organisationUnitGroups.add( organisationUnitGroup );
-            }
-
-            for ( OrganisationUnit organisationUnit : reportTable.getUnits() )
-            {
-                units.add( organisationUnit );
-            }
-
-            for ( Period period : reportTable.getPeriods() )
-            {
-                periods.add( period );
-            }
-
-            for ( DataSet dataSet : reportTable.getDataSets() )
-            {
-                dataSets.add( dataSet );
-            }
-
-            for ( Indicator indicator : reportTable.getIndicators() )
-            {
-                indicators.add( indicator );
-            }
-
-            for ( DataElement dataElement : reportTable.getDataElements() )
-            {
-                dataElements.add( dataElement );
-            }
+            organisationUnitGroups.addAll( reportTable.getOrganisationUnitGroups() );
+            units.addAll( reportTable.getUnits() );
+            periods.addAll( reportTable.getPeriods() );
+            dataSets.addAll( reportTable.getDataSets() );
+            indicators.addAll( reportTable.getIndicators() );
+            dataElements.addAll( reportTable.getDataElements() );
         }
     }
 }

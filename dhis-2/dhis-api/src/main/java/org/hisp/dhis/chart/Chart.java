@@ -657,43 +657,28 @@ public class Chart
         {
             Chart chart = (Chart) other;
 
-            domainAxisLabel = domainAxisLabel != null ? domainAxisLabel : chart.getDomainAxisLabel();
-            rangeAxisLabel = rangeAxisLabel != null ? rangeAxisLabel : chart.getRangeAxisLabel();
-            type = type != null ? type : chart.getType();
-            series = series != null ? series : chart.getSeries();
-            category = category != null ? category : chart.getCategory();
-            filter = filter != null ? filter : chart.getFilter();
+            domainAxisLabel = chart.getDomainAxisLabel() == null ? domainAxisLabel : chart.getDomainAxisLabel();
+            rangeAxisLabel = chart.getRangeAxisLabel() == null ? rangeAxisLabel : chart.getRangeAxisLabel();
+            type = chart.getType() == null ? type : chart.getType();
+            series = chart.getSeries() == null ? series : chart.getSeries();
+            category = chart.getCategory() == null ? category : chart.getCategory();
+            filter = chart.getFilter() == null ? filter : chart.getFilter();
             hideLegend = chart.isHideLegend();
             regression = chart.isRegression();
             hideSubtitle = chart.isHideSubtitle();
-            targetLineValue = targetLineValue != null ? targetLineValue : chart.getTargetLineValue();
-            targetLineLabel = targetLineLabel != null ? targetLineLabel : chart.getTargetLineLabel();
-            baseLineValue = baseLineValue != null ? baseLineValue : chart.getBaseLineValue();
-            baseLineLabel = baseLineLabel != null ? baseLineLabel : chart.getBaseLineLabel();
-            relatives = relatives != null ? relatives : chart.getRelatives();
+            targetLineValue = chart.getTargetLineValue() == null ? targetLineValue : chart.getTargetLineValue();
+            targetLineLabel = chart.getTargetLineLabel() == null ? targetLineLabel : chart.getTargetLineLabel();
+            baseLineValue = chart.getBaseLineValue() == null ? baseLineValue : chart.getBaseLineValue();
+            baseLineLabel = chart.getBaseLineLabel() == null ? baseLineLabel : chart.getBaseLineLabel();
+            relatives = chart.getRelatives() == null ? relatives : chart.getRelatives();
             userOrganisationUnit = chart.isUserOrganisationUnit();
-            user = user != null ? user : chart.getUser();
-            organisationUnitGroupSet = organisationUnitGroupSet != null ? organisationUnitGroupSet : chart.getOrganisationUnitGroupSet();
+            user = chart.getUser() == null ? user : chart.getUser();
+            organisationUnitGroupSet = chart.getOrganisationUnitGroupSet() == null ? organisationUnitGroupSet : chart.getOrganisationUnitGroupSet();
 
-            for ( Indicator indicator : chart.getIndicators() )
-            {
-                indicators.add( indicator );
-            }
-
-            for ( DataElement dataElement : chart.getDataElements() )
-            {
-                dataElements.add( dataElement );
-            }
-
-            for ( DataSet dataSet : chart.getDataSets() )
-            {
-                dataSets.add( dataSet );
-            }
-
-            for ( OrganisationUnit organisationUnit : chart.getOrganisationUnits() )
-            {
-                organisationUnits.add( organisationUnit );
-            }
+            indicators.addAll( chart.getIndicators() );
+            dataElements.addAll( chart.getDataElements() );
+            dataSets.addAll( chart.getDataSets() );
+            organisationUnits.addAll( chart.getOrganisationUnits() );
         }
     }
 }
