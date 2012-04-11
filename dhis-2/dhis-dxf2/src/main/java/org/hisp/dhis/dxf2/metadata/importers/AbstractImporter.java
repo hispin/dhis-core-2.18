@@ -243,9 +243,6 @@ public abstract class AbstractImporter<T extends BaseIdentifiableObject>
             shortNameMap = (Map<String, T>) manager.getIdMap( (Class<? extends NameableObject>) type.getClass(), NameableObject.NameableProperty.SHORT_NAME );
             alternativeNameMap = (Map<String, T>) manager.getIdMap( (Class<? extends NameableObject>) type.getClass(), NameableObject.NameableProperty.ALTERNATIVE_NAME );
         }
-
-        log.info( "shortNameMap: " + shortNameMap );
-        log.info( "alternativeNameMap: " + alternativeNameMap );
     }
 
     private ImportConflict importObjectLocal( T object, ImportOptions options )
