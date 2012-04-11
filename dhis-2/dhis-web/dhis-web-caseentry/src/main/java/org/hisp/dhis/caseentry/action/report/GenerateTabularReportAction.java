@@ -35,7 +35,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import org.hisp.dhis.caseentry.state.SelectedStateManager;
 import org.hisp.dhis.common.Grid;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementService;
@@ -44,7 +43,12 @@ import org.hisp.dhis.i18n.I18nFormat;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitHierarchy;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
+import org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager;
 import org.hisp.dhis.paging.ActionPagingSupport;
+import org.hisp.dhis.patient.PatientAttribute;
+import org.hisp.dhis.patient.PatientAttributeService;
+import org.hisp.dhis.patient.PatientIdentifierType;
+import org.hisp.dhis.patient.PatientIdentifierTypeService;
 import org.hisp.dhis.program.ProgramStage;
 import org.hisp.dhis.program.ProgramStageInstance;
 import org.hisp.dhis.program.ProgramStageInstanceService;
@@ -58,15 +62,21 @@ import org.hisp.dhis.program.ProgramStageService;
 public class GenerateTabularReportAction
     extends ActionPagingSupport<ProgramStageInstance>
 {
+    private String PREFIX_IDENTIFIER_TYPE = "iden";
+
+    private String PREFIX_PATIENT_ATTRIBUTE = "attr";
+
+    private String PREFIX_DATA_ELEMENT = "de";
+
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
 
-    private SelectedStateManager selectedStateManager;
+    private OrganisationUnitSelectionManager selectionManager;
 
-    public void setSelectedStateManager( SelectedStateManager selectedStateManager )
+    public void setSelectionManager( OrganisationUnitSelectionManager selectionManager )
     {
-        this.selectedStateManager = selectedStateManager;
+        this.selectionManager = selectionManager;
     }
 
     private OrganisationUnitService organisationUnitService;
@@ -97,22 +107,36 @@ public class GenerateTabularReportAction
         this.programStageInstanceService = programStageInstanceService;
     }
 
+    private PatientIdentifierTypeService identifierTypeService;
+
+    public void setIdentifierTypeService( PatientIdentifierTypeService identifierTypeService )
+    {
+        this.identifierTypeService = identifierTypeService;
+    }
+
+    private PatientAttributeService patientAttributeService;
+
+    public void setPatientAttributeService( PatientAttributeService patientAttributeService )
+    {
+        this.patientAttributeService = patientAttributeService;
+    }
+
     // -------------------------------------------------------------------------
     // Input/Output
     // -------------------------------------------------------------------------
+
+    private Integer orgunitId;
+
+    public void setOrgunitId( Integer orgunitId )
+    {
+        this.orgunitId = orgunitId;
+    }
 
     private Integer programStageId;
 
     public void setProgramStageId( Integer programStageId )
     {
         this.programStageId = programStageId;
-    }
-
-    private List<Integer> dataElementIds = new ArrayList<Integer>();
-
-    public void setDataElementIds( List<Integer> dataElementIds )
-    {
-        this.dataElementIds = dataElementIds;
     }
 
     private String startDate;
@@ -129,11 +153,16 @@ public class GenerateTabularReportAction
         this.endDate = endDate;
     }
 
-    private Set<String> searchingValues = new HashSet<String>();
+    private List<String> searchingValues = new ArrayList<String>();
 
-    public void setSearchingValues( Set<String> searchingValues )
+    public void setSearchingValues( List<String> searchingValues )
     {
         this.searchingValues = searchingValues;
+    }
+
+    public List<String> getSearchingValues()
+    {
+        return searchingValues;
     }
 
     private boolean orderByOrgunitAsc;
@@ -185,7 +214,21 @@ public class GenerateTabularReportAction
         this.format = format;
     }
 
-    private List<DataElement> dataElements;
+    private List<PatientIdentifierType> identifierTypes = new ArrayList<PatientIdentifierType>();
+
+    public List<PatientIdentifierType> getIdentifierTypes()
+    {
+        return identifierTypes;
+    }
+
+    private List<PatientAttribute> patientAttributes = new ArrayList<PatientAttribute>();
+
+    public List<PatientAttribute> getPatientAttributes()
+    {
+        return patientAttributes;
+    }
+
+    private List<DataElement> dataElements = new ArrayList<DataElement>();
 
     public List<DataElement> getDataElements()
     {
@@ -206,6 +249,12 @@ public class GenerateTabularReportAction
         this.facilityLB = facilityLB;
     }
 
+    private Map<Integer, String> searchingIdenKeys = new HashMap<Integer, String>();
+
+    private Map<Integer, String> searchingAttrKeys = new HashMap<Integer, String>();
+
+    private Map<Integer, String> searchingDEKeys = new HashMap<Integer, String>();
+
     // -------------------------------------------------------------------------
     // Implementation Action
     // -------------------------------------------------------------------------
@@ -217,13 +266,16 @@ public class GenerateTabularReportAction
         // Get orgunitIds
         // ---------------------------------------------------------------------
 
-        OrganisationUnit selectedOrgunit = selectedStateManager.getSelectedOrganisationUnit();
+        OrganisationUnit selectedOrgunit = selectionManager.getSelectedOrganisationUnit();
+        
+        // OrganisationUnit selectedOrgunit =
+        // organisationUnitService.getOrganisationUnit( orgunitId );
 
         Set<Integer> orgunitIds = new HashSet<Integer>();
 
         if ( facilityLB.equals( "selected" ) )
         {
-            orgunitIds.add( selectedOrgunit.getId() );
+            orgunitIds.add( orgunitId );
         }
         else
         {
@@ -249,29 +301,11 @@ public class GenerateTabularReportAction
 
         Date endValue = format.parseDate( endDate );
 
-        dataElements = new ArrayList<DataElement>();
-
         // ---------------------------------------------------------------------
-        // Get selected dataelements
+        // Get DE searching-keys
         // ---------------------------------------------------------------------
 
-        for ( Integer dataElementId : dataElementIds )
-        {
-            dataElements.add( dataElementService.getDataElement( dataElementId ) );
-        }
-
-        // ---------------------------------------------------------------------
-        // Get searching-keys
-        // ---------------------------------------------------------------------
-
-        Map<Integer, String> searchingKeys = new HashMap<Integer, String>();
-
-        for ( String searchingValue : searchingValues )
-        {
-            String[] infor = searchingValue.split( "_" );
-
-            searchingKeys.put( Integer.parseInt( infor[0] ), infor[1] );
-        }
+        getParams();
 
         // ---------------------------------------------------------------------
         // Generate tabular report
@@ -279,20 +313,66 @@ public class GenerateTabularReportAction
 
         if ( type == null )
         {
-            total = programStageInstanceService.countProgramStageInstances( programStage, searchingKeys, orgunitIds,
-                startValue, endValue );
+            total = programStageInstanceService.countProgramStageInstances( programStage, searchingIdenKeys,
+                searchingAttrKeys, searchingDEKeys, orgunitIds, startValue, endValue );
 
             this.paging = createPaging( total );
 
-            grid = programStageInstanceService.getTabularReport( programStage, dataElements, searchingKeys, orgunitIds,
-                level, startValue, endValue, orderByOrgunitAsc, orderByExecutionDateByAsc, paging
-                    .getStartPos(), paging.getPageSize(), format, i18n );
+            grid = programStageInstanceService.getTabularReport( programStage, identifierTypes, patientAttributes,
+                dataElements, searchingIdenKeys, searchingAttrKeys, searchingDEKeys, orgunitIds, level, startValue,
+                endValue, orderByOrgunitAsc, orderByExecutionDateByAsc, paging.getStartPos(), paging.getPageSize(),
+                format, i18n );
+
             return SUCCESS;
         }
 
-        grid = programStageInstanceService.getTabularReport( programStage, dataElements, searchingKeys, orgunitIds,
-            level, startValue, endValue, orderByOrgunitAsc, orderByExecutionDateByAsc, format, i18n );
+        grid = programStageInstanceService.getTabularReport( programStage, identifierTypes, patientAttributes,
+            dataElements, searchingIdenKeys, searchingAttrKeys, searchingDEKeys, orgunitIds, level, startValue,
+            endValue, orderByOrgunitAsc, orderByExecutionDateByAsc, format, i18n );
 
         return type;
+    }
+
+    // ---------------------------------------------------------------------
+    // Supportive methods
+    // ---------------------------------------------------------------------
+
+    private void getParams()
+    {
+        // ---------------------------------------------------------------------
+        // Get Patient-Identifier searching-keys
+        // ---------------------------------------------------------------------
+
+        for ( String searchingValue : searchingValues )
+        {
+            String[] infor = searchingValue.split( "_" );
+            String objectType = infor[0];
+            int objectId = Integer.parseInt( infor[1] );
+
+            if ( objectType.equals( PREFIX_IDENTIFIER_TYPE ) )
+            {
+                identifierTypes.add( identifierTypeService.getPatientIdentifierType( objectId ) );
+                if ( infor.length == 3 )
+                {
+                    searchingIdenKeys.put( objectId, infor[2].trim() );
+                }
+            }
+            else if ( objectType.equals( PREFIX_PATIENT_ATTRIBUTE ) )
+            {
+                patientAttributes.add( patientAttributeService.getPatientAttribute( objectId ) );
+                if ( infor.length == 3 )
+                {
+                    searchingAttrKeys.put( objectId, infor[2].trim() );
+                }
+            }
+            else if ( objectType.equals( PREFIX_DATA_ELEMENT ) )
+            {
+                dataElements.add( dataElementService.getDataElement( objectId ) );
+                if ( infor.length == 3 )
+                {
+                    searchingDEKeys.put( objectId, infor[2].trim() );
+                }
+            }
+        }
     }
 }

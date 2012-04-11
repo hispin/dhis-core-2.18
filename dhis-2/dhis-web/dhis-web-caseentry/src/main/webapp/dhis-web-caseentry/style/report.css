@@ -2,9 +2,15 @@
 /* For GRID form                                                              */
 /*----------------------------------------------------------------------------*/
 
-.button
+input.button
 {
-	width:140px; 
+	width:60px; 
+}
+
+select[multiple='true']
+{
+	min-width:250px;
+	min-height:250px;
 }
 
 input[type="button"], input[type="submit"]

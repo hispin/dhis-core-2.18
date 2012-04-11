@@ -27,63 +27,86 @@
 
 package org.hisp.dhis.caseentry.action.report;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
-import org.hisp.dhis.program.ProgramStageDataElement;
-import org.hisp.dhis.program.ProgramStageService;
+import org.hisp.dhis.organisationunit.OrganisationUnit;
+import org.hisp.dhis.organisationunit.OrganisationUnitLevel;
+import org.hisp.dhis.organisationunit.OrganisationUnitService;
+import org.hisp.dhis.program.Program;
+import org.hisp.dhis.program.ProgramService;
 
 import com.opensymphony.xwork2.Action;
 
 /**
  * @author Chau Thu Tran
  * 
- * @version $LoadDataElementsAction.java Feb 29, 2012 9:40:40 AM$
+ * @version $TabularInitializeAction.java Apr 5, 2012 9:44:37 AM$
  */
-public class LoadDataElementsAction
+public class TabularInitializeAction
     implements Action
 {
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
 
-    private ProgramStageService programStageService;
+    private OrganisationUnitService organisationUnitService;
 
-    public void setProgramStageService( ProgramStageService programStageService )
+    public void setOrganisationUnitService( OrganisationUnitService organisationUnitService )
     {
-        this.programStageService = programStageService;
+        this.organisationUnitService = organisationUnitService;
+    }
+
+    private ProgramService programService;
+
+    public void setProgramService( ProgramService programService )
+    {
+        this.programService = programService;
     }
 
     // -------------------------------------------------------------------------
-    // Input/output
+    // Output
     // -------------------------------------------------------------------------
 
-    private Integer programStageId;
+    private OrganisationUnit rootNode;
 
-    public void setProgramStageId( Integer programStageId )
+    public OrganisationUnit getRootNode()
     {
-        this.programStageId = programStageId;
+        return rootNode;
     }
 
-    private Collection<ProgramStageDataElement> psDataElements;
+    private Collection<Program> programs;
 
-    public Collection<ProgramStageDataElement> getPsDataElements()
+    public Collection<Program> getPrograms()
     {
-        return psDataElements;
+        return programs;
+    }
+
+    private List<OrganisationUnitLevel> levels;
+
+    public List<OrganisationUnitLevel> getLevels()
+    {
+        return levels;
     }
 
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
 
-    @Override
     public String execute()
         throws Exception
     {
-        if ( programStageId != null )
-        {
-            psDataElements = programStageService.getProgramStage( programStageId ).getProgramStageDataElements();
-        }
+        Collection<OrganisationUnit> rootUnits = new ArrayList<OrganisationUnit>( organisationUnitService
+            .getOrganisationUnitsAtLevel( 1 ) );
+
+        programs = programService.getAllPrograms();
+
+        rootNode = rootUnits.size() > 0 ? rootUnits.iterator().next() : new OrganisationUnit();
+
+        levels = organisationUnitService.getFilledOrganisationUnitLevels();
         
         return SUCCESS;
     }
+
 }

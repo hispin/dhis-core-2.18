@@ -15,11 +15,6 @@
 
 	<h5>$!encoder.htmlEncode( $grid.subtitle )</h5>
 
-	#set( $anonymous = "true")
-	#if( $grid.getVisibleHeaders().size() <  $grid.getHeaders().size() )
-		#set( $anonymous = "false" )
-	#end
-
 	<table class="listTable grid" id='gridTable'>
 		<tr>
 			<th>#</th>
@@ -31,6 +26,16 @@
 				$i18n.getString('report_date')
 					<a href="javascript:onchangeOrderBy( 'orderByExecutionDateByAsc' );"  title='$i18n.getString( "order_by_report_date" )'><img src="../images/asc.gif" alt='$i18n.getString( "desc" )' id='orderByExecutionDateByAsc' orderBy='true' style='curser:pointer;'></a>
 			</th>
+			#foreach( $identifierType in $identifierTypes )
+				<th>
+					$!encoder.htmlEncode( $identifierType.name )
+				</th>
+			#end
+			#foreach( $patientAttribute in $patientAttributes )
+				<th>
+					$!encoder.htmlEncode( $patientAttribute.name )
+				</th>
+			#end
 			#foreach( $dataElement in $dataElements )
 				<th>
 					$!encoder.htmlEncode( $dataElement.name )
@@ -47,13 +52,20 @@
 			</td>
 			<td></td>
 			<td></td>
-			#foreach( $dataElement in $dataElements )
+			#foreach( $identifierType in $identifierTypes )
 				<td>
-					<input type='text' id='$dataElement.id' title='$i18n.getString("how_to_search_tabular_report")' onkeypress='onkeypressSearch( event );' #if($dataElement.optionSet) options='$dataElement.optionSet.options' #end />
+					<input type='text' id='iden_$identifierType.id' title='$i18n.getString("how_to_search_tabular_report")' onkeypress='onkeypressSearch( event );' #if($dataElement.optionSet) options='$dataElement.optionSet.options' #end />
 				</td>
 			#end
-			#if( $anonymous == "false" )
-				<td></td>
+			#foreach( $patientAttribute in $patientAttributes )
+				<td>
+					<input type='text' id='attr_$patientAttribute.id' title='$i18n.getString("how_to_search_tabular_report")' onkeypress='onkeypressSearch( event );' #if($dataElement.optionSet) options='$dataElement.optionSet.options' #end />
+				</td>
+			#end
+			#foreach( $dataElement in $dataElements )
+				<td>
+					<input type='text' id='de_$dataElement.id' title='$i18n.getString("how_to_search_tabular_report")' onkeypress='onkeypressSearch( event );' #if($dataElement.optionSet) options='$dataElement.optionSet.options' #end />
+				</td>
 			#end
 		</tr>
 		
