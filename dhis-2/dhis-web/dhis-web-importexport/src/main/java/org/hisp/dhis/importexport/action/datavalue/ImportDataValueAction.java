@@ -1,7 +1,7 @@
-package org.hisp.dhis.system.notification;
+package org.hisp.dhis.importexport.action.datavalue;
 
 /*
- * Copyright (c) 2004-2012, University of Oslo
+ * Copyright (c) 2012, University of Oslo
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -27,25 +27,56 @@ package org.hisp.dhis.system.notification;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.util.List;
+import java.io.BufferedInputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.InputStream;
 
-/**
- * @author Lars Helge Overland
- */
-public interface Notifier
+import org.hisp.dhis.dxf2.datavalueset.DataValueSetService;
+import org.hisp.dhis.importexport.ImportStrategy;
+import org.hisp.dhis.importexport.action.util.ImportDataValueTask;
+import org.hisp.dhis.system.scheduling.Scheduler;
+import org.springframework.beans.factory.annotation.Autowired;
+
+import com.opensymphony.xwork2.Action;
+
+public class ImportDataValueAction
+    implements Action
 {
-    Notifier notify( NotificationCategory category, String message );
+    @Autowired
+    private DataValueSetService dataValueSetService;
     
-    Notifier notify( NotificationLevel level, NotificationCategory category, String message, boolean completed );
-    
-    List<Notification> getNotifications( NotificationCategory category, int max );
-    
-    List<Notification> getNotifications( NotificationCategory category, String lastUid );
-    
-    Notifier clear( NotificationCategory category );
-    
-    Notifier addTaskSummary( NotificationCategory category, Object taskSummary );
-    
-    Object getTaskSummary( NotificationCategory category );
-    
+    @Autowired
+    private Scheduler scheduler;
+
+    private File upload;
+
+    public void setUpload( File upload )
+    {
+        this.upload = upload;
+    }
+
+    private boolean dryRun;
+
+    public void setDryRun( boolean dryRun )
+    {
+        this.dryRun = dryRun;
+    }
+
+    private ImportStrategy strategy;
+
+    public void setStrategy( String stgy )
+    {
+        this.strategy = ImportStrategy.valueOf( stgy );
+    }
+
+    public String execute()
+        throws Exception
+    {
+        final InputStream in = new BufferedInputStream( new FileInputStream( upload ) ); 
+
+        scheduler.executeTask( new ImportDataValueTask( dataValueSetService, in, dryRun, strategy ) );
+        
+        return SUCCESS;
+    }
 }

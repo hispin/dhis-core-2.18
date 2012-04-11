@@ -106,11 +106,9 @@ public class ImportCount
     @Override
     public String toString()
     {
-        return "ImportCount{" +
-            "object='" + object + '\'' +
+        return "[object='" + object + "'" +
             ", imports=" + imports +
             ", updates=" + updates +
-            ", ignores=" + ignores +
-            '}';
+            ", ignores=" + ignores + "]";
     }
 }

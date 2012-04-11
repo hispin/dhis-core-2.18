@@ -14,9 +14,21 @@
       <param name="menu">/dhis-web-importexport/mainMenu.vm</param>
     </action>
 
-    <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
-    <!-- Menu                                                          -->
-    <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+    <!-- Data value import -->
+	
+	<action name="displayImportDataValueForm" class="org.hisp.dhis.importexport.action.NoAction">		
+      <result name="success" type="velocity">/main.vm</result>
+      <param name="page">/dhis-web-importexport/importDataValue.vm</param>
+      <param name="menu">/dhis-web-importexport/mainMenu.vm</param>
+	  <param name="javascripts">javascript/importDataValue.js</param>
+	</action>
+		
+	<action name="importDataValue" class="org.hisp.dhis.importexport.action.datavalue.ImportDataValueAction">
+	  <result name="success" type="redirect">displayImportDataValueForm.action?running=true</result>
+      <interceptor-ref name="fileUploadStack" />
+	</action>
+
+    <!-- Menu -->
 
     <action name="displayExternalImportMenu" class="org.hisp.dhis.importexport.action.NoAction">
       <result name="success" type="velocity">/main.vm</result>
@@ -30,9 +42,7 @@
       <param name="menu">/dhis-web-importexport/mainMenu.vm</param>
     </action>
 	
-    <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
-    <!-- Import                                                        -->
-    <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+    <!-- Import -->
 
     <action name="setImportFormat" class="org.hisp.dhis.importexport.action.imp.SetImportTypeAction">
       <result name="success" type="redirect">displayImportForm.action</result>
@@ -66,10 +76,8 @@
       <param name="page">/dhis-web-importexport/importAnalysisForm.vm</param>
       <param name="menu">/dhis-web-importexport/mainMenu.vm</param>
     </action>
-		
-    <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
-    <!-- Object Ajax                                                   -->
-    <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+	
+    <!-- Object Ajax -->
 
     <action name="discardObjectAjax" class="org.hisp.dhis.importexport.action.object.DiscardObjectAction">
       <result name="success" type="velocity-xml">/dhis-web-importexport/responseSuccess.vm</result>
@@ -83,9 +91,7 @@
       <param name="onExceptionReturn">plainTextError</param>
     </action>
 		
-    <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
-    <!-- Preview                                                       -->
-    <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+    <!-- Preview -->
 
     <action name="displayPreviewForm" class="org.hisp.dhis.importexport.action.imp.GetPreviewOptionsAction">
       <result name="success" type="velocity">/main.vm</result>
@@ -129,10 +135,8 @@
       <param name="menu">/dhis-web-importexport/mainMenu.vm</param>
       <param name="javascripts">javascript/import.js</param>
     </action>
-		
-    <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
-    <!-- Export                                                        -->
-    <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+	
+    <!-- Export -->
 
     <action name="displayMetaDataExportForm" class="org.hisp.dhis.importexport.action.exp.GetExportOptionsAction">
       <result name="success" type="velocity">/main.vm</result>
@@ -203,9 +207,7 @@
       <param name="onExceptionReturn">plainTextError</param>
     </action>
 
-    <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
-    <!-- Dhis 1.4 Configuration                                        -->
-    <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+    <!-- Dhis 1.4 Configuration -->
 
     <action name="displayConfigDhis14Form" class="org.hisp.dhis.importexport.action.dhis14.GetDhis14ConfigurationAction">
       <result name="success" type="velocity">/main.vm</result>

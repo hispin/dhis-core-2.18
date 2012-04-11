@@ -3,9 +3,11 @@
   xsi:schemaLocation="
 http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.1.xsd">
 
-	<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
-	<!-- Import                                                        -->
-	<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+  <!-- Data value import -->
+
+  <bean id="org.hisp.dhis.importexport.action.datavalue.ImportDataValueAction" class="org.hisp.dhis.importexport.action.datavalue.ImportDataValueAction"/>
+
+  <!-- Import -->
 
   <bean id="org.hisp.dhis.importexport.action.imp.ImportAction" class="org.hisp.dhis.importexport.action.imp.ImportAction"
     scope="prototype">
@@ -34,9 +36,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     <property name="processCoordinator" ref="processCoordinator" />
   </bean>
 
-	<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
-	<!-- Object Ajax                                                   -->
-	<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+  <!-- Object Ajax -->
 
   <bean id="org.hisp.dhis.importexport.action.object.MatchObjectAction" class="org.hisp.dhis.importexport.action.object.MatchObjectAction"
     scope="prototype">
@@ -66,9 +66,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     <property name="currentUserService" ref="org.hisp.dhis.user.CurrentUserService" />
   </bean>
 
-	<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
-	<!-- Preview                                                       -->
-	<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+  <!-- Preview -->
 
   <bean id="org.hisp.dhis.importexport.action.imp.GetPreviewOptionsAction" class="org.hisp.dhis.importexport.action.imp.GetPreviewOptionsAction"
     scope="prototype">
@@ -97,9 +95,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     <property name="importObjectService" ref="org.hisp.dhis.importexport.ImportObjectService" />
   </bean>
 
-	<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
-	<!-- Export                                                        -->
-	<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+  <!-- Export -->
 
   <bean id="org.hisp.dhis.importexport.action.exp.MetaDataExportAction" class="org.hisp.dhis.importexport.action.exp.MetaDataExportAction"
     scope="prototype">
@@ -159,9 +155,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     <property name="dataIntegrityService" ref="org.hisp.dhis.dataintegrity.DataIntegrityService" />
   </bean>
 
-	<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
-	<!-- Dhis 1.4 Configuration                                        -->
-	<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+  <!-- Dhis 1.4 Configuration -->
 
   <bean id="org.hisp.dhis.importexport.action.dhis14.GetDhis14ConfigurationAction" class="org.hisp.dhis.importexport.action.dhis14.GetDhis14ConfigurationAction"
     scope="prototype">

@@ -5,8 +5,8 @@
     "uid": "${notification.uid}",
     "level": "${notification.level}",
     "category": "${notification.category}",
-    "time": "${format.formatDate( $notification.time )}",
-    "message": "${notification.message}",
+    "time": "${format.formatDateTime( $notification.time )}",
+    "message": "$!{encoder.jsonEncode( $notification.message )}",
     "completed": "${notification.completed}"    
   }#if( $velocityCount < $size ),#end
 #end

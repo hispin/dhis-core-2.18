@@ -1,4 +1,3 @@
-
 <h3>$i18n.getString( "data_mart_management" )</h3>
 
 <div id="critiera" class="inputCriteria" style="width:380px;height:170px;">
@@ -29,4 +28,9 @@
 </table>
 </div>
 
-<div id="notificationDiv" class="notifications"></div>
+<div>
+<table id="notificationTable" class="notificationTable" style="display:none">
+<col width="120">
+<col width="380">
+</table>
+</div>

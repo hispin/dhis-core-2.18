@@ -338,6 +338,19 @@ div#headerMessage
   border-radius: 3px;
 }
 
+table.notificationTable 
+{
+  background-color: #ffffbf;
+  border: 1px solid #cccc00;
+  padding: 6px;
+  border-radius: 3px;
+}
+
+table.notificationTable td 
+{
+  padding: 3px;
+}
+
 /*----------------------------------------------------------------------------*/
 /* Sorting                                                                    */
 /*----------------------------------------------------------------------------*/

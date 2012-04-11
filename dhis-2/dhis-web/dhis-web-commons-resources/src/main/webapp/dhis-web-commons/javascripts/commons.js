@@ -4,8 +4,8 @@
 // -----------------------------------------------------------------------------
 
 var headerMessageTimeout = -1;
-var _loading_bar_html = "<img src='../images/ajax-loader-bar.gif'>";
-var _loading_circle_html = "<img src='../images/ajax-loader-circle.gif'>";
+var _loading_bar_html = "<span id='loaderSpan'><img src='../images/ajax-loader-bar.gif'></span>";
+var _loading_circle_html = "<span id='loaderSpan'><img src='../images/ajax-loader-circle.gif'></span>";
 
 /**
  * Go back using the document.referrer.
@@ -1522,7 +1522,6 @@ function roundTo( number, decimals )
 // Paging
 // -----------------------------------------------------------------------------
 
-
 isAjax = false;
 function pagingList( currentPage, pageSize )
 {
@@ -1586,4 +1585,40 @@ function changePageSize( event )
 		
 		pagingList( currentPage, pageSize );
 	}
+}
+
+// -----------------------------------------------------------------------------
+// Notifications
+// -----------------------------------------------------------------------------
+
+function pingNotifications( category, tableId )
+{	
+	var lastUid = $( '#' + tableId ).prop( 'lastUid' );
+	
+	var param = lastUid ? '&lastUid=' + lastUid : '';
+		
+	$.getJSON( '../dhis-web-commons-ajax-json/getNotifications.action?category=' + category + param, function( json )
+	{
+		var html = '';
+		var completedHtml = '<img src="../images/completed.png">';
+		
+		$.each( json.notifications, function( i, notification )
+		{
+			var first = i == 0;
+			var loaderHtml = '';			
+			
+			if ( first )
+			{
+				$( '#' + tableId ).prop( 'lastUid', notification.uid );
+				loaderHtml = _loading_bar_html;
+				$( '#loaderSpan' ).replaceWith ( '' ); // Hide previous loader bar
+			}		
+			
+			html += '<tr><td>' + notification.time + '</td><td>' + notification.message + ' &nbsp;';
+			html += notification.completed == "true" ?  completedHtml : loaderHtml;
+			html += '</td></tr>';
+		} );
+		
+		$( '#' + tableId ).prepend( html );
+	} );
 }

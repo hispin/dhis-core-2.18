@@ -36,6 +36,17 @@ import com.opensymphony.xwork2.Action;
 public class NoAction
     implements Action
 {
+    private boolean running;
+    
+    public boolean isRunning()
+    {
+        return running;
+    }
+    public void setRunning( boolean running )
+    {
+        this.running = running;
+    }
+    
     public String execute()
     {
         return SUCCESS;
