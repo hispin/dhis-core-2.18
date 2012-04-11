@@ -37,6 +37,7 @@ import org.apache.commons.collections.CollectionUtils;
 import org.hisp.dhis.attribute.AttributeValue;
 import org.hisp.dhis.common.BaseIdentifiableObject;
 import org.hisp.dhis.common.Dxf2Namespace;
+import org.hisp.dhis.common.IdentifiableObject;
 import org.hisp.dhis.common.IdentifiableObjectUtils;
 import org.hisp.dhis.common.view.DetailedView;
 import org.hisp.dhis.common.view.ExportView;
@@ -348,5 +349,29 @@ public class User
     public void setAttributeValues( Set<AttributeValue> attributeValues )
     {
         this.attributeValues = attributeValues;
+    }
+
+    @Override
+    public void mergeWith( IdentifiableObject other )
+    {
+        super.mergeWith( other );
+
+        if ( other.getClass().isInstance( this ) )
+        {
+            User user = (User) other;
+
+            surname = user.getSurname() == null ? surname : user.getSurname();
+            firstName = user.getFirstName() == null ? firstName : user.getFirstName();
+            email = user.getEmail() == null ? email : user.getEmail();
+            phoneNumber = user.getPhoneNumber() == null ? phoneNumber : user.getPhoneNumber();
+            userCredentials = user.getUserCredentials() == null ? userCredentials : user.getUserCredentials();
+
+            attributeValues.addAll( user.getAttributeValues() );
+
+            for ( OrganisationUnit organisationUnit : user.getOrganisationUnits() )
+            {
+                addOrganisationUnit( organisationUnit );
+            }
+        }
     }
 }

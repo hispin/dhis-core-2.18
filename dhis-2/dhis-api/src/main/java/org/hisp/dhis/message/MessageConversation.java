@@ -35,6 +35,7 @@ import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 import org.hisp.dhis.common.BaseIdentifiableObject;
 import org.hisp.dhis.common.Dxf2Namespace;
+import org.hisp.dhis.common.IdentifiableObject;
 import org.hisp.dhis.common.view.DetailedView;
 import org.hisp.dhis.common.view.ExportView;
 import org.hisp.dhis.user.User;
@@ -359,5 +360,23 @@ public class MessageConversation
     public void setLastSenderFirstname( String lastSenderFirstname )
     {
         this.lastSenderFirstname = lastSenderFirstname;
+    }
+
+    @Override
+    public void mergeWith( IdentifiableObject other )
+    {
+        super.mergeWith( other );
+
+        if ( other.getClass().isInstance( this ) )
+        {
+            MessageConversation messageConversation = (MessageConversation) other;
+
+            subject = messageConversation.getSubject() == null ? subject : messageConversation.getSubject();
+            lastSender = messageConversation.getLastSender() == null ? lastSender : messageConversation.getLastSender();
+            lastMessage = messageConversation.getLastMessage() == null ? lastMessage : messageConversation.getLastMessage();
+
+            userMessages.addAll( messageConversation.getUserMessages() );
+            messages.addAll( messageConversation.getMessages() );
+        }
     }
 }

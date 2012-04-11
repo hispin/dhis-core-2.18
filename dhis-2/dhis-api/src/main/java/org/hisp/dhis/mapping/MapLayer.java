@@ -33,6 +33,7 @@ import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 import org.hisp.dhis.common.BaseIdentifiableObject;
 import org.hisp.dhis.common.Dxf2Namespace;
+import org.hisp.dhis.common.IdentifiableObject;
 import org.hisp.dhis.common.view.DetailedView;
 import org.hisp.dhis.common.view.ExportView;
 
@@ -216,5 +217,25 @@ public class MapLayer
     public void setStrokeWidth( int strokeWidth )
     {
         this.strokeWidth = strokeWidth;
+    }
+
+    @Override
+    public void mergeWith( IdentifiableObject other )
+    {
+        super.mergeWith( other );
+
+        if ( other.getClass().isInstance( this ) )
+        {
+            MapLayer mapLayer = (MapLayer) other;
+
+            type = mapLayer.getType() == null ? type : mapLayer.getType();
+            url = mapLayer.getUrl() == null ? url : mapLayer.getUrl();
+            layers = mapLayer.getLayers() == null ? layers : mapLayer.getLayers();
+            time = mapLayer.getTime() == null ? time : mapLayer.getTime();
+            fillColor = mapLayer.getFillColor() == null ? fillColor : mapLayer.getFillColor();
+            fillOpacity = mapLayer.getFillOpacity();
+            strokeColor = mapLayer.getStrokeColor() == null ? strokeColor : mapLayer.getStrokeColor();
+            strokeWidth = mapLayer.getStrokeWidth();
+        }
     }
 }

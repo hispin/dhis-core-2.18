@@ -35,6 +35,7 @@ import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 import org.hisp.dhis.common.BaseIdentifiableObject;
 import org.hisp.dhis.common.Dxf2Namespace;
+import org.hisp.dhis.common.IdentifiableObject;
 import org.hisp.dhis.common.view.DetailedView;
 import org.hisp.dhis.common.view.ExportView;
 import org.hisp.dhis.dataelement.DataElement;
@@ -181,5 +182,23 @@ public class MapLegendSet
     public void setDataElements( Set<DataElement> dataElements )
     {
         this.dataElements = dataElements;
+    }
+
+    @Override
+    public void mergeWith( IdentifiableObject other )
+    {
+        super.mergeWith( other );
+
+        if ( other.getClass().isInstance( this ) )
+        {
+            MapLegendSet mapLegendSet = (MapLegendSet) other;
+
+            type = mapLegendSet.getType() == null ? type : mapLegendSet.getType();
+            symbolizer = mapLegendSet.getSymbolizer() == null ? symbolizer : mapLegendSet.getSymbolizer();
+
+            mapLegends.addAll( mapLegendSet.getMapLegends() );
+            indicators.addAll( mapLegendSet.getIndicators() );
+            dataElements.addAll( mapLegendSet.getDataElements() );
+        }
     }
 }

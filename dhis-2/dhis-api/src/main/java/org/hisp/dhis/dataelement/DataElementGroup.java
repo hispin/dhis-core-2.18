@@ -35,6 +35,7 @@ import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 import org.hisp.dhis.common.BaseIdentifiableObject;
 import org.hisp.dhis.common.Dxf2Namespace;
+import org.hisp.dhis.common.IdentifiableObject;
 import org.hisp.dhis.common.view.DetailedView;
 import org.hisp.dhis.common.view.ExportView;
 
@@ -172,5 +173,19 @@ public class DataElementGroup
     public void setGroupSet( DataElementGroupSet groupSet )
     {
         this.groupSet = groupSet;
+    }
+
+    @Override
+    public void mergeWith( IdentifiableObject other )
+    {
+        super.mergeWith( other );
+
+        if ( other.getClass().isInstance( this ) )
+        {
+            DataElementGroup dataElementGroup = (DataElementGroup) other;
+
+            members.addAll( dataElementGroup.getMembers() );
+            groupSet = groupSet != null ? groupSet : dataElementGroup.getGroupSet();
+        }
     }
 }
