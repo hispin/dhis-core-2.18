@@ -27,6 +27,9 @@
 
 package org.hisp.dhis.light.beneficiaryregistration.action;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.patient.Patient;
 import org.hisp.dhis.patient.PatientService;
@@ -130,9 +133,9 @@ public class SaveBeneficiaryAction
     {
         this.dateOfBirth = dateOfBirth;
     }
-    
+
     public boolean validated;
-    
+
     public boolean isValidated()
     {
         return validated;
@@ -143,6 +146,30 @@ public class SaveBeneficiaryAction
         this.validated = validated;
     }
 
+    public Map<String, String> validationMap = new HashMap<String, String>();
+
+    public Map<String, String> getValidationMap()
+    {
+        return validationMap;
+    }
+
+    public void setValidationMap( Map<String, String> validationMap )
+    {
+        this.validationMap = validationMap;
+    }
+
+    public Map<String, String> previousValues = new HashMap<String, String>();
+
+    public Map<String, String> getPreviousValues()
+    {
+        return previousValues;
+    }
+
+    public void setPreviousValues( Map<String, String> previousValues )
+    {
+        this.previousValues = previousValues;
+    }
+
     @Override
     public String execute()
         throws Exception
@@ -151,32 +178,49 @@ public class SaveBeneficiaryAction
 
         patient.setOrganisationUnit( organisationUnitService.getOrganisationUnit( Integer.parseInt( orgUnitId ) ) );
 
-        String[] tokens = this.patientFullName.split( " " );
-
-        patient.setFirstName( tokens[0] );
-
-        if ( tokens.length == 2 )
+        if ( this.patientFullName.trim().equals( "" ) )
         {
-            patient.setLastName( tokens[1] );
+            validationMap.put( "fullName", "is_empty" );
         }
-        else if ( tokens.length > 2 )
+        else
         {
-            patient.setMiddleName( tokens[1] );
-            patient.setLastName( tokens[2] );
+            String[] tokens = this.patientFullName.split( " " );
+
+            patient.setFirstName( tokens[0] );
+
+            if ( tokens.length == 2 )
+            {
+                patient.setLastName( tokens[1] );
+            }
+            else if ( tokens.length > 2 )
+            {
+                patient.setMiddleName( tokens[1] );
+                patient.setLastName( tokens[2] );
+            }
         }
 
         patient.setGender( gender );
         patient.setBloodGroup( bloodGroup );
 
-        DateTimeFormatter sdf = ISODateTimeFormat.yearMonthDay();
-        DateTime date = sdf.parseDateTime( dateOfBirth );
         try
         {
+            DateTimeFormatter sdf = ISODateTimeFormat.yearMonthDay();
+            DateTime date = sdf.parseDateTime( dateOfBirth );
             patient.setBirthDate( date.toDate() );
         }
         catch ( Exception e )
         {
-            e.printStackTrace();
+            validationMap.put( "dob", "is_invalid_date" );
+        }
+
+        if ( this.validationMap.size() > 0 )
+        {
+            this.validated = false;
+            this.previousValues.put( "fullName", this.patientFullName );
+            this.previousValues.put( "gender", this.gender );
+            this.previousValues.put( "bloodGroup", this.bloodGroup );
+            this.previousValues.put( "dob", this.dateOfBirth );
+            return SUCCESS;
         }
 
         patientService.savePatient( patient );

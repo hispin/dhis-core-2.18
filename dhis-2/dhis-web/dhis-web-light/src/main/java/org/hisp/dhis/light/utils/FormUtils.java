@@ -161,12 +161,13 @@ public class FormUtils
     // -------------------------------------------------------------------------
 
     @SuppressWarnings( "unchecked" )
-    public Map<String, DeflatedDataValue> getValidationViolations( OrganisationUnit organisationUnit, Collection<DataElement> dataElements,
-                                                                   Period period )
+    public Map<String, DeflatedDataValue> getValidationViolations( OrganisationUnit organisationUnit,
+        Collection<DataElement> dataElements, Period period )
     {
         Map<String, DeflatedDataValue> validationErrorMap = new HashMap<String, DeflatedDataValue>();
 
-        Collection<MinMaxDataElement> minmaxs = minMaxDataElementService.getMinMaxDataElements( organisationUnit, dataElements );
+        Collection<MinMaxDataElement> minmaxs = minMaxDataElementService.getMinMaxDataElements( organisationUnit,
+            dataElements );
         Collection<DeflatedDataValue> deflatedDataValues;
 
         if ( minmaxs == null )
@@ -310,7 +311,8 @@ public class FormUtils
         try
         {
             Double.parseDouble( value );
-        } catch ( NumberFormatException e )
+        }
+        catch ( NumberFormatException e )
         {
             return false;
         }
@@ -323,7 +325,8 @@ public class FormUtils
         try
         {
             Integer.parseInt( value );
-        } catch ( NumberFormatException e )
+        }
+        catch ( NumberFormatException e )
         {
             return false;
         }
@@ -353,7 +356,8 @@ public class FormUtils
             {
                 return true;
             }
-        } catch ( NumberFormatException e )
+        }
+        catch ( NumberFormatException e )
         {
         }
 
@@ -372,7 +376,8 @@ public class FormUtils
             {
                 return true;
             }
-        } catch ( NumberFormatException e )
+        }
+        catch ( NumberFormatException e )
         {
         }
 
@@ -392,7 +397,8 @@ public class FormUtils
         {
             sdf.parseDateTime( value );
             return true;
-        } catch ( IllegalArgumentException e )
+        }
+        catch ( IllegalArgumentException e )
         {
         }
 

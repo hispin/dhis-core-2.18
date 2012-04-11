@@ -13,26 +13,49 @@
 <input type="hidden" name="orgUnitId" value="$orgUnitId"/>	
 	<p style="text-align: left;">
 		<label>$i18n.getString( "full_name" )</label>
-		<input type="text" name="patientFullName" value="$!prevDataValues.get($key)" />
+		#if( $validationMap.get( "fullName" ) )
+           	<br /><span style="color: #990000;"> $i18n.getString($validationMap.get( "fullName" ))</span>
+     	#end
+		<input type="text" name="patientFullName" value="$!previousValues.get("fullName")" />
+		
 		<label>$i18n.getString( "gender" )</label>
 		<select name="gender">
-			<option value="M">$i18n.getString( "male" )</option>
-			<option value="F">$i18n.getString( "female" )</option>
-			<option value="T">$i18n.getString( "transgender" )</option>
+			<option value="M"
+			#if($previousValues.get("gender") == "M")
+				selected
+			#end
+			>$i18n.getString( "male" )</option>
+			
+			<option value="F"
+			#if($previousValues.get("gender") == "F")
+				selected
+			#end
+			>$i18n.getString( "female" )</option>
+			
+			<option value="T"
+			#if($previousValues.get("gender") == "T")
+				selected
+			#end
+			>$i18n.getString( "transgender" )</option>
 		</select>
+		
 		<label>$i18n.getString( "date_of_birth" )</label>
-		<input type="text" name="dateOfBirth" value="$!prevDataValues.get($key)" />
+		#if( $validationMap.get( "dob" ) )
+           	<br /><span style="color: #990000;"> $i18n.getString($validationMap.get( "dob" ))</span>
+     	#end
+		<input type="text" name="dateOfBirth" value="$!previousValues.get("dob")" />
+		
 		<label>$i18n.getString( "blood_group" )</label>
 		<select name="bloodGroup">
 			<option value="">[Please select]</option>
-			<option value="A+">A+</option>
-			<option value="A-">A-</option>
-			<option value="AB+">AB+</option>
-			<option value="AB-">AB-</option>
-			<option value="B+">B+</option>
-			<option value="B-">B-</option>
-			<option value="O+">O+</option>
-			<option value="O-">O-</option>
+			#set($bloodGroups = ["A+", "A-", "AB+", "AB-", "B+", "B-", "O+", "O-"])
+			#foreach($item in $bloodGroups) 
+			<option value="$item"
+			#if($previousValues.get("bloodGroup") == $item)
+				selected
+			#end
+			>$item</option>
+			#end
 		</select>
 	</p>
 </div>
