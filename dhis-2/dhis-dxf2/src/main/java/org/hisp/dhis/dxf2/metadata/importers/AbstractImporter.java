@@ -62,11 +62,11 @@ public abstract class AbstractImporter<T extends BaseIdentifiableObject>
     // Current import counts
     //-------------------------------------------------------------------------------------------------------
 
-    protected int imports;
+    protected int imported;
 
-    protected int updates;
+    protected int updated;
 
-    protected int ignores;
+    protected int ignored;
 
     //-------------------------------------------------------------------------------------------------------
     // Mappings from identifier (uid, name, code) to a db object.
@@ -149,7 +149,6 @@ public abstract class AbstractImporter<T extends BaseIdentifiableObject>
             if ( ReflectionUtils.isType( field, IdentifiableObject.class ) )
             {
                 IdentifiableObject identifiableObject = ReflectionUtils.invokeGetterMethod( field.getName(), object );
-                // we now have the identifiableObject, and can make sure that the reference is OK
                 log.info( identifiableObject );
             }
             else
@@ -159,7 +158,6 @@ public abstract class AbstractImporter<T extends BaseIdentifiableObject>
                 if ( b )
                 {
                     Collection<IdentifiableObject> identifiableObjects = ReflectionUtils.invokeGetterMethod( field.getName(), object );
-                    // we now have the collection, and can make sure that references are OK
                     log.info( identifiableObjects );
                 }
             }
@@ -218,9 +216,9 @@ public abstract class AbstractImporter<T extends BaseIdentifiableObject>
     {
         ImportCount importCount = new ImportCount( getObjectName() );
 
-        importCount.setImports( imports );
-        importCount.setUpdates( updates );
-        importCount.setIgnores( ignores );
+        importCount.setImported( imported );
+        importCount.setUpdated( updated );
+        importCount.setIgnored( ignored );
 
         return importCount;
     }
@@ -231,9 +229,9 @@ public abstract class AbstractImporter<T extends BaseIdentifiableObject>
 
     private void reset( T type )
     {
-        imports = 0;
-        updates = 0;
-        ignores = 0;
+        imported = 0;
+        updated = 0;
+        ignored = 0;
 
         uidMap = manager.getIdMap( (Class<T>) type.getClass(), IdentifiableObject.IdentifiableProperty.UID );
         codeMap = manager.getIdMap( (Class<T>) type.getClass(), IdentifiableObject.IdentifiableProperty.CODE );
@@ -257,7 +255,7 @@ public abstract class AbstractImporter<T extends BaseIdentifiableObject>
 
         if ( conflict != null )
         {
-            ignores++;
+            ignored++;
         }
 
         return conflict;
@@ -278,7 +276,7 @@ public abstract class AbstractImporter<T extends BaseIdentifiableObject>
                 return conflict;
             }
 
-            imports++;
+            imported++;
         }
         else if ( ImportStrategy.UPDATES.equals( options.getImportStrategy() ) )
         {
@@ -289,7 +287,7 @@ public abstract class AbstractImporter<T extends BaseIdentifiableObject>
                 return conflict;
             }
 
-            updates++;
+            updated++;
         }
         else if ( ImportStrategy.NEW_AND_UPDATES.equals( options.getImportStrategy() ) )
         {
@@ -302,7 +300,7 @@ public abstract class AbstractImporter<T extends BaseIdentifiableObject>
                     return conflict;
                 }
 
-                updates++;
+                updated++;
             }
             else
             {
@@ -314,7 +312,7 @@ public abstract class AbstractImporter<T extends BaseIdentifiableObject>
                     return conflict;
                 }
 
-                imports++;
+                imported++;
             }
         }
 
