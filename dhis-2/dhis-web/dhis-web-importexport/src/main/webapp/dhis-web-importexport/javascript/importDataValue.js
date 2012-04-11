@@ -14,18 +14,19 @@ function importDataValue()
 
 function pingNotificationsTimeout()
 {
-	pingNotifications( 'DATAVALUE_IMPORT', 'notificationTable', displayImportSummaryTimeout );	
+	pingNotifications( 'DATAVALUE_IMPORT', 'notificationTable', displaySummaryLink );	
 	pingTimeout = setTimeout( "pingNotificationsTimeout()", 1500 );
 }
 
-function displayImportSummaryTimeout()
+function displaySummaryLink()
 {
-	setTimeout( "displayImportSummary()", 2000 );	
+	window.clearTimeout( pingTimeout );
+	var html = '<tr><td></td><td><a href="javascript:displaySummary()">Display import summary</a></td></tr>';
+	$( '#notificationTable' ).prepend( html );
 }
 
-function displayImportSummary()
+function displaySummary()
 {	
-	window.clearTimeout( pingTimeout );
 	$( '#notificationDiv' ).hide();
-	$( '#importSummaryDiv' ).show().load( 'getDataValueImportSummary.action' );
+	$( '#importSummaryDiv' ).show( 'slow' ).load( 'getDataValueImportSummary.action' );
 }

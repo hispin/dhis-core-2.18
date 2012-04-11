@@ -1593,19 +1593,24 @@ function changePageSize( event )
 
 function pingNotifications( category, tableId, completedCallback )
 {	
-	var lastUid = $( '#' + tableId ).prop( 'lastUid' );
+	var lastUid = $( '#' + tableId ).prop( 'lastUid' ); // Store on table property
 	
 	var param = lastUid ? '&lastUid=' + lastUid : '';
 		
 	$.getJSON( '../dhis-web-commons-ajax-json/getNotifications.action?category=' + category + param, function( json )
 	{
 		var html = '';
-		var completedHtml = '<img src="../images/completed.png">';
+		var isComplete = false;
 		
 		$.each( json.notifications, function( i, notification )
 		{
 			var first = i == 0;
 			var loaderHtml = '';			
+			
+			if ( notification.completed == "true" )
+			{
+				isComplete = true;
+			}
 			
 			if ( first )
 			{
@@ -1615,15 +1620,15 @@ function pingNotifications( category, tableId, completedCallback )
 			}		
 			
 			html += '<tr><td>' + notification.time + '</td><td>' + notification.message + ' &nbsp;';
-			html += notification.completed == "true" ?  completedHtml : loaderHtml;
+			html += isComplete ?  '<img src="../images/completed.png">' : loaderHtml;
 			html += '</td></tr>';
-			
-			if ( notification.completed && completedCallback && completedCallback.call )
-			{
-				completedCallback();				
-			}
 		} );
 		
 		$( '#' + tableId ).prepend( html );
+		
+		if ( isComplete && completedCallback && completedCallback.call )
+		{
+			completedCallback();				
+		}
 	} );
 }
