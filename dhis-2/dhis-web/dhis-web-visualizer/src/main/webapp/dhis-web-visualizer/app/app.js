@@ -81,6 +81,7 @@ DV.conf = {
             path_api: '../../api/',
             path_portal: '../../dhis-web-portal/',
             path_images: 'images/',
+            path_lib: '../../dhis-web-commons/javascripts/',
             initialize: 'initialize.action',
             redirect: 'redirect.action',
             data_get: 'getAggregatedValues.action',
@@ -213,7 +214,7 @@ DV.conf = {
 };
 
 Ext.Loader.setConfig({enabled: true});
-Ext.Loader.setPath('Ext.ux', 'lib/ext-ux');
+Ext.Loader.setPath('Ext.ux', DV.conf.finals.ajax.path_lib + 'ext-ux');
 Ext.require('Ext.ux.form.MultiSelect');
 
 Ext.onReady( function() {
