@@ -38,6 +38,7 @@ import org.hisp.dhis.scheduling.TaskCategory;
 import org.hisp.dhis.scheduling.TaskId;
 import org.hisp.dhis.system.notification.Notification;
 import org.hisp.dhis.system.notification.Notifier;
+import org.hisp.dhis.user.User;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -50,9 +51,11 @@ public class NotifierTest
     @Autowired
     private Notifier notifier;
 
-    private TaskId id1 = new TaskId( "DATAVALUE_IMPORT-admin" );
-    private TaskId id2 = new TaskId( "DATAMART-admin" );
-    private TaskId id3 = new TaskId( "METADATA_IMPORT-admin" );
+    private User user = createUser( 'A' );
+    
+    private TaskId id1 = new TaskId( TaskCategory.DATAVALUE_IMPORT, user );
+    private TaskId id2 = new TaskId( TaskCategory.DATAMART, user );
+    private TaskId id3 = new TaskId( TaskCategory.METADATA_IMPORT, user );
     
     @Test
     public void testNotifiy()
