@@ -247,6 +247,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
   
   <bean id="org.hisp.dhis.reporting.datamart.action.StartExportAction" class="org.hisp.dhis.reporting.datamart.action.StartExportAction"
 	scope="prototype">
+	<property name="currentUserService" ref="org.hisp.dhis.user.CurrentUserService"/>
 	<property name="scheduler" ref="scheduler"/>
 	<property name="dataMartTask" ref="dataMartLast12MonthsTask"/>
   </bean>

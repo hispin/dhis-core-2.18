@@ -32,6 +32,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import org.hisp.dhis.organisationunit.OrganisationUnitGroup;
+import org.hisp.dhis.scheduling.TaskId;
 
 /**
  * @author Lars Helge Overland
@@ -65,8 +66,8 @@ public interface DataMartEngine
      * @param periodIds the period identifiers.
      * @param organisationUnitIds the organisation unit identifiers.
      * @param organisationUnitGroupIds the organisation unit group identifiers.
-     * @param processState the state object.
+     * @param id the task identifier.
      */
     void export( Collection<Integer> dataElementIds, Collection<Integer> indicatorIds,
-        Collection<Integer> periodIds, Collection<Integer> organisationUnitIds, Collection<Integer> organisationUnitGroupIds );
+        Collection<Integer> periodIds, Collection<Integer> organisationUnitIds, Collection<Integer> organisationUnitGroupIds, TaskId id );
 }

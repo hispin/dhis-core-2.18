@@ -1,7 +1,7 @@
-package org.hisp.dhis.dxf2.datavalueset;
+package org.hisp.dhis.scheduling;
 
 /*
- * Copyright (c) 2011, University of Oslo
+ * Copyright (c) 2004-2012, University of Oslo
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -27,18 +27,12 @@ package org.hisp.dhis.dxf2.datavalueset;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.io.InputStream;
-import java.io.OutputStream;
-
-import org.hisp.dhis.dxf2.importsummary.ImportSummary;
-import org.hisp.dhis.dxf2.metadata.ImportOptions;
-import org.hisp.dhis.scheduling.TaskId;
-
-public interface DataValueSetService
+/**
+ * @author Lars Helge Overland
+ */
+public enum TaskCategory
 {
-    void writeDataValueSet( String dataSet, String period, String orgUnit, OutputStream out );
-    
-    ImportSummary saveDataValueSet( InputStream in );
-    
-    ImportSummary saveDataValueSet( InputStream in, ImportOptions importOptions, TaskId taskId );
+    DATAMART,
+    DATAVALUE_IMPORT,
+    METADATA_IMPORT
 }

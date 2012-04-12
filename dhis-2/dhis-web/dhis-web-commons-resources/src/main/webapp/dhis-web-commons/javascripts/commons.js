@@ -1620,7 +1620,7 @@ function pingNotifications( category, tableId, completedCallback )
 			}		
 			
 			html += '<tr><td>' + notification.time + '</td><td>' + notification.message + ' &nbsp;';
-			html += isComplete ?  '<img src="../images/completed.png">' : loaderHtml;
+			html += notification.completed == "true" ?  '<img src="../images/completed.png">' : loaderHtml;
 			html += '</td></tr>';
 		} );
 		

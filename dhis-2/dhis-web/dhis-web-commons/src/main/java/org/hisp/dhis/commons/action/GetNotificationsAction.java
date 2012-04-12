@@ -30,9 +30,12 @@ package org.hisp.dhis.commons.action;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.hisp.dhis.scheduling.TaskCategory;
+import org.hisp.dhis.scheduling.TaskId;
 import org.hisp.dhis.system.notification.Notification;
-import org.hisp.dhis.system.notification.NotificationCategory;
 import org.hisp.dhis.system.notification.Notifier;
+import org.hisp.dhis.user.CurrentUserService;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import com.opensymphony.xwork2.Action;
 
@@ -41,18 +44,13 @@ import com.opensymphony.xwork2.Action;
  */
 public class GetNotificationsAction
     implements Action
-{
-    // -------------------------------------------------------------------------
-    // Dependencies
-    // -------------------------------------------------------------------------
-    
+{    
+    @Autowired
     private Notifier notifier;
 
-    public void setNotifier( Notifier notifier )
-    {
-        this.notifier = notifier;
-    }
-
+    @Autowired
+    private CurrentUserService currentUserService;
+    
     // -------------------------------------------------------------------------
     // Input
     // -------------------------------------------------------------------------
@@ -69,13 +67,6 @@ public class GetNotificationsAction
     public void setLastUid( String lastUid )
     {
         this.lastUid = lastUid;
-    }
-
-    private Integer max;
-
-    public void setMax( Integer max )
-    {
-        this.max = max;
     }
 
     // -------------------------------------------------------------------------
@@ -99,16 +90,11 @@ public class GetNotificationsAction
     {
         if ( category != null )
         {
-            NotificationCategory notificationCategory = NotificationCategory.valueOf( category.toUpperCase() );
+            TaskCategory taskCategory = TaskCategory.valueOf( category.toUpperCase() );
 
-            if ( max != null )
-            {
-                notifications = notifier.getNotifications( notificationCategory, max );
-            }
-            else
-            {
-                notifications = notifier.getNotifications( notificationCategory, lastUid );
-            }
+            TaskId taskId = new TaskId( taskCategory, currentUserService.getCurrentUser() );
+            
+            notifications = notifier.getNotifications( taskId, taskCategory, lastUid );
         }
         
         return SUCCESS;

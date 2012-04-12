@@ -1,7 +1,7 @@
-package org.hisp.dhis.dxf2.datavalueset;
+package org.hisp.dhis.scheduling;
 
 /*
- * Copyright (c) 2011, University of Oslo
+ * Copyright (c) 2004-2012, University of Oslo
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -27,18 +27,64 @@ package org.hisp.dhis.dxf2.datavalueset;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.io.InputStream;
-import java.io.OutputStream;
+import org.hisp.dhis.user.User;
 
-import org.hisp.dhis.dxf2.importsummary.ImportSummary;
-import org.hisp.dhis.dxf2.metadata.ImportOptions;
-import org.hisp.dhis.scheduling.TaskId;
-
-public interface DataValueSetService
+/**
+ * @author Lars Helge Overland
+ */
+public class TaskId
 {
-    void writeDataValueSet( String dataSet, String period, String orgUnit, OutputStream out );
+    private static final String SEPARATOR = "-";
     
-    ImportSummary saveDataValueSet( InputStream in );
+    private String id;
     
-    ImportSummary saveDataValueSet( InputStream in, ImportOptions importOptions, TaskId taskId );
+    public TaskId( String id )
+    {
+        this.id = id;
+    }
+    
+    public TaskId( TaskCategory category, User user )
+    {
+        this.id = category.toString() + SEPARATOR + user.getUserCredentials().getUsername();
+    }
+    
+    public String getId()
+    {
+        return id;
+    }
+    
+    @Override
+    public int hashCode()
+    {
+        return id.hashCode();
+    }
+
+    @Override
+    public boolean equals( Object obj )
+    {
+        if ( this == obj )
+        {
+            return true;
+        }
+        
+        if ( obj == null )
+        {
+            return false;
+        }
+        
+        if ( getClass() != obj.getClass() )
+        {
+            return false;
+        }
+        
+        TaskId other = (TaskId) obj;
+        
+        return id.equals( other.id );
+    }
+
+    @Override
+    public String toString()
+    {
+        return "[" + id + "]";
+    }
 }

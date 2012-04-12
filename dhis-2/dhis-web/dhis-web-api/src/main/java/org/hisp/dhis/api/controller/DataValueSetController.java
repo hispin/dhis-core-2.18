@@ -91,7 +91,7 @@ public class DataValueSetController
                                   InputStream in,
                                   Model model ) throws IOException
     {
-        ImportSummary summary = dataValueSetService.saveDataValueSet( in, importOptions );
+        ImportSummary summary = dataValueSetService.saveDataValueSet( in, importOptions, null );
 
         log.info( "Data values set saved " + importOptions );    
 
