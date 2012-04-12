@@ -90,6 +90,7 @@ import org.hisp.dhis.program.ProgramStageService;
 import org.hisp.dhis.resourcetable.ResourceTableService;
 import org.hisp.dhis.sqlview.SqlView;
 import org.hisp.dhis.user.User;
+import org.hisp.dhis.user.UserCredentials;
 import org.hisp.dhis.user.UserGroup;
 import org.hisp.dhis.user.UserService;
 import org.hisp.dhis.validation.ValidationCriteria;
@@ -837,6 +838,11 @@ public abstract class DhisConvenienceTest
         user.setEmail( "Email" + uniqueCharacter );
         user.setPhoneNumber( "PhoneNumber" + uniqueCharacter );
 
+        UserCredentials credentials = new UserCredentials();
+        credentials.setUsername( "username" );
+        
+        user.setUserCredentials( credentials );
+        
         return user;
     }
     
