@@ -29,6 +29,7 @@
       <param name="page">/dhis-web-maintenance-user/allUser.vm</param>
       <param name="menu">/dhis-web-maintenance-user/menu.vm</param>
       <param name="javascripts">javascript/user.js,javascript/filterTable.js</param>
+	  <param name="requiredAuthorities">F_USER_VIEW</param>
     </action>
 
     <action name="getUser" class="org.hisp.dhis.user.action.GetUserAction">
