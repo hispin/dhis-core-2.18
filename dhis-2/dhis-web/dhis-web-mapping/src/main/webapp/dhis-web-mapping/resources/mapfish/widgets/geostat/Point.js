@@ -1062,13 +1062,46 @@ mapfish.widgets.geostat.Point = Ext.extend(Ext.Panel, {
         };
         
         var onClickSelect = function onClickSelect(feature) {
+						
+			function drill() {
+				if (G.vars.locateFeatureWindow) {
+					G.vars.locateFeatureWindow.destroy();
+				}
+						 
+				scope.updateValues = true;
+				scope.isDrillDown = true;
+				
+				function organisationUnitLevelCallback() {
+					this.organisationUnitSelection.setValuesOnDrillDown(feature.attributes.id, feature.attributes.name);
+					
+					this.cmp.parent.reset();
+					this.cmp.parent.selectedNode = {attributes: {
+						id: this.organisationUnitSelection.parent.id,
+						text: this.organisationUnitSelection.parent.name,
+						level: this.organisationUnitSelection.parent.level
+					}};
+					
+					this.cmp.level.setValue(this.organisationUnitSelection.level.level);
+					this.loadGeoJson();
+				}
+				
+				if (G.stores.organisationUnitLevel.isLoaded) {
+					organisationUnitLevelCallback.call(scope);
+				}
+				else {
+					G.stores.organisationUnitLevel.load({scope: scope, callback: function() {
+						organisationUnitLevelCallback.call(this);
+					}});
+				}
+			}
+			
             if (feature.geometry.CLASS_NAME == G.conf.map_feature_type_point_class_name) {
                 if (scope.featureOptions.menu) {
                     scope.featureOptions.menu.destroy();
                 }
                 
                 scope.featureOptions.menu = new Ext.menu.Menu({
-                    showInfo: function() {                        
+                    showInfo: function() {
                         Ext.Ajax.request({
                             url: G.conf.path_mapping + 'getFacilityInfo' + G.conf.type,
                             params: {id: feature.attributes.id},
@@ -1244,39 +1277,23 @@ mapfish.widgets.geostat.Point = Ext.extend(Ext.Panel, {
                         }
                     ]
                 });
+                
+                if (feature.attributes.hcwc) {
+					scope.featureOptions.menu.add({
+						text: 'Drill down',
+						iconCls: 'menu-featureoptions-drilldown',
+						scope: this,
+						handler: function() {
+							drill.call(this);
+						}
+					});
+				}
+                
                 scope.featureOptions.menu.showAt([G.vars.mouseMove.x, G.vars.mouseMove.y]);
             }
             else {
                 if (feature.attributes.hcwc) {
-                    if (G.vars.locateFeatureWindow) {
-                        G.vars.locateFeatureWindow.destroy();
-                    }
-                             
-                    scope.updateValues = true;
-                    scope.isDrillDown = true;
-                    
-                    function organisationUnitLevelCallback() {
-                        this.organisationUnitSelection.setValuesOnDrillDown(feature.attributes.id, feature.attributes.name);
-                        
-                        this.cmp.parent.reset();
-                        this.cmp.parent.selectedNode = {attributes: {
-                            id: this.organisationUnitSelection.parent.id,
-                            text: this.organisationUnitSelection.parent.name,
-                            level: this.organisationUnitSelection.parent.level
-                        }};
-                        
-                        this.cmp.level.setValue(this.organisationUnitSelection.level.level);
-                        this.loadGeoJson();
-                    }
-                    
-                    if (G.stores.organisationUnitLevel.isLoaded) {
-                        organisationUnitLevelCallback.call(scope);
-                    }
-                    else {
-                        G.stores.organisationUnitLevel.load({scope: scope, callback: function() {
-                            organisationUnitLevelCallback.call(this);
-                        }});
-                    }
+					drill.call(this);
                 }
                 else {
                     Ext.message.msg(false, G.i18n.no_coordinates_found);

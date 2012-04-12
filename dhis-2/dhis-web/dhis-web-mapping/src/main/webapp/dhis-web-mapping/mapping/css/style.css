@@ -169,6 +169,9 @@ a.x-menu-item-custom {
 .menu-featureoptions-relocate {
     background-image:url('../../../images/relocate.png');
 }
+.menu-featureoptions-drilldown {
+    background-image:url('../../../images/drilldown.png');
+}
 .menu-mapview {
     background-image:url('../../../images/favorite.png');
 }
