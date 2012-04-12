@@ -55,6 +55,7 @@ import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodService;
 import org.hisp.dhis.period.RelativePeriods;
 import org.hisp.dhis.period.YearlyPeriodType;
+import org.hisp.dhis.scheduling.TaskId;
 import org.hisp.dhis.setting.SystemSettingManager;
 import org.hisp.dhis.system.util.ConversionUtils;
 import org.hisp.dhis.system.util.Filter;
@@ -85,10 +86,17 @@ public class DataMartTask
     private DataSetService dataSetService;
     
     private SystemSettingManager systemSettingManager;
-
+    
     // -------------------------------------------------------------------------
     // Params
     // -------------------------------------------------------------------------
+
+    private TaskId taskId;
+
+    public void setTaskId( TaskId taskId )
+    {
+        this.taskId = taskId;
+    }
 
     private List<Period> periods;
     
@@ -157,7 +165,7 @@ public class DataMartTask
         
         Collection<Integer> periodIds = ConversionUtils.getIdentifiers( Period.class, periodService.reloadPeriods( periods ) );
         
-        dataMartEngine.export( dataElementIds, indicatorIds, periodIds, organisationUnitIds, organisationUnitGroupIds );
+        dataMartEngine.export( dataElementIds, indicatorIds, periodIds, organisationUnitIds, organisationUnitGroupIds, taskId );
         completenessEngine.exportDataSetCompleteness( dataSetIds, periodIds, organisationUnitIds ); 
     }
 

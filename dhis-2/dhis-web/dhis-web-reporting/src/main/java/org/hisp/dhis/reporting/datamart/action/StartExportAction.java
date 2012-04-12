@@ -36,9 +36,12 @@ import java.util.Set;
 import org.hisp.dhis.period.CalendarPeriodType;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodType;
+import org.hisp.dhis.scheduling.TaskCategory;
+import org.hisp.dhis.scheduling.TaskId;
 import org.hisp.dhis.system.scheduling.DataMartTask;
 import org.hisp.dhis.system.scheduling.Scheduler;
 import org.hisp.dhis.system.util.DateUtils;
+import org.hisp.dhis.user.CurrentUserService;
 
 import com.opensymphony.xwork2.Action;
 
@@ -51,6 +54,13 @@ public class StartExportAction
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
+
+    private CurrentUserService currentUserService;
+    
+    public void setCurrentUserService( CurrentUserService currentUserService )
+    {
+        this.currentUserService = currentUserService;
+    }
 
     private Scheduler scheduler;
     
@@ -110,10 +120,13 @@ public class StartExportAction
             
             periods.addAll( periodType.generatePeriods( start, end ) );
         }
+
+        TaskId taskId = new TaskId( TaskCategory.DATAMART, currentUserService.getCurrentUser() );
         
         if ( periods.size() > 0 )
         {
             dataMartTask.setPeriods( periods );
+            dataMartTask.setTaskId( taskId );
         
             scheduler.executeTask( dataMartTask );
         }

@@ -32,7 +32,7 @@ import static org.hisp.dhis.importexport.ImportStrategy.NEW_AND_UPDATES;
 import static org.hisp.dhis.importexport.ImportStrategy.UPDATES;
 import static org.hisp.dhis.system.util.ConversionUtils.wrap;
 import static org.hisp.dhis.system.util.DateUtils.getDefaultDate;
-import static org.hisp.dhis.system.notification.NotificationCategory.DATAVALUE_IMPORT;
+import static org.hisp.dhis.scheduling.TaskCategory.DATAVALUE_IMPORT;
 import static org.hisp.dhis.system.notification.NotificationLevel.INFO;
 
 import java.io.InputStream;
@@ -64,6 +64,7 @@ import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodService;
 import org.hisp.dhis.period.PeriodType;
+import org.hisp.dhis.scheduling.TaskId;
 import org.hisp.dhis.system.notification.Notifier;
 import org.hisp.dhis.system.util.DateUtils;
 import org.hisp.dhis.user.CurrentUserService;
@@ -148,12 +149,12 @@ public class DefaultDataValueSetService
     
     public ImportSummary saveDataValueSet( InputStream in )
     {
-        return saveDataValueSet( in, ImportOptions.getDefaultImportOptions() );
+        return saveDataValueSet( in, ImportOptions.getDefaultImportOptions(), null );
     }
     
-    public ImportSummary saveDataValueSet( InputStream in, ImportOptions importOptions )
+    public ImportSummary saveDataValueSet( InputStream in, ImportOptions importOptions, TaskId id )
     {
-        notifier.clear( DATAVALUE_IMPORT ).notify( DATAVALUE_IMPORT, "Process started" );
+        notifier.clear( id, DATAVALUE_IMPORT ).notify( id, DATAVALUE_IMPORT, "Process started" );
         
         ImportSummary summary = new ImportSummary();
         
@@ -175,6 +176,7 @@ public class DefaultDataValueSetService
         
         if ( dataSet != null && completeDate != null )
         {
+            notifier.notify( id, DATAVALUE_IMPORT, "Completing data set" );
             handleComplete( dataSet, completeDate, orgUnit, period, summary );
         }
         else
@@ -190,7 +192,7 @@ public class DefaultDataValueSetService
         int updateCount = 0;
         int totalCount = 0;
         
-        notifier.notify( DATAVALUE_IMPORT, "Importing data values" );
+        notifier.notify( id, DATAVALUE_IMPORT, "Importing data values" );
         
         while ( dataValueSet.hasNextDataValue() )
         {
@@ -275,7 +277,7 @@ public class DefaultDataValueSetService
         
         batchHandler.flush();
         
-        notifier.notify( INFO, DATAVALUE_IMPORT, "Import done", true ).addTaskSummary( DATAVALUE_IMPORT, summary );
+        notifier.notify( id, DATAVALUE_IMPORT, INFO, "Import done", true ).addTaskSummary( id, DATAVALUE_IMPORT, summary );
         
         return summary;
     }
@@ -285,9 +287,7 @@ public class DefaultDataValueSetService
     //--------------------------------------------------------------------------
 
     private void handleComplete( DataSet dataSet, Date completeDate, OrganisationUnit orgUnit, Period period, ImportSummary summary )
-    {
-        notifier.notify( DATAVALUE_IMPORT, "Completing data set" );
-        
+    {        
         if ( orgUnit == null )
         {
             summary.getConflicts().add( new ImportConflict( OrganisationUnit.class.getSimpleName(), ERROR_OBJECT_NEEDED_TO_COMPLETE ) );

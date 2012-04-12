@@ -35,20 +35,33 @@ import java.io.InputStream;
 import org.hisp.dhis.dxf2.datavalueset.DataValueSetService;
 import org.hisp.dhis.importexport.ImportStrategy;
 import org.hisp.dhis.importexport.action.util.ImportDataValueTask;
+import org.hisp.dhis.scheduling.TaskCategory;
+import org.hisp.dhis.scheduling.TaskId;
 import org.hisp.dhis.system.scheduling.Scheduler;
+import org.hisp.dhis.user.CurrentUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.opensymphony.xwork2.Action;
 
+/**
+ * @author Lars Helge Overland
+ */
 public class ImportDataValueAction
     implements Action
 {
     @Autowired
     private DataValueSetService dataValueSetService;
+
+    @Autowired
+    private CurrentUserService currentUserService;
     
     @Autowired
     private Scheduler scheduler;
 
+    // -------------------------------------------------------------------------
+    // Input
+    // -------------------------------------------------------------------------
+    
     private File upload;
 
     public void setUpload( File upload )
@@ -70,12 +83,18 @@ public class ImportDataValueAction
         this.strategy = ImportStrategy.valueOf( stgy );
     }
 
+    // -------------------------------------------------------------------------
+    // Action implementation
+    // -------------------------------------------------------------------------
+    
     public String execute()
         throws Exception
     {
+        final TaskId taskId = new TaskId( TaskCategory.DATAVALUE_IMPORT, currentUserService.getCurrentUser() );
+        
         final InputStream in = new BufferedInputStream( new FileInputStream( upload ) ); 
 
-        scheduler.executeTask( new ImportDataValueTask( dataValueSetService, in, dryRun, strategy ) );
+        scheduler.executeTask( new ImportDataValueTask( dataValueSetService, in, dryRun, strategy, taskId ) );
         
         return SUCCESS;
     }

@@ -33,7 +33,11 @@ import org.hisp.dhis.common.IdentifiableObject.IdentifiableProperty;
 import org.hisp.dhis.dxf2.datavalueset.DataValueSetService;
 import org.hisp.dhis.dxf2.metadata.ImportOptions;
 import org.hisp.dhis.importexport.ImportStrategy;
+import org.hisp.dhis.scheduling.TaskId;
 
+/**
+ * @author Lars Helge Overland
+ */
 public class ImportDataValueTask
     implements Runnable
 {    
@@ -41,18 +45,20 @@ public class ImportDataValueTask
     private InputStream in;
     private boolean dryRun;
     private ImportStrategy strategy;
+    private TaskId taskId;
     
-    public ImportDataValueTask( DataValueSetService dataValueSetService, InputStream in, boolean dryRun, ImportStrategy strategy )
+    public ImportDataValueTask( DataValueSetService dataValueSetService, InputStream in, boolean dryRun, ImportStrategy strategy, TaskId taskId )
     {
         this.dataValueSetService = dataValueSetService;
         this.in = in;
         this.dryRun = dryRun;
         this.strategy = strategy;
+        this.taskId = taskId;
     }
     
     @Override
     public void run()
     {
-        dataValueSetService.saveDataValueSet( in, new ImportOptions( IdentifiableProperty.UID, IdentifiableProperty.UID, dryRun, strategy ) );
+        dataValueSetService.saveDataValueSet( in, new ImportOptions( IdentifiableProperty.UID, IdentifiableProperty.UID, dryRun, strategy ), taskId );
     }
 }

@@ -1,7 +1,7 @@
-package org.hisp.dhis.dxf2.datavalueset;
+package org.hisp.dhis.system.util;
 
 /*
- * Copyright (c) 2011, University of Oslo
+ * Copyright (c) 2004-2012, University of Oslo
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -27,18 +27,38 @@ package org.hisp.dhis.dxf2.datavalueset;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.io.InputStream;
-import java.io.OutputStream;
+import java.util.HashMap;
+import java.util.Map;
 
-import org.hisp.dhis.dxf2.importsummary.ImportSummary;
-import org.hisp.dhis.dxf2.metadata.ImportOptions;
 import org.hisp.dhis.scheduling.TaskId;
 
-public interface DataValueSetService
+/**
+ * @author Lars Helge Overland
+ */
+public class TaskLocalMap<T, V>
 {
-    void writeDataValueSet( String dataSet, String period, String orgUnit, OutputStream out );
+    private Map<TaskId, Map<T, V>> internalMap;
     
-    ImportSummary saveDataValueSet( InputStream in );
-    
-    ImportSummary saveDataValueSet( InputStream in, ImportOptions importOptions, TaskId taskId );
+    public TaskLocalMap()
+    {
+        this.internalMap = new HashMap<TaskId, Map<T, V>>();
+    }
+
+    public Map<T, V> get( TaskId id )
+    {
+        Map<T, V> map = internalMap.get( id );
+        
+        if ( map == null )
+        {
+            map = new HashMap<T, V>();
+            internalMap.put( id, map );
+        }
+        
+        return map;
+    }
+
+    public boolean clear( TaskId id )
+    {
+        return internalMap.remove( id ) != null;
+    }
 }

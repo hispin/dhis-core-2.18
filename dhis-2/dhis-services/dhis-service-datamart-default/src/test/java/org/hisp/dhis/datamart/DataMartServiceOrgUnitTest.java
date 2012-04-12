@@ -302,7 +302,7 @@ public class DataMartServiceOrgUnitTest
         
         dataElementService.updateDataElement( dataElementA );
         
-        dataMartEngine.export( dataElementIds, indicatorIds, periodIds, organisationUnitIds, organisationUnitGroupIds );
+        dataMartEngine.export( dataElementIds, indicatorIds, periodIds, organisationUnitIds, organisationUnitGroupIds, null );
         
         assertEquals( 145.0, aggregatedOrgUnitDataValueService.getAggregatedValue( dataElementA, categoryOptionCombo, periodA, unitA, groupA ) );
         assertEquals( 145.0, aggregatedOrgUnitDataValueService.getAggregatedValue( dataElementA, categoryOptionCombo, periodA, unitB, groupA ) );
@@ -336,7 +336,7 @@ public class DataMartServiceOrgUnitTest
         
         dataElementService.updateDataElement( dataElementA );
 
-        dataMartEngine.export( dataElementIds, indicatorIds, periodIds, organisationUnitIds, organisationUnitGroupIds );
+        dataMartEngine.export( dataElementIds, indicatorIds, periodIds, organisationUnitIds, organisationUnitGroupIds, null );
         
         assertEquals( 145.0, aggregatedOrgUnitDataValueService.getAggregatedValue( dataElementA, categoryOptionCombo, periodA, unitA, groupA ) );
         assertEquals( 145.0, aggregatedOrgUnitDataValueService.getAggregatedValue( dataElementA, categoryOptionCombo, periodA, unitB, groupA ) );
@@ -370,7 +370,7 @@ public class DataMartServiceOrgUnitTest
 
         dataElementService.updateDataElement( dataElementB );
 
-        dataMartEngine.export( dataElementIds, indicatorIds, periodIds, organisationUnitIds, organisationUnitGroupIds );
+        dataMartEngine.export( dataElementIds, indicatorIds, periodIds, organisationUnitIds, organisationUnitGroupIds, null );
         
         assertEquals( 1.0, aggregatedOrgUnitDataValueService.getAggregatedValue( dataElementB, categoryOptionCombo, periodA, unitA, groupA ) );
         assertEquals( 1.0, aggregatedOrgUnitDataValueService.getAggregatedValue( dataElementB, categoryOptionCombo, periodA, unitB, groupA ) );
@@ -404,7 +404,7 @@ public class DataMartServiceOrgUnitTest
         
         dataElementService.updateDataElement( dataElementB );
         
-        dataMartEngine.export( dataElementIds, indicatorIds, periodIds, organisationUnitIds, organisationUnitGroupIds );
+        dataMartEngine.export( dataElementIds, indicatorIds, periodIds, organisationUnitIds, organisationUnitGroupIds, null );
         
         assertEquals( 33.3, aggregatedOrgUnitDataValueService.getAggregatedValue( dataElementB, categoryOptionCombo, periodA, unitA, groupA ) );
         assertEquals( 33.3, aggregatedOrgUnitDataValueService.getAggregatedValue( dataElementB, categoryOptionCombo, periodA, unitB, groupA ) );
@@ -512,7 +512,7 @@ public class DataMartServiceOrgUnitTest
         
         indicatorIds.add( indicatorService.addIndicator( indicatorA ) );
 
-        dataMartEngine.export( dataElementIds, indicatorIds, periodIds, organisationUnitIds, organisationUnitGroupIds );
+        dataMartEngine.export( dataElementIds, indicatorIds, periodIds, organisationUnitIds, organisationUnitGroupIds, null );
         
         // ---------------------------------------------------------------------
         // Assert

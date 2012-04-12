@@ -29,23 +29,23 @@ package org.hisp.dhis.system.notification;
 
 import java.util.List;
 
+import org.hisp.dhis.scheduling.TaskCategory;
+import org.hisp.dhis.scheduling.TaskId;
+
 /**
  * @author Lars Helge Overland
  */
 public interface Notifier
 {
-    Notifier notify( NotificationCategory category, String message );
+    Notifier notify( TaskId id, TaskCategory category, String message );
     
-    Notifier notify( NotificationLevel level, NotificationCategory category, String message, boolean completed );
+    Notifier notify( TaskId id, TaskCategory category, NotificationLevel level, String message, boolean completed );
     
-    List<Notification> getNotifications( NotificationCategory category, int max );
+    List<Notification> getNotifications( TaskId id, TaskCategory category, String lastUid );
     
-    List<Notification> getNotifications( NotificationCategory category, String lastUid );
+    Notifier clear( TaskId id, TaskCategory category );
     
-    Notifier clear( NotificationCategory category );
+    Notifier addTaskSummary( TaskId id, TaskCategory category, Object taskSummary );
     
-    Notifier addTaskSummary( NotificationCategory category, Object taskSummary );
-    
-    Object getTaskSummary( NotificationCategory category );
-    
+    Object getTaskSummary( TaskId id, TaskCategory category );
 }

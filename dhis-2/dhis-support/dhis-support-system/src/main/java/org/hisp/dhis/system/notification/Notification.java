@@ -30,6 +30,7 @@ package org.hisp.dhis.system.notification;
 import java.util.Date;
 
 import org.hisp.dhis.common.CodeGenerator;
+import org.hisp.dhis.scheduling.TaskCategory;
 
 /**
  * @author Lars Helge Overland
@@ -40,7 +41,7 @@ public class Notification
     
     private NotificationLevel level;
     
-    private NotificationCategory category;
+    private TaskCategory category;
     
     private Date time;
     
@@ -57,7 +58,7 @@ public class Notification
         this.uid = CodeGenerator.generateCode();
     }
 
-    public Notification( NotificationLevel level, NotificationCategory category, Date time, String message, boolean completed )
+    public Notification( NotificationLevel level, TaskCategory category, Date time, String message, boolean completed )
     {
         this.uid = CodeGenerator.generateCode();
         this.level = level;
@@ -91,12 +92,12 @@ public class Notification
         this.level = level;
     }
 
-    public NotificationCategory getCategory()
+    public TaskCategory getCategory()
     {
         return category;
     }
 
-    public void setCategory( NotificationCategory category )
+    public void setCategory( TaskCategory category )
     {
         this.category = category;
     }
