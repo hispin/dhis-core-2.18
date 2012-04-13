@@ -61,25 +61,7 @@ public class ProgramStage
         for ( int i = 0; i < dataElements.size(); i++ )
         {
             DataElement de = (DataElement) dataElements.get( i );
-            dout.writeInt( de.getId() );
-            dout.writeUTF( de.getName() );
-            dout.writeUTF( de.getType() );
-            dout.writeBoolean( de.isCompulsory() );
-
-            List<Model> cateOptCombos = de.getCategoryOptionCombos().getModels();
-            if ( cateOptCombos == null || cateOptCombos.size() <= 0 )
-            {
-                dout.writeInt( 0 );
-            }
-            else
-            {
-                dout.writeInt( cateOptCombos.size() );
-                for ( Model each : cateOptCombos )
-                {
-                    dout.writeInt( each.getId() );
-                    dout.writeUTF( each.getName() );
-                }
-            }
+            de.serialize( dout );
 
         }
     }

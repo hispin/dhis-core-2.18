@@ -67,7 +67,7 @@ public class Section
             for ( int i = 0; i < dataElements.size(); i++ )
             {
                 DataElement de = (DataElement) dataElements.get( i );
-                de.serializeHack( dout );
+                de.serialize( dout );
             }
         }
     }
