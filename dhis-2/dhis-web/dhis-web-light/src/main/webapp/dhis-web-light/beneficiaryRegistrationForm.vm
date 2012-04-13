@@ -39,7 +39,7 @@
 			>$i18n.getString( "transgender" )</option>
 		</select>
 		
-		<label>$i18n.getString( "date_of_birth" )</label>
+		<label>$i18n.getString( "date_of_birth" ) [yyyy-MM-dd] </label>
 		#if( $validationMap.get( "dob" ) )
            	<br /><span style="color: #990000;"> $i18n.getString($validationMap.get( "dob" ))</span>
      	#end

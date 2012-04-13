@@ -205,8 +205,6 @@ public class SaveProgramStageFormAction
 
         dataElements = programStage.getDataElements();
 
-        System.out.println( "Current: " + current );
-
         HttpServletRequest request = (HttpServletRequest) ActionContext.getContext().get(
             ServletActionContext.HTTP_REQUEST );
         Map<String, String> parameterMap = ContextUtils.getParameterMap( request );
