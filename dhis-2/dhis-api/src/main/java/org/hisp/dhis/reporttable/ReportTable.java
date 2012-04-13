@@ -283,7 +283,7 @@ public class ReportTable
     private List<NameableObject> allUnits = new ArrayList<NameableObject>();
 
     /**
-     * All Indicatrs, including DateElements, Indicators and DataSets.
+     * All Indicators, including DateElements, Indicators and DataSets.
      */
     private List<NameableObject> allIndicators = new ArrayList<NameableObject>();
 

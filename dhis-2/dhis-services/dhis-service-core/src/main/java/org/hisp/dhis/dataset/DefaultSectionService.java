@@ -23,12 +23,12 @@ package org.hisp.dhis.dataset;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import static org.hisp.dhis.i18n.I18nUtils.i18n;
-
-import java.util.Collection;
-import org.hisp.dhis.dataset.Section;
 import org.hisp.dhis.i18n.I18nService;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Collection;
+
+import static org.hisp.dhis.i18n.I18nUtils.i18n;
 
 /**
  * @author Tri
@@ -87,6 +87,12 @@ public class DefaultSectionService
     public Section getSection( int id )
     {
         return i18n( i18nService, sectionStore.get( id ) );
+    }
+
+    @Override
+    public Section getSection( String uid )
+    {
+        return i18n( i18nService, sectionStore.getByUid( uid ) );
     }
 
     public Section getSectionByName( String name, Integer dataSetId )

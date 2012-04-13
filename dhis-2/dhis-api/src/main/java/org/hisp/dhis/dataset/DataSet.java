@@ -419,6 +419,7 @@ public class DataSet
     }
 
     @JsonProperty
+    @JsonSerialize( contentAs = BaseIdentifiableObject.class )
     @JsonView( {DetailedView.class, ExportView.class} )
     @JacksonXmlElementWrapper( localName = "sections", namespace = Dxf2Namespace.NAMESPACE )
     @JacksonXmlProperty( localName = "section", namespace = Dxf2Namespace.NAMESPACE )

@@ -50,7 +50,7 @@ public class IdentityPopulator
         "organisationunit", "orgunitgroup", "orgunitgroupset", "dataelementcategoryoption", "dataelementgroup", "sqlview",
         "dataelement", "dataelementgroupset", "dataelementcategory", "categorycombo", "categoryoptioncombo", "mapview",
         "reporttable", "report", "messageconversation", "message", "userinfo", "usergroup", "userrole", "maplegend",
-        "maplegendset", "maplayer"
+        "maplegendset", "maplayer", "section"
     };
 
     // -------------------------------------------------------------------------

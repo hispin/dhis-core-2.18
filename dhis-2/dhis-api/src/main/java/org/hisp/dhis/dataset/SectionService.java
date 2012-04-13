@@ -64,6 +64,14 @@ public interface SectionService
     Section getSection( int id );
 
     /**
+     * Retrieves the Section with the given identifier (uid).
+     *
+     * @param uid the identifier of the Section to retrieve.
+     * @return the Section.
+     */
+    Section getSection( String uid );
+
+    /**
      * Retrieves the Section with the given name.
      * 
      * @param name the name of the Section to retrieve.
