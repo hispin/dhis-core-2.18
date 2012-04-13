@@ -1,5 +1,5 @@
-<h2>$i18n.getString( "beneficiary_list" )</h2>
-	#if( $validated)
+<h2>$i18n.getString( "search_result_for" ) $keyword</h2>
+	#if( $validated && $current )
 		<div class="header-box">
 			<h3 style="text-align: left;">$i18n.getString("successfully_saved")</h3>
 		</div>
@@ -8,8 +8,9 @@
 	#end
 <p>
 <ul>
-#foreach( $beneficiary in $beneficiaries )
-	<li><a href="selectActivity.action?organisationUnitId=$organisationUnit.id&beneficiaryId=$beneficiary.id&current=$current">$!encoder.htmlEncode( ${beneficiary.getFullName()} )</a></li>
+#foreach( $patient in $patientList )
+	#set($fullName = $patient.getFirstName() + $patient.getMiddle() + $patient.getLastName())
+	<li><a href="selectProgram.action?organisationUnitId=$organisationUnit.id&beneficiaryId=$beneficiary.id&current=$current">$!encoder.htmlEncode( ${fullName} )</a></li>
 #end
 </ul>
 </p>

@@ -1,6 +1,6 @@
 <h2>$i18n.getString( "beneficiary_search" )</h2>
 
-	#if( $validated )
+	#if( $validated == true)
 		<div class="header-box">
 			<h3 style="text-align: left;">$i18n.getString("successfully_saved")</h3>
 		</div>
