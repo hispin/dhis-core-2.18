@@ -124,7 +124,7 @@ public class MetaDataController
         MetaData dxf2 = JacksonUtils.fromXml( request.getInputStream(), MetaData.class );
         System.err.println( dxf2 );
 
-        ImportSummary summary = importService.importDxf2( dxf2, importOptions );
+        ImportSummary summary = importService.importMetaData( dxf2, importOptions );
 
         response.setContentType( MediaType.APPLICATION_XML.toString() );
         JacksonUtils.toXml( response.getOutputStream(), summary );
@@ -137,7 +137,7 @@ public class MetaDataController
         MetaData dxf2 = JacksonUtils.fromJson( request.getInputStream(), MetaData.class );
         System.err.println( dxf2 );
 
-        ImportSummary summary = importService.importDxf2( dxf2, importOptions );
+        ImportSummary summary = importService.importMetaData( dxf2, importOptions );
 
         response.setContentType( MediaType.APPLICATION_JSON.toString() );
         JacksonUtils.toJson( response.getOutputStream(), summary );
@@ -153,7 +153,7 @@ public class MetaDataController
         MetaData dxf2 = JacksonUtils.fromXml( zip, MetaData.class );
         System.err.println( dxf2 );
 
-        ImportSummary summary = importService.importDxf2( dxf2, importOptions );
+        ImportSummary summary = importService.importMetaData( dxf2, importOptions );
 
         response.setContentType( MediaType.APPLICATION_XML.toString() );
         JacksonUtils.toXml( response.getOutputStream(), summary );
@@ -169,7 +169,7 @@ public class MetaDataController
         MetaData dxf2 = JacksonUtils.fromJson( zip, MetaData.class );
         System.err.println( dxf2 );
 
-        ImportSummary summary = importService.importDxf2( dxf2, importOptions );
+        ImportSummary summary = importService.importMetaData( dxf2, importOptions );
 
         response.setContentType( MediaType.APPLICATION_JSON.toString() );
         JacksonUtils.toJson( response.getOutputStream(), summary );
