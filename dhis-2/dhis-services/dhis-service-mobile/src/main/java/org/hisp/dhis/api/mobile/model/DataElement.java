@@ -43,6 +43,8 @@ public class DataElement
 
     private ModelList categoryOptionCombos;
 
+    private OptionSet optionSet;
+
     @XmlAttribute
     public String getType()
     {
@@ -64,6 +66,16 @@ public class DataElement
         this.categoryOptionCombos = categoryOptionCombos;
     }
 
+    public OptionSet getOptionSet()
+    {
+        return optionSet;
+    }
+
+    public void setOptionSet( OptionSet optionSet )
+    {
+        this.optionSet = optionSet;
+    }
+
     @XmlAttribute
     public boolean isCompulsory()
     {
@@ -75,32 +87,39 @@ public class DataElement
         this.compulsory = compulsory;
     }
 
-    public void serializeHack( DataOutputStream dout )
+    @Override
+    public void serialize( DataOutputStream dout )
         throws IOException
     {
-        dout.writeInt( getId() );
-        dout.writeUTF( getName() );
-        dout.writeUTF( type );
-        dout.writeBoolean( compulsory );
+        dout.writeInt( this.getId() );
+        dout.writeUTF( this.getName() );
+        dout.writeUTF( this.getType() );
+        dout.writeBoolean( this.isCompulsory() );
 
-        if ( categoryOptionCombos == null )
-        {
-            dout.writeInt( 0 );
-            return;
-        }
-
-        List<Model> cateOptCombos = categoryOptionCombos.getModels();
+        List<Model> cateOptCombos = this.getCategoryOptionCombos().getModels();
         if ( cateOptCombos == null || cateOptCombos.size() <= 0 )
         {
             dout.writeInt( 0 );
-            return;
+        }
+        else
+        {
+            dout.writeInt( cateOptCombos.size() );
+            for ( Model each : cateOptCombos )
+            {
+                dout.writeInt( each.getId() );
+                dout.writeUTF( each.getName() );
+            }
         }
 
-        dout.writeInt( cateOptCombos.size() );
-        for ( Model each : cateOptCombos )
+        OptionSet optionSet = this.getOptionSet();
+
+        if ( optionSet == null )
         {
-            dout.writeInt( each.getId() );
-            dout.writeUTF( each.getName() );
+            dout.writeInt( 0 );
+        }
+        else
+        {
+            optionSet.serialize( dout );
         }
     }
 
