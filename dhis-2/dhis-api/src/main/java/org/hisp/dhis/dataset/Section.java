@@ -160,6 +160,10 @@ public class Section
     // Getters and setters
     // -------------------------------------------------------------------------
 
+    @JsonProperty
+    @JsonSerialize( contentAs = BaseIdentifiableObject.class )
+    @JsonView( {DetailedView.class, ExportView.class} )
+    @JacksonXmlProperty( namespace = Dxf2Namespace.NAMESPACE )
     public DataSet getDataSet()
     {
         return dataSet;
@@ -190,9 +194,6 @@ public class Section
         this.dataElements.add( dataElement );
     }
 
-    @JsonProperty
-    @JsonView( {DetailedView.class, ExportView.class} )
-    @JacksonXmlProperty( namespace = Dxf2Namespace.NAMESPACE )
     public int getSortOrder()
     {
         return sortOrder;

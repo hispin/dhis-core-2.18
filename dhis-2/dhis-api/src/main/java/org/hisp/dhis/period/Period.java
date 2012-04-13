@@ -27,18 +27,18 @@ package org.hisp.dhis.period;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonView;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 import org.hisp.dhis.common.BaseNameableObject;
 import org.hisp.dhis.common.Dxf2Namespace;
 import org.hisp.dhis.common.Weighted;
 import org.hisp.dhis.common.view.DetailedView;
+import org.hisp.dhis.common.view.ExportView;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonView;
-import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 /**
  * @author Kristian Nordal
@@ -54,7 +54,7 @@ public class Period
     private static final long serialVersionUID = -4445992494203466044L;
 
     public static final String DEFAULT_DATE_FORMAT = "yyyy-MM-dd";
-    
+
     private static final String SEPARATOR = "_";
 
     /**
@@ -120,7 +120,7 @@ public class Period
     {
         return getIsoDate();
     }
-    
+
     /**
      * Returns an ISO8601 formatted string version of the period
      *
@@ -215,28 +215,27 @@ public class Period
             format.applyPattern( DEFAULT_DATE_FORMAT );
 
             return dateString != null ? format.parse( dateString ) : null;
-        } 
-        catch ( ParseException ex )
+        } catch ( ParseException ex )
         {
             throw new RuntimeException( "Failed to parse medium date", ex );
         }
     }
-    
+
     /**
      * Return the potential number of periods of the given period type which is
      * spanned by this period.
-     * 
+     *
      * @param type the period type.
-     * @return the potential number of periods of the given period type spanned 
+     * @return the potential number of periods of the given period type spanned
      *         by this period.
      */
     public int getPeriodSpan( PeriodType type )
     {
         double no = (double) this.periodType.getFrequencyOrder() / type.getFrequencyOrder();
-        
+
         return (int) Math.floor( no );
     }
-    
+
     // -------------------------------------------------------------------------
     // hashCode, equals and toString
     // -------------------------------------------------------------------------
@@ -282,7 +281,7 @@ public class Period
     @Override
     public String toString()
     {
-        return "[" + periodType.getName() + ": " + startDate + " - " + endDate + "]";
+        return "[" + (periodType == null ? "" : periodType.getName() + ": ") + startDate + " - " + endDate + "]";
     }
 
     // -------------------------------------------------------------------------
@@ -290,7 +289,7 @@ public class Period
     // -------------------------------------------------------------------------
 
     @JsonProperty
-    @JsonView( {DetailedView.class} )
+    @JsonView( {DetailedView.class, ExportView.class} )
     public Date getEndDate()
     {
         return endDate;
@@ -313,7 +312,7 @@ public class Period
     }
 
     @JsonProperty
-    @JsonView( {DetailedView.class} )
+    @JsonView( {DetailedView.class, ExportView.class} )
     public Date getStartDate()
     {
         return startDate;

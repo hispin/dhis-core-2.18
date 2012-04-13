@@ -35,6 +35,7 @@ import org.hisp.dhis.dxf2.importsummary.ImportCount;
 import org.hisp.dhis.dxf2.metadata.ImportOptions;
 import org.hisp.dhis.dxf2.metadata.Importer;
 import org.hisp.dhis.importexport.ImportStrategy;
+import org.hisp.dhis.period.Period;
 import org.hisp.dhis.system.util.ReflectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -117,13 +118,13 @@ public class DefaultImporter<T extends BaseIdentifiableObject>
             return null;
         }
 
-        log.info( "Trying to save new object with UID: " + object.getUid() );
+        // log.info( "Trying to save new object with UID: " + object.getUid() );
 
         findAndUpdateReferences( object );
         //manager.save( object );
         //updateIdMaps( object );
 
-        log.info( "Save successful." );
+        // log.info( "Save successful." );
 
         return null;
     }
@@ -143,13 +144,13 @@ public class DefaultImporter<T extends BaseIdentifiableObject>
             return null;
         }
 
-        log.info( "Trying to update object with UID: " + oldObject.getUid() );
+        // log.info( "Trying to update object with UID: " + oldObject.getUid() );
 
         findAndUpdateReferences( object );
         // oldObject.mergeWith( object );
         // manager.update( oldObject );
 
-        log.info( "Update successful." );
+        // log.info( "Update successful." );
 
         return null;
     }
@@ -559,6 +560,8 @@ public class DefaultImporter<T extends BaseIdentifiableObject>
     {
         Field[] fields = object.getClass().getDeclaredFields();
 
+        log.info( "Finding and updating references for " + object.getClass().getSimpleName() );
+
         for ( Field field : fields )
         {
             if ( ReflectionUtils.isType( field, IdentifiableObject.class ) )
@@ -567,7 +570,24 @@ public class DefaultImporter<T extends BaseIdentifiableObject>
 
                 if ( identifiableObject != null )
                 {
-                    log.info( "VERIFYING: " + identifiableObject );
+                    log.info( "Verifying field " + field.getName() );
+
+                    if ( Period.class.isAssignableFrom( identifiableObject.getClass() ) )
+                    {
+                        log.info( "Skipping Period.class" );
+                    }
+                    else
+                    {
+                        IdentifiableObject ref = manager.get( identifiableObject.getClass(), identifiableObject.getUid() );
+
+                        if ( ref != null )
+                        {
+                        }
+                        else
+                        {
+                            log.info( "Reference " + identifiableObject + " not found." );
+                        }
+                    }
                 }
             }
             else
@@ -578,9 +598,32 @@ public class DefaultImporter<T extends BaseIdentifiableObject>
                 {
                     Collection<IdentifiableObject> identifiableObjects = ReflectionUtils.invokeGetterMethod( field.getName(), object );
 
-                    if ( !identifiableObjects.isEmpty() )
+                    if ( identifiableObjects == null )
                     {
-                        log.info( "VERIFYING: " + identifiableObjects );
+                        log.info( "identifiableObjects is null for field " + field.getName() );
+                    }
+                    else if ( !identifiableObjects.isEmpty() )
+                    {
+                        log.info( "Verifying field " + field.getName() );
+
+                        for ( IdentifiableObject identifiableObject : identifiableObjects )
+                        {
+                            if ( Period.class.isAssignableFrom( identifiableObject.getClass() ) )
+                            {
+                                log.info( "Skipping Period.class" );
+                                continue;
+                            }
+
+                            IdentifiableObject ref = manager.get( identifiableObject.getClass(), identifiableObject.getUid() );
+
+                            if ( ref != null )
+                            {
+                            }
+                            else
+                            {
+                                log.info( "Reference " + identifiableObject + " not found." );
+                            }
+                        }
                     }
                 }
             }

@@ -27,16 +27,16 @@ package org.hisp.dhis.dataset;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import org.hisp.dhis.common.GenericStore;
+import org.hisp.dhis.common.GenericIdentifiableObjectStore;
 
 public interface SectionStore
-    extends GenericStore<Section>
+    extends GenericIdentifiableObjectStore<Section>
 {
     String ID = SectionStore.class.getName();
 
     /**
      * Retrieves the Section with the given name and the given DataSet.
-     * 
+     *
      * @param name the name of the Section to retrieve.
      * @return the Section.
      */
