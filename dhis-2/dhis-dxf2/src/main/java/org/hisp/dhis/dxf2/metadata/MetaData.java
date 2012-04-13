@@ -619,7 +619,7 @@ public class MetaData
     @Override
     public String toString()
     {
-        return "DXF2{" +
+        return "MetaData{" +
             "attributeTypes=" + attributeTypes.size() +
             ", users=" + users.size() +
             ", userAuthorityGroups=" + userAuthorityGroups.size() +

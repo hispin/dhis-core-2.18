@@ -36,7 +36,7 @@ import org.springframework.stereotype.Service;
 @Service
 public interface ImportService
 {
-    ImportSummary importDxf2( MetaData dxf2 );
+    ImportSummary importMetaData( MetaData metaData );
 
-    ImportSummary importDxf2( MetaData dxf2, ImportOptions importOptions );
+    ImportSummary importMetaData( MetaData metaData, ImportOptions importOptions );
 }
