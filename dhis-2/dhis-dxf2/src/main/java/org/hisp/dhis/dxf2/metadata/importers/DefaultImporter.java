@@ -154,54 +154,6 @@ public class DefaultImporter<T extends BaseIdentifiableObject>
         return null;
     }
 
-    private void findAndUpdateReferences( T object )
-    {
-        Field[] fields = object.getClass().getDeclaredFields();
-
-        for ( Field field : fields )
-        {
-            if ( ReflectionUtils.isType( field, IdentifiableObject.class ) )
-            {
-                IdentifiableObject identifiableObject = ReflectionUtils.invokeGetterMethod( field.getName(), object );
-
-                if ( identifiableObject != null )
-                {
-                    log.info( "VERIFYING: " + identifiableObject );
-                }
-            }
-            else
-            {
-                boolean b = ReflectionUtils.isCollection( field.getName(), object, IdentifiableObject.class );
-
-                if ( b )
-                {
-                    Collection<IdentifiableObject> identifiableObjects = ReflectionUtils.invokeGetterMethod( field.getName(), object );
-
-                    if ( !identifiableObjects.isEmpty() )
-                    {
-                        log.info( "VERIFYING: " + identifiableObjects );
-                    }
-                }
-            }
-        }
-    }
-
-    /**
-     * Current object name, used to fill name part of a ImportConflict
-     *
-     * @return Name of object
-     */
-    protected String getObjectName()
-    {
-        return importerClass.getSimpleName();
-    }
-
-    @Override
-    public boolean canHandle( Class<?> clazz )
-    {
-        return importerClass.equals( clazz );
-    }
-
     //-------------------------------------------------------------------------------------------------------
     // Importer<T> Implementation
     //-------------------------------------------------------------------------------------------------------
@@ -245,8 +197,82 @@ public class DefaultImporter<T extends BaseIdentifiableObject>
         return new ImportCount( imported, updated, ignored );
     }
 
+    @Override
+    public boolean canHandle( Class<?> clazz )
+    {
+        return importerClass.equals( clazz );
+    }
+
     //-------------------------------------------------------------------------------------------------------
-    // Internal methods
+    // Protected methods
+    //-------------------------------------------------------------------------------------------------------
+
+    protected void updateIdMaps( T object )
+    {
+        if ( object.getUid() != null )
+        {
+            uidMap.put( object.getUid(), object );
+        }
+
+        if ( object.getCode() != null )
+        {
+            codeMap.put( object.getCode(), object );
+        }
+
+        if ( object.getName() != null )
+        {
+            nameMap.put( object.getName(), object );
+        }
+
+        if ( nameable )
+        {
+            NameableObject nameableObject = (NameableObject) object;
+
+            if ( nameableObject.getShortName() != null )
+            {
+                shortNameMap.put( nameableObject.getShortName(), object );
+            }
+
+            if ( nameableObject.getAlternativeName() != null )
+            {
+                alternativeNameMap.put( nameableObject.getAlternativeName(), object );
+            }
+        }
+    }
+
+    protected void prepareIdentifiableObject( BaseIdentifiableObject object )
+    {
+        if ( object.getUid() == null && object.getLastUpdated() == null )
+        {
+            object.setAutoFields();
+        }
+        else if ( object.getUid() == null )
+        {
+            object.setUid( CodeGenerator.generateCode() );
+        }
+    }
+
+    /**
+     * @param object Object to get display name for
+     * @return A usable display name
+     */
+    protected String getDisplayName( IdentifiableObject object )
+    {
+        return object.getClass().getName();
+    }
+
+    /**
+     * Current object name, used to fill name part of a ImportConflict
+     *
+     * @return Name of object
+     */
+    protected String getObjectName()
+    {
+        return importerClass.getSimpleName();
+    }
+
+    //-------------------------------------------------------------------------------------------------------
+    // Helpers
     //-------------------------------------------------------------------------------------------------------
 
     private void reset()
@@ -529,61 +555,35 @@ public class DefaultImporter<T extends BaseIdentifiableObject>
         return matchedObject;
     }
 
-    //-------------------------------------------------------------------------------------------------------
-    // Protected methods
-    //-------------------------------------------------------------------------------------------------------
-
-    protected void updateIdMaps( T object )
+    private void findAndUpdateReferences( T object )
     {
-        if ( object.getUid() != null )
-        {
-            uidMap.put( object.getUid(), object );
-        }
+        Field[] fields = object.getClass().getDeclaredFields();
 
-        if ( object.getCode() != null )
+        for ( Field field : fields )
         {
-            codeMap.put( object.getCode(), object );
-        }
-
-        if ( object.getName() != null )
-        {
-            nameMap.put( object.getName(), object );
-        }
-
-        if ( nameable )
-        {
-            NameableObject nameableObject = (NameableObject) object;
-
-            if ( nameableObject.getShortName() != null )
+            if ( ReflectionUtils.isType( field, IdentifiableObject.class ) )
             {
-                shortNameMap.put( nameableObject.getShortName(), object );
+                IdentifiableObject identifiableObject = ReflectionUtils.invokeGetterMethod( field.getName(), object );
+
+                if ( identifiableObject != null )
+                {
+                    log.info( "VERIFYING: " + identifiableObject );
+                }
             }
-
-            if ( nameableObject.getAlternativeName() != null )
+            else
             {
-                alternativeNameMap.put( nameableObject.getAlternativeName(), object );
+                boolean b = ReflectionUtils.isCollection( field.getName(), object, IdentifiableObject.class );
+
+                if ( b )
+                {
+                    Collection<IdentifiableObject> identifiableObjects = ReflectionUtils.invokeGetterMethod( field.getName(), object );
+
+                    if ( !identifiableObjects.isEmpty() )
+                    {
+                        log.info( "VERIFYING: " + identifiableObjects );
+                    }
+                }
             }
         }
-    }
-
-    protected void prepareIdentifiableObject( BaseIdentifiableObject object )
-    {
-        if ( object.getUid() == null && object.getLastUpdated() == null )
-        {
-            object.setAutoFields();
-        }
-        else if ( object.getUid() == null )
-        {
-            object.setUid( CodeGenerator.generateCode() );
-        }
-    }
-
-    /**
-     * @param object Object to get display name for
-     * @return A usable display name
-     */
-    protected String getDisplayName( IdentifiableObject object )
-    {
-        return object.getClass().getName();
     }
 }
