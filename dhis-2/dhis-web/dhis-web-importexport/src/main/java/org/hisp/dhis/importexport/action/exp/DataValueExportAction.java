@@ -31,6 +31,7 @@ import static org.hisp.dhis.system.util.ConversionUtils.getIdentifiers;
 import static org.hisp.dhis.system.util.ConversionUtils.getIntegerCollection;
 import static org.hisp.dhis.system.util.DateUtils.getMediumDate;
 import static org.hisp.dhis.system.util.DateUtils.getMediumDateString;
+import static org.hisp.dhis.system.util.CodecUtils.filenameEncode;
 
 import java.io.InputStream;
 import java.util.Collection;
@@ -275,28 +276,16 @@ public class DataValueExportAction
         
         if ( selectionTreeManager.getSelectedOrganisationUnits().size() == 1 )
         {
-            fileName += FILE_SEPARATOR + fileNameEncode( selectionTreeManager.getSelectedOrganisationUnits().iterator().next().getShortName() );
+            fileName += FILE_SEPARATOR + filenameEncode( selectionTreeManager.getSelectedOrganisationUnits().iterator().next().getShortName() );
         }
         
         if ( params.getDataSets().size() == 1 )
         {
-            fileName += FILE_SEPARATOR + fileNameEncode( dataSetService.getDataSet( params.getDataSets().iterator().next() ).getName() );
+            fileName += FILE_SEPARATOR + filenameEncode( dataSetService.getDataSet( params.getDataSets().iterator().next() ).getName() );
         }
         
         fileName += FILE_EXTENSION;
         
         return fileName;
-    }
-    
-    private String fileNameEncode( String in )
-    {
-        if ( in == null )
-        {
-            return "";
-        }
-        
-        in = in.replaceAll( " ", FILE_SEPARATOR );
-        
-        return in;
     }
 }

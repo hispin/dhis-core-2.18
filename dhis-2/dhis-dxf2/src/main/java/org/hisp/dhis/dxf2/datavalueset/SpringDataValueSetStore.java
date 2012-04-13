@@ -30,6 +30,7 @@ package org.hisp.dhis.dxf2.datavalueset;
 import static org.hisp.dhis.system.util.ConversionUtils.getIdentifiers;
 import static org.hisp.dhis.system.util.DateUtils.getMediumDateString;
 import static org.hisp.dhis.system.util.TextUtils.getCommaDelimitedString;
+import static org.hisp.dhis.system.util.TextUtils.ifNotNull;
 
 import java.io.OutputStream;
 import java.util.Collection;
@@ -68,10 +69,10 @@ public class SpringDataValueSetStore
         SqlRowSet rowSet = jdbcTemplate.queryForRowSet( getDataValueSql( dataElements, periods, orgUnits ) );
 
         DataValueSet dataValueSet = new StreamingDataValueSet( writer );
-        dataValueSet.setDataSet( dataSet.getUid() );
+        dataValueSet.setDataSet( ifNotNull( dataSet, dataSet.getUid() ) );
         dataValueSet.setCompleteDate( getMediumDateString( completeDate ) );
-        dataValueSet.setPeriod( period.getIsoDate() );
-        dataValueSet.setOrgUnit( orgUnit.getUid() );
+        dataValueSet.setPeriod( ifNotNull( period, period.getIsoDate() ) );
+        dataValueSet.setOrgUnit( ifNotNull( orgUnit, orgUnit.getUid() ) );
         
         while ( rowSet.next() )
         {
