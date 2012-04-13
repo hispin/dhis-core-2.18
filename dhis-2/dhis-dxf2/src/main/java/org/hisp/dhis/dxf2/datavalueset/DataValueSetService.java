@@ -39,6 +39,8 @@ public interface DataValueSetService
     void writeDataValueSet( String dataSet, String period, String orgUnit, OutputStream out );
     
     ImportSummary saveDataValueSet( InputStream in );
+
+    ImportSummary saveDataValueSet( InputStream in, ImportOptions importOptions );
     
     ImportSummary saveDataValueSet( InputStream in, ImportOptions importOptions, TaskId taskId );
 }
