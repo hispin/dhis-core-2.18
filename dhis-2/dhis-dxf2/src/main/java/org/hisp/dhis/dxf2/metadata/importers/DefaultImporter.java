@@ -118,13 +118,13 @@ public class DefaultImporter<T extends BaseIdentifiableObject>
             return null;
         }
 
-        // log.info( "Trying to save new object with UID: " + object.getUid() );
+        log.info( "Trying to save new object with UID: " + object.getUid() );
 
         findAndUpdateReferences( object );
-        //manager.save( object );
-        //updateIdMaps( object );
+        manager.save( object );
+        updateIdMaps( object );
 
-        // log.info( "Save successful." );
+        log.info( "Save successful." );
 
         return null;
     }
@@ -144,13 +144,13 @@ public class DefaultImporter<T extends BaseIdentifiableObject>
             return null;
         }
 
-        // log.info( "Trying to update object with UID: " + oldObject.getUid() );
+        log.info( "Starting update of object " + getDisplayName( oldObject ) + " (" + oldObject.getClass().getSimpleName() + ")" );
 
         findAndUpdateReferences( object );
-        // oldObject.mergeWith( object );
-        // manager.update( oldObject );
+        oldObject.mergeWith( object );
+        manager.update( oldObject );
 
-        // log.info( "Update successful." );
+        log.info( "Update successful." );
 
         return null;
     }
@@ -259,6 +259,19 @@ public class DefaultImporter<T extends BaseIdentifiableObject>
      */
     protected String getDisplayName( IdentifiableObject object )
     {
+        if ( object.getUid() != null )
+        {
+            return object.getUid();
+        }
+        else if ( object.getCode() != null )
+        {
+            return object.getCode();
+        }
+        else if ( object.getName() != null )
+        {
+            return object.getName();
+        }
+
         return object.getClass().getName();
     }
 
@@ -267,7 +280,7 @@ public class DefaultImporter<T extends BaseIdentifiableObject>
      *
      * @return Name of object
      */
-    protected String getObjectName()
+    protected String getClassName()
     {
         return importerClass.getSimpleName();
     }
@@ -556,11 +569,31 @@ public class DefaultImporter<T extends BaseIdentifiableObject>
         return matchedObject;
     }
 
+    private IdentifiableObject findObjectByReference( IdentifiableObject identifiableObject )
+    {
+        IdentifiableObject match = null;
+
+        if ( identifiableObject.getUid() != null )
+        {
+            match = manager.get( identifiableObject.getClass(), identifiableObject.getUid() );
+        }
+        else if ( identifiableObject.getCode() != null )
+        {
+            match = manager.getByCode( identifiableObject.getClass(), identifiableObject.getCode() );
+        }
+        else if ( identifiableObject.getName() != null )
+        {
+            match = manager.getByName( identifiableObject.getClass(), identifiableObject.getName() );
+        }
+
+        return match;
+    }
+
     private void findAndUpdateReferences( T object )
     {
         Field[] fields = object.getClass().getDeclaredFields();
 
-        log.info( "Finding and updating references for " + object.getClass().getSimpleName() );
+        log.info( "-> Finding and updating references." );
 
         for ( Field field : fields )
         {
@@ -570,22 +603,22 @@ public class DefaultImporter<T extends BaseIdentifiableObject>
 
                 if ( identifiableObject != null )
                 {
-                    log.info( "Verifying field " + field.getName() );
-
                     if ( Period.class.isAssignableFrom( identifiableObject.getClass() ) )
                     {
+                        // FIXME
                         log.info( "Skipping Period.class" );
                     }
                     else
                     {
-                        IdentifiableObject ref = manager.get( identifiableObject.getClass(), identifiableObject.getUid() );
+                        IdentifiableObject ref = findObjectByReference( identifiableObject );
 
                         if ( ref != null )
                         {
+                            ReflectionUtils.invokeSetterMethod( field.getName(), object, ref );
                         }
                         else
                         {
-                            log.info( "Reference " + identifiableObject + " not found." );
+                            log.info( "--> Ignored reference " + getDisplayName( identifiableObject ) + "." );
                         }
                     }
                 }
@@ -598,30 +631,26 @@ public class DefaultImporter<T extends BaseIdentifiableObject>
                 {
                     Collection<IdentifiableObject> identifiableObjects = ReflectionUtils.invokeGetterMethod( field.getName(), object );
 
-                    if ( identifiableObjects == null )
+                    if ( identifiableObjects != null && !identifiableObjects.isEmpty() )
                     {
-                        log.info( "identifiableObjects is null for field " + field.getName() );
-                    }
-                    else if ( !identifiableObjects.isEmpty() )
-                    {
-                        log.info( "Verifying field " + field.getName() );
-
                         for ( IdentifiableObject identifiableObject : identifiableObjects )
                         {
                             if ( Period.class.isAssignableFrom( identifiableObject.getClass() ) )
                             {
+                                // FIXME
                                 log.info( "Skipping Period.class" );
                                 continue;
                             }
 
-                            IdentifiableObject ref = manager.get( identifiableObject.getClass(), identifiableObject.getUid() );
+                            IdentifiableObject ref = findObjectByReference( identifiableObject );
 
                             if ( ref != null )
                             {
+                                ReflectionUtils.invokeSetterMethod( field.getName(), object, ref );
                             }
                             else
                             {
-                                log.info( "Reference " + identifiableObject + " not found." );
+                                log.info( "--> Ignored reference " + getDisplayName( identifiableObject ) + "." );
                             }
                         }
                     }

@@ -49,6 +49,10 @@
     <constructor-arg name="importerClass" type="java.lang.Class" value="org.hisp.dhis.chart.Chart"/>
   </bean>
 
+  <bean id="conceptImporter" class="org.hisp.dhis.dxf2.metadata.importers.DefaultImporter">
+    <constructor-arg name="importerClass" type="java.lang.Class" value="org.hisp.dhis.concept.Concept"/>
+  </bean>
+
   <bean id="constantImporter" class="org.hisp.dhis.dxf2.metadata.importers.DefaultImporter">
     <constructor-arg name="importerClass" type="java.lang.Class" value="org.hisp.dhis.constant.Constant"/>
   </bean>
