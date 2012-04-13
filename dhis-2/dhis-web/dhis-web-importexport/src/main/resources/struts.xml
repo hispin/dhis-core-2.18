@@ -156,7 +156,7 @@
 	
     <!-- Export -->
 
-    <action name="displayMetaDataExportForm" class="org.hisp.dhis.importexport.action.exp.GetExportOptionsAction">
+    <action name="displayMetaDataExportForm" class="org.hisp.dhis.importexport.action.NoAction">
       <result name="success" type="velocity">/main.vm</result>
       <param name="page">/dhis-web-importexport/exportMetaDataForm.vm</param>
       <param name="menu">/dhis-web-importexport/mainMenu.vm</param>
