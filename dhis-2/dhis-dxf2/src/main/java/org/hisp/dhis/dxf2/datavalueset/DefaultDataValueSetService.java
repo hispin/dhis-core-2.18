@@ -38,7 +38,9 @@ import static org.hisp.dhis.system.util.DateUtils.getDefaultDate;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
 import org.amplecode.quick.BatchHandler;
 import org.amplecode.quick.BatchHandlerFactory;
@@ -144,7 +146,42 @@ public class DefaultDataValueSetService
         
         period_ = periodService.reloadPeriod( period_ );
         
-        dataValueSetStore.writeDataValueSet( dataSet_, completeDate, orgUnit_, period_, dataSet_.getDataElements(), wrap( period_ ), wrap( orgUnit_ ), out );
+        dataValueSetStore.writeDataValueSet( dataSet_, completeDate, period_, orgUnit_, dataSet_.getDataElements(), wrap( period_ ), wrap( orgUnit_ ), out );
+    }
+
+    public void writeDataValueSet( Set<String> dataSets, Date startDate, Date endDate, Set<String> orgUnits, OutputStream out )
+    {
+        Set<DataElement> dataElements = new HashSet<DataElement>();
+        
+        for ( String ds : dataSets )
+        {
+            DataSet dataSet = dataSetService.getDataSet( ds );
+            
+            if ( dataSet == null )
+            {
+                throw new IllegalArgumentException( ERROR_INVALID_DATA_SET + ds );
+            }
+            
+            dataElements.addAll( dataSet.getDataElements() );
+        }
+        
+        Set<Period> periods = new HashSet<Period>( periodService.getPeriodsBetweenDates( startDate, endDate ) );
+        
+        Set<OrganisationUnit> organisationUnits = new HashSet<OrganisationUnit>();
+        
+        for ( String ou : orgUnits )
+        {
+            OrganisationUnit orgUnit = organisationUnitService.getOrganisationUnit( ou );            
+
+            if ( orgUnit == null )
+            {
+                throw new IllegalArgumentException( ERROR_INVALID_ORG_UNIT + ou );
+            }
+            
+            organisationUnits.add( orgUnit );
+        }
+        
+        dataValueSetStore.writeDataValueSet( null, null, null, null, dataElements, periods, organisationUnits, out );
     }
     
     public ImportSummary saveDataValueSet( InputStream in )
