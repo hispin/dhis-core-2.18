@@ -1,5 +1,5 @@
 
-<h3>$i18n.getString( "data_value_import" )</h3>
+<h3>$i18n.getString( "data_import" )</h3>
 
 <div class="inputCriteria" style="height:130px">
 <form id="importForm" name="importForm" method="post" enctype="multipart/form-data" action="importDataValue.action">
