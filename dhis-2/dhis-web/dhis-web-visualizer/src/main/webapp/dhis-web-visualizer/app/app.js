@@ -2202,14 +2202,15 @@ Ext.onReady( function() {
                         text: DV.conf.finals.dimension[DV.c.dimension.series].rawvalue,
                         dataIndex: DV.conf.finals.dimension[DV.c.dimension.series].value,
                         width: 150,
-                        height: DV.conf.layout.east_gridcolumn_height
+                        height: DV.conf.layout.east_gridcolumn_height,
+                        sortable: DV.c.dimension.series != DV.conf.finals.dimension.period.value
                     },
                     {
                         text: DV.conf.finals.dimension[DV.c.dimension.category].rawvalue,
                         dataIndex: DV.conf.finals.dimension[DV.c.dimension.category].value,
                         width: 150,
                         height: DV.conf.layout.east_gridcolumn_height,
-                        sortable: false
+                        sortable: DV.c.dimension.category != DV.conf.finals.dimension.period.value
                     },
                     {
                         text: DV.i18n.value,

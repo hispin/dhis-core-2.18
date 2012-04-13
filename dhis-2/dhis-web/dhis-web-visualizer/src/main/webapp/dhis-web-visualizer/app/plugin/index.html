@@ -16,6 +16,8 @@
     
 	<!--
 	CONFIG              TYPE            DEFAULT             DESCRIPTION
+
+	uid                 string                              (Optional) A chart uid. If provided, only 'el' and 'url' are required.
 		
 	type                string          'column'            (Optional) Chart types: 'column', 'stackedcolumn', 'bar', 'stackedbar', 'line', 'area', 'pie'
 	indicators          [integer]                           (Required*) Indicator uids. Required if no data elements are provided.
@@ -30,8 +32,6 @@
 	height              integer         <el height>         (Optional) Chart height. Default is the element height.
 	legendPosition      string          'top'               (Optional) Positions: 'top', 'right', 'bottom' or 'left'
 	url                 string                              (Required) The base url of the DHIS instance.
-
-	uid                 string                              (Optional) A chart uid. If provided, only 'el' and 'url' are required.
 	-->
 </head>
 
