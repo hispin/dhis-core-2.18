@@ -55,7 +55,7 @@ public class DataValueSet
     protected String orgUnit;
 
     protected List<DataValue> dataValues = new ArrayList<DataValue>();
-
+    
     //--------------------------------------------------------------------------
     // Constructors
     //--------------------------------------------------------------------------

@@ -76,6 +76,18 @@ public class TextUtils
     }
     
     /**
+     * Returns the value argument if the object argument is not null, null otherwise.
+     * 
+     * @param object the object.
+     * @param value the value.
+     * @return the value or null.
+     */
+    public static <T> T ifNotNull( Object object, T value )
+    {
+        return object != null ? value: null;
+    }
+    
+    /**
      * Gets the sub string of the given string. If the beginIndex is larger than
      * the length of the string, the empty string is returned. If the beginIndex +
      * the length is larger than the length of the string, the part of the string
