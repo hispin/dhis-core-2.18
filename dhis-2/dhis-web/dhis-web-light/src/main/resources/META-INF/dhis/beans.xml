@@ -243,6 +243,14 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		scope="prototype">
 	</bean>
 	
+	<bean
+		id="org.hisp.dhis.light.beneficiaryenrollment.action.SearchBeneficiaryAction"
+		class="org.hisp.dhis.light.beneficiaryenrollment.action.SearchBeneficiaryAction"
+		scope="prototype">
+		<property name="patientService"
+			ref="org.hisp.dhis.patient.PatientService"/>
+	</bean>
+	
 	<!-- Dashboard -->
 	
 	<bean id="org.hisp.dhis.light.dashboard.action.ProvideContentAction"

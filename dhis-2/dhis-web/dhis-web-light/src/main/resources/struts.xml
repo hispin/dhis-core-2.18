@@ -167,6 +167,14 @@
 			<param name="page">
 				/dhis-web-light/beneficiarySearchingForm.vm</param>
 		</action>
+		
+		<action name="searchBeneficiary"
+			class="org.hisp.dhis.light.beneficiaryenrollment.action.SearchBeneficiaryAction">
+			<result name="success" type="velocity">
+				/dhis-web-light/main.vm</result>
+			<param name="page">
+				/dhis-web-light/beneficiarySearchResult.vm</param>
+		</action>
 		<!-- Reports -->
 		
 		<action name="reports"
