@@ -8,7 +8,7 @@
 <ul>
 #foreach( $activity in $activities )
 	<li>
-		<a href="showProgramStageForm.action?orgUnitId=$organisationUnitId&programStageId=$activity.getTask().getProgramStageId()&programId=$activity.getTask().getProgramId()&programStageInstanceId=$activity.task.id&current=$current">
+		<a href="showProgramStageForm.action?orgUnitId=$organisationUnitId&programStageId=$activity.getTask().getProgramStageId()&programId=$activity.getTask().getProgramId()&programStageInstanceId=$activity.task.id&current=$current&beneficiaryId=$beneficiaryId">
 			 $util.getProgramStage($activity.getTask().getProgramId(), $activity.getTask().getProgramStageId()).getName()
 		</a> 
 	</li>
