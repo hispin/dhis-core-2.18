@@ -61,7 +61,7 @@ public class SpringDataValueSetStore
     // DataValueSetStore implementation
     //--------------------------------------------------------------------------
 
-    public void writeDataValueSet( DataSet dataSet, Date completeDate, OrganisationUnit orgUnit, Period period, 
+    public void writeDataValueSet( DataSet dataSet, Date completeDate, Period period, OrganisationUnit orgUnit, 
         Set<DataElement> dataElements, Set<Period> periods, Set<OrganisationUnit> orgUnits, OutputStream out )
     {
         XMLWriter writer = XMLFactory.getXMLWriter( out );
