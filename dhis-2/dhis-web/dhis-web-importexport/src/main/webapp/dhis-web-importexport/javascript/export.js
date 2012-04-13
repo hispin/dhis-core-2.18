@@ -1,108 +1,9 @@
 
 // -----------------------------------------------------------------------------
-// DataMartExport
-// -----------------------------------------------------------------------------
-
-function exportDataValue()
-{
-    if ( validateDataValueExportForm() )
-    {
-        var aggregatedData = getListValue( "aggregatedData" );
-        
-        if ( aggregatedData == "true" )
-        {
-            var request = new Request();
-            request.setResponseTypeXML( 'message' );
-            request.setCallbackSuccess( validateAggregatedExportCompleted );
-            request.send( "validateAggregatedExport.action" );
-        }
-        else
-        {
-            submitDataValueExportForm();
-        }
-    }
-}
-
-function validateAggregatedExportCompleted( messageElement )
-{
-    var type = messageElement.getAttribute( 'type' );
-    var message = messageElement.firstChild.nodeValue;
-    
-    if ( type == 'success' )
-    {
-        var generateDataSource = getListValue( "generateDataSource" );
-        
-        if ( generateDataSource && generateDataSource == "true" )
-        {
-            var request = new Request();
-            request.sendAsPost( getDataMartExportParams() );
-            request.setCallbackSuccess( exportDataMartReceived );
-            request.send( "exportDataMart.action" );   
-        }
-        else
-        {
-            submitDataValueExportForm();
-        }
-    }
-    else if ( type == 'error' )
-    {
-        document.getElementById( 'message' ).innerHTML = message;
-        document.getElementById( 'message' ).style.display = 'block';
-    }
-}
-
-function exportDataMartReceived( messageElement )
-{
-    getExportStatus();
-}
-
-function getExportStatus()
-{
-    var url = "getExportStatus.action";
-    
-    var request = new Request();
-    request.setResponseTypeXML( "status" );
-    request.setCallbackSuccess( exportStatusReceived );    
-    request.send( url );
-}
-
-function exportStatusReceived( xmlObject )
-{
-    var statusMessage = getElementValue( xmlObject, "statusMessage" );
-    var finished = getElementValue( xmlObject, "finished" );
-    
-    if ( finished == "true" )
-    {        
-        submitDataValueExportForm();
-    }
-    else
-    {
-        setMessage( statusMessage );
-        
-        setTimeout( "getExportStatus();", 2000 );
-    }
-}
-
-// -----------------------------------------------------------------------------
-// Supportive methods
-// -----------------------------------------------------------------------------
-
-function getDataMartExportParams()
-{
-    var params = getParamString( "selectedDataSets", "selectedDataSets" );
-    
-    params += "startDate=" + document.getElementById( "startDate" ).value + "&";
-    params += "endDate=" + document.getElementById( "endDate" ).value + "&";
-    params += "dataSourceLevel=" + getListValue( "dataSourceLevel" );
-    
-    return params;
-}
-
-// -----------------------------------------------------------------------------
 // Export
 // -----------------------------------------------------------------------------
 
-function submitDataValueExportForm()
+function exportDataValue()
 {
     selectAll( document.getElementById( "selectedDataSets" ) );
 	
@@ -110,22 +11,6 @@ function submitDataValueExportForm()
 	{
 	   document.getElementById( "exportForm" ).submit();
 	}
-}
-
-function setDataType()
-{
-    var aggregatedData = getListValue( "aggregatedData" );
-  
-    if ( aggregatedData == "true" )
-    {
-        showById( "aggregatedDataDiv" );
-        hideById( "regularDataDiv" );
-    }
-    else
-    {
-        hideById( "aggregatedDataDiv" );
-        showById( "regularDataDiv" );
-    }
 }
 
 // -----------------------------------------------------------------------------
@@ -161,33 +46,33 @@ function validateMetaDataExportForm()
 		return false;
 	}
 	
-	hideMessage();
+	hideHeaderMessage();
 	return true;
 }
 
 function validateDataValueExportForm()
 {    
-    if ( selectedOrganisationUnitIds == null || selectedOrganisationUnitIds.length == 0 )
+    if ( !selectionTreeSelection.isSelected() )
     {
-        setMessage( i18n_select_organisation_unit );
+        setHeaderDelayMessage( i18n_select_organisation_unit );
         return false;
     }
     if ( !hasText( "startDate" ) )
     {
-        setMessage( i18n_select_startdate );
+        setHeaderDelayMessage( i18n_select_startdate );
         return false;
     }
     if ( !hasText( "endDate" ) )
     {
-        setMessage( i18n_select_enddate );
+        setHeaderDelayMessage( i18n_select_enddate );
         return false;
     }
     if ( !hasElements( "selectedDataSets" ) )
     {
-        setMessage( i18n_select_datasets );
+        setHeaderDelayMessage( i18n_select_datasets );
         return false;
     }
     
-    hideMessage();
+    hideHeaderMessage();
     return true;
 }

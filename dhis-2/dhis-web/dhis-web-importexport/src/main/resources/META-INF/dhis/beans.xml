@@ -11,6 +11,10 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 	<property name="category" value="DATAVALUE_IMPORT" />
   </bean>
 
+  <!-- Data value export -->
+  
+  <bean id="org.hisp.dhis.importexport.action.datavalue.ExportDataValueAction" class="org.hisp.dhis.importexport.action.datavalue.ExportDataValueAction"/>
+
   <!-- Import -->
 
   <bean id="org.hisp.dhis.importexport.action.imp.ImportAction" class="org.hisp.dhis.importexport.action.imp.ImportAction"
@@ -115,27 +119,6 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     <property name="expressionService" ref="org.hisp.dhis.expression.ExpressionService" />
     <property name="importDataValueService" ref="org.hisp.dhis.importexport.ImportDataValueService" />
     <property name="importObjectService" ref="org.hisp.dhis.importexport.ImportObjectService" />
-  </bean>
-
-  <bean id="org.hisp.dhis.importexport.action.exp.DataValueExportAction" class="org.hisp.dhis.importexport.action.exp.DataValueExportAction"
-    scope="prototype">
-    <property name="selectionTreeManager" ref="org.hisp.dhis.oust.manager.SelectionTreeManager" />
-    <property name="serviceProvider" ref="exportServiceProvider" />
-    <property name="dataSetService" ref="org.hisp.dhis.dataset.DataSetService" />
-    <property name="periodService" ref="org.hisp.dhis.period.PeriodService" />
-    <property name="organisationUnitService" ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
-  </bean>
-
-  <bean id="org.hisp.dhis.importexport.action.exp.GetExportOptionsAction" class="org.hisp.dhis.importexport.action.exp.GetExportOptionsAction"
-    scope="prototype">
-    <property name="dataSetService" ref="org.hisp.dhis.dataset.DataSetService" />
-    <property name="selectionTreeManager" ref="org.hisp.dhis.oust.manager.SelectionTreeManager" />
-    <property name="organisationUnitService" ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
-  </bean>
-
-  <bean id="org.hisp.dhis.importexport.action.exp.GetExportStatusAction" class="org.hisp.dhis.importexport.action.exp.GetExportStatusAction"
-    scope="prototype">
-    <property name="processCoordinator" ref="processCoordinator" />
   </bean>
 
   <bean id="org.hisp.dhis.importexport.action.exp.GetDetailedExportOptionsAction" class="org.hisp.dhis.importexport.action.exp.GetDetailedExportOptionsAction"

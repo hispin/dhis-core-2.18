@@ -33,6 +33,19 @@
       <param name="onExceptionReturn">plainTextError</param>
     </action>
 
+    <!-- Data value export -->
+		
+    <action name="displayDataValueExportForm" class="org.hisp.dhis.importexport.action.NoAction">
+      <result name="success" type="velocity">/main.vm</result>
+      <param name="page">/dhis-web-importexport/exportDataValueForm.vm</param>
+      <param name="menu">/dhis-web-importexport/mainMenu.vm</param>
+      <param name="javascripts">../dhis-web-commons/oust/oust.js,javascript/export.js</param>
+    </action>	
+
+    <action name="exportDataValue" class="org.hisp.dhis.importexport.action.datavalue.ExportDataValueAction">
+      <result name="success" type="outputStreamResult" />
+    </action>
+
     <!-- Menu -->
 
     <action name="displayExternalImportMenu" class="org.hisp.dhis.importexport.action.NoAction">
@@ -157,13 +170,6 @@
       <param name="javascripts">javascript/detailedExport.js</param>
     </action>
 
-    <action name="displayDataValueExportForm" class="org.hisp.dhis.importexport.action.exp.GetExportOptionsAction">
-      <result name="success" type="velocity">/main.vm</result>
-      <param name="page">/dhis-web-importexport/exportDataValueForm.vm</param>
-      <param name="menu">/dhis-web-importexport/mainMenu.vm</param>
-      <param name="javascripts">../dhis-web-commons/oust/oust.js,javascript/export.js</param>
-    </action>
-
     <action name="exportMetaData" class="org.hisp.dhis.importexport.action.exp.MetaDataExportAction">
       <result name="success" type="stream">
         <param name="contentType">application/zip</param>
@@ -180,20 +186,6 @@
         <param name="contentDisposition">filename="${fileName}"</param>
         <param name="bufferSize">10240</param>
       </result>
-    </action>
-
-    <action name="exportDataValue" class="org.hisp.dhis.importexport.action.exp.DataValueExportAction">
-      <result name="success" type="stream">
-        <param name="contentType">application/zip</param>
-        <param name="inputName">inputStream</param>
-        <param name="contentDisposition">filename="${fileName}"</param>
-        <param name="bufferSize">10240</param>
-      </result>
-    </action>
-
-    <action name="getExportStatus" class="org.hisp.dhis.importexport.action.exp.GetExportStatusAction">
-      <result name="success" type="velocity-xml">/dhis-web-importexport/responseExportStatus.vm</result>
-      <param name="onExceptionReturn">plainTextError</param>
     </action>
 
     <action name="getDataElementList" class="org.hisp.dhis.importexport.action.exp.GetDataElementListAction">
