@@ -205,6 +205,17 @@ public class ReflectionUtils
         }
     }
 
+    public static Method findSetterMethod( String fieldName, Object object )
+    {
+        try
+        {
+            return object.getClass().getMethod( "set" + StringUtils.capitalize( fieldName ) );
+        } catch ( NoSuchMethodException e )
+        {
+            return null;
+        }
+    }
+
     public static <T> T invokeGetterMethod( String fieldName, Object object )
     {
         Method method = findGetterMethod( fieldName, object );
@@ -217,6 +228,27 @@ public class ReflectionUtils
         try
         {
             return (T) method.invoke( object );
+        } catch ( InvocationTargetException e )
+        {
+            return null;
+        } catch ( IllegalAccessException e )
+        {
+            return null;
+        }
+    }
+
+    public static <T> T invokeSetterMethod( String fieldName, Object object, Object... objects )
+    {
+        Method method = findSetterMethod( fieldName, object );
+
+        if ( method == null )
+        {
+            return null;
+        }
+
+        try
+        {
+            return (T) method.invoke( object, objects );
         } catch ( InvocationTargetException e )
         {
             return null;

@@ -99,6 +99,28 @@ public class DefaultIdentifiableObjectManager
         return null;
     }
 
+    @Override
+    public <T extends IdentifiableObject> T getByCode( Class<T> clazz, String code )
+    {
+        if ( objectStoreMap.get( clazz ) != null )
+        {
+            return (T) objectStoreMap.get( clazz ).getByCode( code );
+        }
+
+        return null;
+    }
+
+    @Override
+    public <T extends IdentifiableObject> T getByName( Class<T> clazz, String name )
+    {
+        if ( objectStoreMap.get( clazz ) != null )
+        {
+            return (T) objectStoreMap.get( clazz ).getByName( name );
+        }
+
+        return null;
+    }
+
     @SuppressWarnings( "unchecked" )
     public <T extends IdentifiableObject> Collection<T> getAll( Class<T> clazz )
     {

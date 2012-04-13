@@ -27,21 +27,10 @@ package org.hisp.dhis.api.controller;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.io.BufferedInputStream;
-import java.io.IOException;
-import java.util.zip.ZipEntry;
-import java.util.zip.ZipInputStream;
-import java.util.zip.ZipOutputStream;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.xml.bind.JAXBException;
-
 import org.hisp.dhis.api.utils.ContextUtils;
 import org.hisp.dhis.common.view.ExportView;
 import org.hisp.dhis.dxf2.importsummary.ImportSummary;
 import org.hisp.dhis.dxf2.metadata.*;
-import org.hisp.dhis.dxf2.metadata.MetaData;
 import org.hisp.dhis.dxf2.utils.JacksonUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -50,6 +39,12 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.xml.bind.JAXBException;
+import java.io.IOException;
+import java.util.zip.*;
 
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
@@ -73,9 +68,9 @@ public class MetaDataController
     @PreAuthorize( "hasRole('ALL') or hasRole('F_METADATA_EXPORT')" )
     public String export( ExportOptions exportOptions, Model model )
     {
-        MetaData dxf2 = exportService.getMetaData( exportOptions );
+        MetaData metaData = exportService.getMetaData( exportOptions );
 
-        model.addAttribute( "model", dxf2 );
+        model.addAttribute( "model", metaData );
         model.addAttribute( "view", "export" );
 
         return "export";
@@ -85,7 +80,7 @@ public class MetaDataController
     @PreAuthorize( "hasRole('ALL') or hasRole('F_METADATA_EXPORT')" )
     public void exportZippedXML( ExportOptions exportOptions, HttpServletResponse response ) throws IOException, JAXBException
     {
-        MetaData dxf2 = exportService.getMetaData( exportOptions );
+        MetaData metaData = exportService.getMetaData( exportOptions );
 
         response.setContentType( ContextUtils.CONTENT_TYPE_ZIP );
         response.addHeader( "Content-Disposition", "attachment; filename=\"export.xml.zip\"" );
@@ -94,14 +89,14 @@ public class MetaDataController
         ZipOutputStream zip = new ZipOutputStream( response.getOutputStream() );
         zip.putNextEntry( new ZipEntry( "export.xml" ) );
 
-        JacksonUtils.toXmlWithView( zip, dxf2, ExportView.class );
+        JacksonUtils.toXmlWithView( zip, metaData, ExportView.class );
     }
 
     @RequestMapping( value = MetaDataController.RESOURCE_PATH + ".zip", method = RequestMethod.GET, headers = {"Accept=application/json"} )
     @PreAuthorize( "hasRole('ALL') or hasRole('F_METADATA_EXPORT')" )
     public void exportZippedJSON( ExportOptions exportOptions, HttpServletResponse response ) throws IOException, JAXBException
     {
-        MetaData dxf2 = exportService.getMetaData( exportOptions );
+        MetaData metaData = exportService.getMetaData( exportOptions );
 
         response.setContentType( ContextUtils.CONTENT_TYPE_ZIP );
         response.addHeader( "Content-Disposition", "attachment; filename=\"export.json.zip\"" );
@@ -110,7 +105,31 @@ public class MetaDataController
         ZipOutputStream zip = new ZipOutputStream( response.getOutputStream() );
         zip.putNextEntry( new ZipEntry( "export.json" ) );
 
-        JacksonUtils.toJsonWithView( zip, dxf2, ExportView.class );
+        JacksonUtils.toJsonWithView( zip, metaData, ExportView.class );
+    }
+
+    @RequestMapping( value = MetaDataController.RESOURCE_PATH + ".gz", method = RequestMethod.GET, headers = {"Accept=application/xml, text/*"} )
+    @PreAuthorize( "hasRole('ALL') or hasRole('F_METADATA_EXPORT')" )
+    public void exportGZippedXML( ExportOptions exportOptions, HttpServletResponse response ) throws IOException, JAXBException
+    {
+        MetaData metaData = exportService.getMetaData( exportOptions );
+
+        response.setContentType( ContextUtils.CONTENT_TYPE_GZIP );
+        GZIPOutputStream gzip = new GZIPOutputStream( response.getOutputStream() );
+
+        JacksonUtils.toXmlWithView( gzip, metaData, ExportView.class );
+    }
+
+    @RequestMapping( value = MetaDataController.RESOURCE_PATH + ".gz", method = RequestMethod.GET, headers = {"Accept=application/json"} )
+    @PreAuthorize( "hasRole('ALL') or hasRole('F_METADATA_EXPORT')" )
+    public void exportGZippedJSON( ExportOptions exportOptions, HttpServletResponse response ) throws IOException, JAXBException
+    {
+        MetaData metaData = exportService.getMetaData( exportOptions );
+
+        response.setContentType( ContextUtils.CONTENT_TYPE_GZIP );
+        GZIPOutputStream gzip = new GZIPOutputStream( response.getOutputStream() );
+
+        JacksonUtils.toJsonWithView( gzip, metaData, ExportView.class );
     }
 
     //-------------------------------------------------------------------------------------------------------
@@ -121,10 +140,10 @@ public class MetaDataController
     @PreAuthorize( "hasRole('ALL') or hasRole('F_METADATA_IMPORT')" )
     public void importXml( ImportOptions importOptions, HttpServletResponse response, HttpServletRequest request ) throws JAXBException, IOException
     {
-        MetaData dxf2 = JacksonUtils.fromXml( request.getInputStream(), MetaData.class );
-        System.err.println( dxf2 );
+        MetaData metaData = JacksonUtils.fromXml( request.getInputStream(), MetaData.class );
+        System.err.println( metaData );
 
-        ImportSummary summary = importService.importMetaData( dxf2, importOptions );
+        ImportSummary summary = importService.importMetaData( metaData, importOptions );
 
         response.setContentType( MediaType.APPLICATION_XML.toString() );
         JacksonUtils.toXml( response.getOutputStream(), summary );
@@ -134,10 +153,10 @@ public class MetaDataController
     @PreAuthorize( "hasRole('ALL') or hasRole('F_METADATA_IMPORT')" )
     public void importJson( ImportOptions importOptions, HttpServletResponse response, HttpServletRequest request ) throws IOException
     {
-        MetaData dxf2 = JacksonUtils.fromJson( request.getInputStream(), MetaData.class );
-        System.err.println( dxf2 );
+        MetaData metaData = JacksonUtils.fromJson( request.getInputStream(), MetaData.class );
+        System.err.println( metaData );
 
-        ImportSummary summary = importService.importMetaData( dxf2, importOptions );
+        ImportSummary summary = importService.importMetaData( metaData, importOptions );
 
         response.setContentType( MediaType.APPLICATION_JSON.toString() );
         JacksonUtils.toJson( response.getOutputStream(), summary );
@@ -147,13 +166,13 @@ public class MetaDataController
     @PreAuthorize( "hasRole('ALL') or hasRole('F_METADATA_IMPORT')" )
     public void importZippedXml( ImportOptions importOptions, HttpServletResponse response, HttpServletRequest request ) throws JAXBException, IOException
     {
-        ZipInputStream zip = new ZipInputStream( new BufferedInputStream( request.getInputStream() ) );
+        ZipInputStream zip = new ZipInputStream( request.getInputStream() );
         ZipEntry entry = zip.getNextEntry();
 
-        MetaData dxf2 = JacksonUtils.fromXml( zip, MetaData.class );
-        System.err.println( dxf2 );
+        MetaData metaData = JacksonUtils.fromXml( zip, MetaData.class );
+        System.err.println( metaData );
 
-        ImportSummary summary = importService.importMetaData( dxf2, importOptions );
+        ImportSummary summary = importService.importMetaData( metaData, importOptions );
 
         response.setContentType( MediaType.APPLICATION_XML.toString() );
         JacksonUtils.toXml( response.getOutputStream(), summary );
@@ -166,10 +185,42 @@ public class MetaDataController
         ZipInputStream zip = new ZipInputStream( request.getInputStream() );
         ZipEntry entry = zip.getNextEntry();
 
-        MetaData dxf2 = JacksonUtils.fromJson( zip, MetaData.class );
-        System.err.println( dxf2 );
+        MetaData metaData = JacksonUtils.fromJson( zip, MetaData.class );
+        System.err.println( metaData );
 
-        ImportSummary summary = importService.importMetaData( dxf2, importOptions );
+        ImportSummary summary = importService.importMetaData( metaData, importOptions );
+
+        response.setContentType( MediaType.APPLICATION_JSON.toString() );
+        JacksonUtils.toJson( response.getOutputStream(), summary );
+    }
+
+
+    @RequestMapping( value = MetaDataController.RESOURCE_PATH + ".gz", method = RequestMethod.POST, headers = {"Content-Type=application/xml, text/xml"} )
+    @PreAuthorize( "hasRole('ALL') or hasRole('F_METADATA_IMPORT')" )
+    public void importGZippedXml( ImportOptions importOptions, HttpServletResponse response, HttpServletRequest request ) throws JAXBException, IOException
+    {
+        GZIPInputStream gzip = new GZIPInputStream( request.getInputStream() );
+        MetaData metaData = JacksonUtils.fromXml( gzip, MetaData.class );
+
+        System.err.println( metaData );
+
+        ImportSummary summary = importService.importMetaData( metaData, importOptions );
+
+        response.setContentType( MediaType.APPLICATION_XML.toString() );
+        JacksonUtils.toXml( response.getOutputStream(), summary );
+    }
+
+    @RequestMapping( value = MetaDataController.RESOURCE_PATH + ".gz", method = RequestMethod.POST, headers = {"Content-Type=application/json"} )
+    @PreAuthorize( "hasRole('ALL') or hasRole('F_METADATA_IMPORT')" )
+    public void importGZippedJson( ImportOptions importOptions, HttpServletResponse response, HttpServletRequest request ) throws IOException
+    {
+        GZIPInputStream gzip = new GZIPInputStream( request.getInputStream() );
+
+        MetaData metaData = JacksonUtils.fromJson( gzip, MetaData.class );
+
+        System.err.println( metaData );
+
+        ImportSummary summary = importService.importMetaData( metaData, importOptions );
 
         response.setContentType( MediaType.APPLICATION_JSON.toString() );
         JacksonUtils.toJson( response.getOutputStream(), summary );
