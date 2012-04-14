@@ -193,13 +193,13 @@ public class DefaultDataValueSetService
         DataSet dataSet = dataValueSet.getDataSet() != null ? identifiableObjectManager.getObject( DataSet.class, IdentifiableProperty.UID, dataValueSet.getDataSet() ) : null;
         Date completeDate = getDefaultDate( dataValueSet.getCompleteDate() );
         
-        Period period = PeriodType.getPeriodFromIsoString( dataValueSet.getPeriod() );
-        OrganisationUnit orgUnit = dataValueSet.getOrgUnit() != null ? identifiableObjectManager.getObject( OrganisationUnit.class, orgUnitIdScheme, dataValueSet.getOrgUnit() ) : null;
+        Period outerPeriod = PeriodType.getPeriodFromIsoString( dataValueSet.getPeriod() );
+        OrganisationUnit outerOrgUnit = dataValueSet.getOrgUnit() != null ? identifiableObjectManager.getObject( OrganisationUnit.class, orgUnitIdScheme, dataValueSet.getOrgUnit() ) : null;
         
         if ( dataSet != null && completeDate != null )
         {
             notifier.notify( id, DATAVALUE_IMPORT, "Completing data set" );
-            handleComplete( dataSet, completeDate, orgUnit, period, summary );
+            handleComplete( dataSet, completeDate, outerOrgUnit, outerPeriod, summary );
         }
         else
         {
@@ -226,8 +226,8 @@ public class DefaultDataValueSetService
             
             DataElement dataElement = dataElementMap.get( dataValue.getDataElement() );
             DataElementCategoryOptionCombo categoryOptionCombo = categoryOptionComboMap.get( dataValue.getCategoryOptionCombo() );
-            period = period != null ? period : PeriodType.getPeriodFromIsoString( dataValue.getPeriod() );
-            orgUnit = orgUnit != null ? orgUnit : orgUnitMap.get( dataValue.getOrgUnit() );
+            Period period = outerPeriod != null ? outerPeriod : PeriodType.getPeriodFromIsoString( dataValue.getPeriod() );
+            OrganisationUnit orgUnit = outerOrgUnit != null ? outerOrgUnit : orgUnitMap.get( dataValue.getOrgUnit() );
             
             if ( dataElement == null )
             {
