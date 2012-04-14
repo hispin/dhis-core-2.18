@@ -147,6 +147,10 @@ public class DataValueSet
     {
         return dataValues.iterator().next();
     }
+
+    public void close()
+    {
+    }
     
     @Override
     public String toString()

@@ -162,5 +162,11 @@ public class StreamingDataValueSet
     public void setOrgUnit( String orgUnit )
     {
         writer.writeAttribute( FIELD_ORGUNIT, orgUnit );
-    } 
+    }
+
+    public void close()
+    {
+        writer.closeElement();
+        writer.closeDocument();
+    }
 }

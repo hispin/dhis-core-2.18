@@ -88,13 +88,11 @@ public class SpringDataValueSetStore
             dataValue.setStoredBy( rowSet.getString( "storedby" ) );
             dataValue.setTimestamp( getMediumDateString( rowSet.getDate( "lastupdated" ) ) );
             dataValue.setComment( rowSet.getString( "comment" ) );
-            dataValue.setFollowup( rowSet.getBoolean( "followup" ) );
-            
-            writer.closeElement();
+            dataValue.setFollowup( rowSet.getBoolean( "followup" ) );            
+            dataValue.close();
         }
         
-        writer.closeElement();
-        writer.closeDocument();
+        dataValueSet.close();
     }
     
     private String getDataValueSql( Collection<DataElement> dataElements, Collection<Period> periods, Collection<OrganisationUnit> orgUnits )
