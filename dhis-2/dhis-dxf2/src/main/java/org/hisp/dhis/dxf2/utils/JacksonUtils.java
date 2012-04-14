@@ -57,7 +57,7 @@ public class JacksonUtils
 
     static
     {
-        ObjectMapper[] objectMappers = new ObjectMapper[]{ jsonMapper, xmlMapper };
+        ObjectMapper[] objectMappers = new ObjectMapper[]{jsonMapper, xmlMapper};
 
         for ( ObjectMapper objectMapper : objectMappers )
         {
@@ -130,7 +130,7 @@ public class JacksonUtils
         return jsonMapper.writerWithView( viewClass ).writeValueAsString( value );
     }
 
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings( "unchecked" )
     public static <T> T fromJson( InputStream input, Class<?> clazz ) throws IOException
     {
         return (T) jsonMapper.readValue( input, clazz );
@@ -160,7 +160,7 @@ public class JacksonUtils
         return xmlMapper.writerWithView( viewClass ).writeValueAsString( value );
     }
 
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings( "unchecked" )
     public static <T> T fromXml( InputStream input, Class<?> clazz ) throws IOException
     {
         return (T) xmlMapper.readValue( input, clazz );
