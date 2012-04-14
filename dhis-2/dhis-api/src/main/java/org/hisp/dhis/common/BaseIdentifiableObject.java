@@ -31,6 +31,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonView;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
+import org.apache.commons.lang.Validate;
 import org.hisp.dhis.common.view.DetailedView;
 import org.hisp.dhis.common.view.ExportView;
 import org.hisp.dhis.common.view.IdentifiableObjectView;
@@ -306,6 +307,8 @@ public class BaseIdentifiableObject
     @Override
     public void mergeWith( IdentifiableObject other )
     {
+        Validate.notNull( other );
+
         this.id = other.getId() == 0 ? this.id : other.getId();
         this.uid = other.getUid() == null ? this.uid : other.getUid();
         this.name = other.getName() == null ? this.name : other.getName();
