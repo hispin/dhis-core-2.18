@@ -83,8 +83,7 @@ public class GetRoleListAction
 
     public String execute()
         throws Exception
-    {
-        
+    {        
         if ( isNotBlank( key ) ) // Filter on key only if set
         {
             this.paging = createPaging( userService.getUserRoleCountByName( key ) );
