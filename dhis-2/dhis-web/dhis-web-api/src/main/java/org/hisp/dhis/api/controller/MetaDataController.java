@@ -28,6 +28,7 @@ package org.hisp.dhis.api.controller;
  */
 
 import org.hisp.dhis.api.utils.ContextUtils;
+import org.hisp.dhis.api.utils.ContextUtils.CacheStrategy;
 import org.hisp.dhis.common.view.ExportView;
 import org.hisp.dhis.dxf2.importsummary.ImportSummary;
 import org.hisp.dhis.dxf2.metadata.*;
@@ -46,6 +47,8 @@ import javax.xml.bind.JAXBException;
 import java.io.IOException;
 import java.util.zip.*;
 
+import static org.hisp.dhis.api.utils.ContextUtils.*;
+
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
@@ -59,6 +62,9 @@ public class MetaDataController
 
     @Autowired
     private ImportService importService;
+    
+    @Autowired
+    private ContextUtils contextUtils;
 
     //-------------------------------------------------------------------------------------------------------
     // Export
@@ -82,9 +88,8 @@ public class MetaDataController
     {
         MetaData metaData = exportService.getMetaData( exportOptions );
 
-        response.setContentType( ContextUtils.CONTENT_TYPE_ZIP );
-        response.addHeader( "Content-Disposition", "attachment; filename=\"export.xml.zip\"" );
-        response.addHeader( "Content-Transfer-Encoding", "binary" );
+        contextUtils.configureResponse( response, CONTENT_TYPE_ZIP, CacheStrategy.NO_CACHE, "export.xml.zip", true );
+        response.addHeader( HEADER_CONTENT_TRANSFER_ENCODING, "binary" );
 
         ZipOutputStream zip = new ZipOutputStream( response.getOutputStream() );
         zip.putNextEntry( new ZipEntry( "export.xml" ) );
@@ -98,9 +103,8 @@ public class MetaDataController
     {
         MetaData metaData = exportService.getMetaData( exportOptions );
 
-        response.setContentType( ContextUtils.CONTENT_TYPE_ZIP );
-        response.addHeader( "Content-Disposition", "attachment; filename=\"export.json.zip\"" );
-        response.addHeader( "Content-Transfer-Encoding", "binary" );
+        contextUtils.configureResponse( response, CONTENT_TYPE_ZIP, CacheStrategy.NO_CACHE, "export.json.zip", true );
+        response.addHeader( HEADER_CONTENT_TRANSFER_ENCODING, "binary" );
 
         ZipOutputStream zip = new ZipOutputStream( response.getOutputStream() );
         zip.putNextEntry( new ZipEntry( "export.json" ) );
@@ -114,7 +118,7 @@ public class MetaDataController
     {
         MetaData metaData = exportService.getMetaData( exportOptions );
 
-        response.setContentType( ContextUtils.CONTENT_TYPE_GZIP );
+        response.setContentType( CONTENT_TYPE_GZIP );
         GZIPOutputStream gzip = new GZIPOutputStream( response.getOutputStream() );
 
         JacksonUtils.toXmlWithView( gzip, metaData, ExportView.class );
@@ -126,7 +130,7 @@ public class MetaDataController
     {
         MetaData metaData = exportService.getMetaData( exportOptions );
 
-        response.setContentType( ContextUtils.CONTENT_TYPE_GZIP );
+        response.setContentType( CONTENT_TYPE_GZIP );
         GZIPOutputStream gzip = new GZIPOutputStream( response.getOutputStream() );
 
         JacksonUtils.toJsonWithView( gzip, metaData, ExportView.class );
@@ -167,7 +171,7 @@ public class MetaDataController
     public void importZippedXml( ImportOptions importOptions, HttpServletResponse response, HttpServletRequest request ) throws JAXBException, IOException
     {
         ZipInputStream zip = new ZipInputStream( request.getInputStream() );
-        ZipEntry entry = zip.getNextEntry();
+        zip.getNextEntry();
 
         MetaData metaData = JacksonUtils.fromXml( zip, MetaData.class );
         System.err.println( metaData );
@@ -183,7 +187,7 @@ public class MetaDataController
     public void importZippedJson( ImportOptions importOptions, HttpServletResponse response, HttpServletRequest request ) throws IOException
     {
         ZipInputStream zip = new ZipInputStream( request.getInputStream() );
-        ZipEntry entry = zip.getNextEntry();
+        zip.getNextEntry();
 
         MetaData metaData = JacksonUtils.fromJson( zip, MetaData.class );
         System.err.println( metaData );
@@ -200,8 +204,8 @@ public class MetaDataController
     public void importGZippedXml( ImportOptions importOptions, HttpServletResponse response, HttpServletRequest request ) throws JAXBException, IOException
     {
         GZIPInputStream gzip = new GZIPInputStream( request.getInputStream() );
+        
         MetaData metaData = JacksonUtils.fromXml( gzip, MetaData.class );
-
         System.err.println( metaData );
 
         ImportSummary summary = importService.importMetaData( metaData, importOptions );
@@ -217,7 +221,6 @@ public class MetaDataController
         GZIPInputStream gzip = new GZIPInputStream( request.getInputStream() );
 
         MetaData metaData = JacksonUtils.fromJson( gzip, MetaData.class );
-
         System.err.println( metaData );
 
         ImportSummary summary = importService.importMetaData( metaData, importOptions );
