@@ -181,4 +181,10 @@ public class StreamingDataValue
     {
         writer.writeAttribute( FIELD_FOLLOWUP, valueOf( followup ) );
     }
+
+    @Override
+    public void close()
+    {
+        writer.closeElement();
+    }
 }

@@ -153,4 +153,8 @@ public class DataValue
     {
         this.followup = followup;
     }
+
+    public void close()
+    {
+    }
 }
