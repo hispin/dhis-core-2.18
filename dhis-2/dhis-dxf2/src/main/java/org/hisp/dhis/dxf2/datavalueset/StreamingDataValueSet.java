@@ -163,6 +163,12 @@ public class StreamingDataValueSet
     {
         writer.writeAttribute( FIELD_ORGUNIT, orgUnit );
     }
+    
+    @Override
+    public DataValue getDataValueInstance()
+    {
+        return new StreamingDataValue( writer );
+    }
 
     public void close()
     {
