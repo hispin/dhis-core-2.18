@@ -28,6 +28,7 @@ package org.hisp.dhis.dxf2.datavalueset;
  */
 
 import java.io.OutputStream;
+import java.io.Writer;
 import java.util.Date;
 import java.util.Set;
 
@@ -38,6 +39,9 @@ import org.hisp.dhis.period.Period;
 
 public interface DataValueSetStore
 {
-    public void writeDataValueSet( DataSet dataSet, Date completeDate, Period period, OrganisationUnit orgUnit, 
+    public void writeDataValueSetXml( DataSet dataSet, Date completeDate, Period period, OrganisationUnit orgUnit, 
         Set<DataElement> dataElements, Set<Period> periods, Set<OrganisationUnit> orgUnits, OutputStream out );
+    
+    public void writeDataValueSetCsv( Set<DataElement> dataElements, 
+        Set<Period> periods, Set<OrganisationUnit> orgUnits, Writer writer );
 }

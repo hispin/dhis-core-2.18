@@ -30,7 +30,7 @@
 
 <form id="exportForm" name="exportForm" method="post" action="exportDataValue.action">
 
-<input type="hidden" name="exportFormat" value="$!exportFormat">
+<input type="hidden" id="exportFormat" name="exportFormat">
 
 <table width="708">
 	
@@ -95,8 +95,10 @@
 	<!-- Submit -->
 	
 	<tr>		
-		<td><input type="button" value="$i18n.getString( 'export' )" style="width:50%" onclick="exportDataValue()"></td>
-		<td colspan="2"></td>
+		<td><input type="button" value="$i18n.getString( 'export_as_xml' )" style="width:48%" onclick="exportDataValue( 'xml' )">
+		<input type="button" value="$i18n.getString( 'export_as_csv' )" style="width:48%" onclick="exportDataValue( 'csv' )"></td>
+		<td></td>
+		<td></td>
 	</tr>
 	
 </table>

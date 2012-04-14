@@ -309,7 +309,7 @@ function moveSelectedOptionToBottom( listId ) {
  * Creates a hidden select list used for temporarily storing options for
  * filtering
  * 
- * TODO: avoid performance hit on page with many selects, by checking use of
+ * TODO: REMOVE! avoid performance hit on page with many selects, by checking use of
  * filterList method
  */
 $(document).ready(function() {

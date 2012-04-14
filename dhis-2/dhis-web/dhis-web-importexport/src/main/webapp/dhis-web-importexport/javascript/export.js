@@ -3,9 +3,10 @@
 // Export
 // -----------------------------------------------------------------------------
 
-function exportDataValue()
+function exportDataValue( format )
 {
-    selectAll( document.getElementById( "selectedDataSets" ) );
+	$( "#exportFormat" ).val( format );
+    selectAllById( "selectedDataSets" );
 	
 	if ( validateDataValueExportForm() )
 	{
