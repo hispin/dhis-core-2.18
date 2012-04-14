@@ -45,7 +45,6 @@ import org.hisp.dhis.dxf2.datavalue.StreamingDataValue;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.period.PeriodType;
-import org.hisp.dhis.system.util.TextUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.rowset.SqlRowSet;
@@ -89,7 +88,7 @@ public class SpringDataValueSetStore
             dataValue.setStoredBy( rowSet.getString( "storedby" ) );
             dataValue.setTimestamp( getMediumDateString( rowSet.getDate( "lastupdated" ) ) );
             dataValue.setComment( rowSet.getString( "comment" ) );
-            dataValue.setFollowup( TextUtils.valueOf( "followup" ) );
+            dataValue.setFollowup( rowSet.getBoolean( "followup" ) );
             
             writer.closeElement();
         }
