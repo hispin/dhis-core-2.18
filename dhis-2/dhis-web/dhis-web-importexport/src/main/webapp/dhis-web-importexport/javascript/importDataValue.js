@@ -28,5 +28,5 @@ function displaySummaryLink()
 function displaySummary()
 {	
 	$( '#notificationDiv' ).hide();
-	$( '#importSummaryDiv' ).show( 'slow' ).load( 'getDataValueImportSummary.action' );
+	$( '#importSummaryDiv' ).show( 'fast' ).load( 'getDataValueImportSummary.action' );
 }
