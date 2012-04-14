@@ -37,6 +37,7 @@ import static org.hisp.dhis.system.util.DateUtils.getDefaultDate;
 
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.io.Writer;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Map;
@@ -146,42 +147,21 @@ public class DefaultDataValueSetService
         
         period_ = periodService.reloadPeriod( period_ );
         
-        dataValueSetStore.writeDataValueSet( dataSet_, completeDate, period_, orgUnit_, dataSet_.getDataElements(), wrap( period_ ), wrap( orgUnit_ ), out );
+        dataValueSetStore.writeDataValueSetXml( dataSet_, completeDate, period_, orgUnit_, dataSet_.getDataElements(), wrap( period_ ), wrap( orgUnit_ ), out );
     }
 
     public void writeDataValueSet( Set<String> dataSets, Date startDate, Date endDate, Set<String> orgUnits, OutputStream out )
     {
-        Set<DataElement> dataElements = new HashSet<DataElement>();
-        
-        for ( String ds : dataSets )
-        {
-            DataSet dataSet = dataSetService.getDataSet( ds );
-            
-            if ( dataSet == null )
-            {
-                throw new IllegalArgumentException( ERROR_INVALID_DATA_SET + ds );
-            }
-            
-            dataElements.addAll( dataSet.getDataElements() );
-        }
-        
         Set<Period> periods = new HashSet<Period>( periodService.getPeriodsBetweenDates( startDate, endDate ) );
         
-        Set<OrganisationUnit> organisationUnits = new HashSet<OrganisationUnit>();
+        dataValueSetStore.writeDataValueSetXml( null, null, null, null, getDataElements( dataSets ), periods, getOrgUnits( orgUnits ), out );
+    }
+    
+    public void writeDataValueSetCsv( Set<String> dataSets, Date startDate, Date endDate, Set<String> orgUnits, Writer writer )
+    {
+        Set<Period> periods = new HashSet<Period>( periodService.getPeriodsBetweenDates( startDate, endDate ) );
         
-        for ( String ou : orgUnits )
-        {
-            OrganisationUnit orgUnit = organisationUnitService.getOrganisationUnit( ou );            
-
-            if ( orgUnit == null )
-            {
-                throw new IllegalArgumentException( ERROR_INVALID_ORG_UNIT + ou );
-            }
-            
-            organisationUnits.add( orgUnit );
-        }
-        
-        dataValueSetStore.writeDataValueSet( null, null, null, null, dataElements, periods, organisationUnits, out );
+        dataValueSetStore.writeDataValueSetCsv( getDataElements( dataSets ), periods, getOrgUnits( orgUnits ), writer );
     }
     
     public ImportSummary saveDataValueSet( InputStream in )
@@ -361,5 +341,43 @@ public class DefaultDataValueSetService
         }
         
         summary.setDataSetComplete( DateUtils.getMediumDateString( completeDate ) );
+    }
+    
+    private Set<DataElement> getDataElements( Set<String> dataSets )
+    {
+        Set<DataElement> dataElements = new HashSet<DataElement>();
+        
+        for ( String ds : dataSets )
+        {
+            DataSet dataSet = dataSetService.getDataSet( ds );
+            
+            if ( dataSet == null )
+            {
+                throw new IllegalArgumentException( ERROR_INVALID_DATA_SET + ds );
+            }
+            
+            dataElements.addAll( dataSet.getDataElements() );
+        }
+        
+        return dataElements;
+    }
+    
+    public Set<OrganisationUnit> getOrgUnits( Set<String> orgUnits )
+    {
+        Set<OrganisationUnit> organisationUnits = new HashSet<OrganisationUnit>();
+        
+        for ( String ou : orgUnits )
+        {
+            OrganisationUnit orgUnit = organisationUnitService.getOrganisationUnit( ou );            
+
+            if ( orgUnit == null )
+            {
+                throw new IllegalArgumentException( ERROR_INVALID_ORG_UNIT + ou );
+            }
+            
+            organisationUnits.add( orgUnit );
+        }
+        
+        return organisationUnits;
     }
 }

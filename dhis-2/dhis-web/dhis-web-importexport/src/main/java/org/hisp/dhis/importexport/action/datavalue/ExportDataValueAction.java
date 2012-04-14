@@ -29,6 +29,7 @@ package org.hisp.dhis.importexport.action.datavalue;
 
 import static org.hisp.dhis.system.util.DateUtils.getMediumDate;
 import static org.hisp.dhis.system.util.CodecUtils.filenameEncode;
+import static org.hisp.dhis.util.ContextUtils.*;
 
 import java.util.Collection;
 import java.util.HashSet;
@@ -54,7 +55,9 @@ public class ExportDataValueAction
 {
     private final static String FILE_PREFIX = "Export";
     private final static String FILE_SEPARATOR = "_";
-    private final static String FILE_EXTENSION = ".xml";
+    private final static String EXTENSION_XML = ".xml";
+    private final static String EXTENSION_CSV = ".csv";
+    private final static String FORMAT_CSV = "csv";
 
     @Autowired
     private SelectionTreeManager selectionTreeManager;
@@ -90,6 +93,13 @@ public class ExportDataValueAction
         this.endDate = endDate;
     }
 
+    private String exportFormat;
+
+    public void setExportFormat( String exportFormat )
+    {
+        this.exportFormat = exportFormat;
+    }
+
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
@@ -111,9 +121,18 @@ public class ExportDataValueAction
         
         HttpServletResponse response = ServletActionContext.getResponse();
         
-        ContextUtils.configureResponse( response, ContextUtils.CONTENT_TYPE_XML, true, getFileName(), true );
-        
-        dataValueSetService.writeDataValueSet( selectedDataSets, getMediumDate( startDate ), getMediumDate( endDate ), orgUnits, response.getOutputStream() );
+        if ( FORMAT_CSV.equals( exportFormat ) )
+        {
+            ContextUtils.configureResponse( response, CONTENT_TYPE_CSV, true, getFileName( EXTENSION_CSV ), true );
+            
+            dataValueSetService.writeDataValueSetCsv( selectedDataSets,getMediumDate( startDate ), getMediumDate( endDate ), orgUnits, response.getWriter() );
+        }
+        else
+        {
+            ContextUtils.configureResponse( response, CONTENT_TYPE_XML, true, getFileName( EXTENSION_XML ), true );
+            
+            dataValueSetService.writeDataValueSet( selectedDataSets, getMediumDate( startDate ), getMediumDate( endDate ), orgUnits, response.getOutputStream() );
+        }
                 
         return SUCCESS;
     }
@@ -122,7 +141,7 @@ public class ExportDataValueAction
     // Supportive methods
     // -------------------------------------------------------------------------
 
-    private String getFileName()
+    private String getFileName( String extension )
     {
         String fileName = FILE_PREFIX + FILE_SEPARATOR + startDate + FILE_SEPARATOR + endDate;
         
@@ -131,8 +150,6 @@ public class ExportDataValueAction
             fileName += FILE_SEPARATOR + filenameEncode( selectionTreeManager.getSelectedOrganisationUnits().iterator().next().getShortName() );
         }
         
-        fileName += FILE_EXTENSION;
-        
-        return fileName;
+        return fileName + extension;
     }
 }

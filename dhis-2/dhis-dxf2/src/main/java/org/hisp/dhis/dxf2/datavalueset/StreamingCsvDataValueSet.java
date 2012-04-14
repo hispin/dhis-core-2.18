@@ -27,27 +27,68 @@ package org.hisp.dhis.dxf2.datavalueset;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.io.Writer;
-import java.util.Date;
-import java.util.Set;
+import java.io.IOException;
 
-import org.hisp.dhis.dxf2.importsummary.ImportSummary;
-import org.hisp.dhis.dxf2.metadata.ImportOptions;
-import org.hisp.dhis.scheduling.TaskId;
+import org.hisp.dhis.dxf2.datavalue.DataValue;
+import org.hisp.dhis.dxf2.datavalue.StreamingCsvDataValue;
 
-public interface DataValueSetService
+import au.com.bytecode.opencsv.CSVReader;
+import au.com.bytecode.opencsv.CSVWriter;
+
+public class StreamingCsvDataValueSet
+    extends DataValueSet
 {
-    void writeDataValueSet( String dataSet, String period, String orgUnit, OutputStream out );
+    private CSVWriter writer;
     
-    void writeDataValueSet( Set<String> dataSets, Date startDate, Date endDate, Set<String> orgUnits, OutputStream out );
+    private CSVReader reader;
     
-    void writeDataValueSetCsv( Set<String> dataSets, Date startDate, Date endDate, Set<String> orgUnits, Writer writer );
+    private String[] nextRow;
     
-    ImportSummary saveDataValueSet( InputStream in );
+    public StreamingCsvDataValueSet( CSVWriter writer )
+    {
+        this.writer = writer;
+    }
+    
+    public StreamingCsvDataValueSet( CSVReader reader )
+    {
+        this.reader = reader;
+    }
+    
+    @Override
+    public boolean hasNextDataValue()
+    {
+        try
+        {
+            return ( nextRow = reader.readNext() ) != null;            
+        }
+        catch ( IOException ex )
+        {
+            throw new RuntimeException( ex );
+        }
+    }
 
-    ImportSummary saveDataValueSet( InputStream in, ImportOptions importOptions );
-    
-    ImportSummary saveDataValueSet( InputStream in, ImportOptions importOptions, TaskId taskId );
+    @Override
+    public DataValue getNextDataValue()
+    {
+        return new StreamingCsvDataValue( nextRow );
+    }
+
+    @Override
+    public DataValue getDataValueInstance()
+    {
+        return new StreamingCsvDataValue( writer );
+    }
+
+    @Override
+    public void close()
+    {
+        try
+        {
+            writer.close();
+        }
+        catch ( IOException ex )
+        {
+            throw new RuntimeException( ex );
+        }
+    }    
 }

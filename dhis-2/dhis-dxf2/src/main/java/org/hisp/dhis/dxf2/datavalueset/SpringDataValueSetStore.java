@@ -32,12 +32,12 @@ import static org.hisp.dhis.system.util.DateUtils.getMediumDateString;
 import static org.hisp.dhis.system.util.TextUtils.getCommaDelimitedString;
 
 import java.io.OutputStream;
+import java.io.Writer;
 import java.util.Collection;
 import java.util.Date;
 import java.util.Set;
 
 import org.amplecode.staxwax.factory.XMLFactory;
-import org.amplecode.staxwax.writer.XMLWriter;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.dxf2.datavalue.DataValue;
@@ -47,6 +47,8 @@ import org.hisp.dhis.period.PeriodType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.rowset.SqlRowSet;
+
+import au.com.bytecode.opencsv.CSVWriter;
 
 public class SpringDataValueSetStore
     implements DataValueSetStore
@@ -58,14 +60,26 @@ public class SpringDataValueSetStore
     // DataValueSetStore implementation
     //--------------------------------------------------------------------------
 
-    public void writeDataValueSet( DataSet dataSet, Date completeDate, Period period, OrganisationUnit orgUnit, 
+    public void writeDataValueSetXml( DataSet dataSet, Date completeDate, Period period, OrganisationUnit orgUnit, 
         Set<DataElement> dataElements, Set<Period> periods, Set<OrganisationUnit> orgUnits, OutputStream out )
     {
-        XMLWriter writer = XMLFactory.getXMLWriter( out );
+        DataValueSet dataValueSet = new StreamingDataValueSet( XMLFactory.getXMLWriter( out ) );
         
+        writeDataValueSet( dataSet, completeDate, period, orgUnit, dataElements, periods, orgUnits, dataValueSet );        
+    }
+    
+    public void writeDataValueSetCsv( Set<DataElement> dataElements, Set<Period> periods, Set<OrganisationUnit> orgUnits, Writer writer )
+    {
+        DataValueSet dataValueSet = new StreamingCsvDataValueSet( new CSVWriter( writer ) );
+        
+        writeDataValueSet( null, null, null, null, dataElements, periods, orgUnits, dataValueSet );
+    }
+    
+    private void writeDataValueSet( DataSet dataSet, Date completeDate, Period period, OrganisationUnit orgUnit, 
+        Set<DataElement> dataElements, Set<Period> periods, Set<OrganisationUnit> orgUnits, DataValueSet dataValueSet )
+    {        
         SqlRowSet rowSet = jdbcTemplate.queryForRowSet( getDataValueSql( dataElements, periods, orgUnits ) );
 
-        DataValueSet dataValueSet = new StreamingDataValueSet( writer );
         dataValueSet.setDataSet( dataSet != null ? dataSet.getUid() : null );
         dataValueSet.setCompleteDate( getMediumDateString( completeDate ) );
         dataValueSet.setPeriod( period != null ? period.getIsoDate() : null );
