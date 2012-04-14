@@ -150,12 +150,6 @@ public class OrganisationUnitGroupSet
     // -------------------------------------------------------------------------
 
     @Override
-    public int hashCode()
-    {
-        return name.hashCode();
-    }
-
-    @Override
     public boolean equals( Object o )
     {
         if ( this == o )
@@ -181,7 +175,11 @@ public class OrganisationUnitGroupSet
     @Override
     public String toString()
     {
-        return "[" + name + "]";
+        return "OrganisationUnitGroupSet{" +
+            "organisationUnitGroups=" + organisationUnitGroups +
+            ", description='" + description + '\'' +
+            ", compulsory=" + compulsory +
+            "} " + super.toString();
     }
 
     // -------------------------------------------------------------------------

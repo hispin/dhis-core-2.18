@@ -90,6 +90,12 @@ public class BaseNameableObject
         this.description = description;
     }
 
+    @Override
+    public String toString()
+    {
+        return super.toString();
+    }
+
     @JsonProperty
     @JsonView( {DetailedView.class, ExportView.class} )
     @JacksonXmlProperty( namespace = Dxf2Namespace.NAMESPACE )

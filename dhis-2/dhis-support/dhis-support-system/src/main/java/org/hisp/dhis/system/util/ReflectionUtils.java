@@ -27,6 +27,8 @@ package org.hisp.dhis.system.util;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.util.StringUtils;
 
 import java.lang.reflect.*;
@@ -37,11 +39,12 @@ import java.util.Collection;
  */
 public class ReflectionUtils
 {
+    private static final Log log = LogFactory.getLog( ReflectionUtils.class );
 
     /**
      * Invokes method getId() for this object and returns the return value. An
      * int return type is expected. If the operation fails -1 is returned.
-     * 
+     *
      * @param object object to call getId() on.
      * @return The identifier.
      */
@@ -52,8 +55,7 @@ public class ReflectionUtils
             Method method = object.getClass().getMethod( "getId" );
 
             return (Integer) method.invoke( object );
-        }
-        catch ( Exception ex )
+        } catch ( Exception ex )
         {
             return -1;
         }
@@ -61,8 +63,8 @@ public class ReflectionUtils
 
     /**
      * Fetch a property off the object. Returns null if the operation fails.
-     * 
-     * @param object the object.
+     *
+     * @param object   the object.
      * @param property name of the property to get.
      * @return the value of the property or null.
      */
@@ -75,8 +77,7 @@ public class ReflectionUtils
             Method method = object.getClass().getMethod( "get" + property );
 
             return (String) method.invoke( object );
-        }
-        catch ( Exception ex )
+        } catch ( Exception ex )
         {
             return null;
         }
@@ -85,16 +86,16 @@ public class ReflectionUtils
     /**
      * Sets a property for the supplied object. Throws an
      * UnsupportedOperationException if the operation fails.
-     * 
+     *
      * @param object Object to modify
-     * @param name Name of property to set
-     * @param value Value the property will be set to
+     * @param name   Name of property to set
+     * @param value  Value the property will be set to
      */
     public static void setProperty( Object object, String name, String value )
     {
-        Object[] arguments = new Object[] { value };
+        Object[] arguments = new Object[]{value};
 
-        Class<?>[] parameterTypes = new Class<?>[] { String.class };
+        Class<?>[] parameterTypes = new Class<?>[]{String.class};
 
         if ( name.length() > 0 )
         {
@@ -105,8 +106,7 @@ public class ReflectionUtils
                 Method concatMethod = object.getClass().getMethod( name, parameterTypes );
 
                 concatMethod.invoke( object, arguments );
-            }
-            catch ( Exception ex )
+            } catch ( Exception ex )
             {
                 throw new UnsupportedOperationException( "Failed to set property", ex );
             }
@@ -116,11 +116,11 @@ public class ReflectionUtils
     /**
      * Sets a property for the supplied object. Throws an
      * UnsupportedOperationException if the operation fails.
-     * 
-     * @param object Object to modify
+     *
+     * @param object     Object to modify
      * @param namePrefix prefix of the property name to set
-     * @param name Name of property to set
-     * @param value Value the property will be set to
+     * @param name       Name of property to set
+     * @param value      Value the property will be set to
      */
     public static void setProperty( Object object, String namePrefix, String name, String value )
     {
@@ -132,7 +132,7 @@ public class ReflectionUtils
     /**
      * Returns the name of the class that the object is an instance of
      * org.hisp.dhis.indicator.Indicactor returns Indicator.
-     * 
+     *
      * @param object object to determine className for.
      * @return String containing the class name.
      */
@@ -143,7 +143,7 @@ public class ReflectionUtils
 
     /**
      * Test whether the object is an array or a Collection.
-     * 
+     *
      * @param value the object.
      * @return true if the object is an array or a Collection, false otherwise.
      */
@@ -167,8 +167,7 @@ public class ReflectionUtils
         try
         {
             field = object.getClass().getDeclaredField( fieldName );
-        }
-        catch ( NoSuchFieldException e )
+        } catch ( NoSuchFieldException e )
         {
             return false;
         }
@@ -189,8 +188,7 @@ public class ReflectionUtils
                 }
             }
 
-        }
-        catch ( ClassCastException e )
+        } catch ( ClassCastException e )
         {
             return false;
         }
@@ -198,34 +196,54 @@ public class ReflectionUtils
         return false;
     }
 
-    public static Method findGetterMethod( String fieldName, Object object )
+    public static Method findGetterMethod( String fieldName, Object object, Class<?>... classes )
     {
         try
         {
-            return object.getClass().getMethod( "get" + StringUtils.capitalize( fieldName ) );
-        }
-        catch ( NoSuchMethodException e )
+            return object.getClass().getMethod( "get" + StringUtils.capitalize( fieldName ), classes );
+        } catch ( NoSuchMethodException e )
         {
+            log.info( "Getter method was not found for fieldName: " + fieldName );
             return null;
         }
     }
 
-    public static Method findSetterMethod( String fieldName, Object object )
+    public static Method findSetterMethod( String fieldName, Object object, Class<?>... classes )
     {
+        Method method = null;
+
         try
         {
-            return object.getClass().getMethod( "set" + StringUtils.capitalize( fieldName ) );
-        }
-        catch ( NoSuchMethodException e )
+            method = object.getClass().getMethod( "set" + StringUtils.capitalize( fieldName ), classes );
+        } catch ( NoSuchMethodException e )
         {
-            return null;
         }
+
+        // if parameter classes was not given, we will retry using the type of the field
+        if ( method == null && classes.length == 0 )
+        {
+            try
+            {
+                Field field = object.getClass().getDeclaredField( fieldName );
+                method = findSetterMethod( fieldName, object, field.getType() );
+            } catch ( NoSuchFieldException e )
+            {
+            }
+        }
+
+        if ( method == null )
+        {
+            log.info( "Setter method was not found for fieldName: " + fieldName );
+        }
+
+        return method;
     }
 
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings( "unchecked" )
     public static <T> T invokeGetterMethod( String fieldName, Object object )
     {
         Method method = findGetterMethod( fieldName, object );
+        log.info( method );
 
         if ( method == null )
         {
@@ -235,21 +253,22 @@ public class ReflectionUtils
         try
         {
             return (T) method.invoke( object );
-        }
-        catch ( InvocationTargetException e )
+        } catch ( InvocationTargetException e )
         {
+            log.info( "InvocationTargetException for fieldName: " + fieldName );
             return null;
-        }
-        catch ( IllegalAccessException e )
+        } catch ( IllegalAccessException e )
         {
+            log.info( "IllegalAccessException for fieldName: " + fieldName );
             return null;
         }
     }
 
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings( "unchecked" )
     public static <T> T invokeSetterMethod( String fieldName, Object object, Object... objects )
     {
         Method method = findSetterMethod( fieldName, object );
+        log.info( method );
 
         if ( method == null )
         {
@@ -259,13 +278,13 @@ public class ReflectionUtils
         try
         {
             return (T) method.invoke( object, objects );
-        }
-        catch ( InvocationTargetException e )
+        } catch ( InvocationTargetException e )
         {
+            log.info( "InvocationTargetException for fieldName: " + fieldName );
             return null;
-        }
-        catch ( IllegalAccessException e )
+        } catch ( IllegalAccessException e )
         {
+            log.info( "IllegalAccessException for fieldName: " + fieldName );
             return null;
         }
     }

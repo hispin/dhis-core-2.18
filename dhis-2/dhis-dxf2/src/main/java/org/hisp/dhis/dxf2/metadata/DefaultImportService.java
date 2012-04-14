@@ -102,9 +102,9 @@ public class DefaultImportService
 */
 
         doImport( metaData.getOrganisationUnits(), importOptions, importSummary );
+        doImport( metaData.getOrganisationUnitGroups(), importOptions, importSummary );
 
 /*
-        doImport( metaData.getOrganisationUnitGroups(), importOptions, importSummary );
         doImport( metaData.getOrganisationUnitGroupSets(), importOptions, importSummary );
         doImport( metaData.getSqlViews(), importOptions, importSummary );
         doImport( metaData.getUsers(), importOptions, importSummary );

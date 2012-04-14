@@ -40,6 +40,7 @@ import org.hisp.dhis.system.util.ReflectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.lang.reflect.Field;
+import java.lang.reflect.Method;
 import java.util.*;
 
 /**
@@ -120,11 +121,13 @@ public class DefaultImporter<T extends BaseIdentifiableObject>
 
         log.info( "Trying to save new object with UID: " + object.getUid() );
 
-        findAndUpdateReferences( object );
-        manager.save( object );
+        saveOrUpdateObjectWithReferences( object, false );
+        manager.update( object );
         updateIdMaps( object );
 
         log.info( "Save successful." );
+
+        log.info( object );
 
         return null;
     }
@@ -146,11 +149,13 @@ public class DefaultImporter<T extends BaseIdentifiableObject>
 
         log.info( "Starting update of object " + getDisplayName( oldObject ) + " (" + oldObject.getClass().getSimpleName() + ")" );
 
-        findAndUpdateReferences( object );
+        saveOrUpdateObjectWithReferences( object, true );
         oldObject.mergeWith( object );
         manager.update( oldObject );
 
         log.info( "Update successful." );
+
+        log.info( object );
 
         return null;
     }
@@ -589,11 +594,13 @@ public class DefaultImporter<T extends BaseIdentifiableObject>
         return match;
     }
 
-    private void findAndUpdateReferences( T object )
+    private void saveOrUpdateObjectWithReferences( T object, boolean update )
     {
         Field[] fields = object.getClass().getDeclaredFields();
 
         log.info( "-> Finding and updating references." );
+
+        Map<String, Set<? extends IdentifiableObject>> collectedCollections = new HashMap<String, Set<? extends IdentifiableObject>>();
 
         for ( Field field : fields )
         {
@@ -629,33 +636,43 @@ public class DefaultImporter<T extends BaseIdentifiableObject>
 
                 if ( b )
                 {
-                    Collection<IdentifiableObject> identifiableObjects = ReflectionUtils.invokeGetterMethod( field.getName(), object );
+                    Collection<IdentifiableObject> objects = ReflectionUtils.invokeGetterMethod( field.getName(), object );
 
-                    if ( identifiableObjects != null && !identifiableObjects.isEmpty() )
+                    if ( objects != null && !objects.isEmpty() )
                     {
-                        for ( IdentifiableObject identifiableObject : identifiableObjects )
-                        {
-                            if ( Period.class.isAssignableFrom( identifiableObject.getClass() ) )
-                            {
-                                // FIXME
-                                log.info( "Skipping Period.class" );
-                                continue;
-                            }
-
-                            IdentifiableObject ref = findObjectByReference( identifiableObject );
-
-                            if ( ref != null )
-                            {
-                                ReflectionUtils.invokeSetterMethod( field.getName(), object, ref );
-                            }
-                            else
-                            {
-                                log.info( "--> Ignored reference " + getDisplayName( identifiableObject ) + "." );
-                            }
-                        }
+                        Set<IdentifiableObject> identifiableObjects = new HashSet<IdentifiableObject>( objects );
+                        collectedCollections.put( field.getName(), identifiableObjects );
+                        objects.clear();
                     }
                 }
             }
+        }
+
+        if ( !update )
+        {
+            manager.save( object );
+        }
+
+        for ( String collectionKey : collectedCollections.keySet() )
+        {
+            Collection<? extends IdentifiableObject> identifiableObjects = collectedCollections.get( collectionKey );
+            Collection<IdentifiableObject> objects = new HashSet<IdentifiableObject>();
+
+            for ( IdentifiableObject identifiableObject : identifiableObjects )
+            {
+                IdentifiableObject ref = findObjectByReference( identifiableObject );
+
+                if ( ref != null )
+                {
+                    objects.add( ref );
+                }
+                else
+                {
+                    log.info( "--> Ignored reference " + getDisplayName( identifiableObject ) + "." );
+                }
+            }
+
+            ReflectionUtils.invokeSetterMethod( collectionKey, object, objects );
         }
     }
 }

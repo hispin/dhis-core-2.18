@@ -98,7 +98,7 @@ public class BaseIdentifiableObject
         this.name = name;
     }
 
-    public BaseIdentifiableObject(IdentifiableObject identifiableObject)
+    public BaseIdentifiableObject( IdentifiableObject identifiableObject )
     {
         this.id = identifiableObject.getId();
         this.uid = identifiableObject.getUid();
@@ -121,7 +121,7 @@ public class BaseIdentifiableObject
     // -------------------------------------------------------------------------
 
     @JsonProperty( value = "internalId" )
-    @JsonView( { DetailedView.class, IdentifiableObjectView.class, ExportView.class } )
+    @JsonView( {DetailedView.class, IdentifiableObjectView.class, ExportView.class} )
     @JacksonXmlProperty( isAttribute = true )
     public int getId()
     {
@@ -146,7 +146,7 @@ public class BaseIdentifiableObject
     }
 
     @JsonProperty
-    @JsonView( { DetailedView.class, IdentifiableObjectView.class, ExportView.class } )
+    @JsonView( {DetailedView.class, IdentifiableObjectView.class, ExportView.class} )
     @JacksonXmlProperty( isAttribute = true )
     public String getCode()
     {
@@ -154,12 +154,12 @@ public class BaseIdentifiableObject
     }
 
     public void setCode( String code )
-    {  
+    {
         this.code = code;
     }
 
     @JsonProperty
-    @JsonView( { DetailedView.class, IdentifiableObjectView.class, ExportView.class } )
+    @JsonView( {DetailedView.class, IdentifiableObjectView.class, ExportView.class} )
     @JacksonXmlProperty( isAttribute = true )
     public String getName()
     {
@@ -172,7 +172,7 @@ public class BaseIdentifiableObject
     }
 
     @JsonProperty
-    @JsonView( { DetailedView.class, IdentifiableObjectView.class, ExportView.class } )
+    @JsonView( {DetailedView.class, IdentifiableObjectView.class, ExportView.class} )
     @JacksonXmlProperty( isAttribute = true )
     public Date getLastUpdated()
     {
@@ -194,6 +194,32 @@ public class BaseIdentifiableObject
         this.displayName = displayName;
     }
 
+    @Override
+    public boolean equals( Object o )
+    {
+        if ( this == o ) return true;
+        if ( o == null || getClass() != o.getClass() ) return false;
+
+        BaseIdentifiableObject that = (BaseIdentifiableObject) o;
+
+        if ( code != null ? !code.equals( that.code ) : that.code != null ) return false;
+        if ( name != null ? !name.equals( that.name ) : that.name != null ) return false;
+        if ( uid != null ? !uid.equals( that.uid ) : that.uid != null ) return false;
+
+        return true;
+    }
+
+    @Override
+    public int hashCode()
+    {
+        int result = uid != null ? uid.hashCode() : 0;
+        result = 31 * result + (code != null ? code.hashCode() : 0);
+        result = 31 * result + (name != null ? name.hashCode() : 0);
+        result = 31 * result + (lastUpdated != null ? lastUpdated.hashCode() : 0);
+
+        return result;
+    }
+
     // -------------------------------------------------------------------------
     // Logic
     // -------------------------------------------------------------------------
@@ -213,7 +239,7 @@ public class BaseIdentifiableObject
 
     /**
      * Get a map of uids to internal identifiers
-     * 
+     *
      * @param objects the IdentifiableObjects to put in the map
      * @return the map
      */
@@ -234,7 +260,7 @@ public class BaseIdentifiableObject
 
     /**
      * Get a map of codes to internal identifiers
-     * 
+     *
      * @param objects the NameableObjects to put in the map
      * @return the map
      */
@@ -253,7 +279,7 @@ public class BaseIdentifiableObject
 
     /**
      * Get a map of names to internal identifiers
-     * 
+     *
      * @param objects the NameableObjects to put in the map
      * @return the map
      */
@@ -273,14 +299,8 @@ public class BaseIdentifiableObject
     @Override
     public String toString()
     {
-        return "IdentifiableObject{" +
-            "id=" + id +
-            ", uid='" + uid + '\'' +
-            ", code='" + code + '\'' +
-            ", name='" + name + '\'' +
-            ", lastUpdated=" + lastUpdated +
-            ", displayName='" + displayName + '\'' +
-            '}';
+        return "{" + "id=" + id + ", uid='" + uid + '\'' + ", code='" +
+            code + '\'' + ", name='" + name + '\'' + ", lastUpdated=" + lastUpdated + "} ";
     }
 
     @Override
