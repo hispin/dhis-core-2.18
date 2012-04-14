@@ -36,7 +36,7 @@
 #if( $running )
 
 <div id="notificationDiv">
-<table id="notificationTable" class="notificationTable">
+<table id="notificationTable" class="notificationTable" style="width:422px">
 <col width="120">
 <col width="380">
 </table>
@@ -51,4 +51,4 @@ $( document ).ready( function() {
 
 #end
 
-<div id="importSummaryDiv" class="page"></div>
+<div id="importSummaryDiv" class="page formSection" style="display:none; width:400px;"></div>
