@@ -31,6 +31,7 @@ import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertNotNull;
 import static junit.framework.Assert.assertTrue;
 
+import java.io.InputStreamReader;
 import java.util.Collection;
 
 import org.hisp.dhis.DhisTest;
@@ -158,6 +159,16 @@ public class DataValueSetServiceTest
         throws Exception
     {
         ImportSummary summary = dataValueSetService.saveDataValueSet( new ClassPathResource( "datavalueset/dataValueSetB.xml" ).getInputStream() );
+        
+        assertImportDataValues( summary );
+    }
+    
+    @Test
+    public void testImportDataValuesCsv()
+        throws Exception
+    {
+        ImportSummary summary = dataValueSetService.saveDataValueSetCsv( 
+            new InputStreamReader( new ClassPathResource( "datavalueset/dataValueSetB.csv" ).getInputStream() ), null, null );
         
         assertImportDataValues( summary );
     }

@@ -37,6 +37,7 @@ import static org.hisp.dhis.system.util.DateUtils.getDefaultDate;
 
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.io.Reader;
 import java.io.Writer;
 import java.util.Date;
 import java.util.HashSet;
@@ -73,6 +74,8 @@ import org.hisp.dhis.system.util.DateUtils;
 import org.hisp.dhis.user.CurrentUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
+
+import au.com.bytecode.opencsv.CSVReader;
 
 /**
  * @author Lars Helge Overland
@@ -176,11 +179,25 @@ public class DefaultDataValueSetService
     
     public ImportSummary saveDataValueSet( InputStream in, ImportOptions importOptions, TaskId id )
     {
+        DataValueSet dataValueSet = new StreamingDataValueSet( XMLFactory.getXMLReader( in ) );
+        
+        return saveDataValueSet( importOptions, id, dataValueSet );
+    }
+
+    public ImportSummary saveDataValueSetCsv( Reader reader, ImportOptions importOptions, TaskId id )
+    {
+        DataValueSet dataValueSet = new StreamingCsvDataValueSet( new CSVReader( reader ) );
+        
+        return saveDataValueSet( importOptions, id, dataValueSet );
+    }
+    
+    private ImportSummary saveDataValueSet( ImportOptions importOptions, TaskId id, DataValueSet dataValueSet )
+    {
         notifier.clear( id, DATAVALUE_IMPORT ).notify( id, DATAVALUE_IMPORT, "Process started" );
         
         ImportSummary summary = new ImportSummary();
         
-        DataValueSet dataValueSet = new StreamingDataValueSet( XMLFactory.getXMLReader( in ) );
+        importOptions = importOptions != null ? importOptions : ImportOptions.getDefaultImportOptions();
         
         IdentifiableProperty dataElementIdScheme = dataValueSet.getDataElementIdScheme() != null ? IdentifiableProperty.valueOf( dataValueSet.getDataElementIdScheme().toUpperCase() ) : importOptions.getDataElementIdScheme();
         IdentifiableProperty orgUnitIdScheme = dataValueSet.getOrgUnitIdScheme() != null ? IdentifiableProperty.valueOf( dataValueSet.getOrgUnitIdScheme().toUpperCase() ) : importOptions.getOrgUnitIdScheme();
