@@ -43,9 +43,9 @@ import org.hisp.dhis.i18n.I18nFormat;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitHierarchy;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
-import org.hisp.dhis.ouwt.manager.OrganisationUnitSelectionManager;
 import org.hisp.dhis.paging.ActionPagingSupport;
 import org.hisp.dhis.patient.PatientAttribute;
+import org.hisp.dhis.patient.PatientAttributeOption;
 import org.hisp.dhis.patient.PatientAttributeService;
 import org.hisp.dhis.patient.PatientIdentifierType;
 import org.hisp.dhis.patient.PatientIdentifierTypeService;
@@ -67,17 +67,12 @@ public class GenerateTabularReportAction
     private String PREFIX_PATIENT_ATTRIBUTE = "attr";
 
     private String PREFIX_DATA_ELEMENT = "de";
+    
+    private String VALUE_TYPE_OPTION_SET = "optionSet";
 
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
-
-    private OrganisationUnitSelectionManager selectionManager;
-
-    public void setSelectionManager( OrganisationUnitSelectionManager selectionManager )
-    {
-        this.selectionManager = selectionManager;
-    }
 
     private OrganisationUnitService organisationUnitService;
 
@@ -153,16 +148,18 @@ public class GenerateTabularReportAction
         this.endDate = endDate;
     }
 
+    private List<String> values = new ArrayList<String>();
+
+    public List<String> getValues()
+    {
+        return values;
+    }
+
     private List<String> searchingValues = new ArrayList<String>();
 
     public void setSearchingValues( List<String> searchingValues )
     {
         this.searchingValues = searchingValues;
-    }
-
-    public List<String> getSearchingValues()
-    {
-        return searchingValues;
     }
 
     private boolean orderByOrgunitAsc;
@@ -249,6 +246,20 @@ public class GenerateTabularReportAction
         this.facilityLB = facilityLB;
     }
 
+    private List<String> valueTypes = new ArrayList<String>();
+
+    public List<String> getValueTypes()
+    {
+        return valueTypes;
+    }
+
+    private Map<Integer, List<String>> mapSuggestedValues = new HashMap<Integer, List<String>>();
+
+    public Map<Integer, List<String>> getMapSuggestedValues()
+    {
+        return mapSuggestedValues;
+    }
+
     private Map<Integer, String> searchingIdenKeys = new HashMap<Integer, String>();
 
     private Map<Integer, String> searchingAttrKeys = new HashMap<Integer, String>();
@@ -266,10 +277,7 @@ public class GenerateTabularReportAction
         // Get orgunitIds
         // ---------------------------------------------------------------------
 
-        OrganisationUnit selectedOrgunit = selectionManager.getSelectedOrganisationUnit();
-        
-        // OrganisationUnit selectedOrgunit =
-        // organisationUnitService.getOrganisationUnit( orgunitId );
+        OrganisationUnit selectedOrgunit = organisationUnitService.getOrganisationUnit( orgunitId );
 
         Set<Integer> orgunitIds = new HashSet<Integer>();
 
@@ -313,10 +321,12 @@ public class GenerateTabularReportAction
 
         if ( type == null )
         {
-            total = programStageInstanceService.countProgramStageInstances( programStage, searchingIdenKeys,
+            int totalRecords = programStageInstanceService.countProgramStageInstances( programStage, searchingIdenKeys,
                 searchingAttrKeys, searchingDEKeys, orgunitIds, startValue, endValue );
 
-            this.paging = createPaging( total );
+            total = getNumberOfPages( totalRecords );
+
+            this.paging = createPaging( totalRecords );
 
             grid = programStageInstanceService.getTabularReport( programStage, identifierTypes, patientAttributes,
                 dataElements, searchingIdenKeys, searchingAttrKeys, searchingDEKeys, orgunitIds, level, startValue,
@@ -337,12 +347,18 @@ public class GenerateTabularReportAction
     // Supportive methods
     // ---------------------------------------------------------------------
 
+    public int getNumberOfPages( int totalRecord )
+    {
+        int pageSize = this.getDefaultPageSize();
+        return (totalRecord % pageSize == 0) ? (totalRecord / pageSize) : (totalRecord / pageSize + 1);
+    }
+
     private void getParams()
     {
         // ---------------------------------------------------------------------
         // Get Patient-Identifier searching-keys
         // ---------------------------------------------------------------------
-
+        int index = 0;
         for ( String searchingValue : searchingValues )
         {
             String[] infor = searchingValue.split( "_" );
@@ -351,28 +367,105 @@ public class GenerateTabularReportAction
 
             if ( objectType.equals( PREFIX_IDENTIFIER_TYPE ) )
             {
-                identifierTypes.add( identifierTypeService.getPatientIdentifierType( objectId ) );
+                PatientIdentifierType identifierType = identifierTypeService.getPatientIdentifierType( objectId );
+                identifierTypes.add( identifierType );
+
+                // Get value-type && suggested-values
+                valueTypes.add( identifierType.getType() );
+
+                // Get searching-value
                 if ( infor.length == 3 )
                 {
                     searchingIdenKeys.put( objectId, infor[2].trim() );
+                    values.add( infor[2].trim() );
+                }
+                else
+                {
+                    values.add( "" );
                 }
             }
             else if ( objectType.equals( PREFIX_PATIENT_ATTRIBUTE ) )
             {
-                patientAttributes.add( patientAttributeService.getPatientAttribute( objectId ) );
+                PatientAttribute attribute = patientAttributeService.getPatientAttribute( objectId );
+                patientAttributes.add( attribute );
+
+                // Get value-type && suggested-values
+                valueTypes.add( attribute.getValueType() );
+                mapSuggestedValues.put( index, getSuggestedAttrValues( attribute ) );
+
+                // Get searching-value
                 if ( infor.length == 3 )
                 {
                     searchingAttrKeys.put( objectId, infor[2].trim() );
+                    values.add( infor[2].trim() );
+                }
+                else
+                {
+                    values.add( "" );
                 }
             }
             else if ( objectType.equals( PREFIX_DATA_ELEMENT ) )
             {
-                dataElements.add( dataElementService.getDataElement( objectId ) );
+                DataElement dataElement = dataElementService.getDataElement( objectId );
+                dataElements.add( dataElement );
+
+                // Get value-type && suggested-values
+                String valueType = ( dataElement.getOptionSet() != null ) ? VALUE_TYPE_OPTION_SET : dataElement.getType();
+                valueTypes.add( valueType );
+                mapSuggestedValues.put( index, getSuggestedDEValues( dataElement ) );
+
                 if ( infor.length == 3 )
                 {
                     searchingDEKeys.put( objectId, infor[2].trim() );
+                    values.add( infor[2].trim() );
+                }
+                else
+                {
+                    values.add( "" );
                 }
             }
+
+            index++;
         }
     }
+
+    private List<String> getSuggestedAttrValues( PatientAttribute patientAttribute )
+    {
+        List<String> values = new ArrayList<String>();
+        String valueType = patientAttribute.getValueType();
+
+        if ( valueType.equals( PatientAttribute.TYPE_BOOL ) )
+        {
+            values.add( i18n.getString( "yes" ) );
+            values.add( i18n.getString( "no" ) );
+        }
+        else if ( valueType.equals( PatientAttribute.TYPE_COMBO ) )
+        {
+            for ( PatientAttributeOption attributeOption : patientAttribute.getAttributeOptions() )
+            {
+                values.add( attributeOption.getName() );
+            }
+        }
+
+        return values;
+    }
+
+    private List<String> getSuggestedDEValues( DataElement dataElement )
+    {
+        List<String> values = new ArrayList<String>();
+        String valueType = dataElement.getType();
+
+        if ( valueType.equals( DataElement.VALUE_TYPE_BOOL ) )
+        {
+            values.add( i18n.getString( "yes" ) );
+            values.add( i18n.getString( "no" ) );
+        }
+        else if ( dataElement.getOptionSet() != null )
+        {
+            values = dataElement.getOptionSet().getOptions();
+        }
+
+        return values;
+    }
+
 }

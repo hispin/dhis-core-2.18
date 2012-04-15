@@ -7,7 +7,7 @@
 	#introListImgItem( "multipledataEntrySelect.action" "multiple_name_based_data_entry" "dataentry" )
 	#introListImgItem( "anonymousRegistration.action" "anonymous_events" "dataentry" )
     #introListImgItem( "reportSelect.action" "program_summary" "summaryreport" )
-	#introListImgItem( "tabularReportSelect.action" "tabular_report" "summaryreport" )
+	#introListImgItem( "app/index.html" "tabular_report" "summaryreport" )
 	#introListImgItem( "visitplan.action" "visit_plan" "visitplan" )
     #introListImgItem( "caseAggregationForm.action" "case_aggregation" "caseaggregation" )
 </ul>
