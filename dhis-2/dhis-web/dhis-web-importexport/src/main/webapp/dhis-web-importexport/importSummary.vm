@@ -1,7 +1,7 @@
 
 <h3>$i18n.getString( "import_summary" )</h3>
 
-#if( ${summary.dataSetComplete} != "false" )
+#if( ${summary.dataSetComplete} && ${summary.dataSetComplete} != "false" )
 <p>$i18n.getString( "data_set_completed_on" ) ${summary.dataSetComplete}</p>
 #end
 

@@ -124,10 +124,10 @@ public class ContextUtils
         }
     }
 
-    public static void errorResponse( HttpServletResponse response, String message )
+    public static void conflictResponse( HttpServletResponse response, String message )
         throws IOException
     {
-        response.setStatus( HttpServletResponse.SC_BAD_REQUEST );
+        response.setStatus( HttpServletResponse.SC_CONFLICT );
         response.setContentType( CONTENT_TYPE_TEXT );
 
         PrintWriter writer = response.getWriter();

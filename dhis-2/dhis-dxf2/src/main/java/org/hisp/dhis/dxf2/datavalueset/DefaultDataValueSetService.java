@@ -32,6 +32,7 @@ import static org.hisp.dhis.importexport.ImportStrategy.NEW_AND_UPDATES;
 import static org.hisp.dhis.importexport.ImportStrategy.UPDATES;
 import static org.hisp.dhis.scheduling.TaskCategory.DATAVALUE_IMPORT;
 import static org.hisp.dhis.system.notification.NotificationLevel.INFO;
+import static org.hisp.dhis.system.notification.NotificationLevel.ERROR;
 import static org.hisp.dhis.system.util.ConversionUtils.wrap;
 import static org.hisp.dhis.system.util.DateUtils.getDefaultDate;
 
@@ -179,16 +180,30 @@ public class DefaultDataValueSetService
     
     public ImportSummary saveDataValueSet( InputStream in, ImportOptions importOptions, TaskId id )
     {
-        DataValueSet dataValueSet = new StreamingDataValueSet( XMLFactory.getXMLReader( in ) );
-        
-        return saveDataValueSet( importOptions, id, dataValueSet );
+        try
+        {
+            DataValueSet dataValueSet = new StreamingDataValueSet( XMLFactory.getXMLReader( in ) );        
+            return saveDataValueSet( importOptions, id, dataValueSet );
+        }
+        catch ( RuntimeException ex )
+        {
+            notifier.notify( id, DATAVALUE_IMPORT, ERROR, "Unfortunately the process failed, check the logs", true );            
+            throw ex;
+        }
     }
 
     public ImportSummary saveDataValueSetCsv( Reader reader, ImportOptions importOptions, TaskId id )
     {
-        DataValueSet dataValueSet = new StreamingCsvDataValueSet( new CSVReader( reader ) );
-        
-        return saveDataValueSet( importOptions, id, dataValueSet );
+        try
+        {
+            DataValueSet dataValueSet = new StreamingCsvDataValueSet( new CSVReader( reader ) );        
+            return saveDataValueSet( importOptions, id, dataValueSet );
+        }
+        catch ( RuntimeException ex )
+        {
+            notifier.clear( id, DATAVALUE_IMPORT ).notify( id, DATAVALUE_IMPORT, ERROR, "Unfortunately the process failed, check the logs", true );            
+            throw ex;
+        }
     }
     
     private ImportSummary saveDataValueSet( ImportOptions importOptions, TaskId id, DataValueSet dataValueSet )

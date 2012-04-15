@@ -36,6 +36,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.hisp.dhis.api.utils.ContextUtils;
 import org.hisp.dhis.api.webdomain.DataValueSets;
 import org.hisp.dhis.dxf2.datavalueset.DataValueSet;
 import org.hisp.dhis.dxf2.datavalueset.DataValueSetService;
@@ -46,6 +47,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -97,5 +99,12 @@ public class DataValueSetController
 
         response.setContentType( CONTENT_TYPE_XML );        
         JacksonUtils.toXml( response.getOutputStream(), summary );
+    }
+    
+    @ExceptionHandler(IllegalArgumentException.class)
+    public void handleError( IllegalArgumentException ex, HttpServletResponse response )
+        throws IOException
+    {
+        ContextUtils.conflictResponse( response, ex.getMessage() );
     }
 }
