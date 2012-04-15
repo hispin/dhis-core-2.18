@@ -47,16 +47,15 @@ public class NoAction
         this.running = running;
     }
     
-    private String exportFormat;
+    private String importFormat;
     
-    public String getExportFormat()
+    public String getImportFormat()
     {
-        return exportFormat;
+        return importFormat;
     }
-    
-    public void setExportFormat( String exportFormat )
+    public void setImportFormat( String importFormat )
     {
-        this.exportFormat = exportFormat;
+        this.importFormat = importFormat;
     }
     
     public String execute()

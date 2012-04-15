@@ -28,11 +28,10 @@ package org.hisp.dhis.importexport.action.util;
  */
 
 import java.io.InputStream;
+import java.io.Reader;
 
-import org.hisp.dhis.common.IdentifiableObject.IdentifiableProperty;
 import org.hisp.dhis.dxf2.datavalueset.DataValueSetService;
 import org.hisp.dhis.dxf2.metadata.ImportOptions;
-import org.hisp.dhis.importexport.ImportStrategy;
 import org.hisp.dhis.scheduling.TaskId;
 
 /**
@@ -40,25 +39,37 @@ import org.hisp.dhis.scheduling.TaskId;
  */
 public class ImportDataValueTask
     implements Runnable
-{    
+{
+    public static final String FORMAT_CSV = "csv";
+    
     private DataValueSetService dataValueSetService;
     private InputStream in;
-    private boolean dryRun;
-    private ImportStrategy strategy;
+    private Reader reader;
+    private ImportOptions options;
     private TaskId taskId;
+    private String format;
     
-    public ImportDataValueTask( DataValueSetService dataValueSetService, InputStream in, boolean dryRun, ImportStrategy strategy, TaskId taskId )
+    public ImportDataValueTask( DataValueSetService dataValueSetService, InputStream in, Reader reader, ImportOptions options, TaskId taskId, String format )
     {
         this.dataValueSetService = dataValueSetService;
         this.in = in;
-        this.dryRun = dryRun;
-        this.strategy = strategy;
+        this.reader = reader;
+        this.options = options;
         this.taskId = taskId;
+        this.format = format;
     }
     
     @Override
     public void run()
     {
-        dataValueSetService.saveDataValueSet( in, new ImportOptions( IdentifiableProperty.UID, IdentifiableProperty.UID, dryRun, strategy ), taskId );
+        System.out.println( "F " + format);
+        if ( FORMAT_CSV.equals( format ) )
+        {
+            dataValueSetService.saveDataValueSetCsv( reader, options, taskId );
+        }
+        else
+        {
+            dataValueSetService.saveDataValueSet( in, options, taskId );
+        }
     }
 }

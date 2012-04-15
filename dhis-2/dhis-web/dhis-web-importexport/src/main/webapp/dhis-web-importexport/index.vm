@@ -9,7 +9,8 @@ jQuery(function() {
 
 <ul class="introList">
 	#introListImgItem( "setImportFormat.action?importFormat=DXF" "import" "import" )
-	#introListImgItem( "displayImportDataValueForm.action" "data_import" "import" )
+	#introListImgItem( "displayImportDataValueForm.action?importFormat=xml" "xml_data_import" "import" )
+	#introListImgItem( "displayImportDataValueForm.action?importFormat=csv" "csv_data_import" "import" )
 	#introListImgItem( "displayExternalImportMenu.action" "dhis14_import" "import" )
 	
     #introListImgItem( "displayDataValueExportForm.action?exportFormat=DXF" "data_export" "export" )
