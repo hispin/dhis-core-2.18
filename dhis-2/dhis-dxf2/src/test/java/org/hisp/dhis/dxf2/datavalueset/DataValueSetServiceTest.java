@@ -86,8 +86,16 @@ public class DataValueSetServiceTest
     private DataElement deC;
     private DataSet dsA;
     private OrganisationUnit ouA;
+    private OrganisationUnit ouB;
     private Period peA;
+    private Period peB;
     private DataElementCategoryOptionCombo optionComboA;
+    
+    @Override
+    public boolean emptyDatabaseAfterTest()
+    {
+        return true;
+    }
     
     @Override
     public void setUpTest()
@@ -97,7 +105,9 @@ public class DataValueSetServiceTest
         deC = createDataElement( 'C' );
         dsA = createDataSet( 'A', new MonthlyPeriodType() );
         ouA = createOrganisationUnit( 'A' );
+        ouB = createOrganisationUnit( 'B' );
         peA = createPeriod( getDate( 2012, 1, 1 ), getDate( 2012, 1, 31 ) );
+        peB = createPeriod( getDate( 2012, 2, 1 ), getDate( 2012, 2, 29 ) );
         optionComboA = categoryService.getDefaultDataElementCategoryOptionCombo();
         
         deA.setUid( "f7n9E0hX8qk" );
@@ -105,20 +115,23 @@ public class DataValueSetServiceTest
         deC.setUid( "eY5ehpbEsB7" );
         dsA.setUid( "pBOMPrpg1QX" );
         ouA.setUid( "DiszpKrYNg8" );
+        ouB.setUid( "BdfsJfj87js" );
         
         dataElementService.addDataElement( deA );
         dataElementService.addDataElement( deB );
         dataElementService.addDataElement( deC );
         dataSetService.addDataSet( dsA );
         organisationUnitService.addOrganisationUnit( ouA );
+        organisationUnitService.addOrganisationUnit( ouB );
         periodService.addPeriod( peA );
+        periodService.addPeriod( peB );
     }
     
     @Test
-    public void testImport()
+    public void testImportDataValueSetXml()
         throws Exception
     {
-        ImportSummary summary = dataValueSetService.saveDataValueSet( new ClassPathResource( "dataValueSetA.xml" ).getInputStream() );
+        ImportSummary summary = dataValueSetService.saveDataValueSet( new ClassPathResource( "datavalueset/dataValueSetA.xml" ).getInputStream() );
         
         assertNotNull( summary );
         assertNotNull( summary.getDataValueCount() );
@@ -137,6 +150,38 @@ public class DataValueSetServiceTest
         assertEquals( dsA, registration.getDataSet() );
         assertEquals( peA, registration.getPeriod() );
         assertEquals( ouA, registration.getSource() );
-        assertEquals( getDate( 2012, 1, 2 ), registration.getDate() );
+        assertEquals( getDate( 2012, 1, 9 ), registration.getDate() );
+    }
+    
+    @Test
+    public void testImportDataValuesXml()
+        throws Exception
+    {
+        ImportSummary summary = dataValueSetService.saveDataValueSet( new ClassPathResource( "datavalueset/dataValueSetB.xml" ).getInputStream() );
+        
+        assertImportDataValues( summary );
+    }
+    
+    private void assertImportDataValues( ImportSummary summary )
+    {
+        assertNotNull( summary );
+        assertNotNull( summary.getDataValueCount() );
+
+        Collection<DataValue> dataValues = dataValueService.getAllDataValues();
+
+        assertNotNull( dataValues );
+        assertEquals( 12, dataValues.size() );
+        assertTrue( dataValues.contains( new DataValue( deA, peA, ouA, optionComboA ) ) );
+        assertTrue( dataValues.contains( new DataValue( deA, peA, ouB, optionComboA ) ) );
+        assertTrue( dataValues.contains( new DataValue( deA, peB, ouA, optionComboA ) ) );
+        assertTrue( dataValues.contains( new DataValue( deA, peB, ouB, optionComboA ) ) );
+        assertTrue( dataValues.contains( new DataValue( deB, peA, ouA, optionComboA ) ) );
+        assertTrue( dataValues.contains( new DataValue( deB, peA, ouB, optionComboA ) ) );
+        assertTrue( dataValues.contains( new DataValue( deB, peB, ouA, optionComboA ) ) );
+        assertTrue( dataValues.contains( new DataValue( deB, peB, ouB, optionComboA ) ) );
+        assertTrue( dataValues.contains( new DataValue( deC, peA, ouA, optionComboA ) ) );
+        assertTrue( dataValues.contains( new DataValue( deC, peA, ouB, optionComboA ) ) );
+        assertTrue( dataValues.contains( new DataValue( deC, peB, ouA, optionComboA ) ) );
+        assertTrue( dataValues.contains( new DataValue( deC, peB, ouB, optionComboA ) ) );        
     }
 }

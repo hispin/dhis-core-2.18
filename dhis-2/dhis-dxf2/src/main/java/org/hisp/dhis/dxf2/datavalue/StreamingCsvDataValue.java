@@ -176,4 +176,14 @@ public class StreamingCsvDataValue
         
         writer.writeNext( values.toArray( row ) );
     }
+    
+    public static String[] getHeaders()
+    {
+        String[] headers = { 
+            "dataelelement", "period", "orgunit", 
+            "categoryoptioncombo", "value", "storedby", 
+            "timestamp", "comment", "followup" };
+        
+        return headers;
+    }
 }
