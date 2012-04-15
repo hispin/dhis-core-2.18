@@ -1,8 +1,8 @@
 
-<h3>$i18n.getString( "data_import" )</h3>
+<h3>$!i18n.getString( $importFormat ) $i18n.getString( "data_import" )</h3>
 
 <div class="inputCriteria" style="height:130px">
-<form id="importForm" name="importForm" method="post" enctype="multipart/form-data" action="importDataValue.action">
+<form id="importForm" name="importForm" method="post" enctype="multipart/form-data" action="importDataValue.action?importFormat=$!{importFormat}">
 <table>
 <col width="80">
 <col>
@@ -51,4 +51,4 @@ $( document ).ready( function() {
 
 #end
 
-<div id="importSummaryDiv" class="page formSection" style="display:none; width:400px;"></div>
+<div id="importSummaryDiv" class="page formSection" style="display:none; width:400px; padding-bottom:20px;"></div>

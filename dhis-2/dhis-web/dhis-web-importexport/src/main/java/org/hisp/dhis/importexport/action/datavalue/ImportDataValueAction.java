@@ -28,11 +28,16 @@ package org.hisp.dhis.importexport.action.datavalue;
  */
 
 import java.io.BufferedInputStream;
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.Reader;
 
+import org.hisp.dhis.common.IdentifiableObject.IdentifiableProperty;
 import org.hisp.dhis.dxf2.datavalueset.DataValueSetService;
+import org.hisp.dhis.dxf2.metadata.ImportOptions;
 import org.hisp.dhis.importexport.ImportStrategy;
 import org.hisp.dhis.importexport.action.util.ImportDataValueTask;
 import org.hisp.dhis.scheduling.TaskCategory;
@@ -42,6 +47,8 @@ import org.hisp.dhis.user.CurrentUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.opensymphony.xwork2.Action;
+
+import static org.hisp.dhis.importexport.action.util.ImportDataValueTask.FORMAT_CSV;
 
 /**
  * @author Lars Helge Overland
@@ -82,6 +89,18 @@ public class ImportDataValueAction
     {
         this.strategy = ImportStrategy.valueOf( stgy );
     }
+    
+    private String importFormat;
+
+    public void setImportFormat( String importFormat )
+    {
+        this.importFormat = importFormat;
+    }
+
+    public String getImportFormat()
+    {
+        return importFormat;
+    }
 
     // -------------------------------------------------------------------------
     // Action implementation
@@ -91,10 +110,14 @@ public class ImportDataValueAction
         throws Exception
     {
         final TaskId taskId = new TaskId( TaskCategory.DATAVALUE_IMPORT, currentUserService.getCurrentUser() );
-        
-        final InputStream in = new BufferedInputStream( new FileInputStream( upload ) ); 
 
-        scheduler.executeTask( new ImportDataValueTask( dataValueSetService, in, dryRun, strategy, taskId ) );
+        final ImportOptions options = new ImportOptions( IdentifiableProperty.UID, IdentifiableProperty.UID, dryRun, strategy );
+        
+        final InputStream in = !FORMAT_CSV.equals( importFormat ) ? new BufferedInputStream( new FileInputStream( upload ) ) : null;
+        
+        final Reader reader = FORMAT_CSV.equals( importFormat ) ? new BufferedReader( new InputStreamReader( new FileInputStream( upload ) ) ) : null;
+
+        scheduler.executeTask( new ImportDataValueTask( dataValueSetService, in, reader, options, taskId, importFormat ) );
         
         return SUCCESS;
     }
