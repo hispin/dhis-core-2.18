@@ -30,6 +30,8 @@ package org.hisp.dhis.dxf2.datavalueset;
 import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertNotNull;
 import static junit.framework.Assert.assertTrue;
+import static org.hisp.dhis.common.IdentifiableObject.IdentifiableProperty.*;
+import static org.hisp.dhis.importexport.ImportStrategy.*;
 
 import java.io.InputStreamReader;
 import java.util.Collection;
@@ -46,6 +48,7 @@ import org.hisp.dhis.dataset.DataSetService;
 import org.hisp.dhis.datavalue.DataValue;
 import org.hisp.dhis.datavalue.DataValueService;
 import org.hisp.dhis.dxf2.importsummary.ImportSummary;
+import org.hisp.dhis.dxf2.metadata.ImportOptions;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.period.MonthlyPeriodType;
@@ -194,5 +197,33 @@ public class DataValueSetServiceTest
         assertTrue( dataValues.contains( new DataValue( deC, peA, ouB, optionComboA ) ) );
         assertTrue( dataValues.contains( new DataValue( deC, peB, ouA, optionComboA ) ) );
         assertTrue( dataValues.contains( new DataValue( deC, peB, ouB, optionComboA ) ) );        
+    }
+    
+    @Test
+    public void testImportDataValuesXmlDryRun()
+        throws Exception
+    {
+        ImportOptions options = new ImportOptions( UID, UID, true, NEW_AND_UPDATES );
+        
+        dataValueSetService.saveDataValueSet( new ClassPathResource( "datavalueset/dataValueSetB.xml" ).getInputStream(), options );
+        
+        Collection<DataValue> dataValues = dataValueService.getAllDataValues();
+        
+        assertNotNull( dataValues );
+        assertEquals( 0, dataValues.size() );
+    }
+    
+    @Test
+    public void testImportDataValuesXmlUpdatesOnly()
+        throws Exception
+    {
+        ImportOptions options = new ImportOptions( UID, UID, false, UPDATES );
+        
+        dataValueSetService.saveDataValueSet( new ClassPathResource( "datavalueset/dataValueSetB.xml" ).getInputStream(), options );
+        
+        Collection<DataValue> dataValues = dataValueService.getAllDataValues();
+        
+        assertNotNull( dataValues );
+        assertEquals( 0, dataValues.size() );
     }
 }

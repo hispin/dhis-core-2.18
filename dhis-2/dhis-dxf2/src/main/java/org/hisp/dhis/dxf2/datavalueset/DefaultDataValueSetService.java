@@ -216,7 +216,8 @@ public class DefaultDataValueSetService
         
         IdentifiableProperty dataElementIdScheme = dataValueSet.getDataElementIdScheme() != null ? IdentifiableProperty.valueOf( dataValueSet.getDataElementIdScheme().toUpperCase() ) : importOptions.getDataElementIdScheme();
         IdentifiableProperty orgUnitIdScheme = dataValueSet.getOrgUnitIdScheme() != null ? IdentifiableProperty.valueOf( dataValueSet.getOrgUnitIdScheme().toUpperCase() ) : importOptions.getOrgUnitIdScheme();
-        ImportStrategy strategy = importOptions.getImportStrategy();
+        boolean dryRun = dataValueSet.getDryRun() != null ? dataValueSet.getDryRun() : importOptions.isDryRun();
+        ImportStrategy strategy = dataValueSet.getStrategy() != null ? ImportStrategy.valueOf( dataValueSet.getStrategy() ) : importOptions.getImportStrategy();
         
         Map<String, DataElement> dataElementMap = identifiableObjectManager.getIdMap( DataElement.class, dataElementIdScheme );
         Map<String, OrganisationUnit> orgUnitMap = identifiableObjectManager.getIdMap( OrganisationUnit.class, orgUnitIdScheme );
@@ -303,7 +304,7 @@ public class DefaultDataValueSetService
             {
                 if ( NEW_AND_UPDATES.equals( strategy ) || UPDATES.equals( strategy ) )
                 {
-                    if ( !importOptions.isDryRun() )
+                    if ( !dryRun )
                     {
                         batchHandler.updateObject( internalValue );
                     }
@@ -315,7 +316,7 @@ public class DefaultDataValueSetService
             {
                 if ( NEW_AND_UPDATES.equals( strategy ) || NEW.equals( strategy ) )
                 {
-                    if ( !importOptions.isDryRun() )
+                    if ( !dryRun )
                     {
                         batchHandler.addObject( internalValue );
                     }
