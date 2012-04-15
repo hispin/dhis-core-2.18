@@ -62,7 +62,6 @@ public class ImportDataValueTask
     @Override
     public void run()
     {
-        System.out.println( "F " + format);
         if ( FORMAT_CSV.equals( format ) )
         {
             dataValueSetService.saveDataValueSetCsv( reader, options, taskId );
