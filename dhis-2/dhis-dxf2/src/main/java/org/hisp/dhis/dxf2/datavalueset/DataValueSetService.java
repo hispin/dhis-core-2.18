@@ -29,6 +29,7 @@ package org.hisp.dhis.dxf2.datavalueset;
 
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.io.Reader;
 import java.io.Writer;
 import java.util.Date;
 import java.util.Set;
@@ -50,4 +51,6 @@ public interface DataValueSetService
     ImportSummary saveDataValueSet( InputStream in, ImportOptions importOptions );
     
     ImportSummary saveDataValueSet( InputStream in, ImportOptions importOptions, TaskId taskId );
+    
+    ImportSummary saveDataValueSetCsv( Reader reader, ImportOptions importOptions, TaskId id );
 }
