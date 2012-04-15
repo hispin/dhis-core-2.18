@@ -46,12 +46,22 @@ public class StreamingCsvDataValueSet
     
     public StreamingCsvDataValueSet( CSVWriter writer )
     {
-        this.writer = writer;
+        this.writer = writer;        
+        this.writer.writeNext( StreamingCsvDataValue.getHeaders() ); // Write headers
     }
     
     public StreamingCsvDataValueSet( CSVReader reader )
     {
         this.reader = reader;
+        
+        try
+        {
+            this.reader.readNext(); // Skip first row / headers
+        }
+        catch ( IOException ex )
+        {
+            throw new RuntimeException( ex );
+        }
     }
     
     @Override
