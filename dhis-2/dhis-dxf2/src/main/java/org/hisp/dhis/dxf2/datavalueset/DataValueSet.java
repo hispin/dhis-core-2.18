@@ -42,6 +42,10 @@ public class DataValueSet
     
     protected String orgUnitIdScheme;
     
+    protected Boolean dryRun;
+    
+    protected String strategy;
+    
     //--------------------------------------------------------------------------
     // Properties
     //--------------------------------------------------------------------------
@@ -86,6 +90,26 @@ public class DataValueSet
     public void setOrgUnitIdScheme( String orgUnitIdScheme )
     {
         this.orgUnitIdScheme = orgUnitIdScheme;
+    }
+
+    public Boolean getDryRun()
+    {
+        return dryRun;
+    }
+
+    public void setDryRun( Boolean dryRun )
+    {
+        this.dryRun = dryRun;
+    }
+
+    public String getStrategy()
+    {
+        return strategy;
+    }
+
+    public void setStrategy( String strategy )
+    {
+        this.strategy = strategy;
     }
 
     public String getDataSet()

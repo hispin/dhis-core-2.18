@@ -37,9 +37,12 @@ public class StreamingDataValueSet
 {
     private static final String XMLNS = "xmlns";
     private static final String NS = "http://dhis2.org/schema/dxf/2.0";
+    private static final String TRUE = "true";
 
     private static final String FIELD_DATAELEMENTIDSCHEME = "dataElementIdScheme";
     private static final String FIELD_ORGUNITIDSCHEME = "orgUnitIdScheme";
+    private static final String FIELD_DRYRUN = "dryRun";
+    private static final String FIELD_IMPORTSTRATEGY = "importStrategy";
 
     private static final String FIELD_DATAVALUESET = "dataValueSet";
     private static final String FIELD_DATAVALUE = "dataValue";
@@ -86,6 +89,18 @@ public class StreamingDataValueSet
     public String getOrgUnitIdScheme()
     {
         return orgUnitIdScheme = orgUnitIdScheme == null ? reader.getAttributeValue( FIELD_ORGUNITIDSCHEME ) : orgUnitIdScheme;
+    }
+    
+    @Override
+    public Boolean getDryRun()
+    {
+        return dryRun = dryRun == null ? ( TRUE.equals( reader.getAttributeValue( FIELD_DRYRUN ) ) ? Boolean.TRUE : null ) : dryRun;
+    }
+
+    @Override
+    public String getStrategy()
+    {
+        return strategy = strategy == null ? reader.getAttributeValue( FIELD_IMPORTSTRATEGY ) : strategy;
     }
 
     @Override
