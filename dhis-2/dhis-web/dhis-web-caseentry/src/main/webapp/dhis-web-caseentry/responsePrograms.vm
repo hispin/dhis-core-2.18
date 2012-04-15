@@ -5,7 +5,7 @@
 	  {
 		"id":  ${program.id} ,
 		"name": "$!encoder.jsonEncode( ${program.name} )",
-		"singleEvent": "$program.singleEvent"
+		"anonymous": "$program.anonymous"
 	  }#if( $velocityCount < $size ),#end
 	#end]
 }

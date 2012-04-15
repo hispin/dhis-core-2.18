@@ -339,22 +339,22 @@
 				/dhis-web-commons/ajax/jsonResponseInput.vm</result>
 		</action>
 		
-        <action name="generateTabularReport"
+        <!--  action name="generateTabularReport"
 			class="org.hisp.dhis.caseentry.action.report.GenerateTabularReportAction">
 			<result name="success" type="velocity">/content.vm</result>
 			<result name="xls" type="gridXlsResult" />
       		<result name="pdf" type="gridPdfResult" />
 			<param name="page">/dhis-web-caseentry/tabularReportResult.vm</param>
 			<param name="requiredAuthorities">F_GENERATE_BENEFICIARY_TABULAR_REPORT</param>
-		</action>
+		</action -->
 		
-		 <!--  action name="generateTabularReport"
+		 <action name="generateTabularReport"
 			class="org.hisp.dhis.caseentry.action.report.GenerateTabularReportAction">
 			<result name="success" type="velocity-json">/dhis-web-caseentry/jsonTabularReport.vm</result>
 			<result name="xls" type="gridXlsResult" />
       		<result name="pdf" type="gridPdfResult" />
 			<param name="requiredAuthorities">F_GENERATE_BENEFICIARY_TABULAR_REPORT</param>
-		</action>  -->
+		</action>
 		
 		<action name="searchTabularReport"
 			class="org.hisp.dhis.caseentry.action.report.GenerateTabularReportAction">

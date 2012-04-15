@@ -37,10 +37,8 @@ import java.util.Map;
 
 import org.amplecode.quick.StatementHolder;
 import org.amplecode.quick.StatementManager;
-import org.hibernate.Criteria;
 import org.hibernate.Query;
 import org.hibernate.criterion.Order;
-import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.hisp.dhis.hibernate.HibernateGenericStore;
 import org.hisp.dhis.jdbc.StatementBuilder;
@@ -187,17 +185,14 @@ public class HibernateProgramStageInstanceStore
             .setFirstResult( min ).setMaxResults( max ).list();
     }
 
-    @SuppressWarnings( "unchecked" )
     public List<ProgramStageInstance> get( ProgramStage programStage, Map<Integer, String> searchingIdenKeys,
         Map<Integer, String> searchingAttrKeys, Map<Integer, String> searchingDEKeys, Collection<Integer> orgunitIds,
         Date startDate, Date endDate, boolean orderByOrgunitAsc, boolean orderByExecutionDateByAsc, int min, int max )
     {
-        if ( searchingDEKeys.keySet().size() > 0 )
-        {
             String sql = getTabularReportStatement( false, programStage, searchingIdenKeys, searchingAttrKeys,
                 searchingDEKeys, orgunitIds, startDate, endDate, orderByOrgunitAsc, orderByExecutionDateByAsc )
                 + statementBuilder.limitRecord( min, max );
-
+            
             List<Integer> ids = executeSQL( sql );
 
             List<ProgramStageInstance> programStageInstances = new ArrayList<ProgramStageInstance>();
@@ -208,40 +203,12 @@ public class HibernateProgramStageInstanceStore
             }
 
             return programStageInstances;
-        }
-
-        Criteria criteria = (getCriteria( Restrictions.eq( "programStage", programStage ), Restrictions.in(
-            "organisationUnit.id", orgunitIds ), Restrictions.between( "executionDate", startDate, endDate ) ))
-            .setFirstResult( min ).setMaxResults( max );
-
-        if ( orderByOrgunitAsc )
-        {
-            criteria.addOrder( Order.asc( "organisationUnit" ) );
-        }
-        else
-        {
-            criteria.addOrder( Order.desc( "organisationUnit" ) );
-        }
-
-        if ( orderByExecutionDateByAsc )
-        {
-            criteria.addOrder( Order.asc( "executionDate" ) );
-        }
-        else
-        {
-            criteria.addOrder( Order.desc( "executionDate" ) );
-        }
-
-        return criteria.list();
     }
 
-    @SuppressWarnings( "unchecked" )
     public List<ProgramStageInstance> get( ProgramStage programStage, Map<Integer, String> searchingIdenKeys,
         Map<Integer, String> searchingAttrKeys, Map<Integer, String> searchingDEKeys, Collection<Integer> orgunitIds,
         Date startDate, Date endDate, boolean orderByOrgunitAsc, boolean orderByExecutionDateByAsc )
     {
-        if ( searchingDEKeys.keySet().size() > 0 )
-        {
             String sql = getTabularReportStatement( false, programStage, searchingIdenKeys, searchingAttrKeys,
                 searchingDEKeys, orgunitIds, startDate, endDate, orderByOrgunitAsc, orderByExecutionDateByAsc );
 
@@ -255,51 +222,17 @@ public class HibernateProgramStageInstanceStore
             }
 
             return programStageInstances;
-        }
-
-        Criteria criteria = (getCriteria( Restrictions.eq( "programStage", programStage ), Restrictions.in(
-            "organisationUnit.id", orgunitIds ), Restrictions.between( "executionDate", startDate, endDate ) ));
-
-        if ( orderByOrgunitAsc )
-        {
-            criteria = criteria.addOrder( Order.asc( "organisationUnit" ) );
-        }
-        else
-        {
-            criteria = criteria.addOrder( Order.desc( "organisationUnit" ) );
-        }
-
-        if ( orderByExecutionDateByAsc )
-        {
-            criteria = criteria.addOrder( Order.asc( "executionDate" ) );
-        }
-        else
-        {
-            criteria = criteria.addOrder( Order.desc( "executionDate" ) );
-        }
-
-        return criteria.list();
     }
 
     public int count( ProgramStage programStage, Map<Integer, String> searchingIdenKeys,
         Map<Integer, String> searchingAttrKeys, Map<Integer, String> searchingDEKeys, Collection<Integer> orgunitIds,
         Date startDate, Date endDate )
     {
-        if ( searchingIdenKeys.keySet().size() > 0 || searchingAttrKeys.keySet().size() > 0
-            || searchingDEKeys.keySet().size() > 0 )
-        {
-            String sql = getTabularReportStatement( false, programStage, searchingIdenKeys, searchingAttrKeys,
+            String sql = getTabularReportStatement( true, programStage, searchingIdenKeys, searchingAttrKeys,
                 searchingDEKeys, orgunitIds, startDate, endDate, true, true );
             List<Integer> countRow = executeSQL( sql );
 
             return (countRow != null && countRow.size() > 0) ? countRow.get( 0 ) : 0;
-        }
-
-        Number rs = (Number) (getCriteria( Restrictions.eq( "programStage", programStage ), Restrictions.in(
-            "organisationUnit.id", orgunitIds ), Restrictions.between( "dueDate", startDate, endDate ) ))
-            .setProjection( Projections.rowCount() ).uniqueResult();
-
-        return rs != null ? rs.intValue() : 0;
     }
 
     private String getTabularReportStatement( boolean isCount, ProgramStage programStage,
@@ -337,7 +270,7 @@ public class HibernateProgramStageInstanceStore
             }
         }
 
-        condition  += "WHERE psi.executiondate >= '" + DateUtils.getMediumDateString( startDate )
+        condition += "WHERE psi.executiondate >= '" + DateUtils.getMediumDateString( startDate )
             + "' AND psi.executiondate <= '" + DateUtils.getMediumDateString( endDate ) + "' "
             + " AND psi.organisationunitid in " + splitListHelper( orgunitIds ) + " ";
 
@@ -348,12 +281,12 @@ public class HibernateProgramStageInstanceStore
         Iterator<Integer> idenKeys = searchingIdenKeys.keySet().iterator();
         boolean index = false;
         while ( idenKeys.hasNext() )
-        {            
+        {
             Integer attributeId = idenKeys.next();
 
             if ( index )
             {
-                condition += " AND psi.programstageinstanceid in ( " + sqlID + " WHERE 1=1 ";;
+                condition += " AND psi.programstageinstanceid in ( " + sqlID + " WHERE psi.programstageid = " + programStage.getId() + " ";
             }
 
             condition += " AND pid.patientidentifierTypeid=" + attributeId + " AND lower(pid.identifier) ";
@@ -420,11 +353,8 @@ public class HibernateProgramStageInstanceStore
         {
             Integer dataElementId = deKeys.next();
 
-            //if ( index )
-            //{
-                condition += " AND psi.programstageinstanceid in ( " + sqlDE + " WHERE 1=1 ";
-            //}
-
+            condition += " AND psi.programstageinstanceid in ( " + sqlDE + " WHERE 1=1 ";
+           
             condition += " AND pdv.dataElementid=" + dataElementId + " AND lower(pdv.value) ";
 
             String compareValue = searchingDEKeys.get( dataElementId ).toLowerCase();
@@ -436,19 +366,14 @@ public class HibernateProgramStageInstanceStore
 
             condition += compareValue;
 
-            //if ( index )
-            //{
-                condition += ") ";
-            //}
-
-            //index = true;
+            condition += ") ";
         }
 
         if ( isCount )
         {
-            return "select count(psi.programstageinstanceid) " + condition;
+            return "select count( distinct psi.programstageinstanceid ) " + condition;
         }
-        
+
         condition += " ORDER BY psi.organisationunitid ";
         condition += orderByOrgunitAsc ? "asc" : "desc";
         condition += ", psi.executiondate ";

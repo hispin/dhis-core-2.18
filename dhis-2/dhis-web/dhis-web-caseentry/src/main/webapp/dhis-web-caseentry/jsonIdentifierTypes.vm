@@ -1,0 +1,10 @@
+#set( $size = ${identifierTypes.size()} )
+{ "identifierTypes": [
+  #foreach( ${identifierType} in $!{identifierTypes} )
+  {
+	"id": "${identifierType.id}",
+	"name": "$!encoder.jsonEncode( ${identifierType.name} )"
+  }#if( $velocityCount < $size ),#end
+  #end
+  ]
+}
