@@ -54,6 +54,7 @@ public class Dxf2MetaDataProducer
     public void process( Exchange exchange ) throws Exception
     {
         log.info( this.getEndpoint().getEndpointUri() + " : " + exchange.getIn().getBody() );
+        
         Dxf2MetaDataEndpoint endpoint = (Dxf2MetaDataEndpoint) this.getEndpoint();
         MetaData metadata = JacksonUtils.fromXml( (InputStream) exchange.getIn().getBody(), MetaData.class );
         

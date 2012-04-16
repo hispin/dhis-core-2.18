@@ -51,9 +51,9 @@ public class Dxf2DataEndpoint
         return dataValueSetService;
     }
     
-    // -------------------------------------------------------------------------------
-    // parameters supported by this endpoint 
-    // -------------------------------------------------------------------------------
+    // -------------------------------------------------------------------------
+    // Parameters supported by this endpoint 
+    // -------------------------------------------------------------------------
     
     protected ImportOptions importOptions;
     
@@ -72,8 +72,6 @@ public class Dxf2DataEndpoint
         importOptions.setDryRun( dryRun );
     }
 
-    // -------------------------------------------------------------------------------
-  
     public Dxf2DataEndpoint( String uri, Dxf2Component component, DataValueSetService dataValueSetService )
     {
         super( uri, component );

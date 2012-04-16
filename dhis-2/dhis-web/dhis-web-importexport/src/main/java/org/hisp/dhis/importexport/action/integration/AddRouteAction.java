@@ -27,7 +27,6 @@ package org.hisp.dhis.importexport.action.integration;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-
 import com.opensymphony.xwork2.Action;
 import java.io.File;
 import java.io.FileInputStream;
@@ -44,16 +43,18 @@ public class AddRouteAction
     implements Action
 {
     private static final Log log = LogFactory.getLog( AddRouteAction.class );
+
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
-    
-    CamelContext builtinCamelContext;
 
-    public void setBuiltinCamelContext(CamelContext camelContext) {
+    private CamelContext builtinCamelContext;
+
+    public void setBuiltinCamelContext( CamelContext camelContext )
+    {
         this.builtinCamelContext = camelContext;
     }
-    
+
     private File file;
 
     public void setUpload( File file )
@@ -68,12 +69,6 @@ public class AddRouteAction
         this.fileName = fileName;
     }
 
-    private String contentType;
-
-    public void setUploadContentType( String contentType )
-    {
-        this.contentType = contentType;
-    }
     // -------------------------------------------------------------------------
     // Action implementation
     // -------------------------------------------------------------------------
@@ -81,19 +76,24 @@ public class AddRouteAction
     public String execute()
         throws Exception
     {
-        log.info("Uploaded " + fileName);
-        if (file!=null) {
-                FileInputStream is = new FileInputStream(file);
-                try {
-                    RoutesDefinition routes = builtinCamelContext.loadRoutesDefinition(is);
-                    builtinCamelContext.addRouteDefinitions(routes.getRoutes());
-                } 
-                catch (Exception e )
-                {
-                    log.info("Unable to load route: " + e.getMessage());
-                    return ERROR;
-                }
+        log.info( "Uploaded " + fileName );
+        
+        if ( file != null )
+        {
+            FileInputStream is = new FileInputStream( file );
+            
+            try
+            {
+                RoutesDefinition routes = builtinCamelContext.loadRoutesDefinition( is );
+                builtinCamelContext.addRouteDefinitions( routes.getRoutes() );
+            }
+            catch ( Exception e )
+            {
+                log.info( "Unable to load route: " + e.getMessage() );
+                return ERROR;
+            }
         }
+        
         return SUCCESS;
     }
 }
