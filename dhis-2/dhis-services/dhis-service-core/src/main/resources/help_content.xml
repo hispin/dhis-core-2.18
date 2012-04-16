@@ -420,12 +420,10 @@ If there are no datasets defined for an organisation unit, it indicates that no 
 <section id="datasets">
 <title>Datasets</title>
 <para>All data entry in DHIS2 is organised through the use of datasets. You can add and edit datasets in Maintenance-&gt;Datasets. A dataset is a collection of data elements grouped together for data collection and data export between instances of DHIS2 (e.g. from a district office local installation to a national server). .</para>
-<para>A dataset also has a frequency which controls the data collection frequency, which can be daily, weekly, monthly, quarterly, six-monthly, or yearly. Both which data elements to include in the dataset and the frequency is set in the Add/Edit Dataset window, together with a name, short name, and code. 
-
-In order to use a dataset to collect data for a specific orgunit you must assign the orgunit to the dataset, and this mechanism controls which orgunits that can use which datasets. </para>
+<para>A dataset also has a frequency which controls the data collection frequency, which can be daily, weekly, monthly, quarterly, six-monthly, or yearly. Both which data elements to include in the dataset and the frequency is set in the Add/Edit Dataset window, together with a name, short name, and code. In order to use a dataset to collect data for a specific orgunit you must assign the orgunit to the dataset, and this mechanism controls which orgunits that can use which datasets. </para>
 <para>Datasets also are assigned to specific organisation units which will be allowed to enter data for all data elements in a given dataset. You can assign orgunits to a dataset in the Dataset Management (list of available datasets are shown) by clicking on the blue folder icon, the first icon under Operations, corresponding to the dataset you would like to modify. Alternatively you can manage orgunit assignments for all datasets together in the Dataset Assignment Editor (available in the right-side menu for Datasets). </para>
 <para>Your dataset will then be ready to be used in Services-&gt;Data Entry for the orgunits that you have assigned and for periods according to your selected frequency (period type).</para>
-<section>
+<section id="dataSet">
 <title>Dataset management</title>
 <para>The dataset management function allows you to create new datasets and manage existing ones. The dialog can be reached by choosing Maintenance-&gt;Datasets-&gt;Dataset. A sample dialog is displayed below.</para>
 <screenshot>
@@ -473,18 +471,15 @@ In order to use a dataset to collect data for a specific orgunit you must assign
 <section>
 <title>Data Entry Forms</title>
 <para>Once you have assigned a dataset to an orgunit that dataset will be made available in Data Entry (under Services) for the orgunits you have assigned it to. A default data entry form will then be shown, which is simply a list of the data elements you belonging to the dataset together with a column for inputting the values. If your dataset contains data elements with a non-default categorycombination, such as age groups or gender then additional columns will be automatically generated in the default form based on the different options/dimensions. </para>
-<para>If you use more than one dataelement category combination you will get multiple columns in the data entry form with different column headings for the options.
-
-In addition to the default list-based data entry form there are two more alternatives, the section-based form and the custom form.</para>
+<para>If you use more than one dataelement category combination you will get multiple columns in the data entry form with different column headings for the options. In addition to the default list-based data entry form there are two more alternatives, the section-based form and the custom form.</para>
 <section>
 <title>Section forms</title>
 <para>Section forms allow for a bit more flexibility when it comes to using tabular forms and are quick and simple to design. Often your data entry form will need multiple tables with subheadings, and sometimes you need to disable (grey out) a few fields in the table, both of these functions are supported in section forms. This function can be access by choosing Maintenance-&gt;Dataset Section. </para>
 </section>
-<section id="dataset_sections">
+<section id="dataSetSection">
 <title>Adding a new section form</title>
 <para>Section forms are separated automatically by data element category combinations, which produce a spreadsheet like data entry form for each section. </para>
-<para>When designing a section form the procedure is as follows:
-</para>
+<para>When designing a section form the procedure is as follows:</para>
 <orderedlist>
 <listitem>
 <para> Set up your dataset as described in <xref linkend="datasets"/></para>
@@ -495,8 +490,7 @@ In addition to the default list-based data entry form there are two more alterna
 </note></para>
 </listitem>
 <listitem>
-<para> You may need to control how the data element sections are displayed on the final form. In Dataset Section management, select the dataset from the &quot;Dataset&quot; drop-down box, then leave [All] in the &quot;Select Category Combo&quot; drop-down. Click on &quot;Sort section&quot; to sort the order of appearance of your sections in the data entry form.
-</para>
+<para> You may need to control how the data element sections are displayed on the final form. In Dataset Section management, select the dataset from the &quot;Dataset&quot; drop-down box, then leave [All] in the &quot;Select Category Combo&quot; drop-down. Click on &quot;Sort section&quot; to sort the order of appearance of your sections in the data entry form.</para>
 </listitem>
 <listitem>
 <para>In Data Entry you can now start using the Section form (should appear automatically when sections are available for the selected dataset). Datasets which have section forms will automatically display the section form.</para>
@@ -522,16 +516,15 @@ In addition to the default list-based data entry form there are two more alterna
 </mediaobject>
 </screenshot>
 </section>
-<section>
-<title id="customDataEntryForms">Custom Forms</title>
+<section id="customDataEntryForm">
+<title>Custom Forms</title>
 <para>When the form you want to design is to complicated for the default or section forms then your last option is to use a custom form. This takes more time, but gives you full flexibility in term of the design. DHIS2 uses a built-in HTML editor (FcK Editor) for the form designer and you can either design the form in the UI or paste in your HTML directly (using the Source window in the editor). A complete reference for use of the editor can be found <ulink url="http://docs.cksource.com/CKEditor_3.x/Users_Guide">here</ulink>.</para>
 <para>One of the big advantages of custom forms, is that they can be created to mimic existing paper aggregation forms. This makes data entry much easier for users, and should reduce the number of data elements which are incorrectly entered, as they are more easily identifiable when entering data from a paper form. </para>
 <para>Once a custom form has been added to a dataset it will be available in data entry and used automatically. </para>
 <note>
 <para>Custom forms are preferentially displayed over section forms. If a dataset has both a section form and a custom form, the custom form will be displayed during data entry. Users will not be able to select which method they wish to input data, so be sure that your custom form contains all data elements which may be required.</para>
 </note>
-<para>To add a custom form design to a dataset then first locate your dataset in the Dataset Management window and click on the Design data entry form icon under Operations (the fifth icon), see the mouse-over text to be sure.
-</para>
+<para>To add a custom form design to a dataset then first locate your dataset in the Dataset Management window and click on the Design data entry form icon under Operations (the fifth icon), see the mouse-over text to be sure.</para>
 <para>First provide a Name for the form. There are a few important buttons in the Editor that you must pay special attention to. The blue monitor icon is the full screen mode on/off button, which can be very useful. The there is a Source button that shows the HTML code for your form. </para>
 <para>If you already have the HTML for your form then you should start by pasting it in here. Click on Source again to go back to preview/non-HTML mode. Then there is an icon in the top right corner with a + sign on it, this will open a list of available data elements to add to your form, the Data Element Selector window. </para>
 <para>All the input fields need to have a link to a data element or indicator. To add new data elements to the form, double-click them from the data element/indicator box as shown below. You can also select a data element/indicator and press the &quot;+Insert&quot; button. You can switch between either data elements or indicators by pressing the respective buttons.</para>
@@ -543,8 +536,12 @@ In addition to the default list-based data entry form there are two more alterna
 </mediaobject>
 </screenshot>
 <para>You can to intermediary saving by clicking on the Save button, and this will not close the window. It is recommended to save often to ensure you do not loose your work. </para>
-<para>When you are done or want to test your form in data entry click on &lt;Save and close&gt;.
-</para>
+<para>When you are done or want to test your form in data entry click on &lt;Save and close&gt;.</para>
+</section>
+<section id="dataSetAssignmentEditor">
+<title>Data set assignment editor</title>
+<para>The data set assignment editor is a tool for adding and removing many data sets to organisation units in batch style. Start by selecting an organisation unit from the selection tree. In the area below the tree a grid will be displayed showing all data sets as columns and the child organisation units as rows.</para>
+<para>From the grid you can now assign or unassign data sets simply by clicking on of the corresponding icons in the grid. If you want to assign or unassign an organisation unit to all data sets you can check or uncheck the checkbox next to the organisation unit. Your changes will automatically be saved.</para>
 </section>
 </section>
 </chapter>
@@ -4072,8 +4069,7 @@ Some indicators have been allocated to several indicator groups that are members
 </section>
 <section id="optionSet">
 <title>Option sets</title>
-<para> Option sets can be associated with data
-elements in the add / update data element interface for name-based data elements. You can define any kind of options, for instance an option set
+<para> Option sets can be associated with data elements in the add / update data element interface for name-based data elements. You can define any kind of options, for instance an option set
 called &quot;Delivery type&quot; where &quot;Normal&quot;, &quot;Breach&quot;, &quot;Caesarian&quot; and
 &quot;Assisted&quot; would be the options. This option set can later be
 associated with any number of data elements. When doing data entry in

@@ -12,7 +12,7 @@
 	}
 </script>
 
-<h3>$i18n.getString( "dataset_management" )</h3>
+<h3>$i18n.getString( "dataset_management" ) #openHelp( "dataSet" )</h3>
 
 <table class="mainPageTable">
   <tr>
