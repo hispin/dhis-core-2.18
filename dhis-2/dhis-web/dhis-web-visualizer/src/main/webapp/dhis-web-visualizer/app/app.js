@@ -666,11 +666,6 @@ Ext.onReady( function() {
 				setHeight: function(mx) {
 					var h = DV.cmp.region.west.getHeight() - DV.conf.layout.west_fill;
 					DV.cmp.dimension.panel.setHeight(h > mx ? mx : h);
-				},
-				setDimensionLabels: function() {
-					//alert(DV.cmp.settings.series.getValue());
-					//alert(DV.cmp.settings.series.getRawValue());
-					//DV.cmp.settings.series
 				}
 			}
         },
@@ -1073,11 +1068,6 @@ Ext.onReady( function() {
         },
         combobox: {
             filter: {
-                clearValue: function(v, cb, i, d) {
-                    if (v === cb.getValue()) {
-                        cb.clearValue();
-                    }
-                },
                 category: function() {
                     var cbs = DV.cmp.settings.series,
                         cbc = DV.cmp.settings.category,
@@ -1096,10 +1086,15 @@ Ext.onReady( function() {
                         return cbc.filterArray[index++];
                     });
                     
+                    if (!cbc.getValue() && cbf.getValue()) {
+						cbc.setValue(this.getAutoSelectOption(cbs.getValue(), cbf.getValue()));
+                    }
+                    
                     this.filter();
                 },                
                 filter: function() {
-                    var cbc = DV.cmp.settings.category,
+                    var cbs = DV.cmp.settings.series,
+                        cbc = DV.cmp.settings.category,
                         cbf = DV.cmp.settings.filter,
                         v = cbc.getValue(),
                         d = DV.conf.finals.dimension.data.value,
@@ -1116,8 +1111,25 @@ Ext.onReady( function() {
                     
                     cbf.store.filterBy( function(r) {
                         return cbf.filterArray[index++];
-                    });
-                }
+                    });                    
+                    
+                    if (!cbf.getValue()) {
+						cbf.setValue(this.getAutoSelectOption(cbs.getValue(), cbc.getValue()));
+                    }
+                },
+                clearValue: function(v, cb, i, d) {
+                    if (v === cb.getValue()) {
+                        cb.clearValue();
+                    }
+                },
+                getAutoSelectOption: function(o1, o2) {
+					var a = [DV.conf.finals.dimension.data.value, DV.conf.finals.dimension.period.value, DV.conf.finals.dimension.organisationunit.value];
+					for (var i = 0; i < a.length; i++) {
+						if (a[i] != o1 && a[i] != o2) {
+							return a[i];
+						}
+					}
+				}
             }
         },
         checkbox: {
@@ -2383,7 +2395,6 @@ Ext.onReady( function() {
                                             },
                                             select: function() {
                                                 DV.util.combobox.filter.category();
-                                                DV.util.dimension.panel.setDimensionLabels();
                                             }
                                         }
                                     }
