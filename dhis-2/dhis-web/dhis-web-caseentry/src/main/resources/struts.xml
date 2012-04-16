@@ -293,11 +293,6 @@
 			<result name="success" type="velocity-json">
 				/dhis-web-commons/ajax/jsonPrograms.vm</result>
 		</action>
-		
-		<action name="getTabularParams"
-			class="org.hisp.dhis.caseentry.action.report.GetTabularParamsAction">
-			<result name="success" type="velocity-json">/dhis-web-caseentry/responseTabularParams.vm</result>
-		</action>
 				
 		<action name="loadReportIdentifierTypes"
 			class="org.hisp.dhis.caseentry.action.report.LoadIdentifierTypesAction">
@@ -339,15 +334,6 @@
 				/dhis-web-commons/ajax/jsonResponseInput.vm</result>
 		</action>
 		
-        <!--  action name="generateTabularReport"
-			class="org.hisp.dhis.caseentry.action.report.GenerateTabularReportAction">
-			<result name="success" type="velocity">/content.vm</result>
-			<result name="xls" type="gridXlsResult" />
-      		<result name="pdf" type="gridPdfResult" />
-			<param name="page">/dhis-web-caseentry/tabularReportResult.vm</param>
-			<param name="requiredAuthorities">F_GENERATE_BENEFICIARY_TABULAR_REPORT</param>
-		</action -->
-		
 		 <action name="generateTabularReport"
 			class="org.hisp.dhis.caseentry.action.report.GenerateTabularReportAction">
 			<result name="success" type="velocity-json">/dhis-web-caseentry/jsonTabularReport.vm</result>
@@ -355,13 +341,7 @@
       		<result name="pdf" type="gridPdfResult" />
 			<param name="requiredAuthorities">F_GENERATE_BENEFICIARY_TABULAR_REPORT</param>
 		</action>
-		
-		<action name="searchTabularReport"
-			class="org.hisp.dhis.caseentry.action.report.GenerateTabularReportAction">
-			<result name="success" type="velocity">/dhis-web-caseentry/searchTabularReportResult.vm</result>
-			<param name="requiredAuthorities">F_GENERATE_BENEFICIARY_TABULAR_REPORT</param>
-		</action>
-		
+			
 		<!-- i18n -->
 
         <action name="i18n" class="org.hisp.dhis.caseentry.action.NoAction">
