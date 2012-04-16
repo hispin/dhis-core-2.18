@@ -43,7 +43,8 @@ import org.hisp.dhis.dxf2.utils.JacksonUtils;
 public class XMLConverterWrappers
 {
     @Converter
-    public static MetaData toMetaData(InputStream inputStream) throws IOException 
+    public static MetaData toMetaData( InputStream inputStream ) 
+        throws IOException 
     {
         return JacksonUtils.fromXml( inputStream, MetaData.class ); 
     }

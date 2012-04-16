@@ -51,7 +51,8 @@ public class DHIS2LifecycleStrategy
     private final Log log = LogFactory.getLog( DHIS2LifecycleStrategy.class );
     
     @Override
-    public void onContextStart(CamelContext context) throws VetoCamelContextStartException
+    public void onContextStart( CamelContext context ) 
+        throws VetoCamelContextStartException
     {
         log.info( "Camel context started" );
         // todo: pickup routes from dhis2_home
@@ -60,31 +61,31 @@ public class DHIS2LifecycleStrategy
     @Override
     public void onContextStop( CamelContext cc )
     {
-        log.info( "Camel context stopped");
+        log.info( "Camel context stopped" );
     }
 
     @Override
     public void onComponentAdd( String name, Component cmpnt )
     {
-        log.info( "Camel component added: " + name);
+        log.info( "Camel component added: " + name );
     }
 
     @Override
     public void onComponentRemove( String name, Component cmpnt )
     {
-        log.info( "Camel component removed: " + name);
+        log.info( "Camel component removed: " + name );
     }
 
     @Override
     public void onEndpointAdd( Endpoint endpnt )
     {
-        log.info( "Camel endpoint added: " + endpnt.getEndpointUri());
+        log.info( "Camel endpoint added: " + endpnt.getEndpointUri() );
     }
 
     @Override
     public void onEndpointRemove( Endpoint endpnt )
     {
-        log.info( "Camel endpoint removed: " + endpnt.getEndpointUri());
+        log.info( "Camel endpoint removed: " + endpnt.getEndpointUri() );
     }
 
     @Override
@@ -100,30 +101,30 @@ public class DHIS2LifecycleStrategy
     @Override
     public void onRoutesAdd( Collection<Route> clctn )
     {
-        log.debug( "Camel routes added");
+        log.debug( "Camel routes added" );
     }
 
     @Override
     public void onRoutesRemove( Collection<Route> clctn )
     {
-        log.debug( "Camel routes removed");
+        log.debug( "Camel routes removed" );
     }
 
     @Override
     public void onRouteContextCreate( RouteContext rc )
     {
-        log.debug( "Camel route context created");
+        log.debug( "Camel route context created" );
     }
 
     @Override
     public void onErrorHandlerAdd( RouteContext rc, Processor prcsr, ErrorHandlerFactory ehf )
     {
-        log.info( "Camel error handler added: " + ehf.toString());
+        log.info( "Camel error handler added: " + ehf.toString() );
     }
 
     @Override
     public void onThreadPoolAdd( CamelContext cc, ThreadPoolExecutor tpe, String string, String string1, String string2, String string3 )
     {
-        log.debug( "Camel threadpool added");
+        log.debug( "Camel threadpool added" );
     }
 }

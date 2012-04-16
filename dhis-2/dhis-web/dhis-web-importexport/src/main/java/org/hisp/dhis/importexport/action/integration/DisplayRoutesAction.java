@@ -27,7 +27,6 @@ package org.hisp.dhis.importexport.action.integration;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-
 import com.opensymphony.xwork2.Action;
 import java.util.List;
 import org.apache.camel.CamelContext;
@@ -43,19 +42,20 @@ public class DisplayRoutesAction
     // -------------------------------------------------------------------------
     // Dependencies
     // -------------------------------------------------------------------------
-    
-    CamelContext builtinCamelContext;
 
-    public void setBuiltinCamelContext(CamelContext camelContext) {
+    private CamelContext builtinCamelContext;
+
+    public void setBuiltinCamelContext( CamelContext camelContext )
+    {
         this.builtinCamelContext = camelContext;
     }
-    
-    List<RouteDefinition> routeDefinitions;
 
-    public List<RouteDefinition> getRouteDefinitions() {
+    private List<RouteDefinition> routeDefinitions;
+
+    public List<RouteDefinition> getRouteDefinitions()
+    {
         return routeDefinitions;
     }
-    
 
     // -------------------------------------------------------------------------
     // Action implementation
@@ -65,7 +65,7 @@ public class DisplayRoutesAction
         throws Exception
     {
         routeDefinitions = builtinCamelContext.getRouteDefinitions();
-        
+
         return SUCCESS;
     }
 }
