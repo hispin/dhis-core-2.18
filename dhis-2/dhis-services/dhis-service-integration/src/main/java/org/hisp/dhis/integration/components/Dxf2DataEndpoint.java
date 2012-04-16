@@ -34,18 +34,16 @@ import org.apache.camel.impl.DefaultEndpoint;
 import org.hisp.dhis.dxf2.datavalueset.DataValueSetService;
 import org.hisp.dhis.dxf2.metadata.ImportOptions;
 import org.hisp.dhis.importexport.ImportStrategy;
-;
 
 /**
- *
  * dataendpoint is created using a uri of the form:
  * dhis2:metadata?dryRun=true|false&importStrategy=NEW|NEW_AND_UPDATES|UPDATES
  * 
  * @author bobj
  */
-public class Dxf2DataEndpoint extends DefaultEndpoint
+public class Dxf2DataEndpoint 
+    extends DefaultEndpoint
 {
-
     protected DataValueSetService dataValueSetService;
 
     public DataValueSetService getDataValueSetService()

@@ -35,7 +35,7 @@ import org.hisp.dhis.dxf2.utils.JacksonUtils;
 
 /**
  * This class contains annotated static methods to allow various conversions between
- * dhis api objects and dxf2 representatation within integration routes
+ * dhis api objects and dxf2 representations within integration routes
  * 
  * @author bobj
  */

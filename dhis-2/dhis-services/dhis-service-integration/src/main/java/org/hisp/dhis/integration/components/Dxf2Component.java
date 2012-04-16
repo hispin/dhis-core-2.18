@@ -28,15 +28,15 @@ package org.hisp.dhis.integration.components;
  */
 
 import java.util.Map;
+
 import org.apache.camel.Endpoint;
 import org.apache.camel.impl.DefaultComponent;
 import org.hisp.dhis.dxf2.datavalueset.DataValueSetService;
-import org.hisp.dhis.dxf2.datavalueset.DefaultDataValueSetService;
 import org.hisp.dhis.dxf2.metadata.ImportService;
 import org.springframework.beans.factory.annotation.Autowired;
 
 /**
- * A DHIS2 specific camel component for creating dhis2 endpoints
+ * A DHIS 2 specific camel component for creating dhis2 endpoints
  * 
  * Two forms of uri are supported for the endpoints:
  * 1.  uri="dhis2:metadata?<options>" creates a metadata endpoint for importing metadata 
@@ -46,7 +46,8 @@ import org.springframework.beans.factory.annotation.Autowired;
  * 
  * @author bobj
  */
-public class Dxf2Component extends DefaultComponent
+public class Dxf2Component 
+    extends DefaultComponent
 {
     public static final String DATA = "data";
 
@@ -54,24 +55,13 @@ public class Dxf2Component extends DefaultComponent
     
     @Autowired
     private ImportService importService;
-
-    public void setImportService( ImportService importService )
-    {
-        this.importService = importService;
-    }
     
     @Autowired
     private DataValueSetService dataValueSetService;
 
-    public void setDataValueSetService( DataValueSetService dataValueSetService )
-    {
-        this.dataValueSetService = dataValueSetService;
-    }
-
     @Override
     protected Endpoint createEndpoint( String uri, String remaining, Map<String, Object> parameters ) throws Exception
     {
-        System.out.println("Creating endpoint for "+uri+" , "+remaining);
         if ( !remaining.equals( DATA ) && !remaining.equals( METADATA ) ) 
         {
             throw new UnsupportedOperationException( "Invalid dhis2 uri part " + remaining);

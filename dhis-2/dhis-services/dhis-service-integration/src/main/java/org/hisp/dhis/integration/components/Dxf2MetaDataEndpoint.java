@@ -40,7 +40,8 @@ import org.hisp.dhis.dxf2.metadata.ImportService;
  * 
  * @author bobj
  */
-public class Dxf2MetaDataEndpoint extends DefaultEndpoint
+public class Dxf2MetaDataEndpoint 
+    extends DefaultEndpoint
 {
     protected ImportService importService;
 
@@ -57,7 +58,7 @@ public class Dxf2MetaDataEndpoint extends DefaultEndpoint
     }
 
     // -------------------------------------------------------------------------------
-    // parameters supported by this endpoint 
+    // Parameters supported by this endpoint 
     // -------------------------------------------------------------------------------
     
     public void setDryRun( Boolean dryRun )
@@ -65,20 +66,12 @@ public class Dxf2MetaDataEndpoint extends DefaultEndpoint
         options.setDryRun( dryRun );
     }
     
-    
-    // -------------------------------------------------------------------------------
-
     public Dxf2MetaDataEndpoint( String uri, Dxf2Component component, ImportService importService )
     {
         super( uri, component );
         this.importService = importService;
         options= new ImportOptions();
     }
-
-//    public Dxf2MetaDataEndpoint( String endpointUri )
-//    {
-//        super( endpointUri );
-//    }
 
     @Override
     public Producer createProducer() throws Exception
