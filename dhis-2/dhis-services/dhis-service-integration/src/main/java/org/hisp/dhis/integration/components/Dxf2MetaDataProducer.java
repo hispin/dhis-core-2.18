@@ -28,25 +28,22 @@ package org.hisp.dhis.integration.components;
  */
 
 import java.io.InputStream;
+
 import org.apache.camel.Exchange;
 import org.apache.camel.impl.DefaultProducer;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hisp.dhis.dxf2.importsummary.ImportSummary;
-import org.hisp.dhis.dxf2.metadata.ImportOptions;
-import org.hisp.dhis.dxf2.metadata.ImportService;
 import org.hisp.dhis.dxf2.metadata.MetaData;
 import org.hisp.dhis.dxf2.utils.JacksonUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 
 /**
- *
  * @author bobj
  */
-public class Dxf2MetaDataProducer extends DefaultProducer
+public class Dxf2MetaDataProducer 
+    extends DefaultProducer
 {
-
-    private static final transient Log log = LogFactory.getLog( Dxf2MetaDataProducer.class );
+    private static final Log log = LogFactory.getLog( Dxf2MetaDataProducer.class );
 
     public Dxf2MetaDataProducer( Dxf2MetaDataEndpoint endpoint)
     {

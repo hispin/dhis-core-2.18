@@ -34,12 +34,11 @@ import org.hisp.dhis.dxf2.importsummary.ImportSummary;
 import org.hisp.dhis.dxf2.utils.JacksonUtils;
 
 /**
- *
  * @author bobj
  */
-public class Dxf2DataProducer extends DefaultProducer
+public class Dxf2DataProducer 
+    extends DefaultProducer
 {
-
     public Dxf2DataProducer( Dxf2DataEndpoint endpoint )
     {
         super( endpoint );

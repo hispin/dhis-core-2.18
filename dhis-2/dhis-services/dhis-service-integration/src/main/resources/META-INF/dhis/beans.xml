@@ -8,7 +8,8 @@
 
   <bean id="importService" class="org.hisp.dhis.dxf2.metadata.DefaultImportService" />
   
-  <!-- custom lifecycle strategy -->
+  <!-- Custom lifecycle strategy -->
+  
   <bean id="lifecyclestrategy" class="org.hisp.dhis.integration.management.DHIS2LifecycleStrategy" />
   
   <camel:camelContext id="camel-builtin">
