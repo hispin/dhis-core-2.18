@@ -22,7 +22,8 @@
 	
 		if(orgUnitIds != null && orgUnitIds != ""  )
 		{
-			getReports(orgUnitIds, reportTypeName)
+			//getReports(orgUnitIds, reportTypeName)
+			getOUDeatilsForMDReport( orgUnitIds );
 		}
 	}
 	
