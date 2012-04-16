@@ -69,12 +69,12 @@
 <h3>$i18n.getString( "update_patient" )</h3>
 <p>
 <form id="patientForm" name="patientForm" action="updatePatient.action" method="post" >
-<input type="hidden" id="representativeId" name="representativeId"/> 
+<input type="hidden" id="representativeId" name="representativeId" value='$!patient.representative.id'' /> 
 <input type="hidden" id="relationshipTypeId" name="relationshipTypeId"/>
 <div>
 	<input type="hidden" id="id" name="id" value="$patient.id">
-</div>
 
+</div>
 <table>
 		
 	<tr>
