@@ -1,7 +1,7 @@
 package org.hisp.dhis.reportsheet;
 
 /*
- * Copyright (c) 2004-2011, University of Oslo
+ * Copyright (c) 2004-2012, University of Oslo
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -26,69 +26,25 @@ package org.hisp.dhis.reportsheet;
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-import java.util.ArrayList;
-import java.util.List;
 
 /**
- * @author Tran Thanh Tri
+ * @author Dang Duy Hieu
+ * @version $Id$
  */
-
-public class ExportReportNormal
-    extends ExportReport
+public interface AttributeValueGroupOrderStore
 {
+    String ID = AttributeValueGroupOrderStore.class.getName();
+
     // -------------------------------------------------------------------------
-    // Constructors
+    // Attribute Value Group Order
     // -------------------------------------------------------------------------
 
-    public ExportReportNormal()
-    {
-        super();
-    }
+    public AttributeValueGroupOrder getAttributeValueGroupOrder( Integer id );
 
-    @Override
-    public String getReportType()
-    {
-        return ExportReport.TYPE.NORMAL;
-    }
+    public AttributeValueGroupOrder getAttributeValueGroupOrder( String name, String clazzName, Integer reportId );
 
-    @Override
-    public boolean isAttribute()
-    {
-        return false;
-    }
+    public void updateAttributeValueGroupOrder( AttributeValueGroupOrder attributeValueGroupOrder );
 
-    @Override
-    public boolean isCategory()
-    {
-        return false;
-    }
+    public void deleteAttributeValueGroupOrder( Integer id );
 
-    @Override
-    public boolean isNormal()
-    {
-        return true;
-    }
-
-    @Override
-    public boolean isOrgUnitGroupListing()
-    {
-        return false;
-    }
-
-    @Override
-    public boolean isPeriodColumnListing()
-    {
-        return false;
-    }
-
-    @Override
-    public List<String> getItemTypes()
-    {
-        List<String> types = new ArrayList<String>();
-        types.add( ExportItem.TYPE.DATAELEMENT );
-        types.add( ExportItem.TYPE.INDICATOR );
-        types.add( ExportItem.TYPE.FORMULA_EXCEL );
-
-        return types;
-    }
 }

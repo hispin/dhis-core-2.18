@@ -29,6 +29,7 @@ package org.hisp.dhis.attribute.hibernate;
 
 import java.util.Collection;
 
+import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.hisp.dhis.attribute.Attribute;
 import org.hisp.dhis.attribute.AttributeValue;
@@ -44,10 +45,18 @@ public class HibernateLocalAttributeValueStore
     extends HibernateGenericStore<AttributeValue>
     implements LocalAttributeValueStore
 {
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings( "unchecked" )
     @Override
     public Collection<AttributeValue> getByAttribute( Attribute attribute )
     {
         return getCriteria().add( Restrictions.eq( "attribute", attribute ) ).list();
+    }
+
+    @SuppressWarnings( "unchecked" )
+    @Override
+    public Collection<String> getDistinctValuesByAttribute( Attribute attribute )
+    {
+        return getCriteria().add( Restrictions.eq( "attribute", attribute ) ).add( Restrictions.ne( "value", "" ) )
+            .setProjection( Projections.distinct( Projections.property( "value" ) ) ).list();
     }
 }

@@ -68,6 +68,12 @@ public class ExportReportCategory
     }
 
     @Override
+    public boolean isAttribute()
+    {
+        return false;
+    }
+
+    @Override
     public boolean isCategory()
     {
         return true;

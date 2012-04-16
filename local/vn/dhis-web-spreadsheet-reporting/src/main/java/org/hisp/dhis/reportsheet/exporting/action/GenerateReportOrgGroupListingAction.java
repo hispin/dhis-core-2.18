@@ -43,7 +43,7 @@ import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.reportsheet.ExportItem;
 import org.hisp.dhis.reportsheet.ExportReport;
-import org.hisp.dhis.reportsheet.ExportReportOganiztionGroupListing;
+import org.hisp.dhis.reportsheet.ExportReportOrganizationGroupListing;
 import org.hisp.dhis.reportsheet.exporting.AbstractGenerateExcelReportSupport;
 import org.hisp.dhis.reportsheet.utils.ExcelUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -76,7 +76,7 @@ public class GenerateReportOrgGroupListingAction
     {
         OrganisationUnit organisationUnit = organisationUnitSelectionManager.getSelectedOrganisationUnit();
 
-        ExportReportOganiztionGroupListing exportReportInstance = (ExportReportOganiztionGroupListing) exportReport;
+        ExportReportOrganizationGroupListing exportReportInstance = (ExportReportOrganizationGroupListing) exportReport;
 
         Map<OrganisationUnitGroup, OrganisationUnitLevel> orgUniGroupAtLevels = new HashMap<OrganisationUnitGroup, OrganisationUnitLevel>(
             exportReportInstance.getOrganisationUnitLevels() );
@@ -97,7 +97,7 @@ public class GenerateReportOrgGroupListingAction
     // Supportive method
     // -------------------------------------------------------------------------
 
-    private void generateOutPutFile( ExportReportOganiztionGroupListing exportReport,
+    private void generateOutPutFile( ExportReportOrganizationGroupListing exportReport,
         Map<OrganisationUnitGroup, OrganisationUnitLevel> orgUniGroupAtLevels,
         Collection<ExportItem> exportReportItems, OrganisationUnit organisationUnit, Sheet sheet )
     {

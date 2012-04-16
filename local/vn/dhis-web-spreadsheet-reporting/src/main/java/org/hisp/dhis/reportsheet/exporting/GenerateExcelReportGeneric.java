@@ -47,6 +47,7 @@ import org.apache.poi.ss.usermodel.IndexedColors;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.hisp.dhis.aggregation.AggregatedDataValueService;
 import org.hisp.dhis.aggregation.AggregationService;
 import org.hisp.dhis.dataelement.DataElementCategoryService;
 import org.hisp.dhis.dataelement.DataElementService;
@@ -97,6 +98,8 @@ public class GenerateExcelReportGeneric
 
     protected AggregationService aggregationService;
 
+    protected AggregatedDataValueService aggregatedDataValueService;
+
     protected DataElementCategoryService categoryService;
 
     protected DataElementService dataElementService;
@@ -144,7 +147,7 @@ public class GenerateExcelReportGeneric
     protected Date endDate;
 
     protected Date firstDayOfMonth;
-    
+
     protected Date firstDayOfYear;
 
     protected Date last3MonthStartDate;
@@ -257,6 +260,11 @@ public class GenerateExcelReportGeneric
     public void setAggregationService( AggregationService aggregationService )
     {
         this.aggregationService = aggregationService;
+    }
+
+    public void setAggregatedDataValueService( AggregatedDataValueService aggregatedDataValueService )
+    {
+        this.aggregatedDataValueService = aggregatedDataValueService;
     }
 
     public void setFormat( I18nFormat format )

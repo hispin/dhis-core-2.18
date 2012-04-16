@@ -28,27 +28,60 @@ package org.hisp.dhis.reportsheet;
  */
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+
+import org.hisp.dhis.organisationunit.OrganisationUnitGroup;
+import org.hisp.dhis.organisationunit.OrganisationUnitLevel;
 
 /**
- * @author Tran Thanh Tri
+ * @author Chau Thu Tran
+ * @version $Id$
  */
 
-public class ExportReportNormal
+public class ExportReportOrganizationGroupListing
     extends ExportReport
 {
+    private List<OrganisationUnitGroup> organisationUnitGroups;
+
+    private Map<OrganisationUnitGroup, OrganisationUnitLevel> organisationUnitLevels;
+
     // -------------------------------------------------------------------------
     // Constructors
     // -------------------------------------------------------------------------
 
-    public ExportReportNormal()
+    public ExportReportOrganizationGroupListing()
     {
         super();
+    }
+
+    // -------------------------------------------------------------------------
+    // Getters and setters
+    // -------------------------------------------------------------------------
+
+    public List<OrganisationUnitGroup> getOrganisationUnitGroups()
+    {
+        return organisationUnitGroups;
+    }
+
+    public Map<OrganisationUnitGroup, OrganisationUnitLevel> getOrganisationUnitLevels()
+    {
+        return organisationUnitLevels;
+    }
+
+    public void setOrganisationUnitLevels( Map<OrganisationUnitGroup, OrganisationUnitLevel> organisationUnitLevels )
+    {
+        this.organisationUnitLevels = organisationUnitLevels;
+    }
+
+    public void setOrganisationUnitGroups( List<OrganisationUnitGroup> organisationUnitGroups )
+    {
+        this.organisationUnitGroups = organisationUnitGroups;
     }
 
     @Override
     public String getReportType()
     {
-        return ExportReport.TYPE.NORMAL;
+        return ExportReport.TYPE.ORGANIZATION_GROUP_LISTING;
     }
 
     @Override
@@ -66,13 +99,13 @@ public class ExportReportNormal
     @Override
     public boolean isNormal()
     {
-        return true;
+        return false;
     }
 
     @Override
     public boolean isOrgUnitGroupListing()
     {
-        return false;
+        return true;
     }
 
     @Override
@@ -86,8 +119,10 @@ public class ExportReportNormal
     {
         List<String> types = new ArrayList<String>();
         types.add( ExportItem.TYPE.DATAELEMENT );
+        types.add( ExportItem.TYPE.ORGANISATION );
         types.add( ExportItem.TYPE.INDICATOR );
         types.add( ExportItem.TYPE.FORMULA_EXCEL );
+        types.add( ExportItem.TYPE.SERIAL );
 
         return types;
     }

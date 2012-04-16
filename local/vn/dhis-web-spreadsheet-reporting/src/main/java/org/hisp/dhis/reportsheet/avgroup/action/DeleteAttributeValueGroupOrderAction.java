@@ -1,7 +1,7 @@
-package org.hisp.dhis.reportsheet;
+package org.hisp.dhis.reportsheet.avgroup.action;
 
 /*
- * Copyright (c) 2004-2011, University of Oslo
+ * Copyright (c) 2004-2012, University of Oslo
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -26,69 +26,49 @@ package org.hisp.dhis.reportsheet;
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-import java.util.ArrayList;
-import java.util.List;
+
+import org.hisp.dhis.reportsheet.AttributeValueGroupOrderService;
+
+import com.opensymphony.xwork2.Action;
 
 /**
- * @author Tran Thanh Tri
+ * @author Dang Duy Hieu
+ * @version $Id$
  */
-
-public class ExportReportNormal
-    extends ExportReport
+public class DeleteAttributeValueGroupOrderAction
+    implements Action
 {
     // -------------------------------------------------------------------------
-    // Constructors
+    // Dependency
     // -------------------------------------------------------------------------
 
-    public ExportReportNormal()
+    private AttributeValueGroupOrderService attributeValueGroupOrderService;
+
+    public void setAttributeValueGroupOrderService( AttributeValueGroupOrderService attributeValueGroupOrderService )
     {
-        super();
+        this.attributeValueGroupOrderService = attributeValueGroupOrderService;
     }
 
-    @Override
-    public String getReportType()
+    // -------------------------------------------------------------------------
+    // Input & Output
+    // -------------------------------------------------------------------------
+
+    private Integer id;
+
+    public void setId( Integer id )
     {
-        return ExportReport.TYPE.NORMAL;
+        this.id = id;
     }
 
-    @Override
-    public boolean isAttribute()
-    {
-        return false;
-    }
+    // -------------------------------------------------------------------------
+    // Action implementation
+    // -------------------------------------------------------------------------
 
-    @Override
-    public boolean isCategory()
+    public String execute()
+        throws Exception
     {
-        return false;
-    }
+        attributeValueGroupOrderService.deleteAttributeValueGroupOrder( id );
 
-    @Override
-    public boolean isNormal()
-    {
-        return true;
-    }
-
-    @Override
-    public boolean isOrgUnitGroupListing()
-    {
-        return false;
-    }
-
-    @Override
-    public boolean isPeriodColumnListing()
-    {
-        return false;
-    }
-
-    @Override
-    public List<String> getItemTypes()
-    {
-        List<String> types = new ArrayList<String>();
-        types.add( ExportItem.TYPE.DATAELEMENT );
-        types.add( ExportItem.TYPE.INDICATOR );
-        types.add( ExportItem.TYPE.FORMULA_EXCEL );
-
-        return types;
+        return SUCCESS;
     }
 }
