@@ -318,17 +318,6 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		scope="prototype">
 		<property name="programStageService" ref="org.hisp.dhis.program.ProgramStageService" />
 	</bean>
-	
-	<bean
-		id="org.hisp.dhis.caseentry.action.report.GetTabularParamsAction"
-		class="org.hisp.dhis.caseentry.action.report.GetTabularParamsAction"
-		scope="prototype">
-		<property name="identifierTypeService"
-			ref="org.hisp.dhis.patient.PatientIdentifierTypeService" />
-		<property name="attributeService"
-			ref="org.hisp.dhis.patient.PatientAttributeService" />
-		<property name="programService" ref="org.hisp.dhis.program.ProgramService" />
-	</bean>
 
 	<bean
 		id="org.hisp.dhis.caseentry.action.report.GenerateTabularReportAction"
