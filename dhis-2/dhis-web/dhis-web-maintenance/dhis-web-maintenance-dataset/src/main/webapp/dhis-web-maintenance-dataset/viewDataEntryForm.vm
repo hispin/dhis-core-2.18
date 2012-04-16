@@ -107,7 +107,7 @@
 }
 </style>
 
-<h3>$i18n.getString( "dataentryform_management" ) #openHelp( "custom_forms" )</h3>
+<h3>$i18n.getString( "dataentryform_management" ) #openHelp( "customDataEntryForm" )</h3>
 
 <form id="saveDataEntryForm" name="saveDataEntryForm" action="saveDataEntryForm.action" method="post">
   <table id="detailsList">

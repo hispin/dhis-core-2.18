@@ -11,7 +11,7 @@
 	var currentUserName = '$currentUserName';
 </script>
 
-<h3>$i18n.getString( "user_management" ) #openHelp( "users" )</h3>
+<h3>$i18n.getString( "user_management" ) #openHelp( "user_management" )</h3>
 
 <table style="width:100%">
 	<tr>

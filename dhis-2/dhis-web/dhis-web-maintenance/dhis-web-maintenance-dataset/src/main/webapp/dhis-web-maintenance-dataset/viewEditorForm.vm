@@ -1,5 +1,5 @@
 
-<h3>$i18n.getString( "dataset_assignment_editor" )</h3>
+<h3>$i18n.getString( "dataset_assignment_editor" ) #openHelp( "dataSetAssignmentEditor" )</h3>
 
 <table>
     <col width="330"/>
