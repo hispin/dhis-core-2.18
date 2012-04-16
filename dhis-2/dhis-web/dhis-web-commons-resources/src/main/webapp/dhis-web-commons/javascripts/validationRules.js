@@ -2,9 +2,7 @@ var validationRules = {
     "user" : {
         "username" : {
             "required" : true,
-            "rangelength" : [ 2, 140 ],
-            "firstletteralphabet" : true,
-            "alphanumeric" : true
+            "rangelength" : [ 2, 140 ]
         },
         "firstName" : {
             "required" : true,
