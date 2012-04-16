@@ -1469,7 +1469,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
         scope="prototype">
         <property name="userGroupService" ref="org.hisp.dhis.user.UserGroupService" />
 		<property name="dashBoardService" ref="org.hisp.dhis.dataanalyser.util.DashBoardService" />
-		<property name="programService" ref="org.hisp.dhis.program.ProgramService" />
+		<!--<property name="programService" ref="org.hisp.dhis.program.ProgramService" />-->
 		
     </bean>     
     <!-- BULK SMS: Excel Uploading -->
