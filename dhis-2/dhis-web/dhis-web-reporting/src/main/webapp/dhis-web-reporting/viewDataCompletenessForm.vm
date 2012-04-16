@@ -9,7 +9,7 @@
     var i18n_please_select_period = '$encoder.jsEscape( $i18n.getString( "please_select_period" ) , "'")';
 </script>
 
-<h3>$i18n.getString( "reporting_rate_summary" )</h3>
+<h3>$i18n.getString( "reporting_rate_summary" ) #openHelp( "reporting_reporting_rate_summary" )</h3>
 
 <div id="critiera" class="inputCriteria" style="width:660px;height:310px;">
 <table>
