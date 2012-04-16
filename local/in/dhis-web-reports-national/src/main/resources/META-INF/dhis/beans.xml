@@ -232,7 +232,25 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
         class="org.hisp.dhis.reports.md.action.MDReportFormAction"
         scope="prototype">
         <property name="periodService" ref="org.hisp.dhis.period.PeriodService" />
+		<property name="reportService" ref="org.hisp.dhis.reports.ReportService" />
     </bean>
+	
+    <bean id="org.hisp.dhis.reports.md.action.GetOrgUnitsAction"
+        class="org.hisp.dhis.reports.md.action.GetOrgUnitsAction"
+        scope="prototype">
+        <property name="reportService" ref="org.hisp.dhis.reports.ReportService" />
+        <property name="organisationUnitService" ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
+    </bean>	
+
+    <bean id="org.hisp.dhis.reports.md.action.MDReportResultAction"
+        class="org.hisp.dhis.reports.md.action.MDReportResultAction"
+        scope="prototype">
+        <property name="statementManager" ref="statementManager"/>
+        <property name="periodService" ref="org.hisp.dhis.period.PeriodService" />
+        <property name="reportService" ref="org.hisp.dhis.reports.ReportService" />
+        <property name="organisationUnitService" ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
+    </bean>	
+		
     <bean id="org.hisp.dhis.reports.md.action.GenerateMDReportAnalyserResultAction"
         class="org.hisp.dhis.reports.md.action.GenerateMDReportAnalyserResultAction"
         scope="prototype">
