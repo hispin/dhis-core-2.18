@@ -1,5 +1,7 @@
+package org.hisp.dhis.reportsheet.avgroup.action;
+
 /*
- * Copyright (c) 2004-2011, University of Oslo
+ * Copyright (c) 2004-2012, University of Oslo
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -24,41 +26,28 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package org.hisp.dhis.reportsheet.orgunitgrouplisting.action;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import org.hisp.dhis.organisationunit.OrganisationUnitGroup;
-import org.hisp.dhis.organisationunit.OrganisationUnitGroupService;
-import org.hisp.dhis.reportsheet.ExportReportOrganizationGroupListing;
-import org.hisp.dhis.reportsheet.ExportReportService;
+import org.hisp.dhis.reportsheet.AttributeValueGroupOrder;
+import org.hisp.dhis.reportsheet.AttributeValueGroupOrderService;
 
 import com.opensymphony.xwork2.Action;
 
 /**
- * @author Tran Thanh Tri
+ * @author Dang Duy Hieu
  * @version $Id$
  */
-public class UpdateOrgUnitGroupAction
+public class GetAttributeValueGroupOrderAction
     implements Action
 {
     // -------------------------------------------------------------------------
     // Dependency
     // -------------------------------------------------------------------------
 
-    private ExportReportService exportReportService;
+    private AttributeValueGroupOrderService attributeValueGroupOrderService;
 
-    public void setExportReportService( ExportReportService exportReportService )
+    public void setAttributeValueGroupOrderService( AttributeValueGroupOrderService attributeValueGroupOrderService )
     {
-        this.exportReportService = exportReportService;
-    }
-
-    private OrganisationUnitGroupService organisationUnitGroupService;
-
-    public void setOrganisationUnitGroupService( OrganisationUnitGroupService organisationUnitGroupService )
-    {
-        this.organisationUnitGroupService = organisationUnitGroupService;
+        this.attributeValueGroupOrderService = attributeValueGroupOrderService;
     }
 
     // -------------------------------------------------------------------------
@@ -72,11 +61,35 @@ public class UpdateOrgUnitGroupAction
         this.id = id;
     }
 
-    private List<String> selectedOrganisationUnitGroups = new ArrayList<String>();
+    private Integer reportId;
 
-    public void setSelectedOrganisationUnitGroups( List<String> selectedOrganisationUnitGroups )
+    public Integer getReportId()
     {
-        this.selectedOrganisationUnitGroups = selectedOrganisationUnitGroups;
+        return reportId;
+    }
+
+    public void setReportId( Integer reportId )
+    {
+        this.reportId = reportId;
+    }
+
+    private String clazzName;
+
+    public void setClazzName( String clazzName )
+    {
+        this.clazzName = clazzName;
+    }
+
+    public String getClazzName()
+    {
+        return clazzName;
+    }
+
+    private AttributeValueGroupOrder attributeValueGroupOrder;
+
+    public AttributeValueGroupOrder getAttributeValueGroupOrder()
+    {
+        return attributeValueGroupOrder;
     }
 
     // -------------------------------------------------------------------------
@@ -86,22 +99,7 @@ public class UpdateOrgUnitGroupAction
     public String execute()
         throws Exception
     {
-        ExportReportOrganizationGroupListing exportReport = (ExportReportOrganizationGroupListing) exportReportService
-            .getExportReport( id );
-
-        List<OrganisationUnitGroup> organisationUnitGroups = new ArrayList<OrganisationUnitGroup>();
-
-        for ( String oid : this.selectedOrganisationUnitGroups )
-        {
-            OrganisationUnitGroup organisationUnitGroup = organisationUnitGroupService
-                .getOrganisationUnitGroup( Integer.parseInt( oid ) );
-
-            organisationUnitGroups.add( organisationUnitGroup );
-        }
-
-        exportReport.setOrganisationUnitGroups( organisationUnitGroups );
-
-        exportReportService.updateExportReport( exportReport );
+        attributeValueGroupOrder = attributeValueGroupOrderService.getAttributeValueGroupOrder( id );
 
         return SUCCESS;
     }

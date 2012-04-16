@@ -87,6 +87,8 @@ public abstract class ExportReport
         return results;
     }
 
+    public abstract boolean isAttribute();
+    
     public abstract boolean isCategory();
 
     public abstract boolean isOrgUnitGroupListing();
@@ -112,6 +114,8 @@ public abstract class ExportReport
         public static final String NORMAL = "NORMAL";
 
         public static final String CATEGORY = "CATEGORY";
+        
+        public static final String ATTRIBUTE = "ATTRIBUTE";
 
         public static final String PERIOD_COLUMN_LISTING = "PERIOD_COLUMN_LISTING";
 

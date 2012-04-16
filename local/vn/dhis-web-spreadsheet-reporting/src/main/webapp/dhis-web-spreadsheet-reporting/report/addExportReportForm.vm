@@ -47,6 +47,7 @@
 			<td>
 				<select name="exportReportType" style="min-width:20em">
 					<option value='NORMAL'>$i18n.getString('NORMAL')</option>					
+					<option value='ATTRIBUTE'>$i18n.getString('ATTRIBUTE')</option>					
 					<option value='CATEGORY'>$i18n.getString('CATEGORY')</option>					
 					<option value='PERIOD_COLUMN_LISTING'>$i18n.getString('PERIOD_COLUMN_LISTING')</option>	
 					<option value='ORGANIZATION_GROUP_LISTING'>$i18n.getString('ORGANIZATION_GROUP_LISTING')</option>									

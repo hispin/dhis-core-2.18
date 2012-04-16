@@ -33,7 +33,7 @@ import org.hisp.dhis.organisationunit.OrganisationUnitGroup;
 import org.hisp.dhis.organisationunit.OrganisationUnitLevel;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.reportsheet.ExportReportService;
-import org.hisp.dhis.reportsheet.ExportReportOganiztionGroupListing;
+import org.hisp.dhis.reportsheet.ExportReportOrganizationGroupListing;
 
 import com.opensymphony.xwork2.Action;
 
@@ -94,9 +94,9 @@ public class ListOrgUnitGroupAtLevelAction
         return organisationUnitLevel;
     }
 
-    private ExportReportOganiztionGroupListing exportReport;
+    private ExportReportOrganizationGroupListing exportReport;
 
-    public ExportReportOganiztionGroupListing getExportReport()
+    public ExportReportOrganizationGroupListing getExportReport()
     {
         return exportReport;
     }
@@ -110,7 +110,7 @@ public class ListOrgUnitGroupAtLevelAction
     {
         organisationUnitLevel = organisationUnitService.getOrganisationUnitLevels();
 
-        exportReport = (ExportReportOganiztionGroupListing) exportReportService.getExportReport( id );
+        exportReport = (ExportReportOrganizationGroupListing) exportReportService.getExportReport( id );
 
         availableOrganisationUnitGroups = exportReport.getOrganisationUnitGroups();
         

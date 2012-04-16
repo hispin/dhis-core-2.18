@@ -30,31 +30,47 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * @author Tran Thanh Tri
+ * @author Dang Duy Hieu
+ * @version $Id$
  */
-
-public class ExportReportNormal
+public class ExportReportAttribute
     extends ExportReport
 {
+    private List<AttributeValueGroupOrder> attributeValueOrders;
+
     // -------------------------------------------------------------------------
     // Constructors
     // -------------------------------------------------------------------------
 
-    public ExportReportNormal()
+    public ExportReportAttribute()
     {
         super();
+    }
+
+    // -------------------------------------------------------------------------
+    // Getters and setters
+    // -------------------------------------------------------------------------
+
+    public List<AttributeValueGroupOrder> getAttributeValueOrders()
+    {
+        return attributeValueOrders;
+    }
+
+    public void setAttributeValueOrders( List<AttributeValueGroupOrder> attributeValueOrders )
+    {
+        this.attributeValueOrders = attributeValueOrders;
     }
 
     @Override
     public String getReportType()
     {
-        return ExportReport.TYPE.NORMAL;
+        return ExportReport.TYPE.ATTRIBUTE;
     }
 
     @Override
     public boolean isAttribute()
     {
-        return false;
+        return true;
     }
 
     @Override
@@ -66,7 +82,7 @@ public class ExportReportNormal
     @Override
     public boolean isNormal()
     {
-        return true;
+        return false;
     }
 
     @Override
@@ -86,8 +102,9 @@ public class ExportReportNormal
     {
         List<String> types = new ArrayList<String>();
         types.add( ExportItem.TYPE.DATAELEMENT );
-        types.add( ExportItem.TYPE.INDICATOR );
-        types.add( ExportItem.TYPE.FORMULA_EXCEL );
+        types.add( ExportItem.TYPE.DATAELEMENT_CODE );
+        types.add( ExportItem.TYPE.DATAELEMENT_NAME );
+        types.add( ExportItem.TYPE.SERIAL );
 
         return types;
     }

@@ -1,7 +1,7 @@
 package org.hisp.dhis.reportsheet;
 
 /*
- * Copyright (c) 2004-2011, University of Oslo
+ * Copyright (c) 2004-2012, University of Oslo
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -26,94 +26,107 @@ package org.hisp.dhis.reportsheet;
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-import java.util.ArrayList;
-import java.util.HashSet;
+
 import java.util.List;
-import java.util.Set;
+
+import org.hisp.dhis.attribute.Attribute;
 
 /**
- * @author Tran Thanh Tri
+ * @author Dang Duy Hieu
  * @version $Id$
  */
-
-public class ExportReportPeriodColumnListing
-    extends ExportReport
+public class AttributeValueGroupOrder
 {
-    private Set<PeriodColumn> periodColumns = new HashSet<PeriodColumn>();
+    private int id;
+
+    private String name;
+
+    private Attribute attribute;
+
+    private List<String> attributeValues;
 
     // -------------------------------------------------------------------------
     // Constructors
     // -------------------------------------------------------------------------
 
-    public ExportReportPeriodColumnListing()
+    public AttributeValueGroupOrder()
     {
-        super();
     }
 
-    public void addPeriodColumn( PeriodColumn periodColumn )
+    public AttributeValueGroupOrder( String name )
     {
-        periodColumns.add( periodColumn );
+        this.name = name;
     }
 
-    public void deletePeriodColumn( PeriodColumn periodColumn )
-    {
+    // -------------------------------------------------------------------------
+    // Getters and setters
+    // -------------------------------------------------------------------------
 
-        periodColumns.remove( periodColumn );
+    public int getId()
+    {
+        return id;
+    }
+
+    public void setId( int id )
+    {
+        this.id = id;
+    }
+
+    public String getName()
+    {
+        return name;
+    }
+
+    public void setName( String name )
+    {
+        this.name = name;
+    }
+
+    public Attribute getAttribute()
+    {
+        return attribute;
+    }
+
+    public void setAttribute( Attribute attribute )
+    {
+        this.attribute = attribute;
+    }
+
+    public List<String> getAttributeValues()
+    {
+        return attributeValues;
+    }
+
+    public void setAttributeValues( List<String> attributeValues )
+    {
+        this.attributeValues = attributeValues;
+    }
+
+    // -------------------------------------------------------------------------
+    // hashCode and equals
+    // -------------------------------------------------------------------------
+
+    @Override
+    public int hashCode()
+    {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + id;
+        return result;
     }
 
     @Override
-    public String getReportType()
+    public boolean equals( Object obj )
     {
-        return ExportReport.TYPE.PERIOD_COLUMN_LISTING;
-    }
-
-    public Set<PeriodColumn> getPeriodColumns()
-    {
-        return periodColumns;
-    }
-
-    public void setPeriodColumns( Set<PeriodColumn> periodColumns )
-    {
-        this.periodColumns = periodColumns;
-    }
-
-    @Override
-    public boolean isAttribute()
-    {
-        return false;
-    }
-
-    @Override
-    public boolean isCategory()
-    {
-        return false;
-    }
-
-    @Override
-    public boolean isNormal()
-    {
-        return false;
-    }
-
-    @Override
-    public boolean isOrgUnitGroupListing()
-    {
-        return false;
-    }
-
-    @Override
-    public boolean isPeriodColumnListing()
-    {
+        if ( this == obj )
+            return true;
+        if ( obj == null )
+            return false;
+        if ( getClass() != obj.getClass() )
+            return false;
+        AttributeValueGroupOrder other = (AttributeValueGroupOrder) obj;
+        if ( id != other.id )
+            return false;
         return true;
-    }
-
-    @Override
-    public List<String> getItemTypes()
-    {
-        List<String> types = new ArrayList<String>();
-        types.add( ExportItem.TYPE.DATAELEMENT );
-        types.add( ExportItem.TYPE.INDICATOR );
-
-        return types;
     }
 }

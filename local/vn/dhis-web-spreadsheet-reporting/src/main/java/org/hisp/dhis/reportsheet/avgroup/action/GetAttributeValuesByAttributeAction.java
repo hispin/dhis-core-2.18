@@ -1,7 +1,5 @@
-package org.hisp.dhis.reportsheet;
-
 /*
- * Copyright (c) 2004-2011, University of Oslo
+ * Copyright (c) 2004-2012, University of Oslo
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -26,69 +24,76 @@ package org.hisp.dhis.reportsheet;
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
+
+package org.hisp.dhis.reportsheet.avgroup.action;
+
 import java.util.ArrayList;
-import java.util.List;
+import java.util.Collection;
+
+import org.hisp.dhis.attribute.Attribute;
+import org.hisp.dhis.attribute.AttributeService;
+import org.hisp.dhis.attribute.LocalAttributeValueService;
+
+import com.opensymphony.xwork2.Action;
 
 /**
- * @author Tran Thanh Tri
+ * @author Dang Duy Hieu
+ * @version $Id$
  */
-
-public class ExportReportNormal
-    extends ExportReport
+public class GetAttributeValuesByAttributeAction
+    implements Action
 {
     // -------------------------------------------------------------------------
-    // Constructors
+    // Dependencies
     // -------------------------------------------------------------------------
 
-    public ExportReportNormal()
+    private AttributeService attributeService;
+
+    public void setAttributeService( AttributeService attributeService )
     {
-        super();
+        this.attributeService = attributeService;
     }
 
-    @Override
-    public String getReportType()
+    private LocalAttributeValueService localAttributeValueService;
+
+    public void setLocalAttributeValueService( LocalAttributeValueService localAttributeValueService )
     {
-        return ExportReport.TYPE.NORMAL;
+        this.localAttributeValueService = localAttributeValueService;
     }
 
-    @Override
-    public boolean isAttribute()
+    // -------------------------------------------------------------------------
+    // Input && Output
+    // -------------------------------------------------------------------------
+
+    private Integer attributeId;
+
+    public void setAttributeId( Integer attributeId )
     {
-        return false;
+        this.attributeId = attributeId;
     }
 
-    @Override
-    public boolean isCategory()
+    private Collection<String> values = new ArrayList<String>();
+
+    public Collection<String> getValues()
     {
-        return false;
+        return values;
     }
 
-    @Override
-    public boolean isNormal()
-    {
-        return true;
-    }
+    // -------------------------------------------------------------------------
+    // Action implementation
+    // -------------------------------------------------------------------------
 
     @Override
-    public boolean isOrgUnitGroupListing()
+    public String execute()
+        throws Exception
     {
-        return false;
-    }
+        Attribute attribute = attributeService.getAttribute( attributeId );
 
-    @Override
-    public boolean isPeriodColumnListing()
-    {
-        return false;
-    }
+        if ( attribute != null )
+        {
+            values = localAttributeValueService.getDistinctValuesByAttribute( attribute );
+        }
 
-    @Override
-    public List<String> getItemTypes()
-    {
-        List<String> types = new ArrayList<String>();
-        types.add( ExportItem.TYPE.DATAELEMENT );
-        types.add( ExportItem.TYPE.INDICATOR );
-        types.add( ExportItem.TYPE.FORMULA_EXCEL );
-
-        return types;
+        return SUCCESS;
     }
 }

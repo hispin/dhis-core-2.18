@@ -259,6 +259,68 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		<property name="dataElementGroupOrderService" ref="org.hisp.dhis.reportsheet.DataElementGroupOrderService" />
 	</bean>
 
+	<!-- REPORT EXCEL ATTRIBUTE BEAN -->
+
+	<bean
+		id="org.hisp.dhis.reportsheet.avgroup.action.ValidateAttributeValueGroupOrderAction"
+		class="org.hisp.dhis.reportsheet.avgroup.action.ValidateAttributeValueGroupOrderAction"
+		scope="prototype">
+		<property name="attributeValueGroupOrderService" ref="org.hisp.dhis.reportsheet.AttributeValueGroupOrderService" />
+	</bean>
+	
+	<bean
+		id="org.hisp.dhis.reportsheet.avgroup.action.SaveAttributeValueGroupOrderAction"
+		class="org.hisp.dhis.reportsheet.avgroup.action.SaveAttributeValueGroupOrderAction"
+		scope="prototype">
+		<property name="attributeService" ref="org.hisp.dhis.attribute.AttributeService" />
+		<property name="exportReportService" ref="org.hisp.dhis.reportsheet.ExportReportService" />
+	</bean>
+
+	<bean
+		id="org.hisp.dhis.reportsheet.avgroup.action.UpdateAttributeValueGroupOrderAction"
+		class="org.hisp.dhis.reportsheet.avgroup.action.UpdateAttributeValueGroupOrderAction"
+		scope="prototype">
+		<property name="attributeService" ref="org.hisp.dhis.attribute.AttributeService" />
+		<property name="attributeValueGroupOrderService" ref="org.hisp.dhis.reportsheet.AttributeValueGroupOrderService" />
+	</bean>
+
+	<bean
+		id="org.hisp.dhis.reportsheet.avgroup.action.DeleteAttributeValueGroupOrderAction"
+		class="org.hisp.dhis.reportsheet.avgroup.action.DeleteAttributeValueGroupOrderAction"
+		scope="prototype">
+		<property name="attributeValueGroupOrderService" ref="org.hisp.dhis.reportsheet.AttributeValueGroupOrderService" />
+	</bean>
+
+	<bean
+		id="org.hisp.dhis.reportsheet.avgroup.action.GetAttributeValueGroupOrderAction"
+		class="org.hisp.dhis.reportsheet.avgroup.action.GetAttributeValueGroupOrderAction"
+		scope="prototype">
+		<property name="attributeValueGroupOrderService" ref="org.hisp.dhis.reportsheet.AttributeValueGroupOrderService" />
+	</bean>
+
+	<bean
+		id="org.hisp.dhis.reportsheet.avgroup.action.UpdateSortedAttributeValueGroupOrderAction"
+		class="org.hisp.dhis.reportsheet.avgroup.action.UpdateSortedAttributeValueGroupOrderAction"
+		scope="prototype">
+		<property name="attributeValueGroupOrderService" ref="org.hisp.dhis.reportsheet.AttributeValueGroupOrderService" />
+		<property name="exportReportService" ref="org.hisp.dhis.reportsheet.ExportReportService" />
+	</bean>
+	
+	<bean
+		id="org.hisp.dhis.reportsheet.avgroup.action.UpdateSortedAttributeValueAction"
+		class="org.hisp.dhis.reportsheet.avgroup.action.UpdateSortedAttributeValueAction"
+		scope="prototype">
+		<property name="attributeValueGroupOrderService" ref="org.hisp.dhis.reportsheet.AttributeValueGroupOrderService" />
+	</bean>
+	
+	<bean
+		id="org.hisp.dhis.reportsheet.avgroup.action.GetAttributeValuesByAttributeAction"
+		class="org.hisp.dhis.reportsheet.avgroup.action.GetAttributeValuesByAttributeAction"
+		scope="prototype">
+		<property name="attributeService" ref="org.hisp.dhis.attribute.AttributeService" />
+		<property name="localAttributeValueService" ref="org.hisp.dhis.attribute.LocalAttributeValueService" />
+	</bean>
+
 	<!-- REPORT ORGANISATION UNIT GROUP LISTING BEAN -->
 
 	<bean

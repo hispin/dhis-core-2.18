@@ -1,4 +1,4 @@
-package org.hisp.dhis.reportsheet;
+package org.hisp.dhis.reportsheet.avgroup.action;
 
 /*
  * Copyright (c) 2004-2011, University of Oslo
@@ -26,98 +26,78 @@ package org.hisp.dhis.reportsheet;
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
 
-import org.hisp.dhis.organisationunit.OrganisationUnitGroup;
-import org.hisp.dhis.organisationunit.OrganisationUnitLevel;
+import org.hisp.dhis.reportsheet.AttributeValueGroupOrder;
+import org.hisp.dhis.reportsheet.AttributeValueGroupOrderService;
+import org.hisp.dhis.reportsheet.action.ActionSupport;
 
 /**
- * @author Chau Thu Tran
+ * @author Dang Duy Hieu
  * @version $Id$
  */
-
-public class ExportReportOganiztionGroupListing
-    extends ExportReport
+public class ValidateAttributeValueGroupOrderAction
+    extends ActionSupport
 {
-    private List<OrganisationUnitGroup> organisationUnitGroups;
-
-    private Map<OrganisationUnitGroup, OrganisationUnitLevel> organisationUnitLevels;
-
     // -------------------------------------------------------------------------
-    // Constructors
+    // Dependency
     // -------------------------------------------------------------------------
 
-    public ExportReportOganiztionGroupListing()
+    private AttributeValueGroupOrderService attributeValueGroupOrderService;
+
+    public void setAttributeValueGroupOrderService( AttributeValueGroupOrderService attributeValueGroupOrderService )
     {
-        super();
+        this.attributeValueGroupOrderService = attributeValueGroupOrderService;
     }
 
     // -------------------------------------------------------------------------
-    // Getters and setters
+    // Input & Output
     // -------------------------------------------------------------------------
 
-    public List<OrganisationUnitGroup> getOrganisationUnitGroups()
+    private Integer id;
+
+    public void setId( Integer id )
     {
-        return organisationUnitGroups;
+        this.id = id;
     }
 
-    public Map<OrganisationUnitGroup, OrganisationUnitLevel> getOrganisationUnitLevels()
+    private Integer reportId;
+
+    public void setReportId( Integer reportId )
     {
-        return organisationUnitLevels;
+        this.reportId = reportId;
     }
 
-    public void setOrganisationUnitLevels( Map<OrganisationUnitGroup, OrganisationUnitLevel> organisationUnitLevels )
+    private String clazzName;
+
+    public void setClazzName( String clazzName )
     {
-        this.organisationUnitLevels = organisationUnitLevels;
+        this.clazzName = clazzName;
     }
 
-    public void setOrganisationUnitGroups( List<OrganisationUnitGroup> organisationUnitGroups )
+    private String name;
+
+    public void setName( String name )
     {
-        this.organisationUnitGroups = organisationUnitGroups;
+        this.name = name;
     }
 
-    @Override
-    public String getReportType()
-    {
-        return ExportReport.TYPE.ORGANIZATION_GROUP_LISTING;
-    }
+    // -------------------------------------------------------------------------
+    // Input & Output
+    // -------------------------------------------------------------------------
 
-    @Override
-    public boolean isCategory()
+    public String execute()
+        throws Exception
     {
-        return false;
-    }
+        AttributeValueGroupOrder match = attributeValueGroupOrderService.getAttributeValueGroupOrder( name, clazzName,
+            reportId );
 
-    @Override
-    public boolean isNormal()
-    {
-        return false;
-    }
+        if ( match != null && (id == null || match.getId() != id) )
+        {
+            message = i18n.getString( "name_ready_exist" );
 
-    @Override
-    public boolean isOrgUnitGroupListing()
-    {
-        return true;
-    }
+            return ERROR;
+        }
 
-    @Override
-    public boolean isPeriodColumnListing()
-    {
-        return false;
-    }
-
-    @Override
-    public List<String> getItemTypes()
-    {
-        List<String> types = new ArrayList<String>();
-        types.add( ExportItem.TYPE.DATAELEMENT );
-        types.add( ExportItem.TYPE.ORGANISATION );
-        types.add( ExportItem.TYPE.INDICATOR );
-        types.add( ExportItem.TYPE.FORMULA_EXCEL );
-        types.add( ExportItem.TYPE.SERIAL );
-
-        return types;
+        return SUCCESS;
     }
 }

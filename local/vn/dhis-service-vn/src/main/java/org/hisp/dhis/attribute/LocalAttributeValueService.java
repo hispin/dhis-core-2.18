@@ -40,4 +40,6 @@ import org.hisp.dhis.attribute.AttributeValue;
 public interface LocalAttributeValueService
 {
     Collection<AttributeValue> getAttributeValuesByAttribute( Attribute attribute );
+    
+    Collection<String> getDistinctValuesByAttribute( Attribute attribute );
 }

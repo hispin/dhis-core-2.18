@@ -218,8 +218,6 @@ public class LoadFormAction
 
         List<DataElement> dataElements = new ArrayList<DataElement>( dataSet.getDataElements() );
 
-        Collections.sort( dataElements, new DataElementFormNameComparator() );
-        
         if ( dataElements.isEmpty() )
         {
             return INPUT;
@@ -235,7 +233,7 @@ public class LoadFormAction
             dataElements.retainAll( dataElementsByAttr );
         }
 
-//        Collections.sort( dataElements, dataElementComparator );
+        Collections.sort( dataElements, dataElementComparator );
 
         orderedDataElements = dataElementService.getGroupedDataElementsByCategoryCombo( dataElements );
 

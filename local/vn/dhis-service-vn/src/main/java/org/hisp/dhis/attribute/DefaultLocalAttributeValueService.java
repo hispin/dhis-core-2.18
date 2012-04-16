@@ -61,4 +61,9 @@ public class DefaultLocalAttributeValueService
     {
         return localAttributeValueStore.getByAttribute( attribute );
     }
+
+    public Collection<String> getDistinctValuesByAttribute( Attribute attribute )
+    {
+        return localAttributeValueStore.getDistinctValuesByAttribute( attribute );
+    }
 }

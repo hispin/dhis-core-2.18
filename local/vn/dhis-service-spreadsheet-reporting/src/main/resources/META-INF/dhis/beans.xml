@@ -43,7 +43,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 	</bean>
 	
 	<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
-	<!-- DATAELEMENTGROUPORDER STORE / SERVICE                         -->
+	<!-- DATAELEMENT-GROUP-ORDER STORE / SERVICE                         -->
 	<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
 	
 	<bean id="org.hisp.dhis.reportsheet.DataElementGroupOrderStore"
@@ -55,6 +55,21 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		class="org.hisp.dhis.reportsheet.impl.DefaultDataElementGroupOrderService">
 		<property name="dataElementGroupOrderStore"
 			ref="org.hisp.dhis.reportsheet.DataElementGroupOrderStore" />
+	</bean>
+	
+	<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+	<!-- ATTRIBUTEVALUE-GROUP-ORDER STORE / SERVICE                    -->
+	<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+	
+	<bean id="org.hisp.dhis.reportsheet.AttributeValueGroupOrderStore"
+		class="org.hisp.dhis.reportsheet.hibernate.HibernateAttributeValueGroupOrderStore">
+		<property name="sessionFactory" ref="sessionFactory"/>
+	</bean>
+	
+	<bean id="org.hisp.dhis.reportsheet.AttributeValueGroupOrderService"
+		class="org.hisp.dhis.reportsheet.impl.DefaultAttributeValueGroupOrderService">
+		<property name="attributeValueGroupOrderStore"
+			ref="org.hisp.dhis.reportsheet.AttributeValueGroupOrderStore" />
 	</bean>
 	
 	<!-- Report Location Manager -->

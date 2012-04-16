@@ -1,5 +1,7 @@
+package org.hisp.dhis.reportsheet.avgroup.action;
+
 /*
- * Copyright (c) 2004-2011, University of Oslo
+ * Copyright (c) 2004-2012, University of Oslo
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -24,79 +26,88 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package org.hisp.dhis.reportsheet.orgunitgrouplisting.action;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
-import org.hisp.dhis.common.comparator.IdentifiableObjectNameComparator;
-import org.hisp.dhis.organisationunit.OrganisationUnitGroup;
-import org.hisp.dhis.organisationunit.OrganisationUnitGroupService;
-import org.hisp.dhis.reportsheet.ExportReportOrganizationGroupListing;
-import org.hisp.dhis.reportsheet.ExportReportService;
+import org.hisp.dhis.attribute.Attribute;
+import org.hisp.dhis.attribute.AttributeService;
+import org.hisp.dhis.reportsheet.AttributeValueGroupOrder;
+import org.hisp.dhis.reportsheet.AttributeValueGroupOrderService;
 
 import com.opensymphony.xwork2.Action;
 
 /**
- * @author Tran Thanh Tri
+ * @author Dang Duy Hieu
  * @version $Id$
  */
-public class OpenUpdateOrgUnitGroupAction
+public class UpdateAttributeValueGroupOrderAction
     implements Action
 {
     // -------------------------------------------------------------------------
     // Dependency
     // -------------------------------------------------------------------------
 
-    private ExportReportService exportReportService;
+    private AttributeService attributeService;
 
-    public void setExportReportService( ExportReportService exportReportService )
+    public void setAttributeService( AttributeService attributeService )
     {
-        this.exportReportService = exportReportService;
+        this.attributeService = attributeService;
     }
 
-    private OrganisationUnitGroupService organisationUnitGroupService;
+    private AttributeValueGroupOrderService attributeValueGroupOrderService;
 
-    public void setOrganisationUnitGroupService( OrganisationUnitGroupService organisationUnitGroupService )
+    public void setAttributeValueGroupOrderService( AttributeValueGroupOrderService attributeValueGroupOrderService )
     {
-        this.organisationUnitGroupService = organisationUnitGroupService;
+        this.attributeValueGroupOrderService = attributeValueGroupOrderService;
     }
 
     // -------------------------------------------------------------------------
-    // Input & Output
+    // Input
     // -------------------------------------------------------------------------
 
     private Integer id;
 
-    private List<OrganisationUnitGroup> availableOrganisationUnitGroups;
+    private Integer attributeId;
 
-    private List<OrganisationUnitGroup> selectedOrganisationUnitGroups;
+    private Integer attributeValueGroupOrderId;
 
-    private ExportReportOrganizationGroupListing exportReportOrgUnitGroupListing;
+    private String name;
+
+    private List<String> attributeValues = new ArrayList<String>();
 
     // -------------------------------------------------------------------------
     // Getter & Setter
     // -------------------------------------------------------------------------
 
-    public ExportReportOrganizationGroupListing getExportReportOrgUnitGroupListing()
+    public void setAttributeValueGroupOrderId( Integer attributeValueGroupOrderId )
     {
-        return exportReportOrgUnitGroupListing;
+        this.attributeValueGroupOrderId = attributeValueGroupOrderId;
     }
 
-    public List<OrganisationUnitGroup> getSelectedOrganisationUnitGroups()
+    public void setName( String name )
     {
-        return selectedOrganisationUnitGroups;
+        this.name = name;
     }
 
-    public List<OrganisationUnitGroup> getAvailableOrganisationUnitGroups()
+    public Integer getId()
     {
-        return availableOrganisationUnitGroups;
+        return id;
     }
 
     public void setId( Integer id )
     {
         this.id = id;
+    }
+
+    public void setAttributeId( Integer attributeId )
+    {
+        this.attributeId = attributeId;
+    }
+
+    public void setAttributeValues( List<String> attributeValues )
+    {
+        this.attributeValues = attributeValues;
     }
 
     // -------------------------------------------------------------------------
@@ -106,18 +117,34 @@ public class OpenUpdateOrgUnitGroupAction
     public String execute()
         throws Exception
     {
-        exportReportOrgUnitGroupListing = (ExportReportOrganizationGroupListing) exportReportService.getExportReport( id );
+        AttributeValueGroupOrder attributeValueGroupOrder = attributeValueGroupOrderService
+            .getAttributeValueGroupOrder( attributeValueGroupOrderId );
 
-        availableOrganisationUnitGroups = new ArrayList<OrganisationUnitGroup>( organisationUnitGroupService
-            .getAllOrganisationUnitGroups() );
+        Attribute attribute = attributeService.getAttribute( attributeId );
 
-        selectedOrganisationUnitGroups = exportReportOrgUnitGroupListing.getOrganisationUnitGroups();
+        attributeValueGroupOrder.setName( name );
 
-        availableOrganisationUnitGroups.removeAll( selectedOrganisationUnitGroups );
+        attributeValueGroupOrder.setAttribute( attribute );
 
-        Collections.sort( this.availableOrganisationUnitGroups, new IdentifiableObjectNameComparator() );
+        List<String> finalList = new ArrayList<String>();
+
+        removeDuplicatedItems( attributeValues, finalList );
+
+        attributeValueGroupOrder.setAttributeValues( finalList );
+
+        attributeValueGroupOrderService.updateAttributeValueGroupOrder( attributeValueGroupOrder );
 
         return SUCCESS;
     }
 
+    private static void removeDuplicatedItems( List<String> a, List<String> b )
+    {
+        for ( String s1 : a )
+        {
+            if ( !b.contains( s1 ) )
+            {
+                b.add( s1 );
+            }
+        }
+    }
 }

@@ -1,7 +1,7 @@
 package org.hisp.dhis.reportsheet.exportreport.action;
 
 /*
- * Copyright (c) 2004-2011, University of Oslo
+ * Copyright (c) 2004-2012, University of Oslo
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -26,11 +26,12 @@ package org.hisp.dhis.reportsheet.exportreport.action;
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
+import org.hisp.dhis.reportsheet.ExportReportAttribute;
 import org.hisp.dhis.reportsheet.ExportReportService;
 import org.hisp.dhis.reportsheet.ExportReport;
 import org.hisp.dhis.reportsheet.ExportReportCategory;
 import org.hisp.dhis.reportsheet.ExportReportNormal;
-import org.hisp.dhis.reportsheet.ExportReportOganiztionGroupListing;
+import org.hisp.dhis.reportsheet.ExportReportOrganizationGroupListing;
 import org.hisp.dhis.reportsheet.ExportReportPeriodColumnListing;
 
 import com.opensymphony.xwork2.Action;
@@ -48,6 +49,11 @@ public class AddExportReportAction
     // -------------------------------------------------------------------------
 
     private ExportReportService exportReportService;
+
+    public void setExportReportService( ExportReportService exportReportService )
+    {
+        this.exportReportService = exportReportService;
+    }
 
     // -------------------------------------------------------------------------
     // Input & Output
@@ -74,11 +80,6 @@ public class AddExportReportAction
     // -------------------------------------------------------------------------
     // Getter & Setter
     // -------------------------------------------------------------------------
-
-    public void setExportReportService( ExportReportService exportReportService )
-    {
-        this.exportReportService = exportReportService;
-    }
 
     public void setGroup( String group )
     {
@@ -133,15 +134,19 @@ public class AddExportReportAction
             exportReport = new ExportReportNormal();
         }
 
-        if ( exportReportType.equalsIgnoreCase( ExportReport.TYPE.ORGANIZATION_GROUP_LISTING ) )
+        if ( exportReportType.equalsIgnoreCase( ExportReport.TYPE.ATTRIBUTE ) )
         {
-            exportReport = new ExportReportOganiztionGroupListing();
+            exportReport = new ExportReportAttribute();
         }
 
         if ( exportReportType.equalsIgnoreCase( ExportReport.TYPE.CATEGORY ) )
         {
             exportReport = new ExportReportCategory();
+        }
 
+        if ( exportReportType.equalsIgnoreCase( ExportReport.TYPE.ORGANIZATION_GROUP_LISTING ) )
+        {
+            exportReport = new ExportReportOrganizationGroupListing();
         }
 
         if ( exportReportType.equalsIgnoreCase( ExportReport.TYPE.PERIOD_COLUMN_LISTING ) )

@@ -102,15 +102,15 @@ public class GetExportReportAction
     public String execute()
         throws Exception
     {
-        if ( id != null )
+        if ( id == null )
+        {
+            return ERROR;
+        }
+        else
         {
             selectionManager.setSelectedReportId( id );
 
             report = exportReportService.getExportReport( id );
-        }
-        else
-        {
-            return ERROR;
         }
 
         return SUCCESS;

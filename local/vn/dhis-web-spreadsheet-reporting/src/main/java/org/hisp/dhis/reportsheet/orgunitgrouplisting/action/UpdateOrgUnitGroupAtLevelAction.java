@@ -34,7 +34,7 @@ import org.hisp.dhis.organisationunit.OrganisationUnitGroupService;
 import org.hisp.dhis.organisationunit.OrganisationUnitLevel;
 import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.reportsheet.ExportReportService;
-import org.hisp.dhis.reportsheet.ExportReportOganiztionGroupListing;
+import org.hisp.dhis.reportsheet.ExportReportOrganizationGroupListing;
 
 import com.opensymphony.xwork2.Action;
 
@@ -102,7 +102,7 @@ public class UpdateOrgUnitGroupAtLevelAction
     public String execute()
         throws Exception
     {
-        ExportReportOganiztionGroupListing exportReport = (ExportReportOganiztionGroupListing) exportReportService
+        ExportReportOrganizationGroupListing exportReport = (ExportReportOrganizationGroupListing) exportReportService
             .getExportReport( exportReportId );
 
         Map<OrganisationUnitGroup, OrganisationUnitLevel> orgUniGroupAtLevels = new HashMap<OrganisationUnitGroup, OrganisationUnitLevel>(

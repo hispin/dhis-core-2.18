@@ -2,8 +2,8 @@
 
 <ul class="introList">
     #introListImgItem( "getConfiguration.action" "configuration" "systemsettings")
-    #introListImgItem( "listAllExportReport.action" "export_reports" "export")
-	#introListImgItem( "listAllImportReport.action" "import_reports" "import" )
+    #introListImgItem( "listAllExportReport.action" "design_export_reports" "export")
+	#introListImgItem( "listAllImportReport.action" "design_import_reports" "import" )
     #introListImgItem( "listDataEntryStatus.action" "data_status_management" "validationcriteria")
     #introListImgItem( "listAllExcelTemplates.action" "excel_template_management" "excel")
 	#introListImgItem( "javascript: cleanUp();" "clean_up" "clean-up")

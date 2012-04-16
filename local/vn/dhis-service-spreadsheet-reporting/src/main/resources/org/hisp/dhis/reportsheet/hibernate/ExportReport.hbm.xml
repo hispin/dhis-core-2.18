@@ -39,7 +39,7 @@
 		
 		<joined-subclass name="org.hisp.dhis.reportsheet.ExportReportPeriodColumnListing" table="reportexcels_periodcolumnlisting">
 			<key column="reportexcelid" />		
-			<set name="periodColumns" cascade="all" table="reportexcel_periodcolumns" lazy="false">
+			<set name="periodColumns" table="reportexcel_periodcolumns" cascade="all" lazy="false">
 				<key column="reportexcelid"/>
 				<one-to-many class="org.hisp.dhis.reportsheet.PeriodColumn"/>
 			</set>	
@@ -47,14 +47,23 @@
 		
 		<joined-subclass name="org.hisp.dhis.reportsheet.ExportReportCategory" table="reportexcels_category">
 			<key column="reportexcelid"/>
-			<list name="dataElementOrders" table="reportexcel_dataelementgrouporder" cascade="all" lazy="false">
+			<list name="dataElementOrders" table="reportexcel_dataelementgrouporders" cascade="all" lazy="false">
 				<key column="reportexcelid"/>
 				<list-index base="0" column="dataelementgrouporder"/>
 				<one-to-many class="org.hisp.dhis.reportsheet.DataElementGroupOrder"/>
 		    </list>				
 		</joined-subclass>
 		
-		<joined-subclass name="org.hisp.dhis.reportsheet.ExportReportOganiztionGroupListing" table="reportexcels_organizationgrouplisting">			
+		<joined-subclass name="org.hisp.dhis.reportsheet.ExportReportAttribute" table="reportexcels_attribute">
+			<key column="reportexcelid"/>
+			<list name="attributeValueOrders" table="reportexcel_attributevaluegrouporders" cascade="all" lazy="false">
+				<key column="reportexcelid"/>
+				<list-index base="0" column="attributevaluegrouporder"/>
+				<one-to-many class="org.hisp.dhis.reportsheet.AttributeValueGroupOrder"/>
+		    </list>				
+		</joined-subclass>
+		
+		<joined-subclass name="org.hisp.dhis.reportsheet.ExportReportOrganizationGroupListing" table="reportexcels_organizationgrouplisting">			
 			<key column="reportexcelid"/>			
 			<list  name="organisationUnitGroups" table="reportexcel_organisationgroup">
 				<key column="reportexcelid" />

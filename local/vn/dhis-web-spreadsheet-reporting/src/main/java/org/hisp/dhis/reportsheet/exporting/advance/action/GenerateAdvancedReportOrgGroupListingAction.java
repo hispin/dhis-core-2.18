@@ -40,7 +40,7 @@ import org.hisp.dhis.organisationunit.OrganisationUnitGroupService;
 import org.hisp.dhis.period.Period;
 import org.hisp.dhis.reportsheet.ExportItem;
 import org.hisp.dhis.reportsheet.ExportReport;
-import org.hisp.dhis.reportsheet.ExportReportOganiztionGroupListing;
+import org.hisp.dhis.reportsheet.ExportReportOrganizationGroupListing;
 import org.hisp.dhis.reportsheet.exporting.AbstractGenerateExcelReportSupport;
 import org.hisp.dhis.reportsheet.utils.ExcelUtils;
 
@@ -85,7 +85,7 @@ public class GenerateAdvancedReportOrgGroupListingAction
         OrganisationUnitGroup organisationUnitGroup = organisationUnitGroupService
             .getOrganisationUnitGroup( organisationGroupId );
 
-        ExportReportOganiztionGroupListing exportReportInstance = (ExportReportOganiztionGroupListing) exportReport;
+        ExportReportOrganizationGroupListing exportReportInstance = (ExportReportOrganizationGroupListing) exportReport;
 
         this.installReadTemplateFile( exportReportInstance, period, organisationUnitGroup );
 
