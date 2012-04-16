@@ -17,7 +17,7 @@
 	});
 </script>
 
-<h3>$i18n.getString("user_general_settings")</h3>
+<h3>$i18n.getString("user_general_settings") #openHelp( "userGeneralSettings" )</h3>
 
 <h4>$i18n.getString( "language" )</h4>
 

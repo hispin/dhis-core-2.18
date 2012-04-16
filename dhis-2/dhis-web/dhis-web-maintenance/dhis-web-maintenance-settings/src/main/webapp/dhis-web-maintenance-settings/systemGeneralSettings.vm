@@ -19,7 +19,7 @@
 	});
 </script>
 
-<h3>$i18n.getString( "general_settings" )</h3>
+<h3>$i18n.getString( "general_settings" ) #openHelp( "systemGeneralSettings" )</h3>
 
 <!-- cache_strategy -->
 <h4>$i18n.getString( "cache_strategy" )</h4>

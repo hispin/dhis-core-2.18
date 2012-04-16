@@ -6,7 +6,7 @@
 	var i18n_not_choose_organisation = '$encoder.jsEncode( $i18n.getString( "not_choose_organisation" ) )';
 </script>
 
-<h3>$i18n.getString( "min_max_value_generation" )</h3>
+<h3>$i18n.getString( "min_max_value_generation" ) #openHelp( "minMaxValueGeneration" )</h3>
 
 <form id="minMaxGeneratingForm" method="post">
 <table>
