@@ -23,10 +23,10 @@
 	  <param name="javascripts">javascript/importDataValue.js</param>
 	</action>
 		
-	<action name="importDataValue" class="org.hisp.dhis.importexport.action.datavalue.ImportDataValueAction">
-	  <result name="success" type="redirect">displayImportDataValueForm.action?running=true&amp;importFormat=${importFormat}</result>
-      <interceptor-ref name="fileUploadStack" />
-	</action>
+      <action name="importDataValue" class="org.hisp.dhis.importexport.action.datavalue.ImportDataValueAction">
+        <result name="success" type="redirect">displayImportDataValueForm.action?running=true&amp;importFormat=${importFormat}</result>
+        <interceptor-ref name="fileUploadStack" />
+      </action>
 
     <action name="getDataValueImportSummary" class="org.hisp.dhis.importexport.action.GetImportSummaryAction">			
       <result name="success" type="velocity">/dhis-web-importexport/importSummary.vm</result>
@@ -221,6 +221,28 @@
       <result name="success" type="velocity-xml">/dhis-web-importexport/responseSuccess.vm</result>
       <result name="input" type="velocity-xml">/dhis-web-importexport/responseInput.vm</result>
     </action>
+
+    <action name="displayRoutes" class="org.hisp.dhis.importexport.action.integration.DisplayRoutesAction">
+      <result name="success" type="velocity">/main.vm</result>
+      <param name="page">/dhis-web-importexport/displayRoutes.vm</param>
+      <param name="menu">/dhis-web-importexport/mainMenu.vm</param>
+      <param name="javascripts" />
+    </action>
+
+    <action name="showAddRouteForm" class="org.hisp.dhis.importexport.action.integration.ShowAddRouteFormAction">
+      <result name="success" type="velocity">/main.vm</result>
+      <param name="page">/dhis-web-importexport/showAddRouteForm.vm</param>
+      <param name="menu">/dhis-web-importexport/mainMenu.vm</param>
+      <param name="javascripts" />
+    </action>
+
+    <action name="addRoute" class="org.hisp.dhis.importexport.action.integration.AddRouteAction">
+      <result name="success" type="redirect">displayRoutes.action</result>
+      <result name="error" type="redirect">showAddRouteForm.action</result>
+      <interceptor-ref name="fileUploadStack" />
+      <param name="javascripts" />
+    </action>
+
   </package>
 
 </struts>
