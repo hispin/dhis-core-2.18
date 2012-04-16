@@ -267,7 +267,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 	</bean>
 	
 	<bean id="org.hisp.dhis.caseentry.action.report.GetOrganisationUnitChildrenAction"
-		class="org.hisp.dhis.visualizer.action.GetOrganisationUnitChildrenAction"
+		class="org.hisp.dhis.caseentry.action.report.GetOrganisationUnitChildrenAction"
 		scope="prototype">
 		<property name="organisationUnitService"
 			ref="org.hisp.dhis.organisationunit.OrganisationUnitService" />
