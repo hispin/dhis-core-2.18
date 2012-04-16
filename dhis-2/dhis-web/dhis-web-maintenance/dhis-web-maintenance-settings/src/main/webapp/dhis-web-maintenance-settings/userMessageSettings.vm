@@ -1,5 +1,4 @@
 <script type="text/javascript">
-	
 	jQuery(document).ready(function() {
 		jQuery("input[type=button]").click(function() {
 			jQuery.post( 'setUserMessageSettings.action', {
@@ -13,11 +12,10 @@
 	});
 </script>
 
-<h3>$i18n.getString("user_message_settings")</h3>
+<h3>$i18n.getString( "user_message_settings" ) #openHelp( "userMessageSettings" )</h3>
 
 <h4>$i18n.getString( "message_email_notification" )</h4>
 <p><input type="checkbox" id="messageEmailNotification" name="messageEmailNotification" #if( $messageEmailNotification ) checked="checked"#end/></p>
-
 
 <h4>$i18n.getString( "message_sms_notification" )</h4>
 <p><input type="checkbox" id="messageSmsNotification" name="messageSmsNotification" #if( $messageSmsNotification ) checked="checked"#end/></p>

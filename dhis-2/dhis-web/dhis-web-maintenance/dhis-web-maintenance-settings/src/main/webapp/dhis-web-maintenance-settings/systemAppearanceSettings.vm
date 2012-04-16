@@ -14,7 +14,7 @@
 	});
 </script>
 
-<h3>$i18n.getString( "appearance_settings" )</h3>
+<h3>$i18n.getString( "appearance_settings" ) #openHelp( "systemAppearanceSettings" )</h3>
 
 <h4>$i18n.getString( "application_title" )</h4>
 

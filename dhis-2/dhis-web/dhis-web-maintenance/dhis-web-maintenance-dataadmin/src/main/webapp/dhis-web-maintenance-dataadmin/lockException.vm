@@ -23,7 +23,7 @@
 
 </script>
 
-<h3>$i18n.getString( "lock_exception_management" ) #openHelp( "lock_exception" )</h3>
+<h3>$i18n.getString( "lock_exception_management" ) #openHelp( "lockException" )</h3>
 
 <table class="mainPageTable">
 	<tr>
