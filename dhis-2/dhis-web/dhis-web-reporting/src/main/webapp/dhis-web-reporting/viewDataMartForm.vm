@@ -1,4 +1,4 @@
-<h3>$i18n.getString( "data_mart_management" )</h3>
+<h3>$i18n.getString( "data_mart_management" ) #openHelp( "data_mart" )</h3>
 
 <div id="critiera" class="inputCriteria" style="width:380px;height:170px;">
 <table>

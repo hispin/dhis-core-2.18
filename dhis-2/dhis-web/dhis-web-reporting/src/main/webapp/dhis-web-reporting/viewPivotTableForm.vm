@@ -34,7 +34,7 @@ div#control
   margin-bottom: 15px;
 }
 
-div#pivot222
+div#pivot
 {
   position: relative;
   left: 2px;
@@ -45,7 +45,6 @@ div#pivot222
   padding-left: 20px;
   margin-bottom: 6px;
   border-radius: 3px;
-  -moz-border-radius: 3px; /* Firefox */
 }
 
 div.inputSection
@@ -81,13 +80,13 @@ div#pivotMenu
 
 </style>
 
-<h3>$i18n.getString( "pivot_table" )</h3>
+<h3>$i18n.getString( "pivot_table" ) #openHelp( "web_pivot_table" )</h3>
 
 <!-- Control panel -->
 
 <div id="control">
-<input type="button" value='$i18n.getString( "data" )' style="width:110px" onclick="showCriteria()" />
-<input type="button" value='$i18n.getString( "pivot" )' style="width:110px" onclick="showPivot()" />
+<input type="button" value="$i18n.getString( 'data' )" style="width:110px" onclick="showCriteria()" />
+<input type="button" value="$i18n.getString( 'pivot' )" style="width:110px" onclick="showPivot()" />
 <input type="button" value="$i18n.getString( 'get_report_as_xls' )" onclick="exportXls()" style="width:130px">&nbsp;
 <label id="dataLabel" style="color:#606060"></label>
 </div>
