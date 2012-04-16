@@ -233,7 +233,7 @@ public class LoadFormAction
             dataElements.retainAll( dataElementsByAttr );
         }
 
-        Collections.sort( dataElements, dataElementComparator );
+        Collections.sort( dataElements, new DataElementFormNameComparator()  );
 
         orderedDataElements = dataElementService.getGroupedDataElementsByCategoryCombo( dataElements );
 
